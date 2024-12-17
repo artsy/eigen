@@ -32,6 +32,7 @@ import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
 import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
+import { ElementInView } from "app/utils/ElementInView"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
@@ -40,6 +41,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { RandomNumberGenerator } from "app/utils/placeholders"
+import { usePrefetch } from "app/utils/queryPrefetching"
 import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
@@ -124,6 +126,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 }) => {
   const itemRef = useRef<any>()
   const color = useColor()
+  const prefetchUrl = usePrefetch()
   const tracking = useTracking()
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
@@ -131,6 +134,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
     "AREnableNewSaveAndFollowOnArtworkCard"
   )
+  const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
 
   const {
     enabled,
@@ -284,192 +288,200 @@ export const Artwork: React.FC<ArtworkProps> = ({
     await item._disappearable?.disappear()
   }
 
+  const handleVisible = () => {
+    if (enableViewPortPrefetching && artwork.href) {
+      prefetchUrl(artwork.href)
+    }
+  }
+
   const displayArtworkSocialSignal =
     !isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals
 
   return (
-    <Disappearable ref={(ref) => ((artwork as any)._disappearable = ref)}>
-      <ContextMenuArtwork
-        onSupressArtwork={() => handleSupress(artwork as any)}
-        contextModule={contextModule}
-        contextScreenOwnerType={contextScreenOwnerType}
-        onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
-        artwork={artwork}
-        hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
-      >
-        <Touchable
-          haptic
-          underlayColor={color("white100")}
-          activeOpacity={0.8}
-          onPress={handleTap}
-          testID={`artworkGridItem-${artwork.title}`}
+    <ElementInView onVisible={handleVisible}>
+      <Disappearable ref={(ref) => ((artwork as any)._disappearable = ref)}>
+        <ContextMenuArtwork
+          onSupressArtwork={() => handleSupress(artwork as any)}
+          contextModule={contextModule}
+          contextScreenOwnerType={contextScreenOwnerType}
+          onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
+          artwork={artwork}
+          hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
         >
-          <View ref={itemRef}>
-            {!!artwork.image?.url && (
-              <View>
-                <Image
-                  src={artwork.image.url}
-                  aspectRatio={artwork.image.aspectRatio ?? 1}
-                  height={height}
-                  width={Number(height) * (artwork.image.aspectRatio ?? 1)}
-                  blurhash={showBlurhash ? artwork.image.blurhash : undefined}
-                  resizeMode="contain"
-                />
-              </View>
-            )}
-            {!!canShowAuctionProgressBar && (
-              <Box mt={1}>
-                <DurationProvider startAt={endsAt ?? undefined}>
-                  <LotProgressBar
-                    duration={null}
-                    startAt={artwork.sale?.startAt}
-                    extendedBiddingPeriodMinutes={artwork.sale.extendedBiddingPeriodMinutes}
-                    extendedBiddingIntervalMinutes={artwork.sale.extendedBiddingIntervalMinutes}
-                    biddingEndAt={endsAt}
-                    hasBeenExtended={lotSaleExtended}
+          <Touchable
+            haptic
+            underlayColor={color("white100")}
+            activeOpacity={0.8}
+            onPress={handleTap}
+            testID={`artworkGridItem-${artwork.title}`}
+          >
+            <View ref={itemRef}>
+              {!!artwork.image?.url && (
+                <View>
+                  <Image
+                    src={artwork.image.url}
+                    aspectRatio={artwork.image.aspectRatio ?? 1}
+                    height={height}
+                    width={Number(height) * (artwork.image.aspectRatio ?? 1)}
+                    blurhash={showBlurhash ? artwork.image.blurhash : undefined}
+                    resizeMode="contain"
                   />
-                </DurationProvider>
-              </Box>
-            )}
-
-            <Flex
-              flexDirection={positionCTAs}
-              justifyContent="space-between"
-              mt={1}
-              style={artworkMetaStyle}
-            >
-              <Flex
-                flexGrow={positionCTAs === "column" ? 1 : undefined}
-                flex={positionCTAs === "row" ? 1 : undefined}
-              >
-                {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
-                  <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
-                    Lot {artwork.saleArtwork.lotLabel}
-                  </Text>
-                )}
-                {!!artwork.artistNames && (
-                  <Text
-                    lineHeight="18px"
-                    weight="regular"
-                    variant="xs"
-                    numberOfLines={1}
-                    {...artistNamesTextStyle}
-                  >
-                    {artwork.artistNames}
-                  </Text>
-                )}
-                {!!artwork.title && (
-                  <Text
-                    lineHeight="18px"
-                    variant="xs"
-                    weight="regular"
-                    color="black60"
-                    numberOfLines={1}
-                    {...titleTextStyle}
-                  >
-                    <Text lineHeight="18px" variant="xs" weight="regular">
-                      {artwork.title}
-                    </Text>
-                    {artwork.date ? `, ${artwork.date}` : ""}
-                  </Text>
-                )}
-                {!hidePartner && !!artwork.partner?.name && (
-                  <Text
-                    variant="xs"
-                    lineHeight="18px"
-                    color="black60"
-                    numberOfLines={1}
-                    {...partnerNameTextStyle}
-                  >
-                    {artwork.partner.name}
-                  </Text>
-                )}
-                {!!displayPriceOfferMessage && (
-                  <Flex flexDirection="row">
-                    <Text lineHeight="20px" variant="xs" numberOfLines={1} fontWeight="bold">
-                      {priceOfferMessage.priceWithDiscountMessage}
-                    </Text>
-                    <Text color="black60" variant="xs">
-                      {" "}
-                      (List price: {priceOfferMessage.priceListedMessage})
-                    </Text>
-                  </Flex>
-                )}
-                {!!saleInfo && !hideSaleInfo && !displayPriceOfferMessage && (
-                  <ArtworkSaleMessage
-                    artwork={artwork}
-                    saleMessage={saleInfo}
-                    displayLimitedTimeOfferSignal={displayLimitedTimeOfferSignal}
-                    saleInfoTextStyle={saleInfoTextStyle}
-                  />
-                )}
-
-                {!!artwork.isUnlisted && (
-                  <Text lineHeight="18px" variant="xs" numberOfLines={1} fontWeight="bold">
-                    Exclusive Access
-                  </Text>
-                )}
-
-                {!!isAuction && !!collectorSignals && (
-                  <ArtworkAuctionTimer
-                    collectorSignals={collectorSignals}
-                    hideRegisterBySignal={hideRegisterBySignal}
-                  />
-                )}
-
-                {!!displayArtworkSocialSignal && (
-                  <ArtworkSocialSignal
-                    collectorSignals={collectorSignals}
-                    hideCuratorsPick={hideCuratorsPickSignal}
-                    hideIncreasedInterest={hideIncreasedInterestSignal}
-                  />
-                )}
-              </Flex>
-
-              {!!showOldSaveCTA && (
-                <Flex flexDirection="row" alignItems="flex-start">
-                  {!!isAuction && !!collectorSignals?.auction?.lotWatcherCount && (
-                    <Text lineHeight="18px" variant="xs" numberOfLines={1}>
-                      {collectorSignals.auction.lotWatcherCount}
-                    </Text>
-                  )}
-                  <Touchable
-                    haptic
-                    onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
-                    testID="save-artwork-icon"
-                  >
-                    <ArtworkHeartIcon isSaved={!!isSaved} index={itemIndex} />
-                  </Touchable>
-                </Flex>
+                </View>
+              )}
+              {!!canShowAuctionProgressBar && (
+                <Box mt={1}>
+                  <DurationProvider startAt={endsAt ?? undefined}>
+                    <LotProgressBar
+                      duration={null}
+                      startAt={artwork.sale?.startAt}
+                      extendedBiddingPeriodMinutes={artwork.sale.extendedBiddingPeriodMinutes}
+                      extendedBiddingIntervalMinutes={artwork.sale.extendedBiddingIntervalMinutes}
+                      biddingEndAt={endsAt}
+                      hasBeenExtended={lotSaleExtended}
+                    />
+                  </DurationProvider>
+                </Box>
               )}
 
-              {!!enableNewSaveAndFollowOnArtworkCard &&
-                !!(enableNewSaveCTA || enableNewSaveAndFollowCTAs) && (
-                  <Spacer y={positionCTAs === "column" ? 0.5 : 0} />
+              <Flex
+                flexDirection={positionCTAs}
+                justifyContent="space-between"
+                mt={1}
+                style={artworkMetaStyle}
+              >
+                <Flex
+                  flexGrow={positionCTAs === "column" ? 1 : undefined}
+                  flex={positionCTAs === "row" ? 1 : undefined}
+                >
+                  {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
+                    <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
+                      Lot {artwork.saleArtwork.lotLabel}
+                    </Text>
+                  )}
+                  {!!artwork.artistNames && (
+                    <Text
+                      lineHeight="18px"
+                      weight="regular"
+                      variant="xs"
+                      numberOfLines={1}
+                      {...artistNamesTextStyle}
+                    >
+                      {artwork.artistNames}
+                    </Text>
+                  )}
+                  {!!artwork.title && (
+                    <Text
+                      lineHeight="18px"
+                      variant="xs"
+                      weight="regular"
+                      color="black60"
+                      numberOfLines={1}
+                      {...titleTextStyle}
+                    >
+                      <Text lineHeight="18px" variant="xs" weight="regular">
+                        {artwork.title}
+                      </Text>
+                      {artwork.date ? `, ${artwork.date}` : ""}
+                    </Text>
+                  )}
+                  {!hidePartner && !!artwork.partner?.name && (
+                    <Text
+                      variant="xs"
+                      lineHeight="18px"
+                      color="black60"
+                      numberOfLines={1}
+                      {...partnerNameTextStyle}
+                    >
+                      {artwork.partner.name}
+                    </Text>
+                  )}
+                  {!!displayPriceOfferMessage && (
+                    <Flex flexDirection="row">
+                      <Text lineHeight="20px" variant="xs" numberOfLines={1} fontWeight="bold">
+                        {priceOfferMessage.priceWithDiscountMessage}
+                      </Text>
+                      <Text color="black60" variant="xs">
+                        {" "}
+                        (List price: {priceOfferMessage.priceListedMessage})
+                      </Text>
+                    </Flex>
+                  )}
+                  {!!saleInfo && !hideSaleInfo && !displayPriceOfferMessage && (
+                    <ArtworkSaleMessage
+                      artwork={artwork}
+                      saleMessage={saleInfo}
+                      displayLimitedTimeOfferSignal={displayLimitedTimeOfferSignal}
+                      saleInfoTextStyle={saleInfoTextStyle}
+                    />
+                  )}
+
+                  {!!artwork.isUnlisted && (
+                    <Text lineHeight="18px" variant="xs" numberOfLines={1} fontWeight="bold">
+                      Exclusive Access
+                    </Text>
+                  )}
+
+                  {!!isAuction && !!collectorSignals && (
+                    <ArtworkAuctionTimer
+                      collectorSignals={collectorSignals}
+                      hideRegisterBySignal={hideRegisterBySignal}
+                    />
+                  )}
+
+                  {!!displayArtworkSocialSignal && (
+                    <ArtworkSocialSignal
+                      collectorSignals={collectorSignals}
+                      hideCuratorsPick={hideCuratorsPickSignal}
+                      hideIncreasedInterest={hideIncreasedInterestSignal}
+                    />
+                  )}
+                </Flex>
+
+                {!!showOldSaveCTA && (
+                  <Flex flexDirection="row" alignItems="flex-start">
+                    {!!isAuction && !!collectorSignals?.auction?.lotWatcherCount && (
+                      <Text lineHeight="18px" variant="xs" numberOfLines={1}>
+                        {collectorSignals.auction.lotWatcherCount}
+                      </Text>
+                    )}
+                    <Touchable
+                      haptic
+                      onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
+                      testID="save-artwork-icon"
+                    >
+                      <ArtworkHeartIcon isSaved={!!isSaved} index={itemIndex} />
+                    </Touchable>
+                  </Flex>
                 )}
 
-              <ArtworkItemCTAs
-                artwork={artwork}
-                showSaveIcon={!hideSaveIcon}
-                showFollowIcon={!hideFollowIcon}
-                hideViewFollowsLink={hideViewFollowsLink}
-                contextModule={contextModule}
-                contextScreen={contextScreen}
-                contextScreenOwnerId={contextScreenOwnerId}
-                contextScreenOwnerSlug={contextScreenOwnerSlug}
-                contextScreenOwnerType={contextScreenOwnerType}
-              />
-            </Flex>
-          </View>
-        </Touchable>
-      </ContextMenuArtwork>
+                {!!enableNewSaveAndFollowOnArtworkCard &&
+                  !!(enableNewSaveCTA || enableNewSaveAndFollowCTAs) && (
+                    <Spacer y={positionCTAs === "column" ? 0.5 : 0} />
+                  )}
 
-      <CreateArtworkAlertModal
-        artwork={artwork}
-        onClose={() => setShowCreateArtworkAlertModal(false)}
-        visible={showCreateArtworkAlertModal}
-      />
-    </Disappearable>
+                <ArtworkItemCTAs
+                  artwork={artwork}
+                  showSaveIcon={!hideSaveIcon}
+                  showFollowIcon={!hideFollowIcon}
+                  hideViewFollowsLink={hideViewFollowsLink}
+                  contextModule={contextModule}
+                  contextScreen={contextScreen}
+                  contextScreenOwnerId={contextScreenOwnerId}
+                  contextScreenOwnerSlug={contextScreenOwnerSlug}
+                  contextScreenOwnerType={contextScreenOwnerType}
+                />
+              </Flex>
+            </View>
+          </Touchable>
+        </ContextMenuArtwork>
+
+        <CreateArtworkAlertModal
+          artwork={artwork}
+          onClose={() => setShowCreateArtworkAlertModal(false)}
+          visible={showCreateArtworkAlertModal}
+        />
+      </Disappearable>
+    </ElementInView>
   )
 }
 
