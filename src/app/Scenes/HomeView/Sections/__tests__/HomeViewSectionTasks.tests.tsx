@@ -5,17 +5,11 @@ import { HomeViewSectionTasks } from "app/Scenes/HomeView/Sections/HomeViewSecti
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { PanGesture } from "react-native-gesture-handler"
-import { fireGestureHandler } from "react-native-gesture-handler/jest-utils"
 import { graphql } from "react-relay"
 import { ReactTestInstance } from "react-test-renderer"
 
 const swipeTaskOpen = async (task: ReactTestInstance) => {
-  fireGestureHandler<PanGesture>(task, [
-    { translationX: 0 },
-    // see Components/Swipeable SWIPE_TO_INTERACT_THRESHOLD
-    { translationX: -81 },
-  ])
+  fireEvent(task, "onSwipeableWillOpen", { direction: "right" })
 }
 
 describe("HomeViewSectionTasks", () => {
@@ -171,7 +165,37 @@ describe("HomeViewSectionTasks", () => {
     `)
 
     await waitFor(() => {
-      expect(screen.queryByText("Task 1")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("user-task-1")).not.toBeOnTheScreen()
+    })
+  })
+
+  it("closes open task when opening a different on in the list", async () => {
+    renderWithRelay({
+      HomeViewSectionTasks: () => ({
+        internalID: "home-view-section-recommended-tasks",
+        component: {
+          title: "Act Now",
+        },
+        tasksConnection: mockTasks,
+      }),
+    })
+
+    fireEvent.press(screen.getByText("Show All"))
+    const task1 = screen.getByTestId("user-task-1")
+    const task2 = screen.getByTestId("user-task-2")
+    // expect(screen.getAllByText("Clear")).toHaveLength(0)
+
+    await swipeTaskOpen(task2)
+
+    await waitFor(() => {
+      within(task2).getByText("Clear")
+      // expect(() => within(task1).getByText("Clear")).toThrow()
+    })
+
+    await swipeTaskOpen(task1)
+    await waitFor(() => {
+      within(task1).getByText("Clear")
+      // expect(() => within(task2).getByText("Clear")).toThrow()
     })
   })
 
