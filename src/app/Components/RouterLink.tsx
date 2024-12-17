@@ -6,11 +6,13 @@ import { usePrefetch } from "app/utils/queryPrefetching"
 import { GestureResponderEvent } from "react-native"
 
 interface RouterLinkProps {
+  disablePrefetch?: boolean
   passProps?: Object
   to: string | null | undefined
 }
 
 export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
+  disablePrefetch,
   to,
   onPress,
   passProps,
@@ -28,7 +30,7 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   }
 
   const handleVisible = () => {
-    if (enableViewPortPrefetching && to) {
+    if (!disablePrefetch && enableViewPortPrefetching && to) {
       prefetchUrl(to)
     }
   }
