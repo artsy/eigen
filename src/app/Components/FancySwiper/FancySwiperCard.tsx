@@ -26,10 +26,7 @@ export const FancySwiperCard = memo(
 
     return (
       <Animated.View
-        style={[
-          { position: "absolute", zIndex: -1, backgroundColor: "white" },
-          isTopCard && animatedStyle,
-        ]}
+        style={[{ position: "absolute", zIndex: -1 }, isTopCard && animatedStyle]}
         {...rest}
       >
         {card.jsx}
