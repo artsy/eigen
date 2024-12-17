@@ -56,7 +56,7 @@ export const InfiniteDiscovery: React.FC = () => {
   const artworkCards: Card[] = artworks.slice(currentArtworkIndex).map((artwork) => {
     return {
       jsx: (
-        <>
+        <Flex backgroundColor={color("white100")}>
           <Flex flexDirection="row" justifyContent="space-between" testID="artist-header">
             <Text variant="sm-display">Artist Name</Text>
             <Button variant="outlineGray">Follow</Button>
@@ -82,7 +82,7 @@ export const InfiniteDiscovery: React.FC = () => {
             </Flex>
             <Button variant="fillGray">Save</Button>
           </Flex>
-        </>
+        </Flex>
       ),
       id: artwork,
     }
