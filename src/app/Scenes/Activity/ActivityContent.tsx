@@ -18,7 +18,6 @@ export const ActivityContent: React.FC<ActivityProps> = ({ type }) => {
   const queryData = useLazyLoadQuery<ActivityContentQuery>(
     activityContentQuery,
     {
-      count: 10,
       types,
     },
     {
@@ -31,8 +30,12 @@ export const ActivityContent: React.FC<ActivityProps> = ({ type }) => {
   return <ActivityList viewer={queryData.viewer} type={type} />
 }
 
-const activityContentQuery = graphql`
-  query ActivityContentQuery($count: Int, $after: String, $types: [NotificationTypesEnum]) {
+export const activityContentQuery = graphql`
+  query ActivityContentQuery(
+    $count: Int = 10
+    $after: String
+    $types: [NotificationTypesEnum] = []
+  ) {
     viewer {
       ...ActivityList_viewer @arguments(count: $count, after: $after, types: $types)
     }

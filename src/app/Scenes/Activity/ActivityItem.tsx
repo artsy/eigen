@@ -2,6 +2,7 @@ import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { ActivityItem_notification$key } from "__generated__/ActivityItem_notification.graphql"
+import { RouterLink } from "app/Components/RouterLink"
 import { CollectorUpdateNotification } from "app/Scenes/Activity/components/CollectorUpdateNotification"
 import {
   ExpiresInTimer,
@@ -9,10 +10,9 @@ import {
 } from "app/Scenes/Activity/components/ExpiresInTimer"
 import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBadge"
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
-import { navigateToActivityItem } from "app/Scenes/Activity/utils/navigateToActivityItem"
+import { getActivityItemHref } from "app/Scenes/Activity/utils/getActivityItemHref"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { memo } from "react"
-import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ActivityItemTypeLabel } from "./ActivityItemTypeLabel"
@@ -48,16 +48,19 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
       if (notification.isUnread) {
         markAsRead(notification)
       }
-
-      if (!isCollectorProfileUpdate) {
-        navigateToActivityItem(notification)
-      }
     }
 
     const showAsRow = isPartnerOffer
 
+    const { href, passProps } = getActivityItemHref(notification)
+
     return (
-      <TouchableOpacity activeOpacity={0.65} onPress={handlePress}>
+      <RouterLink
+        activeOpacity={0.65}
+        onPress={handlePress}
+        to={isCollectorProfileUpdate ? undefined : href}
+        passProps={passProps}
+      >
         <Flex flexDirection="row" alignItems="center" justifyContent="space-between" px={2}>
           {!!isCollectorProfileUpdate ? (
             <CollectorUpdateNotification
@@ -146,7 +149,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
             />
           )}
         </Flex>
-      </TouchableOpacity>
+      </RouterLink>
     )
   },
   (prevProps, nextProps) => {
