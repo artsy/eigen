@@ -1,4 +1,13 @@
-import { Button, Flex, Image, Screen, Text, Touchable, useTheme } from "@artsy/palette-mobile"
+import {
+  Button,
+  Flex,
+  Image,
+  Screen,
+  Text,
+  Touchable,
+  useScreenDimensions,
+  useTheme,
+} from "@artsy/palette-mobile"
 import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
 import { Card } from "app/Components/FancySwiper/FancySwiperCard"
 import { InfiniteDiscoveryContext } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryContext"
@@ -14,6 +23,7 @@ export const InfiniteDiscoveryView: React.FC = () => {
 
 export const InfiniteDiscovery: React.FC = () => {
   const { color } = useTheme()
+  const { width: screenWidth } = useScreenDimensions()
 
   const artworks = InfiniteDiscoveryContext.useStoreState((state) => state.artworks)
   const currentArtwork = InfiniteDiscoveryContext.useStoreState((state) => state.currentArtwork)
@@ -52,7 +62,11 @@ export const InfiniteDiscovery: React.FC = () => {
             <Button variant="outlineGray">Follow</Button>
           </Flex>
           <Flex alignItems="center">
-            <Image src="https://d32dm0rphc51dk.cloudfront.net/Wor_U4FSvsAmEAEFj1iyVg/medium.jpg" />
+            <Image
+              src="https://d32dm0rphc51dk.cloudfront.net/Wor_U4FSvsAmEAEFj1iyVg/medium.jpg"
+              width={screenWidth}
+              aspectRatio={0.79}
+            />
           </Flex>
           <Flex flexDirection="row" justifyContent="space-between" testID="artwork-info">
             <Flex>
@@ -76,21 +90,23 @@ export const InfiniteDiscovery: React.FC = () => {
 
   return (
     <Screen>
-      <Screen.Header
-        title="Discovery"
-        leftElements={
-          <Touchable onPress={handleBackPressed}>
-            <Text variant="xs">Back</Text>
-          </Touchable>
-        }
-        hideLeftElements={!canGoBack}
-        rightElements={
-          <Touchable onPress={handleExitPressed}>
-            <Text variant="xs">Exit</Text>
-          </Touchable>
-        }
-      />
       <Screen.Body fullwidth>
+        <Flex zIndex={-100}>
+          <Screen.Header
+            title="Discovery"
+            leftElements={
+              <Touchable onPress={handleBackPressed}>
+                <Text variant="xs">Back</Text>
+              </Touchable>
+            }
+            hideLeftElements={!canGoBack}
+            rightElements={
+              <Touchable onPress={handleExitPressed}>
+                <Text variant="xs">Exit</Text>
+              </Touchable>
+            }
+          />
+        </Flex>
         <FancySwiper
           cards={artworkCards}
           hideActionButtons
