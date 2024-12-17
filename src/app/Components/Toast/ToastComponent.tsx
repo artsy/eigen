@@ -66,7 +66,7 @@ export const ToastComponent = ({
       return TABBAR_HEIGHT
     }
 
-    const { modules } = require("app/AppRegistry")
+    const { modules } = require("app/Navigation/routes")
 
     const moduleName = internal_navigationRef?.current?.getCurrentRoute()
       ?.name as keyof typeof modules

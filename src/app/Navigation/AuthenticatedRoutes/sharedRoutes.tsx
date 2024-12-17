@@ -1,6 +1,7 @@
-import { AppModule, nonTabModules } from "app/AppRegistry"
 import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
-import { isModalScreen } from "app/Navigation/Utils/isModalScreen"
+import { AppModule } from "app/Navigation/routes"
+import { isModalScreen } from "app/Navigation/utils/isModalScreen"
+import { nonTabModules } from "app/Navigation/utils/modules"
 
 const nonModalModules = Object.entries(nonTabModules).filter(
   ([_, module]) => !isModalScreen(module)

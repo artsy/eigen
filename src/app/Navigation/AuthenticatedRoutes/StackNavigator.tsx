@@ -8,10 +8,10 @@ import {
 } from "@artsy/palette-mobile"
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { ModuleDescriptor } from "app/AppRegistry"
 import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
-import { isModalScreen } from "app/Navigation/Utils/isModalScreen"
+import { AppModule, ModuleDescriptor } from "app/Navigation/routes"
+import { isModalScreen } from "app/Navigation/utils/isModalScreen"
 import { goBack } from "app/system/navigation/navigate"
 import { memo } from "react"
 import { Platform } from "react-native"
@@ -20,7 +20,7 @@ import { isTablet } from "react-native-device-info"
 export const StackNavigator = createNativeStackNavigator<AuthenticatedRoutesParams>()
 
 type StackNavigatorScreenProps = {
-  name: keyof AuthenticatedRoutesParams
+  name: AppModule
   module: ModuleDescriptor
 } & Omit<React.ComponentProps<typeof StackNavigator.Screen>, "component" | "getComponent">
 
@@ -33,7 +33,7 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
       options={{
         presentation: isModalScreen(module) ? "fullScreenModal" : "card",
         orientation: !isTablet() ? "portrait" : "default",
-        headerShown: module.options.screenOptions?.headerShown ?? true,
+        headerShown: module.options?.screenOptions?.headerShown ?? true,
         headerLeft: ({ canGoBack }) => {
           if (!canGoBack) {
             return null
@@ -57,19 +57,19 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
         },
         headerTitle: "",
         headerTitleAlign: "center",
-        ...module.options.screenOptions,
+        ...module.options?.screenOptions,
         gestureEnabled: true,
         headerShadowVisible: Platform.OS === "ios",
         headerTitleStyle: {
           fontFamily: THEMES.v3.fonts.sans.regular,
           ...THEMES.v3.textTreatments["sm-display"],
-          ...((module.options.screenOptions?.headerTitleStyle as {} | undefined) ?? {}),
+          ...((module.options?.screenOptions?.headerTitleStyle as {} | undefined) ?? {}),
         },
       }}
       children={(screenProps) => {
         const params = screenProps.route.params || {}
 
-        const hidesBottomTabs = module.options.hidesBottomTabs || isModalScreen(module)
+        const hidesBottomTabs = module.options?.hidesBottomTabs || isModalScreen(module)
 
         return (
           <ScreenWrapper hidesBottomTabs={hidesBottomTabs}>
