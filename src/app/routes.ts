@@ -1,4 +1,5 @@
 import { parse } from "url"
+import { NativeStackNavigationOptions } from "@react-navigation/native-stack"
 import { AppModule } from "app/AppRegistry"
 import { ArtsyWebViewConfig } from "app/Components/ArtsyWebView"
 import { internal_navigationRef } from "app/Navigation/Navigation"
@@ -65,13 +66,18 @@ export const addRoute = (route: string, module: AppModule, paramsMapper?: (val: 
   return new RouteMatcher(route, module, paramsMapper)
 }
 
-export function addWebViewRoute(url: string, config?: ArtsyWebViewConfig) {
+export function addWebViewRoute(
+  url: string,
+  config?: ArtsyWebViewConfig,
+  screenOptions?: NativeStackNavigationOptions
+) {
   return addRoute(
     url,
     config?.alwaysPresentModally ? "ModalWebView" : "ReactWebView",
     (params) => ({
       url: replaceParams(url, params),
       isPresentedModally: !!config?.alwaysPresentModally,
+      screenOptions,
       ...config,
     })
   )
@@ -348,6 +354,8 @@ export function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/works-for-you", "WorksForYou"),
 
     // Webview routes
+    addWebViewRoute("/artists", {}, { headerShown: false }),
+    addWebViewRoute("/galleries", {}, { headerShown: false }),
     addWebViewRoute("/auction-faq", {
       alwaysPresentModally: true,
     }),
