@@ -5,7 +5,7 @@ import { ArtQuizExploreArtists } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuiz
 import { ArtQuizExploreArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizExploreArtworks"
 import { ArtQuizLikedArtworks } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizLikedArtworks"
 import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
-import { navigate } from "app/system/navigation/navigate"
+import { popToRoot } from "app/system/navigation/navigate"
 import React, { useState } from "react"
 import { graphql, useFragment } from "react-relay"
 
@@ -26,7 +26,7 @@ export const ArtQuizResultsTabs = ({ me }: { me: ArtQuizResultsQuery$data["me"] 
       title={title}
       lazy
       headerProps={{
-        onBack: () => navigate("/"),
+        onBack: () => popToRoot(),
       }}
       onTabChange={({ tabName }) => {
         setActiveTab(tabName as TabName)
