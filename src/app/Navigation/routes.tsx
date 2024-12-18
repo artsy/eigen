@@ -152,9 +152,17 @@ export interface ViewOptions {
   screenOptions?: NativeStackNavigationOptions
 }
 // Default WebView Route Definition
-const webViewRoute = (url: string, config?: ArtsyWebViewConfig) => {
+const webViewRoute = ({
+  path,
+  config,
+  screenOptions,
+}: {
+  path: string
+  config?: ArtsyWebViewConfig
+  screenOptions?: NativeStackNavigationOptions
+}) => {
   return {
-    path: url,
+    path,
     name: config?.alwaysPresentModally ? "ModalWebView" : "ReactWebView",
     Component: ArtsyWebViewPage,
     options: {
@@ -162,10 +170,11 @@ const webViewRoute = (url: string, config?: ArtsyWebViewConfig) => {
       screenOptions: {
         gestureEnabled: false,
         headerShown: false,
+        ...screenOptions,
       },
     },
     injectParams: (params: any) => ({
-      url: replaceParams(url, params),
+      url: replaceParams(path, params),
       isPresentedModally: !!config?.alwaysPresentModally,
       ...config,
     }),
@@ -1432,30 +1441,57 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: WorksForYouQueryRenderer,
     Queries: [WorksForYouScreenQuery],
   },
-  webViewRoute("/auction-faq", {
-    alwaysPresentModally: true,
+  webViewRoute({
+    path: "/artists",
+    screenOptions: {
+      headerShown: false,
+    },
   }),
-  webViewRoute("/buy-now-feature-faq"),
-  webViewRoute("/buyer-guarantee"),
-  webViewRoute("/categories"),
-  webViewRoute("/conditions-of-sale", {
-    alwaysPresentModally: true,
+  webViewRoute({
+    path: "/galleries",
+    screenOptions: {
+      headerShown: false,
+    },
   }),
-  webViewRoute("/identity-verification-faq"),
-  webViewRoute("/meet-the-specialists"),
-  webViewRoute("/orders/:orderID", {
-    mimicBrowserBackButton: true,
-    useRightCloseButton: true,
-    alwaysPresentModally: true,
+  webViewRoute({
+    path: "/auction-faq",
+    config: {
+      alwaysPresentModally: true,
+    },
   }),
-  webViewRoute("/price-database"),
-  webViewRoute("/privacy", {
-    alwaysPresentModally: true,
+  webViewRoute({ path: "/buy-now-feature-faq" }),
+  webViewRoute({ path: "/buyer-guarantee" }),
+  webViewRoute({ path: "/categories" }),
+  webViewRoute({
+    path: "/conditions-of-sale",
+    config: {
+      alwaysPresentModally: true,
+    },
   }),
-  webViewRoute("/terms", {
-    alwaysPresentModally: true,
+  webViewRoute({ path: "/identity-verification-faq" }),
+  webViewRoute({ path: "/meet-the-specialists" }),
+  webViewRoute({
+    path: "/orders/:orderID",
+    config: {
+      mimicBrowserBackButton: true,
+      useRightCloseButton: true,
+      alwaysPresentModally: true,
+    },
   }),
-  webViewRoute("/unsubscribe"),
+  webViewRoute({ path: "/price-database" }),
+  webViewRoute({
+    path: "/privacy",
+    config: {
+      alwaysPresentModally: true,
+    },
+  }),
+  webViewRoute({
+    path: "/terms",
+    config: {
+      alwaysPresentModally: true,
+    },
+  }),
+  webViewRoute({ path: "/unsubscribe" }),
 
   // Every other route needs to go above
   {
@@ -1463,7 +1499,7 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "VanityURLEntity",
     Component: VanityURLEntityRenderer,
   },
-  webViewRoute("/*"),
+  webViewRoute({ path: "/*" }),
 ])
 
 export const liveDotArtsyRoutes = defineRoutes([
