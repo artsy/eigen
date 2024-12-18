@@ -32,9 +32,9 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
   }
 
   return (
-    <Screen>
+    <Screen safeArea={false}>
       <Screen.Body>
-        <Flex flex={1} mt={1}>
+        <Flex flex={1} mt={2}>
           <Suspense fallback={() => null}>
             <MyCollectionAddCollectedArtistsAutosuggest />
           </Suspense>
