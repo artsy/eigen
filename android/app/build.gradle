@@ -10,7 +10,6 @@ project.ext.envConfigFiles = [
 ]
 
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
-apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
  * This is the configuration block to customize your React Native Android app.

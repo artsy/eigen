@@ -16,7 +16,6 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.soloader.SoLoader
 import com.google.firebase.messaging.FirebaseMessaging
-import com.microsoft.codepush.react.CodePush
 import com.segment.analytics.Analytics
 import net.artsy.app.utils.ReactNativeConfigUtils
 import io.sentry.react.RNSentryPackage
