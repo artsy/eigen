@@ -1474,6 +1474,7 @@ export const liveDotArtsyRoutes = defineRoutes([
         Component: LiveAuctionView,
         options: {
           alwaysPresentModally: true,
+          hidesBottomTabs: true,
           screenOptions: {
             gestureEnabled: false,
             headerShown: false,
@@ -1483,9 +1484,11 @@ export const liveDotArtsyRoutes = defineRoutes([
       }
     : {
         path: "/*",
-        name: "ReactWebView",
+        name: "LiveAuctionWebView",
         Component: ArtsyWebViewPage,
         options: {
+          alwaysPresentModally: true,
+          hidesBottomTabs: true,
           screenOptions: {
             gestureEnabled: false,
             headerShown: false,
