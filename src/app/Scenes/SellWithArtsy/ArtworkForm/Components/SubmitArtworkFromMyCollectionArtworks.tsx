@@ -72,8 +72,8 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
 
         setIsLoading(false)
 
-        navigation.navigate("AddTitle")
-        setCurrentStep("AddTitle")
+        navigation.navigate("SelectArtist")
+        setCurrentStep("SelectArtist")
       }
     } catch (error) {
       console.error(
@@ -105,7 +105,7 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
               }}
             >
               My Collection.{"\n"}
-            </LinkText>{" "}
+            </LinkText>
           </Text>
         </Message>
 
@@ -114,8 +114,8 @@ export const SubmitArtworkFromMyCollectionArtworks: React.FC<{}> = () => {
         <Button
           block
           onPress={() => {
-            navigation.navigate("AddTitle")
-            setCurrentStep("AddTitle")
+            navigation.navigate("SelectArtist")
+            setCurrentStep("SelectArtist")
           }}
         >
           Add Details Manually
