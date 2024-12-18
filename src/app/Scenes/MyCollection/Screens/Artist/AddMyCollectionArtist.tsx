@@ -5,6 +5,7 @@ import {
   Input,
   InputRef,
   Join,
+  Screen,
   Spacer,
 } from "@artsy/palette-mobile"
 import { RouteProp, useIsFocused, useNavigation, useRoute } from "@react-navigation/native"
@@ -92,7 +93,7 @@ export const AddMyCollectionArtist: React.FC = () => {
   }
 
   return (
-    <>
+    <Screen>
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader onLeftButtonPress={handleBackPress} hideBottomDivider>
           Add New Artist
@@ -113,7 +114,7 @@ export const AddMyCollectionArtist: React.FC = () => {
           keyboardShouldPersistTaps="handled"
           ref={scrollViewRef}
         >
-          <Flex p={2}>
+          <Flex px={2}>
             <Join separator={<Spacer y={2} />}>
               <Input
                 accessibilityLabel="Artist Name"
@@ -195,6 +196,6 @@ export const AddMyCollectionArtist: React.FC = () => {
           </Flex>
         </ScrollView>
       </ArtsyKeyboardAvoidingView>
-    </>
+    </Screen>
   )
 }
