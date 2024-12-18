@@ -78,7 +78,13 @@ export const PhotoItem = ({
           testID="Submission_Image"
         />
       ) : (
-        <SkeletonBox height={IMAGE_SIZE} width={IMAGE_SIZE}></SkeletonBox>
+        <SkeletonBox height={IMAGE_SIZE} width={IMAGE_SIZE} justifyContent="flex-end">
+          {!!photo.geminiToken && (
+            <Text p={0.5} variant="xs">
+              Processing...
+            </Text>
+          )}
+        </SkeletonBox>
       )}
       {!hideDeleteButton && (
         <Flex
