@@ -38,7 +38,9 @@ export const defaultState: AuthContextModel = {
 
   // actions
   goBack: action((state) => {
-    state.currentScreen = state.previousScreens.pop()
+    if (state.previousScreens.length !== 0) {
+      state.currentScreen = state.previousScreens.pop()
+    }
   }),
   setCurrentScreen: action((state, currentScreen) => {
     state.previousScreens.push(state.currentScreen)
