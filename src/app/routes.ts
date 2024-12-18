@@ -196,7 +196,7 @@ export function getDomainMap(): Record<string, RouteMatcher[] | null> {
   const liveDotArtsyDotNet: RouteMatcher[] = compact([
     Platform.OS === "ios"
       ? addRoute("/*", "LiveAuction", (params) => ({ slug: params["*"] }))
-      : addRoute("/*", "ReactWebView", (params) => ({
+      : addRoute("/*", "ModalWebView", (params) => ({
           url: unsafe__getEnvironment().predictionURL + "/" + params["*"],
         })),
   ])

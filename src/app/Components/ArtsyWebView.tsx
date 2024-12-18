@@ -215,7 +215,9 @@ export const ArtsyWebView = forwardRef<
       // to a different vanityURL that we can handle inapp, such as Fair & Partner.
       if (
         result.type === "match" &&
-        ["ReactWebView", "ModalWebView", "VanityURLEntity"].includes(result.module)
+        ["ReactWebView", "ModalWebView", "VanityURLEntity", "LiveAuctionWebView"].includes(
+          result.module
+        )
       ) {
         if (innerRef.current) {
           innerRef.current.shareTitleUrl = targetURL
