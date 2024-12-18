@@ -4,6 +4,7 @@
   "isAndroidBeta": false,
   "codePushReleaseName": "none",
   "codePushDist": "none",
+  "expo": {},
   "extra": {
     "eas": {
       "projectId": "39b092dc-effa-4d59-a530-85107bdfd668"
