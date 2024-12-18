@@ -1,5 +1,6 @@
-import { Flex, Box, Text, Separator, Touchable, Image } from "@artsy/palette-mobile"
+import { Flex, Box, Text, Separator, Touchable } from "@artsy/palette-mobile"
 import { ItemShow_show$data } from "__generated__/ItemShow_show.graphql"
+import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import { navigate } from "app/system/navigation/navigate"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -18,9 +19,12 @@ export const ItemShow: React.FC<ItemShowProps> = ({ show }) => {
         <Touchable onPress={() => show.href && navigate(show.href)}>
           <Flex flexDirection="row">
             <Box height="100px" width="100px" justifyContent="center" backgroundColor="pink">
-              {!!show.image?.thumbnailUrl && (
-                <Image testID="showImage" src={show.image?.thumbnailUrl} width={100} height={100} />
-              )}
+              <ImageWithFallback
+                testID="showImage"
+                src={show.image?.thumbnailUrl}
+                width={100}
+                height={100}
+              />
             </Box>
             <Flex flexDirection="column" ml={2} flexShrink={1}>
               <Text variant="sm" numberOfLines={1}>
