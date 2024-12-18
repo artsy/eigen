@@ -109,15 +109,7 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
   }
 
   return (
-    <AutomountedBottomSheetModal
-      visible={visible}
-      onDismiss={handleDismiss}
-      enableDynamicSizing
-      style={{
-        // this allows us to test assertions about the visibility of this modal
-        display: visible ? "flex" : "none",
-      }}
-    >
+    <AutomountedBottomSheetModal visible={visible} onDismiss={handleDismiss} enableDynamicSizing>
       <BottomSheetScrollView keyboardShouldPersistTaps="always">
         <Box p={2}>
           <Text>{message}</Text>
