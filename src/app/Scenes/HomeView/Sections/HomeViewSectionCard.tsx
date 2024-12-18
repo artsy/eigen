@@ -42,7 +42,7 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
     return null
   }
 
-  const imageHeight = height * 0.5
+  const imageHeight = height * (isTablet() ? 0.7 : 0.5)
 
   const hasImage = !!section.card.image?.imageURL
   const textColor = hasImage ? "white100" : "black100"
@@ -65,7 +65,7 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
             <FastImage
               source={{ uri: section.card.image.imageURL }}
               style={{ width: width, height: imageHeight }}
-              resizeMode={isTablet() ? "contain" : "cover"}
+              resizeMode="cover"
             />
             <LinearGradient
               colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
