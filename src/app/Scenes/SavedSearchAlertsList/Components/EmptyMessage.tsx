@@ -1,16 +1,17 @@
 import {
-  Spacer,
-  Flex,
-  Box,
-  Text,
-  Button,
-  Join,
-  FilterIcon,
-  BellIcon,
   ArtworkIcon,
+  BellIcon,
+  Box,
+  Button,
+  FilterIcon,
+  Flex,
+  Join,
+  Spacer,
+  Text,
 } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
-import { navigate } from "app/system/navigation/navigate"
+import { GlobalStore } from "app/store/GlobalStore"
+import { navigate, popToRoot } from "app/system/navigation/navigate"
 import { ScrollView } from "react-native"
 
 interface InfoSectionProps {
@@ -64,6 +65,8 @@ const t = {
 }
 
 export const EmptyMessage: React.FC = () => {
+  const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
+
   return (
     <ScrollView>
       <Box px={2} py={4}>
@@ -77,7 +80,17 @@ export const EmptyMessage: React.FC = () => {
           <InfoSection title={t.match.title} body={t.match.body} icon={<ArtworkIcon />} />
         </Join>
         <Spacer y={4} />
-        <Button block variant="outline" onPress={() => navigate("/")}>
+        <Button
+          block
+          variant="outline"
+          onPress={() => {
+            if (selectedTab === "home") {
+              popToRoot()
+            } else {
+              navigate("/")
+            }
+          }}
+        >
           {t.button.label}
         </Button>
       </Box>
