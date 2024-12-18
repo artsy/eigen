@@ -16494,8 +16494,14 @@ type Query {
     # (Only for when useOpenSearch is true) These artworks are used to calculate the taste profile vector. Such artworks are excluded from the response
     likedArtworkIds: [String]
     limit: Int
+
+    # (Only for when useOpenSearch is true) These fields are used to calculate the More Like This query
+    mltFields: [String] = ["material", "categories", "tags", "medium"]
     offset: Int
     sort: DiscoverArtworksSort
+
+    # (Only for when useOpenSearch is true) Use the More Like This query with the kNN query
+    useMltQuery: Boolean = false
     useOpenSearch: Boolean = false
     userId: String
   ): ArtworkConnection
@@ -21076,8 +21082,14 @@ type Viewer {
     # (Only for when useOpenSearch is true) These artworks are used to calculate the taste profile vector. Such artworks are excluded from the response
     likedArtworkIds: [String]
     limit: Int
+
+    # (Only for when useOpenSearch is true) These fields are used to calculate the More Like This query
+    mltFields: [String] = ["material", "categories", "tags", "medium"]
     offset: Int
     sort: DiscoverArtworksSort
+
+    # (Only for when useOpenSearch is true) Use the More Like This query with the kNN query
+    useMltQuery: Boolean = false
     useOpenSearch: Boolean = false
     userId: String
   ): ArtworkConnection
