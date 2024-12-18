@@ -1,6 +1,7 @@
-import { Flex, ClassTheme, Text, Touchable, Image } from "@artsy/palette-mobile"
+import { Flex, ClassTheme, Text, Touchable } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ConversationSnippet_conversation$data } from "__generated__/ConversationSnippet_conversation.graphql"
+import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import { Schema, Track, track as _track } from "app/utils/track"
 import moment from "moment"
 import React from "react"
@@ -28,7 +29,7 @@ const Indicator = styled.View`
   background-color: ${themeGet("colors.blue100")};
 `
 
-const ImageView = styled(Image)`
+const ImageView = styled(ImageWithFallback)`
   border-radius: 2px;
 `
 
@@ -95,9 +96,7 @@ export class ConversationSnippet extends React.Component<Props> {
                       <Indicator />
                     </Unread>
                   )}
-                  {!!imageURL && (
-                    <ImageView src={imageURL} blurhash={blurhash} width={80} height={80} />
-                  )}
+                  <ImageView src={imageURL} blurhash={blurhash} width={80} height={80} />
                 </Flex>
                 <Flex ml={1} style={{ flex: 1 }}>
                   <Flex flexDirection="row" mb="2px" style={{ flex: 0, alignItems: "center" }}>

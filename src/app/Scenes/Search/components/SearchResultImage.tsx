@@ -1,4 +1,5 @@
-import { Avatar, Flex, Image } from "@artsy/palette-mobile"
+import { Avatar, Flex } from "@artsy/palette-mobile"
+import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 
 export const IMAGE_SIZE = 40
 
@@ -21,15 +22,13 @@ export const SearchResultImage: React.FC<{
       borderRadius={round ? IMAGE_SIZE / 2 : 0}
       overflow="hidden"
     >
-      {!!imageURL && (
-        <Image
-          testID={testID}
-          performResize={!(resultType === "Article")}
-          src={imageURL}
-          height={IMAGE_SIZE}
-          width={IMAGE_SIZE}
-        />
-      )}
+      <ImageWithFallback
+        testID={testID}
+        performResize={!(resultType === "Article")}
+        src={imageURL}
+        height={IMAGE_SIZE}
+        width={IMAGE_SIZE}
+      />
     </Flex>
   )
 }

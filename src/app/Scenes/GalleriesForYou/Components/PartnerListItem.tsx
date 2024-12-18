@@ -1,13 +1,13 @@
 import {
   Flex,
   FollowButton,
-  Image,
   Text,
   Touchable,
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
 import { PartnerListItem_partner$key } from "__generated__/PartnerListItem_partner.graphql"
+import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import { sortByDistance } from "app/Scenes/GalleriesForYou/helpers"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -79,7 +79,7 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
       <Touchable onPress={handlePress}>
         <Flex width={width} mx="auto">
           <Flex>
-            {!!imageUrl && <Image src={imageUrl} aspectRatio={1.33} width={width} />}
+            <ImageWithFallback src={imageUrl} aspectRatio={1.33} width={width} />
 
             {!!showInitials && (
               <Flex
