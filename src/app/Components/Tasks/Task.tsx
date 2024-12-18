@@ -13,20 +13,20 @@ import { graphql, useFragment } from "react-relay"
 
 const TASK_IMAGE_SIZE = 60
 
-interface TaskProps {
+export interface TaskProps {
   disableSwipeable?: boolean
   onClearTask: () => void
+  onOpenTask: () => void
   onPress?: () => void
   task: Task_task$key
 }
 
 export const Task = forwardRef<SwipeableMethods, TaskProps>(
-  ({ disableSwipeable, onClearTask, onPress, ...restProps }, ref) => {
+  ({ disableSwipeable, onClearTask, onOpenTask, onPress, ...restProps }, ref) => {
     const { tappedTaskGroup, tappedClearTask } = useHomeViewTracking()
     const { submitMutation: dismissTask } = useDismissTask()
     const { submitMutation: acknowledgeTask } = useAcknowledgeTask()
     const fontScale = PixelRatio.getFontScale()
-
     const task = useFragment(taskFragment, restProps.task)
 
     const handlePressTask = async () => {
@@ -50,6 +50,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
 
     return (
       <Swipeable
+        testID={`user-task-${task.internalID}`}
         ref={ref}
         actionComponent={
           <Text variant="xs" color="white100">
@@ -57,8 +58,15 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
           </Text>
         }
         actionComponentWidth={80 * fontScale}
-        actionOnPress={handleClearTask}
-        actionOnSwipe={handleClearTask}
+        actionOnPress={() => {
+          handleClearTask()
+        }}
+        actionOnSwipe={() => {
+          handleClearTask()
+        }}
+        onSwipeableWillOpen={() => {
+          onOpenTask()
+        }}
         enabled={!disableSwipeable}
       >
         <Flex backgroundColor="white100" borderRadius={5}>

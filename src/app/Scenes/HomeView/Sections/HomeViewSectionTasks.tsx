@@ -26,12 +26,13 @@ import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { AnimatePresence, MotiView } from "moti"
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { memo, RefObject, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { CellRendererProps, InteractionManager, ListRenderItem } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
 import { SwipeableMethods } from "react-native-gesture-handler/ReanimatedSwipeable"
 import { Easing } from "react-native-reanimated"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
+import { usePrevious } from "react-use"
 
 const MAX_NUMBER_OF_TASKS = 10
 
@@ -50,7 +51,12 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
   index,
   ...flexProps
 }) => {
-  const swipeableRef = useRef<SwipeableMethods>(null)
+  const firstSwipeableRef = useRef<SwipeableMethods>(null)
+
+  // Define a Map of refs to each task but since it will never be
+  // reassigned, we can access current immediately
+  const taskRefs = useRef<Map<string, RefObject<SwipeableMethods>>>(new Map()).current
+
   const section = useFragment(tasksFragment, sectionProp)
   const tasks = extractNodes(section.tasksConnection)
   const isFocused = useIsFocused()
@@ -72,25 +78,32 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
     isFocused &&
     !isDismissed("act-now-tasks").status &&
     !!isDismissed("find-saved-artwork").status &&
-    !!swipeableRef.current &&
+    !!firstSwipeableRef.current &&
     !!task
 
   useEffect(() => {
     if (shouldStartOnboardingAnimation) {
       InteractionManager.runAfterInteractions(() => {
-        if (swipeableRef.current) {
-          swipeableRef.current.openRight()
+        if (firstSwipeableRef.current) {
+          firstSwipeableRef.current.openRight()
         }
       }).then(() => {
         setTimeout(() => {
-          if (swipeableRef.current) {
-            swipeableRef.current.close()
+          if (firstSwipeableRef.current) {
+            firstSwipeableRef.current.close()
             dismiss("act-now-tasks")
           }
         }, 2000)
       })
     }
   }, [shouldStartOnboardingAnimation])
+
+  const previousShowAll = usePrevious(showAll)
+  useEffect(() => {
+    if (!showAll && previousShowAll) {
+      closeAllTasks()
+    }
+  }, [showAll, previousShowAll])
 
   const handleClearTask = (task: Task) => {
     if (!task) {
@@ -100,41 +113,32 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
     setClearedTasks((prev) => [...prev, task.internalID])
   }
 
+  // Close all tasks except the one with the provided taskID
+  const closeAllTasks = (excludeTaskID?: string) => {
+    taskRefs.forEach((ref, taskID) => {
+      if (ref.current && taskID !== excludeTaskID) {
+        ref.current.close()
+      }
+    })
+  }
+
   const renderCell = useCallback(({ index, ...rest }: CellRendererProps<Task>) => {
     return <Box zIndex={-index} {...rest} />
   }, [])
 
   const renderItem = useCallback<ListRenderItem<Task>>(
     ({ item, index }) => {
-      let scaleX = 1
-      let translateY = 0
-      let opacity = 1
-
-      if (!showAll && index !== 0) {
-        scaleX = 1 - index * 0.05
-        translateY = -83 * index
-        opacity = 1 - index * 0.15
-        if (index > 2) {
-          opacity = 0
-        }
-      }
-
       return (
-        <Flex>
-          <MotiView
-            key={item.internalID + index}
-            transition={{ type: "timing" }}
-            animate={{ transform: [{ scaleX }, { translateY }], opacity }}
-          >
-            <Task
-              disableSwipeable={displayTaskStack}
-              onClearTask={() => handleClearTask(item)}
-              onPress={displayTaskStack ? () => setShowAll((prev) => !prev) : undefined}
-              ref={swipeableRef}
-              task={item}
-            />
-          </MotiView>
-        </Flex>
+        <TaskItem
+          task={item}
+          taskRefs={taskRefs}
+          index={index}
+          showAll={showAll}
+          displayTaskStack={displayTaskStack}
+          onClearTask={handleClearTask}
+          onOpenTask={() => closeAllTasks(item.internalID)}
+          setShowAll={setShowAll}
+        />
       )
     },
     [displayTaskStack, handleClearTask, showAll]
@@ -221,6 +225,68 @@ const tasksFragment = graphql`
     }
   }
 `
+
+interface TaskItemProps {
+  task: Task
+  taskRefs: Map<string, RefObject<SwipeableMethods>>
+  showAll: boolean
+  index: number
+  displayTaskStack: boolean
+  onClearTask: (task: Task) => void
+  onOpenTask: () => void
+  setShowAll: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const TaskItem = ({
+  task,
+  taskRefs,
+  index,
+  showAll,
+  displayTaskStack,
+  onClearTask,
+  onOpenTask,
+  setShowAll,
+}: TaskItemProps) => {
+  const taskRef = useRef<SwipeableMethods>(null)
+
+  useEffect(() => {
+    if (!taskRefs.has(task.internalID)) {
+      taskRefs.set(task.internalID, taskRef)
+    }
+  }, [])
+
+  let scaleX = 1
+  let translateY = 0
+  let opacity = 1
+
+  if (!showAll && index !== 0) {
+    scaleX = 1 - index * 0.05
+    translateY = -83 * index
+    opacity = 1 - index * 0.15
+    if (index > 2) {
+      opacity = 0
+    }
+  }
+
+  return (
+    <Flex>
+      <MotiView
+        key={task.internalID + index}
+        transition={{ type: "timing" }}
+        animate={{ transform: [{ scaleX }, { translateY }], opacity }}
+      >
+        <Task
+          disableSwipeable={displayTaskStack}
+          onClearTask={() => onClearTask(task)}
+          onPress={displayTaskStack ? () => setShowAll((prev) => !prev) : undefined}
+          ref={taskRef}
+          onOpenTask={onOpenTask}
+          task={task}
+        />
+      </MotiView>
+    </Flex>
+  )
+}
 
 const HomeViewSectionTasksPlaceholder: React.FC<FlexProps> = (flexProps) => {
   return (

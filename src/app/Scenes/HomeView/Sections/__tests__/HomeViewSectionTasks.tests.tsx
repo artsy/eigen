@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor, within } from "@testing-library/react-native"
 import { HomeViewSectionTasksTestsQuery } from "__generated__/HomeViewSectionTasksTestsQuery.graphql"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionTasks } from "app/Scenes/HomeView/Sections/HomeViewSectionTasks"
@@ -6,6 +6,11 @@ import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
+import { ReactTestInstance } from "react-test-renderer"
+
+const swipeTaskOpen = async (task: ReactTestInstance) => {
+  fireEvent(task, "onSwipeableWillOpen", { direction: "right" })
+}
 
 describe("HomeViewSectionTasks", () => {
   const { renderWithRelay } = setupTestWrapper<HomeViewSectionTasksTestsQuery>({
@@ -114,7 +119,7 @@ describe("HomeViewSectionTasks", () => {
           "context_module": "actNow",
           "context_screen_owner_type": "home",
           "destination_path": "/test-link",
-          "task_id": "<Task-mock-id-1>",
+          "task_id": "1",
           "task_type": "send_wire",
           "type": "thumbnail",
         },
@@ -122,7 +127,7 @@ describe("HomeViewSectionTasks", () => {
     `)
   })
 
-  it("clears and tracks when clearing a dask", async () => {
+  it("clears and tracks when clearing a task", async () => {
     const { mockResolveLastOperation } = renderWithRelay({
       HomeViewSectionTasks: () => ({
         internalID: "home-view-section-recommended-tasks",
@@ -135,9 +140,11 @@ describe("HomeViewSectionTasks", () => {
 
     expect(screen.getByText("Task 1")).toBeOnTheScreen()
     expect(screen.getByText("Task 2")).toBeOnTheScreen()
+    const task1 = screen.getByTestId("user-task-1")
+    swipeTaskOpen(task1)
 
     // Tap Clear on the first task
-    fireEvent.press(screen.getAllByText("Clear")[0])
+    fireEvent.press(within(task1).getByText("Clear"))
 
     await waitFor(() => {
       // mock reslove the mutation
@@ -151,14 +158,41 @@ describe("HomeViewSectionTasks", () => {
           "context_module": "actNow",
           "context_screen_owner_type": "home",
           "destination_path": "/test-link",
-          "task_id": "<Task-mock-id-1>",
+          "task_id": "1",
           "task_type": "send_wire",
         },
       ]
     `)
 
     await waitFor(() => {
-      expect(screen.queryByText("Task 1")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("user-task-1")).not.toBeOnTheScreen()
+    })
+  })
+
+  it("closes open tasks when collapsing the section", async () => {
+    renderWithRelay({
+      HomeViewSectionTasks: () => ({
+        internalID: "home-view-section-recommended-tasks",
+        component: {
+          title: "Act Now",
+        },
+        tasksConnection: mockTasks,
+      }),
+    })
+
+    fireEvent.press(screen.getByText("Show All"))
+    const task2 = screen.getByTestId("user-task-2")
+
+    await swipeTaskOpen(task2)
+
+    await waitFor(() => {
+      within(task2).getByText("Clear")
+    })
+
+    fireEvent.press(screen.getByText("Show Less"))
+
+    await waitFor(() => {
+      expect(() => screen.getByText("Clear")).toThrow()
     })
   })
 })
@@ -168,6 +202,7 @@ const mockTasks = {
     {
       node: {
         actionLink: "/test-link",
+        internalID: "1",
         actionMessage: "View",
         imageUrl: "https://d2v80f5yrouhh2.cloudfront.net/1/1.jpg",
         message: "Task Message 1",
@@ -177,6 +212,7 @@ const mockTasks = {
     },
     {
       node: {
+        internalID: "2",
         actionLink: "/test-link2",
         actionMessage: "View",
         imageUrl: "https://d2v80f5yrouhh2.cloudfront.net/2/2.jpg",

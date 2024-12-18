@@ -9,6 +9,7 @@ import { graphql } from "react-relay"
 const mockClearTask = jest.fn()
 const mockDissmissTask = jest.fn()
 const mockAcknowledgeTask = jest.fn()
+const mockOnOpenTask = jest.fn()
 
 jest.mock("app/utils/mutations/useDismissTask", () => ({
   useDismissTask: () => ({ submitMutation: mockDissmissTask }),
@@ -21,7 +22,7 @@ jest.mock("app/utils/mutations/useAcknowledgeTask.ts", () => ({
 describe("Task Component", () => {
   const { renderWithRelay } = setupTestWrapper<TaskTestQuery>({
     Component: ({ me }) => {
-      return <Task task={me!.tasks![0]!} onClearTask={mockClearTask} />
+      return <Task task={me!.tasks![0]!} onClearTask={mockClearTask} onOpenTask={mockOnOpenTask} />
     },
     query: graphql`
       query TaskTestQuery @relay_test_operation {
@@ -39,6 +40,16 @@ describe("Task Component", () => {
 
     expect(screen.getByText("Test Task")).toBeOnTheScreen()
     expect(screen.getByText("Test Message")).toBeOnTheScreen()
+  })
+
+  it("should call the onOpenTask function when swiped", async () => {
+    renderWithRelay({ Task: () => mockTask })
+
+    const taskElement = screen.getByText("Test Task") // Assuming the text is inside a parent node that handles the swipe
+
+    fireEvent(taskElement, "onSwipeableWillOpen", { direction: "right" })
+
+    await waitFor(() => expect(mockOnOpenTask).toHaveBeenCalled())
   })
 
   it("should dismiss when the task is cleared", async () => {
