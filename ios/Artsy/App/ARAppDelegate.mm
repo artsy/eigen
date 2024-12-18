@@ -8,9 +8,6 @@
 
 @import BrazeUI;
 
-#import <CodePush/CodePush.h>
-#import <AppCenterReactNative.h>
-
 #import "ARAppDelegate.h"
 #import "ARAppDelegate+Emission.h"
 #import "ARAppDelegate+Echo.h"
@@ -108,9 +105,6 @@ static ARAppDelegate *_sharedInstance = nil;
     [[ARLogger sharedLogger] startLogging];
 
     [self setupSharedEmission];
-
-    [AppCenterReactNative register];
-
 
     self.moduleName = @"eigen";
 
@@ -285,11 +279,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (NSURL *)bundleURL
 {
-#if DEBUG
     return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
-#else
-    return [CodePush bundleURL];
-#endif
 }
 
 - (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge
