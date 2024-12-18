@@ -76,6 +76,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
             multiline
             placeholder="Please share with us why you are leaving"
             onChangeText={setExplanation}
+            defaultValue={explanation}
             error={!hasPassword ? error : undefined}
           />
           <Spacer y={4} />
@@ -90,6 +91,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
                 secureTextEntry
                 placeholder="Enter your password to continue"
                 onChangeText={setPassword}
+                defaultValue={password}
                 error={error}
               />
               <Spacer y={2} />

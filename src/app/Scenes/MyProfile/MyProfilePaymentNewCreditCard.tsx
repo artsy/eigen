@@ -188,6 +188,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
               title="Name on card"
               placeholder="Full name"
               onChangeText={actions.fields.fullName.setValue}
+              defaultValue={state.fields.fullName.value ?? ""}
               returnKeyType="next"
               onSubmitEditing={() => addressLine1Ref.current?.focus()}
             />
@@ -196,6 +197,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
               title="Address line 1"
               placeholder="Add street address"
               onChangeText={actions.fields.addressLine1.setValue}
+              defaultValue={state.fields.addressLine1.value ?? ""}
               returnKeyType="next"
               onSubmitEditing={() => addressLine2Ref.current?.focus()}
             />
@@ -209,6 +211,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
                 "Add your apt, etc.",
               ]}
               onChangeText={actions.fields.addressLine2.setValue}
+              defaultValue={state.fields.addressLine2.value ?? ""}
               returnKeyType="next"
               onSubmitEditing={() => cityRef.current?.focus()}
             />
@@ -216,6 +219,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
               ref={cityRef}
               title="City"
               onChangeText={actions.fields.city.setValue}
+              defaultValue={state.fields.city.value ?? ""}
               returnKeyType="next"
               onSubmitEditing={() => postalCodeRef.current?.focus()}
             />
@@ -223,6 +227,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
               ref={postalCodeRef}
               title="Postal Code"
               onChangeText={actions.fields.postalCode.setValue}
+              defaultValue={state.fields.postalCode.value ?? ""}
               returnKeyType="next"
               onSubmitEditing={() => stateRef.current?.focus()}
             />
@@ -231,6 +236,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
               ref={stateRef}
               title="State, province, or region"
               onChangeText={actions.fields.state.setValue}
+              defaultValue={state.fields.state.value ?? ""}
               onSubmitEditing={() => {
                 stateRef.current?.blur()
                 scrollViewRef.current?.scrollToEnd()
