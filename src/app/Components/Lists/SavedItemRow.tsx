@@ -1,4 +1,5 @@
-import { Spacer, Flex, useColor, Text, Touchable, Image } from "@artsy/palette-mobile"
+import { Spacer, Flex, useColor, Text, Touchable } from "@artsy/palette-mobile"
+import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import { navigate } from "app/system/navigation/navigate"
 
 interface SavedItemRowProps {
@@ -36,7 +37,7 @@ export const SavedItemRow: React.FC<SavedItemRowProps> = ({
             borderRadius={square_image ? 2 : size / 2}
             overflow="hidden"
           >
-            {!!imageURL && <Image src={imageURL} width={size} height={size} />}
+            <ImageWithFallback src={imageURL} width={size} height={size} />
           </Flex>
           <Spacer x={2} />
           <Text variant="sm" weight="medium">
