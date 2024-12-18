@@ -11,6 +11,7 @@ export const routingInstrumentation = Sentry.reactNavigationIntegration({
 // important! this must match the release version specified
 // in fastfile in order for sourcemaps/sentry stacktraces to work
 export const eigenSentryReleaseName = () => {
+  // TODO: do we need some solution for eas update?
   const codePushReleaseName = appJson().codePushReleaseName
   if (codePushReleaseName && codePushReleaseName !== "none") {
     return codePushReleaseName
@@ -23,6 +24,7 @@ export const eigenSentryReleaseName = () => {
 }
 
 const eigenSentryDist = () => {
+  // TODO: do we need some solution for eas update?
   const codePushDist = appJson().codePushDist
   if (codePushDist && codePushDist !== "none") {
     return codePushDist
