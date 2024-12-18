@@ -4,7 +4,7 @@ import { ArtQuizResultsEmptyTabsQuery } from "__generated__/ArtQuizResultsEmptyT
 import { ArtQuizResultsTabsHeader } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizResultsTabsHeader"
 import { ArtQuizTrendingArtists } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizTrendingArtists"
 import { ArtQuizTrendingCollections } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResultsTabs/ArtQuizTrendingCollections"
-import { navigate } from "app/system/navigation/navigate"
+import { popToRoot } from "app/system/navigation/navigate"
 
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -19,7 +19,7 @@ export const ArtQuizResultsEmptyTabs = () => {
       title="Explore Your Quiz Results"
       lazy
       headerProps={{
-        onBack: () => navigate("/"),
+        onBack: () => popToRoot(),
       }}
       BelowTitleHeaderComponent={() => (
         <Flex mb={1}>
