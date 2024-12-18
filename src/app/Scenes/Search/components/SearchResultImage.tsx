@@ -1,4 +1,4 @@
-import { Avatar, Flex, Image } from "@artsy/palette-mobile"
+import { Avatar, Flex } from "@artsy/palette-mobile"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 
 export const IMAGE_SIZE = 40

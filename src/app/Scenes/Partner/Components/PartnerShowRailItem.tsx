@@ -1,4 +1,4 @@
-import { Flex, Image, Spacer, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
 import { PartnerShowRailItem_show$data } from "__generated__/PartnerShowRailItem_show.graphql"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
