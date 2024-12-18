@@ -12,8 +12,16 @@ export const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
   ...props
 }) => {
   if (!src) {
-    return <Box width={width} height={height} backgroundColor="black10" borderRadius="md" />
+    return (
+      <Box
+        testID="fallback-image"
+        width={width}
+        height={height}
+        backgroundColor="black10"
+        borderRadius="md"
+      />
+    )
   }
 
-  return <Image {...props} src={src} width={width} height={height} />
+  return <Image testID="image" {...props} src={src} width={width} height={height} />
 }
