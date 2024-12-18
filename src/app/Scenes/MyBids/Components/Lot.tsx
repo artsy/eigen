@@ -1,5 +1,6 @@
-import { Flex, Box, Text, Image } from "@artsy/palette-mobile"
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { Lot_saleArtwork$data } from "__generated__/Lot_saleArtwork.graphql"
+import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -20,9 +21,7 @@ class Lot extends React.Component<Props> {
       <Flex flexDirection="row" width="50%" paddingRight={2}>
         <Flex mr={isSmallScreen ? 0.5 : 1}>
           <Flex width={50} height={50} borderRadius={2} overflow="hidden">
-            {!!saleArtwork?.artwork?.image?.url && (
-              <Image src={saleArtwork?.artwork?.image?.url} width={50} height={50} />
-            )}
+            <ImageWithFallback src={saleArtwork?.artwork?.image?.url} width={50} height={50} />
           </Flex>
           {!!ArtworkBadge && (
             <Box position="absolute" top={-2} left={-5}>

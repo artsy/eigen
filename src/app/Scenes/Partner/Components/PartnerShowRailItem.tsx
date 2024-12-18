@@ -1,5 +1,6 @@
-import { Flex, Image, Spacer, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
 import { PartnerShowRailItem_show$data } from "__generated__/PartnerShowRailItem_show.graphql"
+import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
@@ -30,9 +31,12 @@ export const PartnerShowRailItem: React.FC<Props> = (props) => {
   return (
     <Touchable onPress={onPress}>
       <Flex my="15px" mr={2} width={sectionWidth}>
-        {!!imageURL && (
-          <Image height={200} width={sectionWidth} src={imageURL} blurhash={coverImage?.blurhash} />
-        )}
+        <ImageWithFallback
+          height={200}
+          width={sectionWidth}
+          src={imageURL}
+          blurhash={coverImage?.blurhash}
+        />
         <Spacer y={1} />
         <Text variant="sm" numberOfLines={1}>
           {name}

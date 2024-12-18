@@ -1,4 +1,5 @@
-import { Box, Image } from "@artsy/palette-mobile"
+import { Box } from "@artsy/palette-mobile"
+import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import styled from "styled-components/native"
 
 interface ThreeUpImageLayoutProps {
@@ -16,7 +17,7 @@ export const ThreeUpImageLayout: React.FC<ThreeUpImageLayoutProps> = ({ imageURL
 
   return (
     <ArtworkImageContainer>
-      <Image
+      <ImageWithFallback
         testID="image-1"
         width={LARGE_IMAGE_SIZE}
         height={LARGE_IMAGE_SIZE}
@@ -24,14 +25,14 @@ export const ThreeUpImageLayout: React.FC<ThreeUpImageLayoutProps> = ({ imageURL
       />
       <Division />
       <Box>
-        <Image
+        <ImageWithFallback
           testID="image-2"
           width={SMALL_IMAGE_SIZE}
           height={SMALL_IMAGE_SIZE}
           src={artworkImageURLs[1]}
         />
         <Division horizontal />
-        <Image
+        <ImageWithFallback
           testID="image-3"
           width={SMALL_IMAGE_SIZE}
           height={SMALL_IMAGE_SIZE}
