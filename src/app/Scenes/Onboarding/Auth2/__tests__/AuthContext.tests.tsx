@@ -57,6 +57,17 @@ describe("AuthContext", () => {
       expect(getState().currentScreen).toEqual({ name: "SignUpPasswordStep" })
     })
 
+    it("doesn't goBack when there are no previous screens", () => {
+      const { getState, actions } = setup({
+        currentScreen: { name: "LoginWelcomeStep" },
+        previousScreens: [],
+      })
+
+      act(() => actions.goBack())
+
+      expect(getState().currentScreen).toEqual({ name: "LoginWelcomeStep" })
+    })
+
     it("setCurrentScreen", () => {
       const { getState, actions } = setup({ currentScreen: { name: "LoginWelcomeStep" } })
 
