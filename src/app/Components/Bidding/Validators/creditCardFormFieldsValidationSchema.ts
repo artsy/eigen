@@ -2,7 +2,9 @@ import * as Yup from "yup"
 
 export const creditCardFormValidationSchema = Yup.object().shape({
   creditCard: Yup.object().shape({
-    valid: Yup.boolean().required("Credit card is required"),
+    valid: Yup.boolean()
+      .oneOf([true], "Credit card is required")
+      .required("Credit card is required"),
   }),
   fullName: Yup.string().required("Name is required"),
   addressLine1: Yup.string().required("Address is required"),
