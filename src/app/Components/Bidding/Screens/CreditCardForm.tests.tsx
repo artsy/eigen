@@ -160,7 +160,7 @@ describe("CreditCardForm", () => {
     await waitFor(() => expect(addButton.props.accessibilityState.disabled).toEqual(true))
   })
 
-  it("is enabled while the form is valid", () => {
+  it("is enabled while the form is valid", async () => {
     const onSubmitMock = jest.fn()
 
     ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
@@ -187,7 +187,33 @@ describe("CreditCardForm", () => {
 
     const addButton = screen.getByTestId("credit-card-form-button")
 
-    expect(addButton.props.accessibilityState.disabled).toEqual(false)
+    await waitFor(() => expect(addButton.props.accessibilityState.disabled).toEqual(false))
+  })
+
+  it("is disabled when the form is invalid", async () => {
+    renderWithWrappers(
+      <CreditCardForm
+        onSubmit={onSubmitMock}
+        navigator={{ pop: () => null } as any}
+        billingAddress={{
+          fullName: "mockName",
+          addressLine1: "mockAddress1",
+          addressLine2: "mockAddress2",
+          city: "mockCity",
+          state: "mockState",
+          postalCode: "mockPostalCode",
+          phoneNumber: "mockPhone",
+          country: { shortName: "US", longName: "United States" },
+        }}
+      />
+    )
+
+    const creditCardField = screen.getByTestId("credit-card-field")
+    fireEvent.changeText(creditCardField, "4242") // incomplete number
+
+    const addButton = screen.getByTestId("credit-card-form-button")
+
+    await waitFor(() => expect(addButton.props.accessibilityState.disabled).toEqual(true))
   })
 
   it("shows an error when stripe's API returns an error", async () => {
