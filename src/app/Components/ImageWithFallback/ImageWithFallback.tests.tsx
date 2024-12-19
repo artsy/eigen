@@ -4,7 +4,7 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("ImageWithFallback", () => {
   it("renders without error", () => {
-    renderWithWrappers(<ImageWithFallback />)
+    renderWithWrappers(<ImageWithFallback width={100} height={100} />)
   })
 
   it("renders the image when a url is passed", async () => {
