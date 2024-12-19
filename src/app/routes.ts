@@ -71,16 +71,18 @@ export function addWebViewRoute(
   config?: ArtsyWebViewConfig,
   screenOptions?: NativeStackNavigationOptions
 ) {
-  return addRoute(
-    url,
-    config?.alwaysPresentModally ? "ModalWebView" : "ReactWebView",
-    (params) => ({
+  return addRoute(url, config?.alwaysPresentModally ? "ModalWebView" : "ReactWebView", (params) => {
+    const injectedParams = {
       url: replaceParams(url, params),
       isPresentedModally: !!config?.alwaysPresentModally,
-      screenOptions,
       ...config,
-    })
-  )
+    }
+    if (screenOptions) {
+      // @ts-expect-error
+      injectedParams["screenOptions"] = screenOptions
+    }
+    return injectedParams
+  })
 }
 
 export function replaceParams(url: string, params: any) {
