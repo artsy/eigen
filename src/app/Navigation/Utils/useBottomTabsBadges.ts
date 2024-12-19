@@ -77,7 +77,7 @@ export const useBottomTabsBadges = () => {
           tabsBadges[tab] = {
             tabBarBadge: unreadConversationsCount,
             tabBarBadgeStyle: {
-              backgroundColor: color("red100"),
+              backgroundColor: color("red50"),
             },
           }
         }
