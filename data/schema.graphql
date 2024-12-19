@@ -7937,6 +7937,35 @@ type CreateBidderPayload {
   clientMutationId: String
 }
 
+type CreateCanonicalArtistFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateCanonicalArtistMutationInput {
+  birthday: String
+  clientMutationId: String
+  deathday: String
+  displayName: String
+  firstName: String
+  lastName: String
+  middleName: String
+  nationality: String
+}
+
+type CreateCanonicalArtistMutationPayload {
+  # Success or Error, where on success Artist is returned
+  artistOrError: CreateCanonicalArtistSuccessOrErrorType
+  clientMutationId: String
+}
+
+type CreateCanonicalArtistSuccess {
+  artist: Artist
+}
+
+union CreateCanonicalArtistSuccessOrErrorType =
+    CreateCanonicalArtistFailure
+  | CreateCanonicalArtistSuccess
+
 type CreateCareerHighlightFailure {
   mutationError: GravityMutationError
 }
@@ -13515,6 +13544,11 @@ type Mutation {
 
   # Creates a bidder position
   createBidderPosition(input: BidderPositionInput!): BidderPositionPayload
+
+  # Create a canonical artist
+  createCanonicalArtist(
+    input: CreateCanonicalArtistMutationInput!
+  ): CreateCanonicalArtistMutationPayload
 
   # Creates Artist Career Highlight.
   createCareerHighlight(input: CreateCareerHighlightInput!): CreateCareerHighlightPayload
