@@ -1,5 +1,5 @@
 import { ChevronIcon, Collapse, Flex, Text, Touchable } from "@artsy/palette-mobile"
-import { MAX_WIDTH } from "app/Components/Artist/Biography"
+import { MAX_WIDTH_BIO } from "app/Components/Artist/Biography"
 import { MotiView } from "moti"
 import { useState } from "react"
 
@@ -30,7 +30,12 @@ export const Expandable: React.FC<ExpandableProps> = ({
   }
 
   return (
-    <Flex borderTopWidth={1} py={1} accessibilityHint="Toggles the accordion" maxWidth={MAX_WIDTH}>
+    <Flex
+      borderTopWidth={1}
+      py={1}
+      accessibilityHint="Toggles the accordion"
+      maxWidth={MAX_WIDTH_BIO}
+    >
       <Touchable
         onPress={() => handleToggle()}
         accessibilityRole="togglebutton"

@@ -1,11 +1,12 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Join, Spacer, Tabs } from "@artsy/palette-mobile"
+import { Flex, Join, Spacer, Tabs } from "@artsy/palette-mobile"
 import { ArtistAbout_artist$data } from "__generated__/ArtistAbout_artist.graphql"
 import { Articles } from "app/Components/Artist/Articles/Articles"
 import { ArtistAboutEmpty } from "app/Components/Artist/ArtistAbout/ArtistAboutEmpty"
 import { ArtistAboutRelatedGenes } from "app/Components/Artist/ArtistAbout/ArtistAboutRelatedGenes"
-import { Biography } from "app/Components/Artist/Biography"
+import { Biography, MAX_WIDTH_BIO } from "app/Components/Artist/Biography"
 import { RelatedArtistsRail } from "app/Components/Artist/RelatedArtistsRail"
+import { SectionTitle } from "app/Components/SectionTitle"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { extractNodes } from "app/utils/extractNodes"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -46,7 +47,10 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
             {!!hasBiography && (
               <>
                 <Spacer y={1} />
-                <Biography artist={artist} />
+                <Flex maxWidth={MAX_WIDTH_BIO} px={2}>
+                  <SectionTitle title="Biography" />
+                  <Biography artist={artist} />
+                </Flex>
               </>
             )}
             {!!hasInsights && <ArtistCareerHighlights artist={artist} />}
