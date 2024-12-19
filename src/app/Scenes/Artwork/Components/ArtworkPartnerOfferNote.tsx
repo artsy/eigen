@@ -58,7 +58,7 @@ export const ArtworkPartnerOfferNote: React.FC<ArtworkPartnerOfferNoteProps> = (
 
 const artworkFragment = graphql`
   fragment ArtworkPartnerOfferNote_artwork on Artwork {
-    partner {
+    partner(shallow: true) {
       profile {
         icon {
           url(version: "square140")

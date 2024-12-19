@@ -28,7 +28,7 @@ export const CompleteProfilePrompt: React.FC<CompleteProfilePromptProps> = ({
 
 const artworkFragment = graphql`
   fragment CompleteProfilePrompt_artwork on Artwork {
-    partner {
+    partner(shallow: true) {
       name
     }
   }
