@@ -67,7 +67,7 @@ export const PartnerHeaderContainer = createFragmentContainer(PartnerHeader, {
       counts {
         eligibleArtworks
       }
-      ...PartnerFollowButton_partner
+      ...PartnerFollowButton_deprecated_partner
     }
   `,
 })

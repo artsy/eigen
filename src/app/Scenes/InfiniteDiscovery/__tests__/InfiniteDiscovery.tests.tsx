@@ -1,15 +1,16 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { InfiniteDiscovery } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
 import { InfiniteDiscoveryContext } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryContext"
-import { navigate } from "app/system/navigation/navigate"
+import { goBack } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { action } from "easy-peasy"
 
 jest.mock("app/system/navigation/navigate")
+jest.mock("app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet", () => ({
+  InfiniteDiscoveryBottomSheet: () => null,
+}))
 
 describe("InfiniteDiscovery", () => {
-  const mockNavigate = navigate as jest.Mock
-
   beforeEach(() => {
     jest.clearAllMocks()
   })
@@ -60,6 +61,6 @@ describe("InfiniteDiscovery", () => {
       </InfiniteDiscoveryContext.Provider>
     )
     fireEvent.press(screen.getByText("Exit"))
-    expect(mockNavigate).toHaveBeenCalledWith("/home-view")
+    expect(goBack).toHaveBeenCalledTimes(1)
   })
 })
