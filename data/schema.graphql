@@ -16498,10 +16498,10 @@ type Query {
     # (Only for when useOpenSearch is true) These fields are used to calculate the More Like This query
     mltFields: [String] = ["material", "categories", "tags", "medium"]
     offset: Int
-    sort: DiscoverArtworksSort
 
-    # (Only for when useOpenSearch is true) Use the More Like This query with the kNN query
-    useMltQuery: Boolean = false
+    # (Only for when useOpenSearch is true) Weights for the OpenSearch query
+    osWeights: [Float] = [0.6, 0.4]
+    sort: DiscoverArtworksSort
     useOpenSearch: Boolean = false
     userId: String
   ): ArtworkConnection
@@ -21086,10 +21086,10 @@ type Viewer {
     # (Only for when useOpenSearch is true) These fields are used to calculate the More Like This query
     mltFields: [String] = ["material", "categories", "tags", "medium"]
     offset: Int
-    sort: DiscoverArtworksSort
 
-    # (Only for when useOpenSearch is true) Use the More Like This query with the kNN query
-    useMltQuery: Boolean = false
+    # (Only for when useOpenSearch is true) Weights for the OpenSearch query
+    osWeights: [Float] = [0.6, 0.4]
+    sort: DiscoverArtworksSort
     useOpenSearch: Boolean = false
     userId: String
   ): ArtworkConnection
