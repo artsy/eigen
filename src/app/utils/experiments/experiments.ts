@@ -29,6 +29,13 @@ export const experiments = {
     payloadSuggestions: ["variant-a", "variant-b", "variant-c"],
     variantSuggestions: ["variant-a", "variant-b", "variant-c"],
   },
+  "onyx_activity-dot-experiment": {
+    description: "Replace current visual clue dot with a larger or red variant",
+    fallbackEnabled: true,
+    fallbackVariant: "control",
+    variantSuggestions: ["control", "variant-b", "variant-c"],
+    payloadSuggestions: ['{"forceDots": "true"}', '{"forceDots": "false"}'],
+  },
 } satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments
