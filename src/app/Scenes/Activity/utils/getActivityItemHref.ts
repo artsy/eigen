@@ -3,18 +3,17 @@ import { ActivityRailItem_item$data } from "__generated__/ActivityRailItem_item.
 import { FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ORDERED_ARTWORK_SORTS } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { SUPPORTED_NOTIFICATION_TYPES } from "app/Scenes/Activity/ActivityItemScreen"
-import { navigate } from "app/system/navigation/navigate"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { last } from "lodash"
 import { parse as parseQueryString } from "query-string"
 
-export const navigateToActivityItem = (
+export const getActivityItemHref = (
   item: ActivityItem_notification$data | ActivityRailItem_item$data
 ) => {
   const { internalID, targetHref, notificationType } = item
 
   if (SUPPORTED_NOTIFICATION_TYPES.includes(notificationType)) {
-    return navigate(`/notification/${internalID}`)
+    return { href: `/notification/${internalID}` }
   }
 
   const splittedQueryParams = targetHref.split("?")
@@ -34,7 +33,5 @@ export const navigateToActivityItem = (
     passProps.scrollToArtworksGrid = true
   }
 
-  navigate(targetHref, {
-    passProps,
-  })
+  return { href: targetHref, passProps }
 }

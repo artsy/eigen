@@ -32,7 +32,7 @@ export const ActivityItemScreenQueryRenderer: FC<ActivityItemScreenQueryRenderer
   withSuspense({
     Component: ({ notificationID }) => {
       const data = useLazyLoadQuery<ActivityItemScreenQuery>(ActivityItemQuery, {
-        internalID: notificationID,
+        notificationID,
       })
 
       const notification = data.me?.notification
@@ -83,10 +83,10 @@ export const ActivityItemScreenQueryRenderer: FC<ActivityItemScreenQueryRenderer
     },
   })
 
-const ActivityItemQuery = graphql`
-  query ActivityItemScreenQuery($internalID: String!) {
+export const ActivityItemQuery = graphql`
+  query ActivityItemScreenQuery($notificationID: String!) {
     me {
-      notification(id: $internalID) {
+      notification(id: $notificationID) {
         item {
           __typename
         }
