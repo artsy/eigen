@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   Flex,
   Image,
@@ -8,10 +9,13 @@ import {
   useScreenDimensions,
   useTheme,
 } from "@artsy/palette-mobile"
+import { InfiniteDiscoveryQuery } from "__generated__/InfiniteDiscoveryQuery.graphql"
 import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
 import { Card } from "app/Components/FancySwiper/FancySwiperCard"
 import { InfiniteDiscoveryContext } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryContext"
 import { navigate } from "app/system/navigation/navigate"
+import { useEffect } from "react"
+import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const InfiniteDiscoveryView: React.FC = () => {
   return (
@@ -25,16 +29,26 @@ export const InfiniteDiscovery: React.FC = () => {
   const { color } = useTheme()
   const { width: screenWidth } = useScreenDimensions()
 
+  const data = useLazyLoadQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, {})
+
   const artworks = InfiniteDiscoveryContext.useStoreState((state) => state.artworks)
-  const currentArtwork = InfiniteDiscoveryContext.useStoreState((state) => state.currentArtwork)
+  const currentArtworkIndex = InfiniteDiscoveryContext.useStoreState(
+    (state) => state.currentArtworkIndex
+  )
   const goToPreviousArtwork = InfiniteDiscoveryContext.useStoreActions(
     (action) => action.goToPreviousArtwork
   )
   const goToNextArtwork = InfiniteDiscoveryContext.useStoreActions(
     (actions) => actions.goToNextArtwork
   )
+  const setArtworks = InfiniteDiscoveryContext.useStoreActions((actions) => actions.setArtworks)
 
-  const currentArtworkIndex = artworks.indexOf(currentArtwork)
+  useEffect(() => {
+    setArtworks(
+      (data.marketingCollection?.artworksConnection?.edges?.map((edge) => edge?.node) as any) || []
+    )
+  }, [data])
+
   const canGoBack = currentArtworkIndex > 0
 
   const handleBackPressed = () => {
@@ -58,33 +72,41 @@ export const InfiniteDiscovery: React.FC = () => {
       jsx: (
         <Flex backgroundColor={color("white100")}>
           <Flex flexDirection="row" justifyContent="space-between" testID="artist-header">
-            <Text variant="sm-display">Artist Name</Text>
+            <Flex flexDirection="row">
+              <Avatar
+                initials={artwork.artists[0].initials || undefined}
+                src={artwork.artists[0].coverArtwork?.image?.cropped?.url || undefined}
+                size="xs"
+              />
+              <Flex>
+                <Text variant="sm-display">{artwork.artistNames}</Text>
+                <Text variant="xs" color={color("black60")}>
+                  {artwork.artists[0].formattedNationalityAndBirthday}
+                </Text>
+              </Flex>
+            </Flex>
             <Button variant="outlineGray">Follow</Button>
           </Flex>
           <Flex alignItems="center">
-            <Image
-              src="https://d32dm0rphc51dk.cloudfront.net/Wor_U4FSvsAmEAEFj1iyVg/medium.jpg"
-              width={screenWidth}
-              aspectRatio={0.79}
-            />
+            <Image src={artwork.images[0].url} width={screenWidth} aspectRatio={0.79} />
           </Flex>
           <Flex flexDirection="row" justifyContent="space-between" testID="artwork-info">
             <Flex>
               <Flex flexDirection="row">
                 <Text color={color("black60")} italic variant="sm-display">
-                  Artwork Title,
+                  {artwork.title}
                 </Text>
                 <Text color={color("black60")} variant="sm-display">
-                  2024
+                  , {artwork.date}
                 </Text>
               </Flex>
-              <Text variant="sm-display">$1,234</Text>
+              <Text variant="sm-display">{artwork.saleMessage}</Text>
             </Flex>
             <Button variant="fillGray">Save</Button>
           </Flex>
         </Flex>
       ),
-      id: artwork,
+      id: artwork.internalID,
     }
   })
 
@@ -117,3 +139,35 @@ export const InfiniteDiscovery: React.FC = () => {
     </Screen>
   )
 }
+
+const infiniteDiscoveryQuery = graphql`
+  query InfiniteDiscoveryQuery {
+    marketingCollection(slug: "curators-picks") {
+      artworksConnection(first: 10) {
+        edges {
+          node {
+            artistNames
+            artists(shallow: true) {
+              initials
+              formattedNationalityAndBirthday
+              coverArtwork {
+                image {
+                  cropped(height: 45, width: 45) {
+                    url
+                  }
+                }
+              }
+            }
+            date
+            internalID
+            images {
+              url(version: "large")
+            }
+            saleMessage
+            title
+          }
+        }
+      }
+    }
+  }
+`
