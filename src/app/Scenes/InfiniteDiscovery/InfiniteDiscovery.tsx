@@ -1,7 +1,7 @@
 import {
   Button,
-  Color,
   Flex,
+  Image,
   Screen,
   Text,
   Touchable,
@@ -9,6 +9,7 @@ import {
   useTheme,
 } from "@artsy/palette-mobile"
 import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
+import { Card } from "app/Components/FancySwiper/FancySwiperCard"
 import { InfiniteDiscoveryContext } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryContext"
 import { navigate } from "app/system/navigation/navigate"
 
@@ -21,6 +22,9 @@ export const InfiniteDiscoveryView: React.FC = () => {
 }
 
 export const InfiniteDiscovery: React.FC = () => {
+  const { color } = useTheme()
+  const { width: screenWidth } = useScreenDimensions()
+
   const artworks = InfiniteDiscoveryContext.useStoreState((state) => state.artworks)
   const currentArtwork = InfiniteDiscoveryContext.useStoreState((state) => state.currentArtwork)
   const goToPreviousArtwork = InfiniteDiscoveryContext.useStoreActions(
@@ -30,7 +34,8 @@ export const InfiniteDiscovery: React.FC = () => {
     (actions) => actions.goToNextArtwork
   )
 
-  const canGoBack = artworks.length && currentArtwork !== artworks[0]
+  const currentArtworkIndex = artworks.indexOf(currentArtwork)
+  const canGoBack = currentArtworkIndex > 0
 
   const handleBackPressed = () => {
     goToPreviousArtwork()
@@ -48,51 +53,21 @@ export const InfiniteDiscovery: React.FC = () => {
     goToNextArtwork()
   }
 
-  return (
-    <Screen>
-      <Screen.Header
-        title="Discovery"
-        leftElements={
-          <Touchable onPress={handleBackPressed}>
-            <Text variant="xs">Back</Text>
-          </Touchable>
-        }
-        hideLeftElements={!canGoBack}
-        rightElements={
-          <Touchable onPress={handleExitPressed}>
-            <Text variant="xs">Exit</Text>
-          </Touchable>
-        }
-      />
-      <Screen.Body>
-        <FancySwiper
-          cards={artworkCards(artworks)}
-          onSwipeRight={handleSwipedRight}
-          onSwipeLeft={handleSwipedLeft}
-        />
-      </Screen.Body>
-    </Screen>
-  )
-}
-
-const artworkCards = (artworks: Color[]) => {
-  return artworks.map((artwork) => {
-    const { color, space } = useTheme()
-    const { width } = useScreenDimensions()
+  const artworkCards: Card[] = artworks.slice(currentArtworkIndex).map((artwork) => {
     return {
       jsx: (
-        <Flex width={width - space(4)} height={500} backgroundColor="white">
+        <Flex backgroundColor={color("white100")}>
           <Flex flexDirection="row" justifyContent="space-between" testID="artist-header">
             <Text variant="sm-display">Artist Name</Text>
             <Button variant="outlineGray">Follow</Button>
           </Flex>
-          <Flex
-            backgroundColor={color(artwork)}
-            height={250}
-            testID="image-frame"
-            width={250}
-          ></Flex>
-          <Flex testID="multi-image-tabs" />
+          <Flex alignItems="center">
+            <Image
+              src="https://d32dm0rphc51dk.cloudfront.net/Wor_U4FSvsAmEAEFj1iyVg/medium.jpg"
+              width={screenWidth}
+              aspectRatio={0.79}
+            />
+          </Flex>
           <Flex flexDirection="row" justifyContent="space-between" testID="artwork-info">
             <Flex>
               <Flex flexDirection="row">
@@ -112,4 +87,33 @@ const artworkCards = (artworks: Color[]) => {
       id: artwork,
     }
   })
+
+  return (
+    <Screen>
+      <Screen.Body fullwidth>
+        <Flex zIndex={-100}>
+          <Screen.Header
+            title="Discovery"
+            leftElements={
+              <Touchable onPress={handleBackPressed}>
+                <Text variant="xs">Back</Text>
+              </Touchable>
+            }
+            hideLeftElements={!canGoBack}
+            rightElements={
+              <Touchable onPress={handleExitPressed}>
+                <Text variant="xs">Exit</Text>
+              </Touchable>
+            }
+          />
+        </Flex>
+        <FancySwiper
+          cards={artworkCards}
+          hideActionButtons
+          onSwipeRight={handleSwipedRight}
+          onSwipeLeft={handleSwipedLeft}
+        />
+      </Screen.Body>
+    </Screen>
+  )
 }
