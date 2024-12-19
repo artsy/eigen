@@ -79,7 +79,7 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
       <Touchable onPress={handlePress}>
         <Flex width={width} mx="auto">
           <Flex>
-            <ImageWithFallback src={imageUrl} aspectRatio={1.33} width={width} />
+            <ImageWithFallback src={imageUrl} height={width / 1.33} width={width} />
 
             {!!showInitials && (
               <Flex
