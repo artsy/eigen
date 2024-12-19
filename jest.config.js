@@ -8,7 +8,7 @@ module.exports = {
   rootDir: "./",
   setupFilesAfterEnv: [
     "jest-extended/all",
-    "@testing-library/jest-native/extend-expect",
+    "@testing-library/react-native/extend-expect",
     "./src/setupJest.tsx",
     "./node_modules/react-native-gesture-handler/jestSetup.js",
   ],
