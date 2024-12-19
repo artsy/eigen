@@ -6,6 +6,8 @@ source 'https://github.com/artsy/Specs.git'
 require 'dotenv'
 Dotenv.load('../.env.shared')
 
+require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
+
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
@@ -58,8 +60,15 @@ end
 
 
 target 'Artsy' do
-
+  use_expo_modules!
   config = use_native_modules!
+  post_integrate do |installer|
+    begin
+      expo_patch_react_imports!(installer)
+    rescue => e
+      Pod::UI.warn e
+    end
+  end
 
   use_react_native!(
     :path => config[:reactNativePath],
