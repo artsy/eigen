@@ -26,12 +26,12 @@ import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwor
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
+import { RouterLink } from "app/Components/RouterLink"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
 import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { GlobalStore } from "app/store/GlobalStore"
-import { navigate } from "app/system/navigation/navigate"
 import { ElementInView } from "app/utils/ElementInView"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
@@ -226,15 +226,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
     addArtworkToRecentSearches()
     trackArtworkTap()
-
-    if (artwork.href) {
-      if (partnerOffer && !!hasEnded && !!enablePartnerOfferOnArtworkScreen) {
-        navigate?.(artwork.href, { passProps: { artworkOfferExpired: true } })
-      } else {
-        navigate?.(artwork.href)
-      }
-    }
   }
+
+  const passProps =
+    partnerOffer && !!hasEnded && !!enablePartnerOfferOnArtworkScreen
+      ? { artworkOfferExpired: true }
+      : undefined
 
   const trackArtworkTap = () => {
     // Unless you explicitly pass in a tracking function or provide a contextScreenOwnerType, we won't track
@@ -308,11 +305,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
           artwork={artwork}
           hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
         >
-          <Touchable
+          <RouterLink
             haptic
             underlayColor={color("white100")}
             activeOpacity={0.8}
             onPress={handleTap}
+            passProps={passProps}
+            to={artwork.href}
             testID={`artworkGridItem-${artwork.title}`}
           >
             <View ref={itemRef}>
@@ -472,7 +471,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 />
               </Flex>
             </View>
-          </Touchable>
+          </RouterLink>
         </ContextMenuArtwork>
 
         <CreateArtworkAlertModal
