@@ -156,3 +156,7 @@ tsconfig.tsbuildinfo
 #########################################################
 
 main.jsbundle.map
+# Expo
+.expo
+dist/
+web-build/
