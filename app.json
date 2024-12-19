@@ -4,6 +4,9 @@
   "isAndroidBeta": false,
   "codePushReleaseName": "none",
   "codePushDist": "none",
+  "expo": {
+    "name": "Artsy"
+  },
   "extra": {
     "eas": {
       "projectId": "39b092dc-effa-4d59-a530-85107bdfd668"
