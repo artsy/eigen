@@ -68,7 +68,8 @@ target 'Artsy' do
     :path => config[:reactNativePath],
     :production => ENV['CIRCLE_BUILD_NUM'],
     # An absolute path to your application root.
-    :app_path => "#{Pod::Config.instance.installation_root}/.."
+    :app_path => "#{Pod::Config.instance.installation_root}/..",
+    new_arch_enabled: false
   )
 
   # Networking
