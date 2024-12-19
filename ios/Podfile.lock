@@ -22,12 +22,6 @@ PODS:
   - AppAuth/Core (1.7.3)
   - AppAuth/ExternalUserAgent (1.7.3):
     - AppAuth/Core
-  - appcenter-core (5.0.0):
-    - AppCenterReactNativeShared (~> 5.0)
-    - React-Core
-  - AppCenter/Core (5.0.3)
-  - AppCenterReactNativeShared (5.0.0):
-    - AppCenter/Core (= 5.0.3)
   - boost (1.84.0)
   - braze-react-native-sdk (11.0.0):
     - BrazeKit (~> 9.0.0)
@@ -63,21 +57,64 @@ PODS:
   - CocoaLumberjack (3.7.2):
     - CocoaLumberjack/Core (= 3.7.2)
   - CocoaLumberjack/Core (3.7.2)
-  - CwlCatchException (2.2.0):
-    - CwlCatchExceptionSupport (~> 2.2.0)
-  - CwlCatchExceptionSupport (2.2.0)
-  - CwlMachBadInstructionHandler (2.2.0)
-  - CwlPosixPreconditionTesting (2.2.0)
-  - CwlPreconditionTesting (2.2.1):
-    - CwlCatchException (~> 2.2.0)
-    - CwlMachBadInstructionHandler (~> 2.2.0)
-    - CwlPosixPreconditionTesting (~> 2.2.0)
+  - CwlCatchException (2.2.1):
+    - CwlCatchExceptionSupport (~> 2.2.1)
+  - CwlCatchExceptionSupport (2.2.1)
+  - CwlMachBadInstructionHandler (2.2.2)
+  - CwlPosixPreconditionTesting (2.2.2)
+  - CwlPreconditionTesting (2.2.2):
+    - CwlCatchException (~> 2.2.1)
+    - CwlMachBadInstructionHandler (~> 2.2.2)
+    - CwlPosixPreconditionTesting (~> 2.2.2)
   - DoubleConversion (1.1.6)
+  - EXConstants (17.0.3):
+    - ExpoModulesCore
   - Expecta (1.0.6)
   - "Expecta+Snapshots (3.2.0)":
     - Expecta (~> 1.0)
     - iOSSnapshotTestCase (~> 8.0)
     - Specta (~> 2.0)
+  - Expo (52.0.20):
+    - ExpoModulesCore
+  - ExpoAdapterFBSDKNext (13.0.0):
+    - ExpoModulesCore
+    - FBSDKCoreKit
+    - React-Core
+  - ExpoAdapterGoogleSignIn (11.0.1):
+    - ExpoModulesCore
+    - GoogleSignIn (~> 7.0)
+    - React-Core
+  - ExpoAsset (11.0.1):
+    - ExpoModulesCore
+  - ExpoFileSystem (18.0.6):
+    - ExpoModulesCore
+  - ExpoFont (13.0.2):
+    - ExpoModulesCore
+  - ExpoKeepAwake (14.0.1):
+    - ExpoModulesCore
+  - ExpoModulesCore (2.1.2):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-jsinspector
+    - React-NativeModulesApple
+    - React-RCTAppDelegate
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - FBAEMKit (17.0.0):
     - FBSDKCoreKit_Basics (= 17.0.0)
   - FBLazyVector (0.75.4)
@@ -230,7 +267,7 @@ PODS:
     - nanopb/encode (= 2.30910.0)
   - nanopb/decode (2.30910.0)
   - nanopb/encode (2.30910.0)
-  - Nimble (13.2.1):
+  - Nimble (13.7.1):
     - CwlPreconditionTesting (~> 2.2.0)
   - Nimble-Snapshots (9.8.0):
     - Nimble-Snapshots/Core (= 9.8.0)
@@ -238,7 +275,7 @@ PODS:
     - iOSSnapshotTestCase (~> 8.0)
     - Nimble (~> 13.0)
   - ObjectiveSugar (1.1.0)
-  - OCMock (3.9.1)
+  - OCMock (3.9.4)
   - OHHTTPStubs (3.1.2)
   - ORStackView (2.0.3):
     - FLKAutoLayout
@@ -2155,14 +2192,22 @@ DEPENDENCIES:
   - AFNetworking/NSURLConnection (= 2.7.0)
   - AFNetworking/NSURLSession (= 2.7.0)
   - Analytics (= 4.1.8)
-  - appcenter-core (from `../node_modules/appcenter`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - "braze-react-native-sdk (from `../node_modules/@braze/react-native-sdk`)"
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - CocoaLumberjack (= 3.7.2)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - EXConstants (from `../node_modules/expo-constants/ios`)
   - Expecta (= 1.0.6)
   - "Expecta+Snapshots (= 3.2.0)"
+  - Expo (from `../node_modules/expo`)
+  - ExpoAdapterFBSDKNext (from `../node_modules/react-native-fbsdk-next/ios`)
+  - "ExpoAdapterGoogleSignIn (from `../node_modules/@react-native-google-signin/google-signin/expo/ios`)"
+  - ExpoAsset (from `../node_modules/expo-asset/ios`)
+  - ExpoFileSystem (from `../node_modules/expo-file-system/ios`)
+  - ExpoFont (from `../node_modules/expo-font/ios`)
+  - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
+  - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBSDKCoreKit (~> 17)
   - FBSDKLoginKit (~> 17)
@@ -2313,8 +2358,6 @@ SPEC REPOS:
     - AFNetworking
     - Analytics
     - AppAuth
-    - AppCenter
-    - AppCenterReactNativeShared
     - BrazeKit
     - BrazeLocation
     - BrazeUI
@@ -2392,8 +2435,6 @@ SPEC REPOS:
     - "XCTest+OHHTTPStubSuiteCleanUp"
 
 EXTERNAL SOURCES:
-  appcenter-core:
-    :path: "../node_modules/appcenter"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   braze-react-native-sdk:
@@ -2402,6 +2443,24 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  EXConstants:
+    :path: "../node_modules/expo-constants/ios"
+  Expo:
+    :path: "../node_modules/expo"
+  ExpoAdapterFBSDKNext:
+    :path: "../node_modules/react-native-fbsdk-next/ios"
+  ExpoAdapterGoogleSignIn:
+    :path: "../node_modules/@react-native-google-signin/google-signin/expo/ios"
+  ExpoAsset:
+    :path: "../node_modules/expo-asset/ios"
+  ExpoFileSystem:
+    :path: "../node_modules/expo-file-system/ios"
+  ExpoFont:
+    :path: "../node_modules/expo-font/ios"
+  ExpoKeepAwake:
+    :path: "../node_modules/expo-keep-awake/ios"
+  ExpoModulesCore:
+    :path: "../node_modules/expo-modules-core"
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   FLKAutoLayout:
@@ -2643,9 +2702,6 @@ SPEC CHECKSUMS:
   AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
   Analytics: 9655e0e1c71ea98107cfcb2b14891168acc6c6c9
   AppAuth: a13994980c1ec792f7e2e665acd4d4aa6be43240
-  AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
-  appcenter-core: 3f5907606dfbf4ffe62cb7798210174c2608a7d9
-  AppCenterReactNativeShared: 01df23849b1c3c6eb8c4049f54322635650e98f0
   boost: 4cb898d0bf20404aab1850c656dcea009429d6c1
   braze-react-native-sdk: 533e3610dce5b236c684524d88e010dad3f2bbc7
   BrazeKit: 7406e77825c624d8e7a162d858a4bffdf79270f5
@@ -2653,14 +2709,23 @@ SPEC CHECKSUMS:
   BrazeUI: 9e86bd30ca84f66444a5f6d95e438057000f4d0f
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
-  CwlCatchException: 51bf8319009a31104ea6f0568730d1ecc25b6454
-  CwlCatchExceptionSupport: 1345d6adb01a505933f2bc972dab60dcb9ce3e50
-  CwlMachBadInstructionHandler: ea1030428925d9bf340882522af30712fb4bf356
-  CwlPosixPreconditionTesting: a125dee731883f2582715f548c6b6c92c7fde145
-  CwlPreconditionTesting: ccfd08aca58d14e04062b2a3dd2fd52e09857453
+  CwlCatchException: 7acc161b299a6de7f0a46a6ed741eae2c8b4d75a
+  CwlCatchExceptionSupport: 54ccab8d8c78907b57f99717fb19d4cc3bce02dc
+  CwlMachBadInstructionHandler: dae4fdd124d45c9910ac240287cc7b898f4502a1
+  CwlPosixPreconditionTesting: ecd095aa2129e740b44301c34571e8d85906fb88
+  CwlPreconditionTesting: 67a0047dd4de4382b93442c0e3f25207f984f35a
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
+  EXConstants: 277129d9a42ba2cf1fad375e7eaa9939005c60be
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": 7a3ac7ad2b9bae43aadb4dca08113bb495c98f3e
+  Expo: 9fdd90743d2d89544cb5a039e24627a799e180b1
+  ExpoAdapterFBSDKNext: 7e281be5078ab6eda58ac8c489ea2c2b8ea31b70
+  ExpoAdapterGoogleSignIn: 3a02de846d07a35ed9d505bb45f66592d20c1de0
+  ExpoAsset: 6f7a8887cbb9fb39fdb0808e7f6f74ba0e1ae9b6
+  ExpoFileSystem: a38e1bb58d77f41717293a7b73ebd4014d8cb8dd
+  ExpoFont: b089994dac1fe603deda1cec151e32c81f46c2f1
+  ExpoKeepAwake: 22173f45d767c7d37403fdf48292726901d69ce7
+  ExpoModulesCore: 70ec3efba682c47542106f0971f1a07aa5d1fe41
   FBAEMKit: 31a20c2d8744d8c57d3a5b7ae4e27b4fdd819193
   FBLazyVector: 430e10366de01d1e3d57374500b1b150fe482e6d
   FBSDKCoreKit: dac911b656816f8d0b06e5fa4bac60e89505bb3b
@@ -2702,10 +2767,10 @@ SPEC CHECKSUMS:
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: 228e2321b74f45ea43ae19c268fdd60fd88d99b7
   nanopb: 438bc412db1928dac798aa6fd75726007be04262
-  Nimble: 9e81a67096dab1d1f5160d7a3f8fa7a1eeec38fd
+  Nimble: 317d713c30c3336dd8571da1889f7ec3afc626e8
   Nimble-Snapshots: 240ea76ee8e52dfc1387b8d0d9bf1db3420cabbd
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
-  OCMock: 9491e4bec59e0b267d52a9184ff5605995e74be8
+  OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
@@ -2832,6 +2897,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 055f92ad73f8c8600a93f0e25ac0b2344c3b07e6
 
-PODFILE CHECKSUM: 26a64abb7a6f7968399484992db5f7ada506869d
+PODFILE CHECKSUM: f3aac93cc1ac81ccb5abeb603d070eba666acfa4
 
 COCOAPODS: 1.14.3
