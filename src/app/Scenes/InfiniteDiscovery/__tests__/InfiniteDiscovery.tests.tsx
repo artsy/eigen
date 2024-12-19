@@ -3,14 +3,15 @@ import {
   infiniteDiscoveryQuery,
   InfiniteDiscoveryQueryRenderer,
 } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
-import { navigate } from "app/system/navigation/navigate"
+import { goBack } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
 jest.mock("app/system/navigation/navigate")
+jest.mock("app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet", () => ({
+  InfiniteDiscoveryBottomSheet: () => null,
+}))
 
 describe("InfiniteDiscovery", () => {
-  const mockNavigate = navigate as jest.Mock
-
   beforeEach(() => {
     jest.clearAllMocks()
   })
@@ -54,7 +55,7 @@ describe("InfiniteDiscovery", () => {
     })
     renderWithRelay(marketingCollection)
     fireEvent.press(screen.getByText("Exit"))
-    expect(mockNavigate).toHaveBeenCalledWith("/home-view")
+    expect(goBack).toHaveBeenCalledTimes(1)
   })
 })
 

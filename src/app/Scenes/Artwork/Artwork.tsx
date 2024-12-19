@@ -727,7 +727,7 @@ export const ArtworkContainer = createRefetchContainer(
         exhibitionHistory
         literature
         isForSale
-        partner {
+        partner(shallow: true) {
           type
           isInquireable
         }

@@ -15,7 +15,7 @@ export const PrivateArtworkExclusiveAccess: React.FC<PrivateArtworkExclusiveAcce
   const data = useFragment(
     graphql`
       fragment PrivateArtworkExclusiveAccess_artwork on Artwork {
-        partner {
+        partner(shallow: true) {
           name
           profile {
             isPubliclyVisible

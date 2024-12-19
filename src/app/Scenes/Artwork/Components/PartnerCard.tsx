@@ -103,7 +103,7 @@ export const PartnerCardFragmentContainer = createFragmentContainer(PartnerCard,
         isBenefit
         isGalleryAuction
       }
-      partner {
+      partner(shallow: true) {
         cities
         isDefaultProfilePublic
         type

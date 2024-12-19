@@ -1,19 +1,18 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Text } from "@artsy/palette-mobile"
 import { Biography_artist$key } from "__generated__/Biography_artist.graphql"
 import { HTML } from "app/Components/HTML"
-import { SectionTitle } from "app/Components/SectionTitle"
 import { useState } from "react"
 import { graphql, useFragment } from "react-relay"
 
 const MAX_CHARS = 250
-
-export const MAX_WIDTH = 650
+export const MAX_WIDTH_BIO = 650
 
 interface BiographyProps {
   artist: Biography_artist$key
+  variant?: "sm" | "xs"
 }
 
-export const Biography: React.FC<BiographyProps> = ({ artist }) => {
+export const Biography: React.FC<BiographyProps> = ({ artist, variant = "sm" }) => {
   const [expanded, setExpanded] = useState(false)
   const data = useFragment(query, artist)
 
@@ -26,21 +25,20 @@ export const Biography: React.FC<BiographyProps> = ({ artist }) => {
   const canExpand = text.length > MAX_CHARS
 
   return (
-    <Flex maxWidth={MAX_WIDTH} px={2}>
-      <SectionTitle title="Biography" />
+    <>
       <HTML
         html={`${expanded ? text : truncatedText}${
           text.length > MAX_CHARS && !expanded ? "... " : " "
         }`}
-        variant="sm"
+        variant={variant}
       />
 
       {!!canExpand && (
-        <Text underline onPress={() => setExpanded((e) => !e)} mt={-1}>
+        <Text underline onPress={() => setExpanded((e) => !e)} mt={-1} variant={variant}>
           {expanded ? "Read Less" : "Read More"}
         </Text>
       )}
-    </Flex>
+    </>
   )
 }
 
