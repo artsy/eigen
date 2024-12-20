@@ -21,8 +21,7 @@ export const useBottomTabsBadges = () => {
   const { showVisualClue } = useVisualClue()
   const { unreadConversationsCount, hasUnseenNotifications } = useTabBarBadge()
 
-  const { enabled, variant, forceDots } = useActivityDotExperiment()
-  const backgroundColor = enabled ? (variant === "variant-b" ? "red50" : "blue100") : "blue100"
+  const { forceDots, color: backgroundColor } = useActivityDotExperiment()
 
   const tabsBadges: Record<string, BadgeProps> = {}
 
