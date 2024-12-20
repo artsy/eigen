@@ -4,6 +4,7 @@ import {
   Flex,
   Image,
   Screen,
+  Spacer,
   Text,
   Touchable,
   useScreenDimensions,
@@ -14,13 +15,14 @@ import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
 import { Card } from "app/Components/FancySwiper/FancySwiperCard"
 import { InfiniteDiscoveryContext } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryContext"
 import { navigate } from "app/system/navigation/navigate"
-import { useEffect } from "react"
+import { extractNodes } from "app/utils/extractNodes"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const InfiniteDiscoveryView: React.FC = () => {
   return (
     <InfiniteDiscoveryContext.Provider>
-      <InfiniteDiscovery />
+      <InfiniteDiscoveryWithSuspense />
     </InfiniteDiscoveryContext.Provider>
   )
 }
@@ -29,30 +31,16 @@ export const InfiniteDiscovery: React.FC = () => {
   const { color } = useTheme()
   const { width: screenWidth } = useScreenDimensions()
 
+  const currentIndex = InfiniteDiscoveryContext.useStoreState((state) => state.currentIndex)
+  const goToPrevious = InfiniteDiscoveryContext.useStoreActions((action) => action.goToPrevious)
+  const goToNext = InfiniteDiscoveryContext.useStoreActions((actions) => actions.goToNext)
+
   const data = useLazyLoadQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, {})
 
-  const artworks = InfiniteDiscoveryContext.useStoreState((state) => state.artworks)
-  const currentArtworkIndex = InfiniteDiscoveryContext.useStoreState(
-    (state) => state.currentArtworkIndex
-  )
-  const goToPreviousArtwork = InfiniteDiscoveryContext.useStoreActions(
-    (action) => action.goToPreviousArtwork
-  )
-  const goToNextArtwork = InfiniteDiscoveryContext.useStoreActions(
-    (actions) => actions.goToNextArtwork
-  )
-  const setArtworks = InfiniteDiscoveryContext.useStoreActions((actions) => actions.setArtworks)
-
-  useEffect(() => {
-    setArtworks(
-      (data.marketingCollection?.artworksConnection?.edges?.map((edge) => edge?.node) as any) || []
-    )
-  }, [data])
-
-  const canGoBack = currentArtworkIndex > 0
+  const artworks = extractNodes(data.marketingCollection?.artworksConnection)
 
   const handleBackPressed = () => {
-    goToPreviousArtwork()
+    goToPrevious()
   }
 
   const handleExitPressed = () => {
@@ -64,31 +52,36 @@ export const InfiniteDiscovery: React.FC = () => {
   }
 
   const handleSwipedLeft = () => {
-    goToNextArtwork()
+    goToNext()
   }
 
-  const artworkCards: Card[] = artworks.slice(currentArtworkIndex).map((artwork) => {
+  const artworkCards: Card[] = artworks.map((artwork) => {
     return {
       jsx: (
         <Flex backgroundColor={color("white100")}>
           <Flex flexDirection="row" justifyContent="space-between" testID="artist-header">
-            <Flex flexDirection="row">
+            <Flex flexDirection="row" px={2}>
               <Avatar
-                initials={artwork.artists[0].initials || undefined}
-                src={artwork.artists[0].coverArtwork?.image?.cropped?.url || undefined}
+                initials={artwork?.artists?.[0]?.initials || undefined}
+                src={artwork?.artists?.[0]?.coverArtwork?.image?.cropped?.url || undefined}
                 size="xs"
               />
               <Flex>
                 <Text variant="sm-display">{artwork.artistNames}</Text>
                 <Text variant="xs" color={color("black60")}>
-                  {artwork.artists[0].formattedNationalityAndBirthday}
+                  {artwork?.artists?.[0]?.formattedNationalityAndBirthday}
                 </Text>
               </Flex>
             </Flex>
-            <Button variant="outlineGray">Follow</Button>
+            <Button variant="outlineGray" size="small">
+              Follow
+            </Button>
           </Flex>
+          <Spacer y={2} />
           <Flex alignItems="center">
-            <Image src={artwork.images[0].url} width={screenWidth} aspectRatio={0.79} />
+            {!!artwork?.images?.[0]?.url && (
+              <Image src={artwork.images[0].url} width={screenWidth} aspectRatio={0.79} />
+            )}
           </Flex>
           <Flex flexDirection="row" justifyContent="space-between" testID="artwork-info">
             <Flex>
@@ -121,7 +114,7 @@ export const InfiniteDiscovery: React.FC = () => {
                 <Text variant="xs">Back</Text>
               </Touchable>
             }
-            hideLeftElements={!canGoBack}
+            hideLeftElements={currentIndex === 0}
             rightElements={
               <Touchable onPress={handleExitPressed}>
                 <Text variant="xs">Exit</Text>
@@ -140,7 +133,13 @@ export const InfiniteDiscovery: React.FC = () => {
   )
 }
 
-const infiniteDiscoveryQuery = graphql`
+export const InfiniteDiscoveryWithSuspense = withSuspense({
+  Component: InfiniteDiscovery,
+  LoadingFallback: () => <Text>Loading...</Text>,
+  ErrorFallback: NoFallback,
+})
+
+export const infiniteDiscoveryQuery = graphql`
   query InfiniteDiscoveryQuery {
     marketingCollection(slug: "curators-picks") {
       artworksConnection(first: 10) {
@@ -148,8 +147,6 @@ const infiniteDiscoveryQuery = graphql`
           node {
             artistNames
             artists(shallow: true) {
-              initials
-              formattedNationalityAndBirthday
               coverArtwork {
                 image {
                   cropped(height: 45, width: 45) {
@@ -157,6 +154,8 @@ const infiniteDiscoveryQuery = graphql`
                   }
                 }
               }
+              formattedNationalityAndBirthday
+              initials
             }
             date
             internalID

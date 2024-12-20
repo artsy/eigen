@@ -30,47 +30,47 @@ describe("InfiniteDiscoveryContext", () => {
   it("sets up intial state and action helpers", () => {
     const { getState, actions } = setup({})
 
-    expect(Object.keys(getState())).toEqual(["artworks", "currentArtwork"])
-    expect(Object.keys(actions)).toEqual(["goToPreviousArtwork", "goToNextArtwork"])
+    expect(Object.keys(getState())).toEqual(["count", "currentIndex"])
+    expect(Object.keys(actions)).toEqual(["goToPrevious", "goToNext"])
   })
 
-  describe("goToPreviousArtwork", () => {
+  describe("goToPrevious", () => {
     it("sets the current artwork to the previous one in the list of artworks", () => {
       const { getState, actions } = setup({
-        artworks: ["1", "2", "3"],
-        currentArtwork: "2",
+        count: 3,
+        currentIndex: 2,
       })
-      act(() => actions.goToPreviousArtwork())
-      expect(getState().currentArtwork).toEqual("1")
+      act(() => actions.goToPrevious())
+      expect(getState().currentIndex).toEqual(1)
     })
 
     it("stops at the first artwork", () => {
       const { getState, actions } = setup({
-        artworks: ["1", "2", "3"],
-        currentArtwork: "1",
+        count: 3,
+        currentIndex: 0,
       })
-      act(() => actions.goToPreviousArtwork())
-      expect(getState().currentArtwork).toEqual("1")
+      act(() => actions.goToPrevious())
+      expect(getState().currentIndex).toEqual(0)
     })
   })
 
-  describe("goToNextArtwork", () => {
+  describe("goToNext", () => {
     it("sets the current artwork to the next one in the list of artworks", () => {
       const { getState, actions } = setup({
-        artworks: ["1", "2", "3"],
-        currentArtwork: "2",
+        count: 3,
+        currentIndex: 1,
       })
-      act(() => actions.goToNextArtwork())
-      expect(getState().currentArtwork).toEqual("3")
+      act(() => actions.goToNext())
+      expect(getState().currentIndex).toEqual(2)
     })
 
     it("stops at the last artwork", () => {
       const { getState, actions } = setup({
-        artworks: ["1", "2", "3"],
-        currentArtwork: "3",
+        count: 3,
+        currentIndex: 2,
       })
-      act(() => actions.goToNextArtwork())
-      expect(getState().currentArtwork).toEqual("3")
+      act(() => actions.goToNext())
+      expect(getState().currentIndex).toEqual(2)
     })
   })
 })
