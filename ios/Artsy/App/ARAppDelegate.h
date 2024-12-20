@@ -2,6 +2,7 @@
 #import <RCTAppDelegate.h>
 #import <BrazeKit/BrazeKit-Swift.h>
 #import <UserNotifications/UNUserNotificationCenter.h>
+#import <Expo/Expo.h>
 
 @class ARWindow, ArtsyEcho;
 
@@ -11,7 +12,7 @@
 // When testing the various decoupled app delegate classes, simply use the shared app delegate
 // (`[JSDecoupledAppDelegate sharedAppDelegate]`) to perform your tests on.
 
-@interface ARAppDelegate : RCTAppDelegate <JSApplicationStateDelegate>
+@interface ARAppDelegate : ExAppDelegateWrapper <JSApplicationStateDelegate>
 
 + (ARAppDelegate *)sharedInstance;
 + (Braze *)braze;
