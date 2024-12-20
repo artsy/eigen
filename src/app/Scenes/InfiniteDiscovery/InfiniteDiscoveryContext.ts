@@ -1,28 +1,25 @@
 import { action, Action, createContextStore } from "easy-peasy"
 
 export interface InfiniteDiscoveryContextModel {
-  artworks: any[]
-  currentArtworkIndex: number
-  goToPreviousArtwork: Action<this>
-  goToNextArtwork: Action<this>
-  setArtworks: Action<this, any[]>
+  count: number
+  currentIndex: number
+  goToPrevious: Action<this>
+  goToNext: Action<this>
 }
 
 export const initialModel: InfiniteDiscoveryContextModel = {
-  artworks: [],
-  currentArtworkIndex: 0,
-  goToPreviousArtwork: action((state) => {
-    if (state.currentArtworkIndex > 0) {
-      state.currentArtworkIndex--
+  // TODO: this needs to come from the result of the query
+  count: 10,
+  currentIndex: 0,
+  goToPrevious: action((state) => {
+    if (state.currentIndex > 0) {
+      state.currentIndex = state.currentIndex - 1
     }
   }),
-  goToNextArtwork: action((state) => {
-    if (state.currentArtworkIndex < state.artworks.length - 1) {
-      state.currentArtworkIndex++
+  goToNext: action((state) => {
+    if (state.currentIndex < state.count - 1) {
+      state.currentIndex = state.currentIndex + 1
     }
-  }),
-  setArtworks: action((state, artworks) => {
-    state.artworks = artworks
   }),
 }
 

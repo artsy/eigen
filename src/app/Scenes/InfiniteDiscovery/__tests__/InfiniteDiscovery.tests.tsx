@@ -1,8 +1,11 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { InfiniteDiscovery } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
+import {
+  infiniteDiscoveryQuery,
+  InfiniteDiscoveryWithSuspense,
+} from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
 import { InfiniteDiscoveryContext } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryContext"
 import { navigate } from "app/system/navigation/navigate"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { action } from "easy-peasy"
 
 jest.mock("app/system/navigation/navigate")
@@ -15,50 +18,77 @@ describe("InfiniteDiscovery", () => {
   })
 
   it("shows the back button if the current artwork is not the first artwork", () => {
-    renderWithWrappers(
-      <InfiniteDiscoveryContext.Provider
-        runtimeModel={{ artworks: ["1", "2", "3"], currentArtwork: "2" }}
-      >
-        <InfiniteDiscovery />
-      </InfiniteDiscoveryContext.Provider>
-    )
+    const { renderWithRelay } = setupTestWrapper({
+      Component: () => (
+        <InfiniteDiscoveryContext.Provider
+          runtimeModel={{
+            count: 3,
+            currentIndex: 1,
+          }}
+        >
+          <InfiniteDiscoveryWithSuspense />
+        </InfiniteDiscoveryContext.Provider>
+      ),
+      query: infiniteDiscoveryQuery,
+    })
+    renderWithRelay()
     expect(screen.getByText("Back")).toBeOnTheScreen()
   })
 
   it("hides the back button if the current artwork is on the first artwork", () => {
-    renderWithWrappers(
-      <InfiniteDiscoveryContext.Provider
-        runtimeModel={{ artworks: ["1", "2", "3"], currentArtwork: "1" }}
-      >
-        <InfiniteDiscovery />
-      </InfiniteDiscoveryContext.Provider>
-    )
+    const { renderWithRelay } = setupTestWrapper({
+      Component: () => (
+        <InfiniteDiscoveryContext.Provider
+          runtimeModel={{
+            count: 3,
+            currentIndex: 0,
+          }}
+        >
+          <InfiniteDiscoveryWithSuspense />
+        </InfiniteDiscoveryContext.Provider>
+      ),
+      query: infiniteDiscoveryQuery,
+    })
+    renderWithRelay()
     expect(screen.queryByText("Back")).not.toBeOnTheScreen()
   })
 
   it("returns to the previous artwork when the back button is pressed", () => {
-    const mockGoToPreviousArtwork = jest.fn().mockImplementation()
-    renderWithWrappers(
-      <InfiniteDiscoveryContext.Provider
-        runtimeModel={{
-          artworks: ["1", "2", "3"],
-          currentArtwork: "2",
-          goToPreviousArtwork: action(mockGoToPreviousArtwork),
-        }}
-      >
-        <InfiniteDiscovery />
-      </InfiniteDiscoveryContext.Provider>
-    )
+    const mockGoToPrevious = jest.fn().mockImplementation()
+    const { renderWithRelay } = setupTestWrapper({
+      Component: () => (
+        <InfiniteDiscoveryContext.Provider
+          runtimeModel={{
+            count: 3,
+            currentIndex: 1,
+            goToPrevious: action(mockGoToPrevious),
+          }}
+        >
+          <InfiniteDiscoveryWithSuspense />
+        </InfiniteDiscoveryContext.Provider>
+      ),
+      query: infiniteDiscoveryQuery,
+    })
+    renderWithRelay()
     fireEvent.press(screen.getByText("Back"))
-    expect(mockGoToPreviousArtwork).toHaveBeenCalled()
+    expect(mockGoToPrevious).toHaveBeenCalled()
   })
 
   it("navigates to home view when the exit button is pressed", () => {
-    renderWithWrappers(
-      <InfiniteDiscoveryContext.Provider>
-        <InfiniteDiscovery />
-      </InfiniteDiscoveryContext.Provider>
-    )
+    const { renderWithRelay } = setupTestWrapper({
+      Component: () => (
+        <InfiniteDiscoveryContext.Provider
+          runtimeModel={{
+            count: 3,
+            currentIndex: 1,
+          }}
+        >
+          <InfiniteDiscoveryWithSuspense />
+        </InfiniteDiscoveryContext.Provider>
+      ),
+      query: infiniteDiscoveryQuery,
+    })
+    renderWithRelay()
     fireEvent.press(screen.getByText("Exit"))
     expect(mockNavigate).toHaveBeenCalledWith("/home-view")
   })
