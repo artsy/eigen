@@ -28,7 +28,7 @@ export const HeroUnit: React.FC<HeroUnitItemProps> = ({ item, onPress }) => {
   const cardImageWidth = screenWidth > 700 ? screenWidth / 2 : CARD_IMAGE_WIDTH
 
   return (
-    <Touchable key={internalID} onPress={onPress}>
+    <Touchable key={internalID} onPress={onPress} haptic="impactLight">
       <Flex bg="black100" flexDirection="row" height={HERO_UNIT_CARD_HEIGHT} width={screenWidth}>
         <Image height={HERO_UNIT_CARD_HEIGHT} src={imageSrc} width={cardImageWidth} />
         <Box p={2} width={screenWidth - cardImageWidth}>

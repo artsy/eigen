@@ -45,7 +45,7 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
 
   const { title, subtitle, image, buttonText: btnText } = section.card
 
-  const imageHeight = height * (isTablet() ? 0.7 : 0.5)
+  const imageHeight = height * 0.5
 
   const hasImage = !!image?.imageURL
   const textColor = hasImage ? "white100" : "black100"
