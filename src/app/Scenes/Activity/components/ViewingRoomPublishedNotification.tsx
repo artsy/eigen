@@ -20,7 +20,7 @@ export const ViewingRoomPublishedNotification: React.FC<ViewingRoomPublishedNoti
   const { followProfile, isInFlight } = useFollowProfile({
     id: item?.partner?.profile?.id ?? "",
     internalID: item?.partner?.profile?.internalID ?? "",
-    isFollowd: item?.partner?.profile?.isFollowed ?? false,
+    isFollowed: item?.partner?.profile?.isFollowed ?? false,
   })
 
   const partner = item?.partner

@@ -50,9 +50,9 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
     : locations
 
   const { followProfile, isInFlight } = useFollowProfile({
-    id: profile?.id!,
-    internalID: profile?.internalID!,
-    isFollowd: profile?.isFollowed!,
+    id: profile?.id ?? "",
+    internalID: profile?.internalID ?? "",
+    isFollowed: !!profile?.isFollowed,
     onCompleted: onFollow,
   })
 

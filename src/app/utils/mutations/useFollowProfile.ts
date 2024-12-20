@@ -3,32 +3,32 @@ import { useMutation, graphql } from "react-relay"
 export interface FollowProfileOptions {
   id: string
   internalID: string
-  isFollowd: boolean | null
-  onCompleted?: (isFollowd: boolean) => void
+  isFollowed: boolean | null
+  onCompleted?: (isFollowed: boolean) => void
   onError?: () => void
 }
 
 export const useFollowProfile = ({
   id,
   internalID,
-  isFollowd,
+  isFollowed,
   onCompleted,
   onError,
 }: FollowProfileOptions) => {
   const [commit, isInFlight] = useMutation(Mutation)
 
-  const nextFollowdState = !isFollowd
+  const nextFollowedState = !isFollowed
 
   const followProfile = () => {
     commit({
       variables: {
         input: {
           profileID: internalID,
-          unfollow: !!isFollowd,
+          unfollow: !!isFollowed,
         },
       },
       onCompleted: () => {
-        onCompleted?.(nextFollowdState)
+        onCompleted?.(nextFollowedState)
       },
       onError,
       optimisticResponse: {
@@ -36,13 +36,13 @@ export const useFollowProfile = ({
           profile: {
             id,
             internalID,
-            isFollowed: nextFollowdState,
+            isFollowed: nextFollowedState,
           },
         },
       },
       optimisticUpdater: (store) => {
         const profile = store.get(id)
-        profile?.setValue(nextFollowdState, "isFollowd")
+        profile?.setValue(nextFollowedState, "isFollowed")
       },
     })
   }
