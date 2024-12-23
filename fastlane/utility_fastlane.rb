@@ -9,9 +9,11 @@ end
 
 desc "Checks app store connect if a license agreement needs to be signed"
 lane :notify_if_new_license_agreement do
-  # TODO: This login method will no longer work for CI with 2fa being enforced
-  # Check spaceship docs for future support with api key
-  client = Spaceship::Tunes.login(ENV['FASTLANE_USERNAME'], ENV['FASTLANE_PASSWORD'])
+  # TODO: This login method uses a stored session, expires every 30 days and needs to be refreshed via
+  # `bundle exec fastlane spaceauth`
+  # then update the session env var in .env.releases with the output session
+  # this is annoying, keep an eye out for token based auth in future
+  client = Spaceship::Tunes.login
   client.team_id = '479887'
   messages = Spaceship::Tunes.client.fetch_program_license_agreement_messages
 
