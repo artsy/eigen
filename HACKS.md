@@ -354,3 +354,14 @@ After updates to both/either react native react-native-collapsible-tab-view. Rem
 #### Explanation/Context:
 
 After upgrading to react native 0.75 screens like my collection using this library stopped rendering on Android. This was fixed with a patch that added some style changes to the components from the package.
+
+## patch-pacakge for react-native-reanimated
+
+#### When can we remove this:
+
+When we can update the reanimated flatlist CellRendererComponent or it's style, or when this PR gets merged:
+https://github.com/software-mansion/react-native-reanimated/pull/6573
+
+#### Explanation/Context:
+
+In the HomeView Tasks, we want to update the FlatList's `CellRendererComponent` to update the `zIndex` of the rendered elements so they can be on top of each other, and to animate them we need to use Reanimated's FlatList, but it doesn't support updating the `CellRendererComponent` prop since they have their own implementation, so we added this patch to update the style of the component in Reanimated's FlatList.
