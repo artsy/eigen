@@ -2,7 +2,6 @@ import { ContextModule } from "@artsy/cohesion"
 import {
   ArrowDownIcon,
   ArrowUpIcon,
-  Box,
   Flex,
   FlexProps,
   Skeleton,
@@ -27,10 +26,15 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { AnimatePresence, MotiView } from "moti"
 import { memo, RefObject, useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { CellRendererProps, InteractionManager, ListRenderItem } from "react-native"
-import { FlatList } from "react-native-gesture-handler"
+import { InteractionManager, ListRenderItem } from "react-native"
 import { SwipeableMethods } from "react-native-gesture-handler/ReanimatedSwipeable"
-import { Easing } from "react-native-reanimated"
+import Animated, {
+  Easing,
+  FadeOut,
+  LinearTransition,
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { usePrevious } from "react-use"
 
@@ -122,8 +126,8 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
     })
   }
 
-  const renderCell = useCallback(({ index, ...rest }: CellRendererProps<Task>) => {
-    return <Box zIndex={-index} {...rest} />
+  const getCellZIndex = useCallback(({ index }: { index: number }) => {
+    return { zIndex: -index }
   }, [])
 
   const renderItem = useCallback<ListRenderItem<Task>>(
@@ -185,11 +189,12 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
             </Flex>
 
             <Flex mr={2}>
-              <FlatList
+              <Animated.FlatList
+                itemLayoutAnimation={LinearTransition}
                 scrollEnabled={false}
                 data={filteredTasks}
                 keyExtractor={(item) => item.internalID}
-                CellRendererComponent={renderCell}
+                CellRendererComponentStyle={getCellZIndex}
                 ItemSeparatorComponent={() => <Spacer y={1} />}
                 renderItem={renderItem}
               />
@@ -268,23 +273,24 @@ const TaskItem = ({
     }
   }
 
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scaleX: withTiming(scaleX) }, { translateY: withTiming(translateY) }],
+      opacity: withTiming(opacity),
+    }
+  })
+
   return (
-    <Flex>
-      <MotiView
-        key={task.internalID + index}
-        transition={{ type: "timing" }}
-        animate={{ transform: [{ scaleX }, { translateY }], opacity }}
-      >
-        <Task
-          disableSwipeable={displayTaskStack}
-          onClearTask={() => onClearTask(task)}
-          onPress={displayTaskStack ? () => setShowAll((prev) => !prev) : undefined}
-          ref={taskRef}
-          onOpenTask={onOpenTask}
-          task={task}
-        />
-      </MotiView>
-    </Flex>
+    <Animated.View exiting={FadeOut} style={animatedStyle} key={task.internalID}>
+      <Task
+        disableSwipeable={displayTaskStack}
+        onClearTask={() => onClearTask(task)}
+        onPress={displayTaskStack ? () => setShowAll((prev) => !prev) : undefined}
+        ref={taskRef}
+        onOpenTask={onOpenTask}
+        task={task}
+      />
+    </Animated.View>
   )
 }
 
