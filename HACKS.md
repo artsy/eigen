@@ -98,7 +98,7 @@ There are two hacks here:
 - We hack the output of the compiler to provide clickable links for error messages. Relay assumes that you put your `__generated__` folder in the root of your project, but we put it in `src`.
 - We make sure that files which do not change are not overwritten. This prevents excessive reloading by metro.
 
-# android Input placeholder measuring hack
+## android Input placeholder measuring hack
 
 #### When can we remove this:
 
@@ -110,7 +110,7 @@ As you can see in the PR and issue, android doesn't use ellipsis on the placehol
 
 We added a workaround on Input, to accept an array of placeholders, from longest to shortest, so that android can measure which one fits in the TextInput as placeholder, and it uses that. When android can handle a long placeholder and use ellipsis or if we don't use long placeholders anymore, this can go.
 
-# `react-native-screens` fragment crash on open from background on Android
+## `react-native-screens` fragment crash on open from background on Android
 
 #### When can we remove this:
 
@@ -135,7 +135,7 @@ I wasn't the one to add this file, so I don't have all the context, but I do kno
 
 The latest change I did was add the `ThemeContext` in there, because the version of styled-components we use has that, but the types are not exposing that, so I had to manually add it there.
 
-# `react-native-push-notification` Requiring unknown module on ios
+## `react-native-push-notification` Requiring unknown module on ios
 
 #### When can we remove this:
 
@@ -147,7 +147,7 @@ This is happening because react-native-push-notification requires @react-native-
 adding this dependency at this time because it is unnecessary and we do not use react-native-push-notification on iOS. Also,
 we do not want unnecessary conflicts between our native push notification implementation and @react-native-community/push-notification-ios's.
 
-# `PropsStore` pass functions as props inside navigate() on iOS
+## `PropsStore` pass functions as props inside navigate() on iOS
 
 #### When can we remove this:
 
@@ -161,7 +161,7 @@ See what can be converted: https://github.com/facebook/react-native/blob/main/Re
 
 PropsStore allows us to temporarily hold on the props and reinject them back into the destination view or module.
 
-# `ORStackView` patch (add UIKit import)
+## `ORStackView` patch (add UIKit import)
 
 #### When can we remove this:
 
@@ -171,7 +171,7 @@ Once we remove ORStackView or the upstream repo adds the import. May want to pro
 
 The Pod does not compile when imported as is without hack due to missing symbols from UIKit.
 
-# `Map` manual prop update in `PageWrapper`
+## `Map` manual prop update in `PageWrapper`
 
 #### When can we remove this:
 
@@ -183,7 +183,7 @@ If it is still an issue with old native navigation gone this can either be remov
 City Guide is a mixture of native components and react components, prop updates from the native side are not updating the component on the react native side without this manual check and update. See the PR here for the change in the AppRegistry:
 https://github.com/artsy/eigen/pull/6348
 
-# `React-Native-Image-Crop-Picker` App restarting when photo is taken. Fix is in `ArtsyNativeModule.clearCache`.
+## `React-Native-Image-Crop-Picker` App restarting when photo is taken. Fix is in `ArtsyNativeModule.clearCache`.
 
 #### When can we remove this:
 
