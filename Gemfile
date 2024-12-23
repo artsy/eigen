@@ -2,7 +2,9 @@ source 'https://rubygems.org'
 
 ruby ">= 2.6.10"
 
-gem 'fastlane'
+# TODO: remove this once we the issue with the rollout is resolved
+# https://github.com/fastlane/fastlane/issues/28995
+gem 'fastlane', '2.225.0'
 
 # Exclude problematic versions of cocoapods and activesupport that causes build failures.
 gem 'cocoapods', '>= 1.13', '!= 1.15.0', '!= 1.15.1'
