@@ -200,6 +200,9 @@ jobs:
       - run:
           name: Update rollout if needed
           command: ./scripts/deploys/update-android-rollout-if-needed
+      - run:
+          name: Notify if license agreement needs to be signed
+          command: ./scripts/deploys/notify-if-new-license-agreement
 
   deploy-nightly-beta:
     environment:
