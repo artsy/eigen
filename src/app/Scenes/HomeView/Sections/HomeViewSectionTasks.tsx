@@ -26,7 +26,7 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { AnimatePresence, MotiView } from "moti"
 import { memo, RefObject, useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { InteractionManager, ListRenderItem } from "react-native"
+import { InteractionManager, ListRenderItem, Platform } from "react-native"
 import { SwipeableMethods } from "react-native-gesture-handler/ReanimatedSwipeable"
 import Animated, {
   Easing,
@@ -42,6 +42,8 @@ const MAX_NUMBER_OF_TASKS = 10
 
 // Height of each task + seperator
 const TASK_CARD_HEIGHT = 92
+
+const IS_ANDROID = Platform.OS === "android"
 
 type Task = ExtractNodeType<HomeViewSectionTasks_section$data["tasksConnection"]>
 
@@ -74,6 +76,10 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
   const filteredTasks = tasks.filter((task) => !clearedTasks.includes(task.internalID))
   const displayTaskStack = filteredTasks.length > 1 && !showAll
   const HeaderIconComponent = showAll ? ArrowUpIcon : ArrowDownIcon
+
+  // TODO: remove this when this reanimated issue gets fixed
+  // https://github.com/software-mansion/react-native-reanimated/issues/5728
+  const [flatlistHeight, setFlatlistHeight] = useState<number | undefined>(undefined)
 
   const task = tasks?.[0]
 
@@ -190,6 +196,13 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
 
             <Flex mr={2}>
               <Animated.FlatList
+                onLayout={(event) => {
+                  if (IS_ANDROID) {
+                    setFlatlistHeight(event.nativeEvent.layout.height)
+                  }
+                }}
+                style={IS_ANDROID ? { height: flatlistHeight } : {}}
+                contentContainerStyle={IS_ANDROID ? { flex: 1, height: flatlistHeight } : {}}
                 itemLayoutAnimation={LinearTransition}
                 scrollEnabled={false}
                 data={filteredTasks}
