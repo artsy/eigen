@@ -3519,12 +3519,13 @@
   resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-plugin-braze/-/analytics-react-native-plugin-braze-0.6.1.tgz#f4c8a85852b50470a398e2b0330c6ed3d3b0e27c"
   integrity sha512-jyksibkSHlE5CMoYc/Rs3N9m2cMjsryVz/HiZyuVZ0k+073w6ooZ3tWtwStsZHPiILCLEtLDLfM8j6NemBs3/g==
 
-"@segment/analytics-react-native@2.19.0":
-  version "2.19.0"
-  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native/-/analytics-react-native-2.19.0.tgz#24de5c5ff961a2120c5eac18af1d8b50b8eec479"
-  integrity sha512-QoA7R/+cJslR/wGILJfxMFx9akQF9FVvttP3OQ4u1a++z1elChAA5oK6T46lGoT3n24h4YaIlMF+sx9hPagz0Q==
+"@segment/analytics-react-native@2.20.3":
+  version "2.20.3"
+  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native/-/analytics-react-native-2.20.3.tgz#cc656a656257ec45d7b55ff9d321a240458c076c"
+  integrity sha512-Gb0PqZGTJJXsCIw2ZFubAS6ZTEBoff4HRADn6Mm3OdHctaOu2D/l96Iow4Qheqoq2jhV5wyhEQVvIvLPJQqg8A==
   dependencies:
-    "@segment/tsub" "^2"
+    "@segment/tsub" "2.0.0"
+    "@stdlib/number-float64-base-normalize" "0.0.8"
     deepmerge "^4.3.1"
     js-base64 "^3.7.5"
     uuid "^9.0.1"
@@ -3538,7 +3539,7 @@
     deepmerge "^4.2.2"
     shell-quote "1.8.0"
 
-"@segment/tsub@^2":
+"@segment/tsub@2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@segment/tsub/-/tsub-2.0.0.tgz#321e781a38fcd3720853f2da7574b523b447a296"
   integrity sha512-NzkBK8GwPsyQ74AceLjENbUoaFrObnzEKOX4ko2wZDuIyK+DnDm3B//8xZYI2LCKt+wUD55l6ygfjCoVs8RMWw==
@@ -4352,6 +4353,18 @@
     "@stdlib/assert-is-little-endian" "^0.0.x"
     "@stdlib/number-float64-base-to-words" "^0.0.x"
     "@stdlib/utils-library-manifest" "^0.0.x"
+
+"@stdlib/number-float64-base-normalize@0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@stdlib/number-float64-base-normalize/-/number-float64-base-normalize-0.0.8.tgz#981149317bd34921c653ed526376718b961e17e9"
+  integrity sha512-4P3c7YD0hahCgflxxTWrjR8457o2ViYu32MH/M166Aj6nkPj0ZovYj/X1DdyiYAAMHhVePGGMl0JAL3X141FVQ==
+  dependencies:
+    "@stdlib/constants-float64-smallest-normal" "^0.0.x"
+    "@stdlib/math-base-assert-is-infinite" "^0.0.x"
+    "@stdlib/math-base-assert-is-nan" "^0.0.x"
+    "@stdlib/math-base-special-abs" "^0.0.x"
+    "@stdlib/types" "^0.0.x"
+    "@stdlib/utils-define-nonenumerable-read-only-property" "^0.0.x"
 
 "@stdlib/number-float64-base-normalize@^0.0.x":
   version "0.0.9"
