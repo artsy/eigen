@@ -50,21 +50,6 @@ Doesn't really need to be removed but can be if view hierarchy issue is fixed in
 
 We have a modal for showing a loading state and a onDismiss call that optionally displays an alert message, on iOS 14 we came across an issue where the alert was not displaying because when onDismiss was called the LoadingModal was still in the view heirarchy. The delay is a workaround.
 
-## @react-navigation/core patch-package
-
-#### When can we remove this:
-
-react-navigation has a bug with nested independent `NavigationContainer` instances. https://github.com/react-navigation/react-navigation/issues/8611
-
-#### Explanation/Context:
-
-Our patch alleviates the issue in our case, but would not work as an upstream PR.
-
-To remove this hack we can do one of two things:
-
-- Stop using nested navigation containers.
-- Fix `@react-navigation/core` properly upstream.
-
 ## relay-compiler
 
 #### When can we remove this:
