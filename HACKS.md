@@ -48,7 +48,7 @@ Doesn't really need to be removed but can be if view hierarchy issue is fixed in
 
 #### Explanation/Context:
 
-We have a modal for showing a loading state and a onDismiss call that optionally displays an alert message, on iOS 14 we came across an issue where the alert was not displaying because when onDismiss was called the LoadingModal was still in the view heirarchy. The delay is a workaround.
+We have a modal for showing a loading state and a onDismiss call that optionally displays an alert message, on iOS 14 we came across an issue where the alert was not displaying because when onDismiss was called the LoadingModal was still in the view hierarchy. The delay is a workaround.
 
 ## relay-compiler
 
