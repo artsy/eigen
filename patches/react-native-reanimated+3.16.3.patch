@@ -1,0 +1,135 @@
+diff --git a/node_modules/react-native-reanimated/lib/typescript/component/FlatList.d.ts b/node_modules/react-native-reanimated/lib/typescript/component/FlatList.d.ts
+index a427011..9244d1b 100644
+--- a/node_modules/react-native-reanimated/lib/typescript/component/FlatList.d.ts
++++ b/node_modules/react-native-reanimated/lib/typescript/component/FlatList.d.ts
+@@ -1,7 +1,7 @@
+ import React from 'react';
+-import type { FlatListProps } from 'react-native';
++import type { FlatListProps, StyleProp, ViewStyle } from 'react-native';
+ import { FlatList } from 'react-native';
+-import type { ILayoutAnimationBuilder } from '../layoutReanimation/animationBuilder/commonTypes';
++import type { AnimatedStyle, ILayoutAnimationBuilder } from '../commonTypes';
+ import type { AnimatedProps } from '../helperTypes';
+ declare const AnimatedFlatList: React.ComponentClass<import("../helperTypes").AnimateProps<FlatListProps<unknown>>, any>;
+ interface ReanimatedFlatListPropsWithLayout<T> extends AnimatedProps<FlatListProps<T>> {
+@@ -18,6 +18,14 @@ interface ReanimatedFlatListPropsWithLayout<T> extends AnimatedProps<FlatListPro
+     skipEnteringExitingAnimations?: boolean;
+     /** Property `CellRendererComponent` is not supported in `Animated.FlatList`. */
+     CellRendererComponent?: never;
++    /**
++     * Either animated view styles or a function that receives the item to be
++     * rendered and its index and returns animated view styles.
++     */
++    CellRendererComponentStyle?: StyleProp<AnimatedStyle<StyleProp<ViewStyle>>> | (({ item, index, }: {
++        item: T;
++        index: number;
++    }) => StyleProp<AnimatedStyle<StyleProp<ViewStyle>>>) | undefined;
+ }
+ export type FlatListPropsWithLayout<T> = ReanimatedFlatListPropsWithLayout<T>;
+ interface AnimatedFlatListComplement<T> extends FlatList<T> {
+diff --git a/node_modules/react-native-reanimated/lib/typescript/component/FlatList.d.ts.map b/node_modules/react-native-reanimated/lib/typescript/component/FlatList.d.ts.map
+index afc2283..0c3ac1f 100644
+--- a/node_modules/react-native-reanimated/lib/typescript/component/FlatList.d.ts.map
++++ b/node_modules/react-native-reanimated/lib/typescript/component/FlatList.d.ts.map
+@@ -1 +1 @@
+-{"version":3,"file":"FlatList.d.ts","sourceRoot":"","sources":["../../../src/component/FlatList.tsx"],"names":[],"mappings":"AACA,OAAO,KAA6B,MAAM,OAAO,CAAC;AAClD,OAAO,KAAK,EACV,aAAa,EAId,MAAM,cAAc,CAAC;AACtB,OAAO,EAAE,QAAQ,EAAE,MAAM,cAAc,CAAC;AAGxC,OAAO,KAAK,EAAE,uBAAuB,EAAE,MAAM,mDAAmD,CAAC;AAGjG,OAAO,KAAK,EAAE,aAAa,EAAE,MAAM,gBAAgB,CAAC;AAEpD,QAAA,MAAM,gBAAgB,0FAAoC,CAAC;AA4B3D,UAAU,iCAAiC,CAAC,CAAC,CAC3C,SAAQ,aAAa,CAAC,aAAa,CAAC,CAAC,CAAC,CAAC;IACvC;;;;OAIG;IACH,mBAAmB,CAAC,EAAE,uBAAuB,CAAC;IAC9C;;;OAGG;IACH,6BAA6B,CAAC,EAAE,OAAO,CAAC;IACxC,gFAAgF;IAChF,qBAAqB,CAAC,EAAE,KAAK,CAAC;CAC/B;AAED,MAAM,MAAM,uBAAuB,CAAC,CAAC,IAAI,iCAAiC,CAAC,CAAC,CAAC,CAAC;AAI9E,UAAU,0BAA0B,CAAC,CAAC,CAAE,SAAQ,QAAQ,CAAC,CAAC,CAAC;IACzD,OAAO,IAAI,QAAQ,CAAC,CAAC,CAAC,CAAC;CACxB;AAgDD,eAAO,MAAM,kBAAkB;;MAQ1B,MAAM,YAAY,CAAC;AAExB,MAAM,MAAM,kBAAkB,CAAC,CAAC,IAAI,OAAO,gBAAgB,GACzD,0BAA0B,CAAC,CAAC,CAAC,CAAC"}
+\ No newline at end of file
++{"version":3,"file":"FlatList.d.ts","sourceRoot":"","sources":["../../../src/component/FlatList.tsx"],"names":[],"mappings":"AACA,OAAO,KAA6B,MAAM,OAAO,CAAC;AAClD,OAAO,KAAK,EACV,aAAa,EAEb,SAAS,EACT,SAAS,EACV,MAAM,cAAc,CAAC;AACtB,OAAO,EAAE,QAAQ,EAAE,MAAM,cAAc,CAAC;AAGxC,OAAO,KAAK,EAAE,aAAa,EAAE,uBAAuB,EAAE,MAAM,gBAAgB,CAAC;AAE7E,OAAO,KAAK,EAAE,aAAa,EAAE,MAAM,gBAAgB,CAAC;AAEpD,QAAA,MAAM,gBAAgB,0FAAoC,CAAC;AAyC3D,UAAU,iCAAiC,CAAC,CAAC,CAC3C,SAAQ,aAAa,CAAC,aAAa,CAAC,CAAC,CAAC,CAAC;IACvC;;;;OAIG;IACH,mBAAmB,CAAC,EAAE,uBAAuB,CAAC;IAC9C;;;OAGG;IACH,6BAA6B,CAAC,EAAE,OAAO,CAAC;IACxC,gFAAgF;IAChF,qBAAqB,CAAC,EAAE,KAAK,CAAC;IAC9B;;;OAGG;IACH,0BAA0B,CAAC,EACvB,SAAS,CAAC,aAAa,CAAC,SAAS,CAAC,SAAS,CAAC,CAAC,CAAC,GAC9C,CAAC,CAAC,EACA,IAAI,EACJ,KAAK,GACN,EAAE;QACD,IAAI,EAAE,CAAC,CAAC;QACR,KAAK,EAAE,MAAM,CAAC;KACf,KAAK,SAAS,CAAC,aAAa,CAAC,SAAS,CAAC,SAAS,CAAC,CAAC,CAAC,CAAC,GACrD,SAAS,CAAC;CACf;AAED,MAAM,MAAM,uBAAuB,CAAC,CAAC,IAAI,iCAAiC,CAAC,CAAC,CAAC,CAAC;AAI9E,UAAU,0BAA0B,CAAC,CAAC,CAAE,SAAQ,QAAQ,CAAC,CAAC,CAAC;IACzD,OAAO,IAAI,QAAQ,CAAC,CAAC,CAAC,CAAC;CACxB;AA2DD,eAAO,MAAM,kBAAkB;;MAQ1B,MAAM,YAAY,CAAC;AAExB,MAAM,MAAM,kBAAkB,CAAC,CAAC,IAAI,OAAO,gBAAgB,GACzD,0BAA0B,CAAC,CAAC,CAAC,CAAC"}
+\ No newline at end of file
+diff --git a/node_modules/react-native-reanimated/src/component/FlatList.tsx b/node_modules/react-native-reanimated/src/component/FlatList.tsx
+index c886b0d..67b5ca5 100644
+--- a/node_modules/react-native-reanimated/src/component/FlatList.tsx
++++ b/node_modules/react-native-reanimated/src/component/FlatList.tsx
+@@ -16,7 +16,9 @@ import type { AnimatedProps } from '../helperTypes';
+ 
+ const AnimatedFlatList = createAnimatedComponent(FlatList);
+ 
+-interface CellRendererComponentProps {
++interface CellRendererComponentProps<ItemT = any> {
++  index: number;
++  item: ItemT;
+   onLayout?: ((event: LayoutChangeEvent) => void) | undefined;
+   children: React.ReactNode;
+   style?: StyleProp<AnimatedStyle<ViewStyle>>;
+@@ -25,6 +27,9 @@ interface CellRendererComponentProps {
+ const createCellRendererComponent = (
+   itemLayoutAnimationRef?: React.MutableRefObject<
+     ILayoutAnimationBuilder | undefined
++    >,
++    cellRendererComponentStyleRef?: React.MutableRefObject<
++      ReanimatedFlatListPropsWithLayout<any>['CellRendererComponentStyle']
+   >
+ ) => {
+   const CellRendererComponent = (props: CellRendererComponentProps) => {
+@@ -33,7 +38,15 @@ const createCellRendererComponent = (
+         // TODO TYPESCRIPT This is temporary cast is to get rid of .d.ts file.
+         layout={itemLayoutAnimationRef?.current as any}
+         onLayout={props.onLayout}
+-        style={props.style}>
++        style={[
++          props.style,
++          typeof cellRendererComponentStyleRef?.current === 'function'
++            ? cellRendererComponentStyleRef?.current({
++                index: props.index,
++                item: props.item,
++              })
++            : cellRendererComponentStyleRef?.current,
++        ]}>
+         {props.children}
+       </AnimatedView>
+     );
+@@ -57,6 +70,20 @@ interface ReanimatedFlatListPropsWithLayout<T>
+   skipEnteringExitingAnimations?: boolean;
+   /** Property `CellRendererComponent` is not supported in `Animated.FlatList`. */
+   CellRendererComponent?: never;
++  /**
++   * Either animated view styles or a function that receives the item to be
++   * rendered and its index and returns animated view styles.
++   */
++  CellRendererComponentStyle:
++    | StyleProp<AnimatedStyle<StyleProp<ViewStyle>>>
++    | (({
++        item,
++        index,
++      }: {
++        item: T;
++        index: number;
++      }) => StyleProp<AnimatedStyle<StyleProp<ViewStyle>>>)
++    | undefined;
+ }
+ 
+ export type FlatListPropsWithLayout<T> = ReanimatedFlatListPropsWithLayout<T>;
+@@ -73,8 +100,12 @@ const FlatListForwardRefRender = function <Item = any>(
+   props: ReanimatedFlatListPropsWithLayout<Item>,
+   ref: React.ForwardedRef<FlatList>
+ ) {
+-  const { itemLayoutAnimation, skipEnteringExitingAnimations, ...restProps } =
+-    props;
++  const {
++    itemLayoutAnimation,
++    skipEnteringExitingAnimations,
++    CellRendererComponentStyle,
++    ...restProps
++  } = props;
+ 
+   // Set default scrollEventThrottle, because user expects
+   // to have continuous scroll events and
+@@ -88,9 +119,16 @@ const FlatListForwardRefRender = function <Item = any>(
+   const itemLayoutAnimationRef = useRef(itemLayoutAnimation);
+   itemLayoutAnimationRef.current = itemLayoutAnimation;
+ 
++  const cellRendererComponentStyleRef = useRef(CellRendererComponentStyle);
++  cellRendererComponentStyleRef.current = CellRendererComponentStyle;
++
+   const CellRendererComponent = React.useMemo(
+-    () => createCellRendererComponent(itemLayoutAnimationRef),
+-    [itemLayoutAnimationRef]
++    () =>
++      createCellRendererComponent(
++        itemLayoutAnimationRef,
++        cellRendererComponentStyleRef
++      ),
++    [itemLayoutAnimationRef, CellRendererComponentStyle]
+   );
+ 
+   const animatedFlatList = (

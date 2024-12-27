@@ -50,7 +50,7 @@ Doesn't really need to be removed but can be if view hierarchy issue is fixed in
 
 We have a modal for showing a loading state and a onDismiss call that optionally displays an alert message, on iOS 14 we came across an issue where the alert was not displaying because when onDismiss was called the LoadingModal was still in the view hierarchy. The delay is a workaround.
 
-# android Input placeholder measuring hack
+## android Input placeholder measuring hack
 
 #### When can we remove this:
 
@@ -62,7 +62,7 @@ As you can see in the PR and issue, android doesn't use ellipsis on the placehol
 
 We added a workaround on Input, to accept an array of placeholders, from longest to shortest, so that android can measure which one fits in the TextInput as placeholder, and it uses that. When android can handle a long placeholder and use ellipsis or if we don't use long placeholders anymore, this can go.
 
-# `react-native-screens` fragment crash on open from background on Android
+## `react-native-screens` fragment crash on open from background on Android
 
 #### When can we remove this:
 
@@ -87,7 +87,7 @@ I wasn't the one to add this file, so I don't have all the context, but I do kno
 
 The latest change I did was add the `ThemeContext` in there, because the version of styled-components we use has that, but the types are not exposing that, so I had to manually add it there.
 
-# `react-native-push-notification` Requiring unknown module on ios
+## `react-native-push-notification` Requiring unknown module on ios
 
 #### When can we remove this:
 
@@ -99,7 +99,7 @@ This is happening because react-native-push-notification requires @react-native-
 adding this dependency at this time because it is unnecessary and we do not use react-native-push-notification on iOS. Also,
 we do not want unnecessary conflicts between our native push notification implementation and @react-native-community/push-notification-ios's.
 
-# `PropsStore` pass functions as props inside navigate() on iOS
+## `PropsStore` pass functions as props inside navigate() on iOS
 
 #### When can we remove this:
 
@@ -113,7 +113,7 @@ See what can be converted: https://github.com/facebook/react-native/blob/main/Re
 
 PropsStore allows us to temporarily hold on the props and reinject them back into the destination view or module.
 
-# `ORStackView` patch (add UIKit import)
+## `ORStackView` patch (add UIKit import)
 
 #### When can we remove this:
 
@@ -123,7 +123,7 @@ Once we remove ORStackView or the upstream repo adds the import. May want to pro
 
 The Pod does not compile when imported as is without hack due to missing symbols from UIKit.
 
-# `Map` manual prop update in `PageWrapper`
+## `Map` manual prop update in `PageWrapper`
 
 #### When can we remove this:
 
@@ -135,7 +135,7 @@ If it is still an issue with old native navigation gone this can either be remov
 City Guide is a mixture of native components and react components, prop updates from the native side are not updating the component on the react native side without this manual check and update. See the PR here for the change in the AppRegistry:
 https://github.com/artsy/eigen/pull/6348
 
-# `React-Native-Image-Crop-Picker` App restarting when photo is taken. Fix is in `ArtsyNativeModule.clearCache`.
+## `React-Native-Image-Crop-Picker` App restarting when photo is taken. Fix is in `ArtsyNativeModule.clearCache`.
 
 #### When can we remove this:
 
@@ -285,3 +285,14 @@ After updates to both/either react native react-native-collapsible-tab-view. Rem
 #### Explanation/Context:
 
 After upgrading to react native 0.75 screens like my collection using this library stopped rendering on Android. This was fixed with a patch that added some style changes to the components from the package.
+
+## patch-pacakge for react-native-reanimated
+
+#### When can we remove this:
+
+When we can update the reanimated flatlist CellRendererComponent or it's style, or when this PR gets merged:
+https://github.com/software-mansion/react-native-reanimated/pull/6573
+
+#### Explanation/Context:
+
+In the HomeView Tasks, we want to update the FlatList's `CellRendererComponent` to update the `zIndex` of the rendered elements so they can be on top of each other, and to animate them we need to use Reanimated's FlatList, but it doesn't support updating the `CellRendererComponent` prop since they have their own implementation, so we added this patch to update the style of the component in Reanimated's FlatList.

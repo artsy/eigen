@@ -2,7 +2,6 @@ import { ContextModule } from "@artsy/cohesion"
 import {
   ArrowDownIcon,
   ArrowUpIcon,
-  Box,
   Flex,
   FlexProps,
   Skeleton,
@@ -27,10 +26,15 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { AnimatePresence, MotiView } from "moti"
 import { memo, RefObject, useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { CellRendererProps, InteractionManager, ListRenderItem } from "react-native"
-import { FlatList } from "react-native-gesture-handler"
+import { InteractionManager, ListRenderItem, Platform } from "react-native"
 import { SwipeableMethods } from "react-native-gesture-handler/ReanimatedSwipeable"
-import { Easing } from "react-native-reanimated"
+import Animated, {
+  Easing,
+  FadeOut,
+  LinearTransition,
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { usePrevious } from "react-use"
 
@@ -38,6 +42,8 @@ const MAX_NUMBER_OF_TASKS = 10
 
 // Height of each task + seperator
 const TASK_CARD_HEIGHT = 92
+
+const IS_ANDROID = Platform.OS === "android"
 
 type Task = ExtractNodeType<HomeViewSectionTasks_section$data["tasksConnection"]>
 
@@ -70,6 +76,10 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
   const filteredTasks = tasks.filter((task) => !clearedTasks.includes(task.internalID))
   const displayTaskStack = filteredTasks.length > 1 && !showAll
   const HeaderIconComponent = showAll ? ArrowUpIcon : ArrowDownIcon
+
+  // TODO: remove this when this reanimated issue gets fixed
+  // https://github.com/software-mansion/react-native-reanimated/issues/5728
+  const [flatlistHeight, setFlatlistHeight] = useState<number | undefined>(undefined)
 
   const task = tasks?.[0]
 
@@ -122,8 +132,8 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
     })
   }
 
-  const renderCell = useCallback(({ index, ...rest }: CellRendererProps<Task>) => {
-    return <Box zIndex={-index} {...rest} />
+  const getCellZIndex = useCallback(({ index }: { index: number }) => {
+    return { zIndex: -index }
   }, [])
 
   const renderItem = useCallback<ListRenderItem<Task>>(
@@ -185,11 +195,19 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
             </Flex>
 
             <Flex mr={2}>
-              <FlatList
+              <Animated.FlatList
+                onLayout={(event) => {
+                  if (IS_ANDROID) {
+                    setFlatlistHeight(event.nativeEvent.layout.height)
+                  }
+                }}
+                style={IS_ANDROID ? { height: flatlistHeight } : {}}
+                contentContainerStyle={IS_ANDROID ? { flex: 1, height: flatlistHeight } : {}}
+                itemLayoutAnimation={LinearTransition}
                 scrollEnabled={false}
                 data={filteredTasks}
                 keyExtractor={(item) => item.internalID}
-                CellRendererComponent={renderCell}
+                CellRendererComponentStyle={getCellZIndex}
                 ItemSeparatorComponent={() => <Spacer y={1} />}
                 renderItem={renderItem}
               />
@@ -268,23 +286,24 @@ const TaskItem = ({
     }
   }
 
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scaleX: withTiming(scaleX) }, { translateY: withTiming(translateY) }],
+      opacity: withTiming(opacity),
+    }
+  })
+
   return (
-    <Flex>
-      <MotiView
-        key={task.internalID + index}
-        transition={{ type: "timing" }}
-        animate={{ transform: [{ scaleX }, { translateY }], opacity }}
-      >
-        <Task
-          disableSwipeable={displayTaskStack}
-          onClearTask={() => onClearTask(task)}
-          onPress={displayTaskStack ? () => setShowAll((prev) => !prev) : undefined}
-          ref={taskRef}
-          onOpenTask={onOpenTask}
-          task={task}
-        />
-      </MotiView>
-    </Flex>
+    <Animated.View exiting={FadeOut} style={animatedStyle} key={task.internalID}>
+      <Task
+        disableSwipeable={displayTaskStack}
+        onClearTask={() => onClearTask(task)}
+        onPress={displayTaskStack ? () => setShowAll((prev) => !prev) : undefined}
+        ref={taskRef}
+        onOpenTask={onOpenTask}
+        task={task}
+      />
+    </Animated.View>
   )
 }
 
