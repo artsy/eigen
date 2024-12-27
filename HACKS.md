@@ -50,19 +50,6 @@ Doesn't really need to be removed but can be if view hierarchy issue is fixed in
 
 We have a modal for showing a loading state and a onDismiss call that optionally displays an alert message, on iOS 14 we came across an issue where the alert was not displaying because when onDismiss was called the LoadingModal was still in the view hierarchy. The delay is a workaround.
 
-## relay-compiler
-
-#### When can we remove this:
-
-We can remove these hacks when they don't matter anymore. Neither are likely to be fixed by facebook.
-
-#### Explanation/Context:
-
-There are two hacks here:
-
-- We hack the output of the compiler to provide clickable links for error messages. Relay assumes that you put your `__generated__` folder in the root of your project, but we put it in `src`.
-- We make sure that files which do not change are not overwritten. This prevents excessive reloading by metro.
-
 # android Input placeholder measuring hack
 
 #### When can we remove this:
@@ -191,16 +178,6 @@ Once we can figure out how to mock `global.setImmediate` with `global.setTimeout
 
 After upgrading to Jest 29, our use of jest.useFakeTimers() became somewhat funky. In most cases passing `legacyFakeTimers: true` to the function fixes it, but in other cases it breaks @jest/fake-timers at this line. Not sure why. To elaborate more, when jest runs tests it errors out saying that `setImmediate` isn't a function (this was removed from Jest 28); however, when trying to mock it with `global.setImmediate = global.setTimeout` it doesn't work. So ran a patch and replaced it manually in the code, which appears harmless since `setImmediate` is the same as `setTimeout(..., 0)`.
 
-## Providers.tsx LegacyTheme
-
-#### When can we remove this:
-
-Once we have removed the `palette` directory from eigen.
-
-#### Explanation/Context:
-
-Look at the tech plan here: https://www.notion.so/artsy/palette-mobile-in-eigen-c5e3396302734f0a921aed3978f5dbeb
-
 ## Patch-package for sift-react-native
 
 #### When can we remove this:
@@ -213,17 +190,6 @@ patch.
 
 This package includes a `setPageName` method on `SiftReactNative`, but no corresponding type.
 I patched it to add the type.
-
-## Patch-package for @braze/react-native-sdk
-
-#### When can we remove this:
-
-When we upgrade @braze/react-native-sdk to version >= 8.3.0.
-
-#### Explanation/Context:
-
-We had to patch Braze in order to proceed with the react native upgrade to 0.73.9. The patch was needed to support kotlin jvm target 17 and
-in order to also make targetCompatibility and sourceCompatibility compatible with the JAVA 17 which is the standard for newer rn versions starting 0.73.
 
 ## Patch-package for @react-navigation/native
 
