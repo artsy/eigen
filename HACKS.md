@@ -28,16 +28,6 @@ There was a case where echo returns 401 when a user asks for the latest echo opt
 
 After a few months we should be safe to return to the old name if we want. If we decide to do that, we should make sure to remove the old file that might have been sitting on users' phones.
 
-## @segment+analytics-react-native-appboy patch
-
-### When can we remove this:
-
-When we upgrade to a version of `@segment/analytics-react-native` that includes an updated kotlin version compatible with the version of kotlin we need for React Native.
-
-### Explanation/Context:
-
-When updating to rn-0.69.10 we had to patch this due to kotlin version missmatch.
-
 ## react-native-image-crop-picker getRootVC patch
 
 #### When can we remove this:
@@ -50,16 +40,6 @@ https://github.com/ivpusic/react-native-image-crop-picker/pull/1354
 
 We do some swizzling in our AppDelegate that causes [[UIApplication sharedApplication] delegate] window] to return nil, this is used by image-crop-picker to find the currently presented viewController to present the picker onto. This patch looks for our custom window subclass (ARWindow) instead and uses that to find the presented viewController. Note we cannot reliably use the lastWindow rather than checking for our custom subclass because in some circumstances this is not our window but an apple window for example UIInputWindow used for managing the keyboard.
 
-## exporting MockResolverContext (@types/relay-test-utils patch-package)
-
-#### When can we remove this:
-
-Not really needed to be removed, unless it causes problems.
-
-#### Explanation/Context:
-
-We use this type in out code for our tests and the `resolveMostRecentRelayOperation`, so we exported it.
-
 ## Delay modal display after LoadingModal is dismissed
 
 #### When can we remove this:
@@ -68,35 +48,7 @@ Doesn't really need to be removed but can be if view hierarchy issue is fixed in
 
 #### Explanation/Context:
 
-We have a modal for showing a loading state and a onDismiss call that optionally displays an alert message, on iOS 14 we came across an issue where the alert was not displaying because when onDismiss was called the LoadingModal was still in the view heirarchy. The delay is a workaround.
-
-## @react-navigation/core patch-package
-
-#### When can we remove this:
-
-react-navigation has a bug with nested independent `NavigationContainer` instances. https://github.com/react-navigation/react-navigation/issues/8611
-
-#### Explanation/Context:
-
-Our patch alleviates the issue in our case, but would not work as an upstream PR.
-
-To remove this hack we can do one of two things:
-
-- Stop using nested navigation containers.
-- Fix `@react-navigation/core` properly upstream.
-
-## relay-compiler
-
-#### When can we remove this:
-
-We can remove these hacks when they don't matter anymore. Neither are likely to be fixed by facebook.
-
-#### Explanation/Context:
-
-There are two hacks here:
-
-- We hack the output of the compiler to provide clickable links for error messages. Relay assumes that you put your `__generated__` folder in the root of your project, but we put it in `src`.
-- We make sure that files which do not change are not overwritten. This prevents excessive reloading by metro.
+We have a modal for showing a loading state and a onDismiss call that optionally displays an alert message, on iOS 14 we came across an issue where the alert was not displaying because when onDismiss was called the LoadingModal was still in the view hierarchy. The delay is a workaround.
 
 # android Input placeholder measuring hack
 
@@ -226,16 +178,6 @@ Once we can figure out how to mock `global.setImmediate` with `global.setTimeout
 
 After upgrading to Jest 29, our use of jest.useFakeTimers() became somewhat funky. In most cases passing `legacyFakeTimers: true` to the function fixes it, but in other cases it breaks @jest/fake-timers at this line. Not sure why. To elaborate more, when jest runs tests it errors out saying that `setImmediate` isn't a function (this was removed from Jest 28); however, when trying to mock it with `global.setImmediate = global.setTimeout` it doesn't work. So ran a patch and replaced it manually in the code, which appears harmless since `setImmediate` is the same as `setTimeout(..., 0)`.
 
-## Providers.tsx LegacyTheme
-
-#### When can we remove this:
-
-Once we have removed the `palette` directory from eigen.
-
-#### Explanation/Context:
-
-Look at the tech plan here: https://www.notion.so/artsy/palette-mobile-in-eigen-c5e3396302734f0a921aed3978f5dbeb
-
 ## Patch-package for sift-react-native
 
 #### When can we remove this:
@@ -248,17 +190,6 @@ patch.
 
 This package includes a `setPageName` method on `SiftReactNative`, but no corresponding type.
 I patched it to add the type.
-
-## Patch-package for @braze/react-native-sdk
-
-#### When can we remove this:
-
-When we upgrade @braze/react-native-sdk to version >= 8.3.0.
-
-#### Explanation/Context:
-
-We had to patch Braze in order to proceed with the react native upgrade to 0.73.9. The patch was needed to support kotlin jvm target 17 and
-in order to also make targetCompatibility and sourceCompatibility compatible with the JAVA 17 which is the standard for newer rn versions starting 0.73.
 
 ## Patch-package for @react-navigation/native
 
