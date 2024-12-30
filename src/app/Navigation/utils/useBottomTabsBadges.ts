@@ -1,7 +1,7 @@
 import { useColor, useSpace } from "@artsy/palette-mobile"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
-import { useActivityDotExperiment } from "app/Scenes/HomeView/hooks/useActivityDotExperiment"
+import { useActivityDotExperiment } from "app/utils/experiments/useActivityDotExperiment"
 import { useVisualClue } from "app/utils/hooks/useVisualClue"
 import { useTabBarBadge } from "app/utils/useTabBarBadge"
 import { StyleProp, TextStyle } from "react-native"
@@ -21,8 +21,7 @@ export const useBottomTabsBadges = () => {
   const { showVisualClue } = useVisualClue()
   const { unreadConversationsCount, hasUnseenNotifications } = useTabBarBadge()
 
-  const { enabled, variant, forceDots } = useActivityDotExperiment()
-  const backgroundColor = enabled ? (variant === "variant-b" ? "red50" : "blue100") : "blue100"
+  const { forceDots, color: backgroundColor } = useActivityDotExperiment()
 
   const tabsBadges: Record<string, BadgeProps> = {}
 

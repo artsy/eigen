@@ -1,7 +1,7 @@
 import { BellIcon, Box, DEFAULT_HIT_SLOP, VisualClueDot } from "@artsy/palette-mobile"
-import { useActivityDotExperiment } from "app/Scenes/HomeView/hooks/useActivityDotExperiment"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
+import { useActivityDotExperiment } from "app/utils/experiments/useActivityDotExperiment"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 
@@ -16,9 +16,8 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = (props) => {
 
   const { enabled, variant, forceDots } = useActivityDotExperiment()
 
-  let BellVariant = BellWithSmallBlueDot
-  if (enabled && variant === "variant-b") BellVariant = BellWithLargeRedDot
-  if (enabled && variant === "variant-c") BellVariant = BellWithLargeBlueDot
+  let BellVariant = BellWithSmallDot
+  if (enabled && variant !== "control") BellVariant = BellWithLargeDot
 
   hasUnseenNotifications = hasUnseenNotifications || forceDots
 
@@ -41,8 +40,9 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = (props) => {
   )
 }
 
-const BellWithSmallBlueDot: React.FC<{ hasUnseenNotifications: boolean }> = (props) => {
+const BellWithSmallDot: React.FC<{ hasUnseenNotifications: boolean }> = (props) => {
   const { hasUnseenNotifications } = props
+  const { color } = useActivityDotExperiment()
 
   return (
     <>
@@ -55,15 +55,16 @@ const BellWithSmallBlueDot: React.FC<{ hasUnseenNotifications: boolean }> = (pro
           right={0}
           accessibilityLabel="Unseen Notifications Indicator"
         >
-          <VisualClueDot diameter={4} />
+          <VisualClueDot diameter={4} color={color} />
         </Box>
       )}
     </>
   )
 }
 
-const BellWithLargeRedDot: React.FC<{ hasUnseenNotifications: boolean }> = (props) => {
+const BellWithLargeDot: React.FC<{ hasUnseenNotifications: boolean }> = (props) => {
   const { hasUnseenNotifications } = props
+  const { color } = useActivityDotExperiment()
 
   return (
     <>
@@ -76,28 +77,7 @@ const BellWithLargeRedDot: React.FC<{ hasUnseenNotifications: boolean }> = (prop
           right="0px"
           accessibilityLabel="Unseen Notifications Indicator"
         >
-          <VisualClueDot diameter={8} color="red50" />
-        </Box>
-      )}
-    </>
-  )
-}
-
-const BellWithLargeBlueDot: React.FC<{ hasUnseenNotifications: boolean }> = (props) => {
-  const { hasUnseenNotifications } = props
-
-  return (
-    <>
-      <BellIcon height={24} width={30} />
-
-      {!!hasUnseenNotifications && (
-        <Box
-          position="absolute"
-          top="-0.5px"
-          right="0px"
-          accessibilityLabel="Unseen Notifications Indicator"
-        >
-          <VisualClueDot diameter={8} color="blue100" />
+          <VisualClueDot diameter={8} color={color} />
         </Box>
       )}
     </>
