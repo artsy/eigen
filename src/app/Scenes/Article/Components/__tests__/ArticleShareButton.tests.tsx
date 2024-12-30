@@ -1,10 +1,8 @@
-import { ShareIcon } from "@artsy/palette-mobile"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArticleShareButton } from "app/Scenes/Article/Components/ArticleShareButton"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import RNShare from "react-native-share"
 import { graphql } from "react-relay"
-import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 
 // Mock react-native-share module
@@ -40,11 +38,9 @@ describe("ArticleShareButton", () => {
       }),
     })
 
-    expect(screen.UNSAFE_getByType(ShareIcon)).toBeOnTheScreen()
+    expect(screen.getByTestId("shareButton")).toBeOnTheScreen()
 
-    act(() => {
-      fireEvent.press(screen.getByTestId("shareButton"))
-    })
+    fireEvent.press(screen.getByTestId("shareButton"))
 
     expect(RNShare.open).toHaveBeenCalledWith({
       title: "Example Article",

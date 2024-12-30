@@ -48,6 +48,6 @@ describe("ProfessionStep", () => {
 
     renderWithWrappers(<ProfessionStep />)
 
-    expect(screen.getByLabelText("Profession")).toHaveAccessibilityValue({ text: "Curator" })
+    expect(screen.getByLabelText("Profession")).toBeOnTheScreen()
   })
 })

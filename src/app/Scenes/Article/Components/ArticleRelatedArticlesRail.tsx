@@ -23,6 +23,7 @@ export const ArticleRelatedArticlesRail: React.FC<ArticlesRailProps> = ({
   return (
     <Flex {...flexProps}>
       <FlatList
+        testID="ArticleRelatedArticlesRail"
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: space(2) }}

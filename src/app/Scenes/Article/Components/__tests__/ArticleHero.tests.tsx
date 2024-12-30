@@ -59,7 +59,7 @@ describe("ArticleHero", () => {
       }),
     })
 
-    expect(screen.UNSAFE_getByType(Image)).toBeOnTheScreen()
+    expect(screen.UNSAFE_getByType(Image)).toBeTruthy()
   })
 
   it("does not render hero image if not available", () => {

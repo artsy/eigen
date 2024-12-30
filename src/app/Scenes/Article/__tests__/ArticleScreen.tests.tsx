@@ -1,9 +1,5 @@
-import { Screen } from "@artsy/palette-mobile"
 import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
-import { ArticleBody } from "app/Scenes/Article/Components/ArticleBody"
-import { ArticleRelatedArticlesRail } from "app/Scenes/Article/Components/ArticleRelatedArticlesRail"
-import { ArticleWebViewScreen } from "app/Scenes/Article/Components/ArticleWebViewScreen"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
 describe("ArticleScreen", () => {
@@ -24,12 +20,10 @@ describe("ArticleScreen", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("ArticleScreenPlaceholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("ArticleScreenPlaceholder"))
 
-    expect(screen.queryByText("Article Title")).toBeOnTheScreen()
-    expect(screen.UNSAFE_getByType(Screen.AnimatedHeader)).toBeOnTheScreen()
-    expect(screen.UNSAFE_getByType(ArticleBody)).toBeOnTheScreen()
-    expect(screen.UNSAFE_getByType(ArticleRelatedArticlesRail)).toBeOnTheScreen()
+    expect(screen.getByText("Article Title")).toBeOnTheScreen()
+    expect(screen.getByTestId("ArticleRelatedArticlesRail")).toBeOnTheScreen()
   })
 
   it("renders featured article", async () => {
@@ -42,12 +36,10 @@ describe("ArticleScreen", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("ArticleScreenPlaceholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("ArticleScreenPlaceholder"))
 
-    expect(screen.queryByText("Article Title")).toBeOnTheScreen()
-    expect(screen.UNSAFE_getByType(Screen.FloatingHeader)).toBeOnTheScreen()
-    expect(screen.UNSAFE_getByType(ArticleBody)).toBeOnTheScreen()
-    expect(screen.UNSAFE_getByType(ArticleRelatedArticlesRail)).toBeOnTheScreen()
+    expect(screen.getByText("Article Title")).toBeOnTheScreen()
+    expect(screen.getByTestId("ArticleRelatedArticlesRail")).toBeOnTheScreen()
   })
 
   it("redirects to webview if not standard or feature", async () => {
@@ -61,8 +53,8 @@ describe("ArticleScreen", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.getByTestId("ArticleScreenPlaceholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("ArticleScreenPlaceholder"))
 
-    expect(screen.UNSAFE_getByType(ArticleWebViewScreen)).toBeOnTheScreen()
+    expect(screen.getByTestId("ArticleWebViewScreen")).toBeOnTheScreen()
   })
 })

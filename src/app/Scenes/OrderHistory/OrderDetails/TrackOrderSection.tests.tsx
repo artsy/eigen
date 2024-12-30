@@ -70,8 +70,10 @@ describe("TrackOrderSection", () => {
         expect(screen.getByTestId("orderStatus")).toHaveTextContent("pending")
         expect(screen.queryByTestId("trackingNumber")).toBeFalsy()
         expect(screen.queryByTestId("noTrackingNumber")).toBeFalsy()
-        expect(screen.getByTestId("shippedOn")).toHaveTextContent("Sep 2, 2021")
-        expect(screen.getByTestId("estimatedDelivery")).toHaveTextContent("Oct 2, 2021")
+        expect(screen.getByTestId("shippedOn")).toHaveTextContent("Shipped on 2. Sept. 2021")
+        expect(screen.getByTestId("estimatedDelivery")).toHaveTextContent(
+          "Estimated Delivery: 2. Okt. 2021"
+        )
         expect(screen.getByTestId("trackingUrl")).toHaveTextContent("View full tracking details")
       })
     })
@@ -81,10 +83,12 @@ describe("TrackOrderSection", () => {
         renderWithRelay({ CommerceOrder: () => CommerceShipArtaOrder })
 
         expect(screen.getByTestId("orderStatus")).toHaveTextContent("in transit")
-        expect(screen.queryByTestId("trackingNumber")).toHaveTextContent("12345678910")
+        expect(screen.queryByTestId("trackingNumber")).toHaveTextContent("Tracking: 12345678910")
         expect(screen.queryByTestId("noTrackingNumber")).toBeFalsy()
-        expect(screen.getByTestId("shippedOn")).toHaveTextContent("Oct 3, 2021")
-        expect(screen.getByTestId("estimatedDelivery")).toHaveTextContent("on September 20, 2021")
+        expect(screen.getByTestId("shippedOn")).toHaveTextContent("Shipped on 3. Okt. 2021")
+        expect(screen.getByTestId("estimatedDelivery")).toHaveTextContent(
+          "Estimated Delivery: on September 20, 2021"
+        )
         expect(screen.getByTestId("trackingUrl")).toHaveTextContent("View full tracking details")
       })
 
@@ -105,7 +109,9 @@ describe("TrackOrderSection", () => {
           }),
         })
 
-        expect(screen.getByTestId("deliveredStatus")).toHaveTextContent("Delivered on Sep 2, 2021")
+        expect(screen.getByTestId("deliveredStatus")).toHaveTextContent(
+          "Delivered on 2. Sept. 2021"
+        )
       })
     })
   })

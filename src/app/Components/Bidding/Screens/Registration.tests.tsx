@@ -252,11 +252,11 @@ describe("when pressing register button", () => {
     const conditionsOfSaleLink = await root.findByType(LinkText)
     const conditionsOfSaleCheckbox = await root.findByType(Checkbox)
 
-    fireEvent(yourMaxBidRow, "onPress")
+    yourMaxBidRow.props.onPress()
 
     expect(navigator.push).not.toHaveBeenCalled()
 
-    fireEvent(creditCardRow, "onPress")
+    creditCardRow.props.onPress()
 
     expect(navigator.push).not.toHaveBeenCalled()
 
@@ -381,13 +381,12 @@ describe("when pressing register button", () => {
 
     // Wait for the error modal to be displayed
     await screen.findByText("Your card's security code is incorrect.")
-    expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", true)
 
     // press the dismiss modal button
     fireEvent.press(screen.getByText("Ok"))
 
     // error modal is dismissed
-    expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", false)
+    expect(screen.queryByText("Your card's security code is incorrect.")).not.toBeOnTheScreen()
   })
 
   it("displays the default error message if there are unhandled errors from the createCreditCard mutation", async () => {
@@ -423,13 +422,16 @@ describe("when pressing register button", () => {
     await screen.findByText(
       "There was a problem processing your information. Check your payment details and try again."
     )
-    expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", true)
 
     // press the dismiss modal button
     fireEvent.press(screen.getByText("Ok"))
 
     // error modal is dismissed
-    expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", false)
+    expect(
+      screen.queryByText(
+        "There was a problem processing your information. Check your payment details and try again."
+      )
+    ).not.toBeOnTheScreen()
   })
 
   it("displays an error message on a createCreditCard mutation network failure", async () => {
@@ -461,13 +463,16 @@ describe("when pressing register button", () => {
     await screen.findByText(
       "There was a problem processing your information. Check your payment details and try again."
     )
-    expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", true)
 
     // press the dismiss modal button
     fireEvent.press(screen.getByText("Ok"))
 
     // error modal is dismissed
-    expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", false)
+    expect(
+      screen.queryByText(
+        "There was a problem processing your information. Check your payment details and try again."
+      )
+    ).not.toBeOnTheScreen()
   })
 
   it("displays an error message on a bidderMutation failure", async () => {
