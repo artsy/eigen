@@ -237,6 +237,16 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
     }
   }, [])
 
+  const infoButtonRef = useRef<{ closeModal: () => void } | null>(null)
+
+  const handleNavigate = () => {
+    infoButtonRef.current?.closeModal()
+
+    requestAnimationFrame(() => {
+      navigate("/notifications")
+    })
+  }
+
   return (
     <ProvideScreenTracking
       info={{
@@ -253,6 +263,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
 
         <Flex px={2}>
           <InfoButton
+            ref={infoButtonRef}
             titleElement={
               <Text variant="lg-display" mr={1}>
                 Alerts
@@ -275,14 +286,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
                   <Flex flex={1}>
                     <Text variant="sm-display">
                       Stay informed through emails, push notifications, or within{" "}
-                      <LinkText
-                        onPress={() => {
-                          navigate("/notifications")
-                        }}
-                      >
-                        Activity
-                      </LinkText>
-                      .
+                      <LinkText onPress={handleNavigate}>Activity</LinkText>.
                     </Text>
                   </Flex>
                 </Flex>

@@ -1,6 +1,6 @@
 import { Button, Flex, InfoCircleIcon, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
-import React, { useState } from "react"
+import React, { forwardRef, useImperativeHandle, useState } from "react"
 import { ScrollView } from "react-native"
 
 interface InfoButtonProps {
@@ -13,16 +13,18 @@ interface InfoButtonProps {
   trackEvent?: () => void
 }
 
-export const InfoButton: React.FC<InfoButtonProps> = ({
-  modalContent,
-  modalTitle,
-  onPress,
-  subTitle,
-  title,
-  titleElement,
-  trackEvent,
-}) => {
+export const InfoButton = forwardRef<
+  {
+    closeModal: () => void
+  },
+  InfoButtonProps
+>(({ modalContent, modalTitle, onPress, subTitle, title, titleElement, trackEvent }, ref) => {
   const [modalVisible, setModalVisible] = useState(false)
+
+  // Expose closeModal function via the ref
+  useImperativeHandle(ref, () => ({
+    closeModal: () => setModalVisible(false),
+  }))
 
   return (
     <>
@@ -62,7 +64,7 @@ export const InfoButton: React.FC<InfoButtonProps> = ({
       />
     </>
   )
-}
+})
 
 export const AutoHeightInfoModal: React.FC<{
   visible: boolean
