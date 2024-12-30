@@ -5,13 +5,13 @@ There are multiple tools available to help you debug your app. This document wil
 ## Tools:
 
 - [Reactotron](https://docs.infinite.red/reactotron/)
-- [Debugging Basics](https://reactnative.dev/docs/0.75/debugging)
-- [React DevTools](https://reactnative.dev/docs/0.75/react-devtools)
-- [React Native Debugger](https://reactnative.dev/docs/0.75/debugging#react-native-debugger)
-- [Debugging Native Code](https://reactnative.dev/docs/0.75/debugging-native-code)
-- [Other Debugging Methods](https://reactnative.dev/docs/0.75/other-debugging-methods)
+- [Debugging Basics](https://reactnative.dev/docs/0.76/debugging)
+- [React DevTools](https://reactnative.dev/docs/0.76/react-devtools)
+- [React Native Debugger](https://reactnative.dev/docs/0.76/debugging#react-native-debugger)
+- [Debugging Native Code](https://reactnative.dev/docs/0.76/debugging-native-code)
+- [Other Debugging Methods](https://reactnative.dev/docs/0.76/other-debugging-methods)
 
-- [Performance](https://reactnative.dev/docs/0.75/performance)
+- [Performance](https://reactnative.dev/docs/0.76/performance)
 
 ### Reactotron
 
