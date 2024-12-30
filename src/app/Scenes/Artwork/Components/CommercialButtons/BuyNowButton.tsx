@@ -12,7 +12,6 @@ import { useCreateOrder } from "app/Scenes/Artwork/hooks/useCreateOrder"
 import { usePartnerOfferMutation } from "app/Scenes/PartnerOffer/mutations/usePartnerOfferCheckoutMutation"
 import { navigate } from "app/system/navigation/navigate"
 import { getTimer } from "app/utils/getTimer"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { promptForReview } from "app/utils/promptForReview"
 import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
 import { useEffect, useRef, useState } from "react"
@@ -49,7 +48,6 @@ export const BuyNowButton = ({
   source,
 }: BuyNowButtonProps) => {
   const [isCommittingCreateOrderMutation, setIsCommittingCreateOrderMutation] = useState(false)
-  const AREnablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
 
   const { saleMessage, internalID, slug } = useFragment(artworkFragment, artwork)
   const { trackEvent } = useTracking()
@@ -160,7 +158,7 @@ export const BuyNowButton = ({
     setIsCommittingCreateOrderMutation(true)
 
     try {
-      if (AREnablePartnerOfferOnArtworkScreen && partnerOffer && !partnerOfferTimer?.hasEnded) {
+      if (partnerOffer && !partnerOfferTimer?.hasEnded) {
         trackEvent(
           tracks.tappedBuyNow(
             slug,

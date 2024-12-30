@@ -6,7 +6,6 @@ import {
   ArtworkStoreProvider,
   artworkModel,
 } from "app/Scenes/Artwork/ArtworkStore"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { DateTime } from "luxon"
@@ -92,10 +91,6 @@ describe("ArtworkPrice", () => {
   })
 
   describe("Partner Offer", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePartnerOfferOnArtworkScreen: true })
-    })
-
     it("should NOT render if there is not partner offers", () => {
       renderWithRelay({
         Artwork: () => ({ isInAuction: false }),

@@ -130,7 +130,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const tracking = useTracking()
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
-  const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
   const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
     "AREnableNewSaveAndFollowOnArtworkCard"
   )
@@ -228,7 +227,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     trackArtworkTap()
 
     if (artwork.href) {
-      if (partnerOffer && !!hasEnded && !!enablePartnerOfferOnArtworkScreen) {
+      if (partnerOffer && !!hasEnded) {
         navigate?.(artwork.href, { passProps: { artworkOfferExpired: true } })
       } else {
         navigate?.(artwork.href)

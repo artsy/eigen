@@ -4,7 +4,6 @@ import { ArtworkPrice_partnerOffer$key } from "__generated__/ArtworkPrice_partne
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { ExpiresInTimer } from "app/Scenes/Artwork/Components/ExpiresInTimer"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { graphql, useFragment } from "react-relay"
 import { ArtworkAuctionBidInfo } from "./ArtworkAuctionBidInfo"
 
@@ -24,8 +23,6 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
   const editionSets = artworkData.editionSets ?? []
   let message = null
-
-  const AREnablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
 
   const getEditionSetMessage = () => {
     const selectedEdition = editionSets.find((editionSet) => {
@@ -49,12 +46,7 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({
     message = artworkData.saleMessage
   }
 
-  if (
-    !!AREnablePartnerOfferOnArtworkScreen &&
-    !!partnerOfferData &&
-    partnerOfferData.isAvailable &&
-    partnerOfferData.isActive
-  ) {
+  if (!!partnerOfferData && partnerOfferData.isAvailable && partnerOfferData.isActive) {
     const listPrice = artworkData.isPriceHidden ? "Not publicly listed" : message
 
     return (
