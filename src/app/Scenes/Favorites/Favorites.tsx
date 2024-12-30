@@ -105,6 +105,7 @@ export const Favorites: React.FC = () => {
                     <Flex flex={1}>
                       <Text variant="sm-display">
                         Never miss out by exploring your Activity and receiving timely email updates
+                        updates.
                       </Text>
                     </Flex>
                   </Flex>

@@ -85,13 +85,13 @@ export const SavesTabHeader = () => {
             <Flex flexDirection="row" alignItems="flex-start">
               <HeartIcon mr={0.5} />
               <Flex flex={1}>
-                <Text variant="sm-display">Curate your own list of works you love</Text>
+                <Text variant="sm-display">Curate your own list of works you love.</Text>
               </Flex>
             </Flex>
             <Flex flexDirection="row" alignItems="flex-start">
               <TrendingIcon mr={0.5} />
               <Flex flex={1}>
-                <Text variant="sm-display">Get better recommendations with every Save</Text>
+                <Text variant="sm-display">Get better recommendations with every Save.</Text>
               </Flex>
             </Flex>
             <Flex flexDirection="row" alignItems="flex-start">
