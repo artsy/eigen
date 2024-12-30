@@ -75,7 +75,7 @@ describe("UrgencyInfo", () => {
       )
 
       jest.advanceTimersByTime(2000)
-      expect(getByText("58m 59s left")).toHaveStyle({ color: "#C82400" })
+      expect(getByText("58m 59s left")).toHaveStyle({ color: "#D71023" })
     })
     it("text color is blue when time is greater than 1 hour", () => {
       const start = new Date(new Date().getTime() - 10).toISOString()
