@@ -59,7 +59,7 @@ export const CommercialButtons: React.FC<{
   me: MyProfileEditModal_me$key & useSendInquiry_me$key
   partnerOffer?: PartnerOffer
   artworkID: string
-}> = ({ artwork, me, partnerOffer, artworkID }) => {
+}> = ({ artwork, partnerOffer, artworkID }) => {
   const artworkData = useFragment(artworkFragment, artwork)
 
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
