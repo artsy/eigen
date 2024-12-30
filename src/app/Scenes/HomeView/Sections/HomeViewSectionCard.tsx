@@ -11,6 +11,7 @@ import {
 } from "@artsy/palette-mobile"
 import { HomeViewSectionCardQuery } from "__generated__/HomeViewSectionCardQuery.graphql"
 import { HomeViewSectionCard_section$key } from "__generated__/HomeViewSectionCard_section.graphql"
+import { HeroUnit } from "app/Scenes/HomeView/Components/HeroUnit"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
@@ -42,11 +43,13 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
     return null
   }
 
+  const { title, subtitle, image, buttonText: btnText } = section.card
+
   const imageHeight = height * 0.5
 
-  const hasImage = !!section.card.image?.imageURL
+  const hasImage = !!image?.imageURL
   const textColor = hasImage ? "white100" : "black100"
-  const buttonText = section.card.buttonText ?? "More"
+  const buttonText = btnText ?? "More"
   const route = getRoute(section.card)
 
   const onPress = () => {
@@ -59,54 +62,67 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
 
   return (
     <Flex {...flexProps}>
-      <Touchable onPress={onPress} haptic="impactLight">
-        {!!hasImage && (
-          <Flex position="absolute">
-            <FastImage
-              source={{ uri: section.card.image.imageURL }}
-              style={{ width: width, height: imageHeight }}
-              resizeMode={isTablet() ? "contain" : "cover"}
-            />
-            <LinearGradient
-              colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 0, y: 1 }}
-              style={{
-                position: "absolute",
-                width: "100%",
-                height: "40%",
-                bottom: 0,
-              }}
-            />
-          </Flex>
-        )}
-
-        <Flex justifyContent="flex-end" px={2} pb={2} height={hasImage ? imageHeight : undefined}>
-          <Text variant="lg-display" color={textColor}>
-            {section.card.title}
-          </Text>
-
-          <Flex mt={0.5} justifyContent="space-between" flexDirection="row">
-            <Flex flex={1} mr={2}>
-              <Text variant="sm-display" color={textColor}>
-                {section.card.subtitle}
-              </Text>
+      {isTablet() ? (
+        <HeroUnit
+          item={{
+            title: title,
+            body: subtitle,
+            imageSrc: image?.imageURL ?? "",
+            url: route,
+            buttonText: buttonText,
+          }}
+          onPress={onPress}
+        />
+      ) : (
+        <Touchable onPress={onPress} haptic="impactLight">
+          {!!hasImage && (
+            <Flex position="absolute">
+              <FastImage
+                source={{ uri: image.imageURL }}
+                style={{ width: width, height: imageHeight }}
+                resizeMode="cover"
+              />
+              <LinearGradient
+                colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1 }}
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  height: "40%",
+                  bottom: 0,
+                }}
+              />
             </Flex>
+          )}
 
-            {!!route && (
-              <Flex mt={0.5} maxWidth={150}>
-                <Button
-                  variant={hasImage ? "outlineLight" : "fillDark"}
-                  size="small"
-                  onPress={onPress}
-                >
-                  {buttonText}
-                </Button>
+          <Flex justifyContent="flex-end" px={2} pb={2} height={hasImage ? imageHeight : undefined}>
+            <Text variant="lg-display" color={textColor}>
+              {title}
+            </Text>
+
+            <Flex mt={0.5} justifyContent="space-between" flexDirection="row">
+              <Flex flex={1} mr={2}>
+                <Text variant="sm-display" color={textColor}>
+                  {subtitle}
+                </Text>
               </Flex>
-            )}
+
+              {!!route && (
+                <Flex mt={0.5} maxWidth={150}>
+                  <Button
+                    variant={hasImage ? "outlineLight" : "fillDark"}
+                    size="small"
+                    onPress={onPress}
+                  >
+                    {buttonText}
+                  </Button>
+                </Flex>
+              )}
+            </Flex>
           </Flex>
-        </Flex>
-      </Touchable>
+        </Touchable>
+      )}
 
       <HomeViewSectionSentinel
         contextModule={section.contextModule as ContextModule}
