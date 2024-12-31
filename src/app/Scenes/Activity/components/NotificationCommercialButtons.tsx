@@ -8,12 +8,9 @@ import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { BuyNowButton } from "app/Scenes/Artwork/Components/CommercialButtons/BuyNowButton"
-import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
-import { MakeOfferButtonFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/MakeOfferButton"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { getTimer } from "app/utils/getTimer"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { Children, useState } from "react"
 import { QueryRenderer, graphql, useFragment } from "react-relay"
@@ -62,80 +59,58 @@ export const CommercialButtons: React.FC<{
   me: MyProfileEditModal_me$key & useSendInquiry_me$key
   partnerOffer?: PartnerOffer
   artworkID: string
-}> = ({ artwork, me, partnerOffer, artworkID }) => {
+}> = ({ artwork, partnerOffer, artworkID }) => {
   const artworkData = useFragment(artworkFragment, artwork)
 
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
 
   const { hasEnded } = getTimer(partnerOffer?.endAt || "")
   const noLongerAvailable = !partnerOffer?.isAvailable
-  const enablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
   const tracking = useTracking()
 
   let renderComponent = null
 
   if (!!hasEnded) {
-    if (!enablePartnerOfferOnArtworkScreen) {
-      renderComponent = (
-        <>
-          <MakeOfferButtonFragmentContainer artwork={artworkData} editionSetID={null} />
-          <ContactGalleryButton artwork={artworkData} me={me} block variant="outline" />
-        </>
-      )
-    } else {
-      renderComponent = (
+    renderComponent = (
+      <Button
+        onPress={() => {
+          tracking.trackEvent(tracks.tappedViewWork(artworkID, partnerOffer?.internalID || ""))
+
+          navigate(`/artwork/${artworkID}`, { passProps: { artworkOfferExpired: true } })
+        }}
+        block
+        accessibilityLabel="View Work"
+      >
+        View Work
+      </Button>
+    )
+  } else if (!noLongerAvailable) {
+    renderComponent = (
+      <RowContainer>
         <Button
           onPress={() => {
-            tracking.trackEvent(tracks.tappedViewWork(artworkID, partnerOffer?.internalID || ""))
+            tracking.trackEvent(tracks.tappedViewWork(artworkID, partnerOffer.internalID))
 
-            navigate(`/artwork/${artworkID}`, { passProps: { artworkOfferExpired: true } })
+            navigate(`/artwork/${artworkID}`, {
+              passProps: { partnerOfferId: partnerOffer?.internalID },
+            })
           }}
-          block
+          variant="outline"
           accessibilityLabel="View Work"
+          block
         >
           View Work
         </Button>
-      )
-    }
-  } else if (!noLongerAvailable) {
-    if (!enablePartnerOfferOnArtworkScreen) {
-      renderComponent = (
+
         <BuyNowButton
-          artwork={artworkData}
+          artwork={artworkData as BuyNowButton_artwork$key}
           partnerOffer={partnerOffer}
           editionSetID={null}
-          buttonText="Continue to Purchase"
+          buttonText="Purchase"
           source="notification"
         />
-      )
-    } else {
-      renderComponent = (
-        <RowContainer>
-          <Button
-            onPress={() => {
-              tracking.trackEvent(tracks.tappedViewWork(artworkID, partnerOffer.internalID))
-
-              navigate(`/artwork/${artworkID}`, {
-                passProps: { partnerOfferId: partnerOffer?.internalID },
-              })
-            }}
-            variant="outline"
-            accessibilityLabel="View Work"
-            block
-          >
-            View Work
-          </Button>
-
-          <BuyNowButton
-            artwork={artworkData as BuyNowButton_artwork$key}
-            partnerOffer={partnerOffer}
-            editionSetID={null}
-            buttonText="Purchase"
-            source="notification"
-          />
-        </RowContainer>
-      )
-    }
+      </RowContainer>
+    )
   } else if (!!noLongerAvailable) {
     renderComponent = (
       <>

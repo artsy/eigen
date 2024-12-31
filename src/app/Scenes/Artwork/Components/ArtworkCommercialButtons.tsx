@@ -10,7 +10,6 @@ import { BuyNowButton } from "app/Scenes/Artwork/Components/CommercialButtons/Bu
 import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
 import { MakeOfferButtonFragmentContainer } from "app/Scenes/Artwork/Components/CommercialButtons/MakeOfferButton"
 import { getTimer } from "app/utils/getTimer"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Children } from "react"
 import { useFragment, graphql } from "react-relay"
 import { BidButtonFragmentContainer } from "./CommercialButtons/BidButton"
@@ -44,7 +43,6 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
   const selectedEditionId = ArtworkStore.useStoreState((state) => state.selectedEditionId)
   const auctionState = ArtworkStore.useStoreState((state) => state.auctionState)
 
-  const AREnablePartnerOfferOnArtworkScreen = useFeatureFlag("AREnablePartnerOfferOnArtworkScreen")
   const { hasEnded: partnerOfferEnded } = getTimer(partnerOfferData?.endAt || "")
 
   const isBiddableInAuction = artworkData.isInAuction && artworkData.sale
@@ -55,8 +53,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
     isBiddableInAuction
   const noEditions = !artworkData.editionSets || artworkData.editionSets.length === 0
 
-  const hasActivePartnerOffer =
-    AREnablePartnerOfferOnArtworkScreen && partnerOfferData?.isAvailable && !partnerOfferEnded
+  const hasActivePartnerOffer = partnerOfferData?.isAvailable && !partnerOfferEnded
 
   if (!canTakeCommercialAction) {
     return null
