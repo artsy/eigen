@@ -1,4 +1,4 @@
-import { act, screen, waitFor } from "@testing-library/react-native"
+import { act, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { CurrentlyRunningAuctions } from "./CurrentlyRunningAuctions"
 import { SalesScreen } from "./Sales"
@@ -15,9 +15,7 @@ describe("Sales", () => {
   it("renders without Errors", async () => {
     renderWithRelay()
 
-    await waitFor(() => expect(screen.queryByTestId("SalePlaceholder")).not.toBeOnTheScreen(), {
-      timeout: 10000,
-    })
+    await waitForElementToBeRemoved(() => screen.queryByTestId("SalePlaceholder"))
 
     expect(screen.getByTestId("Sales-Screen-ScrollView")).toBeOnTheScreen()
   })
@@ -25,7 +23,7 @@ describe("Sales", () => {
   it("renders the ZeroState when there are no sales", async () => {
     renderWithRelay()
 
-    await waitFor(() => expect(screen.queryByTestId("SalePlaceholder")).toBeNull())
+    await waitForElementToBeRemoved(() => screen.queryByTestId("SalePlaceholder"))
 
     const CurrentAuction = screen.UNSAFE_getAllByType(CurrentlyRunningAuctions)[0]
     const UpcomingAuction = screen.UNSAFE_getAllByType(UpcomingAuctions)[0]
@@ -41,7 +39,7 @@ describe("Sales", () => {
   it("Can refresh current and upcoming auctions", async () => {
     renderWithRelay()
 
-    await waitFor(() => expect(screen.queryByTestId("SalePlaceholder")).toBeNull())
+    await waitForElementToBeRemoved(() => screen.queryByTestId("SalePlaceholder"))
 
     const CurrentAuction = screen.UNSAFE_getAllByType(CurrentlyRunningAuctions)[0]
     const UpcomingAuction = screen.UNSAFE_getAllByType(UpcomingAuctions)[0]
@@ -63,7 +61,7 @@ describe("Sales", () => {
     renderWithRelay({
       Query: () => viewer,
     })
-    await waitFor(() => expect(screen.queryByTestId("SalePlaceholder")).not.toBeOnTheScreen())
+    await waitForElementToBeRemoved(() => screen.queryByTestId("SalePlaceholder"))
 
     expect(screen.getByText("Auction Lots for You")).toBeOnTheScreen()
   })

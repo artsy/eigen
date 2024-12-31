@@ -81,11 +81,11 @@ describe("Artwork", () => {
     resolveMostRecentRelayOperation(environment)
 
     await flushPromiseQueue()
-    expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeOnTheScreen()
-    expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeOnTheScreen()
-    expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeOnTheScreen()
-    expect(screen.UNSAFE_queryByType(ArtworkStickyBottomContent)).toBeOnTheScreen()
-    expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeOnTheScreen()
+    expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ArtworkStickyBottomContent)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeTruthy()
   })
 
   it("renders all content after the full query has been resolved", async () => {
@@ -116,11 +116,11 @@ describe("Artwork", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeOnTheScreen()
-    expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeOnTheScreen()
-    expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeOnTheScreen()
+    expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeNull()
-    expect(screen.UNSAFE_queryByType(ArtworkHistory)).toBeOnTheScreen()
+    expect(screen.UNSAFE_queryByType(ArtworkHistory)).toBeTruthy()
   })
 
   describe("artist series components", () => {
@@ -159,8 +159,8 @@ describe("Artwork", () => {
 
       await flushPromiseQueue()
 
-      expect(screen.UNSAFE_queryByType(ArtistSeriesMoreSeries)).toBeOnTheScreen()
-      expect(screen.UNSAFE_queryByType(ArtworksInSeriesRail)).toBeOnTheScreen()
+      expect(screen.UNSAFE_queryByType(ArtistSeriesMoreSeries)).toBeTruthy()
+      expect(screen.UNSAFE_queryByType(ArtworksInSeriesRail)).toBeTruthy()
     })
 
     it("does not render when there are no artist series to show", async () => {
@@ -1026,15 +1026,15 @@ describe("Artwork", () => {
       expect(screen.UNSAFE_queryByType(ArtworkConsignments)).toBeNull()
 
       // Displayed in unlisted private artworks
-      expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeOnTheScreen()
-      expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeOnTheScreen()
-      expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeOnTheScreen()
-      expect(screen.UNSAFE_queryByType(ShippingAndTaxesFragmentContainer)).toBeOnTheScreen()
-      expect(screen.UNSAFE_queryByType(PrivateArtworkExclusiveAccess)).toBeOnTheScreen()
-      expect(screen.UNSAFE_queryByType(PartnerCard)).toBeOnTheScreen()
-      expect(screen.UNSAFE_queryByType(PrivateArtworkMetadata)).toBeOnTheScreen()
+      expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeTruthy()
+      expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
+      expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
+      expect(screen.UNSAFE_queryByType(ShippingAndTaxesFragmentContainer)).toBeTruthy()
+      expect(screen.UNSAFE_queryByType(PrivateArtworkExclusiveAccess)).toBeTruthy()
+      expect(screen.UNSAFE_queryByType(PartnerCard)).toBeTruthy()
+      expect(screen.UNSAFE_queryByType(PrivateArtworkMetadata)).toBeTruthy()
 
-      expect(screen.getByText("Read More")).toBeOnTheScreen()
+      expect(screen.getByText("Read More")).toBeTruthy()
     })
 
     it("tracks partner name taps", async () => {
