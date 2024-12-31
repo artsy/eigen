@@ -1,5 +1,4 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { CollectionArtistSeriesRailTestsQuery } from "__generated__/CollectionArtistSeriesRailTestsQuery.graphql"
 import { CardRailCard } from "app/Components/CardRail/CardRailCard"
 import { GenericArtistSeriesRail } from "app/Components/GenericArtistSeriesRail"
 import { CollectionArtistSeriesRail } from "app/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
@@ -102,7 +101,7 @@ describe("Artist Series Rail", () => {
   })
 })
 
-const CollectionHubRailsArtistSeriesFixture: CollectionArtistSeriesRailTestsQuery["rawResponse"] = {
+const CollectionHubRailsArtistSeriesFixture = {
   marketingCollection: {
     id: "collection0",
     slug: "cool-collection",
