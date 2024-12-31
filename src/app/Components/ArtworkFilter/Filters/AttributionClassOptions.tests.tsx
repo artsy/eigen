@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
@@ -28,12 +29,12 @@ describe("AttributionClassOptions Screen", () => {
   }
 
   it("renders the options", () => {
-    const { getByText } = renderWithWrappers(<MockAttributionClassOptionsScreen />)
+    renderWithWrappers(<MockAttributionClassOptionsScreen />)
 
-    expect(getByText("Unique")).toBeTruthy()
-    expect(getByText("Limited Edition")).toBeTruthy()
-    expect(getByText("Open Edition")).toBeTruthy()
-    expect(getByText("Unknown Edition")).toBeTruthy()
+    expect(screen.getByText("Unique")).toBeOnTheScreen()
+    expect(screen.getByText("Limited Edition")).toBeOnTheScreen()
+    expect(screen.getByText("Open Edition")).toBeOnTheScreen()
+    expect(screen.getByText("Unknown Edition")).toBeOnTheScreen()
   })
 
   it("displays all the selected filters on the filter modal screen", () => {
@@ -58,9 +59,9 @@ describe("AttributionClassOptions Screen", () => {
       sizeMetric: "cm",
     }
 
-    const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
+    renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-    expect(getByText("Rarity • 2")).toBeTruthy()
+    expect(screen.getByText("Rarity • 2")).toBeTruthy()
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
@@ -85,13 +86,20 @@ describe("AttributionClassOptions Screen", () => {
       sizeMetric: "cm",
     }
 
-    const { getAllByA11yState } = renderWithWrappers(
-      <MockAttributionClassOptionsScreen initialData={injectedState} />
-    )
-    const options = getAllByA11yState({ checked: true })
+    renderWithWrappers(<MockAttributionClassOptionsScreen initialData={injectedState} />)
+    const options = screen.getAllByTestId("multi-select-option-button")
 
-    expect(options).toHaveLength(2)
+    expect(options).toHaveLength(4)
     expect(options[0]).toHaveTextContent("Unique")
-    expect(options[1]).toHaveTextContent("Unknown Edition")
+    expect(options[3]).toHaveTextContent("Unknown Edition")
+
+    const checkbox = screen.getAllByTestId("multi-select-option-checkbox")
+    expect(checkbox).toHaveLength(4)
+
+    expect(checkbox[0]).toHaveProp("selected", true)
+    expect(checkbox[3]).toHaveProp("selected", true)
+
+    expect(checkbox[1]).toHaveProp("selected", false)
+    expect(checkbox[2]).toHaveProp("selected", false)
   })
 })

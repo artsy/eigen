@@ -1,4 +1,4 @@
-import { screen, waitFor } from "@testing-library/react-native"
+import { screen } from "@testing-library/react-native"
 import { ArticleSectionImageCollectionTestQuery } from "__generated__/ArticleSectionImageCollectionTestQuery.graphql"
 import { ArticleSectionImageCollection } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollection"
 import { ArticleSectionImageCollectionCaption } from "app/Scenes/Article/Components/Sections/ArticleSectionImageCollection/ArticleSectionImageCollectionCaption"
@@ -23,9 +23,7 @@ describe("ArticleSectionImageCollection", () => {
   it("renders", async () => {
     renderWithRelay()
 
-    await waitFor(() => {
-      expect(screen.UNSAFE_getByType(ArticleSectionImageCollectionImage)).toBeOnTheScreen()
-      expect(screen.UNSAFE_getByType(ArticleSectionImageCollectionCaption)).toBeOnTheScreen()
-    })
+    expect(screen.UNSAFE_getByType(ArticleSectionImageCollectionImage)).toBeTruthy()
+    expect(screen.UNSAFE_getByType(ArticleSectionImageCollectionCaption)).toBeTruthy()
   })
 })

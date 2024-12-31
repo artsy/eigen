@@ -1,4 +1,4 @@
-import { fireEvent, within } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { Aggregations, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
@@ -60,21 +60,19 @@ describe("AdditionalGeneIDsOptions Screen", () => {
   }
 
   it("renders the options", () => {
-    const { getByText } = renderWithWrappers(
-      <MockAdditionalGeneIDsOptionsScreen initialData={initialState} />
-    )
+    renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={initialState} />)
 
-    expect(getByText("Prints")).toBeTruthy()
-    expect(getByText("Design")).toBeTruthy()
-    expect(getByText("Sculpture")).toBeTruthy()
-    expect(getByText("Work on Paper")).toBeTruthy()
-    expect(getByText("Painting")).toBeTruthy()
-    expect(getByText("Drawing")).toBeTruthy()
-    expect(getByText("Jewelry")).toBeTruthy()
-    expect(getByText("Photography")).toBeTruthy()
+    expect(screen.getByText("Prints")).toBeTruthy()
+    expect(screen.getByText("Design")).toBeTruthy()
+    expect(screen.getByText("Sculpture")).toBeTruthy()
+    expect(screen.getByText("Work on Paper")).toBeTruthy()
+    expect(screen.getByText("Painting")).toBeTruthy()
+    expect(screen.getByText("Drawing")).toBeTruthy()
+    expect(screen.getByText("Jewelry")).toBeTruthy()
+    expect(screen.getByText("Photography")).toBeTruthy()
   })
 
-  it.skip("displays the number of the selected filters on the filter modal screen", () => {
+  it("displays the number of the selected filters on the filter modal screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
@@ -96,9 +94,9 @@ describe("AdditionalGeneIDsOptions Screen", () => {
       sizeMetric: "cm",
     }
 
-    const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
+    renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-    expect(within(getByText("Medium")).getByText("• 2")).toBeTruthy()
+    expect(screen.getByText("Medium • 2")).toBeOnTheScreen()
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
@@ -123,14 +121,17 @@ describe("AdditionalGeneIDsOptions Screen", () => {
       sizeMetric: "cm",
     }
 
-    const { getAllByA11yState } = renderWithWrappers(
-      <MockAdditionalGeneIDsOptionsScreen initialData={injectedState} />
-    )
-    const options = getAllByA11yState({ checked: true })
+    renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={injectedState} />)
+    const option1 = screen.getByText("Prints")
+    const option2 = screen.getByText("Sculpture")
 
-    expect(options).toHaveLength(2)
-    expect(options[0]).toHaveTextContent("Prints")
-    expect(options[1]).toHaveTextContent("Sculpture")
+    expect(option1).toBeOnTheScreen()
+    expect(option2).toBeOnTheScreen()
+
+    const checkbox = screen.getAllByTestId("multi-select-option-checkbox")
+
+    expect(checkbox[0]).toHaveProp("selected", true)
+    expect(checkbox[2]).toHaveProp("selected", true)
   })
 
   it("clears all when clear button is tapped", () => {
@@ -155,14 +156,12 @@ describe("AdditionalGeneIDsOptions Screen", () => {
       sizeMetric: "cm",
     }
 
-    const { getByText, queryAllByA11yState } = renderWithWrappers(
-      <MockAdditionalGeneIDsOptionsScreen initialData={injectedState} />
-    )
+    renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={injectedState} />)
 
-    expect(queryAllByA11yState({ checked: true })).toHaveLength(2)
+    expect(screen.queryAllByA11yState({ checked: true })).toHaveLength(2)
 
-    fireEvent.press(getByText("Clear"))
+    fireEvent.press(screen.getByText("Clear"))
 
-    expect(queryAllByA11yState({ checked: true })).toHaveLength(0)
+    expect(screen.queryAllByA11yState({ checked: true })).toHaveLength(0)
   })
 })
