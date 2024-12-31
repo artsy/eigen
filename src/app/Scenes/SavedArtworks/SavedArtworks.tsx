@@ -19,7 +19,9 @@ export const SavedArtworks = () => {
           }
           title="Saves"
         />
+
         <Screen.StickySubHeader title="Saves" />
+
         <Screen.Body fullwidth>
           <ArtworkLists isTab={false} />
         </Screen.Body>

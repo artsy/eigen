@@ -3,21 +3,29 @@ import {
   Box,
   Button,
   Flex,
+  HeartIcon,
+  InstitutionIcon,
+  Join,
   LinkText,
   Skeleton,
   SkeletonBox,
   SkeletonText,
+  Spacer,
   Text,
+  TrendingIcon,
 } from "@artsy/palette-mobile"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { AutoHeightInfoModal } from "app/Components/Buttons/InfoButton"
 import { ProgressiveOnboardingOfferSettings } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingOfferSettings"
 import { ProgressiveOnboardingSignalInterest } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSignalInterest"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useState } from "react"
 
 const PARTNER_OFFER_HELP_ARTICLE_URL = "https://support.artsy.net/s/article/Offers-on-saved-works"
 
 export const SavesTabHeader = () => {
+  const [modalVisible, setModalVisible] = useState(false)
   const { dispatch } = useArtworkListsContext()
   const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
 
@@ -40,11 +48,7 @@ export const SavesTabHeader = () => {
       <ProgressiveOnboardingSignalInterest>
         <Text variant="xs" color="black60">
           Curate your own lists of the works you love and{" "}
-          <LinkText
-            variant="xs"
-            color="black60"
-            onPress={() => navigate(PARTNER_OFFER_HELP_ARTICLE_URL)}
-          >
+          <LinkText variant="xs" color="black60" onPress={() => setModalVisible(true)}>
             signal your interest to galleries
           </LinkText>
           .
@@ -71,6 +75,41 @@ export const SavesTabHeader = () => {
           Create New List
         </Button>
       </Flex>
+
+      <AutoHeightInfoModal
+        visible={modalVisible}
+        onDismiss={() => setModalVisible(false)}
+        modalTitle="Saves"
+        modalContent={
+          <Join separator={<Spacer y={2} />}>
+            <Flex flexDirection="row" alignItems="flex-start">
+              <HeartIcon mr={0.5} />
+              <Flex flex={1}>
+                <Text variant="sm-display">Curate your own list of works you love.</Text>
+              </Flex>
+            </Flex>
+            <Flex flexDirection="row" alignItems="flex-start">
+              <TrendingIcon mr={0.5} />
+              <Flex flex={1}>
+                <Text variant="sm-display">Get better recommendations with every Save.</Text>
+              </Flex>
+            </Flex>
+            <Flex flexDirection="row" alignItems="flex-start">
+              <InstitutionIcon mr={0.5} />
+              <Flex flex={1}>
+                <Text variant="sm-display">
+                  Signal your interest to galleries and you could receiving an offer on your saved
+                  artwork from a gallery.{" "}
+                  <LinkText onPress={() => navigate(PARTNER_OFFER_HELP_ARTICLE_URL)}>
+                    Read more
+                  </LinkText>
+                  .
+                </Text>
+              </Flex>
+            </Flex>
+          </Join>
+        }
+      />
     </Box>
   )
 }

@@ -1,7 +1,21 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Screen, Separator, Spinner, useTheme } from "@artsy/palette-mobile"
+import {
+  BellIcon,
+  FilterIcon,
+  Flex,
+  Join,
+  LinkText,
+  Screen,
+  Separator,
+  Spacer,
+  Spinner,
+  Text,
+  TrendingIcon,
+  useTheme,
+} from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { SavedSearchesList_me$data } from "__generated__/SavedSearchesList_me.graphql"
+import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { SortByModal, SortOption } from "app/Components/SortByModal/SortByModal"
 import { SAVED_SERCHES_PAGE_SIZE } from "app/Components/constants"
 import {
@@ -223,6 +237,16 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
     }
   }, [])
 
+  const infoButtonRef = useRef<{ closeModal: () => void } | null>(null)
+
+  const handleNavigate = () => {
+    infoButtonRef.current?.closeModal()
+
+    requestAnimationFrame(() => {
+      navigate("/notifications")
+    })
+  }
+
   return (
     <ProvideScreenTracking
       info={{
@@ -237,7 +261,48 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
           rightElements={<SortButton onPress={() => setModalVisible(true)} />}
         />
 
-        <Screen.StickySubHeader title="Alerts" />
+        <Flex px={2}>
+          <InfoButton
+            ref={infoButtonRef}
+            titleElement={
+              <Text variant="lg-display" mr={1}>
+                Alerts
+              </Text>
+            }
+            modalTitle="Alerts"
+            modalContent={
+              <Join separator={<Spacer y={2} />}>
+                <Flex flexDirection="row" alignItems="flex-start">
+                  <BellIcon mr={0.5} />
+                  <Flex flex={1}>
+                    <Text variant="sm-display">
+                      If you’re on the hunt for a particular artwork, create an Alert and we’ll
+                      notify you when there’s a match.
+                    </Text>
+                  </Flex>
+                </Flex>
+                <Flex flexDirection="row" alignItems="flex-start">
+                  <TrendingIcon mr={0.5} />
+                  <Flex flex={1}>
+                    <Text variant="sm-display">
+                      Stay informed through emails, push notifications, or within{" "}
+                      <LinkText onPress={handleNavigate}>Activity</LinkText>.
+                    </Text>
+                  </Flex>
+                </Flex>
+                <Flex flexDirection="row" alignItems="flex-start">
+                  <FilterIcon mr={0.5} />
+                  <Flex flex={1}>
+                    <Text variant="sm-display">
+                      Customize Alerts to match your budget, preferred medium, rarity or other
+                      criteria.
+                    </Text>
+                  </Flex>
+                </Flex>
+              </Join>
+            }
+          />
+        </Flex>
 
         <Screen.Body fullwidth>
           <SavedSearchesList

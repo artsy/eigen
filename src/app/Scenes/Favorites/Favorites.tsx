@@ -1,4 +1,14 @@
-import { Tabs } from "@artsy/palette-mobile"
+import {
+  BellIcon,
+  Flex,
+  FollowArtistIcon,
+  Join,
+  Spacer,
+  Tabs,
+  Text,
+  TrendingIcon,
+} from "@artsy/palette-mobile"
+import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 
@@ -61,6 +71,49 @@ export const Favorites: React.FC = () => {
     >
       <Tabs.TabsWithHeader
         title="Follows"
+        showLargeHeaderText={false}
+        BelowTitleHeaderComponent={() => (
+          <Flex px={2}>
+            <InfoButton
+              titleElement={
+                <Text variant="lg-display" mr={1}>
+                  Follows
+                </Text>
+              }
+              modalTitle="Follows"
+              modalContent={
+                <Join separator={<Spacer y={2} />}>
+                  <Flex flexDirection="row" alignItems="flex-start">
+                    <FollowArtistIcon mr={0.5} />
+                    <Flex flex={1}>
+                      <Text variant="sm-display">
+                        Get updates on your favorite artists, including new artworks, shows,
+                        exhibitions and more.
+                      </Text>
+                    </Flex>
+                  </Flex>
+                  <Flex flexDirection="row" alignItems="flex-start">
+                    <TrendingIcon mr={0.5} />
+                    <Flex flex={1}>
+                      <Text variant="sm-display">
+                        Tailor your experience, helping you discover artworks that match your taste.
+                      </Text>
+                    </Flex>
+                  </Flex>
+                  <Flex flexDirection="row" alignItems="flex-start">
+                    <BellIcon mr={0.5} />
+                    <Flex flex={1}>
+                      <Text variant="sm-display">
+                        Never miss out by exploring your Activity and receiving timely email updates
+                        updates.
+                      </Text>
+                    </Flex>
+                  </Flex>
+                </Join>
+              }
+            />
+          </Flex>
+        )}
         onTabChange={fireTabSelectionAnalytics}
         headerProps={{ onBack: goBack }}
       >
