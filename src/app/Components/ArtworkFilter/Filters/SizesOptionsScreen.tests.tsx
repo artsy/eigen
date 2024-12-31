@@ -107,7 +107,22 @@ describe("SizesOptionsScreen", () => {
     const filters = getFilters(screen.getByTestId("debug"))
     const sizesFilter = getSizesFilterOption(filters)
 
-    expect(screen.getAllByA11yState({ checked: true })[0]).toHaveTextContent("Small (under 16in)")
+    const options = screen.getAllByTestId("multi-select-option-button")
+    const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
+
+    expect(options).toHaveLength(4)
+    expect(checkboxes).toHaveLength(4)
+
+    expect(options[0]).toHaveTextContent("Small (under 16in)")
+    expect(options[1]).toHaveTextContent("Medium (16in – 40in)")
+    expect(options[2]).toHaveTextContent("Large (over 40in)")
+    expect(options[3]).toHaveTextContent("Custom Size")
+
+    expect(checkboxes[0]).toHaveProp("selected", true)
+    expect(checkboxes[1]).toHaveProp("selected", false)
+    expect(checkboxes[2]).toHaveProp("selected", false)
+    expect(checkboxes[3]).toHaveProp("selected", false)
+
     expect(sizesFilter).toEqual({
       paramName: "sizes",
       displayText: "Small (under 16in)",
@@ -124,8 +139,22 @@ describe("SizesOptionsScreen", () => {
     const filters = getFilters(screen.getByTestId("debug"))
     const sizesFilter = getSizesFilterOption(filters)
 
-    expect(screen.getAllByA11yState({ checked: true })[0]).toHaveTextContent("Small (under 16in)")
-    expect(screen.getAllByA11yState({ checked: true })[1]).toHaveTextContent("Large (over 40in)")
+    const options = screen.getAllByTestId("multi-select-option-button")
+    const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
+
+    expect(options).toHaveLength(4)
+    expect(checkboxes).toHaveLength(4)
+
+    expect(options[0]).toHaveTextContent("Small (under 16in)")
+    expect(options[1]).toHaveTextContent("Medium (16in – 40in)")
+    expect(options[2]).toHaveTextContent("Large (over 40in)")
+    expect(options[3]).toHaveTextContent("Custom Size")
+
+    expect(checkboxes[0]).toHaveProp("selected", true)
+    expect(checkboxes[1]).toHaveProp("selected", false)
+    expect(checkboxes[2]).toHaveProp("selected", true)
+    expect(checkboxes[3]).toHaveProp("selected", false)
+
     expect(sizesFilter).toEqual({
       paramName: "sizes",
       displayText: "Small (under 16in), Large (over 40in)",
@@ -136,9 +165,31 @@ describe("SizesOptionsScreen", () => {
   it("correctly select/unselect the same option", () => {
     renderWithWrappers(<TestRenderer />)
 
+    const options = screen.getAllByTestId("multi-select-option-button")
+    const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
+
+    expect(options).toHaveLength(4)
+    expect(checkboxes).toHaveLength(4)
+
+    expect(options).toHaveLength(4)
+    expect(checkboxes).toHaveLength(4)
+
+    expect(options[0]).toHaveTextContent("Small (under 16in)")
+    expect(options[1]).toHaveTextContent("Medium (16in – 40in)")
+    expect(options[2]).toHaveTextContent("Large (over 40in)")
+    expect(options[3]).toHaveTextContent("Custom Size")
+
+    expect(checkboxes[0]).toHaveProp("selected", false)
+    expect(checkboxes[1]).toHaveProp("selected", false)
+    expect(checkboxes[2]).toHaveProp("selected", false)
+    expect(checkboxes[3]).toHaveProp("selected", false)
+
     fireEvent.press(screen.getByText("Small (under 16in)"))
     // ensures that the checked elements are the selected filter and one radio button
-    expect(screen.queryAllByA11yState({ checked: true })).toHaveLength(2)
+    expect(checkboxes[0]).toHaveProp("selected", true)
+    expect(checkboxes[1]).toHaveProp("selected", false)
+    expect(checkboxes[2]).toHaveProp("selected", false)
+    expect(checkboxes[3]).toHaveProp("selected", false)
 
     fireEvent.press(screen.getByText("Small (under 16in)"))
 
@@ -146,7 +197,11 @@ describe("SizesOptionsScreen", () => {
     const sizesFilter = getSizesFilterOption(filters)
 
     // ensures that the checked element is one radio button
-    expect(screen.queryAllByA11yState({ checked: true })).toHaveLength(1)
+    expect(checkboxes[0]).toHaveProp("selected", false)
+    expect(checkboxes[1]).toHaveProp("selected", false)
+    expect(checkboxes[2]).toHaveProp("selected", false)
+    expect(checkboxes[3]).toHaveProp("selected", false)
+
     expect(sizesFilter).toEqual({
       paramName: "sizes",
       displayText: "All",
@@ -164,9 +219,9 @@ describe("SizesOptionsScreen", () => {
       expect(screen.getByLabelText("in")).toBeTruthy()
       expect(screen.getByLabelText("in")).toHaveProp("accessibilityState", { checked: true })
 
-      expect(screen.queryByText("Small (under 16in)")).toBeTruthy()
-      expect(screen.queryByText("Medium (16in – 40in)")).toBeTruthy()
-      expect(screen.queryByText("Large (over 40in)")).toBeTruthy()
+      expect(screen.getByText("Small (under 16in)")).toBeTruthy()
+      expect(screen.getByText("Medium (16in – 40in)")).toBeTruthy()
+      expect(screen.getByText("Large (over 40in)")).toBeTruthy()
 
       // makes sure that "cm" appears in the screen only once for the radio button
       expect(screen.queryAllByText("cm")).toHaveLength(1)
@@ -180,9 +235,9 @@ describe("SizesOptionsScreen", () => {
       expect(screen.queryByText("Medium (16in – 40in)")).toBeFalsy()
       expect(screen.queryByText("Large (over 40in)")).toBeFalsy()
 
-      expect(screen.queryByText("Small (under 40cm)")).toBeTruthy()
-      expect(screen.queryByText("Medium (40cm – 100cm)")).toBeTruthy()
-      expect(screen.queryByText("Large (over 100cm)")).toBeTruthy()
+      expect(screen.getByText("Small (under 40cm)")).toBeTruthy()
+      expect(screen.getByText("Medium (40cm – 100cm)")).toBeTruthy()
+      expect(screen.getByText("Large (over 100cm)")).toBeTruthy()
 
       // makes sure that "in" appears in the screen only once for the radio button
       expect(screen.queryAllByText("in")).toHaveLength(1)
@@ -195,7 +250,12 @@ describe("SizesOptionsScreen", () => {
 
       fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
 
-      expect(screen.getAllByA11yState({ checked: true })[0]).toHaveTextContent("Custom Size")
+      const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
+
+      expect(checkboxes[0]).toHaveProp("selected", false)
+      expect(checkboxes[1]).toHaveProp("selected", false)
+      expect(checkboxes[2]).toHaveProp("selected", false)
+      expect(checkboxes[3]).toHaveProp("selected", true)
     })
 
     it("should clear custom values in filters when the custom size option is unselected", () => {
@@ -232,11 +292,17 @@ describe("SizesOptionsScreen", () => {
       renderWithWrappers(<TestRenderer />)
 
       fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
-      expect(screen.queryAllByA11yState({ checked: true })[0]).toBeTruthy()
+
+      const options = screen.getAllByTestId("multi-select-option-button")
+      const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
+
+      expect(options[3]).toHaveTextContent("Custom Size")
+
+      expect(checkboxes[3]).toHaveProp("selected", true)
 
       fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "")
       // ensures that the checked element is one radio button
-      expect(screen.queryAllByA11yState({ checked: true })).toHaveLength(1)
+      expect(checkboxes[3]).toHaveProp("selected", false)
     })
 
     it("should keep custom inputs filled in if a predefined value is selected", () => {
@@ -253,14 +319,37 @@ describe("SizesOptionsScreen", () => {
     it("should clear the previously selected option if a custom value is entered", () => {
       renderWithWrappers(<TestRenderer />)
 
+      const options = screen.getAllByTestId("multi-select-option-button")
+      const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
+
+      expect(options[0]).toHaveTextContent("Small (under 16in)")
+      expect(options[1]).toHaveTextContent("Medium (16in – 40in)")
+      expect(options[2]).toHaveTextContent("Large (over 40in)")
+      expect(options[3]).toHaveTextContent("Custom Size")
+
+      expect(checkboxes[0]).toHaveProp("selected", false)
+      expect(checkboxes[1]).toHaveProp("selected", false)
+      expect(checkboxes[2]).toHaveProp("selected", false)
+      expect(checkboxes[3]).toHaveProp("selected", false)
+
       fireEvent.press(screen.getByText("Small (under 16in)"))
+
+      expect(checkboxes[0]).toHaveProp("selected", true)
+      expect(checkboxes[1]).toHaveProp("selected", false)
+      expect(checkboxes[2]).toHaveProp("selected", false)
+      expect(checkboxes[3]).toHaveProp("selected", false)
+
       fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
+
+      expect(checkboxes[0]).toHaveProp("selected", false)
+      expect(checkboxes[1]).toHaveProp("selected", false)
+      expect(checkboxes[2]).toHaveProp("selected", false)
+      expect(checkboxes[3]).toHaveProp("selected", true)
 
       const filters = getFilters(screen.getByTestId("debug"))
       const sizesFilter = getSizesFilterOption(filters)
       const widthFilter = getWidthFilterOption(filters)
 
-      expect(screen.getAllByA11yState({ checked: true })).toHaveLength(2)
       expect(sizesFilter).toEqual({
         paramName: "sizes",
         displayText: "All",
@@ -378,21 +467,44 @@ describe("SizesOptionsScreen", () => {
     it('should clear selected predefined values if "Clear" button is pressed', () => {
       renderWithWrappers(<TestRenderer />)
 
+      const options = screen.getAllByTestId("multi-select-option-button")
+      const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
+
       fireEvent.press(screen.getByText("Small (under 16in)"))
+
+      expect(checkboxes[0]).toHaveProp("selected", true)
+      expect(checkboxes[1]).toHaveProp("selected", false)
+      expect(checkboxes[2]).toHaveProp("selected", false)
+      expect(checkboxes[3]).toHaveProp("selected", false)
+
       fireEvent.press(screen.getByText("Clear"))
 
+      expect(options[0]).toHaveTextContent("Small (under 16in)")
+
       // only one of unit radio buttons is selected
-      expect(screen.queryAllByA11yState({ checked: true })).toHaveLength(1)
+      expect(checkboxes[0]).toHaveProp("selected", false)
+      expect(checkboxes[1]).toHaveProp("selected", false)
+      expect(checkboxes[2]).toHaveProp("selected", false)
+      expect(checkboxes[3]).toHaveProp("selected", false)
     })
 
     it('should clear selected custom values if "Clear" button is pressed', () => {
       renderWithWrappers(<TestRenderer />)
 
+      const options = screen.getAllByTestId("multi-select-option-button")
+      const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
+
+      expect(options[3]).toHaveTextContent("Custom Size")
+      expect(checkboxes[3]).toHaveProp("selected", false)
+
       fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
+
+      expect(checkboxes[3]).toHaveProp("selected", true)
+
       fireEvent.press(screen.getByText("Clear"))
 
       // only one of unit radio buttons is selected
-      expect(screen.queryAllByA11yState({ checked: true })).toHaveLength(1)
+      expect(checkboxes[3]).toHaveProp("selected", false)
     })
   })
 })

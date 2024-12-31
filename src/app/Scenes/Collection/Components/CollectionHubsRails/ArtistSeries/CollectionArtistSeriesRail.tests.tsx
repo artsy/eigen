@@ -81,9 +81,9 @@ describe("Artist Series Rail", () => {
     it("renders each artist series' metadata", () => {
       renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
-      expect(screen.getByText("From $20.000")).toBeOnTheScreen()
-      expect(screen.getByText("From $7.500")).toBeOnTheScreen()
-      expect(screen.getByText("From $2.000")).toBeOnTheScreen()
+      expect(screen.getByText("From $20,000")).toBeOnTheScreen()
+      expect(screen.getByText("From $7,500")).toBeOnTheScreen()
+      expect(screen.getByText("From $2,000")).toBeOnTheScreen()
     })
 
     it("navigates to a new collection when a series is tapped", () => {

@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
@@ -65,13 +66,11 @@ describe("Materials Options Screen", () => {
 
   describe("before any filters are selected", () => {
     it("renders all options present in the aggregation", () => {
-      const { getByText } = renderWithWrappers(
-        <MockMaterialsTermsOptionsScreen initialData={initialState} />
-      )
+      renderWithWrappers(<MockMaterialsTermsOptionsScreen initialData={initialState} />)
 
-      expect(getByText("Acrylic")).toBeTruthy()
-      expect(getByText("Canvas")).toBeTruthy()
-      expect(getByText("Metal")).toBeTruthy()
+      expect(screen.getByText("Acrylic")).toBeOnTheScreen()
+      expect(screen.getByText("Canvas")).toBeOnTheScreen()
+      expect(screen.getByText("Metal")).toBeOnTheScreen()
     })
   })
 
@@ -88,19 +87,25 @@ describe("Materials Options Screen", () => {
     }
 
     it("displays the number of the selected filters on the filter modal screen", () => {
-      const { getByText } = renderWithWrappers(<MockFilterScreen initialState={state} />)
+      renderWithWrappers(<MockFilterScreen initialState={state} />)
 
-      expect(getByText("Material • 1")).toBeTruthy()
+      expect(screen.getByText("Material • 1")).toBeTruthy()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      const { getAllByA11yState } = renderWithWrappers(
-        <MockMaterialsTermsOptionsScreen initialData={state} />
-      )
-      const options = getAllByA11yState({ checked: true })
+      renderWithWrappers(<MockMaterialsTermsOptionsScreen initialData={state} />)
+      const options = screen.getAllByTestId("multi-select-option-button")
+      const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
 
-      expect(options).toHaveLength(1)
+      expect(options).toHaveLength(3)
+
       expect(options[0]).toHaveTextContent("Acrylic")
+      expect(options[1]).toHaveTextContent("Canvas")
+      expect(options[2]).toHaveTextContent("Metal")
+
+      expect(checkboxes[0]).toHaveProp("selected", true)
+      expect(checkboxes[1]).toHaveProp("selected", false)
+      expect(checkboxes[2]).toHaveProp("selected", false)
     })
   })
 })
