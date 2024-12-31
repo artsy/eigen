@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import {
   BellIcon,
   Flex,
@@ -75,6 +76,9 @@ export const Favorites: React.FC = () => {
         BelowTitleHeaderComponent={() => (
           <Flex px={2}>
             <InfoButton
+              trackEvent={() => {
+                tracking.trackEvent(tracks.tapFollowsInfo())
+              }}
               titleElement={
                 <Text variant="lg-display" mr={1}>
                   Follows
@@ -104,7 +108,7 @@ export const Favorites: React.FC = () => {
                     <BellIcon mr={0.5} />
                     <Flex flex={1}>
                       <Text variant="sm-display">
-                        Never miss out by exploring your Activity and receiving timely email updates
+                        Never miss out by exploring your Activity and receiving timely email
                         updates.
                       </Text>
                     </Flex>
@@ -135,4 +139,13 @@ export const Favorites: React.FC = () => {
       </Tabs.TabsWithHeader>
     </ProvideScreenTracking>
   )
+}
+
+const tracks = {
+  tapFollowsInfo: (): TappedInfoBubble => ({
+    action: ActionType.tappedInfoBubble,
+    context_module: ContextModule.follows,
+    context_screen_owner_type: OwnerType.follows,
+    subject: "followsHeader",
+  }),
 }
