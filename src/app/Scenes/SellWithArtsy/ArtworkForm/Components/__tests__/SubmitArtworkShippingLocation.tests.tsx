@@ -57,8 +57,9 @@ describe("SubmitArtworkShippingLocation", () => {
     expect(countrySelect).toBeOnTheScreen()
 
     fireEvent.press(countrySelect)
+
     // Wait for the select modal to show up
-    await flushPromiseQueue()
+    await screen.findByText(COUNTRY_SELECT_OPTIONS[0].label as string)
 
     fireEvent.press(screen.getByText(COUNTRY_SELECT_OPTIONS[0].label as string))
 

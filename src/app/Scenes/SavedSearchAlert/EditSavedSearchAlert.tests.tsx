@@ -280,19 +280,19 @@ describe("EditSavedSearchAlert", () => {
       it("is enabled when the user taps on a suggested filter", async () => {
         renderWithWrappers(<TestRenderer />)
 
-        await waitFor(() => {
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            Alert: () => alert,
-          })
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            Viewer: () => viewerMocked,
-          })
-          resolveMostRecentRelayOperation(mockEnvironment, {
-            PreviewSavedSearch: () => ({
-              suggestedFilters: mockSuggestedFilters,
-            }),
-          })
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Alert: () => alert,
         })
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          Viewer: () => viewerMocked,
+        })
+        resolveMostRecentRelayOperation(mockEnvironment, {
+          PreviewSavedSearch: () => ({
+            suggestedFilters: mockSuggestedFilters,
+          }),
+        })
+
+        await screen.findByText("Painting")
 
         fireEvent.press(screen.getByText("Painting"), "onPress")
 
