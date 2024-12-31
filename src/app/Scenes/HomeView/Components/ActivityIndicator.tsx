@@ -10,8 +10,7 @@ interface ActivityIndicatorProps {
 }
 
 export const ActivityIndicator: React.FC<ActivityIndicatorProps> = (props) => {
-  let { hasUnseenNotifications } = props
-
+  const { hasUnseenNotifications } = props
   const tracking = useHomeViewTracking()
 
   const { enabled, variant, forceDots } = useActivityDotExperiment()
@@ -19,7 +18,7 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = (props) => {
   let BellVariant = BellWithSmallDot
   if (enabled && variant !== "control") BellVariant = BellWithLargeDot
 
-  hasUnseenNotifications = hasUnseenNotifications || forceDots
+  const displayUnseenNotifications = hasUnseenNotifications || forceDots
 
   const navigateToActivityPanel = () => {
     tracking.tappedNotificationBell()
@@ -34,7 +33,7 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = (props) => {
         onPress={navigateToActivityPanel}
         hitSlop={DEFAULT_HIT_SLOP}
       >
-        <BellVariant hasUnseenNotifications={hasUnseenNotifications} />
+        <BellVariant hasUnseenNotifications={displayUnseenNotifications} />
       </TouchableOpacity>
     </Box>
   )
@@ -73,8 +72,8 @@ const BellWithLargeDot: React.FC<{ hasUnseenNotifications: boolean }> = (props) 
       {!!hasUnseenNotifications && (
         <Box
           position="absolute"
-          top="-0.5px"
-          right="0px"
+          top={-0.5}
+          right={0}
           accessibilityLabel="Unseen Notifications Indicator"
         >
           <VisualClueDot diameter={8} color={color} />
