@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
@@ -65,13 +66,11 @@ describe(LocationCitiesOptionsScreen, () => {
 
   describe("no filters are selected", () => {
     it("renders all options present in the aggregation", () => {
-      const { getByText } = renderWithWrappers(
-        <MockLocationCitiesOptionsScreen initialData={initialState} />
-      )
+      renderWithWrappers(<MockLocationCitiesOptionsScreen initialData={initialState} />)
 
-      expect(getByText("Paris, France")).toBeTruthy()
-      expect(getByText("London, United Kingdom")).toBeTruthy()
-      expect(getByText("Milan, Italy")).toBeTruthy()
+      expect(screen.getByText("Paris, France")).toBeOnTheScreen()
+      expect(screen.getByText("London, United Kingdom")).toBeOnTheScreen()
+      expect(screen.getByText("Milan, Italy")).toBeOnTheScreen()
     })
   })
 
@@ -88,21 +87,20 @@ describe(LocationCitiesOptionsScreen, () => {
     }
 
     it("displays the number of the selected filters on the filter modal screen", () => {
-      const { getByText } = renderWithWrappers(<MockFilterScreen initialState={state} />)
+      renderWithWrappers(<MockFilterScreen initialState={state} />)
 
-      expect(getByText("Artwork Location • 2")).toBeTruthy()
+      expect(screen.getByText("Artwork Location • 2")).toBeOnTheScreen()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      const { getAllByA11yState } = renderWithWrappers(
-        <MockLocationCitiesOptionsScreen initialData={state} />
-      )
+      renderWithWrappers(<MockLocationCitiesOptionsScreen initialData={state} />)
 
-      const options = getAllByA11yState({ checked: true })
+      const options = screen.getAllByTestId("multi-select-option-button")
 
-      expect(options).toHaveLength(2)
+      expect(options).toHaveLength(3)
       expect(options[0]).toHaveTextContent("Paris, France")
-      expect(options[1]).toHaveTextContent("Milan, Italy")
+      expect(options[1]).toHaveTextContent("London, United Kingdom")
+      expect(options[2]).toHaveTextContent("Milan, Italy")
     })
   })
 })

@@ -72,7 +72,7 @@ describe("TrackOrderSection", () => {
         expect(screen.queryByTestId("noTrackingNumber")).toBeFalsy()
         expect(screen.getByTestId("shippedOn")).toHaveTextContent("Shipped on Sep 2, 2021")
         expect(screen.getByTestId("estimatedDelivery")).toHaveTextContent(
-          "Estimated Delivery: 2. Okt. 2021"
+          "Estimated Delivery: Oct 2, 2021"
         )
         expect(screen.getByTestId("trackingUrl")).toHaveTextContent("View full tracking details")
       })
