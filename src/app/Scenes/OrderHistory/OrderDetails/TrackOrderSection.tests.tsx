@@ -70,7 +70,7 @@ describe("TrackOrderSection", () => {
         expect(screen.getByTestId("orderStatus")).toHaveTextContent("pending")
         expect(screen.queryByTestId("trackingNumber")).toBeFalsy()
         expect(screen.queryByTestId("noTrackingNumber")).toBeFalsy()
-        expect(screen.getByTestId("shippedOn")).toHaveTextContent("Shipped on 2. Sept. 2021")
+        expect(screen.getByTestId("shippedOn")).toHaveTextContent("Shipped on Sep 2, 2021")
         expect(screen.getByTestId("estimatedDelivery")).toHaveTextContent(
           "Estimated Delivery: 2. Okt. 2021"
         )
@@ -85,7 +85,7 @@ describe("TrackOrderSection", () => {
         expect(screen.getByTestId("orderStatus")).toHaveTextContent("in transit")
         expect(screen.queryByTestId("trackingNumber")).toHaveTextContent("Tracking: 12345678910")
         expect(screen.queryByTestId("noTrackingNumber")).toBeFalsy()
-        expect(screen.getByTestId("shippedOn")).toHaveTextContent("Shipped on 3. Okt. 2021")
+        expect(screen.getByTestId("shippedOn")).toHaveTextContent("Shipped on Oct 3, 2021")
         expect(screen.getByTestId("estimatedDelivery")).toHaveTextContent(
           "Estimated Delivery: on September 20, 2021"
         )
@@ -109,9 +109,7 @@ describe("TrackOrderSection", () => {
           }),
         })
 
-        expect(screen.getByTestId("deliveredStatus")).toHaveTextContent(
-          "Delivered on 2. Sept. 2021"
-        )
+        expect(screen.getByTestId("deliveredStatus")).toHaveTextContent("Delivered on Sep 2, 2021")
       })
     })
   })

@@ -94,6 +94,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
                   color={rightButtonDisabled ? "black30" : "black100"}
                   testID={rightButtonTestId}
                   disabled={rightButtonDisabled}
+                  aria-disabled={rightButtonDisabled}
                 >
                   {rightButtonText}
                 </Text>

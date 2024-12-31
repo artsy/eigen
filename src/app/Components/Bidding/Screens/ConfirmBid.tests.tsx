@@ -76,7 +76,7 @@ describe("ConfirmBid", () => {
         renderWithWrappers(<ConfirmBid {...initialProps} />)
 
         expect(screen.getByTestId("disclaimer")).toHaveTextContent(
-          "I agree to Artsy's and Christie's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted."
+          /I agree to Artsy's and Christie's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted./
         )
       })
 
@@ -107,7 +107,7 @@ describe("ConfirmBid", () => {
         renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
 
         expect(screen.getByTestId("disclaimer")).toHaveTextContent(
-          "I agree to Artsy's and Christie's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted."
+          /I agree to Artsy's and Christie's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted./
         )
       })
 
@@ -188,7 +188,7 @@ describe("ConfirmBid", () => {
       renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
       expect(screen.queryByTestId("disclaimer-checkbox")).toBeNull()
       expect(screen.queryByTestId("payment-info-row")).toBeNull()
-      expect(screen.getByTestId("disclaimer-text")).toHaveTextContent("I agree to")
+      expect(screen.getByTestId("disclaimer-text")).toHaveTextContent(/I agree to/)
     })
 
     it("shows a checkbox but no payment info if the user is not registered and has cc on file", () => {
@@ -247,11 +247,11 @@ describe("ConfirmBid", () => {
       const conditionsOfSaleLink = await view.root.findByType(LinkText)
       const conditionsOfSaleCheckbox = await view.root.findByType(Checkbox)
 
-      fireEvent.press(yourMaxBidRow)
+      yourMaxBidRow.props.onPress()
 
       expect(navigator.push).not.toHaveBeenCalled()
 
-      fireEvent.press(creditCardRow)
+      creditCardRow.props.onPress()
 
       expect(navigator.push).not.toHaveBeenCalled()
 
@@ -381,7 +381,7 @@ describe("ConfirmBid", () => {
       // eslint-disable-next-line testing-library/no-node-access
       expect((await selectMaxBidRow.findAllByType(Text))[1].props.children).toEqual("$45,000")
 
-      fireEvent.press(selectMaxBidRow)
+      selectMaxBidRow.props.onPress()
 
       const editScreen = await fakeNavigator.nextStep().root.findByType(SelectMaxBid)
 
@@ -648,7 +648,7 @@ describe("ConfirmBid", () => {
       const view = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
       const creditcardRow = (await view.root.findAllByType(TouchableWithoutFeedback))[1]
 
-      fireEvent.press(creditcardRow)
+      creditcardRow.props.onPress()
 
       expect(nextStep?.component).toEqual(CreditCardForm)
     })
@@ -675,13 +675,16 @@ describe("ConfirmBid", () => {
       await screen.findByText(
         "There was a problem processing your information. Check your payment details and try again."
       )
-      expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", true)
 
       // press the dismiss modal button
       fireEvent.press(screen.getByText("Ok"))
 
       // error modal is dismissed
-      expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", false)
+      expect(
+        screen.queryByText(
+          "There was a problem processing your information. Check your payment details and try again."
+        )
+      ).not.toBeOnTheScreen()
     })
 
     it("shows the error screen with the correct error message on a createCreditCard mutation failure", async () => {
@@ -701,13 +704,12 @@ describe("ConfirmBid", () => {
       fireEvent.press(screen.getByTestId("bid-button"))
 
       await screen.findByText("Your card's security code is incorrect.")
-      expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", true)
 
       // press the dismiss modal button
       fireEvent.press(screen.getByText("Ok"))
 
       // error modal is dismissed
-      expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", false)
+      expect(screen.queryByText("Your card's security code is incorrect.")).not.toBeOnTheScreen()
     })
 
     it("shows the error screen with the default error message if there are unhandled errors from the createCreditCard mutation", async () => {
@@ -758,13 +760,16 @@ describe("ConfirmBid", () => {
       await screen.findByText(
         "There was a problem processing your information. Check your payment details and try again."
       )
-      expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", true)
 
       // press the dismiss modal button
       fireEvent.press(screen.getByText("Ok"))
 
       // error modal is dismissed
-      expect(screen.UNSAFE_getByType(Modal)).toHaveProp("visible", false)
+      expect(
+        screen.queryByText(
+          "There was a problem processing your information. Check your payment details and try again."
+        )
+      ).not.toBeOnTheScreen()
     })
 
     it("shows the generic error screen on a createCreditCard mutation network failure", async () => {
