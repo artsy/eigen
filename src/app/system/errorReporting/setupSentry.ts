@@ -64,8 +64,8 @@ export function setupSentry(props: SetupSentryProps = { debug: false }) {
     autoSessionTracking: true,
     enableWatchdogTerminationTracking: false,
     attachStacktrace: true,
-    tracesSampleRate: props.debug ? 1.0 : 0.05,
-    profilesSampleRate: props.debug ? 1.0 : 0.05,
+    tracesSampleRate: 1.0,
+    profilesSampleRate: 1.0,
     debug: props.debug,
     integrations: [
       Sentry.reactNativeTracingIntegration({
