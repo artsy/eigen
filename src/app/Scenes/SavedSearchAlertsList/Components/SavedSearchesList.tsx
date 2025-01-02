@@ -242,6 +242,8 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
   const infoButtonRef = useRef<{ closeModal: () => void } | null>(null)
 
   const handleNavigate = () => {
+    tracking.trackEvent(tracks.tapActivityLink())
+
     infoButtonRef.current?.closeModal()
 
     requestAnimationFrame(() => {
