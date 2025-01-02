@@ -33,7 +33,7 @@ describe("Sales", () => {
       UpcomingAuction.props.setSalesCountOnParent(0)
     })
 
-    await screen.findByTestId("Sales-Zero-State-Container")
+    expect(screen.getByTestId("Sales-Zero-State-Container")).toBeOnTheScreen()
   })
 
   it("Can refresh current and upcoming auctions", async () => {
