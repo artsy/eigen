@@ -64,11 +64,11 @@ describe(makeCareerHighlightMap, () => {
 
   it("Prepares the eventDigest and creates a map of each year to the highlight kind", () => {
     const result = makeCareerHighlightMap(
-      "2016 Group Show @ MOCA Los Angeles; 2015 Reviewed Solo Show @ The Guardian; 2015 Reviewed Solo Show @ Art in America"
+      "2017 Group Show @ MOCA Los Angeles; 2015 Reviewed Solo Show @ The Guardian; 2015 Reviewed Solo Show @ Art in America"
     )
 
     expect(result).toEqual({
-      2016: { "Group Show": ["MOCA Los Angeles"] },
+      2017: { "Group Show": ["MOCA Los Angeles"] },
     })
   })
 
