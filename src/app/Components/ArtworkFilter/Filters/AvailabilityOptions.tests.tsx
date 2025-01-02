@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
@@ -50,11 +50,9 @@ describe(AvailabilityOptionsScreen, () => {
 
   describe("no filters are selected", () => {
     it("renders all options", () => {
-      const { getByText } = renderWithWrappers(
-        <MockAvailabilityOptionsScreen initialData={initialState} />
-      )
+      renderWithWrappers(<MockAvailabilityOptionsScreen initialData={initialState} />)
 
-      expect(getByText("Only works for sale")).toBeTruthy()
+      expect(screen.getByText("Only works for sale")).toBeTruthy()
     })
   })
 
@@ -71,27 +69,29 @@ describe(AvailabilityOptionsScreen, () => {
     }
 
     it("displays the number of the selected filters on the filter modal screen", () => {
-      const { getByText } = renderWithWrappers(<MockFilterScreen initialState={state} />)
+      renderWithWrappers(<MockFilterScreen initialState={state} />)
 
-      expect(getByText("Availability • 1")).toBeTruthy()
+      expect(screen.getByText("Availability • 1")).toBeTruthy()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      const { getAllByA11yState } = renderWithWrappers(
-        <MockAvailabilityOptionsScreen initialData={state} />
-      )
+      renderWithWrappers(<MockAvailabilityOptionsScreen initialData={state} />)
 
-      let options = getAllByA11yState({ checked: true })
+      const options = screen.getAllByTestId("multi-select-option-button")
+      const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
 
       expect(options).toHaveLength(1)
       expect(options[0]).toHaveTextContent("Only works for sale")
+
+      expect(checkboxes[0]).toHaveProp("selected", true)
 
       fireEvent.press(options[0])
 
-      options = getAllByA11yState({ checked: false })
+      expect(checkboxes[0]).toHaveProp("selected", false)
 
-      expect(options).toHaveLength(1)
-      expect(options[0]).toHaveTextContent("Only works for sale")
+      fireEvent.press(options[0])
+
+      expect(checkboxes[0]).toHaveProp("selected", true)
     })
   })
 })

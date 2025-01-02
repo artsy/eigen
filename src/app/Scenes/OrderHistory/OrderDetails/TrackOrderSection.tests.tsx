@@ -70,8 +70,10 @@ describe("TrackOrderSection", () => {
         expect(screen.getByTestId("orderStatus")).toHaveTextContent("pending")
         expect(screen.queryByTestId("trackingNumber")).toBeFalsy()
         expect(screen.queryByTestId("noTrackingNumber")).toBeFalsy()
-        expect(screen.getByTestId("shippedOn")).toHaveTextContent("Sep 2, 2021")
-        expect(screen.getByTestId("estimatedDelivery")).toHaveTextContent("Oct 2, 2021")
+        expect(screen.getByTestId("shippedOn")).toHaveTextContent("Shipped on Sep 2, 2021")
+        expect(screen.getByTestId("estimatedDelivery")).toHaveTextContent(
+          "Estimated Delivery: Oct 2, 2021"
+        )
         expect(screen.getByTestId("trackingUrl")).toHaveTextContent("View full tracking details")
       })
     })
@@ -81,10 +83,12 @@ describe("TrackOrderSection", () => {
         renderWithRelay({ CommerceOrder: () => CommerceShipArtaOrder })
 
         expect(screen.getByTestId("orderStatus")).toHaveTextContent("in transit")
-        expect(screen.queryByTestId("trackingNumber")).toHaveTextContent("12345678910")
+        expect(screen.queryByTestId("trackingNumber")).toHaveTextContent("Tracking: 12345678910")
         expect(screen.queryByTestId("noTrackingNumber")).toBeFalsy()
-        expect(screen.getByTestId("shippedOn")).toHaveTextContent("Oct 3, 2021")
-        expect(screen.getByTestId("estimatedDelivery")).toHaveTextContent("on September 20, 2021")
+        expect(screen.getByTestId("shippedOn")).toHaveTextContent("Shipped on Oct 3, 2021")
+        expect(screen.getByTestId("estimatedDelivery")).toHaveTextContent(
+          "Estimated Delivery: on September 20, 2021"
+        )
         expect(screen.getByTestId("trackingUrl")).toHaveTextContent("View full tracking details")
       })
 

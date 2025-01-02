@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
@@ -42,27 +42,45 @@ describe("Categories options screen", () => {
   }
 
   it("selects only the option that is selected", () => {
-    const { getByText, getAllByA11yState } = renderWithWrappers(
-      <MockCategoryScreen {...getEssentialProps()} initialData={initialState} />
-    )
-    fireEvent.press(getByText("Painting"))
+    renderWithWrappers(<MockCategoryScreen {...getEssentialProps()} initialData={initialState} />)
 
-    const selectedOptions = getAllByA11yState({ checked: true })
-    expect(selectedOptions).toHaveLength(1)
-    expect(selectedOptions[0]).toHaveTextContent("Painting")
-    expect(getByText("Clear")).toBeTruthy()
+    fireEvent.press(screen.getByText("Painting"))
+
+    const options = screen.getAllByTestId("multi-select-option-button")
+    const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
+
+    expect(options).toHaveLength(6)
+    expect(checkboxes).toHaveLength(6)
+
+    expect(options[0]).toHaveTextContent("Painting")
+
+    expect(checkboxes[0]).toHaveProp("selected", true)
+
+    expect(checkboxes[1]).toHaveProp("selected", false)
+
+    expect(screen.getByText("Clear")).toBeTruthy()
   })
 
   it("allows multiple categories to be selected", () => {
-    const { getByText, getAllByA11yState } = renderWithWrappers(
-      <MockCategoryScreen {...getEssentialProps()} initialData={initialState} />
-    )
-    fireEvent.press(getByText("Painting"))
-    fireEvent.press(getByText("Work on Paper"))
+    renderWithWrappers(<MockCategoryScreen {...getEssentialProps()} initialData={initialState} />)
+    fireEvent.press(screen.getByText("Painting"))
+    fireEvent.press(screen.getByText("Work on Paper"))
 
-    const selectedOptions = getAllByA11yState({ checked: true })
-    expect(selectedOptions).toHaveLength(2)
-    expect(selectedOptions[0]).toHaveTextContent("Painting")
-    expect(selectedOptions[1]).toHaveTextContent("Work on Paper")
+    const options = screen.getAllByTestId("multi-select-option-button")
+
+    expect(options[0]).toHaveTextContent("Painting")
+    expect(options[1]).toHaveTextContent("Work on Paper")
+
+    const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
+
+    expect(options).toHaveLength(6)
+    expect(checkboxes).toHaveLength(6)
+
+    expect(checkboxes[0]).toHaveProp("selected", true)
+    expect(checkboxes[1]).toHaveProp("selected", true)
+    expect(checkboxes[2]).toHaveProp("selected", false)
+    expect(checkboxes[3]).toHaveProp("selected", false)
+    expect(checkboxes[4]).toHaveProp("selected", false)
+    expect(checkboxes[5]).toHaveProp("selected", false)
   })
 })

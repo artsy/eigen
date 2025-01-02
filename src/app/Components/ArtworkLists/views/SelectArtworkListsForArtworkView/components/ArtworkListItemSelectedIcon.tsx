@@ -10,6 +10,7 @@ export const ArtworkListItemSelectedIcon = ({ selected }: ArtworkListItemSelecte
   if (selected) {
     return (
       <CheckCircleIcon
+        testID="artworkListItemSelectedIcon"
         width={ICON_SIZE}
         height={ICON_SIZE}
         accessibilityState={{ selected: true }}
@@ -19,6 +20,7 @@ export const ArtworkListItemSelectedIcon = ({ selected }: ArtworkListItemSelecte
 
   return (
     <EmptyCheckCircleIcon
+      testID="artworkListItemUnselectedIcon"
       width={ICON_SIZE}
       height={ICON_SIZE}
       accessibilityState={{ selected: false }}

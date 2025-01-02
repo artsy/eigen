@@ -46,7 +46,7 @@ export const MultiSelectOptionItem: React.FC<MultiSelectOptionItemProps> = memo(
               </Text>
             </Box>
 
-            <Check selected={selected} disabled={disabled} />
+            <Check selected={selected} disabled={disabled} testID="multi-select-option-checkbox" />
           </OptionListItem>
         </TouchableRow>
       </Box>

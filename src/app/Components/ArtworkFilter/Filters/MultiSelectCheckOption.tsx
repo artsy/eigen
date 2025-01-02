@@ -81,7 +81,10 @@ export const CheckMarkOptionListItem = ({
   selected: boolean
   hasExtraLeftPadding?: boolean
 }) => (
-  <TouchableOpacity onPress={() => onSelect(item, !item.paramValue)}>
+  <TouchableOpacity
+    onPress={() => onSelect(item, !item.paramValue)}
+    testID="multi-select-option-button"
+  >
     <Flex flexGrow={1} justifyContent="space-between" flexDirection="row">
       <Flex
         flexDirection="row"
@@ -103,7 +106,7 @@ export const CheckMarkOptionListItem = ({
         </Text>
 
         {!!selected && (
-          <Box>
+          <Box testID={`selected-checkmark-${item.displayText}`}>
             <CheckIcon fill="black100" />
           </Box>
         )}

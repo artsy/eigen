@@ -21,8 +21,8 @@ describe("ArticleBody", () => {
   it("renders", () => {
     renderWithRelay()
 
-    expect(screen.UNSAFE_getByType(ArticleHero)).toBeOnTheScreen()
-    expect(screen.UNSAFE_getByType(ArticleSection)).toBeOnTheScreen()
-    expect(screen.UNSAFE_getByType(ArticleSectionImageCollection)).toBeOnTheScreen()
+    expect(screen.UNSAFE_getByType(ArticleHero)).toBeTruthy()
+    expect(screen.UNSAFE_getByType(ArticleSection)).toBeTruthy()
+    expect(screen.UNSAFE_getByType(ArticleSectionImageCollection)).toBeTruthy()
   })
 })

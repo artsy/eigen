@@ -27,6 +27,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
             accessibilityRole: "checkbox",
             accessibilityLabel: "Accept terms and privacy policy",
             accessibilityHint: "Check this element to accept Artsy's terms and privacy policy",
+            "aria-checked": checked,
             accessibilityState: {
               checked,
             },

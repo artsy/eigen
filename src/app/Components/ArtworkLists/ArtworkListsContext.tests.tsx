@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkListsContextTestQuery } from "__generated__/ArtworkListsContextTestQuery.graphql"
 import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ArtworkEntity } from "app/Components/ArtworkLists/types"
@@ -40,21 +40,12 @@ describe("ArtworkListsProvider", () => {
       expect(screen.getByText("Select where you’d like to save this artwork:")).toBeOnTheScreen()
     })
 
-    // TODO: Fix this test, it's failing because footerComponent (in SelectArtworkListsForArtworkView) is not being rendered
-    it.skip("should display `Done` button", () => {
-      renderWithRelay()
-
-      expect(screen.getByText("Done")).toBeOnTheScreen()
-    })
-
     it("should display artwork lists", async () => {
       const { mockResolveLastOperation } = renderWithRelay()
 
-      await waitFor(() =>
-        mockResolveLastOperation({ Me: () => ({ savedArtworksArtworkList, customArtworkLists }) })
-      )
+      mockResolveLastOperation({ Me: () => ({ savedArtworksArtworkList, customArtworkLists }) })
 
-      expect(screen.getByText("Saved Artworks")).toBeOnTheScreen()
+      await screen.findByText("Saved Artworks")
       expect(screen.getByText("Custom Artwork List 1")).toBeOnTheScreen()
       expect(screen.getByText("Custom Artwork List 2")).toBeOnTheScreen()
     })
@@ -71,75 +62,96 @@ describe("ArtworkListsProvider", () => {
       it("all artwork lists should be unselected", async () => {
         const { mockResolveLastOperation } = renderWithRelay()
 
-        await waitFor(() =>
-          mockResolveLastOperation({ Me: () => ({ savedArtworksArtworkList, customArtworkLists }) })
-        )
+        mockResolveLastOperation({ Me: () => ({ savedArtworksArtworkList, customArtworkLists }) })
 
-        const selected = screen.queryAllByA11yState({ selected: true })
-        expect(selected).toHaveLength(0)
+        await screen.findByText("Saved Artworks")
+        expect(screen.getByText("Custom Artwork List 1")).toBeOnTheScreen()
+        expect(screen.getByText("Custom Artwork List 2")).toBeOnTheScreen()
+
+        const options = screen.getAllByTestId("artworkListItem")
+        const unchecked = screen.queryAllByTestId("artworkListItemUnselectedIcon")
+
+        expect(options).toHaveLength(3)
+        expect(unchecked).toHaveLength(3)
       })
 
       it("recently selected artwork lists should be preselected by default", async () => {
         const { mockResolveLastOperation } = renderWithRelay()
 
-        await waitFor(() =>
-          mockResolveLastOperation({
-            Me: () => ({
-              savedArtworksArtworkList: { ...savedArtworksArtworkList, isSavedArtwork: true },
-              customArtworkLists: {
-                edges: [
-                  { node: { ...customArtworkListOne, isSavedArtwork: true } },
-                  { node: customArtworkListTwo },
-                ],
-              },
-            }),
-          })
-        )
+        mockResolveLastOperation({
+          Me: () => ({
+            savedArtworksArtworkList: { ...savedArtworksArtworkList, isSavedArtwork: true },
+            customArtworkLists: {
+              edges: [
+                { node: { ...customArtworkListOne, isSavedArtwork: true } },
+                { node: customArtworkListTwo },
+              ],
+            },
+          }),
+        })
 
-        const selected = screen.queryAllByA11yState({ selected: true })
-        expect(selected).toHaveLength(2)
+        await screen.findByText("Saved Artworks")
+        expect(screen.getByText("Custom Artwork List 1")).toBeOnTheScreen()
+        expect(screen.getByText("Custom Artwork List 2")).toBeOnTheScreen()
+
+        const options = screen.getAllByTestId("artworkListItem")
+        const unchecked = screen.queryAllByTestId("artworkListItemUnselectedIcon")
+        const checked = screen.queryAllByTestId("artworkListItemSelectedIcon")
+
+        expect(options).toHaveLength(3)
+        expect(checked).toHaveLength(2)
+        expect(unchecked).toHaveLength(1)
       })
 
       it("add selected state when artwork list is pressed", async () => {
         const { mockResolveLastOperation } = renderWithRelay()
 
-        await waitFor(() =>
-          mockResolveLastOperation({ Me: () => ({ savedArtworksArtworkList, customArtworkLists }) })
-        )
+        mockResolveLastOperation({ Me: () => ({ savedArtworksArtworkList, customArtworkLists }) })
 
-        const selectedBefore = screen.queryAllByA11yState({ selected: true })
-        expect(selectedBefore).toHaveLength(0)
+        await screen.findByText("Saved Artworks")
+        expect(screen.getByText("Custom Artwork List 1")).toBeOnTheScreen()
+        expect(screen.getByText("Custom Artwork List 2")).toBeOnTheScreen()
+
+        const options = screen.getAllByTestId("artworkListItem")
+        const unchecked = screen.queryAllByTestId("artworkListItemUnselectedIcon")
+        const checked = screen.queryAllByTestId("artworkListItemSelectedIcon")
+
+        expect(options).toHaveLength(3)
+        expect(checked).toHaveLength(0)
+        expect(unchecked).toHaveLength(3)
+        expect(screen.queryByTestId("artworkListItemSelectedIcon")).not.toBeOnTheScreen()
 
         fireEvent.press(screen.getByText("Custom Artwork List 2"))
 
-        const selectedAfter = screen.queryAllByA11yState({ selected: true })
-        expect(selectedAfter).toHaveLength(1)
+        expect(screen.getByTestId("artworkListItemSelectedIcon")).toBeOnTheScreen()
       })
 
       it("unselect recently selected artwork lists", async () => {
         const { mockResolveLastOperation } = renderWithRelay()
 
-        await waitFor(() =>
-          mockResolveLastOperation({
-            Me: () => ({
-              savedArtworksArtworkList: { ...savedArtworksArtworkList, isSavedArtwork: true },
-              customArtworkLists,
-            }),
-          })
-        )
+        mockResolveLastOperation({
+          Me: () => ({
+            savedArtworksArtworkList: { ...savedArtworksArtworkList, isSavedArtwork: true },
+            customArtworkLists,
+          }),
+        })
+
+        await screen.findByText("Saved Artworks")
 
         // Select some custom artwork list
         fireEvent.press(screen.getByText("Custom Artwork List 2"))
 
-        const selectedBefore = screen.queryAllByA11yState({ selected: true })
-        expect(selectedBefore).toHaveLength(2)
+        const options = screen.getAllByTestId("artworkListItem")
+        const unchecked = screen.queryAllByTestId("artworkListItemUnselectedIcon")
+        const checked = screen.queryAllByTestId("artworkListItemSelectedIcon")
 
-        // Unselect all
-        fireEvent.press(screen.getByText("Saved Artworks"))
+        expect(options).toHaveLength(3)
+        expect(checked).toHaveLength(2)
+        expect(unchecked).toHaveLength(1)
+
         fireEvent.press(screen.getByText("Custom Artwork List 2"))
 
-        const selectedAfter = screen.queryAllByA11yState({ selected: true })
-        expect(selectedAfter).toHaveLength(0)
+        expect(screen.getAllByTestId("artworkListItemSelectedIcon")).toHaveLength(1)
       })
     })
 
@@ -147,28 +159,24 @@ describe("ArtworkListsProvider", () => {
       it("should render `x Artwork` when one artwork was saved", async () => {
         const { mockResolveLastOperation } = renderWithRelay()
 
-        await waitFor(() =>
-          mockResolveLastOperation({
-            Me: () => ({
-              savedArtworksArtworkList: { ...savedArtworksArtworkList, artworksCount: 1 },
-              customArtworkLists: { edges: [] },
-            }),
-          })
-        )
+        mockResolveLastOperation({
+          Me: () => ({
+            savedArtworksArtworkList: { ...savedArtworksArtworkList, artworksCount: 1 },
+            customArtworkLists: { edges: [] },
+          }),
+        })
 
-        expect(screen.getByText("1 Artwork")).toBeOnTheScreen()
+        await screen.findByText("1 Artwork")
       })
 
       it("should render `x Artworks` when multiple artwork were saved", async () => {
         const { mockResolveLastOperation } = renderWithRelay()
 
-        await waitFor(() =>
-          mockResolveLastOperation({
-            Me: () => ({ savedArtworksArtworkList, customArtworkLists: { edges: [] } }),
-          })
-        )
+        mockResolveLastOperation({
+          Me: () => ({ savedArtworksArtworkList, customArtworkLists: { edges: [] } }),
+        })
 
-        expect(screen.getByText("5 Artworks")).toBeOnTheScreen()
+        await screen.findByText("5 Artworks")
       })
     })
 
@@ -177,11 +185,9 @@ describe("ArtworkListsProvider", () => {
         it("default state", async () => {
           const { mockResolveLastOperation } = renderWithRelay()
 
-          await waitFor(() =>
-            mockResolveLastOperation({
-              Me: () => ({ savedArtworksArtworkList, customArtworkLists, artworkLists }),
-            })
-          )
+          mockResolveLastOperation({
+            Me: () => ({ savedArtworksArtworkList, customArtworkLists, artworkLists }),
+          })
 
           expect(screen.getByText("0 lists selected")).toBeOnTheScreen()
         })
@@ -189,12 +195,11 @@ describe("ArtworkListsProvider", () => {
         it("selected one artwork list", async () => {
           const { mockResolveLastOperation } = renderWithRelay()
 
-          await waitFor(() =>
-            mockResolveLastOperation({
-              Me: () => ({ savedArtworksArtworkList, customArtworkLists, artworkLists }),
-            })
-          )
+          mockResolveLastOperation({
+            Me: () => ({ savedArtworksArtworkList, customArtworkLists, artworkLists }),
+          })
 
+          await screen.findByText("Saved Artworks")
           fireEvent.press(screen.getByText("Saved Artworks"))
 
           expect(screen.getByText("1 list selected")).toBeOnTheScreen()
@@ -203,12 +208,11 @@ describe("ArtworkListsProvider", () => {
         it("selected multiple artwork lists", async () => {
           const { mockResolveLastOperation } = renderWithRelay()
 
-          await waitFor(() =>
-            mockResolveLastOperation({
-              Me: () => ({ savedArtworksArtworkList, customArtworkLists, artworkLists }),
-            })
-          )
+          mockResolveLastOperation({
+            Me: () => ({ savedArtworksArtworkList, customArtworkLists, artworkLists }),
+          })
 
+          await screen.findByText("Saved Artworks")
           fireEvent.press(screen.getByText("Saved Artworks"))
           fireEvent.press(screen.getByText("Custom Artwork List 1"))
 
@@ -218,12 +222,11 @@ describe("ArtworkListsProvider", () => {
         it("selected multiple artwork lists (select and unselect action)", async () => {
           const { mockResolveLastOperation } = renderWithRelay()
 
-          await waitFor(() =>
-            mockResolveLastOperation({
-              Me: () => ({ savedArtworksArtworkList, customArtworkLists, artworkLists }),
-            })
-          )
+          mockResolveLastOperation({
+            Me: () => ({ savedArtworksArtworkList, customArtworkLists, artworkLists }),
+          })
 
+          await screen.findByText("Saved Artworks")
           fireEvent.press(screen.getByText("Saved Artworks"))
           fireEvent.press(screen.getByText("Custom Artwork List 1"))
           expect(screen.getByText("2 lists selected")).toBeOnTheScreen()
@@ -237,32 +240,29 @@ describe("ArtworkListsProvider", () => {
         it("default state", async () => {
           const { mockResolveLastOperation } = renderWithRelay()
 
-          await waitFor(() =>
-            mockResolveLastOperation({
-              Me: () => ({
-                savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
-                customArtworkLists: preselectedCustomArtworkLists,
-                artworkLists: preselectedArtworkLists,
-              }),
-            })
-          )
+          mockResolveLastOperation({
+            Me: () => ({
+              savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
+              customArtworkLists: preselectedCustomArtworkLists,
+              artworkLists: preselectedArtworkLists,
+            }),
+          })
 
-          expect(screen.getByText("3 lists selected")).toBeOnTheScreen()
+          await screen.findByText("3 lists selected")
         })
 
         it("unselect preselected artwork lists", async () => {
           const { mockResolveLastOperation } = renderWithRelay()
 
-          await waitFor(() =>
-            mockResolveLastOperation({
-              Me: () => ({
-                savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
-                customArtworkLists: preselectedCustomArtworkLists,
-                artworkLists: preselectedArtworkLists,
-              }),
-            })
-          )
+          mockResolveLastOperation({
+            Me: () => ({
+              savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
+              customArtworkLists: preselectedCustomArtworkLists,
+              artworkLists: preselectedArtworkLists,
+            }),
+          })
 
+          await screen.findByText("Saved Artworks")
           fireEvent.press(screen.getByText("Saved Artworks"))
           fireEvent.press(screen.getByText("Custom Artwork List 1"))
 
@@ -272,16 +272,15 @@ describe("ArtworkListsProvider", () => {
         it("unselect preselected and select again the same artwork lists", async () => {
           const { mockResolveLastOperation } = renderWithRelay()
 
-          await waitFor(() =>
-            mockResolveLastOperation({
-              Me: () => ({
-                savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
-                customArtworkLists: preselectedCustomArtworkLists,
-                artworkLists: preselectedArtworkLists,
-              }),
-            })
-          )
+          mockResolveLastOperation({
+            Me: () => ({
+              savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
+              customArtworkLists: preselectedCustomArtworkLists,
+              artworkLists: preselectedArtworkLists,
+            }),
+          })
 
+          await screen.findByText("Saved Artworks")
           fireEvent.press(screen.getByText("Saved Artworks"))
           fireEvent.press(screen.getByText("Custom Artwork List 1"))
           expect(screen.getByText("1 list selected")).toBeOnTheScreen()
@@ -294,15 +293,15 @@ describe("ArtworkListsProvider", () => {
         it("unselect preselected and select other artwork lists", async () => {
           const { mockResolveLastOperation } = renderWithRelay()
 
-          await waitFor(() =>
-            mockResolveLastOperation({
-              Me: () => ({
-                savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
-                customArtworkLists: preselectedCustomArtworkLists,
-                artworkLists: preselectedArtworkLists,
-              }),
-            })
-          )
+          mockResolveLastOperation({
+            Me: () => ({
+              savedArtworksArtworkList: preselectedSavedArtworksArtworkList,
+              customArtworkLists: preselectedCustomArtworkLists,
+              artworkLists: preselectedArtworkLists,
+            }),
+          })
+
+          await screen.findByText("Saved Artworks")
 
           fireEvent.press(screen.getByText("Saved Artworks"))
           fireEvent.press(screen.getByText("Custom Artwork List 1"))
@@ -311,19 +310,6 @@ describe("ArtworkListsProvider", () => {
           fireEvent.press(screen.getByText("Custom Artwork List 3"))
           expect(screen.getByText("2 lists selected")).toBeOnTheScreen()
         })
-      })
-    })
-
-    // TODO: Fix this test, it's failing because footerComponent (in SelectArtworkListsForArtworkView) is not being rendered
-    describe.skip("Done button", () => {
-      it("enabled by default", async () => {
-        const { mockResolveLastOperation } = renderWithRelay()
-
-        await waitFor(() =>
-          mockResolveLastOperation({ Me: () => ({ savedArtworksArtworkList, customArtworkLists }) })
-        )
-
-        expect(screen.getByText("Done")).toBeEnabled()
       })
     })
   })
@@ -350,9 +336,10 @@ describe("ArtworkListsProvider", () => {
     it("should display the artwork lists", async () => {
       const { mockResolveLastOperation } = renderOfferSettings()
 
-      await waitFor(() =>
-        mockResolveLastOperation({ Me: () => ({ savedArtworksArtworkList, customArtworkLists }) })
-      )
+      mockResolveLastOperation({ Me: () => ({ savedArtworksArtworkList, customArtworkLists }) })
+
+      await screen.findByText("Offer Settings")
+      await screen.findByText("Saved Artworks")
 
       expect(screen.getByText("Offer Settings")).toBeOnTheScreen()
 
@@ -367,9 +354,9 @@ describe("ArtworkListsProvider", () => {
       it("all artwork lists should be unshared", async () => {
         const { mockResolveLastOperation } = renderOfferSettings()
 
-        await waitFor(() =>
-          mockResolveLastOperation({ Me: () => ({ savedArtworksArtworkList, customArtworkLists }) })
-        )
+        mockResolveLastOperation({ Me: () => ({ savedArtworksArtworkList, customArtworkLists }) })
+
+        await screen.findByText("Saved Artworks")
 
         expect(screen.getAllByLabelText("EyeClosedIcon").length).toEqual(1)
 
@@ -381,9 +368,7 @@ describe("ArtworkListsProvider", () => {
         fireEvent(savedArtworks, "valueChange", true)
         fireEvent(custom1, "valueChange", true)
 
-        await waitFor(() => {
-          expect(screen.getAllByLabelText("EyeClosedIcon").length).toEqual(3)
-        })
+        expect(screen.getAllByLabelText("EyeClosedIcon").length).toEqual(3)
 
         // Share again
         fireEvent(savedArtworks, "valueChange", false)

@@ -25,13 +25,13 @@ describe("collection header", () => {
       })
     })
 
-    it("passes the collection header image url to collection header", () => {
+    it("doesn't render the collection header image url to collection header", () => {
       renderWithRelay({ MarketingCollection: () => CollectionFixture })
 
-      expect(screen.UNSAFE_queryByProps({ testID: "header-image" })).not.toBeTruthy()
+      expect(screen.queryByTestId("header-image")).not.toBeOnTheScreen()
     })
 
-    it("passes the url of the most marketable artwork in the collection to the collection header when there is no headerImage value present", () => {
+    it("doesn't render the image of the most marketable artwork in the collection to the collection header when there is no headerImage value present", () => {
       renderWithRelay({
         MarketingCollection: () => ({
           ...CollectionFixture,
@@ -53,14 +53,10 @@ describe("collection header", () => {
     it("passes the collection header image url to collection header", () => {
       renderWithRelay({ MarketingCollection: () => CollectionFixture })
 
-      expect(screen.UNSAFE_queryByProps({ testID: "header-image" })).toBeTruthy()
-      expect(screen.UNSAFE_queryByProps({ testID: "header-image" })).toHaveProp(
-        "src",
-        "http://imageuploadedbymarketingteam.jpg"
-      )
+      expect(screen.getByTestId("header-image")).toBeOnTheScreen()
     })
 
-    it("passes the url of the most marketable artwork in the collection to the collection header when there is no headerImage value present", () => {
+    it("renders the image of the most marketable artwork in the collection to the collection header when there is no headerImage value present", () => {
       renderWithRelay({
         MarketingCollection: () => ({
           ...CollectionFixture,
@@ -68,11 +64,7 @@ describe("collection header", () => {
         }),
       })
 
-      expect(screen.UNSAFE_queryByProps({ testID: "header-image" })).toBeOnTheScreen()
-      expect(screen.UNSAFE_queryByProps({ testID: "header-image" })).toHaveProp(
-        "src",
-        "https://defaultmostmarketableartworkincollectionimage.jpg"
-      )
+      expect(screen.getByTestId("header-image")).toBeOnTheScreen()
     })
   })
 

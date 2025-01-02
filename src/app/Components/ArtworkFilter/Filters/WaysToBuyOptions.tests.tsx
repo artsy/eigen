@@ -1,4 +1,4 @@
-import { within } from "@testing-library/react-native"
+import { screen } from "@testing-library/react-native"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
@@ -42,15 +42,15 @@ describe("Ways to Buy Options Screen", () => {
   )
 
   it("renders the correct ways to buy options", () => {
-    const { getByText } = renderWithWrappers(<MockWaysToBuyScreen initialData={initialState} />)
+    renderWithWrappers(<MockWaysToBuyScreen initialData={initialState} />)
 
-    expect(getByText("Purchase")).toBeTruthy()
-    expect(getByText("Make Offer")).toBeTruthy()
-    expect(getByText("Bid")).toBeTruthy()
-    expect(getByText("Contact Gallery")).toBeTruthy()
+    expect(screen.getByText("Purchase")).toBeTruthy()
+    expect(screen.getByText("Make Offer")).toBeTruthy()
+    expect(screen.getByText("Bid")).toBeTruthy()
+    expect(screen.getByText("Contact Gallery")).toBeTruthy()
   })
 
-  it.skip("does not display the default text when no filter selected on the filter modal screen", () => {
+  it("does not display the default text when no filter selected on the filter modal screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [],
       appliedFilters: [],
@@ -66,12 +66,12 @@ describe("Ways to Buy Options Screen", () => {
       sizeMetric: "cm",
     }
 
-    const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
+    renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
 
-    expect(getByText("Ways to Buy")).toBeTruthy()
+    expect(screen.getByText("Ways to Buy")).toBeOnTheScreen()
   })
 
-  it.skip("displays the number of the selected filters on the filter modal screen", () => {
+  it("displays the number of the selected filters on the filter modal screen", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
         {
@@ -103,8 +103,9 @@ describe("Ways to Buy Options Screen", () => {
       sizeMetric: "cm",
     }
 
-    const { getByText } = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
-    expect(within(getByText("Ways to Buy")).getByText("• 3")).toBeTruthy()
+    renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
+
+    expect(screen.getByText("Ways to Buy • 3")).toBeOnTheScreen()
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
@@ -129,13 +130,23 @@ describe("Ways to Buy Options Screen", () => {
       sizeMetric: "cm",
     }
 
-    const { getAllByA11yState } = renderWithWrappers(
-      <MockWaysToBuyScreen initialData={injectedState} />
-    )
-    const options = getAllByA11yState({ checked: true })
+    renderWithWrappers(<MockWaysToBuyScreen initialData={injectedState} />)
 
-    expect(options).toHaveLength(1)
+    const options = screen.getAllByTestId("multi-select-option-button")
+    const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
+
+    expect(options).toHaveLength(4)
+    expect(checkboxes).toHaveLength(4)
+
     expect(options[0]).toHaveTextContent("Purchase")
+    expect(options[1]).toHaveTextContent("Make Offer")
+    expect(options[2]).toHaveTextContent("Bid")
+    expect(options[3]).toHaveTextContent("Contact Gallery")
+
+    expect(checkboxes[0]).toHaveProp("selected", true)
+    expect(checkboxes[1]).toHaveProp("selected", false)
+    expect(checkboxes[2]).toHaveProp("selected", false)
+    expect(checkboxes[3]).toHaveProp("selected", false)
   })
 
   it("it toggles applied filters 'ON' and unapplied filters 'OFF", () => {
@@ -166,12 +177,22 @@ describe("Ways to Buy Options Screen", () => {
       sizeMetric: "cm",
     }
 
-    const { getAllByA11yState } = renderWithWrappers(
-      <MockWaysToBuyScreen initialData={injectedState} />
-    )
-    const options = getAllByA11yState({ checked: true })
+    renderWithWrappers(<MockWaysToBuyScreen initialData={injectedState} />)
 
-    expect(options).toHaveLength(1)
-    expect(options[0]).toHaveTextContent("Contact Gallery")
+    const options = screen.getAllByTestId("multi-select-option-button")
+    const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
+
+    expect(options).toHaveLength(4)
+    expect(checkboxes).toHaveLength(4)
+
+    expect(options[0]).toHaveTextContent("Purchase")
+    expect(options[1]).toHaveTextContent("Make Offer")
+    expect(options[2]).toHaveTextContent("Bid")
+    expect(options[3]).toHaveTextContent("Contact Gallery")
+
+    expect(checkboxes[0]).toHaveProp("selected", false)
+    expect(checkboxes[1]).toHaveProp("selected", false)
+    expect(checkboxes[2]).toHaveProp("selected", false)
+    expect(checkboxes[3]).toHaveProp("selected", true)
   })
 })

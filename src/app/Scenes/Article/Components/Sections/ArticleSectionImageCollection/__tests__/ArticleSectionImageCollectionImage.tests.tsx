@@ -48,7 +48,7 @@ describe("ArticleSectionImageCollectionImage", () => {
     renderWithRelay()
 
     await waitFor(() => {
-      expect(screen.UNSAFE_getByType(Image)).toBeOnTheScreen()
+      expect(screen.UNSAFE_queryByType(Image)).toBeTruthy()
     })
   })
 
@@ -60,7 +60,7 @@ describe("ArticleSectionImageCollectionImage", () => {
     })
 
     await waitFor(() => {
-      expect(screen.UNSAFE_getByType(Image)).toBeOnTheScreen()
+      expect(screen.UNSAFE_queryByType(Image)).toBeTruthy()
     })
   })
 })

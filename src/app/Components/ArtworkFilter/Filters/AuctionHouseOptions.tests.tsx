@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
@@ -42,31 +42,52 @@ describe("AuctionHouse options screen", () => {
   }
 
   it("selects only the option that is selected", () => {
-    const { getByText, getAllByA11yState } = renderWithWrappers(
+    renderWithWrappers(
       <MockAuctionHouseScreen {...getEssentialProps()} initialData={initialState} />
     )
-    fireEvent.press(getByText("Sotheby's"))
+    const options = screen.getAllByTestId("multi-select-option-button")
+    const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
 
-    const selectedOptions = getAllByA11yState({ checked: true })
-    expect(selectedOptions).toHaveLength(1)
-    expect(selectedOptions[0]).toHaveTextContent("Sotheby's")
-    expect(getByText("Clear")).toBeTruthy()
+    expect(options[0]).toHaveTextContent("Sotheby's")
+    expect(checkboxes[0]).toHaveProp("selected", false)
+
+    fireEvent.press(screen.getByText("Sotheby's"))
+
+    expect(checkboxes[0]).toHaveProp("selected", true)
+
+    expect(screen.getByText("Clear")).toBeTruthy()
   })
 
   it("allows multiple auction houses to be selected", () => {
-    const { getByText, getAllByA11yState } = renderWithWrappers(
+    renderWithWrappers(
       <MockAuctionHouseScreen {...getEssentialProps()} initialData={initialState} />
     )
-    fireEvent.press(getByText("Sotheby's"))
-    fireEvent.press(getByText("Christie's"))
-    fireEvent.press(getByText("Bonhams"))
-    fireEvent.press(getByText("Artsy Auction"))
 
-    const selectedOptions = getAllByA11yState({ checked: true })
-    expect(selectedOptions).toHaveLength(4)
-    expect(selectedOptions[0]).toHaveTextContent("Sotheby's")
-    expect(selectedOptions[1]).toHaveTextContent("Christie's")
-    expect(selectedOptions[2]).toHaveTextContent("Bonhams")
-    expect(selectedOptions[3]).toHaveTextContent("Artsy Auction")
+    const options = screen.getAllByTestId("multi-select-option-button")
+    const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
+
+    expect(options).toHaveLength(5)
+
+    expect(options[0]).toHaveTextContent("Sotheby's")
+    expect(options[1]).toHaveTextContent("Christie's")
+    expect(options[3]).toHaveTextContent("Bonhams")
+    expect(options[4]).toHaveTextContent("Artsy Auction")
+
+    expect(checkboxes[0]).toHaveProp("selected", false)
+    expect(checkboxes[1]).toHaveProp("selected", false)
+    expect(checkboxes[2]).toHaveProp("selected", false)
+    expect(checkboxes[3]).toHaveProp("selected", false)
+    expect(checkboxes[4]).toHaveProp("selected", false)
+
+    fireEvent.press(screen.getByText("Sotheby's"))
+    fireEvent.press(screen.getByText("Christie's"))
+    fireEvent.press(screen.getByText("Bonhams"))
+    fireEvent.press(screen.getByText("Artsy Auction"))
+
+    expect(checkboxes[0]).toHaveProp("selected", true)
+    expect(checkboxes[1]).toHaveProp("selected", true)
+    expect(checkboxes[2]).toHaveProp("selected", false)
+    expect(checkboxes[3]).toHaveProp("selected", true)
+    expect(checkboxes[4]).toHaveProp("selected", true)
   })
 })

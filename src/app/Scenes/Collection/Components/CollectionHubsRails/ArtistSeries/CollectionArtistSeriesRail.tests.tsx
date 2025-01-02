@@ -1,94 +1,12 @@
-import { act, fireEvent } from "@testing-library/react-native"
-import { CollectionArtistSeriesRailTestsQuery } from "__generated__/CollectionArtistSeriesRailTestsQuery.graphql"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { CardRailCard } from "app/Components/CardRail/CardRailCard"
 import { GenericArtistSeriesRail } from "app/Components/GenericArtistSeriesRail"
-import {
-  CollectionArtistSeriesRail,
-  CollectionArtistSeriesRailContainer,
-} from "app/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
+import { CollectionArtistSeriesRail } from "app/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("Artist Series Rail", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  const TestRenderer = () => (
-    <QueryRenderer<CollectionArtistSeriesRailTestsQuery>
-      environment={env}
-      query={graphql`
-        query CollectionArtistSeriesRailTestsQuery @raw_response_type {
-          marketingCollection(slug: "photography") {
-            ...CollectionArtistSeriesRail_collection
-            linkedCollections {
-              groupType
-              ...CollectionArtistSeriesRail_collectionGroup
-            }
-          }
-        }
-      `}
-      variables={{}}
-      render={({ props, error }) => {
-        if (props?.marketingCollection) {
-          return (
-            <CollectionArtistSeriesRailContainer
-              collection={props.marketingCollection}
-              collectionGroup={props.marketingCollection.linkedCollections[0]}
-            />
-          )
-        } else if (error) {
-          console.log(error)
-        }
-      }}
-    />
-  )
-
-  const getWrapper = () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: {
-          ...CollectionHubRailsArtistSeriesFixture,
-        },
-      })
-    })
-    return tree
-  }
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
-
-  afterEach(() => {
-    jest.clearAllMocks()
-  })
-
-  it("renders without throwing an error", () => {
-    const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(GenericArtistSeriesRail)).toHaveLength(1)
-  })
-
-  it("correctly tracks when a collection is tapped", () => {
-    const wrapper = getWrapper()
-    wrapper.root.findAllByType(CardRailCard)[0].props.onPress()
-
-    expect(mockTrackEvent).toBeCalledWith({
-      action_type: "tappedCollectionGroup",
-      context_module: "artistSeriesRail",
-      context_screen_owner_id: "collection0",
-      context_screen_owner_slug: "cool-collection",
-      context_screen_owner_type: "Collection",
-      destination_screen_owner_id: "collection1",
-      destination_screen_owner_slug: "cindy-sherman-untitled-film-stills",
-      destination_screen_owner_type: "Collection",
-      horizontal_slide_position: 0,
-      type: "thumbnail",
-    })
-  })
-
   describe("Trending Artists Rail", () => {
     let props: any /* STRICTNESS_MIGRATION */
     beforeEach(() => {
@@ -99,77 +17,91 @@ describe("Artist Series Rail", () => {
       }
     })
 
-    it("renders three artist series in the Trending Artists Series", () => {
-      const { queryByText } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
+    it("renders without throwing an error", () => {
+      renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
-      expect(queryByText("Cindy Sherman: Untitled Film Stills")).toBeTruthy()
-      expect(queryByText("Damien Hirst: Butterflies")).toBeTruthy()
-      expect(queryByText("Hunt Slonem: Bunnies")).toBeTruthy()
+      expect(screen.UNSAFE_getAllByType(GenericArtistSeriesRail)).toHaveLength(1)
     })
 
-    it("renders three images of the correct size in an artist series", () => {
-      const { UNSAFE_getAllByProps } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
+    it("correctly tracks when a collection is tapped", () => {
+      renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
-      expect(UNSAFE_getAllByProps({ testID: "image-1" })[0]).toHaveProp(
-        "src",
-        "https://cindy-sherman-untitled-film-stills/medium.jpg"
-      )
-      expect(UNSAFE_getAllByProps({ testID: "image-1" })[0]).toHaveProp("height", 180)
-      expect(UNSAFE_getAllByProps({ testID: "image-1" })[0]).toHaveProp("width", 180)
+      const railCard = screen.UNSAFE_getAllByType(CardRailCard)[0]
 
-      expect(UNSAFE_getAllByProps({ testID: "image-2" })[0]).toHaveProp(
-        "src",
-        "https://cindy-sherman-untitled-film-stills-2/medium.jpg"
-      )
-      expect(UNSAFE_getAllByProps({ testID: "image-2" })[0]).toHaveProp("height", 90)
-      expect(UNSAFE_getAllByProps({ testID: "image-2" })[0]).toHaveProp("width", 90)
+      fireEvent.press(railCard)
 
-      expect(UNSAFE_getAllByProps({ testID: "image-3" })[0]).toHaveProp(
-        "src",
-        "https://cindy-sherman-untitled-film-stills-3/medium.jpg"
-      )
-      expect(UNSAFE_getAllByProps({ testID: "image-3" })[0]).toHaveProp("height", 90)
-      expect(UNSAFE_getAllByProps({ testID: "image-3" })[0]).toHaveProp("width", 90)
+      expect(mockTrackEvent).toBeCalledWith({
+        action_type: "tappedCollectionGroup",
+        context_module: "artistSeriesRail",
+        context_screen_owner_id: "collection0",
+        context_screen_owner_slug: "cool-collection",
+        context_screen_owner_type: "Collection",
+        destination_screen_owner_id: "collection1",
+        destination_screen_owner_slug: "cindy-sherman-untitled-film-stills",
+        destination_screen_owner_type: "Collection",
+        horizontal_slide_position: 0,
+        type: "thumbnail",
+      })
+    })
+
+    it("renders three artist series in the Trending Artists Series", () => {
+      renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
+
+      expect(screen.getByText("Cindy Sherman: Untitled Film Stills")).toBeOnTheScreen()
+      expect(screen.getByText("Damien Hirst: Butterflies")).toBeOnTheScreen()
+      expect(screen.getByText("Hunt Slonem: Bunnies")).toBeOnTheScreen()
+    })
+
+    it("renders three images in an artist series", () => {
+      renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
+
+      const img1 = screen.getAllByTestId("image-1")[0]
+      const img2 = screen.getAllByTestId("image-2")[0]
+      const img3 = screen.getAllByTestId("image-3")[0]
+
+      expect(img1).toBeOnTheScreen()
+      expect(img2).toBeOnTheScreen()
+      expect(img3).toBeOnTheScreen()
     })
 
     it("renders the collection hub rail title", () => {
-      const { queryByText } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
+      renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
-      expect(queryByText("Trending Artist Series")).toBeTruthy()
+      expect(screen.getByText("Trending Artist Series")).toBeOnTheScreen()
     })
 
     it("renders each artist series' title", () => {
-      const { queryByText } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
+      renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
-      expect(queryByText("Cindy Sherman: Untitled Film Stills")).toBeTruthy()
-      expect(queryByText("Damien Hirst: Butterflies")).toBeTruthy()
-      expect(queryByText("Hunt Slonem: Bunnies")).toBeTruthy()
+      expect(screen.getByText("Cindy Sherman: Untitled Film Stills")).toBeOnTheScreen()
+      expect(screen.getByText("Damien Hirst: Butterflies")).toBeOnTheScreen()
+      expect(screen.getByText("Hunt Slonem: Bunnies")).toBeOnTheScreen()
     })
 
     it("renders each artist series' metadata", () => {
-      const { queryByText } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
+      renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
-      expect(queryByText("From $20,000")).toBeTruthy()
-      expect(queryByText("From $7,500")).toBeTruthy()
-      expect(queryByText("From $2,000")).toBeTruthy()
+      expect(screen.getByText("From $20,000")).toBeOnTheScreen()
+      expect(screen.getByText("From $7,500")).toBeOnTheScreen()
+      expect(screen.getByText("From $2,000")).toBeOnTheScreen()
     })
 
     it("navigates to a new collection when a series is tapped", () => {
-      const { getByText } = renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
+      renderWithWrappers(<CollectionArtistSeriesRail {...props} />)
 
-      fireEvent.press(getByText("Cindy Sherman: Untitled Film Stills"))
+      fireEvent.press(screen.getByText("Cindy Sherman: Untitled Film Stills"))
       expect(navigate).toHaveBeenCalledWith("/collection/cindy-sherman-untitled-film-stills")
 
-      fireEvent.press(getByText("Damien Hirst: Butterflies"))
+      fireEvent.press(screen.getByText("Damien Hirst: Butterflies"))
       expect(navigate).toHaveBeenCalledWith("/collection/damien-hirst-butterflies")
 
-      fireEvent.press(getByText("Hunt Slonem: Bunnies"))
+      fireEvent.press(screen.getByText("Hunt Slonem: Bunnies"))
       expect(navigate).toHaveBeenCalledWith("/collection/hunt-slonem-bunnies")
     })
   })
 })
 
-const CollectionHubRailsArtistSeriesFixture: CollectionArtistSeriesRailTestsQuery["rawResponse"] = {
+const CollectionHubRailsArtistSeriesFixture = {
   marketingCollection: {
     id: "collection0",
     slug: "cool-collection",

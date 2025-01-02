@@ -1,6 +1,5 @@
 import { screen } from "@testing-library/react-native"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -51,9 +50,7 @@ describe(CareerHighlightBottomSheet, () => {
 
     mockEnvironment.mock.resolveMostRecentOperation({ data: bottomSheetDataMock })
 
-    await flushPromiseQueue()
-
-    expect(screen.getByTestId("BottomSheetFlatlist")).toBeOnTheScreen()
+    await screen.findByTestId("BottomSheetFlatlist")
   })
 })
 
@@ -72,8 +69,8 @@ describe(makeCareerHighlightMap, () => {
     })
   })
 
-  it("Returns an empty object if the year is less than 2014", () => {
-    const result = makeCareerHighlightMap(
+  it("Returns an empty object if the year is less than 2014", async () => {
+    const result = await makeCareerHighlightMap(
       "2013 Group Show @ MOCA Los Angeles; 2012 Reviewed Solo Show @ The Guardian; 2011 Reviewed Solo Show @ Art in America"
     )
 

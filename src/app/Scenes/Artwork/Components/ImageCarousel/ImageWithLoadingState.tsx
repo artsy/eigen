@@ -40,6 +40,7 @@ export const ImageWithLoadingState = React.forwardRef<View, ImageWithLoadingStat
             aspectRatio={width / height}
             height={height}
             width={width}
+            testID="ImageWithLoadingState"
           />
         </View>
       </TouchableWithoutFeedback>

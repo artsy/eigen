@@ -73,11 +73,8 @@ describe("SubmitArtworkCondition", () => {
     fireEvent(conditionSelect, "onPress")
 
     // Wait for the select modal to show up
-    await flushPromiseQueue()
+    await screen.findByText("Fair")
     fireEvent.press(screen.getByText("Fair"))
-
-    // Wait for the select modal to show up
-    await flushPromiseQueue()
 
     // The value is going to be rendered twice because it's also available in the Select component
     expect(screen.getAllByText("Fair")).toHaveLength(2)

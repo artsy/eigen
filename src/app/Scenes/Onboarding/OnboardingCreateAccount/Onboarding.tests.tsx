@@ -20,26 +20,26 @@ describe("Onboarding", () => {
     renderWithWrappers(<Onboarding />)
     __globalStoreTestUtils__?.injectState({ auth: { onboardingState: "none" } })
 
-    expect(screen.UNSAFE_queryByType(OnboardingQuiz)).not.toBeOnTheScreen()
-    expect(screen.UNSAFE_getByType(OnboardingWelcomeScreens)).toBeOnTheScreen()
+    expect(screen.UNSAFE_queryByType(OnboardingQuiz)).toBeFalsy()
+    expect(screen.UNSAFE_getByType(OnboardingWelcomeScreens)).toBeTruthy()
 
     renderWithWrappers(<Onboarding />)
     __globalStoreTestUtils__?.injectState({ auth: { onboardingState: "complete" } })
 
-    expect(screen.UNSAFE_queryByType(OnboardingQuiz)).not.toBeOnTheScreen()
-    expect(screen.UNSAFE_getByType(OnboardingWelcomeScreens)).toBeOnTheScreen()
+    expect(screen.UNSAFE_queryByType(OnboardingQuiz)).toBeFalsy()
+    expect(screen.UNSAFE_getByType(OnboardingWelcomeScreens)).toBeTruthy()
   })
 
   it("renders the personalization flow when the onboarding state is incomplete", () => {
     renderWithWrappers(<Onboarding />)
     __globalStoreTestUtils__?.injectState({ auth: { onboardingState: "incomplete" } })
-    expect(screen.UNSAFE_getByType(OnboardingQuiz)).toBeOnTheScreen()
-    expect(screen.UNSAFE_queryByType(OnboardingWelcomeScreens)).not.toBeOnTheScreen()
+    expect(screen.UNSAFE_getByType(OnboardingQuiz)).toBeTruthy()
+    expect(screen.UNSAFE_queryByType(OnboardingWelcomeScreens)).toBeFalsy()
   })
 
   it("renders NetworkAwareProvider", () => {
     renderWithWrappers(<Onboarding />)
 
-    expect(screen.UNSAFE_getByType(NetworkAwareProvider)).toBeOnTheScreen()
+    expect(screen.UNSAFE_getByType(NetworkAwareProvider)).toBeTruthy()
   })
 })
