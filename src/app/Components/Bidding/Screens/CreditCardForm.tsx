@@ -8,7 +8,8 @@ import {
   Text,
   useSpace,
 } from "@artsy/palette-mobile"
-import { createToken, Token } from "@stripe/stripe-react-native"
+import { NavigationProp, RouteProp } from "@react-navigation/native"
+import { createToken } from "@stripe/stripe-react-native"
 import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
 import { Details } from "@stripe/stripe-react-native/lib/typescript/src/types/components/CardFieldInput"
 import {
@@ -18,30 +19,26 @@ import {
 import { findCountryNameByCountryCode } from "app/Components/Bidding/Utils/findCountryNameByCountryCode"
 import { creditCardFormValidationSchema } from "app/Components/Bidding/Validators/creditCardFormFieldsValidationSchema"
 import { Address } from "app/Components/Bidding/types"
+import { RegistrationFlowNavigationStackParams } from "app/Components/Containers/RegistrationFlow"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { CreditCardField } from "app/Components/CreditCardField/CreditCardField"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Select } from "app/Components/Select/SelectV2"
-import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { useFormik } from "formik"
 import { useRef } from "react"
 import { ScrollView } from "react-native"
 
 interface CreditCardFormProps {
-  navigator: NavigatorIOS
-  billingAddress?: Address | null
-  onSubmit: (t: Token.Result, a: Address) => void
+  navigation: NavigationProp<RegistrationFlowNavigationStackParams, "CreditCardForm">
+  route: RouteProp<RegistrationFlowNavigationStackParams, "CreditCardForm">
 }
 
-export const CreditCardForm: React.FC<CreditCardFormProps> = ({
-  onSubmit,
-  billingAddress,
-  navigator,
-}) => {
+export const CreditCardForm: React.FC<CreditCardFormProps> = ({ navigation, route }) => {
+  const onSubmit = route.params.onSubmit
   const space = useSpace()
   const initialValues: CreditCardFormValues = {
     ...CREDIT_CARD_INITIAL_FORM_VALUES,
-    ...billingAddress,
+    ...route.params.billingAddress,
   }
 
   const {
@@ -69,7 +66,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
         }
 
         onSubmit(token.token, buildBillingAddress(values))
-        navigator.pop()
+        navigation.goBack()
       } catch (error) {
         setErrors({ creditCard: { valid: "There was an error. Please try again." } })
         console.error("CreditCardForm.tsx", error)
@@ -111,7 +108,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
 
   return (
     <ArtsyKeyboardAvoidingView>
-      <FancyModalHeader onLeftButtonPress={() => navigator.pop()}>Add Credit Card</FancyModalHeader>
+      <FancyModalHeader onLeftButtonPress={navigation.goBack}>Add Credit Card</FancyModalHeader>
 
       <ScrollView
         contentContainerStyle={{ padding: space(2), paddingBottom: space(4) }}

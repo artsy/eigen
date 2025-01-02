@@ -1,8 +1,10 @@
 import { Box, Button, Checkbox, LinkText, Text } from "@artsy/palette-mobile"
+import { NavigationProp, RouteProp, useRoute } from "@react-navigation/native"
 import { createToken, Token } from "@stripe/stripe-react-native"
 import { BidderPositionQuery } from "__generated__/BidderPositionQuery.graphql"
 import { ConfirmBidCreateBidderPositionMutation } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
 import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
+import { ConfirmBidQuery } from "__generated__/ConfirmBidQuery.graphql"
 import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { ConfirmBid_me$data } from "__generated__/ConfirmBid_me.graphql"
 import { ConfirmBid_sale_artwork$data } from "__generated__/ConfirmBid_sale_artwork.graphql"
@@ -11,25 +13,32 @@ import { Divider } from "app/Components/Bidding/Components/Divider"
 import { PaymentInfo } from "app/Components/Bidding/Components/PaymentInfo"
 import { Timer } from "app/Components/Bidding/Components/Timer"
 import { Flex } from "app/Components/Bidding/Elements/Flex"
-import { BidResultScreen } from "app/Components/Bidding/Screens/BidResult"
 import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
 import { PriceSummary } from "app/Components/Bidding/Screens/ConfirmBid/PriceSummary"
 import { Address, Bid, PaymentCardTextFieldParams } from "app/Components/Bidding/types"
+import { BidFlowNavigationStackParams } from "app/Components/Containers/BidFlow"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { partnerName } from "app/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
 import { navigate } from "app/system/navigation/navigate"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/AuctionSocketContext"
-import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
+import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { Schema, screenTrack, track } from "app/utils/track"
 import { get, isEmpty } from "lodash"
 import React from "react"
 import { Image, ScrollView, ViewProps } from "react-native"
-import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import {
+  commitMutation,
+  createRefetchContainer,
+  graphql,
+  QueryRenderer,
+  RelayRefetchProp,
+} from "react-relay"
 import { PayloadError } from "relay-runtime"
 
-type BidderPositionResult = NonNullable<
+export type BidderPositionResult = NonNullable<
   NonNullable<ConfirmBidCreateBidderPositionMutation["response"]["createBidderPosition"]>["result"]
 >
 
@@ -37,7 +46,8 @@ export interface ConfirmBidProps extends ViewProps {
   sale_artwork: ConfirmBid_sale_artwork$data
   me: ConfirmBid_me$data
   relay: RelayRefetchProp
-  navigator?: NavigatorIOS
+  navigation: NavigationProp<BidFlowNavigationStackParams, "ConfirmBid">
+  route: RouteProp<BidFlowNavigationStackParams, "ConfirmBid">
   refreshSaleArtwork?: () => void
   increments: any
   selectedBidIndex: number
@@ -93,7 +103,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       isLoading: false,
       requiresCheckbox,
       requiresPaymentInformation,
-      selectedBidIndex: this.props.selectedBidIndex,
+      selectedBidIndex: this.props.route.params.selectedBidIndex,
       errorModalVisible: false,
       errorModalDetailText: "",
       currentBiddingEndAt:
@@ -380,14 +390,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   presentErrorResult(error: Error | ReadonlyArray<PayloadError> | null | undefined) {
     console.error(error)
 
-    this.props.navigator?.push({
-      component: BidResultScreen,
-      title: "",
-      passProps: {
-        sale_artwork: this.props.sale_artwork,
-        bidderPositionResult: resultForNetworkError,
-        biddingEndAt: this.state.currentBiddingEndAt,
-      },
+    this.props.navigation?.navigate("BidResult", {
+      sale_artwork: this.props.sale_artwork as any,
+      bidderPositionResult: resultForNetworkError as BidderPositionResult,
+      biddingEndAt: this.state.currentBiddingEndAt,
     })
 
     this.setState({ isLoading: false })
@@ -395,26 +401,22 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
 
   presentBidResult(bidderPositionResult: BidderPositionResult) {
     LegacyNativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkBidUpdated", {
-      ARAuctionID: this.props.sale_artwork.sale?.slug,
-      ARAuctionArtworkID: this.props.sale_artwork.artwork?.slug,
+      ARAuctionID: this.props.route.params.sale_artwork.sale?.slug,
+      ARAuctionArtworkID: this.props.route.params.sale_artwork.artwork?.slug,
     })
     LegacyNativeModules.ARNotificationsManager.postNotificationName(
       "ARAuctionArtworkRegistrationUpdated",
       {
-        ARAuctionID: this.props.sale_artwork.sale?.slug,
+        ARAuctionID: this.props.route.params.sale_artwork.sale?.slug,
       }
     )
 
-    this.props.navigator?.push({
-      component: BidResultScreen,
-      title: "",
-      passProps: {
-        sale_artwork: this.props.sale_artwork,
-        bidderPositionResult,
-        refreshBidderInfo: this.refreshBidderInfo,
-        refreshSaleArtwork: this.props.refreshSaleArtwork,
-        biddingEndAt: this.state.currentBiddingEndAt,
-      },
+    this.props.navigation.navigate("BidResult", {
+      sale_artwork: this.props.route.params.sale_artwork as any,
+      bidderPositionResult,
+      refreshBidderInfo: this.refreshBidderInfo,
+      refreshSaleArtwork: this.props.route.params.refreshSaleArtwork,
+      biddingEndAt: this.state.currentBiddingEndAt,
     })
 
     this.setState({ isLoading: false })
@@ -468,10 +470,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
           },
         }}
       >
-        <Flex m={0} flex={1} flexDirection="column">
-          <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
-            Confirm your bid
-          </FancyModalHeader>
+        <Flex m={0} flex={1} flexDirection="column" pb={2}>
           <ScrollView scrollEnabled>
             <Flex alignItems="center" pt={2}>
               <Timer
@@ -523,12 +522,12 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               <BidInfoRow
                 label="Max bid"
                 value={this.selectedBid().display}
-                onPress={isLoading ? () => null : () => this.props.navigator?.pop()}
+                onPress={isLoading ? () => null : () => this.props.navigation.goBack()}
               />
 
               {requiresPaymentInformation ? (
                 <PaymentInfo
-                  navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+                  navigation={this.props.navigation as any}
                   onCreditCardAdded={this.onCreditCardAdded.bind(this)}
                   billingAddress={this.state.billingAddress}
                   creditCardFormParams={this.state.creditCardFormParams}
@@ -597,7 +596,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               </Flex>
             )}
 
-            <Box m={4}>
+            <Box p={2}>
               <Button
                 testID="bid-button"
                 loading={this.state.isLoading}
@@ -616,7 +615,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   private selectedBid(): Bid {
-    return this.props.increments[this.state.selectedBidIndex]
+    return this.props.route.params.increments[this.state.selectedBidIndex]
   }
 
   private determineDisplayRequirements(
@@ -683,3 +682,49 @@ export const ConfirmBidScreen = createRefetchContainer(
     }
   `
 )
+
+export const ConfirmBidScreenQueryRenderer: React.FC<any> = (screenProps) => {
+  const route = useRoute<RouteProp<BidFlowNavigationStackParams, "ConfirmBid">>()
+
+  // TODO: artworkID can be nil, so omit that part of the query if it is.
+  return (
+    <Flex flex={1}>
+      <FancyModalHeader onLeftButtonPress={screenProps.navigation.goBack}>
+        Confirm your bid
+      </FancyModalHeader>
+      <QueryRenderer<ConfirmBidQuery>
+        environment={getRelayEnvironment()}
+        query={graphql`
+          query ConfirmBidQuery($artworkID: String!, $saleID: String!) {
+            artwork(id: $artworkID) {
+              sale_artwork: saleArtwork(saleID: $saleID) {
+                ...ConfirmBid_sale_artwork
+              }
+            }
+            me {
+              ...ConfirmBid_me
+            }
+          }
+        `}
+        cacheConfig={{ force: true }} // We want to always fetch latest bid increments.
+        variables={{
+          artworkID: route.params.artworkID,
+          saleID: route.params.saleID,
+        }}
+        render={renderWithLoadProgress<ConfirmBidQuery["response"]>((props) => {
+          if (!props?.artwork?.sale_artwork || !props?.me) {
+            return null
+          }
+
+          return (
+            <ConfirmBidScreen
+              me={props.me}
+              sale_artwork={props.artwork.sale_artwork}
+              {...screenProps}
+            />
+          )
+        })}
+      />
+    </Flex>
+  )
+}

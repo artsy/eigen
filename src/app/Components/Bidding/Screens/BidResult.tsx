@@ -1,4 +1,5 @@
 import { Button } from "@artsy/palette-mobile"
+import { NavigationProp, RouteProp } from "@react-navigation/native"
 import { BidResult_sale_artwork$data } from "__generated__/BidResult_sale_artwork.graphql"
 import { Container } from "app/Components/Bidding/Components/Containers"
 import { Icon20 } from "app/Components/Bidding/Components/Icon"
@@ -6,11 +7,11 @@ import { Timer } from "app/Components/Bidding/Components/Timer"
 import { Title } from "app/Components/Bidding/Components/Title"
 import { Flex } from "app/Components/Bidding/Elements/Flex"
 import { BidderPositionResult } from "app/Components/Bidding/types"
+import { BidFlowNavigationStackParams } from "app/Components/Containers/BidFlow"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Markdown } from "app/Components/Markdown"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
-import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import React from "react"
 import { BackHandler, ImageRequireSource, NativeEventSubscription, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -20,7 +21,8 @@ const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 interface BidResultProps {
   sale_artwork: BidResult_sale_artwork$data
   bidderPositionResult: BidderPositionResult
-  navigator: NavigatorIOS
+  navigation: NavigationProp<BidFlowNavigationStackParams, "BidResult">
+  route: RouteProp<BidFlowNavigationStackParams, "BidResult">
   refreshBidderInfo?: () => void
   refreshSaleArtwork?: () => void
   biddingEndAt?: string
@@ -67,11 +69,14 @@ export class BidResult extends React.Component<BidResultProps> {
 
     // pushing to MaxBidScreen creates a circular relay reference but this works
     // TODO: correct the screen transition animation
-    this.props.navigator.popToTop()
+    this.props.navigation.reset({
+      index: 0,
+      routes: [{ name: "SelectMaxBid", params: this.props.route.params }],
+    })
   }
 
   exitBidFlow = async () => {
-    if (this.props.bidderPositionResult.status === "LIVE_BIDDING_STARTED") {
+    if (this.props.route.params.bidderPositionResult.status === "LIVE_BIDDING_STARTED") {
       const saleSlug = this.props.sale_artwork.sale?.slug
       const url = `${unsafe__getEnvironment().predictionURL}/${saleSlug}`
       navigate(url, { modal: true })
@@ -81,7 +86,7 @@ export class BidResult extends React.Component<BidResultProps> {
   }
 
   handleBackButton = () => {
-    if (this.canBidAgain(this.props.bidderPositionResult.status)) {
+    if (this.canBidAgain(this.props.route.params.bidderPositionResult.status)) {
       return false
     } else {
       dismissModal()
@@ -90,13 +95,13 @@ export class BidResult extends React.Component<BidResultProps> {
   }
 
   render() {
-    const { sale_artwork, bidderPositionResult } = this.props
+    const { sale_artwork, bidderPositionResult } = this.props.route.params
     const { status, message_header, message_description_md } = bidderPositionResult
 
     return (
       <View style={{ flex: 1 }}>
         <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()} />
-        <Container mt={6}>
+        <Container mt={6} pb={2}>
           <View>
             <Flex alignItems="center">
               <Icon20 source={Icons[status] || require("images/circle-x-red.webp")} />
@@ -109,7 +114,7 @@ export class BidResult extends React.Component<BidResultProps> {
                 <Markdown mb={6}>
                   {status === "PENDING"
                     ? messageForPollingTimeout.description
-                    : message_description_md}
+                    : message_description_md || ""}
                 </Markdown>
               )}
               {!!this.shouldDisplayTimer(status) && (

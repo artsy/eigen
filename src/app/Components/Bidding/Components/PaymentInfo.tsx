@@ -1,10 +1,11 @@
 import { bullet } from "@artsy/palette-mobile"
+import { NavigationProp } from "@react-navigation/native"
 import { Token } from "@stripe/stripe-react-native"
 import { Card } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
 import { FlexProps } from "app/Components/Bidding/Elements/Flex"
-import { CreditCardForm } from "app/Components/Bidding/Screens/CreditCardForm"
 import { Address, PaymentCardTextFieldParams } from "app/Components/Bidding/types"
-import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
+import { BidFlowNavigationStackParams } from "app/Components/Containers/BidFlow"
+import { RegistrationFlowNavigationStackParams } from "app/Components/Containers/RegistrationFlow"
 import React from "react"
 import { View } from "react-native"
 
@@ -12,7 +13,9 @@ import { BidInfoRow } from "./BidInfoRow"
 import { Divider } from "./Divider"
 
 interface PaymentInfoProps extends FlexProps {
-  navigator?: NavigatorIOS
+  navigation:
+    | NavigationProp<RegistrationFlowNavigationStackParams, "RegisterToBid">
+    | NavigationProp<BidFlowNavigationStackParams, "SelectMaxBid">
   onCreditCardAdded: (t: Token.Result, a: Address) => void
   billingAddress?: Address | null
   creditCardFormParams?: PaymentCardTextFieldParams | null
@@ -25,14 +28,11 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
   }
 
   presentCreditCardForm() {
-    this.props.navigator?.push({
-      component: CreditCardForm,
-      title: "",
-      passProps: {
-        onSubmit: (token: Token.Result, address: Address) => this.onCreditCardAdded(token, address),
-        billingAddress: this.props.billingAddress,
-        navigator: this.props.navigator,
-      },
+    // Typescript failed to tell that the screen name is the same for both stacks
+    // @ts-expect-error
+    this.props.navigation.navigate("CreditCardForm", {
+      onSubmit: (token: Token.Result, address: Address) => this.onCreditCardAdded(token, address),
+      billingAddress: this.props.billingAddress,
     })
   }
 

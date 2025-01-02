@@ -1,5 +1,7 @@
 import { Box, Button } from "@artsy/palette-mobile"
+import { NavigationProp, RouteProp } from "@react-navigation/native"
 import { BottomAlignedButtonWrapper } from "app/Components/Buttons/BottomAlignedButtonWrapper"
+import { RegistrationFlowNavigationStackParams } from "app/Components/Containers/RegistrationFlow"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Input } from "app/Components/Input"
 import { PhoneInput } from "app/Components/Input/PhoneInput"
@@ -9,13 +11,14 @@ import { PageNames } from "app/utils/track/schema"
 import { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 interface PhoneNumberFormProps {
-  onSubmit: (phone: string) => void
   navigator: NavigatorIOS
-  phoneNumber?: string
+
+  navigation: NavigationProp<RegistrationFlowNavigationStackParams, "PhoneNumberForm">
+  route: RouteProp<RegistrationFlowNavigationStackParams, "PhoneNumberForm">
 }
 
 export const PhoneNumberForm: React.FC<PhoneNumberFormProps> = (props) => {
-  const { onSubmit, navigator, phoneNumber } = props
+  const { phoneNumber, onSubmit } = props.route.params
 
   const phoneRef = useRef<Input>(null)
 
@@ -28,15 +31,15 @@ export const PhoneNumberForm: React.FC<PhoneNumberFormProps> = (props) => {
 
   const handleAddPhoneNumberClick = (): void => {
     onSubmit(enteredPhone)
-    navigator?.pop()
     track({
       action_type: Schema.ActionTypes.Success,
       action_name: Schema.ActionNames.BidFlowSavePhoneNumber,
     })
+    props.navigation.goBack()
   }
 
   const buttonComponent = (
-    <Box m={4}>
+    <Box pb={4} px={2}>
       <Button
         mt={4}
         block
@@ -58,7 +61,7 @@ export const PhoneNumberForm: React.FC<PhoneNumberFormProps> = (props) => {
       }}
     >
       <BottomAlignedButtonWrapper buttonComponent={buttonComponent}>
-        <FancyModalHeader onLeftButtonPress={() => navigator?.pop()}>
+        <FancyModalHeader onLeftButtonPress={props.navigation.goBack}>
           Add phone number
         </FancyModalHeader>
         <ScrollView

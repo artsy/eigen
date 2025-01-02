@@ -1,7 +1,9 @@
 import { Text, Button } from "@artsy/palette-mobile"
+import { RouteProp } from "@react-navigation/native"
 import { Icon20 } from "app/Components/Bidding/Components/Icon"
 import { Title } from "app/Components/Bidding/Components/Title"
 import { Flex } from "app/Components/Bidding/Elements/Flex"
+import { RegistrationFlowNavigationStackParams } from "app/Components/Containers/RegistrationFlow"
 import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
 import { Markdown } from "app/Components/Markdown"
 import { dismissModal } from "app/system/navigation/navigate"
@@ -12,8 +14,7 @@ import { BackHandler, NativeEventSubscription, View } from "react-native"
 import { blockRegex } from "simple-markdown"
 
 interface RegistrationResultProps {
-  status: RegistrationStatus
-  needsIdentityVerification?: boolean
+  route: RouteProp<RegistrationFlowNavigationStackParams, "RegistrationResult">
 }
 
 export enum RegistrationStatus {
@@ -98,7 +99,7 @@ const resultEnumToPageName = (result: RegistrationStatus) => {
 @screenTrack(
   (props: RegistrationResultProps) =>
     ({
-      context_screen: resultEnumToPageName(props.status),
+      context_screen: resultEnumToPageName(props.route.params.status),
       context_screen_owner_type: null,
     }) as any /* STRICTNESS_MIGRATION */
 )
@@ -118,8 +119,8 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
 
   handleBackButton = () => {
     if (
-      this.props.status === RegistrationStatus.RegistrationStatusComplete ||
-      this.props.status === RegistrationStatus.RegistrationStatusPending
+      this.props.route.params.status === RegistrationStatus.RegistrationStatusComplete ||
+      this.props.route.params.status === RegistrationStatus.RegistrationStatusPending
     ) {
       dismissModal()
       return true
@@ -129,7 +130,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
   }
 
   render() {
-    const { status, needsIdentityVerification } = this.props
+    const { status, needsIdentityVerification } = this.props.route.params
     let title: string
     let msg: string
 
