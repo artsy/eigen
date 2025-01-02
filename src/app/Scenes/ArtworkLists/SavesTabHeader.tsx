@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   AddIcon,
   Box,
@@ -21,6 +22,7 @@ import { ProgressiveOnboardingSignalInterest } from "app/Components/ProgressiveO
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useState } from "react"
+import { useTracking } from "react-tracking"
 
 const PARTNER_OFFER_HELP_ARTICLE_URL = "https://support.artsy.net/s/article/Offers-on-saved-works"
 
@@ -28,6 +30,7 @@ export const SavesTabHeader = () => {
   const [modalVisible, setModalVisible] = useState(false)
   const { dispatch } = useArtworkListsContext()
   const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
+  const tracking = useTracking()
 
   const handleCreateList = () => {
     dispatch({
@@ -48,7 +51,14 @@ export const SavesTabHeader = () => {
       <ProgressiveOnboardingSignalInterest>
         <Text variant="xs" color="black60">
           Curate your own lists of the works you love and{" "}
-          <LinkText variant="xs" color="black60" onPress={() => setModalVisible(true)}>
+          <LinkText
+            variant="xs"
+            color="black60"
+            onPress={() => {
+              tracking.trackEvent(tracks.tapFollowsInfo())
+              setModalVisible(true)
+            }}
+          >
             signal your interest to galleries
           </LinkText>
           .
@@ -100,7 +110,12 @@ export const SavesTabHeader = () => {
                 <Text variant="sm-display">
                   Signal your interest to galleries and you could receiving an offer on your saved
                   artwork from a gallery.{" "}
-                  <LinkText onPress={() => navigate(PARTNER_OFFER_HELP_ARTICLE_URL)}>
+                  <LinkText
+                    onPress={() => {
+                      tracking.trackEvent(tracks.tapReadMore())
+                      navigate(PARTNER_OFFER_HELP_ARTICLE_URL)
+                    }}
+                  >
                     Read more
                   </LinkText>
                   .
@@ -132,4 +147,20 @@ export const SavesTabHeaderPlaceholder = () => {
       </Flex>
     </Skeleton>
   )
+}
+
+const tracks = {
+  tapFollowsInfo: () => ({
+    action: ActionType.tappedLink,
+    context_module: ContextModule.saves,
+    context_screen_owner_type: OwnerType.saves,
+    type: "link",
+    subject: "signalYourInterestToGalleries",
+  }),
+  tapReadMore: () => ({
+    action: ActionType.tappedLink,
+    context_module: ContextModule.saves,
+    context_screen_owner_type: OwnerType.savesInfoModal,
+    type: "link",
+  }),
 }

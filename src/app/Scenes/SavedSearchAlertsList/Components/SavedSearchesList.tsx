@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import {
   BellIcon,
   FilterIcon,
@@ -30,6 +30,7 @@ import { RefreshEvents, SAVED_ALERT_REFRESH_KEY } from "app/utils/refreshHelpers
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect, useRef, useState } from "react"
 import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
 import { EmptyMessage } from "./EmptyMessage"
 import { SavedSearchAlertsListPlaceholder } from "./SavedSearchAlertsListPlaceholder"
@@ -159,6 +160,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
   const prevSelectedSortValue = usePrevious(selectedSortValue)
   const [fetchingMore, setFetchingMore] = useState(false)
   const [refreshMode, setRefreshMode] = useState<RefreshType | null>(null)
+  const tracking = useTracking()
 
   const handleCloseModal = () => {
     setModalVisible(false)
@@ -240,6 +242,8 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
   const infoButtonRef = useRef<{ closeModal: () => void } | null>(null)
 
   const handleNavigate = () => {
+    tracking.trackEvent(tracks.tapActivityLink())
+
     infoButtonRef.current?.closeModal()
 
     requestAnimationFrame(() => {
@@ -264,6 +268,9 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
         <Flex px={2}>
           <InfoButton
             ref={infoButtonRef}
+            trackEvent={() => {
+              tracking.trackEvent(tracks.tapAlertsInfo())
+            }}
             titleElement={
               <Text variant="lg-display" mr={1}>
                 Alerts
@@ -391,3 +398,18 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
     `,
   }
 )
+
+const tracks = {
+  tapAlertsInfo: (): TappedInfoBubble => ({
+    action: ActionType.tappedInfoBubble,
+    context_module: ContextModule.alertsList,
+    context_screen_owner_type: OwnerType.alerts,
+    subject: "alertsHeader",
+  }),
+  tapActivityLink: () => ({
+    action: ActionType.tappedLink,
+    context_module: ContextModule.alertsList,
+    context_screen_owner_type: OwnerType.alertsInfoModal,
+    type: "link",
+  }),
+}
