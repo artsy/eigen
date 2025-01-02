@@ -27,6 +27,7 @@ export const EmailSubscriptionCheckbox: React.FC<EmailSubscriptionCheckboxProps>
             accessibilityRole: "checkbox",
             accessibilityLabel: "Agree to receive Artsy's emails",
             accessibilityHint: "Check this element to receive Artsy's emails",
+            "aria-checked": checked,
             accessibilityState: {
               checked,
             },

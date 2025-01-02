@@ -3,10 +3,8 @@ import { BackButton } from "app/system/navigation/BackButton"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { FormikProvider, useFormik } from "formik"
-import { EmailSubscriptionCheckbox } from "./EmailSubscriptionCheckbox"
 import { FormikSchema, nameSchema } from "./OnboardingCreateAccount"
 import { OnboardingCreateAccountName } from "./OnboardingCreateAccountName"
-import { TermsOfServiceCheckbox } from "./TermsOfServiceCheckbox"
 
 const goBackMock = jest.fn()
 
@@ -81,23 +79,20 @@ describe("OnboardingCreateAccountName", () => {
   describe("Checkboxes", () => {
     it("sets acceptedTerms to true when the user presses on the checkbox", async () => {
       renderWithWrappers(<Test name="Andy warhol" />)
-      const termsCheckbox = screen.UNSAFE_getByType(TermsOfServiceCheckbox)
+      const termsCheckbox = screen.getByLabelText("Accept terms and privacy policy")
 
       fireEvent(termsCheckbox, "setChecked")
 
-      await flushPromiseQueue()
-
-      expect(termsCheckbox).toHaveProp("checked", true)
+      expect(termsCheckbox).toBeChecked()
     })
 
     it("sets agreedToReceiveEmails to true when the user presses on the checkbox", async () => {
       renderWithWrappers(<Test name="Andy warhol" />)
 
-      const emailsSubscriptionCheckbox = screen.UNSAFE_getByType(EmailSubscriptionCheckbox)
+      const emailsSubscriptionCheckbox = screen.getByLabelText("Agree to receive Artsy's emails")
       fireEvent(emailsSubscriptionCheckbox, "setChecked")
 
-      await flushPromiseQueue()
-      expect(emailsSubscriptionCheckbox).toHaveProp("checked", true)
+      expect(emailsSubscriptionCheckbox).toBeChecked()
     })
   })
 })
