@@ -25,15 +25,15 @@ describe("Sales", () => {
 
     await waitForElementToBeRemoved(() => screen.queryByTestId("SalePlaceholder"))
 
-    const CurrentAuction = screen.UNSAFE_getAllByType(CurrentlyRunningAuctions)[0]
-    const UpcomingAuction = screen.UNSAFE_getAllByType(UpcomingAuctions)[0]
+    const CurrentAuction = screen.UNSAFE_getByType(CurrentlyRunningAuctions)
+    const UpcomingAuction = screen.UNSAFE_getByType(UpcomingAuctions)
 
-    act(() => {
+    await act(() => {
       CurrentAuction.props.setSalesCountOnParent(0)
       UpcomingAuction.props.setSalesCountOnParent(0)
     })
 
-    expect(screen.getByTestId("Sales-Zero-State-Container")).toBeOnTheScreen()
+    await screen.findByText("There are no upcoming auctions scheduled")
   })
 
   it("Can refresh current and upcoming auctions", async () => {
