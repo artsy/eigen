@@ -1,6 +1,7 @@
 import { useColor, useSpace } from "@artsy/palette-mobile"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
+import { useActivityDotExperiment } from "app/utils/experiments/useActivityDotExperiment"
 import { useVisualClue } from "app/utils/hooks/useVisualClue"
 import { useTabBarBadge } from "app/utils/useTabBarBadge"
 import { StyleProp, TextStyle } from "react-native"
@@ -18,13 +19,14 @@ export const useBottomTabsBadges = () => {
   const space = useSpace()
 
   const { showVisualClue } = useVisualClue()
-
   const { unreadConversationsCount, hasUnseenNotifications } = useTabBarBadge()
+
+  const { forceDots, color: backgroundColor } = useActivityDotExperiment()
 
   const tabsBadges: Record<string, BadgeProps> = {}
 
   const visualClueStyles = {
-    backgroundColor: color("blue100"),
+    backgroundColor: color(backgroundColor),
     top: space(1),
     minWidth: VISUAL_CLUE_HEIGHT,
     maxHeight: VISUAL_CLUE_HEIGHT,
@@ -61,7 +63,7 @@ export const useBottomTabsBadges = () => {
 
     switch (tab) {
       case "home": {
-        if (hasUnseenNotifications) {
+        if (hasUnseenNotifications || forceDots) {
           tabsBadges[tab] = {
             tabBarBadge: "",
             tabBarBadgeStyle: {
@@ -73,11 +75,23 @@ export const useBottomTabsBadges = () => {
       }
 
       case "inbox": {
-        if (unreadConversationsCount) {
+        if (unreadConversationsCount || forceDots) {
           tabsBadges[tab] = {
-            tabBarBadge: unreadConversationsCount,
+            tabBarBadge: unreadConversationsCount || (forceDots ? 42 : 0),
             tabBarBadgeStyle: {
-              backgroundColor: color("red100"),
+              backgroundColor: color("red50"),
+            },
+          }
+        }
+        return
+      }
+
+      case "profile": {
+        if (forceDots) {
+          tabsBadges[tab] = {
+            tabBarBadge: "",
+            tabBarBadgeStyle: {
+              ...visualClueStyles,
             },
           }
         }
