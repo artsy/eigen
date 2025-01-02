@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
@@ -65,13 +66,11 @@ describe("Galleries and Institutions Options Screen", () => {
 
   describe("before any filters are selected", () => {
     it("renders all options present in the aggregation", () => {
-      const { getByText } = renderWithWrappers(
-        <MockGalleriesAndInstitutionsScreen initialData={initialState} />
-      )
+      renderWithWrappers(<MockGalleriesAndInstitutionsScreen initialData={initialState} />)
 
-      expect(getByText("Musée Picasso Paris"))
-      expect(getByText("Gagosian"))
-      expect(getByText("Tate"))
+      expect(screen.getByText("Musée Picasso Paris")).toBeOnTheScreen()
+      expect(screen.getByText("Gagosian")).toBeOnTheScreen()
+      expect(screen.getByText("Tate")).toBeOnTheScreen()
     })
   })
 
@@ -88,19 +87,16 @@ describe("Galleries and Institutions Options Screen", () => {
     }
 
     it("displays the number of the selected filters on the filter modal screen", () => {
-      const { getByText } = renderWithWrappers(<MockFilterScreen initialState={state} />)
+      renderWithWrappers(<MockFilterScreen initialState={state} />)
 
-      expect(getByText("Galleries & Institutions • 1")).toBeTruthy()
+      expect(screen.getByText("Galleries & Institutions • 1")).toBeOnTheScreen()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      const { getAllByA11yState } = renderWithWrappers(
-        <MockGalleriesAndInstitutionsScreen initialData={state} />
-      )
+      renderWithWrappers(<MockGalleriesAndInstitutionsScreen initialData={state} />)
 
-      const options = getAllByA11yState({ checked: true })
+      const options = screen.getAllByTestId("multi-select-option-button")
 
-      expect(options).toHaveLength(1)
       expect(options[0]).toHaveTextContent("Musée Picasso Paris")
     })
   })

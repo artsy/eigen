@@ -1,6 +1,5 @@
 import { screen } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Image } from "react-native"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
 
 const imageURL = "https://image.com/image.jpg"
@@ -20,6 +19,7 @@ describe("ImageWithLoadingState", () => {
     const images = screen.getAllByLabelText("Image with Loading State")
 
     expect(images).toHaveLength(1)
-    expect(await images[0].findByType(Image)).toHaveProp("src", imageURL)
+
+    expect(screen.getByTestId("ImageWithLoadingState")).toHaveProp("src", imageURL)
   })
 })

@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { Aggregations, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
@@ -25,25 +25,26 @@ describe("ArtistIDsSaleArtworksOptionsScreen", () => {
   }
 
   it("should render all artist options", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
-    expect(getByText("Artists You Follow")).toBeTruthy()
-    expect(getByText("All Artists")).toBeTruthy()
-    expect(getByText(/Artist A/)).toBeTruthy()
-    expect(getByText(/Artist B/)).toBeTruthy()
-    expect(getByText(/Artist C/)).toBeTruthy()
-    expect(getByText(/Artist D/)).toBeTruthy()
+    expect(screen.getByText("Artists You Follow")).toBeOnTheScreen()
+    expect(screen.getByText("All Artists")).toBeOnTheScreen()
+    expect(screen.getByText(/Artist A/)).toBeOnTheScreen()
+    expect(screen.getByText(/Artist B/)).toBeOnTheScreen()
+    expect(screen.getByText(/Artist C/)).toBeOnTheScreen()
+    expect(screen.getByText(/Artist D/)).toBeOnTheScreen()
   })
 
   it("should render artist options sorted by name", () => {
-    const { getAllByA11yState } = renderWithWrappers(<TestRenderer />)
-    const options = getAllByA11yState({ checked: false })
+    renderWithWrappers(<TestRenderer />)
+    const options = screen.getAllByTestId("multi-select-option-button")
 
     expect(options[0]).toHaveTextContent("Artists You Follow")
-    expect(options[1]).toHaveTextContent("Artist A")
-    expect(options[2]).toHaveTextContent("Artist B")
-    expect(options[3]).toHaveTextContent("Artist C")
-    expect(options[4]).toHaveTextContent("Artist D")
+    expect(options[1]).toHaveTextContent("All Artists")
+    expect(options[2]).toHaveTextContent(/Artist A/)
+    expect(options[3]).toHaveTextContent(/Artist B/)
+    expect(options[4]).toHaveTextContent(/Artist C/)
+    expect(options[5]).toHaveTextContent(/Artist D/)
   })
 
   it("should render the followed artists count", () => {
@@ -55,41 +56,44 @@ describe("ArtistIDsSaleArtworksOptionsScreen", () => {
       },
     }
 
-    const { getByText } = renderWithWrappers(<TestRenderer initialData={injectedState} />)
+    renderWithWrappers(<TestRenderer initialData={injectedState} />)
 
-    expect(getByText("Artists You Follow (2)")).toBeTruthy()
+    expect(screen.getByText("Artists You Follow (2)")).toBeTruthy()
   })
 
   describe("Selecting", () => {
     it("when the single option is selected", () => {
-      const { getAllByA11yState, getByText } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
+      const options = screen.getAllByTestId("multi-select-option-button")
 
-      const prevSelectedOptions = getAllByA11yState({ checked: true })
-      expect(prevSelectedOptions).toHaveLength(1)
-      expect(prevSelectedOptions[0]).toHaveTextContent("All Artists")
+      expect(options[1]).toHaveTextContent("All Artists")
+      expect(screen.getByTestId("selected-checkmark-All Artists")).toBeOnTheScreen()
 
-      fireEvent.press(getByText(/Artist B/))
+      expect(screen.queryByTestId("selected-checkmark-Artist B")).not.toBeOnTheScreen()
 
-      const selectedOptions = getAllByA11yState({ checked: true })
-      expect(selectedOptions).toHaveLength(1)
-      expect(selectedOptions[0]).toHaveTextContent(/Artist B/)
+      fireEvent.press(screen.getByText(/Artist B/))
+
+      expect(screen.getByTestId("selected-checkmark-Artist B")).toBeOnTheScreen()
+      expect(screen.queryByTestId("selected-checkmark-All Artists")).not.toBeOnTheScreen()
     })
 
     it("when multiple options are selected", () => {
-      const { getByText, getAllByA11yState } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
-      const prevSelectedOptions = getAllByA11yState({ checked: true })
-      expect(prevSelectedOptions).toHaveLength(1)
-      expect(prevSelectedOptions[0]).toHaveTextContent("All Artists")
+      const options = screen.getAllByTestId("multi-select-option-button")
 
-      fireEvent.press(getByText(/Artist A/))
-      fireEvent.press(getByText(/Artist B/))
+      expect(options[1]).toHaveTextContent("All Artists")
+      expect(screen.getByTestId("selected-checkmark-All Artists")).toBeOnTheScreen()
 
-      const selectedOptions = getAllByA11yState({ checked: true })
+      expect(screen.queryByTestId("selected-checkmark-Artist A")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("selected-checkmark-Artist B")).not.toBeOnTheScreen()
 
-      expect(selectedOptions).toHaveLength(2)
-      expect(selectedOptions[0]).toHaveTextContent(/Artist A/)
-      expect(selectedOptions[1]).toHaveTextContent(/Artist B/)
+      fireEvent.press(screen.getByText(/Artist A/))
+      fireEvent.press(screen.getByText(/Artist B/))
+
+      expect(screen.getByTestId("selected-checkmark-Artist A")).toBeOnTheScreen()
+      expect(screen.getByTestId("selected-checkmark-Artist B")).toBeOnTheScreen()
+      expect(screen.queryByTestId("selected-checkmark-All Artists")).not.toBeOnTheScreen()
     })
   })
 
@@ -106,19 +110,18 @@ describe("ArtistIDsSaleArtworksOptionsScreen", () => {
         ],
       }
 
-      const { getAllByA11yState, getByText } = renderWithWrappers(
-        <TestRenderer initialData={injectedState} />
-      )
+      renderWithWrappers(<TestRenderer initialData={injectedState} />)
 
-      const prevSelectedOptions = getAllByA11yState({ checked: true })
-      expect(prevSelectedOptions).toHaveLength(1)
-      expect(prevSelectedOptions[0]).toHaveTextContent("Artist B")
+      const options = screen.getAllByTestId("multi-select-option-button")
 
-      fireEvent.press(getByText(/Artist B/))
+      expect(options[3]).toHaveTextContent(/Artist B/)
+      expect(screen.getByTestId("selected-checkmark-Artist B")).toBeOnTheScreen()
+      expect(screen.queryByTestId("selected-checkmark-All Artists")).not.toBeOnTheScreen()
 
-      const selectedOptions = getAllByA11yState({ checked: true })
-      expect(selectedOptions).toHaveLength(1)
-      expect(selectedOptions[0]).toHaveTextContent("All Artists")
+      fireEvent.press(screen.getByText(/Artist B/))
+
+      expect(screen.queryByTestId("selected-checkmark-Artist B")).not.toBeOnTheScreen()
+      expect(screen.getByTestId("selected-checkmark-All Artists")).toBeOnTheScreen()
     })
 
     it("when multiple options are selected", () => {
@@ -133,20 +136,16 @@ describe("ArtistIDsSaleArtworksOptionsScreen", () => {
         ],
       }
 
-      const { getAllByA11yState, getByText } = renderWithWrappers(
-        <TestRenderer initialData={injectedState} />
-      )
+      renderWithWrappers(<TestRenderer initialData={injectedState} />)
 
-      const prevSelectedOptions = getAllByA11yState({ checked: true })
-      expect(prevSelectedOptions).toHaveLength(2)
-      expect(prevSelectedOptions[0]).toHaveTextContent("Artist A")
-      expect(prevSelectedOptions[1]).toHaveTextContent("Artist B")
+      expect(screen.getByTestId("selected-checkmark-Artist A")).toBeOnTheScreen()
+      expect(screen.getByTestId("selected-checkmark-Artist B")).toBeOnTheScreen()
+      expect(screen.queryByTestId("selected-checkmark-All Artists")).not.toBeOnTheScreen()
 
-      fireEvent.press(getByText(/Artist B/))
+      fireEvent.press(screen.getByText(/Artist B/))
 
-      const selectedOptions = getAllByA11yState({ checked: true })
-      expect(selectedOptions).toHaveLength(1)
-      expect(selectedOptions[0]).toHaveTextContent("Artist A")
+      expect(screen.queryByTestId("selected-checkmark-Artist B")).not.toBeOnTheScreen()
+      expect(screen.getByTestId("selected-checkmark-Artist A")).toBeOnTheScreen()
     })
   })
 })

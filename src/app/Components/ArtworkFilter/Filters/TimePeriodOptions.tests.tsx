@@ -1,3 +1,4 @@
+import { fireEvent, screen } from "@testing-library/react-native"
 import { FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersStoreProvider,
@@ -65,19 +66,17 @@ describe("TimePeriodOptions Screen", () => {
 
   describe("before any filters are selected", () => {
     it("should render name without count label", () => {
-      const { getByText } = renderWithWrappers(<MockFilterScreen initialState={initialState} />)
+      renderWithWrappers(<MockFilterScreen initialState={initialState} />)
 
-      expect(getByText("Time Period")).toBeTruthy()
+      expect(screen.getByText("Time Period")).toBeTruthy()
     })
 
     it("renders all options present in the aggregation", () => {
-      const { getByText } = renderWithWrappers(
-        <MockTimePeriodOptionsScreen initialData={initialState} />
-      )
+      renderWithWrappers(<MockTimePeriodOptionsScreen initialData={initialState} />)
 
-      expect(getByText("2020–Today")).toBeTruthy()
-      expect(getByText("2010–2019")).toBeTruthy()
-      expect(getByText("In the Year 2000!")).toBeTruthy()
+      expect(screen.getByText("2020–Today")).toBeTruthy()
+      expect(screen.getByText("2010–2019")).toBeTruthy()
+      expect(screen.getByText("In the Year 2000!")).toBeTruthy()
     })
   })
 
@@ -94,19 +93,36 @@ describe("TimePeriodOptions Screen", () => {
     }
 
     it("displays the number of the selected filters on the filter modal screen", () => {
-      const { getByText } = renderWithWrappers(<MockFilterScreen initialState={state} />)
+      renderWithWrappers(<MockFilterScreen initialState={state} />)
 
-      expect(getByText("Time Period • 1")).toBeTruthy()
+      expect(screen.getByText("Time Period • 1")).toBeTruthy()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      const { getAllByA11yState } = renderWithWrappers(
-        <MockTimePeriodOptionsScreen initialData={state} />
-      )
-      const options = getAllByA11yState({ checked: true })
+      renderWithWrappers(<MockTimePeriodOptionsScreen initialData={state} />)
+      const options = screen.getAllByTestId("multi-select-option-button")
+      const checkboxes = screen.getAllByTestId("multi-select-option-checkbox")
 
-      expect(options).toHaveLength(1)
+      expect(options).toHaveLength(3)
       expect(options[0]).toHaveTextContent("2020–Today")
+      expect(options[1]).toHaveTextContent("2010–2019")
+      expect(options[2]).toHaveTextContent("In the Year 2000!")
+
+      expect(checkboxes[0]).toHaveProp("selected", true)
+      expect(checkboxes[1]).toHaveProp("selected", false)
+      expect(checkboxes[2]).toHaveProp("selected", false)
+
+      fireEvent.press(options[0])
+
+      expect(checkboxes[0]).toHaveProp("selected", false)
+      expect(checkboxes[1]).toHaveProp("selected", false)
+      expect(checkboxes[2]).toHaveProp("selected", false)
+
+      fireEvent.press(options[2])
+
+      expect(checkboxes[0]).toHaveProp("selected", false)
+      expect(checkboxes[1]).toHaveProp("selected", false)
+      expect(checkboxes[2]).toHaveProp("selected", true)
     })
   })
 })
