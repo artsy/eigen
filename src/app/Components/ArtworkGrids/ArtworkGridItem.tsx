@@ -135,7 +135,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
     "AREnableNewSaveAndFollowOnArtworkCard"
   )
   const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
-
   const {
     enabled,
     enableShowOldSaveCTA,
@@ -236,10 +235,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
   }
 
-  const passProps =
-    partnerOffer && !!hasEnded && !!enablePartnerOfferOnArtworkScreen
-      ? { artworkOfferExpired: true }
-      : undefined
+  const passProps = partnerOffer && !!hasEnded ? { artworkOfferExpired: true } : undefined
 
   const trackArtworkTap = () => {
     // Unless you explicitly pass in a tracking function or provide a contextScreenOwnerType, we won't track
