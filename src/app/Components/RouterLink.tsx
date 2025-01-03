@@ -24,8 +24,10 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   const handlePress = (event: GestureResponderEvent) => {
     onPress?.(event)
 
+    const options = passProps ? { passProps } : undefined
+
     if (to) {
-      navigate(to, { passProps })
+      navigate(to, options)
     }
   }
 
