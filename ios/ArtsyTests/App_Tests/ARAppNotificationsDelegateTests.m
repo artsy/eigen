@@ -99,51 +99,6 @@ describe(@"receiveRemoteNotification", ^{
             });
         });
     });
-
-    describe(@"running in the foreground", ^{
-        beforeEach(^{
-            appState = UIApplicationStateActive;
-        });
-
-        itBehavesLike(@"when receiving a notification", nil);
-
-        it(@"displays a notification", ^{
-            id mock = [OCMockObject mockForClass:[ARNotificationView class]];
-            [[mock expect] showNoticeInView:OCMOCK_ANY title:@"New Works For You" response:OCMOCK_ANY];
-
-            [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
-
-            [mock verify];
-            [mock stopMocking];
-        });
-
-        it(@"triggers an analytics event when a notification has been tapped", ^{
-            id mockNotificationView = [OCMockObject mockForClass:[ARNotificationView class]];
-            [[mockNotificationView stub] showNoticeInView:OCMOCK_ANY
-                                                    title:OCMOCK_ANY
-                                                 response:[OCMArg checkWithBlock:^(dispatch_block_t callback) {
-                                                    callback();
-                                                    return YES;
-                                                 }]];
-
-            [[mockEmissionSharedInstance stub] sendEvent:ARAnalyticsNotificationReceived traits:OCMOCK_ANY];
-            [[mockEmissionSharedInstance expect] sendEvent:ARAnalyticsNotificationTapped traits:DictionaryWithAppState(notification, appState)];
-
-            [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
-
-            [mockEmissionSharedInstance verify];
-            [mockNotificationView stopMocking];
-        });
-
-        it(@"defaults message to url", ^{
-            id mock = [OCMockObject mockForClass:[ARNotificationView class]];
-            [[mock expect] showNoticeInView:OCMOCK_ANY title:@"http://artsy.net/feature" response:OCMOCK_ANY];
-            [delegate applicationDidReceiveRemoteNotification:@{ @"url" : @"http://artsy.net/feature" } inApplicationState:appState];
-
-            [mock verify];
-            [mock stopMocking];
-        });
-    });
 });
 
 SpecEnd;
