@@ -217,7 +217,7 @@ const artworkFragment = graphql`
       internalID
       question
     }
-    partner {
+    partner(shallow: true) {
       name
     }
   }

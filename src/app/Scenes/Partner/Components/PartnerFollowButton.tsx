@@ -1,12 +1,12 @@
 import { ButtonProps, FollowButton } from "@artsy/palette-mobile"
 import { PartnerFollowButtonFollowMutation } from "__generated__/PartnerFollowButtonFollowMutation.graphql"
-import { PartnerFollowButton_partner$data } from "__generated__/PartnerFollowButton_partner.graphql"
+import { PartnerFollowButton_deprecated_partner$data } from "__generated__/PartnerFollowButton_deprecated_partner.graphql"
 import { Schema, Track, track as _track } from "app/utils/track"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface Props {
-  partner: PartnerFollowButton_partner$data
+  partner: PartnerFollowButton_deprecated_partner$data
   relay: RelayProp
   size?: ButtonProps["size"]
 }
@@ -17,6 +17,10 @@ interface State {
 
 const track: Track<Props, State> = _track
 
+/**
+ * @deprecated in favor of PartnerFollowButtonWithSuspense
+ * @reason moving away personalized data into different queries
+ */
 @track()
 export class PartnerFollowButton extends React.Component<Props, State> {
   state = { isFollowedChanging: false }
@@ -107,7 +111,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
 
 export const PartnerFollowButtonFragmentContainer = createFragmentContainer(PartnerFollowButton, {
   partner: graphql`
-    fragment PartnerFollowButton_partner on Partner {
+    fragment PartnerFollowButton_deprecated_partner on Partner {
       internalID
       slug
       profile {
