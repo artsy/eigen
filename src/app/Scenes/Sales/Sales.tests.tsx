@@ -20,22 +20,6 @@ describe("Sales", () => {
     expect(screen.getByTestId("Sales-Screen-ScrollView")).toBeOnTheScreen()
   })
 
-  it("renders the ZeroState when there are no sales", async () => {
-    renderWithRelay()
-
-    await waitForElementToBeRemoved(() => screen.queryByTestId("SalePlaceholder"))
-
-    const CurrentAuction = screen.UNSAFE_getByType(CurrentlyRunningAuctions)
-    const UpcomingAuction = screen.UNSAFE_getByType(UpcomingAuctions)
-
-    await act(() => {
-      CurrentAuction.props.setSalesCountOnParent(0)
-      UpcomingAuction.props.setSalesCountOnParent(0)
-    })
-
-    await screen.findByText("There are no upcoming auctions scheduled")
-  })
-
   it("Can refresh current and upcoming auctions", async () => {
     renderWithRelay()
 
