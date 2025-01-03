@@ -1,17 +1,23 @@
 import { ArrowRightIcon, Flex, SpacingUnit, Text, TextProps, useTheme } from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
-import { TouchableOpacity } from "react-native"
+import { RouterLink } from "app/system/navigation/RouterLink"
 
-const Wrapper: React.FC<{ onPress?(): any }> = ({ onPress, children }) => {
+const Wrapper: React.FC<{ onPress?(): void; href?: string | null }> = ({
+  children,
+  href,
+  onPress,
+}) => {
   if (onPress) {
     return (
-      <TouchableOpacity
+      <RouterLink
         onPress={onPress}
+        to={href}
         testID="touchable-wrapper"
         hitSlop={{ top: 10, bottom: 10 }}
+        activeOpacity={0.65}
       >
         {children}
-      </TouchableOpacity>
+      </RouterLink>
     )
   } else {
     return <>{children}</>
@@ -19,6 +25,7 @@ const Wrapper: React.FC<{ onPress?(): any }> = ({ onPress, children }) => {
 }
 
 export const SectionTitle: React.FC<{
+  href?: string | null
   title: React.ReactNode
   titleVariant?: TextProps["variant"]
   subtitle?: React.ReactNode
@@ -27,6 +34,7 @@ export const SectionTitle: React.FC<{
   mb?: SpacingUnit
   capitalized?: boolean
 }> = ({
+  href,
   title,
   titleVariant = "sm-display",
   subtitle,
@@ -43,7 +51,7 @@ export const SectionTitle: React.FC<{
   }
 
   return (
-    <Wrapper onPress={onPress}>
+    <Wrapper onPress={onPress} href={href}>
       <Flex mb={mb} flexDirection="row" alignItems="flex-start">
         <Flex flex={1}>
           <Text variant={titleVariant} ellipsizeMode="tail" numberOfLines={1} testID="title">
