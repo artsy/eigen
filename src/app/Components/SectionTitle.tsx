@@ -1,6 +1,6 @@
 import { ArrowRightIcon, Flex, SpacingUnit, Text, TextProps, useTheme } from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
-import { RouterLink } from "app/Components/RouterLink"
+import { RouterLink } from "app/system/navigation/RouterLink"
 
 const Wrapper: React.FC<{ onPress?(): void; href?: string | null }> = ({
   children,
