@@ -185,7 +185,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     if (enableSupressArtwork) {
       contextMenuActions.push({
         title: "Not interested",
-        systemIcon: "no.art",
+        systemIcon: "rectangle.slash",
         onPress: () => {
           InteractionManager.runAfterInteractions(() => {
             onSupressArtwork?.()
