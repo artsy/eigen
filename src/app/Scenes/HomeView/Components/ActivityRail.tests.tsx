@@ -100,7 +100,7 @@ describe("ActivityRail", () => {
 
     fireEvent.press(screen.getByText(/mock-value-for-field-"headline"/))
 
-    expect(navigate).toHaveBeenCalledWith("/notification/id-1")
+    expect(navigate).toHaveBeenCalledWith("/notification/id-1", undefined)
 
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedActivityGroup",

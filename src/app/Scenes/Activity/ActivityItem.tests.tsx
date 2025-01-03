@@ -96,7 +96,10 @@ describe("ActivityItem", () => {
     fireEvent.press(await screen.findByText("Notification Headline"))
 
     await waitFor(() =>
-      expect(navigate).toHaveBeenCalledWith('/notification/<mock-value-for-field-"internalID">')
+      expect(navigate).toHaveBeenCalledWith(
+        '/notification/<mock-value-for-field-"internalID">',
+        undefined
+      )
     )
   })
 
