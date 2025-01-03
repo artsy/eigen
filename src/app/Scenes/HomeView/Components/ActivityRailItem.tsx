@@ -4,7 +4,6 @@ import {
   ActivityRailItem_item$key,
   NotificationTypesEnum,
 } from "__generated__/ActivityRailItem_item.graphql"
-import { RouterLink } from "app/Components/RouterLink"
 import { ActivityItemTypeLabel } from "app/Scenes/Activity/ActivityItemTypeLabel"
 import {
   ExpiresInTimer,
@@ -13,6 +12,7 @@ import {
 import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBadge"
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
 import { getActivityItemHref } from "app/Scenes/Activity/utils/getActivityItemHref"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { graphql, useFragment } from "react-relay"
 

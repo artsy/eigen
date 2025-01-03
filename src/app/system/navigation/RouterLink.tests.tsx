@@ -1,6 +1,6 @@
 import { Text } from "@artsy/palette-mobile"
 import { fireEvent, screen } from "@testing-library/react-native"
-import { RouterLink } from "app/Components/RouterLink"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useEffect } from "react"

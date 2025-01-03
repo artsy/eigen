@@ -2,7 +2,6 @@ import { ActionType } from "@artsy/cohesion"
 import { ClickedActivityPanelNotificationItem } from "@artsy/cohesion/dist/Schema/Events/ActivityPanel"
 import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { ActivityItem_notification$key } from "__generated__/ActivityItem_notification.graphql"
-import { RouterLink } from "app/Components/RouterLink"
 import { CollectorUpdateNotification } from "app/Scenes/Activity/components/CollectorUpdateNotification"
 import {
   ExpiresInTimer,
@@ -11,6 +10,7 @@ import {
 import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBadge"
 import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMarkNotificationAsRead"
 import { getActivityItemHref } from "app/Scenes/Activity/utils/getActivityItemHref"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { memo } from "react"
 import { graphql, useFragment } from "react-relay"
