@@ -45,6 +45,8 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
     const handleClearTask = async () => {
       await dismissTask({ variables: { taskID: task.internalID } })
       tappedClearTask(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
+
+      console.warn("handleClearTask")
       onClearTask()
     }
 
@@ -87,7 +89,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
 
               <Flex flex={1} pr={1}>
                 <Text color="white100" variant="xs" fontWeight="bold">
-                  {task.title}
+                  {task.title} {restProps.index}
                 </Text>
 
                 <Text color="white100" variant="xs">

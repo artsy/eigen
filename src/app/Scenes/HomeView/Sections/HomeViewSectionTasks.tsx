@@ -35,7 +35,7 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated"
-import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
+import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { usePrevious } from "react-use"
 
 const MAX_NUMBER_OF_TASKS = 10
@@ -63,7 +63,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
   // reassigned, we can access current immediately
   const taskRefs = useRef<Map<string, RefObject<SwipeableMethods>>>(new Map()).current
 
-  const section = useFragment(tasksFragment, sectionProp)
+  const [section, refetch] = useRefetchableFragment(tasksFragment, sectionProp)
   const tasks = extractNodes(section.tasksConnection)
   const isFocused = useIsFocused()
 
@@ -119,9 +119,20 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
     if (!task) {
       return
     }
+    setTimeout(() => {
+      console.warn("refetching...")
+      refetch(
+        { numberOfTasks: MAX_NUMBER_OF_TASKS },
+        { onComplete: () => console.warn("refetched") }
+      )
+    }, 5000)
 
-    setClearedTasks((prev) => [...prev, task.internalID])
+    // setClearedTasks((prev) => [...prev, task.internalID])
   }
+
+  useEffect(() => {
+    console.log("****", tasks.length)
+  }, [tasks])
 
   // Close all tasks except the one with the provided taskID
   const closeAllTasks = (excludeTaskID?: string) => {
@@ -226,14 +237,15 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
 
 const tasksFragment = graphql`
   fragment HomeViewSectionTasks_section on HomeViewSectionTasks
-  @argumentDefinitions(numberOfTasks: { type: "Int", defaultValue: 10 }) {
+  @argumentDefinitions(numberOfTasks: { type: "Int", defaultValue: 10 }, after: { type: "String" })
+  @refetchable(queryName: "HomeViewSectionTasksRefetchQuery") {
     internalID
     contextModule
     ownerType
     component {
       title
     }
-    tasksConnection(first: $numberOfTasks) {
+    tasksConnection(first: $numberOfTasks, after: $after) {
       edges {
         node {
           internalID
