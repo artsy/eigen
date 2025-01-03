@@ -1,4 +1,4 @@
-import { tappedTabBar } from "@artsy/cohesion"
+import { ActionType, OwnerType, Screen, tappedTabBar } from "@artsy/cohesion"
 import { Flex, Text, useColor } from "@artsy/palette-mobile"
 import { THEME } from "@artsy/palette-tokens"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
@@ -71,6 +71,7 @@ const AppTabs: React.FC = () => {
             contextScreenOwnerType: BottomTabOption[tabName as BottomTabType],
           })
         )
+        postEventToProviders(tabsTracks.tabScreenView(tabName))
       }
     },
     [selectedTab]
@@ -169,4 +170,32 @@ export const AuthenticatedRoutes: React.FC = () => {
       </AuthenticatedRoutesStack.Group>
     </AuthenticatedRoutesStack.Navigator>
   )
+}
+
+export const tabsTracks = {
+  tabScreenView: (tab: BottomTabType): Screen => {
+    let tabScreen = OwnerType.home
+    switch (tab) {
+      case "home":
+        tabScreen = OwnerType.home
+        break
+      case "inbox":
+        tabScreen = OwnerType.inbox
+        break
+      case "profile":
+        tabScreen = OwnerType.profile
+        break
+      case "search":
+        tabScreen = OwnerType.search
+        break
+      case "sell":
+        tabScreen = OwnerType.sell
+        break
+    }
+
+    return {
+      context_screen_owner_type: tabScreen,
+      action: ActionType.screen,
+    }
+  },
 }

@@ -1,6 +1,6 @@
 import { EventEmitter } from "events"
-import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
 import { StackActions, TabActions } from "@react-navigation/native"
+import { tabsTracks } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { modules } from "app/Navigation/utils/modules"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
@@ -103,7 +103,7 @@ export function switchTab(tab: BottomTabType, props?: object) {
   // like other screens manually track screen views here
   // home handles this on its own since it is default tab
   if (tab !== "home") {
-    postEventToProviders(tracks.tabScreenView(tab))
+    postEventToProviders(tabsTracks.tabScreenView(tab))
   }
 
   if (props) {
@@ -113,34 +113,6 @@ export function switchTab(tab: BottomTabType, props?: object) {
   GlobalStore.actions.bottomTabs.setSelectedTab(tab)
 
   internal_navigationRef?.current?.dispatch(TabActions.jumpTo(tab, props))
-}
-
-const tracks = {
-  tabScreenView: (tab: BottomTabType): Screen => {
-    let tabScreen = OwnerType.home
-    switch (tab) {
-      case "home":
-        tabScreen = OwnerType.home
-        break
-      case "inbox":
-        tabScreen = OwnerType.inbox
-        break
-      case "profile":
-        tabScreen = OwnerType.profile
-        break
-      case "search":
-        tabScreen = OwnerType.search
-        break
-      case "sell":
-        tabScreen = OwnerType.sell
-        break
-    }
-
-    return {
-      context_screen_owner_type: tabScreen,
-      action: ActionType.screen,
-    }
-  },
 }
 
 export function dismissModal(after?: () => void) {
