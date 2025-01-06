@@ -38,7 +38,6 @@ export function getUnleashClient(props?: {
       envBeingUsed = props?.env
     }
     unleashClient = createUnleashClient(nullToUndef(props?.userId))
-    unleashClient.start()
   }
   return unleashClient
 }
