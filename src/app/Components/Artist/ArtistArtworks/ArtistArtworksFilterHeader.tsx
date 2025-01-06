@@ -9,11 +9,13 @@ import { graphql, useFragment } from "react-relay"
 interface ArtistArtworksFilterProps {
   artist: ArtistArtworksFilterHeader_artist$key
   showCreateAlertModal: () => void
+  shouldShowCreateAlertPrompt?: boolean
 }
 
 export const ArtistArtworksFilterHeader: React.FC<ArtistArtworksFilterProps> = ({
   artist,
   showCreateAlertModal,
+  shouldShowCreateAlertPrompt,
 }) => {
   const data = useFragment(
     graphql`
@@ -43,6 +45,7 @@ export const ArtistArtworksFilterHeader: React.FC<ArtistArtworksFilterProps> = (
           onPress={() => {
             showCreateAlertModal()
           }}
+          shouldShowCreateAlertPrompt={shouldShowCreateAlertPrompt}
         />
       </ArtworksFilterHeader>
     </Box>

@@ -14,6 +14,7 @@ import {
 import { MasonryFlashListRef } from "@shopify/flash-list"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
+import { CreateAlertPromptMessage } from "app/Components/Artist/ArtistArtworks/CreateAlertPromptMessage"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { useCreateSavedSearchModalFilters } from "app/Components/Artist/ArtistArtworks/hooks/useCreateSavedSearchModalFilters"
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
@@ -150,7 +151,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     }
   }, [relay.hasMore(), relay.isLoading()])
 
-  const CreateAlertButton = () => {
+  const CreateAlertButton: React.FC = () => {
     return (
       <Button
         variant="outline"
@@ -257,6 +258,11 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     )
   }
 
+  const variant_a = true
+  const variant_b = true
+
+  const shouldShowCreateAlertPrompt = artworks.length >= 10 // 40
+
   return (
     <>
       <Tabs.Masonry
@@ -288,6 +294,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
               <ArtistArtworksFilterHeader
                 artist={artist}
                 showCreateAlertModal={() => setIsCreateAlertModalVisible(true)}
+                shouldShowCreateAlertPrompt={!!shouldShowCreateAlertPrompt && variant_a}
               />
             </Tabs.SubTabBar>
             <Flex pt={1}>
@@ -299,6 +306,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         }
         ListFooterComponent={<ListFooterComponenet />}
       />
+
       <ArtworkFilterNavigator
         {...props}
         id={artist.internalID}
@@ -310,12 +318,18 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         mode={FilterModalMode.ArtistArtworks}
         shouldShowCreateAlertButton
       />
+
       <CreateSavedSearchModal
         attributes={attributes}
         closeModal={() => setIsCreateAlertModalVisible(false)}
         entity={savedSearchEntity}
         onComplete={handleCompleteSavedSearch}
         visible={isCreateAlertModalVisible}
+      />
+
+      <CreateAlertPromptMessage
+        shouldShowCreateAlertPrompt={!!shouldShowCreateAlertPrompt && variant_b}
+        onPress={() => setIsCreateAlertModalVisible(true)}
       />
     </>
   )
