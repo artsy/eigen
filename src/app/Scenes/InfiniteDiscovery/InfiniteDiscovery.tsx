@@ -10,14 +10,14 @@ import {
   useScreenDimensions,
   useTheme,
 } from "@artsy/palette-mobile"
-import { InfiniteDiscoveryQuery } from "__generated__/InfiniteDiscoveryQuery.graphql"
 import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
-import { Card } from "app/Components/FancySwiper/FancySwiperCard"
 import { InfiniteDiscoveryContext } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryContext"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import type { InfiniteDiscoveryQuery } from "__generated__/InfiniteDiscoveryQuery.graphql"
+import type { Card } from "app/Components/FancySwiper/FancySwiperCard"
 
 export const InfiniteDiscoveryView: React.FC = () => {
   return (

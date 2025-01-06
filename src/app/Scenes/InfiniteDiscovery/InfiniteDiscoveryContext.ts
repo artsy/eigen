@@ -1,4 +1,4 @@
-import { action, Action, createContextStore } from "easy-peasy"
+import { action, type Action, createContextStore } from "easy-peasy"
 
 export interface InfiniteDiscoveryContextModel {
   count: number
