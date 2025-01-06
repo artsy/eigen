@@ -1,6 +1,7 @@
 import { ActionType, AuthService, CreatedAccount, ResetYourPassword } from "@artsy/cohesion"
 import Braze from "@braze/react-native-sdk"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin"
 import * as Sentry from "@sentry/react-native"
@@ -1012,6 +1013,7 @@ export const getAuthModel = (): AuthModel => ({
       __DEV__ && (await clearNavState()),
       await signOutGoogle(),
       LoginManager.logOut(),
+      await AsyncStorage.clear(),
       CookieManager.clearAll(),
       _globalCacheRef?.clear(),
     ])

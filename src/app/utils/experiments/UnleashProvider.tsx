@@ -22,6 +22,9 @@ export function UnleashProvider({ children }: { children?: React.ReactNode }) {
     if (isHydrated && userId) {
       const client = getUnleashClient({ env: unleashEnv, userId })
 
+      // starts unleash client each time user logs in
+      client.start()
+
       client.on("initialized", () => {
         if (__DEV__) {
           console.log("Unleash initialized")
