@@ -1,4 +1,4 @@
-import { Box, Flex, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import { Flex, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import {
   ArtworkRail_artworks$data,
   ArtworkRail_artworks$key,
@@ -65,22 +65,20 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
     const renderItem: ListRenderItem<Artwork> = useCallback(
       ({ item, index }) => {
         return (
-          <Box pr={2}>
-            <ArtworkRailCard
-              testID={`artwork-${item.slug}`}
-              artwork={item}
-              showPartnerName={showPartnerName}
-              hideArtistName={hideArtistName}
-              dark={dark}
-              onPress={() => {
-                onPress?.(item, index)
-              }}
-              showSaveIcon={showSaveIcon}
-              hideIncreasedInterestSignal={hideIncreasedInterestSignal}
-              hideCuratorsPickSignal={hideCuratorsPickSignal}
-              {...otherProps}
-            />
-          </Box>
+          <ArtworkRailCard
+            testID={`artwork-${item.slug}`}
+            artwork={item}
+            showPartnerName={showPartnerName}
+            hideArtistName={hideArtistName}
+            dark={dark}
+            onPress={() => {
+              onPress?.(item, index)
+            }}
+            showSaveIcon={showSaveIcon}
+            hideIncreasedInterestSignal={hideIncreasedInterestSignal}
+            hideCuratorsPickSignal={hideCuratorsPickSignal}
+            {...otherProps}
+          />
         )
       },
       [hideArtistName, onPress, showPartnerName]
