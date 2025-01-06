@@ -1,4 +1,4 @@
-import { Flex, Spacer } from "@artsy/palette-mobile"
+import { Box, Flex, Spacer } from "@artsy/palette-mobile"
 import { ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import {
@@ -103,57 +103,59 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
             SalePriceComponent,
           }}
         >
-          <TouchableHighlight
-            underlayColor={backgroundColor}
-            activeOpacity={0.8}
-            onPress={onPress}
-            testID={testID}
-          >
-            <Flex
-              height={
-                containerHeight ?? ARTWORK_RAIL_CARD_IMAGE_HEIGHT + artworkRailCardMetaDataHeight
-              }
-              justifyContent="flex-start"
-              minWidth={ARTWORK_RAIL_CARD_MIN_WIDTH}
-              maxWidth={ARTWORK_RAIL_CARD_MAX_WIDTH}
+          <Box pr={2}>
+            <TouchableHighlight
+              underlayColor={backgroundColor}
+              activeOpacity={0.8}
+              onPress={onPress}
+              testID={testID}
             >
-              <ArtworkRailCardImage artwork={artwork} />
+              <Flex
+                height={
+                  containerHeight ?? ARTWORK_RAIL_CARD_IMAGE_HEIGHT + artworkRailCardMetaDataHeight
+                }
+                justifyContent="flex-start"
+                minWidth={ARTWORK_RAIL_CARD_MIN_WIDTH}
+                maxWidth={ARTWORK_RAIL_CARD_MAX_WIDTH}
+              >
+                <ArtworkRailCardImage artwork={artwork} />
 
-              <Spacer y={1} />
+                <Spacer y={1} />
 
-              <ArtworkRailCardMeta
-                artwork={artwork}
-                contextModule={contextModule}
-                contextScreen={contextScreen}
-                contextScreenOwnerId={contextScreenOwnerId}
-                contextScreenOwnerSlug={contextScreenOwnerSlug}
-                contextScreenOwnerType={contextScreenOwnerType}
-                dark={dark}
-                hideArtistName={hideArtistName}
-                hideCuratorsPickSignal={hideCuratorsPickSignal}
-                hideIncreasedInterestSignal={hideIncreasedInterestSignal}
-                lotLabel={lotLabel}
-                SalePriceComponent={SalePriceComponent}
-                showPartnerName={showPartnerName}
-                showSaveIcon={showSaveIcon}
-                backgroundColor={backgroundColor}
-              />
+                <ArtworkRailCardMeta
+                  artwork={artwork}
+                  contextModule={contextModule}
+                  contextScreen={contextScreen}
+                  contextScreenOwnerId={contextScreenOwnerId}
+                  contextScreenOwnerSlug={contextScreenOwnerSlug}
+                  contextScreenOwnerType={contextScreenOwnerType}
+                  dark={dark}
+                  hideArtistName={hideArtistName}
+                  hideCuratorsPickSignal={hideCuratorsPickSignal}
+                  hideIncreasedInterestSignal={hideIncreasedInterestSignal}
+                  lotLabel={lotLabel}
+                  SalePriceComponent={SalePriceComponent}
+                  showPartnerName={showPartnerName}
+                  showSaveIcon={showSaveIcon}
+                  backgroundColor={backgroundColor}
+                />
 
-              {!!enableNewSaveAndFollowOnArtworkCard &&
-                !!(enableNewSaveCTA || enableNewSaveAndFollowCTAs) && <Spacer y={0.5} />}
+                {!!enableNewSaveAndFollowOnArtworkCard &&
+                  !!(enableNewSaveCTA || enableNewSaveAndFollowCTAs) && <Spacer y={0.5} />}
 
-              <ArtworkItemCTAs
-                artwork={artwork}
-                showSaveIcon={showSaveIcon}
-                dark={dark}
-                contextModule={contextModule}
-                contextScreen={contextScreen}
-                contextScreenOwnerId={contextScreenOwnerId}
-                contextScreenOwnerSlug={contextScreenOwnerSlug}
-                contextScreenOwnerType={contextScreenOwnerType}
-              />
-            </Flex>
-          </TouchableHighlight>
+                <ArtworkItemCTAs
+                  artwork={artwork}
+                  showSaveIcon={showSaveIcon}
+                  dark={dark}
+                  contextModule={contextModule}
+                  contextScreen={contextScreen}
+                  contextScreenOwnerId={contextScreenOwnerId}
+                  contextScreenOwnerSlug={contextScreenOwnerSlug}
+                  contextScreenOwnerType={contextScreenOwnerType}
+                />
+              </Flex>
+            </TouchableHighlight>
+          </Box>
         </ContextMenuArtwork>
 
         <CreateArtworkAlertModal
