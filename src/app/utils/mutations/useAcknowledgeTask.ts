@@ -1,11 +1,8 @@
 import { useAcknowledgeTaskMutation } from "__generated__/useAcknowledgeTaskMutation.graphql"
-import { useMutation } from "app/utils/useMutation"
-import { graphql } from "react-relay"
+import { graphql, useMutation } from "react-relay"
 
 export const useAcknowledgeTask = () => {
-  return useMutation<useAcknowledgeTaskMutation>({
-    mutation: AcknowledgeTaskMutation,
-  })
+  return useMutation<useAcknowledgeTaskMutation>(AcknowledgeTaskMutation)
 }
 
 const AcknowledgeTaskMutation = graphql`

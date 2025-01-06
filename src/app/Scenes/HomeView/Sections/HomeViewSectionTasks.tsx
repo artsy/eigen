@@ -35,7 +35,7 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated"
-import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { usePrevious } from "react-use"
 
 const MAX_NUMBER_OF_TASKS = 10
@@ -63,17 +63,17 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
   // reassigned, we can access current immediately
   const taskRefs = useRef<Map<string, RefObject<SwipeableMethods>>>(new Map()).current
 
-  const [section, refetch] = useRefetchableFragment(tasksFragment, sectionProp)
+  const section = useFragment(tasksFragment, sectionProp)
   const tasks = extractNodes(section.tasksConnection)
   const isFocused = useIsFocused()
 
   const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
 
-  const [clearedTasks, setClearedTasks] = useState<string[]>([])
+  const [clientHiddenTasks, setClientHiddenTasks] = useState<string[]>([])
   const [showAll, setShowAll] = useState(false)
 
-  const filteredTasks = tasks.filter((task) => !clearedTasks.includes(task.internalID))
+  const filteredTasks = tasks.filter((task) => !clientHiddenTasks.includes(task.internalID))
   const displayTaskStack = filteredTasks.length > 1 && !showAll
   const HeaderIconComponent = showAll ? ArrowUpIcon : ArrowDownIcon
 
@@ -115,21 +115,6 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
     }
   }, [showAll, previousShowAll])
 
-  const handleClearTask = (task: Task) => {
-    if (!task) {
-      return
-    }
-    setTimeout(() => {
-      console.warn("refetching...")
-      refetch(
-        { numberOfTasks: MAX_NUMBER_OF_TASKS },
-        { onComplete: () => console.warn("refetched") }
-      )
-    }, 5000)
-
-    // setClearedTasks((prev) => [...prev, task.internalID])
-  }
-
   useEffect(() => {
     console.log("****", tasks.length)
   }, [tasks])
@@ -149,20 +134,33 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
 
   const renderItem = useCallback<ListRenderItem<Task>>(
     ({ item, index }) => {
+      // wrap task clearing actions in a function to instantly hide them
+      const handleClearTask: <T>(clearTask: () => Promise<T>) => Promise<void> = async (
+        clearTask
+      ) => {
+        setClientHiddenTasks((prev) => [...prev, item.internalID])
+        try {
+          await clearTask()
+        } catch (error) {
+          setClientHiddenTasks((prev) => prev.filter((id) => id !== item.internalID))
+        }
+      }
+
       return (
         <TaskItem
           task={item}
+          allTasks={tasks}
           taskRefs={taskRefs}
           index={index}
           showAll={showAll}
           displayTaskStack={displayTaskStack}
-          onClearTask={handleClearTask}
           onOpenTask={() => closeAllTasks(item.internalID)}
+          onClearTask={handleClearTask}
           setShowAll={setShowAll}
         />
       )
     },
-    [displayTaskStack, handleClearTask, showAll]
+    [displayTaskStack, showAll]
   )
 
   const motiViewHeight = useMemo(() => {
@@ -237,15 +235,18 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
 
 const tasksFragment = graphql`
   fragment HomeViewSectionTasks_section on HomeViewSectionTasks
-  @argumentDefinitions(numberOfTasks: { type: "Int", defaultValue: 10 }, after: { type: "String" })
-  @refetchable(queryName: "HomeViewSectionTasksRefetchQuery") {
+  @argumentDefinitions(
+    numberOfTasks: { type: "Int", defaultValue: 10 }
+    after: { type: "String" }
+  ) {
     internalID
     contextModule
     ownerType
     component {
       title
     }
-    tasksConnection(first: $numberOfTasks, after: $after) {
+    tasksConnection(first: $numberOfTasks, after: $after)
+      @connection(key: "HomeViewSectionTasks_tasksConnection") {
       edges {
         node {
           internalID
@@ -258,12 +259,13 @@ const tasksFragment = graphql`
 
 interface TaskItemProps {
   task: Task
+  allTasks: Task[]
   taskRefs: Map<string, RefObject<SwipeableMethods>>
   showAll: boolean
   index: number
   displayTaskStack: boolean
-  onClearTask: (task: Task) => void
   onOpenTask: () => void
+  onClearTask: <T>(clearTask: () => Promise<T>) => Promise<void>
   setShowAll: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -273,8 +275,8 @@ const TaskItem = ({
   index,
   showAll,
   displayTaskStack,
-  onClearTask,
   onOpenTask,
+  onClearTask,
   setShowAll,
 }: TaskItemProps) => {
   const taskRef = useRef<SwipeableMethods>(null)
@@ -309,7 +311,7 @@ const TaskItem = ({
     <Animated.View exiting={FadeOut} style={animatedStyle} key={task.internalID}>
       <Task
         disableSwipeable={displayTaskStack}
-        onClearTask={() => onClearTask(task)}
+        onClearTask={onClearTask}
         onPress={displayTaskStack ? () => setShowAll((prev) => !prev) : undefined}
         ref={taskRef}
         onOpenTask={onOpenTask}

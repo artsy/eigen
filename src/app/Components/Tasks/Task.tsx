@@ -15,7 +15,7 @@ const TASK_IMAGE_SIZE = 60
 
 export interface TaskProps {
   disableSwipeable?: boolean
-  onClearTask: () => void
+  onClearTask: <T>(clearTask: () => Promise<T>) => Promise<void>
   onOpenTask: () => void
   onPress?: () => void
   task: Task_task$key
@@ -24,8 +24,8 @@ export interface TaskProps {
 export const Task = forwardRef<SwipeableMethods, TaskProps>(
   ({ disableSwipeable, onClearTask, onOpenTask, onPress, ...restProps }, ref) => {
     const { tappedTaskGroup, tappedClearTask } = useHomeViewTracking()
-    const { submitMutation: dismissTask } = useDismissTask()
-    const { submitMutation: acknowledgeTask } = useAcknowledgeTask()
+    const [acknowledgeTask] = useAcknowledgeTask()
+    const [dismissTask] = useDismissTask()
     const fontScale = PixelRatio.getFontScale()
     const task = useFragment(taskFragment, restProps.task)
 
@@ -37,17 +37,19 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
 
       await acknowledgeTask({ variables: { taskID: task.internalID } })
       tappedTaskGroup(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
-      onClearTask()
+      await onClearTask(async () => {
+        return await acknowledgeTask({ variables: { taskID: task.internalID } })
+      })
 
       navigate(task.actionLink)
     }
 
     const handleClearTask = async () => {
-      await dismissTask({ variables: { taskID: task.internalID } })
-      tappedClearTask(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
+      await onClearTask(async () => {
+        return await dismissTask({ variables: { taskID: task.internalID } })
+      })
 
-      console.warn("handleClearTask")
-      onClearTask()
+      tappedClearTask(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
     }
 
     return (
@@ -89,7 +91,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
 
               <Flex flex={1} pr={1}>
                 <Text color="white100" variant="xs" fontWeight="bold">
-                  {task.title} {restProps.index}
+                  {task.title}
                 </Text>
 
                 <Text color="white100" variant="xs">
