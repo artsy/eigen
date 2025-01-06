@@ -99,7 +99,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
 
   const articles = extractNodes(artwork.artist?.articles)
 
-  const isEditable = artwork.consignmentSubmission?.isEditable
+  const isEditable = !artwork.consignmentSubmission || artwork.consignmentSubmission?.isEditable
 
   return (
     <Screen>
