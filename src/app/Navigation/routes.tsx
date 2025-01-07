@@ -908,9 +908,13 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: AddMyCollectionArtist,
     options: {
       screenOptions: {
-        headerShown: false,
+        headerTitle: "Add New Artist",
       },
     },
+    injectParams: (params) => ({
+      ...params,
+      useNativeHeader: true,
+    }),
   },
   {
     path: "/my-collection/artwork/:artworkId",
