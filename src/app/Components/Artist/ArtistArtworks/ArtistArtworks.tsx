@@ -28,6 +28,7 @@ import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilter
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
@@ -70,6 +71,11 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const artworks = useMemo(() => extractNodes(artist.artworks), [artist.artworks])
   const artworksCount = artist.artworks?.counts?.total ?? 0
   const gridRef = useRef<MasonryFlashListRef<(typeof artworks)[0]>>(null)
+  const {
+    enabled,
+    variant,
+    trackExperiment: trackCreateAlertPromptExperiment,
+  } = useExperimentVariant("onyx_create-alert-prompt-experiment")
 
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
@@ -83,6 +89,10 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setInitialFilterStateAction
   )
+
+  useEffect(() => {
+    trackCreateAlertPromptExperiment()
+  }, [])
 
   useEffect(() => {
     let filters: FilterArray = []
@@ -258,8 +268,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     )
   }
 
-  const variant_a = true
-  const variant_b = true
+  const variant_a = enabled && variant === "variant-a"
+  const variant_b = enabled && variant === "variant-b"
 
   const userDidScroll = artworks.length >= 10 // 40
 
