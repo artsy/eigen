@@ -23,9 +23,11 @@ describe("OfferSubmittedModal", () => {
     jest.clearAllMocks()
   })
 
-  it("renders", () => {
+  it("renders", async () => {
     renderWithWrappers(<OfferSubmittedModal />)
     act(() => callback?.({ orderCode: "1234", message: "Test message" }))
+
+    await flushPromiseQueue()
 
     expect(screen.getByText("Thank you, your offer has been submitted")).toBeTruthy()
     expect(
@@ -40,6 +42,7 @@ describe("OfferSubmittedModal", () => {
     renderWithWrappers(<OfferSubmittedModal />)
     act(() => callback?.({ orderCode: "1234", message: "Test message" }))
 
+    await flushPromiseQueue()
     fireEvent.press(screen.getAllByText("Go to inbox")[0])
 
     // Wait for modal dismissal
