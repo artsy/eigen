@@ -16530,7 +16530,7 @@ type Query {
     limit: Int
 
     # (Only for when useOpenSearch is true) These fields are used to calculate the More Like This query
-    mltFields: [String] = ["material", "categories", "tags", "medium"]
+    mltFields: [String] = ["genes", "materials", "tags", "medium"]
     offset: Int
 
     # (Only for when useOpenSearch is true) Weights for the OpenSearch query
@@ -21118,7 +21118,7 @@ type Viewer {
     limit: Int
 
     # (Only for when useOpenSearch is true) These fields are used to calculate the More Like This query
-    mltFields: [String] = ["material", "categories", "tags", "medium"]
+    mltFields: [String] = ["genes", "materials", "tags", "medium"]
     offset: Int
 
     # (Only for when useOpenSearch is true) Weights for the OpenSearch query
