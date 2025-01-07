@@ -1,13 +1,13 @@
 import {
-  Spacer,
-  AuctionIcon,
+  ArrowRightIcon,
   ArtworkIcon,
+  AuctionIcon,
   CloseIcon,
   Flex,
   Pill,
+  Spacer,
   Text,
   Touchable,
-  ArrowRightIcon,
 } from "@artsy/palette-mobile"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
@@ -19,7 +19,6 @@ import {
   navigateToPartner,
   SlugType,
 } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { useContext } from "react"
 import { TouchableOpacity } from "react-native"
@@ -72,9 +71,7 @@ export const AutosuggestSearchResult: React.FC<{
   updateRecentSearchesOnTap = true,
   showQuickNavigationButtons = false,
 }) => {
-  const enableNewSearchModal = useFeatureFlag("AREnableNewSearchModal")
-
-  const { inputRef, queryRef } = useContext(SearchContext)
+  const { queryRef } = useContext(SearchContext)
   const { trackEvent } = useTracking()
 
   const showNavigationButtons =
@@ -83,43 +80,32 @@ export const AutosuggestSearchResult: React.FC<{
   const onPress: HandleResultPress = (passProps) => {
     if (onResultPress) {
       onResultPress(result)
-    } else {
-      if (enableNewSearchModal) {
-        navigateToResult(result, passProps)
-        if (updateRecentSearchesOnTap) {
-          GlobalStore.actions.search.addRecentSearch({
-            type: "AUTOSUGGEST_RESULT_TAPPED",
-            props: result,
-          })
-        }
-      } else {
-        inputRef.current?.blur()
-        // need to wait a tick to push next view otherwise the input won't blur ¯\_(ツ)_/¯
-        setTimeout(() => {
-          navigateToResult(result, passProps)
-          if (updateRecentSearchesOnTap) {
-            GlobalStore.actions.search.addRecentSearch({
-              type: "AUTOSUGGEST_RESULT_TAPPED",
-              props: result,
-            })
-          }
-        }, 20)
-      }
-      if (trackResultPress) {
-        trackResultPress(result, itemIndex)
-        return
-      }
+      return
+    }
 
-      trackEvent({
-        action_type: displayingRecentResult
-          ? Schema.ActionNames.ARAnalyticsSearchRecentItemSelected
-          : Schema.ActionNames.ARAnalyticsSearchItemSelected,
-        // @ts-expect-error
-        query: queryRef.current,
-        selected_object_type: result.displayType || result.__typename,
-        selected_object_slug: result.slug,
+    navigateToResult(result, passProps)
+
+    if (updateRecentSearchesOnTap) {
+      GlobalStore.actions.search.addRecentSearch({
+        type: "AUTOSUGGEST_RESULT_TAPPED",
+        props: result,
       })
     }
+
+    if (trackResultPress) {
+      trackResultPress(result, itemIndex)
+      return
+    }
+
+    trackEvent({
+      action_type: displayingRecentResult
+        ? Schema.ActionNames.ARAnalyticsSearchRecentItemSelected
+        : Schema.ActionNames.ARAnalyticsSearchItemSelected,
+      // @ts-expect-error
+      query: queryRef.current,
+      selected_object_type: result.displayType || result.__typename,
+      selected_object_slug: result.slug,
+    })
   }
 
   const resultType = getResultType(result)
