@@ -337,10 +337,9 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         visible={isCreateAlertModalVisible}
       />
 
-      <CreateAlertPromptMessage
-        shouldShowCreateAlertPrompt={!!userDidScroll && variant_b}
-        onPress={() => setIsCreateAlertModalVisible(true)}
-      />
+      {!!userDidScroll && !!variant_b && (
+        <CreateAlertPromptMessage onPress={() => setIsCreateAlertModalVisible(true)} />
+      )}
     </>
   )
 }

@@ -6,7 +6,8 @@ export interface CreateAlertPromptModel {
     dismisDate: number
   }
   updateTimesShown: Action<this>
-  dismissPrompt: Action<this, boolean>
+  dismissPrompt: Action<this>
+  dontShowCreateAlertPromptAgain: Action<this>
 }
 
 export const getCreateAlertPromptModel = (): CreateAlertPromptModel => ({
@@ -17,10 +18,16 @@ export const getCreateAlertPromptModel = (): CreateAlertPromptModel => ({
   updateTimesShown: action((state) => {
     state.promptState.timesShown = state.promptState.timesShown + 1
   }),
-  dismissPrompt: action((state, dontShowAgain) => {
+  dismissPrompt: action((state) => {
     state.promptState = {
-      timesShown: state.promptState.timesShown + (dontShowAgain ? 1 : 0),
+      ...state.promptState,
       dismisDate: Date.now(),
+    }
+  }),
+  dontShowCreateAlertPromptAgain: action((state) => {
+    state.promptState = {
+      ...state.promptState,
+      timesShown: state.promptState.timesShown + 1,
     }
   }),
 })

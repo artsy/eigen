@@ -1,6 +1,8 @@
 import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
 import { BellIcon, Flex, Box, Text, TouchableHighlightColor } from "@artsy/palette-mobile"
+import { useIsFocused } from "@react-navigation/native"
 import { SavedSearchButtonV2Popover } from "app/Components/Artist/ArtistArtworks/SavedSearchButtonV2Popover"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useTracking } from "react-tracking"
 
 export interface SavedSearchButtonV2Props {
@@ -12,10 +14,23 @@ export interface SavedSearchButtonV2Props {
 
 export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) => {
   const { artistId, artistSlug, onPress, shouldShowCreateAlertPrompt } = props
+  const { promptState } = GlobalStore.useAppState((state) => state.createAlertPrompt)
+  const { dontShowCreateAlertPromptAgain } = GlobalStore.actions.createAlertPrompt
   const tracking = useTracking()
+  const isFocused = useIsFocused()
 
   const handlePress = () => {
     onPress()
+
+    /**
+     * if Create Alert CTA was pressed withing 2 minutes after the prompt was shown
+     *  do not show the prompt again
+     * */
+    // TODO: maybe add is the screen is still focused check
+    if (Date.now() - promptState.dismisDate < 120000 && isFocused) {
+      dontShowCreateAlertPromptAgain()
+    }
+
     tracking.trackEvent(tracks.tappedCreateAlert(artistId, artistSlug))
   }
 

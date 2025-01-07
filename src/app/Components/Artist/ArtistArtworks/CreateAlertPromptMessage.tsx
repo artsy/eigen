@@ -1,21 +1,18 @@
-import { Button, Message } from "@artsy/palette-mobile"
+import { Button, Message, Text } from "@artsy/palette-mobile"
 import { useShouldShowPrompt } from "app/Components/Artist/ArtistArtworks/hooks/useShouldShowPrompt"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
 
 interface CreateAlertPromptMessageProps {
   onPress: () => void
-  shouldShowCreateAlertPrompt: boolean
 }
 
-export const CreateAlertPromptMessage: React.FC<CreateAlertPromptMessageProps> = ({
-  onPress,
-  shouldShowCreateAlertPrompt,
-}) => {
+export const CreateAlertPromptMessage: React.FC<CreateAlertPromptMessageProps> = ({ onPress }) => {
   const { promptState } = GlobalStore.useAppState((state) => state.createAlertPrompt)
-  const { dismissPrompt, updateTimesShown } = GlobalStore.actions.createAlertPrompt
+  const { updateTimesShown, dontShowCreateAlertPromptAgain, dismissPrompt } =
+    GlobalStore.actions.createAlertPrompt
 
-  const shouldShowPrompt = useShouldShowPrompt(promptState) && shouldShowCreateAlertPrompt
+  const { shouldShowPrompt, forcePrompt } = useShouldShowPrompt(promptState)
 
   useEffect(() => {
     if (shouldShowPrompt) {
@@ -32,24 +29,30 @@ export const CreateAlertPromptMessage: React.FC<CreateAlertPromptMessageProps> =
         variant="dark"
         IconComponent={() => {
           return (
-            <Button
-              variant="outline"
-              size="small"
-              onPress={() => {
-                const dontShowAgain = true
-                dismissPrompt(dontShowAgain)
-                onPress()
-              }}
-            >
-              Create Alert
-            </Button>
+            <>
+              <Button
+                variant="outline"
+                size="small"
+                onPress={() => {
+                  dismissPrompt()
+                  dontShowCreateAlertPromptAgain()
+                  onPress()
+                }}
+              >
+                Create Alert
+              </Button>
+              {!!forcePrompt && (
+                <Text variant="xs" color="pink">
+                  timesShown: {promptState.timesShown}
+                </Text>
+              )}
+            </>
           )
         }}
         iconPosition="bottom"
         showCloseButton
         onClose={() => {
-          const dontShowAgain = false
-          dismissPrompt(dontShowAgain)
+          dismissPrompt()
         }}
       />
     )

@@ -7,7 +7,7 @@ export const CreateAlertPromptPopover: React.FC<{}> = ({ children }) => {
   const { promptState } = GlobalStore.useAppState((state) => state.createAlertPrompt)
   const { dismissPrompt, updateTimesShown } = GlobalStore.actions.createAlertPrompt
 
-  const shouldShowPrompt = useShouldShowPrompt(promptState)
+  const { shouldShowPrompt, forcePrompt } = useShouldShowPrompt(promptState)
 
   useEffect(() => {
     if (shouldShowPrompt) {
@@ -32,9 +32,16 @@ export const CreateAlertPromptPopover: React.FC<{}> = ({ children }) => {
         </Text>
       }
       content={
-        <Text variant="xs" color="white100">
-          Create an alert and we’ll let you know when there’s a match.
-        </Text>
+        <>
+          <Text variant="xs" color="white100">
+            Create an alert and we’ll let you know when there’s a match.
+          </Text>
+          {!!forcePrompt && (
+            <Text variant="xs" color="pink">
+              timesShown: {promptState.timesShown}
+            </Text>
+          )}
+        </>
       }
     >
       <Flex>{children}</Flex>

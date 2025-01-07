@@ -4,17 +4,16 @@ import { useExperimentVariant } from "app/utils/experiments/hooks"
 export const useShouldShowPrompt = (promptState: CreateAlertPromptModel["promptState"]) => {
   const { payload } = useExperimentVariant("onyx_create-alert-prompt-experiment")
 
-  // unlimited for dev, 2 for production
-  const maxTimesShown = /* __DEV__ ? 123456 : */ 2
-  // 30 seconds for dev, 3 days for production
-  const timeInterval = /* __DEV__ ? 30000 : */ 259200000
-
+  // forcePrompt is used for testing purposes
   const forcePrompt = Boolean(payload && JSON.parse(payload)?.forcePrompt === "true")
 
-  const shouldShowPrompt =
-    (promptState.timesShown <= maxTimesShown &&
-      Date.now() - promptState.dismisDate >= timeInterval) ||
-    forcePrompt
+  // unlimited for dev, 2 for production
+  const maxTimesShown = forcePrompt ? 123456 : 2
+  // 30 seconds for dev, 3 days for production
+  const timeInterval = forcePrompt ? 30000 : 259200000
 
-  return shouldShowPrompt
+  const shouldShowPrompt =
+    promptState.timesShown <= maxTimesShown && Date.now() - promptState.dismisDate >= timeInterval
+
+  return { shouldShowPrompt, forcePrompt }
 }
