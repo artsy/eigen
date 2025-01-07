@@ -12,8 +12,7 @@ import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { Schema } from "app/utils/track"
-import { throttle } from "lodash"
-import { memo, Suspense, useEffect, useMemo, useRef, useState } from "react"
+import { memo, Suspense, useEffect, useRef, useState } from "react"
 import { Platform, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
@@ -25,7 +24,7 @@ import { SearchResults } from "./SearchResults"
 import { TrendingArtists } from "./TrendingArtists"
 import { CityGuideCTA } from "./components/CityGuideCTA"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
-import { SEARCH_PILLS, SEARCH_THROTTLE_INTERVAL, TOP_PILL } from "./constants"
+import { SEARCH_PILLS, TOP_PILL } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
 import { PillType } from "./types"
 
@@ -78,41 +77,6 @@ export const Search: React.FC = () => {
 
   const isSelected = (pill: PillType) => {
     return selectedPill.key === pill.key
-  }
-
-  const handleResetSearchInput = () => {
-    searchPillsRef?.current?.scrollTo({ x: 0, y: 0, animated: true })
-    setSelectedPill(TOP_PILL)
-  }
-
-  const handleThrottledTextChange = useMemo(
-    () =>
-      throttle((value) => {
-        setSearchQuery(value)
-      }, SEARCH_THROTTLE_INTERVAL),
-    []
-  )
-
-  const onSearchTextChanged = (queryText: string) => {
-    queryText = queryText.trim()
-
-    handleThrottledTextChange(queryText)
-
-    if (queryText.length === 0) {
-      trackEvent({
-        action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
-      })
-      handleResetSearchInput()
-
-      handleThrottledTextChange.flush()
-
-      return
-    }
-
-    trackEvent({
-      action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
-      query: queryText,
-    })
   }
 
   useEffect(() => {
