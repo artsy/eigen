@@ -261,7 +261,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const variant_a = true
   const variant_b = true
 
-  const shouldShowCreateAlertPrompt = artworks.length >= 10 // 40
+  const userDidScroll = artworks.length >= 10 // 40
 
   return (
     <>
@@ -294,7 +294,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
               <ArtistArtworksFilterHeader
                 artist={artist}
                 showCreateAlertModal={() => setIsCreateAlertModalVisible(true)}
-                shouldShowCreateAlertPrompt={!!shouldShowCreateAlertPrompt && variant_a}
+                shouldShowCreateAlertPrompt={!!userDidScroll && variant_a}
               />
             </Tabs.SubTabBar>
             <Flex pt={1}>
@@ -328,7 +328,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
       />
 
       <CreateAlertPromptMessage
-        shouldShowCreateAlertPrompt={!!shouldShowCreateAlertPrompt && variant_b}
+        shouldShowCreateAlertPrompt={!!userDidScroll && variant_b}
         onPress={() => setIsCreateAlertModalVisible(true)}
       />
     </>

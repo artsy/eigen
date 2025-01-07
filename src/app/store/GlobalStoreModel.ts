@@ -11,6 +11,7 @@ import {
   getSubmissionModel,
   SubmissionModel,
 } from "app/Scenes/SellWithArtsy/utils/submissionModelState"
+import { CreateAlertPromptModel, getCreateAlertPromptModel } from "app/store/CreateAlertPromptModel"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import {
   ProgressiveOnboardingModel,
@@ -57,6 +58,7 @@ interface GlobalStoreStateModel {
   requestedPriceEstimates: RequestedPriceEstimatesModel
   recentPriceRanges: RecentPriceRangesModel
   progressiveOnboarding: ProgressiveOnboardingModel
+  createAlertPrompt: CreateAlertPromptModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
@@ -144,6 +146,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   requestedPriceEstimates: getRequestedPriceEstimatesModel(),
   recentPriceRanges: getRecentPriceRangesModel(),
   progressiveOnboarding: getProgressiveOnboardingModel(),
+  createAlertPrompt: getCreateAlertPromptModel(),
 
   setSessionState: action((state, payload) => {
     state.sessionState = { ...state.sessionState, ...payload }

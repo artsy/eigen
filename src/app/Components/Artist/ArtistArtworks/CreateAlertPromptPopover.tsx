@@ -1,21 +1,29 @@
 import { Flex, Popover, Text } from "@artsy/palette-mobile"
+import { useShouldShowPrompt } from "app/Components/Artist/ArtistArtworks/hooks/useShouldShowPrompt"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
 
-export const CreateAlertPromptPopover: React.FC = ({ children }) => {
+export const CreateAlertPromptPopover: React.FC<{}> = ({ children }) => {
+  const { promptState } = GlobalStore.useAppState((state) => state.createAlertPrompt)
+  const { dismissPrompt, updateTimesShown } = GlobalStore.actions.createAlertPrompt
+
+  const shouldShowPrompt = useShouldShowPrompt(promptState)
+
   useEffect(() => {
-    // track the time of the prompt being shown
+    if (shouldShowPrompt) {
+      updateTimesShown()
+    }
   }, [])
 
   const handleDismiss = () => {
-    // handle dismiss
+    dismissPrompt()
   }
 
   return (
     <Popover
-      visible={true}
+      visible={shouldShowPrompt}
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
-      //  onCloseComplete={clearActivePopover}
       variant="dark"
       placement="bottom"
       title={
