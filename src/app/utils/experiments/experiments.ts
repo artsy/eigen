@@ -41,7 +41,7 @@ export const experiments = {
     fallbackEnabled: true,
     fallbackVariant: "control",
     variantSuggestions: ["control", "variant-a", "variant-b"],
-    // payloadSuggestions: ['{"forcePrompt": "true"}', '{"forcePrompt": "false"}'],
+    payloadSuggestions: ['{"forcePrompt": "true"}', '{"forcePrompt": "false"}'],
   },
 } satisfies { [key: string]: ExperimentDescriptor }
 

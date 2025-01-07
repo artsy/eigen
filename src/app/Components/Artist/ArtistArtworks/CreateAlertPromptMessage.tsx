@@ -23,15 +23,6 @@ export const CreateAlertPromptMessage: React.FC<CreateAlertPromptMessageProps> =
     }
   }, [])
 
-  const handleDismiss = () => {
-    dismissPrompt()
-  }
-
-  const handleOnPress = () => {
-    handleDismiss()
-    onPress()
-  }
-
   if (shouldShowPrompt) {
     return (
       <Message
@@ -41,14 +32,25 @@ export const CreateAlertPromptMessage: React.FC<CreateAlertPromptMessageProps> =
         variant="dark"
         IconComponent={() => {
           return (
-            <Button variant="outline" size="small" onPress={handleOnPress}>
+            <Button
+              variant="outline"
+              size="small"
+              onPress={() => {
+                const dontShowAgain = true
+                dismissPrompt(dontShowAgain)
+                onPress()
+              }}
+            >
               Create Alert
             </Button>
           )
         }}
         iconPosition="bottom"
         showCloseButton
-        onClose={handleDismiss}
+        onClose={() => {
+          const dontShowAgain = false
+          dismissPrompt(dontShowAgain)
+        }}
       />
     )
   } else {

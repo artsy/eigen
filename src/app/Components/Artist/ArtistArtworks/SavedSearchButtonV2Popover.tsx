@@ -8,29 +8,18 @@ export const SavedSearchButtonV2Popover: React.FC<{ shouldShowCreateAlertPrompt?
   shouldShowCreateAlertPrompt,
 }) => {
   const {
-    //  isDismissed,
-    // dismissed,
+    isDismissed,
     sessionState: { activePopover },
   } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const isFocused = useIsFocused()
 
-  const isCreateAlertReminderDisplayable =
+  const isOnboardingFinished =
     isFocused &&
-    // isDismissed("alert-create").status &&
-    // we only show the createAlertPromptPopover if the onboarding is completed
-    // isDismissed("save-highlight").status &&
     // make sure threre is no active onboarding popover on the screen
+    isDismissed("alert-create").status &&
     !activePopover
 
-  console.log(
-    "[LOGD] isCreateAlertReminderDisplayable = ",
-    shouldShowCreateAlertPrompt,
-    isCreateAlertReminderDisplayable
-  )
-
-  // TODO: would be great if we can tell if the onboarding is finished
-  // or if the onboarding only on this screen is finished
-  if (isCreateAlertReminderDisplayable && shouldShowCreateAlertPrompt) {
+  if (isOnboardingFinished && shouldShowCreateAlertPrompt) {
     return <CreateAlertPromptPopover>{children}</CreateAlertPromptPopover>
   }
 

@@ -1,14 +1,12 @@
 import { action, Action } from "easy-peasy"
 
-export const MAX_SHOWN_RECENT_PRICE_RANGES = 5
-
 export interface CreateAlertPromptModel {
   promptState: {
     timesShown: number
     dismisDate: number
   }
   updateTimesShown: Action<this>
-  dismissPrompt: Action<this>
+  dismissPrompt: Action<this, boolean>
 }
 
 export const getCreateAlertPromptModel = (): CreateAlertPromptModel => ({
@@ -19,9 +17,9 @@ export const getCreateAlertPromptModel = (): CreateAlertPromptModel => ({
   updateTimesShown: action((state) => {
     state.promptState.timesShown = state.promptState.timesShown + 1
   }),
-  dismissPrompt: action((state) => {
+  dismissPrompt: action((state, dontShowAgain) => {
     state.promptState = {
-      timesShown: state.promptState.timesShown + 1,
+      timesShown: state.promptState.timesShown + (dontShowAgain ? 1 : 0),
       dismisDate: Date.now(),
     }
   }),
