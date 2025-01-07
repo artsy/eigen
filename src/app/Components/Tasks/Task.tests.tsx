@@ -22,7 +22,7 @@ jest.mock("app/utils/mutations/useAcknowledgeTask.ts", () => ({
 describe("Task Component", () => {
   const { renderWithRelay } = setupTestWrapper<TaskTestQuery>({
     Component: ({ me }) => {
-      return <Task task={me!.tasks![0]!} onClearTask={mockClearTask} onOpenTask={mockOnOpenTask} />
+      return <Task task={me!.tasks![0]!} onOpenTask={mockOnOpenTask} />
     },
     query: graphql`
       query TaskTestQuery @relay_test_operation {

@@ -70,11 +70,9 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
   const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
 
-  const [clientHiddenTasks, setClientHiddenTasks] = useState<string[]>([])
   const [showAll, setShowAll] = useState(false)
 
-  const filteredTasks = tasks.filter((task) => !clientHiddenTasks.includes(task.internalID))
-  const displayTaskStack = filteredTasks.length > 1 && !showAll
+  const displayTaskStack = tasks.length > 1 && !showAll
   const HeaderIconComponent = showAll ? ArrowUpIcon : ArrowDownIcon
 
   // TODO: remove this when this reanimated issue gets fixed
@@ -134,18 +132,6 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
 
   const renderItem = useCallback<ListRenderItem<Task>>(
     ({ item, index }) => {
-      // wrap task clearing actions in a function to instantly hide them
-      const handleClearTask: <T>(clearTask: () => Promise<T>) => Promise<void> = async (
-        clearTask
-      ) => {
-        setClientHiddenTasks((prev) => [...prev, item.internalID])
-        try {
-          await clearTask()
-        } catch (error) {
-          setClientHiddenTasks((prev) => prev.filter((id) => id !== item.internalID))
-        }
-      }
-
       return (
         <TaskItem
           task={item}
@@ -155,7 +141,6 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
           showAll={showAll}
           displayTaskStack={displayTaskStack}
           onOpenTask={() => closeAllTasks(item.internalID)}
-          onClearTask={handleClearTask}
           setShowAll={setShowAll}
         />
       )
@@ -171,12 +156,12 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
       return singleTaskHeight
     }
 
-    return singleTaskHeight + (filteredTasks.length - 1) * TASK_CARD_HEIGHT
-  }, [filteredTasks, showAll])
+    return singleTaskHeight + (tasks.length - 1) * TASK_CARD_HEIGHT
+  }, [tasks, showAll])
 
   return (
     <AnimatePresence>
-      {!!filteredTasks.length && (
+      {!!tasks.length && (
         <MotiView
           transition={{ type: "timing" }}
           animate={{ opacity: 1, height: motiViewHeight }}
@@ -188,7 +173,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
               <SectionTitle
                 title={section.component?.title}
                 RightButtonContent={() => {
-                  if (filteredTasks.length < 2) {
+                  if (tasks.length < 2) {
                     return null
                   }
 
@@ -214,7 +199,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
                 contentContainerStyle={IS_ANDROID ? { flex: 1, height: flatlistHeight } : {}}
                 itemLayoutAnimation={LinearTransition}
                 scrollEnabled={false}
-                data={filteredTasks}
+                data={tasks}
                 keyExtractor={(item) => item.internalID}
                 CellRendererComponentStyle={getCellZIndex}
                 ItemSeparatorComponent={() => <Spacer y={1} />}
@@ -265,7 +250,6 @@ interface TaskItemProps {
   index: number
   displayTaskStack: boolean
   onOpenTask: () => void
-  onClearTask: <T>(clearTask: () => Promise<T>) => Promise<void>
   setShowAll: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -276,7 +260,6 @@ const TaskItem = ({
   showAll,
   displayTaskStack,
   onOpenTask,
-  onClearTask,
   setShowAll,
 }: TaskItemProps) => {
   const taskRef = useRef<SwipeableMethods>(null)
@@ -311,7 +294,7 @@ const TaskItem = ({
     <Animated.View exiting={FadeOut} style={animatedStyle} key={task.internalID}>
       <Task
         disableSwipeable={displayTaskStack}
-        onClearTask={onClearTask}
+        // onClearTask={onClearTask}
         onPress={displayTaskStack ? () => setShowAll((prev) => !prev) : undefined}
         ref={taskRef}
         onOpenTask={onOpenTask}
