@@ -32,7 +32,7 @@ const validationSchema = Yup.object().shape({
   deathYear: Yup.string().trim().max(4, "Death year is invalid"),
 })
 
-export const AddMyCollectionArtist: React.FC = () => {
+export const AddMyCollectionArtist: React.FC<{ useNativeHeader?: boolean }> = (props) => {
   const navigation =
     useNavigation<StackNavigationProp<ArtworkFormScreen, "AddMyCollectionArtist">>()
 
@@ -93,11 +93,13 @@ export const AddMyCollectionArtist: React.FC = () => {
   }
 
   return (
-    <Screen>
+    <Screen safeArea={false}>
       <ArtsyKeyboardAvoidingView>
-        <FancyModalHeader onLeftButtonPress={handleBackPress} hideBottomDivider>
-          Add New Artist
-        </FancyModalHeader>
+        {!props.useNativeHeader && (
+          <FancyModalHeader onLeftButtonPress={handleBackPress} hideBottomDivider>
+            Add New Artist
+          </FancyModalHeader>
+        )}
 
         <AbandonFlowModal
           continueButtonTitle="Continue Editing"
