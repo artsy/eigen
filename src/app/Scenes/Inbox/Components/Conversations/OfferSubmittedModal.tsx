@@ -14,7 +14,10 @@ export const OfferSubmittedModal: React.FC = () => {
     (args) => {
       setOfferData({ code: args.orderCode ?? "", message: args.message ?? "" })
       goBack()
-      setVisible(true)
+      // Wait for the back animation to finish before showing the modal
+      requestAnimationFrame(() => {
+        setVisible(true)
+      })
     }
   )
 
@@ -31,7 +34,7 @@ export const OfferSubmittedModal: React.FC = () => {
   }
 
   return (
-    <Modal visible={visible} onRequestClose={onClose} animationType="fade">
+    <Modal visible={visible} onRequestClose={onClose} animationType="fade" statusBarTranslucent>
       <Screen>
         <FancyModalHeader rightCloseButton onRightButtonPress={onClose}>
           Make Offer
