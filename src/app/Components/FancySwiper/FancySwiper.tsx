@@ -10,7 +10,7 @@ interface FancySwiperProps {
   cards: Card[]
   hideActionButtons?: boolean
   onSwipeLeft: () => void
-  onSwipeRight: () => void
+  onSwipeRight?: () => void
 }
 
 export const FancySwiper = ({
@@ -27,7 +27,7 @@ export const FancySwiper = ({
       // Revert the pan responder to its initial position
       swiper.setValue({ x: 0, y: 0 })
 
-      if (swipeDirection === "right") {
+      if (onSwipeRight && swipeDirection === "right") {
         onSwipeRight()
       } else {
         onSwipeLeft()
@@ -43,18 +43,24 @@ export const FancySwiper = ({
       swiper.setValue({ x: dx, y: dy })
     },
     onPanResponderRelease: (_, { dx, dy }) => {
-      // If the user didn't swipe far enough, reset the position
-      if (Math.abs(dx) < OFFSET_X) {
-        Animated.spring(swiper, {
-          toValue: { x: 0, y: 0 },
-          friction: 5,
-          useNativeDriver: true,
-        }).start()
-      } else {
+      // if the card was swiped enough, attempt to remove it from the top
+      if (Math.abs(dx) >= OFFSET_X) {
         const sign = Math.sign(dx)
         const swipeDirection = sign > 0 ? "right" : "left"
-        onSwipeHandler(swipeDirection, dy)
+
+        // only allow the swipe if the swipe direction is supported
+        if ((onSwipeRight && swipeDirection === "right") || swipeDirection === "left") {
+          onSwipeHandler(swipeDirection, dy)
+          return
+        }
       }
+
+      // move the card to its original position if it wasn't swiped enough or the swipe was invalid
+      Animated.spring(swiper, {
+        toValue: { x: 0, y: 0 },
+        friction: 5,
+        useNativeDriver: true,
+      }).start()
     },
   })
 

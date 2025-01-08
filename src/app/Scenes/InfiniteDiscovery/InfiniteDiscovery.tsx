@@ -49,10 +49,6 @@ export const InfiniteDiscovery: React.FC = () => {
     goBack()
   }
 
-  const handleSwipedRight = () => {
-    // no-op
-  }
-
   const handleSwipedLeft = () => {
     goToNext()
   }
@@ -117,12 +113,7 @@ export const InfiniteDiscovery: React.FC = () => {
             }
           />
         </Flex>
-        <FancySwiper
-          cards={artworkCards}
-          hideActionButtons
-          onSwipeRight={handleSwipedRight}
-          onSwipeLeft={handleSwipedLeft}
-        />
+        <FancySwiper cards={artworkCards} hideActionButtons onSwipeLeft={handleSwipedLeft} />
 
         <InfiniteDiscoveryBottomSheet artworkID="add-fuel-modular" />
       </Screen.Body>
