@@ -271,7 +271,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const variant_a = enabled && variant === "variant-a"
   const variant_b = enabled && variant === "variant-b"
 
-  const userDidScroll = artworks.length >= 10 // 40
+  const userDidScroll = artworks.length >= 40
 
   return (
     <>
