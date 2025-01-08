@@ -14,14 +14,10 @@ import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { useCallback, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import type { InfiniteDiscoveryQuery } from "__generated__/InfiniteDiscoveryQuery.graphql"
 import type { Card } from "app/Components/FancySwiper/FancySwiperCard"
-
-export const InfiniteDiscoveryView: React.FC = () => {
-  return <InfiniteDiscoveryWithSuspense />
-}
 
 export const InfiniteDiscovery: React.FC = () => {
   const data = useLazyLoadQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, {})
@@ -32,17 +28,17 @@ export const InfiniteDiscovery: React.FC = () => {
 
   const [index, setIndex] = useState(0)
 
-  const goToPrevious = useCallback(() => {
+  const goToPrevious = () => {
     if (index > 0) {
       setIndex(index - 1)
     }
-  }, [index, setIndex])
+  }
 
-  const goToNext = useCallback(() => {
+  const goToNext = () => {
     if (index < artworks.length - 1) {
       setIndex(index + 1)
     }
-  }, [artworks, index, setIndex])
+  }
 
   const handleBackPressed = () => {
     goToPrevious()
@@ -138,7 +134,7 @@ export const InfiniteDiscovery: React.FC = () => {
   )
 }
 
-export const InfiniteDiscoveryWithSuspense = withSuspense({
+export const InfiniteDiscoveryQueryRenderer = withSuspense({
   Component: InfiniteDiscovery,
   LoadingFallback: () => <Text>Loading...</Text>,
   ErrorFallback: NoFallback,

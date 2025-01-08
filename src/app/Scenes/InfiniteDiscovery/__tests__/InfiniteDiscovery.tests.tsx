@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import {
   infiniteDiscoveryQuery,
-  InfiniteDiscoveryWithSuspense,
+  InfiniteDiscoveryQueryRenderer,
 } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -17,17 +17,16 @@ describe("InfiniteDiscovery", () => {
 
   it("hides the back button if the current artwork is on the first artwork", () => {
     const { renderWithRelay } = setupTestWrapper({
-      Component: InfiniteDiscoveryWithSuspense,
+      Component: InfiniteDiscoveryQueryRenderer,
       query: infiniteDiscoveryQuery,
     })
-
     renderWithRelay(marketingCollection)
     expect(screen.queryByText("Back")).not.toBeOnTheScreen()
   })
 
   it("shows the back button if the current artwork is not the first artwork", async () => {
     const { renderWithRelay } = setupTestWrapper({
-      Component: InfiniteDiscoveryWithSuspense,
+      Component: InfiniteDiscoveryQueryRenderer,
       query: infiniteDiscoveryQuery,
     })
     renderWithRelay(marketingCollection)
@@ -37,12 +36,10 @@ describe("InfiniteDiscovery", () => {
 
   it("returns to the previous artwork when the back button is pressed", async () => {
     const { renderWithRelay } = setupTestWrapper({
-      Component: InfiniteDiscoveryWithSuspense,
+      Component: InfiniteDiscoveryQueryRenderer,
       query: infiniteDiscoveryQuery,
     })
-
     renderWithRelay(marketingCollection)
-
     expect(screen.queryByText("Back")).not.toBeOnTheScreen()
     swipeLeft()
     await screen.findByText("Back")
@@ -52,7 +49,7 @@ describe("InfiniteDiscovery", () => {
 
   it("navigates to home view when the exit button is pressed", () => {
     const { renderWithRelay } = setupTestWrapper({
-      Component: InfiniteDiscoveryWithSuspense,
+      Component: InfiniteDiscoveryQueryRenderer,
       query: infiniteDiscoveryQuery,
     })
     renderWithRelay(marketingCollection)
