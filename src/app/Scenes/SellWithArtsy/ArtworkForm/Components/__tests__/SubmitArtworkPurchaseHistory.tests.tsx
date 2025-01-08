@@ -16,7 +16,16 @@ describe("SubmitArtworkPurchaseHistory", () => {
 
     fireEvent.press(purchaseInformationSelect)
 
-    fireEvent.press(screen.getByText(PROVENANCE_LIST[0].label))
-    expect(screen.getAllByText(PROVENANCE_LIST[0].label)).toHaveLength(1)
+    fireEvent.press(screen.getByText("Purchase information"))
+
+    // wait for modal to open
+    await screen.findByText(PROVENANCE_LIST[0].label)
+
+    // check if all options are visible
+    expect(screen.getByText(PROVENANCE_LIST[1].label)).toBeOnTheScreen()
+    expect(screen.getByText(PROVENANCE_LIST[2].label)).toBeOnTheScreen()
+    expect(screen.getByText(PROVENANCE_LIST[3].label)).toBeOnTheScreen()
+    expect(screen.getByText(PROVENANCE_LIST[4].label)).toBeOnTheScreen()
+    expect(screen.getByText(PROVENANCE_LIST[5].label)).toBeOnTheScreen()
   })
 })
