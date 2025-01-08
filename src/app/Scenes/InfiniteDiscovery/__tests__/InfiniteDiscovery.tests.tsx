@@ -1,43 +1,10 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { Card } from "app/Components/FancySwiper/FancySwiperCard"
 import {
   infiniteDiscoveryQuery,
   InfiniteDiscoveryWithSuspense,
 } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-
-/**
- * The swipe gesture is not a built-in event (like fireEvent.press or fireEvent.changeText), so this
- * test suite uses a fake implementation of the FancySwiper component to make assertions about the
- * InfiniteDiscovery component when a user has swiped left on the top card.
- *
- * In this fake implementation, the FancySwiper component renders a Button for each card. The first
- * card is assigned onSwipeLeft as its onPress handler, and the testID "top-card". In order to swipe
- * left, tests will get the top card by its testID and fire a press event on it.
- */
-
-jest.mock("app/Components/FancySwiper/FancySwiper", () => {
-  const { Button } = jest.requireActual("@artsy/palette-mobile")
-  return {
-    __esModule: true,
-    FancySwiper: ({ cards, onSwipeLeft }: { cards: Card[]; onSwipeLeft: () => void }) => {
-      return (
-        <>
-          {cards.map((_, i) => (
-            <Button
-              key={i}
-              onPress={i === 0 ? onSwipeLeft : undefined}
-              testID={i === 0 ? "top-card" : undefined}
-            >
-              Swipe Left
-            </Button>
-          ))}
-        </>
-      )
-    },
-  }
-})
 
 jest.mock("app/system/navigation/navigate")
 
@@ -58,17 +25,17 @@ describe("InfiniteDiscovery", () => {
     expect(screen.queryByText("Back")).not.toBeOnTheScreen()
   })
 
-  it("shows the back button if the current artwork is not the first artwork", () => {
+  it("shows the back button if the current artwork is not the first artwork", async () => {
     const { renderWithRelay } = setupTestWrapper({
       Component: InfiniteDiscoveryWithSuspense,
       query: infiniteDiscoveryQuery,
     })
     renderWithRelay(marketingCollection)
-    fireEvent.press(screen.getByTestId("top-card"))
-    expect(screen.getByText("Back")).toBeOnTheScreen()
+    swipeLeft()
+    await screen.findByText("Back")
   })
 
-  it("returns to the previous artwork when the back button is pressed", () => {
+  it("returns to the previous artwork when the back button is pressed", async () => {
     const { renderWithRelay } = setupTestWrapper({
       Component: InfiniteDiscoveryWithSuspense,
       query: infiniteDiscoveryQuery,
@@ -77,8 +44,8 @@ describe("InfiniteDiscovery", () => {
     renderWithRelay(marketingCollection)
 
     expect(screen.queryByText("Back")).not.toBeOnTheScreen()
-    fireEvent.press(screen.getByTestId("top-card"))
-    expect(screen.getByText("Back")).toBeOnTheScreen()
+    swipeLeft()
+    await screen.findByText("Back")
     fireEvent.press(screen.getByText("Back"))
     expect(screen.queryByText("Back")).not.toBeOnTheScreen()
   })
@@ -111,4 +78,89 @@ const marketingCollection = {
       ],
     },
   }),
+}
+
+const swipeLeft = () => {
+  const topCard = screen.getByTestId("top-fancy-swiper-card")
+
+  const startX = 0
+  const startY = 0
+  const startTimeStamp = Date.now()
+
+  // Simulate the start of the pan gesture
+  fireEvent(topCard, "responderStart", {
+    touchHistory: {
+      indexOfSingleActiveTouch: 1,
+      mostRecentTimeStamp: startTimeStamp,
+      numberActiveTouches: 1,
+      touchBank: [
+        undefined,
+        {
+          currentPageX: startX,
+          currentPageY: startY,
+          currentTimeStamp: startTimeStamp,
+          previousPageX: startX,
+          previousPageY: startY,
+          previousTimeStamp: startTimeStamp,
+          startPageX: startX,
+          startPageY: startY,
+          startTimeStamp: startTimeStamp,
+          touchActive: true,
+        },
+      ],
+    },
+  })
+
+  const moveX = -300
+  const moveTimeStamp = Date.now()
+
+  // Simulate the move during the pan gesture
+  fireEvent(topCard, "responderMove", {
+    touchHistory: {
+      indexOfSingleActiveTouch: 1,
+      mostRecentTimeStamp: moveTimeStamp,
+      numberActiveTouches: 1,
+      touchBank: [
+        undefined,
+        {
+          currentPageX: moveX,
+          currentPageY: startY,
+          currentTimeStamp: moveTimeStamp,
+          previousPageX: startX,
+          previousPageY: startY,
+          previousTimeStamp: startTimeStamp,
+          startPageX: startX,
+          startPageY: startY,
+          startTimeStamp: startTimeStamp,
+          touchActive: true,
+        },
+      ],
+    },
+  })
+
+  const releaseTimeStamp = Date.now()
+
+  // Simulate the end of the pan gesture
+  fireEvent(topCard, "responderRelease", {
+    touchHistory: {
+      indexOfSingleActiveTouch: 1,
+      mostRecentTimeStamp: releaseTimeStamp,
+      numberActiveTouches: 0,
+      touchBank: [
+        undefined,
+        {
+          currentPageX: moveX,
+          currentPageY: startY,
+          currentTimeStamp: releaseTimeStamp,
+          previousPageX: moveX,
+          previousPageY: startY,
+          previousTimeStamp: moveTimeStamp,
+          startPageX: startX,
+          startPageY: startY,
+          startTimeStamp: startTimeStamp,
+          touchActive: false,
+        },
+      ],
+    },
+  })
 }
