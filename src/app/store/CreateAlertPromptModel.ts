@@ -3,7 +3,7 @@ import { action, Action } from "easy-peasy"
 export interface CreateAlertPromptModel {
   promptState: {
     timesShown: number
-    dismisDate: number
+    dismissDate: number
   }
   updateTimesShown: Action<this>
   dismissPrompt: Action<this>
@@ -13,7 +13,7 @@ export interface CreateAlertPromptModel {
 export const getCreateAlertPromptModel = (): CreateAlertPromptModel => ({
   promptState: {
     timesShown: 0,
-    dismisDate: 0,
+    dismissDate: 0,
   },
   updateTimesShown: action((state) => {
     state.promptState.timesShown = state.promptState.timesShown + 1
@@ -21,7 +21,7 @@ export const getCreateAlertPromptModel = (): CreateAlertPromptModel => ({
   dismissPrompt: action((state) => {
     state.promptState = {
       ...state.promptState,
-      dismisDate: Date.now(),
+      dismissDate: Date.now(),
     }
   }),
   dontShowCreateAlertPromptAgain: action((state) => {

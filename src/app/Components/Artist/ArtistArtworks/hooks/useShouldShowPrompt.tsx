@@ -13,7 +13,7 @@ export const useShouldShowPrompt = (promptState: CreateAlertPromptModel["promptS
   const timeInterval = forcePrompt ? 30000 : 259200000
 
   const shouldShowPrompt =
-    promptState.timesShown <= maxTimesShown && Date.now() - promptState.dismisDate >= timeInterval
+    promptState.timesShown <= maxTimesShown && Date.now() - promptState.dismissDate >= timeInterval
 
   return { shouldShowPrompt, forcePrompt }
 }

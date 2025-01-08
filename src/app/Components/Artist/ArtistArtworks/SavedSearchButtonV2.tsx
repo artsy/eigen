@@ -26,8 +26,7 @@ export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) =
      * if Create Alert CTA was pressed withing 2 minutes after the prompt was shown
      *  do not show the prompt again
      * */
-    // TODO: maybe add is the screen is still focused check
-    if (Date.now() - promptState.dismisDate < 120000 && isFocused) {
+    if (Date.now() - promptState.dismissDate < 120000 && isFocused) {
       dontShowCreateAlertPromptAgain()
     }
 
