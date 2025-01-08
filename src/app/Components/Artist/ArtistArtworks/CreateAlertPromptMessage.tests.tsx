@@ -25,7 +25,7 @@ describe("CreateAlertPromptMessage", () => {
 
   it("renders correctly first time", () => {
     __globalStoreTestUtils__?.injectState({
-      createAlertPrompt: { promptState: { timesShown: 0, dismisDate: 0 } },
+      createAlertPrompt: { promptState: { timesShown: 0, dismissDate: 0 } },
     })
     wrapper()
 
@@ -34,7 +34,7 @@ describe("CreateAlertPromptMessage", () => {
 
   it("is not rendered on the third time", () => {
     __globalStoreTestUtils__?.injectState({
-      createAlertPrompt: { promptState: { timesShown: 2, dismisDate: 0 } },
+      createAlertPrompt: { promptState: { timesShown: 2, dismissDate: 0 } },
     })
     wrapper()
 
@@ -44,7 +44,7 @@ describe("CreateAlertPromptMessage", () => {
   it("renders correctly second time after 3 days", () => {
     __globalStoreTestUtils__?.injectState({
       // 259200000 is 3 days
-      createAlertPrompt: { promptState: { timesShown: 1, dismisDate: Date.now() - 259200000 } },
+      createAlertPrompt: { promptState: { timesShown: 1, dismissDate: Date.now() - 259200000 } },
     })
     wrapper()
 
@@ -54,7 +54,7 @@ describe("CreateAlertPromptMessage", () => {
   it("is not rendered second time after less than 3 days", () => {
     __globalStoreTestUtils__?.injectState({
       // 259200 is less than 3 days
-      createAlertPrompt: { promptState: { timesShown: 1, dismisDate: Date.now() - 259200 } },
+      createAlertPrompt: { promptState: { timesShown: 1, dismissDate: Date.now() - 259200 } },
     })
     wrapper()
 
