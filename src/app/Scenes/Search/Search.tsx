@@ -6,29 +6,25 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { withProfiler } from "@sentry/react-native"
 import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
-import { SearchInput } from "app/Components/SearchInput"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
-import { throttle } from "lodash"
-import { memo, Suspense, useEffect, useMemo, useRef, useState } from "react"
+import { memo, Suspense, useEffect, useRef, useState } from "react"
 import { Platform, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { CuratedCollections } from "./CuratedCollections"
-import { RecentSearches } from "./RecentSearches"
 import { SearchContext, useSearchProviderValues } from "./SearchContext"
 import { SearchResults } from "./SearchResults"
 import { TrendingArtists } from "./TrendingArtists"
 import { CityGuideCTA } from "./components/CityGuideCTA"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
-import { SEARCH_PILLS, SEARCH_THROTTLE_INTERVAL, TOP_PILL } from "./constants"
+import { SEARCH_PILLS, TOP_PILL } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
 import { PillType } from "./types"
 
@@ -45,7 +41,6 @@ export const searchQueryDefaultVariables: SearchQuery$variables = {
 }
 
 export const Search: React.FC = () => {
-  const enableNewSearchModal = useFeatureFlag("AREnableNewSearchModal")
   const searchPillsRef = useRef<ScrollView>(null)
   const [searchQuery, setSearchQuery] = useState<string>("")
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
@@ -84,41 +79,6 @@ export const Search: React.FC = () => {
     return selectedPill.key === pill.key
   }
 
-  const handleResetSearchInput = () => {
-    searchPillsRef?.current?.scrollTo({ x: 0, y: 0, animated: true })
-    setSelectedPill(TOP_PILL)
-  }
-
-  const handleThrottledTextChange = useMemo(
-    () =>
-      throttle((value) => {
-        setSearchQuery(value)
-      }, SEARCH_THROTTLE_INTERVAL),
-    []
-  )
-
-  const onSearchTextChanged = (queryText: string) => {
-    queryText = queryText.trim()
-
-    handleThrottledTextChange(queryText)
-
-    if (queryText.length === 0) {
-      trackEvent({
-        action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
-      })
-      handleResetSearchInput()
-
-      handleThrottledTextChange.flush()
-
-      return
-    }
-
-    trackEvent({
-      action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
-      query: queryText,
-    })
-  }
-
   useEffect(() => {
     if (searchProviderValues.inputRef?.current && isAndroid) {
       const unsubscribe = navigation?.addListener("focus", () => {
@@ -134,16 +94,8 @@ export const Search: React.FC = () => {
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <ArtsyKeyboardAvoidingView>
-        <Flex p={2} pb={enableNewSearchModal ? 1 : 0}>
-          {enableNewSearchModal ? (
-            <GlobalSearchInput ownerType={OwnerType.search} />
-          ) : (
-            <SearchInput
-              ref={searchProviderValues?.inputRef}
-              placeholder={SEARCH_INPUT_PLACEHOLDER}
-              onChangeText={onSearchTextChanged}
-            />
-          )}
+        <Flex p={2} pb={1}>
+          <GlobalSearchInput ownerType={OwnerType.search} />
         </Flex>
         <Flex flex={1} collapsable={false}>
           {shouldStartSearching(searchQuery) && !!queryData.viewer ? (
@@ -167,15 +119,6 @@ export const Search: React.FC = () => {
             </>
           ) : (
             <Scrollable ref={scrollableRef}>
-              {!enableNewSearchModal && (
-                <>
-                  <HorizontalPadding>
-                    <RecentSearches />
-                  </HorizontalPadding>
-                  <Spacer y={4} />
-                </>
-              )}
-
               <TrendingArtists data={queryData} mb={4} />
               <CuratedCollections collections={queryData} mb={4} />
 

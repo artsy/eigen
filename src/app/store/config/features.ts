@@ -241,12 +241,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnablePaymentFailureBanner",
   },
-  AREnableNewSearchModal: {
-    description: "Enable new search modal",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableNewSearchModal",
-  },
   AREnableAvailabilityFilter: {
     description: "Enable availability filter",
     readyForRelease: true,

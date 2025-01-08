@@ -7,7 +7,7 @@ import { useSearch } from "app/Components/GlobalSearchInput/useSearch"
 import { RecentSearches } from "app/Scenes/Search/RecentSearches"
 import { SEARCH_INPUT_PLACEHOLDER, shouldStartSearching } from "app/Scenes/Search/Search"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
-import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "app/Scenes/Search/SearchModel"
+import { useRecentSearches } from "app/Scenes/Search/SearchModel"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { SearchResults } from "app/Scenes/Search/SearchResults"
 import { SEARCH_PILLS } from "app/Scenes/Search/constants"
@@ -40,7 +40,7 @@ const GlobalSearchInputOverlayContent: React.FC<{ query: string }> = ({ query })
     refetch,
   } = useSearch({ query })
 
-  const recentSearches = useRecentSearches(MAX_SHOWN_RECENT_SEARCHES)
+  const recentSearches = useRecentSearches()
 
   return (
     <SearchContext.Provider value={searchProviderValues}>
