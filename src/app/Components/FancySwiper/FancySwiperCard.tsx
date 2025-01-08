@@ -27,6 +27,7 @@ export const FancySwiperCard = memo(
     return (
       <Animated.View
         style={[{ position: "absolute", zIndex: -1 }, isTopCard && animatedStyle]}
+        testID={isTopCard ? "top-fancy-swiper-card" : undefined}
         {...rest}
       >
         {card.jsx}
