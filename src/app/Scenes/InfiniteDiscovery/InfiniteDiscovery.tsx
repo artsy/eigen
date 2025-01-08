@@ -1,6 +1,6 @@
 import {
-  Avatar,
   Button,
+  EntityHeader,
   Flex,
   Image,
   Screen,
@@ -60,31 +60,24 @@ export const InfiniteDiscovery: React.FC = () => {
     return {
       jsx: (
         <Flex backgroundColor={color("white100")}>
-          <Flex flexDirection="row" justifyContent="space-between" testID="artist-header">
-            <Flex flexDirection="row" px={2}>
-              <Avatar
-                initials={artwork?.artists?.[0]?.initials || undefined}
-                src={artwork?.artists?.[0]?.coverArtwork?.image?.cropped?.url || undefined}
-                size="xs"
-              />
-              <Flex>
-                <Text variant="sm-display">{artwork.artistNames}</Text>
-                <Text variant="xs" color={color("black60")}>
-                  {artwork?.artists?.[0]?.formattedNationalityAndBirthday}
-                </Text>
-              </Flex>
-            </Flex>
-            <Button variant="outlineGray" size="small">
-              Follow
-            </Button>
-          </Flex>
+          <EntityHeader
+            name={artwork?.artistNames ?? ""}
+            meta={artwork?.artists?.[0]?.formattedNationalityAndBirthday ?? undefined}
+            imageUrl={artwork?.artists?.[0]?.coverArtwork?.image?.cropped?.url ?? undefined}
+            initials={artwork?.artists?.[0]?.initials ?? undefined}
+            RightButton={
+              <Button variant="outlineGray" size="small">
+                Follow
+              </Button>
+            }
+          />
           <Spacer y={2} />
           <Flex alignItems="center">
             {!!artwork?.images?.[0]?.url && (
               <Image src={artwork.images[0].url} width={screenWidth} aspectRatio={0.79} />
             )}
           </Flex>
-          <Flex flexDirection="row" justifyContent="space-between" testID="artwork-info">
+          <Flex flexDirection="row" justifyContent="space-between">
             <Flex>
               <Flex flexDirection="row">
                 <Text color={color("black60")} italic variant="sm-display">
@@ -143,7 +136,7 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
 export const infiniteDiscoveryQuery = graphql`
   query InfiniteDiscoveryQuery {
     marketingCollection(slug: "curators-picks") {
-      artworksConnection(first: 100) {
+      artworksConnection(first: 10) {
         edges {
           node {
             artistNames
