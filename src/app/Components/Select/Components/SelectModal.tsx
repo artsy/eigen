@@ -2,17 +2,17 @@ import {
   Autocomplete,
   CloseIcon,
   Flex,
+  Screen,
   Separator,
   Text,
   Touchable,
   useColor,
 } from "@artsy/palette-mobile"
-import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { INPUT_HEIGHT } from "app/Components/Input"
 import { SearchInput } from "app/Components/SearchInput"
 import { SelectOption } from "app/Components/Select/Select"
 import { useEffect, useMemo, useRef, useState } from "react"
-import { FlatList, TouchableOpacity } from "react-native"
+import { FlatList, Modal, TouchableOpacity } from "react-native"
 
 export const SelectModal: React.FC<{
   options: Array<SelectOption<unknown>>
@@ -32,11 +32,9 @@ export const SelectModal: React.FC<{
   title,
   enableSearch,
   visible,
-  maxHeight,
   onDismiss,
   onSelectValue,
   renderItemLabel,
-  onModalFinishedClosing,
   testID,
 }) => {
   const color = useColor()
@@ -120,92 +118,88 @@ export const SelectModal: React.FC<{
   }, [searchTerm, visible])
 
   return (
-    <FancyModal
-      visible={visible}
-      onBackgroundPressed={onDismiss}
-      maxHeight={maxHeight}
-      onModalFinishedClosing={onModalFinishedClosing}
-      testID={testID}
-    >
-      <Flex p={2} pb="15px" flexDirection="row" alignItems="center" flexGrow={0}>
-        <Flex flex={1} />
-        {!!title && (
-          <Flex flex={2} alignItems="center">
-            <Text>{title}</Text>
+    <Modal visible={visible} onDismiss={onDismiss} statusBarTranslucent testID={testID}>
+      <Screen>
+        <Flex p={2} pb="15px" flexDirection="row" alignItems="center" flexGrow={0}>
+          <Flex flex={1} />
+          {!!title && (
+            <Flex flex={2} alignItems="center">
+              <Text>{title}</Text>
+            </Flex>
+          )}
+
+          <TouchableOpacity
+            onPress={onDismiss}
+            testID="select-close-button"
+            hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
+            style={{ flex: 1, alignItems: "flex-end" }}
+          >
+            <CloseIcon fill="black60" />
+          </TouchableOpacity>
+        </Flex>
+        {!!enableSearch && (
+          <Flex mb={1} mx={2}>
+            <SearchInput placeholder="Type to search..." onChangeText={setSearchTerm} />
           </Flex>
         )}
+        <Separator />
+        <FlatList
+          ref={flatListRef}
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
+          data={autocompleteResults}
+          extraData={{ value: localValue }}
+          keyExtractor={(item) => String(item.value)}
+          windowSize={4}
+          contentContainerStyle={{ paddingTop: 10, paddingBottom: 60 }}
+          // we handle scrolling to the selected value ourselves because FlatList has weird
+          // rendering bugs when initialScrollIndex changes, at the time of writing
+          initialScrollIndex={undefined}
+          getItemLayout={(_item, index) => ({
+            index,
+            length: INPUT_HEIGHT,
+            offset: INPUT_HEIGHT * index,
+          })}
+          style={{ flex: 1 }}
+          onLayout={(e) => (flatListHeight.current = e.nativeEvent.layout.height)}
+          renderItem={({ item, index }) => {
+            const selected = localValue === item.value
 
-        <TouchableOpacity
-          onPress={onDismiss}
-          testID="select-close-button"
-          hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
-          style={{ flex: 1, alignItems: "flex-end" }}
-        >
-          <CloseIcon fill="black60" />
-        </TouchableOpacity>
-      </Flex>
-      {!!enableSearch && (
-        <Flex mb={1} mx={2}>
-          <SearchInput placeholder="Type to search..." onChangeText={setSearchTerm} />
-        </Flex>
-      )}
-      <Separator />
-      <FlatList
-        ref={flatListRef}
-        keyboardDismissMode="on-drag"
-        keyboardShouldPersistTaps="handled"
-        data={autocompleteResults}
-        extraData={{ value: localValue }}
-        keyExtractor={(item) => String(item.value)}
-        windowSize={4}
-        contentContainerStyle={{ paddingTop: 10, paddingBottom: 60 }}
-        // we handle scrolling to the selected value ourselves because FlatList has weird
-        // rendering bugs when initialScrollIndex changes, at the time of writing
-        initialScrollIndex={undefined}
-        getItemLayout={(_item, index) => ({
-          index,
-          length: INPUT_HEIGHT,
-          offset: INPUT_HEIGHT * index,
-        })}
-        style={{ flex: 1 }}
-        onLayout={(e) => (flatListHeight.current = e.nativeEvent.layout.height)}
-        renderItem={({ item, index }) => {
-          const selected = localValue === item.value
-
-          return (
-            <Touchable
-              onPress={() => {
-                setValue(item.value)
-                onDismiss()
-                onSelectValue(item.value, index)
-              }}
-              style={{ flexGrow: 0 }}
-              testID={`select-option-${item.index}`}
-            >
-              <Flex
-                flexDirection="row"
-                pl={2}
-                pr="15px"
-                justifyContent="space-between"
-                height={INPUT_HEIGHT}
-                alignItems="center"
-                flexGrow={0}
+            return (
+              <Touchable
+                onPress={() => {
+                  setValue(item.value)
+                  onDismiss()
+                  onSelectValue(item.value, index)
+                }}
+                style={{ flexGrow: 0 }}
+                testID={`select-option-${item.index}`}
               >
-                {renderItemLabel?.(item) ?? (
-                  <Text
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                    color={selected ? color("blue100") : color("black100")}
-                    style={{ flexShrink: 1, textDecorationLine: selected ? "underline" : "none" }}
-                  >
-                    {item.label}
-                  </Text>
-                )}
-              </Flex>
-            </Touchable>
-          )
-        }}
-      />
-    </FancyModal>
+                <Flex
+                  flexDirection="row"
+                  pl={2}
+                  pr="15px"
+                  justifyContent="space-between"
+                  height={INPUT_HEIGHT}
+                  alignItems="center"
+                  flexGrow={0}
+                >
+                  {renderItemLabel?.(item) ?? (
+                    <Text
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
+                      color={selected ? color("blue100") : color("black100")}
+                      style={{ flexShrink: 1, textDecorationLine: selected ? "underline" : "none" }}
+                    >
+                      {item.label}
+                    </Text>
+                  )}
+                </Flex>
+              </Touchable>
+            )
+          }}
+        />
+      </Screen>
+    </Modal>
   )
 }

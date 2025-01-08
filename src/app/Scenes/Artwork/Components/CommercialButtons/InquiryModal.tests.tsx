@@ -1,9 +1,4 @@
-import {
-  fireEvent,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { InquiryModalTestsQuery } from "__generated__/InquiryModalTestsQuery.graphql"
 import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
 import { AUTOMATED_MESSAGES } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
@@ -99,12 +94,11 @@ describe("inquiry modal", () => {
 
   it("closes when the 'cancel' button is pressed", async () => {
     renderWithRelay()
+    expect(screen.getByText("What information are you looking for?")).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Cancel"))
 
-    await waitForElementToBeRemoved(() =>
-      screen.queryByText("What information are you looking for?")
-    )
+    expect(screen.queryByText("What information are you looking for?")).not.toBeOnTheScreen()
   })
 
   it("tracks an event when the inquiry modal is closed", async () => {

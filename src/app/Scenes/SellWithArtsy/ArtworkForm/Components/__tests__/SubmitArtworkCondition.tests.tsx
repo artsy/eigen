@@ -76,8 +76,7 @@ describe("SubmitArtworkCondition", () => {
     await screen.findByText("Fair")
     fireEvent.press(screen.getByText("Fair"))
 
-    // The value is going to be rendered twice because it's also available in the Select component
-    expect(screen.getAllByText("Fair")).toHaveLength(2)
+    expect(screen.getAllByText("Fair")).toHaveLength(1)
 
     fireEvent(screen.getByText("Add Additional Condition Details"), "onChangeText", "Pretty fair")
 
