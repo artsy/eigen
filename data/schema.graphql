@@ -5528,17 +5528,14 @@ input CommerceOptInMutationInput {
   # The partner location ID to assign
   locationId: String
 
-  # whether or not it is pick up available
+  # whether or not it is not signed
+  notSigned: Boolean
+
+  # whether or not pick up it is pick up available
   pickupAvailable: Boolean
 
   # whether or not it is signed
   signedByArtist: Boolean
-
-  # whether or not it is stamped by the artist estate
-  stampedByArtistEstate: Boolean
-
-  # whether or not it has a sticker label
-  stickerLabel: Boolean
 
   # whether or not it is signed in plate
   signedInPlate: Boolean
@@ -5546,8 +5543,11 @@ input CommerceOptInMutationInput {
   # whether or not other is selected for signature
   signedOther: Boolean
 
-  # whether or not it is not signed
-  notSigned: Boolean
+  # whether or not it is stamped by the artist estate
+  stampedByArtistEstate: Boolean
+
+  # whether or not it has a sticker label
+  stickerLabel: Boolean
 }
 
 type CommerceOptInMutationPayload {
@@ -5590,17 +5590,14 @@ input CommerceOptInReportMutationInput {
   # The partner location ID to assign
   locationId: String
 
+  # whether or not it is not signed
+  notSigned: Boolean
+
   # whether or not pick up should be available
   pickupAvailable: Boolean
 
   # whether or not it is signed
   signedByArtist: Boolean
-
-  # whether or not it is stamped by the artist estate
-  stampedByArtistEstate: Boolean
-
-  # whether or not it has a sticker label
-  stickerLabel: Boolean
 
   # whether or not it is signed in plate
   signedInPlate: Boolean
@@ -5608,8 +5605,11 @@ input CommerceOptInReportMutationInput {
   # whether or not other is selected for signature
   signedOther: Boolean
 
-  # whether or not it is not signed
-  notSigned: Boolean
+  # whether or not it is stamped by the artist estate
+  stampedByArtistEstate: Boolean
+
+  # whether or not it has a sticker label
+  stickerLabel: Boolean
 }
 
 type CommerceOptInReportMutationPayload {
