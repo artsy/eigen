@@ -73,7 +73,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v11-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+            - v13-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
       - run:
           name: Bundle install
           command: bundle check || bundle install
@@ -81,19 +81,19 @@ commands:
             BUNDLE_JOBS: 4
             BUNDLE_RETRY: 3
       - save_cache:
-          key: v11-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+          key: v13-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
           paths:
             - .vendor
   install-cocoapods:
     steps:
       - restore_cache:
           keys:
-            - v26-pods-{{ checksum ".manifests/cocoapods" }}
+            - v28-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;
       - save_cache:
-          key: v26-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v28-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - ios/Pods
             # this changes after pod install because we don't install dev tools on CI
@@ -103,7 +103,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v21-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v23-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
           command: ./scripts/setup/download-fonts
@@ -114,7 +114,7 @@ commands:
           name: Build App
           command: ./scripts/ci/ci-ios
       - save_cache:
-          key: v21-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v23-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
@@ -124,7 +124,7 @@ commands:
           at: ../workspace
       - restore_cache:
           keys:
-            - v13-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+            - v15-test-success-{{ checksum "../workspace/.manifests/android_native" }}
       - android/change-java-version:
           java-version: 17
       - run:
@@ -153,7 +153,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v7-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+            - v9-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
       - generate-query-map
       - run:
           name: Download fonts from s3
@@ -165,7 +165,7 @@ commands:
           name: Build App
           command: ./scripts/ci/ci-android
       - save_cache:
-          key: v7-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+          key: v9-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
           paths:
             - android/build
             - android/app/build
@@ -417,7 +417,7 @@ jobs:
           at: ../workspace
       - restore_cache:
           keys:
-            - v16-test-success-{{ checksum "../workspace/.manifests/native_code" }}
+            - v18-test-success-{{ checksum "../workspace/.manifests/native_code" }}
       # we can quit the macos build early if there were no native code changes
       # and we're not on the beta branch
       - run:
@@ -458,7 +458,7 @@ jobs:
           name: Run tests if native code has changed
           command: ls xcode_test_raw.log || ./scripts/ci/ci-test-ios
       - save_cache:
-          key: v16-test-success-{{ checksum ".manifests/native_code" }}
+          key: v18-test-success-{{ checksum ".manifests/native_code" }}
           paths:
             - xcode_test_raw.log
 
@@ -495,7 +495,7 @@ jobs:
           prefix: android-build
 
       - save_cache:
-          key: v13-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+          key: v15-test-success-{{ checksum "../workspace/.manifests/android_native" }}
           paths:
             - build-success.log
       - run:
