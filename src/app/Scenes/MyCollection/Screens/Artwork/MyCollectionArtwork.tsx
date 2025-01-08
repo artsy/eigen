@@ -99,18 +99,14 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
 
   const articles = extractNodes(artwork.artist?.articles)
 
-  const isEditable = artwork.consignmentSubmission?.isEditable
+  const isEditingDisabled = artwork.consignmentSubmission?.isEditable === false
 
   return (
     <Screen>
       <Screen.Header
         onBack={goBack}
         rightElements={
-          !!isEditable ? (
-            <TouchableOpacity onPress={handleEdit} hitSlop={DEFAULT_HIT_SLOP}>
-              <Text>Edit</Text>
-            </TouchableOpacity>
-          ) : (
+          isEditingDisabled ? (
             <Popover
               visible={isToolTipVisible}
               onDismiss={() => setIsToolTipVisible(false)}
@@ -131,6 +127,10 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
                 <Text color="black60">Edit</Text>
               </TouchableOpacity>
             </Popover>
+          ) : (
+            <TouchableOpacity onPress={handleEdit} hitSlop={DEFAULT_HIT_SLOP}>
+              <Text color="black100">Edit</Text>
+            </TouchableOpacity>
           )
         }
       />
