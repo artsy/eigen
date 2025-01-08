@@ -19,8 +19,11 @@ export function UnleashProvider({ children }: { children?: React.ReactNode }) {
   const { unleashEnv } = useUnleashEnvironment()
 
   useEffect(() => {
-    if (isHydrated) {
+    if (isHydrated && userId) {
       const client = getUnleashClient({ env: unleashEnv, userId })
+
+      // starts unleash client each time user logs in
+      client.start()
 
       client.on("initialized", () => {
         if (__DEV__) {
@@ -51,7 +54,7 @@ export function UnleashProvider({ children }: { children?: React.ReactNode }) {
         client.stop()
       }
     }
-  }, [unleashEnv, isHydrated])
+  }, [unleashEnv, isHydrated, userId])
 
   const onForeground = useCallback(() => {
     forceFetchToggles(unleashEnv)

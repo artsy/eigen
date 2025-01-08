@@ -13,9 +13,8 @@ import {
 } from "app/Components/Input/INTERNALSelectAndInputCombinationBase"
 import { InputRef } from "app/Components/Input/Input"
 import { SelectOption } from "app/Components/Select"
-import * as glibphone from "google-libphonenumber"
-import replace from "lodash/replace"
-import { forwardRef, useEffect, useRef, useState } from "react"
+import { validatePhoneNumber } from "app/utils/validatePhoneNumber"
+import { forwardRef, useCallback, useEffect, useRef, useState } from "react"
 import { cleanUserPhoneNumber } from "./cleanUserPhoneNumber"
 import { countries, countryIndex } from "./countries"
 import { formatPhoneNumber } from "./formatPhoneNumber"
@@ -56,26 +55,18 @@ export const PhoneInput = forwardRef<
     const [validationErrorMessage, setValidationErrorMessage] = useState("")
     const dialCode = countryIndex[countryCode].dialCode
     const countryISO2Code = countryIndex[countryCode].iso2
-    const phoneUtil = glibphone.PhoneNumberUtil.getInstance()
 
-    const isValidNumber = (number: string, code: string) => {
-      try {
-        number = replace(number, /[+()-\s]/g, "")
-        const parsedNumber = phoneUtil.parse(number, code)
-        return phoneUtil.isValidNumber(parsedNumber)
-      } catch (err) {
-        return false
-      }
-    }
-
-    const handleValidation = () => {
-      const isValid = isValidNumber(phoneNumber, countryISO2Code)
+    const handleValidation = useCallback(async () => {
+      const isValid = await validatePhoneNumber({
+        national: phoneNumber,
+        regionCode: countryISO2Code,
+      })
       setValidation?.(isValid)
 
       if (shouldDisplayLocalError) {
         setValidationErrorMessage(isValid ? "" : "Please enter a valid phone number.")
       }
-    }
+    }, [phoneNumber, countryISO2Code, setValidation, shouldDisplayLocalError])
 
     const isFirstRun = useRef(true)
     useEffect(() => {

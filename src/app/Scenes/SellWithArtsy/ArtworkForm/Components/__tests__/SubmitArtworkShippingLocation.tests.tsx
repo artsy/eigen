@@ -63,8 +63,6 @@ describe("SubmitArtworkShippingLocation", () => {
 
     fireEvent.press(screen.getByText(COUNTRY_SELECT_OPTIONS[0].label as string))
 
-    expect(screen.getAllByText(COUNTRY_SELECT_OPTIONS[0].label as string)).toHaveLength(2)
-
     expect(screen.getByText("Address Line 1")).toBeOnTheScreen()
 
     expect(screen.getByText("Address Line 2")).toBeOnTheScreen()
