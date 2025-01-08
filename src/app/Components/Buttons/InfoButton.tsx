@@ -2,6 +2,7 @@ import { Button, Flex, InfoCircleIcon, Spacer, Text, Touchable } from "@artsy/pa
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import React, { forwardRef, useImperativeHandle, useState } from "react"
 import { ScrollView } from "react-native"
+import { FullWindowOverlay } from "react-native-screens"
 
 interface InfoButtonProps {
   modalContent: JSX.Element
@@ -74,7 +75,11 @@ export const AutoHeightInfoModal: React.FC<{
   modalContent: JSX.Element
 }> = ({ visible, onDismiss, modalTitle, title, modalContent }) => {
   return (
-    <AutoHeightBottomSheet visible={visible} onDismiss={onDismiss}>
+    <AutoHeightBottomSheet
+      visible={visible}
+      onDismiss={onDismiss}
+      containerComponent={({ children }) => <FullWindowOverlay>{children}</FullWindowOverlay>}
+    >
       <Flex pb={4} pt={1} height="100%">
         <Text mx={2} variant="lg-display">
           {modalTitle ?? title}
