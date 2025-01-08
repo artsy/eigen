@@ -8,7 +8,6 @@ export const SavedSearchButtonV2Popover: React.FC<{ shouldShowCreateAlertPrompt?
   shouldShowCreateAlertPrompt,
 }) => {
   const {
-    isDismissed,
     sessionState: { activePopover },
   } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const isFocused = useIsFocused()
@@ -16,7 +15,6 @@ export const SavedSearchButtonV2Popover: React.FC<{ shouldShowCreateAlertPrompt?
   const isOnboardingFinished =
     isFocused &&
     // make sure threre is no active onboarding popover on the screen
-    isDismissed("alert-create").status &&
     !activePopover
 
   if (isOnboardingFinished && shouldShowCreateAlertPrompt) {
