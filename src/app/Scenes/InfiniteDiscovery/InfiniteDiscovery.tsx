@@ -63,7 +63,7 @@ export const InfiniteDiscovery: React.FC = () => {
           <EntityHeader
             name={artwork?.artistNames ?? ""}
             meta={artwork?.artists?.[0]?.formattedNationalityAndBirthday ?? undefined}
-            imageUrl={artwork?.artists?.[0]?.coverArtwork?.image?.cropped?.url ?? undefined}
+            imageUrl={artwork?.artists?.[0]?.coverArtwork?.images?.[0]?.url ?? undefined}
             initials={artwork?.artists?.[0]?.initials ?? undefined}
             RightButton={
               <Button variant="outlineGray" size="small">
@@ -142,10 +142,8 @@ export const infiniteDiscoveryQuery = graphql`
             artistNames
             artists(shallow: true) {
               coverArtwork {
-                image {
-                  cropped(height: 45, width: 45) {
-                    url
-                  }
+                images {
+                  url(version: "small")
                 }
               }
               formattedNationalityAndBirthday
