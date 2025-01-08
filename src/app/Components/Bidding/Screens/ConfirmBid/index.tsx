@@ -75,12 +75,19 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   constructor(props: ConfirmBidProps) {
     super(props)
 
+    console.log("HERE HERE HERE!!!!")
+    console.log(props.sale_artwork.sale.bidder)
+    console.log("-------------------------")
+
     const { bidders, has_qualified_credit_cards } = this.props.me
     const { requiresCheckbox, requiresPaymentInformation } = this.determineDisplayRequirements(
+      props.sale_artwork.sale.bidder,
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       bidders,
       has_qualified_credit_cards
     )
+
+    console.log(requiresPaymentInformation)
 
     this.state = {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -362,7 +369,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
           console.error("ConfirmBid.tsx", error.message)
         }
         const { bidders, has_qualified_credit_cards } = this.props.me
+        console.log("XXXXXXXXXXXXXXXXXXXXX")
+        console.log(this.props)
+        console.log("-------------------------")
         const { requiresCheckbox, requiresPaymentInformation } = this.determineDisplayRequirements(
+          null,
           // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           bidders,
           has_qualified_credit_cards
@@ -620,10 +631,16 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   }
 
   private determineDisplayRequirements(
+    bidder,
     bidders: ReadonlyArray<any>,
     hasQualifiedCreditCards: boolean
   ) {
-    const isRegistered = bidders && bidders.length > 0
+    console.log("INSIDE >>>>>>>>>>>>>>>> !!!!")
+    console.log(bidder)
+    console.log(hasQualifiedCreditCards)
+    console.log("-------------------------")
+
+    const isRegistered = !!bidder
     const requiresCheckbox = !isRegistered
     const requiresPaymentInformation = !(isRegistered || hasQualifiedCreditCards)
     return { requiresCheckbox, requiresPaymentInformation }
@@ -646,6 +663,9 @@ export const ConfirmBidScreen = createRefetchContainer(
           cascadingEndTimeIntervalMinutes
           partner {
             name
+          }
+          bidder {
+            id
           }
         }
         artwork {
