@@ -8,7 +8,7 @@ jest.mock("@artsy/palette-mobile", () => ({
   Popover: (props: any) => <MockedPopover {...props} />,
 }))
 
-describe("My Collection Artwork", () => {
+describe("MyCollectionArtwork", () => {
   const { renderWithRelay } = setupTestWrapper({ Component: MyCollectionArtworkScreen })
 
   it("show new artwork screen ", async () => {
@@ -65,6 +65,7 @@ describe("My Collection Artwork", () => {
       )
 
       expect(screen.getByText("Edit")).toBeOnTheScreen()
+      expect(screen.getByText("Edit").props.color).toEqual("black100")
     })
 
     it("should be visible when the artwork does not have an associated submission", async () => {
@@ -77,6 +78,7 @@ describe("My Collection Artwork", () => {
       )
 
       expect(screen.getByText("Edit")).toBeOnTheScreen()
+      expect(screen.getByText("Edit").props.color).toEqual("black100")
     })
   })
 })
