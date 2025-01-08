@@ -1,4 +1,5 @@
 import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Text } from "react-native"
 import { MyCollectionArtworkScreen } from "./MyCollectionArtwork"
@@ -66,6 +67,12 @@ describe("MyCollectionArtwork", () => {
 
       expect(screen.getByText("Edit")).toBeOnTheScreen()
       expect(screen.getByText("Edit").props.color).toEqual("black100")
+
+      fireEvent.press(screen.getByText("Edit"))
+      expect(navigate).toHaveBeenCalledWith(
+        'my-collection/artworks/<mock-value-for-field-"internalID">/edit',
+        { passProps: { mode: "edit" } }
+      )
     })
 
     it("should be visible when the artwork does not have an associated submission", async () => {
@@ -79,6 +86,12 @@ describe("MyCollectionArtwork", () => {
 
       expect(screen.getByText("Edit")).toBeOnTheScreen()
       expect(screen.getByText("Edit").props.color).toEqual("black100")
+
+      fireEvent.press(screen.getByText("Edit"))
+      expect(navigate).toHaveBeenCalledWith(
+        'my-collection/artworks/<mock-value-for-field-"internalID">/edit',
+        { passProps: { mode: "edit" } }
+      )
     })
   })
 })
