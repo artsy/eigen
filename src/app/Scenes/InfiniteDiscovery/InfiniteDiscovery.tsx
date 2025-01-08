@@ -11,33 +11,38 @@ import {
   useTheme,
 } from "@artsy/palette-mobile"
 import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
-import { InfiniteDiscoveryContext } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryContext"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { useCallback, useMemo, useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import type { InfiniteDiscoveryQuery } from "__generated__/InfiniteDiscoveryQuery.graphql"
 import type { Card } from "app/Components/FancySwiper/FancySwiperCard"
 
 export const InfiniteDiscoveryView: React.FC = () => {
-  return (
-    <InfiniteDiscoveryContext.Provider>
-      <InfiniteDiscoveryWithSuspense />
-    </InfiniteDiscoveryContext.Provider>
-  )
+  return <InfiniteDiscoveryWithSuspense />
 }
 
 export const InfiniteDiscovery: React.FC = () => {
+  const data = useLazyLoadQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, {})
+  const artworks = useMemo(() => extractNodes(data.marketingCollection?.artworksConnection), [data])
+
   const { color } = useTheme()
   const { width: screenWidth } = useScreenDimensions()
 
-  const currentIndex = InfiniteDiscoveryContext.useStoreState((state) => state.currentIndex)
-  const goToPrevious = InfiniteDiscoveryContext.useStoreActions((action) => action.goToPrevious)
-  const goToNext = InfiniteDiscoveryContext.useStoreActions((actions) => actions.goToNext)
+  const [index, setIndex] = useState(0)
 
-  const data = useLazyLoadQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, {})
+  const goToPrevious = useCallback(() => {
+    if (index > 0) {
+      setIndex(index - 1)
+    }
+  }, [index, setIndex])
 
-  const artworks = extractNodes(data.marketingCollection?.artworksConnection)
+  const goToNext = useCallback(() => {
+    if (index < artworks.length - 1) {
+      setIndex(index + 1)
+    }
+  }, [artworks, index, setIndex])
 
   const handleBackPressed = () => {
     goToPrevious()
@@ -55,7 +60,7 @@ export const InfiniteDiscovery: React.FC = () => {
     goToNext()
   }
 
-  const artworkCards: Card[] = artworks.map((artwork) => {
+  const artworkCards: Card[] = artworks.slice(index).map((artwork) => {
     return {
       jsx: (
         <Flex backgroundColor={color("white100")}>
@@ -114,7 +119,7 @@ export const InfiniteDiscovery: React.FC = () => {
                 <Text variant="xs">Back</Text>
               </Touchable>
             }
-            hideLeftElements={currentIndex === 0}
+            hideLeftElements={index === 0}
             rightElements={
               <Touchable onPress={handleExitPressed}>
                 <Text variant="xs">Exit</Text>
@@ -142,7 +147,7 @@ export const InfiniteDiscoveryWithSuspense = withSuspense({
 export const infiniteDiscoveryQuery = graphql`
   query InfiniteDiscoveryQuery {
     marketingCollection(slug: "curators-picks") {
-      artworksConnection(first: 10) {
+      artworksConnection(first: 100) {
         edges {
           node {
             artistNames
