@@ -42,7 +42,7 @@ describe("RouterLink", () => {
 
     fireEvent.press(screen.getByText("Test Link"))
 
-    expect(navigate).toHaveBeenCalledWith("/test-route", { passProps: undefined })
+    expect(navigate).toHaveBeenCalledWith("/test-route")
   })
 
   describe("prefetching", () => {
