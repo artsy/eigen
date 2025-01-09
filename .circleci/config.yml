@@ -103,7 +103,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v23-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v24-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
           command: ./scripts/setup/download-fonts
@@ -114,7 +114,7 @@ commands:
           name: Build App
           command: ./scripts/ci/ci-ios
       - save_cache:
-          key: v23-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v24-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
@@ -124,7 +124,7 @@ commands:
           at: ../workspace
       - restore_cache:
           keys:
-            - v15-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+            - v16-test-success-{{ checksum "../workspace/.manifests/android_native" }}
       - android/change-java-version:
           java-version: 17
       - run:
@@ -153,7 +153,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v9-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+            - v10-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
       - generate-query-map
       - run:
           name: Download fonts from s3
@@ -165,7 +165,7 @@ commands:
           name: Build App
           command: ./scripts/ci/ci-android
       - save_cache:
-          key: v9-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+          key: v10-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
           paths:
             - android/build
             - android/app/build
