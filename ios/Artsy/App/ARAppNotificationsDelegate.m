@@ -101,7 +101,7 @@
 #endif
 }
 
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
+- (void)application:(UIApplication *)application didReceiveNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
 {
 
     bool handled = [[[ARAppDelegate braze] notifications] handleBackgroundNotificationWithUserInfo:userInfo fetchCompletionHandler:handler];
