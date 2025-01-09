@@ -24,7 +24,7 @@ jobs:
 
       - name: Fetch all tags
         run: |
-          git fetch --tags --depth=300
+          git fetch --tags --depth=300 --jobs=8
           echo "fetched tags!"
 
       - name: Determine iOS and Android tags
