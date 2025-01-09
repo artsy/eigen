@@ -935,6 +935,7 @@ describe("ConfirmBid", () => {
       partner: {
         name: "Christie's",
       },
+      bidder: null,
     },
     lot_label: "538",
   }

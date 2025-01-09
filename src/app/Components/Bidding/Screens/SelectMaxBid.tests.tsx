@@ -10,7 +10,7 @@ describe("SelectMaxBid", () => {
       <SelectMaxBidContainer me={me!} sale_artwork={sale_artwork!} navigator={null!} />
     ),
     query: graphql`
-      query SelectMaxBidTestsQuery($saleID: String!) @relay_test_operation {
+      query SelectMaxBidTestsQuery @relay_test_operation {
         sale_artwork: saleArtwork(id: "wow") {
           ...SelectMaxBid_sale_artwork
         }

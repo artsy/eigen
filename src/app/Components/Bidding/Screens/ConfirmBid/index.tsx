@@ -76,10 +76,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     super(props)
 
     const { has_qualified_credit_cards } = this.props.me
-    const { bidder } = this.props.sale_artwork.sale
+    const bidder = this.props.sale_artwork?.sale?.bidder
     const { requiresCheckbox, requiresPaymentInformation } = this.determineDisplayRequirements(
-      bidder,
-      has_qualified_credit_cards
+      !!bidder,
+      !!has_qualified_credit_cards
     )
 
     this.state = {
@@ -362,11 +362,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
           console.error("ConfirmBid.tsx", error.message)
         }
         const { has_qualified_credit_cards } = this.props.me
-        const { bidder } = this.props.sale_artwork.sale
+        const bidder = this.props.sale_artwork?.sale?.bidder
 
         const { requiresCheckbox, requiresPaymentInformation } = this.determineDisplayRequirements(
-          bidder,
-          has_qualified_credit_cards
+          !!bidder,
+          !!has_qualified_credit_cards
         )
         this.setState({ requiresCheckbox, requiresPaymentInformation })
       },
@@ -620,10 +620,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     return this.props.increments[this.state.selectedBidIndex]
   }
 
-  private determineDisplayRequirements(bidder, hasQualifiedCreditCards: boolean) {
-    const isRegistered = !!bidder
-    const requiresCheckbox = !isRegistered
-    const requiresPaymentInformation = !(isRegistered || hasQualifiedCreditCards)
+  private determineDisplayRequirements(hasBidder: boolean, hasQualifiedCreditCards: boolean) {
+    const requiresCheckbox = !hasBidder
+    const requiresPaymentInformation = !(hasBidder || hasQualifiedCreditCards)
     return { requiresCheckbox, requiresPaymentInformation }
   }
 }
