@@ -3,7 +3,7 @@ name: Release with Changelog
 on:
   push:
     tags:
-      - "ios-[0-9]*.[0-9]*.[0-9]*-[0-9]*.[0-9]*.[0-9]*.[0-9]*-submission"
+      - "ios-[0-9]*.[0-9]*.[0-9]*-[0-9]*.[0-9]*.[0-9]*.[0-9]*-sultantest"
 
 permissions:
   contents: write
@@ -23,13 +23,13 @@ jobs:
           cache: "yarn"
 
       - name: Fetch all tags
-        run: git fetch --tags
+        run: git fetch --tags --quiet
 
       - name: Determine iOS and Android tags
         id: determine_tags
         run: |
           # Get all iOS release tags and sort them
-          ios_tags=$(git tag --list "ios-*-submission" | sort -V)
+          ios_tags=$(git tag --sort=-creatordate | grep "^ios.*submission$" | head -n 10)
 
           # Get the last and second-to-last iOS tags
           last_ios_tag=$(echo "$ios_tags" | tail -n1)
@@ -62,8 +62,8 @@ jobs:
           base_changelog=$(yarn generate-changelog "${{ env.second_last_ios_tag }}" "${{ env.last_ios_tag }}")
 
           # Add monitoring links
-          ios_link="Monitor the iOS release on Sentry [here](https://artsynet.sentry.io/releases/${{ env.last_ios_tag }}/?project=5867225)"
-          android_link="Monitor the Android release on Sentry [here](https://artsynet.sentry.io/releases/${{ env.android_tag }}/?project=5867225)"
+          ios_link="Monitor the iOS release on Sentry [here :lock:](https://artsynet.sentry.io/releases/${{ env.last_ios_tag }}/?project=5867225)"
+          android_link="Monitor the Android release on Sentry [here :lock:](https://artsynet.sentry.io/releases/${{ env.android_tag }}/?project=5867225)"
 
           changelog="${base_changelog}\n\n$ios_link\n$android_link"
 
