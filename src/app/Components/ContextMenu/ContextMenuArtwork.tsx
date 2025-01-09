@@ -2,16 +2,15 @@ import { ActionType, ContextModule, LongPressedArtwork, ScreenOwnerType } from "
 import { useColor } from "@artsy/palette-mobile"
 import { ContextMenuArtworkPreviewCard_artwork$key } from "__generated__/ContextMenuArtworkPreviewCard_artwork.graphql"
 import { ContextMenuArtwork_artwork$key } from "__generated__/ContextMenuArtwork_artwork.graphql"
-import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ArtworkRailCardProps } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { ContextMenuArtworkPreviewCard } from "app/Components/ContextMenu/ContextMenuArtworkPreviewCard"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { cm2in } from "app/utils/conversions"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { isDislikeArtworksEnabled } from "app/utils/isDislikeArtworksEnabled"
 import { useDislikeArtwork } from "app/utils/mutations/useDislikeArtwork"
 import { Schema } from "app/utils/track"
-import { isEmpty } from "lodash"
 import { InteractionManager, Platform } from "react-native"
 import ContextMenu, { ContextMenuAction, ContextMenuProps } from "react-native-context-menu-view"
 import { HapticFeedbackTypes, trigger } from "react-native-haptic-feedback"
@@ -59,10 +58,6 @@ const artworkFragment = graphql`
     image(includeAll: false) {
       url(version: ["larger", "large", "medium", "small", "square"])
     }
-    sale {
-      isAuction
-      isClosed
-    }
     heightCm
     widthCm
   }
@@ -93,21 +88,12 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 
   const dark = artworkDisplayProps?.dark ?? false
 
-  const { title, href, artists, slug, internalID, id, isHangable, image, sale } = artwork
+  const { title, href, artists, slug, internalID, id, isHangable, image } = artwork
 
   const shouldDisplayContextMenu = isIOS && enableContextMenu
   const enableCreateAlerts = !!artwork.artists?.length
   const enableViewInRoom = LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable
-  const enableSupressArtwork = contextModule == "newWorksForYouRail"
-
-  const isOpenSale = !isEmpty(sale) && sale?.isAuction && !sale?.isClosed
-
-  const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
-    artworkFragmentRef: artwork,
-    onCompleted:
-      // TODO: Do we need to track anything here?
-      () => null,
-  })
+  const enableSupressArtwork = isDislikeArtworksEnabled(contextModule)
 
   const openViewInRoom = () => {
     if (artwork?.widthCm == null || artwork?.heightCm == null || image?.url == null) {
@@ -154,21 +140,6 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
         },
       },
     ]
-
-    if (!enableSupressArtwork) {
-      let saveTitle = isSaved ? "Remove from saved" : "Save"
-      if (isOpenSale) {
-        saveTitle = "Watch Lot"
-      }
-
-      contextMenuActions.unshift({
-        title: saveTitle,
-        systemIcon: isSaved ? "heart.fill" : "heart",
-        onPress: () => {
-          saveArtworkToLists()
-        },
-      })
-    }
 
     if (enableViewInRoom) {
       contextMenuActions.push({

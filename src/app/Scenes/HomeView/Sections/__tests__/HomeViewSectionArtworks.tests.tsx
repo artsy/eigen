@@ -102,4 +102,28 @@ describe("HomeViewSectionArtworks", () => {
 
     expect(navigate).toHaveBeenCalledWith("/artwork-2-href")
   })
+
+  it("does not render disliked artworks when enabled", () => {
+    renderWithRelay({
+      HomeViewSectionArtworks: () => ({
+        internalID: "home-view-section-new-works-for-you",
+        contextModule: "newWorksForYouRail",
+        artworksConnection: {
+          edges: [
+            {
+              node: {
+                internalID: "artwork-1-id",
+                slug: "artwork-1-slug",
+                title: "Artwork 1",
+                href: "/artwork-1-href",
+                isDisliked: true,
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    expect(screen.queryByText(/Artwork 1/)).not.toBeOnTheScreen()
+  })
 })
