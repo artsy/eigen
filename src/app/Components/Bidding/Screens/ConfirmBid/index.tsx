@@ -75,19 +75,12 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   constructor(props: ConfirmBidProps) {
     super(props)
 
-    console.log("HERE HERE HERE!!!!")
-    console.log(props.sale_artwork.sale.bidder)
-    console.log("-------------------------")
-
-    const { bidders, has_qualified_credit_cards } = this.props.me
+    const { has_qualified_credit_cards } = this.props.me
+    const { bidder } = this.props.sale_artwork.sale
     const { requiresCheckbox, requiresPaymentInformation } = this.determineDisplayRequirements(
-      props.sale_artwork.sale.bidder,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      bidders,
+      bidder,
       has_qualified_credit_cards
     )
-
-    console.log(requiresPaymentInformation)
 
     this.state = {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -368,14 +361,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
         if (error) {
           console.error("ConfirmBid.tsx", error.message)
         }
-        const { bidders, has_qualified_credit_cards } = this.props.me
-        console.log("XXXXXXXXXXXXXXXXXXXXX")
-        console.log(this.props)
-        console.log("-------------------------")
+        const { has_qualified_credit_cards } = this.props.me
+        const { bidder } = this.props.sale_artwork.sale
+
         const { requiresCheckbox, requiresPaymentInformation } = this.determineDisplayRequirements(
-          null,
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          bidders,
+          bidder,
           has_qualified_credit_cards
         )
         this.setState({ requiresCheckbox, requiresPaymentInformation })
@@ -630,16 +620,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     return this.props.increments[this.state.selectedBidIndex]
   }
 
-  private determineDisplayRequirements(
-    bidder,
-    bidders: ReadonlyArray<any>,
-    hasQualifiedCreditCards: boolean
-  ) {
-    console.log("INSIDE >>>>>>>>>>>>>>>> !!!!")
-    console.log(bidder)
-    console.log(hasQualifiedCreditCards)
-    console.log("-------------------------")
-
+  private determineDisplayRequirements(bidder, hasQualifiedCreditCards: boolean) {
     const isRegistered = !!bidder
     const requiresCheckbox = !isRegistered
     const requiresPaymentInformation = !(isRegistered || hasQualifiedCreditCards)
@@ -686,19 +667,13 @@ export const ConfirmBidScreen = createRefetchContainer(
     me: graphql`
       fragment ConfirmBid_me on Me {
         has_qualified_credit_cards: hasQualifiedCreditCards
-        bidders(saleID: $saleID) {
-          id
-        }
       }
     `,
   },
   graphql`
-    query ConfirmBidRefetchQuery($saleID: String!) {
+    query ConfirmBidRefetchQuery {
       me {
         has_qualified_credit_cards: hasQualifiedCreditCards
-        bidders(saleID: $saleID) {
-          id
-        }
       }
     }
   `
