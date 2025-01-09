@@ -131,9 +131,9 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigation
   )
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find(
-    (option) => option.paramName === FilterParamName.sort
-  )!
+  const selectedOption =
+    selectedOptions.find((option) => option.paramName === FilterParamName.sort) ??
+    DEFAULT_ARTWORK_SORT
 
   const filterOptions = {
     artwork: [DEFAULT_ARTWORK_SORT, ...ORDERED_ARTWORK_SORTS],

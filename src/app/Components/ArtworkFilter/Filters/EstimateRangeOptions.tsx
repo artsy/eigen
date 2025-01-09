@@ -41,7 +41,8 @@ export const EstimateRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> 
   })
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find((option) => option.paramName === paramName)!
+  const selectedOption =
+    selectedOptions.find((option) => option.paramName === paramName) ?? options[0]
 
   const selectOption = (option: AggregateOption) => {
     selectFiltersAction({
