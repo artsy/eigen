@@ -26,13 +26,12 @@ export const EstimateRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> 
   navigation,
 }) => {
   const paramName = FilterParamName.estimateRange
-  const ranges = EstimateRanges
 
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.selectFiltersAction
   )
 
-  const options = ranges.map((estimateRange) => {
+  const options = EstimateRanges.map((estimateRange) => {
     return {
       displayText: estimateRange.paramDisplay,
       paramName,
