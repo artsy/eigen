@@ -48,7 +48,7 @@ commands:
     steps:
       - node/install-packages:
           pkg-manager: yarn
-          cache-version: v10
+          cache-version: v12
   run-relay-compiler:
     steps:
       - run:
