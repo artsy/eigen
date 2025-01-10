@@ -16556,6 +16556,9 @@ type Query {
     before: String
     certainty: Float
 
+    # The number of curated artworks to return. This is a temporary field to support the transition to OpenSearch
+    curatedPicksSize: Int = 2
+
     # (Only for when useOpenSearch is true) Exclude these artworks from the response
     excludeArtworkIds: [String]
     first: Int
@@ -21143,6 +21146,9 @@ type Viewer {
     after: String
     before: String
     certainty: Float
+
+    # The number of curated artworks to return. This is a temporary field to support the transition to OpenSearch
+    curatedPicksSize: Int = 2
 
     # (Only for when useOpenSearch is true) Exclude these artworks from the response
     excludeArtworkIds: [String]
