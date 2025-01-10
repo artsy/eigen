@@ -12,7 +12,7 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { Schema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { NativeScrollEvent, NativeSyntheticEvent } from "react-native"
+import { LayoutChangeEvent, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { useFocusedTab } from "react-native-collapsible-tab-view"
 import { RelayProp, createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -81,7 +81,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
             artist={artist}
             scrollToTop={scrollToTop}
             initialFilters={initialFilters}
-            onLayout={({ nativeEvent }) => {
+            onLayout={({ nativeEvent }: LayoutChangeEvent) => {
               auctionResultsYCoordinate.current = nativeEvent.layout.y
             }}
             onScrollEndDragChange={onScrollEndDragChange}

@@ -42,7 +42,6 @@ export const UserProfileQueryRenderer: React.FC = () => (
       if (error) {
         return null
       } else if (props) {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         return <UserProfileFragmentContainer {...props} />
       } else {
         return (

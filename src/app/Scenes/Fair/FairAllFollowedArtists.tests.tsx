@@ -7,9 +7,14 @@ import { FairAllFollowedArtistsFragmentContainer } from "./FairAllFollowedArtist
 
 describe("FairAllFollowedArtists", () => {
   const { renderWithRelay } = setupTestWrapper<FairAllFollowedArtistsTestsQuery>({
-    Component: FairAllFollowedArtistsFragmentContainer,
+    Component: (props) => (
+      <FairAllFollowedArtistsFragmentContainer
+        fair={props.fair}
+        fairForFilters={props.fairForFilters}
+      />
+    ),
     query: graphql`
-      query FairAllFollowedArtistsTestsQuery @relay_test_operation {
+      query FairAllFollowedArtistsTestsQuery {
         fair(id: "fair-id") @required(action: NONE) {
           ...FairAllFollowedArtists_fair
         }
