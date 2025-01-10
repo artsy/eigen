@@ -1,16 +1,17 @@
-import { NewSaleLotsListTestsQuery } from "__generated__/NewSaleLotsListTestsQuery.graphql"
+import { screen } from "@testing-library/react-native"
+import { SaleLotsListTestsQuery } from "__generated__/SaleLotsListTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import { NewSaleLotsListContainer } from "./NewSaleLotsList"
+import { SaleLotsListContainer } from "./SaleLotsList"
 
-describe("NewSaleLotsList", () => {
-  const { renderWithRelay } = setupTestWrapper<NewSaleLotsListTestsQuery>({
+describe("SaleLotsList", () => {
+  const { renderWithRelay } = setupTestWrapper<SaleLotsListTestsQuery>({
     Component: (props) => {
       if (props?.viewer) {
         return (
           <ArtworkFiltersStoreProvider>
-            <NewSaleLotsListContainer
+            <SaleLotsListContainer
               viewer={props.viewer}
               unfilteredArtworks={props.viewer.unfilteredArtworks}
               saleID="saleID"
@@ -23,16 +24,16 @@ describe("NewSaleLotsList", () => {
       return null
     },
     query: graphql`
-      query NewSaleLotsListTestsQuery($saleID: ID) @relay_test_operation {
+      query SaleLotsListTestsQuery($saleID: ID) @relay_test_operation {
         viewer {
           unfilteredArtworks: artworksConnection(
             saleID: $saleID
             aggregations: [FOLLOWED_ARTISTS, ARTIST, MEDIUM, TOTAL]
             first: 0
           ) {
-            ...NewSaleLotsList_unfilteredArtworks
+            ...SaleLotsList_unfilteredArtworks
           }
-          ...NewSaleLotsList_viewer @arguments(saleID: $saleID)
+          ...SaleLotsList_viewer @arguments(saleID: $saleID)
         }
       }
     `,
@@ -53,20 +54,20 @@ describe("NewSaleLotsList", () => {
   })
 
   it("renders content", () => {
-    const { getByText } = renderWithRelay({
+    renderWithRelay({
       FilterArtworksConnection: () => mockedFilterArtworksConnection,
     })
 
-    expect(getByText("Artwork Title")).toBeDefined()
+    expect(screen.getByText("Artwork Title")).toBeDefined()
   })
 
   it("renders header", () => {
-    const { getByText } = renderWithRelay({
+    renderWithRelay({
       FilterArtworksConnection: () => mockedFilterArtworksConnection,
     })
 
-    expect(getByText("Sorted by Lot Number Ascending")).toBeDefined()
-    expect(getByText("Showing 1 of 1")).toBeDefined()
+    expect(screen.getByText("Sorted by Lot Number Ascending")).toBeDefined()
+    expect(screen.getByText("Showing 1 of 1")).toBeDefined()
   })
 })
 
