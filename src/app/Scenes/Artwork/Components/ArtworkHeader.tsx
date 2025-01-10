@@ -67,7 +67,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
           figures={artwork.figures}
           setVideoAsCover={artwork.isSetVideoAsCover ?? false}
           cardHeight={screenDimensions.width >= 375 ? 340 : 290}
-          onImageIndexChange={(imageIndex) => setCurrentImageIndex(imageIndex)}
+          onImageIndexChange={(imageIndex: number) => setCurrentImageIndex(imageIndex)}
         />
 
         {debugInstagramShot ? (
