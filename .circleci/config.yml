@@ -551,7 +551,7 @@ workflows:
 
       - test-js
 
-      # - build-test-js
+      - build-test-js
 
       - horizon/block:
           context: horizon
@@ -570,7 +570,7 @@ workflows:
           requires:
             - test-js
             - check-code
-            # - build-test-js
+            - build-test-js
             - horizon/block
 
       - build-test-app-android:
@@ -581,7 +581,7 @@ workflows:
           requires:
             - test-js
             - check-code
-            # - build-test-js
+            - build-test-js
             - horizon/block
 
       - update-metaphysics:
