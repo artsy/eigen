@@ -108,7 +108,7 @@ export const SavesTabHeader = () => {
               <InstitutionIcon mr={0.5} />
               <Flex flex={1}>
                 <Text variant="sm-display">
-                  Signal your interest to galleries and you could receiving an offer on your saved
+                  Signal your interest to galleries and you could receive an offer on your saved
                   artwork from a gallery.{" "}
                   <LinkText
                     onPress={() => {
