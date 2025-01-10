@@ -29,7 +29,6 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ProgressiveOnboardingAlertReminder } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingAlertReminder"
 import { useDismissAlertReminder } from "app/Components/ProgressiveOnboarding/useDismissAlertReminder"
-import { GlobalStore } from "app/store/GlobalStore"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -73,15 +72,13 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const artworks = useMemo(() => extractNodes(artist.artworks), [artist.artworks])
   const artworksCount = artist.artworks?.counts?.total ?? 0
   const gridRef = useRef<MasonryFlashListRef<(typeof artworks)[0]>>(null)
-
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-
+  const { dismissChainOfRemindersAfterDelay } = useDismissAlertReminder()
   const {
     enabled,
     variant,
     trackExperiment: trackCreateAlertPromptExperiment,
   } = useExperimentVariant("onyx_create-alert-prompt-experiment")
-  const { dismissChainOfRemindersAfterDelay } = useDismissAlertReminder()
 
   useEffect(() => {
     trackCreateAlertPromptExperiment()
@@ -310,14 +307,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
                 >
                   <></>
                 </ProgressiveOnboardingAlertReminder>
-                <Button
-                  onPress={() => {
-                    const { __clearDissmissed } = GlobalStore.actions.progressiveOnboarding
-                    __clearDissmissed()
-                  }}
-                >
-                  CLEAR
-                </Button>
                 <Flex flex={1}>
                   <ArtistArtworksFilterHeader
                     artist={artist}
