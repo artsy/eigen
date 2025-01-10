@@ -981,8 +981,12 @@ describe("ConfirmBid", () => {
 
   const saleArtworkRegisteredForBidding: ConfirmBid_sale_artwork$data = {
     ...saleArtwork,
+    endAt: "2018-05-13T20:22:42+00:00",
+    extendedBiddingEndAt: null,
     sale: {
       ...baseSaleArtwork.sale,
+      live_start_at: null,
+      cascadingEndTimeIntervalMinutes: null,
       bidder: {
         id: "1234567",
       },
