@@ -45,8 +45,8 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       _FancyModalPageWrapper,
       ToastProvider, // uses: GlobalStoreProvider
       GravityWebsocketContextProvider, // uses GlobalStoreProvider
-      ShareSheetProvider, // uses _FancyModalPageWrapper
       ArtworkListsProvider,
+      ShareSheetProvider, // uses BottomSheetProvider
     ],
     children
   )
@@ -71,9 +71,9 @@ export const TestProviders: React.FC<{ skipRelay?: boolean; includeNavigation?: 
       Theme,
       Screen.ScreenScrollContextProvider,
       PopoverMessageProvider,
-      ShareSheetProvider,
       ToastProvider,
       ArtworkListsProvider,
+      ShareSheetProvider,
     ],
     children
   )
