@@ -1,10 +1,9 @@
 import { Flex, Text } from "@artsy/palette-mobile"
-import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { NavigationHeader } from "app/Components/NavigationHeader"
 import { LocationAutocomplete } from "app/Components/LocationAutocomplete"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import React, { useState } from "react"
-import { ScrollView } from "react-native"
+import { Modal, ScrollView } from "react-native"
 
 interface ShippingModalProps {
   toggleVisibility: () => void
@@ -19,7 +18,12 @@ export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
   const [locationDetails, setLocationDetails] = useState<LocationWithDetails | null>(null)
 
   return (
-    <FancyModal visible={modalIsVisible} onBackgroundPressed={() => toggleVisibility()}>
+    <Modal
+      visible={modalIsVisible}
+      onRequestClose={toggleVisibility}
+      presentationStyle="formSheet"
+      animationType="slide"
+    >
       <NavigationHeader
         leftButtonText="Cancel"
         onLeftButtonPress={() => {
@@ -51,6 +55,6 @@ export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
           />
         </Flex>
       </ScrollView>
-    </FancyModal>
+    </Modal>
   )
 }
