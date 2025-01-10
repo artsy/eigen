@@ -1,9 +1,7 @@
-import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
 import { Button, Message, Text } from "@artsy/palette-mobile"
 import { useShouldShowPrompt } from "app/Components/Artist/ArtistArtworks/hooks/useShouldShowPrompt"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
-import { useTracking } from "react-tracking"
 
 interface CreateAlertPromptMessageProps {
   onPress: () => void
@@ -13,7 +11,6 @@ export const CreateAlertPromptMessage: React.FC<CreateAlertPromptMessageProps> =
   const { promptState } = GlobalStore.useAppState((state) => state.createAlertPrompt)
   const { updateTimesShown, dontShowCreateAlertPromptAgain, dismissPrompt } =
     GlobalStore.actions.createAlertPrompt
-  const tracking = useTracking()
 
   const { shouldShowPrompt, forcePrompt } = useShouldShowPrompt(promptState)
 
@@ -62,14 +59,4 @@ export const CreateAlertPromptMessage: React.FC<CreateAlertPromptMessageProps> =
   } else {
     return <></>
   }
-}
-
-const tracks = {
-  tappedCreateAlert: (artistId: string, artistSlug: string): TappedCreateAlert => ({
-    action: ActionType.tappedCreateAlert,
-    context_screen_owner_type: OwnerType.artist,
-    context_screen_owner_id: artistId,
-    context_screen_owner_slug: artistSlug,
-    context_module: ContextModule.artworkGrid,
-  }),
 }
