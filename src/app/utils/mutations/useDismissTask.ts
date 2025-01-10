@@ -1,9 +1,5 @@
 import { useDismissTaskMutation } from "__generated__/useDismissTaskMutation.graphql"
-import {
-  // ConnectionHandler,
-  useMutation,
-  graphql,
-} from "react-relay"
+import { useMutation, graphql } from "react-relay"
 
 export const useDismissTask = () => {
   return useMutation<useDismissTaskMutation>(DismissTaskMutation)

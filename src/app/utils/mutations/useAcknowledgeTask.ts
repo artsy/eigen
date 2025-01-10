@@ -13,6 +13,9 @@ const AcknowledgeTaskMutation = graphql`
           task {
             internalID
           }
+          homeViewTasksSection {
+            ...HomeViewSectionTasks_section
+          }
         }
 
         ... on AckTaskFailure {

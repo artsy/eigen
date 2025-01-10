@@ -58,15 +58,13 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
       }
 
       tappedTaskGroup(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
-      await new Promise((resolve) =>
-        acknowledgeTask({
-          variables: { taskID: task.internalID },
-          optimisticUpdater: optimisticallyClearTask as any,
-          onCompleted: resolve,
-        })
-      )
-
-      navigate(task.actionLink)
+      acknowledgeTask({
+        variables: { taskID: task.internalID },
+        optimisticUpdater: optimisticallyClearTask as any,
+        onCompleted: () => {
+          navigate(task.actionLink)
+        },
+      })
     }
 
     const handleClearTask = async () => {
