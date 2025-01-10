@@ -27,6 +27,7 @@ import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilter
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { ProgressiveOnboardingAlertReminder } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingAlertReminder"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
@@ -285,10 +286,17 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         ListHeaderComponent={
           <>
             <Tabs.SubTabBar>
-              <ArtistArtworksFilterHeader
-                artist={artist}
-                showCreateAlertModal={() => setIsCreateAlertModalVisible(true)}
-              />
+              <Flex flexDirection="row">
+                <ProgressiveOnboardingAlertReminder visible={artworks.length > 19}>
+                  <Flex />
+                </ProgressiveOnboardingAlertReminder>
+                <Flex flex={1}>
+                  <ArtistArtworksFilterHeader
+                    artist={artist}
+                    showCreateAlertModal={() => setIsCreateAlertModalVisible(true)}
+                  />
+                </Flex>
+              </Flex>
             </Tabs.SubTabBar>
             <Flex pt={1}>
               <Text variant="xs" weight="medium">{`${artworksCount} Artwork${
@@ -317,6 +325,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         onComplete={handleCompleteSavedSearch}
         visible={isCreateAlertModalVisible}
       />
+      <ProgressiveOnboardingAlertReminder visible={artworks.length > 19} />
     </>
   )
 }
