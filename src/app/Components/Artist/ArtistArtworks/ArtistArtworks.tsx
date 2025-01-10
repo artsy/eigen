@@ -171,7 +171,11 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         onPress={() => {
           // Could be useful to differenciate between the two at a later point
           tracking.trackEvent(
-            tracks.tappedCreateAlert({ artistId: artist.internalID, artistSlug: artist.slug })
+            tracks.tappedCreateAlert({
+              artistId: artist.internalID,
+              artistSlug: artist.slug,
+              contextModule: ContextModule.artistArtworksGridEnd,
+            })
           )
 
           setIsCreateAlertModalVisible(true)
@@ -338,7 +342,18 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
       />
 
       {!!userDidScroll && !!variantB && (
-        <CreateAlertPromptMessage onPress={() => setIsCreateAlertModalVisible(true)} />
+        <CreateAlertPromptMessage
+          onPress={() => {
+            tracking.trackEvent(
+              tracks.tappedCreateAlert({
+                artistId: artist.internalID,
+                artistSlug: artist.slug,
+                contextModule: ContextModule.artistArtworksCreateAlertPromptMessage,
+              })
+            )
+            setIsCreateAlertModalVisible(true)
+          }}
+        />
       )}
     </>
   )
@@ -438,11 +453,19 @@ export default createPaginationContainer(
 )
 
 const tracks = {
-  tappedCreateAlert: ({ artistId, artistSlug }: { artistId: string; artistSlug: string }) => ({
+  tappedCreateAlert: ({
+    artistId,
+    artistSlug,
+    contextModule,
+  }: {
+    artistId: string
+    artistSlug: string
+    contextModule: ContextModule
+  }) => ({
     action: ActionType.tappedCreateAlert,
     context_screen_owner_type: OwnerType.artist,
     context_screen_owner_id: artistId,
     context_screen_owner_slug: artistSlug,
-    context_module: ContextModule.artistArtworksGridEnd,
+    context_module: contextModule,
   }),
 }
