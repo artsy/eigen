@@ -164,6 +164,10 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
 
   const handleCloseModal = () => {
     setModalVisible(false)
+    // onDismiss doesn't get called on TEST Environments so we need to manually call it
+    if (__TEST__) {
+      handleSortByModalClosed()
+    }
   }
 
   const handleLoadMore = () => {
@@ -218,7 +222,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
    * More context here: https://github.com/facebook/react-native/issues/16182#issuecomment-333814201
    */
   const handleSortByModalClosed = () => {
-    if (selectedSortValue === prevSelectedSortValue) {
+    if (selectedSortValue === prevSelectedSortValue && !__TEST__) {
       return
     }
 
