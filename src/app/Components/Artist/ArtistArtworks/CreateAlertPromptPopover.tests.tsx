@@ -53,8 +53,8 @@ describe("CreateAlertPromptPopover", () => {
 
   it("renders correctly second time after 3 days", () => {
     __globalStoreTestUtils__?.injectState({
-      // 259200000 is 3 days
-      createAlertPrompt: { promptState: { timesShown: 1, dismissDate: Date.now() - 259200000 } },
+      // 604800000 is 7 days
+      createAlertPrompt: { promptState: { timesShown: 1, dismissDate: Date.now() - 604800000 } },
     })
     wrapper()
 
@@ -64,7 +64,7 @@ describe("CreateAlertPromptPopover", () => {
 
   it("is not rendered second time after less than 3 days", () => {
     __globalStoreTestUtils__?.injectState({
-      // 259200 is less than 3 days
+      // 259200 is less than 7 days
       createAlertPrompt: { promptState: { timesShown: 1, dismissDate: Date.now() - 259200 } },
     })
     wrapper()
