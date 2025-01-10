@@ -86,6 +86,10 @@ export const PROGRESSIVE_ONBOARDING_ALERT_CHAIN = [
 // Alerts Reminder
 export const PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1 = "alert-create-reminder-1"
 export const PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2 = "alert-create-reminder-2"
+export const PROGRESSIVE_ONBOARDING_ALERT_REMINDER_CHAIN = [
+  PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1,
+  PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2,
+] as const
 
 // My Collection
 export const PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK = "my-collection-sell-this-work"

@@ -28,6 +28,7 @@ import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ProgressiveOnboardingAlertReminder } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingAlertReminder"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
@@ -72,6 +73,16 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const gridRef = useRef<MasonryFlashListRef<(typeof artworks)[0]>>(null)
 
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+
+  const {
+    enabled,
+    variant,
+    trackExperiment: trackCreateAlertPromptExperiment,
+  } = useExperimentVariant("onyx_create-alert-prompt-experiment")
+
+  useEffect(() => {
+    trackCreateAlertPromptExperiment()
+  }, [])
 
   useArtworkFilters({
     relay,
@@ -160,9 +171,11 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         size="small"
         onPress={() => {
           // Could be useful to differenciate between the two at a later point
-          tracking.trackEvent(
-            tracks.tappedCreateAlert({ artistId: artist.internalID, artistSlug: artist.slug })
-          )
+          tracks.tappedCreateAlert({
+            artistId: artist.internalID,
+            artistSlug: artist.slug,
+            contextModule: ContextModule.artistArtworksGridEnd,
+          })
 
           setIsCreateAlertModalVisible(true)
         }}
@@ -287,8 +300,10 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
           <>
             <Tabs.SubTabBar>
               <Flex flexDirection="row">
-                <ProgressiveOnboardingAlertReminder visible={artworks.length > 19}>
-                  <Flex />
+                <ProgressiveOnboardingAlertReminder
+                  visible={artworks.length > 19 && !!enabled && variant === "variant-a"}
+                >
+                  <></>
                 </ProgressiveOnboardingAlertReminder>
                 <Flex flex={1}>
                   <ArtistArtworksFilterHeader
@@ -307,6 +322,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         }
         ListFooterComponent={<ListFooterComponenet />}
       />
+
       <ArtworkFilterNavigator
         {...props}
         id={artist.internalID}
@@ -318,6 +334,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         mode={FilterModalMode.ArtistArtworks}
         shouldShowCreateAlertButton
       />
+
       <CreateSavedSearchModal
         attributes={attributes}
         closeModal={() => setIsCreateAlertModalVisible(false)}
@@ -325,7 +342,20 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         onComplete={handleCompleteSavedSearch}
         visible={isCreateAlertModalVisible}
       />
-      <ProgressiveOnboardingAlertReminder visible={artworks.length > 19} />
+
+      <ProgressiveOnboardingAlertReminder
+        visible={artworks.length > 19 && !!enabled && variant === "variant-b"}
+        onPress={() => {
+          tracking.trackEvent(
+            tracks.tappedCreateAlert({
+              artistId: artist.internalID,
+              artistSlug: artist.slug,
+              contextModule: ContextModule.artistArtworksCreateAlertPromptMessage,
+            })
+          )
+          setIsCreateAlertModalVisible(true)
+        }}
+      />
     </>
   )
 }
@@ -424,11 +454,19 @@ export default createPaginationContainer(
 )
 
 const tracks = {
-  tappedCreateAlert: ({ artistId, artistSlug }: { artistId: string; artistSlug: string }) => ({
+  tappedCreateAlert: ({
+    artistId,
+    artistSlug,
+    contextModule,
+  }: {
+    artistId: string
+    artistSlug: string
+    contextModule: ContextModule
+  }) => ({
     action: ActionType.tappedCreateAlert,
     context_screen_owner_type: OwnerType.artist,
     context_screen_owner_id: artistId,
     context_screen_owner_slug: artistSlug,
-    context_module: ContextModule.artistArtworksGridEnd,
+    context_module: contextModule,
   }),
 }

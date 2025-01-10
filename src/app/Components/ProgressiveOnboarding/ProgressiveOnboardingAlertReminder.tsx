@@ -5,32 +5,27 @@ import { GlobalStore } from "app/store/GlobalStore"
 import {
   PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1,
   PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2,
+  PROGRESSIVE_ONBOARDING_ALERT_REMINDER_CHAIN,
 } from "app/store/ProgressiveOnboardingModel"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
-import { useEffect } from "react"
 
 const DAYS = 1000 * 60 * 60 * 24
 
 interface ProgressiveOnboardingAlertReminderProps {
   visible: boolean
+  onPress?: () => void
 }
 export const ProgressiveOnboardingAlertReminder: React.FC<
   ProgressiveOnboardingAlertReminderProps
-> = ({ children, visible }) => {
-  const { variant, trackExperiment: trackCreateAlertPromptExperiment } = useExperimentVariant(
-    "onyx_create-alert-prompt-experiment"
-  )
-
-  useEffect(() => {
-    trackCreateAlertPromptExperiment()
-  }, [])
-
+> = ({ children, visible, onPress }) => {
   const {
     isDismissed,
     sessionState: { isReady },
   } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const { dismiss, setIsReady } = GlobalStore.actions.progressiveOnboarding
   const isFocused = useIsFocused()
+
+  const { variant } = useExperimentVariant("onyx_create-alert-prompt-experiment")
 
   const displayFirstTime = !isDismissed(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1).status
   // TODO: Bring it back when onboarding is working again.
@@ -40,21 +35,12 @@ export const ProgressiveOnboardingAlertReminder: React.FC<
   const displaySecondTime =
     !isDismissed(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2).status &&
     isDismissed(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1).status &&
+    // TODO: make it 7 * DAYS
     Date.now() - isDismissed(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1).timestamp > 10 * 1000 // 30 seconds
 
   const isDisplayable = isReady && (displayFirstTime || displaySecondTime) && isFocused && visible
 
-  const { clearActivePopover, isActive } = useSetActivePopover(isDisplayable)
-
-  console.log({
-    isDisplayable,
-    displayFirstTime,
-    displaySecondTime,
-    one: isDismissed(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1),
-    two: isDismissed(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2),
-    isReady,
-    isActive,
-  })
+  const { clearActivePopover /* isActive */ } = useSetActivePopover(isDisplayable)
 
   const handleDismiss = () => {
     setIsReady(false)
@@ -64,6 +50,11 @@ export const ProgressiveOnboardingAlertReminder: React.FC<
     } else {
       dismiss(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2)
     }
+  }
+
+  const handleDismissChain = () => {
+    setIsReady(false)
+    dismiss(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_CHAIN)
   }
 
   if (variant === "variant-a") {
@@ -92,7 +83,8 @@ export const ProgressiveOnboardingAlertReminder: React.FC<
     )
   }
 
-  if (isDisplayable) {
+  // TODO: Check why isActive is not working and always false
+  if (variant === "variant-b" && isDisplayable /* && isActive */) {
     return (
       <Message
         // TODO: Check if we need to call clearActivePopover here
@@ -102,11 +94,16 @@ export const ProgressiveOnboardingAlertReminder: React.FC<
         variant="dark"
         IconComponent={() => {
           return (
-            <>
-              <Button variant="outline" size="small" onPress={handleDismiss}>
-                Create Alert
-              </Button>
-            </>
+            <Button
+              variant="outline"
+              size="small"
+              onPress={() => {
+                onPress?.()
+                handleDismissChain()
+              }}
+            >
+              Create Alert
+            </Button>
           )
         }}
         iconPosition="bottom"
