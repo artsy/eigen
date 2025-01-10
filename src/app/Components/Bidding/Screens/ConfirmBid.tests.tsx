@@ -595,6 +595,7 @@ describe("ConfirmBid", () => {
                 partner: {
                   name: "Christie's",
                 },
+                bidder: null,
                 slug: "best-art-sale-in-town",
               },
             },
@@ -978,6 +979,16 @@ describe("ConfirmBid", () => {
     },
   }
 
+  const saleArtworkRegisteredForBidding: ConfirmBid_sale_artwork$data = {
+    ...saleArtwork,
+    sale: {
+      ...baseSaleArtwork.sale,
+      bidder: {
+        id: "1234567",
+      },
+    },
+  }
+
   const mockRequestResponses = {
     updateMyUserProfile: {
       updateMyUserProfile: {
@@ -1135,7 +1146,6 @@ describe("ConfirmBid", () => {
     },
     me: {
       has_qualified_credit_cards: true,
-      bidders: null,
     },
     navigator: mockNavigator,
   } as any
@@ -1149,9 +1159,7 @@ describe("ConfirmBid", () => {
 
   const initialPropsForRegisteredUser = {
     ...initialProps,
-    me: {
-      bidders: [{ qualified_for_bidding: true }],
-    },
+    sale_artwork: saleArtworkRegisteredForBidding,
   } as any
 
   const initialPropsForCascadingSale = {
