@@ -1,11 +1,11 @@
-import { Flex, Text, Separator } from "@artsy/palette-mobile"
-import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { NavigationHeader } from "app/Components/NavigationHeader"
+import { Flex, Separator, Text } from "@artsy/palette-mobile"
 import { Input, INPUT_HEIGHT, InputTitle } from "app/Components/Input"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { Select } from "app/Components/Select"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { artworkRarityClassifications } from "app/utils/artworkRarityClassifications"
 import React, { useState } from "react"
+import { Modal } from "react-native"
 
 export type AttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION"
 
@@ -78,7 +78,13 @@ export const RarityInfoModal: React.FC<{
   onDismiss(): any
 }> = ({ title, visible, onDismiss }) => {
   return (
-    <FancyModal visible={visible} onBackgroundPressed={onDismiss} testID="RarityInfoModal">
+    <Modal
+      visible={visible}
+      onRequestClose={onDismiss}
+      testID="RarityInfoModal"
+      presentationStyle="pageSheet"
+      animationType="slide"
+    >
       <NavigationHeader onLeftButtonPress={onDismiss} useXButton>
         {title}
       </NavigationHeader>
@@ -91,6 +97,6 @@ export const RarityInfoModal: React.FC<{
           </Flex>
         ))}
       </Flex>
-    </FancyModal>
+    </Modal>
   )
 }
