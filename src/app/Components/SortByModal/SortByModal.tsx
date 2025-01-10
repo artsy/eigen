@@ -1,6 +1,6 @@
 import { Flex, Text, RadioDot } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { TouchableRow } from "app/Components/TouchableRow"
 
 export interface SortOption {
@@ -28,9 +28,9 @@ export const SortByModal: React.FC<SortByModalProps> = (props) => {
       onBackgroundPressed={onCloseModal}
       onModalFinishedClosing={onModalFinishedClosing}
     >
-      <FancyModalHeader useXButton onLeftButtonPress={onCloseModal}>
+      <NavigationHeader useXButton onLeftButtonPress={onCloseModal}>
         Sort By
-      </FancyModalHeader>
+      </NavigationHeader>
       {options.map((option) => {
         const selected = selectedValue === option.value
 

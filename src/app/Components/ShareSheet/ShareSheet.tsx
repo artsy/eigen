@@ -17,7 +17,7 @@ import {
 import Clipboard from "@react-native-clipboard/clipboard"
 import Sentry, { captureException, captureMessage } from "@sentry/react-native"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { CustomShareSheetItem } from "app/Components/ShareSheet/ShareSheetItem"
 import { getShareImages, shareContent } from "app/Components/ShareSheet/helpers"
@@ -165,9 +165,9 @@ export const ShareSheet = () => {
       visible={isVisible}
       onBackgroundPressed={() => hideShareSheet()}
     >
-      <FancyModalHeader useXButton onLeftButtonPress={() => hideShareSheet()}>
+      <NavigationHeader useXButton onLeftButtonPress={() => hideShareSheet()}>
         Share
-      </FancyModalHeader>
+      </NavigationHeader>
       <ScrollView>
         {data.type !== "sale" && data.type !== "default" && (
           <InstagramStoryViewShot

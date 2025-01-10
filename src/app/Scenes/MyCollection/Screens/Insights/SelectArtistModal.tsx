@@ -6,7 +6,7 @@ import {
 } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import { SelectArtistModal_myCollectionInfo$key } from "__generated__/SelectArtistModal_myCollectionInfo.graphql"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { SearchInput } from "app/Components/SearchInput"
 import { extractNodes } from "app/utils/extractNodes"
 import { normalizeText } from "app/utils/normalizeText"
@@ -64,9 +64,9 @@ export const SelectArtistModal: React.FC<SelectArtistModalProps> = ({
       fullScreen
       animationPosition="right"
     >
-      <FancyModalHeader onLeftButtonPress={closeModal} hideBottomDivider>
+      <NavigationHeader onLeftButtonPress={closeModal} hideBottomDivider>
         <Text variant="sm-display">Select Artist</Text>
-      </FancyModalHeader>
+      </NavigationHeader>
 
       <Flex flex={1} px={2}>
         <Flex pt={1} pb={2}>

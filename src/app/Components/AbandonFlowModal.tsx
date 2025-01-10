@@ -1,7 +1,7 @@
 import { CloseIcon, Spacer, Box, Text, Button } from "@artsy/palette-mobile"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { popToRoot } from "app/system/navigation/navigate"
 import { FancyModal } from "./FancyModal/FancyModal"
-import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
 
 interface AbandonFlowModalProps {
   isVisible: boolean
@@ -24,7 +24,7 @@ export const AbandonFlowModal: React.FC<AbandonFlowModalProps> = ({
 }) => {
   return (
     <FancyModal visible={isVisible}>
-      <FancyModalHeader
+      <NavigationHeader
         hideBottomDivider
         renderRightButton={() => <CloseIcon width={26} height={26} />}
         onRightButtonPress={onDismiss}

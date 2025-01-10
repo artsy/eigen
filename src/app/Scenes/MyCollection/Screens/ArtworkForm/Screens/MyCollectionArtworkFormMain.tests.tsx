@@ -1,5 +1,5 @@
 import { StackNavigationProp } from "@react-navigation/stack"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { CategoryPicker } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker"
 import { Dimensions } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/Dimensions"
 import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkStore"
@@ -10,8 +10,8 @@ import { MyCollectionArtworkFormMain } from "./MyCollectionArtworkFormMain"
 
 jest.mock("formik")
 
-jest.mock("app/Components/FancyModal/FancyModalHeader", () => ({
-  FancyModalHeader: () => null,
+jest.mock("app/Components/NavigationHeader", () => ({
+  NavigationHeader: () => null,
 }))
 
 jest.mock("app/Components/ArtistAutosuggest/ArtistAutosuggest", () => ({
@@ -74,7 +74,7 @@ describe("AddEditArtwork", () => {
       </MyCollectionArtworkStore.Provider>
     )
     const wrapper = renderWithWrappersLEGACY(artworkForm)
-    const expected = [FancyModalHeader, CategoryPicker, Dimensions]
+    const expected = [NavigationHeader, CategoryPicker, Dimensions]
     expected.forEach((Component) => {
       expect(wrapper.root.findByType(Component as React.ComponentType)).toBeDefined()
     })
@@ -136,7 +136,7 @@ describe("AddEditArtwork", () => {
     })
 
     const wrapper = renderWithWrappersLEGACY(artworkForm)
-    wrapper.root.findByType(FancyModalHeader).props.onRightButtonPress()
+    wrapper.root.findByType(NavigationHeader).props.onRightButtonPress()
 
     expect(mockShowActionSheetWithOptions).toHaveBeenCalled()
 

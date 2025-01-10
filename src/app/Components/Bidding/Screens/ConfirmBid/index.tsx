@@ -15,7 +15,7 @@ import { BidResultScreen } from "app/Components/Bidding/Screens/BidResult"
 import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
 import { PriceSummary } from "app/Components/Bidding/Screens/ConfirmBid/PriceSummary"
 import { Address, Bid, PaymentCardTextFieldParams } from "app/Components/Bidding/types"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { partnerName } from "app/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
@@ -470,9 +470,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
         }}
       >
         <Flex m={0} flex={1} flexDirection="column">
-          <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
+          <NavigationHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
             Confirm your bid
-          </FancyModalHeader>
+          </NavigationHeader>
           <ScrollView scrollEnabled>
             <Flex alignItems="center" pt={2}>
               <Timer

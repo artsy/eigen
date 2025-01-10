@@ -3,7 +3,7 @@ import { findCountryNameByCountryCode } from "app/Components/Bidding/Utils/findC
 import { validateAddressFieldsPresence } from "app/Components/Bidding/Validators/validateAddressFieldsPresence"
 import { Address } from "app/Components/Bidding/types"
 import { CountrySelect } from "app/Components/CountrySelect"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { Stack } from "app/Components/Stack"
 import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -101,9 +101,9 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
 
   return (
     <ArtsyKeyboardAvoidingView>
-      <FancyModalHeader onLeftButtonPress={() => navigator?.pop()}>
+      <NavigationHeader onLeftButtonPress={() => navigator?.pop()}>
         Add billing address
-      </FancyModalHeader>
+      </NavigationHeader>
       <ScrollView
         ref={scrollViewRef}
         contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 50 }}

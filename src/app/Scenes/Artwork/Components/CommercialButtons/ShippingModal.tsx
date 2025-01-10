@@ -1,6 +1,6 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { LocationAutocomplete } from "app/Components/LocationAutocomplete"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import React, { useState } from "react"
@@ -20,7 +20,7 @@ export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
 
   return (
     <FancyModal visible={modalIsVisible} onBackgroundPressed={() => toggleVisibility()}>
-      <FancyModalHeader
+      <NavigationHeader
         leftButtonText="Cancel"
         onLeftButtonPress={() => {
           toggleVisibility()
@@ -33,7 +33,7 @@ export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
         rightButtonDisabled={!locationDetails}
       >
         Add Location
-      </FancyModalHeader>
+      </NavigationHeader>
       <ScrollView keyboardShouldPersistTaps="always" contentContainerStyle={{ flex: 1 }}>
         <Flex m={2} flex={1}>
           <LocationAutocomplete

@@ -2,7 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { Button, Flex, Spacer, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { SavedSearchFilterAdditionalGeneIDs } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAdditionalGeneIDs"
 import { SavedSearchFilterAppliedFilters } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterAppliedFilters"
 import { SavedSearchFilterArtistSeriesQR } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterArtistSeries"
@@ -29,14 +29,14 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
         context_screen_owner_type: OwnerType.alertFilters,
       })}
     >
-      <FancyModalHeader
+      <NavigationHeader
         hideBottomDivider
         onLeftButtonPress={navigation.goBack}
         renderRightButton={ClearAllButton}
         onRightButtonPress={() => {}}
       >
         Filters
-      </FancyModalHeader>
+      </NavigationHeader>
       <ScrollView>
         <SavedSearchFilterAppliedFilters />
         <SavedSearchFilterAdditionalGeneIDs />

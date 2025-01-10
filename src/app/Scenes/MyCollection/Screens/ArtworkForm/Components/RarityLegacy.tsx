@@ -1,6 +1,6 @@
 import { Flex, Text, Separator } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { Input, INPUT_HEIGHT, InputTitle } from "app/Components/Input"
 import { Select } from "app/Components/Select"
 import { useArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
@@ -79,9 +79,9 @@ export const RarityInfoModal: React.FC<{
 }> = ({ title, visible, onDismiss }) => {
   return (
     <FancyModal visible={visible} onBackgroundPressed={onDismiss} testID="RarityInfoModal">
-      <FancyModalHeader onLeftButtonPress={onDismiss} useXButton>
+      <NavigationHeader onLeftButtonPress={onDismiss} useXButton>
         {title}
-      </FancyModalHeader>
+      </NavigationHeader>
       <Separator />
       <Flex m={2}>
         {artworkRarityClassifications.map((classification) => (

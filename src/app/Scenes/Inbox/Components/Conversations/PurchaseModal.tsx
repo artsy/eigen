@@ -2,7 +2,7 @@ import { ActionType, OwnerType } from "@artsy/cohesion"
 import { BorderBox, Button, Flex, Text } from "@artsy/palette-mobile"
 import { PurchaseModalQuery } from "__generated__/PurchaseModalQuery.graphql"
 import { PurchaseModal_artwork$data } from "__generated__/PurchaseModal_artwork.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails } from "app/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
 import { dismissModal } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -37,9 +37,9 @@ export const PurchaseModal: React.FC<PurchaseModalProps> = ({ ...props }) => {
 
   return (
     <View>
-      <FancyModalHeader rightButtonDisabled hideBottomDivider>
+      <NavigationHeader rightButtonDisabled hideBottomDivider>
         Purchase
-      </FancyModalHeader>
+      </NavigationHeader>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Flex p={2}>
           <Text variant="lg-display">Select edition set</Text>

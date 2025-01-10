@@ -13,7 +13,7 @@ import { ResponsiveAlignItemsValue } from "app/Components/Bidding/Elements/types
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 
-export interface FancyModalHeaderProps {
+export interface NavigationHeaderProps {
   hideBottomDivider?: boolean
   leftButtonText?: string
   onLeftButtonPress?: () => void
@@ -28,9 +28,7 @@ export interface FancyModalHeaderProps {
   alignItems?: ResponsiveAlignItemsValue
 }
 
-// Beware: If you're using this in the context of a non fancy modal,
-// it might break the behaviour of ArtsyKeyboardAvoidingView
-export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
+export const NavigationHeader: React.FC<NavigationHeaderProps> = ({
   children,
   hideBottomDivider = false,
   leftButtonText,
