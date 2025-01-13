@@ -132,7 +132,6 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
       listRef={listRef}
       onEndReached={onEndReached}
       onEndReachedThreshold={onEndReachedThreshold}
-      prefetchUrlExtractor={(item) => item?.artwork?.href || undefined}
       renderItem={renderItem}
       showsHorizontalScrollIndicator={false}
     />
