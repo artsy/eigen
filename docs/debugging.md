@@ -25,16 +25,4 @@ It is already setup to work with eigen, so you don't need to do anything else - 
 
 ### Debugger:
 
-In order to access the debugger you should either run `npx react-native start --experimental-debugger` or our inhouse `yarn start-dev` command.
-
-### React Dev Tools:
-
-In order to access the react devtools you can run:
-
-```bash
-npx react-devtools
-
-# or
-
-yarn react-devtools
-```
+In order to access the debugger you should open react native devtools (via artsy dev menu) and lick on `Open DevTools`. From there you also have access to react dev tools and the new react native debugger.

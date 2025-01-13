@@ -1,6 +1,6 @@
 # Getting Started
 
-It is recommended to follow the steps for a fresh environment setup from the [react native docs](https://reactnative.dev/docs/0.75/set-up-your-environment) depending on the version that you are aiming to develop for.
+It is recommended to follow the steps for a fresh environment setup from the [react native docs](https://reactnative.dev/docs/0.76/set-up-your-environment) depending on the version that you are aiming to develop for.
 
 ### Prerequisites
 
