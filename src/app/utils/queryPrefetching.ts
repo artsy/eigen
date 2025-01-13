@@ -46,7 +46,9 @@ const prefetchRoute = async <TQuery extends OperationType>(
   const allVariables = { ...result.params, ...variables }
 
   return queries.map((query) => {
-    console.log("[queryPrefetching] Prefetching:", route, JSON.stringify(allVariables))
+    if (logPrefetching)
+      console.log("[queryPrefetching] Prefetching:", route, JSON.stringify(allVariables))
+
     return prefetchQuery({ query, variables: allVariables, route })
   })
 }

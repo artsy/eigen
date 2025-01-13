@@ -21,6 +21,8 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   const prefetchUrl = usePrefetch()
   const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
 
+  const isPrefetchingEnabled = !disablePrefetch && enableViewPortPrefetching && to
+
   const handlePress = (event: GestureResponderEvent) => {
     onPress?.(event)
 
@@ -34,9 +36,13 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   }
 
   const handleVisible = () => {
-    if (!disablePrefetch && enableViewPortPrefetching && to) {
+    if (isPrefetchingEnabled) {
       prefetchUrl(to)
     }
+  }
+
+  if (!isPrefetchingEnabled) {
+    return <Touchable {...restProps} onPress={handlePress} />
   }
 
   return (

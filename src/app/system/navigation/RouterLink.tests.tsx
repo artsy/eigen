@@ -1,5 +1,6 @@
 import { Text } from "@artsy/palette-mobile"
 import { fireEvent, screen } from "@testing-library/react-native"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -46,6 +47,12 @@ describe("RouterLink", () => {
   })
 
   describe("prefetching", () => {
+    beforeAll(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({
+        AREnableViewPortPrefetching: true,
+      })
+    })
+
     it("prefetches ", () => {
       renderWithWrappers(<TestComponent />)
 
@@ -53,6 +60,20 @@ describe("RouterLink", () => {
     })
 
     describe("when disablePrefetch is true", () => {
+      renderWithWrappers(<TestComponent disablePrefetch />)
+
+      it("does not prefetch", () => {
+        expect(mockPrefetch).not.toHaveBeenCalledWith("/test-route")
+      })
+    })
+
+    describe("when AREnableViewPortPrefetching is disabled", () => {
+      beforeAll(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({
+          AREnableViewPortPrefetching: false,
+        })
+      })
+
       renderWithWrappers(<TestComponent disablePrefetch />)
 
       it("does not prefetch", () => {
