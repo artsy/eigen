@@ -1,63 +1,35 @@
 import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
-import {
-  RecommendedAuctionLotsRail_artworkConnection$data,
-  RecommendedAuctionLotsRail_artworkConnection$key,
-} from "__generated__/RecommendedAuctionLotsRail_artworkConnection.graphql"
+import { RecommendedAuctionLotsRail_artworkConnection$key } from "__generated__/RecommendedAuctionLotsRail_artworkConnection.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { RailScrollProps } from "app/Scenes/HomeView/Components/types"
-import { useItemsImpressionsTracking } from "app/Scenes/HomeView/Components/useImpressionsTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
 } from "app/utils/track/ArtworkActions"
-import React, { memo, useImperativeHandle, useRef } from "react"
-import { FlatList, View } from "react-native"
+import React, { memo, useRef } from "react"
+import { View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface RecommendedAuctionLotsRailProps extends ArtworkActionTrackingProps {
   title: string
   artworkConnection: RecommendedAuctionLotsRail_artworkConnection$key | null | undefined
-  isRailVisible: boolean
 }
 
-export const RecommendedAuctionLotsRail: React.FC<
-  RecommendedAuctionLotsRailProps & RailScrollProps
-> = memo(
-  ({
-    title,
-    artworkConnection,
-    isRailVisible,
-    scrollRef,
-    contextScreenOwnerType,
-    ...restProps
-  }) => {
+export const RecommendedAuctionLotsRail: React.FC<RecommendedAuctionLotsRailProps> = memo(
+  ({ title, artworkConnection, contextScreenOwnerType, ...restProps }) => {
     const { trackEvent } = useTracking()
 
     const trackingProps = extractArtworkActionTrackingProps(restProps)
 
-    const { artworksForUser } = useFragment(
-      artworksFragment,
-      artworkConnection
-    ) as RecommendedAuctionLotsRail_artworkConnection$data
+    const data = useFragment(artworksFragment, artworkConnection)
 
     const railRef = useRef<View>(null)
-    const listRef = useRef<FlatList<any>>(null)
 
-    const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
-      isRailVisible,
-      contextModule: ContextModule.lotsForYouRail,
-    })
-
-    useImperativeHandle(scrollRef, () => ({
-      scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
-    }))
-
-    const artworks = extractNodes(artworksForUser)
+    const artworks = extractNodes(data?.artworksForUser)
 
     if (!artworks.length) {
       return null
@@ -83,21 +55,18 @@ export const RecommendedAuctionLotsRail: React.FC<
             onPress={() => {
               trackEvent(tracks.tappedHeader(contextScreenOwnerType))
               navigate("/auctions/lots-for-you-ending-soon")
-              console.log(contextScreenOwnerType)
             }}
           />
         </Flex>
         <ArtworkRail
           {...trackingProps}
-          artworks={artworks as any}
+          artworks={artworks}
           onPress={handleOnArtworkPress}
           showSaveIcon
           onMorePress={() => {
             trackEvent(tracks.tappedMoreCard(contextScreenOwnerType))
             navigate("/auctions/lots-for-you-ending-soon")
           }}
-          onViewableItemsChanged={onViewableItemsChanged}
-          viewabilityConfig={viewabilityConfig}
         />
       </View>
     )

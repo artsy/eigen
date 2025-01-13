@@ -83,15 +83,15 @@ export const Sales: React.FC = () => {
           <RecommendedAuctionLotsRail
             title="Auction Lots for You"
             artworkConnection={data.recommendedAuctionLots}
-            isRailVisible={true}
-            scrollRef={null}
             contextScreenOwnerType={OwnerType.auctions}
           />
+
           <CurrentlyRunningAuctions
             sales={data.currentlyRunningAuctions}
             setRefetchPropOnParent={setCurrentAuctionsRefreshProp}
             setSalesCountOnParent={(count: number) => setCurrentSalesCount(count)}
           />
+
           <UpcomingAuctions
             sales={data.upcomingAuctions}
             setRefetchPropOnParent={setUpcomongAuctionsRefreshProp}
