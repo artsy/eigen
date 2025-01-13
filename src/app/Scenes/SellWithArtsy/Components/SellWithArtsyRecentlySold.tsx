@@ -131,7 +131,6 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
       estimatedItemSize={ARTWORK_RAIL_CARD_MIN_WIDTH}
       horizontal
       keyExtractor={(item, index) => String(item?.artwork?.slug || index)}
-      ItemSeparatorComponent={() => <Spacer x="15px" />}
       ListFooterComponent={ListFooterComponent}
       ListHeaderComponent={ListHeaderComponent}
       listRef={listRef}
