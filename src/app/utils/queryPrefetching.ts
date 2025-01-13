@@ -8,7 +8,7 @@ import { fetchQuery, GraphQLTaggedNode } from "react-relay"
 import { OperationType, Variables, VariablesOf } from "relay-runtime"
 import { logPrefetching } from "./loggers"
 
-const DEFAULT_QUERIES_PER_INTERVAL = 60
+const DEFAULT_QUERIES_PER_INTERVAL = 180
 
 let limiter: RateLimiter
 
@@ -46,6 +46,9 @@ const prefetchRoute = async <TQuery extends OperationType>(
   const allVariables = { ...result.params, ...variables }
 
   return queries.map((query) => {
+    if (logPrefetching)
+      console.log("[queryPrefetching] Prefetching:", route, JSON.stringify(allVariables))
+
     return prefetchQuery({ query, variables: allVariables, route })
   })
 }

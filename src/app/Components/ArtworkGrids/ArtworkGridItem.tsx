@@ -31,6 +31,7 @@ import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreated
 import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
 import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { GlobalStore } from "app/store/GlobalStore"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { navigate } from "app/system/navigation/navigate"
 import { ElementInView } from "app/utils/ElementInView"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
@@ -134,7 +135,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
     "AREnableNewSaveAndFollowOnArtworkCard"
   )
   const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
-
   const {
     enabled,
     enableShowOldSaveCTA,
@@ -235,6 +235,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
   }
 
+  const passProps = partnerOffer && !!hasEnded ? { artworkOfferExpired: true } : undefined
+
   const trackArtworkTap = () => {
     // Unless you explicitly pass in a tracking function or provide a contextScreenOwnerType, we won't track
     // taps from the grid.
@@ -307,11 +309,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
           artwork={artwork}
           hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
         >
-          <Touchable
+          <RouterLink
             haptic
             underlayColor={color("white100")}
             activeOpacity={0.8}
             onPress={handleTap}
+            passProps={passProps}
+            to={artwork.href}
             testID={`artworkGridItem-${artwork.title}`}
           >
             <View ref={itemRef}>
@@ -471,7 +475,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 />
               </Flex>
             </View>
-          </Touchable>
+          </RouterLink>
         </ContextMenuArtwork>
 
         <CreateArtworkAlertModal

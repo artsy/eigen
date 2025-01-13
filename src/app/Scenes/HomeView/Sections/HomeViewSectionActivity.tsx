@@ -69,7 +69,11 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
   return (
     <Flex {...flexProps}>
       <Flex px={2}>
-        <SectionTitle title={section.component?.title} onPress={onSectionViewAll} />
+        <SectionTitle
+          href={viewAll?.href}
+          title={section.component?.title}
+          onPress={onSectionViewAll}
+        />
       </Flex>
 
       <FlatList
