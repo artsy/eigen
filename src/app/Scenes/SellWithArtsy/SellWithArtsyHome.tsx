@@ -1,5 +1,6 @@
 import { tappedConsign, TappedConsignArgs, TappedConsignmentInquiry } from "@artsy/cohesion"
 import { Flex, Screen, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import * as Sentry from "@sentry/react-native"
 import { SellWithArtsyHomeQuery } from "__generated__/SellWithArtsyHomeQuery.graphql"
 import { CollectorsNetwork } from "app/Scenes/SellWithArtsy/Components/CollectorsNetwork"
 import { FAQSWA } from "app/Scenes/SellWithArtsy/Components/FAQSWA"
@@ -174,7 +175,9 @@ export const SellWithArtsyHomeScreenQuery = graphql`
 export const SellWithArtsyHomeQueryRenderer: React.FC = () => {
   return (
     <Suspense fallback={<SellWithArtsyHomePlaceholder />}>
-      <SellWithArtsyHome />
+      <Sentry.TimeToInitialDisplay record>
+        <SellWithArtsyHome />
+      </Sentry.TimeToInitialDisplay>
     </Suspense>
   )
 }
