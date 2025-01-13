@@ -32,7 +32,6 @@ import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
 import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { navigate } from "app/system/navigation/navigate"
 import { ElementInView } from "app/utils/ElementInView"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
@@ -225,14 +224,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
     addArtworkToRecentSearches()
     trackArtworkTap()
-
-    if (artwork.href) {
-      if (partnerOffer && !!hasEnded) {
-        navigate?.(artwork.href, { passProps: { artworkOfferExpired: true } })
-      } else {
-        navigate?.(artwork.href)
-      }
-    }
   }
 
   const navigationProps = partnerOffer && !!hasEnded ? { artworkOfferExpired: true } : undefined
