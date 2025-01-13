@@ -1,6 +1,6 @@
 import { Flex } from "@artsy/palette-mobile"
 import { FancySwiperIcons } from "app/Components/FancySwiper/FancySwiperIcons"
-import { useRef, useCallback } from "react"
+import { useRef } from "react"
 import { PanResponder, Animated } from "react-native"
 import { Card, FancySwiperCard } from "./FancySwiperCard"
 
@@ -9,8 +9,8 @@ export const OFFSET_X = 100
 interface FancySwiperProps {
   cards: Card[]
   hideActionButtons?: boolean
-  onSwipeLeft: () => void
-  onSwipeRight: () => void
+  onSwipeLeft?: () => void
+  onSwipeRight?: () => void
 }
 
 export const FancySwiper = ({
@@ -22,20 +22,6 @@ export const FancySwiper = ({
   const remainingCards = cards.reverse()
   const swiper = useRef<Animated.ValueXY>(new Animated.ValueXY()).current
 
-  const removeCardFromTop = useCallback(
-    (swipeDirection: "right" | "left") => {
-      // Revert the pan responder to its initial position
-      swiper.setValue({ x: 0, y: 0 })
-
-      if (swipeDirection === "right") {
-        onSwipeRight()
-      } else {
-        onSwipeLeft()
-      }
-    },
-    [remainingCards, swiper]
-  )
-
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (_, { dx, dy }) => {
@@ -43,36 +29,60 @@ export const FancySwiper = ({
       swiper.setValue({ x: dx, y: dy })
     },
     onPanResponderRelease: (_, { dx, dy }) => {
-      // If the user didn't swipe far enough, reset the position
-      if (Math.abs(dx) < OFFSET_X) {
+      const isFullSwipe = Math.abs(dx) >= OFFSET_X
+      const isRightSwipe = dx > 0
+      const isLeftSwipe = dx < 0
+
+      if (isFullSwipe && isRightSwipe && onSwipeRight) {
+        handleRightSwipe(dy)
+      } else if (isFullSwipe && isLeftSwipe && onSwipeLeft) {
+        handleLeftSwipe(dy)
+      } else {
+        // move the card to its original position
         Animated.spring(swiper, {
           toValue: { x: 0, y: 0 },
           friction: 5,
           useNativeDriver: true,
         }).start()
-      } else {
-        const sign = Math.sign(dx)
-        const swipeDirection = sign > 0 ? "right" : "left"
-        onSwipeHandler(swipeDirection, dy)
       }
     },
   })
 
-  const onSwipeHandler = (swipeDirection: "right" | "left", toValueY?: number) => {
-    const sign = swipeDirection === "left" ? -1 : 1
-    // Move the card off the screen
+  const handleLeftSwipe = (toValueY?: number) => {
+    // move the card off the screen
     Animated.timing(swiper, {
-      toValue: { x: 1000 * sign, y: toValueY || 0 },
+      toValue: { x: -1000, y: toValueY || 0 },
       duration: 300,
       useNativeDriver: true,
     }).start(() => {
-      removeCardFromTop(swipeDirection)
+      // revert the pan responder to its initial position
+      swiper.setValue({ x: 0, y: 0 })
+
+      if (onSwipeLeft) {
+        onSwipeLeft()
+      }
+    })
+  }
+
+  const handleRightSwipe = (toValueY?: number) => {
+    // move the card off the screen
+    Animated.timing(swiper, {
+      toValue: { x: 1000, y: toValueY || 0 },
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      // Revert the pan responder to its initial position
+      swiper.setValue({ x: 0, y: 0 })
+
+      if (onSwipeRight) {
+        onSwipeRight()
+      }
     })
   }
 
   return (
     <>
-      <Flex justifyContent="center" alignItems="center" flex={1}>
+      <Flex alignItems="center" flex={1}>
         {remainingCards.map((card, index) => {
           const isTopCard = index === remainingCards.length - 1
 
@@ -90,7 +100,9 @@ export const FancySwiper = ({
           )
         })}
       </Flex>
-      {!hideActionButtons && <FancySwiperIcons swiper={swiper} OnPress={onSwipeHandler} />}
+      {!hideActionButtons && (
+        <FancySwiperIcons onDislike={handleLeftSwipe} onLike={handleRightSwipe} swiper={swiper} />
+      )}
     </>
   )
 }
