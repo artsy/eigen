@@ -15,6 +15,7 @@ import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Compo
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { sizeToFit } from "app/utils/useSizeToFit"
 import { useMemo, useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import type { InfiniteDiscoveryQuery } from "__generated__/InfiniteDiscoveryQuery.graphql"
@@ -54,9 +55,15 @@ export const InfiniteDiscovery: React.FC = () => {
   }
 
   const artworkCards: Card[] = artworks.slice(index).map((artwork) => {
+    const src = !!artwork?.images?.[0]?.url ? artwork.images[0].url : undefined
+    const width = !!artwork?.images?.[0]?.width ? artwork.images[0].width : 0
+    const height = !!artwork?.images?.[0]?.height ? artwork.images[0].height : 0
+
+    const size = sizeToFit({ width: width, height: height }, { width: screenWidth, height: 500 })
+
     return {
       jsx: (
-        <Flex backgroundColor={color("white100")}>
+        <Flex backgroundColor={color("white100")} width="100%" height={800}>
           <EntityHeader
             name={artwork?.artistNames ?? ""}
             meta={artwork?.artists?.[0]?.formattedNationalityAndBirthday ?? undefined}
@@ -69,15 +76,23 @@ export const InfiniteDiscovery: React.FC = () => {
             }
           />
           <Spacer y={2} />
-          <Flex alignItems="center">
-            {!!artwork?.images?.[0]?.url && (
-              <Image src={artwork.images[0].url} width={screenWidth} aspectRatio={0.79} />
-            )}
+
+          <Flex alignItems="center" backgroundColor={color("purple60")}>
+            {!!src && <Image src={src} height={size.height} width={size.width} />}
           </Flex>
           <Flex flexDirection="row" justifyContent="space-between">
             <Flex>
-              <Flex flexDirection="row">
-                <Text color={color("black60")} italic variant="sm-display">
+              <Flex flexDirection="row" maxWidth={screenWidth - 200}>
+                {/* TODO: maxWidth above and ellipsizeMode + numberOfLines below are used to */}
+                {/* prevent long artwork titles from pushing the save button off of the card, */}
+                {/* it doesn't work as expected on Android. */}
+                <Text
+                  color={color("black60")}
+                  italic
+                  variant="sm-display"
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                >
                   {artwork.title}
                 </Text>
                 <Text color={color("black60")} variant="sm-display">
@@ -147,6 +162,8 @@ export const infiniteDiscoveryQuery = graphql`
             internalID
             images {
               url(version: "large")
+              width
+              height
             }
             saleMessage
             title

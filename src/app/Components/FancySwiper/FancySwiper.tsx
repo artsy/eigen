@@ -82,7 +82,7 @@ export const FancySwiper = ({
 
   return (
     <>
-      <Flex justifyContent="center" alignItems="center" flex={1}>
+      <Flex alignItems="center" flex={1}>
         {remainingCards.map((card, index) => {
           const isTopCard = index === remainingCards.length - 1
 
