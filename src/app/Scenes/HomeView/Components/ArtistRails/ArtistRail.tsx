@@ -9,7 +9,6 @@ import { ArtistRail_rail$data } from "__generated__/ArtistRail_rail.graphql"
 import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
 import { CardRailFlatList, INTER_CARD_PADDING } from "app/Components/CardRail/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { defaultArtistVariables } from "app/Scenes/Artist/Artist"
 import { RailScrollProps } from "app/Scenes/HomeView/Components/types"
 import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
 import { Schema } from "app/utils/track"
@@ -110,8 +109,6 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
         <SectionTitle title={props.title} subtitle={props.subtitle} />
       </Flex>
       <CardRailFlatList<SuggestedArtist>
-        prefetchUrlExtractor={(item) => item?.href}
-        prefetchVariablesExtractor={defaultArtistVariables}
         listRef={listRef}
         data={artists}
         keyExtractor={(artist) => artist.id}
