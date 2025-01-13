@@ -75,11 +75,11 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   constructor(props: ConfirmBidProps) {
     super(props)
 
-    const { bidders, has_qualified_credit_cards } = this.props.me
+    const { has_qualified_credit_cards } = this.props.me
+    const bidder = this.props.sale_artwork?.sale?.bidder
     const { requiresCheckbox, requiresPaymentInformation } = this.determineDisplayRequirements(
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      bidders,
-      has_qualified_credit_cards
+      !!bidder,
+      !!has_qualified_credit_cards
     )
 
     this.state = {
@@ -361,11 +361,12 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
         if (error) {
           console.error("ConfirmBid.tsx", error.message)
         }
-        const { bidders, has_qualified_credit_cards } = this.props.me
+        const { has_qualified_credit_cards } = this.props.me
+        const bidder = this.props.sale_artwork?.sale?.bidder
+
         const { requiresCheckbox, requiresPaymentInformation } = this.determineDisplayRequirements(
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          bidders,
-          has_qualified_credit_cards
+          !!bidder,
+          !!has_qualified_credit_cards
         )
         this.setState({ requiresCheckbox, requiresPaymentInformation })
       },
@@ -619,13 +620,9 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
     return this.props.increments[this.state.selectedBidIndex]
   }
 
-  private determineDisplayRequirements(
-    bidders: ReadonlyArray<any>,
-    hasQualifiedCreditCards: boolean
-  ) {
-    const isRegistered = bidders && bidders.length > 0
-    const requiresCheckbox = !isRegistered
-    const requiresPaymentInformation = !(isRegistered || hasQualifiedCreditCards)
+  private determineDisplayRequirements(hasBidder: boolean, hasQualifiedCreditCards: boolean) {
+    const requiresCheckbox = !hasBidder
+    const requiresPaymentInformation = !(hasBidder || hasQualifiedCreditCards)
     return { requiresCheckbox, requiresPaymentInformation }
   }
 }
@@ -647,6 +644,9 @@ export const ConfirmBidScreen = createRefetchContainer(
           partner {
             name
           }
+          bidder {
+            id
+          }
         }
         artwork {
           slug
@@ -666,19 +666,13 @@ export const ConfirmBidScreen = createRefetchContainer(
     me: graphql`
       fragment ConfirmBid_me on Me {
         has_qualified_credit_cards: hasQualifiedCreditCards
-        bidders(saleID: $saleID) {
-          id
-        }
       }
     `,
   },
   graphql`
-    query ConfirmBidRefetchQuery($saleID: String!) {
+    query ConfirmBidRefetchQuery {
       me {
         has_qualified_credit_cards: hasQualifiedCreditCards
-        bidders(saleID: $saleID) {
-          id
-        }
       }
     }
   `

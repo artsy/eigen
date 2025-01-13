@@ -595,6 +595,7 @@ describe("ConfirmBid", () => {
                 partner: {
                   name: "Christie's",
                 },
+                bidder: null,
                 slug: "best-art-sale-in-town",
               },
             },
@@ -935,6 +936,7 @@ describe("ConfirmBid", () => {
       partner: {
         name: "Christie's",
       },
+      bidder: null,
     },
     lot_label: "538",
   }
@@ -974,6 +976,20 @@ describe("ConfirmBid", () => {
       ...baseSaleArtwork.sale,
       live_start_at: null,
       cascadingEndTimeIntervalMinutes: 1,
+    },
+  }
+
+  const saleArtworkRegisteredForBidding: ConfirmBid_sale_artwork$data = {
+    ...saleArtwork,
+    endAt: "2018-05-13T20:22:42+00:00",
+    extendedBiddingEndAt: null,
+    sale: {
+      ...baseSaleArtwork.sale,
+      live_start_at: null,
+      cascadingEndTimeIntervalMinutes: null,
+      bidder: {
+        id: "1234567",
+      },
     },
   }
 
@@ -1134,7 +1150,6 @@ describe("ConfirmBid", () => {
     },
     me: {
       has_qualified_credit_cards: true,
-      bidders: null,
     },
     navigator: mockNavigator,
   } as any
@@ -1148,9 +1163,7 @@ describe("ConfirmBid", () => {
 
   const initialPropsForRegisteredUser = {
     ...initialProps,
-    me: {
-      bidders: [{ qualified_for_bidding: true }],
-    },
+    sale_artwork: saleArtworkRegisteredForBidding,
   } as any
 
   const initialPropsForCascadingSale = {
