@@ -8,6 +8,7 @@ import {
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 
 const DAYS = 1000 * 60 * 60 * 24
+const MINUTES = 1000 * 60
 const SECONDS = 1000
 
 export const useDismissAlertReminder = () => {
@@ -51,17 +52,14 @@ export const useDismissAlertReminder = () => {
     dismiss(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_CHAIN)
   }
 
-  const dismissChainOfRemindersAfterDelay = () => {
+  const dismissChainOfRemindersAfterInteraction = () => {
     /**
-     * Dismiss the reminder if the user taps the filter button
-     * withing two minutes of the reminder being shown
+     * Dismiss the second reminder if the user clicks the Create Alert
+     * button within two minutes of dismissing the first reminder.
      */
-    if (
-      Date.now() - isDismissed(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1).timestamp <
-      2 * 60 * 1000
-    ) {
+    if (Date.now() - isDismissed(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1).timestamp < 2 * MINUTES) {
       setIsReady(false)
-      dismiss(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_CHAIN)
+      dismiss(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2)
     }
   }
 
@@ -69,6 +67,6 @@ export const useDismissAlertReminder = () => {
     isDisplayable,
     dismissSingleReminder,
     dismissChainOfReminders,
-    dismissChainOfRemindersAfterDelay,
+    dismissChainOfRemindersAfterInteraction,
   }
 }

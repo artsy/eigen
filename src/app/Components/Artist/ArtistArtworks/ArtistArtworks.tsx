@@ -44,6 +44,8 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
+const CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD = 40
+
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist$data
   searchCriteria: SearchCriteriaAttributes | null
@@ -73,7 +75,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const artworksCount = artist.artworks?.counts?.total ?? 0
   const gridRef = useRef<MasonryFlashListRef<(typeof artworks)[0]>>(null)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-  const { dismissChainOfRemindersAfterDelay } = useDismissAlertReminder()
+  const { dismissChainOfRemindersAfterInteraction } = useDismissAlertReminder()
   const {
     enabled,
     variant,
@@ -271,7 +273,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     )
   }
 
-  const shouldShowCreateAlertReminder = artworks.length >= 40 && !!enabled
+  const shouldShowCreateAlertReminder =
+    artworks.length >= CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD && !!enabled
 
   return (
     <>
@@ -310,7 +313,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
                     artist={artist}
                     showCreateAlertModal={() => {
                       if (shouldShowCreateAlertReminder) {
-                        dismissChainOfRemindersAfterDelay()
+                        dismissChainOfRemindersAfterInteraction()
                       }
 
                       setIsCreateAlertModalVisible(true)
