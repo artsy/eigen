@@ -27,7 +27,7 @@ describe("RouterLink", () => {
   })
 
   const TestComponent = (props: any) => (
-    <RouterLink to="/test-route" {...props}>
+    <RouterLink to="/test-route" navigationProps={{ id: "test-id" }} {...props}>
       <Text>Test Link</Text>
     </RouterLink>
   )
@@ -43,7 +43,7 @@ describe("RouterLink", () => {
 
     fireEvent.press(screen.getByText("Test Link"))
 
-    expect(navigate).toHaveBeenCalledWith("/test-route")
+    expect(navigate).toHaveBeenCalledWith("/test-route", { passProps: { id: "test-id" } })
   })
 
   describe("prefetching", () => {

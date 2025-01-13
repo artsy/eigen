@@ -235,7 +235,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     }
   }
 
-  const passProps = partnerOffer && !!hasEnded ? { artworkOfferExpired: true } : undefined
+  const navigationProps = partnerOffer && !!hasEnded ? { artworkOfferExpired: true } : undefined
 
   const trackArtworkTap = () => {
     // Unless you explicitly pass in a tracking function or provide a contextScreenOwnerType, we won't track
@@ -314,7 +314,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             underlayColor={color("white100")}
             activeOpacity={0.8}
             onPress={handleTap}
-            passProps={passProps}
+            navigationProps={navigationProps}
             to={artwork.href}
             testID={`artworkGridItem-${artwork.title}`}
           >

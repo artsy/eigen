@@ -49,7 +49,7 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
   const { href, passProps } = getActivityItemHref(item)
 
   return (
-    <RouterLink activeOpacity={0.65} onPress={handlePress} to={href} passProps={passProps}>
+    <RouterLink activeOpacity={0.65} onPress={handlePress} to={href} navigationProps={passProps}>
       <Flex flexDirection="row" width={ACTIVITY_RAIL_ITEM_WIDTH}>
         <Flex
           mr={1}
