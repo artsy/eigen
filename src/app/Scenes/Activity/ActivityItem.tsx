@@ -59,7 +59,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
         activeOpacity={0.65}
         onPress={handlePress}
         to={isCollectorProfileUpdate ? undefined : href}
-        passProps={passProps}
+        navigationProps={passProps}
       >
         <Flex flexDirection="row" alignItems="center" justifyContent="space-between" px={2}>
           {!!isCollectorProfileUpdate ? (

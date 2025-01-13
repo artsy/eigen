@@ -7,7 +7,7 @@ import { GestureResponderEvent } from "react-native"
 
 interface RouterLinkProps {
   disablePrefetch?: boolean
-  passProps?: Object
+  navigationProps?: Object
   to: string | null | undefined
 }
 
@@ -15,7 +15,7 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   disablePrefetch,
   to,
   onPress,
-  passProps,
+  navigationProps,
   ...restProps
 }) => {
   const prefetchUrl = usePrefetch()
@@ -28,8 +28,8 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
 
     if (!to) return
 
-    if (passProps) {
-      navigate(to, { passProps })
+    if (navigationProps) {
+      navigate(to, { passProps: navigationProps })
     } else {
       navigate(to)
     }
