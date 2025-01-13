@@ -9,7 +9,7 @@ describe("PartnerFollowButton", () => {
     query: graphql`
       query PartnerFollowButtonTestQuery @relay_test_operation {
         partner(id: "white-cube") {
-          ...PartnerFollowButton_partner
+          ...PartnerFollowButton_deprecated_partner
         }
       }
     `,

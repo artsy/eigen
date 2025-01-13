@@ -144,7 +144,7 @@ export const ArtworkHeaderFragmentContainer = createFragmentContainer(ArtworkHea
       artists(shallow: true) {
         name
       }
-      partner {
+      partner(shallow: true) {
         name
       }
     }

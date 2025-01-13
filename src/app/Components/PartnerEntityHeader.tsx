@@ -43,7 +43,7 @@ export const PartnerEntityHeader: React.FC<PartnerEntityHeaderProps> = ({ partne
 export const PartnerEntityHeaderFragmentContainer = createFragmentContainer(PartnerEntityHeader, {
   partner: graphql`
     fragment PartnerEntityHeader_partner on Partner {
-      ...PartnerFollowButton_partner
+      ...PartnerFollowButton_deprecated_partner
       href
       name
       cities

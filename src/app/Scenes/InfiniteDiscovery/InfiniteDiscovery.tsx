@@ -11,7 +11,8 @@ import {
   useTheme,
 } from "@artsy/palette-mobile"
 import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
-import { navigate } from "app/system/navigation/navigate"
+import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
+import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemo, useState } from "react"
@@ -45,7 +46,7 @@ export const InfiniteDiscovery: React.FC = () => {
   }
 
   const handleExitPressed = () => {
-    navigate("/home-view")
+    goBack()
   }
 
   const handleSwipedRight = () => {
@@ -122,6 +123,8 @@ export const InfiniteDiscovery: React.FC = () => {
           onSwipeRight={handleSwipedRight}
           onSwipeLeft={handleSwipedLeft}
         />
+
+        <InfiniteDiscoveryBottomSheet artworkID="add-fuel-modular" />
       </Screen.Body>
     </Screen>
   )

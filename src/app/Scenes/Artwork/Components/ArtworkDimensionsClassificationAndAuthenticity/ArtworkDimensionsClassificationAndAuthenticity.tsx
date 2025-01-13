@@ -13,21 +13,6 @@ const ArtworkDimensionsClassificationAndAuthenticity: React.FC<
 > = ({ artwork }) => {
   const { medium, dimensions, framed, editionOf, editionSets, isUnlisted } = artwork
 
-  const dimensionsPresent = (dimensions: any) =>
-    /\d/.test(dimensions?.in) || /\d/.test(dimensions?.cm)
-
-  const getFrameString = (frameDetails?: string | null, isUnlisted?: boolean) => {
-    if (frameDetails !== "Included") {
-      if (isUnlisted) {
-        return "Frame not included"
-      } else {
-        return
-      }
-    }
-
-    return `Frame ${frameDetails.toLowerCase()}`
-  }
-
   return (
     <Box>
       <Spacer y={2} />
@@ -81,3 +66,18 @@ export const ArtworkDimensionsClassificationAndAuthenticityFragmentContainer =
       }
     `,
   })
+
+export const getFrameString = (frameDetails?: string | null, isUnlisted?: boolean) => {
+  if (frameDetails !== "Included") {
+    if (isUnlisted) {
+      return "Frame not included"
+    } else {
+      return
+    }
+  }
+
+  return `Frame ${frameDetails.toLowerCase()}`
+}
+
+export const dimensionsPresent = (dimensions: any) =>
+  /\d/.test(dimensions?.in) || /\d/.test(dimensions?.cm)
