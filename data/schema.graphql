@@ -8058,47 +8058,6 @@ union CreateConsignmentInquiryMutationType =
     ConsignmentInquiryMutationFailure
   | ConsignmentInquiryMutationSuccess
 
-input CreateDiscoveryArtworkReferenceMutationInput {
-  # The artwork's ID
-  artworkId: String!
-  clientMutationId: String
-
-  # The reference type
-  reference: ReferenceTypes!
-
-  # The user's ID
-  userId: String
-}
-
-type CreateDiscoveryArtworkReferenceMutationPayload {
-  clientMutationId: String
-
-  # On success: return boolean. On failure: MutationError.
-  createDiscoveryArtworkReferenceResponseOrError: CreateDiscoveryArtworkReferenceResponseOrError
-}
-
-union CreateDiscoveryArtworkReferenceResponseOrError =
-    DiscoveryArtworkReferenceMutationFailure
-  | DiscoveryArtworkReferenceMutationSuccess
-
-input CreateDiscoveryUserMutationInput {
-  clientMutationId: String
-
-  # The user's ID
-  userId: String!
-}
-
-type CreateDiscoveryUserMutationPayload {
-  clientMutationId: String
-
-  # On success: return boolean. On failure: MutationError.
-  createDiscoveryUserReferenceResponseOrError: CreateDiscoveryUserResponseOrError
-}
-
-union CreateDiscoveryUserResponseOrError =
-    DiscoveryUserMutationFailure
-  | DiscoveryUserMutationSuccess
-
 type CreateFeatureFailure {
   mutationError: GravityMutationError
 }
@@ -8909,32 +8868,6 @@ type DeleteCreditCardPayload {
   me: Me
 }
 
-type DeleteDiscoveryUserMutationFailure {
-  mutationError: GravityMutationError
-}
-
-input DeleteDiscoveryUserMutationInput {
-  clientMutationId: String
-
-  # The user's ID
-  userId: String!
-}
-
-type DeleteDiscoveryUserMutationPayload {
-  clientMutationId: String
-
-  # On success: return boolean. On failure: MutationError.
-  deleteDiscoveryUserResponseOrError: DeleteDiscoveryUserResponseOrError
-}
-
-type DeleteDiscoveryUserMutationSuccess {
-  success: Boolean
-}
-
-union DeleteDiscoveryUserResponseOrError =
-    DeleteDiscoveryUserMutationFailure
-  | DeleteDiscoveryUserMutationSuccess
-
 type DeleteFeatureFailure {
   mutationError: GravityMutationError
 }
@@ -9206,30 +9139,6 @@ input DisableSecondFactorInput {
 type DisableSecondFactorPayload {
   clientMutationId: String
   secondFactorOrErrors: SecondFactorOrErrorsUnion!
-}
-
-enum DiscoverArtworksSort {
-  # Sort by certainty ascending. High certainty means the artwork is more likely to be recommended.
-  CERTAINTY_ASC
-
-  # Sort by certainty descending. High certainty means the artwork is more likely to be recommended.
-  CERTAINTY_DESC
-}
-
-type DiscoveryArtworkReferenceMutationFailure {
-  mutationError: GravityMutationError
-}
-
-type DiscoveryArtworkReferenceMutationSuccess {
-  success: Boolean
-}
-
-type DiscoveryUserMutationFailure {
-  mutationError: GravityMutationError
-}
-
-type DiscoveryUserMutationSuccess {
-  success: Boolean
 }
 
 input DislikeArtworkInput {
@@ -13612,14 +13521,6 @@ type Mutation {
   # Create a credit card
   createCreditCard(input: CreditCardInput!): CreditCardPayload
 
-  # Creates a cross reference for artwork and user in weaviate
-  createDiscoveryArtworkReference(
-    input: CreateDiscoveryArtworkReferenceMutationInput!
-  ): CreateDiscoveryArtworkReferenceMutationPayload
-
-  # Creates a user object in weaviate
-  createDiscoveryUser(input: CreateDiscoveryUserMutationInput!): CreateDiscoveryUserMutationPayload
-
   # Creates a feature.
   createFeature(input: CreateFeatureMutationInput!): CreateFeatureMutationPayload
 
@@ -13717,11 +13618,6 @@ type Mutation {
 
   # Remove a credit card
   deleteCreditCard(input: DeleteCreditCardInput!): DeleteCreditCardPayload
-
-  # Deletes a user from the Infinite Discovery system.
-  deleteDiscoveryUserMutation(
-    input: DeleteDiscoveryUserMutationInput!
-  ): DeleteDiscoveryUserMutationPayload
 
   # deletes a feature.
   deleteFeature(input: DeleteFeatureMutationInput!): DeleteFeatureMutationPayload
@@ -15979,15 +15875,6 @@ type PublishViewingRoomPayload {
 }
 
 type Query {
-  LikedDiscoveryArtworks(
-    after: String
-    before: String
-    first: Int
-    last: Int
-    limit: Int
-    userId: String!
-  ): ArtworkConnection
-
   # Do not use (only used internally for stitching)
   _do_not_use_conversation(
     # The ID of the Conversation
@@ -16554,7 +16441,6 @@ type Query {
   discoverArtworks(
     after: String
     before: String
-    certainty: Float
 
     # The number of curated artworks to return. This is a temporary field to support the transition to OpenSearch
     curatedPicksSize: Int = 2
@@ -16570,13 +16456,9 @@ type Query {
 
     # (Only for when useOpenSearch is true) These fields are used to calculate the More Like This query
     mltFields: [String] = ["genes", "materials", "tags", "medium"]
-    offset: Int
 
     # (Only for when useOpenSearch is true) Weights for the OpenSearch query
     osWeights: [Float] = [0.6, 0.4]
-    sort: DiscoverArtworksSort
-    useOpenSearch: Boolean = false
-    userId: String
   ): ArtworkConnection
 
   # A namespace external partners (provided by Galaxy)
@@ -17439,13 +17321,6 @@ type RecordArtworkViewPayload {
 
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
-}
-
-enum ReferenceTypes {
-  LIKED_ARTWORKS
-
-  # Artworks that the user has seen and not "liked". Should not be considered a negative signal.
-  SEEN_ARTWORKS
 }
 
 enum RelatedArtistsKind {
@@ -20798,15 +20673,6 @@ type Video {
 
 # A wildcard used to support complex root queries in Relay
 type Viewer {
-  LikedDiscoveryArtworks(
-    after: String
-    before: String
-    first: Int
-    last: Int
-    limit: Int
-    userId: String!
-  ): ArtworkConnection
-
   # Do not use (only used internally for stitching)
   _do_not_use_conversation(
     # The ID of the Conversation
@@ -21145,7 +21011,6 @@ type Viewer {
   discoverArtworks(
     after: String
     before: String
-    certainty: Float
 
     # The number of curated artworks to return. This is a temporary field to support the transition to OpenSearch
     curatedPicksSize: Int = 2
@@ -21161,13 +21026,9 @@ type Viewer {
 
     # (Only for when useOpenSearch is true) These fields are used to calculate the More Like This query
     mltFields: [String] = ["genes", "materials", "tags", "medium"]
-    offset: Int
 
     # (Only for when useOpenSearch is true) Weights for the OpenSearch query
     osWeights: [Float] = [0.6, 0.4]
-    sort: DiscoverArtworksSort
-    useOpenSearch: Boolean = false
-    userId: String
   ): ArtworkConnection
 
   # A namespace external partners (provided by Galaxy)
