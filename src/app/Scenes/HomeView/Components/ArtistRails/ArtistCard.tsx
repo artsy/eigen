@@ -9,10 +9,10 @@ import {
 } from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { createFragmentContainer, graphql } from "react-relay"
-import styled from "styled-components/native"
 
 export const ARTIST_CARD_WIDTH = 295
 
@@ -67,8 +67,8 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
   }
 
   return (
-    <ArtistCardWrapper onPress={handlePress}>
-      <Flex>
+    <RouterLink onPress={handlePress} to={artist.href}>
+      <Flex width={ARTIST_CARD_WIDTH} overflow="hidden">
         <ArtworkCardImages images={artistImages} />
 
         <Flex flexDirection="row" mt={1}>
@@ -109,7 +109,7 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
           </Flex>
         )}
       </Flex>
-    </ArtistCardWrapper>
+    </RouterLink>
   )
 }
 
@@ -184,13 +184,6 @@ const ArtworkCardImages = ({
     </Flex>
   )
 }
-
-export const ArtistCardWrapper = styled.TouchableHighlight.attrs(() => ({
-  underlayColor: "transparent",
-}))`
-  width: ${ARTIST_CARD_WIDTH}px;
-  overflow: hidden;
-`
 
 export const ArtistCardContainer = createFragmentContainer(ArtistCard, {
   artist: graphql`

@@ -125,7 +125,7 @@ import { ConsignmentInquiryScreen } from "app/Scenes/SellWithArtsy/ConsignmentIn
 import { SellWithArtsyHomeScreenQuery } from "app/Scenes/SellWithArtsy/SellWithArtsyHome"
 import { SellWithArtsy } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils"
 import { ShowMoreInfoQueryRenderer } from "app/Scenes/Show/Screens/ShowMoreInfo"
-import { ShowQueryRenderer } from "app/Scenes/Show/Show"
+import { ShowQueryRenderer, ShowScreenQuery } from "app/Scenes/Show/Show"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import { TagQueryRenderer } from "app/Scenes/Tag/Tag"
 import { VanityURLEntityRenderer } from "app/Scenes/VanityURL/VanityURLEntity"
@@ -1363,6 +1363,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/show/:showID",
     name: "Show",
     Component: ShowQueryRenderer,
+    Queries: [ShowScreenQuery],
   },
   {
     path: "/show/:showID/info",
