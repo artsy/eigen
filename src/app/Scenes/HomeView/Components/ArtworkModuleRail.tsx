@@ -116,10 +116,6 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
         listRef={listRef}
         artworks={artworks}
         onPress={(artwork, position) => {
-          if (!artwork.href) {
-            return
-          }
-
           if (contextModule) {
             tracking.trackEvent(
               HomeAnalytics.artworkThumbnailTapEvent(
@@ -131,8 +127,6 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
               )
             )
           }
-
-          navigate(artwork.href)
         }}
         onMorePress={handlePressMore}
         showSaveIcon

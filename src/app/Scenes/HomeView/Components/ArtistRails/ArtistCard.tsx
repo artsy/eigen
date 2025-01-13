@@ -10,7 +10,6 @@ import {
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -58,16 +57,8 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
     width: number
   }>
 
-  const handlePress = () => {
-    onPress?.()
-
-    if (artist.href) {
-      navigate(artist.href)
-    }
-  }
-
   return (
-    <RouterLink onPress={handlePress} to={artist.href}>
+    <RouterLink onPress={onPress} to={artist.href}>
       <Flex width={ARTIST_CARD_WIDTH} overflow="hidden">
         <ArtworkCardImages images={artistImages} />
 

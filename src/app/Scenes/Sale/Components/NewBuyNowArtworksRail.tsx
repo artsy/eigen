@@ -2,7 +2,6 @@ import { Flex } from "@artsy/palette-mobile"
 import { NewBuyNowArtworksRail_sale$data } from "__generated__/NewBuyNowArtworksRail_sale.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -23,14 +22,7 @@ export const NewBuyNowArtworksRail: React.FC<NewBuyNowArtworksRailProps> = ({ sa
       <Flex mx={2}>
         <SectionTitle title="Artworks Available to Inquire" />
       </Flex>
-      <ArtworkRail
-        artworks={compact(artworks)}
-        onPress={(artwork) => {
-          if (artwork?.href) {
-            navigate(artwork.href)
-          }
-        }}
-      />
+      <ArtworkRail artworks={compact(artworks)} />
     </Flex>
   )
 }

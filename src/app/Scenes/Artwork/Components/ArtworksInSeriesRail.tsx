@@ -48,8 +48,6 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props)
           if (!item.href) return
 
           trackEvent(tracks.tappedArtwork(artwork, item, item.collectorSignals))
-
-          navigate(item.href)
         }}
         ListHeaderComponent={null}
         ListFooterComponent={null}

@@ -3,7 +3,6 @@ import { ArtQuizTrendingCollection_collection$key } from "__generated__/ArtQuizT
 import { ArtQuizTrendingCollections_viewer$data } from "__generated__/ArtQuizTrendingCollections_viewer.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { ReadMore } from "app/Components/ReadMore"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { graphql, useFragment } from "react-relay"
@@ -27,6 +26,7 @@ export const ArtQuizTrendingCollection = ({
     <Flex pt={2}>
       <Flex>
         <Text variant="md">{collection?.title}</Text>
+
         {!!collection?.descriptionMarkdown && (
           <ReadMore
             content={collection.descriptionMarkdown}
@@ -38,15 +38,10 @@ export const ArtQuizTrendingCollection = ({
           />
         )}
       </Flex>
+
       <Spacer y={1} />
-      <ArtworkRail
-        artworks={artworks}
-        onPress={(artwork) => {
-          if (artwork?.href) {
-            navigate(artwork.href)
-          }
-        }}
-      />
+
+      <ArtworkRail artworks={artworks} />
     </Flex>
   )
 }
