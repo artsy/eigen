@@ -19,7 +19,7 @@ export const useDismissAlertReminder = () => {
     sessionState: { isReady },
   } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
 
-  const interval = Boolean(payload && JSON.parse(payload)?.forcePrompt === "true")
+  const interval = Boolean(payload && JSON.parse(payload)?.forceReminder === "true")
     ? 10 * SECONDS
     : 7 * DAYS
 
@@ -52,6 +52,10 @@ export const useDismissAlertReminder = () => {
   }
 
   const dismissChainOfRemindersAfterDelay = () => {
+    /**
+     * Dismiss the reminder if the user taps the filter button
+     * withing two minutes of the reminder being shown
+     */
     if (
       Date.now() - isDismissed(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1).timestamp <
       2 * 60 * 1000

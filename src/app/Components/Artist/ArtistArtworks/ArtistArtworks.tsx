@@ -304,9 +304,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
               <Flex flexDirection="row">
                 <ProgressiveOnboardingAlertReminder
                   visible={!!shouldShowCreateAlertReminder && variant === "variant-a"}
-                >
-                  <></>
-                </ProgressiveOnboardingAlertReminder>
+                />
                 <Flex flex={1}>
                   <ArtistArtworksFilterHeader
                     artist={artist}
