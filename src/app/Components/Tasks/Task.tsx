@@ -16,7 +16,6 @@ const TASK_IMAGE_SIZE = 60
 
 export interface TaskProps {
   disableSwipeable?: boolean
-  // onClearTask: <T>(clearTask: () => Promise<T>) => Promise<void>
   onOpenTask: () => void
   onPress?: () => void
   task: Task_task$key
@@ -46,7 +45,6 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
         if (tasksConnection) {
           // remove the task with matching relay id from the connection
           ConnectionHandler.deleteNode(tasksConnection, task.relayID)
-          console.warn("Task removed from relay store: ", task.relayID)
         }
       }
     }
@@ -71,12 +69,6 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
       dismissTask({
         variables: { taskID: task.internalID },
         optimisticUpdater: optimisticallyClearTask as any,
-        onCompleted: (response, errors) => {
-          if (errors) {
-            console.error("Mutation error:", errors)
-          }
-        },
-        onError: (err) => console.error(err),
       })
 
       tappedClearTask(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)

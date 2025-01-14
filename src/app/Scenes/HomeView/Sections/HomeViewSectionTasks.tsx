@@ -113,10 +113,6 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
     }
   }, [showAll, previousShowAll])
 
-  useEffect(() => {
-    console.log("****", tasks.length)
-  }, [tasks])
-
   // Close all tasks except the one with the provided taskID
   const closeAllTasks = (excludeTaskID?: string) => {
     taskRefs.forEach((ref, taskID) => {
