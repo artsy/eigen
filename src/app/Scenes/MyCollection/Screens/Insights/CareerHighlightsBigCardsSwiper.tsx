@@ -1,6 +1,6 @@
 import { Flex, Screen, useColor, useSpace } from "@artsy/palette-mobile"
 import { CareerHighlightsBigCardsSwiperQuery } from "__generated__/CareerHighlightsBigCardsSwiperQuery.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
 import { goBack } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -139,7 +139,7 @@ const CareerHighlightsBigCardsSwiperScreen: React.FC<CareerHighlightsBigCardsSwi
   return (
     <>
       <Flex>
-        <FancyModalHeader
+        <NavigationHeader
           alignItems="flex-start"
           rightCloseButton
           onRightButtonPress={() => goBack()}
@@ -158,7 +158,7 @@ const CareerHighlightsBigCardsSwiperScreen: React.FC<CareerHighlightsBigCardsSwi
               <StepDot key={key} index={index} />
             ))}
           </Flex>
-        </FancyModalHeader>
+        </NavigationHeader>
       </Flex>
       <ScrollView
         horizontal

@@ -1,7 +1,7 @@
-import { Flex, Text, RadioDot } from "@artsy/palette-mobile"
-import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { Flex, RadioDot, Text } from "@artsy/palette-mobile"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { TouchableRow } from "app/Components/TouchableRow"
+import { Modal } from "react-native"
 
 export interface SortOption {
   value: string
@@ -22,33 +22,36 @@ export const SortByModal: React.FC<SortByModalProps> = (props) => {
     props
 
   return (
-    <FancyModal
+    <Modal
       visible={visible}
-      maxHeight={250}
-      onBackgroundPressed={onCloseModal}
-      onModalFinishedClosing={onModalFinishedClosing}
+      onRequestClose={onCloseModal}
+      onDismiss={onModalFinishedClosing}
+      presentationStyle="pageSheet"
+      animationType="slide"
     >
-      <FancyModalHeader useXButton onLeftButtonPress={onCloseModal}>
-        Sort By
-      </FancyModalHeader>
-      {options.map((option) => {
-        const selected = selectedValue === option.value
+      <Flex height={250} width="100%">
+        <NavigationHeader useXButton onLeftButtonPress={onCloseModal}>
+          Sort By
+        </NavigationHeader>
+        {options.map((option) => {
+          const selected = selectedValue === option.value
 
-        return (
-          <TouchableRow
-            accessibilityState={{ selected }}
-            key={option.value}
-            onPress={() => onSelectOption(option)}
-          >
-            <Flex flexDirection="row" p={2} alignItems="center" justifyContent="space-between">
-              <Flex flex={1} mr={1}>
-                <Text numberOfLines={2}>{option.text}</Text>
+          return (
+            <TouchableRow
+              accessibilityState={{ selected }}
+              key={option.value}
+              onPress={() => onSelectOption(option)}
+            >
+              <Flex flexDirection="row" p={2} alignItems="center" justifyContent="space-between">
+                <Flex flex={1} mr={1}>
+                  <Text numberOfLines={2}>{option.text}</Text>
+                </Flex>
+                <RadioDot selected={selected} />
               </Flex>
-              <RadioDot selected={selected} />
-            </Flex>
-          </TouchableRow>
-        )
-      })}
-    </FancyModal>
+            </TouchableRow>
+          )
+        })}
+      </Flex>
+    </Modal>
   )
 }

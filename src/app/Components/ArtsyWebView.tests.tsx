@@ -1,5 +1,5 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { appJson } from "app/utils/jsonFiles"
@@ -89,14 +89,14 @@ describe("ArtsyWebViewPage", () => {
 
   it(`renders a back button normally`, () => {
     render()
-    expect(screen.UNSAFE_getByType(FancyModalHeader).props.useXButton).toBeFalse()
-    expect(screen.UNSAFE_getByType(FancyModalHeader).props.onLeftButtonPress).not.toBeUndefined()
+    expect(screen.UNSAFE_getByType(NavigationHeader).props.useXButton).toBeFalse()
+    expect(screen.UNSAFE_getByType(NavigationHeader).props.onLeftButtonPress).not.toBeUndefined()
   })
 
   it("renders a close button when presented modally", () => {
     render({ isPresentedModally: true })
-    expect(screen.UNSAFE_getByType(FancyModalHeader).props.useXButton).toBeTrue()
-    expect(screen.UNSAFE_getByType(FancyModalHeader).props.onLeftButtonPress).not.toBeUndefined()
+    expect(screen.UNSAFE_getByType(NavigationHeader).props.useXButton).toBeTrue()
+    expect(screen.UNSAFE_getByType(NavigationHeader).props.onLeftButtonPress).not.toBeUndefined()
   })
 
   it("renders a back button when presented modally and internal navigation is has happened", () => {
@@ -105,7 +105,7 @@ describe("ArtsyWebViewPage", () => {
       ...mockOnNavigationStateChange,
       canGoBack: true,
     })
-    expect(screen.UNSAFE_getByType(FancyModalHeader).props.useXButton).toBeFalsy()
+    expect(screen.UNSAFE_getByType(NavigationHeader).props.useXButton).toBeFalsy()
   })
 
   it("shares the correct URL", () => {

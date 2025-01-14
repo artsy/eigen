@@ -2,7 +2,7 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Join, Spacer, Spinner, Text } from "@artsy/palette-mobile"
 import { ArtworkErrorQuery } from "__generated__/ArtworkErrorQuery.graphql"
 import { ArtworkErrorRecentlyViewed_homePage$key } from "__generated__/ArtworkErrorRecentlyViewed_homePage.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { ArtworkModuleRailFragmentContainer } from "app/Scenes/HomeView/Components/ArtworkModuleRail"
 import { ArtworkRecommendationsRail } from "app/Scenes/HomeView/Components/ArtworkRecommendationsRail"
@@ -28,7 +28,7 @@ export const ArtworkError: React.FC<ArtworkErrorProps> = ({ homePage, me, viewer
 
   return (
     <Flex flex={1}>
-      <FancyModalHeader onLeftButtonPress={goBack} />
+      <NavigationHeader onLeftButtonPress={goBack} />
 
       <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
         <Flex p={2}>
@@ -92,7 +92,7 @@ export const ArtworkErrorScreen: React.FC<{}> = withSuspense({
     if (!data.homePage || !data.me || !data.viewer) {
       return (
         <Flex flex={1}>
-          <FancyModalHeader onLeftButtonPress={goBack}>Artwork can't be found</FancyModalHeader>
+          <NavigationHeader onLeftButtonPress={goBack}>Artwork can't be found</NavigationHeader>
           <Flex p={2}>
             <Text variant="lg-display">The artwork you were looking for isn't available.</Text>
           </Flex>

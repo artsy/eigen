@@ -1,6 +1,6 @@
 import { Box, Button } from "@artsy/palette-mobile"
 import { BottomAlignedButtonWrapper } from "app/Components/Buttons/BottomAlignedButtonWrapper"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { Input } from "app/Components/Input"
 import { PhoneInput } from "app/Components/Input/PhoneInput"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -58,9 +58,9 @@ export const PhoneNumberForm: React.FC<PhoneNumberFormProps> = (props) => {
       }}
     >
       <BottomAlignedButtonWrapper buttonComponent={buttonComponent}>
-        <FancyModalHeader onLeftButtonPress={() => navigator?.pop()}>
+        <NavigationHeader onLeftButtonPress={() => navigator?.pop()}>
           Add phone number
-        </FancyModalHeader>
+        </NavigationHeader>
         <ScrollView
           scrollEnabled={false}
           contentContainerStyle={{ marginHorizontal: 20, marginTop: 10 }}

@@ -1,6 +1,6 @@
 import { Spacer, Flex, Text, Button, ButtonProps, useSpace } from "@artsy/palette-mobile"
 import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { ViewStyle } from "react-native"
 
 interface Props {
@@ -24,9 +24,9 @@ export const InfoModal: React.FC<Props> = ({
   const space = useSpace()
   return (
     <FancyModal visible={visible} onBackgroundPressed={onDismiss} fullScreen={fullScreen}>
-      <FancyModalHeader onLeftButtonPress={onDismiss} hideBottomDivider useXButton>
+      <NavigationHeader onLeftButtonPress={onDismiss} hideBottomDivider useXButton>
         {!!title && <Text fontSize={24}>{title}</Text>}
-      </FancyModalHeader>
+      </NavigationHeader>
 
       <Flex style={[{ margin: space(2) }, containerStyle]}>{children}</Flex>
       <Spacer y={2} />

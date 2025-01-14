@@ -20,7 +20,7 @@ import { Edge } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import WebView, { WebViewNavigation, WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
-import { FancyModalHeader } from "./FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 
 export interface ArtsyWebViewConfig {
   title?: string
@@ -132,7 +132,7 @@ export const ArtsyWebViewPage = ({
     <Screen>
       <Flex flex={1} backgroundColor="white">
         <ArtsyKeyboardAvoidingView>
-          <FancyModalHeader
+          <NavigationHeader
             useXButton={!!isPresentedModally && !canGoBack}
             onLeftButtonPress={leftButton}
             useShareButton={showShareButton}
@@ -142,7 +142,7 @@ export const ArtsyWebViewPage = ({
             }
           >
             {title}
-          </FancyModalHeader>
+          </NavigationHeader>
           <ArtsyWebView
             url={url}
             ref={ref}

@@ -2,7 +2,7 @@ import { Box, Flex, InfoCircleIcon, Input, Screen, Text } from "@artsy/palette-m
 import { InquiryModal_artwork$key } from "__generated__/InquiryModal_artwork.graphql"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { CompleteProfilePrompt } from "app/Scenes/Artwork/Components/CommercialButtons/CompleteProfilePrompt"
 import { InquiryQuestionOption } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryQuestionOption"
 import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
@@ -103,7 +103,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
     <>
       <Modal visible={state.inquiryModalVisible} onDismiss={handleDismiss} statusBarTranslucent>
         <Screen>
-          <FancyModalHeader
+          <NavigationHeader
             leftButtonText="Cancel"
             onLeftButtonPress={handleDismiss}
             rightButtonText="Send"
@@ -111,7 +111,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
             onRightButtonPress={() => sendInquiry(message)}
           >
             Contact Gallery
-          </FancyModalHeader>
+          </NavigationHeader>
           {!!error && (
             <Flex
               bg="red100"

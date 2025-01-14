@@ -11,7 +11,7 @@ import {
 import { RouteProp, useIsFocused, useNavigation, useRoute } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { useFormik } from "formik"
 import React, { useEffect, useRef, useState } from "react"
@@ -96,9 +96,9 @@ export const AddMyCollectionArtist: React.FC<{ useNativeHeader?: boolean }> = (p
     <Screen safeArea={false}>
       <ArtsyKeyboardAvoidingView>
         {!props.useNativeHeader && (
-          <FancyModalHeader onLeftButtonPress={handleBackPress} hideBottomDivider>
+          <NavigationHeader onLeftButtonPress={handleBackPress} hideBottomDivider>
             Add New Artist
-          </FancyModalHeader>
+          </NavigationHeader>
         )}
 
         <AbandonFlowModal

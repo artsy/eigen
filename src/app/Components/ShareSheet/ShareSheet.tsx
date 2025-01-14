@@ -11,22 +11,22 @@ import {
   LinkIcon,
   MoreIcon,
   ShareIcon,
-  useScreenDimensions,
   WhatsAppAppIcon,
 } from "@artsy/palette-mobile"
+import { BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet"
 import Clipboard from "@react-native-clipboard/clipboard"
 import Sentry, { captureException, captureMessage } from "@sentry/react-native"
-import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { CustomShareSheetItem } from "app/Components/ShareSheet/ShareSheetItem"
 import { getShareImages, shareContent } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
 import { InstagramStoryViewShot } from "app/Scenes/Artwork/Components/InstagramStoryViewShot"
+import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
 import { useRef } from "react"
-import { ScrollView } from "react-native"
 import Config from "react-native-config"
 import Share, { Social } from "react-native-share"
 import ViewShot from "react-native-view-shot"
@@ -36,7 +36,6 @@ export const ShareSheet = () => {
   const { isVisible, item: data, hideShareSheet } = useShareSheet()
   const isArtwork = data?.type === "artwork"
   const showWhatsAppItem = useCanOpenURL("whatsapp://send?phone=+491898")
-  const { height: screenHeight } = useScreenDimensions()
   const toast = useToast()
   const shotRef = useRef<ViewShot>(null)
   const showInstagramStoriesItem =
@@ -160,43 +159,46 @@ export const ShareSheet = () => {
   }
 
   return (
-    <FancyModal
-      maxHeight={screenHeight / 2}
+    <AutomountedBottomSheetModal
       visible={isVisible}
-      onBackgroundPressed={() => hideShareSheet()}
+      onDismiss={hideShareSheet}
+      enableDynamicSizing
+      snapPoints={SNAP_POINTS}
     >
-      <FancyModalHeader useXButton onLeftButtonPress={() => hideShareSheet()}>
-        Share
-      </FancyModalHeader>
-      <ScrollView>
-        {data.type !== "sale" && data.type !== "default" && (
-          <InstagramStoryViewShot
-            shotRef={shotRef}
-            href={currentImageUrl}
-            artist={data.artists?.[0]?.name ?? ""}
-            title={data?.title}
-          />
-        )}
+      <BottomSheetView style={{ flex: 1 }}>
+        <NavigationHeader useXButton onLeftButtonPress={() => hideShareSheet()}>
+          Share
+        </NavigationHeader>
+        <BottomSheetScrollView>
+          {data.type !== "sale" && data.type !== "default" && (
+            <InstagramStoryViewShot
+              shotRef={shotRef}
+              href={currentImageUrl}
+              artist={data.artists?.[0]?.name ?? ""}
+              title={data?.title}
+            />
+          )}
 
-        {!!showWhatsAppItem && (
-          <CustomShareSheetItem
-            title="WhatsApp"
-            Icon={<WhatsAppAppIcon />}
-            onPress={shareOnWhatsApp}
-          />
-        )}
-        {!!showInstagramStoriesItem && (
-          <CustomShareSheetItem
-            title="Instagram Stories"
-            Icon={<InstagramAppIcon />}
-            onPress={shareOnInstagramStory}
-          />
-        )}
+          {!!showWhatsAppItem && (
+            <CustomShareSheetItem
+              title="WhatsApp"
+              Icon={<WhatsAppAppIcon />}
+              onPress={shareOnWhatsApp}
+            />
+          )}
+          {!!showInstagramStoriesItem && (
+            <CustomShareSheetItem
+              title="Instagram Stories"
+              Icon={<InstagramAppIcon />}
+              onPress={shareOnInstagramStory}
+            />
+          )}
 
-        <CustomShareSheetItem title="Copy link" Icon={<LinkIcon />} onPress={handleCopyLink} />
-        <CustomShareSheetItem title="More" Icon={<MoreIcon />} onPress={handleMorePress} />
-      </ScrollView>
-    </FancyModal>
+          <CustomShareSheetItem title="Copy link" Icon={<LinkIcon />} onPress={handleCopyLink} />
+          <CustomShareSheetItem title="More" Icon={<MoreIcon />} onPress={handleMorePress} />
+        </BottomSheetScrollView>
+      </BottomSheetView>
+    </AutomountedBottomSheetModal>
   )
 }
 

@@ -2,7 +2,7 @@ import { Flex, Button } from "@artsy/palette-mobile"
 import { SelectMaxBidQuery } from "__generated__/SelectMaxBidQuery.graphql"
 import { SelectMaxBid_me$data } from "__generated__/SelectMaxBid_me.graphql"
 import { SelectMaxBid_sale_artwork$data } from "__generated__/SelectMaxBid_sale_artwork.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { Select } from "app/Components/Select"
 import { dismissModal } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -134,9 +134,9 @@ export const SelectMaxBidQueryRenderer: React.FC<{
   // TODO: artworkID can be nil, so omit that part of the query if it is.
   return (
     <Flex flex={1}>
-      <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()}>
+      <NavigationHeader useXButton onLeftButtonPress={() => dismissModal()}>
         Place a max bid
-      </FancyModalHeader>
+      </NavigationHeader>
       <QueryRenderer<SelectMaxBidQuery>
         environment={getRelayEnvironment()}
         query={graphql`

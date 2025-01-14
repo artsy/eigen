@@ -2,7 +2,7 @@ import { ActionType, ContextModule, OwnerType, TappedSkip } from "@artsy/cohesio
 import { Flex, Spacer } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { MyCollectionArtworkFormArtworkQuery } from "__generated__/MyCollectionArtworkFormArtworkQuery.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { ArtistSearchResult } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistSearchResult"
 import { ArtworkAutosuggest } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtworkAutosuggest"
@@ -111,14 +111,14 @@ export const MyCollectionArtworkFormArtwork: React.FC<
 
   return (
     <>
-      <FancyModalHeader
+      <NavigationHeader
         onLeftButtonPress={handleBackButtonPress}
         rightButtonText="Skip"
         onRightButtonPress={onSkip}
         hideBottomDivider
       >
         Select an Artwork
-      </FancyModalHeader>
+      </NavigationHeader>
       <Flex flex={1} px={2}>
         {!!formik.values.artistSearchResult && (
           <ArtistSearchResult result={formik.values.artistSearchResult} />

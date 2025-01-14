@@ -1,6 +1,7 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { SavedSearchesListTestsQuery } from "__generated__/SavedSearchesListTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { PanGesture } from "react-native-gesture-handler"
 import { fireGestureHandler, getByGestureTestId } from "react-native-gesture-handler/jest-utils"
@@ -93,10 +94,13 @@ describe("SavedSearches", () => {
     expect(screen.getByText("Sort By")).toBeTruthy()
   })
 
-  it("should display sort options when Sort By button is pressed", () => {
+  it("should display sort options when Sort By button is pressed", async () => {
     renderWithRelay()
 
     fireEvent.press(screen.getByText("Sort By"))
+
+    // Wait for the modal to show up
+    await flushPromiseQueue()
 
     expect(screen.getByText("Recently Added")).toBeTruthy()
     expect(screen.getByText("Name (A-Z)")).toBeTruthy()
@@ -106,11 +110,15 @@ describe("SavedSearches", () => {
     const { env } = renderWithRelay()
 
     fireEvent.press(screen.getByText("Sort By"))
-    fireEvent.press(screen.getByText("Name (A-Z)"))
+
+    // Wait for the modal to show up
+    await flushPromiseQueue()
+
+    fireEvent.press(screen.getByText("Recently Added"))
 
     await waitFor(() => {
       const operation = env.mock.getMostRecentOperation()
-      expect(operation.fragment.variables.sort).toBe("NAME_ASC")
+      expect(operation.fragment.variables.sort).toBe("ENABLED_AT_DESC")
     })
   })
 

@@ -4,7 +4,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { AutosuggestResultsPlaceholder } from "app/Components/AutosuggestResults/AutosuggestResultsPlaceholder"
 import { SimpleErrorMessage } from "app/Components/ErrorView/SimpleErrorMessage"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { ArtistAutosuggest } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistAutosuggest"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
@@ -62,9 +62,9 @@ export const MyCollectionArtworkFormArtist: React.FC<
 
   return (
     <>
-      <FancyModalHeader hideBottomDivider onLeftButtonPress={handleBack}>
+      <NavigationHeader hideBottomDivider onLeftButtonPress={handleBack}>
         Select an Artist
-      </FancyModalHeader>
+      </NavigationHeader>
       <ScreenMargin>
         <ErrorBoundary fallback={<SimpleErrorMessage />}>
           <Suspense fallback={<Placeholder />}>
