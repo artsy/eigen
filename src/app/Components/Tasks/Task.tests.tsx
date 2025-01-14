@@ -5,18 +5,17 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-// mock clear task function
-const mockClearTask = jest.fn()
-const mockDissmissTask = jest.fn()
+const mockDismissTask = jest.fn()
 const mockAcknowledgeTask = jest.fn()
+
 const mockOnOpenTask = jest.fn()
 
 jest.mock("app/utils/mutations/useDismissTask", () => ({
-  useDismissTask: () => ({ submitMutation: mockDissmissTask }),
+  useDismissTask: () => [mockDismissTask],
 }))
 
 jest.mock("app/utils/mutations/useAcknowledgeTask.ts", () => ({
-  useAcknowledgeTask: () => ({ submitMutation: mockAcknowledgeTask }),
+  useAcknowledgeTask: () => [mockAcknowledgeTask],
 }))
 
 describe("Task Component", () => {
@@ -59,8 +58,7 @@ describe("Task Component", () => {
 
     fireEvent.press(clearButton)
 
-    await waitFor(() => expect(mockClearTask).toHaveBeenCalled())
-    expect(mockDissmissTask).toHaveBeenCalled()
+    expect(mockDismissTask).toHaveBeenCalled()
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedClearTask",
       context_module: "actNow",
@@ -77,7 +75,6 @@ describe("Task Component", () => {
     fireEvent.press(screen.getByText("Test Task"))
 
     await waitFor(() => expect(mockAcknowledgeTask).toHaveBeenCalled())
-    expect(mockClearTask).toHaveBeenCalled()
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedTaskGroup",
       context_module: "actNow",

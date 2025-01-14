@@ -127,15 +127,17 @@ describe("HomeViewSectionTasks", () => {
     `)
   })
 
-  it("clears and tracks when clearing a task", async () => {
-    const { mockResolveLastOperation } = renderWithRelay({
-      HomeViewSectionTasks: () => ({
-        internalID: "home-view-section-recommended-tasks",
-        component: {
-          title: "Act Now",
-        },
-        tasksConnection: mockTasks,
-      }),
+  fit("clears and tracks when clearing a task", async () => {
+    const initialHomeViewSection = {
+      internalID: "home-view-section-recommended-tasks",
+      component: {
+        title: "Act Now",
+      },
+      tasksConnection: mockTasks,
+    }
+
+    const { mockResolveLastOperation, env } = renderWithRelay({
+      HomeViewSectionTasks: () => initialHomeViewSection,
     })
 
     expect(screen.getByText("Task 1")).toBeOnTheScreen()
@@ -147,8 +149,30 @@ describe("HomeViewSectionTasks", () => {
     fireEvent.press(within(task1).getByText("Clear"))
 
     await waitFor(() => {
-      // mock reslove the mutation
-      mockResolveLastOperation({})
+      expect(screen.queryByText("Task 1")).not.toBeOnTheScreen()
+    })
+
+    await waitFor(() => {
+      // mock resolve the mutation
+      mockResolveLastOperation({
+        DismissTaskMutationPayload: () => ({
+          taskOrError: {
+            __typename: "DismissTaskSuccess",
+            task: {
+              internalID: "1",
+            },
+            homeViewTasksSection: {
+              __typename: "HomeViewTasksSection",
+              ...initialHomeViewSection,
+              tasksConnection: {
+                edges: initialHomeViewSection.tasksConnection.edges.filter(
+                  ({ node }) => node.internalID !== "1"
+                ),
+              },
+            },
+          },
+        }),
+      })
     })
 
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
@@ -164,9 +188,15 @@ describe("HomeViewSectionTasks", () => {
       ]
     `)
 
+    // Inspect the Relay store
+    const store = env.getStore()
+    const records = store.getSource().toJSON()
+    console.log("Relay Store Records:", records)
+
     await waitFor(() => {
-      expect(screen.queryByTestId("user-task-1")).not.toBeOnTheScreen()
+      expect(screen.queryByText("Task 1")).not.toBeOnTheScreen()
     })
+    expect(screen.getByText("Task 2")).toBeOnTheScreen()
   })
 
   it("closes open tasks when collapsing the section", async () => {

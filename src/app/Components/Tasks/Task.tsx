@@ -71,6 +71,12 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
       dismissTask({
         variables: { taskID: task.internalID },
         optimisticUpdater: optimisticallyClearTask as any,
+        onCompleted: (response, errors) => {
+          if (errors) {
+            console.error("Mutation error:", errors)
+          }
+        },
+        onError: (err) => console.error(err),
       })
 
       tappedClearTask(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
