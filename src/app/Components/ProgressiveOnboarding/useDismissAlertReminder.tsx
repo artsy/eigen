@@ -4,16 +4,13 @@ import {
   PROGRESSIVE_ONBOARDING_ALERT_FINISH,
   PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1,
   PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2,
-  PROGRESSIVE_ONBOARDING_ALERT_REMINDER_CHAIN,
 } from "app/store/ProgressiveOnboardingModel"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
 
 const DAYS = 1000 * 60 * 60 * 24
 const MINUTES = 1000 * 60
 const SECONDS = 1000
 
 export const useDismissAlertReminder = () => {
-  const { payload } = useExperimentVariant("onyx_create-alert-prompt-experiment")
   const isFocused = useIsFocused()
   const { dismiss, setIsReady } = GlobalStore.actions.progressiveOnboarding
   const {
@@ -21,9 +18,7 @@ export const useDismissAlertReminder = () => {
     sessionState: { isReady },
   } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
 
-  const interval = Boolean(payload && JSON.parse(payload)?.forceReminder === "true")
-    ? 10 * SECONDS
-    : 7 * DAYS
+  const interval = __DEV__ ? 10 * SECONDS : 7 * DAYS
 
   const displayFirstTime =
     isDismissed(PROGRESSIVE_ONBOARDING_ALERT_FINISH).status &&
@@ -47,11 +42,6 @@ export const useDismissAlertReminder = () => {
     }
   }
 
-  const dismissChainOfReminders = () => {
-    setIsReady(false)
-    dismiss(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_CHAIN)
-  }
-
   const dismissChainOfRemindersAfterInteraction = () => {
     /**
      * Dismiss the second reminder if the user clicks the Create Alert
@@ -66,7 +56,6 @@ export const useDismissAlertReminder = () => {
   return {
     isDisplayable,
     dismissSingleReminder,
-    dismissChainOfReminders,
     dismissChainOfRemindersAfterInteraction,
   }
 }

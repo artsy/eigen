@@ -29,7 +29,6 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ProgressiveOnboardingAlertReminder } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingAlertReminder"
 import { useDismissAlertReminder } from "app/Components/ProgressiveOnboarding/useDismissAlertReminder"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
@@ -76,15 +75,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const gridRef = useRef<MasonryFlashListRef<(typeof artworks)[0]>>(null)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const { dismissChainOfRemindersAfterInteraction } = useDismissAlertReminder()
-  const {
-    enabled,
-    variant,
-    trackExperiment: trackCreateAlertPromptExperiment,
-  } = useExperimentVariant("onyx_create-alert-prompt-experiment")
-
-  useEffect(() => {
-    trackCreateAlertPromptExperiment()
-  }, [])
 
   useArtworkFilters({
     relay,
@@ -176,7 +166,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
           tracks.tappedCreateAlert({
             artistId: artist.internalID,
             artistSlug: artist.slug,
-            contextModule: ContextModule.artistArtworksGridEnd,
           })
 
           setIsCreateAlertModalVisible(true)
@@ -273,8 +262,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     )
   }
 
-  const shouldShowCreateAlertReminder =
-    artworks.length >= CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD && !!enabled
+  const shouldShowCreateAlertReminder = artworks.length >= CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD
 
   return (
     <>
@@ -305,9 +293,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
           <>
             <Tabs.SubTabBar>
               <Flex flexDirection="row">
-                <ProgressiveOnboardingAlertReminder
-                  visible={!!shouldShowCreateAlertReminder && variant === "variant-a"}
-                />
+                <ProgressiveOnboardingAlertReminder visible={!!shouldShowCreateAlertReminder} />
                 <Flex flex={1}>
                   <ArtistArtworksFilterHeader
                     artist={artist}
@@ -350,20 +336,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         entity={savedSearchEntity}
         onComplete={handleCompleteSavedSearch}
         visible={isCreateAlertModalVisible}
-      />
-
-      <ProgressiveOnboardingAlertReminder
-        visible={!!shouldShowCreateAlertReminder && variant === "variant-b"}
-        onPress={() => {
-          tracking.trackEvent(
-            tracks.tappedCreateAlert({
-              artistId: artist.internalID,
-              artistSlug: artist.slug,
-              contextModule: ContextModule.artistArtworksCreateAlertPromptMessage,
-            })
-          )
-          setIsCreateAlertModalVisible(true)
-        }}
       />
     </>
   )
@@ -463,19 +435,11 @@ export default createPaginationContainer(
 )
 
 const tracks = {
-  tappedCreateAlert: ({
-    artistId,
-    artistSlug,
-    contextModule,
-  }: {
-    artistId: string
-    artistSlug: string
-    contextModule: ContextModule
-  }) => ({
+  tappedCreateAlert: ({ artistId, artistSlug }: { artistId: string; artistSlug: string }) => ({
     action: ActionType.tappedCreateAlert,
     context_screen_owner_type: OwnerType.artist,
     context_screen_owner_id: artistId,
     context_screen_owner_slug: artistSlug,
-    context_module: contextModule,
+    context_module: ContextModule.artistArtworksGridEnd,
   }),
 }
