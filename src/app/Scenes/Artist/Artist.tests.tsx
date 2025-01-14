@@ -92,17 +92,9 @@ describe("Artist", () => {
 
     await flushPromiseQueue()
 
-    expect(postEventToProviders).toHaveBeenCalledTimes(2)
+    expect(postEventToProviders).toHaveBeenCalledTimes(1)
 
     expect(postEventToProviders).toHaveBeenNthCalledWith(1, {
-      action: "experiment_viewed",
-      experiment_name: "onyx_create-alert-prompt-experiment",
-      payload: undefined,
-      service: "unleash",
-      variant_name: "control",
-    })
-
-    expect(postEventToProviders).toHaveBeenNthCalledWith(2, {
       context_screen: "Artist",
       context_screen_owner_id: '<mock-value-for-field-"internalID">',
       context_screen_owner_slug: '<mock-value-for-field-"slug">',
