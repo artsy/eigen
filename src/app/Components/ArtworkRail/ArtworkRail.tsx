@@ -88,16 +88,16 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
 
     // On android we are using a flatlist to fix some image issues
     // Context https://github.com/artsy/eigen/pull/11207
-    const Wrapper =
+    const ListComponent =
       Platform.OS === "ios"
         ? (props: any) => <FlashList estimatedItemSize={ARTWORK_RAIL_CARD_MIN_WIDTH} {...props} />
         : FlatList
 
     return (
-      <Wrapper
+      <ListComponent
         data={artworks}
         horizontal
-        keyExtractor={(item: any) => item.internalID}
+        keyExtractor={(item: Artwork) => item.internalID}
         ListFooterComponent={
           <>
             {!!onMorePress && (
