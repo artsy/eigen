@@ -4,7 +4,6 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { buildLocationDisplay } from "app/Components/LocationAutocomplete"
-import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
 import {
   UserProfileFields,
   UserProfileFormikSchema,
@@ -109,13 +108,7 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
   }
 
   return (
-    <AutomountedBottomSheetModal
-      visible={visible}
-      onDismiss={handleDismiss}
-      enableDynamicSizing
-      snapPoints={SNAP_POINTS}
-      enableOverDrag={false}
-    >
+    <AutomountedBottomSheetModal visible={visible} onDismiss={handleDismiss} enableDynamicSizing>
       <BottomSheetScrollView keyboardShouldPersistTaps="always">
         <Box p={2}>
           <Text>{message}</Text>
