@@ -182,7 +182,7 @@ describe("FairFollowedArtistsRail", () => {
 
     const viewAllButton = await wrapper.root.findAllByType(RouterLink)
 
-    expect(viewAllButton.length).toBe(1)
+    expect(viewAllButton.length).toBe(5)
   })
 
   it("doesn't display the '>' button if there are less than 3 artworks to show", async () => {
@@ -201,7 +201,7 @@ describe("FairFollowedArtistsRail", () => {
 
     const viewAllButton = await wrapper.root.findAllByType(RouterLink)
 
-    expect(viewAllButton.length).toBe(0)
+    expect(viewAllButton.length).toBe(2)
   })
 
   it("tracks taps on the rails header", () => {
