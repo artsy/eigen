@@ -12,8 +12,6 @@ import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__genera
 import ParentAwareScrollView from "app/Components/ParentAwareScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
-import { GlobalStore } from "app/store/GlobalStore"
-import { PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK } from "app/store/ProgressiveOnboardingModel"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -217,7 +215,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   const enableMyCollectionSellOnboarding = useFeatureFlag(
     "AREnableMyCollectionInterestedInSellingTooltip"
   )
-  const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
 
   const getSectionDimension = (gridWidth: number | null | undefined) => {
     // Setting the dimension to 1 for tests to avoid adjusting the screen width
@@ -339,11 +336,11 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
         const displayToolTip =
           enableMyCollectionSellOnboarding &&
           isMyCollection &&
-          !isDismissed(PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK).status &&
           itemIndex === 0 &&
           artwork.artist?.targetSupply?.isTargetSupply &&
           !(artwork as any).consignmentSubmission
 
+        console.log("[LOGD] displayToolTip = ", displayToolTip)
         artworkComponents.push(
           <ItemComponent
             contextScreenOwnerType={contextScreenOwnerType}

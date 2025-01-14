@@ -57,8 +57,12 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
 
   const showHighDemandIcon = isP1Artist && isHighDemand && !consignmentSubmission?.internalID
 
+  const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
-  const { isActive, clearActivePopover } = useSetActivePopover(!!displayToolTip)
+  const { isActive, clearActivePopover } = useSetActivePopover(
+    !!displayToolTip && !isDismissed(PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK).status,
+    PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK
+  )
 
   const handleDismissPopover = () => {
     dismiss(PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK)
