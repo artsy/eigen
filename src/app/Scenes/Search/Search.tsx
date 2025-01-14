@@ -4,6 +4,7 @@ import { PortalHost } from "@gorhom/portal"
 import { useNavigation } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { withProfiler } from "@sentry/react-native"
+import * as Sentry from "@sentry/react-native"
 import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
@@ -150,7 +151,9 @@ const SearchScreenInner: React.FC<SearchScreenProps> = () => {
     <>
       <Screen>
         <Suspense fallback={<SearchPlaceholder />}>
-          <Search />
+          <Sentry.TimeToInitialDisplay record>
+            <Search />
+          </Sentry.TimeToInitialDisplay>
         </Suspense>
       </Screen>
       <PortalHost name={`${OwnerType.search}-SearchOverlay`} />

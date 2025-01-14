@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Screen, Tabs, VisualClueDot } from "@artsy/palette-mobile"
+import * as Sentry from "@sentry/react-native"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
 import { MyCollectionQueryRenderer } from "app/Scenes/MyCollection/MyCollection"
 import { MyCollectionInsightsQR } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionInsights"
@@ -92,7 +93,9 @@ export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC = (
       key={key}
     >
       <MyCollectionTabsStoreProvider>
-        <MyProfileHeaderMyCollectionAndSavedWorks initialTab={initialTab} />
+        <Sentry.TimeToInitialDisplay record>
+          <MyProfileHeaderMyCollectionAndSavedWorks initialTab={initialTab} />
+        </Sentry.TimeToInitialDisplay>
       </MyCollectionTabsStoreProvider>
     </ProvideScreenTrackingWithCohesionSchema>
   )
