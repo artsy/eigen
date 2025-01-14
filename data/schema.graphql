@@ -16448,6 +16448,9 @@ type Query {
     # (Only for when useOpenSearch is true) Exclude these artworks from the response
     excludeArtworkIds: [String]
     first: Int
+
+    # (Only for when useOpenSearch is true) Which index to use to display initial batch of artworks
+    initialArtworksIndexName: String = "infinite_discovery_initial_artworks"
     last: Int
 
     # (Only for when useOpenSearch is true) These artworks are used to calculate the taste profile vector. Such artworks are excluded from the response
@@ -21018,6 +21021,9 @@ type Viewer {
     # (Only for when useOpenSearch is true) Exclude these artworks from the response
     excludeArtworkIds: [String]
     first: Int
+
+    # (Only for when useOpenSearch is true) Which index to use to display initial batch of artworks
+    initialArtworksIndexName: String = "infinite_discovery_initial_artworks"
     last: Int
 
     # (Only for when useOpenSearch is true) These artworks are used to calculate the taste profile vector. Such artworks are excluded from the response
