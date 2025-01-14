@@ -21,6 +21,7 @@ import { Task } from "app/Components/Tasks/Task"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { GlobalStore } from "app/store/GlobalStore"
+import { PROGRESSIVE_ONBOARDING_ACT_NOW_TASKS } from "app/store/ProgressiveOnboardingModel"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
@@ -86,8 +87,8 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
   // adding the find-saved-artwork onboarding key to prevent overlap
   const shouldStartOnboardingAnimation =
     isFocused &&
-    !isDismissed("act-now-tasks").status &&
-    !!isDismissed("find-saved-artwork").status &&
+    !isDismissed(PROGRESSIVE_ONBOARDING_ACT_NOW_TASKS).status &&
+    // !!isDismissed("find-saved-artwork").status &&
     !!firstSwipeableRef.current &&
     !!task
 
@@ -101,7 +102,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
         setTimeout(() => {
           if (firstSwipeableRef.current) {
             firstSwipeableRef.current.close()
-            dismiss("act-now-tasks")
+            dismiss(PROGRESSIVE_ONBOARDING_ACT_NOW_TASKS)
           }
         }, 2000)
       })
