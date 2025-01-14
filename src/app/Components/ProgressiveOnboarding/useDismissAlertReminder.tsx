@@ -1,6 +1,7 @@
 import { useIsFocused } from "@react-navigation/native"
 import { GlobalStore } from "app/store/GlobalStore"
 import {
+  PROGRESSIVE_ONBOARDING_ALERT_FINISH,
   PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1,
   PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2,
   PROGRESSIVE_ONBOARDING_ALERT_REMINDER_CHAIN,
@@ -24,10 +25,9 @@ export const useDismissAlertReminder = () => {
     ? 10 * SECONDS
     : 7 * DAYS
 
-  const displayFirstTime = !isDismissed(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1).status
-  // TODO: Bring it back when onboarding is working again.
-  // isDismissed(PROGRESSIVE_ONBOARDING_ALERT_FINISH).status &&
-  // Date.now() - isDismissed(PROGRESSIVE_ONBOARDING_ALERT_FINISH).timestamp >= interval
+  const displayFirstTime =
+    isDismissed(PROGRESSIVE_ONBOARDING_ALERT_FINISH).status &&
+    Date.now() - isDismissed(PROGRESSIVE_ONBOARDING_ALERT_FINISH).timestamp >= interval
 
   const displaySecondTime =
     !isDismissed(PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2).status &&
