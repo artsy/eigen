@@ -54,7 +54,7 @@ describe("ProgressiveOnboardingSaveAlert", () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         sessionState: { isReady: true },
-        dismissed: [{ key: "save-highlight", timestamp: Date.now() }],
+        dismissed: [{ key: "offer-settings", timestamp: Date.now() }],
       },
     })
     wrapper()
@@ -66,7 +66,7 @@ describe("ProgressiveOnboardingSaveAlert", () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         sessionState: { isReady: true },
-        dismissed: [{ key: "save-highlight", timestamp: Date.now() }],
+        dismissed: [{ key: "offer-settings", timestamp: Date.now() }],
       },
     })
     wrapper()
@@ -85,7 +85,7 @@ describe("ProgressiveOnboardingSaveAlert", () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         sessionState: { isReady: true },
-        dismissed: [{ key: "save-highlight", timestamp: Date.now() }],
+        dismissed: [{ key: "offer-settings", timestamp: Date.now() }],
       },
     })
     wrapper()
@@ -96,7 +96,7 @@ describe("ProgressiveOnboardingSaveAlert", () => {
     expect(__globalStoreTestUtils__?.getLastAction()).toHaveProperty("payload", "alert-create")
   })
 
-  it("does not show the popover if 'save-highlight' is not dismissed", () => {
+  it("does not show the popover if 'offer-settings' is not dismissed", () => {
     wrapper()
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
   })

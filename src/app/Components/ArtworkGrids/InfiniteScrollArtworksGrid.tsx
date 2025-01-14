@@ -340,7 +340,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
           artwork.artist?.targetSupply?.isTargetSupply &&
           !(artwork as any).consignmentSubmission
 
-        console.log("[LOGD] displayToolTip = ", displayToolTip)
         artworkComponents.push(
           <ItemComponent
             contextScreenOwnerType={contextScreenOwnerType}

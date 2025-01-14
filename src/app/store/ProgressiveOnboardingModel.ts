@@ -64,9 +64,11 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
 })
 
 // Saves
+// displayed on Artwork grids
 export const PROGRESSIVE_ONBOARDING_SAVE_ARTWORK = "save-artwork"
 
 // Alerts
+// make sure "save-artwork" is dismissed before showing alert chain
 export const PROGRESSIVE_ONBOARDING_ALERT_CREATE = "alert-create"
 export const PROGRESSIVE_ONBOARDING_ALERT_SELECT_FILTERS = "alert-select-filters"
 export const PROGRESSIVE_ONBOARDING_ALERT_FINISH = "alert-finish"
@@ -77,13 +79,16 @@ export const PROGRESSIVE_ONBOARDING_ALERT_CHAIN = [
 ] as const
 
 // My Collection
+// independant Popover, called on Mycollection Artworks grid
 export const PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK = "my-collection-sell-this-work"
 
 // Partner Offer
+// independant Popover, called on Saves screen
 export const PROGRESSIVE_ONBOARDING_SIGNAL_INTEREST = "signal-interest"
 export const PROGRESSIVE_ONBOARDING_OFFER_SETTINGS = "offer-settings"
 
 // Act Now Tasks
+// make sure it soes not conflict with "save-artwork"
 export const PROGRESSIVE_ONBOARDING_ACT_NOW_TASKS = "act-now-tasks"
 
 export const PROGRESSIVE_ONBOARDING_KEYS = [

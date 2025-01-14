@@ -19,9 +19,14 @@ export const ProgressiveOnboardingSaveArtwork: React.FC = ({ children }) => {
 
   const savedArtworks = data?.me.counts.savedArtworks
   const isDismissed = _isDismissed(PROGRESSIVE_ONBOARDING_SAVE_ARTWORK).status
+  /**
+   *  we might not need the && savedArtworks === 0 check here because we have useDismissSavedArtwork()
+   * hook that is being calld on the homeview
+   */
   const isDisplayable = isReady && !isDismissed && savedArtworks === 0 && isInView
 
-  const { isActive, clearActivePopover } = useSetActivePopover(isDisplayable)
+  const { clearActivePopover } = useSetActivePopover(isDisplayable)
+
   const isPartnerOfferEnabled = useFeatureFlag("AREnablePartnerOffer")
 
   const handleDismiss = () => {
@@ -30,18 +35,10 @@ export const ProgressiveOnboardingSaveArtwork: React.FC = ({ children }) => {
   }
 
   // all conditions met we show the popover
-  if (isDisplayable && isActive) {
-    const content = (
-      <Text color="white100">
-        {isPartnerOfferEnabled
-          ? "Tap the heart to save an artwork\nand signal your interest to galleries."
-          : "Hit the heart to save an artwork."}
-      </Text>
-    )
-
+  if (isDisplayable) {
     return (
       <Popover
-        visible={isActive}
+        visible={isDisplayable}
         onDismiss={handleDismiss}
         onPressOutside={handleDismiss}
         onCloseComplete={clearActivePopover}
@@ -50,7 +47,13 @@ export const ProgressiveOnboardingSaveArtwork: React.FC = ({ children }) => {
             Like what you see?
           </Text>
         }
-        content={content}
+        content={
+          <Text color="white100">
+            {isPartnerOfferEnabled
+              ? "Tap the heart to save an artwork\nand signal your interest to galleries."
+              : "Hit the heart to save an artwork."}
+          </Text>
+        }
       >
         <Flex>{children}</Flex>
       </Popover>

@@ -59,10 +59,15 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
 
   const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
-  const { isActive, clearActivePopover } = useSetActivePopover(
-    !!displayToolTip && !isDismissed(PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK).status,
-    PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK
-  )
+
+  const isDisplayable =
+    /**
+     * this popover is displayed only in My Collection, this is why there is no
+     * need to check if the save artwork popover was dismissed
+     */
+    !!displayToolTip && !isDismissed(PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK).status
+
+  const { clearActivePopover } = useSetActivePopover(isDisplayable)
 
   const handleDismissPopover = () => {
     dismiss(PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK)
@@ -70,7 +75,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
 
   return (
     <Popover
-      visible={!!displayToolTip && isActive}
+      visible={!!isDisplayable}
       onDismiss={handleDismissPopover}
       onPressOutside={handleDismissPopover}
       onCloseComplete={clearActivePopover}

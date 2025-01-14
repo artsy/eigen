@@ -5,6 +5,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import {
   PROGRESSIVE_ONBOARDING_ALERT_CREATE,
   PROGRESSIVE_ONBOARDING_ALERT_SELECT_FILTERS,
+  PROGRESSIVE_ONBOARDING_SAVE_ARTWORK,
 } from "app/store/ProgressiveOnboardingModel"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
@@ -21,9 +22,10 @@ export const ProgressiveOnboardingAlertFilters: React.FC = ({ children }) => {
     isReady &&
     !isDismissed(PROGRESSIVE_ONBOARDING_ALERT_SELECT_FILTERS).status &&
     !!isDismissed(PROGRESSIVE_ONBOARDING_ALERT_CREATE).status &&
+    !!isDismissed(PROGRESSIVE_ONBOARDING_SAVE_ARTWORK) &&
     !!progressiveOnboardingAlerts &&
     isFocused
-  const { isActive, clearActivePopover } = useSetActivePopover(isDisplayable)
+  const { clearActivePopover } = useSetActivePopover(isDisplayable)
 
   const handleDismiss = () => {
     setIsReady(false)
@@ -32,7 +34,7 @@ export const ProgressiveOnboardingAlertFilters: React.FC = ({ children }) => {
 
   return (
     <Popover
-      visible={!!isDisplayable && isActive}
+      visible={!!isDisplayable}
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
       onCloseComplete={clearActivePopover}
