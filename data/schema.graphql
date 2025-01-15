@@ -16448,22 +16448,22 @@ type Query {
     # The number of curated artworks to return. This is a temporary field to support the transition to OpenSearch
     curatedPicksSize: Int = 2
 
-    # (Only for when useOpenSearch is true) Exclude these artworks from the response
+    # Exclude these artworks from the response
     excludeArtworkIds: [String]
     first: Int
 
-    # (Only for when useOpenSearch is true) Which index to use to display initial batch of artworks
+    # Which index to use to display initial batch of artworks
     initialArtworksIndexName: String = "infinite_discovery_initial_artworks"
     last: Int
 
-    # (Only for when useOpenSearch is true) These artworks are used to calculate the taste profile vector. Such artworks are excluded from the response
+    # These artworks are used to calculate the taste profile vector. Such artworks are excluded from the response
     likedArtworkIds: [String]
     limit: Int
 
-    # (Only for when useOpenSearch is true) These fields are used to calculate the More Like This query
+    # These fields are used for More Like This query
     mltFields: [String] = ["genes", "materials", "tags", "medium"]
 
-    # (Only for when useOpenSearch is true) Weights for the OpenSearch query
+    # Weights for the KNN and MLT query
     osWeights: [Float] = [0.6, 0.4]
   ): ArtworkConnection
 
@@ -21024,22 +21024,22 @@ type Viewer {
     # The number of curated artworks to return. This is a temporary field to support the transition to OpenSearch
     curatedPicksSize: Int = 2
 
-    # (Only for when useOpenSearch is true) Exclude these artworks from the response
+    # Exclude these artworks from the response
     excludeArtworkIds: [String]
     first: Int
 
-    # (Only for when useOpenSearch is true) Which index to use to display initial batch of artworks
+    # Which index to use to display initial batch of artworks
     initialArtworksIndexName: String = "infinite_discovery_initial_artworks"
     last: Int
 
-    # (Only for when useOpenSearch is true) These artworks are used to calculate the taste profile vector. Such artworks are excluded from the response
+    # These artworks are used to calculate the taste profile vector. Such artworks are excluded from the response
     likedArtworkIds: [String]
     limit: Int
 
-    # (Only for when useOpenSearch is true) These fields are used to calculate the More Like This query
+    # These fields are used for More Like This query
     mltFields: [String] = ["genes", "materials", "tags", "medium"]
 
-    # (Only for when useOpenSearch is true) Weights for the OpenSearch query
+    # Weights for the KNN and MLT query
     osWeights: [Float] = [0.6, 0.4]
   ): ArtworkConnection
 
