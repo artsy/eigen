@@ -83,10 +83,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
-  const enableContextMenuForRecommendations =
-    useFeatureFlag("AREnableLongPressOnNewForYouRail") && contextModule == "newWorksForYouRail"
-  const enableContextMenu =
-    useFeatureFlag("AREnableLongPressOnArtworkCards") || enableContextMenuForRecommendations
+  const enableContextMenu = useFeatureFlag("AREnableArtworkCardContextMenuIOS")
   const { submitMutation: dislikeArtworkMutation } = useDislikeArtwork()
   const isIOS = Platform.OS === "ios"
   const color = useColor()
