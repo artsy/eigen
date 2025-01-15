@@ -131,7 +131,6 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
       return (
         <TaskItem
           task={item}
-          allTasks={tasks}
           taskRefs={taskRefs}
           index={index}
           showAll={showAll}
@@ -220,6 +219,7 @@ const tasksFragment = graphql`
     numberOfTasks: { type: "Int", defaultValue: 10 }
     after: { type: "String" }
   ) {
+    id
     internalID
     contextModule
     ownerType
@@ -240,7 +240,6 @@ const tasksFragment = graphql`
 
 interface TaskItemProps {
   task: Task
-  allTasks: Task[]
   taskRefs: Map<string, RefObject<SwipeableMethods>>
   showAll: boolean
   index: number
@@ -290,7 +289,6 @@ const TaskItem = ({
     <Animated.View exiting={FadeOut} style={animatedStyle} key={task.internalID}>
       <Task
         disableSwipeable={displayTaskStack}
-        // onClearTask={onClearTask}
         onPress={displayTaskStack ? () => setShowAll((prev) => !prev) : undefined}
         ref={taskRef}
         onOpenTask={onOpenTask}

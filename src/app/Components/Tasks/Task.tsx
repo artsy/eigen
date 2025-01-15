@@ -42,10 +42,8 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
       const tasksConnection = ConnectionHandler.getConnection(homeViewTaskSection, key)
 
       if (tasksConnection) {
-        if (tasksConnection) {
-          // remove the task with matching relay id from the connection
-          ConnectionHandler.deleteNode(tasksConnection, task.relayID)
-        }
+        // remove the task with matching relay id from the connection
+        ConnectionHandler.deleteNode(tasksConnection, task.relayID)
       }
     }
 
