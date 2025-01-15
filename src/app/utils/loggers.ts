@@ -5,7 +5,7 @@ let metaflags = {
   logNavigation: false,
   logNotification: false,
   logOperation: false,
-  logPrefetching: true,
+  logPrefetching: false,
   logQueryPath: false,
   logRelay: false,
   logRelayVerbose: false,
