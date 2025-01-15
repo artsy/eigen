@@ -130,13 +130,14 @@ describe("HomeViewSectionTasks", () => {
   it("clears and tracks when clearing a task", async () => {
     const initialHomeViewSection = {
       internalID: "home-view-section-recommended-tasks",
+      id: "HomeViewSectionTasks-mock-id-for-relay-fragment-matching",
       component: {
         title: "Act Now",
       },
       tasksConnection: mockTasks,
     }
 
-    const { mockResolveLastOperation, env } = renderWithRelay({
+    const { mockResolveLastOperation } = renderWithRelay({
       HomeViewSectionTasks: () => initialHomeViewSection,
     })
 
@@ -189,8 +190,8 @@ describe("HomeViewSectionTasks", () => {
       ]
     `)
 
-    // TODO: Not staying gone after successful mutation result
-    // expect(screen.queryByText("Task 1")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Task 1")).not.toBeOnTheScreen()
+    expect(screen.getByText("Task 2")).toBeOnTheScreen()
   })
 
   it("closes open tasks when collapsing the section", async () => {
