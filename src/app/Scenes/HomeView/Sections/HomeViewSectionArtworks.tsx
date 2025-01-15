@@ -59,10 +59,6 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
       section.contextModule as ContextModule,
       position
     )
-
-    if (artwork.href) {
-      navigate(artwork.href)
-    }
   }
 
   const onSectionViewAll = () => {

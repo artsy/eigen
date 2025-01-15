@@ -53,10 +53,6 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
       artwork: ArtworkRail_artworks$data[0] | ArtworkRail_artworks$data[0],
       position: number
     ) => {
-      if (!artwork.href) {
-        return
-      }
-
       const collectorSignals = artwork.collectorSignals
 
       trackEvent(
@@ -69,7 +65,6 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
           collectorSignals
         )
       )
-      navigate(artwork.href)
     }
 
     return (

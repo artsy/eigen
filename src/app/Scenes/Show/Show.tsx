@@ -147,17 +147,19 @@ export const ShowFragmentContainer = createFragmentContainer(Show, {
   `,
 })
 
+export const ShowScreenQuery = graphql`
+  query ShowQuery($showID: String!) @cacheable {
+    show(id: $showID) @principalField {
+      ...Show_show
+    }
+  }
+`
+
 export const ShowQueryRenderer: React.FC<ShowQueryRendererProps> = ({ showID }) => {
   return (
     <QueryRenderer<ShowQuery>
       environment={getRelayEnvironment()}
-      query={graphql`
-        query ShowQuery($showID: String!) @cacheable {
-          show(id: $showID) @principalField {
-            ...Show_show
-          }
-        }
-      `}
+      query={ShowScreenQuery}
       variables={{ showID }}
       cacheConfig={{
         force: false,

@@ -25,7 +25,11 @@ import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
 import { ArticlesSlideShowScreen } from "app/Scenes/ArticleSlideShow/ArticleSlideShow"
 import { ArticlesScreen, ArticlesScreenQuery } from "app/Scenes/Articles/Articles"
 import { NewsScreen, NewsScreenQuery } from "app/Scenes/Articles/News/News"
-import { ArtistQueryRenderer, ArtistScreenQuery } from "app/Scenes/Artist/Artist"
+import {
+  ArtistQueryRenderer,
+  ArtistScreenQuery,
+  defaultArtistVariables,
+} from "app/Scenes/Artist/Artist"
 import { ArtistArticlesQueryRenderer } from "app/Scenes/ArtistArticles/ArtistArticles"
 import { ArtistSeriesQueryRenderer } from "app/Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
@@ -125,7 +129,7 @@ import { ConsignmentInquiryScreen } from "app/Scenes/SellWithArtsy/ConsignmentIn
 import { SellWithArtsyHomeScreenQuery } from "app/Scenes/SellWithArtsy/SellWithArtsyHome"
 import { SellWithArtsy } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils"
 import { ShowMoreInfoQueryRenderer } from "app/Scenes/Show/Screens/ShowMoreInfo"
-import { ShowQueryRenderer } from "app/Scenes/Show/Show"
+import { ShowQueryRenderer, ShowScreenQuery } from "app/Scenes/Show/Show"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import { TagQueryRenderer } from "app/Scenes/Tag/Tag"
 import { VanityURLEntityRenderer } from "app/Scenes/VanityURL/VanityURLEntity"
@@ -192,7 +196,14 @@ export type ModuleDescriptor<T = string> = {
   name: T
   Component: React.ComponentType<any>
   options?: ViewOptions
-  Queries?: GraphQLTaggedNode[]
+  /**
+   * If the route has a query, you can specify it here. The query will be used to prefetch data for the route.
+   */
+  queries?: GraphQLTaggedNode[]
+  /**
+   * Here variables can be specified for each query. The variables will be merged with the route params.
+   */
+  queryVariables?: object[]
   injectParams?: (params: any) => any
 }
 
@@ -215,7 +226,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [homeViewScreenQuery],
+    queries: [homeViewScreenQuery],
   },
   {
     path: "/about",
@@ -237,7 +248,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [activityHeaderQuery, activityContentQuery],
+    queries: [activityHeaderQuery, activityContentQuery],
   },
   {
     path: "/notification/:notificationID",
@@ -249,7 +260,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [ActivityItemQuery],
+    queries: [ActivityItemQuery],
   },
   {
     path: "/art-quiz",
@@ -315,7 +326,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [ArticlesScreenQuery],
+    queries: [ArticlesScreenQuery],
   },
   {
     path: "/artist-series/:artistSeriesID",
@@ -336,7 +347,8 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [ArtistScreenQuery],
+    queries: [ArtistScreenQuery],
+    queryVariables: [defaultArtistVariables],
   },
   {
     path: "/artist/:artistID/articles",
@@ -372,7 +384,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [ArtistScreenQuery],
+    queries: [ArtistScreenQuery],
 
     injectParams: (params) => ({
       ...params,
@@ -388,7 +400,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [ArtistScreenQuery],
+    queries: [ArtistScreenQuery],
     injectParams: (params) => ({
       ...params,
       initialTab: "Artworks",
@@ -411,7 +423,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [ArtistScreenQuery],
+    queries: [ArtistScreenQuery],
   },
   {
     path: "/:profile_id_ignored/artist/:artistID",
@@ -422,7 +434,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [ArtistScreenQuery],
+    queries: [ArtistScreenQuery],
   }, // For artists in a gallery context, like https://www.artsy.net/spruth-magers/artist/astrid-klein . Until we have a native // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
 
   {
@@ -475,7 +487,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [ArtworkScreenQuery],
+    queries: [ArtworkScreenQuery],
   },
   {
     path: "/artwork/:artworkID/medium",
@@ -525,14 +537,14 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [AuctionResultsForArtistsYouFollowPrefetchQuery],
+    queries: [AuctionResultsForArtistsYouFollowPrefetchQuery],
   },
   {
     path: "/auction/:saleID",
     name: "Auction",
     Component: SaleQueryRenderer,
     options: { screenOptions: { headerShown: false } },
-    Queries: [SaleScreenQuery],
+    queries: [SaleScreenQuery],
   },
   {
     path: "/auction/:saleID/bid/:artworkID",
@@ -564,7 +576,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [SalesScreenQuery],
+    queries: [SalesScreenQuery],
   },
   {
     path: "/auctions/lots-for-you-ending-soon",
@@ -672,7 +684,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [FairScreenQuery],
+    queries: [FairScreenQuery],
   },
   {
     path: "/fair/:fairID/articles",
@@ -693,7 +705,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [FairScreenQuery],
+    queries: [FairScreenQuery],
   },
   {
     path: "/fair/:fairID/artworks",
@@ -704,7 +716,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [FairScreenQuery],
+    queries: [FairScreenQuery],
   },
   {
     path: "/fair/:fairID/exhibitors",
@@ -715,7 +727,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [FairScreenQuery],
+    queries: [FairScreenQuery],
   },
   {
     path: "/fair/:fairID/followedArtists",
@@ -793,7 +805,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [InboxScreenQuery],
+    queries: [InboxScreenQuery],
   },
   {
     path: "/infinite-discovery",
@@ -933,7 +945,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [MyCollectionArtworkScreenQuery],
+    queries: [MyCollectionArtworkScreenQuery],
   },
   {
     path: "/my-collection/artwork/:artworkID/price-estimate",
@@ -1036,7 +1048,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [MyCollectionScreenQuery],
+    queries: [MyCollectionScreenQuery],
   },
   {
     path: "/my-profile/edit",
@@ -1097,7 +1109,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [NewsScreenQuery],
+    queries: [NewsScreenQuery],
   },
   {
     path: "/new-for-you",
@@ -1234,7 +1246,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [RecentlyViewedScreenQuery],
+    queries: [RecentlyViewedScreenQuery],
   },
   {
     path: "/sell",
@@ -1247,7 +1259,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [SellWithArtsyHomeScreenQuery],
+    queries: [SellWithArtsyHomeScreenQuery],
   },
   {
     path: "/search",
@@ -1260,7 +1272,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    Queries: [SearchScreenQuery],
+    queries: [SearchScreenQuery],
   },
   {
     path: "/sell/inquiry",
@@ -1363,6 +1375,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/show/:showID",
     name: "Show",
     Component: ShowQueryRenderer,
+    queries: [ShowScreenQuery],
   },
   {
     path: "/show/:showID/info",
@@ -1424,7 +1437,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/viewing-room/:viewing_room_id",
     name: "ViewingRoom",
     Component: ViewingRoomQueryRenderer,
-    Queries: [ViewingRoomScreenQuery],
+    queries: [ViewingRoomScreenQuery],
   },
   {
     path: "/viewing-room/:viewing_room_id/artworks",
@@ -1440,7 +1453,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/viewing-rooms",
     name: "ViewingRooms",
     Component: ViewingRoomsListScreen,
-    Queries: [viewingRoomsListScreenQuery],
+    queries: [viewingRoomsListScreenQuery],
     options: {
       screenOptions: {
         headerTitle: "Viewing Rooms",
@@ -1451,7 +1464,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/works-for-you",
     name: "WorksForYou",
     Component: WorksForYouQueryRenderer,
-    Queries: [WorksForYouScreenQuery],
+    queries: [WorksForYouScreenQuery],
   },
   webViewRoute({
     path: "/artists",

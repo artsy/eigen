@@ -42,10 +42,6 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = (
       <ArtworkRail
         artworks={artworks}
         onPress={(artwork, position) => {
-          if (!artwork.href) {
-            return
-          }
-
           trackEvent(
             tracks.tappedArtwork(
               fair,
@@ -55,7 +51,6 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = (
               artwork.collectorSignals
             )
           )
-          navigate(artwork.href)
         }}
       />
     </>

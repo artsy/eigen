@@ -44,7 +44,6 @@ export const RecommendedAuctionLotsRail: React.FC<RecommendedAuctionLotsRailProp
         position,
         "single"
       )
-      navigate(artwork.href)
     }
 
     return (

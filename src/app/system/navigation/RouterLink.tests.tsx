@@ -22,6 +22,12 @@ jest.mock("app/utils/ElementInView", () => ({
 }))
 
 describe("RouterLink", () => {
+  beforeAll(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      AREnableViewPortPrefetching: true,
+    })
+  })
+
   afterEach(() => {
     jest.clearAllMocks()
   })
@@ -38,22 +44,28 @@ describe("RouterLink", () => {
     expect(screen.getByText("Test Link")).toBeDefined()
   })
 
-  it("navigates to route on press", () => {
+  it("navigates to route on press (with prefetching)", async () => {
     renderWithWrappers(<TestComponent />)
 
     fireEvent.press(screen.getByText("Test Link"))
 
-    expect(navigate).toHaveBeenCalledWith("/test-route", { passProps: { id: "test-id" } })
+    expect(navigate).toHaveBeenCalledExactlyOnceWith("/test-route", {
+      passProps: { id: "test-id" },
+    })
+  })
+
+  it("navigates to route on press (without prefetching)", () => {
+    renderWithWrappers(<TestComponent disablePrefetch />)
+
+    fireEvent.press(screen.getByText("Test Link"))
+
+    expect(navigate).toHaveBeenCalledExactlyOnceWith("/test-route", {
+      passProps: { id: "test-id" },
+    })
   })
 
   describe("prefetching", () => {
-    beforeAll(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableViewPortPrefetching: true,
-      })
-    })
-
-    it("prefetches ", () => {
+    it("prefetches", () => {
       renderWithWrappers(<TestComponent />)
 
       expect(mockPrefetch).toHaveBeenCalledWith("/test-route")
