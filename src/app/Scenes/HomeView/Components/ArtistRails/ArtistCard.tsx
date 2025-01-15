@@ -193,7 +193,7 @@ export const ArtistCardContainer = createFragmentContainer(ArtistCard, {
         edges {
           node {
             image {
-              resized(width: 295) {
+              resized(width: 590, version: ["main", "larger", "large"]) {
                 src
                 width
                 height
