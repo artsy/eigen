@@ -8,13 +8,13 @@ export const useAcknowledgeTask = () => {
 const AcknowledgeTaskMutation = graphql`
   mutation useAcknowledgeTaskMutation($taskID: String!) {
     ackTask(input: { id: $taskID }) {
+      homeViewTasksSection {
+        ...HomeViewSectionTasks_section
+      }
       taskOrError {
         ... on AckTaskSuccess {
           task {
             internalID
-          }
-          homeViewTasksSection {
-            ...HomeViewSectionTasks_section
           }
         }
 

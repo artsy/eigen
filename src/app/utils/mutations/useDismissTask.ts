@@ -8,14 +8,14 @@ export const useDismissTask = () => {
 const DismissTaskMutation = graphql`
   mutation useDismissTaskMutation($taskID: String!) {
     dismissTask(input: { id: $taskID }) {
+      homeViewTasksSection {
+        ...HomeViewSectionTasks_section
+      }
       taskOrError {
         __typename
         ... on DismissTaskSuccess {
           task {
             internalID
-          }
-          homeViewTasksSection {
-            ...HomeViewSectionTasks_section
           }
         }
 

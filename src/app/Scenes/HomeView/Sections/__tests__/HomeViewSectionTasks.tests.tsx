@@ -158,19 +158,19 @@ describe("HomeViewSectionTasks", () => {
       // mock resolve the mutation
       mockResolveLastOperation({
         DismissTaskMutationPayload: () => ({
+          homeViewTasksSection: {
+            __typename: "HomeViewTasksSection",
+            ...initialHomeViewSection,
+            tasksConnection: {
+              edges: initialHomeViewSection.tasksConnection.edges.filter(
+                ({ node }) => node.internalID !== "1"
+              ),
+            },
+          },
           taskOrError: {
             __typename: "DismissTaskSuccess",
             task: {
               internalID: "1",
-            },
-            homeViewTasksSection: {
-              __typename: "HomeViewTasksSection",
-              ...initialHomeViewSection,
-              tasksConnection: {
-                edges: initialHomeViewSection.tasksConnection.edges.filter(
-                  ({ node }) => node.internalID !== "1"
-                ),
-              },
             },
           },
         }),
