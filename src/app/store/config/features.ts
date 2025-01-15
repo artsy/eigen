@@ -75,12 +75,6 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnableNewAuctionsRailCard",
   },
-  AREnableLongPressOnArtworkCards: {
-    description: "Enable Context Menu on artwork cards",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableLongPressOnArtworkCards",
-  },
   AREnableShowsForYouLocation: {
     description: "Enable Shows For You Location",
     readyForRelease: true,
@@ -193,12 +187,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAlertBottomSheet",
   },
-  AREnableLongPressOnNewForYouRail: {
-    description: "Enable Context Menu on artwork cards on new for you rail",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableLongPressOnNewForYouRail",
-  },
   AREnableMyCollectionInterestedInSellingTooltip: {
     description: "Enable My Collection 'Interested in Selling?' tooltip",
     readyForRelease: true,
@@ -257,6 +245,12 @@ export const features = {
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableViewPortPrefetching",
+  },
+  AREnableArtworkCardContextMenuIOS: {
+    description: "Enable long press menu on artwork cards for iOS",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableArtworkCardContextMenuIOS",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
