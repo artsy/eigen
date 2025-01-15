@@ -196,7 +196,13 @@ export type ModuleDescriptor<T = string> = {
   name: T
   Component: React.ComponentType<any>
   options?: ViewOptions
+  /**
+   * If the route has a query, you can specify it here. The query will be used to prefetch data for the route.
+   */
   queries?: GraphQLTaggedNode[]
+  /**
+   * Here variables can be specified for each query. The variables will be merged with the route params.
+   */
   queryVariables?: object[]
   injectParams?: (params: any) => any
 }
