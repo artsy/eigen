@@ -27,10 +27,8 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
     useQueryLoader<InfiniteDiscoveryBottomSheetTabsQuery>(aboutTheWorkQuery)
 
   useEffect(() => {
-    if (!queryRef) {
-      loadQuery({ id: artworkID })
-    }
-  }, [])
+    loadQuery({ id: artworkID })
+  }, [artworkID])
 
   const pan = Gesture.Pan().onUpdate((event) => {
     if (event.translationY < TRANSLATE_Y_THRESHOLD) {
