@@ -23,8 +23,8 @@ export const ContextMenuArtworkPreviewCardImage: React.FC<
 
     const imageWidth = containerWidth
     const imageHeight = imageWidth / imageAspectRatio
-    const { height: screenHeight } = useScreenDimensions()
 
+    const { height: screenHeight } = useScreenDimensions()
     const maxHeight = Math.floor(screenHeight / 2)
 
     let containerHeight = imageHeight
