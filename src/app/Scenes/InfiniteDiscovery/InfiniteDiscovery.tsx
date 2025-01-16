@@ -10,25 +10,51 @@ import {
   useScreenDimensions,
   useTheme,
 } from "@artsy/palette-mobile"
+import { InfiniteDiscoveryRefetchQuery } from "__generated__/InfiniteDiscoveryRefetchQuery.graphql"
+import { InfiniteDiscovery_Fragment$key } from "__generated__/InfiniteDiscovery_Fragment.graphql"
 import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { sizeToFit } from "app/utils/useSizeToFit"
-import { useMemo, useState } from "react"
-import { graphql, useLazyLoadQuery } from "react-relay"
-import type { InfiniteDiscoveryQuery } from "__generated__/InfiniteDiscoveryQuery.graphql"
+import { useEffect, useState } from "react"
+import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
+import type {
+  InfiniteDiscoveryQuery,
+  InfiniteDiscoveryQuery$data,
+} from "__generated__/InfiniteDiscoveryQuery.graphql"
 import type { Card } from "app/Components/FancySwiper/FancySwiperCard"
 
-export const InfiniteDiscovery: React.FC = () => {
-  const data = useLazyLoadQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, {})
-  const artworks = useMemo(() => extractNodes(data.marketingCollection?.artworksConnection), [data])
+interface InfiniteDiscoveryProps {
+  artworks: InfiniteDiscoveryQuery$data
+}
+
+export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({ artworks: _artworks }) => {
+  const [data, refetch] = useRefetchableFragment<
+    InfiniteDiscoveryRefetchQuery,
+    InfiniteDiscovery_Fragment$key
+  >(infiniteDiscoveryFragment, _artworks)
+
+  const REFETCH_BUFFER = 2
 
   const { color } = useTheme()
   const { width: screenWidth } = useScreenDimensions()
 
   const [index, setIndex] = useState(0)
+  const [artworks, setArtworks] = useState(extractNodes(data.discoverArtworks))
+
+  useEffect(() => {
+    setArtworks((previousArtworks) => {
+      // only add new artworks to the list by filtering-out existing artworks
+      const newArtworks = extractNodes(data.discoverArtworks).filter(
+        (newArtwork) =>
+          !previousArtworks.some((artwork) => artwork.internalID === newArtwork.internalID)
+      )
+
+      return [...previousArtworks, ...newArtworks]
+    })
+  }, [data, extractNodes, setArtworks])
 
   const goToPrevious = () => {
     if (index > 0) {
@@ -39,6 +65,16 @@ export const InfiniteDiscovery: React.FC = () => {
   const goToNext = () => {
     if (index < artworks.length - 1) {
       setIndex(index + 1)
+    }
+
+    // fetch more artworks when the user is about to reach the end of the list
+    if (index === artworks.length - REFETCH_BUFFER) {
+      refetch(
+        { excludeArtworkIds: artworks.map((artwork) => artwork.internalID) },
+        {
+          fetchPolicy: "network-only",
+        }
+      )
     }
   }
 
@@ -74,13 +110,14 @@ export const InfiniteDiscovery: React.FC = () => {
                 Follow
               </Button>
             }
+            p={1}
           />
           <Spacer y={2} />
 
           <Flex alignItems="center" backgroundColor={color("purple60")}>
             {!!src && <Image src={src} height={size.height} width={size.width} />}
           </Flex>
-          <Flex flexDirection="row" justifyContent="space-between">
+          <Flex flexDirection="row" justifyContent="space-between" p={1}>
             <Flex>
               <Flex flexDirection="row" maxWidth={screenWidth - 200}>
                 {/* TODO: maxWidth above and ellipsizeMode + numberOfLines below are used to */}
@@ -137,39 +174,53 @@ export const InfiniteDiscovery: React.FC = () => {
 }
 
 export const InfiniteDiscoveryQueryRenderer = withSuspense({
-  Component: InfiniteDiscovery,
-  LoadingFallback: () => <Text>Loading...</Text>,
+  Component: () => {
+    const initialData = useLazyLoadQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, {})
+
+    if (!initialData) {
+      return null
+    }
+
+    return <InfiniteDiscovery artworks={initialData} />
+  },
+  LoadingFallback: SpinnerFallback,
   ErrorFallback: NoFallback,
 })
 
-export const infiniteDiscoveryQuery = graphql`
-  query InfiniteDiscoveryQuery {
-    marketingCollection(slug: "curators-picks") {
-      artworksConnection(first: 10) {
-        edges {
-          node {
-            artistNames
-            artists(shallow: true) {
-              coverArtwork {
-                images {
-                  url(version: "small")
-                }
+const infiniteDiscoveryFragment = graphql`
+  fragment InfiniteDiscovery_Fragment on Query
+  @refetchable(queryName: "InfiniteDiscoveryRefetchQuery")
+  @argumentDefinitions(excludeArtworkIds: { type: "[String!]" }) {
+    discoverArtworks(excludeArtworkIds: $excludeArtworkIds) {
+      edges {
+        node {
+          artistNames
+          artists(shallow: true) {
+            coverArtwork {
+              images {
+                url(version: "small")
               }
-              formattedNationalityAndBirthday
-              initials
             }
-            date
-            internalID @required(action: NONE)
-            images {
-              url(version: "large")
-              width
-              height
-            }
-            saleMessage
-            title
+            formattedNationalityAndBirthday
+            initials
           }
+          date
+          internalID @required(action: NONE)
+          images {
+            url(version: "large")
+            width
+            height
+          }
+          saleMessage
+          title
         }
       }
     }
+  }
+`
+
+export const infiniteDiscoveryQuery = graphql`
+  query InfiniteDiscoveryQuery {
+    ...InfiniteDiscovery_Fragment
   }
 `

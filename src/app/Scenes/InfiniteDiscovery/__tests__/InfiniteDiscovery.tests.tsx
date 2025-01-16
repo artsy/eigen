@@ -1,4 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { swipeLeft } from "app/Components/FancySwiper/__tests__/utils"
 import {
   infiniteDiscoveryQuery,
   InfiniteDiscoveryQueryRenderer,
@@ -60,105 +61,23 @@ describe("InfiniteDiscovery", () => {
 })
 
 const marketingCollection = {
-  MarketingCollection: () => ({
-    artworksConnection: {
-      edges: [
-        {
-          node: {
-            internalID: "artwork-1",
-          },
+  ArtworkConnection: () => ({
+    edges: [
+      {
+        node: {
+          internalID: "artwork-1",
         },
-        {
-          node: {
-            internalID: "artwork-2",
-          },
+      },
+      {
+        node: {
+          internalID: "artwork-2",
         },
-      ],
-    },
+      },
+      {
+        node: {
+          internalID: "artwork-3",
+        },
+      },
+    ],
   }),
-}
-
-const swipeLeft = () => {
-  const topCard = screen.getByTestId("top-fancy-swiper-card")
-
-  const startX = 0
-  const startY = 0
-  const startTimeStamp = Date.now()
-
-  // Simulate the start of the pan gesture
-  fireEvent(topCard, "responderStart", {
-    touchHistory: {
-      indexOfSingleActiveTouch: 1,
-      mostRecentTimeStamp: startTimeStamp,
-      numberActiveTouches: 1,
-      touchBank: [
-        undefined,
-        {
-          currentPageX: startX,
-          currentPageY: startY,
-          currentTimeStamp: startTimeStamp,
-          previousPageX: startX,
-          previousPageY: startY,
-          previousTimeStamp: startTimeStamp,
-          startPageX: startX,
-          startPageY: startY,
-          startTimeStamp: startTimeStamp,
-          touchActive: true,
-        },
-      ],
-    },
-  })
-
-  const moveX = -300
-  const moveTimeStamp = Date.now()
-
-  // Simulate the move during the pan gesture
-  fireEvent(topCard, "responderMove", {
-    touchHistory: {
-      indexOfSingleActiveTouch: 1,
-      mostRecentTimeStamp: moveTimeStamp,
-      numberActiveTouches: 1,
-      touchBank: [
-        undefined,
-        {
-          currentPageX: moveX,
-          currentPageY: startY,
-          currentTimeStamp: moveTimeStamp,
-          previousPageX: startX,
-          previousPageY: startY,
-          previousTimeStamp: startTimeStamp,
-          startPageX: startX,
-          startPageY: startY,
-          startTimeStamp: startTimeStamp,
-          touchActive: true,
-        },
-      ],
-    },
-  })
-
-  const releaseTimeStamp = Date.now()
-
-  // Simulate the end of the pan gesture
-  fireEvent(topCard, "responderRelease", {
-    touchHistory: {
-      indexOfSingleActiveTouch: 1,
-      mostRecentTimeStamp: releaseTimeStamp,
-      numberActiveTouches: 0,
-      touchBank: [
-        undefined,
-        {
-          currentPageX: moveX,
-          currentPageY: startY,
-          currentTimeStamp: releaseTimeStamp,
-          previousPageX: moveX,
-          previousPageY: startY,
-          previousTimeStamp: moveTimeStamp,
-          startPageX: startX,
-          startPageY: startY,
-          startTimeStamp: startTimeStamp,
-          touchActive: false,
-        },
-      ],
-    },
-  })
 }
