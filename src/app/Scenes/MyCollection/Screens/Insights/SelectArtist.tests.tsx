@@ -1,5 +1,6 @@
-import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import { useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -49,7 +50,7 @@ describe("SelectArtist", () => {
       })
 
       // Modal is hidden and the artist is updated
-      await waitForElementToBeRemoved(() => screen.queryByTestId("select-artist-modal"))
+      await flushPromiseQueue()
 
       expect(screen.getByText("Banksy")).toBeTruthy()
     })
@@ -91,7 +92,9 @@ describe("SelectArtist", () => {
           ...insights,
         },
       })
-      await waitForElementToBeRemoved(() => screen.queryByTestId("select-artist-modal"))
+
+      // Wait for modal to be dismissed
+      await flushPromiseQueue()
 
       // Modal is hidden and the artist is updated
       expect(screen.getByText("Amoako Boafo")).toBeTruthy()

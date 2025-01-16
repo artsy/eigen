@@ -2,7 +2,7 @@ import { Text, Button } from "@artsy/palette-mobile"
 import { Icon20 } from "app/Components/Bidding/Components/Icon"
 import { Title } from "app/Components/Bidding/Components/Title"
 import { Flex } from "app/Components/Bidding/Elements/Flex"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { Markdown } from "app/Components/Markdown"
 import { dismissModal } from "app/system/navigation/navigate"
 import { defaultRules } from "app/utils/renderMarkdown"
@@ -159,7 +159,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
 
     return (
       <View style={{ flex: 1 }}>
-        <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()} />
+        <NavigationHeader useXButton onLeftButtonPress={() => dismissModal()} />
         <View style={{ padding: 20 }}>
           <Flex alignItems="center">
             {status !== RegistrationStatus.RegistrationStatusPending && (

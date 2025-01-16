@@ -1,4 +1,5 @@
 import { Flex, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import { FlashList } from "@shopify/flash-list"
 import {
   ArtworkRail_artworks$data,
   ArtworkRail_artworks$key,
@@ -9,8 +10,6 @@ import {
   ARTWORK_RAIL_CARD_MIN_WIDTH,
 } from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
-import { PrefetchFlashList } from "app/Components/PrefetchFlashList"
-import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import React, { memo, ReactElement, useCallback } from "react"
@@ -33,6 +32,7 @@ export interface ArtworkRailProps extends ArtworkActionTrackingProps {
   ListFooterComponent?: ReactElement | null
   ListHeaderComponent?: ReactElement | null
   listRef?: React.RefObject<FlatList<any>>
+  itemHref?(artwork: Artwork): string
   onEndReached?: () => void
   onEndReachedThreshold?: number
   onMorePress?: () => void
@@ -50,6 +50,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
     ListHeaderComponent = <Spacer x={2} />,
     ListFooterComponent = <Spacer x={2} />,
     hideArtistName = false,
+    itemHref,
     showPartnerName = true,
     dark = false,
     showSaveIcon = false,
@@ -68,6 +69,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
           <ArtworkRailCard
             testID={`artwork-${item.slug}`}
             artwork={item}
+            href={itemHref?.(item)}
             showPartnerName={showPartnerName}
             hideArtistName={hideArtistName}
             dark={dark}
@@ -86,18 +88,16 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
 
     // On android we are using a flatlist to fix some image issues
     // Context https://github.com/artsy/eigen/pull/11207
-    const Wrapper =
+    const ListComponent =
       Platform.OS === "ios"
-        ? (props: any) => (
-            <PrefetchFlashList estimatedItemSize={ARTWORK_RAIL_CARD_MIN_WIDTH} {...props} />
-          )
-        : PrefetchFlatList
+        ? (props: any) => <FlashList estimatedItemSize={ARTWORK_RAIL_CARD_MIN_WIDTH} {...props} />
+        : FlatList
 
     return (
-      <Wrapper
+      <ListComponent
         data={artworks}
         horizontal
-        keyExtractor={(item) => item.internalID}
+        keyExtractor={(item: Artwork) => item.internalID}
         ListFooterComponent={
           <>
             {!!onMorePress && (
@@ -110,8 +110,6 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
         listRef={listRef}
         onEndReached={onEndReached}
         onEndReachedThreshold={onEndReachedThreshold}
-        onViewableItemsChanged={onViewableItemsChanged}
-        prefetchUrlExtractor={(item) => item?.href || undefined}
         renderItem={renderItem}
         showsHorizontalScrollIndicator={false}
         viewabilityConfig={viewabilityConfig}

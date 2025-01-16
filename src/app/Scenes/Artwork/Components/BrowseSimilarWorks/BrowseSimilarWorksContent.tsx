@@ -13,7 +13,7 @@ import {
 } from "__generated__/BrowseSimilarWorksContentQuery.graphql"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { BrowseSimilarWorksProps } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { BrowseSimilarWorksExploreMoreButton } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorksExploreMoreButton"
 import { extractPills } from "app/Scenes/SavedSearchAlert/pillExtractors"
@@ -42,9 +42,9 @@ export const BrowseSimilarWorksContent: React.FC<BrowseSimilarWorksContentProps>
 
   return (
     <Flex flex={1}>
-      <FancyModalHeader
+      <NavigationHeader
         onLeftButtonPress={goBack}
-      >{`Works by ${entity.artists[0].name}`}</FancyModalHeader>
+      >{`Works by ${entity.artists[0].name}`}</NavigationHeader>
       <ScrollView
         contentContainerStyle={{
           paddingBottom: bottomInset,

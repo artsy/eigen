@@ -72,17 +72,13 @@ export const HomeViewSectionFeaturedCollection: React.FC<
   }
 
   const handleOnArtworkPress = (artwork: ArtworkRail_artworks$data[0], index: number) => {
-    if (artwork.href) {
-      tracking.tappedArtworkGroup(
-        artwork.internalID,
-        artwork.slug,
-        artwork.collectorSignals,
-        section.contextModule as ContextModule,
-        index
-      )
-
-      navigate(artwork.href)
-    }
+    tracking.tappedArtworkGroup(
+      artwork.internalID,
+      artwork.slug,
+      artwork.collectorSignals,
+      section.contextModule as ContextModule,
+      index
+    )
   }
 
   return (

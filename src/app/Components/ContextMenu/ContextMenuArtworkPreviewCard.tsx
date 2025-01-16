@@ -79,13 +79,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
             </Text>
           )}
           {!!title && (
-            <Text
-              lineHeight="20px"
-              color={secondaryColor}
-              numberOfLines={1}
-              variant="xs"
-              fontStyle="italic"
-            >
+            <Text lineHeight="20px" color={secondaryColor} numberOfLines={1} variant="xs">
               {title}
               {!!date && (
                 <Text lineHeight="20px" color={secondaryColor} numberOfLines={1} variant="xs">

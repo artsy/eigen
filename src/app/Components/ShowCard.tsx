@@ -1,8 +1,8 @@
-import { Spacer, Flex, Text, Touchable, SkeletonBox, SkeletonText } from "@artsy/palette-mobile"
+import { Flex, SkeletonBox, SkeletonText, Spacer, Text } from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
 import { ShowCard_show$data } from "__generated__/ShowCard_show.graphql"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { compact } from "lodash"
 import { GestureResponderEvent, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -18,13 +18,6 @@ interface ShowCardProps extends ViewProps {
 export const ShowCard: React.FC<ShowCardProps> = ({ show, onPress }) => {
   const imageURL = show.metaImage?.url
 
-  const onTap = (event: GestureResponderEvent) => {
-    onPress?.(event)
-    if (show.href) {
-      navigate(show.href)
-    }
-  }
-
   const showCity = getShowCity({
     showName: show.name,
     showCity: show.city,
@@ -38,7 +31,7 @@ export const ShowCard: React.FC<ShowCardProps> = ({ show, onPress }) => {
 
   return (
     <Flex width={WIDTH}>
-      <Touchable haptic onPress={onTap}>
+      <RouterLink haptic onPress={onPress} to={show.href}>
         <Flex width={WIDTH} overflow="hidden">
           <ImageWithFallback src={imageURL} width={WIDTH} height={HEIGHT} />
           <Spacer y={1} />
@@ -50,7 +43,7 @@ export const ShowCard: React.FC<ShowCardProps> = ({ show, onPress }) => {
           </Text>
           <Text variant="xs">{formattedCityAndDate}</Text>
         </Flex>
-      </Touchable>
+      </RouterLink>
     </Flex>
   )
 }

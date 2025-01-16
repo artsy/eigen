@@ -5,12 +5,13 @@ import {
   MedianSalePriceAtAuctionQuery$data,
 } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import { SelectArtistModal_myCollectionInfo$key } from "__generated__/SelectArtistModal_myCollectionInfo.graphql"
-import { FancyModal } from "app/Components/FancyModal/FancyModal"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { SearchInput } from "app/Components/SearchInput"
 import { extractNodes } from "app/utils/extractNodes"
 import { normalizeText } from "app/utils/normalizeText"
 import React, { useEffect, useState } from "react"
+import { Modal } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 import { graphql, usePaginationFragment } from "react-relay"
 import { SelectArtistList } from "./Components/MyCollectionSelectArtist"
 import { artistsQueryVariables } from "./MedianSalePriceAtAuction"
@@ -57,41 +58,42 @@ export const SelectArtistModal: React.FC<SelectArtistModalProps> = ({
   }, [query])
 
   return (
-    <FancyModal
+    <Modal
       testID="select-artist-modal"
       visible={visible}
-      onBackgroundPressed={closeModal}
-      fullScreen
-      animationPosition="right"
+      onDismiss={closeModal}
+      animationType="slide"
     >
-      <FancyModalHeader onLeftButtonPress={closeModal} hideBottomDivider>
-        <Text variant="sm-display">Select Artist</Text>
-      </FancyModalHeader>
+      <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
+        <NavigationHeader onLeftButtonPress={closeModal} hideBottomDivider>
+          <Text variant="sm-display">Select Artist</Text>
+        </NavigationHeader>
 
-      <Flex flex={1} px={2}>
-        <Flex pt={1} pb={2}>
-          <SearchInput
-            testID="select-artists-search-input"
-            placeholder="Search Artist from Your Collection"
-            value={query}
-            onChangeText={setQuery}
-            error={
-              filteredArtists.length === 0 && normalizedQuery
-                ? "Please select from the list of artists in your collection with insights available."
-                : ""
-            }
+        <Flex flex={1} px={2}>
+          <Flex pt={1} pb={2}>
+            <SearchInput
+              testID="select-artists-search-input"
+              placeholder="Search Artist from Your Collection"
+              value={query}
+              onChangeText={setQuery}
+              error={
+                filteredArtists.length === 0 && normalizedQuery
+                  ? "Please select from the list of artists in your collection with insights available."
+                  : ""
+              }
+            />
+          </Flex>
+
+          <SelectArtistList
+            artistsList={normalizedQuery ? filteredArtists : artistsList}
+            ListHeaderComponent={!normalizedQuery ? ListHeaderComponent : undefined}
+            onEndReached={handleLoadMore}
+            isLoadingNext={isLoadingNext}
+            onItemPress={onItemPress}
           />
         </Flex>
-
-        <SelectArtistList
-          artistsList={normalizedQuery ? filteredArtists : artistsList}
-          ListHeaderComponent={!normalizedQuery ? ListHeaderComponent : undefined}
-          onEndReached={handleLoadMore}
-          isLoadingNext={isLoadingNext}
-          onItemPress={onItemPress}
-        />
-      </Flex>
-    </FancyModal>
+      </SafeAreaView>
+    </Modal>
   )
 }
 

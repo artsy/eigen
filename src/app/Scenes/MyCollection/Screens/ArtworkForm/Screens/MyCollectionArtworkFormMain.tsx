@@ -17,7 +17,7 @@ import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { MoneyInput } from "app/Components/Input/MoneyInput"
 import { LocationAutocomplete, buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
@@ -247,7 +247,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           />
         ) : null}
 
-        <FancyModalHeader
+        <NavigationHeader
           onLeftButtonPress={() => {
             if (isFormDirty() && mode === "edit") {
               setShowAbandonModal(true)
@@ -266,7 +266,7 @@ export const MyCollectionArtworkFormMain: React.FC<
           hideBottomDivider
         >
           {addOrEditLabel} Details
-        </FancyModalHeader>
+        </NavigationHeader>
 
         <AbandonFlowModal
           isVisible={!!showAbandonModal && mode === "edit"}

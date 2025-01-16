@@ -2,7 +2,7 @@ import { ActionType, OwnerType } from "@artsy/cohesion"
 import { BorderBox, Flex, Text, Button } from "@artsy/palette-mobile"
 import { MakeOfferModalQuery } from "__generated__/MakeOfferModalQuery.graphql"
 import { MakeOfferModal_artwork$data } from "__generated__/MakeOfferModal_artwork.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { CollapsibleArtworkDetailsFragmentContainer as CollapsibleArtworkDetails } from "app/Scenes/Artwork/Components/CommercialButtons/CollapsibleArtworkDetails"
 import { dismissModal } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -36,9 +36,9 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
 
   return (
     <View>
-      <FancyModalHeader rightButtonDisabled hideBottomDivider>
+      <NavigationHeader rightButtonDisabled hideBottomDivider>
         Make Offer
-      </FancyModalHeader>
+      </NavigationHeader>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Flex p={2}>
           <Text variant="lg-display">Select edition set</Text>

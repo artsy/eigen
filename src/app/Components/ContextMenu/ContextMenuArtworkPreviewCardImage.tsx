@@ -1,8 +1,7 @@
-import { Flex, Image, useColor } from "@artsy/palette-mobile"
+import { Flex, Image, useColor, useScreenDimensions } from "@artsy/palette-mobile"
 import { ContextMenuArtworkPreviewCardImage_artwork$key } from "__generated__/ContextMenuArtworkPreviewCardImage_artwork.graphql"
 import { graphql, useFragment } from "react-relay"
 
-const ARTWORK_PREVIEW_IMAGE_MAX_HEIGHT = 400
 const ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT = 50
 
 export interface ContextMenuArtworkPreviewCardImageProps {
@@ -25,6 +24,9 @@ export const ContextMenuArtworkPreviewCardImage: React.FC<
     const imageWidth = containerWidth
     const imageHeight = imageWidth / imageAspectRatio
 
+    const { height: screenHeight } = useScreenDimensions()
+    const maxHeight = Math.floor(screenHeight / 2)
+
     let containerHeight = imageHeight
 
     // Case when the image height is less than the minimum height
@@ -33,17 +35,14 @@ export const ContextMenuArtworkPreviewCardImage: React.FC<
     }
 
     // Case when the image height exceeds the maximum height
-    if (imageHeight >= ARTWORK_PREVIEW_IMAGE_MAX_HEIGHT) {
-      containerHeight = ARTWORK_PREVIEW_IMAGE_MAX_HEIGHT
+    if (imageHeight >= maxHeight) {
+      containerHeight = maxHeight
     }
 
     const displayImageHeight =
       imageHeight <= ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT
         ? Math.min(imageHeight, ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT)
-        : Math.min(
-            Math.max(imageHeight, ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT),
-            ARTWORK_PREVIEW_IMAGE_MAX_HEIGHT
-          )
+        : Math.min(Math.max(imageHeight, ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT), maxHeight)
 
     const displayImageWidth = Math.min(displayImageHeight * imageAspectRatio, imageWidth)
 

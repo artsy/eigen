@@ -1,7 +1,5 @@
-import { ArtsyKeyboardAvoidingView, Box } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
-import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import {
   SavedSearchStoreProvider,
   savedSearchModel,
@@ -16,6 +14,8 @@ import {
   useReloadedDevNavigationState,
 } from "app/system/navigation/useReloadedDevNavigationState"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
+import { KeyboardAvoidingView, Modal, Platform } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 import {
   CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertProps,
@@ -38,29 +38,32 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
   }
 
   return (
-    <ArtsyKeyboardAvoidingView>
-      <SavedSearchStoreProvider
-        runtimeModel={{
-          ...savedSearchModel,
-          attributes: localizeHeightAndWidthAttributes({
-            attributes: attributes,
-            from: "in",
-            to: sizeMetric || localizedUnit,
-          }),
-          currentArtworkID,
-          entity,
-          unit: sizeMetric || localizedUnit,
+    <SavedSearchStoreProvider
+      runtimeModel={{
+        ...savedSearchModel,
+        attributes: localizeHeightAndWidthAttributes({
+          attributes: attributes,
+          from: "in",
+          to: sizeMetric || localizedUnit,
+        }),
+        currentArtworkID,
+        entity,
+        unit: sizeMetric || localizedUnit,
+      }}
+    >
+      <NavigationContainer
+        independent
+        initialState={initialState}
+        onStateChange={(state) => {
+          saveSession(state)
         }}
       >
-        <NavigationContainer
-          independent
-          initialState={initialState}
-          onStateChange={(state) => {
-            saveSession(state)
-          }}
-        >
-          <FancyModal visible={visible} fullScreen>
-            <Box flex={1}>
+        <Modal visible={visible} presentationStyle="fullScreen" statusBarTranslucent>
+          <SafeAreaView style={{ flex: 1 }}>
+            <KeyboardAvoidingView
+              style={{ flex: 1 }}
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+            >
               <Stack.Navigator
                 // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
                 detachInactiveScreens={false}
@@ -102,10 +105,10 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
                   }}
                 />
               </Stack.Navigator>
-            </Box>
-          </FancyModal>
-        </NavigationContainer>
-      </SavedSearchStoreProvider>
-    </ArtsyKeyboardAvoidingView>
+            </KeyboardAvoidingView>
+          </SafeAreaView>
+        </Modal>
+      </NavigationContainer>
+    </SavedSearchStoreProvider>
   )
 }

@@ -5,7 +5,6 @@ import { RecommendedArtistsRailFollowMutation } from "__generated__/RecommendedA
 import { RecommendedArtistsRail_me$data } from "__generated__/RecommendedArtistsRail_me.graphql"
 import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { defaultArtistVariables } from "app/Scenes/Artist/Artist"
 import { RailScrollProps } from "app/Scenes/HomeView/Components/types"
 import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -85,8 +84,6 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
       </Flex>
       <CardRailFlatList<ArtistCard_artist$data>
         listRef={listRef}
-        prefetchUrlExtractor={(item) => item?.href}
-        prefetchVariablesExtractor={defaultArtistVariables}
         data={artists as any}
         keyExtractor={(artist) => artist.id}
         initialNumToRender={3}

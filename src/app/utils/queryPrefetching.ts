@@ -35,7 +35,7 @@ const prefetchRoute = async <TQuery extends OperationType>(
 
   const module = modules[result.module]
 
-  const queries = module.Queries
+  const queries = module.queries
 
   if (!queries) {
     if (logPrefetching)
@@ -43,11 +43,13 @@ const prefetchRoute = async <TQuery extends OperationType>(
     return
   }
 
-  const allVariables = { ...result.params, ...variables }
+  return queries.map((query, index) => {
+    const allVariables = { ...module.queryVariables?.[index], ...result.params, ...variables }
 
-  return queries.map((query) => {
     if (logPrefetching)
-      console.log("[queryPrefetching] Prefetching:", route, JSON.stringify(allVariables))
+      console.log("[queryPrefetching] Prefetching:", route, {
+        variables: JSON.stringify(allVariables),
+      })
 
     return prefetchQuery({ query, variables: allVariables, route })
   })

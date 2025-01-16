@@ -78,7 +78,6 @@ export const ArtworkRecommendationsRail: React.FC<
                 artwork.collectorSignals
               )
             )
-            navigate(artwork.href)
           }}
           onMorePress={() => handleMorePress("viewAll")}
           onViewableItemsChanged={onViewableItemsChanged}

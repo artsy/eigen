@@ -130,7 +130,7 @@ export const InfiniteDiscovery: React.FC = () => {
         </Flex>
         <FancySwiper cards={artworkCards} hideActionButtons onSwipeLeft={handleSwipedLeft} />
 
-        <InfiniteDiscoveryBottomSheet artworkID="add-fuel-modular" />
+        <InfiniteDiscoveryBottomSheet artworkID={artworks[index].internalID} />
       </Screen.Body>
     </Screen>
   )
@@ -159,7 +159,7 @@ export const infiniteDiscoveryQuery = graphql`
               initials
             }
             date
-            internalID
+            internalID @required(action: NONE)
             images {
               url(version: "large")
               width

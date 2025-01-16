@@ -12,7 +12,6 @@ import {
   ARTWORK_RAIL_CARD_MIN_WIDTH,
 } from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import { PrefetchFlashList } from "app/Components/PrefetchFlashList"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { compact } from "lodash"
@@ -57,16 +56,13 @@ export const SellWithArtsyRecentlySold: React.FC<SellWithArtsyRecentlySoldProps>
       <RecentlySoldArtworksRail
         recentlySoldArtworks={recentlySoldArtworksNodes}
         onPress={(recentlySoldArtwork) => {
-          if (recentlySoldArtwork?.artwork?.href) {
-            tracking.trackEvent(
-              tappedEntityGroup({
-                ...trackingArgs,
-                destinationScreenOwnerId: recentlySoldArtwork?.artwork?.internalID,
-                destinationScreenOwnerSlug: recentlySoldArtwork?.artwork?.slug,
-              })
-            )
-            navigate(recentlySoldArtwork.artwork.href)
-          }
+          tracking.trackEvent(
+            tappedEntityGroup({
+              ...trackingArgs,
+              destinationScreenOwnerId: recentlySoldArtwork?.artwork?.internalID,
+              destinationScreenOwnerSlug: recentlySoldArtwork?.artwork?.slug,
+            })
+          )
         }}
         showPartnerName={false}
       />
@@ -136,7 +132,6 @@ const RecentlySoldArtworksRail: React.FC<RecentlySoldArtworksRailProps> = ({
       listRef={listRef}
       onEndReached={onEndReached}
       onEndReachedThreshold={onEndReachedThreshold}
-      prefetchUrlExtractor={(item) => item?.artwork?.href || undefined}
       renderItem={renderItem}
       showsHorizontalScrollIndicator={false}
     />

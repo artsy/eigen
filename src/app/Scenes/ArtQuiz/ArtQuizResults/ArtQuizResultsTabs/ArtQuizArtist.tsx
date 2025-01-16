@@ -81,14 +81,7 @@ export const ArtQuizArtist = ({
         </Flex>
         <Spacer y={2} />
         <Flex mx={-2}>
-          <ArtworkRail
-            artworks={artworks}
-            onPress={(artwork) => {
-              if (artwork?.href) {
-                navigate(artwork.href)
-              }
-            }}
-          />
+          <ArtworkRail artworks={artworks} />
         </Flex>
       </TouchableOpacity>
     </Flex>

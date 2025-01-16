@@ -1,5 +1,5 @@
 import { Flex, Text } from "@artsy/palette-mobile"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { useMemo, useRef } from "react"
 import { Animated, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 
@@ -28,17 +28,17 @@ export const useStickyScrollHeader = ({
   header =
     !header && !!headerText ? (
       <Flex backgroundColor="white">
-        <FancyModalHeader>
+        <NavigationHeader>
           <Flex flex={1} pt={0.5} flexDirection="row">
             <Text variant="sm-display" numberOfLines={1} style={{ flexShrink: 1 }}>
               {headerText}
             </Text>
           </Flex>
-        </FancyModalHeader>
+        </NavigationHeader>
       </Flex>
     ) : (
       <Flex backgroundColor="white">
-        <FancyModalHeader>{header}</FancyModalHeader>
+        <NavigationHeader>{header}</NavigationHeader>
       </Flex>
     )
 

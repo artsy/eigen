@@ -1,5 +1,5 @@
 import { Box, Button, Screen, Text } from "@artsy/palette-mobile"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { goBack, switchTab } from "app/system/navigation/navigate"
 import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
 import React, { useState } from "react"
@@ -36,9 +36,9 @@ export const OfferSubmittedModal: React.FC = () => {
   return (
     <Modal visible={visible} onRequestClose={onClose} animationType="fade" statusBarTranslucent>
       <Screen>
-        <FancyModalHeader rightCloseButton onRightButtonPress={onClose}>
+        <NavigationHeader rightCloseButton onRightButtonPress={onClose}>
           Make Offer
-        </FancyModalHeader>
+        </NavigationHeader>
         <Box flex={1} py={4} px={2}>
           <Text variant="lg-display">Thank you, your offer has been submitted</Text>
           <Text variant="sm" color="black60">

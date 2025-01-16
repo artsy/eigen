@@ -4,7 +4,7 @@ import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navig
 import { captureMessage } from "@sentry/react-native"
 import { CreateSavedSearchContentContainerQuery } from "__generated__/CreateSavedSearchContentContainerQuery.graphql"
 import { CreateSavedSearchContentContainer_viewer$data } from "__generated__/CreateSavedSearchContentContainer_viewer.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { SavedSearchAlertForm } from "app/Scenes/SavedSearchAlert/SavedSearchAlertForm"
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -84,7 +84,7 @@ const CreateSavedSearchAlertContent: React.FC<CreateSavedSearchAlertContentProps
 
   return (
     <Box flex={1}>
-      <FancyModalHeader useXButton hideBottomDivider onLeftButtonPress={onClosePress} />
+      <NavigationHeader useXButton hideBottomDivider onLeftButtonPress={onClosePress} />
       <SavedSearchAlertForm
         initialValues={{ name: "", email: userAllowsEmails, push: enablePushNotifications }}
         contentContainerStyle={{ paddingTop: 0 }}
