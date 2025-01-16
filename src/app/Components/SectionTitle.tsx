@@ -16,6 +16,9 @@ export const SectionTitle: React.FC<
     title: React.ReactNode
     titleVariant?: TextProps["variant"]
     subtitle?: React.ReactNode
+    /**
+     * onPress is only called when href is provided
+     */
     onPress?: () => any
     RightButtonContent?: React.FC
     mb?: SpacingUnit
@@ -38,6 +41,8 @@ export const SectionTitle: React.FC<
     titleText = capitalized ? toTitleCase(title) : title
   }
 
+  const displayShowAllButton = !!href || !!onPress
+
   return (
     <Wrapper onPress={onPress} href={href}>
       <Flex mb={2} flexDirection="row" alignItems="flex-start" {...flexProps}>
@@ -45,13 +50,15 @@ export const SectionTitle: React.FC<
           <Text variant={titleVariant} ellipsizeMode="tail" numberOfLines={1} testID="title">
             {typeof title === "string" ? titleText : title}
           </Text>
-          {Boolean(subtitle) && (
+
+          {!!subtitle && (
             <Text variant="sm" color={color("black60")} lineHeight="20px" testID="subtitle">
               {subtitle}
             </Text>
           )}
         </Flex>
-        {!!onPress && (
+
+        {!!displayShowAllButton && (
           <Flex flexShrink={0} pl={1}>
             <RightButtonContent />
           </Flex>

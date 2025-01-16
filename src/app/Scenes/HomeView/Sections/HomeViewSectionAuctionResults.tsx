@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import {
   Flex,
   FlexProps,
@@ -56,7 +56,16 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
   const auctionResults = extractNodes(section.auctionResultsConnection)
   const viewAll = section.component?.behaviors?.viewAll
 
-  const onSectionViewAll = () => {
+  const onHeaderPress = () => {
+    if (viewAll?.href) {
+      tracking.tappedAuctionResultGroupViewAll(
+        section.contextModule as ContextModule,
+        viewAll?.ownerType as ScreenOwnerType
+      )
+    }
+  }
+
+  const onViewAllPress = () => {
     if (viewAll?.href) {
       tracking.tappedAuctionResultGroupViewAll(
         section.contextModule as ContextModule,
@@ -64,28 +73,17 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
       )
 
       navigate(viewAll.href)
-    } else {
-      // TODO: This default view all behavior navigates to the existing Auction
-      // "Results From Artists You Follow" screen. This should eventually be
-      // updated to navigate to a HomeViewSectionAuctionResults screen and we can
-      // use the `component > behaviors > viewAll > ownerType` value.
-      tracking.tappedAuctionResultGroupViewAll(
-        section.contextModule as ContextModule,
-        OwnerType.auctionResultsForArtistsYouFollow
-      )
-
-      navigate("/auction-results-for-artists-you-follow")
     }
   }
 
   return (
     <Flex {...flexProps}>
-      <Flex px={2}>
-        <SectionTitle
-          title={section.component?.title ?? "Auction Results"}
-          onPress={viewAll ? onSectionViewAll : undefined}
-        />
-      </Flex>
+      <SectionTitle
+        onPress={onHeaderPress}
+        mx={2}
+        title={section.component?.title ?? "Auction Results"}
+      />
+
       <FlatList
         horizontal
         initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
@@ -112,7 +110,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
         keyExtractor={(item) => item.internalID}
         ListFooterComponent={
           viewAll ? (
-            <BrowseMoreRailCard onPress={onSectionViewAll} text={viewAll.buttonText} />
+            <BrowseMoreRailCard onPress={onViewAllPress} text={viewAll.buttonText} />
           ) : undefined
         }
       />

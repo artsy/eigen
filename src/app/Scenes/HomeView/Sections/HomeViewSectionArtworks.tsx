@@ -67,36 +67,35 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         section.contextModule as ContextModule,
         viewAll?.ownerType as ScreenOwnerType
       )
+    }
+  }
 
-      navigate(viewAll.href)
-    } else {
+  const onMorePress = () => {
+    if (viewAll?.href) {
       tracking.tappedArtworkGroupViewAll(
         section.contextModule as ContextModule,
-        section.ownerType as ScreenOwnerType
+        viewAll?.ownerType as ScreenOwnerType
       )
 
-      navigate(`/home-view/sections/${section.internalID}`, {
-        passProps: {
-          sectionType: section.__typename,
-        },
-      })
+      navigate(viewAll.href)
     }
   }
 
   return (
     <Flex {...flexProps}>
-      <Flex pl={2} pr={2}>
-        <SectionTitle
-          title={section.component?.title}
-          onPress={viewAll ? onSectionViewAll : undefined}
-        />
-      </Flex>
+      <SectionTitle
+        href={viewAll?.href}
+        mx={2}
+        title={section.component?.title}
+        onPress={onSectionViewAll}
+      />
+
       <ArtworkRail
         contextModule={section.contextModule as ContextModule}
         artworks={artworks}
         onPress={handleOnArtworkPress}
         showSaveIcon
-        onMorePress={viewAll ? onSectionViewAll : undefined}
+        onMorePress={onMorePress}
       />
 
       <HomeViewSectionSentinel

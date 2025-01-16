@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, FlexProps, Join, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionActivityQuery } from "__generated__/HomeViewSectionActivityQuery.graphql"
 import { HomeViewSectionActivity_section$key } from "__generated__/HomeViewSectionActivity_section.graphql"
@@ -17,7 +17,6 @@ import {
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
@@ -49,21 +48,10 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
   }
 
   const onSectionViewAll = () => {
-    if (viewAll?.href) {
-      tracking.tappedActivityGroupViewAll(
-        section.contextModule as ContextModule,
-        viewAll?.ownerType as ScreenOwnerType
-      )
-
-      navigate(viewAll.href)
-    } else {
-      tracking.tappedActivityGroupViewAll(
-        section.contextModule as ContextModule,
-        OwnerType.activities
-      )
-
-      navigate("/notifications")
-    }
+    tracking.tappedActivityGroupViewAll(
+      section.contextModule as ContextModule,
+      viewAll?.ownerType as ScreenOwnerType
+    )
   }
 
   return (

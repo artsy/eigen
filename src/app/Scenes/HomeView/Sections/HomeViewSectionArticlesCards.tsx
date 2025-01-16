@@ -58,7 +58,7 @@ export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCards
     }
   }
 
-  const onSectionTitlePress = () => {
+  const onViewAllPress = () => {
     if (viewAll?.href) {
       tracking.tappedArticleGroupViewAll(
         section.contextModule as ContextModule,
@@ -89,7 +89,7 @@ export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCards
           </Flex>
         ))}
         {!!viewAll && (
-          <Touchable onPress={onSectionTitlePress}>
+          <Touchable onPress={onViewAllPress}>
             <Flex flexDirection="row" justifyContent="flex-end">
               <Text variant="sm-display">{viewAll.buttonText}</Text>
             </Flex>

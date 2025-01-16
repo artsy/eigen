@@ -26,7 +26,6 @@ import {
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
@@ -83,8 +82,6 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
         section.contextModule as ContextModule,
         viewAll?.ownerType as ScreenOwnerType
       )
-
-      navigate(viewAll.href)
     }
   }
 
@@ -92,6 +89,7 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
     <Flex {...flexProps}>
       <Flex px={2}>
         <SectionTitle
+          href={viewAll?.href}
           title={section.component?.title}
           onPress={viewAll ? onSectionViewAll : undefined}
         />

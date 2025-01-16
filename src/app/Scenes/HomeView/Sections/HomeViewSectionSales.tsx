@@ -52,7 +52,16 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
 
   const viewAll = section.component?.behaviors?.viewAll
 
-  const onSectionViewAll = () => {
+  const onHeaderPress = () => {
+    if (viewAll?.href) {
+      tracking.tappedAuctionResultGroupViewAll(
+        section.contextModule as ContextModule,
+        viewAll?.ownerType as ScreenOwnerType
+      )
+    }
+  }
+
+  const onViewAllPress = () => {
     if (viewAll?.href) {
       tracking.tappedAuctionResultGroupViewAll(
         section.contextModule as ContextModule,
@@ -60,17 +69,6 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
       )
 
       navigate(viewAll.href)
-    } else {
-      tracking.tappedAuctionResultGroupViewAll(
-        section.contextModule as ContextModule,
-        section.ownerType as ScreenOwnerType
-      )
-
-      navigate(`/home-view/sections/${section.internalID}`, {
-        passProps: {
-          sectionType: section.__typename,
-        },
-      })
     }
   }
 
@@ -78,8 +76,9 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
     <Flex {...flexProps}>
       <Flex px={2}>
         <SectionTitle
+          href={viewAll?.href}
           title={section.component?.title}
-          onPress={viewAll ? onSectionViewAll : undefined}
+          onPress={onHeaderPress}
         />
       </Flex>
       <CardRailFlatList
@@ -107,7 +106,7 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
         ListFooterComponent={
           viewAll ? (
             <BrowseMoreRailCard
-              onPress={onSectionViewAll}
+              onPress={onViewAllPress}
               text={viewAll.buttonText ?? "Browse All Auctions"}
             />
           ) : undefined
