@@ -36,6 +36,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({ artworks: 
     InfiniteDiscovery_Fragment$key
   >(infiniteDiscoveryFragment, _artworks)
 
+  const REFETCH_BUFFER = 2
+
   const { color } = useTheme()
   const { width: screenWidth } = useScreenDimensions()
 
@@ -66,7 +68,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({ artworks: 
     }
 
     // fetch more artworks when the user is about to reach the end of the list
-    if (index === artworks.length - 2) {
+    if (index === artworks.length - REFETCH_BUFFER) {
       refetch(
         { excludeArtworkIds: artworks.map((artwork) => artwork.internalID) },
         {
