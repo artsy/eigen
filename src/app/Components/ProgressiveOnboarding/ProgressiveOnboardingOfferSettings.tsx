@@ -2,10 +2,6 @@ import { Flex, Popover, Text } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
-import {
-  PROGRESSIVE_ONBOARDING_OFFER_SETTINGS,
-  PROGRESSIVE_ONBOARDING_SIGNAL_INTEREST,
-} from "app/store/ProgressiveOnboardingModel"
 import { ElementInView } from "app/utils/ElementInView"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useState } from "react"
@@ -23,8 +19,8 @@ export const ProgressiveOnboardingOfferSettings: React.FC = ({ children }) => {
   const isDisplayable =
     isArtworkListOfferabilityEnabled &&
     isReady &&
-    !isDismissed(PROGRESSIVE_ONBOARDING_OFFER_SETTINGS).status &&
-    !!isDismissed(PROGRESSIVE_ONBOARDING_SIGNAL_INTEREST).status &&
+    !isDismissed("offer-settings").status &&
+    !!isDismissed("signal-interest").status &&
     isFocused &&
     isInView
 
@@ -32,7 +28,7 @@ export const ProgressiveOnboardingOfferSettings: React.FC = ({ children }) => {
 
   const handleDismiss = () => {
     setIsReady(false)
-    dismiss(PROGRESSIVE_ONBOARDING_OFFER_SETTINGS)
+    dismiss("offer-settings")
   }
 
   if (isInView) {

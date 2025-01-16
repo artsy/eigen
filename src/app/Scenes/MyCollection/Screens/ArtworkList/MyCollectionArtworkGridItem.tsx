@@ -6,7 +6,6 @@ import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSet
 import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
 import { SubmissionStatus } from "app/Scenes/MyCollection/Components/SubmissionStatus"
 import { GlobalStore } from "app/store/GlobalStore"
-import { PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK } from "app/store/ProgressiveOnboardingModel"
 import { navigate } from "app/system/navigation/navigate"
 import { useLocalImage } from "app/utils/LocalImageStore"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -65,12 +64,12 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
      * this popover is displayed only in My Collection, this is why there is no
      * need to check if the save artwork popover was dismissed
      */
-    !!displayToolTip && !isDismissed(PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK).status
+    !!displayToolTip && !isDismissed("my-collection-sell-this-work").status
 
   const { clearActivePopover } = useSetActivePopover(isDisplayable)
 
   const handleDismissPopover = () => {
-    dismiss(PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK)
+    dismiss("my-collection-sell-this-work")
   }
 
   return (

@@ -2,11 +2,7 @@ import { Button, Flex, Join, Popover, Spacer, Text } from "@artsy/palette-mobile
 import { useIsFocused } from "@react-navigation/native"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
-import {
-  PROGRESSIVE_ONBOARDING_ALERT_CHAIN,
-  PROGRESSIVE_ONBOARDING_ALERT_CREATE,
-  PROGRESSIVE_ONBOARDING_SAVE_ARTWORK,
-} from "app/store/ProgressiveOnboardingModel"
+import { PROGRESSIVE_ONBOARDING_ALERT_CHAIN } from "app/store/ProgressiveOnboardingModel"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 export const ProgressiveOnboardingSaveAlert: React.FC = ({ children }) => {
@@ -20,9 +16,9 @@ export const ProgressiveOnboardingSaveAlert: React.FC = ({ children }) => {
 
   const isDisplayable =
     isReady &&
-    !isDismissed(PROGRESSIVE_ONBOARDING_ALERT_CREATE).status &&
+    !isDismissed("alert-create").status &&
     // we only enable the alerts flow if the save artwork is completed
-    isDismissed(PROGRESSIVE_ONBOARDING_SAVE_ARTWORK) &&
+    isDismissed("save-artwork") &&
     !!progressiveOnboardingAlerts &&
     isFocused
 
@@ -30,7 +26,7 @@ export const ProgressiveOnboardingSaveAlert: React.FC = ({ children }) => {
 
   const handleDismiss = () => {
     setIsReady(false)
-    dismiss(PROGRESSIVE_ONBOARDING_ALERT_CREATE)
+    dismiss("alert-create")
   }
 
   const handleDismissAlertsOnboarding = () => {
