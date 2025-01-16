@@ -51,7 +51,7 @@ export const ArtworkRecommendationsRail: React.FC<
     return null
   }
 
-  const handleMorePress = (g) => {
+  const handleMorePress = () => {
     trackEvent(tracks.tappedMore("viewAll"))
     navigate("/artwork-recommendations")
   }
@@ -87,7 +87,7 @@ export const ArtworkRecommendationsRail: React.FC<
               )
             )
           }}
-          onMorePress={() => handleMorePress("viewAll")}
+          onMorePress={handleMorePress}
           onViewableItemsChanged={onViewableItemsChanged}
           viewabilityConfig={viewabilityConfig}
           showSaveIcon
