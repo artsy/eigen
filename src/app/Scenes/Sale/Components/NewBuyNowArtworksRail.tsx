@@ -19,9 +19,8 @@ export const NewBuyNowArtworksRail: React.FC<NewBuyNowArtworksRailProps> = ({ sa
 
   return (
     <Flex mt={4} testID="bnmo-rail-wrapper">
-      <Flex mx={2}>
-        <SectionTitle title="Artworks Available to Inquire" />
-      </Flex>
+      <SectionTitle title="Artworks Available to Inquire" mx={2} />
+
       <ArtworkRail artworks={compact(artworks)} />
     </Flex>
   )

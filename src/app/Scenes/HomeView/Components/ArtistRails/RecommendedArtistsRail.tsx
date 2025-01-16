@@ -79,9 +79,8 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
 
   return (
     <Flex>
-      <Flex pl={2} pr={2}>
-        <SectionTitle title={title} subtitle={subtitle} />
-      </Flex>
+      <SectionTitle title={title} subtitle={subtitle} mx={2} />
+
       <CardRailFlatList<ArtistCard_artist$data>
         listRef={listRef}
         data={artists as any}

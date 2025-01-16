@@ -1,4 +1,4 @@
-import { Spacer, Flex, Touchable } from "@artsy/palette-mobile"
+import { Flex, Spacer, Touchable } from "@artsy/palette-mobile"
 import { SectionTitle } from "app/Components/SectionTitle"
 import React from "react"
 import { FlatList, FlatListProps } from "react-native"
@@ -20,11 +20,8 @@ export const EmbeddedCarousel: React.FC<EmbeddedCarouselProps & FlatListProps<an
 
   return (
     <Flex>
-      {!!title && (
-        <Flex px={2}>
-          <SectionTitle title={title} />
-        </Flex>
-      )}
+      {!!title && <SectionTitle title={title} mx={2} />}
+
       <FlatList
         testID={testID}
         horizontal

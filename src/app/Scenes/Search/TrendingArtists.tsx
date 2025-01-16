@@ -43,9 +43,7 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data, ...boxPr
 
   return (
     <Box {...boxProps}>
-      <Box mx={2}>
-        <SectionTitle title="Trending Artists" />
-      </Box>
+      <SectionTitle title="Trending Artists" mx={2} />
 
       <CardRailFlatList
         data={nodes}

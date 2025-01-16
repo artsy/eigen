@@ -104,16 +104,13 @@ export const ViewingRoomsList = () => {
             <>
               {featuredLength > 0 && (
                 <>
-                  <Flex mx={2}>
-                    <SectionTitle title="Featured" />
-                  </Flex>
+                  <SectionTitle title="Featured" mx={2} />
+
                   <FeaturedRail featured={queryData.featured} scrollRef={scrollRef} />
                   <Spacer y={4} />
                 </>
               )}
-              <Flex mx={2}>
-                <SectionTitle title="Latest" />
-              </Flex>
+              <SectionTitle title="Latest" mx={2} />
             </>
           )}
           data={viewingRooms}
