@@ -84,11 +84,11 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
 
   const task = tasks?.[0]
 
-  // adding the find-saved-artwork onboarding key to prevent overlap
+  // adding the save-artwork onboarding key to prevent overlap
   const shouldStartOnboardingAnimation =
     isFocused &&
     !isDismissed(PROGRESSIVE_ONBOARDING_ACT_NOW_TASKS).status &&
-    // !!isDismissed("find-saved-artwork").status &&
+    !!isDismissed("save-artwork").status &&
     !!firstSwipeableRef.current &&
     !!task
 
