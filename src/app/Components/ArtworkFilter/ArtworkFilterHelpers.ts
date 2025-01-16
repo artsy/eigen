@@ -119,7 +119,7 @@ export enum ViewAsValues {
 export const getSortDefaultValueByFilterType = (filterType: FilterType) => {
   return {
     artwork: "-decayed_merch",
-    saleArtwork: "sale_position",
+    saleArtwork: "position",
     showArtwork: "partner_show_position",
     auctionResult: "DATE_DESC",
     geneArtwork: "-partner_updated_at",
@@ -295,7 +295,7 @@ const DEFAULT_ARTWORKS_PARAMS = {
 } as FilterParams
 
 const DEFAULT_SALE_ARTWORKS_PARAMS = {
-  sort: "sale_position",
+  sort: "position",
   estimateRange: "",
 } as FilterParams
 

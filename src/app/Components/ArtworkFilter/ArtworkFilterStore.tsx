@@ -238,7 +238,7 @@ export const selectedOptionsUnion = ({
     },
     saleArtwork: {
       paramName: FilterParamName.sort,
-      paramValue: "sale_position",
+      paramValue: "position",
       displayText: "Lot Number Ascending",
     },
     showArtwork: {

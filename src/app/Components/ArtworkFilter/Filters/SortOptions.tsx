@@ -37,10 +37,10 @@ const DEFAULT_TAG_SORT = {
   paramValue: "-partner_updated_at",
 }
 
-export const DEFAULT_NEW_SALE_ARTWORK_SORT = {
+export const DEFAULT_SALE_ARTWORK_SORT = {
   displayText: "Lot Number Ascending",
   paramName: FilterParamName.sort,
-  paramValue: "sale_position",
+  paramValue: "position",
 }
 
 export const ORDERED_ARTWORK_SORTS: FilterData[] = [
@@ -77,11 +77,11 @@ export const ORDERED_ARTWORK_SORTS: FilterData[] = [
 ]
 
 export const ORDERED_SALE_ARTWORK_SORTS: FilterData[] = [
-  DEFAULT_NEW_SALE_ARTWORK_SORT,
+  DEFAULT_SALE_ARTWORK_SORT,
   {
     displayText: "Lot Number Descending",
     paramName: FilterParamName.sort,
-    paramValue: "-sale_position",
+    paramValue: "-position",
   },
   {
     displayText: "Most Bids",
