@@ -14,10 +14,12 @@ import {
 import { MasonryFlashListRef } from "@shopify/flash-list"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
-import { CreateAlertReminderMessage } from "app/Components/Artist/ArtistArtworks/CreateAlertReminderMessage"
+import {
+  CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD,
+  CreateAlertReminderMessage,
+} from "app/Components/Artist/ArtistArtworks/CreateAlertReminderMessage"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { useCreateSavedSearchModalFilters } from "app/Components/Artist/ArtistArtworks/hooks/useCreateSavedSearchModalFilters"
-import { CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD } from "app/Components/Artist/ArtistArtworks/hooks/useShouldShowReminder"
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { Aggregations, FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -263,7 +265,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     )
   }
 
-  const userDidScroll = artworks.length >= CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD
+  const displayAlertReminderMessage = artworks.length >= CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD
 
   return (
     <>
@@ -328,7 +330,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         visible={isCreateAlertModalVisible}
       />
 
-      {!!userDidScroll && (
+      {!!displayAlertReminderMessage && (
         <CreateAlertReminderMessage
           onPress={() => {
             tracking.trackEvent(

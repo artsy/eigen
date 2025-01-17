@@ -5,10 +5,13 @@ import {
   OwnerType,
 } from "@artsy/cohesion"
 import { Button, Message } from "@artsy/palette-mobile"
-import { useShouldShowReminder } from "app/Components/Artist/ArtistArtworks/hooks/useShouldShowReminder"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
 import { useTracking } from "react-tracking"
+
+export const CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD = 40
+export const DAYS = 1000 * 60 * 60 * 24
+const MAX_TIMES_SHOWN = 2
 
 interface CreateAlertReminderMessageProps {
   onPress: () => void
@@ -22,7 +25,12 @@ export const CreateAlertReminderMessage: React.FC<CreateAlertReminderMessageProp
   const { updateTimesShown, dontShowCreateAlertReminderAgain, dismissReminder } =
     GlobalStore.actions.createAlertReminder
 
-  const { shouldShowReminder } = useShouldShowReminder(reminderState)
+  const shouldShowReminder =
+    /**
+     * show the reminder max 2 times with an interval of 7 days
+     */
+    reminderState.timesShown <= MAX_TIMES_SHOWN &&
+    Date.now() - reminderState.dismissDate >= 7 * DAYS
 
   useEffect(() => {
     if (shouldShowReminder) {

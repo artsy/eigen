@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
 import { BellIcon, Flex, Box, Text, TouchableHighlightColor } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
-import { DAYS } from "app/Components/Artist/ArtistArtworks/hooks/useShouldShowReminder"
+import { DAYS } from "app/Components/Artist/ArtistArtworks/CreateAlertReminderMessage"
 import { ProgressiveOnboardingSaveAlert } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveAlert"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useTracking } from "react-tracking"
