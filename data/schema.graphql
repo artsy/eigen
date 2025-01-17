@@ -11984,6 +11984,7 @@ type Job {
   externalURL: String!
   id: ID!
   location: String!
+  teamName: String!
   title: String!
   updatedAt(
     format: String
@@ -16455,7 +16456,7 @@ type Query {
     first: Int
 
     # Which index to use to display initial batch of artworks
-    initialArtworksIndexName: String
+    initialArtworksIndexName: String = "infinite_discovery_initial_artworks"
     last: Int
 
     # These artworks are used to calculate the taste profile vector. Such artworks are excluded from the response
@@ -21031,7 +21032,7 @@ type Viewer {
     first: Int
 
     # Which index to use to display initial batch of artworks
-    initialArtworksIndexName: String
+    initialArtworksIndexName: String = "infinite_discovery_initial_artworks"
     last: Int
 
     # These artworks are used to calculate the taste profile vector. Such artworks are excluded from the response
