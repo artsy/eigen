@@ -12,6 +12,7 @@ import {
   SubmissionModel,
 } from "app/Scenes/SellWithArtsy/utils/submissionModelState"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { getInfiniteDiscoveryModel, InfiniteDiscoveryModel } from "app/store/InfiniteDiscoveryModel"
 import {
   ProgressiveOnboardingModel,
   getProgressiveOnboardingModel,
@@ -57,6 +58,7 @@ interface GlobalStoreStateModel {
   requestedPriceEstimates: RequestedPriceEstimatesModel
   recentPriceRanges: RecentPriceRangesModel
   progressiveOnboarding: ProgressiveOnboardingModel
+  infiniteDiscovery: InfiniteDiscoveryModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
@@ -144,6 +146,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   requestedPriceEstimates: getRequestedPriceEstimatesModel(),
   recentPriceRanges: getRecentPriceRangesModel(),
   progressiveOnboarding: getProgressiveOnboardingModel(),
+  infiniteDiscovery: getInfiniteDiscoveryModel(),
 
   setSessionState: action((state, payload) => {
     state.sessionState = { ...state.sessionState, ...payload }
