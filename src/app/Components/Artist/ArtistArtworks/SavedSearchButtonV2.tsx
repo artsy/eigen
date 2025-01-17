@@ -13,8 +13,8 @@ export interface SavedSearchButtonV2Props {
 
 export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) => {
   const { artistId, artistSlug, onPress } = props
-  const { promptState } = GlobalStore.useAppState((state) => state.createAlertPrompt)
-  const { dontShowCreateAlertPromptAgain } = GlobalStore.actions.createAlertPrompt
+  const { reminderState } = GlobalStore.useAppState((state) => state.createAlertReminder)
+  const { dontShowCreateAlertReminderAgain } = GlobalStore.actions.createAlertReminder
   const tracking = useTracking()
   const isFocused = useIsFocused()
 
@@ -22,11 +22,11 @@ export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) =
     onPress()
 
     /**
-     * if Create Alert CTA was pressed withing 2 minutes after the prompt was shown
-     *  do not show the prompt again
+     * if Create Alert CTA was pressed withing 2 minutes after the reminder was shown
+     *  do not show the reminder again
      * */
-    if (Date.now() - promptState.dismissDate < 120000 && isFocused) {
-      dontShowCreateAlertPromptAgain()
+    if (Date.now() - reminderState.dismissDate < 120000 && isFocused) {
+      dontShowCreateAlertReminderAgain()
     }
 
     tracking.trackEvent(tracks.tappedCreateAlert(artistId, artistSlug))

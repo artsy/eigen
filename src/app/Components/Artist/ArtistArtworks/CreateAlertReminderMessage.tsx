@@ -1,5 +1,5 @@
 import { Button, Message, Text } from "@artsy/palette-mobile"
-import { useShouldShowPrompt } from "app/Components/Artist/ArtistArtworks/hooks/useShouldShowPrompt"
+import { useShouldShowReminder } from "app/Components/Artist/ArtistArtworks/hooks/useShouldShowReminder"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
 
@@ -10,19 +10,19 @@ interface CreateAlertReminderMessageProps {
 export const CreateAlertReminderMessage: React.FC<CreateAlertReminderMessageProps> = ({
   onPress,
 }) => {
-  const { promptState } = GlobalStore.useAppState((state) => state.createAlertPrompt)
-  const { updateTimesShown, dontShowCreateAlertPromptAgain, dismissPrompt } =
-    GlobalStore.actions.createAlertPrompt
+  const { reminderState } = GlobalStore.useAppState((state) => state.createAlertReminder)
+  const { updateTimesShown, dontShowCreateAlertReminderAgain, dismissReminder } =
+    GlobalStore.actions.createAlertReminder
 
-  const { shouldShowPrompt, forceReminder } = useShouldShowPrompt(promptState)
+  const { shouldShowReminder, forceReminder } = useShouldShowReminder(reminderState)
 
   useEffect(() => {
-    if (shouldShowPrompt) {
+    if (shouldShowReminder) {
       updateTimesShown()
     }
   }, [])
 
-  if (shouldShowPrompt) {
+  if (shouldShowReminder) {
     return (
       <Message
         title="Searching for a particular artwork?"
@@ -36,8 +36,8 @@ export const CreateAlertReminderMessage: React.FC<CreateAlertReminderMessageProp
                 variant="outline"
                 size="small"
                 onPress={() => {
-                  dismissPrompt()
-                  dontShowCreateAlertPromptAgain()
+                  dismissReminder()
+                  dontShowCreateAlertReminderAgain()
                   onPress()
                 }}
               >
@@ -45,7 +45,7 @@ export const CreateAlertReminderMessage: React.FC<CreateAlertReminderMessageProp
               </Button>
               {!!forceReminder && (
                 <Text variant="xs" color="pink">
-                  timesShown: {promptState.timesShown}
+                  timesShown: {reminderState.timesShown}
                 </Text>
               )}
             </>
@@ -54,7 +54,7 @@ export const CreateAlertReminderMessage: React.FC<CreateAlertReminderMessageProp
         iconPosition="bottom"
         showCloseButton
         onClose={() => {
-          dismissPrompt()
+          dismissReminder()
         }}
       />
     )

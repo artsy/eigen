@@ -57,10 +57,10 @@ export const Versions = {
   DeleteDirtyArtworkDetails: 44,
   AddSubmissionDraft: 45,
   DeleteArtworkAndArtistViewOption: 46,
-  AddcreateAlertPrompt: 47,
+  AddCreateAlertReminder: 47,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddcreateAlertPrompt
+export const CURRENT_APP_VERSION = Versions.AddCreateAlertReminder
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -331,9 +331,9 @@ export const artsyAppMigrations: Migrations = {
     delete state.userPrefs.artworkViewOption
     delete state.userPrefs.artistViewOption
   },
-  [Versions.AddcreateAlertPrompt]: (state) => {
-    state.createAlertPrompt = {
-      promptState: {
+  [Versions.AddCreateAlertReminder]: (state) => {
+    state.createAlertReminder = {
+      reminderState: {
         timesShown: 0,
         dismissDate: 0,
       },
