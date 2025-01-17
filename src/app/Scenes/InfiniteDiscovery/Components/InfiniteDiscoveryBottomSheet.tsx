@@ -14,12 +14,13 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useQueryLoader } from "react-relay"
 
 interface InfiniteDiscoveryBottomSheetProps {
-  // TODO: should come from the context
   artworkID: string
+  artistIDs: string[]
 }
 
 export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps> = ({
   artworkID,
+  artistIDs,
 }) => {
   const [visible, setVisible] = useState(false)
   const { bottom } = useSafeAreaInsets()
@@ -27,8 +28,9 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
     useQueryLoader<InfiniteDiscoveryBottomSheetTabsQuery>(aboutTheWorkQuery)
 
   useEffect(() => {
-    loadQuery({ id: artworkID })
-  }, [artworkID])
+    console.log("cb::useEffect", { artistIDs })
+    loadQuery({ id: artworkID, artistIDs })
+  }, [artworkID, artistIDs])
 
   const pan = Gesture.Pan().onUpdate((event) => {
     if (event.translationY < TRANSLATE_Y_THRESHOLD) {
@@ -66,7 +68,9 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
         <Flex justifyContent="center" alignItems="center" style={{ marginBottom: bottom }}>
           <ArrowUpIcon fill="black60" />
 
-          <Text color="black60">Swipe up for more details</Text>
+          <Text selectable={false} color="black60">
+            Swipe up for more details
+          </Text>
         </Flex>
       </GestureDetector>
     </>
@@ -76,10 +80,12 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
 const { height } = Dimensions.get("screen")
 
 const SNAP_POINTS = [height * 0.88]
-const TRANSLATE_Y_THRESHOLD = -50
+const TRANSLATE_Y_THRESHOLD = -30
 
 export const aboutTheWorkQuery = graphql`
-  query InfiniteDiscoveryBottomSheetTabsQuery($id: String!) {
+  query InfiniteDiscoveryBottomSheetTabsQuery($id: String!, $artistIDs: [String!]!) {
+    ...InfiniteDiscoveryMoreWorksTab_artworks @arguments(artistIDs: $artistIDs)
+
     me {
       ...useSendInquiry_me
       ...MyProfileEditModal_me

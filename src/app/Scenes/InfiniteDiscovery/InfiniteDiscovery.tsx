@@ -10,18 +10,39 @@ import {
   useScreenDimensions,
   useTheme,
 } from "@artsy/palette-mobile"
+import { NavigationContainer } from "@react-navigation/native"
+import { createStackNavigator } from "@react-navigation/stack"
 import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { sizeToFit } from "app/utils/useSizeToFit"
-import { useMemo, useState } from "react"
+import { FC, useMemo, useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import type { InfiniteDiscoveryQuery } from "__generated__/InfiniteDiscoveryQuery.graphql"
 import type { Card } from "app/Components/FancySwiper/FancySwiperCard"
 
-export const InfiniteDiscovery: React.FC = () => {
+const Stack = createStackNavigator()
+
+export const InfiniteDiscoveryNavigator: FC = () => {
+  return (
+    <NavigationContainer independent>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen
+          name="InfiniteDiscoveryQueryRenderer"
+          component={InfiniteDiscoveryQueryRenderer}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}
+
+export const InfiniteDiscovery: FC = () => {
   const data = useLazyLoadQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, {})
   const artworks = useMemo(() => extractNodes(data.marketingCollection?.artworksConnection), [data])
 
@@ -130,12 +151,14 @@ export const InfiniteDiscovery: React.FC = () => {
         </Flex>
         <FancySwiper cards={artworkCards} hideActionButtons onSwipeLeft={handleSwipedLeft} />
 
-        <InfiniteDiscoveryBottomSheet artworkID={artworks[index].internalID} />
+        <InfiniteDiscoveryBottomSheet
+          artworkID={artworks[index].internalID}
+          artistIDs={artworks[index].artists.map((data) => data?.internalID ?? "")}
+        />
       </Screen.Body>
     </Screen>
   )
 }
-
 export const InfiniteDiscoveryQueryRenderer = withSuspense({
   Component: InfiniteDiscovery,
   LoadingFallback: () => <Text>Loading...</Text>,
@@ -149,7 +172,8 @@ export const infiniteDiscoveryQuery = graphql`
         edges {
           node {
             artistNames
-            artists(shallow: true) {
+            artists(shallow: true) @required(action: NONE) {
+              internalID @required(action: NONE)
               coverArtwork {
                 images {
                   url(version: "small")
