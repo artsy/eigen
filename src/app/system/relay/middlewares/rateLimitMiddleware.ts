@@ -14,7 +14,7 @@ export const rateLimitMiddleware = (
     interval,
     logger = console.log.bind(console, "[RELAY-NETWORK]"),
   }: RateLimitMiddlewareOpts = {
-    limit: 50,
+    limit: 100,
     interval: 1000,
   }
 ): Middleware => {
