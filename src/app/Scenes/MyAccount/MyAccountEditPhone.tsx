@@ -35,7 +35,7 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me$data }> = ({ me }
   }, [navigation, phone, isValidNumber])
 
   const canSave = () => {
-    if (!isValidNumber && !!phone.trim()) {
+    if (!isValidNumber || !!phone.trim()) {
       return false
     } else {
       return true
