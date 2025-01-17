@@ -1,7 +1,14 @@
+import {
+  ActionType,
+  ContextModule,
+  CreateAlertReminderMessageViewed,
+  OwnerType,
+} from "@artsy/cohesion"
 import { Button, Message } from "@artsy/palette-mobile"
 import { useShouldShowReminder } from "app/Components/Artist/ArtistArtworks/hooks/useShouldShowReminder"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
+import { useTracking } from "react-tracking"
 
 interface CreateAlertReminderMessageProps {
   onPress: () => void
@@ -10,6 +17,7 @@ interface CreateAlertReminderMessageProps {
 export const CreateAlertReminderMessage: React.FC<CreateAlertReminderMessageProps> = ({
   onPress,
 }) => {
+  const tracking = useTracking()
   const { reminderState } = GlobalStore.useAppState((state) => state.createAlertReminder)
   const { updateTimesShown, dontShowCreateAlertReminderAgain, dismissReminder } =
     GlobalStore.actions.createAlertReminder
@@ -19,7 +27,7 @@ export const CreateAlertReminderMessage: React.FC<CreateAlertReminderMessageProp
   useEffect(() => {
     if (shouldShowReminder) {
       updateTimesShown()
-      // track
+      tracking.trackEvent(tracks.createAlertReminderMessageViewed())
     }
   }, [])
 
@@ -55,4 +63,12 @@ export const CreateAlertReminderMessage: React.FC<CreateAlertReminderMessageProp
   } else {
     return <></>
   }
+}
+
+const tracks = {
+  createAlertReminderMessageViewed: (): CreateAlertReminderMessageViewed => ({
+    action: ActionType.createAlertReminderMessageViewed,
+    context_screen: OwnerType.artist,
+    context_module: ContextModule.artistArtworksCreateAlertReminderMessage,
+  }),
 }

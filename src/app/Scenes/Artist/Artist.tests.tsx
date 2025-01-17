@@ -85,7 +85,7 @@ describe("Artist", () => {
     expect(screen.getByText("Overview")).toBeTruthy()
   })
 
-  it("tracks a page view experiment", async () => {
+  it("tracks a page view", async () => {
     renderWithHookWrappersTL(<TestWrapper />, getRelayEnvironment(), { includeNavigation: true })
 
     mockMostRecentOperation("ArtistAboveTheFoldQuery")

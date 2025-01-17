@@ -2,7 +2,7 @@ import { CreateAlertReminderModel } from "app/store/CreateAlertReminderModel"
 
 export const CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD = 40
 
-const DAYS = 1000 * 60 * 60 * 24
+export const DAYS = 1000 * 60 * 60 * 24
 
 const MAX_TIMES_SHOWN = 2
 

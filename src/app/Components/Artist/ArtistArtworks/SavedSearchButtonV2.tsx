@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
 import { BellIcon, Flex, Box, Text, TouchableHighlightColor } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
+import { DAYS } from "app/Components/Artist/ArtistArtworks/hooks/useShouldShowReminder"
 import { ProgressiveOnboardingSaveAlert } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveAlert"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useTracking } from "react-tracking"
@@ -25,7 +26,7 @@ export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) =
      * if Create Alert CTA was pressed withing 2 minutes after the reminder was shown
      *  do not show the reminder again
      * */
-    if (Date.now() - reminderState.dismissDate < 120000 && isFocused) {
+    if (Date.now() - reminderState.dismissDate < 2 * DAYS && isFocused) {
       dontShowCreateAlertReminderAgain()
     }
 
