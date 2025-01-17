@@ -12,7 +12,7 @@ export const CreateAlertPromptMessage: React.FC<CreateAlertPromptMessageProps> =
   const { updateTimesShown, dontShowCreateAlertPromptAgain, dismissPrompt } =
     GlobalStore.actions.createAlertPrompt
 
-  const { shouldShowPrompt, forcePrompt } = useShouldShowPrompt(promptState)
+  const { shouldShowPrompt, forceReminder } = useShouldShowPrompt(promptState)
 
   useEffect(() => {
     if (shouldShowPrompt) {
@@ -41,7 +41,7 @@ export const CreateAlertPromptMessage: React.FC<CreateAlertPromptMessageProps> =
               >
                 Create Alert
               </Button>
-              {!!forcePrompt && (
+              {!!forceReminder && (
                 <Text variant="xs" color="pink">
                   timesShown: {promptState.timesShown}
                 </Text>

@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
 import { BellIcon, Flex, Box, Text, TouchableHighlightColor } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
-import { SavedSearchButtonV2Popover } from "app/Components/Artist/ArtistArtworks/SavedSearchButtonV2Popover"
+import { ProgressiveOnboardingSaveAlert } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveAlert"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useTracking } from "react-tracking"
 
@@ -9,11 +9,10 @@ export interface SavedSearchButtonV2Props {
   artistId: string
   artistSlug: string
   onPress: () => void
-  shouldShowCreateAlertPrompt?: boolean
 }
 
 export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) => {
-  const { artistId, artistSlug, onPress, shouldShowCreateAlertPrompt } = props
+  const { artistId, artistSlug, onPress } = props
   const { promptState } = GlobalStore.useAppState((state) => state.createAlertPrompt)
   const { dontShowCreateAlertPromptAgain } = GlobalStore.actions.createAlertPrompt
   const tracking = useTracking()
@@ -35,7 +34,7 @@ export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) =
 
   return (
     <Flex>
-      <SavedSearchButtonV2Popover shouldShowCreateAlertPrompt={shouldShowCreateAlertPrompt}>
+      <ProgressiveOnboardingSaveAlert>
         <TouchableHighlightColor
           haptic
           onPress={handlePress}
@@ -50,7 +49,7 @@ export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) =
             </Flex>
           )}
         />
-      </SavedSearchButtonV2Popover>
+      </ProgressiveOnboardingSaveAlert>
     </Flex>
   )
 }

@@ -36,13 +36,6 @@ export const experiments = {
     variantSuggestions: ["control", "variant-b", "variant-c"],
     payloadSuggestions: ['{"forceDots": "true"}', '{"forceDots": "false"}'],
   },
-  "onyx_create-alert-prompt-experiment": {
-    description: "Show create alert prompt on artist page",
-    fallbackEnabled: true,
-    fallbackVariant: "control",
-    variantSuggestions: ["control", "variant-a", "variant-b"],
-    payloadSuggestions: ['{"forcePrompt": "true"}', '{"forcePrompt": "false"}'],
-  },
 } satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments
