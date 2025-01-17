@@ -8,7 +8,7 @@ import { fetchQuery, GraphQLTaggedNode } from "react-relay"
 import { OperationType, Variables, VariablesOf } from "relay-runtime"
 import { logPrefetching } from "./loggers"
 
-const DEFAULT_QUERIES_PER_INTERVAL = 180
+const DEFAULT_QUERIES_PER_INTERVAL = 60
 
 let limiter: RateLimiter
 
