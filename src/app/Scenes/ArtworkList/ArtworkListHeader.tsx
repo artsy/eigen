@@ -1,6 +1,6 @@
 import { MoreIcon } from "@artsy/palette-mobile"
 import { ArtworkListHeader_me$key } from "__generated__/ArtworkListHeader_me.graphql"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { ManageArtworkListView } from "app/Scenes/ArtworkList/ManageArtworkListView"
 import { goBack } from "app/system/navigation/navigate"
 import { FC, useCallback, useState } from "react"
@@ -34,7 +34,7 @@ export const ArtworkListHeader: FC<ArtworkListHeaderProps> = ({ me }) => {
 
   return (
     <>
-      <FancyModalHeader
+      <NavigationHeader
         onLeftButtonPress={goBack}
         renderRightButton={() => {
           if (artworkListEntity) {

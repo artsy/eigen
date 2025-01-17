@@ -8,7 +8,7 @@ import {
   FilterArtworksInput,
 } from "__generated__/ConfirmationScreenMatchingArtworksQuery.graphql"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchPills"
@@ -61,7 +61,7 @@ export const ConfirmationScreen: React.FC = () => {
 
   return (
     <Box flex={1}>
-      <FancyModalHeader hideBottomDivider useXButton onLeftButtonPress={handleLeftButtonPress} />
+      <NavigationHeader hideBottomDivider useXButton onLeftButtonPress={handleLeftButtonPress} />
       <Box flex={1}>
         <Text variant="lg" px={2}>
           Your alert has been saved

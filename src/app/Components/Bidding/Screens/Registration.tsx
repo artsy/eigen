@@ -13,7 +13,7 @@ import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
 import { PaymentInfo } from "app/Components/Bidding/Components/PaymentInfo"
 import { PhoneInfo } from "app/Components/Bidding/Components/PhoneInfo"
 import { Address, PaymentCardTextFieldParams } from "app/Components/Bidding/types"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
@@ -527,7 +527,7 @@ export const RegistrationQueryRenderer: React.FC<{ saleID: string; navigator: Na
 }) => {
   return (
     <View style={{ flex: 1 }}>
-      <FancyModalHeader
+      <NavigationHeader
         onLeftButtonPress={() => {
           Alert.alert("Are you sure you want to leave?", "", [
             {
@@ -545,7 +545,7 @@ export const RegistrationQueryRenderer: React.FC<{ saleID: string; navigator: Na
         useXButton
       >
         Register to bid
-      </FancyModalHeader>
+      </NavigationHeader>
       <QueryRenderer<RegistrationQuery>
         environment={getRelayEnvironment()}
         query={graphql`

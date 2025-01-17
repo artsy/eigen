@@ -2,12 +2,12 @@ import { SimpleMessage } from "@artsy/palette-mobile"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { GlobalStore } from "app/store/GlobalStore"
 import { LayoutAnimation } from "react-native"
-import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "./SearchModel"
+import { useRecentSearches } from "./SearchModel"
 import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
 import { SearchResultList } from "./components/SearchResultList"
 
 export const RecentSearches: React.FC = () => {
-  const recentSearches = useRecentSearches(MAX_SHOWN_RECENT_SEARCHES)
+  const recentSearches = useRecentSearches()
   return (
     <>
       <SectionTitle title="Recent Searches" />

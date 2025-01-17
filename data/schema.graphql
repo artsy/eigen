@@ -59,6 +59,7 @@ input AckTaskMutationInput {
 
 type AckTaskMutationPayload {
   clientMutationId: String
+  homeViewTasksSection: HomeViewSectionTasks
 
   # On success: the new state of the Task
   taskOrError: AckTaskResponseOrError!
@@ -1727,6 +1728,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   # Only specific Artists should show a link to auction results.
   isDisplayAuctionLink: Boolean
   isFollowed: Boolean
+
+  # Temporary field to test SEO experiment
+  isInSeoExperiment: Boolean
 
   # Whether the artist has been created by a user.
   isPersonalArtist: Boolean
@@ -8058,47 +8062,6 @@ union CreateConsignmentInquiryMutationType =
     ConsignmentInquiryMutationFailure
   | ConsignmentInquiryMutationSuccess
 
-input CreateDiscoveryArtworkReferenceMutationInput {
-  # The artwork's ID
-  artworkId: String!
-  clientMutationId: String
-
-  # The reference type
-  reference: ReferenceTypes!
-
-  # The user's ID
-  userId: String
-}
-
-type CreateDiscoveryArtworkReferenceMutationPayload {
-  clientMutationId: String
-
-  # On success: return boolean. On failure: MutationError.
-  createDiscoveryArtworkReferenceResponseOrError: CreateDiscoveryArtworkReferenceResponseOrError
-}
-
-union CreateDiscoveryArtworkReferenceResponseOrError =
-    DiscoveryArtworkReferenceMutationFailure
-  | DiscoveryArtworkReferenceMutationSuccess
-
-input CreateDiscoveryUserMutationInput {
-  clientMutationId: String
-
-  # The user's ID
-  userId: String!
-}
-
-type CreateDiscoveryUserMutationPayload {
-  clientMutationId: String
-
-  # On success: return boolean. On failure: MutationError.
-  createDiscoveryUserReferenceResponseOrError: CreateDiscoveryUserResponseOrError
-}
-
-union CreateDiscoveryUserResponseOrError =
-    DiscoveryUserMutationFailure
-  | DiscoveryUserMutationSuccess
-
 type CreateFeatureFailure {
   mutationError: GravityMutationError
 }
@@ -8909,32 +8872,6 @@ type DeleteCreditCardPayload {
   me: Me
 }
 
-type DeleteDiscoveryUserMutationFailure {
-  mutationError: GravityMutationError
-}
-
-input DeleteDiscoveryUserMutationInput {
-  clientMutationId: String
-
-  # The user's ID
-  userId: String!
-}
-
-type DeleteDiscoveryUserMutationPayload {
-  clientMutationId: String
-
-  # On success: return boolean. On failure: MutationError.
-  deleteDiscoveryUserResponseOrError: DeleteDiscoveryUserResponseOrError
-}
-
-type DeleteDiscoveryUserMutationSuccess {
-  success: Boolean
-}
-
-union DeleteDiscoveryUserResponseOrError =
-    DeleteDiscoveryUserMutationFailure
-  | DeleteDiscoveryUserMutationSuccess
-
 type DeleteFeatureFailure {
   mutationError: GravityMutationError
 }
@@ -9208,30 +9145,6 @@ type DisableSecondFactorPayload {
   secondFactorOrErrors: SecondFactorOrErrorsUnion!
 }
 
-enum DiscoverArtworksSort {
-  # Sort by certainty ascending. High certainty means the artwork is more likely to be recommended.
-  CERTAINTY_ASC
-
-  # Sort by certainty descending. High certainty means the artwork is more likely to be recommended.
-  CERTAINTY_DESC
-}
-
-type DiscoveryArtworkReferenceMutationFailure {
-  mutationError: GravityMutationError
-}
-
-type DiscoveryArtworkReferenceMutationSuccess {
-  success: Boolean
-}
-
-type DiscoveryUserMutationFailure {
-  mutationError: GravityMutationError
-}
-
-type DiscoveryUserMutationSuccess {
-  success: Boolean
-}
-
 input DislikeArtworkInput {
   artworkID: String!
   clientMutationId: String
@@ -9255,6 +9168,7 @@ input DismissTaskMutationInput {
 
 type DismissTaskMutationPayload {
   clientMutationId: String
+  homeViewTasksSection: HomeViewSectionTasks
 
   # On success: the new state of the Task
   taskOrError: DismissTaskResponseOrError!
@@ -13612,14 +13526,6 @@ type Mutation {
   # Create a credit card
   createCreditCard(input: CreditCardInput!): CreditCardPayload
 
-  # Creates a cross reference for artwork and user in weaviate
-  createDiscoveryArtworkReference(
-    input: CreateDiscoveryArtworkReferenceMutationInput!
-  ): CreateDiscoveryArtworkReferenceMutationPayload
-
-  # Creates a user object in weaviate
-  createDiscoveryUser(input: CreateDiscoveryUserMutationInput!): CreateDiscoveryUserMutationPayload
-
   # Creates a feature.
   createFeature(input: CreateFeatureMutationInput!): CreateFeatureMutationPayload
 
@@ -13717,11 +13623,6 @@ type Mutation {
 
   # Remove a credit card
   deleteCreditCard(input: DeleteCreditCardInput!): DeleteCreditCardPayload
-
-  # Deletes a user from the Infinite Discovery system.
-  deleteDiscoveryUserMutation(
-    input: DeleteDiscoveryUserMutationInput!
-  ): DeleteDiscoveryUserMutationPayload
 
   # deletes a feature.
   deleteFeature(input: DeleteFeatureMutationInput!): DeleteFeatureMutationPayload
@@ -15979,15 +15880,6 @@ type PublishViewingRoomPayload {
 }
 
 type Query {
-  LikedDiscoveryArtworks(
-    after: String
-    before: String
-    first: Int
-    last: Int
-    limit: Int
-    userId: String!
-  ): ArtworkConnection
-
   # Do not use (only used internally for stitching)
   _do_not_use_conversation(
     # The ID of the Conversation
@@ -16554,26 +16446,27 @@ type Query {
   discoverArtworks(
     after: String
     before: String
-    certainty: Float
 
-    # (Only for when useOpenSearch is true) Exclude these artworks from the response
+    # The number of curated artworks to return. This is a temporary field to support the transition to OpenSearch
+    curatedPicksSize: Int = 2
+
+    # Exclude these artworks from the response
     excludeArtworkIds: [String]
     first: Int
+
+    # Which index to use to display initial batch of artworks
+    initialArtworksIndexName: String
     last: Int
 
-    # (Only for when useOpenSearch is true) These artworks are used to calculate the taste profile vector. Such artworks are excluded from the response
+    # These artworks are used to calculate the taste profile vector. Such artworks are excluded from the response
     likedArtworkIds: [String]
     limit: Int
 
-    # (Only for when useOpenSearch is true) These fields are used to calculate the More Like This query
+    # These fields are used for More Like This query
     mltFields: [String] = ["genes", "materials", "tags", "medium"]
-    offset: Int
 
-    # (Only for when useOpenSearch is true) Weights for the OpenSearch query
+    # Weights for the KNN and MLT query
     osWeights: [Float] = [0.6, 0.4]
-    sort: DiscoverArtworksSort
-    useOpenSearch: Boolean = false
-    userId: String
   ): ArtworkConnection
 
   # A namespace external partners (provided by Galaxy)
@@ -17190,6 +17083,9 @@ type Query {
     # Search query to perform. Required.
     query: String!
   ): SearchableConnection
+
+  # A list of artists that are part of the SEO experiment
+  seoExperimentArtists: [String]
   shortcut(id: ID!): Shortcut
 
   # A Show
@@ -17436,13 +17332,6 @@ type RecordArtworkViewPayload {
 
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
-}
-
-enum ReferenceTypes {
-  LIKED_ARTWORKS
-
-  # Artworks that the user has seen and not "liked". Should not be considered a negative signal.
-  SEEN_ARTWORKS
 }
 
 enum RelatedArtistsKind {
@@ -20795,15 +20684,6 @@ type Video {
 
 # A wildcard used to support complex root queries in Relay
 type Viewer {
-  LikedDiscoveryArtworks(
-    after: String
-    before: String
-    first: Int
-    last: Int
-    limit: Int
-    userId: String!
-  ): ArtworkConnection
-
   # Do not use (only used internally for stitching)
   _do_not_use_conversation(
     # The ID of the Conversation
@@ -21142,26 +21022,27 @@ type Viewer {
   discoverArtworks(
     after: String
     before: String
-    certainty: Float
 
-    # (Only for when useOpenSearch is true) Exclude these artworks from the response
+    # The number of curated artworks to return. This is a temporary field to support the transition to OpenSearch
+    curatedPicksSize: Int = 2
+
+    # Exclude these artworks from the response
     excludeArtworkIds: [String]
     first: Int
+
+    # Which index to use to display initial batch of artworks
+    initialArtworksIndexName: String
     last: Int
 
-    # (Only for when useOpenSearch is true) These artworks are used to calculate the taste profile vector. Such artworks are excluded from the response
+    # These artworks are used to calculate the taste profile vector. Such artworks are excluded from the response
     likedArtworkIds: [String]
     limit: Int
 
-    # (Only for when useOpenSearch is true) These fields are used to calculate the More Like This query
+    # These fields are used for More Like This query
     mltFields: [String] = ["genes", "materials", "tags", "medium"]
-    offset: Int
 
-    # (Only for when useOpenSearch is true) Weights for the OpenSearch query
+    # Weights for the KNN and MLT query
     osWeights: [Float] = [0.6, 0.4]
-    sort: DiscoverArtworksSort
-    useOpenSearch: Boolean = false
-    userId: String
   ): ArtworkConnection
 
   # A namespace external partners (provided by Galaxy)
@@ -21725,6 +21606,9 @@ type Viewer {
     # Search query to perform. Required.
     query: String!
   ): SearchableConnection
+
+  # A list of artists that are part of the SEO experiment
+  seoExperimentArtists: [String]
   shortcut(id: ID!): Shortcut
 
   # A Show

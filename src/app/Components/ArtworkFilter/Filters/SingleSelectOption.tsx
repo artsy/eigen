@@ -3,13 +3,13 @@ import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterData } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
-import { FancyModalHeaderProps } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeaderProps } from "app/Components/NavigationHeader"
 import { TouchableRow } from "app/Components/TouchableRow"
 import React, { Fragment } from "react"
 import { FlatList, ScrollView } from "react-native"
 import styled from "styled-components/native"
 
-interface SingleSelectOptionScreenProps extends FancyModalHeaderProps {
+interface SingleSelectOptionScreenProps extends NavigationHeaderProps {
   navigation: StackNavigationProp<ParamListBase>
   filterHeaderText: string
   selectedOption: FilterData

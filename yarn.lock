@@ -17,10 +17,10 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@14.0.15":
-  version "14.0.15"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-14.0.15.tgz#dc81a6b22b472adc01366fc0c5681e5f6c829004"
-  integrity sha512-oRHrEv7HDtKQZE3WRvOpcY8UGpgDahi7pHsRIs83mYqFBjGN4VOzDtNM7A2Y9Aitzrn3cva67p289HFqu4SQEQ==
+"@artsy/palette-mobile@14.0.16":
+  version "14.0.16"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-14.0.16.tgz#ac2f12bd64b5bab5d0937346b91b64b37a0abfcd"
+  integrity sha512-oHt0+tX1gbi02JgnfHjH+sbA6Myxpxbd+wKNdRmoCfW4I/LE6Oy2FFe3rhOXPO1F4C3EhjXlJ+WE0aIVctMTZA==
   dependencies:
     "@artsy/palette-tokens" "^6.0.3"
     "@shopify/flash-list" "1.7.1"
@@ -5197,10 +5197,10 @@
     "@types/react" "*"
     "@types/relay-runtime" "*"
 
-"@types/react-relay@16.0.0":
-  version "16.0.0"
-  resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-16.0.0.tgz#2c09fd43918a6bb6425895d84e67bb28275b261d"
-  integrity sha512-oaKLjC/cD7oTC4YVR0cOya/a/fqWJewrjNq3Nk6wJFGbUBd+2TMFCc0BEHewobpSH/YqZONiLpdJ1uRk+W3M3g==
+"@types/react-relay@18.2.0":
+  version "18.2.0"
+  resolved "https://registry.yarnpkg.com/@types/react-relay/-/react-relay-18.2.0.tgz#9d9ae7b1e3d9101d3f8dd07b7c6a76b93534ad19"
+  integrity sha512-F1QvwX9nnK33hzvsQfkAfDtwTWp195LpFXuArdmZFor9ELPu7SuxO6dlJGjRvXLRvBz3oJILniKL/8mGYPAZdA==
   dependencies:
     "@types/react" "*"
     "@types/relay-runtime" "*"
@@ -13434,16 +13434,16 @@ react-relay-network-modern@6.2.2:
     core-js "^3.29.0"
     extract-files "^9.0.0"
 
-react-relay@16.0.0:
-  version "16.0.0"
-  resolved "https://registry.yarnpkg.com/react-relay/-/react-relay-16.0.0.tgz#50201d309559401c19184f9a6e2cf32127175d21"
-  integrity sha512-3Dje0NLJFwt6b3xqgbiCGlTnpxoZe1OTPsXIPtFdftgDWQzSfrwqkBYUKab6bV2HhCKWCzXWafb8wURLDAlNJQ==
+react-relay@18.2.0:
+  version "18.2.0"
+  resolved "https://registry.yarnpkg.com/react-relay/-/react-relay-18.2.0.tgz#c18dca79c0b88f1bea2787939c4c25c8e7543c26"
+  integrity sha512-/yHlv4pj3IQQPtDzYLfVk6P4wrOSvYPu/5ySPcRp4xV3pn9xoVOHVczSLcZkRVf72lJu8CIjoT8rn3roaGoFyQ==
   dependencies:
-    "@babel/runtime" "^7.0.0"
+    "@babel/runtime" "^7.25.0"
     fbjs "^3.0.2"
     invariant "^2.2.4"
     nullthrows "^1.1.1"
-    relay-runtime "16.0.0"
+    relay-runtime "18.2.0"
 
 react-shallow-renderer@^16.15.0:
   version "16.15.0"
@@ -13815,6 +13815,15 @@ relay-runtime@16.0.0:
   integrity sha512-gJ70upfOxmFgtvFEKn7sU72uN2XF9Bg5Bml9oGRqe0rFWJDj1ItsljWzOZ972EyDE+pZG/VKbqiz3gUjhbsejQ==
   dependencies:
     "@babel/runtime" "^7.0.0"
+    fbjs "^3.0.2"
+    invariant "^2.2.4"
+
+relay-runtime@18.2.0:
+  version "18.2.0"
+  resolved "https://registry.yarnpkg.com/relay-runtime/-/relay-runtime-18.2.0.tgz#36e2c88be6e13dcdf987d32a3063e3e491aafa43"
+  integrity sha512-r4FYWlx1dPwFW+KQnuF1ugwVKR4toIFduCGheEf2paRc6nEEcCIgd2p2Jx2gRF+4niO3mCbRZvqdCoKaznUDzg==
+  dependencies:
+    "@babel/runtime" "^7.25.0"
     fbjs "^3.0.2"
     invariant "^2.2.4"
 

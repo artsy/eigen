@@ -3,6 +3,7 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkGridItemTestsQuery } from "__generated__/ArtworkGridItemTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -36,6 +37,21 @@ describe("ArtworkGridItem", () => {
     })
     ;(useExperimentVariant as jest.Mock).mockReturnValue({
       enabled: false,
+    })
+  })
+
+  describe("navigation", () => {
+    it("navigates to the Artwork screen", () => {
+      renderWithRelay({
+        Artwork: () => ({
+          title: "Some Kind of Dinosaur",
+          slug: "cool-artwork",
+        }),
+      })
+
+      fireEvent.press(screen.getByTestId("artworkGridItem-Some Kind of Dinosaur"))
+
+      expect(navigate).toHaveBeenCalledExactlyOnceWith('<mock-value-for-field-"href">')
     })
   })
 

@@ -27,7 +27,7 @@ export const PartnerShowOpenedNotification: FC<PartnerShowOpenedNotificationProp
   const { followProfile, isInFlight } = useFollowProfile({
     id: profile?.id ?? "",
     internalID: profile?.internalID ?? "",
-    isFollowd: profile?.isFollowed ?? false,
+    isFollowed: profile?.isFollowed ?? false,
   })
 
   if (!profile || !shows.length) {

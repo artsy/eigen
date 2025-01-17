@@ -236,7 +236,9 @@ const HomeViewScreenComponent: React.FC = () => {
     <HomeViewStoreProvider>
       <RetryErrorBoundary trackErrorBoundary={false}>
         <Suspense fallback={<HomeViewScreenPlaceholder />}>
-          <HomeView />
+          <Sentry.TimeToInitialDisplay record>
+            <HomeView />
+          </Sentry.TimeToInitialDisplay>
         </Suspense>
         <PortalHost name={`${OwnerType.home}-SearchOverlay`} />
       </RetryErrorBoundary>

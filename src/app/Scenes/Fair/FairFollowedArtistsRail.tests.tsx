@@ -1,7 +1,7 @@
 import { FairFollowedArtistsRailTestsQuery } from "__generated__/FairFollowedArtistsRailTestsQuery.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
@@ -180,9 +180,9 @@ describe("FairFollowedArtistsRail", () => {
       }),
     })
 
-    const viewAllButton = await wrapper.root.findAllByType(TouchableOpacity)
+    const viewAllButton = await wrapper.root.findAllByType(RouterLink)
 
-    expect(viewAllButton.length).toBe(1)
+    expect(viewAllButton.length).toBe(5)
   })
 
   it("doesn't display the '>' button if there are less than 3 artworks to show", async () => {
@@ -199,9 +199,9 @@ describe("FairFollowedArtistsRail", () => {
       }),
     })
 
-    const viewAllButton = await wrapper.root.findAllByType(TouchableOpacity)
+    const viewAllButton = await wrapper.root.findAllByType(RouterLink)
 
-    expect(viewAllButton.length).toBe(0)
+    expect(viewAllButton.length).toBe(2)
   })
 
   it("tracks taps on the rails header", () => {
@@ -219,7 +219,7 @@ describe("FairFollowedArtistsRail", () => {
         },
       }),
     })
-    const viewAllButton = wrapper.root.findAllByType(TouchableOpacity)
+    const viewAllButton = wrapper.root.findAllByType(RouterLink)
     act(() => viewAllButton[0].props.onPress())
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",

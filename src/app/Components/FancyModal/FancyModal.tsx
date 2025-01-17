@@ -13,6 +13,11 @@ import {
 } from "./FancyModalCard"
 import { FancyModalContext } from "./FancyModalContext"
 
+/**
+ *
+ * @deprecated use RN Modal instead
+ *
+ */
 export const FancyModal: React.FC<{
   visible: boolean
   maxHeight?: number

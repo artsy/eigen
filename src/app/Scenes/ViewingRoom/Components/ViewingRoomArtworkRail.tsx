@@ -36,6 +36,7 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = ({ 
       </Flex>
       <ArtworkRail
         artworks={artworks}
+        itemHref={(artwork) => `/viewing-room/${viewingRoom.slug}/${artwork.slug}`}
         onPress={(artwork) => {
           tracking.trackEvent(
             tracks.tappedArtworkThumbnail(

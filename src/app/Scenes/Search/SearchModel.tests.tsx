@@ -1,5 +1,5 @@
+import { waitFor } from "@testing-library/react-native"
 import { __globalStoreTestUtils__, GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { times } from "lodash"
 import {
@@ -94,30 +94,25 @@ describe("Recent Searches", () => {
 })
 
 describe(useRecentSearches, () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({
-      AREnableNewSearchModal: true,
-    })
-  })
-
   it("truncates the list of recent searches", async () => {
     let localRecentSearches: SearchModel["recentSearches"] = []
     let globalRecentSearches: SearchModel["recentSearches"] = []
-    const TestComponent: React.FC<{ numSearches: number }> = ({ numSearches }) => {
-      localRecentSearches = useRecentSearches(numSearches)
+
+    const TestComponent: React.FC = () => {
+      localRecentSearches = useRecentSearches()
       globalRecentSearches = __globalStoreTestUtils__?.getCurrentState().search.recentSearches!
 
       return null
     }
 
-    const tree = renderWithWrappersLEGACY(
-      <GlobalStoreProvider>
-        <TestComponent numSearches={5} />
-      </GlobalStoreProvider>
-    )
-
     expect(localRecentSearches.length).toBe(0)
     expect(globalRecentSearches.length).toBe(0)
+
+    renderWithWrappersLEGACY(
+      <GlobalStoreProvider>
+        <TestComponent />
+      </GlobalStoreProvider>
+    )
 
     times(10).forEach((i) => {
       GlobalStore.actions.search.addRecentSearch({
@@ -132,20 +127,9 @@ describe(useRecentSearches, () => {
       })
     })
 
-    await flushPromiseQueue()
-
-    expect(localRecentSearches.length).toBe(10)
-    expect(globalRecentSearches.length).toBe(10)
-
-    tree.update(
-      <GlobalStoreProvider>
-        <TestComponent numSearches={8} />
-      </GlobalStoreProvider>
-    )
-
-    await flushPromiseQueue()
-
-    expect(localRecentSearches.length).toBe(10)
-    expect(globalRecentSearches.length).toBe(10)
+    await waitFor(() => {
+      expect(localRecentSearches.length).toBe(10)
+      expect(globalRecentSearches.length).toBe(10)
+    })
   })
 })

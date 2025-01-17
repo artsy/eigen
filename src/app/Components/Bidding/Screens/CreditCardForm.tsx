@@ -20,7 +20,7 @@ import { creditCardFormValidationSchema } from "app/Components/Bidding/Validator
 import { Address } from "app/Components/Bidding/types"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { CreditCardField } from "app/Components/CreditCardField/CreditCardField"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { Select } from "app/Components/Select/SelectV2"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { useFormik } from "formik"
@@ -111,7 +111,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
 
   return (
     <ArtsyKeyboardAvoidingView>
-      <FancyModalHeader onLeftButtonPress={() => navigator.pop()}>Add Credit Card</FancyModalHeader>
+      <NavigationHeader onLeftButtonPress={() => navigator.pop()}>Add Credit Card</NavigationHeader>
 
       <ScrollView
         contentContainerStyle={{ padding: space(2), paddingBottom: space(4) }}

@@ -70,11 +70,9 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
   const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
 
-  const [clearedTasks, setClearedTasks] = useState<string[]>([])
   const [showAll, setShowAll] = useState(false)
 
-  const filteredTasks = tasks.filter((task) => !clearedTasks.includes(task.internalID))
-  const displayTaskStack = filteredTasks.length > 1 && !showAll
+  const displayTaskStack = tasks.length > 1 && !showAll
   const HeaderIconComponent = showAll ? ArrowUpIcon : ArrowDownIcon
 
   // TODO: remove this when this reanimated issue gets fixed
@@ -115,14 +113,6 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
     }
   }, [showAll, previousShowAll])
 
-  const handleClearTask = (task: Task) => {
-    if (!task) {
-      return
-    }
-
-    setClearedTasks((prev) => [...prev, task.internalID])
-  }
-
   // Close all tasks except the one with the provided taskID
   const closeAllTasks = (excludeTaskID?: string) => {
     taskRefs.forEach((ref, taskID) => {
@@ -145,13 +135,12 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
           index={index}
           showAll={showAll}
           displayTaskStack={displayTaskStack}
-          onClearTask={handleClearTask}
           onOpenTask={() => closeAllTasks(item.internalID)}
           setShowAll={setShowAll}
         />
       )
     },
-    [displayTaskStack, handleClearTask, showAll]
+    [displayTaskStack, showAll]
   )
 
   const motiViewHeight = useMemo(() => {
@@ -162,12 +151,12 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
       return singleTaskHeight
     }
 
-    return singleTaskHeight + (filteredTasks.length - 1) * TASK_CARD_HEIGHT
-  }, [filteredTasks, showAll])
+    return singleTaskHeight + (tasks.length - 1) * TASK_CARD_HEIGHT
+  }, [tasks, showAll])
 
   return (
     <AnimatePresence>
-      {!!filteredTasks.length && (
+      {!!tasks.length && (
         <MotiView
           transition={{ type: "timing" }}
           animate={{ opacity: 1, height: motiViewHeight }}
@@ -179,7 +168,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
               <SectionTitle
                 title={section.component?.title}
                 RightButtonContent={() => {
-                  if (filteredTasks.length < 2) {
+                  if (tasks.length < 2) {
                     return null
                   }
 
@@ -205,7 +194,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
                 contentContainerStyle={IS_ANDROID ? { flex: 1, height: flatlistHeight } : {}}
                 itemLayoutAnimation={LinearTransition}
                 scrollEnabled={false}
-                data={filteredTasks}
+                data={tasks}
                 keyExtractor={(item) => item.internalID}
                 CellRendererComponentStyle={getCellZIndex}
                 ItemSeparatorComponent={() => <Spacer y={1} />}
@@ -226,14 +215,19 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
 
 const tasksFragment = graphql`
   fragment HomeViewSectionTasks_section on HomeViewSectionTasks
-  @argumentDefinitions(numberOfTasks: { type: "Int", defaultValue: 10 }) {
+  @argumentDefinitions(
+    numberOfTasks: { type: "Int", defaultValue: 10 }
+    after: { type: "String" }
+  ) {
+    id
     internalID
     contextModule
     ownerType
     component {
       title
     }
-    tasksConnection(first: $numberOfTasks) {
+    tasksConnection(first: $numberOfTasks, after: $after)
+      @connection(key: "HomeViewSectionTasks_tasksConnection") {
       edges {
         node {
           internalID
@@ -250,7 +244,6 @@ interface TaskItemProps {
   showAll: boolean
   index: number
   displayTaskStack: boolean
-  onClearTask: (task: Task) => void
   onOpenTask: () => void
   setShowAll: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -261,7 +254,6 @@ const TaskItem = ({
   index,
   showAll,
   displayTaskStack,
-  onClearTask,
   onOpenTask,
   setShowAll,
 }: TaskItemProps) => {
@@ -297,7 +289,6 @@ const TaskItem = ({
     <Animated.View exiting={FadeOut} style={animatedStyle} key={task.internalID}>
       <Task
         disableSwipeable={displayTaskStack}
-        onClearTask={() => onClearTask(task)}
         onPress={displayTaskStack ? () => setShowAll((prev) => !prev) : undefined}
         ref={taskRef}
         onOpenTask={onOpenTask}

@@ -16,10 +16,11 @@ import { Disappearable, DissapearableArtwork } from "app/Components/Disappearabl
 import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
 import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import { useState } from "react"
-import { GestureResponderEvent, PixelRatio, TouchableHighlight } from "react-native"
+import { GestureResponderEvent, PixelRatio } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 const fontScale = PixelRatio.getFontScale()
@@ -29,6 +30,7 @@ export interface ArtworkRailCardProps
   extends ArtworkActionTrackingProps,
     ArtworkRailCardCommonProps {
   artwork: ArtworkRailCard_artwork$key
+  href?: string | null
   onPress?: (event: GestureResponderEvent) => void
   testID?: string
 }
@@ -40,6 +42,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   contextScreenOwnerSlug,
   contextScreen,
   dark = false,
+  href,
   hideArtistName = false,
   hideIncreasedInterestSignal = false,
   hideCuratorsPickSignal = false,
@@ -104,10 +107,14 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
           }}
         >
           <Box pr={2}>
-            <TouchableHighlight
+            <RouterLink
+              to={href || artwork.href}
               underlayColor={backgroundColor}
               activeOpacity={0.8}
               onPress={onPress}
+              // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
+              onLongPress={() => {}}
+              delayLongPress={400}
               testID={testID}
             >
               <Flex
@@ -154,7 +161,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   contextScreenOwnerType={contextScreenOwnerType}
                 />
               </Flex>
-            </TouchableHighlight>
+            </RouterLink>
           </Box>
         </ContextMenuArtwork>
 
@@ -170,6 +177,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 
 const artworkFragment = graphql`
   fragment ArtworkRailCard_artwork on Artwork {
+    href
     internalID
     slug
     ...ArtworkRailCardImage_artwork

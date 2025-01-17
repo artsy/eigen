@@ -52,10 +52,9 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
     initialValues: {
       name: data.name ?? "",
       displayLocation: { display: buildLocationDisplay(data.location ?? null) },
-      location:
-        {
-          ...data.location,
-        } ?? undefined,
+      location: {
+        ...data.location,
+      },
       profession: data.profession ?? "",
       otherRelevantPositions: data.otherRelevantPositions ?? "",
     },

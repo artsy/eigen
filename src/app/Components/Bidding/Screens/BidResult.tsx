@@ -6,7 +6,7 @@ import { Timer } from "app/Components/Bidding/Components/Timer"
 import { Title } from "app/Components/Bidding/Components/Title"
 import { Flex } from "app/Components/Bidding/Elements/Flex"
 import { BidderPositionResult } from "app/Components/Bidding/types"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { Markdown } from "app/Components/Markdown"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
@@ -95,7 +95,7 @@ export class BidResult extends React.Component<BidResultProps> {
 
     return (
       <View style={{ flex: 1 }}>
-        <FancyModalHeader useXButton onLeftButtonPress={() => dismissModal()} />
+        <NavigationHeader useXButton onLeftButtonPress={() => dismissModal()} />
         <Container mt={6}>
           <View>
             <Flex alignItems="center">

@@ -1,7 +1,7 @@
 import { AddIcon, BorderBox, Box, Flex, XCircleIcon, useColor } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
-import { FancyModalHeader as NavHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader as NavHeader } from "app/Components/NavigationHeader"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { Image as ImageProps } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { GlobalStore } from "app/store/GlobalStore"

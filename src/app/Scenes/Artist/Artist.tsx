@@ -218,11 +218,12 @@ export const ArtistScreenQuery = graphql`
   }
 `
 
-export const defaultArtistVariables = () => ({
-  input: {
+export const defaultArtistVariables = {
+  input: prepareFilterArtworksParamsForInput({
+    ...filterArtworksParams([], "artwork"),
     sort: DEFAULT_ARTWORK_SORT.paramValue,
-  },
-})
+  }),
+}
 
 export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) => {
   const {
@@ -258,7 +259,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
           const predefinedFilterParams = filterArtworksParams(filters ?? [], "artwork")
 
           let initialArtworksInput = {
-            ...defaultArtistVariables().input,
+            ...defaultArtistVariables.input,
             ...predefinedFilterParams,
           }
 
@@ -294,7 +295,6 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                 `,
                 variables: { artistID },
               }}
-              cacheConfig={{ force: false }}
               fallback={({ error }) => (
                 <LoadFailureView showBackButton error={error} trackErrorBoundary={false} />
               )}

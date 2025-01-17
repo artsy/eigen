@@ -3,11 +3,12 @@ import { OFFSET_X } from "app/Components/FancySwiper/FancySwiper"
 import { Animated } from "react-native"
 
 interface FancySwiperIconsProps {
+  onDislike: () => void
+  onLike: () => void
   swiper: Animated.ValueXY
-  OnPress: (swipeDirection: "right" | "left") => void
 }
 
-export const FancySwiperIcons = ({ swiper, OnPress }: FancySwiperIconsProps) => {
+export const FancySwiperIcons = ({ onDislike, onLike, swiper }: FancySwiperIconsProps) => {
   const inputRange = [-OFFSET_X, 0, OFFSET_X]
 
   const likeIconScale = swiper.x.interpolate({
@@ -52,26 +53,18 @@ export const FancySwiperIcons = ({ swiper, OnPress }: FancySwiperIconsProps) => 
   return (
     <Flex flexDirection="row" justifyContent="space-around" pb={4} mx={4}>
       <Animated.View style={[{ flex: 1, alignItems: "center" }, dislikeIconAnimatedStyle]}>
-        <Touchable
-          onPress={() => OnPress("left")}
-          accessibilityLabel="Skip"
-          accessibilityRole="button"
-        >
+        <Touchable onPress={() => onDislike()} accessibilityLabel="Skip" accessibilityRole="button">
           <CloseIcon height={40} width={50} />
         </Touchable>
       </Animated.View>
       <Flex flex={1} alignItems="center">
         <Animated.View style={[likeIconAnimatedStyle, { position: "absolute" }]}>
-          <Touchable
-            onPress={() => OnPress("right")}
-            accessibilityLabel="Like"
-            accessibilityRole="button"
-          >
+          <Touchable onPress={() => onLike()} accessibilityLabel="Like" accessibilityRole="button">
             <HeartIcon height={40} width={50} />
           </Touchable>
         </Animated.View>
         <Animated.View style={[likeFilledIconAnimatedStyle, { position: "absolute" }]}>
-          <Touchable onPress={() => OnPress("right")}>
+          <Touchable onPress={() => onLike()}>
             <HeartFillIcon height={40} width={50} />
           </Touchable>
         </Animated.View>

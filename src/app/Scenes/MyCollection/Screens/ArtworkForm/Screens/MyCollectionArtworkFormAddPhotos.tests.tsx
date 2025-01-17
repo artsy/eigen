@@ -1,5 +1,5 @@
 import { waitFor } from "@testing-library/react-native"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkStore"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
@@ -43,7 +43,7 @@ describe("MyCollectionAddPhotos", () => {
 
   it("updates header with correct label based on number of photos selected", () => {
     const wrapper = renderWithWrappersLEGACY(mockAddPhotos)
-    expect(wrapper.root.findByType(FancyModalHeader).props.children).toStrictEqual([
+    expect(wrapper.root.findByType(NavigationHeader).props.children).toStrictEqual([
       "Photos ",
       "(2)",
     ])

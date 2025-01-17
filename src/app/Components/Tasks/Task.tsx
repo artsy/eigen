@@ -9,25 +9,43 @@ import { useDismissTask } from "app/utils/mutations/useDismissTask"
 import { forwardRef } from "react"
 import { PixelRatio } from "react-native"
 import { SwipeableMethods } from "react-native-gesture-handler/ReanimatedSwipeable"
-import { graphql, useFragment } from "react-relay"
+import { ConnectionHandler, graphql, useFragment } from "react-relay"
+import { SelectorStoreUpdater } from "relay-runtime"
 
 const TASK_IMAGE_SIZE = 60
 
 export interface TaskProps {
   disableSwipeable?: boolean
-  onClearTask: () => void
   onOpenTask: () => void
   onPress?: () => void
   task: Task_task$key
 }
 
 export const Task = forwardRef<SwipeableMethods, TaskProps>(
-  ({ disableSwipeable, onClearTask, onOpenTask, onPress, ...restProps }, ref) => {
+  ({ disableSwipeable, onOpenTask, onPress, ...restProps }, ref) => {
     const { tappedTaskGroup, tappedClearTask } = useHomeViewTracking()
-    const { submitMutation: dismissTask } = useDismissTask()
-    const { submitMutation: acknowledgeTask } = useAcknowledgeTask()
+    const [acknowledgeTask] = useAcknowledgeTask()
+    const [dismissTask] = useDismissTask()
     const fontScale = PixelRatio.getFontScale()
     const task = useFragment(taskFragment, restProps.task)
+
+    const optimisticallyClearTask: SelectorStoreUpdater<unknown> = async (store) => {
+      const homeViewTaskSection = store
+        .getRoot()
+        .getLinkedRecord("homeView")
+        ?.getLinkedRecord("section", { id: "home-view-section-tasks" })
+
+      if (!homeViewTaskSection) {
+        return
+      }
+      const key = "HomeViewSectionTasks_tasksConnection"
+      const tasksConnection = ConnectionHandler.getConnection(homeViewTaskSection, key)
+
+      if (tasksConnection) {
+        // remove the task with matching relay id from the connection
+        ConnectionHandler.deleteNode(tasksConnection, task.relayID)
+      }
+    }
 
     const handlePressTask = async () => {
       if (onPress) {
@@ -35,17 +53,23 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
         return
       }
 
-      await acknowledgeTask({ variables: { taskID: task.internalID } })
       tappedTaskGroup(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
-      onClearTask()
-
-      navigate(task.actionLink)
+      acknowledgeTask({
+        variables: { taskID: task.internalID },
+        optimisticUpdater: optimisticallyClearTask as any,
+        onCompleted: () => {
+          navigate(task.actionLink)
+        },
+      })
     }
 
     const handleClearTask = async () => {
-      await dismissTask({ variables: { taskID: task.internalID } })
+      dismissTask({
+        variables: { taskID: task.internalID },
+        optimisticUpdater: optimisticallyClearTask as any,
+      })
+
       tappedClearTask(ContextModule.actNow, task.actionLink, task.internalID, task.taskType)
-      onClearTask()
     }
 
     return (
@@ -104,6 +128,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
 
 const taskFragment = graphql`
   fragment Task_task on Task {
+    relayID: id
     actionLink
     imageUrl
     internalID

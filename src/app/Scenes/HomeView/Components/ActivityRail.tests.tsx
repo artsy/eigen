@@ -97,6 +97,7 @@ describe("ActivityRail", () => {
         },
       }),
     })
+    ;(navigate as jest.Mock).mockClear()
 
     fireEvent.press(screen.getByText(/mock-value-for-field-"headline"/))
 

@@ -1,7 +1,7 @@
 import { Box } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtsyWebView } from "app/Components/ArtsyWebView"
-import { FancyModalHeader } from "app/Components/FancyModal/FancyModalHeader"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 
 type Props = StackScreenProps<CreateSavedSearchAlertNavigationStack, "EmailPreferences">
@@ -14,7 +14,7 @@ export const EmailPreferencesScreen: React.FC<Props> = (props) => {
 
   return (
     <Box flex={1}>
-      <FancyModalHeader hideBottomDivider onLeftButtonPress={handleLeftButtonPress} />
+      <NavigationHeader hideBottomDivider onLeftButtonPress={handleLeftButtonPress} />
       <ArtsyWebView url="/unsubscribe" />
     </Box>
   )

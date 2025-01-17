@@ -14,7 +14,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { useCollectionByCategoryTracking } from "app/Scenes/CollectionsByCategory/hooks/useCollectionByCategoryTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { withSuspense, NoFallback } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { FC } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -38,7 +38,6 @@ export const CollectionRail: FC<CollectionRailProps> = ({
 
   const handleArtworkPress = (artwork: ArtworkRail_artworks$data[0], index: number) => {
     trackArtworkRailItemTap(artwork.internalID, index)
-    navigate(artwork.href ?? "")
   }
 
   const handleTitlePress = () => {

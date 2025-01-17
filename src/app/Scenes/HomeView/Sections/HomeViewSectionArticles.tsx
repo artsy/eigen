@@ -1,5 +1,6 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, FlexProps, Join, Skeleton, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import { HomeViewSectionArticlesQuery } from "__generated__/HomeViewSectionArticlesQuery.graphql"
 import { HomeViewSectionArticles_section$key } from "__generated__/HomeViewSectionArticles_section.graphql"
 import { SkeletonArticleCard } from "app/Components/ArticleCard"
@@ -48,7 +49,7 @@ export const HomeViewSectionArticles: React.FC<HomeViewSectionArticlesProps> = (
       <ArticlesRailFragmentContainer
         title={section.component?.title ?? ""}
         articlesConnection={section.articlesConnection}
-        onTrack={(article, index) => {
+        onTrack={(article: ArticleCard_article$data, index: number) => {
           tracking.tappedArticleGroup(
             article.internalID,
             article.slug,
