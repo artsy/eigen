@@ -8,6 +8,7 @@ export interface CreateAlertReminderModel {
   updateTimesShown: Action<this>
   dismissReminder: Action<this>
   dontShowCreateAlertReminderAgain: Action<this>
+  __clearReminderState: Action<this>
 }
 
 export const getCreateAlertReminderModel = (): CreateAlertReminderModel => ({
@@ -28,6 +29,12 @@ export const getCreateAlertReminderModel = (): CreateAlertReminderModel => ({
     state.reminderState = {
       ...state.reminderState,
       timesShown: state.reminderState.timesShown + 1,
+    }
+  }),
+  __clearReminderState: action((state) => {
+    state.reminderState = {
+      timesShown: 0,
+      dismissDate: 0,
     }
   }),
 })

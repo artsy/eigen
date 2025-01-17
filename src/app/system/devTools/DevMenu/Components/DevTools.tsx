@@ -36,6 +36,8 @@ export const DevTools: React.FC<{}> = () => {
     "https://".length
   )
   const { __clearDissmissed } = GlobalStore.actions.progressiveOnboarding
+  const { __clearReminderState } = GlobalStore.actions.createAlertReminder
+
   const toast = useToast()
 
   const { unleashEnv } = useUnleashEnvironment()
@@ -124,8 +126,15 @@ export const DevTools: React.FC<{}> = () => {
               toast.show("Progressive Onboarding progress cleared ✅", "middle")
             }}
           />
+          <DevMenuButtonItem
+            title="Clear Create Alert Reminder state"
+            onPress={() => {
+              __clearReminderState()
+              toast.show("Create Alert Reminder state cleared ✅", "middle")
+            }}
+          />
           <DevMenuButtonItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
-
+          <DevMenuButtonItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
           <DevMenuButtonItem
             title="Throw Sentry Error"
             onPress={() => {
