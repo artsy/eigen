@@ -73,7 +73,7 @@ import { MakeOfferModalQueryRenderer } from "app/Scenes/Inbox/Components/Convers
 import { PurchaseModalQueryRenderer } from "app/Scenes/Inbox/Components/Conversations/PurchaseModal"
 import { ConversationQueryRenderer } from "app/Scenes/Inbox/Screens/Conversation"
 import { ConversationDetailsQueryRenderer } from "app/Scenes/Inbox/Screens/ConversationDetails"
-import { InfiniteDiscoveryQueryRenderer } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
+import { InfiniteDiscoveryNavigator } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
 import { MyAccountQueryRenderer } from "app/Scenes/MyAccount/MyAccount"
 import { MyAccountDeleteAccountQueryRenderer } from "app/Scenes/MyAccount/MyAccountDeleteAccount"
 import { MyAccountEditEmailQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditEmail"
@@ -814,7 +814,7 @@ export const artsyDotNetRoutes = defineRoutes([
   {
     path: "/infinite-discovery",
     name: "InfiniteDiscovery",
-    Component: InfiniteDiscoveryQueryRenderer,
+    Component: InfiniteDiscoveryNavigator,
     options: {
       hidesBottomTabs: true,
       screenOptions: {

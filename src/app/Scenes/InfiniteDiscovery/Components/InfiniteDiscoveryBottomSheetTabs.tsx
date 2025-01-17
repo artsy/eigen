@@ -4,7 +4,7 @@ import {
   InfiniteDiscoveryAboutTheWorkTab,
   InfiniteDiscoveryAboutTheWorkTabSkeleton,
 } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryAboutTheWorkTab"
-import { InfiniteDiscoveryOtherWorksTab } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryOtherWorksTab"
+import { InfiniteDiscoveryMoreWorksTab } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryMoreWorksTab"
 import { FC } from "react"
 import { PreloadedQuery } from "react-relay"
 
@@ -18,8 +18,8 @@ export const InfiniteDiscoveryTabs: FC<InfiniteDiscoveryOtherWorksTabProps> = ({
       <Tabs.Tab name="About the work" label="About the work">
         <InfiniteDiscoveryAboutTheWorkTab queryRef={queryRef} />
       </Tabs.Tab>
-      <Tabs.Tab name="Other works" label="Other works">
-        <InfiniteDiscoveryOtherWorksTab />
+      <Tabs.Tab name="More works by artist" label="More works by artist">
+        <InfiniteDiscoveryMoreWorksTab queryRef={queryRef} />
       </Tabs.Tab>
     </Tabs>
   )
@@ -32,8 +32,8 @@ export const InfiniteDiscoveryTabsSkeleton: FC = () => {
         <Tabs.Tab name="About the work" label="About the work">
           <InfiniteDiscoveryAboutTheWorkTabSkeleton />
         </Tabs.Tab>
-        <Tabs.Tab name="Other works" label="Other works">
-          <SkeletonText variant="xs">Other works</SkeletonText>
+        <Tabs.Tab name="More works by artist" label="More works by artist">
+          <SkeletonText variant="xs">More works by artist</SkeletonText>
         </Tabs.Tab>
       </Tabs>
     </Skeleton>
