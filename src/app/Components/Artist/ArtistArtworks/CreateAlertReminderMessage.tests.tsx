@@ -1,35 +1,27 @@
 import { screen } from "@testing-library/react-native"
+import { CreateAlertReminderMessage } from "app/Components/Artist/ArtistArtworks/CreateAlertReminderMessage"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
-import { CreateAlertPromptPopover } from "./CreateAlertPromptPopover"
 
 jest.mock("@artsy/palette-mobile", () => ({
   ...jest.requireActual("@artsy/palette-mobile"),
-  Popover: (props: any) => <MockedPopover {...props} />,
 }))
-
-const mockUseIsFocusedMock = jest.fn()
 
 jest.mock("@react-navigation/native", () => ({
   ...jest.requireActual("@react-navigation/native"),
   useNavigation: () => ({
     navigate: jest.fn(),
   }),
-  useIsFocused: () => mockUseIsFocusedMock(),
 }))
 
-describe("CreateAlertPromptPopover", () => {
+describe("CreateAlertReminderMessage", () => {
   const wrapper = () =>
     renderWithWrappers(
-      <CreateAlertPromptPopover>
+      <CreateAlertReminderMessage onPress={() => jest.fn()}>
         <Text>Test Children</Text>
-      </CreateAlertPromptPopover>
+      </CreateAlertReminderMessage>
     )
-
-  beforeEach(() => {
-    mockUseIsFocusedMock.mockReturnValue(true)
-  })
 
   it("renders correctly first time", () => {
     __globalStoreTestUtils__?.injectState({
@@ -37,8 +29,7 @@ describe("CreateAlertPromptPopover", () => {
     })
     wrapper()
 
-    expect(screen.getByText("Test Children")).toBeOnTheScreen()
-    expect(screen.getByText("Popover")).toBeOnTheScreen()
+    expect(screen.getByText("Searching for a particular artwork?")).toBeOnTheScreen()
   })
 
   it("is not rendered on the third time", () => {
@@ -47,8 +38,7 @@ describe("CreateAlertPromptPopover", () => {
     })
     wrapper()
 
-    expect(screen.getByText("Test Children")).toBeOnTheScreen()
-    expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Searching for a particular artwork?")).not.toBeOnTheScreen()
   })
 
   it("renders correctly second time after 3 days", () => {
@@ -58,8 +48,7 @@ describe("CreateAlertPromptPopover", () => {
     })
     wrapper()
 
-    expect(screen.getByText("Test Children")).toBeOnTheScreen()
-    expect(screen.getByText("Popover")).toBeOnTheScreen()
+    expect(screen.getByText("Searching for a particular artwork?")).toBeOnTheScreen()
   })
 
   it("is not rendered second time after less than 3 days", () => {
@@ -69,21 +58,6 @@ describe("CreateAlertPromptPopover", () => {
     })
     wrapper()
 
-    expect(screen.getByText("Test Children")).toBeOnTheScreen()
-    expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Searching for a particular artwork?")).not.toBeOnTheScreen()
   })
 })
-
-const MockedPopover: React.FC<any> = ({ children, onDismiss, visible, content }) => {
-  if (!visible) {
-    return <>{children}</>
-  }
-
-  return (
-    <>
-      <Text onPress={onDismiss}>Popover</Text>
-      <>{children}</>
-      <>{content}</>
-    </>
-  )
-}

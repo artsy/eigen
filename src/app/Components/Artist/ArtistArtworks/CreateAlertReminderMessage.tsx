@@ -3,11 +3,13 @@ import { useShouldShowPrompt } from "app/Components/Artist/ArtistArtworks/hooks/
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
 
-interface CreateAlertPromptMessageProps {
+interface CreateAlertReminderMessageProps {
   onPress: () => void
 }
 
-export const CreateAlertPromptMessage: React.FC<CreateAlertPromptMessageProps> = ({ onPress }) => {
+export const CreateAlertReminderMessage: React.FC<CreateAlertReminderMessageProps> = ({
+  onPress,
+}) => {
   const { promptState } = GlobalStore.useAppState((state) => state.createAlertPrompt)
   const { updateTimesShown, dontShowCreateAlertPromptAgain, dismissPrompt } =
     GlobalStore.actions.createAlertPrompt

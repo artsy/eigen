@@ -14,7 +14,7 @@ import {
 import { MasonryFlashListRef } from "@shopify/flash-list"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
-import { CreateAlertPromptMessage } from "app/Components/Artist/ArtistArtworks/CreateAlertPromptMessage"
+import { CreateAlertReminderMessage } from "app/Components/Artist/ArtistArtworks/CreateAlertReminderMessage"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { useCreateSavedSearchModalFilters } from "app/Components/Artist/ArtistArtworks/hooks/useCreateSavedSearchModalFilters"
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
@@ -328,13 +328,13 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
       />
 
       {!!userDidScroll && (
-        <CreateAlertPromptMessage
+        <CreateAlertReminderMessage
           onPress={() => {
             tracking.trackEvent(
               tracks.tappedCreateAlert({
                 artistId: artist.internalID,
                 artistSlug: artist.slug,
-                contextModule: ContextModule.artistArtworksCreateAlertPromptMessage,
+                contextModule: ContextModule.artistArtworksCreateAlertReminderMessage,
               })
             )
             setIsCreateAlertModalVisible(true)
