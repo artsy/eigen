@@ -8,7 +8,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import useAppState from "app/utils/useAppState"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { useInterval } from "react-use"
@@ -26,8 +26,8 @@ export interface MyBidsProps {
 
 const MyBids: React.FC<MyBidsProps> = (props) => {
   const [isFetching, setIsFetching] = useState<boolean>(false)
-  const appIsInForeground = useRef(false)
-  const hasViewedScreen = useRef(false)
+  const [appIsInForeground, setAppIsInForeground] = useState(true)
+  const [hasViewedScreen, setViewedScreen] = useState(false)
   const { relay, isActiveTab, me } = props
   const { isSmallScreen } = useScreenDimensions()
 
@@ -51,7 +51,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
 
   useAppState({
     onChange: (state) => {
-      appIsInForeground.current = state === "active"
+      setAppIsInForeground(state === "active")
     },
   })
 
@@ -60,7 +60,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
       refreshMyBids()
     },
     // starts when the tab is active, but only pauses when the app goes to the background
-    hasViewedScreen.current && appIsInForeground.current ? null : MY_BIDS_REFRESH_INTERVAL_MS
+    hasViewedScreen && appIsInForeground ? MY_BIDS_REFRESH_INTERVAL_MS : null
   )
 
   useEffect(() => {
@@ -68,8 +68,8 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
       refreshMyBids()
     }
 
-    if (!hasViewedScreen.current) {
-      hasViewedScreen.current = true
+    if (isActiveTab && !hasViewedScreen) {
+      setViewedScreen(true)
     }
   }, [isActiveTab])
 
