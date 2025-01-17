@@ -16,9 +16,7 @@ export const SectionTitle: React.FC<
     title: React.ReactNode
     titleVariant?: TextProps["variant"]
     subtitle?: React.ReactNode
-    /**
-     * onPress is only called when href is provided
-     */
+    navigationProps?: object
     onPress?: () => any
     RightButtonContent?: React.FC
     mb?: SpacingUnit
@@ -26,6 +24,7 @@ export const SectionTitle: React.FC<
   } & FlexProps
 > = ({
   href,
+  navigationProps,
   title,
   titleVariant = "sm-display",
   subtitle,
@@ -41,10 +40,8 @@ export const SectionTitle: React.FC<
     titleText = capitalized ? toTitleCase(title) : title
   }
 
-  const displayShowAllButton = !!href || !!onPress
-
   return (
-    <Wrapper onPress={onPress} href={href}>
+    <Wrapper onPress={onPress} href={href} navigationProps={navigationProps}>
       <Flex mb={2} flexDirection="row" alignItems="flex-start" {...flexProps}>
         <Flex flex={1}>
           <Text variant={titleVariant} ellipsizeMode="tail" numberOfLines={1} testID="title">
@@ -58,7 +55,7 @@ export const SectionTitle: React.FC<
           )}
         </Flex>
 
-        {!!displayShowAllButton && (
+        {!!href && (
           <Flex flexShrink={0} pl={1}>
             <RightButtonContent />
           </Flex>
@@ -68,15 +65,17 @@ export const SectionTitle: React.FC<
   )
 }
 
-const Wrapper: React.FC<{ onPress?(): void; href?: string | null }> = ({
+const Wrapper: React.FC<{ onPress?(): void; href?: string | null; navigationProps?: object }> = ({
   children,
   href,
+  navigationProps,
   onPress,
 }) => {
   if (onPress) {
     return (
       <RouterLink
         onPress={onPress}
+        navigationProps={navigationProps}
         to={href}
         testID="touchable-wrapper"
         hitSlop={{ top: 10, bottom: 10 }}

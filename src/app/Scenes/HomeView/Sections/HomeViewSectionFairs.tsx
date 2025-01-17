@@ -50,20 +50,19 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
 
     tracking.tappedFairGroupViewAll(
       section.contextModule as ContextModule,
-      viewAll?.ownerType as ScreenOwnerType
+      (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
     )
   }
 
   return (
     <Flex {...flexProps}>
-      <Flex px={2}>
-        <SectionTitle
-          href={viewAll?.href}
-          title={section.component?.title}
-          subtitle={section.component?.description}
-          onPress={onViewAllPress}
-        />
-      </Flex>
+      <SectionTitle
+        href={viewAll?.href}
+        title={section.component?.title}
+        subtitle={section.component?.description}
+        onPress={onViewAllPress}
+        mx={2}
+      />
 
       <CardRailFlatList<FairItem>
         data={fairs}

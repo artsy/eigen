@@ -65,7 +65,7 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
     if (viewAll?.href) {
       tracking.tappedAuctionResultGroupViewAll(
         section.contextModule as ContextModule,
-        viewAll?.ownerType as ScreenOwnerType
+        (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
       )
 
       navigate(viewAll.href)

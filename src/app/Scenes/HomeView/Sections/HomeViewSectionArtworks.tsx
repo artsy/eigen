@@ -61,30 +61,38 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     )
   }
 
+  const href = viewAll?.href || `home-view/sections/${section.internalID}`
+  const navigationProps = viewAll?.href
+    ? undefined
+    : {
+        sectionType: section.__typename,
+      }
+
   const onSectionViewAll = () => {
-    if (viewAll?.href) {
+    if (href) {
       tracking.tappedArtworkGroupViewAll(
         section.contextModule as ContextModule,
-        viewAll?.ownerType as ScreenOwnerType
+        (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
       )
     }
   }
 
   const onMorePress = () => {
-    if (viewAll?.href) {
+    if (href) {
       tracking.tappedArtworkGroupViewAll(
         section.contextModule as ContextModule,
-        viewAll?.ownerType as ScreenOwnerType
+        (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
       )
 
-      navigate(viewAll.href)
+      navigate(href)
     }
   }
 
   return (
     <Flex {...flexProps}>
       <SectionTitle
-        href={viewAll?.href}
+        href={href}
+        navigationProps={navigationProps}
         mx={2}
         title={section.component?.title}
         onPress={onSectionViewAll}

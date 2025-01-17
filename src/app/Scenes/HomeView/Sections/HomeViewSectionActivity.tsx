@@ -1,4 +1,4 @@
-import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, FlexProps, Join, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionActivityQuery } from "__generated__/HomeViewSectionActivityQuery.graphql"
 import { HomeViewSectionActivity_section$key } from "__generated__/HomeViewSectionActivity_section.graphql"
@@ -17,6 +17,7 @@ import {
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
@@ -47,21 +48,28 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
     return null
   }
 
+  const href = viewAll?.href || "/notifications"
+
+  const onHeaderPress = () => {
+    tracking.tappedActivityGroupViewAll(
+      section.contextModule as ContextModule,
+      (viewAll?.ownerType || OwnerType.activities) as ScreenOwnerType
+    )
+  }
+
   const onSectionViewAll = () => {
     tracking.tappedActivityGroupViewAll(
       section.contextModule as ContextModule,
-      viewAll?.ownerType as ScreenOwnerType
+      (viewAll?.ownerType || OwnerType.activities) as ScreenOwnerType
     )
+
+    navigate(href)
   }
 
   return (
     <Flex {...flexProps}>
       <Flex px={2}>
-        <SectionTitle
-          href={viewAll?.href}
-          title={section.component?.title}
-          onPress={onSectionViewAll}
-        />
+        <SectionTitle href={href} title={section.component?.title} onPress={onHeaderPress} />
       </Flex>
 
       <FlatList

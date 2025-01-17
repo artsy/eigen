@@ -1,4 +1,4 @@
-import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import {
   Flex,
   FlexProps,
@@ -56,8 +56,10 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
   const auctionResults = extractNodes(section.auctionResultsConnection)
   const viewAll = section.component?.behaviors?.viewAll
 
+  const href = viewAll?.href || "/auction-results-for-artists-you-follow"
+
   const onHeaderPress = () => {
-    if (viewAll?.href) {
+    if (href) {
       tracking.tappedAuctionResultGroupViewAll(
         section.contextModule as ContextModule,
         viewAll?.ownerType as ScreenOwnerType
@@ -66,19 +68,20 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
   }
 
   const onViewAllPress = () => {
-    if (viewAll?.href) {
+    if (href) {
       tracking.tappedAuctionResultGroupViewAll(
         section.contextModule as ContextModule,
-        viewAll?.ownerType as ScreenOwnerType
+        (viewAll?.ownerType || OwnerType.auctionResultsForArtistsYouFollow) as ScreenOwnerType
       )
 
-      navigate(viewAll.href)
+      navigate(href)
     }
   }
 
   return (
     <Flex {...flexProps}>
       <SectionTitle
+        href={href}
         onPress={onHeaderPress}
         mx={2}
         title={section.component?.title ?? "Auction Results"}

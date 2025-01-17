@@ -64,7 +64,7 @@ export const HomeViewSectionMarketingCollections: React.FC<
 
     tracking.tappedMarketingCollectionGroupViewAll(
       section.contextModule as ContextModule,
-      viewAll?.ownerType as ScreenOwnerType
+      (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
     )
   }
 
