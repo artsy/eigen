@@ -24,7 +24,12 @@ const CountdownText: React.FC<CountdownTimerProps> = ({ duration }) => {
   const separator = "  "
   const sections = duration ? durationSections(duration, ["d", "h", "m", "s"]) : []
   return (
-    <Text variant="xs" fontWeight={500} color="white100">
+    <Text
+      variant="xs"
+      fontWeight={500}
+      // We want to set the color to white here regardless of the theme
+      color="white"
+    >
       {sections
         .map(({ time, label }, idx) =>
           idx < sections.length - 1 ? time + label + separator : time + label
@@ -54,7 +59,12 @@ const Countdown: React.FC<{ startAt: string; endAt: string; status: string }> = 
 
   return (
     <>
-      <Text variant="xs" fontWeight={500} color="white100">
+      <Text
+        variant="xs"
+        fontWeight={500}
+        // We want to set the color to white here regardless of the theme
+        color="white"
+      >
         {finalText}
       </Text>
       {status !== ViewingRoomStatus.CLOSED ? (
@@ -102,7 +112,13 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
           mb={0.5}
         >
           <Flex alignItems="center" flexDirection="column" flexGrow={1}>
-            <Text testID="title" variant="lg-display" textAlign="center" color="white100">
+            <Text
+              testID="title"
+              variant="lg-display"
+              textAlign="center"
+              // We want to set the color to white here regardless of the theme
+              color="white"
+            >
               {title}
             </Text>
             <Spacer y={1} />
@@ -122,7 +138,13 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
                     />
                   </Box>
                 )}
-                <Text variant="xs" fontWeight={500} color="white100" testID="partner-name">
+                <Text
+                  variant="xs"
+                  fontWeight={500}
+                  // We want to set the color to white here regardless of the theme
+                  color="white"
+                  testID="partner-name"
+                >
                   {partner?.name}
                 </Text>
               </Flex>

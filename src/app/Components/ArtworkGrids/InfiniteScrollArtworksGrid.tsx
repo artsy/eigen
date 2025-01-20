@@ -461,7 +461,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             style={{ opacity: localIsLoading && hasMore() ? 1 : 0 }}
           >
             {!!autoFetch && (
-              <ActivityIndicator color={Platform.OS === "android" ? "black" : undefined} />
+              <ActivityIndicator color={Platform.OS === "android" ? "black100" : undefined} />
             )}
           </Flex>
         )}

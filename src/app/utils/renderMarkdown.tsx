@@ -1,4 +1,5 @@
-import { ClassTheme, Text, LinkText, TextProps, Separator } from "@artsy/palette-mobile"
+import { LinkText, Separator, Text, TextProps } from "@artsy/palette-mobile"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { navigate } from "app/system/navigation/navigate"
 import { decode } from "html-entities"
 import { map } from "lodash"
@@ -210,7 +211,7 @@ export function defaultRules({
     },
     blockQuote: {
       react: (node, output, state) => (
-        <ClassTheme>
+        <ThemeAwareClassTheme>
           {({ color, space }) => (
             <View
               style={{
@@ -222,7 +223,7 @@ export function defaultRules({
               {output(node.content, state)}
             </View>
           )}
-        </ClassTheme>
+        </ThemeAwareClassTheme>
       ),
     },
     hr: {

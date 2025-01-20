@@ -1,8 +1,9 @@
 import { ActionType, ContextModule, OwnerType, TappedConsignmentInquiry } from "@artsy/cohesion"
-import { Flex, Spacer, Text, useColor, useSpace, Button } from "@artsy/palette-mobile"
+import { Button, Flex, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { MeetTheSpecialists_staticContent$key } from "__generated__/MeetTheSpecialists_staticContent.graphql"
 import { useExtraLargeWidth } from "app/Components/ArtworkRail/useExtraLargeWidth"
 import { ReadMore } from "app/Components/ReadMore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { AnimateHeight } from "app/utils/animations/AnimateHeight"
 import { MotiView } from "moti"
 import { useState } from "react"
@@ -87,8 +88,8 @@ interface SpecialistProps {
 const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) => {
   const [isBioExpanded, setIsBioExpanded] = useState(false)
 
-  const color = useColor()
   const space = useSpace()
+  const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
   const imgWidth = useExtraLargeWidth()
   const imgHeight = imgWidth * IMG_HEIGHT_TO_WIDTH_RATIO
@@ -129,10 +130,20 @@ const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) =
       </MotiView>
       <Flex position="absolute" bottom={0} pb={2} mt={1} mx={1}>
         <AnimateHeight>
-          <Text variant="lg-display" color={color("white100")}>
+          <Text
+            variant="lg-display"
+            // We want to set the color to white here regardless of the theme
+            color="white"
+          >
             {specialist.name}
           </Text>
-          <Text variant="xs" fontWeight="bold" mb={1} color={color("white100")}>
+          <Text
+            variant="xs"
+            fontWeight="bold"
+            mb={1}
+            // We want to set the color to white here regardless of the theme
+            color="white"
+          >
             {specialist.jobTitle}
           </Text>
           <Flex>
@@ -142,7 +153,8 @@ const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) =
               textStyle="new"
               textVariant="xs"
               linkTextVariant="xs"
-              color={color("white100")}
+              // We want to set the color to white here regardless of the theme
+              color="white"
               showReadLessButton
               onExpand={(isExpanded) => setIsBioExpanded(isExpanded)}
             />
@@ -151,7 +163,7 @@ const Specialist: React.FC<SpecialistProps> = ({ specialist, onInquiryPress }) =
         <Spacer y={2} />
         <Button
           size="small"
-          variant="outlineLight"
+          variant={theme === "light" ? "outlineLight" : "fillDark"}
           testID="MeetTheSpecialists-contact-CTA"
           onPress={() => {
             onInquiryPress(
