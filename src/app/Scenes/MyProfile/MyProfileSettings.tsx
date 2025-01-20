@@ -15,7 +15,9 @@ export const MyProfileSettings: React.FC = () => {
   const separatorColor = color("black5")
 
   return (
-    <ScrollView contentContainerStyle={{ paddingTop: space(2) }}>
+    <ScrollView
+      contentContainerStyle={{ paddingTop: space(2), backgroundColor: color("background") }}
+    >
       <Text variant="xs" color="black60" px={2}>
         Settings
       </Text>
@@ -47,6 +49,15 @@ export const MyProfileSettings: React.FC = () => {
         onPress={() => {
           tracking.trackEvent(tracks.trackMenuTap("my-profile/recently-viewed"))
           navigate("recently-viewed")
+        }}
+      />
+      <Separator my={1} borderColor={separatorColor} />
+
+      <MenuItem
+        title="Dark mode"
+        onPress={() => {
+          tracking.trackEvent(tracks.trackMenuTap("settings/dark-mode"))
+          navigate("/settings/dark-mode")
         }}
       />
       <Separator my={1} borderColor={separatorColor} />

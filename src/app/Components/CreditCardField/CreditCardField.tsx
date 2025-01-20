@@ -60,7 +60,6 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
     return {
       zIndex: 100,
       position: "absolute",
-      backgroundColor: "white",
       left: withTiming(
         hasSelectedValue || isFocused ? 15 : STRIPE_CREDIT_CARD_ICON_CONTAINER_WIDTH
       ),
@@ -93,7 +92,7 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
           testID="credit-card-field"
           cardStyle={{
             borderWidth: 0, // avoid repeat border
-            backgroundColor: color("white100"),
+            backgroundColor: color("background"),
             fontSize: textStyle.fontSize,
             fontFamily: textStyle.fontFamily,
             textColor: color("black100"),
@@ -113,7 +112,7 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
         />
       </AnimatedFlex>
       <Flex pointerEvents="none" style={{ position: "absolute" }}>
-        <AnimatedText style={labelStyles}>
+        <AnimatedText style={[{ backgroundColor: color("white100") }, labelStyles]}>
           {hasSelectedValue || isFocused ? "Credit Card" : ""}
         </AnimatedText>
       </Flex>

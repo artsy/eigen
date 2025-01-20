@@ -15,6 +15,7 @@ import { HeroUnit } from "app/Scenes/HomeView/Components/HeroUnit"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
+import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -35,6 +36,7 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
   ...flexProps
 }) => {
   const tracking = useHomeViewTracking()
+  const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
   const { width, height } = useScreenDimensions()
   const section = useFragment(HomeViewSectionCardFragment, sectionProp)
@@ -48,7 +50,7 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
   const imageHeight = height * 0.5
 
   const hasImage = !!image?.imageURL
-  const textColor = hasImage ? "white100" : "black100"
+  const textColor = hasImage && theme !== "dark" ? "white100" : "black100"
   const buttonText = btnText ?? "More"
   const route = getRoute(section.card)
 
@@ -111,7 +113,7 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
               {!!route && (
                 <Flex mt={0.5} maxWidth={150}>
                   <Button
-                    variant={hasImage ? "outlineLight" : "fillDark"}
+                    variant={hasImage && theme !== "dark" ? "outlineLight" : "fillDark"}
                     size="small"
                     onPress={onPress}
                   >

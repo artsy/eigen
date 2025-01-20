@@ -59,7 +59,7 @@ const OnboardingMarketingCollection: React.FC<OnboardingMarketingCollectionProps
           hideViewFollowsLink
           hideCreateAlertOnArtworkPreview
         />
-        <Flex p={2} backgroundColor="white">
+        <Flex p={2} backgroundColor="white100">
           <Button block onPress={() => navigate("OnboardingPostFollowLoadingScreen")} mb={1}>
             Explore More on Artsy
           </Button>

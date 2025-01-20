@@ -1,4 +1,4 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, useColor } from "@artsy/palette-mobile"
 import { MotiView } from "moti"
 
 interface PaginationDotsProps {
@@ -23,6 +23,7 @@ interface PaginationDotProps {
 }
 
 const PaginationDot: React.FC<PaginationDotProps> = (props) => {
+  const color = useColor()
   const { active } = props
   const diameter = 5
 
@@ -31,7 +32,7 @@ const PaginationDot: React.FC<PaginationDotProps> = (props) => {
       accessibilityLabel="Image Pagination Indicator"
       animate={{ opacity: active ? 1 : 0.1 }}
       style={{
-        backgroundColor: "black",
+        backgroundColor: color("black100"),
         borderRadius: diameter / 2,
         height: diameter,
         marginHorizontal: diameter * 0.8,

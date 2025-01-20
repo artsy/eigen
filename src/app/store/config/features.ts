@@ -46,6 +46,7 @@ export type FeatureName = keyof typeof features
 export const features = {
   ARDarkModeSupport: {
     readyForRelease: false,
+    showInDevMenu: true,
     description: "Support dark mode",
   },
   AREnableEditorialNews: {
