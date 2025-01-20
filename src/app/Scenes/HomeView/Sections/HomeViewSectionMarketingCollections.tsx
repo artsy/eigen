@@ -31,6 +31,7 @@ import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
+import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -53,29 +54,23 @@ export const HomeViewSectionMarketingCollections: React.FC<
   const section = useFragment(fragment, sectionProp)
   const component = section.component
 
-  if (!component) return null
-
   const marketingCollections = extractNodes(section.marketingCollectionsConnection)
-  if (!marketingCollections || marketingCollections.length === 0) return null
-  const viewAll = section.component.behaviors?.viewAll
+  const viewAll = component?.behaviors?.viewAll
+  const href = getHomeViewSectionHref(viewAll?.href, section)
 
   const onSectionViewAll = () => {
-    if (!viewAll?.href) return
-
     tracking.tappedMarketingCollectionGroupViewAll(
       section.contextModule as ContextModule,
       (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
     )
   }
 
+  if (!component) return null
+  if (!marketingCollections || marketingCollections.length === 0) return null
+
   return (
     <Flex {...flexProps}>
-      <SectionTitle
-        href={viewAll?.href}
-        mx={2}
-        onPress={onSectionViewAll}
-        title={component.title}
-      />
+      <SectionTitle href={href} mx={2} onPress={onSectionViewAll} title={component.title} />
 
       <CardRailFlatList<
         ExtractNodeType<

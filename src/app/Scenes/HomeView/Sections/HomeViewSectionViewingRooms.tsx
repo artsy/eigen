@@ -41,22 +41,18 @@ export const HomeViewSectionViewingRooms: React.FC<HomeViewSectionViewingRoomsPr
   const viewAll = section.component?.behaviors?.viewAll
 
   const onHeaderPress = () => {
-    if (viewAll?.href) {
-      tracking.tappedViewingRoomGroupViewAll(
-        section.contextModule as ContextModule,
-        viewAll?.ownerType as ScreenOwnerType
-      )
-    }
+    tracking.tappedViewingRoomGroupViewAll(
+      section.contextModule as ContextModule,
+      viewAll?.ownerType as ScreenOwnerType
+    )
   }
+
+  const href =
+    viewAll?.href || `home-view/sections/${section.internalID}?sectionType=${section.__typename}`
 
   return (
     <Flex {...flexProps}>
-      <SectionTitle
-        href={viewAll?.href}
-        px={2}
-        title={section.component?.title}
-        onPress={onHeaderPress}
-      />
+      <SectionTitle href={href} px={2} title={section.component?.title} onPress={onHeaderPress} />
 
       <Suspense fallback={<ViewingRoomsRailPlaceholder />}>
         <LegacyViewingRoomsHomeRail

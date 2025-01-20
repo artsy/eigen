@@ -19,6 +19,7 @@ import {
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
+import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -61,38 +62,28 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     )
   }
 
-  const href = viewAll?.href || `home-view/sections/${section.internalID}`
-  const navigationProps = viewAll?.href
-    ? undefined
-    : {
-        sectionType: section.__typename,
-      }
+  const href = getHomeViewSectionHref(viewAll?.href, section)
 
   const onSectionViewAll = () => {
-    if (href) {
-      tracking.tappedArtworkGroupViewAll(
-        section.contextModule as ContextModule,
-        (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
-      )
-    }
+    tracking.tappedArtworkGroupViewAll(
+      section.contextModule as ContextModule,
+      (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
+    )
   }
 
   const onMorePress = () => {
-    if (href) {
-      tracking.tappedArtworkGroupViewAll(
-        section.contextModule as ContextModule,
-        (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
-      )
+    tracking.tappedArtworkGroupViewAll(
+      section.contextModule as ContextModule,
+      (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
+    )
 
-      navigate(href)
-    }
+    navigate(href)
   }
 
   return (
     <Flex {...flexProps}>
       <SectionTitle
         href={href}
-        navigationProps={navigationProps}
         mx={2}
         title={section.component?.title}
         onPress={onSectionViewAll}

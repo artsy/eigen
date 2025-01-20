@@ -22,6 +22,7 @@ import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
+import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -48,38 +49,32 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
   const section = useFragment(fragment, sectionProp)
 
   const sales = extractNodes(section.salesConnection)
-  if (sales.length === 0) return null
 
   const viewAll = section.component?.behaviors?.viewAll
+  const href = getHomeViewSectionHref(viewAll?.href, section)
 
   const onHeaderPress = () => {
-    if (viewAll?.href) {
-      tracking.tappedAuctionResultGroupViewAll(
-        section.contextModule as ContextModule,
-        viewAll?.ownerType as ScreenOwnerType
-      )
-    }
+    tracking.tappedAuctionResultGroupViewAll(
+      section.contextModule as ContextModule,
+      viewAll?.ownerType as ScreenOwnerType
+    )
   }
 
   const onViewAllPress = () => {
-    if (viewAll?.href) {
-      tracking.tappedAuctionResultGroupViewAll(
-        section.contextModule as ContextModule,
-        (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
-      )
+    tracking.tappedAuctionResultGroupViewAll(
+      section.contextModule as ContextModule,
+      (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
+    )
 
-      navigate(viewAll.href)
-    }
+    navigate(href)
   }
+
+  if (sales.length === 0) return null
 
   return (
     <Flex {...flexProps}>
       <Flex px={2}>
-        <SectionTitle
-          href={viewAll?.href}
-          title={section.component?.title}
-          onPress={onHeaderPress}
-        />
+        <SectionTitle href={href} title={section.component?.title} onPress={onHeaderPress} />
       </Flex>
       <CardRailFlatList
         prefetchUrlExtractor={(item) => item?.href}

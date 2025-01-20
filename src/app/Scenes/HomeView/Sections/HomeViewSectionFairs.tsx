@@ -16,6 +16,7 @@ import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
+import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -43,21 +44,21 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
   const viewAll = section.component?.behaviors?.viewAll
 
   const fairs = extractNodes(section.fairsConnection)
-  if (!fairs || fairs.length === 0) return null
+  const href = getHomeViewSectionHref(viewAll?.href, section)
 
   const onViewAllPress = () => {
-    if (!viewAll?.href) return
-
     tracking.tappedFairGroupViewAll(
       section.contextModule as ContextModule,
       (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
     )
   }
 
+  if (!fairs?.length) return null
+
   return (
     <Flex {...flexProps}>
       <SectionTitle
-        href={viewAll?.href}
+        href={href}
         title={section.component?.title}
         subtitle={section.component?.description}
         onPress={onViewAllPress}
