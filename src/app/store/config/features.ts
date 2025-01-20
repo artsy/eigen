@@ -252,6 +252,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworkCardContextMenuIOS",
   },
+  AREnableFramedFilter: {
+    description: "Enable show only framed works filter",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

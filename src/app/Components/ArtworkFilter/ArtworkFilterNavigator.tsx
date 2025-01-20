@@ -21,6 +21,7 @@ import { AvailabilityOptionsScreen } from "app/Components/ArtworkFilter/Filters/
 import { CategoriesOptionsScreen } from "app/Components/ArtworkFilter/Filters/CategoriesOptions"
 import { ColorsOptionsScreen } from "app/Components/ArtworkFilter/Filters/ColorsOptions"
 import { EstimateRangeOptionsScreen } from "app/Components/ArtworkFilter/Filters/EstimateRangeOptions"
+import { FramedOptionsScreen } from "app/Components/ArtworkFilter/Filters/FramedOptions"
 import { GalleriesAndInstitutionsOptionsScreen } from "app/Components/ArtworkFilter/Filters/GalleriesAndInstitutionsOptions"
 import { MaterialsTermsOptionsScreen } from "app/Components/ArtworkFilter/Filters/MaterialsTermsOptions"
 import { MediumOptionsScreen } from "app/Components/ArtworkFilter/Filters/MediumOptions"
@@ -89,9 +90,10 @@ export type ArtworkFilterNavigationStack = {
   ColorsOptionsScreen: undefined
   EstimateRangeOptionsScreen: undefined
   FilterOptionsScreen: ArtworkFilterOptionsScreenParams
+  FramedOptionsScreen: undefined
   GalleriesAndInstitutionsOptionsScreen: undefined
-  MaterialsTermsOptionsScreen: undefined
   LocationCitiesOptionsScreen: undefined
+  MaterialsTermsOptionsScreen: undefined
   MediumOptionsScreen: undefined
   PriceRangeOptionsScreen: undefined
   SizesOptionsScreen: undefined
@@ -342,6 +344,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
               name="EstimateRangeOptionsScreen"
               component={EstimateRangeOptionsScreen}
             />
+            <Stack.Screen name="FramedOptionsScreen" component={FramedOptionsScreen} />
             <Stack.Screen
               name="GalleriesAndInstitutionsOptionsScreen"
               component={GalleriesAndInstitutionsOptionsScreen}
