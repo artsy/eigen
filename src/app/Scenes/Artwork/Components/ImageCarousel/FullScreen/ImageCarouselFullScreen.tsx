@@ -1,3 +1,4 @@
+import { useColor } from "@artsy/palette-mobile"
 import {
   ImageCarouselContext,
   ImageCarouselMedia,
@@ -148,11 +149,12 @@ export const ImageCarouselFullScreen = () => {
  */
 const WhiteUnderlay: React.FC = () => {
   const opacity = useSpringFade("in")
+  const color = useColor()
 
   return (
     <Animated.View
       style={{
-        backgroundColor: "white",
+        backgroundColor: color("white100"),
         opacity,
         position: "absolute",
         left: 0,

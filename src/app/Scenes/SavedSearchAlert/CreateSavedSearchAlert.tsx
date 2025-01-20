@@ -1,5 +1,7 @@
+import { useColor } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
+import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import {
   SavedSearchStoreProvider,
   savedSearchModel,
@@ -25,6 +27,9 @@ import { EmailPreferencesScreen } from "./screens/EmailPreferencesScreen"
 const Stack = createStackNavigator<CreateSavedSearchAlertNavigationStack>()
 
 export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (props) => {
+  const theme = useNavigationTheme()
+  const color = useColor()
+
   const { visible, params } = props
   const { attributes, entity, currentArtworkID, sizeMetric } = params
   const { localizedUnit } = useLocalizedUnit()
@@ -57,9 +62,10 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
         onStateChange={(state) => {
           saveSession(state)
         }}
+        theme={theme}
       >
         <Modal visible={visible} presentationStyle="fullScreen" statusBarTranslucent>
-          <SafeAreaView style={{ flex: 1 }}>
+          <SafeAreaView style={{ flex: 1, backgroundColor: color("background") }}>
             <KeyboardAvoidingView
               style={{ flex: 1 }}
               behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -70,7 +76,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
                 screenOptions={{
                   ...TransitionPresets.SlideFromRightIOS,
                   headerShown: false,
-                  cardStyle: { backgroundColor: "white" },
+                  cardStyle: { backgroundColor: color("background") },
                 }}
               >
                 <Stack.Screen

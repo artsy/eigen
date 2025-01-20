@@ -1,4 +1,4 @@
-import { Spacer, Flex, Text, Separator, Box } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Separator, Box, useColor } from "@artsy/palette-mobile"
 import { FeatureQuery } from "__generated__/FeatureQuery.graphql"
 import { Feature_feature$data } from "__generated__/Feature_feature.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
@@ -52,6 +52,7 @@ interface FeatureAppProps {
 }
 
 const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
+  const color = useColor()
   const sets = extractNodes(feature.sets)
   const { width, orientation } = useScreenDimensions()
 
@@ -177,7 +178,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           addSeparatorBetweenAllSections(
             contentSections,
             "content",
-            <Separator mt={4} mb={4} style={{ borderColor: "black" }} />
+            <Separator mt={4} mb={4} style={{ borderColor: color("black100") }} />
           )
         ),
       ]}

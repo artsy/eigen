@@ -1,4 +1,4 @@
-import { ChevronIcon, Collapse, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { ChevronIcon, Collapse, Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { MAX_WIDTH_BIO } from "app/Components/Artist/Biography"
 import { MotiView } from "moti"
 import { useState } from "react"
@@ -21,6 +21,7 @@ export const Expandable: React.FC<ExpandableProps> = ({
   onTrack,
 }) => {
   const [expanded, setExpanded] = useState(propExpanded)
+  const color = useColor()
 
   const handleToggle = () => {
     setExpanded((prev) => !prev)
@@ -35,6 +36,7 @@ export const Expandable: React.FC<ExpandableProps> = ({
       py={1}
       accessibilityHint="Toggles the accordion"
       maxWidth={MAX_WIDTH_BIO}
+      borderColor={color("black100")}
     >
       <Touchable
         onPress={() => handleToggle()}
@@ -52,7 +54,7 @@ export const Expandable: React.FC<ExpandableProps> = ({
             style={{ transform: [{ rotate: !!expanded ? "-90deg" : "90deg" }] }}
             transition={{ type: "timing" }}
           >
-            <ChevronIcon />
+            <ChevronIcon fill="black100" />
           </MotiView>
         </Flex>
       </Touchable>

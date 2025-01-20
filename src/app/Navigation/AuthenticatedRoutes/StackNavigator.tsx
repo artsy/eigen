@@ -50,7 +50,7 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
               {isModalScreen(module) ? (
                 <CloseIcon fill="black100" />
               ) : (
-                <ArrowLeftIcon fill="onBackgroundHigh" />
+                <ArrowLeftIcon fill="black100" />
               )}
             </Touchable>
           )

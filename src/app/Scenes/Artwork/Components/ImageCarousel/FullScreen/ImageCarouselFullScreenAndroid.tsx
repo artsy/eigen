@@ -1,3 +1,4 @@
+import { useColor } from "@artsy/palette-mobile"
 import {
   ImageCarouselContext,
   ImageCarouselMedia,
@@ -17,6 +18,7 @@ const ZoomFlatList = createZoomListComponent(FlatList)
 
 export const ImageCarouselFullScreenAndroid = () => {
   const screenDimensions = useScreenDimensions()
+  const color = useColor()
   const { media, dispatch, fullScreenState, imageIndex } = useContext(ImageCarouselContext)
   fullScreenState.useUpdates()
   const initialScrollIndex = useMemo(() => imageIndex.current, [])
@@ -77,7 +79,7 @@ export const ImageCarouselFullScreenAndroid = () => {
       // 👇 responsible for closing the modal on android back button press
       onRequestClose={onClose}
     >
-      <GestureHandlerRootView style={{ flex: 1, backgroundColor: "white" }}>
+      <GestureHandlerRootView style={{ flex: 1, backgroundColor: color("white100") }}>
         <ZoomFlatList<ImageCarouselMedia>
           data={media}
           pagingEnabled

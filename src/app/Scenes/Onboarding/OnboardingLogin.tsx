@@ -76,7 +76,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
   const valuesNotEmpty = !!values.email && !!values.password
 
   return (
-    <Flex flex={1} backgroundColor="white" flexGrow={1} pb={1}>
+    <Flex flex={1} backgroundColor="white100" flexGrow={1} pb={1}>
       <ArtsyKeyboardAvoidingView>
         <ScrollView
           contentContainerStyle={{
