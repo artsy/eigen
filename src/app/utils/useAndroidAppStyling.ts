@@ -9,6 +9,8 @@ import { Platform } from "react-native"
 export const useAndroidAppStyling = () => {
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => state.auth.userAccessToken)
+  const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+
   useEffect(() => {
     if (isHydrated) {
       // We wait a bit until the UI finishes drawing behind the splash screen
@@ -18,8 +20,13 @@ export const useAndroidAppStyling = () => {
         }
 
         if (isLoggedIn && Platform.OS === "android") {
-          ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
-          ArtsyNativeModule.setAppLightContrast(false)
+          if (theme === "dark") {
+            ArtsyNativeModule.setNavigationBarColor("#000000")
+            ArtsyNativeModule.setAppLightContrast(true)
+          } else {
+            ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
+            ArtsyNativeModule.setAppLightContrast(false)
+          }
         }
       }, 500)
     }

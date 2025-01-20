@@ -8,6 +8,7 @@ import {
   Spacer,
   Text,
   Touchable,
+  useColor,
 } from "@artsy/palette-mobile"
 import { ArtworkItemCTAs_artwork$key } from "__generated__/ArtworkItemCTAs_artwork.graphql"
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
@@ -185,6 +186,8 @@ const ArtworkItemCTAsWrapper: React.FC<{
   dark?: boolean
   testID: string
 }> = ({ onPress, dark, testID, children }) => {
+  const color = useColor()
+
   return (
     <Touchable
       haptic
@@ -200,7 +203,7 @@ const ArtworkItemCTAsWrapper: React.FC<{
         flexDirection="row"
         p={1}
         borderRadius={50}
-        borderColor={dark ? "white" : undefined}
+        borderColor={dark ? color("white100") : undefined}
         borderWidth={dark ? 1 : undefined}
         justifyContent="center"
         alignItems="center"

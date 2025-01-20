@@ -37,11 +37,11 @@ export class FairEventSectionCard extends Component<Props> {
           </Flex>
           <Box p={2} style={{ position: "absolute", bottom: 0, left: 0 }} zIndex={4}>
             <Flex flexDirection="column" flexGrow={1}>
-              <Text variant="sm" weight="medium" color="white">
+              <Text variant="sm" weight="medium" color="white100">
                 {name}
               </Text>
               {!!exhibition_period && (
-                <Text variant="sm" color="white">
+                <Text variant="sm" color="white100">
                   {exhibition_period}
                 </Text>
               )}

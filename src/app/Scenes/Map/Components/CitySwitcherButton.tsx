@@ -1,4 +1,5 @@
-import { Flex, Box, ClassTheme, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Text } from "@artsy/palette-mobile"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import Spinner from "app/Components/Spinner"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -31,7 +32,7 @@ export class CitySwitcherButton extends Component<Props> {
   render() {
     const { city, isLoading } = this.props
     return isLoading || city ? (
-      <ClassTheme>
+      <ThemeAwareClassTheme>
         {({ color }) => (
           <TouchableWithoutFeedback
             onPress={() => {
@@ -81,7 +82,7 @@ export class CitySwitcherButton extends Component<Props> {
             </Background>
           </TouchableWithoutFeedback>
         )}
-      </ClassTheme>
+      </ThemeAwareClassTheme>
     ) : null
   }
 }

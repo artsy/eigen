@@ -1,5 +1,6 @@
-import { Spacer, Flex, BoxProps, ClassTheme, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, BoxProps, Text } from "@artsy/palette-mobile"
 import { Message_message$data } from "__generated__/Message_message.graphql"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { navigate } from "app/system/navigation/navigate"
 import { Schema, Track, track as _track } from "app/utils/track"
@@ -95,7 +96,7 @@ export class Message extends React.Component<Props> {
     const alignSelf = isFromUser ? "flex-end" : undefined
     const alignAttachments = isFromUser ? "flex-end" : "flex-start"
     return (
-      <ClassTheme>
+      <ThemeAwareClassTheme>
         {({ color }) => {
           const backgroundColor = color(isFromUser ? "black100" : "black10")
           return (
@@ -132,7 +133,7 @@ export class Message extends React.Component<Props> {
             </>
           )
         }}
-      </ClassTheme>
+      </ThemeAwareClassTheme>
     )
   }
 }
