@@ -4,13 +4,13 @@ import { HomeViewSectionActivityQuery } from "__generated__/HomeViewSectionActiv
 import { HomeViewSectionActivity_section$key } from "__generated__/HomeViewSectionActivity_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { shouldDisplayNotification } from "app/Scenes/Activity/utils/shouldDisplayNotification"
-import { SeeAllCard } from "app/Scenes/HomeView/Components/ActivityRail"
 import {
   ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE,
   ACTIVITY_RAIL_ITEM_WIDTH,
   ActivityRailItem,
 } from "app/Scenes/HomeView/Components/ActivityRailItem"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { SeeAllCard } from "app/Scenes/HomeView/Components/SeeAllCard"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
@@ -78,7 +78,13 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
         ListHeaderComponent={() => <Spacer x={2} />}
         ListFooterComponent={
           viewAll
-            ? () => <SeeAllCard buttonText={viewAll.buttonText} onPress={onSectionViewAll} />
+            ? () => (
+                <SeeAllCard
+                  href={href}
+                  buttonText={viewAll.buttonText}
+                  onPress={onSectionViewAll}
+                />
+              )
             : undefined
         }
         ItemSeparatorComponent={() => <Spacer x={2} />}
