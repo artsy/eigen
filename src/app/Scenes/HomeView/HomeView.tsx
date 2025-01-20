@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
+import { Flex, Screen, Spinner, useColor } from "@artsy/palette-mobile"
 import { PortalHost } from "@gorhom/portal"
 import { useFocusEffect } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
@@ -44,6 +44,7 @@ export const homeViewScreenQueryVariables = () => ({
 
 export const HomeView: React.FC = memo(() => {
   const flashlistRef = useBottomTabsScrollToTop()
+  const color = useColor()
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const { fetchKey } = useRetryErrorBoundaryContext()
@@ -190,6 +191,9 @@ export const HomeView: React.FC = memo(() => {
           onEndReachedThreshold={2}
           stickyHeaderIndices={[0]}
           windowSize={15}
+          contentContainerStyle={{
+            backgroundColor: color("white100"),
+          }}
         />
         {!!data?.me && <EmailConfirmationBannerFragmentContainer me={data.me} />}
       </Screen.Body>

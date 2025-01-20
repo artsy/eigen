@@ -1,4 +1,3 @@
-import { useColor } from "@artsy/palette-mobile"
 import { BottomSheetBackdropProps } from "@gorhom/bottom-sheet"
 import { useMemo } from "react"
 import { TouchableWithoutFeedback } from "react-native"
@@ -18,8 +17,6 @@ export const DefaultBottomSheetBackdrop: React.FC<DefaultBottomSheetBackdrop> = 
   pressBehavior,
   style,
 }) => {
-  const color = useColor()
-
   // animated variables
   const containerAnimatedStyle = useAnimatedStyle(() => {
     "worklet"
@@ -33,7 +30,8 @@ export const DefaultBottomSheetBackdrop: React.FC<DefaultBottomSheetBackdrop> = 
     () => [
       style,
       {
-        backgroundColor: color("black100"),
+        // We intentionally want the background color to be black regardless of the theme
+        backgroundColor: "black",
       },
       containerAnimatedStyle,
     ],

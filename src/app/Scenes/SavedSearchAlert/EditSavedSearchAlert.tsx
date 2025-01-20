@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { ArtsyKeyboardAvoidingView, Screen } from "@artsy/palette-mobile"
+import { ArtsyKeyboardAvoidingView, Screen, useColor } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
@@ -11,6 +11,7 @@ import {
   SavedSearchEntityArtist,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { AlertArtworks } from "app/Scenes/SavedSearchAlert/AlertArtworks"
 import { EditSavedSearchAlertContent } from "app/Scenes/SavedSearchAlert/EditSavedSearchAlertContent"
 import {
@@ -51,6 +52,9 @@ interface EditSavedSearchAlertProps {
 const Stack = createStackNavigator<EditSavedSearchAlertNavigationStack>()
 
 export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props) => {
+  const theme = useNavigationTheme()
+  const color = useColor()
+
   const { me, viewer, artists, savedSearchAlertId, relay } = props
   const { localizedUnit } = useLocalizedUnit()
 
@@ -145,6 +149,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
             onStateChange={(state) => {
               saveSession(state)
             }}
+            theme={theme}
           >
             <Stack.Navigator
               // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
@@ -152,7 +157,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
               screenOptions={{
                 ...TransitionPresets.SlideFromRightIOS,
                 headerShown: false,
-                cardStyle: { backgroundColor: "white" },
+                cardStyle: { backgroundColor: color("white100") },
               }}
             >
               <Stack.Screen

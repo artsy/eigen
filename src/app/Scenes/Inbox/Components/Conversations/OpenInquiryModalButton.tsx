@@ -114,7 +114,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
             {(!!isOfferableFromInquiry || !!isOfferableConversationalBuyNow) && (
               <Flex flex={1}>
                 <InquiryMakeOfferButtonFragmentContainer
-                  variant={isAcquireableFromInquiry ? "outline" : "fillDark"}
+                  variant={isAcquireableFromInquiry ? "fillDark" : "outline"}
                   artwork={artwork}
                   editionSetID={editionSets?.[0]?.internalID || null}
                   conversationID={conversationID}

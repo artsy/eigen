@@ -90,7 +90,7 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
           paddingBottom: -15,
         }}
       >
-        <Box p={2} backgroundColor="white">
+        <Box p={2} backgroundColor="white100">
           <Box
             height={50}
             borderRadius={50}

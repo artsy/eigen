@@ -1,7 +1,7 @@
-import { Flex, Text } from "@artsy/palette-mobile"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
+import { Flex } from "@artsy/palette-mobile"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { GlobalStore } from "app/store/GlobalStore"
+import { ScrollView } from "react-native"
 
 export function DarkModeSettings() {
   const syncWithSystem = GlobalStore.useAppState(
@@ -10,11 +10,8 @@ export function DarkModeSettings() {
   const forceMode = GlobalStore.useAppState((state) => state.devicePrefs.forcedColorScheme)
 
   return (
-    <PageWithSimpleHeader title="Dark Mode Settings">
-      <Text variant="lg-display" textAlign="center">
-        Choose your destiny
-      </Text>
-      <Flex mx={2} mt={2}>
+    <ScrollView>
+      <Flex px={2} mt={2}>
         <SwitchMenu
           title="Sync with system"
           description="Automatically turn dark mode on or off based on the system's dark mode setting."
@@ -33,6 +30,6 @@ export function DarkModeSettings() {
           }}
         />
       </Flex>
-    </PageWithSimpleHeader>
+    </ScrollView>
   )
 }

@@ -52,7 +52,7 @@ export const Expandable: React.FC<ExpandableProps> = ({
             style={{ transform: [{ rotate: !!expanded ? "-90deg" : "90deg" }] }}
             transition={{ type: "timing" }}
           >
-            <ChevronIcon />
+            <ChevronIcon fill="black100" />
           </MotiView>
         </Flex>
       </Touchable>

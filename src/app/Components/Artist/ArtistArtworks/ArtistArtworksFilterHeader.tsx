@@ -29,7 +29,7 @@ export const ArtistArtworksFilterHeader: React.FC<ArtistArtworksFilterProps> = (
   const { openFilterArtworksModal } = useShowArtworksFilterModal({ artist: data })
 
   return (
-    <Box backgroundColor="white">
+    <Box backgroundColor="white100">
       <ArtworksFilterHeader
         onFilterPress={() => {
           openFilterArtworksModal("sortAndFilter")

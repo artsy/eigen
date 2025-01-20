@@ -49,7 +49,7 @@ export const SectionTitle: React.FC<
           </Text>
 
           {!!subtitle && (
-            <Text variant="sm" color={color("black60")} lineHeight="20px" testID="subtitle">
+            <Text variant="sm" color="black60" lineHeight="20px" testID="subtitle">
               {subtitle}
             </Text>
           )}

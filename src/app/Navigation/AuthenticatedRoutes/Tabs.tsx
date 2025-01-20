@@ -121,6 +121,7 @@ const AppTabs: React.FC = () => {
                   style={{ top: Platform.OS === "ios" ? -4 : 0 }}
                   selectable={false}
                   textAlign="center"
+                  color="black100"
                 >
                   {bottomTabsConfig[route.name].name}
                 </Text>

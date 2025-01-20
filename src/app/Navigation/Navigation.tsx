@@ -1,14 +1,14 @@
-import { Flex, Text } from "@artsy/palette-mobile"
-import { DefaultTheme, NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
+import { Flex, Spacer, Spinner, Text } from "@artsy/palette-mobile"
+import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { addBreadcrumb } from "@sentry/react-native"
 import { FPSCounter } from "app/Components/FPSCounter"
-import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import {
   AuthenticatedRoutes,
   AuthenticatedRoutesParams,
 } from "app/Navigation/AuthenticatedRoutes/Tabs"
+import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { OnboardingWelcomeScreens } from "app/Scenes/Onboarding/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
 import { routingInstrumentation } from "app/system/errorReporting/setupSentry"
@@ -36,6 +36,8 @@ export const Navigation = () => {
 
   const isLoggedIn = GlobalStore.useAppState((state) => state.auth.userID)
   const fpsCounter = useDevToggle("DTFPSCounter")
+
+  const theme = useNavigationTheme()
 
   const { setSessionState: setNavigationReady } = GlobalStore.actions
 
@@ -107,24 +109,18 @@ export const Navigation = () => {
   )
 }
 
-const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    background: "#FFF",
-  },
-}
-
 const NavigationLoadingIndicator = () => {
   return (
-    <LoadingSpinner>
+    <Flex backgroundColor="white100" flex={1} justifyContent="center">
       {!!__DEV__ && (
-        <Flex px={2} mt={2}>
-          <Text color="devpurple" variant="xs" italic textAlign="center">
-            This spinner is only visible in DEV mode.{"\n"}
+        <Flex px={2} mt={2} backgroundColor="white100" alignItems="center">
+          <Spinner color="devpurple" size="large" />
+          <Spacer y={4} />
+          <Text color="black100" variant="xs" textAlign="center">
+            Reloadig previous navigation state
           </Text>
         </Flex>
       )}
-    </LoadingSpinner>
+    </Flex>
   )
 }

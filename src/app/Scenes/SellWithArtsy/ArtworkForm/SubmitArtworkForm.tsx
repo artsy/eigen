@@ -1,6 +1,7 @@
-import { Screen, useScreenDimensions } from "@artsy/palette-mobile"
+import { Screen, useColor, useScreenDimensions } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
+import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { SubmitArtworkAddDetails } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDetails"
 import { SubmitArtworkAddDimensions } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddDimensions"
 import { SubmitArtworkAddPhoneNumber } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkAddPhoneNumber"
@@ -102,6 +103,9 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
   initialStep,
   hasStartedFlowFromMyCollection,
 }) => {
+  const color = useColor()
+  const theme = useNavigationTheme()
+
   const currentStep = SubmitArtworkFormStore.useStoreState((state) => state.currentStep)
 
   const initialValues = {
@@ -152,6 +156,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
     <FormikProvider value={formik}>
       <ArtsyKeyboardAvoidingView>
         <NavigationContainer
+          theme={theme}
           independent
           ref={__unsafe__SubmissionArtworkFormNavigationRef}
           initialState={getInitialNavigationState({
@@ -174,7 +179,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
             screenOptions={{
               headerShown: false,
               cardStyle: {
-                backgroundColor: "white",
+                backgroundColor: color("white100"),
                 ...(isTablet
                   ? {
                       paddingTop: 20,

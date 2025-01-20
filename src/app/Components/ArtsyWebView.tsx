@@ -2,6 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Text } from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
 import { addBreadcrumb } from "@sentry/react-native"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { GlobalStore, getCurrentEmissionState } from "app/store/GlobalStore"
 import { GoBackProps, dismissModal, goBack, navigate } from "app/system/navigation/navigate"
@@ -20,7 +21,6 @@ import { Edge } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import WebView, { WebViewNavigation, WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
-import { NavigationHeader } from "app/Components/NavigationHeader"
 
 export interface ArtsyWebViewConfig {
   title?: string
