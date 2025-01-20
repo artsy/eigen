@@ -1,4 +1,4 @@
-import { Touchable } from "@artsy/palette-mobile"
+import { Touchable, useColor } from "@artsy/palette-mobile"
 import { useScreenDimensions } from "app/utils/hooks"
 import { StyleProp, ViewProps, ViewStyle } from "react-native"
 import Animated, { AnimateProps, FadeIn, FadeOut } from "react-native-reanimated"
@@ -26,6 +26,7 @@ export const HeaderButton: React.FC<HeaderButtonProps> = (props) => {
     onPress,
     ...rest
   } = props
+  const color = useColor()
   const { safeAreaInsets } = useScreenDimensions()
 
   if (shouldHide) {
@@ -42,7 +43,7 @@ export const HeaderButton: React.FC<HeaderButtonProps> = (props) => {
           width: BUTTON_SIZE,
           height: BUTTON_SIZE,
           borderRadius: BUTTON_SIZE / 2,
-          backgroundColor: "white",
+          backgroundColor: color("white100"),
           position: "absolute",
           left: position === "left" ? BUTTON_HORIZONTAL_OFFSET : undefined,
           right: position === "right" ? BUTTON_HORIZONTAL_OFFSET : undefined,

@@ -1,3 +1,4 @@
+import { useColor } from "@artsy/palette-mobile"
 import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Animated, Image, View } from "react-native"
@@ -57,6 +58,7 @@ export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({
   id,
   pyramid,
 }) => {
+  const color = useColor()
   const [showing, setShowing] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const isMounted = useIsMounted()
@@ -104,7 +106,7 @@ export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({
           left,
           width: width - 2 * borderWidth,
           height: height - 2 * borderWidth,
-          borderColor: "black",
+          borderColor: color("black100"),
           borderWidth,
           backgroundColor: !showing
             ? "rgba(255, 0, 0, 0.2)"

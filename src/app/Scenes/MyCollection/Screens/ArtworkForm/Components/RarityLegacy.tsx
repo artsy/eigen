@@ -85,17 +85,19 @@ export const RarityInfoModal: React.FC<{
       presentationStyle="pageSheet"
       animationType="slide"
     >
-      <NavigationHeader onLeftButtonPress={onDismiss} useXButton>
-        {title}
-      </NavigationHeader>
-      <Separator />
-      <Flex m={2}>
-        {artworkRarityClassifications.map((classification) => (
-          <Flex mb={2} key={classification.label}>
-            <InputTitle>{classification.label}</InputTitle>
-            <Text>{classification.description}</Text>
-          </Flex>
-        ))}
+      <Flex flex={1} backgroundColor="background">
+        <NavigationHeader onLeftButtonPress={onDismiss} useXButton>
+          {title}
+        </NavigationHeader>
+        <Separator />
+        <Flex m={2}>
+          {artworkRarityClassifications.map((classification) => (
+            <Flex mb={2} key={classification.label}>
+              <InputTitle>{classification.label}</InputTitle>
+              <Text>{classification.description}</Text>
+            </Flex>
+          ))}
+        </Flex>
       </Flex>
     </Modal>
   )

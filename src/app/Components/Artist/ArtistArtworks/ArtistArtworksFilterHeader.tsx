@@ -1,4 +1,4 @@
-import { Box } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import { ArtistArtworksFilterHeader_artist$key } from "__generated__/ArtistArtworksFilterHeader_artist.graphql"
 import { SavedSearchButtonV2 } from "app/Components/Artist/ArtistArtworks/SavedSearchButtonV2"
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
@@ -29,7 +29,7 @@ export const ArtistArtworksFilterHeader: React.FC<ArtistArtworksFilterProps> = (
   const { openFilterArtworksModal } = useShowArtworksFilterModal({ artist: data })
 
   return (
-    <Box backgroundColor="white">
+    <Flex backgroundColor="background">
       <ArtworksFilterHeader
         onFilterPress={() => {
           openFilterArtworksModal("sortAndFilter")
@@ -45,6 +45,6 @@ export const ArtistArtworksFilterHeader: React.FC<ArtistArtworksFilterProps> = (
           }}
         />
       </ArtworksFilterHeader>
-    </Box>
+    </Flex>
   )
 }

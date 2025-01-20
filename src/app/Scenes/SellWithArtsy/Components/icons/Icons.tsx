@@ -2,7 +2,7 @@ import { Icon, IconProps, Path, useColor } from "@artsy/palette-mobile"
 
 // TODO: - Remove these icons when palette-Mobile is stable as they have already been added there in newer unstable versions
 
-export const MoneyCircleIcon = ({ fill, ...restProps }: IconProps) => {
+export const MoneyCircleIcon = ({ fill = "black100", ...restProps }: IconProps) => {
   const color = useColor()
   return (
     <Icon {...restProps} viewBox="0 0 19 19">
@@ -14,7 +14,7 @@ export const MoneyCircleIcon = ({ fill, ...restProps }: IconProps) => {
 
       <Path
         d="M16.1114 8.19C16.1114 12.4371 12.6684 15.88 8.4214 15.88C4.17436 15.88 0.731445 12.4371 0.731445 8.19C0.731445 3.94293 4.17436 0.5 8.4214 0.5C12.6684 0.5 16.1114 3.94293 16.1114 8.19Z"
-        fill="white"
+        fill={color("background")}
         fillRule="nonzero"
         scale={0.935}
         translateX={0.6}
@@ -33,7 +33,7 @@ export const MoneyCircleIcon = ({ fill, ...restProps }: IconProps) => {
   )
 }
 
-export const LightStarIcon = ({ fill, ...restProps }: IconProps) => {
+export const LightStarIcon = ({ fill = "black100", ...restProps }: IconProps) => {
   const color = useColor()
   return (
     <Icon {...restProps} viewBox="0 0 19 19">
@@ -45,7 +45,7 @@ export const LightStarIcon = ({ fill, ...restProps }: IconProps) => {
 
       <Path
         d="M16.1114 8.19C16.1114 12.4371 12.6684 15.88 8.4214 15.88C4.17436 15.88 0.731445 12.4371 0.731445 8.19C0.731445 3.94293 4.17436 0.5 8.4214 0.5C12.6684 0.5 16.1114 3.94293 16.1114 8.19Z"
-        fill="white"
+        fill={color("white100")}
         fillRule="nonzero"
         scale={0.935}
         translateX={0.6}
@@ -63,7 +63,7 @@ export const LightStarIcon = ({ fill, ...restProps }: IconProps) => {
   )
 }
 
-export const WorldGlobeCircleIcon = ({ fill, ...restProps }: IconProps) => {
+export const WorldGlobeCircleIcon = ({ fill = "black100", ...restProps }: IconProps) => {
   const color = useColor()
   return (
     <Icon {...restProps} viewBox="0 0 19 19">
@@ -75,7 +75,7 @@ export const WorldGlobeCircleIcon = ({ fill, ...restProps }: IconProps) => {
 
       <Path
         d="M16.1114 8.19C16.1114 12.4371 12.6684 15.88 8.4214 15.88C4.17436 15.88 0.731445 12.4371 0.731445 8.19C0.731445 3.94293 4.17436 0.5 8.4214 0.5C12.6684 0.5 16.1114 3.94293 16.1114 8.19Z"
-        fill="white"
+        fill={color("white100")}
         fillRule="nonzero"
         scale={0.935}
         translateX={0.6}

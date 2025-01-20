@@ -2,7 +2,7 @@ import {
   Flex,
   INPUT_BORDER_RADIUS,
   INPUT_MIN_HEIGHT,
-  INPUT_VARIANTS,
+  getInputVariants,
   InputState,
   InputVariant,
   Text,
@@ -10,6 +10,7 @@ import {
   getInputVariant,
   useColor,
   useTextStyleForPalette,
+  useTheme,
 } from "@artsy/palette-mobile"
 import { THEME } from "@artsy/palette-tokens"
 import { CardField } from "@stripe/stripe-react-native"
@@ -50,9 +51,13 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
       cardDetails.validNumber !== "Incomplete" ||
       !!cardDetails.expiryMonth ||
       !!cardDetails.expiryYear)
+
+  const { theme } = useTheme()
+  const inputVariants = getInputVariants(theme)
+
   const animatedStyles = useAnimatedStyle(() => {
     return {
-      borderColor: withTiming(INPUT_VARIANTS[variant][animatedState.value].inputBorderColor),
+      borderColor: withTiming(inputVariants[variant][animatedState.value].inputBorderColor),
     }
   })
 
@@ -60,12 +65,11 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
     return {
       zIndex: 100,
       position: "absolute",
-      backgroundColor: "white",
       left: withTiming(
         hasSelectedValue || isFocused ? 15 : STRIPE_CREDIT_CARD_ICON_CONTAINER_WIDTH
       ),
       paddingHorizontal: withTiming(hasSelectedValue || isFocused ? 5 : 0),
-      color: withTiming(INPUT_VARIANTS[variant][animatedState.value].labelColor),
+      color: withTiming(inputVariants[variant][animatedState.value].labelColor),
       top: withTiming(hasSelectedValue || isFocused ? -INPUT_MIN_HEIGHT / 4 : 14),
       fontSize: withTiming(
         hasSelectedValue || isFocused
@@ -93,7 +97,7 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
           testID="credit-card-field"
           cardStyle={{
             borderWidth: 0, // avoid repeat border
-            backgroundColor: color("white100"),
+            backgroundColor: color("background"),
             fontSize: textStyle.fontSize,
             fontFamily: textStyle.fontFamily,
             textColor: color("black100"),
@@ -113,7 +117,7 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
         />
       </AnimatedFlex>
       <Flex pointerEvents="none" style={{ position: "absolute" }}>
-        <AnimatedText style={labelStyles}>
+        <AnimatedText style={[{ backgroundColor: color("white100") }, labelStyles]}>
           {hasSelectedValue || isFocused ? "Credit Card" : ""}
         </AnimatedText>
       </Flex>

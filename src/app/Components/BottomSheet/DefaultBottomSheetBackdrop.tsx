@@ -19,7 +19,6 @@ export const DefaultBottomSheetBackdrop: React.FC<DefaultBottomSheetBackdrop> = 
   style,
 }) => {
   const color = useColor()
-
   // animated variables
   const containerAnimatedStyle = useAnimatedStyle(() => {
     "worklet"
@@ -33,6 +32,7 @@ export const DefaultBottomSheetBackdrop: React.FC<DefaultBottomSheetBackdrop> = 
     () => [
       style,
       {
+        // We intentionally want the background color to be black regardless of the theme
         backgroundColor: color("black100"),
       },
       containerAnimatedStyle,

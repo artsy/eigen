@@ -1,4 +1,4 @@
-import { Text } from "@artsy/palette-mobile"
+import { Text, useColor } from "@artsy/palette-mobile"
 import { ImageCarouselContext } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { useSpringValue } from "app/Scenes/Artwork/Components/ImageCarousel/useSpringValue"
 import { useContext, useMemo } from "react"
@@ -12,6 +12,7 @@ import { useSpringFade } from "./useSpringFade"
  * is zoomed completely out!
  */
 export const IndexIndicator: React.FC = () => {
+  const color = useColor()
   const { images, isZoomedCompletelyOut, imageIndex } = useContext(ImageCarouselContext)
 
   isZoomedCompletelyOut.useUpdates()
@@ -41,7 +42,7 @@ export const IndexIndicator: React.FC = () => {
           {
             borderRadius: 15,
             height: 30,
-            backgroundColor: "white",
+            backgroundColor: color("white100"),
             justifyContent: "center",
             paddingHorizontal: 10,
             opacity,
