@@ -13,10 +13,8 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { RefreshEvents, SELL_SCREEN_REFRESH_KEY } from "app/utils/refreshHelpers"
-import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { compact } from "lodash"
 import { RefObject, Suspense, useEffect, useReducer } from "react"
-import { StatusBarStyle } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -53,12 +51,7 @@ export const SellWithArtsyHome: React.FC = () => {
       }
     )
 
-  const onFocusStatusBarStyle: StatusBarStyle = "dark-content"
-  const onBlurStatusBarStyle: StatusBarStyle = "dark-content"
-
   const scrollViewRef = useBottomTabsScrollToTop()
-
-  useSwitchStatusBarStyle(onFocusStatusBarStyle, onBlurStatusBarStyle)
 
   const tracking = useTracking()
 

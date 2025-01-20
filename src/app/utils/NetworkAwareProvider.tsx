@@ -32,7 +32,7 @@ export const NetworkAwareProvider: React.FC<{}> = () => {
     >
       <Flex flex={1} justifyContent="flex-end" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
         <Flex
-          backgroundColor="white"
+          backgroundColor="white100"
           alignItems="center"
           px={2}
           py={2}

@@ -101,7 +101,12 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
 
   return (
     <>
-      <Modal visible={state.inquiryModalVisible} onDismiss={handleDismiss} statusBarTranslucent>
+      <Modal
+        visible={state.inquiryModalVisible}
+        onDismiss={handleDismiss}
+        statusBarTranslucent
+        animationType="slide"
+      >
         <Screen>
           <NavigationHeader
             leftButtonText="Cancel"
@@ -122,7 +127,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
               width={1}
               zIndex={5}
             >
-              <Text variant="xs" color="white">
+              <Text variant="xs" color="white100">
                 Sorry, we were unable to send this message. Please try again.
               </Text>
             </Flex>
