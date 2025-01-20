@@ -55,7 +55,7 @@ export const SectionTitle: React.FC<
           )}
         </Flex>
 
-        {!!href && (
+        {(!!href || !!onPress) && (
           <Flex flexShrink={0} pl={1}>
             <RightButtonContent />
           </Flex>
