@@ -54,9 +54,7 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
 
   return (
     <Flex py={2}>
-      <Flex px={2}>
-        <SectionTitle title={section.component?.title} />
-      </Flex>
+      <SectionTitle title={section.component?.title} mx={2} />
 
       <FlatList
         horizontal
@@ -129,9 +127,7 @@ const HomeViewSectionCardsChipsPlaceholder: React.FC = () => {
   return (
     <Skeleton>
       <Flex py={2} testID="HomeViewSectionCardsChipsPlaceholder">
-        <Flex px={2}>
-          <SectionTitle title="Discover Something New" />
-        </Flex>
+        <SectionTitle title="Discover Something New" mx={2} />
 
         <FlatList
           scrollEnabled={false}

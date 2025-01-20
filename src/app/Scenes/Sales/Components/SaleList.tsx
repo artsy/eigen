@@ -22,6 +22,7 @@ export const SaleList: React.FC<{
   return (
     <View style={{ paddingHorizontal: 20 }}>
       <SectionTitle title={title} />
+
       <View
         style={{
           flexDirection: "row",

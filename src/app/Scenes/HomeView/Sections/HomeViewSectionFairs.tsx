@@ -16,8 +16,8 @@ import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
+import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
@@ -44,39 +44,26 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
   const viewAll = section.component?.behaviors?.viewAll
 
   const fairs = extractNodes(section.fairsConnection)
-  if (!fairs || fairs.length === 0) return null
+  const href = getHomeViewSectionHref(viewAll?.href, section)
 
-  const onSectionViewAll = () => {
-    if (viewAll?.href) {
-      tracking.tappedFairGroupViewAll(
-        section.contextModule as ContextModule,
-        viewAll?.ownerType as ScreenOwnerType
-      )
-
-      navigate(viewAll.href)
-    } else {
-      tracking.tappedFairGroupViewAll(
-        section.contextModule as ContextModule,
-        section.ownerType as ScreenOwnerType
-      )
-
-      navigate(`/home-view/sections/${section.internalID}`, {
-        passProps: {
-          sectionType: section.__typename,
-        },
-      })
-    }
+  const onViewAllPress = () => {
+    tracking.tappedFairGroupViewAll(
+      section.contextModule as ContextModule,
+      (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
+    )
   }
+
+  if (!fairs?.length) return null
 
   return (
     <Flex {...flexProps}>
-      <Flex px={2}>
-        <SectionTitle
-          title={section.component?.title}
-          subtitle={section.component?.description}
-          onPress={viewAll ? onSectionViewAll : undefined}
-        />
-      </Flex>
+      <SectionTitle
+        href={href}
+        title={section.component?.title}
+        subtitle={section.component?.description}
+        onPress={onViewAllPress}
+        mx={2}
+      />
 
       <CardRailFlatList<FairItem>
         data={fairs}

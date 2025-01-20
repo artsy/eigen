@@ -23,9 +23,8 @@ export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
 
   return (
     <Flex mt={4}>
-      <Flex mx={2} my={1}>
-        <SectionTitle title="Lots by artists you follow" />
-      </Flex>
+      <SectionTitle title="Lots by artists you follow" mx={2} />
+
       <CardRailFlatList
         data={artworks}
         initialNumToRender={INITIAL_NUMBER_TO_RENDER}

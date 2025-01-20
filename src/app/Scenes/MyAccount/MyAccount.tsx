@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
 import { MyAccount_me$data } from "__generated__/MyAccount_me.graphql"
 import { MenuItem } from "app/Components/MenuItem"
@@ -98,9 +98,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
       {!!me.paddleNumber && <MenuItem title="Paddle Number" value={me.paddleNumber} />}
       {!!showLinkedAccounts && (
         <Flex mt={4}>
-          <Box mx={2}>
-            <SectionTitle title="LINKED ACCOUNTS" />
-          </Box>
+          <SectionTitle title="Linked Accounts" mx={2} />
 
           <MenuItem
             title="Facebook"

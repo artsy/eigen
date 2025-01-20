@@ -38,18 +38,13 @@ const prefetchRoute = async <TQuery extends OperationType>(
   const queries = module.queries
 
   if (!queries) {
-    if (logPrefetching)
-      console.error(`[queryPrefetching] Cannot not find queries for route ${route}.`)
+    if (logPrefetching) console.error(`[queryPrefetching] Cannot not find queries for ${route}.`)
+
     return
   }
 
   return queries.map((query, index) => {
     const allVariables = { ...module.queryVariables?.[index], ...result.params, ...variables }
-
-    if (logPrefetching)
-      console.log("[queryPrefetching] Prefetching:", route, {
-        variables: JSON.stringify(allVariables),
-      })
 
     return prefetchQuery({ query, variables: allVariables, route })
   })
@@ -72,18 +67,14 @@ const prefetchQuery = async ({
       force: false,
     },
   }).subscribe({
-    start: () => {
-      if (logPrefetching) {
-        console.log("[queryPrefetching] Starting prefetch:", route)
-      }
-    },
     complete: () => {
-      if (logPrefetching) {
-        console.log("[queryPrefetching] Completed:", route)
-      }
+      if (logPrefetching)
+        console.log("[queryPrefetching] Completed prefetching", route, {
+          variables,
+        })
     },
     error: () => {
-      console.error("[queryPrefetching] Error prefetching:", route)
+      console.error("[queryPrefetching] Error prefetching", route, { variables })
     },
   })
 }

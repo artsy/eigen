@@ -105,9 +105,8 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
 
   return (
     <Flex>
-      <Flex pl={2} pr={2}>
-        <SectionTitle title={props.title} subtitle={props.subtitle} />
-      </Flex>
+      <SectionTitle title={props.title} subtitle={props.subtitle} mx={2} />
+
       <CardRailFlatList<SuggestedArtist>
         listRef={listRef}
         data={artists}

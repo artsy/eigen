@@ -98,7 +98,7 @@ describe(MyAccountQueryRenderer, () => {
         })
         return result
       })
-      expect(extractText(tree.root)).toContain("LINKED ACCOUNTS")
+      expect(extractText(tree.root)).toContain("Linked Accounts")
     })
 
     describe("Link Accounts Menu Items", () => {

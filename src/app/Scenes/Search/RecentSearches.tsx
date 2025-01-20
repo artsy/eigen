@@ -11,6 +11,7 @@ export const RecentSearches: React.FC = () => {
   return (
     <>
       <SectionTitle title="Recent Searches" />
+
       {recentSearches.length ? (
         <SearchResultList
           results={recentSearches.map(({ props: result }) => (

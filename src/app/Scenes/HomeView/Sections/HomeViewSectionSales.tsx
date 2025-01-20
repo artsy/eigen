@@ -22,6 +22,7 @@ import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
+import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -48,39 +49,32 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
   const section = useFragment(fragment, sectionProp)
 
   const sales = extractNodes(section.salesConnection)
-  if (sales.length === 0) return null
 
   const viewAll = section.component?.behaviors?.viewAll
+  const href = getHomeViewSectionHref(viewAll?.href, section)
 
-  const onSectionViewAll = () => {
-    if (viewAll?.href) {
-      tracking.tappedAuctionResultGroupViewAll(
-        section.contextModule as ContextModule,
-        viewAll?.ownerType as ScreenOwnerType
-      )
-
-      navigate(viewAll.href)
-    } else {
-      tracking.tappedAuctionResultGroupViewAll(
-        section.contextModule as ContextModule,
-        section.ownerType as ScreenOwnerType
-      )
-
-      navigate(`/home-view/sections/${section.internalID}`, {
-        passProps: {
-          sectionType: section.__typename,
-        },
-      })
-    }
+  const onHeaderPress = () => {
+    tracking.tappedAuctionResultGroupViewAll(
+      section.contextModule as ContextModule,
+      viewAll?.ownerType as ScreenOwnerType
+    )
   }
+
+  const onViewAllPress = () => {
+    tracking.tappedAuctionResultGroupViewAll(
+      section.contextModule as ContextModule,
+      (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
+    )
+
+    navigate(href)
+  }
+
+  if (sales.length === 0) return null
 
   return (
     <Flex {...flexProps}>
       <Flex px={2}>
-        <SectionTitle
-          title={section.component?.title}
-          onPress={viewAll ? onSectionViewAll : undefined}
-        />
+        <SectionTitle href={href} title={section.component?.title} onPress={onHeaderPress} />
       </Flex>
       <CardRailFlatList
         prefetchUrlExtractor={(item) => item?.href}
@@ -107,7 +101,7 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
         ListFooterComponent={
           viewAll ? (
             <BrowseMoreRailCard
-              onPress={onSectionViewAll}
+              onPress={onViewAllPress}
               text={viewAll.buttonText ?? "Browse All Auctions"}
             />
           ) : undefined

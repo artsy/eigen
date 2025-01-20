@@ -1,14 +1,12 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { Flex, FlexProps, Join, Skeleton, SkeletonText, Spacer } from "@artsy/palette-mobile"
-import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import { HomeViewSectionArticlesQuery } from "__generated__/HomeViewSectionArticlesQuery.graphql"
 import { HomeViewSectionArticles_section$key } from "__generated__/HomeViewSectionArticles_section.graphql"
 import { SkeletonArticleCard } from "app/Components/ArticleCard"
-import { ArticlesRailFragmentContainer } from "app/Scenes/HomeView/Components/ArticlesRail"
+import { ArticlesRail } from "app/Scenes/HomeView/Components/ArticlesRail"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
@@ -33,23 +31,21 @@ export const HomeViewSectionArticles: React.FC<HomeViewSectionArticlesProps> = (
     return null
   }
 
-  const onSectionViewAll = () => {
+  const handleTitlePress = () => {
     if (viewAll?.href) {
       tracking.tappedArticleGroupViewAll(
         section.contextModule as ContextModule,
         viewAll?.ownerType as ScreenOwnerType
       )
-
-      navigate(viewAll.href)
     }
   }
 
   return (
     <Flex {...flexProps}>
-      <ArticlesRailFragmentContainer
-        title={section.component?.title ?? ""}
+      <ArticlesRail
         articlesConnection={section.articlesConnection}
-        onTrack={(article: ArticleCard_article$data, index: number) => {
+        onTitlePress={handleTitlePress}
+        onPress={(article, index) => {
           tracking.tappedArticleGroup(
             article.internalID,
             article.slug,
@@ -57,7 +53,8 @@ export const HomeViewSectionArticles: React.FC<HomeViewSectionArticlesProps> = (
             index
           )
         }}
-        onSectionTitlePress={viewAll ? onSectionViewAll : undefined}
+        title={section.component?.title ?? ""}
+        titleHref={viewAll?.href}
       />
 
       <HomeViewSectionSentinel

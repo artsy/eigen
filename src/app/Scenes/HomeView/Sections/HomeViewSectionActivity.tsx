@@ -48,32 +48,28 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
     return null
   }
 
+  const href = viewAll?.href || "/notifications"
+
+  const onHeaderPress = () => {
+    tracking.tappedActivityGroupViewAll(
+      section.contextModule as ContextModule,
+      (viewAll?.ownerType || OwnerType.activities) as ScreenOwnerType
+    )
+  }
+
   const onSectionViewAll = () => {
-    if (viewAll?.href) {
-      tracking.tappedActivityGroupViewAll(
-        section.contextModule as ContextModule,
-        viewAll?.ownerType as ScreenOwnerType
-      )
+    tracking.tappedActivityGroupViewAll(
+      section.contextModule as ContextModule,
+      (viewAll?.ownerType || OwnerType.activities) as ScreenOwnerType
+    )
 
-      navigate(viewAll.href)
-    } else {
-      tracking.tappedActivityGroupViewAll(
-        section.contextModule as ContextModule,
-        OwnerType.activities
-      )
-
-      navigate("/notifications")
-    }
+    navigate(href)
   }
 
   return (
     <Flex {...flexProps}>
       <Flex px={2}>
-        <SectionTitle
-          href={viewAll?.href}
-          title={section.component?.title}
-          onPress={onSectionViewAll}
-        />
+        <SectionTitle href={href} title={section.component?.title} onPress={onHeaderPress} />
       </Flex>
 
       <FlatList

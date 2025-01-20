@@ -56,36 +56,37 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
   const auctionResults = extractNodes(section.auctionResultsConnection)
   const viewAll = section.component?.behaviors?.viewAll
 
-  const onSectionViewAll = () => {
-    if (viewAll?.href) {
+  const href = viewAll?.href || "/auction-results-for-artists-you-follow"
+
+  const onHeaderPress = () => {
+    if (href) {
       tracking.tappedAuctionResultGroupViewAll(
         section.contextModule as ContextModule,
         viewAll?.ownerType as ScreenOwnerType
       )
+    }
+  }
 
-      navigate(viewAll.href)
-    } else {
-      // TODO: This default view all behavior navigates to the existing Auction
-      // "Results From Artists You Follow" screen. This should eventually be
-      // updated to navigate to a HomeViewSectionAuctionResults screen and we can
-      // use the `component > behaviors > viewAll > ownerType` value.
+  const onViewAllPress = () => {
+    if (href) {
       tracking.tappedAuctionResultGroupViewAll(
         section.contextModule as ContextModule,
-        OwnerType.auctionResultsForArtistsYouFollow
+        (viewAll?.ownerType || OwnerType.auctionResultsForArtistsYouFollow) as ScreenOwnerType
       )
 
-      navigate("/auction-results-for-artists-you-follow")
+      navigate(href)
     }
   }
 
   return (
     <Flex {...flexProps}>
-      <Flex px={2}>
-        <SectionTitle
-          title={section.component?.title ?? "Auction Results"}
-          onPress={viewAll ? onSectionViewAll : undefined}
-        />
-      </Flex>
+      <SectionTitle
+        href={href}
+        onPress={onHeaderPress}
+        mx={2}
+        title={section.component?.title ?? "Auction Results"}
+      />
+
       <FlatList
         horizontal
         initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
@@ -112,7 +113,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
         keyExtractor={(item) => item.internalID}
         ListFooterComponent={
           viewAll ? (
-            <BrowseMoreRailCard onPress={onSectionViewAll} text={viewAll.buttonText} />
+            <BrowseMoreRailCard onPress={onViewAllPress} text={viewAll.buttonText} />
           ) : undefined
         }
       />

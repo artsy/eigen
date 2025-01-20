@@ -40,36 +40,20 @@ export const HomeViewSectionViewingRooms: React.FC<HomeViewSectionViewingRoomsPr
   const section = useFragment(viewingRoomsFragment, sectionProp)
   const viewAll = section.component?.behaviors?.viewAll
 
-  const onSectionViewAll = () => {
-    if (viewAll?.href) {
-      tracking.tappedViewingRoomGroupViewAll(
-        section.contextModule as ContextModule,
-        viewAll?.ownerType as ScreenOwnerType
-      )
-
-      navigate(viewAll.href)
-    } else {
-      tracking.tappedViewingRoomGroupViewAll(
-        section.contextModule as ContextModule,
-        section.ownerType as ScreenOwnerType
-      )
-
-      navigate(`/home-view/sections/${section.internalID}`, {
-        passProps: {
-          sectionType: section.__typename,
-        },
-      })
-    }
+  const onHeaderPress = () => {
+    tracking.tappedViewingRoomGroupViewAll(
+      section.contextModule as ContextModule,
+      viewAll?.ownerType as ScreenOwnerType
+    )
   }
+
+  const href =
+    viewAll?.href || `home-view/sections/${section.internalID}?sectionType=${section.__typename}`
 
   return (
     <Flex {...flexProps}>
-      <Flex px={2}>
-        <SectionTitle
-          title={section.component?.title}
-          onPress={viewAll ? onSectionViewAll : undefined}
-        />
-      </Flex>
+      <SectionTitle href={href} px={2} title={section.component?.title} onPress={onHeaderPress} />
+
       <Suspense fallback={<ViewingRoomsRailPlaceholder />}>
         <LegacyViewingRoomsHomeRail
           onPress={(viewingRoom, index) => {

@@ -33,7 +33,7 @@ const fragmentSpec = graphql`
 `
 
 export const viewingRoomsListScreenQuery = graphql`
-  query ViewingRoomsListQuery($count: Int!, $after: String) {
+  query ViewingRoomsListQuery($count: Int = 10, $after: String) {
     ...ViewingRoomsList_viewingRooms @arguments(count: $count, after: $after)
 
     featured: viewingRoomsConnection(featured: true) {
@@ -58,7 +58,6 @@ export const ViewingRoomsList = () => {
 
   const queryData = useLazyLoadQuery<ViewingRoomsListQuery>(viewingRoomsListScreenQuery, {
     count: PAGE_SIZE,
-    after: null,
   })
 
   const { data, isLoadingNext, hasNext, loadNext, refetch } = usePaginationFragment<
@@ -104,16 +103,13 @@ export const ViewingRoomsList = () => {
             <>
               {featuredLength > 0 && (
                 <>
-                  <Flex mx={2}>
-                    <SectionTitle title="Featured" />
-                  </Flex>
+                  <SectionTitle title="Featured" mx={2} />
+
                   <FeaturedRail featured={queryData.featured} scrollRef={scrollRef} />
                   <Spacer y={4} />
                 </>
               )}
-              <Flex mx={2}>
-                <SectionTitle title="Latest" />
-              </Flex>
+              <SectionTitle title="Latest" mx={2} />
             </>
           )}
           data={viewingRooms}

@@ -31,8 +31,6 @@ export const ActivityRail: React.FC<ActivityRailProps> = ({ title, viewer }) => 
 
   const handleHeaderPress = () => {
     trackEvent(HomeAnalytics.activityHeaderTapEvent())
-
-    navigate("/notifications")
   }
 
   const handleMorePress = () => {
@@ -43,9 +41,7 @@ export const ActivityRail: React.FC<ActivityRailProps> = ({ title, viewer }) => 
 
   return (
     <Flex pt={2}>
-      <Flex px={2}>
-        <SectionTitle title={title} onPress={handleHeaderPress} />
-      </Flex>
+      <SectionTitle title={title} onPress={handleHeaderPress} href="/notifications" mx={2} />
 
       <FlatList
         horizontal

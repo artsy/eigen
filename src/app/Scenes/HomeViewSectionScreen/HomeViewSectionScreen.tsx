@@ -33,7 +33,7 @@ export const HomeViewSectionScreen: React.FC<HomeSectionScreenProps> = ({ sectio
   )
 }
 
-const HOME_SECTION_SCREEN_QUERY = graphql`
+export const HOME_SECTION_SCREEN_QUERY = graphql`
   query HomeViewSectionScreenQuery($id: String!) {
     homeView {
       section(id: $id) {
@@ -54,14 +54,14 @@ const HOME_SECTION_SCREEN_QUERY = graphql`
 `
 
 interface HomeViewSectionScreenQueryRendererProps {
-  sectionID: string
+  id: string
   sectionType: string
 }
 
 export const HomeViewSectionScreenQueryRenderer = withSuspense({
   Component: (props: HomeViewSectionScreenQueryRendererProps) => {
     const data = useLazyLoadQuery<HomeViewSectionScreenQuery>(HOME_SECTION_SCREEN_QUERY, {
-      id: props.sectionID,
+      id: props.id,
     })
 
     if (!data.homeView.section) {

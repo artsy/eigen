@@ -1,100 +1,76 @@
 import { Flex, Spacer } from "@artsy/palette-mobile"
-import { ArticlesRail_articlesConnection$data } from "__generated__/ArticlesRail_articlesConnection.graphql"
+import {
+  ArticlesRail_articlesConnection$data,
+  ArticlesRail_articlesConnection$key,
+} from "__generated__/ArticlesRail_articlesConnection.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
 import { SectionTitle } from "app/Components/SectionTitle"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
-import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { memo } from "react"
 import { FlatList } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
-import { useTracking } from "react-tracking"
+import { graphql, useFragment } from "react-relay"
 
 interface ArticlesRailProps {
-  articlesConnection: ArticlesRail_articlesConnection$data
-  onTrack?: (article: ExtractNodeType<ArticlesRail_articlesConnection$data>, index: number) => void
-  onSectionTitlePress?: () => void
+  articlesConnection: ArticlesRail_articlesConnection$key
+  onTitlePress?: () => void
+  onPress?: (article: ExtractNodeType<ArticlesRail_articlesConnection$data>, index: number) => void
   title: string
+  titleHref?: string | null
 }
 
-export const ArticlesRail: React.FC<ArticlesRailProps> = ({
-  articlesConnection,
-  onTrack,
-  onSectionTitlePress,
-  title,
-}) => {
-  const articles = extractNodes(articlesConnection)
-  const tracking = useTracking()
+export const ArticlesRail: React.FC<ArticlesRailProps> = memo(
+  ({ onTitlePress, onPress, title, titleHref, ...restProps }) => {
+    const articlesConnection = useFragment(articlesConnectionFragment, restProps.articlesConnection)
 
-  if (!articles.length) {
-    return null
+    const articles = extractNodes(articlesConnection)
+
+    if (!articles.length) {
+      return null
+    }
+
+    return (
+      <Flex>
+        <SectionTitle href={titleHref} mx={2} onPress={onTitlePress} title={title} />
+
+        <Flex>
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            ListHeaderComponent={() => <Spacer x={2} />}
+            ListFooterComponent={() => <Spacer x={2} />}
+            ItemSeparatorComponent={() => <Spacer x={2} />}
+            initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
+            windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
+            data={articles}
+            keyExtractor={(item) => `${item.internalID}`}
+            renderItem={({ item, index }) => (
+              <ArticleCardContainer
+                onPress={() => {
+                  onPress?.(item, index)
+                }}
+                article={item}
+              />
+            )}
+          />
+        </Flex>
+      </Flex>
+    )
   }
+)
 
-  const onTitlePress = () => {
-    if (onSectionTitlePress) {
-      onSectionTitlePress()
-    } else {
-      tracking.trackEvent(HomeAnalytics.articlesHeaderTapEvent())
-      navigate("/articles")
+const articlesConnectionFragment = graphql`
+  fragment ArticlesRail_articlesConnection on ArticleConnection {
+    edges {
+      node {
+        internalID
+        slug
+        ...ArticleCard_article
+      }
     }
   }
-
-  return (
-    <Flex>
-      <Flex mx={2}>
-        <SectionTitle title={title} onPress={onTitlePress} />
-      </Flex>
-      <Flex>
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          ListHeaderComponent={() => <Spacer x={2} />}
-          ListFooterComponent={() => <Spacer x={2} />}
-          ItemSeparatorComponent={() => <Spacer x={2} />}
-          initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
-          windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
-          data={articles}
-          keyExtractor={(item) => `${item.internalID}`}
-          renderItem={({ item, index }) => (
-            <ArticleCardContainer
-              onPress={() => {
-                if (onTrack) {
-                  return onTrack(item, index)
-                }
-
-                const tapEvent = HomeAnalytics.articleThumbnailTapEvent(
-                  item.internalID,
-                  item.slug || "",
-                  index
-                )
-                tracking.trackEvent(tapEvent)
-              }}
-              article={item}
-            />
-          )}
-        />
-      </Flex>
-    </Flex>
-  )
-}
-
-export const ArticlesRailFragmentContainer = memo(
-  createFragmentContainer(ArticlesRail, {
-    articlesConnection: graphql`
-      fragment ArticlesRail_articlesConnection on ArticleConnection {
-        edges {
-          node {
-            internalID
-            slug
-            ...ArticleCard_article
-          }
-        }
-      }
-    `,
-  })
-)
+`

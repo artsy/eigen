@@ -19,6 +19,7 @@ import {
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
+import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -61,42 +62,39 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     )
   }
 
+  const href = getHomeViewSectionHref(viewAll?.href, section)
+
   const onSectionViewAll = () => {
-    if (viewAll?.href) {
-      tracking.tappedArtworkGroupViewAll(
-        section.contextModule as ContextModule,
-        viewAll?.ownerType as ScreenOwnerType
-      )
+    tracking.tappedArtworkGroupViewAll(
+      section.contextModule as ContextModule,
+      (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
+    )
+  }
 
-      navigate(viewAll.href)
-    } else {
-      tracking.tappedArtworkGroupViewAll(
-        section.contextModule as ContextModule,
-        section.ownerType as ScreenOwnerType
-      )
+  const onMorePress = () => {
+    tracking.tappedArtworkGroupViewAll(
+      section.contextModule as ContextModule,
+      (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
+    )
 
-      navigate(`/home-view/sections/${section.internalID}`, {
-        passProps: {
-          sectionType: section.__typename,
-        },
-      })
-    }
+    navigate(href)
   }
 
   return (
     <Flex {...flexProps}>
-      <Flex pl={2} pr={2}>
-        <SectionTitle
-          title={section.component?.title}
-          onPress={viewAll ? onSectionViewAll : undefined}
-        />
-      </Flex>
+      <SectionTitle
+        href={href}
+        mx={2}
+        title={section.component?.title}
+        onPress={onSectionViewAll}
+      />
+
       <ArtworkRail
         contextModule={section.contextModule as ContextModule}
         artworks={artworks}
         onPress={handleOnArtworkPress}
         showSaveIcon
-        onMorePress={viewAll ? onSectionViewAll : undefined}
+        onMorePress={onMorePress}
       />
 
       <HomeViewSectionSentinel

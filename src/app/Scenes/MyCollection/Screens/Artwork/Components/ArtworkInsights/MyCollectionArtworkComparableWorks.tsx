@@ -28,6 +28,7 @@ export const MyCollectionArtworkComparableWorks: React.FC<
   return (
     <Flex>
       <SectionTitle title="Comparable Works" />
+
       {comparableWorks.map((item) => (
         <Flex my={1} mx={-2} key={item.internalID}>
           <AuctionResultListItemFragmentContainer

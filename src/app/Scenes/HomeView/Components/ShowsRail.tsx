@@ -57,36 +57,33 @@ export const ShowsRail: React.FC<ShowsRailProps> = memo(
 
     return (
       <Flex {...flexProps}>
-        <Flex mx={2}>
-          <SectionTitle title={title} />
-        </Flex>
-        <Flex>
-          <FlatList
-            horizontal
-            initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
-            windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
-            showsHorizontalScrollIndicator={false}
-            ListHeaderComponent={() => <Spacer x={2} />}
-            ListFooterComponent={() => <Spacer x={2} />}
-            ItemSeparatorComponent={() => <Spacer x={2} />}
-            data={shows.slice(0, NUMBER_OF_SHOWS)}
-            keyExtractor={(item) => `${item.internalID}`}
-            renderItem={({ item, index }) => (
-              <ShowCardContainer
-                show={item}
-                onPress={() => {
-                  if (onTrack) {
-                    return onTrack(item, index)
-                  }
+        <SectionTitle title={title} mx={2} />
 
-                  tracking.trackEvent(
-                    tracks.tappedThumbnail(item.internalID, item.slug || "", index, contextModule)
-                  )
-                }}
-              />
-            )}
-          />
-        </Flex>
+        <FlatList
+          horizontal
+          initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
+          windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
+          showsHorizontalScrollIndicator={false}
+          ListHeaderComponent={() => <Spacer x={2} />}
+          ListFooterComponent={() => <Spacer x={2} />}
+          ItemSeparatorComponent={() => <Spacer x={2} />}
+          data={shows.slice(0, NUMBER_OF_SHOWS)}
+          keyExtractor={(item) => `${item.internalID}`}
+          renderItem={({ item, index }) => (
+            <ShowCardContainer
+              show={item}
+              onPress={() => {
+                if (onTrack) {
+                  return onTrack(item, index)
+                }
+
+                tracking.trackEvent(
+                  tracks.tappedThumbnail(item.internalID, item.slug || "", index, contextModule)
+                )
+              }}
+            />
+          )}
+        />
       </Flex>
     )
   }

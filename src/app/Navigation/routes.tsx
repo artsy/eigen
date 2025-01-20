@@ -65,7 +65,10 @@ import { FeatureQueryRenderer } from "app/Scenes/Feature/Feature"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { GeneQueryRenderer } from "app/Scenes/Gene/Gene"
 import { HomeViewScreen, homeViewScreenQuery } from "app/Scenes/HomeView/HomeView"
-import { HomeViewSectionScreenQueryRenderer } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreen"
+import {
+  HOME_SECTION_SCREEN_QUERY,
+  HomeViewSectionScreenQueryRenderer,
+} from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreen"
 import { MakeOfferModalQueryRenderer } from "app/Scenes/Inbox/Components/Conversations/MakeOfferModal"
 import { PurchaseModalQueryRenderer } from "app/Scenes/Inbox/Components/Conversations/PurchaseModal"
 import { ConversationQueryRenderer } from "app/Scenes/Inbox/Screens/Conversation"
@@ -785,7 +788,7 @@ export const artsyDotNetRoutes = defineRoutes([
     },
   },
   {
-    path: "/home-view/sections/:sectionID",
+    path: "/home-view/sections/:id",
     name: "HomeViewSectionScreen",
     Component: HomeViewSectionScreenQueryRenderer,
     options: {
@@ -793,6 +796,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [HOME_SECTION_SCREEN_QUERY],
   },
   {
     path: "/inbox",

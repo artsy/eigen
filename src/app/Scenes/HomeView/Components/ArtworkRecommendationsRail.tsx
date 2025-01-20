@@ -51,17 +51,25 @@ export const ArtworkRecommendationsRail: React.FC<
     return null
   }
 
-  const handleMorePress = (type: string) => {
-    trackEvent(tracks.tappedMore(type))
+  const handleMorePress = () => {
+    trackEvent(tracks.tappedMore("viewAll"))
     navigate("/artwork-recommendations")
+  }
+
+  const handleHeaderPress = () => {
+    trackEvent(tracks.tappedMore("header"))
   }
 
   return (
     <Flex mb={mb}>
       <View ref={railRef}>
-        <Flex pl={2} pr={2}>
-          <SectionTitle title={title} onPress={() => handleMorePress("header")} />
-        </Flex>
+        <SectionTitle
+          href="/artwork-recommendations"
+          title={title}
+          onPress={handleHeaderPress}
+          mx={2}
+        />
+
         <ArtworkRail
           {...trackingProps}
           artworks={artworks}
@@ -79,7 +87,7 @@ export const ArtworkRecommendationsRail: React.FC<
               )
             )
           }}
-          onMorePress={() => handleMorePress("viewAll")}
+          onMorePress={handleMorePress}
           onViewableItemsChanged={onViewableItemsChanged}
           viewabilityConfig={viewabilityConfig}
           showSaveIcon

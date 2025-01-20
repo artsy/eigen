@@ -23,9 +23,7 @@ export const CuratedCollections: React.FC<CuratedCollectionsProps> = ({
 
   return (
     <Box {...boxProps}>
-      <Box mx={2}>
-        <SectionTitle title="Artsy Collections" />
-      </Box>
+      <SectionTitle title="Artsy Collections" mx={2} />
 
       <CardRailFlatList
         data={filledCollections}
