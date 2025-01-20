@@ -1,7 +1,8 @@
-import { Box, ClassTheme, Flex, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Text } from "@artsy/palette-mobile"
 import MapboxGL from "@rnmapbox/maps"
 import { themeGet } from "@styled-system/theme-get"
 import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { Pin } from "app/Components/Icons/Pin"
 import PinFairSelected from "app/Components/Icons/PinFairSelected"
 import PinSavedSelected from "app/Components/Icons/PinSavedSelected"
@@ -354,7 +355,7 @@ export class GlobalMap extends React.Component<Props, State> {
         clusterLat &&
         clusterLng &&
         pointCount && (
-          <ClassTheme>
+          <ThemeAwareClassTheme>
             {({ color }) => (
               <MapboxGL.PointAnnotation
                 key={clusterId}
@@ -369,7 +370,7 @@ export class GlobalMap extends React.Component<Props, State> {
                 </SelectedCluster>
               </MapboxGL.PointAnnotation>
             )}
-          </ClassTheme>
+          </ThemeAwareClassTheme>
         )
       )
     }
@@ -541,7 +542,7 @@ export class GlobalMap extends React.Component<Props, State> {
     }
 
     return (
-      <ClassTheme>
+      <ThemeAwareClassTheme>
         {({ color }) => (
           <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: color("black5") }}>
             <LoadingScreen
@@ -621,7 +622,7 @@ export class GlobalMap extends React.Component<Props, State> {
             </Flex>
           </Flex>
         )}
-      </ClassTheme>
+      </ThemeAwareClassTheme>
     )
   }
 

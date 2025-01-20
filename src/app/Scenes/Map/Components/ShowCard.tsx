@@ -1,5 +1,6 @@
-import { Box, ClassTheme, Text } from "@artsy/palette-mobile"
+import { Box, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { ShowItemRow } from "app/Components/Lists/ShowItemRow"
 import { TabFairItemRow } from "app/Scenes/City/Components/TabFairItemRow"
 import { Fair, Show } from "app/Scenes/Map/types"
@@ -154,7 +155,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     return hasOne ? (
       show && this.renderItem({ item: show }, true)
     ) : (
-      <ClassTheme>
+      <ThemeAwareClassTheme>
         {({ space }) => (
           <>
             <PageIndicator style={shadowDetails} mx={1} px={0.5} my={0.5}>
@@ -186,7 +187,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
             />
           </>
         )}
-      </ClassTheme>
+      </ThemeAwareClassTheme>
     )
   }
 }

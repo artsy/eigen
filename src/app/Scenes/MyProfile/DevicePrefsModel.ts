@@ -1,7 +1,7 @@
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { EnvironmentModel, getEnvironmentModel } from "app/store/config/EnvironmentModel"
-import { action, Action, computed, Computed } from "easy-peasy"
-import { Appearance } from "react-native"
+import { action, Action, computed, Computed, effectOn, EffectOn } from "easy-peasy"
+import { Appearance, StatusBar } from "react-native"
 
 export interface DevicePrefsModel {
   environment: EnvironmentModel
@@ -16,6 +16,7 @@ export interface DevicePrefsModel {
   setUsingSystemColorScheme: Action<this, this["usingSystemColorScheme"]>
   setForcedColorScheme: Action<this, this["forcedColorScheme"]>
   setIsDeepZoomModalVisible: Action<this, this["sessionState"]["isDeepZoomModalVisible"]>
+  updateStatusBarStyle: EffectOn<this>
 }
 
 export const getDevicePrefsModel = (): DevicePrefsModel => ({
@@ -43,5 +44,15 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
   }),
   setIsDeepZoomModalVisible: action((state, isVisible) => {
     state.sessionState.isDeepZoomModalVisible = isVisible
+  }),
+  updateStatusBarStyle: effectOn([(state) => state.colorScheme], (_, change) => {
+    const [colorScheme] = change.current
+    if (colorScheme === "dark") {
+      StatusBar.setBarStyle("light-content")
+      Appearance.setColorScheme("dark")
+    } else {
+      StatusBar.setBarStyle("dark-content")
+      Appearance.setColorScheme("light")
+    }
   }),
 })

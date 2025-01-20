@@ -72,7 +72,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
   // MARK:- STATES
 
   const [lastPressedDatum, setLastPressedDatum] = useState<
-    (typeof data[0] & { left?: number; dataTag?: string }) | null
+    ((typeof data)[0] & { left?: number; dataTag?: string }) | null
   >(null)
 
   const shadedTintColor = shadeColor(tintColor, tintColorShadeFactor)
@@ -208,7 +208,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
       <Defs>
         <LinearGradient id="gradientStroke" gradientTransform="rotate(90)">
           <Stop offset="0%" stopColor={shadedTintColor} stopOpacity="20%" />
-          <Stop offset="100%" stopColor="white" />
+          <Stop offset="100%" stopColor={color("white100")} />
         </LinearGradient>
       </Defs>
     ),
@@ -239,7 +239,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
             />
           }
           style={{
-            background: { fill: "white" },
+            background: { fill: color("white100") },
           }}
           padding={{ left: 40, right: 40, bottom: 20, top: 40 }}
           width={chartWidth}

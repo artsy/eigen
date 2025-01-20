@@ -1,5 +1,6 @@
-import { Box, ClassTheme, Text } from "@artsy/palette-mobile"
+import { Box, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { Component } from "react"
 import { Animated } from "react-native"
 import styled from "styled-components/native"
@@ -63,19 +64,19 @@ export default class TabBar extends Component<TabBarProps> {
         onPress={() => onPressHandler(page)}
       >
         <TabButton spaceEvenly={this.props.spaceEvenly} active={isTabActive}>
-          <ClassTheme>
+          <ThemeAwareClassTheme>
             {({ color }) => (
               <Text
                 variant="sm"
                 numberOfLines={1}
                 ellipsizeMode="tail"
                 weight="medium"
-                color={isTabActive ? "black" : color("black30")}
+                color={isTabActive ? "black100" : color("black30")}
               >
                 {name}
               </Text>
             )}
-          </ClassTheme>
+          </ThemeAwareClassTheme>
         </TabButton>
       </Button>
     )
@@ -83,8 +84,8 @@ export default class TabBar extends Component<TabBarProps> {
 
   render() {
     return (
-      <ClassTheme>
-        {({ space }) => {
+      <ThemeAwareClassTheme>
+        {({ space, color }) => {
           // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           const containerWidth = this.props.containerWidth - space(4)
           const numberOfTabs = this.props.tabs.length
@@ -108,7 +109,7 @@ export default class TabBar extends Component<TabBarProps> {
                         position: "absolute",
                         width: containerWidth / numberOfTabs,
                         height: 1,
-                        backgroundColor: "black",
+                        backgroundColor: color("black100"),
                         bottom: -1,
                         left: 0,
                         right: 0,
@@ -123,7 +124,7 @@ export default class TabBar extends Component<TabBarProps> {
             </Wrapper>
           )
         }}
-      </ClassTheme>
+      </ThemeAwareClassTheme>
     )
   }
 }

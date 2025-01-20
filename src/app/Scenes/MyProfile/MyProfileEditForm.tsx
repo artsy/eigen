@@ -218,7 +218,9 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
               </Box>
             </Touchable>
             <Touchable haptic onPress={chooseImageHandler}>
-              <Text style={{ textDecorationLine: "underline" }}>Choose an Image</Text>
+              <Text style={{ textDecorationLine: "underline" }} color="black100">
+                Choose an Image
+              </Text>
             </Touchable>
           </Flex>
           <Flex m={2} gap={2}>
@@ -322,16 +324,14 @@ const LoadingSkeleton = () => {
 }
 
 const VerifiedRow: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => {
-  const color = useColor()
-
   return (
     <Flex flexDirection="row">
       <Flex mt="3px">
         <CheckCircleFillIcon height={ICON_SIZE} width={ICON_SIZE} fill="green100" />
       </Flex>
       <Flex ml={1}>
-        <Text>{title}</Text>
-        <Text color={color("black60")}>{subtitle}</Text>
+        <Text color="black100">{title}</Text>
+        <Text color="black60">{subtitle}</Text>
       </Flex>
     </Flex>
   )
@@ -366,13 +366,18 @@ const ProfileVerifications = ({
             <CheckCircleIcon height={ICON_SIZE} width={ICON_SIZE} fill="black30" />
           </Flex>
           <Flex ml={1}>
-            <Text onPress={handleIDVerification} style={{ textDecorationLine: "underline" }}>
+            <Text
+              onPress={handleIDVerification}
+              style={{ textDecorationLine: "underline" }}
+              color="black100"
+            >
               Verify Your ID
             </Text>
             <Text color={color("black60")}>
               For details, see{" "}
               <Text
                 style={{ textDecorationLine: "underline" }}
+                color="black100"
                 onPress={() => navigate(`https://www.artsy.net/identity-verification-faq`)}
               >
                 FAQs
@@ -381,6 +386,7 @@ const ProfileVerifications = ({
               <Text
                 style={{ textDecorationLine: "underline" }}
                 onPress={() => sendEmail("verification@artsy.net", { subject: "ID Verification" })}
+                color="black100"
               >
                 verification@artsy.net
               </Text>

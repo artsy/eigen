@@ -1,5 +1,6 @@
-import { ClassTheme, Touchable } from "@artsy/palette-mobile"
+import { Touchable } from "@artsy/palette-mobile"
 import { AttachmentPreview_attachment$data } from "__generated__/AttachmentPreview_attachment.graphql"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import React from "react"
 import { findNodeHandle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -25,7 +26,7 @@ export class AttachmentPreview extends React.Component<Props> {
   render() {
     const { attachment, children, onSelected } = this.props
     return (
-      <ClassTheme>
+      <ThemeAwareClassTheme>
         {({ color }) => (
           <Touchable
             underlayColor={color("black5")}
@@ -34,7 +35,7 @@ export class AttachmentPreview extends React.Component<Props> {
             <Container>{children}</Container>
           </Touchable>
         )}
-      </ClassTheme>
+      </ThemeAwareClassTheme>
     )
   }
 }

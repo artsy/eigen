@@ -1,3 +1,4 @@
+import { useColor } from "@artsy/palette-mobile"
 import { useScreenDimensions } from "app/utils/hooks"
 import { compact } from "lodash"
 import React, { RefObject, useImperativeHandle, useRef } from "react"
@@ -43,6 +44,8 @@ export const FancyModalCard = React.forwardRef<
     onBackgroundPressed(): void
   }>
 >((props, ref) => {
+  const color = useColor()
+
   const animationPosition = props.animationPosition ?? "bottom"
   const screen = useScreenDimensions()
   const isRootCard = props.level === 0
@@ -174,7 +177,7 @@ export const FancyModalCard = React.forwardRef<
           <Animated.View
             style={{
               flex: 1,
-              backgroundColor: "black",
+              backgroundColor: color("black100"),
               opacity: backdropOpacity,
             }}
           />
@@ -208,7 +211,7 @@ export const FancyModalCard = React.forwardRef<
         <View
           style={{
             flex: 1,
-            backgroundColor: "white",
+            backgroundColor: color("white100"),
             paddingTop: props.fullScreen ? screen.safeAreaInsets.top : 0,
           }}
         >

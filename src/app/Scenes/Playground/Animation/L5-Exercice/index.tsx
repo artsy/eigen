@@ -1,4 +1,4 @@
-import { BellFillIcon, Flex, Separator, Text } from "@artsy/palette-mobile"
+import { BellFillIcon, Flex, Separator, Text, useColor } from "@artsy/palette-mobile"
 import { MenuItem } from "app/Components/MenuItem"
 import { ScrollView, View } from "react-native"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
@@ -10,6 +10,8 @@ import Animated, {
 } from "react-native-reanimated"
 
 export const Exercice: React.FC<{}> = () => {
+  const color = useColor()
+
   return (
     <ScrollView>
       <Flex px={2}>
@@ -48,7 +50,7 @@ export const Exercice: React.FC<{}> = () => {
             description="Ephemera or Merchandise or Print, Limited Edition"
             onPress={() => {}}
             noFeedback
-            style={{ backgroundColor: "white" }}
+            style={{ backgroundColor: color("white100") }}
           />
         </Flex>
       </Flex>
@@ -97,6 +99,7 @@ const Solution1 = () => {
 const THRESHOLD = 50
 
 const Solution2 = () => {
+  const color = useColor()
   const dragX = useSharedValue(0)
   const isIconVisible = useSharedValue(false)
 
@@ -149,7 +152,7 @@ const Solution2 = () => {
             description="Ephemera or Merchandise or Print, Limited Edition"
             onPress={() => {}}
             noFeedback
-            style={{ backgroundColor: "white" }}
+            style={{ backgroundColor: color("white100") }}
           />
         </Animated.View>
       </View>
