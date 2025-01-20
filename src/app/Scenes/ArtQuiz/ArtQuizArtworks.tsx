@@ -158,7 +158,7 @@ const ArtQuizArtworksScreen = () => {
   const artworkCards: Card[] = artworks.slice(activeCardIndex).map((artwork) => {
     return {
       jsx: (
-        <Flex width={width - space(4)} height={500} backgroundColor="white">
+        <Flex width={width - space(4)} height={500} backgroundColor="white100">
           <Image
             source={{ uri: artwork.image?.resized?.src }}
             style={{ flex: 1 }}

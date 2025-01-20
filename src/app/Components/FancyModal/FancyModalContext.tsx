@@ -1,3 +1,4 @@
+import { Flex } from "@artsy/palette-mobile"
 import { ExecutionQueue } from "app/utils/ExecutionQueue"
 import { useScreenDimensions } from "app/utils/hooks"
 import { compact, flatten } from "lodash"
@@ -48,7 +49,7 @@ class FancyModalCardStack {
 
   getRootCard(height: number, content: React.ReactNode) {
     return (
-      <View style={{ flex: 1, backgroundColor: "black" }}>
+      <Flex flex={1} backgroundColor="black100">
         <FancyModalCard
           level={0}
           ref={this.stack[0]}
@@ -58,7 +59,7 @@ class FancyModalCardStack {
         >
           {content}
         </FancyModalCard>
-      </View>
+      </Flex>
     )
   }
 
