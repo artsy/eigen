@@ -17,7 +17,7 @@ export const useSetActivePopover = (isDisplayable: boolean) => {
 
   // This is a listener that will be called when the screen is blurred
   // This is to make sure that the popover is not displayed when the screen is not focused
-  useEffect(() => {
+  /*   useEffect(() => {
     const blurListener = navigation.addListener("blur", () => {
       setIsPopoverVisible(false)
     })
@@ -32,17 +32,21 @@ export const useSetActivePopover = (isDisplayable: boolean) => {
 
     return focusListener
   }, [isDisplayable, isFocused, navigation])
-
+ */
   useEffect(() => {
-    if (!isDisplayable || activePopover || !popoverId || !isPopoverVisible) {
+    if (!isDisplayable || activePopover || !popoverId) {
+      console.log("[LOGD] return = ", !isDisplayable, activePopover, !popoverId)
       return
     }
-    if (isPopoverVisible && isDisplayable && !activePopover) {
+    if (isDisplayable && !activePopover) {
+      console.log("[LOGD] set = ", !isDisplayable, activePopover, !popoverId)
+
       setActivePopover(popoverId)
     }
-  }, [activePopover, isDisplayable, popoverId, isPopoverVisible])
+  }, [activePopover, isDisplayable, popoverId])
 
   const clearActivePopover = () => {
+    console.log("[LOGD] ---------- clearActivePopover")
     setActivePopover(undefined)
     setIsReady(true)
   }

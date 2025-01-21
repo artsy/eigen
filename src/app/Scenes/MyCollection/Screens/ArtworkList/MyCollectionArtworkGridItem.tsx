@@ -56,10 +56,11 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
 
   const showHighDemandIcon = isP1Artist && isHighDemand && !consignmentSubmission?.internalID
 
-  const { dismiss } = GlobalStore.actions.progressiveOnboarding
+  const { dismiss, setIsReady } = GlobalStore.actions.progressiveOnboarding
   const { isActive, clearActivePopover } = useSetActivePopover(!!displayToolTip)
 
   const handleDismissPopover = () => {
+    setIsReady(false)
     dismiss("my-collection-sell-this-work")
   }
 

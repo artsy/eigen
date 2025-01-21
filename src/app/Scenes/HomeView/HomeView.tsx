@@ -19,6 +19,7 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracki
 import { Playground } from "app/Scenes/Playground/Playground"
 import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { GlobalStore } from "app/store/GlobalStore"
+import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMenuButtonItem"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
@@ -162,10 +163,17 @@ export const HomeView: React.FC = memo(() => {
       },
     })
   }
+  const { __clearDissmissed } = GlobalStore.actions.progressiveOnboarding
 
   return (
     <Screen safeArea={true}>
       <Screen.Body fullwidth>
+        <DevMenuButtonItem
+          title="Clear Progressive Onboarding progress"
+          onPress={() => {
+            __clearDissmissed()
+          }}
+        />
         <FlatList
           automaticallyAdjustKeyboardInsets
           keyboardDismissMode="on-drag"
