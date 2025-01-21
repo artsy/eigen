@@ -8,11 +8,21 @@ extension LatestArticles {
         let entry: Entry
         
         var body: some SwiftUI.View {
+            if #available(iOSApplicationExtension 17.0, *) {
+                actualBody().containerBackground(for: .widget) {
+                    Color.white
+                }
+            } else {
+                actualBody()
+            }
+        }
+        
+        func actualBody() -> some SwiftUI.View {
             let artsyLogo = UIImage(named: "BlackArtsyLogo")!
             let articles = entry.articles
             let artsyUrl = WidgetUrl.from(link: "https://www.artsy.net")!
             
-            VStack() {
+            return VStack() {
                 HStack(alignment: .center) {
                     Link(destination: artsyUrl) {
                         Text("LATEST ARTICLES")
