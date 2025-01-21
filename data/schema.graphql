@@ -4182,10 +4182,12 @@ type Collection {
 
   # Name of the collection. Has a predictable value for 'standard' collections such as Saved Artwork, My Collection, etc. Can be provided by user otherwise.
   name: String!
+  private: Boolean!
 
   # True if this collection represents artworks explicitly saved by the user, false otherwise.
   saves: Boolean!
   shareableWithPartners: Boolean!
+  slug: String!
 }
 
 enum CollectionArtworkSorts {
@@ -22319,6 +22321,7 @@ input updateCollectionInput {
   # The internal ID of the collection
   id: String!
   name: String!
+  private: Boolean
   shareableWithPartners: Boolean
 }
 
