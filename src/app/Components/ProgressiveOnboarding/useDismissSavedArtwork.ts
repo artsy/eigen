@@ -1,5 +1,6 @@
 import { useIsFocused } from "@react-navigation/native"
 import { useOnSaveArtwork } from "app/Components/ProgressiveOnboarding/useOnSaveArtwork"
+import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
 
@@ -14,6 +15,7 @@ export const useDismissSavedArtwork = (saved?: boolean | null) => {
   const isFocused = useIsFocused()
 
   const dismissed = isDismissed("save-artwork").status
+  const { clearActivePopover } = useSetActivePopover(!dismissed)
 
   useEffect(() => {
     if (!saved || dismissed || !isReady || !isFocused) {
@@ -23,6 +25,7 @@ export const useDismissSavedArtwork = (saved?: boolean | null) => {
     // If an Artwork was saved before and wasn't dismissed, dismiss and enable bottom tab notification
     if (saved && !dismissed) {
       dismiss("save-artwork")
+      clearActivePopover()
       setProfileTabSavedArtwork()
     }
   }, [saved, dismissed, dismiss, setProfileTabSavedArtwork, isReady, isFocused])

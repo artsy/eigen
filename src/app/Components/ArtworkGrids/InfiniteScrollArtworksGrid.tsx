@@ -13,7 +13,6 @@ import ParentAwareScrollView from "app/Components/ParentAwareScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
 import { GlobalStore } from "app/store/GlobalStore"
-import { PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK } from "app/store/ProgressiveOnboardingModel"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -339,7 +338,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
         const displayToolTip =
           enableMyCollectionSellOnboarding &&
           isMyCollection &&
-          !isDismissed(PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK).status &&
+          !isDismissed("my-collection-sell-this-work").status &&
           itemIndex === 0 &&
           artwork.artist?.targetSupply?.isTargetSupply &&
           !(artwork as any).consignmentSubmission

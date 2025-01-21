@@ -1,3 +1,4 @@
+import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useCallback } from "react"
 
@@ -9,9 +10,13 @@ export const useOnSaveArtwork = () => {
     ...state.progressiveOnboarding,
   }))
 
+  const dismissed = isDismissed("save-artwork").status
+  const { clearActivePopover } = useSetActivePopover(!dismissed)
+
   const setProfileTabSavedArtwork = useCallback(() => {
-    if (!isDismissed("save-artwork").status) {
+    if (!dismissed) {
       dismiss("save-artwork")
+      clearActivePopover()
     }
     setTabProps({ tab: "profile", props: { ...tabProps.profile, savedArtwork: true } })
   }, [tabProps.profile?.savedArtwork, setTabProps, isDismissed, dismiss])
