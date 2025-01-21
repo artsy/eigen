@@ -48,7 +48,7 @@ commands:
     steps:
       - node/install-packages:
           pkg-manager: yarn
-          cache-version: v12
+          cache-version: v13
   run-relay-compiler:
     steps:
       - run:
@@ -88,12 +88,12 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v28-pods-{{ checksum ".manifests/cocoapods" }}
+            - v29-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;
       - save_cache:
-          key: v28-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v29-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - ios/Pods
             # this changes after pod install because we don't install dev tools on CI
@@ -103,7 +103,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v24-app_build_ios-{{ checksum ".manifests/app_build" }}
+            - v25-app_build_ios-{{ checksum ".manifests/app_build" }}
       - run:
           name: Download fonts from s3
           command: ./scripts/setup/download-fonts
@@ -114,7 +114,7 @@ commands:
           name: Build App
           command: ./scripts/ci/ci-ios
       - save_cache:
-          key: v24-app_build_ios-{{ checksum ".manifests/app_build" }}
+          key: v25-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
             - node_modules/react-native-config
