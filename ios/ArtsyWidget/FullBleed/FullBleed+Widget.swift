@@ -13,6 +13,7 @@ extension FullBleed {
                 View(entry: entry)
             }
             .configurationDisplayName(Widget.displayName)
+            .contentMarginsDisabled()
             .description(Widget.description)
             .supportedFamilies(View.supportedFamilies)
         }
