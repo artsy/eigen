@@ -14,7 +14,7 @@ require Pod::Executable.execute_command('node', ['-p',
   )', __dir__]).strip
 
 project 'Artsy.xcodeproj'
-platform :ios, '15.1'
+platform :ios, '16.6'
 inhibit_all_warnings! # ignore all warnings from all pods
 
 prepare_react_native_project!
@@ -164,7 +164,7 @@ target 'Artsy' do
             config.build_settings['EXPANDED_CODE_SIGN_IDENTITY'] = ""
             config.build_settings['CODE_SIGNING_REQUIRED'] = "NO"
             config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
-            config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "15.1"
+            config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "16.6"
         end
     end
   end
