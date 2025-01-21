@@ -222,13 +222,17 @@
 // Handle the tapping on the notification when the app in the foreground
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{
     BOOL processedByBraze = ARAppDelegate.braze != nil && [ARAppDelegate.braze.notifications handleUserNotificationWithResponse:response
-                                                                                                      withCompletionHandler:completionHandler];
-    if (processedByBraze) {
-      return;
-    }
+                                                                                                    withCompletionHandler:completionHandler];
     
     NSDictionary *userInfo = response.notification.request.content.userInfo;
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
+    
+    if (processedByBraze) {
+      NSString *url = userInfo[@"ab_uri"];
+      [self tappedNotification:userInfo url:url];
+      return;
+    }
+    
 
     [self tappedNotification:notificationInfo url:userInfo[@"url"]];
     completionHandler();
