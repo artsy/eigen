@@ -5,56 +5,94 @@ import {
   Image,
   Screen,
   Spacer,
+  Spinner,
   Text,
   Touchable,
   useScreenDimensions,
   useTheme,
 } from "@artsy/palette-mobile"
-import { InfiniteDiscoveryRefetchQuery } from "__generated__/InfiniteDiscoveryRefetchQuery.graphql"
-import { InfiniteDiscovery_Fragment$key } from "__generated__/InfiniteDiscovery_Fragment.graphql"
 import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
+import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
-import { NoFallback, SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { useEffect, useState } from "react"
-import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
+import { fetchQuery, graphql } from "react-relay"
 import type {
   InfiniteDiscoveryQuery,
   InfiniteDiscoveryQuery$data,
 } from "__generated__/InfiniteDiscoveryQuery.graphql"
 import type { Card } from "app/Components/FancySwiper/FancySwiperCard"
 
-interface InfiniteDiscoveryProps {
-  artworks: InfiniteDiscoveryQuery$data
-}
+type Artwork = NonNullable<
+  NonNullable<
+    NonNullable<NonNullable<InfiniteDiscoveryQuery$data["discoverArtworks"]>["edges"]>[0]
+  >["node"]
+>
 
-export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({ artworks: _artworks }) => {
-  const [data, refetch] = useRefetchableFragment<
-    InfiniteDiscoveryRefetchQuery,
-    InfiniteDiscovery_Fragment$key
-  >(infiniteDiscoveryFragment, _artworks)
-
+export const InfiniteDiscovery: React.FC = () => {
   const REFETCH_BUFFER = 2
+
+  const discoveredArtworksIds = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.discoveredArtworkIds
+  )
+  const { addDiscoveredArtworkId } = GlobalStore.actions.infiniteDiscovery
 
   const { color } = useTheme()
   const { width: screenWidth } = useScreenDimensions()
 
   const [index, setIndex] = useState(0)
-  const [artworks, setArtworks] = useState(extractNodes(data.discoverArtworks))
+  const [artworks, setArtworks] = useState<Artwork[]>([])
+
+  const fetchArtworkBatch = () => {
+    fetchQuery<InfiniteDiscoveryQuery>(
+      getRelayEnvironment(),
+      infiniteDiscoveryQuery,
+      { excludeArtworkIds: discoveredArtworksIds },
+      {
+        fetchPolicy: "network-only",
+      }
+    )
+      .toPromise()
+      .then((response) => {
+        if (!response) {
+          console.error("Error fetching infinite discovery batch: response is falsy")
+          return
+        }
+
+        setArtworks((previousArtworks) => {
+          // only add new artworks to the list by filtering-out existing artworks
+          const newArtworks = extractNodes(response.discoverArtworks).filter(
+            (newArtwork) =>
+              !previousArtworks.some((artwork) => artwork.internalID === newArtwork.internalID)
+          )
+
+          return [...previousArtworks, ...newArtworks]
+        })
+      })
+      .catch((error) => {
+        console.error("Error fetching infinite discovery batch:", error)
+      })
+  }
 
   useEffect(() => {
-    setArtworks((previousArtworks) => {
-      // only add new artworks to the list by filtering-out existing artworks
-      const newArtworks = extractNodes(data.discoverArtworks).filter(
-        (newArtwork) =>
-          !previousArtworks.some((artwork) => artwork.internalID === newArtwork.internalID)
-      )
+    fetchArtworkBatch()
+  }, [])
 
-      return [...previousArtworks, ...newArtworks]
-    })
-  }, [data, extractNodes, setArtworks])
+  if (!artworks || artworks.length === 0) {
+    return (
+      <Screen>
+        <Screen.Body fullwidth>
+          <Screen.Header title="Discovery" />
+          <Flex flex={1} justifyContent="center" alignItems="center">
+            <Spinner />
+          </Flex>
+        </Screen.Body>
+      </Screen>
+    )
+  }
 
   const goToPrevious = () => {
     if (index > 0) {
@@ -64,17 +102,13 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({ artworks: 
 
   const goToNext = () => {
     if (index < artworks.length - 1) {
+      addDiscoveredArtworkId(artworks[index].internalID)
       setIndex(index + 1)
     }
 
     // fetch more artworks when the user is about to reach the end of the list
     if (index === artworks.length - REFETCH_BUFFER) {
-      refetch(
-        { excludeArtworkIds: artworks.map((artwork) => artwork.internalID) },
-        {
-          fetchPolicy: "network-only",
-        }
-      )
+      fetchArtworkBatch()
     }
   }
 
@@ -173,24 +207,10 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({ artworks: 
   )
 }
 
-export const InfiniteDiscoveryQueryRenderer = withSuspense({
-  Component: () => {
-    const initialData = useLazyLoadQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, {})
+export const InfiniteDiscoveryQueryRenderer = () => <InfiniteDiscovery />
 
-    if (!initialData) {
-      return null
-    }
-
-    return <InfiniteDiscovery artworks={initialData} />
-  },
-  LoadingFallback: SpinnerFallback,
-  ErrorFallback: NoFallback,
-})
-
-const infiniteDiscoveryFragment = graphql`
-  fragment InfiniteDiscovery_Fragment on Query
-  @refetchable(queryName: "InfiniteDiscoveryRefetchQuery")
-  @argumentDefinitions(excludeArtworkIds: { type: "[String!]" }) {
+export const infiniteDiscoveryQuery = graphql`
+  query InfiniteDiscoveryQuery($excludeArtworkIds: [String!]!) {
     discoverArtworks(excludeArtworkIds: $excludeArtworkIds) {
       edges {
         node {
@@ -216,11 +236,5 @@ const infiniteDiscoveryFragment = graphql`
         }
       }
     }
-  }
-`
-
-export const infiniteDiscoveryQuery = graphql`
-  query InfiniteDiscoveryQuery {
-    ...InfiniteDiscovery_Fragment
   }
 `
