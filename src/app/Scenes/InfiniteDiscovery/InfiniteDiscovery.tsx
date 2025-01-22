@@ -33,7 +33,7 @@ type Artwork = NonNullable<
 >
 
 export const InfiniteDiscovery: React.FC = () => {
-  const REFETCH_BUFFER = 2
+  const REFETCH_BUFFER = 3
 
   const discoveredArtworksIds = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.discoveredArtworkIds
@@ -46,7 +46,15 @@ export const InfiniteDiscovery: React.FC = () => {
   const [index, setIndex] = useState(0)
   const [artworks, setArtworks] = useState<Artwork[]>([])
 
-  const fetchArtworkBatch = () => {
+  /**
+   * TODO: Tomorrow:
+   *
+   * - Fetching a new batch has been sketchy since I made this a reusable method. Check out what's
+   * going on there.
+   * - Start adding save into this!!
+   */
+
+  useEffect(() => {
     fetchQuery<InfiniteDiscoveryQuery>(
       getRelayEnvironment(),
       infiniteDiscoveryQuery,
@@ -75,23 +83,10 @@ export const InfiniteDiscovery: React.FC = () => {
       .catch((error) => {
         console.error("Error fetching infinite discovery batch:", error)
       })
-  }
-
-  useEffect(() => {
-    fetchArtworkBatch()
   }, [])
 
   if (!artworks || artworks.length === 0) {
-    return (
-      <Screen>
-        <Screen.Body fullwidth>
-          <Screen.Header title="Discovery" />
-          <Flex flex={1} justifyContent="center" alignItems="center">
-            <Spinner />
-          </Flex>
-        </Screen.Body>
-      </Screen>
-    )
+    return <InfiniteDiscoverySpinner />
   }
 
   const goToPrevious = () => {
@@ -108,7 +103,34 @@ export const InfiniteDiscovery: React.FC = () => {
 
     // fetch more artworks when the user is about to reach the end of the list
     if (index === artworks.length - REFETCH_BUFFER) {
-      fetchArtworkBatch()
+      fetchQuery<InfiniteDiscoveryQuery>(
+        getRelayEnvironment(),
+        infiniteDiscoveryQuery,
+        { excludeArtworkIds: discoveredArtworksIds },
+        {
+          fetchPolicy: "network-only",
+        }
+      )
+        .toPromise()
+        .then((response) => {
+          if (!response) {
+            console.error("Error fetching infinite discovery batch: response is falsy")
+            return
+          }
+
+          setArtworks((previousArtworks) => {
+            // only add new artworks to the list by filtering-out existing artworks
+            const newArtworks = extractNodes(response.discoverArtworks).filter(
+              (newArtwork) =>
+                !previousArtworks.some((artwork) => artwork.internalID === newArtwork.internalID)
+            )
+
+            return [...previousArtworks, ...newArtworks]
+          })
+        })
+        .catch((error) => {
+          console.error("Error fetching infinite discovery batch:", error)
+        })
     }
   }
 
@@ -206,6 +228,17 @@ export const InfiniteDiscovery: React.FC = () => {
     </Screen>
   )
 }
+
+const InfiniteDiscoverySpinner: React.FC = () => (
+  <Screen>
+    <Screen.Body fullwidth>
+      <Screen.Header title="Discovery" />
+      <Flex flex={1} justifyContent="center" alignItems="center">
+        <Spinner />
+      </Flex>
+    </Screen.Body>
+  </Screen>
+)
 
 export const InfiniteDiscoveryQueryRenderer = () => <InfiniteDiscovery />
 
