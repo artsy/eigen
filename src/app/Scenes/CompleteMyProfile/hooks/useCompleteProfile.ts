@@ -7,11 +7,11 @@ import {
   Routes,
 } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import {
-  ProgressState,
   CompleteMyProfileStore,
+  ProgressState,
 } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { getNextRoute } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
-import { navigate as artsyNavigate, goBack as systemGoBack } from "app/system/navigation/navigate"
+import { popToRoot, goBack as systemGoBack } from "app/system/navigation/navigate"
 import { useUpdateMyProfile } from "app/utils/mutations/useUpdateMyProfile"
 import { useMemo } from "react"
 
@@ -70,20 +70,23 @@ export const useCompleteProfile = () => {
 
     // navigates to my-profile if no changes
     if (Object.values(input).length === 0) {
-      artsyNavigate("/my-profile")
+      setIsLoading(false)
+      popToRoot()
       return
     }
 
     updateProfile({
       variables: { input },
       onCompleted: (_, errors) => {
+        setIsLoading(false)
+
         if (errors) {
           show("An error occurred", "bottom")
           console.error("error", errors)
-          setIsLoading(false)
           return
         }
-        artsyNavigate("/my-profile")
+
+        popToRoot()
       },
       updater: (store) => {
         // Gemini takes some time to process the image, so we update the iconUrl in the store manually
@@ -97,9 +100,10 @@ export const useCompleteProfile = () => {
         }
       },
       onError: (error) => {
+        setIsLoading(false)
+
         show("An error occurred", "bottom")
         console.error("error", error)
-        setIsLoading(false)
       },
     })
   }
