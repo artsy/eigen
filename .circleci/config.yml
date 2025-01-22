@@ -17,16 +17,6 @@ only-main-or-release-or-build-me: &only-main-or-release-or-build-me
         - /.*hotfix$/
         - /.*beta-$/
 
-only-prs: &only-prs
-  filters:
-    branches:
-      ignore:
-        - main
-        - /.*release$/
-        - /.*build-me$/
-        - /.*hotfix$/
-        - /.*beta-$/
-
 commands:
   await-previous-builds:
     parameters:
@@ -282,7 +272,7 @@ jobs:
             echo "Triggering CodePush deployment..."
             ./scripts/codepush/deploy-to-codepush.sh Staging
 
-  test-js-pr:
+  test-js:
     parallelism: 8
     executor:
       name: node/default
@@ -304,7 +294,7 @@ jobs:
       - store_test_results:
           path: ./reports/junit/
 
-  test-js:
+  test-js-complete:
     parallelism: 8
     executor:
       name: node/default
@@ -571,7 +561,7 @@ workflows:
     when: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
     jobs:
       - build-echo-test-js
-      - test-js
+      - test-js-complete
 
   test-build-deploy:
     when: << pipeline.parameters.run_workflow_test-build-deploy >>
@@ -591,11 +581,10 @@ workflows:
               only:
                 - main
 
-      - test-js:
-          <<: *only-main-or-release-or-build-me
+      - test-js
 
-      - test-js-pr:
-          <<: *only-prs
+      - test-js-complete:
+          <<: *only-main-or-release-or-build-me
 
       - build-test-js
 
