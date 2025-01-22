@@ -120,6 +120,7 @@ const LoginPasswordStepForm: React.FC = () => {
 
       <Input
         accessibilityHint="Enter your password"
+        accessibilityLabel="Password Input"
         autoCapitalize="none"
         autoComplete="password"
         importantForAutofill="yes"
