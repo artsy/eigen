@@ -5,10 +5,9 @@ import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
 import { useToast } from "app/Components/Toast/toastHook"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { FormikProvider, useFormik } from "formik"
 import { useState } from "react"
-import { Modal } from "react-native"
+import { KeyboardAvoidingView, Modal } from "react-native"
 import { Screen } from "react-native-screens"
 import { commitMutation, Environment, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -134,13 +133,13 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
   return (
     <FormikProvider value={formik}>
       <>
-        <ArtsyKeyboardAvoidingView>
+        <KeyboardAvoidingView>
           <ConsignmentInquiryForm
             confirmLeaveEdit={(v) => setShowAbandonModal(v)}
             canPopScreen={canPopScreen}
             recipientName={recipientName}
           />
-        </ArtsyKeyboardAvoidingView>
+        </KeyboardAvoidingView>
 
         <AbandonFlowModal
           isVisible={!!showAbandonModal && !showConfirmedModal}

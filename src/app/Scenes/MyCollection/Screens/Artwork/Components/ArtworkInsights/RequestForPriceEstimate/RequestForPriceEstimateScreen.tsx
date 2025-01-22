@@ -5,7 +5,6 @@ import { Toast } from "app/Components/Toast/Toast"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
 import { FormikProvider, useFormik } from "formik"
 import { Environment, commitMutation, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -131,11 +130,7 @@ export const RequestForPriceEstimateScreen: React.FC<RequestForPriceEstimateScre
 
   return (
     <FormikProvider value={formik}>
-      <ArtsyKeyboardAvoidingViewContext.Provider
-        value={{ isVisible: true, isPresentedModally: false, bottomOffset: 10 }}
-      >
-        <RequestForPriceEstimateForm />
-      </ArtsyKeyboardAvoidingViewContext.Provider>
+      <RequestForPriceEstimateForm />
     </FormikProvider>
   )
 }
