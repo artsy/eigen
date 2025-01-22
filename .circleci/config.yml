@@ -218,34 +218,36 @@ jobs:
       - run:
           name: Test maestro install
           command: maestro --version
-      # - run:
-      #     name: Clear project dir
-      #     command: |
-      #       rm -rf  /Users/distiller/project/*
-      # - checkout
-      # - attach_workspace:
-      #     at: .
-      # - install-node
-      # - setup-awscli
-      # - setup-env-file
-      # - install-node-modules
-      # - run-relay-compiler
-      # - update-echo
-      # - install-gems
-      # - install-cocoapods
-      # - macos/preboot-simulator:
-      #     version: "18.1"
-      #     platform: "iOS"
-      #     device: "iPhone 16 Pro"
-      # - build-app-ios
+      - run:
+          name: Clear project dir
+          command: |
+            rm -rf  /Users/distiller/project/*
+      - checkout
+      - attach_workspace:
+          at: .
+      - install-node
+      - setup-awscli
+      - setup-env-file
+      - install-node-modules
+      - run-relay-compiler
+      - update-echo
+      - install-gems
+      - install-cocoapods
+      - macos/preboot-simulator:
+          version: "18.1"
+          platform: "iOS"
+          device: "iPhone 16 Pro"
+      - build-app-ios
+      - run:
+          name: Maestro sign up test
+          command: maestro test e2e/flows/onboarding/login.yml
+      - store_artifacts:
+          path: xcode_build_raw.log
+          prefix: build
 
-      # - store_artifacts:
-      #     path: xcode_build_raw.log
-      #     prefix: build
-
-      # - store_artifacts:
-      #     path: xcode_test_raw.log
-      #     prefix: tests
+      - store_artifacts:
+          path: xcode_test_raw.log
+          prefix: tests
 
   deploy-nightly-beta:
     environment:
