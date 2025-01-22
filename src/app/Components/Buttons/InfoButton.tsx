@@ -5,14 +5,17 @@ import {
   Spacer,
   Text,
   Touchable,
+  useColor,
   useSpace,
 } from "@artsy/palette-mobile"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
-import React, { forwardRef, useImperativeHandle, useState } from "react"
-import { Platform, ScrollView } from "react-native"
+import React, { forwardRef, useImperativeHandle, useMemo, useState } from "react"
+import { Modal, Platform, ScrollView } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 import { FullWindowOverlay } from "react-native-screens"
 
 interface InfoButtonProps {
+  isPresentedModally?: boolean
   modalContent: JSX.Element
   modalTitle?: string
   onPress?: () => void
@@ -27,74 +30,119 @@ export const InfoButton = forwardRef<
     closeModal: () => void
   },
   InfoButtonProps
->(({ modalContent, modalTitle, onPress, subTitle, title, titleElement, trackEvent }, ref) => {
-  const [modalVisible, setModalVisible] = useState(false)
+>(
+  (
+    {
+      isPresentedModally,
+      modalContent,
+      modalTitle,
+      onPress,
+      subTitle,
+      title,
+      titleElement,
+      trackEvent,
+    },
+    ref
+  ) => {
+    const [modalVisible, setModalVisible] = useState(false)
 
-  // Expose closeModal function via the ref
-  useImperativeHandle(ref, () => ({
-    closeModal: () => setModalVisible(false),
-  }))
+    // Expose closeModal function via the ref
+    useImperativeHandle(ref, () => ({
+      closeModal: () => setModalVisible(false),
+    }))
 
-  return (
-    <>
-      <Touchable
-        onPress={() => {
-          setModalVisible(true)
-          trackEvent?.()
-          onPress?.()
-        }}
-        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-      >
-        <Flex flexDirection="row" alignItems="center">
-          {titleElement ? (
-            titleElement
-          ) : (
-            <Text variant="sm" mr={0.5}>
-              {title}
-            </Text>
-          )}
+    return (
+      <>
+        <Touchable
+          onPress={() => {
+            setModalVisible(true)
+            trackEvent?.()
+            onPress?.()
+          }}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <Flex flexDirection="row" alignItems="center">
+            {titleElement ? (
+              titleElement
+            ) : (
+              <Text variant="sm" mr={0.5}>
+                {title}
+              </Text>
+            )}
 
-          <InfoCircleIcon fill="black60" />
-        </Flex>
-      </Touchable>
+            <InfoCircleIcon fill="black60" />
+          </Flex>
+        </Touchable>
 
-      {!!subTitle && (
-        <Text variant="xs" color="black60">
-          {subTitle}
-        </Text>
-      )}
+        {!!subTitle && (
+          <Text variant="xs" color="black60">
+            {subTitle}
+          </Text>
+        )}
 
-      <AutoHeightInfoModal
-        visible={modalVisible}
-        onDismiss={() => setModalVisible(false)}
-        modalTitle={modalTitle}
-        title={title}
-        modalContent={modalContent}
-      />
-    </>
-  )
-})
+        <AutoHeightInfoModal
+          visible={modalVisible}
+          onDismiss={() => setModalVisible(false)}
+          modalTitle={modalTitle}
+          title={title}
+          modalContent={modalContent}
+          isPresentedModally={isPresentedModally}
+        />
+      </>
+    )
+  }
+)
 
 export const AutoHeightInfoModal: React.FC<{
-  visible: boolean
-  onDismiss: () => void
-  modalTitle?: string
-  title?: string
+  isPresentedModally?: boolean
   modalContent: JSX.Element
-}> = ({ visible, onDismiss, modalTitle, title, modalContent }) => {
+  modalTitle?: string
+  onDismiss: () => void
+  title?: string
+  visible: boolean
+}> = ({ visible, onDismiss, isPresentedModally, modalTitle, title, modalContent }) => {
   const space = useSpace()
+  const color = useColor()
+
+  const containerComponent = useMemo(() => {
+    if (Platform.OS === "ios") {
+      return ({ children }: { children: React.ReactElement }) => (
+        <FullWindowOverlay>{children}</FullWindowOverlay>
+      )
+    }
+
+    if (Platform.OS === "android" && isPresentedModally) {
+      return ({ children }: { children: React.ReactElement }) => (
+        <Modal visible={visible} transparent statusBarTranslucent>
+          {children}
+        </Modal>
+      )
+    }
+
+    return undefined
+  }, [visible, isPresentedModally])
 
   return (
     <AutoHeightBottomSheet
       visible={visible}
       onDismiss={onDismiss}
-      containerComponent={
-        Platform.OS === "ios"
-          ? ({ children }) => <FullWindowOverlay>{children}</FullWindowOverlay>
+      containerComponent={containerComponent}
+      handleIndicatorStyle={
+        // Inside modals, the gesture detector is not working on Android.
+        // This is a workaround to make to hide it
+        Platform.OS === "android" && isPresentedModally
+          ? {
+              backgroundColor: color("white100"),
+            }
           : undefined
       }
     >
-      <Flex pb={4} pt={1}>
+      <SafeAreaView
+        style={{
+          paddingBottom: space(4),
+          paddingHorizontal: space(2),
+        }}
+      >
         <Text mx={2} variant="lg-display">
           {modalTitle ?? title}
         </Text>
@@ -112,7 +160,7 @@ export const AutoHeightInfoModal: React.FC<{
             Close
           </Button>
         </Flex>
-      </Flex>
+      </SafeAreaView>
     </AutoHeightBottomSheet>
   )
 }
