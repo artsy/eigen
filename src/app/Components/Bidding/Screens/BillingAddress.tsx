@@ -99,7 +99,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
   }
 
   return (
-    <KeyboardAvoidingView>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <NavigationHeader onLeftButtonPress={() => navigator?.pop()}>
         Add billing address
       </NavigationHeader>

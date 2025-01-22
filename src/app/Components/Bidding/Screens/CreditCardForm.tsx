@@ -101,7 +101,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   const countryRef = useRef<Select<any>>(null)
 
   return (
-    <KeyboardAvoidingView>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <NavigationHeader onLeftButtonPress={() => navigator.pop()}>Add Credit Card</NavigationHeader>
 
       <ScrollView

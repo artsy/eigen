@@ -85,7 +85,7 @@ export const AddMyCollectionArtist: React.FC<{ useNativeHeader?: boolean }> = (p
 
   return (
     <Screen safeArea={false}>
-      <KeyboardAvoidingView>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         {!props.useNativeHeader && (
           <NavigationHeader onLeftButtonPress={handleBackPress} hideBottomDivider>
             Add New Artist

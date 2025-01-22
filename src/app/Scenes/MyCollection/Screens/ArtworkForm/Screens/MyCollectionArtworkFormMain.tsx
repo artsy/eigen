@@ -243,7 +243,7 @@ export const MyCollectionArtworkFormMain: React.FC<
 
   return (
     <>
-      <KeyboardAvoidingView>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         {formikValues.artistSearchResult?.internalID ? (
           <MyCollectionArtworkFormDeleteArtworkModal
             visible={showDeleteArtistModal}

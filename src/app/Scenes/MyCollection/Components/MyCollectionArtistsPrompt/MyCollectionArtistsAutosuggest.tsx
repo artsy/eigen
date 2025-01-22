@@ -48,7 +48,7 @@ export const MyCollectionArtistsAutosuggest: FC = () => {
   }
 
   return (
-    <KeyboardAvoidingView behavior="padding">
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
       <Flex gap={2} height="100%">
         <Flex>
           <Input

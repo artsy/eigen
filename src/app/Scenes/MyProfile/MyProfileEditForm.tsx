@@ -285,7 +285,7 @@ const MyProfileEditFormScreenQuery = graphql`
 
 export const MyProfileEditFormScreen: React.FC<MyProfileEditFormProps> = (props) => {
   return (
-    <KeyboardAvoidingView>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <Suspense fallback={<LoadingSkeleton />}>
         <MyProfileEditForm {...props} />
       </Suspense>

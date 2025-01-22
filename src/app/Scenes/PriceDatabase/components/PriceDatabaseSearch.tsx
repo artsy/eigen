@@ -51,7 +51,7 @@ export const PriceDatabaseSearch: React.FC<StackScreenProps<ArtworkFilterNavigat
   }
 
   return (
-    <KeyboardAvoidingView>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <ScrollView keyboardShouldPersistTaps="handled">
         <BackButton
           onPress={() => goBack()}

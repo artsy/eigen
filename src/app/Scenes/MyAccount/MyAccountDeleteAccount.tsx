@@ -40,7 +40,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
     : explanation.length > 0
 
   return (
-    <KeyboardAvoidingView>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <ScrollView>
         <Box pr={2} pl={2}>
           <Text variant="lg-display" mt="6">

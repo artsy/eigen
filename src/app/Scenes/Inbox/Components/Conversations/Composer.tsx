@@ -90,7 +90,7 @@ export default class Composer extends React.Component<Props, State> {
             fontFamily: "Unica77LL-Regular",
           }
           return (
-            <KeyboardAvoidingView>
+            <KeyboardAvoidingView style={{ flex: 1 }}>
               {this.props.children}
               <Flex flexDirection="column">
                 <ConversationCTAFragmentContainer
