@@ -19,6 +19,7 @@ export const ArtworkListOfferSettingsView = () => {
       visible
       name={ArtworkListsViewName.ArtworkListOfferSettings}
       snapPoints={SNAP_POINTS}
+      enableDynamicSizing={false}
       onDismiss={reset}
       footerComponent={ArtworkListOfferSettingsStickyBottomContent}
     >
