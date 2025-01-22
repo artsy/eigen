@@ -116,6 +116,7 @@ export const Form: React.FC<FormProps> = ({
                   matching works are added to Artsy.
                 </Text>
               }
+              isPresentedModally
             />
             <Spacer y={4} />
           </>

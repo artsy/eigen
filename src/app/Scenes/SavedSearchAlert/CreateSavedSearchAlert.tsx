@@ -58,7 +58,12 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
           saveSession(state)
         }}
       >
-        <Modal visible={visible} presentationStyle="fullScreen" statusBarTranslucent>
+        <Modal
+          visible={visible}
+          presentationStyle="fullScreen"
+          statusBarTranslucent
+          animationType="slide"
+        >
           <SafeAreaView style={{ flex: 1 }}>
             <KeyboardAvoidingView
               style={{ flex: 1 }}
