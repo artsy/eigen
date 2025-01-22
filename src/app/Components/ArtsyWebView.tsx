@@ -130,7 +130,7 @@ export const ArtsyWebViewPage = ({
   return (
     <Screen>
       <Flex flex={1} backgroundColor="white">
-        <KeyboardAvoidingView>
+        <KeyboardAvoidingView style={{ flex: 1 }}>
           <NavigationHeader
             useXButton={!!isPresentedModally && !canGoBack}
             onLeftButtonPress={leftButton}

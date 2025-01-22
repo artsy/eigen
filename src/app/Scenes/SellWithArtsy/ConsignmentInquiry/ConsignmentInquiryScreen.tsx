@@ -133,7 +133,7 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
   return (
     <FormikProvider value={formik}>
       <>
-        <KeyboardAvoidingView>
+        <KeyboardAvoidingView style={{ flex: 1 }}>
           <ConsignmentInquiryForm
             confirmLeaveEdit={(v) => setShowAbandonModal(v)}
             canPopScreen={canPopScreen}

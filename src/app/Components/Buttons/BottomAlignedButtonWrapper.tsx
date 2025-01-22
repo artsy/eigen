@@ -6,7 +6,7 @@ export interface BottomAlignedProps extends React.Props<JSX.Element> {
 }
 
 export const BottomAlignedButtonWrapper: React.FC<BottomAlignedProps> = (props) => (
-  <KeyboardAvoidingView>
+  <KeyboardAvoidingView style={{ flex: 1 }}>
     <View key="space-eater" style={{ flexGrow: 1 }}>
       {props.children}
     </View>

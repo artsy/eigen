@@ -12,7 +12,7 @@ export const RequestForPriceEstimateForm = () => {
     useFormikContext<RequestForPriceEstimateFormikSchema>()
 
   return (
-    <KeyboardAvoidingView>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
         <Box pt={`${safeAreaInsets.top}px`} pb={`${safeAreaInsets.bottom}px`} px={2}>
           <Box my={4}>

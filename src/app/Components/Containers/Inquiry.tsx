@@ -97,7 +97,7 @@ export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({
   disabled,
   showSeparator = true,
 }) => (
-  <KeyboardAvoidingView>
+  <KeyboardAvoidingView style={{ flex: 1 }}>
     <View key="space-eater" style={{ flexGrow: 1 }}>
       {children}
     </View>

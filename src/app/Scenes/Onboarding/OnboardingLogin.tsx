@@ -76,7 +76,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
 
   return (
     <Flex flex={1} backgroundColor="white" flexGrow={1} pb={1}>
-      <KeyboardAvoidingView>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         <ScrollView
           contentContainerStyle={{
             paddingTop: useScreenDimensions().safeAreaInsets.top,

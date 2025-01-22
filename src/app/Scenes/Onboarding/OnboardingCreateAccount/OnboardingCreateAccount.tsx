@@ -142,7 +142,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
 
   return (
     <Flex flex={1} backgroundColor="white" flexGrow={1} pb={1}>
-      <KeyboardAvoidingView>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         <FormikProvider value={formik}>
           <NavigationContainer
             onStateChange={(state) => {
