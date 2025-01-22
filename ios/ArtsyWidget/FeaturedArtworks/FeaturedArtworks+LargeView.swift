@@ -5,13 +5,23 @@ private struct TopArtwork: SwiftUI.View {
     let artwork: Artwork
     
     var body: some SwiftUI.View {
+        if #available(iOSApplicationExtension 17.0, *) {
+            actualBody().containerBackground(for: .widget) {
+                Color.white
+            }
+        } else {
+            actualBody()
+        }
+    }
+    
+    func actualBody() -> some SwiftUI.View {
         let artsyLogo = UIImage(named: "BlackArtsyLogo")!
         let artworkImage = artwork.image!
         let artistName = artwork.artist.name
         let artworkTitle = artwork.title
         let artworkUrl = artwork.url
         
-        HStack(alignment: .bottom) {
+        return HStack(alignment: .bottom) {
             Image(uiImage: artworkImage)
                 .resizable()
                 .scaledToFit()

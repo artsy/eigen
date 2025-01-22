@@ -12,12 +12,22 @@ extension LatestArticles {
         }
         
         var body: some SwiftUI.View {
+            if #available(iOSApplicationExtension 17.0, *) {
+                actualBody().containerBackground(for: .widget) {
+                    Color.white
+                }
+            } else {
+                actualBody()
+            }
+        }
+        
+        func actualBody() -> some SwiftUI.View {
             let artsyLogo = UIImage(named: "WhiteArtsyLogo")!
             let articleImage = article.image!
             let articleTitle = article.title
             let articleUrl = article.url!
             
-            GeometryReader { geo in
+            return GeometryReader { geo in
                 ZStack() {
                     Image(uiImage: articleImage)
                         .resizable()
