@@ -11,11 +11,10 @@ import {
   PopIn,
   Touchable,
 } from "@artsy/palette-mobile"
-import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { INPUT_HEIGHT, InputTitle } from "app/Components/Input"
 import { SearchInput } from "app/Components/SearchInput"
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { FlatList, TextInput, TouchableOpacity } from "react-native"
+import { FlatList, Modal, TextInput, TouchableOpacity } from "react-native"
 
 export interface SelectOption<ValueType> {
   value: ValueType
@@ -249,12 +248,7 @@ const SelectModal: React.FC<{
   }, [searchTerm, props.visible])
 
   return (
-    <FancyModal
-      visible={props.visible}
-      onBackgroundPressed={props.onDismiss}
-      maxHeight={props.maxHeight}
-      onModalFinishedClosing={props.onModalFinishedClosing}
-    >
+    <Modal visible={props.visible} onDismiss={props.onDismiss}>
       <Flex p={2} pb="15px" flexDirection="row" alignItems="center" flexGrow={0}>
         <Flex flex={1} />
         <Flex flex={2} alignItems="center">
@@ -337,6 +331,6 @@ const SelectModal: React.FC<{
           </Touchable>
         )}
       />
-    </FancyModal>
+    </Modal>
   )
 }
