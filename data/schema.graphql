@@ -17577,6 +17577,7 @@ type Sale implements Node {
 
   # A formatted description of when the auction starts or ends or if it has ended
   formattedStartDateTime: String
+  hideTotal: Boolean
   href: String
 
   # A globally unique ID.
@@ -17651,6 +17652,7 @@ type Sale implements Node {
   status: String
   symbol: String
   timeZone: String
+  totalRaised: Money
 
   # True if the current user needs to undergo identity verification for this sale, false otherwise
   userNeedsIdentityVerification: Boolean
