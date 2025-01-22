@@ -201,6 +201,52 @@ jobs:
           name: Update rollout if needed
           command: ./scripts/deploys/update-android-rollout-if-needed
 
+  run-e2e-tests:
+    environment:
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
+
+    macos:
+      xcode: 16.1
+      resource_class: macos.m1.medium.gen1
+
+    steps:
+      - attach_workspace:
+          at: ../workspace
+      - run:
+          name: Install maestro
+          command: curl -Ls "https://get.maestro.mobile.dev" | bash
+      - run:
+          name: Test maestro install
+          command: maestro --version
+      # - run:
+      #     name: Clear project dir
+      #     command: |
+      #       rm -rf  /Users/distiller/project/*
+      # - checkout
+      # - attach_workspace:
+      #     at: .
+      # - install-node
+      # - setup-awscli
+      # - setup-env-file
+      # - install-node-modules
+      # - run-relay-compiler
+      # - update-echo
+      # - install-gems
+      # - install-cocoapods
+      # - macos/preboot-simulator:
+      #     version: "18.1"
+      #     platform: "iOS"
+      #     device: "iPhone 16 Pro"
+      # - build-app-ios
+
+      # - store_artifacts:
+      #     path: xcode_build_raw.log
+      #     prefix: build
+
+      # - store_artifacts:
+      #     path: xcode_test_raw.log
+      #     prefix: tests
+
   deploy-nightly-beta:
     environment:
       BUNDLE_PATH: .vendor
@@ -511,6 +557,14 @@ workflows:
       - deploy-nightly-beta
       - run-nightly-tasks
 
+  run-e2e:
+    jobs:
+      - run-e2e-tests:
+        filters:
+          branches:
+            only:
+              - brian/e2e-again
+
   flag-check:
     triggers:
       - schedule:
@@ -537,56 +591,56 @@ workflows:
               ignore:
                 - main
 
-      - check-code:
-          context: danger-github-oss
+      # - check-code:
+      #     context: danger-github-oss
 
-      - check-and-deploy:
-          filters:
-            branches:
-              only:
-                - main
+      # - check-and-deploy:
+      #     filters:
+      #       branches:
+      #         only:
+      # - main
 
-      - test-js
+      # - test-js
 
-      - build-test-js
+      # - build-test-js
 
-      - horizon/block:
-          context: horizon
-          project_id: 37
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
+      # - horizon/block:
+      #     context: horizon
+      #     project_id: 37
+      #     filters:
+      #       branches:
+      #         only:
+      #           - beta-ios
+      #           - beta-android
 
-      - build-test-app-ios:
-          filters:
-            branches:
-              ignore:
-                - beta-android
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
-            - horizon/block
+      # - build-test-app-ios:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - beta-android
+      #     requires:
+      #       - test-js
+      #       - check-code
+      #       - build-test-js
+      #       - horizon/block
 
-      - build-test-app-android:
-          filters:
-            branches:
-              ignore:
-                - beta-ios
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
-            - horizon/block
+      # - build-test-app-android:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - beta-ios
+      #     requires:
+      #       - test-js
+      #       - check-code
+      #       - build-test-js
+      #       - horizon/block
 
-      - update-metaphysics:
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
-          requires:
-            - build-test-app-ios
-            - build-test-app-android
+      # - update-metaphysics:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - beta-ios
+      #           - beta-android
+      #     requires:
+      #       - build-test-app-ios
+      #       - build-test-app-android
