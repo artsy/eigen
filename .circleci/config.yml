@@ -222,6 +222,7 @@ jobs:
           name: Clear project dir
           command: |
             rm -rf  /Users/distiller/project/*
+      - checkout
       - setup-awscli
       - run:
           name: Download app zip
