@@ -1,4 +1,12 @@
-import { Button, Flex, InfoCircleIcon, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import {
+  Button,
+  Flex,
+  InfoCircleIcon,
+  Spacer,
+  Text,
+  Touchable,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import React, { forwardRef, useImperativeHandle, useState } from "react"
 import { Platform, ScrollView } from "react-native"
@@ -74,28 +82,29 @@ export const AutoHeightInfoModal: React.FC<{
   title?: string
   modalContent: JSX.Element
 }> = ({ visible, onDismiss, modalTitle, title, modalContent }) => {
-  const isIos = Platform.OS === "ios"
+  const space = useSpace()
 
   return (
     <AutoHeightBottomSheet
       visible={visible}
       onDismiss={onDismiss}
       containerComponent={
-        isIos ? ({ children }) => <FullWindowOverlay>{children}</FullWindowOverlay> : undefined
+        Platform.OS === "ios"
+          ? ({ children }) => <FullWindowOverlay>{children}</FullWindowOverlay>
+          : undefined
       }
     >
-      <Flex pb={4} pt={1} height="100%">
+      <Flex pb={4} pt={1}>
         <Text mx={2} variant="lg-display">
           {modalTitle ?? title}
         </Text>
 
         <Spacer y={2} />
 
-        <Flex flex={1}>
-          <ScrollView>
-            <Flex px={2}>{modalContent}</Flex>
-          </ScrollView>
-        </Flex>
+        <ScrollView contentContainerStyle={{ paddingHorizontal: space(2) }}>
+          {modalContent}
+        </ScrollView>
+
         <Spacer y={2} />
 
         <Flex px={2}>
