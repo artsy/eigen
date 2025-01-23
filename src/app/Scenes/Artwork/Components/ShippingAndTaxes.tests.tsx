@@ -51,6 +51,7 @@ describe("ShippingAndTaxes", () => {
 
     expect(screen.getByText(/City, State, Country/)).toBeDefined()
     expect(screen.getByText(/Shipping: Calculated in checkout/)).toBeDefined()
+    expect(screen.getByText(/Pickup available/)).toBeDefined()
     expect(screen.getByText(/VAT included in price/)).toBeDefined()
   })
 
@@ -103,6 +104,7 @@ const artwork = {
   shippingOrigin: "City, State, Country",
   shippingInfo: "Shipping: Calculated in checkout",
   priceIncludesTaxDisplay: "VAT included in price",
+  pickupAvailable: true,
   taxInfo: {
     displayText: "Tax Info",
     moreInfo: {
