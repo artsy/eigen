@@ -19,6 +19,7 @@ import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 const ArtQuizArtworksScreen = () => {
   const queryResult = useLazyLoadQuery<ArtQuizArtworksQuery>(artQuizArtworksQuery, {})
   const { userID } = GlobalStore.useAppState((store) => store.auth)
+  const nonNullUserID = userID as string
   const { width } = useScreenDimensions()
   const space = useSpace()
   const artworks = extractNodes(queryResult.me?.quiz.quizArtworkConnection)
@@ -88,7 +89,7 @@ const ArtQuizArtworksScreen = () => {
       variables: {
         input: {
           artworkId: currentArtwork.internalID,
-          userId: userID!,
+          userId: nonNullUserID,
         },
       },
     })
@@ -140,7 +141,7 @@ const ArtQuizArtworksScreen = () => {
         variables: {
           input: {
             artworkId: previousArtwork.internalID,
-            userId: userID!,
+            userId: nonNullUserID,
             clearInteraction: true,
           },
         },
