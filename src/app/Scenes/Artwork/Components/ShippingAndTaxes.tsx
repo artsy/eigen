@@ -10,7 +10,8 @@ interface ShippingAndTaxesProps {
 }
 
 const ShippingAndTaxes: React.FC<ShippingAndTaxesProps> = ({ artwork }) => {
-  const { shippingInfo, shippingOrigin, priceIncludesTaxDisplay, taxInfo } = artwork
+  const { shippingInfo, shippingOrigin, pickupAvailable, priceIncludesTaxDisplay, taxInfo } =
+    artwork
   const { trackEvent } = useTracking()
 
   const handleLearnMorePress = () => {
@@ -33,32 +34,38 @@ const ShippingAndTaxes: React.FC<ShippingAndTaxesProps> = ({ artwork }) => {
       {!artwork.isUnlisted && (
         <>
           <Text variant="md">Shipping and taxes</Text>
-          <Spacer y={1} />
+          <Spacer y={2} />
         </>
       )}
 
       {!!shippingOrigin && (
-        <Text variant="sm" color="black60" mb={0.5}>
+        <Text variant="sm" color="black60">
           Ships from {shippingOrigin}
         </Text>
       )}
-
       {!!shippingInfo && (
-        <Text variant="xs" color="black60">
+        <Text variant="sm" color="black60">
           {shippingInfo}
         </Text>
       )}
+      {!!pickupAvailable && (
+        <Text variant="sm" color="black60">
+          Pickup available
+        </Text>
+      )}
+
+      {(!!priceIncludesTaxDisplay || !!taxInfo) && <Spacer y={2} />}
 
       {!!priceIncludesTaxDisplay && (
-        <Text variant="xs" color="black60">
+        <Text variant="sm" color="black60">
           {priceIncludesTaxDisplay}
         </Text>
       )}
 
       {!!taxInfo && (
-        <Text variant="xs" color="black60">
+        <Text variant="sm" color="black60">
           {taxInfo.displayText}{" "}
-          <LinkText variant="xs" onPress={handleLearnMorePress}>
+          <LinkText variant="sm" onPress={handleLearnMorePress}>
             {taxInfo.moreInfo.displayText}
           </LinkText>
         </Text>
@@ -73,6 +80,7 @@ export const ShippingAndTaxesFragmentContainer = createFragmentContainer(Shippin
       isUnlisted
       shippingOrigin
       shippingInfo
+      pickupAvailable
       priceIncludesTaxDisplay
       taxInfo {
         displayText
