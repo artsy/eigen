@@ -57,9 +57,10 @@ export const Versions = {
   DeleteDirtyArtworkDetails: 44,
   AddSubmissionDraft: 45,
   DeleteArtworkAndArtistViewOption: 46,
+  AddInfiniteDiscoveryModel: 47,
 }
 
-export const CURRENT_APP_VERSION = Versions.DeleteArtworkAndArtistViewOption
+export const CURRENT_APP_VERSION = Versions.AddInfiniteDiscoveryModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -329,6 +330,11 @@ export const artsyAppMigrations: Migrations = {
   [Versions.DeleteArtworkAndArtistViewOption]: (state) => {
     delete state.userPrefs.artworkViewOption
     delete state.userPrefs.artistViewOption
+  },
+  [Versions.AddInfiniteDiscoveryModel]: (state) => {
+    state.infiniteDiscovery = {
+      discoveredArtworkIds: [],
+    }
   },
 }
 

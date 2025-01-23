@@ -1041,3 +1041,23 @@ describe("App version Versions.AddProgressiveOnboardingModel", () => {
     })
   })
 })
+
+describe("App version Versions.AddInfiniteDiscoveryModel", () => {
+  it("adds infiniteScrolling to the UserPrefs model", () => {
+    const migrationToTest = Versions.AddInfiniteDiscoveryModel
+
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.infiniteDiscovery).toEqual({
+      discoveredArtworkIds: [],
+    })
+  })
+})
