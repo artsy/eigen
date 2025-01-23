@@ -13239,10 +13239,10 @@ react-native-in-app-review@4.3.3:
   resolved "https://registry.yarnpkg.com/react-native-in-app-review/-/react-native-in-app-review-4.3.3.tgz#61f09f110de18f0a470a9bb55b9f49600390085f"
   integrity sha512-Q9sXBtK8tCBYFPCGmMgeMlkxXC5e6vAyPZK26OC1oOKUuKUd0QORnryk/qbwnuN4fLshHQN8UKlLgyHLGRuK3A==
 
-react-native-keychain@8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-keychain/-/react-native-keychain-8.0.0.tgz#ff708e4dc2a5440df717179bf9b7cd50f78b61d7"
-  integrity sha512-c7Cs+YQN26UaQsRG1dmlXL7VL2ctnXwH/dl0IOMEQ7ZaL2NdN313YSAI8ZEZZjrVhNmPsyWEuvTFqWrdpItqQg==
+react-native-keychain@9.2.2:
+  version "9.2.2"
+  resolved "https://registry.yarnpkg.com/react-native-keychain/-/react-native-keychain-9.2.2.tgz#45449fadfbe96b35a2e1470f8a9c40a0c22edbe5"
+  integrity sha512-sATwVC76fEl4fsdBsgzG6lwhUhKduK0yqPBKHQRrJlv/2/HFBLXc4yLk9SKnZdgVHCpBxIEX4obMyMcu3HBh9w==
 
 react-native-linear-gradient@2.8.3:
   version "2.8.3"
