@@ -46,14 +46,6 @@ export const InfiniteDiscovery: React.FC = () => {
   const [index, setIndex] = useState(0)
   const [artworks, setArtworks] = useState<Artwork[]>([])
 
-  /**
-   * TODO: Tomorrow:
-   *
-   * - Fetching a new batch has been sketchy since I made this a reusable method. Check out what's
-   * going on there.
-   * - Start adding save into this!!
-   */
-
   useEffect(() => {
     fetchQuery<InfiniteDiscoveryQuery>(
       getRelayEnvironment(),
@@ -70,15 +62,7 @@ export const InfiniteDiscovery: React.FC = () => {
           return
         }
 
-        setArtworks((previousArtworks) => {
-          // only add new artworks to the list by filtering-out existing artworks
-          const newArtworks = extractNodes(response.discoverArtworks).filter(
-            (newArtwork) =>
-              !previousArtworks.some((artwork) => artwork.internalID === newArtwork.internalID)
-          )
-
-          return [...previousArtworks, ...newArtworks]
-        })
+        setArtworks(extractNodes(response.discoverArtworks))
       })
       .catch((error) => {
         console.error("Error fetching infinite discovery batch:", error)
