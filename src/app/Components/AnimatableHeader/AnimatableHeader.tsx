@@ -28,7 +28,7 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
         paddingHorizontal: space(2),
         alignItems: "center",
         height: headerHeight,
-        backgroundColor: color("white100"),
+        backgroundColor: color("background"),
       }}
     >
       <TouchableOpacity
