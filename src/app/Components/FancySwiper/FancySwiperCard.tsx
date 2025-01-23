@@ -4,7 +4,6 @@ import { OFFSET_X } from "./FancySwiper"
 
 export interface Card {
   jsx: JSX.Element
-  id: string
 }
 
 interface FancySwiperCardProps extends GestureResponderHandlers {

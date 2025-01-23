@@ -167,7 +167,6 @@ const ArtQuizArtworksScreen = () => {
           />
         </Flex>
       ),
-      id: artwork.internalID,
     }
   })
 

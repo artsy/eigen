@@ -92,7 +92,7 @@ export const FancySwiper = ({
           return (
             <FancySwiperCard
               card={card}
-              key={card.id}
+              key={index}
               swiper={swiper}
               isTopCard={isTopCard}
               {...gestureDraggers}

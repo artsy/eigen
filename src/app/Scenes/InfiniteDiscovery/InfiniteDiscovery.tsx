@@ -177,7 +177,6 @@ export const InfiniteDiscovery: React.FC = () => {
           </Flex>
         </Flex>
       ),
-      id: artwork.internalID,
     }
   })
 
