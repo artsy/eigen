@@ -206,22 +206,22 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 16.1
+      xcode: 16.2
       resource_class: m2pro.medium
 
     steps:
       - attach_workspace:
           at: ../workspace
       - macos/preboot-simulator:
-          version: "18.1"
+          version: "18.2"
           platform: "iOS"
           device: "iPhone 16 Pro Max"
       - macos/preboot-simulator:
-          version: "18.1"
+          version: "18.2"
           platform: "iOS"
           device: "iPhone 16 Pro"
       - macos/preboot-simulator:
-          version: "18.1"
+          version: "18.2"
           platform: "iOS"
           device: "iPhone 16"
       - run:
