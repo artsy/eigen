@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from "@artsy/palette-mobile"
+import themeGet from "@styled-system/theme-get"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import Spinner from "app/Components/Spinner"
@@ -16,7 +17,7 @@ shadow-opacity: 0.3;
 `
 
 const Background = styled(Flex)`
-  background: white;
+  background: ${themeGet("colors.background")};
   height: 40px;
   border-radius: 20px;
   ${shadowProps};
@@ -33,7 +34,7 @@ export class CitySwitcherButton extends Component<Props> {
     const { city, isLoading } = this.props
     return isLoading || city ? (
       <ThemeAwareClassTheme>
-        {({ color }) => (
+        {({}) => (
           <TouchableWithoutFeedback
             onPress={() => {
               if (this.props.onPress) {
@@ -61,13 +62,7 @@ export class CitySwitcherButton extends Component<Props> {
                     {city.name}
                   </Text>
                   <Box ml={2} mr={4}>
-                    <ChevronIcon
-                      initialDirection="down"
-                      // @ts-ignore
-                      color={color("black100")}
-                      width={20}
-                      height={20}
-                    />
+                    <ChevronIcon initialDirection="down" color="black100" width={20} height={20} />
                   </Box>
                 </>
               ) : (

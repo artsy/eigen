@@ -9,7 +9,7 @@ import styled from "styled-components/native"
 import { FairEventSectionCard } from "./Components/FairEventSectionCard"
 
 const FairSectionBackground = styled(Box)`
-  background: black;
+  background: ${themeGet("colors.black100")};
   margin-bottom: ${themeGet("space.1")};
 `
 
