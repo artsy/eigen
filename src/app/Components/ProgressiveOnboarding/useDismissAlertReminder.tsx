@@ -3,7 +3,6 @@ import { GlobalStore } from "app/store/GlobalStore"
 
 export const CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD = 40
 const DAYS = 1000 * 60 * 60 * 24
-const MINUTES = 1000 * 60
 
 export const useDismissAlertReminder = () => {
   const isFocused = useIsFocused()
@@ -33,23 +32,14 @@ export const useDismissAlertReminder = () => {
     }
   }
 
-  const dismissChainOfRemindersAfterInteraction = () => {
-    if (isDismissed("alert-create-reminder-2").status) {
-      return
-    }
-    /**
-     * Dismiss the second reminder if the user clicks the Create Alert
-     * button within two minutes of dismissing the first reminder.
-     */
-    if (Date.now() - isDismissed("alert-create-reminder-1").timestamp < 2 * MINUTES) {
-      setIsReady(false)
-      dismiss("alert-create-reminder-2")
-    }
+  const dismissChainOfReminders = () => {
+    dismiss("alert-create-reminder-1")
+    dismiss("alert-create-reminder-2")
   }
 
   return {
     isDisplayable,
     dismissSingleReminder,
-    dismissChainOfRemindersAfterInteraction,
+    dismissChainOfReminders,
   }
 }
