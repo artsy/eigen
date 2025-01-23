@@ -103,12 +103,7 @@ export const InfiniteDiscovery: React.FC = () => {
           }
 
           setArtworks((previousArtworks) => {
-            // only add new artworks to the list by filtering-out existing artworks
-            const newArtworks = extractNodes(response.discoverArtworks).filter(
-              (newArtwork) =>
-                !previousArtworks.some((artwork) => artwork.internalID === newArtwork.internalID)
-            )
-
+            const newArtworks = extractNodes(response.discoverArtworks)
             return [...previousArtworks, ...newArtworks]
           })
         })
