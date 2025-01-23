@@ -58,9 +58,10 @@ export const Versions = {
   AddSubmissionDraft: 45,
   DeleteArtworkAndArtistViewOption: 46,
   AddInfiniteDiscoveryModel: 47,
+  AddSeenFeatures: 48,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddInfiniteDiscoveryModel
+export const CURRENT_APP_VERSION = Versions.AddSeenFeatures
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -335,6 +336,9 @@ export const artsyAppMigrations: Migrations = {
     state.infiniteDiscovery = {
       discoveredArtworkIds: [],
     }
+  },
+  [Versions.AddSeenFeatures]: (state) => {
+    state.progressiveOnboarding.seenFeatures = []
   },
 }
 
