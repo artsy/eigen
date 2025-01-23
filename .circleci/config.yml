@@ -248,6 +248,7 @@ jobs:
           command: ./install_app_in_booted_sims.sh
       - run:
           name: Run maestro tests
+          no_output_timeout: 25m
           command: maestro test --shard-split 3 e2e/
 
   deploy-nightly-beta:
