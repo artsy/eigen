@@ -54,19 +54,19 @@ export const InfiniteDiscovery: React.FC = () => {
       {
         fetchPolicy: "network-only",
       }
-    )
-      .toPromise()
-      .then((response) => {
-        if (!response) {
+    ).subscribe({
+      next: (data) => {
+        if (!data) {
           console.error("Error fetching infinite discovery batch: response is falsy")
           return
         }
 
-        setArtworks(extractNodes(response.discoverArtworks))
-      })
-      .catch((error) => {
+        setArtworks(extractNodes(data.discoverArtworks))
+      },
+      error: (error: Error) => {
         console.error("Error fetching infinite discovery batch:", error)
-      })
+      },
+    })
   }, [])
 
   if (!artworks || artworks.length === 0) {
@@ -94,22 +94,22 @@ export const InfiniteDiscovery: React.FC = () => {
         {
           fetchPolicy: "network-only",
         }
-      )
-        .toPromise()
-        .then((response) => {
-          if (!response) {
+      ).subscribe({
+        next: (data) => {
+          if (!data) {
             console.error("Error fetching infinite discovery batch: response is falsy")
             return
           }
 
           setArtworks((previousArtworks) => {
-            const newArtworks = extractNodes(response.discoverArtworks)
+            const newArtworks = extractNodes(data.discoverArtworks)
             return [...previousArtworks, ...newArtworks]
           })
-        })
-        .catch((error) => {
+        },
+        error: (error: Error) => {
           console.error("Error fetching infinite discovery batch:", error)
-        })
+        },
+      })
     }
   }
 
