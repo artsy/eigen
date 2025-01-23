@@ -13,6 +13,7 @@ interface DismissedKeyStatus {
 
 export interface ProgressiveOnboardingModel {
   dismissed: DismissedKey[]
+  seenFeatures: String[]
   dismiss: Action<this, ProgressiveOnboardingKey | readonly ProgressiveOnboardingKey[]>
   isDismissed: Computed<this, (key: ProgressiveOnboardingKey) => DismissedKeyStatus>
   sessionState: {
@@ -25,6 +26,7 @@ export interface ProgressiveOnboardingModel {
   }
   setIsReady: Action<this, boolean>
   setActivePopover: Action<this, string | undefined>
+  addSeenFeature: Action<this, string>
   __clearDissmissed: Action<this>
 }
 
@@ -32,6 +34,7 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
   sessionState: {
     isReady: false,
   },
+  seenFeatures: [],
   dismissed: [],
   dismiss: action((state, key) => {
     const keys = Array.isArray(key) ? key : [key]
@@ -57,6 +60,11 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
   }),
   setActivePopover: action((state, id) => {
     state.sessionState.activePopover = id
+  }),
+  addSeenFeature: action((state, feature) => {
+    if (!state.seenFeatures.includes(feature)) {
+      state.seenFeatures.push(feature)
+    }
   }),
   __clearDissmissed: action((state) => {
     state.dismissed = []

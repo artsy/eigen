@@ -57,9 +57,10 @@ export const Versions = {
   DeleteDirtyArtworkDetails: 44,
   AddSubmissionDraft: 45,
   DeleteArtworkAndArtistViewOption: 46,
+  AddSeenFeatures: 47,
 }
 
-export const CURRENT_APP_VERSION = Versions.DeleteArtworkAndArtistViewOption
+export const CURRENT_APP_VERSION = Versions.AddSeenFeatures
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -329,6 +330,9 @@ export const artsyAppMigrations: Migrations = {
   [Versions.DeleteArtworkAndArtistViewOption]: (state) => {
     delete state.userPrefs.artworkViewOption
     delete state.userPrefs.artistViewOption
+  },
+  [Versions.AddSeenFeatures]: (state) => {
+    state.progressiveOnboarding.seenFeatures = []
   },
 }
 

@@ -10,6 +10,7 @@ import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
 import { RetryErrorBoundary, useRetryErrorBoundaryContext } from "app/Components/RetryErrorBoundary"
+import { DarkModeBottomSheetOnboarding } from "app/Scenes/HomeView/Components/DarkModeBottomSheetOnboarding"
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/HomeView/Components/EmailConfirmationBanner"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { HomeViewStore, HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
@@ -43,6 +44,7 @@ export const homeViewScreenQueryVariables = () => ({
 
 export const HomeView: React.FC = memo(() => {
   const flashlistRef = useBottomTabsScrollToTop()
+
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const { fetchKey } = useRetryErrorBoundaryContext()
@@ -86,6 +88,7 @@ export const HomeView: React.FC = memo(() => {
 
   useDismissSavedArtwork(savedArtworksCount > 0)
   useEnableProgressiveOnboarding()
+
   const prefetchUrl = usePrefetch()
   const tracking = useHomeViewTracking()
   useHomeViewExperimentTracking(queryData.homeView?.experiments)
@@ -191,6 +194,7 @@ export const HomeView: React.FC = memo(() => {
           windowSize={15}
         />
         {!!data?.me && <EmailConfirmationBannerFragmentContainer me={data.me} />}
+        <DarkModeBottomSheetOnboarding />
       </Screen.Body>
     </Screen>
   )

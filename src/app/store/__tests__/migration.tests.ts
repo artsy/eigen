@@ -1040,4 +1040,24 @@ describe("App version Versions.AddProgressiveOnboardingModel", () => {
       expect(migratedState.artworkSubmission.submission.artistViewOption).toEqual(undefined)
     })
   })
+
+  describe("App version Versions.AddSeenFeatures", () => {
+    const migrationToTest = Versions.AddSeenFeatures
+
+    it("adds seenFeatures array", () => {
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      expect(previousState.progressiveOnboarding.seenFeatures).toEqual(undefined)
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.progressiveOnboarding.seenFeatures).toEqual([])
+    })
+  })
 })
