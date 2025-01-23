@@ -1,10 +1,15 @@
 import { ContextModule } from "@artsy/cohesion"
 
+const ENABLED_CONTEXT_MODULES = [
+  ContextModule.newWorksForYouRail,
+  ContextModule.artworkRecommendationsRail,
+  ContextModule.lotsForYouRail,
+  ContextModule.newWorksByGalleriesYouFollowRail,
+]
+
 /**
- * returns true if supressing artworks is enabled for the given contextModule
- * @param contextModule
- * @returns
+ * returns true if hiding disliked artworks is enabled for the given context module
  */
 export const isDislikeArtworksEnabled = (contextModule: string | null | undefined) => {
-  return contextModule === ContextModule.newWorksForYouRail
+  return ENABLED_CONTEXT_MODULES.includes(contextModule as ContextModule)
 }

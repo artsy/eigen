@@ -188,10 +188,17 @@ const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
 
 export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> = memo(
   withSuspense({
-    Component: ({ sectionID, index, ...flexProps }) => {
-      const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(homeViewSectionArtworksQuery, {
-        id: sectionID,
-      })
+    Component: ({ sectionID, index, refetchKey, ...flexProps }) => {
+      const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(
+        homeViewSectionArtworksQuery,
+        {
+          id: sectionID,
+        },
+        {
+          fetchKey: refetchKey,
+          fetchPolicy: "store-and-network",
+        }
+      )
 
       if (!data.homeView.section) {
         return null

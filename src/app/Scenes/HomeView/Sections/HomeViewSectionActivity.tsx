@@ -195,10 +195,17 @@ const HomeViewSectionActivityPlaceholder: React.FC<FlexProps> = (flexProps) => {
 
 export const HomeViewSectionActivityQueryRenderer: React.FC<SectionSharedProps> = memo(
   withSuspense({
-    Component: ({ sectionID, index, ...flexProps }) => {
-      const data = useLazyLoadQuery<HomeViewSectionActivityQuery>(homeViewSectionActivityQuery, {
-        id: sectionID,
-      })
+    Component: ({ sectionID, index, refetchKey, ...flexProps }) => {
+      const data = useLazyLoadQuery<HomeViewSectionActivityQuery>(
+        homeViewSectionActivityQuery,
+        {
+          id: sectionID,
+        },
+        {
+          fetchKey: refetchKey,
+          fetchPolicy: "store-and-network",
+        }
+      )
 
       if (!data.homeView.section) {
         return null
