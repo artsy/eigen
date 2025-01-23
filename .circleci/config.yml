@@ -212,6 +212,18 @@ jobs:
     steps:
       - attach_workspace:
           at: ../workspace
+      - macos/preboot-simulator:
+          version: "18.1"
+          platform: "iOS"
+          device: "iPhone 16 Pro Max"
+      - macos/preboot-simulator:
+          version: "18.1"
+          platform: "iOS"
+          device: "iPhone 16 Pro"
+      - macos/preboot-simulator:
+          version: "18.1"
+          platform: "iOS"
+          device: "iPhone 16"
       - run:
           name: Install maestro
           command: curl -Ls "https://get.maestro.mobile.dev" | bash
@@ -230,16 +242,13 @@ jobs:
       - run:
           name: Unzip the app
           command: unzip Artsy.zip
-      - macos/preboot-simulator:
-          version: "18.1"
-          platform: "iOS"
-          device: "iPhone 16 Pro"
+
       - run:
-          name: Install app in sim
-          command: xcrun simctl install booted ./Artsy.app
+          name: Install app in booted sims
+          command: ./install_app_in_booted_sims.sh
       - run:
-          name: Maestro sign up test
-          command: maestro test e2e/flows/onboarding/login.yml
+          name: Run maestro tests
+          command: maestro test --shard-split 3 e2e/
 
   deploy-nightly-beta:
     environment:
