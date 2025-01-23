@@ -34,6 +34,9 @@ export const useDismissAlertReminder = () => {
   }
 
   const dismissChainOfRemindersAfterInteraction = () => {
+    if (isDismissed("alert-create-reminder-2").status) {
+      return
+    }
     /**
      * Dismiss the second reminder if the user clicks the Create Alert
      * button within two minutes of dismissing the first reminder.
