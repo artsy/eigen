@@ -26,16 +26,9 @@ extension LatestArticles {
     }
 }
 
-struct LatestArticlesWidgetView_Previews: PreviewProvider {
-    static var previews: some View {
-        let entry = LatestArticles.Entry.fallback()
-        let families = LatestArticles.View.supportedFamilies
-        
-        Group {
-            ForEach(families, id: \.self) { family in
-                LatestArticles.View(entry: entry)
-                    .previewContext(WidgetPreviewContext(family: family))
-            }
-        }
-    }
-}
+@available(iOSApplicationExtension 17.0, *)
+#Preview(as: .systemSmall, widget: {
+    LatestArticles.Widget()
+}, timeline: {
+    LatestArticles.Entry.fallback()
+})

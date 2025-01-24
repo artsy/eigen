@@ -61,20 +61,11 @@ extension FullBleed {
             }
         }
     }
-    
-    
 }
 
-struct FullBleed_View_Previews: PreviewProvider {
-    static var previews: some SwiftUI.View {
-        let entry = FullBleed.Entry.fallback()
-        let families = FullBleed.View.supportedFamilies
-        
-        Group {
-            ForEach(families, id: \.self) { family in
-                FullBleed.View(entry: entry)
-                    .previewContext(WidgetPreviewContext(family: family))
-            }
-        }
-    }
-}
+@available(iOSApplicationExtension 17.0, *)
+#Preview(as: .systemLarge, widget: {
+    FullBleed.Widget()
+}, timeline: {
+    FullBleed.Entry.fallback()
+})
