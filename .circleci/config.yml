@@ -228,6 +228,9 @@ jobs:
           name: Install maestro
           command: curl -Ls "https://get.maestro.mobile.dev" | bash
       - run:
+          name: Install idb
+          command: brew tap facebook/fb && brew install idb-companion
+      - run:
           name: Test maestro install
           command: maestro --version
       - run:
