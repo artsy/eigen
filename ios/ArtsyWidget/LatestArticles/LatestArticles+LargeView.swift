@@ -8,21 +8,11 @@ extension LatestArticles {
         let entry: Entry
         
         var body: some SwiftUI.View {
-            if #available(iOSApplicationExtension 17.0, *) {
-                actualBody().containerBackground(for: .widget) {
-                    Color.white
-                }
-            } else {
-                actualBody()
-            }
-        }
-        
-        func actualBody() -> some SwiftUI.View {
             let artsyLogo = UIImage(named: "BlackArtsyLogo")!
             let articles = entry.articles
             let artsyUrl = WidgetUrl.from(link: "https://www.artsy.net")!
             
-            return VStack() {
+            VStack() {
                 HStack(alignment: .center) {
                     Link(destination: artsyUrl) {
                         Text("LATEST ARTICLES")
@@ -57,21 +47,6 @@ extension LatestArticles {
                 }
             }
             .padding(16)
-            .background(Color.white)
-        }
-    }
-}
-
-struct LatestArticles_LargeView_Previews: PreviewProvider {
-    static var previews: some View {
-        let entry = LatestArticles.Entry.fallback()
-        let families = LatestArticles.LargeView.supportedFamilies
-        
-        Group {
-            ForEach(families, id: \.self) { family in
-                LatestArticles.LargeView(entry: entry)
-                    .previewContext(WidgetPreviewContext(family: family))
-            }
         }
     }
 }

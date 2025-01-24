@@ -12,22 +12,12 @@ extension LatestArticles {
         }
         
         var body: some SwiftUI.View {
-            if #available(iOSApplicationExtension 17.0, *) {
-                actualBody().containerBackground(for: .widget) {
-                    Color.white
-                }
-            } else {
-                actualBody()
-            }
-        }
-        
-        func actualBody() -> some SwiftUI.View {
             let artsyLogo = UIImage(named: "WhiteArtsyLogo")!
             let articleImage = article.image!
             let articleTitle = article.title
             let articleUrl = article.url!
             
-            return GeometryReader { geo in
+            GeometryReader { geo in
                 ZStack() {
                     Image(uiImage: articleImage)
                         .resizable()
@@ -51,20 +41,6 @@ extension LatestArticles {
                     }
                     .widgetURL(articleUrl)
                 }
-            }
-        }
-    }
-}
-
-struct LatestArticles_SmallView_Previews: PreviewProvider {
-    static var previews: some View {
-        let entry = LatestArticles.Entry.fallback()
-        let families = LatestArticles.SmallView.supportedFamilies
-        
-        Group {
-            ForEach(families, id: \.self) { family in
-                LatestArticles.SmallView(entry: entry)
-                    .previewContext(WidgetPreviewContext(family: family))
             }
         }
     }

@@ -15,23 +15,13 @@ extension FullBleed {
         }
         
         var body: some SwiftUI.View {
-            if #available(iOSApplicationExtension 17.0, *) {
-                actualBody().containerBackground(for: .widget) {
-                    Color.white
-                }
-            } else {
-                actualBody()
-            }
-        }
-        
-        func actualBody() -> some SwiftUI.View {
             let artsyLogo = UIImage(named: "WhiteArtsyLogo")!
             let artworkImage = artwork.image!
             let artistName = artwork.artist.name
             let artworkTitle = artwork.title
             let artworkUrl = artwork.url
             
-            return GeometryReader { geo in
+            GeometryReader { geo in
                 ZStack() {
                     Image(uiImage: artworkImage)
                         .resizable()
@@ -56,9 +46,9 @@ extension FullBleed {
                         .padding(16)
                         .background(Color.black)
                     }
-                    .widgetURL(artworkUrl)
                 }
             }
+            .widgetURL(artworkUrl)
         }
     }
 }
