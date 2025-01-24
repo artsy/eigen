@@ -245,10 +245,7 @@ jobs:
       - run:
           name: Run Maestro Tests
           no_output_timeout: 25m
-          command: |
-            TEST_FILES=$(find e2e -name "*.yml" | sort | awk "NR % ${CIRCLE_NODE_TOTAL} == ${CIRCLE_NODE_INDEX}")
-            echo "$TEST_FILES" | xargs -n 1 maestro test
-
+          command: ./run_maestro_shard.sh
   deploy-nightly-beta:
     environment:
       BUNDLE_PATH: .vendor
