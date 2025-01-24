@@ -3,23 +3,24 @@ appId: ${MAESTRO_APP_ID}
 - launchApp:
     clearState: true
     clearKeychain: true
-- tapOn: "Sign up.*"
-- tapOn: "Continue with Email.*"
 - runScript:
     file: signup.js
+- assertVisible: "Sign up or log in"
+- tapOn: "Email Input"
 - inputText: ${output.signup.email}
-- tapOn: "Next.*"
+- tapOn: "Continue.*"
 - inputText: ${output.signup.password}
-- tapOn: "Next.*"
+- tapOn: "Continue.*"
 - inputText: "Test McTest"
 - runFlow:
     when:
       platform: iOS
     commands:
-      - tapOn: "checkbox of consent By checking this box, you consent to our Terms of Use, Privacy Policy, and Conditions of Sale."
+      - tapOn:
+          point: 15%,36%
 - runFlow:
     when:
       platform: Android
     commands:
       - tapOn: "Accept terms and privacy policy, Check this element to accept Artsy's terms and privacy policy"
-- tapOn: "Next.*"
+- tapOn: "Continue.*"

@@ -49,6 +49,24 @@ if (__DEV__) {
   require("../../ReactotronConfig.js")
 }
 
+if (__DEV__) {
+  const { LaunchArguments } = require("react-native-launch-arguments")
+  const args = LaunchArguments.value()
+  const email = args.email
+  const password = args.password
+  const shouldSignOut = args.shouldSignOut
+  if (email && password) {
+    GlobalStore.actions.auth.signIn({
+      oauthProvider: "email",
+      oauthMode: "email",
+      email,
+      password,
+    })
+  } else if (shouldSignOut) {
+    GlobalStore.actions.auth.signOut()
+  }
+}
+
 // Sentry must be setup early in the app lifecycle to hook into navigation
 const debugSentry = unsafe_getDevToggle("DTDebugSentry")
 const environment = unsafe__getEnvironment()
