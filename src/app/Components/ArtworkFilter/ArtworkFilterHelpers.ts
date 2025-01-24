@@ -295,7 +295,7 @@ const DEFAULT_ARTWORKS_PARAMS = {
 } as FilterParams
 
 const DEFAULT_SALE_ARTWORKS_PARAMS = {
-  sort: "position",
+  sort: "sale_position",
   estimateRange: "",
 } as FilterParams
 
