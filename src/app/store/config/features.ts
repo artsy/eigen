@@ -259,9 +259,9 @@ export const features = {
   },
   AREnableArtworkCardContextMenuAndroid: {
     description: "Enable long press menu on artwork cards for Android",
-    readyForRelease: true,
+    readyForRelease: false,
     showInDevMenu: true,
-    echoFlagKey: "AREnableArtworkCardContextMenuAndroid",
+    // echoFlagKey: "AREnableArtworkCardContextMenuAndroid",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
