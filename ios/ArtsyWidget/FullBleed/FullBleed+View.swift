@@ -5,7 +5,7 @@ import WidgetKit
 extension FullBleed {
     struct View: SwiftUI.View {
         static var supportedFamilies: [WidgetFamily] {
-            return [.systemLarge, .systemExtraLarge]
+            return [.systemSmall, .systemLarge]
         }
         
         let entry: Entry
@@ -52,6 +52,13 @@ extension FullBleed {
         }
     }
 }
+
+@available(iOSApplicationExtension 17.0, *)
+#Preview(as: .systemSmall, widget: {
+    FullBleed.Widget()
+}, timeline: {
+    FullBleed.Entry.fallback()
+})
 
 @available(iOSApplicationExtension 17.0, *)
 #Preview(as: .systemLarge, widget: {

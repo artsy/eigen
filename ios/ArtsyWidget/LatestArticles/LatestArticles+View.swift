@@ -3,7 +3,9 @@ import WidgetKit
 
 extension LatestArticles {
     struct View: SwiftUI.View {
-        static let supportedFamilies: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge]
+        static var supportedFamilies: [WidgetFamily] {
+            return [.systemSmall, .systemMedium]
+        }
         
         @Environment(\.widgetFamily) var family: WidgetFamily
         
@@ -17,8 +19,6 @@ extension LatestArticles {
             switch family {
             case .systemMedium:
                 LatestArticles.MediumView(entry: entry)
-            case .systemLarge:
-                LatestArticles.LargeView(entry: entry)
             default:
                 LatestArticles.SmallView(entry: entry)
             }
@@ -28,6 +28,13 @@ extension LatestArticles {
 
 @available(iOSApplicationExtension 17.0, *)
 #Preview(as: .systemSmall, widget: {
+    LatestArticles.Widget()
+}, timeline: {
+    LatestArticles.Entry.fallback()
+})
+
+@available(iOSApplicationExtension 17.0, *)
+#Preview(as: .systemMedium, widget: {
     LatestArticles.Widget()
 }, timeline: {
     LatestArticles.Entry.fallback()
