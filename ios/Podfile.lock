@@ -1523,6 +1523,8 @@ PODS:
     - React-Core
   - react-native-in-app-review (4.3.3):
     - React-Core
+  - react-native-launch-arguments (4.0.4):
+    - React
   - react-native-netinfo (11.3.2):
     - React-Core
   - react-native-pager-view (6.5.0):
@@ -2260,6 +2262,7 @@ DEPENDENCIES:
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-in-app-review (from `../node_modules/react-native-in-app-review`)
+  - react-native-launch-arguments (from `../node_modules/react-native-launch-arguments`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-render-html (from `../node_modules/react-native-render-html`)
@@ -2528,6 +2531,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-get-random-values"
   react-native-in-app-review:
     :path: "../node_modules/react-native-in-app-review"
+  react-native-launch-arguments:
+    :path: "../node_modules/react-native-launch-arguments"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-pager-view:
@@ -2783,6 +2788,7 @@ SPEC CHECKSUMS:
   react-native-geolocation: def10765a5144e7a76837093d43303d70bb6addf
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-in-app-review: b3d1eed3d1596ebf6539804778272c4c65e4a400
+  react-native-launch-arguments: 8ad8efa525a4c7cb72b3f69f05abfcba86f65dea
   react-native-netinfo: ce102083db558237dac20cf64172ef569ebe2dd9
   react-native-pager-view: a58a82591f421322e2bdb4fb69b82f6486dd4b22
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd

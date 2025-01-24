@@ -304,6 +304,7 @@
     "prop-types": "15.7.2",
     "pull-lock": "1.0.0",
     "react-dom": "17.0.2",
+    "react-native-launch-arguments": "4.0.4",
     "react-relay-network-modern": "6.2.2",
     "react-test-renderer": "18.1.0",
     "reactotron-react-native": "5.1.7",
