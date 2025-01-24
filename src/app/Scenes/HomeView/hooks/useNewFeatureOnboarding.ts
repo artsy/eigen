@@ -25,12 +25,12 @@ export const useDarkModeOnboarding = () => {
     ) {
       setTimeout(() => {
         setIsVisible(true)
-        addSeenFeature("dark-mode")
       }, 1000)
     } else {
       setIsVisible(false)
     }
   }, [isReady, activePopover, supportsDarkMode, seenFeatures, addSeenFeature])
+
   return {
     isVisible,
     setIsVisible,

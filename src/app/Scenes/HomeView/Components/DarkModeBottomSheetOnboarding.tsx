@@ -9,8 +9,9 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 export const DarkModeBottomSheetOnboarding = () => {
   const supportsDarkMode = useFeatureFlag("ARDarkModeSupport")
   const { isVisible: isDarkModeOnboardingVisible } = useDarkModeOnboarding()
+  const { seenFeatures } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
 
-  if (!supportsDarkMode) {
+  if (!supportsDarkMode || seenFeatures.includes("dark-mode")) {
     return null
   }
 
