@@ -315,6 +315,9 @@ type Alert {
     periods: [String]
     priceRange: String
     saleID: ID
+
+    # When true, will only return signed artworks.
+    signed: Boolean
     size: Int
 
     # Filter results by Artwork sizes
@@ -1673,6 +1676,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     periods: [String]
     priceRange: String
     saleID: ID
+
+    # When true, will only return signed artworks.
+    signed: Boolean
     size: Int
 
     # Filter results by Artwork sizes
@@ -2145,6 +2151,9 @@ type ArtistSeries implements Node {
     periods: [String]
     priceRange: String
     saleID: ID
+
+    # When true, will only return signed artworks.
+    signed: Boolean
     size: Int
 
     # Filter results by Artwork sizes
@@ -9354,6 +9363,9 @@ interface EntityWithFilterArtworksConnectionInterface {
     periods: [String]
     priceRange: String
     saleID: ID
+
+    # When true, will only return signed artworks.
+    signed: Boolean
     size: Int
 
     # Filter results by Artwork sizes
@@ -9598,6 +9610,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     periods: [String]
     priceRange: String
     saleID: ID
+
+    # When true, will only return signed artworks.
+    signed: Boolean
     size: Int
 
     # Filter results by Artwork sizes
@@ -10105,6 +10120,9 @@ input FilterArtworksInput {
   periods: [String]
   priceRange: String
   saleID: ID
+
+  # When true, will only return signed artworks.
+  signed: Boolean
   size: Int
 
   # Filter results by Artwork sizes
@@ -10546,6 +10564,9 @@ type Gene implements Node & Searchable {
     periods: [String]
     priceRange: String
     saleID: ID
+
+    # When true, will only return signed artworks.
+    signed: Boolean
     size: Int
 
     # Filter results by Artwork sizes
@@ -12370,6 +12391,9 @@ type MarketingCollection implements Node {
     periods: [String]
     priceRange: String
     saleID: ID
+
+    # When true, will only return signed artworks.
+    signed: Boolean
     size: Int
 
     # Filter results by Artwork sizes
@@ -14737,6 +14761,9 @@ type Partner implements Node {
     periods: [String]
     priceRange: String
     saleID: ID
+
+    # When true, will only return signed artworks.
+    signed: Boolean
     size: Int
 
     # Filter results by Artwork sizes
@@ -16220,6 +16247,9 @@ type Query {
     periods: [String]
     priceRange: String
     saleID: ID
+
+    # When true, will only return signed artworks.
+    signed: Boolean
     size: Int
 
     # Filter results by Artwork sizes
@@ -18549,6 +18579,9 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     periods: [String]
     priceRange: String
     saleID: ID
+
+    # When true, will only return signed artworks.
+    signed: Boolean
     size: Int
 
     # Filter results by Artwork sizes
@@ -19028,6 +19061,9 @@ type Tag implements Node {
     periods: [String]
     priceRange: String
     saleID: ID
+
+    # When true, will only return signed artworks.
+    signed: Boolean
     size: Int
 
     # Filter results by Artwork sizes
@@ -20931,6 +20967,9 @@ type Viewer {
     periods: [String]
     priceRange: String
     saleID: ID
+
+    # When true, will only return signed artworks.
+    signed: Boolean
     size: Int
 
     # Filter results by Artwork sizes
@@ -22371,7 +22410,7 @@ input updateCollectionInput {
 
   # The internal ID of the collection
   id: String!
-  name: String!
+  name: String
   private: Boolean
   shareableWithPartners: Boolean
 }
