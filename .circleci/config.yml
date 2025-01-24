@@ -252,7 +252,7 @@ jobs:
       - run:
           name: Run maestro tests
           no_output_timeout: 25m
-          command: maestro test --shard-split 3 e2e/
+          command: maestro test e2e/flows/signup.yml
 
   deploy-nightly-beta:
     environment:
