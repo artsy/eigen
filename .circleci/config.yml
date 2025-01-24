@@ -212,18 +212,18 @@ jobs:
     steps:
       - attach_workspace:
           at: ../workspace
-      - macos/preboot-simulator:
-          version: "18.2"
-          platform: "iOS"
-          device: "iPhone 16 Pro Max"
+      # - macos/preboot-simulator:
+      #     version: "18.2"
+      #     platform: "iOS"
+      #     device: "iPhone 16 Pro Max"
       - macos/preboot-simulator:
           version: "18.2"
           platform: "iOS"
           device: "iPhone 16 Pro"
-      - macos/preboot-simulator:
-          version: "18.2"
-          platform: "iOS"
-          device: "iPhone 16"
+      # - macos/preboot-simulator:
+      #     version: "18.2"
+      #     platform: "iOS"
+      #     device: "iPhone 16"
       - run:
           name: Install maestro
           command: curl -Ls "https://get.maestro.mobile.dev" | bash
