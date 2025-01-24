@@ -202,6 +202,8 @@ jobs:
           command: ./scripts/deploys/update-android-rollout-if-needed
 
   run-e2e-tests:
+    parallelism: 4
+
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
@@ -212,18 +214,10 @@ jobs:
     steps:
       - attach_workspace:
           at: ../workspace
-      # - macos/preboot-simulator:
-      #     version: "18.2"
-      #     platform: "iOS"
-      #     device: "iPhone 16 Pro Max"
       - macos/preboot-simulator:
           version: "18.2"
           platform: "iOS"
           device: "iPhone 16 Pro"
-      # - macos/preboot-simulator:
-      #     version: "18.2"
-      #     platform: "iOS"
-      #     device: "iPhone 16"
       - run:
           name: Install maestro
           command: curl -Ls "https://get.maestro.mobile.dev" | bash
@@ -245,14 +239,15 @@ jobs:
       - run:
           name: Unzip the app
           command: unzip Artsy.zip
-
       - run:
           name: Install app in booted sims
           command: ./install_app_in_booted_sims.sh
       - run:
-          name: Run maestro tests
+          name: Run Maestro Tests
           no_output_timeout: 25m
-          command: maestro test e2e/flows/signup.yml
+          command: |
+            TEST_FILES=$(find e2e -name "*.yaml" | sort | awk "NR % ${CIRCLE_NODE_TOTAL} == ${CIRCLE_NODE_INDEX}")
+            echo "$TEST_FILES" | xargs -n 1 maestro test
 
   deploy-nightly-beta:
     environment:
