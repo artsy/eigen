@@ -77,7 +77,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
 
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
-  const { dismissChainOfReminders } = useDismissAlertReminder()
+  const { dismissAllCreateAlertReminder } = useDismissAlertReminder()
 
   useArtworkFilters({
     relay,
@@ -304,7 +304,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
                     artist={artist}
                     showCreateAlertModal={() => {
                       if (shouldShowCreateAlertReminder) {
-                        dismissChainOfReminders()
+                        dismissAllCreateAlertReminder()
                       }
 
                       setIsCreateAlertModalVisible(true)

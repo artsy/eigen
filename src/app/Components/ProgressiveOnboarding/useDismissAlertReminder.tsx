@@ -22,7 +22,7 @@ export const useDismissAlertReminder = () => {
 
   const isDisplayable = isReady && (displayFirstTime || displaySecondTime) && isFocused
 
-  const dismissSingleReminder = () => {
+  const dismissNextCreateAlertReminder = () => {
     setIsReady(false)
 
     if (!isDismissed("alert-create-reminder-1").status) {
@@ -32,14 +32,14 @@ export const useDismissAlertReminder = () => {
     }
   }
 
-  const dismissChainOfReminders = () => {
+  const dismissAllCreateAlertReminder = () => {
     dismiss("alert-create-reminder-1")
     dismiss("alert-create-reminder-2")
   }
 
   return {
     isDisplayable,
-    dismissSingleReminder,
-    dismissChainOfReminders,
+    dismissNextCreateAlertReminder,
+    dismissAllCreateAlertReminder,
   }
 }

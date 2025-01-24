@@ -11,14 +11,14 @@ export const ProgressiveOnboardingAlertReminder: React.FC<
 > = ({ children, visible }) => {
   const { setActivePopover } = GlobalStore.actions.progressiveOnboarding
 
-  const { isDisplayable, dismissSingleReminder } = useDismissAlertReminder()
+  const { isDisplayable, dismissNextCreateAlertReminder } = useDismissAlertReminder()
 
   const shouldDisplayReminder = isDisplayable && visible
 
   const { isActive } = useSetActivePopover(shouldDisplayReminder)
 
   const handleDismiss = () => {
-    dismissSingleReminder()
+    dismissNextCreateAlertReminder()
   }
 
   return (
