@@ -16,7 +16,7 @@ import { isEmpty } from "lodash"
 import { useState } from "react"
 import { InteractionManager, Platform } from "react-native"
 import ContextMenu, { ContextMenuAction, ContextMenuProps } from "react-native-context-menu-view"
-import { TouchableWithoutFeedback } from "react-native-gesture-handler"
+import { TouchableHighlight } from "react-native-gesture-handler"
 import { HapticFeedbackTypes, trigger } from "react-native-haptic-feedback"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -56,7 +56,8 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
-  const enableContextMenu = useFeatureFlag("AREnableArtworkCardContextMenuIOS")
+  const enableContextMenuIOS = useFeatureFlag("AREnableArtworkCardContextMenuIOS")
+  const enableContextMenuAndroid = useFeatureFlag("AREnableArtworkCardContextMenuAndroid")
   const { submitMutation: dislikeArtworkMutation } = useDislikeArtwork()
   const isIOS = Platform.OS === "ios"
   const color = useColor()
@@ -223,25 +224,26 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     )
   }
 
-  const [modalVisible, setModalVisible] = useState(false)
+  const [androidVisible, setAndroidVisible] = useState(false)
 
   const handleAndroidLongPress = () => {
-    setModalVisible(true)
+    setAndroidVisible(true)
   }
 
-  if (!enableContextMenu) {
-    return <>{children}</>
-  }
-
-  // TODO: Remove the `true ||` before merging!
-  if (true || !isIOS) {
+  // Fall back to a bottom sheet on Android
+  if (!isIOS && enableContextMenuAndroid) {
     return (
       <>
-        <TouchableWithoutFeedback onLongPress={handleAndroidLongPress}>
+        <TouchableHighlight
+          underlayColor={color("white100")}
+          activeOpacity={0.8}
+          onLongPress={handleAndroidLongPress}
+          onPress={undefined}
+        >
           {children}
-        </TouchableWithoutFeedback>
+        </TouchableHighlight>
 
-        <AutoHeightBottomSheet visible={modalVisible} onDismiss={() => setModalVisible(false)}>
+        <AutoHeightBottomSheet visible={androidVisible} onDismiss={() => setAndroidVisible(false)}>
           <Flex pb={4} pt={1} mx={2} height="100%">
             <Flex ml={-1} mb={1}>
               {artworkPreviewComponent(artwork)}
@@ -252,8 +254,8 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
                 return (
                   <Touchable
                     key={index}
-                    onPress={async () => {
-                      setModalVisible(false)
+                    onPress={() => {
+                      setAndroidVisible(false)
 
                       action.onPress?.()
                     }}
@@ -271,6 +273,10 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     )
   }
 
+  if (!enableContextMenuIOS) {
+    return <>{children}</>
+  }
+
   return (
     <ContextMenu
       actions={contextActions}
@@ -279,7 +285,6 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
       preview={artworkPreviewComponent(artwork)}
       hideShadows={true}
       previewBackgroundColor={!!dark ? color("black100") : color("white100")}
-      disabled={!enableContextMenu}
     >
       {children}
     </ContextMenu>

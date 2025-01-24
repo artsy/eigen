@@ -92,30 +92,30 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         contextScreenOwnerSlug={contextScreenOwnerSlug}
         contextScreenOwnerType={contextScreenOwnerType}
       >
-        <ContextMenuArtwork
-          contextModule={contextModule}
-          contextScreenOwnerType={contextScreenOwnerType}
-          onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
-          onSupressArtwork={supressArtwork}
-          artwork={artwork}
-          artworkDisplayProps={{
-            dark,
-            showPartnerName,
-            hideArtistName,
-            lotLabel,
-            SalePriceComponent,
-          }}
-        >
-          <Box pr={2}>
-            <RouterLink
-              to={href || artwork.href}
-              underlayColor={backgroundColor}
-              activeOpacity={0.8}
-              onPress={onPress}
-              // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
-              onLongPress={() => {}}
-              delayLongPress={400}
-              testID={testID}
+        <Box pr={2}>
+          <RouterLink
+            to={href || artwork.href}
+            underlayColor={backgroundColor}
+            activeOpacity={0.8}
+            onPress={onPress}
+            // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
+            onLongPress={() => {}}
+            delayLongPress={400}
+            testID={testID}
+          >
+            <ContextMenuArtwork
+              contextModule={contextModule}
+              contextScreenOwnerType={contextScreenOwnerType}
+              onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
+              onSupressArtwork={supressArtwork}
+              artwork={artwork}
+              artworkDisplayProps={{
+                dark,
+                showPartnerName,
+                hideArtistName,
+                lotLabel,
+                SalePriceComponent,
+              }}
             >
               <Flex
                 height={
@@ -161,9 +161,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   contextScreenOwnerType={contextScreenOwnerType}
                 />
               </Flex>
-            </RouterLink>
-          </Box>
-        </ContextMenuArtwork>
+            </ContextMenuArtwork>
+          </RouterLink>
+        </Box>
 
         <CreateArtworkAlertModal
           artwork={artwork}
