@@ -1,8 +1,19 @@
 appId: ${MAESTRO_APP_ID}
 ---
+- launchApp:
+    clearState: false
+    clearKeychain: false
 - runFlow:
-    file: login.yml
-- assertVisible: "New Works for You"
+    when:
+      visible: "Sign up or log in"
+    commands:
+      - tapOn: "Email Input"
+      - inputText: ${MAESTRO_TEST_EMAIL}
+      - tapOn: "Continue.*"
+      - inputText: ${MAESTRO_TEST_PASSWORD}
+      - tapOn: "Continue.*"
+      - assertVisible: "New Works for You"
+      - assertVisible: "New Works for You"
 - killApp
 - openLink:
     link: https://www.artsy.net/artist/kaws
