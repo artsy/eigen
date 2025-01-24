@@ -6,7 +6,6 @@ import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSet
 import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
 import { SubmissionStatus } from "app/Scenes/MyCollection/Components/SubmissionStatus"
 import { GlobalStore } from "app/store/GlobalStore"
-import { PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK } from "app/store/ProgressiveOnboardingModel"
 import { navigate } from "app/system/navigation/navigate"
 import { useLocalImage } from "app/utils/LocalImageStore"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -57,11 +56,12 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
 
   const showHighDemandIcon = isP1Artist && isHighDemand && !consignmentSubmission?.internalID
 
-  const { dismiss } = GlobalStore.actions.progressiveOnboarding
+  const { dismiss, setIsReady } = GlobalStore.actions.progressiveOnboarding
   const { isActive, clearActivePopover } = useSetActivePopover(!!displayToolTip)
 
   const handleDismissPopover = () => {
-    dismiss(PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK)
+    setIsReady(false)
+    dismiss("my-collection-sell-this-work")
   }
 
   return (

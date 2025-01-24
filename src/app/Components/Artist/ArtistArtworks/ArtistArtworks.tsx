@@ -27,6 +27,11 @@ import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilter
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { ProgressiveOnboardingAlertReminder } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingAlertReminder"
+import {
+  CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD,
+  useDismissAlertReminder,
+} from "app/Components/ProgressiveOnboarding/useDismissAlertReminder"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
@@ -71,6 +76,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const gridRef = useRef<MasonryFlashListRef<(typeof artworks)[0]>>(null)
 
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+
+  const { dismissAllCreateAlertReminder } = useDismissAlertReminder()
 
   useArtworkFilters({
     relay,
@@ -150,7 +157,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     }
   }, [relay.hasMore(), relay.isLoading()])
 
-  const CreateAlertButton = () => {
+  const CreateAlertButton: React.FC = () => {
     return (
       <Button
         variant="outline"
@@ -160,7 +167,10 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         onPress={() => {
           // Could be useful to differenciate between the two at a later point
           tracking.trackEvent(
-            tracks.tappedCreateAlert({ artistId: artist.internalID, artistSlug: artist.slug })
+            tracks.tappedCreateAlert({
+              artistId: artist.internalID,
+              artistSlug: artist.slug,
+            })
           )
 
           setIsCreateAlertModalVisible(true)
@@ -257,6 +267,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     )
   }
 
+  const shouldShowCreateAlertReminder = artworks.length >= CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD
+
   return (
     <>
       <Tabs.Masonry
@@ -285,10 +297,21 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         ListHeaderComponent={
           <>
             <Tabs.SubTabBar>
-              <ArtistArtworksFilterHeader
-                artist={artist}
-                showCreateAlertModal={() => setIsCreateAlertModalVisible(true)}
-              />
+              <Flex flexDirection="row">
+                <ProgressiveOnboardingAlertReminder visible={!!shouldShowCreateAlertReminder} />
+                <Flex flex={1}>
+                  <ArtistArtworksFilterHeader
+                    artist={artist}
+                    showCreateAlertModal={() => {
+                      if (shouldShowCreateAlertReminder) {
+                        dismissAllCreateAlertReminder()
+                      }
+
+                      setIsCreateAlertModalVisible(true)
+                    }}
+                  />
+                </Flex>
+              </Flex>
             </Tabs.SubTabBar>
             <Flex pt={1}>
               <Text variant="xs" weight="medium">{`${artworksCount} Artwork${
@@ -299,6 +322,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         }
         ListFooterComponent={<ListFooterComponenet />}
       />
+
       <ArtworkFilterNavigator
         {...props}
         id={artist.internalID}
@@ -310,6 +334,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         mode={FilterModalMode.ArtistArtworks}
         shouldShowCreateAlertButton
       />
+
       <CreateSavedSearchModal
         attributes={attributes}
         closeModal={() => setIsCreateAlertModalVisible(false)}

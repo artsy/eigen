@@ -1,8 +1,8 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { ProgressiveOnboardingAlertReminder } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingAlertReminder"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Text } from "react-native"
-import { ProgressiveOnboardingSaveAlert } from "./ProgressiveOnboardingSaveAlert"
 
 jest.mock("@artsy/palette-mobile", () => ({
   ...jest.requireActual("@artsy/palette-mobile"),
@@ -27,12 +27,12 @@ jest.mock("@react-navigation/native", () => ({
   useIsFocused: () => mockUseIsFocusedMock(),
 }))
 
-describe("ProgressiveOnboardingSaveAlert", () => {
+describe("ProgressiveOnboardingAlertReminder", () => {
   const wrapper = () =>
     renderWithWrappers(
-      <ProgressiveOnboardingSaveAlert>
+      <ProgressiveOnboardingAlertReminder visible={true}>
         <Text>Test Children</Text>
-      </ProgressiveOnboardingSaveAlert>
+      </ProgressiveOnboardingAlertReminder>
     )
 
   beforeEach(() => {
@@ -54,7 +54,7 @@ describe("ProgressiveOnboardingSaveAlert", () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         sessionState: { isReady: true },
-        dismissed: [{ key: "save-artwork", timestamp: Date.now() }],
+        dismissed: [{ key: "alert-finish", timestamp: Date.now() }],
       },
     })
     wrapper()
@@ -62,50 +62,61 @@ describe("ProgressiveOnboardingSaveAlert", () => {
     expect(screen.getByText("Popover")).toBeOnTheScreen()
   })
 
-  it("dismisses the alert chain when tapping 'Got it'", async () => {
+  it("dismisses the alert when tapping on it", async () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         sessionState: { isReady: true },
-        dismissed: [{ key: "save-artwork", timestamp: Date.now() }],
+        dismissed: [{ key: "alert-finish", timestamp: Date.now() }],
       },
     })
     wrapper()
 
-    await screen.findByText("Got it")
-    fireEvent.press(screen.getByText("Got it"))
+    fireEvent.press(screen.getByText("Popover"))
 
-    expect(__globalStoreTestUtils__?.getLastAction()).toHaveProperty("payload", [
-      "alert-create",
-      "alert-select-filters",
-      "alert-finish",
+    const state = __globalStoreTestUtils__?.getCurrentState()
+    expect(state?.progressiveOnboarding.dismissed).toStrictEqual([
+      {
+        key: "alert-finish",
+        timestamp: expect.any(Number),
+      },
+      {
+        key: "alert-create-reminder-1",
+        timestamp: expect.any(Number),
+      },
     ])
-  })
-
-  it("dismisses the alert 'alert-create' when tapping 'Got it'", async () => {
-    __globalStoreTestUtils__?.injectState({
-      progressiveOnboarding: {
-        sessionState: { isReady: true },
-        dismissed: [{ key: "save-artwork", timestamp: Date.now() }],
-      },
-    })
-    wrapper()
-
-    await screen.findByText("Learn more")
-    fireEvent.press(screen.getByText("Learn more"))
-
-    expect(__globalStoreTestUtils__?.getLastAction()).toHaveProperty("payload", "alert-create")
-  })
-
-  it("does not show the popover if 'save-artwork' is not dismissed", () => {
-    wrapper()
-    expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
   })
 
   it("does not show the popover given another popover is active", () => {
     __globalStoreTestUtils__?.injectState({
       progressiveOnboarding: {
         sessionState: { isReady: true, activePopover: "save-artwork" },
-        dismissed: [],
+        dismissed: [{ key: "alert-finish", timestamp: Date.now() }],
+      },
+    })
+
+    wrapper()
+    expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
+  })
+
+  it("renders the second reminder only after 7 days", () => {
+    __globalStoreTestUtils__?.injectState({
+      progressiveOnboarding: {
+        sessionState: { isReady: true },
+        // 604800000 is 7 days
+        dismissed: [{ key: "alert-create-reminder-1", timestamp: Date.now() - 604800000 }],
+      },
+    })
+
+    wrapper()
+    expect(screen.getByText("Popover")).toBeOnTheScreen()
+  })
+
+  it("does not render the second reminder after less than 7 days", () => {
+    __globalStoreTestUtils__?.injectState({
+      progressiveOnboarding: {
+        sessionState: { isReady: true },
+        // 604800000 is 7 days
+        dismissed: [{ key: "alert-create-reminder-1", timestamp: Date.now() - 604800 }],
       },
     })
 
@@ -121,7 +132,7 @@ describe("ProgressiveOnboardingSaveAlert", () => {
   })
 })
 
-const MockedPopover: React.FC<any> = ({ children, onDismiss, visible, content }) => {
+const MockedPopover: React.FC<any> = ({ children, onDismiss, visible }) => {
   if (!visible) {
     return <>{children}</>
   }
@@ -130,7 +141,6 @@ const MockedPopover: React.FC<any> = ({ children, onDismiss, visible, content })
     <>
       <Text onPress={onDismiss}>Popover</Text>
       <>{children}</>
-      <>{content}</>
     </>
   )
 }
