@@ -1,8 +1,9 @@
 appId: ${MAESTRO_APP_ID}
 ---
 - launchApp:
-    clearState: true
-    clearKeychain: true
+    clearState: false
+    arguments:
+      shouldSignOut: "true"
 - assertVisible: "Sign up or log in"
 - tapOn: "Email Input"
 - inputText: ${MAESTRO_TEST_EMAIL}

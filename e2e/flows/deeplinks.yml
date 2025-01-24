@@ -2,7 +2,6 @@ appId: ${MAESTRO_APP_ID}
 ---
 - launchApp:
     clearState: false
-    clearKeychain: false
 - runFlow:
     when:
       visible: "Sign up or log in"

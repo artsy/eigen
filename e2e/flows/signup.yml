@@ -1,8 +1,9 @@
 appId: ${MAESTRO_APP_ID}
 ---
 - launchApp:
-    clearState: true
-    clearKeychain: true
+    clearState: false
+    arguments:
+      shouldSignOut: "true"
 - runScript:
     file: signup.js
 - assertVisible: "Sign up or log in"
