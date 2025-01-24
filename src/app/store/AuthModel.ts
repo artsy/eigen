@@ -1007,9 +1007,10 @@ export const getAuthModel = (): AuthModel => ({
     updateExperimentsContext({ userId: undefined })
 
     await Promise.all([
-      Platform.OS === "ios"
-        ? await LegacyNativeModules.ArtsyNativeModule.clearUserData()
-        : Promise.resolve(),
+      // TODO: Figure out why this is breaking for Maestro
+      // Platform.OS === "ios"
+      //   ? await LegacyNativeModules.ArtsyNativeModule.clearUserData()
+      //   : Promise.resolve(),
       __DEV__ && (await clearNavState()),
       await signOutGoogle(),
       LoginManager.logOut(),

@@ -4,6 +4,7 @@ import { Navigation } from "app/Navigation/Navigation"
 import { GlobalStore, unsafe__getEnvironment, unsafe_getDevToggle } from "app/store/GlobalStore"
 import { codePushOptions } from "app/system/codepush"
 import { DevMenuWrapper } from "app/system/devTools/DevMenu/DevMenuWrapper"
+import { useMaestroInitialization } from "app/system/devTools/useMaestroInitialization"
 import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
 import { setupSentry } from "app/system/errorReporting/setupSentry"
 import { usePurgeCacheOnAppUpdate } from "app/system/relay/usePurgeCacheOnAppUpdate"
@@ -49,26 +50,6 @@ if (__DEV__) {
   require("../../ReactotronConfig.js")
 }
 
-// TODO: We should not have this installed as a dependency in the app
-// figure out how to get this conditionally working for maestro builds
-// if (__DEV__) {
-const { LaunchArguments } = require("react-native-launch-arguments")
-const args = LaunchArguments.value()
-const email = args.email
-const password = args.password
-const shouldSignOut = args.shouldSignOut
-if (email && password) {
-  GlobalStore.actions.auth.signIn({
-    oauthProvider: "email",
-    oauthMode: "email",
-    email,
-    password,
-  })
-} else if (shouldSignOut) {
-  GlobalStore.actions.auth.signOut()
-}
-// }
-
 // Sentry must be setup early in the app lifecycle to hook into navigation
 const debugSentry = unsafe_getDevToggle("DTDebugSentry")
 const environment = unsafe__getEnvironment()
@@ -86,6 +67,8 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 
 const Main = () => {
   useRageShakeDevMenu()
+  useMaestroInitialization()
+
   useEffect(() => {
     if (Config.OSS === "true") {
       return
