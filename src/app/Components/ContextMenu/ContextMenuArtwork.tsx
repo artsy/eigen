@@ -8,7 +8,7 @@ import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { cm2in } from "app/utils/conversions"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { isDislikeArtworksEnabled } from "app/utils/isDislikeArtworksEnabled"
+import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
 import { useDislikeArtwork } from "app/utils/mutations/useDislikeArtwork"
 import { Schema } from "app/utils/track"
 import { InteractionManager, Platform } from "react-native"
@@ -90,7 +90,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   const shouldDisplayContextMenu = isIOS && enableContextMenu
   const enableCreateAlerts = !!artwork.artists?.length
   const enableViewInRoom = LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable
-  const enableSupressArtwork = isDislikeArtworksEnabled(contextModule)
+  const enableSupressArtwork = isDislikeArtworksEnabledFor(contextModule)
 
   const openViewInRoom = () => {
     if (artwork?.widthCm == null || artwork?.heightCm == null || image?.url == null) {

@@ -10,6 +10,6 @@ const ENABLED_CONTEXT_MODULES = [
 /**
  * returns true if hiding disliked artworks is enabled for the given context module
  */
-export const isDislikeArtworksEnabled = (contextModule: string | null | undefined) => {
+export const isDislikeArtworksEnabledFor = (contextModule: string | null | undefined) => {
   return ENABLED_CONTEXT_MODULES.includes(contextModule as ContextModule)
 }

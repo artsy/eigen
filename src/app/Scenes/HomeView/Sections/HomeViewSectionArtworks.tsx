@@ -24,7 +24,7 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracki
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { isDislikeArtworksEnabled } from "app/utils/isDislikeArtworksEnabled"
+import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { memo } from "react"
@@ -45,7 +45,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const section = useFragment(fragment, sectionProp)
   let artworks = extractNodes(section.artworksConnection)
 
-  if (isDislikeArtworksEnabled(section.contextModule)) {
+  if (isDislikeArtworksEnabledFor(section.contextModule)) {
     artworks = artworks.filter((artwork) => !artwork.isDisliked)
   }
 
