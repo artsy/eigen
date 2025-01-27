@@ -17,7 +17,7 @@ export const SectionTitle: React.FC<
     titleVariant?: TextProps["variant"]
     subtitle?: React.ReactNode
     navigationProps?: object
-    onPress?: () => any
+    onPress?: () => any | null
     RightButtonContent?: React.FC
     mb?: SpacingUnit
     capitalized?: boolean

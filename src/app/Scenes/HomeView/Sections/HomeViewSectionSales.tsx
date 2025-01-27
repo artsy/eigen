@@ -74,8 +74,13 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
   return (
     <Flex {...flexProps}>
       <Flex px={2}>
-        <SectionTitle href={href} title={section.component?.title} onPress={onHeaderPress} />
+        <SectionTitle
+          href={href}
+          title={section.component?.title}
+          onPress={href ? onHeaderPress : undefined}
+        />
       </Flex>
+
       <CardRailFlatList
         prefetchUrlExtractor={(item) => item?.href}
         prefetchVariablesExtractor={(item) => ({ saleSlug: item?.slug })}
