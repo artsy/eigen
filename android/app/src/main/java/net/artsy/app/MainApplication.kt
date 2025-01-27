@@ -19,8 +19,8 @@ import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.google.firebase.messaging.FirebaseMessaging
 import com.microsoft.codepush.react.CodePush
 import com.segment.analytics.Analytics
-import net.artsy.app.utils.ReactNativeConfigUtils
 import io.sentry.react.RNSentryPackage
+import com.reactnativekeysjsi.KeysModule.getSecureFor
 
 class MainApplication : Application(), ReactApplication {
 
@@ -55,14 +55,12 @@ class MainApplication : Application(), ReactApplication {
 
         ArtsyNativeModule.didLaunch(this.getSharedPreferences("launchConfig", MODE_PRIVATE))
 
-        var segmentWriteKey = BuildConfig.SEGMENT_PRODUCTION_WRITE_KEY_ANDROID
+        var segmentWriteKey: String = getSecureFor("SEGMENT_PRODUCTION_WRITE_KEY_ANDROID")
         if (BuildConfig.DEBUG) {
-            segmentWriteKey = BuildConfig.SEGMENT_STAGING_WRITE_KEY_ANDROID
+            segmentWriteKey = getSecureFor("SEGMENT_STAGING_WRITE_KEY_ANDROID")
         }
 
-        val analytics = Analytics.Builder(this,
-            ReactNativeConfigUtils.decode(segmentWriteKey, BuildConfig.GRAVITY_API_KEY)
-        ).build()
+        val analytics = Analytics.Builder(this, segmentWriteKey).build()
 
         Analytics.setSingletonInstance(analytics)
 
