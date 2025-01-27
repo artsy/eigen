@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Spacer, Flex, Text, Separator, Join, Tabs } from "@artsy/palette-mobile"
+import { captureException } from "@sentry/react-native"
 import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 import { MyBids_me$data } from "__generated__/MyBids_me.graphql"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -41,7 +42,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
       (error) => {
         if (error) {
           console.error("MyBids/index.tsx #refreshMyBids", error.message)
-          // FIXME: Handle error
+          captureException(error, { tags: { source: "MyBids/index.tsx #refreshMyBids" } })
         }
         setIsFetching(false)
       },

@@ -6,7 +6,7 @@ import { MyBidsContainer } from "./MyBids"
 
 describe("My Bids", () => {
   const { renderWithRelay } = setupTestWrapper<MyBidsTestsQuery>({
-    Component: (props) => <MyBidsContainer isActiveTab me={props.me} />,
+    Component: (props) => <MyBidsContainer isActiveTab me={props.me!} />,
     query: graphql`
       query MyBidsTestsQuery @relay_test_operation {
         me {
