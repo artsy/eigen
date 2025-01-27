@@ -1,20 +1,20 @@
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { Platform } from "react-native"
 import codePush from "react-native-code-push"
-import Config from "react-native-config"
+import Keys from "react-native-keys"
 
 const codePushCanaryKey =
   Platform.OS == "ios"
-    ? Config.CODE_PUSH_IOS_CANARY_DEPLOYMENT_KEY
-    : Config.CODE_PUSH_ANDROID_CANARY_DEPLOYMENT_KEY
+    ? Keys.secureFor("CODE_PUSH_IOS_CANARY_DEPLOYMENT_KEY")
+    : Keys.secureFor("CODE_PUSH_ANDROID_CANARY_DEPLOYMENT_KEY")
 const codePushStagingKey =
   Platform.OS == "ios"
-    ? Config.CODE_PUSH_IOS_STAGING_DEPLOYMENT_KEY
-    : Config.CODE_PUSH_ANDROID_STAGING_DEPLOYMENT_KEY
+    ? Keys.secureFor("CODE_PUSH_IOS_STAGING_DEPLOYMENT_KEY")
+    : Keys.secureFor("CODE_PUSH_ANDROID_STAGING_DEPLOYMENT_KEY")
 const codePushProdKey =
   Platform.OS == "ios"
-    ? Config.CODE_PUSH_IOS_PRODUCTION_DEPLOYMENT_KEY
-    : Config.CODE_PUSH_ANDROID_PRODUCTION_DEPLOYMENT_KEY
+    ? Keys.secureFor("CODE_PUSH_IOS_PRODUCTION_DEPLOYMENT_KEY")
+    : Keys.secureFor("CODE_PUSH_ANDROID_PRODUCTION_DEPLOYMENT_KEY")
 
 export const stagingKey = codePushStagingKey ?? "Staging_Key"
 export const productionKey = codePushProdKey ?? "Production_Key"
