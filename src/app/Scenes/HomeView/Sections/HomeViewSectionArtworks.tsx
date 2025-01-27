@@ -86,6 +86,10 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     navigate(href)
   }
 
+  if (!artworks.length) {
+    return null
+  }
+
   return (
     <Flex {...flexProps}>
       <SectionTitle
