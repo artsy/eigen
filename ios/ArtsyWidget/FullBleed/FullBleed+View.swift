@@ -17,8 +17,6 @@ extension FullBleed {
         var body: some SwiftUI.View {
             let artsyLogo = UIImage(named: "WhiteArtsyLogo")!
             let artworkImage = artwork.image!
-            let artistName = artwork.artist.name
-            let artworkTitle = artwork.title
             let artworkUrl = artwork.url
             
             GeometryReader { geo in
@@ -26,25 +24,17 @@ extension FullBleed {
                     Image(uiImage: artworkImage)
                         .resizable()
                         .scaledToFill()
+                        .scaleEffect(1.3)
                         .frame(width: geo.size.width, height: geo.size.height, alignment: .top)
                     VStack() {
-                        Spacer()
                         HStack() {
-                            VStack() {
-                                PrimaryText(name: artistName, color: .white)
-                                    .lineLimit(1)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                SecondaryText(title: artworkTitle, color: .white)
-                                    .lineLimit(1)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                            }
                             Spacer()
                             Image(uiImage: artsyLogo)
                                 .resizable()
                                 .frame(width: 20, height: 20)
                         }
                         .padding(16)
-                        .background(Color.black)
+                        Spacer()
                     }
                 }
             }
