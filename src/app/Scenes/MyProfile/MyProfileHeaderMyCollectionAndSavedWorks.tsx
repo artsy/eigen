@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Screen, Tabs, VisualClueDot } from "@artsy/palette-mobile"
+import { Button, Flex, Screen, ShareIcon, Tabs, Text, VisualClueDot } from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
 import { MyCollectionQueryRenderer } from "app/Scenes/MyCollection/MyCollection"
@@ -8,7 +8,7 @@ import {
   MyCollectionTabsStore,
   MyCollectionTabsStoreProvider,
 } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
-import { MyProfileHeaderQueryRenderer } from "app/Scenes/MyProfile/MyProfileHeader"
+import { SellWithArtsyHome } from "app/Scenes/SellWithArtsy/SellWithArtsyHome"
 import { GlobalStore } from "app/store/GlobalStore"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -18,6 +18,7 @@ import { useMemo } from "react"
 export enum Tab {
   collection = "My Collection",
   insights = "Insights",
+  sell = "Sell",
 }
 
 interface Props {
@@ -49,7 +50,19 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
         <Screen.Body fullwidth>
           <Tabs
             initialTabName={initialTab}
-            renderHeader={() => <MyProfileHeaderQueryRenderer />}
+            renderHeader={() => (
+              <Flex
+                p={2}
+                backgroundColor="background"
+                flexDirection="row"
+                justifyContent="space-between"
+              >
+                <Text variant="lg-display">My Profile</Text>
+                <Button size="small">
+                  Share <ShareIcon fill="white100" width={18} height={18} />
+                </Button>
+              </Flex>
+            )}
             headerHeight={500}
             indicators={indicators}
             onTabPress={(tabName) => {
@@ -72,6 +85,11 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
             <Tabs.Tab name={Tab.insights} label={Tab.insights}>
               <Tabs.Lazy>
                 <MyCollectionInsightsQR />
+              </Tabs.Lazy>
+            </Tabs.Tab>
+            <Tabs.Tab name={Tab.sell} label={`${Tab.sell} 💰`}>
+              <Tabs.Lazy>
+                <SellWithArtsyHome />
               </Tabs.Lazy>
             </Tabs.Tab>
           </Tabs>

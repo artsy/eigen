@@ -191,6 +191,7 @@ export const HomeView: React.FC = memo(() => {
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
           onEndReachedThreshold={2}
           stickyHeaderIndices={[0]}
+          stickyHeaderHiddenOnScroll
           windowSize={15}
         />
         {!!data?.me && <EmailConfirmationBannerFragmentContainer me={data.me} />}
