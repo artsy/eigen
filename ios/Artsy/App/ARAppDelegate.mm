@@ -30,7 +30,7 @@
 #import "ARPHPhotoPickerModule.h"
 #import "ARCocoaConstantsModule.h"
 
-#import <react-native-config/ReactNativeConfig.h>
+#import "Keys.h"
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <React/RCTBundleURLProvider.h>
 #import "AREmission.h"
@@ -138,7 +138,7 @@ static ARAppDelegate *_sharedInstance = nil;
         didFinishLaunchingWithOptions:launchOptions];
 
 
-    BOOL ossUser = [[ReactNativeConfig envFor:@"OSS"] isEqualToString:@"true"];
+    BOOL ossUser = [[Keys publicFor:@"OSS"] isEqualToString:@"true"];
     if ([FIRApp defaultApp] == nil && !ossUser) {
         [FIRApp configure];
     }
@@ -163,9 +163,9 @@ static ARAppDelegate *_sharedInstance = nil;
 
 - (void)setupAnalytics:(UIApplication *)application withLaunchOptions:(NSDictionary *)launchOptions
 {
-    NSString *brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_STAGING_APP_KEY_IOS"];
+    NSString *brazeAppKey = [Keys secureFor:@"BRAZE_STAGING_APP_KEY_IOS"];
     if (![ARAppStatus isDev]) {
-        brazeAppKey = [ReactNativeConfig envFor:@"BRAZE_PRODUCTION_APP_KEY_IOS"];
+        brazeAppKey = [Keys secureFor:@"BRAZE_STAGING_APP_KEY_IOS"];
     }
 
     NSString *brazeSDKEndPoint = @"sdk.iad-06.braze.com";
@@ -178,9 +178,10 @@ static ARAppDelegate *_sharedInstance = nil;
     BrazeInAppMessageUI *inAppMessageUI = [[BrazeInAppMessageUI alloc] init];
     braze.inAppMessagePresenter = inAppMessageUI;
 
-    NSString *segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_STAGING_WRITE_KEY_IOS"];
+    NSString *segmentWriteKey = [Keys secureFor:@"SEGMENT_STAGING_WRITE_KEY_IOS"];
+
     if (![ARAppStatus isDev]) {
-        segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_PRODUCTION_WRITE_KEY_IOS"];
+        segmentWriteKey = [Keys secureFor:@"SEGMENT_PRODUCTION_WRITE_KEY_IOS"];
     }
 
     SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:segmentWriteKey];

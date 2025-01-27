@@ -20,7 +20,7 @@
 #import "ARRouter.h"
 #import "AROptions.h"
 
-#import <react-native-config/ReactNativeConfig.h>
+#import "Keys.h"
 #import "AREmission.h"
 #import "ARTemporaryAPIModule.h"
 #import "AREventsModule.h"
