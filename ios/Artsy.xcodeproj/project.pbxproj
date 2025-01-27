@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		161D209B2CC7D49800856E71 /* ARTCityGuideManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 161D209A2CC7D49800856E71 /* ARTCityGuideManager.m */; };
-		16FD24AA2D39734600AD299F /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 16FD24A92D39734600AD299F /* Config.xcconfig */; };
 		1A4B97BC283CDD5A00878EAE /* ARCocoaConstantsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */; };
 		1A4B97BD283CDD5A00878EAE /* AREventsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9793283CDD5900878EAE /* AREventsModule.m */; };
 		1A4B97BE283CDD5A00878EAE /* ARScrollViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.m */; };
@@ -550,7 +549,6 @@
 /* Begin PBXFileReference section */
 		13B07F961A680F5B00A75B9A /* Artsy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Artsy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		161D209A2CC7D49800856E71 /* ARTCityGuideManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTCityGuideManager.m; sourceTree = "<group>"; };
-		16FD24A92D39734600AD299F /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		1973F4CD291679B41728F08A /* Pods-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCocoaConstantsModule.m; sourceTree = "<group>"; };
 		1A4B9792283CDD5900878EAE /* AREmission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREmission.h; sourceTree = "<group>"; };
@@ -1574,7 +1572,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				16FD24A92D39734600AD299F /* Config.xcconfig */,
 				CBE3210527D9615000395A93 /* Artsy */,
 				CB43271D27E8FE5400B29DD6 /* ArtsyTests */,
 				CB43266427E8F39900B29DD6 /* ArtsyStickers */,
@@ -3505,7 +3502,6 @@
 				CB762B3D2911A5E100881194 /* ARVIRShadow.png in Resources */,
 				CBE3272927E275A400395A93 /* ViewInRoom_Wall@2x.png in Resources */,
 				CBE3273F27E275A400395A93 /* Hash@2x.png in Resources */,
-				16FD24AA2D39734600AD299F /* Config.xcconfig in Resources */,
 				CBE326B527E275A300395A93 /* LiveAuctionsAssets.xcassets in Resources */,
 				CBE3272727E275A400395A93 /* Images.xcassets in Resources */,
 				CBE3276627E275A400395A93 /* full_logo_black_small@2x.png in Resources */,
@@ -4196,7 +4192,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 16FD24A92D39734600AD299F /* Config.xcconfig */;
+			baseConfigurationReference = 1AE9F25D2902DA87002A561B /* App-Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -4275,7 +4271,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 16FD24A92D39734600AD299F /* Config.xcconfig */;
+			baseConfigurationReference = 1AE9F2622902DA87002A561B /* App-Store.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
