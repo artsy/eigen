@@ -3,7 +3,7 @@ import { BrazePlugin } from "@segment/analytics-react-native-plugin-braze"
 import { addBreadcrumb } from "@sentry/react-native"
 import { visualize } from "app/utils/visualizer"
 import { Platform } from "react-native"
-import Config from "react-native-config"
+import Keys from "react-native-keys"
 import { isCohesionScreen, TrackingProvider } from "./providers"
 
 export const SEGMENT_TRACKING_PROVIDER = "SEGMENT_TRACKING_PROVIDER"
@@ -16,11 +16,11 @@ export const SegmentTrackingProvider: TrackingProvider = {
     // prettier-ignore
     const writeKey = Platform.select({
       ios: __DEV__
-        ? Config.SEGMENT_STAGING_WRITE_KEY_IOS
-        : Config.SEGMENT_PRODUCTION_WRITE_KEY_IOS,
+        ? Keys.secureFor("SEGMENT_STAGING_WRITE_KEY_IOS")
+        : Keys.secureFor("SEGMENT_PRODUCTION_WRITE_KEY_IOS"),
       android: __DEV__
-        ? Config.SEGMENT_STAGING_WRITE_KEY_ANDROID
-        : Config.SEGMENT_PRODUCTION_WRITE_KEY_ANDROID,
+        ? Keys.secureFor("SEGMENT_STAGING_WRITE_KEY_ANDROID")
+        : Keys.secureFor("SEGMENT_PRODUCTION_WRITE_KEY_ANDROID"),
       default: "",
     })
 

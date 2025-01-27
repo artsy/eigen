@@ -1,8 +1,8 @@
 import { captureMessage } from "@sentry/react-native"
 import { stringify } from "query-string"
-import Config from "react-native-config"
+import Keys from "react-native-keys"
 
-const API_KEY = Config.GOOGLE_MAPS_API_KEY
+const API_KEY = Keys.secureFor("GOOGLE_MAPS_API_KEY")
 
 export interface SimpleLocation {
   id: string
