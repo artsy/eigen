@@ -230,6 +230,21 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     setAndroidVisible(true)
   }
 
+  if (isIOS && enableContextMenuIOS) {
+    return (
+      <ContextMenu
+        actions={contextActions}
+        onPress={handleContextPress}
+        onCancel={handleContextCancel}
+        preview={artworkPreviewComponent(artwork)}
+        hideShadows={true}
+        previewBackgroundColor={!!dark ? color("black100") : color("white100")}
+      >
+        {children}
+      </ContextMenu>
+    )
+  }
+
   // Fall back to a bottom sheet on Android
   if (!isIOS && enableContextMenuAndroid) {
     return (
@@ -273,22 +288,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     )
   }
 
-  if (!enableContextMenuIOS) {
-    return <>{children}</>
-  }
-
-  return (
-    <ContextMenu
-      actions={contextActions}
-      onPress={handleContextPress}
-      onCancel={handleContextCancel}
-      preview={artworkPreviewComponent(artwork)}
-      hideShadows={true}
-      previewBackgroundColor={!!dark ? color("black100") : color("white100")}
-    >
-      {children}
-    </ContextMenu>
-  )
+  return <>{children}</>
 }
 
 const artworkFragment = graphql`
