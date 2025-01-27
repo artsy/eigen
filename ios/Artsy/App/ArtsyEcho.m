@@ -28,7 +28,7 @@
         return;
     }
 
-    if (![[Keys publicFor:<#(NSString *)#>:@"_OSS_"] isEqualToString:@"true"]) {
+    if (![[Keys publicFor:@"_OSS_"] isEqualToString:@"true"]) {
         [super checkForUpdates:updateCheckCompleted];
     }
 }
