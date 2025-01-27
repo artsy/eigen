@@ -60,7 +60,7 @@ export const MyCollectionCollectedArtistsRail: React.FC<MyCollectionCollectedArt
         ItemSeparatorComponent={() => <Spacer y={2} />}
         contentContainerStyle={{
           paddingTop: space(2),
-          paddingBottom: space(4),
+          paddingBottom: space(2),
           paddingLeft: space(2),
         }}
         ListFooterComponent={
@@ -109,7 +109,7 @@ export const Artist: React.FC<{
         <Avatar
           initials={data.initials || undefined}
           src={data?.image?.url || undefined}
-          size="md"
+          size="sm"
         />
         <Text variant="xs" numberOfLines={2} textAlign="center" mt={0.5}>
           {data.name}

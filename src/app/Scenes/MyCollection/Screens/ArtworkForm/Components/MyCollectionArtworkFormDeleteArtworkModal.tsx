@@ -57,7 +57,7 @@ export const MyCollectionArtworkFormDeleteArtworkModal: React.FC<MyCollectionArt
           onRequestClose={hideModal}
           animationType="slide"
         >
-          <Flex p={2}>
+          <Flex p={2} backgroundColor="background" flexGrow={1}>
             <Text variant="lg-display">Delete this artwork?</Text>
             <Spacer y={2} />
             <Text variant="sm">This artwork will be removed from My Collection.</Text>

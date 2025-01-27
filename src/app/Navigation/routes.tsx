@@ -243,10 +243,11 @@ export const artsyDotNetRoutes = defineRoutes([
   },
   {
     path: "/notifications",
-    name: "Activity",
+    name: "Notifications",
     Component: ActivityScreen,
     options: {
-      hidesBottomTabs: true,
+      // hidesBottomTabs: true,
+      onlyShowInTabName: "notifications",
       screenOptions: {
         headerShown: false,
       },

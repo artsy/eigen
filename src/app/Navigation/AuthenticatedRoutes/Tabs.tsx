@@ -1,12 +1,13 @@
 import { ActionType, OwnerType, Screen, tappedTabBar } from "@artsy/cohesion"
 import { Flex, Text, useColor } from "@artsy/palette-mobile"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { createDrawerNavigator, DrawerContentScrollView } from "@react-navigation/drawer"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
 import { InboxTab } from "app/Navigation/AuthenticatedRoutes/InboxTab"
+import { NotificationsTab } from "app/Navigation/AuthenticatedRoutes/NotificationsTab"
 import { ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
 import { SearchTab } from "app/Navigation/AuthenticatedRoutes/SearchTab"
-import { SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
 import { modalRoutes } from "app/Navigation/AuthenticatedRoutes/modalRoutes"
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { AppModule } from "app/Navigation/routes"
@@ -15,6 +16,9 @@ import { useBottomTabsBadges } from "app/Navigation/utils/useBottomTabsBadges"
 import { BottomTabOption, BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
+import { ProfileDrawer } from "app/Scenes/MyProfile/Drawer"
+import { MyProfileHeaderQueryRenderer } from "app/Scenes/MyProfile/MyProfileHeader"
+import { MyProfileSettings } from "app/Scenes/MyProfile/MyProfileSettings"
 import { OnboardingQuiz } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
@@ -39,7 +43,7 @@ type TabRoutesParams = {
   home: undefined
   search: undefined
   inbox: undefined
-  sell: undefined
+  notifications: undefined
   profile: undefined
 }
 
@@ -143,13 +147,40 @@ const AppTabs: React.FC = () => {
       <Tab.Screen name="home" component={HomeTab} options={{ ...tabsBadges["home"] }} />
       <Tab.Screen name="search" component={SearchTab} />
       <Tab.Screen name="inbox" component={InboxTab} options={{ ...tabsBadges["inbox"] }} />
-      <Tab.Screen name="sell" component={SellTab} />
+      <Tab.Screen name="notifications" component={NotificationsTab} />
       <Tab.Screen name="profile" component={ProfileTab} options={{ ...tabsBadges["profile"] }} />
     </Tab.Navigator>
   )
 }
 
 export const AuthenticatedRoutesStack = createNativeStackNavigator()
+
+const Drawer = createDrawerNavigator()
+
+export default function AppDrawerNavigator() {
+  return (
+    <Drawer.Navigator
+      initialRouteName="AppTabs"
+      drawerContent={(props) => {
+        return (
+          <DrawerContentScrollView {...props}>
+            <MyProfileHeaderQueryRenderer />
+            <ProfileDrawer />
+          </DrawerContentScrollView>
+        )
+      }}
+    >
+      <Drawer.Screen
+        name="AppTabs"
+        component={AppTabs}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Drawer.Screen name="Profile" component={Flex} />
+    </Drawer.Navigator>
+  )
+}
 
 export const AuthenticatedRoutes: React.FC = () => {
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
@@ -162,8 +193,8 @@ export const AuthenticatedRoutes: React.FC = () => {
     <AuthenticatedRoutesStack.Navigator>
       <AuthenticatedRoutesStack.Group>
         <AuthenticatedRoutesStack.Screen
-          name="AppTabs"
-          component={AppTabs}
+          name="AppDrawerNavigator"
+          component={AppDrawerNavigator}
           options={{ headerShown: false }}
         />
         {modalRoutes()}
@@ -188,12 +219,14 @@ export const tabsTracks = {
       case "search":
         tabScreen = OwnerType.search
         break
-      case "sell":
-        tabScreen = OwnerType.sell
+      case "notifications":
+        // @ts-ignore
+        tabScreen = OwnerType.notifications
         break
     }
 
     return {
+      // @ts-ignore
       context_screen_owner_type: tabScreen,
       action: ActionType.screen,
     }
