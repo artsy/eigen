@@ -10,7 +10,7 @@
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
             <ActionContent
                title = "Run Script"
-               scriptText = "# export KEYSFILE=keys.shared.json&#10;&#10;# ASDF_BREW_PREFIX=/opt/homebrew/opt/asdf/&#10;# . &quot;$ASDF_BREW_PREFIX/libexec/asdf.sh&quot;&#10;&#10;#&quot;${SRCROOT}/../node_modules/react-native-keys/keysIOS.js&quot;&#10;">
+               scriptText = "export KEYSFILE=keys.shared.json&#10;&#10;ASDF_BREW_PREFIX=/opt/homebrew/opt/asdf/&#10;. &quot;$ASDF_BREW_PREFIX/libexec/asdf.sh&quot;&#10;&#10;&quot;${SRCROOT}/../node_modules/react-native-keys/keysIOS.js&quot;&#10;">
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
