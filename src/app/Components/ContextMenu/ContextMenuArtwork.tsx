@@ -14,7 +14,7 @@ import { useDislikeArtwork } from "app/utils/mutations/useDislikeArtwork"
 import { Schema } from "app/utils/track"
 import { isEmpty } from "lodash"
 import { useState } from "react"
-import { InteractionManager, Platform } from "react-native"
+import { InteractionManager, Platform, SafeAreaView } from "react-native"
 import ContextMenu, { ContextMenuAction, ContextMenuProps } from "react-native-context-menu-view"
 import { TouchableHighlight } from "react-native-gesture-handler"
 import { HapticFeedbackTypes, trigger } from "react-native-haptic-feedback"
@@ -259,30 +259,32 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
         </TouchableHighlight>
 
         <AutoHeightBottomSheet visible={androidVisible} onDismiss={() => setAndroidVisible(false)}>
-          <Flex pb={4} pt={1} mx={2} height="100%">
-            <Flex ml={-1} mb={1}>
-              {artworkPreviewComponent(artwork)}
+          <SafeAreaView>
+            <Flex mx={2} my={2}>
+              <Flex ml={-1} mb={1}>
+                {artworkPreviewComponent(artwork)}
+              </Flex>
+
+              <Join separator={<Separator borderColor="black10" my={1} />}>
+                {contextActions.map((action, index) => {
+                  return (
+                    <Touchable
+                      key={index}
+                      onPress={() => {
+                        setAndroidVisible(false)
+
+                        action.onPress?.()
+                      }}
+                    >
+                      <Box>
+                        <Text>{action.title}</Text>
+                      </Box>
+                    </Touchable>
+                  )
+                })}
+              </Join>
             </Flex>
-
-            <Join separator={<Separator borderColor="black10" my={1} />}>
-              {contextActions.map((action, index) => {
-                return (
-                  <Touchable
-                    key={index}
-                    onPress={() => {
-                      setAndroidVisible(false)
-
-                      action.onPress?.()
-                    }}
-                  >
-                    <Box>
-                      <Text>{action.title}</Text>
-                    </Box>
-                  </Touchable>
-                )
-              })}
-            </Join>
-          </Flex>
+          </SafeAreaView>
         </AutoHeightBottomSheet>
       </>
     )
