@@ -28,22 +28,17 @@ const commitMutationMock = (fn?: typeof relay.commitMutation) =>
 
 const bidderPositionQueryMock = bidderPositionQuery as jest.Mock<any>
 let fakeNavigator: FakeNavigator
-let fakeRelay: any
 
 beforeEach(() => {
   fakeNavigator = new FakeNavigator()
-  fakeRelay = {
-    refetch: jest.fn(),
-  }
 })
 
 it("allows bidders with a qualified credit card to bid", async () => {
   let screen = renderWithWrappersLEGACY(
     <SelectMaxBid
       me={Me.qualifiedUser as any}
-      sale_artwork={SaleArtwork as any}
+      saleArtwork={SaleArtwork as any}
       navigator={fakeNavigator as any}
-      relay={fakeRelay as any}
     />
   )
 
@@ -75,9 +70,8 @@ it("allows bidders without a qualified credit card to register a card and bid", 
   let screen = renderWithWrappersLEGACY(
     <SelectMaxBid
       me={Me.unqualifiedUser as any}
-      sale_artwork={SaleArtwork as any}
+      saleArtwork={SaleArtwork as any}
       navigator={fakeNavigator as any}
-      relay={fakeRelay}
     />
   )
 

@@ -2,17 +2,17 @@ import { screen } from "@testing-library/react-native"
 import { SelectMaxBidTestsQuery } from "__generated__/SelectMaxBidTestsQuery.graphql"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import { SelectMaxBid, SelectMaxBidContainer } from "./SelectMaxBid"
+import { SelectMaxBid } from "./SelectMaxBid"
 
 describe("SelectMaxBid", () => {
   const { renderWithRelay } = setupTestWrapper<SelectMaxBidTestsQuery>({
-    Component: ({ me, sale_artwork }) => (
-      <SelectMaxBidContainer me={me!} sale_artwork={sale_artwork!} navigator={null!} />
+    Component: ({ me, saleArtwork }) => (
+      <SelectMaxBid me={me!} saleArtwork={saleArtwork!} navigator={null!} />
     ),
     query: graphql`
       query SelectMaxBidTestsQuery @relay_test_operation {
-        sale_artwork: saleArtwork(id: "wow") {
-          ...SelectMaxBid_sale_artwork
+        saleArtwork(id: "wow") {
+          ...SelectMaxBid_saleArtwork
         }
         me {
           ...SelectMaxBid_me

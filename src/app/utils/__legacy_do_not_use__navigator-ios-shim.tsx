@@ -27,6 +27,9 @@ const ScreenWrapper: React.FC<{ route: { params: ScreenProps } }> = (props) => {
   )
 }
 
+/**
+ * @deprecated Please use react-navigation instead
+ */
 class NavigatorIOS extends React.Component<{
   initialRoute: { component: React.ComponentType<any>; passProps?: object }
 }> {
