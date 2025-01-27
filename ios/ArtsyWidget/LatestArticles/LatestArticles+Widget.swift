@@ -11,9 +11,9 @@ extension LatestArticles {
         var body: some WidgetConfiguration {
             StaticConfiguration(kind: Widget.kind, provider: Provider()) { entry in
                 if #available(iOSApplicationExtension 17.0, *) {
-                    View(entry: entry).containerBackground(Color.white, for: .widget)
+                    View(entry: entry).containerBackground(Color.black, for: .widget)
                 } else {
-                    View(entry: entry).background(Color.white)
+                    View(entry: entry).background(Color.black)
                 }
             }
             .configurationDisplayName(Widget.displayName)

@@ -47,41 +47,10 @@ class ArticleStore {
     func handleParsedFeed(articles: [Article]) {
         self.articles = articles
         
-        let imageUrls = articles.map { URL(string: $0.imageUrl)! }
-        
-        let publishers: [URLSession.DataTaskPublisher] = imageUrls.map() { imageUrl in
-            let publisher = self.urlSession.dataTaskPublisher(for: imageUrl)
-            return publisher
-        }
-        
-        let cancellable = Publishers.Zip4(publishers[0], publishers[1], publishers[2], publishers[3])
-            .sink(receiveCompletion: self.imagesComplete, receiveValue: self.parseOutputs)
-        
-        self.cancellable = cancellable
-    }
-    
-    func parseOutputs(outputs: ZippedOutputs) {
         guard
-            let completion = completion,
-            let articles = articles
+            let completion = completion
         else { return }
         
-        let values = [outputs.0, outputs.1, outputs.2, outputs.3]
-        
-        let articlesToValues = Array(zip(articles, values))
-        
-        let enhancedArticles: [Article] = articlesToValues.map() { article, value in
-            var enhancedArticle = article
-            let image = UIImage(data: value.data)
-            enhancedArticle.image = image
-            return enhancedArticle
-        }
-                
-        completion(enhancedArticles)
-    }
-    
-    func imagesComplete(status: PublisherCompletionStatus) {
-        // i should be evaluating the two cases and doing something with failures...
-        print(status)
+        completion(articles)
     }
 }

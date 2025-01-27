@@ -25,9 +25,6 @@ class ArticleParser: NSObject, XMLParserDelegate {
         
         if currentElement == "item" {
             article.resetProperties()
-        } else if currentElement == "enclosure" {
-            let imageUrl = attributeDict["url"]!
-            article.updateProperty(elementName: "imageUrl", value: imageUrl)
         }
     }
     
