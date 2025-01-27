@@ -1,33 +1,147 @@
-import { Flex, Button } from "@artsy/palette-mobile"
+import { Button, Flex, useScreenDimensions } from "@artsy/palette-mobile"
 import { SelectMaxBidQuery } from "__generated__/SelectMaxBidQuery.graphql"
-import { SelectMaxBid_me$data } from "__generated__/SelectMaxBid_me.graphql"
-import { SelectMaxBid_sale_artwork$data } from "__generated__/SelectMaxBid_sale_artwork.graphql"
+import { SelectMaxBid_me$key } from "__generated__/SelectMaxBid_me.graphql"
+import { SelectMaxBid_saleArtwork$key } from "__generated__/SelectMaxBid_saleArtwork.graphql"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { Select } from "app/Components/Select"
 import { dismissModal } from "app/system/navigation/navigate"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import { ScreenDimensionsContext } from "app/utils/hooks"
-import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { Schema, screenTrack } from "app/utils/track"
+import { NoFallback, SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { compact } from "lodash"
-import React, { memo } from "react"
-import { ActivityIndicator, View, ViewProps } from "react-native"
-import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import React, { useMemo, useState } from "react"
+import { graphql, useFragment, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { ConfirmBidScreen } from "./ConfirmBid"
 
-interface SelectMaxBidProps extends ViewProps {
-  sale_artwork: SelectMaxBid_sale_artwork$data
-  me: SelectMaxBid_me$data
+interface SelectMaxBidProps {
+  saleArtwork: SelectMaxBid_saleArtwork$key
+  me: SelectMaxBid_me$key
   navigator: NavigatorIOS
-  relay: RelayRefetchProp
 }
 
-interface SelectMaxBidState {
-  selectedBidIndex: number
-  isRefreshingSaleArtwork: boolean
+export const SelectMaxBid: React.FC<SelectMaxBidProps> = ({ navigator, me, saleArtwork }) => {
+  const { height } = useScreenDimensions()
+  const [selectedBidIndex, setSelectedBidIndex] = useState(0)
+
+  const [saleArtworkData, refetch] = useRefetchableFragment(
+    selectMaxBidSaleArtworkFragment,
+    saleArtwork
+  )
+  const meData = useFragment(selectMaxBidMeFragment, me)
+
+  const handleRefresh = () => {
+    refetch({}, { fetchPolicy: "network-only" })
+  }
+
+  const handleNext = () => {
+    navigator.push({
+      component: ConfirmBidScreen,
+      passProps: {
+        me: meData,
+        sale_artwork: saleArtworkData,
+        increments: saleArtworkData.increments,
+        selectedBidIndex,
+        refreshSaleArtwork: handleRefresh,
+      },
+    })
+  }
+  const bids = compact(saleArtworkData.increments) || []
+
+  const bidOptions = useMemo(
+    () => bids.map((b) => ({ label: b.display || "", value: b.cents })),
+    [bids]
+  )
+
+  return (
+    <Flex flex={1} mx={2}>
+      <Flex flexGrow={1} justifyContent="center">
+        <Select
+          title="Your max bid"
+          maxModalHeight={height * 0.75}
+          value={bids[selectedBidIndex]?.cents ?? null}
+          options={bidOptions}
+          onSelectValue={(_, index) => setSelectedBidIndex(index)}
+        />
+      </Flex>
+
+      <Button testID="next-button" block onPress={handleNext} flexGrow={0}>
+        Next
+      </Button>
+    </Flex>
+  )
 }
 
+interface SelectMaxBidQRProps {
+  artworkID: string
+  saleID: string
+  navigator: NavigatorIOS
+}
+
+export const SelectMaxBidQueryRenderer = withSuspense<SelectMaxBidQRProps>({
+  Component: (props) => {
+    const initialData = useLazyLoadQuery<SelectMaxBidQuery>(selectMaxBidQuery, {
+      artworkID: props.artworkID,
+      saleID: props.saleID,
+    })
+
+    if (!initialData || !initialData.artwork?.saleArtwork || !initialData.me) {
+      return null
+    }
+
+    // TODO: we should add this into Cohesion
+    //   <ProvideScreenTrackingWithCohesionSchema
+    //   info={screen({ context_screen_owner_type: OwnerType.maxBidFlow })}
+    // >
+    return (
+      <>
+        <NavigationHeader useXButton onLeftButtonPress={() => dismissModal()}>
+          Place a max bid
+        </NavigationHeader>
+
+        <SelectMaxBid
+          me={initialData.me}
+          saleArtwork={initialData.artwork.saleArtwork}
+          {...props}
+        />
+      </>
+    )
+  },
+  ErrorFallback: NoFallback,
+  LoadingFallback: SpinnerFallback,
+})
+
+const selectMaxBidQuery = graphql`
+  query SelectMaxBidQuery($artworkID: String!, $saleID: String!) {
+    artwork(id: $artworkID) {
+      saleArtwork(saleID: $saleID) {
+        ...SelectMaxBid_saleArtwork
+      }
+    }
+    me {
+      ...SelectMaxBid_me
+    }
+  }
+`
+
+const selectMaxBidSaleArtworkFragment = graphql`
+  fragment SelectMaxBid_saleArtwork on SaleArtwork
+  @refetchable(queryName: "SelectMaxBidRefetchQuery") {
+    id
+    increments(useMyMaxBid: true) {
+      display
+      cents
+    }
+    ...ConfirmBid_sale_artwork
+  }
+`
+const selectMaxBidMeFragment = graphql`
+  fragment SelectMaxBid_me on Me {
+    ...ConfirmBid_me
+  }
+`
+
+// TODO: Clean up old code
+
+/*
 @screenTrack({
   context_screen: Schema.PageNames.BidFlowMaxBidPage,
   context_screen_owner_type: null,
@@ -173,3 +287,4 @@ export const SelectMaxBidQueryRenderer: React.FC<{
     </Flex>
   )
 })
+*/
