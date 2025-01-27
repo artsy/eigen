@@ -17,6 +17,7 @@ import {
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubmitArtworkTracking"
 import { goBack } from "app/system/navigation/navigate"
+import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useFormikContext } from "formik"
 import { useEffect, useMemo } from "react"
 import { Alert } from "react-native"
@@ -95,6 +96,11 @@ export const useSubmissionContext = () => {
       }
     }, [currentStep])
   }
+
+  useBackHandler(() => {
+    navigateToPreviousStep()
+    return true
+  })
 
   return {
     isValid,
