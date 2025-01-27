@@ -210,9 +210,7 @@ const HomeViewScreenComponent: React.FC = () => {
     if (artQuizState === "incomplete" && isNavigationReady) {
       // Wait for react-navigation to start drawing the screen before navigating to ArtQuiz
       requestAnimationFrame(() => {
-        navigate("/art-quiz", {
-          replaceActiveScreen: true,
-        })
+        navigate("/art-quiz")
       })
       return
     }
