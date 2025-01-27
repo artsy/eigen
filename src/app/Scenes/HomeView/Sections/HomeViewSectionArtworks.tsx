@@ -86,7 +86,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         href={href}
         mx={2}
         title={section.component?.title}
-        onPress={onSectionViewAll}
+        onPress={href ? onSectionViewAll : undefined}
       />
 
       <ArtworkRail
