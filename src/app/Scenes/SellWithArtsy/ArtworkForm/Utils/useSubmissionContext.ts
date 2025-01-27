@@ -19,7 +19,7 @@ import { useSubmitArtworkTracking } from "app/Scenes/SellWithArtsy/Hooks/useSubm
 import { goBack } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
 import { useEffect, useMemo } from "react"
-import { Alert } from "react-native"
+import { Alert, BackHandler } from "react-native"
 
 export const SubmitArtworkFormEvents = new EventEmitter()
 SubmitArtworkFormEvents.setMaxListeners(20)
@@ -95,6 +95,16 @@ export const useSubmissionContext = () => {
       }
     }, [currentStep])
   }
+
+  // Navigate to the previous step when the hardware back button is pressed (Android)
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener("hardwareBackPress", () => {
+      navigateToPreviousStep()
+      return true
+    })
+
+    return () => subscription.remove()
+  }, [])
 
   return {
     isValid,
