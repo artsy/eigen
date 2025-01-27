@@ -1,13 +1,13 @@
-import { Flex, Spacer, Text, useTheme } from "@artsy/palette-mobile"
+import { Flex, Spacer } from "@artsy/palette-mobile"
 import { ActivityRail_viewer$key } from "__generated__/ActivityRail_viewer.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { shouldDisplayNotification } from "app/Scenes/Activity/utils/shouldDisplayNotification"
 import { ActivityRailItem } from "app/Scenes/HomeView/Components/ActivityRailItem"
+import { SeeAllCard } from "app/Scenes/HomeView/Components/SeeAllCard"
 import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
-import { navigate } from "app/system/navigation/navigate"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { extractNodes } from "app/utils/extractNodes"
-import { FlatList, TouchableOpacity } from "react-native"
+import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -15,6 +15,8 @@ interface ActivityRailProps {
   title: string
   viewer: ActivityRail_viewer$key | null
 }
+
+const ACTIVITY_SCREEN_ROUTE = "/notifications"
 
 export const ActivityRail: React.FC<ActivityRailProps> = ({ title, viewer }) => {
   const { trackEvent } = useTracking()
@@ -29,25 +31,21 @@ export const ActivityRail: React.FC<ActivityRailProps> = ({ title, viewer }) => 
     return null
   }
 
-  const handleHeaderPress = () => {
-    trackEvent(HomeAnalytics.activityHeaderTapEvent())
-  }
-
   const handleMorePress = () => {
     trackEvent(HomeAnalytics.activityViewAllTapEvent())
-
-    navigate("/notifications")
   }
 
   return (
     <Flex pt={2}>
-      <SectionTitle title={title} onPress={handleHeaderPress} href="/notifications" mx={2} />
+      <SectionTitle title={title} onPress={handleMorePress} href={ACTIVITY_SCREEN_ROUTE} mx={2} />
 
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
         ListHeaderComponent={() => <Spacer x={2} />}
-        ListFooterComponent={() => <SeeAllCard onPress={handleMorePress} />}
+        ListFooterComponent={() => (
+          <SeeAllCard href={ACTIVITY_SCREEN_ROUTE} onPress={handleMorePress} />
+        )}
         ItemSeparatorComponent={() => <Spacer x={2} />}
         data={notifications}
         keyExtractor={(item) => item.internalID}
@@ -97,25 +95,3 @@ const notificationsConnectionFragment = graphql`
     }
   }
 `
-
-interface SeeAllCardProps {
-  onPress: () => void
-  buttonText?: string | null
-}
-
-export const SeeAllCard: React.FC<SeeAllCardProps> = ({ buttonText, onPress }) => {
-  const { space } = useTheme()
-
-  return (
-    <Flex flex={1} px={1} mx={4} justifyContent="center">
-      <TouchableOpacity
-        onPress={onPress}
-        hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
-      >
-        <Text accessibilityLabel="See All" fontWeight="bold">
-          {buttonText ?? "See All"}
-        </Text>
-      </TouchableOpacity>
-    </Flex>
-  )
-}
