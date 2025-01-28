@@ -41,7 +41,7 @@ const WARN = (message) => console.log(`🟡 ${message}`)
 const g = (text) => chalk.bold.green(text)
 const r = (text) => chalk.bold.red(text)
 
-const checkEnvVariablesAreUpToDate = () => {
+const checkDotEnvVariablesAreUpToDate = () => {
   exec("touch .env.temp")
   exec("aws s3 cp s3://artsy-citadel/eigen/.env.shared .env.temp")
 
@@ -60,6 +60,30 @@ const checkEnvVariablesAreUpToDate = () => {
     YES(`Your ${g`env file`} seems to be valid.`)
   }
   exec("rm .env.temp")
+}
+
+const checkEnvJSONVariablesAreUpToDate = () => {
+  exec("touch keys.shared.json.temp")
+  exec("aws s3 cp s3://artsy-citadel/eigen/keys.shared.json keys.shared.json.temp")
+
+  const updatedEnv = fs.readFileSync("./keys.shared.json.temp", "utf8").toString()
+  let localEnv = ""
+  try {
+    localEnv = fs.readFileSync("./keys.shared.json", "utf8").toString()
+  } catch (e) {
+    // in that case, we don't even have a `keys.shared.json`.
+    localEnv = "nope"
+  }
+
+  if (updatedEnv !== localEnv) {
+    NO(
+      `Your ${r`keys.shared.json file`} does not match the one in AWS.`,
+      `Run ${g`yarn setup:artsy`}.`
+    )
+  } else {
+    YES(`Your ${g`keys.shared.json file`} seems to be valid.`)
+  }
+  exec("rm keys.shared.json.temp")
 }
 
 const checkNodeExists = () => {
@@ -247,7 +271,8 @@ const checkAndroidStudioVersion = () => {
 }
 
 const main = async () => {
-  checkEnvVariablesAreUpToDate()
+  checkEnvJSONVariablesAreUpToDate()
+  checkDotEnvVariablesAreUpToDate()
 
   checkNodeExists()
   checkYarnExists()
