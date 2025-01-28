@@ -67,7 +67,8 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 const Main = () => {
   useRageShakeDevMenu()
   useEffect(() => {
-    if (Keys.OSS) {
+    const oss = Keys.OSS
+    if (oss === "true") {
       return
     }
     GoogleSignin.configure({
