@@ -33,7 +33,9 @@ export const ArtQuizWelcome = () => {
             variant="text"
             onPress={() => {
               GlobalStore.actions.auth.setArtQuizState("complete")
-              navigate("/")
+              navigate("/", {
+                replaceActiveScreen: true,
+              })
             }}
           >
             Skip
