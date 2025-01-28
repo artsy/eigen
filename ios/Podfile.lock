@@ -1520,7 +1520,7 @@ PODS:
     - React-Core
   - react-native-in-app-review (4.3.3):
     - React-Core
-  - react-native-keys (0.7.10):
+  - react-native-keys (0.7.11):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2822,7 +2822,7 @@ SPEC CHECKSUMS:
   react-native-geolocation: def10765a5144e7a76837093d43303d70bb6addf
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-in-app-review: b3d1eed3d1596ebf6539804778272c4c65e4a400
-  react-native-keys: f302d79b77f0ba06c0ac9b3f8fc6b18af776581f
+  react-native-keys: ac4011e7f7b63f9c0557a0c120a9f7e78ee9ab7e
   react-native-netinfo: ce102083db558237dac20cf64172ef569ebe2dd9
   react-native-pager-view: a58a82591f421322e2bdb4fb69b82f6486dd4b22
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd

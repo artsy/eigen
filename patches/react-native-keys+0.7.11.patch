@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-keys/android/build.gradle b/node_modules/react-native-keys/android/build.gradle
+index 7d07aae..56f223a 100644
+--- a/node_modules/react-native-keys/android/build.gradle
++++ b/node_modules/react-native-keys/android/build.gradle
+@@ -156,6 +156,7 @@ android {
+       "**/libc++_shared.so",
+       "**/libfbjni.so",
+       "**/libreactnativejni.so",
++      "**/libreactnative.so",
+       "**/libjsi.so",
+       "**/libreact_nativemodule_core.so",
+       "**/libturbomodulejsijni.so",

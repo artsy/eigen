@@ -301,9 +301,9 @@ In the HomeView Tasks, we want to update the FlatList's `CellRendererComponent` 
 
 #### When can we remove this:
 
-When react-native-keys fixes and releases the fix for those two issues:
-https://github.com/numandev1/react-native-keys/issues/86 and https://github.com/numandev1/react-native-keys/issues/86#issuecomment-2546610160
+When react-native-keys fixes and releases the this issue:
+https://github.com/numandev1/react-native-keys/issues/86#issuecomment-2546610160
 
 #### Explanation/Context:
 
-Android was unable to build correctly on react-native 76 without these two additions
+Android was unable to build correctly on react-native 76 without excluding `libreactnative.so`
