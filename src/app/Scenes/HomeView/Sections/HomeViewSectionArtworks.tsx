@@ -52,7 +52,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
   const viewAll = section.component?.behaviors?.viewAll
 
-  if (!artworks || artworks.length === 0) {
+  if (!artworks.length) {
     return null
   }
 
@@ -85,10 +85,6 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     )
 
     navigate(href)
-  }
-
-  if (!artworks.length) {
-    return null
   }
 
   return (
