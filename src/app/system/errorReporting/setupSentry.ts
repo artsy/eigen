@@ -37,7 +37,7 @@ interface SetupSentryProps extends Partial<Sentry.ReactNativeOptions> {
 
 export function setupSentry(props: SetupSentryProps = { debug: false }) {
   const sentryDSN = Keys.secureFor("SENTRY_DSN")
-  const ossUser = Keys.OSS === "true"
+  const ossUser = Keys.OSS
 
   // In DEV, enabling this will clober stack traces in errors and logs, obscuring
   // the source of the error. So we disable it in dev mode.
