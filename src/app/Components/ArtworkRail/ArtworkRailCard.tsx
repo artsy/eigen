@@ -61,10 +61,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     ;(artwork as DissapearableArtwork)?._disappearable?.disappear()
   }
 
-  const artworkRailCardMetaPadding = fontScale * 10
-  const artworkRailCardMetaDataHeight =
-    ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + artworkRailCardMetaPadding
-
   return (
     <Disappearable ref={(ref) => ((artwork as DissapearableArtwork)._disappearable = ref)}>
       <AnalyticsContextProvider
