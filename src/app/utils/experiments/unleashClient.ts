@@ -29,7 +29,7 @@ export function getUnleashClient(props?: {
   env?: "production" | "staging"
   userId?: string | null
 }): PublicUnleashClient {
-  if (Keys.OSS === "true") {
+  if (Keys.OSS) {
     return fakeUnleashClient
   }
 
