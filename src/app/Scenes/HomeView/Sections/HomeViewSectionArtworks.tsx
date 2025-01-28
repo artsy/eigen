@@ -23,6 +23,7 @@ import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewS
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
 import { useMemoizedRandom } from "app/utils/placeholders"
@@ -117,7 +118,8 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 }
 
 const fragment = graphql`
-  fragment HomeViewSectionArtworks_section on HomeViewSectionArtworks {
+  fragment HomeViewSectionArtworks_section on HomeViewSectionArtworks
+  @argumentDefinitions(enableHidingDislikedArtworks: { type: "Boolean", defaultValue: false }) {
     __typename
     internalID
     contextModule
@@ -135,7 +137,7 @@ const fragment = graphql`
     artworksConnection(first: 10) {
       edges {
         node {
-          isDisliked
+          isDisliked @include(if: $enableHidingDislikedArtworks)
           ...ArtworkRail_artworks
         }
       }
@@ -144,10 +146,11 @@ const fragment = graphql`
 `
 
 const homeViewSectionArtworksQuery = graphql`
-  query HomeViewSectionArtworksQuery($id: String!) {
+  query HomeViewSectionArtworksQuery($id: String!, $enableHidingDislikedArtworks: Boolean!) {
     homeView {
       section(id: $id) {
         ...HomeViewSectionArtworks_section
+          @arguments(enableHidingDislikedArtworks: $enableHidingDislikedArtworks)
       }
     }
   }
@@ -193,10 +196,13 @@ const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
 export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> = memo(
   withSuspense({
     Component: ({ sectionID, index, refetchKey, ...flexProps }) => {
+      const enableHidingDislikedArtworks = useFeatureFlag("AREnableHidingDislikedArtworks")
+
       const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(
         homeViewSectionArtworksQuery,
         {
           id: sectionID,
+          enableHidingDislikedArtworks,
         },
         {
           fetchKey: refetchKey,

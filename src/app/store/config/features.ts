@@ -257,6 +257,12 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableHidingDislikedArtworks: {
+    description: "Enable hiding disliked artworks",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableHidingDislikedArtworks",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
