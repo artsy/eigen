@@ -137,10 +137,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   const switchToLive = () => {
     const liveBaseURL = unsafe__getEnvironment().predictionURL
     const liveAuctionURL = `${liveBaseURL}/${sale.slug}`
-    navigate(liveAuctionURL, {
-      replaceActiveScreen: true,
-      replaceActiveModal: true,
-    })
+    navigate(liveAuctionURL, {})
   }
 
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
