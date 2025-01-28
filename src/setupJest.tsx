@@ -283,8 +283,30 @@ jest.mock("react-native-image-crop-picker", () => ({
   clean: jest.fn(),
 }))
 
-jest.mock("react-native-config", () => {
-  const mockConfig = {
+jest.mock("react-native-keys", () => {
+  interface MockConfig {
+    secureFor: (key: keyof typeof secrets) => string
+    secrets: {
+      ARTSY_DEV_API_CLIENT_SECRET: string
+      ARTSY_DEV_API_CLIENT_KEY: string
+      ARTSY_PROD_API_CLIENT_SECRET: string
+      ARTSY_PROD_API_CLIENT_KEY: string
+      ARTSY_FACEBOOK_APP_ID: string
+      SEGMENT_PRODUCTION_WRITE_KEY_IOS: string
+      SEGMENT_PRODUCTION_WRITE_KEY_ANDROID: string
+      SEGMENT_STAGING_WRITE_KEY_IOS: string
+      SEGMENT_STAGING_WRITE_KEY_ANDROID: string
+      SENTRY_DSN: string
+      GOOGLE_MAPS_API_KEY: string
+      MAPBOX_API_CLIENT_KEY: string
+      UNLEASH_PROXY_CLIENT_KEY_PRODUCTION: string
+      UNLEASH_PROXY_CLIENT_KEY_STAGING: string
+      UNLEASH_PROXY_URL_PRODUCTION: string
+      UNLEASH_PROXY_URL_STAGING: string
+    }
+  }
+
+  const secrets = {
     ARTSY_DEV_API_CLIENT_SECRET: "artsy_api_client_secret", // pragma: allowlist secret
     ARTSY_DEV_API_CLIENT_KEY: "artsy_api_client_key", // pragma: allowlist secret
     ARTSY_PROD_API_CLIENT_SECRET: "artsy_api_client_secret", // pragma: allowlist secret
@@ -302,8 +324,15 @@ jest.mock("react-native-config", () => {
     UNLEASH_PROXY_URL_PRODUCTION: "https://unleash_proxy_url_production", // pragma: allowlist secret
     UNLEASH_PROXY_URL_STAGING: "https://unleash_proxy_url_staging", // pragma: allowlist secret
   }
-  // support both default and named export
-  return { ...mockConfig, Config: mockConfig }
+
+  const mockConfig: MockConfig = {
+    secureFor: (key) => {
+      return secrets[key]
+    },
+    secrets,
+  }
+
+  return mockConfig
 })
 
 jest.mock("react-native-view-shot", () => ({}))
