@@ -7,7 +7,7 @@ export interface AppStateProps {
   onBackground?: () => void
 }
 
-export default function useAppState({ onForeground, onBackground }: AppStateProps) {
+export default function useAppState({ onForeground, onBackground, onChange }: AppStateProps) {
   /**
    * App States
    * active - The app is running in the foreground
@@ -30,6 +30,10 @@ export default function useAppState({ onForeground, onBackground }: AppStateProp
       // App has come to the background
       if (appState.current.match(/active/) && nextAppState === "background" && onBackground) {
         onBackground()
+      }
+
+      if (onChange) {
+        onChange(nextAppState)
       }
 
       appState.current = nextAppState

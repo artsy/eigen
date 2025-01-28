@@ -263,6 +263,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableHidingDislikedArtworks",
   },
+  AREnableArtworkCardContextMenuAndroid: {
+    description: "Enable long press menu on artwork cards for Android",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableArtworkCardContextMenuAndroid",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
