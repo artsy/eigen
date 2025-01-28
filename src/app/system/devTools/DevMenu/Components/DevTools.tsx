@@ -132,7 +132,7 @@ export const DevTools: React.FC<{}> = () => {
               if (!Keys.secureFor("SENTRY_DSN")) {
                 Alert.alert(
                   "No Sentry DSN available",
-                  __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
+                  __DEV__ ? "Set it in keys.shared.json and re-build the app." : undefined
                 )
                 return
               }
@@ -145,7 +145,7 @@ export const DevTools: React.FC<{}> = () => {
               if (!Keys.secureFor("SENTRY_DSN")) {
                 Alert.alert(
                   "No Sentry DSN available",
-                  __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
+                  __DEV__ ? "Set it in keys.shared.json and re-build the app." : undefined
                 )
                 return
               }

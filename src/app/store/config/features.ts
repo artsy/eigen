@@ -323,7 +323,9 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
     onChange: (value, { toast }) => {
       if (!Keys.secureFor("SENTRY_DSN")) {
         toast.show(
-          `No Sentry DSN available ${__DEV__ ? "Set it in .env.shared and re-build the app." : ""}`,
+          `No Sentry DSN available ${
+            __DEV__ ? "Set it in keys.shared.json and re-build the app." : ""
+          }`,
           "middle"
         )
         return

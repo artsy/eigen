@@ -4,12 +4,6 @@ apply plugin: "com.google.gms.google-services"
 apply plugin: "com.facebook.react"
 apply plugin: "org.jetbrains.kotlin.android"
 
-// TODO: remove those after finishing the migration to react-native-keys
-// project.ext.envConfigFiles = [
-//     debug: ".env.shared",
-//     release: ".env.shared",
-// ]
-
 project.ext.keyFiles = [
  debug: "keys.shared.json",
  release: "keys.shared.json",
