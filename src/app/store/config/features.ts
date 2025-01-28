@@ -217,12 +217,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableMarketingCollectionsCategories",
   },
-  AREnableNewSaveAndFollowOnArtworkCard: {
-    description: "Redesign Save CTA and Add Follow CTA on Artwork Grid/Rail",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableNewSaveAndFollowOnArtworkCard",
-  },
   AREnablePaymentFailureBanner: {
     description: "Enable payment failure banner",
     readyForRelease: true,

@@ -2,7 +2,6 @@ import { Box, Flex, Spacer } from "@artsy/palette-mobile"
 import { ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import {
-  ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   ARTWORK_RAIL_CARD_MAX_WIDTH,
   ARTWORK_RAIL_CARD_MIN_WIDTH,
   ArtworkRailCardImage,
@@ -13,11 +12,8 @@ import {
 } from "app/Components/ArtworkRail/ArtworkRailCardMeta"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
-import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
-import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import { useState } from "react"
 import { GestureResponderEvent, PixelRatio } from "react-native"
@@ -55,15 +51,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   testID,
   ...restProps
 }) => {
-  const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
-    "AREnableNewSaveAndFollowOnArtworkCard"
-  )
-
-  const { enableNewSaveCTA, enableNewSaveAndFollowCTAs } =
-    useGetNewSaveAndFollowOnArtworkCardExperimentVariant(
-      "onyx_artwork-card-save-and-follow-cta-redesign"
-    )
-
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
 
   const artwork = useFragment(artworkFragment, restProps.artwork)
@@ -74,16 +61,9 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     ;(artwork as DissapearableArtwork)?._disappearable?.disappear()
   }
 
-  // 36 = 20 (padding) + 18 (icon size) + 5 (top padding) + 2 (border radius when dark background)
-  const likeAndFollowCTAPadding =
-    showSaveIcon &&
-    enableNewSaveAndFollowOnArtworkCard &&
-    (enableNewSaveCTA || enableNewSaveAndFollowCTAs)
-      ? fontScale * (43 + (dark ? 2 : 0))
-      : 0
   const artworkRailCardMetaPadding = fontScale * 10
   const artworkRailCardMetaDataHeight =
-    ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + artworkRailCardMetaPadding + likeAndFollowCTAPadding
+    ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + artworkRailCardMetaPadding
 
   return (
     <Disappearable ref={(ref) => ((artwork as DissapearableArtwork)._disappearable = ref)}>
@@ -118,9 +98,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               }}
             >
               <Flex
-                height={
-                  containerHeight ?? ARTWORK_RAIL_CARD_IMAGE_HEIGHT + artworkRailCardMetaDataHeight
-                }
+                height={containerHeight ?? "auto"}
                 justifyContent="flex-start"
                 minWidth={ARTWORK_RAIL_CARD_MIN_WIDTH}
                 maxWidth={ARTWORK_RAIL_CARD_MAX_WIDTH}
@@ -146,20 +124,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   showSaveIcon={showSaveIcon}
                   backgroundColor={backgroundColor}
                 />
-
-                {!!enableNewSaveAndFollowOnArtworkCard &&
-                  !!(enableNewSaveCTA || enableNewSaveAndFollowCTAs) && <Spacer y={0.5} />}
-
-                <ArtworkItemCTAs
-                  artwork={artwork}
-                  showSaveIcon={showSaveIcon}
-                  dark={dark}
-                  contextModule={contextModule}
-                  contextScreen={contextScreen}
-                  contextScreenOwnerId={contextScreenOwnerId}
-                  contextScreenOwnerSlug={contextScreenOwnerSlug}
-                  contextScreenOwnerType={contextScreenOwnerType}
-                />
               </Flex>
             </ContextMenuArtwork>
           </RouterLink>
@@ -184,6 +148,5 @@ const artworkFragment = graphql`
     ...ArtworkRailCardMeta_artwork
     ...ContextMenuArtwork_artwork
     ...CreateArtworkAlertModal_artwork
-    ...ArtworkItemCTAs_artwork
   }
 `
