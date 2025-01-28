@@ -4,62 +4,52 @@ import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Compo
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { useEffect, useMemo, useState } from "react"
-import { fetchQuery, graphql } from "react-relay"
+import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from "react-relay"
 import type {
   InfiniteDiscoveryQuery,
   InfiniteDiscoveryQuery$data,
 } from "__generated__/InfiniteDiscoveryQuery.graphql"
 
-type InfiniteDiscoveryArtwork = NonNullable<
-  NonNullable<NonNullable<InfiniteDiscoveryQuery$data["discoverArtworks"]>["edges"]>[number]
->["node"]
+interface InfiniteDiscoveryProps {
+  fetchMoreArtworks: () => void
+  queryRef: PreloadedQuery<InfiniteDiscoveryQuery>
+}
 
-export const InfiniteDiscovery: React.FC = () => {
+type InfiniteDiscoveryArtwork = ExtractNodeType<InfiniteDiscoveryQuery$data["discoverArtworks"]>
+
+export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
+  fetchMoreArtworks,
+  queryRef,
+}) => {
   const REFETCH_BUFFER = 3
 
-  const discoveredArtworksIds = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.discoveredArtworkIds
-  )
-  const { addDiscoveredArtworkId } = GlobalStore.actions.infiniteDiscovery
+  const { addDiscoveredArtworkIds } = GlobalStore.actions.infiniteDiscovery
 
   const [index, setIndex] = useState(0)
   const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>([])
 
-  useEffect(() => {
-    fetchQuery<InfiniteDiscoveryQuery>(
-      getRelayEnvironment(),
-      infiniteDiscoveryQuery,
-      { excludeArtworkIds: discoveredArtworksIds },
-      {
-        fetchPolicy: "network-only",
-      }
-    ).subscribe({
-      next: (data) => {
-        if (!data) {
-          console.error("Error fetching infinite discovery batch: response is falsy")
-          return
-        }
+  const data = usePreloadedQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, queryRef)
 
-        setArtworks(extractNodes(data.discoverArtworks))
-      },
-      error: (error: Error) => {
-        console.error("Error fetching infinite discovery batch:", error)
-      },
-    })
-  }, [])
+  /**
+   * This is called whenever a query for more artworks is made.
+   */
+  useEffect(() => {
+    const newArtworks = extractNodes(data.discoverArtworks)
+
+    // record the artworks that have been served to the user so that they are not served again
+    addDiscoveredArtworkIds(newArtworks.map((artwork) => artwork.internalID))
+
+    setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
+  }, [data, extractNodes, setArtworks])
 
   const artworkCards: React.ReactNode[] = useMemo(() => {
     return artworks.map((artwork, i) => <InfiniteDiscoveryArtworkCard artwork={artwork} key={i} />)
   }, [artworks])
 
   const unswipedCards: React.ReactNode[] = artworkCards.slice(index)
-
-  if (!artworks) {
-    return <InfiniteDiscoverySpinner />
-  }
 
   const goToPrevious = () => {
     if (index > 0) {
@@ -69,35 +59,12 @@ export const InfiniteDiscovery: React.FC = () => {
 
   const goToNext = () => {
     if (index < artworks.length - 1) {
-      addDiscoveredArtworkId(artworks[index]?.internalID)
       setIndex(index + 1)
     }
 
     // fetch more artworks when the user is about to reach the end of the list
     if (index === artworks.length - REFETCH_BUFFER) {
-      fetchQuery<InfiniteDiscoveryQuery>(
-        getRelayEnvironment(),
-        infiniteDiscoveryQuery,
-        { excludeArtworkIds: discoveredArtworksIds },
-        {
-          fetchPolicy: "network-only",
-        }
-      ).subscribe({
-        next: (data) => {
-          if (!data) {
-            console.error("Error fetching infinite discovery batch: response is falsy")
-            return
-          }
-
-          setArtworks((previousArtworks) => [
-            ...previousArtworks,
-            ...(extractNodes(data.discoverArtworks) as InfiniteDiscoveryArtwork[]),
-          ])
-        },
-        error: (error: Error) => {
-          console.error("Error fetching infinite discovery batch:", error)
-        },
-      })
+      fetchMoreArtworks()
     }
   }
 
@@ -151,13 +118,41 @@ const InfiniteDiscoverySpinner: React.FC = () => (
   </Screen>
 )
 
-export const InfiniteDiscoveryQueryRenderer = () => <InfiniteDiscovery />
+export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
+  const [queryRef, loadQuery] = useQueryLoader<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery)
+
+  const discoveredArtworksIds = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.discoveredArtworkIds
+  )
+
+  /**
+   * This fetches the first batch of artworks. discoveredArtworksIds is omitted from the list of
+   * dependencies to prevent this from being called unnecessarily, since that list is updated when
+   * new artworks are fetched.
+   */
+  useEffect(() => {
+    if (!queryRef) {
+      loadQuery({ excludeArtworkIds: discoveredArtworksIds })
+    }
+  }, [loadQuery, queryRef])
+
+  if (!queryRef) {
+    return <InfiniteDiscoverySpinner />
+  }
+
+  const fetchMoreArtworks = () => {
+    loadQuery({ excludeArtworkIds: discoveredArtworksIds })
+  }
+
+  return <InfiniteDiscovery fetchMoreArtworks={fetchMoreArtworks} queryRef={queryRef} />
+}
 
 export const infiniteDiscoveryQuery = graphql`
   query InfiniteDiscoveryQuery($excludeArtworkIds: [String!]!) {
     discoverArtworks(excludeArtworkIds: $excludeArtworkIds) {
       edges {
         node {
+          internalID
           ...InfiniteDiscoveryArtworkCard_artwork
         }
       }
