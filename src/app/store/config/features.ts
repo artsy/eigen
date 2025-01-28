@@ -257,11 +257,17 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
   },
+  AREnableHidingDislikedArtworks: {
+    description: "Enable hiding disliked artworks",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableHidingDislikedArtworks",
+  },
   AREnableArtworkCardContextMenuAndroid: {
     description: "Enable long press menu on artwork cards for Android",
     readyForRelease: false,
     showInDevMenu: true,
-    // echoFlagKey: "AREnableArtworkCardContextMenuAndroid",
+    echoFlagKey: "AREnableArtworkCardContextMenuAndroid",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
