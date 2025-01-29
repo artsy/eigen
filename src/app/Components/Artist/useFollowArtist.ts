@@ -5,7 +5,7 @@ import { useState } from "react"
 import { useFragment, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 
-export const useFollowArtist = (artist: useFollowArtist_artist$key) => {
+export const useFollowArtist = (artist: useFollowArtist_artist$key | null) => {
   const [isLoading, setIsLoading] = useState(false)
   const data = useFragment(fragment, artist)
   const [commitMutation] = useMutation<useFollowArtist_artist_Mutation>(mutation)

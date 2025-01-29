@@ -20,8 +20,7 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   const data = useFragment(fragment, artist)
   const [isFollowed, setIsFollowed] = useState(!!data?.isFollowed)
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const { handleFollowToggle } = useFollowArtist(data!)
+  const { handleFollowToggle } = useFollowArtist(data)
 
   useDebounce(
     () => {

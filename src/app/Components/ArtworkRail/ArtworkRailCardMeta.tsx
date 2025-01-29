@@ -16,7 +16,7 @@ import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 // These are the props that are shared between ArtworkRailCard and ArtworkRailCardMeta
 export interface ArtworkRailCardCommonProps extends ArtworkActionTrackingProps {
-  dark?: boolean // TODO: cleanup dark
+  dark?: boolean
   hideArtistName?: boolean
   hideIncreasedInterestSignal?: boolean
   hideCuratorsPickSignal?: boolean
