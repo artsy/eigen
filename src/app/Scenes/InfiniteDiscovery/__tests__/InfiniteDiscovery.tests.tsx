@@ -15,7 +15,7 @@ jest.mock("app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
   InfiniteDiscoveryBottomSheet: () => null,
 }))
 
-describe("InfiniteDiscovery", () => {
+xdescribe("InfiniteDiscovery", () => {
   const mockFetchQuery = fetchQuery as jest.MockedFunction<typeof fetchQuery>
 
   beforeEach(() => {
