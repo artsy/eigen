@@ -1,6 +1,5 @@
 import { waitFor } from "@testing-library/react-native"
 import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
-import { Card } from "app/Components/FancySwiper/FancySwiperCard"
 import { swipeLeft, swipeRight } from "app/Components/FancySwiper/__tests__/utils"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
@@ -20,13 +19,4 @@ describe("FancySwiper", () => {
   })
 })
 
-const cards: Card[] = [
-  {
-    id: "1",
-    jsx: <>1</>,
-  },
-  {
-    id: "2",
-    jsx: <>2</>,
-  },
-]
+const cards: React.ReactNode[] = [<></>, <></>]

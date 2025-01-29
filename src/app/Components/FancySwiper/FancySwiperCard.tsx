@@ -2,13 +2,8 @@ import { memo } from "react"
 import { Animated, GestureResponderHandlers } from "react-native"
 import { OFFSET_X } from "./FancySwiper"
 
-export interface Card {
-  jsx: JSX.Element
-  id: string
-}
-
 interface FancySwiperCardProps extends GestureResponderHandlers {
-  card: Card
+  card: React.ReactNode
   swiper: Animated.ValueXY
   isTopCard: boolean
 }
@@ -30,7 +25,7 @@ export const FancySwiperCard = memo(
         testID={isTopCard ? "top-fancy-swiper-card" : undefined}
         {...rest}
       >
-        {card.jsx}
+        {card}
       </Animated.View>
     )
   }

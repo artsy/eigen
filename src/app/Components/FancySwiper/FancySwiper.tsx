@@ -1,13 +1,13 @@
 import { Flex } from "@artsy/palette-mobile"
 import { FancySwiperIcons } from "app/Components/FancySwiper/FancySwiperIcons"
-import { useRef } from "react"
+import React, { useRef } from "react"
 import { PanResponder, Animated } from "react-native"
-import { Card, FancySwiperCard } from "./FancySwiperCard"
+import { FancySwiperCard } from "./FancySwiperCard"
 
 export const OFFSET_X = 100
 
 interface FancySwiperProps {
-  cards: Card[]
+  cards: React.ReactNode[]
   hideActionButtons?: boolean
   onSwipeLeft?: () => void
   onSwipeRight?: () => void
@@ -92,7 +92,7 @@ export const FancySwiper = ({
           return (
             <FancySwiperCard
               card={card}
-              key={card.id}
+              key={index}
               swiper={swiper}
               isTopCard={isTopCard}
               {...gestureDraggers}
