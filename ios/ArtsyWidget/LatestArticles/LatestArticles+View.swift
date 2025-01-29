@@ -33,7 +33,7 @@ extension LatestArticles {
             
             VStack() {
                 HStack(alignment: .top) {
-                    Text("News")
+                    Text("Editorial")
                         .font(bodyFont)
                         .foregroundColor(whiteColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
