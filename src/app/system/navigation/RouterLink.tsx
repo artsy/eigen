@@ -11,6 +11,10 @@ interface RouterLinkProps {
   to?: string | null | undefined
 }
 
+/**
+ * Wrapper component around <Touchable> that navigates to a specified route (the `to` prop) when pressed.
+ * `RouterLink` also supports prefetching the route when it comes into view.
+ */
 export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   disablePrefetch,
   to,
