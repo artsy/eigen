@@ -1,10 +1,9 @@
 import { Box, Button, Input, LinkText, Spacer, Text } from "@artsy/palette-mobile"
 import { PhoneInput } from "app/Components/Input/PhoneInput"
 import { navigate } from "app/system/navigation/navigate"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useFormikContext } from "formik"
-import { Platform, ScrollView } from "react-native"
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 import { RequestForPriceEstimateFormikSchema } from "./RequestForPriceEstimateScreen"
 
 export const RequestForPriceEstimateForm = () => {
@@ -13,7 +12,7 @@ export const RequestForPriceEstimateForm = () => {
     useFormikContext<RequestForPriceEstimateFormikSchema>()
 
   return (
-    <ArtsyKeyboardAvoidingView>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
         <Box pt={`${safeAreaInsets.top}px`} pb={`${safeAreaInsets.bottom}px`} px={2}>
           <Box my={4}>
@@ -94,6 +93,6 @@ export const RequestForPriceEstimateForm = () => {
           </Box>
         </Box>
       </ScrollView>
-    </ArtsyKeyboardAvoidingView>
+    </KeyboardAvoidingView>
   )
 }

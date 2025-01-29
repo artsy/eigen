@@ -1,13 +1,4 @@
-import {
-  ArtsyKeyboardAvoidingView,
-  Button,
-  Flex,
-  Input,
-  InputRef,
-  Join,
-  Screen,
-  Spacer,
-} from "@artsy/palette-mobile"
+import { Button, Flex, Input, InputRef, Join, Screen, Spacer } from "@artsy/palette-mobile"
 import { RouteProp, useIsFocused, useNavigation, useRoute } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
@@ -15,7 +6,7 @@ import { NavigationHeader } from "app/Components/NavigationHeader"
 import { ArtworkFormScreen } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { useFormik } from "formik"
 import React, { useEffect, useRef, useState } from "react"
-import { Keyboard, ScrollView } from "react-native"
+import { Keyboard, KeyboardAvoidingView, ScrollView } from "react-native"
 import * as Yup from "yup"
 
 export interface MyCollectionCustomArtistSchema {
@@ -94,7 +85,7 @@ export const AddMyCollectionArtist: React.FC<{ useNativeHeader?: boolean }> = (p
 
   return (
     <Screen safeArea={false}>
-      <ArtsyKeyboardAvoidingView>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         {!props.useNativeHeader && (
           <NavigationHeader onLeftButtonPress={handleBackPress} hideBottomDivider>
             Add New Artist
@@ -197,7 +188,7 @@ export const AddMyCollectionArtist: React.FC<{ useNativeHeader?: boolean }> = (p
             </Join>
           </Flex>
         </ScrollView>
-      </ArtsyKeyboardAvoidingView>
+      </KeyboardAvoidingView>
     </Screen>
   )
 }

@@ -5,12 +5,11 @@ import { Address } from "app/Components/Bidding/types"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { Stack } from "app/Components/Stack"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { ScreenDimensionsContext } from "app/utils/hooks"
 import { Schema, screenTrack, track } from "app/utils/track"
 import React, { useEffect, useRef, useState } from "react"
-import { ScrollView } from "react-native"
+import { KeyboardAvoidingView, ScrollView } from "react-native"
 
 interface BillingAddressProps {
   onSubmit: (values: Address) => void
@@ -100,7 +99,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
   }
 
   return (
-    <ArtsyKeyboardAvoidingView>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <NavigationHeader onLeftButtonPress={() => navigator?.pop()}>
         Add billing address
       </NavigationHeader>
@@ -239,6 +238,6 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({
           </Button>
         </Stack>
       </ScrollView>
-    </ArtsyKeyboardAvoidingView>
+    </KeyboardAvoidingView>
   )
 }

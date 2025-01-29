@@ -10,11 +10,10 @@ import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearch
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { Schema } from "app/utils/track"
 import { memo, Suspense, useEffect, useRef, useState } from "react"
-import { Platform, ScrollView } from "react-native"
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -94,7 +93,7 @@ export const Search: React.FC = () => {
 
   return (
     <SearchContext.Provider value={searchProviderValues}>
-      <ArtsyKeyboardAvoidingView>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         <Flex p={2} pb={1}>
           <GlobalSearchInput ownerType={OwnerType.search} />
         </Flex>
@@ -129,7 +128,7 @@ export const Search: React.FC = () => {
             </Scrollable>
           )}
         </Flex>
-      </ArtsyKeyboardAvoidingView>
+      </KeyboardAvoidingView>
     </SearchContext.Provider>
   )
 }

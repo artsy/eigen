@@ -17,9 +17,9 @@ import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
-import { NavigationHeader } from "app/Components/NavigationHeader"
 import { MoneyInput } from "app/Components/Input/MoneyInput"
 import { LocationAutocomplete, buildLocationDisplay } from "app/Components/LocationAutocomplete"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
 import { ArrowDetails } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArrowDetails"
 import { ArtistCustomArtist } from "app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistCustomArtist"
@@ -36,14 +36,20 @@ import { myCollectionDeleteArtwork } from "app/Scenes/MyCollection/mutations/myC
 import { Currency } from "app/Scenes/Search/UserPrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { dismissModal, goBack, popToRoot } from "app/system/navigation/navigate"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import { Alert, Image, Platform, ScrollView, TouchableOpacity } from "react-native"
+import {
+  Alert,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native"
 import { useTracking } from "react-tracking"
 
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
@@ -237,7 +243,7 @@ export const MyCollectionArtworkFormMain: React.FC<
 
   return (
     <>
-      <ArtsyKeyboardAvoidingView>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         {formikValues.artistSearchResult?.internalID ? (
           <MyCollectionArtworkFormDeleteArtworkModal
             visible={showDeleteArtistModal}
@@ -469,7 +475,7 @@ export const MyCollectionArtworkFormMain: React.FC<
             {mode === "edit" ? "Save changes" : "Complete"}
           </Button>
         </Flex>
-      </ArtsyKeyboardAvoidingView>
+      </KeyboardAvoidingView>
     </>
   )
 }

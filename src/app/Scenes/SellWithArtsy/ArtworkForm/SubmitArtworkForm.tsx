@@ -36,10 +36,9 @@ import {
 } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
 import { createOrUpdateSubmission } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/createOrUpdateSubmission"
 import { fetchUserContactInformation } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/utils/fetchUserContactInformation"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect } from "react"
-import { Keyboard, Platform } from "react-native"
+import { Keyboard, KeyboardAvoidingView, Platform } from "react-native"
 import { isTablet as getIsTablet } from "react-native-device-info"
 
 export type SubmitArtworkStackNavigation = {
@@ -150,7 +149,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
 
   return (
     <FormikProvider value={formik}>
-      <ArtsyKeyboardAvoidingView>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         <NavigationContainer
           independent
           ref={__unsafe__SubmissionArtworkFormNavigationRef}
@@ -278,7 +277,7 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
           </Stack.Navigator>
           <SubmitArtworkBottomNavigation />
         </NavigationContainer>
-      </ArtsyKeyboardAvoidingView>
+      </KeyboardAvoidingView>
     </FormikProvider>
   )
 }

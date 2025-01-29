@@ -2,13 +2,13 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { SentConsignmentInquiry } from "@artsy/cohesion/dist/Schema/Events/Consignments"
 import { ConsignmentInquiryScreenMutation } from "__generated__/ConsignmentInquiryScreenMutation.graphql"
 import { AbandonFlowModal } from "app/Components/AbandonFlowModal"
-import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { useToast } from "app/Components/Toast/toastHook"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { FormikProvider, useFormik } from "formik"
 import { useState } from "react"
+import { KeyboardAvoidingView, Modal } from "react-native"
+import { Screen } from "react-native-screens"
 import { commitMutation, Environment, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import * as Yup from "yup"
@@ -133,13 +133,13 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
   return (
     <FormikProvider value={formik}>
       <>
-        <ArtsyKeyboardAvoidingView>
+        <KeyboardAvoidingView style={{ flex: 1 }}>
           <ConsignmentInquiryForm
             confirmLeaveEdit={(v) => setShowAbandonModal(v)}
             canPopScreen={canPopScreen}
             recipientName={recipientName}
           />
-        </ArtsyKeyboardAvoidingView>
+        </KeyboardAvoidingView>
 
         <AbandonFlowModal
           isVisible={!!showAbandonModal && !showConfirmedModal}
@@ -151,13 +151,11 @@ export const ConsignmentInquiryScreen: React.FC<InquiryScreenProps> = ({
           onLeave={goBack}
         />
 
-        <FancyModal
-          fullScreen
-          visible={!!showConfirmedModal && !showAbandonModal}
-          animationPosition="right"
-        >
-          <ConsignmentInquiryConfirmation />
-        </FancyModal>
+        <Modal visible={!!showConfirmedModal && !showAbandonModal}>
+          <Screen>
+            <ConsignmentInquiryConfirmation />
+          </Screen>
+        </Modal>
       </>
     </FormikProvider>
   )

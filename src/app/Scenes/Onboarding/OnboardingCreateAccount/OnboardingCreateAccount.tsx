@@ -6,12 +6,11 @@ import { OnboardingSocialPick } from "app/Scenes/Onboarding/OnboardingSocialPick
 import { OnboardingWebView, OnboardingWebViewRoute } from "app/Scenes/Onboarding/OnboardingWebView"
 import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { useScreenDimensions } from "app/utils/hooks"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import React, { useEffect, useRef, useState } from "react"
-import { Alert, Animated, ScrollView } from "react-native"
+import { Alert, Animated, KeyboardAvoidingView, ScrollView } from "react-native"
 import * as Yup from "yup"
 import {
   OnboardingCreateAccountEmail,
@@ -143,7 +142,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
 
   return (
     <Flex flex={1} backgroundColor="white" flexGrow={1} pb={1}>
-      <ArtsyKeyboardAvoidingView>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         <FormikProvider value={formik}>
           <NavigationContainer
             onStateChange={(state) => {
@@ -181,7 +180,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
             {currentRoute !== "OnboardingWebView" && <OnboardingCreateAccountButton />}
           </NavigationContainer>
         </FormikProvider>
-      </ArtsyKeyboardAvoidingView>
+      </KeyboardAvoidingView>
     </Flex>
   )
 }

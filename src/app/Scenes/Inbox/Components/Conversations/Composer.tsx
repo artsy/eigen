@@ -1,10 +1,9 @@
 import { Flex, ClassTheme, Button } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { Composer_conversation$data } from "__generated__/Composer_conversation.graphql"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { Schema, Track, track as _track } from "app/utils/track"
 import React from "react"
-import { Keyboard, TextInput, TouchableWithoutFeedback } from "react-native"
+import { Keyboard, KeyboardAvoidingView, TextInput, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { ConversationCTAFragmentContainer } from "./ConversationCTA"
@@ -91,7 +90,7 @@ export default class Composer extends React.Component<Props, State> {
             fontFamily: "Unica77LL-Regular",
           }
           return (
-            <ArtsyKeyboardAvoidingView>
+            <KeyboardAvoidingView style={{ flex: 1 }}>
               {this.props.children}
               <Flex flexDirection="column">
                 <ConversationCTAFragmentContainer
@@ -121,7 +120,7 @@ export default class Composer extends React.Component<Props, State> {
                   </TouchableWithoutFeedback>
                 </Container>
               </Flex>
-            </ArtsyKeyboardAvoidingView>
+            </KeyboardAvoidingView>
           )
         }}
       </ClassTheme>

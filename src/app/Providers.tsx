@@ -11,7 +11,6 @@ import { Component, Suspense } from "react"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
-import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { PopoverMessageProvider } from "./Components/PopoverMessage/PopoverMessageProvider"
 import { AppWideErrorBoundary } from "./Components/RetryErrorBoundary"
 import { ToastProvider } from "./Components/Toast/toastHook"
@@ -42,7 +41,6 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       SuspenseProvider,
       ActionSheetProvider,
       PopoverMessageProvider,
-      _FancyModalPageWrapper,
       ToastProvider, // uses: GlobalStoreProvider
       GravityWebsocketContextProvider, // uses GlobalStoreProvider
       ArtworkListsProvider,

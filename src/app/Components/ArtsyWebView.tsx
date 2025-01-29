@@ -2,11 +2,11 @@ import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Text } from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
 import { addBreadcrumb } from "@sentry/react-native"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { GlobalStore, getCurrentEmissionState } from "app/store/GlobalStore"
 import { GoBackProps, dismissModal, goBack, navigate } from "app/system/navigation/navigate"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useEnvironment } from "app/utils/hooks/useEnvironment"
@@ -15,12 +15,11 @@ import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { debounce } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
-import { Platform } from "react-native"
+import { KeyboardAvoidingView, Platform } from "react-native"
 import { Edge } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import WebView, { WebViewNavigation, WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
-import { NavigationHeader } from "app/Components/NavigationHeader"
 
 export interface ArtsyWebViewConfig {
   title?: string
@@ -131,7 +130,7 @@ export const ArtsyWebViewPage = ({
   return (
     <Screen>
       <Flex flex={1} backgroundColor="white">
-        <ArtsyKeyboardAvoidingView>
+        <KeyboardAvoidingView style={{ flex: 1 }}>
           <NavigationHeader
             useXButton={!!isPresentedModally && !canGoBack}
             onLeftButtonPress={leftButton}
@@ -156,7 +155,7 @@ export const ArtsyWebViewPage = ({
                 : undefined
             }
           />
-        </ArtsyKeyboardAvoidingView>
+        </KeyboardAvoidingView>
       </Flex>
     </Screen>
   )

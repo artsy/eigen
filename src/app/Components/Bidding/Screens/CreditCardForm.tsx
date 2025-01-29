@@ -1,13 +1,4 @@
-import {
-  ArtsyKeyboardAvoidingView,
-  Box,
-  Button,
-  Flex,
-  Input,
-  Spacer,
-  Text,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { Box, Button, Flex, Input, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { createToken, Token } from "@stripe/stripe-react-native"
 import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
 import { Details } from "@stripe/stripe-react-native/lib/typescript/src/types/components/CardFieldInput"
@@ -25,7 +16,7 @@ import { Select } from "app/Components/Select/SelectV2"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { useFormik } from "formik"
 import { useRef } from "react"
-import { ScrollView } from "react-native"
+import { KeyboardAvoidingView, ScrollView } from "react-native"
 
 interface CreditCardFormProps {
   navigator: NavigatorIOS
@@ -110,7 +101,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   const countryRef = useRef<Select<any>>(null)
 
   return (
-    <ArtsyKeyboardAvoidingView>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <NavigationHeader onLeftButtonPress={() => navigator.pop()}>Add Credit Card</NavigationHeader>
 
       <ScrollView
@@ -260,7 +251,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
           Save
         </Button>
       </Box>
-    </ArtsyKeyboardAvoidingView>
+    </KeyboardAvoidingView>
   )
 }
 
