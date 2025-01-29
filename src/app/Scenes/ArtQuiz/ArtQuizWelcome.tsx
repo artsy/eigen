@@ -32,7 +32,7 @@ export const ArtQuizWelcome = () => {
             block
             variant="text"
             onPress={() => {
-              GlobalStore.actions.auth.setArtQuizState("complete")
+              GlobalStore.actions.onboarding.setArtQuizState("complete")
               navigate("/", {
                 replaceActiveScreen: true,
               })

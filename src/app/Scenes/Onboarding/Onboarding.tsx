@@ -168,7 +168,7 @@ const DevMenu = () => (
   <DevMenuDefault onClose={() => __unsafe__onboardingNavigationRef.current?.goBack()} />
 )
 export const Onboarding = () => {
-  const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
+  const onboardingState = GlobalStore.useAppState((state) => state.onboarding.onboardingState)
   const fpsCounter = useDevToggle("DTFPSCounter")
 
   return (
