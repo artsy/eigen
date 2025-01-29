@@ -1,7 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkRailCardTestsQuery } from "__generated__/ArtworkRailCardTestsQuery.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { DateTime } from "luxon"
 import { graphql } from "react-relay"
@@ -86,13 +85,7 @@ describe("ArtworkRailCard", () => {
     })
   })
 
-  describe("save artwork when AREnableNewSaveAndFollowOnArtworkCard is disabled", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({
-        AREnableNewSaveAndFollowOnArtworkCard: false,
-      })
-    })
-
+  describe("save artwork", () => {
     it("saving artworks works when showSaveIcon is set to true", () => {
       renderWithRelay({ Artwork: () => artwork }, { showSaveIcon: true })
 
