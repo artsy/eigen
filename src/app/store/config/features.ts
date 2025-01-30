@@ -263,6 +263,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworkCardContextMenuAndroid",
   },
+  AREnableLongPressContextMenuOnboarding: {
+    description: "Enable long press context menu onboarding",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableLongPressContextMenuOnboarding",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

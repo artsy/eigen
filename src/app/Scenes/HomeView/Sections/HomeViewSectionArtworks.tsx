@@ -16,6 +16,7 @@ import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   ARTWORK_RAIL_CARD_MIN_WIDTH,
 } from "app/Components/ArtworkRail/ArtworkRailCardImage"
+import { ProgressiveOnboardingLongPressContextMenu } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingLongPressContextMenu"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
@@ -87,6 +88,9 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     navigate(href)
   }
 
+  // This is a temporary solution to show the long press context menu only on the first artwork section
+  const isFirstArtworkSection = section.contextModule === ContextModule.newWorksForYouRail
+
   return (
     <Flex {...flexProps}>
       <SectionTitle
@@ -95,6 +99,8 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         title={section.component?.title}
         onPress={href ? onSectionViewAll : undefined}
       />
+
+      {!!isFirstArtworkSection && <ProgressiveOnboardingLongPressContextMenu />}
 
       <ArtworkRail
         contextModule={section.contextModule as ContextModule}
