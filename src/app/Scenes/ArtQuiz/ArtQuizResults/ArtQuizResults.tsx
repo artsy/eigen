@@ -15,7 +15,7 @@ const ResultsScreen = () => {
   const hasSavedArtworks = queryResult.me?.quiz.savedArtworks.length
 
   useEffect(() => {
-    GlobalStore.actions.onboarding.setArtQuizState("complete")
+    GlobalStore.actions.auth.setArtQuizState("complete")
   }, [])
 
   if (hasSavedArtworks) {

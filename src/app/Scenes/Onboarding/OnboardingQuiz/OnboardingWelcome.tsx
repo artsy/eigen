@@ -181,7 +181,7 @@ const OnboardingWelcome = () => {
               variant="fillDark"
               block
               haptic="impactMedium"
-              onPress={() => GlobalStore.actions.onboarding.setOnboardingState("complete")}
+              onPress={() => GlobalStore.actions.auth.setState({ onboardingState: "complete" })}
             >
               Skip
             </Button>

@@ -13,7 +13,6 @@ import {
 } from "app/Scenes/SellWithArtsy/utils/submissionModelState"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { getInfiniteDiscoveryModel, InfiniteDiscoveryModel } from "app/store/InfiniteDiscoveryModel"
-import { getOnboardingModel, OnboardingModel } from "app/store/OnboardingModel"
 import {
   ProgressiveOnboardingModel,
   getProgressiveOnboardingModel,
@@ -49,7 +48,6 @@ interface GlobalStoreStateModel {
   search: SearchModel
   myCollection: MyCollectionModel
   auth: AuthModel
-  onboarding: OnboardingModel
   toast: ToastModel
   pendingPushNotification: PendingPushNotificationModel
   artsyPrefs: ArtsyPrefsModel
@@ -139,7 +137,6 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   myCollection: getMyCollectionModel(),
   artsyPrefs: getArtsyPrefsModel(),
   auth: getAuthModel(),
-  onboarding: getOnboardingModel(),
   toast: getToastModel(),
   devicePrefs: getDevicePrefsModel(),
   pendingPushNotification: getPendingPushNotificationModel(),
