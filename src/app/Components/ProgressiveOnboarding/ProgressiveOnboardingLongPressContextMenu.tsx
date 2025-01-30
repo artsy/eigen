@@ -3,11 +3,17 @@ import { useIsFocused } from "@react-navigation/native"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { Platform } from "react-native"
 
 export const ProgressiveOnboardingLongPressContextMenu: React.FC = ({ children }) => {
   const enableLongPressContextMenuOnboarding = useFeatureFlag(
     "AREnableLongPressContextMenuOnboarding"
   )
+  const enableLongPressContextMenu =
+    Platform.OS === "ios"
+      ? useFeatureFlag("AREnableArtworkCardContextMenuIOS")
+      : useFeatureFlag("AREnableArtworkCardContextMenuAndroid")
+
   const {
     isDismissed,
     sessionState: { isReady },
@@ -26,7 +32,12 @@ export const ProgressiveOnboardingLongPressContextMenu: React.FC = ({ children }
 
   return (
     <Popover
-      visible={!!enableLongPressContextMenuOnboarding && !!isDisplayable && isActive}
+      visible={
+        enableLongPressContextMenu &&
+        enableLongPressContextMenuOnboarding &&
+        isDisplayable &&
+        isActive
+      }
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
       onCloseComplete={clearActivePopover}
