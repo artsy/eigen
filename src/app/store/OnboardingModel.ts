@@ -1,6 +1,6 @@
 import { Action, action } from "easy-peasy"
 
-type OnboardingState = "none" | "incomplete" | "complete"
+type OnboardingState = "incomplete" | "complete"
 type OnboardingArtQuizState = "none" | "incomplete" | "complete"
 
 export interface OnboardingModel {

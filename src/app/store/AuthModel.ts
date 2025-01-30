@@ -345,6 +345,7 @@ export const getAuthModel = (): AuthModel => ({
         userEmail: email,
       })
 
+      GlobalStore.actions.onboarding.setOnboardingState("complete")
       // TODO: do we need to set requested push permissions false here
 
       if (oauthProvider === "email") {
@@ -455,6 +456,7 @@ export const getAuthModel = (): AuthModel => ({
 
       // Setting up user prefs from gravity after successsfull registration.
       GlobalStore.actions.userPrefs.fetchRemoteUserPrefs()
+      GlobalStore.actions.onboarding.setOnboardingState("incomplete")
 
       return { success: true, message: "" }
     }
