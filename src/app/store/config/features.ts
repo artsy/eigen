@@ -154,7 +154,7 @@ export const features = {
   },
   AREnableProgressiveOnboardingAlerts: {
     description: "Enable progressive onboarding alerts",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableProgressiveOnboardingAlerts",
   },
