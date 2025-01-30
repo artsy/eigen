@@ -1060,4 +1060,29 @@ describe("App version Versions.AddInfiniteDiscoveryModel", () => {
       discoveredArtworkIds: [],
     })
   })
+
+  describe("App version Versions.MoveOnboardingStateToOnboardingModel", () => {
+    it("moves onboardingState and onboardingArtQuizState to the Onboarding model", () => {
+      const migrationToTest = Versions.MoveOnboardingStateToOnboardingModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      previousState.auth.onboardingState = "incomplete"
+      previousState.auth.onboardingArtQuizState = "none"
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.auth.onboardingState).toEqual(undefined)
+      expect(migratedState.auth.onboardingArtQuizState).toEqual(undefined)
+
+      expect(migratedState.onboarding.onboardingState).toEqual("incomplete")
+      expect(migratedState.onboarding.onboardingArtQuizState).toEqual("none")
+    })
+  })
 })

@@ -35,7 +35,7 @@ export const OnboardingQuiz = () => {
 
   const onDone = () => {
     trackCompletedOnboarding()
-    GlobalStore.actions.auth.setState({ onboardingState: "complete" })
+    GlobalStore.actions.onboarding.setOnboardingState("complete")
   }
 
   const { commitMutation } = useUpdateUserProfile(onDone)

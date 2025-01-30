@@ -89,9 +89,6 @@ type OAuthParams =
   | AppleOAuthParams
   | FacebookLimitedOAuthParams
 
-type OnboardingState = "none" | "incomplete" | "complete"
-type OnboardingArtQuizState = "none" | "incomplete" | "complete"
-
 export interface AuthPromiseResolveType {
   success: boolean
 }
@@ -123,8 +120,6 @@ export interface AuthModel {
   userAccessTokenExpiresIn: string | null
   xAppToken: string | null
   xApptokenExpiresIn: string | null
-  onboardingState: OnboardingState
-  onboardingArtQuizState: OnboardingArtQuizState
   userEmail: string | null
   previousSessionUserID: string | null
 
@@ -137,7 +132,7 @@ export interface AuthModel {
   getUser: Thunk<this, { accessToken: string }, {}, GlobalStoreModel>
   signIn: Thunk<
     this,
-    { email: string; onboardingState?: OnboardingState; onSignIn?: () => void } & OAuthParams,
+    { email: string; onSignIn?: () => void } & OAuthParams,
     {},
     GlobalStoreModel,
     Promise<SignInStatus>
@@ -187,7 +182,6 @@ export interface AuthModel {
     GlobalStoreModel,
     ReturnType<typeof fetch>
   >
-  setArtQuizState: Action<this, OnboardingArtQuizState>
   identifyUser: Action<this>
   signOut: Thunk<this>
   verifyUser: Thunk<
@@ -214,8 +208,6 @@ export const getAuthModel = (): AuthModel => ({
   userAccessTokenExpiresIn: null,
   xAppToken: null,
   xApptokenExpiresIn: null,
-  onboardingState: "none",
-  onboardingArtQuizState: "none",
   userEmail: null,
   previousSessionUserID: null,
   userHasArtsyEmail: computed((state) => isArtsyEmail(state.userEmail ?? "")),
@@ -303,7 +295,7 @@ export const getAuthModel = (): AuthModel => ({
     ).json()
   }),
   signIn: thunk(async (actions, args, store) => {
-    const { oauthProvider, oauthMode, email, onboardingState, onSignIn } = args
+    const { oauthProvider, oauthMode, email, onSignIn } = args
 
     const grantTypeMap = {
       accessToken: "oauth_token",
@@ -351,7 +343,6 @@ export const getAuthModel = (): AuthModel => ({
         userAccessTokenExpiresIn: expires_in,
         userID: user.id,
         userEmail: email,
-        onboardingState: onboardingState ?? "complete",
       })
 
       // TODO: do we need to set requested push permissions false here
@@ -431,7 +422,6 @@ export const getAuthModel = (): AuthModel => ({
             oauthMode,
             email,
             accessToken: args.accessToken,
-            onboardingState: "incomplete",
           })
           break
         case "jwt":
@@ -440,7 +430,6 @@ export const getAuthModel = (): AuthModel => ({
             oauthMode,
             email,
             jwt: args.jwt,
-            onboardingState: "incomplete",
           })
           break
         case "idToken":
@@ -450,7 +439,6 @@ export const getAuthModel = (): AuthModel => ({
             email,
             idToken: args.idToken,
             appleUid: args.appleUid,
-            onboardingState: "incomplete",
           })
           break
         case "email":
@@ -459,7 +447,6 @@ export const getAuthModel = (): AuthModel => ({
             oauthMode,
             email,
             password: args.password,
-            onboardingState: "incomplete",
           })
           break
         default:
@@ -966,9 +953,6 @@ export const getAuthModel = (): AuthModel => ({
         }
       }
     })
-  }),
-  setArtQuizState: action((state, artQuizState) => {
-    state.onboardingArtQuizState = artQuizState
   }),
   identifyUser: action((state) => {
     const { userID: userId } = state

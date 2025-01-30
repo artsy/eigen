@@ -185,7 +185,7 @@ export const HomeView: React.FC = memo(() => {
 })
 
 const HomeViewScreenComponent: React.FC = () => {
-  const artQuizState = GlobalStore.useAppState((state) => state.auth.onboardingArtQuizState)
+  const artQuizState = GlobalStore.useAppState((state) => state.onboarding.onboardingArtQuizState)
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const showPlayground = useDevToggle("DTShowPlayground")
 

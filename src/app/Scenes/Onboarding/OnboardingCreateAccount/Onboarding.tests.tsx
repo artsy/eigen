@@ -18,13 +18,13 @@ describe("Onboarding", () => {
 
   it("renders the welcome screens when the onboarding state is none or complete", () => {
     renderWithWrappers(<Onboarding />)
-    __globalStoreTestUtils__?.injectState({ auth: { onboardingState: "none" } })
+    __globalStoreTestUtils__?.injectState({ onboarding: { onboardingState: "none" } })
 
     expect(screen.UNSAFE_queryByType(OnboardingQuiz)).toBeFalsy()
     expect(screen.UNSAFE_getByType(OnboardingWelcomeScreens)).toBeTruthy()
 
     renderWithWrappers(<Onboarding />)
-    __globalStoreTestUtils__?.injectState({ auth: { onboardingState: "complete" } })
+    __globalStoreTestUtils__?.injectState({ onboarding: { onboardingState: "complete" } })
 
     expect(screen.UNSAFE_queryByType(OnboardingQuiz)).toBeFalsy()
     expect(screen.UNSAFE_getByType(OnboardingWelcomeScreens)).toBeTruthy()
@@ -32,7 +32,7 @@ describe("Onboarding", () => {
 
   it("renders the personalization flow when the onboarding state is incomplete", () => {
     renderWithWrappers(<Onboarding />)
-    __globalStoreTestUtils__?.injectState({ auth: { onboardingState: "incomplete" } })
+    __globalStoreTestUtils__?.injectState({ onboarding: { onboardingState: "incomplete" } })
     expect(screen.UNSAFE_getByType(OnboardingQuiz)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(OnboardingWelcomeScreens)).toBeFalsy()
   })

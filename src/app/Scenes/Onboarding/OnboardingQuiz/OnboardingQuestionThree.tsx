@@ -32,7 +32,7 @@ export const OnboardingQuestionThree = () => {
       trackAnsweredQuestionThree(questionThree)
     }
     if (questionThree === OPTION_THE_ART_TASTE_QUIZ) {
-      GlobalStore.actions.auth.setArtQuizState("incomplete")
+      GlobalStore.actions.onboarding.setArtQuizState("incomplete")
       onDone()
     } else {
       // @ts-expect-error
