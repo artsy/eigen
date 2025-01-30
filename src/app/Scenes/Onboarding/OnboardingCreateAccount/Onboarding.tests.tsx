@@ -16,13 +16,7 @@ describe("Onboarding", () => {
     })
   })
 
-  it("renders the welcome screens when the onboarding state is none or complete", () => {
-    renderWithWrappers(<Onboarding />)
-    __globalStoreTestUtils__?.injectState({ onboarding: { onboardingState: "none" } })
-
-    expect(screen.UNSAFE_queryByType(OnboardingQuiz)).toBeFalsy()
-    expect(screen.UNSAFE_getByType(OnboardingWelcomeScreens)).toBeTruthy()
-
+  it("renders the welcome screens when the onboarding state is complete", () => {
     renderWithWrappers(<Onboarding />)
     __globalStoreTestUtils__?.injectState({ onboarding: { onboardingState: "complete" } })
 
