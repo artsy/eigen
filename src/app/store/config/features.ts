@@ -248,8 +248,9 @@ export const features = {
   },
   AREnableFramedFilter: {
     description: "Enable show only framed works filter",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableFramedFilter",
   },
   AREnableHidingDislikedArtworks: {
     description: "Enable hiding disliked artworks",
