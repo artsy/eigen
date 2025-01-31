@@ -34,6 +34,7 @@ net.artsy.artsy.dev.pem
 ios/Artsy/App/Echo.json
 ios/Artsy/App/EchoNew.json
 **/.xcode.env.local
+ios/tmp.xcconfig
 
 # Fastlane
 Preview.html
@@ -102,6 +103,9 @@ native-hash.txt
 # Ignore env files
 **/.env*
 !.env.example
+
+# Ignore key env files
+**/keys.shared.json
 
 # Android/IntelliJ
 .gradle

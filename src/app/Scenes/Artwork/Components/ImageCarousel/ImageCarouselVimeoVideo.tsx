@@ -2,7 +2,7 @@ import { Flex, Touchable } from "@artsy/palette-mobile"
 import { parse } from "query-string"
 import { useEffect, useState } from "react"
 import { DimensionValue, Image } from "react-native"
-import { Config } from "react-native-config"
+import Keys from "react-native-keys"
 import { Vimeo } from "react-native-vimeo-iframe"
 
 interface ImageCarouselVimeoVideoProps {
@@ -77,7 +77,7 @@ const useVimeoVideoMetadata = (videoId: string) => {
         const response = await fetch(`https://api.vimeo.com/videos/${videoId}`, {
           headers: {
             Accept: "application/vnd.vimeo.*+json;version=3.4",
-            Authorization: `Bearer ${Config.VIMEO_PUBLIC_TOKEN}`,
+            Authorization: `Bearer ${Keys.secureFor("VIMEO_PUBLIC_TOKEN")}`,
           },
         })
         const data = await response.json()

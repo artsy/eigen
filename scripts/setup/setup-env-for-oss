@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-if [ -f ".env.shared" ]; then
-  echo "You already have a .env.shared file, skipping .env.shared creation"
+if [ -f "keys.shared.json" ]; then
+  echo "You already have a keys.shared.json file, skipping keys.shared.json creation"
 else
-  echo "Creating .env.shared file"
-  cp .env.example .env.shared
+  echo "Creating keys.shared.json file"
+  cp keys.example.json keys.shared.json
 fi
-
-# Set the OSS flag to true
-sed -i'old' 's/OSS=.*/OSS=true/g' .env.shared
 
 cp metaflags.example.json metaflags.json
 

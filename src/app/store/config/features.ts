@@ -2,7 +2,7 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { setupSentry } from "app/system/errorReporting/setupSentry"
 import { echoLaunchJson } from "app/utils/jsonFiles"
-import Config from "react-native-config"
+import Keys from "react-native-keys"
 
 interface FeatureDescriptorCommonTypes {
   /** Provide a short description for the Dev Menu. */
@@ -328,9 +328,11 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
   DTDebugSentry: {
     description: "Enable sentry debug mode and send exceptions to sentry",
     onChange: (value, { toast }) => {
-      if (!Config.SENTRY_DSN) {
+      if (!Keys.secureFor("SENTRY_DSN")) {
         toast.show(
-          `No Sentry DSN available ${__DEV__ ? "Set it in .env.shared and re-build the app." : ""}`,
+          `No Sentry DSN available ${
+            __DEV__ ? "Set it in keys.shared.json and re-build the app." : ""
+          }`,
           "middle"
         )
         return

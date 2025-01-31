@@ -38,7 +38,7 @@ commands:
     steps:
       - run:
           name: "Set up .env file"
-          command: touch .env.shared && touch .env && scripts/setup/setup-env-for-ci
+          command: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci
   setup-awscli:
     steps:
       - run:

@@ -24,9 +24,9 @@ import { postEventToProviders } from "app/utils/track/providers"
 import { Action, Computed, StateMapper, Thunk, action, computed, thunk } from "easy-peasy"
 import { stringify } from "qs"
 import { Platform } from "react-native"
-import Config from "react-native-config"
 import { LoginManager, LoginTracking } from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
+import Keys from "react-native-keys"
 import SiftReactNative from "sift-react-native"
 import { AuthError } from "./AuthError"
 import { GlobalStore, getCurrentEmissionState } from "./GlobalStore"
@@ -193,10 +193,12 @@ export interface AuthModel {
   >
 }
 
-const clientKey = __DEV__ ? Config.ARTSY_DEV_API_CLIENT_KEY : Config.ARTSY_PROD_API_CLIENT_KEY
+const clientKey = __DEV__
+  ? Keys.secureFor("ARTSY_DEV_API_CLIENT_KEY")
+  : Keys.secureFor("ARTSY_PROD_API_CLIENT_KEY")
 const clientSecret = __DEV__
-  ? Config.ARTSY_DEV_API_CLIENT_SECRET
-  : Config.ARTSY_PROD_API_CLIENT_SECRET
+  ? Keys.secureFor("ARTSY_DEV_API_CLIENT_SECRET")
+  : Keys.secureFor("ARTSY_PROD_API_CLIENT_SECRET")
 
 export const getAuthModel = (): AuthModel => ({
   sessionState: {

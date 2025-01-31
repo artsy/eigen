@@ -2,7 +2,7 @@
 import { ActionCable, Cable } from "@kesha-antonov/react-native-action-cable"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import React, { createContext, useContext, useEffect, useState } from "react"
-import Config from "react-native-config"
+import Keys from "react-native-keys"
 
 interface GravityWebsocketContextValueType {
   cable: any | null
@@ -21,7 +21,9 @@ export const GravityWebsocketContextProvider: React.FC = ({ children }) => {
   const [channelsHolder, setChannelsHolder] = useState<any | null>(null)
 
   const isStaging = useIsStaging()
-  const wssUrl = isStaging ? Config.GRAVITY_STAGING_WEBSOCKET_URL : Config.GRAVITY_WEBSOCKET_URL
+  const wssUrl = isStaging
+    ? Keys.secureFor("GRAVITY_STAGING_WEBSOCKET_URL")
+    : Keys.secureFor("GRAVITY_WEBSOCKET_URL")
 
   useEffect(() => {
     if (!actionCable) {
