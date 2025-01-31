@@ -48,6 +48,9 @@ export const HOME_SECTION_SCREEN_QUERY = graphql`
         ... on HomeViewSectionArtworks {
           ...HomeViewSectionScreenArtworks_section
         }
+        ... on HomeViewSectionFairs {
+          ...HomeViewSectionScreenFairs_section
+        }
       }
     }
   }

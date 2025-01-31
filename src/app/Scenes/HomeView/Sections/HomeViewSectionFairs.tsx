@@ -44,7 +44,7 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
   const viewAll = section.component?.behaviors?.viewAll
 
   const fairs = extractNodes(section.fairsConnection)
-  const href = viewAll && getHomeViewSectionHref(viewAll?.href, section)
+  const href = getHomeViewSectionHref(viewAll?.href, section)
 
   const onViewAllPress = () => {
     tracking.tappedFairGroupViewAll(
