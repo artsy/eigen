@@ -9,10 +9,11 @@ export const ProgressiveOnboardingLongPressContextMenu: React.FC = ({ children }
   const enableLongPressContextMenuOnboarding = useFeatureFlag(
     "AREnableLongPressContextMenuOnboarding"
   )
-  const enableLongPressContextMenu =
+  const enableLongPressContextMenu = useFeatureFlag(
     Platform.OS === "ios"
-      ? useFeatureFlag("AREnableArtworkCardContextMenuIOS")
-      : useFeatureFlag("AREnableArtworkCardContextMenuAndroid")
+      ? "AREnableArtworkCardContextMenuIOS"
+      : "AREnableArtworkCardContextMenuAndroid"
+  )
 
   const {
     isDismissed,
@@ -33,9 +34,9 @@ export const ProgressiveOnboardingLongPressContextMenu: React.FC = ({ children }
   return (
     <Popover
       visible={
-        enableLongPressContextMenu &&
-        enableLongPressContextMenuOnboarding &&
-        isDisplayable &&
+        !!enableLongPressContextMenu &&
+        !!enableLongPressContextMenuOnboarding &&
+        !!isDisplayable &&
         isActive
       }
       onDismiss={handleDismiss}
