@@ -214,8 +214,10 @@ const ArtQuizArtworkCard: React.FC<ArtQuizArtworkCardProps> = ({ artwork }) => {
   const { width } = useScreenDimensions()
   const space = useSpace()
 
+  const CARD_HEIGHT = 500
+
   return (
-    <Flex width={width - space(4)} height={500} backgroundColor="white">
+    <Flex width={width - space(4)} height={CARD_HEIGHT} backgroundColor="white">
       <Image
         source={{ uri: artwork?.image?.resized?.src }}
         style={{ flex: 1 }}

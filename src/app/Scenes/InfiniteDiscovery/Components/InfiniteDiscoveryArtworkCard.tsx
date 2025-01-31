@@ -1,6 +1,4 @@
 import {
-  Button,
-  EntityHeader,
   Flex,
   HeartFillIcon,
   HeartIcon,
@@ -9,9 +7,9 @@ import {
   Text,
   Touchable,
   useScreenDimensions,
-  useTheme,
 } from "@artsy/palette-mobile"
 import { InfiniteDiscoveryArtworkCard_artwork$key } from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
+import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { sizeToFit } from "app/utils/useSizeToFit"
@@ -24,7 +22,6 @@ interface InfiniteDiscoveryArtworkCardProps {
 export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCardProps> = ({
   artwork: artworkProp,
 }) => {
-  const { color } = useTheme()
   const { width: screenWidth } = useScreenDimensions()
 
   const artwork = useFragment<InfiniteDiscoveryArtworkCard_artwork$key>(
@@ -45,29 +42,24 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     return null
   }
 
+  const MAX_ARTWORK_HEIGHT = 500
+  const CARD_HEIGHT = 800
+
   const src = artwork.images?.[0]?.url
   const width = artwork.images?.[0]?.width ?? 0
   const height = artwork.images?.[0]?.height ?? 0
 
-  const size = sizeToFit({ width: width, height: height }, { width: screenWidth, height: 500 })
+  const size = sizeToFit(
+    { width: width, height: height },
+    { width: screenWidth, height: MAX_ARTWORK_HEIGHT }
+  )
 
   return (
-    <Flex backgroundColor={color("white100")} width="100%" height={800}>
-      <EntityHeader
-        name={artwork.artistNames ?? ""}
-        meta={artwork.artists?.[0]?.formattedNationalityAndBirthday ?? undefined}
-        imageUrl={artwork.artists?.[0]?.coverArtwork?.images?.[0]?.url ?? undefined}
-        initials={artwork.artists?.[0]?.initials ?? undefined}
-        RightButton={
-          <Button variant="outlineGray" size="small">
-            Follow
-          </Button>
-        }
-        p={1}
-      />
+    <Flex backgroundColor="white100" width="100%" height={CARD_HEIGHT}>
+      <ArtistListItemContainer artist={artwork.artists?.[0]} />
       <Spacer y={2} />
 
-      <Flex alignItems="center" backgroundColor={color("purple60")}>
+      <Flex alignItems="center" backgroundColor="purple60">
         {!!src && <Image src={src} height={size.height} width={size.width} />}
       </Flex>
       <Flex flexDirection="row" justifyContent="space-between" p={1}>
@@ -77,7 +69,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             {/* prevent long artwork titles from pushing the save button off of the card, */}
             {/* it doesn't work as expected on Android. */}
             <Text
-              color={color("black60")}
+              color="black60"
               italic
               variant="sm-display"
               ellipsizeMode="tail"
@@ -85,7 +77,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             >
               {artwork.title}
             </Text>
-            <Text color={color("black60")} variant="sm-display">
+            <Text color="black60" variant="sm-display">
               , {artwork.date}
             </Text>
           </Flex>
@@ -129,6 +121,7 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
       }
       formattedNationalityAndBirthday
       initials
+      ...ArtistListItem_artist
     }
     date
     id
