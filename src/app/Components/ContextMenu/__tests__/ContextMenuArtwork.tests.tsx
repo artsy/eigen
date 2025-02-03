@@ -2,7 +2,6 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ArtworkRailCardTestsQuery } from "__generated__/ArtworkRailCardTestsQuery.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Platform } from "react-native"
 import { graphql } from "react-relay"
@@ -38,8 +37,6 @@ describe("ContextMenuArtwork", () => {
       const artworkCard = screen.getByTestId("android-context-menu-trigger")
 
       fireEvent(artworkCard, "onLongPress")
-
-      await flushPromiseQueue()
 
       await waitFor(() => {
         expect(screen.getByText("Create alert")).toBeOnTheScreen()
