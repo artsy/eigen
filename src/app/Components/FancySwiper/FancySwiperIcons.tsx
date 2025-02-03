@@ -1,5 +1,5 @@
 import { CloseIcon, Flex, HeartFillIcon, HeartIcon, Touchable } from "@artsy/palette-mobile"
-import { OFFSET_X } from "app/Components/FancySwiper/FancySwiper"
+import { SWIPE_MAGNITUDE } from "app/Components/FancySwiper/FancySwiper"
 import { Animated } from "react-native"
 
 interface FancySwiperIconsProps {
@@ -9,7 +9,7 @@ interface FancySwiperIconsProps {
 }
 
 export const FancySwiperIcons = ({ onDislike, onLike, swiper }: FancySwiperIconsProps) => {
-  const inputRange = [-OFFSET_X, 0, OFFSET_X]
+  const inputRange = [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE]
 
   const likeIconScale = swiper.x.interpolate({
     inputRange,
