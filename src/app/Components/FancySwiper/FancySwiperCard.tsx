@@ -1,6 +1,6 @@
 import { memo } from "react"
 import { Animated, GestureResponderHandlers } from "react-native"
-import { OFFSET_X } from "./FancySwiper"
+import { SWIPE_MAGNITUDE } from "./FancySwiper"
 
 interface FancySwiperCardProps extends GestureResponderHandlers {
   card: React.ReactNode
@@ -15,7 +15,7 @@ export const FancySwiperCard = memo(
      * impression that they are moving a real card.
      */
     const rotate = swiper.x.interpolate({
-      inputRange: [-OFFSET_X, 0, OFFSET_X],
+      inputRange: [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE],
       outputRange: ["-10deg", "0deg", "10deg"],
     })
 
