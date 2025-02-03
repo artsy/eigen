@@ -10,10 +10,10 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@artsy/cohesion@4.228.0":
-  version "4.228.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.228.0.tgz#7fc5346fcf6f516be4236be06c5758448225ec11"
-  integrity sha512-2XwygAKbVsZZyM8KQ/Eo/oZVfirS7t/bMuxo16QE9UwbeBbRs6SIxhmnk6I1xjrKWhUiri+B46qAWYcwGXSk0g==
+"@artsy/cohesion@4.229.0":
+  version "4.229.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.229.0.tgz#76fef7ed2da43a4df4109efcb679edbb79f26d66"
+  integrity sha512-6WfMINiOukmYy6s4SBg3WsfjIM8kQ6bcOD++RKSJs8nNw+qsLMV0mYSM1O/2uaPvdAr9fyOBRwVZlOSJTCJpow==
   dependencies:
     core-js "3"
 
