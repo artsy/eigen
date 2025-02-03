@@ -201,10 +201,6 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 
   const [androidVisible, setAndroidVisible] = useState(false)
 
-  const handleAndroidLongPress = () => {
-    setAndroidVisible(true)
-  }
-
   if (isIOS && enableContextMenuIOS) {
     return (
       <ContextMenu
@@ -227,8 +223,8 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
         <TouchableHighlight
           underlayColor={color("white100")}
           activeOpacity={0.8}
-          onLongPress={handleAndroidLongPress}
-          onPress={undefined}
+          onLongPress={() => setAndroidVisible(true)}
+          delayLongPress={1200}
         >
           {children}
         </TouchableHighlight>
