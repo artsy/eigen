@@ -63,13 +63,6 @@ export const DevTools: React.FC<{}> = () => {
               dismissModal(() => navigate("/art-quiz"))
             }}
           />
-          <DevMenuButtonItem
-            title="Forget Discovered Artworks"
-            onPress={() => {
-              GlobalStore.actions._forgetDiscoveredArtworks()
-              toast.show("What discovered artworks? ✅", "middle")
-            }}
-          />
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <Flex>
               <MenuItem title="Migration version" />
@@ -129,6 +122,13 @@ export const DevTools: React.FC<{}> = () => {
             onPress={() => {
               __clearDissmissed()
               toast.show("Progressive Onboarding progress cleared ✅", "middle")
+            }}
+          />
+          <DevMenuButtonItem
+            title="Clear Infinite Discovery artworks"
+            onPress={() => {
+              GlobalStore.actions._forgetDiscoveredArtworks()
+              toast.show("Infinite Discovery artworks cleared ✅", "middle")
             }}
           />
           <DevMenuButtonItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
