@@ -118,7 +118,13 @@ export const SelectModal: React.FC<{
   }, [searchTerm, visible])
 
   return (
-    <Modal visible={visible} onDismiss={onDismiss} statusBarTranslucent testID={testID}>
+    <Modal
+      visible={visible}
+      onDismiss={onDismiss}
+      onRequestClose={onDismiss}
+      statusBarTranslucent
+      testID={testID}
+    >
       <Screen>
         <Flex p={2} pb="15px" flexDirection="row" alignItems="center" flexGrow={0}>
           <Flex flex={1} />
