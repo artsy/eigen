@@ -37,7 +37,7 @@ export const FancySwiper = ({
       const isRightSwipe = dx > 0
 
       if (isFullSwipe && onSwipeAnywhere) {
-        handleSwipe(dx, dy)
+        handle360Swipe(dx, dy)
       } else if (isFullSwipe && isLeftSwipe && onSwipeLeft) {
         handleLeftSwipe(dy)
       } else if (isFullSwipe && isRightSwipe && onSwipeRight) {
@@ -53,6 +53,26 @@ export const FancySwiper = ({
     },
   })
 
+  const handle360Swipe = (dx: number, dy: number) => {
+    // send the card on the same trajectory by multiplying the dx and dy by 100 (but cap it at 1000)
+    const toValueX = Math.abs(dx) * 100 > 1000 ? Math.sign(dx) * 1000 : dx * 100
+    const toValueY = Math.abs(dy) * 100 > 1000 ? Math.sign(dy) * 1000 : dy * 100
+
+    // move the card off the screen
+    Animated.timing(swiper, {
+      toValue: { x: toValueX, y: toValueY },
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      // Revert the pan responder to its initial position
+      swiper.setValue({ x: 0, y: 0 })
+
+      if (onSwipeAnywhere) {
+        onSwipeAnywhere()
+      }
+    })
+  }
+
   const handleLeftSwipe = (toValueY?: number) => {
     // move the card off the screen
     Animated.timing(swiper, {
@@ -65,8 +85,6 @@ export const FancySwiper = ({
 
       if (onSwipeLeft) {
         onSwipeLeft()
-      } else if (onSwipeAnywhere) {
-        onSwipeAnywhere()
       }
     })
   }
@@ -83,28 +101,6 @@ export const FancySwiper = ({
 
       if (onSwipeRight) {
         onSwipeRight()
-      } else if (onSwipeAnywhere) {
-        onSwipeAnywhere()
-      }
-    })
-  }
-
-  const handleSwipe = (dx: number, dy: number) => {
-    // send the card on the same trajectory by multiplying the dx and dy by 100 (but cap it at 1000)
-    const toValueX = Math.abs(dx) * 100 > 1000 ? Math.sign(dx) * 1000 : dx * 100
-    const toValueY = Math.abs(dy) * 100 > 1000 ? Math.sign(dy) * 1000 : dy * 100
-
-    // move the card off the screen
-    Animated.timing(swiper, {
-      toValue: { x: toValueX, y: toValueY },
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => {
-      // Revert the pan responder to its initial position
-      swiper.setValue({ x: 0, y: 0 })
-
-      if (onSwipeAnywhere) {
-        onSwipeAnywhere()
       }
     })
   }
