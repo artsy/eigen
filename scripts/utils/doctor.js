@@ -195,7 +195,7 @@ const checkPodDependenciesAreUpToDate = async () => {
       } else {
         NO(
           `Your ${r`pod dependencies`} are out of sync.`,
-          `Run ${g`bundle exec pod install`} in the iOS directory.`
+          `Run ${g`bundle exec npx pod-install`} in the iOS directory.`
         )
       }
     }
@@ -205,7 +205,7 @@ const checkPodDependenciesAreUpToDate = async () => {
     } else {
       NO(
         `Your ${r`pod dependencies`} are out of sync.`,
-        `Run ${g`bundle exec pod install`} in the iOS directory.`
+        `Run ${g`bundle exec npx pod-install`} in the iOS directory.`
       )
     }
   } catch (error) {
