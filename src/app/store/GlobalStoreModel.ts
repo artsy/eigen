@@ -72,6 +72,7 @@ export interface GlobalStoreModel extends GlobalStoreStateModel {
 
   // for dev only.
   _setVersion: Action<this, number>
+  _forgetDiscoveredArtworks: Action<this>
 
   // for testing only. noop otherwise.
   __inject: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
@@ -157,6 +158,10 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   // for dev only.
   _setVersion: action((state, newVersion) => {
     state.version = newVersion
+  }),
+
+  _forgetDiscoveredArtworks: action((state) => {
+    state.infiniteDiscovery.discoveredArtworkIds = []
   }),
 
   // for testing only. noop otherwise.

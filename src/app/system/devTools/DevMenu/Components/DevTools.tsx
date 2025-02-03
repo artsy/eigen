@@ -63,6 +63,13 @@ export const DevTools: React.FC<{}> = () => {
               dismissModal(() => navigate("/art-quiz"))
             }}
           />
+          <DevMenuButtonItem
+            title="Forget Discovered Artworks"
+            onPress={() => {
+              GlobalStore.actions._forgetDiscoveredArtworks()
+              toast.show("What discovered artworks? ✅", "middle")
+            }}
+          />
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <Flex>
               <MenuItem title="Migration version" />
