@@ -9,6 +9,7 @@ export const OFFSET_X = 100
 interface FancySwiperProps {
   cards: React.ReactNode[]
   hideActionButtons?: boolean
+  onSwipeAnywhere?: () => void
   onSwipeLeft?: () => void
   onSwipeRight?: () => void
 }
@@ -16,6 +17,7 @@ interface FancySwiperProps {
 export const FancySwiper = ({
   cards,
   hideActionButtons = false,
+  onSwipeAnywhere,
   onSwipeLeft,
   onSwipeRight,
 }: FancySwiperProps) => {
@@ -33,9 +35,9 @@ export const FancySwiper = ({
       const isRightSwipe = dx > 0
       const isLeftSwipe = dx < 0
 
-      if (isFullSwipe && isRightSwipe && onSwipeRight) {
+      if (isFullSwipe && isRightSwipe && (onSwipeRight || onSwipeAnywhere)) {
         handleRightSwipe(dy)
-      } else if (isFullSwipe && isLeftSwipe && onSwipeLeft) {
+      } else if (isFullSwipe && isLeftSwipe && (onSwipeLeft || onSwipeAnywhere)) {
         handleLeftSwipe(dy)
       } else {
         // move the card to its original position
@@ -60,6 +62,8 @@ export const FancySwiper = ({
 
       if (onSwipeLeft) {
         onSwipeLeft()
+      } else if (onSwipeAnywhere) {
+        onSwipeAnywhere()
       }
     })
   }
@@ -76,6 +80,8 @@ export const FancySwiper = ({
 
       if (onSwipeRight) {
         onSwipeRight()
+      } else if (onSwipeAnywhere) {
+        onSwipeAnywhere()
       }
     })
   }

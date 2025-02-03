@@ -40,6 +40,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     const newArtworks = extractNodes(data.discoverArtworks)
 
     // record the artworks that have been served to the user so that they are not served again
+    // TODO: do this for the first batch of artworks as well
     addDiscoveredArtworkIds(newArtworks.map((artwork) => artwork.internalID))
 
     setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
@@ -51,13 +52,13 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 
   const unswipedCards: React.ReactNode[] = artworkCards.slice(index)
 
-  const goToPrevious = () => {
+  const handleBackPressed = () => {
     if (index > 0) {
       setIndex(index - 1)
     }
   }
 
-  const goToNext = () => {
+  const handleCardSwiped = () => {
     if (index < artworks.length - 1) {
       setIndex(index + 1)
     }
@@ -68,16 +69,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     }
   }
 
-  const handleBackPressed = () => {
-    goToPrevious()
-  }
-
   const handleExitPressed = () => {
     goBack()
-  }
-
-  const handleSwipedLeft = () => {
-    goToNext()
   }
 
   return (
@@ -99,7 +92,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
             }
           />
         </Flex>
-        <FancySwiper cards={unswipedCards} hideActionButtons onSwipeLeft={handleSwipedLeft} />
+        <FancySwiper cards={unswipedCards} hideActionButtons onSwipeAnywhere={handleCardSwiped} />
 
         <InfiniteDiscoveryBottomSheet artworkID={artworks[index]?.internalID} />
       </Screen.Body>
