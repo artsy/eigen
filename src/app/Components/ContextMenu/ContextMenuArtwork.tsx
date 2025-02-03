@@ -229,6 +229,8 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
           activeOpacity={0.8}
           onLongPress={handleAndroidLongPress}
           delayLongPress={1200}
+          onPress={undefined}
+          testID="android-context-menu-trigger"
         >
           {children}
         </TouchableHighlight>
