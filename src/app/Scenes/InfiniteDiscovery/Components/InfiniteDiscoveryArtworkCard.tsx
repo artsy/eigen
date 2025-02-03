@@ -10,10 +10,12 @@ import {
 } from "@artsy/palette-mobile"
 import { InfiniteDiscoveryArtworkCard_artwork$key } from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
+import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { HEART_ICON_SIZE } from "app/Components/constants"
-import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
+import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface InfiniteDiscoveryArtworkCardProps {
   artwork: InfiniteDiscoveryArtworkCard_artwork$key
@@ -23,19 +25,24 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
   artwork: artworkProp,
 }) => {
   const { width: screenWidth } = useScreenDimensions()
+  const { trackEvent } = useTracking()
 
   const artwork = useFragment<InfiniteDiscoveryArtworkCard_artwork$key>(
     infiniteDiscoveryArtworkCardFragment,
     artworkProp
   )
 
-  const saveArtwork = useSaveArtwork({
-    id: artwork?.id as string,
-    internalID: artwork?.internalID as string,
-    isSaved: !!artwork?.isSaved,
-    onCompleted: (isSaved) =>
-      console.error(`Untracked artwork ${isSaved ? "save" : "unsave"} event`),
-    onError: (error) => console.error("Error saving artwork:", error),
+  const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
+    artworkFragmentRef: artwork,
+    onCompleted: (isArtworkSaved) => {
+      trackEvent({
+        action_name: isArtworkSaved
+          ? Schema.ActionNames.ArtworkSave
+          : Schema.ActionNames.ArtworkUnsave,
+        action_type: Schema.ActionTypes.Success,
+        context_module: Schema.ContextModules.ArtworkActions,
+      })
+    },
   })
 
   if (!artwork) {
@@ -86,10 +93,10 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         <Touchable
           haptic
           hitSlop={{ bottom: 5, right: 5, left: 5, top: 5 }}
-          onPress={saveArtwork}
+          onPress={saveArtworkToLists}
           testID="save-artwork-icon"
         >
-          {!!artwork.isSaved ? (
+          {!!isSaved ? (
             <HeartFillIcon
               testID="filled-heart-icon"
               height={HEART_ICON_SIZE}
