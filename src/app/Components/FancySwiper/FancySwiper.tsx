@@ -32,7 +32,7 @@ export const FancySwiper = ({
       swiper.setValue({ x: dx, y: dy })
     },
     onPanResponderRelease: (_, { dx, dy }) => {
-      const isFullSwipe = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)) >= SWIPE_MAGNITUDE
+      const isFullSwipe = Math.hypot(dx, dy) >= SWIPE_MAGNITUDE
       const isLeftSwipe = dx < 0
       const isRightSwipe = dx > 0
 
