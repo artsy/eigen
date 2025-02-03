@@ -5,21 +5,26 @@ import { PanResponder, Animated } from "react-native"
 import { FancySwiperCard } from "./FancySwiperCard"
 
 export const OFFSET_X = 100
+const OFFSET_Y = 100
 
 interface FancySwiperProps {
   cards: React.ReactNode[]
   hideActionButtons?: boolean
   onSwipeAnywhere?: () => void
+  onSwipeDown?: () => void
   onSwipeLeft?: () => void
   onSwipeRight?: () => void
+  onSwipeUp?: () => void
 }
 
 export const FancySwiper = ({
   cards,
   hideActionButtons = false,
   onSwipeAnywhere,
+  onSwipeDown,
   onSwipeLeft,
   onSwipeRight,
+  onSwipeUp,
 }: FancySwiperProps) => {
   const remainingCards = cards.reverse()
   const swiper = useRef<Animated.ValueXY>(new Animated.ValueXY()).current
@@ -31,14 +36,22 @@ export const FancySwiper = ({
       swiper.setValue({ x: dx, y: dy })
     },
     onPanResponderRelease: (_, { dx, dy }) => {
-      const isFullSwipe = Math.abs(dx) >= OFFSET_X
-      const isRightSwipe = dx > 0
-      const isLeftSwipe = dx < 0
+      const isFullHorizontalSwipe = Math.abs(dx) >= OFFSET_X
+      const isFullVerticalSwipe = Math.abs(dy) >= OFFSET_Y
 
-      if (isFullSwipe && isRightSwipe && (onSwipeRight || onSwipeAnywhere)) {
-        handleRightSwipe(dy)
-      } else if (isFullSwipe && isLeftSwipe && (onSwipeLeft || onSwipeAnywhere)) {
+      const isLeftSwipe = dx < 0
+      const isRightSwipe = dx > 0
+      const isDownSwipe = dy > 0
+      const isUpSwipe = dy < 0
+
+      if (isFullHorizontalSwipe && isLeftSwipe && (onSwipeLeft || onSwipeAnywhere)) {
         handleLeftSwipe(dy)
+      } else if (isFullHorizontalSwipe && isRightSwipe && (onSwipeRight || onSwipeAnywhere)) {
+        handleRightSwipe(dy)
+      } else if (isFullVerticalSwipe && isDownSwipe && (onSwipeDown || onSwipeAnywhere)) {
+        handleDownSwipe(dx)
+      } else if (isFullVerticalSwipe && isUpSwipe && (onSwipeUp || onSwipeAnywhere)) {
+        handleUpSwipe(dx)
       } else {
         // move the card to its original position
         Animated.spring(swiper, {
@@ -80,6 +93,42 @@ export const FancySwiper = ({
 
       if (onSwipeRight) {
         onSwipeRight()
+      } else if (onSwipeAnywhere) {
+        onSwipeAnywhere()
+      }
+    })
+  }
+
+  const handleDownSwipe = (toValueX?: number) => {
+    // move the card off the screen
+    Animated.timing(swiper, {
+      toValue: { x: toValueX || 0, y: 1000 },
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      // Revert the pan responder to its initial position
+      swiper.setValue({ x: 0, y: 0 })
+
+      if (onSwipeDown) {
+        onSwipeDown()
+      } else if (onSwipeAnywhere) {
+        onSwipeAnywhere()
+      }
+    })
+  }
+
+  const handleUpSwipe = (toValueX?: number) => {
+    // move the card off the screen
+    Animated.timing(swiper, {
+      toValue: { x: toValueX || 0, y: -1000 },
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      // Revert the pan responder to its initial position
+      swiper.setValue({ x: 0, y: 0 })
+
+      if (onSwipeUp) {
+        onSwipeUp()
       } else if (onSwipeAnywhere) {
         onSwipeAnywhere()
       }
