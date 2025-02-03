@@ -10,6 +10,10 @@ interface FancySwiperCardProps extends GestureResponderHandlers {
 
 export const FancySwiperCard = memo(
   ({ card, swiper, isTopCard, ...rest }: FancySwiperCardProps) => {
+    /**
+     * Give the top card a small rotation as it is being swiped so that it gives users the
+     * impression that they are moving a real card.
+     */
     const rotate = swiper.x.interpolate({
       inputRange: [-OFFSET_X, 0, OFFSET_X],
       outputRange: ["-10deg", "0deg", "10deg"],

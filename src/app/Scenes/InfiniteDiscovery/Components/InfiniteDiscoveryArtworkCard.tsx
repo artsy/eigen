@@ -114,13 +114,6 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
   fragment InfiniteDiscoveryArtworkCard_artwork on Artwork {
     artistNames
     artists(shallow: true) {
-      coverArtwork {
-        images {
-          url(version: "small")
-        }
-      }
-      formattedNationalityAndBirthday
-      initials
       ...ArtistListItem_artist
     }
     date
