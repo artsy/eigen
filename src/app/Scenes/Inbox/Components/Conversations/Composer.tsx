@@ -3,7 +3,13 @@ import { themeGet } from "@styled-system/theme-get"
 import { Composer_conversation$data } from "__generated__/Composer_conversation.graphql"
 import { Schema, Track, track as _track } from "app/utils/track"
 import React from "react"
-import { Keyboard, KeyboardAvoidingView, TextInput, TouchableWithoutFeedback } from "react-native"
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  TextInput,
+  TouchableWithoutFeedback,
+} from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { ConversationCTAFragmentContainer } from "./ConversationCTA"
@@ -90,7 +96,11 @@ export default class Composer extends React.Component<Props, State> {
             fontFamily: "Unica77LL-Regular",
           }
           return (
-            <KeyboardAvoidingView style={{ flex: 1 }}>
+            <KeyboardAvoidingView
+              behavior="padding"
+              keyboardVerticalOffset={Platform.OS === "ios" ? 120 : 80}
+              style={{ flex: 1, justifyContent: "space-between" }}
+            >
               {this.props.children}
               <Flex flexDirection="column">
                 <ConversationCTAFragmentContainer
