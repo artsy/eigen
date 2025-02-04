@@ -14,6 +14,7 @@ import { HomeViewSectionFeaturedCollectionQueryRenderer } from "app/Scenes/HomeV
 import { HomeViewSectionGeneric } from "app/Scenes/HomeView/Sections/HomeViewSectionGeneric"
 import { HomeViewSectionHeroUnitsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionHeroUnits"
 import { HomeViewSectionMarketingCollectionsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollections"
+import { HomeViewSectionNavigationPillsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionNavigationPills"
 import { HomeViewSectionSalesQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionSales"
 import { HomeViewSectionShowsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
 import { HomeViewSectionTasksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionTasks"
@@ -87,6 +88,11 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
       return <HomeViewSectionSalesQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionTasks":
       return <HomeViewSectionTasksQueryRenderer sectionID={section.internalID} {...rest} />
+    case "HomeViewSectionNavigationPills":
+      return (
+        <HomeViewSectionNavigationPillsQueryRenderer sectionID={section.internalID} {...rest} />
+      )
+
     default:
       if (__DEV__) {
         return (
