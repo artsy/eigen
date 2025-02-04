@@ -76,7 +76,7 @@ export const FancySwiper = ({
   const handleLeftSwipe = (toValueY?: number) => {
     /**
      * TODO: Before implementing 360º swipe, there was a bug where the card got stuck in space. I
-     * think that happens because this animation sometimes doesn't doesn't start.
+     * think that happens because this animation sometimes doesn't start.
      */
 
     // move the card off the screen
