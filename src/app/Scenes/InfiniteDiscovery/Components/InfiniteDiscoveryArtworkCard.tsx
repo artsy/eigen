@@ -11,6 +11,7 @@ import {
 import { InfiniteDiscoveryArtworkCard_artwork$key } from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { HEART_ICON_SIZE } from "app/Components/constants"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { graphql, useFragment } from "react-relay"
@@ -23,6 +24,8 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
   artwork: artworkProp,
 }) => {
   const { width: screenWidth } = useScreenDimensions()
+  const { incrementSavedArtworksCount, decrementSavedArtworksCount } =
+    GlobalStore.actions.infiniteDiscovery
 
   const artwork = useFragment<InfiniteDiscoveryArtworkCard_artwork$key>(
     infiniteDiscoveryArtworkCardFragment,
@@ -33,8 +36,14 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     id: artwork?.id as string,
     internalID: artwork?.internalID as string,
     isSaved: !!artwork?.isSaved,
-    onCompleted: (isSaved) =>
-      console.error(`Untracked artwork ${isSaved ? "save" : "unsave"} event`),
+    onCompleted: (isSaved) => {
+      console.error(`Untracked artwork ${isSaved ? "save" : "unsave"} event`)
+      if (isSaved) {
+        incrementSavedArtworksCount()
+      } else {
+        decrementSavedArtworksCount()
+      }
+    },
     onError: (error) => console.error("Error saving artwork:", error),
   })
 
