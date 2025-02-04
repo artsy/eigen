@@ -1,15 +1,12 @@
 import { useColor } from "@artsy/palette-mobile"
-import { BottomSheetBackdropProps } from "@gorhom/bottom-sheet"
+import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types"
 import { useMemo } from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import Animated, { Extrapolate, interpolate, useAnimatedStyle } from "react-native-reanimated"
 
 const MAX_OPACITY = 0.4
-
-interface DefaultBottomSheetBackdrop extends BottomSheetBackdropProps {
+interface DefaultBottomSheetBackdrop extends BottomSheetDefaultBackdropProps {
   onClose?: () => void
-  // set to "close" to close the bottom sheet when the backdrop is pressed
-  pressBehavior?: "close"
 }
 
 export const DefaultBottomSheetBackdrop: React.FC<DefaultBottomSheetBackdrop> = ({
@@ -17,14 +14,28 @@ export const DefaultBottomSheetBackdrop: React.FC<DefaultBottomSheetBackdrop> = 
   onClose,
   pressBehavior,
   style,
+  appearsOnIndex,
+  disappearsOnIndex,
 }) => {
   const color = useColor()
 
   // animated variables
   const containerAnimatedStyle = useAnimatedStyle(() => {
     "worklet"
+
+    if (appearsOnIndex === undefined || disappearsOnIndex === undefined) {
+      return {
+        opacity: interpolate(animatedIndex.value, [-1, 0], [0, MAX_OPACITY], Extrapolate.CLAMP),
+      }
+    }
+
     return {
-      opacity: interpolate(animatedIndex.value, [-1, 0], [0, MAX_OPACITY], Extrapolate.CLAMP),
+      opacity: interpolate(
+        animatedIndex.value,
+        [-1, disappearsOnIndex, appearsOnIndex],
+        [0, 0, MAX_OPACITY],
+        Extrapolate.CLAMP
+      ),
     }
   })
 
@@ -40,15 +51,13 @@ export const DefaultBottomSheetBackdrop: React.FC<DefaultBottomSheetBackdrop> = 
     [style, containerAnimatedStyle]
   )
 
-  return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        if (pressBehavior === "close") {
-          onClose?.()
-        }
-      }}
-    >
-      <Animated.View style={containerStyle} />
-    </TouchableWithoutFeedback>
-  )
+  if (pressBehavior === "close") {
+    return (
+      <TouchableWithoutFeedback onPress={() => onClose?.()}>
+        <Animated.View style={containerStyle} />
+      </TouchableWithoutFeedback>
+    )
+  }
+
+  return <Animated.View style={containerStyle} pointerEvents="none" />
 }

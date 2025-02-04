@@ -26,8 +26,6 @@ export const MoreWorksTab: FC<MoreWorksTabProps> = ({ artworks: _artworks }) => 
 
   const artworks = extractNodes(data.artworksConnection)
 
-  console.log("cb::data", artworks.length)
-
   const loadMore = () => {
     if (!!hasNext && !isLoadingNext) {
       loadNext(PAGE_SIZE)

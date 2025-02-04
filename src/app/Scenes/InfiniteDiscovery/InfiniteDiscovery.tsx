@@ -32,6 +32,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>([])
 
   const data = usePreloadedQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, queryRef)
+  const artworkNodes = extractNodes(data.discoverArtworks)
 
   /**
    * This is called whenever a query for more artworks is made.
@@ -94,10 +95,12 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         </Flex>
         <FancySwiper cards={unswipedCards} hideActionButtons onSwipeAnywhere={handleCardSwiped} />
 
-        <InfiniteDiscoveryBottomSheet
-          artworkID={artworks[index].internalID}
-          artistIDs={artworks[index].artists.map((data) => data?.internalID ?? "")}
-        />
+        {!!artworkNodes.length && (
+          <InfiniteDiscoveryBottomSheet
+            artworkID={artworkNodes[index].internalID}
+            artistIDs={artworkNodes[index].artists.map((data) => data?.internalID ?? "")}
+          />
+        )}
       </Screen.Body>
     </Screen>
   )
@@ -148,19 +151,13 @@ export const infiniteDiscoveryQuery = graphql`
     discoverArtworks(excludeArtworkIds: $excludeArtworkIds) {
       edges {
         node {
-          artistNames
-          artists(shallow: true) @required(action: NONE) {
-            internalID @required(action: NONE)
-            coverArtwork {
-              images {
-                url(version: "small")
-              }
-            }
-            formattedNationalityAndBirthday
-            initials
-          }
+          ...InfiniteDiscoveryArtworkCard_artwork
+
           date
           internalID @required(action: NONE)
+          artists(shallow: true) {
+            internalID @required(action: NONE)
+          }
           images {
             url(version: "large")
             width
@@ -168,7 +165,6 @@ export const infiniteDiscoveryQuery = graphql`
           }
           saleMessage
           title
-          ...InfiniteDiscoveryArtworkCard_artwork
         }
       }
     }

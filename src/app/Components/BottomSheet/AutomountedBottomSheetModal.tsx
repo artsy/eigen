@@ -11,11 +11,15 @@ import { FC, useCallback, useEffect, useRef, useState } from "react"
 export interface AutomountedBottomSheetModalProps extends BottomSheetModalProps {
   visible: boolean
   closeOnBackdropClick?: boolean
+  appearsBackdropOnIndex?: number
+  disappearsBackdropOnIndex?: number
 }
 
 export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> = ({
   visible,
   closeOnBackdropClick = true,
+  appearsBackdropOnIndex,
+  disappearsBackdropOnIndex,
   ...rest
 }) => {
   const ref = useRef<BottomSheetModal>(null)
@@ -63,7 +67,14 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
         )
       }
 
-      return <DefaultBottomSheetBackdrop {...props} />
+      return (
+        <DefaultBottomSheetBackdrop
+          {...props}
+          disappearsOnIndex={disappearsBackdropOnIndex}
+          appearsOnIndex={appearsBackdropOnIndex}
+          pressBehavior="none"
+        />
+      )
     },
     [closeOnBackdropClick]
   )
