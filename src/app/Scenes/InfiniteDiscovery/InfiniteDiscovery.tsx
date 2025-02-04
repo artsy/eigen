@@ -29,7 +29,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const REFETCH_BUFFER = 3
   const toast = useToast()
 
-  const { resetSavedArtworksCount, addDiscoveredArtworkIds } = GlobalStore.actions.infiniteDiscovery
+  const { addDiscoveredArtworkIds } = GlobalStore.actions.infiniteDiscovery
 
   const savedArtworksCount = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.savedArtworksCount
@@ -39,10 +39,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>([])
 
   const data = usePreloadedQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, queryRef)
-
-  useEffect(() => {
-    resetSavedArtworksCount()
-  }, [])
 
   /**
    * This is called whenever a query for more artworks is made.
@@ -148,6 +144,11 @@ export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
   const discoveredArtworksIds = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.discoveredArtworkIds
   )
+  const { resetSavedArtworksCount } = GlobalStore.actions.infiniteDiscovery
+
+  useEffect(() => {
+    resetSavedArtworksCount()
+  }, [])
 
   /**
    * This fetches the first batch of artworks. discoveredArtworksIds is omitted from the list of
