@@ -24,7 +24,7 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
 
   // dismiss modal on back button press on Android
   useBackHandler(() => {
-    if (ref.current && modalIsPresented) {
+    if (ref.current && modalIsPresented && visible) {
       ref.current.dismiss()
       return true
     } else {
