@@ -1,10 +1,12 @@
 import { Flex, Screen, Spinner, Text, Touchable } from "@artsy/palette-mobile"
 import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
+import { useToast } from "app/Components/Toast/toastHook"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { GlobalStore } from "app/store/GlobalStore"
-import { goBack } from "app/system/navigation/navigate"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { pluralize } from "app/utils/pluralize"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { useEffect, useMemo, useState } from "react"
 import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from "react-relay"
@@ -25,13 +27,22 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   queryRef,
 }) => {
   const REFETCH_BUFFER = 3
+  const toast = useToast()
 
-  const { addDiscoveredArtworkIds } = GlobalStore.actions.infiniteDiscovery
+  const { resetSavedArtworksCount, addDiscoveredArtworkIds } = GlobalStore.actions.infiniteDiscovery
+
+  const savedArtworksCount = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.savedArtworksCount
+  )
 
   const [index, setIndex] = useState(0)
   const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>([])
 
   const data = usePreloadedQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, queryRef)
+
+  useEffect(() => {
+    resetSavedArtworksCount()
+  }, [])
 
   /**
    * This is called whenever a query for more artworks is made.
@@ -73,6 +84,19 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   }
 
   const handleExitPressed = () => {
+    if (savedArtworksCount > 0) {
+      toast.show(
+        `${savedArtworksCount} ${pluralize("artwork", savedArtworksCount)} saved`,
+        "bottom",
+        {
+          onPress: () => {
+            navigate("/favorites/saves")
+          },
+          backgroundColor: "green100",
+          description: "Tap here to navigate to your Saves area in your profile.",
+        }
+      )
+    }
     goBack()
   }
 

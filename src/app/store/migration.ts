@@ -59,9 +59,10 @@ export const Versions = {
   DeleteArtworkAndArtistViewOption: 46,
   AddInfiniteDiscoveryModel: 47,
   MoveOnboardingStateToOnboardingModel: 48,
+  AddSavedArtworksCountToInfiniteDiscoveryModel: 49,
 }
 
-export const CURRENT_APP_VERSION = Versions.MoveOnboardingStateToOnboardingModel
+export const CURRENT_APP_VERSION = Versions.AddSavedArtworksCountToInfiniteDiscoveryModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -345,6 +346,9 @@ export const artsyAppMigrations: Migrations = {
     }
     delete state.auth.onboardingState
     delete state.auth.onboardingArtQuizState
+  },
+  [Versions.AddSavedArtworksCountToInfiniteDiscoveryModel]: (state) => {
+    state.infiniteDiscovery.savedArtworksCount = 0
   },
 }
 
