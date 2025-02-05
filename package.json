@@ -1,7 +1,7 @@
 {
   "name": "eigen",
   "version": "1.21.52",
-  "native-code-version": 44,
+  "license": "MIT",
   "description": "Artsy mobile app.",
   "engines": {
     "node": "20.x",
@@ -91,7 +91,6 @@
     "react-native"
   ],
   "contributors": "See docs/thanks.md",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/artsy/eigen/issues"
   },
