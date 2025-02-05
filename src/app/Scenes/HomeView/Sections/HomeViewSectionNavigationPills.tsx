@@ -85,7 +85,7 @@ const sectionFragment = graphql`
   fragment HomeViewSectionNavigationPills_section on HomeViewSectionNavigationPills {
     internalID
     contextModule
-    quickLinks {
+    navigationPills {
       title
       href
       ownerType
@@ -110,7 +110,7 @@ const HomeViewSectionNavigationPillsPlaceholder: React.FC<FlexProps> = (flexProp
     <Skeleton>
       <Flex {...flexProps} mt={1}>
         <FlatList
-          data={QUICK_LINKS_PLACEHOLDER}
+          data={NAVIGATION_LINKS_PLACEHOLDER}
           horizontal
           contentContainerStyle={{
             paddingHorizontal: space(2),
@@ -162,7 +162,7 @@ export const HomeViewSectionNavigationPillsQueryRenderer: React.FC<SectionShared
   })
 )
 
-export const QUICK_LINKS_PLACEHOLDER: Array<NavigationPill> = [
+export const NAVIGATION_LINKS_PLACEHOLDER: Array<NavigationPill> = [
   { title: "Follows", href: "/favorites", ownerType: "whatever" },
   { title: "Auctions", href: "/auctions", ownerType: "whatever" },
   { title: "Saves", href: "/favorites/saves", ownerType: "whatever" },

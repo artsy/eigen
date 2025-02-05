@@ -3,7 +3,7 @@ import { HomeViewSectionNavigationPillsTestsQuery } from "__generated__/HomeView
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import {
   HomeViewSectionNavigationPills,
-  QUICK_LINKS_PLACEHOLDER,
+  NAVIGATION_LINKS_PLACEHOLDER,
 } from "app/Scenes/HomeView/Sections/HomeViewSectionNavigationPills"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -34,14 +34,14 @@ describe("HomeViewSectionNavigationPills", () => {
   it("renders the section pills properly", async () => {
     renderWithRelay({
       HomeViewSectionNavigationPills: () => ({
-        quickLinks: QUICK_LINKS_PLACEHOLDER,
+        navigationPills: NAVIGATION_LINKS_PLACEHOLDER,
       }),
     })
 
-    QUICK_LINKS_PLACEHOLDER.forEach((pill) => {
+    NAVIGATION_LINKS_PLACEHOLDER.forEach((pill) => {
       expect(screen.getByText(pill.title)).toBeOnTheScreen()
     })
-    fireEvent.press(screen.getByText(QUICK_LINKS_PLACEHOLDER[0].title))
-    expect(navigate).toHaveBeenCalledWith(QUICK_LINKS_PLACEHOLDER[0].href)
+    fireEvent.press(screen.getByText(NAVIGATION_LINKS_PLACEHOLDER[0].title))
+    expect(navigate).toHaveBeenCalledWith(NAVIGATION_LINKS_PLACEHOLDER[0].href)
   })
 })

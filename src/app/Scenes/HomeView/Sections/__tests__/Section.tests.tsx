@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react-native"
+import { screen } from "@testing-library/react-native"
 import { Section, SectionProps } from "app/Scenes/HomeView/Sections/Section"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
@@ -19,7 +19,7 @@ describe("Section", () => {
         internalID: null,
       }
       expect(() => {
-        render(
+        renderWithWrappers(
           // @ts-expect-error internalID=null intentionally
           <Section section={section} index={1} />
         )
@@ -52,7 +52,7 @@ describe("Section", () => {
         internalID: null,
       }
       expect(() => {
-        render(
+        renderWithWrappers(
           // @ts-expect-error internalID=null intentionally
           <Section section={section} index={1} />
         )
