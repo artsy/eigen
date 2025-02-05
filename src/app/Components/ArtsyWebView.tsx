@@ -5,7 +5,13 @@ import { addBreadcrumb } from "@sentry/react-native"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { GlobalStore, getCurrentEmissionState } from "app/store/GlobalStore"
-import { GoBackProps, dismissModal, goBack, navigate } from "app/system/navigation/navigate"
+import {
+  GoBackProps,
+  dismissModal,
+  goBack,
+  navigate,
+  navigationEvents,
+} from "app/system/navigation/navigate"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
@@ -89,6 +95,18 @@ export const ArtsyWebViewPage = ({
       }
     }
   }
+
+  const handleModalDismiss = () => {
+    dismissModal()
+  }
+
+  useEffect(() => {
+    const emitter = navigationEvents.addListener("requestModalDismiss", handleModalDismiss)
+
+    return () => {
+      emitter.removeListener("requestModalDismiss", handleModalDismiss)
+    }
+  }, [])
 
   const handleGoBack = () => {
     if (backAction) {
