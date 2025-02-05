@@ -124,6 +124,13 @@ export const DevTools: React.FC<{}> = () => {
               toast.show("Progressive Onboarding progress cleared ✅", "middle")
             }}
           />
+          <DevMenuButtonItem
+            title="Clear Infinite Discovery artworks"
+            onPress={() => {
+              GlobalStore.actions._forgetDiscoveredArtworks()
+              toast.show("Infinite Discovery artworks cleared ✅", "middle")
+            }}
+          />
           <DevMenuButtonItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
 
           <DevMenuButtonItem

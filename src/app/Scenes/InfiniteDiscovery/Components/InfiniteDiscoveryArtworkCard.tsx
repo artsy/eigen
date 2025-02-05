@@ -12,6 +12,7 @@ import { InfiniteDiscoveryArtworkCard_artwork$key } from "__generated__/Infinite
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { HEART_ICON_SIZE } from "app/Components/constants"
+import { GlobalStore } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { graphql, useFragment } from "react-relay"
@@ -26,6 +27,8 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 }) => {
   const { width: screenWidth } = useScreenDimensions()
   const { trackEvent } = useTracking()
+  const { incrementSavedArtworksCount, decrementSavedArtworksCount } =
+    GlobalStore.actions.infiniteDiscovery
 
   const artwork = useFragment<InfiniteDiscoveryArtworkCard_artwork$key>(
     infiniteDiscoveryArtworkCardFragment,
@@ -42,6 +45,12 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         action_type: Schema.ActionTypes.Success,
         context_module: Schema.ContextModules.ArtworkActions,
       })
+
+      if (isArtworkSaved) {
+        incrementSavedArtworksCount()
+      } else {
+        decrementSavedArtworksCount()
+      }
     },
   })
 
@@ -121,13 +130,6 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
   fragment InfiniteDiscoveryArtworkCard_artwork on Artwork {
     artistNames
     artists(shallow: true) {
-      coverArtwork {
-        images {
-          url(version: "small")
-        }
-      }
-      formattedNationalityAndBirthday
-      initials
       ...ArtistListItem_artist
     }
     date

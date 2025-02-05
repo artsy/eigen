@@ -1085,4 +1085,28 @@ describe("App version Versions.AddInfiniteDiscoveryModel", () => {
       expect(migratedState.onboarding.onboardingArtQuizState).toEqual("none")
     })
   })
+
+  describe("App version Versions.AddSavedArtworksCountToInfiniteDiscoveryModel", () => {
+    it("adds savedArtworksCount to the InfiniteDiscovery model", () => {
+      const migrationToTest = Versions.AddSavedArtworksCountToInfiniteDiscoveryModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      previousState.infiniteDiscovery.discoveredArtworkIds = ["artwork-1", "artwork-2"]
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.infiniteDiscovery.discoveredArtworkIds).toEqual([
+        "artwork-1",
+        "artwork-2",
+      ])
+      expect(migratedState.infiniteDiscovery.savedArtworksCount).toEqual(0)
+    })
+  })
 })
