@@ -20,7 +20,7 @@ interface HomeViewSectionNavigationPillsProps {
 }
 
 export type NavigationPill = NonNullable<
-  NonNullable<NonNullable<HomeViewSectionNavigationPills_section$data>["quickLinks"]>[number]
+  NonNullable<NonNullable<HomeViewSectionNavigationPills_section$data>["navigationPills"]>[number]
 >
 
 export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationPillsProps> = ({
@@ -32,18 +32,18 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
   const tracking = useHomeViewTracking()
   const space = useSpace()
 
-  const quickLinks = section.quickLinks.filter(
+  const navigationPills = section.navigationPills.filter(
     (pill) => pill?.title && pill.href
   ) as NavigationPill[]
 
-  if (!quickLinks.length) {
+  if (!navigationPills.length) {
     return null
   }
 
   return (
     <Flex {...flexProps} mt={1}>
       <FlatList
-        data={quickLinks}
+        data={navigationPills}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{
