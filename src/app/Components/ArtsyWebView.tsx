@@ -226,6 +226,14 @@ export const ArtsyWebView = forwardRef<
         return
       }
 
+      // TODO: For not we are not redirecting to home from webviews because of artsy logo
+      // in purchase flow breaking things. We should instead hide the artsy logo or not redirect to home
+      // when in eigen purchase flow.
+      if (result.type === "match" && result.module === "Home") {
+        stopLoading(true)
+        return
+      }
+
       // if it's a route that we know we don't have a native view for, keep it in the webview
       // only vanityURLs which do not have a native screen ends up in the webview. So also keep in webview for VanityUrls
       // TODO:- Handle cases where a vanityURl lands in a webview and then webview url navigation state changes
