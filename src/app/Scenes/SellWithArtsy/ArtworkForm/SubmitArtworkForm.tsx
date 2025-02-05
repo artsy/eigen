@@ -149,7 +149,11 @@ const SubmitArtworkFormContent: React.FC<SubmitArtworkProps> = ({
 
   return (
     <FormikProvider value={formik}>
-      <KeyboardAvoidingView style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 65 : 0}
+      >
         <NavigationContainer
           independent
           ref={__unsafe__SubmissionArtworkFormNavigationRef}
