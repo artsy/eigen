@@ -32,7 +32,7 @@ const CreateSavedSearchAlertContent: React.FC<CreateSavedSearchAlertContentProps
   const isPreviouslyFocused = useRef(false)
   const [refetching, setRefetching] = useState(false)
   const [enablePushNotifications, setEnablePushNotifications] = useState(true)
-  const isCustomAlertsNotificationsEnabled = viewer?.notificationPreferences.some((preference) => {
+  const isCustomAlertsNotificationsEnabled = viewer?.notificationPreferences?.some((preference) => {
     return (
       preference.channel === "email" &&
       preference.name === "custom_alerts" &&
