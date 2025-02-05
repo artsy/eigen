@@ -59,8 +59,8 @@ export interface BidderPositionResult {
     // the createBidderPosition mutation may return 'SUCCESS' when it successfully placed a bid
     | "SUCCESS"
 
-  message_header: string
-  message_description_md: string
+  messageHeader: string
+  messageDescriptionMD: string
   position: {
     id: string
     suggested_next_bid: {

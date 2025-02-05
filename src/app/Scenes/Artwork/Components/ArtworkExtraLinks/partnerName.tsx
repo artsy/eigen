@@ -1,18 +1,21 @@
 import { ArtworkExtraLinks_artwork$data } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { ArtworkLotDetails_artwork$data } from "__generated__/ArtworkLotDetails_artwork.graphql"
-import { ConfirmBid_sale_artwork$data } from "__generated__/ConfirmBid_sale_artwork.graphql"
-import { isEmpty } from "lodash"
+import { ConfirmBid_saleArtwork$data } from "__generated__/ConfirmBid_saleArtwork.graphql"
 
-type SaleWithPartner =
-  | NonNullable<ConfirmBid_sale_artwork$data["sale"]>
-  | NonNullable<ArtworkExtraLinks_artwork$data["sale"]>
-  | NonNullable<ArtworkLotDetails_artwork$data["sale"]>
+type SaleWithPartner = Pick<
+  NonNullable<
+    | ConfirmBid_saleArtwork$data["sale"]
+    | ArtworkExtraLinks_artwork$data["sale"]
+    | ArtworkLotDetails_artwork$data["sale"]
+  >,
+  "partner" | "isBenefit"
+>
 
 export const partnerName = ({ isBenefit, partner }: SaleWithPartner) => {
-  if (isBenefit || isEmpty(partner)) {
+  if (isBenefit || !partner?.name) {
     return "Artsy's"
   } else {
-    const name = partner!.name! /* STRICTNESS_MIGRATION */
+    const name = partner.name
 
     if (name.endsWith("'s") || name.endsWith("’s")) {
       return `Artsy's and ${name}`
