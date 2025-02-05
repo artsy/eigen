@@ -10,67 +10,41 @@ interface FancySwiperCardProps extends GestureResponderHandlers {
 
 export const FancySwiperCard = memo(
   ({ card, swiper, isTopCard, ...rest }: FancySwiperCardProps) => {
-    // tilt the top card ever so slightly as it is being swiped
-    const rotate = swiper.x.interpolate({
-      inputRange: [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE],
-      outputRange: ["-10deg", "0deg", "10deg"],
-    })
+    let transformStyle = undefined
+    let shadowStyle = undefined
 
-    const transformStyle = {
-      transform: [...swiper.getTranslateTransform(), { rotate }],
-    }
+    if (isTopCard) {
+      // tilt the top card ever so slightly as it is being swiped
+      const rotate = swiper.x.interpolate({
+        inputRange: [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE],
+        outputRange: ["-10deg", "0deg", "10deg"],
+      })
 
-    // drop a shadow from the top card and make it more intense as it is swiped
-    const shadowOpacityX = swiper.x.interpolate({
-      inputRange: [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE],
-      outputRange: [MAX_SHADOW_OPACITY, 0, MAX_SHADOW_OPACITY],
-    })
+      transformStyle = {
+        transform: [...swiper.getTranslateTransform(), { rotate }],
+      }
 
-    const shadowOpacityY = swiper.y.interpolate({
-      inputRange: [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE],
-      outputRange: [MAX_SHADOW_OPACITY, 0, MAX_SHADOW_OPACITY],
-    })
+      // drop a shadow from the top card and make it more intense as it is swiped
+      const shadowOpacity = interpolateShadowOpacity(swiper)
+      const elevation = interpolateElevation(swiper)
 
-    const shadowOpacity = Animated.add(shadowOpacityX, shadowOpacityY).interpolate({
-      inputRange: [0, MAX_SHADOW_OPACITY * 2],
-      outputRange: [0, MAX_SHADOW_OPACITY],
-      extrapolate: "clamp",
-    })
-
-    const elevationX = swiper.x.interpolate({
-      inputRange: [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE],
-      outputRange: [MAX_ELEVATION, 0, MAX_ELEVATION],
-    })
-
-    const elevationY = swiper.y.interpolate({
-      inputRange: [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE],
-      outputRange: [MAX_ELEVATION, 0, MAX_ELEVATION],
-    })
-
-    const elevation = Animated.add(elevationX, elevationY).interpolate({
-      inputRange: [0, MAX_ELEVATION * 2],
-      outputRange: [0, MAX_ELEVATION],
-      extrapolate: "clamp",
-    })
-
-    const shadowStyle = {
-      shadowOffset: { width: 0, height: 0 },
-      shadowRadius: 12,
-      shadowOpacity,
-      elevation,
+      shadowStyle = {
+        shadowOffset: { width: 0, height: 0 },
+        shadowRadius: 12,
+        shadowOpacity,
+        elevation,
+      }
     }
 
     return (
       <Animated.View
-        style={[
-          {
-            position: "absolute",
-            width: "100%",
-            borderRadius: 10,
-          },
-          isTopCard && transformStyle,
-          isTopCard && shadowStyle,
-        ]}
+        style={{
+          position: "absolute",
+          width: "100%",
+          borderRadius: 10,
+          ...shadowStyle,
+          ...transformStyle,
+        }}
         testID={isTopCard ? "top-fancy-swiper-card" : undefined}
         {...rest}
       >
@@ -80,5 +54,42 @@ export const FancySwiperCard = memo(
   }
 )
 
-const MAX_SHADOW_OPACITY = 0.13
-const MAX_ELEVATION = 8
+const interpolateShadowOpacity = (swiper: Animated.ValueXY) => {
+  const MAX_SHADOW_OPACITY = 0.13
+
+  const shadowOpacityX = swiper.x.interpolate({
+    inputRange: [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE],
+    outputRange: [MAX_SHADOW_OPACITY, 0, MAX_SHADOW_OPACITY],
+  })
+
+  const shadowOpacityY = swiper.y.interpolate({
+    inputRange: [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE],
+    outputRange: [MAX_SHADOW_OPACITY, 0, MAX_SHADOW_OPACITY],
+  })
+
+  return Animated.add(shadowOpacityX, shadowOpacityY).interpolate({
+    inputRange: [0, MAX_SHADOW_OPACITY * 2],
+    outputRange: [0, MAX_SHADOW_OPACITY],
+    extrapolate: "clamp",
+  })
+}
+
+const interpolateElevation = (swiper: Animated.ValueXY) => {
+  const MAX_ELEVATION = 8
+
+  const elevationX = swiper.x.interpolate({
+    inputRange: [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE],
+    outputRange: [MAX_ELEVATION, 0, MAX_ELEVATION],
+  })
+
+  const elevationY = swiper.y.interpolate({
+    inputRange: [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE],
+    outputRange: [MAX_ELEVATION, 0, MAX_ELEVATION],
+  })
+
+  return Animated.add(elevationX, elevationY).interpolate({
+    inputRange: [0, MAX_ELEVATION * 2],
+    outputRange: [0, MAX_ELEVATION],
+    extrapolate: "clamp",
+  })
+}
