@@ -11388,7 +11388,7 @@ type HomeViewSectionMarketingCollections implements HomeViewSectionGeneric & Nod
   ownerType: String
 }
 
-# A selection of quick links in the home view
+# A selection of navigation links in the home view
 type HomeViewSectionNavigationPills implements HomeViewSectionGeneric & Node {
   # Component prescription for this section, for overriding or customizing presentation and behavior
   component: HomeViewComponent
@@ -11401,10 +11401,10 @@ type HomeViewSectionNavigationPills implements HomeViewSectionGeneric & Node {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  navigationPills: [NavigationPill]!
 
   # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
   ownerType: String
-  quickLinks: [NavigationPill]!
 }
 
 # A sales (auctions) section in the home view
@@ -14273,13 +14273,13 @@ type MyLocation {
 }
 
 type NavigationPill {
-  # Quick link URL
+  # Link URL
   href: String!
 
   # The context module for analytics
   ownerType: String!
 
-  # Quick link title
+  # Link title
   title: String!
 }
 
