@@ -60,7 +60,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
   )
 
   const { settings, ...attributes } = me?.alert ?? {}
-  const isCustomAlertsNotificationsEnabled = viewer.notificationPreferences.some((preference) => {
+  const isCustomAlertsNotificationsEnabled = viewer?.notificationPreferences?.some((preference) => {
     return (
       preference.channel === "email" &&
       preference.name === "custom_alerts" &&
