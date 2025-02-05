@@ -153,18 +153,10 @@ export const infiniteDiscoveryQuery = graphql`
         node {
           ...InfiniteDiscoveryArtworkCard_artwork
 
-          date
           internalID @required(action: NONE)
           artists(shallow: true) @required(action: NONE) {
             internalID @required(action: NONE)
           }
-          images {
-            url(version: "large")
-            width
-            height
-          }
-          saleMessage
-          title
         }
       }
     }
