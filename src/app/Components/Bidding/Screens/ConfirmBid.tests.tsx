@@ -25,7 +25,7 @@ import { merge } from "lodash"
 import { TouchableWithoutFeedback } from "react-native"
 import relay, { graphql } from "react-relay"
 import { ReactTestRenderer } from "react-test-renderer"
-import { BidResultScreen } from "./BidResult"
+import { BidResult } from "./BidResult"
 import { CreditCardForm } from "./CreditCardForm"
 import { SelectMaxBid } from "./SelectMaxBid"
 
@@ -421,7 +421,7 @@ describe("ConfirmBid", () => {
 
           fireEvent.press(screen.getByTestId("bid-button"))
 
-          expect(nextStep?.component).toEqual(BidResultScreen)
+          expect(nextStep?.component).toEqual(BidResult)
           expect(nextStep?.passProps).toEqual(
             expect.objectContaining({
               bidderPositionResult: {
@@ -456,7 +456,7 @@ describe("ConfirmBid", () => {
 
           await waitFor(() => !!nextStep)
 
-          expect(nextStep?.component).toEqual(BidResultScreen)
+          expect(nextStep?.component).toEqual(BidResult)
           expect(nextStep?.passProps).toEqual(
             expect.objectContaining({
               bidderPositionResult: {
@@ -547,7 +547,7 @@ describe("ConfirmBid", () => {
 
         await waitFor(() => !!nextStep)
 
-        expect(nextStep?.component).toEqual(BidResultScreen)
+        expect(nextStep?.component).toEqual(BidResult)
         expect(nextStep?.passProps).toEqual(
           expect.objectContaining({
             bidderPositionResult:
@@ -578,7 +578,7 @@ describe("ConfirmBid", () => {
         fireEvent.press(screen.getByTestId("bid-button"))
         await waitFor(() => !!nextStep)
 
-        expect(nextStep?.component).toEqual(BidResultScreen)
+        expect(nextStep?.component).toEqual(BidResult)
         expect(nextStep?.passProps).toEqual(
           expect.objectContaining({
             bidderPositionResult: mockRequestResponses.pollingForBid.pending.me!.bidderPosition,
@@ -608,7 +608,7 @@ describe("ConfirmBid", () => {
         fireEvent.press(screen.getByTestId("bid-button"))
         await waitFor(() => !!nextStep)
 
-        expect(nextStep?.component).toEqual(BidResultScreen)
+        expect(nextStep?.component).toEqual(BidResult)
         expect(nextStep?.passProps).toEqual(
           expect.objectContaining({
             bidderPositionResult:
@@ -639,7 +639,7 @@ describe("ConfirmBid", () => {
         fireEvent.press(screen.getByTestId("bid-button"))
         await waitFor(() => !!nextStep)
 
-        expect(nextStep?.component).toEqual(BidResultScreen)
+        expect(nextStep?.component).toEqual(BidResult)
         expect(nextStep?.passProps).toEqual(
           expect.objectContaining({
             bidderPositionResult: mockRequestResponses.pollingForBid.outbid.me!.bidderPosition,
@@ -669,7 +669,7 @@ describe("ConfirmBid", () => {
         fireEvent.press(screen.getByTestId("bid-button"))
         await waitFor(() => !!nextStep)
 
-        expect(nextStep?.component).toEqual(BidResultScreen)
+        expect(nextStep?.component).toEqual(BidResult)
         expect(nextStep?.passProps).toEqual(
           expect.objectContaining({
             bidderPositionResult:
@@ -714,7 +714,7 @@ describe("ConfirmBid", () => {
 
         // navigates to bid result screen
         expect(navigator.push).toHaveBeenCalledWith({
-          component: BidResultScreen,
+          component: BidResult,
           passProps: expect.objectContaining({
             bidderPositionResult: {
               position: {
@@ -776,7 +776,7 @@ describe("ConfirmBid", () => {
 
         await waitFor(() => !!nextStep)
 
-        expect(nextStep?.component).toEqual(BidResultScreen)
+        expect(nextStep?.component).toEqual(BidResult)
         expect(nextStep?.passProps).toEqual(
           expect.objectContaining({
             bidderPositionResult:
@@ -949,7 +949,7 @@ describe("ConfirmBid", () => {
 
       await fillOutFormAndSubmit(view)
 
-      expect(nextStep?.component).toEqual(BidResultScreen)
+      expect(nextStep?.component).toEqual(BidResult)
       expect(nextStep?.passProps).toEqual(
         expect.objectContaining({
           bidderPositionResult: {
@@ -1051,7 +1051,7 @@ describe("ConfirmBid", () => {
         fillOutFormAndSubmit(view)
         await waitFor(() => !!nextStep)
 
-        expect(nextStep?.component).toEqual(BidResultScreen)
+        expect(nextStep?.component).toEqual(BidResult)
         expect(nextStep?.passProps).toEqual(
           expect.objectContaining({
             bidderPositionResult: {
@@ -1325,14 +1325,4 @@ describe("ConfirmBid", () => {
     ...initialProps,
     sale_artwork: saleArtworkRegisteredForBidding,
   } as any
-
-  const initialPropsForCascadingSale = {
-    ...initialProps,
-    sale_artwork: cascadingEndTimeSaleArtwork,
-  }
-
-  const initialPropsForNonCascadingSale = {
-    ...initialProps,
-    sale_artwork: nonCascadeSaleArtwork,
-  }
 })

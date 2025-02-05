@@ -15,7 +15,7 @@ import { Divider } from "app/Components/Bidding/Components/Divider"
 import { PaymentInfo } from "app/Components/Bidding/Components/PaymentInfo"
 import { Timer } from "app/Components/Bidding/Components/Timer"
 import { Flex } from "app/Components/Bidding/Elements/Flex"
-import { BidResultScreen } from "app/Components/Bidding/Screens/BidResult"
+import { BidResult } from "app/Components/Bidding/Screens/BidResult"
 import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
 import { PriceSummary } from "app/Components/Bidding/Screens/ConfirmBid/PriceSummary"
 import { Address } from "app/Components/Bidding/types"
@@ -229,10 +229,10 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
       console.error("ConfirmBid.tsx: navigateToBidScreen", error)
 
       navigator?.push({
-        component: BidResultScreen,
+        component: BidResult,
         title: "",
         passProps: {
-          sale_artwork: saleArtworkData,
+          saleArtwork: saleArtworkData,
           bidderPositionResult: resultForNetworkError,
           biddingEndAt: currentBiddingEndAt,
         },
@@ -253,10 +253,10 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
       )
 
       navigator?.push({
-        component: BidResultScreen,
+        component: BidResult,
         title: "",
         passProps: {
-          sale_artwork: saleArtworkData,
+          saleArtwork: saleArtworkData,
           bidderPositionResult,
           refreshBidderInfo,
           refreshSaleArtwork,
@@ -405,7 +405,7 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
           </Flex>
         )}
 
-        <Box mx={4}>
+        <Box mx={2} mt={4}>
           <Button
             testID="bid-button"
             block
@@ -453,7 +453,7 @@ const confirmBidSaleArtworkFragment = graphql`
     lotLabel
     endAt
     extendedBiddingEndAt
-    ...BidResult_sale_artwork
+    ...BidResult_saleArtwork
   }
 `
 

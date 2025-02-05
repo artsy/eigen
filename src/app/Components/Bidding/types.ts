@@ -63,7 +63,7 @@ export interface BidderPositionResult {
   messageDescriptionMD: string
   position: {
     id: string
-    suggested_next_bid: {
+    suggestedNextBid: {
       cents: string
       display: string
     }
