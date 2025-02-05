@@ -10,6 +10,8 @@ import {
   Touchable,
   useScreenDimensions,
   useTheme,
+  CloseIcon,
+  ArrowBackIcon,
 } from "@artsy/palette-mobile"
 import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
@@ -189,13 +191,13 @@ export const InfiniteDiscovery: React.FC = () => {
             title="Discovery"
             leftElements={
               <Touchable onPress={handleBackPressed}>
-                <Text variant="xs">Back</Text>
+                <ArrowBackIcon />
               </Touchable>
             }
             hideLeftElements={index === 0}
             rightElements={
               <Touchable onPress={handleExitPressed}>
-                <Text variant="xs">Exit</Text>
+                <CloseIcon fill="black100" />
               </Touchable>
             }
           />
