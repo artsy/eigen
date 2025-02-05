@@ -7,18 +7,13 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useEffect } from "react"
 import { View } from "react-native"
 
-const mockPrefetch = jest.fn()
-const MockedVisibleSentinel: React.FC<any> = ({ children, onVisible }) => {
-  useEffect(() => onVisible(), [])
-
-  return <View>{children}</View>
-}
-
 jest.mock("app/utils/queryPrefetching", () => ({
   usePrefetch: () => mockPrefetch,
 }))
-jest.mock("app/utils/ElementInView", () => ({
-  ElementInView: (props: any) => <MockedVisibleSentinel {...props} />,
+
+jest.mock("@herberthtk/react-native-viewport", () => ({
+  __esModule: true,
+  default: (props: any) => <MockedVisibleSentinel {...props} />,
 }))
 
 describe("RouterLink", () => {
@@ -94,3 +89,10 @@ describe("RouterLink", () => {
     })
   })
 })
+
+const mockPrefetch = jest.fn()
+const MockedVisibleSentinel: React.FC<any> = ({ children, onChange }) => {
+  useEffect(() => onChange(true), [])
+
+  return <View>{children}</View>
+}

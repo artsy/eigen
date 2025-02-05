@@ -6,8 +6,9 @@ import { Text, View } from "react-native"
 import { graphql } from "react-relay"
 import { ProgressiveOnboardingSaveArtwork } from "./ProgressiveOnboardingSaveArtwork"
 
-jest.mock("app/utils/ElementInView", () => ({
-  ElementInView: (props: any) => <MockedVisibleSentinel {...props} />,
+jest.mock("@herberthtk/react-native-viewport", () => ({
+  __esModule: true,
+  default: (props: any) => <MockedVisibleSentinel {...props} />,
 }))
 
 jest.mock("@artsy/palette-mobile", () => ({
@@ -111,8 +112,8 @@ describe("ProgressiveOnboardingSaveArtwork", () => {
   })
 })
 
-const MockedVisibleSentinel: React.FC<any> = ({ children, onVisible }) => {
-  useEffect(() => onVisible(), [])
+const MockedVisibleSentinel: React.FC<any> = ({ children, onChange }) => {
+  useEffect(() => onChange(true), [])
 
   return <View>{children}</View>
 }

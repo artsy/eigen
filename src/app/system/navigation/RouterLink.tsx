@@ -1,9 +1,10 @@
-import { TouchableProps } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
-import { ElementInView } from "app/utils/ElementInView"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { usePrefetch } from "app/utils/queryPrefetching"
+import { Sentinel } from "app/utils/Sentinel"
+import { useState } from "react"
 import { GestureResponderEvent, TouchableOpacity } from "react-native"
+import { TouchableProps } from "react-native-svg"
 
 interface RouterLinkProps {
   disablePrefetch?: boolean
@@ -22,6 +23,8 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   navigationProps,
   ...restProps
 }) => {
+  const [isPrefetched, setIsPrefetched] = useState(false)
+
   const prefetchUrl = usePrefetch()
   const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
 
@@ -39,9 +42,10 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
     }
   }
 
-  const handleVisible = () => {
-    if (isPrefetchingEnabled) {
+  const handleInViewportChange = (isVisible: boolean) => {
+    if (isPrefetchingEnabled && isVisible && !isPrefetched) {
       prefetchUrl(to)
+      setIsPrefetched(true)
     }
   }
 
@@ -56,8 +60,8 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   }
 
   return (
-    <ElementInView onVisible={handleVisible}>
+    <Sentinel onChange={handleInViewportChange}>
       <TouchableOpacity {...touchableProps} />
-    </ElementInView>
+    </Sentinel>
   )
 }
