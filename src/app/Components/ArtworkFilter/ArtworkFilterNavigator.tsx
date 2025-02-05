@@ -140,7 +140,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
 
   const handleClosingModal = () => {
-    // dismiss alert-finish on modal close,so the user can proseed with the next onboarding step
+    // dismiss alert-finish on modal close,so the user can proceed with the next onboarding step
     dismiss("alert-finish")
     resetFiltersAction()
     closeModal?.()
