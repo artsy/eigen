@@ -190,13 +190,13 @@ export const InfiniteDiscovery: React.FC = () => {
           <Screen.Header
             title="Discovery"
             leftElements={
-              <Touchable onPress={handleBackPressed}>
+              <Touchable onPress={handleBackPressed} testID="back-icon">
                 <ArrowBackIcon />
               </Touchable>
             }
             hideLeftElements={index === 0}
             rightElements={
-              <Touchable onPress={handleExitPressed}>
+              <Touchable onPress={handleExitPressed} testID="close-icon">
                 <CloseIcon fill="black100" />
               </Touchable>
             }
