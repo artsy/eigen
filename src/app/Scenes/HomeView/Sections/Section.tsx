@@ -19,6 +19,7 @@ import { HomeViewSectionSalesQueryRenderer } from "app/Scenes/HomeView/Sections/
 import { HomeViewSectionShowsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
 import { HomeViewSectionTasksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionTasks"
 import { HomeViewSectionViewingRoomsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 
 export interface SectionProps extends FlexProps {
@@ -34,6 +35,8 @@ export interface SectionSharedProps extends FlexProps {
 }
 
 export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
+  const enableNavigationPills = useFeatureFlag("AREnableHomeViewQuickLinks")
+
   if (!section.internalID) {
     if (__DEV__) {
       throw new Error("Section has no internalID")
@@ -88,10 +91,15 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
       return <HomeViewSectionSalesQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionTasks":
       return <HomeViewSectionTasksQueryRenderer sectionID={section.internalID} {...rest} />
-    case "HomeViewSectionNavigationPills":
-      return (
-        <HomeViewSectionNavigationPillsQueryRenderer sectionID={section.internalID} {...rest} />
-      )
+    case "HomeViewSectionNavigationPills": {
+      if (enableNavigationPills) {
+        return (
+          <HomeViewSectionNavigationPillsQueryRenderer sectionID={section.internalID} {...rest} />
+        )
+      }
+
+      return null
+    }
 
     default:
       if (__DEV__) {
