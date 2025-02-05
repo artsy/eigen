@@ -223,7 +223,7 @@ export const FooterButtons = ({
             switchTab("profile")
             dismissModal()
             requestAnimationFrame(() => {
-              navigate("my-collection/artists/new", {
+              navigate("my-collection/collected-artists/new", {
                 passProps: {
                   source: Tab.collection,
                 },
