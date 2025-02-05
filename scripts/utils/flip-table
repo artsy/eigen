@@ -58,5 +58,3 @@ echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
 yarn install:all
 
 ./scripts/setup/update-echo
-
-yarn pod-install-repo-update

@@ -12740,6 +12740,11 @@ plist@^3.0.4:
     base64-js "^1.5.1"
     xmlbuilder "^15.1.1"
 
+pod-install@0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/pod-install/-/pod-install-0.3.4.tgz#8d6ad22a3e42d8014ee0363378d4bd782b8152d5"
+  integrity sha512-I6ObV36HNvbM5/QI8IEZ61ot41p8eBB9Zm0Bc9Sw99v9JzdNvwxg6IS2ZbZbJ0KvLWnUCIL1mIiFhJTLVF5r1w==
+
 popmotion@11.0.3:
   version "11.0.3"
   resolved "https://registry.yarnpkg.com/popmotion/-/popmotion-11.0.3.tgz#565c5f6590bbcddab7a33a074bb2ba97e24b0cc9"
