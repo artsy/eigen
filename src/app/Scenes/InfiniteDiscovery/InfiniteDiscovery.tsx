@@ -9,6 +9,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { pluralize } from "app/utils/pluralize"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { useEffect, useMemo, useState } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from "react-relay"
 import type {
   InfiniteDiscoveryQuery,
@@ -39,6 +40,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>([])
 
   const data = usePreloadedQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, queryRef)
+
+  const insets = useSafeAreaInsets()
 
   /**
    * This is called whenever a query for more artworks is made.
@@ -94,8 +97,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   }
 
   return (
-    <Screen>
-      <Screen.Body fullwidth>
+    <Screen safeArea={false}>
+      <Screen.Body fullwidth style={{ marginTop: insets.top }}>
         <Flex zIndex={-100}>
           <Screen.Header
             title="Discovery"

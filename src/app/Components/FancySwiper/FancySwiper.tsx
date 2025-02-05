@@ -46,7 +46,7 @@ export const FancySwiper = ({
         // move the card to its original position
         Animated.spring(swiper, {
           toValue: { x: 0, y: 0 },
-          friction: 5,
+          friction: 50,
           useNativeDriver: true,
         }).start()
       }
@@ -74,6 +74,11 @@ export const FancySwiper = ({
   }
 
   const handleLeftSwipe = (toValueY?: number) => {
+    /**
+     * TODO: Before implementing 360º swipe, there was a bug where the card got stuck in space. I
+     * think that happens because this animation sometimes doesn't start.
+     */
+
     // move the card off the screen
     Animated.timing(swiper, {
       toValue: { x: -1000, y: toValueY || 0 },
