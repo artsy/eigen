@@ -23,33 +23,51 @@ export const FancySwiperCard = memo(
     // drop a shadow from the top card and make it more intense as it is swiped
     const shadowOpacityX = swiper.x.interpolate({
       inputRange: [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE],
-      outputRange: [0.13, 0, 0.13],
+      outputRange: [MAX_SHADOW_OPACITY, 0, MAX_SHADOW_OPACITY],
     })
 
     const shadowOpacityY = swiper.y.interpolate({
       inputRange: [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE],
-      outputRange: [0.13, 0, 0.13],
+      outputRange: [MAX_SHADOW_OPACITY, 0, MAX_SHADOW_OPACITY],
     })
 
     const shadowOpacity = Animated.add(shadowOpacityX, shadowOpacityY).interpolate({
-      inputRange: [0, 0.26],
-      outputRange: [0, 1],
+      inputRange: [0, MAX_SHADOW_OPACITY * 2],
+      outputRange: [0, MAX_SHADOW_OPACITY],
+      extrapolate: "clamp",
+    })
+
+    const elevationX = swiper.x.interpolate({
+      inputRange: [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE],
+      outputRange: [MAX_ELEVATION, 0, MAX_ELEVATION],
+    })
+
+    const elevationY = swiper.y.interpolate({
+      inputRange: [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE],
+      outputRange: [MAX_ELEVATION, 0, MAX_ELEVATION],
+    })
+
+    const elevation = Animated.add(elevationX, elevationY).interpolate({
+      inputRange: [0, MAX_ELEVATION * 2],
+      outputRange: [0, MAX_ELEVATION],
       extrapolate: "clamp",
     })
 
     const shadowStyle = {
-      shadowOffset: {
-        width: 0,
-        height: 0,
-      },
-      shadowOpacity,
+      shadowOffset: { width: 0, height: 0 },
       shadowRadius: 12,
+      shadowOpacity,
+      elevation,
     }
 
     return (
       <Animated.View
         style={[
-          { position: "absolute", zIndex: -1, width: "100%" },
+          {
+            position: "absolute",
+            width: "100%",
+            borderRadius: 10,
+          },
           isTopCard && transformStyle,
           isTopCard && shadowStyle,
         ]}
@@ -61,3 +79,6 @@ export const FancySwiperCard = memo(
     )
   }
 )
+
+const MAX_SHADOW_OPACITY = 0.13
+const MAX_ELEVATION = 8
