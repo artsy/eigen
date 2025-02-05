@@ -60,7 +60,7 @@ describe(FooterButtons, () => {
       expect(mockDismissModal).toHaveBeenCalled()
       await flushPromiseQueue()
 
-      expect(navigate).toHaveBeenCalledWith("my-collection/artists/new", {
+      expect(navigate).toHaveBeenCalledWith("my-collection/collected-artists/new", {
         passProps: {
           source: Tab.collection,
         },
