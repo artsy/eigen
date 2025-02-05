@@ -91,7 +91,11 @@ export class BidResult extends React.Component<BidResultProps> {
 
   render() {
     const { sale_artwork, bidderPositionResult } = this.props
-    const { status, message_header, message_description_md } = bidderPositionResult
+    const {
+      status,
+      messageHeader: message_header,
+      messageDescriptionMD: message_description_md,
+    } = bidderPositionResult
 
     return (
       <View style={{ flex: 1 }}>

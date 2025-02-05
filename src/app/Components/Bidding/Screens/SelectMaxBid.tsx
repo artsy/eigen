@@ -10,7 +10,7 @@ import { NoFallback, SpinnerFallback, withSuspense } from "app/utils/hooks/withS
 import { compact } from "lodash"
 import React, { useMemo, useState } from "react"
 import { graphql, useFragment, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
-import { ConfirmBidScreen } from "./ConfirmBid"
+import { ConfirmBid } from "./ConfirmBid"
 
 interface SelectMaxBidProps {
   saleArtwork: SelectMaxBid_saleArtwork$key
@@ -34,10 +34,10 @@ export const SelectMaxBid: React.FC<SelectMaxBidProps> = ({ navigator, me, saleA
 
   const handleNext = () => {
     navigator.push({
-      component: ConfirmBidScreen,
+      component: ConfirmBid,
       passProps: {
         me: meData,
-        sale_artwork: saleArtworkData,
+        saleArtwork: saleArtworkData,
         increments: saleArtworkData.increments,
         selectedBidIndex,
         refreshSaleArtwork: handleRefresh,
@@ -130,9 +130,10 @@ const selectMaxBidSaleArtworkFragment = graphql`
       display
       cents
     }
-    ...ConfirmBid_sale_artwork
+    ...ConfirmBid_saleArtwork
   }
 `
+
 const selectMaxBidMeFragment = graphql`
   fragment SelectMaxBid_me on Me {
     ...ConfirmBid_me
