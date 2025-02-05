@@ -26,16 +26,13 @@ import { graphql, PreloadedQuery, useFragment, usePreloadedQuery } from "react-r
 interface InfiniteDiscoveryBottomSheetFooterProps extends BottomSheetFooterProps {
   artwork: InfiniteDiscoveryBottomSheetFooter_artwork$key
   me: InfiniteDiscoveryBottomSheetFooter_me$key
-  visible: boolean
 }
 
 export const InfiniteDiscoveryBottomSheetFooter: FC<InfiniteDiscoveryBottomSheetFooterProps> = ({
   artwork: _artwork,
   me: _me,
-  visible,
   ...bottomSheetFooterProps
 }) => {
-  const { bottom } = useSafeAreaInsets()
   const { reversedOpacityStyle } = useBottomSheetAnimatedStyles()
 
   const artwork = useFragment(artworkFragment, _artwork)
@@ -59,7 +56,6 @@ export const InfiniteDiscoveryBottomSheetFooter: FC<InfiniteDiscoveryBottomSheet
       {...bottomSheetFooterProps}
       style={{
         ...reversedOpacityStyle,
-        paddingBottom: bottom,
       }}
     >
       <Divider />
@@ -121,7 +117,6 @@ const meFragment = graphql`
 
 interface InfiniteDiscoveryBottomSheetFooterQueryRendererProps extends BottomSheetFooterProps {
   queryRef: PreloadedQuery<InfiniteDiscoveryBottomSheetTabsQuery>
-  visible: boolean
 }
 
 export const InfiniteDiscoveryBottomSheetFooterQueryRenderer: FC<

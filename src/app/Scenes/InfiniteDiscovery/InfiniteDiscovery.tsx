@@ -155,7 +155,7 @@ export const infiniteDiscoveryQuery = graphql`
 
           date
           internalID @required(action: NONE)
-          artists(shallow: true) {
+          artists(shallow: true) @required(action: NONE) {
             internalID @required(action: NONE)
           }
           images {

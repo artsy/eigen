@@ -1,8 +1,8 @@
-import { Flex, Text, useScreenDimensions } from "@artsy/palette-mobile"
-import { useBottomSheet } from "@gorhom/bottom-sheet"
+import { Flex, Text, useScreenDimensions, useTextStyleForPalette } from "@artsy/palette-mobile"
+import BottomSheet, { useBottomSheet } from "@gorhom/bottom-sheet"
 import { BottomSheetDefaultHandleProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetHandle/types"
 import { InfiniteDiscoveryBottomSheetTabsQuery } from "__generated__/InfiniteDiscoveryBottomSheetTabsQuery.graphql"
-import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
+import { DefaultBottomSheetBackdrop } from "app/Components/BottomSheet/DefaultBottomSheetBackdrop"
 import { InfiniteDiscoveryBottomSheetFooterQueryRenderer } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetFooter"
 import {
   InfiniteDiscoveryTabs,
@@ -12,7 +12,6 @@ import { FC, useEffect, useState } from "react"
 import { Dimensions } from "react-native"
 import Animated, { useAnimatedStyle } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-
 import { graphql, useQueryLoader } from "react-relay"
 
 interface InfiniteDiscoveryBottomSheetProps {
@@ -33,33 +32,32 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
   }, [artworkID, artistIDs])
 
   const handleOnTabChange = () => {
-    // setFooterVisible((prev) => !prev)
+    setFooterVisible((prev) => !prev)
   }
 
   return (
     <>
-      <AutomountedBottomSheetModal
-        visible
+      <BottomSheet
         enableDynamicSizing={false}
         enablePanDownToClose={false}
-        closeOnBackdropClick={false}
-        enableDismissOnClose={false}
         snapPoints={SNAP_POINTS}
         index={0}
-        appearsBackdropOnIndex={1}
-        disappearsBackdropOnIndex={0}
-        handleComponent={BottomeSheetHandle}
-        footerComponent={(props) => {
-          if (!queryRef) {
-            return null
-          }
+        backdropComponent={(props) => {
           return (
-            <InfiniteDiscoveryBottomSheetFooterQueryRenderer
-              queryRef={queryRef}
-              visible={footerVisible}
+            <DefaultBottomSheetBackdrop
               {...props}
+              disappearsOnIndex={0}
+              appearsOnIndex={1}
+              pressBehavior="none"
             />
           )
+        }}
+        handleComponent={BottomeSheetHandle}
+        footerComponent={(props) => {
+          if (!queryRef || !footerVisible) {
+            return null
+          }
+          return <InfiniteDiscoveryBottomSheetFooterQueryRenderer queryRef={queryRef} {...props} />
         }}
       >
         {/* This if is to make TS happy, usePreloadedQuery will always require a queryRef */}
@@ -68,7 +66,7 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
         ) : (
           <InfiniteDiscoveryTabs queryRef={queryRef} onTabChange={handleOnTabChange} />
         )}
-      </AutomountedBottomSheetModal>
+      </BottomSheet>
     </>
   )
 }
@@ -96,7 +94,6 @@ export const aboutTheWorkQuery = graphql`
 
 const BottomeSheetHandle: FC<BottomSheetDefaultHandleProps> = () => {
   const { width } = useScreenDimensions()
-  const { bottom } = useSafeAreaInsets()
   const { opacityStyle, heightStyle } = useBottomSheetAnimatedStyles()
 
   const handleWidth = (7.5 * width) / 100
@@ -111,7 +108,7 @@ const BottomeSheetHandle: FC<BottomSheetDefaultHandleProps> = () => {
       />
 
       <Animated.View style={[opacityStyle, heightStyle]}>
-        <Text selectable={false} color="black60" style={{ marginBottom: bottom }}>
+        <Text selectable={false} color="black60">
           Swipe up for more details
         </Text>
       </Animated.View>
@@ -121,16 +118,19 @@ const BottomeSheetHandle: FC<BottomSheetDefaultHandleProps> = () => {
 
 export const useBottomSheetAnimatedStyles = () => {
   const { animatedIndex } = useBottomSheet()
+  const { bottom } = useSafeAreaInsets()
+  const { lineHeight } = useTextStyleForPalette("sm-display")
+  const handleTextHeight = bottom + (lineHeight as number)
 
   // TODO: instead of starting from .5 start from 0 to 1
   const reversedOpacityStyle = useAnimatedStyle(() => ({
     opacity: animatedIndex.value < 0.5 ? 0 : (animatedIndex.value - 0.5) * 2,
   }))
   const opacityStyle = useAnimatedStyle(() => ({
-    opacity: animatedIndex.value > 0.3 ? 0 : 1,
+    opacity: 1 - animatedIndex.value,
   }))
   const heightStyle = useAnimatedStyle(() => ({
-    height: animatedIndex.value > 0.3 ? 0 : "auto",
+    height: handleTextHeight - animatedIndex.value * handleTextHeight,
   }))
 
   return { opacityStyle, heightStyle, reversedOpacityStyle }

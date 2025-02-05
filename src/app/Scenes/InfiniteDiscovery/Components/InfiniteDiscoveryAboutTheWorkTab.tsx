@@ -13,7 +13,7 @@ import {
   TextProps,
   useSpace,
 } from "@artsy/palette-mobile"
-import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
+import { BottomSheetScrollView, useBottomSheet } from "@gorhom/bottom-sheet"
 import { InfiniteDiscoveryAboutTheWorkTab_artwork$key } from "__generated__/InfiniteDiscoveryAboutTheWorkTab_artwork.graphql"
 import { InfiniteDiscoveryBottomSheetTabsQuery } from "__generated__/InfiniteDiscoveryBottomSheetTabsQuery.graphql"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
@@ -24,7 +24,9 @@ import { PartnerListItemShort } from "app/Components/PartnerListItemShort"
 import { dimensionsPresent } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkDimensionsClassificationAndAuthenticity"
 import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
 import { aboutTheWorkQuery } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
+import { useSetArtworkAsRecentlyViewed } from "app/Scenes/InfiniteDiscovery/hooks/useSetArtworkAsRecentlyViewed"
 import { navigate } from "app/system/navigation/navigate"
+import { ElementInView } from "app/utils/ElementInView"
 import { FC } from "react"
 import { graphql, PreloadedQuery, useFragment, usePreloadedQuery } from "react-relay"
 
@@ -36,7 +38,9 @@ interface AboutTheWorkTabProps {
 // TODO: export TAB_BAR_HEIGHT from palette-mobile
 export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
   const data = useFragment(fragment, artwork)
+  const { collapse } = useBottomSheet()
   const space = useSpace()
+  const { setArtworkAsRecentlyViewed } = useSetArtworkAsRecentlyViewed(data?.internalID)
 
   if (!data) {
     return null
@@ -45,20 +49,31 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
   const attributionClass = data.attributionClass?.shortArrayDescription
   const hasCertificateOfAuthenticity = data.hasCertificateOfAuthenticity && !data.isBiddable
 
+  const handleOnVisible = () => {
+    setArtworkAsRecentlyViewed()
+  }
+
+  const onNavigate = (link: string) => {
+    collapse()
+    navigate(link)
+  }
+
   return (
     <BottomSheetScrollView>
       <Flex flex={1} px={2} style={{ paddingTop: 50 + space(2) }} gap={2}>
         <Flex gap={1}>
           {!!attributionClass?.length && (
-            <Flex flexDirection="row" gap={0.5} alignItems="center">
-              <ArtworkIcon height={18} width={18} fill="black60" />
-              <Text variant="xs">
-                {attributionClass[0]}{" "}
-                <LinkText variant="xs" onPress={() => navigate(`/artwork-classifications`)}>
-                  {attributionClass[1]}
-                </LinkText>
-              </Text>
-            </Flex>
+            <ElementInView onVisible={handleOnVisible}>
+              <Flex flexDirection="row" gap={0.5} alignItems="center">
+                <ArtworkIcon height={18} width={18} fill="black60" />
+                <Text variant="xs">
+                  {attributionClass[0]}{" "}
+                  <LinkText variant="xs" onPress={() => onNavigate(`/artwork-classifications`)}>
+                    {attributionClass[1]}
+                  </LinkText>
+                </Text>
+              </Flex>
+            </ElementInView>
           )}
 
           {!!hasCertificateOfAuthenticity && (
@@ -68,7 +83,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
                 Includes a{" "}
                 <LinkText
                   variant="xs"
-                  onPress={() => navigate(`/artwork-certificate-of-authenticity`)}
+                  onPress={() => onNavigate(`/artwork-certificate-of-authenticity`)}
                 >
                   Certificate of Authenticity
                 </LinkText>
@@ -150,7 +165,13 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
                 return null
               }
 
-              return <ArtistListItemShort key={`artist-${index}`} artist={artist} />
+              return (
+                <ArtistListItemShort
+                  key={`artist-${index}`}
+                  artist={artist}
+                  onPress={() => collapse()}
+                />
+              )
             })}
           </Flex>
         </Flex>
@@ -160,7 +181,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
         <Flex gap={1}>
           <Text variant="sm-display">Gallery</Text>
 
-          <PartnerListItemShort partner={data.partner} />
+          <PartnerListItemShort partner={data.partner} onPress={() => collapse()} />
           <Flex
             flexDirection="row"
             flexWrap="wrap"
@@ -190,6 +211,8 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
 const fragment = graphql`
   fragment InfiniteDiscoveryAboutTheWorkTab_artwork on Artwork {
     ...ContactGalleryButton_artwork
+
+    internalID @required(action: NONE)
 
     attributionClass {
       shortArrayDescription
