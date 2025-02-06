@@ -1,8 +1,8 @@
 import { Flex, Popover, Text } from "@artsy/palette-mobile"
-import InViewport from "@herberthtk/react-native-viewport"
 import { ProgressiveOnboardingSaveArtwork_Query } from "__generated__/ProgressiveOnboardingSaveArtwork_Query.graphql"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
+import { Sentinel } from "app/utils/Sentinel"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -63,7 +63,7 @@ export const ProgressiveOnboardingSaveArtwork: React.FC = ({ children }) => {
 
   // no conditions met and children is not visible in the screen yet
   return (
-    <InViewport
+    <Sentinel
       onChange={(visible) => {
         if (visible) {
           setIsInView(true)
@@ -71,7 +71,7 @@ export const ProgressiveOnboardingSaveArtwork: React.FC = ({ children }) => {
       }}
     >
       {children}
-    </InViewport>
+    </Sentinel>
   )
 }
 

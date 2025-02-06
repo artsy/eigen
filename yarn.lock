@@ -2292,11 +2292,6 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@herberthtk/react-native-viewport@0.1.15":
-  version "0.1.15"
-  resolved "https://registry.yarnpkg.com/@herberthtk/react-native-viewport/-/react-native-viewport-0.1.15.tgz#d9ae46c8c42b5dd1abc6b119650b303ca37da128"
-  integrity sha512-M/FImb2W3eRdtvG6fKlMX5kekzDSoPdweHtO6JUbAC8YLRxh+T914KUjprzzQUFzgxenwKuJ7JIHaPRy7GB4pA==
-
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.8"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.8.tgz#03595ac2075a4dc0f191cc2131de14fbd7d410b9"

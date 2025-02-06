@@ -43,7 +43,7 @@ export const Sentinel: FC<Props> = ({ children, onChange }) => {
     useCallback(() => {
       setLastValue(false)
       startWatching()
-      isInViewPort()
+      isSentinel()
       return stopWatching
     }, [dimensions.rectTop, dimensions.rectBottom, dimensions.rectWidth])
   )
@@ -81,7 +81,7 @@ export const Sentinel: FC<Props> = ({ children, onChange }) => {
     interval = clearInterval(interval)
   }
 
-  const isInViewPort = () => {
+  const isSentinel = () => {
     const window = Dimensions.get("window")
     const isVisible =
       dimensions.rectBottom != 0 &&
@@ -100,7 +100,7 @@ export const Sentinel: FC<Props> = ({ children, onChange }) => {
 
   return (
     <RNView collapsable={false} ref={myView}>
-      {!!children && { children }}
+      {children}
       <Flex height={0} />
     </RNView>
   )
