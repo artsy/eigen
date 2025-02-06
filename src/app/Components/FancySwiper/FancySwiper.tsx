@@ -74,11 +74,6 @@ export const FancySwiper = ({
   }
 
   const handleLeftSwipe = (toValueY?: number) => {
-    /**
-     * TODO: Before implementing 360º swipe, there was a bug where the card got stuck in space. I
-     * think that happens because this animation sometimes doesn't start.
-     */
-
     // move the card off the screen
     Animated.timing(swiper, {
       toValue: { x: -1000, y: toValueY || 0 },
@@ -115,6 +110,7 @@ export const FancySwiper = ({
       <Flex alignItems="center" flex={1}>
         {remainingCards.map((card, index) => {
           const isTopCard = index === remainingCards.length - 1
+          const isSecondCard = index === remainingCards.length - 2
 
           // We would like to be able to drag the top card only
           const gestureDraggers = isTopCard ? panResponder.panHandlers : {}
@@ -125,6 +121,7 @@ export const FancySwiper = ({
               key={index}
               swiper={swiper}
               isTopCard={isTopCard}
+              isSecondCard={isSecondCard}
               {...gestureDraggers}
             />
           )
