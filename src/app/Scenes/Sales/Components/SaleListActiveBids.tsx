@@ -1,30 +1,22 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
-import {
-  SaleListActiveBids_me$data,
-  SaleListActiveBids_me$key,
-} from "__generated__/SaleListActiveBids_me.graphql"
+import { ArtworkRail_artworks$key } from "__generated__/ArtworkRail_artworks.graphql"
+import { SaleListActiveBids_me$key } from "__generated__/SaleListActiveBids_me.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
 import { graphql, useFragment } from "react-relay"
 
 interface Props {
-  me: SaleListActiveBids_me$key
+  me: SaleListActiveBids_me$key | null | undefined
 }
-
-type Artwork = NonNullable<
-  NonNullable<
-    NonNullable<
-      NonNullable<NonNullable<SaleListActiveBids_me$data>["lotStandings"]>[number]
-    >["saleArtwork"]
-  >["artwork"]
->
 
 export const SaleListActiveBids: React.FC<Props> = (props) => {
   const me = useFragment(meFragment, props.me)
 
-  const artworks = me?.lotStandings?.map((lotStanding) => lotStanding?.saleArtwork?.artwork)
+  const artworks = me?.lotStandings
+    ?.map((lotStanding) => lotStanding?.saleArtwork?.artwork)
+    .filter((artwork) => !!artwork)
 
   if (!artworks?.length) {
     return null
@@ -36,7 +28,7 @@ export const SaleListActiveBids: React.FC<Props> = (props) => {
 
       <ArtworkRail
         contextModule={ContextModule.yourActiveBids}
-        artworks={artworks as Artwork[]}
+        artworks={artworks as ArtworkRail_artworks$key}
         onPress={({ href }) => {
           if (href) {
             navigate(href)

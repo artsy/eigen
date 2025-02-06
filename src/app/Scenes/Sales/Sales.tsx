@@ -84,7 +84,7 @@ export const Sales: React.FC = () => {
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       >
         <Stack py={2} spacing={4}>
-          {!!data.me && <SaleListActiveBids me={data.me} />}
+          <SaleListActiveBids me={data.me} />
 
           <RecommendedAuctionLotsRail
             title="Auction Lots for You"
