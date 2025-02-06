@@ -83,7 +83,7 @@ describe("shouldDisplayNotification", () => {
       notificationType: "ARTICLE_FEATURED_ARTIST",
       artworks: undefined,
       item: {
-        article: { internalID: "asdf" },
+        article: null,
         __typename: "ArticleFeaturedArtistNotificationItem",
       },
     })
