@@ -14,7 +14,7 @@ import {
 import { THEME } from "@artsy/palette-tokens"
 import { CardField } from "@stripe/stripe-react-native"
 import { Details } from "@stripe/stripe-react-native/lib/typescript/src/types/components/CardFieldInput"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 
 interface CreditCardFieldProps {
@@ -30,29 +30,27 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
 
   const textStyle = useTextStyleForPalette("sm")
 
-  const variant: InputVariant = getInputVariant({
-    hasError: false,
-    disabled: false,
-  })
+  const variant: InputVariant = getInputVariant({ hasError: false, disabled: false })
 
   const animatedState = useSharedValue<InputState>(
-    getInputState({ isFocused: isFocused, value: cardDetails?.number })
+    getInputState({ isFocused, value: cardDetails?.number })
   )
 
-  animatedState.value = getInputState({
-    isFocused: isFocused,
-    value: cardDetails?.number,
-  })
+  animatedState.set(getInputState({ isFocused, value: cardDetails?.number }))
 
-  const hasSelectedValue =
-    cardDetails !== undefined &&
-    (!!cardDetails.last4 ||
-      cardDetails.validNumber !== "Incomplete" ||
-      !!cardDetails.expiryMonth ||
-      !!cardDetails.expiryYear)
+  const hasSelectedValue = useMemo(() => {
+    return (
+      cardDetails !== undefined &&
+      (!!cardDetails.last4 ||
+        cardDetails.validNumber !== "Incomplete" ||
+        !!cardDetails.expiryMonth ||
+        !!cardDetails.expiryYear)
+    )
+  }, [cardDetails])
+
   const animatedStyles = useAnimatedStyle(() => {
     return {
-      borderColor: withTiming(INPUT_VARIANTS[variant][animatedState.value].inputBorderColor),
+      borderColor: withTiming(INPUT_VARIANTS[variant][animatedState.get()].inputBorderColor),
     }
   })
 
@@ -65,7 +63,7 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
         hasSelectedValue || isFocused ? 15 : STRIPE_CREDIT_CARD_ICON_CONTAINER_WIDTH
       ),
       paddingHorizontal: withTiming(hasSelectedValue || isFocused ? 5 : 0),
-      color: withTiming(INPUT_VARIANTS[variant][animatedState.value].labelColor),
+      color: withTiming(INPUT_VARIANTS[variant][animatedState.get()].labelColor),
       top: withTiming(hasSelectedValue || isFocused ? -INPUT_MIN_HEIGHT / 4 : 14),
       fontSize: withTiming(
         hasSelectedValue || isFocused
@@ -79,11 +77,7 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
     <Flex>
       <AnimatedFlex
         style={[
-          {
-            borderRadius: INPUT_BORDER_RADIUS,
-            borderWidth: 1,
-            alignItems: "center",
-          },
+          { borderRadius: INPUT_BORDER_RADIUS, borderWidth: 1, alignItems: "center" },
           animatedStyles,
         ]}
         flexDirection="row"
@@ -99,10 +93,7 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
             textColor: color("black100"),
             placeholderColor: color("black60"),
           }}
-          style={{
-            width: "100%",
-            height: INPUT_MIN_HEIGHT,
-          }}
+          style={{ width: "100%", height: INPUT_MIN_HEIGHT }}
           postalCodeEnabled={false}
           onCardChange={(cardDetails) => {
             setCardDetails(cardDetails)
@@ -112,6 +103,7 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
           onBlur={() => setIsFocused(false)}
         />
       </AnimatedFlex>
+
       <Flex pointerEvents="none" style={{ position: "absolute" }}>
         <AnimatedText style={labelStyles}>
           {hasSelectedValue || isFocused ? "Credit Card" : ""}
