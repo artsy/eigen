@@ -65,7 +65,6 @@ export const Sales: React.FC = () => {
     setIsRefreshing(true)
     currentAuctionsRefreshRef.current?.({})
     upcomingAuctionsRefreshRef.current?.({})
-
     setIsRefreshing(false)
   }
 
