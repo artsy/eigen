@@ -70,15 +70,15 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
     return (
       <Flex>
         <View ref={railRef}>
-          <Flex pl={2} pr={2}>
-            <SectionTitle
-              title={title}
-              onPress={() => {
-                trackEvent(tracks.tappedHeader())
-                navigate("/new-for-you")
-              }}
-            />
-          </Flex>
+          <SectionTitle
+            title={title}
+            href="/new-for-you"
+            onPress={() => {
+              trackEvent(tracks.tappedHeader())
+            }}
+            px={2}
+          />
+
           <ArtworkRail
             {...trackingProps}
             artworks={artworks}
