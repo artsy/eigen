@@ -1,10 +1,10 @@
+import { TouchableProps } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
+import { Sentinel } from "app/utils/Sentinel"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { usePrefetch } from "app/utils/queryPrefetching"
-import { Sentinel } from "app/utils/Sentinel"
 import { useState } from "react"
 import { GestureResponderEvent, TouchableOpacity } from "react-native"
-import { TouchableProps } from "react-native-svg"
 
 interface RouterLinkProps {
   disablePrefetch?: boolean
