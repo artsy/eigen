@@ -30,7 +30,6 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = (props) => {
         accessibilityLabel="Activity"
         hitSlop={DEFAULT_HIT_SLOP}
         onPress={navigateToActivityPanel}
-        activeOpacity={0.5}
       >
         <BellVariant hasUnseenNotifications={displayUnseenNotifications} />
       </RouterLink>
