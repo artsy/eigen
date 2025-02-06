@@ -105,15 +105,3 @@ const me = {
     ],
   },
 }
-
-/* auctionResultsByFollowedArtists(first: 10, state: PAST) {
-  totalCount
-  edges {
-    cursor
-    node {
-      ...AuctionResultListItem_auctionResult
-      artistID
-      internalID
-    }
-  }
-} */
