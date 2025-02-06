@@ -270,6 +270,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableLongPressContextMenuOnboarding",
   },
+  AREnableHomeViewQuickLinks: {
+    description: "Enable Home View Quick Links",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
