@@ -2396,7 +2396,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # The depth as expressed by the original input metric
   depth: String
+  depthCm: Float
   description(format: Format): String
+  diameterCm: Float
   dimensions: dimensions
   displayArtistBio: Boolean
   displayLabel: String
@@ -2430,7 +2432,10 @@ type Artwork implements Node & Searchable & Sellable {
   formattedMetadata: String
   framed: ArtworkInfoRow @deprecated(reason: "Consider using isFramed field (boolean) instead")
   framedDepth: String
+  framedDiameter: Float
   framedHeight: String
+
+  # The unit of measurement for the framed dimensions
   framedMetric: String
   framedWidth: String
 
@@ -2648,6 +2653,10 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Minimal location information describing from where artwork will be shipped.
   shippingOrigin: String
+  shippingWeight: Float
+
+  # The unit of measurement for the shipping weight
+  shippingWeightMetric: String
 
   # Is this work available for shipping only within the Continental US?
   shipsToContinentalUSOnly: Boolean
