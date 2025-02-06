@@ -37,6 +37,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 }) => {
   const REFETCH_BUFFER = 3
   const toast = useToast()
+  // const { trackEvent } = useTracking()
 
   const { addDiscoveredArtworkIds } = GlobalStore.actions.infiniteDiscovery
 
@@ -45,6 +46,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   )
 
   const [index, setIndex] = useState(0)
+  const [maxIndexReached, setMaxIndexReached] = useState(index)
   const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>([])
 
   const data = usePreloadedQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, queryRef)
@@ -75,12 +77,39 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 
   const handleBackPressed = () => {
     if (index > 0) {
+      // trackEvent({
+      //   action: ActionType.tappedRewind,
+      //   context_module: ContextModule.infiniteDiscovery,
+      //   context_screen_owner_id: artworks[index-1]?.internalID,
+      //   context_screen_owner_slug: artworks[index-1]?.slug,
+      //   context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+      // })
       setIndex(index - 1)
     }
   }
 
   const handleCardSwiped = () => {
     if (index < artworks.length - 1) {
+      // trackEvent({
+      //   action: ActionType.swipedInfiniteDiscoveryArtwork,
+      //   context_module: ContextModule.infiniteDiscovery,
+      //   context_screen_owner_id: artworks[index+1]?.internalID,
+      //   context_screen_owner_slug: artworks[index+1]?.slug,
+      //   context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+      // })
+
+      const newMaxIndexReached = Math.max(index + 1, maxIndexReached)
+
+      if (newMaxIndexReached > maxIndexReached) {
+        // trackEvent({
+        //   action_name: ActionType.screen,
+        //   context_screen_owner_id: artwork.internalID,
+        //   context_screen_owner_slug: artwork.slug,
+        //   context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+        // })
+      }
+
+      setMaxIndexReached(newMaxIndexReached)
       setIndex(index + 1)
     }
 
@@ -97,6 +126,13 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         "bottom",
         {
           onPress: () => {
+            // trackEvent({
+            //   action: ActionType.tappedToast,
+            //   context_module: ContextModule.infiniteDiscovery,
+            //   context_screen_owner_type: OwnerType.home,
+            //   subject: "Tap here to navigate to your Saves area in your profile."
+            // })
+
             navigate("/favorites/saves")
           },
           backgroundColor: "green100",
@@ -104,6 +140,12 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         }
       )
     }
+
+    // trackEvent({
+    //   action: ActionType.tappedClose,
+    //   context_module: ContextModule.infiniteDiscovery,
+    // })
+
     goBack()
   }
 
@@ -196,6 +238,7 @@ export const infiniteDiscoveryQuery = graphql`
           artists(shallow: true) @required(action: NONE) {
             internalID @required(action: NONE)
           }
+          slug
         }
       }
     }

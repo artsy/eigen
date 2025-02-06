@@ -7,6 +7,7 @@ import {
 } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryAboutTheWorkTab"
 import { InfiniteDiscoveryMoreWorksTab } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryMoreWorksTab"
 import { FC } from "react"
+import { IndexChangeEventData } from "react-native-collapsible-tab-view/lib/typescript/src/types"
 import { PreloadedQuery } from "react-relay"
 
 interface InfiniteDiscoveryOtherWorksTabProps {
@@ -14,18 +15,47 @@ interface InfiniteDiscoveryOtherWorksTabProps {
   onTabChange: TabsContainerProps["onTabChange"]
 }
 
-export const TABS = ["About the work", "More works by artist"]
+const TABS = [
+  {
+    name: "About the work",
+    analyticsName: "infiniteDiscoveryArtworkAboutTab", // TODO: use ContextModule from Cohesion
+  },
+  {
+    name: "Other works",
+    analyticsName: "infiniteDiscoveryArtworkOtherWorksTab", // TODO: use ContextModule from Cohesion
+  },
+]
 
 export const InfiniteDiscoveryTabs: FC<InfiniteDiscoveryOtherWorksTabProps> = ({
   queryRef,
   onTabChange,
 }) => {
+  // const { trackEvent } = useTracking()
+
+  const handleTabChange = (data: IndexChangeEventData) => {
+    const contextModule = TABS.find((tab) => tab.name === data.prevTabName)?.analyticsName
+    const subject = TABS.find((tab) => tab.name === data.tabName)?.analyticsName
+
+    // trackEvent({
+    //   action: ActionType.tappedNavigationTab,
+    //   context_module: contextModule,
+    //   subject: subject,
+    // })
+    console.log("[Debug] tappedNavigationTab", {
+      action_name: "tappedNavigationTab",
+      context_module: contextModule,
+      subject: subject,
+    })
+
+    onTabChange?.(data)
+  }
+
   return (
-    <Tabs onTabChange={onTabChange}>
-      <Tabs.Tab name={TABS[0]} label={TABS[0]}>
+    <Tabs onTabChange={handleTabChange}>
+      <Tabs.Tab name={TABS[0].name} label={TABS[0].name}>
         <InfiniteDiscoveryAboutTheWorkTab queryRef={queryRef} />
       </Tabs.Tab>
-      <Tabs.Tab name={TABS[1]} label={TABS[1]}>
+      <Tabs.Tab name={TABS[1].name} label={TABS[1].name}>
         <InfiniteDiscoveryMoreWorksTab queryRef={queryRef} />
       </Tabs.Tab>
     </Tabs>
@@ -36,11 +66,11 @@ export const InfiniteDiscoveryTabsSkeleton: FC = () => {
   return (
     <Skeleton>
       <Tabs>
-        <Tabs.Tab name="About the work" label="About the work">
+        <Tabs.Tab name={TABS[0].name} label={TABS[0].name}>
           <InfiniteDiscoveryAboutTheWorkTabSkeleton />
         </Tabs.Tab>
-        <Tabs.Tab name="More works by artist" label="More works by artist">
-          <SkeletonText variant="xs">More works by artist</SkeletonText>
+        <Tabs.Tab name={TABS[1].name} label={TABS[1].name}>
+          <SkeletonText variant="xs">{TABS[1].name}</SkeletonText>
         </Tabs.Tab>
       </Tabs>
     </Skeleton>

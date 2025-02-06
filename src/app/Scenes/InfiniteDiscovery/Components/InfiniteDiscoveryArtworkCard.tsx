@@ -12,10 +12,10 @@ import { InfiniteDiscoveryArtworkCard_artwork$key } from "__generated__/Infinite
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { GlobalStore } from "app/store/GlobalStore"
-import { Schema } from "app/utils/track"
+// import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { graphql, useFragment } from "react-relay"
-import { useTracking } from "react-tracking"
+// import { useTracking } from "react-tracking"
 
 interface InfiniteDiscoveryArtworkCardProps {
   artwork: InfiniteDiscoveryArtworkCard_artwork$key
@@ -25,7 +25,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
   artwork: artworkProp,
 }) => {
   const { width: screenWidth, height: screenHeight } = useScreenDimensions()
-  const { trackEvent } = useTracking()
+  // const { trackEvent } = useTracking()
   const color = useColor()
   const { incrementSavedArtworksCount, decrementSavedArtworksCount } =
     GlobalStore.actions.infiniteDiscovery
@@ -38,13 +38,16 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
   const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
     artworkFragmentRef: artwork,
     onCompleted: (isArtworkSaved) => {
-      trackEvent({
-        action_name: isArtworkSaved
-          ? Schema.ActionNames.ArtworkSave
-          : Schema.ActionNames.ArtworkUnsave,
-        action_type: Schema.ActionTypes.Success,
-        context_module: Schema.ContextModules.ArtworkActions,
-      })
+      // trackEvent({
+      //   action_name: isArtworkSaved
+      //     ? Schema.ActionNames.ArtworkSave
+      //     : Schema.ActionNames.ArtworkUnsave,
+      //   action_type: Schema.ActionTypes.Success,
+      //   context_module: ContextModule.infiniteDiscoveryArtworkCard,
+      //   context_screen_owner_id: artwork.internalID,
+      //   context_screen_owner_slug: artwork.slug,
+      //   context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+      // })
 
       if (isArtworkSaved) {
         incrementSavedArtworksCount()
@@ -73,6 +76,9 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           artist={artwork.artists?.[0]}
           avatarSize="xxs"
           includeTombstone={false}
+          contextModule="TODO: infiniteDiscoveryArtworkCard"
+          contextScreenOwnerId={artwork.internalID}
+          contextScreenOwnerSlug={artwork.slug}
         />
       </Flex>
 
@@ -163,6 +169,7 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
     }
     isSaved
     saleMessage
+    slug
     title
     ...useSaveArtworkToArtworkLists_artwork
   }
