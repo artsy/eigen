@@ -6,9 +6,9 @@ import { Text, View } from "react-native"
 import { graphql } from "react-relay"
 import { ProgressiveOnboardingSaveArtwork } from "./ProgressiveOnboardingSaveArtwork"
 
-jest.mock("@herberthtk/react-native-viewport", () => ({
+jest.mock("app/utils/Sentinel", () => ({
   __esModule: true,
-  default: (props: any) => <MockedVisibleSentinel {...props} />,
+  Sentinel: (props: any) => <MockedVisibleSentinel {...props} />,
 }))
 
 jest.mock("@artsy/palette-mobile", () => ({

@@ -11,9 +11,9 @@ jest.mock("app/utils/queryPrefetching", () => ({
   usePrefetch: () => mockPrefetch,
 }))
 
-jest.mock("@herberthtk/react-native-viewport", () => ({
+jest.mock("app/utils/Sentinel", () => ({
   __esModule: true,
-  default: (props: any) => <MockedVisibleSentinel {...props} />,
+  Sentinel: (props: any) => <MockedVisibleSentinel {...props} />,
 }))
 
 describe("RouterLink", () => {
