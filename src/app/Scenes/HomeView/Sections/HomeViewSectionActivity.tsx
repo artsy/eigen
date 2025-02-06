@@ -39,8 +39,8 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
   const tracking = useHomeViewTracking()
 
   const section = useFragment(sectionFragment, sectionProp)
-  const notifications = extractNodes(section.notificationsConnection).filter(
-    shouldDisplayNotification
+  const notifications = extractNodes(section.notificationsConnection).filter((notification) =>
+    shouldDisplayNotification(notification, "rail")
   )
   const viewAll = section.component?.behaviors?.viewAll
 
@@ -134,6 +134,8 @@ const sectionFragment = graphql`
           }
           targetHref
           item {
+            __typename
+
             ... on ViewingRoomPublishedNotificationItem {
               viewingRoomsConnection(first: 1) {
                 totalCount

@@ -142,6 +142,9 @@ const notificationsConnectionFragment = graphql`
                 internalID
               }
             }
+            ... on CollectorProfileUpdatePromptNotificationItem {
+              __typename
+            }
           }
 
           ...ActivityItem_notification
