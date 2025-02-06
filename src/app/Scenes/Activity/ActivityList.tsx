@@ -24,7 +24,9 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
 
   const notificationsNodes = extractNodes(data?.notificationsConnection)
 
-  const notifications = notificationsNodes.filter(shouldDisplayNotification)
+  const notifications = notificationsNodes.filter((notification) =>
+    shouldDisplayNotification(notification, "list")
+  )
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
@@ -127,6 +129,8 @@ const notificationsConnectionFragment = graphql`
             totalCount
           }
           item {
+            __typename
+
             ... on ViewingRoomPublishedNotificationItem {
               viewingRoomsConnection(first: 1) {
                 totalCount
@@ -138,7 +142,11 @@ const notificationsConnectionFragment = graphql`
                 internalID
               }
             }
+            ... on CollectorProfileUpdatePromptNotificationItem {
+              __typename
+            }
           }
+
           ...ActivityItem_notification
         }
       }
