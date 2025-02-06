@@ -39,7 +39,7 @@ interface HomeViewSectionAuctionResultsProps {
 }
 
 // Avoid the card width to be too wide on tablets
-const AUCTION_RESULT_CARD_WIDTH = Math.min(400, Dimensions.get("window").width * 0.9)
+export const AUCTION_RESULT_CARD_WIDTH = Math.min(400, Dimensions.get("window").width * 0.9)
 
 export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResultsProps> = ({
   section: sectionProp,

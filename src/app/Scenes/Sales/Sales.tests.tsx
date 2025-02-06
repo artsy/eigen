@@ -49,6 +49,15 @@ describe("Sales", () => {
 
     expect(screen.getByText("Auction Lots for You")).toBeOnTheScreen()
   })
+
+  it("renders LatestAuctionResultsRail", async () => {
+    renderWithRelay({
+      Query: () => me,
+    })
+    await waitForElementToBeRemoved(() => screen.queryByTestId("SalePlaceholder"))
+
+    expect(screen.getByText("Latest Auction Results")).toBeOnTheScreen()
+  })
 })
 
 const artwork = {
@@ -79,3 +88,32 @@ const viewer = {
     edges: [{ node: artwork }],
   },
 }
+
+const me = {
+  auctionResultsByFollowedArtists: {
+    first: 10,
+    edges: [
+      {
+        node: {
+          id: "an-id",
+          saleDate: "2055-01-11T18:00:00-06:00",
+          isUpcoming: true,
+          isInArtsyAuction: true,
+          externalURL: "https://www.artsy.net/artwork/auction-lot",
+        },
+      },
+    ],
+  },
+}
+
+/* auctionResultsByFollowedArtists(first: 10, state: PAST) {
+  totalCount
+  edges {
+    cursor
+    node {
+      ...AuctionResultListItem_auctionResult
+      artistID
+      internalID
+    }
+  }
+} */

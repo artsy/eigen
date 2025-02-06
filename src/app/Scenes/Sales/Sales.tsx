@@ -1,6 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
 import { SalesQuery } from "__generated__/SalesQuery.graphql"
+import { LatestAuctionResultsRail } from "app/Components/LatestAuctionResultsRail"
 import { Stack } from "app/Components/Stack"
 import { RecommendedAuctionLotsRail } from "app/Scenes/HomeView/Components/RecommendedAuctionLotsRail"
 import { goBack } from "app/system/navigation/navigate"
@@ -26,6 +27,9 @@ export const SalesScreenQuery = graphql`
     }
     recommendedAuctionLots: viewer {
       ...RecommendedAuctionLotsRail_artworkConnection
+    }
+    latestAuctioResults: me {
+      ...LatestAuctionResultsRail_me
     }
   }
 `
@@ -61,6 +65,7 @@ export const Sales: React.FC = () => {
     setIsRefreshing(true)
     currentAuctionsRefreshRef.current?.({})
     upcomingAuctionsRefreshRef.current?.({})
+
     setIsRefreshing(false)
   }
 
@@ -85,6 +90,8 @@ export const Sales: React.FC = () => {
             artworkConnection={data.recommendedAuctionLots}
             contextScreenOwnerType={OwnerType.auctions}
           />
+
+          <LatestAuctionResultsRail me={data.latestAuctioResults} />
 
           <CurrentlyRunningAuctions
             sales={data.currentlyRunningAuctions}
