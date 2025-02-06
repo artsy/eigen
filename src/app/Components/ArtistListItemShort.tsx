@@ -11,9 +11,10 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface ArtistListItemShortProps {
   artist: ArtistListItemShort_artist$key
+  onPress?: () => void
 }
 
-export const ArtistListItemShort: FC<ArtistListItemShortProps> = ({ artist }) => {
+export const ArtistListItemShort: FC<ArtistListItemShortProps> = ({ artist, onPress }) => {
   const data = useFragment(fragment, artist)
 
   if (!data) {
@@ -25,6 +26,7 @@ export const ArtistListItemShort: FC<ArtistListItemShortProps> = ({ artist }) =>
   const bioTextLimit = truncatedTextLimit()
 
   const handleOnPress = () => {
+    onPress?.()
     navigate(data.href)
   }
 

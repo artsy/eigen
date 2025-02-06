@@ -40,6 +40,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>([])
 
   const data = usePreloadedQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, queryRef)
+  const artworkNodes = extractNodes(data.discoverArtworks)
 
   const insets = useSafeAreaInsets()
 
@@ -117,7 +118,12 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         </Flex>
         <FancySwiper cards={unswipedCards} hideActionButtons onSwipeAnywhere={handleCardSwiped} />
 
-        <InfiniteDiscoveryBottomSheet artworkID={artworks[index]?.internalID} />
+        {!!artworkNodes.length && (
+          <InfiniteDiscoveryBottomSheet
+            artworkID={artworkNodes[index].internalID}
+            artistIDs={artworkNodes[index].artists.map((data) => data?.internalID ?? "")}
+          />
+        )}
       </Screen.Body>
     </Screen>
   )
@@ -173,8 +179,12 @@ export const infiniteDiscoveryQuery = graphql`
     discoverArtworks(excludeArtworkIds: $excludeArtworkIds) {
       edges {
         node {
-          internalID
           ...InfiniteDiscoveryArtworkCard_artwork
+
+          internalID @required(action: NONE)
+          artists(shallow: true) @required(action: NONE) {
+            internalID @required(action: NONE)
+          }
         }
       }
     }
