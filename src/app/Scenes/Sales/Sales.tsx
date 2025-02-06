@@ -3,6 +3,7 @@ import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
 import { SalesQuery } from "__generated__/SalesQuery.graphql"
 import { Stack } from "app/Components/Stack"
 import { RecommendedAuctionLotsRail } from "app/Scenes/HomeView/Components/RecommendedAuctionLotsRail"
+import { SaleListActiveBids } from "app/Scenes/Sales/Components/SaleListActiveBids"
 import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -26,6 +27,9 @@ export const SalesScreenQuery = graphql`
     }
     recommendedAuctionLots: viewer {
       ...RecommendedAuctionLotsRail_artworkConnection
+    }
+    me {
+      ...SaleListActiveBids_me
     }
   }
 `
@@ -80,18 +84,18 @@ export const Sales: React.FC = () => {
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       >
         <Stack py={2} spacing={4}>
+          <SaleListActiveBids me={data.me} />
+
           <RecommendedAuctionLotsRail
             title="Auction Lots for You"
             artworkConnection={data.recommendedAuctionLots}
             contextScreenOwnerType={OwnerType.auctions}
           />
-
           <CurrentlyRunningAuctions
             sales={data.currentlyRunningAuctions}
             setRefetchPropOnParent={setCurrentAuctionsRefreshProp}
             setSalesCountOnParent={(count: number) => setCurrentSalesCount(count)}
           />
-
           <UpcomingAuctions
             sales={data.upcomingAuctions}
             setRefetchPropOnParent={setUpcomongAuctionsRefreshProp}
