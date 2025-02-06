@@ -17,7 +17,7 @@ export const FancySwiperCard = memo(
     let bottomCardTransform = undefined
 
     if (isTopCard) {
-      // tilt the top card ever so slightly as it is being swiped
+      // tilt the top card as it is being swiped away
       const rotate = swiper.x.interpolate({
         inputRange: [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE],
         outputRange: ["-10deg", "0deg", "10deg"],
@@ -27,7 +27,7 @@ export const FancySwiperCard = memo(
         transform: [...swiper.getTranslateTransform(), { rotate }],
       }
 
-      // drop a shadow from the top card and make it more intense as it is swiped
+      // drop a shadow from the top card and make it more intense as it is swiped away
       const shadowOpacity = interpolateSwiper(swiper, MAX_SHADOW_OPACITY)
       const elevation = interpolateSwiper(swiper, MAX_ELEVATION)
 
@@ -38,13 +38,14 @@ export const FancySwiperCard = memo(
         elevation,
       }
     } else if (isSecondCard) {
-      // slightly scale down the second card
+      // make the second card fade in as the top card swipes away
       const opacity = interpolateSwiper(swiper, MAX_OPACITY, MIN_OPACITY)
 
       bottomCardOpacity = {
         opacity,
       }
 
+      // make the second card grow to full size as the top card swipes away
       const scale = interpolateSwiper(swiper, MAX_SCALE, MIN_SCALE)
 
       bottomCardTransform = {
