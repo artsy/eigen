@@ -12,10 +12,9 @@ import { Address } from "app/Components/Bidding/types"
 import { CountrySelect } from "app/Components/CountrySelect"
 import { CreditCardField } from "app/Components/CreditCardField/CreditCardField"
 import { NavigationHeader } from "app/Components/NavigationHeader"
-import { Select } from "app/Components/Select/SelectV2"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { useFormik } from "formik"
-import { useRef } from "react"
+import { memo, useCallback, useRef } from "react"
 import { KeyboardAvoidingView, ScrollView } from "react-native"
 
 interface CreditCardFormProps {
@@ -23,6 +22,8 @@ interface CreditCardFormProps {
   billingAddress?: Address | null
   onSubmit: (t: Token.Result, a: Address) => void
 }
+
+const MemoizedInput = memo(Input)
 
 export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   onSubmit,
@@ -34,6 +35,26 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
     ...CREDIT_CARD_INITIAL_FORM_VALUES,
     ...billingAddress,
   }
+
+  const handleFormSubmit = useCallback(
+    async (values: CreditCardFormValues) => {
+      try {
+        const tokenBody = buildTokenParams(values)
+        const token = await createToken(tokenBody)
+
+        if (token.error) {
+          throw new Error(`[Stripe]: error creating the token: ${JSON.stringify(token.error)}`)
+        }
+
+        onSubmit(token.token, buildBillingAddress(values))
+        navigator.pop()
+      } catch (error) {
+        setErrors({ creditCard: { valid: "There was an error. Please try again." } })
+        console.error("CreditCardForm.tsx", error)
+      }
+    },
+    [onSubmit, navigator, buildTokenParams, buildBillingAddress]
+  )
 
   const {
     values,
@@ -50,22 +71,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   } = useFormik({
     initialValues,
     validationSchema: creditCardFormValidationSchema,
-    onSubmit: async (values) => {
-      try {
-        const tokenBody = buildTokenParams(values)
-        const token = await createToken(tokenBody)
-
-        if (token.error) {
-          throw new Error(`[Stripe]: error creating the token: ${JSON.stringify(token.error)}`)
-        }
-
-        onSubmit(token.token, buildBillingAddress(values))
-        navigator.pop()
-      } catch (error) {
-        setErrors({ creditCard: { valid: "There was an error. Please try again." } })
-        console.error("CreditCardForm.tsx", error)
-      }
-    },
+    onSubmit: handleFormSubmit,
   })
 
   const handleOnCardChange = (cardDetails: Details) => {
@@ -98,7 +104,6 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   const stateRef = useRef<Input>(null)
   const postalCodeRef = useRef<Input>(null)
   const phoneRef = useRef<Input>(null)
-  const countryRef = useRef<Select<any>>(null)
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
@@ -120,34 +125,36 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             )}
           </>
 
-          <Input
+          <MemoizedInput
             testID="input-full-name"
             title="Name on card"
             placeholder="Full name"
-            value={values.fullName}
+            defaultValue={values.fullName}
             error={showError("fullName")}
             onChangeText={handleChange("fullName")}
             onBlur={handleBlur("fullName")}
             returnKeyType="next"
             onSubmitEditing={() => addressLine1Ref.current?.focus()}
+            submitBehavior="submit"
           />
-          <Input
+          <MemoizedInput
             testID="input-address-1"
             ref={addressLine1Ref}
             title="Address line 1"
-            value={values.addressLine1}
+            defaultValue={values.addressLine1}
             error={showError("addressLine1")}
             placeholder="Add street address"
             onChangeText={handleChange("addressLine1")}
             onBlur={handleBlur("addressLine1")}
             returnKeyType="next"
             onSubmitEditing={() => addressLine2Ref.current?.focus()}
+            submitBehavior="submit"
           />
-          <Input
+          <MemoizedInput
             testID="input-address-2"
             ref={addressLine2Ref}
             title="Address line 2"
-            value={values.addressLine2}
+            defaultValue={values.addressLine2}
             error={showError("addressLine2")}
             optional
             placeholder={[
@@ -159,48 +166,52 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
             onBlur={handleBlur("addressLine2")}
             returnKeyType="next"
             onSubmitEditing={() => cityRef.current?.focus()}
+            submitBehavior="submit"
           />
-          <Input
+          <MemoizedInput
             testID="input-city"
             ref={cityRef}
             title="City"
-            value={values.city}
+            defaultValue={values.city}
             error={showError("city")}
             onChangeText={handleChange("city")}
             onBlur={handleBlur("city")}
             returnKeyType="next"
             onSubmitEditing={() => stateRef.current?.focus()}
+            submitBehavior="submit"
           />
-          <Input
+          <MemoizedInput
             testID="input-state"
             ref={stateRef}
             title="State, province, or region"
-            value={values.state}
+            defaultValue={values.state}
             error={showError("state")}
             onChangeText={handleChange("state")}
             onBlur={handleBlur("state")}
             returnKeyType="next"
             onSubmitEditing={() => postalCodeRef.current?.focus()}
+            submitBehavior="submit"
           />
-          <Input
+          <MemoizedInput
             testID="input-postal-code"
             ref={postalCodeRef}
             title="Postal Code"
-            value={values.postalCode}
+            defaultValue={values.postalCode}
             error={showError("postalCode")}
             onChangeText={handleChange("postalCode")}
             onBlur={handleBlur("postalCode")}
             returnKeyType="next"
             onSubmitEditing={() => phoneRef.current?.focus()}
+            submitBehavior="submit"
           />
-          <Input
+          <MemoizedInput
             testID="input-phone"
             ref={phoneRef}
             title="Phone"
             placeholder="Add phone number"
             keyboardType="phone-pad"
             textContentType="telephoneNumber"
-            value={values.phoneNumber}
+            defaultValue={values.phoneNumber}
             error={showError("phoneNumber")}
             onChangeText={handleChange("phoneNumber")}
             onBlur={handleBlur("phoneNumber")}
@@ -210,7 +221,6 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
           <Spacer y={2} />
 
           <CountrySelect
-            ref={countryRef}
             onSelectValue={(countryCode: string) =>
               setFieldValue("country", {
                 shortName: countryCode,
