@@ -23,8 +23,9 @@ export const ActivityRail: React.FC<ActivityRailProps> = ({ title, viewer }) => 
 
   const notificationsNodes = extractNodes(data?.notificationsConnection)
 
-  const notifications = notificationsNodes.filter(shouldDisplayNotification)
-
+  const notifications = notificationsNodes.filter((notification) =>
+    shouldDisplayNotification(notification, "rail")
+  )
   if (notifications.length === 0) {
     return null
   }
@@ -79,10 +80,16 @@ const notificationsConnectionFragment = graphql`
             totalCount
           }
           item {
+            __typename
+
             ... on ViewingRoomPublishedNotificationItem {
               viewingRoomsConnection(first: 1) {
                 totalCount
               }
+            }
+
+            ... on CollectorProfileUpdatePromptNotificationItem {
+              __typename
             }
 
             ... on ArticleFeaturedArtistNotificationItem {
@@ -91,6 +98,7 @@ const notificationsConnectionFragment = graphql`
               }
             }
           }
+
           ...ActivityRailItem_item
         }
       }
