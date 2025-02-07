@@ -9,6 +9,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { pluralize } from "app/utils/pluralize"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { useEffect, useMemo, useState } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from "react-relay"
 import type {
   InfiniteDiscoveryQuery,
@@ -39,6 +40,9 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>([])
 
   const data = usePreloadedQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, queryRef)
+  const artworkNodes = extractNodes(data.discoverArtworks)
+
+  const insets = useSafeAreaInsets()
 
   /**
    * This is called whenever a query for more artworks is made.
@@ -94,8 +98,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   }
 
   return (
-    <Screen>
-      <Screen.Body fullwidth>
+    <Screen safeArea={false}>
+      <Screen.Body fullwidth style={{ marginTop: insets.top }}>
         <Flex zIndex={-100}>
           <Screen.Header
             title="Discovery"
@@ -114,7 +118,12 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         </Flex>
         <FancySwiper cards={unswipedCards} hideActionButtons onSwipeAnywhere={handleCardSwiped} />
 
-        <InfiniteDiscoveryBottomSheet artworkID={artworks[index]?.internalID} />
+        {!!artworkNodes.length && (
+          <InfiniteDiscoveryBottomSheet
+            artworkID={artworkNodes[index].internalID}
+            artistIDs={artworkNodes[index].artists.map((data) => data?.internalID ?? "")}
+          />
+        )}
       </Screen.Body>
     </Screen>
   )
@@ -170,8 +179,12 @@ export const infiniteDiscoveryQuery = graphql`
     discoverArtworks(excludeArtworkIds: $excludeArtworkIds) {
       edges {
         node {
-          internalID
           ...InfiniteDiscoveryArtworkCard_artwork
+
+          internalID @required(action: NONE)
+          artists(shallow: true) @required(action: NONE) {
+            internalID @required(action: NONE)
+          }
         }
       }
     }

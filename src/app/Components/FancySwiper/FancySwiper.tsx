@@ -46,7 +46,7 @@ export const FancySwiper = ({
         // move the card to its original position
         Animated.spring(swiper, {
           toValue: { x: 0, y: 0 },
-          friction: 5,
+          friction: 50,
           useNativeDriver: true,
         }).start()
       }
@@ -110,6 +110,7 @@ export const FancySwiper = ({
       <Flex alignItems="center" flex={1}>
         {remainingCards.map((card, index) => {
           const isTopCard = index === remainingCards.length - 1
+          const isSecondCard = index === remainingCards.length - 2
 
           // We would like to be able to drag the top card only
           const gestureDraggers = isTopCard ? panResponder.panHandlers : {}
@@ -120,6 +121,7 @@ export const FancySwiper = ({
               key={index}
               swiper={swiper}
               isTopCard={isTopCard}
+              isSecondCard={isSecondCard}
               {...gestureDraggers}
             />
           )

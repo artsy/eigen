@@ -14,6 +14,8 @@ import { navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { useEffect } from "react"
+import { View } from "react-native"
 import { ConfirmationScreen, NUMBER_OF_ARTWORKS_TO_SHOW } from "./ConfirmationScreen"
 
 jest.mock("@react-navigation/native", () => {
@@ -46,6 +48,11 @@ jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills", () => {
     ],
   }
 })
+
+jest.mock("app/utils/Sentinel", () => ({
+  __esModule: true,
+  Sentinel: (props: any) => <MockedVisibleSentinel {...props} />,
+}))
 
 const TestWrapper: React.FC = ({ children }) => (
   <SavedSearchStoreProvider
@@ -297,4 +304,10 @@ const entity: SavedSearchEntity = {
     slug: "some-artwork",
     type: OwnerType.artwork,
   },
+}
+
+const MockedVisibleSentinel: React.FC<any> = ({ children, onChange }) => {
+  useEffect(() => onChange(true), [])
+
+  return <View>{children}</View>
 }

@@ -22,7 +22,7 @@ export enum FilterDisplayName {
   categories = "Medium",
   colors = "Color",
   estimateRange = "Price/Estimate Range",
-  framed = "Frame",
+  framed = "Framed",
   locationCities = "Artwork Location",
   materialsTerms = "Material",
   medium = "Medium",

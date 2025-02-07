@@ -632,3 +632,12 @@ jest.mock("react-native-document-picker", () => ({
 jest.mock("app/utils/queryPrefetching", () => ({
   usePrefetch: jest.fn(() => jest.fn()),
 }))
+
+jest.mock("app/utils/Sentinel", () => {
+  const { View } = require("react-native")
+
+  return {
+    __esModule: true,
+    Sentinel: View,
+  }
+})

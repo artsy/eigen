@@ -43,7 +43,7 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
     })
 
     expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).not.toBe(null)
-    expect(screen.queryAllByText("Complete Submission")).toHaveLength(2)
+    expect(screen.queryAllByText("Complete Submission")).toHaveLength(1)
   })
 
   it("displays submission status in LISTED state", () => {
@@ -60,7 +60,7 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
     })
 
     expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).not.toBe(null)
-    expect(screen.queryAllByText("Listed")).toHaveLength(2)
+    expect(screen.queryAllByText("Listed")).toHaveLength(1)
   })
 
   it("does not display action label in LISTED state", () => {
@@ -95,7 +95,7 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
     })
 
     expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).not.toBe(null)
-    expect(screen.queryAllByText("Submission Unsuccessful")).toHaveLength(2)
+    expect(screen.queryAllByText("Submission Unsuccessful")).toHaveLength(1)
   })
 
   it("navigatess to submission flow ShippingLocation when action label is pressed and Tier 2", () => {
@@ -113,7 +113,7 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
       },
     })
 
-    expect(screen.queryAllByText("Complete Listing")).toHaveLength(2)
+    expect(screen.queryAllByText("Complete Listing")).toHaveLength(1)
     fireEvent.press(screen.getByTestId("action-label"))
     expect(navigate).toHaveBeenCalledWith("/sell/submissions/some-external-id/edit", {
       passProps: {
@@ -139,7 +139,7 @@ describe("MyCollectionArtworkSubmissionStatus", () => {
       },
     })
 
-    expect(screen.queryAllByText("Complete Submission")).toHaveLength(2)
+    expect(screen.queryAllByText("Complete Submission")).toHaveLength(1)
     fireEvent.press(screen.getByTestId("action-label"))
     expect(navigate).toHaveBeenCalledWith("/sell/submissions/some-external-id/edit", {
       passProps: {

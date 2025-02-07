@@ -11,7 +11,10 @@ import { currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { artworkModel, ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
 import { ArtworkCommercialButtons } from "app/Scenes/Artwork/Components/ArtworkCommercialButtons"
 import { ArtworkPrice } from "app/Scenes/Artwork/Components/ArtworkPrice"
-import { aboutTheWorkQuery } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
+import {
+  aboutTheWorkQuery,
+  useBottomSheetAnimatedStyles,
+} from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import {
   AuctionWebsocketChannelInfo,
   AuctionWebsocketContextProvider,
@@ -30,8 +33,7 @@ export const InfiniteDiscoveryBottomSheetFooter: FC<InfiniteDiscoveryBottomSheet
   me: _me,
   ...bottomSheetFooterProps
 }) => {
-  const { bottom } = useSafeAreaInsets()
-  const color = useColor()
+  const { reversedOpacityStyle } = useBottomSheetAnimatedStyles()
 
   const artwork = useFragment(artworkFragment, _artwork)
   const me = useFragment(meFragment, _me)
@@ -52,11 +54,13 @@ export const InfiniteDiscoveryBottomSheetFooter: FC<InfiniteDiscoveryBottomSheet
   return (
     <BottomSheetFooter
       {...bottomSheetFooterProps}
-      style={{ paddingBottom: bottom, backgroundColor: color("white100") }}
+      style={{
+        ...reversedOpacityStyle,
+      }}
     >
       <Divider />
 
-      <Flex p={2} gap={1}>
+      <Flex p={2} gap={1} backgroundColor="white100">
         <AuctionWebsocketContextProvider channelInfo={socketChannelInfo} enabled={websocketEnabled}>
           <ArtworkStoreProvider
             runtimeModel={{
@@ -146,6 +150,7 @@ const getInitialAuctionTimerState = (
 export const InfiniteDiscoveryBottomSheetFooterSkeleton: FC<BottomSheetFooterProps> = (props) => {
   const { bottom } = useSafeAreaInsets()
   const color = useColor()
+
   return (
     <BottomSheetFooter
       {...props}

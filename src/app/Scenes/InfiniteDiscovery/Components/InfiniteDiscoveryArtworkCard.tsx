@@ -71,7 +71,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
   )
 
   return (
-    <Flex backgroundColor="white100" width="100%" height={CARD_HEIGHT}>
+    <Flex backgroundColor="white100" width="100%" height={CARD_HEIGHT} style={{ borderRadius: 10 }}>
       <ArtistListItemContainer artist={artwork.artists?.[0]} />
       <Spacer y={2} />
 
