@@ -26,7 +26,7 @@ import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialBu
 import { aboutTheWorkQuery } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { useSetArtworkAsRecentlyViewed } from "app/Scenes/InfiniteDiscovery/hooks/useSetArtworkAsRecentlyViewed"
 import { navigate } from "app/system/navigation/navigate"
-import { ElementInView } from "app/utils/ElementInView"
+import { Sentinel } from "app/utils/Sentinel"
 import { FC } from "react"
 import { graphql, PreloadedQuery, useFragment, usePreloadedQuery } from "react-relay"
 
@@ -49,8 +49,10 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
   const attributionClass = data.attributionClass?.shortArrayDescription
   const hasCertificateOfAuthenticity = data.hasCertificateOfAuthenticity && !data.isBiddable
 
-  const handleOnVisible = () => {
-    setArtworkAsRecentlyViewed()
+  const handleOnVisible = (visible: boolean) => {
+    if (visible) {
+      setArtworkAsRecentlyViewed()
+    }
   }
 
   const onNavigate = (link: string) => {
@@ -63,7 +65,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
       <Flex flex={1} px={2} style={{ paddingTop: 50 + space(2) }} gap={2}>
         <Flex gap={1}>
           {!!attributionClass?.length && (
-            <ElementInView onVisible={handleOnVisible}>
+            <Sentinel onChange={handleOnVisible}>
               <Flex flexDirection="row" gap={0.5} alignItems="center">
                 <ArtworkIcon height={18} width={18} fill="black60" />
                 <Text variant="xs">
@@ -73,7 +75,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
                   </LinkText>
                 </Text>
               </Flex>
-            </ElementInView>
+            </Sentinel>
           )}
 
           {!!hasCertificateOfAuthenticity && (
