@@ -6,6 +6,7 @@ import {
   Text,
   Touchable,
   useColor,
+  useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
@@ -103,6 +104,7 @@ export const AutoHeightInfoModal: React.FC<{
 }> = ({ visible, onDismiss, isPresentedModally, modalTitle, title, modalContent }) => {
   const space = useSpace()
   const color = useColor()
+  const { height: screenHeight, safeAreaInsets } = useScreenDimensions()
 
   const containerComponent = useMemo(() => {
     if (Platform.OS === "ios") {
@@ -122,6 +124,9 @@ export const AutoHeightInfoModal: React.FC<{
     return undefined
   }, [visible, isPresentedModally])
 
+  // Calculate the max height of the content within the bottom sheet
+  const MAX_CONTENT_HEIGHT = screenHeight - safeAreaInsets.top - safeAreaInsets.bottom - space(1)
+
   return (
     <AutoHeightBottomSheet
       visible={visible}
@@ -139,26 +144,28 @@ export const AutoHeightInfoModal: React.FC<{
     >
       <SafeAreaView
         style={{
-          paddingBottom: space(4),
+          paddingBottom: space(2),
           paddingHorizontal: space(2),
         }}
       >
-        <Text mx={2} variant="lg-display">
-          {modalTitle ?? title}
-        </Text>
+        <Flex maxHeight={MAX_CONTENT_HEIGHT}>
+          <Text mx={2} variant="lg-display">
+            {modalTitle ?? title}
+          </Text>
 
-        <Spacer y={2} />
+          <Spacer y={2} />
 
-        <ScrollView contentContainerStyle={{ paddingHorizontal: space(2) }}>
-          {modalContent}
-        </ScrollView>
+          <ScrollView contentContainerStyle={{ paddingHorizontal: space(2) }}>
+            {modalContent}
+          </ScrollView>
 
-        <Spacer y={2} />
+          <Spacer y={2} />
 
-        <Flex px={2}>
-          <Button variant="outline" block onPress={onDismiss}>
-            Close
-          </Button>
+          <Flex px={2}>
+            <Button variant="outline" block onPress={onDismiss}>
+              Close
+            </Button>
+          </Flex>
         </Flex>
       </SafeAreaView>
     </AutoHeightBottomSheet>
