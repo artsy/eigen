@@ -1,15 +1,14 @@
 import {
-  Spacer,
   Flex,
-  useTheme,
-  Text,
-  Touchable,
+  Image,
   SkeletonBox,
   SkeletonText,
-  Image,
+  Spacer,
+  Text,
+  useTheme,
 } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { compact } from "lodash"
 import { DateTime } from "luxon"
 import { GestureResponderEvent, useWindowDimensions, View, ViewProps } from "react-native"
@@ -27,13 +26,6 @@ interface ArticleCardProps extends ViewProps {
 export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFluid }) => {
   const imageURL = article.thumbnailImage?.url
 
-  const onTap = (event: GestureResponderEvent) => {
-    onPress?.(event)
-    if (article.href) {
-      navigate(article.href)
-    }
-  }
-
   const { space } = useTheme()
   const { width } = useWindowDimensions()
 
@@ -44,7 +36,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
 
   return (
     <Flex width={isFluid ? "100%" : ARTICLE_CARD_IMAGE_WIDTH}>
-      <Touchable onPress={onTap} testID="article-card">
+      <RouterLink onPress={onPress} testID="article-card" to={article.href}>
         <Flex width={isFluid ? "100%" : ARTICLE_CARD_IMAGE_WIDTH} overflow="hidden">
           {!!imageURL &&
             (isFluid ? (
@@ -81,7 +73,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
             </Text>
           )}
         </Flex>
-      </Touchable>
+      </RouterLink>
     </Flex>
   )
 }
