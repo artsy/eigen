@@ -10,6 +10,7 @@ import {
   savedSearchModel,
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { MockedVisibleSentinel } from "app/system/navigation/RouterLink.tests"
 import { navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -46,6 +47,11 @@ jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills", () => {
     ],
   }
 })
+
+jest.mock("app/utils/Sentinel", () => ({
+  __esModule: true,
+  Sentinel: (props: any) => <MockedVisibleSentinel {...props} />,
+}))
 
 const TestWrapper: React.FC = ({ children }) => (
   <SavedSearchStoreProvider

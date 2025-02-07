@@ -1,8 +1,7 @@
 import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { OnboardingMarketingCollectionScreen } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingMarketingCollection"
+import { MockedVisibleSentinel } from "app/system/navigation/RouterLink.tests"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { useEffect } from "react"
-import { View } from "react-native"
 
 const mockedNavigate = jest.fn()
 
@@ -54,9 +53,3 @@ describe("OnboardingMarketingCollection", () => {
     expect(screen.getByText("Explore More on Artsy")).toBeTruthy()
   })
 })
-
-const MockedVisibleSentinel: React.FC<any> = ({ children, onChange }) => {
-  useEffect(() => onChange(true), [])
-
-  return <View>{children}</View>
-}

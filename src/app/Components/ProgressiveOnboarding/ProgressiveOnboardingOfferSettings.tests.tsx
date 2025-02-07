@@ -1,9 +1,9 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ProgressiveOnboardingOfferSettings } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingOfferSettings"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { MockedVisibleSentinel } from "app/system/navigation/RouterLink.tests"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { useEffect } from "react"
-import { Text, View } from "react-native"
+import { Text } from "react-native"
 
 jest.mock("app/utils/Sentinel", () => ({
   __esModule: true,
@@ -92,12 +92,6 @@ describe("ProgressiveOnboardingOfferSettings", () => {
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
   })
 })
-
-const MockedVisibleSentinel: React.FC<any> = ({ children, onChange }) => {
-  useEffect(() => onChange(true), [])
-
-  return <View>{children}</View>
-}
 
 const MockedPopover: React.FC<any> = ({ children, onDismiss, visible }) => {
   if (!visible) {

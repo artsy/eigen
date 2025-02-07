@@ -1,8 +1,8 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { MockedVisibleSentinel } from "app/system/navigation/RouterLink.tests"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { useEffect } from "react"
-import { Text, View } from "react-native"
+import { Text } from "react-native"
 import { graphql } from "react-relay"
 import { ProgressiveOnboardingSaveArtwork } from "./ProgressiveOnboardingSaveArtwork"
 
@@ -111,12 +111,6 @@ describe("ProgressiveOnboardingSaveArtwork", () => {
     expect(screen.queryByText("Popover")).not.toBeOnTheScreen()
   })
 })
-
-const MockedVisibleSentinel: React.FC<any> = ({ children, onChange }) => {
-  useEffect(() => onChange(true), [])
-
-  return <View>{children}</View>
-}
 
 const MockedPopover: React.FC<any> = ({ children, onDismiss }) => {
   return (
