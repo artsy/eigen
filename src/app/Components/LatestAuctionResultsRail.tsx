@@ -28,16 +28,11 @@ export const LatestAuctionResultsRail: React.FC<Props> = ({ me }) => {
   const data = useFragment(latestAuctionResultsRailFragment, me)
   const auctionResultsByFollowedArtists = extractNodes(data?.auctionResultsByFollowedArtists)
 
-  const href = "/auction-results-for-artists-you-follow"
-
-  const navigateToAuctionResultsForArtistsYouFollow = () => {
-    trackEvent(tracks.tappedHeader())
-    navigate(href)
-  }
-
   if (!auctionResultsByFollowedArtists?.length) {
     return null
   }
+
+  const href = "/auction-results-for-artists-you-follow"
 
   return (
     <Flex>
@@ -45,21 +40,16 @@ export const LatestAuctionResultsRail: React.FC<Props> = ({ me }) => {
         href={href}
         title="Latest Auction Results"
         mx={2}
-        onPress={navigateToAuctionResultsForArtistsYouFollow}
+        onPress={() => trackEvent(tracks.tappedHeader())}
       />
 
       <CardRailFlatList
         data={auctionResultsByFollowedArtists}
-        keyExtractor={(_, index) => String(index)}
         initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
         showsHorizontalScrollIndicator={false}
         ItemSeparatorComponent={AuctionResultListSeparator}
         renderItem={({ item, index }) => {
-          if (!item) {
-            return <></>
-          }
-
           return (
             <AuctionResultListItemFragmentContainer
               showArtistName
@@ -74,7 +64,10 @@ export const LatestAuctionResultsRail: React.FC<Props> = ({ me }) => {
         }}
         ListFooterComponent={
           <BrowseMoreRailCard
-            onPress={() => navigate("/auction-results-for-artists-you-follow")}
+            onPress={() => {
+              trackEvent(tracks.tappedAuctionResultGroupViewAll())
+              navigate(href)
+            }}
             text="Browse All Results"
           />
         }
@@ -86,9 +79,7 @@ export const LatestAuctionResultsRail: React.FC<Props> = ({ me }) => {
 const latestAuctionResultsRailFragment = graphql`
   fragment LatestAuctionResultsRail_me on Me {
     auctionResultsByFollowedArtists(first: 10, state: PAST) {
-      totalCount
       edges {
-        cursor
         node {
           ...AuctionResultListItem_auctionResult
           artistID
@@ -102,19 +93,27 @@ const latestAuctionResultsRailFragment = graphql`
 export const tracks = {
   tappedHeader: () => ({
     action: ActionType.tappedAuctionResultGroup,
-    context_module: ContextModule.auctionResultsRail,
-    context_screen_owner_type: OwnerType.home,
+    context_module: ContextModule.auctionResultsForArtistsYouFollow,
+    context_screen_owner_type: OwnerType.sale,
     destination_screen_owner_type: OwnerType.auctionResultsForArtistsYouFollow,
     type: "header",
   }),
 
   tappedThumbnail: (auctionResultId: string, position: number) => ({
     action: ActionType.tappedAuctionResultGroup,
-    context_module: ContextModule.auctionResultsRail,
-    context_screen_owner_type: OwnerType.home,
+    context_module: ContextModule.auctionResultsForArtistsYouFollow,
+    context_screen_owner_type: OwnerType.sale,
     destination_screen_owner_type: OwnerType.auctionResult,
     destination_screen_owner_id: auctionResultId,
     horizontal_slide_position: position,
     type: "thumbnail",
+  }),
+
+  tappedAuctionResultGroupViewAll: () => ({
+    action: ActionType.tappedAuctionResultGroup,
+    context_module: ContextModule.auctionResultsForArtistsYouFollow,
+    context_screen_owner_type: OwnerType.sale,
+    destination_screen_owner_type: OwnerType.auctionResultsForArtistsYouFollow,
+    type: "viewAll",
   }),
 }

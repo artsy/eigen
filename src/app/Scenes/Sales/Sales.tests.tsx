@@ -96,10 +96,6 @@ const me = {
       {
         node: {
           id: "an-id",
-          saleDate: "2055-01-11T18:00:00-06:00",
-          isUpcoming: true,
-          isInArtsyAuction: true,
-          externalURL: "https://www.artsy.net/artwork/auction-lot",
         },
       },
     ],
