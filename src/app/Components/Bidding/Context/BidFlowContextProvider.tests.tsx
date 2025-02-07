@@ -2,7 +2,7 @@ import {
   BidFlowContextModel,
   getBidFlowContextStore,
 } from "app/Components/Bidding/Context/BidFlowContextProvider"
-import { createStore, State } from "easy-peasy"
+import { createStore } from "easy-peasy"
 
 const createBidFlowStore = (state: any) =>
   createStore<BidFlowContextModel>({ ...getBidFlowContextStore(), ...state })
