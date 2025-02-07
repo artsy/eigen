@@ -3,7 +3,6 @@ import { Box, Text, TrendingIcon, useColor } from "@artsy/palette-mobile"
 import { MyCollectionArtworkGridItem_artwork$data } from "__generated__/MyCollectionArtworkGridItem_artwork.graphql"
 import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
-import { SubmissionStatus } from "app/Scenes/MyCollection/Components/SubmissionStatus"
 import { navigate } from "app/system/navigation/navigate"
 import { useLocalImage } from "app/utils/LocalImageStore"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -37,7 +36,6 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
     image,
     date,
     submissionId,
-    consignmentSubmission,
   } = artwork
 
   // consistent with how sections are derived in InfiniteScrollArtworksGrid
@@ -48,7 +46,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
   const isHighDemand = Number((artwork.marketPriceInsights?.demandRank || 0) * 10) >= 9
 
-  const showHighDemandIcon = isP1Artist && isHighDemand && !consignmentSubmission?.internalID
+  const showHighDemandIcon = isP1Artist && isHighDemand
 
   return (
     <TouchableHighlight
@@ -103,8 +101,6 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
               </Text>
             </Box>
           )}
-
-          <SubmissionStatus artwork={artwork} />
         </Box>
       </View>
     </TouchableHighlight>
@@ -149,10 +145,6 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
         marketPriceInsights {
           demandRank
         }
-        consignmentSubmission {
-          internalID
-        }
-        ...SubmissionStatus_artwork
       }
     `,
   }
