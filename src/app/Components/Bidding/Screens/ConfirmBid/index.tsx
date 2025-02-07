@@ -366,7 +366,7 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
           )}
 
           <Box mt={4}>
-            <PriceSummary saleArtworkId={saleArtworkData.id} bid={increments[selectedBidIndex]} />
+            <PriceSummary saleArtworkId={saleArtworkData.id} />
           </Box>
 
           <Modal
