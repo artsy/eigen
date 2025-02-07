@@ -1,12 +1,4 @@
-import {
-  ArrowBackIcon,
-  CloseIcon,
-  Flex,
-  Screen,
-  Spacer,
-  Spinner,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { ArrowBackIcon, CloseIcon, Flex, Screen, Spinner, Touchable } from "@artsy/palette-mobile"
 import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
 import { useToast } from "app/Components/Toast/toastHook"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
@@ -123,7 +115,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
             }
           />
         </Flex>
-        <Spacer y={1} />
         <FancySwiper cards={unswipedCards} hideActionButtons onSwipeAnywhere={handleCardSwiped} />
 
         {!!artworks.length && (
