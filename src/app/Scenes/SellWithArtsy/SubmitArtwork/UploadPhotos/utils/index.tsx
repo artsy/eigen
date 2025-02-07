@@ -14,6 +14,7 @@ type SellWithArtsyProps = StackScreenProps<any>
 
 export const SellWithArtsy: React.FC<SellWithArtsyProps> = memo(() => {
   const sellTabProps = GlobalStore.useAppState((state) => {
+    // @ts-expect-error
     return state.bottomTabs.sessionState.tabProps.sell ?? {}
   }) as SellTabProps
 
@@ -36,6 +37,7 @@ export const SellWithArtsy: React.FC<SellWithArtsyProps> = memo(() => {
   const handleBackButton = useCallback(() => {
     if (sellTabPropsRef.current) {
       switchTab(sellTabPropsRef.current)
+      // @ts-expect-error
       GlobalStore.actions.bottomTabs.setTabProps({ tab: "sell", props: {} })
     } else {
       goBack()

@@ -32,14 +32,12 @@ export type AuthenticatedRoutesParams = {
   Search: undefined
   Profile: undefined
   Inbox: undefined
-  Sell: undefined
 } & { [key in AppModule]: undefined }
 
 type TabRoutesParams = {
   home: undefined
   search: undefined
   inbox: undefined
-  sell: undefined
   profile: undefined
 }
 
@@ -142,7 +140,6 @@ const AppTabs: React.FC = () => {
       <Tab.Screen name="home" component={HomeTab} options={{ ...tabsBadges["home"] }} />
       <Tab.Screen name="search" component={SearchTab} />
       <Tab.Screen name="inbox" component={InboxTab} options={{ ...tabsBadges["inbox"] }} />
-      {/* <Tab.Screen name="sell" component={SellTab} /> */}
       <Tab.Screen name="profile" component={ProfileTab} options={{ ...tabsBadges["profile"] }} />
     </Tab.Navigator>
   )
@@ -186,9 +183,6 @@ export const tabsTracks = {
         break
       case "search":
         tabScreen = OwnerType.search
-        break
-      case "sell":
-        tabScreen = OwnerType.sell
         break
     }
 
