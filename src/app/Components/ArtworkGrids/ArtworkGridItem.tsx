@@ -42,7 +42,7 @@ import {
   tracks as artworkActionTracks,
 } from "app/utils/track/ArtworkActions"
 import React, { useRef, useState } from "react"
-import { View, ViewProps } from "react-native"
+import { View, ViewProps, Text as RNText } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotProgressBar } from "./LotProgressBar"
@@ -328,19 +328,20 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   </Text>
                 )}
                 {!!artwork.title && (
-                  <Text
-                    lineHeight="18px"
-                    variant="xs"
-                    weight="regular"
-                    color="black60"
-                    numberOfLines={1}
-                    {...titleTextStyle}
-                  >
-                    <Text lineHeight="18px" variant="xs" weight="regular">
-                      {artwork.title}
+                  <RNText numberOfLines={1}>
+                    <Text
+                      lineHeight="18px"
+                      variant="xs"
+                      weight="regular"
+                      color="black60"
+                      {...titleTextStyle}
+                    >
+                      <Text lineHeight="18px" variant="xs" weight="regular">
+                        {artwork.title}
+                      </Text>
+                      {artwork.date ? `, ${artwork.date}` : ""}
                     </Text>
-                    {artwork.date ? `, ${artwork.date}` : ""}
-                  </Text>
+                  </RNText>
                 )}
                 {!hidePartner && !!artwork.partner?.name && (
                   <Text
