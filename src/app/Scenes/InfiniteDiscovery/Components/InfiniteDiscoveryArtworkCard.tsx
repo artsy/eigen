@@ -3,15 +3,14 @@ import {
   HeartFillIcon,
   HeartIcon,
   Image,
-  Spacer,
   Text,
   Touchable,
+  useColor,
   useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { InfiniteDiscoveryArtworkCard_artwork$key } from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
-import { HEART_ICON_SIZE } from "app/Components/constants"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
@@ -25,8 +24,9 @@ interface InfiniteDiscoveryArtworkCardProps {
 export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCardProps> = ({
   artwork: artworkProp,
 }) => {
-  const { width: screenWidth } = useScreenDimensions()
+  const { width: screenWidth, height: screenHeight } = useScreenDimensions()
   const { trackEvent } = useTracking()
+  const color = useColor()
   const { incrementSavedArtworksCount, decrementSavedArtworksCount } =
     GlobalStore.actions.infiniteDiscovery
 
@@ -58,32 +58,31 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     return null
   }
 
-  const MAX_ARTWORK_HEIGHT = 500
-  const CARD_HEIGHT = 800
+  const MAX_ARTWORK_HEIGHT = screenHeight * 0.6
 
   const src = artwork.images?.[0]?.url
   const width = artwork.images?.[0]?.width ?? 0
   const height = artwork.images?.[0]?.height ?? 0
 
-  const size = sizeToFit(
-    { width: width, height: height },
-    { width: screenWidth, height: MAX_ARTWORK_HEIGHT }
-  )
+  const size = sizeToFit({ width, height }, { width: screenWidth, height: MAX_ARTWORK_HEIGHT })
 
   return (
-    <Flex backgroundColor="white100" width="100%" height={CARD_HEIGHT} style={{ borderRadius: 10 }}>
-      <ArtistListItemContainer artist={artwork.artists?.[0]} />
-      <Spacer y={2} />
+    <Flex backgroundColor="white100" width="100%" style={{ borderRadius: 10 }}>
+      <Flex mx={2} my={1}>
+        <ArtistListItemContainer
+          artist={artwork.artists?.[0]}
+          avatarSize="xxs"
+          includeTombstone={false}
+        />
+      </Flex>
 
-      <Flex alignItems="center" backgroundColor="purple60">
+      <Flex alignItems="center" minHeight={MAX_ARTWORK_HEIGHT} justifyContent="center">
         {!!src && <Image src={src} height={size.height} width={size.width} />}
       </Flex>
-      <Flex flexDirection="row" justifyContent="space-between" p={1}>
+
+      <Flex flexDirection="row" justifyContent="space-between" p={1} mx={2}>
         <Flex>
           <Flex flexDirection="row" maxWidth={screenWidth - 200}>
-            {/* TODO: maxWidth above and ellipsizeMode + numberOfLines below are used to */}
-            {/* prevent long artwork titles from pushing the save button off of the card, */}
-            {/* it doesn't work as expected on Android. */}
             <Text
               color="black60"
               italic
@@ -106,19 +105,41 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           testID="save-artwork-icon"
         >
           {!!isSaved ? (
-            <HeartFillIcon
-              testID="filled-heart-icon"
-              height={HEART_ICON_SIZE}
-              width={HEART_ICON_SIZE}
-              fill="blue100"
-            />
+            <Flex
+              style={{
+                width: HEART_CIRCLE_SIZE,
+                height: HEART_CIRCLE_SIZE,
+                borderRadius: HEART_CIRCLE_SIZE,
+                backgroundColor: color("black5"),
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <HeartFillIcon
+                testID="filled-heart-icon"
+                height={HEART_ICON_SIZE}
+                width={HEART_ICON_SIZE}
+                fill="blue100"
+              />
+            </Flex>
           ) : (
-            <HeartIcon
-              testID="empty-heart-icon"
-              height={HEART_ICON_SIZE}
-              width={HEART_ICON_SIZE}
-              fill="black100"
-            />
+            <Flex
+              style={{
+                width: HEART_CIRCLE_SIZE,
+                height: HEART_CIRCLE_SIZE,
+                borderRadius: HEART_CIRCLE_SIZE,
+                backgroundColor: color("black5"),
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <HeartIcon
+                testID="empty-heart-icon"
+                height={HEART_ICON_SIZE}
+                width={HEART_ICON_SIZE}
+                fill="black100"
+              />
+            </Flex>
           )}
         </Touchable>
       </Flex>
@@ -146,3 +167,6 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
     ...useSaveArtworkToArtworkLists_artwork
   }
 `
+
+const HEART_ICON_SIZE = 18
+const HEART_CIRCLE_SIZE = 50

@@ -32,6 +32,7 @@ interface Props {
   disableNavigation?: boolean
   onFollowFinish?: () => void
   onPress?: () => void
+  includeTombstone?: boolean
   isPrivate?: boolean
   relay: RelayProp
   RightButton?: JSX.Element
@@ -69,6 +70,7 @@ const ArtistListItem: React.FC<Props> = ({
   disableNavigation,
   onFollowFinish,
   onPress,
+  includeTombstone = true,
   isPrivate,
   relay,
   RightButton,
@@ -104,33 +106,44 @@ const ArtistListItem: React.FC<Props> = ({
     navigate(href)
   }
 
-  const getMeta = () => {
-    const tombstoneText = formatTombstoneText(nationality, birthday, deathday)
+  let meta
 
-    if (tombstoneText || Number.isInteger(uploadsCount)) {
-      return (
-        <Flex>
-          {!!tombstoneText && (
-            <Text variant="xs" color={theme === "light" ? "black60" : "white100"} numberOfLines={1}>
-              {tombstoneText}
-            </Text>
-          )}
+  if (includeTombstone) {
+    const getMeta = () => {
+      const tombstoneText = formatTombstoneText(nationality, birthday, deathday)
 
-          {Number.isInteger(uploadsCount) && (
-            <Text
-              variant="xs"
-              color={theme === "light" ? (uploadsCount === 0 ? "black60" : "black100") : "white100"}
-            >
-              {uploadsCount} {pluralize("artwork", uploadsCount || 0)} uploaded
-            </Text>
-          )}
-        </Flex>
-      )
+      if (tombstoneText || Number.isInteger(uploadsCount)) {
+        return (
+          <Flex>
+            {!!tombstoneText && (
+              <Text
+                variant="xs"
+                color={theme === "light" ? "black60" : "white100"}
+                numberOfLines={1}
+              >
+                {tombstoneText}
+              </Text>
+            )}
+
+            {Number.isInteger(uploadsCount) && (
+              <Text
+                variant="xs"
+                color={
+                  theme === "light" ? (uploadsCount === 0 ? "black60" : "black100") : "white100"
+                }
+              >
+                {uploadsCount} {pluralize("artwork", uploadsCount || 0)} uploaded
+              </Text>
+            )}
+          </Flex>
+        )
+      }
+
+      return undefined
     }
 
-    return undefined
+    meta = getMeta()
   }
-  const meta = getMeta()
 
   if (!name) {
     return null
