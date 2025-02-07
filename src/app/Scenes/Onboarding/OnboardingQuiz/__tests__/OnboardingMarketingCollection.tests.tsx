@@ -1,10 +1,15 @@
 import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { OnboardingMarketingCollectionScreen } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingMarketingCollection"
-import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { useEffect } from "react"
+import { View } from "react-native"
 
 const mockedNavigate = jest.fn()
+
+jest.mock("app/utils/Sentinel", () => ({
+  __esModule: true,
+  Sentinel: (props: any) => <MockedVisibleSentinel {...props} />,
+}))
 
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native")
@@ -18,31 +23,26 @@ jest.mock("@react-navigation/native", () => {
 })
 
 describe("OnboardingMarketingCollection", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    env = createMockEnvironment()
-  })
-
   const description = "This is the description."
   const placeholderText = "Great choice\nWe’re finding a collection for you"
 
-  it("renders properly", async () => {
-    renderWithHookWrappersTL(
+  const { renderWithRelay } = setupTestWrapper({
+    Component: () => (
       <OnboardingMarketingCollectionScreen
         slug="curators-picks-emerging"
         description={description}
-      />,
-      env
-    )
+      />
+    ),
+  })
 
-    expect(screen.getByText(placeholderText)).toBeTruthy()
-
-    resolveMostRecentRelayOperation(env, {
+  it("renders properly", async () => {
+    renderWithRelay({
       MarketingCollection: () => ({
         title: "Example Collection",
       }),
     })
+
+    expect(screen.getByText(placeholderText)).toBeTruthy()
 
     await waitForElementToBeRemoved(() => screen.queryByText(placeholderText))
 
@@ -54,3 +54,9 @@ describe("OnboardingMarketingCollection", () => {
     expect(screen.getByText("Explore More on Artsy")).toBeTruthy()
   })
 })
+
+const MockedVisibleSentinel: React.FC<any> = ({ children, onChange }) => {
+  useEffect(() => onChange(true), [])
+
+  return <View>{children}</View>
+}
