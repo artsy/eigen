@@ -7,7 +7,6 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { myCollectionUpdateArtwork } from "app/Scenes/MyCollection/mutations/myCollectionUpdateArtwork"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
-import { updateMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/updateMyCollectionArtwork"
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
@@ -67,12 +66,6 @@ export const SubmitArtworkCondition = () => {
         )
         // Reset saved draft if submission is successful
         GlobalStore.actions.artworkSubmission.setDraft(null)
-        // Refetch associated My Collection artwork to display the updated submission status on the artwork screen.
-        if (values.myCollectionArtworkID) {
-          await updateMyCollectionArtwork({
-            artworkID: values.myCollectionArtworkID,
-          })
-        }
 
         refreshMyCollection()
 

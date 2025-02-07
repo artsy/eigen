@@ -187,12 +187,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAlertBottomSheet",
   },
-  AREnableMyCollectionInterestedInSellingTooltip: {
-    description: "Enable My Collection 'Interested in Selling?' tooltip",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableMyCollectionInterestedInSellingTooltip",
-  },
   ARSWAMakeAllDimensionsOptional: {
     description: "Make all dimensions optional in SWA submit flow",
     readyForRelease: true,

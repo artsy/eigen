@@ -18,16 +18,6 @@ describe("artsy.net routes", () => {
     expect(matchRoute("https://staging.artsy.net/")).toEqual(expected)
   })
 
-  it("routes to Sell", () => {
-    expect(matchRoute("/sell")).toMatchInlineSnapshot(`
-      {
-        "module": "Sell",
-        "params": {},
-        "type": "match",
-      }
-    `)
-  })
-
   it("routes to Search", () => {
     expect(matchRoute("/search")).toMatchInlineSnapshot(`
       {
@@ -854,16 +844,6 @@ describe("artsy.net routes", () => {
     expect(matchRoute("/my-collection")).toMatchInlineSnapshot(`
       {
         "module": "MyCollection",
-        "params": {},
-        "type": "match",
-      }
-    `)
-  })
-
-  it("routes to Sell", () => {
-    expect(matchRoute("/collections/my-collection/marketing-landing")).toMatchInlineSnapshot(`
-      {
-        "module": "SellNotRootTabView",
         "params": {},
         "type": "match",
       }
