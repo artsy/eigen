@@ -1,5 +1,4 @@
 import { Box, Button, Checkbox, LinkText, Text } from "@artsy/palette-mobile"
-import { Token } from "@stripe/stripe-react-native"
 import {
   BidderPositionQuery,
   BidderPositionQuery$data,
@@ -14,11 +13,11 @@ import { BidInfoRow } from "app/Components/Bidding/Components/BidInfoRow"
 import { Divider } from "app/Components/Bidding/Components/Divider"
 import { PaymentInfo } from "app/Components/Bidding/Components/PaymentInfo"
 import { Timer } from "app/Components/Bidding/Components/Timer"
+import { BidFlowContextStore } from "app/Components/Bidding/Context/BidFlowContextProvider"
 import { Flex } from "app/Components/Bidding/Elements/Flex"
 import { BidResult } from "app/Components/Bidding/Screens/BidResult"
 import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
 import { PriceSummary } from "app/Components/Bidding/Screens/ConfirmBid/PriceSummary"
-import { Address } from "app/Components/Bidding/types"
 import { Modal } from "app/Components/Modal"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -30,7 +29,7 @@ import { useCreateBidderPosition } from "app/utils/mutations/useCreateBidderPosi
 import { useCreateCreditCard } from "app/utils/mutations/useCreateCreditCard"
 import { useUpdateUserPhoneNumber } from "app/utils/mutations/useUpdateUserPhoneNumber"
 import { Schema } from "app/utils/track"
-import React, { useMemo, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Image, ScrollView } from "react-native"
 import { graphql, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -53,15 +52,11 @@ export interface ConfirmBidProps {
   me: ConfirmBid_me$key
   navigator?: NavigatorIOS
   refreshSaleArtwork?: () => void
-  increments: any
-  selectedBidIndex: number
 }
 
 export const ConfirmBid: React.FC<ConfirmBidProps> = ({
-  increments,
   me,
   saleArtwork,
-  selectedBidIndex,
   refreshSaleArtwork,
   navigator,
 }) => {
@@ -74,11 +69,21 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
   const [meData, refetchMe] = useRefetchableFragment(confirmBidMeFragment, me)
   const { sale, endAt, extendedBiddingEndAt } = saleArtworkData
 
-  const [currentBiddingEndAt, setBiddingEndAt] = useState(
-    extendedBiddingEndAt || endAt || sale?.endAt
+  // store states
+  const biddingEndAt = BidFlowContextStore.useStoreState((state) => state.biddingEndAt)
+  const creditCardToken = BidFlowContextStore.useStoreState((state) => state.creditCardToken)
+  const billingAddress = BidFlowContextStore.useStoreState((state) => state.billingAddress)
+  const selectedBid = BidFlowContextStore.useStoreState((state) => state.selectedBid)
+
+  // store actions
+  const setBiddingEndAt = BidFlowContextStore.useStoreActions((actions) => actions.setBiddingEndAt)
+  const setCreditCardToken = BidFlowContextStore.useStoreActions(
+    (actions) => actions.setCreditCardToken
   )
-  const [creditCardToken, setCreditCardToken] = useState<Token.Result>()
-  const [billingAddress, setBillingAddress] = useState<Address>()
+  const setBillingAddress = BidFlowContextStore.useStoreActions(
+    (actions) => actions.setBillingAddress
+  )
+
   const [errorMessage, setErrorMessage] = useState("")
   const [errorModalVisible, setErrorModalVisible] = useState(false)
   const [conditionsOfSaleChecked, setConditionsOfSaleChecked] = useState(false)
@@ -89,6 +94,10 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
 
   const requiresCheckbox = !sale?.bidder
   const requiresPaymentInformation = !(sale?.bidder || meData.hasQualifiedCreditCards)
+
+  useEffect(() => {
+    setBiddingEndAt(extendedBiddingEndAt || endAt || sale?.endAt)
+  }, [saleArtworkData])
 
   const canPlaceBid = useMemo(() => {
     switch (true) {
@@ -156,12 +165,16 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
         })
       }
 
+      if (selectedBid?.cents == null) {
+        throw new Error("Selected bid amount is not valid")
+      }
+
       createBidderPosition({
         variables: {
           input: {
             saleID: sale.slug,
             artworkID: saleArtworkData?.artwork?.slug as string,
-            maxBidAmountCents: increments[selectedBidIndex].cents,
+            maxBidAmountCents: selectedBid.cents,
           },
         },
         onCompleted: (results, errors) => {
@@ -234,7 +247,7 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
         passProps: {
           saleArtwork: saleArtworkData,
           bidderPositionResult: resultForNetworkError,
-          biddingEndAt: currentBiddingEndAt,
+          biddingEndAt,
         },
       })
     } else {
@@ -260,7 +273,7 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
           bidderPositionResult,
           refreshBidderInfo,
           refreshSaleArtwork,
-          biddingEndAt: currentBiddingEndAt,
+          biddingEndAt,
         },
       })
     }
@@ -287,7 +300,7 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
           <Timer
             liveStartsAt={sale.liveStartAt ?? undefined}
             lotEndAt={endAt}
-            biddingEndAt={currentBiddingEndAt}
+            biddingEndAt={biddingEndAt}
           />
         </Flex>
 
@@ -334,7 +347,7 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
 
           <BidInfoRow
             label="Max bid"
-            value={increments[selectedBidIndex].display}
+            value={selectedBid.display ?? undefined}
             onPress={() => (mutationInProgress ? null : navigator?.pop())}
           />
 
