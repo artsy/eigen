@@ -22,36 +22,36 @@ xdescribe("InfiniteDiscovery", () => {
     jest.clearAllMocks()
   })
 
-  it("hides the back button if the current artwork is on the first artwork", async () => {
+  it("hides the back icon if the current artwork is on the first artwork", async () => {
     await renderAndFetchFirstBatch(mockFetchQuery)
 
-    expect(screen.queryByText("Back")).not.toBeOnTheScreen()
+    expect(screen.queryByTestId("back-icon")).not.toBeOnTheScreen()
   })
 
-  it("shows the back button if the current artwork is not the first artwork", async () => {
+  it("shows the back icon if the current artwork is not the first artwork", async () => {
     await renderAndFetchFirstBatch(mockFetchQuery)
 
     swipeLeft()
 
-    await screen.findByText("Back")
+    await screen.findByTestId("back-icon")
   })
 
-  it("returns to the previous artwork when the back button is pressed", async () => {
+  it("returns to the previous artwork when the back icon is pressed", async () => {
     await renderAndFetchFirstBatch(mockFetchQuery)
 
-    expect(screen.queryByText("Back")).not.toBeOnTheScreen()
+    expect(screen.queryByTestId("back-icon")).not.toBeOnTheScreen()
     swipeLeft()
 
-    await screen.findByText("Back")
+    await screen.findByTestId("back-icon")
 
-    fireEvent.press(screen.getByText("Back"))
-    expect(screen.queryByText("Back")).not.toBeOnTheScreen()
+    fireEvent.press(screen.getByTestId("back-icon"))
+    expect(screen.queryByTestId("back-icon")).not.toBeOnTheScreen()
   })
 
-  it("navigates to home view when the exit button is pressed", async () => {
+  it("navigates to home view when the close icon is pressed", async () => {
     await renderAndFetchFirstBatch(mockFetchQuery)
 
-    fireEvent.press(screen.getByText("Exit"))
+    fireEvent.press(screen.getByTestId("close-icon"))
     expect(goBack).toHaveBeenCalledTimes(1)
   })
 })
