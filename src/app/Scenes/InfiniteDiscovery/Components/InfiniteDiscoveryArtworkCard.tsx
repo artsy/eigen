@@ -3,18 +3,18 @@ import {
   HeartFillIcon,
   HeartIcon,
   Image,
+  Spacer,
   Text,
   Touchable,
-  useColor,
   useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { InfiniteDiscoveryArtworkCard_artwork$key } from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { HEART_ICON_SIZE } from "app/Components/constants"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
-import { View } from "moti"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -27,7 +27,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 }) => {
   const { width: screenWidth } = useScreenDimensions()
   const { trackEvent } = useTracking()
-  const color = useColor()
   const { incrementSavedArtworksCount, decrementSavedArtworksCount } =
     GlobalStore.actions.infiniteDiscovery
 
@@ -73,18 +72,13 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
   return (
     <Flex backgroundColor="white100" width="100%" height={CARD_HEIGHT} style={{ borderRadius: 10 }}>
-      <Flex mx={2} my={1}>
-        <ArtistListItemContainer
-          artist={artwork.artists?.[0]}
-          avatarSize="xxs"
-          includeTombstone={false}
-        />
-      </Flex>
+      <ArtistListItemContainer artist={artwork.artists?.[0]} />
+      <Spacer y={2} />
 
       <Flex alignItems="center" backgroundColor="purple60">
         {!!src && <Image src={src} height={size.height} width={size.width} />}
       </Flex>
-      <Flex flexDirection="row" justifyContent="space-between" p={1} mx={2}>
+      <Flex flexDirection="row" justifyContent="space-between" p={1}>
         <Flex>
           <Flex flexDirection="row" maxWidth={screenWidth - 200}>
             {/* TODO: maxWidth above and ellipsizeMode + numberOfLines below are used to */}
@@ -112,41 +106,19 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           testID="save-artwork-icon"
         >
           {!!isSaved ? (
-            <View
-              style={{
-                width: HEART_CIRCLE_SIZE,
-                height: HEART_CIRCLE_SIZE,
-                borderRadius: HEART_CIRCLE_SIZE,
-                backgroundColor: color("black5"),
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <HeartFillIcon
-                testID="filled-heart-icon"
-                height={HEART_ICON_SIZE}
-                width={HEART_ICON_SIZE}
-                fill="blue100"
-              />
-            </View>
+            <HeartFillIcon
+              testID="filled-heart-icon"
+              height={HEART_ICON_SIZE}
+              width={HEART_ICON_SIZE}
+              fill="blue100"
+            />
           ) : (
-            <View
-              style={{
-                width: HEART_CIRCLE_SIZE,
-                height: HEART_CIRCLE_SIZE,
-                borderRadius: HEART_CIRCLE_SIZE,
-                backgroundColor: color("black5"),
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <HeartIcon
-                testID="empty-heart-icon"
-                height={HEART_ICON_SIZE}
-                width={HEART_ICON_SIZE}
-                fill="black100"
-              />
-            </View>
+            <HeartIcon
+              testID="empty-heart-icon"
+              height={HEART_ICON_SIZE}
+              width={HEART_ICON_SIZE}
+              fill="black100"
+            />
           )}
         </Touchable>
       </Flex>
@@ -174,6 +146,3 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
     ...useSaveArtworkToArtworkLists_artwork
   }
 `
-
-const HEART_ICON_SIZE = 18
-const HEART_CIRCLE_SIZE = 50
