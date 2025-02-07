@@ -14,7 +14,7 @@ import { mockPostEventToProviders, mockTrackEvent } from "app/utils/tests/global
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import chalk from "chalk"
 import * as matchers from "jest-extended"
-import { NativeModules, View } from "react-native"
+import { NativeModules } from "react-native"
 import "react-native-gesture-handler/jestSetup"
 // @ts-ignore-next-line
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
@@ -633,11 +633,11 @@ jest.mock("app/utils/queryPrefetching", () => ({
   usePrefetch: jest.fn(() => jest.fn()),
 }))
 
-jest.mock("app/utils/Sentinel", () => ({
-  __esModule: true,
-  Sentinel: () => <MockedVisibleSentinel />,
-}))
+jest.mock("app/utils/Sentinel", () => {
+  const { View } = require("react-native")
 
-const MockedVisibleSentinel: React.FC<any> = ({ children }) => {
-  return <View>{children}</View>
-}
+  return {
+    __esModule: true,
+    Sentinel: View,
+  }
+})
