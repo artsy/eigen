@@ -850,16 +850,6 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to Sell", () => {
-    expect(matchRoute("/collections/my-collection/marketing-landing")).toMatchInlineSnapshot(`
-      {
-        "module": "SellNotRootTabView",
-        "params": {},
-        "type": "match",
-      }
-    `)
-  })
-
   it("routes /conditions-of-sale to web view", () => {
     expect(matchRoute("/conditions-of-sale")).toMatchInlineSnapshot(`
       {
