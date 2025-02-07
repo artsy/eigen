@@ -49,6 +49,15 @@ describe("Sales", () => {
 
     expect(screen.getByText("Auction Lots for You")).toBeOnTheScreen()
   })
+
+  it("renders LatestAuctionResultsRail", async () => {
+    renderWithRelay({
+      Query: () => me,
+    })
+    await waitForElementToBeRemoved(() => screen.queryByTestId("SalePlaceholder"))
+
+    expect(screen.getByText("Latest Auction Results")).toBeOnTheScreen()
+  })
 })
 
 const artwork = {
@@ -77,5 +86,18 @@ const viewer = {
     first: 10,
     onlyAtAuction: true,
     edges: [{ node: artwork }],
+  },
+}
+
+const me = {
+  auctionResultsByFollowedArtists: {
+    first: 10,
+    edges: [
+      {
+        node: {
+          id: "an-id",
+        },
+      },
+    ],
   },
 }
