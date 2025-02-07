@@ -50,7 +50,6 @@ import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutA
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
 import { ArtsyGuarantee } from "./Components/ArtsyGuarantee"
-import { ArtworkConsignments } from "./Components/ArtworkConsignments"
 import { ArtworkDetails } from "./Components/ArtworkDetails"
 import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInformation } from "./Components/ArtworkEditionSetInformation"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
@@ -164,21 +163,6 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
     }
 
     return (artist?.artistSeriesConnection?.totalCount ?? 0) > 0
-  }
-
-  const shouldRenderConsignmentsSection = () => {
-    if (artworkAboveTheFold?.isUnlisted) {
-      return false
-    }
-
-    const { isAcquireable, isOfferable } = artworkAboveTheFold ?? {}
-    const { isForSale, sale } = artworkBelowTheFold ?? {}
-    const artists = artworkBelowTheFold?.artists ?? []
-    const consignableArtists = artists.filter((currentArtist) => !!currentArtist?.isConsignable)
-    const isBiddableInAuction =
-      isInAuction && sale && auctionTimerState !== AuctionTimerState.CLOSED && isForSale
-
-    return consignableArtists.length || isAcquireable || isOfferable || isBiddableInAuction
   }
 
   useEffect(() => {
@@ -458,13 +442,6 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
       })
     }
 
-    if (shouldRenderConsignmentsSection()) {
-      sections.push({
-        key: "consignments",
-        element: <ArtworkConsignments artwork={artworkBelowTheFold} />,
-      })
-    }
-
     if (context && context.__typename === "Sale" && context.isAuction) {
       sections.push({
         key: "contextCard",
@@ -719,7 +696,6 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkHistory_artwork
         ...ArtworksInSeriesRail_artwork
         ...ShippingAndTaxes_artwork
-        ...ArtworkConsignments_artwork
         ...PrivateArtworkMetadata_artwork
         additionalInformation
         description

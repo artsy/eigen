@@ -162,11 +162,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
             marketPriceInsights={data.marketPriceInsights}
           />
 
-          <MyCollectionArtworkInsights
-            artwork={artwork}
-            marketPriceInsights={data.marketPriceInsights}
-            me={data.me}
-          />
+          <MyCollectionArtworkInsights artwork={artwork} />
 
           {articles.length > 0 && (
             <MyCollectionArtworkArticles
@@ -189,9 +185,6 @@ export const MyCollectionArtworkScreenQuery = graphql`
       ...MyCollectionArtworkHeader_artwork #new
       ...MyCollectionArtworkInsights_artwork #new
       ...MyCollectionArtworkAboutWork_artwork #new
-      ...MyCollectionWhySell_artwork #new
-      ...MyCollectionArtworkSubmissionStatus_submissionState
-      ...ArtworkSubmissionStatusDescription_artwork
       comparableAuctionResults(first: 6) @optionalField {
         totalCount
       }
@@ -218,15 +211,12 @@ export const MyCollectionArtworkScreenQuery = graphql`
       }
     }
     marketPriceInsights(artistId: $artistInternalID, medium: $medium) @optionalField {
-      ...MyCollectionArtworkInsights_marketPriceInsights
       ...MyCollectionArtworkAboutWork_marketPriceInsights
     }
+
     _marketPriceInsights: marketPriceInsights(artistId: $artistInternalID, medium: $medium)
       @optionalField {
       annualLotsSold
-    }
-    me {
-      ...MyCollectionArtworkInsights_me
     }
   }
 `

@@ -89,7 +89,6 @@ export const HomeView: React.FC = memo(() => {
         prefetchUrl<SearchQuery>("search", searchQueryDefaultVariables)
         prefetchUrl("my-profile")
         prefetchUrl("inbox")
-        prefetchUrl("sell")
       }
     })
   }, [])

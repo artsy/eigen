@@ -2,7 +2,6 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkExtraLinks_artwork$data } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
-import { switchTab } from "app/system/navigation/navigate"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -35,82 +34,6 @@ describe("ArtworkExtraLinks", () => {
     }
 
     getWrapper({ artwork })
-
-    expect(screen.getByText(/Want to sell a work by Santa?/)).toBeTruthy()
-    expect(screen.getByText(/Consign with Artsy/)).toBeTruthy()
-    fireEvent.press(screen.getByText(/Consign with Artsy/))
-    expect(switchTab).toHaveBeenCalledWith("sell")
-  })
-
-  describe("for an artwork with more than 1 consignable artist", () => {
-    it("shows plural link text", () => {
-      const artwork = {
-        ...ArtworkFixture,
-        isForSale: true,
-        artists: [
-          {
-            name: "Santa",
-            isConsignable: true,
-          },
-          {
-            name: "Easter Bunny",
-            isConsignable: true,
-          },
-        ],
-      }
-      getWrapper({ artwork })
-      expect(screen.getByText(/Want to sell a work by these artists?/)).toBeTruthy()
-    })
-
-    it("shows consign link if at least 1 artist is consignable", () => {
-      const artwork = {
-        ...ArtworkFixture,
-        isForSale: true,
-        artists: [
-          {
-            name: "Santa",
-            isConsignable: true,
-          },
-        ],
-      }
-
-      getWrapper({ artwork })
-      expect(screen.getByText(/Consign with Artsy/)).toBeTruthy()
-    })
-
-    it("doesn't render component if no artists are consignable", () => {
-      const artwork = {
-        ...ArtworkFixture,
-        isForSale: true,
-        artists: [
-          {
-            name: "Santa",
-            isConsignable: false,
-          },
-        ],
-      }
-      getWrapper({ artwork })
-
-      expect(screen.queryByText(/Consign with Artsy/)).toBeNull()
-    })
-  })
-
-  describe("for an artwork with one artist", () => {
-    it("shows correct link text and consign text", () => {
-      const artwork = {
-        ...ArtworkFixture,
-        isForSale: true,
-        artists: [
-          {
-            name: "Santa",
-            isConsignable: true,
-          },
-        ],
-      }
-      getWrapper({ artwork })
-      expect(screen.getByText(/Want to sell a work by Santa?/)).toBeTruthy()
-      expect(screen.getByText(/Consign with Artsy/)).toBeTruthy()
-    })
   })
 
   describe("FAQ and specialist Auction links", () => {

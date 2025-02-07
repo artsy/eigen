@@ -7,7 +7,6 @@ import { HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
 import { InboxTab } from "app/Navigation/AuthenticatedRoutes/InboxTab"
 import { ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
 import { SearchTab } from "app/Navigation/AuthenticatedRoutes/SearchTab"
-import { SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
 import { modalRoutes } from "app/Navigation/AuthenticatedRoutes/modalRoutes"
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { AppModule } from "app/Navigation/routes"
@@ -143,7 +142,7 @@ const AppTabs: React.FC = () => {
       <Tab.Screen name="home" component={HomeTab} options={{ ...tabsBadges["home"] }} />
       <Tab.Screen name="search" component={SearchTab} />
       <Tab.Screen name="inbox" component={InboxTab} options={{ ...tabsBadges["inbox"] }} />
-      <Tab.Screen name="sell" component={SellTab} />
+      {/* <Tab.Screen name="sell" component={SellTab} /> */}
       <Tab.Screen name="profile" component={ProfileTab} options={{ ...tabsBadges["profile"] }} />
     </Tab.Navigator>
   )

@@ -1,6 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { ArtworkConsignments } from "app/Scenes/Artwork/Components/ArtworkConsignments"
 import { ArtworkDetails } from "app/Scenes/Artwork/Components/ArtworkDetails"
 import { ArtworkHistory } from "app/Scenes/Artwork/Components/ArtworkHistory"
 import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
@@ -12,9 +11,9 @@ import { PrivateArtworkMetadata } from "app/Scenes/Artwork/Components/PrivateArt
 import { ShippingAndTaxesFragmentContainer } from "app/Scenes/Artwork/Components/ShippingAndTaxes"
 import {
   ArtworkFromLiveAuctionRegistrationClosed,
-  RegisteredBidder,
-  NotRegisteredToBid,
   ArtworkFromLiveAuctionRegistrationOpen,
+  NotRegisteredToBid,
+  RegisteredBidder,
 } from "app/__fixtures__/ArtworkBidAction"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 
@@ -928,66 +927,6 @@ describe("Artwork", () => {
     })
   })
 
-  describe("Consigments", () => {
-    it("shows consign link if at least 1 artist is consignable", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
-
-      // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment)
-      // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
-      // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
-        Artwork: () => ({
-          isUnlisted: false,
-          isForSale: true,
-          artists: [
-            {
-              name: "Santa",
-              isConsignable: true,
-            },
-          ],
-        }),
-      })
-      await flushPromiseQueue()
-
-      expect(screen.getByText(/Consign with Artsy/)).toBeOnTheScreen()
-    })
-
-    it("doesn't render section", async () => {
-      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
-
-      // ArtworkAboveTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
-        Artwork: () => ({
-          isUnlisted: false,
-          isAcquireable: false,
-          isOfferable: false,
-          isInAuction: false,
-          sale: null,
-        }),
-      })
-      // ArtworkMarkAsRecentlyViewedQuery
-      resolveMostRecentRelayOperation(environment)
-      // ArtworkBelowTheFoldQuery
-      resolveMostRecentRelayOperation(environment, {
-        Artwork: () => ({
-          isUnlisted: false,
-          isForSale: false,
-          artists: [
-            {
-              name: "Santa",
-              isConsignable: false,
-            },
-          ],
-        }),
-      })
-      await flushPromiseQueue()
-
-      expect(screen.queryByText(/Consign with Artsy/)).toBeNull()
-    })
-  })
-
   describe("Unlisted Private Artworks", () => {
     it("renders correct components for unlisted private artworks", async () => {
       renderWithWrappers(<TestRenderer />, { includeNavigation: true })
@@ -1023,7 +962,6 @@ describe("Artwork", () => {
       expect(screen.UNSAFE_queryByType(OtherWorksFragmentContainer)).toBeNull()
       expect(screen.UNSAFE_queryByType(ArtworksInSeriesRail)).toBeNull()
       expect(screen.UNSAFE_queryByType(ArtistSeriesMoreSeries)).toBeNull()
-      expect(screen.UNSAFE_queryByType(ArtworkConsignments)).toBeNull()
 
       // Displayed in unlisted private artworks
       expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeTruthy()

@@ -6,16 +6,14 @@
 //    - leting the artwork component do a layout pass and calculate its own height based on the column width.
 // 4. Update height of grid to encompass all items.
 
-import { Box, Flex, Spinner, Button } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Spinner } from "@artsy/palette-mobile"
 import { InfiniteScrollArtworksGrid_connection$data } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import ParentAwareScrollView from "app/Components/ParentAwareScrollView"
 import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
-import { GlobalStore } from "app/store/GlobalStore"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isCloseToBottom } from "app/utils/isCloseToBottom"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import React, { useState } from "react"
@@ -32,7 +30,7 @@ import {
   View,
   ViewStyle,
 } from "react-native"
-import { createFragmentContainer, RelayPaginationProp, graphql } from "react-relay"
+import { createFragmentContainer, graphql, RelayPaginationProp } from "react-relay"
 import Artwork, { ArtworkProps } from "./ArtworkGridItem"
 
 /**
@@ -213,11 +211,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
 }) => {
   const artworks = extractNodes(connection)
 
-  const enableMyCollectionSellOnboarding = useFeatureFlag(
-    "AREnableMyCollectionInterestedInSellingTooltip"
-  )
-  const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
-
   const getSectionDimension = (gridWidth: number | null | undefined) => {
     // Setting the dimension to 1 for tests to avoid adjusting the screen width
     if (__TEST__) {
@@ -334,15 +327,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
         const imgWidth = sectionDimension
         const imgHeight = imgWidth / aspectRatio
 
-        // Display "Interested in Selling?" tooltip if the first artwork is from a P1 artist in the list
-        const displayToolTip =
-          enableMyCollectionSellOnboarding &&
-          isMyCollection &&
-          !isDismissed("my-collection-sell-this-work").status &&
-          itemIndex === 0 &&
-          artwork.artist?.targetSupply?.isTargetSupply &&
-          !(artwork as any).consignmentSubmission
-
         artworkComponents.push(
           <ItemComponent
             contextScreenOwnerType={contextScreenOwnerType}
@@ -359,7 +343,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             {...itemComponentProps}
             height={imgHeight}
             {...componentSpecificProps}
-            displayToolTip={displayToolTip}
             hideIncreasedInterestSignal={hideIncreasedInterest}
             hideCuratorsPickSignal={hideCuratorsPick}
             hideRegisterBySignal={hideRegisterBySignal}
