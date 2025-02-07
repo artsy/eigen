@@ -1,4 +1,4 @@
-import { Flex, Screen, Spinner, Text, Touchable } from "@artsy/palette-mobile"
+import { ArrowBackIcon, CloseIcon, Flex, Screen, Spinner, Touchable } from "@artsy/palette-mobile"
 import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
 import { useToast } from "app/Components/Toast/toastHook"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
@@ -103,14 +103,14 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           <Screen.Header
             title="Discovery"
             leftElements={
-              <Touchable onPress={handleBackPressed}>
-                <Text variant="xs">Back</Text>
+              <Touchable onPress={handleBackPressed} testID="back-icon">
+                <ArrowBackIcon />
               </Touchable>
             }
             hideLeftElements={index === 0}
             rightElements={
-              <Touchable onPress={handleExitPressed}>
-                <Text variant="xs">Exit</Text>
+              <Touchable onPress={handleExitPressed} testID="close-icon">
+                <CloseIcon fill="black100" />
               </Touchable>
             }
           />
