@@ -42,7 +42,7 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
     }
   }
 
-  const handleSentinelChange = (isVisible: boolean) => {
+  const handleVisible = (isVisible: boolean) => {
     if (isPrefetchingEnabled && isVisible && !isPrefetched) {
       prefetchUrl(to)
       setIsPrefetched(true)
@@ -60,7 +60,7 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   }
 
   return (
-    <Sentinel onChange={handleSentinelChange}>
+    <Sentinel onChange={handleVisible}>
       <TouchableOpacity {...touchableProps} />
     </Sentinel>
   )

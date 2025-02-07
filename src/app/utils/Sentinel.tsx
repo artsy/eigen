@@ -43,7 +43,7 @@ export const Sentinel: FC<Props> = ({ children, onChange }) => {
     useCallback(() => {
       setLastValue(false)
       startWatching()
-      isSentinel()
+      isInViewPort()
       return stopWatching
     }, [dimensions.rectTop, dimensions.rectBottom, dimensions.rectWidth])
   )
@@ -81,7 +81,7 @@ export const Sentinel: FC<Props> = ({ children, onChange }) => {
     interval = clearInterval(interval)
   }
 
-  const isSentinel = () => {
+  const isInViewPort = () => {
     const window = Dimensions.get("window")
     const isVisible =
       dimensions.rectBottom != 0 &&
