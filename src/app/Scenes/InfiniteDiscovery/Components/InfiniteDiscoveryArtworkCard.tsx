@@ -14,7 +14,6 @@ import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSav
 import { GlobalStore } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
-import { View } from "moti"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -109,7 +108,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           testID="save-artwork-icon"
         >
           {!!isSaved ? (
-            <View
+            <Flex
               style={{
                 width: HEART_CIRCLE_SIZE,
                 height: HEART_CIRCLE_SIZE,
@@ -125,9 +124,9 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                 width={HEART_ICON_SIZE}
                 fill="blue100"
               />
-            </View>
+            </Flex>
           ) : (
-            <View
+            <Flex
               style={{
                 width: HEART_CIRCLE_SIZE,
                 height: HEART_CIRCLE_SIZE,
@@ -143,7 +142,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                 width={HEART_ICON_SIZE}
                 fill="black100"
               />
-            </View>
+            </Flex>
           )}
         </Touchable>
       </Flex>
