@@ -1,6 +1,7 @@
 import { Button, Flex, Text } from "@artsy/palette-mobile"
 import { BidResult_saleArtwork$key } from "__generated__/BidResult_saleArtwork.graphql"
 import { Timer } from "app/Components/Bidding/Components/Timer"
+import { BidFlowContextStore } from "app/Components/Bidding/Context/BidFlowContextProvider"
 import { BidderPositionResult } from "app/Components/Bidding/types"
 import { Markdown } from "app/Components/Markdown"
 import { NavigationHeader } from "app/Components/NavigationHeader"
@@ -20,7 +21,6 @@ interface BidResultProps {
   navigator: NavigatorIOS
   refreshBidderInfo?: () => void
   refreshSaleArtwork?: () => void
-  biddingEndAt?: string
 }
 
 const POLLING_TIMEOUT_MESSAGES = {
@@ -43,8 +43,8 @@ export const BidResult: React.FC<BidResultProps> = ({
   navigator,
   refreshBidderInfo,
   refreshSaleArtwork,
-  biddingEndAt,
 }) => {
+  const biddingEndAt = BidFlowContextStore.useStoreState((state) => state.biddingEndAt)
   const saleArtworkData = useFragment(bidResultFragment, saleArtwork)
   const { status, messageHeader, messageDescriptionMD } = bidderPositionResult
 

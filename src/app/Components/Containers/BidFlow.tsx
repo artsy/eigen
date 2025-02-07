@@ -1,5 +1,5 @@
 import { Screen } from "@artsy/palette-mobile"
-import { BidFlowContextStore } from "app/Components/Bidding/Context/BidFlowContextProvider"
+import { BidFlowContextProvider } from "app/Components/Bidding/Context/BidFlowContextProvider"
 import { TimeOffsetProvider } from "app/Components/Bidding/Context/TimeOffsetProvider"
 import { SelectMaxBidQueryRenderer } from "app/Components/Bidding/Screens/SelectMaxBid"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
@@ -11,13 +11,13 @@ export const BidFlow: React.FC<
   return (
     <Screen>
       <SafeAreaView edges={["bottom"]} style={{ flex: 1 }}>
-        <BidFlowContextStore.Provider>
+        <BidFlowContextProvider>
           <TimeOffsetProvider>
             <NavigatorIOS
               initialRoute={{ component: SelectMaxBidQueryRenderer, passProps: props }}
             />
           </TimeOffsetProvider>
-        </BidFlowContextStore.Provider>
+        </BidFlowContextProvider>
       </SafeAreaView>
     </Screen>
   )

@@ -2,13 +2,14 @@ import { Button, Flex, useScreenDimensions } from "@artsy/palette-mobile"
 import { SelectMaxBidQuery } from "__generated__/SelectMaxBidQuery.graphql"
 import { SelectMaxBid_me$key } from "__generated__/SelectMaxBid_me.graphql"
 import { SelectMaxBid_saleArtwork$key } from "__generated__/SelectMaxBid_saleArtwork.graphql"
+import { BidFlowContextStore } from "app/Components/Bidding/Context/BidFlowContextProvider"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { Select } from "app/Components/Select"
 import { dismissModal } from "app/system/navigation/navigate"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { NoFallback, SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { compact } from "lodash"
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo } from "react"
 import { graphql, useFragment, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { ConfirmBid } from "./ConfirmBid"
 
@@ -19,8 +20,14 @@ interface SelectMaxBidProps {
 }
 
 export const SelectMaxBid: React.FC<SelectMaxBidProps> = ({ navigator, me, saleArtwork }) => {
+  const selectedBidIndex = BidFlowContextStore.useStoreState((state) => state.selectedBidIndex)
+  const bids = BidFlowContextStore.useStoreState((state) => state.saleArtworkIncrements)
+  const setSelectedBidIndex = BidFlowContextStore.useStoreActions(
+    (actions) => actions.setSelectedBidIndex
+  )
+  const setBids = BidFlowContextStore.useStoreActions((actions) => actions.setSaleArtworkIncrements)
+
   const { height } = useScreenDimensions()
-  const [selectedBidIndex, setSelectedBidIndex] = useState(0)
 
   const [saleArtworkData, refetch] = useRefetchableFragment(
     selectMaxBidSaleArtworkFragment,
@@ -29,8 +36,14 @@ export const SelectMaxBid: React.FC<SelectMaxBidProps> = ({ navigator, me, saleA
   const meData = useFragment(selectMaxBidMeFragment, me)
 
   const handleRefresh = () => {
-    refetch({}, { fetchPolicy: "network-only" })
+    refetch({}, { fetchPolicy: "store-and-network" })
   }
+
+  useEffect(() => {
+    if (saleArtworkData.increments?.length) {
+      setBids(compact(saleArtworkData.increments))
+    }
+  }, [saleArtworkData])
 
   const handleNext = () => {
     navigator.push({
@@ -38,13 +51,10 @@ export const SelectMaxBid: React.FC<SelectMaxBidProps> = ({ navigator, me, saleA
       passProps: {
         me: meData,
         saleArtwork: saleArtworkData,
-        increments: saleArtworkData.increments,
-        selectedBidIndex,
         refreshSaleArtwork: handleRefresh,
       },
     })
   }
-  const bids = compact(saleArtworkData.increments) || []
 
   const bidOptions = useMemo(
     () => bids.map((b) => ({ label: b.display || "", value: b.cents })),
