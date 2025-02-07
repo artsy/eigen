@@ -5,7 +5,6 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { SubmitArtworkFormStore } from "app/Scenes/SellWithArtsy/ArtworkForm/Components/SubmitArtworkFormStore"
 import { SubmitArtworkStackNavigation } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
 import { TIER_1_STATES } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/constants"
-import { updateMyCollectionArtwork } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/updateMyCollectionArtwork"
 import { useNavigationListeners } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useNavigationListeners"
 import { useSubmissionContext } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/useSubmissionContext"
 import { SubmissionModel } from "app/Scenes/SellWithArtsy/ArtworkForm/Utils/validation"
@@ -51,12 +50,6 @@ export const SubmitArtworkAddPhoneNumber = () => {
         if (nextStep === "CompleteYourSubmission") {
           // Reset saved draft if submission is successful
           GlobalStore.actions.artworkSubmission.setDraft(null)
-          // Refetch associated My Collection artwork to display the updated submission status on the artwork screen.
-          if (values.myCollectionArtworkID) {
-            await updateMyCollectionArtwork({
-              artworkID: values.myCollectionArtworkID,
-            })
-          }
           refreshMyCollection()
         }
       } catch (error) {

@@ -1,4 +1,3 @@
-import { MyCollectionWhySell_artwork$data } from "__generated__/MyCollectionWhySell_artwork.graphql"
 import {
   ACCEPTABLE_CATEGORY_VALUES_MAP,
   AcceptableCategoryValue,
@@ -7,7 +6,7 @@ import {
 import { GlobalStore } from "app/store/GlobalStore"
 import { getAttributionClassValueByName } from "app/utils/artworkRarityClassifications"
 
-export const initializeSubmissionArtworkForm = (artwork: MyCollectionWhySell_artwork$data) => {
+export const initializeSubmissionArtworkForm = (artwork: any) => {
   GlobalStore.actions.artworkSubmission.submission.resetSessionState()
   let category = artwork.mediumType?.name
     ? (formatCategoryValueForSubmission(artwork.mediumType?.name) as AcceptableCategoryValue)
@@ -33,7 +32,7 @@ export const initializeSubmissionArtworkForm = (artwork: MyCollectionWhySell_art
     myCollectionArtworkID: artwork.internalID,
   })
 
-  const photos = artwork.images?.map((image) => ({
+  const photos = artwork.images?.map((image: any) => ({
     path: image?.url?.replace(":version", "large") ?? "",
     automaticallyAdded: true,
   }))

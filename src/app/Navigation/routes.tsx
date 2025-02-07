@@ -91,7 +91,6 @@ import {
   MyCollectionArtworkScreen,
   MyCollectionArtworkScreenQuery,
 } from "app/Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
-import { MyCollectionSellingWithArtsyFAQ } from "app/Scenes/MyCollection/Screens/Artwork/MyCollectionSellingWithartsyFAQ"
 import { MyCollectionArtworkAdd } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionArtworkEditQueryRenderer } from "app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkEdit"
 import { MyCollectionCollectedArtistsPrivacyQueryRenderer } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/MyCollectionCollectedArtistsPrivacy"
@@ -126,11 +125,6 @@ import { AlertArtworks } from "app/Scenes/SavedSearchAlert/AlertArtworks"
 import { EditSavedSearchAlertQueryRenderer } from "app/Scenes/SavedSearchAlert/EditSavedSearchAlert"
 import { SavedSearchAlertsListQueryRenderer } from "app/Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
 import { SearchScreen, SearchScreenQuery } from "app/Scenes/Search/Search"
-import { SubmitArtworkForm } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
-import { SubmitArtworkFormEditContainer } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkFormEdit"
-import { ConsignmentInquiryScreen } from "app/Scenes/SellWithArtsy/ConsignmentInquiry/ConsignmentInquiryScreen"
-import { SellWithArtsyHomeScreenQuery } from "app/Scenes/SellWithArtsy/SellWithArtsyHome"
-import { SellWithArtsy } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils"
 import { ShowMoreInfoQueryRenderer } from "app/Scenes/Show/Screens/ShowMoreInfo"
 import { ShowQueryRenderer, ShowScreenQuery } from "app/Scenes/Show/Show"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
@@ -637,11 +631,6 @@ export const artsyDotNetRoutes = defineRoutes([
         headerTitle: "Featured Artists",
       },
     },
-  },
-  {
-    path: "/collections/my-collection/marketing-landing",
-    name: "SellNotRootTabView",
-    Component: SellWithArtsy,
   },
   {
     path: "/conversation/:conversationID",
@@ -1254,19 +1243,6 @@ export const artsyDotNetRoutes = defineRoutes([
     queries: [RecentlyViewedScreenQuery],
   },
   {
-    path: "/sell",
-    name: "Sell",
-    Component: SellWithArtsy,
-    options: {
-      isRootViewForTabName: "sell",
-      onlyShowInTabName: "sell",
-      screenOptions: {
-        headerShown: false,
-      },
-    },
-    queries: [SellWithArtsyHomeScreenQuery],
-  },
-  {
     path: "/search",
     name: "Search",
     Component: SearchScreen,
@@ -1278,46 +1254,6 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [SearchScreenQuery],
-  },
-  {
-    path: "/sell/inquiry",
-    name: "ConsignmentInquiry",
-    Component: ConsignmentInquiryScreen,
-    options: {
-      screenOptions: {
-        gestureEnabled: false,
-      },
-    },
-  },
-  {
-    path: "/sell/submissions/new",
-    name: "SubmitArtwork",
-    Component: SubmitArtworkForm,
-    options: {
-      alwaysPresentModally: true,
-      screenOptions: {
-        gestureEnabled: false,
-        headerShown: false,
-      },
-    },
-  },
-  {
-    path: "/sell/submissions/:externalID/edit",
-    name: "SubmitArtworkEdit",
-    Component: SubmitArtworkFormEditContainer,
-    options: {
-      alwaysPresentModally: true,
-      hidesBottomTabs: true,
-      screenOptions: {
-        gestureEnabled: false,
-        headerShown: false,
-      },
-    },
-  },
-  {
-    path: "/selling-with-artsy",
-    name: "MyCollectionSellingWithartsyFAQ",
-    Component: MyCollectionSellingWithArtsyFAQ,
   },
   {
     path: "/favorites/alerts",

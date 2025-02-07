@@ -7,32 +7,18 @@ import { MyCollectionArtworkInsights } from "./MyCollectionArtworkInsights"
 describe("MyCollectionArtworkInsights", () => {
   const { renderWithRelay } = setupTestWrapper<MyCollectionArtworkInsightsTestsQuery>({
     Component: (props) => {
-      if (!props?.artwork || !props?.marketPriceInsights || !props.me) {
+      if (!props?.artwork) {
         return null
       }
-      return (
-        <MyCollectionArtworkInsights
-          me={props.me}
-          marketPriceInsights={props.marketPriceInsights}
-          artwork={props?.artwork}
-        />
-      )
+      return <MyCollectionArtworkInsights artwork={props?.artwork} />
     },
     query: graphql`
       query MyCollectionArtworkInsightsTestsQuery @relay_test_operation {
         artwork(id: "some-artwork-id") {
           ...MyCollectionArtworkInsights_artwork
-          ...MyCollectionArtworkSubmissionStatus_submissionState
           consignmentSubmission {
             state
           }
-        }
-
-        marketPriceInsights(artistId: "some-artist-id", medium: "painting") {
-          ...MyCollectionArtworkInsights_marketPriceInsights
-        }
-        me {
-          ...MyCollectionArtworkInsights_me
         }
       }
     `,
@@ -66,26 +52,6 @@ describe("MyCollectionArtworkInsights", () => {
     expect(screen.getByText("Comparable Works")).toBeTruthy()
   })
 
-  it("renders the submission status when status is REJECTES", async () => {
-    renderWithRelay({
-      Query: () => ({
-        artwork: { ...mockArtwork, consignmentSubmission: { state: "REJECTED" } },
-      }),
-    })
-
-    expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).not.toBe(null)
-  })
-
-  it("does not render the submission status when status is not REJECTES", async () => {
-    renderWithRelay({
-      Query: () => ({
-        artwork: { ...mockArtwork, consignmentSubmission: { state: "APPROVED" } },
-      }),
-    })
-
-    expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
-  })
-
   describe("Conditional Display of RequestForPriceEstimateBanner", () => {
     it("does not display RequestForPriceEstimateBanner when Artist is not P1", () => {
       renderWithRelay({
@@ -109,60 +75,6 @@ describe("MyCollectionArtworkInsights", () => {
       })
 
       expect(screen.queryByTestId("request-price-estimate-button")).toBeNull()
-    })
-  })
-
-  describe("display of Submit for Sale section", () => {
-    it("renders Submit for Sale section if P1 artist and artwork was not submitted to sale", () => {
-      renderWithRelay({
-        Query: () => ({
-          artwork: {
-            artist: {
-              targetSupply: {
-                isTargetSupply: true,
-              },
-            },
-            submissionId: null,
-          },
-        }),
-      })
-      expect(screen.getByText("Interested in Selling This Work?")).toBeTruthy()
-    })
-
-    it("does not render Submit for Sale section if not P1 artist", () => {
-      renderWithRelay({
-        Query: () => ({
-          artwork: {
-            artist: {
-              targetSupply: {
-                isTargetSupply: false,
-              },
-            },
-          },
-        }),
-      })
-
-      expect(() => screen.getByText("Interested in Selling This Work?")).toThrow(
-        "Unable to find an element with text: Interested in Selling This Work?"
-      )
-    })
-    it("does not render Submit for Sale section if P1 artist and artwork was submited to sale", () => {
-      renderWithRelay({
-        Query: () => ({
-          artwork: {
-            artist: {
-              targetSupply: {
-                isTargetSupply: true,
-              },
-            },
-            submissionId: "someId",
-          },
-        }),
-      })
-
-      expect(() => screen.getByText("Interested in Selling This Work?")).toThrow(
-        "Unable to find an element with text: Interested in Selling This Work?"
-      )
     })
   })
 })

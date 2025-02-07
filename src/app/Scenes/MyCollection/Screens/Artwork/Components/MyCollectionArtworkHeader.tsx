@@ -1,5 +1,5 @@
 import { tappedCollectedArtworkImages } from "@artsy/cohesion"
-import { useColor, Spacer, Flex, NoImageIcon, Text, Join } from "@artsy/palette-mobile"
+import { Flex, Join, NoImageIcon, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { MyCollectionArtworkHeader_artwork$key } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import { ImageCarouselFragmentContainer } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import { navigate } from "app/system/navigation/navigate"
@@ -7,7 +7,6 @@ import { useScreenDimensions } from "app/utils/hooks"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import { MyCollectionArtworkSubmissionStatus } from "./MyCollectionArtworkSubmissionStatus"
 
 const NO_ARTIST_NAMES_TEXT = "-"
 
@@ -17,7 +16,7 @@ interface MyCollectionArtworkHeaderProps {
 
 export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (props) => {
   const artwork = useFragment(myCollectionArtworkHeaderFragment, props.artwork)
-  const { artistNames, date, internalID, title, slug, consignmentSubmission } = artwork
+  const { artistNames, date, internalID, title, slug } = artwork
 
   const dimensions = useScreenDimensions()
 
@@ -26,9 +25,6 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   const { trackEvent } = useTracking()
 
   const hasImages = artwork?.figures?.length > 0
-
-  const displaySubmissionStateSectionInHeader =
-    consignmentSubmission?.state && consignmentSubmission?.state !== "REJECTED"
 
   return (
     <Join separator={<Spacer y={2} />}>
@@ -73,12 +69,6 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
           {!!date && `, ${date}`}
         </Text>
       </Flex>
-
-      {!!displaySubmissionStateSectionInHeader && (
-        <Flex px={2}>
-          <MyCollectionArtworkSubmissionStatus artwork={artwork} />
-        </Flex>
-      )}
     </Join>
   )
 }
@@ -101,7 +91,6 @@ const myCollectionArtworkHeaderFragment = graphql`
       state
     }
     submissionId
-    ...MyCollectionArtworkSubmissionStatus_submissionState
   }
 `
 

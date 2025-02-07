@@ -1,11 +1,8 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
-import { Box, Text, Popover, useColor, TrendingIcon } from "@artsy/palette-mobile"
+import { Box, Text, TrendingIcon, useColor } from "@artsy/palette-mobile"
 import { MyCollectionArtworkGridItem_artwork$data } from "__generated__/MyCollectionArtworkGridItem_artwork.graphql"
 import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
-import { SubmissionStatus } from "app/Scenes/MyCollection/Components/SubmissionStatus"
-import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useLocalImage } from "app/utils/LocalImageStore"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -17,13 +14,9 @@ import { useTracking } from "react-tracking"
 
 interface MyCollectionArtworkGridItemProps {
   artwork: MyCollectionArtworkGridItem_artwork$data
-  displayToolTip?: boolean | null | undefined
 }
 
-const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({
-  artwork,
-  displayToolTip,
-}) => {
+const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({ artwork }) => {
   const color = useColor()
   const { trackEvent } = useTracking()
   const displayImage = artwork.images?.find((i: any) => i?.isDefault) || artwork.images?.[0]
@@ -43,7 +36,6 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
     image,
     date,
     submissionId,
-    consignmentSubmission,
   } = artwork
 
   // consistent with how sections are derived in InfiniteScrollArtworksGrid
@@ -54,98 +46,64 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const isP1Artist = artwork.artist?.targetSupply?.isP1
   const isHighDemand = Number((artwork.marketPriceInsights?.demandRank || 0) * 10) >= 9
 
-  const showHighDemandIcon = isP1Artist && isHighDemand && !consignmentSubmission?.internalID
-
-  const { dismiss, setIsReady } = GlobalStore.actions.progressiveOnboarding
-  const { isActive, clearActivePopover } = useSetActivePopover(!!displayToolTip)
-
-  const handleDismissPopover = () => {
-    setIsReady(false)
-    dismiss("my-collection-sell-this-work")
-  }
+  const showHighDemandIcon = isP1Artist && isHighDemand
 
   return (
-    <Popover
-      visible={!!displayToolTip && isActive}
-      onDismiss={handleDismissPopover}
-      onPressOutside={handleDismissPopover}
-      onCloseComplete={clearActivePopover}
-      placement="top"
-      title={
-        <Text variant="xs" color="white100" fontWeight="500">
-          Interested in Selling This Work?
-        </Text>
-      }
-      content={
-        <Text variant="xs" color="white100">
-          Submit for sale and let our experts find the best selling option for you.
-        </Text>
-      }
+    <TouchableHighlight
+      underlayColor={color("white100")}
+      activeOpacity={0.8}
+      accessibilityLabel="Go to artwork details"
+      accessibilityRole="link"
+      onPress={() => {
+        if (!!artist) {
+          trackEvent(tracks.tappedCollectedArtwork(internalID, slug))
+          navigate("/my-collection/artwork/" + slug, {
+            passProps: {
+              medium,
+              category: mediumType?.name,
+              artistInternalID: artist.internalID,
+            },
+          })
+        } else {
+          console.warn("MyCollectionArtworkGridItem: Error: Missing artist.artistID")
+        }
+      }}
     >
-      <TouchableHighlight
-        underlayColor={color("white100")}
-        activeOpacity={0.8}
-        accessibilityLabel="Go to artwork details"
-        accessibilityRole="link"
-        onPress={() => {
-          if (!!artist) {
-            trackEvent(tracks.tappedCollectedArtwork(internalID, slug))
-            navigate("/my-collection/artwork/" + slug, {
-              passProps: {
-                medium,
-                category: mediumType?.name,
-                artistInternalID: artist.internalID,
-              },
-            })
-          } else {
-            console.warn("MyCollectionArtworkGridItem: Error: Missing artist.artistID")
-          }
-        }}
-      >
-        <View>
-          <MyCollectionImageView
-            imageWidth={imageWidth}
-            imageURL={(localImage?.path || displayImage?.url) ?? undefined}
-            aspectRatio={localImage?.aspectRatio || image?.aspectRatio}
-            artworkSlug={slug}
-            artworkSubmissionId={submissionId}
-            useRawURL={!!localImage}
-            blurhash={showBlurhash ? image?.blurhash : undefined}
-          />
-          <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
-            <Text lineHeight="18px" weight="regular" variant="xs" numberOfLines={2}>
-              {artistNames}
-            </Text>
+      <View>
+        <MyCollectionImageView
+          imageWidth={imageWidth}
+          imageURL={(localImage?.path || displayImage?.url) ?? undefined}
+          aspectRatio={localImage?.aspectRatio || image?.aspectRatio}
+          artworkSlug={slug}
+          artworkSubmissionId={submissionId}
+          useRawURL={!!localImage}
+          blurhash={showBlurhash ? image?.blurhash : undefined}
+        />
+        <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
+          <Text lineHeight="18px" weight="regular" variant="xs" numberOfLines={2}>
+            {artistNames}
+          </Text>
 
-            {!!title ? (
-              <Text
-                lineHeight="18px"
-                variant="xs"
-                weight="regular"
-                numberOfLines={1}
-                color="black60"
-              >
-                <Text lineHeight="18px" variant="xs" weight="regular" italic>
-                  {title}
-                </Text>
-                {date ? `, ${date}` : ""}
+          {!!title ? (
+            <Text lineHeight="18px" variant="xs" weight="regular" numberOfLines={1} color="black60">
+              <Text lineHeight="18px" variant="xs" weight="regular" italic>
+                {title}
               </Text>
-            ) : null}
+              {date ? `, ${date}` : ""}
+            </Text>
+          ) : null}
 
-            {!!showHighDemandIcon && (
-              <Box testID="test-high-demand-signal" alignItems="center" flexDirection="row">
-                <TrendingIcon />
-                <Text variant="xs" pl="3px" textAlign="center">
-                  High demand
-                </Text>
-              </Box>
-            )}
-
-            <SubmissionStatus artwork={artwork} />
-          </Box>
-        </View>
-      </TouchableHighlight>
-    </Popover>
+          {!!showHighDemandIcon && (
+            <Box testID="test-high-demand-signal" alignItems="center" flexDirection="row">
+              <TrendingIcon />
+              <Text variant="xs" pl="3px" textAlign="center">
+                High demand
+              </Text>
+            </Box>
+          )}
+        </Box>
+      </View>
+    </TouchableHighlight>
   )
 }
 
@@ -187,10 +145,6 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
         marketPriceInsights {
           demandRank
         }
-        consignmentSubmission {
-          internalID
-        }
-        ...SubmissionStatus_artwork
       }
     `,
   }
