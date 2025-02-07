@@ -60,19 +60,15 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
   }
 
   const MAX_ARTWORK_HEIGHT = 500
-  const CARD_HEIGHT = 800
 
   const src = artwork.images?.[0]?.url
   const width = artwork.images?.[0]?.width ?? 0
   const height = artwork.images?.[0]?.height ?? 0
 
-  const size = sizeToFit(
-    { width: width, height: height },
-    { width: screenWidth, height: MAX_ARTWORK_HEIGHT }
-  )
+  const size = sizeToFit({ width, height }, { width: screenWidth, height: MAX_ARTWORK_HEIGHT })
 
   return (
-    <Flex backgroundColor="white100" width="100%" height={CARD_HEIGHT} style={{ borderRadius: 10 }}>
+    <Flex backgroundColor="white100" width="100%" style={{ borderRadius: 10 }}>
       <Flex mx={2} my={1}>
         <ArtistListItemContainer
           artist={artwork.artists?.[0]}
@@ -81,9 +77,10 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         />
       </Flex>
 
-      <Flex alignItems="center" backgroundColor="purple60">
+      <Flex alignItems="center" minHeight={MAX_ARTWORK_HEIGHT} justifyContent="center">
         {!!src && <Image src={src} height={size.height} width={size.width} />}
       </Flex>
+
       <Flex flexDirection="row" justifyContent="space-between" p={1} mx={2}>
         <Flex>
           <Flex flexDirection="row" maxWidth={screenWidth - 200}>
