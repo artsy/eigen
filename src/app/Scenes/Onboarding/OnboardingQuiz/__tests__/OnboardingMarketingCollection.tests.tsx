@@ -55,7 +55,7 @@ describe("OnboardingMarketingCollection", () => {
   })
 })
 
-export const MockedVisibleSentinel: React.FC<any> = ({ children, onChange }) => {
+const MockedVisibleSentinel: React.FC<any> = ({ children, onChange }) => {
   useEffect(() => onChange(true), [])
 
   return <View>{children}</View>
