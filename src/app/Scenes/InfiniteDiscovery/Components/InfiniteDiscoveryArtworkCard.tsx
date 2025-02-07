@@ -24,7 +24,7 @@ interface InfiniteDiscoveryArtworkCardProps {
 export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCardProps> = ({
   artwork: artworkProp,
 }) => {
-  const { width: screenWidth } = useScreenDimensions()
+  const { width: screenWidth, height: screenHeight } = useScreenDimensions()
   const { trackEvent } = useTracking()
   const color = useColor()
   const { incrementSavedArtworksCount, decrementSavedArtworksCount } =
@@ -58,7 +58,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     return null
   }
 
-  const MAX_ARTWORK_HEIGHT = 500
+  const MAX_ARTWORK_HEIGHT = screenHeight * 0.6
 
   const src = artwork.images?.[0]?.url
   const width = artwork.images?.[0]?.width ?? 0
@@ -83,9 +83,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       <Flex flexDirection="row" justifyContent="space-between" p={1} mx={2}>
         <Flex>
           <Flex flexDirection="row" maxWidth={screenWidth - 200}>
-            {/* TODO: maxWidth above and ellipsizeMode + numberOfLines below are used to */}
-            {/* prevent long artwork titles from pushing the save button off of the card, */}
-            {/* it doesn't work as expected on Android. */}
             <Text
               color="black60"
               italic
