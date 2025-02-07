@@ -17,41 +17,6 @@ describe("MyCollectionArtworkHeader", () => {
     `,
   })
 
-  it("renders submission component when submission is not in REJECTED state", async () => {
-    renderWithRelay({
-      Artwork: () => ({
-        artistNames: "names",
-        date: new Date().toISOString(),
-        figures: null,
-        internalID: "internal-id",
-        title: "a title",
-        slug: "some-slug",
-        consignmentSubmission: {
-          state: "APPROVED",
-        },
-      }),
-    })
-    expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).not.toBe(null)
-  })
-
-  it("does not render the submission component when submission is in REJECTED state", async () => {
-    renderWithRelay({
-      Artwork: () => ({
-        artistNames: "names",
-        date: new Date().toISOString(),
-        figures: null,
-        internalID: "internal-id",
-        title: "a title",
-        slug: "some-slug",
-        consignmentSubmission: {
-          state: "REJECTED",
-        },
-      }),
-    })
-
-    expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
-  })
-
   it("fires the analytics tracking event when image is pressed", () => {
     renderWithRelay({
       Artwork: () => ({

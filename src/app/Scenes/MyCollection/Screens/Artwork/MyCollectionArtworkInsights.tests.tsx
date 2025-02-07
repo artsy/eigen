@@ -52,26 +52,6 @@ describe("MyCollectionArtworkInsights", () => {
     expect(screen.getByText("Comparable Works")).toBeTruthy()
   })
 
-  it("renders the submission status when status is REJECTES", async () => {
-    renderWithRelay({
-      Query: () => ({
-        artwork: { ...mockArtwork, consignmentSubmission: { state: "REJECTED" } },
-      }),
-    })
-
-    expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).not.toBe(null)
-  })
-
-  it("does not render the submission status when status is not REJECTES", async () => {
-    renderWithRelay({
-      Query: () => ({
-        artwork: { ...mockArtwork, consignmentSubmission: { state: "APPROVED" } },
-      }),
-    })
-
-    expect(screen.queryByTestId("MyCollectionArtworkSubmissionStatus-Container")).toBe(null)
-  })
-
   describe("Conditional Display of RequestForPriceEstimateBanner", () => {
     it("does not display RequestForPriceEstimateBanner when Artist is not P1", () => {
       renderWithRelay({
