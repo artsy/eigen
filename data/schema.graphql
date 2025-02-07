@@ -2851,6 +2851,46 @@ union ArtworkFilterFacet = Gene | Tag
 
 union ArtworkHighlight = Article | Show
 
+type ArtworkImport {
+  fileName: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  rowsConnection(after: String, before: String, first: Int, last: Int): ArtworkImportRowConnection
+}
+
+type ArtworkImportRow {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  rawData: JSON!
+}
+
+# A connection to a list of items.
+type ArtworkImportRowConnection {
+  # A list of edges.
+  edges: [ArtworkImportRowEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ArtworkImportRowEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: ArtworkImportRow
+}
+
 enum ArtworkImportSource {
   CONVECTION
   MY_COLLECTION
@@ -7992,6 +8032,27 @@ type CreateArtistSuccess {
 }
 
 union CreateArtistSuccessOrErrorType = CreateArtistFailure | CreateArtistSuccess
+
+type CreateArtworkImportFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateArtworkImportInput {
+  clientMutationId: String
+  filePath: String!
+  partnerID: String!
+}
+
+type CreateArtworkImportPayload {
+  artworkImportOrError: CreateArtworkImportResponseOrError
+  clientMutationId: String
+}
+
+union CreateArtworkImportResponseOrError = CreateArtworkImportFailure | CreateArtworkImportSuccess
+
+type CreateArtworkImportSuccess {
+  artworkImport: ArtworkImport
+}
 
 input CreateBackupSecondFactorsInput {
   clientMutationId: String
@@ -13616,6 +13677,7 @@ type Mutation {
 
   # Create an artist
   createArtist(input: CreateArtistMutationInput!): CreateArtistMutationPayload
+  createArtworkImport(input: CreateArtworkImportInput!): CreateArtworkImportPayload
   createBackupSecondFactors(
     input: CreateBackupSecondFactorsInput!
   ): CreateBackupSecondFactorsPayload
@@ -16270,6 +16332,7 @@ type Query {
 
   # List of all artwork attribution classes
   artworkAttributionClasses: [AttributionClass]
+  artworkImport(id: String!): ArtworkImport
 
   # List of all artwork mediums
   artworkMediums: [ArtworkMedium]
@@ -21008,6 +21071,7 @@ type Viewer {
 
   # List of all artwork attribution classes
   artworkAttributionClasses: [AttributionClass]
+  artworkImport(id: String!): ArtworkImport
 
   # List of all artwork mediums
   artworkMediums: [ArtworkMedium]
