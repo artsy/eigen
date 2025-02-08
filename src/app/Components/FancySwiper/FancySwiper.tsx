@@ -7,8 +7,13 @@ import { FancySwiperCard } from "./FancySwiperCard"
 // the amount of swiping that is considered a full swipe
 export const SWIPE_MAGNITUDE = 100
 
+export type FancySwiperArtworkCard = {
+  content: React.ReactNode
+  artworkId: string
+}
+
 interface FancySwiperProps {
-  cards: React.ReactNode[]
+  cards: FancySwiperArtworkCard[]
   hideActionButtons?: boolean
   onSwipeAnywhere?: () => void
   onSwipeLeft?: () => void
@@ -117,8 +122,8 @@ export const FancySwiper = ({
 
           return (
             <FancySwiperCard
-              card={card}
-              key={index}
+              card={card.content}
+              key={card.artworkId}
               swiper={swiper}
               isTopCard={isTopCard}
               isSecondCard={isSecondCard}

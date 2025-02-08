@@ -7,7 +7,7 @@ import {
   Spinner,
   Touchable,
 } from "@artsy/palette-mobile"
-import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
+import { FancySwiper, FancySwiperArtworkCard } from "app/Components/FancySwiper/FancySwiper"
 import { useToast } from "app/Components/Toast/toastHook"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
@@ -64,11 +64,14 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
   }, [data, extractNodes, setArtworks])
 
-  const artworkCards: React.ReactNode[] = useMemo(() => {
-    return artworks.map((artwork, i) => <InfiniteDiscoveryArtworkCard artwork={artwork} key={i} />)
+  const artworkCards: FancySwiperArtworkCard[] = useMemo(() => {
+    return artworks.map((artwork) => ({
+      content: <InfiniteDiscoveryArtworkCard artwork={artwork} key={artwork.internalID} />,
+      artworkId: artwork.internalID,
+    }))
   }, [artworks])
 
-  const unswipedCards: React.ReactNode[] = artworkCards.slice(index)
+  const unswipedCards: FancySwiperArtworkCard[] = artworkCards.slice(index)
 
   const handleBackPressed = () => {
     if (index > 0) {
