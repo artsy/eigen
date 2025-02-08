@@ -157,8 +157,8 @@ const ArtQuizArtworksScreen = () => {
   }
 
   const artworkCards: FancySwiperArtworkCard[] = useMemo(() => {
-    return artworks.map((artwork, index) => ({
-      content: <ArtQuizArtworkCard artwork={artwork} key={index} />,
+    return artworks.map((artwork) => ({
+      content: <ArtQuizArtworkCard artwork={artwork} key={artwork.internalID} />,
       artworkId: artwork.internalID,
     }))
   }, [artworks])
