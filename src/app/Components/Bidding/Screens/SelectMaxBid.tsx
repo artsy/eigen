@@ -64,6 +64,7 @@ export const SelectMaxBid: React.FC<SelectMaxBidProps> = ({ me, saleArtwork, nav
     <Flex flex={1} mx={2}>
       <Flex flexGrow={1} justifyContent="center">
         <Select
+          testID="max-bid"
           title="Your max bid"
           maxModalHeight={height * 0.75}
           value={bids[selectedBidIndex]?.cents ?? null}
