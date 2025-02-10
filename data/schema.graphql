@@ -273,6 +273,7 @@ type Alert {
     artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
+    availability: String
     before: String
     color: String
     colors: [String]
@@ -289,6 +290,7 @@ type Alert {
     height: String
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
     keyword: String
@@ -314,6 +316,9 @@ type Alert {
     period: String
     periods: [String]
     priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
     saleID: ID
 
     # When true, will only return signed artworks.
@@ -322,8 +327,10 @@ type Alert {
 
     # Filter results by Artwork sizes
     sizes: [ArtworkSizes]
+    sold: Boolean
     sort: String
     tagID: String
+    visibilityLevel: String
     width: String
   ): FilterArtworksConnection
   atAuction: Boolean
@@ -1634,6 +1641,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
+    availability: String
     before: String
     color: String
     colors: [String]
@@ -1650,6 +1658,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     height: String
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
     keyword: String
@@ -1675,6 +1684,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     period: String
     periods: [String]
     priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
     saleID: ID
 
     # When true, will only return signed artworks.
@@ -1683,8 +1695,10 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
 
     # Filter results by Artwork sizes
     sizes: [ArtworkSizes]
+    sold: Boolean
     sort: String
     tagID: String
+    visibilityLevel: String
     width: String
   ): FilterArtworksConnection
   first: String
@@ -2109,6 +2123,7 @@ type ArtistSeries implements Node {
     artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
+    availability: String
     before: String
     color: String
     colors: [String]
@@ -2125,6 +2140,7 @@ type ArtistSeries implements Node {
     height: String
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
     keyword: String
@@ -2150,6 +2166,9 @@ type ArtistSeries implements Node {
     period: String
     periods: [String]
     priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
     saleID: ID
 
     # When true, will only return signed artworks.
@@ -2158,8 +2177,10 @@ type ArtistSeries implements Node {
 
     # Filter results by Artwork sizes
     sizes: [ArtworkSizes]
+    sold: Boolean
     sort: String
     tagID: String
+    visibilityLevel: String
     width: String
   ): FilterArtworksConnection
   forSaleArtworksCount: Int!
@@ -2375,7 +2396,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # The depth as expressed by the original input metric
   depth: String
+  depthCm: Float
   description(format: Format): String
+  diameterCm: Float
   dimensions: dimensions
   displayArtistBio: Boolean
   displayLabel: String
@@ -2409,7 +2432,10 @@ type Artwork implements Node & Searchable & Sellable {
   formattedMetadata: String
   framed: ArtworkInfoRow @deprecated(reason: "Consider using isFramed field (boolean) instead")
   framedDepth: String
+  framedDiameter: Float
   framedHeight: String
+
+  # The unit of measurement for the framed dimensions
   framedMetric: String
   framedWidth: String
 
@@ -2627,6 +2653,10 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Minimal location information describing from where artwork will be shipped.
   shippingOrigin: String
+  shippingWeight: Float
+
+  # The unit of measurement for the shipping weight
+  shippingWeightMetric: String
 
   # Is this work available for shipping only within the Continental US?
   shipsToContinentalUSOnly: Boolean
@@ -2820,6 +2850,46 @@ union ArtworkFigures = Image | Video
 union ArtworkFilterFacet = Gene | Tag
 
 union ArtworkHighlight = Article | Show
+
+type ArtworkImport {
+  fileName: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  rowsConnection(after: String, before: String, first: Int, last: Int): ArtworkImportRowConnection
+}
+
+type ArtworkImportRow {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  rawData: JSON!
+}
+
+# A connection to a list of items.
+type ArtworkImportRowConnection {
+  # A list of edges.
+  edges: [ArtworkImportRowEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ArtworkImportRowEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: ArtworkImportRow
+}
 
 enum ArtworkImportSource {
   CONVECTION
@@ -7963,6 +8033,27 @@ type CreateArtistSuccess {
 
 union CreateArtistSuccessOrErrorType = CreateArtistFailure | CreateArtistSuccess
 
+type CreateArtworkImportFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateArtworkImportInput {
+  clientMutationId: String
+  filePath: String!
+  partnerID: String!
+}
+
+type CreateArtworkImportPayload {
+  artworkImportOrError: CreateArtworkImportResponseOrError
+  clientMutationId: String
+}
+
+union CreateArtworkImportResponseOrError = CreateArtworkImportFailure | CreateArtworkImportSuccess
+
+type CreateArtworkImportSuccess {
+  artworkImport: ArtworkImport
+}
+
 input CreateBackupSecondFactorsInput {
   clientMutationId: String
   password: String!
@@ -9322,6 +9413,7 @@ interface EntityWithFilterArtworksConnectionInterface {
     artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
+    availability: String
     before: String
     color: String
     colors: [String]
@@ -9338,6 +9430,7 @@ interface EntityWithFilterArtworksConnectionInterface {
     height: String
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
     inquireableOnly: Boolean
     keyword: String
 
@@ -9362,6 +9455,9 @@ interface EntityWithFilterArtworksConnectionInterface {
     period: String
     periods: [String]
     priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
     saleID: ID
 
     # When true, will only return signed artworks.
@@ -9370,8 +9466,10 @@ interface EntityWithFilterArtworksConnectionInterface {
 
     # Filter results by Artwork sizes
     sizes: [ArtworkSizes]
+    sold: Boolean
     sort: String
     tagID: String
+    visibilityLevel: String
     width: String
   ): FilterArtworksConnection
 
@@ -9568,6 +9666,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
+    availability: String
     before: String
     color: String
     colors: [String]
@@ -9584,6 +9683,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     height: String
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
     keyword: String
@@ -9609,6 +9709,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     period: String
     periods: [String]
     priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
     saleID: ID
 
     # When true, will only return signed artworks.
@@ -9617,8 +9720,10 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
 
     # Filter results by Artwork sizes
     sizes: [ArtworkSizes]
+    sold: Boolean
     sort: String
     tagID: String
+    visibilityLevel: String
     width: String
   ): FilterArtworksConnection
   followedContent: FollowedContent
@@ -10079,6 +10184,7 @@ input FilterArtworksInput {
   artistSeriesIDs: [String]
   atAuction: Boolean
   attributionClass: [String]
+  availability: String
   before: String
   color: String
   colors: [String]
@@ -10095,6 +10201,7 @@ input FilterArtworksInput {
   height: String
   includeArtworksByFollowedArtists: Boolean
   includeMediumFilterInAggregation: Boolean
+  includeUnpublished: Boolean
   inquireableOnly: Boolean
   keyword: String
 
@@ -10119,6 +10226,9 @@ input FilterArtworksInput {
   period: String
   periods: [String]
   priceRange: String
+
+  # When false, will only return unpublished artworks for authorized users.
+  published: Boolean
   saleID: ID
 
   # When true, will only return signed artworks.
@@ -10127,8 +10237,10 @@ input FilterArtworksInput {
 
   # Filter results by Artwork sizes
   sizes: [ArtworkSizes]
+  sold: Boolean
   sort: String
   tagID: String
+  visibilityLevel: String
   width: String
 }
 
@@ -10522,6 +10634,7 @@ type Gene implements Node & Searchable {
     artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
+    availability: String
     before: String
     color: String
     colors: [String]
@@ -10538,6 +10651,7 @@ type Gene implements Node & Searchable {
     height: String
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
     keyword: String
@@ -10563,6 +10677,9 @@ type Gene implements Node & Searchable {
     period: String
     periods: [String]
     priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
     saleID: ID
 
     # When true, will only return signed artworks.
@@ -10571,8 +10688,10 @@ type Gene implements Node & Searchable {
 
     # Filter results by Artwork sizes
     sizes: [ArtworkSizes]
+    sold: Boolean
     sort: String
     tagID: String
+    visibilityLevel: String
     width: String
   ): FilterArtworksConnection
   href: String
@@ -11355,6 +11474,25 @@ type HomeViewSectionMarketingCollections implements HomeViewSectionGeneric & Nod
     first: Int
     last: Int
   ): MarketingCollectionConnection
+
+  # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
+  ownerType: String
+}
+
+# A selection of navigation links in the home view
+type HomeViewSectionNavigationPills implements HomeViewSectionGeneric & Node {
+  # Component prescription for this section, for overriding or customizing presentation and behavior
+  component: HomeViewComponent
+
+  # [Analytics] `context module` analytics value for this section, as defined in our schema (artsy/cohesion)
+  contextModule: String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  navigationPills: [NavigationPill]!
 
   # [Analytics] `owner type` analytics value for this scetion when displayed in a standalone UI, as defined in our schema (artsy/cohesion)
   ownerType: String
@@ -12349,6 +12487,7 @@ type MarketingCollection implements Node {
     artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
+    availability: String
     before: String
     color: String
     colors: [String]
@@ -12365,6 +12504,7 @@ type MarketingCollection implements Node {
     height: String
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
     keyword: String
@@ -12390,6 +12530,9 @@ type MarketingCollection implements Node {
     period: String
     periods: [String]
     priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
     saleID: ID
 
     # When true, will only return signed artworks.
@@ -12398,8 +12541,10 @@ type MarketingCollection implements Node {
 
     # Filter results by Artwork sizes
     sizes: [ArtworkSizes]
+    sold: Boolean
     sort: String
     tagID: String
+    visibilityLevel: String
     width: String
   ): FilterArtworksConnection
   category: String!
@@ -13532,6 +13677,7 @@ type Mutation {
 
   # Create an artist
   createArtist(input: CreateArtistMutationInput!): CreateArtistMutationPayload
+  createArtworkImport(input: CreateArtworkImportInput!): CreateArtworkImportPayload
   createBackupSecondFactors(
     input: CreateBackupSecondFactorsInput!
   ): CreateBackupSecondFactorsPayload
@@ -14221,6 +14367,17 @@ type MyLocation {
   timezone: String
 }
 
+type NavigationPill {
+  # Link URL
+  href: String!
+
+  # The context module for analytics
+  ownerType: String!
+
+  # Link title
+  title: String!
+}
+
 input Near {
   lat: Float!
   lng: Float!
@@ -14719,6 +14876,7 @@ type Partner implements Node {
     artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
+    availability: String
     before: String
     color: String
     colors: [String]
@@ -14735,6 +14893,7 @@ type Partner implements Node {
     height: String
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
     keyword: String
@@ -14760,6 +14919,9 @@ type Partner implements Node {
     period: String
     periods: [String]
     priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
     saleID: ID
 
     # When true, will only return signed artworks.
@@ -14768,8 +14930,10 @@ type Partner implements Node {
 
     # Filter results by Artwork sizes
     sizes: [ArtworkSizes]
+    sold: Boolean
     sort: String
     tagID: String
+    visibilityLevel: String
     width: String
   ): FilterArtworksConnection
   fullProfileEligible: Boolean @deprecated(reason: "Prefer displayFullPartnerPage")
@@ -16168,6 +16332,7 @@ type Query {
 
   # List of all artwork attribution classes
   artworkAttributionClasses: [AttributionClass]
+  artworkImport(id: String!): ArtworkImport
 
   # List of all artwork mediums
   artworkMediums: [ArtworkMedium]
@@ -16205,6 +16370,7 @@ type Query {
     artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
+    availability: String
     before: String
     color: String
     colors: [String]
@@ -16221,6 +16387,7 @@ type Query {
     height: String
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
     keyword: String
@@ -16246,6 +16413,9 @@ type Query {
     period: String
     periods: [String]
     priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
     saleID: ID
 
     # When true, will only return signed artworks.
@@ -16254,8 +16424,10 @@ type Query {
 
     # Filter results by Artwork sizes
     sizes: [ArtworkSizes]
+    sold: Boolean
     sort: String
     tagID: String
+    visibilityLevel: String
     width: String
   ): FilterArtworksConnection
 
@@ -18534,6 +18706,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
+    availability: String
     before: String
     color: String
     colors: [String]
@@ -18550,6 +18723,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     height: String
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
     keyword: String
@@ -18575,6 +18749,9 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     period: String
     periods: [String]
     priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
     saleID: ID
 
     # When true, will only return signed artworks.
@@ -18583,8 +18760,10 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
 
     # Filter results by Artwork sizes
     sizes: [ArtworkSizes]
+    sold: Boolean
     sort: String
     tagID: String
+    visibilityLevel: String
     width: String
   ): FilterArtworksConnection
 
@@ -19016,6 +19195,7 @@ type Tag implements Node {
     artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
+    availability: String
     before: String
     color: String
     colors: [String]
@@ -19032,6 +19212,7 @@ type Tag implements Node {
     height: String
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
     keyword: String
@@ -19057,6 +19238,9 @@ type Tag implements Node {
     period: String
     periods: [String]
     priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
     saleID: ID
 
     # When true, will only return signed artworks.
@@ -19065,8 +19249,10 @@ type Tag implements Node {
 
     # Filter results by Artwork sizes
     sizes: [ArtworkSizes]
+    sold: Boolean
     sort: String
     tagID: String
+    visibilityLevel: String
     width: String
   ): FilterArtworksConnection
   href: String
@@ -20885,6 +21071,7 @@ type Viewer {
 
   # List of all artwork attribution classes
   artworkAttributionClasses: [AttributionClass]
+  artworkImport(id: String!): ArtworkImport
 
   # List of all artwork mediums
   artworkMediums: [ArtworkMedium]
@@ -20922,6 +21109,7 @@ type Viewer {
     artistSeriesIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
+    availability: String
     before: String
     color: String
     colors: [String]
@@ -20938,6 +21126,7 @@ type Viewer {
     height: String
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
     input: FilterArtworksInput
     inquireableOnly: Boolean
     keyword: String
@@ -20963,6 +21152,9 @@ type Viewer {
     period: String
     periods: [String]
     priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
     saleID: ID
 
     # When true, will only return signed artworks.
@@ -20971,8 +21163,10 @@ type Viewer {
 
     # Filter results by Artwork sizes
     sizes: [ArtworkSizes]
+    sold: Boolean
     sort: String
     tagID: String
+    visibilityLevel: String
     width: String
   ): FilterArtworksConnection
 

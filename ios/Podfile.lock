@@ -248,6 +248,7 @@ PODS:
   - ObjectiveSugar (1.1.0)
   - OCMock (3.9.1)
   - OHHTTPStubs (3.1.2)
+  - OpenSSL-Universal (3.3.2000)
   - ORStackView (2.0.3):
     - FLKAutoLayout
   - PromisesObjC (2.4.0)
@@ -1492,10 +1493,6 @@ PODS:
     - React-Core
   - react-native-blurhash (1.1.11):
     - React-Core
-  - react-native-config (1.4.11):
-    - react-native-config/App (= 1.4.11)
-  - react-native-config/App (1.4.11):
-    - React-Core
   - react-native-context-menu-view (1.10.0):
     - React
   - react-native-cookies (6.0.11):
@@ -1523,6 +1520,28 @@ PODS:
     - React-Core
   - react-native-in-app-review (4.3.3):
     - React-Core
+  - react-native-keys (0.7.11):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - OpenSSL-Universal
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-netinfo (11.3.2):
     - React-Core
   - react-native-pager-view (6.5.0):
@@ -2271,7 +2290,6 @@ DEPENDENCIES:
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - react-native-blob-util (from `../node_modules/react-native-blob-util`)
   - react-native-blurhash (from `../node_modules/react-native-blurhash`)
-  - react-native-config (from `../node_modules/react-native-config`)
   - react-native-context-menu-view (from `../node_modules/react-native-context-menu-view`)
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
@@ -2279,6 +2297,7 @@ DEPENDENCIES:
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-get-random-values (from `../node_modules/react-native-get-random-values`)
   - react-native-in-app-review (from `../node_modules/react-native-in-app-review`)
+  - react-native-keys (from `../node_modules/react-native-keys`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-render-html (from `../node_modules/react-native-render-html`)
@@ -2409,6 +2428,7 @@ SPEC REPOS:
     - ObjectiveSugar
     - OCMock
     - OHHTTPStubs
+    - OpenSSL-Universal
     - ORStackView
     - PromisesObjC
     - Quick
@@ -2531,8 +2551,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-blob-util"
   react-native-blurhash:
     :path: "../node_modules/react-native-blurhash"
-  react-native-config:
-    :path: "../node_modules/react-native-config"
   react-native-context-menu-view:
     :path: "../node_modules/react-native-context-menu-view"
   react-native-cookies:
@@ -2547,6 +2565,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-get-random-values"
   react-native-in-app-review:
     :path: "../node_modules/react-native-in-app-review"
+  react-native-keys:
+    :path: "../node_modules/react-native-keys"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-pager-view:
@@ -2759,6 +2779,7 @@ SPEC CHECKSUMS:
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
   OCMock: 9491e4bec59e0b267d52a9184ff5605995e74be8
   OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
+  OpenSSL-Universal: b60a3702c9fea8b3145549d421fdb018e53ab7b4
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   Pulley: edc993fb57f7eb20541c8453d0fce10559f21dac
@@ -2794,7 +2815,6 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: 16e31e4f503a5f46adafd035096130418c3bce70
   react-native-blob-util: f7234c91ad0e3faeee51b3edee80b61553f74993
   react-native-blurhash: 275104c6fb85e754c448854024bf7a8d4571ba8a
-  react-native-config: 1baea138c9641f8460d7730568daf2ff3738c4db
   react-native-context-menu-view: 74fbcf8a5f842c4802d0121addda2f8ffca43604
   react-native-cookies: b90327af903c8a7652100201d890c50a98697799
   react-native-document-picker: 6b08d834d4e4252bb8aad13d852e27666294b5b9
@@ -2802,6 +2822,7 @@ SPEC CHECKSUMS:
   react-native-geolocation: def10765a5144e7a76837093d43303d70bb6addf
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-in-app-review: b3d1eed3d1596ebf6539804778272c4c65e4a400
+  react-native-keys: ac4011e7f7b63f9c0557a0c120a9f7e78ee9ab7e
   react-native-netinfo: ce102083db558237dac20cf64172ef569ebe2dd9
   react-native-pager-view: a58a82591f421322e2bdb4fb69b82f6486dd4b22
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd

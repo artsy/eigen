@@ -1,5 +1,5 @@
 import { Text } from "@artsy/palette-mobile"
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { navigate } from "app/system/navigation/navigate"
@@ -7,18 +7,13 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useEffect } from "react"
 import { View } from "react-native"
 
-const mockPrefetch = jest.fn()
-const MockedVisibleSentinel: React.FC<any> = ({ children, onVisible }) => {
-  useEffect(() => onVisible(), [])
-
-  return <View>{children}</View>
-}
-
 jest.mock("app/utils/queryPrefetching", () => ({
   usePrefetch: () => mockPrefetch,
 }))
-jest.mock("app/utils/ElementInView", () => ({
-  ElementInView: (props: any) => <MockedVisibleSentinel {...props} />,
+
+jest.mock("app/utils/Sentinel", () => ({
+  __esModule: true,
+  Sentinel: (props: any) => <MockedVisibleSentinel {...props} />,
 }))
 
 describe("RouterLink", () => {
@@ -65,10 +60,12 @@ describe("RouterLink", () => {
   })
 
   describe("prefetching", () => {
-    it("prefetches", () => {
+    it("prefetches", async () => {
       renderWithWrappers(<TestComponent />)
 
-      expect(mockPrefetch).toHaveBeenCalledWith("/test-route")
+      await waitFor(() => {
+        expect(mockPrefetch).toHaveBeenCalledWith("/test-route")
+      })
     })
 
     describe("when disablePrefetch is true", () => {
@@ -94,3 +91,10 @@ describe("RouterLink", () => {
     })
   })
 })
+
+const mockPrefetch = jest.fn()
+const MockedVisibleSentinel: React.FC<any> = ({ children, onChange }) => {
+  useEffect(() => onChange(true), [])
+
+  return <View>{children}</View>
+}

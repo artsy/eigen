@@ -506,7 +506,6 @@ const CollectionFiltersSorted: FilterScreen[] = [
   "priceRange",
   "sizes",
   "waysToBuy",
-  "framed",
   "availability",
   "materialsTerms",
   "artistNationalities",
@@ -514,6 +513,7 @@ const CollectionFiltersSorted: FilterScreen[] = [
   "majorPeriods",
   "colors",
   "partnerIDs",
+  "framed",
 ]
 const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "sort",
@@ -524,13 +524,13 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "artistSeriesIDs",
   "sizes",
   "waysToBuy",
-  "framed",
   "availability",
   "materialsTerms",
   "locationCities",
   "majorPeriods",
   "colors",
   "partnerIDs",
+  "framed",
 ]
 const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "sort",
@@ -540,13 +540,13 @@ const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "priceRange",
   "sizes",
   "waysToBuy",
-  "framed",
   "availability",
   "materialsTerms",
   "locationCities",
   "majorPeriods",
   "colors",
   "partnerIDs",
+  "framed",
 ]
 const ArtworksFiltersSorted: FilterScreen[] = [
   "sort",
@@ -556,7 +556,6 @@ const ArtworksFiltersSorted: FilterScreen[] = [
   "priceRange",
   "sizes",
   "waysToBuy",
-  "framed",
   "availability",
   "materialsTerms",
   "artistNationalities",
@@ -564,6 +563,7 @@ const ArtworksFiltersSorted: FilterScreen[] = [
   "majorPeriods",
   "colors",
   "partnerIDs",
+  "framed",
 ]
 const FairFiltersSorted: FilterScreen[] = [
   "partnerIDs",
@@ -573,13 +573,13 @@ const FairFiltersSorted: FilterScreen[] = [
   "priceRange",
   "sizes",
   "waysToBuy",
-  "framed",
   "availability",
   "materialsTerms",
   "artistNationalities",
   "locationCities",
   "majorPeriods",
   "colors",
+  "framed",
 ]
 const SaleArtworksFiltersSorted: FilterScreen[] = [
   "sort",
@@ -599,12 +599,12 @@ const ShowFiltersSorted: FilterScreen[] = [
   "priceRange",
   "sizes",
   "waysToBuy",
-  "framed",
   "availability",
   "materialsTerms",
   "artistNationalities",
   "majorPeriods",
   "colors",
+  "framed",
 ]
 
 const PartnerFiltersSorted: FilterScreen[] = [
@@ -615,12 +615,12 @@ const PartnerFiltersSorted: FilterScreen[] = [
   "priceRange",
   "sizes",
   "waysToBuy",
-  "framed",
   "availability",
   "materialsTerms",
   "artistNationalities",
   "majorPeriods",
   "colors",
+  "framed",
 ]
 
 const TagAndGeneFiltersSorted: FilterScreen[] = [
@@ -631,7 +631,6 @@ const TagAndGeneFiltersSorted: FilterScreen[] = [
   "priceRange",
   "sizes",
   "waysToBuy",
-  "framed",
   "availability",
   "materialsTerms",
   "artistNationalities",
@@ -639,6 +638,7 @@ const TagAndGeneFiltersSorted: FilterScreen[] = [
   "majorPeriods",
   "colors",
   "partnerIDs",
+  "framed",
 ]
 
 const AuctionResultsFiltersSorted: FilterScreen[] = [

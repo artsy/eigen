@@ -34,7 +34,7 @@ describe("ContextMenuArtwork", () => {
     it("shows context menu on long press", async () => {
       renderWithRelay()
 
-      const artworkCard = screen.getByTestId("artwork-card")
+      const artworkCard = screen.getByTestId("android-context-menu-trigger")
 
       fireEvent(artworkCard, "onLongPress")
 

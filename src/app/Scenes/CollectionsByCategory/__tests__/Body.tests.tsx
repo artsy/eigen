@@ -34,7 +34,7 @@ describe("Body", () => {
   it("renders", () => {
     renderWithRelay()
 
-    expect(screen.getByText(/Explore collections with mock-category/)).toBeOnTheScreen()
+    expect(screen.getByText(/Explore collections by mock-category/)).toBeOnTheScreen()
     expect(screen.getByText(/<mock-value-for-field-"title">/)).toBeOnTheScreen()
   })
 })

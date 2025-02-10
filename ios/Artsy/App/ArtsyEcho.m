@@ -1,7 +1,7 @@
 #import "ArtsyEcho.h"
 
 #import <Foundation/Foundation.h>
-#import <react-native-config/ReactNativeConfig.h>
+#import "Keys.h"
 
 #import "ARAppStatus.h"
 
@@ -28,7 +28,7 @@
         return;
     }
 
-    if (![[ReactNativeConfig envFor:@"_OSS_"] isEqualToString:@"true"]) {
+    if (![[Keys publicFor:@"_OSS_"] isEqualToString:@"true"]) {
         [super checkForUpdates:updateCheckCompleted];
     }
 }

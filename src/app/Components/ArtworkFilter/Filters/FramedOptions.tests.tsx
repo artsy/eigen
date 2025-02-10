@@ -71,7 +71,7 @@ describe(FramedOptionsScreen, () => {
     it("displays the number of the selected filters on the filter modal screen", () => {
       renderWithWrappers(<MockFilterScreen initialState={state} />)
 
-      expect(screen.getByText("Frame • 1")).toBeTruthy()
+      expect(screen.getByText("Framed • 1")).toBeTruthy()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {

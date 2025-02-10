@@ -6,7 +6,7 @@ import {
 } from "__generated__/ArtQuizArtworksQuery.graphql"
 import { ArtQuizArtworksSaveMutation } from "__generated__/ArtQuizArtworksSaveMutation.graphql"
 import { ArtQuizArtworksUpdateQuizMutation } from "__generated__/ArtQuizArtworksUpdateQuizMutation.graphql"
-import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
+import { FancySwiper, FancySwiperArtworkCard } from "app/Components/FancySwiper/FancySwiper"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -156,12 +156,14 @@ const ArtQuizArtworksScreen = () => {
     })
   }
 
-  const artworkCards: React.ReactNode[] = useMemo(
-    () => artworks.map((artwork, index) => <ArtQuizArtworkCard artwork={artwork} key={index} />),
-    [artworks]
-  )
+  const artworkCards: FancySwiperArtworkCard[] = useMemo(() => {
+    return artworks.map((artwork) => ({
+      content: <ArtQuizArtworkCard artwork={artwork} key={artwork.internalID} />,
+      artworkId: artwork.internalID,
+    }))
+  }, [artworks])
 
-  const unswipedCards: React.ReactNode[] = artworkCards.slice(activeCardIndex)
+  const unswipedCards: FancySwiperArtworkCard[] = artworkCards.slice(activeCardIndex)
 
   return (
     <Screen>
@@ -214,8 +216,10 @@ const ArtQuizArtworkCard: React.FC<ArtQuizArtworkCardProps> = ({ artwork }) => {
   const { width } = useScreenDimensions()
   const space = useSpace()
 
+  const CARD_HEIGHT = 500
+
   return (
-    <Flex width={width - space(4)} height={500} backgroundColor="white">
+    <Flex width={width - space(4)} height={CARD_HEIGHT} backgroundColor="white">
       <Image
         source={{ uri: artwork?.image?.resized?.src }}
         style={{ flex: 1 }}

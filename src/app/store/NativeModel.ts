@@ -91,6 +91,7 @@ listenToNativeEvents((event: NativeEvent) => {
       return
     case "REQUEST_NAVIGATION": {
       const { route, props } = event.payload
+      navigationEvents.emit("requestModalDismiss")
       navigate(route, { passProps: props })
       return
     }

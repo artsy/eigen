@@ -19,7 +19,7 @@ You might encounter some Pod errors, i.e.:
 in that case, you can try to run the following commands:
 
 ```sh
-cd ios && bundle exec pod repo update && bundle exec pod install
+cd ios && bundle exec npx pod-install
 ```
 
 This will update the stale pods on your local environment.

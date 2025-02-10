@@ -100,7 +100,7 @@ export const Sentinel: FC<Props> = ({ children, onChange }) => {
 
   return (
     <RNView collapsable={false} ref={myView}>
-      {!!children && { children }}
+      {children}
       <Flex height={0} />
     </RNView>
   )

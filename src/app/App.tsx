@@ -21,9 +21,9 @@ import { useStripeConfig } from "app/utils/useStripeConfig"
 import { useEffect } from "react"
 import { NativeModules, UIManager, View } from "react-native"
 import codePush from "react-native-code-push"
-import Config from "react-native-config"
 import { Settings } from "react-native-fbsdk-next"
 import "react-native-get-random-values"
+import Keys from "react-native-keys"
 import { useWebViewCookies } from "./Components/ArtsyWebView"
 import { Providers } from "./Providers"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
@@ -67,7 +67,8 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 const Main = () => {
   useRageShakeDevMenu()
   useEffect(() => {
-    if (Config.OSS === "true") {
+    const oss = Keys.OSS
+    if (oss === "true") {
       return
     }
     GoogleSignin.configure({

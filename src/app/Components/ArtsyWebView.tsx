@@ -5,7 +5,13 @@ import { addBreadcrumb } from "@sentry/react-native"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { GlobalStore, getCurrentEmissionState } from "app/store/GlobalStore"
-import { GoBackProps, dismissModal, goBack, navigate } from "app/system/navigation/navigate"
+import {
+  GoBackProps,
+  dismissModal,
+  goBack,
+  navigate,
+  navigationEvents,
+} from "app/system/navigation/navigate"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
@@ -89,6 +95,18 @@ export const ArtsyWebViewPage = ({
       }
     }
   }
+
+  const handleModalDismiss = () => {
+    dismissModal()
+  }
+
+  useEffect(() => {
+    const emitter = navigationEvents.addListener("requestModalDismiss", handleModalDismiss)
+
+    return () => {
+      emitter.removeListener("requestModalDismiss", handleModalDismiss)
+    }
+  }, [])
 
   const handleGoBack = () => {
     if (backAction) {
@@ -205,6 +223,14 @@ export const ArtsyWebView = forwardRef<
       // to the articles route, which would cause a loop and once in the webview to
       // redirect you to either a native article view or an article webview
       if (result.type === "match" && result.module === "Article") {
+        return
+      }
+
+      // TODO: For not we are not redirecting to home from webviews because of artsy logo
+      // in purchase flow breaking things. We should instead hide the artsy logo or not redirect to home
+      // when in eigen purchase flow.
+      if (result.type === "match" && result.module === "Home") {
+        stopLoading(true)
         return
       }
 

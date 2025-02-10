@@ -2,7 +2,7 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { setupSentry } from "app/system/errorReporting/setupSentry"
 import { echoLaunchJson } from "app/utils/jsonFiles"
-import Config from "react-native-config"
+import Keys from "react-native-keys"
 
 interface FeatureDescriptorCommonTypes {
   /** Provide a short description for the Dev Menu. */
@@ -187,18 +187,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAlertBottomSheet",
   },
-  AREnableMyCollectionInterestedInSellingTooltip: {
-    description: "Enable My Collection 'Interested in Selling?' tooltip",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableMyCollectionInterestedInSellingTooltip",
-  },
-  ARSWAMakeAllDimensionsOptional: {
-    description: "Make all dimensions optional in SWA submit flow",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "ARSWAMakeAllDimensionsOptional",
-  },
   AREnableCollectionsWithoutHeaderImage: {
     description: "Remove the header image from collections",
     readyForRelease: true,
@@ -248,8 +236,9 @@ export const features = {
   },
   AREnableFramedFilter: {
     description: "Enable show only framed works filter",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableFramedFilter",
   },
   AREnableHidingDislikedArtworks: {
     description: "Enable hiding disliked artworks",
@@ -259,7 +248,7 @@ export const features = {
   },
   AREnableArtworkCardContextMenuAndroid: {
     description: "Enable long press menu on artwork cards for Android",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworkCardContextMenuAndroid",
   },
@@ -268,6 +257,11 @@ export const features = {
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableLongPressContextMenuOnboarding",
+  },
+  AREnableHomeViewQuickLinks: {
+    description: "Enable Home View Quick Links",
+    readyForRelease: false,
+    showInDevMenu: true,
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
@@ -327,9 +321,11 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
   DTDebugSentry: {
     description: "Enable sentry debug mode and send exceptions to sentry",
     onChange: (value, { toast }) => {
-      if (!Config.SENTRY_DSN) {
+      if (!Keys.secureFor("SENTRY_DSN")) {
         toast.show(
-          `No Sentry DSN available ${__DEV__ ? "Set it in .env.shared and re-build the app." : ""}`,
+          `No Sentry DSN available ${
+            __DEV__ ? "Set it in keys.shared.json and re-build the app." : ""
+          }`,
           "middle"
         )
         return
