@@ -749,9 +749,6 @@ export const ArtworkContainer = createRefetchContainer(
             }
           }
         }
-        artists(shallow: true) {
-          isConsignable
-        }
         isEligibleForArtsyGuarantee
       }
     `,

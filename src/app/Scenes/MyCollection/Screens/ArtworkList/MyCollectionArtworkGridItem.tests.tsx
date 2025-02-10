@@ -113,7 +113,6 @@ describe("MyCollectionArtworkGridItem", () => {
         marketPriceInsights: {
           demandRank: 0.91,
         },
-        consignmentSubmission: null,
       }),
     })
 
@@ -134,9 +133,6 @@ describe("MyCollectionArtworkGridItem", () => {
         medium: "artwork medium",
         marketPriceInsights: {
           demandRank: 0.91,
-        },
-        consignmentSubmission: {
-          internalID: "submission-id",
         },
       }),
     })

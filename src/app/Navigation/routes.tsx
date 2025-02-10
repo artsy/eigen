@@ -85,8 +85,6 @@ import {
   MyCollectionScreenQuery,
 } from "app/Scenes/MyCollection/MyCollection"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
-import { RequestForPriceEstimateConfirmationScreen } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/RequestForPriceEstimate/RequestForPriceEstimateConfirmationScreen"
-import { RequestForPriceEstimateScreen } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/RequestForPriceEstimate/RequestForPriceEstimateScreen"
 import {
   MyCollectionArtworkScreen,
   MyCollectionArtworkScreenQuery,
@@ -940,21 +938,6 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [MyCollectionArtworkScreenQuery],
-  },
-  {
-    path: "/my-collection/artwork/:artworkID/price-estimate",
-    name: "RequestForPriceEstimateScreen",
-    Component: RequestForPriceEstimateScreen,
-  },
-  {
-    path: "/my-collection/artwork/:artworkID/price-estimate/success",
-    name: "RequestForPriceEstimateConfirmationScreen",
-    Component: RequestForPriceEstimateConfirmationScreen,
-    options: {
-      screenOptions: {
-        headerShown: false,
-      },
-    },
   },
   {
     path: "/my-collection/artworks/:artworkID/edit",

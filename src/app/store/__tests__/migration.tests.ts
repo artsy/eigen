@@ -1,6 +1,5 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { DEFAULT_VIEW_OPTION } from "app/Scenes/Search/UserPrefsModel"
-import { artworkDetailsEmptyInitialValues } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { CURRENT_APP_VERSION, migrate, Versions } from "app/store/migration"
 import { sanitize } from "app/store/persistence"
@@ -986,9 +985,35 @@ describe("App version Versions.AddProgressiveOnboardingModel", () => {
         toVersion: migrationToTest - 1,
       }) as any
 
-      expect(previousState.artworkSubmission.submission.dirtyArtworkDetailsValues).toEqual(
-        artworkDetailsEmptyInitialValues
-      )
+      expect(previousState.artworkSubmission.submission.dirtyArtworkDetailsValues).toEqual({
+        artist: "",
+        artistId: "",
+        attributionClass: null,
+        category: null,
+        depth: "",
+        dimensionsMetric: "in",
+        editionNumber: "",
+        editionSizeFormatted: "",
+        height: "",
+        location: {
+          city: "",
+          state: "",
+          country: "",
+          countryCode: "",
+          zipCode: "",
+        },
+        medium: "",
+        myCollectionArtworkID: null,
+        provenance: "",
+        source: null,
+        state: "DRAFT",
+        utmMedium: "",
+        utmSource: "",
+        utmTerm: "",
+        width: "",
+        title: "",
+        year: "",
+      })
 
       const migratedState = migrate({
         state: previousState,
@@ -1107,6 +1132,57 @@ describe("App version Versions.AddInfiniteDiscoveryModel", () => {
         "artwork-2",
       ])
       expect(migratedState.infiniteDiscovery.savedArtworksCount).toEqual(0)
+    })
+  })
+
+  describe("App version Versions.RemoveArworkSubmissionModel", () => {
+    it("Remove artworkSubmission model", () => {
+      const migrationToTest = Versions.RemoveArworkSubmissionModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      previousState.artworkSubmission = {
+        submission: {
+          submissionId: "submission-id",
+        },
+      }
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.artworkSubmission).toEqual(undefined)
+    })
+  })
+
+  describe("App version Versions.RemoveRequestPriceEstimateModel", () => {
+    it("remove requestedPriceEstimates model", () => {
+      const migrationToTest = Versions.RemoveRequestPriceEstimateModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      previousState.requestedPriceEstimates = {
+        requestedPriceEstimates: {
+          id: {
+            artworkId: "id",
+            requestedAt: "random-value",
+          },
+        },
+      }
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.requestedPriceEstimates).toEqual(undefined)
     })
   })
 })

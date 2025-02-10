@@ -28,7 +28,6 @@ describe("ArtworkExtraLinks", () => {
       artists: [
         {
           name: "Santa",
-          isConsignable: true,
         },
       ],
     }
@@ -51,7 +50,6 @@ describe("ArtworkExtraLinks", () => {
       artists: [
         {
           name: "Santa",
-          isConsignable: true,
         },
       ],
     }
@@ -81,7 +79,6 @@ describe("ArtworkExtraLinks", () => {
         artists: [
           {
             name: "Santa",
-            isConsignable: false,
           },
         ],
       }

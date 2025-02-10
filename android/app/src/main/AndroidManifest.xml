@@ -132,7 +132,6 @@
                 <data android:pathPrefix="/collection" />
                 <data android:pathPrefix="/collections" />
                 <data android:pathPrefix="/conditions-of-sale" />
-                <data android:pathPrefix="/consign" />
                 <data android:pathPrefix="/conversation" />
                 <data android:pathPrefix="/fair" />
                 <data android:pathPrefix="/fairs" />

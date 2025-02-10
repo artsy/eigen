@@ -25,18 +25,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
 
   const localImage = useLocalImage(displayImage)
 
-  const {
-    artist,
-    artistNames,
-    internalID,
-    medium,
-    mediumType,
-    slug,
-    title,
-    image,
-    date,
-    submissionId,
-  } = artwork
+  const { artist, artistNames, internalID, medium, mediumType, slug, title, image, date } = artwork
 
   // consistent with how sections are derived in InfiniteScrollArtworksGrid
   const screen = useScreenDimensions()
@@ -75,7 +64,6 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           imageURL={(localImage?.path || displayImage?.url) ?? undefined}
           aspectRatio={localImage?.aspectRatio || image?.aspectRatio}
           artworkSlug={slug}
-          artworkSubmissionId={submissionId}
           useRawURL={!!localImage}
           blurhash={showBlurhash ? image?.blurhash : undefined}
         />
@@ -139,7 +127,6 @@ export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContai
         artistNames
         medium
         slug
-        submissionId
         title
         date
         marketPriceInsights {

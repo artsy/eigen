@@ -187,12 +187,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAlertBottomSheet",
   },
-  ARSWAMakeAllDimensionsOptional: {
-    description: "Make all dimensions optional in SWA submit flow",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "ARSWAMakeAllDimensionsOptional",
-  },
   AREnableCollectionsWithoutHeaderImage: {
     description: "Remove the header image from collections",
     readyForRelease: true,

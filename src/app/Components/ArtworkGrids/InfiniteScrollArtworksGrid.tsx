@@ -530,9 +530,6 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
               blurhash
             }
             artistNames
-            consignmentSubmission {
-              state
-            }
             medium
             artist {
               targetSupply {
