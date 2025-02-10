@@ -20,7 +20,6 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.soloader.SoLoader
 import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.google.firebase.messaging.FirebaseMessaging
-import com.microsoft.codepush.react.CodePush
 import com.segment.analytics.Analytics
 import io.sentry.react.RNSentryPackage
 import com.reactnativekeysjsi.KeysModule.getSecureFor

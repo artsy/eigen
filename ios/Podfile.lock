@@ -27,7 +27,6 @@ PODS:
   - AppCenter/Core (5.0.3)
   - AppCenterReactNativeShared (5.0.0):
     - AppCenter/Core (= 5.0.3)
-  - Base64 (1.1.2)
   - boost (1.84.0)
   - braze-react-native-sdk (13.1.1):
     - BrazeKit (~> 11.1.1)
@@ -63,11 +62,6 @@ PODS:
   - CocoaLumberjack (3.7.2):
     - CocoaLumberjack/Core (= 3.7.2)
   - CocoaLumberjack/Core (3.7.2)
-  - CodePush (8.3.1):
-    - Base64 (~> 1.1)
-    - JWT (~> 3.0.0-beta.12)
-    - React-Core
-    - SSZipArchive (~> 2.2.2)
   - CwlCatchException (2.2.1):
     - CwlCatchExceptionSupport (~> 2.2.1)
   - CwlCatchExceptionSupport (2.2.1)
@@ -2199,7 +2193,6 @@ PODS:
   - sovran-react-native (1.1.1):
     - React-Core
   - Specta (2.0.0)
-  - SSZipArchive (2.2.3)
   - Starscream (4.0.8)
   - Stripe (23.30.0):
     - StripeApplePay (= 23.30.0)
@@ -2260,7 +2253,6 @@ DEPENDENCIES:
   - BrazeUI (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeUI.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - CocoaLumberjack (= 3.7.2)
-  - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EASClient (from `../node_modules/expo-eas-client/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
@@ -2480,7 +2472,6 @@ SPEC REPOS:
     - Sift
     - SocketRocket
     - Specta
-    - SSZipArchive
     - Starscream
     - Stripe
     - StripeApplePay
@@ -2512,8 +2503,6 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeUI.podspec
   BVLinearGradient:
     :path: "../node_modules/react-native-linear-gradient"
-  CodePush:
-    :path: "../node_modules/react-native-code-push"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EASClient:
@@ -2791,7 +2780,6 @@ SPEC CHECKSUMS:
   AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
   appcenter-core: 3f5907606dfbf4ffe62cb7798210174c2608a7d9
   AppCenterReactNativeShared: 01df23849b1c3c6eb8c4049f54322635650e98f0
-  Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: 1dca942403ed9342f98334bf4c3621f011aa7946
   braze-react-native-sdk: 578aa5dcc064b0260a288d7b74607cc4b846a7bb
   BrazeKit: bc5feb3d7b899c3961f7238735423b8e603fd48e
@@ -2799,7 +2787,6 @@ SPEC CHECKSUMS:
   BrazeUI: d2a12504bc0183e14cd7255d574f8340807ab45a
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
-  CodePush: 8ba8ea6dbaf817d5e51dbbbd622e15150ba814dd
   CwlCatchException: 7acc161b299a6de7f0a46a6ed741eae2c8b4d75a
   CwlCatchExceptionSupport: 54ccab8d8c78907b57f99717fb19d4cc3bce02dc
   CwlMachBadInstructionHandler: dae4fdd124d45c9910ac240287cc7b898f4502a1
@@ -2974,7 +2961,6 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   sovran-react-native: 5aca73bffa66562f8cd8cbb4b766e4c40da9743b
   Specta: b79d84043684b35ffdc2680df578dc318ec2efc2
-  SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Starscream: 19b5533ddb925208db698f0ac508a100b884a1b9
   Stripe: 9757efc154de1d9615cbea4836d590bc4034d3a4
   stripe-react-native: e5ccbc2b1aba47ce7c1371723e8f9619dc510576
