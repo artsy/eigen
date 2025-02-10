@@ -12,8 +12,15 @@ describe("Registration result component", () => {
   it("renders registration pending properly", () => {
     const view = renderWithWrappersLEGACY(
       <RegistrationResult
-        status={RegistrationStatus.RegistrationStatusPending}
-        needsIdentityVerification={false}
+        navigation={null!}
+        route={
+          {
+            params: {
+              status: RegistrationStatus.RegistrationStatusPending,
+              needsIdentityVerification: false,
+            },
+          } as any
+        }
       />
     )
     expect(extractText(view.root)).toMatch("Registration pending")
@@ -28,8 +35,15 @@ describe("Registration result component", () => {
   it("renders registration pending with an explanation about IDV", () => {
     const view = renderWithWrappersLEGACY(
       <RegistrationResult
-        status={RegistrationStatus.RegistrationStatusPending}
-        needsIdentityVerification
+        navigation={null!}
+        route={
+          {
+            params: {
+              status: RegistrationStatus.RegistrationStatusPending,
+              needsIdentityVerification: true,
+            },
+          } as any
+        }
       />
     )
 
@@ -44,7 +58,10 @@ describe("Registration result component", () => {
 
   it("does not render the icon when the registration status is pending", async () => {
     const view = renderWithWrappersLEGACY(
-      <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} />
+      <RegistrationResult
+        navigation={null!}
+        route={{ params: { status: RegistrationStatus.RegistrationStatusPending } } as any}
+      />
     )
 
     expect((await view.root.findAllByType(Icon20)).length).toEqual(0)
@@ -52,14 +69,20 @@ describe("Registration result component", () => {
 
   it("renders registration complete properly", () => {
     const view = renderWithWrappersLEGACY(
-      <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
+      <RegistrationResult
+        navigation={null!}
+        route={{ params: { status: RegistrationStatus.RegistrationStatusComplete } } as any}
+      />
     )
     expect(extractText(view.root)).toMatch("Registration complete")
   })
 
   it("renders registration error properly", () => {
     const view = renderWithWrappersLEGACY(
-      <RegistrationResult status={RegistrationStatus.RegistrationStatusError} />
+      <RegistrationResult
+        navigation={null!}
+        route={{ params: { status: RegistrationStatus.RegistrationStatusError } } as any}
+      />
     )
 
     expect(extractText(view.root)).toMatch("An error occurred")
@@ -69,7 +92,10 @@ describe("Registration result component", () => {
 
   it("renders an error screen when the status is a network error", () => {
     const view = renderWithWrappersLEGACY(
-      <RegistrationResult status={RegistrationStatus.RegistrationStatusNetworkError} />
+      <RegistrationResult
+        navigation={null!}
+        route={{ params: { status: RegistrationStatus.RegistrationStatusNetworkError } } as any}
+      />
     )
 
     expect(extractText(view.root)).toMatch("An error occurred")
@@ -81,7 +107,10 @@ describe("Registration result component", () => {
     Linking.openURL = jest.fn()
 
     const view = renderWithWrappersLEGACY(
-      <RegistrationResult status={RegistrationStatus.RegistrationStatusError} />
+      <RegistrationResult
+        navigation={null!}
+        route={{ params: { status: RegistrationStatus.RegistrationStatusError } } as any}
+      />
     )
 
     const linkText = await view.root.findByType(LinkText)
@@ -94,7 +123,10 @@ describe("Registration result component", () => {
       legacyFakeTimers: true,
     })
     renderWithWrappers(
-      <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
+      <RegistrationResult
+        navigation={null!}
+        route={{ params: { status: RegistrationStatus.RegistrationStatusComplete } } as any}
+      />
     )
 
     fireEvent.press(screen.getByTestId("continue-button"))
