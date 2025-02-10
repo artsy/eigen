@@ -1,9 +1,12 @@
 import { Flex, Popover, Text } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
-import { GlobalStore } from "app/store/GlobalStore"
+import { getCurrentEmissionState, GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Platform } from "react-native"
+
+// We don't want to show the onboarding popover on the first launch
+const MIN_LAUNCH_COUNT = 2
 
 export const ProgressiveOnboardingLongPressContextMenu: React.FC = ({ children }) => {
   const enableLongPressContextMenuOnboarding = useFeatureFlag(
@@ -15,6 +18,7 @@ export const ProgressiveOnboardingLongPressContextMenu: React.FC = ({ children }
       : "AREnableArtworkCardContextMenuAndroid"
   )
 
+  const launchCount = getCurrentEmissionState().launchCount
   const {
     isDismissed,
     sessionState: { isReady },
@@ -23,7 +27,10 @@ export const ProgressiveOnboardingLongPressContextMenu: React.FC = ({ children }
   const isFocused = useIsFocused()
 
   const isDisplayable =
-    isReady && !isDismissed("long-press-artwork-context-menu").status && isFocused
+    launchCount >= MIN_LAUNCH_COUNT &&
+    isReady &&
+    !isDismissed("long-press-artwork-context-menu").status &&
+    isFocused
   const { isActive, clearActivePopover } = useSetActivePopover(isDisplayable)
 
   const handleDismiss = () => {
