@@ -1,10 +1,9 @@
 import { Box, Button, Checkbox, LinkText, Text } from "@artsy/palette-mobile"
+import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import {
   BidderPositionQuery,
   BidderPositionQuery$data,
 } from "__generated__/BidderPositionQuery.graphql"
-import { ConfirmBid_me$key } from "__generated__/ConfirmBid_me.graphql"
-import { ConfirmBid_saleArtwork$key } from "__generated__/ConfirmBid_saleArtwork.graphql"
 import {
   useCreateBidderPositionMutation,
   useCreateBidderPositionMutation$data,
@@ -15,16 +14,15 @@ import { PaymentInfo } from "app/Components/Bidding/Components/PaymentInfo"
 import { Timer } from "app/Components/Bidding/Components/Timer"
 import { BidFlowContextStore } from "app/Components/Bidding/Context/BidFlowContextProvider"
 import { Flex } from "app/Components/Bidding/Elements/Flex"
-import { BidResult } from "app/Components/Bidding/Screens/BidResult"
 import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
 import { PriceSummary } from "app/Components/Bidding/Screens/ConfirmBid/PriceSummary"
+import { BiddingNavigationStackParams } from "app/Components/Containers/BiddingNavigator"
 import { Modal } from "app/Components/Modal"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { partnerName } from "app/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
 import { navigate } from "app/system/navigation/navigate"
 import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/AuctionSocketContext"
-import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { useCreateBidderPosition } from "app/utils/mutations/useCreateBidderPosition"
 import { useCreateCreditCard } from "app/utils/mutations/useCreateCreditCard"
 import { useUpdateUserPhoneNumber } from "app/utils/mutations/useUpdateUserPhoneNumber"
@@ -35,7 +33,7 @@ import { graphql, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { PayloadError } from "relay-runtime"
 
-type BidderPositionResult =
+export type BidderPositionResult =
   | NonNullable<useCreateBidderPositionMutation$data["createBidderPosition"]>["result"]
   | NonNullable<BidderPositionQuery$data["me"]>["bidderPosition"]
 
@@ -45,20 +43,17 @@ const resultForNetworkError = {
   messageHeader: "An error occurred",
   messageDescriptionMD:
     "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
+  position: null,
+  status: "ERROR",
 }
 
-export interface ConfirmBidProps {
-  saleArtwork: ConfirmBid_saleArtwork$key
-  me: ConfirmBid_me$key
-  navigator?: NavigatorIOS
-  refreshSaleArtwork?: () => void
-}
+type ConfirmBidProps = NativeStackScreenProps<BiddingNavigationStackParams, "ConfirmBid">
 
 export const ConfirmBid: React.FC<ConfirmBidProps> = ({
-  me,
-  saleArtwork,
-  refreshSaleArtwork,
-  navigator,
+  navigation,
+  route: {
+    params: { me, saleArtwork, refreshSaleArtwork },
+  },
 }) => {
   const pollCount = useRef(0)
   const { trackEvent } = useTracking()
@@ -252,17 +247,12 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
     bidderPositionResult?: BidderPositionResult,
     error?: Error | ReadonlyArray<PayloadError> | null
   ) => {
-    if (error) {
+    if (error || !bidderPositionResult) {
       console.error("ConfirmBid.tsx: navigateToBidScreen", error)
 
-      navigator?.push({
-        component: BidResult,
-        title: "",
-        passProps: {
-          saleArtwork: saleArtworkData,
-          bidderPositionResult: resultForNetworkError,
-          biddingEndAt,
-        },
+      navigation.navigate("BidResult", {
+        saleArtwork: saleArtworkData,
+        bidderPositionResult: resultForNetworkError,
       })
     } else {
       LegacyNativeModules.ARNotificationsManager.postNotificationName(
@@ -279,16 +269,11 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
         }
       )
 
-      navigator?.push({
-        component: BidResult,
-        title: "",
-        passProps: {
-          saleArtwork: saleArtworkData,
-          bidderPositionResult,
-          refreshBidderInfo,
-          refreshSaleArtwork,
-          biddingEndAt,
-        },
+      navigation.navigate("BidResult", {
+        saleArtwork: saleArtworkData,
+        bidderPositionResult,
+        refreshBidderInfo,
+        refreshSaleArtwork,
       })
     }
   }
@@ -305,7 +290,7 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
         },
       }}
     >
-      <NavigationHeader onLeftButtonPress={() => navigator?.pop()}>
+      <NavigationHeader onLeftButtonPress={() => navigation.goBack()}>
         Confirm your bid
       </NavigationHeader>
 
@@ -362,12 +347,12 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
           <BidInfoRow
             label="Max bid"
             value={selectedBid.display ?? undefined}
-            onPress={() => (mutationInProgress ? null : navigator?.pop())}
+            onPress={() => (mutationInProgress ? null : navigation.goBack())}
           />
 
           {requiresPaymentInformation ? (
             <PaymentInfo
-              navigator={mutationInProgress ? undefined : navigator}
+              navigator={mutationInProgress ? undefined : navigation}
               onCreditCardAdded={(token, address) => {
                 setCreditCardToken(token)
                 setBillingAddress(address)

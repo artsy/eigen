@@ -1,31 +1,32 @@
 import { Button, Flex, useScreenDimensions } from "@artsy/palette-mobile"
+import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { SelectMaxBidQuery } from "__generated__/SelectMaxBidQuery.graphql"
 import { SelectMaxBid_me$key } from "__generated__/SelectMaxBid_me.graphql"
 import { SelectMaxBid_saleArtwork$key } from "__generated__/SelectMaxBid_saleArtwork.graphql"
 import { BidFlowContextStore } from "app/Components/Bidding/Context/BidFlowContextProvider"
+import { BiddingNavigationStackParams } from "app/Components/Containers/BiddingNavigator"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { Select } from "app/Components/Select"
 import { dismissModal } from "app/system/navigation/navigate"
-import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
+
 import { NoFallback, SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { compact } from "lodash"
 import React, { useEffect, useMemo } from "react"
 import { graphql, useFragment, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
-import { ConfirmBid } from "./ConfirmBid"
 
-interface SelectMaxBidProps {
+interface SelectMaxBidProps
+  extends NativeStackScreenProps<BiddingNavigationStackParams, "SelectMaxBid"> {
   saleArtwork: SelectMaxBid_saleArtwork$key
   me: SelectMaxBid_me$key
-  navigator: NavigatorIOS
 }
 
-export const SelectMaxBid: React.FC<SelectMaxBidProps> = ({ navigator, me, saleArtwork }) => {
-  const selectedBidIndex = BidFlowContextStore.useStoreState((state) => state.selectedBidIndex)
-  const bids = BidFlowContextStore.useStoreState((state) => state.saleArtworkIncrements)
+export const SelectMaxBid: React.FC<SelectMaxBidProps> = ({ me, saleArtwork, navigation }) => {
+  const setBids = BidFlowContextStore.useStoreActions((actions) => actions.setSaleArtworkIncrements)
   const setSelectedBidIndex = BidFlowContextStore.useStoreActions(
     (actions) => actions.setSelectedBidIndex
   )
-  const setBids = BidFlowContextStore.useStoreActions((actions) => actions.setSaleArtworkIncrements)
+  const bids = BidFlowContextStore.useStoreState((state) => state.saleArtworkIncrements)
+  const selectedBidIndex = BidFlowContextStore.useStoreState((state) => state.selectedBidIndex)
 
   const { height } = useScreenDimensions()
 
@@ -33,6 +34,7 @@ export const SelectMaxBid: React.FC<SelectMaxBidProps> = ({ navigator, me, saleA
     selectMaxBidSaleArtworkFragment,
     saleArtwork
   )
+
   const meData = useFragment(selectMaxBidMeFragment, me)
 
   const handleRefresh = () => {
@@ -46,13 +48,10 @@ export const SelectMaxBid: React.FC<SelectMaxBidProps> = ({ navigator, me, saleA
   }, [saleArtworkData])
 
   const handleNext = () => {
-    navigator.push({
-      component: ConfirmBid,
-      passProps: {
-        me: meData,
-        saleArtwork: saleArtworkData,
-        refreshSaleArtwork: handleRefresh,
-      },
+    navigation.navigate("ConfirmBid", {
+      me: meData,
+      saleArtwork: saleArtworkData,
+      refreshSaleArtwork: handleRefresh,
     })
   }
 
@@ -80,17 +79,13 @@ export const SelectMaxBid: React.FC<SelectMaxBidProps> = ({ navigator, me, saleA
   )
 }
 
-interface SelectMaxBidQRProps {
-  artworkID: string
-  saleID: string
-  navigator: NavigatorIOS
-}
-
-export const SelectMaxBidQueryRenderer = withSuspense<SelectMaxBidQRProps>({
-  Component: (props) => {
+export const SelectMaxBidQueryRenderer = withSuspense<
+  NativeStackScreenProps<BiddingNavigationStackParams, "SelectMaxBid">
+>({
+  Component: (screenProps) => {
     const initialData = useLazyLoadQuery<SelectMaxBidQuery>(selectMaxBidQuery, {
-      artworkID: props.artworkID,
-      saleID: props.saleID,
+      artworkID: screenProps.route.params.artworkID,
+      saleID: screenProps.route.params.saleID,
     })
 
     if (!initialData || !initialData.artwork?.saleArtwork || !initialData.me) {
@@ -110,7 +105,7 @@ export const SelectMaxBidQueryRenderer = withSuspense<SelectMaxBidQRProps>({
         <SelectMaxBid
           me={initialData.me}
           saleArtwork={initialData.artwork.saleArtwork}
-          {...props}
+          {...screenProps}
         />
       </>
     )
