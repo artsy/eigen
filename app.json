@@ -1,7 +1,5 @@
 {
   "appName": "eigen",
   "version": "8.65.0",
-  "isAndroidBeta": false,
-  "codePushReleaseName": "none",
-  "codePushDist": "none"
+  "isAndroidBeta": false
 }
