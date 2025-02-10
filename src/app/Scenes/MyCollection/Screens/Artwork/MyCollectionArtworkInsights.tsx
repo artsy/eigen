@@ -52,7 +52,6 @@ const artworkFragment = graphql`
         isTargetSupply
       }
     }
-    ...RequestForPriceEstimateBanner_artwork
     ...MyCollectionArtworkDemandIndex_artwork
     ...MyCollectionArtworkArtistMarket_artwork
     ...MyCollectionArtworkComparableWorks_artwork
@@ -60,9 +59,6 @@ const artworkFragment = graphql`
     marketPriceInsights {
       ...MyCollectionArtworkArtistMarket_artworkPriceInsights
       ...MyCollectionArtworkDemandIndex_artworkPriceInsights
-    }
-    consignmentSubmission {
-      state
     }
   }
 `

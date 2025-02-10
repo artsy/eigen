@@ -28,7 +28,6 @@ export const ArtworkExtraLinksFragmentContainer = createFragmentContainer(Artwor
         }
       }
       artists {
-        isConsignable
         name
       }
       artist {

@@ -87,10 +87,6 @@ const myCollectionArtworkHeaderFragment = graphql`
     internalID
     slug
     title
-    consignmentSubmission {
-      state
-    }
-    submissionId
   }
 `
 

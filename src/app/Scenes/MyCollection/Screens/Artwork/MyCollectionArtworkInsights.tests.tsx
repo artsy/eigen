@@ -16,9 +16,6 @@ describe("MyCollectionArtworkInsights", () => {
       query MyCollectionArtworkInsightsTestsQuery @relay_test_operation {
         artwork(id: "some-artwork-id") {
           ...MyCollectionArtworkInsights_artwork
-          consignmentSubmission {
-            state
-          }
         }
       }
     `,
@@ -50,32 +47,6 @@ describe("MyCollectionArtworkInsights", () => {
     // Artwork Comparable Works
 
     expect(screen.getByText("Comparable Works")).toBeTruthy()
-  })
-
-  describe("Conditional Display of RequestForPriceEstimateBanner", () => {
-    it("does not display RequestForPriceEstimateBanner when Artist is not P1", () => {
-      renderWithRelay({
-        Query: () => ({
-          artwork: mockArtwork,
-          marketPriceInsights: mockMarketPriceInsightsForHighDemandIndex,
-        }),
-      })
-      expect(screen.queryByTestId("request-price-estimate-button")).toBeNull()
-    })
-
-    it("does not display when artwork is submitted", () => {
-      renderWithRelay({
-        Query: () => ({
-          artwork: {
-            ...mockArtworkForP1Artist,
-            consignmentsSubmission: { displayText: "Consignment" },
-          },
-          marketPriceInsights: mockMarketPriceInsightsForHighDemandIndex,
-        }),
-      })
-
-      expect(screen.queryByTestId("request-price-estimate-button")).toBeNull()
-    })
   })
 })
 
@@ -129,33 +100,4 @@ const mockArtwork = {
     ],
   },
   marketPriceInsights: mockMarketPriceInsights,
-}
-
-const mockMarketPriceInsightsForHighDemandIndex = {
-  ...mockMarketPriceInsights,
-  demandRank: 0.95,
-}
-
-const mockArtworkForP1Artist = {
-  ...mockArtwork,
-  ...{
-    comparableAuctionResults: {
-      edges: [
-        {
-          ...mockArtwork.comparableAuctionResults.edges[0],
-          ...{
-            node: {
-              ...mockArtwork.comparableAuctionResults.edges[0].node,
-              artist: {
-                name: "Takashi Murakami",
-                targetSupply: {
-                  isTargetSupply: true,
-                },
-              },
-            },
-          },
-        },
-      ],
-    },
-  },
 }
