@@ -1,5 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { BidResult_saleArtwork$data } from "__generated__/BidResult_saleArtwork.graphql"
+import { BidFlowContextProvider } from "app/Components/Bidding/Context/BidFlowContextProvider"
 import { BidderPositionResult } from "app/Components/Bidding/types"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -21,12 +22,14 @@ describe("BidResult component", () => {
 
   const { renderWithRelay } = setupTestWrapper({
     Component: (props: any) => (
-      <BidResult
-        refreshBidderInfo={refreshBidderInfoMock}
-        refreshSaleArtwork={refreshSaleArtworkInfoMock}
-        navigator={mockNavigator}
-        {...props}
-      />
+      <BidFlowContextProvider>
+        <BidResult
+          refreshBidderInfo={refreshBidderInfoMock}
+          refreshSaleArtwork={refreshSaleArtworkInfoMock}
+          navigator={mockNavigator}
+          {...props}
+        />
+      </BidFlowContextProvider>
     ),
     query: graphql`
       query BidResultTestsQuery @relay_test_operation {
