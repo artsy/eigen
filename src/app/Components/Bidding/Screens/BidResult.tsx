@@ -1,13 +1,13 @@
 import { Button, Flex, Text } from "@artsy/palette-mobile"
-import { BidResult_saleArtwork$key } from "__generated__/BidResult_saleArtwork.graphql"
+import { StackActions } from "@react-navigation/native"
+import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { Timer } from "app/Components/Bidding/Components/Timer"
 import { BidFlowContextStore } from "app/Components/Bidding/Context/BidFlowContextProvider"
-import { BidderPositionResult } from "app/Components/Bidding/types"
+import { BiddingNavigationStackParams } from "app/Components/Containers/BiddingNavigator"
 import { Markdown } from "app/Components/Markdown"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
-import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import React from "react"
 import { Image, ImageRequireSource } from "react-native"
@@ -15,13 +15,7 @@ import { graphql, useFragment } from "react-relay"
 
 const SHOW_TIMER_STATUSES = ["WINNING", "OUTBID", "RESERVE_NOT_MET"]
 
-interface BidResultProps {
-  saleArtwork: BidResult_saleArtwork$key
-  bidderPositionResult: BidderPositionResult
-  navigator: NavigatorIOS
-  refreshBidderInfo?: () => void
-  refreshSaleArtwork?: () => void
-}
+type BidResultProps = NativeStackScreenProps<BiddingNavigationStackParams, "BidResult">
 
 const POLLING_TIMEOUT_MESSAGES = {
   title: "Bid processing",
@@ -38,13 +32,15 @@ const ICONS: Record<string, ImageRequireSource> = {
 }
 
 export const BidResult: React.FC<BidResultProps> = ({
-  bidderPositionResult,
-  saleArtwork,
-  navigator,
-  refreshBidderInfo,
-  refreshSaleArtwork,
+  navigation,
+  route: {
+    params: { bidderPositionResult, saleArtwork, refreshBidderInfo, refreshSaleArtwork },
+  },
 }) => {
   const biddingEndAt = BidFlowContextStore.useStoreState((state) => state.biddingEndAt)
+  const setSelectedBidIndex = BidFlowContextStore.useStoreActions(
+    (actions) => actions.setSelectedBidIndex
+  )
   const saleArtworkData = useFragment(bidResultFragment, saleArtwork)
   const { status, messageHeader, messageDescriptionMD } = bidderPositionResult
 
@@ -71,7 +67,8 @@ export const BidResult: React.FC<BidResultProps> = ({
       refreshSaleArtwork()
     }
 
-    navigator.popToTop()
+    setSelectedBidIndex(0)
+    navigation.dispatch(StackActions.popToTop())
   }
 
   const onContinue = () => {
@@ -104,7 +101,9 @@ export const BidResult: React.FC<BidResultProps> = ({
 
           {status !== "WINNING" && (
             <Markdown mb={6}>
-              {status === "PENDING" ? POLLING_TIMEOUT_MESSAGES.description : messageDescriptionMD}
+              {status === "PENDING"
+                ? POLLING_TIMEOUT_MESSAGES.description
+                : messageDescriptionMD ?? ""}
             </Markdown>
           )}
 
