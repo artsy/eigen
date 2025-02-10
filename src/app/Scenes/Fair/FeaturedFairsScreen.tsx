@@ -117,6 +117,7 @@ const viewerFragment = graphql`
   }
 `
 
+// TODO: Update query to use new featuredFairsConnection
 export const featuredFairsScreenQuery = graphql`
   query FeaturedFairsScreenQuery {
     viewer {
