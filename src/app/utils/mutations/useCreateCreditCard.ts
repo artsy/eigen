@@ -17,7 +17,9 @@ export const useCreateCreditCard = () => {
           }
           ... on CreditCardMutationFailure {
             mutationError {
+              type
               message
+              detail
             }
           }
         }

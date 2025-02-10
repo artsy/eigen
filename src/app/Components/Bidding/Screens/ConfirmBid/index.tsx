@@ -138,6 +138,15 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
 
         updateUserPhoneNumber({
           variables: { input: { phone: billingAddress?.phoneNumber } },
+          onCompleted: (_, errors) => {
+            if (errors && errors.length) {
+              console.error("ConfirmBid.tsx: updateUserPhoneNumber", errors)
+              setErrorMessage(
+                "There was a problem processing your information. Check your payment details and try again."
+              )
+              setErrorModalVisible(true)
+            }
+          },
           onError: (errors) => {
             console.error("ConfirmBid.tsx: updateUserPhoneNumber", errors)
           },
@@ -147,11 +156,15 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
           variables: { input: { token: creditCardToken.id } },
           onError: (errors) => {
             console.error("ConfirmBid.tsx: createCreditCard", errors)
+            navigateToBidScreen(undefined, errors)
           },
           onCompleted: (results, error) => {
             const mutationError = results?.createCreditCard?.creditCardOrError?.mutationError
-            if (mutationError?.message) {
-              setErrorMessage(mutationError.message)
+            if (mutationError) {
+              setErrorMessage(
+                mutationError.detail ||
+                  "There was a problem processing your information. Check your payment details and try again."
+              )
               setErrorModalVisible(true)
               console.error("ConfirmBid.tsx: createCreditCard", mutationError)
             } else if (error) {
@@ -186,6 +199,7 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
           }
         },
         onError: (errors) => {
+          console.error("ConfirmBid.tsx: createBidderPosition", errors)
           navigateToBidScreen(undefined, errors)
         },
       })
