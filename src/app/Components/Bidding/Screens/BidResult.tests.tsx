@@ -1,3 +1,4 @@
+import { StackActions } from "@react-navigation/native"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { BidResult_saleArtwork$data } from "__generated__/BidResult_saleArtwork.graphql"
 import { BidFlowContextProvider } from "app/Components/Bidding/Context/BidFlowContextProvider"
@@ -8,8 +9,8 @@ import { graphql } from "react-relay"
 import { BidResult } from "./BidResult"
 
 describe("BidResult component", () => {
-  const popToTop = jest.fn()
-  const mockNavigator = { popToTop }
+  const dispatch = jest.fn()
+  const mockNavigator = { dispatch }
   const refreshBidderInfoMock = jest.fn()
   const refreshSaleArtworkInfoMock = jest.fn()
 
@@ -24,10 +25,16 @@ describe("BidResult component", () => {
     Component: (props: any) => (
       <BidFlowContextProvider>
         <BidResult
-          refreshBidderInfo={refreshBidderInfoMock}
-          refreshSaleArtwork={refreshSaleArtworkInfoMock}
-          navigator={mockNavigator}
-          {...props}
+          navigation={mockNavigator as any}
+          route={
+            {
+              params: {
+                refreshBidderInfo: refreshBidderInfoMock,
+                refreshSaleArtwork: refreshSaleArtworkInfoMock,
+                ...props,
+              },
+            } as any
+          }
         />
       </BidFlowContextProvider>
     ),
@@ -73,7 +80,7 @@ describe("BidResult component", () => {
 
       expect(refreshBidderInfoMock).toHaveBeenCalled()
       expect(refreshSaleArtworkInfoMock).toHaveBeenCalled()
-      expect(popToTop).toHaveBeenCalled()
+      expect(dispatch).toHaveBeenCalledWith(StackActions.popToTop())
     })
   })
 
