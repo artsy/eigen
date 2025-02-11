@@ -255,7 +255,7 @@ static ARAppDelegate *_sharedInstance = nil;
 }
 
 - (NSURL *)bundleURL
-{
+{   
 #if DEBUG
     return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@".expo/.virtual-metro-entry"];
 #else

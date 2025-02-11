@@ -254,7 +254,6 @@
     "@typescript-eslint/eslint-plugin": "5.57.0",
     "@typescript-eslint/parser": "5.57.0",
     "@typescript-eslint/utils": "5.51.0",
-    "appcenter": "5.0.0",
     "argparse": "2.0.1",
     "awesome-typescript-loader": "3.4.1",
     "babel-jest": "^29.6.3",
