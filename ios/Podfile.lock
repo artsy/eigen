@@ -22,12 +22,6 @@ PODS:
   - AppAuth/Core (1.7.3)
   - AppAuth/ExternalUserAgent (1.7.3):
     - AppAuth/Core
-  - appcenter-core (5.0.0):
-    - AppCenterReactNativeShared (~> 5.0)
-    - React-Core
-  - AppCenter/Core (5.0.3)
-  - AppCenterReactNativeShared (5.0.0):
-    - AppCenter/Core (= 5.0.3)
   - boost (1.84.0)
   - braze-react-native-sdk (13.1.1):
     - BrazeKit (~> 11.1.1)
@@ -2205,7 +2199,6 @@ DEPENDENCIES:
   - AFNetworking/NSURLConnection (= 2.7.0)
   - AFNetworking/NSURLSession (= 2.7.0)
   - Analytics (= 4.1.8)
-  - appcenter-core (from `../node_modules/appcenter`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - "braze-react-native-sdk (from `../node_modules/@braze/react-native-sdk`)"
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
@@ -2364,8 +2357,6 @@ SPEC REPOS:
     - AFNetworking
     - Analytics
     - AppAuth
-    - AppCenter
-    - AppCenterReactNativeShared
     - BrazeKit
     - BrazeLocation
     - BrazeUI
@@ -2444,8 +2435,6 @@ SPEC REPOS:
     - "XCTest+OHHTTPStubSuiteCleanUp"
 
 EXTERNAL SOURCES:
-  appcenter-core:
-    :path: "../node_modules/appcenter"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   braze-react-native-sdk:
@@ -2697,9 +2686,6 @@ SPEC CHECKSUMS:
   AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
   Analytics: 9655e0e1c71ea98107cfcb2b14891168acc6c6c9
   AppAuth: a13994980c1ec792f7e2e665acd4d4aa6be43240
-  AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
-  appcenter-core: 3f5907606dfbf4ffe62cb7798210174c2608a7d9
-  AppCenterReactNativeShared: 01df23849b1c3c6eb8c4049f54322635650e98f0
   boost: 1dca942403ed9342f98334bf4c3621f011aa7946
   braze-react-native-sdk: 578aa5dcc064b0260a288d7b74607cc4b846a7bb
   BrazeKit: 879da791a0f4e247846a06c6de95f8b93f4579df
