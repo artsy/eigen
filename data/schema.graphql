@@ -14371,6 +14371,9 @@ type NavigationPill {
   # Link URL
   href: String!
 
+  # Icon file name
+  icon: String
+
   # The context module for analytics
   ownerType: String!
 
