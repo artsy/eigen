@@ -6,6 +6,8 @@ source 'https://github.com/artsy/Specs.git'
 require 'dotenv'
 Dotenv.load('../.env.shared')
 
+require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
+
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
@@ -18,9 +20,6 @@ platform :ios, '16.6'
 inhibit_all_warnings! # ignore all warnings from all pods
 
 prepare_react_native_project!
-
-
-plugin 'cocoapods-patch'
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -61,6 +60,7 @@ end
 
 
 target 'Artsy' do
+  use_expo_modules!
 
   config = use_native_modules!
 
@@ -166,6 +166,31 @@ target 'Artsy' do
             config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
             config.build_settings["IPHONEOS_DEPLOYMENT_TARGET"] = "16.6"
         end
+    end
+
+    # TODO:
+    # * ORStackView: Move Laura's changes into master and update
+    # * Send PRs for the rest
+    %w[
+      Pods/ORStackView/Classes/ios/ORStackView.h
+    ].flat_map { |x| Dir.glob(x) }.each do |header|
+      system("chmod +w #{header}")
+      addition = "#import <UIKit/UIKit.h>\n"
+      contents = File.read(header)
+      next if contents.include?(addition)
+
+      File.open(header, 'w') do |file|
+        file.puts addition
+        file.puts contents
+      end
+    end
+  end
+
+  post_integrate do |installer|
+    begin
+      expo_patch_react_imports!(installer)
+    rescue => e
+      Pod::UI.warn e
     end
   end
 end
