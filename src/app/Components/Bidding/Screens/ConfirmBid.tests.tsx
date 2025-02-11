@@ -19,9 +19,6 @@ import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/B
 import { Address } from "app/Components/Bidding/types"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import * as navigation from "app/system/navigation/navigate"
-import NavigatorIOS, {
-  NavigatorIOSPushArgs,
-} from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { useCreateBidderPosition } from "app/utils/mutations/useCreateBidderPosition"
 import { useCreateCreditCard } from "app/utils/mutations/useCreateCreditCard"
 import { useUpdateUserPhoneNumber } from "app/utils/mutations/useUpdateUserPhoneNumber"
@@ -29,8 +26,6 @@ import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { merge } from "lodash"
 import relay, { graphql } from "react-relay"
-import { BidResult } from "./BidResult"
-import { CreditCardForm } from "./CreditCardForm"
 
 jest.mock("app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () => ({
   bidderPositionQuery: jest.fn(),
@@ -60,8 +55,7 @@ describe("ConfirmBid", () => {
   const commitMutationMock = (fn?: typeof relay.commitMutation) =>
     jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
 
-  let nextStep: NavigatorIOSPushArgs | null
-  const mockNavigator: Partial<NavigatorIOS> = { push: (route) => (nextStep = route) }
+  const mockNavigator = { navigate: jest.fn(), goBack: jest.fn() }
 
   const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager
     .postNotificationName as jest.Mock
@@ -93,10 +87,10 @@ describe("ConfirmBid", () => {
           }}
         >
           <ConfirmBid
-            navigator={mockNavigator}
-            {...props}
-            me={props.me}
-            saleArtwork={props.artwork.saleArtwork}
+            navigation={mockNavigator as any}
+            route={
+              { params: { ...props, saleArtwork: props.artwork.saleArtwork, me: props.me } } as any
+            }
           />
           <MockStoreInstance />
         </BidFlowContextProvider>
@@ -118,7 +112,6 @@ describe("ConfirmBid", () => {
   })
 
   beforeEach(() => {
-    nextStep = null // reset nextStep between tests
     // Because of how we mock metaphysics, the mocked value from one test can bleed into another.
     bidderPositionQueryMock.mockReset()
 
@@ -381,13 +374,15 @@ describe("ConfirmBid", () => {
 
           fireEvent.press(screen.getByTestId("bid-button"))
 
-          expect(nextStep?.component).toEqual(BidResult)
-          expect(nextStep?.passProps).toEqual(
+          expect(mockNavigator.navigate).toHaveBeenCalledWith(
+            "BidResult",
             expect.objectContaining({
               bidderPositionResult: {
                 messageHeader: "An error occurred",
                 messageDescriptionMD:
                   "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
+                position: null,
+                status: "ERROR",
               },
             })
           )
@@ -414,15 +409,17 @@ describe("ConfirmBid", () => {
           fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
           fireEvent.press(screen.getByTestId("bid-button"))
 
-          await waitFor(() => !!nextStep)
+          await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
-          expect(nextStep?.component).toEqual(BidResult)
-          expect(nextStep?.passProps).toEqual(
+          expect(mockNavigator.navigate).toHaveBeenCalledWith(
+            "BidResult",
             expect.objectContaining({
               bidderPositionResult: {
                 messageHeader: "An error occurred",
                 messageDescriptionMD:
                   "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
+                position: null,
+                status: "ERROR",
               },
             })
           )
@@ -433,12 +430,10 @@ describe("ConfirmBid", () => {
 
   describe("editing bid amount", () => {
     it("allows you to go to the max bid edit screen and select a new max bid", () => {
-      const navigator = { pop: jest.fn() }
-
-      renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding }, { navigator })
+      renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
 
       fireEvent.press(screen.getByText("Edit"))
-      expect(navigator.pop).toHaveBeenCalled()
+      expect(mockNavigator.goBack).toHaveBeenCalled()
 
       expect(mockStore.getState().selectedBidIndex).toEqual(0)
       expect(mockStore.getState().selectedBid).toEqual({ cents: 450000, display: "$45,000" })
@@ -480,10 +475,10 @@ describe("ConfirmBid", () => {
 
         fireEvent.press(screen.getByTestId("bid-button"))
 
-        await waitFor(() => !!nextStep)
+        await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
-        expect(nextStep?.component).toEqual(BidResult)
-        expect(nextStep?.passProps).toEqual(
+        expect(mockNavigator.navigate).toHaveBeenCalledWith(
+          "BidResult",
           expect.objectContaining({
             bidderPositionResult:
               mockRequestResponses.pollingForBid.highestBidder.me!.bidderPosition,
@@ -511,10 +506,10 @@ describe("ConfirmBid", () => {
         )
 
         fireEvent.press(screen.getByTestId("bid-button"))
-        await waitFor(() => !!nextStep)
+        await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
-        expect(nextStep?.component).toEqual(BidResult)
-        expect(nextStep?.passProps).toEqual(
+        expect(mockNavigator.navigate).toHaveBeenCalledWith(
+          "BidResult",
           expect.objectContaining({
             bidderPositionResult: mockRequestResponses.pollingForBid.pending.me!.bidderPosition,
           })
@@ -541,10 +536,10 @@ describe("ConfirmBid", () => {
         )
 
         fireEvent.press(screen.getByTestId("bid-button"))
-        await waitFor(() => !!nextStep)
+        await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
-        expect(nextStep?.component).toEqual(BidResult)
-        expect(nextStep?.passProps).toEqual(
+        expect(mockNavigator.navigate).toHaveBeenCalledWith(
+          "BidResult",
           expect.objectContaining({
             bidderPositionResult:
               mockRequestResponses.pollingForBid.highestBidder.me!.bidderPosition,
@@ -572,10 +567,10 @@ describe("ConfirmBid", () => {
         )
 
         fireEvent.press(screen.getByTestId("bid-button"))
-        await waitFor(() => !!nextStep)
+        await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
-        expect(nextStep?.component).toEqual(BidResult)
-        expect(nextStep?.passProps).toEqual(
+        expect(mockNavigator.navigate).toHaveBeenCalledWith(
+          "BidResult",
           expect.objectContaining({
             bidderPositionResult: mockRequestResponses.pollingForBid.outbid.me!.bidderPosition,
           })
@@ -602,10 +597,10 @@ describe("ConfirmBid", () => {
         )
 
         fireEvent.press(screen.getByTestId("bid-button"))
-        await waitFor(() => !!nextStep)
+        await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
-        expect(nextStep?.component).toEqual(BidResult)
-        expect(nextStep?.passProps).toEqual(
+        expect(mockNavigator.navigate).toHaveBeenCalledWith(
+          "BidResult",
           expect.objectContaining({
             bidderPositionResult:
               mockRequestResponses.pollingForBid.reserveNotMet.me!.bidderPosition,
@@ -614,7 +609,6 @@ describe("ConfirmBid", () => {
       })
 
       it("updates the main auction screen", async () => {
-        const navigator = { push: jest.fn() }
         const completedCreateBidderPositionMutation = jest
           .fn()
           .mockImplementation(({ onCompleted }) => {
@@ -622,10 +616,10 @@ describe("ConfirmBid", () => {
           })
         useCreateBidderPositionMock.mockReturnValue([completedCreateBidderPositionMutation, false])
 
-        renderWithRelay(
-          { Me: () => ({ hasQualifiedCreditCards: true }), SaleArtwork: () => saleArtwork },
-          { navigator }
-        )
+        renderWithRelay({
+          Me: () => ({ hasQualifiedCreditCards: true }),
+          SaleArtwork: () => saleArtwork,
+        })
 
         fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
 
@@ -648,9 +642,9 @@ describe("ConfirmBid", () => {
         })
 
         // navigates to bid result screen
-        expect(navigator.push).toHaveBeenCalledWith({
-          component: BidResult,
-          passProps: expect.objectContaining({
+        expect(mockNavigator.navigate).toHaveBeenCalledWith(
+          "BidResult",
+          expect.objectContaining({
             bidderPositionResult: {
               position: {
                 internalID: "bidder-position-id-from-polling",
@@ -685,9 +679,8 @@ describe("ConfirmBid", () => {
                 slug: "best-art-sale-in-town",
               },
             }),
-          }),
-          title: "",
-        })
+          })
+        )
       })
     })
 
@@ -709,10 +702,10 @@ describe("ConfirmBid", () => {
 
         fireEvent.press(screen.getByTestId("bid-button"))
 
-        await waitFor(() => !!nextStep)
+        await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
-        expect(nextStep?.component).toEqual(BidResult)
-        expect(nextStep?.passProps).toEqual(
+        expect(mockNavigator.navigate).toHaveBeenCalledWith(
+          "BidResult",
           expect.objectContaining({
             bidderPositionResult:
               mockRequestResponses.placingBid.bidRejected.createBidderPosition!.result,
@@ -741,7 +734,7 @@ describe("ConfirmBid", () => {
 
       fireEvent.press(screen.getByText("Add"))
 
-      expect(nextStep?.component).toEqual(CreditCardForm)
+      expect(mockNavigator.navigate).toHaveBeenCalledWith("CreditCardForm", expect.any(Object))
     })
 
     it("shows the error screen when stripe's API returns an error", async () => {
@@ -865,13 +858,15 @@ describe("ConfirmBid", () => {
 
       mockFillAndSubmit()
 
-      expect(nextStep?.component).toEqual(BidResult)
-      expect(nextStep?.passProps).toEqual(
+      expect(mockNavigator.navigate).toHaveBeenCalledWith(
+        "BidResult",
         expect.objectContaining({
           bidderPositionResult: {
             messageHeader: "An error occurred",
             messageDescriptionMD:
               "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
+            position: null,
+            status: "ERROR",
           },
         })
       )
@@ -956,15 +951,17 @@ describe("ConfirmBid", () => {
 
         mockFillAndSubmit()
 
-        await waitFor(() => !!nextStep)
+        await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
-        expect(nextStep?.component).toEqual(BidResult)
-        expect(nextStep?.passProps).toEqual(
+        expect(mockNavigator.navigate).toHaveBeenCalledWith(
+          "BidResult",
           expect.objectContaining({
             bidderPositionResult: {
               messageHeader: "An error occurred",
               messageDescriptionMD:
                 "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
+              position: null,
+              status: "ERROR",
             },
           })
         )
