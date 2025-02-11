@@ -380,7 +380,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       return (
         <Flex py={2}>
           <PaymentInfo
-            navigator={isLoading ? ({ push: () => null } as any) : this.props.navigation}
+            navigator={isLoading ? ({ navigate: () => null } as any) : this.props.navigation}
             onCreditCardAdded={this.onCreditCardAdded.bind(this)}
             billingAddress={this.state.billingAddress}
             creditCardFormParams={this.state.creditCardFormParams}
@@ -392,7 +392,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       return (
         <Flex justifyContent="center" py={2}>
           <PhoneInfo
-            navigator={isLoading ? ({ push: () => null } as any) : this.props.navigation}
+            navigator={isLoading ? ({ navigate: () => null } as any) : this.props.navigation}
             onPhoneAdded={this.onPhoneAdded.bind(this)}
             phoneNumber={this.state.phoneNumber}
           />
