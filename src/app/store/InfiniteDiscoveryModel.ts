@@ -3,7 +3,7 @@ import { Action, action } from "easy-peasy"
 export interface InfiniteDiscoveryModel {
   discoveredArtworkIds: string[]
   savedArtworksCount: number
-  addDiscoveredArtworkIds: Action<this, string[]>
+  addDisoveredArtworkId: Action<this, string>
   incrementSavedArtworksCount: Action<this>
   decrementSavedArtworksCount: Action<this>
   resetSavedArtworksCount: Action<this>
@@ -12,8 +12,10 @@ export interface InfiniteDiscoveryModel {
 export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   discoveredArtworkIds: [],
   savedArtworksCount: 0,
-  addDiscoveredArtworkIds: action((state, artworkIds) => {
-    state.discoveredArtworkIds = state.discoveredArtworkIds.concat(artworkIds)
+  addDisoveredArtworkId: action((state, artworkId) => {
+    if (!state.discoveredArtworkIds.includes(artworkId)) {
+      state.discoveredArtworkIds.push(artworkId)
+    }
   }),
   incrementSavedArtworksCount: action((state) => {
     state.savedArtworksCount += 1
