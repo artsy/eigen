@@ -121,6 +121,12 @@ target 'Artsy' do
   pod 'GoogleUtilities', :modular_headers => true
   pod 'nanopb', :modular_headers => true
 
+
+  pod 'CwlCatchException', :modular_headers => true
+  pod 'CwlCatchExceptionSupport', :modular_headers => true
+  pod 'CwlPreconditionTesting', :modular_headers => true
+  pod 'CwlMachBadInstructionHandler', :modular_headers => true
+
   # Swift pods 🎉
   pod 'Then', '2.3.0'
   pod 'Interstellar/Core', git: 'https://github.com/artsy/Interstellar.git', branch: 'observable-unsubscribe'
@@ -133,7 +139,7 @@ target 'Artsy' do
 
   target 'ArtsyTests' do
     inherit! :search_paths
-    use_frameworks!
+    # use_frameworks!
 
     pod 'OHHTTPStubs', '3.1.2'
     pod 'XCTest+OHHTTPStubSuiteCleanUp'
