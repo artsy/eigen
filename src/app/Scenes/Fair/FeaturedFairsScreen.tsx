@@ -58,6 +58,7 @@ export const FeaturedFairs: React.FC<FeaturedFairsProps> = ({ viewer }) => {
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
         // TODO: Update owner type
+        // context_screen_owner_type: OwnerType.featuredFairs,
         context_screen_owner_type: OwnerType.articles,
       })}
     >
