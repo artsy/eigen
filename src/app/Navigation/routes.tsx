@@ -133,6 +133,7 @@ import { SellWithArtsyHomeScreenQuery } from "app/Scenes/SellWithArtsy/SellWithA
 import { SellWithArtsy } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils"
 import { ShowMoreInfoQueryRenderer } from "app/Scenes/Show/Screens/ShowMoreInfo"
 import { ShowQueryRenderer, ShowScreenQuery } from "app/Scenes/Show/Show"
+import { ShowsForYouScreen, ShowsForYouScreenQuery } from "app/Scenes/Shows/ShowsForYou"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import { TagQueryRenderer } from "app/Scenes/Tag/Tag"
 import { VanityURLEntityRenderer } from "app/Scenes/VanityURL/VanityURLEntity"
@@ -1385,6 +1386,17 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/show/:showID/info",
     name: "ShowMoreInfo",
     Component: ShowMoreInfoQueryRenderer,
+  },
+  {
+    path: "/shows-for-you",
+    name: "ShowsForYou",
+    Component: ShowsForYouScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [ShowsForYouScreenQuery],
   },
   {
     path: "/similar-to-recently-viewed",
