@@ -55,8 +55,7 @@ export const ShowsForYouList: React.FC<{ me: any }> = ({ me }) => {
     if (!hasNext || isLoadingNext) {
       return
     }
-
-    loadNext(15)
+    loadNext(10)
   }
 
   const handleRefresh = () => {
@@ -84,7 +83,7 @@ export const ShowsForYouList: React.FC<{ me: any }> = ({ me }) => {
             renderItem={({ item, index }) => {
               console.log("LOGD item = ", item)
               return (
-                <Box height={100} backgroundColor="pink">
+                <Box height={200} backgroundColor="pink">
                   <Text>{index}</Text>
                 </Box>
 
@@ -98,10 +97,7 @@ export const ShowsForYouList: React.FC<{ me: any }> = ({ me }) => {
               )
             }}
             ItemSeparatorComponent={() => <Spacer y={4} />}
-            onEndReached={() => {
-              console.warn("LOGD onEndReached")
-              handleLoadMore()
-            }}
+            onEndReached={handleLoadMore}
             onEndReachedThreshold={1}
             style={{ paddingTop: 20 }}
             /*             ListFooterComponent={() => (
@@ -152,7 +148,7 @@ export const ShowsForYouScreenQuery = graphql`
 
 const showsNearYouConnectionFragment = graphql`
   fragment ShowsForYou_showsConnection on Me
-  @refetchable(queryName: "ShowsForYou_showsConnection")
+  @refetchable(queryName: "ShowsForYou_showsConnectionRefetch")
   @argumentDefinitions(
     count: { type: "Int", defaultValue: 10 }
     after: { type: "String" }
