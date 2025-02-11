@@ -1,5 +1,17 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Flex, FlexProps, Pill, Skeleton, Spacer, Text, useSpace } from "@artsy/palette-mobile"
+import {
+  AuctionIcon,
+  Box,
+  Flex,
+  FlexProps,
+  FollowArtistIcon,
+  HeartIcon,
+  Pill,
+  Skeleton,
+  Spacer,
+  Text,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { HomeViewSectionNavigationPillsQuery } from "__generated__/HomeViewSectionNavigationPillsQuery.graphql"
 import {
   HomeViewSectionNavigationPills_section$data,
@@ -10,7 +22,7 @@ import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { memo } from "react"
+import React, { ComponentType, memo } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -66,9 +78,12 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
               navigate(pill.href)
             }}
           >
-            <Text variant="xs" color="black100">
-              {pill.title}
-            </Text>
+            <Flex flexDirection="row" alignItems="center" gap={0.5} pt={0.5}>
+              <PillIcon name={pill.icon} />
+              <Text variant="xs" color="black100">
+                {pill.title}
+              </Text>
+            </Flex>
           </Pill>
         )}
       />
@@ -89,6 +104,7 @@ const sectionFragment = graphql`
       title
       href
       ownerType
+      icon
     }
   }
 `
@@ -163,18 +179,31 @@ export const HomeViewSectionNavigationPillsQueryRenderer: React.FC<SectionShared
 )
 
 export const NAVIGATION_LINKS_PLACEHOLDER: Array<NavigationPill> = [
-  { title: "Follows", href: "/favorites", ownerType: "whatever" },
-  { title: "Auctions", href: "/auctions", ownerType: "whatever" },
-  { title: "Saves", href: "/favorites/saves", ownerType: "whatever" },
-  {
-    title: "Art under $1000",
-    href: "/collect?price_range=%2A-1000",
-    ownerType: "whatever",
-  },
-  {
-    title: "Price Database",
-    href: "/price-database",
-    ownerType: "whatever",
-  },
-  { title: "Editorial", href: "/news", ownerType: "whatever" },
+  { title: "Follows", href: "/favorites", ownerType: "whatever", icon: "HeartIcon" },
+  { title: "Auctions", href: "/auctions", ownerType: "whatever", icon: "HeartIcon" },
+  { title: "Saves", href: "/favorites/saves", ownerType: "whatever", icon: "HeartIcon" },
+  { title: "Art under $1000", href: "/collect", ownerType: "whatever", icon: "HeartIcon" },
+  { title: "Price Database", href: "/price-database", ownerType: "whatever", icon: "HeartIcon" },
+  { title: "Editorial", href: "/news", ownerType: "whatever", icon: "HeartIcon" },
 ]
+
+const SUPPORTED_ICONS: Record<string, ComponentType> = {
+  FollowArtistIcon,
+  AuctionIcon,
+  HeartIcon,
+}
+
+export const PillIcon: React.FC<{ name: string | null | undefined }> = (props) => {
+  const { name } = props
+
+  if (name && name in SUPPORTED_ICONS) {
+    const Icon = SUPPORTED_ICONS[name]
+    return (
+      <Box testID={`pill-icon-${name}`} accessibilityRole="image">
+        <Icon />
+      </Box>
+    )
+  }
+
+  return null // ignore unsupported icons
+}
