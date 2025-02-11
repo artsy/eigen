@@ -1,10 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { HomeViewSectionNavigationPillsTestsQuery } from "__generated__/HomeViewSectionNavigationPillsTestsQuery.graphql"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
-import {
-  HomeViewSectionNavigationPills,
-  NAVIGATION_LINKS_PLACEHOLDER,
-} from "app/Scenes/HomeView/Sections/HomeViewSectionNavigationPills"
+import { HomeViewSectionNavigationPills } from "app/Scenes/HomeView/Sections/HomeViewSectionNavigationPills"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -34,14 +31,41 @@ describe("HomeViewSectionNavigationPills", () => {
   it("renders the section pills properly", async () => {
     renderWithRelay({
       HomeViewSectionNavigationPills: () => ({
-        navigationPills: NAVIGATION_LINKS_PLACEHOLDER,
+        navigationPills: [
+          {
+            icon: "FollowArtistIcon",
+            title: "Follows",
+            href: "/favorites",
+            ownerType: "follows",
+          },
+          {
+            icon: "NewAndUnsupportedIcon",
+            title: "A new feature",
+            href: "/new-feature",
+            ownerType: "new-feature",
+          },
+          {
+            icon: null,
+            title: "Icon-less feature",
+            href: "/iconless-feature",
+            ownerType: "iconless-feature",
+          },
+        ],
       }),
     })
 
-    NAVIGATION_LINKS_PLACEHOLDER.forEach((pill) => {
-      expect(screen.getByText(pill.title)).toBeOnTheScreen()
-    })
-    fireEvent.press(screen.getByText(NAVIGATION_LINKS_PLACEHOLDER[0].title))
-    expect(navigate).toHaveBeenCalledWith(NAVIGATION_LINKS_PLACEHOLDER[0].href)
+    expect(screen.getByText("Follows")).toBeOnTheScreen()
+    expect(screen.getByTestId("pill-icon-FollowArtistIcon")).toBeOnTheScreen()
+
+    expect(screen.getByText("A new feature")).toBeOnTheScreen()
+    expect(screen.queryByTestId("pill-icon-NewAndUnsupportedIcon")).not.toBeOnTheScreen()
+
+    expect(screen.getByText("Icon-less feature")).toBeOnTheScreen()
+
+    // missing and unsupported icons should not be rendered
+    expect(screen.queryAllByTestId(/pill-icon-/)).toHaveLength(1)
+
+    fireEvent.press(screen.getByText("Follows"))
+    expect(navigate).toHaveBeenCalledWith("/favorites")
   })
 })
