@@ -9,6 +9,7 @@ import {
 } from "@artsy/palette-mobile"
 import { FancySwiper, FancySwiperArtworkCard } from "app/Components/FancySwiper/FancySwiper"
 import { useToast } from "app/Components/Toast/toastHook"
+import { ICON_HIT_SLOP } from "app/Components/constants"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -113,13 +114,23 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           <Screen.Header
             title="Discovery"
             leftElements={
-              <Touchable onPress={handleBackPressed} testID="back-icon">
+              <Touchable
+                onPress={handleBackPressed}
+                testID="back-icon"
+                hitSlop={ICON_HIT_SLOP}
+                haptic
+              >
                 <ArrowBackIcon />
               </Touchable>
             }
             hideLeftElements={index === 0}
             rightElements={
-              <Touchable onPress={handleExitPressed} testID="close-icon">
+              <Touchable
+                onPress={handleExitPressed}
+                testID="close-icon"
+                hitSlop={ICON_HIT_SLOP}
+                haptic
+              >
                 <CloseIcon fill="black100" />
               </Touchable>
             }

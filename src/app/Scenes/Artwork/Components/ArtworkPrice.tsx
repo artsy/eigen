@@ -64,11 +64,11 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({
         </Flex>
 
         <Flex flexDirection="row" flexWrap="wrap" mt={1} alignItems="flex-end">
-          <Text variant="lg-display" mr={1}>
+          <Text variant="lg-display" mr={1} selectable={false}>
             {partnerOfferData.priceWithDiscount?.display}
           </Text>
 
-          <Text variant="xs" color="black60">
+          <Text variant="xs" color="black60" selectable={false}>
             (List Price: {listPrice})
           </Text>
         </Flex>
@@ -79,7 +79,9 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({
   if (message) {
     return (
       <Flex {...flexProps}>
-        <Text variant="lg-display">{message}</Text>
+        <Text variant="lg-display" selectable={false}>
+          {message}
+        </Text>
       </Flex>
     )
   }
