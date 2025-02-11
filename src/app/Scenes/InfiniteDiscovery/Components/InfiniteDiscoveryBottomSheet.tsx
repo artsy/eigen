@@ -120,7 +120,8 @@ export const useBottomSheetAnimatedStyles = () => {
   const { animatedIndex } = useBottomSheet()
   const { bottom } = useSafeAreaInsets()
   const { lineHeight } = useTextStyleForPalette("sm-display")
-  const handleTextHeight = bottom + (lineHeight as number)
+  // Some devices need extra space, 30 does the job for all of them
+  const handleTextHeight = bottom + (lineHeight as number) + 30
 
   // TODO: instead of starting from .5 start from 0 to 1
   const reversedOpacityStyle = useAnimatedStyle(() => ({
