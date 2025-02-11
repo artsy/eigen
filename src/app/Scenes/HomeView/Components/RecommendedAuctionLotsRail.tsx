@@ -50,9 +50,9 @@ export const RecommendedAuctionLotsRail: React.FC<RecommendedAuctionLotsRailProp
         <SectionTitle
           mx={2}
           title={title}
+          href="/auctions/lots-for-you-ending-soon"
           onPress={() => {
             trackEvent(tracks.tappedHeader(contextScreenOwnerType))
-            navigate("/auctions/lots-for-you-ending-soon")
           }}
         />
         <ArtworkRail
