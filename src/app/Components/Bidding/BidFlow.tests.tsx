@@ -6,7 +6,7 @@ import {
   BidFlowContextStore,
 } from "app/Components/Bidding/Context/BidFlowContextProvider"
 import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
-import { BiddingNavigator } from "app/Components/Containers/BiddingNavigator"
+import { BiddingNavigator } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 import { useCreateBidderPosition } from "app/utils/mutations/useCreateBidderPosition"
 import { useCreateCreditCard } from "app/utils/mutations/useCreateCreditCard"
 import { useUpdateUserPhoneNumber } from "app/utils/mutations/useUpdateUserPhoneNumber"
