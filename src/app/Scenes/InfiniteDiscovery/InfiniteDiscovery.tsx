@@ -17,7 +17,7 @@ import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { pluralize } from "app/utils/pluralize"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from "react-relay"
 import type {
@@ -76,10 +76,9 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     }
   }
 
-  const handleCardSwiped = () => {
-    const dismissedArtworkId = artworkCards[index].artworkId
-
+  const handleCardSwiped = useCallback(() => {
     if (index < artworks.length - 1) {
+      const dismissedArtworkId = artworkCards[index].artworkId
       setIndex(index + 1)
       addDisoveredArtworkId(dismissedArtworkId)
     }
@@ -88,7 +87,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     if (index === artworks.length - REFETCH_BUFFER) {
       fetchMoreArtworks()
     }
-  }
+  }, [index, artworks.length, fetchMoreArtworks])
 
   const handleExitPressed = () => {
     if (savedArtworksCount > 0) {

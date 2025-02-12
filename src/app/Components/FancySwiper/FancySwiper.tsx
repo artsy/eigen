@@ -1,6 +1,6 @@
 import { Flex } from "@artsy/palette-mobile"
 import { FancySwiperIcons } from "app/Components/FancySwiper/FancySwiperIcons"
-import React, { useRef } from "react"
+import React, { useMemo, useRef } from "react"
 import { PanResponder, Animated } from "react-native"
 import { FancySwiperCard } from "./FancySwiperCard"
 
@@ -27,7 +27,7 @@ export const FancySwiper = ({
   onSwipeLeft,
   onSwipeRight,
 }: FancySwiperProps) => {
-  const remainingCards = cards.reverse()
+  const remainingCards = useMemo(() => cards.reverse(), [cards.length])
   const swiper = useRef<Animated.ValueXY>(new Animated.ValueXY()).current
 
   const panResponder = PanResponder.create({
