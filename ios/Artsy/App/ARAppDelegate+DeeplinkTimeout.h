@@ -1,4 +1,4 @@
-#import "ARAppDelegate.h"
+#import "AppDelegate.h"
 
 @interface ARAppDelegate (DeeplinkTimeout)
 

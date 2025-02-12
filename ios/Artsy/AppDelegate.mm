@@ -11,7 +11,7 @@
 #import <CodePush/CodePush.h>
 #import <AppCenterReactNative.h>
 
-#import "ARAppDelegate.h"
+#import "AppDelegate.h"
 #import "ARAppDelegate+Emission.h"
 #import "ARAppDelegate+Echo.h"
 #import "ARAppNotificationsDelegate.h"
@@ -147,7 +147,7 @@ static ARAppDelegate *_sharedInstance = nil;
 }
 
 - (RCTBridge *)createBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate launchOptions:(NSDictionary *)launchOptions {
-    RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+    RCTBridge *bridge = [self.reactDelegate createBridgeWithDelegate:self launchOptions:launchOptions];
     AREmission *emission = [AREmission sharedInstance];
     [emission setBridge:bridge];
     return bridge;
@@ -289,7 +289,7 @@ static ARAppDelegate *_sharedInstance = nil;
 - (NSURL *)bundleURL
 {
 #if DEBUG
-    return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
+    return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@".expo/.virtual-metro-entry"];
 #else
     return [CodePush bundleURL];
 #endif
