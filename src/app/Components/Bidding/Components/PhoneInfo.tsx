@@ -1,6 +1,6 @@
 import { NavigationProp } from "@react-navigation/native"
 import { FlexProps } from "app/Components/Bidding/Elements/Flex"
-import { BiddingNavigationStackParams } from "app/Components/Containers/BiddingNavigator"
+import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 import { View } from "react-native"
 
 import { BidInfoRow } from "./BidInfoRow"

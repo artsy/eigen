@@ -4,7 +4,7 @@ import { TimeOffsetProvider } from "app/Components/Bidding/Context/TimeOffsetPro
 import {
   BiddingNavigationStackParams,
   BiddingNavigator,
-} from "app/Components/Containers/BiddingNavigator"
+} from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 import { SafeAreaView } from "react-native-safe-area-context"
 
 export const BidFlow: React.FC<BiddingNavigationStackParams["SelectMaxBid"]> = (props) => {

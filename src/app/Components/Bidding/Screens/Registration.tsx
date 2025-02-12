@@ -14,10 +14,10 @@ import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
 import { PaymentInfo } from "app/Components/Bidding/Components/PaymentInfo"
 import { PhoneInfo } from "app/Components/Bidding/Components/PhoneInfo"
 import { Address, PaymentCardTextFieldParams } from "app/Components/Bidding/types"
-import { BiddingNavigationStackParams } from "app/Components/Containers/BiddingNavigator"
 import { Modal } from "app/Components/Modal"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { bidderNeedsIdentityVerification } from "app/utils/auction/bidderNeedsIdentityVerification"
@@ -520,7 +520,7 @@ const RegistrationContainer = createFragmentContainer(Registration, {
 })
 
 export const RegistrationQueryRenderer: React.FC<
-  NativeStackScreenProps<BiddingNavigationStackParams, "SelectMaxBid">
+  NativeStackScreenProps<BiddingNavigationStackParams, "RegisterToBid">
 > = (screenProps) => {
   const { saleID } = screenProps.route.params
 
