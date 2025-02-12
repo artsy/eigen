@@ -2,14 +2,15 @@ import {
   Flex,
   INPUT_BORDER_RADIUS,
   INPUT_MIN_HEIGHT,
-  INPUT_VARIANTS,
   InputState,
   InputVariant,
   Text,
   getInputState,
   getInputVariant,
+  getInputVariants,
   useColor,
   useTextStyleForPalette,
+  useTheme,
 } from "@artsy/palette-mobile"
 import { THEME } from "@artsy/palette-tokens"
 import { CardField } from "@stripe/stripe-react-native"
@@ -44,6 +45,9 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
     value: cardDetails?.number,
   })
 
+  const { theme } = useTheme()
+  const inputVariants = getInputVariants(theme)
+
   const hasSelectedValue =
     cardDetails !== undefined &&
     (!!cardDetails.last4 ||
@@ -52,7 +56,7 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
       !!cardDetails.expiryYear)
   const animatedStyles = useAnimatedStyle(() => {
     return {
-      borderColor: withTiming(INPUT_VARIANTS[variant][animatedState.value].inputBorderColor),
+      borderColor: withTiming(inputVariants[variant][animatedState.value].inputBorderColor),
     }
   })
 
@@ -65,7 +69,7 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
         hasSelectedValue || isFocused ? 15 : STRIPE_CREDIT_CARD_ICON_CONTAINER_WIDTH
       ),
       paddingHorizontal: withTiming(hasSelectedValue || isFocused ? 5 : 0),
-      color: withTiming(INPUT_VARIANTS[variant][animatedState.value].labelColor),
+      color: withTiming(inputVariants[variant][animatedState.value].labelColor),
       top: withTiming(hasSelectedValue || isFocused ? -INPUT_MIN_HEIGHT / 4 : 14),
       fontSize: withTiming(
         hasSelectedValue || isFocused
