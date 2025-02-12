@@ -2859,10 +2859,22 @@ type ArtworkImport {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
-  rowsConnection(after: String, before: String, first: Int, last: Int): ArtworkImportRowConnection
+  rowsConnection(
+    after: String
+    before: String
+    errorTypes: [String!]
+    first: Int
+    hasErrors: Boolean
+    last: Int
+  ): ArtworkImportRowConnection
+  unmatchedArtistNames: [String!]!
 }
 
 type ArtworkImportRow {
+  artists: [Artist!]
+  artwork: Artwork
+  errors: [ArtworkImportRowError!]
+
   # A globally unique ID.
   id: ID!
 
@@ -2889,6 +2901,17 @@ type ArtworkImportRowEdge {
 
   # The item at the end of the edge
   node: ArtworkImportRow
+}
+
+type ArtworkImportRowError {
+  errorType: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  metadata: JSON
 }
 
 enum ArtworkImportSource {
@@ -3163,6 +3186,31 @@ type ArtworksCollectionsBatchUpdateSuccess {
 enum AssetType {
   ADDITIONAL_FILE
   IMAGE
+}
+
+type AssignArtworkImportArtistFailure {
+  mutationError: GravityMutationError
+}
+
+input AssignArtworkImportArtistInput {
+  artistID: String!
+  artistName: String!
+  artworkImportID: String!
+  clientMutationId: String
+}
+
+type AssignArtworkImportArtistPayload {
+  assignArtworkImportArtistOrError: AssignArtworkImportArtistResponseOrError
+  clientMutationId: String
+}
+
+union AssignArtworkImportArtistResponseOrError =
+    AssignArtworkImportArtistFailure
+  | AssignArtworkImportArtistSuccess
+
+type AssignArtworkImportArtistSuccess {
+  artworkImportID: String!
+  updatedRowsCount: Int!
 }
 
 # Fields of an attachment (currently from Radiation)
@@ -8033,14 +8081,39 @@ type CreateArtistSuccess {
 
 union CreateArtistSuccessOrErrorType = CreateArtistFailure | CreateArtistSuccess
 
+type CreateArtworkImportArtworksFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateArtworkImportArtworksInput {
+  artworkImportID: String!
+  clientMutationId: String
+}
+
+type CreateArtworkImportArtworksPayload {
+  clientMutationId: String
+  createArtworkImportArtworksOrError: CreateArtworkImportArtworksResponseOrError
+}
+
+union CreateArtworkImportArtworksResponseOrError =
+    CreateArtworkImportArtworksFailure
+  | CreateArtworkImportArtworksSuccess
+
+type CreateArtworkImportArtworksSuccess {
+  artworkImportID: String!
+  created: Int!
+  errors: Int!
+}
+
 type CreateArtworkImportFailure {
   mutationError: GravityMutationError
 }
 
 input CreateArtworkImportInput {
   clientMutationId: String
-  filePath: String!
   partnerID: String!
+  s3Bucket: String!
+  s3Key: String!
 }
 
 type CreateArtworkImportPayload {
@@ -12664,6 +12737,30 @@ union Match =
   | Show
   | Tag
 
+type MatchArtworkImportArtistsFailure {
+  mutationError: GravityMutationError
+}
+
+input MatchArtworkImportArtistsInput {
+  artworkImportID: String!
+  clientMutationId: String
+}
+
+type MatchArtworkImportArtistsPayload {
+  clientMutationId: String
+  matchArtworkImportArtistsOrError: MatchArtworkImportArtistsResponseOrError
+}
+
+union MatchArtworkImportArtistsResponseOrError =
+    MatchArtworkImportArtistsFailure
+  | MatchArtworkImportArtistsSuccess
+
+type MatchArtworkImportArtistsSuccess {
+  artworkImportID: String!
+  matched: Int!
+  unmatched: Int!
+}
+
 # A connection to a list of items.
 type MatchConnection {
   # A list of edges.
@@ -13469,6 +13566,9 @@ type Mutation {
   artworksCollectionsBatchUpdate(
     input: ArtworksCollectionsBatchUpdateInput!
   ): ArtworksCollectionsBatchUpdatePayload
+  assignArtworkImportArtist(
+    input: AssignArtworkImportArtistInput!
+  ): AssignArtworkImportArtistPayload
 
   # Update all artworks that belong to the partner
   bulkUpdatePartnerArtworks(
@@ -13678,6 +13778,9 @@ type Mutation {
   # Create an artist
   createArtist(input: CreateArtistMutationInput!): CreateArtistMutationPayload
   createArtworkImport(input: CreateArtworkImportInput!): CreateArtworkImportPayload
+  createArtworkImportArtworks(
+    input: CreateArtworkImportArtworksInput!
+  ): CreateArtworkImportArtworksPayload
   createBackupSecondFactors(
     input: CreateBackupSecondFactorsInput!
   ): CreateBackupSecondFactorsPayload
@@ -13918,6 +14021,9 @@ type Mutation {
 
   # Mark notifications as seen
   markNotificationsAsSeen(input: MarkNotificationsAsSeenInput!): MarkNotificationsAsSeenPayload
+  matchArtworkImportArtists(
+    input: MatchArtworkImportArtistsInput!
+  ): MatchArtworkImportArtistsPayload
 
   # Merge multiple artist records in order to deduplicate artists
   mergeArtists(input: MergeArtistsMutationInput!): MergeArtistsMutationPayload
