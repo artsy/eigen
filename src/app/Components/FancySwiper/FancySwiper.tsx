@@ -37,11 +37,16 @@ export const FancySwiper = ({
       swiper.setValue({ x: dx, y: dy })
     },
     onPanResponderRelease: (_, { dx, dy }) => {
+      // the hypoteneuse of the swipe is at least 100
       const isFullSwipe = Math.hypot(dx, dy) >= SWIPE_MAGNITUDE
+
+      // the angle of the swipe is below 60 degrees from the horizontal axis
+      const isUnder60DegreeSwipe = Math.abs(Math.atan(dy / dx)) < Math.PI / 3
+
       const isLeftSwipe = dx < 0
       const isRightSwipe = dx > 0
 
-      if (isFullSwipe && onSwipeAnywhere) {
+      if (isFullSwipe && isUnder60DegreeSwipe && onSwipeAnywhere) {
         handle360Swipe(dx, dy)
       } else if (isFullSwipe && isLeftSwipe && onSwipeLeft) {
         handleLeftSwipe(dy)
