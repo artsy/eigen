@@ -2851,7 +2851,7 @@ union ArtworkFilterFacet = Gene | Tag
 
 union ArtworkHighlight = Article | Show
 
-type ArtworkImport {
+type ArtworkImport implements Node {
   fileName: String!
 
   # A globally unique ID.
