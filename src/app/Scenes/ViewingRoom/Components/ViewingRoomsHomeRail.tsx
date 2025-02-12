@@ -1,20 +1,21 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Flex, Spacer, Touchable } from "@artsy/palette-mobile"
+import { Flex, Spacer } from "@artsy/palette-mobile"
 import {
   ViewingRoomsHomeRailQuery,
   ViewingRoomsHomeRailQuery$data,
 } from "__generated__/ViewingRoomsHomeRailQuery.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { MediumCard } from "app/Components/Cards"
-import { PrefetchFlatList } from "app/Components/PrefetchFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Schema } from "app/utils/track"
 import { times } from "lodash"
 import React, { memo, Suspense } from "react"
+import { FlatList } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -95,19 +96,18 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({
 
   return (
     <Flex>
-      <PrefetchFlatList
+      <FlatList
         horizontal
         ListHeaderComponent={() => <Spacer x={2} />}
         ListFooterComponent={() => <Spacer x={2} />}
         data={regular}
         initialNumToRender={isTablet() ? 10 : 5}
         keyExtractor={(item) => `${item.internalID}`}
-        prefetchUrlExtractor={(viewingRoom) => `/viewing-room/${viewingRoom?.slug}`}
-        prefetchVariablesExtractor={(viewingRoom) => ({ viewingRoomID: viewingRoom?.slug })}
         renderItem={({ item, index }) => {
           const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
           return (
-            <Touchable
+            <RouterLink
+              to={`/viewing-room/${item.slug}`}
               onPress={() => {
                 if (onPress) {
                   return onPress(item, index)
@@ -125,7 +125,6 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({
                         )
                       : featuredTracks.tappedFeaturedViewingRoomRailItem(item.internalID, item.slug)
                   )
-                  navigate(`/viewing-room/${item.slug}`)
                 }
               }}
             >
@@ -135,7 +134,7 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({
                 image={item.heroImage?.imageURLs?.normalized ?? ""}
                 tag={tag}
               />
-            </Touchable>
+            </RouterLink>
           )
         }}
         ItemSeparatorComponent={() => <Spacer x={2} />}
