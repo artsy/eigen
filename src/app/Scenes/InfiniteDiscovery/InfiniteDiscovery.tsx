@@ -26,7 +26,7 @@ import type {
 } from "__generated__/InfiniteDiscoveryQuery.graphql"
 
 interface InfiniteDiscoveryProps {
-  fetchMoreArtworks: () => void
+  fetchMoreArtworks: (undiscoveredArtworks: string[]) => void
   queryRef: PreloadedQuery<InfiniteDiscoveryQuery>
 }
 
@@ -85,7 +85,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 
     // fetch more artworks when the user is about to reach the end of the list
     if (index === artworks.length - REFETCH_BUFFER) {
-      fetchMoreArtworks()
+      fetchMoreArtworks(unswipedCards.map((card) => card.artworkId))
     }
   }, [index, artworks.length, fetchMoreArtworks])
 
@@ -187,8 +187,8 @@ export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
     return <InfiniteDiscoverySpinner />
   }
 
-  const fetchMoreArtworks = () => {
-    loadQuery({ excludeArtworkIds: discoveredArtworksIds })
+  const fetchMoreArtworks = (undiscoveredArtworks: string[]) => {
+    loadQuery({ excludeArtworkIds: discoveredArtworksIds.concat(undiscoveredArtworks) })
   }
 
   return <InfiniteDiscovery fetchMoreArtworks={fetchMoreArtworks} queryRef={queryRef} />
