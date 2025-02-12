@@ -3,7 +3,6 @@ import {
   HORIZONTAL_PADDING,
   INPUT_BORDER_RADIUS,
   INPUT_MIN_HEIGHT,
-  INPUT_VARIANTS,
   InputState,
   InputVariant,
   Text,
@@ -11,7 +10,9 @@ import {
   TriangleDown,
   getInputState,
   getInputVariant,
+  getInputVariants,
   useSpace,
+  useTheme,
 } from "@artsy/palette-mobile"
 import { THEME } from "@artsy/palette-tokens"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
@@ -61,9 +62,12 @@ export const SelectButton: React.FC<{
 
   const hasSelectedValue = !!value
 
+  const { theme } = useTheme()
+  const inputVariants = getInputVariants(theme)
+
   const animatedStyles = useAnimatedStyle(() => {
     return {
-      borderColor: withTiming(INPUT_VARIANTS[variant][animatedState.value].inputBorderColor),
+      borderColor: withTiming(inputVariants[variant][animatedState.value].inputBorderColor),
     }
   })
 
@@ -71,7 +75,7 @@ export const SelectButton: React.FC<{
     return {
       backgroundColor: "white",
       paddingHorizontal: withTiming(hasSelectedValue ? 5 : 0),
-      color: withTiming(INPUT_VARIANTS[variant][animatedState.value].labelColor),
+      color: withTiming(inputVariants[variant][animatedState.value].labelColor),
       top: withTiming(hasSelectedValue ? -INPUT_MIN_HEIGHT / 2 : 0),
       fontSize: withTiming(
         hasSelectedValue

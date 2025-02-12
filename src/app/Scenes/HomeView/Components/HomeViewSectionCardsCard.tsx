@@ -100,7 +100,7 @@ const sectionFragment = graphql`
 `
 
 export const marketingCollectionsQuery = graphql`
-  query HomeViewSectionCardsCardQuery($category: String!) @cacheable {
+  query HomeViewSectionCardsCardQuery($category: String!) {
     viewer {
       marketingCollections(category: $category, sort: CURATED, first: 20) {
         ...BodyCollectionsByCategory_marketingCollections
