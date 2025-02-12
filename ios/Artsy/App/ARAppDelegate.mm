@@ -1,6 +1,7 @@
 #import <AuthenticationServices/AuthenticationServices.h>
 #import <SafariServices/SafariServices.h>
-#import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+
 #import <Firebase.h>
 #import <BrazeKit/BrazeKit-Swift.h>
 #import "BrazeReactBridge.h"
@@ -18,7 +19,7 @@
 #import "ARAppDelegate+DeeplinkTimeout.h"
 #import "ARUserManager.h"
 #import "ARFonts.h"
-#import <Analytics/SEGAnalytics.h>
+#import <SEGAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "User.h"
 
