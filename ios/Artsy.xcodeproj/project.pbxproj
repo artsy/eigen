@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		028C25392245A695B08EC29B /* Pods_Artsy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF84AB6BF307ADE3F606D2CC /* Pods_Artsy.framework */; };
 		161D209B2CC7D49800856E71 /* ARTCityGuideManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 161D209A2CC7D49800856E71 /* ARTCityGuideManager.m */; };
 		1A4B97BC283CDD5A00878EAE /* ARCocoaConstantsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */; };
 		1A4B97BD283CDD5A00878EAE /* AREventsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9793283CDD5900878EAE /* AREventsModule.m */; };
@@ -42,8 +43,7 @@
 		1AE9F2692902DA87002A561B /* Shared.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F2612902DA87002A561B /* Shared.xcconfig */; };
 		1AE9F26A2902DA87002A561B /* App-Store.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F2622902DA87002A561B /* App-Store.xcconfig */; };
 		1AE9F26B2902DA87002A561B /* Tests-Store.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F2632902DA87002A561B /* Tests-Store.xcconfig */; };
-		488D450AC3C49EB0CCA7F2D4 /* Pods_Artsy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6FE5650623A4A5E44827B88 /* Pods_Artsy.framework */; };
-		7448C2EC42E1DD4A032A6C70 /* Pods_ArtsyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C1B6860831AE690075CFD4C /* Pods_ArtsyTests.framework */; };
+		532FD45D4B3BE8F4F55DDF4C /* Pods_ArtsyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 993956EC138537BF4B98F4A4 /* Pods_ArtsyTests.framework */; };
 		8E4207792A055D2D006888BD /* ARAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8E4207782A055D2D006888BD /* ARAppDelegate.mm */; };
 		CB0D52052AF56984000E6C08 /* LiveAuctionTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0D52042AF56984000E6C08 /* LiveAuctionTestUtils.swift */; };
 		CB18282829CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB18282729CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift */; };
@@ -549,7 +549,6 @@
 /* Begin PBXFileReference section */
 		13B07F961A680F5B00A75B9A /* Artsy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Artsy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		161D209A2CC7D49800856E71 /* ARTCityGuideManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTCityGuideManager.m; sourceTree = "<group>"; };
-		1973F4CD291679B41728F08A /* Pods-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCocoaConstantsModule.m; sourceTree = "<group>"; };
 		1A4B9792283CDD5900878EAE /* AREmission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREmission.h; sourceTree = "<group>"; };
 		1A4B9793283CDD5900878EAE /* AREventsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREventsModule.m; sourceTree = "<group>"; };
@@ -610,11 +609,11 @@
 		1AE9F2612902DA87002A561B /* Shared.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
 		1AE9F2622902DA87002A561B /* App-Store.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "App-Store.xcconfig"; sourceTree = "<group>"; };
 		1AE9F2632902DA87002A561B /* Tests-Store.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "Tests-Store.xcconfig"; sourceTree = "<group>"; };
-		36B80F603A77F1EFD957AB24 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
-		4C1B6860831AE690075CFD4C /* Pods_ArtsyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ArtsyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		23F91A8B29FDF39537DB7EE6 /* Pods-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
+		38615FC21A0CEB559718DF5D /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
+		83303193943BB0B8D7CDDEEE /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 		8E4207782A055D2D006888BD /* ARAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ARAppDelegate.mm; sourceTree = "<group>"; };
-		A13D613770ABA09F958CEC44 /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
-		B6786672018842FE1C6B598E /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
+		993956EC138537BF4B98F4A4 /* Pods_ArtsyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ArtsyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB0D52042AF56984000E6C08 /* LiveAuctionTestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAuctionTestUtils.swift; sourceTree = "<group>"; };
 		CB18282729CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARAugmentedWallBasedVIRViewController.swift; sourceTree = "<group>"; };
 		CB18282A29D35F29006A0805 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "Artsy/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -1345,8 +1344,9 @@
 		CBE3266B27E275A300395A93 /* LiveAuctionLot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveAuctionLot.h; sourceTree = "<group>"; };
 		CBE3266D27E275A300395A93 /* ARHasImageBaseURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHasImageBaseURL.h; sourceTree = "<group>"; };
 		CBE3266E27E275A300395A93 /* ARPostAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPostAttachment.h; sourceTree = "<group>"; };
-		D6FE5650623A4A5E44827B88 /* Pods_Artsy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Artsy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF84AB6BF307ADE3F606D2CC /* Pods_Artsy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Artsy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1856EA12C98923B00849C0E /* BootSplash.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BootSplash.storyboard; sourceTree = "<group>"; };
+		E71D0589D39E061FEC1E8AD2 /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -1367,7 +1367,7 @@
 				CB43299427FDFE5300B29DD6 /* MessageUI.framework in Frameworks */,
 				CB43299827FDFE6400B29DD6 /* StoreKit.framework in Frameworks */,
 				CBE0D12E2C20C8D800DFF17E /* libBrazeUI.a in Frameworks */,
-				488D450AC3C49EB0CCA7F2D4 /* Pods_Artsy.framework in Frameworks */,
+				028C25392245A695B08EC29B /* Pods_Artsy.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1391,7 +1391,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7448C2EC42E1DD4A032A6C70 /* Pods_ArtsyTests.framework in Frameworks */,
+				532FD45D4B3BE8F4F55DDF4C /* Pods_ArtsyTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1563,8 +1563,8 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				CB43268327E8FA6900B29DD6 /* WidgetKit.framework */,
 				CB43268527E8FA6900B29DD6 /* SwiftUI.framework */,
-				4C1B6860831AE690075CFD4C /* Pods_ArtsyTests.framework */,
-				D6FE5650623A4A5E44827B88 /* Pods_Artsy.framework */,
+				CF84AB6BF307ADE3F606D2CC /* Pods_Artsy.framework */,
+				993956EC138537BF4B98F4A4 /* Pods_ArtsyTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2416,10 +2416,10 @@
 		CB8672711C005915043C63E8 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				36B80F603A77F1EFD957AB24 /* Pods-Artsy.debug.xcconfig */,
-				B6786672018842FE1C6B598E /* Pods-Artsy.store.xcconfig */,
-				1973F4CD291679B41728F08A /* Pods-ArtsyTests.debug.xcconfig */,
-				A13D613770ABA09F958CEC44 /* Pods-ArtsyTests.store.xcconfig */,
+				83303193943BB0B8D7CDDEEE /* Pods-Artsy.debug.xcconfig */,
+				E71D0589D39E061FEC1E8AD2 /* Pods-Artsy.store.xcconfig */,
+				23F91A8B29FDF39537DB7EE6 /* Pods-ArtsyTests.debug.xcconfig */,
+				38615FC21A0CEB559718DF5D /* Pods-ArtsyTests.store.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -3335,15 +3335,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Artsy" */;
 			buildPhases = (
-				400905DA34751CB03A2B22D1 /* [CP] Check Pods Manifest.lock */,
+				9B201A2B33441C870FBCEA35 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				CB43266B27E8F39B00B29DD6 /* Embed App Extensions */,
-				4867A6DC8E7BCFE19EF05DBB /* [CP] Embed Pods Frameworks */,
-				DDA4AEB493C5BCB609AE7E60 /* [CP] Copy Pods Resources */,
+				09DD47E336EA6402A28FE94F /* [CP] Embed Pods Frameworks */,
+				95C454CB3D1A0A681423E956 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3410,11 +3410,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CB43272227E8FE5400B29DD6 /* Build configuration list for PBXNativeTarget "ArtsyTests" */;
 			buildPhases = (
-				21D9FBA2AAC48EBB99241E8F /* [CP] Check Pods Manifest.lock */,
+				3CD6F61C2F535BE18B0D359A /* [CP] Check Pods Manifest.lock */,
 				CB43271827E8FE5400B29DD6 /* Sources */,
 				CB43271927E8FE5400B29DD6 /* Frameworks */,
 				CB43271A27E8FE5400B29DD6 /* Resources */,
-				5996141493C2E5CED0AFE6EF /* [CP] Embed Pods Frameworks */,
+				0E336C98C58C8423BAD441B5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3643,7 +3643,41 @@
 			shellPath = /bin/sh;
 			shellScript = "export SOURCEMAP_FILE=\"$PROJECT_DIR/../main.jsbundle.map\"\n\nset -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		21D9FBA2AAC48EBB99241E8F /* [CP] Check Pods Manifest.lock */ = {
+		09DD47E336EA6402A28FE94F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		0E336C98C58C8423BAD441B5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3CD6F61C2F535BE18B0D359A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3665,7 +3699,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		400905DA34751CB03A2B22D1 /* [CP] Check Pods Manifest.lock */ = {
+		95C454CB3D1A0A681423E956 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9B201A2B33441C870FBCEA35 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3685,57 +3736,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4867A6DC8E7BCFE19EF05DBB /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5996141493C2E5CED0AFE6EF /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DDA4AEB493C5BCB609AE7E60 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {

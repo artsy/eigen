@@ -16,18 +16,18 @@ PODS:
   - AFNetworking/Security (2.7.0)
   - AFNetworking/Serialization (2.7.0)
   - Analytics (4.1.8)
-  - AppAuth (1.7.3):
-    - AppAuth/Core (= 1.7.3)
-    - AppAuth/ExternalUserAgent (= 1.7.3)
-  - AppAuth/Core (1.7.3)
-  - AppAuth/ExternalUserAgent (1.7.3):
+  - AppAuth (1.7.6):
+    - AppAuth/Core (= 1.7.6)
+    - AppAuth/ExternalUserAgent (= 1.7.6)
+  - AppAuth/Core (1.7.6)
+  - AppAuth/ExternalUserAgent (1.7.6):
     - AppAuth/Core
   - appcenter-core (5.0.0):
     - AppCenterReactNativeShared (~> 5.0)
     - React-Core
-  - AppCenter/Core (5.0.3)
-  - AppCenterReactNativeShared (5.0.0):
-    - AppCenter/Core (= 5.0.3)
+  - AppCenter/Core (5.0.5)
+  - AppCenterReactNativeShared (5.0.2):
+    - AppCenter/Core (= 5.0.5)
   - Base64 (1.1.2)
   - boost (1.84.0)
   - braze-react-native-sdk (13.1.1):
@@ -69,42 +69,42 @@ PODS:
     - JWT (~> 3.0.0-beta.12)
     - React-Core
     - SSZipArchive (~> 2.2.2)
-  - CwlCatchException (2.2.0):
-    - CwlCatchExceptionSupport (~> 2.2.0)
-  - CwlCatchExceptionSupport (2.2.0)
-  - CwlMachBadInstructionHandler (2.2.0)
-  - CwlPosixPreconditionTesting (2.2.0)
-  - CwlPreconditionTesting (2.2.1):
-    - CwlCatchException (~> 2.2.0)
-    - CwlMachBadInstructionHandler (~> 2.2.0)
-    - CwlPosixPreconditionTesting (~> 2.2.0)
+  - CwlCatchException (2.2.1):
+    - CwlCatchExceptionSupport (~> 2.2.1)
+  - CwlCatchExceptionSupport (2.2.1)
+  - CwlMachBadInstructionHandler (2.2.2)
+  - CwlPosixPreconditionTesting (2.2.2)
+  - CwlPreconditionTesting (2.2.2):
+    - CwlCatchException (~> 2.2.1)
+    - CwlMachBadInstructionHandler (~> 2.2.2)
+    - CwlPosixPreconditionTesting (~> 2.2.2)
   - DoubleConversion (1.1.6)
   - Expecta (1.0.6)
   - "Expecta+Snapshots (3.2.0)":
     - Expecta (~> 1.0)
     - iOSSnapshotTestCase (~> 8.0)
     - Specta (~> 2.0)
-  - FBAEMKit (17.0.0):
-    - FBSDKCoreKit_Basics (= 17.0.0)
+  - FBAEMKit (17.0.3):
+    - FBSDKCoreKit_Basics (= 17.0.3)
   - FBLazyVector (0.76.5)
-  - FBSDKCoreKit (17.0.0):
-    - FBAEMKit (= 17.0.0)
-    - FBSDKCoreKit_Basics (= 17.0.0)
-  - FBSDKCoreKit_Basics (17.0.0)
-  - FBSDKGamingServicesKit (17.0.0):
-    - FBSDKCoreKit (= 17.0.0)
-    - FBSDKCoreKit_Basics (= 17.0.0)
-    - FBSDKShareKit (= 17.0.0)
-  - FBSDKLoginKit (17.0.0):
-    - FBSDKCoreKit (= 17.0.0)
-  - FBSDKShareKit (17.0.0):
-    - FBSDKCoreKit (= 17.0.0)
+  - FBSDKCoreKit (17.0.3):
+    - FBAEMKit (= 17.0.3)
+    - FBSDKCoreKit_Basics (= 17.0.3)
+  - FBSDKCoreKit_Basics (17.0.3)
+  - FBSDKGamingServicesKit (17.0.3):
+    - FBSDKCoreKit (= 17.0.3)
+    - FBSDKCoreKit_Basics (= 17.0.3)
+    - FBSDKShareKit (= 17.0.3)
+  - FBSDKLoginKit (17.0.3):
+    - FBSDKCoreKit (= 17.0.3)
+  - FBSDKShareKit (17.0.3):
+    - FBSDKCoreKit (= 17.0.3)
   - Firebase/Auth (10.23.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 10.23.0)
   - Firebase/CoreOnly (10.23.0):
     - FirebaseCore (= 10.23.0)
-  - FirebaseAppCheckInterop (10.23.0)
+  - FirebaseAppCheckInterop (10.29.0)
   - FirebaseAuth (10.23.0):
     - FirebaseAppCheckInterop (~> 10.17)
     - FirebaseCore (~> 10.0)
@@ -155,7 +155,7 @@ PODS:
   - GTMAppAuth (2.0.0):
     - AppAuth/Core (~> 1.6)
     - GTMSessionFetcher/Core (< 4.0, >= 1.5)
-  - GTMSessionFetcher/Core (3.3.2)
+  - GTMSessionFetcher/Core (3.5.0)
   - hermes-engine (0.76.5):
     - hermes-engine/Pre-built (= 0.76.5)
   - hermes-engine/Pre-built (0.76.5)
@@ -173,34 +173,34 @@ PODS:
   - JWT (3.0.0-beta.14):
     - Base64 (~> 1.1.2)
   - JWTDecode (2.0.0)
-  - libwebp (1.3.2):
-    - libwebp/demux (= 1.3.2)
-    - libwebp/mux (= 1.3.2)
-    - libwebp/sharpyuv (= 1.3.2)
-    - libwebp/webp (= 1.3.2)
-  - libwebp/demux (1.3.2):
+  - libwebp (1.5.0):
+    - libwebp/demux (= 1.5.0)
+    - libwebp/mux (= 1.5.0)
+    - libwebp/sharpyuv (= 1.5.0)
+    - libwebp/webp (= 1.5.0)
+  - libwebp/demux (1.5.0):
     - libwebp/webp
-  - libwebp/mux (1.3.2):
+  - libwebp/mux (1.5.0):
     - libwebp/demux
-  - libwebp/sharpyuv (1.3.2)
-  - libwebp/webp (1.3.2):
+  - libwebp/sharpyuv (1.5.0)
+  - libwebp/webp (1.5.0):
     - libwebp/sharpyuv
   - Mantle (1.5.6):
     - Mantle/extobjc (= 1.5.6)
   - Mantle/extobjc (1.5.6)
-  - MapboxCommon (23.11.0)
-  - MapboxCoreMaps (10.19.1):
+  - MapboxCommon (23.11.4)
+  - MapboxCoreMaps (10.19.2):
     - MapboxCommon (~> 23.11)
-  - MapboxMaps (10.19.0):
-    - MapboxCommon (= 23.11.0)
-    - MapboxCoreMaps (= 10.19.1)
+  - MapboxMaps (10.19.3):
+    - MapboxCommon (= 23.11.4)
+    - MapboxCoreMaps (= 10.19.2)
     - MapboxMobileEvents (= 2.0.0)
     - Turf (= 2.8.0)
   - MapboxMobileEvents (2.0.0)
   - MARKRangeSlider (1.1.1)
   - MMMarkdown (0.4)
   - MultiDelegate (0.0.4)
-  - Nimble (13.2.1):
+  - Nimble (13.7.1):
     - CwlPreconditionTesting (~> 2.2.0)
   - Nimble-Snapshots (9.8.0):
     - Nimble-Snapshots/Core (= 9.8.0)
@@ -208,7 +208,7 @@ PODS:
     - iOSSnapshotTestCase (~> 8.0)
     - Nimble (~> 13.0)
   - ObjectiveSugar (1.1.0)
-  - OCMock (3.9.1)
+  - OCMock (3.9.4)
   - OHHTTPStubs (3.1.2)
   - OpenSSL-Universal (3.3.2000)
   - ORStackView (2.0.3):
@@ -2114,7 +2114,7 @@ PODS:
     - React-Core
     - sovran-react-native
   - Sentry/HybridSDK (8.36.0)
-  - Sift (2.1.5)
+  - Sift (2.2.3)
   - sift-react-native (0.1.8):
     - React
     - Sift
@@ -2663,10 +2663,10 @@ SPEC CHECKSUMS:
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
   Analytics: 9655e0e1c71ea98107cfcb2b14891168acc6c6c9
-  AppAuth: a13994980c1ec792f7e2e665acd4d4aa6be43240
-  AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
+  AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
+  AppCenter: 994875ea7941b9e168babb98299f900a94bcef13
   appcenter-core: 3f5907606dfbf4ffe62cb7798210174c2608a7d9
-  AppCenterReactNativeShared: 01df23849b1c3c6eb8c4049f54322635650e98f0
+  AppCenterReactNativeShared: e6f6bd4d0e055bf1a3d7337edb4993bfce79185b
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: 1dca942403ed9342f98334bf4c3621f011aa7946
   braze-react-native-sdk: 578aa5dcc064b0260a288d7b74607cc4b846a7bb
@@ -2676,23 +2676,23 @@ SPEC CHECKSUMS:
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   CodePush: 8ba8ea6dbaf817d5e51dbbbd622e15150ba814dd
-  CwlCatchException: 51bf8319009a31104ea6f0568730d1ecc25b6454
-  CwlCatchExceptionSupport: 1345d6adb01a505933f2bc972dab60dcb9ce3e50
-  CwlMachBadInstructionHandler: ea1030428925d9bf340882522af30712fb4bf356
-  CwlPosixPreconditionTesting: a125dee731883f2582715f548c6b6c92c7fde145
-  CwlPreconditionTesting: ccfd08aca58d14e04062b2a3dd2fd52e09857453
+  CwlCatchException: 7acc161b299a6de7f0a46a6ed741eae2c8b4d75a
+  CwlCatchExceptionSupport: 54ccab8d8c78907b57f99717fb19d4cc3bce02dc
+  CwlMachBadInstructionHandler: dae4fdd124d45c9910ac240287cc7b898f4502a1
+  CwlPosixPreconditionTesting: ecd095aa2129e740b44301c34571e8d85906fb88
+  CwlPreconditionTesting: 67a0047dd4de4382b93442c0e3f25207f984f35a
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": 7a3ac7ad2b9bae43aadb4dca08113bb495c98f3e
-  FBAEMKit: 31a20c2d8744d8c57d3a5b7ae4e27b4fdd819193
+  FBAEMKit: 9900b2edd99a2d21629a6277e6166f14c6215799
   FBLazyVector: 1bf99bb46c6af9a2712592e707347315f23947aa
-  FBSDKCoreKit: dac911b656816f8d0b06e5fa4bac60e89505bb3b
-  FBSDKCoreKit_Basics: 92b7b7458d57091370b0b6cc197578874c3b4b16
-  FBSDKGamingServicesKit: 0ae05466560dca03aa6c8691746e664c351b5d9e
-  FBSDKLoginKit: 5d5271ebfd1e39c6b071de8db5c4bd6255be3561
-  FBSDKShareKit: 09dbbe11cf43a4a831b92f064f974e9a01b4f8bc
+  FBSDKCoreKit: 0791f8f68a8630931a4c12aa23a56cc021551596
+  FBSDKCoreKit_Basics: 46d6b472c0dd0a5a7e972c025033d1c567f54eb4
+  FBSDKGamingServicesKit: 599a63c235776b7c6288d5dfd7c02edab9a1d3b7
+  FBSDKLoginKit: b4a4eba1d62eb452544411824f41689adabd5bd2
+  FBSDKShareKit: eb1169eafe3c06f881dc6deed2d7979585b16959
   Firebase: 333ec7c6b12fa09c77b5162cda6b862102211d50
-  FirebaseAppCheckInterop: a1955ce8c30f38f87e7d091630e871e91154d65d
+  FirebaseAppCheckInterop: 6a1757cfd4067d8e00fccd14fcc1b8fd78cfac07
   FirebaseAuth: 22eb85d3853141de7062bfabc131aa7d6335cade
   FirebaseCore: 63efb128decaebb04c4033ed4e05fb0bb1cccef1
   FirebaseCoreInternal: df84dd300b561c27d5571684f389bf60b0a5c934
@@ -2704,7 +2704,7 @@ SPEC CHECKSUMS:
   GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
   GTMAppAuth: 99fb010047ba3973b7026e45393f51f27ab965ae
-  GTMSessionFetcher: 0e876eea9782ec6462e91ab872711c357322c94f
+  GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
   hermes-engine: 06a9c6900587420b90accc394199527c64259db4
   Interstellar: cd0c3290e249b5f156113a4c6c9c09dd0f418aaa
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
@@ -2713,19 +2713,19 @@ SPEC CHECKSUMS:
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
-  libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
+  libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
-  MapboxCommon: 119f3759f7dc9457f0695848108ab323eb643cb4
-  MapboxCoreMaps: ca17f67baced23f8c952166ac6314c35bad3f66c
-  MapboxMaps: b7f29ec7c33f7dc6d2947c1148edce6db81db9a7
+  MapboxCommon: cc47fafe3fe5408ca49240aa80fa64f27f275711
+  MapboxCoreMaps: 35685edba03e44468aed57c3dfd7f8795edafda8
+  MapboxMaps: 429db75b136978f8b2dc2456da5d8b6b03c22cea
   MapboxMobileEvents: d044b9edbe0ec7df60f6c2c9634fe9a7f449266b
   MARKRangeSlider: ef7e1fe84d22996f47fd72dcb8de50b9410aac47
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: 228e2321b74f45ea43ae19c268fdd60fd88d99b7
-  Nimble: 9e81a67096dab1d1f5160d7a3f8fa7a1eeec38fd
+  Nimble: 317d713c30c3336dd8571da1889f7ec3afc626e8
   Nimble-Snapshots: 240ea76ee8e52dfc1387b8d0d9bf1db3420cabbd
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
-  OCMock: 9491e4bec59e0b267d52a9184ff5605995e74be8
+  OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
   OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
   OpenSSL-Universal: b60a3702c9fea8b3145549d421fdb018e53ab7b4
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
@@ -2830,7 +2830,7 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   segment-analytics-react-native: 6f98edf18246782ee7428c5380c6519a3d2acf5e
   Sentry: f8374b5415bc38dfb5645941b3ae31230fbeae57
-  Sift: 7c27188ba3533c0a1be541d7efb68384e17e544c
+  Sift: 8007649a36d89440982c2e358a26c2fd79eae6bb
   sift-react-native: b146219794a56be21d30931b6317d9080770ae7a
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   sovran-react-native: 5aca73bffa66562f8cd8cbb4b766e4c40da9743b
@@ -2857,4 +2857,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: cf0efb5e63bb5313ca856a955d1364a24e079288
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.15.2
