@@ -11230,6 +11230,7 @@ type HomeView {
 }
 
 type HomeViewCard {
+  badgeText: String
   buttonText: String
   entityID: String
   entityType: String
