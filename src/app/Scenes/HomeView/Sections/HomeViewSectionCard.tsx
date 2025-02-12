@@ -48,7 +48,7 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
     return null
   }
 
-  const { title, subtitle, image, buttonText: btnText, hint } = section.card
+  const { title, subtitle, image, buttonText: btnText, badgeText } = section.card
 
   const imageHeight = height * 0.5
 
@@ -102,7 +102,7 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
           )}
 
           <Flex justifyContent="flex-end" px={2} pb={2} height={hasImage ? imageHeight : undefined}>
-            {!!hint && (
+            {!!badgeText && (
               <Flex flexDirection="row" mb={0.5}>
                 <Text
                   color="white100"
@@ -110,7 +110,7 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
                   style={{ paddingHorizontal: space(0.5) }}
                   variant="xs"
                 >
-                  {hint}
+                  {badgeText}
                 </Text>
               </Flex>
             )}
@@ -161,7 +161,7 @@ const HomeViewSectionCardFragment = graphql`
       title
       subtitle
       href
-      hint
+      badgeText
       buttonText
       image {
         imageURL
