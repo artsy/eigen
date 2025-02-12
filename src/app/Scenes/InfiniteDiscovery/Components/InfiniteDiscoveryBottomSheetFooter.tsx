@@ -11,10 +11,8 @@ import { currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { artworkModel, ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
 import { ArtworkCommercialButtons } from "app/Scenes/Artwork/Components/ArtworkCommercialButtons"
 import { ArtworkPrice } from "app/Scenes/Artwork/Components/ArtworkPrice"
-import {
-  aboutTheWorkQuery,
-  useBottomSheetAnimatedStyles,
-} from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
+import { aboutTheWorkQuery } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
+import { useBottomSheetAnimatedStyles } from "app/Scenes/InfiniteDiscovery/hooks/useBottomSheetAnimatedStyles"
 import {
   AuctionWebsocketChannelInfo,
   AuctionWebsocketContextProvider,
