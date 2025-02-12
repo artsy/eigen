@@ -1,13 +1,15 @@
 #import <AuthenticationServices/AuthenticationServices.h>
 #import <SafariServices/SafariServices.h>
-#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
 
 #import <Firebase.h>
-#import <BrazeKit/BrazeKit-Swift.h>
 #import "BrazeReactBridge.h"
 #import "BrazeReactUtils.h"
 
-@import BrazeUI;
+@import BrazeKit;
+
+#import <BrazeUI/BrazeUI-Swift.h>
+
 
 #import <CodePush/CodePush.h>
 #import <AppCenterReactNative.h>
