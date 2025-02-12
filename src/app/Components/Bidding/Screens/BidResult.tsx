@@ -50,10 +50,9 @@ export const BidResult: React.FC<BidResultProps> = ({
   const backHandler = () => {
     if (canBidAgain) {
       return false
-    } else {
-      dismissModal()
-      return true
     }
+    dismissModal()
+    return true
   }
 
   useBackHandler(backHandler)
