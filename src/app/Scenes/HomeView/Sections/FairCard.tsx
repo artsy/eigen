@@ -1,24 +1,24 @@
 import { bullet, Flex, Text } from "@artsy/palette-mobile"
-import {
-  HomeViewSectionFairsFairItem_fair$data,
-  HomeViewSectionFairsFairItem_fair$key,
-} from "__generated__/HomeViewSectionFairsFairItem_fair.graphql"
-import { CardRailCard, CardRailMetadataContainer } from "app/Components/CardRail/CardRailCard"
+import { FairCard_fair$data, FairCard_fair$key } from "__generated__/FairCard_fair.graphql"
+import { CARD_WIDTH, CardRailMetadataContainer } from "app/Components/CardRail/CardRailCard"
 import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact, concat, take } from "lodash"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
 
-interface HomeViewSectionFairsFairItemProps {
-  fair: HomeViewSectionFairsFairItem_fair$key
-  onPress?: (fair: HomeViewSectionFairsFairItem_fair$data) => void
+interface FairCardProps {
+  fair: FairCard_fair$key
+  onPress?: (fair: FairCard_fair$data) => void
+  width?: number
 }
 
-export const HomeViewSectionFairsFairItem: FC<HomeViewSectionFairsFairItemProps> = ({
+export const FairCard: FC<FairCardProps> = ({
   fair: fairFragment,
   onPress,
+  width = CARD_WIDTH,
 }) => {
   const fair = useFragment(fragment, fairFragment)
 
@@ -39,19 +39,21 @@ export const HomeViewSectionFairsFairItem: FC<HomeViewSectionFairsFairItemProps>
   const location = fair.location?.city || fair.location?.country
 
   return (
-    <CardRailCard
+    <RouterLink
       key={fair.slug}
       onPress={() => {
         onPress?.(fair)
         navigate(`/fair/${fair.slug}`)
       }}
     >
-      <Flex>
-        <ThreeUpImageLayout imageURLs={artworkImageURLs} />
+      <Flex width={width} border={1} borderRadius={4} borderColor="black10" overflow="hidden">
+        <ThreeUpImageLayout imageURLs={artworkImageURLs} width={width} />
+
         <CardRailMetadataContainer>
           <Text numberOfLines={1} lineHeight="20px" variant="sm">
             {fair.name}
           </Text>
+
           <Text
             numberOfLines={1}
             lineHeight="20px"
@@ -65,12 +67,12 @@ export const HomeViewSectionFairsFairItem: FC<HomeViewSectionFairsFairItemProps>
           </Text>
         </CardRailMetadataContainer>
       </Flex>
-    </CardRailCard>
+    </RouterLink>
   )
 }
 
 const fragment = graphql`
-  fragment HomeViewSectionFairsFairItem_fair on Fair {
+  fragment FairCard_fair on Fair {
     internalID
     slug
     profile {
