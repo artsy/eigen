@@ -3,6 +3,9 @@
 #import <BrazeKit/BrazeKit-Swift.h>
 #import <UserNotifications/UNUserNotificationCenter.h>
 
+#import <Expo/Expo.h>
+
+
 @class ARWindow, ArtsyEcho;
 
 // This class, and in fact the complete JSDecoupledAppDelegate class, is not used during testing.

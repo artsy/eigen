@@ -1,4 +1,0 @@
-#include "Shared.xcconfig"
-
-
-PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy
