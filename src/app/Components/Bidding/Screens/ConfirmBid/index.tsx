@@ -1,5 +1,6 @@
 import { Box, Button, Checkbox, LinkText, Text } from "@artsy/palette-mobile"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
+import { captureException, captureMessage } from "@sentry/react-native"
 import {
   BidderPositionQuery,
   BidderPositionQuery$data,
@@ -136,6 +137,10 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
           onCompleted: (_, errors) => {
             if (errors && errors.length) {
               console.error("ConfirmBid.tsx: updateUserPhoneNumber", errors)
+              captureMessage(
+                `ConfirmBid.tsx: #updateUserPhoneNumber ${JSON.stringify(errors)}`,
+                "error"
+              )
               setErrorMessage(
                 "There was a problem processing your information. Check your payment details and try again."
               )
@@ -150,12 +155,17 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
         createCreditCard({
           variables: { input: { token: creditCardToken.id } },
           onError: (errors) => {
+            captureException(errors, { tags: { source: "ConfirmBid.tsx: createCreditCard" } })
             console.error("ConfirmBid.tsx: createCreditCard", errors)
             navigateToBidScreen(undefined, errors)
           },
           onCompleted: (results, error) => {
             const mutationError = results?.createCreditCard?.creditCardOrError?.mutationError
             if (mutationError) {
+              captureMessage(
+                `ConfirmBid.tsx: #createCreditCard mutation error ${JSON.stringify(mutationError)}`,
+                "error"
+              )
               setErrorMessage(
                 mutationError.detail ||
                   "There was a problem processing your information. Check your payment details and try again."
@@ -163,6 +173,10 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
               setErrorModalVisible(true)
               console.error("ConfirmBid.tsx: createCreditCard", mutationError)
             } else if (error) {
+              captureMessage(
+                `ConfirmBid.tsx: #createCreditCard error ${JSON.stringify(error)}`,
+                "error"
+              )
               console.error("ConfirmBid.tsx: createCreditCard", error)
               setErrorMessage(
                 "There was a problem processing your information. Check your payment details and try again."
@@ -187,6 +201,10 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
         },
         onCompleted: (results, errors) => {
           if (errors?.length) {
+            captureMessage(
+              `ConfirmBid.tsx: #createBidderPosition ${JSON.stringify(errors)}`,
+              "error"
+            )
             console.error("ConfirmBid.tsx: createBidderPosition", errors)
             navigateToBidScreen(undefined, errors)
           } else {
@@ -194,6 +212,7 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
           }
         },
         onError: (errors) => {
+          captureException(errors, { tags: { source: "ConfirmBid.tsx: createBidderPosition" } })
           console.error("ConfirmBid.tsx: createBidderPosition", errors)
           navigateToBidScreen(undefined, errors)
         },
@@ -216,6 +235,7 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
       bidderPositionQuery(bidderPostion.result.position?.internalID as string)
         .then(checkBidderPosition)
         .catch((error) => {
+          captureException(error, { tags: { source: "ConfirmBid.tsx: verifyBidderPosition" } })
           navigateToBidScreen(undefined, error)
         })
     } else {
@@ -233,6 +253,10 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
         bidderPositionQuery(bidderPosition.position?.internalID as string)
           .then(checkBidderPosition)
           .catch((error) => {
+            captureException(error, {
+              tags: { source: "ConfirmBid.tsx: checkBidderPosition" },
+              extra: { pollCount: pollCount.current },
+            })
             navigateToBidScreen(undefined, error)
           })
       }, 1000)
