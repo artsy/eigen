@@ -1,8 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Screen, Spacer, Text } from "@artsy/palette-mobile"
+import { Flex, Screen, Spacer } from "@artsy/palette-mobile"
 import { ShowsForYouQuery } from "__generated__/ShowsForYouQuery.graphql"
 import { ShowsForYou_showsConnection$key } from "__generated__/ShowsForYou_showsConnection.graphql"
-import { ArticlesPlaceholder, useNumColumns } from "app/Scenes/Articles/ArticlesList"
+import { ShowCardContainer } from "app/Components/ShowCard"
+import { ArticlesPlaceholder } from "app/Scenes/Articles/ArticlesList"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -10,6 +11,7 @@ import { useLocation } from "app/utils/hooks/useLocation"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Suspense, useState } from "react"
+import { ActivityIndicator, RefreshControl } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 const ShowsForYou: React.FC = () => {
@@ -19,7 +21,6 @@ const ShowsForYou: React.FC = () => {
     disabled: !enableShowsForYouLocation,
     skipPermissionRequests: true,
   })
-  console.log("LOGD location = ", location)
 
   const showsForYouQueryVariables = location
     ? { near: location, count: 10 }
@@ -30,11 +31,14 @@ const ShowsForYou: React.FC = () => {
     showsForYouQueryVariables
   )
 
+  if (isLoading) {
+    return <ArticlesPlaceholder title="Shows for You" />
+  }
+
   return <ShowsForYouList me={queryData.me} />
 }
 
 export const ShowsForYouList: React.FC<{ me: any }> = ({ me }) => {
-  console.log("LOGD ShowsForYouList me = ", me)
   const [refreshing, setRefreshing] = useState(false)
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
@@ -42,14 +46,11 @@ export const ShowsForYouList: React.FC<{ me: any }> = ({ me }) => {
     ShowsForYou_showsConnection$key
   >(showsNearYouConnectionFragment, me)
 
-  const numColumns = useNumColumns()
-
   if (!data) {
     return null
   }
-  const shows = extractNodes(data.showsConnection)
 
-  console.log("LOGD data = ", data, shows)
+  const shows = extractNodes(data.showsConnection)
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
@@ -68,39 +69,30 @@ export const ShowsForYouList: React.FC<{ me: any }> = ({ me }) => {
     <Screen>
       <ProvideScreenTrackingWithCohesionSchema
         info={screen({
-          context_screen_owner_type: OwnerType.shows, // todo: change to showsForYou?
+          context_screen_owner_type: OwnerType.shows,
         })}
       >
         <Screen.AnimatedHeader onBack={goBack} title="Shows for You" />
         <Screen.StickySubHeader title="Shows for You" />
         <Screen.Body fullwidth>
           <Screen.FlatList
-            numColumns={numColumns}
-            key={`${numColumns}`}
             data={shows}
-            // refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-            keyExtractor={(item) => `${item.internalID}-${numColumns}`}
-            renderItem={({ item, index }) => {
-              console.log("LOGD item = ", item)
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+            keyExtractor={(item) => `${item.internalID}`}
+            renderItem={({ item }) => {
               return (
-                <Box height={200} backgroundColor="pink">
-                  <Text>{index}</Text>
-                </Box>
+                // TODO:add wrapper with 1 or 2 collumns
 
-                /*  <ArticlesListItem index={index}>
-                  <ArticleCardContainer
-                    article={item as any}
-                    isFluid
-                    onPress={() => handleOnPress(item)}
-                  />
-                </ArticlesListItem> */
+                <Flex mx={2}>
+                  <ShowCardContainer show={item} isFluid />
+                </Flex>
               )
             }}
             ItemSeparatorComponent={() => <Spacer y={4} />}
             onEndReached={handleLoadMore}
             onEndReachedThreshold={1}
             style={{ paddingTop: 20 }}
-            /*             ListFooterComponent={() => (
+            ListFooterComponent={() => (
               <Flex
                 alignItems="center"
                 justifyContent="center"
@@ -110,7 +102,7 @@ export const ShowsForYouList: React.FC<{ me: any }> = ({ me }) => {
               >
                 <ActivityIndicator />
               </Flex>
-            )} */
+            )}
           />
         </Screen.Body>
       </ProvideScreenTrackingWithCohesionSchema>
@@ -119,7 +111,6 @@ export const ShowsForYouList: React.FC<{ me: any }> = ({ me }) => {
 }
 
 export const ShowsForYouScreen: React.FC = () => {
-  // TODO: write another placeholder???
   return (
     <Suspense fallback={<ArticlesPlaceholder title="Shows for You" />}>
       <ShowsForYou />
@@ -166,6 +157,7 @@ const showsNearYouConnectionFragment = graphql`
         node {
           internalID
           slug
+          ...ShowCard_show
         }
       }
     }

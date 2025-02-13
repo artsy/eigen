@@ -1,10 +1,18 @@
-import { Flex, SkeletonBox, SkeletonText, Spacer, Text } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Image,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+  Text,
+  useTheme,
+} from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
 import { ShowCard_show$data } from "__generated__/ShowCard_show.graphql"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { compact } from "lodash"
-import { GestureResponderEvent, ViewProps } from "react-native"
+import { GestureResponderEvent, useWindowDimensions, View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 const WIDTH = 295
@@ -12,10 +20,11 @@ const HEIGHT = 230
 
 interface ShowCardProps extends ViewProps {
   show: ShowCard_show$data
+  isFluid: boolean
   onPress?(event: GestureResponderEvent): void
 }
 
-export const ShowCard: React.FC<ShowCardProps> = ({ show, onPress }) => {
+export const ShowCard: React.FC<ShowCardProps> = ({ show, isFluid, onPress }) => {
   const imageURL = show.metaImage?.url
 
   const showCity = getShowCity({
@@ -29,11 +38,30 @@ export const ShowCard: React.FC<ShowCardProps> = ({ show, onPress }) => {
 
   const formattedCityAndDate = compact([showCity, formattedDate]).join(" • ")
 
+  const { space } = useTheme()
+  const { width } = useWindowDimensions()
+
   return (
-    <Flex width={WIDTH}>
+    <Flex width={isFluid ? "100%" : WIDTH}>
       <RouterLink haptic onPress={onPress} to={show.href}>
-        <Flex width={WIDTH} overflow="hidden">
-          <ImageWithFallback src={imageURL} width={WIDTH} height={HEIGHT} />
+        <Flex width={isFluid ? "100%" : WIDTH} overflow="hidden">
+          {!!imageURL &&
+            (isFluid ? (
+              <>
+                <View style={{ width }}>
+                  <Image
+                    src={imageURL}
+                    // aspect ratio is fixed to 1.33 to match the old image aspect ratio
+                    aspectRatio={1.33}
+                    // 40 here comes from the mx={2} from the parent component
+                    width={width - 2 * space(2)}
+                  />
+                </View>
+              </>
+            ) : (
+              <ImageWithFallback src={imageURL} width={WIDTH} height={HEIGHT} />
+            ))}
+
           <Spacer y={1} />
           <Text numberOfLines={2} ellipsizeMode="tail" variant="sm-display" mb={0.5}>
             {show.name}
