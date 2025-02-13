@@ -79,7 +79,12 @@ PODS:
     - CwlMachBadInstructionHandler (~> 2.2.0)
     - CwlPosixPreconditionTesting (~> 2.2.0)
   - DoubleConversion (1.1.6)
+  - EASClient (0.13.2):
+    - ExpoModulesCore
   - EXConstants (17.0.5):
+    - ExpoModulesCore
+  - EXJSONUtils (0.14.0)
+  - EXManifests (0.15.5):
     - ExpoModulesCore
   - Expecta (1.0.6)
   - "Expecta+Snapshots (3.2.0)":
@@ -127,6 +132,36 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - EXStructuredHeaders (4.0.0)
+  - EXUpdates (0.26.18):
+    - DoubleConversion
+    - EASClient
+    - EXManifests
+    - ExpoModulesCore
+    - EXStructuredHeaders
+    - EXUpdatesInterface
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - ReachabilitySwift
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - EXUpdatesInterface (1.0.0):
+    - ExpoModulesCore
   - FBAEMKit (17.0.0):
     - FBSDKCoreKit_Basics (= 17.0.0)
   - FBLazyVector (0.76.5)
@@ -281,6 +316,7 @@ PODS:
     - FBLazyVector (= 0.76.5)
     - RCTRequired (= 0.76.5)
     - React-Core (= 0.76.5)
+  - ReachabilitySwift (5.2.4)
   - React (0.76.5):
     - React-Core (= 0.76.5)
     - React-Core/DevSupport (= 0.76.5)
@@ -2226,7 +2262,10 @@ DEPENDENCIES:
   - CocoaLumberjack (= 3.7.2)
   - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - EASClient (from `../node_modules/expo-eas-client/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
+  - EXJSONUtils (from `../node_modules/expo-json-utils/ios`)
+  - EXManifests (from `../node_modules/expo-manifests/ios`)
   - Expecta (= 1.0.6)
   - "Expecta+Snapshots (= 3.2.0)"
   - Expo (from `../node_modules/expo`)
@@ -2237,6 +2276,9 @@ DEPENDENCIES:
   - ExpoFont (from `../node_modules/expo-font/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
+  - EXStructuredHeaders (from `../node_modules/expo-structured-headers/ios`)
+  - EXUpdates (from `../node_modules/expo-updates/ios`)
+  - EXUpdatesInterface (from `../node_modules/expo-updates-interface/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBSDKCoreKit (~> 17)
   - FBSDKLoginKit (~> 17)
@@ -2436,6 +2478,7 @@ SPEC REPOS:
     - ORStackView
     - PromisesObjC
     - Quick
+    - ReachabilitySwift
     - RecaptchaInterop
     - SDWebImage
     - SDWebImageWebPCoder
@@ -2473,8 +2516,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-code-push"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  EASClient:
+    :path: "../node_modules/expo-eas-client/ios"
   EXConstants:
     :path: "../node_modules/expo-constants/ios"
+  EXJSONUtils:
+    :path: "../node_modules/expo-json-utils/ios"
+  EXManifests:
+    :path: "../node_modules/expo-manifests/ios"
   Expo:
     :path: "../node_modules/expo"
   ExpoAdapterFBSDKNext:
@@ -2491,6 +2540,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-keep-awake/ios"
   ExpoModulesCore:
     :path: "../node_modules/expo-modules-core"
+  EXStructuredHeaders:
+    :path: "../node_modules/expo-structured-headers/ios"
+  EXUpdates:
+    :path: "../node_modules/expo-updates/ios"
+  EXUpdatesInterface:
+    :path: "../node_modules/expo-updates-interface/ios"
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   FLKAutoLayout:
@@ -2752,7 +2807,10 @@ SPEC CHECKSUMS:
   CwlPosixPreconditionTesting: a125dee731883f2582715f548c6b6c92c7fde145
   CwlPreconditionTesting: ccfd08aca58d14e04062b2a3dd2fd52e09857453
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
+  EASClient: d7420d607795707821b8bcd30ab7444159e802e0
   EXConstants: aa93a3e70f8b37c81a80931cfd23f860b1819167
+  EXJSONUtils: 01fc7492b66c234e395dcffdd5f53439c5c29c93
+  EXManifests: 81324537a654111964f6e7994dbc351a4233dcfa
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": 7a3ac7ad2b9bae43aadb4dca08113bb495c98f3e
   Expo: eb362d6461fd355f2d50786daad5fc3c377599e3
@@ -2763,6 +2821,9 @@ SPEC CHECKSUMS:
   ExpoFont: 8b14db1afebf62e9774613a082e402985f4e747c
   ExpoKeepAwake: 1f74cdf53ab3b3aeb7110f18eb053c92e7c3e710
   ExpoModulesCore: a8c352ca61526d2b79a49467cec20c3eece4915b
+  EXStructuredHeaders: 09c70347b282e3d2507e25fb4c747b1b885f87f6
+  EXUpdates: 909c51cbac9024cfc7cbb4cc4a8f3690980ce771
+  EXUpdatesInterface: 1dcebac98ac5dad4289e6ff2bd5616822e894397
   FBAEMKit: 31a20c2d8744d8c57d3a5b7ae4e27b4fdd819193
   FBLazyVector: 1bf99bb46c6af9a2712592e707347315f23947aa
   FBSDKCoreKit: dac911b656816f8d0b06e5fa4bac60e89505bb3b
@@ -2815,6 +2876,7 @@ SPEC CHECKSUMS:
   RCTDeprecation: fb7d408617e25d7f537940000d766d60149c5fea
   RCTRequired: 9aaf0ffcc1f41f0c671af863970ef25c422a9920
   RCTTypeSafety: e9a6e7d48184646eb0610295b74c0dd02768cbb2
+  ReachabilitySwift: 32793e867593cfc1177f5d16491e3a197d2fccda
   React: fffb3cf1b0d7aee03c4eb4952b2d58783615e9fa
   React-callinvoker: 3c6ecc0315d42924e01b3ddc25cf2e49d33da169
   React-Core: d2143ba58d0c8563cf397f96f699c6069eba951c
