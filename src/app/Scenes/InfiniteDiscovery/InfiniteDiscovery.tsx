@@ -111,7 +111,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     }
   }
 
-  const handleCardSwiped = useCallback(() => {
+  const handleCardSwipedLeft = useCallback(() => {
     if (index < artworks.length - 1) {
       const dismissedArtworkId = artworkCards[index].artworkId
       addDisoveredArtworkId(dismissedArtworkId)
@@ -160,6 +160,12 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       fetchMoreArtworks(unswipedCards.map((card) => card.artworkId))
     }
   }, [index, artworks.length, fetchMoreArtworks])
+
+  const handleCardWhiffedRight = () => {
+    if (index > 0) {
+      setIndex(index - 1)
+    }
+  }
 
   const handleExitPressed = () => {
     if (savedArtworksCount > 0) {
@@ -220,7 +226,12 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           />
         </Flex>
         <Spacer y={1} />
-        <FancySwiper cards={unswipedCards} hideActionButtons onSwipeAnywhere={handleCardSwiped} />
+        <FancySwiper
+          cards={unswipedCards}
+          hideActionButtons
+          onSwipeLeft={handleCardSwipedLeft}
+          onWhiffRight={handleCardWhiffedRight}
+        />
 
         {!!artworks.length && (
           <InfiniteDiscoveryBottomSheet

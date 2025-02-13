@@ -15,17 +15,17 @@ export type FancySwiperArtworkCard = {
 interface FancySwiperProps {
   cards: FancySwiperArtworkCard[]
   hideActionButtons?: boolean
-  onSwipeAnywhere?: () => void
-  onSwipeLeft?: () => void
+  onSwipeLeft: () => void
   onSwipeRight?: () => void
+  onWhiffRight?: () => void
 }
 
 export const FancySwiper = ({
   cards,
   hideActionButtons = false,
-  onSwipeAnywhere,
   onSwipeLeft,
   onSwipeRight,
+  onWhiffRight,
 }: FancySwiperProps) => {
   const remainingCards = useMemo(() => cards.reverse(), [cards.length])
   const swiper = useRef<Animated.ValueXY>(new Animated.ValueXY()).current
@@ -33,22 +33,18 @@ export const FancySwiper = ({
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (_, { dx, dy }) => {
-      // set the position of the card
-      swiper.setValue({ x: dx, y: dy })
+      const isRightSwipe = dx > 0
+      // lock right swipes if not allowed
+      const x = isRightSwipe && !onSwipeRight ? 0 : dx
+
+      swiper.setValue({ x, y: dy })
     },
     onPanResponderRelease: (_, { dx, dy }) => {
-      // the hypoteneuse of the swipe is at least 100
-      const isFullSwipe = Math.hypot(dx, dy) >= SWIPE_MAGNITUDE
-
-      // the angle of the swipe is below 60 degrees from the horizontal axis
-      const isUnder60DegreeSwipe = Math.abs(Math.atan(dy / dx)) < Math.PI / 3
-
+      const isFullSwipe = Math.abs(dx) > SWIPE_MAGNITUDE
       const isLeftSwipe = dx < 0
       const isRightSwipe = dx > 0
 
-      if (isFullSwipe && isUnder60DegreeSwipe && onSwipeAnywhere) {
-        handle360Swipe(dx, dy)
-      } else if (isFullSwipe && isLeftSwipe && onSwipeLeft) {
+      if (isFullSwipe && isLeftSwipe) {
         handleLeftSwipe(dy)
       } else if (isFullSwipe && isRightSwipe && onSwipeRight) {
         handleRightSwipe(dy)
@@ -58,30 +54,17 @@ export const FancySwiper = ({
           toValue: { x: 0, y: 0 },
           friction: 50,
           useNativeDriver: true,
-        }).start()
+        }).start(() => {
+          // revert the pan responder to its initial position
+          swiper.setValue({ x: 0, y: 0 })
+
+          if (isFullSwipe && isRightSwipe && onWhiffRight) {
+            onWhiffRight()
+          }
+        })
       }
     },
   })
-
-  const handle360Swipe = (dx: number, dy: number) => {
-    // send the card on the same trajectory by multiplying the dx and dy by 100 (but cap it at 1000)
-    const toValueX = Math.abs(dx) * 100 > 1000 ? Math.sign(dx) * 1000 : dx * 100
-    const toValueY = Math.abs(dy) * 100 > 1000 ? Math.sign(dy) * 1000 : dy * 100
-
-    // move the card off the screen
-    Animated.timing(swiper, {
-      toValue: { x: toValueX, y: toValueY },
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => {
-      // Revert the pan responder to its initial position
-      swiper.setValue({ x: 0, y: 0 })
-
-      if (onSwipeAnywhere) {
-        onSwipeAnywhere()
-      }
-    })
-  }
 
   const handleLeftSwipe = (toValueY?: number) => {
     // move the card off the screen
@@ -92,10 +75,7 @@ export const FancySwiper = ({
     }).start(() => {
       // revert the pan responder to its initial position
       swiper.setValue({ x: 0, y: 0 })
-
-      if (onSwipeLeft) {
-        onSwipeLeft()
-      }
+      onSwipeLeft()
     })
   }
 
@@ -106,12 +86,9 @@ export const FancySwiper = ({
       duration: 300,
       useNativeDriver: true,
     }).start(() => {
-      // Revert the pan responder to its initial position
+      // revert the pan responder to its initial position
       swiper.setValue({ x: 0, y: 0 })
-
-      if (onSwipeRight) {
-        onSwipeRight()
-      }
+      onSwipeRight?.()
     })
   }
 
