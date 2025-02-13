@@ -20,7 +20,7 @@
 #import "UIDevice-Hardware.h"
 
 #import "ARButtonSubclasses.h"
-#import "UIView+BooleanAnimations.h"
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <MultiDelegate/AIMultiDelegate.h>
