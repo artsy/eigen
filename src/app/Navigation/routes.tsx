@@ -668,17 +668,6 @@ export const artsyDotNetRoutes = defineRoutes([
     },
   },
   {
-    path: "/fairs/featured",
-    name: "Featured Fairs",
-    Component: FeaturedFairsScreen,
-    options: {
-      screenOptions: {
-        headerShown: false,
-      },
-    },
-    queries: [featuredFairsScreenQuery],
-  },
-  {
     path: "/fair/:fairID",
     name: "Fair",
     Component: FairScreen,
@@ -751,6 +740,17 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+  },
+  {
+    path: "/featured-fairs",
+    name: "Featured Fairs",
+    Component: FeaturedFairsScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [featuredFairsScreenQuery],
   },
   {
     path: "/favorites",
