@@ -1,6 +1,6 @@
 #import "ARAppActivityContinuationDelegate.h"
 #import "ARUserManager.h"
-#import "ARAppDelegate.h"
+#import "AppDelegate.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
 #import "AREmission.h"

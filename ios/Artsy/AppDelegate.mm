@@ -4,14 +4,14 @@
 #import <Firebase.h>
 #import <BrazeKit/BrazeKit-Swift.h>
 #import "BrazeReactBridge.h"
-#import "BrazeReactUtils.h"
+#import "BrazeReactUtils.h" 
 
 @import BrazeUI;
 
 #import <CodePush/CodePush.h>
 #import <AppCenterReactNative.h>
 
-#import "ARAppDelegate.h"
+#import "AppDelegate.h"
 #import "ARAppDelegate+Emission.h"
 #import "ARAppDelegate+Echo.h"
 #import "ARAppNotificationsDelegate.h"

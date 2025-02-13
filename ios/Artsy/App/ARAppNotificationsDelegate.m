@@ -3,7 +3,7 @@
 #import "ArtsyAPI+Notifications.h"
 #import "ArtsyAPI+DeviceTokens.h"
 
-#import "ARAppDelegate.h"
+#import "AppDelegate.h"
 #import "ARAppConstants.h"
 #import "ARAnalyticsConstants.h"
 #import <SEGAnalytics.h>
