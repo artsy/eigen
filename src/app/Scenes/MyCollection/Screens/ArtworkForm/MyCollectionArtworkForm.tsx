@@ -1,11 +1,12 @@
 import { ActionType, ContextModule, OwnerType, SaveCollectedArtwork } from "@artsy/cohesion"
-import { Flex, Screen } from "@artsy/palette-mobile"
+import { Flex, Screen, useColor } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { MyCollectionArtworkEditQuery } from "__generated__/MyCollectionArtworkEditQuery.graphql"
 import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import { FadeIn } from "app/Components/FadeIn"
 import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
+import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import {
   AddMyCollectionArtist,
@@ -63,6 +64,8 @@ export type MyCollectionArtworkFormProps =
 const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (props) => {
+  const color = useColor()
+  const theme = useNavigationTheme()
   const enableShowError = useDevToggle("DTShowErrorInLoadFailureView")
   const { trackEvent } = useTracking()
   const { formValues, dirtyFormCheckValues } = GlobalStore.useAppState(
@@ -155,14 +158,14 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
   const { width, height } = Dimensions.get("screen")
 
   return (
-    <NavigationContainer independent ref={navContainerRef}>
+    <NavigationContainer independent ref={navContainerRef} theme={theme}>
       <FormikProvider value={formik}>
         <Stack.Navigator
           // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
           detachInactiveScreens={false}
           screenOptions={{
             headerShown: false,
-            cardStyle: { backgroundColor: "white" },
+            cardStyle: { backgroundColor: color("background") },
           }}
         >
           {mode === "add" && (

@@ -1,6 +1,7 @@
-import { Flex, ClassTheme, Button } from "@artsy/palette-mobile"
+import { Button, Flex } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { Composer_conversation$data } from "__generated__/Composer_conversation.graphql"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { Schema, Track, track as _track } from "app/utils/track"
 import React from "react"
 import {
@@ -27,7 +28,7 @@ const Container = styled.View`
   border-bottom-color: ${themeGet("colors.black10")};
   border-bottom-width: 1px;
   padding: 10px;
-  background-color: ${(p: ContainerProps) => (p.active ? "white" : themeGet("colors.black5"))};
+  background-color: ${(p: ContainerProps) => (p.active ? "white100" : themeGet("colors.black5"))};
 `
 
 interface Props {
@@ -81,7 +82,7 @@ export default class Composer extends React.Component<Props, State> {
     const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
 
     return (
-      <ClassTheme>
+      <ThemeAwareClassTheme>
         {({ color }) => {
           // The TextInput loses its isFocused() callback as a styled component
           const inputStyles = {
@@ -133,7 +134,7 @@ export default class Composer extends React.Component<Props, State> {
             </KeyboardAvoidingView>
           )
         }}
-      </ClassTheme>
+      </ThemeAwareClassTheme>
     )
   }
 }

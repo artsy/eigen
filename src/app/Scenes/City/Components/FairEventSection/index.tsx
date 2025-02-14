@@ -1,6 +1,7 @@
-import { Box, ClassTheme, Text } from "@artsy/palette-mobile"
+import { Box, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { navigate } from "app/system/navigation/navigate"
 import { Component } from "react"
 import { FlatList } from "react-native"
@@ -8,7 +9,7 @@ import styled from "styled-components/native"
 import { FairEventSectionCard } from "./Components/FairEventSectionCard"
 
 const FairSectionBackground = styled(Box)`
-  background: black;
+  background: ${themeGet("colors.black100")};
   margin-bottom: ${themeGet("space.1")};
 `
 
@@ -37,11 +38,11 @@ export class FairEventSection extends Component<Props> {
   render() {
     const { data } = this.props
     return (
-      <ClassTheme>
+      <ThemeAwareClassTheme>
         {({ space }) => (
           <FairSectionBackground>
             <Box mt={4}>
-              <Text variant="lg-display" color="white">
+              <Text variant="lg-display" color="white100">
                 Fairs
               </Text>
             </Box>
@@ -57,13 +58,13 @@ export class FairEventSection extends Component<Props> {
                 <CaretButton
                   onPress={() => this.viewAllPressed()}
                   text={`View all ${data.length} fairs`}
-                  textColor="white"
+                  textColor="white100"
                 />
               </Box>
             )}
           </FairSectionBackground>
         )}
-      </ClassTheme>
+      </ThemeAwareClassTheme>
     )
   }
 }

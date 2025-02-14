@@ -1,4 +1,4 @@
-import { Flex, FlexProps, Image, Text } from "@artsy/palette-mobile"
+import { Flex, FlexProps, Image, Text, useColor } from "@artsy/palette-mobile"
 import { FeatureHeader_feature$data } from "__generated__/FeatureHeader_feature.graphql"
 import { Stack } from "app/Components/Stack"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -13,6 +13,8 @@ export interface FeatureHeaderProps extends FlexProps {
 
 export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
   const { height, width } = useScreenDimensions()
+  const color = useColor()
+
   const imageHeight = isTablet() ? height * 0.6 : width
   const imageWidth = isTablet() ? width / 2 : width
 
@@ -35,7 +37,7 @@ export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
     />
   )
   return isTablet() ? (
-    <Flex flexDirection="row" borderBottomWidth={1} borderBottomColor="black">
+    <Flex flexDirection="row" borderBottomWidth={1} borderBottomColor={color("black100")}>
       <Flex flex={1} alignItems="center" justifyContent="center">
         {image}
       </Flex>
@@ -45,7 +47,7 @@ export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
       </Stack>
     </Flex>
   ) : (
-    <Stack spacing={4} borderBottomWidth={1} borderBottomColor="black" pb={4}>
+    <Stack spacing={4} borderBottomWidth={1} borderBottomColor={color("black100")} pb={4}>
       {image}
       <Stack mx={2} alignItems="center">
         {title}
@@ -72,7 +74,7 @@ export const FeatureHeaderPlaceholder: React.FC<{}> = ({}) => {
   const imageHeight = isTablet() ? height * 0.6 : width
 
   return isTablet() ? (
-    <Flex flexDirection="row" borderBottomWidth={1} borderBottomColor="black">
+    <Flex flexDirection="row" borderBottomWidth={1} borderBottomColor="black100">
       <PlaceholderBox height={imageHeight} flex={1} />
       <Stack px={2} alignItems="center" justifyContent="center" flex={1}>
         <PlaceholderText width={220} />
@@ -80,7 +82,7 @@ export const FeatureHeaderPlaceholder: React.FC<{}> = ({}) => {
       </Stack>
     </Flex>
   ) : (
-    <Stack spacing={4} borderBottomWidth={1} borderBottomColor="black" pb={4}>
+    <Stack spacing={4} borderBottomWidth={1} borderBottomColor="black100" pb={4}>
       <PlaceholderBox height={imageHeight} />
       <Stack mx={2} alignItems="center" justifyContent="center" minHeight={140}>
         <PlaceholderText width={220} />

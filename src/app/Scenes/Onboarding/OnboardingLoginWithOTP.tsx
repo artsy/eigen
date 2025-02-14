@@ -65,7 +65,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
   const [recoveryCodeMode, setRecoveryCodeMode] = useState(false)
 
   return (
-    <Flex flex={1} backgroundColor="white" flexGrow={1} pb={1}>
+    <Flex flex={1} backgroundColor="background" flexGrow={1} pb={1}>
       <KeyboardAvoidingView style={{ flex: 1 }}>
         <ScrollView
           contentContainerStyle={{

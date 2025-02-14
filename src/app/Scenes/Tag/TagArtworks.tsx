@@ -144,7 +144,7 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
             <Tabs.SubTabBar>
               <TagArtworksFilterHeader openFilterArtworksModal={openFilterArtworksModal} />
             </Tabs.SubTabBar>
-            <Flex pt={1}>
+            <Flex pt={1} backgroundColor="white100">
               <Text variant="xs" color="black60">
                 Showing {artworksTotal} works
               </Text>

@@ -43,7 +43,7 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
   }, [selectedTab, hasArtworks])
 
   return (
-    <Flex px={2} backgroundColor="white100">
+    <Flex px={2} backgroundColor="background">
       <Messages showNewWorksMessage={showNewWorksMessage} hasMarketSignals={hasMarketSignals} />
 
       <MainStickyHeader hasArtworks={hasArtworks} />

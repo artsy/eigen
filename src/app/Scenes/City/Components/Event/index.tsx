@@ -1,5 +1,6 @@
-import { Box, Button, ClassTheme, Flex, Image, Text } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Image, Text } from "@artsy/palette-mobile"
 import { EventMutation } from "__generated__/EventMutation.graphql"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
 import { Show } from "app/Scenes/Map/types"
 import { navigate } from "app/system/navigation/navigate"
@@ -127,7 +128,7 @@ export class Event extends React.Component<Props, State> {
     const { isFollowedSaving } = this.state
     const url = cover_image ? cover_image.url : null
     return (
-      <ClassTheme>
+      <ThemeAwareClassTheme>
         {({ color }) => (
           <TouchableWithoutFeedback onPress={() => this.handleTap()}>
             <Box mb={2}>
@@ -163,7 +164,7 @@ export class Event extends React.Component<Props, State> {
             </Box>
           </TouchableWithoutFeedback>
         )}
-      </ClassTheme>
+      </ThemeAwareClassTheme>
     )
   }
 }

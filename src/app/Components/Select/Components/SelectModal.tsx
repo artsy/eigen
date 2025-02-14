@@ -124,6 +124,7 @@ export const SelectModal: React.FC<{
       onRequestClose={onDismiss}
       statusBarTranslucent
       testID={testID}
+      animationType="slide"
     >
       <Screen>
         <Flex p={2} pb="15px" flexDirection="row" alignItems="center" flexGrow={0}>

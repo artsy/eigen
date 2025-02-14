@@ -28,7 +28,7 @@ export const ArtworksFilterHeader: React.FC<FilterHeaderProps> = ({
   showSeparator = true,
 }) => {
   return (
-    <Flex backgroundColor="white100">
+    <Flex backgroundColor="background">
       <Flex
         flexDirection="row"
         height={HEADER_HEIGHT}

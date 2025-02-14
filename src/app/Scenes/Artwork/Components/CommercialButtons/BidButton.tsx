@@ -1,8 +1,9 @@
 import { ActionType } from "@artsy/cohesion"
-import { ButtonProps, ClassTheme, Text, TextProps, Button } from "@artsy/palette-mobile"
+import { ButtonProps, Text, TextProps, Button } from "@artsy/palette-mobile"
 import { BidButton_artwork$data } from "__generated__/BidButton_artwork.graphql"
 import { BidButton_me$data } from "__generated__/BidButton_me.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { navigate } from "app/system/navigation/navigate"
 import { bidderNeedsIdentityVerification } from "app/utils/auction/bidderNeedsIdentityVerification"
 import { Schema } from "app/utils/track"
@@ -156,13 +157,13 @@ export class BidButton extends React.Component<BidButtonProps> {
     return (
       <>
         {!!isWatchOnly && (
-          <ClassTheme>
+          <ThemeAwareClassTheme>
             {({ color }) => (
               <Text variant="sm-display" color={color("black60")} pb={1} textAlign="center">
                 Registration closed
               </Text>
             )}
-          </ClassTheme>
+          </ThemeAwareClassTheme>
         )}
         <Button
           width={100}

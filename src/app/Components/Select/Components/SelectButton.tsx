@@ -11,6 +11,7 @@ import {
   getInputState,
   getInputVariant,
   getInputVariants,
+  useColor,
   useSpace,
   useTheme,
 } from "@artsy/palette-mobile"
@@ -48,6 +49,7 @@ export const SelectButton: React.FC<{
   error,
 }) => {
   const space = useSpace()
+  const color = useColor()
 
   const variant: InputVariant = getInputVariant({
     hasError: !!hasError || !!error,
@@ -73,7 +75,6 @@ export const SelectButton: React.FC<{
 
   const labelStyles = useAnimatedStyle(() => {
     return {
-      backgroundColor: "white",
       paddingHorizontal: withTiming(hasSelectedValue ? 5 : 0),
       color: withTiming(inputVariants[variant][animatedState.value].labelColor),
       top: withTiming(hasSelectedValue ? -INPUT_MIN_HEIGHT / 2 : 0),
@@ -119,7 +120,11 @@ export const SelectButton: React.FC<{
           ]}
           flexDirection="row"
         >
-          {!!title && <AnimatedText style={labelStyles}>{title}</AnimatedText>}
+          {!!title && (
+            <AnimatedText style={[{ backgroundColor: color("background") }, labelStyles]}>
+              {title}
+            </AnimatedText>
+          )}
 
           {!!value && (
             <Text

@@ -44,13 +44,13 @@ export const AuthBackground: React.FC = () => {
             easing: isMounted ? Easing.linear : Easing.out(Easing.circle),
           }}
         >
-          <Text variant="xl" color="white">
+          <Text variant="xl" color="white100">
             Collect Art by the World’s Leading Artists
           </Text>
 
           <Spacer y={1} />
 
-          <Text variant="sm" color="white">
+          <Text variant="sm" color="white100">
             Build your personalized profile, get market insights, buy and sell art with confidence.
           </Text>
 

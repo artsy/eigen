@@ -1,4 +1,4 @@
-import { Touchable, Flex, Text, useScreenDimensions, useSpace, Screen } from "@artsy/palette-mobile"
+import { Flex, Screen, Text, Touchable, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtQuizArtworksDislikeMutation } from "__generated__/ArtQuizArtworksDislikeMutation.graphql"
 import {
   ArtQuizArtworksQuery,
