@@ -2610,6 +2610,7 @@ type Artwork implements Node & Searchable & Sellable {
   pickupAvailable: Boolean
   price: String
   priceCurrency: String
+  priceDisplay: String
   priceIncludesTax: Boolean
   priceIncludesTaxDisplay: String
   priceListed: Money
@@ -9410,6 +9411,7 @@ input EditableLocation {
 }
 
 type EditionSet implements Sellable {
+  availability: String
   dimensions: dimensions
   displayPriceRange: Boolean
   editionOf: String
@@ -9432,6 +9434,7 @@ type EditionSet implements Sellable {
   isSold: Boolean
   listPrice: ListPrice
   price: String
+  priceDisplay: String
   priceListed: Money
   saleMessage: String
 
@@ -19627,6 +19630,29 @@ type UpdateArtistSuccess {
   artist: Artist
 }
 
+input UpdateArtworkEditionSetInput {
+  # The availability of the artwork
+  availability: String
+
+  # Show/Hide the price range of an artwork
+  displayPriceRange: Boolean
+
+  # True for `Buy Now` artworks
+  ecommerce: Boolean
+
+  # The id of the artwork to update.
+  id: String!
+
+  # True for `Make Offer` artworks
+  offer: Boolean
+
+  # Show/Hide the price of an artwork
+  priceHidden: Boolean
+
+  # The price of the artwork
+  priceListed: String
+}
+
 type UpdateArtworkImportRowFailure {
   mutationError: GravityMutationError
 }
@@ -19657,8 +19683,26 @@ input UpdateArtworkMutationInput {
   availability: String
   clientMutationId: String
 
+  # Show/Hide the price range of an artwork
+  displayPriceRange: Boolean
+
+  # True for `Buy Now` artworks
+  ecommerce: Boolean
+
+  # A list of edition sets for the artwork
+  editionSets: [UpdateArtworkEditionSetInput]
+
   # The id of the artwork to update.
   id: String!
+
+  # True for `Make Offer` artworks
+  offer: Boolean
+
+  # Show/Hide the price of an artwork
+  priceHidden: Boolean
+
+  # The price of the artwork
+  priceListed: String
 }
 
 type UpdateArtworkMutationPayload {
