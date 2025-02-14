@@ -1,7 +1,7 @@
 #import <AuthenticationServices/AuthenticationServices.h>
 #import <SafariServices/SafariServices.h>
 #import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
-// #import <Firebase.h>
+#import <Firebase.h>
 //#import <BrazeKit/BrazeKit-Swift.h>
 //#import "BrazeReactBridge.h"
 //#import "BrazeReactUtils.h" 
@@ -139,15 +139,15 @@ static ARAppDelegate *_sharedInstance = nil;
 
 
     BOOL ossUser = [[Keys publicFor:@"OSS"] isEqualToString:@"true"];
-//    if ([FIRApp defaultApp] == nil && !ossUser) {
-//        [FIRApp configure];
-//    }
+    if ([FIRApp defaultApp] == nil && !ossUser) {
+        [FIRApp configure];
+    }
 
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
 //- (RCTBridge *)createBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate launchOptions:(NSDictionary *)launchOptions {
-//    // TODO: fix it 
+//    // TODO: fix it
 ////    RCTBridge *bridge = [self.reactDelegate createBridgeWithDelegate:self launchOptions:launchOptions];
 ////    AREmission *emission = [AREmission sharedInstance];
 ////    [emission setBridge:bridge];
