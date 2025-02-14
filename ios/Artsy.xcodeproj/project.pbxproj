@@ -4271,9 +4271,7 @@
 					"-DFOLLY_NO_CONFIG",
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
-					"-fcxx-modules",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
-					"-fmodules",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
