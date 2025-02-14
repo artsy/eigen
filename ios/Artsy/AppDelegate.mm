@@ -1,7 +1,7 @@
 #import <AuthenticationServices/AuthenticationServices.h>
 #import <SafariServices/SafariServices.h>
 #import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
-#import <Firebase.h>
+// #import <Firebase.h>
 #import <BrazeKit/BrazeKit-Swift.h>
 #import "BrazeReactBridge.h"
 #import "BrazeReactUtils.h" 
