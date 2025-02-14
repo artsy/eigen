@@ -1,4 +1,5 @@
 import { Button, Checkbox } from "@artsy/palette-mobile"
+import Sentry from "@sentry/react-native"
 import {
   fireEvent,
   screen,
@@ -358,6 +359,7 @@ describe("ConfirmBid", () => {
         })
 
         it("displays an error message on a network failure", () => {
+          const captureMessageSpy = jest.spyOn(Sentry, "captureMessage")
           const erroredCreateBidderPositionMutation = jest
             .fn()
             .mockImplementation(({ onError }) => {
@@ -374,6 +376,10 @@ describe("ConfirmBid", () => {
 
           fireEvent.press(screen.getByTestId("bid-button"))
 
+          expect(captureMessageSpy).toHaveBeenCalledWith(
+            expect.stringContaining("#createBidderPosition"),
+            "error"
+          )
           expect(mockNavigator.navigate).toHaveBeenCalledWith(
             "BidResult",
             expect.objectContaining({
@@ -389,6 +395,7 @@ describe("ConfirmBid", () => {
         })
 
         it("displays an error message on a createBidderPosition mutation failure", async () => {
+          const captureMessageSpy = jest.spyOn(Sentry, "captureMessage")
           const error = {
             message:
               'GraphQL Timeout Error: Mutation.createBidderPosition has timed out after waiting for 5000ms"}',
@@ -408,6 +415,11 @@ describe("ConfirmBid", () => {
 
           fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
           fireEvent.press(screen.getByTestId("bid-button"))
+
+          expect(captureMessageSpy).toHaveBeenCalledWith(
+            expect.stringContaining("GraphQL Timeout Error"),
+            "error"
+          )
 
           await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
@@ -738,6 +750,7 @@ describe("ConfirmBid", () => {
     })
 
     it("shows the error screen when stripe's API returns an error", async () => {
+      const captureMessageSpy = jest.spyOn(Sentry, "captureMessage")
       const erroredCreateCreditCardMutation = jest.fn().mockImplementation(({ onCompleted }) => {
         onCompleted({}, [new Error("Stripe API error")])
       })
@@ -755,6 +768,11 @@ describe("ConfirmBid", () => {
         "There was a problem processing your information. Check your payment details and try again."
       )
 
+      expect(captureMessageSpy).toHaveBeenCalledWith(
+        expect.stringContaining("#createCreditCard error"),
+        "error"
+      )
+
       // press the dismiss modal button
       fireEvent.press(screen.getByText("Ok"))
 
@@ -767,6 +785,7 @@ describe("ConfirmBid", () => {
     })
 
     it("shows the error screen with the correct error message on a createCreditCard mutation failure", async () => {
+      const captureMessageSpy = jest.spyOn(Sentry, "captureMessage")
       const erroredCreateCreditCardMutation = jest.fn().mockImplementation(({ onCompleted }) => {
         onCompleted(mockRequestResponses.creatingCreditCardError, null)
       })
@@ -781,6 +800,11 @@ describe("ConfirmBid", () => {
 
       await screen.findByText("Your card's security code is incorrect.")
 
+      expect(captureMessageSpy).toHaveBeenCalledWith(
+        expect.stringContaining("Your card's security code is incorrect"),
+        "error"
+      )
+
       // press the dismiss modal button
       fireEvent.press(screen.getByText("Ok"))
 
@@ -789,6 +813,8 @@ describe("ConfirmBid", () => {
     })
 
     it("shows the error screen with the default error message if there are unhandled errors from the createCreditCard mutation", async () => {
+      const captureMessageSpy = jest.spyOn(Sentry, "captureMessage")
+
       const errors = [{ message: "malformed error" }]
       const erroredCreateCreditCardMutation = jest.fn().mockImplementation(({ onCompleted }) => {
         onCompleted({}, errors)
@@ -806,6 +832,11 @@ describe("ConfirmBid", () => {
         "There was a problem processing your information. Check your payment details and try again."
       )
 
+      expect(captureMessageSpy).toHaveBeenCalledWith(
+        expect.stringContaining("malformed error"),
+        "error"
+      )
+
       // press the dismiss modal button
       fireEvent.press(screen.getByText("Ok"))
 
@@ -818,6 +849,8 @@ describe("ConfirmBid", () => {
     })
 
     it("shows the error screen with the default error message if the creditCardMutation error message is empty", async () => {
+      const captureMessageSpy = jest.spyOn(Sentry, "captureMessage")
+
       const erroredCreateCreditCardMutation = jest.fn().mockImplementation(({ onCompleted }) => {
         onCompleted(mockRequestResponses.creatingCreditCardEmptyError, null)
       })
@@ -834,6 +867,11 @@ describe("ConfirmBid", () => {
         "There was a problem processing your information. Check your payment details and try again."
       )
 
+      expect(captureMessageSpy).toHaveBeenCalledWith(
+        expect.stringContaining("Payment information could not be processed"),
+        "error"
+      )
+
       // press the dismiss modal button
       fireEvent.press(screen.getByText("Ok"))
 
@@ -846,6 +884,7 @@ describe("ConfirmBid", () => {
     })
 
     it("shows the generic error screen on a createCreditCard mutation network failure", async () => {
+      const captureMessageSpy = jest.spyOn(Sentry, "captureMessage")
       const erroredCreateCreditCardMutation = jest.fn().mockImplementation(({ onError }) => {
         onError(new TypeError("Network request failed"))
       })
@@ -860,6 +899,10 @@ describe("ConfirmBid", () => {
 
       await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
+      expect(captureMessageSpy).toHaveBeenCalledWith(
+        expect.stringContaining("#createCreditCard"),
+        "error"
+      )
       expect(mockNavigator.navigate).toHaveBeenCalledWith(
         "BidResult",
         expect.objectContaining({
@@ -946,6 +989,7 @@ describe("ConfirmBid", () => {
       })
 
       it("displays an error message on polling failure", async () => {
+        const captureExceptionSpy = jest.spyOn(Sentry, "captureException")
         bidderPositionQueryMock.mockReturnValueOnce(Promise.reject({ message: "error" }))
 
         renderWithRelay({
@@ -957,6 +1001,10 @@ describe("ConfirmBid", () => {
 
         await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
+        expect(captureExceptionSpy).toHaveBeenCalledWith(
+          { message: "error" },
+          { tags: { source: "ConfirmBid.tsx: verifyBidderPosition" } }
+        )
         expect(mockNavigator.navigate).toHaveBeenCalledWith(
           "BidResult",
           expect.objectContaining({
