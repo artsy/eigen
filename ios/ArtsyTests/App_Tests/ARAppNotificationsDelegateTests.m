@@ -4,7 +4,7 @@
 #import "ARSerifNavigationViewController.h"
 #import "UIApplicationStateEnum.h"
 #import "AREmission.h"
-//#import <SEGAnalytics.h>
+#import <SEGAnalytics.h>
 #import "UserNotifications/UNNotification.h"
 #import "UserNotifications/UNNotificationRequest.h"
 #import "UserNotifications/UNNotificationContent.h"
@@ -47,8 +47,8 @@ describe(@"receiveRemoteNotification", ^{
         mockEmissionSharedInstance = [OCMockObject partialMockForObject:AREmission.sharedInstance];;
 
         // Setup a segment shared instance otherwise the tests will crash
-//        SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"GARBAGE"];
-//        [SEGAnalytics setupWithConfiguration:configuration];
+        SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"GARBAGE"];
+        [SEGAnalytics setupWithConfiguration:configuration];
     });
 
     afterEach(^{

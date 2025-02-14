@@ -6,7 +6,7 @@
 #import "AppDelegate.h"
 #import "ARAppConstants.h"
 #import "ARAnalyticsConstants.h"
-//#import <SEGAnalytics.h>
+#import <SEGAnalytics.h>
 #import "UIApplicationStateEnum.h"
 #import "ARNotificationView.h"
 #import "ARSerifNavigationViewController.h"
@@ -147,7 +147,7 @@
 {
     NSDictionary *normalizedInfo = [self normalizedNotificationInfo:notificationInfo];
     [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationReceived traits:normalizedInfo];
-//    [[SEGAnalytics sharedAnalytics] receivedRemoteNotification:notificationInfo];
+    [[SEGAnalytics sharedAnalytics] receivedRemoteNotification:notificationInfo];
 }
 
 - (NSDictionary *)normalizedNotificationInfo:(NSDictionary *)notificationInfo {
