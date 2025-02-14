@@ -212,12 +212,13 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
           }
         },
         onError: (errors) => {
-          captureException(errors, { tags: { source: "ConfirmBid.tsx: createBidderPosition" } })
+          captureMessage(`ConfirmBid.tsx: #createBidderPosition ${JSON.stringify(errors)}`, "error")
           console.error("ConfirmBid.tsx: createBidderPosition", errors)
           navigateToBidScreen(undefined, errors)
         },
       })
     } catch (error) {
+      captureException(error, { tags: { source: "ConfirmBid.tsx: handlePlaceBid" } })
       setErrorMessage((error as Error).message)
       setErrorModalVisible(true)
     }
