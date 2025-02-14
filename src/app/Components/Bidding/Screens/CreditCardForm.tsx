@@ -16,7 +16,7 @@ import { NavigationHeader } from "app/Components/NavigationHeader"
 import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 import { useFormik } from "formik"
 import { memo, useCallback, useRef } from "react"
-import { KeyboardAvoidingView, ScrollView } from "react-native"
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 
 type CreditCardFormProps = NativeStackScreenProps<BiddingNavigationStackParams, "CreditCardForm">
 
@@ -104,7 +104,10 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
   const phoneRef = useRef<Input>(null)
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }}>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
       <NavigationHeader onLeftButtonPress={() => navigation.goBack()}>
         Add Credit Card
       </NavigationHeader>
