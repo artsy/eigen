@@ -35,11 +35,7 @@ export const FancySwiper = ({
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (_, { dx, dy }) => {
-      const isRightSwipe = dx > 0
-      // lock right swipes if not allowed
-      const x = isRightSwipe && !onSwipeRight ? 0 : dx
-
-      swiper.setValue({ x, y: dy })
+      swiper.setValue({ x: dx, y: dy })
     },
     onPanResponderRelease: (_, { dx, dy }) => {
       const isFullSwipe = Math.abs(dx) > SWIPE_MAGNITUDE
@@ -93,6 +89,7 @@ export const FancySwiper = ({
   }
 
   const handleRightWhiff = () => {
+    swiper.setValue({ x: 0, y: 0 })
     onWhiffRight?.()
   }
 
@@ -105,6 +102,7 @@ export const FancySwiper = ({
           const isTopCard = remainingCards.length - 1 - index === topCardIndex
           const isSecondCard = remainingCards.length - 1 - index === topCardIndex + 1
           const isSwipedCard = remainingCards.length - 1 - index < topCardIndex
+          const isLastSwipedCard = remainingCards.length - 1 - index === topCardIndex - 1
 
           // We would like to be able to drag the top card only
           const gestureDraggers = isTopCard ? panResponder.panHandlers : {}
@@ -118,6 +116,7 @@ export const FancySwiper = ({
               isTopCard={isTopCard}
               isSecondCard={isSecondCard}
               isSwipedCard={isSwipedCard}
+              isLastSwipedCard={isLastSwipedCard}
               {...gestureDraggers}
             />
           )

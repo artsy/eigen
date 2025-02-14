@@ -1,4 +1,4 @@
-import { GlobalStore } from "app/store/GlobalStore"
+import { useScreenDimensions } from "@artsy/palette-mobile"
 import { memo } from "react"
 import { Animated, GestureResponderHandlers } from "react-native"
 import { SWIPE_MAGNITUDE } from "./FancySwiper"
@@ -9,6 +9,7 @@ interface FancySwiperCardProps extends GestureResponderHandlers {
   isTopCard: boolean
   isSecondCard: boolean
   isSwipedCard: boolean
+  isLastSwipedCard: boolean
   swiper: Animated.ValueXY
 }
 
@@ -20,11 +21,10 @@ export const FancySwiperCard = memo(
     isTopCard,
     isSecondCard,
     isSwipedCard,
+    isLastSwipedCard,
     ...rest
   }: FancySwiperCardProps) => {
-    const discoveredArtworksIds = GlobalStore.useAppState(
-      (state) => state.infiniteDiscovery.discoveredArtworkIds
-    )
+    const { width: screenWidth } = useScreenDimensions()
 
     let topCardShadow = undefined
     let topCardTransform = undefined
@@ -33,25 +33,21 @@ export const FancySwiperCard = memo(
     let swipedCardTransform = undefined
 
     if (isTopCard) {
-      if (discoveredArtworksIds.includes(artworkId)) {
-        swiper.setValue({ x: -1000, y: 0 })
-
-        // animate the card back if it has been swiped
-        Animated.timing(swiper, {
-          toValue: { x: 0, y: 0 },
-          duration: 1000,
-          useNativeDriver: true,
-        }).start()
-      }
-
       // tilt the top card as it is being swiped away
       const rotate = swiper.x.interpolate({
-        inputRange: [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE],
-        outputRange: ["-10deg", "0deg", "10deg"],
+        inputRange: [-SWIPE_MAGNITUDE, 0],
+        outputRange: ["-5deg", "0deg"],
+        extrapolate: "clamp",
+      })
+
+      const translateX = swiper.x.interpolate({
+        inputRange: [-SWIPE_MAGNITUDE, 0],
+        outputRange: [-screenWidth, 0],
+        extrapolate: "clamp",
       })
 
       topCardTransform = {
-        transform: [...swiper.getTranslateTransform(), { rotate }],
+        transform: [{ translateX }, { rotate }],
       }
 
       // drop a shadow from the top card and make it more intense as it is swiped away
@@ -78,9 +74,25 @@ export const FancySwiperCard = memo(
       secondCardTransform = {
         transform: [{ scale }],
       }
+    } else if (isLastSwipedCard) {
+      const rotate = swiper.x.interpolate({
+        inputRange: [0, SWIPE_MAGNITUDE],
+        outputRange: ["-5deg", "0deg"],
+        extrapolate: "clamp",
+      })
+
+      const translateX = swiper.x.interpolate({
+        inputRange: [0, SWIPE_MAGNITUDE],
+        outputRange: [-screenWidth, 0],
+        extrapolate: "clamp",
+      })
+
+      swipedCardTransform = {
+        transform: [{ translateX }, { rotate }],
+      }
     } else if (isSwipedCard) {
       swipedCardTransform = {
-        transform: [{ translateX: -1000 }, { translateY: 0 }],
+        transform: [{ translateX: -screenWidth }, { translateY: 0 }],
       }
     } else {
       // hide the rest of the cards
