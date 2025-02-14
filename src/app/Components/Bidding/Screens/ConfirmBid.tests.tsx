@@ -845,9 +845,9 @@ describe("ConfirmBid", () => {
       ).not.toBeOnTheScreen()
     })
 
-    it("shows the generic error screen on a createCreditCard mutation network failure", () => {
+    it("shows the generic error screen on a createCreditCard mutation network failure", async () => {
       const erroredCreateCreditCardMutation = jest.fn().mockImplementation(({ onError }) => {
-        onError([new TypeError("Network request failed")])
+        onError(new TypeError("Network request failed"))
       })
       useCreateCreditCardMock.mockReturnValue([erroredCreateCreditCardMutation, false])
 
@@ -857,6 +857,8 @@ describe("ConfirmBid", () => {
       })
 
       mockFillAndSubmit()
+
+      await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
       expect(mockNavigator.navigate).toHaveBeenCalledWith(
         "BidResult",
@@ -916,6 +918,8 @@ describe("ConfirmBid", () => {
         expect(completedCreateCreditCardMutation).toHaveBeenCalledWith(
           expect.objectContaining({ variables: { input: { token: "fake-token" } } })
         )
+
+        await waitFor(() => expect(completedCreateBidderPositionMutation).toHaveBeenCalled())
 
         expect(completedCreateBidderPositionMutation).toHaveBeenCalledWith(
           expect.objectContaining({

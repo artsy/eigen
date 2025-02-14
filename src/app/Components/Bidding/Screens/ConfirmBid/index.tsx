@@ -24,6 +24,7 @@ import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes
 import { partnerName } from "app/Scenes/Artwork/Components/ArtworkExtraLinks/partnerName"
 import { navigate } from "app/system/navigation/navigate"
 import { AuctionWebsocketContextProvider } from "app/utils/Websockets/auctions/AuctionSocketContext"
+import { usePromisedMutation } from "app/utils/hooks/usePromisedMutation"
 import { useCreateBidderPosition } from "app/utils/mutations/useCreateBidderPosition"
 import { useCreateCreditCard } from "app/utils/mutations/useCreateCreditCard"
 import { useUpdateUserPhoneNumber } from "app/utils/mutations/useUpdateUserPhoneNumber"
@@ -85,7 +86,7 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
   const [conditionsOfSaleChecked, setConditionsOfSaleChecked] = useState(false)
 
   const [updateUserPhoneNumber, updatingPhoneNumber] = useUpdateUserPhoneNumber()
-  const [createCreditCard, creatingCreditCard] = useCreateCreditCard()
+  const [createCreditCard, creatingCreditCard] = usePromisedMutation(useCreateCreditCard)
   const [createBidderPosition, creatingBidderPosition] = useCreateBidderPosition()
 
   const requiresCheckbox = !sale?.bidder
@@ -152,14 +153,8 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
           },
         })
 
-        createCreditCard({
-          variables: { input: { token: creditCardToken.id } },
-          onError: (errors) => {
-            captureException(errors, { tags: { source: "ConfirmBid.tsx: createCreditCard" } })
-            console.error("ConfirmBid.tsx: createCreditCard", errors)
-            navigateToBidScreen(undefined, errors)
-          },
-          onCompleted: (results, error) => {
+        await createCreditCard({ variables: { input: { token: creditCardToken.id } } })
+          .then((results) => {
             const mutationError = results?.createCreditCard?.creditCardOrError?.mutationError
             if (mutationError) {
               captureMessage(
@@ -172,7 +167,10 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
               )
               setErrorModalVisible(true)
               console.error("ConfirmBid.tsx: createCreditCard", mutationError)
-            } else if (error) {
+            }
+          })
+          .catch((error) => {
+            if (error?.length) {
               captureMessage(
                 `ConfirmBid.tsx: #createCreditCard error ${JSON.stringify(error)}`,
                 "error"
@@ -182,9 +180,12 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
                 "There was a problem processing your information. Check your payment details and try again."
               )
               setErrorModalVisible(true)
+            } else {
+              captureMessage(`ConfirmBid.tsx: #createCreditCard ${JSON.stringify(error)}`, "error")
+              console.error("ConfirmBid.tsx: createCreditCard", error)
+              navigateToBidScreen(undefined, error)
             }
-          },
-        })
+          })
       }
 
       if (selectedBid?.cents == null) {
