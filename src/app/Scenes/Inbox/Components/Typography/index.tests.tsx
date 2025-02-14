@@ -1,12 +1,13 @@
-import { render } from "@testing-library/react-native"
+import { screen } from "@testing-library/react-native"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Subtitle } from "./"
 
 it("passes on props to subtitle", () => {
-  const { getByText } = render(
+  renderWithWrappers(
     <Subtitle numberOfLines={1} ellipsizeMode="middle">
       My Subtitle
     </Subtitle>
   )
-  expect(getByText(/My Subtitle/)).toHaveProp("numberOfLines", 1)
-  expect(getByText(/My Subtitle/)).toHaveProp("ellipsizeMode", "middle")
+  expect(screen.getByText(/My Subtitle/)).toHaveProp("numberOfLines", 1)
+  expect(screen.getByText(/My Subtitle/)).toHaveProp("ellipsizeMode", "middle")
 })

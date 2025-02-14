@@ -1,4 +1,4 @@
-import { ArtsyLogoBlackIcon, Flex, Image, Text } from "@artsy/palette-mobile"
+import { ArtsyLogoBlackIcon, Flex, Image, Text, useColor } from "@artsy/palette-mobile"
 import { useOffscreenStyle } from "app/utils/hooks"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useSizeToFitScreen } from "app/utils/useSizeToFit"
@@ -30,6 +30,7 @@ export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({
   artist,
   title,
 }) => {
+  const color = useColor()
   const debugInstagramShot = useDevToggle("DTShowInstagramShot")
   const { width, height } = useSizeToFitScreen({
     width: InstagramStoryBackgroundDimensions.width,
@@ -44,7 +45,7 @@ export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({
       <ViewShot
         ref={shotRef}
         options={{ format: "png", result: "base64" }}
-        style={{ backgroundColor: "white" }}
+        style={{ backgroundColor: color("white100") }}
       >
         <Image src={href} style={{ width, height }} resizeMode="contain" />
 

@@ -1,4 +1,4 @@
-import { useScreenDimensions } from "@artsy/palette-mobile"
+import { useColor, useScreenDimensions } from "@artsy/palette-mobile"
 import {
   BottomSheetBackdropProps,
   BottomSheetModal,
@@ -18,6 +18,7 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
   closeOnBackdropClick = true,
   ...rest
 }) => {
+  const color = useColor()
   const ref = useRef<BottomSheetModal>(null)
   const [modalIsPresented, setModalIsPresented] = useState(false)
   const { height: screenHeight, safeAreaInsets } = useScreenDimensions()
@@ -78,6 +79,16 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
       backdropComponent={renderBackdrop}
       enableDynamicSizing
       maxDynamicContentSize={screenHeight - safeAreaInsets.top}
+      backgroundStyle={{
+        ...(rest?.backgroundStyle as any),
+        backgroundColor: color("background"),
+      }}
+      handleIndicatorStyle={{
+        backgroundColor: color("black100"),
+        width: 40,
+        height: 4,
+        borderRadius: 2,
+      }}
       {...rest}
     />
   )

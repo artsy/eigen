@@ -14,7 +14,7 @@ export interface AnimatableHeaderProps {
 
 export const AnimatableHeader = (props: AnimatableHeaderProps) => {
   const { title, rightButtonDisabled, rightButtonText, onRightButtonPress } = props
-  const { space } = useTheme()
+  const { space, color } = useTheme()
   const { headerHeight, setTitle, titleShown } = useAnimatableHeaderContext()
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
         paddingHorizontal: space(2),
         alignItems: "center",
         height: headerHeight,
-        backgroundColor: "white",
+        backgroundColor: color("background"),
       }}
     >
       <TouchableOpacity

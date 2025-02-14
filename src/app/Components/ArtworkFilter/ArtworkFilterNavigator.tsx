@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
+import { useColor } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
@@ -32,6 +33,7 @@ import { TimePeriodOptionsScreen } from "app/Components/ArtworkFilter/Filters/Ti
 import { ViewAsOptionsScreen } from "app/Components/ArtworkFilter/Filters/ViewAsOptions"
 import { WaysToBuyOptionsScreen } from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { YearOptionsScreen } from "app/Components/ArtworkFilter/Filters/YearOptions"
+import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { GlobalStore } from "app/store/GlobalStore"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
@@ -107,6 +109,9 @@ export type ArtworkFilterNavigationStack = {
 const Stack = createStackNavigator<ArtworkFilterNavigationStack>()
 
 export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
+  const theme = useNavigationTheme()
+  const color = useColor()
+
   const tracking = useTracking()
   const { id, mode, slug, name, query, shouldShowCreateAlertButton, closeModal, exitModal } = props
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
@@ -317,16 +322,16 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   }, [])
 
   return (
-    <NavigationContainer independent>
+    <NavigationContainer independent theme={theme}>
       <Modal visible={props.visible} onDismiss={handleClosingModal} animationType="slide">
-        <SafeAreaView edges={["top"]} style={{ flex: 1 }}>
+        <SafeAreaView edges={["top"]} style={{ flex: 1, backgroundColor: color("background") }}>
           <Stack.Navigator
             // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
             detachInactiveScreens={false}
             screenOptions={{
               ...TransitionPresets.SlideFromRightIOS,
               headerShown: false,
-              cardStyle: { backgroundColor: "white" },
+              cardStyle: { backgroundColor: color("background") },
             }}
           >
             <Stack.Screen

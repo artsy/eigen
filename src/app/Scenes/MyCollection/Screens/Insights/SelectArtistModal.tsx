@@ -1,4 +1,4 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Text, useColor } from "@artsy/palette-mobile"
 import { ArtistItem_artist$key } from "__generated__/ArtistItem_artist.graphql"
 import {
   MedianSalePriceAtAuctionQuery,
@@ -29,6 +29,8 @@ export const SelectArtistModal: React.FC<SelectArtistModalProps> = ({
   onItemPress,
   queryData,
 }) => {
+  const color = useColor()
+
   const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment<
     MedianSalePriceAtAuctionQuery,
     SelectArtistModal_myCollectionInfo$key
@@ -64,7 +66,7 @@ export const SelectArtistModal: React.FC<SelectArtistModalProps> = ({
       onDismiss={closeModal}
       animationType="slide"
     >
-      <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: color("background") }} edges={["top"]}>
         <NavigationHeader onLeftButtonPress={closeModal} hideBottomDivider>
           <Text variant="sm-display">Select Artist</Text>
         </NavigationHeader>

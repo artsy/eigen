@@ -1,4 +1,4 @@
-import { Spacer, Flex } from "@artsy/palette-mobile"
+import { Flex, Spacer } from "@artsy/palette-mobile"
 import { Message_message$data } from "__generated__/Message_message.graphql"
 import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
 import { OrderUpdate_event$data } from "__generated__/OrderUpdate_event.graphql"

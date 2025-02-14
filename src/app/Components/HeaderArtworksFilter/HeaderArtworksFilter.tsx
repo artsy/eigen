@@ -115,7 +115,7 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({
   }
 
   return (
-    <Box backgroundColor="white" onLayout={(e) => _onLayout(e)} testID="HeaderArtworksFilter">
+    <Box backgroundColor="white100" onLayout={(e) => _onLayout(e)} testID="HeaderArtworksFilter">
       {!!animationValue && !disableYAxisAnimation && (
         <SeparatorWithSmoothOpacity {...separatorProps} />
       )}
@@ -136,7 +136,7 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({
             ],
           }}
         >
-          <Flex backgroundColor="white" height={50} px={2} justifyContent="center">
+          <Flex backgroundColor="white100" height={50} px={2} justifyContent="center">
             <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
               {hideArtworksCount ? (
                 <Flex />

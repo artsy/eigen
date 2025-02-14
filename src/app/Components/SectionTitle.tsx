@@ -5,7 +5,6 @@ import {
   SpacingUnit,
   Text,
   TextProps,
-  useTheme,
 } from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
 import { RouterLink } from "app/system/navigation/RouterLink"
@@ -33,7 +32,6 @@ export const SectionTitle: React.FC<
   capitalized = true,
   ...flexProps
 }) => {
-  const { color } = useTheme()
   let titleText
 
   if (typeof title === "string") {
@@ -49,7 +47,7 @@ export const SectionTitle: React.FC<
           </Text>
 
           {!!subtitle && (
-            <Text variant="sm" color={color("black60")} lineHeight="20px" testID="subtitle">
+            <Text variant="sm" color="black60" lineHeight="20px" testID="subtitle">
               {subtitle}
             </Text>
           )}

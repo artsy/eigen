@@ -1,11 +1,11 @@
-import { Flex, Box, Text, TextProps, Separator } from "@artsy/palette-mobile"
+import { Flex, Box, Text, TextProps, Separator, Join } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { CircleWhiteCheckIcon } from "app/Components/Icons/CircleWhiteCheckIcon"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { useScreenDimensions } from "app/utils/hooks"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect, useState } from "react"
-import { TouchableOpacity } from "react-native"
+import { ScrollView, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 import cities from "../../../../data/cityDataSortedByDisplayPreference.json"
 
@@ -52,29 +52,31 @@ export const CityPicker: React.FC<Props> = (props) => {
             Fairs and Shows by City
           </Text>
         </Box>
-        <Box mx={2}>
-          {cityList.map((city, i) => (
-            <Box key={i}>
-              <TouchableOpacity onPress={() => selectCity(city, i)}>
-                <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                  <Text
-                    mt={1}
-                    variant={dimensions(screenHeight)[size].cityFontSize}
-                    lineHeight={`${dimensions(screenHeight)[size].lineHeight}px`}
-                  >
-                    {city}
-                  </Text>
-                  {selectedCity === city && (
-                    <Box mb={2} mt={2}>
-                      <CircleWhiteCheckIcon width={26} height={26} />
-                    </Box>
-                  )}
-                </Flex>
-              </TouchableOpacity>
-              <Separator />
-            </Box>
-          ))}
-        </Box>
+        <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
+          <Join separator={<Separator />}>
+            {cityList.map((city, i) => (
+              <Box key={i}>
+                <TouchableOpacity onPress={() => selectCity(city, i)}>
+                  <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+                    <Text
+                      mt={1}
+                      variant={dimensions(screenHeight)[size].cityFontSize}
+                      lineHeight={`${dimensions(screenHeight)[size].lineHeight}px`}
+                    >
+                      {city}
+                    </Text>
+                    {selectedCity === city && (
+                      <Box mb={2} mt={2}>
+                        <CircleWhiteCheckIcon width={26} height={26} />
+                      </Box>
+                    )}
+                  </Flex>
+                </TouchableOpacity>
+                <Separator />
+              </Box>
+            ))}
+          </Join>
+        </ScrollView>
       </Overlay>
     </ProvideScreenTracking>
   )
@@ -82,10 +84,11 @@ export const CityPicker: React.FC<Props> = (props) => {
 
 const Overlay = styled.ScrollView`
   flex: 1;
-  background-color: ${themeGet("colors.white100")};
-  margin-top: ${themeGet("space.2")};
-  margin-left: ${themeGet("space.2")};
-  margin-right: ${themeGet("space.2")};
+  background-color: ${themeGet("colors.background")};
+  padding-top: ${themeGet("space.2")};
+  padding-left: ${themeGet("space.2")};
+  padding-right: ${themeGet("space.2")};
+  border-radius: 10;
   flex-direction: column;
 `
 

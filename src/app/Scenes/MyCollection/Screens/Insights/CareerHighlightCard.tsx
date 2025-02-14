@@ -40,7 +40,14 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
 
   return (
     <Touchable haptic onPress={onPress} testID="career-highlight-card-item">
-      <Flex p={1} height={135} width={205} backgroundColor="white" border={1} borderColor="black10">
+      <Flex
+        p={1}
+        height={135}
+        width={205}
+        backgroundColor="background"
+        border={1}
+        borderColor="black10"
+      >
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
           <Flex
             width={26}
@@ -82,7 +89,7 @@ export const CareerHighlightPromotionalCard: React.FC<CareerHighlightPromotional
       <Flex
         width={200}
         height={135}
-        backgroundColor="white100"
+        backgroundColor="background"
         flexDirection="row"
         border={1}
         borderColor="black10"

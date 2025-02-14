@@ -1294,6 +1294,11 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/settings/dark-mode",
     name: "DarkModeSettings",
     Component: DarkModeSettings,
+    options: {
+      screenOptions: {
+        headerTitle: "Dark Mode Settings",
+      },
+    },
   },
   {
     path: "/show/:showID",

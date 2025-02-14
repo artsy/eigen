@@ -1,4 +1,4 @@
-import { Flex, Text, Switch } from "@artsy/palette-mobile"
+import { Flex, Switch, Text } from "@artsy/palette-mobile"
 
 interface SwitchMenuProps {
   onChange: (value: boolean) => void

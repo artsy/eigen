@@ -1,4 +1,5 @@
-import { Flex, Box, ClassTheme, Text } from "@artsy/palette-mobile"
+import { Flex, Box, Text } from "@artsy/palette-mobile"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { navigate } from "app/system/navigation/navigate"
 import React from "react"
 import { Image, TouchableWithoutFeedback } from "react-native"
@@ -13,7 +14,7 @@ export default class DarkNavigationButton extends React.Component<Props, any> {
   render() {
     const showNavArrow = this.props.href || this.props.onPress
     return (
-      <ClassTheme>
+      <ThemeAwareClassTheme>
         {({ color }) => (
           <Box px={2} py={1} style={{ backgroundColor: color("black100") }}>
             <TouchableWithoutFeedback onPress={this.openLink.bind(this)}>
@@ -28,7 +29,7 @@ export default class DarkNavigationButton extends React.Component<Props, any> {
             </TouchableWithoutFeedback>
           </Box>
         )}
-      </ClassTheme>
+      </ThemeAwareClassTheme>
     )
   }
 

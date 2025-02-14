@@ -155,7 +155,7 @@ const MyCollectionInsightsPlaceholder = () => {
             ml={1}
             height={135}
             width={205}
-            backgroundColor="white"
+            backgroundColor="background"
             border={1}
             borderColor="black10"
           >

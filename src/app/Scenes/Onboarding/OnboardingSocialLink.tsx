@@ -241,7 +241,7 @@ export const OnboardingSocialLink: React.FC<
     )
   }
   return (
-    <Flex justifyContent="center" flex={1} backgroundColor="white">
+    <Flex justifyContent="center" flex={1} backgroundColor="white100">
       <BackButton onPress={() => navigation.goBack()} />
       <Flex flex={1} px={2} mt={`${insets.top + NAVBAR_HEIGHT + 20}px`} mb={`${insets.bottom}px`}>
         <Text variant="lg-display">Link Accounts</Text>
