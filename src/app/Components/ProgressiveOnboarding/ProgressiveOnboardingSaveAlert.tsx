@@ -18,7 +18,7 @@ export const ProgressiveOnboardingSaveAlert: React.FC = ({ children }) => {
     isReady &&
     !isDismissed("alert-create").status &&
     // we only enable the alerts flow if the save artwork is completed
-    isDismissed("save-highlight").status &&
+    isDismissed("save-artwork").status &&
     !!progressiveOnboardingAlerts &&
     isFocused
   const { isActive, clearActivePopover } = useSetActivePopover(isDisplayable)

@@ -82,6 +82,8 @@ lane :ship_beta_ios do
   sentry_release_name = "ios-#{latest_version}-#{bundle_version}"
 
   sh('yarn bundle:ios')
+  # Workaround for timeout in ci
+  ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
   build_ios_app(
     workspace: 'ios/Artsy.xcworkspace',
     configuration: 'Store',

@@ -5,7 +5,7 @@ import {
   experiments,
 } from "app/utils/experiments/experiments"
 import { nullToUndef } from "app/utils/nullAndUndef"
-import { Config } from "react-native-config"
+import Keys from "react-native-keys"
 import { UnleashClient } from "unleash-proxy-client"
 
 // We want to return a phony unleash client for oss builds
@@ -29,7 +29,8 @@ export function getUnleashClient(props?: {
   env?: "production" | "staging"
   userId?: string | null
 }): PublicUnleashClient {
-  if (Config.OSS === "true") {
+  const oss = Keys.OSS
+  if (oss === "true") {
     return fakeUnleashClient
   }
 
@@ -52,12 +53,12 @@ const createUnleashClient = (userId: string | undefined) => {
   return new UnleashClient({
     url:
       envBeingUsed === "production"
-        ? Config.UNLEASH_PROXY_URL_PRODUCTION
-        : Config.UNLEASH_PROXY_URL_STAGING,
+        ? Keys.secureFor("UNLEASH_PROXY_URL_PRODUCTION")
+        : Keys.secureFor("UNLEASH_PROXY_URL_STAGING"),
     clientKey:
       envBeingUsed === "production"
-        ? Config.UNLEASH_PROXY_CLIENT_KEY_PRODUCTION
-        : Config.UNLEASH_PROXY_CLIENT_KEY_STAGING,
+        ? Keys.secureFor("UNLEASH_PROXY_CLIENT_KEY_PRODUCTION")
+        : Keys.secureFor("UNLEASH_PROXY_CLIENT_KEY_STAGING"),
     appName: "eigen",
     context: {
       userId,

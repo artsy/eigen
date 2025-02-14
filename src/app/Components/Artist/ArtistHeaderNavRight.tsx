@@ -2,7 +2,6 @@ import { Flex, FollowButton, NAVBAR_HEIGHT, ShareIcon } from "@artsy/palette-mob
 import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
 import { ArtistHeaderNavRight_artist$key } from "__generated__/ArtistHeaderNavRight_artist.graphql"
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
-import { Schema } from "app/utils/track"
 import { useState } from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -21,10 +20,7 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   const data = useFragment(fragment, artist)
   const [isFollowed, setIsFollowed] = useState(!!data?.isFollowed)
 
-  const { handleFollowToggle } = useFollowArtist({
-    artist: data,
-    ownerType: Schema.OwnerEntityTypes.Artist,
-  })
+  const { handleFollowToggle } = useFollowArtist(data)
 
   useDebounce(
     () => {

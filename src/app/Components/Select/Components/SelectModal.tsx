@@ -121,6 +121,7 @@ export const SelectModal: React.FC<{
     <Modal
       visible={visible}
       onDismiss={onDismiss}
+      onRequestClose={onDismiss}
       statusBarTranslucent
       testID={testID}
       animationType="slide"

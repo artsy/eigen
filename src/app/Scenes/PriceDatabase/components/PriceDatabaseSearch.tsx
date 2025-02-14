@@ -1,13 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import {
-  ArtsyKeyboardAvoidingView,
-  Flex,
-  Spacer,
-  Text,
-  Button,
-  BackButton,
-  useTheme,
-} from "@artsy/palette-mobile"
+import { Flex, Spacer, Text, Button, BackButton, useTheme } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtistAutosuggest } from "app/Components/ArtistAutosuggest/ArtistAutosuggest"
 import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
@@ -24,7 +16,7 @@ import { PriceDatabaseSearchModel } from "app/Scenes/PriceDatabase/validation"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
 import { stringify } from "query-string"
-import { ScrollView } from "react-native"
+import { KeyboardAvoidingView, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 
 export const PriceDatabaseSearch: React.FC<StackScreenProps<ArtworkFilterNavigationStack>> = ({
@@ -59,7 +51,7 @@ export const PriceDatabaseSearch: React.FC<StackScreenProps<ArtworkFilterNavigat
   }
 
   return (
-    <ArtsyKeyboardAvoidingView>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <ScrollView keyboardShouldPersistTaps="handled">
         <BackButton
           onPress={() => goBack()}
@@ -123,7 +115,7 @@ export const PriceDatabaseSearch: React.FC<StackScreenProps<ArtworkFilterNavigat
           <PriceDatabaseBenefits />
         </Flex>
       </ScrollView>
-    </ArtsyKeyboardAvoidingView>
+    </KeyboardAvoidingView>
   )
 }
 

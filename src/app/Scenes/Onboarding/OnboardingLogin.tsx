@@ -2,12 +2,11 @@ import { Box, Button, Flex, Input, Spacer, Text, Touchable, useColor } from "@ar
 import { StackScreenProps } from "@react-navigation/stack"
 import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { useScreenDimensions } from "app/utils/hooks"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import React, { useEffect, useRef } from "react"
-import { ScrollView } from "react-native"
+import { KeyboardAvoidingView, ScrollView } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "./Onboarding"
 import { OnboardingSocialPick } from "./OnboardingSocialPick"
@@ -76,8 +75,8 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
   const valuesNotEmpty = !!values.email && !!values.password
 
   return (
-    <Flex flex={1} backgroundColor="white100" flexGrow={1} pb={1}>
-      <ArtsyKeyboardAvoidingView>
+    <Flex flex={1} backgroundColor="background" flexGrow={1} pb={1}>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         <ScrollView
           contentContainerStyle={{
             paddingTop: useScreenDimensions().safeAreaInsets.top,
@@ -178,7 +177,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
             Log in
           </Button>
         </Flex>
-      </ArtsyKeyboardAvoidingView>
+      </KeyboardAvoidingView>
     </Flex>
   )
 }

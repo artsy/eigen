@@ -9,7 +9,7 @@ import {
   unsafe_getUserAccessToken,
 } from "app/store/GlobalStore"
 import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
-import { navigate } from "app/system/navigation/navigate"
+import { navigate, navigationEvents } from "app/system/navigation/navigate"
 import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
@@ -208,6 +208,7 @@ export const handleReceivedNotification = (
     }
     const hasUrl = !!notification.data.url
     if (isLoggedIn && hasUrl) {
+      navigationEvents.emit("requestModalDismiss")
       navigate(notification.data.url as string, {
         passProps: notification.data,
         ignoreDebounce: true,

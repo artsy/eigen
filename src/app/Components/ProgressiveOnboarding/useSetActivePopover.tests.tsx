@@ -19,7 +19,7 @@ jest.mock("@react-navigation/native", () => ({
   useIsFocused: () => mockUseIsFocusedMock(),
 }))
 
-describe("useSetActivePopver", () => {
+describe("useSetActivePopover", () => {
   const wrapper = ({ children }: any) => <GlobalStoreProvider>{children}</GlobalStoreProvider>
 
   it("isActive is true given isDisplayable true and no activePopover", () => {

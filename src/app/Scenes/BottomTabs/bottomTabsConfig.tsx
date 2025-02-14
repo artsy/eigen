@@ -1,8 +1,8 @@
 import { OwnerType, TappedTabBarArgs } from "@artsy/cohesion"
 import { BottomTabType } from "./BottomTabType"
 
-export type BottomTabRoute = "/" | "/search" | "/inbox" | "/sell" | "/my-profile"
-export const BottomTabRoutes = ["/", "/search", "/inbox", "/sell", "/my-profile"]
+export type BottomTabRoute = "/" | "/search" | "/inbox" | "/my-profile"
+export const BottomTabRoutes = ["/", "/search", "/inbox", "/my-profile"]
 
 export const bottomTabsConfig: {
   [k in BottomTabType]: {
@@ -26,11 +26,6 @@ export const bottomTabsConfig: {
     route: "/inbox",
     analyticsDescription: OwnerType.inbox,
     name: "Inbox",
-  },
-  sell: {
-    route: "/sell",
-    analyticsDescription: OwnerType.sell,
-    name: "Sell",
   },
   profile: {
     route: "/my-profile",

@@ -34,8 +34,6 @@ export type UserPushNotificationSettings =
   | "receivePurchaseNotification"
   | "receiveSaleOpeningClosingNotification"
   | "receiveOrderNotification"
-  | "receiveViewingRoomNotification"
-  | "receivePartnerShowNotification"
   | "receivePartnerOfferNotification"
 
 export const OpenSettingsBanner = () => (
@@ -257,24 +255,6 @@ export const MyProfilePushNotifications: React.FC<{
             disabled={isLoading}
             onChange={(value) => {
               handleUpdateUserNotificationSettings("receiveNewSalesNotification", value)
-            }}
-          />
-          <SwitchMenu
-            title="New Viewing Rooms for You"
-            description="New viewing rooms added by galleries you follow"
-            value={!!userNotificationSettings.receiveViewingRoomNotification}
-            disabled={isLoading}
-            onChange={(value) => {
-              handleUpdateUserNotificationSettings("receiveViewingRoomNotification", value)
-            }}
-          />
-          <SwitchMenu
-            title="New Shows for You"
-            description="New shows added by galleries you follow"
-            value={!!userNotificationSettings.receivePartnerShowNotification}
-            disabled={isLoading}
-            onChange={(value) => {
-              handleUpdateUserNotificationSettings("receivePartnerShowNotification", value)
             }}
           />
           <SwitchMenu

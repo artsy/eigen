@@ -10,6 +10,8 @@ export const AutoHeightBottomSheet: React.FC<AutoHeightBottomSheetProps> = ({
   children,
   ...rest
 }) => {
+  if (!rest.visible) return null
+
   return (
     <AutomountedBottomSheetModal enableDynamicSizing {...rest}>
       <BottomSheetView>{children}</BottomSheetView>

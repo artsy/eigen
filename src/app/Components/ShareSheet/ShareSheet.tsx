@@ -27,7 +27,7 @@ import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBott
 import { GlobalStore } from "app/store/GlobalStore"
 import { useCanOpenURL } from "app/utils/useCanOpenURL"
 import { useRef } from "react"
-import Config from "react-native-config"
+import Keys from "react-native-keys"
 import Share, { Social } from "react-native-share"
 import ViewShot from "react-native-view-shot"
 import { useTracking } from "react-tracking"
@@ -86,7 +86,7 @@ export const ShareSheet = () => {
 
       try {
         await Share.shareSingle({
-          appId: Config.ARTSY_FACEBOOK_APP_ID,
+          appId: Keys.secureFor("ARTSY_FACEBOOK_APP_ID"),
           social: Social.InstagramStories,
           backgroundImage: `data:image/png;base64,${processedBase64Image}`,
         })

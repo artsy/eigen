@@ -1,5 +1,4 @@
-import { Spacer, GraphIcon, Text, ArtworkIcon, Flex, Join, IconProps } from "@artsy/palette-mobile"
-import { SellWithEaseIcon } from "app/Components/Icons/HomeFeedOnboarding/SellWithEaseIcon"
+import { ArtworkIcon, Flex, GraphIcon, IconProps, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { ModalCarouselContainer } from "./ModalCarouselContainer"
 import { ModalCarouselScreenWrapper } from "./ModalCarouselScreenWrapper"
 
@@ -51,16 +50,6 @@ const HowItWorksScreenNew = () => {
           title="Check for insights"
           text="Get free insights into the markets and careers of the artists in your collection."
           icon={GraphIcon}
-        />
-        <Slide
-          title="Request a Price Estimate"
-          text="On eligible works, request an estimate from our specialists."
-          icon={SellWithEaseIcon}
-        />
-        <Slide
-          title="Sell with Ease"
-          text="Inquire about sales options directly from My Collection for eligible artworks."
-          icon={SellWithEaseIcon}
         />
       </Join>
     </Flex>

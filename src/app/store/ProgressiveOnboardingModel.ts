@@ -13,7 +13,6 @@ interface DismissedKeyStatus {
 
 export interface ProgressiveOnboardingModel {
   dismissed: DismissedKey[]
-  seenFeatures: String[]
   dismiss: Action<this, ProgressiveOnboardingKey | readonly ProgressiveOnboardingKey[]>
   isDismissed: Computed<this, (key: ProgressiveOnboardingKey) => DismissedKeyStatus>
   sessionState: {
@@ -26,7 +25,6 @@ export interface ProgressiveOnboardingModel {
   }
   setIsReady: Action<this, boolean>
   setActivePopover: Action<this, string | undefined>
-  addSeenFeature: Action<this, string>
   __clearDissmissed: Action<this>
 }
 
@@ -34,7 +32,6 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
   sessionState: {
     isReady: false,
   },
-  seenFeatures: [],
   dismissed: [],
   dismiss: action((state, key) => {
     const keys = Array.isArray(key) ? key : [key]
@@ -61,11 +58,6 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
   setActivePopover: action((state, id) => {
     state.sessionState.activePopover = id
   }),
-  addSeenFeature: action((state, feature) => {
-    if (!state.seenFeatures.includes(feature)) {
-      state.seenFeatures.push(feature)
-    }
-  }),
   __clearDissmissed: action((state) => {
     state.dismissed = []
   }),
@@ -73,13 +65,6 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
 
 // Saves
 export const PROGRESSIVE_ONBOARDING_SAVE_ARTWORK = "save-artwork"
-export const PROGRESSIVE_ONBOARDING_FIND_SAVED_ARTWORK = "find-saved-artwork"
-export const PROGRESSIVE_ONBOARDING_SAVE_HIGHLIGHT = "save-highlight"
-export const PROGRESSIVE_ONBOARDING_SAVE_CHAIN = [
-  PROGRESSIVE_ONBOARDING_SAVE_ARTWORK,
-  PROGRESSIVE_ONBOARDING_FIND_SAVED_ARTWORK,
-  PROGRESSIVE_ONBOARDING_SAVE_HIGHLIGHT,
-]
 
 // Alerts
 export const PROGRESSIVE_ONBOARDING_ALERT_CREATE = "alert-create"
@@ -97,25 +82,30 @@ export const PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK = "my-collectio
 // Partner Offer
 export const PROGRESSIVE_ONBOARDING_SIGNAL_INTEREST = "signal-interest"
 export const PROGRESSIVE_ONBOARDING_OFFER_SETTINGS = "offer-settings"
-export const PROGRESSIVE_ONBOARDING_PARTNER_OFFER_CHAIN = [
-  PROGRESSIVE_ONBOARDING_SIGNAL_INTEREST,
-  PROGRESSIVE_ONBOARDING_OFFER_SETTINGS,
-]
 
 // Act Now Tasks
 export const PROGRESSIVE_ONBOARDING_ACT_NOW_TASKS = "act-now-tasks"
 
+// Alerts Reminder
+export const PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1 = "alert-create-reminder-1"
+export const PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2 = "alert-create-reminder-2"
+
+// Long-Press Artwork Context Menu
+export const PROGRESSIVE_ONBOARDING_LONG_PRESS_ARTWORK_CONTEXT_MENU =
+  "long-press-artwork-context-menu"
+
 export const PROGRESSIVE_ONBOARDING_KEYS = [
   PROGRESSIVE_ONBOARDING_MY_COLLECTION_SELL_THIS_WORK,
   PROGRESSIVE_ONBOARDING_SAVE_ARTWORK,
-  PROGRESSIVE_ONBOARDING_FIND_SAVED_ARTWORK,
-  PROGRESSIVE_ONBOARDING_SAVE_HIGHLIGHT,
   PROGRESSIVE_ONBOARDING_ALERT_CREATE,
   PROGRESSIVE_ONBOARDING_ALERT_SELECT_FILTERS,
   PROGRESSIVE_ONBOARDING_ALERT_FINISH,
   PROGRESSIVE_ONBOARDING_SIGNAL_INTEREST,
   PROGRESSIVE_ONBOARDING_OFFER_SETTINGS,
   PROGRESSIVE_ONBOARDING_ACT_NOW_TASKS,
+  PROGRESSIVE_ONBOARDING_ALERT_REMINDER_1,
+  PROGRESSIVE_ONBOARDING_ALERT_REMINDER_2,
+  PROGRESSIVE_ONBOARDING_LONG_PRESS_ARTWORK_CONTEXT_MENU,
 ] as const
 
 export type ProgressiveOnboardingKey = (typeof PROGRESSIVE_ONBOARDING_KEYS)[number]

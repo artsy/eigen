@@ -10,14 +10,13 @@ import {
 import { ArtworkListsQuery } from "__generated__/ArtworkListsQuery.graphql"
 import { ArtworkLists_collectionsConnection$key } from "__generated__/ArtworkLists_collectionsConnection.graphql"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
-import { useDismissSavedHighlight } from "app/Components/ProgressiveOnboarding/useDismissSavedHighlight"
 import { ArtworkListItem } from "app/Scenes/ArtworkLists/ArtworkListItem"
 import { SavesTabHeader, SavesTabHeaderPlaceholder } from "app/Scenes/ArtworkLists/SavesTabHeader"
 import { useArtworkListsColCount } from "app/Scenes/ArtworkLists/useArtworkListsColCount"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { compact } from "lodash"
-import { Suspense, useState } from "react"
+import { useState } from "react"
 import { RefreshControl } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -131,16 +130,6 @@ export const ArtworkLists: React.FC<ArtworkListsProps> = ({ isTab = true }) => {
       ListHeaderComponent={isPartnerOfferEnabled ? <SavesTabHeader /> : null}
       refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
     />
-  )
-}
-
-export const ArtworkListsQR = () => {
-  useDismissSavedHighlight()
-
-  return (
-    <Suspense fallback={<ArtworkListsPlaceHolder />}>
-      <ArtworkLists />
-    </Suspense>
   )
 }
 

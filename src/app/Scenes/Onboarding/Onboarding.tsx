@@ -10,7 +10,6 @@ import { AuthApp } from "app/Scenes/Onboarding/Auth2/AuthApp"
 import { OAuthProvider } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { DevMenu as DevMenuDefault } from "app/system/devTools/DevMenu/DevMenu"
-import { ArtsyKeyboardAvoidingViewContext } from "app/utils/ArtsyKeyboardAvoidingView"
 import { NetworkAwareProvider } from "app/utils/NetworkAwareProvider"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -169,17 +168,13 @@ const DevMenu = () => (
   <DevMenuDefault onClose={() => __unsafe__onboardingNavigationRef.current?.goBack()} />
 )
 export const Onboarding = () => {
-  const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
+  const onboardingState = GlobalStore.useAppState((state) => state.onboarding.onboardingState)
   const fpsCounter = useDevToggle("DTFPSCounter")
 
   return (
     <View style={{ flex: 1 }}>
-      <ArtsyKeyboardAvoidingViewContext.Provider
-        value={{ isVisible: true, isPresentedModally: false, bottomOffset: 0 }}
-      >
-        {onboardingState === "incomplete" ? <OnboardingQuiz /> : <OnboardingWelcomeScreens />}
-        <NetworkAwareProvider />
-      </ArtsyKeyboardAvoidingViewContext.Provider>
+      {onboardingState === "incomplete" ? <OnboardingQuiz /> : <OnboardingWelcomeScreens />}
+      <NetworkAwareProvider />
       {!!fpsCounter && <FPSCounter style={{ bottom: Platform.OS === "ios" ? 40 : undefined }} />}
     </View>
   )

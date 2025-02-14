@@ -1,5 +1,5 @@
-import { fireEvent } from "@testing-library/react-native"
-import { Photo } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/validation"
+import { fireEvent, screen } from "@testing-library/react-native"
+import { Photo } from "app/Components/PhotoRow/utils/validation"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RelayEnvironmentProvider } from "react-relay"
@@ -19,23 +19,23 @@ describe("PhotoRow", () => {
     beforeEach(() => mockEnvironment.mockClear())
 
     it("renders photo as a thumbnail", () => {
-      const { getByTestId } = renderWithWrappers(<TestRenderer />)
-      expect(getByTestId("Submission_Image")).toBeTruthy()
+      renderWithWrappers(<TestRenderer />)
+      expect(screen.getByTestId("Submission_Image")).toBeTruthy()
     })
 
     it("renders photo size", () => {
-      const { getByText } = renderWithWrappers(<TestRenderer />)
-      expect(getByText("3.3 MB")).toBeTruthy()
+      renderWithWrappers(<TestRenderer />)
+      expect(screen.getByText("3.3 MB")).toBeTruthy()
     })
 
     it("renders Delete button", () => {
-      const { getByTestId } = renderWithWrappers(<TestRenderer />)
-      expect(getByTestId("Submission_Delete_Photo_Button")).toBeTruthy()
+      renderWithWrappers(<TestRenderer />)
+      expect(screen.getByTestId("Submission_Delete_Photo_Button")).toBeTruthy()
     })
 
     it("fires handlePhotoDelete with correct photo when Delete button pressed", () => {
-      const { getByTestId } = renderWithWrappers(<TestRenderer />)
-      const DeleteButton = getByTestId("Submission_Delete_Photo_Button")
+      renderWithWrappers(<TestRenderer />)
+      const DeleteButton = screen.getByTestId("Submission_Delete_Photo_Button")
 
       fireEvent.press(DeleteButton)
 
@@ -54,8 +54,8 @@ describe("PhotoRow", () => {
     beforeEach(() => mockEnvironment.mockClear())
 
     it("renders correct error message", () => {
-      const { getByText } = renderWithWrappers(<TestRenderer />)
-      expect(getByText("some error")).toBeTruthy()
+      renderWithWrappers(<TestRenderer />)
+      expect(screen.getByText("some error")).toBeTruthy()
     })
   })
 })

@@ -49,6 +49,8 @@ export const ArtworkFilterOptionsScreen: React.FC<
 > = ({ navigation, route }) => {
   const enableArtistSeriesFilter = useFeatureFlag("AREnableArtistSeriesFilter")
   const enableAvailabilityFilter = useFeatureFlag("AREnableAvailabilityFilter")
+  const enableFramedFilter = useFeatureFlag("AREnableFramedFilter")
+
   const tracking = useTracking()
   const { closeModal, id, mode, slug, title = "Sort & Filter" } = route.params
 
@@ -106,7 +108,8 @@ export const ArtworkFilterOptionsScreen: React.FC<
     .filter(
       (filterOption) =>
         (enableArtistSeriesFilter || filterOption.filterType !== "artistSeriesIDs") &&
-        (enableAvailabilityFilter || filterOption.filterType !== "availability")
+        (enableAvailabilityFilter || filterOption.filterType !== "availability") &&
+        (enableFramedFilter || filterOption.filterType !== "framed")
     )
 
   const clearAllFilters = () => {
@@ -197,6 +200,7 @@ export const getStaticFilterOptionsByMode = (
   switch (mode) {
     case FilterModalMode.SaleArtworks:
       return [
+        filterOptionToDisplayConfigMap.framed,
         filterOptionToDisplayConfigMap.estimateRange,
         filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.viewAs,
@@ -216,6 +220,7 @@ export const getStaticFilterOptionsByMode = (
 
     default:
       return [
+        filterOptionToDisplayConfigMap.framed,
         filterOptionToDisplayConfigMap.attributionClass,
         filterOptionToDisplayConfigMap.availability,
         filterOptionToDisplayConfigMap.sort,
@@ -414,6 +419,11 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     filterType: "estimateRange",
     ScreenComponent: "EstimateRangeOptionsScreen",
   },
+  framed: {
+    displayText: FilterDisplayName.framed,
+    filterType: "framed",
+    ScreenComponent: "FramedOptionsScreen",
+  },
   availability: {
     displayText: FilterDisplayName.availability,
     filterType: "availability",
@@ -503,6 +513,7 @@ const CollectionFiltersSorted: FilterScreen[] = [
   "majorPeriods",
   "colors",
   "partnerIDs",
+  "framed",
 ]
 const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "sort",
@@ -519,6 +530,7 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "majorPeriods",
   "colors",
   "partnerIDs",
+  "framed",
 ]
 const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "sort",
@@ -534,6 +546,7 @@ const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "majorPeriods",
   "colors",
   "partnerIDs",
+  "framed",
 ]
 const ArtworksFiltersSorted: FilterScreen[] = [
   "sort",
@@ -550,6 +563,7 @@ const ArtworksFiltersSorted: FilterScreen[] = [
   "majorPeriods",
   "colors",
   "partnerIDs",
+  "framed",
 ]
 const FairFiltersSorted: FilterScreen[] = [
   "partnerIDs",
@@ -565,6 +579,7 @@ const FairFiltersSorted: FilterScreen[] = [
   "locationCities",
   "majorPeriods",
   "colors",
+  "framed",
 ]
 const SaleArtworksFiltersSorted: FilterScreen[] = [
   "sort",
@@ -573,6 +588,7 @@ const SaleArtworksFiltersSorted: FilterScreen[] = [
   "medium",
   "additionalGeneIDs",
   "estimateRange",
+  "framed",
 ]
 
 const ShowFiltersSorted: FilterScreen[] = [
@@ -588,6 +604,7 @@ const ShowFiltersSorted: FilterScreen[] = [
   "artistNationalities",
   "majorPeriods",
   "colors",
+  "framed",
 ]
 
 const PartnerFiltersSorted: FilterScreen[] = [
@@ -603,6 +620,7 @@ const PartnerFiltersSorted: FilterScreen[] = [
   "artistNationalities",
   "majorPeriods",
   "colors",
+  "framed",
 ]
 
 const TagAndGeneFiltersSorted: FilterScreen[] = [
@@ -620,6 +638,7 @@ const TagAndGeneFiltersSorted: FilterScreen[] = [
   "majorPeriods",
   "colors",
   "partnerIDs",
+  "framed",
 ]
 
 const AuctionResultsFiltersSorted: FilterScreen[] = [

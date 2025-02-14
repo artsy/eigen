@@ -70,7 +70,12 @@ export const HomeViewSectionMarketingCollections: React.FC<
 
   return (
     <Flex {...flexProps}>
-      <SectionTitle href={href} mx={2} onPress={onSectionViewAll} title={component.title} />
+      <SectionTitle
+        href={href}
+        mx={2}
+        onPress={href ? onSectionViewAll : undefined}
+        title={component.title}
+      />
 
       <CardRailFlatList<
         ExtractNodeType<

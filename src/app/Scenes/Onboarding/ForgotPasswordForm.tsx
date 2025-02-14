@@ -1,10 +1,9 @@
 import { Text, Spacer, Flex, useColor, Button, Input } from "@artsy/palette-mobile"
 import { BackButton } from "app/system/navigation/BackButton"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useFormikContext } from "formik"
 import React from "react"
-import { ScrollView } from "react-native"
+import { KeyboardAvoidingView, ScrollView } from "react-native"
 import { ForgotPasswordFormProps, ForgotPasswordValuesSchema } from "./ForgotPassword"
 
 export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
@@ -17,8 +16,8 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   const color = useColor()
 
   return (
-    <Flex flex={1} backgroundColor="white100" flexGrow={1} pb={1}>
-      <ArtsyKeyboardAvoidingView>
+    <Flex flex={1} backgroundColor="background" flexGrow={1} pb={1}>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         <ScrollView
           contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top }}
           keyboardShouldPersistTaps="always"
@@ -104,7 +103,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
             </Button>
           )}
         </Flex>
-      </ArtsyKeyboardAvoidingView>
+      </KeyboardAvoidingView>
     </Flex>
   )
 }

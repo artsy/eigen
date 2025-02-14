@@ -148,7 +148,7 @@ export class CityView extends Component<Props, State> {
     const { buckets, cityName, citySlug, relayErrorState } = this.state
 
     return buckets || relayErrorState ? (
-      <Flex style={{ flex: 1 }}>
+      <Container style={{ flex: 1 }}>
         <Flex py={1} alignItems="center">
           <Handle />
         </Flex>
@@ -192,7 +192,7 @@ export class CityView extends Component<Props, State> {
             })}
           </TabsContainer>
         )}
-      </Flex>
+      </Container>
     ) : null
   }
 }
@@ -202,6 +202,10 @@ const Handle = styled.View`
   height: 5px;
   border-radius: 2.5px;
   background-color: ${themeGet("colors.black30")};
+`
+
+const Container = styled.View`
+  background-color: ${themeGet("colors.background")};
 `
 
 // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562

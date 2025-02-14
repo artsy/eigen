@@ -68,7 +68,12 @@ async function fetchNotionDatabase(databaseId: string) {
   }
 }
 
-async function createJiraIssue(issueSummary: string, issueLink: string) {
+async function createJiraIssue(
+  issueSummary: string,
+  issueLink: string,
+  bugSeverity: string,
+  component: string
+) {
   try {
     const auth = Buffer.from(`${JIRA_EMAIL}:${JIRA_API_TOKEN}`).toString("base64")
     const response = await fetch(`${JIRA_BASE_URL}/rest/api/3/issue`, {
@@ -110,6 +115,14 @@ async function createJiraIssue(issueSummary: string, issueLink: string) {
               },
             ],
           },
+          customfield_10130: {
+            value: bugSeverity, // Bug Severity
+          },
+          components: [
+            {
+              name: component,
+            },
+          ],
           issuetype: {
             name: "Bug",
           },
@@ -131,13 +144,50 @@ async function createJiraIssue(issueSummary: string, issueLink: string) {
   }
 }
 
+interface ValidIssue {
+  summary: string
+  severity: string
+  component: string
+  notionUrl: string
+}
+
+const severityMap = {
+  P1: "P1 - Critical",
+  P2: "P2 - High",
+  P3: "P3 - Moderate",
+  P4: "P4 - Low",
+  P5: "P5 - Informal",
+}
+
 async function main() {
   const notionData = await fetchNotionDatabase(databaseId)
   if (notionData && notionData.results) {
+    const validIssues: ValidIssue[] = []
     for (const page of notionData.results) {
       const issueSummary = page.properties.Name.title[0]?.plain_text || "No Title"
       const notionPageUrl = page.url
-      await createJiraIssue(issueSummary, notionPageUrl)
+
+      const severity = page.properties["Bug Severity"]?.select?.name || null
+      const component = page.properties.Components?.select?.name || null
+
+      if (!severity || !component) {
+        console.error(chalk.bold.red("Missing Bug Severity or Component for page:"))
+        console.error(chalk.bold.red(notionPageUrl))
+        console.error(chalk.bold.red("Please fill in the missing fields and try again."))
+        return
+      }
+
+      const fullSeverity = severityMap[severity as keyof typeof severityMap]
+      validIssues.push({
+        summary: issueSummary,
+        severity: fullSeverity,
+        component,
+        notionUrl: notionPageUrl,
+      })
+    }
+
+    for (const issue of validIssues) {
+      await createJiraIssue(issue.summary, issue.notionUrl, issue.severity, issue.component)
     }
   }
 }

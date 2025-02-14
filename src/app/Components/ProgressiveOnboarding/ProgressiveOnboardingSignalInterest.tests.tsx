@@ -5,8 +5,9 @@ import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useEffect } from "react"
 import { Text, View } from "react-native"
 
-jest.mock("app/utils/ElementInView", () => ({
-  ElementInView: (props: any) => <MockedVisibleSentinel {...props} />,
+jest.mock("app/utils/Sentinel", () => ({
+  __esModule: true,
+  Sentinel: (props: any) => <MockedVisibleSentinel {...props} />,
 }))
 
 jest.mock("@artsy/palette-mobile", () => ({
@@ -85,12 +86,6 @@ describe("ProgressiveOnboardingSignalInterest", () => {
   })
 })
 
-const MockedVisibleSentinel: React.FC<any> = ({ children, onVisible }) => {
-  useEffect(() => onVisible(), [])
-
-  return <View>{children}</View>
-}
-
 const MockedPopover: React.FC<any> = ({ children, onDismiss, visible }) => {
   if (!visible) {
     return <>{children}</>
@@ -102,4 +97,10 @@ const MockedPopover: React.FC<any> = ({ children, onDismiss, visible }) => {
       <>{children}</>
     </>
   )
+}
+
+const MockedVisibleSentinel: React.FC<any> = ({ children, onChange }) => {
+  useEffect(() => onChange(true), [])
+
+  return <View>{children}</View>
 }

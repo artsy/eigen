@@ -8,7 +8,6 @@ export interface MyCollectionImageViewProps {
   imageHeight?: number
   aspectRatio?: number
   artworkSlug: string
-  artworkSubmissionId?: string | null
   useRawURL?: boolean
   internalID?: string | null
   versions?: string[]

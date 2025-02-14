@@ -1,15 +1,15 @@
 import { act, fireEvent, screen } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
-import { saveOrUpdateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm/methods/uploadArtwork"
-import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
-import * as artworkMutations from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import {
   getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
-} from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileToS3"
+} from "app/Components/PhotoRow/utils/uploadFileToS3"
+import { saveOrUpdateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm/methods/uploadArtwork"
+import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
+import * as artworkMutations from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
+import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import * as LocalImageStore from "app/utils/LocalImageStore"
@@ -23,7 +23,7 @@ import {
 } from "./MyCollectionArtworkForm"
 import * as photoUtil from "./MyCollectionImageUtil"
 
-jest.mock("app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils/uploadFileToS3", () => ({
+jest.mock("app/Components/PhotoRow/utils/uploadFileToS3", () => ({
   getConvectionGeminiKey: jest.fn(),
   getGeminiCredentialsForEnvironment: jest.fn(),
   uploadFileToS3: jest.fn(),
@@ -479,11 +479,6 @@ describe("MyCollectionArtworkForm", () => {
                     countryCode: "some-country-code",
                   },
                   confidentialNotes: "some-notes",
-                  consignmentSubmission: {
-                    displayText: "In progress",
-                    internalID: "submission-id",
-                    isEditable: false,
-                  },
                   dimensions: {
                     in: "23",
                     cm: "26",

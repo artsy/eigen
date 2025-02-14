@@ -16,6 +16,7 @@ import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   ARTWORK_RAIL_CARD_MIN_WIDTH,
 } from "app/Components/ArtworkRail/ArtworkRailCardImage"
+import { ProgressiveOnboardingLongPressContextMenu } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingLongPressContextMenu"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
@@ -23,7 +24,9 @@ import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewS
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { memo } from "react"
@@ -42,10 +45,15 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const tracking = useHomeViewTracking()
 
   const section = useFragment(fragment, sectionProp)
-  const artworks = extractNodes(section.artworksConnection)
+  let artworks = extractNodes(section.artworksConnection)
+
+  if (isDislikeArtworksEnabledFor(section.contextModule)) {
+    artworks = artworks.filter((artwork) => !artwork.isDisliked)
+  }
+
   const viewAll = section.component?.behaviors?.viewAll
 
-  if (!artworks || artworks.length === 0) {
+  if (!artworks.length) {
     return null
   }
 
@@ -80,14 +88,19 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     navigate(href)
   }
 
+  // This is a temporary solution to show the long press context menu only on the first artwork section
+  const isFirstArtworkSection = section.contextModule === ContextModule.newWorksForYouRail
+
   return (
     <Flex {...flexProps}>
       <SectionTitle
         href={href}
         mx={2}
         title={section.component?.title}
-        onPress={onSectionViewAll}
+        onPress={href ? onSectionViewAll : undefined}
       />
+
+      {!!isFirstArtworkSection && <ProgressiveOnboardingLongPressContextMenu />}
 
       <ArtworkRail
         contextModule={section.contextModule as ContextModule}
@@ -107,7 +120,8 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 }
 
 const fragment = graphql`
-  fragment HomeViewSectionArtworks_section on HomeViewSectionArtworks {
+  fragment HomeViewSectionArtworks_section on HomeViewSectionArtworks
+  @argumentDefinitions(enableHidingDislikedArtworks: { type: "Boolean", defaultValue: false }) {
     __typename
     internalID
     contextModule
@@ -125,6 +139,7 @@ const fragment = graphql`
     artworksConnection(first: 10) {
       edges {
         node {
+          isDisliked @include(if: $enableHidingDislikedArtworks)
           ...ArtworkRail_artworks
         }
       }
@@ -133,10 +148,11 @@ const fragment = graphql`
 `
 
 const homeViewSectionArtworksQuery = graphql`
-  query HomeViewSectionArtworksQuery($id: String!) {
+  query HomeViewSectionArtworksQuery($id: String!, $enableHidingDislikedArtworks: Boolean!) {
     homeView {
       section(id: $id) {
         ...HomeViewSectionArtworks_section
+          @arguments(enableHidingDislikedArtworks: $enableHidingDislikedArtworks)
       }
     }
   }
@@ -181,10 +197,20 @@ const HomeViewSectionArtworksPlaceholder: React.FC<FlexProps> = (flexProps) => {
 
 export const HomeViewSectionArtworksQueryRenderer: React.FC<SectionSharedProps> = memo(
   withSuspense({
-    Component: ({ sectionID, index, ...flexProps }) => {
-      const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(homeViewSectionArtworksQuery, {
-        id: sectionID,
-      })
+    Component: ({ sectionID, index, refetchKey, ...flexProps }) => {
+      const enableHidingDislikedArtworks = useFeatureFlag("AREnableHidingDislikedArtworks")
+
+      const data = useLazyLoadQuery<HomeViewSectionArtworksQuery>(
+        homeViewSectionArtworksQuery,
+        {
+          id: sectionID,
+          enableHidingDislikedArtworks,
+        },
+        {
+          fetchKey: refetchKey,
+          fetchPolicy: "store-and-network",
+        }
+      )
 
       if (!data.homeView.section) {
         return null

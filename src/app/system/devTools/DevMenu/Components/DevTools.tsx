@@ -19,10 +19,10 @@ import { requestSystemPermissions } from "app/utils/requestPushNotificationsPerm
 import { capitalize, sortBy } from "lodash"
 import { useState } from "react"
 import { Alert, Button, Platform } from "react-native"
-import Config from "react-native-config"
 import DeviceInfo from "react-native-device-info"
 import FastImage from "react-native-fast-image"
 import Keychain from "react-native-keychain"
+import Keys from "react-native-keys"
 
 const configurableDevToggleKeys = sortBy(
   Object.entries(devToggles),
@@ -124,15 +124,22 @@ export const DevTools: React.FC<{}> = () => {
               toast.show("Progressive Onboarding progress cleared ✅", "middle")
             }}
           />
+          <DevMenuButtonItem
+            title="Clear Infinite Discovery artworks"
+            onPress={() => {
+              GlobalStore.actions._forgetDiscoveredArtworks()
+              toast.show("Infinite Discovery artworks cleared ✅", "middle")
+            }}
+          />
           <DevMenuButtonItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
 
           <DevMenuButtonItem
             title="Throw Sentry Error"
             onPress={() => {
-              if (!Config.SENTRY_DSN) {
+              if (!Keys.secureFor("SENTRY_DSN")) {
                 Alert.alert(
                   "No Sentry DSN available",
-                  __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
+                  __DEV__ ? "Set it in keys.shared.json and re-build the app." : undefined
                 )
                 return
               }
@@ -142,10 +149,10 @@ export const DevTools: React.FC<{}> = () => {
           <DevMenuButtonItem
             title="Trigger Sentry Native Crash"
             onPress={() => {
-              if (!Config.SENTRY_DSN) {
+              if (!Keys.secureFor("SENTRY_DSN")) {
                 Alert.alert(
                   "No Sentry DSN available",
-                  __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
+                  __DEV__ ? "Set it in keys.shared.json and re-build the app." : undefined
                 )
                 return
               }

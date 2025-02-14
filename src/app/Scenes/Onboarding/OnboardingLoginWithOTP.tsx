@@ -12,11 +12,10 @@ import {
 import { StackScreenProps } from "@react-navigation/stack"
 import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useScreenDimensions } from "app/utils/hooks"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import React, { useRef, useState } from "react"
-import { ScrollView } from "react-native"
+import { KeyboardAvoidingView, ScrollView } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "./Onboarding"
 
@@ -66,8 +65,8 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
   const [recoveryCodeMode, setRecoveryCodeMode] = useState(false)
 
   return (
-    <Flex flex={1} backgroundColor="white100" flexGrow={1} pb={1}>
-      <ArtsyKeyboardAvoidingView>
+    <Flex flex={1} backgroundColor="background" flexGrow={1} pb={1}>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         <ScrollView
           contentContainerStyle={{
             paddingTop: useScreenDimensions().safeAreaInsets.top,
@@ -135,7 +134,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
             Log in
           </Button>
         </Flex>
-      </ArtsyKeyboardAvoidingView>
+      </KeyboardAvoidingView>
     </Flex>
   )
 }

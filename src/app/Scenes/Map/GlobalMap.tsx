@@ -18,7 +18,7 @@ import { Schema, screenTrack, track } from "app/utils/track"
 import { get, isEqual, uniq } from "lodash"
 import React from "react"
 import { Animated, Dimensions, Image } from "react-native"
-import Config from "react-native-config"
+import Keys from "react-native-keys"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"
@@ -35,7 +35,7 @@ import {
 } from "./bucketCityResults"
 import { Fair, FilterData, RelayErrorState, Show } from "./types"
 
-MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
+MapboxGL.setAccessToken(Keys.secureFor("MAPBOX_API_CLIENT_KEY"))
 
 const ShowCardContainer = styled(Box)`
   position: absolute;

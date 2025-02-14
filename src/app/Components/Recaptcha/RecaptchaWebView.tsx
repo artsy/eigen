@@ -1,6 +1,6 @@
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { FC, useRef } from "react"
-import Config from "react-native-config"
+import Keys from "react-native-keys"
 import WebView, { WebViewMessageEvent } from "react-native-webview"
 import { ShouldStartLoadRequest } from "react-native-webview/lib/WebViewTypes"
 
@@ -20,7 +20,9 @@ export const RecaptchaWebView: FC<RecaptchaWebViewProps> = ({
   const ref = useRef<WebView>(null)
   const isStaging = useIsStaging()
 
-  const recaptchaKey = !isStaging ? Config.RECAPTCHA_KEY_PRODUCTION : Config.RECAPTCHA_KEY_STAGING
+  const recaptchaKey = !isStaging
+    ? Keys.secureFor("RECAPTCHA_KEY_PRODUCTION")
+    : Keys.secureFor("RECAPTCHA_KEY_STAGING")
   const baseUrl = !isStaging ? "https://artsy.net/" : "https://staging.artsy.net/"
 
   const handleOnMessage = (e: WebViewMessageEvent) => {

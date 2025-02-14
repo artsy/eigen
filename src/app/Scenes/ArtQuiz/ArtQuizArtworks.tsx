@@ -1,17 +1,19 @@
-import { Touchable, Flex, Text, useScreenDimensions, useSpace, Screen } from "@artsy/palette-mobile"
+import { Flex, Screen, Text, Touchable, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtQuizArtworksDislikeMutation } from "__generated__/ArtQuizArtworksDislikeMutation.graphql"
-import { ArtQuizArtworksQuery } from "__generated__/ArtQuizArtworksQuery.graphql"
+import {
+  ArtQuizArtworksQuery,
+  ArtQuizArtworksQuery$data,
+} from "__generated__/ArtQuizArtworksQuery.graphql"
 import { ArtQuizArtworksSaveMutation } from "__generated__/ArtQuizArtworksSaveMutation.graphql"
 import { ArtQuizArtworksUpdateQuizMutation } from "__generated__/ArtQuizArtworksUpdateQuizMutation.graphql"
-import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
-import { Card } from "app/Components/FancySwiper/FancySwiperCard"
+import { FancySwiper, FancySwiperArtworkCard } from "app/Components/FancySwiper/FancySwiper"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { ArtQuizLoader } from "app/Scenes/ArtQuiz/ArtQuizLoader"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isEmpty } from "lodash"
-import { Suspense, useEffect, useState } from "react"
+import { Suspense, useEffect, useMemo, useState } from "react"
 import { Image } from "react-native"
 
 import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
@@ -19,8 +21,7 @@ import { graphql, useLazyLoadQuery, useMutation } from "react-relay"
 const ArtQuizArtworksScreen = () => {
   const queryResult = useLazyLoadQuery<ArtQuizArtworksQuery>(artQuizArtworksQuery, {})
   const { userID } = GlobalStore.useAppState((store) => store.auth)
-  const { width } = useScreenDimensions()
-  const space = useSpace()
+  const nonNullUserID = userID as string
   const artworks = extractNodes(queryResult.me?.quiz.quizArtworkConnection)
 
   const lastInteractedArtworkIndex = queryResult.me?.quiz.quizArtworkConnection?.edges?.findIndex(
@@ -88,7 +89,7 @@ const ArtQuizArtworksScreen = () => {
       variables: {
         input: {
           artworkId: currentArtwork.internalID,
-          userId: userID!,
+          userId: nonNullUserID,
         },
       },
     })
@@ -140,7 +141,7 @@ const ArtQuizArtworksScreen = () => {
         variables: {
           input: {
             artworkId: previousArtwork.internalID,
-            userId: userID!,
+            userId: nonNullUserID,
             clearInteraction: true,
           },
         },
@@ -155,20 +156,14 @@ const ArtQuizArtworksScreen = () => {
     })
   }
 
-  const artworkCards: Card[] = artworks.slice(activeCardIndex).map((artwork) => {
-    return {
-      jsx: (
-        <Flex width={width - space(4)} height={500} backgroundColor="white100">
-          <Image
-            source={{ uri: artwork.image?.resized?.src }}
-            style={{ flex: 1 }}
-            resizeMode="contain"
-          />
-        </Flex>
-      ),
-      id: artwork.internalID,
-    }
-  })
+  const artworkCards: FancySwiperArtworkCard[] = useMemo(() => {
+    return artworks.map((artwork) => ({
+      content: <ArtQuizArtworkCard artwork={artwork} key={artwork.internalID} />,
+      artworkId: artwork.internalID,
+    }))
+  }, [artworks])
+
+  const unswipedCards: FancySwiperArtworkCard[] = artworkCards.slice(activeCardIndex)
 
   return (
     <Screen>
@@ -188,7 +183,7 @@ const ArtQuizArtworksScreen = () => {
 
       <Screen.Body>
         <FancySwiper
-          cards={artworkCards}
+          cards={unswipedCards}
           onSwipeRight={() => handleSwipe("right")}
           onSwipeLeft={() => handleSwipe("left")}
         />
@@ -202,6 +197,35 @@ export const ArtQuizArtworks = () => {
     <Suspense fallback={<ArtQuizLoader />}>
       <ArtQuizArtworksScreen />
     </Suspense>
+  )
+}
+
+type ArtQuizArtwork = NonNullable<
+  NonNullable<
+    NonNullable<
+      NonNullable<ArtQuizArtworksQuery$data["me"]>["quiz"]["quizArtworkConnection"]
+    >["edges"]
+  >[number]
+>["node"]
+
+interface ArtQuizArtworkCardProps {
+  artwork: ArtQuizArtwork
+}
+
+const ArtQuizArtworkCard: React.FC<ArtQuizArtworkCardProps> = ({ artwork }) => {
+  const { width } = useScreenDimensions()
+  const space = useSpace()
+
+  const CARD_HEIGHT = 500
+
+  return (
+    <Flex width={width - space(4)} height={CARD_HEIGHT} backgroundColor="white">
+      <Image
+        source={{ uri: artwork?.image?.resized?.src }}
+        style={{ flex: 1 }}
+        resizeMode="contain"
+      />
+    </Flex>
   )
 }
 
