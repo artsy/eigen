@@ -18,7 +18,7 @@
 #import "ARAppDelegate+DeeplinkTimeout.h"
 #import "ARUserManager.h"
 #import "ARFonts.h"
-#import <SEGAnalytics.h>
+//#import <SEGAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "User.h"
 
@@ -139,19 +139,20 @@ static ARAppDelegate *_sharedInstance = nil;
 
 
     BOOL ossUser = [[Keys publicFor:@"OSS"] isEqualToString:@"true"];
-    if ([FIRApp defaultApp] == nil && !ossUser) {
-        [FIRApp configure];
-    }
+//    if ([FIRApp defaultApp] == nil && !ossUser) {
+//        [FIRApp configure];
+//    }
 
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
-- (RCTBridge *)createBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate launchOptions:(NSDictionary *)launchOptions {
-    RCTBridge *bridge = [self.reactDelegate createBridgeWithDelegate:self launchOptions:launchOptions];
-    AREmission *emission = [AREmission sharedInstance];
-    [emission setBridge:bridge];
-    return bridge;
-}
+//- (RCTBridge *)createBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate launchOptions:(NSDictionary *)launchOptions {
+//    // TODO: fix it 
+////    RCTBridge *bridge = [self.reactDelegate createBridgeWithDelegate:self launchOptions:launchOptions];
+////    AREmission *emission = [AREmission sharedInstance];
+////    [emission setBridge:bridge];
+////    return bridge;
+//}
 
 - (UIView *)createRootViewWithBridge:(RCTBridge *)bridge
                           moduleName:(NSString *)moduleName
@@ -184,11 +185,11 @@ static ARAppDelegate *_sharedInstance = nil;
         segmentWriteKey = [Keys secureFor:@"SEGMENT_PRODUCTION_WRITE_KEY_IOS"];
     }
 
-    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:segmentWriteKey];
-    configuration.trackApplicationLifecycleEvents = YES;
-    configuration.trackPushNotifications = YES;
-    configuration.trackDeepLinks = YES;
-    [SEGAnalytics setupWithConfiguration:configuration];
+//    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:segmentWriteKey];
+//    configuration.trackApplicationLifecycleEvents = YES;
+//    configuration.trackPushNotifications = YES;
+//    configuration.trackDeepLinks = YES;
+//    [SEGAnalytics setupWithConfiguration:configuration];
 //    [[BrazeReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];
 }
 
