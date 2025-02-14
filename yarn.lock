@@ -17,12 +17,12 @@
   dependencies:
     core-js "3"
 
-"@artsy/palette-mobile@14.0.24":
-  version "14.0.24"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-14.0.24.tgz#53bd3e2eb9499d87e7be9ce85924dd019adc631c"
-  integrity sha512-b9SHA8/hsfiyl7uAy3JnZS+t63ls58dIcTbuqEOen+VQKkc94aeqUvKxYM2AyfUlRz6kQmQdTBqP6Y3XOzLByw==
+"@artsy/palette-mobile@14.0.28":
+  version "14.0.28"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-14.0.28.tgz#ed0708c662f7bcd97ce9e779e24f441dc9278682"
+  integrity sha512-9XONsd5qP+/2SPZqgOIjzmx0FrvzzapUfZW7C8YyZOl0O3HIdmF4aSpi5dDkJ6i0+vJD2U4YwSZpObVGsd8hhg==
   dependencies:
-    "@artsy/palette-tokens" "^6.0.3"
+    "@artsy/palette-tokens" "^6.3.0"
     "@shopify/flash-list" "1.7.1"
     "@styled-system/core" "^5.1.2"
     "@styled-system/theme-get" "^5.1.2"
@@ -38,10 +38,10 @@
     react-spring "8.0.23"
     styled-system "^5.1.5"
 
-"@artsy/palette-tokens@^6.0.3":
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-tokens/-/palette-tokens-6.2.0.tgz#189d6dcf8280407c38bfe0fef5153b6b112c70da"
-  integrity sha512-cKsVAO+6Ze78us49yh/VxJ7NmkggPnaPajj0qom3DkxqaTrbJrrWWWtAZkkcMs+3wG3FdI9P2Ro/2XHBUhbnkw==
+"@artsy/palette-tokens@^6.3.0":
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-tokens/-/palette-tokens-6.3.0.tgz#1eab1354f90644214a0d8d481c302b3c5e58699f"
+  integrity sha512-UmpwWW7aLeQ5cnQopBmq34IlXar8QedEEjwQVqgUIHTTkMz7Sk3/3QkXYjHhx6UEQprsv5X64f0gvLv6Y+6fFw==
 
 "@artsy/to-title-case@1.1.0":
   version "1.1.0"
