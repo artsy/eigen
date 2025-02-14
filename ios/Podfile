@@ -55,7 +55,7 @@ end
 
 
 target 'Artsy' do
-  use_modular_headers!
+  # use_modular_headers!
 
   use_expo_modules!
 
