@@ -9,7 +9,6 @@ interface FancySwiperCardProps extends GestureResponderHandlers {
   isTopCard: boolean
   isSecondCard: boolean
   isSwipedCard: boolean
-  isLastSwipedCard: boolean
   swiper: Animated.ValueXY
 }
 
@@ -21,7 +20,6 @@ export const FancySwiperCard = memo(
     isTopCard,
     isSecondCard,
     isSwipedCard,
-    isLastSwipedCard,
     ...rest
   }: FancySwiperCardProps) => {
     const discoveredArtworksIds = GlobalStore.useAppState(
@@ -30,9 +28,9 @@ export const FancySwiperCard = memo(
 
     let topCardShadow = undefined
     let topCardTransform = undefined
-    let bottomCardOpacity = undefined
-    let bottomCardTransform = undefined
-    let lastSwipedCardTransform = undefined
+    let secondCardOpacity = undefined
+    let secondCardTransform = undefined
+    let swipedCardTransform = undefined
 
     if (isTopCard) {
       if (discoveredArtworksIds.includes(artworkId)) {
@@ -70,23 +68,23 @@ export const FancySwiperCard = memo(
       // make the second card fade in as the top card swipes away
       const opacity = interpolateSwiper(swiper, MAX_OPACITY, MIN_OPACITY)
 
-      bottomCardOpacity = {
+      secondCardOpacity = {
         opacity,
       }
 
       // make the second card grow to full size as the top card swipes away
       const scale = interpolateSwiper(swiper, MAX_SCALE, MIN_SCALE)
 
-      bottomCardTransform = {
+      secondCardTransform = {
         transform: [{ scale }],
       }
     } else if (isSwipedCard) {
-      lastSwipedCardTransform = {
+      swipedCardTransform = {
         transform: [{ translateX: -1000 }, { translateY: 0 }],
       }
     } else {
       // hide the rest of the cards
-      bottomCardOpacity = {
+      secondCardOpacity = {
         opacity: 0,
       }
     }
@@ -99,9 +97,9 @@ export const FancySwiperCard = memo(
           borderRadius: 10,
           ...topCardShadow,
           ...topCardTransform,
-          ...bottomCardOpacity,
-          ...bottomCardTransform,
-          ...lastSwipedCardTransform,
+          ...secondCardOpacity,
+          ...secondCardTransform,
+          ...swipedCardTransform,
         }}
         testID={isTopCard ? "top-fancy-swiper-card" : undefined}
         {...rest}

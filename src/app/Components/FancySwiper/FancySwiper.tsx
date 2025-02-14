@@ -105,7 +105,6 @@ export const FancySwiper = ({
           const isTopCard = remainingCards.length - 1 - index === topCardIndex
           const isSecondCard = remainingCards.length - 1 - index === topCardIndex + 1
           const isSwipedCard = remainingCards.length - 1 - index < topCardIndex
-          const isLastSwipedCard = remainingCards.length - 1 - index === topCardIndex - 1
 
           // We would like to be able to drag the top card only
           const gestureDraggers = isTopCard ? panResponder.panHandlers : {}
@@ -119,7 +118,6 @@ export const FancySwiper = ({
               isTopCard={isTopCard}
               isSecondCard={isSecondCard}
               isSwipedCard={isSwipedCard}
-              isLastSwipedCard={isLastSwipedCard}
               {...gestureDraggers}
             />
           )
