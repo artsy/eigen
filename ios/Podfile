@@ -76,6 +76,9 @@ target 'Artsy' do
 
   config = use_native_modules!(config_command)
 
+  use_frameworks! :linkage => :static
+  $RNFirebaseAsStaticFramework = true
+
   use_react_native!(
     :path => config[:reactNativePath],
     :production => ENV['CIRCLE_BUILD_NUM'],
