@@ -45,7 +45,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     (state) => state.infiniteDiscovery.savedArtworksCount
   )
 
-  const [index, setIndex] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(0)
   const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>([])
 
   const data = usePreloadedQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, queryRef)
@@ -68,30 +68,31 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     }))
   }, [artworks])
 
-  const unswipedCards: FancySwiperArtworkCard[] = artworkCards.slice(index)
+  const unswipedCards: FancySwiperArtworkCard[] = artworkCards.slice(currentIndex)
 
   const handleBackPressed = () => {
-    if (index > 0) {
-      setIndex(index - 1)
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1)
     }
   }
 
   const handleCardSwipedLeft = useCallback(() => {
-    if (index < artworks.length - 1) {
-      const dismissedArtworkId = artworkCards[index].artworkId
-      setIndex(index + 1)
+    if (currentIndex < artworks.length - 1) {
+      const dismissedArtworkId = artworks[currentIndex].internalID
+
+      setCurrentIndex(currentIndex + 1)
       addDisoveredArtworkId(dismissedArtworkId)
     }
 
     // fetch more artworks when the user is about to reach the end of the list
-    if (index === artworks.length - REFETCH_BUFFER) {
+    if (currentIndex === artworks.length - REFETCH_BUFFER) {
       fetchMoreArtworks(unswipedCards.map((card) => card.artworkId))
     }
-  }, [index, artworks.length, fetchMoreArtworks])
+  }, [currentIndex, artworks.length, fetchMoreArtworks])
 
   const handleCardWhiffedRight = () => {
-    if (index > 0) {
-      setIndex(index - 1)
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1)
     }
   }
 
@@ -128,7 +129,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
                 <ArrowBackIcon />
               </Touchable>
             }
-            hideLeftElements={index === 0}
+            hideLeftElements={currentIndex === 0}
             rightElements={
               <Touchable
                 onPress={handleExitPressed}
@@ -143,7 +144,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         </Flex>
         <Spacer y={1} />
         <FancySwiper
-          cards={unswipedCards}
+          cards={artworkCards}
+          topCardIndex={currentIndex}
           hideActionButtons
           onSwipeLeft={handleCardSwipedLeft}
           onWhiffRight={handleCardWhiffedRight}
@@ -151,8 +153,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 
         {!!artworks.length && (
           <InfiniteDiscoveryBottomSheet
-            artworkID={artworks[index].internalID}
-            artistIDs={artworks[index].artists.map((data) => data?.internalID ?? "")}
+            artworkID={artworks[currentIndex].internalID}
+            artistIDs={artworks[currentIndex].artists.map((data) => data?.internalID ?? "")}
           />
         )}
       </Screen.Body>

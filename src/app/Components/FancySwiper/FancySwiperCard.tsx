@@ -1,22 +1,51 @@
+import { GlobalStore } from "app/store/GlobalStore"
 import { memo } from "react"
 import { Animated, GestureResponderHandlers } from "react-native"
 import { SWIPE_MAGNITUDE } from "./FancySwiper"
 
 interface FancySwiperCardProps extends GestureResponderHandlers {
+  artworkId: string
   card: React.ReactNode
-  swiper: Animated.ValueXY
   isTopCard: boolean
   isSecondCard: boolean
+  isSwipedCard: boolean
+  isLastSwipedCard: boolean
+  swiper: Animated.ValueXY
 }
 
 export const FancySwiperCard = memo(
-  ({ card, swiper, isTopCard, isSecondCard, ...rest }: FancySwiperCardProps) => {
+  ({
+    artworkId,
+    card,
+    swiper,
+    isTopCard,
+    isSecondCard,
+    isSwipedCard,
+    isLastSwipedCard,
+    ...rest
+  }: FancySwiperCardProps) => {
+    const discoveredArtworksIds = GlobalStore.useAppState(
+      (state) => state.infiniteDiscovery.discoveredArtworkIds
+    )
+
     let topCardShadow = undefined
     let topCardTransform = undefined
     let bottomCardOpacity = undefined
     let bottomCardTransform = undefined
+    let lastSwipedCardTransform = undefined
 
     if (isTopCard) {
+      if (discoveredArtworksIds.includes(artworkId)) {
+        swiper.setValue({ x: -1000, y: 0 })
+
+        // animate the card back if it has been swiped
+        Animated.timing(swiper, {
+          toValue: { x: 0, y: 0 },
+          duration: 1000,
+          useNativeDriver: true,
+        }).start()
+      }
+
       // tilt the top card as it is being swiped away
       const rotate = swiper.x.interpolate({
         inputRange: [-SWIPE_MAGNITUDE, 0, SWIPE_MAGNITUDE],
@@ -51,6 +80,10 @@ export const FancySwiperCard = memo(
       bottomCardTransform = {
         transform: [{ scale }],
       }
+    } else if (isSwipedCard) {
+      lastSwipedCardTransform = {
+        transform: [{ translateX: -1000 }, { translateY: 0 }],
+      }
     } else {
       // hide the rest of the cards
       bottomCardOpacity = {
@@ -68,6 +101,7 @@ export const FancySwiperCard = memo(
           ...topCardTransform,
           ...bottomCardOpacity,
           ...bottomCardTransform,
+          ...lastSwipedCardTransform,
         }}
         testID={isTopCard ? "top-fancy-swiper-card" : undefined}
         {...rest}
