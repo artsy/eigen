@@ -46,7 +46,6 @@
 		6FC5A425300A26FB12457D68 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8794C0002FFD13AC93222168 /* ExpoModulesProvider.swift */; };
 		8E4207792A055D2D006888BD /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8E4207782A055D2D006888BD /* AppDelegate.mm */; };
 		A7F9965D554E30C28A86CFAA /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F7BAF80CBDF6FD0C28CDAE /* ExpoModulesProvider.swift */; };
-		B13752C6F1A0174804E45DAF /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FF9A08D850B10E68492E49 /* libPods-Artsy.a */; };
 		CB0D52052AF56984000E6C08 /* LiveAuctionTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0D52042AF56984000E6C08 /* LiveAuctionTestUtils.swift */; };
 		CB18282829CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB18282729CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift */; };
 		CB18282B29D35F29006A0805 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB18282A29D35F29006A0805 /* GoogleService-Info.plist */; };
@@ -497,6 +496,8 @@
 		E15070762CCFE8A900615118 /* ARTLiveAuctionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259A27E275A200395A93 /* ARTLiveAuctionViewManager.m */; };
 		E15070772CCFE8C400615118 /* LiveAuctionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259B27E275A200395A93 /* LiveAuctionView.swift */; };
 		E1856EA22C98923B00849C0E /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E1856EA12C98923B00849C0E /* BootSplash.storyboard */; };
+		EB0E9F39BC4C0F55B470B8CD /* Pods_ArtsyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C1B6860831AE690075CFD4C /* Pods_ArtsyTests.framework */; };
+		FB9ADC38911222915B415FFC /* Pods_Artsy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 321EEBB700CC9B7FE0B1D445 /* Pods_Artsy.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -610,14 +611,13 @@
 		1AE9F2622902DA87002A561B /* App-Store.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "App-Store.xcconfig"; sourceTree = "<group>"; };
 		1AE9F2632902DA87002A561B /* Tests-Store.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "Tests-Store.xcconfig"; sourceTree = "<group>"; };
 		321EEBB700CC9B7FE0B1D445 /* Pods_Artsy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Artsy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		36B80F603A77F1EFD957AB24 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
+		36AB004B497F94B6C1B41215 /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
+		433F2A7AFB608DD6D2999F4C /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
 		4C1B6860831AE690075CFD4C /* Pods_ArtsyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ArtsyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		74F7BAF80CBDF6FD0C28CDAE /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Artsy/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		7C96CEA2C7A485946149BE6E /* Pods_ArtsyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ArtsyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8794C0002FFD13AC93222168 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-ArtsyTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		8E4207782A055D2D006888BD /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
-		A13D613770ABA09F958CEC44 /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
-		B6786672018842FE1C6B598E /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
 		CB0D52042AF56984000E6C08 /* LiveAuctionTestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAuctionTestUtils.swift; sourceTree = "<group>"; };
 		CB18282729CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARAugmentedWallBasedVIRViewController.swift; sourceTree = "<group>"; };
 		CB18282A29D35F29006A0805 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "Artsy/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -1349,7 +1349,9 @@
 		CBE3266D27E275A300395A93 /* ARHasImageBaseURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHasImageBaseURL.h; sourceTree = "<group>"; };
 		CBE3266E27E275A300395A93 /* ARPostAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARPostAttachment.h; sourceTree = "<group>"; };
 		E1856EA12C98923B00849C0E /* BootSplash.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = BootSplash.storyboard; sourceTree = "<group>"; };
+		E26C482031FC159EC2179E20 /* Pods-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		EF0F4D5BA7EEBA270603ACB9 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1368,7 +1370,7 @@
 				CB43299227FDFE4700B29DD6 /* iAd.framework in Frameworks */,
 				CB43299427FDFE5300B29DD6 /* MessageUI.framework in Frameworks */,
 				CB43299827FDFE6400B29DD6 /* StoreKit.framework in Frameworks */,
-				C7013F6223A0728501AF731A /* Pods_Artsy.framework in Frameworks */,
+				FB9ADC38911222915B415FFC /* Pods_Artsy.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1393,6 +1395,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				32DF93B77EC8C314E2D054B8 /* Pods_ArtsyTests.framework in Frameworks */,
+				EB0E9F39BC4C0F55B470B8CD /* Pods_ArtsyTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1599,6 +1602,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				CB8672711C005915043C63E8 /* Pods */,
 				1FB83AE98DCFF63A1F334D28 /* ExpoModulesProviders */,
+				CBCFBAD32D5FB54700167D15 /* Recovered References */,
 			);
 			indentWidth = 4;
 			sourceTree = "<group>";
@@ -2435,12 +2439,20 @@
 		CB8672711C005915043C63E8 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				727E2F565E74B7ADDF0DEA73 /* Pods-Artsy.debug.xcconfig */,
-				2EBDD394F48D6B6DB7297175 /* Pods-Artsy.store.xcconfig */,
-				9F8352DE6603B6B07B0C2EC3 /* Pods-ArtsyTests.debug.xcconfig */,
-				60F12B0003B5727917739915 /* Pods-ArtsyTests.store.xcconfig */,
+				EF0F4D5BA7EEBA270603ACB9 /* Pods-Artsy.debug.xcconfig */,
+				36AB004B497F94B6C1B41215 /* Pods-Artsy.store.xcconfig */,
+				E26C482031FC159EC2179E20 /* Pods-ArtsyTests.debug.xcconfig */,
+				433F2A7AFB608DD6D2999F4C /* Pods-ArtsyTests.store.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		CBCFBAD32D5FB54700167D15 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				7C96CEA2C7A485946149BE6E /* Pods_ArtsyTests.framework */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		CBE3210527D9615000395A93 /* Artsy */ = {
@@ -4322,6 +4334,7 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-fcxx-modules",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
+					"-fmodules",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",

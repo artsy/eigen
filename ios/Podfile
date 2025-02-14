@@ -55,6 +55,7 @@ end
 
 
 target 'Artsy' do
+  use_modular_headers!
 
   use_expo_modules!
 
@@ -74,9 +75,6 @@ target 'Artsy' do
   end
 
   config = use_native_modules!(config_command)
-
-  use_frameworks! :linkage => :static
-  $RNFirebaseAsStaticFramework = true
 
   use_react_native!(
     :path => config[:reactNativePath],
