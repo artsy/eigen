@@ -245,7 +245,6 @@ const CGFloat MARGIN = 10;
     [self.cityPickerContainerView addSubview:self.cityPickerController.view];
     self.cityPickerController.view.frame = self.cityPickerContainerView.bounds;
     self.cityPickerController.view.clipsToBounds = YES;
-    self.cityPickerController.view.layer.cornerRadius = 20;
 
     CALayer *layer = self.cityPickerContainerView.layer;
     layer.masksToBounds = NO;

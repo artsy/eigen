@@ -1,7 +1,14 @@
 import { ActionType, ContextModule, EditCollectedArtwork, OwnerType } from "@artsy/cohesion"
-import { DEFAULT_HIT_SLOP, Flex, Join, Screen, Separator, Text } from "@artsy/palette-mobile"
+import {
+  DEFAULT_HIT_SLOP,
+  Flex,
+  Join,
+  Screen,
+  Separator,
+  Spinner,
+  Text,
+} from "@artsy/palette-mobile"
 import { MyCollectionArtworkQuery } from "__generated__/MyCollectionArtworkQuery.graphql"
-import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
 import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 import { MyCollectionArtworkAboutWork } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkAbout/MyCollectionArtworkAboutWork"
 import { MyCollectionArtworkArticles } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkAbout/MyCollectionArtworkArticles"
@@ -186,13 +193,14 @@ export const MyCollectionArtworkScreenQuery = graphql`
 const MyCollectionArtworkPlaceholder = () => (
   <ProvidePlaceholderContext>
     <Flex
-      flexDirection="column"
-      justifyContent="space-between"
       height="100%"
       pb="8px"
       testID="my-collection-artwork-placeholder"
+      flex={1}
+      justifyContent="center"
+      alignItems="center"
     >
-      <LoadingSpinner />
+      <Spinner size="large" />
     </Flex>
   </ProvidePlaceholderContext>
 )
