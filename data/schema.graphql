@@ -14123,6 +14123,7 @@ type Mutation {
 
   # Updates an artwork.
   updateArtwork(input: UpdateArtworkMutationInput!): UpdateArtworkMutationPayload
+  updateArtworkImportRow(input: UpdateArtworkImportRowInput!): UpdateArtworkImportRowPayload
 
   # Updates the flags on a partner.
   updateCMSLastAccessTimestamp(
@@ -19624,6 +19625,31 @@ union UpdateArtistResponseOrError = UpdateArtistFailure | UpdateArtistSuccess
 
 type UpdateArtistSuccess {
   artist: Artist
+}
+
+type UpdateArtworkImportRowFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtworkImportRowInput {
+  artworkImportID: String!
+  artworkImportRowID: String!
+  clientMutationId: String
+  fieldName: String!
+  fieldValue: String!
+}
+
+type UpdateArtworkImportRowPayload {
+  clientMutationId: String
+  updateArtworkImportRowOrError: UpdateArtworkImportRowResponseOrError
+}
+
+union UpdateArtworkImportRowResponseOrError =
+    UpdateArtworkImportRowFailure
+  | UpdateArtworkImportRowSuccess
+
+type UpdateArtworkImportRowSuccess {
+  success: Boolean!
 }
 
 input UpdateArtworkMutationInput {
