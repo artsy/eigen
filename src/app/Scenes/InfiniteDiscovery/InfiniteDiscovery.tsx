@@ -1,208 +1,149 @@
 import {
-  Button,
-  EntityHeader,
+  ArrowBackIcon,
+  CloseIcon,
   Flex,
-  Image,
   Screen,
   Spacer,
   Spinner,
-  Text,
   Touchable,
-  useScreenDimensions,
-  useTheme,
 } from "@artsy/palette-mobile"
-import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
+import { FancySwiper, FancySwiperArtworkCard } from "app/Components/FancySwiper/FancySwiper"
+import { useToast } from "app/Components/Toast/toastHook"
+import { ICON_HIT_SLOP } from "app/Components/constants"
+import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { GlobalStore } from "app/store/GlobalStore"
-import { goBack } from "app/system/navigation/navigate"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { sizeToFit } from "app/utils/useSizeToFit"
-import { useEffect, useState } from "react"
-import { fetchQuery, graphql } from "react-relay"
+import { pluralize } from "app/utils/pluralize"
+import { ExtractNodeType } from "app/utils/relayHelpers"
+import { useCallback, useEffect, useMemo, useState } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from "react-relay"
 import type {
   InfiniteDiscoveryQuery,
   InfiniteDiscoveryQuery$data,
 } from "__generated__/InfiniteDiscoveryQuery.graphql"
-import type { Card } from "app/Components/FancySwiper/FancySwiperCard"
 
-type Artwork = NonNullable<
-  NonNullable<
-    NonNullable<NonNullable<InfiniteDiscoveryQuery$data["discoverArtworks"]>["edges"]>[0]
-  >["node"]
->
+interface InfiniteDiscoveryProps {
+  fetchMoreArtworks: (undiscoveredArtworks: string[]) => void
+  queryRef: PreloadedQuery<InfiniteDiscoveryQuery>
+}
 
-export const InfiniteDiscovery: React.FC = () => {
+type InfiniteDiscoveryArtwork = ExtractNodeType<InfiniteDiscoveryQuery$data["discoverArtworks"]>
+
+export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
+  fetchMoreArtworks,
+  queryRef,
+}) => {
   const REFETCH_BUFFER = 3
+  const toast = useToast()
 
-  const discoveredArtworksIds = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.discoveredArtworkIds
+  const { addDisoveredArtworkId } = GlobalStore.actions.infiniteDiscovery
+
+  const savedArtworksCount = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.savedArtworksCount
   )
-  const { addDiscoveredArtworkId } = GlobalStore.actions.infiniteDiscovery
-
-  const { color } = useTheme()
-  const { width: screenWidth } = useScreenDimensions()
 
   const [index, setIndex] = useState(0)
-  const [artworks, setArtworks] = useState<Artwork[]>([])
+  const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>([])
 
+  const data = usePreloadedQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, queryRef)
+
+  const insets = useSafeAreaInsets()
+
+  /**
+   * This is called whenever a query for more artworks is made.
+   */
   useEffect(() => {
-    fetchQuery<InfiniteDiscoveryQuery>(
-      getRelayEnvironment(),
-      infiniteDiscoveryQuery,
-      { excludeArtworkIds: discoveredArtworksIds },
-      {
-        fetchPolicy: "network-only",
-      }
-    ).subscribe({
-      next: (data) => {
-        if (!data) {
-          console.error("Error fetching infinite discovery batch: response is falsy")
-          return
-        }
+    const newArtworks = extractNodes(data.discoverArtworks)
 
-        setArtworks(extractNodes(data.discoverArtworks))
-      },
-      error: (error: Error) => {
-        console.error("Error fetching infinite discovery batch:", error)
-      },
-    })
-  }, [])
+    setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
+  }, [data, extractNodes, setArtworks])
 
-  if (!artworks || artworks.length === 0) {
-    return <InfiniteDiscoverySpinner />
-  }
+  const artworkCards: FancySwiperArtworkCard[] = useMemo(() => {
+    return artworks.map((artwork) => ({
+      content: <InfiniteDiscoveryArtworkCard artwork={artwork} key={artwork.internalID} />,
+      artworkId: artwork.internalID,
+    }))
+  }, [artworks])
 
-  const goToPrevious = () => {
+  const unswipedCards: FancySwiperArtworkCard[] = artworkCards.slice(index)
+
+  const handleBackPressed = () => {
     if (index > 0) {
       setIndex(index - 1)
     }
   }
 
-  const goToNext = () => {
+  const handleCardSwiped = useCallback(() => {
     if (index < artworks.length - 1) {
-      addDiscoveredArtworkId(artworks[index].internalID)
+      const dismissedArtworkId = artworkCards[index].artworkId
       setIndex(index + 1)
+      addDisoveredArtworkId(dismissedArtworkId)
     }
 
     // fetch more artworks when the user is about to reach the end of the list
     if (index === artworks.length - REFETCH_BUFFER) {
-      fetchQuery<InfiniteDiscoveryQuery>(
-        getRelayEnvironment(),
-        infiniteDiscoveryQuery,
-        { excludeArtworkIds: discoveredArtworksIds },
-        {
-          fetchPolicy: "network-only",
-        }
-      ).subscribe({
-        next: (data) => {
-          if (!data) {
-            console.error("Error fetching infinite discovery batch: response is falsy")
-            return
-          }
-
-          setArtworks((previousArtworks) => {
-            const newArtworks = extractNodes(data.discoverArtworks)
-            return [...previousArtworks, ...newArtworks]
-          })
-        },
-        error: (error: Error) => {
-          console.error("Error fetching infinite discovery batch:", error)
-        },
-      })
+      fetchMoreArtworks(unswipedCards.map((card) => card.artworkId))
     }
-  }
-
-  const handleBackPressed = () => {
-    goToPrevious()
-  }
+  }, [index, artworks.length, fetchMoreArtworks])
 
   const handleExitPressed = () => {
+    if (savedArtworksCount > 0) {
+      toast.show(
+        `${savedArtworksCount} ${pluralize("artwork", savedArtworksCount)} saved`,
+        "bottom",
+        {
+          onPress: () => {
+            navigate("/favorites/saves")
+          },
+          backgroundColor: "green100",
+          description: "Tap here to navigate to your Saves area in your profile.",
+        }
+      )
+    }
     goBack()
   }
 
-  const handleSwipedLeft = () => {
-    goToNext()
-  }
-
-  const artworkCards: Card[] = artworks.slice(index).map((artwork) => {
-    const src = !!artwork?.images?.[0]?.url ? artwork.images[0].url : undefined
-    const width = !!artwork?.images?.[0]?.width ? artwork.images[0].width : 0
-    const height = !!artwork?.images?.[0]?.height ? artwork.images[0].height : 0
-
-    const size = sizeToFit({ width: width, height: height }, { width: screenWidth, height: 500 })
-
-    return {
-      jsx: (
-        <Flex backgroundColor={color("white100")} width="100%" height={800}>
-          <EntityHeader
-            name={artwork?.artistNames ?? ""}
-            meta={artwork?.artists?.[0]?.formattedNationalityAndBirthday ?? undefined}
-            imageUrl={artwork?.artists?.[0]?.coverArtwork?.images?.[0]?.url ?? undefined}
-            initials={artwork?.artists?.[0]?.initials ?? undefined}
-            RightButton={
-              <Button variant="outlineGray" size="small">
-                Follow
-              </Button>
-            }
-            p={1}
-          />
-          <Spacer y={2} />
-
-          <Flex alignItems="center" backgroundColor={color("purple60")}>
-            {!!src && <Image src={src} height={size.height} width={size.width} />}
-          </Flex>
-          <Flex flexDirection="row" justifyContent="space-between" p={1}>
-            <Flex>
-              <Flex flexDirection="row" maxWidth={screenWidth - 200}>
-                {/* TODO: maxWidth above and ellipsizeMode + numberOfLines below are used to */}
-                {/* prevent long artwork titles from pushing the save button off of the card, */}
-                {/* it doesn't work as expected on Android. */}
-                <Text
-                  color={color("black60")}
-                  italic
-                  variant="sm-display"
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
-                >
-                  {artwork.title}
-                </Text>
-                <Text color={color("black60")} variant="sm-display">
-                  , {artwork.date}
-                </Text>
-              </Flex>
-              <Text variant="sm-display">{artwork.saleMessage}</Text>
-            </Flex>
-            <Button variant="fillGray">Save</Button>
-          </Flex>
-        </Flex>
-      ),
-      id: artwork.internalID,
-    }
-  })
-
   return (
-    <Screen>
-      <Screen.Body fullwidth>
+    <Screen safeArea={false}>
+      <Screen.Body fullwidth style={{ marginTop: insets.top }}>
         <Flex zIndex={-100}>
           <Screen.Header
             title="Discovery"
             leftElements={
-              <Touchable onPress={handleBackPressed}>
-                <Text variant="xs">Back</Text>
+              <Touchable
+                onPress={handleBackPressed}
+                testID="back-icon"
+                hitSlop={ICON_HIT_SLOP}
+                haptic
+              >
+                <ArrowBackIcon />
               </Touchable>
             }
             hideLeftElements={index === 0}
             rightElements={
-              <Touchable onPress={handleExitPressed}>
-                <Text variant="xs">Exit</Text>
+              <Touchable
+                onPress={handleExitPressed}
+                testID="close-icon"
+                hitSlop={ICON_HIT_SLOP}
+                haptic
+              >
+                <CloseIcon fill="black100" />
               </Touchable>
             }
           />
         </Flex>
-        <FancySwiper cards={artworkCards} hideActionButtons onSwipeLeft={handleSwipedLeft} />
+        <Spacer y={1} />
+        <FancySwiper cards={unswipedCards} hideActionButtons onSwipeAnywhere={handleCardSwiped} />
 
-        <InfiniteDiscoveryBottomSheet artworkID={artworks[index].internalID} />
+        {!!artworks.length && (
+          <InfiniteDiscoveryBottomSheet
+            artworkID={artworks[index].internalID}
+            artistIDs={artworks[index].artists.map((data) => data?.internalID ?? "")}
+          />
+        )}
       </Screen.Body>
     </Screen>
   )
@@ -219,32 +160,51 @@ const InfiniteDiscoverySpinner: React.FC = () => (
   </Screen>
 )
 
-export const InfiniteDiscoveryQueryRenderer = () => <InfiniteDiscovery />
+export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
+  const [queryRef, loadQuery] = useQueryLoader<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery)
+
+  const discoveredArtworksIds = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.discoveredArtworkIds
+  )
+  const { resetSavedArtworksCount } = GlobalStore.actions.infiniteDiscovery
+
+  useEffect(() => {
+    resetSavedArtworksCount()
+  }, [])
+
+  /**
+   * This fetches the first batch of artworks. discoveredArtworksIds is omitted from the list of
+   * dependencies to prevent this from being called unnecessarily, since that list is updated when
+   * new artworks are fetched.
+   */
+  useEffect(() => {
+    if (!queryRef) {
+      loadQuery({ excludeArtworkIds: discoveredArtworksIds })
+    }
+  }, [loadQuery, queryRef])
+
+  if (!queryRef) {
+    return <InfiniteDiscoverySpinner />
+  }
+
+  const fetchMoreArtworks = (undiscoveredArtworks: string[]) => {
+    loadQuery({ excludeArtworkIds: discoveredArtworksIds.concat(undiscoveredArtworks) })
+  }
+
+  return <InfiniteDiscovery fetchMoreArtworks={fetchMoreArtworks} queryRef={queryRef} />
+}
 
 export const infiniteDiscoveryQuery = graphql`
   query InfiniteDiscoveryQuery($excludeArtworkIds: [String!]!) {
     discoverArtworks(excludeArtworkIds: $excludeArtworkIds) {
       edges {
         node {
-          artistNames
-          artists(shallow: true) {
-            coverArtwork {
-              images {
-                url(version: "small")
-              }
-            }
-            formattedNationalityAndBirthday
-            initials
-          }
-          date
+          ...InfiniteDiscoveryArtworkCard_artwork
+
           internalID @required(action: NONE)
-          images {
-            url(version: "large")
-            width
-            height
+          artists(shallow: true) @required(action: NONE) {
+            internalID @required(action: NONE)
           }
-          saleMessage
-          title
         }
       }
     }

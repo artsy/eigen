@@ -14,24 +14,20 @@ struct Article {
         return dateFormatter
     }
     
-    var imageUrl: String
     var link: String
     var pubDate: String
     var title: String
     
-    var image: UIImage?
     var url: URL?
     
     init() {
-        self.imageUrl = ""
         self.link = ""
         self.pubDate = ""
         self.title = ""
     }
     
-    init(image: UIImage, pubDate: String, title: String, url: URL) {
+    init(pubDate: String, title: String, url: URL) {
         self.init()
-        self.image = image
         self.pubDate = pubDate
         self.title = title
         self.url = url
@@ -43,8 +39,6 @@ struct Article {
     
     mutating func updateProperty(elementName: String, value: String) {
         switch elementName {
-        case "imageUrl":
-            imageUrl = value
         case "link":
             link += value
         case "pubDate":

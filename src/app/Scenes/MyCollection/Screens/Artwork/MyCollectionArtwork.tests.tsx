@@ -33,51 +33,11 @@ describe("MyCollectionArtwork", () => {
   })
 
   describe("Edit button", () => {
-    it("should be visible, greyed out and open a popover when submission process is not complete", async () => {
+    it("should be visible always", async () => {
       renderWithRelay({
         Artwork: () => ({
           ...artwork,
-          consignmentSubmission: { internalID: "submission-id", isEditable: false },
         }),
-      })
-
-      await waitForElementToBeRemoved(() =>
-        screen.queryByTestId("my-collection-artwork-placeholder")
-      )
-
-      expect(screen.getByText("Edit")).toBeOnTheScreen()
-      expect(screen.getByText("Edit").props.color).toEqual("black60")
-
-      fireEvent.press(screen.getByText("Edit"))
-
-      expect(screen.getByText("Popover")).toBeOnTheScreen()
-    })
-
-    it("should be visible when the artwork submission is complete", async () => {
-      renderWithRelay({
-        Artwork: () => ({
-          ...artwork,
-          consignmentSubmission: { internalID: "submission-id", isEditable: true },
-        }),
-      })
-
-      await waitForElementToBeRemoved(() =>
-        screen.queryByTestId("my-collection-artwork-placeholder")
-      )
-
-      expect(screen.getByText("Edit")).toBeOnTheScreen()
-      expect(screen.getByText("Edit").props.color).toEqual("black100")
-
-      fireEvent.press(screen.getByText("Edit"))
-      expect(navigate).toHaveBeenCalledWith(
-        'my-collection/artworks/<mock-value-for-field-"internalID">/edit',
-        { passProps: { mode: "edit" } }
-      )
-    })
-
-    it("should be visible when the artwork does not have an associated submission", async () => {
-      renderWithRelay({
-        Artwork: () => ({ ...artwork, consignmentSubmission: null }),
       })
 
       await waitForElementToBeRemoved(() =>

@@ -12,18 +12,6 @@ export const PurchasedArtworkAddedMessage: React.FC<Partial<MessageProps>> = (pr
   )
 }
 
-export const SubmittedArtworkAddedMessage: React.FC<Partial<MessageProps>> = (props) => {
-  return (
-    <Message
-      variant="info"
-      title="Artwork added to My Collection"
-      text="The artwork you submitted for sale has been automatically added."
-      showCloseButton
-      {...props}
-    />
-  )
-}
-
 export const AddedArtworkWithInsightsMessage: React.FC<Partial<MessageProps>> = (props) => {
   return (
     <Message

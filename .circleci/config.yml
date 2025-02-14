@@ -38,7 +38,7 @@ commands:
     steps:
       - run:
           name: "Set up .env file"
-          command: touch .env.shared && touch .env && scripts/setup/setup-env-for-ci
+          command: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci
   setup-awscli:
     steps:
       - run:
@@ -91,7 +91,7 @@ commands:
             - v29-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
-          command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec pod install; cd ..;
+          command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec npx pod-install; cd ..;
       - save_cache:
           key: v29-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
@@ -200,9 +200,6 @@ jobs:
       - run:
           name: Update rollout if needed
           command: ./scripts/deploys/update-android-rollout-if-needed
-      - run:
-          name: Notify if license agreement needs to be signed
-          command: ./scripts/deploys/notify-if-new-license-agreement
 
   deploy-nightly-beta:
     environment:

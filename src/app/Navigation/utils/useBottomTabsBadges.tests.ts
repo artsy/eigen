@@ -44,7 +44,6 @@ describe("useBottomTabsBadges", () => {
       home: { tabBarBadge: undefined, tabBarBadgeStyle: {} },
       search: { tabBarBadge: undefined, tabBarBadgeStyle: {} },
       inbox: { tabBarBadge: undefined, tabBarBadgeStyle: {} },
-      sell: { tabBarBadge: undefined, tabBarBadgeStyle: {} },
       profile: { tabBarBadge: undefined, tabBarBadgeStyle: {} },
     })
   })

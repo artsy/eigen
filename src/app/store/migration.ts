@@ -58,10 +58,13 @@ export const Versions = {
   AddSubmissionDraft: 45,
   DeleteArtworkAndArtistViewOption: 46,
   AddInfiniteDiscoveryModel: 47,
-  AddSeenFeatures: 48,
+  MoveOnboardingStateToOnboardingModel: 48,
+  AddSavedArtworksCountToInfiniteDiscoveryModel: 49,
+  RemoveArworkSubmissionModel: 50,
+  RemoveRequestPriceEstimateModel: 51,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddSeenFeatures
+export const CURRENT_APP_VERSION = Versions.RemoveRequestPriceEstimateModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -337,8 +340,23 @@ export const artsyAppMigrations: Migrations = {
       discoveredArtworkIds: [],
     }
   },
-  [Versions.AddSeenFeatures]: (state) => {
-    state.progressiveOnboarding.seenFeatures = []
+  [Versions.MoveOnboardingStateToOnboardingModel]: (state) => {
+    state.onboarding = {
+      onboardingState:
+        state.auth.onboardingState === "none" ? "incomplete" : state.auth.onboardingState,
+      onboardingArtQuizState: state.auth.onboardingArtQuizState,
+    }
+    delete state.auth.onboardingState
+    delete state.auth.onboardingArtQuizState
+  },
+  [Versions.AddSavedArtworksCountToInfiniteDiscoveryModel]: (state) => {
+    state.infiniteDiscovery.savedArtworksCount = 0
+  },
+  [Versions.RemoveArworkSubmissionModel]: (state) => {
+    delete state.artworkSubmission
+  },
+  [Versions.RemoveRequestPriceEstimateModel]: (state) => {
+    delete state.requestedPriceEstimates
   },
 }
 

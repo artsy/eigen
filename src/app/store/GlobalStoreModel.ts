@@ -7,15 +7,12 @@ import {
 import { DevicePrefsModel, getDevicePrefsModel } from "app/Scenes/MyProfile/DevicePrefsModel"
 import { getSearchModel, SearchModel } from "app/Scenes/Search/SearchModel"
 import { getUserPrefsModel, UserPrefsModel } from "app/Scenes/Search/UserPrefsModel"
-import {
-  getSubmissionModel,
-  SubmissionModel,
-} from "app/Scenes/SellWithArtsy/utils/submissionModelState"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { getInfiniteDiscoveryModel, InfiniteDiscoveryModel } from "app/store/InfiniteDiscoveryModel"
+import { getOnboardingModel, OnboardingModel } from "app/store/OnboardingModel"
 import {
-  ProgressiveOnboardingModel,
   getProgressiveOnboardingModel,
+  ProgressiveOnboardingModel,
 } from "app/store/ProgressiveOnboardingModel"
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
 import { ArtsyPrefsModel, getArtsyPrefsModel } from "./ArtsyPrefsModel"
@@ -26,10 +23,6 @@ import {
   PendingPushNotificationModel,
 } from "./PendingPushNotificationModel"
 import { getRecentPriceRangesModel, RecentPriceRangesModel } from "./RecentPriceRangesModel"
-import {
-  getRequestedPriceEstimatesModel,
-  RequestedPriceEstimatesModel,
-} from "./RequestedPriceEstimatesModel"
 import { getToastModel, ToastModel } from "./ToastModel"
 import { getVisualClueModel, VisualClueModel } from "./VisualClueModel"
 import { CURRENT_APP_VERSION } from "./migration"
@@ -48,14 +41,13 @@ interface GlobalStoreStateModel {
   search: SearchModel
   myCollection: MyCollectionModel
   auth: AuthModel
+  onboarding: OnboardingModel
   toast: ToastModel
   pendingPushNotification: PendingPushNotificationModel
   artsyPrefs: ArtsyPrefsModel
   userPrefs: UserPrefsModel
   devicePrefs: DevicePrefsModel
   visualClue: VisualClueModel
-  artworkSubmission: SubmissionModel
-  requestedPriceEstimates: RequestedPriceEstimatesModel
   recentPriceRanges: RecentPriceRangesModel
   progressiveOnboarding: ProgressiveOnboardingModel
   infiniteDiscovery: InfiniteDiscoveryModel
@@ -70,6 +62,7 @@ export interface GlobalStoreModel extends GlobalStoreStateModel {
 
   // for dev only.
   _setVersion: Action<this, number>
+  _forgetDiscoveredArtworks: Action<this>
 
   // for testing only. noop otherwise.
   __inject: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
@@ -137,13 +130,12 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   myCollection: getMyCollectionModel(),
   artsyPrefs: getArtsyPrefsModel(),
   auth: getAuthModel(),
+  onboarding: getOnboardingModel(),
   toast: getToastModel(),
   devicePrefs: getDevicePrefsModel(),
   pendingPushNotification: getPendingPushNotificationModel(),
   userPrefs: getUserPrefsModel(),
   visualClue: getVisualClueModel(),
-  artworkSubmission: getSubmissionModel(),
-  requestedPriceEstimates: getRequestedPriceEstimatesModel(),
   recentPriceRanges: getRecentPriceRangesModel(),
   progressiveOnboarding: getProgressiveOnboardingModel(),
   infiniteDiscovery: getInfiniteDiscoveryModel(),
@@ -154,6 +146,10 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   // for dev only.
   _setVersion: action((state, newVersion) => {
     state.version = newVersion
+  }),
+
+  _forgetDiscoveredArtworks: action((state) => {
+    state.infiniteDiscovery.discoveredArtworkIds = []
   }),
 
   // for testing only. noop otherwise.

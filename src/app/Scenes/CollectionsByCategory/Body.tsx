@@ -34,7 +34,7 @@ export const Body: React.FC<BodyProps> = ({ marketingCollections }) => {
         <Text variant="xl" px={2}>
           {category}
         </Text>
-        <Text px={2}>Explore collections with {category}</Text>
+        <Text px={2}>Explore collections by {category.toLowerCase()}</Text>
         {/* TODO: fix typings broken by some unknown reason here, prob related to @plural */}
         <CollectionsChips marketingCollections={marketingCollections as any} />
       </Flex>

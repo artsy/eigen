@@ -13,9 +13,10 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface PartnerListItemShortProps {
   partner: PartnerListItemShort_partner$key
+  onPress?: () => void
 }
 
-export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({ partner }) => {
+export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({ partner, onPress }) => {
   const data = useFragment(fragment, partner)
   const { location } = useLocation()
 
@@ -30,6 +31,7 @@ export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({ partner })
     : locations
 
   const handleOnPress = () => {
+    onPress?.()
     navigate(data.href)
   }
 

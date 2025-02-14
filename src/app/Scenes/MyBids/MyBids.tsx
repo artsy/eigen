@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Spacer, Flex, Text, Separator, Join, Tabs } from "@artsy/palette-mobile"
+import { captureException } from "@sentry/react-native"
 import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 import { MyBids_me$data } from "__generated__/MyBids_me.graphql"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -7,12 +8,16 @@ import { useScreenDimensions } from "app/utils/hooks"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
+import useAppState from "app/utils/useAppState"
 import { useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { useInterval } from "react-use"
 import { MyBidsPlaceholder, SaleCardFragmentContainer } from "./Components"
 import { LotStatusListItemContainer } from "./Components/LotStatusListItem"
 import { NoBids } from "./Components/NoBids"
+
+const MY_BIDS_REFRESH_INTERVAL_MS = 10 * 1000
 
 export interface MyBidsProps {
   me: MyBids_me$data
@@ -22,6 +27,8 @@ export interface MyBidsProps {
 
 const MyBids: React.FC<MyBidsProps> = (props) => {
   const [isFetching, setIsFetching] = useState<boolean>(false)
+  const [appIsInForeground, setAppIsInForeground] = useState(true)
+  const [hasViewedScreen, setViewedScreen] = useState(false)
   const { relay, isActiveTab, me } = props
   const { isSmallScreen } = useScreenDimensions()
 
@@ -29,18 +36,41 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
     if (withSpinner) {
       setIsFetching(true)
     }
-    relay.refetch({}, null, (error) => {
-      if (error) {
-        console.error("MyBids/index.tsx #refreshMyBids", error.message)
-        // FIXME: Handle error
-      }
-      setIsFetching(false)
-    })
+    relay.refetch(
+      {},
+      null,
+      (error) => {
+        if (error) {
+          console.error("MyBids/index.tsx #refreshMyBids", error.message)
+          captureException(error, { tags: { source: "MyBids/index.tsx #refreshMyBids" } })
+        }
+        setIsFetching(false)
+      },
+      { force: true }
+    )
   }
+
+  useAppState({
+    onChange: (state) => {
+      setAppIsInForeground(state === "active")
+    },
+  })
+
+  useInterval(
+    () => {
+      refreshMyBids()
+    },
+    // starts when the tab is active, but only pauses when the app goes to the background
+    hasViewedScreen && appIsInForeground ? MY_BIDS_REFRESH_INTERVAL_MS : null
+  )
 
   useEffect(() => {
     if (isActiveTab) {
       refreshMyBids()
+    }
+
+    if (isActiveTab && !hasViewedScreen) {
+      setViewedScreen(true)
     }
   }, [isActiveTab])
 

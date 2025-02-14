@@ -10,10 +10,9 @@ import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
 import { RetryErrorBoundary, useRetryErrorBoundaryContext } from "app/Components/RetryErrorBoundary"
-import { DarkModeBottomSheetOnboarding } from "app/Scenes/HomeView/Components/DarkModeBottomSheetOnboarding"
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/HomeView/Components/EmailConfirmationBanner"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
-import { HomeViewStore, HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
+import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHomeViewExperimentTracking"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
@@ -23,7 +22,6 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { useActivityDotExperiment } from "app/utils/experiments/useActivityDotExperiment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
@@ -60,18 +58,6 @@ export const HomeView: React.FC = memo(() => {
     }
   )
 
-  const trackedSectionTypes = HomeViewStore.useStoreState((state) => state.trackedSectionTypes)
-
-  const { trackExperiment: trackCardRedesignExperiment } = useExperimentVariant(
-    "onyx_artwork-card-save-and-follow-cta-redesign"
-  )
-
-  useEffect(() => {
-    if (trackedSectionTypes.includes("HomeViewSectionArtworks")) {
-      trackCardRedesignExperiment()
-    }
-  }, [trackedSectionTypes.includes("HomeViewSectionArtworks")])
-
   const { trackExperiment: trackActvityDotExperiment } = useActivityDotExperiment()
 
   useEffect(() => {
@@ -104,7 +90,6 @@ export const HomeView: React.FC = memo(() => {
         prefetchUrl<SearchQuery>("search", searchQueryDefaultVariables)
         prefetchUrl("my-profile")
         prefetchUrl("inbox")
-        prefetchUrl("sell")
       }
     })
   }, [])
@@ -194,14 +179,13 @@ export const HomeView: React.FC = memo(() => {
           windowSize={15}
         />
         {!!data?.me && <EmailConfirmationBannerFragmentContainer me={data.me} />}
-        <DarkModeBottomSheetOnboarding />
       </Screen.Body>
     </Screen>
   )
 })
 
 const HomeViewScreenComponent: React.FC = () => {
-  const artQuizState = GlobalStore.useAppState((state) => state.auth.onboardingArtQuizState)
+  const artQuizState = GlobalStore.useAppState((state) => state.onboarding.onboardingArtQuizState)
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const showPlayground = useDevToggle("DTShowPlayground")
 
@@ -211,9 +195,7 @@ const HomeViewScreenComponent: React.FC = () => {
     if (artQuizState === "incomplete" && isNavigationReady) {
       // Wait for react-navigation to start drawing the screen before navigating to ArtQuiz
       requestAnimationFrame(() => {
-        navigate("/art-quiz", {
-          replaceActiveScreen: true,
-        })
+        navigate("/art-quiz")
       })
       return
     }

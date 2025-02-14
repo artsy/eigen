@@ -47,7 +47,7 @@ export const SearchPills = React.forwardRef<ScrollView, SearchPillsProps>(
 
           return (
             <Pill
-              mr={1}
+              mr={0.5}
               key={key}
               accessibilityState={{ selected, disabled }}
               variant="search"

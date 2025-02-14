@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { ArtsyKeyboardAvoidingView, Screen, useColor } from "@artsy/palette-mobile"
+import { Screen, useColor } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
@@ -32,6 +32,7 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import React, { useCallback, useEffect } from "react"
+import { KeyboardAvoidingView } from "react-native"
 import { QueryRenderer, RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { EditSavedSearchFormPlaceholder } from "./Components/EditSavedSearchAlertPlaceholder"
 import { SavedSearchAlertQueryRenderer } from "./SavedSearchAlert"
@@ -63,7 +64,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
   )
 
   const { settings, ...attributes } = me?.alert ?? {}
-  const isCustomAlertsNotificationsEnabled = viewer.notificationPreferences.some((preference) => {
+  const isCustomAlertsNotificationsEnabled = viewer?.notificationPreferences?.some((preference) => {
     return (
       preference.channel === "email" &&
       preference.name === "custom_alerts" &&
@@ -128,7 +129,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
         context_screen_owner_type: OwnerType.savedSearch,
       }}
     >
-      <ArtsyKeyboardAvoidingView>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         <SavedSearchStoreProvider
           runtimeModel={{
             ...savedSearchModel,
@@ -189,7 +190,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
             </Stack.Navigator>
           </NavigationContainer>
         </SavedSearchStoreProvider>
-      </ArtsyKeyboardAvoidingView>
+      </KeyboardAvoidingView>
     </ProvideScreenTracking>
   )
 }

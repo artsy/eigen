@@ -7,11 +7,10 @@ import { MetadataText, SmallHeadline } from "app/Scenes/Inbox/Components/Typogra
 import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { dismissModal } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { track as _track, ProvideScreenTracking, Schema, Track } from "app/utils/track"
 import React from "react"
-import { View } from "react-native"
+import { KeyboardAvoidingView, View } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import styled from "styled-components/native"
@@ -98,7 +97,7 @@ export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({
   disabled,
   showSeparator = true,
 }) => (
-  <ArtsyKeyboardAvoidingView>
+  <KeyboardAvoidingView style={{ flex: 1 }}>
     <View key="space-eater" style={{ flexGrow: 1 }}>
       {children}
     </View>
@@ -116,7 +115,7 @@ export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({
       </Button>
     </Box>
     <Spacer y={1} />
-  </ArtsyKeyboardAvoidingView>
+  </KeyboardAvoidingView>
 )
 
 interface Props {

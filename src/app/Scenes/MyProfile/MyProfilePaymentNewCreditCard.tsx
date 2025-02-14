@@ -11,7 +11,7 @@ import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { Action, Computed, action, computed, useLocalStore } from "easy-peasy"
 import React, { useEffect, useRef } from "react"
-import { Alert, ScrollView } from "react-native"
+import { Alert, KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 import { commitMutation, graphql } from "react-relay"
 import { __triggerRefresh } from "./MyProfilePayment"
 
@@ -165,7 +165,11 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
   }
 
   return (
-    <>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+    >
       <ScrollView ref={scrollViewRef}>
         <Flex p={2}>
           <Stack spacing={2}>
@@ -257,7 +261,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
           </Stack>
         </Flex>
       </ScrollView>
-    </>
+    </KeyboardAvoidingView>
   )
 }
 

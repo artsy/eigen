@@ -175,6 +175,7 @@ export const ToastComponent = ({
           : undefined
       }
       backgroundColor={color(backgroundColor)}
+      borderRadius={5}
       opacity={opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 1] })}
       overflow="hidden"
       zIndex={999}

@@ -14,10 +14,9 @@ import { MyAccountDeleteAccount_me$data } from "__generated__/MyAccountDeleteAcc
 import { DeleteAccountInput } from "__generated__/deleteUserAccountMutation.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import React, { useState } from "react"
-import { Alert, InteractionManager, ScrollView } from "react-native"
+import { Alert, InteractionManager, KeyboardAvoidingView, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { color } from "styled-system"
 import { deleteUserAccount } from "./deleteUserAccount"
@@ -41,7 +40,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
     : explanation.length > 0
 
   return (
-    <ArtsyKeyboardAvoidingView>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <ScrollView>
         <Box pr={2} pl={2}>
           <Text variant="lg-display" mt="6">
@@ -141,7 +140,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
           </Button>
         </Box>
       </ScrollView>
-    </ArtsyKeyboardAvoidingView>
+    </KeyboardAvoidingView>
   )
 }
 

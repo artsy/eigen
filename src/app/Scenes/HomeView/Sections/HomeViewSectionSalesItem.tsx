@@ -9,12 +9,11 @@ import {
   CardRailMetadataContainer as MetadataContainer,
 } from "app/Components/CardRail/CardRailCard"
 import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { compact } from "lodash"
 import { FC } from "react"
-import { View } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface HomeViewSectionSalesItemProps {
@@ -41,20 +40,11 @@ export const HomeViewSectionSalesItem: FC<HomeViewSectionSalesItemProps> = ({
   // still be cautious to avoid crashes if this assumption is broken.
   const availableArtworkImageURLs = compact(imageURLs)
 
+  const url = sale.liveURLIfOpen ?? sale.href
+
   return (
-    <CardRailCard
-      key={sale.href}
-      onPress={() => {
-        const url = sale.liveURLIfOpen ?? sale.href
-
-        onPress?.(sale)
-
-        if (url) {
-          navigate(url)
-        }
-      }}
-    >
-      <View>
+    <CardRailCard key={sale.href}>
+      <RouterLink to={url} onPress={() => onPress?.(sale)}>
         <ThreeUpImageLayout imageURLs={availableArtworkImageURLs} />
         <MetadataContainer>
           <Text numberOfLines={2} lineHeight="20px" variant="sm">
@@ -70,7 +60,7 @@ export const HomeViewSectionSalesItem: FC<HomeViewSectionSalesItemProps> = ({
             {sale.formattedStartDateTime}
           </Text>
         </MetadataContainer>
-      </View>
+      </RouterLink>
     </CardRailCard>
   )
 }

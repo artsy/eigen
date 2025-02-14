@@ -6,9 +6,7 @@ import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSav
 import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtils"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { HEART_ICON_SIZE } from "app/Components/constants"
-import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
@@ -59,16 +57,6 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
   showSaveIcon = false,
 }) => {
   const { trackEvent } = useTracking()
-  const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
-    "AREnableNewSaveAndFollowOnArtworkCard"
-  )
-
-  const { enabled, enableShowOldSaveCTA } = useGetNewSaveAndFollowOnArtworkCardExperimentVariant(
-    "onyx_artwork-card-save-and-follow-cta-redesign"
-  )
-
-  const showOldSaveCTA =
-    !!showSaveIcon && (!enableNewSaveAndFollowOnArtworkCard || !enabled || !!enableShowOldSaveCTA)
 
   const artwork = useFragment(artworkMetaFragment, artworkProp)
 
@@ -202,7 +190,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
         )}
       </Flex>
 
-      {!!showOldSaveCTA && (
+      {!!showSaveIcon && (
         <Flex flexDirection="row" alignItems="flex-start">
           {!!displayAuctionSignal && !!collectorSignals?.auction?.lotWatcherCount && (
             <Text lineHeight="20px" variant="xs" numberOfLines={1}>

@@ -2,7 +2,6 @@ import { Text } from "@artsy/palette-mobile"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
 import { goBack } from "app/system/navigation/navigate"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import {
   Alert,
@@ -10,6 +9,7 @@ import {
   AlertOptions,
   AlertStatic,
   Keyboard,
+  KeyboardAvoidingView,
   ScrollView,
   TouchableOpacity,
   ViewStyle,
@@ -81,7 +81,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
   )
 
   return (
-    <ArtsyKeyboardAvoidingView>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <PageWithSimpleHeader
         left={
           <TouchableOpacity onPress={() => goBack()}>
@@ -129,7 +129,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
           {children}
         </ScrollView>
       </PageWithSimpleHeader>
-    </ArtsyKeyboardAvoidingView>
+    </KeyboardAvoidingView>
   )
 })
 

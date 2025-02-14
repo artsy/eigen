@@ -108,8 +108,6 @@ export enum PageNames {
   CityGuideSavedList = "CityGuideSavedList",
   CityPicker = "CityPicker",
   Collection = "Collection",
-  ConsignmentsOverView = "ConsignmentsOverview",
-  ConsignmentsSubmission = "ConsignmentsSubmit",
   ConversationPage = "Conversation",
   GenePage = "Gene",
   TagPage = "Tag",
@@ -142,7 +140,6 @@ export enum OwnerEntityTypes {
   Auction = "Auction",
   CityGuide = "CityGuide",
   Collection = "Collection",
-  Consignment = "ConsignmentSubmission",
   Conversation = "Conversation",
   Gene = "Gene",
   Tag = "Tag",
@@ -184,7 +181,6 @@ export enum ActionNames {
    */
   ArtistFollow = "artistFollow",
   ArtistUnfollow = "artistUnfollow",
-  ArtistConsignGetStarted = "Get Started",
 
   /**
    * Artwork Page Events
@@ -199,7 +195,6 @@ export enum ActionNames {
   FAQ = "FAQ",
   IdentityVerificationFAQ = "identityVerificationFAQ",
   ConditionsOfSale = "conditionsOfSale",
-  ConsignWithArtsy = "consignWithArtsy",
   EnterLiveBidding = "enterLiveBidding",
   FollowPartner = "followPartner",
   IncreaseMaxBid = "increaseMaxBid",
@@ -253,12 +248,6 @@ export enum ActionNames {
   FairsTab = "fairsTab",
   GalleriesTab = "galleriesTab",
   MuseumsTab = "museumsTab",
-
-  /**
-   *  Consignment flow
-   */
-  ConsignmentDraftCreated = "consignmentDraftCreated",
-  ConsignmentSubmitted = "consignmentSubmitted",
 
   /**
    * Commercial flow
@@ -331,7 +320,6 @@ export enum ContextModules {
   AboutTheWorkFromSpecialist = "AboutTheWorkFromSpecialist",
   Auction = "Auction",
   ArtistBiography = "ArtistBiography",
-  ArtistConsignment = "ArtistConsignment",
   ArtworkActions = "ArtworkActions",
   ArtworkDetails = "ArtworkDetails",
   ArtworkExtraLinks = "ArtworkExtraLinks",

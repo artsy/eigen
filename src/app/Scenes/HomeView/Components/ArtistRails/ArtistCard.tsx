@@ -34,7 +34,7 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
   showDefaultFollowButton = false,
 }) => {
   const color = useColor()
-  const { handleFollowToggle } = useFollowArtist({ artist })
+  const { handleFollowToggle } = useFollowArtist(artist)
 
   if (__DEV__) {
     if (showDefaultFollowButton && onFollow) {

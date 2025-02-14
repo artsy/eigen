@@ -1,5 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import {
+  ArrowRightIcon,
   Button,
   Flex,
   FlexProps,
@@ -7,7 +8,9 @@ import {
   SkeletonBox,
   Text,
   Touchable,
+  useColor,
   useScreenDimensions,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { HomeViewSectionCardQuery } from "__generated__/HomeViewSectionCardQuery.graphql"
 import { HomeViewSectionCard_section$key } from "__generated__/HomeViewSectionCard_section.graphql"
@@ -37,6 +40,8 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
 }) => {
   const tracking = useHomeViewTracking()
   const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+  const space = useSpace()
+  const color = useColor()
 
   const { width, height } = useScreenDimensions()
   const section = useFragment(HomeViewSectionCardFragment, sectionProp)
@@ -45,7 +50,7 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
     return null
   }
 
-  const { title, subtitle, image, buttonText: btnText } = section.card
+  const { title, subtitle, image, buttonText: btnText, badgeText } = section.card
 
   const imageHeight = height * 0.5
 
@@ -99,6 +104,19 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
           )}
 
           <Flex justifyContent="flex-end" px={2} pb={2} height={hasImage ? imageHeight : undefined}>
+            {!!badgeText && (
+              <Flex flexDirection="row" mb={0.5}>
+                <Text
+                  color="white100"
+                  backgroundColor={color("blue100")}
+                  style={{ paddingHorizontal: space(0.5) }}
+                  variant="xs"
+                >
+                  {badgeText}
+                </Text>
+              </Flex>
+            )}
+
             <Text variant="lg-display" color={textColor}>
               {title}
             </Text>
@@ -116,6 +134,8 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
                     variant={hasImage && theme !== "dark" ? "outlineLight" : "fillDark"}
                     size="small"
                     onPress={onPress}
+                    icon={<ArrowRightIcon fill="white100" height={14} width={14} />}
+                    iconPosition="right"
                   >
                     {buttonText}
                   </Button>
@@ -143,6 +163,7 @@ const HomeViewSectionCardFragment = graphql`
       title
       subtitle
       href
+      badgeText
       buttonText
       image {
         imageURL

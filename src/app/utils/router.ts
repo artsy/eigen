@@ -1,7 +1,5 @@
 /** An enum for the different hard-coded routes in Emission */
 export enum Router {
-  /** The VC for submission modal */
-  ConsignmentsStartSubmission = "/sell/submissions/new",
   /** The screen showing your consignments */
   SellingOverview = "/user/selling",
   /** Artsy Privacy Policy */

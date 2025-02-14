@@ -1,13 +1,5 @@
 import { ActionType, ContextModule, EditCollectedArtwork, OwnerType } from "@artsy/cohesion"
-import {
-  DEFAULT_HIT_SLOP,
-  Flex,
-  Join,
-  Popover,
-  Screen,
-  Separator,
-  Text,
-} from "@artsy/palette-mobile"
+import { DEFAULT_HIT_SLOP, Flex, Join, Screen, Separator, Text } from "@artsy/palette-mobile"
 import { MyCollectionArtworkQuery } from "__generated__/MyCollectionArtworkQuery.graphql"
 import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
 import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
@@ -42,7 +34,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   const { trackEvent } = useTracking()
 
   const [isRefreshing, setIsRefetching] = useState(false)
-  const [isToolTipVisible, setIsToolTipVisible] = useState(false)
 
   const queryVariables = {
     artworkId: artworkId || "",
@@ -85,10 +76,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
     })
   }, [artwork])
 
-  const handleNotEditable = () => {
-    setIsToolTipVisible(true)
-  }
-
   if (!artwork) {
     return (
       <Flex flex={1} justifyContent="center" alignItems="center">
@@ -99,39 +86,14 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
 
   const articles = extractNodes(artwork.artist?.articles)
 
-  const isEditingDisabled = artwork.consignmentSubmission?.isEditable === false
-
   return (
     <Screen>
       <Screen.Header
         onBack={goBack}
         rightElements={
-          isEditingDisabled ? (
-            <Popover
-              visible={isToolTipVisible}
-              onDismiss={() => setIsToolTipVisible(false)}
-              onPressOutside={() => setIsToolTipVisible(false)}
-              placement="bottom"
-              title={
-                <Text variant="xs" color="white100" fontWeight="500">
-                  Thank you for submitting!
-                </Text>
-              }
-              content={
-                <Text variant="xs" color="white100">
-                  Editing will be available once the submission process is complete.
-                </Text>
-              }
-            >
-              <TouchableOpacity onPress={handleNotEditable} hitSlop={DEFAULT_HIT_SLOP}>
-                <Text color="black60">Edit</Text>
-              </TouchableOpacity>
-            </Popover>
-          ) : (
-            <TouchableOpacity onPress={handleEdit} hitSlop={DEFAULT_HIT_SLOP}>
-              <Text color="black100">Edit</Text>
-            </TouchableOpacity>
-          )
+          <TouchableOpacity onPress={handleEdit} hitSlop={DEFAULT_HIT_SLOP}>
+            <Text color="black100">Edit</Text>
+          </TouchableOpacity>
         }
       />
 
@@ -162,11 +124,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
             marketPriceInsights={data.marketPriceInsights}
           />
 
-          <MyCollectionArtworkInsights
-            artwork={artwork}
-            marketPriceInsights={data.marketPriceInsights}
-            me={data.me}
-          />
+          <MyCollectionArtworkInsights artwork={artwork} />
 
           {articles.length > 0 && (
             <MyCollectionArtworkArticles
@@ -189,9 +147,6 @@ export const MyCollectionArtworkScreenQuery = graphql`
       ...MyCollectionArtworkHeader_artwork #new
       ...MyCollectionArtworkInsights_artwork #new
       ...MyCollectionArtworkAboutWork_artwork #new
-      ...MyCollectionWhySell_artwork #new
-      ...MyCollectionArtworkSubmissionStatus_submissionState
-      ...ArtworkSubmissionStatusDescription_artwork
       comparableAuctionResults(first: 6) @optionalField {
         totalCount
       }
@@ -218,15 +173,12 @@ export const MyCollectionArtworkScreenQuery = graphql`
       }
     }
     marketPriceInsights(artistId: $artistInternalID, medium: $medium) @optionalField {
-      ...MyCollectionArtworkInsights_marketPriceInsights
       ...MyCollectionArtworkAboutWork_marketPriceInsights
     }
+
     _marketPriceInsights: marketPriceInsights(artistId: $artistInternalID, medium: $medium)
       @optionalField {
       annualLotsSold
-    }
-    me {
-      ...MyCollectionArtworkInsights_me
     }
   }
 `
@@ -310,13 +262,6 @@ export const ArtworkMetaProps = graphql`
       countryCode
     }
     confidentialNotes
-    # needed to show the banner inside the edit artwork view
-    # TODO: move logic to the edit artwork view https://artsyproduct.atlassian.net/browse/CX-2846
-    consignmentSubmission @optionalField {
-      internalID
-      isEditable
-      displayText
-    }
     pricePaid {
       display
       minor

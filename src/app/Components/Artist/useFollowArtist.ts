@@ -1,37 +1,15 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { useFollowArtist_artist$key } from "__generated__/useFollowArtist_artist.graphql"
 import { useFollowArtist_artist_Mutation } from "__generated__/useFollowArtist_artist_Mutation.graphql"
-import { useToast } from "app/Components/Toast/toastHook"
-import { navigate } from "app/system/navigation/navigate"
 import { Schema } from "app/utils/track"
 import { useState } from "react"
 import { useFragment, graphql, useMutation } from "react-relay"
 import { useTracking } from "react-tracking"
 
-interface Options {
-  artist: useFollowArtist_artist$key | null | undefined
-  showToast?: boolean
-  contextModule?: ContextModule
-  contextScreenOwnerType?: OwnerType
-  ownerType?: Schema.OwnerEntityTypes | OwnerType
-  hideViewFollowsLink?: boolean
-}
-
-export const useFollowArtist = (options: Options) => {
-  const {
-    artist,
-    showToast,
-    contextModule,
-    contextScreenOwnerType = Schema.OwnerEntityTypes.Artist,
-    ownerType,
-    hideViewFollowsLink,
-  } = options
-
+export const useFollowArtist = (artist: useFollowArtist_artist$key | null) => {
   const [isLoading, setIsLoading] = useState(false)
   const data = useFragment(fragment, artist)
   const [commitMutation] = useMutation<useFollowArtist_artist_Mutation>(mutation)
   const { trackEvent } = useTracking()
-  const toast = useToast()
 
   const artistCount = data?.counts?.follows ?? 0
 
@@ -47,9 +25,7 @@ export const useFollowArtist = (options: Options) => {
       action_type: Schema.ActionTypes.Tap,
       owner_id: data.internalID,
       owner_slug: data.slug,
-      owner_type: ownerType,
-      context_screen_owner_type: contextScreenOwnerType,
-      context_module: contextModule,
+      owner_type: Schema.OwnerEntityTypes.Artist,
     })
 
     setIsLoading(true)
@@ -113,29 +89,10 @@ export const useFollowArtist = (options: Options) => {
       action_type: Schema.ActionTypes.Success,
       owner_id: data.internalID,
       owner_slug: data.slug,
-      owner_type: ownerType,
-      context_screen_owner_type: contextScreenOwnerType,
-      context_module: contextModule,
+      owner_type: Schema.OwnerEntityTypes.Artist,
     })
 
     setIsLoading(false)
-
-    if (showToast && !data.isFollowed) {
-      if (hideViewFollowsLink) {
-        toast.show("Artist Followed", "bottom", {
-          backgroundColor: "green100",
-        })
-      } else {
-        toast.show("Artist Followed", "bottom", {
-          cta: "View Follows",
-          onPress: () => {
-            navigate("favorites")
-          },
-          backgroundColor: "green100",
-          description: "Keep track of the artists you love",
-        })
-      }
-    }
   }
 
   const onFollowChangeError = () => {
@@ -149,9 +106,7 @@ export const useFollowArtist = (options: Options) => {
       action_type: Schema.ActionTypes.Fail,
       owner_id: data.internalID,
       owner_slug: data.slug,
-      owner_type: ownerType,
-      context_screen_owner_type: contextScreenOwnerType,
-      context_module: contextModule,
+      owner_type: Schema.OwnerEntityTypes.Artist,
     })
     // callback for analytics purposes
     setIsLoading(false)

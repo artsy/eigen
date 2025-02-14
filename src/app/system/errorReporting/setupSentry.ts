@@ -1,8 +1,8 @@
 import * as Sentry from "@sentry/react-native"
 import { appJson } from "app/utils/jsonFiles"
 import { Platform } from "react-native"
-import Config from "react-native-config"
 import DeviceInfo from "react-native-device-info"
+import Keys from "react-native-keys"
 
 export const routingInstrumentation = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: true,
@@ -36,8 +36,9 @@ interface SetupSentryProps extends Partial<Sentry.ReactNativeOptions> {
 }
 
 export function setupSentry(props: SetupSentryProps = { debug: false }) {
-  const sentryDSN = Config.SENTRY_DSN
-  const ossUser = Config.OSS === "true"
+  const sentryDSN = Keys.secureFor("SENTRY_DSN")
+  const oss = Keys.OSS
+  const ossUser = oss === "true"
 
   // In DEV, enabling this will clober stack traces in errors and logs, obscuring
   // the source of the error. So we disable it in dev mode.

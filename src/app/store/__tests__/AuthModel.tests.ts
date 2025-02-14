@@ -333,7 +333,9 @@ describe("AuthModel", () => {
       })
 
       expect(result.success).toBe(true)
-      expect(__globalStoreTestUtils__?.getCurrentState().auth.onboardingState).toBe("incomplete")
+      expect(__globalStoreTestUtils__?.getCurrentState().onboarding.onboardingState).toBe(
+        "incomplete"
+      )
       expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe(
         "my-access-token"
       )

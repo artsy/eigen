@@ -7,11 +7,11 @@ import { LocationMap_location$data } from "__generated__/LocationMap_location.gr
 import { Pin } from "app/Components/Icons/Pin"
 import { ArtsyMapStyleURL } from "app/Scenes/Map/GlobalMap"
 import { Linking, TouchableOpacity } from "react-native"
-import Config from "react-native-config"
+import Keys from "react-native-keys"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
-MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
+MapboxGL.setAccessToken(Keys.secureFor("MAPBOX_API_CLIENT_KEY"))
 
 const MapWrapper = styled(Flex)`
   border-width: 1px;

@@ -5,9 +5,14 @@ import { addBreadcrumb } from "@sentry/react-native"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { GlobalStore, getCurrentEmissionState } from "app/store/GlobalStore"
-import { GoBackProps, dismissModal, goBack, navigate } from "app/system/navigation/navigate"
+import {
+  GoBackProps,
+  dismissModal,
+  goBack,
+  navigate,
+  navigationEvents,
+} from "app/system/navigation/navigate"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useEnvironment } from "app/utils/hooks/useEnvironment"
@@ -16,7 +21,7 @@ import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { debounce } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
-import { Platform } from "react-native"
+import { KeyboardAvoidingView, Platform } from "react-native"
 import { Edge } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import WebView, { WebViewNavigation, WebViewProps } from "react-native-webview"
@@ -91,6 +96,18 @@ export const ArtsyWebViewPage = ({
     }
   }
 
+  const handleModalDismiss = () => {
+    dismissModal()
+  }
+
+  useEffect(() => {
+    const emitter = navigationEvents.addListener("requestModalDismiss", handleModalDismiss)
+
+    return () => {
+      emitter.removeListener("requestModalDismiss", handleModalDismiss)
+    }
+  }, [])
+
   const handleGoBack = () => {
     if (backAction) {
       backAction()
@@ -130,8 +147,8 @@ export const ArtsyWebViewPage = ({
 
   return (
     <Screen>
-      <Flex flex={1} backgroundColor="white100">
-        <ArtsyKeyboardAvoidingView>
+      <Flex flex={1} backgroundColor="background">
+        <KeyboardAvoidingView style={{ flex: 1 }}>
           <NavigationHeader
             useXButton={!!isPresentedModally && !canGoBack}
             onLeftButtonPress={leftButton}
@@ -156,7 +173,7 @@ export const ArtsyWebViewPage = ({
                 : undefined
             }
           />
-        </ArtsyKeyboardAvoidingView>
+        </KeyboardAvoidingView>
       </Flex>
     </Screen>
   )
@@ -206,6 +223,14 @@ export const ArtsyWebView = forwardRef<
       // to the articles route, which would cause a loop and once in the webview to
       // redirect you to either a native article view or an article webview
       if (result.type === "match" && result.module === "Article") {
+        return
+      }
+
+      // TODO: For not we are not redirecting to home from webviews because of artsy logo
+      // in purchase flow breaking things. We should instead hide the artsy logo or not redirect to home
+      // when in eigen purchase flow.
+      if (result.type === "match" && result.module === "Home") {
+        stopLoading(true)
         return
       }
 

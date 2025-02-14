@@ -2,12 +2,17 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { HomeViewSectionArtworksTestsQuery } from "__generated__/HomeViewSectionArtworksTestsQuery.graphql"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionArtworks } from "app/Scenes/HomeView/Sections/HomeViewSectionArtworks"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 describe("HomeViewSectionArtworks", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableHidingDislikedArtworks: true })
+  })
+
   const { renderWithRelay } = setupTestWrapper<HomeViewSectionArtworksTestsQuery>({
     Component: (props) => {
       if (!props.homeView.section) {
@@ -24,7 +29,7 @@ describe("HomeViewSectionArtworks", () => {
         homeView {
           section(id: "home-view-section-new-works-for-you") {
             ... on HomeViewSectionArtworks {
-              ...HomeViewSectionArtworks_section
+              ...HomeViewSectionArtworks_section @arguments(enableHidingDislikedArtworks: true)
             }
           }
         }
@@ -101,5 +106,29 @@ describe("HomeViewSectionArtworks", () => {
       `)
 
     expect(navigate).toHaveBeenCalledWith("/artwork-2-href")
+  })
+
+  it("does not render disliked artworks when enabled", () => {
+    renderWithRelay({
+      HomeViewSectionArtworks: () => ({
+        internalID: "home-view-section-new-works-for-you",
+        contextModule: "newWorksForYouRail",
+        artworksConnection: {
+          edges: [
+            {
+              node: {
+                internalID: "artwork-1-id",
+                slug: "artwork-1-slug",
+                title: "Artwork 1",
+                href: "/artwork-1-href",
+                isDisliked: true,
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    expect(screen.queryByText(/Artwork 1/)).not.toBeOnTheScreen()
   })
 })

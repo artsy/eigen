@@ -44,7 +44,7 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
   const viewAll = section.component?.behaviors?.viewAll
 
   const fairs = extractNodes(section.fairsConnection)
-  const href = getHomeViewSectionHref(viewAll?.href, section)
+  const href = viewAll && getHomeViewSectionHref(viewAll?.href, section)
 
   const onViewAllPress = () => {
     tracking.tappedFairGroupViewAll(
@@ -61,21 +61,13 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
         href={href}
         title={section.component?.title}
         subtitle={section.component?.description}
-        onPress={onViewAllPress}
+        onPress={href ? onViewAllPress : undefined}
         mx={2}
       />
 
       <CardRailFlatList<FairItem>
         data={fairs}
         initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
-        prefetchUrlExtractor={(fair) => {
-          return `/fair/${fair?.slug}`
-        }}
-        prefetchVariablesExtractor={(item) => {
-          return {
-            fairID: item?.slug,
-          }
-        }}
         renderItem={({ item, index }) => {
           return (
             <HomeViewSectionFairsFairItem
