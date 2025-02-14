@@ -18,6 +18,7 @@ interface FancySwiperProps {
   onSwipeLeft: () => void
   onSwipeRight?: () => void
   onWhiffRight?: () => void
+  topCardIndex: number
 }
 
 export const FancySwiper = ({
@@ -26,6 +27,7 @@ export const FancySwiper = ({
   onSwipeLeft,
   onSwipeRight,
   onWhiffRight,
+  topCardIndex,
 }: FancySwiperProps) => {
   const remainingCards = useMemo(() => cards.reverse(), [cards.length])
   const swiper = useRef<Animated.ValueXY>(new Animated.ValueXY()).current
@@ -45,9 +47,11 @@ export const FancySwiper = ({
       const isRightSwipe = dx > 0
 
       if (isFullSwipe && isLeftSwipe) {
-        handleLeftSwipe(dy)
+        handleLeftSwipe()
       } else if (isFullSwipe && isRightSwipe && onSwipeRight) {
         handleRightSwipe(dy)
+      } else if (isFullSwipe && isRightSwipe && onWhiffRight) {
+        handleRightWhiff()
       } else {
         // move the card to its original position
         Animated.spring(swiper, {
@@ -57,19 +61,15 @@ export const FancySwiper = ({
         }).start(() => {
           // revert the pan responder to its initial position
           swiper.setValue({ x: 0, y: 0 })
-
-          if (isFullSwipe && isRightSwipe && onWhiffRight) {
-            onWhiffRight()
-          }
         })
       }
     },
   })
 
-  const handleLeftSwipe = (toValueY?: number) => {
+  const handleLeftSwipe = () => {
     // move the card off the screen
     Animated.timing(swiper, {
-      toValue: { x: -1000, y: toValueY || 0 },
+      toValue: { x: -1000, y: 0 },
       duration: 300,
       useNativeDriver: true,
     }).start(() => {
@@ -92,12 +92,20 @@ export const FancySwiper = ({
     })
   }
 
+  const handleRightWhiff = () => {
+    onWhiffRight?.()
+  }
+
   return (
     <>
       <Flex alignItems="center" flex={1}>
         {remainingCards.map((card, index) => {
-          const isTopCard = index === remainingCards.length - 1
-          const isSecondCard = index === remainingCards.length - 2
+          // remainingCards was reversed, so we need to compare the index to the topCardIndex
+          // by calculating the index from the end of the array
+          const isTopCard = remainingCards.length - 1 - index === topCardIndex
+          const isSecondCard = remainingCards.length - 1 - index === topCardIndex + 1
+          const isSwipedCard = remainingCards.length - 1 - index < topCardIndex
+          const isLastSwipedCard = remainingCards.length - 1 - index === topCardIndex - 1
 
           // We would like to be able to drag the top card only
           const gestureDraggers = isTopCard ? panResponder.panHandlers : {}
@@ -106,9 +114,12 @@ export const FancySwiper = ({
             <FancySwiperCard
               card={card.content}
               key={card.artworkId}
+              artworkId={card.artworkId}
               swiper={swiper}
               isTopCard={isTopCard}
               isSecondCard={isSecondCard}
+              isSwipedCard={isSwipedCard}
+              isLastSwipedCard={isLastSwipedCard}
               {...gestureDraggers}
             />
           )
