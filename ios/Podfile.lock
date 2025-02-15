@@ -2126,12 +2126,17 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
+  - segment-analytics-react-native (2.20.3):
+    - React-Core
+    - sovran-react-native
   - Sentry/HybridSDK (8.36.0)
   - Sift (2.1.5)
   - sift-react-native (0.1.8):
     - React
     - Sift
   - SocketRocket (0.7.1)
+  - sovran-react-native (1.1.1):
+    - React-Core
   - SSZipArchive (2.2.3)
   - Starscream (4.0.8)
   - Stripe (23.30.0):
@@ -2322,7 +2327,9 @@ DEPENDENCIES:
   - RNShare (from `../node_modules/react-native-share`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - SDWebImage (= 5.19.1)
+  - "segment-analytics-react-native (from `../node_modules/@segment/analytics-react-native`)"
   - sift-react-native (from `../node_modules/sift-react-native`)
+  - "sovran-react-native (from `../node_modules/@segment/sovran-react-native`)"
   - Starscream (= 4.0.8)
   - "stripe-react-native (from `../node_modules/@stripe/stripe-react-native`)"
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON/`, commit `af76cf3ef710b6ca5f8c05f3a31307d44a3c5828`)
@@ -2645,8 +2652,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-share"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  segment-analytics-react-native:
+    :path: "../node_modules/@segment/analytics-react-native"
   sift-react-native:
     :path: "../node_modules/sift-react-native"
+  sovran-react-native:
+    :path: "../node_modules/@segment/sovran-react-native"
   stripe-react-native:
     :path: "../node_modules/@stripe/stripe-react-native"
   SwiftyJSON:
@@ -2839,10 +2850,12 @@ SPEC CHECKSUMS:
   RNSVG: 7ff26379b2d1871b8571e6f9bc9630de6baf9bdf
   SDWebImage: 40b0b4053e36c660a764958bff99eed16610acbb
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
+  segment-analytics-react-native: d57ed4971cbb995706babf29215ebdbf242ecdab
   Sentry: f8374b5415bc38dfb5645941b3ae31230fbeae57
   Sift: 7c27188ba3533c0a1be541d7efb68384e17e544c
   sift-react-native: 9ed8bc21788e3233399eaf196425246442aa7dee
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
+  sovran-react-native: e6a9c963a8a6b9ebc3563394c39c30f33ab1453f
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Starscream: 19b5533ddb925208db698f0ac508a100b884a1b9
   Stripe: 9757efc154de1d9615cbea4836d590bc4034d3a4
