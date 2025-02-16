@@ -2897,10 +2897,11 @@ type ArtworkImportEdge {
 type ArtworkImportRow {
   artists: [Artist!]
   artwork: Artwork
-  errors: [ArtworkImportRowError!]
+  errors: [ArtworkImportRowError!]!
 
   # A globally unique ID.
   id: ID!
+  images: [ArtworkImportRowImage!]!
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
@@ -2936,6 +2937,18 @@ type ArtworkImportRowError {
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   metadata: JSON
+}
+
+type ArtworkImportRowImage {
+  fileName: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  s3Bucket: String
+  s3Key: String
 }
 
 enum ArtworkImportSource {
@@ -12794,6 +12807,32 @@ type MatchArtworkImportArtistsSuccess {
   unmatched: Int!
 }
 
+type MatchArtworkImportRowImageFailure {
+  mutationError: GravityMutationError
+}
+
+input MatchArtworkImportRowImageInput {
+  artworkImportID: String!
+  clientMutationId: String
+  fileName: String!
+  rowID: String!
+  s3Bucket: String!
+  s3Key: String!
+}
+
+type MatchArtworkImportRowImagePayload {
+  clientMutationId: String
+  matchArtworkImportRowImageOrError: MatchArtworkImportRowImageResponseOrError
+}
+
+union MatchArtworkImportRowImageResponseOrError =
+    MatchArtworkImportRowImageFailure
+  | MatchArtworkImportRowImageSuccess
+
+type MatchArtworkImportRowImageSuccess {
+  success: Boolean!
+}
+
 # A connection to a list of items.
 type MatchConnection {
   # A list of edges.
@@ -14057,6 +14096,9 @@ type Mutation {
   matchArtworkImportArtists(
     input: MatchArtworkImportArtistsInput!
   ): MatchArtworkImportArtistsPayload
+  matchArtworkImportRowImage(
+    input: MatchArtworkImportRowImageInput!
+  ): MatchArtworkImportRowImagePayload
 
   # Merge multiple artist records in order to deduplicate artists
   mergeArtists(input: MergeArtistsMutationInput!): MergeArtistsMutationPayload
