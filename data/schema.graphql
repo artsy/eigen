@@ -2874,6 +2874,26 @@ type ArtworkImport implements Node {
   unmatchedArtistNames: [String!]!
 }
 
+# A connection to a list of items.
+type ArtworkImportConnection {
+  # A list of edges.
+  edges: [ArtworkImportEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ArtworkImportEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: ArtworkImport
+}
+
 type ArtworkImportRow {
   artists: [Artist!]
   artwork: Artwork
@@ -14909,6 +14929,14 @@ type Partner implements Node {
     size: Int
     sort: ArtistAlertsSort
   ): ArtistsWithAlertCountsConnection
+
+  # A connection of artwork imports from a Partner.
+  artworkImportsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkImportConnection
 
   # A connection of artworks from a Partner.
   artworksConnection(
