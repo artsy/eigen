@@ -1,35 +1,30 @@
 import { Text } from "@artsy/palette-mobile"
 import { BidInfoRow } from "app/Components/Bidding/Components/BidInfoRow"
-import { CreditCardForm } from "app/Components/Bidding/Screens/CreditCardForm"
-import NavigatorIOS, {
-  NavigatorIOSPushArgs,
-} from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { PaymentInfo } from "./PaymentInfo"
 
-let nextStep: NavigatorIOSPushArgs
-const mockNavigator: Partial<NavigatorIOS> = {
-  push: (route) => {
-    nextStep = route
-  },
-  pop: () => null,
+const mockNavigator = {
+  navigate: jest.fn(),
 }
+
 jest.useFakeTimers({
   legacyFakeTimers: true,
 })
 
 it("renders without throwing an error", () => {
-  renderWithWrappersLEGACY(<PaymentInfo {...initialProps} />)
+  renderWithWrappers(<PaymentInfo {...initialProps} />)
 })
 
 it("shows the cc info that the user had typed into the form", async () => {
-  const { root } = renderWithWrappersLEGACY(<PaymentInfo {...initialProps} />)
+  const { root } = renderWithWrappers(<PaymentInfo {...initialProps} />)
 
   const creditCardRow = await root.findAllByType(BidInfoRow)
 
   creditCardRow[0].instance.props.onPress()
-  expect(nextStep.component).toEqual(CreditCardForm)
+  expect(mockNavigator.navigate).toHaveBeenCalledWith("CreditCardForm", {
+    billingAddress: initialProps.billingAddress,
+    onSubmit: expect.any(Function),
+  })
 
   const creditCardRowText = await creditCardRow[0].findAllByType(Text)
 

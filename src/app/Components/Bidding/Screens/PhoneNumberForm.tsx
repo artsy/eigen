@@ -1,21 +1,24 @@
 import { Box, Button } from "@artsy/palette-mobile"
+import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { BottomAlignedButtonWrapper } from "app/Components/Buttons/BottomAlignedButtonWrapper"
-import { NavigationHeader } from "app/Components/NavigationHeader"
 import { Input } from "app/Components/Input"
 import { PhoneInput } from "app/Components/Input/PhoneInput"
-import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
+import { NavigationHeader } from "app/Components/NavigationHeader"
+import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 import { ProvideScreenTracking, Schema, track } from "app/utils/track"
 import { PageNames } from "app/utils/track/schema"
 import { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
-interface PhoneNumberFormProps {
-  onSubmit: (phone: string) => void
-  navigator: NavigatorIOS
-  phoneNumber?: string
-}
+
+type PhoneNumberFormProps = NativeStackScreenProps<BiddingNavigationStackParams, "PhoneNumberForm">
 
 export const PhoneNumberForm: React.FC<PhoneNumberFormProps> = (props) => {
-  const { onSubmit, navigator, phoneNumber } = props
+  const {
+    navigation,
+    route: {
+      params: { phoneNumber, onSubmit },
+    },
+  } = props
 
   const phoneRef = useRef<Input>(null)
 
@@ -28,7 +31,7 @@ export const PhoneNumberForm: React.FC<PhoneNumberFormProps> = (props) => {
 
   const handleAddPhoneNumberClick = (): void => {
     onSubmit(enteredPhone)
-    navigator?.pop()
+    navigation.goBack()
     track({
       action_type: Schema.ActionTypes.Success,
       action_name: Schema.ActionNames.BidFlowSavePhoneNumber,
@@ -58,7 +61,7 @@ export const PhoneNumberForm: React.FC<PhoneNumberFormProps> = (props) => {
       }}
     >
       <BottomAlignedButtonWrapper buttonComponent={buttonComponent}>
-        <NavigationHeader onLeftButtonPress={() => navigator?.pop()}>
+        <NavigationHeader onLeftButtonPress={() => navigation.goBack()}>
           Add phone number
         </NavigationHeader>
         <ScrollView
