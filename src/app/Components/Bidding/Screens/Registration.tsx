@@ -1,4 +1,5 @@
 import { Box, Button, Checkbox, Flex, LinkText, Text } from "@artsy/palette-mobile"
+import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { captureMessage } from "@sentry/react-native"
 import { Token, createToken } from "@stripe/stripe-react-native"
 import {
@@ -16,9 +17,9 @@ import { Address, PaymentCardTextFieldParams } from "app/Components/Bidding/type
 import { Modal } from "app/Components/Modal"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import { bidderNeedsIdentityVerification } from "app/utils/auction/bidderNeedsIdentityVerification"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { saleTime } from "app/utils/saleTime"
@@ -34,13 +35,14 @@ import {
   graphql,
 } from "react-relay"
 import { PayloadError } from "relay-runtime"
-import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
+import { RegistrationStatus } from "./RegistrationResult"
 
-export interface RegistrationProps extends ViewProps {
+export interface RegistrationProps
+  extends ViewProps,
+    NativeStackScreenProps<BiddingNavigationStackParams, "SelectMaxBid"> {
   sale: Registration_sale$data
   me: Registration_me$data
   relay: RelayProp
-  navigator?: NavigatorIOS
 }
 
 interface RegistrationState {
@@ -344,16 +346,12 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   }
 
   presentRegistrationResult(status: RegistrationStatus) {
-    const { sale, me, navigator } = this.props
+    const { sale, me, navigation } = this.props
 
-    navigator?.push({
-      component: RegistrationResult,
-      title: "",
-      passProps: {
-        status,
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        needsIdentityVerification: bidderNeedsIdentityVerification({ sale, user: me }),
-      },
+    navigation?.navigate("RegistrationResult", {
+      status,
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+      needsIdentityVerification: bidderNeedsIdentityVerification({ sale, user: me }),
     })
 
     this.setState({ isLoading: false })
@@ -382,7 +380,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       return (
         <Flex py={2}>
           <PaymentInfo
-            navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+            navigator={isLoading ? ({ navigate: () => null } as any) : this.props.navigation}
             onCreditCardAdded={this.onCreditCardAdded.bind(this)}
             billingAddress={this.state.billingAddress}
             creditCardFormParams={this.state.creditCardFormParams}
@@ -394,7 +392,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       return (
         <Flex justifyContent="center" py={2}>
           <PhoneInfo
-            navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+            navigator={isLoading ? ({ navigate: () => null } as any) : this.props.navigation}
             onPhoneAdded={this.onPhoneAdded.bind(this)}
             phoneNumber={this.state.phoneNumber}
           />
@@ -521,10 +519,11 @@ const RegistrationContainer = createFragmentContainer(Registration, {
   `,
 })
 
-export const RegistrationQueryRenderer: React.FC<{ saleID: string; navigator: NavigatorIOS }> = ({
-  saleID,
-  navigator,
-}) => {
+export const RegistrationQueryRenderer: React.FC<
+  NativeStackScreenProps<BiddingNavigationStackParams, "RegisterToBid">
+> = (screenProps) => {
+  const { saleID } = screenProps.route.params
+
   return (
     <View style={{ flex: 1 }}>
       <NavigationHeader
@@ -560,11 +559,9 @@ export const RegistrationQueryRenderer: React.FC<{ saleID: string; navigator: Na
           }
         `}
         cacheConfig={{ force: true }} // We want to always fetch latest sale registration status, CC info, etc.
-        variables={{
-          saleID,
-        }}
+        variables={{ saleID }}
         render={renderWithLoadProgress((props) => (
-          <RegistrationContainer {...(props as any)} navigator={navigator} />
+          <RegistrationContainer {...props} {...screenProps} />
         ))}
       />
     </View>

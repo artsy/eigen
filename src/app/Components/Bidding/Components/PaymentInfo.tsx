@@ -1,18 +1,17 @@
 import { bullet } from "@artsy/palette-mobile"
+import { NavigationProp } from "@react-navigation/native"
 import { Token } from "@stripe/stripe-react-native"
 import { Card } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
 import { FlexProps } from "app/Components/Bidding/Elements/Flex"
-import { CreditCardForm } from "app/Components/Bidding/Screens/CreditCardForm"
 import { Address, PaymentCardTextFieldParams } from "app/Components/Bidding/types"
-import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
+import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 import React from "react"
 import { View } from "react-native"
-
 import { BidInfoRow } from "./BidInfoRow"
 import { Divider } from "./Divider"
 
 interface PaymentInfoProps extends FlexProps {
-  navigator?: NavigatorIOS
+  navigator?: NavigationProp<BiddingNavigationStackParams, "ConfirmBid" | "RegisterToBid">
   onCreditCardAdded: (t: Token.Result, a: Address) => void
   billingAddress?: Address | null
   creditCardFormParams?: PaymentCardTextFieldParams | null
@@ -25,14 +24,9 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
   }
 
   presentCreditCardForm() {
-    this.props.navigator?.push({
-      component: CreditCardForm,
-      title: "",
-      passProps: {
-        onSubmit: (token: Token.Result, address: Address) => this.onCreditCardAdded(token, address),
-        billingAddress: this.props.billingAddress,
-        navigator: this.props.navigator,
-      },
+    this.props.navigator?.navigate("CreditCardForm", {
+      onSubmit: (token: Token.Result, address: Address) => this.onCreditCardAdded(token, address),
+      billingAddress: this.props.billingAddress,
     })
   }
 

@@ -1,32 +1,32 @@
-import { Button, Checkbox, LinkText, Text } from "@artsy/palette-mobile"
-import { createToken } from "@stripe/stripe-react-native"
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { Button, Checkbox } from "@artsy/palette-mobile"
+import Sentry from "@sentry/react-native"
+import {
+  fireEvent,
+  screen,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react-native"
 import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
-import { ConfirmBidCreateBidderPositionMutation } from "__generated__/ConfirmBidCreateBidderPositionMutation.graphql"
-import { ConfirmBidCreateCreditCardMutation } from "__generated__/ConfirmBidCreateCreditCardMutation.graphql"
-import { ConfirmBidUpdateUserMutation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
-import { ConfirmBid_sale_artwork$data } from "__generated__/ConfirmBid_sale_artwork.graphql"
-import { BidInfoRow } from "app/Components/Bidding/Components/BidInfoRow"
-import { FakeNavigator } from "app/Components/Bidding/Helpers/FakeNavigator"
+import { ConfirmBid_saleArtwork$data } from "__generated__/ConfirmBid_saleArtwork.graphql"
+import { useCreateBidderPositionMutation } from "__generated__/useCreateBidderPositionMutation.graphql"
+import { useCreateCreditCardMutation } from "__generated__/useCreateCreditCardMutation.graphql"
+import { useUpdateUserPhoneNumberMutation } from "__generated__/useUpdateUserPhoneNumberMutation.graphql"
+import {
+  BidFlowContextProvider,
+  BidFlowContextStore,
+} from "app/Components/Bidding/Context/BidFlowContextProvider"
+import { ConfirmBid } from "app/Components/Bidding/Screens/ConfirmBid"
 import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
 import { Address } from "app/Components/Bidding/types"
-import { Modal } from "app/Components/Modal"
-import Spinner from "app/Components/Spinner"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import * as navigation from "app/system/navigation/navigate"
-import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import NavigatorIOS, {
-  NavigatorIOSPushArgs,
-} from "app/utils/__legacy_do_not_use__navigator-ios-shim"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { useCreateBidderPosition } from "app/utils/mutations/useCreateBidderPosition"
+import { useCreateCreditCard } from "app/utils/mutations/useCreateCreditCard"
+import { useUpdateUserPhoneNumber } from "app/utils/mutations/useUpdateUserPhoneNumber"
+import { CleanRelayFragment } from "app/utils/relayHelpers"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { merge } from "lodash"
-import { TouchableWithoutFeedback } from "react-native"
-import relay from "react-relay"
-import { ReactTestRenderer } from "react-test-renderer"
-import { BidResultScreen } from "./BidResult"
-import { ConfirmBid, ConfirmBidProps } from "./ConfirmBid"
-import { CreditCardForm } from "./CreditCardForm"
-import { SelectMaxBid } from "./SelectMaxBid"
+import relay, { graphql } from "react-relay"
 
 jest.mock("app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () => ({
   bidderPositionQuery: jest.fn(),
@@ -34,6 +34,18 @@ jest.mock("app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () =>
 
 jest.mock("@stripe/stripe-react-native", () => ({
   createToken: jest.fn(),
+}))
+
+jest.mock("app/utils/mutations/useCreateBidderPosition", () => ({
+  useCreateBidderPosition: jest.fn(),
+}))
+
+jest.mock("app/utils/mutations/useCreateCreditCard", () => ({
+  useCreateCreditCard: jest.fn(),
+}))
+
+jest.mock("app/utils/mutations/useUpdateUserPhoneNumber", () => ({
+  useUpdateUserPhoneNumber: jest.fn(),
 }))
 
 describe("ConfirmBid", () => {
@@ -44,36 +56,85 @@ describe("ConfirmBid", () => {
   const commitMutationMock = (fn?: typeof relay.commitMutation) =>
     jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
 
-  let nextStep: NavigatorIOSPushArgs | null
-  const mockNavigator: Partial<NavigatorIOS> = { push: (route) => (nextStep = route) }
+  const mockNavigator = { navigate: jest.fn(), goBack: jest.fn() }
 
   const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager
     .postNotificationName as jest.Mock
 
-  const findPlaceBidButton = (component: ReactTestRenderer) => {
-    return component.root.findByProps({ testID: "bid-button" })
+  const mockCreateBidderMutation = jest.fn()
+  const useCreateBidderPositionMock = useCreateBidderPosition as jest.Mock<any>
+  const mockCreateCreditCardMutation = jest.fn()
+  const useCreateCreditCardMock = useCreateCreditCard as jest.Mock<any>
+  const mockUpdateUserPhoneNumberMutation = jest.fn()
+  const useUpdateUserPhoneNumberMock = useUpdateUserPhoneNumber as jest.Mock
+  const navigateSpy = jest.spyOn(navigation, "navigate")
+  let mockStore: ReturnType<typeof BidFlowContextStore.useStore>
+
+  const MockStoreInstance = () => {
+    mockStore = BidFlowContextStore.useStore()
+    return null
   }
 
-  const mountConfirmBidComponent = (props: ConfirmBidProps) => {
-    return renderWithWrappersLEGACY(<ConfirmBid {...props} />)
-  }
+  const { renderWithRelay } = setupTestWrapper({
+    Component: (props: any) => {
+      return (
+        <BidFlowContextProvider
+          runtimeModel={{
+            saleArtworkIncrements: [
+              { cents: 450000, display: "$45,000" },
+              { cents: 460000, display: "$46,000" },
+            ],
+            selectedBidIndex: 0,
+          }}
+        >
+          <ConfirmBid
+            navigation={mockNavigator as any}
+            route={
+              { params: { ...props, saleArtwork: props.artwork.saleArtwork, me: props.me } } as any
+            }
+          />
+          <MockStoreInstance />
+        </BidFlowContextProvider>
+      )
+    },
+    query: graphql`
+      query ConfirmBidTestQuery($artworkID: String!, $saleID: String!) @relay_test_operation {
+        artwork(id: $artworkID) {
+          saleArtwork(saleID: $saleID) {
+            ...ConfirmBid_saleArtwork
+          }
+        }
+        me {
+          ...ConfirmBid_me
+        }
+      }
+    `,
+    variables: { artworkID: "artwork-id", saleID: "sale-id" },
+  })
 
   beforeEach(() => {
-    nextStep = null // reset nextStep between tests
     // Because of how we mock metaphysics, the mocked value from one test can bleed into another.
     bidderPositionQueryMock.mockReset()
+
+    useCreateBidderPositionMock.mockReturnValue([mockCreateBidderMutation, false])
+    useCreateCreditCardMock.mockReturnValue([mockCreateCreditCardMutation, false])
+    useUpdateUserPhoneNumberMock.mockReturnValue([mockUpdateUserPhoneNumberMutation, false])
+  })
+
+  afterEach(() => {
+    jest.clearAllMocks()
   })
 
   describe("disclaimer", () => {
     describe("when the user is not registered", () => {
       it("displays a checkbox", () => {
-        renderWithWrappers(<ConfirmBid {...initialProps} />)
+        renderWithRelay({ SaleArtwork: () => saleArtwork })
 
-        expect(screen.getByTestId("disclaimer-checkbox")).toBeDefined()
+        expect(screen.getByTestId("disclaimer-checkbox")).toBeOnTheScreen()
       })
 
       it("displays a disclaimer", () => {
-        renderWithWrappers(<ConfirmBid {...initialProps} />)
+        renderWithRelay({ SaleArtwork: () => saleArtwork })
 
         expect(screen.getByTestId("disclaimer")).toHaveTextContent(
           /I agree to Artsy's and Christie's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted./
@@ -81,206 +142,211 @@ describe("ConfirmBid", () => {
       })
 
       it("navigates to the conditions of sale when the user taps the link", () => {
-        jest.mock("app/system/navigation/navigate", () => ({
-          ...jest.requireActual("app/system/navigation/navigate"),
-          navigate: jest.fn(),
-        }))
-
-        renderWithWrappers(<ConfirmBid {...initialProps} />)
+        renderWithRelay({ SaleArtwork: () => saleArtwork })
 
         fireEvent.press(
           screen.getByText("Artsy's and Christie's General Terms and Conditions of Sale")
         )
 
-        expect(navigation.navigate).toHaveBeenCalledWith("/terms")
+        expect(navigateSpy).toHaveBeenCalledWith("/terms")
       })
     })
 
     describe("when the user is registered", () => {
       it("does not display a checkbox", () => {
-        renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
+        renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
 
-        expect(screen.queryByTestId("disclaimer-checkbox")).toBeNull()
+        expect(screen.queryByTestId("disclaimer-checkbox")).not.toBeOnTheScreen()
       })
 
       it("displays a disclaimer", () => {
-        renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
+        renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
 
-        expect(screen.getByTestId("disclaimer")).toHaveTextContent(
-          /I agree to Artsy's and Christie's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted./
-        )
+        expect(
+          screen.getByText(
+            /I agree to Artsy's and Christie's General Terms and Conditions of Sale. I understand that all bids are binding and may not be retracted./
+          )
+        ).toBeOnTheScreen()
       })
 
       it("navigates to the conditions of sale when the user taps the link", () => {
-        jest.mock("app/system/navigation/navigate", () => ({
-          ...jest.requireActual("app/system/navigation/navigate"),
-          navigate: jest.fn(),
-        }))
-
-        renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
+        renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
 
         fireEvent.press(
           screen.getByText("Artsy's and Christie's General Terms and Conditions of Sale")
         )
 
-        expect(navigation.navigate).toHaveBeenCalledWith("/terms")
+        expect(navigateSpy).toHaveBeenCalledWith("/terms")
       })
     })
   })
 
   it("enables the bid button when checkbox is ticked", () => {
-    renderWithWrappers(<ConfirmBid {...initialProps} />)
+    renderWithRelay({
+      Me: () => ({ hasQualifiedCreditCards: true }),
+      SaleArtwork: () => saleArtwork,
+    })
+
     expect(screen.getByTestId("bid-button")).toBeDisabled()
+
     fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+
     expect(screen.getByTestId("bid-button")).toBeEnabled()
   })
 
   it("enables the bid button by default if the user is registered", () => {
-    renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
+    renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
+
     expect(screen.getByTestId("bid-button")).toBeEnabled()
   })
 
   it("displays the artwork title correctly with date", () => {
-    renderWithWrappers(<ConfirmBid {...initialProps} />)
-    expect(screen.getByTestId("artwork-title")).toHaveTextContent(/^Meteor Shower, 2015$/)
+    renderWithRelay({ SaleArtwork: () => saleArtwork })
+
+    expect(screen.getByText("Meteor Shower, 2015")).toBeOnTheScreen()
   })
 
   it("displays the artwork title correctly without date", () => {
-    const datelessProps = merge({}, initialProps, { sale_artwork: { artwork: { date: null } } })
-    renderWithWrappers(<ConfirmBid {...datelessProps} />)
-    expect(screen.getByTestId("artwork-title")).toHaveTextContent(/^Meteor Shower$/)
+    const datelessSaleArtwork = merge({}, saleArtwork, { artwork: { date: null } })
+
+    renderWithRelay({ SaleArtwork: () => datelessSaleArtwork })
+
+    expect(screen.queryByText("Meteor Shower, 2015")).not.toBeOnTheScreen()
+    expect(screen.getByText("Meteor Shower")).toBeOnTheScreen()
   })
 
   it("can load and display price summary", async () => {
-    const view = mountConfirmBidComponent(initialProps)
+    const { mockResolveLastOperation } = renderWithRelay({ SaleArtwork: () => saleArtwork })
 
-    expect((await view.root.findAllByType(Spinner)).length).toEqual(1)
-    getMockRelayEnvironment().mock.resolveMostRecentOperation(() => ({
-      data: {
-        node: {
-          __typename: "SaleArtwork",
-          calculatedCost: {
-            buyersPremium: {
-              display: "$9,000.00",
-            },
-            subtotal: {
-              display: "$54,000.00",
-            },
-          },
+    expect(screen.getByTestId("default-loading-feedback")).toBeOnTheScreen()
+
+    mockResolveLastOperation({
+      SaleArtwork: () => ({
+        calculatedCost: {
+          buyersPremium: { display: "$9,000.00" },
+          subtotal: { display: "$54,000.00" },
         },
-      },
-    }))
+      }),
+    })
 
-    expect((await view.root.findAllByType(Spinner)).length).toEqual(0)
+    await waitForElementToBeRemoved(() => screen.queryByTestId("default-loading-feedback"))
 
-    const TextText = (await view.root.findAllByType(Text))
-      // eslint-disable-next-line testing-library/no-node-access
-      .map((TextComponent) => TextComponent.props.children as string)
-      .join(" ")
+    expect(screen.getByText("Your max bid")).toBeOnTheScreen()
+    expect(screen.getByText("$45,000.00")).toBeOnTheScreen()
 
-    expect(TextText).toContain("Your max bid $45,000.00")
-    expect(TextText).toContain("Buyer’s premium $9,000.00")
-    expect(TextText).toContain("Subtotal $54,000.00")
+    expect(screen.getByText("Buyer’s premium")).toBeOnTheScreen()
+    expect(screen.getByText("$9,000.00")).toBeOnTheScreen()
+
+    expect(screen.getByText("Subtotal")).toBeOnTheScreen()
+    expect(screen.getByText("$54,000.00")).toBeOnTheScreen()
   })
 
   describe("checkbox and payment info display", () => {
     it("shows no checkbox or payment info if the user is registered", () => {
-      renderWithWrappers(<ConfirmBid {...initialPropsForRegisteredUser} />)
-      expect(screen.queryByTestId("disclaimer-checkbox")).toBeNull()
-      expect(screen.queryByTestId("payment-info-row")).toBeNull()
-      expect(screen.getByTestId("disclaimer-text")).toHaveTextContent(/I agree to/)
+      renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
+
+      expect(screen.queryByTestId("disclaimer-checkbox")).not.toBeOnTheScreen()
+      expect(screen.queryByTestId("payment-info-row")).not.toBeOnTheScreen()
+      expect(screen.getByText(/I agree to/)).toBeOnTheScreen()
     })
 
     it("shows a checkbox but no payment info if the user is not registered and has cc on file", () => {
-      renderWithWrappers(<ConfirmBid {...initialProps} />)
-      expect(screen.getByTestId("disclaimer-checkbox")).toBeDefined()
-      expect(screen.queryByTestId("payment-info-row")).toBeNull()
+      renderWithRelay({ SaleArtwork: () => saleArtwork })
+
+      expect(screen.getByTestId("disclaimer-checkbox")).toBeOnTheScreen()
+      expect(screen.queryByTestId("payment-info-row")).not.toBeOnTheScreen()
     })
 
     it("shows a checkbox and payment info if the user is not registered and has no cc on file", async () => {
-      const { root } = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
+      renderWithRelay({
+        Me: () => ({ hasQualifiedCreditCards: false }),
+        SaleArtwork: () => saleArtwork,
+      })
 
-      const checkboxs = await root.findAllByType(Checkbox)
-      const bidInfoRows = await root.findAllByType(BidInfoRow)
-
-      expect(checkboxs.length).toEqual(1)
-      expect(bidInfoRows.length).toEqual(2)
+      expect(screen.getByTestId("disclaimer-checkbox")).toBeOnTheScreen()
+      expect(screen.getByText("Max bid")).toBeOnTheScreen()
+      expect(screen.getByText("Credit card")).toBeOnTheScreen()
     })
   })
 
   describe("when pressing bid button", () => {
     it("commits mutation", () => {
-      renderWithWrappers(<ConfirmBid {...initialProps} />)
+      renderWithRelay({
+        Me: () => ({ hasQualifiedCreditCards: true }),
+        SaleArtwork: () => saleArtwork,
+      })
+
       fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
-      relay.commitMutation = jest.fn()
+
       fireEvent.press(screen.getByTestId("bid-button"))
-      expect(relay.commitMutation).toHaveBeenCalled()
+      expect(mockCreateBidderMutation).toHaveBeenCalled()
     })
 
-    it("shows a spinner", async () => {
-      const view = mountConfirmBidComponent(initialProps)
+    it("shows a spinner", () => {
+      useCreateBidderPositionMock.mockReturnValue([mockCreateBidderMutation, true])
 
-      ;(await view.root.findByType(Checkbox)).props.onPress()
-      relay.commitMutation = jest.fn()
-      const placeBidButton = await findPlaceBidButton(view)
+      renderWithRelay({ SaleArtwork: () => saleArtwork })
 
-      placeBidButton.props.onPress()
+      fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+
+      const placeBidButton = screen.UNSAFE_getByType(Button)
+
+      fireEvent.press(placeBidButton)
 
       expect(placeBidButton.props.loading).toEqual(true)
     })
 
-    it("disables tap events while a spinner is being shown", async () => {
-      const navigator = { push: jest.fn() } as any
-      relay.commitMutation = jest.fn()
+    it("disables tap events while a spinner is being shown", () => {
+      const navigator = { push: jest.fn(), pop: jest.fn() }
+      useCreateBidderPositionMock.mockReturnValue([mockCreateBidderMutation, true])
 
-      const view = mountConfirmBidComponent({ ...initialPropsForUnqualifiedUser, navigator })
+      renderWithRelay({ SaleArtwork: () => saleArtwork }, { navigator })
 
-      ;(await view.root.findByType(ConfirmBid)).instance.setState({
-        conditionsOfSaleChecked: true,
-        creditCardToken: stripeToken,
-        billingAddress,
-      })
-      ;(await findPlaceBidButton(view)).props.onPress()
+      const yourMaxBidRow = screen.getByText("Max bid")
+      const conditionsOfSaleLink = screen.getByText(
+        "Artsy's and Christie's General Terms and Conditions of Sale"
+      )
+      const conditionsOfSaleCheckbox = screen.UNSAFE_getByType(Checkbox)
 
-      const yourMaxBidRow = (await view.root.findAllByType(TouchableWithoutFeedback))[0]
-      const creditCardRow = (await view.root.findAllByType(TouchableWithoutFeedback))[1]
-      const conditionsOfSaleLink = await view.root.findByType(LinkText)
-      const conditionsOfSaleCheckbox = await view.root.findByType(Checkbox)
+      fireEvent.press(conditionsOfSaleCheckbox)
+      fireEvent.press(screen.getByTestId("bid-button"))
 
-      yourMaxBidRow.props.onPress()
+      fireEvent.press(yourMaxBidRow)
 
       expect(navigator.push).not.toHaveBeenCalled()
 
-      creditCardRow.props.onPress()
+      fireEvent.press(conditionsOfSaleLink)
 
-      expect(navigator.push).not.toHaveBeenCalled()
+      expect(navigateSpy).not.toHaveBeenCalled()
 
-      expect(conditionsOfSaleLink.props.onPress).toBeUndefined()
-      expect(conditionsOfSaleCheckbox.props.disabled).toBeTruthy()
+      expect(conditionsOfSaleCheckbox.props.disabled).toEqual(true)
     })
 
     describe("when pressing bid", () => {
       it("commits the mutation", () => {
-        renderWithWrappers(<ConfirmBid {...initialProps} />)
+        renderWithRelay({ SaleArtwork: () => saleArtwork })
 
         fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+
         bidderPositionQueryMock.mockReturnValueOnce(
           Promise.resolve(mockRequestResponses.pollingForBid.highestBidder)
         )
-        relay.commitMutation = jest.fn()
 
         fireEvent.press(screen.getByTestId("bid-button"))
 
-        expect(relay.commitMutation).toHaveBeenCalled()
+        expect(useCreateBidderPosition).toHaveBeenCalled()
       })
 
       describe("when mutation fails", () => {
         it("does not verify bid position", () => {
           // Probably due to a network problem.
-          renderWithWrappers(<ConfirmBid {...initialProps} />)
+          renderWithRelay({
+            Me: () => ({ hasQualifiedCreditCards: true }),
+            SaleArtwork: () => saleArtwork,
+          })
 
           fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
-          console.error = jest.fn() // Silences component logging.
+
           relay.commitMutation = commitMutationMock((_, { onError }) => {
             onError!(new Error("An error occurred."))
             return { dispose: jest.fn() }
@@ -288,61 +354,84 @@ describe("ConfirmBid", () => {
 
           fireEvent.press(screen.getByTestId("bid-button"))
 
-          expect(relay.commitMutation).toHaveBeenCalled()
+          expect(useCreateBidderPosition).toHaveBeenCalled()
           expect(bidderPositionQueryMock).not.toHaveBeenCalled()
         })
 
         it("displays an error message on a network failure", () => {
-          renderWithWrappers(<ConfirmBid {...initialProps} />)
+          const captureMessageSpy = jest.spyOn(Sentry, "captureMessage")
+          const erroredCreateBidderPositionMutation = jest
+            .fn()
+            .mockImplementation(({ onError }) => {
+              onError(new Error("Network request failed"))
+            })
+          useCreateBidderPositionMock.mockReturnValue([erroredCreateBidderPositionMutation, false])
+
+          renderWithRelay({
+            Me: () => ({ hasQualifiedCreditCards: true }),
+            SaleArtwork: () => saleArtwork,
+          })
 
           fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
-          console.error = jest.fn() // Silences component logging.
-
-          // A TypeError is raised when the device has no internet connection.
-          relay.commitMutation = commitMutationMock((_, { onError }) => {
-            onError!(new TypeError("Network request failed"))
-            return { dispose: jest.fn() }
-          }) as any
 
           fireEvent.press(screen.getByTestId("bid-button"))
 
-          expect(nextStep?.component).toEqual(BidResultScreen)
-          expect(nextStep?.passProps).toEqual(
+          expect(captureMessageSpy).toHaveBeenCalledWith(
+            expect.stringContaining("#createBidderPosition"),
+            "error"
+          )
+          expect(mockNavigator.navigate).toHaveBeenCalledWith(
+            "BidResult",
             expect.objectContaining({
               bidderPositionResult: {
-                message_header: "An error occurred",
-                message_description_md:
+                messageHeader: "An error occurred",
+                messageDescriptionMD:
                   "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
+                position: null,
+                status: "ERROR",
               },
             })
           )
         })
 
         it("displays an error message on a createBidderPosition mutation failure", async () => {
+          const captureMessageSpy = jest.spyOn(Sentry, "captureMessage")
           const error = {
             message:
               'GraphQL Timeout Error: Mutation.createBidderPosition has timed out after waiting for 5000ms"}',
           }
 
-          relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-            onCompleted!({}, [error])
-            return { dispose: jest.fn() }
-          }) as any
+          const erroredCreateBidderPositionMutation = jest
+            .fn()
+            .mockImplementation(({ onCompleted }) => {
+              onCompleted({}, [error])
+            })
+          useCreateBidderPositionMock.mockReturnValue([erroredCreateBidderPositionMutation, false])
 
-          renderWithWrappers(<ConfirmBid {...initialProps} />)
+          renderWithRelay({
+            Me: () => ({ hasQualifiedCreditCards: true }),
+            SaleArtwork: () => saleArtwork,
+          })
 
           fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
           fireEvent.press(screen.getByTestId("bid-button"))
 
-          await waitFor(() => !!nextStep)
+          expect(captureMessageSpy).toHaveBeenCalledWith(
+            expect.stringContaining("GraphQL Timeout Error"),
+            "error"
+          )
 
-          expect(nextStep?.component).toEqual(BidResultScreen)
-          expect(nextStep?.passProps).toEqual(
+          await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
+
+          expect(mockNavigator.navigate).toHaveBeenCalledWith(
+            "BidResult",
             expect.objectContaining({
               bidderPositionResult: {
-                message_header: "An error occurred",
-                message_description_md:
+                messageHeader: "An error occurred",
+                messageDescriptionMD:
                   "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
+                position: null,
+                status: "ERROR",
               },
             })
           )
@@ -352,60 +441,41 @@ describe("ConfirmBid", () => {
   })
 
   describe("editing bid amount", () => {
-    it("allows you to go to the max bid edit screen and select a new max bid", async () => {
-      const fakeNavigator = new FakeNavigator()
-      const fakeNavigatorProps = {
-        ...initialPropsForRegisteredUser,
-        navigator: fakeNavigator,
-      }
-      fakeNavigator.push({
-        component: SelectMaxBid,
-        id: "",
-        title: "",
-        passProps: fakeNavigatorProps,
-      })
-      fakeNavigator.push({
-        component: ConfirmBid,
-        id: "",
-        title: "",
-        passProps: fakeNavigatorProps,
-      })
+    it("allows you to go to the max bid edit screen and select a new max bid", () => {
+      renderWithRelay({ SaleArtwork: () => saleArtworkRegisteredForBidding })
 
-      const view = mountConfirmBidComponent({
-        ...initialPropsForRegisteredUser,
-        navigator: fakeNavigator,
-      })
+      fireEvent.press(screen.getByText("Edit"))
+      expect(mockNavigator.goBack).toHaveBeenCalled()
 
-      const selectMaxBidRow = (await view.root.findAllByType(TouchableWithoutFeedback))[0]
+      expect(mockStore.getState().selectedBidIndex).toEqual(0)
+      expect(mockStore.getState().selectedBid).toEqual({ cents: 450000, display: "$45,000" })
 
-      // eslint-disable-next-line testing-library/no-node-access
-      expect((await selectMaxBidRow.findAllByType(Text))[1].props.children).toEqual("$45,000")
+      mockStore.getActions().setSelectedBidIndex(1)
 
-      selectMaxBidRow.props.onPress()
-
-      const editScreen = await fakeNavigator.nextStep().root.findByType(SelectMaxBid)
-
-      expect(editScreen.props.selectedBidIndex).toEqual(0)
-
-      editScreen.instance.setState({ selectedBidIndex: 1 })
-      ;(await editScreen.findByType(Button)).props.onPress()
-
-      const { selectedBidIndex } = fakeNavigator.nextRoute().passProps as any
-      expect(selectedBidIndex).toEqual(1)
+      expect(mockStore.getState().selectedBidIndex).toEqual(1)
+      expect(mockStore.getState().selectedBid).toEqual({ cents: 460000, display: "$46,000" })
     })
   })
 
   describe("polling to verify bid position", () => {
     describe("bid success", () => {
       it("polls for new results", async () => {
-        renderWithWrappers(<ConfirmBid {...initialProps} />)
+        const completedCreateBidderPositionMutation = jest
+          .fn()
+          .mockImplementation(({ onCompleted }) => {
+            onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
+          })
+        useCreateBidderPositionMock.mockReturnValue([completedCreateBidderPositionMutation, false])
+
+        renderWithRelay({
+          Me: () => ({ hasQualifiedCreditCards: true }),
+          SaleArtwork: () => saleArtwork,
+        })
 
         fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
-        relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-          onCompleted!(mockRequestResponses.placingBid.bidAccepted, null)
-          return { dispose: jest.fn() }
-        }) as any
+
         let requestCounter = 0 // On the fifth attempt, return highestBidder
+
         bidderPositionQueryMock.mockImplementation(() => {
           requestCounter++
           if (requestCounter > 5) {
@@ -416,130 +486,158 @@ describe("ConfirmBid", () => {
         })
 
         fireEvent.press(screen.getByTestId("bid-button"))
-        await waitFor(() => !!nextStep)
 
-        expect(nextStep?.component).toEqual(BidResultScreen)
-        expect(nextStep?.passProps).toEqual(
+        await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
+
+        expect(mockNavigator.navigate).toHaveBeenCalledWith(
+          "BidResult",
           expect.objectContaining({
             bidderPositionResult:
-              mockRequestResponses.pollingForBid.highestBidder.me!.bidder_position,
+              mockRequestResponses.pollingForBid.highestBidder.me!.bidderPosition,
           })
         )
       })
 
       it("shows error when polling attempts exceed max", async () => {
-        renderWithWrappers(<ConfirmBid {...initialProps} />)
+        const completedCreateBidderPositionMutation = jest
+          .fn()
+          .mockImplementation(({ onCompleted }) => {
+            onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
+          })
+        useCreateBidderPositionMock.mockReturnValue([completedCreateBidderPositionMutation, false])
+
+        renderWithRelay({
+          Me: () => ({ hasQualifiedCreditCards: true }),
+          SaleArtwork: () => saleArtwork,
+        })
 
         fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+
         bidderPositionQueryMock.mockReturnValue(
           Promise.resolve(mockRequestResponses.pollingForBid.pending)
         )
-        relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-          onCompleted!(mockRequestResponses.placingBid.bidAccepted, null)
-          return { dispose: jest.fn() }
-        }) as any
 
         fireEvent.press(screen.getByTestId("bid-button"))
-        await waitFor(() => !!nextStep)
+        await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
-        expect(nextStep?.component).toEqual(BidResultScreen)
-        expect(nextStep?.passProps).toEqual(
+        expect(mockNavigator.navigate).toHaveBeenCalledWith(
+          "BidResult",
           expect.objectContaining({
-            bidderPositionResult: mockRequestResponses.pollingForBid.pending.me!.bidder_position,
+            bidderPositionResult: mockRequestResponses.pollingForBid.pending.me!.bidderPosition,
           })
         )
       })
 
       it("shows successful bid result when highest bidder", async () => {
-        renderWithWrappers(<ConfirmBid {...initialProps} />)
+        const completedCreateBidderPositionMutation = jest
+          .fn()
+          .mockImplementation(({ onCompleted }) => {
+            onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
+          })
+        useCreateBidderPositionMock.mockReturnValue([completedCreateBidderPositionMutation, false])
+
+        renderWithRelay({
+          Me: () => ({ hasQualifiedCreditCards: true }),
+          SaleArtwork: () => saleArtwork,
+        })
 
         fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+
         bidderPositionQueryMock.mockReturnValueOnce(
           Promise.resolve(mockRequestResponses.pollingForBid.highestBidder)
         )
-        relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-          onCompleted!(mockRequestResponses.placingBid.bidAccepted, null)
-          return { dispose: jest.fn() }
-        }) as any
 
         fireEvent.press(screen.getByTestId("bid-button"))
-        await waitFor(() => !!nextStep)
+        await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
-        expect(nextStep?.component).toEqual(BidResultScreen)
-        expect(nextStep?.passProps).toEqual(
+        expect(mockNavigator.navigate).toHaveBeenCalledWith(
+          "BidResult",
           expect.objectContaining({
             bidderPositionResult:
-              mockRequestResponses.pollingForBid.highestBidder.me!.bidder_position,
+              mockRequestResponses.pollingForBid.highestBidder.me!.bidderPosition,
           })
         )
       })
 
       it("shows outbid bidSuccessResult when outbid", async () => {
-        renderWithWrappers(<ConfirmBid {...initialProps} />)
+        const completedCreateBidderPositionMutation = jest
+          .fn()
+          .mockImplementation(({ onCompleted }) => {
+            onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
+          })
+        useCreateBidderPositionMock.mockReturnValue([completedCreateBidderPositionMutation, false])
+
+        renderWithRelay({
+          Me: () => ({ hasQualifiedCreditCards: true }),
+          SaleArtwork: () => saleArtwork,
+        })
 
         fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+
         bidderPositionQueryMock.mockReturnValueOnce(
           Promise.resolve(mockRequestResponses.pollingForBid.outbid)
         )
-        relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-          onCompleted!(mockRequestResponses.placingBid.bidAccepted, null)
-          return { dispose: jest.fn() }
-        }) as any
 
         fireEvent.press(screen.getByTestId("bid-button"))
-        await waitFor(() => !!nextStep)
+        await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
-        expect(nextStep?.component).toEqual(BidResultScreen)
-        expect(nextStep?.passProps).toEqual(
+        expect(mockNavigator.navigate).toHaveBeenCalledWith(
+          "BidResult",
           expect.objectContaining({
-            bidderPositionResult: mockRequestResponses.pollingForBid.outbid.me!.bidder_position,
+            bidderPositionResult: mockRequestResponses.pollingForBid.outbid.me!.bidderPosition,
           })
         )
       })
 
       it("shows reserve not met when reserve is not met", async () => {
-        renderWithWrappers(<ConfirmBid {...initialProps} />)
+        const completedCreateBidderPositionMutation = jest
+          .fn()
+          .mockImplementation(({ onCompleted }) => {
+            onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
+          })
+        useCreateBidderPositionMock.mockReturnValue([completedCreateBidderPositionMutation, false])
+
+        renderWithRelay({
+          Me: () => ({ hasQualifiedCreditCards: true }),
+          SaleArtwork: () => saleArtwork,
+        })
 
         fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+
         bidderPositionQueryMock.mockReturnValueOnce(
           Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet)
         )
-        relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-          onCompleted!(mockRequestResponses.placingBid.bidAccepted, null)
-          return { dispose: jest.fn() }
-        }) as any
 
         fireEvent.press(screen.getByTestId("bid-button"))
-        await waitFor(() => !!nextStep)
+        await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
-        expect(nextStep?.component).toEqual(BidResultScreen)
-        expect(nextStep?.passProps).toEqual(
+        expect(mockNavigator.navigate).toHaveBeenCalledWith(
+          "BidResult",
           expect.objectContaining({
             bidderPositionResult:
-              mockRequestResponses.pollingForBid.reserveNotMet.me!.bidder_position,
+              mockRequestResponses.pollingForBid.reserveNotMet.me!.bidderPosition,
           })
         )
       })
 
       it("updates the main auction screen", async () => {
-        const mockedMockNavigator = { push: jest.fn() }
+        const completedCreateBidderPositionMutation = jest
+          .fn()
+          .mockImplementation(({ onCompleted }) => {
+            onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
+          })
+        useCreateBidderPositionMock.mockReturnValue([completedCreateBidderPositionMutation, false])
 
-        renderWithWrappers(
-          <ConfirmBid
-            {...initialProps}
-            navigator={mockedMockNavigator as any}
-            refreshSaleArtwork={jest.fn()}
-          />
-        )
+        renderWithRelay({
+          Me: () => ({ hasQualifiedCreditCards: true }),
+          SaleArtwork: () => saleArtwork,
+        })
 
         fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+
         bidderPositionQueryMock.mockReturnValueOnce(
           Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet)
         )
-        relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-          onCompleted!(mockRequestResponses.placingBid.bidAccepted, null)
-          return { dispose: jest.fn() }
-        }) as any
 
         fireEvent.press(screen.getByTestId("bid-button"))
         await waitFor(() => mockPostNotificationName.mock.calls.length > 0)
@@ -556,26 +654,18 @@ describe("ConfirmBid", () => {
         })
 
         // navigates to bid result screen
-        expect(mockedMockNavigator.push).toHaveBeenCalledWith({
-          component: BidResultScreen,
-          passProps: {
+        expect(mockNavigator.navigate).toHaveBeenCalledWith(
+          "BidResult",
+          expect.objectContaining({
             bidderPositionResult: {
               position: {
                 internalID: "bidder-position-id-from-polling",
               },
               status: "RESERVE_NOT_MET",
             },
-            biddingEndAt: expect.anything(),
-            refreshBidderInfo: expect.anything(),
-            refreshSaleArtwork: expect.anything(),
-            sale_artwork: {
-              endAt: null,
-              id: "node-id",
-              internalID: "internal-id",
-              " $fragmentSpreads": null,
-              " $fragmentType": null,
+            saleArtwork: expect.objectContaining({
               artwork: {
-                artist_names: "Makiko Kudo",
+                artistNames: "Makiko Kudo",
                 date: "2015",
                 slug: "meteor-shower",
                 title: "Meteor Shower",
@@ -583,45 +673,51 @@ describe("ConfirmBid", () => {
                   url: "https://d32dm0rphc51dk.cloudfront.net/5RvuM9YF68AyD8OgcdLw7g/small.jpg",
                 },
               },
-              lot_label: "538",
+              endAt: null,
               extendedBiddingEndAt: null,
+              id: "node-id",
+              internalID: "internal-id",
+              lotLabel: "538",
               sale: {
-                start_at: "2018-05-08T20:22:42+00:00",
+                bidder: null,
                 cascadingEndTimeIntervalMinutes: null,
-                end_at: "2018-05-10T20:22:42+00:00",
+                endAt: "2018-05-10T20:22:42+00:00",
                 internalID: "internal-id",
                 isBenefit: false,
-                live_start_at: "2018-05-09T20:22:42+00:00",
+                liveStartAt: "2018-05-09T20:22:42+00:00",
                 partner: {
                   name: "Christie's",
                 },
-                bidder: null,
                 slug: "best-art-sale-in-town",
               },
-            },
-          },
-          title: "",
-        })
+            }),
+          })
+        )
       })
     })
 
     describe("bid failure", () => {
       it("shows the error screen with a failure", async () => {
-        renderWithWrappers(<ConfirmBid {...initialProps} />)
+        const completedCreateBidderPositionMutation = jest
+          .fn()
+          .mockImplementation(({ onCompleted }) => {
+            onCompleted(mockRequestResponses.placingBid.bidRejected, null)
+          })
+        useCreateBidderPositionMock.mockReturnValue([completedCreateBidderPositionMutation, false])
+
+        renderWithRelay({
+          Me: () => ({ hasQualifiedCreditCards: true }),
+          SaleArtwork: () => saleArtwork,
+        })
 
         fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
 
-        relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-          onCompleted!(mockRequestResponses.placingBid.bidRejected, null)
-          return { dispose: jest.fn() }
-        }) as any
-
         fireEvent.press(screen.getByTestId("bid-button"))
 
-        await waitFor(() => !!nextStep)
+        await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
-        expect(nextStep?.component).toEqual(BidResultScreen)
-        expect(nextStep?.passProps).toEqual(
+        expect(mockNavigator.navigate).toHaveBeenCalledWith(
+          "BidResult",
           expect.objectContaining({
             bidderPositionResult:
               mockRequestResponses.placingBid.bidRejected.createBidderPosition!.result,
@@ -632,49 +728,49 @@ describe("ConfirmBid", () => {
   })
 
   describe("ConfirmBid for unqualified user", () => {
-    const fillOutFormAndSubmit = async (component: ReactTestRenderer) => {
-      const confirmBidComponent = await component.root.findByType(ConfirmBid)
-      // manually setting state to avoid duplicating tests for skipping UI interaction, but practically better not to do this.
-      confirmBidComponent.instance.setState({ billingAddress })
-      confirmBidComponent.instance.setState({ creditCardToken: stripeToken.token })
+    const mockFillAndSubmit = () => {
+      // updating bid flow state
+      mockStore.getActions().setBillingAddress(billingAddress)
+      mockStore.getActions().setCreditCardToken(stripeToken.token as any)
 
-      const checkbox = await component.root.findByType(Checkbox)
-      checkbox.props.onPress()
-
-      const bidButton = await findPlaceBidButton(component)
-      bidButton.props.onPress()
+      // check the checkbox and press the Bid button
+      fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+      fireEvent.press(screen.getByTestId("bid-button"))
     }
 
-    it("shows the credit card form when the user tap the edit text in the credit card row", async () => {
-      const view = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
-      const creditcardRow = (await view.root.findAllByType(TouchableWithoutFeedback))[1]
+    it("shows the credit card form when the user tap the edit text in the credit card row", () => {
+      renderWithRelay({
+        Me: () => ({ hasQualifiedCreditCards: false }),
+        SaleArtwork: () => saleArtwork,
+      })
 
-      creditcardRow.props.onPress()
+      fireEvent.press(screen.getByText("Add"))
 
-      expect(nextStep?.component).toEqual(CreditCardForm)
+      expect(mockNavigator.navigate).toHaveBeenCalledWith("CreditCardForm", expect.any(Object))
     })
 
     it("shows the error screen when stripe's API returns an error", async () => {
-      renderWithWrappers(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
-      relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-        onCompleted!({}, null)
-        return { dispose: jest.fn() }
-      }) as any
-      ;(createToken as jest.Mock).mockImplementationOnce(() => {
-        throw new Error("Error tokenizing card")
+      const captureMessageSpy = jest.spyOn(Sentry, "captureMessage")
+      const erroredCreateCreditCardMutation = jest.fn().mockImplementation(({ onCompleted }) => {
+        onCompleted({}, [new Error("Stripe API error")])
+      })
+      useCreateCreditCardMock.mockReturnValue([erroredCreateCreditCardMutation, false])
+
+      renderWithRelay({
+        Me: () => ({ hasQualifiedCreditCards: false }),
+        SaleArtwork: () => saleArtwork,
       })
 
-      // UNSAFELY getting the component instance to set state for testing purposes only
-      screen.UNSAFE_getByType(ConfirmBid).instance.setState({ billingAddress })
-      screen.UNSAFE_getByType(ConfirmBid).instance.setState({ creditCardToken: stripeToken })
-
-      // Check the checkbox and press the Bid button
-      fireEvent.press(screen.UNSAFE_getByType(Checkbox))
-      fireEvent.press(screen.getByTestId("bid-button"))
+      mockFillAndSubmit()
 
       // wait for modal to be displayed
       await screen.findByText(
         "There was a problem processing your information. Check your payment details and try again."
+      )
+
+      expect(captureMessageSpy).toHaveBeenCalledWith(
+        expect.stringContaining("#createCreditCard error"),
+        "error"
       )
 
       // press the dismiss modal button
@@ -689,22 +785,25 @@ describe("ConfirmBid", () => {
     })
 
     it("shows the error screen with the correct error message on a createCreditCard mutation failure", async () => {
-      renderWithWrappers(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
-      ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
-      relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-        onCompleted!(mockRequestResponses.creatingCreditCardError, null)
-        return { dispose: jest.fn() }
-      }) as any
+      const captureMessageSpy = jest.spyOn(Sentry, "captureMessage")
+      const erroredCreateCreditCardMutation = jest.fn().mockImplementation(({ onCompleted }) => {
+        onCompleted(mockRequestResponses.creatingCreditCardError, null)
+      })
+      useCreateCreditCardMock.mockReturnValue([erroredCreateCreditCardMutation, false])
 
-      // UNSAFELY getting the component instance to set state for testing purposes only
-      screen.UNSAFE_getByType(ConfirmBid).instance.setState({ billingAddress })
-      screen.UNSAFE_getByType(ConfirmBid).instance.setState({ creditCardToken: stripeToken })
+      renderWithRelay({
+        Me: () => ({ hasQualifiedCreditCards: false }),
+        SaleArtwork: () => saleArtwork,
+      })
 
-      // Check the checkbox and press the Bid button
-      fireEvent.press(screen.UNSAFE_getByType(Checkbox))
-      fireEvent.press(screen.getByTestId("bid-button"))
+      mockFillAndSubmit()
 
       await screen.findByText("Your card's security code is incorrect.")
+
+      expect(captureMessageSpy).toHaveBeenCalledWith(
+        expect.stringContaining("Your card's security code is incorrect"),
+        "error"
+      )
 
       // press the dismiss modal button
       fireEvent.press(screen.getByText("Ok"))
@@ -714,52 +813,63 @@ describe("ConfirmBid", () => {
     })
 
     it("shows the error screen with the default error message if there are unhandled errors from the createCreditCard mutation", async () => {
+      const captureMessageSpy = jest.spyOn(Sentry, "captureMessage")
+
       const errors = [{ message: "malformed error" }]
+      const erroredCreateCreditCardMutation = jest.fn().mockImplementation(({ onCompleted }) => {
+        onCompleted({}, errors)
+      })
+      useCreateCreditCardMock.mockReturnValue([erroredCreateCreditCardMutation, false])
 
-      console.error = jest.fn() // Silences component logging.
-      ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
-      relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-        onCompleted!({}, errors)
-        return { dispose: jest.fn() }
-      }) as any
+      renderWithRelay({
+        Me: () => ({ hasQualifiedCreditCards: false }),
+        SaleArtwork: () => saleArtwork,
+      })
 
-      const view = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
-
-      await fillOutFormAndSubmit(view)
-
-      const modal = await view.root.findByType(Modal)
-      const modalText = await modal.findAllByType(Text)
-      const modalButton = await modal.findByType(Button)
-
-      // eslint-disable-next-line testing-library/no-node-access
-      expect(modalText[1].props.children).toEqual([
-        "There was a problem processing your information. Check your payment details and try again.",
-      ])
-      modalButton.props.onPress()
-
-      // it dismisses the modal
-      expect(modal.props.visible).toEqual(false)
-    })
-
-    it("shows the error screen with the default error message if the creditCardMutation error message is empty", async () => {
-      renderWithWrappers(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
-      ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
-
-      relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-        onCompleted!(mockRequestResponses.creatingCreditCardEmptyError, null)
-        return { dispose: jest.fn() }
-      }) as any
-
-      // UNSAFELY getting the component instance to set state for testing purposes only
-      screen.UNSAFE_getByType(ConfirmBid).instance.setState({ billingAddress })
-      screen.UNSAFE_getByType(ConfirmBid).instance.setState({ creditCardToken: stripeToken })
-
-      // Check the checkbox and press the Bid button
-      fireEvent.press(screen.UNSAFE_getByType(Checkbox))
-      fireEvent.press(screen.getByTestId("bid-button"))
+      mockFillAndSubmit()
 
       await screen.findByText(
         "There was a problem processing your information. Check your payment details and try again."
+      )
+
+      expect(captureMessageSpy).toHaveBeenCalledWith(
+        expect.stringContaining("malformed error"),
+        "error"
+      )
+
+      // press the dismiss modal button
+      fireEvent.press(screen.getByText("Ok"))
+
+      // error modal is dismissed
+      expect(
+        screen.queryByText(
+          "There was a problem processing your information. Check your payment details and try again."
+        )
+      ).not.toBeOnTheScreen()
+    })
+
+    it("shows the error screen with the default error message if the creditCardMutation error message is empty", async () => {
+      const captureMessageSpy = jest.spyOn(Sentry, "captureMessage")
+
+      const erroredCreateCreditCardMutation = jest.fn().mockImplementation(({ onCompleted }) => {
+        onCompleted(mockRequestResponses.creatingCreditCardEmptyError, null)
+      })
+      useCreateCreditCardMock.mockReturnValue([erroredCreateCreditCardMutation, false])
+
+      renderWithRelay({
+        Me: () => ({ hasQualifiedCreditCards: false }),
+        SaleArtwork: () => saleArtwork,
+      })
+
+      mockFillAndSubmit()
+
+      await screen.findByText(
+        "There was a problem processing your information. Check your payment details and try again."
+      )
+
+      expect(captureMessageSpy).toHaveBeenCalledWith(
+        expect.stringContaining("Payment information could not be processed"),
+        "error"
       )
 
       // press the dismiss modal button
@@ -774,43 +884,62 @@ describe("ConfirmBid", () => {
     })
 
     it("shows the generic error screen on a createCreditCard mutation network failure", async () => {
-      console.error = jest.fn() // Silences component logging.
-      ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
-      relay.commitMutation = commitMutationMock((_, { onError }) => {
-        onError!(new TypeError("Network request failed"))
-        return { dispose: jest.fn() }
-      }) as any
+      const captureMessageSpy = jest.spyOn(Sentry, "captureMessage")
+      const erroredCreateCreditCardMutation = jest.fn().mockImplementation(({ onError }) => {
+        onError(new TypeError("Network request failed"))
+      })
+      useCreateCreditCardMock.mockReturnValue([erroredCreateCreditCardMutation, false])
 
-      const view = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
+      renderWithRelay({
+        Me: () => ({ hasQualifiedCreditCards: false }),
+        SaleArtwork: () => saleArtwork,
+      })
 
-      await fillOutFormAndSubmit(view)
+      mockFillAndSubmit()
 
-      expect(nextStep?.component).toEqual(BidResultScreen)
-      expect(nextStep?.passProps).toEqual(
+      await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
+
+      expect(captureMessageSpy).toHaveBeenCalledWith(
+        expect.stringContaining("#createCreditCard"),
+        "error"
+      )
+      expect(mockNavigator.navigate).toHaveBeenCalledWith(
+        "BidResult",
         expect.objectContaining({
           bidderPositionResult: {
-            message_header: "An error occurred",
-            message_description_md:
+            messageHeader: "An error occurred",
+            messageDescriptionMD:
               "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
+            position: null,
+            status: "ERROR",
           },
         })
       )
     })
 
     describe("After successful mutations", () => {
+      const completedUpdateUserPhoneNumberMutation = jest
+        .fn()
+        .mockImplementation(({ onCompleted }) => {
+          onCompleted(mockRequestResponses.updateMyUserProfile, null)
+        })
+
+      const completedCreateCreditCardMutation = jest.fn().mockImplementation(({ onCompleted }) => {
+        onCompleted(mockRequestResponses.creatingCreditCardSuccess, null)
+      })
+      const completedCreateBidderPositionMutation = jest
+        .fn()
+        .mockImplementation(({ onCompleted }) => {
+          onCompleted(mockRequestResponses.placingBid.bidAccepted, null)
+        })
+
       beforeEach(() => {
-        ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
-        relay.commitMutation = jest
-          .fn()
-          .mockImplementationOnce((_, { onCompleted }) =>
-            onCompleted(mockRequestResponses.updateMyUserProfile)
-          )
-          .mockImplementationOnce((_, { onCompleted }) =>
-            onCompleted(mockRequestResponses.creatingCreditCardSuccess)
-          )
-          .mockImplementationOnce((_, { onCompleted }) =>
-            onCompleted(mockRequestResponses.placingBid.bidAccepted)
-          )
+        useUpdateUserPhoneNumberMock.mockReturnValue([
+          completedUpdateUserPhoneNumberMutation,
+          false,
+        ])
+        useCreateCreditCardMock.mockReturnValue([completedCreateCreditCardMutation, false])
+        useCreateBidderPositionMock.mockReturnValue([completedCreateBidderPositionMutation, false])
       })
 
       it("commits two mutations, createCreditCard followed by createBidderPosition on a successful bid", async () => {
@@ -818,43 +947,24 @@ describe("ConfirmBid", () => {
           .mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.pending))
           .mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
 
-        renderWithWrappers(<ConfirmBid {...initialPropsForUnqualifiedUser} />)
+        renderWithRelay({
+          Me: () => ({ hasQualifiedCreditCards: false }),
+          SaleArtwork: () => saleArtwork,
+        })
 
-        // UNSAFELY getting the component instance to set state for testing purposes only
-        screen.UNSAFE_getByType(ConfirmBid).instance.setState({ billingAddress })
-        screen
-          .UNSAFE_getByType(ConfirmBid)
-          .instance.setState({ creditCardToken: stripeToken.token })
+        mockFillAndSubmit()
 
-        // Check the checkbox and press the Bid button
-        fireEvent.press(screen.UNSAFE_getByType(Checkbox))
-        fireEvent.press(screen.getByTestId("bid-button"))
-
-        await waitFor(() => expect(relay.commitMutation).toHaveBeenCalled())
-        expect(relay.commitMutation).toHaveBeenCalledWith(
-          expect.any(Object),
-          expect.objectContaining({
-            variables: {
-              input: {
-                phone: "111 222 4444",
-              },
-            },
-          })
+        expect(completedUpdateUserPhoneNumberMutation).toHaveBeenCalledWith(
+          expect.objectContaining({ variables: { input: { phone: "111 222 4444" } } })
         )
 
-        expect(relay.commitMutation).toHaveBeenCalledWith(
-          expect.any(Object),
-          expect.objectContaining({
-            variables: {
-              input: {
-                token: "fake-token",
-              },
-            },
-          })
+        expect(completedCreateCreditCardMutation).toHaveBeenCalledWith(
+          expect.objectContaining({ variables: { input: { token: "fake-token" } } })
         )
 
-        expect(relay.commitMutation).toHaveBeenCalledWith(
-          expect.any(Object),
+        await waitFor(() => expect(completedCreateBidderPositionMutation).toHaveBeenCalled())
+
+        expect(completedCreateBidderPositionMutation).toHaveBeenCalledWith(
           expect.objectContaining({
             variables: {
               input: {
@@ -879,21 +989,31 @@ describe("ConfirmBid", () => {
       })
 
       it("displays an error message on polling failure", async () => {
-        console.error = jest.fn() // Silences component logging.
+        const captureExceptionSpy = jest.spyOn(Sentry, "captureException")
         bidderPositionQueryMock.mockReturnValueOnce(Promise.reject({ message: "error" }))
 
-        const view = mountConfirmBidComponent(initialPropsForUnqualifiedUser)
+        renderWithRelay({
+          Me: () => ({ hasQualifiedCreditCards: false }),
+          SaleArtwork: () => saleArtwork,
+        })
 
-        fillOutFormAndSubmit(view)
-        await waitFor(() => !!nextStep)
+        mockFillAndSubmit()
 
-        expect(nextStep?.component).toEqual(BidResultScreen)
-        expect(nextStep?.passProps).toEqual(
+        await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
+
+        expect(captureExceptionSpy).toHaveBeenCalledWith(
+          { message: "error" },
+          { tags: { source: "ConfirmBid.tsx: verifyBidderPosition" } }
+        )
+        expect(mockNavigator.navigate).toHaveBeenCalledWith(
+          "BidResult",
           expect.objectContaining({
             bidderPositionResult: {
-              message_header: "An error occurred",
-              message_description_md:
+              messageHeader: "An error occurred",
+              messageDescriptionMD:
                 "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
+              position: null,
+              status: "ERROR",
             },
           })
         )
@@ -903,13 +1023,13 @@ describe("ConfirmBid", () => {
 
   describe("cascading end times", () => {
     it("sale endtime defaults to extendedBiddingEndtime", () => {
-      renderWithWrappers(<ConfirmBid {...initialPropsForCascadingSale} />)
+      renderWithRelay({ SaleArtwork: () => cascadingEndTimeSaleArtwork })
 
       expect(screen.getByText("00d 00h 00m 10s")).toBeOnTheScreen()
     })
 
     it("shows the sale's end time if the sale does not have cascading end times", () => {
-      renderWithWrappers(<ConfirmBid {...initialPropsForNonCascadingSale} />)
+      renderWithRelay({ SaleArtwork: () => nonCascadeSaleArtwork })
 
       expect(screen.getByText("00d 00h 00m 10s")).toBeOnTheScreen()
     })
@@ -922,7 +1042,7 @@ describe("ConfirmBid", () => {
       slug: "meteor-shower",
       title: "Meteor Shower",
       date: "2015",
-      artist_names: "Makiko Kudo",
+      artistNames: "Makiko Kudo",
       image: {
         url: "https://d32dm0rphc51dk.cloudfront.net/5RvuM9YF68AyD8OgcdLw7g/small.jpg",
       },
@@ -930,62 +1050,58 @@ describe("ConfirmBid", () => {
     sale: {
       internalID: "internal-id",
       slug: "best-art-sale-in-town",
-      start_at: "2018-05-08T20:22:42+00:00",
-      end_at: "2018-05-10T20:22:42+00:00",
+      startAt: "2018-05-08T20:22:42+00:00",
+      endAt: "2018-05-10T20:22:42+00:00",
       isBenefit: false,
       partner: {
         name: "Christie's",
       },
       bidder: null,
     },
-    lot_label: "538",
+    lotLabel: "538",
   }
 
-  const saleArtwork: ConfirmBid_sale_artwork$data = {
+  const saleArtwork: CleanRelayFragment<ConfirmBid_saleArtwork$data> = {
     ...baseSaleArtwork,
     endAt: null,
     extendedBiddingEndAt: null,
     sale: {
       ...baseSaleArtwork.sale,
-      live_start_at: "2018-05-09T20:22:42+00:00",
+      liveStartAt: "2018-05-09T20:22:42+00:00",
       cascadingEndTimeIntervalMinutes: null,
     },
-    " $fragmentSpreads": null as any, // needs this to keep TS happy
-    " $fragmentType": null as any, // needs this to keep TS happy
   }
 
-  const nonCascadeSaleArtwork: ConfirmBid_sale_artwork$data = {
+  const nonCascadeSaleArtwork: CleanRelayFragment<ConfirmBid_saleArtwork$data> = {
     ...baseSaleArtwork,
     endAt: null,
     extendedBiddingEndAt: null,
     sale: {
       ...baseSaleArtwork.sale,
-      end_at: new Date(Date.now() + 10000).toISOString(),
-      live_start_at: null,
+      endAt: new Date(Date.now() + 10000).toISOString(),
+      liveStartAt: null,
       cascadingEndTimeIntervalMinutes: null,
     },
-    " $fragmentSpreads": null as any, // needs this to keep TS happy
-    " $fragmentType": null as any, // needs this to keep TS happy
   }
 
-  const cascadingEndTimeSaleArtwork: ConfirmBid_sale_artwork$data = {
+  const cascadingEndTimeSaleArtwork: CleanRelayFragment<ConfirmBid_saleArtwork$data> = {
     ...saleArtwork,
     endAt: "2018-05-13T20:22:42+00:00",
     extendedBiddingEndAt: new Date(Date.now() + 10000).toISOString(),
     sale: {
       ...baseSaleArtwork.sale,
-      live_start_at: null,
+      liveStartAt: null,
       cascadingEndTimeIntervalMinutes: 1,
     },
   }
 
-  const saleArtworkRegisteredForBidding: ConfirmBid_sale_artwork$data = {
+  const saleArtworkRegisteredForBidding: CleanRelayFragment<ConfirmBid_saleArtwork$data> = {
     ...saleArtwork,
     endAt: "2018-05-13T20:22:42+00:00",
     extendedBiddingEndAt: null,
     sale: {
       ...baseSaleArtwork.sale,
-      live_start_at: null,
+      liveStartAt: null,
       cascadingEndTimeIntervalMinutes: null,
       bidder: {
         id: "1234567",
@@ -1000,21 +1116,22 @@ describe("ConfirmBid", () => {
           phone: "111 222 4444",
         },
       },
-    } as ConfirmBidUpdateUserMutation["response"],
+    } as useUpdateUserPhoneNumberMutation["response"],
     creatingCreditCardSuccess: {
       createCreditCard: {
         creditCardOrError: {
           creditCard: {
             internalID: "new-credit-card",
+            id: "",
             brand: "VISA",
             name: "TEST",
-            last_digits: "4242",
-            expiration_month: 1,
-            expiration_year: 2020,
+            lastDigits: "4242",
+            expirationMonth: 1,
+            expirationYear: 2020,
           },
         },
       },
-    } as ConfirmBidCreateCreditCardMutation["response"],
+    } as useCreateCreditCardMutation["response"],
     creatingCreditCardEmptyError: {
       createCreditCard: {
         creditCardOrError: {
@@ -1025,7 +1142,7 @@ describe("ConfirmBid", () => {
           },
         },
       },
-    } as ConfirmBidCreateCreditCardMutation["response"],
+    } as useCreateCreditCardMutation["response"],
     creatingCreditCardError: {
       createCreditCard: {
         creditCardOrError: {
@@ -1036,34 +1153,34 @@ describe("ConfirmBid", () => {
           },
         },
       },
-    } as ConfirmBidCreateCreditCardMutation["response"],
+    } as useCreateCreditCardMutation["response"],
     placingBid: {
       bidAccepted: {
         createBidderPosition: {
           result: {
             status: "SUCCESS",
-            message_header: "Success",
-            message_description_md: "",
+            messageHeader: "Success",
+            messageDescriptionMD: "",
             position: {
               internalID: "bidder-position-id-from-mutation",
             },
           },
         },
-      } as ConfirmBidCreateBidderPositionMutation["response"],
+      } as useCreateBidderPositionMutation["response"],
       bidRejected: {
         createBidderPosition: {
           result: {
             status: "ERROR",
-            message_header: "An error occurred",
-            message_description_md: "Some markdown description",
+            messageHeader: "An error occurred",
+            messageDescriptionMD: "Some markdown description",
           },
         },
-      } as ConfirmBidCreateBidderPositionMutation["response"],
+      } as useCreateBidderPositionMutation["response"],
     },
     pollingForBid: {
       highestBidder: {
         me: {
-          bidder_position: {
+          bidderPosition: {
             status: "WINNING",
             position: {
               internalID: "bidder-position-id-from-polling",
@@ -1073,7 +1190,7 @@ describe("ConfirmBid", () => {
       } as BidderPositionQuery$data,
       outbid: {
         me: {
-          bidder_position: {
+          bidderPosition: {
             status: "OUTBID",
             position: {
               internalID: "bidder-position-id-from-polling",
@@ -1083,7 +1200,7 @@ describe("ConfirmBid", () => {
       } as BidderPositionQuery$data,
       pending: {
         me: {
-          bidder_position: {
+          bidderPosition: {
             position: {
               internalID: "bidder-position-id-from-polling",
             },
@@ -1093,7 +1210,7 @@ describe("ConfirmBid", () => {
       } as BidderPositionQuery$data,
       reserveNotMet: {
         me: {
-          bidder_position: {
+          bidderPosition: {
             position: {
               internalID: "bidder-position-id-from-polling",
             },
@@ -1130,49 +1247,5 @@ describe("ConfirmBid", () => {
       bankAccount: null,
       extra: null,
     },
-  }
-
-  const initialProps: ConfirmBidProps = {
-    sale_artwork: saleArtwork,
-    increments: [
-      {
-        cents: 450000,
-        display: "$45,000",
-      },
-      {
-        cents: 460000,
-        display: "$46,000",
-      },
-    ],
-    selectedBidIndex: 0,
-    relay: {
-      environment: null,
-    },
-    me: {
-      has_qualified_credit_cards: true,
-    },
-    navigator: mockNavigator,
-  } as any
-
-  const initialPropsForUnqualifiedUser = {
-    ...initialProps,
-    me: {
-      has_qualified_credit_cards: false,
-    },
-  } as any
-
-  const initialPropsForRegisteredUser = {
-    ...initialProps,
-    sale_artwork: saleArtworkRegisteredForBidding,
-  } as any
-
-  const initialPropsForCascadingSale = {
-    ...initialProps,
-    sale_artwork: cascadingEndTimeSaleArtwork,
-  }
-
-  const initialPropsForNonCascadingSale = {
-    ...initialProps,
-    sale_artwork: nonCascadeSaleArtwork,
   }
 })

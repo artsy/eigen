@@ -1,7 +1,7 @@
 import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
 import { Dialog, quoteLeft, quoteRight } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
-import { LengthUnitPreference } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
+import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import {
   SearchCriteria,
   SearchCriteriaAttributes,

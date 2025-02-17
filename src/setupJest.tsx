@@ -221,6 +221,7 @@ jest.mock("@invertase/react-native-apple-authentication", () => ({
 
 jest.mock("@sentry/react-native", () => ({
   captureMessage: jest.fn(),
+  captureException: jest.fn(),
   init() {},
   setUser() {},
   addBreadcrumb() {},
