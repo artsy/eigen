@@ -33,7 +33,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
 
     const optimisticallyClearTask: SelectorStoreUpdater<
       useAcknowledgeTaskMutation$data | useDismissTaskMutation$data
-    > = useCallback(async (store) => {
+    > = useCallback((store) => {
       const homeViewTaskSection = store
         .getRoot()
         .getLinkedRecord("homeView")
@@ -51,7 +51,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
       }
     }, [])
 
-    const handlePressTask = async () => {
+    const handlePressTask = () => {
       if (onPress) {
         onPress()
         return
@@ -67,7 +67,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
       })
     }
 
-    const handleClearTask = async () => {
+    const handleClearTask = () => {
       dismissTask({
         variables: { taskID: task.internalID },
         optimisticUpdater: optimisticallyClearTask,
