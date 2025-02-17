@@ -1,6 +1,7 @@
 import {
   Flex,
   Pill,
+  Screen,
   SimpleMessage,
   Spacer,
   Text,
@@ -41,7 +42,7 @@ export const BrowseSimilarWorksContent: React.FC<BrowseSimilarWorksContentProps>
   const pills = extractPills({ attributes, aggregations, unit: localizedUnit, entity })
 
   return (
-    <Flex flex={1}>
+    <Screen>
       <NavigationHeader
         onLeftButtonPress={goBack}
       >{`Works by ${entity.artists[0].name}`}</NavigationHeader>
@@ -64,7 +65,7 @@ export const BrowseSimilarWorksContent: React.FC<BrowseSimilarWorksContentProps>
         </Flex>
         <SimilarArtworksContainer attributes={attributes} />
       </ScrollView>
-    </Flex>
+    </Screen>
   )
 }
 
