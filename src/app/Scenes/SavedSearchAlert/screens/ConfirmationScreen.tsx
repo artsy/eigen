@@ -225,9 +225,6 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
         onPress={(slug: string, artwork?: ArtworkGridItem_artwork$data) => {
           closeModal?.()
           trackEvent(tracks.tappedArtworkGroup(slug, artwork?.collectorSignals))
-          requestAnimationFrame(() => {
-            navigate?.(`artwork/${slug}`)
-          })
         }}
       />
 
