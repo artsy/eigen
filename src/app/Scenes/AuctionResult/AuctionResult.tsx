@@ -54,9 +54,13 @@ export const AuctionResult: React.FC<Props> = (props) => {
 
   const tracking = useTracking()
 
+  const headerTitle = auctionResult.dateText
+    ? `${auctionResult.title}, ${auctionResult.dateText}`
+    : auctionResult.title
+
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: `${auctionResult.title}, ${auctionResult.dateText}`,
+      headerTitle,
     })
   }, [navigation])
 
