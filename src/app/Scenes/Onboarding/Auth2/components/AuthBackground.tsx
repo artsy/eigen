@@ -44,13 +44,21 @@ export const AuthBackground: React.FC = () => {
             easing: isMounted ? Easing.linear : Easing.out(Easing.circle),
           }}
         >
-          <Text variant="xl" color="white100">
+          <Text
+            variant="xl"
+            // We want to show this text in white regardless of the theme to make sure it can be read clearly
+            color="white"
+          >
             Collect Art by the World’s Leading Artists
           </Text>
 
           <Spacer y={1} />
 
-          <Text variant="sm" color="white100">
+          <Text
+            variant="sm"
+            // We want to show this text in white regardless of the theme to make sure it can be read clearly
+            color="white"
+          >
             Build your personalized profile, get market insights, buy and sell art with confidence.
           </Text>
 
