@@ -21,7 +21,7 @@ export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose 
   return (
     <>
       <Flex mx={2}>
-        <Separator borderColor="black" />
+        <Separator borderColor="black100" />
       </Flex>
       <Spacer y={0.5} />
 

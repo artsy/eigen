@@ -34,7 +34,7 @@ export const useHideSplashScreen = () => {
         return
       }
 
-      if (!isLoggedIn) {
+      if (!isLoggedIn && isNavigationReady) {
         hideSplashScreen()
       }
     }

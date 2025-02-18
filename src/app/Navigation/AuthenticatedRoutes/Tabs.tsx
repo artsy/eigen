@@ -1,13 +1,11 @@
 import { ActionType, OwnerType, Screen, tappedTabBar } from "@artsy/cohesion"
 import { Flex, Text, useColor } from "@artsy/palette-mobile"
-import { THEME } from "@artsy/palette-tokens"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
 import { InboxTab } from "app/Navigation/AuthenticatedRoutes/InboxTab"
 import { ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
 import { SearchTab } from "app/Navigation/AuthenticatedRoutes/SearchTab"
-import { SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
 import { modalRoutes } from "app/Navigation/AuthenticatedRoutes/modalRoutes"
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { AppModule } from "app/Navigation/routes"
@@ -33,14 +31,12 @@ export type AuthenticatedRoutesParams = {
   Search: undefined
   Profile: undefined
   Inbox: undefined
-  Sell: undefined
 } & { [key in AppModule]: undefined }
 
 type TabRoutesParams = {
   home: undefined
   search: undefined
   inbox: undefined
-  sell: undefined
   profile: undefined
 }
 
@@ -121,14 +117,15 @@ const AppTabs: React.FC = () => {
                   style={{ top: Platform.OS === "ios" ? -4 : 0 }}
                   selectable={false}
                   textAlign="center"
+                  color="black100"
                 >
                   {bottomTabsConfig[route.name].name}
                 </Text>
               </Flex>
             )
           },
-          tabBarActiveTintColor: THEME.colors["black100"],
-          tabBarInactiveTintColor: THEME.colors["black60"],
+          tabBarActiveTintColor: color("black100"),
+          tabBarInactiveTintColor: color("black100"),
         }
       }}
       screenListeners={{
@@ -143,7 +140,6 @@ const AppTabs: React.FC = () => {
       <Tab.Screen name="home" component={HomeTab} options={{ ...tabsBadges["home"] }} />
       <Tab.Screen name="search" component={SearchTab} />
       <Tab.Screen name="inbox" component={InboxTab} options={{ ...tabsBadges["inbox"] }} />
-      <Tab.Screen name="sell" component={SellTab} />
       <Tab.Screen name="profile" component={ProfileTab} options={{ ...tabsBadges["profile"] }} />
     </Tab.Navigator>
   )
@@ -187,9 +183,6 @@ export const tabsTracks = {
         break
       case "search":
         tabScreen = OwnerType.search
-        break
-      case "sell":
-        tabScreen = OwnerType.sell
         break
     }
 

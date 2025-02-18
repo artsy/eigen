@@ -46,6 +46,7 @@ export type FeatureName = keyof typeof features
 export const features = {
   ARDarkModeSupport: {
     readyForRelease: false,
+    showInDevMenu: true,
     description: "Support dark mode",
   },
   AREnableEditorialNews: {
@@ -186,18 +187,6 @@ export const features = {
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableAlertBottomSheet",
-  },
-  AREnableMyCollectionInterestedInSellingTooltip: {
-    description: "Enable My Collection 'Interested in Selling?' tooltip",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableMyCollectionInterestedInSellingTooltip",
-  },
-  ARSWAMakeAllDimensionsOptional: {
-    description: "Make all dimensions optional in SWA submit flow",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "ARSWAMakeAllDimensionsOptional",
   },
   AREnableCollectionsWithoutHeaderImage: {
     description: "Remove the header image from collections",

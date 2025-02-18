@@ -1,14 +1,19 @@
 import { Flex } from "@artsy/palette-mobile"
 import { FancySwiperIcons } from "app/Components/FancySwiper/FancySwiperIcons"
-import React, { useRef } from "react"
+import React, { useMemo, useRef } from "react"
 import { PanResponder, Animated } from "react-native"
 import { FancySwiperCard } from "./FancySwiperCard"
 
 // the amount of swiping that is considered a full swipe
 export const SWIPE_MAGNITUDE = 100
 
+export type FancySwiperArtworkCard = {
+  content: React.ReactNode
+  artworkId: string
+}
+
 interface FancySwiperProps {
-  cards: React.ReactNode[]
+  cards: FancySwiperArtworkCard[]
   hideActionButtons?: boolean
   onSwipeAnywhere?: () => void
   onSwipeLeft?: () => void
@@ -22,7 +27,7 @@ export const FancySwiper = ({
   onSwipeLeft,
   onSwipeRight,
 }: FancySwiperProps) => {
-  const remainingCards = cards.reverse()
+  const remainingCards = useMemo(() => cards.reverse(), [cards.length])
   const swiper = useRef<Animated.ValueXY>(new Animated.ValueXY()).current
 
   const panResponder = PanResponder.create({
@@ -32,11 +37,16 @@ export const FancySwiper = ({
       swiper.setValue({ x: dx, y: dy })
     },
     onPanResponderRelease: (_, { dx, dy }) => {
+      // the hypoteneuse of the swipe is at least 100
       const isFullSwipe = Math.hypot(dx, dy) >= SWIPE_MAGNITUDE
+
+      // the angle of the swipe is below 60 degrees from the horizontal axis
+      const isUnder60DegreeSwipe = Math.abs(Math.atan(dy / dx)) < Math.PI / 3
+
       const isLeftSwipe = dx < 0
       const isRightSwipe = dx > 0
 
-      if (isFullSwipe && onSwipeAnywhere) {
+      if (isFullSwipe && isUnder60DegreeSwipe && onSwipeAnywhere) {
         handle360Swipe(dx, dy)
       } else if (isFullSwipe && isLeftSwipe && onSwipeLeft) {
         handleLeftSwipe(dy)
@@ -117,8 +127,8 @@ export const FancySwiper = ({
 
           return (
             <FancySwiperCard
-              card={card}
-              key={index}
+              card={card.content}
+              key={card.artworkId}
               swiper={swiper}
               isTopCard={isTopCard}
               isSecondCard={isSecondCard}

@@ -1,18 +1,12 @@
 import { Screen } from "@artsy/palette-mobile"
 import { TimeOffsetProvider } from "app/Components/Bidding/Context/TimeOffsetProvider"
-import { RegistrationQueryRenderer } from "app/Components/Bidding/Screens/Registration"
-import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
+import { BiddingNavigator } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 
 export const RegistrationFlow: React.FC<{ saleID: string }> = (props) => {
   return (
     <Screen>
       <TimeOffsetProvider>
-        <NavigatorIOS
-          initialRoute={{
-            component: RegistrationQueryRenderer,
-            passProps: props,
-          }}
-        />
+        <BiddingNavigator initialRouteName="RegisterToBid" {...props} />
       </TimeOffsetProvider>
     </Screen>
   )

@@ -83,14 +83,14 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
           shadowOpacity: 0.1,
           shadowRadius: 12,
           elevation: 12,
-          backgroundColor: "white",
+          backgroundColor: color("white100"),
           // the bottom padding that is created by safeareaview in almost all > X apple devices
           // is somewhere around 35px. This is a hack to make sure that the button is
           // displayed 40px above the bottom of the screen.
           paddingBottom: -15,
         }}
       >
-        <Box p={2} backgroundColor="white">
+        <Box p={2} backgroundColor="white100">
           <Box
             height={50}
             borderRadius={50}

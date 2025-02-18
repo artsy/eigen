@@ -1,5 +1,6 @@
-import { Spacer, ClassTheme, Text, Image } from "@artsy/palette-mobile"
+import { Image, Spacer, Text } from "@artsy/palette-mobile"
 import { RelatedArtist_artist$data } from "__generated__/RelatedArtist_artist.graphql"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { navigate } from "app/system/navigation/navigate"
 import { Component } from "react"
 import { TouchableWithoutFeedback, View } from "react-native"
@@ -38,13 +39,13 @@ class RelatedArtist extends Component<Props> {
           <Text variant="sm" weight="medium">
             {artist.name}
           </Text>
-          <ClassTheme>
+          <ThemeAwareClassTheme>
             {({ color }) => (
               <Text variant="sm" color={color("black60")}>
                 {this.artworksString(artist.counts)}
               </Text>
             )}
-          </ClassTheme>
+          </ThemeAwareClassTheme>
         </View>
       </TouchableWithoutFeedback>
     )

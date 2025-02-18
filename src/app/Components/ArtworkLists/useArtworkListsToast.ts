@@ -2,7 +2,6 @@ import { ArtworkEntity, ArtworkListEntity } from "app/Components/ArtworkLists/ty
 import { useToast } from "app/Components/Toast/toastHook"
 import { ToastOptions, ToastPlacement } from "app/Components/Toast/types"
 import { navigate } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 const DEFAULT_TOAST_PLACEMENT: ToastPlacement = "bottom"
 
@@ -25,7 +24,6 @@ type SingleArtworkListOptions = Options & {
 
 export const useArtworkListToast = (bottomPadding?: number | null) => {
   const toast = useToast()
-  const isPartnerOfferEnabled = useFeatureFlag("AREnablePartnerOffer")
 
   const showToast = (message: string, options?: Omit<ToastOptions, "bottomPadding">) => {
     toast.show(message, DEFAULT_TOAST_PLACEMENT, {
@@ -34,16 +32,13 @@ export const useArtworkListToast = (bottomPadding?: number | null) => {
     })
   }
   const savedToDefaultArtworkList = (options: SavedToDefaultArtworkListOptions) => {
-    const { onToastPress, isInAuction } = options
+    const { onToastPress } = options
 
-    showToast("Artwork saved", {
+    showToast("Added to Saved Artworks", {
       cta: "Add to a List",
       onPress: onToastPress,
       backgroundColor: "green100",
-      description:
-        isPartnerOfferEnabled && !isInAuction
-          ? "Saving an artwork signals interest to galleries."
-          : null,
+      description: null,
     })
   }
 

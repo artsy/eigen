@@ -32,7 +32,7 @@ export const ArticleScreen: React.FC<ArticleScreenProps> = (props) => {
 
 const Article: React.FC<ArticleScreenProps> = (props) => {
   const data = useLazyLoadQuery<ArticleScreenQuery>(articleScreenQuery, {
-    slug: props.articleID,
+    articleID: props.articleID,
   })
 
   if (!data.article) {
@@ -82,8 +82,8 @@ const Article: React.FC<ArticleScreenProps> = (props) => {
 }
 
 export const articleScreenQuery = graphql`
-  query ArticleScreenQuery($slug: String!) {
-    article(id: $slug) {
+  query ArticleScreenQuery($articleID: String!) {
+    article(id: $articleID) {
       ...ArticleShareButton_article
       ...ArticleWebViewScreen_article
       ...ArticleBody_article

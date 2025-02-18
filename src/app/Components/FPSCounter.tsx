@@ -1,3 +1,4 @@
+import { useColor } from "@artsy/palette-mobile"
 import { useState } from "react"
 import { useFps } from "react-fps"
 import { Text, TouchableOpacity, View, ViewStyle } from "react-native"
@@ -5,6 +6,8 @@ import { Text, TouchableOpacity, View, ViewStyle } from "react-native"
 export function FPSCounter({ style }: { style?: ViewStyle }) {
   const { currentFps, avgFps, fps, maxFps } = useFps(20)
   const [opacity, setOpacity] = useState(1)
+  const color = useColor()
+
   const textHeight = 20
   const graphHeight = 40
   const borderWidth = 1
@@ -18,8 +21,8 @@ export function FPSCounter({ style }: { style?: ViewStyle }) {
         width: 86,
         left: 4,
         bottom: 4,
-        backgroundColor: "white",
-        borderColor: "black",
+        backgroundColor: color("white100"),
+        borderColor: color("black100"),
         borderWidth,
         paddingHorizontal: 2,
         opacity,

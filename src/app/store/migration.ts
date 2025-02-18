@@ -60,9 +60,11 @@ export const Versions = {
   AddInfiniteDiscoveryModel: 47,
   MoveOnboardingStateToOnboardingModel: 48,
   AddSavedArtworksCountToInfiniteDiscoveryModel: 49,
+  RemoveArworkSubmissionModel: 50,
+  RemoveRequestPriceEstimateModel: 51,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddSavedArtworksCountToInfiniteDiscoveryModel
+export const CURRENT_APP_VERSION = Versions.RemoveRequestPriceEstimateModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -349,6 +351,12 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddSavedArtworksCountToInfiniteDiscoveryModel]: (state) => {
     state.infiniteDiscovery.savedArtworksCount = 0
+  },
+  [Versions.RemoveArworkSubmissionModel]: (state) => {
+    delete state.artworkSubmission
+  },
+  [Versions.RemoveRequestPriceEstimateModel]: (state) => {
+    delete state.requestedPriceEstimates
   },
 }
 

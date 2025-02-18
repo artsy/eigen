@@ -1,19 +1,18 @@
-import { Checkbox } from "@artsy/palette-mobile"
 import { createToken } from "@stripe/stripe-react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
+import {
+  BidFlowContextProvider,
+  BidFlowContextStore,
+} from "app/Components/Bidding/Context/BidFlowContextProvider"
 import { bidderPositionQuery } from "app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery"
-import { Select } from "app/Components/Select"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { waitUntil } from "app/utils/tests/waitUntil"
+import { BiddingNavigator } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
+import { useCreateBidderPosition } from "app/utils/mutations/useCreateBidderPosition"
+import { useCreateCreditCard } from "app/utils/mutations/useCreateCreditCard"
+import { useUpdateUserPhoneNumber } from "app/utils/mutations/useUpdateUserPhoneNumber"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import "react-native"
-import relay from "react-relay"
-import { FakeNavigator } from "./Helpers/FakeNavigator"
-import { SelectMaxBid } from "./Screens/SelectMaxBid"
-
-jest.mock("app/Components/Bidding/Screens/ConfirmBid/PriceSummary", () => ({
-  PriceSummary: () => null,
-}))
+import { graphql } from "react-relay"
 
 jest.mock("app/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () => ({
   bidderPositionQuery: jest.fn(),
@@ -23,116 +22,150 @@ jest.mock("@stripe/stripe-react-native", () => ({
   createToken: jest.fn(),
 }))
 
-const commitMutationMock = (fn?: typeof relay.commitMutation) =>
-  jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
+jest.mock("app/utils/mutations/useCreateBidderPosition", () => ({
+  useCreateBidderPosition: jest.fn(),
+}))
 
-const bidderPositionQueryMock = bidderPositionQuery as jest.Mock<any>
-let fakeNavigator: FakeNavigator
-let fakeRelay: any
+jest.mock("app/utils/mutations/useCreateCreditCard", () => ({
+  useCreateCreditCard: jest.fn(),
+}))
 
-beforeEach(() => {
-  fakeNavigator = new FakeNavigator()
-  fakeRelay = {
-    refetch: jest.fn(),
+jest.mock("app/utils/mutations/useUpdateUserPhoneNumber", () => ({
+  useUpdateUserPhoneNumber: jest.fn(),
+}))
+
+describe("BidFlow", () => {
+  const bidderPositionQueryMock = bidderPositionQuery as jest.Mock<any>
+  const useUpdateUserPhoneNumberMock = useUpdateUserPhoneNumber as jest.Mock
+  const useCreateCreditCardMock = useCreateCreditCard as jest.Mock<any>
+  const useCreateBidderPositionMock = useCreateBidderPosition as jest.Mock<any>
+
+  let mockStore: ReturnType<typeof BidFlowContextStore.useStore>
+
+  const MockStoreInstance = () => {
+    mockStore = BidFlowContextStore.useStore()
+    return null
   }
-})
 
-it("allows bidders with a qualified credit card to bid", async () => {
-  let screen = renderWithWrappersLEGACY(
-    <SelectMaxBid
-      me={Me.qualifiedUser as any}
-      sale_artwork={SaleArtwork as any}
-      navigator={fakeNavigator as any}
-      relay={fakeRelay as any}
-    />
-  )
+  const { renderWithRelay } = setupTestWrapper({
+    Component: (props: any) => {
+      return (
+        <BidFlowContextProvider>
+          <BiddingNavigator
+            initialRouteName="SelectMaxBid"
+            artworkID="meteor-shower"
+            saleID="best-art-sale-in-town"
+            {...props}
+          />
+          <MockStoreInstance />
+        </BidFlowContextProvider>
+      )
+    },
+    query: graphql`
+      query BidFlowTestsQuery($artworkID: String!, $saleID: String!) {
+        artwork(id: $artworkID) {
+          saleArtwork(saleID: $saleID) {
+            ...SelectMaxBid_saleArtwork
+          }
+        }
+        me {
+          ...SelectMaxBid_me
+        }
+      }
+    `,
+    variables: { artworkID: "meteor-shower", saleID: "best-art-sale-in-town" },
+  })
 
-  screen.root.findByType(Select).props.onSelectValue(null, 2)
-  screen.root.findByProps({ testID: "next-button" }).props.onPress()
+  beforeEach(() => {
+    useUpdateUserPhoneNumberMock.mockReturnValue([jest.fn(), false])
+    useCreateCreditCardMock.mockReturnValue([jest.fn(), false])
+    useCreateBidderPositionMock.mockReturnValue([jest.fn(), false])
+  })
 
-  screen = fakeNavigator.nextStep()
-  expect(extractText(screen.root)).toContain("Confirm your bid")
-  ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
-
-  bidderPositionQueryMock.mockReturnValueOnce(
-    Promise.resolve(mockRequestResponses.pollingForBid.highestBidder)
-  )
-  relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
-    onCompleted!(mockRequestResponses.placingBid.bidAccepted, null)
-    return { dispose: jest.fn() }
-  }) as any
-
-  screen.root.findByType(Checkbox).props.onPress()
-  screen.root.findByProps({ testID: "bid-button" }).props.onPress()
-
-  await waitUntil(() => fakeNavigator.stackSize() === 2)
-
-  screen = fakeNavigator.nextStep()
-  expect(extractText(screen.root)).toContain("You’re the highest bidder")
-})
-
-it("allows bidders without a qualified credit card to register a card and bid", async () => {
-  let screen = renderWithWrappersLEGACY(
-    <SelectMaxBid
-      me={Me.unqualifiedUser as any}
-      sale_artwork={SaleArtwork as any}
-      navigator={fakeNavigator as any}
-      relay={fakeRelay}
-    />
-  )
-
-  screen.root.findByType(Select).props.onSelectValue(null, 2)
-  screen.root.findByProps({ testID: "next-button" }).props.onPress()
-
-  screen = fakeNavigator.nextStep()
-
-  expect(extractText(screen.root)).toContain("Confirm your bid")
-  ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
-
-  relay.commitMutation = jest
-    .fn()
-    .mockImplementationOnce((_, { onCompleted }) =>
-      onCompleted(mockRequestResponses.updateMyUserProfile)
-    )
-    .mockImplementationOnce((_, { onCompleted }) =>
-      onCompleted(mockRequestResponses.creatingCreditCardSuccess)
-    )
-    .mockImplementationOnce((_, { onCompleted }) =>
+  it("allows bidders with a qualified credit card to bid", async () => {
+    const mockCreateBidderPositionMutation = jest.fn().mockImplementation(({ onCompleted }) => {
       onCompleted(mockRequestResponses.placingBid.bidAccepted)
+    })
+
+    useCreateBidderPositionMock.mockReturnValue([mockCreateBidderPositionMutation, false])
+    renderWithRelay({
+      SaleArtwork: () => saleArtwork,
+      Me: () => me.qualifiedUser,
+    })
+
+    // Select Max Bid
+    expect(screen.getByText("$35,000")).toBeOnTheScreen()
+    mockStore.getActions().setSelectedBidIndex(2)
+    expect(screen.getByText("$45,000")).toBeOnTheScreen()
+    fireEvent.press(screen.getByText("Next"))
+
+    // Confirm Bid
+    expect(screen.getByText("Confirm your bid")).toBeOnTheScreen()
+    ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
+
+    bidderPositionQueryMock.mockReturnValueOnce(
+      Promise.resolve(mockRequestResponses.pollingForBid.highestBidder)
     )
-  bidderPositionQueryMock.mockReturnValueOnce(
-    Promise.resolve(mockRequestResponses.pollingForBid.highestBidder)
-  )
 
-  // // manually setting state to avoid duplicating tests for skipping UI interaction, but practically better not to do this.
-  // screen.root.findByProps({ nextScreen: true }).instance.setState({
-  // billingAddress,
-  //   creditCardFormParams,
-  //   creditCardToken: {
-  //     card: {
-  //       brand: "visa",
-  //       last4: "4242",
-  //     },
-  //   },
-  // })
+    expect(
+      screen.getByText(/I agree to Artsy's General Terms and Conditions of Sale/)
+    ).toBeOnTheScreen()
 
-  // screen.root.findByType(Checkbox).props.onPress()
-  // await screen.root.findAllByType(Button)[1].props.onPress()
+    fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+    fireEvent.press(screen.getByTestId("bid-button"))
 
-  // expect(stripe.createTokenWithCard).toHaveBeenCalledWith({
-  //   ...creditCardFormParams,
-  //   name: billingAddress.fullName,
-  //   addressLine1: billingAddress.addressLine1,
-  //   addressLine2: billingAddress.addressLine2,
-  //   addressCity: billingAddress.city,
-  //   addressState: billingAddress.state,
-  //   addressZip: billingAddress.postalCode,
-  //   addressCountry: billingAddress.country.shortName,
-  // })
+    // Bid Result
+    await screen.findByText("You’re the highest bidder")
+  })
 
-  // screen = fakeNavigator.nextStep()
+  it("allows bidders without a qualified credit card to register a card and bid", async () => {
+    const mockUpdateUserPhoneNumberMutation = jest.fn().mockImplementation(({ onCompleted }) => {
+      onCompleted(mockRequestResponses.updateMyUserProfile)
+    })
+    const mockCreateCreditCardMutation = jest.fn().mockImplementation(({ onCompleted }) => {
+      onCompleted(mockRequestResponses.creatingCreditCardSuccess)
+    })
+    const mockCreateBidderPositionMutation = jest.fn().mockImplementation(({ onCompleted }) => {
+      onCompleted(mockRequestResponses.placingBid.bidAccepted)
+    })
 
-  // expect(extractText(screen.root)).toContain("You’re the highest bidder")
+    useUpdateUserPhoneNumberMock.mockReturnValue([mockUpdateUserPhoneNumberMutation, false])
+    useCreateCreditCardMock.mockReturnValue([mockCreateCreditCardMutation, false])
+    useCreateBidderPositionMock.mockReturnValue([mockCreateBidderPositionMutation, false])
+
+    renderWithRelay({
+      SaleArtwork: () => saleArtwork,
+      Me: () => me.unqualifiedUser,
+    })
+
+    // Select Max Bid
+    expect(screen.getByText("$35,000")).toBeOnTheScreen()
+    mockStore.getActions().setSelectedBidIndex(2)
+    expect(screen.getByText("$45,000")).toBeOnTheScreen()
+    fireEvent.press(screen.getByText("Next"))
+
+    // Confirm Bid
+    expect(screen.getByText("Confirm your bid")).toBeOnTheScreen()
+    ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
+
+    bidderPositionQueryMock.mockReturnValueOnce(
+      Promise.resolve(mockRequestResponses.pollingForBid.highestBidder)
+    )
+
+    // mimic adding a credit card
+    mockStore.getActions().setBillingAddress(billingAddress)
+    mockStore.getActions().setCreditCardToken(stripeToken as any)
+
+    expect(
+      screen.getByText(/I agree to Artsy's General Terms and Conditions of Sale/)
+    ).toBeOnTheScreen()
+
+    fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
+    fireEvent.press(screen.getByTestId("bid-button"))
+
+    // Bid Result
+    await screen.findByText("You’re the highest bidder")
+  })
 })
 
 const stripeToken = {
@@ -145,51 +178,45 @@ const stripeToken = {
   },
 }
 
-// const billingAddress = {
-//   fullName: "Yuki Stockmeier",
-//   addressLine1: "401 Broadway",
-//   addressLine2: "25th floor",
-//   city: "New York",
-//   state: "NY",
-//   postalCode: "10013",
-//   phoneNumber: "111 222 333",
-//   country: {
-//     longName: "United States",
-//     shortName: "US",
-//   },
-// }
-
-// const creditCardFormParams = {
-//   number: "4242424242424242",
-//   expMonth: "12",
-//   expYear: "2020",
-//   cvc: "314",
-// }
-
-const Me = {
-  qualifiedUser: {
-    has_qualified_credit_cards: true,
-  },
-  unqualifiedUser: {
-    has_qualified_credit_cards: false,
+const billingAddress = {
+  fullName: "Yuki Stockmeier",
+  addressLine1: "401 Broadway",
+  addressLine2: "25th floor",
+  city: "New York",
+  state: "NY",
+  postalCode: "10013",
+  phoneNumber: "111 222 333",
+  country: {
+    longName: "United States",
+    shortName: "US",
   },
 }
 
-const SaleArtwork = {
+const me = {
+  qualifiedUser: {
+    hasQualifiedCreditCards: true,
+  },
+  unqualifiedUser: {
+    hasQualifiedCreditCards: false,
+  },
+}
+
+const saleArtwork = {
   internalID: "sale-artwork-id",
   artwork: {
     id: "meteor shower",
     title: "Meteor Shower",
     date: "2015",
-    artist_names: "Makiko Kudo",
+    artistNames: "Makiko Kudo",
     image: {
       url: "https://d32dm0rphc51dk.cloudfront.net/5RvuM9YF68AyD8OgcdLw7g/small.jpg",
     },
   },
   sale: {
     id: "best-art-sale-in-town",
+    bidder: null,
   },
-  lot_label: "538",
+  lotLabel: "538",
   increments: [
     {
       display: "$35,000",
@@ -230,7 +257,7 @@ const mockRequestResponses = {
   pollingForBid: {
     highestBidder: {
       me: {
-        bidder_position: {
+        bidderPosition: {
           status: "WINNING",
           position: {},
         },

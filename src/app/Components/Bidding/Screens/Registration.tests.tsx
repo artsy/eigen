@@ -4,10 +4,7 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { Registration_me$data } from "__generated__/Registration_me.graphql"
 import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
 import { BidInfoRow } from "app/Components/Bidding/Components/BidInfoRow"
-import {
-  RegistrationResult,
-  RegistrationStatus,
-} from "app/Components/Bidding/Screens/RegistrationResult"
+import { RegistrationStatus } from "app/Components/Bidding/Screens/RegistrationResult"
 import { Address } from "app/Components/Bidding/types"
 import { Modal } from "app/Components/Modal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -15,18 +12,20 @@ import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
-import { CreditCardForm } from "./CreditCardForm"
 import { Registration } from "./Registration"
 
 const commitMutationMock = (fn?: typeof relay.commitMutation) =>
   jest.fn<typeof relay.commitMutation, Parameters<typeof relay.commitMutation>>(fn as any)
 
+afterEach(() => {
+  jest.clearAllMocks()
+})
+
 jest.mock("@stripe/stripe-react-native", () => ({
   createToken: jest.fn(),
 }))
 
-let nextStep: any
-const mockNavigator = { push: (route: any) => (nextStep = route), pop: () => null }
+const mockNavigator = { navigate: jest.fn() }
 
 const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager.postNotificationName
 
@@ -84,7 +83,10 @@ it("shows the credit card form when the user tap the edit text in the credit car
 
   creditCardRow[0].instance.props.onPress()
 
-  expect(nextStep.component).toEqual(CreditCardForm)
+  expect(mockNavigator.navigate).toHaveBeenCalledWith("CreditCardForm", {
+    billingAddress: null,
+    onSubmit: expect.any(Function),
+  })
 })
 
 it("shows the option for entering payment information if the user does not have a credit card on file", async () => {
@@ -226,11 +228,11 @@ describe("when pressing register button", () => {
   })
 
   it("disables tap events while a spinner is being shown", async () => {
-    const navigator = { push: jest.fn() } as any
+    const navigator = { navigate: jest.fn() } as any
     relay.commitMutation = jest.fn()
 
     const { root } = renderWithWrappersLEGACY(
-      <Registration {...initialPropsForUserWithoutCreditCardOrPhone} navigator={navigator} />
+      <Registration {...initialPropsForUserWithoutCreditCardOrPhone} navigation={navigator} />
     )
 
     const registrationComponent = await root.findByType(Registration)
@@ -254,11 +256,11 @@ describe("when pressing register button", () => {
 
     yourMaxBidRow.props.onPress()
 
-    expect(navigator.push).not.toHaveBeenCalled()
+    expect(mockNavigator.navigate).not.toHaveBeenCalled()
 
     creditCardRow.props.onPress()
 
-    expect(navigator.push).not.toHaveBeenCalled()
+    expect(mockNavigator.navigate).not.toHaveBeenCalled()
 
     expect(conditionsOfSaleLink.props.onPress).toBeUndefined()
     expect(conditionsOfSaleCheckbox.props.disabled).toBeTruthy()
@@ -550,8 +552,7 @@ describe("when pressing register button", () => {
       ARAuctionID: "sale-id",
     })
 
-    expect(nextStep.component).toEqual(RegistrationResult)
-    expect(nextStep.passProps).toEqual({
+    expect(mockNavigator.navigate).toHaveBeenCalledWith("RegistrationResult", {
       status: RegistrationStatus.RegistrationStatusPending,
       needsIdentityVerification: false,
     })
@@ -577,8 +578,7 @@ describe("when pressing register button", () => {
     ;(await view.root.findByType(Checkbox)).props.onPress()
     ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
 
-    expect(nextStep.component).toEqual(RegistrationResult)
-    expect(nextStep.passProps).toEqual({
+    expect(mockNavigator.navigate).toHaveBeenCalledWith("RegistrationResult", {
       status: RegistrationStatus.RegistrationStatusPending,
       needsIdentityVerification: true,
     })
@@ -603,8 +603,7 @@ describe("when pressing register button", () => {
       ARAuctionID: "sale-id",
     })
 
-    expect(nextStep.component).toEqual(RegistrationResult)
-    expect(nextStep.passProps).toEqual({
+    expect(mockNavigator.navigate).toHaveBeenCalledWith("RegistrationResult", {
       status: RegistrationStatus.RegistrationStatusComplete,
       needsIdentityVerification: false,
     })
@@ -631,8 +630,10 @@ describe("when pressing register button", () => {
     ;(await view.root.findByType(Checkbox)).props.onPress()
     ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
 
-    expect(nextStep.component).toEqual(RegistrationResult)
-    expect(nextStep.passProps.status).toEqual(RegistrationStatus.RegistrationStatusComplete)
+    expect(mockNavigator.navigate).toHaveBeenCalledWith("RegistrationResult", {
+      needsIdentityVerification: true,
+      status: RegistrationStatus.RegistrationStatusComplete,
+    })
   })
 })
 
@@ -737,7 +738,7 @@ const mockRequestResponses = {
 const initialProps = {
   sale,
   relay: { environment: null },
-  navigator: mockNavigator,
+  navigation: mockNavigator,
 } as any
 
 const me: Partial<Registration_me$data> = {

@@ -1,19 +1,22 @@
 import { Flex } from "@artsy/palette-mobile"
-import { PrefetchFlashList, PrefetchFlashListProps } from "app/Components/PrefetchFlashList"
+import { FlashList, FlashListProps } from "@shopify/flash-list"
+import { Ref } from "react"
 
 export type InfiniteScrollFlashListProps<ItemType> = {
+  listRef?: Ref<ItemType | any>
   initialNumToRender?: number
-} & PrefetchFlashListProps<ItemType>
+} & FlashListProps<ItemType>
 
 const ESTIMATED_ITEM_SIZE = 60
 
 export function InfiniteScrollFlashList<ItemType>(props: InfiniteScrollFlashListProps<ItemType>) {
   const { listRef, onScrollBeginDrag, ...restProps } = props
+
   return (
     <Flex flex={1}>
-      <PrefetchFlashList<ItemType>
+      <FlashList<ItemType>
         {...restProps}
-        listRef={listRef}
+        ref={listRef}
         estimatedItemSize={ESTIMATED_ITEM_SIZE}
         onScrollBeginDrag={(event) => {
           if (onScrollBeginDrag) {

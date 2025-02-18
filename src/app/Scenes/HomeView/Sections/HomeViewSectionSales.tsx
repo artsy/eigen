@@ -82,8 +82,6 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
       </Flex>
 
       <CardRailFlatList
-        prefetchUrlExtractor={(item) => item?.href}
-        prefetchVariablesExtractor={(item) => ({ saleSlug: item?.slug })}
         listRef={listRef}
         data={sales}
         initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}

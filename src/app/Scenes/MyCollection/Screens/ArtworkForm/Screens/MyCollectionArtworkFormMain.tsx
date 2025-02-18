@@ -5,13 +5,11 @@ import {
   Flex,
   Input,
   Join,
-  Message,
   Separator,
   Spacer,
   Text,
   useColor,
   useScreenDimensions,
-  useSpace,
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
@@ -42,14 +40,7 @@ import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
 import React, { useCallback, useEffect, useRef, useState } from "react"
-import {
-  Alert,
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native"
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
@@ -67,7 +58,6 @@ export const MyCollectionArtworkFormMain: React.FC<
 
   const { formik } = useArtworkForm()
   const color = useColor()
-  const space = useSpace()
 
   const { showActionSheetWithOptions } = useActionSheet()
 
@@ -196,10 +186,6 @@ export const MyCollectionArtworkFormMain: React.FC<
       navigation.goBack()
     }
   }
-
-  const isSubmission =
-    mode === "edit" && artwork ? !!artwork.consignmentSubmission?.displayText : false
-
   // To make the location input auto-suggestion dropdown visible when the keyboard is up,
   // we scroll the y position of the location input to move it to the top of the screen.
   const [locationInputYCoordinate, setLocationInputYCoordinate] = useState<number>(0)
@@ -290,19 +276,6 @@ export const MyCollectionArtworkFormMain: React.FC<
           ref={scrollViewRef}
         >
           <Flex style={{ paddingBottom: 160 }}>
-            {!!isSubmission && (
-              <Message
-                containerStyle={{ mx: `${space(2)}px` }}
-                title="Changes will only appear in My Collection. They will not be applied to your sale submission."
-                IconComponent={() => (
-                  <Image
-                    source={require("images/info.webp")}
-                    style={{ tintColor: color("black100") }}
-                  />
-                )}
-              />
-            )}
-
             <Flex p={2}>
               <Join separator={<Spacer y={2} />}>
                 <ArtistField />

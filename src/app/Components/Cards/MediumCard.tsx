@@ -17,7 +17,7 @@ export const MEDIUM_CARD_WIDTH = 280
  * at the bottom.
  */
 export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, tag, ...rest }) => {
-  const { color, space } = useTheme()
+  const { space } = useTheme()
 
   return (
     <Box
@@ -48,11 +48,20 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
           right: space(6),
         }}
       >
-        <Text lineHeight="20px" color={color("white100")} mb={0.5}>
+        <Text
+          lineHeight="20px"
+          // We want to set the color to white here regardless of the theme
+          color="white"
+          mb={0.5}
+        >
           {title}
         </Text>
         {!!subtitle && (
-          <Text color={color("white100")} variant="sm">
+          <Text
+            // We want to set the color to white here regardless of the theme
+            color="white"
+            variant="sm"
+          >
             {subtitle}
           </Text>
         )}
