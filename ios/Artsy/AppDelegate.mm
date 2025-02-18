@@ -13,7 +13,7 @@
 #import "AppDelegate.h"
 #import "ARAppDelegate+Emission.h"
 #import "ARAppDelegate+Echo.h"
-#import "ARAppNotificationsDelegate.h"
+
 #import "ARAppDelegate+DeeplinkTimeout.h"
 #import "ARUserManager.h"
 #import "ARFonts.h"
@@ -37,6 +37,8 @@
 #import <React/RCTLinkingManager.h>
 #import "RNBootSplash.h"
 
+#import "AppDelegate+Notifications.h"
+
 
 @interface ARAppDelegate ()
 @property (strong, nonatomic, readwrite) NSString *referralURLRepresentation;
@@ -52,9 +54,9 @@ static ARAppDelegate *_sharedInstance = nil;
 + (void)load
 {
     _sharedInstance = [[self alloc] init];
-    [JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate = _sharedInstance;
-    [JSDecoupledAppDelegate sharedAppDelegate].appDefaultOrientationDelegate = (id)_sharedInstance;
-    [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = (id)_sharedInstance;
+//    [JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate = _sharedInstance;
+//    [JSDecoupledAppDelegate sharedAppDelegate].appDefaultOrientationDelegate = (id)_sharedInstance;
+//    [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = (id)_sharedInstance;
 }
 
 + (ARAppDelegate *)sharedInstance
@@ -98,8 +100,6 @@ static ARAppDelegate *_sharedInstance = nil;
     // Temp Fix for: https://github.com/artsy/eigen/issues/602
     [self forceCacheCustomFonts];
 
-    [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = [[ARAppNotificationsDelegate alloc] init];
-
     [self countNumberOfRuns];
 
     _landingURLRepresentation = self.landingURLRepresentation ?: @"https://artsy.net";
@@ -131,7 +131,7 @@ static ARAppDelegate *_sharedInstance = nil;
     [self setupAnalytics:application withLaunchOptions:launchOptions];
     
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    center.delegate = [self remoteNotificationsDelegate];
+    center.delegate = self;
 
     [[FBSDKApplicationDelegate sharedInstance] application:application
         didFinishLaunchingWithOptions:launchOptions];
@@ -142,20 +142,25 @@ static ARAppDelegate *_sharedInstance = nil;
         [FIRApp configure];
     }
 
+//    self.reactDelegat.bri
+
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
-- (RCTBridge *)createBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate launchOptions:(NSDictionary *)launchOptions {
-    RCTAppDelegate *appDelegate = (RCTAppDelegate *)self.reactDelegate;
-    RCTBridge *bridge = [appDelegate createBridgeWithDelegate:self launchOptions:launchOptions];
-    AREmission *emission = [AREmission sharedInstance];
-    [emission setBridge:bridge];
-    return bridge;
-}
+//- (RCTBridge *)createBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate launchOptions:(NSDictionary *)launchOptions {
+//    RCTAppDelegate *appDelegate = (RCTAppDelegate *)self.reactDelegate;
+//    RCTBridge *bridge = [appDelegate createBridgeWithDelegate:self launchOptions:launchOptions];
+//    AREmission *emission = [AREmission sharedInstance];
+//    [emission setBridge:bridge];
+//    return bridge;
+//}
 
 - (UIView *)createRootViewWithBridge:(RCTBridge *)bridge
                           moduleName:(NSString *)moduleName
                            initProps:(NSDictionary *)initProps {
+
+  AREmission *emission = [AREmission sharedInstance];
+  [emission setBridge:bridge];
   UIView *rootView = [super createRootViewWithBridge:bridge moduleName:moduleName initProps:initProps];
   [RNBootSplash initWithStoryboard:@"BootSplash" rootView:rootView]; // ⬅️ initialize the splash screen
   return rootView;
@@ -174,7 +179,6 @@ static ARAppDelegate *_sharedInstance = nil;
     Braze *braze = [BrazeReactBridge initBraze:brazeConfiguration];
     [ARAppDelegate setBraze:braze];
 
-
     BrazeInAppMessageUI *inAppMessageUI = [[BrazeInAppMessageUI alloc] init];
     braze.inAppMessagePresenter = inAppMessageUI;
 
@@ -190,7 +194,7 @@ static ARAppDelegate *_sharedInstance = nil;
 //    configuration.trackPushNotifications = YES;
 //    configuration.trackDeepLinks = YES;
 //    [SEGAnalytics setupWithConfiguration:configuration];
-    [[BrazeReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];
+    [[BrazeReactUtils sharedInstance] populateInitialPayloadFromLaunchOptions:launchOptions];
 }
 
 - (void)registerNewSessionOpened {}
@@ -210,11 +214,6 @@ static ARAppDelegate *_sharedInstance = nil;
 {
     // MANUALLY track lifecycle event. Segment already does this if
     // trackLifecycleSessions: true
-}
-
-- (ARAppNotificationsDelegate *)remoteNotificationsDelegate;
-{
-    return (ARAppNotificationsDelegate *)[[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
 }
 
 - (void)forceCacheCustomFonts

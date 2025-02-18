@@ -1,16 +1,19 @@
-//
-//  AppDelegate+Notifications.h
-//  Artsy
-//
-//  Created by Brian Beckerle on 2/18/25.
-//
-
 #import <UIKit/UIKit.h>
+#import "AppDelegate.h"
+#import <UserNotifications/UNUserNotificationCenter.h>
 
-NS_ASSUME_NONNULL_BEGIN
+@interface ARAppDelegate (Notifications) <UNUserNotificationCenterDelegate>
 
-@interface AppDelegate_Notifications : AppDelegate
+typedef NS_ENUM(NSInteger, ARAppNotificationsRequestContext) {
+    ARAppNotificationsRequestContextLaunch,
+    ARAppNotificationsRequestContextOnboarding,
+    ARAppNotificationsRequestContextArtistFollow,
+    ARAppNotificationsRequestContextNone
+};
+
+@property (nonatomic, readwrite, assign) ARAppNotificationsRequestContext requestContext;
+
+- (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo inApplicationState:(UIApplicationState)applicationState;
 
 @end
 
-NS_ASSUME_NONNULL_END

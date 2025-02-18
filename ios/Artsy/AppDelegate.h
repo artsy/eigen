@@ -1,4 +1,3 @@
-#import <JSDecoupledAppDelegate/JSDecoupledAppDelegate.h>
 #import <Expo/Expo.h>
 
 #import <RCTAppDelegate.h>
@@ -13,7 +12,7 @@
 // When testing the various decoupled app delegate classes, simply use the shared app delegate
 // (`[JSDecoupledAppDelegate sharedAppDelegate]`) to perform your tests on.
 
-@interface ARAppDelegate : EXAppDelegateWrapper <JSApplicationStateDelegate>
+@interface ARAppDelegate : EXAppDelegateWrapper
 
 + (ARAppDelegate *)sharedInstance;
 + (Braze *)braze;
