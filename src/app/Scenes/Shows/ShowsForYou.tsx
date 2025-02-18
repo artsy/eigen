@@ -3,7 +3,11 @@ import { Flex, Screen, Spacer } from "@artsy/palette-mobile"
 import { ShowsForYouQuery } from "__generated__/ShowsForYouQuery.graphql"
 import { ShowsForYou_showsConnection$key } from "__generated__/ShowsForYou_showsConnection.graphql"
 import { ShowCardContainer } from "app/Components/ShowCard"
-import { ArticlesPlaceholder } from "app/Scenes/Articles/ArticlesList"
+import {
+  ArticlesListItem,
+  ArticlesPlaceholder,
+  useNumColumns,
+} from "app/Scenes/Articles/ArticlesList"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -46,6 +50,8 @@ export const ShowsForYouList: React.FC<{ me: any }> = ({ me }) => {
     ShowsForYou_showsConnection$key
   >(showsNearYouConnectionFragment, me)
 
+  const numColumns = useNumColumns()
+
   if (!data) {
     return null
   }
@@ -76,16 +82,16 @@ export const ShowsForYouList: React.FC<{ me: any }> = ({ me }) => {
         <Screen.StickySubHeader title="Shows for You" />
         <Screen.Body fullwidth>
           <Screen.FlatList
+            numColumns={numColumns}
+            key={`${numColumns}`}
             data={shows}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
             keyExtractor={(item) => `${item.internalID}`}
-            renderItem={({ item }) => {
+            renderItem={({ item, index }) => {
               return (
-                // TODO:add wrapper with 1 or 2 collumns
-
-                <Flex mx={2}>
+                <ArticlesListItem index={index}>
                   <ShowCardContainer show={item} isFluid />
-                </Flex>
+                </ArticlesListItem>
               )
             }}
             ItemSeparatorComponent={() => <Spacer y={4} />}
