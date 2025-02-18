@@ -29,6 +29,8 @@ interface Props {
   Component?: any
   containerStyle?: StyleProp<ViewStyle>
   contextModule?: string
+  contextScreenOwnerId?: string
+  contextScreenOwnerSlug?: string
   disableNavigation?: boolean
   onFollowFinish?: () => void
   onPress?: () => void
@@ -67,6 +69,8 @@ const ArtistListItem: React.FC<Props> = ({
   avatarSize = "sm",
   containerStyle = {},
   contextModule,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug,
   disableNavigation,
   onFollowFinish,
   onPress,
@@ -98,7 +102,9 @@ const ArtistListItem: React.FC<Props> = ({
   }
 
   const handleShowSuccessfullyUpdated = () => {
-    tracking.trackEvent(tracks.successfulUpdate(artist, contextModule))
+    tracking.trackEvent(
+      tracks.successfulUpdate(artist, contextModule, contextScreenOwnerId, contextScreenOwnerSlug)
+    )
   }
 
   const handleTap = (href: string) => {
@@ -284,14 +290,21 @@ const tracks = {
     owner_type: Schema.OwnerEntityTypes.Artist,
   }),
 
-  successfulUpdate: (artist: Props["artist"], contextModule: string | undefined) => ({
+  successfulUpdate: (
+    artist: Props["artist"],
+    contextModule: string | undefined,
+    contextScreenOwnerId?: string | undefined,
+    contextScreenOwnerSlug?: string | undefined
+  ) => ({
     action_name: artist.is_followed
-      ? Schema.ActionNames.ArtistFollow
-      : Schema.ActionNames.ArtistUnfollow,
+      ? Schema.ActionNames.ArtistUnfollow
+      : Schema.ActionNames.ArtistFollow,
     action_type: Schema.ActionTypes.Success,
     owner_id: artist.internalID,
     owner_slug: artist.slug,
     owner_type: Schema.OwnerEntityTypes.Artist,
     context_module: contextModule,
+    context_screen_owner_id: contextScreenOwnerId,
+    context_screen_owner_slug: contextScreenOwnerSlug,
   }),
 }
