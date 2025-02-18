@@ -18,7 +18,7 @@
 #import "ARAppDelegate+DeeplinkTimeout.h"
 #import "ARUserManager.h"
 #import "ARFonts.h"
-#import <SEGAnalytics.h>
+//#import <SEGAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "User.h"
 
@@ -185,11 +185,12 @@ static ARAppDelegate *_sharedInstance = nil;
         segmentWriteKey = [Keys secureFor:@"SEGMENT_PRODUCTION_WRITE_KEY_IOS"];
     }
 
-    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:segmentWriteKey];
-    configuration.trackApplicationLifecycleEvents = YES;
-    configuration.trackPushNotifications = YES;
-    configuration.trackDeepLinks = YES;
-    [SEGAnalytics setupWithConfiguration:configuration];
+    // TODO: Make sure config is reflected accurately on react native side
+//    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:segmentWriteKey];
+//    configuration.trackApplicationLifecycleEvents = YES;
+//    configuration.trackPushNotifications = YES;
+//    configuration.trackDeepLinks = YES;
+//    [SEGAnalytics setupWithConfiguration:configuration];
 //    [[BrazeReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];
 }
 
