@@ -241,7 +241,7 @@ const checkXcodeVersion = () => {
       YES(`Xcode is installed and the version is correct (${installedVersion}).`)
     } else {
       WARN(
-        `Xcode is installed but the version is incorrect. Installed: ${installedVersion}, Expected: ${desiredVersion}`
+        `Xcode is installed but the version is incorrect. Installed: ${installedVersion}, Expected: ${desiredVersions.xcode}`
       )
     }
   } catch (error) {
@@ -261,7 +261,7 @@ const checkAndroidStudioVersion = () => {
       YES(`Android Studio is installed and the version is correct (${installedVersion}).`)
     } else {
       WARN(
-        `Android Studio is installed but the version is incorrect. Installed: ${installedVersion}, Expected: ${desiredVersion}`
+        `Android Studio is installed but the version is incorrect. Installed: ${installedVersion}, Expected: ${desiredVersions.androidStudio}`
       )
     }
   } catch (error) {
