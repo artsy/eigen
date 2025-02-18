@@ -1,7 +1,7 @@
 import { Box, Input } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
+import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { SearchContext, useSearchProviderValues } from "app/Scenes/Search/SearchContext"
-import { ArtworkDetailsFormModel } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import { AnimateHeight } from "app/utils/animations/AnimateHeight"
 import { useFormikContext } from "formik"
 import React, { useEffect, useState } from "react"
@@ -23,7 +23,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
     setFieldValue,
     errors,
     validateField,
-  } = useFormikContext<ArtworkDetailsFormModel>()
+  } = useFormikContext<ArtworkFormValues>()
   const searchProviderValues = useSearchProviderValues(artist)
 
   const [isArtistSelected, setIsArtistSelected] = useState(false)

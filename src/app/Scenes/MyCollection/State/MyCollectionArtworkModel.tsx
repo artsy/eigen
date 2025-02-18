@@ -27,6 +27,7 @@ export interface Location {
 
 export interface ArtworkFormValues {
   artist: string
+  artistId?: string
   artistDisplayName?: string
   artistIds: string[] | undefined
   artistSearchResult: AutosuggestResult | null

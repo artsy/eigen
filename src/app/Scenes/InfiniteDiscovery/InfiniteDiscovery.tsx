@@ -1,6 +1,15 @@
-import { Flex, Screen, Spinner, Text, Touchable } from "@artsy/palette-mobile"
-import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
+import {
+  ArrowBackIcon,
+  CloseIcon,
+  Flex,
+  Screen,
+  Spacer,
+  Spinner,
+  Touchable,
+} from "@artsy/palette-mobile"
+import { FancySwiper, FancySwiperArtworkCard } from "app/Components/FancySwiper/FancySwiper"
 import { useToast } from "app/Components/Toast/toastHook"
+import { ICON_HIT_SLOP } from "app/Components/constants"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -8,7 +17,7 @@ import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { pluralize } from "app/utils/pluralize"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from "react-relay"
 import type {
@@ -17,7 +26,7 @@ import type {
 } from "__generated__/InfiniteDiscoveryQuery.graphql"
 
 interface InfiniteDiscoveryProps {
-  fetchMoreArtworks: () => void
+  fetchMoreArtworks: (undiscoveredArtworks: string[]) => void
   queryRef: PreloadedQuery<InfiniteDiscoveryQuery>
 }
 
@@ -30,7 +39,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const REFETCH_BUFFER = 3
   const toast = useToast()
 
-  const { addDiscoveredArtworkIds } = GlobalStore.actions.infiniteDiscovery
+  const { addDisoveredArtworkId } = GlobalStore.actions.infiniteDiscovery
 
   const savedArtworksCount = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.savedArtworksCount
@@ -40,7 +49,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>([])
 
   const data = usePreloadedQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, queryRef)
-  const artworkNodes = extractNodes(data.discoverArtworks)
 
   const insets = useSafeAreaInsets()
 
@@ -50,18 +58,17 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   useEffect(() => {
     const newArtworks = extractNodes(data.discoverArtworks)
 
-    // record the artworks that have been served to the user so that they are not served again
-    // TODO: do this for the first batch of artworks as well
-    addDiscoveredArtworkIds(newArtworks.map((artwork) => artwork.internalID))
-
     setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
   }, [data, extractNodes, setArtworks])
 
-  const artworkCards: React.ReactNode[] = useMemo(() => {
-    return artworks.map((artwork, i) => <InfiniteDiscoveryArtworkCard artwork={artwork} key={i} />)
+  const artworkCards: FancySwiperArtworkCard[] = useMemo(() => {
+    return artworks.map((artwork) => ({
+      content: <InfiniteDiscoveryArtworkCard artwork={artwork} key={artwork.internalID} />,
+      artworkId: artwork.internalID,
+    }))
   }, [artworks])
 
-  const unswipedCards: React.ReactNode[] = artworkCards.slice(index)
+  const unswipedCards: FancySwiperArtworkCard[] = artworkCards.slice(index)
 
   const handleBackPressed = () => {
     if (index > 0) {
@@ -69,16 +76,18 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     }
   }
 
-  const handleCardSwiped = () => {
+  const handleCardSwiped = useCallback(() => {
     if (index < artworks.length - 1) {
+      const dismissedArtworkId = artworkCards[index].artworkId
       setIndex(index + 1)
+      addDisoveredArtworkId(dismissedArtworkId)
     }
 
     // fetch more artworks when the user is about to reach the end of the list
     if (index === artworks.length - REFETCH_BUFFER) {
-      fetchMoreArtworks()
+      fetchMoreArtworks(unswipedCards.map((card) => card.artworkId))
     }
-  }
+  }, [index, artworks.length, fetchMoreArtworks])
 
   const handleExitPressed = () => {
     if (savedArtworksCount > 0) {
@@ -104,24 +113,35 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           <Screen.Header
             title="Discovery"
             leftElements={
-              <Touchable onPress={handleBackPressed}>
-                <Text variant="xs">Back</Text>
+              <Touchable
+                onPress={handleBackPressed}
+                testID="back-icon"
+                hitSlop={ICON_HIT_SLOP}
+                haptic
+              >
+                <ArrowBackIcon />
               </Touchable>
             }
             hideLeftElements={index === 0}
             rightElements={
-              <Touchable onPress={handleExitPressed}>
-                <Text variant="xs">Exit</Text>
+              <Touchable
+                onPress={handleExitPressed}
+                testID="close-icon"
+                hitSlop={ICON_HIT_SLOP}
+                haptic
+              >
+                <CloseIcon fill="black100" />
               </Touchable>
             }
           />
         </Flex>
+        <Spacer y={1} />
         <FancySwiper cards={unswipedCards} hideActionButtons onSwipeAnywhere={handleCardSwiped} />
 
-        {!!artworkNodes.length && (
+        {!!artworks.length && (
           <InfiniteDiscoveryBottomSheet
-            artworkID={artworkNodes[index].internalID}
-            artistIDs={artworkNodes[index].artists.map((data) => data?.internalID ?? "")}
+            artworkID={artworks[index].internalID}
+            artistIDs={artworks[index].artists.map((data) => data?.internalID ?? "")}
           />
         )}
       </Screen.Body>
@@ -167,8 +187,8 @@ export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
     return <InfiniteDiscoverySpinner />
   }
 
-  const fetchMoreArtworks = () => {
-    loadQuery({ excludeArtworkIds: discoveredArtworksIds })
+  const fetchMoreArtworks = (undiscoveredArtworks: string[]) => {
+    loadQuery({ excludeArtworkIds: discoveredArtworksIds.concat(undiscoveredArtworks) })
   }
 
   return <InfiniteDiscovery fetchMoreArtworks={fetchMoreArtworks} queryRef={queryRef} />

@@ -102,7 +102,7 @@ const interpolateSwiper = (
 
 const MIN_OPACITY = 0.3
 const MAX_OPACITY = 1
-const MIN_SCALE = 0.9
+const MIN_SCALE = 0.8
 const MAX_SCALE = 1
 const MAX_ELEVATION = 8
 const MAX_SHADOW_OPACITY = 0.13

@@ -106,7 +106,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
             allowDisabledVisualClue
             rightView={
               fbLoading ? (
-                <ActivityIndicator size="small" color="black" />
+                <ActivityIndicator size="small" color="black100" />
               ) : (
                 <Flex flexDirection="row" alignItems="center">
                   <Image
@@ -133,7 +133,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
             allowDisabledVisualClue
             rightView={
               googleLoading ? (
-                <ActivityIndicator size="small" color="black" />
+                <ActivityIndicator size="small" color="black100" />
               ) : (
                 <Flex flexDirection="row" alignItems="center">
                   <Image
@@ -160,7 +160,7 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
               allowDisabledVisualClue
               rightView={
                 appleLoading ? (
-                  <ActivityIndicator size="small" color="black" />
+                  <ActivityIndicator size="small" color="black100" />
                 ) : (
                   <Flex flexDirection="row" alignItems="center">
                     <Image

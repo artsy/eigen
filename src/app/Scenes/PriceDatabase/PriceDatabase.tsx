@@ -1,7 +1,8 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Screen } from "@artsy/palette-mobile"
+import { Screen, useColor } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
+import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { MediumOptions } from "app/Scenes/PriceDatabase/components/MediumOptions"
 import { PriceDatabaseSearch } from "app/Scenes/PriceDatabase/components/PriceDatabaseSearch"
 import { SizesOptions } from "app/Scenes/PriceDatabase/components/SizesOptions"
@@ -23,6 +24,9 @@ export type PriceDatabaseNavigationStack = {
 const Stack = createStackNavigator<PriceDatabaseNavigationStack>()
 
 export const PriceDatabase = () => {
+  const theme = useNavigationTheme()
+  const color = useColor()
+
   const handleSubmit = () => {}
 
   const formik = useFormik<PriceDatabaseSearchModel>({
@@ -41,14 +45,14 @@ export const PriceDatabase = () => {
         })}
       >
         <FormikProvider value={formik}>
-          <NavigationContainer independent>
+          <NavigationContainer independent theme={theme}>
             <Stack.Navigator
               // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
               detachInactiveScreens={false}
               screenOptions={{
                 ...TransitionPresets.SlideFromRightIOS,
                 headerShown: false,
-                cardStyle: { backgroundColor: "white" },
+                cardStyle: { backgroundColor: color("background") },
               }}
             >
               <Stack.Screen name="PriceDatabaseSearch" component={PriceDatabaseSearch} />

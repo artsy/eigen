@@ -1,4 +1,4 @@
-import { Spacer, Flex, Box, useColor, Text, Button } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
@@ -141,7 +141,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
   })
 
   return (
-    <Flex flex={1} backgroundColor="white" flexGrow={1} pb={1}>
+    <Flex flex={1} backgroundColor="white100" flexGrow={1} pb={1}>
       <KeyboardAvoidingView style={{ flex: 1 }}>
         <FormikProvider value={formik}>
           <NavigationContainer
@@ -196,7 +196,7 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<
 > = ({ onBackButtonPress, title, caption, children }) => {
   const color = useColor()
   return (
-    <Flex backgroundColor="white" flexGrow={1}>
+    <Flex backgroundColor="white100" flexGrow={1}>
       <ScrollView
         contentContainerStyle={{
           paddingHorizontal: 20,
@@ -237,7 +237,7 @@ export const OnboardingCreateAccountButton: React.FC = () => {
   }, [errors.email])
 
   return (
-    <Flex px={2} paddingBottom={2} backgroundColor="white" pt={0.5}>
+    <Flex px={2} paddingBottom={2} backgroundColor="white100" pt={0.5}>
       <Button
         onPress={handleSubmit}
         block

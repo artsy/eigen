@@ -1,9 +1,8 @@
 import { BellIcon, Box, DEFAULT_HIT_SLOP, VisualClueDot } from "@artsy/palette-mobile"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { useActivityDotExperiment } from "app/utils/experiments/useActivityDotExperiment"
 import React from "react"
-import { TouchableOpacity } from "react-native"
 
 interface ActivityIndicatorProps {
   hasUnseenNotifications: boolean
@@ -22,19 +21,18 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = (props) => {
 
   const navigateToActivityPanel = () => {
     tracking.tappedNotificationBell()
-
-    navigate("/notifications")
   }
 
   return (
     <Box justifyContent="center">
-      <TouchableOpacity
+      <RouterLink
+        to="/notifications"
         accessibilityLabel="Activity"
-        onPress={navigateToActivityPanel}
         hitSlop={DEFAULT_HIT_SLOP}
+        onPress={navigateToActivityPanel}
       >
         <BellVariant hasUnseenNotifications={displayUnseenNotifications} />
-      </TouchableOpacity>
+      </RouterLink>
     </Box>
   )
 }

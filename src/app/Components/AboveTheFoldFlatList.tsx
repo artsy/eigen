@@ -1,18 +1,23 @@
-import { useState } from "react"
-import { PrefetchFlatList, PrefetchFlatListProps } from "./PrefetchFlatList"
+import { Ref, useState } from "react"
+import { FlatList, FlatListProps } from "react-native"
 
 export type AboveTheFoldFlatListProps<ItemType> = {
   initialNumToRender?: number
-} & PrefetchFlatListProps<ItemType>
+} & FlatListProps<ItemType>
 
-export function AboveTheFoldFlatList<ItemType>(props: AboveTheFoldFlatListProps<ItemType>) {
+export function AboveTheFoldFlatList<ItemType>(
+  props: {
+    initialNumToRender: number
+    listRef?: Ref<FlatList<ItemType | any>>
+  } & FlatListProps<ItemType>
+) {
   const { listRef, onScrollBeginDrag, ...restProps } = props
   const [userHasScrolled, setUserHasScrolled] = useState(false)
 
   return (
-    <PrefetchFlatList<ItemType>
+    <FlatList<ItemType>
       {...restProps}
-      listRef={listRef}
+      ref={listRef}
       onScrollBeginDrag={(event) => {
         if (onScrollBeginDrag) {
           onScrollBeginDrag(event)

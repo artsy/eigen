@@ -287,9 +287,6 @@ export const MyCollectionContainer = createPaginationContainer(
               _marketPriceInsights: marketPriceInsights {
                 demandRank
               }
-              consignmentSubmission {
-                displayText
-              }
             }
           }
           ...InfiniteScrollArtworksGrid_myCollectionConnection @arguments(skipArtworkGridItem: true)

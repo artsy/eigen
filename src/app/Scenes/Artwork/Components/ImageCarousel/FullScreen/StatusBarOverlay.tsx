@@ -1,3 +1,4 @@
+import { useColor } from "@artsy/palette-mobile"
 import { useScreenDimensions } from "app/utils/hooks"
 import { Animated } from "react-native"
 import { useSpringFade } from "./useSpringFade"
@@ -7,6 +8,7 @@ import { useSpringFade } from "./useSpringFade"
 // jarring pop where the area of the image that was behind the status bar becomes fully visible.
 export const StatusBarOverlay: React.FC = () => {
   const opacity = useSpringFade("out")
+  const color = useColor()
   const { safeAreaInsets } = useScreenDimensions()
   return (
     <Animated.View
@@ -17,7 +19,7 @@ export const StatusBarOverlay: React.FC = () => {
         left: 0,
         opacity,
         height: safeAreaInsets.top,
-        backgroundColor: "white",
+        backgroundColor: color("white100"),
       }}
     />
   )

@@ -5,7 +5,7 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { FilterConfigTypes, FilterDisplayConfig } from "app/Components/ArtworkFilter/types"
+import { FilterDisplayConfig } from "app/Components/ArtworkFilter/types"
 import { MyCollectionArtworkEdge } from "app/Scenes/MyCollection/MyCollection"
 import { normalizeText } from "app/utils/normalizeText"
 import { compact, filter, orderBy, uniqBy } from "lodash"
@@ -111,19 +111,6 @@ export const useLocalArtworkFilter = (artworksList?: any[] | null) => {
     ])
     setFilterOptions(
       compact([
-        {
-          configType: FilterConfigTypes.FilterScreenCheckboxItem,
-          displayText: "Show Only Submitted Artworks",
-          filterType: "showOnlySubmittedArtworks",
-          ScreenComponent: "FilterOptionsScreen", // using FilterOptionsScreen so users remain on FilterOptionsScreen if they tap on it
-
-          localSortAndFilter: (artworks, showOnlySubmittedArtworks: boolean) => {
-            if (!showOnlySubmittedArtworks) {
-              return artworks
-            }
-            return filter(artworks, (a) => Boolean(a.consignmentSubmission?.displayText))
-          },
-        },
         {
           displayText: FilterDisplayName.sort,
           filterType: "sort",

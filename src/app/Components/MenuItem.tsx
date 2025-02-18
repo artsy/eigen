@@ -71,7 +71,9 @@ export const MenuItem: React.FC<{
         )}
         <Flex flex={7}>
           <Flex>
-            <Text variant="sm-display">{title}</Text>
+            <Text variant="sm-display" color="black100">
+              {title}
+            </Text>
             {!!description && (
               <Text variant="xs" color="black60">
                 {description}

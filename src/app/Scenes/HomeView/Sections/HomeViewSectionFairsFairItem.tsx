@@ -5,7 +5,7 @@ import {
 } from "__generated__/HomeViewSectionFairsFairItem_fair.graphql"
 import { CardRailCard, CardRailMetadataContainer } from "app/Components/CardRail/CardRailCard"
 import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact, concat, take } from "lodash"
 import { FC } from "react"
@@ -39,32 +39,33 @@ export const HomeViewSectionFairsFairItem: FC<HomeViewSectionFairsFairItemProps>
   const location = fair.location?.city || fair.location?.country
 
   return (
-    <CardRailCard
-      key={fair.slug}
-      onPress={() => {
-        onPress?.(fair)
-        navigate(`/fair/${fair.slug}`)
-      }}
-    >
-      <Flex>
-        <ThreeUpImageLayout imageURLs={artworkImageURLs} />
-        <CardRailMetadataContainer>
-          <Text numberOfLines={1} lineHeight="20px" variant="sm">
-            {fair.name}
-          </Text>
-          <Text
-            numberOfLines={1}
-            lineHeight="20px"
-            color="black60"
-            variant="sm"
-            testID="card-subtitle"
-            ellipsizeMode="middle"
-          >
-            {fair.exhibitionPeriod}
-            {Boolean(location) && `  ${bullet}  ${location}`}
-          </Text>
-        </CardRailMetadataContainer>
-      </Flex>
+    <CardRailCard key={fair.slug}>
+      <RouterLink
+        to={`/fair/${fair.slug}`}
+        onPress={() => {
+          onPress?.(fair)
+        }}
+      >
+        <Flex>
+          <ThreeUpImageLayout imageURLs={artworkImageURLs} />
+          <CardRailMetadataContainer>
+            <Text numberOfLines={1} lineHeight="20px" variant="sm">
+              {fair.name}
+            </Text>
+            <Text
+              numberOfLines={1}
+              lineHeight="20px"
+              color="black60"
+              variant="sm"
+              testID="card-subtitle"
+              ellipsizeMode="middle"
+            >
+              {fair.exhibitionPeriod}
+              {Boolean(location) && `  ${bullet}  ${location}`}
+            </Text>
+          </CardRailMetadataContainer>
+        </Flex>
+      </RouterLink>
     </CardRailCard>
   )
 }
