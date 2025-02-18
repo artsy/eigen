@@ -5,7 +5,7 @@ import {
 import { ConnectionHandler, Disposable, UseMutationConfig, graphql, useMutation } from "react-relay"
 
 type CommitConfig = UseMutationConfig<useCreateNewArtworkListMutation>
-type Data = useCreateNewArtworkListMutation$data
+type Data = useCreateNewArtworkListMutation$data | null | undefined
 type Response = [(config: CommitConfig) => Disposable, boolean]
 
 export const useCreateNewArtworkList = (): Response => {
@@ -54,7 +54,7 @@ const updater = (
   store: Parameters<NonNullable<UseMutationConfig<useCreateNewArtworkListMutation>["updater"]>>[0],
   data: Data
 ) => {
-  const response = data.createCollection?.responseOrError
+  const response = data?.createCollection?.responseOrError
   const me = store.getRoot().getLinkedRecord("me")
 
   if (!response || !me) {

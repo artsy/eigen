@@ -8,8 +8,8 @@ export const useMutation = <T extends MutationParameters>({
   updater,
 }: {
   mutation: GraphQLTaggedNode
-  optimisticResponse?: T["response"]
-  updater?: SelectorStoreUpdater<MutationParameters["response"]> | null | undefined
+  optimisticResponse?: (T["rawResponse"] extends {} ? T["rawResponse"] : never) | undefined
+  updater?: SelectorStoreUpdater<T["response"]> | null | undefined
 }) => {
   const relayEnvironment = getRelayEnvironment()
 
@@ -23,8 +23,8 @@ export const useMutation = <T extends MutationParameters>({
       commitMutation<T>(relayEnvironment, {
         mutation,
         variables,
-        updater: updater as any,
-        optimisticResponse: optimisticResponse as any,
+        updater: updater,
+        optimisticResponse: optimisticResponse,
         onError: reject,
         onCompleted: (res, errors) => {
           if (errors !== null) {
