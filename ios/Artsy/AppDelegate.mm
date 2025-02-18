@@ -2,23 +2,23 @@
 #import <SafariServices/SafariServices.h>
 #import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
 #import <Firebase.h>
-#import <BrazeKit/BrazeKit-Swift.h>
-#import "BrazeReactBridge.h"
-#import "BrazeReactUtils.h"
+//#import <BrazeKit/BrazeKit-Swift.h>
+//#import "BrazeReactBridge.h"
+//#import "BrazeReactUtils.h" 
 
-@import BrazeUI;
+// @import BrazeUI;
 
 #import <CodePush/CodePush.h>
 #import <AppCenterReactNative.h>
 
-#import "ARAppDelegate.h"
+#import "AppDelegate.h"
 #import "ARAppDelegate+Emission.h"
 #import "ARAppDelegate+Echo.h"
 #import "ARAppNotificationsDelegate.h"
 #import "ARAppDelegate+DeeplinkTimeout.h"
 #import "ARUserManager.h"
 #import "ARFonts.h"
-#import <SEGAnalytics.h>
+//#import <SEGAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "User.h"
 
@@ -146,12 +146,13 @@ static ARAppDelegate *_sharedInstance = nil;
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
-- (RCTBridge *)createBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate launchOptions:(NSDictionary *)launchOptions {
-    RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
-    AREmission *emission = [AREmission sharedInstance];
-    [emission setBridge:bridge];
-    return bridge;
-}
+//- (RCTBridge *)createBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate launchOptions:(NSDictionary *)launchOptions {
+//    // TODO: fix it
+////    RCTBridge *bridge = [self.reactDelegate createBridgeWithDelegate:self launchOptions:launchOptions];
+////    AREmission *emission = [AREmission sharedInstance];
+////    [emission setBridge:bridge];
+////    return bridge;
+//}
 
 - (UIView *)createRootViewWithBridge:(RCTBridge *)bridge
                           moduleName:(NSString *)moduleName
@@ -169,14 +170,14 @@ static ARAppDelegate *_sharedInstance = nil;
     }
 
     NSString *brazeSDKEndPoint = @"sdk.iad-06.braze.com";
-    BRZConfiguration *brazeConfiguration = [[BRZConfiguration alloc] initWithApiKey:brazeAppKey endpoint:brazeSDKEndPoint];
-    brazeConfiguration.logger.level = BRZLoggerLevelInfo;
-    Braze *braze = [BrazeReactBridge initBraze:brazeConfiguration];
-    [ARAppDelegate setBraze:braze];
+//    BRZConfiguration *brazeConfiguration = [[BRZConfiguration alloc] initWithApiKey:brazeAppKey endpoint:brazeSDKEndPoint];
+//    brazeConfiguration.logger.level = BRZLoggerLevelInfo;
+//    Braze *braze = [BrazeReactBridge initBraze:brazeConfiguration];
+//    [ARAppDelegate setBraze:braze];
 
 
-    BrazeInAppMessageUI *inAppMessageUI = [[BrazeInAppMessageUI alloc] init];
-    braze.inAppMessagePresenter = inAppMessageUI;
+//    BrazeInAppMessageUI *inAppMessageUI = [[BrazeInAppMessageUI alloc] init];
+//    braze.inAppMessagePresenter = inAppMessageUI;
 
     NSString *segmentWriteKey = [Keys secureFor:@"SEGMENT_STAGING_WRITE_KEY_IOS"];
 
@@ -184,12 +185,12 @@ static ARAppDelegate *_sharedInstance = nil;
         segmentWriteKey = [Keys secureFor:@"SEGMENT_PRODUCTION_WRITE_KEY_IOS"];
     }
 
-    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:segmentWriteKey];
-    configuration.trackApplicationLifecycleEvents = YES;
-    configuration.trackPushNotifications = YES;
-    configuration.trackDeepLinks = YES;
-    [SEGAnalytics setupWithConfiguration:configuration];
-    [[BrazeReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];
+//    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:segmentWriteKey];
+//    configuration.trackApplicationLifecycleEvents = YES;
+//    configuration.trackPushNotifications = YES;
+//    configuration.trackDeepLinks = YES;
+//    [SEGAnalytics setupWithConfiguration:configuration];
+//    [[BrazeReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];
 }
 
 - (void)registerNewSessionOpened {}
@@ -200,9 +201,9 @@ static ARAppDelegate *_sharedInstance = nil;
     [self registerNewSessionOpened];
 
     NSString *currentUserId = [[[ARUserManager sharedManager] currentUser] userID];
-    if (currentUserId) {
-        [[ARAppDelegate braze] changeUser: currentUserId];
-    }
+//    if (currentUserId) {
+//        [[ARAppDelegate braze] changeUser: currentUserId];
+//    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -289,7 +290,7 @@ static ARAppDelegate *_sharedInstance = nil;
 - (NSURL *)bundleURL
 {
 #if DEBUG
-    return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
+    return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@".expo/.virtual-metro-entry"];
 #else
     return [CodePush bundleURL];
 #endif
@@ -308,15 +309,15 @@ static ARAppDelegate *_sharedInstance = nil;
 
 #pragma mark - AppDelegate.braze
 
-static Braze *_braze = nil;
-
-+ (Braze *)braze {
-  return _braze;
-}
-
-+ (void)setBraze:(Braze *)braze {
-  _braze = braze;
-}
+//static Braze *_braze = nil;
+//
+//+ (Braze *)braze {
+//  return _braze;
+//}
+//
+//+ (void)setBraze:(Braze *)braze {
+//  _braze = braze;
+//}
 
 @end
 
