@@ -2,7 +2,7 @@
 #import <Expo/Expo.h>
 
 #import <RCTAppDelegate.h>
-//#import <BrazeKit/BrazeKit-Swift.h>
+#import <BrazeKit/BrazeKit-Swift.h>
 #import <UserNotifications/UNUserNotificationCenter.h>
 
 @class ARWindow, ArtsyEcho;
@@ -16,7 +16,7 @@
 @interface ARAppDelegate : EXAppDelegateWrapper <JSApplicationStateDelegate>
 
 + (ARAppDelegate *)sharedInstance;
-//+ (Braze *)braze;
++ (Braze *)braze;
 - (NSURL *)bundleURL;
 
 @property (strong, nonatomic) ARWindow *window;

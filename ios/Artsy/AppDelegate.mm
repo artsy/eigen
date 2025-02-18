@@ -2,11 +2,10 @@
 #import <SafariServices/SafariServices.h>
 #import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
 #import <Firebase.h>
-//#import <BrazeKit/BrazeKit-Swift.h>
+#import <BrazeKit/BrazeKit-Swift.h>
+#import <BrazeUI/BrazeUI-Swift.h>
 //#import "BrazeReactBridge.h"
-//#import "BrazeReactUtils.h" 
-
-// @import BrazeUI;
+//#import "BrazeReactUtils.h"
 
 #import <CodePush/CodePush.h>
 #import <AppCenterReactNative.h>
@@ -170,13 +169,13 @@ static ARAppDelegate *_sharedInstance = nil;
     }
 
     NSString *brazeSDKEndPoint = @"sdk.iad-06.braze.com";
-//    BRZConfiguration *brazeConfiguration = [[BRZConfiguration alloc] initWithApiKey:brazeAppKey endpoint:brazeSDKEndPoint];
-//    brazeConfiguration.logger.level = BRZLoggerLevelInfo;
+    BRZConfiguration *brazeConfiguration = [[BRZConfiguration alloc] initWithApiKey:brazeAppKey endpoint:brazeSDKEndPoint];
+    brazeConfiguration.logger.level = BRZLoggerLevelInfo;
 //    Braze *braze = [BrazeReactBridge initBraze:brazeConfiguration];
 //    [ARAppDelegate setBraze:braze];
 
 
-//    BrazeInAppMessageUI *inAppMessageUI = [[BrazeInAppMessageUI alloc] init];
+    BrazeInAppMessageUI *inAppMessageUI = [[BrazeInAppMessageUI alloc] init];
 //    braze.inAppMessagePresenter = inAppMessageUI;
 
     NSString *segmentWriteKey = [Keys secureFor:@"SEGMENT_STAGING_WRITE_KEY_IOS"];
@@ -202,9 +201,9 @@ static ARAppDelegate *_sharedInstance = nil;
     [self registerNewSessionOpened];
 
     NSString *currentUserId = [[[ARUserManager sharedManager] currentUser] userID];
-//    if (currentUserId) {
-//        [[ARAppDelegate braze] changeUser: currentUserId];
-//    }
+    if (currentUserId) {
+        [[ARAppDelegate braze] changeUser: currentUserId];
+    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -310,15 +309,15 @@ static ARAppDelegate *_sharedInstance = nil;
 
 #pragma mark - AppDelegate.braze
 
-//static Braze *_braze = nil;
-//
-//+ (Braze *)braze {
-//  return _braze;
-//}
-//
-//+ (void)setBraze:(Braze *)braze {
-//  _braze = braze;
-//}
+static Braze *_braze = nil;
+
++ (Braze *)braze {
+  return _braze;
+}
+
++ (void)setBraze:(Braze *)braze {
+  _braze = braze;
+}
 
 @end
 

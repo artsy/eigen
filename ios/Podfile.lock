@@ -29,6 +29,11 @@ PODS:
     - AppCenter/Core (= 5.0.3)
   - Base64 (1.1.2)
   - boost (1.84.0)
+  - BrazeKit (11.1.1)
+  - BrazeLocation (11.1.1):
+    - BrazeKit (= 11.1.1)
+  - BrazeUI (11.1.1):
+    - BrazeKit (= 11.1.1)
   - BVLinearGradient (2.8.3):
     - React-Core
   - CocoaLumberjack (3.7.2):
@@ -2190,6 +2195,9 @@ DEPENDENCIES:
   - AFNetworking/NSURLSession (= 2.7.0)
   - appcenter-core (from `../node_modules/appcenter`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
+  - BrazeKit (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeKit.podspec`)
+  - BrazeLocation (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeLocation.podspec`)
+  - BrazeUI (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeUI.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - CocoaLumberjack (= 3.7.2)
   - CodePush (from `../node_modules/react-native-code-push`)
@@ -2410,6 +2418,12 @@ EXTERNAL SOURCES:
     :path: "../node_modules/appcenter"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
+  BrazeKit:
+    :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeKit.podspec
+  BrazeLocation:
+    :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeLocation.podspec
+  BrazeUI:
+    :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeUI.podspec
   BVLinearGradient:
     :path: "../node_modules/react-native-linear-gradient"
   CodePush:
@@ -2693,6 +2707,9 @@ SPEC CHECKSUMS:
   AppCenterReactNativeShared: 01df23849b1c3c6eb8c4049f54322635650e98f0
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: 1dca942403ed9342f98334bf4c3621f011aa7946
+  BrazeKit: bc5feb3d7b899c3961f7238735423b8e603fd48e
+  BrazeLocation: bdcb39337d24624b8741f1935c1ebddab677f8ac
+  BrazeUI: d2a12504bc0183e14cd7255d574f8340807ab45a
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   CodePush: d892f13c5012e9e2cb36640f4929654b7be21fe5
@@ -2875,6 +2892,6 @@ SPEC CHECKSUMS:
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   Yoga: 7548e4449365bf0ef60db4aefe58abff37fcabec
 
-PODFILE CHECKSUM: 008da5377b49ae86e4aca565f3abbda5ddd7893f
+PODFILE CHECKSUM: 7b7465d245968019b79708968b0bd8efca0e1a11
 
 COCOAPODS: 1.16.2

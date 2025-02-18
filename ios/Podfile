@@ -137,6 +137,10 @@ target 'Artsy' do
   # Used in Live Auctions to hold user-state
   pod 'JWTDecode', '2.0.0'
 
+  pod 'BrazeKit', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeKit.podspec'
+  pod 'BrazeUI', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeUI.podspec'
+  pod 'BrazeLocation', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeLocation.podspec'
+
   # target 'ArtsyTests' do
   #   inherit! :search_paths
   #   use_frameworks!

@@ -18,7 +18,7 @@
 #import "AREmission.h"
 #import "ARNotificationsManager.h"
 #import <UserNotifications/UserNotifications.h>
-//#import <BrazeKit/BrazeKit-Swift.h>
+#import <BrazeKit/BrazeKit-Swift.h>
 
 
 @implementation ARAppNotificationsDelegate
@@ -78,7 +78,7 @@
     // Save device token for dev settings and to prevent excess calls to gravity if tokens don't change
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
 
-//    [[[ARAppDelegate braze] notifications] registerDeviceToken:deviceTokenData];
+    [[[ARAppDelegate braze] notifications] registerDeviceToken:deviceTokenData];
 
 // We only record device tokens on the Artsy service in case of Beta or App Store builds.
 #ifndef DEBUG
@@ -103,14 +103,14 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
 {
-//    BOOL processedByBraze = ARAppDelegate.braze != nil && [ARAppDelegate.braze.notifications handleBackgroundNotificationWithUserInfo:userInfo
-//                                                                                                               fetchCompletionHandler:handler];
-//    if (processedByBraze) {
-//        NSString *url = userInfo[@"ab_uri"];
-//        [self receivedNotification:userInfo];
-//        [self tappedNotification:userInfo url:url];
-//        return;
-//    }
+    BOOL processedByBraze = ARAppDelegate.braze != nil && [ARAppDelegate.braze.notifications handleBackgroundNotificationWithUserInfo:userInfo
+                                                                                                               fetchCompletionHandler:handler];
+    if (processedByBraze) {
+        NSString *url = userInfo[@"ab_uri"];
+        [self receivedNotification:userInfo];
+        [self tappedNotification:userInfo url:url];
+        return;
+    }
 
     [self applicationDidReceiveRemoteNotification:userInfo inApplicationState:application.applicationState];
 
@@ -208,10 +208,10 @@
 // Handle the notification view on when the app is in the foreground
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler{
 
-//    if (ARAppDelegate.braze != nil) {
-//      // Forward notification payload to Braze for processing.
-//      [ARAppDelegate.braze.notifications handleForegroundNotificationWithNotification:notification];
-//    }
+    if (ARAppDelegate.braze != nil) {
+      // Forward notification payload to Braze for processing.
+      [ARAppDelegate.braze.notifications handleForegroundNotificationWithNotification:notification];
+    }
 
     NSDictionary *userInfo = notification.request.content.userInfo;
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
@@ -222,17 +222,17 @@
 
 // Handle the tapping on the notification when the app in the foreground
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{
-//    BOOL processedByBraze = ARAppDelegate.braze != nil && [ARAppDelegate.braze.notifications handleUserNotificationWithResponse:response
-//                                                                                                    withCompletionHandler:completionHandler];
+    BOOL processedByBraze = ARAppDelegate.braze != nil && [ARAppDelegate.braze.notifications handleUserNotificationWithResponse:response
+                                                                                                    withCompletionHandler:completionHandler];
 
     NSDictionary *userInfo = response.notification.request.content.userInfo;
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
 
-//    if (processedByBraze) {
-//      NSString *url = userInfo[@"ab_uri"];
-//      [self tappedNotification:userInfo url:url];
-//      return;
-//    }
+    if (processedByBraze) {
+      NSString *url = userInfo[@"ab_uri"];
+      [self tappedNotification:userInfo url:url];
+      return;
+    }
 
 
     [self tappedNotification:notificationInfo url:userInfo[@"url"]];
