@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   ArrowBackIcon,
   CloseIcon,
@@ -20,6 +21,7 @@ import { ExtractNodeType } from "app/utils/relayHelpers"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from "react-relay"
+import { useTracking } from "react-tracking"
 import type {
   InfiniteDiscoveryQuery,
   InfiniteDiscoveryQuery$data,
@@ -38,6 +40,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 }) => {
   const REFETCH_BUFFER = 3
   const toast = useToast()
+  const { trackEvent } = useTracking()
 
   const { addDisoveredArtworkId } = GlobalStore.actions.infiniteDiscovery
 
@@ -46,6 +49,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   )
 
   const [index, setIndex] = useState(0)
+  const [maxIndexReached, setMaxIndexReached] = useState(index)
   const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>([])
 
   const data = usePreloadedQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, queryRef)
@@ -72,6 +76,13 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 
   const handleBackPressed = () => {
     if (index > 0) {
+      trackEvent({
+        action: ActionType.tappedRewind,
+        context_module: ContextModule.infiniteDiscovery,
+        context_screen_owner_id: artworks[index - 1]?.internalID,
+        context_screen_owner_slug: artworks[index - 1]?.slug,
+        context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+      })
       setIndex(index - 1)
     }
   }
@@ -79,8 +90,30 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const handleCardSwiped = useCallback(() => {
     if (index < artworks.length - 1) {
       const dismissedArtworkId = artworkCards[index].artworkId
-      setIndex(index + 1)
       addDisoveredArtworkId(dismissedArtworkId)
+
+      trackEvent({
+        action: ActionType.swipedInfiniteDiscoveryArtwork,
+        context_module: ContextModule.infiniteDiscovery,
+        context_screen_owner_id: artworks[index].internalID,
+        context_screen_owner_slug: artworks[index].slug,
+        context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+      })
+
+      // because when swiping, we iterate over the array of artworks, and we want to track only
+      // unique artworks, we need to track the max index reached
+      const newMaxIndexReached = Math.max(index + 1, maxIndexReached)
+      if (newMaxIndexReached > maxIndexReached) {
+        trackEvent({
+          action: ActionType.screen,
+          context_screen_owner_id: artworks[newMaxIndexReached].internalID,
+          context_screen_owner_slug: artworks[newMaxIndexReached].slug,
+          context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+        })
+      }
+      setMaxIndexReached(newMaxIndexReached)
+
+      setIndex(index + 1)
     }
 
     // fetch more artworks when the user is about to reach the end of the list
@@ -96,6 +129,12 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         "bottom",
         {
           onPress: () => {
+            trackEvent({
+              action: ActionType.tappedToast,
+              context_module: ContextModule.infiniteDiscovery,
+              context_screen_owner_type: OwnerType.home,
+              subject: "Tap here to navigate to your Saves area in your profile.",
+            })
             navigate("/favorites/saves")
           },
           backgroundColor: "green100",
@@ -103,6 +142,12 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         }
       )
     }
+
+    trackEvent({
+      action: ActionType.tappedClose,
+      context_module: ContextModule.infiniteDiscovery,
+    })
+
     goBack()
   }
 
@@ -205,6 +250,7 @@ export const infiniteDiscoveryQuery = graphql`
           artists(shallow: true) @required(action: NONE) {
             internalID @required(action: NONE)
           }
+          slug
         }
       }
     }

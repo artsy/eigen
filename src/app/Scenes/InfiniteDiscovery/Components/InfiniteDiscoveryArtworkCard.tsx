@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   Flex,
   HeartFillIcon,
@@ -43,7 +44,10 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             ? Schema.ActionNames.ArtworkSave
             : Schema.ActionNames.ArtworkUnsave,
           action_type: Schema.ActionTypes.Success,
-          context_module: Schema.ContextModules.ArtworkActions,
+          context_module: ContextModule.infiniteDiscoveryArtworkCard,
+          context_screen_owner_id: artwork.internalID,
+          context_screen_owner_slug: artwork.slug,
+          context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
         })
 
         if (isArtworkSaved) {
@@ -73,6 +77,9 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             artist={artwork.artists?.[0]}
             avatarSize="xxs"
             includeTombstone={false}
+            contextModule={ContextModule.infiniteDiscoveryArtworkCard}
+            contextScreenOwnerId={artwork.internalID}
+            contextScreenOwnerSlug={artwork.slug}
           />
         </Flex>
 
@@ -164,6 +171,7 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
     }
     isSaved
     saleMessage
+    slug
     title
     ...useSaveArtworkToArtworkLists_artwork
   }
