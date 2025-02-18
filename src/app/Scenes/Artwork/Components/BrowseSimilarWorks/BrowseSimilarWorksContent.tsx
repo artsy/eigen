@@ -18,7 +18,7 @@ import { NavigationHeader } from "app/Components/NavigationHeader"
 import { BrowseSimilarWorksProps } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { BrowseSimilarWorksExploreMoreButton } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorksExploreMoreButton"
 import { extractPills } from "app/Scenes/SavedSearchAlert/pillExtractors"
-import { goBack, navigate } from "app/system/navigation/navigate"
+import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
@@ -114,13 +114,7 @@ const SimilarArtworksContainer: React.FC<{ attributes: SearchCriteriaAttributes 
 
     return (
       <>
-        <GenericGrid
-          width={screen.width - space(2)}
-          artworks={artworks}
-          onPress={(internalID: string) => {
-            navigate(`artwork/${internalID}`)
-          }}
-        />
+        <GenericGrid width={screen.width - space(2)} artworks={artworks} />
         <Spacer y={2} />
         <BrowseSimilarWorksExploreMoreButton attributes={attributes} />
       </>

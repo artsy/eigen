@@ -66,14 +66,7 @@ export const AlertArtworksGrid: FC<AlertArtworksGridProps> = ({ alertId, fetchKe
             {numWorks} currently on Artsy match your criteria. See our top picks for you:
           </Text>
           <Spacer y={1} />
-          <GenericGrid
-            width={screen.width - space(2)}
-            artworks={artworks}
-            hideSaveIcon
-            onPress={(slug: string) => {
-              navigate?.(`artwork/${slug}`)
-            }}
-          />
+          <GenericGrid width={screen.width - space(2)} artworks={artworks} hideSaveIcon />
         </Flex>
       )}
       {artworksCount === 0 && (
