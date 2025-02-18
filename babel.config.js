@@ -36,10 +36,7 @@ module.exports = (api) => {
     plugins: babelPlugins,
     // presets run after
     presets: [
-      [
-        "babel-preset-expo",
-        { useTransformReactJSXExperimental: true }, // this is so `import React from "react"` is not needed.
-      ],
+      ["babel-preset-expo", ls],
       // TODO: Remove this once we determine if its actually needed. Added during reanimated upgrade.
       // but then we determined that it was leading to errors with loading reanimated while remotely
       // debugging JS in chrome.
