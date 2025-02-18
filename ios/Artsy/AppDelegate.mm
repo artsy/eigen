@@ -145,13 +145,13 @@ static ARAppDelegate *_sharedInstance = nil;
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
-//- (RCTBridge *)createBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate launchOptions:(NSDictionary *)launchOptions {
-//    // TODO: fix it
-////    RCTBridge *bridge = [self.reactDelegate createBridgeWithDelegate:self launchOptions:launchOptions];
-////    AREmission *emission = [AREmission sharedInstance];
-////    [emission setBridge:bridge];
-////    return bridge;
-//}
+- (RCTBridge *)createBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate launchOptions:(NSDictionary *)launchOptions {
+    RCTAppDelegate *appDelegate = (RCTAppDelegate *)self.reactDelegate;
+    RCTBridge *bridge = [appDelegate createBridgeWithDelegate:self launchOptions:launchOptions];
+    AREmission *emission = [AREmission sharedInstance];
+    [emission setBridge:bridge];
+    return bridge;
+}
 
 - (UIView *)createRootViewWithBridge:(RCTBridge *)bridge
                           moduleName:(NSString *)moduleName
