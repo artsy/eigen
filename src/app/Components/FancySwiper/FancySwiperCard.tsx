@@ -33,6 +33,7 @@ export const FancySwiperCard = memo(
     let swipedCardTransform = undefined
 
     if (isTopCard) {
+      console.log("cb::isTopCard", artworkId)
       // tilt the top card as it is being swiped away
       const rotate = swiper.x.interpolate({
         inputRange: [-SWIPE_MAGNITUDE, 0],
@@ -40,14 +41,18 @@ export const FancySwiperCard = memo(
         extrapolate: "clamp",
       })
 
-      const translateX = swiper.x.interpolate({
-        inputRange: [-SWIPE_MAGNITUDE, 0],
-        outputRange: [-screenWidth, 0],
-        extrapolate: "clamp",
-      })
+      // const translateX = swiper.x.interpolate({
+      //   inputRange: [-SWIPE_MAGNITUDE, 0],
+      //   outputRange: [-screenWidth, 0],
+      //   extrapolate: "clamp",
+      // })
+
+      // topCardTransform = {
+      //   transform: [{ translateX }, { rotate }],
+      // }
 
       topCardTransform = {
-        transform: [{ translateX }, { rotate }],
+        transform: [...swiper.getTranslateTransform(), { rotate }],
       }
 
       // drop a shadow from the top card and make it more intense as it is swiped away
@@ -75,6 +80,7 @@ export const FancySwiperCard = memo(
         transform: [{ scale }],
       }
     } else if (isLastSwipedCard) {
+      console.log("cb::isLastSwiperCard", artworkId)
       const rotate = swiper.x.interpolate({
         inputRange: [0, SWIPE_MAGNITUDE],
         outputRange: ["-5deg", "0deg"],
@@ -91,6 +97,7 @@ export const FancySwiperCard = memo(
         transform: [{ translateX }, { rotate }],
       }
     } else if (isSwipedCard) {
+      console.log("cb::isSwipedCard", artworkId)
       swipedCardTransform = {
         transform: [{ translateX: -screenWidth }, { translateY: 0 }],
       }

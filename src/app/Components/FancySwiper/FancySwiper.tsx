@@ -1,11 +1,14 @@
 import { Flex } from "@artsy/palette-mobile"
 import { FancySwiperIcons } from "app/Components/FancySwiper/FancySwiperIcons"
 import React, { useMemo, useRef } from "react"
-import { PanResponder, Animated } from "react-native"
+import { PanResponder, Animated, Dimensions } from "react-native"
 import { FancySwiperCard } from "./FancySwiperCard"
 
 // the amount of swiping that is considered a full swipe
 export const SWIPE_MAGNITUDE = 100
+
+const { width } = Dimensions.get("screen")
+const whiffHitSlop = width / 4
 
 export type FancySwiperArtworkCard = {
   content: React.ReactNode
@@ -34,10 +37,18 @@ export const FancySwiper = ({
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
-    onPanResponderMove: (_, { dx, dy }) => {
-      swiper.setValue({ x: dx, y: dy })
+    onPanResponderMove: (_, { dx, dy, x0 }) => {
+      // if we're 25% left of the screen when swiping then we update normally
+      if (x0 <= whiffHitSlop) {
+        swiper.setValue({ x: dx, y: dy })
+        // otherwise we clamp the dragging to avoid up/down/right movement
+      } else {
+        swiper.setValue({ x: Math.min(dx, 0), y: 0 })
+      }
+      // works but not allows a nice whiff
+      // swiper.setValue({ x: Math.min(dx, 0), y: 0 })
     },
-    onPanResponderRelease: (_, { dx, dy }) => {
+    onPanResponderRelease: (_, { dx, dy, x0 }) => {
       const isFullSwipe = Math.abs(dx) > SWIPE_MAGNITUDE
       const isLeftSwipe = dx < 0
       const isRightSwipe = dx > 0
@@ -47,7 +58,9 @@ export const FancySwiper = ({
       } else if (isFullSwipe && isRightSwipe && onSwipeRight) {
         handleRightSwipe(dy)
       } else if (isFullSwipe && isRightSwipe && onWhiffRight) {
-        handleRightWhiff()
+        if (x0 <= whiffHitSlop) {
+          handleRightWhiff()
+        }
       } else {
         // move the card to its original position
         Animated.spring(swiper, {
@@ -65,7 +78,7 @@ export const FancySwiper = ({
   const handleLeftSwipe = () => {
     // move the card off the screen
     Animated.timing(swiper, {
-      toValue: { x: -1000, y: 0 },
+      toValue: { x: -width, y: 0 },
       duration: 300,
       useNativeDriver: true,
     }).start(() => {
