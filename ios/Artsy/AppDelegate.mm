@@ -4,8 +4,8 @@
 #import <Firebase.h>
 #import <BrazeKit/BrazeKit-Swift.h>
 #import <BrazeUI/BrazeUI-Swift.h>
-//#import "BrazeReactBridge.h"
-//#import "BrazeReactUtils.h"
+#import "BrazeReactBridge.h"
+#import "BrazeReactUtils.h"
 
 #import <CodePush/CodePush.h>
 #import <AppCenterReactNative.h>
@@ -171,12 +171,12 @@ static ARAppDelegate *_sharedInstance = nil;
     NSString *brazeSDKEndPoint = @"sdk.iad-06.braze.com";
     BRZConfiguration *brazeConfiguration = [[BRZConfiguration alloc] initWithApiKey:brazeAppKey endpoint:brazeSDKEndPoint];
     brazeConfiguration.logger.level = BRZLoggerLevelInfo;
-//    Braze *braze = [BrazeReactBridge initBraze:brazeConfiguration];
-//    [ARAppDelegate setBraze:braze];
+    Braze *braze = [BrazeReactBridge initBraze:brazeConfiguration];
+    [ARAppDelegate setBraze:braze];
 
 
     BrazeInAppMessageUI *inAppMessageUI = [[BrazeInAppMessageUI alloc] init];
-//    braze.inAppMessagePresenter = inAppMessageUI;
+    braze.inAppMessagePresenter = inAppMessageUI;
 
     NSString *segmentWriteKey = [Keys secureFor:@"SEGMENT_STAGING_WRITE_KEY_IOS"];
 
@@ -190,7 +190,7 @@ static ARAppDelegate *_sharedInstance = nil;
 //    configuration.trackPushNotifications = YES;
 //    configuration.trackDeepLinks = YES;
 //    [SEGAnalytics setupWithConfiguration:configuration];
-//    [[BrazeReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];
+    [[BrazeReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];
 }
 
 - (void)registerNewSessionOpened {}
