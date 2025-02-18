@@ -165,7 +165,7 @@ static ARAppDelegate *_sharedInstance = nil;
 {
     NSString *brazeAppKey = [Keys secureFor:@"BRAZE_STAGING_APP_KEY_IOS"];
     if (![ARAppStatus isDev]) {
-        brazeAppKey = [Keys secureFor:@"BRAZE_STAGING_APP_KEY_IOS"];
+        brazeAppKey = [Keys secureFor:@"BRAZE_PRODUCTION_APP_KEY_IOS"];
     }
 
     NSString *brazeSDKEndPoint = @"sdk.iad-06.braze.com";
