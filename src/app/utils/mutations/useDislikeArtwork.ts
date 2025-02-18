@@ -1,4 +1,7 @@
-import { useDislikeArtworkMutation } from "__generated__/useDislikeArtworkMutation.graphql"
+import {
+  useDislikeArtworkMutation,
+  useDislikeArtworkMutation$data,
+} from "__generated__/useDislikeArtworkMutation.graphql"
 import { useMutation } from "app/utils/useMutation"
 import { ConnectionHandler, graphql } from "react-relay"
 import { RecordSourceSelectorProxy } from "relay-runtime"
@@ -10,8 +13,11 @@ export const useDislikeArtwork = () => {
   })
 }
 
-const dislikeArtworkUpdater = (store: RecordSourceSelectorProxy<{}>, data: {}) => {
-  const artworkID = (data as any).dislikeArtwork?.artwork?.id
+const dislikeArtworkUpdater = (
+  store: RecordSourceSelectorProxy<{}>,
+  data: useDislikeArtworkMutation$data | undefined | null
+) => {
+  const artworkID = data?.dislikeArtwork?.artwork?.id
 
   if (!artworkID) return
 
