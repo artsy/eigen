@@ -11,20 +11,19 @@ import {
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { useLocation } from "app/utils/hooks/useLocation"
+import { Location, useLocation } from "app/utils/hooks/useLocation"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Suspense, useState } from "react"
 import { ActivityIndicator, RefreshControl } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
-const ShowsForYou: React.FC = () => {
-  const enableShowsForYouLocation = useFeatureFlag("AREnableShowsForYouLocation")
+interface ShowsForYouProps {
+  location: Location | null
+}
 
-  const { location, isLoading } = useLocation({
-    disabled: !enableShowsForYouLocation,
-    skipPermissionRequests: true,
-  })
+const ShowsForYou: React.FC<ShowsForYouProps> = ({ location }) => {
+  const enableShowsForYouLocation = useFeatureFlag("AREnableShowsForYouLocation")
 
   const showsForYouQueryVariables = location
     ? { near: location, count: 10 }
@@ -34,10 +33,6 @@ const ShowsForYou: React.FC = () => {
     ShowsForYouScreenQuery,
     showsForYouQueryVariables
   )
-
-  if (isLoading) {
-    return <ArticlesPlaceholder title="Shows for You" />
-  }
 
   return <ShowsForYouList me={queryData.me} />
 }
@@ -117,9 +112,20 @@ export const ShowsForYouList: React.FC<{ me: any }> = ({ me }) => {
 }
 
 export const ShowsForYouScreen: React.FC = () => {
+  const enableShowsForYouLocation = useFeatureFlag("AREnableShowsForYouLocation")
+
+  const { location, isLoading } = useLocation({
+    disabled: !enableShowsForYouLocation,
+    skipPermissionRequests: true,
+  })
+
+  if (isLoading) {
+    return <ArticlesPlaceholder title="Shows for You" />
+  }
+
   return (
     <Suspense fallback={<ArticlesPlaceholder title="Shows for You" />}>
-      <ShowsForYou />
+      <ShowsForYou location={location} />
     </Suspense>
   )
 }
