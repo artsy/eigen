@@ -183,7 +183,11 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
         <Flex gap={1}>
           <Text variant="sm-display">Gallery</Text>
 
-          <PartnerListItemShort partner={data.partner} onPress={() => collapse()} />
+          <PartnerListItemShort
+            disabledLocation
+            partner={data.partner}
+            onPress={() => collapse()}
+          />
           <Flex
             flexDirection="row"
             flexWrap="wrap"

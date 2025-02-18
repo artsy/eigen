@@ -13,12 +13,17 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface PartnerListItemShortProps {
   partner: PartnerListItemShort_partner$key
+  disabledLocation?: boolean
   onPress?: () => void
 }
 
-export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({ partner, onPress }) => {
+export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({
+  partner,
+  onPress,
+  disabledLocation,
+}) => {
   const data = useFragment(fragment, partner)
-  const { location } = useLocation()
+  const { location } = useLocation({ disabled: !!disabledLocation })
 
   if (!data) {
     return null
