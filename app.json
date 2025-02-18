@@ -1,5 +1,6 @@
 {
-  "appName": "eigen",
+  "name": "Artsy",
+  "displayName": "Artsy",
   "version": "8.65.0",
   "isAndroidBeta": false,
   "codePushReleaseName": "none",
