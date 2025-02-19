@@ -12,6 +12,7 @@ import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
@@ -58,7 +59,14 @@ export const ShowsRail: React.FC<ShowsRailProps> = memo(
 
     return (
       <Flex {...flexProps}>
-        <SectionTitle title={title} mx={2} />
+        <SectionTitle
+          title={title}
+          mx={2}
+          onPress={() => {
+            navigate("/shows-for-you")
+            tracking.trackEvent(tracks.tappedHeader())
+          }}
+        />
 
         <FlatList
           horizontal
