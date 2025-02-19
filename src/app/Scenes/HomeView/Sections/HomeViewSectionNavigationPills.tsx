@@ -2,7 +2,6 @@ import { ContextModule } from "@artsy/cohesion"
 import {
   ArtworkIcon,
   AuctionIcon as GavelIcon,
-  Box,
   FairIcon,
   Flex,
   FlexProps,
@@ -14,6 +13,7 @@ import {
   Spacer,
   Text,
   useSpace,
+  IconProps,
 } from "@artsy/palette-mobile"
 import { HomeViewSectionNavigationPillsQuery } from "__generated__/HomeViewSectionNavigationPillsQuery.graphql"
 import {
@@ -26,7 +26,7 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracki
 import { navigate } from "app/system/navigation/navigate"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { ComponentType, memo, useEffect } from "react"
+import { FC, memo, useEffect } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -78,6 +78,7 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
             accessibilityRole="link"
             testID={`pill-${pill.title}`}
             variant="link"
+            Icon={SUPPORTED_ICONS[pill.icon as string]}
             onPress={() => {
               tracking.tappedNavigationPillsGroup({
                 title: pill.title,
@@ -87,12 +88,9 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
               navigate(pill.href)
             }}
           >
-            <Flex flexDirection="row" alignItems="center" gap={0.5} pt={0.5}>
-              <PillIcon name={pill.icon} />
-              <Text variant="xs" color="black100">
-                {pill.title}
-              </Text>
-            </Flex>
+            <Text variant="xs" color="black100">
+              {pill.title}
+            </Text>
           </Pill>
         )}
       />
@@ -196,26 +194,11 @@ export const NAVIGATION_LINKS_PLACEHOLDER: Array<NavigationPill> = [
   { title: "Editorial", href: "/news", ownerType: "whatever", icon: "HeartIcon" },
 ]
 
-const SUPPORTED_ICONS: Record<string, ComponentType> = {
+const SUPPORTED_ICONS: Record<string, FC<IconProps>> = {
   ArtworkIcon,
   FairIcon,
   FollowArtistIcon,
   GavelIcon,
   HeartStrokeIcon,
   PublicationIcon,
-}
-
-export const PillIcon: React.FC<{ name: string | null | undefined }> = (props) => {
-  const { name } = props
-
-  if (name && name in SUPPORTED_ICONS) {
-    const Icon = SUPPORTED_ICONS[name]
-    return (
-      <Box testID={`pill-icon-${name}`} accessibilityRole="image">
-        <Icon />
-      </Box>
-    )
-  }
-
-  return null // ignore unsupported icons
 }
