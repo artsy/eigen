@@ -38,6 +38,7 @@
 #import "RNBootSplash.h"
 
 #import "AppDelegate+Notifications.h"
+#import "AppDelegate+ActivityContinuation.h"
 
 
 @interface ARAppDelegate ()
@@ -279,6 +280,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [[NSUserDefaults standardUserDefaults] setInteger:numberOfRuns forKey:ARAnalyticsAppUsageCountProperty];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
