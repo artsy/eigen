@@ -11,7 +11,7 @@
 #import "ARAppConstants.h"
 #import "AROptions.h"
 #import "ARMenuAwareViewController.h"
-#import "ARAppNotificationsDelegate.h"
+// #import "ARAppNotificationsDelegate.h"
 #import "ARAugmentedVIRSetupViewController.h"
 #import "ARAugmentedRealityConfig.h"
 #import "ARAugmentedFloorBasedVIRViewController.h"

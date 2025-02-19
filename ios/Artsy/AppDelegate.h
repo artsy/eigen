@@ -21,11 +21,23 @@
 @property (strong, nonatomic) ARWindow *window;
 @property (strong, nonatomic) UIViewController *viewController;
 
+
+typedef NS_ENUM(NSInteger, ARAppNotificationsRequestContext) {
+    ARAppNotificationsRequestContextLaunch,
+    ARAppNotificationsRequestContextOnboarding,
+    ARAppNotificationsRequestContextArtistFollow,
+    ARAppNotificationsRequestContextNone
+};
+
+
 @property (strong, nonatomic, readonly) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readonly) NSString *landingURLRepresentation;
 
 /// The Artsy echo instance for feature flags, and url routing etc
 @property (nonatomic, readwrite, strong) ArtsyEcho *echo;
+
+// Notifications Delegate
+@property (nonatomic, readwrite, assign) ARAppNotificationsRequestContext requestContext;
 
 @end
 
