@@ -2,7 +2,6 @@
 
 #import <RCTAppDelegate.h>
 #import <BrazeKit/BrazeKit-Swift.h>
-#import <UserNotifications/UNUserNotificationCenter.h>
 
 @class ARWindow, ArtsyEcho;
 
