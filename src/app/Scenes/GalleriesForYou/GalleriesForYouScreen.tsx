@@ -23,6 +23,7 @@ import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 interface GalleriesForYouProps {
   location: Location | null
 }
+
 export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) => {
   const visualizeLocation = useDevToggle("DTLocationDetectionVisialiser")
 
