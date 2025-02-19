@@ -8772,6 +8772,30 @@ type CreateUserSaleProfileSuccess {
   userSaleProfile: UserSaleProfile
 }
 
+type CreateUserSeenArtworkFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateUserSeenArtworkInput {
+  artworkId: String!
+  clientMutationId: String
+}
+
+type CreateUserSeenArtworkPayload {
+  clientMutationId: String
+
+  # On success: the created User Seen Artwork.
+  userSeenArtworkOrError: CreateUserSeenArtworkSuccessResponseOrError
+}
+
+type CreateUserSeenArtworkSuccess {
+  artworkId: String
+}
+
+union CreateUserSeenArtworkSuccessResponseOrError =
+    CreateUserSeenArtworkFailure
+  | CreateUserSeenArtworkSuccess
+
 type CreateVerifiedRepresentativeFailure {
   mutationError: GravityMutationError
 }
@@ -14005,6 +14029,9 @@ type Mutation {
     input: CreateUserSaleProfileMutationInput!
   ): CreateUserSaleProfileMutationPayload
 
+  # Marks an artwork as seen when a user swipes through Infinite Discovery.
+  createUserSeenArtwork(input: CreateUserSeenArtworkInput!): CreateUserSeenArtworkPayload
+
   # Creates Verified Representative.
   createVerifiedRepresentative(
     input: CreateVerifiedRepresentativeInput!
@@ -16938,6 +16965,9 @@ type Query {
 
     # Weights for the KNN and MLT query
     osWeights: [Float] = [0.6, 0.4]
+
+    # Internal Redis tracking for the user seen artworks
+    useInternalTracking: Boolean = false
   ): ArtworkConnection
 
   # A namespace external partners (provided by Galaxy)
@@ -21627,6 +21657,9 @@ type Viewer {
 
     # Weights for the KNN and MLT query
     osWeights: [Float] = [0.6, 0.4]
+
+    # Internal Redis tracking for the user seen artworks
+    useInternalTracking: Boolean = false
   ): ArtworkConnection
 
   # A namespace external partners (provided by Galaxy)
