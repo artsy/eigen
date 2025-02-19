@@ -52,9 +52,6 @@ static ARAppDelegate *_sharedInstance = nil;
 + (void)load
 {
     _sharedInstance = [[self alloc] init];
-//    [JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate = _sharedInstance;
-//    [JSDecoupledAppDelegate sharedAppDelegate].appDefaultOrientationDelegate = (id)_sharedInstance;
-//    [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = (id)_sharedInstance;
 }
 
 + (ARAppDelegate *)sharedInstance

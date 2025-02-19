@@ -246,7 +246,6 @@ PODS:
   - iOSSnapshotTestCase/SwiftSupport (8.0.0):
     - iOSSnapshotTestCase/Core
   - ISO8601DateFormatter (0.7.1)
-  - JSDecoupledAppDelegate (1.2.0)
   - JWT (3.0.0-beta.14):
     - Base64 (~> 1.1.2)
   - JWTDecode (2.0.0)
@@ -2294,7 +2293,6 @@ DEPENDENCIES:
   - Interstellar/Core (from `https://github.com/artsy/Interstellar.git`, branch `observable-unsubscribe`)
   - INTUAnimationEngine
   - ISO8601DateFormatter (from `https://github.com/artsy/iso-8601-date-formatter`)
-  - JSDecoupledAppDelegate
   - JWTDecode (= 2.0.0)
   - Mantle (= 1.5.6)
   - MARKRangeSlider
@@ -2454,7 +2452,6 @@ SPEC REPOS:
     - GTMSessionFetcher
     - INTUAnimationEngine
     - iOSSnapshotTestCase
-    - JSDecoupledAppDelegate
     - JWT
     - JWTDecode
     - libwebp
@@ -2852,7 +2849,6 @@ SPEC CHECKSUMS:
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   iOSSnapshotTestCase: a670511f9ee3829c2b9c23e6e68f315fd7b6790f
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
-  JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
@@ -2998,6 +2994,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 7548e4449365bf0ef60db4aefe58abff37fcabec
 
-PODFILE CHECKSUM: a118eb4b9dfc796d3c55367455aaf7ac3b2da003
+PODFILE CHECKSUM: affe6ad335305a2764380848586c6dc905a282c8
 
 COCOAPODS: 1.16.2
