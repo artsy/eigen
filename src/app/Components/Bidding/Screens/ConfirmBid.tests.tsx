@@ -24,6 +24,7 @@ import { useCreateBidderPosition } from "app/utils/mutations/useCreateBidderPosi
 import { useCreateCreditCard } from "app/utils/mutations/useCreateCreditCard"
 import { useUpdateUserPhoneNumber } from "app/utils/mutations/useUpdateUserPhoneNumber"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { merge } from "lodash"
 import relay, { graphql } from "react-relay"
@@ -279,6 +280,7 @@ describe("ConfirmBid", () => {
       fireEvent.press(screen.getByTestId("disclaimer-checkbox"))
 
       fireEvent.press(screen.getByTestId("bid-button"))
+      expect(mockTrackEvent).toHaveBeenCalledWith({ action_type: "tap", action_name: "placeBid" })
       expect(mockCreateBidderMutation).toHaveBeenCalled()
     })
 
@@ -489,6 +491,10 @@ describe("ConfirmBid", () => {
 
         await waitFor(() => expect(mockNavigator.navigate).toHaveBeenCalled())
 
+        expect(mockTrackEvent).toHaveBeenCalledWith({
+          action_type: "success",
+          action_name: "placeBid",
+        })
         expect(mockNavigator.navigate).toHaveBeenCalledWith(
           "BidResult",
           expect.objectContaining({
