@@ -145,20 +145,20 @@ static ARAppDelegate *_sharedInstance = nil;
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
-//- (RCTBridge *)createBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate launchOptions:(NSDictionary *)launchOptions {
-//    RCTAppDelegate *appDelegate = (RCTAppDelegate *)self.reactDelegate;
-//    RCTBridge *bridge = [appDelegate createBridgeWithDelegate:self launchOptions:launchOptions];
-//    AREmission *emission = [AREmission sharedInstance];
-//    [emission setBridge:bridge];
-//    return bridge;
-//}
+- (RCTBridge *)createBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate launchOptions:(NSDictionary *)launchOptions {
+
+    // TODO: This is off the beaten track for expo setup, we should probably find another way
+    // It will definitely not work on new architecture
+    RCTBridge *bridge = [super createBridgeWithDelegate:self launchOptions:launchOptions];
+    AREmission *emission = [AREmission sharedInstance];
+    [emission setBridge:bridge];
+    return bridge;
+}
 
 - (UIView *)createRootViewWithBridge:(RCTBridge *)bridge
                           moduleName:(NSString *)moduleName
                            initProps:(NSDictionary *)initProps {
 
-  AREmission *emission = [AREmission sharedInstance];
-  [emission setBridge:bridge];
   UIView *rootView = [super createRootViewWithBridge:bridge moduleName:moduleName initProps:initProps];
   [RNBootSplash initWithStoryboard:@"BootSplash" rootView:rootView]; // ⬅️ initialize the splash screen
   return rootView;
