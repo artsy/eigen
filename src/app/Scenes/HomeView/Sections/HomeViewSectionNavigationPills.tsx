@@ -1,12 +1,15 @@
 import { ContextModule } from "@artsy/cohesion"
 import {
-  AuctionIcon,
+  ArtworkIcon,
+  AuctionIcon as GavelIcon,
   Box,
+  FairIcon,
   Flex,
   FlexProps,
   FollowArtistIcon,
-  HeartIcon,
+  HeartIcon as HeartStrokeIcon,
   Pill,
+  PublicationIcon,
   Skeleton,
   Spacer,
   Text,
@@ -194,9 +197,12 @@ export const NAVIGATION_LINKS_PLACEHOLDER: Array<NavigationPill> = [
 ]
 
 const SUPPORTED_ICONS: Record<string, ComponentType> = {
+  ArtworkIcon,
+  FairIcon,
   FollowArtistIcon,
-  AuctionIcon,
-  HeartIcon,
+  GavelIcon,
+  HeartStrokeIcon,
+  PublicationIcon,
 }
 
 export const PillIcon: React.FC<{ name: string | null | undefined }> = (props) => {
