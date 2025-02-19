@@ -55,8 +55,6 @@ end
 
 
 target 'Artsy' do
-  # use_modular_headers!
-
   use_expo_modules!
 
   if ENV['EXPO_USE_COMMUNITY_AUTOLINKING'] == '1'
@@ -112,9 +110,6 @@ target 'Artsy' do
   # Language Enhancements
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
-
-  # Analytics
-  # pod 'Analytics', '4.1.8'
 
   # For Stripe integration with Emission. Using a fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
   pod 'Pulley', git: 'https://github.com/artsy/Pulley.git', branch: 'master'

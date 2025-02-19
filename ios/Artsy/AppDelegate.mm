@@ -140,8 +140,6 @@ static ARAppDelegate *_sharedInstance = nil;
         [FIRApp configure];
     }
 
-//    self.reactDelegat.bri
-
     return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
