@@ -8,11 +8,12 @@ import {
   Spinner,
   Touchable,
 } from "@artsy/palette-mobile"
-import { FancySwiper, FancySwiperArtworkCard } from "app/Components/FancySwiper/FancySwiper"
+import { FancySwiperArtworkCard } from "app/Components/FancySwiper/FancySwiper"
 import { useToast } from "app/Components/Toast/toastHook"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
+import { InfiniteSwiperCardsCarousel } from "app/Scenes/InfiniteDiscovery/Components/InfiniteSwiperCardsCarousel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -32,7 +33,9 @@ interface InfiniteDiscoveryProps {
   queryRef: PreloadedQuery<InfiniteDiscoveryQuery>
 }
 
-type InfiniteDiscoveryArtwork = ExtractNodeType<InfiniteDiscoveryQuery$data["discoverArtworks"]>
+export type InfiniteDiscoveryArtwork = ExtractNodeType<
+  InfiniteDiscoveryQuery$data["discoverArtworks"]
+>
 
 export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   fetchMoreArtworks,
@@ -87,6 +90,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     }
   }
 
+  // @ts-ignore
   const handleCardSwiped = useCallback(() => {
     if (index < artworks.length - 1) {
       const dismissedArtworkId = artworkCards[index].artworkId
@@ -181,7 +185,17 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           />
         </Flex>
         <Spacer y={1} />
-        <FancySwiper cards={unswipedCards} hideActionButtons onSwipeAnywhere={handleCardSwiped} />
+
+        <InfiniteSwiperCardsCarousel
+          artworks={artworks}
+          fetchMoreArtworks={() => {
+            console.log(unswipedCards.map((card) => card.artworkId))
+            fetchMoreArtworks(unswipedCards.map((card) => card.artworkId))
+          }}
+          setIndex={setIndex}
+        />
+
+        {/* <FancySwiper cards={unswipedCards} hideActionButtons onSwipeAnywhere={handleCardSwiped} /> */}
 
         {!!artworks.length && (
           <InfiniteDiscoveryBottomSheet
@@ -232,7 +246,7 @@ export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
     return <InfiniteDiscoverySpinner />
   }
 
-  const fetchMoreArtworks = (undiscoveredArtworks: string[]) => {
+  const fetchMoreArtworks = (undiscoveredArtworks: string[] = []) => {
     loadQuery({ excludeArtworkIds: discoveredArtworksIds.concat(undiscoveredArtworks) })
   }
 
