@@ -34,19 +34,18 @@ export const FancySwiper = ({
 }: FancySwiperProps) => {
   const remainingCards = useMemo(() => cards.reverse(), [cards.length])
   const swiper = useRef<Animated.ValueXY>(new Animated.ValueXY()).current
+  const swiperSwipedCard = useRef<Animated.ValueXY>(new Animated.ValueXY()).current
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
     onPanResponderMove: (_, { dx, dy, x0 }) => {
       // if we're 25% left of the screen when swiping then we update normally
       if (x0 <= whiffHitSlop) {
-        swiper.setValue({ x: dx, y: dy })
-        // otherwise we clamp the dragging to avoid up/down/right movement
+        swiperSwipedCard.setValue({ x: dx, y: dy })
       } else {
+        // otherwise we clamp the dragging to avoid up/down/right movement
         swiper.setValue({ x: Math.min(dx, 0), y: 0 })
       }
-      // works but not allows a nice whiff
-      // swiper.setValue({ x: Math.min(dx, 0), y: 0 })
     },
     onPanResponderRelease: (_, { dx, dy, x0 }) => {
       const isFullSwipe = Math.abs(dx) > SWIPE_MAGNITUDE
@@ -84,6 +83,7 @@ export const FancySwiper = ({
     }).start(() => {
       // revert the pan responder to its initial position
       swiper.setValue({ x: 0, y: 0 })
+      swiperSwipedCard.setValue({ x: -width, y: 0 })
       onSwipeLeft()
     })
   }
@@ -102,8 +102,21 @@ export const FancySwiper = ({
   }
 
   const handleRightWhiff = () => {
-    swiper.setValue({ x: 0, y: 0 })
+    // swiper.setValue({ x: 0, y: 0 })
+    swiperSwipedCard.setValue({ x: 0, y: 0 })
     onWhiffRight?.()
+    // Animated.timing(swiperSwipedCard, {
+    //   easing: Easing.cubic,
+    //   toValue: { x: 0, y: 0 },
+    //   duration: 300,
+    //   useNativeDriver: true,
+    // }).start(() => {
+    //   swiper.setValue({ x: 0, y: 0 })
+    //   swiperSwipedCard.setValue({ x: 0, y: 0 })
+    //   onWhiffRight?.()
+    // })
+    // swiper.setValue({ x: 0, y: 0 })
+    // onWhiffRight?.()
   }
 
   return (
@@ -126,6 +139,7 @@ export const FancySwiper = ({
               key={card.artworkId}
               artworkId={card.artworkId}
               swiper={swiper}
+              swiperSwipedCard={swiperSwipedCard}
               isTopCard={isTopCard}
               isSecondCard={isSecondCard}
               isSwipedCard={isSwipedCard}
