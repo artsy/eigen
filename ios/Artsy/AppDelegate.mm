@@ -11,12 +11,12 @@
 #import <AppCenterReactNative.h>
 
 #import "AppDelegate.h"
-#import "ARAppDelegate+Emission.h"
-#import "ARAppDelegate+Echo.h"
+#import "AppDelegate+Emission.h"
+#import "AppDelegate+Echo.h"
 #import "AppDelegate+Notifications.h"
 #import "AppDelegate+ActivityContinuation.h"
 #import "AppDelegate+ShortcutItems.h"
-#import "ARAppDelegate+DeeplinkTimeout.h"
+#import "AppDelegate+DeeplinkTimeout.h"
 
 #import "ARUserManager.h"
 #import "User.h"

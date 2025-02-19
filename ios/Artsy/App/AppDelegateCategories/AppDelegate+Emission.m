@@ -1,4 +1,4 @@
-#import "ARAppDelegate+Emission.h"
+#import "AppDelegate+Emission.h"
 #import "ArtsyAPI+Notifications.h"
 #import "ARRouter.h"
 #import "AREmission.h"

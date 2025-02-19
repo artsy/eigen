@@ -1,4 +1,4 @@
-#import "ARAppDelegate+Echo.h"
+#import "AppDelegate+Echo.h"
 
 @implementation ARAppDelegate (Echo)
 

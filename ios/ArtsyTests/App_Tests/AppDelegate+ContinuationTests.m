@@ -4,7 +4,7 @@
 #import <CoreSpotlight/CoreSpotlight.h>
 #import "AREmission.h"
 
-SpecBegin(ARAppActivityContinuationDelegate);
+SpecBegin(ARAppDelegateActivityContinuation);
 
 __block UIApplication *app = nil;
 __block id<UIApplicationDelegate> delegate = nil;
