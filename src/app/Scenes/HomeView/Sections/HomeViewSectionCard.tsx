@@ -107,7 +107,8 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
             {!!badgeText && (
               <Flex flexDirection="row" mb={0.5}>
                 <Text
-                  color="white100"
+                  // We want to always show the badge text on white to make sure it's accessible on dark mode
+                  color="white"
                   backgroundColor={color("blue100")}
                   style={{ paddingHorizontal: space(0.5) }}
                   variant="xs"
