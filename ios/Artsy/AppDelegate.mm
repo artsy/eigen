@@ -13,6 +13,10 @@
 #import "AppDelegate.h"
 #import "ARAppDelegate+Emission.h"
 #import "ARAppDelegate+Echo.h"
+#import "AppDelegate+Notifications.h"
+#import "AppDelegate+ActivityContinuation.h"
+#import "AppDelegate+ShortcutItems.h"
+
 
 #import "ARAppDelegate+DeeplinkTimeout.h"
 #import "ARUserManager.h"
@@ -36,9 +40,6 @@
 #import "ARNotificationsManager.h"
 #import <React/RCTLinkingManager.h>
 #import "RNBootSplash.h"
-
-#import "AppDelegate+Notifications.h"
-#import "AppDelegate+ActivityContinuation.h"
 
 
 @interface ARAppDelegate ()
