@@ -11,7 +11,7 @@ import {
   ArtworkRailCardMeta,
 } from "app/Components/ArtworkRail/ArtworkRailCardMeta"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
-import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
+import { DissapearableArtwork } from "app/Components/Disappearable"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
@@ -62,76 +62,74 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   }
 
   return (
-    <Disappearable ref={(ref) => ((artwork as DissapearableArtwork)._disappearable = ref)}>
-      <AnalyticsContextProvider
-        contextScreenOwnerId={contextScreenOwnerId}
-        contextScreenOwnerSlug={contextScreenOwnerSlug}
-        contextScreenOwnerType={contextScreenOwnerType}
-      >
-        <Box pr={2}>
-          <RouterLink
-            to={href || artwork.href}
-            underlayColor={backgroundColor}
-            activeOpacity={0.8}
-            onPress={onPress}
-            // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
-            onLongPress={() => {}}
-            delayLongPress={400}
-            testID={testID}
+    <AnalyticsContextProvider
+      contextScreenOwnerId={contextScreenOwnerId}
+      contextScreenOwnerSlug={contextScreenOwnerSlug}
+      contextScreenOwnerType={contextScreenOwnerType}
+    >
+      <Box pr={2}>
+        <RouterLink
+          to={href || artwork.href}
+          underlayColor={backgroundColor}
+          activeOpacity={0.8}
+          onPress={onPress}
+          // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
+          onLongPress={() => {}}
+          delayLongPress={400}
+          testID={testID}
+        >
+          <ContextMenuArtwork
+            contextModule={contextModule}
+            contextScreenOwnerType={contextScreenOwnerType}
+            onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
+            onSupressArtwork={supressArtwork}
+            artwork={artwork}
+            artworkDisplayProps={{
+              dark,
+              showPartnerName,
+              hideArtistName,
+              lotLabel,
+              SalePriceComponent,
+            }}
           >
-            <ContextMenuArtwork
-              contextModule={contextModule}
-              contextScreenOwnerType={contextScreenOwnerType}
-              onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
-              onSupressArtwork={supressArtwork}
-              artwork={artwork}
-              artworkDisplayProps={{
-                dark,
-                showPartnerName,
-                hideArtistName,
-                lotLabel,
-                SalePriceComponent,
-              }}
+            <Flex
+              height={containerHeight ?? "auto"}
+              justifyContent="flex-start"
+              minWidth={ARTWORK_RAIL_CARD_MIN_WIDTH}
+              maxWidth={ARTWORK_RAIL_CARD_MAX_WIDTH}
             >
-              <Flex
-                height={containerHeight ?? "auto"}
-                justifyContent="flex-start"
-                minWidth={ARTWORK_RAIL_CARD_MIN_WIDTH}
-                maxWidth={ARTWORK_RAIL_CARD_MAX_WIDTH}
-              >
-                <ArtworkRailCardImage artwork={artwork} />
+              <ArtworkRailCardImage artwork={artwork} />
 
-                <Spacer y={1} />
+              <Spacer y={1} />
 
-                <ArtworkRailCardMeta
-                  artwork={artwork}
-                  contextModule={contextModule}
-                  contextScreen={contextScreen}
-                  contextScreenOwnerId={contextScreenOwnerId}
-                  contextScreenOwnerSlug={contextScreenOwnerSlug}
-                  contextScreenOwnerType={contextScreenOwnerType}
-                  dark={dark}
-                  hideArtistName={hideArtistName}
-                  hideCuratorsPickSignal={hideCuratorsPickSignal}
-                  hideIncreasedInterestSignal={hideIncreasedInterestSignal}
-                  lotLabel={lotLabel}
-                  SalePriceComponent={SalePriceComponent}
-                  showPartnerName={showPartnerName}
-                  showSaveIcon={showSaveIcon}
-                  backgroundColor={backgroundColor}
-                />
-              </Flex>
-            </ContextMenuArtwork>
-          </RouterLink>
-        </Box>
+              <ArtworkRailCardMeta
+                artwork={artwork}
+                contextModule={contextModule}
+                contextScreen={contextScreen}
+                contextScreenOwnerId={contextScreenOwnerId}
+                contextScreenOwnerSlug={contextScreenOwnerSlug}
+                contextScreenOwnerType={contextScreenOwnerType}
+                dark={dark}
+                hideArtistName={hideArtistName}
+                hideCuratorsPickSignal={hideCuratorsPickSignal}
+                hideIncreasedInterestSignal={hideIncreasedInterestSignal}
+                lotLabel={lotLabel}
+                SalePriceComponent={SalePriceComponent}
+                showPartnerName={showPartnerName}
+                showSaveIcon={showSaveIcon}
+                backgroundColor={backgroundColor}
+              />
+            </Flex>
+          </ContextMenuArtwork>
+        </RouterLink>
+      </Box>
 
-        <CreateArtworkAlertModal
-          artwork={artwork}
-          onClose={() => setShowCreateArtworkAlertModal(false)}
-          visible={showCreateArtworkAlertModal}
-        />
-      </AnalyticsContextProvider>
-    </Disappearable>
+      <CreateArtworkAlertModal
+        artwork={artwork}
+        onClose={() => setShowCreateArtworkAlertModal(false)}
+        visible={showCreateArtworkAlertModal}
+      />
+    </AnalyticsContextProvider>
   )
 }
 

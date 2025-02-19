@@ -24,7 +24,7 @@ import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSav
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
-import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
+import { DissapearableArtwork } from "app/Components/Disappearable"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
@@ -255,7 +255,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     !isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals
 
   return (
-    <Disappearable ref={(ref) => ((artwork as any)._disappearable = ref)}>
+    <>
       <ContextMenuArtwork
         onSupressArtwork={() => handleSupress(artwork as any)}
         contextModule={contextModule}
@@ -422,7 +422,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
         onClose={() => setShowCreateArtworkAlertModal(false)}
         visible={showCreateArtworkAlertModal}
       />
-    </Disappearable>
+    </>
   )
 }
 
