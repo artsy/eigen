@@ -141,23 +141,23 @@ target 'Artsy' do
   pod 'BrazeUI', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeUI.podspec'
   pod 'BrazeLocation', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeLocation.podspec'
 
-  # target 'ArtsyTests' do
-  #   inherit! :search_paths
-  #   use_frameworks!
+  target 'ArtsyTests' do
+    inherit! :search_paths
+    use_frameworks!
 
-  #   pod 'OHHTTPStubs', '3.1.2'
-  #   pod 'XCTest+OHHTTPStubSuiteCleanUp'
-  #   pod 'Specta', '~> 2.0'
-  #   pod 'Expecta', '1.0.6'
-  #   pod 'Expecta+Snapshots', '3.2.0'
-  #   pod 'OCMock'
-  #   pod 'Forgeries/Mocks'
+    pod 'OHHTTPStubs', '3.1.2'
+    pod 'XCTest+OHHTTPStubSuiteCleanUp'
+    pod 'Specta', '~> 2.0'
+    pod 'Expecta', '1.0.6'
+    pod 'Expecta+Snapshots', '3.2.0'
+    pod 'OCMock'
+    pod 'Forgeries/Mocks'
 
-  #   # Swift pods 🎉
-  #   pod 'Quick', '2.0.0'
-  #   pod 'Nimble', '~> 13.0'
-  #   pod 'Nimble-Snapshots', '9.8.0'
-  # end
+    # Swift pods 🎉
+    pod 'Quick', '2.0.0'
+    pod 'Nimble', '~> 13.0'
+    pod 'Nimble-Snapshots', '9.8.0'
+  end
 
   post_install do |installer|
     react_native_post_install(

@@ -68,6 +68,15 @@ PODS:
     - JWT (~> 3.0.0-beta.12)
     - React-Core
     - SSZipArchive (~> 2.2.2)
+  - CwlCatchException (2.2.1):
+    - CwlCatchExceptionSupport (~> 2.2.1)
+  - CwlCatchExceptionSupport (2.2.1)
+  - CwlMachBadInstructionHandler (2.2.2)
+  - CwlPosixPreconditionTesting (2.2.2)
+  - CwlPreconditionTesting (2.2.2):
+    - CwlCatchException (~> 2.2.1)
+    - CwlMachBadInstructionHandler (~> 2.2.2)
+    - CwlPosixPreconditionTesting (~> 2.2.2)
   - DoubleConversion (1.1.6)
   - EASClient (0.13.2):
     - ExpoModulesCore
@@ -76,6 +85,11 @@ PODS:
   - EXJSONUtils (0.14.0)
   - EXManifests (0.15.5):
     - ExpoModulesCore
+  - Expecta (1.0.6)
+  - "Expecta+Snapshots (3.2.0)":
+    - Expecta (~> 1.0)
+    - iOSSnapshotTestCase (~> 8.0)
+    - Specta (~> 2.0)
   - Expo (52.0.33):
     - ExpoModulesCore
   - ExpoAdapterFBSDKNext (13.0.0):
@@ -183,6 +197,10 @@ PODS:
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
   - FLKAutoLayout (1.0.0)
   - fmt (9.1.0)
+  - Forgeries/Core (1.0.0)
+  - Forgeries/Mocks (1.0.0):
+    - Forgeries/Core
+    - OCMock
   - FXBlurView (1.6.4)
   - glog (0.3.5)
   - GoogleSignIn (7.0.0):
@@ -222,6 +240,11 @@ PODS:
   - INTUAnimationEngine (1.4.2):
     - INTUAnimationEngine/SpringSolver (= 1.4.2)
   - INTUAnimationEngine/SpringSolver (1.4.2)
+  - iOSSnapshotTestCase (8.0.0):
+    - iOSSnapshotTestCase/SwiftSupport (= 8.0.0)
+  - iOSSnapshotTestCase/Core (8.0.0)
+  - iOSSnapshotTestCase/SwiftSupport (8.0.0):
+    - iOSSnapshotTestCase/Core
   - ISO8601DateFormatter (0.7.1)
   - JSDecoupledAppDelegate (1.2.0)
   - JWT (3.0.0-beta.14):
@@ -254,12 +277,22 @@ PODS:
   - MARKRangeSlider (1.1.1)
   - MMMarkdown (0.4)
   - MultiDelegate (0.0.4)
+  - Nimble (13.7.1):
+    - CwlPreconditionTesting (~> 2.2.0)
+  - Nimble-Snapshots (9.8.0):
+    - Nimble-Snapshots/Core (= 9.8.0)
+  - Nimble-Snapshots/Core (9.8.0):
+    - iOSSnapshotTestCase (~> 8.0)
+    - Nimble (~> 13.0)
   - ObjectiveSugar (1.1.0)
+  - OCMock (3.9.4)
+  - OHHTTPStubs (3.1.2)
   - OpenSSL-Universal (3.3.2000)
   - ORStackView (2.0.3):
     - FLKAutoLayout
   - PromisesObjC (2.4.0)
   - Pulley (2.6.2)
+  - Quick (2.0.0)
   - RCT-Folly (2024.01.01.00):
     - boost
     - DoubleConversion
@@ -2166,6 +2199,7 @@ PODS:
   - SocketRocket (0.7.1)
   - sovran-react-native (1.1.1):
     - React-Core
+  - Specta (2.0.0)
   - SSZipArchive (2.2.3)
   - Starscream (4.0.8)
   - Stripe (23.30.0):
@@ -2210,6 +2244,8 @@ PODS:
   - Turf (2.8.0)
   - UICKeyChainStore (2.2.1)
   - "UIView+BooleanAnimations (1.0.2)"
+  - "XCTest+OHHTTPStubSuiteCleanUp (1.0.0)":
+    - OHHTTPStubs
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -2231,6 +2267,8 @@ DEPENDENCIES:
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXJSONUtils (from `../node_modules/expo-json-utils/ios`)
   - EXManifests (from `../node_modules/expo-manifests/ios`)
+  - Expecta (= 1.0.6)
+  - "Expecta+Snapshots (= 3.2.0)"
   - Expo (from `../node_modules/expo`)
   - ExpoAdapterFBSDKNext (from `../node_modules/react-native-fbsdk-next/ios`)
   - "ExpoAdapterGoogleSignIn (from `../node_modules/@react-native-google-signin/google-signin/expo/ios`)"
@@ -2249,6 +2287,7 @@ DEPENDENCIES:
   - Firebase/Auth (= 10.23.0)
   - FLKAutoLayout (from `https://github.com/artsy/FLKAutoLayout.git`, branch `v1`)
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
+  - Forgeries/Mocks
   - FXBlurView (= 1.6.4)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
@@ -2261,9 +2300,14 @@ DEPENDENCIES:
   - MARKRangeSlider
   - MMMarkdown (= 0.4)
   - MultiDelegate
+  - Nimble (~> 13.0)
+  - Nimble-Snapshots (= 9.8.0)
   - ObjectiveSugar
+  - OCMock
+  - OHHTTPStubs (= 3.1.2)
   - ORStackView (= 2.0.3)
   - Pulley (from `https://github.com/artsy/Pulley.git`, branch `master`)
+  - Quick (= 2.0.0)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTDeprecation (from `../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
@@ -2363,12 +2407,14 @@ DEPENDENCIES:
   - "segment-analytics-react-native (from `../node_modules/@segment/analytics-react-native`)"
   - sift-react-native (from `../node_modules/sift-react-native`)
   - "sovran-react-native (from `../node_modules/@segment/sovran-react-native`)"
+  - Specta (~> 2.0)
   - Starscream (= 4.0.8)
   - "stripe-react-native (from `../node_modules/@stripe/stripe-react-native`)"
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON/`, commit `af76cf3ef710b6ca5f8c05f3a31307d44a3c5828`)
   - Then (= 2.3.0)
   - UICKeyChainStore
   - "UIView+BooleanAnimations"
+  - "XCTest+OHHTTPStubSuiteCleanUp"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -2382,6 +2428,13 @@ SPEC REPOS:
     - AppCenterReactNativeShared
     - Base64
     - CocoaLumberjack
+    - CwlCatchException
+    - CwlCatchExceptionSupport
+    - CwlMachBadInstructionHandler
+    - CwlPosixPreconditionTesting
+    - CwlPreconditionTesting
+    - Expecta
+    - "Expecta+Snapshots"
     - FBAEMKit
     - FBSDKCoreKit
     - FBSDKCoreKit_Basics
@@ -2393,12 +2446,14 @@ SPEC REPOS:
     - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreInternal
+    - Forgeries
     - FXBlurView
     - GoogleSignIn
     - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
     - INTUAnimationEngine
+    - iOSSnapshotTestCase
     - JSDecoupledAppDelegate
     - JWT
     - JWTDecode
@@ -2411,10 +2466,15 @@ SPEC REPOS:
     - MARKRangeSlider
     - MMMarkdown
     - MultiDelegate
+    - Nimble
+    - Nimble-Snapshots
     - ObjectiveSugar
+    - OCMock
+    - OHHTTPStubs
     - OpenSSL-Universal
     - ORStackView
     - PromisesObjC
+    - Quick
     - ReachabilitySwift
     - RecaptchaInterop
     - SDWebImage
@@ -2422,6 +2482,7 @@ SPEC REPOS:
     - Sentry
     - Sift
     - SocketRocket
+    - Specta
     - SSZipArchive
     - Starscream
     - Stripe
@@ -2437,6 +2498,7 @@ SPEC REPOS:
     - Turf
     - UICKeyChainStore
     - "UIView+BooleanAnimations"
+    - "XCTest+OHHTTPStubSuiteCleanUp"
 
 EXTERNAL SOURCES:
   appcenter-core:
@@ -2741,11 +2803,18 @@ SPEC CHECKSUMS:
   BVLinearGradient: cb006ba232a1f3e4f341bb62c42d1098c284da70
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   CodePush: 8ba8ea6dbaf817d5e51dbbbd622e15150ba814dd
+  CwlCatchException: 7acc161b299a6de7f0a46a6ed741eae2c8b4d75a
+  CwlCatchExceptionSupport: 54ccab8d8c78907b57f99717fb19d4cc3bce02dc
+  CwlMachBadInstructionHandler: dae4fdd124d45c9910ac240287cc7b898f4502a1
+  CwlPosixPreconditionTesting: ecd095aa2129e740b44301c34571e8d85906fb88
+  CwlPreconditionTesting: 67a0047dd4de4382b93442c0e3f25207f984f35a
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
   EASClient: 98a61222936d688d74ec09297b84c18dac478880
   EXConstants: e25c3f3ef5d1cf7a6ef911ebf7a3ab94d8d06d82
   EXJSONUtils: 01fc7492b66c234e395dcffdd5f53439c5c29c93
   EXManifests: 15142dee1be3ea1cd0039feddef3888c3f0bb057
+  Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
+  "Expecta+Snapshots": 7a3ac7ad2b9bae43aadb4dca08113bb495c98f3e
   Expo: ad550eed41b5b0013d2a1b793fd33b6958a1b16f
   ExpoAdapterFBSDKNext: 7e281be5078ab6eda58ac8c489ea2c2b8ea31b70
   ExpoAdapterGoogleSignIn: 3a02de846d07a35ed9d505bb45f66592d20c1de0
@@ -2771,6 +2840,7 @@ SPEC CHECKSUMS:
   FirebaseCoreInternal: df84dd300b561c27d5571684f389bf60b0a5c934
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   fmt: 10c6e61f4be25dc963c36bd73fc7b1705fe975be
+  Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: db786c2561cb49a09ae98407f52460096ab8a44f
   glog: 08b301085f15bcbb6ff8632a8ebaf239aae04e6a
   GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
@@ -2780,6 +2850,7 @@ SPEC CHECKSUMS:
   hermes-engine: 06a9c6900587420b90accc394199527c64259db4
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
+  iOSSnapshotTestCase: a670511f9ee3829c2b9c23e6e68f315fd7b6790f
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
   JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
@@ -2793,11 +2864,16 @@ SPEC CHECKSUMS:
   MARKRangeSlider: ef7e1fe84d22996f47fd72dcb8de50b9410aac47
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: 228e2321b74f45ea43ae19c268fdd60fd88d99b7
+  Nimble: 317d713c30c3336dd8571da1889f7ec3afc626e8
+  Nimble-Snapshots: 240ea76ee8e52dfc1387b8d0d9bf1db3420cabbd
   ObjectiveSugar: a6a25f23d657c19df0a0b972466d5b5ca9f5295c
+  OCMock: 589f2c84dacb1f5aaf6e4cec1f292551fe748e74
+  OHHTTPStubs: c93230597bc5c8b74bcfdb403cc8773515b8b08c
   OpenSSL-Universal: b60a3702c9fea8b3145549d421fdb018e53ab7b4
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   Pulley: edc993fb57f7eb20541c8453d0fce10559f21dac
+  Quick: ce1276c7c27ba2da3cb2fd0cde053c3648b3b22d
   RCT-Folly: bf5c0376ffe4dd2cf438dcf86db385df9fdce648
   RCTDeprecation: fb7d408617e25d7f537940000d766d60149c5fea
   RCTRequired: 9aaf0ffcc1f41f0c671af863970ef25c422a9920
@@ -2901,6 +2977,7 @@ SPEC CHECKSUMS:
   sift-react-native: b146219794a56be21d30931b6317d9080770ae7a
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   sovran-react-native: 5aca73bffa66562f8cd8cbb4b766e4c40da9743b
+  Specta: b79d84043684b35ffdc2680df578dc318ec2efc2
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Starscream: 19b5533ddb925208db698f0ac508a100b884a1b9
   Stripe: 9757efc154de1d9615cbea4836d590bc4034d3a4
@@ -2918,8 +2995,9 @@ SPEC CHECKSUMS:
   Turf: aa2ede4298009639d10db36aba1a7ebaad072a5e
   UICKeyChainStore: ba3bff2c762b12db1e516f395c837dd25298b05e
   "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
+  "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 7548e4449365bf0ef60db4aefe58abff37fcabec
 
-PODFILE CHECKSUM: 7b7465d245968019b79708968b0bd8efca0e1a11
+PODFILE CHECKSUM: a118eb4b9dfc796d3c55367455aaf7ac3b2da003
 
 COCOAPODS: 1.16.2

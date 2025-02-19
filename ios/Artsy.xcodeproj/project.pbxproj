@@ -43,8 +43,10 @@
 		1AE9F26A2902DA87002A561B /* App-Store.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F2622902DA87002A561B /* App-Store.xcconfig */; };
 		1AE9F26B2902DA87002A561B /* Tests-Store.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F2632902DA87002A561B /* Tests-Store.xcconfig */; };
 		4179EBD8940D19B81ABF1852 /* Pods_Artsy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A6FE958311975D764603380 /* Pods_Artsy.framework */; };
+		76C16284CB4A753794F64B94 /* Pods_ArtsyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A93FC55D6F6BDB2D194B60B3 /* Pods_ArtsyTests.framework */; };
 		8E4207792A055D2D006888BD /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8E4207782A055D2D006888BD /* AppDelegate.mm */; };
 		A7F9965D554E30C28A86CFAA /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74F7BAF80CBDF6FD0C28CDAE /* ExpoModulesProvider.swift */; };
+		B9937A0E36E5C0728A426C67 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA3A8807ED95689094C9CA3 /* ExpoModulesProvider.swift */; };
 		CB0D52052AF56984000E6C08 /* LiveAuctionTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0D52042AF56984000E6C08 /* LiveAuctionTestUtils.swift */; };
 		CB18282829CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB18282729CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift */; };
 		CB18282B29D35F29006A0805 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB18282A29D35F29006A0805 /* GoogleService-Info.plist */; };
@@ -612,6 +614,8 @@
 		74F7BAF80CBDF6FD0C28CDAE /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Artsy/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		8E4207782A055D2D006888BD /* AppDelegate.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = AppDelegate.mm; sourceTree = "<group>"; };
 		9A6FE958311975D764603380 /* Pods_Artsy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Artsy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AA3A8807ED95689094C9CA3 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-ArtsyTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		A93FC55D6F6BDB2D194B60B3 /* Pods_ArtsyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ArtsyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB0D52042AF56984000E6C08 /* LiveAuctionTestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAuctionTestUtils.swift; sourceTree = "<group>"; };
 		CB18282729CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARAugmentedWallBasedVIRViewController.swift; sourceTree = "<group>"; };
 		CB18282A29D35F29006A0805 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "Artsy/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -1388,12 +1392,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76C16284CB4A753794F64B94 /* Pods_ArtsyTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1728063410EC15F7C2F6C3A5 /* ArtsyTests */ = {
+			isa = PBXGroup;
+			children = (
+				9AA3A8807ED95689094C9CA3 /* ExpoModulesProvider.swift */,
+			);
+			name = ArtsyTests;
+			sourceTree = "<group>";
+		};
 		1A4B978F283CDD5900878EAE /* Emission */ = {
 			isa = PBXGroup;
 			children = (
@@ -1545,6 +1558,7 @@
 			isa = PBXGroup;
 			children = (
 				FF3DA3C1BBED88DD109FBDC8 /* Artsy */,
+				1728063410EC15F7C2F6C3A5 /* ArtsyTests */,
 			);
 			name = ExpoModulesProviders;
 			sourceTree = "<group>";
@@ -1568,6 +1582,7 @@
 				CB43268327E8FA6900B29DD6 /* WidgetKit.framework */,
 				CB43268527E8FA6900B29DD6 /* SwiftUI.framework */,
 				9A6FE958311975D764603380 /* Pods_Artsy.framework */,
+				A93FC55D6F6BDB2D194B60B3 /* Pods_ArtsyTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -3440,10 +3455,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CB43272227E8FE5400B29DD6 /* Build configuration list for PBXNativeTarget "ArtsyTests" */;
 			buildPhases = (
+				3AF76FD7B74A85A2855E9D70 /* [CP] Check Pods Manifest.lock */,
 				C309FF484F7C82784257EFF1 /* [Expo] Configure project */,
 				CB43271827E8FE5400B29DD6 /* Sources */,
 				CB43271927E8FE5400B29DD6 /* Frameworks */,
 				CB43271A27E8FE5400B29DD6 /* Resources */,
+				5D591234B7C244C1386CE603 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3687,6 +3704,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3AF76FD7B74A85A2855E9D70 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ArtsyTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5D591234B7C244C1386CE603 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B1B20C61CEDEC46809D8467C /* [CP] Check Pods Manifest.lock */ = {
@@ -4177,6 +4233,7 @@
 				CB4328AB27E8FEE500B29DD6 /* ARExpectaExtensions.m in Sources */,
 				CB43287D27E8FEE500B29DD6 /* LiveAuctionBidButtonTests.swift in Sources */,
 				CB43288127E8FEE500B29DD6 /* LiveAuctionLotListStickyCellCollectionViewLayoutTests.swift in Sources */,
+				B9937A0E36E5C0728A426C67 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
