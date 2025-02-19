@@ -2412,6 +2412,8 @@
 				CBE3249727E275A100395A93 /* AppDelegate+ActivityContinuation.m */,
 				CB6B9D882D6531BF0093B232 /* AppDelegate+Notifications.h */,
 				CB6B9D892D6531BF0093B232 /* AppDelegate+Notifications.m */,
+				CBE324A027E275A100395A93 /* ARAppDelegate+Emission.h */,
+				CBE324B027E275A100395A93 /* ARAppDelegate+Emission.m */,
 			);
 			path = AppDelegateCategories;
 			sourceTree = "<group>";
@@ -2566,8 +2568,6 @@
 			children = (
 				CB6B9D8B2D6625E50093B232 /* AppDelegateCategories */,
 				CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */,
-				CBE324A027E275A100395A93 /* ARAppDelegate+Emission.h */,
-				CBE324B027E275A100395A93 /* ARAppDelegate+Emission.m */,
 				CBE324AF27E275A100395A93 /* ARApplicationShortcutItemDelegate.h */,
 				CBE324A127E275A100395A93 /* ARApplicationShortcutItemDelegate.m */,
 				CBA500F12C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.h */,
