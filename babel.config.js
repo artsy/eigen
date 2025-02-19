@@ -36,7 +36,7 @@ module.exports = (api) => {
     plugins: babelPlugins,
     // presets run after
     presets: [
-      ["babel-preset-expo", ls],
+      ["babel-preset-expo"],
       // TODO: Remove this once we determine if its actually needed. Added during reanimated upgrade.
       // but then we determined that it was leading to errors with loading reanimated while remotely
       // debugging JS in chrome.
