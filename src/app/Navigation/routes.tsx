@@ -125,6 +125,7 @@ import { SavedSearchAlertsListQueryRenderer } from "app/Scenes/SavedSearchAlerts
 import { SearchScreen, SearchScreenQuery } from "app/Scenes/Search/Search"
 import { ShowMoreInfoQueryRenderer } from "app/Scenes/Show/Screens/ShowMoreInfo"
 import { ShowQueryRenderer, ShowScreenQuery } from "app/Scenes/Show/Show"
+import { ShowsForYouScreen, ShowsForYouScreenQuery } from "app/Scenes/Shows/ShowsForYou"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import { TagQueryRenderer } from "app/Scenes/Tag/Tag"
 import { VanityURLEntityRenderer } from "app/Scenes/VanityURL/VanityURLEntity"
@@ -1310,6 +1311,17 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/show/:showID/info",
     name: "ShowMoreInfo",
     Component: ShowMoreInfoQueryRenderer,
+  },
+  {
+    path: "/shows-for-you",
+    name: "ShowsForYou",
+    Component: ShowsForYouScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [ShowsForYouScreenQuery],
   },
   {
     path: "/similar-to-recently-viewed",
