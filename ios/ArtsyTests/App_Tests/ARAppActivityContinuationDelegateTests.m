@@ -1,4 +1,3 @@
-#import "ARAppActivityContinuationDelegate.h"
 #import "ARUserManager.h"
 #import "AppDelegate.h"
 
@@ -12,7 +11,7 @@ __block id<UIApplicationDelegate> delegate = nil;
 
 beforeEach(^{
     app = [UIApplication sharedApplication];
-    delegate = [JSDecoupledAppDelegate sharedAppDelegate];
+    delegate = [[ARAppDelegate alloc] init];
 });
 
 it(@"does not accept unsupported activities", ^{
