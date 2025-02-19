@@ -1,12 +1,6 @@
-import {
-  ArrowRightIcon,
-  Flex,
-  FlexProps,
-  SpacingUnit,
-  Text,
-  TextProps,
-} from "@artsy/palette-mobile"
+import { Flex, FlexProps, SpacingUnit, Text, TextProps } from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
+import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
 
 export const SectionTitle: React.FC<
@@ -33,6 +27,7 @@ export const SectionTitle: React.FC<
   ...flexProps
 }) => {
   let titleText
+  const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
   if (typeof title === "string") {
     titleText = capitalized ? toTitleCase(title) : title
@@ -42,7 +37,13 @@ export const SectionTitle: React.FC<
     <Wrapper onPress={onPress} href={href} navigationProps={navigationProps}>
       <Flex mb={2} flexDirection="row" alignItems="flex-start" {...flexProps}>
         <Flex flex={1}>
-          <Text variant={titleVariant} ellipsizeMode="tail" numberOfLines={1} testID="title">
+          <Text
+            variant={titleVariant}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            testID="title"
+            fontWeight={theme === "dark" ? "500" : undefined}
+          >
             {typeof title === "string" ? titleText : title}
           </Text>
 
@@ -87,10 +88,14 @@ const Wrapper: React.FC<{ onPress?(): void; href?: string | null; navigationProp
   }
 }
 
-const RightButton = () => (
-  <Flex flexDirection="row" flex={1}>
-    <Flex my="auto">
-      <ArrowRightIcon width={12} fill="black60" ml={0.5} />
+const RightButton = () => {
+  return (
+    <Flex flexDirection="row" flex={1}>
+      <Flex my="auto">
+        <Text variant="xs" underline>
+          View all
+        </Text>
+      </Flex>
     </Flex>
-  </Flex>
-)
+  )
+}

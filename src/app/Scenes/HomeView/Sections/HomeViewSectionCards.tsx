@@ -1,14 +1,8 @@
 import { ContextModule } from "@artsy/cohesion"
-import {
-  Flex,
-  Skeleton,
-  SkeletonText,
-  Text,
-  useScreenDimensions,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { Flex, Skeleton, SkeletonText, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { HomeViewSectionCardsQuery } from "__generated__/HomeViewSectionCardsQuery.graphql"
 import { HomeViewSectionCards_section$key } from "__generated__/HomeViewSectionCards_section.graphql"
+import { SectionTitle } from "app/Components/SectionTitle"
 import {
   HomeViewSectionCardsCard,
   HomeViewSectionCardsCardPlaceholder,
@@ -47,7 +41,8 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
 
   return (
     <Flex p={2} gap={2}>
-      <Text>{section.component?.title}</Text>
+      <SectionTitle title={section.component?.title} mb={0} />
+
       <Flex flexDirection="row" flexWrap="wrap" gap={1}>
         {cards.map((card, index) => {
           return (
