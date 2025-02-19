@@ -2,12 +2,12 @@ import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spacer } from "@artsy/palette-mobile"
 import { ShowsForYouQuery } from "__generated__/ShowsForYouQuery.graphql"
 import { ShowsForYou_showsConnection$key } from "__generated__/ShowsForYou_showsConnection.graphql"
-import { ShowCardContainer } from "app/Components/ShowCard"
 import {
-  ArticlesListItem,
-  ArticlesPlaceholder,
+  CardsWithMetaDataListPlaceholder as ShowsForYouPlaceholder,
+  CardWithMetaDataListItem,
   useNumColumns,
-} from "app/Scenes/Articles/ArticlesList"
+} from "app/Components/Cards/CardWithMetaData"
+import { ShowCardContainer } from "app/Components/ShowCard"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -84,9 +84,9 @@ export const ShowsForYouList: React.FC<{ me: any }> = ({ me }) => {
             keyExtractor={(item) => `${item.internalID}`}
             renderItem={({ item, index }) => {
               return (
-                <ArticlesListItem index={index}>
+                <CardWithMetaDataListItem index={index}>
                   <ShowCardContainer show={item} isFluid />
-                </ArticlesListItem>
+                </CardWithMetaDataListItem>
               )
             }}
             ItemSeparatorComponent={() => <Spacer y={4} />}
@@ -120,11 +120,17 @@ export const ShowsForYouScreen: React.FC = () => {
   })
 
   if (isLoading) {
-    return <ArticlesPlaceholder title="Shows for You" />
+    return (
+      <ShowsForYouPlaceholder title="Shows for You" testID="shows-for-you-screen-placeholder" />
+    )
   }
 
   return (
-    <Suspense fallback={<ArticlesPlaceholder title="Shows for You" />}>
+    <Suspense
+      fallback={
+        <ShowsForYouPlaceholder title="Shows for You" testID="shows-for-you-screen-placeholder" />
+      }
+    >
       <ShowsForYou location={location} />
     </Suspense>
   )

@@ -1,22 +1,9 @@
-import {
-  Flex,
-  Image,
-  SkeletonBox,
-  SkeletonText,
-  Spacer,
-  Text,
-  useTheme,
-} from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
 import { ShowCard_show$data } from "__generated__/ShowCard_show.graphql"
-import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
-import { RouterLink } from "app/system/navigation/RouterLink"
+import { CardWithMetaData } from "app/Components/Cards/CardWithMetaData"
 import { compact } from "lodash"
-import { GestureResponderEvent, useWindowDimensions, View, ViewProps } from "react-native"
+import { GestureResponderEvent, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-
-const WIDTH = 295
-const HEIGHT = 230
 
 interface ShowCardProps extends ViewProps {
   show: ShowCard_show$data
@@ -38,41 +25,16 @@ export const ShowCard: React.FC<ShowCardProps> = ({ show, isFluid, onPress }) =>
 
   const formattedCityAndDate = compact([showCity, formattedDate]).join(" • ")
 
-  const { space } = useTheme()
-  const { width } = useWindowDimensions()
-
   return (
-    <Flex width={isFluid ? "100%" : WIDTH}>
-      <RouterLink haptic onPress={onPress} to={show.href}>
-        <Flex width={isFluid ? "100%" : WIDTH} overflow="hidden">
-          {!!imageURL &&
-            (isFluid ? (
-              <>
-                <View style={{ width }}>
-                  <Image
-                    src={imageURL}
-                    // aspect ratio is fixed to 1.33 to match the old image aspect ratio
-                    aspectRatio={1.33}
-                    // 40 here comes from the mx={2} from the parent component
-                    width={width - 2 * space(2)}
-                  />
-                </View>
-              </>
-            ) : (
-              <ImageWithFallback src={imageURL} width={WIDTH} height={HEIGHT} />
-            ))}
-
-          <Spacer y={1} />
-          <Text numberOfLines={2} ellipsizeMode="tail" variant="sm-display" mb={0.5}>
-            {show.name}
-          </Text>
-          <Text variant="xs" color="black60">
-            {show.partner?.name}
-          </Text>
-          <Text variant="xs">{formattedCityAndDate}</Text>
-        </Flex>
-      </RouterLink>
-    </Flex>
+    <CardWithMetaData
+      isFluid={isFluid}
+      href={show.href}
+      imageURL={imageURL}
+      title={show.name}
+      subtitle={show.partner?.name}
+      tag={formattedCityAndDate}
+      onPress={onPress}
+    />
   )
 }
 
@@ -136,17 +98,3 @@ export const ShowCardContainer = createFragmentContainer(ShowCard, {
     }
   `,
 })
-
-export const SkeletonShowCard: React.FC = () => {
-  return (
-    <Flex width={WIDTH} overflow="hidden">
-      <SkeletonBox height={HEIGHT} width={WIDTH} />
-      <Spacer y={1} />
-      <SkeletonText variant="sm-display" mb={0.5}>
-        Example Show
-      </SkeletonText>
-      <SkeletonText variant="xs"></SkeletonText>
-      <SkeletonText variant="xs">Berlin • Oct 8-Nov 9</SkeletonText>
-    </Flex>
-  )
-}

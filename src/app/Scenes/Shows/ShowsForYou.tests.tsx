@@ -46,7 +46,7 @@ describe("ShowsForYou", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("articles-screen-placeholder"))
+    await waitForElementToBeRemoved(() => screen.queryByTestId("shows-for-you-screen-placeholder"))
 
     expect(Geolocation.getCurrentPosition).toHaveBeenCalled()
     expect(mockFetch).not.toHaveBeenCalled()

@@ -5,8 +5,9 @@ import {
   ShowsRail_showsConnection$data,
   ShowsRail_showsConnection$key,
 } from "__generated__/ShowsRail_showsConnection.graphql"
+import { CardWithMetaDataSkeleton as SkeletonShowCard } from "app/Components/Cards/CardWithMetaData"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { ShowCardContainer, SkeletonShowCard } from "app/Components/ShowCard"
+import { ShowCardContainer } from "app/Components/ShowCard"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
