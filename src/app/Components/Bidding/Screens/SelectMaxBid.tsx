@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Button, Flex, useScreenDimensions } from "@artsy/palette-mobile"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { SelectMaxBidQuery } from "__generated__/SelectMaxBidQuery.graphql"
@@ -9,6 +10,8 @@ import { Select } from "app/Components/Select"
 import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 import { dismissModal } from "app/system/navigation/navigate"
 import { NoFallback, SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { compact } from "lodash"
 import React, { useEffect, useMemo } from "react"
 import { graphql, useFragment, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
@@ -92,13 +95,10 @@ export const SelectMaxBidQueryRenderer = withSuspense<
       return null
     }
 
-    // TODO: we should add this into Cohesion
-    //   <ProvideScreenTrackingWithCohesionSchema
-    //   info={screen({ context_screen_owner_type: OwnerType.maxBidFlow })}
-    // >
-    // @screenTrack({ context_screen: Schema.PageNames.BidFlowMaxBidPage, context_screen_owner_type: null })
     return (
-      <>
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({ context_screen_owner_type: OwnerType.yourMaxBid })}
+      >
         <NavigationHeader useXButton onLeftButtonPress={() => dismissModal()}>
           Place a max bid
         </NavigationHeader>
@@ -108,7 +108,7 @@ export const SelectMaxBidQueryRenderer = withSuspense<
           saleArtwork={initialData.artwork.saleArtwork}
           {...screenProps}
         />
-      </>
+      </ProvideScreenTrackingWithCohesionSchema>
     )
   },
   ErrorFallback: NoFallback,

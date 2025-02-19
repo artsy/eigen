@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Box, Button, Checkbox, LinkText, Text } from "@artsy/palette-mobile"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { captureException, captureMessage } from "@sentry/react-native"
@@ -28,7 +29,8 @@ import { usePromisedMutation } from "app/utils/hooks/usePromisedMutation"
 import { useCreateBidderPosition } from "app/utils/mutations/useCreateBidderPosition"
 import { useCreateCreditCard } from "app/utils/mutations/useCreateCreditCard"
 import { useUpdateUserPhoneNumber } from "app/utils/mutations/useUpdateUserPhoneNumber"
-import { Schema } from "app/utils/track"
+import { ProvideScreenTrackingWithCohesionSchema, Schema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Image, ScrollView } from "react-native"
 import { graphql, useRefetchableFragment } from "react-relay"
@@ -312,156 +314,160 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
   const mutationInProgress = creatingBidderPosition || creatingCreditCard || updatingPhoneNumber
 
   return (
-    <AuctionWebsocketContextProvider
-      channelInfo={{ channel: "SalesChannel", sale_id: saleArtworkData?.sale?.internalID }}
-      enabled={!!saleArtworkData?.sale?.cascadingEndTimeIntervalMinutes}
-      callbacks={{
-        received: ({ extended_bidding_end_at }) => {
-          setBiddingEndAt(extended_bidding_end_at)
-        },
-      }}
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({ context_screen_owner_type: OwnerType.confirmYourBid })}
     >
-      <NavigationHeader onLeftButtonPress={() => navigation.goBack()}>
-        Confirm your bid
-      </NavigationHeader>
+      <AuctionWebsocketContextProvider
+        channelInfo={{ channel: "SalesChannel", sale_id: saleArtworkData?.sale?.internalID }}
+        enabled={!!saleArtworkData?.sale?.cascadingEndTimeIntervalMinutes}
+        callbacks={{
+          received: ({ extended_bidding_end_at }) => {
+            setBiddingEndAt(extended_bidding_end_at)
+          },
+        }}
+      >
+        <NavigationHeader onLeftButtonPress={() => navigation.goBack()}>
+          Confirm your bid
+        </NavigationHeader>
 
-      <ScrollView style={{ flex: 1 }}>
-        <Flex alignItems="center" pt={2}>
-          <Timer
-            liveStartsAt={sale.liveStartAt ?? undefined}
-            lotEndAt={endAt}
-            biddingEndAt={biddingEndAt}
-          />
-        </Flex>
+        <ScrollView style={{ flex: 1 }}>
+          <Flex alignItems="center" pt={2}>
+            <Timer
+              liveStartsAt={sale.liveStartAt ?? undefined}
+              lotEndAt={endAt}
+              biddingEndAt={biddingEndAt}
+            />
+          </Flex>
 
-        <Box>
-          <Flex my={4} alignItems="center">
-            {!!saleArtworkData.artwork.image?.url && (
-              <Image
-                resizeMode="contain"
-                style={{ width: 50, height: 50 }}
-                source={{ uri: saleArtworkData.artwork.image.url }}
+          <Box>
+            <Flex my={4} alignItems="center">
+              {!!saleArtworkData.artwork.image?.url && (
+                <Image
+                  resizeMode="contain"
+                  style={{ width: 50, height: 50 }}
+                  source={{ uri: saleArtworkData.artwork.image.url }}
+                />
+              )}
+
+              <Text
+                variant="sm-display"
+                mt={4}
+                weight="medium"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {saleArtworkData.artwork.artistNames}
+              </Text>
+
+              <Text variant="xs" weight="medium">
+                Lot {saleArtworkData.lotLabel}
+              </Text>
+
+              <Text
+                variant="xs"
+                italic
+                color="black60"
+                textAlign="center"
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {saleArtworkData.artwork.title}
+                {!!saleArtworkData.artwork.date && (
+                  <Text variant="xs">, {saleArtworkData.artwork.date}</Text>
+                )}
+              </Text>
+            </Flex>
+
+            <Divider />
+
+            <BidInfoRow
+              label="Max bid"
+              value={selectedBid.display ?? undefined}
+              onPress={() => (mutationInProgress ? null : navigation.goBack())}
+            />
+
+            {requiresPaymentInformation ? (
+              <PaymentInfo
+                navigator={mutationInProgress ? undefined : navigation}
+                onCreditCardAdded={(token, address) => {
+                  setCreditCardToken(token)
+                  setBillingAddress(address)
+                }}
+                billingAddress={billingAddress}
+                creditCardToken={creditCardToken}
               />
+            ) : (
+              <Divider mb={2} />
             )}
 
-            <Text
-              variant="sm-display"
-              mt={4}
-              weight="medium"
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {saleArtworkData.artwork.artistNames}
-            </Text>
+            <Box mt={4}>
+              <PriceSummary saleArtworkId={saleArtworkData.id} />
+            </Box>
 
-            <Text variant="xs" weight="medium">
-              Lot {saleArtworkData.lotLabel}
-            </Text>
-
-            <Text
-              variant="xs"
-              italic
-              color="black60"
-              textAlign="center"
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {saleArtworkData.artwork.title}
-              {!!saleArtworkData.artwork.date && (
-                <Text variant="xs">, {saleArtworkData.artwork.date}</Text>
-              )}
-            </Text>
-          </Flex>
-
-          <Divider />
-
-          <BidInfoRow
-            label="Max bid"
-            value={selectedBid.display ?? undefined}
-            onPress={() => (mutationInProgress ? null : navigation.goBack())}
-          />
-
-          {requiresPaymentInformation ? (
-            <PaymentInfo
-              navigator={mutationInProgress ? undefined : navigation}
-              onCreditCardAdded={(token, address) => {
-                setCreditCardToken(token)
-                setBillingAddress(address)
+            <Modal
+              visible={errorModalVisible}
+              headerText="An error occurred"
+              detailText={errorMessage}
+              closeModal={() => {
+                setErrorModalVisible(false)
               }}
-              billingAddress={billingAddress}
-              creditCardToken={creditCardToken}
             />
+          </Box>
+        </ScrollView>
+
+        <Divider />
+
+        <Box testID="disclaimer">
+          {requiresCheckbox ? (
+            <Checkbox
+              m={2}
+              justifyContent="center"
+              onPress={() => setConditionsOfSaleChecked(!conditionsOfSaleChecked)}
+              disabled={mutationInProgress}
+              testID="disclaimer-checkbox"
+              flex={undefined}
+            >
+              <Text color="black60" variant="xs">
+                I agree to{" "}
+                <LinkText
+                  variant="xs"
+                  onPress={() => (mutationInProgress ? null : navigate("/terms"))}
+                >
+                  {partnerName(sale)} General Terms and Conditions of Sale
+                </LinkText>
+                . I understand that all bids are binding and may not be retracted.
+              </Text>
+            </Checkbox>
           ) : (
-            <Divider mb={2} />
+            <Flex alignItems="center" px={4} testID="disclaimer-text">
+              <Text variant="xs" mt={2} color="black60">
+                I agree to{" "}
+                <LinkText
+                  variant="xs"
+                  onPress={() => (mutationInProgress ? null : navigate("/terms"))}
+                >
+                  {partnerName(sale)} General Terms and Conditions of Sale
+                </LinkText>
+                . I understand that all bids are binding and may not be retracted.
+              </Text>
+            </Flex>
           )}
 
-          <Box mt={4}>
-            <PriceSummary saleArtworkId={saleArtworkData.id} />
+          <Box mx={2} mt={4}>
+            <Button
+              testID="bid-button"
+              block
+              loading={mutationInProgress}
+              width={100}
+              disabled={!canPlaceBid}
+              onPress={handlePlaceBid}
+            >
+              Bid
+            </Button>
           </Box>
-
-          <Modal
-            visible={errorModalVisible}
-            headerText="An error occurred"
-            detailText={errorMessage}
-            closeModal={() => {
-              setErrorModalVisible(false)
-            }}
-          />
         </Box>
-      </ScrollView>
-
-      <Divider />
-
-      <Box testID="disclaimer">
-        {requiresCheckbox ? (
-          <Checkbox
-            m={2}
-            justifyContent="center"
-            onPress={() => setConditionsOfSaleChecked(!conditionsOfSaleChecked)}
-            disabled={mutationInProgress}
-            testID="disclaimer-checkbox"
-            flex={undefined}
-          >
-            <Text color="black60" variant="xs">
-              I agree to{" "}
-              <LinkText
-                variant="xs"
-                onPress={() => (mutationInProgress ? null : navigate("/terms"))}
-              >
-                {partnerName(sale)} General Terms and Conditions of Sale
-              </LinkText>
-              . I understand that all bids are binding and may not be retracted.
-            </Text>
-          </Checkbox>
-        ) : (
-          <Flex alignItems="center" px={4} testID="disclaimer-text">
-            <Text variant="xs" mt={2} color="black60">
-              I agree to{" "}
-              <LinkText
-                variant="xs"
-                onPress={() => (mutationInProgress ? null : navigate("/terms"))}
-              >
-                {partnerName(sale)} General Terms and Conditions of Sale
-              </LinkText>
-              . I understand that all bids are binding and may not be retracted.
-            </Text>
-          </Flex>
-        )}
-
-        <Box mx={2} mt={4}>
-          <Button
-            testID="bid-button"
-            block
-            loading={mutationInProgress}
-            width={100}
-            disabled={!canPlaceBid}
-            onPress={handlePlaceBid}
-          >
-            Bid
-          </Button>
-        </Box>
-      </Box>
-    </AuctionWebsocketContextProvider>
+      </AuctionWebsocketContextProvider>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
