@@ -115,7 +115,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     if (currentIndex < artworks.length - 1) {
       const dismissedArtworkId = artworks[currentIndex].internalID
 
-      setCurrentIndex(currentIndex + 1)
+      setCurrentIndex((prev) => prev + 1)
       addDisoveredArtworkId(dismissedArtworkId)
 
       trackEvent({
@@ -153,8 +153,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         })
       }
       setMaxIndexReached(newMaxIndexReached)
-
-      setCurrentIndex((prev) => prev + 1)
     }
 
     // fetch more artworks when the user is about to reach the end of the list
