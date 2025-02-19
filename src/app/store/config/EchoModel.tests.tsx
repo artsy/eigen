@@ -16,6 +16,8 @@ const appVersion = (version: string) => ({
   version,
   isAndroidBeta: false,
   appName: "eigen",
+  name: "eigen",
+  displayName: "Artsy",
   nativeCodeVersion: {
     "1": "some-hash",
   },
