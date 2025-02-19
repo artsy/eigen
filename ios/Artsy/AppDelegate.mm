@@ -22,7 +22,6 @@
 #import "User.h"
 
 #import "ARFonts.h"
-//#import <SEGAnalytics.h>
 #import "ARAnalyticsConstants.h"
 
 #import "ARWebViewCacheHost.h"
@@ -175,18 +174,6 @@ static ARAppDelegate *_sharedInstance = nil;
     BrazeInAppMessageUI *inAppMessageUI = [[BrazeInAppMessageUI alloc] init];
     braze.inAppMessagePresenter = inAppMessageUI;
 
-    NSString *segmentWriteKey = [Keys secureFor:@"SEGMENT_STAGING_WRITE_KEY_IOS"];
-
-    if (![ARAppStatus isDev]) {
-        segmentWriteKey = [Keys secureFor:@"SEGMENT_PRODUCTION_WRITE_KEY_IOS"];
-    }
-
-    // TODO: Make sure config is reflected accurately on react native side
-//    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:segmentWriteKey];
-//    configuration.trackApplicationLifecycleEvents = YES;
-//    configuration.trackPushNotifications = YES;
-//    configuration.trackDeepLinks = YES;
-//    [SEGAnalytics setupWithConfiguration:configuration];
     [[BrazeReactUtils sharedInstance] populateInitialPayloadFromLaunchOptions:launchOptions];
 }
 
@@ -201,12 +188,6 @@ static ARAppDelegate *_sharedInstance = nil;
     if (currentUserId) {
         [[ARAppDelegate braze] changeUser: currentUserId];
     }
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-    // MANUALLY track lifecycle event. Segment already does this if
-    // trackLifecycleSessions: true
 }
 
 - (void)forceCacheCustomFonts

@@ -36,7 +36,6 @@ describe(@"receiveRemoteNotification", ^{
     __block ARAppDelegate *delegate = nil;
     __block UIApplicationState appState = -1;
     __block id mockEmissionSharedInstance = nil;
-    __block id mockSegmentSharedInstance = nil;
     __block UNNotification *unNotification = nil;
     __block UNUserNotificationCenter *currentCenter = nil;
     __block void (^completionHandler)(UNNotificationPresentationOptions) = ^(UNNotificationPresentationOptions options) {};
@@ -50,7 +49,6 @@ describe(@"receiveRemoteNotification", ^{
 
     afterEach(^{
         [mockEmissionSharedInstance stopMocking];
-        [mockSegmentSharedInstance stopMocking];
     });
 
     sharedExamplesFor(@"when receiving a notification", ^(NSDictionary *prefs) {
