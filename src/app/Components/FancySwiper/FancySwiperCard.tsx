@@ -37,7 +37,7 @@ export const FancySwiperCard = memo(
       // tilt the top card as it is being swiped away
       const rotate = swiper.x.interpolate({
         inputRange: [-SWIPE_MAGNITUDE, 0],
-        outputRange: ["-5deg", "0deg"],
+        outputRange: ["-10deg", "0deg"],
         extrapolate: "clamp",
       })
 
@@ -82,13 +82,13 @@ export const FancySwiperCard = memo(
     } else if (isLastSwipedCard) {
       const rotate = swiperSwipedCard.x.interpolate({
         inputRange: [0, SWIPE_MAGNITUDE],
-        outputRange: ["-5deg", "0deg"],
+        outputRange: ["-10deg", "0deg"],
         extrapolate: "clamp",
       })
 
       const translateX = swiperSwipedCard.x.interpolate({
         inputRange: [0, SWIPE_MAGNITUDE],
-        outputRange: [-screenWidth, 0],
+        outputRange: [-screenWidth - 50, 0],
         extrapolate: "clamp",
       })
 
@@ -101,7 +101,7 @@ export const FancySwiperCard = memo(
       // }
     } else if (isSwipedCard) {
       swipedCardTransform = {
-        transform: [{ translateX: -screenWidth }, { translateY: 0 }],
+        transform: [{ translateX: -screenWidth - 50 }, { translateY: 0 }],
       }
     } else {
       // hide the rest of the cards
