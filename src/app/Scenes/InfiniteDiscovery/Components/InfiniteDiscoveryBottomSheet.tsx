@@ -1,3 +1,4 @@
+import { useColor } from "@artsy/palette-mobile"
 import BottomSheet from "@gorhom/bottom-sheet"
 import { InfiniteDiscoveryBottomSheetTabsQuery } from "__generated__/InfiniteDiscoveryBottomSheetTabsQuery.graphql"
 import { InfiniteDiscoveryBottomSheetBackdrop } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetBackdrop"
@@ -21,6 +22,8 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
   artistIDs,
 }) => {
   const [footerVisible, setFooterVisible] = useState(true)
+  const color = useColor()
+
   const [queryRef, loadQuery] =
     useQueryLoader<InfiniteDiscoveryBottomSheetTabsQuery>(aboutTheWorkQuery)
 
@@ -47,6 +50,9 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
               appearsOnIndex={1}
             />
           )
+        }}
+        backgroundStyle={{
+          backgroundColor: color("white100"),
         }}
         handleComponent={InfiniteDiscoveryBottomeSheetHandle}
         footerComponent={(props) => {
