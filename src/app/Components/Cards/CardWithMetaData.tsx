@@ -24,11 +24,11 @@ export const CARD_IMAGE_HEIGHT = 230
 
 interface CardWithMetaDataProps {
   isFluid?: boolean
-  href: string
+  href: string | null | undefined
   imageURL: string | null | undefined
-  title: string
-  subtitle: string
-  tag: string
+  title: string | null | undefined
+  subtitle: string | null | undefined
+  tag: string | null | undefined
   onPress?: (event: GestureResponderEvent) => void
   testId?: string
 }
@@ -41,39 +41,39 @@ export const CardWithMetaData: React.FC<CardWithMetaDataProps> = (props) => {
   const { width } = useWindowDimensions()
 
   return (
-    <>
-      <Flex width={isFluid ? "100%" : CARD_IMAGE_WIDTH}>
-        <RouterLink onPress={onPress} testID="article-card" to={href}>
-          <Flex width={isFluid ? "100%" : CARD_IMAGE_WIDTH} overflow="hidden">
-            {!!imageURL &&
-              (isFluid ? (
-                <Image
-                  src={imageURL}
-                  // aspect ratio is fixed to 1.33 to match the old image aspect ratio
-                  aspectRatio={1.33}
-                  width={width / numColumns - 2 * space(2)}
-                />
-              ) : (
-                <Image src={imageURL} width={CARD_IMAGE_WIDTH} height={CARD_IMAGE_HEIGHT} />
-              ))}
-            <Spacer y={1} />
+    <Flex width={isFluid ? "100%" : CARD_IMAGE_WIDTH}>
+      <RouterLink onPress={onPress} testID="article-card" to={href}>
+        <Flex width={isFluid ? "100%" : CARD_IMAGE_WIDTH} overflow="hidden">
+          {!!imageURL &&
+            (isFluid ? (
+              <Image
+                src={imageURL}
+                // aspect ratio is fixed to 1.33 to match the old image aspect ratio
+                aspectRatio={1.33}
+                width={width / numColumns - 2 * space(2)}
+              />
+            ) : (
+              <Image src={imageURL} width={CARD_IMAGE_WIDTH} height={CARD_IMAGE_HEIGHT} />
+            ))}
+          <Spacer y={1} />
+          {!!title && (
             <Text numberOfLines={2} ellipsizeMode="tail" variant="sm-display" mb={0.5}>
               {title}
             </Text>
-            {!!subtitle && (
-              <Text color="black60" variant="xs">
-                {subtitle}
-              </Text>
-            )}
-            {!!tag && (
-              <Text color="black100" variant="xs">
-                {tag}
-              </Text>
-            )}
-          </Flex>
-        </RouterLink>
-      </Flex>
-    </>
+          )}
+          {!!subtitle && (
+            <Text color="black60" variant="xs">
+              {subtitle}
+            </Text>
+          )}
+          {!!tag && (
+            <Text color="black100" variant="xs">
+              {tag}
+            </Text>
+          )}
+        </Flex>
+      </RouterLink>
+    </Flex>
   )
 }
 
