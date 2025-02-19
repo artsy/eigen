@@ -4074,6 +4074,44 @@ type BidderPositionSuggestedNextBid {
 # exceed the size of a 32-bit integer, it's encoded as a string.
 scalar BigInt
 
+input BulkUpdateArtworksMetadataInput {
+  # The partner location ID to assign
+  location_id: String
+}
+
+type BulkUpdateArtworksMetadataMutationFailure {
+  mutationError: GravityMutationError
+}
+
+input BulkUpdateArtworksMetadataMutationInput {
+  clientMutationId: String
+
+  # ID of the partner
+  id: String!
+
+  # Metadata to be updated
+  metadata: BulkUpdateArtworksMetadataInput
+}
+
+type BulkUpdateArtworksMetadataMutationPayload {
+  bulkUpdateArtworksMetadataOrError: BulkUpdateArtworksMetadataMutationType
+  clientMutationId: String
+}
+
+type BulkUpdateArtworksMetadataMutationSuccess {
+  skippedPartnerArtworks: BulkUpdateArtworksMetadataResponse
+  updatedPartnerArtworks: BulkUpdateArtworksMetadataResponse
+}
+
+union BulkUpdateArtworksMetadataMutationType =
+    BulkUpdateArtworksMetadataMutationFailure
+  | BulkUpdateArtworksMetadataMutationSuccess
+
+type BulkUpdateArtworksMetadataResponse {
+  count: Int
+  ids: [String]
+}
+
 type BulkUpdatePartnerArtworksMutationFailure {
   mutationError: GravityMutationError
 }
@@ -4088,9 +4126,6 @@ input BulkUpdatePartnerArtworksMutationInput {
 
   # ID of the partner
   id: String!
-
-  # The partner location ID to assign
-  location: String
 }
 
 type BulkUpdatePartnerArtworksMutationPayload {
@@ -13640,6 +13675,11 @@ type Mutation {
   assignArtworkImportArtist(
     input: AssignArtworkImportArtistInput!
   ): AssignArtworkImportArtistPayload
+
+  # Update all artworks that belong to the partner
+  bulkUpdateArtworksMetadata(
+    input: BulkUpdateArtworksMetadataMutationInput!
+  ): BulkUpdateArtworksMetadataMutationPayload
 
   # Update all artworks that belong to the partner
   bulkUpdatePartnerArtworks(
