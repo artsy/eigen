@@ -63,30 +63,44 @@ export const InfiniteDiscoveryOnboarding: React.FC<{}> = () => {
             height: "100%",
           }}
         />
-        <SafeAreaView style={{ flex: 1, justifyContent: "flex-end", paddingHorizontal: space(2) }}>
-          <FlatList
-            ref={flatlistRef}
-            data={STEPS}
-            scrollEnabled={false}
-            style={{ marginHorizontal: -space(2), flexGrow: 0 }}
-            renderItem={({ item }) => (
-              <Flex width={width} px={2} justifyContent="flex-end">
-                {item.title}
-                {item.description}
-              </Flex>
-            )}
-            keyExtractor={(item) => item.key}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            pagingEnabled
-          />
+        <SafeAreaView style={{ flex: 1, justifyContent: "flex-end" }}>
+          <Flex
+            flex={1}
+            width="100%"
+            backgroundColor="black15"
+            alignSelf="center"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Text variant="lg-display" fontWeight="500" color="devpurple">
+              The animation goes here
+            </Text>
+          </Flex>
+          <Flex justifyContent="flex-end" px={2}>
+            <FlatList
+              ref={flatlistRef}
+              data={STEPS}
+              scrollEnabled={false}
+              style={{ marginHorizontal: -space(2), flexGrow: 0 }}
+              renderItem={({ item }) => (
+                <Flex width={width} px={2} justifyContent="flex-end">
+                  {item.title}
+                  {item.description}
+                </Flex>
+              )}
+              keyExtractor={(item) => item.key}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              pagingEnabled
+            />
 
-          <Spacer y={2} />
+            <Spacer y={2} />
 
-          <Flex alignItems="flex-end">
-            <Button variant="outline" onPress={handleNext}>
-              {index === STEPS.length - 1 ? "Done" : "Next"}
-            </Button>
+            <Flex alignItems="flex-end">
+              <Button variant="outline" onPress={handleNext}>
+                {index === STEPS.length - 1 ? "Done" : "Next"}
+              </Button>
+            </Flex>
           </Flex>
         </SafeAreaView>
       </Flex>
