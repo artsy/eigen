@@ -30,7 +30,7 @@ const STEPS = [
     key: "favouriteArtworks",
     description: (
       <Text variant="lg-display">
-        Press <HeartIcon /> when you like an artwork you see
+        Press <HeartIcon height={24} width={24} /> when you like an artwork you see
       </Text>
     ),
   },
