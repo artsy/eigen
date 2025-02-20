@@ -4,6 +4,8 @@
 #import "UIApplicationStateEnum.h"
 #import "ARLogger.h"
 #import "AREmission.h"
+#import "ArtsyAPI+DeviceTokens.h"
+#import "User.h"
 
 @implementation ARAppDelegate (Notifications)
 
