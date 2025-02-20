@@ -1,10 +1,12 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Flex, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Button } from "@artsy/palette-mobile"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
 import { PaymentFailureBanner } from "app/Scenes/HomeView/Components/PaymentFailureBanner"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { checkForUpdateAsync, fetchUpdateAsync, reloadAsync } from "expo-updates"
 import { Suspense } from "react"
+import { Alert } from "react-native"
 import { ActivityIndicator } from "./ActivityIndicator"
 
 export const HomeHeader: React.FC = () => {
@@ -12,6 +14,23 @@ export const HomeHeader: React.FC = () => {
   const hasUnseenNotifications = GlobalStore.useAppState(
     (state) => state.bottomTabs.hasUnseenNotifications
   )
+
+  const onFetchUpdateAsync = async () => {
+    try {
+      const update = await checkForUpdateAsync()
+
+      console.log("UPDATES: Available updates", update)
+
+      if (update.isAvailable) {
+        const result = await fetchUpdateAsync()
+        console.log("UPDATES: Update result", result)
+        await reloadAsync()
+      }
+    } catch (error) {
+      // You can also add an alert() to see the error message in case of an error when fetching updates.
+      Alert.alert(`Error fetching latest Expo update: ${error}`)
+    }
+  }
 
   return (
     <Flex backgroundColor="background">
@@ -32,7 +51,7 @@ export const HomeHeader: React.FC = () => {
         </Flex>
         <Box backgroundColor="purple">
           <Flex alignContent="center" justifyContent="center" alignItems="center" p={2}>
-            <Text color="white">If you can see this updates are working</Text>
+            <Button onPress={() => onFetchUpdateAsync()}>Fetch Update</Button>
           </Flex>
         </Box>
       </Flex>
