@@ -234,8 +234,6 @@ PODS:
   - iOSSnapshotTestCase/SwiftSupport (8.0.0):
     - iOSSnapshotTestCase/Core
   - ISO8601DateFormatter (0.7.1)
-  - JWT (3.0.0-beta.14):
-    - Base64 (~> 1.1.2)
   - JWTDecode (2.0.0)
   - libwebp (1.3.2):
     - libwebp/demux (= 1.3.2)
@@ -2407,7 +2405,6 @@ SPEC REPOS:
     - AFNetworkActivityLogger
     - AFNetworking
     - AppAuth
-    - Base64
     - CocoaLumberjack
     - CwlCatchException
     - CwlCatchExceptionSupport
@@ -2435,7 +2432,6 @@ SPEC REPOS:
     - GTMSessionFetcher
     - INTUAnimationEngine
     - iOSSnapshotTestCase
-    - JWT
     - JWTDecode
     - libwebp
     - Mantle
@@ -2818,11 +2814,10 @@ SPEC CHECKSUMS:
   GTMAppAuth: 99fb010047ba3973b7026e45393f51f27ab965ae
   GTMSessionFetcher: 0e876eea9782ec6462e91ab872711c357322c94f
   hermes-engine: 06a9c6900587420b90accc394199527c64259db4
-  Interstellar: ab67502af03105f92100a043e178d188a1a437c9
+  Interstellar: cd0c3290e249b5f156113a4c6c9c09dd0f418aaa
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   iOSSnapshotTestCase: a670511f9ee3829c2b9c23e6e68f315fd7b6790f
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
-  JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
@@ -2843,7 +2838,7 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   Pulley: edc993fb57f7eb20541c8453d0fce10559f21dac
   Quick: ce1276c7c27ba2da3cb2fd0cde053c3648b3b22d
-  RCT-Folly: bf5c0376ffe4dd2cf438dcf86db385df9fdce648
+  RCT-Folly: 84578c8756030547307e4572ab1947de1685c599
   RCTDeprecation: fb7d408617e25d7f537940000d766d60149c5fea
   RCTRequired: 9aaf0ffcc1f41f0c671af863970ef25c422a9920
   RCTTypeSafety: e9a6e7d48184646eb0610295b74c0dd02768cbb2
