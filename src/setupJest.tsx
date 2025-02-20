@@ -221,6 +221,7 @@ jest.mock("@invertase/react-native-apple-authentication", () => ({
 
 jest.mock("@sentry/react-native", () => ({
   captureMessage: jest.fn(),
+  captureException: jest.fn(),
   init() {},
   setUser() {},
   addBreadcrumb() {},
@@ -606,11 +607,6 @@ jest.mock("react-native-collapsible-tab-view", () => {
 
 jest.mock("prettier", () => ({
   format: jest.fn((content) => content), // just return content as-is for tests
-}))
-
-jest.mock("react-native-code-push", () => ({
-  checkForUpdate: jest.fn(),
-  sync: jest.fn(),
 }))
 
 jest.mock("@react-native-community/geolocation", () => ({

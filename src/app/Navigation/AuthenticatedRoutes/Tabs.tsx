@@ -1,6 +1,5 @@
 import { ActionType, OwnerType, Screen, tappedTabBar } from "@artsy/cohesion"
 import { Flex, Text, useColor } from "@artsy/palette-mobile"
-import { THEME } from "@artsy/palette-tokens"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
@@ -118,14 +117,15 @@ const AppTabs: React.FC = () => {
                   style={{ top: Platform.OS === "ios" ? -4 : 0 }}
                   selectable={false}
                   textAlign="center"
+                  color="black100"
                 >
                   {bottomTabsConfig[route.name].name}
                 </Text>
               </Flex>
             )
           },
-          tabBarActiveTintColor: THEME.colors["black100"],
-          tabBarInactiveTintColor: THEME.colors["black60"],
+          tabBarActiveTintColor: color("black100"),
+          tabBarInactiveTintColor: color("black100"),
         }
       }}
       screenListeners={{

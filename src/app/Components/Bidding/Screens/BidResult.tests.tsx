@@ -1,95 +1,64 @@
+import { StackActions } from "@react-navigation/native"
 import { fireEvent, screen } from "@testing-library/react-native"
-import { BidResultTestsQuery } from "__generated__/BidResultTestsQuery.graphql"
-import { BidResult_sale_artwork$data } from "__generated__/BidResult_sale_artwork.graphql"
+import { BidResult_saleArtwork$data } from "__generated__/BidResult_saleArtwork.graphql"
+import { BidFlowContextProvider } from "app/Components/Bidding/Context/BidFlowContextProvider"
 import { BidderPositionResult } from "app/Components/Bidding/types"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { QueryRenderer, graphql } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
-import { BidResultScreen } from "./BidResult"
-
-const sale: BidResult_sale_artwork$data["sale"] = {
-  cascadingEndTimeIntervalMinutes: null,
-  liveStartAt: "2022-01-01T00:03:00+00:00",
-  endAt: "2022-05-01T00:03:00+00:00",
-  slug: "sale-id",
-}
-
-interface WrapperProps {
-  bidderPositionResult: BidderPositionResult
-}
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
+import { BidResult } from "./BidResult"
 
 describe("BidResult component", () => {
-  const popToTop = jest.fn()
-  const mockNavigator = { popToTop }
+  const dispatch = jest.fn()
+  const mockNavigator = { dispatch }
   const refreshBidderInfoMock = jest.fn()
   const refreshSaleArtworkInfoMock = jest.fn()
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   Date.now = jest.fn(() => 1525983752116)
-  jest.useFakeTimers({
-    legacyFakeTimers: true,
-  })
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
+  jest.useFakeTimers({ legacyFakeTimers: true })
 
   afterEach(() => {
     jest.clearAllMocks()
   })
 
-  const TestWrapper = (props: WrapperProps) => {
-    return (
-      <QueryRenderer<BidResultTestsQuery>
-        environment={mockEnvironment}
-        query={graphql`
-          query BidResultTestsQuery @relay_test_operation @raw_response_type {
-            saleArtwork(id: "saleArtworkId") {
-              ...BidResult_sale_artwork
-            }
+  const { renderWithRelay } = setupTestWrapper({
+    Component: (props: any) => (
+      <BidFlowContextProvider>
+        <BidResult
+          navigation={mockNavigator as any}
+          route={
+            {
+              params: {
+                refreshBidderInfo: refreshBidderInfoMock,
+                refreshSaleArtwork: refreshSaleArtworkInfoMock,
+                ...props,
+              },
+            } as any
           }
-        `}
-        variables={{}}
-        render={({ props: relayProps }) => {
-          if (relayProps?.saleArtwork) {
-            return (
-              <BidResultScreen
-                refreshBidderInfo={refreshBidderInfoMock}
-                refreshSaleArtwork={refreshSaleArtworkInfoMock}
-                sale_artwork={relayProps.saleArtwork}
-                navigator={mockNavigator as any}
-                {...props}
-              />
-            )
-          }
-
-          return null
-        }}
-      />
-    )
-  }
+        />
+      </BidFlowContextProvider>
+    ),
+    query: graphql`
+      query BidResultTestsQuery @relay_test_operation {
+        saleArtwork(id: "saleArtworkId") {
+          ...BidResult_saleArtwork
+        }
+      }
+    `,
+  })
 
   describe("high bidder", () => {
     it("renders a timer", () => {
-      renderWithWrappers(<TestWrapper bidderPositionResult={Statuses.winning} />)
+      renderWithRelay({ Sale: () => sale }, { bidderPositionResult: Statuses.winning })
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Sale: () => sale,
-      })
-
-      expect(screen.getByLabelText("Countdown")).toBeTruthy()
+      expect(screen.getByLabelText("Countdown")).toBeOnTheScreen()
     })
 
     it("dismisses the controller when the continue button is pressed", () => {
-      renderWithWrappers(<TestWrapper bidderPositionResult={Statuses.winning} />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Sale: () => sale,
-      })
+      renderWithRelay({ Sale: () => sale }, { bidderPositionResult: Statuses.winning })
 
       fireEvent.press(screen.getByText("Continue"))
+
       jest.runAllTicks()
 
       expect(dismissModal).toHaveBeenCalled()
@@ -99,47 +68,31 @@ describe("BidResult component", () => {
 
   describe("low bidder", () => {
     it("renders a timer", () => {
-      renderWithWrappers(<TestWrapper bidderPositionResult={Statuses.outbid} />)
+      renderWithRelay({ Sale: () => sale }, { bidderPositionResult: Statuses.outbid })
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Sale: () => sale,
-      })
-
-      expect(screen.getByLabelText("Countdown")).toBeTruthy()
+      expect(screen.getByLabelText("Countdown")).toBeOnTheScreen()
     })
 
     it("pops to root when bid-again button is pressed", () => {
-      renderWithWrappers(<TestWrapper bidderPositionResult={Statuses.outbid} />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Sale: () => sale,
-      })
+      renderWithRelay({ Sale: () => sale }, { bidderPositionResult: Statuses.outbid })
 
       fireEvent.press(screen.getByText("Bid again"))
 
       expect(refreshBidderInfoMock).toHaveBeenCalled()
       expect(refreshSaleArtworkInfoMock).toHaveBeenCalled()
-      expect(popToTop).toHaveBeenCalled()
+      expect(dispatch).toHaveBeenCalledWith(StackActions.popToTop())
     })
   })
 
   describe("live bidding has started", () => {
     it("doesn't render a timer", () => {
-      renderWithWrappers(<TestWrapper bidderPositionResult={Statuses.live_bidding_started} />)
+      renderWithRelay({ Sale: () => sale }, { bidderPositionResult: Statuses.liveBiddingStarted })
 
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Sale: () => sale,
-      })
-
-      expect(screen.queryByLabelText("Countdown")).toBeFalsy()
+      expect(screen.queryByLabelText("Countdown")).not.toBeOnTheScreen()
     })
 
     it("dismisses controller and presents live interface when continue button is pressed", () => {
-      renderWithWrappers(<TestWrapper bidderPositionResult={Statuses.live_bidding_started} />)
-
-      resolveMostRecentRelayOperation(mockEnvironment, {
-        Sale: () => sale,
-      })
+      renderWithRelay({ Sale: () => sale }, { bidderPositionResult: Statuses.liveBiddingStarted })
 
       fireEvent.press(screen.getByText("Continue"))
       jest.runAllTicks()
@@ -151,9 +104,9 @@ describe("BidResult component", () => {
   })
 })
 
-const positionPlaceholder = {
+const positionPlaceholder: BidderPositionResult["position"] = {
   id: "",
-  suggested_next_bid: {
+  suggestedNextBid: {
     cents: "",
     display: "",
   },
@@ -161,15 +114,15 @@ const positionPlaceholder = {
 
 const winningStatus: BidderPositionResult = {
   status: "WINNING",
-  message_header: "",
-  message_description_md: "",
+  messageHeader: "",
+  messageDescriptionMD: "",
   position: positionPlaceholder,
 }
 
 const outbidStatus: BidderPositionResult = {
   status: "OUTBID",
-  message_header: "Your bid wasn’t high enough",
-  message_description_md: `
+  messageHeader: "Your bid wasn’t high enough",
+  messageDescriptionMD: `
     Another bidder placed a higher max bid or the same max bid before you did.
   `,
   position: positionPlaceholder,
@@ -177,8 +130,8 @@ const outbidStatus: BidderPositionResult = {
 
 const liveBiddingStartedStatus: BidderPositionResult = {
   status: "LIVE_BIDDING_STARTED",
-  message_header: "Live bidding has started",
-  message_description_md: `
+  messageHeader: "Live bidding has started",
+  messageDescriptionMD: `
     Sorry, your bid wasn’t received before live bidding started.
     To continue bidding, please [join the live auction](http://live-staging.artsy.net/).
   `,
@@ -188,5 +141,12 @@ const liveBiddingStartedStatus: BidderPositionResult = {
 const Statuses = {
   winning: winningStatus,
   outbid: outbidStatus,
-  live_bidding_started: liveBiddingStartedStatus,
+  liveBiddingStarted: liveBiddingStartedStatus,
+}
+
+const sale: BidResult_saleArtwork$data["sale"] = {
+  cascadingEndTimeIntervalMinutes: null,
+  liveStartAt: "2022-01-01T00:03:00+00:00",
+  endAt: "2022-05-01T00:03:00+00:00",
+  slug: "sale-id",
 }

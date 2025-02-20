@@ -1,10 +1,21 @@
-import { useTheme } from "@artsy/palette-mobile"
+import { useColor, useTheme } from "@artsy/palette-mobile"
 import { StyleSheet, Text, TextProps, TextStyle } from "react-native"
 
 const LargeHeadline: React.FC<TextProps> = (props) => {
   const { theme } = useTheme()
+  const color = useColor()
+
   const children: string = (props as any).children
-  const style = [styles.largeDefault, props.style || {}, { fontFamily: theme.fonts.sans.regular }]
+  const style = [
+    {
+      fontSize: 30,
+      color: color("black100"),
+      paddingLeft: 20,
+      paddingRight: 20,
+    },
+    props.style || {},
+    { fontFamily: theme.fonts.sans.regular },
+  ]
   return (
     <Text key={children} style={style}>
       {children}
@@ -16,7 +27,10 @@ const SmallHeadline: React.FC<TextProps & { disabled?: boolean }> = (props) => {
   const { theme, color } = useTheme()
   const children: string = (props as any).children
   const style = [
-    styles.smallDefault,
+    {
+      fontSize: 11,
+      color: color("black100"),
+    },
     props.disabled && { color: color("black30") },
     props.style || {},
     { fontFamily: theme.fonts.sans.regular },
@@ -29,8 +43,17 @@ const SmallHeadline: React.FC<TextProps & { disabled?: boolean }> = (props) => {
 }
 
 const Subtitle: React.FC<TextProps> = (props) => {
+  const color = useColor()
   const children: string = (props as any).children
-  const style = [styles.subtitleDefault, props.style || {}, styles.subtitleRequired]
+  const style = [
+    {
+      fontSize: 14,
+      color: color("black100"),
+    },
+    props.style || {},
+    styles.subtitleRequired,
+  ]
+
   return (
     <Text {...props} key={children} style={style}>
       {children}
@@ -66,8 +89,16 @@ const MetadataText: React.FC<TextProps> = (props) => {
 }
 
 const PreviewText: React.FC<TextProps> = (props) => {
+  const color = useColor()
   const children: string = (props as any).children
-  const style = [styles.bodyDefault, props.style || {}, styles.bodyRequired]
+  const style = [
+    {
+      fontSize: 16,
+      color: color("black100"),
+    },
+    props.style || {},
+    styles.bodyRequired,
+  ]
   return (
     <Text key={children} style={style} numberOfLines={1} ellipsizeMode="tail">
       {children}
@@ -79,7 +110,10 @@ const BodyText: React.FC<TextProps & { disabled?: boolean }> = (props) => {
   const { color } = useTheme()
   const children: string = (props as any).children
   const style = [
-    styles.bodyDefault,
+    {
+      fontSize: 16,
+      color: color("black100"),
+    },
     props.disabled && { color: color("black30") },
     props.style || {},
     styles.bodyRequired,
@@ -102,10 +136,7 @@ export {
 }
 
 interface Styles {
-  largeDefault: TextStyle
-  smallDefault: TextStyle
   subtitleRequired: TextStyle
-  subtitleDefault: TextStyle
   fromSignatureDefault: TextStyle
   metadataDefault: TextStyle
   bodyRequired: TextStyle
@@ -113,25 +144,6 @@ interface Styles {
 }
 
 const styles = StyleSheet.create<Styles>({
-  largeDefault: {
-    fontSize: 30,
-    color: "black",
-    textAlign: "left",
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
-
-  smallDefault: {
-    fontSize: 11,
-    color: "black",
-    textAlign: "left",
-  },
-
-  subtitleDefault: {
-    fontSize: 14,
-    color: "black",
-  },
-
   subtitleRequired: {
     fontFamily: "Unica77LL-Italic",
   },

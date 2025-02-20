@@ -29,7 +29,7 @@ export const SortByModal: React.FC<SortByModalProps> = (props) => {
       presentationStyle="pageSheet"
       animationType="slide"
     >
-      <Flex height={250} width="100%">
+      <Flex height={250} width="100%" backgroundColor="background" flexGrow={1}>
         <NavigationHeader useXButton onLeftButtonPress={onCloseModal}>
           Sort By
         </NavigationHeader>

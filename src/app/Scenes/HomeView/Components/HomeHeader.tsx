@@ -14,7 +14,7 @@ export const HomeHeader: React.FC = () => {
   )
 
   return (
-    <Flex backgroundColor="white100">
+    <Flex backgroundColor="background">
       {!!showPaymentFailureBanner && (
         <Suspense fallback={null}>
           <PaymentFailureBanner />

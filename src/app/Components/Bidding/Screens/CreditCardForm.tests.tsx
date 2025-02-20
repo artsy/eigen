@@ -68,7 +68,7 @@ describe("CreditCardForm", () => {
 
   it("renders without throwing an error", () => {
     renderWithWrappers(
-      <CreditCardForm navigator={{ push: () => null } as any} onSubmit={onSubmitMock} />
+      <CreditCardForm navigation={null!} route={{ params: { onSubmit: onSubmitMock } } as any} />
     )
   })
 
@@ -77,10 +77,15 @@ describe("CreditCardForm", () => {
 
     renderWithWrappers(
       <CreditCardForm
-        onSubmit={onSubmitMock}
-        navigator={{ pop: () => null } as any}
-        // @ts-expect-error prefilling the country for the test
-        billingAddress={{ country: { shortName: "US", longName: "United States" } }}
+        navigation={null!}
+        route={
+          {
+            params: {
+              onSubmit: onSubmitMock,
+              billingAddress: { country: { shortName: "US", longName: "United States" } },
+            },
+          } as any
+        }
       />
     )
 
@@ -125,12 +130,10 @@ describe("CreditCardForm", () => {
   })
 
   it("is does not call onSubmit while the form is invalid", () => {
-    const onSubmitMock = jest.fn()
-
     ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
 
     renderWithWrappers(
-      <CreditCardForm onSubmit={onSubmitMock} navigator={{ pop: () => null } as any} />
+      <CreditCardForm navigation={null!} route={{ params: { onSubmit: onSubmitMock } } as any} />
     )
 
     const creditCardField = screen.getByTestId("credit-card-field")
@@ -144,12 +147,10 @@ describe("CreditCardForm", () => {
   })
 
   it("is is disabled while the form is invalid", async () => {
-    const onSubmitMock = jest.fn()
-
     ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
 
     renderWithWrappers(
-      <CreditCardForm onSubmit={onSubmitMock} navigator={{ pop: () => null } as any} />
+      <CreditCardForm navigation={null!} route={{ params: { onSubmit: onSubmitMock } } as any} />
     )
 
     const creditCardField = screen.getByTestId("credit-card-field")
@@ -161,24 +162,28 @@ describe("CreditCardForm", () => {
   })
 
   it("is enabled while the form is valid", async () => {
-    const onSubmitMock = jest.fn()
-
     ;(createToken as jest.Mock).mockReturnValueOnce(stripeToken)
 
     renderWithWrappers(
       <CreditCardForm
-        onSubmit={onSubmitMock}
-        navigator={{ pop: () => null } as any}
-        billingAddress={{
-          fullName: "mockName",
-          addressLine1: "mockAddress1",
-          addressLine2: "mockAddress2",
-          city: "mockCity",
-          state: "mockState",
-          postalCode: "mockPostalCode",
-          phoneNumber: "mockPhone",
-          country: { shortName: "US", longName: "United States" },
-        }}
+        navigation={null!}
+        route={
+          {
+            params: {
+              onSubmit: onSubmitMock,
+              billingAddress: {
+                fullName: "mockName",
+                addressLine1: "mockAddress1",
+                addressLine2: "mockAddress2",
+                city: "mockCity",
+                state: "mockState",
+                postalCode: "mockPostalCode",
+                phoneNumber: "mockPhone",
+                country: { shortName: "US", longName: "United States" },
+              },
+            },
+          } as any
+        }
       />
     )
 
@@ -193,18 +198,24 @@ describe("CreditCardForm", () => {
   it("is disabled when the form is invalid", async () => {
     renderWithWrappers(
       <CreditCardForm
-        onSubmit={onSubmitMock}
-        navigator={{ pop: () => null } as any}
-        billingAddress={{
-          fullName: "mockName",
-          addressLine1: "mockAddress1",
-          addressLine2: "mockAddress2",
-          city: "mockCity",
-          state: "mockState",
-          postalCode: "mockPostalCode",
-          phoneNumber: "mockPhone",
-          country: { shortName: "US", longName: "United States" },
-        }}
+        navigation={null!}
+        route={
+          {
+            params: {
+              onSubmit: onSubmitMock,
+              billingAddress: {
+                fullName: "mockName",
+                addressLine1: "mockAddress1",
+                addressLine2: "mockAddress2",
+                city: "mockCity",
+                state: "mockState",
+                postalCode: "mockPostalCode",
+                phoneNumber: "mockPhone",
+                country: { shortName: "US", longName: "United States" },
+              },
+            },
+          } as any
+        }
       />
     )
 
@@ -217,25 +228,29 @@ describe("CreditCardForm", () => {
   })
 
   it("shows an error when stripe's API returns an error", async () => {
-    const onSubmitMock = jest.fn()
-
     console.error = jest.fn()
     ;(createToken as jest.Mock).mockResolvedValueOnce({ error: "error" })
 
     renderWithWrappers(
       <CreditCardForm
-        onSubmit={onSubmitMock}
-        navigator={{ pop: () => null } as any}
-        billingAddress={{
-          fullName: "mockName",
-          addressLine1: "mockAddress1",
-          addressLine2: "mockAddress2",
-          city: "mockCity",
-          state: "mockState",
-          postalCode: "mockPostalCode",
-          phoneNumber: "mockPhone",
-          country: { shortName: "US", longName: "United States" },
-        }}
+        navigation={null!}
+        route={
+          {
+            params: {
+              onSubmit: onSubmitMock,
+              billingAddress: {
+                fullName: "mockName",
+                addressLine1: "mockAddress1",
+                addressLine2: "mockAddress2",
+                city: "mockCity",
+                state: "mockState",
+                postalCode: "mockPostalCode",
+                phoneNumber: "mockPhone",
+                country: { shortName: "US", longName: "United States" },
+              },
+            },
+          } as any
+        }
       />
     )
 

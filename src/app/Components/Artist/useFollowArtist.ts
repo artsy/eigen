@@ -51,7 +51,7 @@ export const useFollowArtist = (artist: useFollowArtist_artist$key | null) => {
         },
       },
       updater: (store, data) => {
-        if (!data.followArtist?.artist) {
+        if (!data?.followArtist?.artist) {
           return
         }
 

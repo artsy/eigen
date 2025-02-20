@@ -1,6 +1,7 @@
-import { Flex, ClassTheme, Text, Touchable, Image } from "@artsy/palette-mobile"
+import { Flex, Image, Text, Touchable } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ShowPreview_show$data } from "__generated__/ShowPreview_show.graphql"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { Schema, Track, track as _track } from "app/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -56,7 +57,7 @@ export class ShowPreview extends React.Component<Props> {
     const name = show.fair ? show.fair.name : show.name
 
     return (
-      <ClassTheme>
+      <ThemeAwareClassTheme>
         {({ color }) => (
           <Touchable
             underlayColor={color("black5")}
@@ -82,7 +83,7 @@ export class ShowPreview extends React.Component<Props> {
             </Container>
           </Touchable>
         )}
-      </ClassTheme>
+      </ThemeAwareClassTheme>
     )
   }
 }

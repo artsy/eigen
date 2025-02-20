@@ -72,18 +72,22 @@ export const HTML: React.FC<HTMLProps> = ({
             },
             p: {
               fontFamily: FONTS.regular,
+              color: color("black100"),
               ...variantStyles,
             },
             em: {
               fontFamily: FONTS.italic,
+              color: color("black100"),
             },
             h2: {
               fontFamily: FONTS.medium,
               fontWeight: "normal",
+              color: color("black100"),
             },
             h3: {
               fontFamily: FONTS.regular,
               fontWeight: "normal",
+              color: color("black100"),
             },
           },
           tagStyles

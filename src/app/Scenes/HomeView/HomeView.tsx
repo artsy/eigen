@@ -30,7 +30,6 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
-import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { memo, RefObject, Suspense, useCallback, useEffect, useState } from "react"
 import { FlatList, Linking, RefreshControl } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -43,6 +42,7 @@ export const homeViewScreenQueryVariables = () => ({
 
 export const HomeView: React.FC = memo(() => {
   const flashlistRef = useBottomTabsScrollToTop()
+
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const { fetchKey } = useRetryErrorBoundaryContext()
@@ -74,6 +74,7 @@ export const HomeView: React.FC = memo(() => {
 
   useDismissSavedArtwork(savedArtworksCount > 0)
   useEnableProgressiveOnboarding()
+
   const prefetchUrl = usePrefetch()
   const tracking = useHomeViewTracking()
   useHomeViewExperimentTracking(queryData.homeView?.experiments)
@@ -189,8 +190,6 @@ const HomeViewScreenComponent: React.FC = () => {
   const showPlayground = useDevToggle("DTShowPlayground")
 
   const { isDeepLink } = useIsDeepLink()
-
-  useSwitchStatusBarStyle("dark-content", "dark-content")
 
   useEffect(() => {
     if (artQuizState === "incomplete" && isNavigationReady) {

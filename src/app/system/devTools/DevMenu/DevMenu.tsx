@@ -6,7 +6,6 @@ import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Ta
 import { LargeHeaderView } from "app/Navigation/utils/LargeHeaderView"
 import { __unsafe__onboardingNavigationRef } from "app/Scenes/Onboarding/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
-import { CodePushOptions } from "app/system/devTools/DevMenu/CodePushOptions"
 import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMenuButtonItem"
 import { DevTools } from "app/system/devTools/DevMenu/Components/DevTools"
 import { EnvironmentOptions } from "app/system/devTools/DevMenu/Components/EnvironmentOptions"
@@ -70,7 +69,6 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
       <Join separator={<Spacer y={1} />}>
         <NavigateTo />
         <EnvironmentOptions onClose={onClose} />
-        <CodePushOptions />
         <FeatureFlags />
         <Experiments />
         <DevTools />

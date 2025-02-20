@@ -4,10 +4,12 @@ import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Alert, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 
 export const MyProfileSettings: React.FC = () => {
+  const supportsDarkMode = useFeatureFlag("ARDarkModeSupport")
   const color = useColor()
   const space = useSpace()
 
@@ -15,7 +17,9 @@ export const MyProfileSettings: React.FC = () => {
   const separatorColor = color("black5")
 
   return (
-    <ScrollView contentContainerStyle={{ paddingTop: space(2) }}>
+    <ScrollView
+      contentContainerStyle={{ paddingTop: space(2), backgroundColor: color("background") }}
+    >
       <Text variant="xs" color="black60" px={2}>
         Settings
       </Text>
@@ -49,6 +53,20 @@ export const MyProfileSettings: React.FC = () => {
           navigate("recently-viewed")
         }}
       />
+      {!!supportsDarkMode && (
+        <>
+          <Separator my={1} borderColor={separatorColor} />
+
+          <MenuItem
+            title="Dark mode"
+            onPress={() => {
+              tracking.trackEvent(tracks.trackMenuTap("settings/dark-mode"))
+              navigate("/settings/dark-mode")
+            }}
+          />
+        </>
+      )}
+
       <Separator my={1} borderColor={separatorColor} />
 
       <MenuItem title="About" onPress={() => navigate("about")} />

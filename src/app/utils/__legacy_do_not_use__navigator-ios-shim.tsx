@@ -1,3 +1,4 @@
+import { useColor } from "@artsy/palette-mobile"
 import { NavigationContainer, NavigationContainerRef, StackActions } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import React from "react"
@@ -17,8 +18,9 @@ export interface NavigatorIOSPushArgs {
 }
 
 const ScreenWrapper: React.FC<{ route: { params: ScreenProps } }> = (props) => {
+  const color = useColor()
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: color("white100") }}>
       <props.route.params.Component
         {...props.route.params.props}
         navigator={props.route.params.navigator}
@@ -27,6 +29,9 @@ const ScreenWrapper: React.FC<{ route: { params: ScreenProps } }> = (props) => {
   )
 }
 
+/**
+ * @deprecated Please use react-navigation instead
+ */
 class NavigatorIOS extends React.Component<{
   initialRoute: { component: React.ComponentType<any>; passProps?: object }
 }> {

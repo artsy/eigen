@@ -6,10 +6,6 @@
 #import <BrazeUI/BrazeUI-Swift.h>
 #import "BrazeReactBridge.h"
 #import "BrazeReactUtils.h"
-
-#import <CodePush/CodePush.h>
-#import <AppCenterReactNative.h>
-
 #import "AppDelegate.h"
 #import "AppDelegate+Emission.h"
 #import "AppDelegate+Echo.h"
@@ -102,9 +98,6 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [self setupSharedEmission];
 
-    [AppCenterReactNative register];
-
-
     self.moduleName = @"eigen";
 
     // You can add your custom initial props in the dictionary below.
@@ -123,7 +116,7 @@ static ARAppDelegate *_sharedInstance = nil;
 {
     [self setupForAppLaunch:launchOptions];
     [self setupAnalytics:application withLaunchOptions:launchOptions];
-    
+
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     center.delegate = self;
 
@@ -162,7 +155,7 @@ static ARAppDelegate *_sharedInstance = nil;
 {
     NSString *brazeAppKey = [Keys secureFor:@"BRAZE_STAGING_APP_KEY_IOS"];
     if (![ARAppStatus isDev]) {
-        brazeAppKey = [Keys secureFor:@"BRAZE_STAGING_APP_KEY_IOS"];
+        brazeAppKey = [Keys secureFor:@"BRAZE_PRODUCTION_APP_KEY_IOS"];
     }
 
     NSString *brazeSDKEndPoint = @"sdk.iad-06.braze.com";
@@ -253,7 +246,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [[NSUserDefaults standardUserDefaults] setInteger:numberOfRuns forKey:ARAnalyticsAppUsageCountProperty];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
+
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
@@ -262,11 +255,11 @@ static ARAppDelegate *_sharedInstance = nil;
 }
 
 - (NSURL *)bundleURL
-{
+{   
 #if DEBUG
     return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@".expo/.virtual-metro-entry"];
 #else
-    return [CodePush bundleURL];
+    return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
 }
 

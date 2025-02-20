@@ -17,6 +17,7 @@ export const NavigateTo: React.FC<{}> = () => {
               onChangeText={(text) => setUrl(text)}
               autoCapitalize="none"
               returnKeyType="go"
+              value={url}
             />
           </Flex>
           <Button
