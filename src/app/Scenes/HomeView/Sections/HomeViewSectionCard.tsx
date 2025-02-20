@@ -122,7 +122,7 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
               {title}
             </Text>
 
-            <Flex mt={0.5} justifyContent="space-between" flexDirection="row">
+            <Flex mt={0.5} justifyContent="space-between" flexDirection="row" alignItems="flex-end">
               <Flex flex={1} mr={2}>
                 <Text variant="sm-display" color={textColor}>
                   {subtitle}
