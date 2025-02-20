@@ -8,7 +8,6 @@ type AppConfig = {
   displayName: string
   version: string
   isAndroidBeta: boolean
-  nativeCodeVersion: Record<string, string>
 }
 
 export const appJson = () => appJsonFile as AppConfig

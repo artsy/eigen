@@ -3,5 +3,13 @@
   "name": "Eigen",
   "displayName": "Artsy",
   "version": "8.65.0",
-  "isAndroidBeta": false
+  "isAndroidBeta": false,
+  "expo": {
+    "updates": {
+      "url": "tbd"
+    },
+    "runtimeVersion": {
+      "policy": "fingerprint"
+    }
+  }
 }
