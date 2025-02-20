@@ -2856,6 +2856,8 @@ union ArtworkFilterFacet = Gene | Tag
 union ArtworkHighlight = Article | Show
 
 type ArtworkImport implements Node {
+  # Columns to display for an import, will exist in a row's `transformedData`
+  columns: [String!]!
   fileName: String!
 
   # A globally unique ID.
@@ -2906,6 +2908,7 @@ type ArtworkImportRow {
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   rawData: JSON!
+  transformedData: JSON!
 }
 
 # A connection to a list of items.
