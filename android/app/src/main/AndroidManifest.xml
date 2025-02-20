@@ -133,6 +133,7 @@
                 <data android:pathPrefix="/collections" />
                 <data android:pathPrefix="/conditions-of-sale" />
                 <data android:pathPrefix="/conversation" />
+                <data android:pathPrefix="/infinite-discovery" />
                 <data android:pathPrefix="/fair" />
                 <data android:pathPrefix="/fairs" />
                 <data android:pathPrefix="/favorites" />
