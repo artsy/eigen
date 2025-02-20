@@ -14,6 +14,9 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
+require 'json'
+podfile_properties = JSON.parse(File.read(File.join(__dir__, 'Podfile.properties.json'))) rescue {}
+
 project 'Artsy.xcodeproj'
 platform :ios, '16.6'
 inhibit_all_warnings! # ignore all warnings from all pods
@@ -79,6 +82,7 @@ target 'Artsy' do
 
   use_react_native!(
     :path => config[:reactNativePath],
+    :hermes_enabled => podfile_properties['expo.jsEngine'] == nil || podfile_properties['expo.jsEngine'] == 'hermes',
     :production => ENV['CIRCLE_BUILD_NUM'],
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/..",
