@@ -216,6 +216,7 @@
 		CB43299D27FE0D9000B29DD6 /* CloseButtonLargeHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CBE325DD27E275A200395A93 /* CloseButtonLargeHighlighted@2x.png */; };
 		CB43299E27FE0DB100B29DD6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CB43278427E8FEE400B29DD6 /* InfoPlist.strings */; };
 		CB6B9D8A2D6531BF0093B232 /* AppDelegate+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6B9D892D6531BF0093B232 /* AppDelegate+Notifications.m */; };
+		CB6B9D8E2D67CFD60093B232 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB6B9D8C2D67CFD60093B232 /* Expo.plist */; };
 		CB762B2A291054D500881194 /* LiveAuctionReportProblemButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB762B29291054D500881194 /* LiveAuctionReportProblemButton.swift */; };
 		CB762B2D29119F0700881194 /* ARSentryReporter.m in Sources */ = {isa = PBXBuildFile; fileRef = CB762B2C29119F0700881194 /* ARSentryReporter.m */; };
 		CB762B372911A5E100881194 /* ARVIRModalClose.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B2F2911A5E100881194 /* ARVIRModalClose.png */; };
@@ -922,6 +923,7 @@
 		CB43299927FDFE6B00B29DD6 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		CB6B9D882D6531BF0093B232 /* AppDelegate+Notifications.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Notifications.h"; sourceTree = "<group>"; };
 		CB6B9D892D6531BF0093B232 /* AppDelegate+Notifications.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Notifications.m"; sourceTree = "<group>"; };
+		CB6B9D8C2D67CFD60093B232 /* Expo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		CB762B29291054D500881194 /* LiveAuctionReportProblemButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAuctionReportProblemButton.swift; sourceTree = "<group>"; };
 		CB762B2B29119F0700881194 /* ARSentryReporter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARSentryReporter.h; sourceTree = "<group>"; };
 		CB762B2C29119F0700881194 /* ARSentryReporter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARSentryReporter.m; sourceTree = "<group>"; };
@@ -2437,6 +2439,14 @@
 			path = AppDelegateCategories;
 			sourceTree = "<group>";
 		};
+		CB6B9D8D2D67CFD60093B232 /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				CB6B9D8C2D67CFD60093B232 /* Expo.plist */,
+			);
+			path = Supporting;
+			sourceTree = "<group>";
+		};
 		CB762B2E2911A5E100881194 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -2473,6 +2483,7 @@
 		CBE3210527D9615000395A93 /* Artsy */ = {
 			isa = PBXGroup;
 			children = (
+				CB6B9D8D2D67CFD60093B232 /* Supporting */,
 				CBE324B727E275A100395A93 /* AppDelegate.h */,
 				8E4207782A055D2D006888BD /* AppDelegate.mm */,
 				CB18283429D36A3A006A0805 /* fonts */,
@@ -3586,6 +3597,7 @@
 				CB18283C29D36A3A006A0805 /* Unica77LL-MediumItalic.otf in Resources */,
 				1AE9F2672902DA87002A561B /* BrazeExt.xcconfig in Resources */,
 				CBE3273727E275A400395A93 /* navigation_more_arrow_vertical@2x.png in Resources */,
+				CB6B9D8E2D67CFD60093B232 /* Expo.plist in Resources */,
 				CBE3275327E275A400395A93 /* CircleCheckGreen@2x.png in Resources */,
 				CBE3275727E275A400395A93 /* paddle@3x.png in Resources */,
 				1AE9F2652902DA87002A561B /* App-Debug.xcconfig in Resources */,
