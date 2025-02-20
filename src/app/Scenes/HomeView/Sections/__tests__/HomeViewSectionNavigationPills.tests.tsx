@@ -1,12 +1,10 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { HomeViewSectionNavigationPillsTestsQuery } from "__generated__/HomeViewSectionNavigationPillsTestsQuery.graphql"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
-import {
-  HomeViewSectionNavigationPills,
-  NAVIGATION_LINKS_PLACEHOLDER,
-} from "app/Scenes/HomeView/Sections/HomeViewSectionNavigationPills"
+import { HomeViewSectionNavigationPills } from "app/Scenes/HomeView/Sections/HomeViewSectionNavigationPills"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { RNSVGGroup } from "react-native-svg"
 import { graphql } from "react-relay"
 
 describe("HomeViewSectionNavigationPills", () => {
@@ -34,14 +32,50 @@ describe("HomeViewSectionNavigationPills", () => {
   it("renders the section pills properly", async () => {
     renderWithRelay({
       HomeViewSectionNavigationPills: () => ({
-        navigationPills: NAVIGATION_LINKS_PLACEHOLDER,
+        navigationPills: [
+          {
+            icon: "FollowArtistIcon",
+            title: "Follows",
+            href: "/favorites",
+            ownerType: "follows",
+          },
+          {
+            icon: "NewAndUnsupportedIcon",
+            title: "A new feature",
+            href: "/new-feature",
+            ownerType: "new-feature",
+          },
+          {
+            icon: null,
+            title: "Icon-less feature",
+            href: "/iconless-feature",
+            ownerType: "iconless-feature",
+          },
+        ],
       }),
     })
 
-    NAVIGATION_LINKS_PLACEHOLDER.forEach((pill) => {
-      expect(screen.getByText(pill.title)).toBeOnTheScreen()
-    })
-    fireEvent.press(screen.getByText(NAVIGATION_LINKS_PLACEHOLDER[0].title))
-    expect(navigate).toHaveBeenCalledWith(NAVIGATION_LINKS_PLACEHOLDER[0].href)
+    let pill, icons
+
+    // supported icon
+    expect(screen.getByText("Follows")).toBeOnTheScreen()
+    pill = screen.getByTestId("pill-Follows")
+    icons = await pill.findAllByType(RNSVGGroup)
+    expect(icons).toHaveLength(1)
+
+    // unsupported icon
+    expect(screen.getByText("A new feature")).toBeOnTheScreen()
+    pill = screen.getByTestId("pill-A new feature")
+    icons = await pill.findAllByType(RNSVGGroup)
+    expect(icons).toHaveLength(0)
+
+    // missing icon
+    expect(screen.getByText("Icon-less feature")).toBeOnTheScreen()
+    pill = screen.getByTestId("pill-Icon-less feature")
+    icons = await pill.findAllByType(RNSVGGroup)
+    expect(icons).toHaveLength(0)
+
+    fireEvent.press(screen.getByText("Follows"))
+    expect(navigate).toHaveBeenCalledWith("/favorites")
   })
 })
