@@ -96,7 +96,7 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
     case "HomeViewSectionTasks":
       return <HomeViewSectionTasksQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionNavigationPills": {
-      if (enableNavigationPills && quickLinksExperimentEnabled && variant === "variant-a") {
+      if (enableNavigationPills && quickLinksExperimentEnabled && variant === "experiment") {
         return (
           <HomeViewSectionNavigationPillsQueryRenderer sectionID={section.internalID} {...rest} />
         )

@@ -40,7 +40,7 @@ export const experiments = {
     description: "Add quick links section to home view",
     fallbackEnabled: true,
     fallbackVariant: "control",
-    variantSuggestions: ["control", "variant-a"],
+    variantSuggestions: ["control", "experiment"],
   },
 } satisfies { [key: string]: ExperimentDescriptor }
 
