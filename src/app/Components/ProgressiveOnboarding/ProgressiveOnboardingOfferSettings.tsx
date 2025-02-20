@@ -2,6 +2,7 @@ import { Flex, Popover, Text } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 export const ProgressiveOnboardingOfferSettings: React.FC = ({ children }) => {
@@ -19,6 +20,12 @@ export const ProgressiveOnboardingOfferSettings: React.FC = ({ children }) => {
     !isDismissed("offer-settings").status &&
     !!isDismissed("signal-interest").status &&
     isFocused
+
+  const debouncedIsDisplayable = useDebouncedValue({
+    value: isDisplayable,
+    delay: 500,
+  })
+
   const { isActive, clearActivePopover } = useSetActivePopover(isDisplayable)
 
   const handleDismiss = () => {
@@ -28,7 +35,7 @@ export const ProgressiveOnboardingOfferSettings: React.FC = ({ children }) => {
 
   return (
     <Popover
-      visible={!!isDisplayable && isActive}
+      visible={!!debouncedIsDisplayable.debouncedValue && isActive}
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
       onCloseComplete={clearActivePopover}
