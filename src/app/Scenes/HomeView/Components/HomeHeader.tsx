@@ -1,10 +1,16 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Flex, Button } from "@artsy/palette-mobile"
+import { Box, Flex, Button, Text } from "@artsy/palette-mobile"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
 import { PaymentFailureBanner } from "app/Scenes/HomeView/Components/PaymentFailureBanner"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { checkForUpdateAsync, fetchUpdateAsync, reloadAsync } from "expo-updates"
+import {
+  checkForUpdateAsync,
+  fetchUpdateAsync,
+  reloadAsync,
+  channel,
+  runtimeVersion,
+} from "expo-updates"
 import { Suspense } from "react"
 import { Alert } from "react-native"
 import { ActivityIndicator } from "./ActivityIndicator"
@@ -19,11 +25,13 @@ export const HomeHeader: React.FC = () => {
     try {
       const update = await checkForUpdateAsync()
 
-      console.log("UPDATES: Available updates", update)
+      console.error("UPDATES: Full update object", JSON.stringify(update, null, 2))
+      console.error("UPDATES: Current channel", channel)
+      console.error("UPDATES: Runtime version", runtimeVersion)
 
       if (update.isAvailable) {
         const result = await fetchUpdateAsync()
-        console.log("UPDATES: Update result", result)
+        console.error("UPDATES: Update result", result)
         await reloadAsync()
       }
     } catch (error) {
@@ -51,7 +59,7 @@ export const HomeHeader: React.FC = () => {
         </Flex>
         <Box backgroundColor="purple">
           <Flex alignContent="center" justifyContent="center" alignItems="center" p={2}>
-            <Button onPress={() => onFetchUpdateAsync()}>Fetch Update</Button>
+            <Button onPress={() => onFetchUpdateAsync()}>Fetch Update New</Button>
           </Flex>
         </Box>
       </Flex>
