@@ -7,6 +7,7 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
+import { useRef, useState } from "react"
 import { FlatList } from "react-native-gesture-handler"
 import LinearGradient from "react-native-linear-gradient"
 import { SafeAreaView } from "react-native-safe-area-context"
@@ -37,6 +38,17 @@ const STEPS = [
 export const InfiniteDiscoveryOnboarding: React.FC<{}> = () => {
   const space = useSpace()
   const { width } = useScreenDimensions()
+  const flatlistRef = useRef<FlatList>(null)
+  const [index, setIndex] = useState(0)
+
+  const handleNext = () => {
+    const newIndex = index + 1
+
+    if (newIndex < STEPS.length) {
+      setIndex(newIndex)
+      flatlistRef.current?.scrollToIndex({ animated: true, index: newIndex })
+    }
+  }
 
   return (
     <Flex flex={1} backgroundColor="white100">
@@ -53,7 +65,9 @@ export const InfiniteDiscoveryOnboarding: React.FC<{}> = () => {
         />
         <SafeAreaView style={{ flex: 1, justifyContent: "flex-end", paddingHorizontal: space(2) }}>
           <FlatList
+            ref={flatlistRef}
             data={STEPS}
+            scrollEnabled={false}
             style={{ marginHorizontal: -space(2), flexGrow: 0 }}
             renderItem={({ item }) => (
               <Flex width={width} px={2} justifyContent="flex-end">
@@ -70,7 +84,9 @@ export const InfiniteDiscoveryOnboarding: React.FC<{}> = () => {
           <Spacer y={2} />
 
           <Flex alignItems="flex-end">
-            <Button variant="outline">Next</Button>
+            <Button variant="outline" onPress={handleNext}>
+              {index === STEPS.length - 1 ? "Done" : "Next"}
+            </Button>
           </Flex>
         </SafeAreaView>
       </Flex>
