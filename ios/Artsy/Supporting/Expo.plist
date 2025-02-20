@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-  <dict>
-    <key>EXUpdatesEnabled</key>
-    <true/>
-    <key>EXUpdatesCheckOnLaunch</key>
-    <string>NEVER</string>
-    <key>EXUpdatesLaunchWaitMs</key>
-    <integer>0</integer>
-    <key>EXUpdatesURL</key>
-    <string>https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668</string>
-    <key>EXUpdatesRuntimeVersion</key>
-    <string>file:fingerprint</string>
-    <key>EXUpdatesRequestHeaders</key>
-    <dict>
-      <key>expo-channel-name</key>
-      <string>canary</string>
-    </dict>
-  </dict>
+<dict>
+	<key>EXUpdatesEnabled</key>
+	<true/>
+	<key>EXUpdatesCheckOnLaunch</key>
+	<string>NEVER</string>
+	<key>EXUpdatesLaunchWaitMs</key>
+	<integer>0</integer>
+	<key>EXUpdatesURL</key>
+	<string>https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668</string>
+	<key>EXUpdatesRuntimeVersion</key>
+	<string>1.0.0</string>
+	<key>EXUpdatesRequestHeaders</key>
+	<dict>
+		<key>expo-channel-name</key>
+		<string>canary</string>
+	</dict>
+</dict>
 </plist>
