@@ -1,6 +1,6 @@
 import { useScreenDimensions } from "@artsy/palette-mobile"
 import { FC, useState } from "react"
-import { InteractionManager, ViewStyle } from "react-native"
+import { InteractionManager } from "react-native"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import Animated, {
   Easing,
@@ -19,64 +19,21 @@ const _cards = [
 ]
 
 export const Swiper: React.FC<{}> = () => {
-  const { width } = useScreenDimensions()
-  const dragged = useSharedValue<boolean>(false)
-  const offsetX = useSharedValue<number>(0)
-  const offsetY = useSharedValue<number>(0)
   const [cards, setCards] = useState(_cards)
   const [swipedCards, setSwipedCards] = useState<typeof _cards>([])
-
-  const topCard = cards[0]
+  // TODO: once swiped are virtualized change this
+  const activeIndex = cards.length - 1
 
   const handleCardSwipe = () => {
+    console.log("handleCardSwiper")
     InteractionManager.runAfterInteractions(() => {
-      setSwipedCards((cards) => [...cards, topCard])
-      setCards((cards) => cards.slice(1))
+      setSwipedCards((c) => [...c, cards[activeIndex]])
+      setCards((cards) => cards.slice(0, activeIndex))
     })
   }
 
-  const tap = Gesture.Pan()
-    .onStart(() => {
-      dragged.value = true
-    })
-    .onChange(({ translationX, translationY }) => {
-      offsetX.value = translationX
-      offsetY.value = translationY
-    })
-    .onEnd(({ translationX }) => {
-      dragged.value = false
-
-      // Swipe left
-      if (translationX < 0 && Math.abs(translationX) > SWIPE_THRESHOLD) {
-        if (!topCard) {
-          return
-        }
-
-        offsetX.value = withTiming(-width, { easing: Easing.cubic }, () => {
-          runOnJS(handleCardSwipe)()
-          // TOFIX: needs to be adjusted
-          // in general the idea of having
-          offsetX.value = withTiming(0)
-        })
-        offsetY.value = withTiming(0, { easing: Easing.cubic })
-
-        return
-      }
-
-      offsetX.value = withTiming(0, { easing: Easing.cubic })
-      offsetY.value = withTiming(0, { easing: Easing.cubic })
-    })
-
-  const topCardAnimatedStyles = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: offsetX.value },
-      { translateY: offsetY.value },
-      { scale: withTiming(dragged.value ? 1.1 : 1) },
-    ],
-  }))
-
   console.log("cards", cards)
-  console.log("topCard", topCard)
+  console.log("swipedCards", swipedCards)
 
   return (
     <>
@@ -96,52 +53,87 @@ export const Swiper: React.FC<{}> = () => {
         )
       })} */}
 
-      <GestureDetector gesture={tap}>
-        {!!topCard && (
+      {cards.map((c, i) => {
+        console.log("card", { isTopCard: activeIndex === i, i, c })
+        return (
           <AnimatedView
-            key={`card_${0}`}
-            style={[
-              topCardAnimatedStyles,
-              {
-                width: width,
-                height: width,
-                backgroundColor: topCard.color,
-                alignSelf: "center",
-                position: "absolute",
-                zIndex: cards.length,
-              },
-            ]}
+            onSwipeEnd={handleCardSwipe}
+            index={i}
+            isTopCard={activeIndex === i}
+            card={c}
+            key={`card_${i}`}
           />
-        )}
-      </GestureDetector>
-
-      {cards.length > 1 &&
-        cards.slice(1).map((c, i) => {
-          return (
-            <AnimatedView
-              key={`card_${i}`}
-              style={[
-                {
-                  width: width,
-                  height: width,
-                  backgroundColor: c.color,
-                  alignSelf: "center",
-                  position: "absolute",
-                  zIndex: cards.length - i - 1,
-                },
-              ]}
-            />
-          )
-        })}
+        )
+      })}
     </>
   )
 }
 
 interface AnimatedViewProps {
-  style: ViewStyle | ViewStyle[]
+  isTopCard: boolean
+  index: number
+  onSwipeEnd: () => void
+  card: (typeof _cards)[number]
 }
-const AnimatedView: FC<AnimatedViewProps> = ({ style }) => {
-  return <Animated.View style={style} />
+const AnimatedView: FC<AnimatedViewProps> = ({ card, index, isTopCard, onSwipeEnd }) => {
+  const { width } = useScreenDimensions()
+  const dragged = useSharedValue<boolean>(false)
+  const offsetX = useSharedValue<number>(0)
+  const offsetY = useSharedValue<number>(0)
+
+  const tap = Gesture.Pan()
+    .onStart(() => {
+      dragged.value = true
+    })
+    .onChange(({ translationX, translationY }) => {
+      offsetX.value = translationX
+      offsetY.value = translationY
+    })
+    .onEnd(({ translationX }) => {
+      dragged.value = false
+
+      // Swipe left
+      if (translationX < 0 && Math.abs(translationX) > SWIPE_THRESHOLD) {
+        if (!isTopCard) {
+          return
+        }
+
+        offsetX.value = withTiming(-width, { easing: Easing.cubic }, () => {
+          runOnJS(onSwipeEnd)()
+        })
+        offsetY.value = withTiming(0, { easing: Easing.cubic })
+        return
+      }
+
+      offsetX.value = withTiming(0, { easing: Easing.cubic })
+      offsetY.value = withTiming(0, { easing: Easing.cubic })
+    })
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateX: offsetX.value },
+      { translateY: offsetY.value },
+      { scale: withTiming(dragged.value ? 1.1 : 1) },
+    ],
+  }))
+
+  return (
+    <GestureDetector gesture={tap}>
+      <Animated.View
+        style={[
+          animatedStyle,
+          {
+            width: width,
+            height: width,
+            backgroundColor: card.color,
+            alignSelf: "center",
+            position: "absolute",
+            zIndex: index,
+          },
+        ]}
+      />
+    </GestureDetector>
+  )
 }
 
 const SWIPE_THRESHOLD = 100
