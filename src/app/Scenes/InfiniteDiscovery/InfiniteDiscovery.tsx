@@ -13,6 +13,7 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
+import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -187,20 +188,21 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           />
         </Flex>
         <Spacer y={1} />
-        <FancySwiper
+        {/* <FancySwiper
           cards={artworkCards}
           topCardIndex={currentIndex}
           hideActionButtons
           onSwipeLeft={handleCardSwipedLeft}
           onWhiffRight={handleCardWhiffedRight}
-        />
+        /> */}
+        <Swiper />
 
-        {!!artworks.length && (
+        {/* {!!artworks.length && (
           <InfiniteDiscoveryBottomSheet
             artworkID={artworks[currentIndex].internalID}
             artistIDs={artworks[currentIndex].artists.map((data) => data?.internalID ?? "")}
           />
-        )}
+        )} */}
       </Screen.Body>
     </Screen>
   )

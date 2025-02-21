@@ -88,7 +88,7 @@ export const FancySwiperCard = memo(
 
       const translateX = swiperSwipedCard.x.interpolate({
         inputRange: [0, SWIPE_MAGNITUDE],
-        outputRange: [-screenWidth - 50, 0],
+        outputRange: [-1000, 0],
         extrapolate: "clamp",
       })
 
@@ -101,7 +101,7 @@ export const FancySwiperCard = memo(
       // }
     } else if (isSwipedCard) {
       swipedCardTransform = {
-        transform: [{ translateX: -screenWidth - 50 }, { translateY: 0 }],
+        transform: [{ translateX: -1000 }, { translateY: 0 }],
       }
     } else {
       // hide the rest of the cards
