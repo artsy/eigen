@@ -13,29 +13,6 @@ import { FlatList } from "react-native-gesture-handler"
 import LinearGradient from "react-native-linear-gradient"
 import { SafeAreaView } from "react-native-safe-area-context"
 
-const STEPS = [
-  {
-    key: "introduction",
-    title: (
-      <Text variant="sm-display" color="black60" mb={0.5}>
-        Welcome to Discover Daily
-      </Text>
-    ),
-    description: <Text variant="lg-display">A new way of browsing works on Artsy.</Text>,
-  },
-  {
-    key: "swipeArtworks",
-    description: <Text variant="lg-display">Swipe artworks to the left to see the next work</Text>,
-  },
-  {
-    key: "favouriteArtworks",
-    description: (
-      <Text variant="lg-display">
-        Press <HeartIcon height={24} width={24} /> when you like an artwork you see
-      </Text>
-    ),
-  },
-]
 export const InfiniteDiscoveryOnboarding: React.FC<{}> = () => {
   const [isVisible, setIsVisible] = useState(false)
 
@@ -128,3 +105,27 @@ export const InfiniteDiscoveryOnboarding: React.FC<{}> = () => {
     </Modal>
   )
 }
+
+const STEPS = [
+  {
+    key: "introduction",
+    title: (
+      <Text variant="sm-display" color="black60" mb={0.5}>
+        Welcome to Discover Daily
+      </Text>
+    ),
+    description: <Text variant="lg-display">A new way of browsing works on Artsy.</Text>,
+  },
+  {
+    key: "swipeArtworks",
+    description: <Text variant="lg-display">Swipe artworks to the left to see the next work</Text>,
+  },
+  {
+    key: "favouriteArtworks",
+    description: (
+      <Text variant="lg-display">
+        Press <HeartIcon height={24} width={24} /> when you like an artwork you see
+      </Text>
+    ),
+  },
+]
