@@ -1297,7 +1297,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: DarkModeSettings,
     options: {
       screenOptions: {
-        headerTitle: "Dark Mode Settings",
+        headerTitle: "Dark Mode",
       },
     },
   },
