@@ -58,7 +58,7 @@ export const MyProfileSettings: React.FC = () => {
           <Separator my={1} borderColor={separatorColor} />
 
           <MenuItem
-            title="Dark mode"
+            title="Dark Mode"
             onPress={() => {
               tracking.trackEvent(tracks.trackMenuTap("settings/dark-mode"))
               navigate("/settings/dark-mode")
