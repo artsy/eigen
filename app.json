@@ -6,7 +6,10 @@
   "isAndroidBeta": false,
   "expo": {
     "updates": {
-      "url": "https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668"
+      "url": "https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668",
+      "requestHeaders": {
+        "expo-channel-name": "canary"
+      }
     },
     "runtimeVersion": "1.0.0",
     "extra": {
