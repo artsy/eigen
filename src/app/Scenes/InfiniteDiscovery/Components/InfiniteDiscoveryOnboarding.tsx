@@ -7,7 +7,8 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import { Modal } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
 import LinearGradient from "react-native-linear-gradient"
 import { SafeAreaView } from "react-native-safe-area-context"
@@ -36,6 +37,23 @@ const STEPS = [
   },
 ]
 export const InfiniteDiscoveryOnboarding: React.FC<{}> = () => {
+  const [isVisible, setIsVisible] = useState(false)
+
+  const didInteractWithInfiniteDiscovery = true
+  // TODO: uncomment this when we are done with testing
+  // const discoveredArtworkIds = GlobalStore.useAppState(
+  //   (state) => state.infiniteDiscovery.discoveredArtworkIds
+  // )
+  // const didInteractWithInfiniteDiscovery = discoveredArtworkIds.length > 0
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!didInteractWithInfiniteDiscovery) {
+        setIsVisible(true)
+      }
+    }, 2000)
+  }, [didInteractWithInfiniteDiscovery])
+
   const space = useSpace()
   const { width } = useScreenDimensions()
   const flatlistRef = useRef<FlatList>(null)
@@ -47,63 +65,66 @@ export const InfiniteDiscoveryOnboarding: React.FC<{}> = () => {
     if (newIndex < STEPS.length) {
       setIndex(newIndex)
       flatlistRef.current?.scrollToIndex({ animated: true, index: newIndex })
+    } else {
+      setIsVisible(false)
     }
   }
 
   return (
-    <Flex flex={1} backgroundColor="white100">
-      <Flex flex={1}>
-        <LinearGradient
-          colors={["rgba(0, 0, 0, 0)", `rgba(0, 0, 0, 0.1)`]}
-          start={{ x: 0, y: 1 }}
-          end={{ x: 0, y: 0 }}
-          style={{
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-          }}
-        />
-        <SafeAreaView style={{ flex: 1, justifyContent: "flex-end" }}>
-          <Flex
-            flex={1}
-            width="100%"
-            backgroundColor="black15"
-            alignSelf="center"
-            justifyContent="center"
-            alignItems="center"
+    <Modal animationType="fade" visible={isVisible} transparent>
+      <Flex flex={1} backgroundColor="transparent">
+        <Flex flex={1}>
+          <LinearGradient
+            colors={["rgb(255, 255, 255)", `rgba(231, 231, 231, 0.9)`]}
+            start={{ x: 0, y: 1 }}
+            end={{ x: 0, y: 0 }}
+            style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+            }}
+          />
+          <SafeAreaView
+            style={{ flex: 1, justifyContent: "flex-end", backgroundColor: "transparent" }}
           >
-            <Text variant="lg-display" fontWeight="500" color="devpurple">
-              The animation goes here
-            </Text>
-          </Flex>
-          <Flex justifyContent="flex-end" px={2}>
-            <FlatList
-              ref={flatlistRef}
-              data={STEPS}
-              scrollEnabled={false}
-              style={{ marginHorizontal: -space(2), flexGrow: 0 }}
-              renderItem={({ item }) => (
-                <Flex width={width} px={2} justifyContent="flex-end">
-                  {item.title}
-                  {item.description}
-                </Flex>
-              )}
-              keyExtractor={(item) => item.key}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              pagingEnabled
-            />
+            <Flex
+              flex={1}
+              width="100%"
+              backgroundColor="black15"
+              alignSelf="center"
+              justifyContent="center"
+              alignItems="center"
+              opacity={0.7}
+            ></Flex>
+            <Flex justifyContent="flex-end" px={2}>
+              <FlatList
+                ref={flatlistRef}
+                data={STEPS}
+                scrollEnabled={false}
+                style={{ marginHorizontal: -space(2), flexGrow: 0 }}
+                renderItem={({ item }) => (
+                  <Flex width={width} px={2} justifyContent="flex-end">
+                    {item.title}
+                    {item.description}
+                  </Flex>
+                )}
+                keyExtractor={(item) => item.key}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                pagingEnabled
+              />
 
-            <Spacer y={2} />
+              <Spacer y={2} />
 
-            <Flex alignItems="flex-end">
-              <Button variant="outline" onPress={handleNext}>
-                {index === STEPS.length - 1 ? "Done" : "Next"}
-              </Button>
+              <Flex alignItems="flex-end">
+                <Button variant="outline" onPress={handleNext}>
+                  {index === STEPS.length - 1 ? "Done" : "Next"}
+                </Button>
+              </Flex>
             </Flex>
-          </Flex>
-        </SafeAreaView>
+          </SafeAreaView>
+        </Flex>
       </Flex>
-    </Flex>
+    </Modal>
   )
 }
