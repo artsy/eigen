@@ -1200,7 +1200,7 @@ describe("App version Versions.AddInfiniteDiscoveryModel", () => {
         toVersion: migrationToTest,
       }) as any
 
-      expect(migratedState.devicePrefs.selectedTheme).toEqual("system")
+      expect(migratedState.devicePrefs.darkModeOption).toEqual("system")
       expect(migratedState.devicePrefs.usingSystemColorScheme).toEqual(undefined)
       expect(migratedState.devicePrefs.forcedColorScheme).toEqual(undefined)
     })

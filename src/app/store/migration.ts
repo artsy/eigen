@@ -360,7 +360,7 @@ export const artsyAppMigrations: Migrations = {
     delete state.requestedPriceEstimates
   },
   [Versions.RefactorDarkModeValues]: (state) => {
-    state.devicePrefs.selectedTheme = "system"
+    state.devicePrefs.darkModeOption = "system"
     delete state.devicePrefs.usingSystemColorScheme
     delete state.devicePrefs.forcedColorScheme
   },
