@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Flex, Button } from "@artsy/palette-mobile"
+import { Box, Flex, Text } from "@artsy/palette-mobile"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
 import { PaymentFailureBanner } from "app/Scenes/HomeView/Components/PaymentFailureBanner"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -64,7 +64,7 @@ export const HomeHeader: React.FC = () => {
         </Flex>
         <Box backgroundColor="purple">
           <Flex alignContent="center" justifyContent="center" alignItems="center" p={2}>
-            <Button onPress={() => onFetchUpdateAsync()}>Fetch Update</Button>
+            <Text>If you can see this it worked!</Text>
           </Flex>
         </Box>
       </Flex>
