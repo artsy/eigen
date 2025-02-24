@@ -38,7 +38,7 @@ export interface SectionSharedProps extends FlexProps {
 export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
   const enableNavigationPills = useFeatureFlag("AREnableHomeViewQuickLinks")
   const { enabled: quickLinksExperimentEnabled, variant } = useExperimentVariant(
-    "onyx_quick-links-experiment"
+    "onyx_quick-links-on-homeview-experiment"
   )
 
   if (!section.internalID) {
