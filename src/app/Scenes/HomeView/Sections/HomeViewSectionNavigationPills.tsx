@@ -47,7 +47,7 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
   const section = useFragment(sectionFragment, sectionProp)
   const tracking = useHomeViewTracking()
   const space = useSpace()
-  const { trackExperiment } = useExperimentVariant("onyx_quick-links-experiment")
+  const { trackExperiment } = useExperimentVariant("onyx_quick-links-on-homeview-experiment")
 
   useEffect(() => {
     trackExperiment()

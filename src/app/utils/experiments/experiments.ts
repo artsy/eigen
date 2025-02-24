@@ -36,7 +36,7 @@ export const experiments = {
     variantSuggestions: ["control", "variant-b", "variant-c"],
     payloadSuggestions: ['{"forceDots": "true"}', '{"forceDots": "false"}'],
   },
-  "onyx_quick-links-experiment": {
+  "onyx_quick-links-on-homeview-experiment": {
     description: "Add quick links section to home view",
     fallbackEnabled: true,
     fallbackVariant: "control",
