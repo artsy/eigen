@@ -5,7 +5,14 @@
   "version": "8.65.0",
   "isAndroidBeta": false,
   "expo": {
+    "name": "Eigen",
+    "slug": "eigen",
+    "ios": {
+      "bundleIdentifier": "net.artsy.artsy"
+    },
     "updates": {
+      "enabled": true,
+      "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668",
       "requestHeaders": {
         "expo-channel-name": "canary"
@@ -17,7 +24,6 @@
         "projectId": "39b092dc-effa-4d59-a530-85107bdfd668"
       }
     },
-    "android": {},
-    "ios": {}
+    "android": {}
   }
 }
