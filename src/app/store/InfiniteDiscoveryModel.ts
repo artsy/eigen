@@ -1,5 +1,7 @@
 import { Action, action } from "easy-peasy"
 
+const MAX_DISCOVERED_ARTWORKS = 2000
+
 export interface InfiniteDiscoveryModel {
   discoveredArtworkIds: string[]
   savedArtworksCount: number
@@ -15,6 +17,10 @@ export const getInfiniteDiscoveryModel = (): InfiniteDiscoveryModel => ({
   addDisoveredArtworkId: action((state, artworkId) => {
     if (!state.discoveredArtworkIds.includes(artworkId)) {
       state.discoveredArtworkIds.push(artworkId)
+
+      if (state.discoveredArtworkIds.length > MAX_DISCOVERED_ARTWORKS) {
+        state.discoveredArtworkIds.shift()
+      }
     }
   }),
   incrementSavedArtworksCount: action((state) => {
