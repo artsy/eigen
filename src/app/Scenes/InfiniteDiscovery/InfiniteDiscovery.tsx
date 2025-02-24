@@ -8,11 +8,13 @@ import {
   Spinner,
   Touchable,
 } from "@artsy/palette-mobile"
+import { captureMessage } from "@sentry/react-native"
 import { FancySwiper, FancySwiperArtworkCard } from "app/Components/FancySwiper/FancySwiper"
 import { useToast } from "app/Components/Toast/toastHook"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
+import { useCreateUserSeenArtwork } from "app/Scenes/InfiniteDiscovery/mutations/useCreateUserSeenArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -41,6 +43,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const REFETCH_BUFFER = 3
   const toast = useToast()
   const { trackEvent } = useTracking()
+  const [commitMutation] = useCreateUserSeenArtwork()
 
   const { addDisoveredArtworkId } = GlobalStore.actions.infiniteDiscovery
 
@@ -61,6 +64,23 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
    */
   useEffect(() => {
     const newArtworks = extractNodes(data.discoverArtworks)
+
+    if (index === 0) {
+      commitMutation({
+        variables: {
+          input: {
+            artworkId: newArtworks[index].internalID,
+          },
+        },
+        onError: (error) => {
+          if (__DEV__) {
+            console.error(error)
+          } else {
+            captureMessage(`useCreateUserSeenArtwork ${error?.message}`)
+          }
+        },
+      })
+    }
 
     setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
   }, [data, extractNodes, setArtworks])
@@ -109,6 +129,21 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           context_screen_owner_id: artworks[newMaxIndexReached].internalID,
           context_screen_owner_slug: artworks[newMaxIndexReached].slug,
           context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+        })
+
+        commitMutation({
+          variables: {
+            input: {
+              artworkId: artworks[newMaxIndexReached].internalID,
+            },
+          },
+          onError: (error) => {
+            if (__DEV__) {
+              console.error(error)
+            } else {
+              captureMessage(`useCreateUserSeenArtwork ${error?.message}`)
+            }
+          },
         })
       }
       setMaxIndexReached(newMaxIndexReached)
