@@ -4117,8 +4117,14 @@ type BidderPositionSuggestedNextBid {
 scalar BigInt
 
 input BulkUpdateArtworksMetadataInput {
+  # The category (medium type) to be assigned
+  category: String
+
   # The partner location ID to assign
   location_id: String
+
+  # The price for the artworks
+  price_listed: Float
 }
 
 type BulkUpdateArtworksMetadataMutationFailure {
