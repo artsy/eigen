@@ -3,22 +3,7 @@ set -euxo pipefail
 
 source ./scripts/ci/ci-setup-export-vars
 
-# Check if there is a build in progress
-echo "Checking if there is a build in progress..."
-build_status=$(curl "https://circleci.com/api/v1.1/project/github/artsy/eigen/tree/beta-ios?filter=running&limit=1&shallow=true" -s -H 'Cache-Control: no-cache' | jq -r '.[0].status')
+./scripts/deploys/check_version_synced
+./scripts/deploys/check_build_status ios
 
-# Check if the build status is "running"
-if [ "$build_status" = "running" ]; then
-    echo "Another iOS Build is running"
-    read -p "There is a build currently running? Are you sure you want to overwrite it? (y/n) " -n 1 -r
-    if [[ $REPLY =~ ^[Yy]$ ]]
-    then
-      echo "Proceeding with creating the beta..."
-      git push origin "$LOCAL_BRANCH:beta-ios" -f --no-verify
-    else
-      echo "Aborting..."
-    fi
-else
-    echo "No other iOS build running. Proceeding with creating the beta..."
-    git push origin "$LOCAL_BRANCH:beta-ios" -f --no-verify
-fi
+git push origin "$LOCAL_BRANCH:beta-ios" -f --no-verify

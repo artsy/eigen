@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+# Function to extract version from app.json
+get_version() {
+    jq -r '.version' "$1"
+}
+
+# Check version in local branch
+LOCAL_VERSION=$(get_version "./app.json")
+echo "Local app.json version: $LOCAL_VERSION"
+
+# Fetch the latest main branch without checking it out
+git fetch origin main
+
+git show origin/main:app.json > /tmp/main_app.json
+MAIN_VERSION=$(get_version "/tmp/main_app.json")
+echo "Main branch app.json version: $MAIN_VERSION"
+
+# Compare versions and exit if they do not match
+if [ "$LOCAL_VERSION" != "$MAIN_VERSION" ]; then
+    echo "Version mismatch detected! Local version: $LOCAL_VERSION, Main version: $MAIN_VERSION."
+    echo "Please update your local app.json version to match the main branch before deploying."
+    exit 1
+fi
+
+echo "Versions match. Proceeding with deployment."
