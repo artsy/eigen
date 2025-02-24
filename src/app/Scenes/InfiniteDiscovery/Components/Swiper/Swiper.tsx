@@ -4,6 +4,8 @@ import { View, ViewStyle } from "react-native"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import Animated, {
   Easing,
+  Extrapolation,
+  interpolate,
   SharedValue,
   useAnimatedStyle,
   useSharedValue,
@@ -72,8 +74,6 @@ export const Swiper: React.FC<{}> = () => {
       swipedCardY.value = withTiming(0, { easing: Easing.cubic })
     })
 
-  console.log("cards", _cards)
-
   return (
     <GestureDetector gesture={pan}>
       <View>
@@ -121,27 +121,61 @@ const AnimatedView: FC<AnimatedViewProps> = ({
   const { width } = useScreenDimensions()
 
   const topCardStyle = useAnimatedStyle(() => {
-    if (activeIndex.value !== index) {
-      return {}
+    if (activeIndex.value === index) {
+      return {
+        transform: [
+          { translateX: Math.min(0, activeCardX.value) },
+          { translateY: activeCardY.value },
+        ],
+        shadowOffset: { width: 0, height: 0 },
+        shadowRadius: 12,
+        shadowOpacity: interpolate(activeCardX.value, [0, -width], [0, 0.13], Extrapolation.CLAMP),
+        elevation: interpolate(activeCardX.value, [0, -width], [0, 8], Extrapolation.CLAMP),
+      }
     }
 
-    return {
-      transform: [
-        { translateX: Math.min(0, activeCardX.value) },
-        { translateY: activeCardY.value },
-      ],
-    }
+    // reanimated doesn't reset shadow styles when returning {}
+    return emptyShadowStyle
   })
 
-  const swipedStyle = useAnimatedStyle(() => {
+  const secondCardStyle = useAnimatedStyle(() => {
+    if (index === activeIndex.value - 1) {
+      return {
+        transform: [
+          { scale: interpolate(activeCardX.value, [0, -width], [0.8, 1], Extrapolation.CLAMP) },
+        ],
+        opacity: interpolate(activeCardX.value, [0, -width], [0.3, 1], Extrapolation.CLAMP),
+      }
+    }
+
+    return {}
+  })
+
+  const remainingCardsInDeck = useAnimatedStyle(() => {
+    if (index <= activeIndex.value - 2) {
+      return { opacity: 0 }
+    }
+    return {}
+  })
+
+  const lastSwipedCardStyle = useAnimatedStyle(() => {
+    // if the card is not swiped, no extra style
     if (!swipedIndexes.value.includes(index)) {
       return {}
     }
 
+    // if the card is the last swiped, respect the pan XY value
     if (index === activeIndex.value + 1) {
-      return { transform: [{ translateX: swipedCardX.value }, { translateY: swipedCardY.value }] }
+      return {
+        transform: [{ translateX: swipedCardX.value }, { translateY: swipedCardY.value }],
+        shadowOffset: { width: 0, height: 0 },
+        shadowRadius: 12,
+        shadowOpacity: interpolate(swipedCardX.value, [-width, 0], [0.13, 0], Extrapolation.CLAMP),
+        elevation: interpolate(swipedCardX.value, [-width, 0], [8, 0], Extrapolation.CLAMP),
+      }
     }
 
+    // if the cards is swiped but not the last, keep it away
     return { transform: [{ translateX: -width }, { translateY: 0 }] }
   })
 
@@ -149,7 +183,9 @@ const AnimatedView: FC<AnimatedViewProps> = ({
     <Animated.View
       style={[
         topCardStyle,
-        swipedStyle,
+        secondCardStyle,
+        remainingCardsInDeck,
+        lastSwipedCardStyle,
         {
           width: width,
           height: width,
@@ -166,3 +202,9 @@ const AnimatedView: FC<AnimatedViewProps> = ({
 }
 
 const SWIPE_THRESHOLD = 100
+const emptyShadowStyle = {
+  shadowOffset: { width: 0, height: 0 },
+  shadowRadius: 0,
+  shadowOpacity: 0,
+  elevation: 0,
+}
