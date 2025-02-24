@@ -1,6 +1,6 @@
 import { Action, action } from "easy-peasy"
 
-const MAX_DISCOVERED_ARTWORKS = 1000
+const MAX_DISCOVERED_ARTWORKS = 2000
 
 export interface InfiniteDiscoveryModel {
   discoveredArtworkIds: string[]
