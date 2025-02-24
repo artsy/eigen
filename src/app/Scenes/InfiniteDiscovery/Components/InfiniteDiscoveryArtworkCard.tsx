@@ -62,7 +62,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       return null
     }
 
-    const MAX_ARTWORK_HEIGHT = screenHeight * 0.6
+    const MAX_ARTWORK_HEIGHT = screenHeight * 0.55
 
     const src = artwork.images?.[0]?.url
     const width = artwork.images?.[0]?.width ?? 0

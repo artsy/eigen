@@ -75,7 +75,7 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
 
 const { height } = Dimensions.get("screen")
 
-const SNAP_POINTS = [height * 0.1, height * 0.88]
+const SNAP_POINTS = [height * 0.15, height * 0.88]
 
 export const aboutTheWorkQuery = graphql`
   query InfiniteDiscoveryBottomSheetTabsQuery($id: String!, $artistIDs: [String!]!) {
