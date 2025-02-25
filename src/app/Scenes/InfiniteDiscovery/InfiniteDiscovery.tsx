@@ -9,11 +9,10 @@ import {
   Touchable,
 } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
-import { FancySwiper, FancySwiperArtworkCard } from "app/Components/FancySwiper/FancySwiper"
+import { FancySwiperArtworkCard } from "app/Components/FancySwiper/FancySwiper"
 import { useToast } from "app/Components/Toast/toastHook"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
-import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { useCreateUserSeenArtwork } from "app/Scenes/InfiniteDiscovery/mutations/useCreateUserSeenArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -101,31 +100,20 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 
   const handleBackPressed = () => {
     if (currentIndex > 0) {
-      trackEvent({
-        action: ActionType.tappedRewind,
-        context_module: ContextModule.infiniteDiscovery,
-        context_screen_owner_id: artworks[currentIndex - 1]?.internalID,
-        context_screen_owner_slug: artworks[currentIndex - 1]?.slug,
-        context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
-      })
+      const artworkToRewind = artworks[currentIndex - 1]
+      trackEvent(tracks.tappedRewind(artworkToRewind.internalID, artworkToRewind.slug))
       setCurrentIndex((prev) => prev - 1)
     }
   }
 
   const handleCardSwipedLeft = useCallback(() => {
     if (currentIndex < artworks.length - 1) {
-      const dismissedArtworkId = artworks[currentIndex].internalID
+      const dismissedArtwork = artworks[currentIndex]
 
       setCurrentIndex((prev) => prev + 1)
-      addDisoveredArtworkId(dismissedArtworkId)
+      addDisoveredArtworkId(dismissedArtwork.internalID)
 
-      trackEvent({
-        action: ActionType.swipedInfiniteDiscoveryArtwork,
-        context_module: ContextModule.infiniteDiscovery,
-        context_screen_owner_id: artworks[currentIndex].internalID,
-        context_screen_owner_slug: artworks[currentIndex].slug,
-        context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
-      })
+      trackEvent(tracks.swipedArtwork(dismissedArtwork.internalID, dismissedArtwork.slug))
 
       // because when swiping, we iterate over the array of artworks, and we want to track only
       // unique artworks, we need to track the max index reached
@@ -152,6 +140,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
             }
           },
         })
+        const newArtwork = artworks[newMaxIndexReached]
+        trackEvent(tracks.swipedToNewArtwork(newArtwork.internalID, newArtwork.slug))
       }
       setMaxIndexReached(newMaxIndexReached)
     }
@@ -175,12 +165,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         "bottom",
         {
           onPress: () => {
-            trackEvent({
-              action: ActionType.tappedToast,
-              context_module: ContextModule.infiniteDiscovery,
-              context_screen_owner_type: OwnerType.home,
-              subject: "Tap here to navigate to your Saves area in your profile.",
-            })
+            trackEvent(tracks.tappedSummary())
             navigate("/favorites/saves")
           },
           backgroundColor: "green100",
@@ -189,10 +174,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       )
     }
 
-    trackEvent({
-      action: ActionType.tappedClose,
-      context_module: ContextModule.infiniteDiscovery,
-    })
+    trackEvent(tracks.tappedExit())
 
     goBack()
   }
@@ -309,3 +291,36 @@ export const infiniteDiscoveryQuery = graphql`
     }
   }
 `
+
+const tracks = {
+  swipedArtwork: (artworkId: string, artworkSlug: string) => ({
+    action: ActionType.swipedInfiniteDiscoveryArtwork,
+    context_module: ContextModule.infiniteDiscovery,
+    context_screen_owner_id: artworkId,
+    context_screen_owner_slug: artworkSlug,
+    context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+  }),
+  swipedToNewArtwork: (artworkId: string, artworkSlug: string) => ({
+    action: ActionType.screen,
+    context_screen_owner_id: artworkId,
+    context_screen_owner_slug: artworkSlug,
+    context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+  }),
+  tappedExit: () => ({
+    action: ActionType.tappedClose,
+    context_module: ContextModule.infiniteDiscovery,
+  }),
+  tappedRewind: (artworkId: string, artworkSlug: string) => ({
+    action: ActionType.tappedRewind,
+    context_module: ContextModule.infiniteDiscovery,
+    context_screen_owner_id: artworkId,
+    context_screen_owner_slug: artworkSlug,
+    context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+  }),
+  tappedSummary: () => ({
+    action: ActionType.tappedToast,
+    context_module: ContextModule.infiniteDiscovery,
+    context_screen_owner_type: OwnerType.home,
+    subject: "Tap here to navigate to your Saves area in your profile.",
+  }),
+}
