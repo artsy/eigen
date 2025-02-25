@@ -64,7 +64,8 @@ export const HomeHeader: React.FC = () => {
         </Flex>
         <Box backgroundColor="purple">
           <Flex alignContent="center" justifyContent="center" alignItems="center" p={2}>
-            <Text>If you can see this it worked!</Text>
+            {/* <Button onPress={() => onFetchUpdateAsync()}>Fetch Update</Button> */}
+            <Text>Please just show me this text</Text>
           </Flex>
         </Box>
       </Flex>
