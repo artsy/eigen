@@ -64,12 +64,18 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
    */
   useEffect(() => {
     const newArtworks = extractNodes(data.discoverArtworks)
+    setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
+  }, [data, extractNodes, setArtworks])
 
-    if (index === 0) {
+  /**
+   * sends the first seen artwork to the server
+   */
+  useEffect(() => {
+    if (artworks.length > 0 && index === 0) {
       commitMutation({
         variables: {
           input: {
-            artworkId: newArtworks[index].internalID,
+            artworkId: artworks[index].internalID,
           },
         },
         onError: (error) => {
@@ -81,9 +87,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         },
       })
     }
-
-    setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
-  }, [data, extractNodes, setArtworks])
+  }, [artworks])
 
   const artworkCards: FancySwiperArtworkCard[] = useMemo(() => {
     return artworks.map((artwork) => ({

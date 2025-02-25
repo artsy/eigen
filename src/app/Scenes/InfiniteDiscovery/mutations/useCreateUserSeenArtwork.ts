@@ -38,10 +38,6 @@ const CreateUserSeenArtworkMutation = graphql`
       userSeenArtworkOrError {
         __typename
 
-        ... on CreateUserSeenArtworkSuccess {
-          artworkId
-        }
-
         ... on CreateUserSeenArtworkFailure {
           mutationError {
             message
