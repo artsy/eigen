@@ -21,7 +21,7 @@ const _cards = [
 ]
 
 export const Swiper: React.FC<{}> = () => {
-  const { width } = useScreenDimensions()
+  const width = useScreenWidthWithOffset()
   const dragged = useSharedValue(false)
   const activeCardX = useSharedValue(0)
   const activeCardY = useSharedValue(0)
@@ -35,8 +35,18 @@ export const Swiper: React.FC<{}> = () => {
       dragged.value = true
     })
     .onChange(({ translationX, translationY }) => {
-      activeCardX.value = translationX
-      activeCardY.value = translationY
+      if (translationX > 0) {
+        swipedCardX.value = interpolate(
+          translationX,
+          [0, width / 4],
+          [-width, 0],
+          Extrapolation.CLAMP
+        )
+        swipedCardY.value = translationY
+      } else {
+        activeCardX.value = translationX
+        activeCardY.value = translationY
+      }
     })
     .onEnd(({ translationX }) => {
       dragged.value = false
@@ -46,6 +56,7 @@ export const Swiper: React.FC<{}> = () => {
       if (!swipeOverThreshold) {
         activeCardX.value = withTiming(0)
         activeCardY.value = withTiming(0)
+        swipedCardX.value = withTiming(-width)
         return
       }
 
@@ -83,11 +94,9 @@ export const Swiper: React.FC<{}> = () => {
               index={i}
               card={c}
               activeCardX={activeCardX}
-              activeCardY={activeCardY}
               activeIndex={_activeIndex}
               swipedIndexes={swipedIndexes}
               swipedCardX={swipedCardX}
-              swipedCardY={swipedCardY}
               key={`card_${c.id}`}
             />
           )
@@ -100,9 +109,7 @@ export const Swiper: React.FC<{}> = () => {
 interface AnimatedViewProps {
   index: number
   activeCardX: SharedValue<number>
-  activeCardY: SharedValue<number>
   swipedCardX: SharedValue<number>
-  swipedCardY: SharedValue<number>
   activeIndex: SharedValue<number>
   swipedIndexes: SharedValue<number[]>
   card: (typeof _cards)[number]
@@ -111,26 +118,55 @@ interface AnimatedViewProps {
 const AnimatedView: FC<AnimatedViewProps> = ({
   card,
   activeCardX,
-  activeCardY,
   swipedCardX,
-  swipedCardY,
   activeIndex,
   index,
   swipedIndexes,
 }) => {
-  const { width } = useScreenDimensions()
+  const { width: screenWidth } = useScreenDimensions()
+  const width = useScreenWidthWithOffset()
+
+  const ARC_RADIUS = 80
+  const MAX_ROTATION = 8
+  const MAX_SHADOW_OPACITY = 0.13
+  const MAX_ELEVATION = 8
+  const MIN_SCALE = 0.8
+  const MIN_OPACITY = 0.3
 
   const topCardStyle = useAnimatedStyle(() => {
     if (activeIndex.value === index) {
       return {
         transform: [
           { translateX: Math.min(0, activeCardX.value) },
-          { translateY: activeCardY.value },
+          {
+            translateY:
+              -Math.sin(
+                interpolate(activeCardX.value, [0, -width], [0, Math.PI], Extrapolation.CLAMP)
+              ) * ARC_RADIUS,
+          },
+          {
+            rotate: `${interpolate(
+              activeCardX.value,
+              [0, -width],
+              [0, -MAX_ROTATION],
+              Extrapolation.CLAMP
+            )}deg`,
+          },
         ],
         shadowOffset: { width: 0, height: 0 },
         shadowRadius: 12,
-        shadowOpacity: interpolate(activeCardX.value, [0, -width], [0, 0.13], Extrapolation.CLAMP),
-        elevation: interpolate(activeCardX.value, [0, -width], [0, 8], Extrapolation.CLAMP),
+        shadowOpacity: interpolate(
+          activeCardX.value,
+          [0, -width],
+          [0, MAX_SHADOW_OPACITY],
+          Extrapolation.CLAMP
+        ),
+        elevation: interpolate(
+          activeCardX.value,
+          [0, -width],
+          [0, MAX_ELEVATION],
+          Extrapolation.CLAMP
+        ),
       }
     }
 
@@ -142,9 +178,11 @@ const AnimatedView: FC<AnimatedViewProps> = ({
     if (index === activeIndex.value - 1) {
       return {
         transform: [
-          { scale: interpolate(activeCardX.value, [0, -width], [0.8, 1], Extrapolation.CLAMP) },
+          {
+            scale: interpolate(activeCardX.value, [0, -width], [MIN_SCALE, 1], Extrapolation.CLAMP),
+          },
         ],
-        opacity: interpolate(activeCardX.value, [0, -width], [0.3, 1], Extrapolation.CLAMP),
+        opacity: interpolate(activeCardX.value, [0, -width], [MIN_OPACITY, 1], Extrapolation.CLAMP),
       }
     }
 
@@ -167,7 +205,23 @@ const AnimatedView: FC<AnimatedViewProps> = ({
     // if the card is the last swiped, respect the pan XY value
     if (index === activeIndex.value + 1) {
       return {
-        transform: [{ translateX: swipedCardX.value }, { translateY: swipedCardY.value }],
+        transform: [
+          { translateX: swipedCardX.value },
+          {
+            translateY:
+              -Math.sin(
+                interpolate(swipedCardX.value, [-width, 0], [Math.PI, 0], Extrapolation.CLAMP)
+              ) * ARC_RADIUS,
+          },
+          {
+            rotate: `${interpolate(
+              swipedCardX.value,
+              [-width, 0],
+              [-MAX_ROTATION, 0],
+              Extrapolation.CLAMP
+            )}deg`,
+          },
+        ],
         shadowOffset: { width: 0, height: 0 },
         shadowRadius: 12,
         shadowOpacity: interpolate(swipedCardX.value, [-width, 0], [0.13, 0], Extrapolation.CLAMP),
@@ -187,8 +241,8 @@ const AnimatedView: FC<AnimatedViewProps> = ({
         remainingCardsInDeck,
         lastSwipedCardStyle,
         {
-          width: width,
-          height: width,
+          width: screenWidth,
+          height: screenWidth,
           backgroundColor: card.color,
           alignSelf: "center",
           position: "absolute",
@@ -207,4 +261,9 @@ const emptyShadowStyle = {
   shadowRadius: 0,
   shadowOpacity: 0,
   elevation: 0,
+}
+
+const useScreenWidthWithOffset = () => {
+  const { width } = useScreenDimensions()
+  return width + 100
 }
