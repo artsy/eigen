@@ -295,6 +295,9 @@ const AutosuggestResultsContainer = createPaginationContainer(
                   artworks
                   auctionLots
                 }
+                coverArtwork {
+                  imageUrl
+                }
               }
             }
           }
