@@ -5,12 +5,10 @@
   "version": "8.66.0",
   "isAndroidBeta": false,
   "expo": {
-    "platforms": ["ios", "android"],
     "name": "Eigen",
     "slug": "eigen",
     "ios": {
-      "bundleIdentifier": "net.artsy.artsy",
-      "hermesEnabled": false
+      "bundleIdentifier": "net.artsy.artsy"
     },
     "updates": {
       "enabled": true,
@@ -26,8 +24,6 @@
         "projectId": "39b092dc-effa-4d59-a530-85107bdfd668"
       }
     },
-    "android": {
-      "hermesEnabled": false
-    }
+    "android": {}
   }
 }
