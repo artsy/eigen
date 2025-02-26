@@ -13,6 +13,7 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
+import { InfiniteDiscoveryOnboarding } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryOnboarding"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -236,7 +237,12 @@ export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
     loadQuery({ excludeArtworkIds: discoveredArtworksIds.concat(undiscoveredArtworks) })
   }
 
-  return <InfiniteDiscovery fetchMoreArtworks={fetchMoreArtworks} queryRef={queryRef} />
+  return (
+    <Flex flex={1}>
+      <InfiniteDiscoveryOnboarding />
+      <InfiniteDiscovery fetchMoreArtworks={fetchMoreArtworks} queryRef={queryRef} />
+    </Flex>
+  )
 }
 
 export const infiniteDiscoveryQuery = graphql`
