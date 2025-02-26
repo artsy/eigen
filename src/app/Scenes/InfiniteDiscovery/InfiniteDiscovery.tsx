@@ -43,6 +43,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const { trackEvent } = useTracking()
 
   const { addDisoveredArtworkId } = GlobalStore.actions.infiniteDiscovery
+  const [extraCards, setExtraCards] = useState<typeof _cards>(_cards)
 
   const savedArtworksCount = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.savedArtworksCount
@@ -113,6 +114,15 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     }
   }
 
+  const handleFetchMore = (index: number) => {
+    setTimeout(() => {
+      setExtraCards((prev) => [...getRandomCards(prev.length), ...prev])
+    }, 1000)
+  }
+
+  // 1st -> id: 5, index: 4
+  // 5th -> id: 1, index: 0
+
   const handleExitPressed = () => {
     if (savedArtworksCount > 0) {
       toast.show(
@@ -171,7 +181,12 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           onSwipeLeft={handleCardSwipedLeft}
           onWhiffRight={handleCardWhiffedRight}
         /> */}
-        <Swiper />
+        <Swiper
+          initialCards={extraCards}
+          // extraCards={extraCards}
+          onTrigger={handleFetchMore}
+          swipedIndexCallsOnTrigger={3}
+        />
 
         {/* {!!artworks.length && (
           <InfiniteDiscoveryBottomSheet
@@ -279,3 +294,22 @@ const tracks = {
     subject: "Tap here to navigate to your Saves area in your profile.",
   }),
 }
+
+const _cards = [
+  { color: "lightgreen", id: "5" },
+  { color: "yellow", id: "4" },
+  { color: "orange", id: "3" },
+  { color: "lightblue", id: "2" },
+  { color: "violet", id: "1" },
+]
+
+const getRandomCards = (lastId: number): typeof _cards => {
+  const numberOfCards = 5
+  const cards = [0, 0, 0, 0, 0].map((_, i) => ({
+    color: colors[Math.floor(Math.random() * 4)],
+    id: (lastId + numberOfCards - i).toString(),
+  }))
+
+  return cards
+}
+const colors = ["lightgreen", "yellow", "orange", "lightblue", "violet"]
