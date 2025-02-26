@@ -67,7 +67,7 @@ export const ExpoUpdatesOptions = () => {
       const update = await Updates.checkForUpdateAsync()
       if (update.isAvailable) {
         setLoadStatus("Update available, downloading...")
-        const result = await Updates.fetchUpdateAsync()
+        await Updates.fetchUpdateAsync()
         setLoadProgress(100)
         setLoadStatus("Update downloaded, restarting app...")
         await Updates.reloadAsync()

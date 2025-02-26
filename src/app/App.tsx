@@ -17,13 +17,6 @@ import { useHideSplashScreen } from "app/utils/useHideSplashScreen"
 import { useIdentifyUser } from "app/utils/useIdentifyUser"
 import { useSiftConfig } from "app/utils/useSiftConfig"
 import { useStripeConfig } from "app/utils/useStripeConfig"
-import {
-  isEmergencyLaunch,
-  isEmbeddedLaunch,
-  manifest,
-  runtimeVersion,
-  channel,
-} from "expo-updates"
 import { useEffect } from "react"
 import { NativeModules, UIManager, View } from "react-native"
 import { Settings } from "react-native-fbsdk-next"
@@ -70,12 +63,6 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 }
 
 const Main = () => {
-  console.error("Updates: RESTART: Is Emergency Launch:", isEmergencyLaunch)
-  console.error("Updates: RESTART: Is Embedded Launch:", isEmbeddedLaunch)
-  console.error("Updates: RESTART: Update Manifest id:", manifest.id)
-  console.error("Updates: RESTART: runtime version: ", runtimeVersion)
-  console.error("Updates: RESTART: Current channel:", channel)
-
   useRageShakeDevMenu()
   useEffect(() => {
     const oss = Keys.OSS
