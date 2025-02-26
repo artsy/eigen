@@ -154,12 +154,13 @@ export const HomeView: React.FC = memo(() => {
     <Screen safeArea={true}>
       <Screen.Body fullwidth>
         <Flex
-          backgroundColor="blue"
+          backgroundColor="red"
           alignContent="center"
           justifyContent="center"
           alignItems="center"
+          height={100}
         >
-          <Text color="white">EXPO UPDATES AFTER!</Text>
+          <Text color="white">EXPO UPDATES ONCE MORE!</Text>
         </Flex>
         <FlatList
           automaticallyAdjustKeyboardInsets
