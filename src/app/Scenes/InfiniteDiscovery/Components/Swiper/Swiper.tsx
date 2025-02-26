@@ -1,11 +1,12 @@
 import { Text, useScreenDimensions } from "@artsy/palette-mobile"
-import { FC } from "react"
+import { FC, useEffect, useState } from "react"
 import { View, ViewStyle } from "react-native"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import Animated, {
   Easing,
   Extrapolation,
   interpolate,
+  runOnJS,
   SharedValue,
   useAnimatedStyle,
   useSharedValue,
@@ -26,18 +27,47 @@ const _cards = [
 ]
 /**
  * TODOS
- * - add a prop to append more cards once we reach the 3rd
  * - organize files
+ * - to not render more than 2 swiped cards
  * - integrate with InfiniteDiscovery
+ * - when closing the screen, swiped cards are being dragged
+ * - remove gesture navigation
  */
-export const Swiper: React.FC<{ extraCards?: typeof _cards }> = ({
-  extraCards: _extraCards = [],
+
+type SwiperProps = {
+  initialCards: typeof _cards
+  extraCards?: typeof _cards
+} & (
+  | { onTrigger?: never; swipedIndexCallsOnTrigger?: never }
+  | { onTrigger: (activeIndex: number) => void; swipedIndexCallsOnTrigger: number }
+)
+
+export const Swiper: React.FC<SwiperProps> = ({
+  initialCards,
+  onTrigger,
+  swipedIndexCallsOnTrigger,
 }) => {
   const width = useScreenWidthWithOffset()
+  const [cards, setCards] = useState(initialCards)
+  const [numberExtraCardsAdded, setNumberExtraCardsAdded] = useState(0)
   const activeCardX = useSharedValue(0)
   const swipedCardX = useSharedValue(-width)
-  const _activeIndex = useSharedValue(_cards.length - 1)
-  const swipedIndexes = useSharedValue<number[]>([])
+  // TODO: remove underscore
+  const _activeIndex = useSharedValue(cards.length - 1)
+  const swipedIds = useSharedValue<string[]>([])
+
+  useEffect(() => {
+    if (cards.length < initialCards.length) {
+      setNumberExtraCardsAdded(initialCards.length - cards.length)
+      setCards(initialCards)
+    }
+  }, [initialCards.length])
+
+  useEffect(() => {
+    if (numberExtraCardsAdded !== 0) {
+      _activeIndex.value = _activeIndex.value + numberExtraCardsAdded
+    }
+  }, [cards.length, numberExtraCardsAdded])
 
   const pan = Gesture.Pan()
     .onChange(({ translationX }) => {
@@ -48,7 +78,7 @@ export const Swiper: React.FC<{ extraCards?: typeof _cards }> = ({
         activeCardX.value = translationX
       }
     })
-    .onEnd(({ translationX }) => {
+    .onFinalize(({ translationX }) => {
       const swipeOverThreshold = Math.abs(translationX) > SWIPE_THRESHOLD
 
       if (!swipeOverThreshold) {
@@ -58,28 +88,34 @@ export const Swiper: React.FC<{ extraCards?: typeof _cards }> = ({
       }
 
       // Swipe left
-      if (translationX < 0) {
+      const isSwipeLeft = translationX < 0
+      const isLastCard = _activeIndex.value === 0
+      if (isSwipeLeft && !isLastCard && _activeIndex.value === swipedIndexCallsOnTrigger) {
+        runOnJS(onTrigger)(_activeIndex.value - 1)
+      }
+      if (isSwipeLeft && !isLastCard) {
         activeCardX.value = withTiming(-width, { duration: 500, easing: Easing.linear }, () => {
-          const theLastCardWasSwiped = _activeIndex.value === 0
-          if (theLastCardWasSwiped) {
-            // if the last card was swiped, keep it as the active card and bring it back
-            activeCardX.value = withTiming(0, { easing: Easing.cubic })
-            return
-          }
-
-          swipedIndexes.value = [...swipedIndexes.value, _activeIndex.value]
+          // TODO: maybe fix this if errors
+          swipedIds.value = [...swipedIds.value, cards[_activeIndex.value].id]
           _activeIndex.value = _activeIndex.value - 1
           activeCardX.value = 0
+          return
         })
 
+        return
+      }
+      // when it's the last card drag it back to the deck nicely
+      if (isSwipeLeft && isLastCard) {
+        activeCardX.value = withTiming(0, { duration: 200, easing: Easing.cubic })
         return
       }
 
       // Swipe right then brings the card back to the deck
       activeCardX.value = 0
+      const hasSwipedCards = _activeIndex.value + 1 < cards.length
       swipedCardX.value = withTiming(0, { duration: 200, easing: Easing.linear }, () => {
-        if (_activeIndex.value + 1 < _cards.length) {
-          swipedIndexes.value = swipedIndexes.value.slice(0, -1)
+        if (hasSwipedCards) {
+          swipedIds.value = swipedIds.value.slice(0, -1)
           _activeIndex.value = _activeIndex.value + 1
         }
         swipedCardX.value = -width
@@ -89,14 +125,14 @@ export const Swiper: React.FC<{ extraCards?: typeof _cards }> = ({
   return (
     <GestureDetector gesture={pan}>
       <View>
-        {_cards.map((c, i) => {
+        {cards.map((c, i) => {
           return (
             <AnimatedView
               index={i}
               card={c}
               activeCardX={activeCardX}
               activeIndex={_activeIndex}
-              swipedIndexes={swipedIndexes}
+              swipedIds={swipedIds}
               swipedCardX={swipedCardX}
               key={`card_${c.id}`}
             />
@@ -112,7 +148,7 @@ interface AnimatedViewProps {
   activeCardX: SharedValue<number>
   swipedCardX: SharedValue<number>
   activeIndex: SharedValue<number>
-  swipedIndexes: SharedValue<number[]>
+  swipedIds: SharedValue<string[]>
   card: (typeof _cards)[number]
   style?: ViewStyle | ViewStyle[]
 }
@@ -122,11 +158,18 @@ const AnimatedView: FC<AnimatedViewProps> = ({
   swipedCardX,
   activeIndex,
   index,
-  swipedIndexes,
+  swipedIds,
 }) => {
   const { width: screenWidth } = useScreenDimensions()
   const width = useScreenWidthWithOffset()
-  // const [visible, setVisible] = useState(true)
+  const _index = useSharedValue(index)
+  const [visible, setVisible] = useState(true)
+
+  useEffect(() => {
+    if (index !== _index.value) {
+      _index.value = index
+    }
+  }, [index])
 
   const topCardStyle = useAnimatedStyle(() => {
     if (activeIndex.value === index) {
@@ -187,9 +230,10 @@ const AnimatedView: FC<AnimatedViewProps> = ({
   })
 
   const unswipedCardStyle = useAnimatedStyle(() => {
-    if (index <= activeIndex.value - 2 && !swipedIndexes.value.includes(index)) {
+    if (index <= activeIndex.value - 2 && !swipedIds.value.includes(card.id)) {
       return { opacity: 0 }
     }
+
     return {}
   })
 
@@ -230,7 +274,7 @@ const AnimatedView: FC<AnimatedViewProps> = ({
   })
 
   const swipedCardStyle = useAnimatedStyle(() => {
-    if (swipedIndexes.value.includes(index) && index !== activeIndex.value + 1) {
+    if (swipedIds.value.includes(card.id) && index !== activeIndex.value + 1) {
       return { transform: [{ translateX: -width }, { translateY: 0 }] }
     }
 
@@ -249,13 +293,13 @@ const AnimatedView: FC<AnimatedViewProps> = ({
   // do not render more than 2 swiped cards for performance reasons
   // useDerivedValue(() => {
   //   // do not render more than 2 swiped cards because of performance purposes
-  //   if (swipedIndexes.value.slice(0, -2).includes(index)) {
+  //   if (swipedIds.value.slice(0, -2).includes(index)) {
   //     runOnJS(toggleVisible)(false)
   //     return
   //   }
 
   //   runOnJS(toggleVisible)(true)
-  // }, [swipedIndexes])
+  // }, [swipedIds])
 
   // if (!visible) {
   //   return null
@@ -279,7 +323,8 @@ const AnimatedView: FC<AnimatedViewProps> = ({
         },
       ]}
     >
-      <Text>`Artwork ${card.id}`</Text>
+      <Text>Artwork {card.id}</Text>
+      <Text>Index {index}</Text>
     </Animated.View>
   )
 }
