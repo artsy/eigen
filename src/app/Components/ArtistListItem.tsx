@@ -171,7 +171,7 @@ const ArtistListItem: React.FC<Props> = ({
             mr={1}
             name={name}
             meta={meta}
-            imageUrl={image?.url ?? undefined}
+            imageUrl={artist.coverArtwork?.image?.url ?? image?.url ?? undefined}
             initials={initials ?? undefined}
             avatarSize={avatarSize}
             RightButton={RightButton}
@@ -247,10 +247,10 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
       nationality
       birthday
       deathday
-      # TOFIX: we must use coverArtwork#image here instead, this replacement is fixing
-      # an Artist#coverImage got replaced by this component data with wrong data
-      image {
-        url(version: "small")
+      coverArtwork {
+        image {
+          url(version: "small")
+        }
       }
     }
   `,
