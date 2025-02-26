@@ -20,7 +20,7 @@ import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { pluralize } from "app/utils/pluralize"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { ReactElement, useCallback, useEffect, useMemo, useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -90,11 +90,10 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     }
   }, [artworks])
 
-  const artworkCards: FancySwiperArtworkCard[] = useMemo(() => {
-    return artworks.map((artwork) => ({
-      content: <InfiniteDiscoveryArtworkCard artwork={artwork} key={artwork.internalID} />,
-      artworkId: artwork.internalID,
-    }))
+  const artworkCards: ReactElement[] = useMemo(() => {
+    return artworks.map((artwork) => (
+      <InfiniteDiscoveryArtworkCard artwork={artwork} key={artwork.internalID} />
+    ))
   }, [artworks])
 
   const unswipedCards: FancySwiperArtworkCard[] = artworkCards.slice(currentIndex)
@@ -159,14 +158,9 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     }
   }
 
-  const handleFetchMore = (index: number) => {
-    setTimeout(() => {
-      setExtraCards((prev) => [...getRandomCards(prev.length), ...prev])
-    }, 1000)
+  const handleFetchMore = () => {
+    // TODO: implement fetch more
   }
-
-  // 1st -> id: 5, index: 4
-  // 5th -> id: 1, index: 0
 
   const handleExitPressed = () => {
     if (savedArtworksCount > 0) {
@@ -226,12 +220,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           onSwipeLeft={handleCardSwipedLeft}
           onWhiffRight={handleCardWhiffedRight}
         /> */}
-        <Swiper
-          initialCards={extraCards}
-          // extraCards={extraCards}
-          onTrigger={handleFetchMore}
-          swipedIndexCallsOnTrigger={3}
-        />
+        <Swiper cards={artworkCards} onTrigger={handleFetchMore} swipedIndexCallsOnTrigger={3} />
 
         {/* {!!artworks.length && (
           <InfiniteDiscoveryBottomSheet
