@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box, Flex, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Button } from "@artsy/palette-mobile"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
 import { PaymentFailureBanner } from "app/Scenes/HomeView/Components/PaymentFailureBanner"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -11,7 +11,6 @@ import {
   channel,
   runtimeVersion,
   updateId,
-  manifest,
 } from "expo-updates"
 import { Suspense } from "react"
 import { Alert } from "react-native"
@@ -27,16 +26,16 @@ export const HomeHeader: React.FC = () => {
     try {
       const update = await checkForUpdateAsync()
 
-      console.error("UPDATES: Full update object", JSON.stringify(update, null, 2))
-      console.error("UPDATES: Current channel", channel)
-      console.error("UPDATES: Runtime version", runtimeVersion)
-
-      console.error("EXPO UPDATES: UpdateId:", updateId)
-      console.error("EXPO UPDATES: Manifest:", JSON.stringify(manifest, null, 2))
+      console.error("Updates: FETCH: Current channel", channel)
+      console.error("Updates: FETCH: Runtime version", runtimeVersion)
+      console.error("Updates: FETCH: update id", update.manifest?.id)
+      console.error("Updates: FETCH: UpdateId:", updateId)
+      console.error("Updates: FETCH: Update available:", update.isAvailable)
 
       if (update.isAvailable) {
         const result = await fetchUpdateAsync()
-        console.error("UPDATES: Update result", result)
+        console.error("Updates: FETCH: Update result", result.isNew)
+        console.error("Updates: FETCH: Update result manifest id", result.manifest?.id)
         await reloadAsync()
       }
     } catch (error) {
@@ -64,8 +63,7 @@ export const HomeHeader: React.FC = () => {
         </Flex>
         <Box backgroundColor="purple">
           <Flex alignContent="center" justifyContent="center" alignItems="center" p={2}>
-            {/* <Button onPress={() => onFetchUpdateAsync()}>Fetch Update</Button> */}
-            <Text>Please just show me this text</Text>
+            <Button onPress={() => onFetchUpdateAsync()}>Fetch Update</Button>
           </Flex>
         </Box>
       </Flex>
