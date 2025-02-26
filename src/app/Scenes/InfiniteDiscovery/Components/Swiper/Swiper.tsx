@@ -1,5 +1,5 @@
-import { Text, useScreenDimensions } from "@artsy/palette-mobile"
-import { FC, useEffect, useState } from "react"
+import { useScreenDimensions } from "@artsy/palette-mobile"
+import { FC, Key, ReactElement, useEffect, useState } from "react"
 import { View, ViewStyle } from "react-native"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import Animated, {
@@ -13,18 +13,6 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated"
 
-const _cards = [
-  { color: "green", id: "10" },
-  { color: "red", id: "9" },
-  { color: "blue", id: "8" },
-  { color: "black", id: "7" },
-  { color: "magenta", id: "6" },
-  { color: "lightgreen", id: "5" },
-  { color: "yellow", id: "4" },
-  { color: "orange", id: "3" },
-  { color: "lightblue", id: "2" },
-  { color: "violet", id: "1" },
-]
 /**
  * TODOS
  * - organize files
@@ -35,33 +23,32 @@ const _cards = [
  */
 
 type SwiperProps = {
-  initialCards: typeof _cards
-  extraCards?: typeof _cards
+  cards: ReactElement<{ key: Key }>[]
 } & (
   | { onTrigger?: never; swipedIndexCallsOnTrigger?: never }
   | { onTrigger: (activeIndex: number) => void; swipedIndexCallsOnTrigger: number }
 )
 
 export const Swiper: React.FC<SwiperProps> = ({
-  initialCards,
+  cards: _cards,
   onTrigger,
   swipedIndexCallsOnTrigger,
 }) => {
   const width = useScreenWidthWithOffset()
-  const [cards, setCards] = useState(initialCards)
+  const [cards, setCards] = useState(_cards)
   const [numberExtraCardsAdded, setNumberExtraCardsAdded] = useState(0)
   const activeCardX = useSharedValue(0)
   const swipedCardX = useSharedValue(-width)
   // TODO: remove underscore
   const _activeIndex = useSharedValue(cards.length - 1)
-  const swipedIds = useSharedValue<string[]>([])
+  const swipedKeys = useSharedValue<Key[]>([])
 
   useEffect(() => {
-    if (cards.length < initialCards.length) {
-      setNumberExtraCardsAdded(initialCards.length - cards.length)
-      setCards(initialCards)
+    if (cards.length < _cards.length) {
+      setNumberExtraCardsAdded(_cards.length - cards.length)
+      setCards(_cards)
     }
-  }, [initialCards.length])
+  }, [_cards.length])
 
   useEffect(() => {
     if (numberExtraCardsAdded !== 0) {
@@ -93,10 +80,12 @@ export const Swiper: React.FC<SwiperProps> = ({
       if (isSwipeLeft && !isLastCard && _activeIndex.value === swipedIndexCallsOnTrigger) {
         runOnJS(onTrigger)(_activeIndex.value - 1)
       }
-      if (isSwipeLeft && !isLastCard) {
+      const cardKey = cards[_activeIndex.value].key
+      if (isSwipeLeft && !isLastCard && cardKey) {
         activeCardX.value = withTiming(-width, { duration: 500, easing: Easing.linear }, () => {
           // TODO: maybe fix this if errors
-          swipedIds.value = [...swipedIds.value, cards[_activeIndex.value].id]
+
+          swipedKeys.value = [...swipedKeys.value, cardKey]
           _activeIndex.value = _activeIndex.value - 1
           activeCardX.value = 0
           return
@@ -115,7 +104,7 @@ export const Swiper: React.FC<SwiperProps> = ({
       const hasSwipedCards = _activeIndex.value + 1 < cards.length
       swipedCardX.value = withTiming(0, { duration: 200, easing: Easing.linear }, () => {
         if (hasSwipedCards) {
-          swipedIds.value = swipedIds.value.slice(0, -1)
+          swipedKeys.value = swipedKeys.value.slice(0, -1)
           _activeIndex.value = _activeIndex.value + 1
         }
         swipedCardX.value = -width
@@ -132,9 +121,9 @@ export const Swiper: React.FC<SwiperProps> = ({
               card={c}
               activeCardX={activeCardX}
               activeIndex={_activeIndex}
-              swipedIds={swipedIds}
+              swipedKeys={swipedKeys}
               swipedCardX={swipedCardX}
-              key={`card_${c.id}`}
+              key={`card_${c.key}`}
             />
           )
         })}
@@ -148,8 +137,8 @@ interface AnimatedViewProps {
   activeCardX: SharedValue<number>
   swipedCardX: SharedValue<number>
   activeIndex: SharedValue<number>
-  swipedIds: SharedValue<string[]>
-  card: (typeof _cards)[number]
+  swipedKeys: SharedValue<Key[]>
+  card: ReactElement<{ key: Key }>
   style?: ViewStyle | ViewStyle[]
 }
 const AnimatedView: FC<AnimatedViewProps> = ({
@@ -158,12 +147,11 @@ const AnimatedView: FC<AnimatedViewProps> = ({
   swipedCardX,
   activeIndex,
   index,
-  swipedIds,
+  swipedKeys,
 }) => {
   const { width: screenWidth } = useScreenDimensions()
   const width = useScreenWidthWithOffset()
   const _index = useSharedValue(index)
-  const [visible, setVisible] = useState(true)
 
   useEffect(() => {
     if (index !== _index.value) {
@@ -230,7 +218,7 @@ const AnimatedView: FC<AnimatedViewProps> = ({
   })
 
   const unswipedCardStyle = useAnimatedStyle(() => {
-    if (index <= activeIndex.value - 2 && !swipedIds.value.includes(card.id)) {
+    if (index <= activeIndex.value - 2 && !swipedKeys.value.includes(card.key as Key)) {
       return { opacity: 0 }
     }
 
@@ -274,7 +262,7 @@ const AnimatedView: FC<AnimatedViewProps> = ({
   })
 
   const swipedCardStyle = useAnimatedStyle(() => {
-    if (swipedIds.value.includes(card.id) && index !== activeIndex.value + 1) {
+    if (swipedKeys.value.includes(card.key as Key) && index !== activeIndex.value + 1) {
       return { transform: [{ translateX: -width }, { translateY: 0 }] }
     }
 
@@ -293,13 +281,13 @@ const AnimatedView: FC<AnimatedViewProps> = ({
   // do not render more than 2 swiped cards for performance reasons
   // useDerivedValue(() => {
   //   // do not render more than 2 swiped cards because of performance purposes
-  //   if (swipedIds.value.slice(0, -2).includes(index)) {
+  //   if (swipedKeys.value.slice(0, -2).includes(index)) {
   //     runOnJS(toggleVisible)(false)
   //     return
   //   }
 
   //   runOnJS(toggleVisible)(true)
-  // }, [swipedIds])
+  // }, [swipedKeys])
 
   // if (!visible) {
   //   return null
@@ -315,16 +303,13 @@ const AnimatedView: FC<AnimatedViewProps> = ({
         swipedCardStyle,
         {
           width: screenWidth,
-          height: screenWidth + 200,
-          backgroundColor: card.color,
           alignSelf: "center",
           position: "absolute",
           zIndex: index,
         },
       ]}
     >
-      <Text>Artwork {card.id}</Text>
-      <Text>Index {index}</Text>
+      {card}
     </Animated.View>
   )
 }
