@@ -54,6 +54,7 @@ import { CitySavedListQueryRenderer } from "app/Scenes/City/CitySavedList"
 import { CitySectionListQueryRenderer } from "app/Scenes/City/CitySectionList"
 import { CollectionScreen } from "app/Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
+import { CollectionsByCategoryCollectionRailQuery } from "app/Scenes/CollectionsByCategory/CollectionRail"
 import { CollectionsByCategory } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
 import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import { FairScreen, FairScreenQuery } from "app/Scenes/Fair/Fair"
@@ -610,6 +611,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [CollectionsByCategoryCollectionRailQuery],
   },
   {
     path: "/collection/:collectionID",

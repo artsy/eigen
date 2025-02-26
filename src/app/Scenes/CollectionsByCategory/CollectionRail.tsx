@@ -121,7 +121,7 @@ export const CollectionRailPlaceholder: FC<Partial<CollectionRailProps>> = ({ la
   )
 }
 
-const query = graphql`
+export const CollectionsByCategoryCollectionRailQuery = graphql`
   query CollectionRailCollectionsByCategoryQuery($slug: String!) {
     marketingCollection(slug: $slug) {
       ...CollectionRail_marketingCollection
@@ -141,7 +141,7 @@ export const CollectionRailWithSuspense = withSuspense<
 >({
   Component: ({ slug, lastElement }) => {
     const data = useLazyLoadQuery<CollectionRailCollectionsByCategoryQuery>(
-      query,
+      CollectionsByCategoryCollectionRailQuery,
       { slug },
       { fetchPolicy: "store-and-network" }
     )
