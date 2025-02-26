@@ -1,8 +1,12 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { SaleActiveBidItem_lotStanding$data } from "__generated__/SaleActiveBidItem_lotStanding.graphql"
-import { HighestBid, Outbid, ReserveNotMet } from "app/Scenes/MyBids/Components/BiddingStatuses"
+import {
+  HighestBid,
+  Outbid,
+  ReserveNotMet,
+  BiddingLiveNow,
+} from "app/Scenes/MyBids/Components/BiddingStatuses"
 import { LotFragmentContainer } from "app/Scenes/MyBids/Components/Lot"
-import { TimelySale } from "app/Scenes/MyBids/helpers/timely"
 import { navigate } from "app/system/navigation/navigate"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -12,22 +16,17 @@ interface SaleActiveBidItemProps {
 }
 
 export const SaleActiveBidItem: React.FC<SaleActiveBidItemProps> = ({ lotStanding }) => {
-  const timelySale = TimelySale.create(lotStanding?.sale!)
-  const isLAI = timelySale.isLiveBiddingNow()
-
-  const sellingPrice = lotStanding?.mostRecentBid?.maxBid?.display
-  const bidCount = lotStanding?.saleArtwork?.counts?.bidderPositions
-  const { saleArtwork } = lotStanding
-
+  const saleArtwork = lotStanding?.saleArtwork
   if (!saleArtwork) {
     return null
   }
 
+  const sellingPrice = lotStanding.mostRecentBid?.maxBid?.display
+  const bidCount = saleArtwork.counts?.bidderPositions
+
   return (
     <TouchableOpacity
-      onPress={() =>
-        lotStanding?.saleArtwork?.artwork?.href && navigate(lotStanding.saleArtwork.artwork.href)
-      }
+      onPress={() => saleArtwork.artwork?.href && navigate(saleArtwork.artwork.href)}
     >
       <Flex flexDirection="row" justifyContent="space-between">
         <LotFragmentContainer saleArtwork={saleArtwork} />
@@ -40,9 +39,10 @@ export const SaleActiveBidItem: React.FC<SaleActiveBidItemProps> = ({ lotStandin
             </Text>
           </Flex>
           <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
-            {!isLAI &&
-            lotStanding?.activeBid?.isWinning &&
-            lotStanding?.saleArtwork?.reserveStatus === "ReserveNotMet" ? (
+            {saleArtwork.sale?.isLiveOpen ? (
+              <BiddingLiveNow />
+            ) : lotStanding?.activeBid?.isWinning &&
+              saleArtwork.reserveStatus === "ReserveNotMet" ? (
               <ReserveNotMet />
             ) : lotStanding?.activeBid?.isWinning ? (
               <HighestBid />
@@ -68,6 +68,7 @@ export const SaleActiveBidItemContainer = createFragmentContainer(SaleActiveBidI
         }
       }
       saleArtwork {
+        ...Lot_saleArtwork
         reserveStatus
         counts {
           bidderPositions
@@ -78,10 +79,10 @@ export const SaleActiveBidItemContainer = createFragmentContainer(SaleActiveBidI
         artwork {
           href
         }
-        ...Lot_saleArtwork
-      }
-      sale {
-        liveStartAt
+        sale {
+          isLiveOpen
+          slug
+        }
       }
     }
   `,
