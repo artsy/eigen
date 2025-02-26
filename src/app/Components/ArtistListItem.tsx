@@ -80,7 +80,7 @@ const ArtistListItem: React.FC<Props> = ({
   theme = "light",
 }) => {
   const color = useColor()
-  const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
+  const { is_followed, initials, href, name, nationality, birthday, deathday } = artist
 
   const tracking = useTracking()
 
