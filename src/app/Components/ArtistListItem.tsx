@@ -171,7 +171,7 @@ const ArtistListItem: React.FC<Props> = ({
             mr={1}
             name={name}
             meta={meta}
-            imageUrl={artist.coverArtwork?.image?.url ?? image?.url ?? undefined}
+            imageUrl={artist.coverArtwork?.image?.url ?? artist.image?.url ?? undefined}
             initials={initials ?? undefined}
             avatarSize={avatarSize}
             RightButton={RightButton}
@@ -251,6 +251,9 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
         image {
           url(version: "small")
         }
+      }
+      image {
+        url(version: "small")
       }
     }
   `,
