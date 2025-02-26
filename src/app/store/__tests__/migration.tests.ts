@@ -1185,4 +1185,24 @@ describe("App version Versions.AddInfiniteDiscoveryModel", () => {
       expect(migratedState.requestedPriceEstimates).toEqual(undefined)
     })
   })
+
+  describe("App version Versions.RefactorDarkModeValues", () => {
+    it("update dark mode store values", () => {
+      const migrationToTest = Versions.RefactorDarkModeValues
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.devicePrefs.darkModeOption).toEqual("system")
+      expect(migratedState.devicePrefs.usingSystemColorScheme).toEqual(undefined)
+      expect(migratedState.devicePrefs.forcedColorScheme).toEqual(undefined)
+    })
+  })
 })

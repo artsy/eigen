@@ -309,7 +309,7 @@ const SelectModal: React.FC<{
               justifyContent="space-between"
               height={ROW_HEIGHT}
               alignItems="center"
-              backgroundColor={localValue === item.value ? "black5" : "white"}
+              backgroundColor={localValue === item.value ? "black5" : "white100"}
               flexGrow={0}
             >
               {props.renderItemLabel?.(item) ?? (

@@ -10,7 +10,7 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
-import React, { forwardRef, useImperativeHandle, useMemo, useState } from "react"
+import { forwardRef, useImperativeHandle, useMemo, useState } from "react"
 import { Modal, Platform, ScrollView } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { FullWindowOverlay } from "react-native-screens"
@@ -145,7 +145,6 @@ export const AutoHeightInfoModal: React.FC<{
       <SafeAreaView
         style={{
           paddingBottom: space(2),
-          paddingHorizontal: space(2),
         }}
       >
         <Flex maxHeight={MAX_CONTENT_HEIGHT}>

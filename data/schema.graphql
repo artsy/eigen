@@ -288,6 +288,7 @@ type Alert {
     geneID: String
     geneIDs: [String]
     height: String
+    includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
     includeUnpublished: Boolean
@@ -1656,6 +1657,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     geneID: String
     geneIDs: [String]
     height: String
+    includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
     includeUnpublished: Boolean
@@ -2138,6 +2140,7 @@ type ArtistSeries implements Node {
     geneID: String
     geneIDs: [String]
     height: String
+    includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
     includeUnpublished: Boolean
@@ -2298,6 +2301,41 @@ type ArtistsWithAlertCountsEdge {
   # The item at the end of the edge
   node: Artist
   totalAlertCount: Int
+}
+
+type ArtsyShippingOptInMutationFailure {
+  mutationError: GravityMutationError
+}
+
+input ArtsyShippingOptInMutationInput {
+  # Whether Artsy domestic shipping should be enabled
+  artsyShippingDomestic: Boolean
+
+  # Whether Artsy international shipping should be enabled
+  artsyShippingInternational: Boolean
+  clientMutationId: String
+
+  # ID of the partner
+  id: String!
+}
+
+type ArtsyShippingOptInMutationPayload {
+  ArtsyShippingOptInOrError: ArtsyShippingOptInMutationType
+  clientMutationId: String
+}
+
+type ArtsyShippingOptInMutationSuccess {
+  skippedPartnerArtworks: ArtsyShippingOptInResponse
+  updatedPartnerArtworks: ArtsyShippingOptInResponse
+}
+
+union ArtsyShippingOptInMutationType =
+    ArtsyShippingOptInMutationFailure
+  | ArtsyShippingOptInMutationSuccess
+
+type ArtsyShippingOptInResponse {
+  count: Int
+  ids: [String]
 }
 
 type Artwork implements Node & Searchable & Sellable {
@@ -2610,6 +2648,7 @@ type Artwork implements Node & Searchable & Sellable {
   pickupAvailable: Boolean
   price: String
   priceCurrency: String
+  priceDisplay: String
   priceIncludesTax: Boolean
   priceIncludesTaxDisplay: String
   priceListed: Money
@@ -2852,6 +2891,9 @@ union ArtworkFilterFacet = Gene | Tag
 union ArtworkHighlight = Article | Show
 
 type ArtworkImport implements Node {
+  # Columns to display for an import, will exist in a row's `transformedData`
+  columns: [String!]!
+  currency: String
   fileName: String!
 
   # A globally unique ID.
@@ -2859,28 +2901,54 @@ type ArtworkImport implements Node {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  rawDataMapping: JSON!
   rowsConnection(
     after: String
     before: String
+    blockersOnly: Boolean
     errorTypes: [String!]
     first: Int
     hasErrors: Boolean
     last: Int
   ): ArtworkImportRowConnection
+  state: String!
   unmatchedArtistNames: [String!]!
+}
+
+# A connection to a list of items.
+type ArtworkImportConnection {
+  # A list of edges.
+  edges: [ArtworkImportEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ArtworkImportEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: ArtworkImport
 }
 
 type ArtworkImportRow {
   artists: [Artist!]
   artwork: Artwork
-  errors: [ArtworkImportRowError!]
+  errors: [ArtworkImportRowError!]!
 
   # A globally unique ID.
   id: ID!
+  images: [ArtworkImportRowImage!]!
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  priceListed: Money
   rawData: JSON!
+  transformedData: JSON!
 }
 
 # A connection to a list of items.
@@ -2912,6 +2980,18 @@ type ArtworkImportRowError {
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   metadata: JSON
+}
+
+type ArtworkImportRowImage {
+  fileName: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  s3Bucket: String
+  s3Key: String
 }
 
 enum ArtworkImportSource {
@@ -3209,6 +3289,7 @@ union AssignArtworkImportArtistResponseOrError =
   | AssignArtworkImportArtistSuccess
 
 type AssignArtworkImportArtistSuccess {
+  artworkImport: ArtworkImport
   artworkImportID: String!
   updatedRowsCount: Int!
 }
@@ -4037,40 +4118,46 @@ type BidderPositionSuggestedNextBid {
 # exceed the size of a 32-bit integer, it's encoded as a string.
 scalar BigInt
 
-type BulkUpdatePartnerArtworksMutationFailure {
+input BulkUpdateArtworksMetadataInput {
+  # The category (medium type) to be assigned
+  category: String
+
+  # The partner location ID to assign
+  location_id: String
+
+  # The price for the artworks
+  price_listed: Float
+}
+
+type BulkUpdateArtworksMetadataMutationFailure {
   mutationError: GravityMutationError
 }
 
-input BulkUpdatePartnerArtworksMutationInput {
-  # Whether Artsy domestic shipping should be enabled
-  artsyShippingDomestic: Boolean
-
-  # Whether Artsy international shipping should be enabled
-  artsyShippingInternational: Boolean
+input BulkUpdateArtworksMetadataMutationInput {
   clientMutationId: String
 
   # ID of the partner
   id: String!
 
-  # The partner location ID to assign
-  location: String
+  # Metadata to be updated
+  metadata: BulkUpdateArtworksMetadataInput
 }
 
-type BulkUpdatePartnerArtworksMutationPayload {
-  bulkUpdatePartnerArtworksOrError: BulkUpdatePartnerArtworksMutationType
+type BulkUpdateArtworksMetadataMutationPayload {
+  bulkUpdateArtworksMetadataOrError: BulkUpdateArtworksMetadataMutationType
   clientMutationId: String
 }
 
-type BulkUpdatePartnerArtworksMutationSuccess {
-  skippedPartnerArtworks: BulkUpdatePartnerArtworksResponse
-  updatedPartnerArtworks: BulkUpdatePartnerArtworksResponse
+type BulkUpdateArtworksMetadataMutationSuccess {
+  skippedPartnerArtworks: BulkUpdateArtworksMetadataResponse
+  updatedPartnerArtworks: BulkUpdateArtworksMetadataResponse
 }
 
-union BulkUpdatePartnerArtworksMutationType =
-    BulkUpdatePartnerArtworksMutationFailure
-  | BulkUpdatePartnerArtworksMutationSuccess
+union BulkUpdateArtworksMetadataMutationType =
+    BulkUpdateArtworksMetadataMutationFailure
+  | BulkUpdateArtworksMetadataMutationSuccess
 
-type BulkUpdatePartnerArtworksResponse {
+type BulkUpdateArtworksMetadataResponse {
   count: Int
   ids: [String]
 }
@@ -8100,6 +8187,7 @@ union CreateArtworkImportArtworksResponseOrError =
   | CreateArtworkImportArtworksSuccess
 
 type CreateArtworkImportArtworksSuccess {
+  artworkImport: ArtworkImport
   artworkImportID: String!
   created: Int!
   errors: Int!
@@ -8111,6 +8199,7 @@ type CreateArtworkImportFailure {
 
 input CreateArtworkImportInput {
   clientMutationId: String
+  fileName: String
   partnerID: String!
   s3Bucket: String!
   s3Key: String!
@@ -8698,6 +8787,30 @@ union CreateUserSaleProfileResponseOrError =
 type CreateUserSaleProfileSuccess {
   userSaleProfile: UserSaleProfile
 }
+
+type CreateUserSeenArtworkFailure {
+  mutationError: GravityMutationError
+}
+
+input CreateUserSeenArtworkInput {
+  artworkId: String!
+  clientMutationId: String
+}
+
+type CreateUserSeenArtworkPayload {
+  clientMutationId: String
+
+  # On success: the created User Seen Artwork.
+  userSeenArtworkOrError: CreateUserSeenArtworkSuccessResponseOrError
+}
+
+type CreateUserSeenArtworkSuccess {
+  artworkId: String
+}
+
+union CreateUserSeenArtworkSuccessResponseOrError =
+    CreateUserSeenArtworkFailure
+  | CreateUserSeenArtworkSuccess
 
 type CreateVerifiedRepresentativeFailure {
   mutationError: GravityMutationError
@@ -9410,6 +9523,7 @@ input EditableLocation {
 }
 
 type EditionSet implements Sellable {
+  availability: String
   dimensions: dimensions
   displayPriceRange: Boolean
   editionOf: String
@@ -9432,6 +9546,7 @@ type EditionSet implements Sellable {
   isSold: Boolean
   listPrice: ListPrice
   price: String
+  priceDisplay: String
   priceListed: Money
   saleMessage: String
 
@@ -9501,6 +9616,7 @@ interface EntityWithFilterArtworksConnectionInterface {
     geneID: String
     geneIDs: [String]
     height: String
+    includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
     includeUnpublished: Boolean
@@ -9754,6 +9870,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     geneID: String
     geneIDs: [String]
     height: String
+    includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
     includeUnpublished: Boolean
@@ -10272,6 +10389,7 @@ input FilterArtworksInput {
   geneID: String
   geneIDs: [String]
   height: String
+  includeAllJSON: Boolean
   includeArtworksByFollowedArtists: Boolean
   includeMediumFilterInAggregation: Boolean
   includeUnpublished: Boolean
@@ -10722,6 +10840,7 @@ type Gene implements Node & Searchable {
     geneID: String
     geneIDs: [String]
     height: String
+    includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
     includeUnpublished: Boolean
@@ -12576,6 +12695,7 @@ type MarketingCollection implements Node {
     geneID: String
     geneIDs: [String]
     height: String
+    includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
     includeUnpublished: Boolean
@@ -12757,9 +12877,36 @@ union MatchArtworkImportArtistsResponseOrError =
   | MatchArtworkImportArtistsSuccess
 
 type MatchArtworkImportArtistsSuccess {
+  artworkImport: ArtworkImport
   artworkImportID: String!
   matched: Int!
   unmatched: Int!
+}
+
+type MatchArtworkImportRowImageFailure {
+  mutationError: GravityMutationError
+}
+
+input MatchArtworkImportRowImageInput {
+  artworkImportID: String!
+  clientMutationId: String
+  fileName: String!
+  s3Bucket: String!
+  s3Key: String!
+}
+
+type MatchArtworkImportRowImagePayload {
+  clientMutationId: String
+  matchArtworkImportRowImageOrError: MatchArtworkImportRowImageResponseOrError
+}
+
+union MatchArtworkImportRowImageResponseOrError =
+    MatchArtworkImportRowImageFailure
+  | MatchArtworkImportRowImageSuccess
+
+type MatchArtworkImportRowImageSuccess {
+  artworkImport: ArtworkImport
+  success: Boolean!
 }
 
 # A connection to a list of items.
@@ -13563,6 +13710,9 @@ type Mutation {
   # Updates a feature flag
   adminUpdateFeatureFlag(input: AdminUpdateFeatureFlagInput!): AdminUpdateFeatureFlagPayload
 
+  # Update all artworks that belong to the partner
+  artsyShippingOptIn(input: ArtsyShippingOptInMutationInput!): ArtsyShippingOptInMutationPayload
+
   # Add / remove artworks to / from collections
   artworksCollectionsBatchUpdate(
     input: ArtworksCollectionsBatchUpdateInput!
@@ -13572,9 +13722,9 @@ type Mutation {
   ): AssignArtworkImportArtistPayload
 
   # Update all artworks that belong to the partner
-  bulkUpdatePartnerArtworks(
-    input: BulkUpdatePartnerArtworksMutationInput!
-  ): BulkUpdatePartnerArtworksMutationPayload
+  bulkUpdateArtworksMetadata(
+    input: BulkUpdateArtworksMetadataMutationInput!
+  ): BulkUpdateArtworksMetadataMutationPayload
   captureHold(
     # Parameters for CaptureHold
     input: CaptureHoldInput!
@@ -13895,6 +14045,9 @@ type Mutation {
     input: CreateUserSaleProfileMutationInput!
   ): CreateUserSaleProfileMutationPayload
 
+  # Marks an artwork as seen when a user swipes through Infinite Discovery.
+  createUserSeenArtwork(input: CreateUserSeenArtworkInput!): CreateUserSeenArtworkPayload
+
   # Creates Verified Representative.
   createVerifiedRepresentative(
     input: CreateVerifiedRepresentativeInput!
@@ -14025,6 +14178,9 @@ type Mutation {
   matchArtworkImportArtists(
     input: MatchArtworkImportArtistsInput!
   ): MatchArtworkImportArtistsPayload
+  matchArtworkImportRowImage(
+    input: MatchArtworkImportRowImageInput!
+  ): MatchArtworkImportRowImagePayload
 
   # Merge multiple artist records in order to deduplicate artists
   mergeArtists(input: MergeArtistsMutationInput!): MergeArtistsMutationPayload
@@ -14123,6 +14279,7 @@ type Mutation {
 
   # Updates an artwork.
   updateArtwork(input: UpdateArtworkMutationInput!): UpdateArtworkMutationPayload
+  updateArtworkImportRow(input: UpdateArtworkImportRowInput!): UpdateArtworkImportRowPayload
 
   # Updates the flags on a partner.
   updateCMSLastAccessTimestamp(
@@ -14897,6 +15054,14 @@ type Partner implements Node {
     sort: ArtistAlertsSort
   ): ArtistsWithAlertCountsConnection
 
+  # A connection of artwork imports from a Partner.
+  artworkImportsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkImportConnection
+
   # A connection of artworks from a Partner.
   artworksConnection(
     after: String
@@ -15001,6 +15166,7 @@ type Partner implements Node {
     geneID: String
     geneIDs: [String]
     height: String
+    includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
     includeUnpublished: Boolean
@@ -16495,6 +16661,7 @@ type Query {
     geneID: String
     geneIDs: [String]
     height: String
+    includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
     includeUnpublished: Boolean
@@ -16873,6 +17040,9 @@ type Query {
     # The slug or ID of the Feature
     id: ID
   ): Feature
+
+  # A list of currently running featured fairs, backfilled with past fairs. Fairs are sorted by start date in descending order.
+  featuredFairs(includeBackfill: Boolean = true, size: Int): [Fair]
   featuredLinksConnection(
     after: String
     before: String
@@ -18831,6 +19001,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     geneID: String
     geneIDs: [String]
     height: String
+    includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
     includeUnpublished: Boolean
@@ -19320,6 +19491,7 @@ type Tag implements Node {
     geneID: String
     geneIDs: [String]
     height: String
+    includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
     includeUnpublished: Boolean
@@ -19626,13 +19798,80 @@ type UpdateArtistSuccess {
   artist: Artist
 }
 
+input UpdateArtworkEditionSetInput {
+  # The availability of the artwork
+  availability: String
+
+  # Show/Hide the price range of an artwork
+  displayPriceRange: Boolean
+
+  # True for `Buy Now` artworks
+  ecommerce: Boolean
+
+  # The id of the artwork to update.
+  id: String!
+
+  # True for `Make Offer` artworks
+  offer: Boolean
+
+  # Show/Hide the price of an artwork
+  priceHidden: Boolean
+
+  # The price of the artwork
+  priceListed: String
+}
+
+type UpdateArtworkImportRowFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtworkImportRowInput {
+  artworkImportID: String!
+  artworkImportRowID: String!
+  clientMutationId: String
+  fieldName: String!
+  fieldValue: String!
+}
+
+type UpdateArtworkImportRowPayload {
+  clientMutationId: String
+  updateArtworkImportRowOrError: UpdateArtworkImportRowResponseOrError
+}
+
+union UpdateArtworkImportRowResponseOrError =
+    UpdateArtworkImportRowFailure
+  | UpdateArtworkImportRowSuccess
+
+type UpdateArtworkImportRowSuccess {
+  artworkImport: ArtworkImport
+  success: Boolean!
+}
+
 input UpdateArtworkMutationInput {
   # The availability of the artwork
   availability: String
   clientMutationId: String
 
+  # Show/Hide the price range of an artwork
+  displayPriceRange: Boolean
+
+  # True for `Buy Now` artworks
+  ecommerce: Boolean
+
+  # A list of edition sets for the artwork
+  editionSets: [UpdateArtworkEditionSetInput]
+
   # The id of the artwork to update.
   id: String!
+
+  # True for `Make Offer` artworks
+  offer: Boolean
+
+  # Show/Hide the price of an artwork
+  priceHidden: Boolean
+
+  # The price of the artwork
+  priceListed: String
 }
 
 type UpdateArtworkMutationPayload {
@@ -21234,6 +21473,7 @@ type Viewer {
     geneID: String
     geneIDs: [String]
     height: String
+    includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
     includeUnpublished: Boolean
@@ -21493,6 +21733,9 @@ type Viewer {
     # The slug or ID of the Feature
     id: ID
   ): Feature
+
+  # A list of currently running featured fairs, backfilled with past fairs. Fairs are sorted by start date in descending order.
+  featuredFairs(includeBackfill: Boolean = true, size: Int): [Fair]
   featuredLinksConnection(
     after: String
     before: String

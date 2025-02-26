@@ -62,9 +62,10 @@ export const Versions = {
   AddSavedArtworksCountToInfiniteDiscoveryModel: 49,
   RemoveArworkSubmissionModel: 50,
   RemoveRequestPriceEstimateModel: 51,
+  RefactorDarkModeValues: 52,
 }
 
-export const CURRENT_APP_VERSION = Versions.RemoveRequestPriceEstimateModel
+export const CURRENT_APP_VERSION = Versions.RefactorDarkModeValues
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -357,6 +358,11 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.RemoveRequestPriceEstimateModel]: (state) => {
     delete state.requestedPriceEstimates
+  },
+  [Versions.RefactorDarkModeValues]: (state) => {
+    state.devicePrefs.darkModeOption = "system"
+    delete state.devicePrefs.usingSystemColorScheme
+    delete state.devicePrefs.forcedColorScheme
   },
 }
 

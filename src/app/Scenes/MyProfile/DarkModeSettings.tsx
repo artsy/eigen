@@ -1,38 +1,57 @@
-import { Flex, Text } from "@artsy/palette-mobile"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { SwitchMenu } from "app/Components/SwitchMenu"
+import { Flex, Join, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
 import { GlobalStore } from "app/store/GlobalStore"
+import { ScrollView, TouchableOpacity } from "react-native"
 
-export function DarkModeSettings() {
-  const syncWithSystem = GlobalStore.useAppState(
-    (state) => state.devicePrefs.usingSystemColorScheme
-  )
-  const forceMode = GlobalStore.useAppState((state) => state.devicePrefs.forcedColorScheme)
+export const DarkModeSettings: React.FC<{}> = () => {
+  const darkModeOption = GlobalStore.useAppState((state) => state.devicePrefs.darkModeOption)
+  const setDarkModeOption = GlobalStore.actions.devicePrefs.setDarkModeOption
 
   return (
-    <PageWithSimpleHeader title="Dark Mode Settings">
-      <Text variant="lg-display" textAlign="center">
-        Choose your destiny
-      </Text>
-      <Flex mx={2} mt={2}>
-        <SwitchMenu
-          title="Sync with system"
-          description="Automatically turn dark mode on or off based on the system's dark mode setting."
-          value={syncWithSystem}
-          onChange={(value) => {
-            GlobalStore.actions.devicePrefs.setUsingSystemColorScheme(value)
-          }}
-        />
-        <SwitchMenu
-          title="Dark Mode always on"
-          description="Always use Dark Mode."
-          value={forceMode === "dark"}
-          disabled={syncWithSystem}
-          onChange={(value) => {
-            GlobalStore.actions.devicePrefs.setForcedColorScheme(value ? "dark" : "light")
-          }}
-        />
+    <ScrollView>
+      <Flex px={2} mt={2}>
+        <Join separator={<Spacer y={2} />}>
+          <RadioMenuItem
+            title="Sync with system"
+            selected={darkModeOption === "system"}
+            onPress={() => {
+              setDarkModeOption("system")
+            }}
+          />
+          <RadioMenuItem
+            title="On"
+            selected={darkModeOption === "on"}
+            onPress={() => {
+              setDarkModeOption("on")
+            }}
+          />
+          <RadioMenuItem
+            title="Off"
+            selected={darkModeOption === "off"}
+            onPress={() => {
+              setDarkModeOption("off")
+            }}
+          />
+        </Join>
       </Flex>
-    </PageWithSimpleHeader>
+    </ScrollView>
+  )
+}
+
+const RadioMenuItem: React.FC<{
+  title: string
+  selected: boolean
+  onPress: () => void
+}> = ({ title, selected, onPress }) => {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <Flex flexDirection="row" alignItems="center">
+        <Flex flex={1}>
+          <Text variant="sm-display">{title}</Text>
+        </Flex>
+        <Flex width={40} alignItems="flex-end">
+          <RadioButton selected={selected} />
+        </Flex>
+      </Flex>
+    </TouchableOpacity>
   )
 }

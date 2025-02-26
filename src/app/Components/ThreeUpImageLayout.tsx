@@ -1,5 +1,5 @@
-import { Box, Flex } from "@artsy/palette-mobile"
-import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
+import { Box } from "@artsy/palette-mobile"
+import themeGet from "@styled-system/theme-get"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import styled from "styled-components/native"
 
@@ -57,6 +57,6 @@ export const ThreeUpImageLayout: React.FC<ThreeUpImageLayoutProps> = ({
 }
 
 export const Division = styled.View<{ horizontal?: boolean }>`
-  border: 1px solid white;
+  border: 1px solid ${themeGet("colors.white100")};
   ${({ horizontal }) => (horizontal ? "height" : "width")}: 1px;
 `

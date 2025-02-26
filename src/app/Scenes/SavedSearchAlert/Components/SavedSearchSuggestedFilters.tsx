@@ -163,7 +163,7 @@ const MoreFiltersButton: React.FC<{ text: string }> = ({ text }) => {
       }}
     >
       <Flex px={1} flexDirection="row" alignItems="center">
-        <Text color="blue" variant="xs">
+        <Text color="blue100" variant="xs">
           {text}
         </Text>
         <ChevronIcon

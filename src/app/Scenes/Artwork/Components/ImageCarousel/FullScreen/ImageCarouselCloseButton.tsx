@@ -1,4 +1,4 @@
-import { CloseIcon } from "@artsy/palette-mobile"
+import { CloseIcon, useColor } from "@artsy/palette-mobile"
 import { ImageCarouselContext } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useContext } from "react"
@@ -10,6 +10,8 @@ const CLOSE_BUTTON_MARGIN = 12
 
 export const ImageCarouselCloseButton = ({ onClose }: { onClose(): void }) => {
   const { safeAreaInsets } = useScreenDimensions()
+  const color = useColor()
+
   const { fullScreenState } = useContext(ImageCarouselContext)
   fullScreenState.useUpdates()
 
@@ -43,7 +45,7 @@ export const ImageCarouselCloseButton = ({ onClose }: { onClose(): void }) => {
                 width: 40,
                 height: 40,
                 borderRadius: 20,
-                backgroundColor: "white",
+                backgroundColor: color("white100"),
                 alignItems: "center",
                 justifyContent: "center",
               },

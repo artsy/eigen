@@ -265,23 +265,30 @@ const TaskItem = ({
     }
   }, [])
 
-  let scaleX = 1
-  let translateY = 0
-  let opacity = 1
+  const animationTransform = useMemo(() => {
+    let scaleX = 1
+    let translateY = 0
+    let opacity = 1
 
-  if (!showAll && index !== 0) {
-    scaleX = 1 - index * 0.05
-    translateY = -83 * index
-    opacity = 1 - index * 0.15
-    if (index > 2) {
-      opacity = 0
+    if (!showAll && index !== 0) {
+      scaleX = 1 - index * 0.05
+      translateY = -83 * index
+      opacity = 1 - index * 0.15
+      if (index > 2) {
+        opacity = 0
+      }
     }
-  }
+
+    return { scaleX, translateY, opacity }
+  }, [showAll, index])
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [{ scaleX: withTiming(scaleX) }, { translateY: withTiming(translateY) }],
-      opacity: withTiming(opacity),
+      transform: [
+        { scaleX: withTiming(animationTransform.scaleX) },
+        { translateY: withTiming(animationTransform.translateY) },
+      ],
+      opacity: withTiming(animationTransform.opacity),
     }
   })
 

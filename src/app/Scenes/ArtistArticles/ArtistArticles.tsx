@@ -3,14 +3,15 @@ import { Screen } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import { ArtistArticlesResultQuery } from "__generated__/ArtistArticlesResultQuery.graphql"
 import { ArtistArticles_artist$data } from "__generated__/ArtistArticles_artist.graphql"
-import { ArticlesList, ArticlesPlaceholder } from "app/Scenes/Articles/ArticlesList"
+import { CardsWithMetaDataListPlaceholder as ArticlesPlaceholder } from "app/Components/Cards/CardWithMetaData"
+import { ArticlesList } from "app/Scenes/Articles/ArticlesList"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import React, { useState } from "react"
+import { useState } from "react"
 import {
   createPaginationContainer,
   QueryRenderer,
@@ -137,7 +138,7 @@ export const ArtistArticlesQueryRenderer: React.FC<{
       }}
       render={renderWithPlaceholder({
         Container: ArtistArticlesContainer,
-        renderPlaceholder: () => <ArticlesPlaceholder />,
+        renderPlaceholder: () => <ArticlesPlaceholder testID="articles-screen-placeholder" />,
       })}
     />
   )

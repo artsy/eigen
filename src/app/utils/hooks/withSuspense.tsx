@@ -35,7 +35,7 @@ type WithSuspenseOptions<T> = {
 }
 
 const DefaultLoadingFallback: React.FC = () => (
-  <Flex flex={1} justifyContent="center" alignItems="center">
+  <Flex testID="default-loading-feedback" flex={1} justifyContent="center" alignItems="center">
     <Spinner />
   </Flex>
 )

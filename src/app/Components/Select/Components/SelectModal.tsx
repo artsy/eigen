@@ -80,7 +80,7 @@ export const SelectModal: React.FC<{
 
   const autocompleteResults = useMemo(() => {
     return searchTerm && autocomplete ? autocomplete.getSuggestions(searchTerm) : options
-  }, [autocomplete, searchTerm])
+  }, [autocomplete, searchTerm, options])
 
   const flatListRef = useRef<FlatList>(null)
   const flatListHeight = useRef<number | null>(null)
@@ -124,6 +124,7 @@ export const SelectModal: React.FC<{
       onRequestClose={onDismiss}
       statusBarTranslucent
       testID={testID}
+      animationType="slide"
     >
       <Screen>
         <Flex p={2} pb="15px" flexDirection="row" alignItems="center" flexGrow={0}>
@@ -148,7 +149,9 @@ export const SelectModal: React.FC<{
             <SearchInput placeholder="Type to search..." onChangeText={setSearchTerm} />
           </Flex>
         )}
+
         <Separator />
+
         <FlatList
           ref={flatListRef}
           keyboardDismissMode="on-drag"

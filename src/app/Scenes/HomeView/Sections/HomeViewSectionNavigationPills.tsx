@@ -1,5 +1,20 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Flex, FlexProps, Pill, Skeleton, Spacer, Text, useSpace } from "@artsy/palette-mobile"
+import {
+  ArtworkIcon,
+  AuctionIcon as GavelIcon,
+  FairIcon,
+  Flex,
+  FlexProps,
+  FollowArtistIcon,
+  HeartIcon as HeartStrokeIcon,
+  Pill,
+  PublicationIcon,
+  Skeleton,
+  Spacer,
+  Text,
+  useSpace,
+  IconProps,
+} from "@artsy/palette-mobile"
 import { HomeViewSectionNavigationPillsQuery } from "__generated__/HomeViewSectionNavigationPillsQuery.graphql"
 import {
   HomeViewSectionNavigationPills_section$data,
@@ -9,8 +24,9 @@ import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeView
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { memo } from "react"
+import { FC, memo, useEffect } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -31,6 +47,11 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
   const section = useFragment(sectionFragment, sectionProp)
   const tracking = useHomeViewTracking()
   const space = useSpace()
+  const { trackExperiment } = useExperimentVariant("onyx_quick-links-experiment")
+
+  useEffect(() => {
+    trackExperiment()
+  }, [])
 
   const navigationPills = section.navigationPills.filter(
     (pill) => pill?.title && pill.href
@@ -57,6 +78,7 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
             accessibilityRole="link"
             testID={`pill-${pill.title}`}
             variant="link"
+            Icon={SUPPORTED_ICONS[pill.icon as string]}
             onPress={() => {
               tracking.tappedNavigationPillsGroup({
                 title: pill.title,
@@ -89,6 +111,7 @@ const sectionFragment = graphql`
       title
       href
       ownerType
+      icon
     }
   }
 `
@@ -163,18 +186,19 @@ export const HomeViewSectionNavigationPillsQueryRenderer: React.FC<SectionShared
 )
 
 export const NAVIGATION_LINKS_PLACEHOLDER: Array<NavigationPill> = [
-  { title: "Follows", href: "/favorites", ownerType: "whatever" },
-  { title: "Auctions", href: "/auctions", ownerType: "whatever" },
-  { title: "Saves", href: "/favorites/saves", ownerType: "whatever" },
-  {
-    title: "Art under $1000",
-    href: "/collect?price_range=%2A-1000",
-    ownerType: "whatever",
-  },
-  {
-    title: "Price Database",
-    href: "/price-database",
-    ownerType: "whatever",
-  },
-  { title: "Editorial", href: "/news", ownerType: "whatever" },
+  { title: "Follows", href: "/favorites", ownerType: "whatever", icon: "HeartIcon" },
+  { title: "Auctions", href: "/auctions", ownerType: "whatever", icon: "HeartIcon" },
+  { title: "Saves", href: "/favorites/saves", ownerType: "whatever", icon: "HeartIcon" },
+  { title: "Art under $1000", href: "/collect", ownerType: "whatever", icon: "HeartIcon" },
+  { title: "Price Database", href: "/price-database", ownerType: "whatever", icon: "HeartIcon" },
+  { title: "Editorial", href: "/news", ownerType: "whatever", icon: "HeartIcon" },
 ]
+
+const SUPPORTED_ICONS: Record<string, FC<IconProps>> = {
+  ArtworkIcon,
+  FairIcon,
+  FollowArtistIcon,
+  GavelIcon,
+  HeartStrokeIcon,
+  PublicationIcon,
+}

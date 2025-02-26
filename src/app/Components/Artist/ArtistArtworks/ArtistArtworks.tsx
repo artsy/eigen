@@ -8,6 +8,7 @@ import {
   Spacer,
   Tabs,
   Text,
+  useColor,
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
@@ -62,6 +63,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   searchCriteria,
   ...props
 }) => {
+  const color = useColor()
+
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const { showFilterArtworksModal, closeFilterArtworksModal } = useShowArtworksFilterModal({
@@ -270,7 +273,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const shouldShowCreateAlertReminder = artworks.length >= CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD
 
   return (
-    <>
+    <Flex backgroundColor={color("white100")} flex={1}>
       <Tabs.Masonry
         data={artworks}
         numColumns={NUM_COLUMNS_MASONRY}
@@ -342,7 +345,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         onComplete={handleCompleteSavedSearch}
         visible={isCreateAlertModalVisible}
       />
-    </>
+    </Flex>
   )
 }
 

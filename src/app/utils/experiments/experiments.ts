@@ -36,6 +36,12 @@ export const experiments = {
     variantSuggestions: ["control", "variant-b", "variant-c"],
     payloadSuggestions: ['{"forceDots": "true"}', '{"forceDots": "false"}'],
   },
+  "onyx_quick-links-experiment": {
+    description: "Add quick links section to home view",
+    fallbackEnabled: true,
+    fallbackVariant: "control",
+    variantSuggestions: ["control", "experiment"],
+  },
 } satisfies { [key: string]: ExperimentDescriptor }
 
 export type EXPERIMENT_NAME = keyof typeof experiments

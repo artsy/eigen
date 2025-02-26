@@ -1,9 +1,11 @@
 import { Text, Button } from "@artsy/palette-mobile"
+import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { Icon20 } from "app/Components/Bidding/Components/Icon"
 import { Title } from "app/Components/Bidding/Components/Title"
 import { Flex } from "app/Components/Bidding/Elements/Flex"
-import { NavigationHeader } from "app/Components/NavigationHeader"
 import { Markdown } from "app/Components/Markdown"
+import { NavigationHeader } from "app/Components/NavigationHeader"
+import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 import { dismissModal } from "app/system/navigation/navigate"
 import { defaultRules } from "app/utils/renderMarkdown"
 import { Schema, screenTrack } from "app/utils/track"
@@ -11,10 +13,10 @@ import React from "react"
 import { BackHandler, NativeEventSubscription, View } from "react-native"
 import { blockRegex } from "simple-markdown"
 
-interface RegistrationResultProps {
-  status: RegistrationStatus
-  needsIdentityVerification?: boolean
-}
+type RegistrationResultProps = NativeStackScreenProps<
+  BiddingNavigationStackParams,
+  "RegistrationResult"
+>
 
 export enum RegistrationStatus {
   RegistrationStatusComplete = "RegistrationStatusComplete",
@@ -95,13 +97,10 @@ const resultEnumToPageName = (result: RegistrationStatus) => {
   return pageName
 }
 
-@screenTrack(
-  (props: RegistrationResultProps) =>
-    ({
-      context_screen: resultEnumToPageName(props.status),
-      context_screen_owner_type: null,
-    }) as any /* STRICTNESS_MIGRATION */
-)
+@screenTrack((props: RegistrationResultProps) => ({
+  context_screen: resultEnumToPageName(props.route.params.status),
+  context_screen_owner_type: null,
+}))
 export class RegistrationResult extends React.Component<RegistrationResultProps> {
   backButtonListener?: NativeEventSubscription = undefined
 
@@ -118,8 +117,8 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
 
   handleBackButton = () => {
     if (
-      this.props.status === RegistrationStatus.RegistrationStatusComplete ||
-      this.props.status === RegistrationStatus.RegistrationStatusPending
+      this.props.route.params.status === RegistrationStatus.RegistrationStatusComplete ||
+      this.props.route.params.status === RegistrationStatus.RegistrationStatusPending
     ) {
       dismissModal()
       return true
@@ -129,7 +128,7 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
   }
 
   render() {
-    const { status, needsIdentityVerification } = this.props
+    const { status, needsIdentityVerification } = this.props.route.params
     let title: string
     let msg: string
 
