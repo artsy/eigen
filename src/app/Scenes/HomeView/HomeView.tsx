@@ -154,7 +154,7 @@ export const HomeView: React.FC = memo(() => {
     <Screen safeArea={true}>
       <Screen.Body fullwidth>
         <Flex
-          backgroundColor="red"
+          backgroundColor="purple"
           alignContent="center"
           justifyContent="center"
           alignItems="center"
