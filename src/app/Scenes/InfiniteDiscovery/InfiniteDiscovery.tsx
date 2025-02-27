@@ -120,12 +120,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       // unique artworks, we need to track the max index reached
       const newMaxIndexReached = Math.max(currentIndex + 1, maxIndexReached)
       if (newMaxIndexReached > maxIndexReached) {
-        trackEvent({
-          action: ActionType.screen,
-          context_screen_owner_id: artworks[newMaxIndexReached].internalID,
-          context_screen_owner_slug: artworks[newMaxIndexReached].slug,
-          context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
-        })
+        const newArtwork = artworks[newMaxIndexReached]
+        trackEvent(tracks.swipedToNewArtwork(newArtwork.internalID, newArtwork.slug))
 
         commitMutation({
           variables: {
@@ -141,8 +137,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
             }
           },
         })
-        const newArtwork = artworks[newMaxIndexReached]
-        trackEvent(tracks.swipedToNewArtwork(newArtwork.internalID, newArtwork.slug))
       }
       setMaxIndexReached(newMaxIndexReached)
     }
