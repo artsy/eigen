@@ -32,7 +32,6 @@
 
 #import "RNBootSplash.h"
 
-
 @interface ARAppDelegate ()
 @property (strong, nonatomic, readwrite) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readwrite) NSString *landingURLRepresentation;
@@ -136,7 +135,7 @@ static ARAppDelegate *_sharedInstance = nil;
 
     // TODO: This is off the beaten track for expo setup, we should probably find another way
     // It will definitely not work on new architecture
-    RCTBridge *bridge = [super createBridgeWithDelegate:self launchOptions:launchOptions];
+    RCTBridge *bridge = [super createBridgeWithDelegate:delegate launchOptions:launchOptions];
     AREmission *emission = [AREmission sharedInstance];
     [emission setBridge:bridge];
     return bridge;
