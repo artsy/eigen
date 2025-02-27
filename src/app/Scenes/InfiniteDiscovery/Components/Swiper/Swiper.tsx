@@ -23,7 +23,9 @@ import {
 
 type SwiperProps = {
   cards: ReactElement<{ key: Key }>[]
+  onNewCardReached?: (key: Key) => void
   onRewind: (key: Key) => void
+  onSwipe: (index: number) => void
 } & (
   | { onTrigger?: never; swipedIndexCallsOnTrigger?: never }
   | { onTrigger: (activeIndex: number) => void; swipedIndexCallsOnTrigger: number }
@@ -31,18 +33,23 @@ type SwiperProps = {
 
 export const Swiper: React.FC<SwiperProps> = ({
   cards: _cards,
+  onNewCardReached,
   onRewind,
+  onSwipe,
   onTrigger,
   swipedIndexCallsOnTrigger,
 }) => {
   const width = useScreenWidthWithOffset()
   const [cards, setCards] = useState(_cards)
   const [numberExtraCardsAdded, setNumberExtraCardsAdded] = useState(0)
+
   const activeCardX = useSharedValue(0)
   const swipedCardX = useSharedValue(-width)
   // TODO: remove underscore
   const _activeIndex = useSharedValue(cards.length - 1)
   const swipedKeys = useSharedValue<Key[]>([])
+  // a list of cards that the user has seen
+  const seenCardKeys = useSharedValue<Key[]>([])
 
   useEffect(() => {
     if (cards.length < _cards.length) {
@@ -78,22 +85,38 @@ export const Swiper: React.FC<SwiperProps> = ({
       // Swipe left
       const isSwipeLeft = translationX < 0
       const isLastCard = _activeIndex.value === 0
+
+      // TODO: confirm that we are fetching more cards on the 3rd, 8th, 13th... swipe
       if (isSwipeLeft && !isLastCard && _activeIndex.value === swipedIndexCallsOnTrigger) {
         runOnJS(onTrigger)(_activeIndex.value - 1)
       }
-      const cardKey = cards[_activeIndex.value].key
-      if (isSwipeLeft && !isLastCard && cardKey) {
+
+      const swipedCardIndex = _activeIndex.value
+      const swipedCardKey = cards[swipedCardIndex].key
+
+      if (isSwipeLeft && !isLastCard && swipedCardKey) {
+        const nextCardIndex = swipedCardIndex - 1
+        const nextCardKey = cards[nextCardIndex]?.key
+
+        // if this is the first time that the user has navigated to this card, record it
+        if (nextCardKey && !seenCardKeys.value.includes(nextCardKey) && onNewCardReached) {
+          seenCardKeys.value = [...seenCardKeys.value, nextCardKey]
+          runOnJS(onNewCardReached)(nextCardKey)
+        }
+
         activeCardX.value = withTiming(-width, { duration: 500, easing: Easing.linear }, () => {
           // TODO: maybe fix this if errors
 
-          swipedKeys.value = [...swipedKeys.value, cardKey]
+          swipedKeys.value = [...swipedKeys.value, swipedCardKey]
           _activeIndex.value = _activeIndex.value - 1
           activeCardX.value = 0
           return
         })
 
+        runOnJS(onSwipe)(swipedCardIndex)
         return
       }
+
       // when it's the last card drag it back to the deck nicely
       if (isSwipeLeft && isLastCard) {
         activeCardX.value = withTiming(0, { duration: 200, easing: Easing.cubic })
