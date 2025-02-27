@@ -22,6 +22,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
+import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { useActivityDotExperiment } from "app/utils/experiments/useActivityDotExperiment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
@@ -62,6 +63,14 @@ export const HomeView: React.FC = memo(() => {
 
   useEffect(() => {
     trackActvityDotExperiment()
+  }, [])
+
+  const { trackExperiment: trackQuickLinksExperiment } = useExperimentVariant(
+    "onyx_quick-links-experiment"
+  )
+
+  useEffect(() => {
+    trackQuickLinksExperiment()
   }, [])
 
   const { data, loadNext, hasNext } = usePaginationFragment<
