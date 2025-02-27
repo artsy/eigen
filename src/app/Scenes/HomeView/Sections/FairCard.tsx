@@ -12,16 +12,10 @@ import { graphql, useFragment } from "react-relay"
 interface FairCardProps {
   fair: FairCard_fair$key | null | undefined
   onPress?: (fair: FairCard_fair$data) => void
-  width?: number
   isFluid?: boolean
 }
 
-export const FairCard: FC<FairCardProps> = ({
-  fair: fairFragment,
-  onPress,
-  width = CARD_WIDTH,
-  isFluid,
-}) => {
+export const FairCard: FC<FairCardProps> = ({ fair: fairFragment, onPress, isFluid }) => {
   const fair = useFragment(fragment, fairFragment)
 
   const numColumns = useNumColumns()
@@ -56,7 +50,7 @@ export const FairCard: FC<FairCardProps> = ({
       imageComponent={
         <ThreeUpImageLayout
           imageURLs={artworkImageURLs}
-          width={isFluid ? screenWidth / numColumns - 2 * space(2) : width}
+          width={isFluid ? screenWidth / numColumns - 2 * space(2) : CARD_WIDTH}
         />
       }
       title={fair.name}
