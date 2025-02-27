@@ -10,7 +10,7 @@ import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE } from "app/Components/ThreeUpImageLayout"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
-import { HomeViewSectionFairsFairItem } from "app/Scenes/HomeView/Sections/HomeViewSectionFairsFairItem"
+import { FairCard } from "app/Scenes/HomeView/Sections/FairCard"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
@@ -70,7 +70,7 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
         initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
         renderItem={({ item, index }) => {
           return (
-            <HomeViewSectionFairsFairItem
+            <FairCard
               key={item.internalID}
               fair={item}
               onPress={(fair) => {
@@ -116,7 +116,7 @@ const fragment = graphql`
           href
           internalID
           slug
-          ...HomeViewSectionFairsFairItem_fair
+          ...FairCard_fair
         }
       }
     }
@@ -126,6 +126,7 @@ const fragment = graphql`
 
 const HomeViewSectionFairsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
+
   return (
     <Skeleton>
       <Flex {...flexProps}>

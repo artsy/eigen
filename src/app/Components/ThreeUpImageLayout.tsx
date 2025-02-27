@@ -1,57 +1,61 @@
-import { Box } from "@artsy/palette-mobile"
+import { Box, Flex } from "@artsy/palette-mobile"
 import themeGet from "@styled-system/theme-get"
+import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import styled from "styled-components/native"
 
-interface ThreeUpImageLayoutProps {
-  imageURLs: string[]
-}
-
-export const LARGE_IMAGE_SIZE = 180
+export const LARGE_IMAGE_SIZE = (CARD_WIDTH / 3) * 2
 export const SMALL_IMAGE_SIZE = LARGE_IMAGE_SIZE / 2
 
-export const ThreeUpImageLayout: React.FC<ThreeUpImageLayoutProps> = ({ imageURLs }) => {
+interface ThreeUpImageLayoutProps {
+  imageURLs: string[]
+  width?: number
+}
+
+export const ThreeUpImageLayout: React.FC<ThreeUpImageLayoutProps> = ({
+  imageURLs,
+  width = CARD_WIDTH,
+}) => {
   // Ensure we have an array of exactly 3 URLs, copying over the last image if we have less than 3
   const artworkImageURLs = [null, null, null].reduce((acc: string[], _, i) => {
     return [...acc, imageURLs[i] || acc[i - 1]]
   }, [])
 
+  const largeImageWidth = Math.floor((width * 2) / 3)
+  const smallImageWidth = Math.floor(largeImageWidth / 2)
+
   return (
-    <ArtworkImageContainer>
+    <Flex
+      flexDirection="row"
+      justifyContent="space-between"
+      overflow="hidden"
+      maxHeight={largeImageWidth}
+    >
       <ImageWithFallback
         testID="image-1"
-        width={LARGE_IMAGE_SIZE}
-        height={LARGE_IMAGE_SIZE}
+        width={largeImageWidth}
+        height={largeImageWidth}
         src={artworkImageURLs[0]}
       />
       <Division />
       <Box>
         <ImageWithFallback
           testID="image-2"
-          width={SMALL_IMAGE_SIZE}
-          height={SMALL_IMAGE_SIZE}
+          width={smallImageWidth}
+          height={smallImageWidth}
           src={artworkImageURLs[1]}
         />
         <Division horizontal />
         <ImageWithFallback
           testID="image-3"
-          width={SMALL_IMAGE_SIZE}
-          height={SMALL_IMAGE_SIZE}
+          width={smallImageWidth}
+          height={smallImageWidth}
           src={artworkImageURLs[2]}
         />
       </Box>
-    </ArtworkImageContainer>
+    </Flex>
   )
 }
-
-export const ArtworkImageContainer = styled.View`
-  width: 100%;
-  height: ${LARGE_IMAGE_SIZE}px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  overflow: hidden;
-`
 
 export const Division = styled.View<{ horizontal?: boolean }>`
   border: 1px solid ${themeGet("colors.white100")};

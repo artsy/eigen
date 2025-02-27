@@ -60,6 +60,7 @@ import { FairScreen, FairScreenQuery } from "app/Scenes/Fair/Fair"
 import { FairAllFollowedArtistsQueryRenderer } from "app/Scenes/Fair/FairAllFollowedArtists"
 import { FairArticlesQueryRenderer } from "app/Scenes/Fair/FairArticles"
 import { FairMoreInfoQueryRenderer } from "app/Scenes/Fair/FairMoreInfo"
+import { FeaturedFairsScreen, featuredFairsScreenQuery } from "app/Scenes/Fair/FeaturedFairsScreen"
 import { Favorites } from "app/Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "app/Scenes/Feature/Feature"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
@@ -740,6 +741,17 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+  },
+  {
+    path: "/featured-fairs",
+    name: "Featured Fairs",
+    Component: FeaturedFairsScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [featuredFairsScreenQuery],
   },
   {
     path: "/favorites",

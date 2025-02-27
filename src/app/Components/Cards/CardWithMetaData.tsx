@@ -8,7 +8,9 @@ import {
   useTheme,
   Screen,
   useScreenDimensions,
+  Box,
 } from "@artsy/palette-mobile"
+import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import {
   PlaceholderBox,
@@ -25,7 +27,8 @@ export const CARD_IMAGE_HEIGHT = 230
 interface CardWithMetaDataProps {
   isFluid?: boolean
   href: string | null | undefined
-  imageURL: string | null | undefined
+  imageURL?: string | null | undefined
+  imageComponent?: React.ReactNode
   title: string | null | undefined
   subtitle: string | null | undefined
   tag: string | null | undefined
@@ -34,28 +37,41 @@ interface CardWithMetaDataProps {
 }
 
 export const CardWithMetaData: React.FC<CardWithMetaDataProps> = (props) => {
-  const { isFluid, href, imageURL, title, subtitle, tag, onPress } = props
+  const { isFluid, href, imageURL, title, subtitle, tag, onPress, imageComponent } = props
   const numColumns = useNumColumns()
 
   const { space } = useTheme()
   const { width } = useWindowDimensions()
 
+  const cardWidth = isFluid
+    ? width / numColumns - 2 * space(2)
+    : imageComponent
+      ? CARD_WIDTH
+      : CARD_IMAGE_WIDTH
+
   return (
-    <Flex width={isFluid ? "100%" : CARD_IMAGE_WIDTH}>
+    <Flex width={cardWidth}>
       <RouterLink onPress={onPress} testID="article-card" to={href}>
-        <Flex width={isFluid ? "100%" : CARD_IMAGE_WIDTH} overflow="hidden">
-          {!!imageURL &&
-            (isFluid ? (
+        <Flex width={cardWidth} overflow="hidden">
+          {!!imageURL ? (
+            isFluid ? (
               <Image
                 src={imageURL}
                 // aspect ratio is fixed to 1.33 to match the old image aspect ratio
                 aspectRatio={1.33}
-                width={width / numColumns - 2 * space(2)}
+                width={cardWidth}
               />
             ) : (
               <Image src={imageURL} width={CARD_IMAGE_WIDTH} height={CARD_IMAGE_HEIGHT} />
-            ))}
+            )
+          ) : !!imageComponent ? (
+            imageComponent
+          ) : (
+            <Box height={CARD_IMAGE_HEIGHT} width={CARD_IMAGE_WIDTH} />
+          )}
+
           <Spacer y={1} />
+
           {!!title && (
             <Text numberOfLines={2} ellipsizeMode="tail" variant="sm-display" mb={0.5}>
               {title}
