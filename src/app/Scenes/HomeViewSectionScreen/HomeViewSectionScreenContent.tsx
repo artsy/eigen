@@ -1,6 +1,7 @@
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionScreenQuery$data } from "__generated__/HomeViewSectionScreenQuery.graphql"
 import { HomeViewSectionScreenArtworks } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenArtworks"
+import { HomeViewSectionScreenFairs } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreenFairs"
 
 type HomeViewSectionScreenContentT = NonNullable<
   HomeViewSectionScreenQuery$data["homeView"]["section"]
@@ -14,6 +15,8 @@ export const HomeViewSectionScreenContent: React.FC<{ section: HomeViewSectionSc
   switch (section.__typename) {
     case "HomeViewSectionArtworks":
       return <HomeViewSectionScreenArtworks section={section} />
+    case "HomeViewSectionFairs":
+      return <HomeViewSectionScreenFairs section={section} />
 
     default:
       if (__DEV__) {
