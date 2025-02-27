@@ -107,6 +107,16 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     }
   }
 
+  const handleRewind = (key: Key) => {
+    const artwork = artworks.find((artwork) => artwork.internalID === key)
+
+    if (!artwork) {
+      return
+    }
+
+    trackEvent(tracks.tappedRewind(artwork.internalID, artwork.slug))
+  }
+
   // const handleCardSwipedLeft = useCallback(() => {
   //   if (currentIndex < artworks.length - 1) {
   //     const dismissedArtwork = artworks[currentIndex]
@@ -215,7 +225,12 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           onSwipeLeft={handleCardSwipedLeft}
           onWhiffRight={handleCardWhiffedRight}
         /> */}
-        <Swiper cards={artworkCards} onTrigger={handleFetchMore} swipedIndexCallsOnTrigger={3} />
+        <Swiper
+          cards={artworkCards}
+          onTrigger={handleFetchMore}
+          swipedIndexCallsOnTrigger={3}
+          onRewind={handleRewind}
+        />
 
         {/* {!!artworks.length && (
           <InfiniteDiscoveryBottomSheet

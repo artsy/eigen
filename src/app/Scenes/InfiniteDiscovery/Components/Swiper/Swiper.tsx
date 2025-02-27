@@ -23,6 +23,7 @@ import {
 
 type SwiperProps = {
   cards: ReactElement<{ key: Key }>[]
+  onRewind: (key: Key) => void
 } & (
   | { onTrigger?: never; swipedIndexCallsOnTrigger?: never }
   | { onTrigger: (activeIndex: number) => void; swipedIndexCallsOnTrigger: number }
@@ -30,6 +31,7 @@ type SwiperProps = {
 
 export const Swiper: React.FC<SwiperProps> = ({
   cards: _cards,
+  onRewind,
   onTrigger,
   swipedIndexCallsOnTrigger,
 }) => {
@@ -101,6 +103,8 @@ export const Swiper: React.FC<SwiperProps> = ({
       // Swipe right then brings the card back to the deck
       activeCardX.value = 0
       const hasSwipedCards = _activeIndex.value + 1 < cards.length
+      // TODO: exit early if there are no swiped cards
+      const lastSwipedCardKey = cards[_activeIndex.value + 1].key
       swipedCardX.value = withTiming(0, { duration: 200, easing: Easing.linear }, () => {
         if (hasSwipedCards) {
           swipedKeys.value = swipedKeys.value.slice(0, -1)
@@ -108,6 +112,7 @@ export const Swiper: React.FC<SwiperProps> = ({
         }
         swipedCardX.value = -width
       })
+      runOnJS(onRewind)(lastSwipedCardKey as Key)
     })
 
   return (
