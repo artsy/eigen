@@ -24,9 +24,8 @@ import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeView
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { FC, memo, useEffect } from "react"
+import { FC, memo } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -47,11 +46,6 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
   const section = useFragment(sectionFragment, sectionProp)
   const tracking = useHomeViewTracking()
   const space = useSpace()
-  const { trackExperiment } = useExperimentVariant("onyx_quick-links-experiment")
-
-  useEffect(() => {
-    trackExperiment()
-  }, [])
 
   const navigationPills = section.navigationPills.filter(
     (pill) => pill?.title && pill.href
