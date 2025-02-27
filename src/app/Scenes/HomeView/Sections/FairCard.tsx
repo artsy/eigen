@@ -1,25 +1,36 @@
-import { bullet, Flex, Text } from "@artsy/palette-mobile"
+import { bullet, useTheme } from "@artsy/palette-mobile"
 import { FairCard_fair$data, FairCard_fair$key } from "__generated__/FairCard_fair.graphql"
-import { CARD_WIDTH, CardRailMetadataContainer } from "app/Components/CardRail/CardRailCard"
+import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
+import { CardWithMetaData, useNumColumns } from "app/Components/Cards/CardWithMetaData"
 import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
-import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact, concat, take } from "lodash"
 import { FC } from "react"
+import { useWindowDimensions } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface FairCardProps {
-  fair: FairCard_fair$key
+  fair: FairCard_fair$key | null | undefined
   onPress?: (fair: FairCard_fair$data) => void
   width?: number
+  isFluid?: boolean
 }
 
 export const FairCard: FC<FairCardProps> = ({
   fair: fairFragment,
   onPress,
   width = CARD_WIDTH,
+  isFluid,
 }) => {
   const fair = useFragment(fragment, fairFragment)
+
+  const numColumns = useNumColumns()
+  const { space } = useTheme()
+  const { width: screenWidth } = useWindowDimensions()
+
+  if (!fair) {
+    return null
+  }
 
   // Fairs are expected to always have >= 2 artworks and a hero image.
   // We can make assumptions about this in UI layout, but should still
@@ -38,34 +49,24 @@ export const FairCard: FC<FairCardProps> = ({
   const location = fair.location?.city || fair.location?.country
 
   return (
-    <CardRailCard key={fair.slug}>
-      <RouterLink
-        to={`/fair/${fair.slug}`}
-        onPress={() => {
-          onPress?.(fair)
-        }}
-      >
-        <Flex>
-          <ThreeUpImageLayout imageURLs={artworkImageURLs} />
-          <CardRailMetadataContainer>
-            <Text numberOfLines={1} lineHeight="20px" variant="sm">
-              {fair.name}
-            </Text>
-            <Text
-              numberOfLines={1}
-              lineHeight="20px"
-              color="black60"
-              variant="sm"
-              testID="card-subtitle"
-              ellipsizeMode="middle"
-            >
-              {fair.exhibitionPeriod}
-              {Boolean(location) && `  ${bullet}  ${location}`}
-            </Text>
-          </CardRailMetadataContainer>
-        </Flex>
-      </RouterLink>
-    </CardRailCard>
+    <CardWithMetaData
+      testId="featured-fair--card"
+      isFluid={isFluid}
+      href={fair.slug}
+      imageURL={null} // TODO
+      threeUpImageLayout={
+        <ThreeUpImageLayout
+          imageURLs={artworkImageURLs}
+          width={isFluid ? screenWidth / numColumns - 2 * space(2) : width}
+        />
+      }
+      title={fair.name}
+      subtitle={fair.exhibitionPeriod}
+      tag={Boolean(location) ? `  ${bullet}  ${location}` : undefined}
+      onPress={() => {
+        onPress?.(fair)
+      }}
+    />
   )
 }
 

@@ -1,5 +1,6 @@
-import { Box } from "@artsy/palette-mobile"
+import { Box, Flex } from "@artsy/palette-mobile"
 import themeGet from "@styled-system/theme-get"
+import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import styled from "styled-components/native"
 
