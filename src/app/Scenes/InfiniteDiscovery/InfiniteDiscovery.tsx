@@ -39,19 +39,19 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   fetchMoreArtworks,
   queryRef,
 }) => {
-  const REFETCH_BUFFER = 3
+  // const REFETCH_BUFFER = 3
   const toast = useToast()
   const { trackEvent } = useTracking()
   const [commitMutation] = useCreateUserSeenArtwork()
 
-  const { addDisoveredArtworkId } = GlobalStore.actions.infiniteDiscovery
+  // const { addDisoveredArtworkId } = GlobalStore.actions.infiniteDiscovery
 
   const savedArtworksCount = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.savedArtworksCount
   )
 
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [maxIndexReached, setMaxIndexReached] = useState(currentIndex)
+  // const [maxIndexReached, setMaxIndexReached] = useState(currentIndex)
   const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>([])
 
   const data = usePreloadedQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, queryRef)
@@ -107,51 +107,51 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     }
   }
 
-  const handleCardSwipedLeft = useCallback(() => {
-    if (currentIndex < artworks.length - 1) {
-      const dismissedArtwork = artworks[currentIndex]
+  // const handleCardSwipedLeft = useCallback(() => {
+  //   if (currentIndex < artworks.length - 1) {
+  //     const dismissedArtwork = artworks[currentIndex]
 
-      setCurrentIndex((prev) => prev + 1)
-      addDisoveredArtworkId(dismissedArtwork.internalID)
+  //     setCurrentIndex((prev) => prev + 1)
+  //     addDisoveredArtworkId(dismissedArtwork.internalID)
 
-      trackEvent(tracks.swipedArtwork(dismissedArtwork.internalID, dismissedArtwork.slug))
+  //     trackEvent(tracks.swipedArtwork(dismissedArtwork.internalID, dismissedArtwork.slug))
 
-      // because when swiping, we iterate over the array of artworks, and we want to track only
-      // unique artworks, we need to track the max index reached
-      const newMaxIndexReached = Math.max(currentIndex + 1, maxIndexReached)
-      if (newMaxIndexReached > maxIndexReached) {
-        const newArtwork = artworks[newMaxIndexReached]
-        trackEvent(tracks.swipedToNewArtwork(newArtwork.internalID, newArtwork.slug))
+  //     // because when swiping, we iterate over the array of artworks, and we want to track only
+  //     // unique artworks, we need to track the max index reached
+  //     const newMaxIndexReached = Math.max(currentIndex + 1, maxIndexReached)
+  //     if (newMaxIndexReached > maxIndexReached) {
+  //       const newArtwork = artworks[newMaxIndexReached]
+  //       trackEvent(tracks.swipedToNewArtwork(newArtwork.internalID, newArtwork.slug))
 
-        commitMutation({
-          variables: {
-            input: {
-              artworkId: artworks[newMaxIndexReached].internalID,
-            },
-          },
-          onError: (error) => {
-            if (__DEV__) {
-              console.error(error)
-            } else {
-              captureMessage(`useCreateUserSeenArtwork ${error?.message}`)
-            }
-          },
-        })
-      }
-      setMaxIndexReached(newMaxIndexReached)
-    }
+  //       commitMutation({
+  //         variables: {
+  //           input: {
+  //             artworkId: artworks[newMaxIndexReached].internalID,
+  //           },
+  //         },
+  //         onError: (error) => {
+  //           if (__DEV__) {
+  //             console.error(error)
+  //           } else {
+  //             captureMessage(`useCreateUserSeenArtwork ${error?.message}`)
+  //           }
+  //         },
+  //       })
+  //     }
+  //     setMaxIndexReached(newMaxIndexReached)
+  //   }
 
-    // fetch more artworks when the user is about to reach the end of the list
-    if (currentIndex === artworks.length - REFETCH_BUFFER) {
-      fetchMoreArtworks(unswipedCardIds)
-    }
-  }, [currentIndex, artworks.length, fetchMoreArtworks])
+  //   // fetch more artworks when the user is about to reach the end of the list
+  //   if (currentIndex === artworks.length - REFETCH_BUFFER) {
+  //     fetchMoreArtworks(unswipedCardIds)
+  //   }
+  // }, [currentIndex, artworks.length, fetchMoreArtworks])
 
-  const handleCardWhiffedRight = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1)
-    }
-  }
+  // const handleCardWhiffedRight = () => {
+  //   if (currentIndex > 0) {
+  //     setCurrentIndex(currentIndex - 1)
+  //   }
+  // }
 
   const handleFetchMore = useCallback(() => {
     fetchMoreArtworks(unswipedCardIds)
