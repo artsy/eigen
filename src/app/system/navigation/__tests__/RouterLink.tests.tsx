@@ -5,7 +5,7 @@ import { RouterLink, RouterLinkProps } from "app/system/navigation/RouterLink"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useEffect } from "react"
-import { View } from "react-native"
+import { TouchableWithoutFeedback, View } from "react-native"
 
 jest.mock("app/utils/queryPrefetching", () => ({
   usePrefetch: () => mockPrefetch,
@@ -17,6 +17,7 @@ jest.mock("app/utils/Sentinel", () => ({
 }))
 
 describe("RouterLink", () => {
+  const touchableOnPress = jest.fn()
   beforeAll(() => {
     __globalStoreTestUtils__?.injectFeatureFlags({
       AREnableViewPortPrefetching: true,
@@ -27,11 +28,21 @@ describe("RouterLink", () => {
     jest.clearAllMocks()
   })
 
-  const TestComponent = (props: RouterLinkProps) => (
+  const TestComponent = (props: Partial<RouterLinkProps>) => (
     <RouterLink to="/test-route" navigationProps={{ id: "test-id" }} {...props}>
       <Text>Test Link</Text>
     </RouterLink>
   )
+
+  const TestTouchableComponent = (props: Partial<RouterLinkProps>) => {
+    return (
+      <RouterLink to="/test-route" navigationProps={{ id: "test-id" }} {...props}>
+        <TouchableWithoutFeedback onPress={touchableOnPress}>
+          <Text>Test Link</Text>
+        </TouchableWithoutFeedback>
+      </RouterLink>
+    )
+  }
 
   it("renders", () => {
     renderWithWrappers(<TestComponent />)
@@ -56,6 +67,25 @@ describe("RouterLink", () => {
 
     expect(navigate).toHaveBeenCalledExactlyOnceWith("/test-route", {
       passProps: { id: "test-id" },
+    })
+  })
+
+  describe("given a children with touchable element", () => {
+    it("navigates given hasChildTouchable", () => {
+      renderWithWrappers(<TestTouchableComponent hasChildTouchable />)
+
+      fireEvent.press(screen.getByText("Test Link"))
+
+      expect(navigate).toHaveBeenCalled()
+    })
+
+    it("does not navigate", () => {
+      renderWithWrappers(<TestTouchableComponent />)
+
+      fireEvent.press(screen.getByText("Test Link"))
+
+      expect(navigate).not.toHaveBeenCalled()
+      expect(touchableOnPress).toHaveBeenCalledTimes(1)
     })
   })
 

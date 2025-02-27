@@ -7,8 +7,7 @@ import { getSnapToOffsets } from "app/Scenes/CollectionsByCategory/CollectionsCh
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { PrefetchableLink } from "app/system/navigation/PrefetchableLink"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -49,7 +48,6 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
         section.contextModule as ContextModule,
         index
       )
-      navigate(card.href)
     }
   }
 
@@ -75,14 +73,14 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
 
               return (
                 <Flex minWidth={CHIP_WIDTH} key={`collectionChips-row-${index}`}>
-                  <PrefetchableLink to={item.href}>
+                  <RouterLink to={item.href} hasChildTouchable>
                     <Chip
                       key={item.href}
                       title={item.title}
                       subtitle={item.subtitle as string | undefined}
                       onPress={() => handleOnChipPress(item, index)}
                     />
-                  </PrefetchableLink>
+                  </RouterLink>
                 </Flex>
               )
             })}
