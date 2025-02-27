@@ -84,7 +84,7 @@ const ArtistListItem: React.FC<Props> = ({
   theme = "light",
 }) => {
   const color = useColor()
-  const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
+  const { is_followed, initials, href, name, nationality, birthday, deathday } = artist
 
   const tracking = useTracking()
 
@@ -177,7 +177,7 @@ const ArtistListItem: React.FC<Props> = ({
             mr={1}
             name={name}
             meta={meta}
-            imageUrl={image?.url ?? undefined}
+            imageUrl={artist.coverArtwork?.image?.url ?? artist.image?.url ?? undefined}
             initials={initials ?? undefined}
             avatarSize={avatarSize}
             RightButton={RightButton}
@@ -253,8 +253,11 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
       nationality
       birthday
       deathday
-      # TOFIX: we must use coverArtwork#image here instead, this replacement is fixing
-      # an Artist#coverImage got replaced by this component data with wrong data
+      coverArtwork {
+        image {
+          url(version: "small")
+        }
+      }
       image {
         url(version: "small")
       }

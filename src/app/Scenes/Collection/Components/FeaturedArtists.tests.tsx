@@ -25,6 +25,12 @@ const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQuery["rawResponse"][
           image: {
             url: "/some/resized/picasso/image/url",
           },
+          coverArtwork: {
+            id: "cover-artwork-picasso",
+            image: {
+              url: "https://example.com/picasso-cover.jpg"
+            }
+          },
           birthday: "1877",
           nationality: "American",
           is_followed: true,
@@ -39,6 +45,12 @@ const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQuery["rawResponse"][
           name: "Andy Warhol",
           image: {
             url: "/some/resized/warhol/image/url",
+          },
+          coverArtwork: {
+            id: "cover-artwork-warhol",
+            image: {
+              url: "https://example.com/warhol-cover.jpg"
+            }
           },
           birthday: "1947",
           nationality: "American",
@@ -55,6 +67,12 @@ const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQuery["rawResponse"][
           image: {
             url: "/some/resized/miro/image/url",
           },
+          coverArtwork: {
+            id: "cover-artwork-miro",
+            image: {
+              url: "https://example.com/miro-cover.jpg"
+            }
+          },
           birthday: "1877",
           nationality: "Spanish",
           is_followed: true,
@@ -70,6 +88,12 @@ const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQuery["rawResponse"][
           image: {
             url: "/some/resized/basquiat/image/url",
           },
+          coverArtwork: {
+            id: "cover-artwork-basquiat",
+            image: {
+              url: "https://example.com/basquiat-cover.jpg"
+            }
+          },
           birthday: "1960",
           nationality: "American",
           is_followed: false,
@@ -84,6 +108,12 @@ const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQuery["rawResponse"][
           name: "Kenny Scharf",
           image: {
             url: "/some/resized/scharf/image/url",
+          },
+          coverArtwork: {
+            id: "cover-artwork-scharf",
+            image: {
+              url: "https://example.com/scharf-cover.jpg"
+            }
           },
           birthday: "1958",
           nationality: "American",

@@ -74,6 +74,7 @@ export const AutosuggestSearchResult: React.FC<{
   const { queryRef } = useContext(SearchContext)
   const { trackEvent } = useTracking()
 
+
   const showNavigationButtons =
     showQuickNavigationButtons && !!result.statuses?.artworks && !!result.statuses?.auctionLots
 
@@ -131,7 +132,7 @@ export const AutosuggestSearchResult: React.FC<{
             alignItems="center"
           >
             <SearchResultImage
-              imageURL={result.imageUrl}
+              imageURL={result.coverArtwork?.imageUrl || result.imageUrl}
               initials={initials}
               resultType={resultType}
             />
