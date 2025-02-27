@@ -1,5 +1,10 @@
 import { SaleActiveBidItemTestsQuery } from "__generated__/SaleActiveBidItemTestsQuery.graphql"
-import { HighestBid, Outbid, ReserveNotMet } from "app/Scenes/MyBids/Components/BiddingStatuses"
+import {
+  HighestBid,
+  Outbid,
+  ReserveNotMet,
+  BiddingLiveNow,
+} from "app/Scenes/MyBids/Components/BiddingStatuses"
 import { navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -157,6 +162,28 @@ describe("SaleActiveBidItem", () => {
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
     expect(tree.root.findAllByType(Outbid)).toHaveLength(1)
+  })
+
+  it("renders BiddingLiveNow if the sale is in live bidding state", () => {
+    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+
+    const liveBiddingLot = {
+      ...lotStanding,
+      saleArtwork: {
+        sale: {
+          isLiveOpen: true,
+        },
+      },
+    }
+    const mockProps = {
+      Me: () => ({
+        lotStandings: [liveBiddingLot],
+      }),
+    }
+
+    resolveMostRecentRelayOperation(mockEnvironment, mockProps)
+
+    expect(tree.root.findAllByType(BiddingLiveNow)).toHaveLength(1)
   })
 
   it("renders the right bid count if the user has only 1 bid", () => {
