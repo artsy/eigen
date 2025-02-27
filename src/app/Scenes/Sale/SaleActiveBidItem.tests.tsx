@@ -164,12 +164,15 @@ describe("SaleActiveBidItem", () => {
     expect(tree.root.findAllByType(Outbid)).toHaveLength(1)
   })
 
-  it("renders BiddingLiveNow if the sale is in live bidding state", () => {
+  it("renders BiddingLiveNow and hides bids info if the sale is in live bidding state", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />)
 
     const liveBiddingLot = {
       ...lotStanding,
       saleArtwork: {
+        counts: {
+          bidderPositions: 1,
+        },
         sale: {
           isLiveOpen: true,
         },
@@ -183,6 +186,7 @@ describe("SaleActiveBidItem", () => {
 
     resolveMostRecentRelayOperation(mockEnvironment, mockProps)
 
+    expect(extractText(tree.root)).not.toContain("1 bid")
     expect(tree.root.findAllByType(BiddingLiveNow)).toHaveLength(1)
   })
 
