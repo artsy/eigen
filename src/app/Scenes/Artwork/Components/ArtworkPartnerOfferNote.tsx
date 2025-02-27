@@ -1,4 +1,4 @@
-import { Box, Flex, Text, useColor } from "@artsy/palette-mobile"
+import { Flex, Text, useColor } from "@artsy/palette-mobile"
 import { ArtworkPartnerOfferNote_artwork$key } from "__generated__/ArtworkPartnerOfferNote_artwork.graphql"
 import { ArtworkPartnerOfferNote_partnerOffer$key } from "__generated__/ArtworkPartnerOfferNote_partnerOffer.graphql"
 import { ImageBackground } from "react-native"
@@ -43,7 +43,7 @@ export const ArtworkPartnerOfferNote: React.FC<ArtworkPartnerOfferNoteProps> = (
         </Flex>
       )}
 
-      <Box>
+      <Flex flex={1}>
         <Text variant="sm-display" color="black100" fontWeight="bold">
           Note from the gallery
         </Text>
@@ -51,7 +51,7 @@ export const ArtworkPartnerOfferNote: React.FC<ArtworkPartnerOfferNoteProps> = (
         <Text variant="sm" color="black100">
           “{note}”
         </Text>
-      </Box>
+      </Flex>
     </Flex>
   )
 }
