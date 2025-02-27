@@ -45,8 +45,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const { trackEvent } = useTracking()
   const [commitMutation] = useCreateUserSeenArtwork()
 
-  const { addDisoveredArtworkId } = GlobalStore.actions.infiniteDiscovery
-
   const savedArtworksCount = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.savedArtworksCount
   )
@@ -113,9 +111,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 
   const handleCardSwiped = useCallback(() => {
     if (index < artworks.length - 1) {
-      const dismissedArtworkId = artworkCards[index].artworkId
-      addDisoveredArtworkId(dismissedArtworkId)
-
       trackEvent({
         action: ActionType.swipedInfiniteDiscoveryArtwork,
         context_module: ContextModule.infiniteDiscovery,
@@ -247,23 +242,16 @@ const InfiniteDiscoverySpinner: React.FC = () => (
 export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
   const [queryRef, loadQuery] = useQueryLoader<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery)
 
-  const discoveredArtworksIds = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.discoveredArtworkIds
-  )
   const { resetSavedArtworksCount } = GlobalStore.actions.infiniteDiscovery
 
   useEffect(() => {
     resetSavedArtworksCount()
   }, [])
 
-  /**
-   * This fetches the first batch of artworks. discoveredArtworksIds is omitted from the list of
-   * dependencies to prevent this from being called unnecessarily, since that list is updated when
-   * new artworks are fetched.
-   */
+  // This fetches the first batch of artworks.
   useEffect(() => {
     if (!queryRef) {
-      loadQuery({ excludeArtworkIds: discoveredArtworksIds })
+      loadQuery({ excludeArtworkIds: [] })
     }
   }, [loadQuery, queryRef])
 
@@ -272,7 +260,7 @@ export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
   }
 
   const fetchMoreArtworks = (undiscoveredArtworks: string[]) => {
-    loadQuery({ excludeArtworkIds: discoveredArtworksIds.concat(undiscoveredArtworks) })
+    loadQuery({ excludeArtworkIds: undiscoveredArtworks })
   }
 
   return <InfiniteDiscovery fetchMoreArtworks={fetchMoreArtworks} queryRef={queryRef} />
