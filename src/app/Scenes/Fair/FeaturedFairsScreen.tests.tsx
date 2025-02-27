@@ -39,6 +39,7 @@ describe("FeaturedFairsScreen", () => {
 
     expect(useTracking().trackEvent).toHaveBeenCalledWith({
       action: "tappedFairGroup",
+      context_module: "fairCard",
       context_screen_owner_type: "fairs",
       destination_screen_owner_id: "art-saloon-international",
       destination_screen_owner_slug: '<mock-value-for-field-"slug">',

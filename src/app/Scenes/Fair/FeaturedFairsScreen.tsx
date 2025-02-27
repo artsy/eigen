@@ -1,4 +1,4 @@
-import { ActionType, OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Screen, Spacer } from "@artsy/palette-mobile"
 import { FairCard_fair$data } from "__generated__/FairCard_fair.graphql"
 import { FeaturedFairsScreenQuery } from "__generated__/FeaturedFairsScreenQuery.graphql"
@@ -106,8 +106,7 @@ export const FeaturedFairsScreen: React.FC = withSuspense({
 export const tracks = {
   tapFair: (fairID: string, fairSlug: string) => ({
     action: ActionType.tappedFairGroup,
-    // TODO: Update context module
-    // context_module: ContextModule.featuredFairs,
+    context_module: ContextModule.fairCard,
     context_screen_owner_type: OwnerType.fairs,
     destination_screen_owner_type: OwnerType.fair,
     destination_screen_owner_id: fairID,
