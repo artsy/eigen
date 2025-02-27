@@ -5,11 +5,13 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { useState } from "react"
 import { GestureResponderEvent, TouchableOpacity } from "react-native"
+import { Variables } from "relay-runtime"
 
 interface RouterLinkProps {
   disablePrefetch?: boolean
   navigationProps?: Object
   to?: string | null | undefined
+  prefetchVariables?: Variables
 }
 
 /**
@@ -19,6 +21,7 @@ interface RouterLinkProps {
 export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   disablePrefetch,
   to,
+  prefetchVariables,
   onPress,
   navigationProps,
   ...restProps
@@ -44,7 +47,7 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
 
   const handleVisible = (isVisible: boolean) => {
     if (isPrefetchingEnabled && isVisible && !isPrefetched) {
-      prefetchUrl(to)
+      prefetchUrl(to, prefetchVariables)
       setIsPrefetched(true)
     }
   }

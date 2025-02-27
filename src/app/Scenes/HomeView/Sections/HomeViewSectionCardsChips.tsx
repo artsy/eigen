@@ -7,6 +7,7 @@ import { getSnapToOffsets } from "app/Scenes/CollectionsByCategory/CollectionsCh
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
+import { PrefetchableLink } from "app/system/navigation/PrefetchableLink"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -74,12 +75,14 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
 
               return (
                 <Flex minWidth={CHIP_WIDTH} key={`collectionChips-row-${index}`}>
-                  <Chip
-                    key={item.href}
-                    title={item.title}
-                    subtitle={item.subtitle as string | undefined}
-                    onPress={() => handleOnChipPress(item, index)}
-                  />
+                  <PrefetchableLink to={item.href}>
+                    <Chip
+                      key={item.href}
+                      title={item.title}
+                      subtitle={item.subtitle as string | undefined}
+                      onPress={() => handleOnChipPress(item, index)}
+                    />
+                  </PrefetchableLink>
                 </Flex>
               )
             })}
@@ -111,7 +114,7 @@ const fragment = graphql`
           entityType @required(action: NONE)
           title
           subtitle
-          href
+          href @required(action: NONE)
         }
       }
     }

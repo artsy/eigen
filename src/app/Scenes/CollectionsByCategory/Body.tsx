@@ -90,7 +90,7 @@ const BodyPlaceholder: React.FC = () => {
   )
 }
 
-const query = graphql`
+export const collectionsByCategoryQuery = graphql`
   query BodyCollectionsByCategoryQuery($category: String!) {
     viewer {
       ...BodyCollectionsByCategory_viewer @arguments(category: $category)
@@ -101,7 +101,7 @@ const query = graphql`
 export const BodyWithSuspense = withSuspense({
   Component: () => {
     const { params } = useRoute<CollectionsByCategoriesRouteProp>()
-    const data = useLazyLoadQuery<BodyCollectionsByCategoryQuery>(query, {
+    const data = useLazyLoadQuery<BodyCollectionsByCategoryQuery>(collectionsByCategoryQuery, {
       category: params.entityID,
     })
 

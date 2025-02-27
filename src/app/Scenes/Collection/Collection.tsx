@@ -120,7 +120,7 @@ export const CollectionContent: React.FC<CollectionProps> = ({ collection }) => 
 
 const CollectionQueryRenderer: React.FC<CollectionScreenProps> = ({ collectionID }) => {
   const data = useLazyLoadQuery<CollectionQuery>(
-    query,
+    collectionQuery,
     { collectionID },
     {
       networkCacheConfig: {
@@ -181,7 +181,7 @@ const CollectionPlaceholder: React.FC = () => {
   )
 }
 
-const query = graphql`
+export const collectionQuery = graphql`
   query CollectionQuery($collectionID: String!) @cacheable {
     collection: marketingCollection(slug: $collectionID) @principalField {
       ...Collection_collection

@@ -52,9 +52,9 @@ import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { CityFairListQueryRenderer } from "app/Scenes/City/CityFairList"
 import { CitySavedListQueryRenderer } from "app/Scenes/City/CitySavedList"
 import { CitySectionListQueryRenderer } from "app/Scenes/City/CitySectionList"
-import { CollectionScreen } from "app/Scenes/Collection/Collection"
+import { collectionQuery, CollectionScreen } from "app/Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
-import { CollectionsByCategoryCollectionRailQuery } from "app/Scenes/CollectionsByCategory/CollectionRail"
+import { collectionsByCategoryQuery } from "app/Scenes/CollectionsByCategory/Body"
 import { CollectionsByCategory } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
 import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import { FairScreen, FairScreenQuery } from "app/Scenes/Fair/Fair"
@@ -611,7 +611,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    queries: [CollectionsByCategoryCollectionRailQuery],
+    queries: [collectionsByCategoryQuery],
   },
   {
     path: "/collection/:collectionID",
@@ -622,6 +622,8 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    // TODO: add the query for the artworks grid
+    queries: [collectionQuery],
   },
   {
     path: "/collection/:collectionID/artists",

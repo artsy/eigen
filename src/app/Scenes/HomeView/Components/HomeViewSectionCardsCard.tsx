@@ -1,9 +1,9 @@
 import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
-import { Flex, Image, SkeletonBox, Text, Touchable, useSpace } from "@artsy/palette-mobile"
+import { Flex, Image, SkeletonBox, Text, useSpace } from "@artsy/palette-mobile"
 import { HomeViewSectionCardsCard_card$key } from "__generated__/HomeViewSectionCardsCard_card.graphql"
 import { HomeViewSectionCardsCard_section$key } from "__generated__/HomeViewSectionCardsCard_section.graphql"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
 
@@ -31,12 +31,20 @@ export const HomeViewSectionCardsCard: FC<HomeViewSectionCardsCardProps> = ({
     return null
   }
 
-  const handleCardPress = () => {
-    const href =
-      card?.entityType === OwnerType.collectionsCategory
-        ? `/collections-by-category/${card.title}?homeViewSectionId=${section.internalID}&entityID=${card.entityID}`
-        : card?.href
+  const href =
+    card?.entityType === OwnerType.collectionsCategory
+      ? `/collections-by-category/${card.entityID}`
+      : card?.href
+  const navigationProps =
+    card?.entityType === OwnerType.collectionsCategory
+      ? {
+          homeViewSectionId: section.internalID,
+          category: card.title,
+          entityID: card.entityID,
+        }
+      : undefined
 
+  const handleCardPress = () => {
     if (href) {
       tracking.tappedCardGroup(
         card.entityID,
@@ -45,12 +53,16 @@ export const HomeViewSectionCardsCard: FC<HomeViewSectionCardsCardProps> = ({
         section.contextModule as ContextModule,
         index
       )
-      navigate(href)
     }
   }
 
   return (
-    <Touchable onPress={handleCardPress}>
+    <RouterLink
+      to={href}
+      prefetchVariables={{ category: card.entityID }}
+      navigationProps={navigationProps}
+      onPress={handleCardPress}
+    >
       <Flex borderRadius={5} overflow="hidden">
         <Image src={card.image?.url as string} width={imageWidth} aspectRatio={IMAGE_RATIO} />
 
@@ -64,7 +76,7 @@ export const HomeViewSectionCardsCard: FC<HomeViewSectionCardsCardProps> = ({
           <Text variant="md">{card.title}</Text>
         </Flex>
       </Flex>
-    </Touchable>
+    </RouterLink>
   )
 }
 
