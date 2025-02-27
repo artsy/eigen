@@ -9,7 +9,6 @@ import {
   Touchable,
 } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
-import { FancySwiperArtworkCard } from "app/Components/FancySwiper/FancySwiper"
 import { useToast } from "app/Components/Toast/toastHook"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
@@ -72,11 +71,11 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
    * sends the first seen artwork to the server
    */
   useEffect(() => {
-    if (artworks.length > 0 && index === 0) {
+    if (artworks.length > 0 && currentIndex === 0) {
       commitMutation({
         variables: {
           input: {
-            artworkId: artworks[index].internalID,
+            artworkId: artworks[currentIndex].internalID,
           },
         },
         onError: (error) => {
