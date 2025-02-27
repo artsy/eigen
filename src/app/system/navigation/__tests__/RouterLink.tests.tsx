@@ -1,7 +1,7 @@
 import { Text } from "@artsy/palette-mobile"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { RouterLink } from "app/system/navigation/RouterLink"
+import { RouterLink, RouterLinkProps } from "app/system/navigation/RouterLink"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useEffect } from "react"
@@ -27,7 +27,7 @@ describe("RouterLink", () => {
     jest.clearAllMocks()
   })
 
-  const TestComponent = (props: any) => (
+  const TestComponent = (props: RouterLinkProps) => (
     <RouterLink to="/test-route" navigationProps={{ id: "test-id" }} {...props}>
       <Text>Test Link</Text>
     </RouterLink>
@@ -64,7 +64,15 @@ describe("RouterLink", () => {
       renderWithWrappers(<TestComponent />)
 
       await waitFor(() => {
-        expect(mockPrefetch).toHaveBeenCalledWith("/test-route")
+        expect(mockPrefetch).toHaveBeenCalledWith("/test-route", undefined)
+      })
+    })
+
+    it("prefetches given prefetchVariables", async () => {
+      renderWithWrappers(<TestComponent prefetchVariables={{ slug: "banksy" }} />)
+
+      await waitFor(() => {
+        expect(mockPrefetch).toHaveBeenCalledWith("/test-route", { slug: "banksy" })
       })
     })
 

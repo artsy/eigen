@@ -7,7 +7,7 @@ import { useState } from "react"
 import { GestureResponderEvent, TouchableOpacity } from "react-native"
 import { Variables } from "relay-runtime"
 
-interface RouterLinkProps {
+export interface RouterLinkProps {
   disablePrefetch?: boolean
   navigationProps?: Object
   to?: string | null | undefined

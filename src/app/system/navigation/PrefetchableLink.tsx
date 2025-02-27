@@ -4,7 +4,7 @@ import { usePrefetch } from "app/utils/queryPrefetching"
 import { FC, ReactElement, useRef } from "react"
 import { Variables } from "relay-runtime"
 
-interface PrefetchableLinkProps {
+export interface PrefetchableLinkProps {
   to: string
   prefetchVariables?: Variables
   children: ReactElement
