@@ -13,7 +13,7 @@ describe("FeaturedFairsScreen", () => {
     renderWithRelay({
       Query: () => ({
         viewer: {
-          fairsConnection: mockFairsConnection,
+          featuredFairs: mockFairsData,
         },
       }),
     })
@@ -28,7 +28,7 @@ describe("FeaturedFairsScreen", () => {
     renderWithRelay({
       Query: () => ({
         viewer: {
-          fairsConnection: mockFairsConnection,
+          featuredFairs: mockFairsData,
         },
       }),
     })
@@ -49,19 +49,10 @@ describe("FeaturedFairsScreen", () => {
   })
 })
 
-const mockFairsConnection = {
-  edges: [
-    {
-      node: {
-        internalID: "art-saloon-international",
-        name: "Art Saloon International",
-      },
-    },
-    {
-      node: {
-        internalID: "art-saloon-ii",
-        name: "Art Saloon II",
-      },
-    },
-  ],
-}
+const mockFairsData = [
+  { internalID: "art-saloon-international", name: "Art Saloon International" },
+  {
+    internalID: "art-saloon-ii",
+    name: "Art Saloon II",
+  },
+]

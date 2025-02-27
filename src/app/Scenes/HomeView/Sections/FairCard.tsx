@@ -52,9 +52,8 @@ export const FairCard: FC<FairCardProps> = ({
     <CardWithMetaData
       testId="featured-fair--card"
       isFluid={isFluid}
-      href={fair.slug}
-      imageURL={null} // TODO
-      threeUpImageLayout={
+      href={`/fair/${fair.slug}`}
+      imageComponent={
         <ThreeUpImageLayout
           imageURLs={artworkImageURLs}
           width={isFluid ? screenWidth / numColumns - 2 * space(2) : width}

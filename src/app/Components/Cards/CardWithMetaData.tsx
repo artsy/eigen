@@ -8,6 +8,7 @@ import {
   useTheme,
   Screen,
   useScreenDimensions,
+  Box,
 } from "@artsy/palette-mobile"
 import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
 import { RouterLink } from "app/system/navigation/RouterLink"
@@ -26,17 +27,17 @@ export const CARD_IMAGE_HEIGHT = 230
 interface CardWithMetaDataProps {
   isFluid?: boolean
   href: string | null | undefined
-  imageURL: string | null | undefined
+  imageURL?: string | null | undefined
+  imageComponent?: React.ReactNode
   title: string | null | undefined
   subtitle: string | null | undefined
   tag: string | null | undefined
   onPress?: (event: GestureResponderEvent) => void
   testId?: string
-  threeUpImageLayout?: React.ReactNode
 }
 
 export const CardWithMetaData: React.FC<CardWithMetaDataProps> = (props) => {
-  const { isFluid, href, imageURL, title, subtitle, tag, onPress, threeUpImageLayout } = props
+  const { isFluid, href, imageURL, title, subtitle, tag, onPress, imageComponent } = props
   const numColumns = useNumColumns()
 
   const { space } = useTheme()
@@ -44,7 +45,7 @@ export const CardWithMetaData: React.FC<CardWithMetaDataProps> = (props) => {
 
   const cardWidth = isFluid
     ? width / numColumns - 2 * space(2)
-    : threeUpImageLayout
+    : imageComponent
       ? CARD_WIDTH
       : CARD_IMAGE_WIDTH
 
@@ -52,9 +53,8 @@ export const CardWithMetaData: React.FC<CardWithMetaDataProps> = (props) => {
     <Flex width={cardWidth}>
       <RouterLink onPress={onPress} testID="article-card" to={href}>
         <Flex width={cardWidth} overflow="hidden">
-          {!!imageURL &&
-            !threeUpImageLayout &&
-            (isFluid ? (
+          {!!imageURL ? (
+            isFluid ? (
               <Image
                 src={imageURL}
                 // aspect ratio is fixed to 1.33 to match the old image aspect ratio
@@ -63,9 +63,13 @@ export const CardWithMetaData: React.FC<CardWithMetaDataProps> = (props) => {
               />
             ) : (
               <Image src={imageURL} width={CARD_IMAGE_WIDTH} height={CARD_IMAGE_HEIGHT} />
-            ))}
+            )
+          ) : !!imageComponent ? (
+            imageComponent
+          ) : (
+            <Box height={CARD_IMAGE_HEIGHT} width={CARD_IMAGE_WIDTH} />
+          )}
 
-          {!!threeUpImageLayout && !imageURL && threeUpImageLayout}
           <Spacer y={1} />
 
           {!!title && (
