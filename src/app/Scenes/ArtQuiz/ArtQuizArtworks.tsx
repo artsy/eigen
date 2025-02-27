@@ -186,7 +186,6 @@ const ArtQuizArtworksScreen = () => {
           cards={unswipedCards}
           onSwipeRight={() => handleSwipe("right")}
           onSwipeLeft={() => handleSwipe("left")}
-          topCardIndex={activeCardIndex}
         />
       </Screen.Body>
     </Screen>
