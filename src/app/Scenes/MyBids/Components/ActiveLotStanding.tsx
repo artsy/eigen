@@ -62,7 +62,8 @@ export const ActiveLotStanding = ({
               </Text>
             </Flex>
             <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
-              {saleArtwork?.isHighestBidder &&
+              {!sale.liveStartAt &&
+              saleArtwork?.isHighestBidder &&
               saleArtwork?.lotState?.reserveStatus === "ReserveNotMet" ? (
                 <ReserveNotMet />
               ) : saleArtwork?.isHighestBidder ? (
