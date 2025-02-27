@@ -20,7 +20,7 @@ import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { pluralize } from "app/utils/pluralize"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { ReactElement, useCallback, useEffect, useMemo, useState } from "react"
+import { Key, ReactElement, useCallback, useEffect, useMemo, useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -46,7 +46,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const [commitMutation] = useCreateUserSeenArtwork()
 
   const { addDisoveredArtworkId } = GlobalStore.actions.infiniteDiscovery
-  const [extraCards, setExtraCards] = useState<typeof _cards>(_cards)
 
   const savedArtworksCount = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.savedArtworksCount
@@ -65,7 +64,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
    */
   useEffect(() => {
     const newArtworks = extractNodes(data.discoverArtworks)
-    setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
+
+    setArtworks((previousArtworks) => newArtworks.concat(previousArtworks))
   }, [data, extractNodes, setArtworks])
 
   /**
@@ -96,7 +96,9 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     ))
   }, [artworks])
 
-  const unswipedCards: FancySwiperArtworkCard[] = artworkCards.slice(currentIndex)
+  const unswipedCardIds: string[] = artworkCards
+    .slice(currentIndex)
+    .map((card) => (card.key as Key).toString())
 
   const handleBackPressed = () => {
     if (currentIndex > 0) {
@@ -148,7 +150,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 
     // fetch more artworks when the user is about to reach the end of the list
     if (currentIndex === artworks.length - REFETCH_BUFFER) {
-      fetchMoreArtworks(unswipedCards.map((card) => card.artworkId))
+      fetchMoreArtworks(unswipedCardIds)
     }
   }, [currentIndex, artworks.length, fetchMoreArtworks])
 
@@ -158,9 +160,9 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     }
   }
 
-  const handleFetchMore = () => {
-    // TODO: implement fetch more
-  }
+  const handleFetchMore = useCallback(() => {
+    fetchMoreArtworks(unswipedCardIds)
+  }, [fetchMoreArtworks, unswipedCardIds])
 
   const handleExitPressed = () => {
     if (savedArtworksCount > 0) {
@@ -328,22 +330,3 @@ const tracks = {
     subject: "Tap here to navigate to your Saves area in your profile.",
   }),
 }
-
-const _cards = [
-  { color: "lightgreen", id: "5" },
-  { color: "yellow", id: "4" },
-  { color: "orange", id: "3" },
-  { color: "lightblue", id: "2" },
-  { color: "violet", id: "1" },
-]
-
-const getRandomCards = (lastId: number): typeof _cards => {
-  const numberOfCards = 5
-  const cards = [0, 0, 0, 0, 0].map((_, i) => ({
-    color: colors[Math.floor(Math.random() * 4)],
-    id: (lastId + numberOfCards - i).toString(),
-  }))
-
-  return cards
-}
-const colors = ["lightgreen", "yellow", "orange", "lightblue", "violet"]
