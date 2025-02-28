@@ -77,7 +77,7 @@ describe("HomeViewSectionFairs", () => {
   it("tracks fairs taps properly", () => {
     renderWithRelay({
       HomeViewSectionFairs: () => ({
-        internalID: "home-view-section-fairs-for-you",
+        internalID: "home-view-section-featured-fairs",
         component: {
           title: "Featured Fairs",
           description: "The most exciting fairs in the world",
@@ -130,7 +130,7 @@ describe("HomeViewSectionFairs", () => {
   it("tracks view-all properly", async () => {
     renderWithRelay({
       HomeViewSectionFairs: () => ({
-        internalID: "home-view-section-fairs-for-you",
+        internalID: "home-view-section-featured-fairs",
         contextModule: "fairRail",
         component: {
           title: "Featured Fairs",
