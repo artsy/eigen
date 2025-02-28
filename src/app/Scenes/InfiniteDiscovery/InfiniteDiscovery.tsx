@@ -150,15 +150,16 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   /**
    * The callback for when a swiped card is brought back.
    * @param key The key of the card that was brought back.
+   * @param wasSwiped True if the card was swiped back, false if it was tapped back.
    */
-  const handleRewind = (key: Key) => {
+  const handleRewind = (key: Key, wasSwiped = true) => {
     const artwork = artworks.find((artwork) => artwork.internalID === key)
 
     if (!artwork) {
       return
     }
 
-    trackEvent(tracks.tappedRewind(artwork.internalID, artwork.slug))
+    trackEvent(tracks.tappedRewind(artwork.internalID, artwork.slug, wasSwiped ? "swipe" : "tap"))
 
     setTopArtworkId(artwork.internalID)
   }
@@ -343,12 +344,13 @@ const tracks = {
     action: ActionType.tappedClose,
     context_module: ContextModule.infiniteDiscovery,
   }),
-  tappedRewind: (artworkId: string, artworkSlug: string) => ({
+  tappedRewind: (artworkId: string, artworkSlug: string, mode: "swipe" | "tap") => ({
     action: ActionType.tappedRewind,
     context_module: ContextModule.infiniteDiscovery,
     context_screen_owner_id: artworkId,
     context_screen_owner_slug: artworkSlug,
     context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+    mode,
   }),
   tappedSummary: () => ({
     action: ActionType.tappedToast,

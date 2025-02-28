@@ -27,7 +27,7 @@ type SwiperProps = {
   cards: ReactElement<{ key: Key }>[]
   isRewindRequested: SharedValue<boolean>
   onNewCardReached?: (key: Key) => void
-  onRewind: (key: Key) => void
+  onRewind: (key: Key, wasSwiped?: boolean) => void
   onSwipe: (swipedKey: Key, nextKey: Key) => void
 } & (
   | { onTrigger?: never; swipedIndexCallsOnTrigger?: never }
@@ -90,7 +90,7 @@ export const Swiper: React.FC<SwiperProps> = ({
         })
 
         if (!!lastSwipedCardKey) {
-          runOnJS(onRewind)(lastSwipedCardKey as Key)
+          runOnJS(onRewind)(lastSwipedCardKey as Key, false)
         }
 
         isRewindRequested.value = false
