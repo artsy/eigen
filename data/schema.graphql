@@ -2893,6 +2893,13 @@ union ArtworkHighlight = Article | Show
 type ArtworkImport implements Node {
   # Columns to display for an import, will exist in a row's `transformedData`
   columns: [String!]!
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  createdBy: ArtworkImportCreatedBy
   currency: String
   fileName: String!
 
@@ -2924,6 +2931,15 @@ type ArtworkImportConnection {
   # Information to aid in pagination.
   pageInfo: PageInfo!
   totalCount: Int
+}
+
+type ArtworkImportCreatedBy {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  name: String
 }
 
 # An edge in a connection.
