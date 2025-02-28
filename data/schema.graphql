@@ -2913,6 +2913,7 @@ type ArtworkImport implements Node {
     after: String
     before: String
     blockersOnly: Boolean
+    createdOnly: Boolean
     errorTypes: [String!]
     first: Int
     hasErrors: Boolean
