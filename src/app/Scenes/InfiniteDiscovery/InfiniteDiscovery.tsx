@@ -99,15 +99,9 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     ))
   }, [artworks])
 
-  /**
-   * TODO: We commented this out to procrastinate on implementing the logic for this. However, it
-   * has a side-effect of fetching the unswiped cards when we request a new batch of artworks, which
-   * causes the card keys to be duplicated - FYI.
-   */
-  const unswipedCardIds: string[] = []
-  // const unswipedCardIds: string[] = artworkCards
-  //   .slice(currentIndex)
-  //   .map((card) => (card.key as Key).toString())
+  const currentIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
+  // TODO: stop reversing the array!
+  const unswipedCardIds = artworks.slice(0, currentIndex).map((artwork) => artwork.internalID)
 
   // TODO: bring this back
   const handleBackPressed = () => {
