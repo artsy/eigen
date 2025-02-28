@@ -103,6 +103,10 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   // TODO: stop reversing the array!
   const unswipedCardIds = artworks.slice(0, currentIndex).map((artwork) => artwork.internalID)
 
+  // TODO: the top card should be at artworks[0] - where is the deck of cards getting flipped?
+  const hideRewindButton =
+    !!artworks.length && topArtworkId === artworks[artworks.length - 1].internalID
+
   // TODO: bring this back
   const handleBackPressed = () => {
     // if (currentIndex > 0) {
@@ -208,10 +212,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     goBack()
   }
 
-  // TODO: the top card should be at artworks[0] - where is the deck of cards getting flipped?
-  const showRewindButton =
-    !!artworks.length && topArtworkId !== artworks[artworks.length - 1].internalID
-
   return (
     <Screen safeArea={false}>
       <Screen.Body fullwidth style={{ marginTop: insets.top }}>
@@ -228,7 +228,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
                 <ArrowBackIcon />
               </Touchable>
             }
-            hideLeftElements={showRewindButton}
+            hideLeftElements={hideRewindButton}
             rightElements={
               <Touchable
                 onPress={handleExitPressed}
