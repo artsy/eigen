@@ -3,24 +3,32 @@ import { navigate } from "app/system/navigation/navigate"
 import { Sentinel } from "app/utils/Sentinel"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { usePrefetch } from "app/utils/queryPrefetching"
-import { useState } from "react"
+import React, { useState } from "react"
 import { GestureResponderEvent, TouchableOpacity } from "react-native"
+import { Variables } from "relay-runtime"
 
-interface RouterLinkProps {
+export interface RouterLinkProps {
   disablePrefetch?: boolean
   navigationProps?: Object
   to?: string | null | undefined
+  // Indicates whether the child component is a touchable element, preventing duplicate touch handlers
+  hasChildTouchable?: boolean
+  prefetchVariables?: Variables
+  children: React.ReactNode
 }
 
 /**
- * Wrapper component around <Touchable> that navigates to a specified route (the `to` prop) when pressed.
- * `RouterLink` also supports prefetching the route when it comes into view.
+ * Wrapper component that enables navigation when pressed, using the `to` prop.
+ * It supports optional prefetching and ensures proper touch handling for nested touchable elements.
  */
 export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   disablePrefetch,
   to,
+  prefetchVariables,
   onPress,
   navigationProps,
+  children,
+  hasChildTouchable,
   ...restProps
 }) => {
   const [isPrefetched, setIsPrefetched] = useState(false)
@@ -44,7 +52,7 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
 
   const handleVisible = (isVisible: boolean) => {
     if (isPrefetchingEnabled && isVisible && !isPrefetched) {
-      prefetchUrl(to)
+      prefetchUrl(to, prefetchVariables)
       setIsPrefetched(true)
     }
   }
@@ -56,12 +64,27 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   }
 
   if (!isPrefetchingEnabled) {
-    return <TouchableOpacity {...touchableProps} />
+    return <TouchableOpacity {...touchableProps} children={children} />
+  }
+
+  if (!hasChildTouchable) {
+    return (
+      <Sentinel onChange={handleVisible}>
+        <TouchableOpacity {...touchableProps}>{children}</TouchableOpacity>
+      </Sentinel>
+    )
+  }
+
+  const cloneProps = {
+    onPress: handlePress,
+    ...restProps,
   }
 
   return (
     <Sentinel onChange={handleVisible}>
-      <TouchableOpacity {...touchableProps} />
+      {React.Children.map(children, (child) =>
+        React.isValidElement(child) ? React.cloneElement(child, cloneProps) : child
+      )}
     </Sentinel>
   )
 }

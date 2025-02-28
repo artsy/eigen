@@ -1,10 +1,10 @@
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { GlobalStore } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { Linking } from "react-native"
-import { navigate } from "./navigate"
 
-jest.unmock("./navigate")
+jest.unmock("../navigate")
 
 jest.mock("app/utils/hooks/useVisualClue", () => ({
   addClue: jest.fn(),

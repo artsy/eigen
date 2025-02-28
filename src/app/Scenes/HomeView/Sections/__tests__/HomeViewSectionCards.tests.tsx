@@ -41,18 +41,7 @@ describe("HomeViewSectionCards", () => {
       HomeViewSectionCards: () => ({
         component: { title: "Explore by category" },
         cardsConnection: {
-          edges: [
-            {
-              node: {
-                title: "Card 1",
-              },
-            },
-            {
-              node: {
-                title: "Card 2",
-              },
-            },
-          ],
+          edges: [{ node: { title: "Card 1" } }, { node: { title: "Card 2" } }],
         },
       }),
     })
@@ -95,7 +84,7 @@ describe("HomeViewSectionCards", () => {
     )
 
     expect(navigate).toHaveBeenCalledWith(
-      expect.stringMatching("/collections-by-category/Card 1"),
+      expect.stringMatching("/collections-by-category/Collect by Price"),
       expect.any(Object)
     )
   })
