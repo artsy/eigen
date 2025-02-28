@@ -15,6 +15,7 @@ const defaultSaleArtwork = {
     },
   },
   sale: {
+    isLiveOpen: false,
     endAt: "2020-08-05T15:00:00+00:00",
     status: "closed",
   },
@@ -56,19 +57,32 @@ describe(ActiveLotStanding, () => {
       expect(extractText(tree.root)).toContain("Highest bid")
     })
 
-    it("says 'Highest bid' if the user is winning the lot but the reserveStatus is ReserveNotMet in a Live Auction", () => {
+    it("says 'Highest bid' if the user is winning but reserveStatus is ReserveNotMet in auction with Live part", () => {
       const date = new Date()
       date.setDate(date.getDate() + 1)
       const tree = renderWithWrappersLEGACY(
         <ActiveLotStanding
           saleArtwork={saleArtworkFixture({
             isHighestBidder: true,
-            sale: { liveStartAt: date },
+            sale: { liveStartAt: date, isLiveOpen: false },
             lotState: { reserveStatus: "ReserveNotMet" },
           })}
         />
       )
       expect(extractText(tree.root)).toContain("Highest bid")
+    })
+
+    it("hides winning info if auction with Live part are in Live bidding", () => {
+      const tree = renderWithWrappersLEGACY(
+        <ActiveLotStanding
+          saleArtwork={saleArtworkFixture({
+            isHighestBidder: true,
+            sale: { liveStartAt: new Date(), isLiveOpen: true },
+            lotState: { reserveStatus: "ReserveNotMet" },
+          })}
+        />
+      )
+      expect(extractText(tree.root)).not.toContain("Highest bid")
     })
 
     it("says 'Reserve not met' if the user is winning the lot, but the reserveStatus is ReserveNotMet", () => {

@@ -16,6 +16,7 @@ const defaultSaleArtwork = {
     },
   },
   sale: {
+    isLiveOpen: false,
     endAt: "2020-08-05T15:00:00+00:00",
     status: "closed",
   },

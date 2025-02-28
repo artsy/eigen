@@ -54,6 +54,15 @@ export const Passed = () => (
   </Text>
 )
 
+export const BiddingLiveNow = () => (
+  <>
+    <Text variant="xs" color="blue100">
+      {" "}
+      Bidding live now
+    </Text>
+  </>
+)
+
 export const Watching = () => (
   <>
     <BookmarkFill />
