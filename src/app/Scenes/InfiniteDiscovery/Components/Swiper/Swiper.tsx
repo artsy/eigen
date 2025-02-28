@@ -8,6 +8,8 @@ import {
   Extrapolation,
   interpolate,
   runOnJS,
+  SharedValue,
+  useAnimatedReaction,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated"
@@ -23,6 +25,7 @@ import {
 
 type SwiperProps = {
   cards: ReactElement<{ key: Key }>[]
+  isRewindRequested: SharedValue<boolean>
   onNewCardReached?: (key: Key) => void
   onRewind: (key: Key) => void
   onSwipe: (swipedKey: Key, nextKey: Key) => void
@@ -33,6 +36,7 @@ type SwiperProps = {
 
 export const Swiper: React.FC<SwiperProps> = ({
   cards: _cards,
+  isRewindRequested,
   onNewCardReached,
   onRewind,
   onSwipe,
@@ -63,6 +67,36 @@ export const Swiper: React.FC<SwiperProps> = ({
       _activeIndex.value = _activeIndex.value + numberExtraCardsAdded
     }
   }, [cards.length, numberExtraCardsAdded])
+
+  useAnimatedReaction(
+    () => isRewindRequested.value,
+    (current, previous) => {
+      if (current && !previous) {
+        const hasSwipedCards = _activeIndex.value + 1 < cards.length
+
+        let lastSwipedCardKey = null
+
+        // TODO: clean up this minefield of if-statements
+        if (hasSwipedCards) {
+          lastSwipedCardKey = cards[_activeIndex.value + 1].key
+        }
+
+        swipedCardX.value = withTiming(0, { duration: 200, easing: Easing.linear }, () => {
+          if (hasSwipedCards) {
+            swipedKeys.value = swipedKeys.value.slice(0, -1)
+            _activeIndex.value = _activeIndex.value + 1
+          }
+          swipedCardX.value = -width
+        })
+
+        if (!!lastSwipedCardKey) {
+          runOnJS(onRewind)(lastSwipedCardKey as Key)
+        }
+
+        isRewindRequested.value = false
+      }
+    }
+  )
 
   const pan = Gesture.Pan()
     .onChange(({ translationX }) => {

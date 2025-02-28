@@ -21,6 +21,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { pluralize } from "app/utils/pluralize"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Key, ReactElement, useCallback, useEffect, useMemo, useState } from "react"
+import { useSharedValue } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -58,6 +59,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     [artworks, topArtworkId]
   )
 
+  const isRewindRequested = useSharedValue(false)
+
   const data = usePreloadedQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, queryRef)
 
   const insets = useSafeAreaInsets()
@@ -72,7 +75,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 
   useEffect(() => {
     if (!topArtworkId && artworks.length > 0) {
-      // TODO: this should be 0 - where is the deck of cards getting flipped?
+      // TODO: beware! the artworks are being displayed in reverse order
       setTopArtworkId(artworks[artworks.length - 1].internalID)
 
       // send the first seen artwork to the server
@@ -100,20 +103,16 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   }, [artworks])
 
   const currentIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
-  // TODO: stop reversing the array!
+  // TODO: beware! the artworks are being displayed in reverse order
   const unswipedCardIds = artworks.slice(0, currentIndex).map((artwork) => artwork.internalID)
 
-  // TODO: the top card should be at artworks[0] - where is the deck of cards getting flipped?
+  // TODO: beware! the artworks are being displayed in reverse order
   const hideRewindButton =
     !!artworks.length && topArtworkId === artworks[artworks.length - 1].internalID
 
-  // TODO: bring this back
   const handleBackPressed = () => {
-    // if (currentIndex > 0) {
-    //   const artworkToRewind = artworks[currentIndex - 1]
-    //   trackEvent(tracks.tappedRewind(artworkToRewind.internalID, artworkToRewind.slug))
-    //   setCurrentIndex((prev) => prev - 1)
-    // }
+    isRewindRequested.value = true
+    // TODO: trackEvent(tracks.tappedRewind(artworkToRewind.internalID, artworkToRewind.slug))
   }
 
   /**
@@ -244,6 +243,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         <Spacer y={1} />
         <Swiper
           cards={artworkCards}
+          isRewindRequested={isRewindRequested}
           onTrigger={handleFetchMore}
           swipedIndexCallsOnTrigger={2}
           onNewCardReached={handleNewCardReached}
