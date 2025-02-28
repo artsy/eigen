@@ -44,7 +44,13 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
   const viewAll = section.component?.behaviors?.viewAll
 
   const fairs = extractNodes(section.fairsConnection)
-  const href = viewAll && getHomeViewSectionHref(viewAll?.href, section)
+
+  let href = viewAll && getHomeViewSectionHref(viewAll?.href, section)
+
+  // Only apply the "Featured Fairs" href to the specific "Featured Fairs" section instance.
+  if (!href && section.internalID === "home-view-section-featured-fairs") {
+    href = "/featured-fairs"
+  }
 
   const onViewAllPress = () => {
     tracking.tappedFairGroupViewAll(
