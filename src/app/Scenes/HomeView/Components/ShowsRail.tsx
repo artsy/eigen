@@ -127,7 +127,7 @@ const showsFragment = graphql`
 
 export const tracks = {
   tappedHeader: () => ({
-    action: ActionType.tappedArtworkGroup,
+    action: ActionType.tappedShowGroup,
     context_module: ContextModule.showsRail,
     context_screen_owner_type: OwnerType.home,
     destination_screen_owner_type: OwnerType.show,
