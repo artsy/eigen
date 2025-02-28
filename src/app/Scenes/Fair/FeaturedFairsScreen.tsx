@@ -57,7 +57,7 @@ export const FeaturedFairs: React.FC<FeaturedFairsProps> = ({ viewer }) => {
                 </CardWithMetaDataListItem>
               )
             }}
-            style={{ paddingTop: 20 }}
+            style={{ marginTop: 20 }}
             ItemSeparatorComponent={() => <Spacer y={4} />}
             ListFooterComponent={<Spacer y={2} />}
           />
