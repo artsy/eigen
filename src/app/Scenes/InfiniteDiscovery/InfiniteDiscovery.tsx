@@ -12,6 +12,7 @@ import { captureMessage } from "@sentry/react-native"
 import { useToast } from "app/Components/Toast/toastHook"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
+import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { useCreateUserSeenArtwork } from "app/Scenes/InfiniteDiscovery/mutations/useCreateUserSeenArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -50,8 +51,12 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     (state) => state.infiniteDiscovery.savedArtworksCount
   )
 
-  const [currentIndex, setCurrentIndex] = useState(0)
   const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>([])
+  const [topArtworkId, setTopArtworkId] = useState<string | null>(null)
+  const topArtwork = useMemo(
+    () => artworks.find((artwork) => artwork.internalID === topArtworkId),
+    [artworks, topArtworkId]
+  )
 
   const data = usePreloadedQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, queryRef)
 
@@ -62,19 +67,19 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
    */
   useEffect(() => {
     const newArtworks = extractNodes(data.discoverArtworks)
-
     setArtworks((previousArtworks) => newArtworks.concat(previousArtworks))
   }, [data, extractNodes, setArtworks])
 
-  /**
-   * sends the first seen artwork to the server
-   */
   useEffect(() => {
-    if (artworks.length > 0 && currentIndex === 0) {
+    if (!topArtworkId && artworks.length > 0) {
+      // TODO: this should be 0 - where is the deck of cards getting flipped?
+      setTopArtworkId(artworks[artworks.length - 1].internalID)
+
+      // send the first seen artwork to the server
       commitMutation({
         variables: {
           input: {
-            artworkId: artworks[currentIndex].internalID,
+            artworkId: artworks[0].internalID,
           },
         },
         onError: (error) => {
@@ -94,16 +99,23 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     ))
   }, [artworks])
 
-  const unswipedCardIds: string[] = artworkCards
-    .slice(currentIndex)
-    .map((card) => (card.key as Key).toString())
+  /**
+   * TODO: We commented this out to procrastinate on implementing the logic for this. However, it
+   * has a side-effect of fetching the unswiped cards when we request a new batch of artworks, which
+   * causes the card keys to be duplicated - FYI.
+   */
+  const unswipedCardIds: string[] = []
+  // const unswipedCardIds: string[] = artworkCards
+  //   .slice(currentIndex)
+  //   .map((card) => (card.key as Key).toString())
 
+  // TODO: bring this back
   const handleBackPressed = () => {
-    if (currentIndex > 0) {
-      const artworkToRewind = artworks[currentIndex - 1]
-      trackEvent(tracks.tappedRewind(artworkToRewind.internalID, artworkToRewind.slug))
-      setCurrentIndex((prev) => prev - 1)
-    }
+    // if (currentIndex > 0) {
+    //   const artworkToRewind = artworks[currentIndex - 1]
+    //   trackEvent(tracks.tappedRewind(artworkToRewind.internalID, artworkToRewind.slug))
+    //   setCurrentIndex((prev) => prev - 1)
+    // }
   }
 
   /**
@@ -150,16 +162,31 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     }
 
     trackEvent(tracks.tappedRewind(artwork.internalID, artwork.slug))
+
+    setTopArtworkId(artwork.internalID)
   }
 
   /**
    * The callback for when a card is swiped away.
-   * @param swipedCardIndex The index of the card that was swiped away.
+   * @param swipedKey The key of the card that was swiped away.
+   * @param nextKey They key of the card under the card that was swiped away.
    */
-  const handleSwipe = (swipedCardIndex: number) => {
-    const swipedArtwork = artworks[swipedCardIndex]
+  const handleSwipe = (swipedKey: Key, nextKey: Key) => {
+    const swipedArtwork = artworks.find((artwork) => artwork.internalID === swipedKey)
+
+    if (!swipedArtwork) {
+      return
+    }
 
     trackEvent(tracks.swipedArtwork(swipedArtwork.internalID, swipedArtwork.slug))
+
+    const nextArtwork = artworks.find((artwork) => artwork.internalID === nextKey)
+
+    if (!nextArtwork) {
+      return
+    }
+
+    setTopArtworkId(nextArtwork.internalID)
   }
 
   const handleFetchMore = useCallback(() => {
@@ -187,6 +214,10 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     goBack()
   }
 
+  // TODO: the top card should be at artworks[0] - where is the deck of cards getting flipped?
+  const showRewindButton =
+    !!artworks.length && topArtworkId !== artworks[artworks.length - 1].internalID
+
   return (
     <Screen safeArea={false}>
       <Screen.Body fullwidth style={{ marginTop: insets.top }}>
@@ -203,7 +234,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
                 <ArrowBackIcon />
               </Touchable>
             }
-            hideLeftElements={currentIndex === 0}
+            hideLeftElements={showRewindButton}
             rightElements={
               <Touchable
                 onPress={handleExitPressed}
@@ -217,28 +248,21 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           />
         </Flex>
         <Spacer y={1} />
-        {/* <FancySwiper
-          cards={artworkCards}
-          topCardIndex={currentIndex}
-          hideActionButtons
-          onSwipeLeft={handleCardSwipedLeft}
-          onWhiffRight={handleCardWhiffedRight}
-        /> */}
         <Swiper
           cards={artworkCards}
           onTrigger={handleFetchMore}
-          swipedIndexCallsOnTrigger={3}
+          swipedIndexCallsOnTrigger={2}
           onNewCardReached={handleNewCardReached}
           onRewind={handleRewind}
           onSwipe={handleSwipe}
         />
 
-        {/* {!!artworks.length && (
+        {!!topArtwork && (
           <InfiniteDiscoveryBottomSheet
-            artworkID={artworks[currentIndex].internalID}
-            artistIDs={artworks[currentIndex].artists.map((data) => data?.internalID ?? "")}
+            artworkID={topArtwork.internalID}
+            artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
           />
-        )} */}
+        )}
       </Screen.Body>
     </Screen>
   )

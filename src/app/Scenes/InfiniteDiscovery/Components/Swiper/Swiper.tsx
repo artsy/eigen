@@ -25,7 +25,7 @@ type SwiperProps = {
   cards: ReactElement<{ key: Key }>[]
   onNewCardReached?: (key: Key) => void
   onRewind: (key: Key) => void
-  onSwipe: (index: number) => void
+  onSwipe: (swipedKey: Key, nextKey: Key) => void
 } & (
   | { onTrigger?: never; swipedIndexCallsOnTrigger?: never }
   | { onTrigger: (activeIndex: number) => void; swipedIndexCallsOnTrigger: number }
@@ -96,7 +96,7 @@ export const Swiper: React.FC<SwiperProps> = ({
 
       if (isSwipeLeft && !isLastCard && swipedCardKey) {
         const nextCardIndex = swipedCardIndex - 1
-        const nextCardKey = cards[nextCardIndex]?.key
+        const nextCardKey = cards[nextCardIndex]?.key as Key
 
         // if this is the first time that the user has navigated to this card, record it
         if (nextCardKey && !seenCardKeys.value.includes(nextCardKey) && onNewCardReached) {
@@ -113,7 +113,7 @@ export const Swiper: React.FC<SwiperProps> = ({
           return
         })
 
-        runOnJS(onSwipe)(swipedCardIndex)
+        runOnJS(onSwipe)(swipedCardKey, nextCardKey)
         return
       }
 
@@ -126,8 +126,13 @@ export const Swiper: React.FC<SwiperProps> = ({
       // Swipe right then brings the card back to the deck
       activeCardX.value = 0
       const hasSwipedCards = _activeIndex.value + 1 < cards.length
-      // TODO: exit early if there are no swiped cards
-      const lastSwipedCardKey = cards[_activeIndex.value + 1].key
+
+      let lastSwipedCardKey = null
+
+      // TODO: clean up this minefield of if-statements
+      if (hasSwipedCards) {
+        lastSwipedCardKey = cards[_activeIndex.value + 1].key
+      }
       swipedCardX.value = withTiming(0, { duration: 200, easing: Easing.linear }, () => {
         if (hasSwipedCards) {
           swipedKeys.value = swipedKeys.value.slice(0, -1)
@@ -135,7 +140,10 @@ export const Swiper: React.FC<SwiperProps> = ({
         }
         swipedCardX.value = -width
       })
-      runOnJS(onRewind)(lastSwipedCardKey as Key)
+
+      if (!!lastSwipedCardKey) {
+        runOnJS(onRewind)(lastSwipedCardKey as Key)
+      }
     })
 
   return (

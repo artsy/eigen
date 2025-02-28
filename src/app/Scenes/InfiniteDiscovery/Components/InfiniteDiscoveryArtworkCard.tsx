@@ -89,6 +89,9 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
         <Flex flexDirection="row" justifyContent="space-between" p={1} mx={2}>
           <Flex>
+            <Text color="blue" variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>
+              {artwork.internalID}
+            </Text>
             <Flex flexDirection="row" maxWidth={screenWidth - 200}>
               <Text
                 color="black60"

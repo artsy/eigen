@@ -66,7 +66,12 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
         {!queryRef ? (
           <InfiniteDiscoveryTabsSkeleton />
         ) : (
-          <InfiniteDiscoveryTabs queryRef={queryRef} onTabChange={handleOnTabChange} />
+          <InfiniteDiscoveryTabs
+            queryRef={queryRef}
+            onTabChange={handleOnTabChange}
+            // this key resets the state of the tabs when the artwork changes
+            key={`infinite_discovery_tabs_${artworkID}`}
+          />
         )}
       </BottomSheet>
     </>
