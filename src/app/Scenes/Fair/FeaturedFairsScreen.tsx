@@ -45,7 +45,6 @@ export const FeaturedFairs: React.FC<FeaturedFairsProps> = ({ viewer }) => {
         <Screen.StickySubHeader title="Featured Fairs" />
 
         <Screen.Body fullwidth>
-          <Spacer y={2} />
           <Screen.FlatList
             keyExtractor={(_item, index) => `fair-${index}`}
             numColumns={numColumns}
@@ -58,6 +57,7 @@ export const FeaturedFairs: React.FC<FeaturedFairsProps> = ({ viewer }) => {
                 </CardWithMetaDataListItem>
               )
             }}
+            style={{ marginTop: 20 }}
             ItemSeparatorComponent={() => <Spacer y={4} />}
             ListFooterComponent={<Spacer y={2} />}
           />

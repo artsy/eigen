@@ -35,7 +35,7 @@ describe("HomeViewSectionFairs", () => {
   it("renders nothing when there are no fairs", () => {
     const { toJSON } = renderWithRelay({
       HomeViewComponent: () => ({
-        title: "Fairs for You",
+        title: "Featured Fairs",
         desriptions: "The most exciting fairs in the world",
       }),
       FairConnection: () => ({
@@ -50,7 +50,7 @@ describe("HomeViewSectionFairs", () => {
   it("renders a list of fairs", () => {
     renderWithRelay({
       HomeViewComponent: () => ({
-        title: "Fairs for You",
+        title: "Featured Fairs",
         description: "The most exciting fairs in the world",
       }),
       FairConnection: () => ({
@@ -69,7 +69,7 @@ describe("HomeViewSectionFairs", () => {
       }),
     })
 
-    expect(screen.getByText("Fairs for You")).toBeOnTheScreen()
+    expect(screen.getByText("Featured Fairs")).toBeOnTheScreen()
     expect(screen.getByText(/Fair 1/)).toBeOnTheScreen()
     expect(screen.getByText(/Fair 2/)).toBeOnTheScreen()
   })
@@ -77,9 +77,9 @@ describe("HomeViewSectionFairs", () => {
   it("tracks fairs taps properly", () => {
     renderWithRelay({
       HomeViewSectionFairs: () => ({
-        internalID: "home-view-section-fairs-for-you",
+        internalID: "home-view-section-featured-fairs",
         component: {
-          title: "Fairs for You",
+          title: "Featured Fairs",
           description: "The most exciting fairs in the world",
         },
         fairsConnection: {
@@ -103,7 +103,7 @@ describe("HomeViewSectionFairs", () => {
       }),
     })
 
-    expect(screen.getByText("Fairs for You")).toBeOnTheScreen()
+    expect(screen.getByText("Featured Fairs")).toBeOnTheScreen()
     expect(screen.getByText(/Fair 1/)).toBeOnTheScreen()
     expect(screen.getByText(/Fair 2/)).toBeOnTheScreen()
 
@@ -125,5 +125,51 @@ describe("HomeViewSectionFairs", () => {
       `)
 
     expect(navigate).toHaveBeenCalledWith("/fair/fair-2-slug")
+  })
+
+  it("tracks view-all properly", async () => {
+    renderWithRelay({
+      HomeViewSectionFairs: () => ({
+        internalID: "home-view-section-featured-fairs",
+        contextModule: "fairRail",
+        component: {
+          title: "Featured Fairs",
+          description: "The most exciting fairs in the world",
+          behaviors: null,
+        },
+        fairsConnection: {
+          edges: [
+            {
+              node: {
+                internalID: "fair-1-id",
+                slug: "fair-1-slug",
+                name: "Fair 1",
+              },
+            },
+            {
+              node: {
+                internalID: "fair-2-id",
+                slug: "fair-2-slug",
+                name: "Fair 2",
+              },
+            },
+          ],
+        },
+      }),
+    })
+
+    fireEvent.press(screen.getByText("Featured Fairs"))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "tappedFairGroup",
+        context_module: "fairRail",
+        context_screen_owner_type: "home",
+        destination_screen_owner_type: '<mock-value-for-field-"ownerType">',
+        type: "viewAll",
+      })
+    )
+
+    expect(navigate).toHaveBeenCalledWith("/featured-fairs")
   })
 })
