@@ -9,18 +9,19 @@ import {
   Touchable,
 } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
-import { FancySwiper, FancySwiperArtworkCard } from "app/Components/FancySwiper/FancySwiper"
 import { useToast } from "app/Components/Toast/toastHook"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
+import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { useCreateUserSeenArtwork } from "app/Scenes/InfiniteDiscovery/mutations/useCreateUserSeenArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { pluralize } from "app/utils/pluralize"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { Key, ReactElement, useCallback, useEffect, useMemo, useState } from "react"
+import { useSharedValue } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -40,7 +41,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   fetchMoreArtworks,
   queryRef,
 }) => {
-  const REFETCH_BUFFER = 3
+  // const REFETCH_BUFFER = 3
   const toast = useToast()
   const { trackEvent } = useTracking()
   const [commitMutation] = useCreateUserSeenArtwork()
@@ -51,9 +52,14 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     (state) => state.infiniteDiscovery.savedArtworksCount
   )
 
-  const [index, setIndex] = useState(0)
-  const [maxIndexReached, setMaxIndexReached] = useState(index)
   const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>([])
+  const [topArtworkId, setTopArtworkId] = useState<string | null>(null)
+  const topArtwork = useMemo(
+    () => artworks.find((artwork) => artwork.internalID === topArtworkId),
+    [artworks, topArtworkId]
+  )
+
+  const isRewindRequested = useSharedValue(false)
 
   const data = usePreloadedQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, queryRef)
 
@@ -64,18 +70,19 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
    */
   useEffect(() => {
     const newArtworks = extractNodes(data.discoverArtworks)
-    setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
+    setArtworks((previousArtworks) => newArtworks.concat(previousArtworks))
   }, [data, extractNodes, setArtworks])
 
-  /**
-   * sends the first seen artwork to the server
-   */
   useEffect(() => {
-    if (artworks.length > 0 && index === 0) {
+    if (!topArtworkId && artworks.length > 0) {
+      // TODO: beware! the artworks are being displayed in reverse order
+      setTopArtworkId(artworks[artworks.length - 1].internalID)
+
+      // send the first seen artwork to the server
       commitMutation({
         variables: {
           input: {
-            artworkId: artworks[index].internalID,
+            artworkId: artworks[0].internalID,
           },
         },
         onError: (error) => {
@@ -89,77 +96,100 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     }
   }, [artworks])
 
-  const artworkCards: FancySwiperArtworkCard[] = useMemo(() => {
-    return artworks.map((artwork) => ({
-      content: <InfiniteDiscoveryArtworkCard artwork={artwork} key={artwork.internalID} />,
-      artworkId: artwork.internalID,
-    }))
+  const artworkCards: ReactElement[] = useMemo(() => {
+    return artworks.map((artwork) => (
+      <InfiniteDiscoveryArtworkCard artwork={artwork} key={artwork.internalID} />
+    ))
   }, [artworks])
 
-  const unswipedCards: FancySwiperArtworkCard[] = artworkCards.slice(index)
+  const currentIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
+  // TODO: beware! the artworks are being displayed in reverse order
+  const unswipedCardIds = artworks.slice(0, currentIndex).map((artwork) => artwork.internalID)
+
+  // TODO: beware! the artworks are being displayed in reverse order
+  const hideRewindButton =
+    !!artworks.length && topArtworkId === artworks[artworks.length - 1].internalID
 
   const handleBackPressed = () => {
-    if (index > 0) {
-      trackEvent({
-        action: ActionType.tappedRewind,
-        context_module: ContextModule.infiniteDiscovery,
-        context_screen_owner_id: artworks[index - 1]?.internalID,
-        context_screen_owner_slug: artworks[index - 1]?.slug,
-        context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
-      })
-      setIndex(index - 1)
-    }
+    isRewindRequested.value = true
+    // TODO: trackEvent(tracks.tappedRewind(artworkToRewind.internalID, artworkToRewind.slug))
   }
 
-  const handleCardSwiped = useCallback(() => {
-    if (index < artworks.length - 1) {
-      const dismissedArtworkId = artworkCards[index].artworkId
-      addDisoveredArtworkId(dismissedArtworkId)
+  /**
+   * The callack for when a card is displayed to the user for the first time.
+   * @param key The key of the new card.
+   */
+  const handleNewCardReached = (key: Key) => {
+    const artwork = artworks.find((artwork) => artwork.internalID === key)
 
-      trackEvent({
-        action: ActionType.swipedInfiniteDiscoveryArtwork,
-        context_module: ContextModule.infiniteDiscovery,
-        context_screen_owner_id: artworks[index].internalID,
-        context_screen_owner_slug: artworks[index].slug,
-        context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
-      })
-
-      // because when swiping, we iterate over the array of artworks, and we want to track only
-      // unique artworks, we need to track the max index reached
-      const newMaxIndexReached = Math.max(index + 1, maxIndexReached)
-      if (newMaxIndexReached > maxIndexReached) {
-        trackEvent({
-          action: ActionType.screen,
-          context_screen_owner_id: artworks[newMaxIndexReached].internalID,
-          context_screen_owner_slug: artworks[newMaxIndexReached].slug,
-          context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
-        })
-
-        commitMutation({
-          variables: {
-            input: {
-              artworkId: artworks[newMaxIndexReached].internalID,
-            },
-          },
-          onError: (error) => {
-            if (__DEV__) {
-              console.error(error)
-            } else {
-              captureMessage(`useCreateUserSeenArtwork ${error?.message}`)
-            }
-          },
-        })
-      }
-      setMaxIndexReached(newMaxIndexReached)
-
-      setIndex(index + 1)
+    if (!artwork) {
+      return
     }
 
-    // fetch more artworks when the user is about to reach the end of the list
-    if (index === artworks.length - REFETCH_BUFFER) {
-      fetchMoreArtworks(unswipedCards.map((card) => card.artworkId))
+    addDisoveredArtworkId(artwork.internalID)
+
+    trackEvent(tracks.displayedNewArtwork(artwork.internalID, artwork.slug))
+
+    // Tell the backend that the user has seen this artwork so that it doesn't show up again.
+    commitMutation({
+      variables: {
+        input: {
+          artworkId: artwork.internalID,
+        },
+      },
+      onError: (error) => {
+        if (__DEV__) {
+          console.error(error)
+        } else {
+          captureMessage(`useCreateUserSeenArtwork ${error?.message}`)
+        }
+      },
+    })
+  }
+
+  /**
+   * The callback for when a swiped card is brought back.
+   * @param key The key of the card that was brought back.
+   * @param wasSwiped True if the card was swiped back, false if it was tapped back.
+   */
+  const handleRewind = (key: Key, wasSwiped = true) => {
+    const artwork = artworks.find((artwork) => artwork.internalID === key)
+
+    if (!artwork) {
+      return
     }
-  }, [index, artworks.length, fetchMoreArtworks])
+
+    trackEvent(tracks.tappedRewind(artwork.internalID, artwork.slug, wasSwiped ? "swipe" : "tap"))
+
+    setTopArtworkId(artwork.internalID)
+  }
+
+  /**
+   * The callback for when a card is swiped away.
+   * @param swipedKey The key of the card that was swiped away.
+   * @param nextKey They key of the card under the card that was swiped away.
+   */
+  const handleSwipe = (swipedKey: Key, nextKey: Key) => {
+    const swipedArtwork = artworks.find((artwork) => artwork.internalID === swipedKey)
+
+    if (!swipedArtwork) {
+      return
+    }
+
+    trackEvent(tracks.swipedArtwork(swipedArtwork.internalID, swipedArtwork.slug))
+
+    const nextArtwork = artworks.find((artwork) => artwork.internalID === nextKey)
+
+    if (!nextArtwork) {
+      return
+    }
+
+    setTopArtworkId(nextArtwork.internalID)
+  }
+
+  const handleFetchMore = useCallback(() => {
+    fetchMoreArtworks(unswipedCardIds)
+  }, [fetchMoreArtworks, unswipedCardIds])
 
   const handleExitPressed = () => {
     if (savedArtworksCount > 0) {
@@ -168,12 +198,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         "bottom",
         {
           onPress: () => {
-            trackEvent({
-              action: ActionType.tappedToast,
-              context_module: ContextModule.infiniteDiscovery,
-              context_screen_owner_type: OwnerType.home,
-              subject: "Tap here to navigate to your Saves area in your profile.",
-            })
+            trackEvent(tracks.tappedSummary())
             navigate("/favorites/saves")
           },
           backgroundColor: "green100",
@@ -182,10 +207,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       )
     }
 
-    trackEvent({
-      action: ActionType.tappedClose,
-      context_module: ContextModule.infiniteDiscovery,
-    })
+    trackEvent(tracks.tappedExit())
 
     goBack()
   }
@@ -206,7 +228,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
                 <ArrowBackIcon />
               </Touchable>
             }
-            hideLeftElements={index === 0}
+            hideLeftElements={hideRewindButton}
             rightElements={
               <Touchable
                 onPress={handleExitPressed}
@@ -220,12 +242,20 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           />
         </Flex>
         <Spacer y={1} />
-        <FancySwiper cards={unswipedCards} hideActionButtons onSwipeAnywhere={handleCardSwiped} />
+        <Swiper
+          cards={artworkCards}
+          isRewindRequested={isRewindRequested}
+          onTrigger={handleFetchMore}
+          swipedIndexCallsOnTrigger={2}
+          onNewCardReached={handleNewCardReached}
+          onRewind={handleRewind}
+          onSwipe={handleSwipe}
+        />
 
-        {!!artworks.length && (
+        {!!topArtwork && (
           <InfiniteDiscoveryBottomSheet
-            artworkID={artworks[index].internalID}
-            artistIDs={artworks[index].artists.map((data) => data?.internalID ?? "")}
+            artworkID={topArtwork.internalID}
+            artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
           />
         )}
       </Screen.Body>
@@ -295,3 +325,37 @@ export const infiniteDiscoveryQuery = graphql`
     }
   }
 `
+
+const tracks = {
+  displayedNewArtwork: (artworkId: string, artworkSlug: string) => ({
+    action: ActionType.screen,
+    context_screen_owner_id: artworkId,
+    context_screen_owner_slug: artworkSlug,
+    context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+  }),
+  swipedArtwork: (artworkId: string, artworkSlug: string) => ({
+    action: ActionType.swipedInfiniteDiscoveryArtwork,
+    context_module: ContextModule.infiniteDiscovery,
+    context_screen_owner_id: artworkId,
+    context_screen_owner_slug: artworkSlug,
+    context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+  }),
+  tappedExit: () => ({
+    action: ActionType.tappedClose,
+    context_module: ContextModule.infiniteDiscovery,
+  }),
+  tappedRewind: (artworkId: string, artworkSlug: string, mode: "swipe" | "tap") => ({
+    action: ActionType.tappedRewind,
+    context_module: ContextModule.infiniteDiscovery,
+    context_screen_owner_id: artworkId,
+    context_screen_owner_slug: artworkSlug,
+    context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+    mode,
+  }),
+  tappedSummary: () => ({
+    action: ActionType.tappedToast,
+    context_module: ContextModule.infiniteDiscovery,
+    context_screen_owner_type: OwnerType.home,
+    subject: "Tap here to navigate to your Saves area in your profile.",
+  }),
+}

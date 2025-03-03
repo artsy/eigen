@@ -66,7 +66,12 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
         {!queryRef ? (
           <InfiniteDiscoveryTabsSkeleton />
         ) : (
-          <InfiniteDiscoveryTabs queryRef={queryRef} onTabChange={handleOnTabChange} />
+          <InfiniteDiscoveryTabs
+            queryRef={queryRef}
+            onTabChange={handleOnTabChange}
+            // this key resets the state of the tabs when the artwork changes
+            key={`infinite_discovery_tabs_${artworkID}`}
+          />
         )}
       </BottomSheet>
     </>
@@ -75,7 +80,7 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
 
 const { height } = Dimensions.get("screen")
 
-const SNAP_POINTS = [height * 0.1, height * 0.88]
+const SNAP_POINTS = [height * 0.15, height * 0.88]
 
 export const aboutTheWorkQuery = graphql`
   query InfiniteDiscoveryBottomSheetTabsQuery($id: String!, $artistIDs: [String!]!) {
