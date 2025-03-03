@@ -11,7 +11,6 @@ import {
 import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { compact } from "lodash"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
@@ -25,16 +24,9 @@ export const HomeViewSectionSalesItem: FC<HomeViewSectionSalesItemProps> = ({
   sale: saleProp,
   onPress,
 }) => {
-  const isArtworksConnectionEnabled = useFeatureFlag("AREnableArtworksConnectionForAuction")
   const sale = useFragment(fragment, saleProp)
 
-  let imageURLs
-
-  if (isArtworksConnectionEnabled) {
-    imageURLs = extractNodes(sale.artworksConnection, (artwork) => artwork.image?.url)
-  } else {
-    imageURLs = extractNodes(sale.saleArtworksConnection, (artwork) => artwork.artwork?.image?.url)
-  }
+  const imageURLs = extractNodes(sale.artworksConnection, (artwork) => artwork.image?.url)
 
   // Sales are expected to always have >= 2 artworks, but we should
   // still be cautious to avoid crashes if this assumption is broken.

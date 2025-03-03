@@ -55,12 +55,6 @@ export const features = {
     echoFlagKey: "AREnableEditorialNews",
     showInDevMenu: true,
   },
-  // TODO: need to refresh it before releasing to avoid leaking the feature in not ready releases, marked as ready since 15 months ago
-  AREnableArtworksConnectionForAuction: {
-    readyForRelease: true,
-    description: "Use artworksConnection for Auction screen",
-    echoFlagKey: "AREnableArtworksConnectionForAuction",
-  },
   ARImpressionsTrackingHomeRailViews: {
     description: "Enable tracking rail views on home screen",
     readyForRelease: true,
