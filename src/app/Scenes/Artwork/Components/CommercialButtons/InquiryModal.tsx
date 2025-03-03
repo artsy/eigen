@@ -16,7 +16,7 @@ import { LocationWithDetails } from "app/utils/googleMaps"
 import { useUpdateCollectorProfile } from "app/utils/mutations/useUpdateCollectorProfile"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useRef, useState } from "react"
-import { Modal, ScrollView } from "react-native"
+import { KeyboardAvoidingView, Modal, Platform, ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
@@ -107,92 +107,102 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
         statusBarTranslucent
         animationType="slide"
       >
-        <Screen>
-          <NavigationHeader
-            leftButtonText="Cancel"
-            onLeftButtonPress={handleDismiss}
-            rightButtonText="Send"
-            rightButtonDisabled={state.inquiryQuestions.length === 0 && message === ""}
-            onRightButtonPress={() => sendInquiry(message)}
-          >
-            Contact Gallery
-          </NavigationHeader>
-          {!!error && (
-            <Flex
-              bg="red100"
-              py={1}
-              alignItems="center"
-              position="absolute"
-              top={6}
-              width={1}
-              zIndex={5}
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <Screen>
+            <NavigationHeader
+              leftButtonText="Cancel"
+              onLeftButtonPress={handleDismiss}
+              rightButtonText="Send"
+              rightButtonDisabled={state.inquiryQuestions.length === 0 && message === ""}
+              onRightButtonPress={() => sendInquiry(message)}
             >
-              <Text variant="xs" color="white100">
-                Sorry, we were unable to send this message. Please try again.
-              </Text>
-            </Flex>
-          )}
-          <ScrollView ref={scrollViewRef}>
-            <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
-            <Box px={2}>
-              <Box my={2}>
-                <Text variant="sm">What information are you looking for?</Text>
-                {artwork.inquiryQuestions?.map((inquiryQuestion) => {
-                  if (!inquiryQuestion) {
-                    return false
-                  }
-                  const { internalID: id, question } = inquiryQuestion
-                  return id === InquiryQuestionIDs.Shipping ? (
-                    <InquiryQuestionOption
-                      key={id}
-                      id={id}
-                      question={question}
-                      setShippingModalVisibility={setShippingModalVisibility}
-                    />
-                  ) : (
-                    <InquiryQuestionOption key={id} id={id} question={question} />
-                  )
-                })}
-              </Box>
-              <Box
-                mb={4}
-                onLayout={({ nativeEvent }) => {
-                  setAddMessageYCoordinate(nativeEvent.layout.y)
-                }}
+              Contact Gallery
+            </NavigationHeader>
+            {!!error && (
+              <Flex
+                bg="red100"
+                py={1}
+                alignItems="center"
+                position="absolute"
+                top={6}
+                width={1}
+                zIndex={5}
               >
-                <Input
-                  multiline
-                  placeholder="Add a custom note..."
-                  title="Add message"
-                  accessibilityLabel="Add message"
-                  value={message ? message : ""}
-                  onChangeText={setMessage}
-                  onFocus={scrollToInput}
-                  style={{ justifyContent: "flex-start" }}
-                />
-              </Box>
-              <Box flexDirection="row">
-                <InfoCircleIcon mr={0.5} style={{ marginTop: 2 }} />
-                <Box flex={1}>
-                  <Text variant="xs" color="black60">
-                    By clicking send, we will share your profile with {artwork.partner?.name}.
-                    Update your profile at any time in{" "}
-                    <Text variant="xs" onPress={handleSettingsPress}>
-                      Settings
+                <Text variant="xs" color="white100">
+                  Sorry, we were unable to send this message. Please try again.
+                </Text>
+              </Flex>
+            )}
+            <ScrollView
+              ref={scrollViewRef}
+              contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
+              contentInsetAdjustmentBehavior="automatic"
+              keyboardShouldPersistTaps="handled"
+            >
+              <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
+              <Box px={2}>
+                <Box my={2}>
+                  <Text variant="sm">What information are you looking for?</Text>
+                  {artwork.inquiryQuestions?.map((inquiryQuestion) => {
+                    if (!inquiryQuestion) {
+                      return false
+                    }
+                    const { internalID: id, question } = inquiryQuestion
+                    return id === InquiryQuestionIDs.Shipping ? (
+                      <InquiryQuestionOption
+                        key={id}
+                        id={id}
+                        question={question}
+                        setShippingModalVisibility={setShippingModalVisibility}
+                      />
+                    ) : (
+                      <InquiryQuestionOption key={id} id={id} question={question} />
+                    )
+                  })}
+                </Box>
+                <Box
+                  mb={4}
+                  onLayout={({ nativeEvent }) => {
+                    setAddMessageYCoordinate(nativeEvent.layout.y)
+                  }}
+                >
+                  <Input
+                    multiline
+                    placeholder="Add a custom note..."
+                    title="Add message"
+                    accessibilityLabel="Add message"
+                    value={message ? message : ""}
+                    onChangeText={setMessage}
+                    onFocus={scrollToInput}
+                    style={{ justifyContent: "flex-start" }}
+                  />
+                </Box>
+                <Box flexDirection="row">
+                  <InfoCircleIcon mr={0.5} style={{ marginTop: 2 }} />
+                  <Box flex={1}>
+                    <Text variant="xs" color="black60">
+                      By clicking send, we will share your profile with {artwork.partner?.name}.
+                      Update your profile at any time in{" "}
+                      <Text variant="xs" onPress={handleSettingsPress}>
+                        Settings
+                      </Text>
+                      .
                     </Text>
-                    .
-                  </Text>
+                  </Box>
                 </Box>
               </Box>
-            </Box>
-          </ScrollView>
-          <ShippingModal
-            toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
-            modalIsVisible={shippingModalVisibility}
-            setLocation={selectShippingLocation}
-            location={state.shippingLocation}
-          />
-        </Screen>
+            </ScrollView>
+            <ShippingModal
+              toggleVisibility={() => setShippingModalVisibility(!shippingModalVisibility)}
+              modalIsVisible={shippingModalVisibility}
+              setLocation={selectShippingLocation}
+              location={state.shippingLocation}
+            />
+          </Screen>
+        </KeyboardAvoidingView>
       </Modal>
       <InquirySuccessNotification />
 
