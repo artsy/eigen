@@ -15,9 +15,9 @@ export const OfferSubmittedModal: React.FC = () => {
       setOfferData({ code: args.orderCode ?? "", message: args.message ?? "" })
       goBack()
       // Wait for the back animation to finish before showing the modal
-      InteractionManager.runAfterInteractions(() => {
+      setTimeout(() => {
         setVisible(true)
-      })
+      }, 2000)
     }
   )
 
