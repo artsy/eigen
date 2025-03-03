@@ -1205,4 +1205,24 @@ describe("App version Versions.AddInfiniteDiscoveryModel", () => {
       expect(migratedState.devicePrefs.forcedColorScheme).toEqual(undefined)
     })
   })
+
+  describe("App version Versions.RemoveDiscoveredArtworkIdsFromInfiniteDiscoveryModel", () => {
+    it("removes discoveredArtworkIds from infiniteDiscovery model", () => {
+      const migrationToTest = Versions.RemoveDiscoveredArtworkIdsFromInfiniteDiscoveryModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      previousState.infiniteDiscovery.discoveredArtworkIds = ["artwork-1", "artwork-2"]
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.infiniteDiscovery.discoveredArtworkIds).toBeUndefined()
+    })
+  })
 })
