@@ -32,7 +32,7 @@ import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { memo, RefObject, Suspense, useCallback, useEffect, useState } from "react"
-import { FlatList, Linking, RefreshControl } from "react-native"
+import { FlatList, Linking, RefreshControl, StatusBar } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const NUMBER_OF_SECTIONS_TO_LOAD = 10
@@ -196,9 +196,13 @@ export const HomeView: React.FC = memo(() => {
 const HomeViewScreenComponent: React.FC = () => {
   const artQuizState = GlobalStore.useAppState((state) => state.onboarding.onboardingArtQuizState)
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
+  const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+
   const showPlayground = useDevToggle("DTShowPlayground")
 
   const { isDeepLink } = useIsDeepLink()
+
+  StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content")
 
   useEffect(() => {
     if (artQuizState === "incomplete" && isNavigationReady) {
