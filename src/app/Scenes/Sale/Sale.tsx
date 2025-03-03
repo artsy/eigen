@@ -446,7 +446,6 @@ export const SaleQueryRenderer: React.FC<{
             query: SaleScreenBelowQuery,
             variables: {
               saleID,
-              // @ts-ignore
               input: {
                 sort: DEFAULT_SALE_ARTWORK_SORT.paramValue,
                 priceRange: "",
