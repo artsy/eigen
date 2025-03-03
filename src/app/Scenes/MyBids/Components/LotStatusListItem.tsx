@@ -27,7 +27,9 @@ const LotStatusListItem: React.FC<Props> = ({ saleArtwork, saleIsClosed }) => {
     return <WatchedLotFragmentContainer saleArtwork={saleArtwork} />
   }
 
-  const isComplete = completeStatuses.includes(saleArtwork.lotState?.soldStatus?.toLowerCase()!)
+  const isComplete = completeStatuses.includes(
+    saleArtwork.lotState?.soldStatus?.toLowerCase() || ""
+  )
 
   return isComplete ? (
     <ClosedLotStandingFragmentContainer saleArtwork={saleArtwork} />
