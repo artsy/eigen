@@ -44,7 +44,7 @@ export const Swiper: React.FC<SwiperProps> = ({
   swipedIndexCallsOnTrigger,
 }) => {
   const width = useScreenWidthWithOffset()
-  const [cards, setCards] = useState(_cards)
+  const [cards, setCards] = useState(_cards.reverse())
   const [numberExtraCardsAdded, setNumberExtraCardsAdded] = useState(0)
 
   const activeCardX = useSharedValue(0)
@@ -58,7 +58,7 @@ export const Swiper: React.FC<SwiperProps> = ({
   useEffect(() => {
     if (cards.length < _cards.length) {
       setNumberExtraCardsAdded(_cards.length - cards.length)
-      setCards(_cards)
+      setCards(_cards.reverse())
     }
   }, [_cards.length])
 

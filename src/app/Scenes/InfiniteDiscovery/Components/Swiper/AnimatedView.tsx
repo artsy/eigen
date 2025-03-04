@@ -1,14 +1,12 @@
 import { useScreenDimensions } from "@artsy/palette-mobile"
 import { useScreenWidthWithOffset } from "app/Scenes/InfiniteDiscovery/Components/Swiper/useScreenWidthWithOffset"
-import { FC, Key, ReactElement, useEffect, useState } from "react"
+import { FC, Key, ReactElement, useEffect } from "react"
 import { ViewStyle } from "react-native"
 import Animated, {
   Extrapolation,
   interpolate,
-  runOnJS,
   SharedValue,
   useAnimatedStyle,
-  useDerivedValue,
   useSharedValue,
 } from "react-native-reanimated"
 
@@ -32,7 +30,7 @@ export const AnimatedView: FC<AnimatedViewProps> = ({
 }) => {
   const { width: screenWidth } = useScreenDimensions()
   const width = useScreenWidthWithOffset()
-  const [visible, setVisible] = useState(true)
+  // const [visible, setVisible] = useState(true)
   const _index = useSharedValue(index)
 
   useEffect(() => {
@@ -152,28 +150,28 @@ export const AnimatedView: FC<AnimatedViewProps> = ({
   })
 
   // Needs to be defined before any call of runOnJS
-  const toggleVisible = (_visible: boolean) => {
-    if (visible === _visible) {
-      return
-    }
+  // const toggleVisible = (_visible: boolean) => {
+  //   if (visible === _visible) {
+  //     return
+  //   }
 
-    setVisible(_visible)
-  }
+  //   setVisible(_visible)
+  // }
 
-  // do not render more than 2 swiped cards for performance reasons
-  useDerivedValue(() => {
-    // do not render more than 2 swiped cards because of performance purposes
-    if (index > activeIndex.value + 2) {
-      runOnJS(toggleVisible)(false)
-      return
-    }
+  // // do not render more than 2 swiped cards for performance reasons
+  // useDerivedValue(() => {
+  //   // do not render more than 2 swiped cards because of performance purposes
+  //   if (index > activeIndex.value + 2) {
+  //     runOnJS(toggleVisible)(false)
+  //     return
+  //   }
 
-    runOnJS(toggleVisible)(true)
-  }, [swipedKeys.value])
+  //   runOnJS(toggleVisible)(true)
+  // }, [swipedKeys.value])
 
-  if (!visible) {
-    return null
-  }
+  // if (!visible) {
+  //   return null
+  // }
 
   return (
     <Animated.View

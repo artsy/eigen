@@ -73,13 +73,12 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
    */
   useEffect(() => {
     const newArtworks = extractNodes(data.discoverArtworks)
-    setArtworks((previousArtworks) => newArtworks.concat(previousArtworks))
+    setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
   }, [data, extractNodes, setArtworks])
 
   useEffect(() => {
     if (!topArtworkId && artworks.length > 0) {
-      // TODO: beware! the artworks are being displayed in reverse order
-      setTopArtworkId(artworks[artworks.length - 1].internalID)
+      setTopArtworkId(artworks[0].internalID)
 
       // send the first seen artwork to the server
       commitMutation({
@@ -106,12 +105,9 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   }, [artworks])
 
   const currentIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
-  // TODO: beware! the artworks are being displayed in reverse order
   const unswipedCardIds = artworks.slice(0, currentIndex).map((artwork) => artwork.internalID)
 
-  // TODO: beware! the artworks are being displayed in reverse order
-  const hideRewindButton =
-    !!artworks.length && topArtworkId === artworks[artworks.length - 1].internalID
+  const hideRewindButton = !!artworks.length && topArtworkId === artworks[0].internalID
 
   const handleBackPressed = () => {
     isRewindRequested.value = true
