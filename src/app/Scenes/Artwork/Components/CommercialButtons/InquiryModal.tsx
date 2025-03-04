@@ -15,7 +15,7 @@ import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { useUpdateCollectorProfile } from "app/utils/mutations/useUpdateCollectorProfile"
 import { Schema } from "app/utils/track"
-import React, { useCallback, useRef, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { KeyboardAvoidingView, Modal, Platform, ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -39,17 +39,26 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
   const [addMessageYCoordinate, setAddMessageYCoordinate] = useState<number>(0)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
 
-  const resetAndExit = () => {
-    setMessage(randomAutomatedMessage())
-    dispatch({ type: "resetForm", payload: null })
+  const exit = () => {
     dispatch({ type: "setInquiryModalVisible", payload: false })
   }
 
   const { sendInquiry, error } = useSendInquiry({
-    onCompleted: resetAndExit,
+    onCompleted: exit,
     artwork,
     me,
   })
+
+  useEffect(() => {
+    if (state.inquiryModalVisible) {
+      return
+    }
+
+    setTimeout(() => setMessage(randomAutomatedMessage()), 500)
+    if (state.shippingLocation || state.inquiryQuestions.length) {
+      dispatch({ type: "resetForm", payload: null })
+    }
+  }, [state.inquiryQuestions.length, state.shippingLocation, state.inquiryModalVisible])
 
   const scrollToInput = useCallback(() => {
     scrollViewRef.current?.scrollTo({ y: addMessageYCoordinate })
@@ -64,12 +73,12 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
 
   const handleSettingsPress = () => {
     navigate("my-profile/edit")
-    resetAndExit()
+    exit()
   }
 
   const handleDismiss = () => {
     tracking.trackEvent(tracks.dismissedTheModal(artwork.internalID, artwork.slug))
-    resetAndExit()
+    exit()
   }
 
   const handleProfilePromptDismiss = () => {
