@@ -54,14 +54,14 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
   const href = getHomeViewSectionHref(viewAll?.href, section)
 
   const onHeaderPress = () => {
-    tracking.tappedAuctionResultGroupViewAll(
+    tracking.tappedAuctionGroupViewAll(
       section.contextModule as ContextModule,
       viewAll?.ownerType as ScreenOwnerType
     )
   }
 
   const onViewAllPress = () => {
-    tracking.tappedAuctionResultGroupViewAll(
+    tracking.tappedAuctionGroupViewAll(
       section.contextModule as ContextModule,
       (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
     )
