@@ -15,7 +15,7 @@ import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSav
 import { GlobalStore } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
-import { memo, useState } from "react"
+import { memo } from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -58,8 +58,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       },
     })
 
-    const [isSaving, setIsSaving] = useState(false)
-
     if (!artwork) {
       return null
     }
@@ -74,9 +72,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     return (
       <Flex backgroundColor="white100" width="100%" style={{ borderRadius: 10 }}>
-        {/* main outer container */}
-
-        {/* artist name and avatar */}
         <Flex mx={2} my={1}>
           <ArtistListItemContainer
             artist={artwork.artists?.[0]}
@@ -87,15 +82,10 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             contextScreenOwnerSlug={artwork.slug}
           />
         </Flex>
-
-        {/* image itself */}
         <Flex alignItems="center" minHeight={MAX_ARTWORK_HEIGHT} justifyContent="center">
           {!!src && <Image src={src} height={size.height} width={size.width} />}
         </Flex>
-
-        {/* spaces out artwork data and save buttons section */}
         <Flex flexDirection="row" justifyContent="space-between" p={1} mx={2}>
-          {/* artwork data (internal ID, title, date, and sale message (price, etc)) */}
           <Flex>
             <Text color="blue" variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>
               {artwork.internalID}
@@ -116,18 +106,10 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             </Flex>
             <Text variant="sm-display">{artwork.saleMessage}</Text>
           </Flex>
-
-          {/* save button specifically and button logic */}
           <Touchable
             haptic
             hitSlop={{ bottom: 10, right: 10, left: 10, top: 10 }}
-            // onPress={saveArtworkToLists}
-            onPress={async () => {
-              if (isSaving) return
-              setIsSaving(true)
-              await saveArtworkToLists()
-              setIsSaving(false)
-            }}
+            onPress={saveArtworkToLists}
             testID="save-artwork-icon"
           >
             <Flex
@@ -137,23 +119,11 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               style={{
                 width: HEART_CIRCLE_SIZE + 40,
                 height: HEART_CIRCLE_SIZE,
-                borderRadius: (HEART_CIRCLE_SIZE + 30) / 2,
+                borderRadius: 30,
                 backgroundColor: color("black5"),
-                paddingHorizontal: 10,
               }}
             >
-              {/* when the artwork is saved */}
               {!!isSaved ? (
-                // <Flex
-                //   style={{
-                //     width: HEART_CIRCLE_SIZE,
-                //     height: HEART_CIRCLE_SIZE,
-                //     borderRadius: HEART_CIRCLE_SIZE,
-                //     backgroundColor: color("black50"),
-                //     justifyContent: "center",
-                //     alignItems: "center",
-                //   }}
-                // >
                 <HeartFillIcon
                   testID="filled-heart-icon"
                   height={HEART_ICON_SIZE}
@@ -161,26 +131,14 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                   fill="blue100"
                 />
               ) : (
-                // {/* </Flex> */}
-                // <Flex
-                //   style={{
-                //     width: HEART_CIRCLE_SIZE,
-                //     height: HEART_CIRCLE_SIZE,
-                //     borderRadius: HEART_CIRCLE_SIZE,
-                //     backgroundColor: color("black5"),
-                //     justifyContent: "center",
-                //     alignItems: "center",
-                //   }}
-                // >
                 <HeartIcon
                   testID="empty-heart-icon"
                   height={HEART_ICON_SIZE}
                   width={HEART_ICON_SIZE}
                   fill="black100"
                 />
-                // {/* </Flex> */}
               )}
-              <Text ml={0.5} variant="sm-display" color={isSaving ? "gray10" : "black100"}>
+              <Text ml={0.5} variant="sm-display">
                 {isSaved ? "Saved" : "Save"}
               </Text>
             </Flex>
