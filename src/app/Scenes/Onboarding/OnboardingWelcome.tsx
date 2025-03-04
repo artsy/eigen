@@ -150,7 +150,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           <Spacer y={1} />
 
           <Text variant="sm" color="white100">
-            Build your personalized profile, get market insights, buy and sell art with confidence.
+            Build your personalized profile, get market insights and buy art with confidence.
           </Text>
 
           <Spacer y={2} />
