@@ -1,6 +1,5 @@
-import { act, fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { goBack, switchTab } from "app/system/navigation/navigate"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { OfferSubmittedModal } from "./OfferSubmittedModal"
 
@@ -19,22 +18,30 @@ jest.mock("app/utils/useWebViewEvent", () => ({
 }))
 
 describe("OfferSubmittedModal", () => {
+  beforeEach(() => {
+    jest.useFakeTimers({ advanceTimers: true })
+  })
+
   afterEach(() => {
     jest.clearAllMocks()
+    jest.useRealTimers()
   })
 
   it("renders", async () => {
     renderWithWrappers(<OfferSubmittedModal />)
+
     act(() => callback?.({ orderCode: "1234", message: "Test message" }))
 
-    await flushPromiseQueue()
+    jest.advanceTimersByTime(2000)
 
-    expect(screen.getByText("Thank you, your offer has been submitted")).toBeTruthy()
+    await screen.findByText("Thank you, your offer has been submitted")
+
+    expect(screen.getByText("Thank you, your offer has been submitted")).toBeOnTheScreen()
     expect(
       screen.getByText("Negotiation with the gallery will continue in the Inbox.")
-    ).toBeTruthy()
-    expect(screen.getByText("Offer #1234")).toBeTruthy()
-    expect(screen.getByText("Test message")).toBeTruthy()
+    ).toBeOnTheScreen()
+    expect(screen.getByText("Offer #1234")).toBeOnTheScreen()
+    expect(screen.getByText("Test message")).toBeOnTheScreen()
     expect(goBack).toHaveBeenCalledTimes(1)
   })
 
@@ -42,11 +49,10 @@ describe("OfferSubmittedModal", () => {
     renderWithWrappers(<OfferSubmittedModal />)
     act(() => callback?.({ orderCode: "1234", message: "Test message" }))
 
-    await flushPromiseQueue()
-    fireEvent.press(screen.getAllByText("Go to inbox")[0])
+    jest.advanceTimersByTime(2000)
 
-    // Wait for modal dismissal
-    await flushPromiseQueue()
-    expect(switchTab).toHaveBeenCalledWith("inbox")
+    fireEvent.press(screen.getByText("Go to inbox"))
+
+    await waitFor(() => expect(switchTab).toHaveBeenCalledWith("inbox"))
   })
 })
