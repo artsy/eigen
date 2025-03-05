@@ -59,7 +59,7 @@ export const AuthBackground: React.FC = () => {
             // We want to show this text in white regardless of the theme to make sure it can be read clearly
             color="white"
           >
-            Build your personalized profile, get market insights, buy and sell art with confidence.
+            Build your personalized profile, get market insights and buy art with confidence.
           </Text>
 
           <Spacer y={2} />
