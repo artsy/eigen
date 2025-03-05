@@ -30,7 +30,14 @@ export const ArtistFollowButton: FC<ArtistFollowButtonProps> = ({ artist }) => {
       },
     })
 
-    trackEvent(tracks.trackFollowUnfollow(data.isFollowed, data.internalID, data.slug, analytics))
+    trackEvent(
+      tracks.trackFollowUnfollow({
+        analytics,
+        isFollowed: data.isFollowed,
+        internalID: data.internalID,
+        slug: data.slug,
+      })
+    )
   }
 
   return <FollowButton isFollowed={data.isFollowed} onPress={handleOnPress} loading={isInFlight} />
@@ -69,12 +76,17 @@ const query = graphql`
 `
 
 const tracks = {
-  trackFollowUnfollow: (
-    isFollowed: boolean,
-    internalID: string,
-    slug: string,
+  trackFollowUnfollow: ({
+    analytics,
+    isFollowed,
+    internalID,
+    slug,
+  }: {
+    isFollowed: boolean
+    internalID: string
+    slug: string
     analytics: AnalyticsContextProps
-  ) => ({
+  }) => ({
     action_name: isFollowed ? ActionNames.ArtistUnfollow : ActionNames.ArtistFollow,
     action_type: ActionTypes.Success,
     owner_id: internalID,
