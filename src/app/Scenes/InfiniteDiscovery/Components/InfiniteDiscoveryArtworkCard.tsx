@@ -15,17 +15,23 @@ import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSav
 import { GlobalStore } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
-import { memo } from "react"
+import { memo, useState } from "react"
+import { ViewStyle } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface InfiniteDiscoveryArtworkCardProps {
   artwork: InfiniteDiscoveryArtworkCard_artwork$key
+  scale: number
+  containerStyle?: ViewStyle
+  // This is only used for the onboarding animation
+  isSaved?: boolean
 }
 
 export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCardProps> = memo(
-  ({ artwork: artworkProp }) => {
+  ({ artwork: artworkProp, scale = 1, containerStyle, isSaved: isSavedProp }) => {
     const { width: screenWidth, height: screenHeight } = useScreenDimensions()
+    const imageWidth = screenWidth * scale
     const { trackEvent } = useTracking()
     const color = useColor()
     const { incrementSavedArtworksCount, decrementSavedArtworksCount } =
@@ -36,7 +42,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       artworkProp
     )
 
-    const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
+    const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
       artworkFragmentRef: artwork,
       onCompleted: (isArtworkSaved) => {
         trackEvent({
@@ -58,20 +64,24 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       },
     })
 
+    const isSaved = isSavedProp !== undefined ? isSavedProp : isSavedToArtworkList
+
+    console.log({ isSaved })
+
     if (!artwork) {
       return null
     }
 
-    const MAX_ARTWORK_HEIGHT = screenHeight * 0.55
+    const MAX_ARTWORK_HEIGHT = screenHeight * 0.55 * scale
 
     const src = artwork.images?.[0]?.url
     const width = artwork.images?.[0]?.width ?? 0
     const height = artwork.images?.[0]?.height ?? 0
 
-    const size = sizeToFit({ width, height }, { width: screenWidth, height: MAX_ARTWORK_HEIGHT })
+    const size = sizeToFit({ width, height }, { width: imageWidth, height: MAX_ARTWORK_HEIGHT })
 
     return (
-      <Flex backgroundColor="white100" width="100%" style={{ borderRadius: 10 }}>
+      <Flex backgroundColor="white100" width={imageWidth} style={containerStyle}>
         <Flex mx={2} my={1}>
           <ArtistListItemContainer
             artist={artwork.artists?.[0]}
@@ -90,7 +100,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             <Text color="blue" variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>
               {artwork.internalID}
             </Text>
-            <Flex flexDirection="row" maxWidth={screenWidth - 200}>
+            <Flex flexDirection="row" maxWidth={imageWidth - 200}>
               <Text
                 color="black60"
                 italic
