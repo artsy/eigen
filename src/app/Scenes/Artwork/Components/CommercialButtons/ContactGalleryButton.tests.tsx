@@ -1,6 +1,8 @@
+import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ContactGalleryButtonTestsQuery } from "__generated__/ContactGalleryButtonTestsQuery.graphql"
 import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
+import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Suspense } from "react"
@@ -90,9 +92,15 @@ describe("ContactGalleryButton", () => {
 
 const { renderWithRelay } = setupTestWrapper<ContactGalleryButtonTestsQuery>({
   Component: ({ artwork, me }) => (
-    <Suspense fallback={null}>
-      <ContactGalleryButton artwork={artwork} me={me} />
-    </Suspense>
+    <AnalyticsContextProvider
+      contextScreenOwnerType={OwnerType.artwork}
+      contextScreenOwnerId="artwork-id"
+      contextScreenOwnerSlug="artwork-slug"
+    >
+      <Suspense fallback={null}>
+        <ContactGalleryButton artwork={artwork} me={me} />
+      </Suspense>
+    </AnalyticsContextProvider>
   ),
   query: graphql`
     query ContactGalleryButtonTestsQuery @relay_test_operation {

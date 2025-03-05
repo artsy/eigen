@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Skeleton, SkeletonBox, SkeletonText, useColor } from "@artsy/palette-mobile"
 import { BottomSheetFooter, BottomSheetFooterProps } from "@gorhom/bottom-sheet"
 import {
@@ -13,6 +14,7 @@ import { ArtworkCommercialButtons } from "app/Scenes/Artwork/Components/ArtworkC
 import { ArtworkPrice } from "app/Scenes/Artwork/Components/ArtworkPrice"
 import { aboutTheWorkQuery } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { useBottomSheetAnimatedStyles } from "app/Scenes/InfiniteDiscovery/hooks/useBottomSheetAnimatedStyles"
+import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import {
   AuctionWebsocketChannelInfo,
   AuctionWebsocketContextProvider,
@@ -56,25 +58,35 @@ export const InfiniteDiscoveryBottomSheetFooter: FC<InfiniteDiscoveryBottomSheet
         ...reversedOpacityStyle,
       }}
     >
-      <Divider />
+      <AnalyticsContextProvider
+        contextModule={ContextModule.infiniteDiscovery}
+        contextScreenOwnerType={OwnerType.infiniteDiscoveryArtwork}
+        contextScreenOwnerId={artwork.internalID}
+        contextScreenOwnerSlug={artwork.slug}
+      >
+        <Divider />
 
-      <Flex p={2} gap={1} backgroundColor="white100">
-        <AuctionWebsocketContextProvider channelInfo={socketChannelInfo} enabled={websocketEnabled}>
-          <ArtworkStoreProvider
-            runtimeModel={{
-              ...artworkModel,
-              auctionState: initialAuctionTimer,
-            }}
+        <Flex p={2} gap={1} backgroundColor="white100">
+          <AuctionWebsocketContextProvider
+            channelInfo={socketChannelInfo}
+            enabled={websocketEnabled}
           >
-            <ArtworkPrice artwork={artwork} partnerOffer={partnerOffer as any} />
-            <ArtworkCommercialButtons
-              artwork={artwork}
-              me={me}
-              partnerOffer={partnerOffer as any}
-            />
-          </ArtworkStoreProvider>
-        </AuctionWebsocketContextProvider>
-      </Flex>
+            <ArtworkStoreProvider
+              runtimeModel={{
+                ...artworkModel,
+                auctionState: initialAuctionTimer,
+              }}
+            >
+              <ArtworkPrice artwork={artwork} partnerOffer={partnerOffer as any} />
+              <ArtworkCommercialButtons
+                artwork={artwork}
+                me={me}
+                partnerOffer={partnerOffer as any}
+              />
+            </ArtworkStoreProvider>
+          </AuctionWebsocketContextProvider>
+        </Flex>
+      </AnalyticsContextProvider>
     </BottomSheetFooter>
   )
 }
@@ -83,6 +95,9 @@ const artworkFragment = graphql`
   fragment InfiniteDiscoveryBottomSheetFooter_artwork on Artwork {
     ...ArtworkPrice_artwork
     ...ArtworkCommercialButtons_artwork
+
+    internalID
+    slug
 
     isInAuction
     sale {

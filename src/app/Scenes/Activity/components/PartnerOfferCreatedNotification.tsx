@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import {
   DEFAULT_HIT_SLOP,
   Flex,
@@ -15,6 +16,7 @@ import {
 import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
 import { CommercialButtonsQueryRenderer } from "app/Scenes/Activity/components/NotificationCommercialButtons"
 import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBadge"
+import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { getTimer } from "app/utils/getTimer"
@@ -59,91 +61,102 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
 
   const note = item?.partnerOffer?.note
   const artworks = extractNodes(artworksConnection)
+  const artwork = artworks[0]
 
-  const partnerIcon = artworks[0]?.partner?.profile?.icon?.url
+  const partnerIcon = artwork.partner?.profile?.icon?.url
 
   const handleManageSaves = () => {
     navigate("/favorites/saves")
   }
 
   return (
-    <Screen>
-      <Screen.Header
-        onBack={goBack}
-        title="Offers"
-        rightElements={
-          isOfferFromSaves ? (
-            <Touchable haptic="impactLight" onPress={handleManageSaves} hitSlop={DEFAULT_HIT_SLOP}>
-              <Text variant="xs">Manage Saves</Text>
-            </Touchable>
-          ) : null
-        }
-      />
-      <Screen.Body fullwidth scroll>
-        <Flex mt={2} mb={4}>
-          <Flex mx={2}>
-            <PartnerOfferBadge notificationType={notificationType} />
+    <AnalyticsContextProvider
+      contextScreenOwnerId={artwork.internalID}
+      contextScreenOwnerSlug={artwork.slug}
+      contextScreenOwnerType={OwnerType.notification}
+    >
+      <Screen>
+        <Screen.Header
+          onBack={goBack}
+          title="Offers"
+          rightElements={
+            isOfferFromSaves ? (
+              <Touchable
+                haptic="impactLight"
+                onPress={handleManageSaves}
+                hitSlop={DEFAULT_HIT_SLOP}
+              >
+                <Text variant="xs">Manage Saves</Text>
+              </Touchable>
+            ) : null
+          }
+        />
+        <Screen.Body fullwidth scroll>
+          <Flex mt={2} mb={4}>
+            <Flex mx={2}>
+              <PartnerOfferBadge notificationType={notificationType} />
 
-            <Spacer y={0.5} />
+              <Spacer y={0.5} />
 
-            <Text variant="lg-display">{headline}</Text>
+              <Text variant="lg-display">{headline}</Text>
 
-            <Spacer y={0.5} />
+              <Spacer y={0.5} />
 
-            <Text variant="sm-display">{subtitle}</Text>
+              <Text variant="sm-display">{subtitle}</Text>
 
-            <Spacer y={0.5} />
+              <Spacer y={0.5} />
 
-            {/* @ts-ignore: fix ExpiresInTimer fragment data */}
-            {shouldDisplayExpiresInTimer(notificationType, item) && <ExpiresInTimer item={item} />}
+              {/* @ts-ignore: fix ExpiresInTimer fragment data */}
+              {shouldDisplayExpiresInTimer(notificationType, item) && <ExpiresInTimer item={item} />}
 
-            <Spacer y={2} />
-          </Flex>
+              <Spacer y={2} />
+            </Flex>
 
-          <NotificationArtworkList
-            artworksConnection={artworksConnection}
-            priceOfferMessage={{
-              priceListedMessage: artworks[0]?.price || "Not publicly listed",
-              priceWithDiscountMessage: item?.partnerOffer?.priceWithDiscount?.display || "",
-            }}
-            partnerOffer={item?.partnerOffer}
-          />
+            <NotificationArtworkList
+              artworksConnection={artworksConnection}
+              priceOfferMessage={{
+                priceListedMessage: artwork.price || "Not publicly listed",
+                priceWithDiscountMessage: item?.partnerOffer?.priceWithDiscount?.display || "",
+              }}
+              partnerOffer={item?.partnerOffer}
+            />
 
-          <CommercialButtonsQueryRenderer
-            artworkID={extractNodes(artworksConnection)[0]?.internalID}
-            partnerOffer={item?.partnerOffer}
-          />
+            <CommercialButtonsQueryRenderer
+              artworkID={artwork.internalID}
+              partnerOffer={item?.partnerOffer}
+            />
 
-          {!!item?.partnerOffer?.note && (
-            <Flex width="100%" flexDirection="row" p={2}>
-              <Flex width="100%" flexDirection="row" bg="black5" p={1}>
-                {!!partnerIcon && (
-                  <Flex mr={1}>
-                    <ImageBackground
-                      source={{ uri: partnerIcon }}
-                      style={{ width: 30, height: 30 }}
-                      imageStyle={{
-                        borderRadius: 15,
-                        borderColor: color("black30"),
-                        borderWidth: 1,
-                      }}
-                    />
+            {!!item?.partnerOffer?.note && (
+              <Flex width="100%" flexDirection="row" p={2}>
+                <Flex width="100%" flexDirection="row" bg="black5" p={1}>
+                  {!!partnerIcon && (
+                    <Flex mr={1}>
+                      <ImageBackground
+                        source={{ uri: partnerIcon }}
+                        style={{ width: 30, height: 30 }}
+                        imageStyle={{
+                          borderRadius: 15,
+                          borderColor: color("black30"),
+                          borderWidth: 1,
+                        }}
+                      />
+                    </Flex>
+                  )}
+                  <Flex flex={1}>
+                    <Text variant="sm" color="black100" fontWeight="bold">
+                      Note from the gallery
+                    </Text>
+                    <Text variant="sm" color="black100">
+                      "{note}"
+                    </Text>
                   </Flex>
-                )}
-                <Flex flex={1}>
-                  <Text variant="sm" color="black100" fontWeight="bold">
-                    Note from the gallery
-                  </Text>
-                  <Text variant="sm" color="black100">
-                    "{note}"
-                  </Text>
                 </Flex>
               </Flex>
-            </Flex>
-          )}
-        </Flex>
-      </Screen.Body>
-    </Screen>
+            )}
+          </Flex>
+        </Screen.Body>
+      </Screen>
+    </AnalyticsContextProvider>
   )
 }
 
@@ -173,6 +186,7 @@ export const PartnerOfferCreatedNotificationFragment = graphql`
       edges {
         node {
           internalID
+          slug
           partner(shallow: true) {
             profile {
               icon {

@@ -1,9 +1,10 @@
-import { ActionType, OwnerType, TappedContactGallery } from "@artsy/cohesion"
+import { ActionType } from "@artsy/cohesion"
 import { ButtonProps, Button } from "@artsy/palette-mobile"
 import { ContactGalleryButton_artwork$key } from "__generated__/ContactGalleryButton_artwork.graphql"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { InquiryModal } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryModal"
+import { AnalyticsContextProps, useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import {
   ArtworkInquiryContext,
   ArtworkInquiryStateProvider,
@@ -29,6 +30,7 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
   const artworkData = useFragment(artworkFragment, artwork)
 
   const { trackEvent } = useTracking()
+  const analytics = useAnalyticsContext()
 
   return (
     <ArtworkInquiryStateProvider>
@@ -36,13 +38,7 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
         {({ dispatch }) => (
           <Button
             onPress={() => {
-              trackEvent(
-                tracks.trackTappedContactGallery(
-                  artworkData.internalID,
-                  artworkData.slug,
-                  artworkData.collectorSignals
-                )
-              )
+              trackEvent(tracks.trackTappedContactGallery(analytics, artworkData.collectorSignals))
               dispatch({ type: "setInquiryModalVisible", payload: true })
             }}
             haptic
@@ -57,24 +53,24 @@ export const ContactGalleryButton: React.FC<ContactGalleryButtonProps> = ({
   )
 }
 
+// TODO: I temporarily removed TappedContactGallery type because it lacks the `context_owner_type` and `context_module` fields
+// I should add them there first and bring back the time
 const tracks = {
   trackTappedContactGallery: (
-    artworkId: string,
-    artworkSlug: string,
+    analytics: AnalyticsContextProps,
     collectorSignals: CollectorSignals
-  ): TappedContactGallery => ({
+  ) => ({
     action: ActionType.tappedContactGallery,
-    context_owner_type: OwnerType.artwork,
-    context_owner_id: artworkId,
-    context_owner_slug: artworkSlug,
+    context_module: analytics.contextModule,
+    context_owner_type: analytics.contextScreenOwnerType,
+    context_owner_id: analytics.contextScreenOwnerId,
+    context_owner_slug: analytics.contextScreenOwnerSlug,
     ...getArtworkSignalTrackingFields(collectorSignals),
   }),
 }
 
 const artworkFragment = graphql`
   fragment ContactGalleryButton_artwork on Artwork {
-    internalID
-    slug
     collectorSignals {
       primaryLabel
       auction {

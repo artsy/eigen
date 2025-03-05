@@ -1,7 +1,8 @@
-import { ActionType, OwnerType } from "@artsy/cohesion"
+import { ActionType } from "@artsy/cohesion"
 import { Button, ButtonProps } from "@artsy/palette-mobile"
 import { MakeOfferButtonOrderMutation } from "__generated__/MakeOfferButtonOrderMutation.graphql"
 import { MakeOfferButton_artwork$data } from "__generated__/MakeOfferButton_artwork.graphql"
+import { useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { navigate } from "app/system/navigation/navigate"
 
 import React, { useState } from "react"
@@ -28,6 +29,7 @@ export const MakeOfferButton: React.FC<MakeOfferButtonProps> = (props) => {
     useState(false)
 
   const tracking = useTracking()
+  const analytics = useAnalyticsContext()
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   const onMutationError = (error) => {
@@ -53,8 +55,9 @@ export const MakeOfferButton: React.FC<MakeOfferButtonProps> = (props) => {
   const handleCreateOfferOrder = () => {
     tracking.trackEvent({
       action: ActionType.tappedMakeOffer,
-      context_owner_type: OwnerType.artwork,
-      context_owner_id: props.artwork.internalID,
+      context_owner_type: analytics.contextScreenOwnerType,
+      context_owner_id: analytics.contextScreenOwnerId,
+      context_owner_slug: analytics.contextScreenOwnerSlug,
     })
 
     const { relay, artwork, editionSetID, partnerOffer } = props

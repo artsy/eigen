@@ -10,6 +10,7 @@ import { BuyNowButton_artwork$key } from "__generated__/BuyNowButton_artwork.gra
 import { Toast } from "app/Components/Toast/Toast"
 import { useCreateOrder } from "app/Scenes/Artwork/hooks/useCreateOrder"
 import { usePartnerOfferMutation } from "app/Scenes/PartnerOffer/mutations/usePartnerOfferCheckoutMutation"
+import { AnalyticsContextProps, useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { navigate } from "app/system/navigation/navigate"
 import { getTimer } from "app/utils/getTimer"
 import { promptForReview } from "app/utils/promptForReview"
@@ -45,12 +46,12 @@ export const BuyNowButton = ({
   editionSetID,
   renderSaleMessage,
   buttonText,
-  source,
 }: BuyNowButtonProps) => {
   const [isCommittingCreateOrderMutation, setIsCommittingCreateOrderMutation] = useState(false)
 
   const { saleMessage, internalID, slug } = useFragment(artworkFragment, artwork)
   const { trackEvent } = useTracking()
+  const analytics = useAnalyticsContext()
 
   useSetWebViewCallback<{ orderCode: string; message: string }>("orderSuccessful", () => {
     setTimeout(() => {
@@ -159,19 +160,11 @@ export const BuyNowButton = ({
 
     try {
       if (partnerOffer && !partnerOfferTimer?.hasEnded) {
-        trackEvent(
-          tracks.tappedBuyNow(
-            slug,
-            internalID,
-            source === "notification" ? OwnerType.notification : OwnerType.artwork,
-            "Partner offer",
-            true
-          )
-        )
+        trackEvent(tracks.tappedBuyNow(analytics, "Partner offer", true))
 
         await createOrderFromPartnerOffer(partnerOffer)
       } else {
-        trackEvent(tracks.tappedBuyNow(slug, internalID, OwnerType.artwork, "Buy now"))
+        trackEvent(tracks.tappedBuyNow(analytics, "Buy now"))
 
         await createOrder()
       }
@@ -228,16 +221,14 @@ const artworkFragment = graphql`
 
 const tracks = {
   tappedBuyNow: (
-    slug: string,
-    internalID: string,
-    context_owner_type: ScreenOwnerType,
-    flow: TappedBuyNow["flow"],
+    analytics: AnalyticsContextProps,
+    flow?: TappedBuyNow["flow"],
     withPartnerOffer?: boolean
   ): TappedBuyNow => ({
     action: ActionType.tappedBuyNow,
-    context_owner_type: context_owner_type,
-    context_owner_id: internalID,
-    context_owner_slug: slug,
+    context_owner_type: analytics.contextScreenOwnerType as ScreenOwnerType,
+    context_owner_id: analytics.contextScreenOwnerId as string,
+    context_owner_slug: analytics.contextScreenOwnerSlug as string,
     flow: flow,
     signal_label: withPartnerOffer ? "Limited-Time Offer" : undefined,
   }),
