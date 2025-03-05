@@ -124,6 +124,17 @@ export const DevTools: React.FC<{}> = () => {
               toast.show("Progressive Onboarding progress cleared ✅", "middle")
             }}
           />
+          <DevMenuButtonItem
+            title="Reset infinite discovery onboarding progress"
+            onPress={() => {
+              GlobalStore.actions.infiniteDiscovery.setHasInteractedWithOnboarding(false)
+              toast.show(
+                "Infinite discovery onboarding progress reset. It will now appear again when you open the infinite discovery.",
+                "middle"
+              )
+            }}
+          />
+
           <DevMenuButtonItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
 
           <DevMenuButtonItem

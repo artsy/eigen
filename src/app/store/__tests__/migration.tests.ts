@@ -1225,4 +1225,23 @@ describe("App version Versions.AddInfiniteDiscoveryModel", () => {
       expect(migratedState.infiniteDiscovery.discoveredArtworkIds).toBeUndefined()
     })
   })
+
+  describe("App version Versions.AddNewWorksForYouArtworkIDsModel", () => {
+    it("adds hasSeenOnboarding as false", () => {
+      const migrationToTest = Versions.AddHasIntereactedWithOnboardingToInfiniteDiscoveryModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(previousState.infiniteDiscovery.hasInteractedWithOnboarding).toEqual(undefined)
+      expect(migratedState.infiniteDiscovery.hasInteractedWithOnboarding).toEqual(false)
+    })
+  })
 })

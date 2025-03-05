@@ -47,6 +47,10 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const { trackEvent } = useTracking()
   const [commitMutation] = useCreateUserSeenArtwork()
 
+  const hasInteractedWithOnboarding = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
+  )
+
   const savedArtworksCount = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.savedArtworksCount
   )
@@ -179,6 +183,11 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 
     if (!nextArtwork) {
       return
+    }
+
+    // If this is the first time the user swipes, dismiss the onboarding.
+    if (!hasInteractedWithOnboarding) {
+      GlobalStore.actions.infiniteDiscovery.setHasInteractedWithOnboarding(true)
     }
 
     setTopArtworkId(nextArtwork.internalID)

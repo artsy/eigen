@@ -7,6 +7,7 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect, useRef, useState } from "react"
 import { Modal } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
@@ -16,20 +17,18 @@ import { SafeAreaView } from "react-native-safe-area-context"
 export const InfiniteDiscoveryOnboarding: React.FC<{}> = () => {
   const [isVisible, setIsVisible] = useState(false)
 
-  const didInteractWithInfiniteDiscovery = true
-  // TODO: uncomment this when we are done with testing
-  // const discoveredArtworkIds = GlobalStore.useAppState(
-  //   (state) => state.infiniteDiscovery.discoveredArtworkIds
-  // )
-  // const didInteractWithInfiniteDiscovery = discoveredArtworkIds.length > 0
+  const hasInteractedWithOnboarding = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
+  )
 
+  console.log({ hasInteractedWithOnboarding })
   useEffect(() => {
     setTimeout(() => {
-      if (!didInteractWithInfiniteDiscovery) {
+      if (!hasInteractedWithOnboarding) {
         setIsVisible(true)
       }
     }, 2000)
-  }, [didInteractWithInfiniteDiscovery])
+  }, [hasInteractedWithOnboarding])
 
   const space = useSpace()
   const { width } = useScreenDimensions()
