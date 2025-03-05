@@ -23,7 +23,6 @@ import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { useExperimentVariant } from "app/utils/experiments/hooks"
-import { useActivityDotExperiment } from "app/utils/experiments/useActivityDotExperiment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useIsDeepLink } from "app/utils/hooks/useIsDeepLink"
@@ -58,12 +57,6 @@ export const HomeView: React.FC = memo(() => {
       fetchKey,
     }
   )
-
-  const { trackExperiment: trackActvityDotExperiment } = useActivityDotExperiment()
-
-  useEffect(() => {
-    trackActvityDotExperiment()
-  }, [])
 
   const { trackExperiment: trackQuickLinksExperiment } = useExperimentVariant(
     "onyx_quick-links-experiment"
