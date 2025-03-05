@@ -56,17 +56,35 @@ export const Swiper: React.FC<SwiperProps> = ({
   const seenCardKeys = useSharedValue<Key[]>([])
 
   useEffect(() => {
-    if (cards.length < _cards.length) {
-      setNumberExtraCardsAdded(_cards.length - cards.length)
-      setCards(_cards.reverse())
-    }
-  }, [_cards.length])
+    console.log(`FOO _cards.length: ${_cards.length}`)
 
-  useEffect(() => {
-    if (numberExtraCardsAdded !== 0) {
-      _activeIndex.value = _activeIndex.value + numberExtraCardsAdded
+    if (_cards.length === 0) {
+      return
     }
-  }, [cards.length, numberExtraCardsAdded])
+
+    setCards(_cards.reverse())
+
+    if (_cards.length < 7) {
+      _activeIndex.value = 6 - swipedKeys.value.length
+    } else {
+      _activeIndex.value = 4
+    }
+  }, [_cards])
+
+  // useEffect(() => {
+  //   console.log(`FOO _cards.length: ${_cards.length}`)
+
+  //   if (cards.length < _cards.length) {
+  //     setNumberExtraCardsAdded(_cards.length - cards.length)
+  //     setCards(_cards.reverse())
+  //   }
+  // }, [_cards.length])
+
+  // useEffect(() => {
+  //   if (numberExtraCardsAdded !== 0) {
+  //     _activeIndex.value = _activeIndex.value + numberExtraCardsAdded
+  //   }
+  // }, [cards.length, numberExtraCardsAdded])
 
   useAnimatedReaction(
     () => isRewindRequested.value,

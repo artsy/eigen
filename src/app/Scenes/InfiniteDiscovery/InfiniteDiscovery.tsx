@@ -73,6 +73,9 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
    */
   useEffect(() => {
     const newArtworks = extractNodes(data.discoverArtworks)
+    console.log("FOO ---------------------------------")
+    newArtworks.forEach((artwork, index) => console.log(`FOO ${index}\t${artwork.internalID}`))
+    console.log("FOO ---------------------------------")
     setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
   }, [data, extractNodes, setArtworks])
 
@@ -99,10 +102,23 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   }, [artworks])
 
   const artworkCards: ReactElement[] = useMemo(() => {
-    return artworks.map((artwork) => (
-      <InfiniteDiscoveryArtworkCard artwork={artwork} key={artwork.internalID} />
-    ))
-  }, [artworks])
+    /**
+     * [0, 1, 2, 3, 4]
+     * [0, 1*, 2, 3, 4-]
+     * [0, 1, 2*, 3, 4]
+     * [0, 1, 2*, 3, 4, 5-, 6-, 7-, 8-, 9-]
+     * [0-, 1, 2, 3*, 4, 5, 6-, 7-, 8-, 9-]
+     */
+    const topArtworkIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
+    const sliceStart = topArtworkIndex < 2 ? 0 : topArtworkIndex - 2
+    const sliceEnd = topArtworkIndex + 5
+
+    console.log(`FOO active:\t${topArtworkIndex} start:\t${sliceStart} end:\t${sliceEnd}`)
+
+    return artworks
+      .slice(sliceStart, sliceEnd)
+      .map((artwork) => <InfiniteDiscoveryArtworkCard artwork={artwork} key={artwork.internalID} />)
+  }, [topArtworkId])
 
   const currentIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
   const unswipedCardIds = artworks.slice(0, currentIndex).map((artwork) => artwork.internalID)
