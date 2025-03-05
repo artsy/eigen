@@ -10,6 +10,7 @@ import {
 } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetTabs"
 import { FC, useEffect, useState } from "react"
 import { Dimensions } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useQueryLoader } from "react-relay"
 
 interface InfiniteDiscoveryBottomSheetProps {
@@ -21,6 +22,7 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
   artworkID,
   artistIDs,
 }) => {
+  const { bottom } = useSafeAreaInsets()
   const [footerVisible, setFooterVisible] = useState(true)
   const color = useColor()
 
@@ -40,7 +42,7 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
       <BottomSheet
         enableDynamicSizing={false}
         enablePanDownToClose={false}
-        snapPoints={SNAP_POINTS}
+        snapPoints={[bottom + height * 0.12, height * 0.88]}
         index={0}
         backdropComponent={(props) => {
           return (
@@ -79,8 +81,6 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
 }
 
 const { height } = Dimensions.get("screen")
-
-const SNAP_POINTS = [height * 0.15, height * 0.88]
 
 export const aboutTheWorkQuery = graphql`
   query InfiniteDiscoveryBottomSheetTabsQuery($id: String!, $artistIDs: [String!]!) {

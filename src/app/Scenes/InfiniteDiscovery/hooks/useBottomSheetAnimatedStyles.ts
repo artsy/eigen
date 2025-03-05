@@ -1,14 +1,14 @@
-import { useTextStyleForPalette } from "@artsy/palette-mobile"
+import { useScreenDimensions, useTextStyleForPalette } from "@artsy/palette-mobile"
 import { useBottomSheet } from "@gorhom/bottom-sheet"
-import { useAnimatedStyle } from "react-native-reanimated"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { Extrapolation, interpolate, useAnimatedStyle } from "react-native-reanimated"
 
 export const useBottomSheetAnimatedStyles = () => {
   const { animatedIndex } = useBottomSheet()
-  const { bottom } = useSafeAreaInsets()
+  const { height } = useScreenDimensions()
   const { lineHeight } = useTextStyleForPalette("sm-display")
-  // Some devices need extra space, 30 does the job for all of them
-  const handleTextHeight = bottom + (lineHeight as number) + 60
+  // Tabs are eating the text up
+  const handleTextHeight = (lineHeight as number) + 40
+  const handleHeight = height * 0.05
 
   const reversedOpacityStyle = useAnimatedStyle(() => ({
     opacity: animatedIndex.value < 0.5 ? 0 : (animatedIndex.value - 0.5) * 2,
@@ -16,9 +16,22 @@ export const useBottomSheetAnimatedStyles = () => {
   const opacityStyle = useAnimatedStyle(() => ({
     opacity: 1 - animatedIndex.value,
   }))
-  const heightStyle = useAnimatedStyle(() => ({
-    height: handleTextHeight - animatedIndex.value * handleTextHeight,
+  const heightTextStyle = useAnimatedStyle(() => ({
+    height: interpolate(
+      animatedIndex.value,
+      [0, 0.2, 1],
+      [handleTextHeight, 10, 0],
+      Extrapolation.CLAMP
+    ),
+  }))
+  const heightHandleStyle = useAnimatedStyle(() => ({
+    height: interpolate(
+      animatedIndex.value,
+      [0, 0.2, 1],
+      [handleHeight, 10, 0],
+      Extrapolation.CLAMP
+    ),
   }))
 
-  return { opacityStyle, heightStyle, reversedOpacityStyle }
+  return { opacityStyle, heightTextStyle, heightHandleStyle, reversedOpacityStyle }
 }
