@@ -82,11 +82,9 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             contextScreenOwnerSlug={artwork.slug}
           />
         </Flex>
-
         <Flex alignItems="center" minHeight={MAX_ARTWORK_HEIGHT} justifyContent="center">
           {!!src && <Image src={src} height={size.height} width={size.width} />}
         </Flex>
-
         <Flex flexDirection="row" justifyContent="space-between" p={1} mx={2}>
           <Flex>
             <Text color="blue" variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>
@@ -110,47 +108,40 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           </Flex>
           <Touchable
             haptic
-            hitSlop={{ bottom: 5, right: 5, left: 5, top: 5 }}
+            hitSlop={{ bottom: 10, right: 10, left: 10, top: 10 }}
             onPress={saveArtworkToLists}
             testID="save-artwork-icon"
           >
-            {!!isSaved ? (
-              <Flex
-                style={{
-                  width: HEART_CIRCLE_SIZE,
-                  height: HEART_CIRCLE_SIZE,
-                  borderRadius: HEART_CIRCLE_SIZE,
-                  backgroundColor: color("black5"),
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+            <Flex
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="center"
+              style={{
+                width: HEART_CIRCLE_SIZE + 40,
+                height: HEART_CIRCLE_SIZE,
+                borderRadius: 30,
+                backgroundColor: color("black5"),
+              }}
+            >
+              {!!isSaved ? (
                 <HeartFillIcon
                   testID="filled-heart-icon"
                   height={HEART_ICON_SIZE}
                   width={HEART_ICON_SIZE}
                   fill="blue100"
                 />
-              </Flex>
-            ) : (
-              <Flex
-                style={{
-                  width: HEART_CIRCLE_SIZE,
-                  height: HEART_CIRCLE_SIZE,
-                  borderRadius: HEART_CIRCLE_SIZE,
-                  backgroundColor: color("black5"),
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+              ) : (
                 <HeartIcon
                   testID="empty-heart-icon"
                   height={HEART_ICON_SIZE}
                   width={HEART_ICON_SIZE}
                   fill="black100"
                 />
-              </Flex>
-            )}
+              )}
+              <Text ml={0.5} variant="sm-display">
+                {isSaved ? "Saved" : "Save"}
+              </Text>
+            </Flex>
           </Touchable>
         </Flex>
       </Flex>
