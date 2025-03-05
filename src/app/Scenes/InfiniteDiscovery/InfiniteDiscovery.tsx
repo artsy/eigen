@@ -13,7 +13,6 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
-import { InfiniteDiscoveryOnboarding } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryOnboarding"
 import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { useCreateUserSeenArtwork } from "app/Scenes/InfiniteDiscovery/mutations/useCreateUserSeenArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -73,10 +72,14 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
    */
   useEffect(() => {
     const newArtworks = extractNodes(data.discoverArtworks)
-    console.log("FOO ---------------------------------")
-    newArtworks.forEach((artwork, index) => console.log(`FOO ${index}\t${artwork.internalID}`))
-    console.log("FOO ---------------------------------")
-    setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
+
+    setArtworks((previousArtworks) => {
+      previousArtworks
+        .concat(newArtworks)
+        .forEach((artwork, index) => console.log(`🪩\t🕺\t${index}\t${artwork.internalID}`))
+
+      return previousArtworks.concat(newArtworks)
+    })
   }, [data, extractNodes, setArtworks])
 
   useEffect(() => {
@@ -102,23 +105,21 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   }, [artworks])
 
   const artworkCards: ReactElement[] = useMemo(() => {
-    /**
-     * [0, 1, 2, 3, 4]
-     * [0, 1*, 2, 3, 4-]
-     * [0, 1, 2*, 3, 4]
-     * [0, 1, 2*, 3, 4, 5-, 6-, 7-, 8-, 9-]
-     * [0-, 1, 2, 3*, 4, 5, 6-, 7-, 8-, 9-]
-     */
-    const topArtworkIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
-    const sliceStart = topArtworkIndex < 2 ? 0 : topArtworkIndex - 2
-    const sliceEnd = topArtworkIndex + 5
+    // const topArtworkIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
+    // const sliceStart = topArtworkIndex < 2 ? 0 : topArtworkIndex - 2
+    // const sliceEnd = topArtworkIndex + 5
 
-    console.log(`FOO active:\t${topArtworkIndex} start:\t${sliceStart} end:\t${sliceEnd}`)
+    // console.log(`FOO active:\t${topArtworkIndex} start:\t${sliceStart} end:\t${sliceEnd}`)
 
-    return artworks
-      .slice(sliceStart, sliceEnd)
-      .map((artwork) => <InfiniteDiscoveryArtworkCard artwork={artwork} key={artwork.internalID} />)
-  }, [topArtworkId])
+    return (
+      artworks
+        // .slice(sliceStart, sliceEnd)
+        .map((artwork) => (
+          <InfiniteDiscoveryArtworkCard artwork={artwork} key={artwork.internalID} />
+        ))
+        .reverse()
+    )
+  }, [artworks.length /*,topArtworkId */])
 
   const currentIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
   const unswipedCardIds = artworks.slice(0, currentIndex).map((artwork) => artwork.internalID)
@@ -197,15 +198,16 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       return
     }
 
+    setTopArtworkId(nextArtwork.internalID)
+
     // If this is the first time the user swipes, dismiss the onboarding.
     if (!hasInteractedWithOnboarding) {
       GlobalStore.actions.infiniteDiscovery.setHasInteractedWithOnboarding(true)
     }
-
-    setTopArtworkId(nextArtwork.internalID)
   }
 
   const handleFetchMore = useCallback(() => {
+    console.log("🪩\t🕺\tfetch more")
     fetchMoreArtworks(unswipedCardIds)
   }, [fetchMoreArtworks, unswipedCardIds])
 
@@ -318,7 +320,7 @@ export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
 
   return (
     <Flex flex={1}>
-      <InfiniteDiscoveryOnboarding />
+      {/* <InfiniteDiscoveryOnboarding /> */}
       <InfiniteDiscovery fetchMoreArtworks={fetchMoreArtworks} queryRef={queryRef} />
     </Flex>
   )

@@ -14,15 +14,6 @@ import {
   withTiming,
 } from "react-native-reanimated"
 
-/**
- * TODOS
- * - organize files
- * - integrate with InfiniteDiscovery
- * - to not render more than 2 swiped cards
- * - when closing the screen, swiped cards are being dragged
- * - remove gesture navigation
- */
-
 type SwiperProps = {
   cards: ReactElement<{ key: Key }>[]
   isRewindRequested: SharedValue<boolean>
@@ -35,7 +26,7 @@ type SwiperProps = {
 )
 
 export const Swiper: React.FC<SwiperProps> = ({
-  cards: _cards,
+  cards,
   isRewindRequested,
   onNewCardReached,
   onRewind,
@@ -44,65 +35,78 @@ export const Swiper: React.FC<SwiperProps> = ({
   swipedIndexCallsOnTrigger,
 }) => {
   const width = useScreenWidthWithOffset()
-  const [cards, setCards] = useState(_cards.reverse())
-  const [numberExtraCardsAdded, setNumberExtraCardsAdded] = useState(0)
 
+  // Horizontal position of the TOP card.
   const activeCardX = useSharedValue(0)
+
+  // Horizontal position of the LAST SWIPED card.
   const swipedCardX = useSharedValue(-width)
-  // TODO: remove underscore
-  const _activeIndex = useSharedValue(cards.length - 1)
+
+  // Index of the TOP card.
+  const activeIndex = useSharedValue(-1)
+
+  // IDs of the artworks that the user has swiped LEFT.
   const swipedKeys = useSharedValue<Key[]>([])
-  // a list of cards that the user has seen
+
+  // IDs of the artworks that have been displayed to the user as the TOP card.
   const seenCardKeys = useSharedValue<Key[]>([])
 
-  useEffect(() => {
-    console.log(`FOO _cards.length: ${_cards.length}`)
+  // Number of cards that have been loaded. Helps us update TOP card index when new cards are loaded.
+  const [cardCount, setCardCount] = useState(0)
 
-    if (_cards.length === 0) {
+  useEffect(() => {
+    cards.forEach((card, index) => console.log(`🪩\t🦊\t${index}\t${card.key}`))
+
+    if (cards.length === 0) {
       return
     }
 
-    setCards(_cards.reverse())
-
-    if (_cards.length < 7) {
-      _activeIndex.value = 6 - swipedKeys.value.length
-    } else {
-      _activeIndex.value = 4
+    if (activeIndex.value === -1) {
+      /**
+       * Initialize the index of the TOP card when the first batch of cards is loaded.
+       */
+      console.log(`🪩\t🦊\tactive index:\t${activeIndex.value} -> ${cards.length - 1}`)
+      activeIndex.value = cards.length - 1
+      setCardCount(cards.length)
+      return
     }
-  }, [_cards])
 
-  // useEffect(() => {
-  //   console.log(`FOO _cards.length: ${_cards.length}`)
-
-  //   if (cards.length < _cards.length) {
-  //     setNumberExtraCardsAdded(_cards.length - cards.length)
-  //     setCards(_cards.reverse())
-  //   }
-  // }, [_cards.length])
-
-  // useEffect(() => {
-  //   if (numberExtraCardsAdded !== 0) {
-  //     _activeIndex.value = _activeIndex.value + numberExtraCardsAdded
-  //   }
-  // }, [cards.length, numberExtraCardsAdded])
+    if (cards.length > cardCount) {
+      /**
+       * Bump the index of the TOP card when a new batch of cards is loaded.
+       */
+      console.log(
+        `🪩\t🦊\tactive index:\t${activeIndex.value} -> ${
+          activeIndex.value + (cards.length - cardCount)
+        }`
+      )
+      activeIndex.value = activeIndex.value + (cards.length - cardCount)
+      setCardCount(cards.length)
+      return
+    }
+  }, [cards])
 
   useAnimatedReaction(
     () => isRewindRequested.value,
     (current, previous) => {
       if (current && !previous) {
-        const hasSwipedCards = _activeIndex.value + 1 < cards.length
+        const hasSwipedCards = activeIndex.value + 1 < cards.length
 
         let lastSwipedCardKey = null
 
-        // TODO: clean up this minefield of if-statements
         if (hasSwipedCards) {
-          lastSwipedCardKey = cards[_activeIndex.value + 1].key
+          lastSwipedCardKey = cards[activeIndex.value + 1].key
         }
 
         swipedCardX.value = withTiming(0, { duration: 200, easing: Easing.linear }, () => {
+          /**
+           * If the user tapped RIGHT, move the LAST SWIPED card to the center and tell the parent component that there is a new TOP card.
+           *
+           * TODO: Explain why the the nested if-statement is necessary.
+           */
           if (hasSwipedCards) {
             swipedKeys.value = swipedKeys.value.slice(0, -1)
-            _activeIndex.value = _activeIndex.value + 1
+            activeIndex.value = activeIndex.value + 1
           }
           swipedCardX.value = -width
         })
@@ -118,10 +122,15 @@ export const Swiper: React.FC<SwiperProps> = ({
 
   const pan = Gesture.Pan()
     .onChange(({ translationX }) => {
-      // when swipe to the right
       if (translationX > 0) {
+        /**
+         * If the user is swiping RIGHT, we want to move the PREVIOUS card to the right.
+         */
         swipedCardX.value = interpolate(translationX, [0, width], [-width, 0], Extrapolation.CLAMP)
       } else {
+        /**
+         * If the user is swiping LEFT, we want to move the TOP card to the left.
+         */
         activeCardX.value = translationX
       }
     })
@@ -129,38 +138,45 @@ export const Swiper: React.FC<SwiperProps> = ({
       const swipeOverThreshold = Math.abs(translationX) > SWIPE_THRESHOLD
 
       if (!swipeOverThreshold) {
+        /**
+         * If the user didn't swipe enough, we want to reset the TOP card and the LAST SWIPED card to their original position.
+         */
         activeCardX.value = withTiming(0)
         swipedCardX.value = withTiming(-width)
         return
       }
 
-      // Swipe left
       const isSwipeLeft = translationX < 0
-      const isLastCard = _activeIndex.value === 0
+      const isLastCard = activeIndex.value === 0
 
-      // TODO: confirm that we are fetching more cards on the 3rd, 8th, 13th... swipe
-      if (isSwipeLeft && !isLastCard && _activeIndex.value === swipedIndexCallsOnTrigger) {
-        runOnJS(onTrigger)(_activeIndex.value - 1)
+      if (isSwipeLeft && !isLastCard && activeIndex.value === swipedIndexCallsOnTrigger) {
+        /**
+         * If the user swiped LEFT and the TOP card was the 3rd card from the end, trigger a request for a new batch of artworks.
+         */
+        runOnJS(onTrigger)(activeIndex.value - 1)
       }
 
-      const swipedCardIndex = _activeIndex.value
+      const swipedCardIndex = activeIndex.value
       const swipedCardKey = cards[swipedCardIndex].key
 
       if (isSwipeLeft && !isLastCard && swipedCardKey) {
         const nextCardIndex = swipedCardIndex - 1
         const nextCardKey = cards[nextCardIndex]?.key as Key
 
-        // if this is the first time that the user has navigated to this card, record it
         if (nextCardKey && !seenCardKeys.value.includes(nextCardKey) && onNewCardReached) {
+          /**
+           * If the user swiped LEFT and the NEXT card is a card that the user hasn't seen yet, trigger a mutation to mark the card as seen.
+           */
           seenCardKeys.value = [...seenCardKeys.value, nextCardKey]
           runOnJS(onNewCardReached)(nextCardKey)
         }
 
+        /**
+         * If the user swiped LEFT move the TOP card off the screen to the left, and tell the parent component that there is a new TOP card.
+         */
         activeCardX.value = withTiming(-width, { duration: 500, easing: Easing.linear }, () => {
-          // TODO: maybe fix this if errors
-
           swipedKeys.value = [...swipedKeys.value, swipedCardKey]
-          _activeIndex.value = _activeIndex.value - 1
+          activeIndex.value = activeIndex.value - 1
           activeCardX.value = 0
           return
         })
@@ -169,26 +185,37 @@ export const Swiper: React.FC<SwiperProps> = ({
         return
       }
 
-      // when it's the last card drag it back to the deck nicely
       if (isSwipeLeft && isLastCard) {
+        /**
+         * If the user swiped LEFT and the TOP card is the last card, return the TOP card to the middle of the screen.
+         */
         activeCardX.value = withTiming(0, { duration: 200, easing: Easing.cubic })
         return
       }
 
-      // Swipe right then brings the card back to the deck
+      /**
+       * If the user swiped RIGHT, keep the TOP card in the middle of the screen.
+       *
+       * TODO: Test if doing this is still necessary.
+       */
       activeCardX.value = 0
-      const hasSwipedCards = _activeIndex.value + 1 < cards.length
 
+      const hasSwipedCards = activeIndex.value + 1 < cards.length
       let lastSwipedCardKey = null
 
-      // TODO: clean up this minefield of if-statements
       if (hasSwipedCards) {
-        lastSwipedCardKey = cards[_activeIndex.value + 1].key
+        lastSwipedCardKey = cards[activeIndex.value + 1].key
       }
+
+      /**
+       * If the user swiped RIGHT, move the LAST SWIPED card to the center and tell the parent component that there is a new TOP card.
+       *
+       * TODO: Explain why the the nested if-statement is necessary.
+       */
       swipedCardX.value = withTiming(0, { duration: 200, easing: Easing.linear }, () => {
         if (hasSwipedCards) {
           swipedKeys.value = swipedKeys.value.slice(0, -1)
-          _activeIndex.value = _activeIndex.value + 1
+          activeIndex.value = activeIndex.value + 1
         }
         swipedCardX.value = -width
       })
@@ -207,7 +234,7 @@ export const Swiper: React.FC<SwiperProps> = ({
               index={i}
               card={c}
               activeCardX={activeCardX}
-              activeIndex={_activeIndex}
+              activeIndex={activeIndex}
               swipedKeys={swipedKeys}
               swipedCardX={swipedCardX}
               key={`card_${c.key}`}
