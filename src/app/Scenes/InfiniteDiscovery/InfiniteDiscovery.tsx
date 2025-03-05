@@ -13,6 +13,7 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
+import { InfiniteDiscoveryOnboarding } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryOnboarding"
 import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { useCreateUserSeenArtwork } from "app/Scenes/InfiniteDiscovery/mutations/useCreateUserSeenArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -45,6 +46,10 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const toast = useToast()
   const { trackEvent } = useTracking()
   const [commitMutation] = useCreateUserSeenArtwork()
+
+  const hasInteractedWithOnboarding = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
+  )
 
   const savedArtworksCount = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.savedArtworksCount
@@ -180,6 +185,11 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       return
     }
 
+    // If this is the first time the user swipes, dismiss the onboarding.
+    if (!hasInteractedWithOnboarding) {
+      GlobalStore.actions.infiniteDiscovery.setHasInteractedWithOnboarding(true)
+    }
+
     setTopArtworkId(nextArtwork.internalID)
   }
 
@@ -294,7 +304,12 @@ export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
     loadQuery({ excludeArtworkIds: undiscoveredArtworks })
   }
 
-  return <InfiniteDiscovery fetchMoreArtworks={fetchMoreArtworks} queryRef={queryRef} />
+  return (
+    <Flex flex={1}>
+      <InfiniteDiscoveryOnboarding />
+      <InfiniteDiscovery fetchMoreArtworks={fetchMoreArtworks} queryRef={queryRef} />
+    </Flex>
+  )
 }
 
 export const infiniteDiscoveryQuery = graphql`

@@ -64,9 +64,10 @@ export const Versions = {
   RemoveRequestPriceEstimateModel: 51,
   RefactorDarkModeValues: 52,
   RemoveDiscoveredArtworkIdsFromInfiniteDiscoveryModel: 53,
+  AddHasIntereactedWithOnboardingToInfiniteDiscoveryModel: 54,
 }
 
-export const CURRENT_APP_VERSION = Versions.RemoveDiscoveredArtworkIdsFromInfiniteDiscoveryModel
+export const CURRENT_APP_VERSION = Versions.AddHasIntereactedWithOnboardingToInfiniteDiscoveryModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -367,6 +368,9 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.RemoveDiscoveredArtworkIdsFromInfiniteDiscoveryModel]: (state) => {
     delete state.infiniteDiscovery.discoveredArtworkIds
+  },
+  [Versions.AddHasIntereactedWithOnboardingToInfiniteDiscoveryModel]: (state) => {
+    state.infiniteDiscovery.hasInteractedWithOnboarding = false
   },
 }
 
