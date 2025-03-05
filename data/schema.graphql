@@ -2965,7 +2965,7 @@ type ArtworkImportRow {
   internalID: ID!
   priceListed: Money
   rawData: JSON!
-  transformedData: JSON!
+  transformedData: ArtworkImportTransformedData!
 }
 
 # A connection to a list of items.
@@ -3014,6 +3014,18 @@ type ArtworkImportRowImage {
 enum ArtworkImportSource {
   CONVECTION
   MY_COLLECTION
+}
+
+type ArtworkImportTransformedData {
+  artistNames: String
+  artworkTitle: String
+  date: String
+  depth: String
+  diameter: String
+  height: String
+  imageFileNames: String
+  price: String
+  width: String
 }
 
 type ArtworkInfoRow {
