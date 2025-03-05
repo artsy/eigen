@@ -7,6 +7,16 @@ orbs:
   macos: circleci/macos@2.5.2
   android: circleci/android@2.5.0
 
+only-main-or-release-or-build-me: &only-main-or-release-or-build-me
+  filters:
+    branches:
+      only:
+        - main
+        - /.*release$/
+        - /.*build-me$/
+        - /.*hotfix$/
+        - /.*beta-$/
+
 commands:
   await-previous-builds:
     parameters:
@@ -260,6 +270,28 @@ jobs:
             ./scripts/codepush/deploy-to-codepush.sh Staging
 
   test-js:
+    parallelism: 8
+    executor:
+      name: node/default
+      tag: "20.9.0"
+    resource_class: large
+    steps:
+      - checkout
+      - install-node-modules
+      - run-relay-compiler
+      - run:
+          name: Run Jest For Updated Files and Scenes Only
+          command: ./scripts/ci/ci-test-js-pr
+          no_output_timeout: 3600s
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+            JEST_JUNIT_UNIQUE_OUTPUT_NAME: true
+      - store_artifacts:
+          path: ./reports/junit/
+      - store_test_results:
+          path: ./reports/junit/
+
+  test-js-complete:
     parallelism: 8
     executor:
       name: node/default
@@ -526,7 +558,7 @@ workflows:
     when: << pipeline.parameters.run_workflow_build-run-tests-for-echo >>
     jobs:
       - build-echo-test-js
-      - test-js
+      - test-js-complete
 
   test-build-deploy:
     when: << pipeline.parameters.run_workflow_test-build-deploy >>
@@ -547,6 +579,9 @@ workflows:
                 - main
 
       - test-js
+
+      - test-js-complete:
+          <<: *only-main-or-release-or-build-me
 
       - build-test-js
 
