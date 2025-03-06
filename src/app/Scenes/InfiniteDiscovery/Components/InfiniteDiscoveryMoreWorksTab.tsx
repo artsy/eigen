@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { InfiniteDiscoveryMoreWorksTab_artworks$key } from "__generated__/InfiniteDiscoveryMoreWorksTab_artworks.graphql"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
@@ -45,10 +45,10 @@ export const MoreWorksTab: FC<MoreWorksTabProps> = ({ artworks: _artworks }) => 
       >
         <ArtworkGridItem
           itemIndex={index}
-          // TODO: add tracking
-          contextScreenOwnerType={OwnerType.infiniteDiscovery}
-          contextScreenOwnerId=""
-          contextScreenOwnerSlug=""
+          contextModule={ContextModule.infiniteDiscoveryArtworkOtherWorksTab}
+          contextScreenOwnerType={OwnerType.artwork}
+          contextScreenOwnerId={item.internalID}
+          contextScreenOwnerSlug={item.slug}
           artwork={item}
           height={imgHeight}
         />
