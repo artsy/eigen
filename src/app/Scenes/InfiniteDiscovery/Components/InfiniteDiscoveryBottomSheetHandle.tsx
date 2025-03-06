@@ -7,23 +7,35 @@ import Animated from "react-native-reanimated"
 
 export const InfiniteDiscoveryBottomeSheetHandle: FC<BottomSheetDefaultHandleProps> = () => {
   const { width } = useScreenDimensions()
-  const { opacityStyle, heightStyle } = useBottomSheetAnimatedStyles()
+  const { opacityStyle, heightTextStyle, heightHandleStyle } = useBottomSheetAnimatedStyles()
   const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
   const handleWidth = (7.5 * width) / 100
 
   return (
-    <Flex justifyContent="center" alignItems="center" gap={0.5} pt={1} backgroundColor="white100">
+    <Flex
+      justifyContent="center"
+      borderRadius={20}
+      alignItems="center"
+      gap={0.5}
+      pt={0.5}
+      backgroundColor="white100"
+    >
+      <Animated.View style={[heightHandleStyle, { width: 1 }]} />
+
       <Flex
-        height={4}
-        width={handleWidth}
-        borderRadius={4}
-        style={{
-          backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.75)" : "rgba(255, 255, 255, 0.75)",
-        }}
+        style={[
+          {
+            width: handleWidth,
+            height: 4,
+            borderRadius: 4,
+            backgroundColor:
+              theme === "light" ? "rgba(0, 0, 0, 0.75)" : "rgba(255, 255, 255, 0.75)",
+          },
+        ]}
       />
 
-      <Animated.View style={[opacityStyle, heightStyle]}>
+      <Animated.View style={[opacityStyle, heightTextStyle]}>
         <Text selectable={false} color="black60">
           Swipe up for more details
         </Text>
