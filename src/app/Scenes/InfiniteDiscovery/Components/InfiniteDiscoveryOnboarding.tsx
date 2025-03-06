@@ -26,6 +26,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
   artworks,
 }) => {
   const [step, setStep] = useState(0)
+  const space = useSpace()
   const [showSavedHint, setShowSavedHint] = useState(false)
 
   const swiperRef = useRef<SwiperRefProps>(null)
@@ -35,8 +36,8 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
       <InfiniteDiscoveryArtworkCard
         artwork={artwork}
         key={artwork.internalID}
-        scale={0.8}
         containerStyle={{
+          paddingVertical: space(1),
           borderRadius: 10,
           shadowRadius: 3,
           shadowColor: "black",
@@ -60,22 +61,29 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
       if (!hasInteractedWithOnboarding) {
         setIsVisible(true)
       }
-    }, 2000)
+    }, 1000)
   }, [hasInteractedWithOnboarding])
 
-  const space = useSpace()
   const { width } = useScreenDimensions()
   const flatlistRef = useRef<FlatList>(null)
 
   const handleNext = () => {
     const newStep = step + 1
 
+    if (newStep > STEPS.length) {
+      setIsVisible(false)
+      return
+    }
+
+    setStep(newStep)
+
+    flatlistRef.current?.scrollToIndex({ animated: true, index: step })
+
     switch (newStep) {
       case 1:
         swiperRef.current?.swipeLeft()
         break
       case 2:
-        setShowSavedHint(false)
         swiperRef.current?.swipeRight()
         break
       case 3:
@@ -84,15 +92,6 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
 
       default:
         break
-    }
-
-    if (newStep <= STEPS.length) {
-      setStep(newStep)
-    }
-    if (newStep < STEPS.length) {
-      flatlistRef.current?.scrollToIndex({ animated: true, index: newStep })
-    } else {
-      // setIsVisible(false)
     }
   }
 
@@ -113,9 +112,9 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
           <SafeAreaView
             style={{ flex: 1, justifyContent: "flex-end", backgroundColor: "transparent" }}
           >
-            <Flex flex={1} alignSelf="center" justifyContent="center" alignItems="center" py={2}>
+            <Flex flex={1} alignSelf="center" justifyContent="center" alignItems="center">
               <Swiper
-                containerStyle={{ flex: 1, left: "10%" }}
+                containerStyle={{ flex: 1, transform: [{ scale: 0.85 }] }}
                 cards={cards}
                 isRewindRequested={isRewindRequested}
                 onTrigger={() => {}}
@@ -149,7 +148,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
 
               <Flex alignItems="flex-end">
                 <Button variant="outline" onPress={handleNext}>
-                  {step === STEPS.length - 1 ? "Done" : "Next"}
+                  {step === STEPS.length ? "Done" : "Next"}
                 </Button>
               </Flex>
             </Flex>

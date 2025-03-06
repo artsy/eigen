@@ -220,11 +220,16 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     goBack()
   }
 
+  // Get the last 2 artworks from the infinite discovery
+  // We are showing the last 2 artworks instead of 2 because we reverse the artworks array
+  // Inside the Swiper component
+  const onboardingArtworks = artworks.slice(artworkCards.length - 3, artworkCards.length)
+
   return (
     <Screen safeArea={false}>
-      <Screen.Body fullwidth style={{ marginTop: insets.top }}>
-        <InfiniteDiscoveryOnboarding artworks={artworks.slice(0, 3)} />
+      <InfiniteDiscoveryOnboarding artworks={onboardingArtworks} />
 
+      <Screen.Body fullwidth style={{ marginTop: insets.top }}>
         <Flex zIndex={-100}>
           <Screen.Header
             title="Discovery"
@@ -251,8 +256,10 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
             }
           />
         </Flex>
+
         <Spacer y={1} />
-        {/* <Swiper
+
+        <Swiper
           cards={artworkCards}
           isRewindRequested={isRewindRequested}
           onTrigger={handleFetchMore}
@@ -260,14 +267,14 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           onNewCardReached={handleNewCardReached}
           onRewind={handleRewind}
           onSwipe={handleSwipe}
-        /> */}
+        />
 
-        {/* {!!topArtwork && (
+        {!!topArtwork && (
           <InfiniteDiscoveryBottomSheet
             artworkID={topArtwork.internalID}
             artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
           />
-        )} */}
+        )}
       </Screen.Body>
     </Screen>
   )
