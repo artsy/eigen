@@ -11,6 +11,7 @@ import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Compo
 import { Swiper, SwiperRefProps } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
 import { GlobalStore } from "app/store/GlobalStore"
+import { MotiView } from "moti"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { Modal } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
@@ -68,31 +69,34 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
   const flatlistRef = useRef<FlatList>(null)
 
   const handleNext = () => {
-    const newStep = step + 1
+    const nextStep = step + 1
 
-    if (newStep > STEPS.length) {
+    // Is last step
+    if (nextStep === STEPS.length + 1) {
       setIsVisible(false)
       return
     }
 
-    setStep(newStep)
+    if (nextStep < STEPS.length) {
+      flatlistRef.current?.scrollToIndex({ animated: true, index: nextStep })
+    }
 
-    flatlistRef.current?.scrollToIndex({ animated: true, index: step })
-
-    switch (newStep) {
-      case 1:
+    switch (nextStep) {
+      case 2:
         swiperRef.current?.swipeLeft()
         break
-      case 2:
+      case 3:
         swiperRef.current?.swipeRight()
         break
-      case 3:
+      case 4:
         setShowSavedHint(true)
         break
 
       default:
         break
     }
+
+    setStep(nextStep)
   }
 
   return (
@@ -113,17 +117,19 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
             style={{ flex: 1, justifyContent: "flex-end", backgroundColor: "transparent" }}
           >
             <Flex flex={1} alignSelf="center" justifyContent="center" alignItems="center">
-              <Swiper
-                containerStyle={{ flex: 1, transform: [{ scale: 0.85 }] }}
-                cards={cards}
-                isRewindRequested={isRewindRequested}
-                onTrigger={() => {}}
-                swipedIndexCallsOnTrigger={2}
-                onNewCardReached={() => {}}
-                onRewind={() => {}}
-                onSwipe={() => {}}
-                ref={swiperRef}
-              />
+              <MotiView animate={{ opacity: step === 0 ? 0 : 1 }}>
+                <Swiper
+                  containerStyle={{ flex: 1, transform: [{ scale: 0.85 }] }}
+                  cards={cards}
+                  isRewindRequested={isRewindRequested}
+                  onTrigger={() => {}}
+                  swipedIndexCallsOnTrigger={2}
+                  onNewCardReached={() => {}}
+                  onRewind={() => {}}
+                  onSwipe={() => {}}
+                  ref={swiperRef}
+                />
+              </MotiView>
             </Flex>
 
             <Flex justifyContent="flex-end" px={2}>
@@ -170,8 +176,14 @@ const STEPS = [
     description: <Text variant="lg-display">A new way of browsing works on Artsy.</Text>,
   },
   {
-    key: "swipeArtworks",
+    key: "swipeArtworksLeft",
     description: <Text variant="lg-display">Swipe artworks to the left to see the next work</Text>,
+  },
+  {
+    key: "swipeArtworksRight",
+    description: (
+      <Text variant="lg-display">Swipe artworks to the right to bring back the previous work</Text>
+    ),
   },
   {
     key: "favouriteArtworks",
