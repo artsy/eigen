@@ -111,15 +111,20 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 
     // console.log(`FOO active:\t${topArtworkIndex} start:\t${sliceStart} end:\t${sliceEnd}`)
 
-    return (
-      artworks
-        // .slice(sliceStart, sliceEnd)
-        .map((artwork) => (
-          <InfiniteDiscoveryArtworkCard artwork={artwork} key={artwork.internalID} />
-        ))
-        .reverse()
+    const topArtworkIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
+    const endRange = Math.min(artworks.length - 1, topArtworkIndex + 2)
+    // Grab left elements of the array respecting the maximumCardsRedered, -1 represents the activeCard
+    const initialRange = Math.max(topArtworkIndex - (5 - (endRange - topArtworkIndex) - 1), 0)
+
+    console.log(
+      `🪩\t🦊\treading range:\tfrom ${initialRange} to ${endRange}, activeIndex -> ${topArtworkIndex}`
     )
-  }, [artworks.length /*,topArtworkId */])
+
+    return artworks
+      .slice(initialRange, endRange + 1)
+      .map((artwork) => <InfiniteDiscoveryArtworkCard artwork={artwork} key={artwork.internalID} />)
+      .reverse()
+  }, [artworks.length, topArtworkId])
 
   const currentIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
   const unswipedCardIds = artworks.slice(0, currentIndex).map((artwork) => artwork.internalID)

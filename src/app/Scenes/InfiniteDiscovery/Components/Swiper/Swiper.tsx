@@ -1,6 +1,6 @@
 import { AnimatedView } from "app/Scenes/InfiniteDiscovery/Components/Swiper/AnimatedView"
 import { useScreenWidthWithOffset } from "app/Scenes/InfiniteDiscovery/Components/Swiper/useScreenWidthWithOffset"
-import { Key, ReactElement, useEffect, useState } from "react"
+import React, { Key, ReactElement, useEffect, useState } from "react"
 import { View } from "react-native"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import {
@@ -35,6 +35,8 @@ export const Swiper: React.FC<SwiperProps> = ({
   swipedIndexCallsOnTrigger,
 }) => {
   const width = useScreenWidthWithOffset()
+  // const [readingWindowLastIndex, setReadingWindowLastIndex] = useState(0)
+  // const [readingWindowInitialIndex, setReadingWindowInitialIndex] = useState(0)
 
   // Horizontal position of the TOP card.
   const activeCardX = useSharedValue(0)
@@ -54,6 +56,40 @@ export const Swiper: React.FC<SwiperProps> = ({
   // Number of cards that have been loaded. Helps us update TOP card index when new cards are loaded.
   const [cardCount, setCardCount] = useState(0)
 
+  // 1st
+  //  - no cards maybe
+  //  - receive new cards(reverse them) and update state and activeIndex
+  //  - we set the reading window of the state
+
+  // 2nd - swiping
+  //  - animation
+  //  - updating reading window
+
+  // 3rd - fetching more data
+  //  - check if we got more data (diff between cards props and cards state length)
+  //    [3, 2, 1] (more data) => [6, 5, 4] + [3, 2, 1]
+  //    activeIndex = 1       => activeIndex = activeIndex + newBatchLength
+  //  - change the reading window to cover the maximum artworks rendered
+
+  // endRange = Math.min(animals.length - 1, activeIndex + 2)
+  // initialRange = Math.max(activeIndex - (cardsBuffer - (endRange - activeIndex) - 1), 0)
+  // animals.slice(initialRange, endRange + 1)
+
+  // const setReadingWindow = (activeIndex: number) => {
+  //   // swiped cards after activeIndex, maximum of 2 always
+  //   const endRange = Math.min(cards.length - 1, activeIndex + 2)
+  //   // Grab left elements of the array respecting the maximumCardsRedered, -1 represents the activeCard
+  //   const initialRange = Math.max(
+  //     activeIndex - (maximumCardsRendered - (endRange - activeIndex) - 1),
+  //     0
+  //   )
+  //   readingWindowInitialIndex.current = initialRange
+  //   readingWindowLastIndex.current = endRange
+  //   console.log(
+  //     `🪩\t🦊\treading range:\tfrom ${initialRange} to ${endRange}, activeIndex -> ${activeIndex}`
+  //   )
+  // }
+
   useEffect(() => {
     cards.forEach((card, index) => console.log(`🪩\t🦊\t${index}\t${card.key}`))
 
@@ -66,7 +102,10 @@ export const Swiper: React.FC<SwiperProps> = ({
        * Initialize the index of the TOP card when the first batch of cards is loaded.
        */
       console.log(`🪩\t🦊\tactive index:\t${activeIndex.value} -> ${cards.length - 1}`)
-      activeIndex.value = cards.length - 1
+      const newActiveIndex = cards.length - 1
+      activeIndex.value = newActiveIndex
+      // setReadingWindow(newActiveIndex)
+
       setCardCount(cards.length)
       return
     }
@@ -80,7 +119,9 @@ export const Swiper: React.FC<SwiperProps> = ({
           activeIndex.value + (cards.length - cardCount)
         }`
       )
-      activeIndex.value = activeIndex.value + (cards.length - cardCount)
+      const newActiveIndex = activeIndex.value + (cards.length - cardCount)
+      activeIndex.value = newActiveIndex
+      // setReadingWindow(newActiveIndex)
       setCardCount(cards.length)
       return
     }
@@ -176,7 +217,9 @@ export const Swiper: React.FC<SwiperProps> = ({
          */
         activeCardX.value = withTiming(-width, { duration: 500, easing: Easing.linear }, () => {
           swipedKeys.value = [...swipedKeys.value, swipedCardKey]
-          activeIndex.value = activeIndex.value - 1
+          const newIndex = activeIndex.value - 1
+          activeIndex.value = newIndex
+          // runOnJS(setReadingWindow)(newIndex)
           activeCardX.value = 0
           return
         })
@@ -228,19 +271,21 @@ export const Swiper: React.FC<SwiperProps> = ({
   return (
     <GestureDetector gesture={pan}>
       <View>
-        {cards.map((c, i) => {
-          return (
-            <AnimatedView
-              index={i}
-              card={c}
-              activeCardX={activeCardX}
-              activeIndex={activeIndex}
-              swipedKeys={swipedKeys}
-              swipedCardX={swipedCardX}
-              key={`card_${c.key}`}
-            />
-          )
-        })}
+        {cards
+          // .slice(readingWindowInitialIndex.current, readingWindowLastIndex.current + 1)
+          .map((c, i) => {
+            return (
+              <AnimatedView
+                index={i}
+                card={c}
+                activeCardX={activeCardX}
+                activeIndex={activeIndex}
+                swipedKeys={swipedKeys}
+                swipedCardX={swipedCardX}
+                key={`card_${c.key}`}
+              />
+            )
+          })}
       </View>
     </GestureDetector>
   )
