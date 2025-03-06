@@ -15,23 +15,29 @@ import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSav
 import { GlobalStore } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
-import { memo, useState } from "react"
+import { memo } from "react"
 import { ViewStyle } from "react-native"
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface InfiniteDiscoveryArtworkCardProps {
   artwork: InfiniteDiscoveryArtworkCard_artwork$key
-  scale: number
   containerStyle?: ViewStyle
   // This is only used for the onboarding animation
   isSaved?: boolean
 }
 
 export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCardProps> = memo(
-  ({ artwork: artworkProp, scale = 1, containerStyle, isSaved: isSavedProp }) => {
+  ({ artwork: artworkProp, containerStyle, isSaved: isSavedProp }) => {
     const { width: screenWidth, height: screenHeight } = useScreenDimensions()
-    const imageWidth = screenWidth * scale
+    const saveAnimationProgress = useSharedValue(0)
+
     const { trackEvent } = useTracking()
     const color = useColor()
     const { incrementSavedArtworksCount, decrementSavedArtworksCount } =
@@ -66,22 +72,37 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     const isSaved = isSavedProp !== undefined ? isSavedProp : isSavedToArtworkList
 
-    console.log({ isSaved })
+    const animatedSaveButtonStyles = useAnimatedStyle(() => {
+      return {
+        transform: [
+          {
+            scale: interpolate(saveAnimationProgress.value, [0, 0.5, 1], [1, 1.2, 1]),
+          },
+        ],
+      }
+    })
+
+    useAnimatedStyle(() => {
+      saveAnimationProgress.value = withTiming(isSavedProp ? 1 : 0, {
+        duration: 300,
+      })
+      return {} // Required for ts
+    }, [isSavedProp])
 
     if (!artwork) {
       return null
     }
 
-    const MAX_ARTWORK_HEIGHT = screenHeight * 0.55 * scale
+    const MAX_ARTWORK_HEIGHT = screenHeight * 0.55
 
     const src = artwork.images?.[0]?.url
     const width = artwork.images?.[0]?.width ?? 0
     const height = artwork.images?.[0]?.height ?? 0
 
-    const size = sizeToFit({ width, height }, { width: imageWidth, height: MAX_ARTWORK_HEIGHT })
+    const size = sizeToFit({ width, height }, { width: screenWidth, height: MAX_ARTWORK_HEIGHT })
 
     return (
-      <Flex backgroundColor="white100" width={imageWidth} style={containerStyle}>
+      <Flex backgroundColor="white100" width="100%" style={containerStyle}>
         <Flex mx={2} my={1}>
           <ArtistListItemContainer
             artist={artwork.artists?.[0]}
@@ -100,7 +121,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             <Text color="blue" variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>
               {artwork.internalID}
             </Text>
-            <Flex flexDirection="row" maxWidth={imageWidth - 200}>
+            <Flex flexDirection="row" maxWidth={screenWidth - 200}>
               <Text
                 color="black60"
                 italic
@@ -134,12 +155,14 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               }}
             >
               {!!isSaved ? (
-                <HeartFillIcon
-                  testID="filled-heart-icon"
-                  height={HEART_ICON_SIZE}
-                  width={HEART_ICON_SIZE}
-                  fill="blue100"
-                />
+                <Animated.View style={animatedSaveButtonStyles}>
+                  <HeartFillIcon
+                    testID="filled-heart-icon"
+                    height={HEART_ICON_SIZE}
+                    width={HEART_ICON_SIZE}
+                    fill="blue100"
+                  />
+                </Animated.View>
               ) : (
                 <HeartIcon
                   testID="empty-heart-icon"

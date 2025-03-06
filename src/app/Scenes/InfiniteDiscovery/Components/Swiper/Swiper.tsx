@@ -13,6 +13,7 @@ import {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated"
+import usePrevious from "react-use/lib/usePrevious"
 
 /**
  * TODOS
@@ -43,7 +44,7 @@ export type SwiperRefProps = {
 export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
   (
     {
-      cards: _cards,
+      cards,
       isRewindRequested,
       onNewCardReached,
       onRewind,
@@ -55,7 +56,6 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
     ref
   ) => {
     const width = useScreenWidthWithOffset()
-    const [cards, setCards] = useState(_cards)
     const [numberExtraCardsAdded, setNumberExtraCardsAdded] = useState(0)
 
     useImperativeHandle(ref, () => ({
@@ -71,19 +71,13 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
     // a list of cards that the user has seen
     const seenCardKeys = useSharedValue<Key[]>([])
 
-    useEffect(() => {
-      if (cards.length < _cards.length) {
-        setNumberExtraCardsAdded(_cards.length - cards.length)
-        setCards(_cards)
-      }
-    }, [_cards.length])
+    const previousCards = usePrevious(cards)
 
-    // This is required in order to make sure that the the save status is shown properly on the onboarding  animation
     useEffect(() => {
-      if (cards) {
-        setCards(_cards)
+      if (previousCards && cards.length < previousCards.length) {
+        setNumberExtraCardsAdded(previousCards.length - cards.length)
       }
-    }, [_cards])
+    }, [cards.length])
 
     useEffect(() => {
       if (numberExtraCardsAdded !== 0) {
