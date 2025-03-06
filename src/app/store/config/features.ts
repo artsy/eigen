@@ -261,8 +261,9 @@ export const features = {
   },
   AREnableHomeViewQuickLinks: {
     description: "Enable Home View Quick Links",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableHomeViewQuickLinks",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
