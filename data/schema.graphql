@@ -10827,6 +10827,19 @@ type FormattedDaySchedules {
 # The `FormattedNumber` type represents a number that can optionally be returnedas a formatted String. It does not try to coerce the type.
 scalar FormattedNumber
 
+type FulfillmentOption {
+  amount: Money
+  selected: Boolean
+  type: FulfillmentOptionTypeEnum!
+}
+
+enum FulfillmentOptionTypeEnum {
+  DOMESTIC_FLAT
+  INTERNATIONAL_FLAT
+  PICKUP
+  SHIPPING_TBD
+}
+
 # An entry from gemini
 type GeminiEntry {
   # The token that represents the gemini entry.
@@ -12414,6 +12427,21 @@ enum LengthUnitPreference {
   IN
 }
 
+# A line item in an order
+type LineItem {
+  artwork: Artwork
+  artworkVersion: ArtworkVersion
+  currencyCode: String!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  listPrice: Money
+  quantity: Int!
+}
+
 input LinkAuthenticationMutationInput {
   # Unique Apple user id. **Required** for Apple authentication.
   appleUid: String
@@ -13304,6 +13332,7 @@ type Me implements Node {
     # The ID of the Notification
     id: String!
   ): Notification
+  order(id: String!): Order
   orders(
     after: String
     before: String
@@ -14816,7 +14845,49 @@ type OpeningHoursText {
 
 union OpeningHoursUnion = OpeningHoursArray | OpeningHoursText
 
+# Buyer's representation of an order
+type Order {
+  # List of alpha-2 country codes to which the order can be shipped
+  availableShippingCountries: [String!]!
+
+  # Phone number of the buyer
+  buyerPhoneNumber: String
+
+  # The total amount the buyer is expected to pay
+  buyerTotal: Money
+
+  # Order code
+  code: String!
+  fulfillmentOptions: [FulfillmentOption!]!
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+
+  # The total amount of the line items
+  itemsTotal: Money
+  lineItems: [LineItem]!
+  mode: OrderModeEnum!
+
+  # Source of the order
+  source: OrderSourceEnum!
+}
+
+enum OrderModeEnum {
+  BUY
+  OFFER
+}
+
 union OrderParty = Partner | User
+
+enum OrderSourceEnum {
+  ARTWORK_PAGE
+  INQUIRY
+  PARTNER_OFFER
+  PRIVATE_SALE
+}
 
 type OrderedSet {
   cached: Int
