@@ -22,11 +22,12 @@ export const useVisualClue = () => {
 /**
  * @deprecated use dismissed from ProgressiveOnboardingModel instead
  */
-export const addClue = GlobalStore.actions.visualClue.addClue
+// export const addClue = GlobalStore.actions.visualClue.addClue
+export const addClue = () => {}
 
 /**
  * @deprecated use dismiss from ProgressiveOnboardingModel instead
  */
-export const setVisualClueAsSeen = GlobalStore.actions.visualClue.setVisualClueAsSeen
+export const setVisualClueAsSeen = () => {}
 
-export const _removeVisualClueAsSeen = GlobalStore.actions.visualClue._removeVisualClueAsSeen
+export const _removeVisualClueAsSeen = () => {}

@@ -1,7 +1,8 @@
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import * as Repack from "@callstack/repack"
-import { babelModuleResolverAlias as moduleResolverAlias } from "./alias"
+import { ReanimatedPlugin } from "@callstack/repack-plugin-reanimated"
+import { babelModuleResolverAlias as moduleResolverAlias } from "./alias.js"
 
 const babelPlugins = [
   "@babel/plugin-transform-named-capturing-groups-regex",
@@ -50,6 +51,7 @@ const __dirname = path.dirname(__filename)
  */
 
 export default {
+  mode: "development",
   context: __dirname,
   entry: "./index-common.js",
   resolve: {
@@ -76,5 +78,5 @@ export default {
       ...Repack.getAssetTransformRules(),
     ],
   },
-  plugins: [new Repack.RepackPlugin()],
+  plugins: [new Repack.RepackPlugin(), new ReanimatedPlugin()],
 }

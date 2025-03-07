@@ -145,7 +145,7 @@ import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
 import { goBack } from "app/system/navigation/navigate"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
-import { compact } from "lodash"
+import { compact, uniqBy } from "lodash"
 import React from "react"
 import { Platform } from "react-native"
 import { GraphQLTaggedNode } from "react-relay"
@@ -1529,3 +1529,24 @@ export const liveDotArtsyRoutes = defineRoutes([
 ])
 
 export const routes = compact([...artsyDotNetRoutes, ...liveDotArtsyRoutes])
+
+/**
+ * Modules is a record of all the modules in the app
+ * The key difference between this and the routes array is that two routes can lead to the same
+ * module screen. However modules are all unique
+ */
+export const testModules: Record<AppModule, ModuleDescriptor<AppModule>> = uniqBy(
+  routes,
+  "name"
+).reduce((acc, value) => ({ ...acc, [value.name]: value }), {} as any)
+
+export const nonTabTestModules = Object.fromEntries(
+  Object.entries(testModules).filter(([_, module]) => {
+    return (
+      // The module should not be a root view for a tab
+      !module.options?.isRootViewForTabName &&
+      // The module is not an restricted to a specific tab
+      !module.options?.onlyShowInTabName
+    )
+  })
+)

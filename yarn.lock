@@ -2082,6 +2082,11 @@
     source-map "^0.7.4"
     ws "^8.7.0"
 
+"@callstack/repack-plugin-reanimated@5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@callstack/repack-plugin-reanimated/-/repack-plugin-reanimated-5.0.1.tgz#518da2148b685a1dc5796ba4aa1376bbeea7ff95"
+  integrity sha512-I+FAShANi7+B/d7MztXRikYekfySqZVNiu/uiTCIE0LXDsVGS5kvT2IO0+YWrSIu2vpoixMRtWFwbA85KjW2iw==
+
 "@callstack/repack@5.0.1":
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@callstack/repack/-/repack-5.0.1.tgz#eff7eb896cfbbc945e29a58bad864825d07631a7"
