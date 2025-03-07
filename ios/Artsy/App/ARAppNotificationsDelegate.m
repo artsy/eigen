@@ -223,16 +223,8 @@
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{
     BOOL processedByBraze = ARAppDelegate.braze != nil && [ARAppDelegate.braze.notifications handleUserNotificationWithResponse:response
                                                                                                     withCompletionHandler:completionHandler];
-
     NSDictionary *userInfo = response.notification.request.content.userInfo;
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
-
-    if (processedByBraze) {
-      NSString *url = userInfo[@"ab_uri"];
-      [self tappedNotification:userInfo url:url];
-      return;
-    }
-
 
     [self tappedNotification:notificationInfo url:userInfo[@"url"]];
     completionHandler();
