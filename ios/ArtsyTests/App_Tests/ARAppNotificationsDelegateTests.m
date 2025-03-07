@@ -5,17 +5,12 @@
 #import "UIApplicationStateEnum.h"
 #import "AREmission.h"
 #import <Analytics/SEGAnalytics.h>
-#import "UserNotifications/UNNotification.h"
-#import "UserNotifications/UNNotificationRequest.h"
-#import "UserNotifications/UNNotificationContent.h"
 
 static NSDictionary *
 DictionaryWithAppState(NSDictionary *input, UIApplicationState appState)
 {
     NSMutableDictionary *dictionary = [input mutableCopy];
-    if (appState != -1) {
-        dictionary[@"UIApplicationState"] = [UIApplicationStateEnum toString:appState];
-    }
+    dictionary[@"UIApplicationState"] = [UIApplicationStateEnum toString:appState];
     return [dictionary copy];
 }
 
@@ -36,9 +31,6 @@ describe(@"receiveRemoteNotification", ^{
     __block UIApplicationState appState = -1;
     __block id mockEmissionSharedInstance = nil;
     __block id mockSegmentSharedInstance = nil;
-    __block UNNotification *unNotification = nil;
-    __block UNUserNotificationCenter *currentCenter = nil;
-    __block void (^completionHandler)(UNNotificationPresentationOptions) = ^(UNNotificationPresentationOptions options) {};
 
     beforeEach(^{
         app = [UIApplication sharedApplication];
@@ -56,19 +48,12 @@ describe(@"receiveRemoteNotification", ^{
         [mockSegmentSharedInstance stopMocking];
     });
 
-    sharedExamplesFor(@"when receiving a notification", ^(NSDictionary *prefs) {
+    sharedExamplesFor(@"when receiving a notification", ^(id _) {
         it(@"triggers an analytics event for receiving a notification", ^{
-
-            BOOL isInForeground = [prefs[@"isInForeground"] boolValue];
-
             [[mockEmissionSharedInstance expect] sendEvent:ARAnalyticsNotificationReceived traits:DictionaryWithAppState(notification, appState)];
             [[mockEmissionSharedInstance reject] sendEvent:ARAnalyticsNotificationTapped traits:OCMOCK_ANY];
 
-            if (isInForeground) {
-                [delegate userNotificationCenter:currentCenter willPresentNotification:unNotification withCompletionHandler:completionHandler];
-            } else {
-                [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
-            }
+            [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
             [mockEmissionSharedInstance verify];
         });
@@ -117,64 +102,46 @@ describe(@"receiveRemoteNotification", ^{
 
     describe(@"running in the foreground", ^{
         beforeEach(^{
-            appState = -1;
-            currentCenter = [UNUserNotificationCenter currentNotificationCenter];
-
-            // mock UserNotification notificaiton
-            unNotification = OCMClassMock([UNNotification class]);
-            UNNotificationRequest *request = OCMClassMock([UNNotificationRequest class]);
-            UNNotificationContent *content = OCMClassMock([UNMutableNotificationContent class]);
-            NSDictionary *userInfo = notification;
-
-            OCMStub([unNotification request]).andReturn(request);
-            OCMStub([request content]).andReturn(content);
-            OCMStub([content userInfo]).andReturn(userInfo);
+            appState = UIApplicationStateActive;
         });
 
-        itBehavesLike(@"when receiving a notification", @{@"isInForeground": @true});
+        itBehavesLike(@"when receiving a notification", nil);
+
+        it(@"displays a notification", ^{
+            id mock = [OCMockObject mockForClass:[ARNotificationView class]];
+            [[mock expect] showNoticeInView:OCMOCK_ANY title:@"New Works For You" response:OCMOCK_ANY];
+
+            [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
+
+            [mock verify];
+            [mock stopMocking];
+        });
 
         it(@"triggers an analytics event when a notification has been tapped", ^{
+            id mockNotificationView = [OCMockObject mockForClass:[ARNotificationView class]];
+            [[mockNotificationView stub] showNoticeInView:OCMOCK_ANY
+                                                    title:OCMOCK_ANY
+                                                 response:[OCMArg checkWithBlock:^(dispatch_block_t callback) {
+                                                    callback();
+                                                    return YES;
+                                                 }]];
+
             [[mockEmissionSharedInstance stub] sendEvent:ARAnalyticsNotificationReceived traits:OCMOCK_ANY];
             [[mockEmissionSharedInstance expect] sendEvent:ARAnalyticsNotificationTapped traits:DictionaryWithAppState(notification, appState)];
 
-            UNNotificationResponse *response = OCMClassMock([UNNotificationResponse class]);
-            OCMStub([response notification]).andReturn(unNotification);
-            void (^completionHandler)(void) = ^() {};
-
-            [delegate userNotificationCenter:currentCenter didReceiveNotificationResponse:response withCompletionHandler:completionHandler];
-
+            [delegate applicationDidReceiveRemoteNotification:notification inApplicationState:appState];
 
             [mockEmissionSharedInstance verify];
+            [mockNotificationView stopMocking];
         });
 
-        it(@"handles notification with ab_uri", ^{
-            // Notification With APPBOY Uri
-            NSDictionary *notification = @{
-                @"aps": @{ @"alert": @"New Works For You", @"badge": @(42), @"content-available": @(1) },
-                @"ab_uri": @"http://artsy.net/works-for-you",
-            };
+        it(@"defaults message to url", ^{
+            id mock = [OCMockObject mockForClass:[ARNotificationView class]];
+            [[mock expect] showNoticeInView:OCMOCK_ANY title:@"http://artsy.net/feature" response:OCMOCK_ANY];
+            [delegate applicationDidReceiveRemoteNotification:@{ @"url" : @"http://artsy.net/feature" } inApplicationState:appState];
 
-            NSMutableDictionary *expectedNotification = [notification mutableCopy];
-            [expectedNotification removeObjectForKey:@"ab_uri"];
-            expectedNotification[@"url"] = notification[@"ab_uri"];
-
-            [[mockEmissionSharedInstance stub] sendEvent:ARAnalyticsNotificationReceived traits:OCMOCK_ANY];
-            [[mockEmissionSharedInstance expect] sendEvent:ARAnalyticsNotificationTapped traits:DictionaryWithAppState(expectedNotification, appState)];
-
-            UNNotificationResponse *response = OCMClassMock([UNNotificationResponse class]);
-            UNNotificationRequest *request = OCMClassMock([UNNotificationRequest class]);
-            UNNotificationContent *content = OCMClassMock([UNMutableNotificationContent class]);
-            NSDictionary *userInfo = notification;
-
-            OCMStub([response notification]).andReturn(unNotification);
-            OCMStub([unNotification request]).andReturn(request);
-            OCMStub([request content]).andReturn(content);
-            OCMStub([content userInfo]).andReturn(userInfo);
-            void (^completionHandler)(void) = ^() {};
-
-            [delegate userNotificationCenter:currentCenter didReceiveNotificationResponse:response withCompletionHandler:completionHandler];
-
-            [mockEmissionSharedInstance verify];
+            [mock verify];
+            [mock stopMocking];
         });
     });
 });
