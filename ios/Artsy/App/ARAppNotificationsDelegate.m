@@ -103,9 +103,10 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
 {
-    BOOL processedByBraze = ARAppDelegate.braze != nil && [ARAppDelegate.braze.notifications handleBackgroundNotificationWithUserInfo:userInfo
-                                                                                                               fetchCompletionHandler:handler];
-    if (processedByBraze) {
+
+    bool handled = [[[ARAppDelegate braze] notifications] handleBackgroundNotificationWithUserInfo:userInfo fetchCompletionHandler:handler];
+
+    if (handled) {
         NSString *url = userInfo[@"ab_uri"];
         [self receivedNotification:userInfo];
         [self tappedNotification:userInfo url:url];
@@ -216,8 +217,6 @@
 
 // Handle the tapping on the notification when the app in the foreground
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{
-    BOOL processedByBraze = ARAppDelegate.braze != nil && [ARAppDelegate.braze.notifications handleUserNotificationWithResponse:response
-                                                                                                    withCompletionHandler:completionHandler];
     NSDictionary *userInfo = response.notification.request.content.userInfo;
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
 
