@@ -110,7 +110,7 @@ interface ProvideScreenTrackingWithCohesionSchemaProps {
   info: Screen
 }
 // Uses schema defined in Cohesion
-@screenTrack<ProvideScreenTrackingProps>((props) => props.info)
+@screenTrack((props) => props.info)
 export class ProvideScreenTrackingWithCohesionSchema extends React.Component<ProvideScreenTrackingWithCohesionSchemaProps> {
   render() {
     return React.createElement(React.Fragment, null, this.props.children)

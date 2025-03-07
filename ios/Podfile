@@ -115,8 +115,7 @@ target 'Artsy' do
   # waiting on https://github.com/SwiftyJSON/SwiftyJSON/issues/1154
   pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON/', :commit => 'af76cf3ef710b6ca5f8c05f3a31307d44a3c5828'
 
-  # Used in Live Auctions to hold user-state
-  pod 'JWTDecode', '2.0.0'
+  pod 'JWTDecode'
 
   target 'ArtsyTests' do
     inherit! :search_paths
