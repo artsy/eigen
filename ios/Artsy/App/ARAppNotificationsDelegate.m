@@ -226,13 +226,6 @@
     NSDictionary *userInfo = response.notification.request.content.userInfo;
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
 
-    if (processedByBraze) {
-      NSString *url = userInfo[@"ab_uri"];
-      [self tappedNotification:userInfo url:url];
-      return;
-    }
-
-
     [self tappedNotification:notificationInfo url:userInfo[@"url"]];
     completionHandler();
 }
