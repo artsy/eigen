@@ -1,15 +1,15 @@
 import { screen } from "@testing-library/react-native"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import { NewBuyNowArtworksRailContainer } from "./NewBuyNowArtworksRail"
+import { BuyNowArtworksRailContainer } from "./BuyNowArtworksRail"
 
-describe("NewBuyNowArtworksRail", () => {
+describe("BuyNowArtworksRail", () => {
   const { renderWithRelay } = setupTestWrapper({
-    Component: NewBuyNowArtworksRailContainer,
+    Component: BuyNowArtworksRailContainer,
     query: graphql`
-      query NewBuyNowArtworksRailTestsQuery($id: String!) @relay_test_operation {
+      query BuyNowArtworksRailTestsQuery($id: String!) @relay_test_operation {
         sale(id: $id) {
-          ...NewBuyNowArtworksRail_sale
+          ...BuyNowArtworksRail_sale
         }
       }
     `,
@@ -18,8 +18,9 @@ describe("NewBuyNowArtworksRail", () => {
 
   it(`renders "Buy now" rail and artworks`, () => {
     renderWithRelay(mockProps)
-    expect(screen.queryByText("Artworks Available to Inquire")).toBeDefined()
-    expect(screen.queryAllByText("Best artwork ever, 2019")).toBeDefined()
+
+    expect(screen.getByText("Artworks Available to Inquire")).toBeDefined()
+    expect(screen.queryAllByText("Best artwork ever, 2019")).toHaveLength(10)
   })
 
   it("renders nothing if there are no artworks", () => {
@@ -31,8 +32,8 @@ describe("NewBuyNowArtworksRail", () => {
       }),
     }
 
-    const { queryAllByTestId } = renderWithRelay(noArtworksProps)
-    expect(queryAllByTestId("bnmo-rail-wrapper")).toHaveLength(0)
+    renderWithRelay(noArtworksProps)
+    expect(screen.queryAllByTestId("bnmo-rail-wrapper")).toHaveLength(0)
   })
 })
 

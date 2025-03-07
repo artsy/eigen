@@ -6,7 +6,6 @@ import {
   ArtworksFiltersStore,
   useSelectedOptionsDisplay,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 type PriceRangeOptionsScreenProps = StackScreenProps<
@@ -15,16 +14,6 @@ type PriceRangeOptionsScreenProps = StackScreenProps<
 >
 
 const EstimateRanges = [
-  { paramValue: "", paramDisplay: "All" },
-  { paramValue: "*-100000", paramDisplay: "$0-1,000" },
-  { paramValue: "100000-500000", paramDisplay: "$1000-5,000" },
-  { paramValue: "500000-1000000", paramDisplay: "$5,000-10,000" },
-  { paramValue: "1000000-5000000", paramDisplay: "$10,000-50,000" },
-  { paramValue: "5000000-*", paramDisplay: "$50,000+" },
-]
-
-// TODO: Replace NewEstimateRanges with EstimateRanges when AREnableArtworksConnectionForAuction is released
-const NewEstimateRanges = [
   { paramValue: "", paramDisplay: "All" },
   { paramValue: "*-1000", paramDisplay: "$0-1,000" },
   { paramValue: "1000-5000", paramDisplay: "$1000-5,000" },
@@ -36,9 +25,8 @@ const NewEstimateRanges = [
 export const EstimateRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({
   navigation,
 }) => {
-  const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction")
   const paramName = FilterParamName.estimateRange
-  const ranges = enableArtworksConnection ? NewEstimateRanges : EstimateRanges
+  const ranges = EstimateRanges
 
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.selectFiltersAction
