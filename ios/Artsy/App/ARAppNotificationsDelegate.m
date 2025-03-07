@@ -103,9 +103,10 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
 {
-    BOOL processedByBraze = ARAppDelegate.braze != nil && [ARAppDelegate.braze.notifications handleBackgroundNotificationWithUserInfo:userInfo
-                                                                                                               fetchCompletionHandler:handler];
-    if (processedByBraze) {
+
+    bool handled = [[[ARAppDelegate braze] notifications] handleBackgroundNotificationWithUserInfo:userInfo fetchCompletionHandler:handler];
+
+    if (handled) {
         NSString *url = userInfo[@"ab_uri"];
         [self receivedNotification:userInfo];
         [self tappedNotification:userInfo url:url];
