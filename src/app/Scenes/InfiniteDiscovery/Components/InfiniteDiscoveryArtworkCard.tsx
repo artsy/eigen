@@ -16,7 +16,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo } from "react"
-import { ViewStyle } from "react-native"
+import { LayoutAnimation, ViewStyle } from "react-native"
 import Animated, {
   interpolate,
   useAnimatedStyle,

@@ -11,6 +11,7 @@ import {
   SharedValue,
   useAnimatedReaction,
   useSharedValue,
+  withSequence,
   withTiming,
 } from "react-native-reanimated"
 import usePrevious from "react-use/lib/usePrevious"
@@ -37,8 +38,7 @@ type SwiperProps = {
 )
 
 export type SwiperRefProps = {
-  swipeLeft: () => void
-  swipeRight: () => void
+  swipeLeftThenRight: (duration: number) => void
 }
 
 export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
@@ -59,8 +59,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
     const [numberExtraCardsAdded, setNumberExtraCardsAdded] = useState(0)
 
     useImperativeHandle(ref, () => ({
-      swipeLeft,
-      swipeRight,
+      swipeLeftThenRight,
     }))
 
     const activeCardX = useSharedValue(0)
@@ -115,30 +114,16 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
       }
     )
 
-    const swipeLeft = () => {
+    const swipeLeftThenRight = (duration: number) => {
       const swipedCardIndex = _activeIndex.value
       const swipedCardKey = cards[swipedCardIndex].key
 
       if (swipedCardKey) {
-        activeCardX.value = withTiming(-width, { duration: 500, easing: Easing.linear }, () => {
-          swipedKeys.value = [...swipedKeys.value, swipedCardKey]
-          _activeIndex.value = _activeIndex.value - 1
-          activeCardX.value = 0
-          return
-        })
+        activeCardX.value = withSequence(
+          withTiming(-width / 3, { duration: duration / 2, easing: Easing.linear }),
+          withTiming(0, { duration: duration / 2, easing: Easing.linear })
+        )
       }
-    }
-
-    const swipeRight = () => {
-      const hasSwipedCards = _activeIndex.value + 1 < cards.length
-
-      swipedCardX.value = withTiming(0, { duration: 500, easing: Easing.linear }, () => {
-        if (hasSwipedCards) {
-          swipedKeys.value = swipedKeys.value.slice(0, -1)
-          _activeIndex.value = _activeIndex.value + 1
-        }
-        swipedCardX.value = -width
-      })
     }
 
     const pan = Gesture.Pan()
