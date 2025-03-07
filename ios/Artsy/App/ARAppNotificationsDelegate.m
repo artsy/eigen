@@ -6,7 +6,7 @@
 #import "ARAppDelegate.h"
 #import "ARAppConstants.h"
 #import "ARAnalyticsConstants.h"
-#import <SEGAnalytics.h>
+#import <Analytics/SEGAnalytics.h>
 #import "UIApplicationStateEnum.h"
 #import "ARNotificationView.h"
 #import "ARSerifNavigationViewController.h"
@@ -208,11 +208,6 @@
 // Handle the notification view on when the app is in the foreground
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler{
 
-    if (ARAppDelegate.braze != nil) {
-      // Forward notification payload to Braze for processing.
-      [ARAppDelegate.braze.notifications handleForegroundNotificationWithNotification:notification];
-    }
-
     NSDictionary *userInfo = notification.request.content.userInfo;
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
 
@@ -222,7 +217,6 @@
 
 // Handle the tapping on the notification when the app in the foreground
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{
-
     NSDictionary *userInfo = response.notification.request.content.userInfo;
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
 
