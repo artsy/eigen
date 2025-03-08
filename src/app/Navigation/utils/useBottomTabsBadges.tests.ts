@@ -12,9 +12,6 @@ jest.mock("@artsy/palette-mobile", () => ({
 jest.mock("app/utils/hooks/useVisualClue", () => ({
   useVisualClue: jest.fn(),
 }))
-jest.mock("app/utils/experiments/useActivityDotExperiment", () => ({
-  useActivityDotExperiment: jest.fn(() => ({ forceDots: false, color: "blue100" })),
-}))
 jest.mock("app/utils/useTabBarBadge", () => ({
   useTabBarBadge: jest.fn(),
 }))
