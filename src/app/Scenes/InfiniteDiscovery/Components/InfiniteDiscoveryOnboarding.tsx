@@ -38,6 +38,8 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
           shadowOpacity: 0.2,
           shadowOffset: { height: 0, width: 0 },
         }}
+        // Only show the saved hint for the upper card - since the cards are reverted in the swiper,
+        // the upper card index is the last in the array
         isSaved={i === artworks.length - 1 ? showSavedHint : false}
       />
     ))
@@ -59,11 +61,11 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
   }, [hasInteractedWithOnboarding])
 
   const showOnboardingAnimation = () => {
-    swiperRef.current?.swipeLeftThenRight(ONBOARDING_SWIPE_ANIMATION_DURATION)
+    setShowSavedHint(true)
 
     setTimeout(() => {
-      setShowSavedHint(true)
-    }, ONBOARDING_SWIPE_ANIMATION_DURATION + ONBOARDING_ANIMATION_DELAY)
+      swiperRef.current?.swipeLeftThenRight(ONBOARDING_SWIPE_ANIMATION_DURATION)
+    }, ONBOARDING_ANIMATION_DELAY + ONBOARDING_SAVED_HINT_DURATION)
 
     setTimeout(
       () => {
@@ -80,8 +82,10 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
       return
     }
 
+    // Wait for a second before showing the animation
     setTimeout(() => {
       showOnboardingAnimation()
+      // Show the animation every 5 seconds afterwards
       setInterval(() => {
         showOnboardingAnimation()
       }, 5000)

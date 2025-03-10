@@ -15,12 +15,15 @@ import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSav
 import { GlobalStore } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
-import { memo } from "react"
-import { LayoutAnimation, ViewStyle } from "react-native"
+import { memo, useEffect } from "react"
+import { ViewStyle } from "react-native"
 import Animated, {
+  Easing,
   interpolate,
   useAnimatedStyle,
   useSharedValue,
+  withDelay,
+  withSequence,
   withTiming,
 } from "react-native-reanimated"
 import { graphql, useFragment } from "react-relay"
@@ -82,12 +85,22 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       }
     })
 
-    useAnimatedStyle(() => {
+    useEffect(() => {
       saveAnimationProgress.value = withTiming(isSavedProp ? 1 : 0, {
         duration: 300,
       })
-      return {} // Required for ts
     }, [isSavedProp])
+
+    const savedArtworkAnimationStyles = useAnimatedStyle(() => {
+      return {
+        opacity: isSavedProp
+          ? withSequence(
+              withTiming(1, { duration: 300, easing: Easing.linear }),
+              withDelay(500, withTiming(0, { duration: 300, easing: Easing.linear }))
+            )
+          : 0,
+      }
+    })
 
     if (!artwork) {
       return null
@@ -114,6 +127,23 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           />
         </Flex>
         <Flex alignItems="center" minHeight={MAX_ARTWORK_HEIGHT} justifyContent="center">
+          <Animated.View
+            style={[
+              {
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(255, 255, 255, 0.5)",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 100,
+              },
+              savedArtworkAnimationStyles,
+            ]}
+          >
+            <HeartFillIcon height={64} width={64} fill="white100" />
+          </Animated.View>
+
           {!!src && <Image src={src} height={size.height} width={size.width} />}
         </Flex>
         <Flex flexDirection="row" justifyContent="space-between" p={1} mx={2}>

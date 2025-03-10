@@ -73,8 +73,8 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
     const previousCards = usePrevious(cards)
 
     useEffect(() => {
-      if (previousCards && cards.length < previousCards.length) {
-        setNumberExtraCardsAdded(previousCards.length - cards.length)
+      if (previousCards && cards.length !== previousCards.length) {
+        setNumberExtraCardsAdded(cards.length - previousCards.length)
       }
     }, [cards.length])
 
