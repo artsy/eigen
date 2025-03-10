@@ -269,12 +269,12 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           onSwipe={handleSwipe}
         />
 
-        {!!topArtwork && (
+        {/* {!!topArtwork && (
           <InfiniteDiscoveryBottomSheet
             artworkID={topArtwork.internalID}
             artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
           />
-        )}
+        )} */}
       </Screen.Body>
     </Screen>
   )
