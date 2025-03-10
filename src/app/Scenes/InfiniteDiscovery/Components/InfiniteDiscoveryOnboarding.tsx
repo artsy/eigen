@@ -21,7 +21,6 @@ export const InfiniteDiscoveryOnboarding: React.FC<{}> = () => {
     (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
   )
 
-  console.log({ hasInteractedWithOnboarding })
   useEffect(() => {
     setTimeout(() => {
       if (!hasInteractedWithOnboarding) {
