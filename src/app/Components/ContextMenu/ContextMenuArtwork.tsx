@@ -35,7 +35,6 @@ interface ContextMenuArtworkProps {
   onSupressArtwork?: () => void
   haptic?: HapticFeedbackTypes | boolean
   artworkDisplayProps?: ArtworkDisplayProps
-  contextScreenOwnerType?: ScreenOwnerType
   contextModule?: ContextModule
   hideCreateAlertOnArtworkPreview?: boolean
 }
@@ -46,7 +45,6 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   artworkDisplayProps,
   onCreateAlertActionPress,
   onSupressArtwork,
-  contextScreenOwnerType,
   contextModule,
   hideCreateAlertOnArtworkPreview,
   ...restProps
@@ -165,32 +163,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 
     const onPressToCall = contextActions[event.nativeEvent.index].onPress
 
-    if (contextModule && contextScreenOwnerType) {
-      trackEvent(tracks.longPressedArtwork(contextModule, contextScreenOwnerType, artwork.id))
-    }
-
     onPressToCall?.()
-  }
-
-  const handleContextCancel: ContextMenuProps["onCancel"] = () => {
-    // There is not an event for callback for when context menu shows so instead track
-    // the 2 possibilities, an action was taken or the menu was cancelled
-    if (contextModule && contextScreenOwnerType) {
-      trackEvent(tracks.longPressedArtwork(contextModule, contextScreenOwnerType, artwork.id))
-    }
-  }
-
-  const tracks = {
-    longPressedArtwork: (
-      contextModule: ContextModule,
-      screenOwnerType: ScreenOwnerType,
-      artworkId: string
-    ): LongPressedArtwork => ({
-      action: ActionType.longPressedArtwork,
-      context_module: contextModule,
-      context_screen_owner_type: screenOwnerType,
-      context_screen_owner_id: artworkId,
-    }),
   }
 
   const artworkPreviewComponent = (artwork: ContextMenuArtworkPreviewCard_artwork$key) => {
@@ -207,7 +180,6 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
       <ContextMenu
         actions={contextActions}
         onPress={handleContextPress}
-        onCancel={handleContextCancel}
         preview={artworkPreviewComponent(artwork)}
         hideShadows={true}
         previewBackgroundColor={!!dark ? color("black100") : color("white100")}
@@ -300,3 +272,16 @@ const artworkFragment = graphql`
     widthCm
   }
 `
+
+export const trackLongPress = {
+  longPressedArtwork: (
+    contextModule: ContextModule,
+    screenOwnerType: ScreenOwnerType,
+    artworkId: string
+  ): LongPressedArtwork => ({
+    action: ActionType.longPressedArtwork,
+    context_module: contextModule,
+    context_screen_owner_type: screenOwnerType,
+    context_screen_owner_id: artworkId,
+  }),
+}

@@ -22,7 +22,7 @@ import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionT
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
-import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
+import { ContextMenuArtwork, trackLongPress } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
@@ -86,7 +86,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   artistNamesTextStyle,
   artwork,
   artworkMetaStyle,
-  contextModule,
+  contextModule = ContextModule.artworkGrid,
   contextScreen,
   contextScreenOwnerId,
   contextScreenOwnerSlug,
@@ -207,7 +207,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     } else if (contextScreenOwnerType) {
       const genericTapEvent: TappedMainArtworkGrid = {
         action: ActionType.tappedMainArtworkGrid,
-        context_module: ContextModule.artworkGrid,
+        context_module: contextModule,
         context_screen: contextScreen,
         context_screen_owner_type: contextScreenOwnerType,
         context_screen_owner_id: contextScreenOwnerId,
@@ -259,7 +259,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
       <ContextMenuArtwork
         onSupressArtwork={() => handleSupress(artwork as any)}
         contextModule={contextModule}
-        contextScreenOwnerType={contextScreenOwnerType}
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
         artwork={artwork}
         hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
@@ -270,7 +269,17 @@ export const Artwork: React.FC<ArtworkProps> = ({
           activeOpacity={0.8}
           onPress={handleTap}
           // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
-          onLongPress={() => {}}
+          onLongPress={() => {
+            if (contextModule && contextScreenOwnerType) {
+              tracking.trackEvent(
+                trackLongPress.longPressedArtwork(
+                  contextModule,
+                  contextScreenOwnerType,
+                  artwork.slug
+                )
+              )
+            }
+          }}
           delayLongPress={400}
           navigationProps={navigationProps}
           to={artwork.href}
