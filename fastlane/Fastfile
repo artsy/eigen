@@ -486,6 +486,24 @@ lane :deploy_to_codepush do |options|
   puts "Deploying to #{deployment_name} with description #{description} for platform #{platform}"
 end
 
+lane :deploy_to_expo_updates do |options|
+  platform = options[:platform]
+  deployment_name = options[:deployment_name]
+  description = options[:description]
+
+  # important! this must match the release version specified
+  # in Eigen in order for sourcemaps to work correctly
+  # TODO: Not sure if this is still needed or a variant needed
+  # Will need to modify eigen code in any case
+  release_name, dist_version, release_version = set_expo_release_values(deployment_name, platform)
+
+  app_name = platform == 'ios' ? 'Eigen' : 'Eigen-Android'
+  sourcemap_output = platform == 'ios' ? './build/CodePush/main.jsbundle.map' : './build/CodePush/index.android.bundle.map'
+  bundle_path = platform == 'ios' ? './build/CodePush/main.jsbundle' : './build/CodePush/index.android.bundle'
+
+  puts("Here is where I should actually deploy it")
+end
+
 lane :promote_codepush do |options|
   token = ENV['APP_CENTER_API_TOKEN']
 
@@ -524,12 +542,12 @@ lane :update_codepush_rollout do |options|
   sh("appcenter codepush patch -a #{iosAppName} #{targetDeployment} -r #{rolloutPercentage}")
 end
 
-def set_codepush_release_values(deployment_name, platform)
+def set_expo_release_values(deployment_name, platform)
   date_str = DateTime.now.strftime('%Y.%m.%d.%H')
   latest_version = $APP_JSON['version']
-  release_name = "codepush-#{deployment_name.downcase}-#{platform.downcase}-#{latest_version}-#{date_str}"
-  $APP_JSON['codePushReleaseName'] = release_name
-  $APP_JSON['codePushDist'] = date_str
+  release_name = "expo-#{deployment_name.downcase}-#{platform.downcase}-#{latest_version}-#{date_str}"
+  $APP_JSON['expoReleaseName'] = release_name
+  $APP_JSON['expoPushDist'] = date_str
   write_contents_to_file($APP_JSON_PATH, JSON.pretty_generate($APP_JSON))
   [release_name, date_str, latest_version]
 end
