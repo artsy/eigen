@@ -28,7 +28,7 @@ else
   description="Commit: $commit_hash, Description: $commit_description"
 fi
 
-# Deploy to codepush
+# Deploy to expo updates
 bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description" platform:ios
 bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description" platform:android
 

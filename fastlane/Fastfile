@@ -491,17 +491,19 @@ lane :deploy_to_expo_updates do |options|
   deployment_name = options[:deployment_name]
   description = options[:description]
 
+  # TODO: May need to install node modules first
+
   # important! this must match the release version specified
   # in Eigen in order for sourcemaps to work correctly
   # TODO: Not sure if this is still needed or a variant needed
   # Will need to modify eigen code in any case
   release_name, dist_version, release_version = set_expo_release_values(deployment_name, platform)
 
-  app_name = platform == 'ios' ? 'Eigen' : 'Eigen-Android'
+  ### TODO: Where are the bundles stored?
   sourcemap_output = platform == 'ios' ? './build/CodePush/main.jsbundle.map' : './build/CodePush/index.android.bundle.map'
   bundle_path = platform == 'ios' ? './build/CodePush/main.jsbundle' : './build/CodePush/index.android.bundle'
 
-  puts("Here is where I should actually deploy it")
+  sh("pushd ..; eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}; popd")
 end
 
 lane :promote_codepush do |options|
