@@ -57,20 +57,25 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
   ) => {
     const width = useScreenWidthWithOffset()
     const [numberExtraCardsAdded, setNumberExtraCardsAdded] = useState(0)
-
-    useImperativeHandle(ref, () => ({
-      swipeLeftThenRight,
-    }))
-
     const activeCardX = useSharedValue(0)
     const swipedCardX = useSharedValue(-width)
     // TODO: remove underscore
     const _activeIndex = useSharedValue(cards.length - 1)
     const swipedKeys = useSharedValue<Key[]>([])
+    const [swipedKeysState, setSwipedKeysState] = useState<Key[]>([])
+
+    const previousCards = usePrevious(cards)
+
     // a list of cards that the user has seen
     const seenCardKeys = useSharedValue<Key[]>([])
 
-    const previousCards = usePrevious(cards)
+    useImperativeHandle(ref, () => ({
+      swipeLeftThenRight,
+    }))
+
+    useEffect(() => {
+      setSwipedKeysState(swipedKeys.value)
+    }, [swipedKeys])
 
     useEffect(() => {
       if (previousCards && cards.length !== previousCards.length) {
@@ -217,13 +222,22 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
       <GestureDetector gesture={pan}>
         <View style={containerStyle}>
           {cards.map((c, i) => {
+            const isSwiped = swipedKeysState.includes(c.key as Key)
+            if (
+              isSwiped &&
+              // Do not dismiss last swiped card
+              swipedKeysState.indexOf(c.key as Key) !== swipedKeys.value.length - 1
+            ) {
+              return null
+            }
+
             return (
               <AnimatedView
                 index={i}
                 card={c}
                 activeCardX={activeCardX}
                 activeIndex={_activeIndex}
-                swipedKeys={swipedKeys}
+                isSwiped={swipedKeysState.includes(c.key as Key)}
                 swipedCardX={swipedCardX}
                 key={`card_${c.key}`}
               />
