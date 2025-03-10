@@ -36,7 +36,9 @@ interface InfiniteDiscoveryProps {
   queryRef: PreloadedQuery<InfiniteDiscoveryQuery>
 }
 
-type InfiniteDiscoveryArtwork = ExtractNodeType<InfiniteDiscoveryQuery$data["discoverArtworks"]>
+export type InfiniteDiscoveryArtwork = ExtractNodeType<
+  InfiniteDiscoveryQuery$data["discoverArtworks"]
+>
 
 export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   fetchMoreArtworks,
@@ -218,8 +220,15 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     goBack()
   }
 
+  // Get the last 2 artworks from the infinite discovery
+  // We are showing the last 2 artworks instead of 2 because we reverse the artworks array
+  // Inside the Swiper component
+  const onboardingArtworks = artworks.slice(artworkCards.length - 3, artworkCards.length)
+
   return (
     <Screen safeArea={false}>
+      <InfiniteDiscoveryOnboarding artworks={onboardingArtworks} />
+
       <Screen.Body fullwidth style={{ marginTop: insets.top }}>
         <Flex zIndex={-100}>
           <Screen.Header
@@ -247,7 +256,9 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
             }
           />
         </Flex>
+
         <Spacer y={1} />
+
         <Swiper
           cards={artworkCards}
           isRewindRequested={isRewindRequested}
@@ -306,7 +317,6 @@ export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
 
   return (
     <Flex flex={1}>
-      <InfiniteDiscoveryOnboarding />
       <InfiniteDiscovery fetchMoreArtworks={fetchMoreArtworks} queryRef={queryRef} />
     </Flex>
   )

@@ -15,17 +15,32 @@ import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSav
 import { GlobalStore } from "app/store/GlobalStore"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
-import { memo } from "react"
+import { memo, useEffect } from "react"
+import { ViewStyle } from "react-native"
+import Animated, {
+  Easing,
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+  withDelay,
+  withSequence,
+  withTiming,
+} from "react-native-reanimated"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface InfiniteDiscoveryArtworkCardProps {
   artwork: InfiniteDiscoveryArtworkCard_artwork$key
+  containerStyle?: ViewStyle
+  // This is only used for the onboarding animation
+  isSaved?: boolean
 }
 
 export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCardProps> = memo(
-  ({ artwork: artworkProp }) => {
+  ({ artwork: artworkProp, containerStyle, isSaved: isSavedProp }) => {
     const { width: screenWidth, height: screenHeight } = useScreenDimensions()
+    const saveAnimationProgress = useSharedValue(0)
+
     const { trackEvent } = useTracking()
     const color = useColor()
     const { incrementSavedArtworksCount, decrementSavedArtworksCount } =
@@ -36,7 +51,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       artworkProp
     )
 
-    const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
+    const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
       artworkFragmentRef: artwork,
       onCompleted: (isArtworkSaved) => {
         trackEvent({
@@ -58,6 +73,35 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       },
     })
 
+    const isSaved = isSavedProp !== undefined ? isSavedProp : isSavedToArtworkList
+
+    const animatedSaveButtonStyles = useAnimatedStyle(() => {
+      return {
+        transform: [
+          {
+            scale: interpolate(saveAnimationProgress.value, [0, 0.5, 1], [1, 1.2, 1]),
+          },
+        ],
+      }
+    })
+
+    useEffect(() => {
+      saveAnimationProgress.value = withTiming(isSavedProp ? 1 : 0, {
+        duration: 300,
+      })
+    }, [isSavedProp])
+
+    const savedArtworkAnimationStyles = useAnimatedStyle(() => {
+      return {
+        opacity: isSavedProp
+          ? withSequence(
+              withTiming(1, { duration: 300, easing: Easing.linear }),
+              withDelay(500, withTiming(0, { duration: 300, easing: Easing.linear }))
+            )
+          : 0,
+      }
+    })
+
     if (!artwork) {
       return null
     }
@@ -71,7 +115,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const size = sizeToFit({ width, height }, { width: screenWidth, height: MAX_ARTWORK_HEIGHT })
 
     return (
-      <Flex backgroundColor="white100" width="100%" style={{ borderRadius: 10 }}>
+      <Flex backgroundColor="white100" width="100%" style={containerStyle}>
         <Flex mx={2} my={1}>
           <ArtistListItemContainer
             artist={artwork.artists?.[0]}
@@ -83,6 +127,23 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           />
         </Flex>
         <Flex alignItems="center" minHeight={MAX_ARTWORK_HEIGHT} justifyContent="center">
+          <Animated.View
+            style={[
+              {
+                position: "absolute",
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(255, 255, 255, 0.5)",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 100,
+              },
+              savedArtworkAnimationStyles,
+            ]}
+          >
+            <HeartFillIcon height={64} width={64} fill="white100" />
+          </Animated.View>
+
           {!!src && <Image src={src} height={size.height} width={size.width} />}
         </Flex>
         <Flex flexDirection="row" justifyContent="space-between" p={1} mx={2}>
@@ -124,12 +185,14 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               }}
             >
               {!!isSaved ? (
-                <HeartFillIcon
-                  testID="filled-heart-icon"
-                  height={HEART_ICON_SIZE}
-                  width={HEART_ICON_SIZE}
-                  fill="blue100"
-                />
+                <Animated.View style={animatedSaveButtonStyles}>
+                  <HeartFillIcon
+                    testID="filled-heart-icon"
+                    height={HEART_ICON_SIZE}
+                    width={HEART_ICON_SIZE}
+                    fill="blue100"
+                  />
+                </Animated.View>
               ) : (
                 <HeartIcon
                   testID="empty-heart-icon"
