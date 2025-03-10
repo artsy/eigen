@@ -52,6 +52,8 @@ export const Swiper: React.FC<SwiperProps> = ({
   // TODO: remove underscore
   const _activeIndex = useSharedValue(cards.length - 1)
   const swipedKeys = useSharedValue<Key[]>([])
+  const [swipedKeysState, setSwipedKeysState] = useState<Key[]>([])
+
   // a list of cards that the user has seen
   const seenCardKeys = useSharedValue<Key[]>([])
 
@@ -97,6 +99,10 @@ export const Swiper: React.FC<SwiperProps> = ({
       }
     }
   )
+
+  useEffect(() => {
+    setSwipedKeysState(swipedKeys.value)
+  }, [swipedKeys])
 
   const pan = Gesture.Pan()
     .onChange(({ translationX }) => {
@@ -184,13 +190,22 @@ export const Swiper: React.FC<SwiperProps> = ({
     <GestureDetector gesture={pan}>
       <View>
         {cards.map((c, i) => {
+          const isSwiped = swipedKeysState.includes(c.key as Key)
+          if (
+            isSwiped &&
+            // Do not dismiss last swiped card
+            swipedKeysState.indexOf(c.key as Key) !== swipedKeys.value.length - 1
+          ) {
+            return null
+          }
+
           return (
             <AnimatedView
               index={i}
               card={c}
               activeCardX={activeCardX}
               activeIndex={_activeIndex}
-              swipedKeys={swipedKeys}
+              isSwiped={swipedKeysState.includes(c.key as Key)}
               swipedCardX={swipedCardX}
               key={`card_${c.key}`}
             />
