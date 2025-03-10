@@ -3,10 +3,22 @@
   "name": "Eigen",
   "displayName": "Artsy",
   "version": "8.66.0",
+
   "isAndroidBeta": false,
   "expo": {
     "name": "Eigen",
     "slug": "eigen",
+    "plugins": [
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "note": "Use SENTRY_AUTH_TOKEN env to authenticate with Sentry.",
+          "project": "eigen",
+          "organization": "artsynet"
+        }
+      ]
+    ],
     "ios": {
       "bundleIdentifier": "net.artsy.artsy"
     },
