@@ -21,8 +21,8 @@ const appVersion = (version: string) => ({
   nativeCodeVersion: {
     "1": "some-hash",
   },
-  codePushReleaseName: "none",
-  codePushDist: "none",
+  expoReleaseName: "none",
+  expoDist: "none",
 })
 
 const _echoLaunchJsonActual = loads.echoLaunchJson()
