@@ -30,6 +30,7 @@ export const AnimatedView: FC<AnimatedViewProps> = ({
 }) => {
   const { width: screenWidth } = useScreenDimensions()
   const width = useScreenWidthWithOffset()
+  // const [visible, setVisible] = useState(true)
   const _index = useSharedValue(index)
 
   useEffect(() => {
@@ -157,16 +158,16 @@ export const AnimatedView: FC<AnimatedViewProps> = ({
   //   setVisible(_visible)
   // }
 
-  // do not render more than 2 swiped cards for performance reasons
+  // // do not render more than 2 swiped cards for performance reasons
   // useDerivedValue(() => {
   //   // do not render more than 2 swiped cards because of performance purposes
-  //   if (swipedKeys.value.slice(0, -2).includes(index)) {
+  //   if (index > activeIndex.value + 2) {
   //     runOnJS(toggleVisible)(false)
   //     return
   //   }
 
   //   runOnJS(toggleVisible)(true)
-  // }, [swipedKeys])
+  // }, [swipedKeys.value])
 
   // if (!visible) {
   //   return null

@@ -13,7 +13,6 @@ import { useToast } from "app/Components/Toast/toastHook"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
-import { InfiniteDiscoveryOnboarding } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryOnboarding"
 import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { useCreateUserSeenArtwork } from "app/Scenes/InfiniteDiscovery/mutations/useCreateUserSeenArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -73,13 +72,19 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
    */
   useEffect(() => {
     const newArtworks = extractNodes(data.discoverArtworks)
-    setArtworks((previousArtworks) => newArtworks.concat(previousArtworks))
+
+    setArtworks((previousArtworks) => {
+      previousArtworks
+        .concat(newArtworks)
+        .forEach((artwork, index) => console.log(`🪩\t🕺\t${index}\t${artwork.internalID}`))
+
+      return previousArtworks.concat(newArtworks)
+    })
   }, [data, extractNodes, setArtworks])
 
   useEffect(() => {
     if (!topArtworkId && artworks.length > 0) {
-      // TODO: beware! the artworks are being displayed in reverse order
-      setTopArtworkId(artworks[artworks.length - 1].internalID)
+      setTopArtworkId(artworks[0].internalID)
 
       // send the first seen artwork to the server
       commitMutation({
@@ -100,18 +105,31 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   }, [artworks])
 
   const artworkCards: ReactElement[] = useMemo(() => {
-    return artworks.map((artwork) => (
-      <InfiniteDiscoveryArtworkCard artwork={artwork} key={artwork.internalID} />
-    ))
-  }, [artworks])
+    // const topArtworkIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
+    // const sliceStart = topArtworkIndex < 2 ? 0 : topArtworkIndex - 2
+    // const sliceEnd = topArtworkIndex + 5
+
+    // console.log(`FOO active:\t${topArtworkIndex} start:\t${sliceStart} end:\t${sliceEnd}`)
+
+    const topArtworkIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
+    const endRange = Math.min(artworks.length - 1, topArtworkIndex + 2)
+    // Grab left elements of the array respecting the maximumCardsRedered, -1 represents the activeCard
+    const initialRange = Math.max(topArtworkIndex - (5 - (endRange - topArtworkIndex) - 1), 0)
+
+    console.log(
+      `🪩\t🦊\treading range:\tfrom ${initialRange} to ${endRange}, activeIndex -> ${topArtworkIndex}`
+    )
+
+    return artworks
+      .slice(initialRange, endRange + 1)
+      .map((artwork) => <InfiniteDiscoveryArtworkCard artwork={artwork} key={artwork.internalID} />)
+      .reverse()
+  }, [artworks.length, topArtworkId])
 
   const currentIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
-  // TODO: beware! the artworks are being displayed in reverse order
   const unswipedCardIds = artworks.slice(0, currentIndex).map((artwork) => artwork.internalID)
 
-  // TODO: beware! the artworks are being displayed in reverse order
-  const hideRewindButton =
-    !!artworks.length && topArtworkId === artworks[artworks.length - 1].internalID
+  const hideRewindButton = !!artworks.length && topArtworkId === artworks[0].internalID
 
   const handleBackPressed = () => {
     isRewindRequested.value = true
@@ -185,15 +203,16 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       return
     }
 
+    setTopArtworkId(nextArtwork.internalID)
+
     // If this is the first time the user swipes, dismiss the onboarding.
     if (!hasInteractedWithOnboarding) {
       GlobalStore.actions.infiniteDiscovery.setHasInteractedWithOnboarding(true)
     }
-
-    setTopArtworkId(nextArtwork.internalID)
   }
 
   const handleFetchMore = useCallback(() => {
+    console.log("🪩\t🕺\tfetch more")
     fetchMoreArtworks(unswipedCardIds)
   }, [fetchMoreArtworks, unswipedCardIds])
 
@@ -306,7 +325,7 @@ export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
 
   return (
     <Flex flex={1}>
-      <InfiniteDiscoveryOnboarding />
+      {/* <InfiniteDiscoveryOnboarding /> */}
       <InfiniteDiscovery fetchMoreArtworks={fetchMoreArtworks} queryRef={queryRef} />
     </Flex>
   )
