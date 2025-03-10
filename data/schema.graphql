@@ -8184,6 +8184,9 @@ input CreateArtistMutationInput {
   lastName: String
   middleName: String
   nationality: String
+
+  # When present, will create the partner-artist record as well
+  partnerID: String
 }
 
 type CreateArtistMutationPayload {
@@ -8293,6 +8296,9 @@ input CreateCanonicalArtistMutationInput {
   lastName: String
   middleName: String
   nationality: String
+
+  # When present, will create the partner-artist record as well
+  partnerID: String
 }
 
 type CreateCanonicalArtistMutationPayload {
@@ -13985,7 +13991,7 @@ type Mutation {
   ): CreateAndSendBackupSecondFactorPayload
   createAppSecondFactor(input: CreateAppSecondFactorInput!): CreateAppSecondFactorPayload
 
-  # Create an artist
+  # Create an artist, used for MyCollection. use CreateCanonicalArtistMutation for all other cases
   createArtist(input: CreateArtistMutationInput!): CreateArtistMutationPayload
   createArtworkImport(input: CreateArtworkImportInput!): CreateArtworkImportPayload
   createArtworkImportArtworks(
