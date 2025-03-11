@@ -6,6 +6,7 @@ import { NotificationCommercialButtonsQuery } from "__generated__/NotificationCo
 import { NotificationCommercialButtons_artwork$key } from "__generated__/NotificationCommercialButtons_artwork.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
+import { trackTappedCreateAlert } from "app/Components/Artist/ArtistArtworks/SavedSearchButtonV2"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { BuyNowButton } from "app/Scenes/Artwork/Components/CommercialButtons/BuyNowButton"
 import { navigate } from "app/system/navigation/navigate"
@@ -114,7 +115,20 @@ export const CommercialButtons: React.FC<{
   } else if (!!noLongerAvailable) {
     renderComponent = (
       <>
-        <Button block variant="outline" onPress={() => setShowCreateArtworkAlertModal(true)}>
+        <Button
+          block
+          variant="outline"
+          onPress={() => {
+            tracking.trackEvent(
+              trackTappedCreateAlert.tappedCreateAlert(
+                OwnerType.notification,
+                artworkID,
+                ContextModule.notification
+              )
+            )
+            setShowCreateArtworkAlertModal(true)
+          }}
+        >
           Create Alert
         </Button>
 

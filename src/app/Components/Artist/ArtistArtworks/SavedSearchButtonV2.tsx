@@ -1,4 +1,10 @@
-import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
+import {
+  ActionType,
+  ContextModule,
+  OwnerType,
+  ScreenOwnerType,
+  TappedCreateAlert,
+} from "@artsy/cohesion"
 import { BellIcon, Flex, Box, Text, TouchableHighlightColor } from "@artsy/palette-mobile"
 import { ProgressiveOnboardingSaveAlert } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveAlert"
 import { useTracking } from "react-tracking"
@@ -6,16 +12,24 @@ import { useTracking } from "react-tracking"
 export interface SavedSearchButtonV2Props {
   artistId: string
   artistSlug: string
+  contextModule: ContextModule
   onPress: () => void
 }
 
 export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) => {
-  const { artistId, artistSlug, onPress } = props
+  const { artistId, artistSlug, contextModule, onPress } = props
   const tracking = useTracking()
 
   const handlePress = () => {
     onPress()
-    tracking.trackEvent(tracks.tappedCreateAlert(artistId, artistSlug))
+    tracking.trackEvent(
+      trackTappedCreateAlert.tappedCreateAlert(
+        OwnerType.artist,
+        artistId,
+        artistSlug,
+        contextModule
+      )
+    )
   }
 
   return (
@@ -40,12 +54,17 @@ export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) =
   )
 }
 
-export const tracks = {
-  tappedCreateAlert: (artistId: string, artistSlug: string): TappedCreateAlert => ({
+export const trackTappedCreateAlert = {
+  tappedCreateAlert: (
+    ownerType: ScreenOwnerType,
+    ownerId?: string,
+    ownerSlug?: string,
+    contextModule?: ContextModule
+  ): TappedCreateAlert => ({
     action: ActionType.tappedCreateAlert,
-    context_screen_owner_type: OwnerType.artist,
-    context_screen_owner_id: artistId,
-    context_screen_owner_slug: artistSlug,
-    context_module: ContextModule.artworkGrid,
+    context_screen_owner_type: ownerType,
+    context_screen_owner_id: ownerId,
+    context_screen_owner_slug: ownerSlug,
+    context_module: contextModule,
   }),
 }

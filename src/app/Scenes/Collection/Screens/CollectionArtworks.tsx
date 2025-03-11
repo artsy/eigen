@@ -154,7 +154,6 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
         // need to pass zIndex: 1 here in order for the SubTabBar to
         // be visible above list content
         ListHeaderComponentStyle={{ zIndex: 1 }}
-        // here !!!
         ListHeaderComponent={
           <Tabs.SubTabBar>
             <HeaderArtworksFilterWithTotalArtworks onPress={handleFilterOpen} />

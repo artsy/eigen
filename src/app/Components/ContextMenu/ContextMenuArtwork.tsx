@@ -2,6 +2,7 @@ import { ActionType, ContextModule, LongPressedArtwork, ScreenOwnerType } from "
 import { Box, Flex, Join, Separator, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { ContextMenuArtworkPreviewCard_artwork$key } from "__generated__/ContextMenuArtworkPreviewCard_artwork.graphql"
 import { ContextMenuArtwork_artwork$key } from "__generated__/ContextMenuArtwork_artwork.graphql"
+import { trackTappedCreateAlert } from "app/Components/Artist/ArtistArtworks/SavedSearchButtonV2"
 import { ArtworkRailCardProps } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { ContextMenuArtworkPreviewCard } from "app/Components/ContextMenu/ContextMenuArtworkPreviewCard"
@@ -36,6 +37,7 @@ interface ContextMenuArtworkProps {
   haptic?: HapticFeedbackTypes | boolean
   artworkDisplayProps?: ArtworkDisplayProps
   contextModule?: ContextModule
+  contextScreenOwnerType?: ScreenOwnerType
   hideCreateAlertOnArtworkPreview?: boolean
 }
 
@@ -46,6 +48,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   onCreateAlertActionPress,
   onSupressArtwork,
   contextModule,
+  contextScreenOwnerType,
   hideCreateAlertOnArtworkPreview,
   ...restProps
 }) => {
@@ -145,6 +148,14 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
         systemIcon: "bell",
         onPress: () => {
           InteractionManager.runAfterInteractions(() => {
+            trackEvent(
+              trackTappedCreateAlert.tappedCreateAlert(
+                contextScreenOwnerType ?? ("" as ScreenOwnerType),
+                artwork.internalID,
+                artwork.slug,
+                "longPressContextMenu" as ContextModule
+              )
+            )
             onCreateAlertActionPress?.()
           })
         },

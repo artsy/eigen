@@ -2,6 +2,7 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { BellIcon, Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkAuctionCreateAlertHeader_artwork$key } from "__generated__/ArtworkAuctionCreateAlertHeader_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
+import { trackTappedCreateAlert } from "app/Components/Artist/ArtistArtworks/SavedSearchButtonV2"
 import { hasBiddingEnded } from "app/Scenes/Artwork/utils/hasBiddingEnded"
 import { isLotClosed } from "app/Scenes/Artwork/utils/isLotClosed"
 import { navigate } from "app/system/navigation/navigate"
@@ -55,7 +56,6 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
       <CreateArtworkAlertModal
         artwork={artworkData}
         onClose={() => setShowCreateArtworkAlertModal(false)}
-        contextModule={ContextModule.artworkClosedLotHeader}
         visible={showCreateArtworkAlertModal}
       />
 
@@ -96,7 +96,18 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
             size="large"
             variant="fillDark"
             haptic
-            onPress={() => setShowCreateArtworkAlertModal(true)}
+            onPress={() => {
+              tracking.trackEvent(
+                trackTappedCreateAlert.tappedCreateAlert(
+                  OwnerType.artwork,
+                  internalID,
+                  slug,
+                  ContextModule.artworkClosedLotHeader
+                )
+              )
+
+              setShowCreateArtworkAlertModal(true)
+            }}
             icon={<BellIcon fill="white100" />}
             block
           >

@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import { Flex } from "@artsy/palette-mobile"
 import { ArtistArtworksFilterHeader_artist$key } from "__generated__/ArtistArtworksFilterHeader_artist.graphql"
 import { SavedSearchButtonV2 } from "app/Components/Artist/ArtistArtworks/SavedSearchButtonV2"
@@ -8,11 +9,13 @@ import { graphql, useFragment } from "react-relay"
 
 interface ArtistArtworksFilterProps {
   artist: ArtistArtworksFilterHeader_artist$key
+  contextModule: ContextModule
   showCreateAlertModal: () => void
 }
 
 export const ArtistArtworksFilterHeader: React.FC<ArtistArtworksFilterProps> = ({
   artist,
+  contextModule,
   showCreateAlertModal,
 }) => {
   const data = useFragment(
@@ -40,6 +43,7 @@ export const ArtistArtworksFilterHeader: React.FC<ArtistArtworksFilterProps> = (
         <SavedSearchButtonV2
           artistId={data.internalID}
           artistSlug={data.slug}
+          contextModule={contextModule}
           onPress={() => {
             showCreateAlertModal()
           }}

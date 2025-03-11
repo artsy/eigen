@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   BellIcon,
   Box,
@@ -16,6 +16,7 @@ import { MasonryFlashListRef } from "@shopify/flash-list"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
 import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
+import { trackTappedCreateAlert } from "app/Components/Artist/ArtistArtworks/SavedSearchButtonV2"
 import { useCreateSavedSearchModalFilters } from "app/Components/Artist/ArtistArtworks/hooks/useCreateSavedSearchModalFilters"
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -160,7 +161,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     }
   }, [relay.hasMore(), relay.isLoading()])
 
-  const CreateAlertButton: React.FC = () => {
+  const CreateAlertButton: React.FC<{ contextModule: ContextModule }> = ({ contextModule }) => {
     return (
       <Button
         variant="outline"
@@ -170,10 +171,12 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         onPress={() => {
           // Could be useful to differenciate between the two at a later point
           tracking.trackEvent(
-            tracks.tappedCreateAlert({
-              artistId: artist.internalID,
-              artistSlug: artist.slug,
-            })
+            trackTappedCreateAlert.tappedCreateAlert(
+              OwnerType.artist,
+              artist.internalID,
+              artist.slug,
+              contextModule
+            )
           )
 
           setIsCreateAlertModalVisible(true)
@@ -224,7 +227,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
 
         <Spacer y={2} />
 
-        <CreateAlertButton />
+        <CreateAlertButton contextModule={"artworkGridEmptyState" as ContextModule} />
 
         <Spacer y={6} />
 
@@ -260,7 +263,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
             title="Get notified when new works are added."
             containerStyle={{ my: 2 }}
             IconComponent={() => {
-              return <CreateAlertButton />
+              return <CreateAlertButton contextModule={ContextModule.artistArtworksGridEnd} />
             }}
             iconPosition="right"
           />
@@ -305,6 +308,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
                 <Flex flex={1}>
                   <ArtistArtworksFilterHeader
                     artist={artist}
+                    contextModule={ContextModule.artworkGrid}
                     showCreateAlertModal={() => {
                       if (shouldShowCreateAlertReminder) {
                         dismissAllCreateAlertReminder()
@@ -441,13 +445,3 @@ export default createPaginationContainer(
     `,
   }
 )
-
-const tracks = {
-  tappedCreateAlert: ({ artistId, artistSlug }: { artistId: string; artistSlug: string }) => ({
-    action: ActionType.tappedCreateAlert,
-    context_screen_owner_type: OwnerType.artist,
-    context_screen_owner_id: artistId,
-    context_screen_owner_slug: artistSlug,
-    context_module: ContextModule.artistArtworksGridEnd,
-  }),
-}
