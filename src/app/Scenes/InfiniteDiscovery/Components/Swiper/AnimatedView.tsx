@@ -16,17 +16,19 @@ interface AnimatedViewProps {
   swipedCardX: SharedValue<number>
   activeIndex: SharedValue<number>
   swipedKeys: SharedValue<Key[]>
-  card: ReactElement<{ key: Key }>
   style?: ViewStyle | ViewStyle[]
+  children: ReactElement
+  key: string
 }
 
 export const AnimatedView: FC<AnimatedViewProps> = ({
-  card,
   activeCardX,
   swipedCardX,
   activeIndex,
   index,
   swipedKeys,
+  children,
+  key,
 }) => {
   const { width: screenWidth } = useScreenDimensions()
   const width = useScreenWidthWithOffset()
@@ -97,7 +99,7 @@ export const AnimatedView: FC<AnimatedViewProps> = ({
   })
 
   const unswipedCardStyle = useAnimatedStyle(() => {
-    if (index <= activeIndex.value - 2 && !swipedKeys.value.includes(card.key as Key)) {
+    if (index <= activeIndex.value - 2 && !swipedKeys.value.includes(key as Key)) {
       return { opacity: 0 }
     }
 
@@ -141,7 +143,7 @@ export const AnimatedView: FC<AnimatedViewProps> = ({
   })
 
   const swipedCardStyle = useAnimatedStyle(() => {
-    if (swipedKeys.value.includes(card.key as Key) && index !== activeIndex.value + 1) {
+    if (swipedKeys.value.includes(key as Key) && index !== activeIndex.value + 1) {
       return { transform: [{ translateX: -width }, { translateY: 0 }] }
     }
 
@@ -188,7 +190,7 @@ export const AnimatedView: FC<AnimatedViewProps> = ({
         },
       ]}
     >
-      {card}
+      {children}
     </Animated.View>
   )
 }
