@@ -104,6 +104,9 @@ export const HomeViewSectionFeaturedCollection: React.FC<
         <Spacer y={4} />
 
         <ArtworkRail
+          contextModule={section.contextModule as ContextModule}
+          // ??? why this module doesn't have section.ownerType
+          contextScreenOwnerType={(viewAll?.ownerType || section.ownerType) as ScreenOwnerType}
           dark
           showPartnerName
           artworks={artworks}

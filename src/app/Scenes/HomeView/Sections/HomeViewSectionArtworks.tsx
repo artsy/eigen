@@ -104,6 +104,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
       <ArtworkRail
         contextModule={section.contextModule as ContextModule}
+        contextScreenOwnerType={section.ownerType as ScreenOwnerType}
         artworks={artworks}
         onPress={handleOnArtworkPress}
         showSaveIcon
