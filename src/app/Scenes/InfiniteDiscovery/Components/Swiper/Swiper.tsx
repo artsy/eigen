@@ -16,7 +16,6 @@ import {
   withSequence,
   withTiming,
 } from "react-native-reanimated"
-import usePrevious from "react-use/lib/usePrevious"
 
 /**
  * TODOS
@@ -48,7 +47,7 @@ export type SwiperRefProps = {
 export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
   (
     {
-      cards,
+      cards: _cards,
       isRewindRequested,
       onNewCardReached,
       onRewind,
@@ -64,13 +63,11 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
     const width = useScreenWidthWithOffset()
     const [numberExtraCardsAdded, setNumberExtraCardsAdded] = useState(0)
     const activeCardX = useSharedValue(0)
+    const [cards, setCards] = useState(_cards)
     const swipedCardX = useSharedValue(-width)
     // TODO: remove underscore
     const _activeIndex = useSharedValue(cards.length - 1)
     const swipedKeys = useSharedValue<Key[]>([])
-    const [swipedKeysState, setSwipedKeysState] = useState<Key[]>([])
-
-    const previousCards = usePrevious(cards)
 
     // a list of cards that the user has seen
     const seenCardKeys = useSharedValue<Key[]>([])
@@ -79,20 +76,19 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
       swipeLeftThenRight,
     }))
 
-    // This is required to make sure that the swipedKeysState is updated when swipedKeys changes
-    // We are relying on swipedKeysState on our virtualization
-    useAnimatedReaction(
-      () => swipedKeys.value,
-      (current) => {
-        runOnJS(setSwipedKeysState)(current)
-      }
-    )
-
     useEffect(() => {
-      if (previousCards && cards.length !== previousCards.length) {
-        setNumberExtraCardsAdded(cards.length - previousCards.length)
+      if (cards.length < _cards.length) {
+        setNumberExtraCardsAdded(_cards.length - cards.length)
+        setCards(_cards)
       }
-    }, [cards.length])
+    }, [_cards.length])
+
+    // Without this, we are only to rewind a few times
+    useEffect(() => {
+      if (cards) {
+        setCards(_cards)
+      }
+    }, [_cards])
 
     useEffect(() => {
       if (numberExtraCardsAdded !== 0) {
@@ -234,16 +230,6 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
       <GestureDetector gesture={pan}>
         <View style={containerStyle}>
           {cards.map((c, i) => {
-            const isSwiped = swipedKeysState.includes(c.internalID as Key)
-            if (
-              isSwiped &&
-              // Do not dismiss last swiped card
-              swipedKeysState.indexOf(c.internalID as Key) !== swipedKeys.value.length - 1
-            ) {
-              console.log("[SWIPER] caching swiped card key ", c.internalID)
-              return null
-            }
-
             return (
               <AnimatedView
                 index={i}
