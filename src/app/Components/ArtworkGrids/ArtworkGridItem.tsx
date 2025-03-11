@@ -86,7 +86,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   artistNamesTextStyle,
   artwork,
   artworkMetaStyle,
-  contextModule = ContextModule.artworkGrid,
+  contextModule,
   contextScreen,
   contextScreenOwnerId,
   contextScreenOwnerSlug,
@@ -270,10 +270,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
           onPress={handleTap}
           // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
           onLongPress={() => {
-            if (contextModule && contextScreenOwnerType) {
+            if (contextScreenOwnerType) {
               tracking.trackEvent(
                 trackLongPress.longPressedArtwork(
-                  contextModule,
+                  ContextModule.artworkGrid,
                   contextScreenOwnerType,
                   artwork.slug
                 )
