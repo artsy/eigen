@@ -499,13 +499,11 @@ lane :deploy_to_expo_updates do |options|
   # Will need to modify eigen code in any case
   release_name, dist_version, release_version = set_expo_release_values(deployment_name, platform)
 
-  ### TODO: Where are the bundles stored?
-  # sourcemap_output = platform == 'ios' ? './build/CodePush/main.jsbundle.map' : './build/CodePush/index.android.bundle.map'
-  # bundle_path = platform == 'ios' ? './build/CodePush/main.jsbundle' : './build/CodePush/index.android.bundle'
-
-  sh("pushd ..; eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}; popd")
-
-  sh("npx sentry-expo-upload-sourcemaps dist")
+  # TODO: This is a bit ugly, maybe separate to script
+  sh("pushd ..; \
+      eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}; \
+      npx sentry-expo-upload-sourcemaps dist \
+      popd")
 end
 
 lane :promote_codepush do |options|
