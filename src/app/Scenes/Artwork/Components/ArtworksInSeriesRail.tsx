@@ -6,7 +6,6 @@ import {
 } from "__generated__/ArtworksInSeriesRail_artwork.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   CollectorSignals,
@@ -39,8 +38,8 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props)
         titleVariant="md"
         onPress={() => {
           trackEvent(tracks.tappedHeader(artwork, firstArtistSeries))
-          navigate(`/artist-series/${firstArtistSeries?.slug}`)
         }}
+        href={`/artist-series/${firstArtistSeries?.slug}`}
       />
       <ArtworkRail
         artworks={artworks}
