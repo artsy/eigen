@@ -7,7 +7,7 @@ import React, { useState } from "react"
 import { GestureResponderEvent, TouchableOpacity } from "react-native"
 import { Variables } from "relay-runtime"
 
-export interface RouterLinkProps {
+export type RouterLinkProps = {
   disablePrefetch?: boolean
   navigationProps?: Object
   to?: string | null | undefined
@@ -15,13 +15,14 @@ export interface RouterLinkProps {
   hasChildTouchable?: boolean
   prefetchVariables?: Variables
   children: React.ReactNode
-}
+} & TouchableProps
 
 /**
  * Wrapper component that enables navigation when pressed, using the `to` prop.
  * It supports optional prefetching and ensures proper touch handling for nested touchable elements.
  */
-export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
+
+export const RouterLink: React.FC<RouterLinkProps> = ({
   disablePrefetch,
   to,
   prefetchVariables,
@@ -31,31 +32,13 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   hasChildTouchable,
   ...restProps
 }) => {
-  const [isPrefetched, setIsPrefetched] = useState(false)
-
-  const prefetchUrl = usePrefetch()
-  const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
-
-  const isPrefetchingEnabled = !disablePrefetch && enableViewPortPrefetching && to
-
-  const handlePress = (event: GestureResponderEvent) => {
-    onPress?.(event)
-
-    if (!to) return
-
-    if (navigationProps) {
-      navigate(to, { passProps: navigationProps })
-    } else {
-      navigate(to)
-    }
-  }
-
-  const handleVisible = (isVisible: boolean) => {
-    if (isPrefetchingEnabled && isVisible && !isPrefetched) {
-      prefetchUrl(to, prefetchVariables)
-      setIsPrefetched(true)
-    }
-  }
+  const { isPrefetchingEnabled, handlePress, handleVisible } = usePrefetchOnVisible({
+    to,
+    disablePrefetch,
+    onPress,
+    navigationProps,
+    prefetchVariables,
+  })
 
   const touchableProps = {
     activeOpacity: 0.65,
@@ -87,4 +70,44 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
       )}
     </Sentinel>
   )
+}
+
+export const usePrefetchOnVisible = ({
+  to,
+  disablePrefetch,
+  onPress,
+  navigationProps,
+  prefetchVariables,
+}: Pick<
+  RouterLinkProps,
+  "to" | "disablePrefetch" | "onPress" | "navigationProps" | "prefetchVariables"
+>) => {
+  const [isPrefetched, setIsPrefetched] = useState(false)
+
+  const prefetchUrl = usePrefetch()
+
+  const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
+
+  const isPrefetchingEnabled = !disablePrefetch && enableViewPortPrefetching && to
+
+  const handlePress = (event: GestureResponderEvent) => {
+    onPress?.(event)
+
+    if (!to) return
+
+    if (navigationProps) {
+      navigate(to, { passProps: navigationProps })
+    } else {
+      navigate(to)
+    }
+  }
+
+  const handleVisible = (isVisible: boolean) => {
+    if (isPrefetchingEnabled && isVisible && !isPrefetched) {
+      prefetchUrl(to, prefetchVariables)
+      setIsPrefetched(true)
+    }
+  }
+
+  return { isPrefetchingEnabled, handlePress, handleVisible }
 }

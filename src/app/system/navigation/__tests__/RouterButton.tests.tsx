@@ -1,11 +1,11 @@
 import { Text } from "@artsy/palette-mobile"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { RouterLink, RouterLinkProps } from "app/system/navigation/RouterLink"
+import { RouterButton, RouterButtonProps } from "app/system/navigation/RouterButton"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useEffect } from "react"
-import { TouchableWithoutFeedback, View } from "react-native"
+import { View } from "react-native"
 
 jest.mock("app/utils/queryPrefetching", () => ({
   usePrefetch: () => mockPrefetch,
@@ -16,8 +16,7 @@ jest.mock("app/utils/Sentinel", () => ({
   Sentinel: (props: any) => <MockedVisibleSentinel {...props} />,
 }))
 
-describe("RouterLink", () => {
-  const touchableOnPress = jest.fn()
+describe("RouterButton", () => {
   beforeAll(() => {
     __globalStoreTestUtils__?.injectFeatureFlags({
       AREnableViewPortPrefetching: true,
@@ -28,34 +27,24 @@ describe("RouterLink", () => {
     jest.clearAllMocks()
   })
 
-  const TestComponent = (props: Partial<RouterLinkProps>) => (
-    <RouterLink to="/test-route" navigationProps={{ id: "test-id" }} {...props}>
-      <Text>Test Link</Text>
-    </RouterLink>
+  const TestComponent = (props: Partial<RouterButtonProps>) => (
+    <RouterButton to="/test-route" navigationProps={{ id: "test-id" }} {...props}>
+      <Text>Test Button</Text>
+    </RouterButton>
   )
-
-  const TestTouchableComponent = (props: Partial<RouterLinkProps>) => {
-    return (
-      <RouterLink to="/test-route" navigationProps={{ id: "test-id" }} {...props}>
-        <TouchableWithoutFeedback onPress={touchableOnPress}>
-          <Text>Test Link</Text>
-        </TouchableWithoutFeedback>
-      </RouterLink>
-    )
-  }
 
   it("renders", () => {
     renderWithWrappers(<TestComponent />)
 
-    expect(screen.getByText("Test Link")).toBeDefined()
+    expect(screen.getByText("Test Button")).toBeDefined()
   })
 
   it("navigates to route on press (with prefetching)", async () => {
     renderWithWrappers(<TestComponent />)
 
-    fireEvent.press(screen.getByText("Test Link"))
+    fireEvent.press(screen.getByText("Test Button"))
 
-    expect(navigate).toHaveBeenCalledExactlyOnceWith("/test-route", {
+    expect(navigate).toHaveBeenCalledWith("/test-route", {
       passProps: { id: "test-id" },
     })
   })
@@ -63,7 +52,7 @@ describe("RouterLink", () => {
   it("navigates to route on press (without prefetching)", () => {
     renderWithWrappers(<TestComponent disablePrefetch />)
 
-    fireEvent.press(screen.getByText("Test Link"))
+    fireEvent.press(screen.getByText("Test Button"))
 
     expect(navigate).toHaveBeenCalledExactlyOnceWith("/test-route", {
       passProps: { id: "test-id" },
@@ -72,31 +61,11 @@ describe("RouterLink", () => {
 
   it("calls onPress on press", () => {
     const onPress = jest.fn()
-
     renderWithWrappers(<TestComponent onPress={onPress} />)
 
-    fireEvent.press(screen.getByText("Test Link"))
+    fireEvent.press(screen.getByText("Test Button"))
 
     expect(onPress).toHaveBeenCalledExactlyOnceWith()
-  })
-
-  describe("given a children with touchable element", () => {
-    it("navigates given hasChildTouchable", () => {
-      renderWithWrappers(<TestTouchableComponent hasChildTouchable />)
-
-      fireEvent.press(screen.getByText("Test Link"))
-
-      expect(navigate).toHaveBeenCalled()
-    })
-
-    it("does not navigate", () => {
-      renderWithWrappers(<TestTouchableComponent />)
-
-      fireEvent.press(screen.getByText("Test Link"))
-
-      expect(navigate).not.toHaveBeenCalled()
-      expect(touchableOnPress).toHaveBeenCalledTimes(1)
-    })
   })
 
   describe("prefetching", () => {
@@ -105,14 +74,6 @@ describe("RouterLink", () => {
 
       await waitFor(() => {
         expect(mockPrefetch).toHaveBeenCalledWith("/test-route", undefined)
-      })
-    })
-
-    it("prefetches given prefetchVariables", async () => {
-      renderWithWrappers(<TestComponent prefetchVariables={{ slug: "banksy" }} />)
-
-      await waitFor(() => {
-        expect(mockPrefetch).toHaveBeenCalledWith("/test-route", { slug: "banksy" })
       })
     })
 
