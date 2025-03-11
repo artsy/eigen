@@ -5,7 +5,7 @@ import * as Sentry from "@sentry/react-native"
 import { Expandable } from "app/Components/Expandable"
 import { useToast } from "app/Components/Toast/toastHook"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { GlobalStore } from "app/store/GlobalStore"
+import { GlobalStore, unsafe_getUserAccessToken } from "app/store/GlobalStore"
 import { DevToggleName, devToggles } from "app/store/config/features"
 import { Versions } from "app/store/migration"
 import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMenuButtonItem"
@@ -184,6 +184,19 @@ export const DevTools: React.FC<{}> = () => {
                   saveToken(token, true)
                 }
               }
+            }}
+          />
+          <DevMenuButtonItem
+            title="Copy auth token"
+            onPress={async () => {
+              const accessToken = unsafe_getUserAccessToken()
+
+              Clipboard.setString(accessToken ?? "")
+              if (!accessToken) {
+                toast.show("No access token found", "middle")
+                return
+              }
+              toast.show(`Copied to clipboard ${accessToken}`, "middle")
             }}
           />
           <DevMenuButtonItem
