@@ -491,8 +491,6 @@ lane :deploy_to_expo_updates do |options|
   deployment_name = options[:deployment_name]
   description = options[:description]
 
-  # TODO: May need to install node modules first
-
   # important! this must match the release version specified
   # in Eigen in order for sourcemaps to work correctly
   # TODO: Not sure if this is still needed or a variant needed
@@ -504,6 +502,10 @@ lane :deploy_to_expo_updates do |options|
       eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}; \
       npx sentry-expo-upload-sourcemaps dist \
       popd")
+
+  tag_and_push(tag: release_name)
+
+  puts "Deploying to #{deployment_name} with description #{description} for platform #{platform}"
 end
 
 lane :promote_codepush do |options|
