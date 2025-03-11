@@ -13733,9 +13733,6 @@ type Money {
   minor: Long!
 }
 
-# A money object with amount in minor currency and a currency code, or an error object
-union MoneyOrErrorUnion = Error
-
 type Mutation {
   acceptPartnerAgreement(
     # Parameters for AcceptPartnerAgreement
