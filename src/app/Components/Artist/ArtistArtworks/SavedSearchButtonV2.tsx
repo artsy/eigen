@@ -12,7 +12,7 @@ import { useTracking } from "react-tracking"
 export interface SavedSearchButtonV2Props {
   artistId: string
   artistSlug: string
-  contextModule: ContextModule
+  contextModule?: ContextModule
   onPress: () => void
 }
 
