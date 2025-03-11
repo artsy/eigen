@@ -1,9 +1,8 @@
 import { Flex, LinkText, Spacer, Text, useSpace } from "@artsy/palette-mobile"
-import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { Swiper, SwiperRefProps } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Modal } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { useSharedValue } from "react-native-reanimated"
@@ -25,25 +24,14 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
 
   const swiperRef = useRef<SwiperRefProps>(null)
 
-  const cards = useMemo(() => {
-    return artworks.map((artwork, i) => (
-      <InfiniteDiscoveryArtworkCard
-        artwork={artwork}
-        key={artwork.internalID}
-        containerStyle={{
-          paddingVertical: space(1),
-          borderRadius: 10,
-          shadowRadius: 3,
-          shadowColor: "black",
-          shadowOpacity: 0.2,
-          shadowOffset: { height: 0, width: 0 },
-        }}
-        // Only show the saved hint for the upper card - since the cards are reverted in the swiper,
-        // the upper card index is the last in the array
-        isSaved={i === artworks.length - 1 ? showSavedHint : false}
-      />
-    ))
-  }, [artworks, showSavedHint])
+  const isAtworkSaved = (index: number) => {
+    // We want to only enable saving the upper card
+    if (index === artworks.length - 1) {
+      return showSavedHint
+    }
+
+    return false
+  }
 
   const [isVisible, setIsVisible] = useState(false)
   const isRewindRequested = useSharedValue(false)
@@ -112,7 +100,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
             <Flex flex={1} pointerEvents="none">
               <Swiper
                 containerStyle={{ flex: 1, transform: [{ scale: 0.8 }] }}
-                cards={cards}
+                cards={artworks}
                 isRewindRequested={isRewindRequested}
                 onTrigger={() => {}}
                 swipedIndexCallsOnTrigger={2}
@@ -120,6 +108,15 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
                 onRewind={() => {}}
                 onSwipe={() => {}}
                 ref={swiperRef}
+                cardStyle={{
+                  paddingVertical: space(1),
+                  borderRadius: 10,
+                  shadowRadius: 3,
+                  shadowColor: "black",
+                  shadowOpacity: 0.2,
+                  shadowOffset: { height: 0, width: 0 },
+                }}
+                isArtworksSaved={isAtworkSaved}
               />
             </Flex>
 

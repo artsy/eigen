@@ -48,53 +48,53 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
     return null
   }
 
-  // switch (section.component?.type) {
-  //   case "FeaturedCollection":
-  //     return (
-  //       <HomeViewSectionFeaturedCollectionQueryRenderer sectionID={section.internalID} {...rest} />
-  //     )
-  //   case "ArticlesCard":
-  //     return <HomeViewSectionArticlesCardsQueryRenderer sectionID={section.internalID} {...rest} />
-  //   case "Chips":
-  //     return <HomeViewSectionCardsChipsQueryRenderer sectionID={section.internalID} {...rest} />
-  // }
+  switch (section.component?.type) {
+    case "FeaturedCollection":
+      return (
+        <HomeViewSectionFeaturedCollectionQueryRenderer sectionID={section.internalID} {...rest} />
+      )
+    case "ArticlesCard":
+      return <HomeViewSectionArticlesCardsQueryRenderer sectionID={section.internalID} {...rest} />
+    case "Chips":
+      return <HomeViewSectionCardsChipsQueryRenderer sectionID={section.internalID} {...rest} />
+  }
 
   switch (section.__typename) {
-    // case "HomeViewSectionActivity":
-    //   return <HomeViewSectionActivityQueryRenderer sectionID={section.internalID} {...rest} />
-    // case "HomeViewSectionArtworks":
-    //   return <HomeViewSectionArtworksQueryRenderer sectionID={section.internalID} {...rest} />
+    case "HomeViewSectionActivity":
+      return <HomeViewSectionActivityQueryRenderer sectionID={section.internalID} {...rest} />
+    case "HomeViewSectionArtworks":
+      return <HomeViewSectionArtworksQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionCard":
       return <HomeViewSectionCardQueryRenderer sectionID={section.internalID} {...rest} />
-    // case "HomeViewSectionGeneric":
-    //   return <HomeViewSectionGeneric section={section} {...rest} />
-    // case "HomeViewSectionArticles":
-    //   return <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} {...rest} />
-    // case "HomeViewSectionArtists":
-    //   return <HomeViewSectionArtistsQueryRenderer sectionID={section.internalID} {...rest} />
-    // case "HomeViewSectionAuctionResults":
-    //   return <HomeViewSectionAuctionResultsQueryRenderer sectionID={section.internalID} {...rest} />
-    // case "HomeViewSectionHeroUnits":
-    //   return <HomeViewSectionHeroUnitsQueryRenderer sectionID={section.internalID} {...rest} />
-    // case "HomeViewSectionCards":
-    //   return <HomeViewSectionCardsQueryRenderer sectionID={section.internalID} {...rest} />
-    // case "HomeViewSectionFairs":
-    //   return <HomeViewSectionFairsQueryRenderer sectionID={section.internalID} {...rest} />
-    // case "HomeViewSectionMarketingCollections":
-    //   return (
-    //     <HomeViewSectionMarketingCollectionsQueryRenderer
-    //       sectionID={section.internalID}
-    //       {...rest}
-    //     />
-    //   )
-    // case "HomeViewSectionShows":
-    //   return <HomeViewSectionShowsQueryRenderer sectionID={section.internalID} {...rest} />
-    // case "HomeViewSectionViewingRooms":
-    //   return <HomeViewSectionViewingRoomsQueryRenderer sectionID={section.internalID} {...rest} />
-    // case "HomeViewSectionSales":
-    //   return <HomeViewSectionSalesQueryRenderer sectionID={section.internalID} {...rest} />
-    // case "HomeViewSectionTasks":
-    //   return <HomeViewSectionTasksQueryRenderer sectionID={section.internalID} {...rest} />
+    case "HomeViewSectionGeneric":
+      return <HomeViewSectionGeneric section={section} {...rest} />
+    case "HomeViewSectionArticles":
+      return <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} {...rest} />
+    case "HomeViewSectionArtists":
+      return <HomeViewSectionArtistsQueryRenderer sectionID={section.internalID} {...rest} />
+    case "HomeViewSectionAuctionResults":
+      return <HomeViewSectionAuctionResultsQueryRenderer sectionID={section.internalID} {...rest} />
+    case "HomeViewSectionHeroUnits":
+      return <HomeViewSectionHeroUnitsQueryRenderer sectionID={section.internalID} {...rest} />
+    case "HomeViewSectionCards":
+      return <HomeViewSectionCardsQueryRenderer sectionID={section.internalID} {...rest} />
+    case "HomeViewSectionFairs":
+      return <HomeViewSectionFairsQueryRenderer sectionID={section.internalID} {...rest} />
+    case "HomeViewSectionMarketingCollections":
+      return (
+        <HomeViewSectionMarketingCollectionsQueryRenderer
+          sectionID={section.internalID}
+          {...rest}
+        />
+      )
+    case "HomeViewSectionShows":
+      return <HomeViewSectionShowsQueryRenderer sectionID={section.internalID} {...rest} />
+    case "HomeViewSectionViewingRooms":
+      return <HomeViewSectionViewingRoomsQueryRenderer sectionID={section.internalID} {...rest} />
+    case "HomeViewSectionSales":
+      return <HomeViewSectionSalesQueryRenderer sectionID={section.internalID} {...rest} />
+    case "HomeViewSectionTasks":
+      return <HomeViewSectionTasksQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionNavigationPills": {
       if (enableNavigationPills && quickLinksExperimentEnabled && variant === "experiment") {
         return (
@@ -106,14 +106,14 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
     }
 
     default:
-      // if (__DEV__) {
-      //   return (
-      //     <Flex p={2} backgroundColor="black10">
-      //       <Text>Non supported section:</Text>
-      //       <Text color="devpurple">{section.__typename}</Text>
-      //     </Flex>
-      //   )
-      // }
+      if (__DEV__) {
+        return (
+          <Flex p={2} backgroundColor="black10">
+            <Text>Non supported section:</Text>
+            <Text color="devpurple">{section.__typename}</Text>
+          </Flex>
+        )
+      }
       return null
   }
 }

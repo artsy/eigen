@@ -16,24 +16,26 @@ interface AnimatedViewProps {
   swipedCardX: SharedValue<number>
   activeIndex: SharedValue<number>
   swipedKeys: SharedValue<Key[]>
-  card: ReactElement<{ key: Key }>
   style?: ViewStyle | ViewStyle[]
+  children: ReactElement
+  key: string
 }
 
 export const AnimatedView: FC<AnimatedViewProps> = ({
-  card,
   activeCardX,
   swipedCardX,
   activeIndex,
   index,
   swipedKeys,
+  children,
+  key,
 }) => {
   const { width: screenWidth } = useScreenDimensions()
   const width = useScreenWidthWithOffset()
 
   const isTopCard = useDerivedValue(() => activeIndex.value === index)
   const isSecondCard = useDerivedValue(() => activeIndex.value - 1 === index)
-  const isSwiped = useDerivedValue(() => swipedKeys.value.includes(card.key as Key))
+  const isSwiped = useDerivedValue(() => swipedKeys.value.includes(key as Key))
   const isThirdOrMoreCard = useDerivedValue(() => index < activeIndex.value - 1 && !isSwiped.value)
   const isLastSwiped = useDerivedValue(() => activeIndex.value + 1 === index)
 
@@ -146,7 +148,7 @@ export const AnimatedView: FC<AnimatedViewProps> = ({
         },
       ]}
     >
-      {card}
+      {children}
     </Animated.View>
   )
 }

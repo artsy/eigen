@@ -1,6 +1,8 @@
+import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { AnimatedView } from "app/Scenes/InfiniteDiscovery/Components/Swiper/AnimatedView"
 import { useScreenWidthWithOffset } from "app/Scenes/InfiniteDiscovery/Components/Swiper/useScreenWidthWithOffset"
-import { forwardRef, Key, ReactElement, useEffect, useImperativeHandle, useState } from "react"
+import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
+import { forwardRef, Key, useEffect, useImperativeHandle, useState } from "react"
 import { View, ViewStyle } from "react-native"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import {
@@ -26,12 +28,14 @@ import usePrevious from "react-use/lib/usePrevious"
  */
 
 type SwiperProps = {
-  cards: ReactElement<{ key: Key }>[]
+  cards: InfiniteDiscoveryArtwork[]
   isRewindRequested: SharedValue<boolean>
   onNewCardReached?: (key: Key) => void
   onRewind: (key: Key, wasSwiped?: boolean) => void
   onSwipe: (swipedKey: Key, nextKey: Key) => void
   containerStyle?: ViewStyle
+  cardStyle?: ViewStyle
+  isArtworksSaved?: (index: number) => boolean
 } & (
   | { onTrigger?: never; swipedIndexCallsOnTrigger?: never }
   | { onTrigger: (activeIndex: number) => void; swipedIndexCallsOnTrigger: number }
@@ -52,6 +56,8 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
       onTrigger,
       swipedIndexCallsOnTrigger,
       containerStyle,
+      cardStyle,
+      isArtworksSaved,
     },
     ref
   ) => {
@@ -73,15 +79,12 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
       swipeLeftThenRight,
     }))
 
-    // useEffect(() => {
-    //   setSwipedKeysState(swipedKeys.value)
-    // }, [swipedKeys])
+    // This is required to make sure that the swipedKeysState is updated when swipedKeys changes
+    // We are relying on swipedKeysState on our virtualization
     useAnimatedReaction(
       () => swipedKeys.value,
-      (current, previous) => {
-        // if (current.length > previous.) {
+      (current) => {
         runOnJS(setSwipedKeysState)(current)
-        // }
       }
     )
 
@@ -107,7 +110,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
 
           // TODO: clean up this minefield of if-statements
           if (hasSwipedCards) {
-            lastSwipedCardKey = cards[_activeIndex.value + 1].key
+            lastSwipedCardKey = cards[_activeIndex.value + 1].internalID
           }
 
           swipedCardX.value = withTiming(0, { duration: 200, easing: Easing.linear }, () => {
@@ -129,7 +132,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
 
     const swipeLeftThenRight = (duration: number) => {
       const swipedCardIndex = _activeIndex.value
-      const swipedCardKey = cards[swipedCardIndex].key
+      const swipedCardKey = cards[swipedCardIndex].internalID
 
       if (swipedCardKey) {
         activeCardX.value = withSequence(
@@ -172,11 +175,12 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
         }
 
         const swipedCardIndex = _activeIndex.value
-        const swipedCardKey = cards[swipedCardIndex].key
+        const swipedCardKey = cards[swipedCardIndex].internalID
 
         if (isSwipeLeft && !isLastCard && swipedCardKey) {
+          console.log("[SWIPER] swiped card key ", swipedCardKey)
           const nextCardIndex = swipedCardIndex - 1
-          const nextCardKey = cards[nextCardIndex]?.key as Key
+          const nextCardKey = cards[nextCardIndex]?.internalID as Key
 
           // if this is the first time that the user has navigated to this card, record it
           if (nextCardKey && !seenCardKeys.value.includes(nextCardKey) && onNewCardReached) {
@@ -211,7 +215,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
 
         // TODO: clean up this minefield of if-statements
         if (hasSwipedCards) {
-          lastSwipedCardKey = cards[_activeIndex.value + 1].key
+          lastSwipedCardKey = cards[_activeIndex.value + 1].internalID
         }
         swipedCardX.value = withTiming(0, { duration: 200, easing: Easing.linear }, () => {
           if (hasSwipedCards) {
@@ -230,25 +234,32 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
       <GestureDetector gesture={pan}>
         <View style={containerStyle}>
           {cards.map((c, i) => {
-            const isSwiped = swipedKeysState.includes(c.key as Key)
+            const isSwiped = swipedKeysState.includes(c.internalID as Key)
             if (
               isSwiped &&
               // Do not dismiss last swiped card
-              swipedKeysState.indexOf(c.key as Key) !== swipedKeys.value.length - 1
+              swipedKeysState.indexOf(c.internalID as Key) !== swipedKeys.value.length - 1
             ) {
+              console.log("[SWIPER] caching swiped card key ", c.internalID)
               return null
             }
 
             return (
               <AnimatedView
                 index={i}
-                card={c}
                 activeCardX={activeCardX}
                 activeIndex={_activeIndex}
                 swipedKeys={swipedKeys}
                 swipedCardX={swipedCardX}
-                key={`card_${c.key}`}
-              />
+                key={c.internalID}
+              >
+                <InfiniteDiscoveryArtworkCard
+                  artwork={c}
+                  key={c.internalID}
+                  containerStyle={cardStyle}
+                  isSaved={isArtworksSaved ? isArtworksSaved(i) : undefined}
+                />
+              </AnimatedView>
             )
           })}
         </View>
