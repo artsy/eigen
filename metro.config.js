@@ -34,5 +34,4 @@ const config = {
   },
 }
 
-const sentryExpoConfig = getSentryExpoConfig(__dirname)
-module.exports = mergeConfig(getDefaultConfig(sentryExpoConfig, config))
+module.exports = mergeConfig(getSentryExpoConfig(__dirname), config)
