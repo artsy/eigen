@@ -148,14 +148,16 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
         systemIcon: "bell",
         onPress: () => {
           InteractionManager.runAfterInteractions(() => {
-            trackEvent(
-              trackTappedCreateAlert.tappedCreateAlert(
-                contextScreenOwnerType ?? ("" as ScreenOwnerType),
-                artwork.internalID,
-                artwork.slug,
-                "longPressContextMenu" as ContextModule
+            if (contextScreenOwnerType) {
+              trackEvent(
+                trackTappedCreateAlert.tappedCreateAlert(
+                  contextScreenOwnerType,
+                  artwork.internalID,
+                  artwork.slug,
+                  "longPressContextMenu" as ContextModule
+                )
               )
-            )
+            }
             onCreateAlertActionPress?.()
           })
         },
@@ -168,6 +170,8 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   const contextActions = getContextMenuActions()
 
   const handleContextPress: ContextMenuProps["onPress"] = (event) => {
+    console.log("LOGD handleContextPress")
+
     if (haptic) {
       trigger?.(haptic === true ? "impactLight" : haptic)
     }
