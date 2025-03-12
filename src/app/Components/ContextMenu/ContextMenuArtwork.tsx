@@ -216,7 +216,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
           underlayColor={color("white100")}
           activeOpacity={0.8}
           onLongPress={handleAndroidLongPress}
-          delayLongPress={1200}
+          delayLongPress={400}
           onPress={undefined}
           testID="android-context-menu-trigger"
         >
