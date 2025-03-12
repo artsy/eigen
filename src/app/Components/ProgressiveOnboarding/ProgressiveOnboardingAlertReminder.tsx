@@ -1,7 +1,13 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Popover, Text } from "@artsy/palette-mobile"
 import { useDismissAlertReminder } from "app/Components/ProgressiveOnboarding/useDismissAlertReminder"
+import {
+  ProgressiveOnboardingTrackedName,
+  useProgressiveOnboardingTracking,
+} from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useEffect } from "react"
 
 interface ProgressiveOnboardingAlertReminderProps {
   visible: boolean
@@ -9,6 +15,27 @@ interface ProgressiveOnboardingAlertReminderProps {
 export const ProgressiveOnboardingAlertReminder: React.FC<
   ProgressiveOnboardingAlertReminderProps
 > = ({ children, visible }) => {
+  const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
+
+  let nameToTrack: ProgressiveOnboardingTrackedName = "unknown"
+  if (
+    !isDismissed("alert-create-reminder-1").status &&
+    !isDismissed("alert-create-reminder-2").status
+  ) {
+    nameToTrack = "alert-create-reminder-1"
+  } else if (
+    isDismissed("alert-create-reminder-1").status &&
+    !isDismissed("alert-create-reminder-2").status
+  ) {
+    nameToTrack = "alert-create-reminder-2"
+  }
+
+  const { trackEvent } = useProgressiveOnboardingTracking({
+    name: nameToTrack,
+    contextScreenOwnerType: OwnerType.artist,
+    contextModule: "artistArtworksFilterHeader" as ContextModule,
+  })
+
   const { setActivePopover } = GlobalStore.actions.progressiveOnboarding
 
   const { isDisplayable, dismissNextCreateAlertReminder } = useDismissAlertReminder()
@@ -17,13 +44,21 @@ export const ProgressiveOnboardingAlertReminder: React.FC<
 
   const { isActive } = useSetActivePopover(shouldDisplayReminder)
 
+  const isVisible = shouldDisplayReminder && isActive
+
+  useEffect(() => {
+    if (isVisible) {
+      trackEvent()
+    }
+  }, [isVisible])
+
   const handleDismiss = () => {
     dismissNextCreateAlertReminder()
   }
 
   return (
     <Popover
-      visible={!!shouldDisplayReminder && isActive}
+      visible={isVisible}
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
       onCloseComplete={() => setActivePopover(undefined)}

@@ -1,8 +1,11 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Popover, Text } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
+import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { getCurrentEmissionState, GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useEffect } from "react"
 import { Platform } from "react-native"
 
 // We don't want to show the onboarding popover on the first launch
@@ -33,19 +36,46 @@ export const ProgressiveOnboardingLongPressContextMenu: React.FC = ({ children }
     isFocused
   const { isActive, clearActivePopover } = useSetActivePopover(isDisplayable)
 
+  const { trackEvent } = useProgressiveOnboardingTracking({
+    name: "long-press-artwork-context-menu",
+    contextScreenOwnerType: OwnerType.home,
+    /**
+     * Setting contextModule to newWorksForYouRail
+     * we display the tooltip on the first rail of the home screen
+     * at the moment it is newWorksForYouRail
+     * see isFirstArtworkSection variable in HomeViewSectionArtworks.tsx
+     */
+    contextModule: ContextModule.newWorksForYouRail,
+  })
+
   const handleDismiss = () => {
     setIsReady(false)
     dismiss("long-press-artwork-context-menu")
   }
 
+  const isVisible =
+    !!enableLongPressContextMenu &&
+    !!enableLongPressContextMenuOnboarding &&
+    !!isDisplayable &&
+    isActive
+
+  useEffect(() => {
+    if (isVisible) {
+      trackEvent()
+      /**
+       * dismissing the popover without waiting for interaction
+       * spesific for the home view screen because on the home view screen we set
+       * isReady to true (indicates that the alert is ready to be shown)
+       * which makes the popover show up every time the user navigates to the home screen if the
+       * popover has not beeb manually dismissed
+       * */
+      dismiss("long-press-artwork-context-menu")
+    }
+  }, [isVisible])
+
   return (
     <Popover
-      visible={
-        !!enableLongPressContextMenu &&
-        !!enableLongPressContextMenuOnboarding &&
-        !!isDisplayable &&
-        isActive
-      }
+      visible={isVisible}
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
       onCloseComplete={clearActivePopover}
