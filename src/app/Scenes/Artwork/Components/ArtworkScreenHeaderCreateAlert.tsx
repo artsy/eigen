@@ -50,7 +50,7 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
               OwnerType.artwork,
               internalID,
               slug,
-              "artworkHeader" as ContextModule
+              "ArtworkScreenHeader" as ContextModule
             )
           )
           setShowCreateArtworkAlertModal(true)
