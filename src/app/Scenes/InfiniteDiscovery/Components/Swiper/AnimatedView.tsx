@@ -158,4 +158,4 @@ const MAX_ROTATIONS = [5, 7, 9]
 const MAX_SHADOW_OPACITY = 0.8
 const MAX_ELEVATION = 8
 const MIN_SCALE = 0.95
-const MIN_OPACITY = 0.5
+const MIN_OPACITY = 0.75

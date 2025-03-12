@@ -116,7 +116,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     return (
       <Flex backgroundColor="white100" width="100%" style={containerStyle}>
-        <Flex mx={2} my={1}>
+        <Flex p={2}>
           <ArtistListItemContainer
             artist={artwork.artists?.[0]}
             avatarSize="xxs"
@@ -146,7 +146,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
           {!!src && <Image src={src} height={size.height} width={size.width} />}
         </Flex>
-        <Flex flexDirection="row" justifyContent="space-between" p={1} mx={2}>
+        <Flex flexDirection="row" justifyContent="space-between" p={2}>
           <Flex>
             <Text color="blue" variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>
               {artwork.internalID}
@@ -178,7 +178,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               alignItems="center"
               justifyContent="center"
               style={{
-                width: HEART_CIRCLE_SIZE + 40,
+                width: SAVE_BUTTON_WIDTH,
                 height: HEART_CIRCLE_SIZE,
                 borderRadius: 30,
                 backgroundColor: color("black5"),
@@ -201,7 +201,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                   fill="black100"
                 />
               )}
-              <Text ml={0.5} variant="sm-display">
+              <Text ml={0.5} variant="xs">
                 {isSaved ? "Saved" : "Save"}
               </Text>
             </Flex>
@@ -236,3 +236,4 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
 
 const HEART_ICON_SIZE = 18
 const HEART_CIRCLE_SIZE = 50
+const SAVE_BUTTON_WIDTH = 105
