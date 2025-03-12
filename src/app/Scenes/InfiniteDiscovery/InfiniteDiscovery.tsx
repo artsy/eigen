@@ -80,13 +80,14 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   useEffect(() => {
     if (!topArtworkId && artworks.length > 0) {
       // TODO: beware! the artworks are being displayed in reverse order
-      setTopArtworkId(artworks[artworks.length - 1].internalID)
+      const topArtwork = artworks[artworks.length - 1]
+      setTopArtworkId(topArtwork.internalID)
 
       // send the first seen artwork to the server
       commitMutation({
         variables: {
           input: {
-            artworkId: artworks[0].internalID,
+            artworkId: topArtwork.internalID,
           },
         },
         onError: (error) => {
@@ -284,6 +285,10 @@ const InfiniteDiscoverySpinner: React.FC = () => (
   </Screen>
 )
 
+export const infiniteDiscoveryVariables = {
+  excludeArtworkIds: [],
+}
+
 export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
   const [queryRef, loadQuery] = useQueryLoader<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery)
 
@@ -296,7 +301,9 @@ export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
   // This fetches the first batch of artworks
   useEffect(() => {
     if (!queryRef) {
-      loadQuery({ excludeArtworkIds: [] })
+      loadQuery(infiniteDiscoveryVariables, {
+        fetchPolicy: "network-only",
+      })
     }
   }, [loadQuery, queryRef])
 
