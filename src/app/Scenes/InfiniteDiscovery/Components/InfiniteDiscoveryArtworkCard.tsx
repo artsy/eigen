@@ -60,6 +60,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       artworkProp
     )
 
+    // This is a workaround to avoid relay removing the fragment from the cache
     const artwork = useRef(artworkData).current
 
     const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
