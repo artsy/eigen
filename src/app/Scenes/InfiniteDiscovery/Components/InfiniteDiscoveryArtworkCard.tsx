@@ -127,7 +127,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const size = sizeToFit({ width, height }, { width: screenWidth, height: MAX_ARTWORK_HEIGHT })
 
     return (
-      <Flex backgroundColor="white100" width="100%" style={containerStyle}>
+      <Flex backgroundColor="white100" width="100%" style={containerStyle || { borderRadius: 10 }}>
         <Flex p={2}>
           <ArtistListItemContainer
             artist={artwork.artists?.[0]}

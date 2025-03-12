@@ -68,7 +68,7 @@ export const AnimatedView: FC<AnimatedViewProps> = ({
     return 0
   })
 
-  const rotation = useDerivedValue(() => {
+  const rotation = useDerivedValue(() =>
     isTopCard.value
       ? interpolate(
           activeCardX.value,
@@ -84,7 +84,7 @@ export const AnimatedView: FC<AnimatedViewProps> = ({
             Extrapolation.CLAMP
           )
         : 0
-  })
+  )
 
   const shadowOpacity = useDerivedValue(() =>
     isTopCard.value
