@@ -13,6 +13,7 @@ import {
   SharedValue,
   useAnimatedReaction,
   useSharedValue,
+  withDelay,
   withSequence,
   withTiming,
 } from "react-native-reanimated"
@@ -132,8 +133,15 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
 
       if (swipedCardKey) {
         activeCardX.value = withSequence(
-          withTiming(-width / 3, { duration: duration / 2, easing: Easing.linear }),
-          withTiming(0, { duration: duration / 2, easing: Easing.linear })
+          withTiming(-width / 3, {
+            duration: duration / 2,
+            easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+          }),
+
+          withDelay(
+            300,
+            withTiming(0, { duration: duration / 2, easing: Easing.bezier(0.25, 0.1, 0.25, 1) })
+          )
         )
       }
     }
