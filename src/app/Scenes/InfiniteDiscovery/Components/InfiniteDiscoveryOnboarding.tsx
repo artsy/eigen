@@ -124,7 +124,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
               </Flex>
 
               <Flex justifyContent="flex-end" px={2}>
-                <Text>Welcome to Discovery Daily</Text>
+                <Text>Welcome to Discover Daily</Text>
 
                 <Spacer y={1} />
 
