@@ -207,7 +207,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     } else if (contextScreenOwnerType) {
       const genericTapEvent: TappedMainArtworkGrid = {
         action: ActionType.tappedMainArtworkGrid,
-        context_module: ContextModule.artworkGrid,
+        context_module: contextModule || ContextModule.artworkGrid,
         context_screen: contextScreen,
         context_screen_owner_type: contextScreenOwnerType,
         context_screen_owner_id: contextScreenOwnerId,

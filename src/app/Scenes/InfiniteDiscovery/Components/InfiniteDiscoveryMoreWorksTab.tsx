@@ -45,8 +45,8 @@ export const MoreWorksTab: FC<MoreWorksTabProps> = ({ artworks: _artworks }) => 
       >
         <ArtworkGridItem
           itemIndex={index}
-          contextModule={ContextModule.infiniteDiscoveryArtworkOtherWorksTab}
-          contextScreenOwnerType={OwnerType.artwork}
+          contextModule={ContextModule.infiniteDiscoveryDrawer}
+          contextScreenOwnerType={OwnerType.infiniteDiscoveryArtwork}
           contextScreenOwnerId={item.internalID}
           contextScreenOwnerSlug={item.slug}
           artwork={item}
