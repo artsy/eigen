@@ -12,8 +12,23 @@ The [RouterLink] component wraps `Touchable` and enables navigation to a specifi
 </RouterLink>
 ```
 
-Alternatively, [navigate] can be used to programmatically navigate to a given route.
+For buttons, [RouterButton] can be used, which wraps `Button`:
+
+```typescript
+<RouterButton to="/my-route">
+  {children}
+</RouterButton>
+```
+
+Alternatively, [navigate] can be used to programmatically navigate to a given route:
+
+```typescript
+<Touchable onPress={() => navigate("/my-route")}>
+  {children}
+</Touchable>
+```
 
 [routes.tsx]: /src/app/Navigation/routes.tsx
 [RouterLink]: /src/app/system/navigation/RouterLink.tsx
+[RouterButton]: /src/app/system/navigation/RouterButton.tsx
 [navigate]: /src/app/system/navigation/navigate.ts
