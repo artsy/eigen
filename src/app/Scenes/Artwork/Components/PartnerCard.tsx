@@ -4,7 +4,7 @@ import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.grap
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { ShortContactGallery } from "app/Scenes/Artwork/Components/ShortContactGallery"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { navigateToPartner } from "app/system/navigation/navigate"
+import { PartnerNavigationProps } from "app/system/navigation/navigate"
 import { limitWithCount } from "app/utils/limitWithCount"
 import { compact } from "lodash"
 import React from "react"
@@ -25,8 +25,6 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({
   shouldShowQuestions,
   showShortContactGallery,
 }) => {
-  const handleTap = (href: string) => navigateToPartner(href)
-
   const partner = artwork.partner
 
   const galleryOrBenefitAuction = artwork.sale?.isBenefit ?? artwork.sale?.isGalleryAuction
@@ -74,7 +72,7 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({
           <Spacer y={1} />
         </>
       )}
-      <RouterLink to={partner.href}>
+      <RouterLink to={partner.href} navigationProps={PartnerNavigationProps}>
         <EntityHeader
           name={partner.name ?? ""}
           meta={locationNames || undefined}

@@ -151,9 +151,11 @@ export enum SlugType {
   FairID = "fairID",
 }
 
+export const PartnerNavigationProps = { entity: EntityType.Partner, slugType: SlugType.ProfileID }
+
 export function navigateToPartner(href: string) {
   navigate(href, {
-    passProps: { entity: EntityType.Partner, slugType: SlugType.ProfileID },
+    passProps: PartnerNavigationProps,
   })
 }
 
