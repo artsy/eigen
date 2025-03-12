@@ -2,8 +2,8 @@ import { EntityHeader, EnvelopeIcon, Flex } from "@artsy/palette-mobile"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { ShortContactGallery_artwork$key } from "__generated__/ShortContactGallery_artwork.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
-import { navigateToPartner } from "app/system/navigation/navigate"
-import { TouchableWithoutFeedback } from "react-native"
+import { RouterLink } from "app/system/navigation/RouterLink"
+import { PartnerNavigationProps } from "app/system/navigation/navigate"
 import { graphql, useFragment } from "react-relay"
 import { ContactGalleryButton } from "./CommercialButtons/ContactGalleryButton"
 
@@ -21,19 +21,13 @@ export const ShortContactGallery: React.FC<ShortContactGalleryProps> = (props) =
 
   return (
     <Flex flexDirection="row" flexWrap="wrap" justifyContent="space-between" alignItems="center">
-      <TouchableWithoutFeedback
-        onPress={() => {
-          if (props.partnerHref) {
-            navigateToPartner(props.partnerHref)
-          }
-        }}
-      >
+      <RouterLink to={props.partnerHref} navigationProps={PartnerNavigationProps}>
         <EntityHeader
           name={props.partnerName ?? ""}
           meta={props.locationNames ?? ""}
           style={{ flex: 1 }}
         />
-      </TouchableWithoutFeedback>
+      </RouterLink>
       <ContactGalleryButton
         artwork={artworkData}
         me={props.me}
