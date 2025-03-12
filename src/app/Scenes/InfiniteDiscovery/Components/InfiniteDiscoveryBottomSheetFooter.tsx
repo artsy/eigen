@@ -1,5 +1,12 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Skeleton, SkeletonBox, SkeletonText, useColor } from "@artsy/palette-mobile"
+import {
+  Flex,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  useColor,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { BottomSheetFooter, BottomSheetFooterProps } from "@gorhom/bottom-sheet"
 import {
   InfiniteDiscoveryBottomSheetFooter_artwork$data,
@@ -37,6 +44,9 @@ export const InfiniteDiscoveryBottomSheetFooter: FC<InfiniteDiscoveryBottomSheet
 
   const artwork = useFragment(artworkFragment, _artwork)
   const me = useFragment(meFragment, _me)
+  const space = useSpace()
+
+  const { bottom } = useSafeAreaInsets()
 
   if (!artwork || !me) {
     return null
@@ -66,7 +76,13 @@ export const InfiniteDiscoveryBottomSheetFooter: FC<InfiniteDiscoveryBottomSheet
       >
         <Divider />
 
-        <Flex p={2} gap={1} backgroundColor="white100">
+        <Flex
+          py={2}
+          px={2}
+          gap={1}
+          backgroundColor="white100"
+          style={{ paddingBottom: space(2) + bottom }}
+        >
           <AuctionWebsocketContextProvider
             channelInfo={socketChannelInfo}
             enabled={websocketEnabled}
