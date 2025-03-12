@@ -4,7 +4,7 @@ import * as Sentry from "@sentry/react-native"
 import { addBreadcrumb } from "@sentry/react-native"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
-import { GlobalStore, getCurrentEmissionState } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import {
   GoBackProps,
   dismissModal,
@@ -22,6 +22,7 @@ import { debounce } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { KeyboardAvoidingView, Platform } from "react-native"
+import { getUserAgent } from "react-native-device-info"
 import { Edge } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import WebView, { WebViewNavigation, WebViewProps } from "react-native-webview"
@@ -193,8 +194,8 @@ export const ArtsyWebView = forwardRef<
     ref
   ) => {
     const innerRef = useRef<WebViewWithShareTitleUrl>(null)
+    const userAgentRef = useRef<string | undefined>()
     useImperativeHandle(ref, () => innerRef.current as WebViewWithShareTitleUrl)
-    const userAgent = getCurrentEmissionState().userAgent
     const { callWebViewEventCallback } = useWebViewCallback()
 
     const showDevToggleIndicator = useDevToggle("DTShowWebviewIndicator")
@@ -280,6 +281,12 @@ export const ArtsyWebView = forwardRef<
       }
     }
 
+    useEffect(() => {
+      getUserAgent().then((agent) => {
+        userAgentRef.current = agent
+      })
+    })
+
     return (
       <Flex flex={1}>
         <WebView
@@ -287,7 +294,8 @@ export const ArtsyWebView = forwardRef<
           ref={innerRef}
           // sharedCookiesEnabled is required on iOS for the user to be implicitly logged into force/prediction
           // on android it works without it
-          // sharedCookiesEnabled
+          sharedCookiesEnabled
+          webviewDebuggingEnabled
           decelerationRate="normal"
           source={{
             uri,
@@ -295,7 +303,7 @@ export const ArtsyWebView = forwardRef<
             // see: https://github.com/react-native-webview/react-native-webview/pull/3133
             ...(Platform.OS === "android" && {
               headers: {
-                "User-Agent": userAgent,
+                "User-Agent": userAgentRef.current,
               },
             }),
           }}
@@ -310,7 +318,7 @@ export const ArtsyWebView = forwardRef<
             }
           }}
           style={{ flex: 1 }}
-          userAgent={Platform.OS === "ios" ? userAgent : undefined}
+          userAgent={Platform.OS === "ios" ? userAgentRef.current : undefined}
           onMessage={({ nativeEvent }) => {
             const data = nativeEvent.data
             try {
