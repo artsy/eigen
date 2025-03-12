@@ -160,9 +160,13 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         </Flex>
         <Flex flexDirection="row" justifyContent="space-between" p={2}>
           <Flex>
-            <Text color="blue" variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>
-              {artwork.internalID}
-            </Text>
+            {/* TODO: remove this when we are done with the infinite discovery */}
+            {!!__DEV__ && (
+              <Text color="blue" variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>
+                {artwork.internalID}
+              </Text>
+            )}
+
             <Flex flexDirection="row" maxWidth={screenWidth - 200}>
               <Text
                 color="black60"

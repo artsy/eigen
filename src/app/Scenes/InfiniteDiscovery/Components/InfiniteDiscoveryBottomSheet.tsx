@@ -42,7 +42,7 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
       <BottomSheet
         enableDynamicSizing={false}
         enablePanDownToClose={false}
-        snapPoints={[bottom + height * 0.12, height * 0.88]}
+        snapPoints={[bottom + 60, height * 0.88]}
         index={0}
         backdropComponent={(props) => {
           return (
