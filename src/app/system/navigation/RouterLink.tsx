@@ -7,21 +7,30 @@ import React, { useState } from "react"
 import { GestureResponderEvent, TouchableOpacity } from "react-native"
 import { Variables } from "relay-runtime"
 
-export interface RouterLinkProps {
-  disablePrefetch?: boolean
-  navigationProps?: Object
-  to?: string | null | undefined
-  // Indicates whether the child component is a touchable element, preventing duplicate touch handlers
-  hasChildTouchable?: boolean
-  prefetchVariables?: Variables
-  children: React.ReactNode
-}
-
 /**
  * Wrapper component that enables navigation when pressed, using the `to` prop.
  * It supports optional prefetching and ensures proper touch handling for nested touchable elements.
  */
-export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
+export const RouterLink = RouterLinkComponent<TouchableProps>
+
+export type RouterLinkComponentProps<WrapperProps = {}> = {
+  disablePrefetch?: boolean
+  navigationProps?: Object
+  to?: string | null | undefined
+  /**
+   * Indicates whether the child component is a touchable element, preventing duplicate touch handlers
+   */
+  hasChildTouchable?: boolean
+  prefetchVariables?: Variables
+  children: React.ReactNode
+  /**
+   * Custom touchable wrapper component (define WrapperProps to adjust props)
+   */
+  TouchableWrapper?: React.ElementType
+  onPress?: (event: GestureResponderEvent) => void
+} & WrapperProps
+
+export function RouterLinkComponent<WrapperProps>({
   disablePrefetch,
   to,
   prefetchVariables,
@@ -29,8 +38,9 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   navigationProps,
   children,
   hasChildTouchable,
+  TouchableWrapper = TouchableOpacity,
   ...restProps
-}) => {
+}: RouterLinkComponentProps<WrapperProps>) {
   const [isPrefetched, setIsPrefetched] = useState(false)
 
   const prefetchUrl = usePrefetch()
@@ -64,13 +74,13 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   }
 
   if (!isPrefetchingEnabled) {
-    return <TouchableOpacity {...touchableProps} children={children} />
+    return <TouchableWrapper {...touchableProps} children={children} />
   }
 
   if (!hasChildTouchable) {
     return (
       <Sentinel onChange={handleVisible}>
-        <TouchableOpacity {...touchableProps}>{children}</TouchableOpacity>
+        <TouchableWrapper {...touchableProps}>{children}</TouchableWrapper>
       </Sentinel>
     )
   }
