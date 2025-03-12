@@ -1,6 +1,8 @@
+import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { AnimatedView } from "app/Scenes/InfiniteDiscovery/Components/Swiper/AnimatedView"
 import { useScreenWidthWithOffset } from "app/Scenes/InfiniteDiscovery/Components/Swiper/useScreenWidthWithOffset"
-import { forwardRef, Key, ReactElement, useEffect, useImperativeHandle, useState } from "react"
+import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
+import { forwardRef, Key, useEffect, useImperativeHandle, useState } from "react"
 import { View, ViewStyle } from "react-native"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import {
@@ -14,7 +16,6 @@ import {
   withSequence,
   withTiming,
 } from "react-native-reanimated"
-import usePrevious from "react-use/lib/usePrevious"
 
 /**
  * TODOS
@@ -26,12 +27,14 @@ import usePrevious from "react-use/lib/usePrevious"
  */
 
 type SwiperProps = {
-  cards: ReactElement<{ key: Key }>[]
+  cards: InfiniteDiscoveryArtwork[]
   isRewindRequested: SharedValue<boolean>
   onNewCardReached?: (key: Key) => void
   onRewind: (key: Key, wasSwiped?: boolean) => void
   onSwipe: (swipedKey: Key, nextKey: Key) => void
   containerStyle?: ViewStyle
+  cardStyle?: ViewStyle
+  isArtworksSaved?: (index: number) => boolean
 } & (
   | { onTrigger?: never; swipedIndexCallsOnTrigger?: never }
   | { onTrigger: (activeIndex: number) => void; swipedIndexCallsOnTrigger: number }
@@ -44,7 +47,7 @@ export type SwiperRefProps = {
 export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
   (
     {
-      cards,
+      cards: _cards,
       isRewindRequested,
       onNewCardReached,
       onRewind,
@@ -52,31 +55,40 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
       onTrigger,
       swipedIndexCallsOnTrigger,
       containerStyle,
+      cardStyle,
+      isArtworksSaved,
     },
     ref
   ) => {
     const width = useScreenWidthWithOffset()
     const [numberExtraCardsAdded, setNumberExtraCardsAdded] = useState(0)
+    const activeCardX = useSharedValue(0)
+    const [cards, setCards] = useState(_cards)
+    const swipedCardX = useSharedValue(-width)
+    // TODO: remove underscore
+    const _activeIndex = useSharedValue(cards.length - 1)
+    const swipedKeys = useSharedValue<Key[]>([])
+
+    // a list of cards that the user has seen
+    const seenCardKeys = useSharedValue<Key[]>([])
 
     useImperativeHandle(ref, () => ({
       swipeLeftThenRight,
     }))
 
-    const activeCardX = useSharedValue(0)
-    const swipedCardX = useSharedValue(-width)
-    // TODO: remove underscore
-    const _activeIndex = useSharedValue(cards.length - 1)
-    const swipedKeys = useSharedValue<Key[]>([])
-    // a list of cards that the user has seen
-    const seenCardKeys = useSharedValue<Key[]>([])
-
-    const previousCards = usePrevious(cards)
-
     useEffect(() => {
-      if (previousCards && cards.length !== previousCards.length) {
-        setNumberExtraCardsAdded(cards.length - previousCards.length)
+      if (cards.length < _cards.length) {
+        setNumberExtraCardsAdded(_cards.length - cards.length)
+        setCards(_cards)
       }
-    }, [cards.length])
+    }, [_cards.length])
+
+    // Without this, we are only to rewind a few times
+    useEffect(() => {
+      if (cards) {
+        setCards(_cards)
+      }
+    }, [_cards])
 
     useEffect(() => {
       if (numberExtraCardsAdded !== 0) {
@@ -94,7 +106,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
 
           // TODO: clean up this minefield of if-statements
           if (hasSwipedCards) {
-            lastSwipedCardKey = cards[_activeIndex.value + 1].key
+            lastSwipedCardKey = cards[_activeIndex.value + 1].internalID
           }
 
           swipedCardX.value = withTiming(0, { duration: 200, easing: Easing.linear }, () => {
@@ -116,7 +128,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
 
     const swipeLeftThenRight = (duration: number) => {
       const swipedCardIndex = _activeIndex.value
-      const swipedCardKey = cards[swipedCardIndex].key
+      const swipedCardKey = cards[swipedCardIndex].internalID
 
       if (swipedCardKey) {
         activeCardX.value = withSequence(
@@ -159,11 +171,11 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
         }
 
         const swipedCardIndex = _activeIndex.value
-        const swipedCardKey = cards[swipedCardIndex].key
+        const swipedCardKey = cards[swipedCardIndex].internalID
 
         if (isSwipeLeft && !isLastCard && swipedCardKey) {
           const nextCardIndex = swipedCardIndex - 1
-          const nextCardKey = cards[nextCardIndex]?.key as Key
+          const nextCardKey = cards[nextCardIndex]?.internalID as Key
 
           // if this is the first time that the user has navigated to this card, record it
           if (nextCardKey && !seenCardKeys.value.includes(nextCardKey) && onNewCardReached) {
@@ -198,7 +210,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
 
         // TODO: clean up this minefield of if-statements
         if (hasSwipedCards) {
-          lastSwipedCardKey = cards[_activeIndex.value + 1].key
+          lastSwipedCardKey = cards[_activeIndex.value + 1].internalID
         }
         swipedCardX.value = withTiming(0, { duration: 200, easing: Easing.linear }, () => {
           if (hasSwipedCards) {
@@ -220,13 +232,19 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
             return (
               <AnimatedView
                 index={i}
-                card={c}
                 activeCardX={activeCardX}
                 activeIndex={_activeIndex}
                 swipedKeys={swipedKeys}
                 swipedCardX={swipedCardX}
-                key={`card_${c.key}`}
-              />
+                key={c.internalID}
+              >
+                <InfiniteDiscoveryArtworkCard
+                  artwork={c}
+                  key={c.internalID}
+                  containerStyle={cardStyle}
+                  isSaved={isArtworksSaved ? isArtworksSaved(i) : undefined}
+                />
+              </AnimatedView>
             )
           })}
         </View>

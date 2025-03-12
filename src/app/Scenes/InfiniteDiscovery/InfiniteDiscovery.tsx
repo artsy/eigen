@@ -11,7 +11,6 @@ import {
 import { captureMessage } from "@sentry/react-native"
 import { useToast } from "app/Components/Toast/toastHook"
 import { ICON_HIT_SLOP } from "app/Components/constants"
-import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { InfiniteDiscoveryOnboarding } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryOnboarding"
 import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
@@ -21,7 +20,7 @@ import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { pluralize } from "app/utils/pluralize"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { Key, ReactElement, useCallback, useEffect, useMemo, useState } from "react"
+import { Key, useCallback, useEffect, useMemo, useState } from "react"
 import { useSharedValue } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from "react-relay"
@@ -99,12 +98,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         },
       })
     }
-  }, [artworks])
-
-  const artworkCards: ReactElement[] = useMemo(() => {
-    return artworks.map((artwork) => (
-      <InfiniteDiscoveryArtworkCard artwork={artwork} key={artwork.internalID} />
-    ))
   }, [artworks])
 
   const currentIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
@@ -223,7 +216,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   // Get the last 2 artworks from the infinite discovery
   // We are showing the last 2 artworks instead of 2 because we reverse the artworks array
   // Inside the Swiper component
-  const onboardingArtworks = artworks.slice(artworkCards.length - 3, artworkCards.length)
+  const onboardingArtworks = artworks.slice(artworks.length - 3, artworks.length)
 
   return (
     <Screen safeArea={false}>
@@ -260,7 +253,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         <Spacer y={1} />
 
         <Swiper
-          cards={artworkCards}
+          cards={artworks}
           isRewindRequested={isRewindRequested}
           onTrigger={handleFetchMore}
           swipedIndexCallsOnTrigger={2}
