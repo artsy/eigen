@@ -171,9 +171,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
             runOnJS(onNewCardReached)(nextCardKey)
           }
 
-          activeCardX.value = withTiming(-width, { duration: 500, easing: Easing.linear }, () => {
-            // TODO: maybe fix this if errors
-
+          activeCardX.value = withTiming(-width, { duration: 300, easing: Easing.linear }, () => {
             swipedKeys.value = [...swipedKeys.value, swipedCardKey]
             _activeIndex.value = _activeIndex.value - 1
             activeCardX.value = 0
@@ -235,4 +233,4 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
   }
 )
 
-const SWIPE_THRESHOLD = 100
+const SWIPE_THRESHOLD = 30
