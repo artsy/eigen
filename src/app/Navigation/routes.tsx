@@ -35,7 +35,10 @@ import {
   ArtistSeriesQueryRenderer,
   ArtistSeriesScreenQuery,
 } from "app/Scenes/ArtistSeries/ArtistSeries"
-import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
+import {
+  ArtistSeriesFullArtistSeriesListQueryRenderer,
+  ArtistSeriesFullArtistSeriesListScreenQuery,
+} from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtistShows2QueryRenderer } from "app/Scenes/ArtistShows/ArtistShows2"
 import { ArtworkScreen, ArtworkScreenQuery } from "app/Scenes/Artwork/Artwork"
 import { BrowseSimilarWorksQueryRenderer } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
@@ -119,7 +122,7 @@ import { NewWorksForYouQueryRenderer } from "app/Scenes/NewWorksForYou/NewWorksF
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 import { OrderDetailsQueryRender } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetails"
 import { OrderHistoryQueryRender } from "app/Scenes/OrderHistory/OrderHistory"
-import { PartnerQueryRenderer } from "app/Scenes/Partner/Partner"
+import { PartnerQueryRenderer, PartnerScreenQuery } from "app/Scenes/Partner/Partner"
 import { PartnerLocationsQueryRenderer } from "app/Scenes/Partner/Screens/PartnerLocations"
 import { PartnerOfferContainer } from "app/Scenes/PartnerOffer/PartnerOfferContainer"
 import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
@@ -379,6 +382,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerTitle: "Artist Series",
       },
     },
+    queries: [ArtistSeriesFullArtistSeriesListScreenQuery],
   },
   {
     path: "/artist/:artistID/auction-result/:auctionResultInternalID",
@@ -1177,6 +1181,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [PartnerScreenQuery],
   },
   {
     path: "/partner/:partnerID/artists/:artistID",

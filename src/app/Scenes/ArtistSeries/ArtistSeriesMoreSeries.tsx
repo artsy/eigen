@@ -2,9 +2,8 @@ import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/co
 import { Flex, FlexProps, Text, TextProps } from "@artsy/palette-mobile"
 import { ArtistSeriesMoreSeries_artist$data } from "__generated__/ArtistSeriesMoreSeries_artist.graphql"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import React, { useEffect, useState } from "react"
-import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -59,16 +58,16 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
           {artistSeriesHeader}
         </Text>
         {totalCount > 4 && (
-          <TouchableOpacity
+          <RouterLink
+            to={`/artist/${artist?.internalID}/artist-series`}
             onPress={() => {
               if (artist.internalID) {
                 trackEvent(tracks.tapViewAllArtistSeries(artist?.internalID, artist?.slug))
-                navigate(`/artist/${artist?.internalID}/artist-series`)
               }
             }}
           >
             <Text variant="xs" underline testID="viewAll">{`View All (${totalCount})`}</Text>
-          </TouchableOpacity>
+          </RouterLink>
         )}
       </Flex>
       {artistSeries.map((item, index) => {

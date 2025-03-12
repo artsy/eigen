@@ -9,7 +9,6 @@ import {
   Spacer,
   Tabs,
 } from "@artsy/palette-mobile"
-import { PartnerInitialQuery } from "__generated__/PartnerInitialQuery.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { Partner_partner$data } from "__generated__/Partner_partner.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -17,7 +16,6 @@ import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import { useClientQuery } from "app/utils/useClientQuery"
 import React from "react"
 
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
@@ -132,32 +130,10 @@ export const PartnerQueryRenderer: React.FC<{
   partnerID: string
   isVisible: boolean
 }> = ({ partnerID, ...others }) => {
-  const { loading } = useClientQuery<PartnerInitialQuery>({
-    environment: getRelayEnvironment(),
-    query: graphql`
-      query PartnerInitialQuery($partnerID: String!) {
-        partner(id: $partnerID) @principalField {
-          displayArtistsSection
-        }
-      }
-    `,
-    variables: { partnerID },
-  })
-
-  if (loading) {
-    return <PartnerSkeleton />
-  }
-
   return (
     <QueryRenderer<PartnerQuery>
       environment={getRelayEnvironment()}
-      query={graphql`
-        query PartnerQuery($partnerID: String!) {
-          partner(id: $partnerID) {
-            ...Partner_partner
-          }
-        }
-      `}
+      query={PartnerScreenQuery}
       variables={{
         partnerID,
       }}
@@ -172,6 +148,14 @@ export const PartnerQueryRenderer: React.FC<{
     />
   )
 }
+
+export const PartnerScreenQuery = graphql`
+  query PartnerQuery($partnerID: String!) {
+    partner(id: $partnerID) {
+      ...Partner_partner
+    }
+  }
+`
 
 export const PartnerSkeleton: React.FC = () => {
   return (
