@@ -1,15 +1,7 @@
-import {
-  AvatarSize,
-  EntityHeader,
-  Flex,
-  FollowButton,
-  Text,
-  Touchable,
-  useColor,
-} from "@artsy/palette-mobile"
+import { AvatarSize, EntityHeader, Flex, FollowButton, Text, useColor } from "@artsy/palette-mobile"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { pluralize } from "app/utils/pluralize"
 import { Schema } from "app/utils/track"
@@ -107,11 +99,6 @@ const ArtistListItem: React.FC<Props> = ({
     )
   }
 
-  const handleTap = (href: string) => {
-    tracks.tapArtistGroup(artist)
-    navigate(href)
-  }
-
   let meta
 
   if (includeTombstone) {
@@ -155,9 +142,12 @@ const ArtistListItem: React.FC<Props> = ({
     return null
   }
 
+  const navigateOnPress = !disableNavigation && !onPress
+
   return (
-    <Touchable
+    <RouterLink
       noFeedback={!withFeedback}
+      to={navigateOnPress ? href : undefined}
       onPress={() => {
         if (onPress) {
           onPress()
@@ -165,13 +155,13 @@ const ArtistListItem: React.FC<Props> = ({
         }
 
         if (href && !disableNavigation) {
-          handleTap(href)
+          tracks.tapArtistGroup(artist)
         }
       }}
       underlayColor={color("black5")}
       style={containerStyle}
     >
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" width="100%">
         <Flex flex={1}>
           <EntityHeader
             mr={1}
@@ -191,7 +181,7 @@ const ArtistListItem: React.FC<Props> = ({
           </Flex>
         )}
       </Flex>
-    </Touchable>
+    </RouterLink>
   )
 }
 
