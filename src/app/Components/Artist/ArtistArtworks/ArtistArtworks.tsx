@@ -15,8 +15,10 @@ import {
 import { MasonryFlashListRef } from "@shopify/flash-list"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
-import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
-import { trackTappedCreateAlert } from "app/Components/Artist/ArtistArtworks/SavedSearchButtonV2"
+import {
+  CreateSavedSearchModal,
+  trackTappedCreateAlert,
+} from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { useCreateSavedSearchModalFilters } from "app/Components/Artist/ArtistArtworks/hooks/useCreateSavedSearchModalFilters"
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -44,7 +46,7 @@ import {
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { Schema } from "app/utils/track"
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -308,7 +310,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
                 <Flex flex={1}>
                   <ArtistArtworksFilterHeader
                     artist={artist}
-                    contextModule={"artistArtworksFilterHeader" as ContextModule}
                     showCreateAlertModal={() => {
                       if (shouldShowCreateAlertReminder) {
                         dismissAllCreateAlertReminder()

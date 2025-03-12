@@ -6,7 +6,7 @@ import { NotificationCommercialButtonsQuery } from "__generated__/NotificationCo
 import { NotificationCommercialButtons_artwork$key } from "__generated__/NotificationCommercialButtons_artwork.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
-import { trackTappedCreateAlert } from "app/Components/Artist/ArtistArtworks/SavedSearchButtonV2"
+import { trackTappedCreateAlert } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { BuyNowButton } from "app/Scenes/Artwork/Components/CommercialButtons/BuyNowButton"
 import { navigate } from "app/system/navigation/navigate"
