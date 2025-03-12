@@ -4,7 +4,7 @@ import { ArtworkAuctionCreateAlertHeader_artwork$key } from "__generated__/Artwo
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { hasBiddingEnded } from "app/Scenes/Artwork/utils/hasBiddingEnded"
 import { isLotClosed } from "app/Scenes/Artwork/utils/isLotClosed"
-import { RouterButton } from "app/system/navigation/RouterButton"
+import { navigate } from "app/system/navigation/navigate"
 import { FC, useState } from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -79,16 +79,18 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
         <Spacer y={2} />
 
         {hasLostBid ? (
-          <RouterButton
+          <Button
             size="large"
             variant="outline"
             haptic
-            to="/favorites/alerts"
+            onPress={() => {
+              navigate("/favorites/alerts")
+            }}
             icon={<BellIcon fill="black100" />}
             block
           >
             Manage your Alerts
-          </RouterButton>
+          </Button>
         ) : (
           <Button
             size="large"
@@ -103,19 +105,19 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
         )}
 
         {!!hasArtworksSuggestions && (
-          <RouterButton
+          <Button
             size="large"
             variant="outline"
             haptic
             onPress={() => {
               tracking.trackEvent(tracks.tappedBrowseSimilarWorksHeaderButton(internalID, slug))
+              navigate(`/artwork/${internalID}/browse-similar-works`)
             }}
-            to={`/artwork/${internalID}/browse-similar-works`}
             block
             mt={1}
           >
             Browse Similar Artworks
-          </RouterButton>
+          </Button>
         )}
       </Flex>
     </>
