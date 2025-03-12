@@ -178,7 +178,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               alignItems="center"
               justifyContent="center"
               style={{
-                width: HEART_CIRCLE_SIZE + 40,
+                width: SAVE_BUTTON_WDITH,
                 height: HEART_CIRCLE_SIZE,
                 borderRadius: 30,
                 backgroundColor: color("black5"),
@@ -201,7 +201,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                   fill="black100"
                 />
               )}
-              <Text ml={0.5} variant="sm-display">
+              <Text ml={0.5} variant="xs">
                 {isSaved ? "Saved" : "Save"}
               </Text>
             </Flex>
@@ -236,3 +236,4 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
 
 const HEART_ICON_SIZE = 18
 const HEART_CIRCLE_SIZE = 50
+const SAVE_BUTTON_WDITH = 105
