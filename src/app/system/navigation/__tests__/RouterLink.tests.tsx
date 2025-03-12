@@ -1,7 +1,7 @@
 import { Text } from "@artsy/palette-mobile"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { RouterLink, RouterLinkProps } from "app/system/navigation/RouterLink"
+import { RouterLink, RouterLinkComponentProps } from "app/system/navigation/RouterLink"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useEffect } from "react"
@@ -28,13 +28,13 @@ describe("RouterLink", () => {
     jest.clearAllMocks()
   })
 
-  const TestComponent = (props: Partial<RouterLinkProps>) => (
+  const TestComponent = (props: Partial<RouterLinkComponentProps>) => (
     <RouterLink to="/test-route" navigationProps={{ id: "test-id" }} {...props}>
       <Text>Test Link</Text>
     </RouterLink>
   )
 
-  const TestTouchableComponent = (props: Partial<RouterLinkProps>) => {
+  const TestTouchableComponent = (props: Partial<RouterLinkComponentProps>) => {
     return (
       <RouterLink to="/test-route" navigationProps={{ id: "test-id" }} {...props}>
         <TouchableWithoutFeedback onPress={touchableOnPress}>

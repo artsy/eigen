@@ -7,22 +7,30 @@ import React, { useState } from "react"
 import { GestureResponderEvent, TouchableOpacity } from "react-native"
 import { Variables } from "relay-runtime"
 
-export type RouterLinkProps = {
-  disablePrefetch?: boolean
-  navigationProps?: Object
-  to?: string | null | undefined
-  // Indicates whether the child component is a touchable element, preventing duplicate touch handlers
-  hasChildTouchable?: boolean
-  prefetchVariables?: Variables
-  children: React.ReactNode
-} & TouchableProps
-
 /**
  * Wrapper component that enables navigation when pressed, using the `to` prop.
  * It supports optional prefetching and ensures proper touch handling for nested touchable elements.
  */
+export const RouterLink = RouterLinkComponent<TouchableProps>
 
-export const RouterLink: React.FC<RouterLinkProps> = ({
+export type RouterLinkComponentProps<WrapperProps = {}> = {
+  disablePrefetch?: boolean
+  navigationProps?: Object
+  to?: string | null | undefined
+  /**
+   * Indicates whether the child component is a touchable element, preventing duplicate touch handlers
+   */
+  hasChildTouchable?: boolean
+  prefetchVariables?: Variables
+  children: React.ReactNode
+  /**
+   * Custom touchable wrapper component (define WrapperProps to adjust props)
+   */
+  TouchableWrapper?: React.ElementType
+  onPress?: (event: GestureResponderEvent) => void
+} & WrapperProps
+
+export function RouterLinkComponent<WrapperProps>({
   disablePrefetch,
   to,
   prefetchVariables,
@@ -30,62 +38,12 @@ export const RouterLink: React.FC<RouterLinkProps> = ({
   navigationProps,
   children,
   hasChildTouchable,
+  TouchableWrapper = TouchableOpacity,
   ...restProps
-}) => {
-  const { isPrefetchingEnabled, handlePress, handleVisible } = usePrefetchOnVisible({
-    to,
-    disablePrefetch,
-    onPress,
-    navigationProps,
-    prefetchVariables,
-  })
-
-  const touchableProps = {
-    activeOpacity: 0.65,
-    onPress: handlePress,
-    ...restProps,
-  }
-
-  if (!isPrefetchingEnabled) {
-    return <TouchableOpacity {...touchableProps} children={children} />
-  }
-
-  if (!hasChildTouchable) {
-    return (
-      <Sentinel onChange={handleVisible}>
-        <TouchableOpacity {...touchableProps}>{children}</TouchableOpacity>
-      </Sentinel>
-    )
-  }
-
-  const cloneProps = {
-    onPress: handlePress,
-    ...restProps,
-  }
-
-  return (
-    <Sentinel onChange={handleVisible}>
-      {React.Children.map(children, (child) =>
-        React.isValidElement(child) ? React.cloneElement(child, cloneProps) : child
-      )}
-    </Sentinel>
-  )
-}
-
-export const usePrefetchOnVisible = ({
-  to,
-  disablePrefetch,
-  onPress,
-  navigationProps,
-  prefetchVariables,
-}: Pick<
-  RouterLinkProps,
-  "to" | "disablePrefetch" | "onPress" | "navigationProps" | "prefetchVariables"
->) => {
+}: RouterLinkComponentProps<WrapperProps>) {
   const [isPrefetched, setIsPrefetched] = useState(false)
 
   const prefetchUrl = usePrefetch()
-
   const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
 
   const isPrefetchingEnabled = !disablePrefetch && enableViewPortPrefetching && to
@@ -109,5 +67,34 @@ export const usePrefetchOnVisible = ({
     }
   }
 
-  return { isPrefetchingEnabled, handlePress, handleVisible }
+  const touchableProps = {
+    activeOpacity: 0.65,
+    onPress: handlePress,
+    ...restProps,
+  }
+
+  if (!isPrefetchingEnabled) {
+    return <TouchableWrapper {...touchableProps} children={children} />
+  }
+
+  if (!hasChildTouchable) {
+    return (
+      <Sentinel onChange={handleVisible}>
+        <TouchableWrapper {...touchableProps}>{children}</TouchableWrapper>
+      </Sentinel>
+    )
+  }
+
+  const cloneProps = {
+    onPress: handlePress,
+    ...restProps,
+  }
+
+  return (
+    <Sentinel onChange={handleVisible}>
+      {React.Children.map(children, (child) =>
+        React.isValidElement(child) ? React.cloneElement(child, cloneProps) : child
+      )}
+    </Sentinel>
+  )
 }
