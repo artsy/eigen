@@ -235,6 +235,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
                 swipedKeys={swipedKeys}
                 swipedCardX={swipedCardX}
                 key={c.internalID}
+                internalID={c.internalID}
               >
                 <InfiniteDiscoveryArtworkCard
                   artwork={c}

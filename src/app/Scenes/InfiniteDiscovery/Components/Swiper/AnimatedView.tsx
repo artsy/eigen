@@ -1,6 +1,6 @@
 import { useScreenDimensions } from "@artsy/palette-mobile"
 import { useScreenWidthWithOffset } from "app/Scenes/InfiniteDiscovery/Components/Swiper/useScreenWidthWithOffset"
-import { FC, Key, ReactElement } from "react"
+import { FC, Key } from "react"
 import { ViewStyle } from "react-native"
 import Animated, {
   Extrapolation,
@@ -17,25 +17,24 @@ interface AnimatedViewProps {
   activeIndex: SharedValue<number>
   swipedKeys: SharedValue<Key[]>
   style?: ViewStyle | ViewStyle[]
-  children: ReactElement
-  key: string
+  internalID: string
 }
 
 export const AnimatedView: FC<AnimatedViewProps> = ({
+  children,
   activeCardX,
   swipedCardX,
   activeIndex,
   index,
   swipedKeys,
-  children,
-  key,
+  internalID,
 }) => {
   const { width: screenWidth } = useScreenDimensions()
   const width = useScreenWidthWithOffset()
 
   const isTopCard = useDerivedValue(() => activeIndex.value === index)
   const isSecondCard = useDerivedValue(() => activeIndex.value - 1 === index)
-  const isSwiped = useDerivedValue(() => swipedKeys.value.includes(key as Key))
+  const isSwiped = useDerivedValue(() => swipedKeys.value.includes(internalID as Key))
   const isThirdOrMoreCard = useDerivedValue(() => index < activeIndex.value - 1 && !isSwiped.value)
   const isLastSwiped = useDerivedValue(() => activeIndex.value + 1 === index)
 
@@ -158,4 +157,4 @@ const MAX_ROTATIONS = [5, 7, 9]
 const MAX_SHADOW_OPACITY = 0.8
 const MAX_ELEVATION = 8
 const MIN_SCALE = 0.95
-const MIN_OPACITY = 0.75
+const MIN_OPACITY = 0.5
