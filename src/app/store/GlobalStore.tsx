@@ -1,12 +1,12 @@
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { DevToggleName, FeatureName, features } from "app/store/config/features"
+import { formatUserAgent } from "app/utils/formatUserAgent"
 import { logAction } from "app/utils/loggers"
 import { Actions, createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { Action, Middleware } from "redux"
 import logger from "redux-logger"
-import { version } from "./../../../app.json"
 import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { DevToggleMap, FeatureMap } from "./config/FeaturesModel"
 import { persistenceMiddleware, unpersist } from "./persistence"
@@ -112,9 +112,9 @@ export function getCurrentEmissionState() {
   // Note also that the specific format of the user-agent string that is constructed here
   // may be relied upon by Metaphysics for determining what content to present to Eigen.
   // See: https://github.com/artsy/metaphysics/pull/6297
-  const userAgent = `${
+  const userAgent = formatUserAgent(
     __DEV__ ? "Artsy-Mobile " + Platform.OS : DeviceInfo.getUserAgentSync()
-  } ${DeviceInfo.getSystemName()}/${DeviceInfo.getSystemVersion()} Artsy-Mobile/${version} Eigen/${DeviceInfo.getBuildNumber()}/${version}`
+  )
 
   const data: GlobalStoreModel["native"]["sessionState"] = {
     authenticationToken: state?.auth.userAccessToken || "",

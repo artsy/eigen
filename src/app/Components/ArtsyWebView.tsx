@@ -13,6 +13,7 @@ import {
   navigationEvents,
 } from "app/system/navigation/navigate"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
+import { formatUserAgent } from "app/utils/formatUserAgent"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useEnvironment } from "app/utils/hooks/useEnvironment"
@@ -283,7 +284,7 @@ export const ArtsyWebView = forwardRef<
 
     useEffect(() => {
       getUserAgent().then((agent) => {
-        userAgentRef.current = agent
+        userAgentRef.current = formatUserAgent(agent)
       })
     })
 
