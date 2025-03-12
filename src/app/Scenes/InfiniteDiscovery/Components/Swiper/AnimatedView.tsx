@@ -1,13 +1,13 @@
 import { useScreenDimensions } from "@artsy/palette-mobile"
 import { useScreenWidthWithOffset } from "app/Scenes/InfiniteDiscovery/Components/Swiper/useScreenWidthWithOffset"
-import { FC, Key, ReactElement } from "react"
+import { FC, Key, ReactElement, useEffect } from "react"
 import { ViewStyle } from "react-native"
 import Animated, {
   Extrapolation,
   interpolate,
   SharedValue,
   useAnimatedStyle,
-  useDerivedValue,
+  useSharedValue,
 } from "react-native-reanimated"
 
 interface AnimatedViewProps {
@@ -16,130 +16,148 @@ interface AnimatedViewProps {
   swipedCardX: SharedValue<number>
   activeIndex: SharedValue<number>
   swipedKeys: SharedValue<Key[]>
+  children: ReactElement<{ key: Key }>
   style?: ViewStyle | ViewStyle[]
-  children: ReactElement
-  key: string
+  internalID: string
 }
 
 export const AnimatedView: FC<AnimatedViewProps> = ({
+  internalID,
   activeCardX,
   swipedCardX,
   activeIndex,
   index,
   swipedKeys,
   children,
-  key,
 }) => {
   const { width: screenWidth } = useScreenDimensions()
   const width = useScreenWidthWithOffset()
+  const _index = useSharedValue(index)
 
-  const isTopCard = useDerivedValue(() => activeIndex.value === index)
-  const isSecondCard = useDerivedValue(() => activeIndex.value - 1 === index)
-  const isSwiped = useDerivedValue(() => swipedKeys.value.includes(key as Key))
-  const isThirdOrMoreCard = useDerivedValue(() => index < activeIndex.value - 1 && !isSwiped.value)
-  const isLastSwiped = useDerivedValue(() => activeIndex.value + 1 === index)
+  useEffect(() => {
+    if (index !== _index.value) {
+      _index.value = index
+    }
+  }, [index])
 
-  const transformX = useDerivedValue(() => {
-    if (isTopCard.value) {
-      return Math.min(0, activeCardX.value)
-    }
-    if (isLastSwiped.value) {
-      return swipedCardX.value
-    }
-    if (isSwiped.value) {
-      return -width
-    }
-
-    return 0
-  })
-  const transformY = useDerivedValue(() => {
-    if (isTopCard.value) {
-      return (
-        -Math.sin(interpolate(activeCardX.value, [0, -width], [0, Math.PI], Extrapolation.CLAMP)) *
-        ARC_RADIUSES[index % ARC_RADIUSES.length]
-      )
-    }
-    if (isLastSwiped.value) {
-      return (
-        -Math.sin(interpolate(swipedCardX.value, [-width, 0], [Math.PI, 0], Extrapolation.CLAMP)) *
-        ARC_RADIUSES[index % ARC_RADIUSES.length]
-      )
-    }
-
-    return 0
-  })
-
-  const rotation = useDerivedValue(() => {
-    isTopCard.value
-      ? interpolate(
+  const topCardStyle = useAnimatedStyle(() => {
+    if (activeIndex.value === index) {
+      return {
+        transform: [
+          { translateX: Math.min(0, activeCardX.value) },
+          {
+            translateY:
+              -Math.sin(
+                interpolate(activeCardX.value, [0, -width], [0, Math.PI], Extrapolation.CLAMP)
+              ) * ARC_RADIUSES[index % ARC_RADIUSES.length],
+          },
+          {
+            rotate: `${interpolate(
+              activeCardX.value,
+              [0, -width],
+              [0, -MAX_ROTATIONS[index % MAX_ROTATIONS.length]],
+              Extrapolation.CLAMP
+            )}deg`,
+          },
+        ],
+        shadowOffset: { width: 0, height: 0 },
+        shadowRadius: 12,
+        shadowOpacity: interpolate(
           activeCardX.value,
           [0, -width],
-          [0, -MAX_ROTATIONS[index % MAX_ROTATIONS.length]],
+          [0, MAX_SHADOW_OPACITY],
           Extrapolation.CLAMP
-        )
-      : isLastSwiped.value
-        ? interpolate(
-            swipedCardX.value,
-            [-width, 0],
-            [-MAX_ROTATIONS[index % MAX_ROTATIONS.length], 0],
-            Extrapolation.CLAMP
-          )
-        : 0
+        ),
+        elevation: interpolate(
+          activeCardX.value,
+          [0, -width],
+          [0, MAX_ELEVATION],
+          Extrapolation.CLAMP
+        ),
+      }
+    }
+
+    // reanimated doesn't reset shadow styles when returning {}
+    return emptyShadowStyle
   })
 
-  const shadowOpacity = useDerivedValue(() =>
-    isTopCard.value
-      ? interpolate(activeCardX.value, [0, -width], [0, MAX_SHADOW_OPACITY], Extrapolation.CLAMP)
-      : isLastSwiped.value
-        ? interpolate(
-            swipedCardX.value,
-            [-width, -width + 20, 0],
-            [0, 0.13, 0],
-            Extrapolation.CLAMP
-          )
-        : 0
-  )
+  const secondCardStyle = useAnimatedStyle(() => {
+    const indexOfTheSecondCard = activeIndex.value - 1
 
-  const elevation = useDerivedValue(() =>
-    isTopCard.value
-      ? interpolate(activeCardX.value, [0, -width], [0, MAX_ELEVATION], Extrapolation.CLAMP)
-      : isLastSwiped.value
-        ? interpolate(swipedCardX.value, [-width, 0], [8, 0], Extrapolation.CLAMP)
-        : 0
-  )
+    if (index === indexOfTheSecondCard) {
+      return {
+        transform: [
+          {
+            scale: interpolate(activeCardX.value, [0, -width], [MIN_SCALE, 1], Extrapolation.CLAMP),
+          },
+        ],
+        opacity: interpolate(activeCardX.value, [0, -width], [MIN_OPACITY, 1], Extrapolation.CLAMP),
+      }
+    }
 
-  const scale = useDerivedValue(() =>
-    isSecondCard.value
-      ? interpolate(activeCardX.value, [0, -width], [MIN_SCALE, 1], Extrapolation.CLAMP)
-      : 1
-  )
+    return {}
+  })
 
-  const opacity = useDerivedValue(() =>
-    isSecondCard.value
-      ? interpolate(activeCardX.value, [0, -width], [MIN_OPACITY, 1], Extrapolation.CLAMP)
-      : isThirdOrMoreCard.value
-        ? 0
-        : 1
-  )
+  const unswipedCardStyle = useAnimatedStyle(() => {
+    if (index <= activeIndex.value - 2 && !swipedKeys.value.includes(internalID as Key)) {
+      return { opacity: 0 }
+    }
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: transformX.value },
-      { translateY: transformY.value },
-      { rotate: `${rotation.value}deg` },
-      { scale: scale.value },
-    ],
-    shadowOffset: { width: 0, height: 0 },
-    shadowRadius: 12,
-    shadowOpacity: shadowOpacity.value,
-    elevation: elevation.value,
-    opacity: opacity.value,
-  }))
+    return {}
+  })
+
+  const lastSwipedCardStyle = useAnimatedStyle(() => {
+    // if the card is the last swiped, respect the pan XY value
+    if (index === activeIndex.value + 1) {
+      return {
+        transform: [
+          { translateX: swipedCardX.value },
+          {
+            translateY:
+              -Math.sin(
+                interpolate(swipedCardX.value, [-width, 0], [Math.PI, 0], Extrapolation.CLAMP)
+              ) * ARC_RADIUSES[index % ARC_RADIUSES.length],
+          },
+          {
+            rotate: `${interpolate(
+              swipedCardX.value,
+              [-width, 0],
+              [-MAX_ROTATIONS[index % MAX_ROTATIONS.length], 0],
+              Extrapolation.CLAMP
+            )}deg`,
+          },
+        ],
+        shadowOffset: { width: 0, height: 0 },
+        shadowRadius: 12,
+        shadowOpacity: interpolate(
+          swipedCardX.value,
+          [-width, -width + 20, 0],
+          [0, 0.13, 0],
+          Extrapolation.CLAMP
+        ),
+        elevation: interpolate(swipedCardX.value, [-width, 0], [8, 0], Extrapolation.CLAMP),
+      }
+    }
+
+    return {}
+  })
+
+  const swipedCardStyle = useAnimatedStyle(() => {
+    if (swipedKeys.value.includes(internalID as Key) && index !== activeIndex.value + 1) {
+      return { transform: [{ translateX: -width }, { translateY: 0 }] }
+    }
+
+    return {}
+  })
 
   return (
     <Animated.View
       style={[
-        animatedStyle,
+        topCardStyle,
+        secondCardStyle,
+        unswipedCardStyle,
+        lastSwipedCardStyle,
+        swipedCardStyle,
         {
           width: screenWidth,
           alignSelf: "center",
@@ -158,4 +176,11 @@ const MAX_ROTATIONS = [5, 7, 9]
 const MAX_SHADOW_OPACITY = 0.8
 const MAX_ELEVATION = 8
 const MIN_SCALE = 0.95
-const MIN_OPACITY = 0.75
+const MIN_OPACITY = 0.5
+
+const emptyShadowStyle = {
+  shadowOffset: { width: 0, height: 0 },
+  shadowRadius: 0,
+  shadowOpacity: 0,
+  elevation: 0,
+}
