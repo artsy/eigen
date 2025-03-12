@@ -823,6 +823,7 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       hidesBottomTabs: true,
       screenOptions: {
+        animation: "slide_from_bottom",
         headerShown: false,
       },
     },
