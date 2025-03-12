@@ -263,7 +263,7 @@ const PopoverWrapper: React.FC<{
         dismiss(PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_1)
         break
 
-      case 10:
+      case SECOND_REMINDER_SWIPES_COUNT:
         dismiss(PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_2)
         break
       default:
@@ -274,7 +274,7 @@ const PopoverWrapper: React.FC<{
   if (isTopCard && !hasSavedArtworks && (showSaveAlertReminder1 || showSaveAlertReminder2)) {
     return (
       <Popover
-        visible={true}
+        visible
         onDismiss={dismissPopover}
         onPressOutside={dismissPopover}
         title={
