@@ -68,10 +68,21 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
     const swipedCardX = useSharedValue(-width)
     // TODO: remove underscore
     const _activeIndex = useSharedValue(cards.length - 1)
+    const [activeIndex, setActiveIndex] = useState(_activeIndex.value)
+
     const swipedKeys = useSharedValue<Key[]>([])
 
     // a list of cards that the user has seen
     const seenCardKeys = useSharedValue<Key[]>([])
+
+    useAnimatedReaction(
+      () => _activeIndex.value,
+      (current, previous) => {
+        if (current !== previous) {
+          runOnJS(setActiveIndex)(cards.length - current - 1)
+        }
+      }
+    )
 
     useImperativeHandle(ref, () => ({
       swipeLeftThenRight,
@@ -235,6 +246,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
       <GestureDetector gesture={pan}>
         <View style={containerStyle}>
           {cards.map((c, i) => {
+            const index = cards.length - i - 1
             return (
               <AnimatedView
                 index={i}
@@ -250,6 +262,8 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
                   key={c.internalID}
                   containerStyle={cardStyle}
                   isSaved={isArtworksSaved ? isArtworksSaved(i) : undefined}
+                  index={index}
+                  isTopCard={index === activeIndex}
                 />
               </AnimatedView>
             )

@@ -4,6 +4,7 @@ import {
   HeartFillIcon,
   HeartIcon,
   Image,
+  Popover,
   Text,
   Touchable,
   useColor,
@@ -13,9 +14,13 @@ import { InfiniteDiscoveryArtworkCard_artwork$key } from "__generated__/Infinite
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { GlobalStore } from "app/store/GlobalStore"
+import {
+  PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_1,
+  PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_2,
+} from "app/store/ProgressiveOnboardingModel"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
-import { memo, useEffect } from "react"
+import { memo, useEffect, useRef } from "react"
 import { ViewStyle } from "react-native"
 import Animated, {
   Easing,
@@ -34,22 +39,29 @@ interface InfiniteDiscoveryArtworkCardProps {
   containerStyle?: ViewStyle
   // This is only used for the onboarding animation
   isSaved?: boolean
+  index: number
+  isTopCard: boolean
 }
 
 export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCardProps> = memo(
-  ({ artwork: artworkProp, containerStyle, isSaved: isSavedProp }) => {
+  ({ artwork: artworkProp, containerStyle, isSaved: isSavedProp, index, isTopCard }) => {
     const { width: screenWidth, height: screenHeight } = useScreenDimensions()
     const saveAnimationProgress = useSharedValue(0)
+    const { hasSavedArtworks } = GlobalStore.useAppState((state) => state.infiniteDiscovery)
+    const setHasSavedArtwors = GlobalStore.actions.infiniteDiscovery.setHasSavedArtworks
 
     const { trackEvent } = useTracking()
     const color = useColor()
     const { incrementSavedArtworksCount, decrementSavedArtworksCount } =
       GlobalStore.actions.infiniteDiscovery
 
-    const artwork = useFragment<InfiniteDiscoveryArtworkCard_artwork$key>(
+    const artworkData = useFragment<InfiniteDiscoveryArtworkCard_artwork$key>(
       infiniteDiscoveryArtworkCardFragment,
       artworkProp
     )
+
+    // This is a workaround to avoid relay removing the fragment from the cache
+    const artwork = useRef(artworkData).current
 
     const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
       artworkFragmentRef: artwork,
@@ -170,41 +182,48 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           <Touchable
             haptic
             hitSlop={{ bottom: 10, right: 10, left: 10, top: 10 }}
-            onPress={saveArtworkToLists}
+            onPress={() => {
+              if (!hasSavedArtworks) {
+                setHasSavedArtwors(true)
+              }
+              saveArtworkToLists()
+            }}
             testID="save-artwork-icon"
           >
-            <Flex
-              flexDirection="row"
-              alignItems="center"
-              justifyContent="center"
-              style={{
-                width: SAVE_BUTTON_WIDTH,
-                height: HEART_CIRCLE_SIZE,
-                borderRadius: 30,
-                backgroundColor: color("black5"),
-              }}
-            >
-              {!!isSaved ? (
-                <Animated.View style={animatedSaveButtonStyles}>
-                  <HeartFillIcon
-                    testID="filled-heart-icon"
+            <PopoverWrapper index={index} internalID={artwork.internalID} isTopCard={isTopCard}>
+              <Flex
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="center"
+                style={{
+                  width: SAVE_BUTTON_WIDTH,
+                  height: HEART_CIRCLE_SIZE,
+                  borderRadius: 30,
+                  backgroundColor: color("black5"),
+                }}
+              >
+                {!!isSaved ? (
+                  <Animated.View style={animatedSaveButtonStyles}>
+                    <HeartFillIcon
+                      testID="filled-heart-icon"
+                      height={HEART_ICON_SIZE}
+                      width={HEART_ICON_SIZE}
+                      fill="blue100"
+                    />
+                  </Animated.View>
+                ) : (
+                  <HeartIcon
+                    testID="empty-heart-icon"
                     height={HEART_ICON_SIZE}
                     width={HEART_ICON_SIZE}
-                    fill="blue100"
+                    fill="black100"
                   />
-                </Animated.View>
-              ) : (
-                <HeartIcon
-                  testID="empty-heart-icon"
-                  height={HEART_ICON_SIZE}
-                  width={HEART_ICON_SIZE}
-                  fill="black100"
-                />
-              )}
-              <Text ml={0.5} variant="xs">
-                {isSaved ? "Saved" : "Save"}
-              </Text>
-            </Flex>
+                )}
+                <Text ml={0.5} variant="xs">
+                  {isSaved ? "Saved" : "Save"}
+                </Text>
+              </Flex>
+            </PopoverWrapper>
           </Touchable>
         </Flex>
       </Flex>
@@ -212,6 +231,66 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
   }
 )
 
+const FIRST_REMINDER_SWIPES_COUNT = 5
+const SECOND_REMINDER_SWIPES_COUNT = 30
+
+const PopoverWrapper: React.FC<{
+  isTopCard: boolean
+  index: number
+  internalID: string
+  children: JSX.Element
+}> = ({ children, index, isTopCard }) => {
+  const { dismiss } = GlobalStore.actions.progressiveOnboarding
+  const {
+    isDismissed,
+    sessionState: { isReady },
+  } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
+
+  const { hasSavedArtworks } = GlobalStore.useAppState((state) => state.infiniteDiscovery)
+
+  const showSaveAlertReminder1 =
+    index === FIRST_REMINDER_SWIPES_COUNT &&
+    !isDismissed(PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_1).status &&
+    isReady
+  const showSaveAlertReminder2 =
+    index === SECOND_REMINDER_SWIPES_COUNT &&
+    !isDismissed(PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_2).status &&
+    isReady
+
+  const dismissPopover = () => {
+    switch (index) {
+      case FIRST_REMINDER_SWIPES_COUNT:
+        dismiss(PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_1)
+        break
+
+      case SECOND_REMINDER_SWIPES_COUNT:
+        dismiss(PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_2)
+        break
+      default:
+        break
+    }
+  }
+
+  if (isTopCard && !hasSavedArtworks && (showSaveAlertReminder1 || showSaveAlertReminder2)) {
+    return (
+      <Popover
+        visible
+        onDismiss={dismissPopover}
+        onPressOutside={dismissPopover}
+        title={
+          <Text variant="xs" color="white100" fontWeight="bold">
+            Save artworks to get better{"\n"}recommendations and to signal your{"\n"}interest to
+            galleries.
+          </Text>
+        }
+        placement="top"
+      >
+        {children}
+      </Popover>
+    )
+  }
+  return <Flex>{children}</Flex>
+}
 const infiniteDiscoveryArtworkCardFragment = graphql`
   fragment InfiniteDiscoveryArtworkCard_artwork on Artwork {
     artistNames
