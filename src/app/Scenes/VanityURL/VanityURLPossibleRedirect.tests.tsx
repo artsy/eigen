@@ -7,13 +7,11 @@ import { fetchMockResponseOnce } from "app/utils/tests/fetchMockHelpers"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import fetchMock from "jest-fetch-mock"
 import { Linking } from "react-native"
-import RNDeviceInfo from "react-native-device-info"
 import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 
 beforeEach(() => {
   __globalStoreTestUtils__?.setProductionMode()
   __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
-  jest.spyOn(RNDeviceInfo, "getUserAgent").mockReturnValue(Promise.resolve("user-agent"))
   fetchMock.resetMocks()
 })
 

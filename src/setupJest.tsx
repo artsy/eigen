@@ -153,7 +153,7 @@ jest.mock("react-native-device-info", () => ({
   getBuildNumber: () => "some-build-number",
   getSystemName: () => "some-system-name",
   getSystemVersion: () => "some-system-version",
-  getUserAgent: jest.fn(),
+  getUserAgent: () => Promise.resolve("some-user-agent"),
   getVersion: jest.fn(),
   getModel: () => "testDevice",
   getUserAgentSync: jest.fn(),
