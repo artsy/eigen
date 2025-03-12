@@ -116,7 +116,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     return (
       <Flex backgroundColor="white100" width="100%" style={containerStyle}>
-        <Flex mx={2} my={1}>
+        <Flex p={2}>
           <ArtistListItemContainer
             artist={artwork.artists?.[0]}
             avatarSize="xxs"
@@ -146,7 +146,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
           {!!src && <Image src={src} height={size.height} width={size.width} />}
         </Flex>
-        <Flex flexDirection="row" justifyContent="space-between" p={1} mx={2}>
+        <Flex flexDirection="row" justifyContent="space-between" p={2}>
           <Flex>
             <Text color="blue" variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>
               {artwork.internalID}
