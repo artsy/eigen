@@ -1,5 +1,6 @@
 import { IconProps, Color } from "@artsy/palette-mobile"
 import { ActionSheetProps } from "@expo/react-native-action-sheet"
+import React from "react"
 
 export type ToastDuration = "long" | "short"
 
@@ -16,7 +17,7 @@ export interface ToastDetails {
 
   placement: ToastPlacement
   message: string
-  description?: string | null
+  description?: string | React.ReactNode | null
 
   /* Display CTA for toasts with top or bottom placement */
   cta?: string
