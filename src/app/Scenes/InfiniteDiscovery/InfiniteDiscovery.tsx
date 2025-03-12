@@ -20,6 +20,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { pluralize } from "app/utils/pluralize"
+import { usePrefetch } from "app/utils/queryPrefetching"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Key, ReactElement, useCallback, useEffect, useMemo, useState } from "react"
 import { useSharedValue } from "react-native-reanimated"
@@ -48,6 +49,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const toast = useToast()
   const { trackEvent } = useTracking()
   const [commitMutation] = useCreateUserSeenArtwork()
+  const prefetchUrl = usePrefetch()
 
   const hasInteractedWithOnboarding = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
@@ -100,6 +102,16 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       })
     }
   }, [artworks])
+
+  useEffect(() => {
+    if (topArtworkId) {
+      const index = artworks.findIndex((c) => c.internalID === topArtworkId)
+      const href = artworks[index].artists[0]?.href
+      if (href) {
+        prefetchUrl(href)
+      }
+    }
+  }, [topArtworkId])
 
   const artworkCards: ReactElement[] = useMemo(() => {
     return artworks.map((artwork) => (
@@ -332,6 +344,7 @@ export const infiniteDiscoveryQuery = graphql`
           internalID @required(action: NONE)
           artists(shallow: true) @required(action: NONE) {
             internalID @required(action: NONE)
+            href @required(action: NONE)
           }
           slug
         }
