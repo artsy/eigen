@@ -308,7 +308,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
                 <Flex flex={1}>
                   <ArtistArtworksFilterHeader
                     artist={artist}
-                    contextModule={ContextModule.artworkGrid}
+                    contextModule={"artistArtworksFilterHeader" as ContextModule}
                     showCreateAlertModal={() => {
                       if (shouldShowCreateAlertReminder) {
                         dismissAllCreateAlertReminder()
