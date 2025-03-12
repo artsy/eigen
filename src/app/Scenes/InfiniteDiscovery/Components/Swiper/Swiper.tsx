@@ -174,7 +174,6 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
         const swipedCardKey = cards[swipedCardIndex].internalID
 
         if (isSwipeLeft && !isLastCard && swipedCardKey) {
-          console.log("[SWIPER] swiped card key ", swipedCardKey)
           const nextCardIndex = swipedCardIndex - 1
           const nextCardKey = cards[nextCardIndex]?.internalID as Key
 
