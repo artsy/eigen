@@ -490,6 +490,7 @@ lane :deploy_to_expo_updates do |options|
   platform = options[:platform]
   deployment_name = options[:deployment_name]
   description = options[:description]
+  rollout_percentage = options[:rollout_percentage]
 
   # important! this must match the release version specified
   # in Eigen in order for sourcemaps to work correctly
@@ -497,15 +498,23 @@ lane :deploy_to_expo_updates do |options|
   # Will need to modify eigen code in any case
   release_name, dist_version, release_version = set_expo_release_values(deployment_name, platform)
 
-  # TODO: This is a bit ugly, maybe separate to script
+  expo_command = "eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}"
+
+  # Append rollout flag if provided
+  if rollout_percentage
+    expo_command += " --branch=#{deployment_name} --rollout=#{rollout_percentage}"
+  end
+
+  # Execute the command
   sh("pushd ..; \
-      eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}; \
-      npx sentry-expo-upload-sourcemaps dist \
+      #{expo_command}; \
+      npx sentry-expo-upload-sourcemaps dist; \
       popd")
 
   tag_and_push(tag: release_name)
 
-  puts "Deploying to #{deployment_name} with description #{description} for platform #{platform}"
+  puts "🚀 Deploying to #{deployment_name} with description '#{description}' for platform #{platform}"
+  puts "🎯 Rollout: #{rollout_percentage}%" if rollout_percentage
 end
 
 lane :promote_codepush do |options|
