@@ -506,9 +506,9 @@ lane :deploy_to_expo_updates do |options|
   end
 
   # Execute the command
-  sh("pushd ..; \
-      #{expo_command}; \
-      npx sentry-expo-upload-sourcemaps dist; \
+  sh("pushd .. && \
+      #{expo_command} && \
+      npx sentry-expo-upload-sourcemaps dist && \
       popd")
 
   tag_and_push(tag: release_name)
