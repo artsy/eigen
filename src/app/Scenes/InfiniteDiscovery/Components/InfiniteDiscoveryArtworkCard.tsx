@@ -22,6 +22,7 @@ import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
 import { ViewStyle, Text as RNText } from "react-native"
+import Haptic from "react-native-haptic-feedback"
 import Animated, {
   Easing,
   interpolate,
@@ -154,6 +155,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           if (state.numTaps === 2) {
             state.numTaps = 0
             if (!isSaved) {
+              Haptic.trigger("impactLight")
               setShowScreenTapToSave(true)
               saveArtworkToLists()
             }
