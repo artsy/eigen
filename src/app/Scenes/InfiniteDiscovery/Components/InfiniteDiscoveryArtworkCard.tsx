@@ -21,7 +21,7 @@ import {
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef } from "react"
-import { ViewStyle } from "react-native"
+import { ViewStyle, Text as RNText } from "react-native"
 import Animated, {
   Easing,
   interpolate,
@@ -158,8 +158,8 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
           {!!src && <Image src={src} height={size.height} width={size.width} />}
         </Flex>
-        <Flex flexDirection="row" justifyContent="space-between" p={2}>
-          <Flex>
+        <Flex flexDirection="row" justifyContent="space-between" p={2} gap={1}>
+          <Flex flex={1}>
             {/* TODO: remove this when we are done with the infinite discovery */}
             {!!__DEV__ && (
               <Text color="blue" variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>
@@ -167,19 +167,15 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               </Text>
             )}
 
-            <Flex flexDirection="row" maxWidth={screenWidth - 200}>
-              <Text
-                color="black60"
-                italic
-                variant="sm-display"
-                ellipsizeMode="tail"
-                numberOfLines={1}
-              >
-                {artwork.title}
-              </Text>
-              <Text color="black60" variant="sm-display">
-                , {artwork.date}
-              </Text>
+            <Flex flexDirection="row">
+              <RNText numberOfLines={1}>
+                <Text color="black60" variant="sm-display">
+                  <Text italic ellipsizeMode="tail" color="black60" variant="sm-display">
+                    {artwork.title}
+                  </Text>
+                  , {artwork.date}
+                </Text>
+              </RNText>
             </Flex>
             <Text variant="sm-display">{artwork.saleMessage}</Text>
           </Flex>
