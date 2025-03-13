@@ -235,19 +235,19 @@ jobs:
       - install-node
       - install-gems
       - setup-awscli
-      # - run:
-      #     name: Determine Deployment Type
-      #     command: |
-      #       DEPLOYMENT_TYPE=$(./scripts/deploys/expo-updates/determine-deployment-type)
-      #       echo "export DEPLOYMENT_TYPE=$DEPLOYMENT_TYPE" >> $BASH_ENV
-      # - run:
-      #     name: Handle Deployment for beta
-      #     command: |
-      #       if [ "$DEPLOYMENT_TYPE" == "beta" ]; then
-      #         echo "Native code changed, new beta needed!"
-      #         ./scripts/deploys/expo-updates/maybe-notify-beta-needed
-      #         circleci-agent step halt
-      #       fi
+      - run:
+          name: Determine Deployment Type
+          command: |
+            DEPLOYMENT_TYPE=$(./scripts/deploys/expo-updates/determine-deployment-type)
+            echo "export DEPLOYMENT_TYPE=$DEPLOYMENT_TYPE" >> $BASH_ENV
+      - run:
+          name: Handle Deployment for beta
+          command: |
+            if [ "$DEPLOYMENT_TYPE" == "beta" ]; then
+              echo "Native code changed, new beta needed!"
+              ./scripts/deploys/expo-updates/maybe-notify-beta-needed
+              circleci-agent step halt
+            fi
       - install-node-modules
       - run-relay-compiler
       - run:
@@ -541,50 +541,49 @@ workflows:
           filters:
             branches:
               only:
-                - brian+george/expo-again # revert me!
+                - main
 
+      - test-js
 
-      # - test-js
+      - build-test-js
 
-      # - build-test-js
+      - horizon/block:
+          context: horizon
+          project_id: 37
+          filters:
+            branches:
+              only:
+                - beta-ios
+                - beta-android
 
-      # - horizon/block:
-      #     context: horizon
-      #     project_id: 37
-      #     filters:
-      #       branches:
-      #         only:
-      #           - beta-ios
-      #           - beta-android
+      - build-test-app-ios:
+          filters:
+            branches:
+              ignore:
+                - beta-android
+          requires:
+            - test-js
+            - check-code
+            - build-test-js
+            - horizon/block
 
-      # - build-test-app-ios:
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - beta-android
-      #     requires:
-      #       - test-js
-      #       - check-code
-      #       - build-test-js
-      #       - horizon/block
+      - build-test-app-android:
+          filters:
+            branches:
+              ignore:
+                - beta-ios
+          requires:
+            - test-js
+            - check-code
+            - build-test-js
+            - horizon/block
 
-      # - build-test-app-android:
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - beta-ios
-      #     requires:
-      #       - test-js
-      #       - check-code
-      #       - build-test-js
-      #       - horizon/block
-
-      # - update-metaphysics:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - beta-ios
-      #           - beta-android
-      #     requires:
-      #       - build-test-app-ios
-      #       - build-test-app-android
+      - update-metaphysics:
+          filters:
+            branches:
+              only:
+                - beta-ios
+                - beta-android
+          requires:
+            - build-test-app-ios
+            - build-test-app-android
