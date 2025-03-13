@@ -6,7 +6,6 @@ import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSet
 import { GlobalStore } from "app/store/GlobalStore"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { useEffect } from "react"
 
 export const ProgressiveOnboardingOfferSettings: React.FC = ({ children }) => {
   const {
@@ -43,18 +42,13 @@ export const ProgressiveOnboardingOfferSettings: React.FC = ({ children }) => {
 
   const isVisible = !!debouncedIsDisplayable.debouncedValue && isActive
 
-  useEffect(() => {
-    if (isVisible) {
-      trackEvent()
-    }
-  }, [isVisible])
-
   return (
     <Popover
       visible={isVisible}
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
       onCloseComplete={clearActivePopover}
+      onOpenComplete={trackEvent}
       placement="top"
       title={
         <Text variant="xs" color="white100">

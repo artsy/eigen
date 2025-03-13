@@ -6,7 +6,7 @@ import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSet
 import { GlobalStore } from "app/store/GlobalStore"
 import { Sentinel } from "app/utils/Sentinel"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
 export const ProgressiveOnboardingSaveArtwork: React.FC<{ contextScreenOwnerType?: OwnerType }> = ({
@@ -38,12 +38,6 @@ export const ProgressiveOnboardingSaveArtwork: React.FC<{ contextScreenOwnerType
 
   const isVisible = !!isDisplayable && isActive
 
-  useEffect(() => {
-    if (isVisible) {
-      trackEvent()
-    }
-  }, [isVisible])
-
   // all conditions met we show the popover
   if (isVisible) {
     const content = (
@@ -60,6 +54,7 @@ export const ProgressiveOnboardingSaveArtwork: React.FC<{ contextScreenOwnerType
         onDismiss={handleDismiss}
         onPressOutside={handleDismiss}
         onCloseComplete={clearActivePopover}
+        onOpenComplete={trackEvent}
         title={
           <Text weight="medium" color="white100">
             Like what you see?

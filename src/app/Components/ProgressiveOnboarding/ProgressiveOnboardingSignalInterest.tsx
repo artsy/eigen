@@ -5,7 +5,6 @@ import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnbo
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { useEffect } from "react"
 
 export const ProgressiveOnboardingSignalInterest: React.FC = ({ children }) => {
   const {
@@ -33,18 +32,13 @@ export const ProgressiveOnboardingSignalInterest: React.FC = ({ children }) => {
 
   const isVisible = !!isDisplayable && isActive
 
-  useEffect(() => {
-    if (isVisible) {
-      trackEvent()
-    }
-  }, [isVisible])
-
   return (
     <Popover
       visible={isVisible}
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
       onCloseComplete={clearActivePopover}
+      onOpenComplete={trackEvent}
       placement="top"
       title={
         <Text variant="xs" color="white100">

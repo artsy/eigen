@@ -7,7 +7,6 @@ import {
 } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useEffect } from "react"
 
 interface ProgressiveOnboardingAlertReminderProps {
   visible: boolean
@@ -46,12 +45,6 @@ export const ProgressiveOnboardingAlertReminder: React.FC<
 
   const isVisible = shouldDisplayReminder && isActive
 
-  useEffect(() => {
-    if (isVisible) {
-      trackEvent()
-    }
-  }, [isVisible])
-
   const handleDismiss = () => {
     dismissNextCreateAlertReminder()
   }
@@ -62,6 +55,7 @@ export const ProgressiveOnboardingAlertReminder: React.FC<
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
       onCloseComplete={() => setActivePopover(undefined)}
+      onOpenComplete={trackEvent}
       placement="bottom"
       title={
         <Text variant="xs" color="white100" fontWeight="bold">

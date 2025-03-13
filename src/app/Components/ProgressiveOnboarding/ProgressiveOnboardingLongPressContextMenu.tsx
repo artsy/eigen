@@ -5,7 +5,6 @@ import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnbo
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { getCurrentEmissionState, GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { useEffect } from "react"
 import { Platform } from "react-native"
 
 // We don't want to show the onboarding popover on the first launch
@@ -59,26 +58,13 @@ export const ProgressiveOnboardingLongPressContextMenu: React.FC = ({ children }
     !!isDisplayable &&
     isActive
 
-  useEffect(() => {
-    if (isVisible) {
-      trackEvent()
-      /**
-       * dismissing the popover without waiting for interaction
-       * spesific for the home view screen because on the home view screen we set
-       * isReady to true (indicates that the alert is ready to be shown)
-       * which makes the popover show up every time the user navigates to the home screen if the
-       * popover has not beeb manually dismissed
-       * */
-      dismiss("long-press-artwork-context-menu")
-    }
-  }, [isVisible])
-
   return (
     <Popover
       visible={isVisible}
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
       onCloseComplete={clearActivePopover}
+      onOpenComplete={trackEvent}
       placement="top"
       title={
         <Text variant="xs" color="white100" fontWeight={500}>
