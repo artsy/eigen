@@ -253,7 +253,7 @@ jobs:
       - run:
           name: Handle Deployment for expo updates
           command: echo "Triggering Expo updates deployment..."
-            ./scripts/codepush/deploy-to-expo-updates staging
+            ./scripts/deploys/expo-updates/deploy-to-expo-updates staging
 
   test-js:
     parallelism: 8
