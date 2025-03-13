@@ -205,6 +205,11 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   }
 
   const handleAndroidLongPress = () => {
+    if (contextModule && contextScreenOwnerType) {
+      trackEvent(
+        trackLongPress.longPressedArtwork(contextModule, contextScreenOwnerType, artwork.slug)
+      )
+    }
     setAndroidVisible(true)
   }
 
@@ -216,7 +221,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
           underlayColor={color("white100")}
           activeOpacity={0.8}
           onLongPress={handleAndroidLongPress}
-          delayLongPress={400}
+          delayLongPress={1200} // To avoid the context menu from opening on a (long) normal press on Android.
           onPress={undefined}
           testID="android-context-menu-trigger"
         >

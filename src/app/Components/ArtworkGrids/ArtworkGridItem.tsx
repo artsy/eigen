@@ -42,7 +42,7 @@ import {
   tracks as artworkActionTracks,
 } from "app/utils/track/ArtworkActions"
 import React, { useRef, useState } from "react"
-import { View, ViewProps, Text as RNText } from "react-native"
+import { View, ViewProps, Text as RNText, Platform } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotProgressBar } from "./LotProgressBar"
@@ -118,6 +118,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const tracking = useTracking()
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
+  const enableContextMenuIOS = useFeatureFlag("AREnableArtworkCardContextMenuIOS")
+  const isIOS = Platform.OS === "ios"
 
   let filterParams: any = undefined
 
@@ -258,7 +260,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
     <Disappearable ref={(ref) => ((artwork as any)._disappearable = ref)}>
       <ContextMenuArtwork
         onSupressArtwork={() => handleSupress(artwork as any)}
-        contextModule={contextModule}
+        contextModule={contextModule ?? ContextModule.artworkGrid}
+        contextScreenOwnerType={contextScreenOwnerType}
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
         artwork={artwork}
         hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
@@ -270,7 +273,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
           onPress={handleTap}
           // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
           onLongPress={() => {
-            if (contextScreenOwnerType) {
+            // Adroid long press is tracked inside of the ContextMenuArtwork component
+            if (contextScreenOwnerType && isIOS && enableContextMenuIOS) {
               tracking.trackEvent(
                 trackLongPress.longPressedArtwork(
                   ContextModule.artworkGrid,
