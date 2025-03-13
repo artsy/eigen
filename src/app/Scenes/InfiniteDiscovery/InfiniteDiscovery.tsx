@@ -210,6 +210,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
               Tap to see all of your saved artworks.
             </Text>
           ),
+          duration: "long",
         }
       )
     }
