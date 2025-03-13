@@ -5,6 +5,7 @@ import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkLists
 import { ArtworkListOfferSettingsView } from "app/Components/ArtworkLists/views/ArtworkListOfferSettingsView/ArtworkListOfferSettingsView"
 import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListView"
 import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/SelectArtworkListsForArtworkView"
+import { GlobalStore } from "app/store/GlobalStore"
 import { createContext, FC, useCallback, useContext, useReducer } from "react"
 import {
   ArtworkEntity,
@@ -131,6 +132,9 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
   }
 
   const onSave = (result: SaveResult) => {
+    const { incrementSavedArtworksCount, decrementSavedArtworksCount } =
+      GlobalStore.actions.infiniteDiscovery
+
     dispatch({ type: "SET_UNSAVED_CHANGES", payload: false })
 
     if (!result.artwork) {
@@ -167,6 +171,7 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     }
 
     if (result.action === ResultAction.SavedToDefaultArtworkList) {
+      incrementSavedArtworksCount()
       toast.savedToDefaultArtworkList({
         onToastPress: () => openSelectArtworkListsForArtworkView(result.artwork as ArtworkEntity),
         isInAuction: !!result.artwork.isInAuction,
@@ -175,6 +180,7 @@ export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
     }
 
     if (result.action === ResultAction.RemovedFromDefaultArtworkList) {
+      decrementSavedArtworksCount()
       toast.removedFromDefaultArtworkList()
 
       return

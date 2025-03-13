@@ -52,8 +52,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     const { trackEvent } = useTracking()
     const color = useColor()
-    const { incrementSavedArtworksCount, decrementSavedArtworksCount } =
-      GlobalStore.actions.infiniteDiscovery
 
     const artworkData = useFragment<InfiniteDiscoveryArtworkCard_artwork$key>(
       infiniteDiscoveryArtworkCardFragment,
@@ -76,12 +74,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           context_screen_owner_slug: artwork.slug,
           context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
         })
-
-        if (isArtworkSaved) {
-          incrementSavedArtworksCount()
-        } else {
-          decrementSavedArtworksCount()
-        }
       },
     })
 
