@@ -38,6 +38,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
 
   const [isVisible, setIsVisible] = useState(false)
   const isRewindRequested = useSharedValue(false)
+  const [enableTapToDismiss, setEnableTapToDismiss] = useState(false)
 
   const hasInteractedWithOnboarding = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
@@ -47,6 +48,11 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
     setTimeout(() => {
       if (!hasInteractedWithOnboarding) {
         setIsVisible(true)
+        // Make sure the user can tap to dismiss the onboarding only after a delay
+        // This is required to make sure they can see the onboarding content
+        setTimeout(() => {
+          setEnableTapToDismiss(true)
+        }, 1500)
       }
     }, 1000)
   }, [hasInteractedWithOnboarding])
@@ -91,8 +97,19 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
   }, [setShowSavedHint, isVisible])
 
   return (
-    <Modal animationType="fade" visible={isVisible} transparent>
-      <TouchableWithoutFeedback onPress={() => setIsVisible(false)}>
+    <Modal
+      animationType="fade"
+      visible={isVisible}
+      transparent
+      onRequestClose={() => setIsVisible(false)}
+    >
+      <TouchableWithoutFeedback
+        onPress={() => {
+          if (enableTapToDismiss) {
+            setIsVisible(false)
+          }
+        }}
+      >
         <Flex flex={1} backgroundColor="transparent">
           <Flex flex={1}>
             <LinearGradient
@@ -127,6 +144,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
                     shadowColor: "black",
                     shadowOpacity: 0.2,
                     shadowOffset: { height: 0, width: 0 },
+                    elevation: 2,
                   }}
                   isArtworksSaved={isAtworkSaved}
                 />
