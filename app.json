@@ -5,37 +5,41 @@
   "version": "8.66.0",
 
   "isAndroidBeta": false,
-  "expo": {
-    "name": "Eigen",
-    "slug": "eigen",
-    "plugins": [
-      [
-        "@sentry/react-native/expo",
-        {
-          "url": "https://sentry.io/",
-          "note": "Use SENTRY_AUTH_TOKEN env to authenticate with Sentry.",
-          "project": "eigen",
-          "organization": "artsynet"
-        }
-      ]
-    ],
-    "ios": {
-      "bundleIdentifier": "net.artsy.artsy"
-    },
-    "updates": {
-      "enabled": true,
-      "fallbackToCacheTimeout": 0,
-      "url": "https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668",
-      "requestHeaders": {
-        "expo-channel-name": "canary"
+  "platforms": ["ios", "android"],
+  "name": "Eigen",
+  "slug": "eigen",
+  "plugins": [
+    [
+      "@sentry/react-native/expo",
+      {
+        "url": "https://sentry.io/",
+        "note": "Use SENTRY_AUTH_TOKEN env to authenticate with Sentry.",
+        "project": "eigen",
+        "organization": "artsynet"
       }
+    ]
+  ],
+  "ios": {
+    "bundleIdentifier": "net.artsy.artsy"
+  },
+  "updates": {
+    "enabled": true,
+    "fallbackToCacheTimeout": 0,
+    "codeSigningCertificate": "./code-signing/certificate.pem",
+    "codeSigningMetadata": {
+      "keyid": "main",
+      "alg": "rsa-v1_5-sha256"
     },
-    "runtimeVersion": "1.0.0",
-    "extra": {
-      "eas": {
-        "projectId": "39b092dc-effa-4d59-a530-85107bdfd668"
-      }
-    },
-    "android": {}
-  }
+    "url": "http://localhost:4000/api/manifest?project=eigen&channel=canary",
+    "requestHeaders": {
+      "expo-channel-name": "canary"
+    }
+  },
+  "runtimeVersion": "1.0.0",
+  "extra": {
+    "eas": {
+      "projectId": "39b092dc-effa-4d59-a530-85107bdfd668"
+    }
+  },
+  "android": {}
 }

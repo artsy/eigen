@@ -33,12 +33,15 @@
     <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notification"/>
     <meta-data android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="false"/>
     <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/white"/>
+    <meta-data android:name="expo.modules.updates.CODE_SIGNING_CERTIFICATE" android:value="./code-signing/certificate.pem"/>
+    <meta-data android:name="expo.modules.updates.CODE_SIGNING_METADATA" android:value="{&quot;keyid&quot;:&quot;main&quot;,&quot;alg&quot;:&quot;rsa-v1_5-sha256&quot;}"/>
     <meta-data android:name="expo.modules.updates.ENABLED" android:value="true"/>
-    <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="ALWAYS"/>
+    <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="NEVER"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668"/>
     <meta-data android:name="expo.modules.updates.EXPO_RUNTIME_VERSION" android:value="@string/expo_runtime_version"/>
     <meta-data android:name="expo.modules.updates.UPDATES_CONFIGURATION_REQUEST_HEADERS_KEY" android:value="{&quot;expo-channel-name&quot;:&quot;canary&quot;}"/>
+    <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="http://localhost:3000/api/manifest?project=eigen&amp;channel=canary"/>
     <activity android:name="com.facebook.FacebookActivity" android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" android:label="@string/app_name"/>
     <activity android:name="com.facebook.CustomTabActivity" android:exported="true">
       <intent-filter>

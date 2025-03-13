@@ -2,6 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>EXUpdatesCodeSigningMetadata</key>
+	<dict>
+		<key>alg</key>
+		<string>rsa-v1_5-sha256</string>
+		<key>keyid</key>
+		<string>main</string>
+	</dict>
+	<key>EXUpdatesCodeSigningCertificate</key>
+	<string>./code-signing/certificate.pem</string>
 	<key>EXUpdatesEnabled</key>
 	<true/>
 	<key>EXUpdatesCheckOnLaunch</key>
@@ -9,7 +18,7 @@
 	<key>EXUpdatesLaunchWaitMs</key>
 	<integer>0</integer>
 	<key>EXUpdatesURL</key>
-	<string>https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668</string>
+	<string>http://localhost:3000/api/manifest?project=eigen&amp;amp;channel=canary</string>
 	<key>EXUpdatesRuntimeVersion</key>
 	<string>1.0.0</string>
 	<key>EXUpdatesRequestHeaders</key>
