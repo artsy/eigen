@@ -83,7 +83,7 @@ export const ArtistSeriesFullArtistSeriesListQueryRenderer: React.FC<{ artistID:
   return (
     <QueryRenderer<ArtistSeriesFullArtistSeriesListQuery>
       environment={getRelayEnvironment()}
-      query={ArtistSeriesFullArtistSeriesListScreenQuery}
+      query={ArtistSeriesFullArtistSeriesScreenQuery}
       variables={{
         artistID,
       }}
@@ -91,3 +91,11 @@ export const ArtistSeriesFullArtistSeriesListQueryRenderer: React.FC<{ artistID:
     />
   )
 }
+
+export const ArtistSeriesFullArtistSeriesScreenQuery = graphql`
+  query ArtistSeriesFullArtistSeriesListQuery($artistID: String!) {
+    artist(id: $artistID) {
+      ...ArtistSeriesFullArtistSeriesList_artist
+    }
+  }
+`

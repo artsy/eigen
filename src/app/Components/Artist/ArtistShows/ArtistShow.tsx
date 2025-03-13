@@ -37,7 +37,7 @@ export const ArtistShow: React.FC<Props> = ({ styles, show, index, imageDimensio
   const imageURL = image && image.url
 
   return (
-    <RouterLink onPress={handleTap} to={hrefForPartialShow(data)} haptic>
+    <RouterLink haptic onPress={handleTap} to={hrefForPartialShow(data)}>
       <View style={[styles?.container]}>
         <View style={[styles?.imageMargin]}>
           <ImageWithFallback

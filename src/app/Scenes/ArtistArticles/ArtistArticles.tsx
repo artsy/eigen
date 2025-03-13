@@ -14,10 +14,10 @@ import { screen } from "app/utils/track/helpers"
 import { useState } from "react"
 import {
   createPaginationContainer,
+  Environment,
+  graphql,
   QueryRenderer,
   RelayPaginationProp,
-  graphql,
-  Environment,
 } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -126,13 +126,7 @@ export const ArtistArticlesQueryRenderer: React.FC<{
   return (
     <QueryRenderer<ArtistArticlesResultQuery>
       environment={environment || getRelayEnvironment()}
-      query={graphql`
-        query ArtistArticlesResultQuery($artistID: String!) {
-          artist(id: $artistID) {
-            ...ArtistArticles_artist
-          }
-        }
-      `}
+      query={ArtistArticlesResultScreenQuery}
       variables={{
         artistID,
       }}
@@ -143,6 +137,14 @@ export const ArtistArticlesQueryRenderer: React.FC<{
     />
   )
 }
+
+export const ArtistArticlesResultScreenQuery = graphql`
+  query ArtistArticlesResultQuery($artistID: String!) {
+    artist(id: $artistID) {
+      ...ArtistArticles_artist
+    }
+  }
+`
 
 export const tracks = {
   tapArticlesListItem: (articleId: string, articleSlug: string) => ({
