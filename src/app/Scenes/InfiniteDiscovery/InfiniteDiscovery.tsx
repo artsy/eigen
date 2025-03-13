@@ -15,6 +15,7 @@ import {
   InfiniteDiscoveryQuery,
   InfiniteDiscoveryQuery$data,
 } from "__generated__/InfiniteDiscoveryQuery.graphql"
+import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 
 import { useToast } from "app/Components/Toast/toastHook"
 import { ICON_HIT_SLOP } from "app/Components/constants"
@@ -268,10 +269,12 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         />
 
         {!!topArtwork && (
-          <InfiniteDiscoveryBottomSheet
-            artworkID={topArtwork.internalID}
-            artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
-          />
+          <RetryErrorBoundary>
+            <InfiniteDiscoveryBottomSheet
+              artworkID={topArtwork.internalID}
+              artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
+            />
+          </RetryErrorBoundary>
         )}
       </Screen.Body>
     </Screen>
@@ -313,7 +316,7 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
     const initialArtworks = extractNodes(data.discoverArtworks)
     const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>(initialArtworks)
 
-    const fetchMoreArtworks = async (excludeArtworkIds: string[]) => {
+    const fetchMoreArtworks = async (excludeArtworkIds: string[], isRetry = false) => {
       try {
         const response = await fetchQuery<InfiniteDiscoveryQuery>(
           getRelayEnvironment(),
@@ -330,6 +333,13 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
           setArtworks((previousArtworks) => newArtworks.concat(previousArtworks))
         }
       } catch (error) {
+        if (!isRetry) {
+          addBreadcrumb({
+            message: "Failed to fetch more artworks, retrying again",
+          })
+          fetchMoreArtworks(excludeArtworkIds, true)
+          return
+        }
         addBreadcrumb({
           message: "Failed to fetch more artworks",
         })
