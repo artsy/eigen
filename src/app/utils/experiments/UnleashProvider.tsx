@@ -22,9 +22,6 @@ export function UnleashProvider({ children }: { children?: React.ReactNode }) {
     if (isHydrated && userId) {
       const client = getUnleashClient({ env: unleashEnv, userId })
 
-      // starts unleash client each time user logs in
-      client.start()
-
       client.on("initialized", () => {
         if (__DEV__) {
           console.log("Unleash initialized")
@@ -49,6 +46,9 @@ export function UnleashProvider({ children }: { children?: React.ReactNode }) {
       })
 
       client.on("impression", () => {})
+
+      // starts unleash client each time user logs in
+      client.start()
 
       return () => {
         client.stop()
