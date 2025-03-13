@@ -1,5 +1,5 @@
-import { Touchable } from "@artsy/palette-mobile"
 import { ArtistListItemTestsQuery } from "__generated__/ArtistListItemTestsQuery.graphql"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
@@ -45,13 +45,13 @@ describe("ArtistListItem", () => {
   it("renders without feedback without throwing an error", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment)
-    expect(tree.findByType(Touchable).props.noFeedback).toBe(true)
+    expect(tree.findByType(RouterLink).props.noFeedback).toBe(true)
   })
 
   it("renders with feedback without throwing an error", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer withFeedback />).root
     resolveMostRecentRelayOperation(mockEnvironment)
-    expect(tree.findByType(Touchable).props.noFeedback).toBe(false)
+    expect(tree.findByType(RouterLink).props.noFeedback).toBe(false)
   })
 
   it("shows uploaded artworks counts when specified", () => {
