@@ -69,7 +69,7 @@ export const InfiniteDiscoveryBottomSheetFooter: FC<InfiniteDiscoveryBottomSheet
       }}
     >
       <AnalyticsContextProvider
-        contextModule={ContextModule.infiniteDiscovery}
+        contextModule={ContextModule.infiniteDiscoveryDrawer}
         contextScreenOwnerType={OwnerType.infiniteDiscoveryArtwork}
         contextScreenOwnerId={artwork.internalID}
         contextScreenOwnerSlug={artwork.slug}

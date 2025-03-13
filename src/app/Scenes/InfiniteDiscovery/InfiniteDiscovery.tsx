@@ -84,6 +84,9 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       const topArtwork = artworks[artworks.length - 1]
       setTopArtworkId(topArtwork.internalID)
 
+      // Track initial shown artwork
+      trackEvent(tracks.displayedNewArtwork(topArtwork.internalID, topArtwork.slug))
+
       // send the first seen artwork to the server
       commitMutation({
         variables: {

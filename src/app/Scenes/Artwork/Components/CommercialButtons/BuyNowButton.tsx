@@ -226,6 +226,7 @@ const tracks = {
     withPartnerOffer?: boolean
   ): TappedBuyNow => ({
     action: ActionType.tappedBuyNow,
+    context_module: analytics.contextModule as ContextModule,
     context_owner_type: analytics.contextScreenOwnerType as ScreenOwnerType,
     context_owner_id: analytics.contextScreenOwnerId as string,
     context_owner_slug: analytics.contextScreenOwnerSlug as string,

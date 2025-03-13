@@ -1,3 +1,4 @@
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import { Flex, LinkText, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { Swiper, SwiperRefProps } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
@@ -7,6 +8,7 @@ import { LayoutAnimation, Modal, TouchableWithoutFeedback } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { useSharedValue } from "react-native-reanimated"
 import { SafeAreaView } from "react-native-safe-area-context"
+import { useTracking } from "react-tracking"
 
 interface InfiniteDiscoveryOnboardingProps {
   artworks: InfiniteDiscoveryArtwork[]
@@ -19,6 +21,7 @@ const ONBOARDING_SAVED_HINT_DURATION = 1500
 export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingProps> = ({
   artworks,
 }) => {
+  const { trackEvent } = useTracking()
   const space = useSpace()
   const [showSavedHint, setShowSavedHint] = useState(false)
 
@@ -47,6 +50,12 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
       }
     }, 1000)
   }, [hasInteractedWithOnboarding])
+
+  useEffect(() => {
+    if (isVisible) {
+      trackEvent(tracks.screenView())
+    }
+  }, [isVisible])
 
   const showOnboardingAnimation = () => {
     setShowSavedHint(true)
@@ -158,4 +167,11 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
       </TouchableWithoutFeedback>
     </Modal>
   )
+}
+
+const tracks = {
+  screenView: () => ({
+    action: ActionType.screen,
+    context_screen_owner_type: OwnerType.infiniteDiscoveryOnboarding,
+  }),
 }

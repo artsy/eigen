@@ -55,6 +55,7 @@ export const MakeOfferButton: React.FC<MakeOfferButtonProps> = (props) => {
   const handleCreateOfferOrder = () => {
     tracking.trackEvent({
       action: ActionType.tappedMakeOffer,
+      context_module: analytics.contextModule,
       context_owner_type: analytics.contextScreenOwnerType,
       context_owner_id: analytics.contextScreenOwnerId,
       context_owner_slug: analytics.contextScreenOwnerSlug,
