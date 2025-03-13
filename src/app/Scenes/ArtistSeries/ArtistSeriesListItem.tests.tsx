@@ -1,14 +1,14 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Touchable } from "@artsy/palette-mobile"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { ArtistSeriesConnectionEdge } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { navigate } from "app/system/navigation/navigate"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { act } from "react-test-renderer"
+import { RouterLink } from "app/system/navigation/RouterLink"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
 describe("ArtistSeriesListItem", () => {
   it("navigates to the artist series when tapped", () => {
-    const artistSeriesListItem = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <ArtistSeriesListItem
         horizontalSlidePosition={2}
         contextScreenOwnerType={OwnerType.artist}
@@ -16,9 +16,7 @@ describe("ArtistSeriesListItem", () => {
       />
     )
 
-    const instance = artistSeriesListItem.root.findAllByType(Touchable)[0]
-
-    act(() => instance.props.onPress())
+    fireEvent.press(screen.getByTestId("list-item-image"))
 
     expect(navigate).toHaveBeenCalledWith("/artist-series/yayoi-kusama-pumpkins")
   })
@@ -32,7 +30,7 @@ describe("ArtistSeriesListItem", () => {
       />
     )
 
-    const instance = artistSeriesListItem.root.findAllByType(Touchable)[0]
+    const instance = artistSeriesListItem.root.findAllByType(RouterLink)[0]
 
     expect(instance.findAllByProps({ testID: "list-item-image" })[0].props.src).toBe(
       "https://d32dm0rphc51dk.cloudfront.net/dL3hz4h6f_tMHQjVHsdO4w/medium.jpg"
