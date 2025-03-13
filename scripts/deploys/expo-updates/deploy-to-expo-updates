@@ -1,7 +1,6 @@
 #!/bin/bash
 set -euxo pipefail
 
-# Check if the correct number of arguments is provided
 if [ "$#" -lt 1 ] || [ "$#" -gt 3 ]; then
   echo "Usage: $0 <deployment> [description] [rollout_percentage]"
   echo "Deployment must be either 'canary', 'staging' or 'production'."
@@ -9,10 +8,8 @@ if [ "$#" -lt 1 ] || [ "$#" -gt 3 ]; then
   exit 1
 fi
 
-# Get the deployment option from the command-line argument
 deployment=$1
 
-# Validate the deployment option
 if [ "$deployment" != "canary" ] && [ "$deployment" != "staging" ] && [ "$deployment" != "production" ]; then
   echo "Invalid deployment option: $deployment"
   echo "Deployment must be either 'canary', 'staging' or 'production'."
@@ -29,13 +26,11 @@ else
   description="Commit: $commit_hash, Description: $commit_description"
 fi
 
-# Get the rollout percentage if provided
 rollout=""
 if [ -n "${3:-}" ]; then
   rollout="rollout_percentage:$3"
 fi
 
-# Deploy to Expo Updates
 if [ -n "$rollout" ]; then
   bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description" platform:ios "$rollout"
   bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description" platform:android "$rollout"

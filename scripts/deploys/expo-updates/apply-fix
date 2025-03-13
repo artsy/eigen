@@ -1,7 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-Step 1: Check if a commit hash is provided
 if [ "$#" -ne 1 ]; then
     echo "Usage: $0 <commit-hash>"
     exit 1
@@ -9,7 +8,6 @@ fi
 
 commit_hash=$1
 
-# Step 2: Get initial native fingerprint
 initial_fingerprint=$(npx @expo/fingerprint fingerprint:generate | jq -r '.hash')
 if [ $? -ne 0 ]; then
     echo "Error generating initial native fingerprint"
@@ -18,14 +16,12 @@ fi
 
 echo "Initial native fingerprint: $initial_fingerprint"
 
-# Step 3: Cherry-pick the provided commit
 git cherry-pick "$commit_hash"
 if [ $? -ne 0 ]; then
     echo "Error cherry-picking commit: $commit_hash"
     exit 3
 fi
 
-# Step 4: Get final native fingerprint
 final_fingerprint=$(npx @expo/fingerprint fingerprint:generate | jq -r '.hash')
 if [ $? -ne 0 ]; then
     echo "Error generating final native fingerprint"
@@ -34,7 +30,6 @@ fi
 
 echo "Final native fingerprint: $final_fingerprint"
 
-# Step 5: Compare fingerprints and output message
 if [ "$initial_fingerprint" != "$final_fingerprint" ]; then
     echo -e "\033[0;31mWarning: Native code changed! You cannot use Expo Updates for this hotfix. Please follow the native release hotfix process steps.\033[0m"
 else
