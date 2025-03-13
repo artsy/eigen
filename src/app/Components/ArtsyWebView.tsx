@@ -194,7 +194,8 @@ export const ArtsyWebView = forwardRef<
   ) => {
     const innerRef = useRef<WebViewWithShareTitleUrl>(null)
     const emissionUserAgent = getCurrentEmissionState().userAgent
-    const { userAgent } = GlobalStore.useAppState((state) => state.native.sessionState)
+    // adding the optional chaining to prevent the app from crashing on Android
+    const userAgent = GlobalStore.useAppState((state) => state.native?.sessionState?.userAgent)
     useImperativeHandle(ref, () => innerRef.current as WebViewWithShareTitleUrl)
     const { callWebViewEventCallback } = useWebViewCallback()
 
