@@ -65,7 +65,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
   return (
     <BottomSheetScrollView>
       <AnalyticsContextProvider
-        contextModule={ContextModule.infiniteDiscovery}
+        contextModule={ContextModule.infiniteDiscoveryDrawer}
         contextScreenOwnerType={OwnerType.infiniteDiscoveryArtwork}
         contextScreenOwnerId={data.internalID}
         contextScreenOwnerSlug={data.slug}

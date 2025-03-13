@@ -92,6 +92,7 @@ const tracks = {
     owner_id: internalID,
     owner_slug: slug,
     owner_type: OwnerEntityTypes.Artist,
+    context_module: analytics.contextModule,
     context_screen_owner_id: analytics.contextScreenOwnerId,
     context_screen_owner_slug: analytics.contextScreenOwnerSlug,
     context_screen_owner_type: analytics.contextScreenOwnerType,
