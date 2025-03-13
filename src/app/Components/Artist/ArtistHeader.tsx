@@ -14,7 +14,7 @@ import {
   ArtistHeader_artist$data,
   ArtistHeader_artist$key,
 } from "__generated__/ArtistHeader_artist.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { FlatList, LayoutChangeEvent, ViewProps } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -90,15 +90,6 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
     }
   }
 
-  const handleRepresentativePress = (
-    partner: ArtistHeader_artist$data["verifiedRepresentatives"][number]["partner"]
-  ) => {
-    if (partner?.href && partner?.internalID) {
-      tracking.trackEvent(tracks.tappedVerifiedRepresentative(artistData, partner))
-      navigate(partner.href)
-    }
-  }
-
   return (
     <Flex pointerEvents="box-none" onLayout={handleOnLayout}>
       {!!artistData?.coverArtwork?.image?.url && (
@@ -140,13 +131,19 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
             data={artistData.verifiedRepresentatives}
             keyExtractor={({ partner }) => `representative-${partner.internalID}`}
             renderItem={({ item }) => (
-              <Pill
-                variant="profile"
-                src={item.partner.profile?.icon?.url ?? undefined}
-                onPress={() => handleRepresentativePress(item.partner)}
-              >
-                {item.partner.name}
-              </Pill>
+              <RouterLink to={item.partner.href} hasChildTouchable>
+                <Pill
+                  variant="profile"
+                  src={item.partner.profile?.icon?.url ?? undefined}
+                  onPress={() => {
+                    tracking.trackEvent(
+                      tracks.tappedVerifiedRepresentative(artistData, item.partner)
+                    )
+                  }}
+                >
+                  {item.partner.name}
+                </Pill>
+              </RouterLink>
             )}
             ItemSeparatorComponent={() => <Spacer x={1} />}
             contentContainerStyle={{
