@@ -7,11 +7,11 @@ import {
   Spacer,
   Spinner,
   Touchable,
+  Text,
 } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { useToast } from "app/Components/Toast/toastHook"
 import { ICON_HIT_SLOP } from "app/Components/constants"
-import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { InfiniteDiscoveryOnboarding } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryOnboarding"
 import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
@@ -21,7 +21,7 @@ import { goBack, navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { pluralize } from "app/utils/pluralize"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { Key, ReactElement, useCallback, useEffect, useMemo, useState } from "react"
+import { Key, useCallback, useEffect, useMemo, useState } from "react"
 import { useSharedValue } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from "react-relay"
@@ -36,7 +36,9 @@ interface InfiniteDiscoveryProps {
   queryRef: PreloadedQuery<InfiniteDiscoveryQuery>
 }
 
-type InfiniteDiscoveryArtwork = ExtractNodeType<InfiniteDiscoveryQuery$data["discoverArtworks"]>
+export type InfiniteDiscoveryArtwork = ExtractNodeType<
+  InfiniteDiscoveryQuery$data["discoverArtworks"]
+>
 
 export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   fetchMoreArtworks,
@@ -79,13 +81,17 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   useEffect(() => {
     if (!topArtworkId && artworks.length > 0) {
       // TODO: beware! the artworks are being displayed in reverse order
-      setTopArtworkId(artworks[artworks.length - 1].internalID)
+      const topArtwork = artworks[artworks.length - 1]
+      setTopArtworkId(topArtwork.internalID)
+
+      // Track initial shown artwork
+      trackEvent(tracks.displayedNewArtwork(topArtwork.internalID, topArtwork.slug))
 
       // send the first seen artwork to the server
       commitMutation({
         variables: {
           input: {
-            artworkId: artworks[0].internalID,
+            artworkId: topArtwork.internalID,
           },
         },
         onError: (error) => {
@@ -97,12 +103,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         },
       })
     }
-  }, [artworks])
-
-  const artworkCards: ReactElement[] = useMemo(() => {
-    return artworks.map((artwork) => (
-      <InfiniteDiscoveryArtworkCard artwork={artwork} key={artwork.internalID} />
-    ))
   }, [artworks])
 
   const currentIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
@@ -200,7 +200,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const handleExitPressed = () => {
     if (savedArtworksCount > 0) {
       toast.show(
-        `${savedArtworksCount} ${pluralize("artwork", savedArtworksCount)} saved`,
+        `Nice! You saved ${savedArtworksCount} ${pluralize("artwork", savedArtworksCount)}.`,
         "bottom",
         {
           onPress: () => {
@@ -208,7 +208,15 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
             navigate("/favorites/saves")
           },
           backgroundColor: "green100",
-          description: "Tap here to navigate to your Saves area in your profile.",
+          description: (
+            <Text
+              variant="xs"
+              style={{ color: "white", textDecorationLine: "underline" }}
+              onPress={() => navigate("/favorites/saves")}
+            >
+              Tap to see all of your saved artworks.
+            </Text>
+          ),
         }
       )
     }
@@ -218,12 +226,19 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     goBack()
   }
 
+  // Get the last 2 artworks from the infinite discovery
+  // We are showing the last 2 artworks instead of 2 because we reverse the artworks array
+  // Inside the Swiper component
+  const onboardingArtworks = artworks.slice(artworks.length - 3, artworks.length)
+
   return (
     <Screen safeArea={false}>
+      <InfiniteDiscoveryOnboarding artworks={onboardingArtworks} />
+
       <Screen.Body fullwidth style={{ marginTop: insets.top }}>
         <Flex zIndex={-100}>
           <Screen.Header
-            title="Discovery"
+            title="Discover Daily"
             leftElements={
               <Touchable
                 onPress={handleBackPressed}
@@ -247,9 +262,11 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
             }
           />
         </Flex>
+
         <Spacer y={1} />
+
         <Swiper
-          cards={artworkCards}
+          cards={artworks}
           isRewindRequested={isRewindRequested}
           onTrigger={handleFetchMore}
           swipedIndexCallsOnTrigger={2}
@@ -280,6 +297,10 @@ const InfiniteDiscoverySpinner: React.FC = () => (
   </Screen>
 )
 
+export const infiniteDiscoveryVariables = {
+  excludeArtworkIds: [],
+}
+
 export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
   const [queryRef, loadQuery] = useQueryLoader<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery)
 
@@ -292,7 +313,9 @@ export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
   // This fetches the first batch of artworks
   useEffect(() => {
     if (!queryRef) {
-      loadQuery({ excludeArtworkIds: [] })
+      loadQuery(infiniteDiscoveryVariables, {
+        fetchPolicy: "network-only",
+      })
     }
   }, [loadQuery, queryRef])
 
@@ -306,7 +329,6 @@ export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
 
   return (
     <Flex flex={1}>
-      <InfiniteDiscoveryOnboarding />
       <InfiniteDiscovery fetchMoreArtworks={fetchMoreArtworks} queryRef={queryRef} />
     </Flex>
   )

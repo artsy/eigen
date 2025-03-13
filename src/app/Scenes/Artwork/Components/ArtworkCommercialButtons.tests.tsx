@@ -1,8 +1,10 @@
+import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ArtworkCommercialButtons_Test_Query } from "__generated__/ArtworkCommercialButtons_Test_Query.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
+import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { navigate } from "app/system/navigation/navigate"
 import { ArtworkInquiryStateProvider } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { extractNodes } from "app/utils/extractNodes"
@@ -19,17 +21,23 @@ describe("ArtworkCommercialButtons", () => {
       const partnerOffer = extractNodes(props.me!.partnerOffersConnection)[0]
 
       return (
-        <ArtworkInquiryStateProvider>
-          <ArtworkStoreProvider>
-            <Suspense fallback={null}>
-              <ArtworkCommercialButtons
-                partnerOffer={partnerOffer}
-                artwork={props.artwork}
-                me={props.me}
-              />
-            </Suspense>
-          </ArtworkStoreProvider>
-        </ArtworkInquiryStateProvider>
+        <AnalyticsContextProvider
+          contextScreenOwnerId={ArtworkFixture.internalID}
+          contextScreenOwnerSlug={ArtworkFixture.slug}
+          contextScreenOwnerType={OwnerType.artwork}
+        >
+          <ArtworkInquiryStateProvider>
+            <ArtworkStoreProvider>
+              <Suspense fallback={null}>
+                <ArtworkCommercialButtons
+                  partnerOffer={partnerOffer}
+                  artwork={props.artwork}
+                  me={props.me}
+                />
+              </Suspense>
+            </ArtworkStoreProvider>
+          </ArtworkInquiryStateProvider>
+        </AnalyticsContextProvider>
       )
     },
     query: graphql`
@@ -459,6 +467,7 @@ describe("ArtworkCommercialButtons", () => {
         [
           {
             "action": "tappedContactGallery",
+            "context_module": undefined,
             "context_owner_id": "5b2b745e9c18db204fc32e11",
             "context_owner_slug": "andreas-rod-prinzknecht",
             "context_owner_type": "artwork",
@@ -491,6 +500,7 @@ describe("ArtworkCommercialButtons", () => {
         [
           {
             "action": "tappedContactGallery",
+            "context_module": undefined,
             "context_owner_id": "5b2b745e9c18db204fc32e11",
             "context_owner_slug": "andreas-rod-prinzknecht",
             "context_owner_type": "artwork",
@@ -522,6 +532,7 @@ describe("ArtworkCommercialButtons", () => {
           [
             {
               "action": "tappedContactGallery",
+              "context_module": undefined,
               "context_owner_id": "5b2b745e9c18db204fc32e11",
               "context_owner_slug": "andreas-rod-prinzknecht",
               "context_owner_type": "artwork",
@@ -555,6 +566,7 @@ describe("ArtworkCommercialButtons", () => {
           [
             {
               "action": "tappedContactGallery",
+              "context_module": undefined,
               "context_owner_id": "5b2b745e9c18db204fc32e11",
               "context_owner_slug": "andreas-rod-prinzknecht",
               "context_owner_type": "artwork",
@@ -596,6 +608,7 @@ describe("ArtworkCommercialButtons", () => {
           [
             {
               "action": "tappedContactGallery",
+              "context_module": undefined,
               "context_owner_id": "5b2b745e9c18db204fc32e11",
               "context_owner_slug": "andreas-rod-prinzknecht",
               "context_owner_type": "artwork",
@@ -633,6 +646,7 @@ describe("ArtworkCommercialButtons", () => {
           [
             {
               "action": "tappedContactGallery",
+              "context_module": undefined,
               "context_owner_id": "5b2b745e9c18db204fc32e11",
               "context_owner_slug": "andreas-rod-prinzknecht",
               "context_owner_type": "artwork",

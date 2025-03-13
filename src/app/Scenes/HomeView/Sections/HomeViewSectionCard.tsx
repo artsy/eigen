@@ -1,6 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import {
-  ArrowRightIcon,
   Button,
   Flex,
   FlexProps,
@@ -135,7 +134,6 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
                     variant={hasImage && theme !== "dark" ? "outlineLight" : "fillDark"}
                     size="small"
                     onPress={onPress}
-                    icon={<ArrowRightIcon fill="white100" height={14} width={14} />}
                     iconPosition="right"
                   >
                     {buttonText}

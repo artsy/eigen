@@ -1,39 +1,36 @@
-import { Flex, useScreenDimensions, Text } from "@artsy/palette-mobile"
+import { ArrowUpIcon, Flex, Text } from "@artsy/palette-mobile"
+import { useBottomSheet } from "@gorhom/bottom-sheet"
 import { BottomSheetDefaultHandleProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetHandle/types"
 import { useBottomSheetAnimatedStyles } from "app/Scenes/InfiniteDiscovery/hooks/useBottomSheetAnimatedStyles"
-import { GlobalStore } from "app/store/GlobalStore"
 import { FC } from "react"
-import Animated from "react-native-reanimated"
+import Animated, { Extrapolation, interpolate, useAnimatedStyle } from "react-native-reanimated"
 
 export const InfiniteDiscoveryBottomeSheetHandle: FC<BottomSheetDefaultHandleProps> = () => {
-  const { width } = useScreenDimensions()
-  const { opacityStyle, heightTextStyle, heightHandleStyle } = useBottomSheetAnimatedStyles()
-  const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+  const { opacityStyle, heightTextStyle } = useBottomSheetAnimatedStyles()
+  const { animatedIndex } = useBottomSheet()
 
-  const handleWidth = (7.5 * width) / 100
-
+  const animatedHandle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          rotateX:
+            interpolate(animatedIndex.value, [0, 0.2, 1], [0, 20, 180], Extrapolation.CLAMP) +
+            "deg",
+        },
+      ],
+    }
+  })
   return (
     <Flex
       justifyContent="center"
       borderRadius={20}
       alignItems="center"
-      gap={0.5}
       pt={0.5}
       backgroundColor="white100"
     >
-      <Animated.View style={[heightHandleStyle, { width: 1 }]} />
-
-      <Flex
-        style={[
-          {
-            width: handleWidth,
-            height: 4,
-            borderRadius: 4,
-            backgroundColor:
-              theme === "light" ? "rgba(0, 0, 0, 0.75)" : "rgba(255, 255, 255, 0.75)",
-          },
-        ]}
-      />
+      <Animated.View style={animatedHandle}>
+        <ArrowUpIcon width={20} height={20} fill="black60" />
+      </Animated.View>
 
       <Animated.View style={[opacityStyle, heightTextStyle]}>
         <Text selectable={false} color="black60">

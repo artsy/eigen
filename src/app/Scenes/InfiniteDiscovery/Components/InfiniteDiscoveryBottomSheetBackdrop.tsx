@@ -11,6 +11,7 @@ import Animated, {
   useAnimatedProps,
   useAnimatedStyle,
 } from "react-native-reanimated"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export const InfiniteDiscoveryBottomSheetBackdrop: FC<BottomSheetDefaultBackdropProps> = ({
   disappearsOnIndex,
@@ -20,6 +21,7 @@ export const InfiniteDiscoveryBottomSheetBackdrop: FC<BottomSheetDefaultBackdrop
 }) => {
   const color = useColor()
   const { collapse } = useBottomSheet()
+  const { top } = useSafeAreaInsets()
 
   const animatedProps = useAnimatedProps<{ pointerEvents: ViewProps["pointerEvents"] }>(() => {
     return {
@@ -47,6 +49,7 @@ export const InfiniteDiscoveryBottomSheetBackdrop: FC<BottomSheetDefaultBackdrop
       style,
       {
         backgroundColor: color("black100"),
+        marginTop: -top,
       },
       containerAnimatedStyle,
     ]

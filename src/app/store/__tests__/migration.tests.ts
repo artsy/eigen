@@ -1244,4 +1244,22 @@ describe("App version Versions.AddInfiniteDiscoveryModel", () => {
       expect(migratedState.infiniteDiscovery.hasInteractedWithOnboarding).toEqual(false)
     })
   })
+  describe("AddHasSavedArtworksToInfiniteDiscoveryModel", () => {
+    it("should add hasSavedArtworks as false", () => {
+      const migrationToTest = Versions.AddHasSavedArtworksToInfiniteDiscoveryModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(previousState.infiniteDiscovery.hasSavedArtworks).toEqual(undefined)
+      expect(migratedState.infiniteDiscovery.hasSavedArtworks).toEqual(false)
+    })
+  })
 })

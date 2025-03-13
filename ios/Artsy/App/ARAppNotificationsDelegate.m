@@ -6,7 +6,7 @@
 #import "ARAppDelegate.h"
 #import "ARAppConstants.h"
 #import "ARAnalyticsConstants.h"
-#import <SEGAnalytics.h>
+#import <Analytics/SEGAnalytics.h>
 #import "UIApplicationStateEnum.h"
 #import "ARNotificationView.h"
 #import "ARSerifNavigationViewController.h"
@@ -68,9 +68,9 @@
     // http://stackoverflow.com/questions/9372815/how-can-i-convert-my-device-token-nsdata-into-an-nsstring
     const unsigned *tokenBytes = [deviceTokenData bytes];
     NSString *deviceToken = [NSString stringWithFormat:@"%08x%08x%08x%08x%08x%08x%08x%08x",
-                             ntohl(tokenBytes[0]), ntohl(tokenBytes[1]), ntohl(tokenBytes[2]),
-                             ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]),
-                             ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
+                                                       ntohl(tokenBytes[0]), ntohl(tokenBytes[1]), ntohl(tokenBytes[2]),
+                                                       ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]),
+                                                       ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
 
     ARActionLog(@"Got device notification token: %@", deviceToken);
     NSString *previousToken = [[NSUserDefaults standardUserDefaults] stringForKey:ARAPNSDeviceTokenKey];
@@ -103,9 +103,10 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
 {
-    BOOL processedByBraze = ARAppDelegate.braze != nil && [ARAppDelegate.braze.notifications handleBackgroundNotificationWithUserInfo:userInfo
-                                                                                                               fetchCompletionHandler:handler];
-    if (processedByBraze) {
+
+    bool handled = [[[ARAppDelegate braze] notifications] handleBackgroundNotificationWithUserInfo:userInfo fetchCompletionHandler:handler];
+
+    if (handled) {
         NSString *url = userInfo[@"ab_uri"];
         [self receivedNotification:userInfo];
         [self tappedNotification:userInfo url:url];
@@ -126,6 +127,7 @@
     [notificationInfo setObject:uiApplicationState forKey:@"UIApplicationState"];
 
     NSString *url = userInfo[@"url"];
+    id message = userInfo[@"aps"][@"alert"] ?: url;
     BOOL isConversation = url && [[[NSURL URLWithString:url] path] hasPrefix:@"/conversation/"];
 
     if (isConversation) {
@@ -136,10 +138,24 @@
         // A notification was received while the app is in the background.
         [self receivedNotification:notificationInfo];
 
-    } else if (applicationState == UIApplicationStateInactive) {
-        // The user tapped a notification while the app was in background.
-        [self tappedNotification:notificationInfo url:url];
+    } else {
 
+        if (applicationState == UIApplicationStateActive) {
+            // A notification was received while the app was already active, so we show our own notification view.
+            [self receivedNotification:notificationInfo];
+
+
+                NSString *title = [message isKindOfClass:[NSString class]] ? message : message[@"title"];
+                [ARNotificationView showNoticeInView:[self findVisibleWindow]
+                                               title:title
+                                            response:^{
+                                                [self tappedNotification:notificationInfo url:url];
+                                            }];
+
+        } else if (applicationState == UIApplicationStateInactive) {
+            // The user tapped a notification while the app was in background.
+            [self tappedNotification:notificationInfo url:url];
+        }
     }
 }
 
@@ -202,40 +218,6 @@
     } else {
         return [newToken isEqualToString:previousToken];
     }
-}
-
-// Handle the notification view on when the app is in the foreground
--(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler{
-
-    if (ARAppDelegate.braze != nil) {
-      // Forward notification payload to Braze for processing.
-      [ARAppDelegate.braze.notifications handleForegroundNotificationWithNotification:notification];
-    }
-
-    NSDictionary *userInfo = notification.request.content.userInfo;
-    NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
-
-    [self receivedNotification:notificationInfo];
-    completionHandler(UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge);
-}
-
-// Handle the tapping on the notification when the app in the foreground
--(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{
-    BOOL processedByBraze = ARAppDelegate.braze != nil && [ARAppDelegate.braze.notifications handleUserNotificationWithResponse:response
-                                                                                                    withCompletionHandler:completionHandler];
-
-    NSDictionary *userInfo = response.notification.request.content.userInfo;
-    NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
-
-    if (processedByBraze) {
-      NSString *url = userInfo[@"ab_uri"];
-      [self tappedNotification:userInfo url:url];
-      return;
-    }
-
-
-    [self tappedNotification:notificationInfo url:userInfo[@"url"]];
-    completionHandler();
 }
 
 @end

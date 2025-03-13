@@ -29,13 +29,6 @@ export const experiments = {
     payloadSuggestions: ["variant-a", "variant-b", "variant-c"],
     variantSuggestions: ["variant-a", "variant-b", "variant-c"],
   },
-  "onyx_activity-dot-experiment": {
-    description: "Replace current visual clue dot with a larger or red variant",
-    fallbackEnabled: true,
-    fallbackVariant: "control",
-    variantSuggestions: ["control", "variant-b", "variant-c"],
-    payloadSuggestions: ['{"forceDots": "true"}', '{"forceDots": "false"}'],
-  },
   "onyx_quick-links-experiment": {
     description: "Add quick links section to home view",
     fallbackEnabled: true,
