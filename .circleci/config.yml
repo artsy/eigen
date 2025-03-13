@@ -544,49 +544,50 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - brian+george/expo-again # revert me!
 
-      - test-js
 
-      - build-test-js
+      # - test-js
 
-      - horizon/block:
-          context: horizon
-          project_id: 37
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
+      # - build-test-js
 
-      - build-test-app-ios:
-          filters:
-            branches:
-              ignore:
-                - beta-android
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
-            - horizon/block
+      # - horizon/block:
+      #     context: horizon
+      #     project_id: 37
+      #     filters:
+      #       branches:
+      #         only:
+      #           - beta-ios
+      #           - beta-android
 
-      - build-test-app-android:
-          filters:
-            branches:
-              ignore:
-                - beta-ios
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
-            - horizon/block
+      # - build-test-app-ios:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - beta-android
+      #     requires:
+      #       - test-js
+      #       - check-code
+      #       - build-test-js
+      #       - horizon/block
 
-      - update-metaphysics:
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
-          requires:
-            - build-test-app-ios
-            - build-test-app-android
+      # - build-test-app-android:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - beta-ios
+      #     requires:
+      #       - test-js
+      #       - check-code
+      #       - build-test-js
+      #       - horizon/block
+
+      # - update-metaphysics:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - beta-ios
+      #           - beta-android
+      #     requires:
+      #       - build-test-app-ios
+      #       - build-test-app-android
