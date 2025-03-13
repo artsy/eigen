@@ -1,11 +1,10 @@
-import { Spinner, Button } from "@artsy/palette-mobile"
+import { Spinner } from "@artsy/palette-mobile"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ArtsyWebView, ArtsyWebViewPage } from "app/Components/ArtsyWebView"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { extractText } from "app/utils/tests/extractText"
 import { fetchMockResponseOnce } from "app/utils/tests/fetchMockHelpers"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import fetchMock from "jest-fetch-mock"
 import { Linking } from "react-native"
 import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
@@ -17,23 +16,17 @@ beforeEach(() => {
 })
 
 describe(VanityURLPossibleRedirect, () => {
-  it("shows a loading spinner before anything has happened", async () => {
-    fetchMockResponseOnce({
-      status: 200,
-      url: "https://artsy.net/test",
-    })
-    const tree = renderWithWrappersLEGACY(<VanityURLPossibleRedirect slug="test" />)
-    expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
-    await flushPromiseQueue()
+  it("shows a loading spinner before anything has happened", () => {
+    fetchMockResponseOnce({ status: 200, url: "https://artsy.net/test" })
+
+    renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
+    expect(screen.UNSAFE_getAllByType(Spinner)).toHaveLength(1)
   })
 
-  it("sends a fetch request", async () => {
-    fetchMockResponseOnce({
-      status: 200,
-      url: "https://www.artsy.net/test",
-    })
-    renderWithWrappersLEGACY(<VanityURLPossibleRedirect slug="test" />)
-    await flushPromiseQueue()
+  it("sends a fetch request", () => {
+    fetchMockResponseOnce({ status: 200, url: "https://www.artsy.net/test" })
+
+    renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(fetchMock.mock.calls[0]).toMatchInlineSnapshot(`
       [
@@ -49,23 +42,18 @@ describe(VanityURLPossibleRedirect, () => {
   })
 
   it("calls `navigate` when the redirect points to an external url", async () => {
-    fetchMockResponseOnce({
-      status: 200,
-      url: "https://google.com/blah",
-    })
+    fetchMockResponseOnce({ status: 200, url: "https://google.com/blah" })
 
-    renderWithWrappersLEGACY(<VanityURLPossibleRedirect slug="test" />)
-    await flushPromiseQueue()
+    renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
+    await waitFor(() => expect(navigate).toBeCalled())
     expect(navigate).toHaveBeenCalledWith("https://google.com/blah")
   })
 
   it("calls `navigate` when the redirect points to a native view", async () => {
-    fetchMockResponseOnce({
-      status: 200,
-      url: "https://www.artsy.net/artist/banksy",
-    })
-    renderWithWrappersLEGACY(<VanityURLPossibleRedirect slug="test" />)
-    await flushPromiseQueue()
+    fetchMockResponseOnce({ status: 200, url: "https://www.artsy.net/artist/banksy" })
+
+    renderWithWrappers(<VanityURLPossibleRedirect slug="test" />)
+    await waitFor(() => expect(navigate).toBeCalled())
     expect(navigate).toHaveBeenCalledWith("https://www.artsy.net/artist/banksy")
   })
 
@@ -84,45 +72,40 @@ describe(VanityURLPossibleRedirect, () => {
 
     it("shows the error page if the fetch fails", async () => {
       fetchMock.mockRejectOnce()
-      const tree = renderWithWrappersLEGACY(<VanityURLPossibleRedirect slug="test-fail" />)
-      await flushPromiseQueue()
-      expect(extractText(tree.root)).toContain("We can't find that page")
+      renderWithWrappers(<VanityURLPossibleRedirect slug="test-fail" />)
+
+      await screen.findByText("We can't find that page.")
+      expect(screen.getByText("We can't find that page.")).toBeOnTheScreen()
       expect(openURLMock).not.toHaveBeenCalled()
-      tree.root.findByType(Button).props.onPress()
+
+      fireEvent.press(screen.getByText("Open in browser"))
       expect(openURLMock).toHaveBeenCalledWith("https://www.artsy.net/test-fail")
     })
 
     it("shows the error page if the response is not `ok`", async () => {
-      fetchMockResponseOnce({
-        status: 404,
-        url: "https://whatever",
-      })
-      const tree = renderWithWrappersLEGACY(<VanityURLPossibleRedirect slug="test-not-ok" />)
-      await flushPromiseQueue()
-      expect(extractText(tree.root)).toContain("We can't find that page")
+      fetchMockResponseOnce({ status: 404, url: "https://whatever" })
+      renderWithWrappers(<VanityURLPossibleRedirect slug="test-not-ok" />)
+
+      await screen.findByText("We can't find that page.")
+      expect(screen.getByText("We can't find that page.")).toBeOnTheScreen()
       expect(openURLMock).not.toHaveBeenCalled()
-      tree.root.findByType(Button).props.onPress()
+
+      fireEvent.press(screen.getByText("Open in browser"))
       expect(openURLMock).toHaveBeenCalledWith("https://www.artsy.net/test-not-ok")
     })
   })
 
   it("shows an internal web view when there is no redirect", async () => {
-    fetchMockResponseOnce({
-      status: 200,
-      url: "https://artsy.net/no-redirect",
-    })
-    const tree = renderWithWrappersLEGACY(<VanityURLPossibleRedirect slug="no-redirect" />)
-    await flushPromiseQueue()
-    expect(tree.root.findAllByType(ArtsyWebView)).toHaveLength(1)
+    fetchMockResponseOnce({ status: 200, url: "https://artsy.net/no-redirect" })
+    renderWithWrappers(<VanityURLPossibleRedirect slug="no-redirect" />)
+
+    await waitFor(() => expect(screen.UNSAFE_getAllByType(ArtsyWebView)).toHaveLength(1))
   })
 
   it("shows an internal web view when there is a redirect to a page that is supposed to be shown in a web view", async () => {
-    fetchMockResponseOnce({
-      status: 200,
-      url: "https://artsy.net/categories",
-    })
-    const tree = renderWithWrappersLEGACY(<VanityURLPossibleRedirect slug="genes" />)
-    await flushPromiseQueue()
-    expect(tree.root.findAllByType(ArtsyWebViewPage)).toHaveLength(1)
+    fetchMockResponseOnce({ status: 200, url: "https://artsy.net/categories" })
+    renderWithWrappers(<VanityURLPossibleRedirect slug="genes" />)
+
+    await waitFor(() => expect(screen.UNSAFE_getAllByType(ArtsyWebViewPage)).toHaveLength(1))
   })
 })
