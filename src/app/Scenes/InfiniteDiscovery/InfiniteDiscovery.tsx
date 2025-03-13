@@ -313,7 +313,7 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
     const initialArtworks = extractNodes(data.discoverArtworks)
     const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>(initialArtworks)
 
-    const fetchMoreArtworks = async (excludeArtworkIds: string[]) => {
+    const fetchMoreArtworks = async (excludeArtworkIds: string[], isRetry = false) => {
       try {
         const response = await fetchQuery<InfiniteDiscoveryQuery>(
           getRelayEnvironment(),
@@ -330,6 +330,13 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
           setArtworks((previousArtworks) => newArtworks.concat(previousArtworks))
         }
       } catch (error) {
+        if (!isRetry) {
+          addBreadcrumb({
+            message: "Failed to fetch more artworks, retrying again",
+          })
+          fetchMoreArtworks(excludeArtworkIds, true)
+          return
+        }
         addBreadcrumb({
           message: "Failed to fetch more artworks",
         })
