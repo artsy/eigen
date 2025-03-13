@@ -170,8 +170,6 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   const contextActions = getContextMenuActions()
 
   const handleContextPress: ContextMenuProps["onPress"] = (event) => {
-    console.log("LOGD handleContextPress")
-
     if (haptic) {
       trigger?.(haptic === true ? "impactLight" : haptic)
     }
