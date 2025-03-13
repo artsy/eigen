@@ -235,19 +235,19 @@ jobs:
       - install-node
       - install-gems
       - setup-awscli
-      - run:
-          name: Determine Deployment Type
-          command: |
-            DEPLOYMENT_TYPE=$(./scripts/deploys/expo-updates/determine-deployment-type)
-            echo "export DEPLOYMENT_TYPE=$DEPLOYMENT_TYPE" >> $BASH_ENV
-      - run:
-          name: Handle Deployment for beta
-          command: |
-            if [ "$DEPLOYMENT_TYPE" == "beta" ]; then
-              echo "Native code changed, new beta needed!"
-              ./scripts/deploys/expo-updates/maybe-notify-beta-needed
-              circleci-agent step halt
-            fi
+      # - run:
+      #     name: Determine Deployment Type
+      #     command: |
+      #       DEPLOYMENT_TYPE=$(./scripts/deploys/expo-updates/determine-deployment-type)
+      #       echo "export DEPLOYMENT_TYPE=$DEPLOYMENT_TYPE" >> $BASH_ENV
+      # - run:
+      #     name: Handle Deployment for beta
+      #     command: |
+      #       if [ "$DEPLOYMENT_TYPE" == "beta" ]; then
+      #         echo "Native code changed, new beta needed!"
+      #         ./scripts/deploys/expo-updates/maybe-notify-beta-needed
+      #         circleci-agent step halt
+      #       fi
       - install-node-modules
       - run-relay-compiler
       - run:
