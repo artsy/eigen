@@ -252,7 +252,8 @@ jobs:
       - run-relay-compiler
       - run:
           name: Handle Deployment for expo updates
-          command: echo "Triggering Expo updates deployment..."
+          command: |
+            echo "Triggering Expo updates deployment..."
             ./scripts/deploys/expo-updates/deploy-to-expo-updates staging
 
   test-js:
