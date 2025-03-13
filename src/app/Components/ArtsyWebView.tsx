@@ -4,7 +4,7 @@ import * as Sentry from "@sentry/react-native"
 import { addBreadcrumb } from "@sentry/react-native"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
-import { GlobalStore } from "app/store/GlobalStore"
+import { getCurrentEmissionState, GlobalStore } from "app/store/GlobalStore"
 import {
   GoBackProps,
   dismissModal,
@@ -13,7 +13,6 @@ import {
   navigationEvents,
 } from "app/system/navigation/navigate"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
-import { formatUserAgent } from "app/utils/formatUserAgent"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useEnvironment } from "app/utils/hooks/useEnvironment"
@@ -195,7 +194,8 @@ export const ArtsyWebView = forwardRef<
     ref
   ) => {
     const innerRef = useRef<WebViewWithShareTitleUrl>(null)
-    const userAgentRef = useRef<string | undefined>()
+    const emissionUserAgent = getCurrentEmissionState().userAgent
+    const [userAgent, setUserAgent] = useState<string>()
     useImperativeHandle(ref, () => innerRef.current as WebViewWithShareTitleUrl)
     const { callWebViewEventCallback } = useWebViewCallback()
 
@@ -283,10 +283,8 @@ export const ArtsyWebView = forwardRef<
     }
 
     useEffect(() => {
-      getUserAgent().then((agent) => {
-        userAgentRef.current = formatUserAgent(agent)
-      })
-    })
+      getUserAgent().then((agent) => setUserAgent(agent))
+    }, [])
 
     return (
       <Flex flex={1}>
@@ -304,7 +302,7 @@ export const ArtsyWebView = forwardRef<
             // see: https://github.com/react-native-webview/react-native-webview/pull/3133
             ...(Platform.OS === "android" && {
               headers: {
-                "User-Agent": userAgentRef.current,
+                "User-Agent": emissionUserAgent,
               },
             }),
           }}
@@ -319,7 +317,7 @@ export const ArtsyWebView = forwardRef<
             }
           }}
           style={{ flex: 1 }}
-          userAgent={Platform.OS === "ios" ? userAgentRef.current : undefined}
+          userAgent={Platform.OS === "ios" ? userAgent : undefined}
           onMessage={({ nativeEvent }) => {
             const data = nativeEvent.data
             try {

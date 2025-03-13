@@ -8,6 +8,7 @@ import mockFetch from "jest-fetch-mock"
 import { debounce } from "lodash"
 import { stringify } from "query-string"
 import { Platform } from "react-native"
+import DeviceInfo from "react-native-device-info"
 import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { WebViewNavigation } from "react-native-webview/lib/WebViewTypes"
@@ -153,13 +154,13 @@ describe("ArtsyWebViewPage", () => {
   })
 
   describe("sets the user agent correctly", () => {
-    it("on iOS", () => {
+    it("on iOS", async () => {
+      jest.spyOn(DeviceInfo, "getUserAgent").mockReturnValue(Promise.resolve("ios-user-agent"))
+
       const view = render()
-      expect(webViewProps(view).userAgent).toBe(
-        `Artsy-Mobile ios some-system-name/some-system-version Artsy-Mobile/${
-          appJson().version
-        } Eigen/some-build-number/${appJson().version}`
-      )
+      await waitFor(() => expect(webViewProps(view).userAgent).toBeTruthy())
+
+      expect(webViewProps(view).userAgent).toBe("ios-user-agent")
     })
 
     it("on Android", () => {
