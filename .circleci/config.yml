@@ -238,26 +238,22 @@ jobs:
       - run:
           name: Determine Deployment Type
           command: |
-            DEPLOYMENT_TYPE=$(./scripts/codepush/determine-deployment-type.sh)
+            DEPLOYMENT_TYPE=$(./scripts/deploys/expo-updates/determine-deployment-type)
             echo "export DEPLOYMENT_TYPE=$DEPLOYMENT_TYPE" >> $BASH_ENV
       - run:
           name: Handle Deployment for beta
           command: |
             if [ "$DEPLOYMENT_TYPE" == "beta" ]; then
               echo "Native code changed, new beta needed!"
-              ./scripts/codepush/maybe_notify_beta_needed.sh
+              ./scripts/deploys/expo-updates/maybe-notify-beta-needed
               circleci-agent step halt
             fi
       - install-node-modules
-      - run:
-          name: Install CodePush CLI
-          command: yarn global add appcenter-cli
       - run-relay-compiler
       - run:
-          name: Handle Deployment for codepush
-          command: |
-            echo "Triggering CodePush deployment..."
-            ./scripts/codepush/deploy-to-codepush.sh Staging
+          name: Handle Deployment for expo updates
+          command: echo "Triggering Expo updates deployment..."
+            ./scripts/codepush/deploy-to-expo-updates staging
 
   test-js:
     parallelism: 8
