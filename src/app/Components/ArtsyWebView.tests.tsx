@@ -1,5 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { NavigationHeader } from "app/Components/NavigationHeader"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { appJson } from "app/utils/jsonFiles"
@@ -8,7 +9,6 @@ import mockFetch from "jest-fetch-mock"
 import { debounce } from "lodash"
 import { stringify } from "query-string"
 import { Platform } from "react-native"
-import DeviceInfo from "react-native-device-info"
 import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { WebViewNavigation } from "react-native-webview/lib/WebViewTypes"
@@ -154,13 +154,13 @@ describe("ArtsyWebViewPage", () => {
   })
 
   describe("sets the user agent correctly", () => {
-    it("on iOS", async () => {
-      jest.spyOn(DeviceInfo, "getUserAgent").mockReturnValue(Promise.resolve("ios-user-agent"))
+    it("on iOS", () => {
+      ;(LegacyNativeModules.ARNotificationsManager.getConstants as jest.Mock).mockReturnValueOnce({
+        userAgent: "Native iOS User Agent",
+      })
 
       const view = render()
-      await waitFor(() => expect(webViewProps(view).userAgent).toBeTruthy())
-
-      expect(webViewProps(view).userAgent).toBe("ios-user-agent")
+      expect(webViewProps(view).userAgent).toBe("Native iOS User Agent")
     })
 
     it("on Android", () => {

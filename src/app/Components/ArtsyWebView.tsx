@@ -22,7 +22,6 @@ import { debounce } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { KeyboardAvoidingView, Platform } from "react-native"
-import { getUserAgent } from "react-native-device-info"
 import { Edge } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import WebView, { WebViewNavigation, WebViewProps } from "react-native-webview"
@@ -195,7 +194,7 @@ export const ArtsyWebView = forwardRef<
   ) => {
     const innerRef = useRef<WebViewWithShareTitleUrl>(null)
     const emissionUserAgent = getCurrentEmissionState().userAgent
-    const [userAgent, setUserAgent] = useState<string>()
+    const { userAgent } = GlobalStore.useAppState((state) => state.native.sessionState)
     useImperativeHandle(ref, () => innerRef.current as WebViewWithShareTitleUrl)
     const { callWebViewEventCallback } = useWebViewCallback()
 
@@ -281,10 +280,6 @@ export const ArtsyWebView = forwardRef<
         navigate(targetURL)
       }
     }
-
-    useEffect(() => {
-      getUserAgent().then((agent) => setUserAgent(agent))
-    }, [])
 
     return (
       <Flex flex={1}>
