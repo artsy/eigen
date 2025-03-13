@@ -1,7 +1,7 @@
 import { useScreenDimensions } from "@artsy/palette-mobile"
 import { useScreenWidthWithOffset } from "app/Scenes/InfiniteDiscovery/Components/Swiper/useScreenWidthWithOffset"
 import { FC, Key } from "react"
-import { ViewStyle } from "react-native"
+import { Platform, ViewStyle } from "react-native"
 import Animated, {
   Extrapolation,
   interpolate,
@@ -128,7 +128,6 @@ export const AnimatedView: FC<AnimatedViewProps> = ({
       { rotate: `${rotation.value}deg` },
       { scale: scale.value },
     ],
-    shadowOffset: { width: 0, height: 0 },
     shadowRadius: 12,
     shadowOpacity: shadowOpacity.value,
     elevation: elevation.value,
@@ -140,6 +139,8 @@ export const AnimatedView: FC<AnimatedViewProps> = ({
       style={[
         animatedStyle,
         {
+          shadowOffset: Platform.OS === "ios" ? { width: 0, height: 0 } : undefined,
+          elevation: Platform.OS === "android" ? 2 : 0,
           width: screenWidth,
           alignSelf: "center",
           position: "absolute",
