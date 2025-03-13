@@ -3,10 +3,8 @@ import { ProgressiveOnboardingKey } from "app/store/ProgressiveOnboardingModel"
 import { useCallback } from "react"
 import { useTracking } from "react-tracking"
 
-export type ProgressiveOnboardingTrackedName = ProgressiveOnboardingKey | "unknown"
-
 interface UseProgressiveOnboardingTracking {
-  name: ProgressiveOnboardingTrackedName
+  name: ProgressiveOnboardingKey
   contextScreenOwnerType?: OwnerType
   contextModule: ContextModule
 }

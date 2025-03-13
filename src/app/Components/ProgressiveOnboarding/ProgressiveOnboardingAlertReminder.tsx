@@ -1,10 +1,7 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Popover, Text } from "@artsy/palette-mobile"
 import { useDismissAlertReminder } from "app/Components/ProgressiveOnboarding/useDismissAlertReminder"
-import {
-  ProgressiveOnboardingTrackedName,
-  useProgressiveOnboardingTracking,
-} from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
+import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
 
@@ -16,21 +13,10 @@ export const ProgressiveOnboardingAlertReminder: React.FC<
 > = ({ children, visible }) => {
   const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
 
-  let nameToTrack: ProgressiveOnboardingTrackedName = "unknown"
-  if (
-    !isDismissed("alert-create-reminder-1").status &&
-    !isDismissed("alert-create-reminder-2").status
-  ) {
-    nameToTrack = "alert-create-reminder-1"
-  } else if (
-    isDismissed("alert-create-reminder-1").status &&
-    !isDismissed("alert-create-reminder-2").status
-  ) {
-    nameToTrack = "alert-create-reminder-2"
-  }
-
   const { trackEvent } = useProgressiveOnboardingTracking({
-    name: nameToTrack,
+    name: !isDismissed("alert-create-reminder-1").status
+      ? "alert-create-reminder-1"
+      : "alert-create-reminder-2",
     contextScreenOwnerType: OwnerType.artist,
     contextModule: "artistArtworksFilterHeader" as ContextModule,
   })
