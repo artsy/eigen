@@ -46,7 +46,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
   useEffect(() => {
     setTimeout(() => {
       if (!hasInteractedWithOnboarding) {
-        // setIsVisible(true)
+        setIsVisible(true)
       }
     }, 1000)
   }, [hasInteractedWithOnboarding])
