@@ -289,12 +289,11 @@ export const ArtsyWebView = forwardRef<
     return (
       <Flex flex={1}>
         <WebView
-          enableApplePay={true}
+          enableApplePay
           ref={innerRef}
           // sharedCookiesEnabled is required on iOS for the user to be implicitly logged into force/prediction
           // on android it works without it
           sharedCookiesEnabled
-          webviewDebuggingEnabled
           decelerationRate="normal"
           source={{
             uri,
