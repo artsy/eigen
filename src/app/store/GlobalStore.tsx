@@ -6,10 +6,10 @@ import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { Action, Middleware } from "redux"
 import logger from "redux-logger"
+import { version } from "./../../../app.json"
 import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { DevToggleMap, FeatureMap } from "./config/FeaturesModel"
 import { persistenceMiddleware, unpersist } from "./persistence"
-import { version } from "../../../app.json"
 
 function createGlobalStore() {
   const middleware: Middleware[] = []
