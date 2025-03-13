@@ -1,13 +1,13 @@
 import {
-  Spacer,
+  Flex,
   Screen,
-  Tabs,
-  useScreenDimensions,
+  Separator,
   Skeleton,
   SkeletonBox,
-  Flex,
   SkeletonText,
-  Separator,
+  Spacer,
+  Tabs,
+  useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
 import { ArtistSeries_artistSeries$key } from "__generated__/ArtistSeries_artistSeries.graphql"
@@ -134,14 +134,7 @@ export const ArtistSeriesQueryRenderer: React.FC<{ artistSeriesID: string }> = (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<ArtistSeriesQuery>
         environment={getRelayEnvironment()}
-        query={graphql`
-          query ArtistSeriesQuery($artistSeriesID: ID!) {
-            artistSeries(id: $artistSeriesID) {
-              ...ArtistSeries_artistSeries
-            }
-          }
-        `}
-        cacheConfig={{ force: true }}
+        query={ArtistSeriesScreenQuery}
         variables={{
           artistSeriesID,
         }}
@@ -153,3 +146,11 @@ export const ArtistSeriesQueryRenderer: React.FC<{ artistSeriesID: string }> = (
     </ArtworkFiltersStoreProvider>
   )
 }
+
+export const ArtistSeriesScreenQuery = graphql`
+  query ArtistSeriesQuery($artistSeriesID: ID!) {
+    artistSeries(id: $artistSeriesID) {
+      ...ArtistSeries_artistSeries
+    }
+  }
+`

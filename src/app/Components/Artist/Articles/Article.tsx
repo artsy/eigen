@@ -1,10 +1,10 @@
 import { ActionType, ContextModule, OwnerType, TappedArticleGroup } from "@artsy/cohesion"
-import { Flex, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { Article_article$data, Article_article$key } from "__generated__/Article_article.graphql"
 import { Article_artist$data, Article_artist$key } from "__generated__/Article_artist.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import FastImage from "react-native-fast-image"
-import { useFragment, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ArticleProps {
@@ -21,12 +21,11 @@ export const Article: React.FC<ArticleProps> = ({ article, artist, headline = fa
   const handleOnPress = () => {
     if (articleData.href) {
       tracking.trackEvent(tracks.tappedArticleGroup(articleData, artistData))
-      navigate(articleData.href)
     }
   }
 
   return (
-    <Touchable onPress={handleOnPress}>
+    <RouterLink onPress={handleOnPress} to={articleData.href}>
       <Flex width="100%" overflow="hidden">
         <Flex width="100%" style={{ aspectRatio: 1.5 }}>
           {/* TODO: palette Image doesn't work with percentages, we can change it
@@ -51,7 +50,7 @@ export const Article: React.FC<ArticleProps> = ({ article, artist, headline = fa
         <Text variant="xs" color="black60">{`By ${articleData.byline}`}</Text>
         {!headline && <Spacer y={4} />}
       </Flex>
-    </Touchable>
+    </RouterLink>
   )
 }
 

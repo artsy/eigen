@@ -52,7 +52,6 @@ export const AuctionResultsForArtistsYouCollectRail: React.FC<
             showArtistName
             onPress={() => {
               trackEvent(tracks.tappedAuctionResultGroup(index))
-              navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
             }}
           />
         )}

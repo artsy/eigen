@@ -53,7 +53,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
 
   const { width, height, aspectRatio } = useArtistHeaderImageDimensions()
   const { updateScrollYOffset } = useScreenScrollContext()
-  const tracking = useTracking()
+  const { trackEvent } = useTracking()
   const artistData = useFragment(artistFragment, artist)
 
   if (!artistData) {
@@ -136,9 +136,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
                   variant="profile"
                   src={item.partner.profile?.icon?.url ?? undefined}
                   onPress={() => {
-                    tracking.trackEvent(
-                      tracks.tappedVerifiedRepresentative(artistData, item.partner)
-                    )
+                    trackEvent(tracks.tappedVerifiedRepresentative(artistData, item.partner))
                   }}
                 >
                   {item.partner.name}

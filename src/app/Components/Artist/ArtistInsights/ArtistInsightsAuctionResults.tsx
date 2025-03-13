@@ -20,7 +20,6 @@ import {
 import Spinner from "app/Components/Spinner"
 import { PAGE_SIZE } from "app/Components/constants"
 import { AuctionResultsState } from "app/Scenes/AuctionResults/AuctionResultsScreenWrapper"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { ExtractNodeType } from "app/utils/relayHelpers"
@@ -270,7 +269,6 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
               auctionResult={item}
               onPress={() => {
                 tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.internalID))
-                navigate(`/artist/${artist?.slug}/auction-result/${item.internalID}`)
               }}
             />
           )}

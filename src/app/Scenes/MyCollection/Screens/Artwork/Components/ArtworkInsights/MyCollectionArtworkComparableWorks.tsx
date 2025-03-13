@@ -3,7 +3,6 @@ import { Flex, Separator } from "@artsy/palette-mobile"
 import { MyCollectionArtworkComparableWorks_artwork$key } from "__generated__/MyCollectionArtworkComparableWorks_artwork.graphql"
 import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -36,7 +35,6 @@ export const MyCollectionArtworkComparableWorks: React.FC<
             onPress={() => {
               if (artwork.artist?.slug) {
                 trackEvent(tracks.tappedAuctionResultGroup(artwork?.internalID, artwork?.slug))
-                navigate(`/artist/${artwork.artist.slug}/auction-result/${item.internalID}`)
               }
             }}
           />

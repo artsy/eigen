@@ -1,5 +1,5 @@
 import { Box, BoxProps, Button, Spacer, Text } from "@artsy/palette-mobile"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { FC } from "react"
 
 export const ArtistInsightsEmpty: FC<BoxProps> = (props) => {
@@ -16,15 +16,11 @@ export const ArtistInsightsEmpty: FC<BoxProps> = (props) => {
 
       <Spacer y={2} />
 
-      <Button
-        variant="outline"
-        mx="auto"
-        onPress={() => {
-          navigate("/price-database")
-        }}
-      >
-        View Artsy’s Price Database
-      </Button>
+      <RouterLink to="/price-database">
+        <Button variant="outline" mx="auto">
+          View Artsy’s Price Database
+        </Button>
+      </RouterLink>
     </Box>
   )
 }
