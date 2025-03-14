@@ -57,7 +57,6 @@ export const LatestAuctionResultsRail: React.FC<Props> = ({ me }) => {
               width={AUCTION_RESULT_CARD_WIDTH}
               onPress={() => {
                 trackEvent(tracks.tappedThumbnail(item.internalID, index))
-                navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
               }}
             />
           )

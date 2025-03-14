@@ -5,9 +5,9 @@ import {
   ScreenOwnerType,
   TappedArtistSeriesGroup,
 } from "@artsy/cohesion"
-import { ArrowRightIcon, Flex, useColor, Text, Touchable, Image } from "@artsy/palette-mobile"
+import { ArrowRightIcon, Flex, Image, Text, useColor } from "@artsy/palette-mobile"
 import { ArtistSeriesConnectionEdge } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { useTracking } from "react-tracking"
 
 interface ArtistSeriesListItemProps {
@@ -55,7 +55,7 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
   }
 
   return (
-    <Touchable
+    <RouterLink
       accessibilityLabel="Artist Series List Item"
       accessibilityRole="button"
       underlayColor={color("black5")}
@@ -64,8 +64,8 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
       style={{ marginHorizontal: -20 }}
       onPress={() => {
         trackArtworkClick()
-        navigate(`/artist-series/${listItem?.node?.slug}`)
       }}
+      to={`/artist-series/${listItem?.node?.slug}`}
     >
       <Flex px={2} my={1} flexDirection="row" justifyContent="space-between">
         <Flex flexDirection="row" justifyContent="space-between" width="100%">
@@ -94,6 +94,6 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
           </Flex>
         </Flex>
       </Flex>
-    </Touchable>
+    </RouterLink>
   )
 }

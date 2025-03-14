@@ -1,11 +1,10 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Text, Join } from "@artsy/palette-mobile"
+import { Flex, Join, Text } from "@artsy/palette-mobile"
 import { ComparableWorks_auctionResult$data } from "__generated__/ComparableWorks_auctionResult.graphql"
 import {
   AuctionResultListItemFragmentContainer,
   AuctionResultListSeparator,
 } from "app/Components/Lists/AuctionResultListItem"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -37,9 +36,6 @@ const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
               auctionResult={auctionResultRow}
               onPress={() => {
                 trackEvent(tracks.tapAuctionResult(auctionResultRow.internalID, index))
-                navigate(
-                  `/artist/${auctionResultRow.artistID}/auction-result/${auctionResultRow.internalID}`
-                )
               }}
             />
           ))}

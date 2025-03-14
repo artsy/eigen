@@ -1,11 +1,11 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Touchable } from "@artsy/palette-mobile"
 import { ArtistSeriesMoreSeriesTestsQuery } from "__generated__/ArtistSeriesMoreSeriesTestsQuery.graphql"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import {
   ArtistSeriesMoreSeries,
   ArtistSeriesMoreSeriesFragmentContainer,
 } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
@@ -86,7 +86,7 @@ describe("ArtistSeriesMoreSeries", () => {
     it("tracks an event on click", async () => {
       const root = getWrapper(ArtistSeriesMoreSeriesFixture)
       const artistSerieListItems = await root.findAllByType(ArtistSeriesListItem)
-      const artistSeriesButton = artistSerieListItems[0].findByType(Touchable)
+      const artistSeriesButton = artistSerieListItems[0].findByType(RouterLink)
 
       act(() => artistSeriesButton.props.onPress())
 

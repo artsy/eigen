@@ -1,5 +1,5 @@
-import { Box, BoxProps, Text, Touchable } from "@artsy/palette-mobile"
-import { navigate } from "app/system/navigation/navigate"
+import { Box, BoxProps, Text } from "@artsy/palette-mobile"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { FC } from "react"
 
 export const ArtistAboutEmpty: FC<BoxProps> = (props) => {
@@ -12,16 +12,11 @@ export const ArtistAboutEmpty: FC<BoxProps> = (props) => {
       <Text variant="md" textAlign="center" color="black60">
         Do you represent this artist?
       </Text>
-      <Touchable
-        onPress={() => {
-          navigate("https://partners.artsy.net")
-        }}
-        style={{ alignSelf: "center" }}
-      >
+      <RouterLink to="https://partners.artsy.net" style={{ alignSelf: "center" }}>
         <Text variant="md" color="black100" style={{ textDecorationLine: "underline" }}>
           Become a partner.
         </Text>
-      </Touchable>
+      </RouterLink>
     </Box>
   )
 }

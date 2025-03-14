@@ -388,7 +388,7 @@ const artistFragment = graphql`
   }
 `
 
-const AuctionResultScreenQuery = graphql`
+export const AuctionResultScreenQuery = graphql`
   query AuctionResultQuery($auctionResultInternalID: String!, $artistID: String!) {
     auctionResult(id: $auctionResultInternalID) {
       ...AuctionResult_auctionResult
@@ -408,16 +408,11 @@ export const AuctionResultScreenContainer: React.FC<AuctionResultQueryRendererPr
   auctionResultInternalID,
   artistID,
 }) => {
-  const data = useLazyLoadQuery<AuctionResultQuery>(
-    AuctionResultScreenQuery,
-    {
-      auctionResultInternalID,
-      artistID,
-    },
-    {
-      fetchPolicy: "store-and-network",
-    }
-  )
+  const data = useLazyLoadQuery<AuctionResultQuery>(AuctionResultScreenQuery, {
+    auctionResultInternalID,
+    artistID,
+  })
+
   if (!data?.auctionResult || !data?.artist) {
     return (
       <Flex>
@@ -425,6 +420,7 @@ export const AuctionResultScreenContainer: React.FC<AuctionResultQueryRendererPr
       </Flex>
     )
   }
+
   return <AuctionResult artist={data.artist} auctionResult={data.auctionResult} />
 }
 

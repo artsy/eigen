@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedArtistGroup } from "@artsy/cohesion"
-import { Flex, FollowButton, Image, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, FollowButton, Image, Text } from "@artsy/palette-mobile"
 import {
   RelatedArtistsRailCell_artist$data,
   RelatedArtistsRailCell_artist$key,
@@ -8,9 +8,9 @@ import {
   RelatedArtistsRailCell_relatedArtist$data,
   RelatedArtistsRailCell_relatedArtist$key,
 } from "__generated__/RelatedArtistsRailCell_relatedArtist.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFollowArtist } from "app/utils/mutations/useFollowArtist"
-import { useFragment, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 const DEFAULT_CELL_WIDTH = 300
@@ -37,7 +37,6 @@ export const RelatedArtistsRailCell: React.FC<RelatedArtistsRailCellProps> = ({
 
   const handleOnPress = () => {
     tracking.trackEvent(tracks.tappedArtistGroup(relatedArtistData, artistData, index))
-    navigate(relatedArtistData.href)
   }
 
   const handleOnFollow = () => {
@@ -61,7 +60,7 @@ export const RelatedArtistsRailCell: React.FC<RelatedArtistsRailCellProps> = ({
   }
 
   return (
-    <Touchable onPress={handleOnPress}>
+    <RouterLink onPress={handleOnPress} to={relatedArtistData.href}>
       <Image
         testID="related-artist-cover"
         src={relatedArtistData.coverArtwork?.image?.url ?? ""}
@@ -78,7 +77,7 @@ export const RelatedArtistsRailCell: React.FC<RelatedArtistsRailCellProps> = ({
         </Flex>
         <FollowButton isFollowed={!!relatedArtistData.isFollowed} onPress={handleOnFollow} />
       </Flex>
-    </Touchable>
+    </RouterLink>
   )
 }
 
