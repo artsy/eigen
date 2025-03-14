@@ -1,12 +1,12 @@
 import {
-  Spacer,
+  Box,
+  Button,
   EyeOpenedIcon,
   Flex,
-  Box,
-  Text,
   Separator,
+  Spacer,
+  Text,
   Touchable,
-  Button,
 } from "@artsy/palette-mobile"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
@@ -215,9 +215,9 @@ const ViewingRoomArtworkScreenQuery = graphql`
 `
 
 export const ViewingRoomArtworkScreen: React.FC<{
-  viewing_room_id: string
+  viewingRoomID: string
   artwork_id: string
-}> = ({ viewing_room_id: viewingRoomID, artwork_id: artworkID }) => {
+}> = ({ viewingRoomID, artwork_id: artworkID }) => {
   const [queryRef, loadQuery] = useQueryLoader<ViewingRoomArtworkQuery>(
     ViewingRoomArtworkScreenQuery
   )
