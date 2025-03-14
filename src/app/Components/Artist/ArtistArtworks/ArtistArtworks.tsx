@@ -15,10 +15,6 @@ import {
 import { MasonryFlashListRef } from "@shopify/flash-list"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
-import {
-  CreateSavedSearchModal,
-  trackTappedCreateAlert,
-} from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { useCreateSavedSearchModalFilters } from "app/Components/Artist/ArtistArtworks/hooks/useCreateSavedSearchModalFilters"
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -36,6 +32,8 @@ import {
   CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD,
   useDismissAlertReminder,
 } from "app/Components/ProgressiveOnboarding/useDismissAlertReminder"
+import { CreateSavedSearchModal } from "app/Scenes/SavedSearchAlert/CreateSavedSearchModal"
+import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
@@ -164,6 +162,13 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   }, [relay.hasMore(), relay.isLoading()])
 
   const CreateAlertButton: React.FC<{ contextModule: ContextModule }> = ({ contextModule }) => {
+    const { trackCreateAlertTap } = useCreateAlertTracking({
+      contextScreenOwnerType: OwnerType.artist,
+      contextScreenOwnerId: artist.internalID,
+      contextScreenOwnerSlug: artist.slug,
+      contextModule: contextModule,
+    })
+
     return (
       <Button
         variant="outline"
@@ -171,16 +176,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         icon={<BellIcon />}
         size="small"
         onPress={() => {
-          // Could be useful to differenciate between the two at a later point
-          tracking.trackEvent(
-            trackTappedCreateAlert.tappedCreateAlert(
-              OwnerType.artist,
-              artist.internalID,
-              artist.slug,
-              contextModule
-            )
-          )
-
+          trackCreateAlertTap()
           setIsCreateAlertModalVisible(true)
         }}
       >

@@ -2,13 +2,12 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { BellIcon, Button } from "@artsy/palette-mobile"
 import { ArtworkScreenHeaderCreateAlert_artwork$key } from "__generated__/ArtworkScreenHeaderCreateAlert_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
-import { trackTappedCreateAlert } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { hasBiddingEnded } from "app/Scenes/Artwork/utils/hasBiddingEnded"
 import { isLotClosed } from "app/Scenes/Artwork/utils/isLotClosed"
+import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useState } from "react"
 import { graphql, useFragment } from "react-relay"
-import { useTracking } from "react-tracking"
 
 interface ArtworkScreenHeaderCreateAlertProps {
   artworkRef: ArtworkScreenHeaderCreateAlert_artwork$key
@@ -17,8 +16,6 @@ interface ArtworkScreenHeaderCreateAlertProps {
 export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateAlertProps> = ({
   artworkRef,
 }) => {
-  const tracking = useTracking()
-
   const artwork = useFragment<ArtworkScreenHeaderCreateAlert_artwork$key>(
     ArtworkScreenHeaderCreateAlert_artwork,
     artworkRef
@@ -34,6 +31,13 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
   const displayCreateAlertHeader =
     isInAuction && isLotClosedOrBiddingEnded && enableAuctionHeaderAlertCTA
 
+  const { trackCreateAlertTap } = useCreateAlertTracking({
+    contextScreenOwnerType: OwnerType.artwork,
+    contextScreenOwnerId: internalID,
+    contextScreenOwnerSlug: slug,
+    contextModule: "ArtworkScreenHeader" as ContextModule,
+  })
+
   if (!!displayCreateAlertHeader || !isEligibleToCreateAlert) {
     return null
   }
@@ -45,14 +49,7 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
         variant={isForSale ? "outline" : "fillDark"}
         haptic
         onPress={() => {
-          tracking.trackEvent(
-            trackTappedCreateAlert.tappedCreateAlert(
-              OwnerType.artwork,
-              internalID,
-              slug,
-              "ArtworkScreenHeader" as ContextModule
-            )
-          )
+          trackCreateAlertTap()
           setShowCreateArtworkAlertModal(true)
         }}
         icon={<BellIcon fill={isForSale ? "black100" : "white100"} />}

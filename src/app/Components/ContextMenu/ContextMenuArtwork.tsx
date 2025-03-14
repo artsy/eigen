@@ -2,12 +2,12 @@ import { ActionType, ContextModule, LongPressedArtwork, ScreenOwnerType } from "
 import { Box, Flex, Join, Separator, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { ContextMenuArtworkPreviewCard_artwork$key } from "__generated__/ContextMenuArtworkPreviewCard_artwork.graphql"
 import { ContextMenuArtwork_artwork$key } from "__generated__/ContextMenuArtwork_artwork.graphql"
-import { trackTappedCreateAlert } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { ArtworkRailCardProps } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { ContextMenuArtworkPreviewCard } from "app/Components/ContextMenu/ContextMenuArtworkPreviewCard"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 import { cm2in } from "app/utils/conversions"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
@@ -69,6 +69,13 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   const enableCreateAlerts = !!artwork.artists?.length
   const enableViewInRoom = LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable
   const enableSupressArtwork = isDislikeArtworksEnabledFor(contextModule)
+
+  const { trackCreateAlertTap } = useCreateAlertTracking({
+    contextScreenOwnerType: contextScreenOwnerType ?? ("unknown" as ScreenOwnerType),
+    contextScreenOwnerId: artwork.internalID,
+    contextScreenOwnerSlug: artwork.slug,
+    contextModule: "longPressContextMenu" as ContextModule,
+  })
 
   const openViewInRoom = () => {
     if (artwork?.widthCm == null || artwork?.heightCm == null || image?.url == null) {
@@ -148,16 +155,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
         systemIcon: "bell",
         onPress: () => {
           InteractionManager.runAfterInteractions(() => {
-            if (contextScreenOwnerType) {
-              trackEvent(
-                trackTappedCreateAlert.tappedCreateAlert(
-                  contextScreenOwnerType,
-                  artwork.internalID,
-                  artwork.slug,
-                  "longPressContextMenu" as ContextModule
-                )
-              )
-            }
+            trackCreateAlertTap()
             onCreateAlertActionPress?.()
           })
         },

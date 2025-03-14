@@ -4,7 +4,7 @@ import {
   CreateArtworkAlertModal,
   computeArtworkAlertProps,
 } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
-import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
+import { CreateSavedSearchModal } from "app/Scenes/SavedSearchAlert/CreateSavedSearchModal"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 

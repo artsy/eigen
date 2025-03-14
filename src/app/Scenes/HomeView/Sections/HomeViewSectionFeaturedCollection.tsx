@@ -1,4 +1,4 @@
-import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import {
   Flex,
   FlexProps,
@@ -105,8 +105,7 @@ export const HomeViewSectionFeaturedCollection: React.FC<
 
         <ArtworkRail
           contextModule={section.contextModule as ContextModule}
-          // ??? why this module doesn't have section.ownerType
-          contextScreenOwnerType={(viewAll?.ownerType || section.ownerType) as ScreenOwnerType}
+          contextScreenOwnerType={OwnerType.home}
           dark
           showPartnerName
           artworks={artworks}

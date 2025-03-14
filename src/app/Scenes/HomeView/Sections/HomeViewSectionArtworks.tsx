@@ -1,4 +1,4 @@
-import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import {
   Flex,
   FlexProps,
@@ -104,7 +104,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
 
       <ArtworkRail
         contextModule={section.contextModule as ContextModule}
-        contextScreenOwnerType={section.ownerType as ScreenOwnerType}
+        contextScreenOwnerType={OwnerType.home}
         artworks={artworks}
         onPress={handleOnArtworkPress}
         showSaveIcon

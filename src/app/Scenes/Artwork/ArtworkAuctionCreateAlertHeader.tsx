@@ -2,9 +2,9 @@ import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { BellIcon, Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkAuctionCreateAlertHeader_artwork$key } from "__generated__/ArtworkAuctionCreateAlertHeader_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
-import { trackTappedCreateAlert } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { hasBiddingEnded } from "app/Scenes/Artwork/utils/hasBiddingEnded"
 import { isLotClosed } from "app/Scenes/Artwork/utils/isLotClosed"
+import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { FC, useState } from "react"
 import { graphql, useFragment } from "react-relay"
@@ -42,6 +42,13 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
     hasBiddingEnded(sale, saleArtwork) || isLotClosed(sale, saleArtwork)
   const displayAuctionCreateAlertHeader =
     isEligibleToCreateAlert && isInAuction && isLotClosedOrBiddingEnded
+
+  const { trackCreateAlertTap } = useCreateAlertTracking({
+    contextScreenOwnerType: OwnerType.artwork,
+    contextScreenOwnerId: internalID,
+    contextScreenOwnerSlug: slug,
+    contextModule: ContextModule.artworkClosedLotHeader,
+  })
 
   if (!displayAuctionCreateAlertHeader) {
     return null
@@ -97,15 +104,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
             variant="fillDark"
             haptic
             onPress={() => {
-              tracking.trackEvent(
-                trackTappedCreateAlert.tappedCreateAlert(
-                  OwnerType.artwork,
-                  internalID,
-                  slug,
-                  ContextModule.artworkClosedLotHeader
-                )
-              )
-
+              trackCreateAlertTap()
               setShowCreateArtworkAlertModal(true)
             }}
             icon={<BellIcon fill="white100" />}

@@ -4,13 +4,13 @@ import {
   CreateArtworkAlertModal_artwork$data,
   CreateArtworkAlertModal_artwork$key,
 } from "__generated__/CreateArtworkAlertModal_artwork.graphql"
-import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
   SavedSearchEntityArtist,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { CreateSavedSearchModal } from "app/Scenes/SavedSearchAlert/CreateSavedSearchModal"
 import { compact } from "lodash"
 import { graphql, useFragment } from "react-relay"
 
