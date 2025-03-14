@@ -1,5 +1,7 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Button, Flex, Join, Popover, Spacer, Text } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
+import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
 import { PROGRESSIVE_ONBOARDING_ALERT_CHAIN } from "app/store/ProgressiveOnboardingModel"
@@ -13,6 +15,11 @@ export const ProgressiveOnboardingSaveAlert: React.FC = ({ children }) => {
   const { dismiss, setIsReady } = GlobalStore.actions.progressiveOnboarding
   const isFocused = useIsFocused()
   const progressiveOnboardingAlerts = useFeatureFlag("AREnableProgressiveOnboardingAlerts")
+  const { trackEvent } = useProgressiveOnboardingTracking({
+    name: "alert-create",
+    contextScreenOwnerType: OwnerType.artist,
+    contextModule: ContextModule.artistArtworksFilterHeader,
+  })
 
   const isDisplayable =
     isReady &&
@@ -38,6 +45,7 @@ export const ProgressiveOnboardingSaveAlert: React.FC = ({ children }) => {
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
       onCloseComplete={clearActivePopover}
+      onOpenComplete={trackEvent}
       variant="light"
       placement="right"
       title={
