@@ -80,10 +80,19 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           context_screen_owner_slug: artwork.slug,
           context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
         })
-
-        if (isArtworkSaved) {
+      },
+      onError: () => {
+        /**
+         * This logic assumes that the saved artworks count was optimistically incremented or decremented when the save button was pressed.
+         * If the save operation fails, we need to revert the saved artworks count to its previous state.
+         * This is needed because the optimisticUpdater callback in useSaveArtworkToArtworkLists performs some actions that can take severel seconds to complete,
+         * and as a result the saved artworks count can be out of sync with the actual state of the artwork.
+         */
+        if (isSaved) {
+          // if the artwork is currently saved, we optimistically decremented the count, so increment it back
           incrementSavedArtworksCount()
         } else {
+          // if the artwork is currently unsaved, we optimistically incremented the count, so decrement it back
           decrementSavedArtworksCount()
         }
       },
@@ -228,6 +237,15 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               if (!hasSavedArtworks) {
                 setHasSavedArtwors(true)
               }
+
+              if (isSaved) {
+                // if the artwork is currently saved, it will become unsaved, so optimistically decrement the count
+                decrementSavedArtworksCount()
+              } else {
+                // if the artwork is currently unsaved, it will become saved, so optimistically decrement the count
+                incrementSavedArtworksCount()
+              }
+
               saveArtworkToLists()
             }}
             testID="save-artwork-icon"
