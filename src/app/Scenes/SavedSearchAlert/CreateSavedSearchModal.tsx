@@ -1,10 +1,4 @@
-import {
-  ActionType,
-  ContextModule,
-  ScreenOwnerType,
-  TappedCreateAlert,
-  ToggledSavedSearch,
-} from "@artsy/cohesion"
+import { ActionType, ScreenOwnerType, ToggledSavedSearch } from "@artsy/cohesion"
 import {
   SavedSearchEntity,
   SearchCriteriaAttributes,
@@ -75,20 +69,5 @@ export const tracks = {
     modified: enabled,
     original: !enabled,
     search_criteria_id: searchCriteriaId,
-  }),
-}
-
-export const trackTappedCreateAlert = {
-  tappedCreateAlert: (
-    ownerType: ScreenOwnerType,
-    ownerId?: string,
-    ownerSlug?: string,
-    contextModule?: ContextModule
-  ): TappedCreateAlert => ({
-    action: ActionType.tappedCreateAlert,
-    context_screen_owner_type: ownerType,
-    context_screen_owner_id: ownerId,
-    context_screen_owner_slug: ownerSlug,
-    context_module: contextModule,
   }),
 }
