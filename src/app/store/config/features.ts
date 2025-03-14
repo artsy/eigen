@@ -222,6 +222,7 @@ export const features = {
     description: "Enable infinite discovery",
     readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableInfiniteDiscovery",
   },
   AREnableViewPortPrefetching: {
     description: "Enable viewport prefetching",
