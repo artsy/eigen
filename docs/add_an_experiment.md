@@ -4,11 +4,17 @@ We are using Unleash to run A/B Testing experiments at Artsy. In order to create
 
 ### Contents
 
-- [Adding an experiment to Unleash dashboard](#adding-an-experiment-to-unleash-dashboard)
-- [Adding an experiment to Eigen](#adding-an-experiment-to-eigen)
-- [Using an experiment](#using-an-experiment)
-- [Removing/killing an experiment](#removingkilling-an-experiment)
-- [Adding overrides](#adding-an-override)
+- [Adding a New Experiment](#adding-a-new-experiment)
+  - [Contents](#contents)
+  - [Adding an experiment to Unleash dashboard](#adding-an-experiment-to-unleash-dashboard)
+  - [Adding an experiment to Eigen](#adding-an-experiment-to-eigen)
+  - [Using an experiment](#using-an-experiment)
+    - [Querying for a single flag](#querying-for-a-single-flag)
+    - [Querying for a single experiment](#querying-for-a-single-experiment)
+    - [Tracking an experiment](#tracking-an-experiment)
+  - [Removing/Killing an Experiment](#removingkilling-an-experiment)
+  - [Adding an Override](#adding-an-override)
+  - [Still need help?](#still-need-help)
 
 ## Adding an experiment to Unleash dashboard
 
@@ -24,7 +30,6 @@ We are using Unleash to run A/B Testing experiments at Artsy. In order to create
 
 ```ts
   "our-new-experiment": {
-    fallbackEnabled: false,
     description: "Experiment description",
     payloadSuggestions: ["payload-1", "payload-2"] // If applicable
   },
@@ -34,19 +39,16 @@ or if we want a variant we can use something like
 
 ```ts
   "our-new-experiment": {
-    fallbackEnabled: true,
-    fallbackVariant: "the-variant-name",
     description: "Experiment description",
     payloadSuggestions: ["payload-1", "payload-2"] // If applicable
   },
 ```
 
-| value                | description                                                                                                      |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `fallbackEnabled`    | (`boolean`) the experiment flag has a fallback value in case we don't receive anything from Unleash client sdk   |
-| `fallbackVariant`    | (`string` or `undefined`) fallback value, applicable only if `fallbackEnabled` is set to `true`                  |
-| `description`        | (`string`) a string describing your experiment                                                                   |
-| `payloadSuggestions` | (`string[]`) a list of strings useful for quickly setting an admin override from Dev Settings > Experiments menu |
+| value                | description                                    |
+| -------------------- | ---------------------------------------------- |
+| `description`        | (`string`) a string describing your experiment |
+| `variantSuggestions` | (`string[]`) a list of variant options         |
+| `payloadSuggestions` | (`string[]`) a list of payload options         |
 
 Don't forget to add some tracking on this, using `reportExperimentVariant`. Look for other examples in the code.
 
