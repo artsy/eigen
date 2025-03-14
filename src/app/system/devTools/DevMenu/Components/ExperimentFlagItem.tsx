@@ -11,6 +11,7 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
+import { IVariant, useFlags } from "@unleash/proxy-client-react"
 import { FONTS } from "app/Components/HTML"
 import { useToast } from "app/Components/Toast/toastHook"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -19,7 +20,6 @@ import {
   ExperimentDescriptor,
   experiments,
 } from "app/utils/experiments/experiments"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { isEmpty } from "lodash"
 import { useState } from "react"
 import { Alert, Modal, TextInput, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
@@ -28,7 +28,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
   description,
   flag,
 }) => {
-  const experiment = useExperimentVariant(flag)
+  const unleashVariant = useFlags().find((e) => e.name === flag)?.variant as IVariant
   const localPayloadOverrides = GlobalStore.useAppState(
     (s) => s.artsyPrefs.experiments.localPayloadOverrides
   )
@@ -118,7 +118,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                               }}
                             >
                               {variantSuggestion}{" "}
-                              {experiment.unleashVariant === variantSuggestion && "(default)"}
+                              {unleashVariant?.name === variantSuggestion && "(default)"}
                             </Pill>
                           )
                         })}
@@ -135,7 +135,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                             setVariant("control")
                           }}
                         >
-                          control {experiment.unleashVariant === "control" && "(default)"}
+                          control {unleashVariant.name === "control" && "(default)"}
                         </Pill>
                         <Pill
                           variant="badge"
@@ -143,7 +143,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                             setVariant("experiment")
                           }}
                         >
-                          experiment {experiment.unleashVariant === "experiment" && "(default)"}
+                          experiment {unleashVariant.name === "experiment" && "(default)"}
                         </Pill>
                       </Flex>
                     )}
@@ -171,7 +171,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                               }}
                             >
                               {payloadSuggestion}{" "}
-                              {experiment.unleashPayload === payloadSuggestion && "(default)"}
+                              {unleashVariant.payload?.value === payloadSuggestion && "(default)"}
                             </Pill>
                           )
                         })}
@@ -236,7 +236,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
       </Text>
       <Text>
         <Text color="black60">Status:</Text>{" "}
-        {experiment.enabled ? (
+        {unleashVariant.enabled ? (
           <Text fontWeight="bold" color="blue100">
             enabled
           </Text>
@@ -247,7 +247,8 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
         )}
       </Text>
       <Text>
-        <Text color="black60">Variant:</Text> <Text fontWeight="bold">{experiment.variant}</Text>
+        <Text color="black60">Variant:</Text>{" "}
+        <Text fontWeight="bold">{localVariantOverrides[flag] || unleashVariant.name}</Text>
         <TouchableOpacity
           onPress={() => {
             setVisible(true)
@@ -259,7 +260,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
       <Flex flexDirection="row" flexWrap="wrap">
         <Text color="black60">Payload: </Text>
         <Text fontWeight="bold" selectable>
-          {experiment.payload || "--"}
+          {unleashVariant.payload?.value || "--"}
           <TouchableOpacity
             onPress={() => {
               setVisible(true)
