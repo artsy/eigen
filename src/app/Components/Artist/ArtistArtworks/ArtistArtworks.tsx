@@ -225,7 +225,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
 
         <Spacer y={2} />
 
-        <CreateAlertButton contextModule={"artworkGridEmptyState" as ContextModule} />
+        <CreateAlertButton contextModule={ContextModule.artworkGridEmptyState} />
 
         <Spacer y={6} />
 

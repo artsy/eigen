@@ -74,7 +74,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     contextScreenOwnerType: contextScreenOwnerType ?? ("unknown" as ScreenOwnerType),
     contextScreenOwnerId: artwork.internalID,
     contextScreenOwnerSlug: artwork.slug,
-    contextModule: "longPressContextMenu" as ContextModule,
+    contextModule: ContextModule.longPressContextMenu,
   })
 
   const openViewInRoom = () => {
