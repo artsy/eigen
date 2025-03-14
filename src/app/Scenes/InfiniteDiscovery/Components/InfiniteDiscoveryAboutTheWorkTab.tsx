@@ -21,7 +21,7 @@ import { InfiniteDiscoveryAboutTheWorkTabQuery } from "__generated__/InfiniteDis
 import { InfiniteDiscoveryAboutTheWorkTab_artwork$key } from "__generated__/InfiniteDiscoveryAboutTheWorkTab_artwork.graphql"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
-import { ArtistListItemShort } from "app/Components/ArtistListItemShort"
+import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { Divider } from "app/Components/Bidding/Components/Divider"
 import { PartnerListItemShort } from "app/Components/PartnerListItemShort"
 import { dimensionsPresent } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkDimensionsClassificationAndAuthenticity"
@@ -178,7 +178,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
                 }
 
                 return (
-                  <ArtistListItemShort
+                  <ArtistListItemContainer
                     key={`artist-${index}`}
                     artist={artist}
                     onPress={() => collapse()}
@@ -264,7 +264,7 @@ const fragment = graphql`
     isFramed
 
     artists(shallow: true) @required(action: NONE) {
-      ...ArtistListItemShort_artist
+      ...ArtistListItem_artist
     }
 
     partner(shallow: true) @required(action: NONE) {
@@ -316,10 +316,8 @@ export const InfiniteDiscoveryAboutTheWorkTab: FC<InfiniteDiscoveryAboutTheWorkT
     },
     LoadingFallback: () => <InfiniteDiscoveryAboutTheWorkTabSkeleton />,
     ErrorFallback: () => {
-      const space = useSpace()
-
       return (
-        <Tabs.ScrollView contentContainerStyle={{ marginTop: space(2) }}>
+        <Tabs.ScrollView contentContainerStyle={{ marginTop: 20 }}>
           <SimpleMessage m={2}>Cannot load work details.</SimpleMessage>
         </Tabs.ScrollView>
       )

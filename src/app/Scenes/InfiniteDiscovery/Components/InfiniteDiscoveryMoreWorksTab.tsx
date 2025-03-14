@@ -144,10 +144,8 @@ export const InfiniteDiscoveryMoreWorksTab: FC<InfiniteDiscoveryMoreWorksTabProp
     )
   },
   ErrorFallback: () => {
-    const space = useSpace()
-
     return (
-      <Tabs.ScrollView contentContainerStyle={{ marginTop: space(2) }}>
+      <Tabs.ScrollView contentContainerStyle={{ marginTop: 20 }}>
         <SimpleMessage m={2}>Cannot load more works.</SimpleMessage>
       </Tabs.ScrollView>
     )
