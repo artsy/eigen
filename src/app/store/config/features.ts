@@ -220,7 +220,7 @@ export const features = {
   },
   AREnableInfiniteDiscovery: {
     description: "Enable infinite discovery",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
   },
   AREnableViewPortPrefetching: {
