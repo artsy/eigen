@@ -17,7 +17,7 @@ export const ProgressiveOnboardingAlertFilters: React.FC = ({ children }) => {
   const { trackEvent } = useProgressiveOnboardingTracking({
     name: "alert-select-filters",
     contextScreenOwnerType: OwnerType.artist,
-    contextModule: "artistArtworksFilterHeader" as ContextModule,
+    contextModule: ContextModule.artistArtworksFilterHeader,
   })
 
   const isDisplayable =

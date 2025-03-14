@@ -18,7 +18,7 @@ export const ProgressiveOnboardingAlertReminder: React.FC<
       ? "alert-create-reminder-1"
       : "alert-create-reminder-2",
     contextScreenOwnerType: OwnerType.artist,
-    contextModule: "artistArtworksFilterHeader" as ContextModule,
+    contextModule: ContextModule.artistArtworksFilterHeader,
   })
 
   const { setActivePopover } = GlobalStore.actions.progressiveOnboarding
