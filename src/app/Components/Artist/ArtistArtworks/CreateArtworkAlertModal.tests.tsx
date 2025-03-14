@@ -8,7 +8,7 @@ import { CreateSavedSearchModal } from "app/Scenes/SavedSearchAlert/CreateSavedS
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-jest.mock("app/Components/Artist/ArtistArtworks/CreateSavedSearchModal", () => ({
+jest.mock("app/Scenes/SavedSearchAlert/CreateSavedSearchModal", () => ({
   CreateSavedSearchModal: () => "CreateSavedSearchModal",
 }))
 
