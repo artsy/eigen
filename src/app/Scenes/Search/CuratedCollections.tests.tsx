@@ -72,6 +72,8 @@ describe("CuratedCollections", () => {
 
     fireEvent.press(getByText("Blue-Chip Artists"))
 
+    expect(navigate).toHaveBeenCalledWith(`/collection/blue-chip-artists`)
+
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       [
         {

@@ -31,8 +31,8 @@ export const CuratedCollectionItem: React.FC<CuratedCollectionItemProps> = ({
   }
 
   return (
-    <RouterLink to={`/collection/${item.slug}`} hasChildTouchable>
-      <CardRailCard onPress={onPress}>
+    <RouterLink to={`/collection/${item.slug}`} onPress={onPress} hasChildTouchable>
+      <CardRailCard>
         <Box>
           <ThreeUpImageLayout imageURLs={availableArtworkImageURLs} />
           <CardRailMetadataContainer>
