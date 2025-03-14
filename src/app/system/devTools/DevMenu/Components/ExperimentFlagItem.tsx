@@ -42,8 +42,8 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
   const localExperiment = experiments[flag] as ExperimentDescriptor
 
   const toast = useToast()
-  const [variant, setVariant] = useState(experiment.variant)
-  const [payload, setPayload] = useState(experiment.payload)
+  const [variant, setVariant] = useState(localVariantOverrides[flag])
+  const [payload, setPayload] = useState(localPayloadOverrides[flag])
   const space = useSpace()
   const [visible, setVisible] = useState(false)
 
@@ -117,7 +117,8 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                                 setVariant(variantSuggestion)
                               }}
                             >
-                              {variantSuggestion}
+                              {variantSuggestion}{" "}
+                              {experiment.unleashVariant === variantSuggestion && "(default)"}
                             </Pill>
                           )
                         })}
@@ -183,7 +184,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
               <Flex position="absolute" bottom={space(2)} px={2}>
                 <Button
                   block
-                  disabled={hasOverride}
+                  disabled={!hasOverride}
                   variant="outline"
                   onPress={() => {
                     Alert.alert(
@@ -197,8 +198,8 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                         {
                           text: "Reset",
                           onPress: () => {
-                            setVariant(experiment.variant)
-                            setPayload(experiment.payload)
+                            setVariant("")
+                            setPayload("")
                             setLocalVariantOverride({ key: flag, value: null })
                             setLocalPayloadOverride({ key: flag, value: null })
                             setVisible(false)

@@ -4,6 +4,7 @@ import { PortalProvider } from "@gorhom/portal"
 import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ShareSheetProvider } from "app/Components/ShareSheet/ShareSheetContext"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { InitializedFlagProvider } from "app/utils/InitializedFlagProvider"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { NavigationTestsProvider } from "app/utils/tests/NavigationTestsProvider"
@@ -17,7 +18,6 @@ import { ToastProvider } from "./Components/Toast/toastHook"
 import { GlobalStore, GlobalStoreProvider } from "./store/GlobalStore"
 import { GravityWebsocketContextProvider } from "./utils/Websockets/GravityWebsocketContext"
 import { combineProviders } from "./utils/combineProviders"
-import { UnleashProvider } from "./utils/experiments/UnleashProvider"
 import { track } from "./utils/track"
 
 export const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) =>
@@ -27,7 +27,7 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       GestureHandlerProvider,
       TrackingProvider,
       GlobalStoreProvider,
-      UnleashProvider, // uses: GlobalStoreProvider
+      InitializedFlagProvider,
       SafeAreaProvider,
       ProvideScreenDimensions, // uses: SafeAreaProvider
       // FIXME: Only use one from palette-mobile
