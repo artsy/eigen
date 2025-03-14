@@ -199,7 +199,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               if (!hasSavedArtworks) {
                 setHasSavedArtwors(true)
               }
-              saveArtworkToLists()
 
               if (isSaved) {
                 // if the artwork is currently saved, it will become unsaved, so optimistically decrement the count
@@ -208,6 +207,8 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                 // if the artwork is currently unsaved, it will become saved, so optimistically decrement the count
                 incrementSavedArtworksCount()
               }
+
+              saveArtworkToLists()
             }}
             testID="save-artwork-icon"
           >
