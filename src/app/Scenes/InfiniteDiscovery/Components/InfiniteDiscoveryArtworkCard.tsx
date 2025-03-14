@@ -21,7 +21,7 @@ import {
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
-import { Platform, Text as RNText, ViewStyle } from "react-native"
+import { Text as RNText, ViewStyle } from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import Animated, {
   Easing,
@@ -166,13 +166,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         onStartShouldSetResponderCapture={handleWrapperTaps}
         backgroundColor="white100"
         width="100%"
-        style={
-          containerStyle || {
-            borderRadius: 10,
-            borderWidth: Platform.OS === "android" ? 1 : 0,
-            borderColor: color("black10"),
-          }
-        }
+        style={containerStyle || { borderRadius: 10 }}
       >
         <Flex p={2}>
           <ArtistListItemContainer
