@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   BellIcon,
   Box,
@@ -15,7 +15,6 @@ import {
 import { MasonryFlashListRef } from "@shopify/flash-list"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
-import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { useCreateSavedSearchModalFilters } from "app/Components/Artist/ArtistArtworks/hooks/useCreateSavedSearchModalFilters"
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -33,6 +32,8 @@ import {
   CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD,
   useDismissAlertReminder,
 } from "app/Components/ProgressiveOnboarding/useDismissAlertReminder"
+import { CreateSavedSearchModal } from "app/Scenes/SavedSearchAlert/CreateSavedSearchModal"
+import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
@@ -43,7 +44,7 @@ import {
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { Schema } from "app/utils/track"
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -160,7 +161,14 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     }
   }, [relay.hasMore(), relay.isLoading()])
 
-  const CreateAlertButton: React.FC = () => {
+  const CreateAlertButton: React.FC<{ contextModule: ContextModule }> = ({ contextModule }) => {
+    const { trackCreateAlertTap } = useCreateAlertTracking({
+      contextScreenOwnerType: OwnerType.artist,
+      contextScreenOwnerId: artist.internalID,
+      contextScreenOwnerSlug: artist.slug,
+      contextModule: contextModule,
+    })
+
     return (
       <Button
         variant="outline"
@@ -168,14 +176,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         icon={<BellIcon />}
         size="small"
         onPress={() => {
-          // Could be useful to differenciate between the two at a later point
-          tracking.trackEvent(
-            tracks.tappedCreateAlert({
-              artistId: artist.internalID,
-              artistSlug: artist.slug,
-            })
-          )
-
+          trackCreateAlertTap()
           setIsCreateAlertModalVisible(true)
         }}
       >
@@ -224,7 +225,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
 
         <Spacer y={2} />
 
-        <CreateAlertButton />
+        <CreateAlertButton contextModule={ContextModule.artworkGridEmptyState} />
 
         <Spacer y={6} />
 
@@ -260,7 +261,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
             title="Get notified when new works are added."
             containerStyle={{ my: 2 }}
             IconComponent={() => {
-              return <CreateAlertButton />
+              return <CreateAlertButton contextModule={ContextModule.artistArtworksGridEnd} />
             }}
             iconPosition="right"
           />
@@ -441,13 +442,3 @@ export default createPaginationContainer(
     `,
   }
 )
-
-const tracks = {
-  tappedCreateAlert: ({ artistId, artistSlug }: { artistId: string; artistSlug: string }) => ({
-    action: ActionType.tappedCreateAlert,
-    context_screen_owner_type: OwnerType.artist,
-    context_screen_owner_id: artistId,
-    context_screen_owner_slug: artistSlug,
-    context_module: ContextModule.artistArtworksGridEnd,
-  }),
-}

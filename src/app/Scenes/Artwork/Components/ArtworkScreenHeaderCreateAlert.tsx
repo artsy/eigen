@@ -1,8 +1,10 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { BellIcon, Button } from "@artsy/palette-mobile"
 import { ArtworkScreenHeaderCreateAlert_artwork$key } from "__generated__/ArtworkScreenHeaderCreateAlert_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { hasBiddingEnded } from "app/Scenes/Artwork/utils/hasBiddingEnded"
 import { isLotClosed } from "app/Scenes/Artwork/utils/isLotClosed"
+import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useState } from "react"
 import { graphql, useFragment } from "react-relay"
@@ -19,7 +21,8 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
     artworkRef
   )
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
-  const { isForSale, sale, saleArtwork, isInAuction, isEligibleToCreateAlert } = artwork
+  const { isForSale, sale, saleArtwork, isInAuction, isEligibleToCreateAlert, internalID, slug } =
+    artwork
 
   const isLotClosedOrBiddingEnded =
     hasBiddingEnded(sale, saleArtwork) || isLotClosed(sale, saleArtwork)
@@ -27,6 +30,13 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
 
   const displayCreateAlertHeader =
     isInAuction && isLotClosedOrBiddingEnded && enableAuctionHeaderAlertCTA
+
+  const { trackCreateAlertTap } = useCreateAlertTracking({
+    contextScreenOwnerType: OwnerType.artwork,
+    contextScreenOwnerId: internalID,
+    contextScreenOwnerSlug: slug,
+    contextModule: "ArtworkScreenHeader" as ContextModule,
+  })
 
   if (!!displayCreateAlertHeader || !isEligibleToCreateAlert) {
     return null
@@ -38,7 +48,10 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
         size="small"
         variant={isForSale ? "outline" : "fillDark"}
         haptic
-        onPress={() => setShowCreateArtworkAlertModal(true)}
+        onPress={() => {
+          trackCreateAlertTap()
+          setShowCreateArtworkAlertModal(true)
+        }}
         icon={<BellIcon fill={isForSale ? "black100" : "white100"} />}
       >
         Create Alert
@@ -55,6 +68,8 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
 
 const ArtworkScreenHeaderCreateAlert_artwork = graphql`
   fragment ArtworkScreenHeaderCreateAlert_artwork on Artwork {
+    internalID
+    slug
     isEligibleToCreateAlert
     isInAuction
     ...CreateArtworkAlertModal_artwork

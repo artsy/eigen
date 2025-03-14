@@ -1,16 +1,16 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { OwnerType } from "@artsy/cohesion"
 import { BrowseSimilarWorks_artwork$data } from "__generated__/BrowseSimilarWorks_artwork.graphql"
 import {
   CreateArtworkAlertModal_artwork$data,
   CreateArtworkAlertModal_artwork$key,
 } from "__generated__/CreateArtworkAlertModal_artwork.graphql"
-import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { Aggregations } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   SavedSearchEntity,
   SavedSearchEntityArtist,
   SearchCriteriaAttributes,
 } from "app/Components/ArtworkFilter/SavedSearch/types"
+import { CreateSavedSearchModal } from "app/Scenes/SavedSearchAlert/CreateSavedSearchModal"
 import { compact } from "lodash"
 import { graphql, useFragment } from "react-relay"
 
@@ -18,14 +18,12 @@ interface CreateArtworkAlertModalProps {
   artwork: CreateArtworkAlertModal_artwork$key
   visible: boolean
   onClose: () => void
-  contextModule?: ContextModule
 }
 
 export const CreateArtworkAlertModal: React.FC<CreateArtworkAlertModalProps> = ({
   artwork,
   visible,
   onClose,
-  contextModule,
 }) => {
   const data = useFragment<CreateArtworkAlertModalProps["artwork"]>(
     graphql`
@@ -70,7 +68,6 @@ export const CreateArtworkAlertModal: React.FC<CreateArtworkAlertModalProps> = (
       entity={artworkAlert.entity}
       attributes={artworkAlert.attributes}
       closeModal={onClose}
-      contextModule={contextModule}
       currentArtworkID={data.internalID}
     />
   )

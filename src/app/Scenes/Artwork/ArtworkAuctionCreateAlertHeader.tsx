@@ -4,6 +4,7 @@ import { ArtworkAuctionCreateAlertHeader_artwork$key } from "__generated__/Artwo
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { hasBiddingEnded } from "app/Scenes/Artwork/utils/hasBiddingEnded"
 import { isLotClosed } from "app/Scenes/Artwork/utils/isLotClosed"
+import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { FC, useState } from "react"
 import { graphql, useFragment } from "react-relay"
@@ -42,6 +43,13 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
   const displayAuctionCreateAlertHeader =
     isEligibleToCreateAlert && isInAuction && isLotClosedOrBiddingEnded
 
+  const { trackCreateAlertTap } = useCreateAlertTracking({
+    contextScreenOwnerType: OwnerType.artwork,
+    contextScreenOwnerId: internalID,
+    contextScreenOwnerSlug: slug,
+    contextModule: ContextModule.artworkClosedLotHeader,
+  })
+
   if (!displayAuctionCreateAlertHeader) {
     return null
   }
@@ -55,7 +63,6 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
       <CreateArtworkAlertModal
         artwork={artworkData}
         onClose={() => setShowCreateArtworkAlertModal(false)}
-        contextModule={ContextModule.artworkClosedLotHeader}
         visible={showCreateArtworkAlertModal}
       />
 
@@ -96,7 +103,10 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
             size="large"
             variant="fillDark"
             haptic
-            onPress={() => setShowCreateArtworkAlertModal(true)}
+            onPress={() => {
+              trackCreateAlertTap()
+              setShowCreateArtworkAlertModal(true)
+            }}
             icon={<BellIcon fill="white100" />}
             block
           >

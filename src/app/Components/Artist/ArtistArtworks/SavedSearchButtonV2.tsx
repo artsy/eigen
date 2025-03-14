@@ -1,7 +1,7 @@
-import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { BellIcon, Flex, Box, Text, TouchableHighlightColor } from "@artsy/palette-mobile"
 import { ProgressiveOnboardingSaveAlert } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveAlert"
-import { useTracking } from "react-tracking"
+import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 
 export interface SavedSearchButtonV2Props {
   artistId: string
@@ -11,11 +11,17 @@ export interface SavedSearchButtonV2Props {
 
 export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) => {
   const { artistId, artistSlug, onPress } = props
-  const tracking = useTracking()
+
+  const { trackCreateAlertTap } = useCreateAlertTracking({
+    contextScreenOwnerType: OwnerType.artist,
+    contextScreenOwnerId: artistId,
+    contextScreenOwnerSlug: artistSlug,
+    contextModule: ContextModule.artworkGrid,
+  })
 
   const handlePress = () => {
     onPress()
-    tracking.trackEvent(tracks.tappedCreateAlert(artistId, artistSlug))
+    trackCreateAlertTap()
   }
 
   return (
@@ -38,14 +44,4 @@ export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) =
       </ProgressiveOnboardingSaveAlert>
     </Flex>
   )
-}
-
-export const tracks = {
-  tappedCreateAlert: (artistId: string, artistSlug: string): TappedCreateAlert => ({
-    action: ActionType.tappedCreateAlert,
-    context_screen_owner_type: OwnerType.artist,
-    context_screen_owner_id: artistId,
-    context_screen_owner_slug: artistSlug,
-    context_module: ContextModule.artworkGrid,
-  }),
 }
