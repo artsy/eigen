@@ -35,6 +35,10 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
     loadQuery({ id: artworkID, artistIDs })
   }, [artworkID, artistIDs])
 
+  useEffect(() => {
+    setFooterVisible(true)
+  }, [artworkID])
+
   const handleOnTabChange = () => {
     setFooterVisible((prev) => !prev)
   }
