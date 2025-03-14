@@ -20,8 +20,9 @@ import {
 } from "app/store/ProgressiveOnboardingModel"
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
-import { memo, useEffect, useRef } from "react"
+import { memo, useEffect, useRef, useState } from "react"
 import { ViewStyle, Text as RNText } from "react-native"
+import Haptic from "react-native-haptic-feedback"
 import Animated, {
   Easing,
   interpolate,
@@ -49,6 +50,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const saveAnimationProgress = useSharedValue(0)
     const { hasSavedArtworks } = GlobalStore.useAppState((state) => state.infiniteDiscovery)
     const setHasSavedArtwors = GlobalStore.actions.infiniteDiscovery.setHasSavedArtworks
+    const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
 
     const { trackEvent } = useTracking()
     const color = useColor()
@@ -86,6 +88,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     })
 
     const isSaved = isSavedProp !== undefined ? isSavedProp : isSavedToArtworkList
+    const [showScreenTapToSave, setShowScreenTapToSave] = useState(false)
 
     const animatedSaveButtonStyles = useAnimatedStyle(() => {
       return {
@@ -98,6 +101,14 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     })
 
     useEffect(() => {
+      // Revert showScreenTapToSave if the artwork is not saved
+      // This is required to make sure we show the heart overlay again
+      if (!isSaved) {
+        setShowScreenTapToSave(false)
+      }
+    }, [isSaved])
+
+    useEffect(() => {
       saveAnimationProgress.value = withTiming(isSavedProp ? 1 : 0, {
         duration: 300,
       })
@@ -105,12 +116,13 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     const savedArtworkAnimationStyles = useAnimatedStyle(() => {
       return {
-        opacity: isSavedProp
-          ? withSequence(
-              withTiming(1, { duration: 300, easing: Easing.linear }),
-              withDelay(500, withTiming(0, { duration: 300, easing: Easing.linear }))
-            )
-          : 0,
+        opacity:
+          isSavedProp || showScreenTapToSave
+            ? withSequence(
+                withTiming(1, { duration: 300, easing: Easing.linear }),
+                withDelay(500, withTiming(0, { duration: 300, easing: Easing.linear }))
+              )
+            : 0,
       }
     })
 
@@ -126,8 +138,36 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     const size = sizeToFit({ width, height }, { width: screenWidth, height: MAX_ARTWORK_HEIGHT })
 
+    const handleWrapperTaps = () => {
+      const now = Date.now()
+      const state = gestureState.current
+
+      if (now - state.lastTapTimestamp < 500) {
+        state.numTaps += 1
+      } else {
+        state.numTaps = 1
+      }
+
+      state.lastTapTimestamp = now
+
+      if (state.numTaps === 2) {
+        state.numTaps = 0
+        if (!isSaved) {
+          Haptic.trigger("impactLight")
+          setShowScreenTapToSave(true)
+          saveArtworkToLists()
+        }
+      }
+      return false
+    }
+
     return (
-      <Flex backgroundColor="white100" width="100%" style={containerStyle || { borderRadius: 10 }}>
+      <Flex
+        onStartShouldSetResponderCapture={handleWrapperTaps}
+        backgroundColor="white100"
+        width="100%"
+        style={containerStyle || { borderRadius: 10 }}
+      >
         <Flex p={2}>
           <ArtistListItemContainer
             artist={artwork.artists?.[0]}
