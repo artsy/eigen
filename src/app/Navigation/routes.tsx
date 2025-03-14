@@ -62,7 +62,7 @@ import { FairAllFollowedArtistsQueryRenderer } from "app/Scenes/Fair/FairAllFoll
 import { FairArticlesQueryRenderer } from "app/Scenes/Fair/FairArticles"
 import { FairMoreInfoQueryRenderer } from "app/Scenes/Fair/FairMoreInfo"
 import { FeaturedFairsScreen, featuredFairsScreenQuery } from "app/Scenes/Fair/FeaturedFairsScreen"
-import { Favorites as LegacyFavorites } from "app/Scenes/Favorites/Favorites"
+import { Favorites, Favorites as LegacyFavorites } from "app/Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "app/Scenes/Feature/Feature"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { GeneQueryRenderer } from "app/Scenes/Gene/Gene"
@@ -145,7 +145,7 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "app/Scenes/ViewingRoom/ViewingRoomsList"
-import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
 import { goBack } from "app/system/navigation/navigate"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
@@ -764,19 +764,9 @@ export const artsyDotNetRoutes = defineRoutes([
   {
     path: "/favorites",
     name: "Favorites",
-    Component: LegacyFavorites,
+    Component: unsafe_getFeatureFlag("AREnableFavoritesTab") ? Favorites : LegacyFavorites,
     options: {
-      screenOptions: {
-        headerShown: false,
-      },
-    },
-  },
-  {
-    path: "/favorites-tab",
-    name: "FavoritesTab",
-    Component: LegacyFavorites,
-    options: {
-      isRootViewForTabName: "favorites",
+      isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
       onlyShowInTabName: "favorites",
       screenOptions: {
         headerShown: false,

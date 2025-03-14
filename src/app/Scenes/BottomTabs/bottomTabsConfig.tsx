@@ -29,7 +29,7 @@ export const bottomTabsConfig: {
   },
   favorites: {
     route: "/favorites",
-    analyticsDescription: OwnerType.saves,
+    analyticsDescription: OwnerType.favorites,
     name: "Favorites",
   },
   profile: {

@@ -4,13 +4,10 @@ import { modules } from "app/Navigation/utils/modules"
 
 export const FavoritesTab: React.FC = () => {
   return (
-    <StackNavigator.Navigator
-      screenOptions={{ headerShown: false }}
-      initialRouteName="FavoritesTab"
-    >
+    <StackNavigator.Navigator screenOptions={{ headerShown: false }} initialRouteName="Favorites">
       {registerScreen({
-        name: "FavoritesTab",
-        module: modules["FavoritesTab"],
+        name: "Favorites",
+        module: modules["Favorites"],
       })}
 
       {sharedRoutes()}
