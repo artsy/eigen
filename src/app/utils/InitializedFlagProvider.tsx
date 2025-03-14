@@ -31,8 +31,7 @@ export const InitializedFlagProvider: React.FC = ({ children }) => {
 
   return (
     <FlagProvider config={config} startClient={false}>
-      <UnleashInitializer />
-      {children}
+      <UnleashInitializer children={children} />
     </FlagProvider>
   )
 }
