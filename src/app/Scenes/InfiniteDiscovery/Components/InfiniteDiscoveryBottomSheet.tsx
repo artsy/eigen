@@ -8,7 +8,7 @@ import {
   InfiniteDiscoveryTabs,
   InfiniteDiscoveryTabsSkeleton,
 } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetTabs"
-import { FC, useEffect, useState } from "react"
+import { FC, Suspense, useEffect, useState } from "react"
 import { Dimensions } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useQueryLoader } from "react-relay"
@@ -61,19 +61,25 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
           if (!queryRef || !footerVisible) {
             return null
           }
-          return <InfiniteDiscoveryBottomSheetFooterQueryRenderer queryRef={queryRef} {...props} />
+          return (
+            <Suspense fallback={null}>
+              <InfiniteDiscoveryBottomSheetFooterQueryRenderer queryRef={queryRef} {...props} />
+            </Suspense>
+          )
         }}
       >
         {/* This if is to make TS happy, usePreloadedQuery will always require a queryRef */}
         {!queryRef ? (
           <InfiniteDiscoveryTabsSkeleton />
         ) : (
-          <InfiniteDiscoveryTabs
-            queryRef={queryRef}
-            onTabChange={handleOnTabChange}
-            // this key resets the state of the tabs when the artwork changes
-            key={`infinite_discovery_tabs_${artworkID}`}
-          />
+          <Suspense fallback={<InfiniteDiscoveryTabsSkeleton />}>
+            <InfiniteDiscoveryTabs
+              queryRef={queryRef}
+              onTabChange={handleOnTabChange}
+              // this key resets the state of the tabs when the artwork changes
+              key={`infinite_discovery_tabs_${artworkID}`}
+            />
+          </Suspense>
         )}
       </BottomSheet>
     </>
