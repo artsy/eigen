@@ -281,7 +281,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   )
 }
 
-const InfiniteDisvoryHeader = () => (
+const InfiniteDiscoveryHeader = () => (
   <Screen.Header
     title="Discover Daily"
     hideLeftElements
@@ -302,7 +302,7 @@ const InfiniteDisvoryHeader = () => (
 
 const InfiniteDiscoverySpinner: React.FC = () => (
   <Screen>
-    <InfiniteDisvoryHeader />
+    <InfiniteDiscoveryHeader />
     <Screen.Body fullwidth>
       <Flex
         flex={1}
@@ -379,7 +379,7 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
   LoadingFallback: InfiniteDiscoverySpinner,
   ErrorFallback: () => (
     <Screen>
-      <InfiniteDisvoryHeader />
+      <InfiniteDiscoveryHeader />
       <Screen.Body fullwidth>
         <LoadFailureView />
       </Screen.Body>
