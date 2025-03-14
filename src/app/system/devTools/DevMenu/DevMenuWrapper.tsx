@@ -5,6 +5,8 @@ import { navigate } from "app/system/navigation/navigate"
 import React, { useRef } from "react"
 import { Platform } from "react-native"
 
+const MAX_DURATION_BETWEEN_TAPS = 250
+
 export const DevMenuWrapper: React.FC = ({ children }) => {
   const userIsDev = GlobalStore.useAppState((store) => store.artsyPrefs.userIsDev.value)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
@@ -24,7 +26,7 @@ export const DevMenuWrapper: React.FC = ({ children }) => {
         const now = Date.now()
         const state = gestureState.current
 
-        if (now - state.lastTapTimestamp < 500) {
+        if (now - state.lastTapTimestamp < MAX_DURATION_BETWEEN_TAPS) {
           state.numTaps += 1
         } else {
           state.numTaps = 1

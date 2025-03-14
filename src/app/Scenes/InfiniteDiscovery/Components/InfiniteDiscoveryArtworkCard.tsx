@@ -35,6 +35,8 @@ import Animated, {
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
+const SAVES_MAX_DURATION_BETWEEN_TAPS = 250
+
 interface InfiniteDiscoveryArtworkCardProps {
   artwork: InfiniteDiscoveryArtworkCard_artwork$key
   containerStyle?: ViewStyle
@@ -142,7 +144,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       const now = Date.now()
       const state = gestureState.current
 
-      if (now - state.lastTapTimestamp < 500) {
+      if (now - state.lastTapTimestamp < SAVES_MAX_DURATION_BETWEEN_TAPS) {
         state.numTaps += 1
       } else {
         state.numTaps = 1
