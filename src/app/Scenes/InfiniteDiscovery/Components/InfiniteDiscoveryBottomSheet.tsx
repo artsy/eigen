@@ -1,6 +1,8 @@
 import { useColor } from "@artsy/palette-mobile"
 import BottomSheet from "@gorhom/bottom-sheet"
 import { InfiniteDiscoveryBottomSheetTabsQuery } from "__generated__/InfiniteDiscoveryBottomSheetTabsQuery.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
+import { RetryErrorBoundaryProps } from "app/Components/RetryErrorBoundary"
 import { InfiniteDiscoveryBottomSheetBackdrop } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetBackdrop"
 import { InfiniteDiscoveryBottomSheetFooterQueryRenderer } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetFooter"
 import { InfiniteDiscoveryBottomeSheetHandle } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetHandle"
@@ -83,6 +85,40 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
         )}
       </BottomSheet>
     </>
+  )
+}
+
+export const InfiniteDiscoveryBottomSheetFailureView: React.FC<
+  {
+    error: Error
+    retry: () => void
+  } & RetryErrorBoundaryProps
+> = ({ error, retry }) => {
+  const color = useColor()
+  const { bottom } = useSafeAreaInsets()
+
+  return (
+    <BottomSheet
+      enableDynamicSizing={false}
+      enablePanDownToClose={false}
+      snapPoints={[bottom + 60, height * 0.88]}
+      index={0}
+      backdropComponent={(props) => {
+        return (
+          <InfiniteDiscoveryBottomSheetBackdrop
+            {...props}
+            disappearsOnIndex={0}
+            appearsOnIndex={1}
+          />
+        )
+      }}
+      backgroundStyle={{
+        backgroundColor: color("white100"),
+      }}
+      handleComponent={InfiniteDiscoveryBottomeSheetHandle}
+    >
+      <LoadFailureView error={error} onRetry={retry} showBackButton />
+    </BottomSheet>
   )
 }
 
