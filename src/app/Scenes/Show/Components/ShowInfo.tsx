@@ -1,7 +1,6 @@
-import { ChevronIcon, Box, BoxProps, Text } from "@artsy/palette-mobile"
+import { Box, BoxProps, ChevronIcon, Text } from "@artsy/palette-mobile"
 import { ShowInfo_show$data } from "__generated__/ShowInfo_show.graphql"
-import { navigate } from "app/system/navigation/navigate"
-import { TouchableOpacity } from "react-native"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export interface ShowInfoProps extends BoxProps {
@@ -17,12 +16,12 @@ export const ShowInfo: React.FC<ShowInfoProps> = ({ show, ...rest }) => {
         </Text>
       )}
 
-      <TouchableOpacity onPress={() => navigate(`${show.href}/info`)}>
+      <RouterLink to={`${show.href}/info`}>
         <Box flexDirection="row" alignItems="center">
           <Text variant="sm">More info</Text>
           <ChevronIcon />
         </Box>
-      </TouchableOpacity>
+      </RouterLink>
     </Box>
   )
 }

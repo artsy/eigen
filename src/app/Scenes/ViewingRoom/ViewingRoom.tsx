@@ -251,8 +251,8 @@ export const ViewingRoomScreenQuery = graphql`
   }
 `
 
-export const ViewingRoomQueryRenderer: React.FC<{ viewing_room_id: string }> = ({
-  viewing_room_id: viewingRoomID,
+export const ViewingRoomQueryRenderer: React.FC<{ viewingRoomID: string }> = ({
+  viewingRoomID,
 }) => {
   return (
     <QueryRenderer<ViewingRoomQuery>

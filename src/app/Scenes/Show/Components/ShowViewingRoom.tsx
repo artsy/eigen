@@ -3,8 +3,7 @@ import { Box, BoxProps } from "@artsy/palette-mobile"
 import { ShowViewingRoom_show$data } from "__generated__/ShowViewingRoom_show.graphql"
 import { MediumCard } from "app/Components/Cards"
 import { tagForStatus } from "app/Scenes/ViewingRoom/Components/ViewingRoomsListItem"
-import { navigate } from "app/system/navigation/navigate"
-import { TouchableOpacity } from "react-native"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -23,8 +22,6 @@ export const ShowViewingRoom: React.FC<ShowViewingRoomProps> = ({ show, ...rest 
 
   const handlePress = () => {
     if (viewingRoom.href) {
-      navigate(viewingRoom.href)
-
       const data: TappedViewingRoomCard = {
         action: ActionType.tappedViewingRoomCard,
         context_module: ContextModule.associatedViewingRoom,
@@ -43,7 +40,7 @@ export const ShowViewingRoom: React.FC<ShowViewingRoomProps> = ({ show, ...rest 
 
   return (
     <Box {...rest}>
-      <TouchableOpacity onPress={handlePress}>
+      <RouterLink to={viewingRoom.href} onPress={handlePress}>
         <MediumCard
           width="100%"
           height="auto"
@@ -57,7 +54,7 @@ export const ShowViewingRoom: React.FC<ShowViewingRoomProps> = ({ show, ...rest 
           )}
           style={{ aspectRatio: 3 / 4 }}
         />
-      </TouchableOpacity>
+      </RouterLink>
     </Box>
   )
 }
