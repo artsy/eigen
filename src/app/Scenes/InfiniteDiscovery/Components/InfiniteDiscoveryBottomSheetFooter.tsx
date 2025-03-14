@@ -179,11 +179,10 @@ export const InfiniteDiscoveryBottomSheetFooterQueryRenderer: FC<InfiniteDiscove
     LoadingFallback: (props) => <InfiniteDiscoveryBottomSheetFooterSkeleton {...props} />,
     ErrorFallback: (_errorProps, props) => {
       const color = useColor()
-      const { bottom } = useSafeAreaInsets()
       return (
         <BottomSheetFooter
           {...props}
-          style={{ paddingBottom: bottom, backgroundColor: color("white100") }}
+          style={{ paddingBottom: 20, backgroundColor: color("white100") }}
         >
           <Divider />
           <Skeleton>
