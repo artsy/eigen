@@ -169,8 +169,8 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         style={
           containerStyle || {
             borderRadius: 10,
-
-            elevation: Platform.OS === "android" ? 2 : 0,
+            borderWidth: Platform.OS === "android" ? 1 : 0,
+            borderColor: color("black10"),
           }
         }
       >

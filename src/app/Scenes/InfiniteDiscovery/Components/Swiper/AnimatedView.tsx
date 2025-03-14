@@ -99,14 +99,6 @@ export const AnimatedView: FC<AnimatedViewProps> = ({
         : 0
   )
 
-  const elevation = useDerivedValue(() =>
-    isTopCard.value
-      ? interpolate(activeCardX.value, [0, -width], [0, MAX_ELEVATION], Extrapolation.CLAMP)
-      : isLastSwiped.value
-        ? interpolate(swipedCardX.value, [-width, 0], [8, 0], Extrapolation.CLAMP)
-        : 0
-  )
-
   const scale = useDerivedValue(() =>
     isSecondCard.value
       ? interpolate(activeCardX.value, [0, -width], [MIN_SCALE, 1], Extrapolation.CLAMP)
@@ -130,7 +122,6 @@ export const AnimatedView: FC<AnimatedViewProps> = ({
     ],
     shadowRadius: 12,
     shadowOpacity: shadowOpacity.value,
-    elevation: elevation.value,
     opacity: opacity.value,
   }))
 
@@ -140,7 +131,6 @@ export const AnimatedView: FC<AnimatedViewProps> = ({
         animatedStyle,
         {
           shadowOffset: Platform.OS === "ios" ? { width: 0, height: 0 } : undefined,
-          elevation: Platform.OS === "android" ? 2 : 0,
           width: screenWidth,
           alignSelf: "center",
           position: "absolute",
@@ -156,6 +146,5 @@ export const AnimatedView: FC<AnimatedViewProps> = ({
 const ARC_RADIUSES = [15, 23, 30]
 const MAX_ROTATIONS = [5, 7, 9]
 const MAX_SHADOW_OPACITY = 0.8
-const MAX_ELEVATION = 8
 const MIN_SCALE = 0.95
 const MIN_OPACITY = 0.5
