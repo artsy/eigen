@@ -6,17 +6,19 @@ import {
   Flex,
   FlexProps,
   LinkText,
+  SimpleMessage,
   Skeleton,
   SkeletonBox,
   SkeletonText,
   Spacer,
+  Tabs,
   Text,
   TextProps,
   useSpace,
 } from "@artsy/palette-mobile"
 import { BottomSheetScrollView, useBottomSheet } from "@gorhom/bottom-sheet"
+import { InfiniteDiscoveryAboutTheWorkTabQuery } from "__generated__/InfiniteDiscoveryAboutTheWorkTabQuery.graphql"
 import { InfiniteDiscoveryAboutTheWorkTab_artwork$key } from "__generated__/InfiniteDiscoveryAboutTheWorkTab_artwork.graphql"
-import { InfiniteDiscoveryBottomSheetTabsQuery } from "__generated__/InfiniteDiscoveryBottomSheetTabsQuery.graphql"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { ArtistListItemShort } from "app/Components/ArtistListItemShort"
@@ -24,13 +26,13 @@ import { Divider } from "app/Components/Bidding/Components/Divider"
 import { PartnerListItemShort } from "app/Components/PartnerListItemShort"
 import { dimensionsPresent } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkDimensionsClassificationAndAuthenticity"
 import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
-import { aboutTheWorkQuery } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { useSetArtworkAsRecentlyViewed } from "app/Scenes/InfiniteDiscovery/hooks/useSetArtworkAsRecentlyViewed"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { navigate } from "app/system/navigation/navigate"
 import { Sentinel } from "app/utils/Sentinel"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { FC } from "react"
-import { graphql, PreloadedQuery, useFragment, usePreloadedQuery } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface AboutTheWorkTabProps {
   artwork: InfiniteDiscoveryAboutTheWorkTab_artwork$key
@@ -272,20 +274,57 @@ const fragment = graphql`
 `
 
 interface InfiniteDiscoveryAboutTheWorkTabProps {
-  queryRef: PreloadedQuery<InfiniteDiscoveryBottomSheetTabsQuery>
+  artworkID: string
 }
 
-export const InfiniteDiscoveryAboutTheWorkTab: FC<InfiniteDiscoveryAboutTheWorkTabProps> = ({
-  queryRef,
-}) => {
-  const data = usePreloadedQuery(aboutTheWorkQuery, queryRef)
-
-  if (!data?.artwork || !data?.me) {
-    return <InfiniteDiscoveryAboutTheWorkTabSkeleton />
+const infiniteDiscoveryAboutTheWorkQuery = graphql`
+  query InfiniteDiscoveryAboutTheWorkTabQuery($id: String!) {
+    artwork(id: $id) {
+      ...InfiniteDiscoveryAboutTheWorkTab_artwork
+    }
+    me {
+      ...useSendInquiry_me
+      ...MyProfileEditModal_me
+      ...BidButton_me
+      ...InfiniteDiscoveryBottomSheetFooter_me
+    }
   }
+`
 
-  return <AboutTheWorkTab artwork={data.artwork} me={data.me} />
-}
+export const InfiniteDiscoveryAboutTheWorkTab: FC<InfiniteDiscoveryAboutTheWorkTabProps> =
+  withSuspense({
+    Component: ({ artworkID }) => {
+      const space = useSpace()
+
+      const data = useLazyLoadQuery<InfiniteDiscoveryAboutTheWorkTabQuery>(
+        infiniteDiscoveryAboutTheWorkQuery,
+        {
+          id: artworkID,
+        }
+      )
+
+      if (!data?.artwork || !data?.me) {
+        return (
+          <Tabs.ScrollView contentContainerStyle={{ marginTop: space(2) }}>
+            {/* This should never be the case, but we'll handle it anyway */}
+            <SimpleMessage m={2}>No details available.</SimpleMessage>
+          </Tabs.ScrollView>
+        )
+      }
+
+      return <AboutTheWorkTab artwork={data.artwork} me={data.me} />
+    },
+    LoadingFallback: () => <InfiniteDiscoveryAboutTheWorkTabSkeleton />,
+    ErrorFallback: () => {
+      const space = useSpace()
+
+      return (
+        <Tabs.ScrollView contentContainerStyle={{ marginTop: space(2) }}>
+          <SimpleMessage m={2}>Cannot load work details.</SimpleMessage>
+        </Tabs.ScrollView>
+      )
+    },
+  })
 
 export const InfiniteDiscoveryAboutTheWorkTabSkeleton: FC = () => {
   const space = useSpace()

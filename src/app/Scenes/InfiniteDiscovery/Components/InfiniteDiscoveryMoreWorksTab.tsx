@@ -1,19 +1,21 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Flex, SimpleMessage, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { InfiniteDiscoveryMoreWorksTabQuery } from "__generated__/InfiniteDiscoveryMoreWorksTabQuery.graphql"
 import { InfiniteDiscoveryMoreWorksTab_artworks$key } from "__generated__/InfiniteDiscoveryMoreWorksTab_artworks.graphql"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { PAGE_SIZE } from "app/Components/constants"
-import { aboutTheWorkQuery } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { extractNodes } from "app/utils/extractNodes"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
+import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { FC, useCallback } from "react"
-import { graphql, PreloadedQuery, usePaginationFragment, usePreloadedQuery } from "react-relay"
+import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface MoreWorksTabProps {
   artworks: InfiniteDiscoveryMoreWorksTab_artworks$key
@@ -101,18 +103,53 @@ const fragment = graphql`
   }
 `
 
-interface InfiniteDiscoveryMoreWorksTabProps {
-  queryRef: PreloadedQuery<any>
-}
-
-export const InfiniteDiscoveryMoreWorksTab: FC<InfiniteDiscoveryMoreWorksTabProps> = ({
-  queryRef,
-}) => {
-  const data = usePreloadedQuery(aboutTheWorkQuery, queryRef)
-
-  if (!data) {
-    return null
+const infiniteDiscoveryMoreWorksQuery = graphql`
+  query InfiniteDiscoveryMoreWorksTabQuery($artistIDs: [String!]!) {
+    ...InfiniteDiscoveryMoreWorksTab_artworks @arguments(artistIDs: $artistIDs)
   }
+`
 
-  return <MoreWorksTab artworks={data} />
+interface InfiniteDiscoveryMoreWorksTabProps {
+  artistIDs: string[]
 }
+
+export const InfiniteDiscoveryMoreWorksTab: FC<InfiniteDiscoveryMoreWorksTabProps> = withSuspense({
+  Component: ({ artistIDs }) => {
+    const space = useSpace()
+
+    const data = useLazyLoadQuery<InfiniteDiscoveryMoreWorksTabQuery>(
+      infiniteDiscoveryMoreWorksQuery,
+      {
+        artistIDs,
+      }
+    )
+
+    if (!data) {
+      return (
+        <Tabs.ScrollView contentContainerStyle={{ marginTop: space(2) }}>
+          <SimpleMessage m={2}>Cannot load more works.</SimpleMessage>
+        </Tabs.ScrollView>
+      )
+    }
+
+    return <MoreWorksTab artworks={data} />
+  },
+  LoadingFallback: () => {
+    const space = useSpace()
+
+    return (
+      <Tabs.ScrollView contentContainerStyle={{ marginTop: space(2) }}>
+        <PlaceholderGrid />
+      </Tabs.ScrollView>
+    )
+  },
+  ErrorFallback: () => {
+    const space = useSpace()
+
+    return (
+      <Tabs.ScrollView contentContainerStyle={{ marginTop: space(2) }}>
+        <SimpleMessage m={2}>Cannot load more works.</SimpleMessage>
+      </Tabs.ScrollView>
+    )
+  },
+})
