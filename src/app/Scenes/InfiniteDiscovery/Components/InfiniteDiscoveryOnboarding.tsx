@@ -1,130 +1,224 @@
-import {
-  Button,
-  Flex,
-  HeartIcon,
-  Spacer,
-  Text,
-  useScreenDimensions,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { ActionType, OwnerType } from "@artsy/cohesion"
+import { Flex, LinkText, Spacer, Text, useSpace } from "@artsy/palette-mobile"
+import { Swiper, SwiperRefProps } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
+import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
 import { GlobalStore } from "app/store/GlobalStore"
+import { MotiView } from "moti"
 import { useEffect, useRef, useState } from "react"
-import { Modal } from "react-native"
-import { FlatList } from "react-native-gesture-handler"
+import { LayoutAnimation, Modal, TouchableWithoutFeedback } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
+import { useSharedValue } from "react-native-reanimated"
 import { SafeAreaView } from "react-native-safe-area-context"
+import { useTracking } from "react-tracking"
 
-export const InfiniteDiscoveryOnboarding: React.FC<{}> = () => {
+interface InfiniteDiscoveryOnboardingProps {
+  artworks: InfiniteDiscoveryArtwork[]
+}
+
+const ONBOARDING_SWIPE_ANIMATION_DURATION = 2500
+const ONBOARDING_ANIMATION_DELAY = 1000
+const ONBOARDING_SAVED_HINT_DURATION = 1500
+
+export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingProps> = ({
+  artworks,
+}) => {
+  const { trackEvent } = useTracking()
+  const space = useSpace()
+  const [showSavedHint, setShowSavedHint] = useState(false)
+  const [showSwiper, setShowSwiper] = useState(false)
+
+  const swiperRef = useRef<SwiperRefProps>(null)
+
+  const isAtworkSaved = (index: number) => {
+    // We want to only enable saving the upper card
+    if (index === artworks.length - 1) {
+      return showSavedHint
+    }
+
+    return false
+  }
+
   const [isVisible, setIsVisible] = useState(false)
+  const isRewindRequested = useSharedValue(false)
+  const [enableTapToDismiss, setEnableTapToDismiss] = useState(false)
 
   const hasInteractedWithOnboarding = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
   )
 
-  console.log({ hasInteractedWithOnboarding })
+  useEffect(() => {
+    if (isVisible) {
+      setTimeout(() => {
+        setShowSwiper(true)
+      }, 1000)
+    }
+  }, [isVisible])
   useEffect(() => {
     setTimeout(() => {
       if (!hasInteractedWithOnboarding) {
         setIsVisible(true)
+        // Make sure the user can tap to dismiss the onboarding only after a delay
+        // This is required to make sure they can see the onboarding content
+        setTimeout(() => {
+          setEnableTapToDismiss(true)
+        }, 1500)
       }
-    }, 2000)
+    }, 1000)
   }, [hasInteractedWithOnboarding])
 
-  const space = useSpace()
-  const { width } = useScreenDimensions()
-  const flatlistRef = useRef<FlatList>(null)
-  const [index, setIndex] = useState(0)
-
-  const handleNext = () => {
-    const newIndex = index + 1
-
-    if (newIndex < STEPS.length) {
-      setIndex(newIndex)
-      flatlistRef.current?.scrollToIndex({ animated: true, index: newIndex })
-    } else {
-      setIsVisible(false)
+  useEffect(() => {
+    if (isVisible) {
+      trackEvent(tracks.screenView())
     }
+  }, [isVisible])
+
+  const showOnboardingAnimation = () => {
+    setShowSavedHint(true)
+
+    setTimeout(() => {
+      swiperRef.current?.swipeLeftThenRight(ONBOARDING_SWIPE_ANIMATION_DURATION)
+    }, ONBOARDING_ANIMATION_DELAY + ONBOARDING_SAVED_HINT_DURATION)
+
+    setTimeout(
+      () => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+        setShowSavedHint(false)
+      },
+      ONBOARDING_SWIPE_ANIMATION_DURATION +
+        ONBOARDING_SAVED_HINT_DURATION +
+        ONBOARDING_ANIMATION_DELAY
+    )
   }
 
+  useEffect(() => {
+    if (!isVisible || !showSwiper) {
+      return
+    }
+
+    // Wait for a second before showing the animation
+    setTimeout(() => {
+      showOnboardingAnimation()
+      // Show the animation every 5 seconds afterwards
+      setInterval(() => {
+        showOnboardingAnimation()
+      }, 7000)
+    }, 1000)
+  }, [setShowSavedHint, isVisible, showSwiper])
+
   return (
-    <Modal animationType="fade" visible={isVisible} transparent>
-      <Flex flex={1} backgroundColor="transparent">
-        <Flex flex={1}>
-          <LinearGradient
-            colors={["rgb(255, 255, 255)", `rgba(231, 231, 231, 0.9)`]}
-            start={{ x: 0, y: 1 }}
-            end={{ x: 0, y: 0 }}
-            style={{
-              position: "absolute",
-              width: "100%",
-              height: "100%",
-            }}
-          />
-          <SafeAreaView
-            style={{ flex: 1, justifyContent: "flex-end", backgroundColor: "transparent" }}
-          >
-            <Flex
-              flex={1}
-              width="100%"
-              backgroundColor="black15"
-              alignSelf="center"
-              justifyContent="center"
-              alignItems="center"
-              opacity={0.7}
-            ></Flex>
-            <Flex justifyContent="flex-end" px={2}>
-              <FlatList
-                ref={flatlistRef}
-                data={STEPS}
-                scrollEnabled={false}
-                style={{ marginHorizontal: -space(2), flexGrow: 0 }}
-                renderItem={({ item }) => (
-                  <Flex width={width} px={2} justifyContent="flex-end">
-                    {item.title}
-                    {item.description}
-                  </Flex>
-                )}
-                keyExtractor={(item) => item.key}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                pagingEnabled
+    <Modal
+      animationType="fade"
+      visible={isVisible}
+      transparent
+      onRequestClose={() => setIsVisible(false)}
+    >
+      <TouchableWithoutFeedback
+        onPress={() => {
+          if (enableTapToDismiss) {
+            setIsVisible(false)
+          }
+        }}
+      >
+        <MotiView
+          from={{ opacity: 0 }}
+          animate={{
+            opacity: isVisible ? 1 : 0,
+          }}
+          style={{ flex: 1 }}
+          transition={{ type: "timing", duration: 800 }}
+        >
+          <Flex flex={1} backgroundColor="transparent">
+            <Flex flex={1}>
+              <LinearGradient
+                colors={["rgb(255, 255, 255)", `rgba(231, 231, 231, 0.9)`]}
+                start={{ x: 0, y: 1 }}
+                end={{ x: 0, y: 0 }}
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  height: "100%",
+                }}
               />
+              <SafeAreaView
+                style={{ flex: 1, justifyContent: "flex-end", backgroundColor: "transparent" }}
+              >
+                <MotiView
+                  animate={{ opacity: showSwiper ? 1 : 0, scale: showSwiper ? 1 : 0.8 }}
+                  style={{ flex: 1 }}
+                  transition={{
+                    type: "timing",
+                    duration: 500,
+                  }}
+                >
+                  <Flex flex={1} pointerEvents="none">
+                    <Swiper
+                      containerStyle={{ flex: 1, transform: [{ scale: 0.8 }] }}
+                      cards={artworks}
+                      isRewindRequested={isRewindRequested}
+                      onTrigger={() => {}}
+                      swipedIndexCallsOnTrigger={2}
+                      onNewCardReached={() => {}}
+                      onRewind={() => {}}
+                      onSwipe={() => {}}
+                      ref={swiperRef}
+                      cardStyle={{
+                        paddingVertical: space(1),
+                        marginTop: -space(2),
+                        borderRadius: 10,
+                        shadowRadius: 3,
+                        shadowColor: "black",
+                        shadowOpacity: 0.2,
+                        shadowOffset: { height: 0, width: 0 },
+                        elevation: 2,
+                      }}
+                      isArtworkSaved={isAtworkSaved}
+                    />
+                  </Flex>
+                </MotiView>
 
-              <Spacer y={2} />
+                <Flex justifyContent="flex-end" px={2}>
+                  <Text>Welcome to Discover Daily</Text>
 
-              <Flex alignItems="flex-end">
-                <Button variant="outline" onPress={handleNext}>
-                  {index === STEPS.length - 1 ? "Done" : "Next"}
-                </Button>
-              </Flex>
+                  <Spacer y={1} />
+
+                  <Text variant="lg-display" numberOfLines={2} adjustsFontSizeToFit>
+                    Start{" "}
+                    <Text variant="lg-display" fontWeight="500">
+                      swiping
+                    </Text>{" "}
+                    to discover art, and{" "}
+                    <Text variant="lg-display" fontWeight="500">
+                      save
+                    </Text>{" "}
+                    the works you love.
+                  </Text>
+
+                  <Spacer y={2} />
+
+                  <MotiView animate={{ opacity: enableTapToDismiss ? 1 : 0 }}>
+                    <Flex alignItems="flex-end">
+                      <LinkText
+                        onPress={() => {
+                          setIsVisible(false)
+                        }}
+                      >
+                        Tap to get started
+                      </LinkText>
+                    </Flex>
+                  </MotiView>
+                </Flex>
+              </SafeAreaView>
             </Flex>
-          </SafeAreaView>
-        </Flex>
-      </Flex>
+          </Flex>
+        </MotiView>
+      </TouchableWithoutFeedback>
     </Modal>
   )
 }
 
-const STEPS = [
-  {
-    key: "introduction",
-    title: (
-      <Text variant="sm-display" color="black60" mb={0.5}>
-        Welcome to Discover Daily
-      </Text>
-    ),
-    description: <Text variant="lg-display">A new way of browsing works on Artsy.</Text>,
-  },
-  {
-    key: "swipeArtworks",
-    description: <Text variant="lg-display">Swipe artworks to the left to see the next work</Text>,
-  },
-  {
-    key: "favouriteArtworks",
-    description: (
-      <Text variant="lg-display">
-        Press <HeartIcon height={24} width={24} /> when you like an artwork you see
-      </Text>
-    ),
-  },
-]
+const tracks = {
+  screenView: () => ({
+    action: ActionType.screen,
+    context_screen_owner_type: OwnerType.infiniteDiscoveryOnboarding,
+  }),
+}

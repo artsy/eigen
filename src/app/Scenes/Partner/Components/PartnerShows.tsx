@@ -1,9 +1,9 @@
-import { Box, Flex, Spacer, Tabs, Text, Touchable, useSpace } from "@artsy/palette-mobile"
+import { Box, Flex, Spacer, Tabs, Text, useSpace } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { PartnerShows_partner$data } from "__generated__/PartnerShows_partner.graphql"
 import { TabEmptyState } from "app/Components/TabEmptyState"
 
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { useState } from "react"
 import { ActivityIndicator, ImageBackground } from "react-native"
@@ -26,16 +26,13 @@ const ShowGridItem: React.FC<ShowGridItemProps> = (props) => {
   const { show, itemIndex } = props
   const space = useSpace()
 
-  const onPress = () => {
-    navigate(`/show/${show.slug}`)
-  }
-
   const showImageURL = show?.coverImage?.url
 
   const styles = itemIndex % 2 === 0 ? { paddingRight: space(1) } : { paddingLeft: space(1) }
+
   return (
     <GridItem key={show.id}>
-      <Touchable onPress={onPress}>
+      <RouterLink to={`/show/${show.slug}`}>
         <Box style={styles}>
           {showImageURL ? (
             <BackgroundImage key={show.id} resizeMode="cover" source={{ uri: showImageURL }} />
@@ -48,7 +45,7 @@ const ShowGridItem: React.FC<ShowGridItemProps> = (props) => {
             {show.exhibitionPeriod}
           </Text>
         </Box>
-      </Touchable>
+      </RouterLink>
       <Spacer y={2} />
     </GridItem>
   )
@@ -78,7 +75,7 @@ export const PartnerShows: React.FC<{
       key: "past_shows_header",
       content: (
         <Flex mb={2}>
-          <Text variant="sm-display">Past shows</Text>
+          <Text variant="sm-display">Past Shows</Text>
         </Flex>
       ),
     })

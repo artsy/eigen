@@ -4,7 +4,7 @@ import * as Sentry from "@sentry/react-native"
 import { addBreadcrumb } from "@sentry/react-native"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
-import { GlobalStore, getCurrentEmissionState } from "app/store/GlobalStore"
+import { getCurrentEmissionState, GlobalStore } from "app/store/GlobalStore"
 import {
   GoBackProps,
   dismissModal,
@@ -193,8 +193,10 @@ export const ArtsyWebView = forwardRef<
     ref
   ) => {
     const innerRef = useRef<WebViewWithShareTitleUrl>(null)
+    const emissionUserAgent = getCurrentEmissionState().userAgent
+    // adding the optional chaining to prevent the app from crashing on Android
+    const userAgent = GlobalStore.useAppState((state) => state.native?.sessionState?.userAgent)
     useImperativeHandle(ref, () => innerRef.current as WebViewWithShareTitleUrl)
-    const userAgent = getCurrentEmissionState().userAgent
     const { callWebViewEventCallback } = useWebViewCallback()
 
     const showDevToggleIndicator = useDevToggle("DTShowWebviewIndicator")
@@ -283,6 +285,7 @@ export const ArtsyWebView = forwardRef<
     return (
       <Flex flex={1}>
         <WebView
+          enableApplePay
           ref={innerRef}
           // sharedCookiesEnabled is required on iOS for the user to be implicitly logged into force/prediction
           // on android it works without it
@@ -294,7 +297,7 @@ export const ArtsyWebView = forwardRef<
             // see: https://github.com/react-native-webview/react-native-webview/pull/3133
             ...(Platform.OS === "android" && {
               headers: {
-                "User-Agent": userAgent,
+                "User-Agent": emissionUserAgent,
               },
             }),
           }}

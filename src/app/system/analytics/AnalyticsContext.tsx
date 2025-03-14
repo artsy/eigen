@@ -2,6 +2,7 @@ import { ScreenOwnerType } from "@artsy/cohesion"
 import { FC, createContext, useContext } from "react"
 
 export interface AnalyticsContextProps {
+  contextModule?: string
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string
   contextScreenOwnerType?: ScreenOwnerType

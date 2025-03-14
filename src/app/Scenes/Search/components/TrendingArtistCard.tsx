@@ -1,8 +1,8 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { TrendingArtistCard_artist$key } from "__generated__/TrendingArtistCard_artist.graphql"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
-import { TouchableHighlight } from "react-native"
-import { useFragment, graphql } from "react-relay"
+import { RouterLink } from "app/system/navigation/RouterLink"
+import { graphql, useFragment } from "react-relay"
 
 interface TrendingArtistCardProps {
   artist: TrendingArtistCard_artist$key
@@ -16,11 +16,7 @@ export const TrendingArtistCard: React.FC<TrendingArtistCardProps> = ({ artist, 
   const data = useFragment(TrendingArtistCardFragment, artist)
 
   return (
-    <TouchableHighlight
-      underlayColor="transparent"
-      style={{ width: CARD_WIDTH, overflow: "hidden" }}
-      onPress={onPress}
-    >
+    <RouterLink to={data.href} style={{ width: CARD_WIDTH, overflow: "hidden" }} onPress={onPress}>
       <Flex>
         <ImageWithFallback
           src={data.coverArtwork?.image?.url}
@@ -40,7 +36,7 @@ export const TrendingArtistCard: React.FC<TrendingArtistCardProps> = ({ artist, 
           )}
         </Flex>
       </Flex>
-    </TouchableHighlight>
+    </RouterLink>
   )
 }
 
