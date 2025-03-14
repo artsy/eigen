@@ -10,12 +10,14 @@
 
 import { Flex } from "@artsy/palette-mobile"
 import { useFocusEffect } from "@react-navigation/native"
+import { debounce } from "lodash"
 import { FC, ReactNode, useCallback, useRef, useState } from "react"
 import { Dimensions, View } from "react-native"
 
 export interface IDimensionData {
   rectTop: number
   rectBottom: number
+  rectHeight: number
   rectWidth: number
 }
 
@@ -24,27 +26,39 @@ export interface Props {
   onChange(visible: boolean): any
   /** The component that needs to be in the viewport */
   children?: ReactNode
+  /** 1 means 100% 0.7 means 70% and so on, The value indicates the minimum percentage of the container to be considered visible. */
+  threshold?: number
 }
 
 const RNView = View as any
 
-export const Sentinel: FC<Props> = ({ children, onChange }) => {
+export const Sentinel: FC<Props> = ({ children, onChange, threshold = 1 }) => {
   const myView: any = useRef(null)
   const [lastValue, setLastValue] = useState<boolean>(false)
   const [dimensions, setDimensions] = useState<IDimensionData>({
     rectTop: 0,
     rectBottom: 0,
+    rectHeight: 0,
     rectWidth: 0,
   })
 
   let interval: any = null
 
+  const handleVisibilityChange = debounce(onChange)
+
   useFocusEffect(
     useCallback(() => {
       setLastValue(false)
+
       startWatching()
+      const subscription = Dimensions.addEventListener("change", isInViewPort)
+
       isInViewPort()
-      return stopWatching
+
+      return () => {
+        stopWatching()
+        subscription.remove()
+      }
     }, [dimensions.rectTop, dimensions.rectBottom, dimensions.rectWidth])
   )
 
@@ -70,6 +84,7 @@ export const Sentinel: FC<Props> = ({ children, onChange }) => {
           setDimensions({
             rectTop: pageY,
             rectBottom: pageY + height,
+            rectHeight: height,
             rectWidth: pageX + width,
           })
         }
@@ -82,19 +97,23 @@ export const Sentinel: FC<Props> = ({ children, onChange }) => {
   }
 
   const isInViewPort = () => {
-    const window = Dimensions.get("window")
+    if (!myView?.current) return
+
+    const windowDimensions = Dimensions.get("window")
+    const { rectTop, rectBottom, rectHeight, rectWidth } = dimensions
+
+    const visibleHeight = Math.min(rectBottom, windowDimensions.height) - Math.max(rectTop, 0)
+    const visibility = (visibleHeight / rectHeight) * 100
+
     const isVisible =
-      dimensions.rectBottom != 0 &&
-      dimensions.rectTop >= 0 &&
-      dimensions.rectBottom <= window.height &&
-      dimensions.rectWidth > 0 &&
-      dimensions.rectWidth <= window.width
+      rectBottom !== 0 &&
+      visibility >= threshold * 100 &&
+      rectWidth > 0 &&
+      rectWidth <= windowDimensions.width
 
     if (lastValue !== isVisible) {
       setLastValue(isVisible)
-      onChange(isVisible)
-    } else {
-      onChange(isVisible)
+      handleVisibilityChange(isVisible)
     }
   }
 
