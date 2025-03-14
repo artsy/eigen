@@ -90,12 +90,12 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
               />
               <LinearGradient
                 colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
-                start={{ x: 0, y: 0 }}
+                start={{ x: 0, y: 0.3 }}
                 end={{ x: 0, y: 1 }}
                 style={{
                   position: "absolute",
                   width: "100%",
-                  height: "40%",
+                  height: "100%",
                   bottom: 0,
                 }}
               />
