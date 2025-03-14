@@ -1,6 +1,7 @@
 import { Screen, ScreenDimensionsProvider, Spinner, Theme } from "@artsy/palette-mobile"
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { PortalProvider } from "@gorhom/portal"
+import FlagProvider from "@unleash/proxy-client-react"
 import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ShareSheetProvider } from "app/Components/ShareSheet/ShareSheetContext"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -59,6 +60,7 @@ export const TestProviders: React.FC<{ skipRelay?: boolean; includeNavigation?: 
       includeNavigation && NavigationTestsProvider,
       TrackingProvider,
       GlobalStoreProvider,
+      TestFlagProvider,
       SafeAreaProvider,
       PortalProvider,
       ProvideScreenDimensions,
@@ -78,6 +80,10 @@ export const TestProviders: React.FC<{ skipRelay?: boolean; includeNavigation?: 
 }
 
 // Providers with preset props
+
+const TestFlagProvider: React.FC = ({ children }) => {
+  return <FlagProvider startClient={false}>{children}</FlagProvider>
+}
 
 const GestureHandlerProvider = (props: { children?: React.ReactNode }) => (
   <GestureHandlerRootView style={{ flex: 1 }} {...props} />
