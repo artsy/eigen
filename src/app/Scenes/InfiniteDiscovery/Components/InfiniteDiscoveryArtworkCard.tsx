@@ -21,7 +21,7 @@ import {
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
-import { ViewStyle, Text as RNText } from "react-native"
+import { Text as RNText, ViewStyle } from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import Animated, {
   Easing,
