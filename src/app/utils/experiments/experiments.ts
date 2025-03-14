@@ -10,7 +10,7 @@ export const experiments = {
   },
   "onyx_artwork-card-save-and-follow-cta-redesign": {
     description: "Redesign Save CTA and Add Follow CTA on Artwork Grid/Rail",
-    variantSuggestions: ["control", "experiment", "variant-c"],
+    variantSuggestions: ["variant-a", "variant-b", "variant-c"],
   },
   "onyx_quick-links-experiment": {
     description: "Add quick links section to home view",
