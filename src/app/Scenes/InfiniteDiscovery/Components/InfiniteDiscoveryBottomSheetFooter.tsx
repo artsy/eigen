@@ -178,23 +178,30 @@ export const InfiniteDiscoveryBottomSheetFooterQueryRenderer: FC<InfiniteDiscove
     },
     LoadingFallback: (props) => <InfiniteDiscoveryBottomSheetFooterSkeleton {...props} />,
     ErrorFallback: (_errorProps, props) => {
-      const color = useColor()
-      return (
-        <BottomSheetFooter
-          {...props}
-          style={{ paddingBottom: 20, backgroundColor: color("white100") }}
-        >
-          <Divider />
-          <Skeleton>
-            <Flex p={2}>
-              <SimpleMessage m={2}>Cannot load work details.</SimpleMessage>
-            </Flex>
-          </Skeleton>
-        </BottomSheetFooter>
-      )
+      return <InfiniteDiscoveryBottomSheetFooterErrorFallback {...props} />
     },
   })
 
+const InfiniteDiscoveryBottomSheetFooterErrorFallback: React.FC<
+  InfiniteDiscoveryBottomSheetFooterQueryRendererProps
+> = (props) => {
+  const color = useColor()
+  const space = useSpace()
+
+  return (
+    <BottomSheetFooter
+      {...props}
+      style={{ paddingBottom: space(2), backgroundColor: color("white100") }}
+    >
+      <Divider />
+      <Skeleton>
+        <Flex p={2}>
+          <SimpleMessage m={2}>Cannot load work details.</SimpleMessage>
+        </Flex>
+      </Skeleton>
+    </BottomSheetFooter>
+  )
+}
 const getInitialAuctionTimerState = (
   artwork: NonNullable<InfiniteDiscoveryBottomSheetFooter_artwork$data>
 ) => {

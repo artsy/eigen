@@ -76,10 +76,6 @@ export const MoreWorksTab: FC<MoreWorksTabProps> = ({ artworks: _artworks }) => 
   )
 }
 
-export const InfiniteDiscoveryMoreWorksTabSkeleton: FC = () => {
-  return null
-}
-
 const fragment = graphql`
   fragment InfiniteDiscoveryMoreWorksTab_artworks on Query
   @refetchable(queryName: "InfiniteDiscoveryMoreWorksQuery")
@@ -115,8 +111,6 @@ interface InfiniteDiscoveryMoreWorksTabProps {
 
 export const InfiniteDiscoveryMoreWorksTab: FC<InfiniteDiscoveryMoreWorksTabProps> = withSuspense({
   Component: ({ artistIDs }) => {
-    const space = useSpace()
-
     const data = useLazyLoadQuery<InfiniteDiscoveryMoreWorksTabQuery>(
       infiniteDiscoveryMoreWorksQuery,
       {
@@ -126,7 +120,7 @@ export const InfiniteDiscoveryMoreWorksTab: FC<InfiniteDiscoveryMoreWorksTabProp
 
     if (!data) {
       return (
-        <Tabs.ScrollView contentContainerStyle={{ marginTop: space(2) }}>
+        <Tabs.ScrollView>
           <SimpleMessage m={2}>Cannot load more works.</SimpleMessage>
         </Tabs.ScrollView>
       )
@@ -135,19 +129,29 @@ export const InfiniteDiscoveryMoreWorksTab: FC<InfiniteDiscoveryMoreWorksTabProp
     return <MoreWorksTab artworks={data} />
   },
   LoadingFallback: () => {
-    const space = useSpace()
-
-    return (
-      <Tabs.ScrollView contentContainerStyle={{ marginTop: space(2) }}>
-        <PlaceholderGrid />
-      </Tabs.ScrollView>
-    )
+    return <InfiniteDiscoveryMoreWorksTabSkeleton />
   },
   ErrorFallback: () => {
-    return (
-      <Tabs.ScrollView contentContainerStyle={{ marginTop: 20 }}>
-        <SimpleMessage m={2}>Cannot load more works.</SimpleMessage>
-      </Tabs.ScrollView>
-    )
+    return <InfiniteDiscoveryMoreWorksTabErrorFallback />
   },
 })
+
+const InfiniteDiscoveryMoreWorksTabSkeleton: React.FC<{}> = () => {
+  const space = useSpace()
+
+  return (
+    <Tabs.ScrollView contentContainerStyle={{ marginTop: space(2) }}>
+      <PlaceholderGrid />
+    </Tabs.ScrollView>
+  )
+}
+
+const InfiniteDiscoveryMoreWorksTabErrorFallback: React.FC<{}> = () => {
+  const space = useSpace()
+
+  return (
+    <Tabs.ScrollView contentContainerStyle={{ marginTop: space(2) }}>
+      <SimpleMessage m={2}>Cannot load more works.</SimpleMessage>
+    </Tabs.ScrollView>
+  )
+}

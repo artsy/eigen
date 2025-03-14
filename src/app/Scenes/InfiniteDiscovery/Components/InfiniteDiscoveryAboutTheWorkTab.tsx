@@ -294,8 +294,6 @@ const infiniteDiscoveryAboutTheWorkQuery = graphql`
 export const InfiniteDiscoveryAboutTheWorkTab: FC<InfiniteDiscoveryAboutTheWorkTabProps> =
   withSuspense({
     Component: ({ artworkID }) => {
-      const space = useSpace()
-
       const data = useLazyLoadQuery<InfiniteDiscoveryAboutTheWorkTabQuery>(
         infiniteDiscoveryAboutTheWorkQuery,
         {
@@ -305,7 +303,7 @@ export const InfiniteDiscoveryAboutTheWorkTab: FC<InfiniteDiscoveryAboutTheWorkT
 
       if (!data?.artwork || !data?.me) {
         return (
-          <Tabs.ScrollView contentContainerStyle={{ marginTop: space(2) }}>
+          <Tabs.ScrollView>
             {/* This should never be the case, but we'll handle it anyway */}
             <SimpleMessage m={2}>No details available.</SimpleMessage>
           </Tabs.ScrollView>
@@ -324,6 +322,15 @@ export const InfiniteDiscoveryAboutTheWorkTab: FC<InfiniteDiscoveryAboutTheWorkT
     },
   })
 
+export const InfiniteDiscoveryAboutTheWorkTabErrorFallback: FC = () => {
+  const space = useSpace()
+
+  return (
+    <Tabs.ScrollView contentContainerStyle={{ marginTop: space(2) }}>
+      <SimpleMessage m={2}>Cannot load work details.</SimpleMessage>
+    </Tabs.ScrollView>
+  )
+}
 export const InfiniteDiscoveryAboutTheWorkTabSkeleton: FC = () => {
   const space = useSpace()
 
