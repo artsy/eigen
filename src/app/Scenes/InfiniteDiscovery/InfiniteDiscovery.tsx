@@ -4,12 +4,19 @@ import {
   CloseIcon,
   Flex,
   Screen,
+  SimpleMessage,
   Spacer,
   Spinner,
-  Touchable,
   Text,
+  Touchable,
 } from "@artsy/palette-mobile"
-import { captureMessage } from "@sentry/react-native"
+import { addBreadcrumb, captureException, captureMessage } from "@sentry/react-native"
+import {
+  InfiniteDiscoveryQuery,
+  InfiniteDiscoveryQuery$data,
+} from "__generated__/InfiniteDiscoveryQuery.graphql"
+import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
+
 import { useToast } from "app/Components/Toast/toastHook"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
@@ -18,22 +25,20 @@ import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { useCreateUserSeenArtwork } from "app/Scenes/InfiniteDiscovery/mutations/useCreateUserSeenArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { pluralize } from "app/utils/pluralize"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Key, useCallback, useEffect, useMemo, useState } from "react"
 import { useSharedValue } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { graphql, PreloadedQuery, usePreloadedQuery, useQueryLoader } from "react-relay"
+import { fetchQuery, graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
-import type {
-  InfiniteDiscoveryQuery,
-  InfiniteDiscoveryQuery$data,
-} from "__generated__/InfiniteDiscoveryQuery.graphql"
 
 interface InfiniteDiscoveryProps {
   fetchMoreArtworks: (undiscoveredArtworks: string[]) => void
-  queryRef: PreloadedQuery<InfiniteDiscoveryQuery>
+  artworks: InfiniteDiscoveryArtwork[]
 }
 
 export type InfiniteDiscoveryArtwork = ExtractNodeType<
@@ -42,9 +47,8 @@ export type InfiniteDiscoveryArtwork = ExtractNodeType<
 
 export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   fetchMoreArtworks,
-  queryRef,
+  artworks,
 }) => {
-  // const REFETCH_BUFFER = 3
   const toast = useToast()
   const { trackEvent } = useTracking()
   const [commitMutation] = useCreateUserSeenArtwork()
@@ -57,7 +61,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     (state) => state.infiniteDiscovery.savedArtworksCount
   )
 
-  const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>([])
   const [topArtworkId, setTopArtworkId] = useState<string | null>(null)
   const topArtwork = useMemo(
     () => artworks.find((artwork) => artwork.internalID === topArtworkId),
@@ -66,17 +69,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 
   const isRewindRequested = useSharedValue(false)
 
-  const data = usePreloadedQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, queryRef)
-
   const insets = useSafeAreaInsets()
-
-  /**
-   * This is called whenever a query for more artworks is made.
-   */
-  useEffect(() => {
-    const newArtworks = extractNodes(data.discoverArtworks)
-    setArtworks((previousArtworks) => newArtworks.concat(previousArtworks))
-  }, [data, extractNodes, setArtworks])
 
   useEffect(() => {
     if (!topArtworkId && artworks.length > 0) {
@@ -276,10 +269,12 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         />
 
         {!!topArtwork && (
-          <InfiniteDiscoveryBottomSheet
-            artworkID={topArtwork.internalID}
-            artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
-          />
+          <RetryErrorBoundary>
+            <InfiniteDiscoveryBottomSheet
+              artworkID={topArtwork.internalID}
+              artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
+            />
+          </RetryErrorBoundary>
         )}
       </Screen.Body>
     </Screen>
@@ -289,8 +284,16 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 const InfiniteDiscoverySpinner: React.FC = () => (
   <Screen>
     <Screen.Body fullwidth>
-      <Screen.Header title="Discovery" />
-      <Flex flex={1} justifyContent="center" alignItems="center">
+      <Screen.Header title="Discover Daily" />
+      <Flex
+        flex={1}
+        justifyContent="center"
+        alignItems="center"
+        // This is to make sure the spinner is centered regardless of the insets
+        position="absolute"
+        height="100%"
+        width="100%"
+      >
         <Spinner />
       </Flex>
     </Screen.Body>
@@ -301,38 +304,64 @@ export const infiniteDiscoveryVariables = {
   excludeArtworkIds: [],
 }
 
-export const InfiniteDiscoveryQueryRenderer: React.FC = () => {
-  const [queryRef, loadQuery] = useQueryLoader<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery)
+export const InfiniteDiscoveryQueryRenderer = withSuspense({
+  Component: () => {
+    const data = useLazyLoadQuery<InfiniteDiscoveryQuery>(
+      infiniteDiscoveryQuery,
+      infiniteDiscoveryVariables,
+      { fetchPolicy: "store-and-network", networkCacheConfig: { force: true } }
+    )
 
-  const { resetSavedArtworksCount } = GlobalStore.actions.infiniteDiscovery
+    const { resetSavedArtworksCount } = GlobalStore.actions.infiniteDiscovery
+    const initialArtworks = extractNodes(data.discoverArtworks)
+    const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>(initialArtworks)
 
-  useEffect(() => {
-    resetSavedArtworksCount()
-  }, [])
-
-  // This fetches the first batch of artworks
-  useEffect(() => {
-    if (!queryRef) {
-      loadQuery(infiniteDiscoveryVariables, {
-        fetchPolicy: "network-only",
-      })
+    const fetchMoreArtworks = async (excludeArtworkIds: string[], isRetry = false) => {
+      try {
+        const response = await fetchQuery<InfiniteDiscoveryQuery>(
+          getRelayEnvironment(),
+          infiniteDiscoveryQuery,
+          {
+            excludeArtworkIds,
+          },
+          {
+            fetchPolicy: "network-only",
+          }
+        ).toPromise()
+        const newArtworks = extractNodes(response?.discoverArtworks)
+        if (newArtworks.length) {
+          setArtworks((previousArtworks) => newArtworks.concat(previousArtworks))
+        }
+      } catch (error) {
+        if (!isRetry) {
+          addBreadcrumb({
+            message: "Failed to fetch more artworks, retrying again",
+          })
+          fetchMoreArtworks(excludeArtworkIds, true)
+          return
+        }
+        addBreadcrumb({
+          message: "Failed to fetch more artworks",
+        })
+        captureException(error)
+      }
     }
-  }, [loadQuery, queryRef])
 
-  if (!queryRef) {
-    return <InfiniteDiscoverySpinner />
-  }
+    useEffect(() => {
+      resetSavedArtworksCount()
+    }, [])
 
-  const fetchMoreArtworks = (undiscoveredArtworks: string[]) => {
-    loadQuery({ excludeArtworkIds: undiscoveredArtworks })
-  }
-
-  return (
-    <Flex flex={1}>
-      <InfiniteDiscovery fetchMoreArtworks={fetchMoreArtworks} queryRef={queryRef} />
-    </Flex>
-  )
-}
+    return (
+      <Flex flex={1}>
+        <InfiniteDiscovery fetchMoreArtworks={fetchMoreArtworks} artworks={artworks} />
+      </Flex>
+    )
+  },
+  LoadingFallback: InfiniteDiscoverySpinner,
+  ErrorFallback: () => (
+    <SimpleMessage m={2}>Failed to load artworks. Please check back later.</SimpleMessage>
+  ),
+})
 
 export const infiniteDiscoveryQuery = graphql`
   query InfiniteDiscoveryQuery($excludeArtworkIds: [String!]!) {
