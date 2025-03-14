@@ -33,7 +33,7 @@ import {
 import { ArtistArticlesQueryRenderer } from "app/Scenes/ArtistArticles/ArtistArticles"
 import { ArtistSeriesQueryRenderer } from "app/Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
-import { ArtistShows2QueryRenderer } from "app/Scenes/ArtistShows/ArtistShows2"
+import { ArtistShowsQueryRenderer } from "app/Scenes/ArtistShows/ArtistShows"
 import { ArtworkScreen, ArtworkScreenQuery } from "app/Scenes/Artwork/Artwork"
 import { BrowseSimilarWorksQueryRenderer } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { CertificateOfAuthenticity } from "app/Scenes/Artwork/Components/CertificateAuthenticity"
@@ -114,7 +114,10 @@ import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGal
 import { OrderDetailsQueryRender } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetails"
 import { OrderHistoryQueryRender } from "app/Scenes/OrderHistory/OrderHistory"
 import { PartnerQueryRenderer } from "app/Scenes/Partner/Partner"
-import { PartnerLocationsQueryRenderer } from "app/Scenes/Partner/Screens/PartnerLocations"
+import {
+  PartnerLocationsQueryRenderer,
+  PartnerLocationsScreenQuery,
+} from "app/Scenes/Partner/Screens/PartnerLocations"
 import { PartnerOfferContainer } from "app/Scenes/PartnerOffer/PartnerOfferContainer"
 import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
 import { PrivacyRequest } from "app/Scenes/PrivacyRequest/PrivacyRequest"
@@ -413,7 +416,7 @@ export const artsyDotNetRoutes = defineRoutes([
   {
     path: "/artist/:artistID/shows",
     name: "ArtistShows",
-    Component: ArtistShows2QueryRenderer,
+    Component: ArtistShowsQueryRenderer,
   },
   // Routes `/artist/:artistID/*` and `"/:profile_id_ignored/artist/:artistID"`
   // MUST go together The following two
@@ -1148,6 +1151,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/partner-locations/:partnerID",
     name: "PartnerLocations",
     Component: PartnerLocationsQueryRenderer,
+    queries: [PartnerLocationsScreenQuery],
   },
   {
     path: "/partner-offer/:partnerOfferID/checkout",

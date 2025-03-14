@@ -1,8 +1,8 @@
-import { Flex, Spacer, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { PartnerShowRailItem_show$data } from "__generated__/PartnerShowRailItem_show.graphql"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { Schema } from "app/utils/track"
 import { first } from "lodash"
 import React from "react"
@@ -19,7 +19,6 @@ export const PartnerShowRailItem: React.FC<Props> = (props) => {
 
   const onPress = () => {
     tracking.trackEvent(tracks.tapPartnerShowRailItem(props.show.internalID, props.show.slug))
-    navigate(`/show/${props.show.slug}`)
   }
 
   const { show } = props
@@ -29,7 +28,7 @@ export const PartnerShowRailItem: React.FC<Props> = (props) => {
   const sectionWidth = windowWidth - 100
 
   return (
-    <Touchable onPress={onPress}>
+    <RouterLink onPress={onPress} to={`/show/${props.show.slug}`}>
       <Flex my="15px" mr={2} width={sectionWidth}>
         <ImageWithFallback
           height={200}
@@ -47,7 +46,7 @@ export const PartnerShowRailItem: React.FC<Props> = (props) => {
           </Text>
         )}
       </Flex>
-    </Touchable>
+    </RouterLink>
   )
 }
 

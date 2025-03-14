@@ -1,6 +1,6 @@
-import { Spacer, Flex, Text, Spinner } from "@artsy/palette-mobile"
-import { ArtistShows2Query } from "__generated__/ArtistShows2Query.graphql"
-import { ArtistShows2_artist$data } from "__generated__/ArtistShows2_artist.graphql"
+import { Flex, Spacer, Spinner, Text } from "@artsy/palette-mobile"
+import { ArtistShowsQuery } from "__generated__/ArtistShowsQuery.graphql"
+import { ArtistShows_artist$data } from "__generated__/ArtistShows_artist.graphql"
 import { ArtistShow } from "app/Components/Artist/ArtistShows/ArtistShow"
 import { PAGE_SIZE } from "app/Components/constants"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -14,11 +14,11 @@ import { Animated, StyleSheet, View, ViewStyle } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 interface Props {
-  artist: ArtistShows2_artist$data
+  artist: ArtistShows_artist$data
   relay: RelayPaginationProp
 }
 
-const ArtistShows2: React.FC<Props> = ({ artist, relay }) => {
+const ArtistShows: React.FC<Props> = ({ artist, relay }) => {
   const top = 60
   const [isFetchingMoreData, setIsFetchingMoreData] = useState(false)
   const pastShows = extractNodes(artist.pastShows)
@@ -99,11 +99,11 @@ const showStyles = StyleSheet.create({
   imageMargin: ViewStyle
 }
 
-export const ArtistShows2PaginationContainer = createPaginationContainer(
-  ArtistShows2,
+export const ArtistShowsPaginationContainer = createPaginationContainer(
+  ArtistShows,
   {
     artist: graphql`
-      fragment ArtistShows2_artist on Artist
+      fragment ArtistShows_artist on Artist
       @argumentDefinitions(
         count: { type: "Int", defaultValue: 10 }
         status: { type: "String", defaultValue: "closed" }
@@ -112,7 +112,7 @@ export const ArtistShows2PaginationContainer = createPaginationContainer(
         slug
         name
         pastShows: showsConnection(status: $status, first: $count, after: $cursor)
-          @connection(key: "ArtistShows2_pastShows") {
+          @connection(key: "ArtistShows_pastShows") {
           edges {
             node {
               id
@@ -139,35 +139,35 @@ export const ArtistShows2PaginationContainer = createPaginationContainer(
 
     query: graphql`
       # Here is the query to fetch any specific page
-      query ArtistShows2PastShowsQuery(
+      query ArtistShowsPastShowsQuery(
         $count: Int!
         $cursor: String
         $artistID: String!
         $status: String!
       ) {
         artist(id: $artistID) {
-          ...ArtistShows2_artist @arguments(count: $count, cursor: $cursor, status: $status)
+          ...ArtistShows_artist @arguments(count: $count, cursor: $cursor, status: $status)
         }
       }
     `,
   }
 )
 
-export const ArtistShows2QueryRenderer: React.FC<{ artistID: string }> = ({ artistID }) => {
+export const ArtistShowsQueryRenderer: React.FC<{ artistID: string }> = ({ artistID }) => {
   return (
-    <QueryRenderer<ArtistShows2Query>
+    <QueryRenderer<ArtistShowsQuery>
       cacheConfig={{ force: true }}
       environment={getRelayEnvironment()}
       query={graphql`
-        query ArtistShows2Query($artistID: String!) {
+        query ArtistShowsQuery($artistID: String!) {
           artist(id: $artistID) {
             slug
-            ...ArtistShows2_artist
+            ...ArtistShows_artist
           }
         }
       `}
       render={renderWithPlaceholder({
-        Container: ArtistShows2PaginationContainer,
+        Container: ArtistShowsPaginationContainer,
         renderPlaceholder: LoadingSkeleton,
       })}
       variables={{ artistID }}
