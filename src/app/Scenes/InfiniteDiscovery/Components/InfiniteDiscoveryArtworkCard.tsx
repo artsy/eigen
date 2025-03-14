@@ -138,30 +138,32 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     const size = sizeToFit({ width, height }, { width: screenWidth, height: MAX_ARTWORK_HEIGHT })
 
+    const handleWrapperTaps = () => {
+      const now = Date.now()
+      const state = gestureState.current
+
+      if (now - state.lastTapTimestamp < 500) {
+        state.numTaps += 1
+      } else {
+        state.numTaps = 1
+      }
+
+      state.lastTapTimestamp = now
+
+      if (state.numTaps === 2) {
+        state.numTaps = 0
+        if (!isSaved) {
+          Haptic.trigger("impactLight")
+          setShowScreenTapToSave(true)
+          saveArtworkToLists()
+        }
+      }
+      return false
+    }
+
     return (
       <Flex
-        onStartShouldSetResponderCapture={() => {
-          const now = Date.now()
-          const state = gestureState.current
-
-          if (now - state.lastTapTimestamp < 500) {
-            state.numTaps += 1
-          } else {
-            state.numTaps = 1
-          }
-
-          state.lastTapTimestamp = now
-
-          if (state.numTaps === 2) {
-            state.numTaps = 0
-            if (!isSaved) {
-              Haptic.trigger("impactLight")
-              setShowScreenTapToSave(true)
-              saveArtworkToLists()
-            }
-          }
-          return false
-        }}
+        onStartShouldSetResponderCapture={handleWrapperTaps}
         backgroundColor="white100"
         width="100%"
         style={containerStyle || { borderRadius: 10 }}
