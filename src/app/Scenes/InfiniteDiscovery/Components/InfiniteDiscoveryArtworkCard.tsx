@@ -35,7 +35,7 @@ import Animated, {
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
-const SAVES_MAX_DURATION_BETWEEN_TAPS = 250
+const SAVES_MAX_DURATION_BETWEEN_TAPS = 150
 
 interface InfiniteDiscoveryArtworkCardProps {
   artwork: InfiniteDiscoveryArtworkCard_artwork$key
