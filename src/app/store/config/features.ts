@@ -266,6 +266,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableHomeViewQuickLinks",
   },
+  AREnableFavoritesTab: {
+    description: "Enable Favorites tab in bottom navigation",
+    readyForRelease: false,
+    showInDevMenu: true,
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
