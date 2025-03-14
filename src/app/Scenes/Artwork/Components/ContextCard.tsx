@@ -1,7 +1,6 @@
-import { Avatar, Flex, Box, Text } from "@artsy/palette-mobile"
+import { Avatar, Box, Flex, Text } from "@artsy/palette-mobile"
 import { ContextCard_artwork$data } from "__generated__/ContextCard_artwork.graphql"
-import { navigate } from "app/system/navigation/navigate"
-import { TouchableWithoutFeedback } from "react-native"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface ContextCardProps {
@@ -24,13 +23,7 @@ export const ContextCard: React.FC<ContextCardProps> = ({ artwork: { context } }
         </Text>
       </Box>
       <Flex>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            if (context.href) {
-              navigate(context.href)
-            }
-          }}
-        >
+        <RouterLink to={context.href}>
           <Flex flexDirection="row" flexWrap="nowrap" accessibilityLabel="Context Card Image">
             {!!imageUrl && (
               <Flex mr={1} justifyContent="center">
@@ -42,7 +35,7 @@ export const ContextCard: React.FC<ContextCardProps> = ({ artwork: { context } }
               <Text variant="sm">{context.formattedStartDateTime}</Text>
             </Flex>
           </Flex>
-        </TouchableWithoutFeedback>
+        </RouterLink>
       </Flex>
     </>
   )

@@ -1,6 +1,6 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { ArtworkMakerTitle_artwork$data } from "__generated__/ArtworkMakerTitle_artwork.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { Schema } from "app/utils/track"
 import React, { useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
@@ -15,26 +15,26 @@ interface ArtworkMakerProps {
 const ArtworkMaker: React.FC<ArtworkMakerProps> = ({ artistName, href }) => {
   const { trackEvent } = useTracking()
 
-  const handleArtistTap = (artistHref?: string | null) => {
-    if (artistHref) {
+  const handleArtistTap = () => {
+    if (href) {
       trackEvent({
         action_name: Schema.ActionNames.ArtistName,
         action_type: Schema.ActionTypes.Tap,
         context_module: Schema.ContextModules.ArtworkTombstone,
       })
-      navigate(artistHref)
     }
   }
 
   return (
-    <TouchableWithoutFeedback
+    <RouterLink
       accessibilityRole="link"
       accessibilityHint="Go to artist page"
       disabled={!href}
-      onPress={() => handleArtistTap(href)}
+      to={href}
+      onPress={handleArtistTap}
     >
       <Text variant="lg-display">{artistName}</Text>
-    </TouchableWithoutFeedback>
+    </RouterLink>
   )
 }
 

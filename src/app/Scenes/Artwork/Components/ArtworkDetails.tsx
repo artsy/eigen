@@ -1,9 +1,8 @@
-import { Spacer, Flex, Box, Text, Join } from "@artsy/palette-mobile"
+import { Box, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkDetails_artwork$key } from "__generated__/ArtworkDetails_artwork.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { Schema } from "app/utils/track"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtworkDetailsRow } from "./ArtworkDetailsRow"
@@ -27,11 +26,11 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
     {
       title: "Medium",
       value: artworkData?.mediumType?.name && (
-        <TouchableWithoutFeedback onPress={() => navigate(`/artwork/${artworkData.slug}/medium`)}>
+        <RouterLink to={`/artwork/${artworkData.slug}/medium`} disablePrefetch>
           <Text variant="xs" color="black100" style={{ textDecorationLine: "underline" }}>
             {artworkData?.mediumType?.name}
           </Text>
-        </TouchableWithoutFeedback>
+        </RouterLink>
       ),
     },
     {

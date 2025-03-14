@@ -1,13 +1,13 @@
-import { Spacer, Flex, Text, EntityHeader } from "@artsy/palette-mobile"
+import { EntityHeader, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { PartnerCard_artwork$data } from "__generated__/PartnerCard_artwork.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { ShortContactGallery } from "app/Scenes/Artwork/Components/ShortContactGallery"
-import { navigateToPartner } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
+import { PartnerNavigationProps } from "app/system/navigation/navigate"
 import { limitWithCount } from "app/utils/limitWithCount"
 import { compact } from "lodash"
 import React from "react"
-import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { Questions } from "./Questions"
 
@@ -25,8 +25,6 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({
   shouldShowQuestions,
   showShortContactGallery,
 }) => {
-  const handleTap = (href: string) => navigateToPartner(href)
-
   const partner = artwork.partner
 
   const galleryOrBenefitAuction = artwork.sale?.isBenefit ?? artwork.sale?.isGalleryAuction
@@ -74,21 +72,17 @@ export const PartnerCard: React.FC<PartnerCardProps> = ({
           <Spacer y={1} />
         </>
       )}
-      <TouchableWithoutFeedback
-        onPress={() => {
-          if (partner.href) {
-            handleTap(partner.href)
-          }
-        }}
-      >
+      <RouterLink to={partner.href} navigationProps={PartnerNavigationProps}>
         <EntityHeader
           name={partner.name ?? ""}
           meta={locationNames || undefined}
           imageUrl={partner.profile?.icon?.url || undefined}
           initials={partner.initials || undefined}
         />
-      </TouchableWithoutFeedback>
+      </RouterLink>
+
       <Spacer y={2} />
+
       {!!shouldShowQuestions && <Questions artwork={artwork} me={me} />}
     </Flex>
   )
