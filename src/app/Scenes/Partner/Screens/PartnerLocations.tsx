@@ -1,4 +1,4 @@
-import { Spacer, Box, Text } from "@artsy/palette-mobile"
+import { Box, Spacer, Text } from "@artsy/palette-mobile"
 import { PartnerLocationsQuery } from "__generated__/PartnerLocationsQuery.graphql"
 import { PartnerLocations_partner$data } from "__generated__/PartnerLocations_partner.graphql"
 import { PartnerMapContainer as PartnerMap } from "app/Scenes/Partner/Components/PartnerMap"
@@ -101,15 +101,17 @@ export const PartnerLocationsQueryRenderer: React.FC<{ partnerID: string }> = ({
   return (
     <QueryRenderer<PartnerLocationsQuery>
       environment={getRelayEnvironment()}
-      query={graphql`
-        query PartnerLocationsQuery($partnerID: String!) {
-          partner(id: $partnerID) {
-            ...PartnerLocations_partner
-          }
-        }
-      `}
+      query={PartnerLocationsScreenQuery}
       variables={{ partnerID }}
       render={renderWithLoadProgress(PartnerLocationsContainer)}
     />
   )
 }
+
+export const PartnerLocationsScreenQuery = graphql`
+  query PartnerLocationsQuery($partnerID: String!) {
+    partner(id: $partnerID) {
+      ...PartnerLocations_partner
+    }
+  }
+`
