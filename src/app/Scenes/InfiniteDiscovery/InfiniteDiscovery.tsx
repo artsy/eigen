@@ -15,14 +15,10 @@ import {
   InfiniteDiscoveryQuery$data,
 } from "__generated__/InfiniteDiscoveryQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
 
 import { useToast } from "app/Components/Toast/toastHook"
 import { ICON_HIT_SLOP } from "app/Components/constants"
-import {
-  InfiniteDiscoveryBottomSheet,
-  InfiniteDiscoveryBottomSheetFailureView,
-} from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
+import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { InfiniteDiscoveryOnboarding } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryOnboarding"
 import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { useCreateUserSeenArtwork } from "app/Scenes/InfiniteDiscovery/mutations/useCreateUserSeenArtwork"
@@ -270,12 +266,10 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           onSwipe={handleSwipe}
         />
         {!!topArtwork && (
-          <RetryErrorBoundary failureView={InfiniteDiscoveryBottomSheetFailureView}>
-            <InfiniteDiscoveryBottomSheet
-              artworkID={topArtwork.internalID}
-              artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
-            />
-          </RetryErrorBoundary>
+          <InfiniteDiscoveryBottomSheet
+            artworkID={topArtwork.internalID}
+            artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
+          />
         )}
       </Screen.Body>
     </Screen>
