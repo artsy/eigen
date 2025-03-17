@@ -11,7 +11,7 @@ import {
   DEFAULT_RECS_MODEL_VERSION,
   RECOMMENDATION_MODEL_EXPERIMENT_NAME,
 } from "app/Scenes/NewWorksForYou/NewWorksForYou"
-import { useExperimentVariant } from "app/system/flags/hooks"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { goBack } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ScrollView } from "react-native"
