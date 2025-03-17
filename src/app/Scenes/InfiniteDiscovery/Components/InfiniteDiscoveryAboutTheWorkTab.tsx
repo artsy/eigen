@@ -322,15 +322,6 @@ export const InfiniteDiscoveryAboutTheWorkTab: FC<InfiniteDiscoveryAboutTheWorkT
     },
   })
 
-export const InfiniteDiscoveryAboutTheWorkTabErrorFallback: FC = () => {
-  const space = useSpace()
-
-  return (
-    <Tabs.ScrollView contentContainerStyle={{ marginTop: space(2) }}>
-      <SimpleMessage m={2}>Cannot load work details.</SimpleMessage>
-    </Tabs.ScrollView>
-  )
-}
 export const InfiniteDiscoveryAboutTheWorkTabSkeleton: FC = () => {
   const space = useSpace()
 
