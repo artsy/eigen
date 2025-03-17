@@ -163,6 +163,7 @@ commands:
           command: ./scripts/setup/download-assets-android
       - run:
           name: Build App
+          no_output_timeout: 20m
           command: ./scripts/ci/ci-android
       - save_cache:
           key: v10-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
