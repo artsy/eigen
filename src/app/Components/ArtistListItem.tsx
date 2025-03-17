@@ -142,17 +142,13 @@ const ArtistListItem: React.FC<Props> = ({
     return null
   }
 
-  const navigateOnPress = !disableNavigation && !onPress
-
   return (
     <RouterLink
       noFeedback={!withFeedback}
-      to={navigateOnPress ? href : undefined}
+      // Only navigate if there is an href and navigation is not disabled by passing `onPress` or
+      to={!disableNavigation ? href : undefined}
       onPress={() => {
-        if (onPress) {
-          onPress()
-          return
-        }
+        onPress?.()
 
         if (href && !disableNavigation) {
           tracks.tapArtistGroup(artist)

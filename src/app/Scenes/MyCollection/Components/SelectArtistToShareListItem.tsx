@@ -3,7 +3,7 @@ import { SelectArtistToShareListItem_artist$key } from "__generated__/SelectArti
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { UserInterestsStore } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/UserInterestsStore"
 import { useState } from "react"
-import { useFragment, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import useDebounce from "react-use/lib/useDebounce"
 
 interface SelectArtistToShareListItemProps {
@@ -52,6 +52,7 @@ export const SelectArtistToShareListItem: React.FC<SelectArtistToShareListItemPr
       withFeedback
       showFollowButton={false}
       containerStyle={{ paddingHorizontal: space(2), paddingVertical: space(1) }}
+      disableNavigation
       onPress={() => setChecked(!checked)}
       RightButton={
         <Checkbox
