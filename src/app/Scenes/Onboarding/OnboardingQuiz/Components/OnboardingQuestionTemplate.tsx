@@ -7,6 +7,7 @@ import {
   Text,
   Button,
   LegacyScreen,
+  Touchable,
 } from "@artsy/palette-mobile"
 import { useFocusEffect, useNavigation } from "@react-navigation/native"
 import {
@@ -14,6 +15,7 @@ import {
   State,
   useOnboardingContext,
 } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
+import { BackButton } from "app/system/navigation/BackButton"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { debounce } from "lodash"
 import React, { FC, useCallback, useState } from "react"
@@ -105,8 +107,34 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
 
   return (
     <LegacyScreen>
-      <LegacyScreen.Header onBack={handleBack} onSkip={debouncedHandleSkip} />
+      {/* <LegacyScreen.Header onBack={handleBack} onSkip={debouncedHandleSkip} /> */}
       <LegacyScreen.Body>
+        <Flex
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+          px={2}
+          height={44}
+          zIndex={10}
+          backgroundColor="red"
+        >
+          {/* <Touchable onPress={handleBack} hitSlop={{ left: 20, right: 20 }}> */}
+          <Flex
+            width={44}
+            height={44}
+            alignItems="center"
+            justifyContent="center"
+            backgroundColor="blue"
+          >
+            <BackButton onPress={handleBack} />
+          </Flex>
+          {/* </Touchable> */}
+
+          <Touchable onPress={debouncedHandleSkip} hitSlop={{ left: 20, right: 20 }}>
+            <Text variant="sm"> Skip </Text>
+          </Touchable>
+        </Flex>
+
         <Box pt={2}>
           <ProgressBar progress={progress} />
         </Box>
@@ -164,4 +192,7 @@ const STATE_KEYS: Record<Exclude<OnboardingContextAction["type"], "RESET">, keyo
   SET_ANSWER_TWO: "questionTwo",
   SET_ANSWER_THREE: "questionThree",
   FOLLOW: "followedIds",
+}
+function useSafeAreaInsets() {
+  throw new Error("Function not implemented.")
 }
