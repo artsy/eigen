@@ -1,9 +1,10 @@
-import { Touchable } from "@artsy/palette-mobile"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { AuctionResultListItemTestsQuery } from "__generated__/AuctionResultListItemTestsQuery.graphql"
 import * as navigation from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import moment from "moment"
 import { graphql, QueryRenderer } from "react-relay"
@@ -191,8 +192,8 @@ describe("AuctionResults", () => {
 
     expect(tree.root.findByProps({ testID: "saleInfo" }).props.children).toContain("Jan 12, 2021")
   })
-  it("navigates to the lot screen for upcoming auction results happening in ", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+  it("navigates to the lot screen for upcoming auction results happening in ", async () => {
+    renderWithWrappers(<TestRenderer />)
     resolveMostRecentRelayOperation(mockEnvironment, {
       Artist: () => ({
         auctionResultsConnection: {
@@ -211,8 +212,10 @@ describe("AuctionResults", () => {
       }),
     })
 
-    const button = tree.root.findAllByType(Touchable)[0]
-    button.props.onPress()
+    const button = screen.getByText("Mediumtext-1")
+
+    fireEvent.press(button)
+
     expect(navigate).toHaveBeenCalledWith("https://www.artsy.net/artwork/auction-lot")
   })
 
@@ -237,8 +240,10 @@ describe("AuctionResults", () => {
       }),
     })
 
-    const button = tree.root.findAllByType(Touchable)[0]
+    const button = tree.root.findAllByType(RouterLink)[0]
+
     button.props.onPress()
+
     expect(mockOnPress).toHaveBeenCalled()
     expect(navigate).not.toHaveBeenCalled()
   })
