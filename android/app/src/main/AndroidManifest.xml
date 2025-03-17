@@ -33,15 +33,31 @@
     <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notification"/>
     <meta-data android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="false"/>
     <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/white"/>
-    <meta-data android:name="expo.modules.updates.CODE_SIGNING_CERTIFICATE" android:value="./code-signing/certificate.pem"/>
+    <meta-data android:name="expo.modules.updates.CODE_SIGNING_CERTIFICATE" android:value="-----BEGIN CERTIFICATE-----
+MIICzTCCAbWgAwIBAgIJE93aAH2H6ghwMA0GCSqGSIb3DQEBCwUAMA8xDTALBgNV
+BAMTBHRlc3QwIBcNMjUwMzEzMTQwNTQxWhgPMjEyNTAzMTMxNDA1NDFaMA8xDTAL
+BgNVBAMTBHRlc3QwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDG8fCp
+iNgvVIBNkXsaStwG69ZD5cLzwFQLgu6Qp2sYqd8y0FiahuBAe1lmTzOyxmvwEUNF
+7ahBGQU30XT8XrCq7DuWMz59Vcg77WLqMjWbvQpcqfFlCDsMkprRV8mGkmMnpS6M
+z/OGDUDrGUd3T+JNdt5Yxg6Iylwd+3k28OzRLUgl0WZUN/tVFB9HAJMMN/zjPrha
+4tU5tg+z1wHpqvx5uK+YtuJfhG/YYYG0TRppO6kmqguDy7CqjWhr030PAszvJFY5
+mI4F+yko3gnQtbuLX1DD9Fq1BIi9Z05ES705g2TI3seaQnKEg/TMK6WEY+Fvkw7x
+p3AUmBjaVkUvTDSrAgMBAAGjKjAoMA4GA1UdDwEB/wQEAwIHgDAWBgNVHSUBAf8E
+DDAKBggrBgEFBQcDAzANBgkqhkiG9w0BAQsFAAOCAQEAxpNIT5dpQuVD6/F+rygd
+c551oSyvbJqWThp0zS3C9JHcalSWUoUkbZC3oTgPlfKpsv9iZfiBR+ymJcFEp9+2
+GTCP1qZefBtYgdaJU88AnUhc+1Cs4589Fp+Z7Sx3nQxf/+Jam+As0+gHerzXXIjt
+yw/6UM62zltglHmgZ+5IxE0Y93GG2HFmC6Rqeyh0/F6IXt2H3iSZabP1DdIqKAET
+y/GCNVvc/Z9KB1rI7ZB6IH1BesOeY1fbXIGH02V0fkYyvKD8Z1YeMvNrCb7HkOji
+iQ/RfWAKqhn3Ky5lGUEYeq1Hnfa9Elosc8j6LoKouajGcqpxc7CeLKlJHoeWcJXM
+AQ==
+-----END CERTIFICATE-----"/>
     <meta-data android:name="expo.modules.updates.CODE_SIGNING_METADATA" android:value="{&quot;keyid&quot;:&quot;main&quot;,&quot;alg&quot;:&quot;rsa-v1_5-sha256&quot;}"/>
     <meta-data android:name="expo.modules.updates.ENABLED" android:value="true"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="NEVER"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0"/>
-    <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668"/>
     <meta-data android:name="expo.modules.updates.EXPO_RUNTIME_VERSION" android:value="@string/expo_runtime_version"/>
     <meta-data android:name="expo.modules.updates.UPDATES_CONFIGURATION_REQUEST_HEADERS_KEY" android:value="{&quot;expo-channel-name&quot;:&quot;canary&quot;}"/>
-    <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="http://localhost:3000/api/manifest?project=eigen&amp;channel=canary"/>
+    <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="http://192.168.2.220:3000/api/manifest?project=eigen&amp;channel=canary"/>
     <activity android:name="com.facebook.FacebookActivity" android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" android:label="@string/app_name"/>
     <activity android:name="com.facebook.CustomTabActivity" android:exported="true">
       <intent-filter>
