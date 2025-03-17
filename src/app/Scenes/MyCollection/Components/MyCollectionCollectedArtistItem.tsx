@@ -35,6 +35,7 @@ export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({
       showFollowButton={false}
       withFeedback
       containerStyle={{ paddingHorizontal: space(2) }}
+      disableNavigation
       onPress={showArtistPreview}
       isPrivate={isPrivate}
     />

@@ -31,8 +31,14 @@ import {
   defaultArtistVariables,
 } from "app/Scenes/Artist/Artist"
 import { ArtistArticlesQueryRenderer } from "app/Scenes/ArtistArticles/ArtistArticles"
-import { ArtistSeriesQueryRenderer } from "app/Scenes/ArtistSeries/ArtistSeries"
-import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
+import {
+  ArtistSeriesQueryRenderer,
+  ArtistSeriesScreenQuery,
+} from "app/Scenes/ArtistSeries/ArtistSeries"
+import {
+  ArtistSeriesFullArtistSeriesListQueryRenderer,
+  ArtistSeriesFullArtistSeriesListScreenQuery,
+} from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtistShowsQueryRenderer } from "app/Scenes/ArtistShows/ArtistShows"
 import { ArtworkScreen, ArtworkScreenQuery } from "app/Scenes/Artwork/Artwork"
 import { BrowseSimilarWorksQueryRenderer } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
@@ -40,7 +46,10 @@ import { CertificateOfAuthenticity } from "app/Scenes/Artwork/Components/Certifi
 import { UnlistedArtworksFAQScreen } from "app/Scenes/Artwork/Components/UnlistedArtworksFAQScreen"
 import { ArtworkAttributionClassFAQQueryRenderer } from "app/Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
-import { ArtworkMediumQueryRenderer } from "app/Scenes/ArtworkMedium/ArtworkMedium"
+import {
+  ARTWORK_MEDIUM_QUERY,
+  ArtworkMediumQueryRenderer,
+} from "app/Scenes/ArtworkMedium/ArtworkMedium"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
 import { AuctionBuyersPremiumQueryRenderer } from "app/Scenes/AuctionBuyersPremium/AuctionBuyersPremium"
 import { AuctionResultQueryRenderer } from "app/Scenes/AuctionResult/AuctionResult"
@@ -113,7 +122,7 @@ import { NewWorksForYouQueryRenderer } from "app/Scenes/NewWorksForYou/NewWorksF
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 import { OrderDetailsQueryRender } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetails"
 import { OrderHistoryQueryRender } from "app/Scenes/OrderHistory/OrderHistory"
-import { PartnerQueryRenderer } from "app/Scenes/Partner/Partner"
+import { PartnerQueryRenderer, PartnerScreenQuery } from "app/Scenes/Partner/Partner"
 import {
   PartnerLocationsQueryRenderer,
   PartnerLocationsScreenQuery,
@@ -343,6 +352,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [ArtistSeriesScreenQuery],
   },
   {
     path: "/artist/:artistID",
@@ -375,6 +385,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerTitle: "Artist Series",
       },
     },
+    queries: [ArtistSeriesFullArtistSeriesListScreenQuery],
   },
   {
     path: "/artist/:artistID/auction-result/:auctionResultInternalID",
@@ -499,6 +510,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/artwork/:artworkID/medium",
     name: "ArtworkMedium",
     Component: ArtworkMediumQueryRenderer,
+    queries: [ARTWORK_MEDIUM_QUERY],
   },
   {
     path: "/artwork/:artworkID/browse-similar-works",
@@ -1173,6 +1185,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [PartnerScreenQuery],
   },
   {
     path: "/partner/:partnerID/artists/:artistID",
