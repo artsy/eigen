@@ -9,7 +9,7 @@ import {
   LegacyScreen,
   Touchable,
   CloseIcon,
-  ChevronIcon
+  ChevronIcon,
 } from "@artsy/palette-mobile"
 import { useFocusEffect, useNavigation } from "@react-navigation/native"
 import {
@@ -109,17 +109,16 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
   return (
     <LegacyScreen>
       <LegacyScreen.Body>
-        <Flex
-          flexDirection="row"
-          alignItems="center"
-          justifyContent="space-between"
-          height={40}
-        >
+        <Flex flexDirection="row" alignItems="center" justifyContent="space-between" height={40}>
           <Touchable onPress={handleBack} hitSlop={{ left: 20, right: 20 }}>
-            <ChevronIcon direction="left"/>
+            <ChevronIcon direction="left" />
           </Touchable>
 
-          <Touchable testID="close-button" onPress={debouncedHandleSkip} hitSlop={{ left: 20, right: 20 }}>
+          <Touchable
+            testID="close-button"
+            onPress={debouncedHandleSkip}
+            hitSlop={{ left: 20, right: 20 }}
+          >
             <CloseIcon />
           </Touchable>
         </Flex>
@@ -181,7 +180,4 @@ const STATE_KEYS: Record<Exclude<OnboardingContextAction["type"], "RESET">, keyo
   SET_ANSWER_TWO: "questionTwo",
   SET_ANSWER_THREE: "questionThree",
   FOLLOW: "followedIds",
-}
-function useSafeAreaInsets() {
-  throw new Error("Function not implemented.")
 }
