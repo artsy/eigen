@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import { ViewingRoom_viewingRoom$data } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -186,9 +186,11 @@ export const ClosedNotice: React.FC<{ status: string; partnerHref?: string | nul
         {finalText}
       </Text>
       {!!partnerHref && (
-        <Button variant="fillGray" onPress={() => navigate(partnerHref)} mt={2}>
-          Visit gallery
-        </Button>
+        <RouterLink to={partnerHref} hasChildTouchable>
+          <Button variant="fillGray" mt={2}>
+            Visit gallery
+          </Button>
+        </RouterLink>
       )}
     </Flex>
   )
@@ -258,7 +260,6 @@ export const ViewingRoomQueryRenderer: React.FC<{ viewingRoomID: string }> = ({
     <QueryRenderer<ViewingRoomQuery>
       environment={getRelayEnvironment()}
       query={ViewingRoomScreenQuery}
-      cacheConfig={{ force: false }}
       variables={{
         viewingRoomID,
       }}
