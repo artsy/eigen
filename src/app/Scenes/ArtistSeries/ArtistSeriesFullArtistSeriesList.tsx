@@ -69,14 +69,6 @@ export const ArtistSeriesFullArtistSeriesListFragmentContainer = createFragmentC
   }
 )
 
-export const ArtistSeriesFullArtistSeriesListScreenQuery = graphql`
-  query ArtistSeriesFullArtistSeriesListQuery($artistID: String!) {
-    artist(id: $artistID) {
-      ...ArtistSeriesFullArtistSeriesList_artist
-    }
-  }
-`
-
 export const ArtistSeriesFullArtistSeriesListQueryRenderer: React.FC<{ artistID: string }> = ({
   artistID,
 }) => {
