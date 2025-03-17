@@ -1,7 +1,6 @@
 import { ActionType, ContextModule } from "@artsy/cohesion"
 import { Skeleton, SkeletonText, Tabs } from "@artsy/palette-mobile"
 import { TabsContainerProps } from "@artsy/palette-mobile/dist/elements/Tabs/TabsContainer"
-import { InfiniteDiscoveryBottomSheetTabsQuery } from "__generated__/InfiniteDiscoveryBottomSheetTabsQuery.graphql"
 import {
   InfiniteDiscoveryAboutTheWorkTab,
   InfiniteDiscoveryAboutTheWorkTabSkeleton,
@@ -9,11 +8,11 @@ import {
 import { InfiniteDiscoveryMoreWorksTab } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryMoreWorksTab"
 import { FC } from "react"
 import { IndexChangeEventData } from "react-native-collapsible-tab-view/lib/typescript/src/types"
-import { PreloadedQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface InfiniteDiscoveryOtherWorksTabProps {
-  queryRef: PreloadedQuery<InfiniteDiscoveryBottomSheetTabsQuery>
+  artistIDs: string[]
+  artworkID: string
   onTabChange: TabsContainerProps["onTabChange"]
 }
 
@@ -29,7 +28,8 @@ const TABS = [
 ]
 
 export const InfiniteDiscoveryTabs: FC<InfiniteDiscoveryOtherWorksTabProps> = ({
-  queryRef,
+  artistIDs,
+  artworkID,
   onTabChange,
 }) => {
   const { trackEvent } = useTracking()
@@ -49,10 +49,10 @@ export const InfiniteDiscoveryTabs: FC<InfiniteDiscoveryOtherWorksTabProps> = ({
   return (
     <Tabs onTabChange={handleTabChange}>
       <Tabs.Tab name={TABS[0].name} label={TABS[0].name}>
-        <InfiniteDiscoveryAboutTheWorkTab queryRef={queryRef} />
+        <InfiniteDiscoveryAboutTheWorkTab artworkID={artworkID} />
       </Tabs.Tab>
       <Tabs.Tab name={TABS[1].name} label={TABS[1].name}>
-        <InfiniteDiscoveryMoreWorksTab queryRef={queryRef} />
+        <InfiniteDiscoveryMoreWorksTab artistIDs={artistIDs} />
       </Tabs.Tab>
     </Tabs>
   )

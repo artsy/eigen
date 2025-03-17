@@ -5,7 +5,7 @@ import { navigate } from "app/system/navigation/navigate"
 import React, { useRef } from "react"
 import { Platform } from "react-native"
 
-const MAX_DURATION_BETWEEN_TAPS = 250
+const MAX_DURATION_BETWEEN_TAPS = 150
 
 export const DevMenuWrapper: React.FC = ({ children }) => {
   const userIsDev = GlobalStore.useAppState((store) => store.artsyPrefs.userIsDev.value)
