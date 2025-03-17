@@ -1,15 +1,18 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import FlagProvider from "@unleash/proxy-client-react"
-import { UnleashInitializer } from "app/utils/UnleashInitializer"
-import { useUnleashEnvironment } from "app/utils/experiments/hooks"
+import FlagProvider, { IConfig } from "@unleash/proxy-client-react"
+import {
+  useUnleashEnvironment,
+  useUnleashInitializer,
+  useUnleashListener,
+} from "app/system/flags/hooks"
 import Keys from "react-native-keys"
 
-export const InitializedFlagProvider: React.FC = ({ children }) => {
+export const WrappedFlagProvider: React.FC = ({ children }) => {
   const { unleashEnv: env } = useUnleashEnvironment()
 
   const storageName = (name: string) => `unleash-values:${name}`
 
-  const config = {
+  const config: IConfig = {
     url:
       env === "production"
         ? Keys.secureFor("UNLEASH_PROXY_URL_PRODUCTION")
@@ -34,4 +37,11 @@ export const InitializedFlagProvider: React.FC = ({ children }) => {
       <UnleashInitializer children={children} />
     </FlagProvider>
   )
+}
+
+const UnleashInitializer: React.FC = ({ children }) => {
+  useUnleashListener()
+  useUnleashInitializer()
+
+  return <>{children}</>
 }

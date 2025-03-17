@@ -11,8 +11,8 @@ import {
   DEFAULT_RECS_MODEL_VERSION,
   RECOMMENDATION_MODEL_EXPERIMENT_NAME,
 } from "app/Scenes/NewWorksForYou/NewWorksForYou"
+import { useExperimentVariant } from "app/system/flags/hooks"
 import { goBack } from "app/system/navigation/navigate"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ScrollView } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"

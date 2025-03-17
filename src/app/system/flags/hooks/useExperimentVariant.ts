@@ -1,7 +1,7 @@
 import { IVariant, useVariant } from "@unleash/proxy-client-react"
 import { GlobalStore } from "app/store/GlobalStore"
-import { EXPERIMENT_NAME } from "app/utils/experiments/experiments"
-import { ContextProps, reportExperimentVariant } from "app/utils/experiments/reporter"
+import { EXPERIMENT_NAME } from "app/system/flags/experiments"
+import { ContextProps, reportExperimentVariant } from "app/system/flags/reporter"
 
 export function useExperimentVariant(name: EXPERIMENT_NAME): {
   enabled: boolean
