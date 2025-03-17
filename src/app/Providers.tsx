@@ -4,8 +4,8 @@ import { PortalProvider } from "@gorhom/portal"
 import FlagProvider from "@unleash/proxy-client-react"
 import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ShareSheetProvider } from "app/Components/ShareSheet/ShareSheetContext"
+import { WrappedFlagProvider } from "app/system/flags/Components/WrappedFlagProvider"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { InitializedFlagProvider } from "app/utils/InitializedFlagProvider"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { NavigationTestsProvider } from "app/utils/tests/NavigationTestsProvider"
@@ -28,7 +28,7 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       GestureHandlerProvider,
       TrackingProvider,
       GlobalStoreProvider,
-      InitializedFlagProvider,
+      WrappedFlagProvider,
       SafeAreaProvider,
       ProvideScreenDimensions, // uses: SafeAreaProvider
       // FIXME: Only use one from palette-mobile

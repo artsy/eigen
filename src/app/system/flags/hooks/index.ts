@@ -1,3 +1,5 @@
 export * from "./useExperimentFlag"
 export * from "./useExperimentVariant"
 export * from "./useUnleashEnvironment"
+export * from "./useUnleashInitializer"
+export * from "./useUnleashListener"

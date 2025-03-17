@@ -38,5 +38,5 @@ export const useUnleashListener = () => {
       client.off("update", onUpdate)
       client.off("error", onError)
     }
-  })
+  }, [])
 }

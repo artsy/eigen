@@ -15,11 +15,7 @@ import { IVariant, useFlags } from "@unleash/proxy-client-react"
 import { FONTS } from "app/Components/HTML"
 import { useToast } from "app/Components/Toast/toastHook"
 import { GlobalStore } from "app/store/GlobalStore"
-import {
-  EXPERIMENT_NAME,
-  ExperimentDescriptor,
-  experiments,
-} from "app/utils/experiments/experiments"
+import { EXPERIMENT_NAME, ExperimentDescriptor, experiments } from "app/system/flags/experiments"
 import { isEmpty } from "lodash"
 import { useState } from "react"
 import { Alert, Modal, TextInput, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
