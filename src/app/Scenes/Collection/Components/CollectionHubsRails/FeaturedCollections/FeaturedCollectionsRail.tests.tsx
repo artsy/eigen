@@ -1,4 +1,5 @@
 /* eslint-disable testing-library/await-async-queries */
+import { Touchable } from "@artsy/palette-mobile"
 import { FeaturedCollectionsRailTestsQuery } from "__generated__/FeaturedCollectionsRailTestsQuery.graphql"
 import {
   FeaturedCollectionsRail,
@@ -8,7 +9,6 @@ import {
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -75,7 +75,7 @@ describe("Featured Collections Rail", () => {
 
   it("correctly tracks when a collection is tapped", () => {
     const wrapper = getWrapper()
-    wrapper.root.findAllByType(TouchableHighlight)[0].props.onPress()
+    wrapper.root.findAllByType(Touchable)[0].props.onPress()
 
     expect(mockTrackEvent).toBeCalledWith({
       action_type: "tappedCollectionGroup",
@@ -138,7 +138,7 @@ describe("Featured Collections Rail", () => {
     it("navigates to a new collection when tapped", () => {
       const tree = renderWithWrappersLEGACY(<FeaturedCollectionsRail {...props} />).root
 
-      const instance = tree.findAllByType(TouchableHighlight)[0]
+      const instance = tree.findAllByType(Touchable)[0]
       act(() => instance.props.onPress())
 
       expect(navigate).toHaveBeenCalledWith("/collection/featured-collection-1")
