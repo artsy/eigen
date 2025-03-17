@@ -131,14 +131,14 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
             data={artistData.verifiedRepresentatives}
             keyExtractor={({ partner }) => `representative-${partner.internalID}`}
             renderItem={({ item }) => (
-              <RouterLink to={item.partner.href} hasChildTouchable>
-                <Pill
-                  variant="profile"
-                  src={item.partner.profile?.icon?.url ?? undefined}
-                  onPress={() => {
-                    trackEvent(tracks.tappedVerifiedRepresentative(artistData, item.partner))
-                  }}
-                >
+              <RouterLink
+                onPress={() => {
+                  trackEvent(tracks.tappedVerifiedRepresentative(artistData, item.partner))
+                }}
+                to={item.partner.href}
+                hasChildTouchable
+              >
+                <Pill variant="profile" src={item.partner.profile?.icon?.url ?? undefined}>
                   {item.partner.name}
                 </Pill>
               </RouterLink>
