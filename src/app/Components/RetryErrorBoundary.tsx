@@ -3,7 +3,7 @@ import { LoadFailureView } from "./LoadFailureView"
 import { NotFoundFailureView } from "./NotFoundFailureView"
 
 // Taken from https://relay.dev/docs/guided-tour/rendering/error-states/#when-using-uselazyloadquery
-interface RetryErrorBoundaryProps {
+export interface RetryErrorBoundaryProps {
   failureView?: React.FC<{ error: Error; retry: () => void }>
   notFoundTitle?: string
   notFoundText?: string

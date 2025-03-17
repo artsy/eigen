@@ -36,7 +36,7 @@ type SwiperProps = {
   onSwipe: (swipedKey: Key, nextKey: Key) => void
   containerStyle?: ViewStyle
   cardStyle?: ViewStyle
-  isArtworksSaved?: (index: number) => boolean
+  isArtworkSaved?: (index: number) => boolean
 } & (
   | { onTrigger?: never; swipedIndexCallsOnTrigger?: never }
   | { onTrigger: (activeIndex: number) => void; swipedIndexCallsOnTrigger: number }
@@ -58,7 +58,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
       swipedIndexCallsOnTrigger,
       containerStyle,
       cardStyle,
-      isArtworksSaved,
+      isArtworkSaved,
     },
     ref
   ) => {
@@ -271,7 +271,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
                   artwork={c}
                   key={c.internalID}
                   containerStyle={cardStyle}
-                  isSaved={isArtworksSaved ? isArtworksSaved(i) : undefined}
+                  isSaved={isArtworkSaved ? isArtworkSaved(i) : undefined}
                   index={index}
                   isTopCard={index === activeIndex}
                 />

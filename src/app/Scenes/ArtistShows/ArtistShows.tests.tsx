@@ -1,20 +1,20 @@
 import { Text } from "@artsy/palette-mobile"
-import { ArtistShows2TestsQuery } from "__generated__/ArtistShows2TestsQuery.graphql"
+import { ArtistShowsTestsQuery } from "__generated__/ArtistShowsTestsQuery.graphql"
 import { ArtistShow } from "app/Components/Artist/ArtistShows/ArtistShow"
 import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { FlatList } from "react-native"
 import { graphql } from "react-relay"
-import { ArtistShows2PaginationContainer } from "./ArtistShows2"
+import { ArtistShowsPaginationContainer } from "./ArtistShows"
 
-describe("ArtistShows2", () => {
-  const { renderWithRelay } = setupTestWrapper<ArtistShows2TestsQuery>({
-    Component: (props) => <ArtistShows2PaginationContainer artist={props.artist!} />,
+describe("ArtistShows", () => {
+  const { renderWithRelay } = setupTestWrapper<ArtistShowsTestsQuery>({
+    Component: (props) => <ArtistShowsPaginationContainer artist={props.artist!} />,
     query: graphql`
-      query ArtistShows2TestsQuery($artistID: String!) @relay_test_operation {
+      query ArtistShowsTestsQuery($artistID: String!) @relay_test_operation {
         artist(id: $artistID) {
           slug
-          ...ArtistShows2_artist
+          ...ArtistShows_artist
         }
       }
     `,

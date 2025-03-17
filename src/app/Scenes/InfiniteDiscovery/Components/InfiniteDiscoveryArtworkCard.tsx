@@ -21,7 +21,7 @@ import {
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
-import { ViewStyle, Text as RNText } from "react-native"
+import { Text as RNText, ViewStyle } from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import Animated, {
   Easing,
@@ -34,6 +34,8 @@ import Animated, {
 } from "react-native-reanimated"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
+
+const SAVES_MAX_DURATION_BETWEEN_TAPS = 250
 
 interface InfiniteDiscoveryArtworkCardProps {
   artwork: InfiniteDiscoveryArtworkCard_artwork$key
@@ -78,10 +80,19 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           context_screen_owner_slug: artwork.slug,
           context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
         })
-
-        if (isArtworkSaved) {
+      },
+      onError: () => {
+        /**
+         * This logic assumes that the saved artworks count was optimistically incremented or decremented when the save button was pressed.
+         * If the save operation fails, we need to revert the saved artworks count to its previous state.
+         * This is needed because the optimisticUpdater callback in useSaveArtworkToArtworkLists performs some actions that can take severel seconds to complete,
+         * and as a result the saved artworks count can be out of sync with the actual state of the artwork.
+         */
+        if (isSaved) {
+          // if the artwork is currently saved, we optimistically decremented the count, so increment it back
           incrementSavedArtworksCount()
         } else {
+          // if the artwork is currently unsaved, we optimistically incremented the count, so decrement it back
           decrementSavedArtworksCount()
         }
       },
@@ -142,7 +153,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       const now = Date.now()
       const state = gestureState.current
 
-      if (now - state.lastTapTimestamp < 500) {
+      if (now - state.lastTapTimestamp < SAVES_MAX_DURATION_BETWEEN_TAPS) {
         state.numTaps += 1
       } else {
         state.numTaps = 1
@@ -226,6 +237,15 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               if (!hasSavedArtworks) {
                 setHasSavedArtwors(true)
               }
+
+              if (isSaved) {
+                // if the artwork is currently saved, it will become unsaved, so optimistically decrement the count
+                decrementSavedArtworksCount()
+              } else {
+                // if the artwork is currently unsaved, it will become saved, so optimistically decrement the count
+                incrementSavedArtworksCount()
+              }
+
               saveArtworkToLists()
             }}
             testID="save-artwork-icon"
