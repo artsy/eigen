@@ -1,10 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import FlagProvider, { IConfig } from "@unleash/proxy-client-react"
-import {
-  useUnleashEnvironment,
-  useUnleashInitializer,
-  useUnleashListener,
-} from "app/system/flags/hooks"
+import { useUnleashEnvironment } from "app/system/flags/hooks/useUnleashEnvironment"
+import { useUnleashInitializer } from "app/system/flags/hooks/useUnleashInitializer"
+import { useUnleashListener } from "app/system/flags/hooks/useUnleashListener"
 import Keys from "react-native-keys"
 
 export const WrappedFlagProvider: React.FC = ({ children }) => {

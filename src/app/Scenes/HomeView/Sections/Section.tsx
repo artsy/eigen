@@ -19,7 +19,7 @@ import { HomeViewSectionSalesQueryRenderer } from "app/Scenes/HomeView/Sections/
 import { HomeViewSectionShowsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
 import { HomeViewSectionTasksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionTasks"
 import { HomeViewSectionViewingRoomsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
-import { useExperimentVariant } from "app/system/flags/hooks"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 
