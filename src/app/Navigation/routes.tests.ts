@@ -430,7 +430,7 @@ describe("artsy.net routes", () => {
       {
         "module": "ViewingRoom",
         "params": {
-          "viewing_room_id": "red",
+          "viewingRoomID": "red",
         },
         "type": "match",
       }
@@ -439,7 +439,7 @@ describe("artsy.net routes", () => {
       {
         "module": "ViewingRoom",
         "params": {
-          "viewing_room_id": "blue",
+          "viewingRoomID": "blue",
         },
         "type": "match",
       }
@@ -451,7 +451,7 @@ describe("artsy.net routes", () => {
       {
         "module": "ViewingRoomArtworks",
         "params": {
-          "viewing_room_id": "red",
+          "viewingRoomID": "red",
         },
         "type": "match",
       }
@@ -460,7 +460,7 @@ describe("artsy.net routes", () => {
       {
         "module": "ViewingRoomArtworks",
         "params": {
-          "viewing_room_id": "blue",
+          "viewingRoomID": "blue",
         },
         "type": "match",
       }
@@ -474,7 +474,7 @@ describe("artsy.net routes", () => {
         "module": "ViewingRoomArtwork",
         "params": {
           "artwork_id": "josef-albers-homage-to-the-square",
-          "viewing_room_id": "red",
+          "viewingRoomID": "red",
         },
         "type": "match",
       }
@@ -484,7 +484,7 @@ describe("artsy.net routes", () => {
         "module": "ViewingRoomArtwork",
         "params": {
           "artwork_id": "yayoi-kusama-red-pumpkin",
-          "viewing_room_id": "blue",
+          "viewingRoomID": "blue",
         },
         "type": "match",
       }

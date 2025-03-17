@@ -141,7 +141,10 @@ import { AlertArtworks } from "app/Scenes/SavedSearchAlert/AlertArtworks"
 import { EditSavedSearchAlertQueryRenderer } from "app/Scenes/SavedSearchAlert/EditSavedSearchAlert"
 import { SavedSearchAlertsListQueryRenderer } from "app/Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
 import { SearchScreen, SearchScreenQuery } from "app/Scenes/Search/Search"
-import { ShowMoreInfoQueryRenderer } from "app/Scenes/Show/Screens/ShowMoreInfo"
+import {
+  ShowMoreInfoQueryRenderer,
+  ShowMoreInfoScreenQuery,
+} from "app/Scenes/Show/Screens/ShowMoreInfo"
 import { ShowQueryRenderer, ShowScreenQuery } from "app/Scenes/Show/Show"
 import { ShowsForYouScreen, ShowsForYouScreenQuery } from "app/Scenes/Shows/ShowsForYou"
 import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
@@ -152,7 +155,10 @@ import {
   ViewingRoomScreenQuery,
 } from "app/Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkScreen } from "app/Scenes/ViewingRoom/ViewingRoomArtwork"
-import { ViewingRoomArtworksQueryRenderer } from "app/Scenes/ViewingRoom/ViewingRoomArtworks"
+import {
+  ViewingRoomArtworksQueryRenderer,
+  ViewingRoomArtworksScreenQuery,
+} from "app/Scenes/ViewingRoom/ViewingRoomArtworks"
 import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
@@ -1352,6 +1358,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/show/:showID/info",
     name: "ShowMoreInfo",
     Component: ShowMoreInfoQueryRenderer,
+    queries: [ShowMoreInfoScreenQuery],
   },
   {
     path: "/shows-for-you",
@@ -1416,18 +1423,19 @@ export const artsyDotNetRoutes = defineRoutes([
     },
   },
   {
-    path: "/viewing-room/:viewing_room_id",
+    path: "/viewing-room/:viewingRoomID",
     name: "ViewingRoom",
     Component: ViewingRoomQueryRenderer,
     queries: [ViewingRoomScreenQuery],
   },
   {
-    path: "/viewing-room/:viewing_room_id/artworks",
+    path: "/viewing-room/:viewingRoomID/artworks",
     name: "ViewingRoomArtworks",
     Component: ViewingRoomArtworksQueryRenderer,
+    queries: [ViewingRoomArtworksScreenQuery],
   },
   {
-    path: "/viewing-room/:viewing_room_id/:artwork_id",
+    path: "/viewing-room/:viewingRoomID/:artwork_id",
     name: "ViewingRoomArtwork",
     Component: ViewingRoomArtworkScreen,
   },
