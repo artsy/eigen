@@ -1,3 +1,4 @@
+import { Flex, Spacer } from "@artsy/palette-mobile"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
 import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
@@ -23,9 +24,13 @@ export const CreateNewArtworkListView = () => {
       name={ArtworkListsViewName.CreateNewArtworkLists}
       onDismiss={closeCurrentView}
     >
-      <ArtworkListsBottomSheetSectionTitle>Create a new list</ArtworkListsBottomSheetSectionTitle>
+      <Flex px={2} mt={2} mb={`${bottomOffset}px`}>
+        <ArtworkListsBottomSheetSectionTitle>New list</ArtworkListsBottomSheetSectionTitle>
 
-      <CreateNewArtworkListForm m={2} mb={`${bottomOffset}px`} />
+        <Spacer y={2} />
+
+        <CreateNewArtworkListForm />
+      </Flex>
     </AutoHeightBottomSheet>
   )
 }

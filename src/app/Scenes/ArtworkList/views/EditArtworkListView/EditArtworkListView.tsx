@@ -33,12 +33,8 @@ export const EditArtworkListView: FC<EditArtworkListViewProps> = ({
   const toast = useArtworkListToast()
   const { trackEvent } = useTracking()
   const bottomOffset = useArtworkListsBottomOffset(2)
-  const { dismiss, dismissAll } = useBottomSheetModal()
+  const { dismissAll } = useBottomSheetModal()
   const [commit] = useEditArtworkList()
-
-  const closeView = () => {
-    dismiss(NAME)
-  }
 
   const trackAnalytics = () => {
     const event: EditedArtworkList = {
@@ -89,13 +85,11 @@ export const EditArtworkListView: FC<EditArtworkListViewProps> = ({
         <Spacer y={2} />
 
         <CreateOrEditArtworkListForm
-          mode="edit"
           initialValues={{
             name: artworkListEntity.title,
             shareableWithPartners: artworkListEntity.shareableWithPartners,
           }}
           onSubmit={handleSubmit}
-          onBackPress={closeView}
         />
       </Flex>
     </AutoHeightBottomSheet>

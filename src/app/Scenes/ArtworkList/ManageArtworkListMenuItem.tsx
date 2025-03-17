@@ -9,7 +9,7 @@ interface ManageArtworkListMenuProps {
 export const ManageArtworkListMenuItem: FC<ManageArtworkListMenuProps> = ({ label, onPress }) => {
   return (
     <Touchable onPress={onPress}>
-      <Flex p={2}>
+      <Flex py={1}>
         <Text variant="sm-display">{label}</Text>
       </Flex>
     </Touchable>
