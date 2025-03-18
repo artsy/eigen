@@ -4,24 +4,39 @@ import { EXPERIMENT_NAME } from "app/system/flags/experiments"
 import { ContextProps, reportExperimentVariant } from "app/system/flags/reporter"
 
 export function useExperimentVariant(name: EXPERIMENT_NAME): {
-  enabled: boolean
-  variant: string
-  payload?: string
-  unleashVariant: string
-  unleashPayload?: string
+  variant: IVariant
   trackExperiment: (contextProps?: ContextProps) => void
 } {
-  const localPayloadOverrides = GlobalStore.useAppState(
-    (s) => s.artsyPrefs.experiments.localPayloadOverrides
-  )
+  const variant = useVariant(name) as IVariant
+
   const localVariantOverrides = GlobalStore.useAppState(
     (s) => s.artsyPrefs.experiments.localVariantOverrides
   )
+  const localPayloadOverrides = GlobalStore.useAppState(
+    (s) => s.artsyPrefs.experiments.localPayloadOverrides
+  )
+  let overrideApplied = false
 
-  const variant = useVariant(name) as IVariant
+  if (localVariantOverrides[name]) {
+    variant.name = localVariantOverrides[name]
+    overrideApplied = true
+  }
+
+  if (localPayloadOverrides[name]) {
+    variant.payload = {
+      type: "string",
+      value: localPayloadOverrides[name],
+    }
+    overrideApplied = true
+  }
 
   const trackExperiment = (contextProps?: ContextProps) => {
-    if (!variant.enabled || localVariantOverrides[name]) {
+    if (!variant.enabled || overrideApplied) {
+      if (__DEV__) {
+        console.warn(
+          `[unleash] ignoring request to track experiment because the variant is disabled or overridden, flag=${name} variant=${variant.name}`
+        )
+      }
       return
     }
 
@@ -33,11 +48,7 @@ export function useExperimentVariant(name: EXPERIMENT_NAME): {
   }
 
   return {
-    enabled: variant.enabled,
-    variant: localVariantOverrides[name] || variant.name,
-    payload: localPayloadOverrides[name] || variant.payload?.value,
-    unleashVariant: variant.name,
-    unleashPayload: variant.payload?.value,
+    variant,
     trackExperiment,
   }
 }

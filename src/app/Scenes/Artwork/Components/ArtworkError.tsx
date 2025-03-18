@@ -78,13 +78,11 @@ export const ArtworkError: React.FC<ArtworkErrorProps> = ({ homePage, me, viewer
 
 export const ArtworkErrorScreen: React.FC<{}> = withSuspense({
   Component: () => {
-    const worksForYouRecommendationsModel = useExperimentVariant(
-      RECOMMENDATION_MODEL_EXPERIMENT_NAME
-    )
+    const { variant } = useExperimentVariant(RECOMMENDATION_MODEL_EXPERIMENT_NAME)
     const data = useLazyLoadQuery<ArtworkErrorQuery>(
       ArtworkErrorScreenQuery,
       {
-        version: worksForYouRecommendationsModel.payload || DEFAULT_RECS_MODEL_VERSION,
+        version: variant.payload?.value || DEFAULT_RECS_MODEL_VERSION,
       },
       { fetchPolicy: "network-only" }
     )
