@@ -30,14 +30,17 @@ import {
   ArtistScreenQuery,
   defaultArtistVariables,
 } from "app/Scenes/Artist/Artist"
-import { ArtistArticlesQueryRenderer } from "app/Scenes/ArtistArticles/ArtistArticles"
+import {
+  ArtistArticlesQueryRenderer,
+  ArtistArticlesResultScreenQuery,
+} from "app/Scenes/ArtistArticles/ArtistArticles"
 import {
   ArtistSeriesQueryRenderer,
   ArtistSeriesScreenQuery,
 } from "app/Scenes/ArtistSeries/ArtistSeries"
 import {
   ArtistSeriesFullArtistSeriesListQueryRenderer,
-  ArtistSeriesFullArtistSeriesListScreenQuery,
+  ArtistSeriesFullArtistSeriesScreenQuery,
 } from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtistShowsQueryRenderer } from "app/Scenes/ArtistShows/ArtistShows"
 import { ArtworkScreen, ArtworkScreenQuery } from "app/Scenes/Artwork/Artwork"
@@ -52,7 +55,10 @@ import {
 } from "app/Scenes/ArtworkMedium/ArtworkMedium"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
 import { AuctionBuyersPremiumQueryRenderer } from "app/Scenes/AuctionBuyersPremium/AuctionBuyersPremium"
-import { AuctionResultQueryRenderer } from "app/Scenes/AuctionResult/AuctionResult"
+import {
+  AuctionResultQueryRenderer,
+  AuctionResultScreenQuery,
+} from "app/Scenes/AuctionResult/AuctionResult"
 import {
   AuctionResultsForArtistsYouFollowPrefetchQuery,
   AuctionResultsForArtistsYouFollowQueryRenderer,
@@ -74,7 +80,7 @@ import { FeaturedFairsScreen, featuredFairsScreenQuery } from "app/Scenes/Fair/F
 import { Favorites, Favorites as LegacyFavorites } from "app/Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "app/Scenes/Feature/Feature"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
-import { GeneQueryRenderer } from "app/Scenes/Gene/Gene"
+import { GeneQueryRenderer, GeneScreenQuery } from "app/Scenes/Gene/Gene"
 import { HomeViewScreen, homeViewScreenQuery } from "app/Scenes/HomeView/HomeView"
 import {
   HOME_SECTION_SCREEN_QUERY,
@@ -381,6 +387,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [ArtistArticlesResultScreenQuery],
   },
   {
     path: "/artist/:artistID/artist-series",
@@ -391,12 +398,13 @@ export const artsyDotNetRoutes = defineRoutes([
         headerTitle: "Artist Series",
       },
     },
-    queries: [ArtistSeriesFullArtistSeriesListScreenQuery],
+    queries: [ArtistSeriesFullArtistSeriesScreenQuery],
   },
   {
     path: "/artist/:artistID/auction-result/:auctionResultInternalID",
     name: "AuctionResult",
     Component: AuctionResultQueryRenderer,
+    queries: [AuctionResultScreenQuery],
   },
   {
     path: "/artist/:artistID/auction-results",
@@ -818,6 +826,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [GeneScreenQuery],
   },
   {
     path: "/home-view/sections/:id",

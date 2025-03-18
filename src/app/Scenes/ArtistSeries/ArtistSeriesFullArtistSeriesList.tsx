@@ -69,21 +69,13 @@ export const ArtistSeriesFullArtistSeriesListFragmentContainer = createFragmentC
   }
 )
 
-export const ArtistSeriesFullArtistSeriesListScreenQuery = graphql`
-  query ArtistSeriesFullArtistSeriesListQuery($artistID: String!) {
-    artist(id: $artistID) {
-      ...ArtistSeriesFullArtistSeriesList_artist
-    }
-  }
-`
-
 export const ArtistSeriesFullArtistSeriesListQueryRenderer: React.FC<{ artistID: string }> = ({
   artistID,
 }) => {
   return (
     <QueryRenderer<ArtistSeriesFullArtistSeriesListQuery>
       environment={getRelayEnvironment()}
-      query={ArtistSeriesFullArtistSeriesListScreenQuery}
+      query={ArtistSeriesFullArtistSeriesScreenQuery}
       variables={{
         artistID,
       }}
@@ -91,3 +83,11 @@ export const ArtistSeriesFullArtistSeriesListQueryRenderer: React.FC<{ artistID:
     />
   )
 }
+
+export const ArtistSeriesFullArtistSeriesScreenQuery = graphql`
+  query ArtistSeriesFullArtistSeriesListQuery($artistID: String!) {
+    artist(id: $artistID) {
+      ...ArtistSeriesFullArtistSeriesList_artist
+    }
+  }
+`

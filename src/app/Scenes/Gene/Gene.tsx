@@ -96,18 +96,7 @@ export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = (props) => {
   return (
     <QueryRenderer<GeneQuery>
       environment={getRelayEnvironment()}
-      query={graphql`
-        query GeneQuery($geneID: String!, $input: FilterArtworksInput) {
-          gene(id: $geneID) @principalField {
-            displayName
-            name
-            slug
-            ...Header_gene
-            ...About_gene
-            ...GeneArtworks_gene @arguments(input: $input)
-          }
-        }
-      `}
+      query={GeneScreenQuery}
       variables={{
         geneID,
         input,
@@ -120,6 +109,19 @@ export const GeneQueryRenderer: React.FC<GeneQueryRendererProps> = (props) => {
     />
   )
 }
+
+export const GeneScreenQuery = graphql`
+  query GeneQuery($geneID: String!, $input: FilterArtworksInput) {
+    gene(id: $geneID) @principalField {
+      displayName
+      name
+      slug
+      ...Header_gene
+      ...About_gene
+      ...GeneArtworks_gene @arguments(input: $input)
+    }
+  }
+`
 
 export const GeneSkeleton: React.FC = () => {
   return (
