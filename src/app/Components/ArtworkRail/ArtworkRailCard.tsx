@@ -10,14 +10,16 @@ import {
   ArtworkRailCardCommonProps,
   ArtworkRailCardMeta,
 } from "app/Components/ArtworkRail/ArtworkRailCardMeta"
-import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
+import { ContextMenuArtwork, trackLongPress } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import { useState } from "react"
-import { GestureResponderEvent, PixelRatio } from "react-native"
+import { GestureResponderEvent, PixelRatio, Platform } from "react-native"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 const fontScale = PixelRatio.getFontScale()
 export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = fontScale * 100
@@ -51,6 +53,11 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   testID,
   ...restProps
 }) => {
+  const enableContextMenuIOS = useFeatureFlag("AREnableArtworkCardContextMenuIOS")
+  const isIOS = Platform.OS === "ios"
+
+  const { trackEvent } = useTracking()
+
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
 
   const artwork = useFragment(artworkFragment, restProps.artwork)
@@ -75,7 +82,18 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
             activeOpacity={0.8}
             onPress={onPress}
             // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
-            onLongPress={() => {}}
+            onLongPress={() => {
+              // Android long press is tracked inside of the ContextMenuArtwork component
+              if (contextModule && contextScreenOwnerType && isIOS && enableContextMenuIOS) {
+                trackEvent(
+                  trackLongPress.longPressedArtwork(
+                    contextModule,
+                    contextScreenOwnerType,
+                    artwork.slug
+                  )
+                )
+              }
+            }}
             delayLongPress={400}
             testID={testID}
           >

@@ -2,7 +2,6 @@ import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/
 import { useColor } from "@artsy/palette-mobile"
 import { NavigationContainer } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
-import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import {
   FilterArray,
   FilterParamName,
@@ -34,6 +33,7 @@ import { ViewAsOptionsScreen } from "app/Components/ArtworkFilter/Filters/ViewAs
 import { WaysToBuyOptionsScreen } from "app/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { YearOptionsScreen } from "app/Components/ArtworkFilter/Filters/YearOptions"
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
+import { CreateSavedSearchModal } from "app/Scenes/SavedSearchAlert/CreateSavedSearchModal"
 import { GlobalStore } from "app/store/GlobalStore"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"

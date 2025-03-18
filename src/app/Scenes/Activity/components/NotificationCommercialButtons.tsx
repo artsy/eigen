@@ -8,6 +8,7 @@ import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { BuyNowButton } from "app/Scenes/Artwork/Components/CommercialButtons/BuyNowButton"
+import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { getTimer } from "app/utils/getTimer"
@@ -68,6 +69,12 @@ export const CommercialButtons: React.FC<{
   const noLongerAvailable = !partnerOffer?.isAvailable
   const tracking = useTracking()
 
+  const { trackCreateAlertTap } = useCreateAlertTracking({
+    contextScreenOwnerType: OwnerType.notification,
+    contextScreenOwnerId: artworkID,
+    contextModule: ContextModule.notification,
+  })
+
   let renderComponent = null
 
   if (!!hasEnded) {
@@ -114,7 +121,14 @@ export const CommercialButtons: React.FC<{
   } else if (!!noLongerAvailable) {
     renderComponent = (
       <>
-        <Button block variant="outline" onPress={() => setShowCreateArtworkAlertModal(true)}>
+        <Button
+          block
+          variant="outline"
+          onPress={() => {
+            trackCreateAlertTap()
+            setShowCreateArtworkAlertModal(true)
+          }}
+        >
           Create Alert
         </Button>
 

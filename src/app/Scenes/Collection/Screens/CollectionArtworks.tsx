@@ -118,7 +118,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
       >
         <ArtworkGridItem
           itemIndex={index}
-          contextScreenOwnerType={OwnerType.artist}
+          contextScreenOwnerType={OwnerType.collection}
           contextScreenOwnerId={collection.id}
           contextScreenOwnerSlug={collection.slug}
           artwork={item}
