@@ -63,9 +63,6 @@ const prefetchQuery = async ({
 
   return fetchQuery(environment, query, variables ?? {}, {
     fetchPolicy: "store-or-network",
-    networkCacheConfig: {
-      force: false,
-    },
   }).subscribe({
     complete: () => {
       if (logPrefetching)
