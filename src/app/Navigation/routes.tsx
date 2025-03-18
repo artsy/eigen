@@ -47,7 +47,10 @@ import {
   ArtistShowsScreenQuery,
 } from "app/Scenes/ArtistShows/ArtistShows"
 import { ArtworkScreen, ArtworkScreenQuery } from "app/Scenes/Artwork/Artwork"
-import { BrowseSimilarWorksQueryRenderer, BrowseSimilarWorksScreenQuery } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
+import {
+  BrowseSimilarWorksQueryRenderer,
+  BrowseSimilarWorksScreenQuery,
+} from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { CertificateOfAuthenticity } from "app/Scenes/Artwork/Components/CertificateAuthenticity"
 import { UnlistedArtworksFAQScreen } from "app/Scenes/Artwork/Components/UnlistedArtworksFAQScreen"
 import { ArtworkAttributionClassFAQQueryRenderer } from "app/Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ"
@@ -69,8 +72,11 @@ import {
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { CityFairListQueryRenderer, CityFairListScreenQuery } from "app/Scenes/City/CityFairList"
 import { CitySavedListQueryRenderer, CitySavedListScreenQuery } from "app/Scenes/City/CitySavedList"
-import { CitySectionListQueryRenderer, CitySectionListScreenQuery } from "app/Scenes/City/CitySectionList"
-import { collectionQuery, CollectionScreen } from "app/Scenes/Collection/Collection"
+import {
+  CitySectionListQueryRenderer,
+  CitySectionListScreenQuery,
+} from "app/Scenes/City/CitySectionList"
+import { CollectionScreen, CollectionScreenQuery } from "app/Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
 import { collectionsByCategoryQuery } from "app/Scenes/CollectionsByCategory/Body"
 import { CollectionsByCategory } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
@@ -104,7 +110,10 @@ import {
   ConversationQueryRenderer,
   ConversationScreenQuery,
 } from "app/Scenes/Inbox/Screens/Conversation"
-import { ConversationDetailsQueryRenderer, ConversationDetailsScreenQuery } from "app/Scenes/Inbox/Screens/ConversationDetails"
+import {
+  ConversationDetailsQueryRenderer,
+  ConversationDetailsScreenQuery,
+} from "app/Scenes/Inbox/Screens/ConversationDetails"
 import {
   infiniteDiscoveryQuery,
   InfiniteDiscoveryQueryRenderer,
@@ -163,7 +172,11 @@ import { SaleInfoQueryRenderer } from "app/Scenes/SaleInfo/SaleInfo"
 import { SalesScreen, SalesScreenQuery } from "app/Scenes/Sales/Sales"
 import { SavedArtworks } from "app/Scenes/SavedArtworks/SavedArtworks"
 import { AlertArtworks } from "app/Scenes/SavedSearchAlert/AlertArtworks"
-import { EditSavedSearchAlertQueryRenderer } from "app/Scenes/SavedSearchAlert/EditSavedSearchAlert"
+import {
+  EditSavedSearchAlertDetailsScreenQuery,
+  EditSavedSearchAlertQueryRenderer,
+} from "app/Scenes/SavedSearchAlert/EditSavedSearchAlert"
+import { SavedSearchAlertScreenQuery } from "app/Scenes/SavedSearchAlert/SavedSearchAlert"
 import { SavedSearchAlertsListQueryRenderer } from "app/Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
 import { SearchScreen, SearchScreenQuery } from "app/Scenes/Search/Search"
 import {
@@ -177,7 +190,10 @@ import {
   SimilarToRecentlyViewedScreenQuery,
 } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import { TagQueryRenderer, TagScreenQuery } from "app/Scenes/Tag/Tag"
-import { VanityURLEntityRenderer } from "app/Scenes/VanityURL/VanityURLEntity"
+import {
+  VanityURLEntityRenderer,
+  VanityURLEntityScreenQuery,
+} from "app/Scenes/VanityURL/VanityURLEntity"
 import {
   ViewingRoomQueryRenderer,
   ViewingRoomScreenQuery,
@@ -686,8 +702,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    // TODO: add the query for the artworks grid
-    queries: [collectionQuery],
+    queries: [CollectionScreenQuery],
   },
   {
     path: "/collection/:collectionID/artists",
@@ -1356,6 +1371,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [SavedSearchAlertScreenQuery, EditSavedSearchAlertDetailsScreenQuery],
   },
   {
     path: "/favorites/alerts/:alertId/artworks",
@@ -1572,6 +1588,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [VanityURLEntityScreenQuery],
   },
   webViewRoute({
     path: "/*",

@@ -223,6 +223,17 @@ export const EditSavedSearchAlertRefetchContainer = createRefetchContainer(
   `
 )
 
+export const EditSavedSearchAlertDetailsScreenQuery = graphql`
+  query EditSavedSearchAlertQuery($artistIDs: [String]) {
+    viewer {
+      ...EditSavedSearchAlert_viewer
+    }
+    artists(ids: $artistIDs) {
+      ...EditSavedSearchAlert_artists
+    }
+  }
+`
+
 export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBaseProps> = (
   props
 ) => {
@@ -236,16 +247,7 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
           render: (relayProps: SavedSearchAlertQuery["response"]) => (
             <QueryRenderer<EditSavedSearchAlertQuery>
               environment={getRelayEnvironment()}
-              query={graphql`
-                query EditSavedSearchAlertQuery($artistIDs: [String]) {
-                  viewer {
-                    ...EditSavedSearchAlert_viewer
-                  }
-                  artists(ids: $artistIDs) {
-                    ...EditSavedSearchAlert_artists
-                  }
-                }
-              `}
+              query={EditSavedSearchAlertDetailsScreenQuery}
               variables={{ artistIDs: relayProps.me?.alert?.artistIDs as string[] }}
               render={renderWithPlaceholder({
                 Container: EditSavedSearchAlertRefetchContainer,
