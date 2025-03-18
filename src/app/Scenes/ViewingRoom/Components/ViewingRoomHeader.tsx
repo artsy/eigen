@@ -1,10 +1,10 @@
-import { Flex, Box, Text, Image, Spacer } from "@artsy/palette-mobile"
+import { Box, Flex, Image, Spacer, Text } from "@artsy/palette-mobile"
 import { ViewingRoomHeader_viewingRoom$data } from "__generated__/ViewingRoomHeader_viewingRoom.graphql"
 import { durationSections } from "app/Components/Countdown"
 import { CountdownTimer, CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { ViewingRoomStatus } from "app/Scenes/ViewingRoom/ViewingRoom"
-import { navigate } from "app/system/navigation/navigate"
-import { Dimensions, TouchableWithoutFeedback, View } from "react-native"
+import { RouterLink } from "app/system/navigation/RouterLink"
+import { Dimensions, View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
@@ -121,14 +121,10 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
             >
               {title}
             </Text>
+
             <Spacer y={1} />
-            <TouchableWithoutFeedback
-              onPress={() => {
-                if (partner?.href) {
-                  navigate(partner.href)
-                }
-              }}
-            >
+
+            <RouterLink noFeedback to={partner?.href}>
               <Flex flexDirection="row" justifyContent="center" alignItems="center">
                 {!!partnerIconImageURL && (
                   <Box mr={0.5}>
@@ -148,7 +144,8 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
                   {partner?.name}
                 </Text>
               </Flex>
-            </TouchableWithoutFeedback>
+            </RouterLink>
+
             <Flex flexDirection="row">
               <Countdown startAt={startAt as string} endAt={endAt as string} status={status} />
             </Flex>

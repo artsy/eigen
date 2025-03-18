@@ -1,10 +1,10 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Spacer, Touchable } from "@artsy/palette-mobile"
+import { Spacer } from "@artsy/palette-mobile"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import { MediumCard } from "app/Components/Cards"
 import { RailScrollProps } from "app/Scenes/HomeView/Components/types"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { FC, useImperativeHandle, useRef } from "react"
@@ -69,7 +69,7 @@ export const FeaturedRail: FC<FeaturedRailProps & Partial<RailScrollProps>> = ({
         renderItem={({ item }) => {
           const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
           return (
-            <Touchable
+            <RouterLink
               onPress={() => {
                 trackEvent(
                   trackInfo
@@ -81,8 +81,8 @@ export const FeaturedRail: FC<FeaturedRailProps & Partial<RailScrollProps>> = ({
                       )
                     : tracks.tappedFeaturedViewingRoomRailItem(item.internalID, item.slug)
                 )
-                navigate(`/viewing-room/${item.slug}`)
               }}
+              to={`/viewing-room/${item.slug}`}
             >
               <MediumCard
                 title={item.title}
@@ -90,7 +90,7 @@ export const FeaturedRail: FC<FeaturedRailProps & Partial<RailScrollProps>> = ({
                 image={item.heroImage?.imageURLs?.normalized ?? ""}
                 tag={tag}
               />
-            </Touchable>
+            </RouterLink>
           )
         }}
       />
