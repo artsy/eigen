@@ -12,7 +12,7 @@ We are using Unleash to run A/B Testing experiments at Artsy. In order to create
     - [Querying for a single flag](#querying-for-a-single-flag)
     - [Querying for a single experiment](#querying-for-a-single-experiment)
     - [Tracking an experiment](#tracking-an-experiment)
-  - [Removing/Killing an Experiment](#removingkilling-an-experiment)
+  - [Winding down a completed Experiment](#winding-down-a-completed-experiment)
   - [Adding an Override](#adding-an-override)
   - [Still need help?](#still-need-help)
 
@@ -74,13 +74,19 @@ You can access the flag value in a functional react component using `useExperime
 You can access the variant value in a functional react component using `useExperimentVariant`.
 
 ```diff
-+ const ourNewExperiment = useExperimentVariant("our-new-experiment")
-  return (
-    <>
-+    {ourNewExperiment.enabled && ourNewExperiment.payload === "payloadA" && <AComponent />}
-+    {ourNewExperiment.enabled && ourNewExperiment.payload === "payloadB" && <BComponent custom={ourNewExperiment.payload} />}
-    <>
-  )
++ const { variant } = useExperimentVariant("our-new-experiment")
++
++ return (
++   <>
++     {variant.enabled ? (
++      {variant.name === "control" && <ControlComponent />}
++      {variant.name === "variant-b" && <ExperimentComponent payload={variant.payload} />}
++      {variant.name === "variant-c" && <ExperimentComponent payload={variant.payload} />}
++     ) : (
++      <ControlComponent />
++     )}
++   <>
++ )
 ```
 
 > Note: Avoid using `experiment.variant` and instead use the `experiment.payload` for rendering your UI! it's more future proof and it's more convenient this way to create multiple experiments using the same flag where you update the control variant
@@ -91,15 +97,24 @@ In order to track an experiment, you can use the `trackExperiment` helper that c
 
 ```diff
 + const { trackExperiment } = useExperimentVariant("our-new-experiment")
++
++ trackExperiment({
++   context_owner_screen: OwnerType.artist,
++   context_owner_id: "4d8b92b34eb68a1b2c0003f4",
++   context_owner_slug: "andy-warhol",
++   context_owner_type: OwnerType.artist,
++ })
 ```
 
-## Removing/Killing an Experiment
+## Winding down a completed Experiment
 
-Once an experiment is done, usually we have a winner variant. In order to roll out that variant for everyone targeted by it, we will need to set it as a default strategy before "killing" it.
+Once an experiment is done, we'll have a winning variant. In order to roll out the winning variant for everyone, we can promote the variant to 100% of users in the Unleash dashboard.
 
-For example, in the previous experiment, we were testing if `varA` is performing better than `varB`. Assuming that it actually did, we then set `varA` as a default variant.
-Then we need to update eigen to remove the experiment code and use only the winner variant code.
-After that, we can archive that experiment in the Unleash dashboard.
+For example, in the previous experiment, we were testing if the `variant-b` variant performed better than `control` we'd promote `variant-b` to 100% of variant requests.
+
+Afterwards we can update Eigen to remove the experiment code, leavning only the winning variant in place.
+
+We should leave the experiment active in Unleash until clients are no longer requesting a variant for the experiment. This can take some time as users naturally upgrade.
 
 ## Adding an Override
 
