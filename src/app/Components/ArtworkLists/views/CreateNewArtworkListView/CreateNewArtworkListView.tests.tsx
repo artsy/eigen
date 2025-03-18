@@ -8,6 +8,7 @@ import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/Crea
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { noop } from "lodash"
+import { Keyboard } from "react-native"
 import { graphql } from "react-relay"
 
 describe("CreateNewArtworkListView", () => {
@@ -50,8 +51,20 @@ describe("CreateNewArtworkListView", () => {
     it("when artwork list name is empty", async () => {
       renderWithRelay()
 
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), helloWorldText)
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), "")
+      const input = screen.getByPlaceholderText(inputPlaceholder)
+      fireEvent.changeText(input, helloWorldText)
+      fireEvent.changeText(input, "")
+
+      expect(await screen.findByText("Name is required"))
+    })
+
+    it("submit (blur) when artwork list name is empty", async () => {
+      renderWithRelay()
+
+      const input = screen.getByPlaceholderText(inputPlaceholder)
+      fireEvent.changeText(input, "")
+
+      fireEvent(input, "submitEditing")
 
       expect(await screen.findByText("Name is required"))
     })
@@ -62,9 +75,12 @@ describe("CreateNewArtworkListView", () => {
       const errorMessage = "You already have a list with this name."
 
       const { mockResolveLastOperation } = renderWithRelay()
+      jest.spyOn(Keyboard, "isVisible").mockReturnValue(true)
 
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), helloWorldText)
-      fireEvent.press(screen.getByText("Save"))
+      const input = screen.getByPlaceholderText(inputPlaceholder)
+      fireEvent.changeText(input, helloWorldText)
+
+      fireEvent(input, "submitEditing")
 
       await waitFor(() => {
         mockResolveLastOperation({
@@ -90,28 +106,35 @@ describe("CreateNewArtworkListView", () => {
     })
   })
 
-  describe("Save button", () => {
-    it("disabled by default", () => {
-      renderWithRelay()
+  describe("Sucess state", () => {
+    it("when mutation returned success", async () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+      jest.spyOn(Keyboard, "isVisible").mockReturnValue(false)
 
-      expect(screen.getByText("Save")).toBeDisabled()
-    })
+      const input = screen.getByPlaceholderText(inputPlaceholder)
+      fireEvent.changeText(input, helloWorldText)
 
-    it("disabled when artwork list name is empty", () => {
-      renderWithRelay()
+      fireEvent(input, "submitEditing")
 
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), helloWorldText)
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), "")
+      await waitFor(() => {
+        mockResolveLastOperation({
+          Mutation: () => ({
+            createCollection: {
+              responseOrError: {
+                __typename: "CreateCollectionSuccess",
+                collection: {
+                  internalID: "artwork-list-id",
+                  name: helloWorldText,
+                  shareableWithPartners: true,
+                  artworksCount: 0,
+                },
+              },
+            },
+          }),
+        })
+      })
 
-      expect(screen.getByText("Save")).toBeDisabled()
-    })
-
-    it("enabled when artwork list name is entered", () => {
-      renderWithRelay()
-
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), helloWorldText)
-
-      expect(screen.getByText("Save")).toBeEnabled()
+      expect(screen.queryByText("Name is required")).not.toBeOnTheScreen()
     })
   })
 
@@ -119,7 +142,7 @@ describe("CreateNewArtworkListView", () => {
     it("default state", () => {
       renderWithRelay()
 
-      expect(screen.getByText("Create a new list")).toBeOnTheScreen()
+      expect(screen.getByText("New list")).toBeOnTheScreen()
     })
 
     it("default state with AREnableArtworkListOfferability ff on", () => {
@@ -129,8 +152,15 @@ describe("CreateNewArtworkListView", () => {
 
       renderWithRelay()
 
-      expect(screen.getByText("Create a new list")).toBeOnTheScreen()
-      expect(screen.getByText("Shared list")).toBeOnTheScreen()
+      expect(screen.getByText("New list")).toBeOnTheScreen()
+      expect(screen.getByText("Share list with galleries")).toBeOnTheScreen()
+
+      // test that the explanatory text is not visible by default
+      expect(screen.queryByText("Shared lists are eligible to receive")).not.toBeOnTheScreen()
+      fireEvent.press(screen.getByText("Share list with galleries", { exact: false }))
+      expect(
+        screen.getByText("Shared lists are eligible to receive", { exact: false })
+      ).toBeOnTheScreen()
     })
   })
 
@@ -145,7 +175,9 @@ describe("CreateNewArtworkListView", () => {
       renderWithRelay()
 
       const longText = "a".repeat(39)
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), longText)
+
+      const input = screen.getByPlaceholderText(inputPlaceholder)
+      fireEvent.changeText(input, longText)
 
       expect(screen.getByText("39 / 40")).toBeOnTheScreen()
     })
@@ -153,7 +185,8 @@ describe("CreateNewArtworkListView", () => {
     it("when user entered something", () => {
       renderWithRelay()
 
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), "abc")
+      const input = screen.getByPlaceholderText(inputPlaceholder)
+      fireEvent.changeText(input, "abc")
 
       expect(screen.getByText("3 / 40")).toBeOnTheScreen()
     })
@@ -164,7 +197,9 @@ describe("CreateNewArtworkListView", () => {
       renderWithRelay()
 
       const longText = "a".repeat(100)
-      fireEvent(screen.getByPlaceholderText(inputPlaceholder), "changeText", longText)
+
+      const input = screen.getByPlaceholderText(inputPlaceholder)
+      fireEvent(input, "changeText", longText)
 
       expect(screen.getByText("40 / 40")).toBeOnTheScreen()
     })
