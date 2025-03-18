@@ -167,17 +167,19 @@ export const CityFairListContainer = createPaginationContainer(
 interface CityFairListProps {
   citySlug: string
 }
+export const CityFairListScreenQuery = graphql`
+  query CityFairListQuery($citySlug: String!) {
+    city(slug: $citySlug) {
+      ...CityFairList_city
+    }
+  }
+`
+
 export const CityFairListQueryRenderer: React.FC<CityFairListProps> = ({ citySlug }) => {
   return (
     <QueryRenderer<CityFairListQuery>
       environment={getRelayEnvironment()}
-      query={graphql`
-        query CityFairListQuery($citySlug: String!) {
-          city(slug: $citySlug) {
-            ...CityFairList_city
-          }
-        }
-      `}
+      query={CityFairListScreenQuery}
       variables={{ citySlug }}
       render={renderWithLoadProgress(CityFairListContainer)}
     />

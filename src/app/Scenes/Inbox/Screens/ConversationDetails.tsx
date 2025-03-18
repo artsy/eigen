@@ -83,19 +83,21 @@ export const ConversationDetailsFragmentContainer = createFragmentContainer(Conv
   `,
 })
 
+export const ConversationDetailsScreenQuery = graphql`
+  query ConversationDetailsQuery($conversationID: String!) {
+    me {
+      ...ConversationDetails_me
+    }
+  }
+`
+
 export const ConversationDetailsQueryRenderer: React.FC<{
   conversationID: string
 }> = ({ conversationID }) => {
   return (
     <QueryRenderer<ConversationDetailsQuery>
       environment={getRelayEnvironment()}
-      query={graphql`
-        query ConversationDetailsQuery($conversationID: String!) {
-          me {
-            ...ConversationDetails_me
-          }
-        }
-      `}
+      query={ConversationDetailsScreenQuery}
       variables={{
         conversationID,
       }}

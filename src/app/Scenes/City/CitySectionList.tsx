@@ -215,6 +215,26 @@ interface CitySectionListProps {
   citySlug: string
   section: BucketKey
 }
+export const CitySectionListScreenQuery = graphql`
+  query CitySectionListQuery(
+    $citySlug: String!
+    $partnerType: PartnerShowPartnerType
+    $status: EventStatus
+    $dayThreshold: Int
+    $sort: ShowSorts
+  ) {
+    city(slug: $citySlug) {
+      ...CitySectionList_city
+        @arguments(
+          partnerType: $partnerType
+          status: $status
+          sort: $sort
+          dayThreshold: $dayThreshold
+        )
+    }
+  }
+`
+
 export const CitySectionListQueryRenderer: React.FC<CitySectionListProps> = ({
   citySlug,
   section,
@@ -252,25 +272,7 @@ export const CitySectionListQueryRenderer: React.FC<CitySectionListProps> = ({
   return (
     <QueryRenderer<CitySectionListQuery>
       environment={getRelayEnvironment()}
-      query={graphql`
-        query CitySectionListQuery(
-          $citySlug: String!
-          $partnerType: PartnerShowPartnerType
-          $status: EventStatus
-          $dayThreshold: Int
-          $sort: ShowSorts
-        ) {
-          city(slug: $citySlug) {
-            ...CitySectionList_city
-              @arguments(
-                partnerType: $partnerType
-                status: $status
-                sort: $sort
-                dayThreshold: $dayThreshold
-              )
-          }
-        }
-      `}
+      query={CitySectionListScreenQuery}
       variables={variables}
       render={renderWithLoadProgress(CitySectionListContainer)}
     />

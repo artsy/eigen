@@ -47,7 +47,7 @@ import {
   ArtistShowsScreenQuery,
 } from "app/Scenes/ArtistShows/ArtistShows"
 import { ArtworkScreen, ArtworkScreenQuery } from "app/Scenes/Artwork/Artwork"
-import { BrowseSimilarWorksQueryRenderer } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
+import { BrowseSimilarWorksQueryRenderer, BrowseSimilarWorksScreenQuery } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { CertificateOfAuthenticity } from "app/Scenes/Artwork/Components/CertificateAuthenticity"
 import { UnlistedArtworksFAQScreen } from "app/Scenes/Artwork/Components/UnlistedArtworksFAQScreen"
 import { ArtworkAttributionClassFAQQueryRenderer } from "app/Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ"
@@ -67,9 +67,9 @@ import {
   AuctionResultsForArtistsYouFollowQueryRenderer,
 } from "app/Scenes/AuctionResults/AuctionResultsForArtistsYouFollow"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
-import { CityFairListQueryRenderer } from "app/Scenes/City/CityFairList"
-import { CitySavedListQueryRenderer } from "app/Scenes/City/CitySavedList"
-import { CitySectionListQueryRenderer } from "app/Scenes/City/CitySectionList"
+import { CityFairListQueryRenderer, CityFairListScreenQuery } from "app/Scenes/City/CityFairList"
+import { CitySavedListQueryRenderer, CitySavedListScreenQuery } from "app/Scenes/City/CitySavedList"
+import { CitySectionListQueryRenderer, CitySectionListScreenQuery } from "app/Scenes/City/CitySectionList"
 import { collectionQuery, CollectionScreen } from "app/Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
 import { collectionsByCategoryQuery } from "app/Scenes/CollectionsByCategory/Body"
@@ -104,7 +104,7 @@ import {
   ConversationQueryRenderer,
   ConversationScreenQuery,
 } from "app/Scenes/Inbox/Screens/Conversation"
-import { ConversationDetailsQueryRenderer } from "app/Scenes/Inbox/Screens/ConversationDetails"
+import { ConversationDetailsQueryRenderer, ConversationDetailsScreenQuery } from "app/Scenes/Inbox/Screens/ConversationDetails"
 import {
   infiniteDiscoveryQuery,
   InfiniteDiscoveryQueryRenderer,
@@ -562,6 +562,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [BrowseSimilarWorksScreenQuery],
   },
   {
     path: "/auction-registration/:saleID",
@@ -651,16 +652,19 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/city-fair/:citySlug",
     name: "CityFairList",
     Component: CityFairListQueryRenderer,
+    queries: [CityFairListScreenQuery],
   },
   {
     path: "/city-save/:citySlug",
     name: "CitySavedList",
     Component: CitySavedListQueryRenderer,
+    queries: [CitySavedListScreenQuery],
   },
   {
     path: "/city/:citySlug/:section",
     name: "CitySectionList",
     Component: CitySectionListQueryRenderer,
+    queries: [CitySectionListScreenQuery],
   },
   {
     path: "/collections-by-category/:category",
@@ -716,6 +720,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerTitle: "Details",
       },
     },
+    queries: [ConversationDetailsScreenQuery],
   },
   {
     path: "/dev-menu",
