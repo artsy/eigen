@@ -79,7 +79,10 @@ import { FairMoreInfoQueryRenderer } from "app/Scenes/Fair/FairMoreInfo"
 import { FeaturedFairsScreen, featuredFairsScreenQuery } from "app/Scenes/Fair/FeaturedFairsScreen"
 import { Favorites, Favorites as LegacyFavorites } from "app/Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "app/Scenes/Feature/Feature"
-import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
+import {
+  GalleriesForYouQuery,
+  GalleriesForYouScreen,
+} from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { GeneQueryRenderer, GeneScreenQuery } from "app/Scenes/Gene/Gene"
 import { HomeViewScreen, homeViewScreenQuery } from "app/Scenes/HomeView/HomeView"
 import {
@@ -119,12 +122,16 @@ import { MedianSalePriceAtAuction } from "app/Scenes/MyCollection/Screens/Insigh
 import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists"
 import { DarkModeSettings } from "app/Scenes/MyProfile/DarkModeSettings"
 import { MyProfile } from "app/Scenes/MyProfile/MyProfile"
-import { MyProfileEditFormScreen } from "app/Scenes/MyProfile/MyProfileEditForm"
+import {
+  MyProfileEditFormScreen,
+  MyProfileEditFormScreenQuery,
+} from "app/Scenes/MyProfile/MyProfileEditForm"
 import { MyProfilePaymentQueryRenderer } from "app/Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "app/Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { MyProfilePushNotificationsQueryRenderer } from "app/Scenes/MyProfile/MyProfilePushNotifications"
 import { MyProfileSettings } from "app/Scenes/MyProfile/MyProfileSettings"
 import { NewWorksForYouQueryRenderer } from "app/Scenes/NewWorksForYou/NewWorksForYou"
+import { NewWorksFromGalleriesYouFollowScreenQuery } from "app/Scenes/NewWorksFromGalleriesYouFollow/Components/NewWorksFromGalleriesYouFollow"
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 import { OrderDetailsQueryRender } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetails"
 import { OrderHistoryQueryRender } from "app/Scenes/OrderHistory/OrderHistory"
@@ -153,7 +160,10 @@ import {
 } from "app/Scenes/Show/Screens/ShowMoreInfo"
 import { ShowQueryRenderer, ShowScreenQuery } from "app/Scenes/Show/Show"
 import { ShowsForYouScreen, ShowsForYouScreenQuery } from "app/Scenes/Shows/ShowsForYou"
-import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
+import {
+  SimilarToRecentlyViewedScreen,
+  SimilarToRecentlyViewedScreenQuery,
+} from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
 import { TagQueryRenderer } from "app/Scenes/Tag/Tag"
 import { VanityURLEntityRenderer } from "app/Scenes/VanityURL/VanityURLEntity"
 import {
@@ -816,6 +826,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [GalleriesForYouQuery],
   },
   {
     path: "/gene/:geneID",
@@ -1093,6 +1104,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerTitle: "Edit Profile",
       },
     },
+    queries: [MyProfileEditFormScreenQuery],
   },
   {
     path: "/my-profile/payment",
@@ -1165,6 +1177,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [NewWorksFromGalleriesYouFollowScreenQuery],
   },
   {
     path: "/orders",
@@ -1391,6 +1404,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [SimilarToRecentlyViewedScreenQuery],
   },
   {
     path: "/tag/:tagID",
