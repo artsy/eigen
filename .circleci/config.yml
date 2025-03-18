@@ -463,7 +463,7 @@ jobs:
   build-test-app-android:
     docker:
       - image: cimg/android:2025.03.1-node
-    resource_class: large
+    resource_class: xlarge
     steps:
       - prep-android-env
       - await-previous-builds:
