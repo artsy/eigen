@@ -73,9 +73,12 @@ import { collectionsByCategoryQuery } from "app/Scenes/CollectionsByCategory/Bod
 import { CollectionsByCategory } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
 import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import { FairScreen, FairScreenQuery } from "app/Scenes/Fair/Fair"
-import { FairAllFollowedArtistsQueryRenderer } from "app/Scenes/Fair/FairAllFollowedArtists"
+import {
+  FairAllFollowedArtistsQueryRenderer,
+  FairAllFollowedArtistsScreenQuery,
+} from "app/Scenes/Fair/FairAllFollowedArtists"
 import { FairArticlesQueryRenderer } from "app/Scenes/Fair/FairArticles"
-import { FairMoreInfoQueryRenderer } from "app/Scenes/Fair/FairMoreInfo"
+import { FaireMoreInfoScreenQuery, FairMoreInfoQueryRenderer } from "app/Scenes/Fair/FairMoreInfo"
 import { FeaturedFairsScreen, featuredFairsScreenQuery } from "app/Scenes/Fair/FeaturedFairsScreen"
 import { Favorites, Favorites as LegacyFavorites } from "app/Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer } from "app/Scenes/Feature/Feature"
@@ -768,6 +771,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerTitle: "Artworks",
       },
     },
+    queries: [FairAllFollowedArtistsScreenQuery],
   },
   {
     path: "/fair/:fairID/info",
@@ -778,6 +782,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [FaireMoreInfoScreenQuery],
   },
   {
     path: "/featured-fairs",
