@@ -1,14 +1,13 @@
 import {
-  Spacer,
   Box,
-  useSpace,
-  Text,
-  Join,
-  SimpleMessage,
   Button,
-  Touchable,
-  Screen,
   Image,
+  Join,
+  Screen,
+  SimpleMessage,
+  Spacer,
+  Text,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { FairArticlesQuery } from "__generated__/FairArticlesQuery.graphql"
 import { FairArticles_fair$data } from "__generated__/FairArticles_fair.graphql"

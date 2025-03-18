@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedArticleGroup } from "@artsy/cohesion"
-import { Box, BoxProps, useColor, Text, Touchable, Image } from "@artsy/palette-mobile"
+import { Box, BoxProps, Image, Text } from "@artsy/palette-mobile"
 import { FairEditorial_fair$data } from "__generated__/FairEditorial_fair.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -10,7 +10,6 @@ interface FairEditorialProps extends BoxProps {
 }
 
 export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) => {
-  const color = useColor()
   const tracking = useTracking()
 
   const trackTappedArticle = (articleID: string, articleSlug: string) => {

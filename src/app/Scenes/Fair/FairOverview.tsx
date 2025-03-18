@@ -1,4 +1,4 @@
-import { ChevronIcon, Flex, Spacer, Tabs, Text, Touchable, useSpace } from "@artsy/palette-mobile"
+import { ChevronIcon, Flex, Spacer, Tabs, Text, useSpace } from "@artsy/palette-mobile"
 import { FairOverview_fair$key } from "__generated__/FairOverview_fair.graphql"
 import { ReadMore } from "app/Components/ReadMore"
 import { FairCollectionsFragmentContainer } from "app/Scenes/Fair/Components/FairCollections"
