@@ -4,6 +4,7 @@ import { useIsFocused } from "@react-navigation/native"
 import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 export const ProgressiveOnboardingAlertFilters: React.FC = ({ children }) => {
@@ -35,9 +36,11 @@ export const ProgressiveOnboardingAlertFilters: React.FC = ({ children }) => {
 
   const isVisible = !!isDisplayable && isActive
 
+  const { debouncedValue: debounceIsVisible } = useDebouncedValue({ value: isVisible, delay: 200 })
+
   return (
     <Popover
-      visible={isVisible}
+      visible={debounceIsVisible}
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
       onCloseComplete={clearActivePopover}

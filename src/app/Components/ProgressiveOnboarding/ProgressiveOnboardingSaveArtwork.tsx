@@ -5,6 +5,7 @@ import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnbo
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
 import { Sentinel } from "app/utils/Sentinel"
+import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -39,7 +40,9 @@ export const ProgressiveOnboardingSaveArtwork: React.FC<{ contextScreenOwnerType
   const isVisible = !!isDisplayable && isActive
 
   // all conditions met we show the popover
-  if (isVisible) {
+  const { debouncedValue: debounceIsVisible } = useDebouncedValue({ value: isVisible, delay: 200 })
+
+  if (debounceIsVisible) {
     const content = (
       <Text color="white100">
         {isPartnerOfferEnabled
@@ -50,7 +53,7 @@ export const ProgressiveOnboardingSaveArtwork: React.FC<{ contextScreenOwnerType
 
     return (
       <Popover
-        visible={isVisible}
+        visible={debounceIsVisible}
         onDismiss={handleDismiss}
         onPressOutside={handleDismiss}
         onCloseComplete={clearActivePopover}
