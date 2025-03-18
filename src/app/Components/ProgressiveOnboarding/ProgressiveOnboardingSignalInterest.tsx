@@ -15,6 +15,8 @@ export const ProgressiveOnboardingSignalInterest: React.FC = ({ children }) => {
   const { dismiss, setIsReady } = GlobalStore.actions.progressiveOnboarding
   const isFocused = useIsFocused()
   const isPartnerOfferEnabled = useFeatureFlag("AREnablePartnerOffer")
+  const progressiveOnboardingAlerts = useFeatureFlag("AREnableProgressiveOnboardingAlerts")
+
   const { trackEvent } = useProgressiveOnboardingTracking({
     name: "signal-interest",
     contextScreenOwnerType: OwnerType.saves,
@@ -22,7 +24,11 @@ export const ProgressiveOnboardingSignalInterest: React.FC = ({ children }) => {
   })
 
   const isDisplayable =
-    isPartnerOfferEnabled && isReady && !isDismissed("signal-interest").status && isFocused
+    isPartnerOfferEnabled &&
+    progressiveOnboardingAlerts &&
+    isReady &&
+    !isDismissed("signal-interest").status &&
+    isFocused
 
   const { isActive, clearActivePopover } = useSetActivePopover(isDisplayable)
 
