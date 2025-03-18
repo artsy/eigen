@@ -20,7 +20,10 @@ import {
 import { ActivityScreen } from "app/Scenes/Activity/ActivityScreen"
 import { activityHeaderQuery } from "app/Scenes/Activity/components/ActivityHeader"
 import { ArtQuiz, ArtQuizScreenQuery } from "app/Scenes/ArtQuiz/ArtQuiz"
-import { ArtQuizResults, ArtQuizResultsScreenQuery } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
+import {
+  ArtQuizResults,
+  ArtQuizResultsScreenQuery,
+} from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { ArticleScreen, articleScreenQuery } from "app/Scenes/Article/ArticleScreen"
 import { ArticlesSlideShowScreen } from "app/Scenes/ArticleSlideShow/ArticleSlideShow"
 import { ArticlesScreen, ArticlesScreenQuery } from "app/Scenes/Articles/Articles"
@@ -53,7 +56,10 @@ import {
 } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { CertificateOfAuthenticity } from "app/Scenes/Artwork/Components/CertificateAuthenticity"
 import { UnlistedArtworksFAQScreen } from "app/Scenes/Artwork/Components/UnlistedArtworksFAQScreen"
-import { ArtworkAttributionClassFAQQueryRenderer, ArtworkAttributionClassFAQScreenQuery } from "app/Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ"
+import {
+  ArtworkAttributionClassFAQQueryRenderer,
+  ArtworkAttributionClassFAQScreenQuery,
+} from "app/Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import {
   ARTWORK_MEDIUM_QUERY,
@@ -706,6 +712,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    // TODO: add the query for the artworks grid
     queries: [CollectionScreenQuery],
   },
   {
