@@ -59,8 +59,6 @@ describe("ViewingRoom", () => {
 
     fireEvent.press(screen.getByText("Artwork 1"))
 
-    // screen.UNSAFE_getByType(RouterLink).props.onPress()
-
     expect(navigate).toHaveBeenCalledWith("/viewing-room/slug-1/artwork-slug-1")
 
     expect(useTracking().trackEvent).toHaveBeenCalledWith({
