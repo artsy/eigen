@@ -32,9 +32,7 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
           subtitle={`${count} works`}
           href={viewAllUrl}
           onPress={() => {
-            if (!viewAllUrl) {
-              return
-            }
+            if (!viewAllUrl) return
 
             trackEvent(tracks.tappedShow(show))
           }}
