@@ -225,17 +225,19 @@ const FeatureFragmentContainer = createFragmentContainer(FeatureApp, {
   `,
 })
 
+export const FeatureScreenQuery = graphql`
+  query FeatureQuery($slug: ID!) {
+    feature(id: $slug) {
+      ...Feature_feature
+    }
+  }
+`
+
 export const FeatureQueryRenderer: React.FC<{ slug: string }> = ({ slug }) => {
   return (
     <QueryRenderer<FeatureQuery>
       environment={getRelayEnvironment()}
-      query={graphql`
-        query FeatureQuery($slug: ID!) {
-          feature(id: $slug) {
-            ...Feature_feature
-          }
-        }
-      `}
+      query={FeatureScreenQuery}
       render={renderWithPlaceholder({
         renderPlaceholder: () => {
           return (
