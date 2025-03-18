@@ -112,7 +112,7 @@ Once an experiment is done, we'll have a winning variant. In order to roll out t
 
 For example, in the previous experiment, we were testing if the `variant-b` variant performed better than `control` we'd promote `variant-b` to 100% of variant requests.
 
-Afterwards we can update Eigen to remove the experiment code, leavning only the winning variant in place.
+Afterwards we can update Eigen to remove the experiment code, leaving only the winning variant in place.
 
 We should leave the experiment active in Unleash until clients are no longer requesting a variant for the experiment. This can take some time as users naturally upgrade.
 
