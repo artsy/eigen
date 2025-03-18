@@ -173,12 +173,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     }
 
     return (
-      <Flex
-        onStartShouldSetResponderCapture={handleWrapperTaps}
-        backgroundColor="white100"
-        width="100%"
-        style={containerStyle || { borderRadius: 10 }}
-      >
+      <Flex backgroundColor="white100" width="100%" style={containerStyle || { borderRadius: 10 }}>
         <Flex p={2}>
           <ArtistListItemContainer
             artist={artwork.artists?.[0]}
@@ -206,6 +201,16 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           >
             <HeartFillIcon height={64} width={64} fill="white100" />
           </Animated.View>
+
+          <Flex
+            onStartShouldSetResponderCapture={handleWrapperTaps}
+            style={{
+              position: "absolute",
+              width: "100%",
+              height: "100%",
+              zIndex: 100,
+            }}
+          />
 
           {!!src && <Image src={src} height={size.height} width={size.width} />}
         </Flex>
