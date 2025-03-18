@@ -198,7 +198,7 @@ export const tabsTracks = {
         tabScreen = OwnerType.search
         break
       case "favorites":
-        tabScreen = OwnerType.saves
+        tabScreen = OwnerType.favorites
         break
     }
 
