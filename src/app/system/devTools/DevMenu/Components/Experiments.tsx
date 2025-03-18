@@ -3,7 +3,7 @@ import { Expandable } from "app/Components/Expandable"
 import { GlobalStore } from "app/store/GlobalStore"
 import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMenuButtonItem"
 import { ExperimentFlagItem } from "app/system/devTools/DevMenu/Components/ExperimentFlagItem"
-import { EXPERIMENT_NAME, experiments } from "app/utils/experiments/experiments"
+import { EXPERIMENT_NAME, experiments } from "app/system/flags/experiments"
 import { isEmpty } from "lodash"
 import { Alert } from "react-native"
 
