@@ -19,8 +19,8 @@ import {
 } from "app/Scenes/Activity/ActivityItemScreen"
 import { ActivityScreen } from "app/Scenes/Activity/ActivityScreen"
 import { activityHeaderQuery } from "app/Scenes/Activity/components/ActivityHeader"
-import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
-import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
+import { ArtQuiz, ArtQuizScreenQuery } from "app/Scenes/ArtQuiz/ArtQuiz"
+import { ArtQuizResults, ArtQuizResultsScreenQuery } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { ArticleScreen, articleScreenQuery } from "app/Scenes/Article/ArticleScreen"
 import { ArticlesSlideShowScreen } from "app/Scenes/ArticleSlideShow/ArticleSlideShow"
 import { ArticlesScreen, ArticlesScreenQuery } from "app/Scenes/Articles/Articles"
@@ -53,7 +53,7 @@ import {
 } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { CertificateOfAuthenticity } from "app/Scenes/Artwork/Components/CertificateAuthenticity"
 import { UnlistedArtworksFAQScreen } from "app/Scenes/Artwork/Components/UnlistedArtworksFAQScreen"
-import { ArtworkAttributionClassFAQQueryRenderer } from "app/Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ"
+import { ArtworkAttributionClassFAQQueryRenderer, ArtworkAttributionClassFAQScreenQuery } from "app/Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import {
   ARTWORK_MEDIUM_QUERY,
@@ -340,6 +340,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
       hidesBottomTabs: true,
     },
+    queries: [ArtQuizScreenQuery],
   },
   {
     path: "/art-quiz/artworks",
@@ -351,6 +352,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
       hidesBottomTabs: true,
     },
+    queries: [ArtQuizScreenQuery],
   },
   {
     path: "/art-quiz/results",
@@ -362,6 +364,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [ArtQuizResultsScreenQuery],
   },
   {
     path: "/article/:articleID",
@@ -519,6 +522,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/artwork-classifications",
     name: "ArtworkAttributionClassFAQ",
     Component: ArtworkAttributionClassFAQQueryRenderer,
+    queries: [ArtworkAttributionClassFAQScreenQuery],
   },
   {
     path: "/artwork-lists",
