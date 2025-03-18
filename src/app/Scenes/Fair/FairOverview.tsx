@@ -6,7 +6,7 @@ import { FairEditorialFragmentContainer } from "app/Scenes/Fair/Components/FairE
 import { FairEmptyStateFragmentContainer } from "app/Scenes/Fair/Components/FairEmptyState"
 import { FairFollowedArtistsRailFragmentContainer } from "app/Scenes/Fair/Components/FairFollowedArtistsRail"
 import { shouldShowLocationMap } from "app/Scenes/Fair/FairMoreInfo"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
@@ -48,12 +48,12 @@ export const FairOverview: FC<FairOverviewProps> = ({ fair }) => {
             <ReadMore textStyle="new" content={previewText} maxChars={truncatedTextLimit()} />
           )}
           {!!canShowMoreInfoLink && (
-            <Touchable onPress={() => navigate(`/fair/${data.slug}/info`)}>
+            <RouterLink to={`/fair/${data.slug}/info`}>
               <Flex pt={2} flexDirection="row" justifyContent="flex-start" alignItems="center">
                 <Text variant="sm">More info</Text>
                 <ChevronIcon mr="-5px" mt="4px" />
               </Flex>
-            </Touchable>
+            </RouterLink>
           )}
 
           {!!hasArticles && <FairEditorialFragmentContainer fair={data} />}

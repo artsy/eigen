@@ -4,7 +4,7 @@ import { FairCollections_fair$data } from "__generated__/FairCollections_fair.gr
 import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
 import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
 import { SmallCard } from "app/Components/Cards"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { compact } from "lodash"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -54,20 +54,23 @@ export const FairCollections: React.FC<FairCollectionsProps> = ({ fair, ...rest 
           const images = compact(collection.artworks.edges.map((edge) => edge?.node?.image?.url))
 
           return (
-            <TouchableWithScale
+            <RouterLink
+              hasChildTouchable
               key={collection.slug}
+              to={`/collection/${collection.slug}`}
               onPress={() => {
                 trackTappedCollection(collection.slug, collection.slug)
-                navigate(`/collection/${collection.slug}`)
               }}
             >
-              <SmallCard
-                width={CARD_WIDTH}
-                images={images}
-                title={collection.title}
-                subtitle={collection.category}
-              />
-            </TouchableWithScale>
+              <TouchableWithScale>
+                <SmallCard
+                  width={CARD_WIDTH}
+                  images={images}
+                  title={collection.title}
+                  subtitle={collection.category}
+                />
+              </TouchableWithScale>
+            </RouterLink>
           )
         }}
       />
