@@ -99,6 +99,14 @@ export const MakeOfferModalFragmentContainer = createFragmentContainer(MakeOffer
   `,
 })
 
+export const MakeOfferModalScreenQuery = graphql`
+  query MakeOfferModalQuery($artworkID: String!) {
+    artwork(id: $artworkID) {
+      ...MakeOfferModal_artwork
+    }
+  }
+`
+
 export const MakeOfferModalQueryRenderer: React.FC<{
   artworkID: string
   conversationID: string
@@ -113,13 +121,7 @@ export const MakeOfferModalQueryRenderer: React.FC<{
     >
       <QueryRenderer<MakeOfferModalQuery>
         environment={getRelayEnvironment()}
-        query={graphql`
-          query MakeOfferModalQuery($artworkID: String!) {
-            artwork(id: $artworkID) {
-              ...MakeOfferModal_artwork
-            }
-          }
-        `}
+        query={MakeOfferModalScreenQuery}
         variables={{
           artworkID,
         }}

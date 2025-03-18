@@ -157,20 +157,22 @@ export const CitySavedListContainer = createPaginationContainer(
 interface CitySavedListProps {
   citySlug: string
 }
+export const CitySavedListScreenQuery = graphql`
+  query CitySavedListQuery($citySlug: String!) {
+    me {
+      ...CitySavedList_me
+    }
+    city(slug: $citySlug) {
+      ...CitySavedList_city
+    }
+  }
+`
+
 export const CitySavedListQueryRenderer: React.FC<CitySavedListProps> = ({ citySlug }) => {
   return (
     <QueryRenderer<CitySavedListQuery>
       environment={getRelayEnvironment()}
-      query={graphql`
-        query CitySavedListQuery($citySlug: String!) {
-          me {
-            ...CitySavedList_me
-          }
-          city(slug: $citySlug) {
-            ...CitySavedList_city
-          }
-        }
-      `}
+      query={CitySavedListScreenQuery}
       variables={{ citySlug }}
       render={renderWithLoadProgress(CitySavedListContainer)}
     />

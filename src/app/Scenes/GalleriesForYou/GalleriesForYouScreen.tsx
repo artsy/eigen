@@ -157,7 +157,7 @@ export const GalleriesForYouQueryVariables = {
   count: 10,
 }
 
-const GalleriesForYouQuery = graphql`
+export const GalleriesForYouQuery = graphql`
   query GalleriesForYouScreenQuery(
     $includePartnersNearIpBasedLocation: Boolean!
     $includePartnersWithFollowedArtists: Boolean

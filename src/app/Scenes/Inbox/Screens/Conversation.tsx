@@ -250,6 +250,14 @@ export const ConversationFragmentContainer = createRefetchContainer(
   `
 )
 
+export const ConversationScreenQuery = graphql`
+  query ConversationQuery($conversationID: String!) {
+    me {
+      ...Conversation_me
+    }
+  }
+`
+
 export const ConversationQueryRenderer: React.FC<{
   conversationID: string
   navigator: NavigatorIOS
@@ -266,13 +274,7 @@ export const ConversationQueryRenderer: React.FC<{
       >
         <QueryRenderer<ConversationQuery>
           environment={getRelayEnvironment()}
-          query={graphql`
-            query ConversationQuery($conversationID: String!) {
-              me {
-                ...Conversation_me
-              }
-            }
-          `}
+          query={ConversationScreenQuery}
           variables={{
             conversationID,
           }}

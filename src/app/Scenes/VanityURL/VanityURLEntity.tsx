@@ -8,6 +8,14 @@ import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 
+export const VanityURLEntityScreenQuery = graphql`
+  query VanityURLEntityQuery($id: String!) {
+    vanityURLEntity(id: $id) {
+      ...VanityURLEntity_fairOrPartner
+    }
+  }
+`
+
 interface EntityProps {
   originalSlug: string
   fairOrPartner: VanityURLEntity_fairOrPartner$data
@@ -60,13 +68,7 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
     return (
       <QueryRenderer<VanityURLEntityQuery>
         environment={getRelayEnvironment()}
-        query={graphql`
-          query VanityURLEntityQuery($id: String!) {
-            vanityURLEntity(id: $id) {
-              ...VanityURLEntity_fairOrPartner
-            }
-          }
-        `}
+        query={VanityURLEntityScreenQuery}
         variables={{ id: slug }}
         render={renderWithPlaceholder({
           showNotFoundView: false,

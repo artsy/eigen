@@ -64,7 +64,7 @@ export const ArtworkAttributionClassFAQContainer = createFragmentContainer(
   }
 )
 
-export const ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY = graphql`
+export const ArtworkAttributionClassFAQScreenQuery = graphql`
   query ArtworkAttributionClassFAQQuery {
     artworkAttributionClasses {
       ...ArtworkAttributionClassFAQ_artworkAttributionClasses
@@ -76,7 +76,7 @@ export const ArtworkAttributionClassFAQQueryRenderer: React.FC = (props) => {
   return (
     <QueryRenderer<ArtworkAttributionClassFAQQuery>
       environment={getRelayEnvironment()}
-      query={ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY}
+      query={ArtworkAttributionClassFAQScreenQuery}
       variables={{}}
       render={renderWithLoadProgress(ArtworkAttributionClassFAQContainer, props)}
     />

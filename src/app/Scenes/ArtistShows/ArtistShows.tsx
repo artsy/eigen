@@ -153,19 +153,20 @@ export const ArtistShowsPaginationContainer = createPaginationContainer(
   }
 )
 
+export const ArtistShowsScreenQuery = graphql`
+  query ArtistShowsQuery($artistID: String!) {
+    artist(id: $artistID) {
+      ...ArtistShows_artist @arguments(count: 10, status: "closed")
+    }
+  }
+`
+
 export const ArtistShowsQueryRenderer: React.FC<{ artistID: string }> = ({ artistID }) => {
   return (
     <QueryRenderer<ArtistShowsQuery>
       cacheConfig={{ force: true }}
       environment={getRelayEnvironment()}
-      query={graphql`
-        query ArtistShowsQuery($artistID: String!) {
-          artist(id: $artistID) {
-            slug
-            ...ArtistShows_artist
-          }
-        }
-      `}
+      query={ArtistShowsScreenQuery}
       render={renderWithPlaceholder({
         Container: ArtistShowsPaginationContainer,
         renderPlaceholder: LoadingSkeleton,

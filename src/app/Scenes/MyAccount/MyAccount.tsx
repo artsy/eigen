@@ -223,17 +223,19 @@ export const MyAccountContainer = createFragmentContainer(MyAccount, {
   `,
 })
 
+export const MyAccountScreenQuery = graphql`
+  query MyAccountQuery {
+    me {
+      ...MyAccount_me
+    }
+  }
+`
+
 export const MyAccountQueryRenderer: React.FC<{}> = () => {
   return (
     <QueryRenderer<MyAccountQuery>
       environment={getRelayEnvironment()}
-      query={graphql`
-        query MyAccountQuery {
-          me {
-            ...MyAccount_me
-          }
-        }
-      `}
+      query={MyAccountScreenQuery}
       render={renderWithPlaceholder({
         Container: MyAccountContainer,
         renderPlaceholder: () => <MyAccountPlaceholder />,

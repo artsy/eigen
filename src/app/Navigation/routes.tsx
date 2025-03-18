@@ -19,8 +19,11 @@ import {
 } from "app/Scenes/Activity/ActivityItemScreen"
 import { ActivityScreen } from "app/Scenes/Activity/ActivityScreen"
 import { activityHeaderQuery } from "app/Scenes/Activity/components/ActivityHeader"
-import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
-import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
+import { ArtQuiz, ArtQuizScreenQuery } from "app/Scenes/ArtQuiz/ArtQuiz"
+import {
+  ArtQuizResults,
+  ArtQuizResultsScreenQuery,
+} from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
 import { ArticleScreen, articleScreenQuery } from "app/Scenes/Article/ArticleScreen"
 import { ArticlesSlideShowScreen } from "app/Scenes/ArticleSlideShow/ArticleSlideShow"
 import { ArticlesScreen, ArticlesScreenQuery } from "app/Scenes/Articles/Articles"
@@ -42,12 +45,21 @@ import {
   ArtistSeriesFullArtistSeriesListQueryRenderer,
   ArtistSeriesFullArtistSeriesScreenQuery,
 } from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
-import { ArtistShowsQueryRenderer } from "app/Scenes/ArtistShows/ArtistShows"
+import {
+  ArtistShowsQueryRenderer,
+  ArtistShowsScreenQuery,
+} from "app/Scenes/ArtistShows/ArtistShows"
 import { ArtworkScreen, ArtworkScreenQuery } from "app/Scenes/Artwork/Artwork"
-import { BrowseSimilarWorksQueryRenderer } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
+import {
+  BrowseSimilarWorksQueryRenderer,
+  BrowseSimilarWorksScreenQuery,
+} from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { CertificateOfAuthenticity } from "app/Scenes/Artwork/Components/CertificateAuthenticity"
 import { UnlistedArtworksFAQScreen } from "app/Scenes/Artwork/Components/UnlistedArtworksFAQScreen"
-import { ArtworkAttributionClassFAQQueryRenderer } from "app/Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ"
+import {
+  ArtworkAttributionClassFAQQueryRenderer,
+  ArtworkAttributionClassFAQScreenQuery,
+} from "app/Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ"
 import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
 import {
   ARTWORK_MEDIUM_QUERY,
@@ -64,10 +76,13 @@ import {
   AuctionResultsForArtistsYouFollowQueryRenderer,
 } from "app/Scenes/AuctionResults/AuctionResultsForArtistsYouFollow"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
-import { CityFairListQueryRenderer } from "app/Scenes/City/CityFairList"
-import { CitySavedListQueryRenderer } from "app/Scenes/City/CitySavedList"
-import { CitySectionListQueryRenderer } from "app/Scenes/City/CitySectionList"
-import { collectionQuery, CollectionScreen } from "app/Scenes/Collection/Collection"
+import { CityFairListQueryRenderer, CityFairListScreenQuery } from "app/Scenes/City/CityFairList"
+import { CitySavedListQueryRenderer, CitySavedListScreenQuery } from "app/Scenes/City/CitySavedList"
+import {
+  CitySectionListQueryRenderer,
+  CitySectionListScreenQuery,
+} from "app/Scenes/City/CitySectionList"
+import { CollectionScreen, CollectionScreenQuery } from "app/Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
 import { collectionsByCategoryQuery } from "app/Scenes/CollectionsByCategory/Body"
 import { CollectionsByCategory } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
@@ -81,24 +96,39 @@ import { FairArticlesQueryRenderer } from "app/Scenes/Fair/FairArticles"
 import { FaireMoreInfoScreenQuery, FairMoreInfoQueryRenderer } from "app/Scenes/Fair/FairMoreInfo"
 import { FeaturedFairsScreen, featuredFairsScreenQuery } from "app/Scenes/Fair/FeaturedFairsScreen"
 import { Favorites, Favorites as LegacyFavorites } from "app/Scenes/Favorites/Favorites"
-import { FeatureQueryRenderer } from "app/Scenes/Feature/Feature"
-import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
+import { FeatureQueryRenderer, FeatureScreenQuery } from "app/Scenes/Feature/Feature"
+import {
+  GalleriesForYouQuery,
+  GalleriesForYouScreen,
+} from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { GeneQueryRenderer, GeneScreenQuery } from "app/Scenes/Gene/Gene"
 import { HomeViewScreen, homeViewScreenQuery } from "app/Scenes/HomeView/HomeView"
 import {
   HOME_SECTION_SCREEN_QUERY,
   HomeViewSectionScreenQueryRenderer,
 } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreen"
-import { MakeOfferModalQueryRenderer } from "app/Scenes/Inbox/Components/Conversations/MakeOfferModal"
-import { PurchaseModalQueryRenderer } from "app/Scenes/Inbox/Components/Conversations/PurchaseModal"
-import { ConversationQueryRenderer } from "app/Scenes/Inbox/Screens/Conversation"
-import { ConversationDetailsQueryRenderer } from "app/Scenes/Inbox/Screens/ConversationDetails"
+import {
+  MakeOfferModalQueryRenderer,
+  MakeOfferModalScreenQuery,
+} from "app/Scenes/Inbox/Components/Conversations/MakeOfferModal"
+import {
+  PurchaseModalQueryRenderer,
+  PurchaseModalScreenQuery,
+} from "app/Scenes/Inbox/Components/Conversations/PurchaseModal"
+import {
+  ConversationQueryRenderer,
+  ConversationScreenQuery,
+} from "app/Scenes/Inbox/Screens/Conversation"
+import {
+  ConversationDetailsQueryRenderer,
+  ConversationDetailsScreenQuery,
+} from "app/Scenes/Inbox/Screens/ConversationDetails"
 import {
   infiniteDiscoveryQuery,
   InfiniteDiscoveryQueryRenderer,
   infiniteDiscoveryVariables,
 } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
-import { MyAccountQueryRenderer } from "app/Scenes/MyAccount/MyAccount"
+import { MyAccountQueryRenderer, MyAccountScreenQuery } from "app/Scenes/MyAccount/MyAccount"
 import { MyAccountDeleteAccountQueryRenderer } from "app/Scenes/MyAccount/MyAccountDeleteAccount"
 import { MyAccountEditEmailQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditEmail"
 import { MyAccountEditPassword } from "app/Scenes/MyAccount/MyAccountEditPassword"
@@ -122,12 +152,16 @@ import { MedianSalePriceAtAuction } from "app/Scenes/MyCollection/Screens/Insigh
 import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists"
 import { DarkModeSettings } from "app/Scenes/MyProfile/DarkModeSettings"
 import { MyProfile } from "app/Scenes/MyProfile/MyProfile"
-import { MyProfileEditFormScreen } from "app/Scenes/MyProfile/MyProfileEditForm"
+import {
+  MyProfileEditFormScreen,
+  MyProfileEditFormScreenQuery,
+} from "app/Scenes/MyProfile/MyProfileEditForm"
 import { MyProfilePaymentQueryRenderer } from "app/Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "app/Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { MyProfilePushNotificationsQueryRenderer } from "app/Scenes/MyProfile/MyProfilePushNotifications"
 import { MyProfileSettings } from "app/Scenes/MyProfile/MyProfileSettings"
 import { NewWorksForYouQueryRenderer } from "app/Scenes/NewWorksForYou/NewWorksForYou"
+import { NewWorksFromGalleriesYouFollowScreenQuery } from "app/Scenes/NewWorksFromGalleriesYouFollow/Components/NewWorksFromGalleriesYouFollow"
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
 import { OrderDetailsQueryRender } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetails"
 import { OrderHistoryQueryRender } from "app/Scenes/OrderHistory/OrderHistory"
@@ -147,7 +181,11 @@ import { SaleInfoQueryRenderer } from "app/Scenes/SaleInfo/SaleInfo"
 import { SalesScreen, SalesScreenQuery } from "app/Scenes/Sales/Sales"
 import { SavedArtworks } from "app/Scenes/SavedArtworks/SavedArtworks"
 import { AlertArtworks } from "app/Scenes/SavedSearchAlert/AlertArtworks"
-import { EditSavedSearchAlertQueryRenderer } from "app/Scenes/SavedSearchAlert/EditSavedSearchAlert"
+import {
+  EditSavedSearchAlertDetailsScreenQuery,
+  EditSavedSearchAlertQueryRenderer,
+} from "app/Scenes/SavedSearchAlert/EditSavedSearchAlert"
+import { SavedSearchAlertScreenQuery } from "app/Scenes/SavedSearchAlert/SavedSearchAlert"
 import { SavedSearchAlertsListQueryRenderer } from "app/Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
 import { SearchScreen, SearchScreenQuery } from "app/Scenes/Search/Search"
 import {
@@ -156,14 +194,23 @@ import {
 } from "app/Scenes/Show/Screens/ShowMoreInfo"
 import { ShowQueryRenderer, ShowScreenQuery } from "app/Scenes/Show/Show"
 import { ShowsForYouScreen, ShowsForYouScreenQuery } from "app/Scenes/Shows/ShowsForYou"
-import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
-import { TagQueryRenderer } from "app/Scenes/Tag/Tag"
-import { VanityURLEntityRenderer } from "app/Scenes/VanityURL/VanityURLEntity"
+import {
+  SimilarToRecentlyViewedScreen,
+  SimilarToRecentlyViewedScreenQuery,
+} from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
+import { TagQueryRenderer, TagScreenQuery } from "app/Scenes/Tag/Tag"
+import {
+  VanityURLEntityRenderer,
+  VanityURLEntityScreenQuery,
+} from "app/Scenes/VanityURL/VanityURLEntity"
 import {
   ViewingRoomQueryRenderer,
   ViewingRoomScreenQuery,
 } from "app/Scenes/ViewingRoom/ViewingRoom"
-import { ViewingRoomArtworkScreen } from "app/Scenes/ViewingRoom/ViewingRoomArtwork"
+import {
+  ViewingRoomArtworkScreen,
+  ViewingRoomArtworkScreenQuery,
+} from "app/Scenes/ViewingRoom/ViewingRoomArtwork"
 import {
   ViewingRoomArtworksQueryRenderer,
   ViewingRoomArtworksScreenQuery,
@@ -302,6 +349,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
       hidesBottomTabs: true,
     },
+    queries: [ArtQuizScreenQuery],
   },
   {
     path: "/art-quiz/artworks",
@@ -313,6 +361,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
       hidesBottomTabs: true,
     },
+    queries: [ArtQuizScreenQuery],
   },
   {
     path: "/art-quiz/results",
@@ -324,6 +373,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [ArtQuizResultsScreenQuery],
   },
   {
     path: "/article/:articleID",
@@ -445,6 +495,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/artist/:artistID/shows",
     name: "ArtistShows",
     Component: ArtistShowsQueryRenderer,
+    queries: [ArtistShowsScreenQuery],
   },
   // Routes `/artist/:artistID/*` and `"/:profile_id_ignored/artist/:artistID"`
   // MUST go together The following two
@@ -480,6 +531,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/artwork-classifications",
     name: "ArtworkAttributionClassFAQ",
     Component: ArtworkAttributionClassFAQQueryRenderer,
+    queries: [ArtworkAttributionClassFAQScreenQuery],
   },
   {
     path: "/artwork-lists",
@@ -539,6 +591,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [BrowseSimilarWorksScreenQuery],
   },
   {
     path: "/auction-registration/:saleID",
@@ -628,16 +681,19 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/city-fair/:citySlug",
     name: "CityFairList",
     Component: CityFairListQueryRenderer,
+    queries: [CityFairListScreenQuery],
   },
   {
     path: "/city-save/:citySlug",
     name: "CitySavedList",
     Component: CitySavedListQueryRenderer,
+    queries: [CitySavedListScreenQuery],
   },
   {
     path: "/city/:citySlug/:section",
     name: "CitySectionList",
     Component: CitySectionListQueryRenderer,
+    queries: [CitySectionListScreenQuery],
   },
   {
     path: "/collections-by-category/:category",
@@ -660,7 +716,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     // TODO: add the query for the artworks grid
-    queries: [collectionQuery],
+    queries: [CollectionScreenQuery],
   },
   {
     path: "/collection/:collectionID/artists",
@@ -682,6 +738,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [ConversationScreenQuery],
   },
   {
     path: "/conversation/:conversationID/details",
@@ -692,6 +749,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerTitle: "Details",
       },
     },
+    queries: [ConversationDetailsScreenQuery],
   },
   {
     path: "/dev-menu",
@@ -811,6 +869,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/feature/:slug",
     name: "Feature",
     Component: FeatureQueryRenderer,
+    queries: [FeatureScreenQuery],
   },
   {
     path: "/galleries-for-you",
@@ -821,6 +880,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [GalleriesForYouQuery],
   },
   {
     path: "/gene/:geneID",
@@ -915,6 +975,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [MakeOfferModalScreenQuery],
   },
   {
     path: "/my-account",
@@ -925,6 +986,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerTitle: "Account Settings",
       },
     },
+    queries: [MyAccountScreenQuery],
   },
   {
     path: "/my-account/delete-account",
@@ -1098,6 +1160,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerTitle: "Edit Profile",
       },
     },
+    queries: [MyProfileEditFormScreenQuery],
   },
   {
     path: "/my-profile/payment",
@@ -1170,6 +1233,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [NewWorksFromGalleriesYouFollowScreenQuery],
   },
   {
     path: "/orders",
@@ -1277,6 +1341,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [PurchaseModalScreenQuery],
   },
   {
     path: "/recently-viewed",
@@ -1322,6 +1387,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [SavedSearchAlertScreenQuery, EditSavedSearchAlertDetailsScreenQuery],
   },
   {
     path: "/favorites/alerts/:alertId/artworks",
@@ -1396,6 +1462,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [SimilarToRecentlyViewedScreenQuery],
   },
   {
     path: "/tag/:tagID",
@@ -1406,6 +1473,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [TagScreenQuery],
   },
   {
     path: "/unlisted-artworks-faq",
@@ -1427,6 +1495,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [ConversationScreenQuery],
   },
   {
     path: "/user/purchases/:orderID",
@@ -1454,6 +1523,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/viewing-room/:viewingRoomID/:artwork_id",
     name: "ViewingRoomArtwork",
     Component: ViewingRoomArtworkScreen,
+    queries: [ViewingRoomArtworkScreenQuery],
   },
   {
     path: "/viewing-rooms",
@@ -1534,6 +1604,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [VanityURLEntityScreenQuery],
   },
   webViewRoute({
     path: "/*",
