@@ -4,7 +4,6 @@ import {
   CloseIcon,
   Flex,
   Screen,
-  SimpleMessage,
   Spacer,
   Spinner,
   Text,
@@ -15,7 +14,7 @@ import {
   InfiniteDiscoveryQuery,
   InfiniteDiscoveryQuery$data,
 } from "__generated__/InfiniteDiscoveryQuery.graphql"
-import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 
 import { useToast } from "app/Components/Toast/toastHook"
 import { ICON_HIT_SLOP } from "app/Components/constants"
@@ -210,6 +209,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
               Tap to see all of your saved artworks.
             </Text>
           ),
+          duration: "long",
         }
       )
     }
@@ -255,9 +255,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
             }
           />
         </Flex>
-
         <Spacer y={1} />
-
         <Swiper
           cards={artworks}
           isRewindRequested={isRewindRequested}
@@ -267,24 +265,40 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           onRewind={handleRewind}
           onSwipe={handleSwipe}
         />
-
         {!!topArtwork && (
-          <RetryErrorBoundary>
-            <InfiniteDiscoveryBottomSheet
-              artworkID={topArtwork.internalID}
-              artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
-            />
-          </RetryErrorBoundary>
+          <InfiniteDiscoveryBottomSheet
+            artworkID={topArtwork.internalID}
+            artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
+          />
         )}
       </Screen.Body>
     </Screen>
   )
 }
 
+const InfiniteDiscoveryHeader = () => (
+  <Screen.Header
+    title="Discover Daily"
+    hideLeftElements
+    rightElements={
+      <Touchable
+        onPress={() => {
+          goBack()
+        }}
+        testID="close-icon"
+        hitSlop={ICON_HIT_SLOP}
+        haptic
+      >
+        <CloseIcon fill="black100" />
+      </Touchable>
+    }
+  />
+)
+
 const InfiniteDiscoverySpinner: React.FC = () => (
   <Screen>
+    <InfiniteDiscoveryHeader />
     <Screen.Body fullwidth>
-      <Screen.Header title="Discover Daily" />
       <Flex
         flex={1}
         justifyContent="center"
@@ -359,7 +373,12 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
   },
   LoadingFallback: InfiniteDiscoverySpinner,
   ErrorFallback: () => (
-    <SimpleMessage m={2}>Failed to load artworks. Please check back later.</SimpleMessage>
+    <Screen>
+      <InfiniteDiscoveryHeader />
+      <Screen.Body fullwidth>
+        <LoadFailureView />
+      </Screen.Body>
+    </Screen>
   ),
 })
 

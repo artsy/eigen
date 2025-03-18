@@ -1,17 +1,13 @@
 import { useColor } from "@artsy/palette-mobile"
 import BottomSheet from "@gorhom/bottom-sheet"
-import { InfiniteDiscoveryBottomSheetTabsQuery } from "__generated__/InfiniteDiscoveryBottomSheetTabsQuery.graphql"
 import { InfiniteDiscoveryBottomSheetBackdrop } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetBackdrop"
 import { InfiniteDiscoveryBottomSheetFooterQueryRenderer } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetFooter"
 import { InfiniteDiscoveryBottomeSheetHandle } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetHandle"
-import {
-  InfiniteDiscoveryTabs,
-  InfiniteDiscoveryTabsSkeleton,
-} from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetTabs"
-import { FC, Suspense, useEffect, useState } from "react"
+import { InfiniteDiscoveryTabs } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetTabs"
+import { FC, useEffect, useState } from "react"
 import { Dimensions } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { graphql, useQueryLoader } from "react-relay"
+import { graphql } from "react-relay"
 
 interface InfiniteDiscoveryBottomSheetProps {
   artworkID: string
@@ -26,12 +22,9 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
   const [footerVisible, setFooterVisible] = useState(true)
   const color = useColor()
 
-  const [queryRef, loadQuery] =
-    useQueryLoader<InfiniteDiscoveryBottomSheetTabsQuery>(aboutTheWorkQuery)
-
   useEffect(() => {
-    loadQuery({ id: artworkID, artistIDs })
-  }, [artworkID, artistIDs])
+    setFooterVisible(true)
+  }, [artworkID])
 
   const handleOnTabChange = () => {
     setFooterVisible((prev) => !prev)
@@ -58,29 +51,22 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
         }}
         handleComponent={InfiniteDiscoveryBottomeSheetHandle}
         footerComponent={(props) => {
-          if (!queryRef || !footerVisible) {
+          if (!footerVisible) {
             return null
           }
+
           return (
-            <Suspense fallback={null}>
-              <InfiniteDiscoveryBottomSheetFooterQueryRenderer queryRef={queryRef} {...props} />
-            </Suspense>
+            <InfiniteDiscoveryBottomSheetFooterQueryRenderer artworkID={artworkID} {...props} />
           )
         }}
       >
-        {/* This if is to make TS happy, usePreloadedQuery will always require a queryRef */}
-        {!queryRef ? (
-          <InfiniteDiscoveryTabsSkeleton />
-        ) : (
-          <Suspense fallback={<InfiniteDiscoveryTabsSkeleton />}>
-            <InfiniteDiscoveryTabs
-              queryRef={queryRef}
-              onTabChange={handleOnTabChange}
-              // this key resets the state of the tabs when the artwork changes
-              key={`infinite_discovery_tabs_${artworkID}`}
-            />
-          </Suspense>
-        )}
+        <InfiniteDiscoveryTabs
+          artistIDs={artistIDs}
+          artworkID={artworkID}
+          onTabChange={handleOnTabChange}
+          // this key resets the state of the tabs when the artwork changes
+          key={`infinite_discovery_tabs_${artworkID}`}
+        />
       </BottomSheet>
     </>
   )

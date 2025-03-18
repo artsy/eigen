@@ -1,4 +1,4 @@
-import { Spacer, Box, Text } from "@artsy/palette-mobile"
+import { Box, Spacer, Text } from "@artsy/palette-mobile"
 import { ShowMoreInfoQuery } from "__generated__/ShowMoreInfoQuery.graphql"
 import { ShowMoreInfo_show$data } from "__generated__/ShowMoreInfo_show.graphql"
 import { PartnerEntityHeaderFragmentContainer as PartnerEntityHeader } from "app/Components/PartnerEntityHeader"
@@ -144,7 +144,7 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
       <FlatList<Section>
         data={sections}
         keyExtractor={({ key }) => key}
-        ListHeaderComponent={<Spacer y={6} />}
+        ListHeaderComponent={<Spacer y={2} />}
         ListFooterComponent={<Spacer y={2} />}
         ItemSeparatorComponent={() => <Spacer y="15px" />}
         renderItem={({ item: { element } }) => element}
@@ -216,15 +216,17 @@ export const ShowMoreInfoQueryRenderer: React.FC<{ showID: string }> = ({ showID
   return (
     <QueryRenderer<ShowMoreInfoQuery>
       environment={getRelayEnvironment()}
-      query={graphql`
-        query ShowMoreInfoQuery($id: String!) {
-          show(id: $id) {
-            ...ShowMoreInfo_show
-          }
-        }
-      `}
-      variables={{ id: showID }}
+      query={ShowMoreInfoScreenQuery}
+      variables={{ showID }}
       render={renderWithLoadProgress(ShowMoreInfoFragmentContainer)}
     />
   )
 }
+
+export const ShowMoreInfoScreenQuery = graphql`
+  query ShowMoreInfoQuery($showID: String!) {
+    show(id: $showID) {
+      ...ShowMoreInfo_show
+    }
+  }
+`

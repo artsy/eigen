@@ -1,6 +1,6 @@
-import { Spacer, Text, Button } from "@artsy/palette-mobile"
+import { Button, Spacer, Text } from "@artsy/palette-mobile"
 import { PartnerLocationSection_partner$data } from "__generated__/PartnerLocationSection_partner.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { get } from "app/utils/get"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -28,10 +28,6 @@ export const createLocationsString = (partner: PartnerLocationSection_partner$da
 }
 
 export const PartnerLocationSection: React.FC<PartnerLocationSectionProps> = ({ partner }) => {
-  const handleSeeAllLocations = () => {
-    navigate(`/partner-locations/${partner.slug}`)
-  }
-
   const cities = get(partner, (p) => p.cities)
 
   if (!cities) {
@@ -62,15 +58,11 @@ export const PartnerLocationSection: React.FC<PartnerLocationSectionProps> = ({ 
         .
       </Text>
       <Spacer y={2} />
-      <Button
-        variant="fillGray"
-        size="large"
-        block
-        width="100%"
-        onPress={() => handleSeeAllLocations()}
-      >
-        See all location details
-      </Button>
+      <RouterLink to={`/partner-locations/${partner.slug}`} hasChildTouchable>
+        <Button variant="fillGray" size="large" block width="100%">
+          See all location details
+        </Button>
+      </RouterLink>
       <Spacer y={4} />
     </>
   )

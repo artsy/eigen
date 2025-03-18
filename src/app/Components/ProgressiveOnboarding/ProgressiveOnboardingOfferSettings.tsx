@@ -1,5 +1,7 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Popover, Text } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
+import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
@@ -13,6 +15,11 @@ export const ProgressiveOnboardingOfferSettings: React.FC = ({ children }) => {
   const { dismiss, setIsReady } = GlobalStore.actions.progressiveOnboarding
   const isFocused = useIsFocused()
   const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
+  const { trackEvent } = useProgressiveOnboardingTracking({
+    name: "offer-settings",
+    contextScreenOwnerType: OwnerType.saves,
+    contextModule: ContextModule.saves,
+  })
 
   const isDisplayable =
     isArtworkListOfferabilityEnabled &&
@@ -33,12 +40,15 @@ export const ProgressiveOnboardingOfferSettings: React.FC = ({ children }) => {
     dismiss("offer-settings")
   }
 
+  const isVisible = !!debouncedIsDisplayable.debouncedValue && isActive
+
   return (
     <Popover
-      visible={!!debouncedIsDisplayable.debouncedValue && isActive}
+      visible={isVisible}
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
       onCloseComplete={clearActivePopover}
+      onOpenComplete={trackEvent}
       placement="top"
       title={
         <Text variant="xs" color="white100">

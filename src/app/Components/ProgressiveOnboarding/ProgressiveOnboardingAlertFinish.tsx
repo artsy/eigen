@@ -1,6 +1,9 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ToolTip } from "@artsy/palette-mobile"
+import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useEffect } from "react"
 
 export const ProgressiveOnboardingAlertFinish: React.FC = ({ children }) => {
   const {
@@ -9,6 +12,11 @@ export const ProgressiveOnboardingAlertFinish: React.FC = ({ children }) => {
   } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
   const progressiveOnboardingAlerts = useFeatureFlag("AREnableProgressiveOnboardingAlerts")
+  const { trackEvent } = useProgressiveOnboardingTracking({
+    name: "alert-finish",
+    contextScreenOwnerType: OwnerType.artist,
+    contextModule: ContextModule.filterScreen,
+  })
 
   const isDisplayable =
     isReady &&
@@ -19,6 +27,12 @@ export const ProgressiveOnboardingAlertFinish: React.FC = ({ children }) => {
   const handleDismiss = () => {
     dismiss("alert-finish")
   }
+
+  useEffect(() => {
+    if (!!isDisplayable) {
+      trackEvent()
+    }
+  }, [isDisplayable])
 
   return (
     <ToolTip

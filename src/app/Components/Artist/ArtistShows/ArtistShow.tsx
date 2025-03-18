@@ -1,8 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedShowGroup } from "@artsy/cohesion"
-import { Touchable } from "@artsy/palette-mobile"
 import { ArtistShow_show$data, ArtistShow_show$key } from "__generated__/ArtistShow_show.graphql"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { hrefForPartialShow } from "app/utils/router"
 import { View, ViewStyle } from "react-native"
@@ -32,14 +31,13 @@ export const ArtistShow: React.FC<Props> = ({ styles, show, index, imageDimensio
 
   const handleTap = () => {
     tracking.trackEvent(tracks.tappedShowGroup(data, index))
-    navigate(hrefForPartialShow(data))
   }
 
   const image = data.coverImage
   const imageURL = image && image.url
 
   return (
-    <Touchable onPress={handleTap} haptic>
+    <RouterLink onPress={handleTap} to={hrefForPartialShow(data)} haptic>
       <View style={[styles?.container]}>
         <View style={[styles?.imageMargin]}>
           <ImageWithFallback
@@ -55,7 +53,7 @@ export const ArtistShow: React.FC<Props> = ({ styles, show, index, imageDimensio
           <Metadata show={data} style={!!styles && styles.metadata} />
         </View>
       </View>
-    </Touchable>
+    </RouterLink>
   )
 }
 

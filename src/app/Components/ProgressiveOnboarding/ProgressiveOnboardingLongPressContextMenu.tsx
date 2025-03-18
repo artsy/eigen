@@ -1,5 +1,7 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Popover, Text } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
+import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { getCurrentEmissionState, GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -33,22 +35,36 @@ export const ProgressiveOnboardingLongPressContextMenu: React.FC = ({ children }
     isFocused
   const { isActive, clearActivePopover } = useSetActivePopover(isDisplayable)
 
+  const { trackEvent } = useProgressiveOnboardingTracking({
+    name: "long-press-artwork-context-menu",
+    contextScreenOwnerType: OwnerType.home,
+    /**
+     * Setting contextModule to newWorksForYouRail
+     * we display the tooltip on the first rail of the home screen
+     * at the moment it is newWorksForYouRail
+     * see isFirstArtworkSection variable in HomeViewSectionArtworks.tsx
+     */
+    contextModule: ContextModule.newWorksForYouRail,
+  })
+
   const handleDismiss = () => {
     setIsReady(false)
     dismiss("long-press-artwork-context-menu")
   }
 
+  const isVisible =
+    !!enableLongPressContextMenu &&
+    !!enableLongPressContextMenuOnboarding &&
+    !!isDisplayable &&
+    isActive
+
   return (
     <Popover
-      visible={
-        !!enableLongPressContextMenu &&
-        !!enableLongPressContextMenuOnboarding &&
-        !!isDisplayable &&
-        isActive
-      }
+      visible={isVisible}
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
       onCloseComplete={clearActivePopover}
+      onOpenComplete={trackEvent}
       placement="top"
       title={
         <Text variant="xs" color="white100" fontWeight={500}>

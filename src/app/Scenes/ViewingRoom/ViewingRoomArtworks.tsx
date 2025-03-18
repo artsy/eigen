@@ -1,12 +1,12 @@
 import {
-  Flex,
   Box,
-  useSpace,
-  Text,
-  Spinner,
-  Separator,
-  Touchable,
+  Flex,
   Image,
+  Separator,
+  Spinner,
+  Text,
+  Touchable,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoomArtworksQueryRendererQuery.graphql"
 import { ViewingRoomArtworks_viewingRoom$data } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
@@ -212,20 +212,13 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
   }
 )
 
-export const ViewingRoomArtworksQueryRenderer: React.FC<{ viewing_room_id: string }> = ({
-  viewing_room_id: viewingRoomID,
+export const ViewingRoomArtworksQueryRenderer: React.FC<{ viewingRoomID: string }> = ({
+  viewingRoomID,
 }) => {
   return (
     <QueryRenderer<ViewingRoomArtworksQueryRendererQuery>
       environment={getRelayEnvironment()}
-      query={graphql`
-        query ViewingRoomArtworksQueryRendererQuery($viewingRoomID: ID!) {
-          viewingRoom(id: $viewingRoomID) {
-            ...ViewingRoomArtworks_viewingRoom
-          }
-        }
-      `}
-      cacheConfig={{ force: true }}
+      query={ViewingRoomArtworksScreenQuery}
       variables={{
         viewingRoomID,
       }}
@@ -233,3 +226,11 @@ export const ViewingRoomArtworksQueryRenderer: React.FC<{ viewing_room_id: strin
     />
   )
 }
+
+export const ViewingRoomArtworksScreenQuery = graphql`
+  query ViewingRoomArtworksQueryRendererQuery($viewingRoomID: ID!) {
+    viewingRoom(id: $viewingRoomID) {
+      ...ViewingRoomArtworks_viewingRoom
+    }
+  }
+`
