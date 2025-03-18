@@ -44,11 +44,11 @@ or if we want a variant we can use something like
   },
 ```
 
-| value                | description                                    |
-| -------------------- | ---------------------------------------------- |
-| `description`        | (`string`) a string describing your experiment |
-| `variantSuggestions` | (`string[]`) a list of variant options         |
-| `payloadSuggestions` | (`string[]`) a list of payload options         |
+| value                | description                                                                |
+| -------------------- | -------------------------------------------------------------------------- |
+| `description`        | (`string`) a string describing your experiment                             |
+| `variantSuggestions` | (`string[]`) a list of variant options, for use via the Dev Menu interface |
+| `payloadSuggestions` | (`string[]`) a list of payload options, for use via the Dev Menu interface |
 
 Don't forget to add some tracking on this, using `reportExperimentVariant`. Look for other examples in the code.
 
