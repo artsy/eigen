@@ -177,7 +177,10 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     onPressToCall?.()
   }
 
-  const artworkPreviewComponent = (artwork: ContextMenuArtworkPreviewCard_artwork$key) => {
+  const artworkPreviewComponent = (
+    artwork: ContextMenuArtworkPreviewCard_artwork$key,
+    artworkDisplayProps: ArtworkDisplayProps | undefined
+  ) => {
     return (
       <ContextMenuArtworkPreviewCard artwork={artwork} artworkDisplayProps={artworkDisplayProps} />
     )
@@ -191,7 +194,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
       <ContextMenu
         actions={contextActions}
         onPress={handleContextPress}
-        preview={artworkPreviewComponent(artwork)}
+        preview={artworkPreviewComponent(artwork, artworkDisplayProps)}
         hideShadows={true}
         previewBackgroundColor={!!dark ? color("black100") : color("white100")}
       >
@@ -214,7 +217,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     return (
       <>
         <TouchableHighlight
-          underlayColor={color("white100")}
+          underlayColor={dark ? color("black100") : color("white100")}
           activeOpacity={0.8}
           onLongPress={handleAndroidLongPress}
           delayLongPress={1200} // To avoid the context menu from opening on a (long) normal press on Android.
@@ -226,9 +229,10 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 
         <AutoHeightBottomSheet visible={androidVisible} onDismiss={() => setAndroidVisible(false)}>
           <SafeAreaView>
-            <Flex mx={2} my={2}>
+            <Flex mx={2} mb={4}>
               <Flex ml={-1} mb={1}>
-                {artworkPreviewComponent(artwork)}
+                {/* Always show light mode on Android for the bottom sheet */}
+                {artworkPreviewComponent(artwork, { ...artworkDisplayProps, dark: false })} //
               </Flex>
 
               <Join separator={<Separator borderColor="black10" my={1} />}>
