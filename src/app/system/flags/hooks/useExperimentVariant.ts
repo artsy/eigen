@@ -7,28 +7,18 @@ export function useExperimentVariant(name: EXPERIMENT_NAME): {
   variant: IVariant
   trackExperiment: (contextProps?: ContextProps) => void
 } {
-  const variant = useVariant(name) as IVariant
-
   const localVariantOverrides = GlobalStore.useAppState(
     (s) => s.artsyPrefs.experiments.localVariantOverrides
   )
   const localPayloadOverrides = GlobalStore.useAppState(
     (s) => s.artsyPrefs.experiments.localPayloadOverrides
   )
-  let overrideApplied = false
-
-  if (localVariantOverrides[name]) {
-    variant.name = localVariantOverrides[name]
-    overrideApplied = true
-  }
-
-  if (localPayloadOverrides[name]) {
-    variant.payload = {
-      type: "string",
-      value: localPayloadOverrides[name],
-    }
-    overrideApplied = true
-  }
+  const { variant, overrideApplied } = maybeOverrideVariant(
+    name,
+    useVariant(name),
+    localVariantOverrides,
+    localPayloadOverrides
+  ) as { variant: IVariant; overrideApplied: boolean }
 
   const trackExperiment = (contextProps?: ContextProps) => {
     if (!variant.enabled || overrideApplied) {
@@ -51,4 +41,28 @@ export function useExperimentVariant(name: EXPERIMENT_NAME): {
     variant,
     trackExperiment,
   }
+}
+
+function maybeOverrideVariant(
+  name: EXPERIMENT_NAME,
+  variant: Partial<IVariant>,
+  localVariantOverrides: Record<string, string>,
+  localPayloadOverrides: Record<string, string>
+): { variant: Partial<IVariant>; overrideApplied: boolean } {
+  let overrideApplied = false
+
+  if (localVariantOverrides[name]) {
+    variant.name = String(localVariantOverrides[name])
+    overrideApplied = true
+  }
+
+  if (localPayloadOverrides[name]) {
+    variant.payload = {
+      type: "string",
+      value: String(localPayloadOverrides[name]),
+    }
+    overrideApplied = true
+  }
+
+  return { variant, overrideApplied }
 }
