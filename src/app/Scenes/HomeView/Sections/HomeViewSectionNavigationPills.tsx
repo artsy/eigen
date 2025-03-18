@@ -1,19 +1,19 @@
 import { ContextModule } from "@artsy/cohesion"
 import {
   ArtworkIcon,
-  AuctionIcon as GavelIcon,
   FairIcon,
   Flex,
   FlexProps,
   FollowArtistIcon,
+  AuctionIcon as GavelIcon,
   HeartIcon as HeartStrokeIcon,
+  IconProps,
   Pill,
   PublicationIcon,
   Skeleton,
   Spacer,
   Text,
   useSpace,
-  IconProps,
 } from "@artsy/palette-mobile"
 import { HomeViewSectionNavigationPillsQuery } from "__generated__/HomeViewSectionNavigationPillsQuery.graphql"
 import {
@@ -23,7 +23,7 @@ import {
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { FC, memo } from "react"
 import { FlatList } from "react-native"
@@ -66,26 +66,30 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
         }}
         ItemSeparatorComponent={() => <Spacer x={0.5} />}
         renderItem={({ item: pill, index }) => (
-          <Pill
+          <RouterLink
+            hasChildTouchable
+            to={pill.href}
             key={pill.title}
-            accessibilityLabel={pill.title}
-            accessibilityRole="link"
-            testID={`pill-${pill.title}`}
-            variant="link"
-            Icon={SUPPORTED_ICONS[pill.icon as string]}
             onPress={() => {
               tracking.tappedNavigationPillsGroup({
                 title: pill.title,
                 href: pill.href,
                 index: index,
               })
-              navigate(pill.href)
             }}
           >
-            <Text variant="xs" color="black100">
-              {pill.title}
-            </Text>
-          </Pill>
+            <Pill
+              accessibilityLabel={pill.title}
+              accessibilityRole="link"
+              testID={`pill-${pill.title}`}
+              variant="link"
+              Icon={SUPPORTED_ICONS[pill.icon as string]}
+            >
+              <Text variant="xs" color="black100">
+                {pill.title}
+              </Text>
+            </Pill>
+          </RouterLink>
         )}
       />
 
