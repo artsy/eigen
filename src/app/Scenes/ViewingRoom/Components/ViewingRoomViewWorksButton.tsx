@@ -29,16 +29,17 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
 
   return (
     <View>
-      <RouterLink noFeedback hasChildTouchable to={`/viewing-room/${viewingRoom.slug}/artworks`}>
-        <AnimatedBottomButton
-          buttonStyles={roundedButtonStyle}
-          isVisible={props.isVisible}
-          onPress={() => {
-            tracking.trackEvent(
-              tracks.tappedViewWorksButton(viewingRoom.internalID, viewingRoom.slug)
-            )
-          }}
-        >
+      <RouterLink
+        noFeedback
+        hasChildTouchable
+        to={`/viewing-room/${viewingRoom.slug}/artworks`}
+        onPress={() => {
+          tracking.trackEvent(
+            tracks.tappedViewWorksButton(viewingRoom.internalID, viewingRoom.slug)
+          )
+        }}
+      >
+        <AnimatedBottomButton buttonStyles={roundedButtonStyle} isVisible={props.isVisible}>
           <ViewWorksButton testID="view-works" px={2}>
             <Text variant="sm" py={1} color="white100" weight="medium">
               View {pluralizedArtworksCount} ({artworksCount})

@@ -14,7 +14,7 @@ export const BottomButtonContainer = styled(Animated.View)`
 
 interface AnimatedBottomButtonProps {
   isVisible: boolean
-  onPress: () => void
+  onPress?: () => void
   buttonStyles?: StyleProp<ViewStyle>
 }
 
