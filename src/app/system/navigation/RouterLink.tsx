@@ -3,7 +3,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { Sentinel } from "app/utils/Sentinel"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { usePrefetch } from "app/utils/queryPrefetching"
-import React, { useState } from "react"
+import React from "react"
 import { GestureResponderEvent } from "react-native"
 import { Variables } from "relay-runtime"
 
@@ -31,8 +31,6 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   hasChildTouchable,
   ...restProps
 }) => {
-  const [isPrefetched, setIsPrefetched] = useState(false)
-
   const prefetchUrl = usePrefetch()
   const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
 
@@ -51,9 +49,8 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   }
 
   const handleVisible = (isVisible: boolean) => {
-    if (isPrefetchingEnabled && isVisible && !isPrefetched) {
+    if (isPrefetchingEnabled && isVisible) {
       prefetchUrl(to, prefetchVariables)
-      setIsPrefetched(true)
     }
   }
 
