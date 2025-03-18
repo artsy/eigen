@@ -1,10 +1,10 @@
 import { Touchable } from "@artsy/palette-mobile"
-import { screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ViewingRoomArtworksTestsQuery } from "__generated__/ViewingRoomArtworksTestsQuery.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { FlatList, TouchableHighlight } from "react-native"
+import { FlatList } from "react-native"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { tracks, ViewingRoomArtworksContainer } from "./ViewingRoomArtworks"
@@ -28,7 +28,7 @@ describe("ViewingRoom", () => {
     renderWithRelay()
 
     expect(screen.UNSAFE_getAllByType(FlatList)).toHaveLength(1)
-    expect(screen.UNSAFE_getAllByType(TouchableHighlight)).toHaveLength(1)
+    expect(screen.UNSAFE_getAllByType(Touchable)).toHaveLength(1)
   })
 
   it("renders additional information if it exists", () => {
@@ -48,14 +48,16 @@ describe("ViewingRoom", () => {
       ViewingRoom: () => ({
         internalID: "viewing-room-internalID-1",
         slug: "slug-1",
+        title: "Viewing Room 1",
       }),
       Artwork: () => ({
         internalID: "artwork-internalID-1",
         slug: "artwork-slug-1",
+        title: "Artwork 1",
       }),
     })
 
-    screen.UNSAFE_getByType(Touchable).props.onPress()
+    fireEvent.press(screen.getByText("Artwork 1"))
 
     expect(navigate).toHaveBeenCalledWith("/viewing-room/slug-1/artwork-slug-1")
 
