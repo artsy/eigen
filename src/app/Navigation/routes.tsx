@@ -42,7 +42,10 @@ import {
   ArtistSeriesFullArtistSeriesListQueryRenderer,
   ArtistSeriesFullArtistSeriesScreenQuery,
 } from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
-import { ArtistShowsQueryRenderer } from "app/Scenes/ArtistShows/ArtistShows"
+import {
+  ArtistShowsQueryRenderer,
+  ArtistShowsScreenQuery,
+} from "app/Scenes/ArtistShows/ArtistShows"
 import { ArtworkScreen, ArtworkScreenQuery } from "app/Scenes/Artwork/Artwork"
 import { BrowseSimilarWorksQueryRenderer } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { CertificateOfAuthenticity } from "app/Scenes/Artwork/Components/CertificateAuthenticity"
@@ -78,7 +81,7 @@ import { FairArticlesQueryRenderer } from "app/Scenes/Fair/FairArticles"
 import { FairMoreInfoQueryRenderer } from "app/Scenes/Fair/FairMoreInfo"
 import { FeaturedFairsScreen, featuredFairsScreenQuery } from "app/Scenes/Fair/FeaturedFairsScreen"
 import { Favorites, Favorites as LegacyFavorites } from "app/Scenes/Favorites/Favorites"
-import { FeatureQueryRenderer } from "app/Scenes/Feature/Feature"
+import { FeatureQueryRenderer, FeatureScreenQuery } from "app/Scenes/Feature/Feature"
 import {
   GalleriesForYouQuery,
   GalleriesForYouScreen,
@@ -89,16 +92,25 @@ import {
   HOME_SECTION_SCREEN_QUERY,
   HomeViewSectionScreenQueryRenderer,
 } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreen"
-import { MakeOfferModalQueryRenderer } from "app/Scenes/Inbox/Components/Conversations/MakeOfferModal"
-import { PurchaseModalQueryRenderer } from "app/Scenes/Inbox/Components/Conversations/PurchaseModal"
-import { ConversationQueryRenderer } from "app/Scenes/Inbox/Screens/Conversation"
+import {
+  MakeOfferModalQueryRenderer,
+  MakeOfferModalScreenQuery,
+} from "app/Scenes/Inbox/Components/Conversations/MakeOfferModal"
+import {
+  PurchaseModalQueryRenderer,
+  PurchaseModalScreenQuery,
+} from "app/Scenes/Inbox/Components/Conversations/PurchaseModal"
+import {
+  ConversationQueryRenderer,
+  ConversationScreenQuery,
+} from "app/Scenes/Inbox/Screens/Conversation"
 import { ConversationDetailsQueryRenderer } from "app/Scenes/Inbox/Screens/ConversationDetails"
 import {
   infiniteDiscoveryQuery,
   InfiniteDiscoveryQueryRenderer,
   infiniteDiscoveryVariables,
 } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
-import { MyAccountQueryRenderer } from "app/Scenes/MyAccount/MyAccount"
+import { MyAccountQueryRenderer, MyAccountScreenQuery } from "app/Scenes/MyAccount/MyAccount"
 import { MyAccountDeleteAccountQueryRenderer } from "app/Scenes/MyAccount/MyAccountDeleteAccount"
 import { MyAccountEditEmailQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditEmail"
 import { MyAccountEditPassword } from "app/Scenes/MyAccount/MyAccountEditPassword"
@@ -164,13 +176,16 @@ import {
   SimilarToRecentlyViewedScreen,
   SimilarToRecentlyViewedScreenQuery,
 } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
-import { TagQueryRenderer } from "app/Scenes/Tag/Tag"
+import { TagQueryRenderer, TagScreenQuery } from "app/Scenes/Tag/Tag"
 import { VanityURLEntityRenderer } from "app/Scenes/VanityURL/VanityURLEntity"
 import {
   ViewingRoomQueryRenderer,
   ViewingRoomScreenQuery,
 } from "app/Scenes/ViewingRoom/ViewingRoom"
-import { ViewingRoomArtworkScreen } from "app/Scenes/ViewingRoom/ViewingRoomArtwork"
+import {
+  ViewingRoomArtworkScreen,
+  ViewingRoomArtworkScreenQuery,
+} from "app/Scenes/ViewingRoom/ViewingRoomArtwork"
 import {
   ViewingRoomArtworksQueryRenderer,
   ViewingRoomArtworksScreenQuery,
@@ -452,6 +467,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/artist/:artistID/shows",
     name: "ArtistShows",
     Component: ArtistShowsQueryRenderer,
+    queries: [ArtistShowsScreenQuery],
   },
   // Routes `/artist/:artistID/*` and `"/:profile_id_ignored/artist/:artistID"`
   // MUST go together The following two
@@ -689,6 +705,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [ConversationScreenQuery],
   },
   {
     path: "/conversation/:conversationID/details",
@@ -816,6 +833,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/feature/:slug",
     name: "Feature",
     Component: FeatureQueryRenderer,
+    queries: [FeatureScreenQuery],
   },
   {
     path: "/galleries-for-you",
@@ -921,6 +939,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [MakeOfferModalScreenQuery],
   },
   {
     path: "/my-account",
@@ -931,6 +950,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerTitle: "Account Settings",
       },
     },
+    queries: [MyAccountScreenQuery],
   },
   {
     path: "/my-account/delete-account",
@@ -1285,6 +1305,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [PurchaseModalScreenQuery],
   },
   {
     path: "/recently-viewed",
@@ -1415,6 +1436,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [TagScreenQuery],
   },
   {
     path: "/unlisted-artworks-faq",
@@ -1436,6 +1458,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [ConversationScreenQuery],
   },
   {
     path: "/user/purchases/:orderID",
@@ -1463,6 +1486,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/viewing-room/:viewingRoomID/:artwork_id",
     name: "ViewingRoomArtwork",
     Component: ViewingRoomArtworkScreen,
+    queries: [ViewingRoomArtworkScreenQuery],
   },
   {
     path: "/viewing-rooms",

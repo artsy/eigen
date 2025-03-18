@@ -5,6 +5,7 @@ import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoo
 import { LargeCard } from "app/Components/Cards"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ImageCarousel } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { cm2in } from "app/utils/conversions"
 import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
@@ -21,7 +22,6 @@ import {
 } from "react-relay"
 import { useTracking } from "react-tracking"
 
-import { RouterLink } from "app/system/navigation/RouterLink"
 import { tagForStatus } from "./Components/ViewingRoomsListItem"
 
 interface ViewingRoomArtworkProps {
@@ -188,7 +188,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkContainerPr
   return <ViewingRoomArtwork selectedArtwork={data.artwork} viewingRoomInfo={data.viewingRoom} />
 }
 
-const ViewingRoomArtworkScreenQuery = graphql`
+export const ViewingRoomArtworkScreenQuery = graphql`
   query ViewingRoomArtworkQuery($viewingRoomID: ID!, $artworkID: String!) {
     artwork(id: $artworkID) {
       ...ViewingRoomArtwork_selectedArtwork
