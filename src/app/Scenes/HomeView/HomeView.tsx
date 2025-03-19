@@ -60,7 +60,7 @@ export const HomeView: React.FC = memo(() => {
   )
 
   const { trackExperiment: trackInternalTestingExperiment } = useExperimentVariant(
-    "onyx_internal_testing_experiment"
+    "onyx_internal-testing-experiment"
   )
   const { trackExperiment: trackQuickLinksExperiment } = useExperimentVariant(
     "onyx_quick-links-experiment"
