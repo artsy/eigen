@@ -93,7 +93,6 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
               }}
               returnKeyType="done"
               autoFocus
-              required
             />
 
             {!!AREnableArtworkListOfferability && (
