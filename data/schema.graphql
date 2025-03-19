@@ -12527,6 +12527,9 @@ enum LiveAuctionRole {
 type Location {
   address: String
   address2: String
+
+  # Buisness, temporary, or private address
+  addressType: String
   cached: Int
   city: String
   coordinates: LatLng
@@ -12549,6 +12552,9 @@ type Location {
   openingHours: OpeningHoursUnion
   phone: String
   postalCode: String
+
+  # Boolean flag that denotes whether a location is publicly viewable on Partner's Artsy Profile
+  publiclyViewable: Boolean
   state: String
   summary: String
 }
