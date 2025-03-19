@@ -1,13 +1,5 @@
-import {
-  Avatar,
-  Flex,
-  Spacer,
-  Text,
-  Touchable,
-  useScreenDimensions,
-  useSpace,
-} from "@artsy/palette-mobile"
-import { navigate } from "app/system/navigation/navigate"
+import { Avatar, Flex, Spacer, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { chunk } from "lodash"
 import { Image } from "react-native"
 
@@ -80,7 +72,7 @@ const Artists: React.FC = () => {
 
 const Artist: React.FC<{ artist: ArtistElement }> = ({ artist }) => {
   return (
-    <Touchable onPress={() => navigate(`/artist/${artist.slug}`)}>
+    <RouterLink to={`/artist/${artist.slug}`}>
       <Flex alignItems="center">
         <Flex mb={0.5}>
           <Avatar size="sm" src={artist?.artistThumbnail} />
@@ -91,7 +83,7 @@ const Artist: React.FC<{ artist: ArtistElement }> = ({ artist }) => {
           {artist?.artistNationality}, {artist?.artistBirthday}
         </Text>
       </Flex>
-    </Touchable>
+    </RouterLink>
   )
 }
 

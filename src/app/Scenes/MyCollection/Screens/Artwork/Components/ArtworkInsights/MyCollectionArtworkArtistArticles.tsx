@@ -1,11 +1,11 @@
 import { ActionType, ContextModule, OwnerType, TappedShowMore } from "@artsy/cohesion"
-import { Spacer, Flex, Box, Text, Separator } from "@artsy/palette-mobile"
+import { Box, Flex, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { MyCollectionArtworkArtistArticles_artwork$data } from "__generated__/MyCollectionArtworkArtistArticles_artwork.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { ScreenMargin } from "app/Scenes/MyCollection/Components/ScreenMargin"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
-import { Image, TouchableOpacity } from "react-native"
+import { Image } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -16,7 +16,7 @@ interface MyCollectionArtworkArtistArticlesProps {
 const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArticlesProps> = (
   props
 ) => {
-  const artist = props?.artwork?.artist!
+  const artist = props?.artwork?.artist
   const articleEdges = extractNodes(artist?.articlesConnection)
   const { trackEvent } = useTracking()
 
@@ -34,7 +34,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
 
       {articleEdges.map(({ thumbnailTitle, slug, publishedAt, internalID, thumbnailImage }) => {
         return (
-          <TouchableOpacity onPress={() => navigate(`/article/${slug}`)} key={internalID}>
+          <RouterLink to={`/article/${slug}`} key={internalID}>
             <Box my={0.5}>
               <Flex flexDirection="row">
                 <Box pr={1} style={{ flex: 1 }}>
@@ -51,14 +51,16 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
                 />
               </Flex>
             </Box>
-          </TouchableOpacity>
+          </RouterLink>
         )
       })}
 
       <Spacer y={1} />
 
       <Box mb={2}>
-        <CaretButton
+        <RouterLink
+          hasChildTouchable
+          to={`/artist/${artist?.slug}/articles`}
           onPress={() => {
             trackEvent(
               tracks.tappedShowMore(
@@ -67,10 +69,10 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
                 "See all articles"
               )
             )
-            navigate(`/artist/${artist?.slug}/articles`)
           }}
-          text="See all articles"
-        />
+        >
+          <CaretButton text="See all articles" />
+        </RouterLink>
       </Box>
     </ScreenMargin>
   )
