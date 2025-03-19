@@ -18,7 +18,7 @@
 #import "ARAppDelegate+DeeplinkTimeout.h"
 #import "ARUserManager.h"
 #import "ARFonts.h"
-#import <Analytics/SEGAnalytics.h>
+#import <SEGAnalytics.h>
 #import "ARAnalyticsConstants.h"
 #import "User.h"
 
