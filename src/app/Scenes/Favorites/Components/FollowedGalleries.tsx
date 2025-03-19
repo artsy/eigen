@@ -1,6 +1,7 @@
-import { Flex, Screen, SimpleMessage, Spacer, useSpace } from "@artsy/palette-mobile"
+import { Flex, Screen, Spacer, useSpace } from "@artsy/palette-mobile"
 import { FollowedGalleriesQuery } from "__generated__/FollowedGalleriesQuery.graphql"
 import { FollowedGalleries_me$key } from "__generated__/FollowedGalleries_me.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { PartnerListItemShort } from "app/Components/PartnerListItemShort"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
@@ -113,5 +114,15 @@ export const FollowedGalleriesQueryRenderer = withSuspense({
     return <FollowedGalleries me={data?.me} />
   },
   LoadingFallback: () => <Spinner />,
-  ErrorFallback: () => <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>,
+  ErrorFallback: (fallbackProps) => {
+    return (
+      <LoadFailureView
+        onRetry={fallbackProps.resetErrorBoundary}
+        showBackButton={true}
+        useSafeArea={false}
+        error={fallbackProps.error}
+        trackErrorBoundary={false}
+      />
+    )
+  },
 })

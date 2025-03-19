@@ -1,7 +1,8 @@
-import { Flex, Screen, SimpleMessage, Spacer, useSpace } from "@artsy/palette-mobile"
+import { Flex, Screen, Spacer, useSpace } from "@artsy/palette-mobile"
 import { FollowedArtistsQuery } from "__generated__/FollowedArtistsQuery.graphql"
 import { FollowedArtists_me$key } from "__generated__/FollowedArtists_me.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
 
@@ -122,5 +123,15 @@ export const FollowedArtistsQueryRenderer = withSuspense({
     return <FollowedArtists me={data?.me} />
   },
   LoadingFallback: () => <Spinner />,
-  ErrorFallback: () => <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>,
+  ErrorFallback: (fallbackProps) => {
+    return (
+      <LoadFailureView
+        onRetry={fallbackProps.resetErrorBoundary}
+        showBackButton={true}
+        useSafeArea={false}
+        error={fallbackProps.error}
+        trackErrorBoundary={false}
+      />
+    )
+  },
 })

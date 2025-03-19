@@ -1,4 +1,12 @@
-import { ArrowDownIcon, Flex, Join, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
+import {
+  ArrowDownIcon,
+  Flex,
+  Join,
+  RadioButton,
+  Spacer,
+  Text,
+  Touchable,
+} from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { FollowedArtistsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedArtists"
@@ -6,7 +14,6 @@ import { FollowedGalleriesQueryRenderer } from "app/Scenes/Favorites/Components/
 import { FollowedShowsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedShows"
 import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
 import { useState } from "react"
-import { TouchableOpacity } from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -39,18 +46,20 @@ export const FollowsTab = () => {
   return (
     <Flex flex={1}>
       <Flex p={2}>
-        <TouchableOpacity
-          style={{ flexDirection: "row", alignItems: "center" }}
+        <Touchable
+          haptic
           onPress={() => {
             Haptic.trigger("impactLight")
             setShowBottomSheet(true)
           }}
         >
-          <Text variant="sm-display" mr={0.5}>
-            {FOLLOW_OPTIONS.find(({ value }) => value === followOption)?.label}
-          </Text>
-          <ArrowDownIcon />
-        </TouchableOpacity>
+          <Flex flexDirection="row" alignItems="center">
+            <Text variant="sm-display" mr={0.5}>
+              {FOLLOW_OPTIONS.find(({ value }) => value === followOption)?.label}
+            </Text>
+            <ArrowDownIcon />
+          </Flex>
+        </Touchable>
       </Flex>
 
       {followOption === "artists" && <FollowedArtistsQueryRenderer />}
@@ -83,7 +92,7 @@ export const FollowsTab = () => {
                     // Dismiss after a short delay to make sure the user can verify their choice
                     setTimeout(() => {
                       setShowBottomSheet(false)
-                    }, 500)
+                    }, 200)
                   }}
                   selected={followOption === value}
                   text={label}
