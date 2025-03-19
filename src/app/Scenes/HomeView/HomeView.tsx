@@ -1,7 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
 import { PortalHost } from "@gorhom/portal"
-import { useFocusEffect } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
 import { HomeViewFetchMeQuery } from "__generated__/HomeViewFetchMeQuery.graphql"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
@@ -15,7 +14,6 @@ import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHomeViewExperimentTracking"
-import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { Playground } from "app/Scenes/Playground/Playground"
 import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -31,7 +29,7 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
-import { memo, RefObject, Suspense, useCallback, useEffect, useState } from "react"
+import { memo, RefObject, Suspense, useEffect, useState } from "react"
 import { FlatList, Linking, RefreshControl, StatusBar } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -87,7 +85,6 @@ export const HomeView: React.FC = memo(() => {
   useEnableProgressiveOnboarding()
 
   const prefetchUrl = usePrefetch()
-  const tracking = useHomeViewTracking()
   useHomeViewExperimentTracking(queryData.homeView?.experiments)
 
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
@@ -109,12 +106,6 @@ export const HomeView: React.FC = memo(() => {
   useEffect(() => {
     requestPushNotificationsPermission()
   }, [])
-
-  useFocusEffect(
-    useCallback(() => {
-      tracking.screen(OwnerType.home)
-    }, [])
-  )
 
   const fetchSavedArtworksCount = async () => {
     fetchQuery<HomeViewFetchMeQuery>(

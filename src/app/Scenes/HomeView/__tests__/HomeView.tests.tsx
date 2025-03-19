@@ -80,15 +80,6 @@ describe("HomeView", () => {
     expect(requestPushNotificationsPermissionSpy).toHaveBeenCalled()
   })
 
-  it("fires a screen view event", () => {
-    renderWithRelay()
-
-    expect(mockTrackEvent).toHaveBeenCalledWith({
-      action: "screen",
-      context_screen_owner_type: "home",
-    })
-  })
-
   it("renders an email confirmation banner", async () => {
     renderWithRelay({
       Me: () => ({
