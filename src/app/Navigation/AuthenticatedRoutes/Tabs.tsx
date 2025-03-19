@@ -20,7 +20,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
-import { useCallback } from "react"
+import { useCallback, useEffect } from "react"
 import { InteractionManager, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -55,6 +55,10 @@ const AppTabs: React.FC = () => {
   const insets = useSafeAreaInsets()
 
   const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
+
+  useEffect(() => {
+    postEventToProviders(tabsTracks.tabScreenView(selectedTab))
+  }, [])
 
   const handleTabPress = useCallback(
     (e) => {
