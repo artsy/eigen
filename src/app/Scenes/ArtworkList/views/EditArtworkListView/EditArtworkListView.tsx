@@ -85,6 +85,7 @@ export const EditArtworkListView: FC<EditArtworkListViewProps> = ({
         <Spacer y={2} />
 
         <CreateOrEditArtworkListForm
+          mode="edit"
           initialValues={{
             name: artworkListEntity.title,
             shareableWithPartners: artworkListEntity.shareableWithPartners,

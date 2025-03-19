@@ -1,9 +1,19 @@
-import { ChevronIcon, Collapse, Touchable, Flex, Spacer, Switch, Text } from "@artsy/palette-mobile"
+import {
+  ChevronIcon,
+  Collapse,
+  Touchable,
+  Flex,
+  Spacer,
+  Switch,
+  Text,
+  Button,
+} from "@artsy/palette-mobile"
 import { CreateNewArtworkListInput } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/components/CreateNewArtworkListInput"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Formik, FormikHelpers } from "formik"
 import { MotiView } from "moti"
 import { FC, useState } from "react"
+import { Keyboard, Platform } from "react-native"
 import * as Yup from "yup"
 
 export interface CreateOrEditArtworkListFormValues {
@@ -22,6 +32,7 @@ const validationSchema = Yup.object().shape({
 })
 
 interface CreateOrEditArtworkListFormProps {
+  mode?: "create" | "edit"
   initialValues?: Partial<CreateOrEditArtworkListFormValues>
   onSubmit: (
     values: CreateOrEditArtworkListFormValues,
@@ -30,11 +41,13 @@ interface CreateOrEditArtworkListFormProps {
 }
 
 export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> = ({
+  mode,
   initialValues: _initialValues,
   onSubmit,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const AREnableArtworkListOfferability = useFeatureFlag("AREnableArtworkListOfferability")
+  const isAdnroid = Platform.OS === "android"
 
   const handleSubmit = (
     values: CreateOrEditArtworkListFormValues,
@@ -68,13 +81,17 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
               value={formik.values.name}
               error={formik.errors.name}
               maxLength={MAX_NAME_LENGTH}
-              onBlur={formik.handleBlur("name")}
+              onBlur={() => {
+                formik.handleBlur("name")
+              }}
               onChangeText={formik.handleChange("name")}
               onSubmitEditing={() => {
+                formik.validateForm()
                 if (formik.values.name) {
                   formik.handleSubmit()
                 }
               }}
+              returnKeyType="done"
               autoFocus
               required
             />
@@ -112,6 +129,23 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
                     are always private.
                   </Text>
                 </Collapse>
+              </>
+            )}
+
+            {!!isAdnroid && (
+              <>
+                <Spacer y={4} />
+                <Button
+                  block
+                  disabled={!formik.isValid || !formik.dirty}
+                  loading={formik.isSubmitting}
+                  onPress={() => {
+                    Keyboard.dismiss()
+                    formik.handleSubmit()
+                  }}
+                >
+                  {mode === "create" ? "Save" : "Save Changes"}
+                </Button>
               </>
             )}
           </>

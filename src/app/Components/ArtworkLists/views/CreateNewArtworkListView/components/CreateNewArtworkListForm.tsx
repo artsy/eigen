@@ -103,5 +103,5 @@ export const CreateNewArtworkListForm: React.FC = () => {
     })
   }
 
-  return <CreateOrEditArtworkListForm onSubmit={handleSubmit} />
+  return <CreateOrEditArtworkListForm mode="create" onSubmit={handleSubmit} />
 }
