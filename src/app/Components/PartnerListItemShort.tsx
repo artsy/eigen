@@ -1,9 +1,9 @@
-import { EntityHeader, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { EntityHeader, Flex, Text } from "@artsy/palette-mobile"
 import { PartnerListItemShortQuery } from "__generated__/PartnerListItemShortQuery.graphql"
 import { PartnerListItemShort_partner$key } from "__generated__/PartnerListItemShort_partner.graphql"
 import { PartnerFollowButtonQueryRenderer } from "app/Components/PartnerFollowButton"
 import { sortByDistance } from "app/Scenes/GalleriesForYou/helpers"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -35,15 +35,10 @@ export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({
     ? sortByDistance(locations as { coordinates?: Location }[], location)
     : locations
 
-  const handleOnPress = () => {
-    onPress?.()
-    navigate(data.href)
-  }
-
   return (
     <>
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-        <Touchable onPress={handleOnPress} style={{ flex: 1 }}>
+        <RouterLink to={data.href} onPress={onPress} style={{ flex: 1 }}>
           <EntityHeader
             name={data.name}
             initials={data.initials}
@@ -64,7 +59,7 @@ export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({
             }
             RightButton={<PartnerFollowButtonQueryRenderer partnerID={data.internalID} />}
           />
-        </Touchable>
+        </RouterLink>
       </Flex>
     </>
   )

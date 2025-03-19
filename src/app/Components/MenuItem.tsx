@@ -6,9 +6,9 @@ import {
   SpacingUnitsTheme,
   Text,
   TextProps,
-  Touchable,
   useColor,
 } from "@artsy/palette-mobile"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { StyleProp, ViewStyle } from "react-native"
 import { ResponsiveValue } from "styled-system"
 
@@ -18,6 +18,7 @@ export const MenuItem: React.FC<{
   description?: string
   disabled?: boolean
   ellipsizeMode?: TextProps["ellipsizeMode"]
+  href?: string | null
   icon?: React.ReactNode
   isBeta?: boolean
   onPress?: () => void
@@ -40,6 +41,7 @@ export const MenuItem: React.FC<{
   ),
   description,
   ellipsizeMode,
+  href,
   icon,
   isBeta,
   noFeedback = false,
@@ -55,7 +57,13 @@ export const MenuItem: React.FC<{
   const color = useColor()
 
   return (
-    <Touchable noFeedback={noFeedback} onPress={onPress} underlayColor="black5" disabled={disabled}>
+    <RouterLink
+      noFeedback={noFeedback}
+      onPress={onPress}
+      to={href}
+      underlayColor="black5"
+      disabled={disabled}
+    >
       <Flex
         flexDirection="row"
         alignItems="center"
@@ -120,13 +128,13 @@ export const MenuItem: React.FC<{
 
           {rightView}
 
-          {!!(onPress && chevron) && (
+          {!!((onPress || href) && chevron) && (
             <Flex ml={1} justifyContent="center">
               {chevron}
             </Flex>
           )}
         </Flex>
       </Flex>
-    </Touchable>
+    </RouterLink>
   )
 }

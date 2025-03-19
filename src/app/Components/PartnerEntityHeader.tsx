@@ -1,10 +1,9 @@
 import { Box, BoxProps, EntityHeader } from "@artsy/palette-mobile"
 import { PartnerEntityHeader_partner$data } from "__generated__/PartnerEntityHeader_partner.graphql"
 import { PartnerFollowButtonFragmentContainer as PartnerFollowButton } from "app/Scenes/Partner/Components/PartnerFollowButton"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { limitWithCount } from "app/utils/limitWithCount"
 import { compact } from "lodash"
-import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export interface PartnerEntityHeaderProps extends BoxProps {
@@ -21,13 +20,7 @@ export const PartnerEntityHeader: React.FC<PartnerEntityHeaderProps> = ({ partne
 
   return (
     <Box {...rest}>
-      <TouchableWithoutFeedback
-        onPress={() => {
-          if (partner.href) {
-            navigate(partner.href)
-          }
-        }}
-      >
+      <RouterLink noFeedback to={partner.href}>
         <EntityHeader
           name={partner.name}
           meta={cities ?? undefined}
@@ -35,7 +28,7 @@ export const PartnerEntityHeader: React.FC<PartnerEntityHeaderProps> = ({ partne
           initials={partner.initials ?? undefined}
           FollowButton={<PartnerFollowButton partner={partner} />}
         />
-      </TouchableWithoutFeedback>
+      </RouterLink>
     </Box>
   )
 }

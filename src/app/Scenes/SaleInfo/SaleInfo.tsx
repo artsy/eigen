@@ -7,7 +7,6 @@ import { Markdown } from "app/Components/Markdown"
 import { MenuItem } from "app/Components/MenuItem"
 import { RegisterToBidButtonContainer } from "app/Scenes/Sale/Components/RegisterToBidButton"
 import { saleStatus } from "app/Scenes/Sale/helpers"
-import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderText, PlaceholderBox } from "app/utils/placeholders"
 import { defaultRules } from "app/utils/renderMarkdown"
@@ -32,9 +31,7 @@ const AuctionSupport = () => {
       </Text>
       <MenuItem
         title="Auction FAQs"
-        onPress={() => {
-          navigate("/auction-faq")
-        }}
+        href="/auction-faq"
       />
       <MenuItem
         title="Contact us for help"

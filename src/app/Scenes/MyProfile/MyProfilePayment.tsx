@@ -4,7 +4,6 @@ import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graph
 import { MyProfilePayment_me$data } from "__generated__/MyProfilePayment_me.graphql"
 import { CreditCardDetailsContainer } from "app/Components/CreditCardDetails"
 import { MenuItem } from "app/Components/MenuItem"
-import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderText } from "app/utils/placeholders"
@@ -159,7 +158,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
       ItemSeparatorComponent={() => <Spacer y={1} />}
       ListFooterComponent={
         <Flex pt={creditCards.length === 0 ? undefined : 2}>
-          <MenuItem title="Add New Card" onPress={() => navigate("/my-profile/payment/new-card")} />
+          <MenuItem title="Add New Card" href="/my-profile/payment/new-card" />
           {!!isLoadingMore && <ActivityIndicator style={{ marginTop: 30 }} />}
         </Flex>
       }
