@@ -16,6 +16,7 @@ import {
   ArtworkFiltersModel,
   ArtworksFiltersStore,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
@@ -66,6 +67,8 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const clearFiltersZeroStateAction = ArtworksFiltersStore.useStoreActions(
     (action) => action.clearFiltersZeroStateAction
   )
+
+  const { dismiss } = GlobalStore.actions.progressiveOnboarding
 
   const selectedFiltersCounts = useMemo(() => {
     const unitedFilters = getUnitedSelectedAndAppliedFilters({
@@ -128,6 +131,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
   }
 
   const handleTappingCloseIcon = () => {
+    dismiss("alert-finish")
     closeModal()
   }
 
