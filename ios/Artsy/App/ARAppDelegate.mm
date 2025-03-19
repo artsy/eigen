@@ -129,8 +129,10 @@ static ARAppDelegate *_sharedInstance = nil;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [self setupForAppLaunch:launchOptions];
-
     [self setupAnalytics:application withLaunchOptions:launchOptions];
+    
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    center.delegate = [self remoteNotificationsDelegate];
 
     [[FBSDKApplicationDelegate sharedInstance] application:application
         didFinishLaunchingWithOptions:launchOptions];
