@@ -242,19 +242,19 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
   return (
     <Screen>
       <SavedSearchAlertQueryRenderer
-        alertId={savedSearchAlertId}
+        savedSearchAlertId={savedSearchAlertId}
         render={renderWithPlaceholder({
           render: (relayProps: SavedSearchAlertQuery["response"]) => (
             <QueryRenderer<EditSavedSearchAlertQuery>
               environment={getRelayEnvironment()}
               query={EditSavedSearchAlertDetailsScreenQuery}
               variables={{ artistIDs: relayProps.me?.alert?.artistIDs as string[] }}
+              fetchPolicy="store-and-network"
               render={renderWithPlaceholder({
                 Container: EditSavedSearchAlertRefetchContainer,
                 renderPlaceholder: () => <EditSavedSearchFormPlaceholder />,
                 initialProps: { savedSearchAlertId, ...relayProps },
               })}
-              cacheConfig={{ force: true }}
             />
           ),
           renderPlaceholder: () => <EditSavedSearchFormPlaceholder />,

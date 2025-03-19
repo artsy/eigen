@@ -1,5 +1,5 @@
-import { Flex, Spacer, Text, Touchable } from "@artsy/palette-mobile"
-import { navigate } from "app/system/navigation/navigate"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { ScrollView } from "react-native-gesture-handler"
 import { NotificationType } from "./types"
 
@@ -9,19 +9,19 @@ interface ActivityEmptyViewProps {
 }
 
 const artistLink = (
-  <Touchable onPress={() => navigate("/artists")}>
+  <RouterLink to="/artists">
     <Text variant="xs" underline>
       Artists
     </Text>
-  </Touchable>
+  </RouterLink>
 )
 
 const galleriesLink = (
-  <Touchable onPress={() => navigate("/galleries")}>
+  <RouterLink to="/galleries">
     <Text variant="xs" underline>
       Galleries
     </Text>
-  </Touchable>
+  </RouterLink>
 )
 
 const entityByType: Record<
