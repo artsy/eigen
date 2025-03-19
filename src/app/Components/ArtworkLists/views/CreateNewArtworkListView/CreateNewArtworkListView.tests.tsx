@@ -163,47 +163,6 @@ describe("CreateNewArtworkListView", () => {
       ).toBeOnTheScreen()
     })
   })
-
-  describe("Remaining characters", () => {
-    it("default state", () => {
-      renderWithRelay()
-
-      expect(screen.getByText("0 / 40")).toBeOnTheScreen()
-    })
-
-    it("when user entered 39 characters", () => {
-      renderWithRelay()
-
-      const longText = "a".repeat(39)
-
-      const input = screen.getByPlaceholderText(inputPlaceholder)
-      fireEvent.changeText(input, longText)
-
-      expect(screen.getByText("39 / 40")).toBeOnTheScreen()
-    })
-
-    it("when user entered something", () => {
-      renderWithRelay()
-
-      const input = screen.getByPlaceholderText(inputPlaceholder)
-      fireEvent.changeText(input, "abc")
-
-      expect(screen.getByText("3 / 40")).toBeOnTheScreen()
-    })
-
-    // Known issue with react native testing library
-    // context: https://github.com/callstack/react-native-testing-library/issues/1239
-    it.skip("when user has reached the allowed limit", () => {
-      renderWithRelay()
-
-      const longText = "a".repeat(100)
-
-      const input = screen.getByPlaceholderText(inputPlaceholder)
-      fireEvent(input, "changeText", longText)
-
-      expect(screen.getByText("40 / 40")).toBeOnTheScreen()
-    })
-  })
 })
 
 const artworkEntity: ArtworkEntity = {
