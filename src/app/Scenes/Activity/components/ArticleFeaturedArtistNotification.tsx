@@ -4,10 +4,11 @@ import { ArticleFeaturedArtistNotificationFollowArtistMutation } from "__generat
 import { ArticleFeaturedArtistNotification_notification$key } from "__generated__/ArticleFeaturedArtistNotification_notification.graphql"
 import { ArticleCard } from "app/Components/ArticleCard"
 import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
-import { goBack, navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
+import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { ScrollView, TouchableOpacity } from "react-native"
-import { useFragment, graphql, useMutation } from "react-relay"
+import { ScrollView } from "react-native"
+import { graphql, useFragment, useMutation } from "react-relay"
 
 interface ArticleFeaturedArtistNotificationProps {
   notification: ArticleFeaturedArtistNotification_notification$key
@@ -58,19 +59,12 @@ export const ArticleFeaturedArtistNotification: React.FC<
                 {artists.map((artist, i: number) => {
                   console.warn(artist)
                   return (
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (artist.href) {
-                          navigate(artist.href)
-                        }
-                      }}
-                      key={artist.internalID}
-                    >
+                    <RouterLink to={artist.href} key={artist.internalID}>
                       <Text variant="xs" my={0.5}>
                         {artist.name}
                         {i < artists.length - 1 && ", "}
                       </Text>
-                    </TouchableOpacity>
+                    </RouterLink>
                   )
                 })}
               </Flex>
@@ -93,18 +87,12 @@ export const ArticleFeaturedArtistNotification: React.FC<
           )}
 
           <ArticleCard article={article as ArticleCard_article$data} isFluid />
-          <Button
-            mt={2}
-            block
-            onPress={() => {
-              if (article.href) {
-                navigate(article.href)
-              }
-            }}
-            accessibilityLabel="Read Article"
-          >
-            Read Article
-          </Button>
+
+          <RouterLink hasChildTouchable to={article.href}>
+            <Button mt={2} block accessibilityLabel="Read Article">
+              Read Article
+            </Button>
+          </RouterLink>
         </Flex>
       </ScrollView>
     </Screen>

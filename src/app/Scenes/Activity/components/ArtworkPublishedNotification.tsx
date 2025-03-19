@@ -1,17 +1,10 @@
-import {
-  ArrowRightIcon,
-  Flex,
-  FollowButton,
-  Screen,
-  Spacer,
-  Text,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { ArrowRightIcon, Flex, FollowButton, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkPublishedNotificationFollowArtistMutation } from "__generated__/ArtworkPublishedNotificationFollowArtistMutation.graphql"
 import { ArtworkPublishedNotification_notification$key } from "__generated__/ArtworkPublishedNotification_notification.graphql"
 import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
 import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
-import { goBack, navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
+import { goBack } from "app/system/navigation/navigate"
 import { FC } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
@@ -52,12 +45,6 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
     })
   }
 
-  const handleViewAllWorksPress = () => {
-    // TODO: Add tracking
-
-    navigate(`/artist/${artist?.slug}/works-for-sale`)
-  }
-
   if (!artist) {
     return (
       <Text variant="lg" m={4}>
@@ -84,14 +71,14 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
         <Spacer y={2} />
 
         <Flex mx={2}>
-          <Touchable onPress={handleViewAllWorksPress}>
+          <RouterLink to={`/artist/${artist?.slug}/works-for-sale`}>
             <Flex flexDirection="row">
               <Text fontWeight="bold">View all works by {artist.name}</Text>
               <Flex alignSelf="center">
                 <ArrowRightIcon fill="black30" ml={0.5} pl={0.3} />
               </Flex>
             </Flex>
-          </Touchable>
+          </RouterLink>
         </Flex>
 
         <Spacer y={4} />
