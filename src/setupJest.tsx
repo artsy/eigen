@@ -352,7 +352,7 @@ jest.mock("@braze/react-native-sdk", () => ({
 }))
 
 jest.mock("app/utils/hooks/useDebouncedValue", () => ({
-  useDebouncedValue: ({ value, delay }: any) => ({ debouncedValue: value }),
+  useDebouncedValue: ({ value }: any) => ({ debouncedValue: value }),
 }))
 
 jest.mock("react-native-push-notification", () => ({
