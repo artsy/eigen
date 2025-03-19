@@ -72,6 +72,7 @@ export const FavoritesScreen: React.FC = () => {
 
       <Screen.StickySubHeader
         title="Favorites"
+        largeTitle
         separatorComponent={<Separator borderColor="black5" />}
       >
         <FavoritesHeader />
