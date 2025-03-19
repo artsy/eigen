@@ -1,5 +1,5 @@
 This update includes a number of improvements and bug fixes.
 
-- Improved image loaders across the app
+- Introducing Discover Daily, an effortless new way to find art you love through swiping and saving artworks.
 
 Have feedback? Email us at support@artsy.net
