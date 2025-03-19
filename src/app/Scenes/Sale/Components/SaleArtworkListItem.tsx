@@ -5,10 +5,10 @@ import {
   tappedEntityGroup,
   TappedEntityGroupArgs,
 } from "@artsy/cohesion"
-import { Flex, Image, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Image, Text } from "@artsy/palette-mobile"
 import { SaleArtworkListItem_artwork$data } from "__generated__/SaleArtworkListItem_artwork.graphql"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getImageSquareDimensions } from "app/utils/resizeImage"
 import React, { useRef } from "react"
@@ -31,7 +31,6 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
   const onPress = () => {
     if (artwork.href) {
       trackArtworkTap()
-      navigate(artwork.href)
     }
   }
 
@@ -66,7 +65,7 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
       contextScreenOwnerId={artwork.internalID}
       contextScreenOwnerSlug={artwork.slug}
     >
-      <Touchable onPress={onPress}>
+      <RouterLink onPress={onPress} to={artwork.href}>
         <Flex flexDirection="row" alignItems="center" height={CONTAINER_HEIGHT} ref={itemRef}>
           {!!artwork.image?.small && (
             <Flex
@@ -108,7 +107,7 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
             )}
           </Flex>
         </Flex>
-      </Touchable>
+      </RouterLink>
     </AnalyticsContextProvider>
   )
 }
