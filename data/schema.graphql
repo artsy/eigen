@@ -7914,6 +7914,41 @@ enum ConsignmentSubmissionStateAggregation {
   SUBMITTED
 }
 
+type Contact {
+  canContact: Boolean
+  email: String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  location: Location
+  name: String
+  phone: String
+  position: String
+}
+
+# A connection to a list of items.
+type ContactConnection {
+  # A list of edges.
+  edges: [ContactEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ContactEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Contact
+}
+
 type ConvectionService {
   geminiTemplateKey: String!
 }
@@ -15335,6 +15370,9 @@ type Partner implements Node {
   cities(size: Int = 25): [String]
   claimed: Boolean
   collectingInstitution: String
+
+  # A connection of contacts from a Partner.
+  contactsConnection(after: String, before: String, first: Int, last: Int): ContactConnection
   counts: PartnerCounts
   defaultProfileID: String
   displayArtistsSection: Boolean
