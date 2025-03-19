@@ -1,4 +1,4 @@
-import { Flex, FollowArtistIcon, HeartIcon, Pill, Screen, Separator } from "@artsy/palette-mobile"
+import { Flex, FollowArtistIcon, HeartIcon, Pill, Screen } from "@artsy/palette-mobile"
 import { AlertsTab } from "app/Scenes/Favorites/AlertsTab"
 import { FavoritesContextStore, FavoritesTab } from "app/Scenes/Favorites/FavoritesContextStore"
 import { FollowsTab } from "app/Scenes/Favorites/FollowsTab"
@@ -70,10 +70,7 @@ export const FavoritesScreen: React.FC = () => {
     <Screen>
       <Screen.AnimatedHeader title="Favorites" hideLeftElements />
 
-      <Screen.StickySubHeader
-        title="Favorites"
-        separatorComponent={<Separator borderColor="black5" />}
-      >
+      <Screen.StickySubHeader title="Favorites" separatorComponent={null}>
         <FavoritesHeader />
       </Screen.StickySubHeader>
 
