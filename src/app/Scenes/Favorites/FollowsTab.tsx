@@ -2,6 +2,7 @@ import { ArrowDownIcon, Flex, Join, RadioButton, Spacer, Text } from "@artsy/pal
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { FollowedArtistsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedArtists"
+import { FollowedShowsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedShows"
 import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
 import { useState } from "react"
 import { TouchableOpacity } from "react-native"
@@ -56,6 +57,7 @@ export const FollowsTab = () => {
       </Flex>
 
       {followOption === "artists" && <FollowedArtistsQueryRenderer />}
+      {followOption === "shows" && <FollowedShowsQueryRenderer />}
 
       <AutomountedBottomSheetModal
         visible={showBottomSheet}

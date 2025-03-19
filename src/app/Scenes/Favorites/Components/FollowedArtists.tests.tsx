@@ -16,7 +16,7 @@ describe("FollowedArtists", () => {
     `,
   })
 
-  it("renders empty state screen when artists are available", () => {
+  it("renders empty state screen when the user has no followed artists", () => {
     renderWithRelay({
       FollowArtistConnection: () => ({
         totalCount: 0,

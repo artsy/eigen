@@ -1,7 +1,7 @@
 import { Flex, Screen, SimpleMessage, Spacer, useSpace } from "@artsy/palette-mobile"
-import { FollowedArtistsQuery } from "__generated__/FollowedArtistsQuery.graphql"
-import { FollowedArtists_me$key } from "__generated__/FollowedArtists_me.graphql"
-import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
+import { FollowedShowsQuery } from "__generated__/FollowedShowsQuery.graphql"
+import { FollowedShows_me$key } from "__generated__/FollowedShows_me.graphql"
+import { ShowItemRowContainer } from "app/Components/Lists/ShowItemRow"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
 
@@ -13,27 +13,27 @@ import React from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface Props {
-  me: FollowedArtists_me$key
+  me: FollowedShows_me$key
 }
 
-export const FollowedArtists: React.FC<Props> = ({ me }) => {
+export const FollowedShows: React.FC<Props> = ({ me }) => {
   const space = useSpace()
 
   const { data, loadNext, isLoadingNext, refetch, hasNext } = usePaginationFragment(
-    followedArtistsFragment,
+    followedShowsFragment,
     me
   )
 
-  const artists = extractNodes(data.followsAndSaves?.artistsConnection)
+  const shows = extractNodes(data.followsAndSaves?.showsConnection)
 
   const RefreshControl = useRefreshControl(refetch)
 
-  if (data.followsAndSaves?.artistsConnection?.totalCount === 0) {
+  if (shows.length === 0) {
     return (
       <Screen.ScrollView refreshControl={RefreshControl}>
         <ZeroState
-          title="You haven’t followed any artists yet"
-          subtitle="When you’ve found an artist you like, follow them to get updates on new works that become available."
+          title="You haven’t saved any shows yet"
+          subtitle="When you save shows, they will show up here for future use."
         />
       </Screen.ScrollView>
     )
@@ -41,11 +41,11 @@ export const FollowedArtists: React.FC<Props> = ({ me }) => {
 
   return (
     <Screen.FlatList
-      data={artists}
+      data={shows}
       onEndReached={() => {
         loadNext(PAGE_SIZE)
       }}
-      keyExtractor={(item, index) => item.artist?.id || index.toString()}
+      keyExtractor={(item, index) => item.id || index.toString()}
       contentContainerStyle={{ paddingVertical: space(1) }}
       onEndReachedThreshold={0.2}
       refreshControl={RefreshControl}
@@ -61,33 +61,24 @@ export const FollowedArtists: React.FC<Props> = ({ me }) => {
         )
       }
       renderItem={({ item }) => {
-        return (
-          <ArtistListItem
-            artist={item.artist}
-            withFeedback
-            containerStyle={{ paddingHorizontal: space(2), paddingVertical: space(0.5) }}
-          />
-        )
+        return <ShowItemRowContainer show={item} isListItem />
       }}
     />
   )
 }
 
-const followedArtistsFragment = graphql`
-  fragment FollowedArtists_me on Me
-  @refetchable(queryName: "FollowedArtists_artistsConnectionRefetch")
+const followedShowsFragment = graphql`
+  fragment FollowedShows_me on Me
+  @refetchable(queryName: "FollowedShows_showsConnectionRefetch")
   @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
     labFeatures
     followsAndSaves {
-      artistsConnection(first: $count, after: $cursor)
-        @connection(key: "FollowedArtists_artistsConnection") {
-        totalCount
+      showsConnection(first: $count, after: $cursor)
+        @connection(key: "FollowedShows_showsConnection") {
         edges {
           node {
-            artist {
-              id
-              ...ArtistListItem_artist
-            }
+            id
+            ...ShowItemRow_show
           }
         }
       }
@@ -95,18 +86,18 @@ const followedArtistsFragment = graphql`
   }
 `
 
-const followedArtistsQuery = graphql`
-  query FollowedArtistsQuery($count: Int!, $cursor: String) {
+const followedShowsQuery = graphql`
+  query FollowedShowsQuery($count: Int!, $cursor: String) {
     me @required(action: NONE) {
-      ...FollowedArtists_me @arguments(count: $count, cursor: $cursor)
+      ...FollowedShows_me @arguments(count: $count, cursor: $cursor)
     }
   }
 `
 
-export const FollowedArtistsQueryRenderer = withSuspense({
+export const FollowedShowsQueryRenderer = withSuspense({
   Component: ({}) => {
-    const data = useLazyLoadQuery<FollowedArtistsQuery>(
-      followedArtistsQuery,
+    const data = useLazyLoadQuery<FollowedShowsQuery>(
+      followedShowsQuery,
       {
         count: PAGE_SIZE,
       },
@@ -119,7 +110,7 @@ export const FollowedArtistsQueryRenderer = withSuspense({
       return null
     }
 
-    return <FollowedArtists me={data?.me} />
+    return <FollowedShows me={data?.me} />
   },
   LoadingFallback: () => <Spinner />,
   ErrorFallback: () => <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>,
