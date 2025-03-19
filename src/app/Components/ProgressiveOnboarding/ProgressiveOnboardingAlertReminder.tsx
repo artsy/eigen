@@ -4,6 +4,7 @@ import { useDismissAlertReminder } from "app/Components/ProgressiveOnboarding/us
 import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 
 interface ProgressiveOnboardingAlertReminderProps {
   visible: boolean
@@ -35,9 +36,11 @@ export const ProgressiveOnboardingAlertReminder: React.FC<
     dismissNextCreateAlertReminder()
   }
 
+  const { debouncedValue: debounceIsVisible } = useDebouncedValue({ value: isVisible, delay: 200 })
+
   return (
     <Popover
-      visible={isVisible}
+      visible={debounceIsVisible}
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
       onCloseComplete={() => setActivePopover(undefined)}

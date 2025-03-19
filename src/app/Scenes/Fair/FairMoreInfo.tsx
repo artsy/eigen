@@ -1,15 +1,15 @@
 import { Box, LinkText, Screen, Spacer, Text, useSpace } from "@artsy/palette-mobile"
-import { FairMoreInfoQuery } from "__generated__/FairMoreInfoQuery.graphql"
 import { FairMoreInfo_fair$data } from "__generated__/FairMoreInfo_fair.graphql"
+import { FairMoreInfoQuery } from "__generated__/FairMoreInfoQuery.graphql"
 import { LocationMapContainer } from "app/Components/LocationMap/LocationMap"
 import { Markdown } from "app/Components/Markdown"
-import { goBack, navigate } from "app/system/navigation/navigate"
+import { goBack } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { defaultRules } from "app/utils/renderMarkdown"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { compact } from "lodash"
-import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 interface FairMoreInfoQueryRendererProps {
@@ -110,15 +110,9 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
       title: "Ticket Links",
       content: (
         <>
-          <TouchableOpacity
-            onPress={() => {
-              if (fair.ticketsLink) {
-                navigate(fair.ticketsLink)
-              }
-            }}
-          >
+          <RouterLink to={fair.ticketsLink}>
             <LinkText>Buy Tickets</LinkText>
-          </TouchableOpacity>
+          </RouterLink>
           <Spacer y={1} />
         </>
       ),
@@ -205,17 +199,19 @@ export const FairMoreInfoFragmentContainer = createFragmentContainer(FairMoreInf
   `,
 })
 
+export const FaireMoreInfoScreenQuery = graphql`
+  query FairMoreInfoQuery($fairID: String!) {
+    fair(id: $fairID) @principalField {
+      ...FairMoreInfo_fair
+    }
+  }
+`
+
 export const FairMoreInfoQueryRenderer: React.FC<FairMoreInfoQueryRendererProps> = ({ fairID }) => {
   return (
     <QueryRenderer<FairMoreInfoQuery>
       environment={getRelayEnvironment()}
-      query={graphql`
-        query FairMoreInfoQuery($fairID: String!) {
-          fair(id: $fairID) @principalField {
-            ...FairMoreInfo_fair
-          }
-        }
-      `}
+      query={FaireMoreInfoScreenQuery}
       variables={{ fairID }}
       render={renderWithLoadProgress(FairMoreInfoFragmentContainer)}
     />

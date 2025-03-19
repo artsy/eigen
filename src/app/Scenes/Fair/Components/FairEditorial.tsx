@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedArticleGroup } from "@artsy/cohesion"
-import { Box, BoxProps, useColor, Text, Touchable, Image } from "@artsy/palette-mobile"
+import { Box, BoxProps, Image, Text } from "@artsy/palette-mobile"
 import { FairEditorial_fair$data } from "__generated__/FairEditorial_fair.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -10,7 +10,6 @@ interface FairEditorialProps extends BoxProps {
 }
 
 export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) => {
-  const color = useColor()
   const tracking = useTracking()
 
   const trackTappedArticle = (articleID: string, articleSlug: string) => {
@@ -44,15 +43,11 @@ export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) =
         <Text variant="sm-display">Related Reading</Text>
 
         {(fair.articles.totalCount ?? 0) > 5 && (
-          <Touchable
-            onPress={() => {
-              navigate(`/fair/${fair.slug}/articles`)
-            }}
-          >
+          <RouterLink to={`/fair/${fair.slug}/articles`}>
             <Text variant="sm" color="black60">
               View all
             </Text>
-          </Touchable>
+          </RouterLink>
         )}
       </Box>
 
@@ -64,15 +59,14 @@ export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) =
         const article = edge.node
 
         return (
-          <Touchable
+          <RouterLink
             key={article.id}
-            underlayColor={color("black5")}
+            to={article.href}
             onPress={() => {
               if (!article.href) {
                 return
               }
               trackTappedArticle(article.internalID, article.slug ?? "")
-              navigate(article.href)
             }}
           >
             <Box flexDirection="row" py={1} px={2}>
@@ -88,7 +82,7 @@ export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) =
                 <Image width={90} height={50} src={article.thumbnailImage.src} />
               )}
             </Box>
-          </Touchable>
+          </RouterLink>
         )
       })}
     </Box>

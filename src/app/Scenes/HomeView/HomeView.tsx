@@ -19,10 +19,10 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracki
 import { Playground } from "app/Scenes/Playground/Playground"
 import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -59,12 +59,17 @@ export const HomeView: React.FC = memo(() => {
     }
   )
 
+  const { trackExperiment: trackInternalTestingExperiment } = useExperimentVariant(
+    "onyx_internal_testing_experiment"
+  )
   const { trackExperiment: trackQuickLinksExperiment } = useExperimentVariant(
     "onyx_quick-links-experiment"
   )
   const enableNavigationPills = useFeatureFlag("AREnableHomeViewQuickLinks")
 
   useEffect(() => {
+    trackInternalTestingExperiment()
+
     if (enableNavigationPills) {
       trackQuickLinksExperiment()
     }

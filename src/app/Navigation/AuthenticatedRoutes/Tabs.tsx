@@ -2,6 +2,7 @@ import { ActionType, OwnerType, Screen, tappedTabBar } from "@artsy/cohesion"
 import { Flex, Text, useColor } from "@artsy/palette-mobile"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { FavoritesTab } from "app/Navigation/AuthenticatedRoutes/FavoritesTab"
 import { HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
 import { InboxTab } from "app/Navigation/AuthenticatedRoutes/InboxTab"
 import { ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
@@ -16,6 +17,7 @@ import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { OnboardingQuiz } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
 import { useCallback } from "react"
@@ -31,12 +33,14 @@ export type AuthenticatedRoutesParams = {
   Search: undefined
   Profile: undefined
   Inbox: undefined
+  Favorites: undefined
 } & { [key in AppModule]: undefined }
 
 type TabRoutesParams = {
   home: undefined
   search: undefined
   inbox: undefined
+  favorites: undefined
   profile: undefined
 }
 
@@ -77,6 +81,8 @@ const AppTabs: React.FC = () => {
     borderTopColor: color("devpurple"),
     borderTopWidth: 1,
   }
+
+  const showFavoritesTab = useFeatureFlag("AREnableFavoritesTab")
 
   return (
     <Tab.Navigator
@@ -140,6 +146,13 @@ const AppTabs: React.FC = () => {
       <Tab.Screen name="home" component={HomeTab} options={{ ...tabsBadges["home"] }} />
       <Tab.Screen name="search" component={SearchTab} />
       <Tab.Screen name="inbox" component={InboxTab} options={{ ...tabsBadges["inbox"] }} />
+      {!!showFavoritesTab && (
+        <Tab.Screen
+          name="favorites"
+          component={FavoritesTab}
+          options={{ ...tabsBadges["favorites"] }}
+        />
+      )}
       <Tab.Screen name="profile" component={ProfileTab} options={{ ...tabsBadges["profile"] }} />
     </Tab.Navigator>
   )
@@ -183,6 +196,9 @@ export const tabsTracks = {
         break
       case "search":
         tabScreen = OwnerType.search
+        break
+      case "favorites":
+        tabScreen = OwnerType.favorites
         break
     }
 

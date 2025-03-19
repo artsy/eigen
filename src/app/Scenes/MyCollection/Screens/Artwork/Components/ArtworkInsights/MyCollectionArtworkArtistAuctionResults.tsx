@@ -45,7 +45,6 @@ export const MyCollectionArtworkArtistAuctionResults: React.FC<
             onPress={() => {
               if (!!artist?.slug) {
                 trackEvent(tracks.tappedAuctionResultGroup(artwork?.internalID, artwork?.slug))
-                navigate(`/artist/${artist.slug}/auction-result/${item.internalID}`)
               }
             }}
           />

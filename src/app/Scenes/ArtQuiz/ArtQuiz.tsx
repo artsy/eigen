@@ -16,7 +16,7 @@ export type ArtQuizNavigationStack = {
 export const StackNavigator = createStackNavigator<ArtQuizNavigationStack>()
 
 const ArtQuizScreen: React.FC = () => {
-  const queryResult = useLazyLoadQuery<ArtQuizNavigationQuery>(artQuizNavigationQuery, {}).me?.quiz
+  const queryResult = useLazyLoadQuery<ArtQuizNavigationQuery>(ArtQuizScreenQuery, {}).me?.quiz
   const isQuizCompleted = !!queryResult?.completedAt
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export const ArtQuiz = () => {
   )
 }
 
-const artQuizNavigationQuery = graphql`
+export const ArtQuizScreenQuery = graphql`
   query ArtQuizNavigationQuery {
     me {
       quiz {

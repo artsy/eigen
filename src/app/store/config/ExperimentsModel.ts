@@ -1,5 +1,5 @@
 import { assignDeep } from "app/store/persistence"
-import { EXPERIMENT_NAME } from "app/utils/experiments/experiments"
+import { EXPERIMENT_NAME } from "app/system/flags/experiments"
 import { action, Action } from "easy-peasy"
 
 export interface ExperimentsModel {

@@ -70,7 +70,7 @@ const BrowseSimilarWorks: React.FC<{ artwork: BrowseSimilarWorks_artwork$key }> 
 
 export const BrowseSimilarWorksQueryRenderer: React.FC<{ artworkID: string }> = withSuspense({
   Component: (props) => {
-    const data = useLazyLoadQuery<BrowseSimilarWorksQuery>(SimilarWorksQuery, {
+    const data = useLazyLoadQuery<BrowseSimilarWorksQuery>(BrowseSimilarWorksScreenQuery, {
       artworkID: props.artworkID,
     })
 
@@ -108,7 +108,7 @@ const similarWorksFragment = graphql`
   }
 `
 
-const SimilarWorksQuery = graphql`
+export const BrowseSimilarWorksScreenQuery = graphql`
   query BrowseSimilarWorksQuery($artworkID: String!) {
     artwork(id: $artworkID) {
       ...BrowseSimilarWorks_artwork

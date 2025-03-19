@@ -7,7 +7,6 @@ import {
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { MediumCard } from "app/Components/Cards"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/system/navigation/navigate"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
@@ -43,9 +42,9 @@ export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> =
         <Flex mx={2}>
           <SectionTitle
             title={title}
+            href={`/viewing-rooms`}
             onPress={() => {
               trackEvent(tracks.tappedViewingRoomsHeader())
-              navigate("/viewing-rooms")
             }}
           />
         </Flex>

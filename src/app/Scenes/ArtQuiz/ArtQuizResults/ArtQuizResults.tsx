@@ -11,7 +11,7 @@ const ResultsScreen = () => {
   // prevents Android users from going back with hardware button
   useBackHandler(() => true)
 
-  const queryResult = useLazyLoadQuery<ArtQuizResultsQuery>(artQuizResultsQuery, {})
+  const queryResult = useLazyLoadQuery<ArtQuizResultsQuery>(ArtQuizResultsScreenQuery, {})
   const hasSavedArtworks = queryResult.me?.quiz.savedArtworks.length
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export const ArtQuizResults = ({ isCalculatingResult }: { isCalculatingResult?: 
   )
 }
 
-const artQuizResultsQuery = graphql`
+export const ArtQuizResultsScreenQuery = graphql`
   query ArtQuizResultsQuery {
     me {
       quiz {

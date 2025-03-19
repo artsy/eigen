@@ -4,6 +4,7 @@ import { useIsFocused } from "@react-navigation/native"
 import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 export const ProgressiveOnboardingSignalInterest: React.FC = ({ children }) => {
@@ -14,6 +15,8 @@ export const ProgressiveOnboardingSignalInterest: React.FC = ({ children }) => {
   const { dismiss, setIsReady } = GlobalStore.actions.progressiveOnboarding
   const isFocused = useIsFocused()
   const isPartnerOfferEnabled = useFeatureFlag("AREnablePartnerOffer")
+  const progressiveOnboardingAlerts = useFeatureFlag("AREnableProgressiveOnboardingAlerts")
+
   const { trackEvent } = useProgressiveOnboardingTracking({
     name: "signal-interest",
     contextScreenOwnerType: OwnerType.saves,
@@ -21,7 +24,11 @@ export const ProgressiveOnboardingSignalInterest: React.FC = ({ children }) => {
   })
 
   const isDisplayable =
-    isPartnerOfferEnabled && isReady && !isDismissed("signal-interest").status && isFocused
+    isPartnerOfferEnabled &&
+    progressiveOnboardingAlerts &&
+    isReady &&
+    !isDismissed("signal-interest").status &&
+    isFocused
 
   const { isActive, clearActivePopover } = useSetActivePopover(isDisplayable)
 
@@ -32,9 +39,11 @@ export const ProgressiveOnboardingSignalInterest: React.FC = ({ children }) => {
 
   const isVisible = !!isDisplayable && isActive
 
+  const { debouncedValue: debounceIsVisible } = useDebouncedValue({ value: isVisible, delay: 200 })
+
   return (
     <Popover
-      visible={isVisible}
+      visible={debounceIsVisible}
       onDismiss={handleDismiss}
       onPressOutside={handleDismiss}
       onCloseComplete={clearActivePopover}

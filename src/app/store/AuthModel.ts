@@ -16,7 +16,6 @@ import {
   handleSignUpError,
   showError,
 } from "app/utils/auth/authHelpers"
-import { updateExperimentsContext } from "app/utils/experiments/helpers"
 import { isArtsyEmail } from "app/utils/general"
 import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
 import { postEventToProviders } from "app/utils/track/providers"
@@ -969,7 +968,6 @@ export const getAuthModel = (): AuthModel => ({
       // upload events for Android devices. If they update the package, we can remove it.
       SiftReactNative.upload()
       SegmentTrackingProvider.identify?.(userId, { is_temporary_user: 0 })
-      updateExperimentsContext({ userId })
     }
 
     state.sessionState.isUserIdentified = true
@@ -992,7 +990,6 @@ export const getAuthModel = (): AuthModel => ({
     GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushPermissionsRequestedThisSession(false)
     SiftReactNative.unsetUserId()
     SegmentTrackingProvider.identify?.(undefined, { is_temporary_user: 1 })
-    updateExperimentsContext({ userId: undefined })
 
     await Promise.all([
       Platform.OS === "ios"

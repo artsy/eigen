@@ -1,6 +1,7 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   Flex,
+  SimpleMessage,
   Skeleton,
   SkeletonBox,
   SkeletonText,
@@ -8,27 +9,27 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { BottomSheetFooter, BottomSheetFooterProps } from "@gorhom/bottom-sheet"
+import { InfiniteDiscoveryBottomSheetFooterQuery } from "__generated__/InfiniteDiscoveryBottomSheetFooterQuery.graphql"
 import {
   InfiniteDiscoveryBottomSheetFooter_artwork$data,
   InfiniteDiscoveryBottomSheetFooter_artwork$key,
 } from "__generated__/InfiniteDiscoveryBottomSheetFooter_artwork.graphql"
 import { InfiniteDiscoveryBottomSheetFooter_me$key } from "__generated__/InfiniteDiscoveryBottomSheetFooter_me.graphql"
-import { InfiniteDiscoveryBottomSheetTabsQuery } from "__generated__/InfiniteDiscoveryBottomSheetTabsQuery.graphql"
 import { Divider } from "app/Components/Bidding/Components/Divider"
 import { currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { artworkModel, ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
 import { ArtworkCommercialButtons } from "app/Scenes/Artwork/Components/ArtworkCommercialButtons"
 import { ArtworkPrice } from "app/Scenes/Artwork/Components/ArtworkPrice"
-import { aboutTheWorkQuery } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { useBottomSheetAnimatedStyles } from "app/Scenes/InfiniteDiscovery/hooks/useBottomSheetAnimatedStyles"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import {
   AuctionWebsocketChannelInfo,
   AuctionWebsocketContextProvider,
 } from "app/utils/Websockets/auctions/AuctionSocketContext"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { FC } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { graphql, PreloadedQuery, useFragment, usePreloadedQuery } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface InfiniteDiscoveryBottomSheetFooterProps extends BottomSheetFooterProps {
   artwork: InfiniteDiscoveryBottomSheetFooter_artwork$key
@@ -145,21 +146,62 @@ const meFragment = graphql`
 `
 
 interface InfiniteDiscoveryBottomSheetFooterQueryRendererProps extends BottomSheetFooterProps {
-  queryRef: PreloadedQuery<InfiniteDiscoveryBottomSheetTabsQuery>
+  artworkID: string
 }
 
-export const InfiniteDiscoveryBottomSheetFooterQueryRenderer: FC<
-  InfiniteDiscoveryBottomSheetFooterQueryRendererProps
-> = ({ queryRef, ...rest }) => {
-  const data = usePreloadedQuery(aboutTheWorkQuery, queryRef)
-
-  if (!data.artwork || !data.me) {
-    return <InfiniteDiscoveryBottomSheetFooterSkeleton {...rest} />
+const infiniteDiscoveryBottomSheetFooterQuery = graphql`
+  query InfiniteDiscoveryBottomSheetFooterQuery($id: String!) {
+    me {
+      ...InfiniteDiscoveryBottomSheetFooter_me
+    }
+    artwork(id: $id) {
+      ...InfiniteDiscoveryBottomSheetFooter_artwork
+    }
   }
+`
 
-  return <InfiniteDiscoveryBottomSheetFooter artwork={data.artwork} me={data.me} {...rest} />
+export const InfiniteDiscoveryBottomSheetFooterQueryRenderer: FC<InfiniteDiscoveryBottomSheetFooterQueryRendererProps> =
+  withSuspense({
+    Component: ({ artworkID, ...rest }) => {
+      const data = useLazyLoadQuery<InfiniteDiscoveryBottomSheetFooterQuery>(
+        infiniteDiscoveryBottomSheetFooterQuery,
+        {
+          id: artworkID,
+        }
+      )
+
+      if (!data.artwork || !data.me) {
+        return null
+      }
+
+      return <InfiniteDiscoveryBottomSheetFooter artwork={data.artwork} me={data.me} {...rest} />
+    },
+    LoadingFallback: (props) => <InfiniteDiscoveryBottomSheetFooterSkeleton {...props} />,
+    ErrorFallback: (_errorProps, props) => {
+      return <InfiniteDiscoveryBottomSheetFooterErrorFallback {...props} />
+    },
+  })
+
+const InfiniteDiscoveryBottomSheetFooterErrorFallback: React.FC<
+  InfiniteDiscoveryBottomSheetFooterQueryRendererProps
+> = (props) => {
+  const color = useColor()
+  const space = useSpace()
+
+  return (
+    <BottomSheetFooter
+      {...props}
+      style={{ paddingBottom: space(2), backgroundColor: color("white100") }}
+    >
+      <Divider />
+      <Skeleton>
+        <Flex p={2}>
+          <SimpleMessage m={2}>Cannot load work details.</SimpleMessage>
+        </Flex>
+      </Skeleton>
+    </BottomSheetFooter>
+  )
 }
-
 const getInitialAuctionTimerState = (
   artwork: NonNullable<InfiniteDiscoveryBottomSheetFooter_artwork$data>
 ) => {

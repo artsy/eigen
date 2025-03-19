@@ -1,8 +1,10 @@
 import { Screen, ScreenDimensionsProvider, Spinner, Theme } from "@artsy/palette-mobile"
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { PortalProvider } from "@gorhom/portal"
+import FlagProvider from "@unleash/proxy-client-react"
 import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ShareSheetProvider } from "app/Components/ShareSheet/ShareSheetContext"
+import { WrappedFlagProvider } from "app/system/flags/Components/WrappedFlagProvider"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
@@ -17,7 +19,6 @@ import { ToastProvider } from "./Components/Toast/toastHook"
 import { GlobalStore, GlobalStoreProvider } from "./store/GlobalStore"
 import { GravityWebsocketContextProvider } from "./utils/Websockets/GravityWebsocketContext"
 import { combineProviders } from "./utils/combineProviders"
-import { UnleashProvider } from "./utils/experiments/UnleashProvider"
 import { track } from "./utils/track"
 
 export const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) =>
@@ -27,7 +28,7 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       GestureHandlerProvider,
       TrackingProvider,
       GlobalStoreProvider,
-      UnleashProvider, // uses: GlobalStoreProvider
+      WrappedFlagProvider,
       SafeAreaProvider,
       ProvideScreenDimensions, // uses: SafeAreaProvider
       // FIXME: Only use one from palette-mobile
@@ -59,6 +60,7 @@ export const TestProviders: React.FC<{ skipRelay?: boolean; includeNavigation?: 
       includeNavigation && NavigationTestsProvider,
       TrackingProvider,
       GlobalStoreProvider,
+      TestFlagProvider,
       SafeAreaProvider,
       PortalProvider,
       ProvideScreenDimensions,
@@ -78,6 +80,10 @@ export const TestProviders: React.FC<{ skipRelay?: boolean; includeNavigation?: 
 }
 
 // Providers with preset props
+
+const TestFlagProvider: React.FC = ({ children }) => {
+  return <FlagProvider startClient={false}>{children}</FlagProvider>
+}
 
 const GestureHandlerProvider = (props: { children?: React.ReactNode }) => (
   <GestureHandlerRootView style={{ flex: 1 }} {...props} />

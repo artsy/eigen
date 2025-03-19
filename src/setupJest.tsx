@@ -351,6 +351,10 @@ jest.mock("@braze/react-native-sdk", () => ({
   changeUser: jest.fn(),
 }))
 
+jest.mock("app/utils/hooks/useDebouncedValue", () => ({
+  useDebouncedValue: ({ value }: any) => ({ debouncedValue: value }),
+}))
+
 jest.mock("react-native-push-notification", () => ({
   configure: jest.fn(),
   onRegister: jest.fn(),

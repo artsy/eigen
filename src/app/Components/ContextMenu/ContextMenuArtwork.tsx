@@ -7,6 +7,7 @@ import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBott
 import { ContextMenuArtworkPreviewCard } from "app/Components/ContextMenu/ContextMenuArtworkPreviewCard"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 import { cm2in } from "app/utils/conversions"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
@@ -35,8 +36,8 @@ interface ContextMenuArtworkProps {
   onSupressArtwork?: () => void
   haptic?: HapticFeedbackTypes | boolean
   artworkDisplayProps?: ArtworkDisplayProps
-  contextScreenOwnerType?: ScreenOwnerType
   contextModule?: ContextModule
+  contextScreenOwnerType?: ScreenOwnerType
   hideCreateAlertOnArtworkPreview?: boolean
 }
 
@@ -46,8 +47,8 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   artworkDisplayProps,
   onCreateAlertActionPress,
   onSupressArtwork,
-  contextScreenOwnerType,
   contextModule,
+  contextScreenOwnerType,
   hideCreateAlertOnArtworkPreview,
   ...restProps
 }) => {
@@ -68,6 +69,13 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   const enableCreateAlerts = !!artwork.artists?.length
   const enableViewInRoom = LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable
   const enableSupressArtwork = isDislikeArtworksEnabledFor(contextModule)
+
+  const { trackCreateAlertTap } = useCreateAlertTracking({
+    contextScreenOwnerType: contextScreenOwnerType ?? ("unknown" as ScreenOwnerType),
+    contextScreenOwnerId: artwork.internalID,
+    contextScreenOwnerSlug: artwork.slug,
+    contextModule: ContextModule.longPressContextMenu,
+  })
 
   const openViewInRoom = () => {
     if (artwork?.widthCm == null || artwork?.heightCm == null || image?.url == null) {
@@ -147,6 +155,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
         systemIcon: "bell",
         onPress: () => {
           InteractionManager.runAfterInteractions(() => {
+            trackCreateAlertTap()
             onCreateAlertActionPress?.()
           })
         },
@@ -165,35 +174,13 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 
     const onPressToCall = contextActions[event.nativeEvent.index].onPress
 
-    if (contextModule && contextScreenOwnerType) {
-      trackEvent(tracks.longPressedArtwork(contextModule, contextScreenOwnerType, artwork.id))
-    }
-
     onPressToCall?.()
   }
 
-  const handleContextCancel: ContextMenuProps["onCancel"] = () => {
-    // There is not an event for callback for when context menu shows so instead track
-    // the 2 possibilities, an action was taken or the menu was cancelled
-    if (contextModule && contextScreenOwnerType) {
-      trackEvent(tracks.longPressedArtwork(contextModule, contextScreenOwnerType, artwork.id))
-    }
-  }
-
-  const tracks = {
-    longPressedArtwork: (
-      contextModule: ContextModule,
-      screenOwnerType: ScreenOwnerType,
-      artworkId: string
-    ): LongPressedArtwork => ({
-      action: ActionType.longPressedArtwork,
-      context_module: contextModule,
-      context_screen_owner_type: screenOwnerType,
-      context_screen_owner_id: artworkId,
-    }),
-  }
-
-  const artworkPreviewComponent = (artwork: ContextMenuArtworkPreviewCard_artwork$key) => {
+  const artworkPreviewComponent = (
+    artwork: ContextMenuArtworkPreviewCard_artwork$key,
+    artworkDisplayProps: ArtworkDisplayProps | undefined
+  ) => {
     return (
       <ContextMenuArtworkPreviewCard artwork={artwork} artworkDisplayProps={artworkDisplayProps} />
     )
@@ -207,8 +194,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
       <ContextMenu
         actions={contextActions}
         onPress={handleContextPress}
-        onCancel={handleContextCancel}
-        preview={artworkPreviewComponent(artwork)}
+        preview={artworkPreviewComponent(artwork, artworkDisplayProps)}
         hideShadows={true}
         previewBackgroundColor={!!dark ? color("black100") : color("white100")}
       >
@@ -218,6 +204,11 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   }
 
   const handleAndroidLongPress = () => {
+    if (contextModule && contextScreenOwnerType) {
+      trackEvent(
+        trackLongPress.longPressedArtwork(contextModule, contextScreenOwnerType, artwork.slug)
+      )
+    }
     setAndroidVisible(true)
   }
 
@@ -226,10 +217,10 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     return (
       <>
         <TouchableHighlight
-          underlayColor={color("white100")}
+          underlayColor={dark ? color("black100") : color("white100")}
           activeOpacity={0.8}
           onLongPress={handleAndroidLongPress}
-          delayLongPress={1200}
+          delayLongPress={1200} // To avoid the context menu from opening on a (long) normal press on Android.
           onPress={undefined}
           testID="android-context-menu-trigger"
         >
@@ -238,9 +229,10 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 
         <AutoHeightBottomSheet visible={androidVisible} onDismiss={() => setAndroidVisible(false)}>
           <SafeAreaView>
-            <Flex mx={2} my={2}>
+            <Flex mx={2} mb={4}>
               <Flex ml={-1} mb={1}>
-                {artworkPreviewComponent(artwork)}
+                {/* Always show light mode on Android for the bottom sheet */}
+                {artworkPreviewComponent(artwork, { ...artworkDisplayProps, dark: false })} //
               </Flex>
 
               <Join separator={<Separator borderColor="black10" my={1} />}>
@@ -300,3 +292,16 @@ const artworkFragment = graphql`
     widthCm
   }
 `
+
+export const trackLongPress = {
+  longPressedArtwork: (
+    contextModule: ContextModule,
+    screenOwnerType: ScreenOwnerType,
+    artworkId: string
+  ): LongPressedArtwork => ({
+    action: ActionType.longPressedArtwork,
+    context_module: contextModule,
+    context_screen_owner_type: screenOwnerType,
+    context_screen_owner_id: artworkId,
+  }),
+}

@@ -2,13 +2,13 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { goBack } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import {
-  ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY,
   ArtworkAttributionClassFAQContainer,
+  ArtworkAttributionClassFAQScreenQuery,
 } from "./ArtworkAttributionClassFAQ"
 
 const { renderWithRelay } = setupTestWrapper({
   Component: ArtworkAttributionClassFAQContainer,
-  query: ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY,
+  query: ArtworkAttributionClassFAQScreenQuery,
 })
 
 describe("ArtworkAttributionClassFAQ", () => {

@@ -1,10 +1,10 @@
-import { TouchableProps } from "@artsy/palette-mobile"
+import { Touchable, TouchableProps } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { Sentinel } from "app/utils/Sentinel"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { usePrefetch } from "app/utils/queryPrefetching"
-import React, { useState } from "react"
-import { GestureResponderEvent, TouchableOpacity } from "react-native"
+import React from "react"
+import { GestureResponderEvent } from "react-native"
 import { Variables } from "relay-runtime"
 
 export interface RouterLinkProps {
@@ -31,8 +31,6 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   hasChildTouchable,
   ...restProps
 }) => {
-  const [isPrefetched, setIsPrefetched] = useState(false)
-
   const prefetchUrl = usePrefetch()
   const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
 
@@ -51,9 +49,8 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   }
 
   const handleVisible = (isVisible: boolean) => {
-    if (isPrefetchingEnabled && isVisible && !isPrefetched) {
+    if (isPrefetchingEnabled && isVisible) {
       prefetchUrl(to, prefetchVariables)
-      setIsPrefetched(true)
     }
   }
 
@@ -64,13 +61,13 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   }
 
   if (!isPrefetchingEnabled) {
-    return <TouchableOpacity {...touchableProps} children={children} />
+    return <Touchable {...touchableProps} children={children} />
   }
 
   if (!hasChildTouchable) {
     return (
       <Sentinel onChange={handleVisible}>
-        <TouchableOpacity {...touchableProps}>{children}</TouchableOpacity>
+        <Touchable {...touchableProps}>{children}</Touchable>
       </Sentinel>
     )
   }
