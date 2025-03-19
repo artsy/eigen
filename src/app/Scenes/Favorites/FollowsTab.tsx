@@ -2,6 +2,7 @@ import { ArrowDownIcon, Flex, Join, RadioButton, Spacer, Text } from "@artsy/pal
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { FollowedArtistsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedArtists"
+import { FollowedGalleriesQueryRenderer } from "app/Scenes/Favorites/Components/FollowedGalleries"
 import { FollowedShowsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedShows"
 import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
 import { useState } from "react"
@@ -9,7 +10,7 @@ import { TouchableOpacity } from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-type FollowOption = "artists" | "shows" | "galleries" | "categories"
+type FollowOption = "artists" | "shows" | "galleries"
 
 const FOLLOW_OPTIONS: {
   value: FollowOption
@@ -26,10 +27,6 @@ const FOLLOW_OPTIONS: {
   {
     value: "galleries",
     label: "Galleries",
-  },
-  {
-    value: "categories",
-    label: "Categories",
   },
 ]
 
@@ -58,6 +55,7 @@ export const FollowsTab = () => {
 
       {followOption === "artists" && <FollowedArtistsQueryRenderer />}
       {followOption === "shows" && <FollowedShowsQueryRenderer />}
+      {followOption === "galleries" && <FollowedGalleriesQueryRenderer />}
 
       <AutomountedBottomSheetModal
         visible={showBottomSheet}

@@ -26,7 +26,7 @@ describe("FollowedShows", () => {
     expect(screen.getByText("You haven’t saved any shows yet")).toBeTruthy()
   })
 
-  it("renders a list of artists", () => {
+  it("renders a list of shows", () => {
     renderWithRelay({
       FollowedShowConnection: () => ({
         edges: [
