@@ -2,7 +2,6 @@ import { useTheme } from "@artsy/palette-mobile"
 import { MenuItem } from "app/Components/MenuItem"
 import { useToast } from "app/Components/Toast/toastHook"
 import { GlobalStore } from "app/store/GlobalStore"
-import { navigate } from "app/system/navigation/navigate"
 import React, { useEffect, useState } from "react"
 import { ScrollView } from "react-native"
 import DeviceInfo from "react-native-device-info"
@@ -43,9 +42,9 @@ export const About: React.FC = () => {
 
   return (
     <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
-      <MenuItem title="Terms and Conditions" onPress={() => navigate("/terms")} />
-      <MenuItem title="Privacy Policy" onPress={() => navigate("/privacy")} />
-      <MenuItem title="Auction Supplement" onPress={() => navigate("/supplemental-cos")} />
+      <MenuItem href="/terms" title="Terms and Conditions" />
+      <MenuItem href="/privacy" title="Privacy Policy" />
+      <MenuItem href="/supplemental-cos" title="Auction Supplement" />
       <MenuItem
         title="Version"
         text={appVersion}

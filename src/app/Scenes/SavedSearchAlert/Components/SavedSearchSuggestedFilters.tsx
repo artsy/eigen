@@ -108,9 +108,7 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
       <MenuItem
         title="Add Filters"
         description="Including Price Range, Rarity, Medium, Color"
-        onPress={() => {
-          navigation.navigate("SavedSearchFilterScreen")
-        }}
+        onPress={() => navigation.navigate("SavedSearchFilterScreen")}
         px={0}
         py={0}
       />

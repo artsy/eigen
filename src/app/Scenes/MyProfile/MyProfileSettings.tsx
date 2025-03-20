@@ -3,7 +3,6 @@ import { Button, Flex, Separator, Spacer, Text, useColor, useSpace } from "@arts
 import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { GlobalStore } from "app/store/GlobalStore"
-import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Alert, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
@@ -24,16 +23,16 @@ export const MyProfileSettings: React.FC = () => {
         Settings
       </Text>
       <Spacer y={2} />
-      <MenuItem title="Edit Profile" onPress={() => navigate("my-profile/edit")} />
+      <MenuItem title="Edit Profile" href="my-profile/edit" />
       <Separator my={1} borderColor={separatorColor} />
-      <MenuItem title="Account Settings" onPress={() => navigate("my-account")} />
+      <MenuItem title="Account Settings" href="my-account" />
       <Separator my={1} borderColor={separatorColor} />
-      <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
+      <MenuItem title="Payment" href="my-profile/payment" />
       <Separator my={1} borderColor={separatorColor} />
 
       <MenuItem
         title="Push Notifications"
-        onPress={() => navigate("my-profile/push-notifications")}
+        href="my-profile/push-notifications"
       />
       <Separator my={1} borderColor={separatorColor} />
 
@@ -43,14 +42,14 @@ export const MyProfileSettings: React.FC = () => {
       />
       <Separator my={1} borderColor={separatorColor} />
 
-      <MenuItem title="Personal Data Request" onPress={() => navigate("privacy-request")} />
+      <MenuItem title="Personal Data Request" href="privacy-request" />
       <Separator my={1} borderColor={separatorColor} />
 
       <MenuItem
         title="Recently Viewed"
+        href="recently-viewed"
         onPress={() => {
           tracking.trackEvent(tracks.trackMenuTap("my-profile/recently-viewed"))
-          navigate("recently-viewed")
         }}
       />
       {!!supportsDarkMode && (
@@ -59,9 +58,9 @@ export const MyProfileSettings: React.FC = () => {
 
           <MenuItem
             title="Dark Mode"
+            href="/settings/dark-mode"
             onPress={() => {
               tracking.trackEvent(tracks.trackMenuTap("settings/dark-mode"))
-              navigate("/settings/dark-mode")
             }}
           />
         </>
@@ -69,7 +68,7 @@ export const MyProfileSettings: React.FC = () => {
 
       <Separator my={1} borderColor={separatorColor} />
 
-      <MenuItem title="About" onPress={() => navigate("about")} />
+      <MenuItem title="About" href="about" />
       <Separator my={1} borderColor={separatorColor} />
 
       <Spacer y={2} />
@@ -77,7 +76,7 @@ export const MyProfileSettings: React.FC = () => {
         Transactions
       </Text>
 
-      <MenuItem title="Order History" onPress={() => navigate("/orders")} />
+      <MenuItem title="Order History" href="/orders" />
       <Separator my={1} borderColor={separatorColor} />
 
       <Flex flexDirection="row" alignItems="center" justifyContent="center" py="7.5px" px={2}>
