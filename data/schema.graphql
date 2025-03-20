@@ -15372,7 +15372,13 @@ type Partner implements Node {
   collectingInstitution: String
 
   # A connection of contacts from a Partner.
-  contactsConnection(after: String, before: String, first: Int, last: Int): ContactConnection
+  contactsConnection(
+    after: String
+    before: String
+    contactType: contactType
+    first: Int
+    last: Int
+  ): ContactConnection
   counts: PartnerCounts
   defaultProfileID: String
   displayArtistsSection: Boolean
@@ -22860,6 +22866,11 @@ enum addressType {
   BUSINESS
   OTHER
   TEMPORARY
+}
+
+enum contactType {
+  ADMIN
+  PARTNER
 }
 
 input createAlertInput {
