@@ -19181,6 +19181,9 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   # The Artists presenting in this show
   artists: [Artist]
 
+  # Connection of Artists included in the show
+  artistsConnection(after: String, before: String, first: Int, last: Int): ArtistConnection
+
   # Artists in the show grouped by last name
   artistsGroupedByName: [ArtistGroup]
 
