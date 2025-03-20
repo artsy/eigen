@@ -70,7 +70,7 @@ export const FavoritesScreen: React.FC = () => {
     <Screen>
       <Screen.AnimatedHeader title="Favorites" hideLeftElements />
 
-      <Screen.StickySubHeader title="Favorites" separatorComponent={null}>
+      <Screen.StickySubHeader title="Favorites" largeTitle separatorComponent={null}>
         <FavoritesHeader />
       </Screen.StickySubHeader>
 

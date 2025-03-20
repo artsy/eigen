@@ -54,6 +54,7 @@ export const Activity: React.FC = () => {
 
       <Screen.StickySubHeader
         title="Activity"
+        largeTitle
         separatorComponent={<Separator borderColor="black5" />}
       >
         <Suspense fallback={null}>
