@@ -4,7 +4,7 @@ import { RouterLink } from "app/system/navigation/RouterLink"
 interface BrowseMoreRailCardProps {
   dark?: boolean
   href?: string | null
-  onPress: () => void
+  onPress?: () => void
   text?: string | null
 }
 

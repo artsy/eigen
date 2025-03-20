@@ -23,7 +23,6 @@ import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { memo } from "react"
@@ -49,7 +48,7 @@ export const HomeViewSectionFeaturedCollection: React.FC<
   if (!component) return null
 
   const artworks = extractNodes(section.artworksConnection)
-  const href = getHomeViewSectionHref(viewAll?.href, section)
+  const viewAllHref = getHomeViewSectionHref(viewAll?.href, section)
 
   const onHeaderPress = () => {
     tracking.tappedArtworkGroupViewAll(
@@ -63,8 +62,6 @@ export const HomeViewSectionFeaturedCollection: React.FC<
       section.contextModule as ContextModule,
       (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
     )
-
-    navigate(href)
   }
 
   const handleOnArtworkPress = (artwork: ArtworkRail_artworks$data[0], index: number) => {
@@ -82,7 +79,7 @@ export const HomeViewSectionFeaturedCollection: React.FC<
   return (
     <Flex {...flexProps}>
       <Flex pb={2} backgroundColor="black100">
-        <RouterLink to={href} onPress={onHeaderPress} activeOpacity={0.7}>
+        <RouterLink to={viewAllHref} onPress={onHeaderPress} activeOpacity={0.7}>
           {!!component.backgroundImageURL && (
             <Image
               width={width}
@@ -110,6 +107,7 @@ export const HomeViewSectionFeaturedCollection: React.FC<
           showPartnerName
           artworks={artworks}
           onPress={handleOnArtworkPress}
+          onMoreHref={viewAllHref}
           onMorePress={onSectionViewAll}
           hideCuratorsPickSignal
           hideIncreasedInterestSignal

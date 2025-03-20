@@ -24,7 +24,6 @@ import {
 } from "app/Scenes/HomeView/helpers/constants"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
@@ -65,8 +64,6 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
       section.contextModule as ContextModule,
       (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
     )
-
-    navigate(href)
   }
 
   if (sales.length === 0) return null
@@ -104,6 +101,7 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
         ListFooterComponent={
           viewAll ? (
             <BrowseMoreRailCard
+              href={viewAll.href}
               onPress={onViewAllPress}
               text={viewAll.buttonText ?? "Browse All Auctions"}
             />
