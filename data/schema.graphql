@@ -4482,7 +4482,7 @@ type Collection {
   # True if this collection represents artworks explicitly saved by the user, false otherwise.
   saves: Boolean!
   shareableWithPartners: Boolean!
-  slug: String!
+  slug: String
 }
 
 enum CollectionArtworkSorts {
@@ -19221,6 +19221,14 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
 
   # A description of the show
   description: String
+
+  # Retrieve all documents for this show
+  documentsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): PartnerDocumentConnection
   endAt(
     format: String
 
