@@ -103,7 +103,7 @@ export const AlertsList: React.FC<AlertsListProps> = (props) => {
             isSwipingActive={item.isSwipingActive}
             displayImage={true}
             image={{
-              url: image?.url ?? "",
+              url: image?.resized?.url ?? "",
               blurhash: image?.blurhash ?? "",
             }}
             onPress={() => {
@@ -307,7 +307,9 @@ export const AlertsListPaginationContainer = createPaginationContainer(
                 edges {
                   node {
                     image {
-                      url(version: "square")
+                      resized(version: "larger", width: 60, height: 60) {
+                        url
+                      }
                       blurhash
                     }
                   }
