@@ -3,9 +3,9 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { graphql, QueryRenderer } from "react-relay"
 
 export const SavedSearchAlertScreenQuery = graphql`
-  query SavedSearchAlertQuery($alertId: String!) {
+  query SavedSearchAlertQuery($savedSearchAlertId: String!) {
     me {
-      alert(id: $alertId) {
+      alert(id: $savedSearchAlertId) {
         acquireable
         additionalGeneIDs
         artistIDs
@@ -37,7 +37,7 @@ export const SavedSearchAlertScreenQuery = graphql`
 `
 
 interface SearchCriteriaAlertBaseProps {
-  alertId: string
+  savedSearchAlertId: string
   render: (renderProps: {
     error: Error | null
     props: SavedSearchAlertQuery["response"] | null
@@ -46,15 +46,15 @@ interface SearchCriteriaAlertBaseProps {
 }
 
 export const SavedSearchAlertQueryRenderer: React.FC<SearchCriteriaAlertBaseProps> = (props) => {
-  const { alertId, render } = props
+  const { savedSearchAlertId, render } = props
 
   return (
     <QueryRenderer<SavedSearchAlertQuery>
       environment={getRelayEnvironment()}
+      fetchPolicy="store-and-network"
       query={SavedSearchAlertScreenQuery}
       render={render}
-      variables={{ alertId }}
-      cacheConfig={{ force: true }}
+      variables={{ savedSearchAlertId }}
     />
   )
 }

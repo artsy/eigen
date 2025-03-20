@@ -10,10 +10,10 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@artsy/cohesion@4.244.0":
-  version "4.244.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.244.0.tgz#2d039258c3b94088191f8916f787a13c1f0ea194"
-  integrity sha512-2ve3LSQU5o1spckUkfm+zrQp0t21+NX23Zg3BWPNqG9h6/GYzmT5r0kcUnqHLzUxdIuijzHGTAvh/bjUWml5aA==
+"@artsy/cohesion@4.245.0":
+  version "4.245.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.245.0.tgz#b0871d62565f7222fe220b4e5bdfc62f1ffaf86a"
+  integrity sha512-PORGMVHp+oOao2ow8XxiAK3pkq3K/pIqqC9cLmwMh8zW/P1pChPFOl74n397xjxAs2AQVTlpR06n18K8mmB7Pw==
   dependencies:
     core-js "3"
 
@@ -1961,10 +1961,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@braze/react-native-sdk@11.0.0":
-  version "11.0.0"
-  resolved "https://registry.yarnpkg.com/@braze/react-native-sdk/-/react-native-sdk-11.0.0.tgz#94a4294df02819dafed0212266978adc9fa6c75c"
-  integrity sha512-RsZ0L8zobNfhNPJWiSSd+P+on1dKvdUqIhEl4jKjQMl5kXEjJC7N3LLZ8ZxznpVVBnshTi7MsAFsyE8eLzBGtw==
+"@braze/react-native-sdk@13.1.1":
+  version "13.1.1"
+  resolved "https://registry.yarnpkg.com/@braze/react-native-sdk/-/react-native-sdk-13.1.1.tgz#14584bc7e0c8e2705c5eee7e1c9a86d02eb76fc0"
+  integrity sha512-Fe1CeOSLuxur8sN7OyTvb0CQQNIhriGgsM0Jf2RIznAGwsylaja68AwJAGNRXZLy97e7gr2irTaVrvl02UUG9A==
 
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"

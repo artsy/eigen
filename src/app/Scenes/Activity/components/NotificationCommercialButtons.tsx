@@ -9,7 +9,7 @@ import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/Cr
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import { BuyNowButton } from "app/Scenes/Artwork/Components/CommercialButtons/BuyNowButton"
 import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { getTimer } from "app/utils/getTimer"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -79,35 +79,34 @@ export const CommercialButtons: React.FC<{
 
   if (!!hasEnded) {
     renderComponent = (
-      <Button
+      <RouterLink
+        hasChildTouchable
+        to={`/artwork/${artworkID}`}
         onPress={() => {
           tracking.trackEvent(tracks.tappedViewWork(artworkID, partnerOffer?.internalID || ""))
-
-          navigate(`/artwork/${artworkID}`, { passProps: { artworkOfferExpired: true } })
         }}
-        block
-        accessibilityLabel="View Work"
+        navigationProps={{ artworkOfferExpired: true }}
       >
-        View Work
-      </Button>
+        <Button block accessibilityLabel="View Work">
+          View Work
+        </Button>
+      </RouterLink>
     )
   } else if (!noLongerAvailable) {
     renderComponent = (
       <RowContainer>
-        <Button
+        <RouterLink
+          hasChildTouchable
+          to={`/artwork/${artworkID}`}
+          navigationProps={{ partnerOfferId: partnerOffer?.internalID }}
           onPress={() => {
             tracking.trackEvent(tracks.tappedViewWork(artworkID, partnerOffer.internalID))
-
-            navigate(`/artwork/${artworkID}`, {
-              passProps: { partnerOfferId: partnerOffer?.internalID },
-            })
           }}
-          variant="outline"
-          accessibilityLabel="View Work"
-          block
         >
-          View Work
-        </Button>
+          <Button variant="outline" accessibilityLabel="View Work" block>
+            View Work
+          </Button>
+        </RouterLink>
 
         <BuyNowButton
           artwork={artworkData as BuyNowButton_artwork$key}

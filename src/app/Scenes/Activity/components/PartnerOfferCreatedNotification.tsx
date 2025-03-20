@@ -1,13 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import {
-  DEFAULT_HIT_SLOP,
-  Flex,
-  Screen,
-  Spacer,
-  Text,
-  Touchable,
-  useColor,
-} from "@artsy/palette-mobile"
+import { Flex, Screen, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { PartnerOfferCreatedNotification_notification$key } from "__generated__/PartnerOfferCreatedNotification_notification.graphql"
 import {
   ExpiresInTimer,
@@ -17,7 +9,8 @@ import { NotificationArtworkList } from "app/Scenes/Activity/components/Notifica
 import { CommercialButtonsQueryRenderer } from "app/Scenes/Activity/components/NotificationCommercialButtons"
 import { PartnerOfferBadge } from "app/Scenes/Activity/components/PartnerOffeBadge"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
-import { goBack, navigate } from "app/system/navigation/navigate"
+import { goBack } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { getTimer } from "app/utils/getTimer"
 import { ImageBackground } from "react-native"
@@ -65,10 +58,6 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
 
   const partnerIcon = artwork.partner?.profile?.icon?.url
 
-  const handleManageSaves = () => {
-    navigate("/favorites/saves")
-  }
-
   return (
     <AnalyticsContextProvider
       contextScreenOwnerId={artwork.internalID}
@@ -81,13 +70,9 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
           title="Offers"
           rightElements={
             isOfferFromSaves ? (
-              <Touchable
-                haptic="impactLight"
-                onPress={handleManageSaves}
-                hitSlop={DEFAULT_HIT_SLOP}
-              >
+              <RouterLink to="/favorites/saves">
                 <Text variant="xs">Manage Saves</Text>
-              </Touchable>
+              </RouterLink>
             ) : null
           }
         />
@@ -107,7 +92,10 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
               <Spacer y={0.5} />
 
               {/* @ts-ignore: fix ExpiresInTimer fragment data */}
-              {shouldDisplayExpiresInTimer(notificationType, item) && <ExpiresInTimer item={item} />}
+              {shouldDisplayExpiresInTimer(notificationType, item) && (
+                /* @ts-ignore: fix ExpiresInTimer fragment data */
+                <ExpiresInTimer item={item} />
+              )}
 
               <Spacer y={2} />
             </Flex>

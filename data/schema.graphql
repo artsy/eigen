@@ -7914,6 +7914,41 @@ enum ConsignmentSubmissionStateAggregation {
   SUBMITTED
 }
 
+type Contact {
+  canContact: Boolean
+  email: String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  location: Location
+  name: String
+  phone: String
+  position: String
+}
+
+# A connection to a list of items.
+type ContactConnection {
+  # A list of edges.
+  edges: [ContactEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ContactEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Contact
+}
+
 type ConvectionService {
   geminiTemplateKey: String!
 }
@@ -9788,6 +9823,10 @@ enum EventStatus {
   UPCOMING
 }
 
+type ExchangeError {
+  message: String!
+}
+
 enum ExhibitionPeriodFormat {
   # Long formatted period e.g. February 25 – May 24, 2015
   LONG
@@ -10876,10 +10915,50 @@ type FormattedDaySchedules {
 # The `FormattedNumber` type represents a number that can optionally be returnedas a formatted String. It does not try to coerce the type.
 scalar FormattedNumber
 
+# Buyer fulfillment details for order
+type FulfillmentDetails {
+  # Shipping address line 1
+  addressLine1: String
+
+  # Shipping address line 2
+  addressLine2: String
+
+  # Shipping address city
+  city: String
+
+  # Shipping address country
+  country: String
+
+  # Name line for shipping address
+  name: String
+
+  # Phone number of the buyer
+  phoneNumber: String
+
+  # Country code of the buyer's phone number
+  phoneNumberCountryCode: String
+
+  # Shipping address postal code
+  postalCode: String
+
+  # Shipping address state/province/region
+  region: String
+}
+
 type FulfillmentOption {
   amount: Money
   selected: Boolean
   type: FulfillmentOptionTypeEnum!
+}
+
+input FulfillmentOptionInput {
+  type: FulfillmentOptionInputEnum!
+}
+
+enum FulfillmentOptionInputEnum {
+  DOMESTIC_FLAT
+  INTERNATIONAL_FLAT
+  PICKUP
 }
 
 enum FulfillmentOptionTypeEnum {
@@ -12527,6 +12606,9 @@ enum LiveAuctionRole {
 type Location {
   address: String
   address2: String
+
+  # Buisness, temporary, or private address
+  addressType: String
   cached: Int
   city: String
   coordinates: LatLng
@@ -12549,6 +12631,9 @@ type Location {
   openingHours: OpeningHoursUnion
   phone: String
   postalCode: String
+
+  # Boolean flag that denotes whether a location is publicly viewable on Partner's Artsy Profile
+  publiclyViewable: Boolean
   state: String
   summary: String
 }
@@ -14347,6 +14432,11 @@ type Mutation {
     input: SendIdentityVerificationEmailMutationInput!
   ): SendIdentityVerificationEmailMutationPayload
 
+  # Update an order
+  setOrderFulfillmentOption(
+    input: setOrderFulfillmentOptionInput!
+  ): setOrderFulfillmentOptionPayload
+
   # Start an identity verification flow for a pending identity verification
   startIdentityVerification(
     input: startIdentityVerificationMutationInput!
@@ -14439,6 +14529,9 @@ type Mutation {
   updateNotificationPreferences(
     input: updateNotificationPreferencesMutationInput!
   ): updateNotificationPreferencesMutationPayload
+
+  # Update an order
+  updateOrder(input: updateOrderInput!): updateOrderPayload
 
   # updates an ordered set.
   updateOrderedSet(input: UpdateOrderedSetMutationInput!): UpdateOrderedSetMutationPayload
@@ -14898,13 +14991,16 @@ type Order {
   availableShippingCountries: [String!]!
 
   # Phone number of the buyer
-  buyerPhoneNumber: String
+  buyerPhoneNumber: String @deprecated(reason: "Use `order.fulfillmentDetails.phoneNumber`")
 
   # The total amount the buyer is expected to pay
   buyerTotal: Money
 
   # Order code
   code: String!
+
+  # Buyer fulfillment details for order
+  fulfillmentDetails: FulfillmentDetails
   fulfillmentOptions: [FulfillmentOption!]!
 
   # A globally unique ID.
@@ -14918,6 +15014,12 @@ type Order {
   lineItems: [LineItem]!
   mode: OrderModeEnum!
 
+  # The selected fulfillment option for the order
+  selectedFulfillmentOption: FulfillmentOption
+
+  # The total amount for shipping
+  shippingTotal: Money
+
   # Source of the order
   source: OrderSourceEnum!
 }
@@ -14925,6 +15027,14 @@ type Order {
 enum OrderModeEnum {
   BUY
   OFFER
+}
+
+type OrderMutationError {
+  mutationError: ExchangeError!
+}
+
+type OrderMutationSuccess {
+  order: Order!
 }
 
 union OrderParty = Partner | User
@@ -15260,6 +15370,15 @@ type Partner implements Node {
   cities(size: Int = 25): [String]
   claimed: Boolean
   collectingInstitution: String
+
+  # A connection of contacts from a Partner.
+  contactsConnection(
+    after: String
+    before: String
+    contactType: contactType
+    first: Int
+    last: Int
+  ): ContactConnection
   counts: PartnerCounts
   defaultProfileID: String
   displayArtistsSection: Boolean
@@ -19023,10 +19142,10 @@ input SendIdentityVerificationEmailMutationInput {
   # The name to be used for the user undergoing identity verification
   name: String
 
-  # The ID of the order where the IDV process was initated
+  # The ID of the order where the IDV process was initiated
   orderID: String
 
-  # The ID of the sale where the IDV process was initated
+  # The ID of the sale where the IDV process was initiated
   saleID: String
 
   # Whether an automated identity verification is sent or not
@@ -19045,6 +19164,8 @@ type Services {
   convection: ConvectionService!
   metaphysics: MetaphysicsService!
 }
+
+union SetOrderFulfillmentOptionResponse = OrderMutationError | OrderMutationSuccess
 
 type Shortcut {
   # A globally unique ID.
@@ -22747,6 +22868,11 @@ enum addressType {
   TEMPORARY
 }
 
+enum contactType {
+  ADMIN
+  PARTNER
+}
+
 input createAlertInput {
   acquireable: Boolean
   additionalGeneIDs: [String]
@@ -23036,6 +23162,19 @@ type purchases {
   totalPrivateSaleCount: Int!
 }
 
+input setOrderFulfillmentOptionInput {
+  clientMutationId: String
+  fulfillmentOption: FulfillmentOptionInput!
+
+  # Order id.
+  id: ID!
+}
+
+type setOrderFulfillmentOptionPayload {
+  clientMutationId: String
+  orderOrError: SetOrderFulfillmentOptionResponse
+}
+
 enum sort {
   ASC
   DESC
@@ -23143,6 +23282,44 @@ type updateNotificationPreferencesMutationPayload {
 
   # User's notification preferences
   notificationPreferences(authenticationToken: String): [NotificationPreference!]!
+}
+
+input updateOrderInput {
+  # Buyer's phone number
+  buyerPhoneNumber: String
+
+  # Buyer's phone number country code
+  buyerPhoneNumberCountryCode: String
+  clientMutationId: String
+
+  # Order id.
+  id: ID!
+
+  # Shipping address line 1
+  shippingAddressLine1: String
+
+  # Shipping address line 2
+  shippingAddressLine2: String
+
+  # Shipping address city
+  shippingCity: String
+
+  # Shipping address country
+  shippingCountry: String
+
+  # Shipping address name
+  shippingName: String
+
+  # Shipping address postal code
+  shippingPostalCode: String
+
+  # Shipping address state/province/region
+  shippingRegion: String
+}
+
+type updateOrderPayload {
+  clientMutationId: String
+  orderOrError: SetOrderFulfillmentOptionResponse
 }
 
 input updateQuizMutationInput {

@@ -1,4 +1,3 @@
-import { OwnerType } from "@artsy/cohesion"
 import { Screen, Tabs, VisualClueDot } from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
@@ -11,9 +10,6 @@ import {
 import { MyProfileHeaderQueryRenderer } from "app/Scenes/MyProfile/MyProfileHeader"
 import { GlobalStore } from "app/store/GlobalStore"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
-import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
-import { screen } from "app/utils/track/helpers"
-import { useMemo } from "react"
 
 export enum Tab {
   collection = "My Collection",
@@ -84,20 +80,14 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<Props> = ({ init
 
 export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC = () => {
   const tabProps = useMyProfileTabProps()
-  const key = useMemo(() => `${Date.now()}`, [tabProps])
   const initialTab = tabProps?.initialTab ?? Tab.collection
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={screen({ context_screen_owner_type: OwnerType.profile })}
-      key={key}
-    >
-      <MyCollectionTabsStoreProvider>
-        <Sentry.TimeToInitialDisplay record>
-          <MyProfileHeaderMyCollectionAndSavedWorks initialTab={initialTab} />
-        </Sentry.TimeToInitialDisplay>
-      </MyCollectionTabsStoreProvider>
-    </ProvideScreenTrackingWithCohesionSchema>
+    <MyCollectionTabsStoreProvider>
+      <Sentry.TimeToInitialDisplay record>
+        <MyProfileHeaderMyCollectionAndSavedWorks initialTab={initialTab} />
+      </Sentry.TimeToInitialDisplay>
+    </MyCollectionTabsStoreProvider>
   )
 }
 
