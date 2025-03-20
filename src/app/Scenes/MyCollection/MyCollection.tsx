@@ -343,7 +343,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
             environment={getRelayEnvironment()}
             query={MyCollectionScreenQuery}
             variables={{}}
-            cacheConfig={{ force: true }}
+            fetchPolicy="store-and-network"
             render={renderWithPlaceholder({
               Container: MyCollectionContainer,
               renderPlaceholder: () => <MyCollectionPlaceholder />,

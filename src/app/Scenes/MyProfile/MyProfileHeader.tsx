@@ -268,7 +268,7 @@ const myProfileHeaderFragment = graphql`
   }
 `
 
-const myProfileHeaderQuery = graphql`
+export const MyProfileHeaderScreenQuery = graphql`
   query MyProfileHeaderQuery {
     me {
       ...MyProfileHeader_me
@@ -277,19 +277,16 @@ const myProfileHeaderQuery = graphql`
 `
 
 export const fetchProfileData = async () => {
-  return fetchQuery<MyProfileHeaderQuery>(getRelayEnvironment(), myProfileHeaderQuery, {})
+  return fetchQuery<MyProfileHeaderQuery>(getRelayEnvironment(), MyProfileHeaderScreenQuery, {})
 }
 
 export const MyProfileHeaderQueryRenderer = withSuspense({
   Component: (props) => {
     const data = useLazyLoadQuery<MyProfileHeaderQuery>(
-      myProfileHeaderQuery,
+      MyProfileHeaderScreenQuery,
       {},
       {
-        fetchPolicy: "network-only",
-        networkCacheConfig: {
-          force: true,
-        },
+        fetchPolicy: "store-and-network",
       }
     )
 
