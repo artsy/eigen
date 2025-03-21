@@ -19262,6 +19262,9 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   # Events from the partner that runs this show
   events: [ShowEventType]
 
+  # Connection of events attached to the show
+  eventsConnection(after: String, before: String, first: Int, last: Int): ShowEventConnection
+
   # A formatted description of the start to end dates
   exhibitionPeriod(
     # Formatting option to apply to exhibition period
@@ -19503,6 +19506,26 @@ type ShowEdge {
 
   # The item at the end of the edge
   node: Show
+}
+
+# A connection to a list of items.
+type ShowEventConnection {
+  # A list of edges.
+  edges: [ShowEventEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ShowEventEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: ShowEventType
 }
 
 type ShowEventType {
