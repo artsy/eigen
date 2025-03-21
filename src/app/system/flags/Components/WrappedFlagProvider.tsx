@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import FlagProvider, { IConfig, useFlagsStatus } from "@unleash/proxy-client-react"
+import FlagProvider, { IConfig } from "@unleash/proxy-client-react"
 import { useUnleashEnvironment } from "app/system/flags/hooks/useUnleashEnvironment"
 import { useUnleashInitializer } from "app/system/flags/hooks/useUnleashInitializer"
 import { useUnleashListener } from "app/system/flags/hooks/useUnleashListener"
@@ -41,15 +41,5 @@ const UnleashInitializer: React.FC = ({ children }) => {
   useUnleashListener()
   useUnleashInitializer()
 
-  return <UnleashReady children={children} />
-}
-
-const UnleashReady: React.FC = ({ children }) => {
-  const { flagsReady: unleashFlagsReady, flagsError: unleashError } = useFlagsStatus()
-  const isUnleashReady = unleashFlagsReady || unleashError
-
-  if (!isUnleashReady) {
-    return null
-  }
   return <>{children}</>
 }
