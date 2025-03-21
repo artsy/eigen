@@ -156,6 +156,7 @@ import {
   MyProfileEditFormScreen,
   MyProfileEditFormScreenQuery,
 } from "app/Scenes/MyProfile/MyProfileEditForm"
+import { MyProfileHeaderScreenQuery } from "app/Scenes/MyProfile/MyProfileHeader"
 import { MyProfilePaymentQueryRenderer } from "app/Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "app/Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { MyProfilePushNotificationsQueryRenderer } from "app/Scenes/MyProfile/MyProfilePushNotifications"
@@ -1149,7 +1150,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    queries: [MyCollectionScreenQuery],
+    queries: [MyProfileHeaderScreenQuery, MyCollectionScreenQuery],
   },
   {
     path: "/my-profile/edit",
