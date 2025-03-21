@@ -2246,10 +2246,10 @@
     query-string "^6.12.1"
     xcase "^2.0.1"
 
-"@gorhom/bottom-sheet@5.0.5":
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/@gorhom/bottom-sheet/-/bottom-sheet-5.0.5.tgz#bf37be6463fa8133163d84428b71cde9bcb5707a"
-  integrity sha512-OPMbwrU/sx/o8AOHe4Bmthp0oR/a1jsTYmdjeGlnWmpnwAVa13QEALsgCm8WaDKA39qeoD7rT38e4/GYeL4myA==
+"@gorhom/bottom-sheet@5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@gorhom/bottom-sheet/-/bottom-sheet-5.1.2.tgz#509992983ce2905d5899d1c7cab1cd3950c8c238"
+  integrity sha512-5np8oL2krqAsVKLRE4YmtkZkyZeFiitoki72bEpVhZb8SRTNuAEeSbP3noq5srKpcRsboCr7uI+xmMyrWUd9kw==
   dependencies:
     "@gorhom/portal" "1.0.14"
     invariant "^2.2.4"

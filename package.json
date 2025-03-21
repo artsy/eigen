@@ -111,7 +111,7 @@
     "@artsy/to-title-case": "1.1.0",
     "@braze/react-native-sdk": "13.1.1",
     "@expo/react-native-action-sheet": "4.0.1",
-    "@gorhom/bottom-sheet": "5.0.5",
+    "@gorhom/bottom-sheet": "5.1.2",
     "@gorhom/portal": "1.0.14",
     "@invertase/react-native-apple-authentication": "2.1.5",
     "@kesha-antonov/react-native-action-cable": "1.1.4",
