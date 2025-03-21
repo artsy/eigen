@@ -1,11 +1,12 @@
 import { captureMessage } from "@sentry/react-native"
 import { unsafe_getDevToggle } from "app/store/GlobalStore"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
-import { appJson, echoLaunchJson } from "app/utils/jsonFiles"
+import AppInfo from "app/system/AppInfo"
+import { echoLaunchJson } from "app/utils/jsonFiles"
 import { action, Action, computed, Computed, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import moment from "moment-timezone"
 import { Platform } from "react-native"
-import { lt as lessThan } from "semver"
+import { lt as lessThan, coerce } from "semver"
 
 export interface Echo {
   id: number // 1
@@ -77,11 +78,11 @@ export const getEchoModel = (): EchoModel => ({
     (env, state) => {
       const key =
         env === "production" ? "StripeProductionPublishableKey" : "StripeStagingPublishableKey"
-      return state.state.messages.find((e) => e.name === key)?.content!
+      return state.state.messages.find((e) => e.name === key)?.content as string
     }
   ),
   forceUpdateMessage: computed((state) => {
-    const appVersion = appJson().version
+    const appVersion = coerce(AppInfo.getVersion(), { includePrerelease: false })?.version ?? ""
     const killedVersions = state.state.killedVersions
 
     const killedVersion = killedVersions[Platform.OS as keyof Echo["killedVersions"]][appVersion]
