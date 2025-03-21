@@ -117,7 +117,6 @@ commands:
           key: v25-app_build_ios-{{ checksum ".manifests/app_build" }}
           paths:
             - derived_data
-            - node_modules/react-native-config
   prep-android-env:
     steps:
       - attach_workspace:
@@ -169,7 +168,6 @@ commands:
           paths:
             - android/build
             - android/app/build
-            - node_modules/react-native-config
 jobs:
   detect-secrets:
     docker:
