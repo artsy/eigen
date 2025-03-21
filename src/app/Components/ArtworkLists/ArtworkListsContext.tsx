@@ -1,27 +1,19 @@
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
-import { dispatchArtworkSavedStateChanged } from "app/Components/ArtworkLists/ArtworkListEvents"
 import { ArtworkListEntity } from "app/Components/ArtworkLists/types"
-import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
 import { ArtworkListOfferSettingsView } from "app/Components/ArtworkLists/views/ArtworkListOfferSettingsView/ArtworkListOfferSettingsView"
 import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListView"
 import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/SelectArtworkListsForArtworkView"
-import { createContext, FC, useCallback, useContext, useReducer } from "react"
-import {
-  ArtworkEntity,
-  ArtworkListAction,
-  ArtworkListsContextState,
-  ArtworkListState,
-  ResultAction,
-  SaveResult,
-} from "./types"
+import { Action, action, Computed, computed, createContextStore } from "easy-peasy"
+import { FC } from "react"
+import { ArtworkListState } from "./types"
 
-export interface ArtworkListsProviderProps {
-  artworkListId?: string
-  // Needs for tests
-  artwork?: ArtworkEntity
-  selectArtworkListsViewVisible?: boolean
-  artworkListOfferSettingsViewVisible?: boolean
-}
+export type ModifiedListType =
+  | "GENERIC_CHANGES"
+  | "ADDED_AND_REMOVED_LIST"
+  | "ADDED_SINGLE_LIST"
+  | "ADDED_MULTIPLE_LIST"
+  | "REMOVED_SINGLE_LIST"
+  | "REMOVED_MULTIPLE_LIST"
 
 export const ARTWORK_LISTS_CONTEXT_INITIAL_STATE: ArtworkListState = {
   selectArtworkListsViewVisible: false,
@@ -39,305 +31,217 @@ export const ARTWORK_LISTS_CONTEXT_INITIAL_STATE: ArtworkListState = {
   toastBottomPadding: null,
 }
 
-export const ArtworkListsContext = createContext<ArtworkListsContextState>(
-  null as unknown as ArtworkListsContextState
-)
+export interface ArtworkListsModel {
+  // State
+  state: ArtworkListState
+  artworkListId?: string
 
-export const useArtworkListsContext = () => {
-  return useContext(ArtworkListsContext)
+  // Computed
+  addingArtworkListIDs: Computed<this, string[]>
+  removingArtworkListIDs: Computed<this, string[]>
+  shareArtworkListIDs: Computed<this, string[]>
+  keepArtworkListPrivateIDs: Computed<this, string[]>
+  modifiedActionType: Computed<this, () => ModifiedListType | void>
+
+  // Actions
+  setToastBottomPadding: Action<this, number | null>
+  setCreateNewArtworkListViewVisible: Action<this, boolean>
+  // TODO: check if this works
+  openSelectArtworkListsView: Action<this, any>
+  setRecentlyAddedArtworkList: Action<this, ArtworkListEntity | null>
+  addOrRemoveArtworkList: Action<
+    this,
+    { artworkList: ArtworkListEntity; mode: "addingArtworkLists" | "removingArtworkLists" }
+  >
+  setSelectedTotalCount: Action<this, number>
+  reset: Action<this>
+  setUnsavedChanges: Action<this, boolean>
+  setOfferSettingsViewVisible: Action<this, boolean>
+  shareOrKeepArtworkListPrivate: Action<
+    this,
+    { artworkList: ArtworkListEntity; mode: "sharingArtworkLists" | "keepingArtworkListsPrivate" }
+  >
 }
 
-/**
- *
- * If `artworkListId` was passed, it means the user is on the artwork lists page
- * In this case, whether the artwork is saved or not will depend on the local state (not on the status received from backend)
- */
-export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({
-  children,
-  artworkListId,
-  artwork,
-  selectArtworkListsViewVisible,
-  artworkListOfferSettingsViewVisible,
-}) => {
-  const [state, dispatch] = useReducer(reducer, {
-    ...ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
-    artwork: artwork ?? null,
-    selectArtworkListsViewVisible: selectArtworkListsViewVisible ?? false,
-    artworkListOfferSettingsViewVisible: artworkListOfferSettingsViewVisible ?? false,
-  })
+export const getArtworkListsModel = (): ArtworkListsModel => ({
+  state: ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
 
-  const toast = useArtworkListToast(state.toastBottomPadding)
+  // Computed properties
+  addingArtworkListIDs: computed((state) =>
+    state.state.addingArtworkLists.map((entity) => entity.internalID)
+  ),
+  removingArtworkListIDs: computed((state) =>
+    state.state.removingArtworkLists.map((entity) => entity.internalID)
+  ),
+  shareArtworkListIDs: computed((state) =>
+    state.state.sharingArtworkLists.map((entity) => entity.internalID)
+  ),
+  keepArtworkListPrivateIDs: computed((state) =>
+    state.state.keepingArtworkListsPrivate.map((entity) => entity.internalID)
+  ),
+  modifiedActionType: computed((state) => {
+    return () => {
+      if (!state.state.artworkListID) {
+        const addingArtworkLists = state.state.addingArtworkLists
+        const removingArtworkLists = state.state.removingArtworkLists
+        if (!!addingArtworkLists.length && !!removingArtworkLists.length) {
+          return "GENERIC_CHANGES"
+        }
 
-  const showToastForAddedLists = (artwork: ArtworkEntity, artworkLists: ArtworkListEntity[]) => {
-    if (artworkLists.length === 1) {
-      toast.addedToSingleArtworkList({
-        artwork,
-        artworkList: artworkLists[0],
-      })
-      return
-    }
+        if (!!addingArtworkLists.length && addingArtworkLists.length === 1) {
+          return "ADDED_SINGLE_LIST"
+        }
+        if (!!addingArtworkLists.length) {
+          return "ADDED_MULTIPLE_LIST"
+        }
 
-    return toast.addedToMultipleArtworkLists({
-      artwork,
-      artworkLists,
-    })
-  }
+        if (!!removingArtworkLists && removingArtworkLists.length === 1) {
+          return "REMOVED_SINGLE_LIST"
+        }
+        if (!!removingArtworkLists.length) {
+          return "REMOVED_MULTIPLE_LIST"
+        }
 
-  const showToastForRemovedLists = (artwork: ArtworkEntity, artworkLists: ArtworkListEntity[]) => {
-    if (artworkLists.length === 1) {
-      toast.removedFromSingleArtworkList({
-        artwork,
-        artworkList: artworkLists[0],
-      })
-      return
-    }
+        throw new Error("Unexpected save result for artwork lists")
+      }
 
-    return toast.removedFromMultipleArtworkLists({
-      artwork,
-      artworkLists,
-    })
-  }
+      const isArtworkListAdded = state.state.addingArtworkLists.some(
+        (list) => list.internalID === state.state.artworkListID
+      )
+      const isArtworkListRemoved = state.state.removingArtworkLists.some(
+        (list) => list.internalID === state.state.artworkListID
+      )
 
-  const modifiedArtworkLists = (
-    artwork: ArtworkEntity,
-    addedArtworkLists: ArtworkListEntity[],
-    removedArtworkLists: ArtworkListEntity[]
-  ) => {
-    if (addedArtworkLists.length > 0 && removedArtworkLists.length > 0) {
-      toast.changesSaved()
-      return
-    }
-
-    if (addedArtworkLists.length > 0) {
-      showToastForAddedLists(artwork, addedArtworkLists)
-
-      return
-    }
-
-    if (removedArtworkLists.length > 0) {
-      showToastForRemovedLists(artwork, removedArtworkLists)
-      return
-    }
-  }
-
-  const openSelectArtworkListsForArtworkView = (artwork: ArtworkEntity) => {
-    dispatch({
-      type: "OPEN_SELECT_ARTWORK_LISTS_VIEW",
-      payload: {
-        artwork,
-        artworkListID: null,
-      },
-    })
-  }
-
-  const onSave = (result: SaveResult) => {
-    dispatch({ type: "SET_UNSAVED_CHANGES", payload: false })
-
-    if (!result.artwork) {
-      if (result.action === ResultAction.ModifiedArtworkListsOfferSettings) {
-        toast.changesSaved()
-
-        return
+      if ((isArtworkListAdded || isArtworkListRemoved) && !!state.state.artwork) {
+        return "ADDED_AND_REMOVED_LIST"
       }
 
       throw new Error("Unexpected save result for artwork lists")
     }
+  }),
 
-    if (state.artworkListID !== null) {
-      if (result.action !== ResultAction.ModifiedArtworkLists) {
-        throw new Error("You should pass `ModifiedArtworkLists` action")
-      }
+  // Actions
+  setToastBottomPadding: action((state, payload) => {
+    state.state.toastBottomPadding = payload
+  }),
 
-      const isArtworkListAdded = isArtworkListsIncludes(
-        state.artworkListID,
-        state.addingArtworkLists
+  setCreateNewArtworkListViewVisible: action((state, payload) => {
+    state.state.createNewArtworkListViewVisible = payload
+  }),
+
+  openSelectArtworkListsView: action((state, payload) => {
+    state.state.artwork = payload
+    state.state.artworkListID = null
+    state.state.selectArtworkListsViewVisible = true
+  }),
+
+  reset: action((state) => {
+    state.state = {
+      ...ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
+      toastBottomPadding: state.state.toastBottomPadding,
+    }
+  }),
+
+  setRecentlyAddedArtworkList: action((state, payload) => {
+    state.state.recentlyAddedArtworkList = payload
+  }),
+
+  addOrRemoveArtworkList: action((state, payload) => {
+    const { artworkList, mode } = payload
+    const artworkLists = state.state[mode]
+    const ids = artworkLists.map((artworkList) => artworkList.internalID)
+    const updatedState = { ...state.state }
+
+    if (ids.includes(artworkList.internalID)) {
+      updatedState[mode] = artworkLists.filter(
+        (entity) => entity.internalID !== artworkList.internalID
       )
-      const isArtworkListRemoved = isArtworkListsIncludes(
-        state.artworkListID,
-        state.removingArtworkLists
+    } else {
+      updatedState[mode] = [...artworkLists, artworkList]
+    }
+
+    updatedState.hasUnsavedChanges = hasChanges(updatedState)
+
+    state.state = updatedState
+  }),
+
+  setSelectedTotalCount: action((state, payload) => {
+    state.state.selectedTotalCount = payload
+  }),
+
+  setUnsavedChanges: action((state, payload) => {
+    state.state.hasUnsavedChanges = payload
+  }),
+
+  setOfferSettingsViewVisible: action((state, payload) => {
+    state.state.artworkListOfferSettingsViewVisible = payload
+  }),
+
+  shareOrKeepArtworkListPrivate: action((state, payload) => {
+    const { artworkList, mode } = payload
+    const artworkLists = state.state[mode]
+    const ids = artworkLists.map((list) => list.internalID)
+
+    if (ids.includes(artworkList.internalID)) {
+      state.state[mode] = artworkLists.filter(
+        (entity) => entity.internalID !== artworkList.internalID
       )
-
-      if ((isArtworkListAdded || isArtworkListRemoved) && !!state.artwork) {
-        dispatchArtworkSavedStateChanged(state.artwork.internalID)
-      }
-
-      toast.changesSaved()
-
-      return
+    } else {
+      state.state[mode] = [...artworkLists, artworkList]
     }
 
-    if (result.action === ResultAction.SavedToDefaultArtworkList) {
-      toast.savedToDefaultArtworkList({
-        onToastPress: () => openSelectArtworkListsForArtworkView(result.artwork as ArtworkEntity),
-        isInAuction: !!result.artwork.isInAuction,
-      })
-      return
-    }
+    state.state.hasUnsavedChanges = hasOfferSettingChanges(state.state)
+  }),
+})
 
-    if (result.action === ResultAction.RemovedFromDefaultArtworkList) {
-      toast.removedFromDefaultArtworkList()
+export const ArtworkListsStore = createContextStore((initialData) => ({
+  ...getArtworkListsModel(),
+  ...initialData,
+}))
 
-      return
-    }
-
-    if (result.action === ResultAction.ModifiedArtworkLists) {
-      modifiedArtworkLists(result.artwork, state.addingArtworkLists, state.removingArtworkLists)
-      return
-    }
-
-    throw new Error("Unexpected save result for artwork lists")
-  }
-
-  const reset = useCallback(() => {
-    dispatch({
-      type: "RESET",
-    })
-  }, [dispatch])
-
-  const addingArtworkListIDs = state.addingArtworkLists.map((entity) => entity.internalID)
-  const removingArtworkListIDs = state.removingArtworkLists.map((entity) => entity.internalID)
-  const shareArtworkListIDs = state.sharingArtworkLists.map((entity) => entity.internalID)
-  const keepArtworkListPrivateIDs = state.keepingArtworkListsPrivate.map(
-    (entity) => entity.internalID
+export const ArtworkListsProvider: FC = ({ children }) => {
+  return (
+    <ArtworkListsStore.Provider
+      runtimeModel={{
+        state: { ...ARTWORK_LISTS_CONTEXT_INITIAL_STATE },
+        artworkListId: null,
+      }}
+    >
+      <ListElements>{children}</ListElements>
+    </ArtworkListsStore.Provider>
   )
-  const value: ArtworkListsContextState = {
-    state,
-    artworkListId,
-    addingArtworkListIDs,
-    removingArtworkListIDs,
-    shareArtworkListIDs,
-    keepArtworkListPrivateIDs,
-    dispatch,
-    reset,
-    onSave,
-  }
+}
+
+const ListElements: FC = ({ children }) => {
+  const {
+    artwork,
+    artworkListOfferSettingsViewVisible,
+    createNewArtworkListViewVisible,
+    selectArtworkListsViewVisible,
+  } = ArtworkListsStore.useStoreState((state) => ({
+    artwork: state.state.artwork,
+    artworkListOfferSettingsViewVisible: state.state.artworkListOfferSettingsViewVisible,
+    selectArtworkListsViewVisible: state.state.selectArtworkListsViewVisible,
+    createNewArtworkListViewVisible: state.state.createNewArtworkListViewVisible,
+  }))
 
   return (
-    <ArtworkListsContext.Provider value={value}>
-      <BottomSheetModalProvider>
-        {children}
+    <BottomSheetModalProvider>
+      {children}
 
-        <>
-          {!!state.artwork && !!state.selectArtworkListsViewVisible && (
-            <SelectArtworkListsForArtworkView />
-          )}
-          {!!state.artworkListOfferSettingsViewVisible && <ArtworkListOfferSettingsView />}
-          {!!state.createNewArtworkListViewVisible && <CreateNewArtworkListView />}
-        </>
-      </BottomSheetModalProvider>
-    </ArtworkListsContext.Provider>
+      <>
+        {!!artwork && !!selectArtworkListsViewVisible && <SelectArtworkListsForArtworkView />}
+        {!!artworkListOfferSettingsViewVisible && <ArtworkListOfferSettingsView />}
+        {!!createNewArtworkListViewVisible && <CreateNewArtworkListView />}
+      </>
+    </BottomSheetModalProvider>
   )
-}
-
-const reducer = (state: ArtworkListState, action: ArtworkListAction): ArtworkListState => {
-  switch (action.type) {
-    case "SET_TOAST_BOTTOM_PADDING":
-      return {
-        ...state,
-        toastBottomPadding: action.payload,
-      }
-
-    case "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE":
-      return {
-        ...state,
-        createNewArtworkListViewVisible: action.payload,
-      }
-    case "OPEN_SELECT_ARTWORK_LISTS_VIEW":
-      return {
-        ...state,
-        artwork: action.payload.artwork,
-        artworkListID: action.payload.artworkListID,
-        selectArtworkListsViewVisible: true,
-      }
-    case "SET_RECENTLY_ADDED_ARTWORK_LIST":
-      return {
-        ...state,
-        recentlyAddedArtworkList: action.payload,
-      }
-    case "ADD_OR_REMOVE_ARTWORK_LIST":
-      return addOrRemoveArtworkList(state, action.payload)
-    case "SET_SELECTED_TOTAL_COUNT":
-      return {
-        ...state,
-        selectedTotalCount: action.payload,
-      }
-    case "RESET":
-      return {
-        ...ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
-        toastBottomPadding: state.toastBottomPadding || null,
-      }
-    case "SET_UNSAVED_CHANGES":
-      return {
-        ...state,
-        hasUnsavedChanges: action.payload,
-      }
-    case "SET_OFFER_SETTINGS_VIEW_VISIBLE":
-      return {
-        ...state,
-        artworkListOfferSettingsViewVisible: action.payload,
-      }
-    case "SHARE_OR_KEEP_ARTWORK_LIST_PRIVATE":
-      return shareOrKeepArtworkList(state, action.payload)
-    default:
-      return state
-  }
-}
-
-const addOrRemoveArtworkList = (
-  state: ArtworkListState,
-  actionPayload: Extract<ArtworkListAction, { type: "ADD_OR_REMOVE_ARTWORK_LIST" }>["payload"]
-): ArtworkListState => {
-  const { artworkList, mode } = actionPayload
-  const artworkLists = state[mode]
-  const ids = artworkLists.map((artworkList) => artworkList.internalID)
-  const updatedState = { ...state }
-
-  if (ids.includes(artworkList.internalID)) {
-    updatedState[mode] = artworkLists.filter(
-      (entity) => entity.internalID !== artworkList.internalID
-    )
-  } else {
-    updatedState[mode] = [...artworkLists, artworkList]
-  }
-
-  updatedState.hasUnsavedChanges = hasChanges(updatedState)
-
-  return updatedState
-}
-
-const shareOrKeepArtworkList = (
-  state: ArtworkListState,
-  actionPayload: Extract<
-    ArtworkListAction,
-    { type: "SHARE_OR_KEEP_ARTWORK_LIST_PRIVATE" }
-  >["payload"]
-): ArtworkListState => {
-  const { artworkList, mode } = actionPayload
-  const artworkLists = state[mode]
-  const ids = artworkLists.map((artworkList) => artworkList.internalID)
-  const updatedState = { ...state }
-
-  if (ids.includes(artworkList.internalID)) {
-    updatedState[mode] = artworkLists.filter(
-      (entity) => entity.internalID !== artworkList.internalID
-    )
-  } else {
-    updatedState[mode] = [...artworkLists, artworkList]
-  }
-
-  updatedState.hasUnsavedChanges = hasOfferSettingChanges(updatedState)
-
-  return updatedState
-}
-
-const isArtworkListsIncludes = (artworkListID: string, artworkLists: ArtworkListEntity[]) => {
-  return artworkLists.find((artworkList) => artworkList.internalID === artworkListID)
-}
-
-const hasChanges = (state: ArtworkListState) => {
-  return state.addingArtworkLists.length !== 0 || state.removingArtworkLists.length !== 0
 }
 
 const hasOfferSettingChanges = (state: ArtworkListState) => {
   return state.sharingArtworkLists.length !== 0 || state.keepingArtworkListsPrivate.length !== 0
+}
+
+const hasChanges = (state: ArtworkListState) => {
+  return state.addingArtworkLists.length !== 0 || state.removingArtworkLists.length !== 0
 }

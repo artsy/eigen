@@ -1,6 +1,6 @@
 import { Box, Flex, Join, Spacer } from "@artsy/palette-mobile"
 import { SelectArtworkListsForArtworkQuery } from "__generated__/SelectArtworkListsForArtworkQuery.graphql"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ArtworkLists } from "app/Components/ArtworkLists/components/ArtworkLists"
 import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"
@@ -10,16 +10,12 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 const LOADING_PLACEHOLDER_COUNT = 10
 
 const SelectArtworkListsForArtworkContent = () => {
-  const { state } = useArtworkListsContext()
-  const artwork = state.artwork
+  const artwork = ArtworkListsStore.useStoreState((state) => state.state.artwork)
+
   const queryData = useLazyLoadQuery<SelectArtworkListsForArtworkQuery>(
     Query,
-    {
-      artworkID: artwork?.internalID as string,
-    },
-    {
-      fetchPolicy: "network-only",
-    }
+    { artworkID: artwork?.internalID ?? "" },
+    { fetchPolicy: "network-only" }
   )
 
   if (!queryData.me) {

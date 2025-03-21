@@ -71,8 +71,8 @@ export const TestProviders: React.FC<{ skipRelay?: boolean; includeNavigation?: 
       Theme,
       Screen.ScreenScrollContextProvider,
       PopoverMessageProvider,
-      ToastProvider,
       ArtworkListsProvider,
+      ToastProvider,
       ShareSheetProvider,
     ],
     children
