@@ -12183,6 +12183,26 @@ type Image {
   width: Int
 }
 
+# A connection to a list of items.
+type ImageConnection {
+  # A list of edges.
+  edges: [ImageEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ImageEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Image
+}
+
 type ImageURLs {
   normalized: String
 }
@@ -19353,6 +19373,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     # Number of images to return
     size: Int
   ): [Image]
+  imagesConnection(after: String, before: String, first: Int, last: Int): ImageConnection
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
