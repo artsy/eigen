@@ -8707,6 +8707,45 @@ type CreatePageSuccess {
   page: Page
 }
 
+type CreatePartnerContactFailure {
+  mutationError: GravityMutationError
+}
+
+input CreatePartnerContactInput {
+  # If true, send all user inquiries and order notifications to this contact.
+  canContact: Boolean
+  clientMutationId: String
+
+  # Email address of the contact
+  email: String
+
+  # ID of the contact's partner location
+  locationID: String
+
+  # Contact's name
+  name: String
+
+  # ID of the partner
+  partnerID: String!
+
+  # Phone number of the contact
+  phone: String
+
+  # Contact's position at the partner
+  position: String
+}
+
+union CreatePartnerContactOrError = CreatePartnerContactFailure | CreatePartnerContactSuccess
+
+type CreatePartnerContactPayload {
+  clientMutationId: String
+  partnerContactOrError: CreatePartnerContactOrError
+}
+
+type CreatePartnerContactSuccess {
+  partnerContact: Contact
+}
+
 type CreateSaleAgreementFailure {
   mutationError: GravityMutationError
 }
@@ -14224,6 +14263,9 @@ type Mutation {
 
   # Creates a static Markdown-backed page.
   createPage(input: CreatePageMutationInput!): CreatePageMutationPayload
+
+  # Creates a new contact for a partner
+  createPartnerContact(input: CreatePartnerContactInput!): CreatePartnerContactPayload
 
   # Create a partner offer for the users
   createPartnerOffer(input: createPartnerOfferMutationInput!): createPartnerOfferMutationPayload
