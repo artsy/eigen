@@ -323,7 +323,7 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
     const data = useLazyLoadQuery<InfiniteDiscoveryQuery>(
       infiniteDiscoveryQuery,
       infiniteDiscoveryVariables,
-      { fetchPolicy: "store-and-network", networkCacheConfig: { force: true } }
+      { fetchPolicy: "store-and-network" }
     )
 
     const { resetSavedArtworksCount } = GlobalStore.actions.infiniteDiscovery

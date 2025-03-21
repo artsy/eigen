@@ -1,12 +1,12 @@
 import { ActionType } from "@artsy/cohesion"
 import {
-  Spacer,
   Flex,
+  Screen,
   Separator,
-  Tabs,
   Skeleton,
   SkeletonText,
-  Screen,
+  Spacer,
+  Tabs,
 } from "@artsy/palette-mobile"
 import { TabsContainer } from "@artsy/palette-mobile/dist/elements/Tabs/TabsContainer"
 import { StackScreenProps } from "@react-navigation/stack"
@@ -16,14 +16,12 @@ import { Inbox_me$data } from "__generated__/Inbox_me.graphql"
 import { ConversationsContainer } from "app/Scenes/Inbox/Components/Conversations/Conversations"
 import { MyBidsContainer } from "app/Scenes/MyBids/MyBids"
 import { listenToNativeEvents } from "app/store/NativeModel"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
-import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { track } from "app/utils/track"
 import { ActionNames, ActionTypes } from "app/utils/track/schema"
-import React, { memo } from "react"
+import React, { memo, Suspense } from "react"
 import { EmitterSubscription } from "react-native"
-import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { createRefetchContainer, graphql, RelayRefetchProp, useLazyLoadQuery } from "react-relay"
 
 enum Tab {
   bids = "bids",
@@ -147,26 +145,29 @@ export const InboxScreenQuery = graphql`
   }
 `
 
+export const InboxScreen: React.FC<InboxQueryRendererProps> = (props) => {
+  return (
+    <Suspense fallback={<InboxPlaceholder />}>
+      <InboxQueryRenderer {...props} />
+    </Suspense>
+  )
+}
+
 interface InboxQueryRendererProps extends StackScreenProps<any> {
   isVisible?: boolean
 }
 
 export const InboxQueryRenderer: React.FC<InboxQueryRendererProps> = memo((props) => {
+  const data = useLazyLoadQuery<InboxQuery>(
+    InboxScreenQuery,
+    {},
+    { fetchPolicy: "store-and-network" }
+  )
+
   return (
     <Sentry.TimeToInitialDisplay record>
       <Screen>
-        <QueryRenderer<InboxQuery>
-          environment={getRelayEnvironment()}
-          query={InboxScreenQuery}
-          variables={{}}
-          render={(...args) =>
-            renderWithPlaceholder({
-              Container: InboxContainer,
-              initialProps: props,
-              renderPlaceholder: () => <InboxPlaceholder />,
-            })(...args)
-          }
-        />
+        <InboxContainer {...props} me={data.me} />
       </Screen>
     </Sentry.TimeToInitialDisplay>
   )
@@ -174,7 +175,7 @@ export const InboxQueryRenderer: React.FC<InboxQueryRendererProps> = memo((props
 
 export const InboxPlaceholder = () => {
   return (
-    <>
+    <Screen>
       <Skeleton>
         {/* Tabs */}
         <Flex justifyContent="space-around" flexDirection="row" px={2} pt={1}>
@@ -198,6 +199,6 @@ export const InboxPlaceholder = () => {
           <PlaceholderBox width={176} height={50} borderRadius={25} />
         </Flex>
       </Flex>
-    </>
+    </Screen>
   )
 }

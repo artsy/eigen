@@ -286,10 +286,7 @@ export const MyProfileHeaderQueryRenderer = withSuspense({
       myProfileHeaderQuery,
       {},
       {
-        fetchPolicy: "network-only",
-        networkCacheConfig: {
-          force: true,
-        },
+        fetchPolicy: "store-and-network",
       }
     )
 

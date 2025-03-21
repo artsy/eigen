@@ -123,9 +123,7 @@ const CollectionQueryRenderer: React.FC<CollectionScreenProps> = ({ collectionID
     CollectionScreenQuery,
     { collectionID },
     {
-      networkCacheConfig: {
-        force: false,
-      },
+      fetchPolicy: "store-and-network",
     }
   )
 
