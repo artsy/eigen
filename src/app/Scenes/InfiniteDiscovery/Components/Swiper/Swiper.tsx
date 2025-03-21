@@ -125,7 +125,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
         lastSwipedCardKey = cards[_activeIndex.value + 1].internalID
       }
 
-      swipedCardX.value = withTiming(0, { duration: 200, easing: Easing.linear }, () => {
+      swipedCardX.value = withTiming(0, { duration: 400, easing: Easing.out(Easing.cubic) }, () => {
         if (hasSwipedCards) {
           swipedKeys.value = swipedKeys.value.slice(0, -1)
           _activeIndex.value = _activeIndex.value + 1
@@ -239,13 +239,17 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
         if (hasSwipedCards) {
           lastSwipedCardKey = cards[_activeIndex.value + 1].internalID
         }
-        swipedCardX.value = withTiming(0, { duration: 200, easing: Easing.linear }, () => {
-          if (hasSwipedCards) {
-            swipedKeys.value = swipedKeys.value.slice(0, -1)
-            _activeIndex.value = _activeIndex.value + 1
+        swipedCardX.value = withTiming(
+          0,
+          { duration: 400, easing: Easing.out(Easing.cubic) },
+          () => {
+            if (hasSwipedCards) {
+              swipedKeys.value = swipedKeys.value.slice(0, -1)
+              _activeIndex.value = _activeIndex.value + 1
+            }
+            swipedCardX.value = -width
           }
-          swipedCardX.value = -width
-        })
+        )
 
         if (!!lastSwipedCardKey) {
           runOnJS(onRewind)(lastSwipedCardKey as Key)
