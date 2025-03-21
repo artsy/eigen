@@ -2,7 +2,7 @@ import { BackButton, Flex } from "@artsy/palette-mobile"
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack"
 import { ArtsyWebViewConfig, ArtsyWebViewPage } from "app/Components/ArtsyWebView"
 import { BidFlow } from "app/Components/Containers/BidFlow"
-import { InboxQueryRenderer, InboxScreenQuery } from "app/Components/Containers/Inbox"
+import { InboxScreen, InboxScreenQuery } from "app/Components/Containers/Inbox"
 import { InquiryQueryRenderer } from "app/Components/Containers/Inquiry"
 import { RegistrationFlow } from "app/Components/Containers/RegistrationFlow"
 import {
@@ -60,7 +60,12 @@ import {
   ArtworkAttributionClassFAQQueryRenderer,
   ArtworkAttributionClassFAQScreenQuery,
 } from "app/Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ"
-import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
+import {
+  ArtworkListScreen,
+  ArtworkListScreenQuery,
+  artworkListVariables,
+} from "app/Scenes/ArtworkList/ArtworkList"
+import { artworkListsQuery } from "app/Scenes/ArtworkLists/ArtworkLists"
 import {
   ARTWORK_MEDIUM_QUERY,
   ArtworkMediumQueryRenderer,
@@ -194,7 +199,7 @@ import {
   ShowMoreInfoScreenQuery,
 } from "app/Scenes/Show/Screens/ShowMoreInfo"
 import { ShowQueryRenderer, ShowScreenQuery } from "app/Scenes/Show/Show"
-import { ShowsForYouScreen, ShowsForYouScreenQuery } from "app/Scenes/Shows/ShowsForYou"
+import { ShowsForYouScreen } from "app/Scenes/Shows/ShowsForYou"
 import {
   SimilarToRecentlyViewedScreen,
   SimilarToRecentlyViewedScreenQuery,
@@ -543,6 +548,8 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [artworkListsQuery],
+    queryVariables: [artworkListVariables],
   },
   {
     path: "/artwork-list/:listID",
@@ -553,6 +560,8 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [ArtworkListScreenQuery],
+    queryVariables: [artworkListVariables],
   },
   {
     path: "/artwork-recommendations",
@@ -716,7 +725,6 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    // TODO: add the query for the artworks grid
     queries: [CollectionScreenQuery],
   },
   {
@@ -908,7 +916,7 @@ export const artsyDotNetRoutes = defineRoutes([
   {
     path: "/inbox",
     name: "Inbox",
-    Component: InboxQueryRenderer,
+    Component: InboxScreen,
     options: {
       isRootViewForTabName: "inbox",
       onlyShowInTabName: "inbox",
@@ -1410,6 +1418,8 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [artworkListsQuery],
+    queryVariables: [artworkListVariables],
   },
   {
     path: "/favorites/saves/:listID",
@@ -1452,7 +1462,8 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    queries: [ShowsForYouScreenQuery],
+    //Not prefetching the query for now because it's dependent on the user's location.
+    queries: [],
   },
   {
     path: "/similar-to-recently-viewed",

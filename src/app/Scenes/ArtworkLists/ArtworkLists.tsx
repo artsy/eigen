@@ -43,11 +43,9 @@ export const ArtworkLists: React.FC<ArtworkListsProps> = ({ isTab = true }) => {
   const space = useSpace()
   const artworkListsColCount = useArtworkListsColCount()
   const [refreshing, setRefreshing] = useState(false)
-  const queryData = useLazyLoadQuery<ArtworkListsQuery>(
-    artworkListsQuery,
-    { count: PAGE_SIZE },
-    { fetchPolicy: "store-and-network" }
-  )
+  const queryData = useLazyLoadQuery<ArtworkListsQuery>(artworkListsQuery, artworkListVariables, {
+    fetchPolicy: "store-and-network",
+  })
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
     ArtworkListsQuery,
@@ -182,8 +180,10 @@ const artworkListsFragment = graphql`
   }
 `
 
-const artworkListsQuery = graphql`
+export const artworkListsQuery = graphql`
   query ArtworkListsQuery($count: Int!, $cursor: String) {
     ...ArtworkLists_collectionsConnection @arguments(count: $count, cursor: $cursor)
   }
 `
+
+export const artworkListVariables = { count: PAGE_SIZE }

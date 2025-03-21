@@ -342,7 +342,6 @@ export const HomeViewSectionTasksQueryRenderer: React.FC<SectionSharedProps> = m
         {
           fetchKey: refetchKey,
           fetchPolicy: "store-and-network",
-          networkCacheConfig: { force: true },
         }
       )
 
