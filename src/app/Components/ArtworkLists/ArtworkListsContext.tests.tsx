@@ -55,7 +55,7 @@ describe("ArtworkListsProvider", () => {
 
       fireEvent.press(screen.getByText("Create New List"))
 
-      expect(screen.getByText("Create a new list")).toBeOnTheScreen()
+      expect(screen.getByText("New list")).toBeOnTheScreen()
     })
 
     describe("Selected/unselected artwork lists state", () => {

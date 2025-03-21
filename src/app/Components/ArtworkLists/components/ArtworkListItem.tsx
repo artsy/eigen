@@ -62,7 +62,7 @@ const Item: FC<ArtworkListItemProps> = (props) => {
 
   return (
     <TouchableOpacity disabled={!!offerSettingsList} onPress={handlePress} testID="artworkListItem">
-      <Flex py={1} px={2} flexDirection="row" alignItems="center">
+      <Flex pb={1} px={2} flexDirection="row" alignItems="center">
         <Join separator={<Spacer x={1} />}>
           <ArtworkListImagePreview imageURL={imageURL} />
 

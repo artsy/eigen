@@ -1,5 +1,6 @@
 import { Box, Flex, Join, SkeletonBox, Spacer } from "@artsy/palette-mobile"
 import { ArtworkListOfferSettingsQuery } from "__generated__/ArtworkListOfferSettingsQuery.graphql"
+import { PREVIEW_SIZE } from "app/Components/ArtworkLists/components/ArtworkListImagePreview"
 import { ArtworkLists } from "app/Components/ArtworkLists/components/ArtworkLists"
 import { RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"
@@ -33,10 +34,10 @@ export const ArtworkListOfferSettings = () => {
 
 const ArtworkListLoadingPlaceholder = () => {
   return (
-    <Flex py={1} px={2} flexDirection="row" alignItems="center">
+    <Flex pb={1} px={2} flexDirection="row" alignItems="center">
       <Join separator={<Spacer x={1} />}>
         {/* Artwork list preview */}
-        <SkeletonBox width={50} height={50} />
+        <SkeletonBox width={PREVIEW_SIZE} height={PREVIEW_SIZE} />
 
         <Flex flex={1}>
           {/* Artwork list name */}

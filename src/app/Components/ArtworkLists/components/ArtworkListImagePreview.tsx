@@ -4,7 +4,7 @@ import {
 } from "app/Components/ArtworkLists/components/ArtworkListImage"
 import { FC } from "react"
 
-const PREVIEW_SIZE = 50
+export const PREVIEW_SIZE = 60
 
 type ArtworkListImagePreviewProps = Omit<ArtworkListImageProps, "size">
 

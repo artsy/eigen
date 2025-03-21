@@ -3,7 +3,7 @@ import { FC } from "react"
 
 export const ArtworkListsBottomSheetSectionTitle: FC<TextProps> = ({ children, ...rest }) => {
   return (
-    <Text variant="sm-display" textAlign="center" {...rest}>
+    <Text variant="lg-display" {...rest}>
       {children}
     </Text>
   )
