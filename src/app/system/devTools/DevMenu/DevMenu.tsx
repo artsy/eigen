@@ -1,11 +1,11 @@
 import { Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 
-import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { LargeHeaderView } from "app/Navigation/utils/LargeHeaderView"
 import { __unsafe__onboardingNavigationRef } from "app/Scenes/Onboarding/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
+import AppInfo from "app/system/AppInfo"
 import { CodePushOptions } from "app/system/devTools/DevMenu/CodePushOptions"
 import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMenuButtonItem"
 import { DevTools } from "app/system/devTools/DevMenu/Components/DevTools"
@@ -18,7 +18,6 @@ import { goBack } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useEffect } from "react"
 import { Alert, NativeModules, PixelRatio, ScrollView } from "react-native"
-import DeviceInfo from "react-native-device-info"
 
 export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
   const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
@@ -81,11 +80,7 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
         !__unsafe__onboardingNavigationRef.current ? <LargeHeaderView /> : null
       }
       <Text variant="xs" color="grey" mx={2} mt={2}>
-        Build:{" "}
-        <Text variant="xs">
-          v{DeviceInfo.getVersion()}, build {DeviceInfo.getBuildNumber()} (
-          {ArtsyNativeModule.gitCommitShortHash})
-        </Text>
+        Version: <Text variant="xs">{AppInfo.getVersion({ includeBuildMetadata: true })}</Text>
       </Text>
       <Text variant="xs" color="grey" mx={2}>
         Email: <Text variant="xs">{userEmail}</Text>

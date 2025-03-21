@@ -1,7 +1,7 @@
+import AppInfo from "app/system/AppInfo"
 import { GraphQLRequest } from "app/system/relay/middlewares/types"
 import { volleyClient } from "app/utils/volleyClient"
 import { Platform } from "react-native"
-import { getVersion } from "react-native-device-info"
 import { RelayNetworkLayerResponse, createRequestError } from "react-relay-network-modern"
 
 export const isErrorStatus = (status: number | undefined) => {
@@ -25,7 +25,7 @@ export const trackError = (
       `kind:${queryKind}`,
       `handler: ${handler}`,
       `OS: ${Platform.OS}`,
-      `appVersion: ${getVersion()}`,
+      `appVersion: ${AppInfo.getVersion()}`,
     ],
   })
 }

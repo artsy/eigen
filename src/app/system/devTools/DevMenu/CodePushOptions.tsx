@@ -8,11 +8,11 @@ import {
   Text,
 } from "@artsy/palette-mobile"
 import { Expandable } from "app/Components/Expandable"
+import AppInfo from "app/system/AppInfo"
 import { canaryKey, productionKey, stagingKey } from "app/system/codepush"
 import { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
 import CodePush from "react-native-code-push"
-import DeviceInfo from "react-native-device-info"
 
 interface CodePushRelease {
   description: string
@@ -158,7 +158,7 @@ export const CodePushOptions = () => {
                 },
                 (codePushPackage) => {
                   // binary version mismatch
-                  const appVersion = DeviceInfo.getVersion()
+                  const appVersion = AppInfo.getVersion()
                   const updateTargetVersion = codePushPackage.appVersion
                   const errorMessage = [
                     "An update is available but it doesn't match your current app version.",

@@ -2,8 +2,8 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import AppInfo from "app/system/AppInfo"
 import { goBack, navigate } from "app/system/navigation/navigate"
-import { appJson } from "app/utils/jsonFiles"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import mockFetch from "jest-fetch-mock"
 import { debounce } from "lodash"
@@ -169,9 +169,7 @@ describe("ArtsyWebViewPage", () => {
       const source = webViewProps(view).source as any
       expect(source).toHaveProperty("headers")
       expect(source?.headers["User-Agent"]).toBe(
-        `Artsy-Mobile android some-system-name/some-system-version Artsy-Mobile/${
-          appJson().version
-        } Eigen/some-build-number/${appJson().version}`
+        `Artsy-Mobile android some-system-name/some-system-version Artsy-Mobile/${AppInfo.getVersion()} Eigen/some-build-number/${AppInfo.getVersion()}`
       )
     })
   })
