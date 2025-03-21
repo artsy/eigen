@@ -7,7 +7,7 @@ export const ArtworkListOfferSettingsHeader = () => {
   }
 
   return (
-    <Box mx={2} mb={2}>
+    <Box px={2} my={2}>
       <Text variant="lg-display">Offer Settings</Text>
 
       <Spacer y={2} />
