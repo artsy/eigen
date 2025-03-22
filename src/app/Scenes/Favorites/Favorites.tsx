@@ -1,4 +1,4 @@
-import { Flex, FollowArtistIcon, HeartIcon, Pill, Screen } from "@artsy/palette-mobile"
+import { BellIcon, Flex, HeartIcon, MultiplePersonsIcon, Pill, Screen } from "@artsy/palette-mobile"
 import { AlertsTab } from "app/Scenes/Favorites/AlertsTab"
 import { FavoritesContextStore, FavoritesTab } from "app/Scenes/Favorites/FavoritesContextStore"
 import { FollowsTab } from "app/Scenes/Favorites/FollowsTab"
@@ -27,14 +27,14 @@ const Pills: {
     key: "saves",
   },
   {
-    Icon: HeartIcon,
-    title: "Alerts",
-    key: "alerts",
-  },
-  {
-    Icon: FollowArtistIcon,
+    Icon: MultiplePersonsIcon,
     title: "Follows",
     key: "follows",
+  },
+  {
+    Icon: BellIcon,
+    title: "Alerts",
+    key: "alerts",
   },
 ]
 

@@ -13,6 +13,7 @@ import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { ArtworkListItem } from "app/Scenes/ArtworkLists/ArtworkListItem"
 import { SavesTabHeader, SavesTabHeaderPlaceholder } from "app/Scenes/ArtworkLists/SavesTabHeader"
 import { useArtworkListsColCount } from "app/Scenes/ArtworkLists/useArtworkListsColCount"
+import { SavesHeader } from "app/Scenes/Favorites/Components/SavesHeader"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { compact } from "lodash"
@@ -35,11 +36,16 @@ import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
  */
 const PAGE_SIZE = isTablet() ? 23 : 11
 
+// TODO: cleanup isFavorites prop when AREnableFavoritesTab ff is released
 interface ArtworkListsProps {
   isTab?: boolean
+  isFavorites?: boolean
 }
 
-export const ArtworkLists: React.FC<ArtworkListsProps> = ({ isTab = true }) => {
+export const ArtworkLists: React.FC<ArtworkListsProps> = ({
+  isTab = true,
+  isFavorites = false,
+}) => {
   const space = useSpace()
   const artworkListsColCount = useArtworkListsColCount()
   const [refreshing, setRefreshing] = useState(false)
@@ -124,8 +130,18 @@ export const ArtworkLists: React.FC<ArtworkListsProps> = ({ isTab = true }) => {
       numColumns={artworkListsColCount}
       keyExtractor={(item) => item.key}
       onEndReached={handleLoadMore}
-      ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer x={2} />}
-      ListHeaderComponent={isPartnerOfferEnabled ? <SavesTabHeader /> : null}
+      ListFooterComponent={
+        isLoadingNext && hasNext ? (
+          <Flex my={4} flexDirection="row" justifyContent="center">
+            <Spinner />
+          </Flex>
+        ) : (
+          <Spacer y={2} />
+        )
+      }
+      ListHeaderComponent={
+        isPartnerOfferEnabled ? isFavorites ? <SavesHeader /> : <SavesTabHeader /> : null
+      }
       refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
     />
   )
