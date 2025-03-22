@@ -8,6 +8,8 @@ import {
   Touchable,
   TrashIcon,
   Dialog,
+  NoImageIcon,
+  Image,
 } from "@artsy/palette-mobile"
 import { deleteSavedSearchMutation } from "app/Scenes/SavedSearchAlert/mutations/deleteSavedSearchAlert"
 import { useState } from "react"
@@ -26,6 +28,11 @@ interface SavedSearchListItemProps {
   title: string
   subtitle?: string
   isSwipingActive?: boolean
+  displayImage?: boolean
+  image?: {
+    url: string
+    blurhash: string
+  }
   onPress: () => void
   onSwipeBegin: (id: string) => void
   onDelete: (id: string) => void
@@ -35,7 +42,17 @@ const FALLBACK_TITLE = "Untitled Alert"
 const DELETE_BUTTON_WIDTH = 91
 
 export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) => {
-  const { id, title, subtitle, isSwipingActive, onPress, onSwipeBegin, onDelete } = props
+  const {
+    id,
+    title,
+    subtitle,
+    isSwipingActive,
+    displayImage,
+    image,
+    onPress,
+    onSwipeBegin,
+    onDelete,
+  } = props
 
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
   const color = useColor()
@@ -156,7 +173,31 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
           <Animated.View style={animatedStyles}>
             <Touchable onPress={onPress} underlayColor={color("black5")}>
               <Box px={2} py={2} backgroundColor="white100">
-                <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
+                <Flex flexDirection="row" alignItems="center" justifyContent="flex-start">
+                  {!!displayImage && (
+                    <Flex mr={1}>
+                      <Flex
+                        testID="Fallback"
+                        bg={color("black5")}
+                        width={60}
+                        height={60}
+                        justifyContent="center"
+                      >
+                        {!!image?.url ? (
+                          <Image
+                            resizeMode="cover"
+                            src={image.url}
+                            width={60}
+                            height={60}
+                            blurhash={image.blurhash}
+                          />
+                        ) : (
+                          <NoImageIcon fill="black60" mx="auto" />
+                        )}
+                      </Flex>
+                    </Flex>
+                  )}
+
                   <Flex flex={1} flexDirection="column">
                     <Text variant="sm" fontWeight="bold">
                       {title ?? FALLBACK_TITLE}
