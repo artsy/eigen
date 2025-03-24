@@ -3,6 +3,7 @@ import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { MotiView } from "moti"
 import React, { useEffect, useState } from "react"
 import { Image } from "react-native"
+import { isTablet } from "react-native-device-info"
 import LinearGradient from "react-native-linear-gradient"
 import { Easing } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -78,6 +79,10 @@ const AnimatedBackground: React.FC = React.memo(() => {
   })
 
   useEffect(() => {
+    if (isTablet()) {
+      return
+    }
+
     const imgProps = Image.resolveAssetSource(require("images/WelcomeImage.webp"))
 
     // We want to animate the background only when the device width is smaller than the scaled image width
