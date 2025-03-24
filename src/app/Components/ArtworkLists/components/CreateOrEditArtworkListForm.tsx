@@ -1,8 +1,19 @@
-import { Button, Flex, Spacer, Switch, Text } from "@artsy/palette-mobile"
+import {
+  ChevronIcon,
+  Collapse,
+  Touchable,
+  Flex,
+  Spacer,
+  Switch,
+  Text,
+  Button,
+} from "@artsy/palette-mobile"
 import { CreateNewArtworkListInput } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/components/CreateNewArtworkListInput"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Formik, FormikHelpers } from "formik"
-import { FC } from "react"
+import { MotiView } from "moti"
+import { FC, useState } from "react"
+import { Keyboard, Platform } from "react-native"
 import * as Yup from "yup"
 
 export interface CreateOrEditArtworkListFormValues {
@@ -21,22 +32,22 @@ const validationSchema = Yup.object().shape({
 })
 
 interface CreateOrEditArtworkListFormProps {
-  mode: "create" | "edit"
+  mode?: "create" | "edit"
   initialValues?: Partial<CreateOrEditArtworkListFormValues>
   onSubmit: (
     values: CreateOrEditArtworkListFormValues,
     helpers: FormikHelpers<CreateOrEditArtworkListFormValues>
   ) => void
-  onBackPress: () => void
 }
 
 export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> = ({
   mode,
   initialValues: _initialValues,
   onSubmit,
-  onBackPress,
 }) => {
+  const [isExpanded, setIsExpanded] = useState(false)
   const AREnableArtworkListOfferability = useFeatureFlag("AREnableArtworkListOfferability")
+  const isAndroid = Platform.OS === "android"
 
   const handleSubmit = (
     values: CreateOrEditArtworkListFormValues,
@@ -70,52 +81,71 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
               value={formik.values.name}
               error={formik.errors.name}
               maxLength={MAX_NAME_LENGTH}
-              onBlur={formik.handleBlur("name")}
+              onBlur={() => {
+                formik.handleBlur("name")
+              }}
               onChangeText={formik.handleChange("name")}
-              required
+              onSubmitEditing={() => {
+                formik.validateForm()
+                if (formik.values.name) {
+                  formik.handleSubmit()
+                }
+              }}
+              returnKeyType="done"
+              autoFocus
             />
 
             {!!AREnableArtworkListOfferability && (
               <>
-                <Spacer y={4} />
+                <Spacer y={2} />
 
-                <Flex flexDirection="row">
-                  <Flex flex={1} mr={1}>
-                    <Text variant="sm-display" color="black100" mb={0.5}>
-                      Shared list
-                    </Text>
-
-                    <Text variant="xs" color="black60">
-                      Shared lists are eligible to receive offers from galleries. Switching sharing
-                      off will make them visible only to you, and you won't receive offers. List
-                      names are always private.
-                    </Text>
-                  </Flex>
-
+                <Flex flexDirection="row" alignItems="center">
                   <Switch
                     value={formik.values.shareableWithPartners}
                     onValueChange={(value) => formik.setFieldValue("shareableWithPartners", value)}
                   />
+                  <Touchable onPress={() => setIsExpanded(!isExpanded)}>
+                    <Flex flexDirection="row">
+                      <Text variant="sm-display" color="black100" mr={0.5} ml={1}>
+                        Share list with galleries
+                      </Text>
+
+                      <MotiView
+                        animate={{ transform: [{ rotate: !!isExpanded ? "-90deg" : "90deg" }] }}
+                        transition={{ type: "timing" }}
+                      >
+                        <ChevronIcon fill="black100" />
+                      </MotiView>
+                    </Flex>
+                  </Touchable>
                 </Flex>
+
+                <Collapse opened={!!isExpanded}>
+                  <Text variant="xs" color="black60" mt={1}>
+                    Shared lists are eligible to receive offers from galleries. Switching sharing
+                    off will make them visible only to you, and you won't receive offers. List names
+                    are always private.
+                  </Text>
+                </Collapse>
               </>
             )}
 
-            <Spacer y={4} />
-
-            <Button
-              block
-              disabled={!formik.isValid || !formik.dirty}
-              loading={formik.isSubmitting}
-              onPress={formik.handleSubmit}
-            >
-              {mode === "create" ? "Save" : "Save Changes"}
-            </Button>
-
-            <Spacer y={1} />
-
-            <Button block variant="outline" onPress={onBackPress}>
-              Back
-            </Button>
+            {!!isAndroid && (
+              <>
+                <Spacer y={4} />
+                <Button
+                  block
+                  disabled={!formik.isValid || !formik.dirty}
+                  loading={formik.isSubmitting}
+                  onPress={() => {
+                    Keyboard.dismiss()
+                    formik.handleSubmit()
+                  }}
+                >
+                  {mode === "create" ? "Save" : "Save Changes"}
+                </Button>
+              </>
+            )}
           </>
         )
       }}

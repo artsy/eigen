@@ -1,4 +1,4 @@
-import { Box, Join, Separator } from "@artsy/palette-mobile"
+import { Flex, Join, Spacer } from "@artsy/palette-mobile"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
 import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
@@ -40,16 +40,17 @@ export const ManageArtworkListView: FC<ManageArtworkListViewProps> = ({
   return (
     <>
       <AutoHeightBottomSheet visible onDismiss={onDismiss}>
-        <ArtworkListsBottomSheetSectionTitle mt={1}>
-          Manage list
-        </ArtworkListsBottomSheetSectionTitle>
+        <Flex mt={2} mx={2} mb={`${bottomOffset}px`}>
+          <Join separator={<Spacer y={2} />}>
+            <>
+              <ArtworkListsBottomSheetSectionTitle>Manage list</ArtworkListsBottomSheetSectionTitle>
+              <Spacer y={1} />
+            </>
 
-        <Join separator={<Separator my={1} />}>
-          <ManageArtworkListMenuItem label="Edit List" onPress={openEditView} />
-          <ManageArtworkListMenuItem label="Delete List" onPress={openDeleteView} />
-        </Join>
-
-        <Box height={`${bottomOffset}px`} />
+            <ManageArtworkListMenuItem label="Edit List" onPress={openEditView} />
+            <ManageArtworkListMenuItem label="Delete List" onPress={openDeleteView} />
+          </Join>
+        </Flex>
       </AutoHeightBottomSheet>
 
       <DeleteArtworkListView
