@@ -5,7 +5,6 @@ import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/Components/useImpressionsTracking"
 import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { CollectorSignals } from "app/utils/getArtworkSignalTrackingFields"
 import {
@@ -53,22 +52,18 @@ export const ArtworkRecommendationsRail: React.FC<
 
   const handleMorePress = () => {
     trackEvent(tracks.tappedMore("viewAll"))
-    navigate("/artwork-recommendations")
   }
 
   const handleHeaderPress = () => {
     trackEvent(tracks.tappedMore("header"))
   }
 
+  const moreHref = "/artwork-recommendations"
+
   return (
     <Flex mb={mb}>
       <View ref={railRef}>
-        <SectionTitle
-          href="/artwork-recommendations"
-          title={title}
-          onPress={handleHeaderPress}
-          mx={2}
-        />
+        <SectionTitle href={moreHref} title={title} onPress={handleHeaderPress} mx={2} />
 
         <ArtworkRail
           {...trackingProps}
@@ -88,6 +83,7 @@ export const ArtworkRecommendationsRail: React.FC<
             )
           }}
           onMorePress={handleMorePress}
+          moreHref={moreHref}
           onViewableItemsChanged={onViewableItemsChanged}
           viewabilityConfig={viewabilityConfig}
           showSaveIcon

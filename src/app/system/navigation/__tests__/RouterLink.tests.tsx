@@ -36,8 +36,13 @@ describe("RouterLink", () => {
 
   const TestTouchableComponent = (props: Partial<RouterLinkProps>) => {
     return (
-      <RouterLink to="/test-route" navigationProps={{ id: "test-id" }} {...props}>
-        <TouchableWithoutFeedback onPress={touchableOnPress}>
+      <RouterLink
+        to="/test-route"
+        navigationProps={{ id: "test-id" }}
+        onPress={touchableOnPress}
+        {...props}
+      >
+        <TouchableWithoutFeedback>
           <Text>Test Link</Text>
         </TouchableWithoutFeedback>
       </RouterLink>
@@ -70,22 +75,40 @@ describe("RouterLink", () => {
     })
   })
 
-  describe("given a children with touchable element", () => {
-    it("navigates given hasChildTouchable", () => {
+  describe("with hasChildTouchable", () => {
+    it("navigates and calls onPress on press", () => {
       renderWithWrappers(<TestTouchableComponent hasChildTouchable />)
 
       fireEvent.press(screen.getByText("Test Link"))
 
       expect(navigate).toHaveBeenCalled()
+      expect(touchableOnPress).toHaveBeenCalled()
     })
 
-    it("does not navigate", () => {
-      renderWithWrappers(<TestTouchableComponent />)
+    describe("when prefetching is disabled", () => {
+      it("calls onPress, navigates and does not prefetch", () => {
+        renderWithWrappers(<TestTouchableComponent hasChildTouchable disablePrefetch />)
 
-      fireEvent.press(screen.getByText("Test Link"))
+        fireEvent.press(screen.getByText("Test Link"))
 
-      expect(navigate).not.toHaveBeenCalled()
-      expect(touchableOnPress).toHaveBeenCalledTimes(1)
+        expect(touchableOnPress).toHaveBeenCalled()
+        expect(navigate).toHaveBeenCalled()
+
+        expect(mockPrefetch).not.toHaveBeenCalled()
+      })
+
+      describe("when `to` is `undefined`", () => {
+        it("calls onPress and does not navigate or prefetch", () => {
+          renderWithWrappers(<TestTouchableComponent hasChildTouchable to={undefined} />)
+
+          fireEvent.press(screen.getByText("Test Link"))
+
+          expect(touchableOnPress).toHaveBeenCalled()
+
+          expect(navigate).not.toHaveBeenCalled()
+          expect(mockPrefetch).not.toHaveBeenCalled()
+        })
+      })
     })
   })
 

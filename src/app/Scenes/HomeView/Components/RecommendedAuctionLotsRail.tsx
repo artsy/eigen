@@ -2,7 +2,6 @@ import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/co
 import { RecommendedAuctionLotsRail_artworkConnection$key } from "__generated__/RecommendedAuctionLotsRail_artworkConnection.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   ArtworkActionTrackingProps,
@@ -62,8 +61,8 @@ export const RecommendedAuctionLotsRail: React.FC<RecommendedAuctionLotsRailProp
           showSaveIcon
           onMorePress={() => {
             trackEvent(tracks.tappedMoreCard(contextScreenOwnerType))
-            navigate("/auctions/lots-for-you-ending-soon")
           }}
+          moreHref={"/auctions/lots-for-you-ending-soon"}
         />
       </View>
     )

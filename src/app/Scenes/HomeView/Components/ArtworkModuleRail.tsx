@@ -3,7 +3,6 @@ import { ArtworkModuleRail_rail$data } from "__generated__/ArtworkModuleRail_rai
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
-import { navigate } from "app/system/navigation/navigate"
 import {
   ArtworkActionTrackingProps,
   extractArtworkActionTrackingProps,
@@ -100,8 +99,6 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
     if (tapEvent) {
       tracking.trackEvent(tapEvent)
     }
-
-    navigate(viewAllUrl)
   }
 
   if (artworks.length === 0) {
@@ -136,6 +133,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
           }
         }}
         onMorePress={handlePressMore}
+        moreHref={viewAllUrl}
         showSaveIcon
       />
     </Flex>

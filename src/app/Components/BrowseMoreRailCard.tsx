@@ -16,7 +16,7 @@ export const BrowseMoreRailCard: React.FC<BrowseMoreRailCardProps> = ({
 }) => {
   return (
     <Flex flex={1} px={1} mx={2} justifyContent="center">
-      <RouterLink hasChildTouchable to={href} onPress={onPress}>
+      <RouterLink disablePrefetch hasChildTouchable to={href} onPress={onPress}>
         <Button
           variant={dark ? "outlineLight" : "outline"}
           accessibilityLabel={text ?? "Browse All Results"}

@@ -22,7 +22,6 @@ import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeView
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -70,7 +69,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     )
   }
 
-  const href = getHomeViewSectionHref(viewAll?.href, section)
+  const moreHref = getHomeViewSectionHref(viewAll?.href, section)
 
   const onSectionViewAll = () => {
     tracking.tappedArtworkGroupViewAll(
@@ -84,8 +83,6 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
       section.contextModule as ContextModule,
       (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
     )
-
-    navigate(href)
   }
 
   // This is a temporary solution to show the long press context menu only on the first artwork section
@@ -94,10 +91,10 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   return (
     <Flex {...flexProps}>
       <SectionTitle
-        href={href}
+        href={moreHref}
         mx={2}
         title={section.component?.title}
-        onPress={href ? onSectionViewAll : undefined}
+        onPress={moreHref ? onSectionViewAll : undefined}
       />
 
       {!!isFirstArtworkSection && <ProgressiveOnboardingLongPressContextMenu />}
@@ -108,6 +105,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         artworks={artworks}
         onPress={handleOnArtworkPress}
         showSaveIcon
+        moreHref={moreHref}
         onMorePress={onMorePress}
       />
 
