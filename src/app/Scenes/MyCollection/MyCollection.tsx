@@ -71,7 +71,7 @@ const MyCollection: React.FC<{
 
   const toast = useToast()
 
-  const hasCollectedArtists = (me.userInterestsConnection?.totalCount ?? 0) > 0
+  const hasCollectedArtists = (me?.userInterestsConnection?.totalCount ?? 0) > 0
 
   const { showVisualClue } = useVisualClue()
   const showMyCollectionCollectedArtistsOnboarding = !!showVisualClue(
