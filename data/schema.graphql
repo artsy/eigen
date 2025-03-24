@@ -8749,6 +8749,129 @@ type CreatePartnerContactSuccess {
   partnerContact: Contact
 }
 
+type CreatePartnerShowDocumentFailure {
+  mutationError: GravityMutationError
+}
+
+input CreatePartnerShowDocumentMutationInput {
+  clientMutationId: String
+
+  # The ID of the partner.
+  partnerId: String!
+
+  # The URL of the document to upload.
+  remoteDocumentUrl: String!
+
+  # The ID of the show.
+  showId: String!
+
+  # The title of the document.
+  title: String!
+}
+
+type CreatePartnerShowDocumentMutationPayload {
+  clientMutationId: String
+
+  # On success: the created document. On error: the error that occurred.
+  documentOrError: CreatePartnerShowDocumentResponseOrError
+}
+
+union CreatePartnerShowDocumentResponseOrError =
+    CreatePartnerShowDocumentFailure
+  | CreatePartnerShowDocumentSuccess
+
+type CreatePartnerShowDocumentSuccess {
+  document: PartnerDocument
+  show: Show
+}
+
+type CreatePartnerShowEventFailure {
+  mutationError: GravityMutationError
+}
+
+input CreatePartnerShowEventMutationInput {
+  clientMutationId: String
+
+  # A description of the event.
+  description: String
+
+  # The end time of the event.
+  endAt: String!
+
+  # The type of event.
+  eventType: String!
+
+  # The ID of the partner.
+  partnerId: String!
+
+  # The ID of the show.
+  showId: String!
+
+  # The start time of the event.
+  startAt: String!
+}
+
+type CreatePartnerShowEventMutationPayload {
+  clientMutationId: String
+
+  # On success: the created show event. On error: the error that occurred.
+  showEventOrError: CreatePartnerShowEventResponseOrError
+}
+
+union CreatePartnerShowEventResponseOrError =
+    CreatePartnerShowEventFailure
+  | CreatePartnerShowEventSuccess
+
+type CreatePartnerShowEventSuccess {
+  show: Show
+  showEvent: ShowEventType
+}
+
+type CreatePartnerShowFailure {
+  mutationError: GravityMutationError
+}
+
+input CreatePartnerShowMutationInput {
+  clientMutationId: String
+
+  # The description of the show.
+  description: String
+
+  # The end date of the show.
+  endAt: String!
+
+  # Is the show featured?
+  featured: Boolean
+
+  # The location id of the show.
+  locationId: String
+
+  # The name of the show.
+  name: String!
+
+  # The id of the partner to create the show for.
+  partnerId: String!
+
+  # The press release of the show.
+  pressRelease: String
+
+  # The start date of the show.
+  startAt: String!
+}
+
+type CreatePartnerShowMutationPayload {
+  clientMutationId: String
+
+  # On success: the created partner show. On error: the error that occurred.
+  showOrError: CreatePartnerShowResponseOrError
+}
+
+union CreatePartnerShowResponseOrError = CreatePartnerShowFailure | CreatePartnerShowSuccess
+
+type CreatePartnerShowSuccess {
+  show: Show
+}
+
 type CreateSaleAgreementFailure {
   mutationError: GravityMutationError
 }
@@ -9382,6 +9505,99 @@ union DeletePageResponseOrError = DeletePageFailure | DeletePageSuccess
 
 type DeletePageSuccess {
   page: Page
+}
+
+type DeletePartnerShowDocumentFailure {
+  mutationError: GravityMutationError
+}
+
+input DeletePartnerShowDocumentMutationInput {
+  clientMutationId: String
+
+  # The ID of the document to delete.
+  documentId: String!
+
+  # The ID of the partner.
+  partnerId: String!
+
+  # The ID of the show.
+  showId: String!
+}
+
+type DeletePartnerShowDocumentMutationPayload {
+  clientMutationId: String
+
+  # On success: the deleted document. On error: the error that occurred.
+  documentOrError: DeletePartnerShowDocumentResponseOrError
+}
+
+union DeletePartnerShowDocumentResponseOrError =
+    DeletePartnerShowDocumentFailure
+  | DeletePartnerShowDocumentSuccess
+
+type DeletePartnerShowDocumentSuccess {
+  document: PartnerDocument
+  show: Show
+}
+
+type DeletePartnerShowEventFailure {
+  mutationError: GravityMutationError
+}
+
+input DeletePartnerShowEventMutationInput {
+  clientMutationId: String
+
+  # The ID of the event to delete.
+  eventId: String!
+
+  # The ID of the partner.
+  partnerId: String!
+
+  # The ID of the show.
+  showId: String!
+}
+
+type DeletePartnerShowEventMutationPayload {
+  clientMutationId: String
+
+  # On success: the deleted show event. On error: the error that occurred.
+  showEventOrError: DeletePartnerShowEventResponseOrError
+}
+
+union DeletePartnerShowEventResponseOrError =
+    DeletePartnerShowEventFailure
+  | DeletePartnerShowEventSuccess
+
+type DeletePartnerShowEventSuccess {
+  show: Show
+  showEvent: ShowEventType
+}
+
+type DeletePartnerShowFailure {
+  mutationError: GravityMutationError
+}
+
+input DeletePartnerShowMutationInput {
+  clientMutationId: String
+
+  # The id of the partner.
+  partnerId: String!
+
+  # The id of the show to delete.
+  showId: String!
+}
+
+type DeletePartnerShowMutationPayload {
+  clientMutationId: String
+
+  # On success: the deleted show. On error: the error that occurred.
+  showOrError: DeletePartnerShowResponseOrError
+}
+
+union DeletePartnerShowResponseOrError = DeletePartnerShowFailure | DeletePartnerShowSuccess
+
+type DeletePartnerShowSuccess {
+  show: Show
 }
 
 # Autogenerated input type of DeleteUserAddress
@@ -14279,6 +14495,19 @@ type Mutation {
   # Create a partner offer for the users
   createPartnerOffer(input: createPartnerOfferMutationInput!): createPartnerOfferMutationPayload
 
+  # Creates a partner show.
+  createPartnerShow(input: CreatePartnerShowMutationInput!): CreatePartnerShowMutationPayload
+
+  # Creates a partner show document.
+  createPartnerShowDocument(
+    input: CreatePartnerShowDocumentMutationInput!
+  ): CreatePartnerShowDocumentMutationPayload
+
+  # Creates a partner show event.
+  createPartnerShowEvent(
+    input: CreatePartnerShowEventMutationInput!
+  ): CreatePartnerShowEventMutationPayload
+
   # Creates a static Markdown-backed sale agreement.
   createSaleAgreement(input: CreateSaleAgreementMutationInput!): CreateSaleAgreementMutationPayload
   createSmsSecondFactor(input: CreateSmsSecondFactorInput!): CreateSmsSecondFactorPayload
@@ -14364,6 +14593,19 @@ type Mutation {
 
   # Deletes a page.
   deletePage(input: DeletePageMutationInput!): DeletePageMutationPayload
+
+  # Deletes a partner show.
+  deletePartnerShow(input: DeletePartnerShowMutationInput!): DeletePartnerShowMutationPayload
+
+  # Deletes a partner show document.
+  deletePartnerShowDocument(
+    input: DeletePartnerShowDocumentMutationInput!
+  ): DeletePartnerShowDocumentMutationPayload
+
+  # Deletes a partner show event.
+  deletePartnerShowEvent(
+    input: DeletePartnerShowEventMutationInput!
+  ): DeletePartnerShowEventMutationPayload
 
   # Delete a User
   deleteUser(input: DeleteUserInput!): DeleteUserPayload
@@ -14612,6 +14854,16 @@ type Mutation {
 
   # Updates a partner artist.
   updatePartnerShow(input: UpdatePartnerShowMutationInput!): UpdatePartnerShowMutationPayload
+
+  # Updates a partner show document.
+  updatePartnerShowDocument(
+    input: UpdatePartnerShowDocumentMutationInput!
+  ): UpdatePartnerShowDocumentMutationPayload
+
+  # Updates a partner show event.
+  updatePartnerShowEvent(
+    input: UpdatePartnerShowEventMutationInput!
+  ): UpdatePartnerShowEventMutationPayload
 
   # Update a quiz artwork interacted_with flag
   updateQuiz(input: updateQuizMutationInput!): updateQuizMutationPayload
@@ -16064,11 +16316,14 @@ type PartnerDocument {
   # A globally unique ID.
   id: ID!
 
-  # A type-specific Gravity Mongo Document ID.
+  # A type-specific ID likely used as a database ID.
   internalID: ID!
   publicURL: String!
   publicUrl: String! @deprecated(reason: "Prefer `publicURL`")
   size: Int! @deprecated(reason: "Prefer `filesize`")
+
+  # A slug ID.
+  slug: ID!
   title: String!
 }
 
@@ -19599,6 +19854,12 @@ type ShowEventType {
     # Formatting option to apply to exhibition period
     format: ExhibitionPeriodFormat = LONG
   ): String
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific Gravity Mongo Document ID.
+  internalID: ID!
   startAt(
     format: String
 
@@ -20756,6 +21017,90 @@ type UpdatePageSuccess {
   page: Page
 }
 
+type UpdatePartnerShowDocumentFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdatePartnerShowDocumentMutationInput {
+  clientMutationId: String
+
+  # The ID of the document to update.
+  documentId: String!
+
+  # The ID of the partner.
+  partnerId: String!
+
+  # The URL of the document to upload.
+  remoteDocumentUrl: String
+
+  # The ID of the show.
+  showId: String!
+
+  # The updated title of the document.
+  title: String
+}
+
+type UpdatePartnerShowDocumentMutationPayload {
+  clientMutationId: String
+
+  # On success: the updated document. On error: the error that occurred.
+  documentOrError: UpdatePartnerShowDocumentResponseOrError
+}
+
+union UpdatePartnerShowDocumentResponseOrError =
+    UpdatePartnerShowDocumentFailure
+  | UpdatePartnerShowDocumentSuccess
+
+type UpdatePartnerShowDocumentSuccess {
+  document: PartnerDocument
+  show: Show
+}
+
+type UpdatePartnerShowEventFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdatePartnerShowEventMutationInput {
+  clientMutationId: String
+
+  # A description of the event.
+  description: String
+
+  # The end time of the event.
+  endAt: String
+
+  # The ID of the event to update.
+  eventId: String!
+
+  # The type of event.
+  eventType: String
+
+  # The ID of the partner.
+  partnerId: String!
+
+  # The ID of the show.
+  showId: String!
+
+  # The start time of the event.
+  startAt: String
+}
+
+type UpdatePartnerShowEventMutationPayload {
+  clientMutationId: String
+
+  # On success: the updated show event. On error: the error that occurred.
+  showEventOrError: UpdatePartnerShowEventResponseOrError
+}
+
+union UpdatePartnerShowEventResponseOrError =
+    UpdatePartnerShowEventFailure
+  | UpdatePartnerShowEventSuccess
+
+type UpdatePartnerShowEventSuccess {
+  show: Show
+  showEvent: ShowEventType
+}
+
 type UpdatePartnerShowFailure {
   mutationError: GravityMutationError
 }
@@ -20763,14 +21108,32 @@ type UpdatePartnerShowFailure {
 input UpdatePartnerShowMutationInput {
   clientMutationId: String
 
-  # Is
+  # The description of the show.
+  description: String
+
+  # The end date of the show.
+  endAt: String
+
+  # Is the show featured?
   featured: Boolean
+
+  # The location id of the show.
+  locationId: String
+
+  # The name of the show.
+  name: String
 
   # The id of the partner to update.
   partnerId: String!
 
+  # The press release of the show.
+  pressRelease: String
+
   # The id of the artist to update.
   showId: String!
+
+  # The start date of the show.
+  startAt: String
 }
 
 type UpdatePartnerShowMutationPayload {
