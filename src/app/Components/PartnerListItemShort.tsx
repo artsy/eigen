@@ -1,4 +1,4 @@
-import { EntityHeader, Flex, Text } from "@artsy/palette-mobile"
+import { EntityHeader, Text } from "@artsy/palette-mobile"
 import { PartnerListItemShortQuery } from "__generated__/PartnerListItemShortQuery.graphql"
 import { PartnerListItemShort_partner$key } from "__generated__/PartnerListItemShort_partner.graphql"
 import { PartnerFollowButtonQueryRenderer } from "app/Components/PartnerFollowButton"
@@ -36,32 +36,28 @@ export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({
     : locations
 
   return (
-    <>
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-        <RouterLink to={data.href} onPress={onPress} style={{ flex: 1 }}>
-          <EntityHeader
-            name={data.name}
-            initials={data.initials}
-            imageUrl={image}
-            meta={
-              <>
-                {!!sortedLocations[0] && (
-                  <Text variant="xs" color="black60">
-                    {sortedLocations[0].city}
-                    {!!(sortedLocations.length > 1) &&
-                      ` and ${sortedLocations.length - 1} more ${pluralize(
-                        "location",
-                        sortedLocations.length - 1
-                      )}`}
-                  </Text>
-                )}
-              </>
-            }
-            RightButton={<PartnerFollowButtonQueryRenderer partnerID={data.internalID} />}
-          />
-        </RouterLink>
-      </Flex>
-    </>
+    <RouterLink to={data.href} onPress={onPress} style={{ flex: 1 }}>
+      <EntityHeader
+        name={data.name}
+        initials={data.initials}
+        imageUrl={image}
+        meta={
+          <>
+            {!!sortedLocations[0] && (
+              <Text variant="xs" color="black60">
+                {sortedLocations[0].city}
+                {!!(sortedLocations.length > 1) &&
+                  ` and ${sortedLocations.length - 1} more ${pluralize(
+                    "location",
+                    sortedLocations.length - 1
+                  )}`}
+              </Text>
+            )}
+          </>
+        }
+        RightButton={<PartnerFollowButtonQueryRenderer partnerID={data.internalID} />}
+      />
+    </RouterLink>
   )
 }
 
