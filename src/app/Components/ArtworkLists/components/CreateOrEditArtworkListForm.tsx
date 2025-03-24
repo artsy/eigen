@@ -47,7 +47,7 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
 }) => {
   const [isExpanded, setIsExpanded] = useState(false)
   const AREnableArtworkListOfferability = useFeatureFlag("AREnableArtworkListOfferability")
-  const isAdnroid = Platform.OS === "android"
+  const isAndroid = Platform.OS === "android"
 
   const handleSubmit = (
     values: CreateOrEditArtworkListFormValues,
@@ -112,7 +112,6 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
 
                       <MotiView
                         animate={{ transform: [{ rotate: !!isExpanded ? "-90deg" : "90deg" }] }}
-                        style={{ transform: [{ rotate: !!isExpanded ? "-90deg" : "90deg" }] }}
                         transition={{ type: "timing" }}
                       >
                         <ChevronIcon fill="black100" />
@@ -131,7 +130,7 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
               </>
             )}
 
-            {!!isAdnroid && (
+            {!!isAndroid && (
               <>
                 <Spacer y={4} />
                 <Button

@@ -8,7 +8,7 @@ import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/Crea
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { noop } from "lodash"
-import { Keyboard } from "react-native"
+import { Keyboard, Platform } from "react-native"
 import { graphql } from "react-relay"
 
 describe("CreateNewArtworkListView", () => {
@@ -106,7 +106,76 @@ describe("CreateNewArtworkListView", () => {
     })
   })
 
-  describe("Sucess state", () => {
+  describe("Save button, Android only", () => {
+    beforeEach(() => {
+      Platform.OS = "android"
+    })
+
+    it("disabled by default", () => {
+      renderWithRelay()
+
+      expect(screen.getByText("Save")).toBeDisabled()
+    })
+
+    it("disabled when artwork list name is empty", () => {
+      renderWithRelay()
+
+      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), helloWorldText)
+      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), "")
+
+      expect(screen.getByText("Save")).toBeDisabled()
+    })
+
+    it("enabled when artwork list name is entered", () => {
+      renderWithRelay()
+
+      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), helloWorldText)
+
+      expect(screen.getByText("Save")).toBeEnabled()
+    })
+  })
+
+  describe("Sucess state Android", () => {
+    beforeEach(() => {
+      Platform.OS = "android"
+    })
+
+    it("when mutation returned success", async () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+      jest.spyOn(Keyboard, "isVisible").mockReturnValue(false)
+
+      const input = screen.getByPlaceholderText(inputPlaceholder)
+      fireEvent.changeText(input, helloWorldText)
+
+      fireEvent.press(screen.getByText("Save"))
+
+      await waitFor(() => {
+        mockResolveLastOperation({
+          Mutation: () => ({
+            createCollection: {
+              responseOrError: {
+                __typename: "CreateCollectionSuccess",
+                collection: {
+                  internalID: "artwork-list-id",
+                  name: helloWorldText,
+                  shareableWithPartners: true,
+                  artworksCount: 0,
+                },
+              },
+            },
+          }),
+        })
+      })
+
+      expect(screen.queryByText("Name is required")).not.toBeOnTheScreen()
+    })
+  })
+
+  describe("Sucess state iOS", () => {
+    beforeEach(() => {
+      Platform.OS = "ios"
+    })
+
     it("when mutation returned success", async () => {
       const { mockResolveLastOperation } = renderWithRelay()
       jest.spyOn(Keyboard, "isVisible").mockReturnValue(false)
