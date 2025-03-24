@@ -48,7 +48,7 @@ commands:
     steps:
       - node/install-packages:
           pkg-manager: yarn
-          cache-version: v13
+          cache-version: v14
   run-relay-compiler:
     steps:
       - run:
@@ -88,7 +88,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v29-pods-{{ checksum ".manifests/cocoapods" }}
+            - v30-pods-{{ checksum ".manifests/cocoapods" }}
       - run:
           name: Install Pods
           command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec npx pod-install; cd ..;
