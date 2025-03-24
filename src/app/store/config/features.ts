@@ -270,6 +270,7 @@ export const features = {
     description: "Enable Favorites tab in bottom navigation",
     readyForRelease: false,
     showInDevMenu: true,
+    echoFlagKey: "AREnableFavoritesTab",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
