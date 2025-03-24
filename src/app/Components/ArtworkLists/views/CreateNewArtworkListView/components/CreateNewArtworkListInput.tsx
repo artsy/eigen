@@ -7,5 +7,5 @@ interface CreateNewArtworkListInputProps extends InputProps {
 }
 
 export const CreateNewArtworkListInput = ({ error, ...rest }: CreateNewArtworkListInputProps) => {
-  return <BottomSheetInput {...rest} error={error} maxLength={rest.maxLength} />
+  return <BottomSheetInput {...rest} error={error} showLimit maxLength={rest.maxLength} />
 }
