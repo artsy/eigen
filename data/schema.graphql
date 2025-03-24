@@ -2550,6 +2550,9 @@ type Artwork implements Node & Searchable & Sellable {
   # Artwork meets minimum metadata criteria to have an alert created from it
   isEligibleToCreateAlert: Boolean!
   isEmbeddableVideo: Boolean
+
+  # Is this work has shipping fee set to fixed amount?
+  isFixedShippingFeeOnly: Boolean
   isForSale: Boolean
   isFramed: Boolean
   isHangable: Boolean
