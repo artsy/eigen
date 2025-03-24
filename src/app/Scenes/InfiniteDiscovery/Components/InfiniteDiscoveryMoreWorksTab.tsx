@@ -1,5 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, SimpleMessage, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { InfiniteDiscoveryMoreWorksTabQuery } from "__generated__/InfiniteDiscoveryMoreWorksTabQuery.graphql"
 import { InfiniteDiscoveryMoreWorksTab_artworks$key } from "__generated__/InfiniteDiscoveryMoreWorksTab_artworks.graphql"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
@@ -15,6 +16,7 @@ import {
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { FC, useCallback } from "react"
+import { Platform } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface MoreWorksTabProps {
@@ -58,7 +60,7 @@ export const MoreWorksTab: FC<MoreWorksTabProps> = ({ artworks: _artworks }) => 
     )
   }, [])
 
-  return (
+  const masonry = (
     <Tabs.Masonry
       data={artworks}
       numColumns={NUM_COLUMNS_MASONRY}
@@ -74,6 +76,9 @@ export const MoreWorksTab: FC<MoreWorksTabProps> = ({ artworks: _artworks }) => 
       renderItem={renderItem}
     />
   )
+
+  // wrap the masonry in a scroll view if on Android, otherwise the masonry will not scroll
+  return Platform.OS === "ios" ? masonry : <BottomSheetScrollView>{masonry}</BottomSheetScrollView>
 }
 
 const fragment = graphql`
