@@ -3,7 +3,7 @@ import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSear
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { isNull } from "lodash"
-import { graphql, QueryRenderer, Environment } from "react-relay"
+import { Environment, graphql, QueryRenderer } from "react-relay"
 
 export interface SearchCriteriaQueryRendererProps {
   environment?: Environment
@@ -63,7 +63,6 @@ export const SearchCriteriaQueryRenderer: React.FC<SearchCriteriaQueryRendererPr
           })
         }}
         variables={{ alertId }}
-        cacheConfig={{ force: true }}
       />
     )
   }
