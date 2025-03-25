@@ -16,7 +16,6 @@ import {
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import React, { memo } from "react"
 import { isTablet } from "react-native-device-info"
@@ -89,9 +88,9 @@ const fragment = graphql`
 `
 
 const query = graphql`
-  query HomeViewSectionCardsQuery($id: String!, $isEnabled: Boolean!) {
+  query HomeViewSectionCardsQuery($id: String!) {
     homeView {
-      section(id: $id) @include(if: $isEnabled) {
+      section(id: $id) {
         ...HomeViewSectionCards_section
       }
     }
@@ -129,10 +128,9 @@ const HomeViewCardsPlaceholder: React.FC = () => {
 export const HomeViewSectionCardsQueryRenderer = memo(
   withSuspense<Pick<SectionSharedProps, "sectionID" | "index">>({
     Component: ({ sectionID, index }) => {
-      const isEnabled = useFeatureFlag("AREnableMarketingCollectionsCategories")
-      const data = useLazyLoadQuery<HomeViewSectionCardsQuery>(query, { id: sectionID, isEnabled })
+      const data = useLazyLoadQuery<HomeViewSectionCardsQuery>(query, { id: sectionID })
 
-      if (!data?.homeView.section || !isEnabled) {
+      if (!data?.homeView.section) {
         return null
       }
 
