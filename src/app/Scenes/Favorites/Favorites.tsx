@@ -7,6 +7,7 @@ import { SavesTab } from "app/Scenes/Favorites/SavesTab"
 
 const Content: React.FC = () => {
   const activeTab = FavoritesContextStore.useStoreState((state) => state.activeTab)
+
   switch (activeTab) {
     case "saves":
       return <SavesTab />
