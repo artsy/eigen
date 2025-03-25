@@ -87,6 +87,7 @@ export const FollowsTab = () => {
               {FOLLOW_OPTIONS.map(({ value, label }) => (
                 <RadioButton
                   key={value}
+                  block
                   onPress={() => {
                     setfollowOption(value)
                     // Dismiss after a short delay to make sure the user can verify their choice
