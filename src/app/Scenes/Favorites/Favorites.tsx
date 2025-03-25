@@ -1,9 +1,15 @@
 import { BellIcon, Flex, HeartIcon, MultiplePersonsIcon, Pill, Screen } from "@artsy/palette-mobile"
+import { PAGE_SIZE } from "app/Components/constants"
+import { alertsQuery } from "app/Scenes/Favorites/Alerts/Alerts"
 import { AlertsTab } from "app/Scenes/Favorites/AlertsTab"
 import { FavoritesLearnMore } from "app/Scenes/Favorites/Components/FavoritesLearnMore"
+import { followedArtistsQuery } from "app/Scenes/Favorites/Components/FollowedArtists"
 import { FavoritesContextStore, FavoritesTab } from "app/Scenes/Favorites/FavoritesContextStore"
 import { FollowsTab } from "app/Scenes/Favorites/FollowsTab"
 import { SavesTab } from "app/Scenes/Favorites/SavesTab"
+import { prefetchQuery } from "app/utils/queryPrefetching"
+import { useEffect } from "react"
+
 const Content: React.FC = () => {
   const activeTab = FavoritesContextStore.useStoreState((state) => state.activeTab)
 
@@ -67,6 +73,19 @@ const FavoritesHeader = () => {
 }
 
 export const FavoritesScreen: React.FC = () => {
+  useEffect(() => {
+    prefetchQuery({
+      query: followedArtistsQuery,
+      variables: {
+        count: PAGE_SIZE,
+      },
+    })
+
+    prefetchQuery({
+      query: alertsQuery,
+    })
+  }, [])
+
   return (
     <Screen>
       <Screen.AnimatedHeader

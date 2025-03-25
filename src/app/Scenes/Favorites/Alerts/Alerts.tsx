@@ -1,26 +1,44 @@
 import { AlertsQuery } from "__generated__/AlertsQuery.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { AlertsListPaginationContainer } from "app/Scenes/Favorites/Alerts/AlertsList"
 import { AlertsListPlaceholder } from "app/Scenes/Favorites/Alerts/AlertsListPlaceholder"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
-import { graphql, QueryRenderer } from "react-relay"
+import { withSuspense } from "app/utils/hooks/withSuspense"
+import { graphql, useLazyLoadQuery } from "react-relay"
 
-export const AlertsQueryRenderer: React.FC = () => {
-  return (
-    <QueryRenderer<AlertsQuery>
-      environment={getRelayEnvironment()}
-      query={graphql`
-        query AlertsQuery {
-          me {
-            ...AlertsList_me
-          }
-        }
-      `}
-      variables={{}}
-      render={renderWithPlaceholder({
-        Container: AlertsListPaginationContainer,
-        renderPlaceholder: () => <AlertsListPlaceholder />,
-      })}
-    />
-  )
-}
+export const alertsQuery = graphql`
+  query AlertsQuery {
+    me {
+      ...AlertsList_me
+    }
+  }
+`
+
+export const AlertsQueryRenderer = withSuspense({
+  Component: ({}) => {
+    const data = useLazyLoadQuery<AlertsQuery>(
+      alertsQuery,
+      {},
+      {
+        fetchPolicy: "store-and-network",
+      }
+    )
+
+    if (!data?.me) {
+      return null
+    }
+
+    return <AlertsListPaginationContainer me={data.me} />
+  },
+  LoadingFallback: () => <AlertsListPlaceholder />,
+  ErrorFallback: (fallbackProps) => {
+    return (
+      <LoadFailureView
+        onRetry={fallbackProps.resetErrorBoundary}
+        showBackButton={true}
+        useSafeArea={false}
+        error={fallbackProps.error}
+        trackErrorBoundary={false}
+      />
+    )
+  },
+})
