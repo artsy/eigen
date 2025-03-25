@@ -1,11 +1,11 @@
 import {
   Box,
   Flex,
+  quoteLeft,
+  quoteRight,
   Spacer,
   Spinner,
   Text,
-  quoteLeft,
-  quoteRight,
   useSpace,
 } from "@artsy/palette-mobile"
 import { MasonryFlashList } from "@shopify/flash-list"
@@ -218,7 +218,6 @@ export const ArtworkAutosuggestResultsQueryRenderer: React.FC<{
         ),
       })}
       variables={{ count: 20, keyword, input: { artistIDs: [artistSlug] } }}
-      cacheConfig={{ force: true }}
     />
   )
 }

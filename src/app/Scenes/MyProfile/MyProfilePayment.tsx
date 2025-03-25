@@ -4,12 +4,10 @@ import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graph
 import { MyProfilePayment_me$data } from "__generated__/MyProfilePayment_me.graphql"
 import { CreditCardDetailsContainer } from "app/Components/CreditCardDetails"
 import { MenuItem } from "app/Components/MenuItem"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderText } from "app/utils/placeholders"
-import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import React, { useCallback, useEffect, useReducer, useState } from "react"
+import React, { Suspense, useCallback, useEffect, useReducer, useState } from "react"
 import {
   ActivityIndicator,
   Alert,
@@ -22,8 +20,8 @@ import {
   commitMutation,
   createPaginationContainer,
   graphql,
-  QueryRenderer,
   RelayPaginationProp,
+  useLazyLoadQuery,
 } from "react-relay"
 
 const NUM_CARDS_TO_FETCH = 100 // stupidly high because most people will have 1 or *maybe* 2
@@ -218,23 +216,26 @@ const MyProfilePaymentContainer = createPaginationContainer(
   }
 )
 
-export const MyProfilePaymentQueryRenderer: React.FC<{}> = ({}) => {
-  return (
-    <QueryRenderer<MyProfilePaymentQuery>
-      environment={getRelayEnvironment()}
-      query={graphql`
-        query MyProfilePaymentQuery($count: Int!) {
-          me {
-            ...MyProfilePayment_me @arguments(count: $count)
-          }
+const MyProfilePaymentSuspense: React.FC = () => {
+  const data = useLazyLoadQuery<MyProfilePaymentQuery>(
+    graphql`
+      query MyProfilePaymentQuery($count: Int!) {
+        me {
+          ...MyProfilePayment_me @arguments(count: $count)
         }
-      `}
-      render={renderWithPlaceholder({
-        Container: MyProfilePaymentContainer,
-        renderPlaceholder: () => <MyProfilePaymentPlaceholder />,
-      })}
-      variables={{ count: NUM_CARDS_TO_FETCH }}
-      cacheConfig={{ force: true }}
-    />
+      }
+    `,
+    { count: NUM_CARDS_TO_FETCH },
+    { fetchPolicy: "store-and-network" }
+  )
+
+  return <MyProfilePaymentContainer me={data.me} />
+}
+
+export const MyProfilePaymentQueryRenderer: React.FC = () => {
+  return (
+    <Suspense fallback={<MyProfilePaymentPlaceholder />}>
+      <MyProfilePaymentSuspense />
+    </Suspense>
   )
 }

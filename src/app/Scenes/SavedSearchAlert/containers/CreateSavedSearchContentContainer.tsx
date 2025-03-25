@@ -56,14 +56,9 @@ const CreateSavedSearchAlertContent: React.FC<CreateSavedSearchAlertContentProps
 
   const refetch = () => {
     setRefetching(true)
-    relay.refetch(
-      {},
-      null,
-      () => {
-        setRefetching(false)
-      },
-      { force: true }
-    )
+    relay.refetch({}, null, () => {
+      setRefetching(false)
+    })
   }
 
   useFocusEffect(
@@ -150,7 +145,6 @@ export const CreateSavedSearchAlertContentQueryRenderer: React.FC<
         )
       }}
       variables={{}}
-      cacheConfig={{ force: true }}
     />
   )
 }

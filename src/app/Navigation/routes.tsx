@@ -88,7 +88,7 @@ import {
   CitySectionListScreenQuery,
 } from "app/Scenes/City/CitySectionList"
 import { CollectionScreen, CollectionScreenQuery } from "app/Scenes/Collection/Collection"
-import { CollectionFullFeaturedArtistListQueryRenderer } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
+import { CollectionFullFeaturedArtistListScreen } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
 import { collectionsByCategoryQuery } from "app/Scenes/CollectionsByCategory/Body"
 import { CollectionsByCategory } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
 import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
@@ -730,7 +730,7 @@ export const artsyDotNetRoutes = defineRoutes([
   {
     path: "/collection/:collectionID/artists",
     name: "FullFeaturedArtistList",
-    Component: CollectionFullFeaturedArtistListQueryRenderer,
+    Component: CollectionFullFeaturedArtistListScreen,
     options: {
       screenOptions: {
         headerTitle: "Featured Artists",

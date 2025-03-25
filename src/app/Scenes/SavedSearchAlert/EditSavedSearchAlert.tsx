@@ -95,7 +95,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
   const refetch = useCallback(
     (backProps?: GoBackProps) => {
       if (backProps?.previousScreen === "Unsubscribe") {
-        relay.refetch({}, null, null, { force: true })
+        relay.refetch({}, null, null)
       }
     },
     [relay]

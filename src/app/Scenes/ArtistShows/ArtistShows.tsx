@@ -164,7 +164,6 @@ export const ArtistShowsScreenQuery = graphql`
 export const ArtistShowsQueryRenderer: React.FC<{ artistID: string }> = ({ artistID }) => {
   return (
     <QueryRenderer<ArtistShowsQuery>
-      cacheConfig={{ force: true }}
       environment={getRelayEnvironment()}
       query={ArtistShowsScreenQuery}
       render={renderWithPlaceholder({

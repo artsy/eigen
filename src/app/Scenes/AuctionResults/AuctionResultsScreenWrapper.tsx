@@ -188,7 +188,7 @@ const getDescriptionByState = (state: AuctionResultsState) => {
   }
 }
 
-export const AuctionResultsScreenScreenWrapperQueryQueryRenderer: React.FC<{
+export const AuctionResultsScreenWrapper: React.FC<{
   state: AuctionResultsState
 }> = ({ state = AuctionResultsState.ALL }) => {
   const space = useSpace()
@@ -201,9 +201,6 @@ export const AuctionResultsScreenScreenWrapperQueryQueryRenderer: React.FC<{
         variables={{
           state,
           sort: AuctionResultsSorts.DATE_DESC,
-        }}
-        cacheConfig={{
-          force: true,
         }}
         render={renderWithPlaceholder({
           Container: AuctionResultsScreenWrapperContainer,
