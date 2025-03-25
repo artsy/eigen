@@ -113,13 +113,14 @@ class PureWrapper extends Component {
 // theme with dark mode support
 function ThemeWithDarkModeSupport({ children }: { children?: React.ReactNode }) {
   const supportDarkMode = useFeatureFlag("ARDarkModeSupport")
+  const enableExtendedSplashScreen = useFeatureFlag("AREnableExtendedSplashScreen")
   const darkMode = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
   return (
     <Theme theme={supportDarkMode ? (darkMode === "dark" ? "v3dark" : "v3light") : undefined}>
       {children}
 
-      <SplashScreen />
+      {!!enableExtendedSplashScreen && <SplashScreen />}
     </Theme>
   )
 }

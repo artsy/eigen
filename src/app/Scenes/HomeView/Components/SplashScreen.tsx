@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 
 const CONFIG = {
-  duration: 2600,
-  fadeDelay: 400,
-  logoFadeDuration: 1400,
-  screenFadeDuration: 600,
+  duration: 2000,
+  logoFadeDelay: 0,
+  logoFadeDuration: 1000,
+  screenFadeDuration: 400,
 }
 
 export const SplashScreen: React.FC = () => {
@@ -28,7 +28,7 @@ export const SplashScreen: React.FC = () => {
     // Fade out logo
     setTimeout(() => {
       logoOpacity.value = withTiming(0, { duration: CONFIG.logoFadeDuration })
-    }, CONFIG.fadeDelay)
+    }, CONFIG.logoFadeDelay)
 
     // Fade out splash screen
     setTimeout(() => {

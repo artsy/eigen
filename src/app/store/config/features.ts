@@ -272,6 +272,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableFavoritesTab",
   },
+  AREnableExtendedSplashScreen: {
+    description: "Enable extended home screen splash screen",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableExtendedSplashScreen",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
