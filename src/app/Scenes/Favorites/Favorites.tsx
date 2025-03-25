@@ -1,5 +1,6 @@
 import { BellIcon, Flex, HeartIcon, MultiplePersonsIcon, Pill, Screen } from "@artsy/palette-mobile"
 import { AlertsTab } from "app/Scenes/Favorites/AlertsTab"
+import { FavoritesLearnMore } from "app/Scenes/Favorites/Components/FavoritesLearnMore"
 import { FavoritesContextStore, FavoritesTab } from "app/Scenes/Favorites/FavoritesContextStore"
 import { FollowsTab } from "app/Scenes/Favorites/FollowsTab"
 import { SavesTab } from "app/Scenes/Favorites/SavesTab"
@@ -68,7 +69,11 @@ const FavoritesHeader = () => {
 export const FavoritesScreen: React.FC = () => {
   return (
     <Screen>
-      <Screen.AnimatedHeader title="Favorites" hideLeftElements />
+      <Screen.AnimatedHeader
+        title="Favorites"
+        hideLeftElements
+        rightElements={<FavoritesLearnMore />}
+      />
 
       <Screen.StickySubHeader title="Favorites" largeTitle separatorComponent={null}>
         <FavoritesHeader />

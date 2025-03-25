@@ -1,0 +1,141 @@
+import {
+  BellIcon,
+  Flex,
+  HeartIcon,
+  InstitutionIcon,
+  Join,
+  MultiplePersonsIcon,
+  QuestionCircleIcon,
+  SettingsIcon,
+  Spacer,
+  Text,
+  Touchable,
+  TrendingIcon,
+} from "@artsy/palette-mobile"
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
+import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
+import { CallapseWithTitle } from "app/Scenes/Favorites/Components/CollapseWithTitle"
+import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
+import React, { useState } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+
+const ICON_SIZE = 18
+
+const TitleWithIcon: React.FC<{ title: string; icon: React.ReactNode }> = ({ title, icon }) => {
+  return (
+    <Flex flexDirection="row">
+      <Flex>{icon}</Flex>
+
+      <Flex flex={1} ml={1}>
+        <Text variant="sm-display">{title}</Text>
+      </Flex>
+    </Flex>
+  )
+}
+
+const SECTIONS = [
+  {
+    title: "Saves",
+    content: (
+      <Flex>
+        <Join separator={<Spacer y={1} />}>
+          <TitleWithIcon icon={<HeartIcon />} title="Curate your own list of works you love" />
+          <TitleWithIcon
+            icon={<TrendingIcon />}
+            title="Get better recommendations with every Save"
+          />
+          <TitleWithIcon
+            icon={<InstitutionIcon />}
+            title="Signal your interest to galleries and you could receiving an offer on your saved artwork from a gallery. Read more."
+          />
+        </Join>
+      </Flex>
+    ),
+  },
+  {
+    title: "Follows",
+    content: (
+      <Flex>
+        <Join separator={<Spacer y={1} />}>
+          <TitleWithIcon
+            icon={<MultiplePersonsIcon />}
+            title="Get updates on your favorite artists, including new artworks, shows, exhibitions and more."
+          />
+          <TitleWithIcon
+            icon={<TrendingIcon />}
+            title="Tailor your experience, helping you discover artworks that match your taste."
+          />
+          <TitleWithIcon
+            icon={<BellIcon />}
+            title="Never miss out by exploring your Activity and receiving timely email updates"
+          />
+        </Join>
+      </Flex>
+    ),
+  },
+  {
+    title: "Alerts",
+    content: (
+      <Flex>
+        <Join separator={<Spacer y={1} />}>
+          <TitleWithIcon
+            icon={<BellIcon />}
+            title="If you’re on the hunt for a particular artwork, create an Alert and we’ll notify you when there’s a match."
+          />
+          <TitleWithIcon
+            icon={<TrendingIcon />}
+            title="Stay informed through emails, push notifications, or within Activity."
+          />
+          <TitleWithIcon
+            icon={<SettingsIcon />}
+            title="Signal your interest to galleries and you could receiving an offer on your saved artwork from a gallery. Read more."
+          />
+        </Join>
+      </Flex>
+    ),
+  },
+]
+export const FavoritesLearnMore = () => {
+  const [showBottomSheet, setShowBottomSheet] = useState(false)
+  const { bottom } = useSafeAreaInsets()
+
+  return (
+    <>
+      <AutomountedBottomSheetModal
+        visible={showBottomSheet}
+        snapPoints={SNAP_POINTS}
+        enableDynamicSizing
+        onDismiss={() => {
+          setShowBottomSheet(false)
+        }}
+        name="LearnMoreBottomSheet"
+      >
+        <BottomSheetScrollView>
+          <Flex p={2}>
+            <Text variant="lg-display" mb={1}>
+              Learn more
+            </Text>
+
+            <Spacer y={2} />
+          </Flex>
+
+          <Join separator={<Spacer y={2} />}>
+            {SECTIONS.map(({ title, content }) => {
+              return (
+                <CallapseWithTitle title={title} key={title}>
+                  {content}
+                </CallapseWithTitle>
+              )
+            })}
+          </Join>
+
+          {/* This is a spacer to make sure the bottom sheet is not covered by the system bottom insets */}
+          <Spacer y={`${bottom}px`} />
+        </BottomSheetScrollView>
+      </AutomountedBottomSheetModal>
+      <Touchable onPress={() => setShowBottomSheet(true)}>
+        <QuestionCircleIcon height={ICON_SIZE} width={ICON_SIZE} />
+      </Touchable>
+    </>
+  )
+}
