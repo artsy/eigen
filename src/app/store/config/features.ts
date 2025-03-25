@@ -200,12 +200,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableSignupLoginFusion",
   },
-  AREnableMarketingCollectionsCategories: {
-    description: "Enable marketing collections categories elements in the home view",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableMarketingCollectionsCategories",
-  },
   AREnablePaymentFailureBanner: {
     description: "Enable payment failure banner",
     readyForRelease: true,
