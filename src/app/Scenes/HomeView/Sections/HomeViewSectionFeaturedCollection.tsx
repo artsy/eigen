@@ -107,7 +107,7 @@ export const HomeViewSectionFeaturedCollection: React.FC<
           showPartnerName
           artworks={artworks}
           onPress={handleOnArtworkPress}
-          onMoreHref={viewAllHref}
+          moreHref={viewAllHref}
           onMorePress={onSectionViewAll}
           hideCuratorsPickSignal
           hideIncreasedInterestSignal

@@ -60,28 +60,39 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
     ...restProps,
   }
 
-  if (!isPrefetchingEnabled) {
-    return <Touchable {...touchableProps} children={children} />
+  const cloneProps = {
+    ...restProps,
+    onPress: handlePress,
   }
 
-  if (!hasChildTouchable) {
+  // If the child component is a touchable element, we don't add another touchable wrapper
+  if (hasChildTouchable && isPrefetchingEnabled) {
     return (
       <Sentinel onChange={handleVisible}>
-        <Touchable {...touchableProps}>{children}</Touchable>
+        {React.Children.map(children, (child) =>
+          React.isValidElement(child) ? React.cloneElement(child, cloneProps) : child
+        )}
       </Sentinel>
     )
   }
 
-  const cloneProps = {
-    onPress: handlePress,
-    ...restProps,
+  if (hasChildTouchable && !isPrefetchingEnabled) {
+    return (
+      <>
+        {React.Children.map(children, (child) =>
+          React.isValidElement(child) ? React.cloneElement(child, cloneProps) : child
+        )}
+      </>
+    )
+  }
+
+  if (!isPrefetchingEnabled) {
+    return <Touchable {...touchableProps} children={children} />
   }
 
   return (
     <Sentinel onChange={handleVisible}>
-      {React.Children.map(children, (child) =>
-        React.isValidElement(child) ? React.cloneElement(child, cloneProps) : child
-      )}
+      <Touchable {...touchableProps}>{children}</Touchable>
     </Sentinel>
   )
 }
