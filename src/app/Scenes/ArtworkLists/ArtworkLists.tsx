@@ -10,12 +10,14 @@ import {
 import { ArtworkListsQuery } from "__generated__/ArtworkListsQuery.graphql"
 import { ArtworkLists_collectionsConnection$key } from "__generated__/ArtworkLists_collectionsConnection.graphql"
 import { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { ArtworkListItem } from "app/Scenes/ArtworkLists/ArtworkListItem"
 import { SavesTabHeader, SavesTabHeaderPlaceholder } from "app/Scenes/ArtworkLists/SavesTabHeader"
 import { useArtworkListsColCount } from "app/Scenes/ArtworkLists/useArtworkListsColCount"
 import { SavesHeader } from "app/Scenes/Favorites/Components/SavesHeader"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { compact } from "lodash"
 import { useState } from "react"
 import { RefreshControl } from "react-native"
@@ -42,110 +44,126 @@ interface ArtworkListsProps {
   isFavorites?: boolean
 }
 
-export const ArtworkLists: React.FC<ArtworkListsProps> = ({
-  isTab = true,
-  isFavorites = false,
-}) => {
-  const space = useSpace()
-  const artworkListsColCount = useArtworkListsColCount()
-  const [refreshing, setRefreshing] = useState(false)
-  const queryData = useLazyLoadQuery<ArtworkListsQuery>(artworkListsQuery, artworkListVariables, {
-    fetchPolicy: "store-and-network",
-  })
+export const ArtworkLists: React.FC<ArtworkListsProps> = withSuspense({
+  Component: ({ isTab = true, isFavorites = false }) => {
+    const space = useSpace()
+    const artworkListsColCount = useArtworkListsColCount()
+    const [refreshing, setRefreshing] = useState(false)
+    const queryData = useLazyLoadQuery<ArtworkListsQuery>(artworkListsQuery, artworkListVariables, {
+      fetchPolicy: "store-and-network",
+    })
 
-  const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
-    ArtworkListsQuery,
-    ArtworkLists_collectionsConnection$key
-  >(artworkListsFragment, queryData)
+    const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
+      ArtworkListsQuery,
+      ArtworkLists_collectionsConnection$key
+    >(artworkListsFragment, queryData)
 
-  const savedArtworksArtworkList = data.me?.savedArtworksArtworkList
-  const customArtworkLists = extractNodes(data.me?.customArtworkLists)
+    const savedArtworksArtworkList = data.me?.savedArtworksArtworkList
+    const customArtworkLists = extractNodes(data.me?.customArtworkLists)
 
-  const artworksList = [savedArtworksArtworkList, ...customArtworkLists]
+    const artworksList = [savedArtworksArtworkList, ...customArtworkLists]
 
-  const isPartnerOfferEnabled = useFeatureFlag("AREnablePartnerOffer")
+    const isPartnerOfferEnabled = useFeatureFlag("AREnablePartnerOffer")
 
-  const handleLoadMore = () => {
-    if (!hasNext || isLoadingNext) {
-      return
+    const handleLoadMore = () => {
+      if (!hasNext || isLoadingNext) {
+        return
+      }
+
+      loadNext(PAGE_SIZE)
     }
 
-    loadNext(PAGE_SIZE)
-  }
+    const handleRefresh = () => {
+      setRefreshing(true)
+      refetch(
+        {},
+        {
+          fetchPolicy: "store-and-network",
+          onComplete: () => {
+            setRefreshing(false)
+          },
+        }
+      )
+    }
 
-  const handleRefresh = () => {
-    setRefreshing(true)
-    refetch(
-      {},
-      {
-        fetchPolicy: "store-and-network",
-        onComplete: () => {
-          setRefreshing(false)
-        },
-      }
+    const artworkSections = compact(
+      artworksList.map((artworkList) => {
+        if (!artworkList) {
+          return null
+        }
+
+        const isDefaultArtworkList =
+          artworkList?.internalID === savedArtworksArtworkList?.internalID
+        return {
+          key: artworkList?.internalID,
+          content: (
+            <ArtworkListItem
+              artworkList={artworkList}
+              imagesLayout={isDefaultArtworkList ? "grid" : "stacked"}
+            />
+          ),
+        }
+      })
     )
-  }
 
-  const artworkSections = compact(
-    artworksList.map((artworkList) => {
-      if (!artworkList) {
-        return null
-      }
+    if (isTab) {
+      return (
+        <Tabs.FlatList
+          contentContainerStyle={{ padding: space(2) }}
+          style={{ paddingTop: space(2) }}
+          data={artworkSections}
+          renderItem={({ item }) => item.content}
+          numColumns={artworkListsColCount}
+          keyExtractor={(item) => item.key}
+          onEndReached={handleLoadMore}
+          ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer x={2} />}
+          ListHeaderComponent={isPartnerOfferEnabled ? <SavesTabHeader /> : null}
+          refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
+        />
+      )
+    }
 
-      const isDefaultArtworkList = artworkList?.internalID === savedArtworksArtworkList?.internalID
-      return {
-        key: artworkList?.internalID,
-        content: (
-          <ArtworkListItem
-            artworkList={artworkList}
-            imagesLayout={isDefaultArtworkList ? "grid" : "stacked"}
-          />
-        ),
-      }
-    })
-  )
-
-  if (isTab) {
     return (
-      <Tabs.FlatList
+      <Screen.FlatList
         contentContainerStyle={{ padding: space(2) }}
-        style={{ paddingTop: space(2) }}
         data={artworkSections}
         renderItem={({ item }) => item.content}
         numColumns={artworkListsColCount}
         keyExtractor={(item) => item.key}
         onEndReached={handleLoadMore}
-        ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer x={2} />}
-        ListHeaderComponent={isPartnerOfferEnabled ? <SavesTabHeader /> : null}
+        ListFooterComponent={
+          isLoadingNext && hasNext ? (
+            <Flex my={4} flexDirection="row" justifyContent="center">
+              <Spinner />
+            </Flex>
+          ) : (
+            <Spacer y={2} />
+          )
+        }
+        ListHeaderComponent={
+          isPartnerOfferEnabled ? isFavorites ? <SavesHeader /> : <SavesTabHeader /> : null
+        }
         refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
       />
     )
-  }
-
-  return (
-    <Screen.FlatList
-      contentContainerStyle={{ padding: space(2) }}
-      data={artworkSections}
-      renderItem={({ item }) => item.content}
-      numColumns={artworkListsColCount}
-      keyExtractor={(item) => item.key}
-      onEndReached={handleLoadMore}
-      ListFooterComponent={
-        isLoadingNext && hasNext ? (
-          <Flex my={4} flexDirection="row" justifyContent="center">
-            <Spinner />
-          </Flex>
-        ) : (
-          <Spacer y={2} />
-        )
-      }
-      ListHeaderComponent={
-        isPartnerOfferEnabled ? isFavorites ? <SavesHeader /> : <SavesTabHeader /> : null
-      }
-      refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
-    />
-  )
-}
+  },
+  LoadingFallback: () => (
+    <Flex flex={1} justifyContent="center" alignItems="center">
+      <Spinner />
+    </Flex>
+  ),
+  ErrorFallback: (fallbackProps) => {
+    return (
+      <LoadFailureView
+        onRetry={fallbackProps.resetErrorBoundary}
+        showBackButton={true}
+        useSafeArea={false}
+        error={fallbackProps.error}
+        trackErrorBoundary={false}
+      />
+    )
+  },
+})
 
 const LoadingIndicator = () => {
   return (
