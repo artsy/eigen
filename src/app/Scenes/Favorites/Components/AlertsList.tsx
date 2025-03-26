@@ -11,7 +11,6 @@ import {
 import { captureMessage } from "@sentry/react-native"
 import { AlertsList_me$data, AlertsList_me$key } from "__generated__/AlertsList_me.graphql"
 import { SAVED_SERCHES_PAGE_SIZE } from "app/Components/constants"
-import { AlertsListPlaceholder } from "app/Scenes/Favorites/Components/AlertsListPlaceholder"
 import { AlertsSortByModal, SortOption } from "app/Scenes/Favorites/Components/AlertsSortByModal"
 import {
   AlertBottomSheet,
@@ -19,25 +18,18 @@ import {
 } from "app/Scenes/SavedSearchAlertsList/Components/AlertBottomSheet"
 import { EmptyMessage } from "app/Scenes/SavedSearchAlertsList/Components/EmptyMessage"
 import { SavedSearchListItem } from "app/Scenes/SavedSearchAlertsList/Components/SavedSearchListItem"
-import { GoBackProps, navigationEvents } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { RefreshEvents, SAVED_ALERT_REFRESH_KEY } from "app/utils/refreshHelpers"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
 
-type RefreshType = "default" | "delete"
-
-interface AlertsListWrapperProps {
+interface AlertsListProps {
   me: AlertsList_me$data
-}
-
-interface AlertsListProps extends AlertsListWrapperProps {
-  refreshMode: RefreshType | null
+  isRefreshing: boolean
   fetchingMore: boolean
-  onRefresh: (type: RefreshType) => void
+  onRefresh: () => void
   onLoadMore: () => void
   onAlertPress: (alert: BottomSheetAlert) => void
 }
@@ -48,34 +40,23 @@ const SORT_OPTIONS: SortOption[] = [
 ]
 
 export const AlertsList: React.FC<AlertsListProps> = (props) => {
-  const { me, fetchingMore, refreshMode, onRefresh, onLoadMore, onAlertPress } = props
+  const { me, isRefreshing, fetchingMore, onRefresh, onLoadMore, onAlertPress } = props
+  // enriching the items with the isSwipingActive state to manage the swipe-to-delete animation
   const [items, setItems] = useState(
     extractNodes(me.alertsConnection).map((node) => ({ ...node, isSwipingActive: false }))
   )
 
-  const refresh = () => {
-    onRefresh("default")
-  }
-
   useEffect(() => {
-    RefreshEvents.addListener(SAVED_ALERT_REFRESH_KEY, refresh)
+    RefreshEvents.addListener(SAVED_ALERT_REFRESH_KEY, onRefresh)
 
     return () => {
-      RefreshEvents.removeListener(SAVED_ALERT_REFRESH_KEY, refresh)
+      RefreshEvents.removeListener(SAVED_ALERT_REFRESH_KEY, onRefresh)
     }
   }, [])
 
   useEffect(() => {
     setItems(extractNodes(me.alertsConnection).map((node) => ({ ...node, isSwipingActive: false })))
   }, [me.alertsConnection])
-
-  if (refreshMode === "delete") {
-    return (
-      <ProvidePlaceholderContext>
-        <AlertsListPlaceholder />
-      </ProvidePlaceholderContext>
-    )
-  }
 
   if (items.length === 0) {
     return <EmptyMessage />
@@ -85,12 +66,14 @@ export const AlertsList: React.FC<AlertsListProps> = (props) => {
     <Screen.FlatList
       data={items}
       keyExtractor={(item) => item.internalID}
-      refreshing={refreshMode !== null}
-      onRefresh={() => {
-        onRefresh("default")
-      }}
+      refreshing={isRefreshing}
+      onRefresh={onRefresh}
       renderItem={({ item }) => {
         const image = item.artworksConnection?.edges?.[0]?.node?.image
+        const imageProps = {
+          url: image?.resized?.url ?? "",
+          blurhash: image?.blurhash ?? "",
+        }
 
         return (
           <SavedSearchListItem
@@ -99,10 +82,7 @@ export const AlertsList: React.FC<AlertsListProps> = (props) => {
             subtitle={item.subtitle}
             isSwipingActive={item.isSwipingActive}
             displayImage={true}
-            image={{
-              url: image?.resized?.url ?? "",
-              blurhash: image?.blurhash ?? "",
-            }}
+            image={imageProps}
             onPress={() => {
               const artworksCount = item.artworksConnection?.counts?.total ?? 0
 
@@ -158,7 +138,7 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
   const [selectedSortValue, setSelectedSortValue] = useState("ENABLED_AT_DESC")
   const prevSelectedSortValue = usePrevious(selectedSortValue)
   const [fetchingMore, setFetchingMore] = useState(false)
-  const [refreshMode, setRefreshMode] = useState<RefreshType | null>(null)
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
@@ -173,7 +153,7 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
           if (__DEV__) {
             console.error(error)
           } else {
-            captureMessage(`SavedSearchesListWrapper loadMore ${error.message}`)
+            captureMessage(`AlertsListPaginationContainer loadMore ${error.message}`)
           }
         }
 
@@ -182,8 +162,8 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
     })
   }
 
-  const onRefresh = (type: RefreshType) => {
-    setRefreshMode(type)
+  const onRefresh = () => {
+    setIsRefreshing(true)
 
     refetch(
       {
@@ -191,15 +171,12 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
       },
       {
         onComplete: () => {
-          setRefreshMode(null)
+          setIsRefreshing(false)
         },
         fetchPolicy: "network-only",
       }
     )
   }
-
-  const refreshRef = useRef(onRefresh)
-  refreshRef.current = onRefresh
 
   const handleSelectOption = (option: SortOption) => {
     setSelectedSortValue(option.value)
@@ -216,26 +193,12 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
   const handleSortByModalClosed = () => {
     setModalVisible(false)
 
-    if (selectedSortValue === prevSelectedSortValue && !__TEST__) {
+    if (selectedSortValue === prevSelectedSortValue) {
       return
     }
 
-    onRefresh("delete")
+    onRefresh()
   }
-
-  useEffect(() => {
-    const onDeleteRefresh = (backProps?: GoBackProps) => {
-      if (backProps?.previousScreen === "EditSavedSearchAlert") {
-        refreshRef.current("delete")
-      }
-    }
-
-    navigationEvents.addListener("goBack", onDeleteRefresh)
-
-    return () => {
-      navigationEvents.removeListener("goBack", onDeleteRefresh)
-    }
-  }, [])
 
   return (
     <ProvideScreenTracking
@@ -259,7 +222,7 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
         <AlertsList
           me={data}
           fetchingMore={fetchingMore}
-          refreshMode={refreshMode}
+          isRefreshing={isRefreshing}
           onRefresh={onRefresh}
           onLoadMore={handleLoadMore}
           onAlertPress={(alert: BottomSheetAlert) => {
