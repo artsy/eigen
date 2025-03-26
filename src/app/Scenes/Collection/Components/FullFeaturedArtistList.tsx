@@ -113,7 +113,7 @@ const CollectionFullFeaturedArtistListPlacholder: React.FC = () => {
 }
 
 export const CollectionFullFeaturedArtistListScreen = withSuspense({
-  Component: (props) => <CollectionFullFeaturedArtistListScreen {...props} />,
+  Component: (props) => <FullFeaturedArtistListQueryRenderer {...props} />,
   LoadingFallback: CollectionFullFeaturedArtistListPlacholder,
   ErrorFallback: () => {
     return <LoadFailureView trackErrorBoundary={false} />
