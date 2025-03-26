@@ -4,7 +4,6 @@ import { FavoritesLearnMore } from "app/Scenes/Favorites/Components/FavoritesLea
 import { FavoritesContextStore, FavoritesTab } from "app/Scenes/Favorites/FavoritesContextStore"
 import { FollowsTab } from "app/Scenes/Favorites/FollowsTab"
 import { SavesTab } from "app/Scenes/Favorites/SavesTab"
-
 const Content: React.FC = () => {
   const activeTab = FavoritesContextStore.useStoreState((state) => state.activeTab)
 
@@ -45,7 +44,7 @@ const FavoritesHeader = () => {
   const { activeTab } = FavoritesContextStore.useStoreState((state) => state)
 
   return (
-    <Flex flexDirection="row" gap={0.5} mx={2}>
+    <Flex flexDirection="row" gap={0.5} mx={2} mb={2}>
       {Pills.map(({ Icon, title, key }) => {
         const isActive = activeTab === key
         return (
