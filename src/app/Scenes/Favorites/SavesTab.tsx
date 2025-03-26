@@ -3,7 +3,7 @@ import { ArtworkLists } from "app/Scenes/ArtworkLists/ArtworkLists"
 
 export const SavesTab = () => {
   return (
-    <Flex mt={-2}>
+    <Flex flex={1} mt={-2}>
       <ArtworkLists isTab={false} isFavorites={true} />
     </Flex>
   )
