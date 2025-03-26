@@ -1,7 +1,7 @@
 import { BellIcon, Flex, HeartIcon, MultiplePersonsIcon, Pill, Screen } from "@artsy/palette-mobile"
 import { PAGE_SIZE } from "app/Components/constants"
-import { alertsQuery } from "app/Scenes/Favorites/Alerts/Alerts"
 import { AlertsTab } from "app/Scenes/Favorites/AlertsTab"
+import { alertsQuery } from "app/Scenes/Favorites/Components/Alerts"
 import { FavoritesLearnMore } from "app/Scenes/Favorites/Components/FavoritesLearnMore"
 import { followedArtistsQuery } from "app/Scenes/Favorites/Components/FollowedArtists"
 import { FavoritesContextStore, FavoritesTab } from "app/Scenes/Favorites/FavoritesContextStore"

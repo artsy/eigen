@@ -1,4 +1,4 @@
-import { AlertsQueryRenderer } from "app/Scenes/Favorites/Alerts/Alerts"
+import { AlertsQueryRenderer } from "app/Scenes/Favorites/Components/Alerts"
 
 export const AlertsTab = () => {
   return <AlertsQueryRenderer />

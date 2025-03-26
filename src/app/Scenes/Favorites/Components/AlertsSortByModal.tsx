@@ -9,7 +9,7 @@ export interface SortOption {
   text: string
 }
 
-export interface SortByModalProps {
+export interface AlertsSortByModalProps {
   visible: boolean
   options: SortOption[]
   selectedValue: string
@@ -17,7 +17,7 @@ export interface SortByModalProps {
   onModalFinishedClosing: () => void
 }
 
-export const SortByModal: React.FC<SortByModalProps> = (props) => {
+export const AlertsSortByModal: React.FC<AlertsSortByModalProps> = (props) => {
   const { visible, options, selectedValue, onSelectOption, onModalFinishedClosing } = props
 
   const { bottom } = useSafeAreaInsets()

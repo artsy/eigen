@@ -1,7 +1,7 @@
 import { AlertsQuery } from "__generated__/AlertsQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { AlertsListPaginationContainer } from "app/Scenes/Favorites/Alerts/AlertsList"
-import { AlertsListPlaceholder } from "app/Scenes/Favorites/Alerts/AlertsListPlaceholder"
+import { AlertsListPaginationContainer } from "app/Scenes/Favorites/Components/AlertsList"
+import { AlertsListPlaceholder } from "app/Scenes/Favorites/Components/AlertsListPlaceholder"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 

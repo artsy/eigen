@@ -7,13 +7,12 @@ import {
   Spinner,
   Text,
   Touchable,
-  useTheme,
 } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { AlertsList_me$data, AlertsList_me$key } from "__generated__/AlertsList_me.graphql"
 import { SAVED_SERCHES_PAGE_SIZE } from "app/Components/constants"
-import { AlertsListPlaceholder } from "app/Scenes/Favorites/Alerts/AlertsListPlaceholder"
-import { SortByModal, SortOption } from "app/Scenes/Favorites/Alerts/SortByModal"
+import { AlertsListPlaceholder } from "app/Scenes/Favorites/Components/AlertsListPlaceholder"
+import { AlertsSortByModal, SortOption } from "app/Scenes/Favorites/Components/AlertsSortByModal"
 import {
   AlertBottomSheet,
   BottomSheetAlert,
@@ -50,7 +49,6 @@ const SORT_OPTIONS: SortOption[] = [
 
 export const AlertsList: React.FC<AlertsListProps> = (props) => {
   const { me, fetchingMore, refreshMode, onRefresh, onLoadMore, onAlertPress } = props
-  const { space } = useTheme()
   const [items, setItems] = useState(
     extractNodes(me.alertsConnection).map((node) => ({ ...node, isSwipingActive: false }))
   )
@@ -269,7 +267,7 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
           }}
         />
 
-        <SortByModal
+        <AlertsSortByModal
           visible={modalVisible}
           options={SORT_OPTIONS}
           selectedValue={selectedSortValue}
