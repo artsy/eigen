@@ -6,7 +6,7 @@ import { useEffect } from "react"
 import { Linking } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
 
-const HOME_VIEW_SPLASH_SCREEN_DELAY = 500
+const HOME_VIEW_SPLASH_SCREEN_DELAY = 1200
 
 export const useHideSplashScreen = () => {
   const { flagsReady: unleashFlagsReady, flagsError: unleashError } = useFlagsStatus()
