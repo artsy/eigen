@@ -3,6 +3,7 @@ import {
   ArrowDownIcon,
   Flex,
   Screen,
+  Spacer,
   Spinner,
   Text,
   Touchable,
@@ -86,7 +87,6 @@ export const AlertsList: React.FC<AlertsListProps> = (props) => {
     <Screen.FlatList
       data={items}
       keyExtractor={(item) => item.internalID}
-      contentContainerStyle={{ paddingTop: space(1) }}
       refreshing={refreshMode !== null}
       onRefresh={() => {
         onRefresh("default")
@@ -135,7 +135,9 @@ export const AlertsList: React.FC<AlertsListProps> = (props) => {
           <Flex alignItems="center" mt={2} mb={4}>
             <Spinner />
           </Flex>
-        ) : null
+        ) : (
+          <Spacer y={4} />
+        )
       }
     />
   )
@@ -193,6 +195,7 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
         onComplete: () => {
           setRefreshMode(null)
         },
+        fetchPolicy: "network-only",
       }
     )
   }
@@ -249,7 +252,7 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
             setModalVisible(true)
           }}
         >
-          <Flex flexDirection="row" alignItems="center" mx={2} mt={2}>
+          <Flex flexDirection="row" alignItems="center" mx={2} mt={2} mb={1}>
             <ArrowDownIcon />
             <Text ml={0.5}>Sort By</Text>
           </Flex>

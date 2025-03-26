@@ -318,6 +318,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
             text: "Delete",
             onPress: () => {
               onDelete()
+              refreshSavedAlerts()
               setVisibleDeleteDialog(false)
             },
           }}

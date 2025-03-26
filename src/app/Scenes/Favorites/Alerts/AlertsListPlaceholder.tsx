@@ -5,7 +5,7 @@ export const AlertsListPlaceholder: React.FC = () => {
   return (
     <>
       <Box>
-        <Flex flexDirection="row" alignItems="center" mx={2} mt={2}>
+        <Flex flexDirection="row" alignItems="center" mx={2} mt={2} mb={1}>
           <ArrowDownIcon />
           <Text ml={0.5}>Sort By</Text>
         </Flex>
