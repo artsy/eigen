@@ -15,8 +15,8 @@ import {
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { CallapseWithTitle } from "app/Scenes/Favorites/Components/CollapseWithTitle"
-import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
 import React, { useState } from "react"
+import { Dimensions } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 const ICON_SIZE = 18
@@ -95,9 +95,13 @@ const SECTIONS = [
     ),
   },
 ]
+
 export const FavoritesLearnMore = () => {
   const [showBottomSheet, setShowBottomSheet] = useState(false)
   const { bottom } = useSafeAreaInsets()
+
+  const { height } = Dimensions.get("screen")
+  const SNAP_POINTS = [height * 0.8, height * 0.9]
 
   return (
     <>
@@ -111,15 +115,13 @@ export const FavoritesLearnMore = () => {
         name="LearnMoreBottomSheet"
       >
         <BottomSheetScrollView>
-          <Flex p={2}>
-            <Text variant="lg-display" mb={1}>
-              Learn more
-            </Text>
+          <Flex px={2} pb={1}>
+            <Text variant="lg-display">Learn more</Text>
 
             <Spacer y={2} />
           </Flex>
 
-          <Join separator={<Spacer y={2} />}>
+          <Join separator={<Spacer y={1} />}>
             {SECTIONS.map(({ title, content }) => {
               return (
                 <CallapseWithTitle title={title} key={title}>
