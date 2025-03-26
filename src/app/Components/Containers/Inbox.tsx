@@ -13,13 +13,15 @@ import { StackScreenProps } from "@react-navigation/stack"
 import * as Sentry from "@sentry/react-native"
 import { InboxQuery } from "__generated__/InboxQuery.graphql"
 import { Inbox_me$data } from "__generated__/Inbox_me.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { ConversationsContainer } from "app/Scenes/Inbox/Components/Conversations/Conversations"
 import { MyBidsContainer } from "app/Scenes/MyBids/MyBids"
 import { listenToNativeEvents } from "app/store/NativeModel"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { track } from "app/utils/track"
 import { ActionNames, ActionTypes } from "app/utils/track/schema"
-import React, { memo, Suspense } from "react"
+import React, { memo } from "react"
 import { EmitterSubscription } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp, useLazyLoadQuery } from "react-relay"
 
@@ -145,34 +147,6 @@ export const InboxScreenQuery = graphql`
   }
 `
 
-export const InboxScreen: React.FC<InboxQueryRendererProps> = (props) => {
-  return (
-    <Suspense fallback={<InboxPlaceholder />}>
-      <InboxQueryRenderer {...props} />
-    </Suspense>
-  )
-}
-
-interface InboxQueryRendererProps extends StackScreenProps<any> {
-  isVisible?: boolean
-}
-
-export const InboxQueryRenderer: React.FC<InboxQueryRendererProps> = memo((props) => {
-  const data = useLazyLoadQuery<InboxQuery>(
-    InboxScreenQuery,
-    {},
-    { fetchPolicy: "store-and-network" }
-  )
-
-  return (
-    <Sentry.TimeToInitialDisplay record>
-      <Screen>
-        <InboxContainer {...props} me={data.me} />
-      </Screen>
-    </Sentry.TimeToInitialDisplay>
-  )
-})
-
 export const InboxPlaceholder = () => {
   return (
     <Screen>
@@ -202,3 +176,31 @@ export const InboxPlaceholder = () => {
     </Screen>
   )
 }
+
+interface InboxQueryRendererProps extends StackScreenProps<any> {
+  isVisible?: boolean
+}
+
+const InboxQueryRenderer: React.FC<InboxQueryRendererProps> = memo((props) => {
+  const data = useLazyLoadQuery<InboxQuery>(
+    InboxScreenQuery,
+    {},
+    { fetchPolicy: "store-and-network" }
+  )
+
+  return (
+    <Sentry.TimeToInitialDisplay record>
+      <Screen>
+        <InboxContainer {...props} me={data.me} />
+      </Screen>
+    </Sentry.TimeToInitialDisplay>
+  )
+})
+
+export const InboxScreen = withSuspense({
+  Component: InboxQueryRenderer,
+  LoadingFallback: InboxPlaceholder,
+  ErrorFallback: () => {
+    return <LoadFailureView trackErrorBoundary={false} />
+  },
+})
