@@ -47,7 +47,6 @@ export const FollowedArtists: React.FC<Props> = ({ me }) => {
         loadNext(PAGE_SIZE)
       }}
       keyExtractor={(item, index) => item.artist?.id || index.toString()}
-      contentContainerStyle={{ paddingVertical: space(1) }}
       onEndReachedThreshold={0.2}
       refreshControl={RefreshControl}
       style={{ paddingHorizontal: 0 }}

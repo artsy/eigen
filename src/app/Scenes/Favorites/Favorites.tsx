@@ -44,7 +44,7 @@ const FavoritesHeader = () => {
   const { activeTab } = FavoritesContextStore.useStoreState((state) => state)
 
   return (
-    <Flex flexDirection="row" gap={0.5} mx={2} mb={2}>
+    <Flex flexDirection="row" gap={0.5} mx={2} mb={2} mt={1}>
       {Pills.map(({ Icon, title, key }) => {
         const isActive = activeTab === key
         return (
