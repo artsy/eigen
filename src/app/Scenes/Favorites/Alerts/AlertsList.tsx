@@ -9,7 +9,7 @@ import {
   useTheme,
 } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
-import { AlertsList_me$data } from "__generated__/AlertsList_me.graphql"
+import { AlertsList_me$data, AlertsList_me$key } from "__generated__/AlertsList_me.graphql"
 import { SAVED_SERCHES_PAGE_SIZE } from "app/Components/constants"
 import { AlertsListPlaceholder } from "app/Scenes/Favorites/Alerts/AlertsListPlaceholder"
 import { SortByModal, SortOption } from "app/Scenes/Favorites/Alerts/SortByModal"
@@ -25,14 +25,13 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { RefreshEvents, SAVED_ALERT_REFRESH_KEY } from "app/utils/refreshHelpers"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect, useRef, useState } from "react"
-import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
+import { graphql, usePaginationFragment } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
 
 type RefreshType = "default" | "delete"
 
 interface AlertsListWrapperProps {
   me: AlertsList_me$data
-  relay: RelayPaginationProp
 }
 
 interface AlertsListProps extends AlertsListWrapperProps {
@@ -142,8 +141,17 @@ export const AlertsList: React.FC<AlertsListProps> = (props) => {
   )
 }
 
-export const AlertsListWrapper: React.FC<AlertsListWrapperProps> = (props) => {
-  const { relay } = props
+interface AlertsListPaginationContainerProps {
+  me: AlertsList_me$key
+}
+
+export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContainerProps> = ({
+  me,
+}) => {
+  const { data, loadNext, isLoadingNext, refetch, hasNext } = usePaginationFragment(
+    alertsListFragment,
+    me
+  )
 
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedAlert, setSelectedAlert] = useState<BottomSheetAlert | null>(null)
@@ -153,37 +161,38 @@ export const AlertsListWrapper: React.FC<AlertsListWrapperProps> = (props) => {
   const [refreshMode, setRefreshMode] = useState<RefreshType | null>(null)
 
   const handleLoadMore = () => {
-    if (!relay.hasMore() || relay.isLoading()) {
+    if (!hasNext || isLoadingNext) {
       return
     }
-    setFetchingMore(true)
-    relay.loadMore(SAVED_SERCHES_PAGE_SIZE, (error) => {
-      if (error) {
-        if (__DEV__) {
-          console.error(error)
-        } else {
-          captureMessage(`SavedSearchesListWrapper loadMore ${error.message}`)
-        }
-      }
 
-      setFetchingMore(false)
+    setFetchingMore(true)
+
+    loadNext(SAVED_SERCHES_PAGE_SIZE, {
+      onComplete: (error) => {
+        if (error) {
+          if (__DEV__) {
+            console.error(error)
+          } else {
+            captureMessage(`SavedSearchesListWrapper loadMore ${error.message}`)
+          }
+        }
+
+        setFetchingMore(false)
+      },
     })
   }
 
   const onRefresh = (type: RefreshType) => {
     setRefreshMode(type)
 
-    relay.refetchConnection(
-      SAVED_SERCHES_PAGE_SIZE,
-      (error) => {
-        if (error) {
-          console.error(error)
-        }
-
-        setRefreshMode(null)
-      },
+    refetch(
       {
         sort: selectedSortValue,
+      },
+      {
+        onComplete: () => {
+          setRefreshMode(null)
+        },
       }
     )
   }
@@ -245,8 +254,9 @@ export const AlertsListWrapper: React.FC<AlertsListWrapperProps> = (props) => {
             <Text ml={0.5}>Sort By</Text>
           </Flex>
         </Touchable>
+
         <AlertsList
-          {...props}
+          me={data}
           fetchingMore={fetchingMore}
           refreshMode={refreshMode}
           onRefresh={onRefresh}
@@ -277,67 +287,44 @@ export const AlertsListWrapper: React.FC<AlertsListWrapperProps> = (props) => {
   )
 }
 
-export const AlertsListPaginationContainer = createPaginationContainer(
-  AlertsListWrapper,
-  {
-    me: graphql`
-      fragment AlertsList_me on Me
-      @argumentDefinitions(
-        count: { type: "Int", defaultValue: 20 }
-        cursor: { type: "String" }
-        sort: { type: "AlertsConnectionSortEnum", defaultValue: ENABLED_AT_DESC }
-      ) {
-        alertsConnection(first: $count, after: $cursor, sort: $sort)
-          @connection(key: "AlertsList_alertsConnection") {
-          pageInfo {
-            hasNextPage
-            startCursor
-            endCursor
-          }
-          edges {
-            node {
-              internalID
-              artistSeriesIDs
-              title: displayName(only: [artistIDs])
-              subtitle: displayName(except: [artistIDs])
-              artworksConnection(first: 1) {
-                counts {
-                  total
-                }
-                edges {
-                  node {
-                    image {
-                      resized(version: "larger", width: 60, height: 60) {
-                        url
-                      }
-                      blurhash
-                    }
+const alertsListFragment = graphql`
+  fragment AlertsList_me on Me
+  @refetchable(queryName: "AlertsList_meRefetch")
+  @argumentDefinitions(
+    count: { type: "Int", defaultValue: 20 }
+    cursor: { type: "String" }
+    sort: { type: "AlertsConnectionSortEnum", defaultValue: ENABLED_AT_DESC }
+  ) {
+    alertsConnection(first: $count, after: $cursor, sort: $sort)
+      @connection(key: "AlertsList_alertsConnection") {
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      edges {
+        node {
+          internalID
+          artistSeriesIDs
+          title: displayName(only: [artistIDs])
+          subtitle: displayName(except: [artistIDs])
+          artworksConnection(first: 1) {
+            counts {
+              total
+            }
+            edges {
+              node {
+                image {
+                  resized(version: "larger", width: 60, height: 60) {
+                    url
                   }
+                  blurhash
                 }
               }
             }
           }
         }
       }
-    `,
-  },
-  {
-    getVariables(_props, { count, cursor }, fragmentVariables) {
-      return {
-        ...fragmentVariables,
-        count,
-        cursor,
-      }
-    },
-    getConnectionFromProps(props) {
-      return props.me.alertsConnection
-    },
-    query: graphql`
-      query AlertsListQuery($count: Int!, $cursor: String, $sort: AlertsConnectionSortEnum) {
-        me {
-          ...AlertsList_me @arguments(count: $count, cursor: $cursor, sort: $sort)
-        }
-      }
-    `,
+    }
   }
-)
+`
