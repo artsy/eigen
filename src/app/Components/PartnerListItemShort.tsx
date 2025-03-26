@@ -38,6 +38,7 @@ export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({
   return (
     <RouterLink to={data.href} onPress={onPress} style={{ flex: 1 }}>
       <EntityHeader
+        avatarSize="sm"
         name={data.name}
         initials={data.initials}
         imageUrl={image}
