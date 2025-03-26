@@ -372,7 +372,12 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
       }
     }
 
-    if (isInAuction && artworkAboveTheFold?.sale && artworkAboveTheFold?.saleArtwork) {
+    if (
+      isInAuction &&
+      artworkAboveTheFold?.sale &&
+      artworkAboveTheFold?.saleArtwork &&
+      !artworkAboveTheFold.sale.isClosed
+    ) {
       sections.push({
         key: "lotDetailsSection",
         element: (
