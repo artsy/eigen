@@ -1,9 +1,9 @@
-import { Touchable, TouchableProps } from "@artsy/palette-mobile"
+import { Flex, Touchable, TouchableProps } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { Sentinel } from "app/utils/Sentinel"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { usePrefetch } from "app/utils/queryPrefetching"
-import React from "react"
+import React, { useState } from "react"
 import { GestureResponderEvent } from "react-native"
 import { Variables } from "relay-runtime"
 
@@ -33,6 +33,7 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
 }) => {
   const prefetchUrl = usePrefetch()
   const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
+  const [isPrefetchComplete, setPrefetchComplete] = useState(false)
 
   const isPrefetchingEnabled = !disablePrefetch && enableViewPortPrefetching && to
 
@@ -50,7 +51,9 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
 
   const handleVisible = (isVisible: boolean) => {
     if (isPrefetchingEnabled && isVisible) {
-      prefetchUrl(to, prefetchVariables)
+      prefetchUrl(to, prefetchVariables, () => {
+        setPrefetchComplete(true)
+      })
     }
   }
 
@@ -69,9 +72,11 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   if (hasChildTouchable && isPrefetchingEnabled) {
     return (
       <Sentinel onChange={handleVisible}>
-        {React.Children.map(children, (child) =>
-          React.isValidElement(child) ? React.cloneElement(child, cloneProps) : child
-        )}
+        <Border show={isPrefetchComplete}>
+          {React.Children.map(children, (child) => {
+            return React.isValidElement(child) ? React.cloneElement(child, cloneProps) : child
+          })}
+        </Border>
       </Sentinel>
     )
   }
@@ -92,7 +97,21 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
 
   return (
     <Sentinel onChange={handleVisible}>
-      <Touchable {...touchableProps}>{children}</Touchable>
+      <Border show={isPrefetchComplete}>
+        <Touchable {...touchableProps}>{children}</Touchable>
+      </Border>
     </Sentinel>
+  )
+}
+
+const Border: React.FC<{ show: boolean }> = ({ show, children }) => {
+  if (!show) {
+    return <>{children}</>
+  }
+
+  return (
+    <Flex borderColor="green" border="1px solid" display="inline">
+      {children}
+    </Flex>
   )
 }
