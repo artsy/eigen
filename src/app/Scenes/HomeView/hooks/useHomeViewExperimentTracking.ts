@@ -1,20 +1,23 @@
-import { ExperimentViewed, ActionType, OwnerType } from "@artsy/cohesion"
-import { HomeViewQuery$data } from "__generated__/HomeViewQuery.graphql"
+import { ActionType, ExperimentViewed, OwnerType } from "@artsy/cohesion"
+import {
+  useHomeViewExperimentTrackingQuery,
+  useHomeViewExperimentTrackingQuery$data,
+} from "__generated__/useHomeViewExperimentTrackingQuery.graphql"
 import { HomeViewStore } from "app/Scenes/HomeView/HomeViewContext"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { compact } from "lodash"
 import { useEffect } from "react"
+import { fetchQuery, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
-export function useHomeViewExperimentTracking(
-  homeViewExperiments: HomeViewQuery$data["homeView"]["experiments"]
-) {
+export const useHomeViewExperimentTracking = () => {
   const trackedExperiments = HomeViewStore.useStoreState((state) => state.trackedExperiments)
   const addTrackedExperiment = HomeViewStore.useStoreActions(
     (actions) => actions.addTrackedExperiment
   )
   const { trackEvent } = useTracking()
 
-  function trackViewedExperiment(name: string, variant: string) {
+  const trackViewedExperiment = (name: string, variant: string) => {
     const payload: ExperimentViewed = {
       action: ActionType.experimentViewed,
       experiment_name: name,
@@ -26,9 +29,10 @@ export function useHomeViewExperimentTracking(
     trackEvent(payload)
   }
 
-  useEffect(() => {
-    const experiments = compact(homeViewExperiments)
-    experiments.forEach(({ name, variant, enabled }) => {
+  const trackExperiments = (
+    homeViewExperiments: useHomeViewExperimentTrackingQuery$data["homeView"]["experiments"]
+  ) => {
+    compact(homeViewExperiments).forEach(({ name, variant, enabled }) => {
       if (!enabled) {
         console.warn(`Experiment is not enabled: ${name}`)
         return
@@ -44,5 +48,38 @@ export function useHomeViewExperimentTracking(
         addTrackedExperiment(name)
       }
     })
-  }, [homeViewExperiments])
+  }
+
+  const fetchAndTrackExperiments = async () => {
+    fetchQuery<useHomeViewExperimentTrackingQuery>(
+      getRelayEnvironment(),
+      graphql`
+        query useHomeViewExperimentTrackingQuery {
+          homeView {
+            experiments {
+              name
+              variant
+              enabled
+            }
+          }
+        }
+      `,
+      {}
+    ).subscribe({
+      error: (error: any) => {
+        console.error("Unable to fetch saved artworks count.", error)
+      },
+      next: (data) => {
+        console.log(
+          "[useHomeViewExperimentTracking] Fetched experiments",
+          data.homeView?.experiments
+        )
+        trackExperiments(data.homeView?.experiments)
+      },
+    })
+  }
+
+  useEffect(() => {
+    fetchAndTrackExperiments()
+  }, [])
 }
