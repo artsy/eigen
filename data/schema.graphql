@@ -14803,6 +14803,11 @@ type Mutation {
   repositionArtworksInPartnerShow(
     input: RepositionArtworksInPartnerShowMutationInput!
   ): RepositionArtworksInPartnerShowMutationPayload
+
+  # Reposition installation shots in a partner show, determining their display order.
+  repositionInstallShotsInPartnerShow(
+    input: RepositionInstallShotsInPartnerShowMutationInput!
+  ): RepositionInstallShotsInPartnerShowMutationPayload
   requestConditionReport(
     # Parameters for RequestConditionReport
     input: RequestConditionReportInput!
@@ -14856,6 +14861,9 @@ type Mutation {
   submitOfferOrderWithConversation(
     input: CommerceSubmitOrderWithOfferInput!
   ): CommerceSubmitOrderWithOfferPayload
+
+  # Submit an order
+  submitOrder(input: submitOrderInput!): submitOrderPayload
   transferMyCollection(
     # Parameters for TransferMyCollection
     input: TransferMyCollectionInput!
@@ -15447,6 +15455,10 @@ type Order {
   taxTotal: Money
 }
 
+enum OrderCreditCardWalletTypeEnum {
+  APPLE_PAY
+}
+
 enum OrderModeEnum {
   BUY
   OFFER
@@ -15461,6 +15473,10 @@ type OrderMutationSuccess {
 }
 
 union OrderParty = Partner | User
+
+enum OrderPaymentMethodEnum {
+  CREDIT_CARD
+}
 
 enum OrderSourceEnum {
   ARTWORK_PAGE
@@ -18660,6 +18676,35 @@ union RepositionArtworksInPartnerShowResponseOrError =
   | RepositionArtworksInPartnerShowSuccess
 
 type RepositionArtworksInPartnerShowSuccess {
+  show: Show
+}
+
+type RepositionInstallShotsInPartnerShowFailure {
+  mutationError: GravityMutationError
+}
+
+input RepositionInstallShotsInPartnerShowMutationInput {
+  clientMutationId: String
+
+  # An ordered array of image IDs representing the new display order.
+  imageIds: [String!]!
+
+  # The ID of the show.
+  showId: String!
+}
+
+type RepositionInstallShotsInPartnerShowMutationPayload {
+  clientMutationId: String
+
+  # On success: the show with repositioned installation shots. On error: the error that occurred.
+  showOrError: RepositionInstallShotsInPartnerShowResponseOrError
+}
+
+union RepositionInstallShotsInPartnerShowResponseOrError =
+    RepositionInstallShotsInPartnerShowFailure
+  | RepositionInstallShotsInPartnerShowSuccess
+
+type RepositionInstallShotsInPartnerShowSuccess {
   show: Show
 }
 
@@ -23884,6 +23929,21 @@ type startIdentityVerificationMutationPayload {
   startIdentityVerificationResponseOrError: StartIdentityVerificationResponseOrError
 }
 
+input submitOrderInput {
+  clientMutationId: String
+
+  # Stripe confirmation token.
+  confirmationToken: String
+
+  # Order id.
+  id: ID!
+}
+
+type submitOrderPayload {
+  clientMutationId: String
+  orderOrError: SetOrderFulfillmentOptionResponse
+}
+
 input updateAlertInput {
   acquireable: Boolean
   additionalGeneIDs: [String]
@@ -23984,8 +24044,14 @@ input updateOrderInput {
   buyerPhoneNumberCountryCode: String
   clientMutationId: String
 
+  # Credit card wallet type
+  creditCardWalletType: OrderCreditCardWalletTypeEnum
+
   # Order id.
   id: ID!
+
+  # Payment method.
+  paymentMethod: OrderPaymentMethodEnum
 
   # Shipping address line 1
   shippingAddressLine1: String
