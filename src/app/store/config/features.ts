@@ -266,6 +266,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableFavoritesTab",
   },
+  AREnableRedesignedSettings: {
+    description: "Enable redesigned settings tab",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableRedesignedSettings",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
