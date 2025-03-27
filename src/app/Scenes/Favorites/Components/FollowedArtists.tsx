@@ -47,11 +47,9 @@ export const FollowedArtists: React.FC<Props> = ({ me }) => {
         loadNext(PAGE_SIZE)
       }}
       keyExtractor={(item, index) => item.artist?.id || index.toString()}
-      contentContainerStyle={{ paddingVertical: space(1) }}
       onEndReachedThreshold={0.2}
       refreshControl={RefreshControl}
-      style={{ paddingHorizontal: 0 }}
-      ItemSeparatorComponent={() => <Spacer y={1} />}
+      ItemSeparatorComponent={() => <Spacer y={2} />}
       ListFooterComponent={
         isLoadingNext && hasNext ? (
           <Flex my={4} flexDirection="row" justifyContent="center">
@@ -64,9 +62,10 @@ export const FollowedArtists: React.FC<Props> = ({ me }) => {
       renderItem={({ item }) => {
         return (
           <ArtistListItem
+            avatarSize="sm"
             artist={item.artist}
             withFeedback
-            containerStyle={{ paddingHorizontal: space(2), paddingVertical: space(0.5) }}
+            containerStyle={{ paddingHorizontal: space(2) }}
           />
         )
       }}

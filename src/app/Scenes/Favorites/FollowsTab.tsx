@@ -45,7 +45,7 @@ export const FollowsTab = () => {
 
   return (
     <Flex flex={1}>
-      <Flex p={2}>
+      <Flex px={2} pb={2}>
         <Touchable
           haptic
           onPress={() => {

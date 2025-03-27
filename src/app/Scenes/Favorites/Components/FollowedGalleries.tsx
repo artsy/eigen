@@ -47,11 +47,10 @@ export const FollowedGalleries: React.FC<Props> = ({ me }) => {
         loadNext(PAGE_SIZE)
       }}
       keyExtractor={(item, index) => item.id || index.toString()}
-      contentContainerStyle={{ paddingVertical: space(1), paddingHorizontal: space(2) }}
+      contentContainerStyle={{ paddingHorizontal: space(2) }}
       onEndReachedThreshold={0.2}
       refreshControl={RefreshControl}
-      style={{ paddingHorizontal: 0 }}
-      ItemSeparatorComponent={() => <Spacer y={1} />}
+      ItemSeparatorComponent={() => <Spacer y={2} />}
       ListFooterComponent={
         isLoadingNext && hasNext ? (
           <Flex my={4} flexDirection="row" justifyContent="center">

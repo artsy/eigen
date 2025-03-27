@@ -1,4 +1,4 @@
-import { Flex, Screen, Spacer, useSpace } from "@artsy/palette-mobile"
+import { Flex, Screen, Spacer } from "@artsy/palette-mobile"
 import { FollowedShowsQuery } from "__generated__/FollowedShowsQuery.graphql"
 import { FollowedShows_me$key } from "__generated__/FollowedShows_me.graphql"
 import { ShowItemRowContainer } from "app/Components/Lists/ShowItemRow"
@@ -18,8 +18,6 @@ interface Props {
 }
 
 export const FollowedShows: React.FC<Props> = ({ me }) => {
-  const space = useSpace()
-
   const { data, loadNext, isLoadingNext, refetch, hasNext } = usePaginationFragment(
     followedShowsFragment,
     me
@@ -47,7 +45,6 @@ export const FollowedShows: React.FC<Props> = ({ me }) => {
         loadNext(PAGE_SIZE)
       }}
       keyExtractor={(item, index) => item.id || index.toString()}
-      contentContainerStyle={{ paddingVertical: space(1) }}
       onEndReachedThreshold={0.2}
       refreshControl={RefreshControl}
       style={{ paddingHorizontal: 0 }}
