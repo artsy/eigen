@@ -67,7 +67,7 @@ export const useHomeViewExperimentTracking = () => {
       {}
     ).subscribe({
       error: (error: any) => {
-        console.error("Unable to fetch saved artworks count.", error)
+        console.error("Unable to fetch experiments.", error)
       },
       next: (data) => {
         console.log(
