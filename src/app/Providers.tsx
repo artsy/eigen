@@ -4,6 +4,7 @@ import { PortalProvider } from "@gorhom/portal"
 import FlagProvider from "@unleash/proxy-client-react"
 import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ShareSheetProvider } from "app/Components/ShareSheet/ShareSheetContext"
+import { SplashScreen } from "app/Scenes/HomeView/Components/SplashScreen"
 import { WrappedFlagProvider } from "app/system/flags/Components/WrappedFlagProvider"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -36,6 +37,7 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       ScreenDimensionsProvider,
       RelayDefaultEnvProvider,
       ThemeWithDarkModeSupport, // uses: GlobalStoreProvider
+      HomeViewSplashScreenProvider, // uses: useFeatureFlag
       // TODO: rename to ScreenContextProvider
       Screen.ScreenScrollContextProvider,
       AppWideErrorBoundary,
@@ -118,5 +120,17 @@ function ThemeWithDarkModeSupport({ children }: { children?: React.ReactNode }) 
     <Theme theme={supportDarkMode ? (darkMode === "dark" ? "v3dark" : "v3light") : undefined}>
       {children}
     </Theme>
+  )
+}
+
+function HomeViewSplashScreenProvider({ children }: { children?: React.ReactNode }) {
+  const enableExtendedSplashScreen = useFeatureFlag("AREnableExtendedSplashScreen")
+
+  return (
+    <>
+      {children}
+
+      {!!enableExtendedSplashScreen && <SplashScreen />}
+    </>
   )
 }
