@@ -144,7 +144,6 @@ const ArtistListItem: React.FC<Props> = ({
 
   return (
     <RouterLink
-      disablePrefetch
       noFeedback={!withFeedback}
       // Only navigate if there is an href and navigation is not disabled by passing `onPress` or
       to={!disableNavigation ? href : undefined}
@@ -242,7 +241,11 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
       deathday
       coverArtwork {
         image {
-          url(version: "small")
+          # Requesting "small" causes this fragment to be refetched unexpectedly because the relay
+          # store usually contains artists with "larger" cover artworks (see ArtistScreenQuery).
+          # We can also disable prefetching on the RouterLink to avoid this, but it is better to
+          # prefetch a larger image than it is to make a additional requests for a smaller one.
+          url(version: "larger")
         }
       }
       image {
