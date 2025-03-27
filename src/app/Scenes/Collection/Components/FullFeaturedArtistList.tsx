@@ -5,8 +5,10 @@ import {
   ArtistListItemContainer as ArtistListItem,
   ArtistListItemPlaceholder,
 } from "app/Components/ArtistListItem"
+import { LoadFailureView } from "app/Components/LoadFailureView"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { compact, times } from "lodash"
-import React, { Suspense } from "react"
+import React from "react"
 import { FlatList, ViewProps } from "react-native"
 import { createFragmentContainer, graphql, useLazyLoadQuery } from "react-relay"
 
@@ -96,16 +98,6 @@ const FullFeaturedArtistListQueryRenderer: React.FC<{ collectionID: string }> = 
   return <CollectionFeaturedArtistsContainer collection={data.collection} />
 }
 
-export const CollectionFullFeaturedArtistListScreen: React.FC<{ collectionID: string }> = ({
-  collectionID,
-}) => {
-  return (
-    <Suspense fallback={<CollectionFullFeaturedArtistListPlacholder />}>
-      <FullFeaturedArtistListQueryRenderer collectionID={collectionID} />
-    </Suspense>
-  )
-}
-
 const CollectionFullFeaturedArtistListPlacholder: React.FC = () => {
   return (
     <Skeleton>
@@ -119,3 +111,11 @@ const CollectionFullFeaturedArtistListPlacholder: React.FC = () => {
     </Skeleton>
   )
 }
+
+export const CollectionFullFeaturedArtistListScreen = withSuspense({
+  Component: (props) => <FullFeaturedArtistListQueryRenderer {...props} />,
+  LoadingFallback: CollectionFullFeaturedArtistListPlacholder,
+  ErrorFallback: () => {
+    return <LoadFailureView trackErrorBoundary={false} />
+  },
+})
