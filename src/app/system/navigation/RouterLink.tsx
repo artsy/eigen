@@ -17,6 +17,8 @@ export interface RouterLinkProps {
   children: React.ReactNode
 }
 
+type PrefetchState = "started" | "complete" | null
+
 /**
  * Wrapper component that enables navigation when pressed, using the `to` prop.
  * It supports optional prefetching and ensures proper touch handling for nested touchable elements.
@@ -33,7 +35,7 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
 }) => {
   const prefetchUrl = usePrefetch()
   const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
-  const [isPrefetchComplete, setPrefetchComplete] = useState(false)
+  const [prefetchState, setPrefetchState] = useState<PrefetchState>(null)
 
   const isPrefetchingEnabled = !disablePrefetch && enableViewPortPrefetching && to
 
@@ -50,9 +52,10 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   }
 
   const handleVisible = (isVisible: boolean) => {
+    setPrefetchState("started")
     if (isPrefetchingEnabled && isVisible) {
       prefetchUrl(to, prefetchVariables, () => {
-        setPrefetchComplete(true)
+        setPrefetchState("complete")
       })
     }
   }
@@ -72,7 +75,7 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   if (hasChildTouchable && isPrefetchingEnabled) {
     return (
       <Sentinel onChange={handleVisible}>
-        <Border show={isPrefetchComplete}>
+        <Border prefetchState={prefetchState}>
           {React.Children.map(children, (child) => {
             return React.isValidElement(child) ? React.cloneElement(child, cloneProps) : child
           })}
@@ -97,20 +100,22 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
 
   return (
     <Sentinel onChange={handleVisible}>
-      <Border show={isPrefetchComplete}>
+      <Border prefetchState={prefetchState}>
         <Touchable {...touchableProps}>{children}</Touchable>
       </Border>
     </Sentinel>
   )
 }
 
-const Border: React.FC<{ show: boolean }> = ({ show, children }) => {
-  if (!show) {
+const Border: React.FC<{ prefetchState: PrefetchState }> = ({ children, prefetchState }) => {
+  if (!prefetchState) {
     return <>{children}</>
   }
 
+  const borderColor = prefetchState === "complete" ? "green" : "yellow"
+
   return (
-    <Flex borderColor="green" border="1px solid" display="inline">
+    <Flex border={`1px dotted ${borderColor}`} display="inline">
       {children}
     </Flex>
   )
