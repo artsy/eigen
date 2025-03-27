@@ -10,35 +10,34 @@ interface ContextGridCTAProps {
   label: string
 }
 
-export const ContextGridCTA: React.FC<ContextGridCTAProps> = (props) => {
+export const ContextGridCTA: React.FC<ContextGridCTAProps> = ({ href, label, contextModule }) => {
   const { trackEvent } = useTracking()
-  const { href, label } = props
 
-  if (href && label) {
-    return (
-      <RouterLink
-        to={href}
-        accessibilityLabel="Context Grid CTA"
-        onPress={() =>
-          trackEvent({
-            action_name: Schema.ActionNames.ViewAll,
-            action_type: Schema.ActionTypes.Tap,
-            flow: Schema.Flow.RecommendedArtworks,
-            context_module: props.contextModule,
-          })
-        }
-      >
-        <Flex flexDirection="row" alignContent="center">
-          <Text variant="sm" textAlign="left" weight="medium">
-            {label}
-          </Text>
-          <Flex alignSelf="center">
-            <ArrowRightIcon fill="black30" ml={1} />
-          </Flex>
-        </Flex>
-      </RouterLink>
-    )
-  } else {
+  if (!href || !label) {
     return null
   }
+
+  return (
+    <RouterLink
+      to={href}
+      accessibilityLabel="Context Grid CTA"
+      onPress={() =>
+        trackEvent({
+          action_name: Schema.ActionNames.ViewAll,
+          action_type: Schema.ActionTypes.Tap,
+          flow: Schema.Flow.RecommendedArtworks,
+          context_module: contextModule,
+        })
+      }
+    >
+      <Flex flexDirection="row" alignContent="center">
+        <Text variant="sm" textAlign="left" weight="medium">
+          {label}
+        </Text>
+        <Flex alignSelf="center">
+          <ArrowRightIcon fill="black30" ml={1} />
+        </Flex>
+      </Flex>
+    </RouterLink>
+  )
 }
