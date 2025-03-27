@@ -144,6 +144,7 @@ const ArtistListItem: React.FC<Props> = ({
 
   return (
     <RouterLink
+      disablePrefetch
       noFeedback={!withFeedback}
       // Only navigate if there is an href and navigation is not disabled by passing `onPress` or
       to={!disableNavigation ? href : undefined}
