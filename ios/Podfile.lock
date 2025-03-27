@@ -2681,7 +2681,7 @@ SPEC CHECKSUMS:
   CwlMachBadInstructionHandler: ea1030428925d9bf340882522af30712fb4bf356
   CwlPosixPreconditionTesting: a125dee731883f2582715f548c6b6c92c7fde145
   CwlPreconditionTesting: ccfd08aca58d14e04062b2a3dd2fd52e09857453
-  DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
+  DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": 7a3ac7ad2b9bae43aadb4dca08113bb495c98f3e
   FBAEMKit: 31a20c2d8744d8c57d3a5b7ae4e27b4fdd819193
@@ -2700,13 +2700,13 @@ SPEC CHECKSUMS:
   fmt: 10c6e61f4be25dc963c36bd73fc7b1705fe975be
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: db786c2561cb49a09ae98407f52460096ab8a44f
-  glog: 08b301085f15bcbb6ff8632a8ebaf239aae04e6a
+  glog: 69ef571f3de08433d766d614c73a9838a06bf7eb
   GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
   GTMAppAuth: 99fb010047ba3973b7026e45393f51f27ab965ae
   GTMSessionFetcher: 0e876eea9782ec6462e91ab872711c357322c94f
   hermes-engine: eb4a80f6bf578536c58a44198ec93a30f6e69218
-  Interstellar: cd0c3290e249b5f156113a4c6c9c09dd0f418aaa
+  Interstellar: ab67502af03105f92100a043e178d188a1a437c9
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   iOSSnapshotTestCase: a670511f9ee3829c2b9c23e6e68f315fd7b6790f
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
@@ -2732,7 +2732,7 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   Pulley: edc993fb57f7eb20541c8453d0fce10559f21dac
   Quick: ce1276c7c27ba2da3cb2fd0cde053c3648b3b22d
-  RCT-Folly: 84578c8756030547307e4572ab1947de1685c599
+  RCT-Folly: 4464f4d875961fce86008d45f4ecf6cef6de0740
   RCTDeprecation: 7691283dd69fed46f6653d376de6fa83aaad774c
   RCTRequired: eac044a04629288f272ee6706e31f81f3a2b4bfe
   RCTTypeSafety: cfe499e127eda6dd46e5080e12d80d0bfe667228

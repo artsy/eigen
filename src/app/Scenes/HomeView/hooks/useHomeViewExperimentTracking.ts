@@ -70,10 +70,6 @@ export const useHomeViewExperimentTracking = () => {
         console.error("Unable to fetch experiments.", error)
       },
       next: (data) => {
-        console.log(
-          "[useHomeViewExperimentTracking] Fetched experiments",
-          data.homeView?.experiments
-        )
         trackExperiments(data.homeView?.experiments)
       },
     })
