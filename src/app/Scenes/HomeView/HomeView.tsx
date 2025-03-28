@@ -85,7 +85,7 @@ export const HomeView: React.FC = memo(() => {
   useEnableProgressiveOnboarding()
 
   const prefetchUrl = usePrefetch()
-  useHomeViewExperimentTracking(queryData.homeView?.experiments)
+  useHomeViewExperimentTracking()
 
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
 
@@ -267,13 +267,6 @@ const sectionsFragment = graphql`
 
 export const homeViewScreenQuery = graphql`
   query HomeViewQuery($count: Int!, $cursor: String) {
-    homeView {
-      experiments {
-        name
-        variant
-        enabled
-      }
-    }
     viewer {
       ...HomeViewSectionsConnection_viewer @arguments(count: $count, cursor: $cursor)
     }
