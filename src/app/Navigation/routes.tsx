@@ -133,7 +133,7 @@ import {
   InfiniteDiscoveryQueryRenderer,
   infiniteDiscoveryVariables,
 } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
-import { Favorites as LegacyFavorites } from "app/Scenes/LegacyFavorites/Favorites"
+import { Favorites as LegacyFavorites } from "app/Scenes/LegacyFavorites/LegacyFavorites"
 import { MyAccountQueryRenderer, MyAccountScreenQuery } from "app/Scenes/MyAccount/MyAccount"
 import { MyAccountDeleteAccountQueryRenderer } from "app/Scenes/MyAccount/MyAccountDeleteAccount"
 import { MyAccountEditEmailQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditEmail"
@@ -865,7 +865,7 @@ export const artsyDotNetRoutes = defineRoutes([
   },
   {
     path: "/favorites",
-    name: "Favorites",
+    name: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "Favorites" : "LegacyFavorites",
     Component: unsafe_getFeatureFlag("AREnableFavoritesTab") ? Favorites : LegacyFavorites,
     options: {
       isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
