@@ -117,7 +117,7 @@ describe("RouterLink", () => {
       renderWithWrappers(<TestComponent />)
 
       await waitFor(() => {
-        expect(mockPrefetch).toHaveBeenCalledWith("/test-route", undefined)
+        expect(mockPrefetch).toHaveBeenCalledWith("/test-route", undefined, expect.any(Function))
       })
     })
 
@@ -125,7 +125,11 @@ describe("RouterLink", () => {
       renderWithWrappers(<TestComponent prefetchVariables={{ slug: "banksy" }} />)
 
       await waitFor(() => {
-        expect(mockPrefetch).toHaveBeenCalledWith("/test-route", { slug: "banksy" })
+        expect(mockPrefetch).toHaveBeenCalledWith(
+          "/test-route",
+          { slug: "banksy" },
+          expect.any(Function)
+        )
       })
     })
 
@@ -133,7 +137,7 @@ describe("RouterLink", () => {
       renderWithWrappers(<TestComponent disablePrefetch />)
 
       it("does not prefetch", () => {
-        expect(mockPrefetch).not.toHaveBeenCalledWith("/test-route")
+        expect(mockPrefetch).not.toHaveBeenCalledWith("/test-route", expect.any(Function))
       })
     })
 

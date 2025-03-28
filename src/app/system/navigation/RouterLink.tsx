@@ -1,6 +1,7 @@
 import { Flex, Touchable, TouchableProps } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { Sentinel } from "app/utils/Sentinel"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import React, { useState } from "react"
@@ -33,6 +34,7 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   hasChildTouchable,
   ...restProps
 }) => {
+  const enablePrefetchingIndicator = useDevToggle("DTShowPrefetchingIndicator")
   const prefetchUrl = usePrefetch()
   const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
   const [prefetchState, setPrefetchState] = useState<PrefetchState>(null)
@@ -53,10 +55,10 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
 
   const handleVisible = (isVisible: boolean) => {
     if (isPrefetchingEnabled && isVisible) {
-      setPrefetchState("started")
+      if (enablePrefetchingIndicator) setPrefetchState("started")
 
       prefetchUrl(to, prefetchVariables, () => {
-        setPrefetchState("complete")
+        if (enablePrefetchingIndicator) setPrefetchState("complete")
       })
     }
   }
