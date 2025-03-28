@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import {
   Button,
   Flex,
@@ -19,9 +19,17 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { useSetDevMode } from "app/system/devTools/useSetDevMode"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { compact } from "lodash"
 import { Alert, ScrollView } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { useTracking } from "react-tracking"
+
+type MenuItemT = {
+  title: string
+  href?: string
+  ownerType?: OwnerType
+  onPress?: () => void
+}
 
 export const MyProfileSettings: React.FC = () => {
   const supportsDarkMode = useFeatureFlag("ARDarkModeSupport")
@@ -124,6 +132,56 @@ export const MyProfileSettings: React.FC = () => {
       </Screen.ScrollView>
     )
   }
+
+  const ACCOUNT_MENU_ITEMS: MenuItemT[] = compact([
+    {
+      title: "Edit Profile",
+      href: "my-profile/edit",
+      ownerType: OwnerType.accountSettings,
+    },
+    {
+      title: "Account Settings",
+      href: "my-account",
+      ownerType: OwnerType.accountSettings,
+    },
+    {
+      title: "Payment",
+      href: "my-profile/payment",
+      ownerType: OwnerType.accountPayment,
+    },
+    {
+      title: "Push Notifications",
+      href: "my-profile/push-notifications",
+      ownerType: OwnerType.accountNotifications,
+    },
+    {
+      title: "Send Feedback",
+      onPress: () => {
+        presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")
+      },
+    },
+    {
+      title: "Personal Data Request",
+      href: "privacy-request",
+      ownerType: OwnerType.accountPersonalDataRequest,
+    },
+    {
+      title: "Recently Viewed",
+      href: "recently-viewed",
+      ownerType: OwnerType.recentlyViewed,
+    },
+    supportsDarkMode && {
+      title: "Dark Mode",
+      href: "/settings/dark-mode",
+      ownerType: OwnerType.accountDarkMode,
+    },
+    {
+      title: "About",
+      href: "about",
+      ownerType: OwnerType.about,
+    },
+  ])
+
   return (
     <ScrollView
       contentContainerStyle={{ paddingTop: space(2), backgroundColor: color("background") }}
@@ -132,57 +190,51 @@ export const MyProfileSettings: React.FC = () => {
         Settings
       </Text>
       <Spacer y={2} />
-      <MenuItem title="Edit Profile" href="my-profile/edit" />
-      <Separator my={1} borderColor={separatorColor} />
-      <MenuItem title="Account Settings" href="my-account" />
-      <Separator my={1} borderColor={separatorColor} />
-      <MenuItem title="Payment" href="my-profile/payment" />
-      <Separator my={1} borderColor={separatorColor} />
+      <Join separator={<Separator my={1} borderColor={separatorColor} />}>
+        {ACCOUNT_MENU_ITEMS.map((item, index) => {
+          return (
+            <MenuItem
+              key={index}
+              title={item.title}
+              href={item.href}
+              onPress={() => {
+                item.onPress?.()
+                if (item.ownerType) {
+                  tracking.trackEvent(
+                    tracks.trackMenuTap({
+                      subject: item.title,
+                      ownerType: item.ownerType,
+                      position: index,
+                    })
+                  )
+                }
+              }}
+            />
+          )
+        })}
+      </Join>
 
-      <MenuItem title="Push Notifications" href="my-profile/push-notifications" />
-      <Separator my={1} borderColor={separatorColor} />
+      <Spacer y={4} />
 
-      <MenuItem
-        title="Send Feedback"
-        onPress={() => presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")}
-      />
-      <Separator my={1} borderColor={separatorColor} />
-
-      <MenuItem title="Personal Data Request" href="privacy-request" />
-      <Separator my={1} borderColor={separatorColor} />
-
-      <MenuItem
-        title="Recently Viewed"
-        href="recently-viewed"
-        onPress={() => {
-          tracking.trackEvent(tracks.trackMenuTap("my-profile/recently-viewed"))
-        }}
-      />
-      {!!supportsDarkMode && (
-        <>
-          <Separator my={1} borderColor={separatorColor} />
-
-          <MenuItem
-            title="Dark Mode"
-            href="/settings/dark-mode"
-            onPress={() => {
-              tracking.trackEvent(tracks.trackMenuTap("settings/dark-mode"))
-            }}
-          />
-        </>
-      )}
-
-      <Separator my={1} borderColor={separatorColor} />
-
-      <MenuItem title="About" href="about" />
-      <Separator my={1} borderColor={separatorColor} />
-
-      <Spacer y={2} />
       <Text variant="xs" color="black60" px={2}>
         Transactions
       </Text>
 
-      <MenuItem title="Order History" href="/orders" />
+      <Spacer y={2} />
+
+      <MenuItem
+        title="Order History"
+        href="/orders"
+        onPress={() => {
+          tracking.trackEvent(
+            tracks.trackMenuTap({
+              subject: "Order History",
+              ownerType: OwnerType.ordersHistory,
+              position: ACCOUNT_MENU_ITEMS.length + 1,
+            })
+          )
+        }}
+      />
       <Separator my={1} borderColor={separatorColor} />
 
       <Flex flexDirection="row" alignItems="center" justifyContent="center" py="7.5px" px={2}>
@@ -210,10 +262,19 @@ export function confirmLogout() {
 }
 
 const tracks = {
-  trackMenuTap: (href: string) => ({
-    action_type: ActionType.tappeMenuItem,
-    payload: href,
-    context_module: ContextModule.account,
-    context_screen_owner_type: OwnerType.settings,
+  trackMenuTap: ({
+    ownerType,
+    position,
+    subject,
+  }: {
+    ownerType: OwnerType
+    position: number
+    subject: string
+  }) => ({
+    action_type: ActionType.tappedMenuItemGroup,
+    subject,
+    context_module: ownerType,
+    context_screen_owner_type: OwnerType.account,
+    position,
   }),
 }
