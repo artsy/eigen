@@ -702,21 +702,11 @@ describe("artsy.net routes", () => {
   it("routes to Favorites ", () => {
     expect(matchRoute("/favorites")).toMatchInlineSnapshot(`
       {
-        "module": "LegacyFavorites",
+        "module": "Favorites",
         "params": {},
         "type": "match",
       }
     `)
-  })
-
-  it("routes to Favorites", () => {
-    expect(matchRoute("/favorites-new")).toMatchInlineSnapshot(`
-    {
-      "module": "Favorites",
-      "params": {},
-      "type": "match",
-    }
-  `)
   })
 
   it("routes to MyAccount", () => {
