@@ -1,5 +1,4 @@
 import { addRoute, addWebViewRoute } from "app/Navigation/utils/addRoute"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
 import { View } from "react-native"
@@ -700,8 +699,7 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to Favorites with ff disabled", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableFavoritesTab: false })
+  it("routes to Favorites ", () => {
     expect(matchRoute("/favorites")).toMatchInlineSnapshot(`
       {
         "module": "LegacyFavorites",
@@ -711,9 +709,8 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to Favorites with ff enabled", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableFavoritesTab: true })
-    expect(matchRoute("/favorites")).toMatchInlineSnapshot(`
+  it("routes to Favorites", () => {
+    expect(matchRoute("/favorites-new")).toMatchInlineSnapshot(`
     {
       "module": "Favorites",
       "params": {},

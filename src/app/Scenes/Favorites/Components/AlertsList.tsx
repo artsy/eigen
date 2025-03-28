@@ -1,13 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import {
-  ArrowDownIcon,
-  Flex,
-  Screen,
-  Spacer,
-  Spinner,
-  Text,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { Flex, Screen, SortIcon, Spacer, Spinner, Text, Touchable } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { AlertsList_me$data, AlertsList_me$key } from "__generated__/AlertsList_me.graphql"
 import { SAVED_SERCHES_PAGE_SIZE } from "app/Components/constants"
@@ -213,8 +205,8 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
             setModalVisible(true)
           }}
         >
-          <Flex flexDirection="row" alignItems="center" mx={2} mt={2} mb={1}>
-            <ArrowDownIcon />
+          <Flex flexDirection="row" alignItems="center" mx={2} mb={1}>
+            <SortIcon />
             <Text ml={0.5}>Sort By</Text>
           </Flex>
         </Touchable>
