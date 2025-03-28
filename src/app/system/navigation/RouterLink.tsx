@@ -52,8 +52,9 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   }
 
   const handleVisible = (isVisible: boolean) => {
-    setPrefetchState("started")
     if (isPrefetchingEnabled && isVisible) {
+      setPrefetchState("started")
+
       prefetchUrl(to, prefetchVariables, () => {
         setPrefetchState("complete")
       })
