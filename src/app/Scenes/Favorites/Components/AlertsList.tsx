@@ -207,7 +207,7 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
         >
           <Flex flexDirection="row" alignItems="center" mx={2}>
             <SortIcon />
-            <Text variant="sm-display" ml={0.5}>
+            <Text variant="xs" ml={0.5}>
               Sort By
             </Text>
           </Flex>
