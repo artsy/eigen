@@ -1,11 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Spacer, Text, Button, BackButton, useTheme } from "@artsy/palette-mobile"
+import { BackButton, Button, Flex, Spacer, Text, useTheme } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtistAutosuggest } from "app/Components/ArtistAutosuggest/ArtistAutosuggest"
-import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import { FilterDisplayName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFilterOptionItem } from "app/Components/ArtworkFilter/components/ArtworkFilterOptionItem"
 import { useToast } from "app/Components/Toast/toastHook"
+import { PriceDatabaseNavigationStack } from "app/Scenes/PriceDatabase/PriceDatabase"
 import { PriceDatabaseBenefits } from "app/Scenes/PriceDatabase/components/PriceDatabaseBenefits"
 import {
   ALLOWED_FILTERS,
@@ -19,9 +19,12 @@ import { stringify } from "query-string"
 import { KeyboardAvoidingView, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 
-export const PriceDatabaseSearch: React.FC<StackScreenProps<ArtworkFilterNavigationStack>> = ({
-  navigation,
-}) => {
+type PriceDatabaseScreenProps = StackScreenProps<
+  PriceDatabaseNavigationStack,
+  "PriceDatabaseSearch"
+>
+
+export const PriceDatabaseSearch: React.FC<PriceDatabaseScreenProps> = ({ navigation }) => {
   const toast = useToast()
   const { trackEvent } = useTracking()
   const { space } = useTheme()

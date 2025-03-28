@@ -1,5 +1,5 @@
 import { useColor } from "@artsy/palette-mobile"
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { Token } from "@stripe/stripe-react-native"
 import { BidResult_saleArtwork$key } from "__generated__/BidResult_saleArtwork.graphql"
@@ -59,31 +59,33 @@ export const BiddingNavigator: React.FC<BiddingNavigatorProps> = (props) => {
   const color = useColor()
 
   return (
-    <NavigationContainer independent>
-      <BiddingNavigationStack.Navigator
-        screenOptions={{
-          headerShown: false,
-          gestureEnabled: false,
-          contentStyle: { flex: 1, backgroundColor: color("white100") },
-        }}
-        initialRouteName={props.initialRouteName}
-      >
-        <BiddingNavigationStack.Screen
-          name="RegisterToBid"
-          component={RegistrationQueryRenderer}
-          initialParams={props}
-        />
-        <BiddingNavigationStack.Screen
-          name="SelectMaxBid"
-          component={SelectMaxBidQueryRenderer}
-          initialParams={props}
-        />
-        <BiddingNavigationStack.Screen name="PhoneNumberForm" component={PhoneNumberForm} />
-        <BiddingNavigationStack.Screen name="CreditCardForm" component={CreditCardForm} />
-        <BiddingNavigationStack.Screen name="ConfirmBid" component={ConfirmBid} />
-        <BiddingNavigationStack.Screen name="BidResult" component={BidResult} />
-        <BiddingNavigationStack.Screen name="RegistrationResult" component={RegistrationResult} />
-      </BiddingNavigationStack.Navigator>
-    </NavigationContainer>
+    <NavigationIndependentTree>
+      <NavigationContainer>
+        <BiddingNavigationStack.Navigator
+          screenOptions={{
+            headerShown: false,
+            gestureEnabled: false,
+            contentStyle: { flex: 1, backgroundColor: color("white100") },
+          }}
+          initialRouteName={props.initialRouteName}
+        >
+          <BiddingNavigationStack.Screen
+            name="RegisterToBid"
+            component={RegistrationQueryRenderer}
+            initialParams={props}
+          />
+          <BiddingNavigationStack.Screen
+            name="SelectMaxBid"
+            component={SelectMaxBidQueryRenderer}
+            initialParams={props}
+          />
+          <BiddingNavigationStack.Screen name="PhoneNumberForm" component={PhoneNumberForm} />
+          <BiddingNavigationStack.Screen name="CreditCardForm" component={CreditCardForm} />
+          <BiddingNavigationStack.Screen name="ConfirmBid" component={ConfirmBid} />
+          <BiddingNavigationStack.Screen name="BidResult" component={BidResult} />
+          <BiddingNavigationStack.Screen name="RegistrationResult" component={RegistrationResult} />
+        </BiddingNavigationStack.Navigator>
+      </NavigationContainer>
+    </NavigationIndependentTree>
   )
 }

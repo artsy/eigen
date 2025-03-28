@@ -81,6 +81,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
   }, [filterTypeState, selectedFiltersState, previouslyAppliedFiltersState])
 
   const navigateToNextFilterScreen = (screenName: keyof ArtworkFilterNavigationStack) => {
+    // @ts-expect-error
     navigation.navigate(screenName)
   }
 

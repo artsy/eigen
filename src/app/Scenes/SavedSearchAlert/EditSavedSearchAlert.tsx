@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Screen, useColor } from "@artsy/palette-mobile"
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
 import { EditSavedSearchAlert_artists$data } from "__generated__/EditSavedSearchAlert_artists.graphql"
@@ -144,51 +144,52 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
             unit: localizedUnit,
           }}
         >
-          <NavigationContainer
-            independent
-            initialState={initialState}
-            onStateChange={(state) => {
-              saveSession(state)
-            }}
-            theme={theme}
-          >
-            <Stack.Navigator
-              // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
-              detachInactiveScreens={false}
-              screenOptions={{
-                ...TransitionPresets.SlideFromRightIOS,
-                headerShown: false,
-                cardStyle: { backgroundColor: color("background") },
+          <NavigationIndependentTree>
+            <NavigationContainer
+              initialState={initialState}
+              onStateChange={(state) => {
+                saveSession(state)
               }}
+              theme={theme}
             >
-              <Stack.Screen
-                name="EditSavedSearchAlertContent"
-                component={EditSavedSearchAlertContent}
-                initialParams={params}
-              />
-              <Stack.Screen
-                name="AlertArtworks"
-                component={AlertArtworks}
-                initialParams={{ alertId: savedSearchAlertId }}
-              />
-              <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
-              <Stack.Screen
-                name="AlertPriceRange"
-                component={AlertPriceRangeScreenQueryRenderer}
-                options={{
-                  // Avoid PanResponser conflicts between the slider and the slide back gesture
-                  gestureEnabled: false,
+              <Stack.Navigator
+                // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
+                detachInactiveScreens={false}
+                screenOptions={{
+                  ...TransitionPresets.SlideFromRightIOS,
+                  headerShown: false,
+                  cardStyle: { backgroundColor: color("background") },
                 }}
-              />
-              <Stack.Screen
-                name="SavedSearchFilterScreen"
-                component={SavedSearchFilterScreen}
-                options={{
-                  gestureEnabled: false,
-                }}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
+              >
+                <Stack.Screen
+                  name="EditSavedSearchAlertContent"
+                  component={EditSavedSearchAlertContent}
+                  initialParams={params}
+                />
+                <Stack.Screen
+                  name="AlertArtworks"
+                  component={AlertArtworks}
+                  initialParams={{ alertId: savedSearchAlertId }}
+                />
+                <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
+                <Stack.Screen
+                  name="AlertPriceRange"
+                  component={AlertPriceRangeScreenQueryRenderer}
+                  options={{
+                    // Avoid PanResponser conflicts between the slider and the slide back gesture
+                    gestureEnabled: false,
+                  }}
+                />
+                <Stack.Screen
+                  name="SavedSearchFilterScreen"
+                  component={SavedSearchFilterScreen}
+                  options={{
+                    gestureEnabled: false,
+                  }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </NavigationIndependentTree>
         </SavedSearchStoreProvider>
       </KeyboardAvoidingView>
     </ProvideScreenTracking>
