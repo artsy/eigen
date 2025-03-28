@@ -154,7 +154,8 @@ const ArtworkListsFragment = graphql`
     includeArtwork: { type: "Boolean", defaultValue: true }
     count: { type: "Int", defaultValue: 20 }
     after: { type: "String" }
-  ) {
+  )
+  @refetchable(queryName: "ArtworkLists_meRefetch") {
     savedArtworksArtworkList: collection(id: "saved-artwork") {
       internalID
       isSavedArtwork(artworkID: $artworkID) @include(if: $includeArtwork)
