@@ -8846,6 +8846,44 @@ type CreatePartnerContactSuccess {
   partnerContact: Contact
 }
 
+type CreatePartnerLocationFailure {
+  mutationError: GravityMutationError
+}
+
+input CreatePartnerLocationInput {
+  address: String
+  address2: String
+  addressType: locationType
+  city: String
+  clientMutationId: String
+  country: String
+
+  # Primary email of given location
+  email: String
+
+  # ID of the partner
+  partnerID: String!
+
+  # Primary phone of given location
+  phone: String
+  postalCode: String
+
+  # Boolean flag that denotes whether a location is publicly viewable on Partner's Artsy Profile
+  publiclyViewable: Boolean
+  state: String
+}
+
+union CreatePartnerLocationOrError = CreatePartnerLocationFailure | CreatePartnerLocationSuccess
+
+type CreatePartnerLocationPayload {
+  clientMutationId: String
+  partnerLocationOrError: CreatePartnerLocationOrError
+}
+
+type CreatePartnerLocationSuccess {
+  location: Location
+}
+
 type CreatePartnerShowDocumentFailure {
   mutationError: GravityMutationError
 }
@@ -14604,6 +14642,9 @@ type Mutation {
 
   # Creates a new contact for a partner
   createPartnerContact(input: CreatePartnerContactInput!): CreatePartnerContactPayload
+
+  # Creates a new location for a partner
+  createPartnerLocation(input: CreatePartnerLocationInput!): CreatePartnerLocationPayload
 
   # Create a partner offer for the users
   createPartnerOffer(input: createPartnerOfferMutationInput!): createPartnerOfferMutationPayload
@@ -23921,6 +23962,12 @@ type deleteUserRoleSuccess {
 type dimensions {
   cm: String
   in: String
+}
+
+enum locationType {
+  BUSINESS
+  OTHER
+  TEMPORARY
 }
 
 type partnerBiographyBlurb {
