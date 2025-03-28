@@ -226,7 +226,7 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "app/Scenes/ViewingRoom/ViewingRoomsList"
-import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
 import { goBack } from "app/system/navigation/navigate"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
@@ -863,23 +863,14 @@ export const artsyDotNetRoutes = defineRoutes([
     },
     queries: [featuredFairsScreenQuery],
   },
+
   {
     path: "/favorites",
-    name: "LegacyFavorites",
-    Component: LegacyFavorites,
-    options: {
-      screenOptions: {
-        headerShown: false,
-      },
-    },
-  },
-  {
-    path: "/favorites-new",
     name: "Favorites",
-    Component: Favorites,
+    Component: unsafe_getFeatureFlag("AREnableFavoritesTab") ? Favorites : LegacyFavorites,
     options: {
-      isRootViewForTabName: "favorites",
-      onlyShowInTabName: "favorites",
+      isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
+      onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
       screenOptions: {
         headerShown: false,
       },
