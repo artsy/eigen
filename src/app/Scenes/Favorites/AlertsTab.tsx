@@ -1,12 +1,5 @@
-import { Flex, Text } from "@artsy/palette-mobile"
-import { ScrollView } from "react-native"
+import { AlertsQueryRenderer } from "app/Scenes/Favorites/Components/Alerts"
 
 export const AlertsTab = () => {
-  return (
-    <ScrollView>
-      <Flex flex={1} justifyContent="center" alignItems="center">
-        <Text variant="lg-display">Alerts</Text>
-      </Flex>
-    </ScrollView>
-  )
+  return <AlertsQueryRenderer />
 }

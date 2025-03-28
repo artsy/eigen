@@ -95,7 +95,7 @@ const followedArtistsFragment = graphql`
   }
 `
 
-const followedArtistsQuery = graphql`
+export const followedArtistsQuery = graphql`
   query FollowedArtistsQuery($count: Int!, $cursor: String) {
     me @required(action: NONE) {
       ...FollowedArtists_me @arguments(count: $count, cursor: $cursor)
