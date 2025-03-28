@@ -1,9 +1,10 @@
-import { Touchable, TouchableProps } from "@artsy/palette-mobile"
+import { Flex, Touchable, TouchableProps } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { Sentinel } from "app/utils/Sentinel"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { usePrefetch } from "app/utils/queryPrefetching"
-import React from "react"
+import React, { useState } from "react"
 import { GestureResponderEvent } from "react-native"
 import { Variables } from "relay-runtime"
 
@@ -16,6 +17,8 @@ export interface RouterLinkProps {
   prefetchVariables?: Variables
   children: React.ReactNode
 }
+
+type PrefetchState = "started" | "complete" | null
 
 /**
  * Wrapper component that enables navigation when pressed, using the `to` prop.
@@ -31,8 +34,10 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   hasChildTouchable,
   ...restProps
 }) => {
+  const enablePrefetchingIndicator = useDevToggle("DTShowPrefetchingIndicator")
   const prefetchUrl = usePrefetch()
   const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
+  const [prefetchState, setPrefetchState] = useState<PrefetchState>(null)
 
   const isPrefetchingEnabled = !disablePrefetch && enableViewPortPrefetching && to
 
@@ -50,7 +55,11 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
 
   const handleVisible = (isVisible: boolean) => {
     if (isPrefetchingEnabled && isVisible) {
-      prefetchUrl(to, prefetchVariables)
+      if (enablePrefetchingIndicator) setPrefetchState("started")
+
+      prefetchUrl(to, prefetchVariables, () => {
+        if (enablePrefetchingIndicator) setPrefetchState("complete")
+      })
     }
   }
 
@@ -69,9 +78,11 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   if (hasChildTouchable && isPrefetchingEnabled) {
     return (
       <Sentinel onChange={handleVisible}>
-        {React.Children.map(children, (child) =>
-          React.isValidElement(child) ? React.cloneElement(child, cloneProps) : child
-        )}
+        <Border prefetchState={prefetchState}>
+          {React.Children.map(children, (child) => {
+            return React.isValidElement(child) ? React.cloneElement(child, cloneProps) : child
+          })}
+        </Border>
       </Sentinel>
     )
   }
@@ -92,7 +103,23 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
 
   return (
     <Sentinel onChange={handleVisible}>
-      <Touchable {...touchableProps}>{children}</Touchable>
+      <Border prefetchState={prefetchState}>
+        <Touchable {...touchableProps}>{children}</Touchable>
+      </Border>
     </Sentinel>
+  )
+}
+
+const Border: React.FC<{ prefetchState: PrefetchState }> = ({ children, prefetchState }) => {
+  if (!prefetchState) {
+    return <>{children}</>
+  }
+
+  const borderColor = prefetchState === "complete" ? "green" : "yellow"
+
+  return (
+    <Flex border={`1px dotted ${borderColor}`} display="inline">
+      {children}
+    </Flex>
   )
 }

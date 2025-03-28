@@ -18,7 +18,8 @@ export const usePrefetch = () => {
 
 const prefetchRoute = async <TQuery extends OperationType>(
   route?: string | null,
-  variables?: VariablesOf<TQuery>
+  variables?: VariablesOf<TQuery>,
+  onComplete?: () => void
 ) => {
   if (!route) return null
 
@@ -46,7 +47,7 @@ const prefetchRoute = async <TQuery extends OperationType>(
   return queries.map((query, index) => {
     const allVariables = { ...module.queryVariables?.[index], ...result.params, ...variables }
 
-    return prefetchQuery({ query, variables: allVariables, route })
+    return prefetchQuery({ query, variables: allVariables, route, onComplete })
   })
 }
 
@@ -54,10 +55,12 @@ export const prefetchQuery = async ({
   query,
   variables,
   route,
+  onComplete,
 }: {
   query: GraphQLTaggedNode
   variables?: Variables
   route?: string
+  onComplete?: () => void
 }) => {
   const environment = getRelayEnvironment()
 
@@ -65,10 +68,15 @@ export const prefetchQuery = async ({
     fetchPolicy: "store-or-network",
   }).subscribe({
     complete: () => {
-      if (logPrefetching)
+      if (logPrefetching) {
         console.log("[queryPrefetching] Completed prefetching", route, {
           variables,
         })
+      }
+
+      if (onComplete) {
+        onComplete()
+      }
     },
     error: () => {
       console.error("[queryPrefetching] Error prefetching", route, { variables })
