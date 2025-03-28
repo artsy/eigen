@@ -232,7 +232,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
             <Flex mx={2} mb={4}>
               <Flex ml={-1} mb={1}>
                 {/* Always show light mode on Android for the bottom sheet */}
-                {artworkPreviewComponent(artwork, { ...artworkDisplayProps, dark: false })} //
+                {artworkPreviewComponent(artwork, { ...artworkDisplayProps, dark: false })}
               </Flex>
 
               <Join separator={<Separator borderColor="black10" my={1} />}>
