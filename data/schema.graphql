@@ -8346,6 +8346,10 @@ type CreateArtistSuccess {
 
 union CreateArtistSuccessOrErrorType = CreateArtistFailure | CreateArtistSuccess
 
+type CreateArtworkFailure {
+  mutationError: GravityMutationError
+}
+
 type CreateArtworkImportArtworksFailure {
   mutationError: GravityMutationError
 }
@@ -8392,6 +8396,33 @@ union CreateArtworkImportResponseOrError = CreateArtworkImportFailure | CreateAr
 
 type CreateArtworkImportSuccess {
   artworkImport: ArtworkImport
+}
+
+input CreateArtworkMutationInput {
+  # The IDs of the artists associated with the artwork.
+  artistIds: [String!]!
+  clientMutationId: String
+
+  # The S3 bucket where the artwork image is stored.
+  imageS3Bucket: String!
+
+  # The S3 key for the artwork image.
+  imageS3Key: String!
+
+  # The ID of the partner under which the artwork is created.
+  partnerId: String!
+}
+
+type CreateArtworkMutationPayload {
+  # On success: the created artwork. On error: the error that occurred.
+  artworkOrError: CreateArtworkResponseOrError
+  clientMutationId: String
+}
+
+union CreateArtworkResponseOrError = CreateArtworkFailure | CreateArtworkSuccess
+
+type CreateArtworkSuccess {
+  artwork: Artwork
 }
 
 input CreateBackupSecondFactorsInput {
@@ -14479,6 +14510,9 @@ type Mutation {
 
   # Create an artist, used for MyCollection. use CreateCanonicalArtistMutation for all other cases
   createArtist(input: CreateArtistMutationInput!): CreateArtistMutationPayload
+
+  # Creates a new artwork with an associated image.
+  createArtwork(input: CreateArtworkMutationInput!): CreateArtworkMutationPayload
   createArtworkImport(input: CreateArtworkImportInput!): CreateArtworkImportPayload
   createArtworkImportArtworks(
     input: CreateArtworkImportArtworksInput!
