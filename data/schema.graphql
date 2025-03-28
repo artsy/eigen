@@ -8557,6 +8557,7 @@ input CreateFeatureMutationInput {
   clientMutationId: String
   description: String
   layout: FeatureLayouts
+  metaTitle: String
   name: String!
   sourceBucket: String
   sourceKey: String
