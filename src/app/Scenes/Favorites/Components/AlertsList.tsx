@@ -205,9 +205,11 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
             setModalVisible(true)
           }}
         >
-          <Flex flexDirection="row" alignItems="center" mx={2} mb={1}>
+          <Flex flexDirection="row" alignItems="center" mx={2}>
             <SortIcon />
-            <Text ml={0.5}>Sort By</Text>
+            <Text variant="sm-display" ml={0.5}>
+              Sort By
+            </Text>
           </Flex>
         </Touchable>
 
