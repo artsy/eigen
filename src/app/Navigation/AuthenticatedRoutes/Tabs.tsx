@@ -93,6 +93,7 @@ const AppTabs: React.FC = () => {
       screenOptions={({ route }) => {
         const currentRoute = internal_navigationRef.current?.getCurrentRoute()?.name
         return {
+          animation: "fade",
           headerShown: false,
           tabBarStyle: {
             animate: true,
