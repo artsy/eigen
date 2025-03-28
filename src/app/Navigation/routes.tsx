@@ -100,7 +100,7 @@ import {
 import { FairArticlesQueryRenderer } from "app/Scenes/Fair/FairArticles"
 import { FaireMoreInfoScreenQuery, FairMoreInfoQueryRenderer } from "app/Scenes/Fair/FairMoreInfo"
 import { FeaturedFairsScreen, featuredFairsScreenQuery } from "app/Scenes/Fair/FeaturedFairsScreen"
-import { Favorites, Favorites as LegacyFavorites } from "app/Scenes/Favorites/Favorites"
+import { Favorites } from "app/Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer, FeatureScreenQuery } from "app/Scenes/Feature/Feature"
 import {
   GalleriesForYouQuery,
@@ -133,6 +133,7 @@ import {
   InfiniteDiscoveryQueryRenderer,
   infiniteDiscoveryVariables,
 } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
+import { Favorites as LegacyFavorites } from "app/Scenes/LegacyFavorites/Favorites"
 import { MyAccountQueryRenderer, MyAccountScreenQuery } from "app/Scenes/MyAccount/MyAccount"
 import { MyAccountDeleteAccountQueryRenderer } from "app/Scenes/MyAccount/MyAccountDeleteAccount"
 import { MyAccountEditEmailQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditEmail"
@@ -868,7 +869,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: unsafe_getFeatureFlag("AREnableFavoritesTab") ? Favorites : LegacyFavorites,
     options: {
       isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
-      onlyShowInTabName: "favorites",
+      onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
       screenOptions: {
         headerShown: false,
       },
