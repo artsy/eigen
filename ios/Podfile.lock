@@ -1453,8 +1453,27 @@ PODS:
     - Yoga
   - react-native-blob-util (0.19.11):
     - React-Core
-  - react-native-blurhash (1.1.11):
+  - react-native-blurhash (2.1.1):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-context-menu-view (1.10.0):
     - React
   - react-native-cookies (6.0.11):
@@ -2762,7 +2781,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: bfec84fd4dc022fcd29656030d0ddba0092376bd
   React-microtasksnativemodule: bd7c624bb83ddc4f8449cadc62674e8107a2bd99
   react-native-blob-util: f7234c91ad0e3faeee51b3edee80b61553f74993
-  react-native-blurhash: 275104c6fb85e754c448854024bf7a8d4571ba8a
+  react-native-blurhash: 21bd42b047baaf3a268d768c52696ebd6a8a54a0
   react-native-context-menu-view: 74fbcf8a5f842c4802d0121addda2f8ffca43604
   react-native-cookies: b90327af903c8a7652100201d890c50a98697799
   react-native-document-picker: 6b08d834d4e4252bb8aad13d852e27666294b5b9
