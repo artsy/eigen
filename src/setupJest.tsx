@@ -16,8 +16,6 @@ import chalk from "chalk"
 import * as matchers from "jest-extended"
 import { NativeModules } from "react-native"
 import "react-native-gesture-handler/jestSetup"
-// @ts-ignore-next-line
-import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 import track, { useTracking } from "react-tracking"
 
 // 👇 needed after upgrading to reanimated 3 otherwise tests break
@@ -91,8 +89,6 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
 jest.mock("@react-native-async-storage/async-storage", () => mockAsyncStorage)
 
 jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
-
-jest.mock("react-native-safe-area-context", () => mockSafeAreaContext)
 
 jest.mock("react-native-permissions", () => ({
   requestNotifications: jest.fn(),
