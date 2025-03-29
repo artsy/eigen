@@ -14,7 +14,7 @@ export interface ForgotPasswordValuesSchema {
   email: string
 }
 
-export type ForgotPasswordProps = StackScreenProps<OnboardingNavigationStack, "OnboardingLogin">
+export type ForgotPasswordProps = StackScreenProps<OnboardingNavigationStack, "ForgotPassword">
 export interface ForgotPasswordFormProps extends ForgotPasswordProps {
   requestedPasswordReset: boolean
   inputRef?: React.Ref<Input>

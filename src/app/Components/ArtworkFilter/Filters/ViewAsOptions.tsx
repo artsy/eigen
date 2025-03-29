@@ -15,7 +15,7 @@ import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
 type ViewAsOptionsScreenProps = StackScreenProps<
   ArtworkFilterNavigationStack,
-  "WaysToBuyOptionsScreen"
+  "ViewAsOptionsScreen"
 >
 
 export const ViewAsOptionsScreen: React.FC<ViewAsOptionsScreenProps> = ({ navigation }) => {

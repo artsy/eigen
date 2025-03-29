@@ -1,4 +1,5 @@
 import { Flex, Spacer, Spinner, Text } from "@artsy/palette-mobile"
+import { useLogger } from "@react-navigation/devtools"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { addBreadcrumb } from "@sentry/react-native"
@@ -13,7 +14,6 @@ import { OnboardingWelcomeScreens } from "app/Scenes/Onboarding/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
 import { routingInstrumentation } from "app/system/errorReporting/setupSentry"
 import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
-
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { logNavigation } from "app/utils/loggers"
@@ -46,6 +46,13 @@ export const Navigation = () => {
   const enableAdditionalSiftAndroidTracking = useFeatureFlag(
     "AREnableAdditionalSiftAndroidTracking"
   )
+
+  if (__DEV__) {
+    // It's safe to break the rul of hooks here because we are only using it in dev
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useLogger(internal_navigationRef)
+  }
+
   if (!isReady) {
     return <NavigationLoadingIndicator />
   }

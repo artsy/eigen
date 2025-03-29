@@ -1,4 +1,4 @@
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { ArtQuizNavigationQuery } from "__generated__/ArtQuizNavigationQuery.graphql"
 import { ArtQuizArtworks } from "app/Scenes/ArtQuiz/ArtQuizArtworks"
@@ -26,19 +26,21 @@ const ArtQuizScreen: React.FC = () => {
   }, [isQuizCompleted])
 
   return (
-    <NavigationContainer independent>
-      <StackNavigator.Navigator
-        screenOptions={{
-          ...TransitionPresets.DefaultTransition,
-          headerShown: false,
-          headerMode: "screen",
-          gestureEnabled: false,
-        }}
-      >
-        <StackNavigator.Screen name="ArtQuizWelcome" component={ArtQuizWelcome} />
-        <StackNavigator.Screen name="ArtQuizArtworks" component={ArtQuizArtworks} />
-      </StackNavigator.Navigator>
-    </NavigationContainer>
+    <NavigationIndependentTree>
+      <NavigationContainer>
+        <StackNavigator.Navigator
+          screenOptions={{
+            ...TransitionPresets.DefaultTransition,
+            headerShown: false,
+            headerMode: "screen",
+            gestureEnabled: false,
+          }}
+        >
+          <StackNavigator.Screen name="ArtQuizWelcome" component={ArtQuizWelcome} />
+          <StackNavigator.Screen name="ArtQuizArtworks" component={ArtQuizArtworks} />
+        </StackNavigator.Navigator>
+      </NavigationContainer>
+    </NavigationIndependentTree>
   )
 }
 

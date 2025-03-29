@@ -46,7 +46,7 @@ type TabRoutesParams = {
 
 const Tab = createBottomTabNavigator<TabRoutesParams>()
 
-const BOTTOM_TABS_HEIGHT = 60
+const BOTTOM_TABS_HEIGHT = 65
 
 const AppTabs: React.FC = () => {
   const { tabsBadges } = useBottomTabsBadges()
@@ -93,6 +93,7 @@ const AppTabs: React.FC = () => {
       screenOptions={({ route }) => {
         const currentRoute = internal_navigationRef.current?.getCurrentRoute()?.name
         return {
+          animation: "fade",
           headerShown: false,
           tabBarStyle: {
             animate: true,
@@ -122,13 +123,7 @@ const AppTabs: React.FC = () => {
                 justifyContent="flex-end"
                 height={BOTTOM_TABS_HEIGHT}
               >
-                <Text
-                  variant="xxs"
-                  style={{ top: Platform.OS === "ios" ? -4 : 0 }}
-                  selectable={false}
-                  textAlign="center"
-                  color="black100"
-                >
+                <Text variant="xxs" selectable={false} textAlign="center" color="black100">
                   {bottomTabsConfig[route.name].name}
                 </Text>
               </Flex>

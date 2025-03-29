@@ -1,5 +1,9 @@
 import { useColor, useSpace } from "@artsy/palette-mobile"
-import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
+import {
+  NavigationContainer,
+  NavigationContainerRef,
+  NavigationIndependentTree,
+} from "@react-navigation/native"
 import {
   CardStyleInterpolators,
   createStackNavigator,
@@ -75,92 +79,94 @@ export const OnboardingWelcomeScreens = () => {
   const signupLoginFusionEnabled = useFeatureFlag("AREnableSignupLoginFusion")
 
   return (
-    <NavigationContainer independent ref={__unsafe__onboardingNavigationRef}>
-      <StackNavigator.Navigator
-        initialRouteName={signupLoginFusionEnabled ? "OnboardingHome" : "OnboardingWelcome"}
-        screenOptions={{
-          headerShown: false,
-          headerMode: "screen",
-        }}
-      >
-        {signupLoginFusionEnabled ? (
-          <StackNavigator.Group screenOptions={{ ...TransitionPresets.SlideFromRightIOS }}>
-            <StackNavigator.Screen name="OnboardingHome" component={AuthApp} />
-            <StackNavigator.Screen name="OnboardingSocialLink" component={OnboardingSocialLink} />
-            {/**
-             * There are two "Forgot Password?" forms in this flow:
-             * 1. The ForgotPasswordStep step in the OnboardingHome screen
-             * 2. The ForgotPassword screen linked-to in the OnboardingSocialLink screen
-             */}
-            <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} />
-            <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
-          </StackNavigator.Group>
-        ) : (
-          <StackNavigator.Group screenOptions={{ ...TransitionPresets.SlideFromRightIOS }}>
-            <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
-            <StackNavigator.Screen
-              name="OnboardingLogin"
-              component={OnboardingLogin}
-              options={({ route: { params } }) => ({
-                cardStyleInterpolator: params?.withFadeAnimation
-                  ? CardStyleInterpolators.forFadeFromBottomAndroid
-                  : CardStyleInterpolators.forHorizontalIOS,
-              })}
-            />
-            <StackNavigator.Screen
-              name="OnboardingLoginWithEmail"
-              component={OnboardingLoginWithEmail}
-              options={({ route: { params } }) => ({
-                cardStyleInterpolator: params?.withFadeAnimation
-                  ? CardStyleInterpolators.forFadeFromBottomAndroid
-                  : CardStyleInterpolators.forHorizontalIOS,
-              })}
-            />
-            <StackNavigator.Screen
-              name="OnboardingLoginWithOTP"
-              component={OnboardingLoginWithOTP}
-            />
-            <StackNavigator.Screen
-              name="OnboardingCreateAccount"
-              component={OnboardingCreateAccount}
-              options={({ route: { params } }) => ({
-                cardStyleInterpolator: params?.withFadeAnimation
-                  ? CardStyleInterpolators.forFadeFromBottomAndroid
-                  : CardStyleInterpolators.forHorizontalIOS,
-              })}
-            />
-            <StackNavigator.Screen
-              name="OnboardingCreateAccountWithEmail"
-              component={OnboardingCreateAccountWithEmail}
-            />
-            <StackNavigator.Screen name="OnboardingSocialLink" component={OnboardingSocialLink} />
-            <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} />
-            <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
-          </StackNavigator.Group>
-        )}
-
-        <StackNavigator.Group>
-          {!!userIsDev && (
-            <StackNavigator.Screen
-              name="DevMenu"
-              component={DevMenu}
-              options={{
-                headerLeftContainerStyle: {
-                  paddingLeft: space(1),
-                },
-                headerTitle: "Dev Settings",
-                headerShown: true,
-                headerTintColor: color("black100"),
-                headerLeftLabelVisible: false,
-                headerRightContainerStyle: {
-                  paddingRight: space(2),
-                },
-              }}
-            />
+    <NavigationIndependentTree>
+      <NavigationContainer ref={__unsafe__onboardingNavigationRef}>
+        <StackNavigator.Navigator
+          initialRouteName={signupLoginFusionEnabled ? "OnboardingHome" : "OnboardingWelcome"}
+          screenOptions={{
+            headerShown: false,
+            headerMode: "screen",
+          }}
+        >
+          {signupLoginFusionEnabled ? (
+            <StackNavigator.Group screenOptions={{ ...TransitionPresets.SlideFromRightIOS }}>
+              <StackNavigator.Screen name="OnboardingHome" component={AuthApp} />
+              <StackNavigator.Screen name="OnboardingSocialLink" component={OnboardingSocialLink} />
+              {/**
+               * There are two "Forgot Password?" forms in this flow:
+               * 1. The ForgotPasswordStep step in the OnboardingHome screen
+               * 2. The ForgotPassword screen linked-to in the OnboardingSocialLink screen
+               */}
+              <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} />
+              <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
+            </StackNavigator.Group>
+          ) : (
+            <StackNavigator.Group screenOptions={{ ...TransitionPresets.SlideFromRightIOS }}>
+              <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
+              <StackNavigator.Screen
+                name="OnboardingLogin"
+                component={OnboardingLogin}
+                options={({ route: { params } }) => ({
+                  cardStyleInterpolator: params?.withFadeAnimation
+                    ? CardStyleInterpolators.forFadeFromBottomAndroid
+                    : CardStyleInterpolators.forHorizontalIOS,
+                })}
+              />
+              <StackNavigator.Screen
+                name="OnboardingLoginWithEmail"
+                component={OnboardingLoginWithEmail}
+                options={({ route: { params } }) => ({
+                  cardStyleInterpolator: params?.withFadeAnimation
+                    ? CardStyleInterpolators.forFadeFromBottomAndroid
+                    : CardStyleInterpolators.forHorizontalIOS,
+                })}
+              />
+              <StackNavigator.Screen
+                name="OnboardingLoginWithOTP"
+                component={OnboardingLoginWithOTP}
+              />
+              <StackNavigator.Screen
+                name="OnboardingCreateAccount"
+                component={OnboardingCreateAccount}
+                options={({ route: { params } }) => ({
+                  cardStyleInterpolator: params?.withFadeAnimation
+                    ? CardStyleInterpolators.forFadeFromBottomAndroid
+                    : CardStyleInterpolators.forHorizontalIOS,
+                })}
+              />
+              <StackNavigator.Screen
+                name="OnboardingCreateAccountWithEmail"
+                component={OnboardingCreateAccountWithEmail}
+              />
+              <StackNavigator.Screen name="OnboardingSocialLink" component={OnboardingSocialLink} />
+              <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} />
+              <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
+            </StackNavigator.Group>
           )}
-        </StackNavigator.Group>
-      </StackNavigator.Navigator>
-    </NavigationContainer>
+
+          <StackNavigator.Group>
+            {!!userIsDev && (
+              <StackNavigator.Screen
+                name="DevMenu"
+                component={DevMenu}
+                options={{
+                  headerLeftContainerStyle: {
+                    paddingLeft: space(1),
+                  },
+                  headerTitle: "Dev Settings",
+                  headerShown: true,
+                  headerTintColor: color("black100"),
+                  headerLeft: () => <></>,
+                  headerRightContainerStyle: {
+                    paddingRight: space(2),
+                  },
+                }}
+              />
+            )}
+          </StackNavigator.Group>
+        </StackNavigator.Navigator>
+      </NavigationContainer>
+    </NavigationIndependentTree>
   )
 }
 

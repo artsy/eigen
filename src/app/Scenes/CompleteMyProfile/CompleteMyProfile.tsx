@@ -1,4 +1,8 @@
-import { NavigationContainer, NavigationProp } from "@react-navigation/native"
+import {
+  NavigationContainer,
+  NavigationIndependentTree,
+  NavigationProp,
+} from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { useCompleteMyProfileSteps_me$key } from "__generated__/useCompleteMyProfileSteps_me.graphql"
 import { AvatarStep } from "app/Scenes/CompleteMyProfile/AvatarStep"
@@ -47,34 +51,36 @@ const CompleteMyProfileNavigator: FC = () => {
   }
 
   return (
-    <NavigationContainer independent>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: true,
-          header: () => <Header />,
-          headerMode: "float",
-        }}
-      >
-        {/* Only renders the relevant screens */}
-        {!!steps?.includes("LocationStep") && (
-          <Stack.Screen name="LocationStep" component={LocationStep} />
-        )}
+    <NavigationIndependentTree>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: true,
+            header: () => <Header />,
+            headerMode: "float",
+          }}
+        >
+          {/* Only renders the relevant screens */}
+          {!!steps?.includes("LocationStep") && (
+            <Stack.Screen name="LocationStep" component={LocationStep} />
+          )}
 
-        {!!steps?.includes("ProfessionStep") && (
-          <Stack.Screen name="ProfessionStep" component={ProfessionStep} />
-        )}
+          {!!steps?.includes("ProfessionStep") && (
+            <Stack.Screen name="ProfessionStep" component={ProfessionStep} />
+          )}
 
-        {!!steps?.includes("AvatarStep") && (
-          <Stack.Screen name="AvatarStep" component={AvatarStep} />
-        )}
+          {!!steps?.includes("AvatarStep") && (
+            <Stack.Screen name="AvatarStep" component={AvatarStep} />
+          )}
 
-        {!!steps?.includes("IdentityVerificationStep") && (
-          <Stack.Screen name="IdentityVerificationStep" component={IdentityVerificationStep} />
-        )}
+          {!!steps?.includes("IdentityVerificationStep") && (
+            <Stack.Screen name="IdentityVerificationStep" component={IdentityVerificationStep} />
+          )}
 
-        <Stack.Screen name="ChangesSummary" component={ChangesSummary} />
-      </Stack.Navigator>
-    </NavigationContainer>
+          <Stack.Screen name="ChangesSummary" component={ChangesSummary} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </NavigationIndependentTree>
   )
 }
 
