@@ -111,7 +111,7 @@ const Stack = createStackNavigator<ArtworkFilterNavigationStack>()
 export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const theme = useNavigationTheme()
   const color = useColor()
-  const { top: topInset } = useSafeAreaInsets()
+  const insets = useSafeAreaInsets()
 
   const tracking = useTracking()
   const { id, mode, slug, name, query, shouldShowCreateAlertButton, closeModal, exitModal } = props
@@ -333,7 +333,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
               screenOptions={{
                 ...TransitionPresets.SlideFromRightIOS,
                 headerShown: false,
-                cardStyle: { backgroundColor: color("background"), paddingTop: topInset },
+                cardStyle: { backgroundColor: color("background"), paddingTop: insets?.top },
               }}
             >
               <Stack.Screen
