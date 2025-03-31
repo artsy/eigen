@@ -2100,7 +2100,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Sentry/HybridSDK (= 8.36.0)
     - Yoga
-  - RNShare (11.1.0):
+  - RNShare (12.0.9):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2843,7 +2843,7 @@ SPEC CHECKSUMS:
   RNReanimated: 80f5a5dc0ff2cc7b2681ab01a7059bf5de479caa
   RNScreens: 4a5446dc4d922b2375df14c3a3f30bfc7719f6b1
   RNSentry: 41b8cac8cded9e27de40df0dff056e6017160dfe
-  RNShare: 0c59ef24686741a21a8482df956a1cd8905f111c
+  RNShare: a731da75fed4354ed5c1824037093c5dddfa035a
   RNSVG: 3421710ac15f4f2dc47e5c122f2c2e4282116830
   SDWebImage: 40b0b4053e36c660a764958bff99eed16610acbb
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
