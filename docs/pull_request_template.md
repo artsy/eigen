@@ -24,7 +24,7 @@ This PR resolves [] <!-- eg [PROJECT-XXXX] -->
   - [ ] **Android**.
   - [ ] **iOS**.
 - [ ] I hid my changes behind a **[feature flag]**, or they don't need one.
-- [ ] I have included **screenshots** or **videos**, or I have not changed the UI.
+- [ ] I have included **screenshots** or **videos** at least on **Android**, or I have not changed the UI.
 - [ ] I have added **tests**, or my changes don't require any.
 - [ ] I added an **[app state migration]**, or my changes do not require one.
 - [ ] I have documented any **follow-up work** that this PR will require, or it does not require any.
