@@ -2,11 +2,26 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { HomeViewSectionCardsChipsTestsQuery } from "__generated__/HomeViewSectionCardsChipsTestsQuery.graphql"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionCardsChips } from "app/Scenes/HomeView/Sections/HomeViewSectionCardsChips"
+import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
+jest.mock("app/Scenes/HomeView/hooks/useHomeViewTracking", () => ({
+  useHomeViewTracking: jest.fn(),
+}))
+
 describe("HomeViewSectionCardsChips", () => {
+  const mockUseHomeViewTracking = useHomeViewTracking as jest.Mock
+  const mockTracking = {
+    tappedCardGroup: jest.fn(),
+  }
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+    mockUseHomeViewTracking.mockReturnValue(mockTracking)
+  })
+
   const { renderWithRelay } = setupTestWrapper<HomeViewSectionCardsChipsTestsQuery>({
     Component: (props) => {
       return (
@@ -48,5 +63,6 @@ describe("HomeViewSectionCardsChips", () => {
     expect(screen.getByText("Discover Something New")).toBeOnTheScreen()
     fireEvent.press(screen.getByText("Figurative Art"))
     expect(navigate).toHaveBeenCalledWith("/figurative-art")
+    expect(mockTracking.tappedCardGroup).toHaveBeenCalledOnce()
   })
 })
