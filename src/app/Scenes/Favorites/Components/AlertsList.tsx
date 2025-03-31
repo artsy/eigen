@@ -2,7 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, SortIcon, Spacer, Spinner, Text, Touchable } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { AlertsList_me$data, AlertsList_me$key } from "__generated__/AlertsList_me.graphql"
-import { SAVED_SERCHES_PAGE_SIZE } from "app/Components/constants"
+import { ALERTS_PAGE_SIZE } from "app/Components/constants"
 import { AlertsSortByModal, SortOption } from "app/Scenes/Favorites/Components/AlertsSortByModal"
 import {
   AlertBottomSheet,
@@ -14,6 +14,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { RefreshEvents, SAVED_ALERT_REFRESH_KEY } from "app/utils/refreshHelpers"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect, useState } from "react"
+import { InteractionManager } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
 
@@ -50,16 +51,14 @@ export const AlertsList: React.FC<AlertsListProps> = (props) => {
     setItems(extractNodes(me.alertsConnection).map((node) => ({ ...node, isSwipingActive: false })))
   }, [me.alertsConnection])
 
-  if (items.length === 0) {
-    return <EmptyMessage />
-  }
-
   return (
     <Screen.FlatList
       data={items}
+      ListEmptyComponent={<EmptyMessage />}
       keyExtractor={(item) => item.internalID}
       refreshing={isRefreshing}
       onRefresh={onRefresh}
+      onEndReachedThreshold={0.5}
       renderItem={({ item }) => {
         const image = item.artworksConnection?.edges?.[0]?.node?.image
         const imageProps = {
@@ -73,7 +72,7 @@ export const AlertsList: React.FC<AlertsListProps> = (props) => {
             title={item.title}
             subtitle={item.subtitle}
             isSwipingActive={item.isSwipingActive}
-            displayImage={true}
+            displayImage
             image={imageProps}
             onPress={() => {
               const artworksCount = item.artworksConnection?.counts?.total ?? 0
@@ -102,11 +101,11 @@ export const AlertsList: React.FC<AlertsListProps> = (props) => {
       onEndReached={onLoadMore}
       ListFooterComponent={
         fetchingMore ? (
-          <Flex alignItems="center" mt={2} mb={4}>
+          <Flex mt={2} mb={6} flexDirection="row" justifyContent="center">
             <Spinner />
           </Flex>
         ) : (
-          <Spacer y={4} />
+          <Spacer y={6} />
         )
       }
     />
@@ -139,7 +138,7 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
 
     setFetchingMore(true)
 
-    loadNext(SAVED_SERCHES_PAGE_SIZE, {
+    loadNext(ALERTS_PAGE_SIZE, {
       onComplete: (error) => {
         if (error) {
           if (__DEV__) {
@@ -189,7 +188,9 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
       return
     }
 
-    onRefresh()
+    InteractionManager.runAfterInteractions(() => {
+      onRefresh()
+    })
   }
 
   return (
@@ -199,13 +200,13 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
         context_screen_owner_type: OwnerType.savedSearch,
       }}
     >
-      <Flex flexDirection="column">
+      <Flex>
         <Touchable
           onPress={() => {
             setModalVisible(true)
           }}
         >
-          <Flex flexDirection="row" alignItems="center" mx={2}>
+          <Flex flexDirection="row" alignItems="center" mx={2} mb={1}>
             <SortIcon />
             <Text variant="xs" ml={0.5}>
               Sort By
@@ -249,7 +250,7 @@ const alertsListFragment = graphql`
   fragment AlertsList_me on Me
   @refetchable(queryName: "AlertsList_meRefetch")
   @argumentDefinitions(
-    count: { type: "Int", defaultValue: 20 }
+    count: { type: "Int", defaultValue: 10 }
     cursor: { type: "String" }
     sort: { type: "AlertsConnectionSortEnum", defaultValue: ENABLED_AT_DESC }
   ) {

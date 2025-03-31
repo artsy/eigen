@@ -34,7 +34,6 @@ export const AlertsQueryRenderer = withSuspense({
     return (
       <LoadFailureView
         onRetry={fallbackProps.resetErrorBoundary}
-        showBackButton={true}
         useSafeArea={false}
         error={fallbackProps.error}
         trackErrorBoundary={false}
