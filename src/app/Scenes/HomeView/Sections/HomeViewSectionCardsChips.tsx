@@ -72,12 +72,15 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
 
               return (
                 <Flex minWidth={CHIP_WIDTH} key={`collectionChips-row-${index}`}>
-                  <RouterLink to={item.href} hasChildTouchable>
+                  <RouterLink
+                    to={item.href}
+                    hasChildTouchable
+                    onPress={() => handleOnChipPress(item, index)}
+                  >
                     <Chip
                       key={item.href}
                       title={item.title}
                       subtitle={item.subtitle as string | undefined}
-                      onPress={() => handleOnChipPress(item, index)}
                     />
                   </RouterLink>
                 </Flex>
