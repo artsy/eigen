@@ -8,8 +8,8 @@ This PR resolves [] <!-- eg [PROJECT-XXXX] -->
 <!-- Screenshots template:
 | Platform | Before | After |
 |---|---|---|
-| Android | x | x |
-| iOS | x | x |
+| Android | <img src="xxx" width="400" /> | <img src="xxx" width="400" /> |
+| iOS | <img src="xxx" width="400" /> | <img src="xxx" width="400" /> |
 -->
 <!-- Videos template:
 | Platform | Before | After |
