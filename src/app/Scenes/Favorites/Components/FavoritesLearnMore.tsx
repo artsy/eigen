@@ -109,7 +109,7 @@ export const FavoritesLearnMore = () => {
 
   const { trackEvent } = useTracking()
 
-  let contextScreen: ContextModule | null = null
+  let contextScreen: ContextModule
   switch (activeTab) {
     case "saves":
       contextScreen = ContextModule.favoritesSaves
@@ -129,7 +129,7 @@ export const FavoritesLearnMore = () => {
           setShowBottomSheet(true)
           trackEvent({
             action: ActionType.tappedInfoBubble,
-            context_screen_owner_type: contextScreen,
+            context_screen: contextScreen,
           })
         }}
       >
