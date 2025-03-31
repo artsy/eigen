@@ -312,6 +312,11 @@ export enum ActionNames {
   TappedViewMoreDetails = "tappedViewMoreDetails",
   TappedViewingRoomGroup = "tappedViewingRoomGroup",
   BodyImpression = "bodyImpression",
+
+  /**
+   * Favorites tab events
+   */
+  TappedNavigationTab = "tappedNavigationTab",
 }
 
 /**
