@@ -4,12 +4,18 @@ This PR resolves [] <!-- eg [PROJECT-XXXX] -->
 
 <!-- Info, implementation, how to get there, before & after screenshots & videos, follow-up work, etc -->
 
-<!--  Please include screenshots for visual changes, at least on Android -->
+<!--  Please include screenshots or videos for visual changes, at least on Android -->
 <!-- Screenshots template:
-| | Before | After |
+| Platform | Before | After |
 |---|---|---|
 | Android | x | x |
 | iOS | x | x |
+-->
+<!-- Videos template:
+| Platform | Before | After |
+|---|---|---|
+| Android | <video src="xxx" width="400" /> | <video src="xxx" width="400" /> |
+| iOS | <video src="xxx" width="400" /> | <video src="xxx" width="400" /> |
 -->
 
 ### PR Checklist
