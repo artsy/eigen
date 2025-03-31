@@ -1,6 +1,7 @@
 import { ActionType, OwnerType, Screen, tappedTabBar } from "@artsy/cohesion"
 import { Flex, Text, useColor } from "@artsy/palette-mobile"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { PlatformPressable } from "@react-navigation/elements"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { FavoritesTab } from "app/Navigation/AuthenticatedRoutes/FavoritesTab"
 import { HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
@@ -114,6 +115,12 @@ const AppTabs: React.FC = () => {
               </Flex>
             )
           },
+          tabBarButton: (props) => (
+            <PlatformPressable
+              {...props}
+              android_ripple={{ color: "transparent" }} // Disables the ripple effect for Android
+            />
+          ),
           tabBarLabel: () => {
             return (
               <Flex
