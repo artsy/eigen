@@ -195,8 +195,8 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
   return (
     <ProvideScreenTracking
       info={{
-        context_screen: Schema.PageNames.SavedSearchList,
-        context_screen_owner_type: OwnerType.savedSearch,
+        context_screen: Schema.PageNames.FavoritesAlerts,
+        context_screen_owner_type: OwnerType.favorites,
       }}
     >
       <Flex flexDirection="column">
