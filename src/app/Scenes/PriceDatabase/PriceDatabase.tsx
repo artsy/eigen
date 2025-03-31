@@ -48,8 +48,6 @@ export const PriceDatabase = () => {
           <NavigationIndependentTree>
             <NavigationContainer theme={theme}>
               <Stack.Navigator
-                // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
-                detachInactiveScreens={false}
                 screenOptions={{
                   ...TransitionPresets.SlideFromRightIOS,
                   headerShown: false,

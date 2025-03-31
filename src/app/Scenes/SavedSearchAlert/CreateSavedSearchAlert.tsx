@@ -17,7 +17,7 @@ import {
 } from "app/system/navigation/useReloadedDevNavigationState"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { KeyboardAvoidingView, Modal, Platform } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import {
   CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertProps,
@@ -29,6 +29,7 @@ const Stack = createStackNavigator<CreateSavedSearchAlertNavigationStack>()
 export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (props) => {
   const theme = useNavigationTheme()
   const color = useColor()
+  const { top: topInset } = useSafeAreaInsets()
 
   const { visible, params } = props
   const { attributes, entity, currentArtworkID, sizeMetric } = params
@@ -70,7 +71,13 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
             statusBarTranslucent
             animationType="slide"
           >
-            <SafeAreaView style={{ flex: 1, backgroundColor: color("background") }}>
+            <SafeAreaView
+              style={{
+                flex: 1,
+                backgroundColor: color("background"),
+                paddingTop: topInset,
+              }}
+            >
               <KeyboardAvoidingView
                 style={{ flex: 1 }}
                 behavior={Platform.OS === "ios" ? "padding" : "height"}

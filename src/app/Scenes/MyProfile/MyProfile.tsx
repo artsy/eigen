@@ -21,8 +21,6 @@ export const MyProfileLegacy: React.FC<MyProfileProps> = memo(() => {
     <NavigationIndependentTree>
       <NavigationContainer theme={theme}>
         <Stack.Navigator
-          // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
-          detachInactiveScreens={false}
           screenOptions={{
             headerShown: false,
             cardStyle: { backgroundColor: color("background") },

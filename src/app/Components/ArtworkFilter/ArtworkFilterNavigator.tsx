@@ -39,7 +39,7 @@ import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { useEffect, useState } from "react"
 import { Modal, ViewProps } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import { useTracking } from "react-tracking"
 import {
   FilterModalMode as ArtworkFilterMode,
@@ -111,6 +111,7 @@ const Stack = createStackNavigator<ArtworkFilterNavigationStack>()
 export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const theme = useNavigationTheme()
   const color = useColor()
+  const { top: topInset } = useSafeAreaInsets()
 
   const tracking = useTracking()
   const { id, mode, slug, name, query, shouldShowCreateAlertButton, closeModal, exitModal } = props
@@ -332,7 +333,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
               screenOptions={{
                 ...TransitionPresets.SlideFromRightIOS,
                 headerShown: false,
-                cardStyle: { backgroundColor: color("background") },
+                cardStyle: { backgroundColor: color("background"), paddingTop: topInset },
               }}
             >
               <Stack.Screen

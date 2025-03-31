@@ -166,8 +166,6 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       <NavigationContainer ref={navContainerRef} theme={theme}>
         <FormikProvider value={formik}>
           <Stack.Navigator
-            // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
-            detachInactiveScreens={false}
             screenOptions={{
               headerShown: false,
               cardStyle: { backgroundColor: color("background") },

@@ -80,9 +80,10 @@ export const ArtworkFilterOptionsScreen: React.FC<
     return counts
   }, [filterTypeState, selectedFiltersState, previouslyAppliedFiltersState])
 
-  const navigateToNextFilterScreen = (screenName: keyof ArtworkFilterNavigationStack) => {
-    // @ts-expect-error
-    navigation.navigate(screenName)
+  const navigateToSpecificFilterOptionScreen = (screenName: keyof ArtworkFilterNavigationStack) => {
+    if (screenName !== "FilterOptionsScreen") {
+      navigation.navigate(screenName)
+    }
   }
 
   const concreteAggregations = aggregationsState ?? []
@@ -185,7 +186,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
                 item={item}
                 count={selectedFiltersCount}
                 onPress={() => {
-                  navigateToNextFilterScreen(
+                  navigateToSpecificFilterOptionScreen(
                     item.ScreenComponent as keyof ArtworkFilterNavigationStack
                   )
                 }}
