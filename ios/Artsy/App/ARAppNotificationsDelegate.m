@@ -77,7 +77,8 @@
 
     // Save device token for dev settings and to prevent excess calls to gravity if tokens don't change
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
-
+    [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:ARAPNSHasSeenPushDialog];
+    
     [[[ARAppDelegate braze] notifications] registerDeviceToken:deviceTokenData];
 
 // We only record device tokens on the Artsy service in case of Beta or App Store builds.
