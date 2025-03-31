@@ -4,9 +4,19 @@ This PR resolves [] <!-- eg [PROJECT-XXXX] -->
 
 <!-- Info, implementation, how to get there, before & after screenshots & videos, follow-up work, etc -->
 
+<!--  Please include screenshots for visual changes, at least on Android -->
+<!-- Screenshots template:
+| | Before | After |
+|---|---|---|
+| Android | x | x |
+| iOS | x | x |
+-->
+
 ### PR Checklist
 
-- [ ] I have tested my changes on **iOS** and **Android**.
+- [ ] I have tested my changes on the following platforms:
+  - [ ] **Android**.
+  - [ ] **iOS**.
 - [ ] I hid my changes behind a **[feature flag]**, or they don't need one.
 - [ ] I have included **screenshots** or **videos**, or I have not changed the UI.
 - [ ] I have added **tests**, or my changes don't require any.
