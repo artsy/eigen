@@ -178,7 +178,7 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
                     <Flex mr={1}>
                       <Flex
                         testID="Fallback"
-                        bg={color("black5")}
+                        backgroundColor="black5"
                         width={60}
                         height={60}
                         justifyContent="center"
@@ -190,6 +190,7 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
                             width={60}
                             height={60}
                             blurhash={image.blurhash}
+                            performResize={false}
                           />
                         ) : (
                           <NoImageIcon fill="black60" mx="auto" />
