@@ -11,10 +11,6 @@ import { localizeHeightAndWidthAttributes } from "app/Scenes/SavedSearchAlert/he
 import { AlertPriceRangeScreenQueryRenderer } from "app/Scenes/SavedSearchAlert/screens/AlertPriceRangeScreen"
 import { ConfirmationScreen } from "app/Scenes/SavedSearchAlert/screens/ConfirmationScreen"
 import { SavedSearchFilterScreen } from "app/Scenes/SavedSearchAlert/screens/SavedSearchFilterScreen"
-import {
-  CREATE_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY,
-  useReloadedDevNavigationState,
-} from "app/system/navigation/useReloadedDevNavigationState"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { KeyboardAvoidingView, Modal, Platform } from "react-native"
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
@@ -35,14 +31,6 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
   const { attributes, entity, currentArtworkID, sizeMetric } = params
   const { localizedUnit } = useLocalizedUnit()
 
-  const { isReady, initialState, saveSession } = useReloadedDevNavigationState(
-    CREATE_SAVED_ARTWORK_NAVIGATION_STACK_STATE_KEY
-  )
-
-  if (!isReady) {
-    return null
-  }
-
   return (
     <SavedSearchStoreProvider
       runtimeModel={{
@@ -58,13 +46,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
       }}
     >
       <NavigationIndependentTree>
-        <NavigationContainer
-          initialState={initialState}
-          onStateChange={(state) => {
-            saveSession(state)
-          }}
-          theme={theme}
-        >
+        <NavigationContainer theme={theme}>
           <Modal
             visible={visible}
             presentationStyle="fullScreen"
