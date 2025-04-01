@@ -1,3 +1,4 @@
+import { ActionType } from "@artsy/cohesion"
 import { BellIcon, Flex, HeartIcon, MultiplePersonsIcon, Pill, Screen } from "@artsy/palette-mobile"
 import { PAGE_SIZE } from "app/Components/constants"
 import { AlertsTab } from "app/Scenes/Favorites/AlertsTab"
@@ -9,6 +10,7 @@ import { FollowsTab } from "app/Scenes/Favorites/FollowsTab"
 import { SavesTab } from "app/Scenes/Favorites/SavesTab"
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { useEffect } from "react"
+import { useTracking } from "react-tracking"
 
 const Content: React.FC = () => {
   const activeTab = FavoritesContextStore.useStoreState((state) => state.activeTab)
@@ -49,6 +51,8 @@ const FavoritesHeader = () => {
   const setActiveTab = FavoritesContextStore.useStoreActions((actions) => actions.setActiveTab)
   const { activeTab } = FavoritesContextStore.useStoreState((state) => state)
 
+  const { trackEvent } = useTracking()
+
   return (
     <Flex flexDirection="row" gap={0.5} mx={2} mb={2} mt={1}>
       {Pills.map(({ Icon, title, key }) => {
@@ -56,7 +60,15 @@ const FavoritesHeader = () => {
         return (
           <Pill
             selected={isActive}
-            onPress={() => setActiveTab(key)}
+            onPress={() => {
+              setActiveTab(key)
+
+              trackEvent({
+                action: ActionType.tappedNavigationTab,
+                context_module: key,
+                subject: key,
+              })
+            }}
             Icon={() => (
               <Flex mr={0.5} justifyContent="center" bottom="1px">
                 <Icon fill={isActive ? "white100" : "black100"} />

@@ -1,3 +1,4 @@
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import { EyeClosedIcon, Flex, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtworkListItem_collection$key } from "__generated__/ArtworkListItem_collection.graphql"
 import { FourUpImageLayout } from "app/Scenes/ArtworkLists/FourUpImageLayout"
@@ -8,6 +9,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface ArtworkListItemProps {
   artworkList: ArtworkListItem_collection$key
@@ -30,8 +32,19 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = ({ artworkList, imagesL
   const artworkNodes = extractNodes(item.artworksConnection)
   const imageURLs = artworkNodes.map((node) => node.image?.resized?.url ?? null)
 
+  const { trackEvent } = useTracking()
+
   return (
-    <RouterLink to={`/artwork-list/${item.internalID}`}>
+    <RouterLink
+      to={`/artwork-list/${item.internalID}`}
+      onPress={() => {
+        trackEvent({
+          action: ActionType.tappedArtworkList,
+          destination_screen: OwnerType.artworkList,
+          destination_screen_owner_id: item.internalID,
+        })
+      }}
+    >
       <Flex
         justifyContent="space-between"
         width={itemWidth}

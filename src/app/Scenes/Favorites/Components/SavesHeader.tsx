@@ -1,17 +1,24 @@
+import { ActionType } from "@artsy/cohesion"
 import { Flex, AddIcon, TagIcon, Touchable, Text, Spacer, Join } from "@artsy/palette-mobile"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { ProgressiveOnboardingOfferSettings } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingOfferSettings"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ScrollView } from "react-native"
+import { useTracking } from "react-tracking"
 
 export const SavesHeader = () => {
   const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
   const { dispatch } = useArtworkListsContext()
+  const { trackEvent } = useTracking()
 
   const handleOfferSettings = () => {
     dispatch({
       type: "SET_OFFER_SETTINGS_VIEW_VISIBLE",
       payload: true,
+    })
+
+    trackEvent({
+      action: ActionType.tappedOfferSettings,
     })
   }
 
@@ -19,6 +26,10 @@ export const SavesHeader = () => {
     dispatch({
       type: "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE",
       payload: true,
+    })
+
+    trackEvent({
+      action: ActionType.tappedNewArtworkList,
     })
   }
 
