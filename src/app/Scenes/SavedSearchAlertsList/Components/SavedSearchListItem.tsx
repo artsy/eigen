@@ -172,13 +172,13 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
 
           <Animated.View style={animatedStyles}>
             <Touchable onPress={onPress} underlayColor={color("black5")}>
-              <Box px={2} py={2} backgroundColor="white100">
+              <Box px={2} py={1} backgroundColor="white100">
                 <Flex flexDirection="row" alignItems="center" justifyContent="flex-start">
                   {!!displayImage && (
                     <Flex mr={1}>
                       <Flex
                         testID="Fallback"
-                        bg={color("black5")}
+                        backgroundColor="black5"
                         width={60}
                         height={60}
                         justifyContent="center"
@@ -190,6 +190,7 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
                             width={60}
                             height={60}
                             blurhash={image.blurhash}
+                            performResize={false}
                           />
                         ) : (
                           <NoImageIcon fill="black60" mx="auto" />

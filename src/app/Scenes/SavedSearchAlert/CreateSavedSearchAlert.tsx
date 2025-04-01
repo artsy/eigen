@@ -1,5 +1,5 @@
 import { useColor } from "@artsy/palette-mobile"
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import {
@@ -17,7 +17,7 @@ import {
 } from "app/system/navigation/useReloadedDevNavigationState"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { KeyboardAvoidingView, Modal, Platform } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import {
   CreateSavedSearchAlertNavigationStack,
   CreateSavedSearchAlertProps,
@@ -29,6 +29,7 @@ const Stack = createStackNavigator<CreateSavedSearchAlertNavigationStack>()
 export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (props) => {
   const theme = useNavigationTheme()
   const color = useColor()
+  const { top: topInset } = useSafeAreaInsets()
 
   const { visible, params } = props
   const { attributes, entity, currentArtworkID, sizeMetric } = params
@@ -56,70 +57,77 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
         unit: sizeMetric || localizedUnit,
       }}
     >
-      <NavigationContainer
-        independent
-        initialState={initialState}
-        onStateChange={(state) => {
-          saveSession(state)
-        }}
-        theme={theme}
-      >
-        <Modal
-          visible={visible}
-          presentationStyle="fullScreen"
-          statusBarTranslucent
-          animationType="slide"
+      <NavigationIndependentTree>
+        <NavigationContainer
+          initialState={initialState}
+          onStateChange={(state) => {
+            saveSession(state)
+          }}
+          theme={theme}
         >
-          <SafeAreaView style={{ flex: 1, backgroundColor: color("background") }}>
-            <KeyboardAvoidingView
-              style={{ flex: 1 }}
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
+          <Modal
+            visible={visible}
+            presentationStyle="fullScreen"
+            statusBarTranslucent
+            animationType="slide"
+          >
+            <SafeAreaView
+              style={{
+                flex: 1,
+                backgroundColor: color("background"),
+                paddingTop: topInset,
+              }}
             >
-              <Stack.Navigator
-                // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
-                detachInactiveScreens={false}
-                screenOptions={{
-                  ...TransitionPresets.SlideFromRightIOS,
-                  headerShown: false,
-                  cardStyle: { backgroundColor: color("background") },
-                }}
+              <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
               >
-                <Stack.Screen
-                  name="CreateSavedSearchAlert"
-                  component={CreateSavedSearchAlertContentQueryRenderer}
-                  initialParams={params}
-                />
-                <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
-                <Stack.Screen
-                  name="AlertPriceRange"
-                  component={AlertPriceRangeScreenQueryRenderer}
-                  options={{
-                    // Avoid PanResponser conflicts between the slider and the slide back gesture
-                    gestureEnabled: false,
+                <Stack.Navigator
+                  // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
+                  detachInactiveScreens={false}
+                  screenOptions={{
+                    ...TransitionPresets.SlideFromRightIOS,
+                    headerShown: false,
+                    cardStyle: { backgroundColor: color("background") },
                   }}
-                />
-                <Stack.Screen
-                  name="ConfirmationScreen"
-                  component={ConfirmationScreen}
-                  options={{
-                    gestureEnabled: false,
-                  }}
-                  initialParams={{
-                    closeModal: params.onClosePress,
-                  }}
-                />
-                <Stack.Screen
-                  name="SavedSearchFilterScreen"
-                  component={SavedSearchFilterScreen}
-                  options={{
-                    gestureEnabled: false,
-                  }}
-                />
-              </Stack.Navigator>
-            </KeyboardAvoidingView>
-          </SafeAreaView>
-        </Modal>
-      </NavigationContainer>
+                >
+                  <Stack.Screen
+                    name="CreateSavedSearchAlert"
+                    component={CreateSavedSearchAlertContentQueryRenderer}
+                    initialParams={params}
+                  />
+                  <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
+                  <Stack.Screen
+                    name="AlertPriceRange"
+                    component={AlertPriceRangeScreenQueryRenderer}
+                    options={{
+                      // Avoid PanResponser conflicts between the slider and the slide back gesture
+                      gestureEnabled: false,
+                    }}
+                  />
+                  <Stack.Screen
+                    name="ConfirmationScreen"
+                    component={ConfirmationScreen}
+                    options={{
+                      gestureEnabled: false,
+                    }}
+                    initialParams={{
+                      closeModal: params.onClosePress,
+                    }}
+                  />
+                  <Stack.Screen
+                    name="SavedSearchFilterScreen"
+                    component={SavedSearchFilterScreen}
+                    options={{
+                      gestureEnabled: false,
+                    }}
+                  />
+                </Stack.Navigator>
+              </KeyboardAvoidingView>
+            </SafeAreaView>
+          </Modal>
+        </NavigationContainer>
+      </NavigationIndependentTree>
     </SavedSearchStoreProvider>
   )
 }
