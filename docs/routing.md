@@ -22,7 +22,7 @@ When wrapping another component that needs the onPress event, `hasChildTouchable
 
 Prefetching can be disabled by passing `disablePrefetch` to `RouterLink`.
 
-Alternatively, [navigate] can be used with `onPress` to programmatically navigate to a given route (not recommended).
+Alternatively, [navigate] can be used with `onPress` to programmatically navigate to a given route (not recommended because it does not support prefetching).
 
 [routes.tsx]: /src/app/Navigation/routes.tsx
 [RouterLink]: /src/app/system/navigation/RouterLink.tsx
