@@ -1,5 +1,9 @@
 import { Box, Button, Flex, Spacer, Text, useColor } from "@artsy/palette-mobile"
-import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
+import {
+  NavigationContainer,
+  NavigationContainerRef,
+  NavigationIndependentTree,
+} from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
 import { OnboardingSocialPick } from "app/Scenes/Onboarding/OnboardingSocialPick"
@@ -23,7 +27,7 @@ export const OnboardingCreateAccount: React.FC = () => <OnboardingSocialPick mod
 
 export type OnboardingCreateAccountProps = StackScreenProps<
   OnboardingNavigationStack,
-  "OnboardingCreateAccount"
+  "OnboardingCreateAccountWithEmail"
 >
 
 export type OnboardingCreateAccountNavigationStack = {
@@ -144,41 +148,42 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
     <Flex flex={1} backgroundColor="white100" flexGrow={1} pb={1}>
       <KeyboardAvoidingView style={{ flex: 1 }}>
         <FormikProvider value={formik}>
-          <NavigationContainer
-            onStateChange={(state) => {
-              const routes = state?.routes
-              const index = state?.index
-              if (index !== undefined && routes) {
-                setCurrentRoute(routes[index].name as any)
-              }
-            }}
-            ref={__unsafe__createAccountNavigationRef}
-            independent
-          >
-            <StackNavigator.Navigator
-              screenOptions={{
-                ...TransitionPresets.SlideFromRightIOS,
-                headerShown: false,
-                headerMode: "screen",
+          <NavigationIndependentTree>
+            <NavigationContainer
+              onStateChange={(state) => {
+                const routes = state?.routes
+                const index = state?.index
+                if (index !== undefined && routes) {
+                  setCurrentRoute(routes[index].name as any)
+                }
               }}
+              ref={__unsafe__createAccountNavigationRef}
             >
-              <StackNavigator.Screen
-                name="OnboardingCreateAccountEmail"
-                component={OnboardingCreateAccountEmail}
-                initialParams={{ navigateToWelcomeScreen: navigation.goBack }}
-              />
-              <StackNavigator.Screen
-                name="OnboardingCreateAccountPassword"
-                component={OnboardingCreateAccountPassword}
-              />
-              <StackNavigator.Screen
-                name="OnboardingCreateAccountName"
-                component={OnboardingCreateAccountName}
-              />
-              <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
-            </StackNavigator.Navigator>
-            {currentRoute !== "OnboardingWebView" && <OnboardingCreateAccountButton />}
-          </NavigationContainer>
+              <StackNavigator.Navigator
+                screenOptions={{
+                  ...TransitionPresets.SlideFromRightIOS,
+                  headerShown: false,
+                  headerMode: "screen",
+                }}
+              >
+                <StackNavigator.Screen
+                  name="OnboardingCreateAccountEmail"
+                  component={OnboardingCreateAccountEmail}
+                  initialParams={{ navigateToWelcomeScreen: navigation.goBack }}
+                />
+                <StackNavigator.Screen
+                  name="OnboardingCreateAccountPassword"
+                  component={OnboardingCreateAccountPassword}
+                />
+                <StackNavigator.Screen
+                  name="OnboardingCreateAccountName"
+                  component={OnboardingCreateAccountName}
+                />
+                <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
+              </StackNavigator.Navigator>
+              {currentRoute !== "OnboardingWebView" && <OnboardingCreateAccountButton />}
+            </NavigationContainer>
+          </NavigationIndependentTree>
         </FormikProvider>
       </KeyboardAvoidingView>
     </Flex>

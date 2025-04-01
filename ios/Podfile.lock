@@ -1548,7 +1548,7 @@ PODS:
     - Yoga
   - react-native-render-html (6.3.4):
     - React-Core
-  - react-native-safe-area-context (3.4.0):
+  - react-native-safe-area-context (5.3.0):
     - React-Core
   - react-native-shake (5.5.2):
     - DoubleConversion
@@ -2055,7 +2055,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.35.0):
+  - RNScreens (4.10.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2793,7 +2793,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: ce102083db558237dac20cf64172ef569ebe2dd9
   react-native-pager-view: 806e4488f4da2518bfbdb7142eadca5970b609a3
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd
-  react-native-safe-area-context: 8d2875c0b41484fda7ab7c803f40d016b8a7ca8c
+  react-native-safe-area-context: fdb0a66feac038cb6eb1edafcf2ccee2b5cf0284
   react-native-shake: 82e568d040bacfd10ee9b1bcf40047848a18fb3e
   react-native-view-shot: 9b93e5a215a9bcdf44dc94c5c752a8b639b4db37
   react-native-webview: 508a7967877321541cc7ff68740f2c294243415c
@@ -2841,7 +2841,7 @@ SPEC CHECKSUMS:
   RNPermissions: 92430517fd4353d5b2b7217cd1ca48ddd2875245
   RNReactNativeHapticFeedback: 7601768ee65ffc86fc93d7c30dd917031144ed3d
   RNReanimated: 80f5a5dc0ff2cc7b2681ab01a7059bf5de479caa
-  RNScreens: 4a5446dc4d922b2375df14c3a3f30bfc7719f6b1
+  RNScreens: 8daee2a4e073e0ef3783f09927f85dea01402b1f
   RNSentry: 41b8cac8cded9e27de40df0dff056e6017160dfe
   RNShare: a731da75fed4354ed5c1824037093c5dddfa035a
   RNSVG: 3421710ac15f4f2dc47e5c122f2c2e4282116830

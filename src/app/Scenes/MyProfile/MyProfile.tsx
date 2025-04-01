@@ -1,5 +1,5 @@
 import { Screen, useColor } from "@artsy/palette-mobile"
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { MyCollectionArtworkForm } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
@@ -18,23 +18,27 @@ export const MyProfileLegacy: React.FC<MyProfileProps> = memo(() => {
   const theme = useNavigationTheme()
 
   return (
-    <NavigationContainer independent theme={theme}>
-      <Stack.Navigator
-        // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
-        detachInactiveScreens={false}
-        screenOptions={{
-          headerShown: false,
-          cardStyle: { backgroundColor: color("background") },
-        }}
-      >
-        <Stack.Screen
-          name="MyProfileHeaderMyCollectionAndSavedWorks"
-          component={MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer}
-        />
-        <Stack.Screen name="MyCollectionArtworkForm" component={MyCollectionArtworkForm} />
-        <Stack.Screen name="MyProfileEditForm" component={MyProfileEditFormScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <NavigationIndependentTree>
+      <NavigationContainer theme={theme}>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+            cardStyle: { backgroundColor: color("background") },
+          }}
+        >
+          <Stack.Screen
+            name="MyProfileHeaderMyCollectionAndSavedWorks"
+            component={MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer}
+          />
+          <Stack.Screen
+            name="MyCollectionArtworkForm"
+            // @ts-expect-error
+            component={MyCollectionArtworkForm}
+          />
+          <Stack.Screen name="MyProfileEditForm" component={MyProfileEditFormScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </NavigationIndependentTree>
   )
 })
 

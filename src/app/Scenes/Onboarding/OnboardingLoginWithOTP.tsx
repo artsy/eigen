@@ -19,12 +19,10 @@ import { KeyboardAvoidingView, ScrollView } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "./Onboarding"
 
-export interface OnboardingLoginWithOTPProps
-  extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWithOTP"> {
-  email: string
-  password: string
-  otpMode: OTPMode
-}
+export type OnboardingLoginWithOTPProps = StackScreenProps<
+  OnboardingNavigationStack,
+  "OnboardingLoginWithOTP"
+>
 
 export interface OnboardingLoginWithOTPFormProps
   extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWithOTP"> {

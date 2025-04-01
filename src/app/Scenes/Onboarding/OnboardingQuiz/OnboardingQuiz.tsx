@@ -1,4 +1,4 @@
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -48,53 +48,55 @@ export const OnboardingQuiz = () => {
 
   return (
     <OnboardingProvider onDone={handleDone}>
-      <NavigationContainer independent>
-        <StackNavigator.Navigator
-          screenOptions={{
-            ...TransitionPresets.DefaultTransition,
-            headerShown: false,
-            headerMode: "screen",
-            gestureEnabled: false,
-          }}
-        >
-          <StackNavigator.Screen
-            name="OnboardingWelcomeScreen"
-            component={OnboardingWelcomeScreen}
-          />
-          <StackNavigator.Screen name="OnboardingQuestionOne" component={OnboardingQuestionOne} />
-          <StackNavigator.Screen name="OnboardingQuestionTwo" component={OnboardingQuestionTwo} />
-          <StackNavigator.Screen
-            name="OnboardingQuestionThree"
-            component={OnboardingQuestionThree}
-          />
+      <NavigationIndependentTree>
+        <NavigationContainer>
+          <StackNavigator.Navigator
+            screenOptions={{
+              ...TransitionPresets.DefaultTransition,
+              headerShown: false,
+              headerMode: "screen",
+              gestureEnabled: false,
+            }}
+          >
+            <StackNavigator.Screen
+              name="OnboardingWelcomeScreen"
+              component={OnboardingWelcomeScreen}
+            />
+            <StackNavigator.Screen name="OnboardingQuestionOne" component={OnboardingQuestionOne} />
+            <StackNavigator.Screen name="OnboardingQuestionTwo" component={OnboardingQuestionTwo} />
+            <StackNavigator.Screen
+              name="OnboardingQuestionThree"
+              component={OnboardingQuestionThree}
+            />
 
-          <StackNavigator.Screen
-            name="OnboardingTopAuctionLots"
-            component={OnboardingTopAuctionLots}
-          />
-          <StackNavigator.Screen
-            name="OnboardingArtistsOnTheRise"
-            component={OnboardingArtistsOnTheRise}
-          />
-          <StackNavigator.Screen
-            name="OnboardingCuratedArtworks"
-            component={OnboardingCuratedArtworks}
-          />
+            <StackNavigator.Screen
+              name="OnboardingTopAuctionLots"
+              component={OnboardingTopAuctionLots}
+            />
+            <StackNavigator.Screen
+              name="OnboardingArtistsOnTheRise"
+              component={OnboardingArtistsOnTheRise}
+            />
+            <StackNavigator.Screen
+              name="OnboardingCuratedArtworks"
+              component={OnboardingCuratedArtworks}
+            />
 
-          <StackNavigator.Screen
-            name="OnboardingFollowArtists"
-            component={OnboardingFollowArtists}
-          />
-          <StackNavigator.Screen
-            name="OnboardingFollowGalleries"
-            component={OnboardingFollowGalleries}
-          />
-          <StackNavigator.Screen
-            name="OnboardingPostFollowLoadingScreen"
-            component={OnboardingPostFollowLoadingScreen}
-          />
-        </StackNavigator.Navigator>
-      </NavigationContainer>
+            <StackNavigator.Screen
+              name="OnboardingFollowArtists"
+              component={OnboardingFollowArtists}
+            />
+            <StackNavigator.Screen
+              name="OnboardingFollowGalleries"
+              component={OnboardingFollowGalleries}
+            />
+            <StackNavigator.Screen
+              name="OnboardingPostFollowLoadingScreen"
+              component={OnboardingPostFollowLoadingScreen}
+            />
+          </StackNavigator.Navigator>
+        </NavigationContainer>
+      </NavigationIndependentTree>
     </OnboardingProvider>
   )
 }

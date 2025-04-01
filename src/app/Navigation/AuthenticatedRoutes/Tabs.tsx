@@ -1,6 +1,7 @@
 import { ActionType, OwnerType, Screen, tappedTabBar } from "@artsy/cohesion"
 import { Flex, Text, useColor } from "@artsy/palette-mobile"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { PlatformPressable } from "@react-navigation/elements"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { FavoritesTab } from "app/Navigation/AuthenticatedRoutes/FavoritesTab"
 import { HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
@@ -46,7 +47,7 @@ type TabRoutesParams = {
 
 const Tab = createBottomTabNavigator<TabRoutesParams>()
 
-const BOTTOM_TABS_HEIGHT = 60
+const BOTTOM_TABS_HEIGHT = 65
 
 const AppTabs: React.FC = () => {
   const { tabsBadges } = useBottomTabsBadges()
@@ -93,6 +94,7 @@ const AppTabs: React.FC = () => {
       screenOptions={({ route }) => {
         const currentRoute = internal_navigationRef.current?.getCurrentRoute()?.name
         return {
+          animation: "fade",
           headerShown: false,
           tabBarStyle: {
             animate: true,
@@ -113,6 +115,12 @@ const AppTabs: React.FC = () => {
               </Flex>
             )
           },
+          tabBarButton: (props) => (
+            <PlatformPressable
+              {...props}
+              android_ripple={{ color: "transparent" }} // Disables the ripple effect for Android
+            />
+          ),
           tabBarLabel: () => {
             return (
               <Flex
@@ -122,13 +130,7 @@ const AppTabs: React.FC = () => {
                 justifyContent="flex-end"
                 height={BOTTOM_TABS_HEIGHT}
               >
-                <Text
-                  variant="xxs"
-                  style={{ top: Platform.OS === "ios" ? -4 : 0 }}
-                  selectable={false}
-                  textAlign="center"
-                  color="black100"
-                >
+                <Text variant="xxs" selectable={false} textAlign="center" color="black100">
                   {bottomTabsConfig[route.name].name}
                 </Text>
               </Flex>
