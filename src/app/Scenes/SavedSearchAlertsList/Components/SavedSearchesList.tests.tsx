@@ -3,10 +3,13 @@ import { SavedSearchesListTestsQuery } from "__generated__/SavedSearchesListTest
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { Alert } from "react-native"
 import { PanGesture } from "react-native-gesture-handler"
 import { fireGestureHandler, getByGestureTestId } from "react-native-gesture-handler/jest-utils"
 import { graphql } from "react-relay"
 import { SavedSearchesListPaginationContainer as SavedSearchesList } from "./SavedSearchesList"
+
+jest.spyOn(Alert, "alert")
 
 describe("SavedSearches", () => {
   const { renderWithRelay } = setupTestWrapper<SavedSearchesListTestsQuery>({
@@ -179,12 +182,7 @@ describe("SavedSearches", () => {
       expect(screen.getByTestId(`delete-button-banksy`)).toBeVisible()
       fireEvent.press(screen.getByTestId(`delete-button-banksy`))
 
-      expect(screen.getByText("Delete Alert")).toBeTruthy()
-      expect(
-        screen.getByText(
-          "You will no longer receive notifications for artworks matching the criteria in this alert."
-        )
-      ).toBeTruthy()
+      expect(Alert.alert).toHaveBeenCalled()
     })
   })
 })

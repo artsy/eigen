@@ -12,7 +12,7 @@ import { EmptyMessage } from "app/Scenes/SavedSearchAlertsList/Components/EmptyM
 import { SavedSearchListItem } from "app/Scenes/SavedSearchAlertsList/Components/SavedSearchListItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { RefreshEvents, SAVED_ALERT_REFRESH_KEY } from "app/utils/refreshHelpers"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { InteractionManager } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
@@ -127,6 +127,7 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
   )
 
   const isFocused = useIsFocused()
+  const initialRender = useRef(true)
 
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedAlert, setSelectedAlert] = useState<BottomSheetAlert | null>(null)
@@ -136,9 +137,10 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
   // We want to make sure that the list is refreshed when the screen is focused
   // This is needed to make sure we don't show deleted alerts
   useEffect(() => {
-    if (isFocused) {
+    if (isFocused && !initialRender.current) {
       onRefresh()
     }
+    initialRender.current = false
   }, [isFocused])
 
   const handleLoadMore = () => {
@@ -268,11 +270,6 @@ const alertsListFragment = graphql`
   ) {
     alertsConnection(first: $count, after: $cursor, sort: $sort)
       @connection(key: "AlertsList_alertsConnection") {
-      pageInfo {
-        hasNextPage
-        startCursor
-        endCursor
-      }
       edges {
         node {
           internalID
