@@ -179,14 +179,16 @@ export const handleReceivedNotification = (
   if (__DEV__ && !__TEST__) {
     console.log("RECEIVED NOTIFICATION", notification)
   }
+
   const isLoggedIn = !!unsafe_getUserAccessToken()
   const isNavigationReady = !!unsafe_getIsNavigationReady()
   if (notification.userInteraction) {
     const now = Date.now()
     // track notification tapped event only in android
+    // and also navigate only once to the deeplink url
     // ios handles it in the native side
-    // debounce events to avoid double tracking
-    // once we resolve the underlying issue with double handleReceivedNotification calls we can remove
+    // debounce events to avoid double tracking and double navigating
+    // once we migrate away from this library we can refactor this
 
     if (Platform.OS === "android" && now - lastEventTimestamp > DEBOUNCE_THRESHOLD) {
       lastEventTimestamp = now
@@ -198,7 +200,20 @@ export const handleReceivedNotification = (
         UIApplicationState: notification.foreground ? "active" : "background",
         message: notification?.message?.toString(),
       })
+
+      const hasUrl = !!notification.data.url
+      if (isLoggedIn && hasUrl) {
+        navigationEvents.emit("requestModalDismiss")
+        navigate(notification.data.url as string, {
+          passProps: notification.data,
+          ignoreDebounce: true,
+        })
+        // clear any pending notification
+        GlobalStore.actions.pendingPushNotification.setPendingPushNotification(null)
+        return
+      }
     }
+
     if (!isLoggedIn || !isNavigationReady) {
       // removing finish because we do not use it on android and we don't want to serialise functions at this time
       const newNotification = { ...notification, finish: undefined, tappedAt: Date.now() }
@@ -206,17 +221,7 @@ export const handleReceivedNotification = (
       GlobalStore.actions.pendingPushNotification.setPendingPushNotification(newNotification)
       return
     }
-    const hasUrl = !!notification.data.url
-    if (isLoggedIn && hasUrl) {
-      navigationEvents.emit("requestModalDismiss")
-      navigate(notification.data.url as string, {
-        passProps: notification.data,
-        ignoreDebounce: true,
-      })
-      // clear any pending notification
-      GlobalStore.actions.pendingPushNotification.setPendingPushNotification(null)
-      return
-    }
+
     return
   }
   if (notification.foreground) {
