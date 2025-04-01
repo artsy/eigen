@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import {
   ArrowDownIcon,
   Flex,
@@ -19,6 +19,7 @@ import { screen } from "app/utils/track/helpers"
 import { useState } from "react"
 import Haptic from "react-native-haptic-feedback"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { useTracking } from "react-tracking"
 
 type FollowOption = "artists" | "shows" | "galleries"
 
@@ -43,6 +44,7 @@ const FOLLOW_OPTIONS: {
 export const FollowsTab = () => {
   const [followOption, setfollowOption] = useState<FollowOption>("artists")
   const { bottom } = useSafeAreaInsets()
+  const { trackEvent } = useTracking()
 
   const [showBottomSheet, setShowBottomSheet] = useState(false)
 
@@ -102,6 +104,11 @@ export const FollowsTab = () => {
                       setTimeout(() => {
                         setShowBottomSheet(false)
                       }, 200)
+                      trackEvent({
+                        action: ActionType.selectedFromDrawer,
+                        context_screen_owner_type: OwnerType.favoritesFollows,
+                        subject: value,
+                      })
                     }}
                     selected={followOption === value}
                     text={label}

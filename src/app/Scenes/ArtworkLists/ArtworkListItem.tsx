@@ -1,4 +1,4 @@
-import { ActionType } from "@artsy/cohesion"
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import { EyeClosedIcon, Flex, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtworkListItem_collection$key } from "__generated__/ArtworkListItem_collection.graphql"
 import { FourUpImageLayout } from "app/Scenes/ArtworkLists/FourUpImageLayout"
@@ -7,7 +7,6 @@ import { useArtworkListsColCount } from "app/Scenes/ArtworkLists/useArtworkLists
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { Schema } from "app/utils/track"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -41,7 +40,7 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = ({ artworkList, imagesL
       onPress={() => {
         trackEvent({
           action: ActionType.tappedArtworkList,
-          destination_screen: Schema.PageNames.ArtworkList,
+          destination_screen: OwnerType.artworkList,
           destination_screen_owner_id: item.internalID,
         })
       }}
