@@ -46,6 +46,7 @@ export const AlertsSortByModal: React.FC<AlertsSortByModalProps> = (props) => {
                 onPress={() => onSelectOption(option)}
                 selected={selectedValue === option.value}
                 text={option.text}
+                block
               />
             ))}
           </Join>

@@ -1,18 +1,21 @@
 import { ActionType, DeletedSavedSearch, OwnerType } from "@artsy/cohesion"
 import {
+  Box,
   ChevronIcon,
   Flex,
-  Box,
-  useColor,
+  Image,
+  NoImageIcon,
   Text,
   Touchable,
   TrashIcon,
-  Dialog,
-  NoImageIcon,
-  Image,
+  useColor,
 } from "@artsy/palette-mobile"
+import {
+  SavedSearchListItem_alert$data,
+  SavedSearchListItem_alert$key,
+} from "__generated__/SavedSearchListItem_alert.graphql"
 import { deleteSavedSearchMutation } from "app/Scenes/SavedSearchAlert/mutations/deleteSavedSearchAlert"
-import { useState } from "react"
+import { Alert } from "react-native"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
 import Animated, {
   Easing,
@@ -21,40 +24,28 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface SavedSearchListItemProps {
-  id: string
-  title: string
-  subtitle?: string
   isSwipingActive?: boolean
   displayImage?: boolean
-  image?: {
-    url: string
-    blurhash: string
-  }
-  onPress: () => void
+  onPress: (alert: SavedSearchListItem_alert$data) => void
   onSwipeBegin: (id: string) => void
-  onDelete: (id: string) => void
+  onDelete?: (id: string) => void
+  alert: SavedSearchListItem_alert$key
 }
 
 const FALLBACK_TITLE = "Untitled Alert"
 const DELETE_BUTTON_WIDTH = 91
 
 export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) => {
-  const {
-    id,
-    title,
-    subtitle,
-    isSwipingActive,
-    displayImage,
-    image,
-    onPress,
-    onSwipeBegin,
-    onDelete,
-  } = props
+  const { isSwipingActive, displayImage, onPress, onSwipeBegin, onDelete } = props
 
-  const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
+  const alert = useFragment(alertFragment, props.alert)
+
+  const image = alert?.artworksConnection?.edges?.[0]?.node?.image
+
   const color = useColor()
   const tracking = useTracking()
 
@@ -67,12 +58,16 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
     isDeleteButtonVisible.set(() => false)
   }
 
+  const handlePress = () => {
+    onPress?.(alert)
+  }
+
   const pan = Gesture.Pan()
     .failOffsetY([-5, 5])
     .activeOffsetX([-5, 5])
-    .withTestId(`pan-alert-${id}`)
+    .withTestId(`pan-alert-${alert.internalID}`)
     .onBegin(() => {
-      runOnJS(onSwipeBegin)(id)
+      runOnJS(onSwipeBegin)(alert.internalID)
     })
     .onChange((event) => {
       // Prevent swiping to the right
@@ -119,34 +114,38 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
   })
 
   const onDeletePress = async () => {
-    setVisibleDeleteDialog(false)
-
     try {
-      await deleteSavedSearchMutation(id)
-      tracking.trackEvent(tracks.deletedSavedSearch(id))
-      onDelete?.(id)
+      await deleteSavedSearchMutation(alert.internalID)
+      tracking.trackEvent(tracks.deletedSavedSearch(alert.internalID))
+      onDelete?.(alert.internalID)
     } catch (error) {
       console.error(error)
     }
   }
 
+  const handleDeleteAlert = () => {
+    Alert.alert(
+      "Delete Alert",
+      "You will no longer receive notifications for artworks matching the criteria in this alert.",
+      [
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: () => {
+            onDeletePress()
+          },
+        },
+        {
+          text: "Cancel",
+          style: "cancel",
+          onPress: () => null,
+        },
+      ]
+    )
+  }
+
   return (
     <Flex>
-      <Dialog
-        isVisible={visibleDeleteDialog}
-        title="Delete Alert"
-        detail="You will no longer receive notifications for artworks matching the criteria in this alert."
-        primaryCta={{
-          text: "Delete",
-          onPress: onDeletePress,
-        }}
-        secondaryCta={{
-          text: "Keep Alert",
-          onPress: () => {
-            setVisibleDeleteDialog(false)
-          },
-        }}
-      />
       <GestureDetector gesture={pan}>
         <Animated.View>
           <Flex
@@ -160,9 +159,12 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
             backgroundColor="red100"
             width={DELETE_BUTTON_WIDTH}
           >
-            <Touchable onPress={() => setVisibleDeleteDialog(true)} testID={`delete-button-${id}`}>
+            <Touchable
+              onPress={() => handleDeleteAlert()}
+              testID={`delete-button-${alert.internalID}`}
+            >
               <Flex flexDirection="row" alignItems="center" width="100%" height="100%">
-                <Text variant="sm-display" color="white100">
+                <Text variant="sm-display" color="white100" selectable={false}>
                   Delete
                 </Text>
                 <TrashIcon fill="white100" width="16px" height="16px" />
@@ -171,7 +173,13 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
           </Flex>
 
           <Animated.View style={animatedStyles}>
-            <Touchable onPress={onPress} underlayColor={color("black5")}>
+            <Touchable
+              onPress={handlePress}
+              underlayColor={color("black5")}
+              activeOpacity={1}
+              haptic
+              onLongPress={handlePress}
+            >
               <Box px={2} py={1} backgroundColor="white100">
                 <Flex flexDirection="row" alignItems="center" justifyContent="flex-start">
                   {!!displayImage && (
@@ -183,12 +191,12 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
                         height={60}
                         justifyContent="center"
                       >
-                        {!!image?.url ? (
+                        {!!image?.resized?.url ? (
                           <Image
-                            resizeMode="cover"
-                            src={image.url}
-                            width={60}
+                            resizeMode="contain"
+                            src={image?.resized?.url}
                             height={60}
+                            width={60}
                             blurhash={image.blurhash}
                             performResize={false}
                           />
@@ -200,12 +208,12 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
                   )}
 
                   <Flex flex={1} flexDirection="column">
-                    <Text variant="sm" fontWeight="bold">
-                      {title ?? FALLBACK_TITLE}
+                    <Text variant="sm" selectable={false}>
+                      {alert.title ?? FALLBACK_TITLE}
                     </Text>
-                    {!!subtitle && (
-                      <Text variant="sm" color="black60">
-                        {subtitle}
+                    {!!alert.subtitle && (
+                      <Text variant="sm" color="black60" selectable={false}>
+                        {alert.subtitle}
                       </Text>
                     )}
                   </Flex>
@@ -219,6 +227,32 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
     </Flex>
   )
 }
+
+const alertFragment = graphql`
+  fragment SavedSearchListItem_alert on Alert {
+    internalID
+    artistSeriesIDs
+    title: displayName(only: [artistIDs])
+    subtitle: displayName(except: [artistIDs])
+    artworksConnection(first: 1) {
+      counts {
+        total
+      }
+      edges {
+        node {
+          image {
+            resized(version: "square", width: 120, height: 120) {
+              url
+              height
+              width
+            }
+            blurhash
+          }
+        }
+      }
+    }
+  }
+`
 
 export const tracks = {
   deletedSavedSearch: (id: string): DeletedSavedSearch => ({

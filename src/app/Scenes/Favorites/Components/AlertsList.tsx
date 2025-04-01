@@ -1,5 +1,5 @@
-import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, SortIcon, Spacer, Spinner, Text, Touchable } from "@artsy/palette-mobile"
+import { useIsFocused } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import { AlertsList_me$data, AlertsList_me$key } from "__generated__/AlertsList_me.graphql"
 import { ALERTS_PAGE_SIZE } from "app/Components/constants"
@@ -12,8 +12,7 @@ import { EmptyMessage } from "app/Scenes/SavedSearchAlertsList/Components/EmptyM
 import { SavedSearchListItem } from "app/Scenes/SavedSearchAlertsList/Components/SavedSearchListItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { RefreshEvents, SAVED_ALERT_REFRESH_KEY } from "app/utils/refreshHelpers"
-import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { InteractionManager } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
@@ -36,7 +35,11 @@ export const AlertsList: React.FC<AlertsListProps> = (props) => {
   const { me, isRefreshing, fetchingMore, onRefresh, onLoadMore, onAlertPress } = props
   // enriching the items with the isSwipingActive state to manage the swipe-to-delete animation
   const [items, setItems] = useState(
-    extractNodes(me.alertsConnection).map((node) => ({ ...node, isSwipingActive: false }))
+    extractNodes(me.alertsConnection).map((node) => ({
+      ...node,
+      isSwipingActive: false,
+      isDeleted: false,
+    }))
   )
 
   useEffect(() => {
@@ -48,43 +51,42 @@ export const AlertsList: React.FC<AlertsListProps> = (props) => {
   }, [])
 
   useEffect(() => {
-    setItems(extractNodes(me.alertsConnection).map((node) => ({ ...node, isSwipingActive: false })))
+    setItems(
+      extractNodes(me.alertsConnection).map((node) => ({
+        ...node,
+        isSwipingActive: false,
+        isDeleted: false,
+      }))
+    )
   }, [me.alertsConnection])
 
   return (
     <Screen.FlatList
-      data={items}
-      ListEmptyComponent={<EmptyMessage />}
+      data={items.filter((item) => !item.isDeleted)}
       keyExtractor={(item) => item.internalID}
       refreshing={isRefreshing}
+      ListEmptyComponent={<EmptyMessage />}
       onRefresh={onRefresh}
       onEndReachedThreshold={0.5}
       renderItem={({ item }) => {
-        const image = item.artworksConnection?.edges?.[0]?.node?.image
-        const imageProps = {
-          url: image?.resized?.url ?? "",
-          blurhash: image?.blurhash ?? "",
-        }
-
         return (
           <SavedSearchListItem
-            id={item.internalID}
-            title={item.title}
-            subtitle={item.subtitle}
-            isSwipingActive={item.isSwipingActive}
+            key={item.internalID}
+            alert={item}
             displayImage
-            image={imageProps}
-            onPress={() => {
-              const artworksCount = item.artworksConnection?.counts?.total ?? 0
-
+            onPress={(alert) => {
+              const artworksCount = alert.artworksConnection?.counts?.total ?? 0
               onAlertPress({
-                id: item.internalID,
-                title: item.title,
+                id: alert.internalID,
+                title: alert.title,
                 artworksCount: artworksCount,
               })
             }}
-            onDelete={(id) => {
-              setItems((prevItems) => prevItems.filter((item) => item.internalID !== id))
+            onDelete={() => {
+              const newAlert = { ...item, isDeleted: true }
+              setItems((prevItems) =>
+                prevItems.map((item) => (item.internalID === newAlert.internalID ? newAlert : item))
+              )
             }}
             onSwipeBegin={(id) => {
               // reset swiping state for all items that are not the one being swiped
@@ -124,19 +126,27 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
     me
   )
 
+  const isFocused = useIsFocused()
+  const initialRender = useRef(true)
+
   const [modalVisible, setModalVisible] = useState(false)
   const [selectedAlert, setSelectedAlert] = useState<BottomSheetAlert | null>(null)
   const [selectedSortValue, setSelectedSortValue] = useState("ENABLED_AT_DESC")
   const prevSelectedSortValue = usePrevious(selectedSortValue)
-  const [fetchingMore, setFetchingMore] = useState(false)
-  const [isRefreshing, setIsRefreshing] = useState(false)
+
+  // We want to make sure that the list is refreshed when the screen is focused
+  // This is needed to make sure we don't show deleted alerts
+  useEffect(() => {
+    if (isFocused && !initialRender.current) {
+      onRefresh()
+    }
+    initialRender.current = false
+  }, [isFocused])
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
       return
     }
-
-    setFetchingMore(true)
 
     loadNext(ALERTS_PAGE_SIZE, {
       onComplete: (error) => {
@@ -147,24 +157,18 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
             captureMessage(`AlertsListPaginationContainer loadMore ${error.message}`)
           }
         }
-
-        setFetchingMore(false)
       },
     })
   }
 
   const onRefresh = () => {
-    setIsRefreshing(true)
-
     refetch(
       {
         sort: selectedSortValue,
       },
       {
-        onComplete: () => {
-          setIsRefreshing(false)
-        },
-        fetchPolicy: "network-only",
+        onComplete: () => {},
+        fetchPolicy: "store-and-network",
       }
     )
   }
@@ -189,60 +193,70 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
     }
 
     InteractionManager.runAfterInteractions(() => {
-      onRefresh()
+      refetch(
+        {
+          sort: selectedSortValue,
+        },
+        {
+          onComplete: () => {},
+          // We intentionally want to fetch the data from the network to avoid showing stale data
+          // Then removing it from the screen. This is mostly visible when the user switches between
+          // Sort modes
+          fetchPolicy: "network-only",
+        }
+      )
     })
   }
 
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.SavedSearchList,
-        context_screen_owner_type: OwnerType.savedSearch,
-      }}
-    >
-      <Flex>
-        <Touchable
-          onPress={() => {
-            setModalVisible(true)
-          }}
-        >
-          <Flex flexDirection="row" alignItems="center" mx={2} mb={1}>
-            <SortIcon />
-            <Text variant="xs" ml={0.5}>
-              Sort By
-            </Text>
-          </Flex>
-        </Touchable>
+    <Flex flex={1}>
+      <Touchable
+        onPress={() => {
+          setModalVisible(true)
+        }}
+      >
+        <AlertsListSortByHeader />
+      </Touchable>
 
-        <AlertsList
-          me={data}
-          fetchingMore={fetchingMore}
-          isRefreshing={isRefreshing}
-          onRefresh={onRefresh}
-          onLoadMore={handleLoadMore}
-          onAlertPress={(alert: BottomSheetAlert) => {
-            setSelectedAlert(alert)
+      <AlertsList
+        me={data}
+        fetchingMore={isLoadingNext}
+        isRefreshing={isLoadingNext}
+        onRefresh={onRefresh}
+        onLoadMore={handleLoadMore}
+        onAlertPress={(alert: BottomSheetAlert) => {
+          setSelectedAlert(alert)
+        }}
+      />
+
+      <AlertsSortByModal
+        visible={modalVisible}
+        options={SORT_OPTIONS}
+        selectedValue={selectedSortValue}
+        onSelectOption={handleSelectOption}
+        onModalFinishedClosing={handleSortByModalClosed}
+      />
+
+      {!!selectedAlert && (
+        <AlertBottomSheet
+          alert={selectedAlert}
+          onDismiss={() => {
+            setSelectedAlert(null)
           }}
         />
+      )}
+    </Flex>
+  )
+}
 
-        <AlertsSortByModal
-          visible={modalVisible}
-          options={SORT_OPTIONS}
-          selectedValue={selectedSortValue}
-          onSelectOption={handleSelectOption}
-          onModalFinishedClosing={handleSortByModalClosed}
-        />
-
-        {!!selectedAlert && (
-          <AlertBottomSheet
-            alert={selectedAlert}
-            onDismiss={() => {
-              setSelectedAlert(null)
-            }}
-          />
-        )}
-      </Flex>
-    </ProvideScreenTracking>
+export const AlertsListSortByHeader: React.FC<{}> = () => {
+  return (
+    <Flex flexDirection="row" alignItems="center" mx={2} mb={1}>
+      <Text variant="sm-display" mr={0.5}>
+        Sort By
+      </Text>
+      <SortIcon />
+    </Flex>
   )
 }
 
@@ -256,32 +270,10 @@ const alertsListFragment = graphql`
   ) {
     alertsConnection(first: $count, after: $cursor, sort: $sort)
       @connection(key: "AlertsList_alertsConnection") {
-      pageInfo {
-        hasNextPage
-        startCursor
-        endCursor
-      }
       edges {
         node {
           internalID
-          artistSeriesIDs
-          title: displayName(only: [artistIDs])
-          subtitle: displayName(except: [artistIDs])
-          artworksConnection(first: 1) {
-            counts {
-              total
-            }
-            edges {
-              node {
-                image {
-                  resized(version: "larger", width: 60, height: 60) {
-                    url
-                  }
-                  blurhash
-                }
-              }
-            }
-          }
+          ...SavedSearchListItem_alert
         }
       }
     }

@@ -68,8 +68,8 @@ export const EmptyMessage: React.FC = () => {
   const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
 
   return (
-    <ScrollView>
-      <Box px={2} py={4}>
+    <ScrollView bounces={false}>
+      <Box px={2}>
         <Text variant="lg">{t.header.line1}</Text>
         <Text variant="lg">{t.header.line2}</Text>
         <Spacer y={4} />

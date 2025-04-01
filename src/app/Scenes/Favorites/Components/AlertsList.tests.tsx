@@ -6,7 +6,9 @@ import { graphql } from "react-relay"
 
 describe("AlertsList", () => {
   const { renderWithRelay } = setupTestWrapper<AlertsListTestsQuery>({
-    Component: ({ me }) => <AlertsListPaginationContainer me={me} />,
+    Component: ({ me }) => {
+      return <AlertsListPaginationContainer me={me} />
+    },
     query: graphql`
       query AlertsListTestsQuery @relay_test_operation {
         me @required(action: NONE) {
