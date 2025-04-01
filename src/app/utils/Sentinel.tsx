@@ -13,10 +13,15 @@ import { useFocusEffect } from "@react-navigation/native"
 import { FC, ReactNode, useCallback, useRef, useState } from "react"
 import { Dimensions, View } from "react-native"
 
+const DEFAULT_THRESHOLD = 1
+
 export interface IDimensionData {
   rectTop: number
   rectBottom: number
   rectWidth: number
+  rectHeight: number
+  width: number
+  height: number
 }
 
 export interface Props {
@@ -24,17 +29,22 @@ export interface Props {
   onChange(visible: boolean): any
   /** The component that needs to be in the viewport */
   children?: ReactNode
+  /** The value indicates the minimum percentage of the container that must be visible (vertically or horizontally). A value of 1 means 100%, 0.7 means 70%, and so forth. The default value is 1 (100%). */
+  threshold?: number
 }
 
 const RNView = View as any
 
-export const Sentinel: FC<Props> = ({ children, onChange }) => {
+export const Sentinel: FC<Props> = ({ children, onChange, threshold = DEFAULT_THRESHOLD }) => {
   const myView: any = useRef(null)
   const [lastValue, setLastValue] = useState<boolean>(false)
   const [dimensions, setDimensions] = useState<IDimensionData>({
     rectTop: 0,
     rectBottom: 0,
     rectWidth: 0,
+    rectHeight: 0,
+    width: 0,
+    height: 0,
   })
 
   let interval: any = null
@@ -71,6 +81,9 @@ export const Sentinel: FC<Props> = ({ children, onChange }) => {
             rectTop: pageY,
             rectBottom: pageY + height,
             rectWidth: pageX + width,
+            rectHeight: pageY + height,
+            width,
+            height,
           })
         }
       )
@@ -86,9 +99,9 @@ export const Sentinel: FC<Props> = ({ children, onChange }) => {
     const isVisible =
       dimensions.rectBottom != 0 &&
       dimensions.rectTop >= 0 &&
-      dimensions.rectBottom <= window.height &&
+      dimensions.rectBottom - dimensions.height * (1 - threshold) <= window.height &&
       dimensions.rectWidth > 0 &&
-      dimensions.rectWidth <= window.width
+      dimensions.rectWidth - dimensions.width * (1 - threshold) <= window.width
 
     if (lastValue !== isVisible) {
       setLastValue(isVisible)
