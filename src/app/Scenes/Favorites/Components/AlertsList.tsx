@@ -12,7 +12,8 @@ import { EmptyMessage } from "app/Scenes/SavedSearchAlertsList/Components/EmptyM
 import { SavedSearchListItem } from "app/Scenes/SavedSearchAlertsList/Components/SavedSearchListItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { RefreshEvents, SAVED_ALERT_REFRESH_KEY } from "app/utils/refreshHelpers"
-import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import React, { useEffect, useState } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
@@ -193,11 +194,10 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
   }
 
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.FavoritesAlerts,
-        context_screen_owner_type: OwnerType.favorites,
-      }}
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.favoritesAlerts,
+      })}
     >
       <Flex flexDirection="column">
         <Touchable
@@ -241,7 +241,7 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
           />
         )}
       </Flex>
-    </ProvideScreenTracking>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 

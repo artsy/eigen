@@ -126,9 +126,6 @@ export enum PageNames {
   ViewingRoomsList = "ViewingRoomsList",
   FairPage = "Fair",
   FairMoreInfoPage = "Fair",
-  FavoritesAlerts = "FavoritesAlerts",
-  FavoritesFollows = "FavoritesFollows",
-  FavoritesSaves = "FavoritesSaves",
   ShowPage = "Show",
   ShowMoreInfoPage = "moreInfo",
   SavedSearchEdit = "SavedSearchEdit",
@@ -313,11 +310,6 @@ export enum ActionNames {
   TappedViewMoreDetails = "tappedViewMoreDetails",
   TappedViewingRoomGroup = "tappedViewingRoomGroup",
   BodyImpression = "bodyImpression",
-
-  /**
-   * Favorites tab events
-   */
-  TappedNavigationTab = "tappedNavigationTab",
 }
 
 /**

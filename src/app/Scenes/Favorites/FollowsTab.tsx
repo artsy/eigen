@@ -14,7 +14,8 @@ import { FollowedArtistsQueryRenderer } from "app/Scenes/Favorites/Components/Fo
 import { FollowedGalleriesQueryRenderer } from "app/Scenes/Favorites/Components/FollowedGalleries"
 import { FollowedShowsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedShows"
 import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
-import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { useState } from "react"
 import Haptic from "react-native-haptic-feedback"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -46,11 +47,10 @@ export const FollowsTab = () => {
   const [showBottomSheet, setShowBottomSheet] = useState(false)
 
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.FavoritesFollows,
-        context_screen_owner_type: OwnerType.favorites,
-      }}
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.favoritesFollows,
+      })}
     >
       <Flex flex={1}>
         <Flex px={2} pb={2}>
@@ -115,6 +115,6 @@ export const FollowsTab = () => {
           </BottomSheetScrollView>
         </AutomountedBottomSheetModal>
       </Flex>
-    </ProvideScreenTracking>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }

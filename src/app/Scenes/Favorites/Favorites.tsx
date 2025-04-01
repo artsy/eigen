@@ -1,3 +1,4 @@
+import { ActionType } from "@artsy/cohesion"
 import { BellIcon, Flex, HeartIcon, MultiplePersonsIcon, Pill, Screen } from "@artsy/palette-mobile"
 import { PAGE_SIZE } from "app/Components/constants"
 import { AlertsTab } from "app/Scenes/Favorites/AlertsTab"
@@ -8,7 +9,6 @@ import { FavoritesContextStore, FavoritesTab } from "app/Scenes/Favorites/Favori
 import { FollowsTab } from "app/Scenes/Favorites/FollowsTab"
 import { SavesTab } from "app/Scenes/Favorites/SavesTab"
 import { prefetchQuery } from "app/utils/queryPrefetching"
-import { Schema } from "app/utils/track"
 import { useEffect } from "react"
 import { useTracking } from "react-tracking"
 
@@ -64,7 +64,7 @@ const FavoritesHeader = () => {
               setActiveTab(key)
 
               trackEvent({
-                action: Schema.ActionNames.TappedNavigationTab,
+                action: ActionType.tappedNavigationTab,
                 context_module: key,
                 subject: key,
               })
