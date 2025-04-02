@@ -38,7 +38,7 @@ const RNView = View as any
 export const Sentinel: FC<Props> = ({ children, onChange, threshold = DEFAULT_THRESHOLD }) => {
   const myView: any = useRef(null)
 
-  const [lastValue, setLastValue] = useState<boolean>(false)
+  const [isVisible, setIsVisible] = useState<boolean>(false)
 
   let interval: any = null
 
@@ -90,21 +90,21 @@ export const Sentinel: FC<Props> = ({ children, onChange, threshold = DEFAULT_TH
   const isInViewPort = (dimensions: IDimensionData) => {
     const window = Dimensions.get("window")
 
-    const isVisible =
+    const newIsVisible =
       dimensions.rectBottom != 0 &&
       dimensions.rectTop >= 0 &&
       dimensions.rectBottom - dimensions.height * (1 - threshold) <= window.height &&
       dimensions.rectWidth > 0 &&
       dimensions.rectWidth - dimensions.width * (1 - threshold) <= window.width
 
-    if (isVisible !== lastValue) {
-      setLastValue(isVisible)
+    if (newIsVisible !== isVisible) {
+      setIsVisible(newIsVisible)
     }
   }
 
   useEffect(() => {
-    onChange(lastValue)
-  }, [lastValue])
+    onChange(isVisible)
+  }, [isVisible])
 
   return (
     <RNView collapsable={false} ref={myView}>
