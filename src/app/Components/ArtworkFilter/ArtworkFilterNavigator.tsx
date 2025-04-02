@@ -38,7 +38,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { useEffect, useState } from "react"
-import { Modal, ViewProps } from "react-native"
+import { Keyboard, Modal, ViewProps } from "react-native"
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import { useTracking } from "react-tracking"
 import {
@@ -310,8 +310,11 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   }
 
   const handleCreateAlertPress = () => {
-    setIsCreateAlertModalVisible(true)
-    tracking.trackEvent(tracks.tappedCreateAlert(id as string, name as string))
+    Keyboard.dismiss()
+    requestAnimationFrame(() => {
+      setIsCreateAlertModalVisible(true)
+      tracking.trackEvent(tracks.tappedCreateAlert(id as string, name as string))
+    })
   }
 
   const setSelectedMetric = ArtworksFiltersStore.useStoreActions((state) => state.setSizeMetric)
