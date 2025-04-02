@@ -16,18 +16,18 @@ import { NavButtons } from "app/system/devTools/DevMenu/Components/NavButtons"
 import { NavigateTo } from "app/system/devTools/DevMenu/Components/NavigateTo"
 import { goBack } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { Alert, NativeModules, PixelRatio, ScrollView } from "react-native"
 import DeviceInfo from "react-native-device-info"
 
-export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
+export const DevMenu: React.FC<{}> = () => {
   const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
   const fontScale = PixelRatio.getFontScale()
   const navigation = useNavigation<NavigationProp<AuthenticatedRoutesParams, "DevMenu">>()
   const setDarkModeOption = GlobalStore.actions.devicePrefs.setDarkModeOption
 
   const handleBackButton = () => {
-    onClose()
+    goBack()
     return true
   }
 
@@ -37,7 +37,7 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
     navigation?.setOptions({
       headerRight: () => (
         <Flex justifyContent="center" alignItems="center">
-          <NavButtons onClose={onClose} />
+          <NavButtons onClose={goBack} />
         </Flex>
       ),
     })
@@ -97,7 +97,7 @@ export const DevMenu = ({ onClose = () => goBack() }: { onClose(): void }) => {
       <DevMenuButtonItem title="Dark Mode 🌙" onPress={handleDarkModePress} />
       <Join separator={<Spacer y={1} />}>
         <NavigateTo />
-        <EnvironmentOptions onClose={onClose} />
+        <EnvironmentOptions onClose={goBack} />
         <CodePushOptions />
         <FeatureFlags />
         <Experiments />
