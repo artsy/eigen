@@ -88,7 +88,7 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
     )
   }
 
-  if (!noEditions && !selectedEditionId) {
+  if ((!artworkData.editionSets || artworkData.editionSets.length > 1) && !selectedEditionId) {
     return null
   }
 

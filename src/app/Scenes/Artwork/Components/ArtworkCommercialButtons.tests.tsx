@@ -668,45 +668,55 @@ describe("ArtworkCommercialButtons", () => {
     })
   })
 
-  describe("with edition sets", () => {
-    const editionSet = {
-      internalID: "editionSetID",
-      editionOf: "Edition Set One",
-      saleMessage: "$1000",
-      isAcquireable: true,
-      isOfferable: true,
-      isInquireable: false,
-    }
-    const artworkWithEditionSets = {
-      ...ArtworkFixture,
-      editionSets: [editionSet],
-      isAcquireable: true,
-      isOfferable: true,
-      isInquireable: false,
-    }
+  describe("edition sets", () => {
+    describe("with multiple edition sets", () => {
+      const editionSets = [
+        { internalID: "edition-set-one", isAcquireable: true, isOfferable: true },
+        { internalID: "edition-set-two", isAcquireable: true, isOfferable: true },
+      ]
 
-    it("renders the Purchase and Make Offer buttons when edition set is selected ", () => {
-      renderWithRelay({
-        Artwork: () => artworkWithEditionSets,
-        Me: () => meFixture,
+      const artworkWithEditionSets = {
+        ...ArtworkFixture,
+        editionSets,
+        isAcquireable: true,
+        isOfferable: true,
+        isInquireable: false,
+      }
+
+      it("does not render the Purchase and Make Offer buttons when edition set is not selected ", () => {
+        renderWithRelay({ Artwork: () => artworkWithEditionSets, Me: () => meFixture })
+
+        expect(screen.queryByText("Purchase")).not.toBeOnTheScreen()
+        expect(screen.queryByText("Make an Offer")).not.toBeOnTheScreen()
       })
 
-      mockArtworkStore.getActions().setSelectedEditionId(editionSet.internalID)
+      it("renders the Purchase and Make Offer buttons when edition set is selected ", () => {
+        renderWithRelay({ Artwork: () => artworkWithEditionSets, Me: () => meFixture })
 
-      expect(screen.getByText("Purchase")).toBeOnTheScreen()
-      expect(screen.getByText("Make an Offer")).toBeOnTheScreen()
+        mockArtworkStore.getActions().setSelectedEditionId(editionSets[0].internalID)
+
+        expect(screen.getByText("Purchase")).toBeOnTheScreen()
+        expect(screen.getByText("Make an Offer")).toBeOnTheScreen()
+      })
     })
 
-    it("does not render the Purchase and Make Offer buttons when edition set is not selected ", () => {
-      renderWithRelay({
-        Artwork: () => artworkWithEditionSets,
-        Me: () => meFixture,
+    describe("with one edition set", () => {
+      const artworkWithEditionSets = {
+        ...ArtworkFixture,
+        editionSets: [{ internalID: "edition-set-one", isAcquireable: true, isOfferable: true }],
+        isAcquireable: true,
+        isOfferable: true,
+        isInquireable: false,
+      }
+
+      it("renders the Purchase and Make Offer buttons even if the edition set is not selected ", () => {
+        renderWithRelay({ Artwork: () => artworkWithEditionSets, Me: () => meFixture })
+
+        mockArtworkStore.getActions().setSelectedEditionId(null)
+
+        expect(screen.getByText("Purchase")).toBeOnTheScreen()
+        expect(screen.getByText("Make an Offer")).toBeOnTheScreen()
       })
-
-      mockArtworkStore.getActions().setSelectedEditionId(null)
-
-      expect(screen.queryByText("Purchase")).not.toBeOnTheScreen()
-      expect(screen.queryByText("Make an Offer")).not.toBeOnTheScreen()
     })
   })
 })
