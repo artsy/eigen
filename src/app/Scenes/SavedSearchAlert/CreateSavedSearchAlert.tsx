@@ -57,7 +57,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
               style={{
                 flex: 1,
                 backgroundColor: color("background"),
-                paddingTop: topInset,
+                paddingTop: Platform.OS === "ios" ? topInset : 0,
               }}
             >
               <KeyboardAvoidingView
