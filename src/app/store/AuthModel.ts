@@ -219,8 +219,8 @@ export const getAuthModel = (): AuthModel => ({
   }),
   getXAppToken: thunk(async (actions, _payload, context) => {
     const xAppToken = context.getState().xAppToken
-    if (xAppToken) {
-      // TODO: handle expiry
+    const xAppTokenExpiresIn = context.getState().xApptokenExpiresIn
+    if (xAppToken && xAppTokenExpiresIn && !isTokenExpired(xAppTokenExpiresIn)) {
       return xAppToken
     }
     const gravityBaseURL = context.getStoreState().devicePrefs.environment.strings.gravityURL
@@ -1037,6 +1037,12 @@ export const getAuthModel = (): AuthModel => ({
     }
   }),
 })
+
+const isTokenExpired = (expiresIn: string) => {
+  const expirationDate = new Date(expiresIn)
+  const now = new Date()
+  return expirationDate <= now
+}
 
 const tracks = {
   createdAccount: ({ signUpMethod }: { signUpMethod: AuthService }): Partial<CreatedAccount> => ({
