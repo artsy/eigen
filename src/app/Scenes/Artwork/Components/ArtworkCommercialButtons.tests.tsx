@@ -2,7 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ArtworkCommercialButtons_Test_Query } from "__generated__/ArtworkCommercialButtons_Test_Query.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
+import { ArtworkStore, ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { navigate } from "app/system/navigation/navigate"
@@ -16,6 +16,13 @@ import { graphql } from "react-relay"
 import { ArtworkCommercialButtons } from "./ArtworkCommercialButtons"
 
 describe("ArtworkCommercialButtons", () => {
+  let mockArtworkStore: ReturnType<typeof ArtworkStore.useStore>
+
+  const ArtworkStoreDebug = () => {
+    mockArtworkStore = ArtworkStore.useStore()
+    return null
+  }
+
   const { renderWithRelay } = setupTestWrapper<ArtworkCommercialButtons_Test_Query>({
     Component: (props) => {
       const partnerOffer = extractNodes(props.me!.partnerOffersConnection)[0]
@@ -34,6 +41,7 @@ describe("ArtworkCommercialButtons", () => {
                   artwork={props.artwork}
                   me={props.me}
                 />
+                <ArtworkStoreDebug />
               </Suspense>
             </ArtworkStoreProvider>
           </ArtworkInquiryStateProvider>
@@ -656,6 +664,58 @@ describe("ArtworkCommercialButtons", () => {
             },
           ]
         `)
+      })
+    })
+  })
+
+  describe("edition sets", () => {
+    describe("with multiple edition sets", () => {
+      const editionSets = [
+        { internalID: "edition-set-one", isAcquireable: true, isOfferable: true },
+        { internalID: "edition-set-two", isAcquireable: true, isOfferable: true },
+      ]
+
+      const artworkWithEditionSets = {
+        ...ArtworkFixture,
+        editionSets,
+        isAcquireable: true,
+        isOfferable: true,
+        isInquireable: false,
+      }
+
+      it("does not render the Purchase and Make Offer buttons when edition set is not selected ", () => {
+        renderWithRelay({ Artwork: () => artworkWithEditionSets, Me: () => meFixture })
+
+        expect(screen.queryByText("Purchase")).not.toBeOnTheScreen()
+        expect(screen.queryByText("Make an Offer")).not.toBeOnTheScreen()
+      })
+
+      it("renders the Purchase and Make Offer buttons when edition set is selected ", () => {
+        renderWithRelay({ Artwork: () => artworkWithEditionSets, Me: () => meFixture })
+
+        mockArtworkStore.getActions().setSelectedEditionId(editionSets[0].internalID)
+
+        expect(screen.getByText("Purchase")).toBeOnTheScreen()
+        expect(screen.getByText("Make an Offer")).toBeOnTheScreen()
+      })
+    })
+
+    describe("with one edition set", () => {
+      const artworkWithEditionSets = {
+        ...ArtworkFixture,
+        editionSets: [{ internalID: "edition-set-one", isAcquireable: true, isOfferable: true }],
+        isAcquireable: true,
+        isOfferable: true,
+        isInquireable: false,
+      }
+
+      it("renders the Purchase and Make Offer buttons even if the edition set is not selected ", () => {
+        renderWithRelay({ Artwork: () => artworkWithEditionSets, Me: () => meFixture })
+
+        mockArtworkStore.getActions().setSelectedEditionId(null)
+
+        expect(screen.getByText("Purchase")).toBeOnTheScreen()
+        expect(screen.getByText("Make an Offer")).toBeOnTheScreen()
       })
     })
   })
