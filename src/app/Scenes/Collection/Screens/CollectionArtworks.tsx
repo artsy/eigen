@@ -171,7 +171,6 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
         exitModal={handleFilterClose}
         closeModal={handleFilterClose}
         mode={FilterModalMode.ArtistArtworks}
-        shouldShowCreateAlertButton
       />
     </>
   )
