@@ -15534,6 +15534,9 @@ type Order {
   # The selected fulfillment option for the order
   selectedFulfillmentOption: FulfillmentOption
 
+  # The seller of the order
+  seller: SellerType
+
   # The total amount for shipping
   shippingTotal: Money
 
@@ -19691,6 +19694,8 @@ interface Sellable {
   isSold: Boolean
   saleMessage: String
 }
+
+union SellerType = Partner
 
 type SendConfirmationEmailMutationFailure {
   mutationError: GravityMutationError
