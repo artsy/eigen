@@ -68,16 +68,14 @@ export const Sentinel: FC<Props> = ({ children, onChange, threshold = DEFAULT_TH
           pageX: number,
           pageY: number
         ) => {
-          const dimensions = {
+          isInViewPort({
             rectTop: pageY,
             rectBottom: pageY + height,
             rectWidth: pageX + width,
             rectHeight: pageY + height,
             width,
             height,
-          }
-
-          isInViewPort(dimensions)
+          })
         }
       )
     }, 1000)
