@@ -10,7 +10,7 @@
 
 import { Flex } from "@artsy/palette-mobile"
 import { useFocusEffect } from "@react-navigation/native"
-import { FC, ReactNode, useCallback, useRef, useState } from "react"
+import { FC, ReactNode, useCallback, useEffect, useRef, useState } from "react"
 import { Dimensions, View } from "react-native"
 
 const DEFAULT_THRESHOLD = 1
@@ -26,7 +26,7 @@ export interface IDimensionData {
 
 export interface Props {
   /** Function that is triggered when component enters the viewport */
-  onChange(visible: boolean): any
+  onChange(visible: boolean): void
   /** The component that needs to be in the viewport */
   children?: ReactNode
   /** The value indicates the minimum percentage of the container that must be visible (vertically or horizontally). A value of 1 means 100%, 0.7 means 70%, and so forth. The default value is 1 (100%). */
@@ -37,25 +37,16 @@ const RNView = View as any
 
 export const Sentinel: FC<Props> = ({ children, onChange, threshold = DEFAULT_THRESHOLD }) => {
   const myView: any = useRef(null)
+
   const [lastValue, setLastValue] = useState<boolean>(false)
-  const [dimensions, setDimensions] = useState<IDimensionData>({
-    rectTop: 0,
-    rectBottom: 0,
-    rectWidth: 0,
-    rectHeight: 0,
-    width: 0,
-    height: 0,
-  })
 
   let interval: any = null
 
   useFocusEffect(
     useCallback(() => {
-      setLastValue(false)
       startWatching()
-      isInViewPort()
       return stopWatching
-    }, [dimensions.rectTop, dimensions.rectBottom, dimensions.rectWidth])
+    }, [])
   )
 
   const startWatching = () => {
@@ -77,14 +68,16 @@ export const Sentinel: FC<Props> = ({ children, onChange, threshold = DEFAULT_TH
           pageX: number,
           pageY: number
         ) => {
-          setDimensions({
+          const dimensions = {
             rectTop: pageY,
             rectBottom: pageY + height,
             rectWidth: pageX + width,
             rectHeight: pageY + height,
             width,
             height,
-          })
+          }
+
+          isInViewPort(dimensions)
         }
       )
     }, 1000)
@@ -94,8 +87,9 @@ export const Sentinel: FC<Props> = ({ children, onChange, threshold = DEFAULT_TH
     interval = clearInterval(interval)
   }
 
-  const isInViewPort = () => {
+  const isInViewPort = (dimensions: IDimensionData) => {
     const window = Dimensions.get("window")
+
     const isVisible =
       dimensions.rectBottom != 0 &&
       dimensions.rectTop >= 0 &&
@@ -103,13 +97,14 @@ export const Sentinel: FC<Props> = ({ children, onChange, threshold = DEFAULT_TH
       dimensions.rectWidth > 0 &&
       dimensions.rectWidth - dimensions.width * (1 - threshold) <= window.width
 
-    if (lastValue !== isVisible) {
+    if (isVisible !== lastValue) {
       setLastValue(isVisible)
-      onChange(isVisible)
-    } else {
-      onChange(isVisible)
     }
   }
+
+  useEffect(() => {
+    onChange(lastValue)
+  }, [lastValue])
 
   return (
     <RNView collapsable={false} ref={myView}>
