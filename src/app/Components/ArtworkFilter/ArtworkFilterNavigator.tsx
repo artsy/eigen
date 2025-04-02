@@ -38,7 +38,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { useLocalizedUnit } from "app/utils/useLocalizedUnit"
 import { useEffect, useState } from "react"
-import { Keyboard, Modal, ViewProps } from "react-native"
+import { Keyboard, Modal, Platform, ViewProps } from "react-native"
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 import { useTracking } from "react-tracking"
 import {
@@ -336,7 +336,10 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
               screenOptions={{
                 ...TransitionPresets.SlideFromRightIOS,
                 headerShown: false,
-                cardStyle: { backgroundColor: color("background"), paddingTop: insets?.top },
+                cardStyle: {
+                  backgroundColor: color("background"),
+                  paddingTop: Platform.OS === "ios" ? insets?.top : 0,
+                },
               }}
             >
               <Stack.Screen
