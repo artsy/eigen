@@ -50,11 +50,11 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
     children
   )
 
-export const TestProviders: React.FC<{ skipRelay?: boolean; includeNavigation?: boolean }> = ({
-  children,
-  skipRelay = false,
-  includeNavigation = false,
-}) => {
+export const TestProviders: React.FC<{
+  skipRelay?: boolean
+  includeNavigation?: boolean
+  includeArtworkLists?: boolean
+}> = ({ children, skipRelay = false, includeNavigation = false, includeArtworkLists = true }) => {
   return combineProviders(
     [
       includeNavigation && NavigationTestsProvider,
@@ -71,7 +71,7 @@ export const TestProviders: React.FC<{ skipRelay?: boolean; includeNavigation?: 
       Theme,
       Screen.ScreenScrollContextProvider,
       PopoverMessageProvider,
-      ArtworkListsProvider,
+      includeArtworkLists && ArtworkListsProvider,
       ToastProvider,
       ShareSheetProvider,
     ],

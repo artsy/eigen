@@ -1,5 +1,8 @@
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
-import { ArtworkListEntity } from "app/Components/ArtworkLists/types"
+import {
+  getArtworkListsStoreInitialState,
+  ArtworkListEntity,
+} from "app/Components/ArtworkLists/types"
 import { ArtworkListOfferSettingsView } from "app/Components/ArtworkLists/views/ArtworkListOfferSettingsView/ArtworkListOfferSettingsView"
 import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListView"
 import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/SelectArtworkListsForArtworkView"
@@ -14,22 +17,6 @@ export type ModifiedListType =
   | "ADDED_MULTIPLE_LIST"
   | "REMOVED_SINGLE_LIST"
   | "REMOVED_MULTIPLE_LIST"
-
-export const ARTWORK_LISTS_CONTEXT_INITIAL_STATE: ArtworkListState = {
-  selectArtworkListsViewVisible: false,
-  createNewArtworkListViewVisible: false,
-  artworkListOfferSettingsViewVisible: false,
-  artwork: null,
-  artworkListID: null,
-  recentlyAddedArtworkList: null,
-  selectedTotalCount: 0,
-  addingArtworkLists: [],
-  removingArtworkLists: [],
-  keepingArtworkListsPrivate: [],
-  sharingArtworkLists: [],
-  hasUnsavedChanges: false,
-  toastBottomPadding: null,
-}
 
 export interface ArtworkListsModel {
   // State
@@ -46,7 +33,6 @@ export interface ArtworkListsModel {
   // Actions
   setToastBottomPadding: Action<this, number | null>
   setCreateNewArtworkListViewVisible: Action<this, boolean>
-  // TODO: check if this works
   openSelectArtworkListsView: Action<this, any>
   setRecentlyAddedArtworkList: Action<this, ArtworkListEntity | null>
   addOrRemoveArtworkList: Action<
@@ -64,7 +50,7 @@ export interface ArtworkListsModel {
 }
 
 export const getArtworkListsModel = (): ArtworkListsModel => ({
-  state: ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
+  state: getArtworkListsStoreInitialState(),
 
   // Computed properties
   addingArtworkListIDs: computed((state) =>
@@ -137,7 +123,7 @@ export const getArtworkListsModel = (): ArtworkListsModel => ({
 
   reset: action((state) => {
     state.state = {
-      ...ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
+      ...getArtworkListsStoreInitialState(),
       toastBottomPadding: state.state.toastBottomPadding,
     }
   }),
@@ -201,12 +187,7 @@ export const ArtworkListsStore = createContextStore((initialData) => ({
 
 export const ArtworkListsProvider: FC = ({ children }) => {
   return (
-    <ArtworkListsStore.Provider
-      runtimeModel={{
-        state: { ...ARTWORK_LISTS_CONTEXT_INITIAL_STATE },
-        artworkListId: null,
-      }}
-    >
+    <ArtworkListsStore.Provider runtimeModel={{ state: { ...getArtworkListsStoreInitialState() } }}>
       <ListElements>{children}</ListElements>
     </ArtworkListsStore.Provider>
   )

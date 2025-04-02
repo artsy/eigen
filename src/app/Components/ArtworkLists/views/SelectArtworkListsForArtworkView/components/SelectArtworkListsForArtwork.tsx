@@ -13,7 +13,7 @@ const SelectArtworkListsForArtworkContent = () => {
   const artwork = ArtworkListsStore.useStoreState((state) => state.state.artwork)
 
   const queryData = useLazyLoadQuery<SelectArtworkListsForArtworkQuery>(
-    Query,
+    selectArtworkListsForArtworkQuery,
     { artworkID: artwork?.internalID ?? "" },
     { fetchPolicy: "network-only" }
   )
@@ -65,7 +65,7 @@ const ArtworkListsPlaceholder = () => {
   )
 }
 
-const Query = graphql`
+export const selectArtworkListsForArtworkQuery = graphql`
   query SelectArtworkListsForArtworkQuery($artworkID: String!) {
     me {
       ...ArtworkLists_me @arguments(artworkID: $artworkID)
