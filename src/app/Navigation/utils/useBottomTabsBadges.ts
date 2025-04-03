@@ -1,4 +1,4 @@
-import { useColor, useSpace } from "@artsy/palette-mobile"
+import { useColor } from "@artsy/palette-mobile"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { useVisualClue } from "app/utils/hooks/useVisualClue"
@@ -15,7 +15,6 @@ type BadgeProps = { tabBarBadge?: string | number; tabBarBadgeStyle: StyleProp<T
  */
 export const useBottomTabsBadges = () => {
   const color = useColor()
-  const space = useSpace()
 
   const { showVisualClue } = useVisualClue()
   const { unreadConversationsCount, hasUnseenNotifications } = useTabBarBadge()
@@ -24,7 +23,7 @@ export const useBottomTabsBadges = () => {
 
   const visualClueStyles = {
     backgroundColor: color("red50"),
-    top: space(1),
+    top: 2,
     minWidth: VISUAL_CLUE_HEIGHT,
     maxHeight: VISUAL_CLUE_HEIGHT,
     borderRadius: VISUAL_CLUE_HEIGHT / 2,
