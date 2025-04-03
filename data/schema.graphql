@@ -4877,6 +4877,7 @@ type CommerceBuyOrder implements CommerceOrder {
   ): String!
   creditCard: CreditCard
   creditCardId: String
+  creditCardWalletType: String
   currencyCode: String!
   displayCommissionRate: String
   displayState: CommerceOrderDisplayStateEnum!
@@ -5696,6 +5697,7 @@ type CommerceOfferOrder implements CommerceOrder {
   ): String!
   creditCard: CreditCard
   creditCardId: String
+  creditCardWalletType: String
   currencyCode: String!
   displayCommissionRate: String
   displayState: CommerceOrderDisplayStateEnum!
@@ -6059,6 +6061,7 @@ interface CommerceOrder {
   ): String!
   creditCard: CreditCard
   creditCardId: String
+  creditCardWalletType: String
   currencyCode: String!
   displayCommissionRate: String
   displayState: CommerceOrderDisplayStateEnum!
@@ -14402,8 +14405,7 @@ type Mutation {
   ): CommerceAddInitialOfferToOrderPayload
 
   # Approves an order. Different procedures will be done depending on the payment method.
-  # In general, approving an order will: debit the comission exemption; commit a
-  # tax transaction; capture a hold or charge the payment; book the shippment.
+  # In general, approving an order will: commit a tax transaction; capture a hold or charge the payment; book the shippment.
   # If the payment method is asychronous, a pre-approval operation will be done instead.
   commerceApproveOrder(
     # Parameters for ApproveOrder
