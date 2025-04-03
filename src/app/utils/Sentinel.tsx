@@ -10,7 +10,7 @@
 
 import { Flex } from "@artsy/palette-mobile"
 import { useFocusEffect } from "@react-navigation/native"
-import { FC, ReactNode, useCallback, useRef, useState } from "react"
+import { FC, ReactNode, useCallback, useEffect, useRef, useState } from "react"
 import { Dimensions, View } from "react-native"
 
 export interface IDimensionData {
@@ -21,7 +21,7 @@ export interface IDimensionData {
 
 export interface Props {
   /** Function that is triggered when component enters the viewport */
-  onChange(visible: boolean): any
+  onChange(visible: boolean): void
   /** The component that needs to be in the viewport */
   children?: ReactNode
 }
@@ -30,22 +30,16 @@ const RNView = View as any
 
 export const Sentinel: FC<Props> = ({ children, onChange }) => {
   const myView: any = useRef(null)
-  const [lastValue, setLastValue] = useState<boolean>(false)
-  const [dimensions, setDimensions] = useState<IDimensionData>({
-    rectTop: 0,
-    rectBottom: 0,
-    rectWidth: 0,
-  })
+
+  const [isVisible, setIsVisible] = useState<boolean>(false)
 
   let interval: any = null
 
   useFocusEffect(
     useCallback(() => {
-      setLastValue(false)
       startWatching()
-      isInViewPort()
       return stopWatching
-    }, [dimensions.rectTop, dimensions.rectBottom, dimensions.rectWidth])
+    }, [])
   )
 
   const startWatching = () => {
@@ -67,7 +61,7 @@ export const Sentinel: FC<Props> = ({ children, onChange }) => {
           pageX: number,
           pageY: number
         ) => {
-          setDimensions({
+          isInViewPort({
             rectTop: pageY,
             rectBottom: pageY + height,
             rectWidth: pageX + width,
@@ -81,22 +75,24 @@ export const Sentinel: FC<Props> = ({ children, onChange }) => {
     interval = clearInterval(interval)
   }
 
-  const isInViewPort = () => {
+  const isInViewPort = (dimensions: IDimensionData) => {
     const window = Dimensions.get("window")
-    const isVisible =
+
+    const newIsVisible =
       dimensions.rectBottom != 0 &&
       dimensions.rectTop >= 0 &&
       dimensions.rectBottom <= window.height &&
       dimensions.rectWidth > 0 &&
       dimensions.rectWidth <= window.width
 
-    if (lastValue !== isVisible) {
-      setLastValue(isVisible)
-      onChange(isVisible)
-    } else {
-      onChange(isVisible)
+    if (newIsVisible !== isVisible) {
+      setIsVisible(newIsVisible)
     }
   }
+
+  useEffect(() => {
+    onChange(isVisible)
+  }, [isVisible])
 
   return (
     <RNView collapsable={false} ref={myView}>
