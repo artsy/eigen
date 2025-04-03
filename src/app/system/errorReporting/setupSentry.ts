@@ -4,7 +4,7 @@ import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import Keys from "react-native-keys"
 
-export const routingInstrumentation = Sentry.reactNavigationIntegration({
+export const navigationInstrumentation = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: true,
 })
 
@@ -68,11 +68,7 @@ export function setupSentry(props: SetupSentryProps = { debug: false }) {
     tracesSampleRate: props.debug ? 1.0 : 0.05,
     profilesSampleRate: props.debug ? 1.0 : 0.05,
     debug: props.debug,
-    integrations: [
-      Sentry.reactNativeTracingIntegration({
-        routingInstrumentation,
-      }),
-    ],
+    integrations: [navigationInstrumentation],
     ...props,
   })
 }

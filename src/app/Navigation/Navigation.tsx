@@ -12,7 +12,7 @@ import {
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { OnboardingWelcomeScreens } from "app/Scenes/Onboarding/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
-import { routingInstrumentation } from "app/system/errorReporting/setupSentry"
+import { navigationInstrumentation } from "app/system/errorReporting/setupSentry"
 import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -66,7 +66,7 @@ export const Navigation = () => {
         theme={theme}
         initialState={initialState}
         onReady={() => {
-          routingInstrumentation.registerNavigationContainer(internal_navigationRef)
+          navigationInstrumentation.registerNavigationContainer(internal_navigationRef)
 
           setNavigationReady({ isNavigationReady: true })
           LegacyNativeModules.ARNotificationsManager.didFinishBootstrapping()
