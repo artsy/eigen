@@ -28,13 +28,6 @@ describe("HomeView", () => {
     },
     query: graphql`
       query HomeViewTestsQuery($count: Int!, $cursor: String) @relay_test_operation {
-        homeView {
-          experiments {
-            name
-            variant
-            enabled
-          }
-        }
         viewer {
           ...HomeViewSectionsConnection_viewer @arguments(count: $count, cursor: $cursor)
         }
@@ -92,7 +85,10 @@ describe("HomeView", () => {
 
   describe("home view experiments", () => {
     it("fires an experiment_viewed event for enabled experiments", () => {
-      renderWithRelay({
+      const { mockResolveLastOperation } = renderWithRelay()
+
+      mockResolveLastOperation({})
+      mockResolveLastOperation({
         HomeView: () => ({
           experiments: [
             {
@@ -115,7 +111,10 @@ describe("HomeView", () => {
     })
 
     it("does not fire an experiment_viewed event for disabled experiments", () => {
-      renderWithRelay({
+      const { mockResolveLastOperation } = renderWithRelay()
+
+      mockResolveLastOperation({})
+      mockResolveLastOperation({
         HomeView: () => ({
           experiments: [
             {
@@ -135,7 +134,10 @@ describe("HomeView", () => {
     })
 
     it("does not fire an experiment_viewed event when variant is missing", () => {
-      renderWithRelay({
+      const { mockResolveLastOperation } = renderWithRelay()
+
+      mockResolveLastOperation({})
+      mockResolveLastOperation({
         HomeView: () => ({
           experiments: [
             {
