@@ -21,8 +21,8 @@ export const SelectArtworkListsForArtworkHeader = () => {
     removingArtworkListIDs,
     recentlyAddedArtworkList,
   } = ArtworkListsStore.useStoreState((state) => ({
-    selectedTotalCount: state.state.selectedTotalCount,
-    recentlyAddedArtworkList: state.state.recentlyAddedArtworkList,
+    selectedTotalCount: state.selectedTotalCount,
+    recentlyAddedArtworkList: state.recentlyAddedArtworkList,
     addingArtworkListIDs: state.addingArtworkListIDs,
     removingArtworkListIDs: state.removingArtworkListIDs,
   }))

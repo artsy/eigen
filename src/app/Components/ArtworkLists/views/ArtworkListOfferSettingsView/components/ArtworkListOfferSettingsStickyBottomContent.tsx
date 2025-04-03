@@ -20,9 +20,7 @@ export const StickyBottomContentPlaceholder = () => {
 export const ArtworkListOfferSettingsStickyBottomContent: React.FC<BottomSheetFooterProps> = ({
   animatedFooterPosition,
 }) => {
-  const hasUnsavedChanges = ArtworkListsStore.useStoreState(
-    (state) => state.state.hasUnsavedChanges
-  )
+  const hasUnsavedChanges = ArtworkListsStore.useStoreState((state) => state.hasUnsavedChanges)
   const { dismiss } = useBottomSheetModal()
 
   const { save, inProgress } = useSaveArtworkListsOfferSettingsChanges({

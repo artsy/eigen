@@ -22,9 +22,7 @@ export const StickyBottomContentPlaceholder = () => {
 export const SelectArtworkListStickyBottomContent: FC<BottomSheetFooterProps> = ({
   animatedFooterPosition,
 }) => {
-  const hasUnsavedChanges = ArtworkListsStore.useStoreState(
-    (state) => state.state.hasUnsavedChanges
-  )
+  const hasUnsavedChanges = ArtworkListsStore.useStoreState((state) => state.hasUnsavedChanges)
   const { setProfileTabSavedArtwork } = useOnSaveArtwork()
   const { dismiss } = useBottomSheetModal()
 
