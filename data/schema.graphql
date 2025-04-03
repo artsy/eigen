@@ -8950,6 +8950,9 @@ input CreatePartnerShowEventMutationInput {
 
   # The start time of the event.
   startAt: String!
+
+  # The time zone of the event.
+  timeZone: String
 }
 
 type CreatePartnerShowEventMutationPayload {
@@ -20224,6 +20227,9 @@ type ShowEventType {
     format: ExhibitionPeriodFormat = LONG
   ): String
 
+  # A formatted description of the time zone
+  formattedTimeZone: String
+
   # A globally unique ID.
   id: ID!
 
@@ -20235,6 +20241,7 @@ type ShowEventType {
     # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+  timeZone: String
   title: String
 }
 
@@ -21526,6 +21533,9 @@ input UpdatePartnerShowEventMutationInput {
 
   # The start time of the event.
   startAt: String
+
+  # The time zone of the event.
+  timeZone: String
 }
 
 type UpdatePartnerShowEventMutationPayload {
