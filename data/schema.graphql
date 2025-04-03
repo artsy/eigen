@@ -15943,6 +15943,12 @@ type Partner implements Node {
   claimed: Boolean
   collectingInstitution: String
 
+  # A Singular Contact belonging to the Partner
+  contact(
+    # The slug or ID of the Contact
+    contactId: String!
+  ): Contact
+
   # A connection of contacts from a Partner.
   contactsConnection(
     after: String
