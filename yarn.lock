@@ -5173,10 +5173,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-tracking@8.1.2":
-  version "8.1.2"
-  resolved "https://registry.yarnpkg.com/@types/react-tracking/-/react-tracking-8.1.2.tgz#333acfcb4b7cff3f175821273a54113ce60d9a35"
-  integrity sha512-FILKMlXtGJCGJvdp/br1TfvK1ijLc+SOkjjxaH968hofhK3Z9aLhRQ5tBc4O2TvGsBkO3PakGp++fBlsJfvl8g==
+"@types/react-tracking@8.1.6":
+  version "8.1.6"
+  resolved "https://registry.yarnpkg.com/@types/react-tracking/-/react-tracking-8.1.6.tgz#ec020f902288c77003077f24931c5cfb855b5009"
+  integrity sha512-FLI4mpLUT7qcz2nxs3lqGm7pWH0dOUoj9bZvomukcsu2/4qNi/aNupXI2UtLh5IaYB3leVy8BjYJRbTMcbyYVA==
   dependencies:
     "@types/react" "*"
 
@@ -8916,15 +8916,15 @@ fs.realpath@^1.0.0:
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
 
+fsevents@*, fsevents@~2.3.3:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.3.tgz#cac6407785d03675a2a5e1a5305c697b347d90d6"
+  integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
+
 fsevents@^2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.2.tgz#8a526f78b8fdf4623b709e0b975c52c24c02fd1a"
   integrity sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==
-
-fsevents@~2.3.3:
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.3.tgz#cac6407785d03675a2a5e1a5305c697b347d90d6"
-  integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
 function-bind@^1.1.1:
   version "1.1.1"
@@ -13466,13 +13466,15 @@ react-test-renderer@18.1.0:
     react-shallow-renderer "^16.15.0"
     scheduler "^0.22.0"
 
-react-tracking@9.2.0:
-  version "9.2.0"
-  resolved "https://registry.yarnpkg.com/react-tracking/-/react-tracking-9.2.0.tgz#d64dcdba399aa833906eb186b8fee13a46780c43"
-  integrity sha512-4RFyQRCEhSePOvckudy2d0e8NidbcoSv0TQoGOQicHFOS+hIwICvyb8qkfdoflAQIA8dLH3DgS585oGEicMRKQ==
+react-tracking@9.3.2:
+  version "9.3.2"
+  resolved "https://registry.yarnpkg.com/react-tracking/-/react-tracking-9.3.2.tgz#8918275eb18fa90bd067e465541e349d9a71589d"
+  integrity sha512-F7miWLnkQIs/13iYJPFl9OlFouD0XXCRt87xsdObL/LJ0D5WquN9azSzA1/fclYZNs5mPTKyJ4cOA/Q8PSVhrw==
   dependencies:
     deepmerge "^4.2.2"
     hoist-non-react-statics "^3.3.2"
+  optionalDependencies:
+    fsevents "*"
 
 react-universal-interface@^0.6.2:
   version "0.6.2"
