@@ -93,3 +93,21 @@ export interface ArtworkListsContextState {
   reset: () => void
   onSave: (result: SaveResult) => void
 }
+
+export const getArtworkListsStoreInitialState = () => ARTWORK_LISTS_STORE_INITIAL_STATE
+
+export const ARTWORK_LISTS_STORE_INITIAL_STATE: ArtworkListState = {
+  selectArtworkListsViewVisible: false,
+  createNewArtworkListViewVisible: false,
+  artworkListOfferSettingsViewVisible: false,
+  artwork: null,
+  artworkListID: null,
+  recentlyAddedArtworkList: null,
+  selectedTotalCount: 0,
+  addingArtworkLists: [],
+  removingArtworkLists: [],
+  keepingArtworkListsPrivate: [],
+  sharingArtworkLists: [],
+  hasUnsavedChanges: false,
+  toastBottomPadding: null,
+}

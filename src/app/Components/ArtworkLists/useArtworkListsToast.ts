@@ -47,9 +47,7 @@ export const useArtworkListToast = (bottomPadding?: number | null) => {
   }
 
   const changesSaved = () => {
-    showToast("Changes saved", {
-      backgroundColor: "green100",
-    })
+    showToast("Changes saved", { backgroundColor: "green100" })
   }
 
   const addedToSingleArtworkList = (options: SingleArtworkListOptions) => {

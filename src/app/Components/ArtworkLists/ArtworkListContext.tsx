@@ -15,6 +15,7 @@ const ArtworkListContext = createContext<ArtworkListContextState>({
   removedArtworkIDs: [],
 })
 
+// TODO: remove this one in favor of ArtworkListStore
 export const ArtworkListProvider: FC<ArtworkListProviderProps> = ({ artworkListID, children }) => {
   const [removedArtworkIDs, setRemovedArtworkIDs] = useState<string[]>([])
 

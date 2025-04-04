@@ -7,14 +7,24 @@ import { Environment, RelayEnvironmentProvider } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 
-interface WrappersProps {
+export interface WrappersProps {
   skipRelay?: boolean
   includeNavigation?: boolean
+  includeArtworkLists?: boolean
 }
 
-const Wrappers: React.FC<WrappersProps> = ({ skipRelay, includeNavigation, children }) => {
+const Wrappers: React.FC<WrappersProps> = ({
+  skipRelay,
+  includeNavigation,
+  includeArtworkLists,
+  children,
+}) => {
   return (
-    <TestProviders includeNavigation={includeNavigation} skipRelay={skipRelay}>
+    <TestProviders
+      includeNavigation={includeNavigation}
+      includeArtworkLists={includeArtworkLists}
+      skipRelay={skipRelay}
+    >
       {children}
     </TestProviders>
   )

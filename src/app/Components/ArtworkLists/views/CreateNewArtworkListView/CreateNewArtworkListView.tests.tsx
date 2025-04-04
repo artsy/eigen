@@ -1,9 +1,10 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsContext"
 import {
-  ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
-  ArtworkListsContext,
-} from "app/Components/ArtworkLists/ArtworkListsContext"
-import { ArtworkEntity, ArtworkListsContextState } from "app/Components/ArtworkLists/types"
+  ARTWORK_LISTS_STORE_INITIAL_STATE,
+  ArtworkEntity,
+  ArtworkListsContextState,
+} from "app/Components/ArtworkLists/types"
 import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListView"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -17,7 +18,7 @@ describe("CreateNewArtworkListView", () => {
 
   const ContextValue: ArtworkListsContextState = {
     state: {
-      ...ARTWORK_LISTS_CONTEXT_INITIAL_STATE,
+      ...ARTWORK_LISTS_STORE_INITIAL_STATE,
       artwork: artworkEntity,
     },
     addingArtworkListIDs: [],
@@ -32,9 +33,9 @@ describe("CreateNewArtworkListView", () => {
   const { renderWithRelay } = setupTestWrapper({
     Component: () => {
       return (
-        <ArtworkListsContext.Provider value={ContextValue}>
+        <ArtworkListsStore.Provider runtimeModel={ContextValue}>
           <CreateNewArtworkListView />
-        </ArtworkListsContext.Provider>
+        </ArtworkListsStore.Provider>
       )
     },
     // added the query to make the component wrapped with a Relay environment

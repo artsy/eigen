@@ -4,13 +4,14 @@ import { GraphQLTaggedNode, QueryRenderer } from "react-relay"
 import { OperationType } from "relay-runtime"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "./renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersLEGACY, WrappersProps } from "./renderWithWrappers"
 
 interface SetupTestWrapper<T extends OperationType, ComponentProps> {
   Component: React.ComponentType<T["response"] & ComponentProps>
   preloaded?: boolean
   query?: GraphQLTaggedNode
   variables?: T["variables"]
+  wrapperProps?: WrappersProps
 }
 
 type RenderWithRelay = RenderResult & {
@@ -84,6 +85,7 @@ export const setupTestWrapper = <T extends OperationType, ComponentProps = {}>({
   preloaded = false,
   query,
   variables = {},
+  wrapperProps = {},
 }: SetupTestWrapper<T, ComponentProps>) => {
   const renderWithRelay = (mockResolvers: MockResolvers = {}, props: any = {}): RenderWithRelay => {
     const env = getMockRelayEnvironment()
@@ -107,7 +109,7 @@ export const setupTestWrapper = <T extends OperationType, ComponentProps = {}>({
       )
     }
 
-    const view = renderWithWrappers(<TestRenderer />)
+    const view = renderWithWrappers(<TestRenderer />, wrapperProps)
 
     act(() => {
       const resolve = preloaded
