@@ -1,9 +1,9 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArticleShareButton } from "app/Scenes/Article/Components/ArticleShareButton"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import RNShare from "react-native-share"
 import { graphql } from "react-relay"
-import { useTracking } from "react-tracking"
 
 // Mock react-native-share module
 jest.mock("react-native-share", () => ({
@@ -11,8 +11,6 @@ jest.mock("react-native-share", () => ({
 }))
 
 describe("ArticleShareButton", () => {
-  const mockUseTracking = useTracking as jest.Mock
-
   const { renderWithRelay } = setupTestWrapper({
     Component: ArticleShareButton,
     query: graphql`
@@ -25,12 +23,6 @@ describe("ArticleShareButton", () => {
   })
 
   it("shares the article", () => {
-    const trackingSpy = jest.fn()
-
-    mockUseTracking.mockImplementation(() => ({
-      trackEvent: trackingSpy,
-    }))
-
     renderWithRelay({
       Article: () => ({
         href: "/article/foo",
@@ -49,7 +41,7 @@ describe("ArticleShareButton", () => {
       failOnCancel: false,
     })
 
-    expect(trackingSpy).toHaveBeenCalledWith(
+    expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
         action: "tappedArticleShare",
         context_module: "article",

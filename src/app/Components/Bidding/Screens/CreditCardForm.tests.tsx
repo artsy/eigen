@@ -63,7 +63,6 @@ describe("CreditCardForm", () => {
   afterEach(() => {
     console.error = originalConsoleError
     jest.clearAllMocks()
-    jest.resetAllMocks()
   })
 
   it("renders without throwing an error", () => {

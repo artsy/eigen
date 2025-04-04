@@ -1,6 +1,6 @@
 import { Screen } from "@artsy/cohesion"
-import React from "react"
-import _track, { Track as _Track, TrackingInfo } from "react-tracking"
+import React, { useLayoutEffect } from "react"
+import _track, { Track as _Track, TrackingInfo, useTracking } from "react-tracking"
 import { _addTrackingProvider, postEventToProviders, TrackingProvider } from "./providers"
 // The schema definition for analytics tracking lives inside `./schema`, not here.
 import * as Schema from "./schema"
@@ -99,22 +99,31 @@ interface ProvideScreenTrackingProps {
 /** Deprecated
  * Please use `ProvideScreenTrackingWithCohesionSchema` instead.
  */
-@screenTrack<ProvideScreenTrackingProps>((props) => props.info)
-export class ProvideScreenTracking extends React.Component<ProvideScreenTrackingProps> {
-  render() {
-    return React.createElement(React.Fragment, null, this.props.children)
-  }
+// Uses schema defined in Cohesion
+export const ProvideScreenTracking: React.FC<ProvideScreenTrackingProps> = (props) => {
+  const tracking = useTracking()
+
+  useLayoutEffect(() => {
+    tracking.trackEvent(props.info)
+  }, [tracking])
+
+  return <React.Fragment>{props.children}</React.Fragment>
 }
 
 interface ProvideScreenTrackingWithCohesionSchemaProps {
   info: Screen
 }
 // Uses schema defined in Cohesion
-@screenTrack<ProvideScreenTrackingProps>((props) => props.info)
-export class ProvideScreenTrackingWithCohesionSchema extends React.Component<ProvideScreenTrackingWithCohesionSchemaProps> {
-  render() {
-    return React.createElement(React.Fragment, null, this.props.children)
-  }
+export const ProvideScreenTrackingWithCohesionSchema: React.FC<
+  ProvideScreenTrackingWithCohesionSchemaProps
+> = (props) => {
+  const tracking = useTracking()
+
+  useLayoutEffect(() => {
+    tracking.trackEvent(props.info)
+  }, [])
+
+  return <React.Fragment>{props.children}</React.Fragment>
 }
 
 /**

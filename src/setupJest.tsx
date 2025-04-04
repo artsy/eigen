@@ -102,7 +102,12 @@ require("jest-fetch-mock").enableMocks()
 
 jest.mock("react-tracking")
 ;(track as jest.Mock).mockImplementation(() => (x: any) => x)
-;(useTracking as jest.Mock).mockImplementation(() => ({ trackEvent: mockTrackEvent }))
+;(useTracking as jest.Mock).mockImplementation(() => ({
+  // Mock the Track component that's used in Providers.tsx
+  Track: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  // Keep the existing trackEvent mock for other components
+  trackEvent: mockTrackEvent,
+}))
 
 jest.mock("@stripe/stripe-react-native", () => mockStripe)
 
