@@ -2535,7 +2535,7 @@ type Artwork implements Node & Searchable & Sellable {
   formattedMetadata: String
   framed: ArtworkInfoRow @deprecated(reason: "Consider using isFramed field (boolean) instead")
   framedDepth: String
-  framedDiameter: Float
+  framedDiameter: String
   framedHeight: String
 
   # The unit of measurement for the framed dimensions
@@ -10077,6 +10077,9 @@ input EditableLocation {
 type EditionSet implements Sellable {
   availability: String
   dimensions: dimensions
+
+  # The edition set parent-artwork display label (title)
+  displayLabel: String
   displayPriceRange: Boolean
   editionOf: String
 
@@ -10093,13 +10096,23 @@ type EditionSet implements Sellable {
   internalID: ID!
   isAcquireable: Boolean
   isForSale: Boolean
+
+  # Is the edition set parent-artwork part of an auction?
+  isInAuction: Boolean
+
+  # Is the edition set parent-artwork inquireable?
+  isInquireable: Boolean
   isOfferable: Boolean
   isOfferableFromInquiry: Boolean
+  isPriceHidden: Boolean
   isSold: Boolean
   listPrice: ListPrice
   price: String
   priceDisplay: String
   priceListed: Money
+
+  # Is the edition set parent-artwork published?
+  published: Boolean
   saleMessage: String
 
   # size bucket assigned to an artwork based on its dimensions
@@ -19726,19 +19739,33 @@ union SecondFactorOrErrorsUnion = AppSecondFactor | Errors | SmsSecondFactor
 
 # A piece that can be sold
 interface Sellable {
+  availability: String
   dimensions: dimensions
+  displayLabel: String
+  displayPriceRange: Boolean
   editionOf: String
+
+  # A globally unique ID.
+  id: ID!
+  internalDisplayPrice: String
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
 
   # Whether a piece can be purchased through e-commerce
   isAcquireable: Boolean
   isForSale: Boolean
+  isInAuction: Boolean
+  isInquireable: Boolean
 
   # Whether a user can make an offer on the work
   isOfferable: Boolean
 
   # Whether a user can make an offer on the work through inquiry
   isOfferableFromInquiry: Boolean
+  isPriceHidden: Boolean
   isSold: Boolean
+  published: Boolean
   saleMessage: String
 }
 
@@ -20821,26 +20848,42 @@ type UpdateArtistSuccess {
 }
 
 input UpdateArtworkEditionSetInput {
+  artistProofs: String
+
   # The availability of the artwork
   availability: String
+  delete: Boolean
 
   # Show/Hide the price range of an artwork
   displayPriceRange: Boolean
 
-  # True for `Buy Now` artworks
+  # True for `Buy Now` edition sets
   ecommerce: Boolean
+  editionSize: String
+  framed: Boolean
+  framedDepth: String
+  framedDiameter: String
+  framedHeight: String
+  framedMetric: String
+  framedWidth: String
 
   # The id of the artwork to update.
   id: String!
 
   # True for `Make Offer` artworks
   offer: Boolean
+  priceCurrency: String
 
   # Show/Hide the price of an artwork
   priceHidden: Boolean
+  priceIncludesTax: Boolean
 
   # The price of the artwork
   priceListed: String
+  priceMax: Int
+  priceMin: Int
+  shippingWeight: Float
+  shippingWeightMetric: String
 }
 
 type UpdateArtworkImportRowFailure {
@@ -20870,30 +20913,46 @@ type UpdateArtworkImportRowSuccess {
 }
 
 input UpdateArtworkMutationInput {
+  artistProofs: String
+
   # The availability of the artwork
   availability: String
   clientMutationId: String
+  delete: Boolean
 
   # Show/Hide the price range of an artwork
   displayPriceRange: Boolean
 
-  # True for `Buy Now` artworks
+  # True for `Buy Now` edition sets
   ecommerce: Boolean
 
   # A list of edition sets for the artwork
   editionSets: [UpdateArtworkEditionSetInput]
+  editionSize: String
+  framed: Boolean
+  framedDepth: String
+  framedDiameter: String
+  framedHeight: String
+  framedMetric: String
+  framedWidth: String
 
   # The id of the artwork to update.
   id: String!
 
   # True for `Make Offer` artworks
   offer: Boolean
+  priceCurrency: String
 
   # Show/Hide the price of an artwork
   priceHidden: Boolean
+  priceIncludesTax: Boolean
 
   # The price of the artwork
   priceListed: String
+  priceMax: Int
+  priceMin: Int
+  shippingWeight: Float
+  shippingWeightMetric: String
 }
 
 type UpdateArtworkMutationPayload {
