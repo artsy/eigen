@@ -14,6 +14,7 @@ import {
 } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
+import { ICON_HIT_SLOP } from "app/Components/constants"
 import { CallapseWithTitle } from "app/Scenes/Favorites/Components/CollapseWithTitle"
 import React, { useState } from "react"
 import { Dimensions } from "react-native"
@@ -135,7 +136,7 @@ export const FavoritesLearnMore = () => {
           <Spacer y={`${bottom}px`} />
         </BottomSheetScrollView>
       </AutomountedBottomSheetModal>
-      <Touchable onPress={() => setShowBottomSheet(true)}>
+      <Touchable onPress={() => setShowBottomSheet(true)} hitSlop={ICON_HIT_SLOP}>
         <QuestionCircleIcon height={ICON_SIZE} width={ICON_SIZE} />
       </Touchable>
     </>
