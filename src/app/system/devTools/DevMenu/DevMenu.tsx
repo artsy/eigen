@@ -97,7 +97,7 @@ export const DevMenu: React.FC<{}> = () => {
       <DevMenuButtonItem title="Dark Mode 🌙" onPress={handleDarkModePress} />
       <Join separator={<Spacer y={1} />}>
         <NavigateTo />
-        <EnvironmentOptions onClose={onClose} />
+        <EnvironmentOptions onClose={goBack} />
         <ExpoUpdatesOptions />
         <FeatureFlags />
         <Experiments />

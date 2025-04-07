@@ -200,7 +200,7 @@ import {
   ShowMoreInfoScreenQuery,
 } from "app/Scenes/Show/Screens/ShowMoreInfo"
 import { ShowQueryRenderer, ShowScreenQuery } from "app/Scenes/Show/Show"
-import { ShowsForYouScreen } from "app/Scenes/Shows/ShowsForYou"
+import { ShowsForYouScreen, ShowsForYouScreenQuery } from "app/Scenes/Shows/ShowsForYou"
 import {
   SimilarToRecentlyViewedScreen,
   SimilarToRecentlyViewedScreenQuery,
