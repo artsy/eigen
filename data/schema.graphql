@@ -2531,6 +2531,9 @@ type Artwork implements Node & Searchable & Sellable {
   exhibitionHistory(format: Format): String
   fair: Fair
 
+  # Featured slot (if set, will boost the work to the top of the artwork grid. Should be set between 1 and 20).
+  featuredSlot: Int
+
   # A list of images and videos for the artwork
   figures(
     # Include all images, even if they are not ready or processing failed.
@@ -2648,6 +2651,10 @@ type Artwork implements Node & Searchable & Sellable {
   # Whether a user can make an offer on the work through inquiry
   isOfferableFromInquiry: Boolean
   isOnHold: String
+  isPartnerPromoted: Boolean
+
+  # Whether a work is available for pickup
+  isPickupAvailable: Boolean
   isPriceEstimateRequestable: Boolean
   isPriceHidden: Boolean
   isPriceRange: Boolean
@@ -2782,6 +2789,7 @@ type Artwork implements Node & Searchable & Sellable {
   signature(format: Format): String
   signatureDetails: String
   signatureInfo: ArtworkInfoRow
+  signatureMeta: ArtworkSignatureMeta
 
   # size bucket assigned to an artwork based on its dimensions
   sizeBucket: String
@@ -3261,6 +3269,26 @@ type ArtworkSavedSearch {
     first: Int
     last: Int
   ): ArtworkConnection
+}
+
+type ArtworkSignatureMeta {
+  # Whether the artwork has a signature
+  hasSignature: Boolean
+
+  # Whether the artwork has a sticker label
+  hasStickerLabel: Boolean
+
+  # Whether the artwork is signed by the artist
+  isSignedByArtist: Boolean
+
+  # Whether the artwork is signed in plate
+  isSignedInPlate: Boolean
+
+  # Whether the artwork is signed by someone else
+  isSignedOther: Boolean
+
+  # Whether the artwork is stamped by the artist's estate
+  isStampedByArtistEstate: Boolean
 }
 
 enum ArtworkSignatureTypeEnum {
@@ -10084,13 +10112,25 @@ input EditableLocation {
 }
 
 type EditionSet implements Sellable {
+  artistProofs: Boolean
   availability: String
+  availableEditions: [String]
+  depth: String
+  diameter: String
   dimensions: dimensions
 
   # The edition set parent-artwork display label (title)
   displayLabel: String
   displayPriceRange: Boolean
+  duration: String
   editionOf: String
+  editionSize: String
+  framedDepth: String
+  framedDiameter: String
+  framedHeight: String
+  framedMetric: String
+  framedWidth: String
+  height: String
 
   # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
   heightCm: Float
@@ -10103,6 +10143,7 @@ type EditionSet implements Sellable {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  inventory: EditionSetInventory
   isAcquireable: Boolean
   isEcommerce: Boolean
   isForSale: Boolean
@@ -10120,19 +10161,28 @@ type EditionSet implements Sellable {
   price: String
   priceDisplay: String
   priceListed: Money
+  prototypes: String
 
   # Is the edition set parent-artwork published?
   published: Boolean
   saleMessage: String
+  shippingWeight: String
+  shippingWeightMetric: String
 
   # size bucket assigned to an artwork based on its dimensions
   sizeBucket: String
 
   # score assigned to an artwork based on its dimensions
   sizeScore: Float
+  width: String
 
   # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
   widthCm: Float
+}
+
+type EditionSetInventory {
+  count: Int
+  isUnlimited: Boolean
 }
 
 enum EditionSetSorts {
