@@ -7,14 +7,14 @@ import {
   Screen,
   Spacer,
   Text,
-  Touchable,
 } from "@artsy/palette-mobile"
 import { AlertNotification_notification$key } from "__generated__/AlertNotification_notification.graphql"
 import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
 import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
-import { goBack, navigate } from "app/system/navigation/navigate"
+import { goBack } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { FC } from "react"
-import { ScrollView, TouchableOpacity } from "react-native"
+import { ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface AlertNotificationProps {
@@ -33,13 +33,7 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
     return <ActivityErrorScreen headerTitle="Alerts" />
   }
 
-  const handleEditAlertPress = () => {
-    navigate(`/favorites/alerts/${alert.internalID}/edit`)
-  }
-
-  const handleViewAllWorksPress = () => {
-    navigate(`/artist/${artist?.slug}/works-for-sale`)
-  }
+  const editAlertHref = `/favorites/alerts/${alert.internalID}/edit`
 
   return (
     <Screen>
@@ -47,15 +41,11 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
         onBack={goBack}
         title="Alerts"
         rightElements={
-          <TouchableOpacity
-            onPress={handleEditAlertPress}
-            testID="edit-alert-header-link"
-            hitSlop={DEFAULT_HIT_SLOP}
-          >
+          <RouterLink to={editAlertHref} testID="edit-alert-header-link" hitSlop={DEFAULT_HIT_SLOP}>
             <Text textAlign="right" variant="xs">
               Edit
             </Text>
-          </TouchableOpacity>
+          </RouterLink>
         }
       />
 
@@ -88,27 +78,23 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
 
         <Spacer y={2} />
 
-        <Flex mx={2}>
-          <Button
-            block
-            variant="outline"
-            onPress={handleEditAlertPress}
-            testID="edit-alert-CTA"
-            mb={1}
-          >
-            Edit Alert
-          </Button>
+        <Flex mx={2} mb={1}>
+          <RouterLink hasChildTouchable to={editAlertHref}>
+            <Button block variant="outline" testID="edit-alert-CTA">
+              Edit Alert
+            </Button>
+          </RouterLink>
 
           <Spacer y={2} />
 
-          <Touchable onPress={handleViewAllWorksPress}>
+          <RouterLink to={`/artist/${artist?.slug}/works-for-sale`}>
             <Flex flexDirection="row">
               <Text fontWeight="bold">View all works by {artist.name}</Text>
               <Flex alignSelf="center">
                 <ArrowRightIcon fill="black30" ml={0.5} pl={0.3} />
               </Flex>
             </Flex>
-          </Touchable>
+          </RouterLink>
         </Flex>
 
         <Spacer y={4} />

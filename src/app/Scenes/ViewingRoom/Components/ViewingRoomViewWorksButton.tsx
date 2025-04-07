@@ -2,7 +2,7 @@ import { Flex, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ViewingRoomViewWorksButton_viewingRoom$data } from "__generated__/ViewingRoomViewWorksButton_viewingRoom.graphql"
 import { AnimatedBottomButton } from "app/Components/AnimatedBottomButton"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { Schema } from "app/utils/track"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -29,22 +29,24 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
 
   return (
     <View>
-      <AnimatedBottomButton
-        buttonStyles={roundedButtonStyle}
-        isVisible={props.isVisible}
+      <RouterLink
+        noFeedback
+        hasChildTouchable
+        to={`/viewing-room/${viewingRoom.slug}/artworks`}
         onPress={() => {
           tracking.trackEvent(
             tracks.tappedViewWorksButton(viewingRoom.internalID, viewingRoom.slug)
           )
-          navigate(`/viewing-room/${viewingRoom.slug}/artworks`)
         }}
       >
-        <ViewWorksButton testID="view-works" px={2}>
-          <Text variant="sm" py={1} color="white100" weight="medium">
-            View {pluralizedArtworksCount} ({artworksCount})
-          </Text>
-        </ViewWorksButton>
-      </AnimatedBottomButton>
+        <AnimatedBottomButton buttonStyles={roundedButtonStyle} isVisible={props.isVisible}>
+          <ViewWorksButton testID="view-works" px={2}>
+            <Text variant="sm" py={1} color="white100" weight="medium">
+              View {pluralizedArtworksCount} ({artworksCount})
+            </Text>
+          </ViewWorksButton>
+        </AnimatedBottomButton>
+      </RouterLink>
     </View>
   )
 }

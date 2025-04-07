@@ -1,6 +1,6 @@
-import { Button, Image, Text, Touchable } from "@artsy/palette-mobile"
+import { Button, Image, Text } from "@artsy/palette-mobile"
 import { ShowItem_show$key } from "__generated__/ShowItem_show.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { hrefForPartialShow } from "app/utils/router"
 import { graphql, useFragment } from "react-relay"
 
@@ -18,22 +18,14 @@ export const ShowItem: React.FC<ShowItemProps> = ({ displayViewShowButton = fals
     return null
   }
 
-  const handleOnPress = () => {
-    navigate(
-      hrefForPartialShow({
-        href: data.href,
-        is_fair_booth: data.isFairBooth,
-        slug: data.slug,
-      })
-    )
-  }
+  const href = hrefForPartialShow({
+    href: data.href,
+    is_fair_booth: data.isFairBooth,
+    slug: data.slug,
+  })
 
   return (
-    <Touchable
-      onPress={handleOnPress}
-      style={{ width: DEFAULT_CELL_WIDTH }}
-      testID="show-item-visit-show-link"
-    >
+    <RouterLink to={href} style={{ width: DEFAULT_CELL_WIDTH }} testID="show-item-visit-show-link">
       <Image
         testID="show-cover"
         src={data.coverImage?.url ?? ""}
@@ -52,11 +44,11 @@ export const ShowItem: React.FC<ShowItemProps> = ({ displayViewShowButton = fals
       )}
 
       {!!displayViewShowButton && (
-        <Button my={2} onPress={handleOnPress}>
-          View Show
-        </Button>
+        <RouterLink hasChildTouchable to={href}>
+          <Button my={2}>View Show</Button>
+        </RouterLink>
       )}
-    </Touchable>
+    </RouterLink>
   )
 }
 

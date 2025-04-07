@@ -5,7 +5,6 @@ import { TrendingArtists_query$key } from "__generated__/TrendingArtists_query.g
 import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { ArtistCardContainer as ArtistCard } from "app/Scenes/HomeView/Components/ArtistRails/ArtistCard"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { isTablet } from "react-native-device-info"
 import { graphql, usePaginationFragment } from "react-relay"
@@ -53,7 +52,6 @@ export const TrendingArtists: React.FC<TrendingArtistsProps> = ({ data, ...boxPr
         renderItem={({ item, index }) => {
           const onPress = () => {
             if (item.href) {
-              navigate(item.href)
               tracking.trackEvent(tracks.tappedArtistGroup(item.internalID, item.slug, index))
             }
           }

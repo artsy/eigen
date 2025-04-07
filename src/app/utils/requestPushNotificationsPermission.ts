@@ -6,7 +6,7 @@ import {
 import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
 import { postEventToProviders } from "app/utils/track/providers"
 import { Alert, Linking, Platform } from "react-native"
-import { requestNotifications } from "react-native-permissions"
+import { PermissionStatus, requestNotifications } from "react-native-permissions"
 
 const showSettingsAlert = () => {
   Alert.alert(
@@ -61,25 +61,42 @@ const showPrepromptAlert = async () => {
   )
 }
 
-export const requestSystemPermissions = async () => {
-  GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationSystemDialogSeen(true)
-  const permissions: Array<"alert" | "badge" | "sound"> = ["alert", "badge", "sound"]
-  const { status } = await requestNotifications(permissions)
+const trackPushStatus = (hasSeenSystemNotificationsDialog: boolean, status: PermissionStatus) => {
+  if (hasSeenSystemNotificationsDialog) {
+    return
+  }
+
   if (status === "granted") {
     postEventToProviders({
       action: "push notifications requested",
       granted: true,
     })
-    SegmentTrackingProvider.identify
-      ? SegmentTrackingProvider.identify(undefined, { "has enabled notifications": 1 })
-      : (() => undefined)()
   } else {
     postEventToProviders({
       action: "push notifications requested",
       granted: false,
     })
+  }
+}
+
+export const requestSystemPermissions = async () => {
+  const hasSeenSystemNotificationsDialog =
+    !!unsafe_getPushPromptSettings()?.pushNotificationSystemDialogSeen
+
+  const permissions: Array<"alert" | "badge" | "sound"> = ["alert", "badge", "sound"]
+  const { status } = await requestNotifications(permissions)
+
+  if (status === "granted") {
+    trackPushStatus(hasSeenSystemNotificationsDialog, status)
+    SegmentTrackingProvider.identify
+      ? SegmentTrackingProvider.identify(undefined, { "has enabled notifications": 1 })
+      : (() => undefined)()
+  } else {
+    trackPushStatus(hasSeenSystemNotificationsDialog, status)
     GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationSystemDialogRejected(true)
   }
+  GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushNotificationSystemDialogSeen(true)
+
   return status
 }
 

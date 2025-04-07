@@ -27,7 +27,6 @@ export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ key
           renderFallback: () => <SimpleErrorMessage />,
         })}
         variables={{ count: 10, keyword }}
-        cacheConfig={{ force: true }}
       />
     </ArtworkFiltersStoreProvider>
   )

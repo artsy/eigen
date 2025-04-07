@@ -39,19 +39,20 @@ const SORT_OPTIONS: SortOption[] = [
 
 const DEFAULT_SORT_OPTION = SORT_OPTIONS[0].value as CollectionArtworkSorts
 
+export const artworkListVariables = { count: PAGE_SIZE, sort: DEFAULT_SORT_OPTION }
+
 export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   const [sortModalVisible, setSortModalVisible] = useState(false)
   const [selectedSortValue, setSelectedSortValue] = useState(DEFAULT_SORT_OPTION)
   const prevSelectedSortValue = usePrevious(selectedSortValue)
 
   const queryData = useLazyLoadQuery<ArtworkListQuery>(
-    artworkListScreenQuery,
+    ArtworkListScreenQuery,
     {
       listID,
-      count: PAGE_SIZE,
-      sort: DEFAULT_SORT_OPTION,
+      ...artworkListVariables,
     },
-    { fetchPolicy: "network-only" }
+    { fetchPolicy: "store-and-network" }
   )
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
@@ -126,7 +127,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   )
 }
 
-export const artworkListScreenQuery = graphql`
+export const ArtworkListScreenQuery = graphql`
   query ArtworkListQuery(
     $listID: String!
     $count: Int

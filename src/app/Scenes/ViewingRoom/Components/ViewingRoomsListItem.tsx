@@ -1,7 +1,6 @@
-import { Touchable } from "@artsy/palette-mobile"
 import { ViewingRoomsListItem_item$key } from "__generated__/ViewingRoomsListItem_item.graphql"
 import { CardTagProps, SmallCard } from "app/Components/Cards"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { View } from "react-native"
@@ -89,11 +88,11 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = (props)
 
   return (
     <View>
-      <Touchable
+      <RouterLink
         onPress={() => {
           trackEvent(tracks.tapViewingRoomListItem(internalID, slug))
-          navigate(`/viewing-room/${slug}`)
         }}
+        to={`/viewing-room/${slug}`}
       >
         <SmallCard
           images={images}
@@ -101,7 +100,7 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = (props)
           subtitle={item.partner?.name ?? undefined}
           tag={tag}
         />
-      </Touchable>
+      </RouterLink>
     </View>
   )
 }

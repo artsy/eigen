@@ -7,18 +7,17 @@ import { EnvironmentModel, getEnvironmentModel } from "app/store/config/Environm
 import { action, Action, computed, Computed, effectOn, EffectOn } from "easy-peasy"
 import { Appearance, Platform, StatusBar } from "react-native"
 
+export type DarkModeOption = "on" | "off" | "system"
 export interface DevicePrefsModel {
   environment: EnvironmentModel
   sessionState: {
     isDeepZoomModalVisible: boolean
   }
   // color scheme
+  darkModeOption: DarkModeOption
   colorScheme: Computed<this, "light" | "dark", GlobalStoreModel>
-  usingSystemColorScheme: boolean
-  forcedColorScheme: "light" | "dark"
 
-  setUsingSystemColorScheme: Action<this, this["usingSystemColorScheme"]>
-  setForcedColorScheme: Action<this, this["forcedColorScheme"]>
+  setDarkModeOption: Action<this, DarkModeOption>
   setIsDeepZoomModalVisible: Action<this, this["sessionState"]["isDeepZoomModalVisible"]>
   updateStatusBarStyle: EffectOn<this>
 }
@@ -29,22 +28,31 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
   sessionState: {
     isDeepZoomModalVisible: false,
   },
+
+  darkModeOption: "system",
   colorScheme: computed([(_, store) => store], (store) => {
     if (!store.artsyPrefs.features.flags.ARDarkModeSupport) {
       return "light"
     }
-    return store.devicePrefs.usingSystemColorScheme
-      ? Appearance.getColorScheme() ?? "light"
-      : store.devicePrefs.forcedColorScheme
-  }),
-  usingSystemColorScheme: false, // TODO: put `true` as default when the flag is ready to go away
-  forcedColorScheme: "light",
 
-  setUsingSystemColorScheme: action((state, option) => {
-    state.usingSystemColorScheme = option
+    const systemColorScheme = Appearance.getColorScheme()
+
+    switch (store.devicePrefs.darkModeOption) {
+      case "system":
+        if (systemColorScheme === "dark") {
+          return "dark"
+        } else {
+          return "light"
+        }
+      case "on":
+        return "dark"
+      default:
+        return "light"
+    }
   }),
-  setForcedColorScheme: action((state, option) => {
-    state.forcedColorScheme = option
+
+  setDarkModeOption: action((state, option) => {
+    state.darkModeOption = option
   }),
   setIsDeepZoomModalVisible: action((state, isVisible) => {
     state.sessionState.isDeepZoomModalVisible = isVisible

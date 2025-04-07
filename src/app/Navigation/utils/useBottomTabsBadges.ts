@@ -1,7 +1,6 @@
-import { useColor, useSpace } from "@artsy/palette-mobile"
+import { useColor } from "@artsy/palette-mobile"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
-import { useActivityDotExperiment } from "app/utils/experiments/useActivityDotExperiment"
 import { useVisualClue } from "app/utils/hooks/useVisualClue"
 import { useTabBarBadge } from "app/utils/useTabBarBadge"
 import { StyleProp, TextStyle } from "react-native"
@@ -16,18 +15,15 @@ type BadgeProps = { tabBarBadge?: string | number; tabBarBadgeStyle: StyleProp<T
  */
 export const useBottomTabsBadges = () => {
   const color = useColor()
-  const space = useSpace()
 
   const { showVisualClue } = useVisualClue()
   const { unreadConversationsCount, hasUnseenNotifications } = useTabBarBadge()
 
-  const { forceDots, color: backgroundColor } = useActivityDotExperiment()
-
   const tabsBadges: Record<string, BadgeProps> = {}
 
   const visualClueStyles = {
-    backgroundColor: color(backgroundColor),
-    top: space(1),
+    backgroundColor: color("red50"),
+    top: 2,
     minWidth: VISUAL_CLUE_HEIGHT,
     maxHeight: VISUAL_CLUE_HEIGHT,
     borderRadius: VISUAL_CLUE_HEIGHT / 2,
@@ -63,7 +59,7 @@ export const useBottomTabsBadges = () => {
 
     switch (tab) {
       case "home": {
-        if (hasUnseenNotifications || forceDots) {
+        if (hasUnseenNotifications) {
           tabsBadges[tab] = {
             tabBarBadge: "",
             tabBarBadgeStyle: {
@@ -75,23 +71,11 @@ export const useBottomTabsBadges = () => {
       }
 
       case "inbox": {
-        if (unreadConversationsCount || forceDots) {
+        if (unreadConversationsCount) {
           tabsBadges[tab] = {
-            tabBarBadge: unreadConversationsCount || (forceDots ? 42 : 0),
+            tabBarBadge: unreadConversationsCount,
             tabBarBadgeStyle: {
               backgroundColor: color("red50"),
-            },
-          }
-        }
-        return
-      }
-
-      case "profile": {
-        if (forceDots) {
-          tabsBadges[tab] = {
-            tabBarBadge: "",
-            tabBarBadgeStyle: {
-              ...visualClueStyles,
             },
           }
         }

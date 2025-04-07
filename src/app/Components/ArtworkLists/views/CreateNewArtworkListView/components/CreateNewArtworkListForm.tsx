@@ -1,5 +1,4 @@
 import { ActionType, CreatedArtworkList, OwnerType } from "@artsy/cohesion"
-import { Flex, FlexProps } from "@artsy/palette-mobile"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { captureMessage } from "@sentry/react-native"
 import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
@@ -13,10 +12,9 @@ import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constant
 import { useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { FormikHelpers } from "formik"
-import { FC } from "react"
 import { useTracking } from "react-tracking"
 
-export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
+export const CreateNewArtworkListForm: React.FC = () => {
   const { dispatch } = useArtworkListsContext()
   const { dismiss } = useBottomSheetModal()
   const analytics = useAnalyticsContext()
@@ -105,13 +103,5 @@ export const CreateNewArtworkListForm: FC<FlexProps> = (props) => {
     })
   }
 
-  return (
-    <Flex {...props}>
-      <CreateOrEditArtworkListForm
-        mode="create"
-        onSubmit={handleSubmit}
-        onBackPress={closeCurrentView}
-      />
-    </Flex>
-  )
+  return <CreateOrEditArtworkListForm mode="create" onSubmit={handleSubmit} />
 }

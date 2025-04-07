@@ -22,7 +22,7 @@ describe("onboarding question template", () => {
     useOnboardingContextMock.mockReset()
   })
 
-  it.each(["Skip", "question", "subtitle", "answer 1", "answer 2", "Next"])(
+  it.each(["question", "subtitle", "answer 1", "answer 2", "Next"])(
     "renders expected element %s",
     (text) => {
       useOnboardingContextMock.mockReturnValue(contextValue())
@@ -38,6 +38,7 @@ describe("onboarding question template", () => {
       )
 
       expect(screen.getByText(text)).toBeTruthy()
+      expect(screen.getByTestId("close-button")).toBeTruthy()
     }
   )
 

@@ -13,7 +13,6 @@ import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -57,16 +56,15 @@ export const LatestAuctionResultsRail: React.FC<Props> = ({ me }) => {
               width={AUCTION_RESULT_CARD_WIDTH}
               onPress={() => {
                 trackEvent(tracks.tappedThumbnail(item.internalID, index))
-                navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
               }}
             />
           )
         }}
         ListFooterComponent={
           <BrowseMoreRailCard
+            href={href}
             onPress={() => {
               trackEvent(tracks.tappedAuctionResultGroupViewAll())
-              navigate(href)
             }}
             text="Browse All Results"
           />

@@ -1,17 +1,8 @@
-import {
-  Flex,
-  Box,
-  useSpace,
-  Text,
-  Spinner,
-  Separator,
-  Touchable,
-  Image,
-} from "@artsy/palette-mobile"
+import { Box, Flex, Image, Separator, Spinner, Text, useSpace } from "@artsy/palette-mobile"
 import { ViewingRoomArtworksQueryRendererQuery } from "__generated__/ViewingRoomArtworksQueryRendererQuery.graphql"
 import { ViewingRoomArtworks_viewingRoom$data } from "__generated__/ViewingRoomArtworks_viewingRoom.graphql"
 import { ReadMore } from "app/Components/ReadMore"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
@@ -46,7 +37,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
         key: `${index}`,
         content: (
           <Box>
-            <Touchable
+            <RouterLink
               onPress={() => {
                 tracking.trackEvent({
                   ...tracks.context(viewingRoom.internalID, viewingRoom.slug),
@@ -57,8 +48,8 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
                     artwork.slug
                   ),
                 })
-                navigate(`/viewing-room/${viewingRoom.slug}/${artwork.slug}`)
               }}
+              to={`/viewing-room/${viewingRoom.slug}/${artwork.slug}`}
             >
               <Box>
                 {!!artwork.image?.url && (
@@ -78,7 +69,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
                   </Text>
                 </Box>
               </Box>
-            </Touchable>
+            </RouterLink>
             {!!artwork.additionalInformation && (
               <Flex mx={2} mt={1}>
                 <ReadMore
@@ -212,20 +203,13 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
   }
 )
 
-export const ViewingRoomArtworksQueryRenderer: React.FC<{ viewing_room_id: string }> = ({
-  viewing_room_id: viewingRoomID,
+export const ViewingRoomArtworksQueryRenderer: React.FC<{ viewingRoomID: string }> = ({
+  viewingRoomID,
 }) => {
   return (
     <QueryRenderer<ViewingRoomArtworksQueryRendererQuery>
       environment={getRelayEnvironment()}
-      query={graphql`
-        query ViewingRoomArtworksQueryRendererQuery($viewingRoomID: ID!) {
-          viewingRoom(id: $viewingRoomID) {
-            ...ViewingRoomArtworks_viewingRoom
-          }
-        }
-      `}
-      cacheConfig={{ force: true }}
+      query={ViewingRoomArtworksScreenQuery}
       variables={{
         viewingRoomID,
       }}
@@ -233,3 +217,11 @@ export const ViewingRoomArtworksQueryRenderer: React.FC<{ viewing_room_id: strin
     />
   )
 }
+
+export const ViewingRoomArtworksScreenQuery = graphql`
+  query ViewingRoomArtworksQueryRendererQuery($viewingRoomID: ID!) {
+    viewingRoom(id: $viewingRoomID) {
+      ...ViewingRoomArtworks_viewingRoom
+    }
+  }
+`

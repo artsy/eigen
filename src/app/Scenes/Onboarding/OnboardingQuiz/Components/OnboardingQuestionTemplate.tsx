@@ -7,6 +7,10 @@ import {
   Text,
   Button,
   LegacyScreen,
+  Touchable,
+  CloseIcon,
+  ChevronIcon,
+  DEFAULT_HIT_SLOP,
 } from "@artsy/palette-mobile"
 import { useFocusEffect, useNavigation } from "@react-navigation/native"
 import {
@@ -105,8 +109,17 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
 
   return (
     <LegacyScreen>
-      <LegacyScreen.Header onBack={handleBack} onSkip={debouncedHandleSkip} />
       <LegacyScreen.Body>
+        <Flex flexDirection="row" alignItems="center" justifyContent="space-between" height={40}>
+          <Touchable onPress={handleBack} hitSlop={DEFAULT_HIT_SLOP}>
+            <ChevronIcon direction="left" />
+          </Touchable>
+
+          <Touchable testID="close-button" onPress={debouncedHandleSkip} hitSlop={DEFAULT_HIT_SLOP}>
+            <CloseIcon />
+          </Touchable>
+        </Flex>
+
         <Box pt={2}>
           <ProgressBar progress={progress} />
         </Box>

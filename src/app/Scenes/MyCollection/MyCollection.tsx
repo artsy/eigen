@@ -71,7 +71,7 @@ const MyCollection: React.FC<{
 
   const toast = useToast()
 
-  const hasCollectedArtists = (me.userInterestsConnection?.totalCount ?? 0) > 0
+  const hasCollectedArtists = (me?.userInterestsConnection?.totalCount ?? 0) > 0
 
   const { showVisualClue } = useVisualClue()
   const showMyCollectionCollectedArtistsOnboarding = !!showVisualClue(
@@ -343,7 +343,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
             environment={getRelayEnvironment()}
             query={MyCollectionScreenQuery}
             variables={{}}
-            cacheConfig={{ force: true }}
+            fetchPolicy="store-and-network"
             render={renderWithPlaceholder({
               Container: MyCollectionContainer,
               renderPlaceholder: () => <MyCollectionPlaceholder />,

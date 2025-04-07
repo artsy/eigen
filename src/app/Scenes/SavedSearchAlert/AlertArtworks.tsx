@@ -1,5 +1,6 @@
 import { Flex, Screen, Spacer } from "@artsy/palette-mobile"
 import { useFocusEffect } from "@react-navigation/native"
+import { StackScreenProps } from "@react-navigation/stack"
 import {
   AlertArtworksGrid,
   AlertArtworksGridPlaceholder,
@@ -8,14 +9,17 @@ import {
   AlertArtworksPills,
   AlertArtworksPillsPlaceholder,
 } from "app/Scenes/SavedSearchAlert/AlertArtworksPills"
+import { EditSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { goBack } from "app/system/navigation/navigate"
 import { FC, Suspense, useCallback, useState } from "react"
 
-interface AlertArtworksProps {
-  alertId: string
+type ScreenNavigationProps = StackScreenProps<EditSavedSearchAlertNavigationStack, "AlertArtworks">
+interface AlertArtworksProps extends ScreenNavigationProps {
+  alertId?: string
 }
 
-export const AlertArtworks: FC<AlertArtworksProps> = ({ alertId }) => {
+export const AlertArtworks: FC<AlertArtworksProps> = ({ alertId: alertIdProp, route }) => {
+  const alertId = alertIdProp ?? route.params.alertId
   // This is a workaround to force the component to re-fetch data when navigating back
   const [fetchKey, setFetchKey] = useState(0)
 

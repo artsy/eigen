@@ -74,25 +74,23 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
         title="Email"
         value={me.email}
         ellipsizeMode="middle"
-        onPress={() => {
-          navigate("my-account/edit-email")
-        }}
+        href="my-account/edit-email"
       />
       <MenuItem
         title="Phone"
         value={me.phone || "Add phone"}
-        onPress={() => navigate("my-account/edit-phone")}
+        href="my-account/edit-phone"
       />
       <MenuItem
         title="Price Range"
         value={priceRangeValue}
-        onPress={() => navigate("my-account/edit-price-range")}
+        href="my-account/edit-price-range"
       />
       {!!me.hasPassword && (
         <MenuItem
           title="Password"
           value="Change password"
-          onPress={() => navigate("my-account/edit-password")}
+          href="my-account/edit-password"
         />
       )}
       {!!me.paddleNumber && <MenuItem title="Paddle Number" value={me.paddleNumber} />}
@@ -223,17 +221,19 @@ export const MyAccountContainer = createFragmentContainer(MyAccount, {
   `,
 })
 
+export const MyAccountScreenQuery = graphql`
+  query MyAccountQuery {
+    me {
+      ...MyAccount_me
+    }
+  }
+`
+
 export const MyAccountQueryRenderer: React.FC<{}> = () => {
   return (
     <QueryRenderer<MyAccountQuery>
       environment={getRelayEnvironment()}
-      query={graphql`
-        query MyAccountQuery {
-          me {
-            ...MyAccount_me
-          }
-        }
-      `}
+      query={MyAccountScreenQuery}
       render={renderWithPlaceholder({
         Container: MyAccountContainer,
         renderPlaceholder: () => <MyAccountPlaceholder />,

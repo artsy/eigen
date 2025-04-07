@@ -12,7 +12,7 @@ export const ActivityHeader: React.FC = () => {
   const displayOffersFilter = !!data?.viewer?.partnerOfferNotifications?.totalCount
 
   return (
-    <Flex px={2} pb={2}>
+    <Flex px={2} mb={2}>
       <Flex flexDirection="row">
         <Pill variant="default" selected={type === "all"} mr={0.5} onPress={() => setType("all")}>
           All

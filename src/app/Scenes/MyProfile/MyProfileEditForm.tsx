@@ -277,7 +277,7 @@ const meFragment = graphql`
   }
 `
 
-const MyProfileEditFormScreenQuery = graphql`
+export const MyProfileEditFormScreenQuery = graphql`
   query MyProfileEditFormQuery {
     me {
       ...MyProfileEditForm_me

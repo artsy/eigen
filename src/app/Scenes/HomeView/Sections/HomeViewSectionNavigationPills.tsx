@@ -1,5 +1,20 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Flex, FlexProps, Pill, Skeleton, Spacer, Text, useSpace } from "@artsy/palette-mobile"
+import {
+  ArtworkIcon,
+  FairIcon,
+  Flex,
+  FlexProps,
+  FollowArtistIcon,
+  AuctionIcon as GavelIcon,
+  HeartIcon as HeartStrokeIcon,
+  IconProps,
+  Pill,
+  PublicationIcon,
+  Skeleton,
+  Spacer,
+  Text,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { HomeViewSectionNavigationPillsQuery } from "__generated__/HomeViewSectionNavigationPillsQuery.graphql"
 import {
   HomeViewSectionNavigationPills_section$data,
@@ -8,9 +23,9 @@ import {
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { memo } from "react"
+import { FC, memo } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -51,25 +66,30 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
         }}
         ItemSeparatorComponent={() => <Spacer x={0.5} />}
         renderItem={({ item: pill, index }) => (
-          <Pill
+          <RouterLink
+            hasChildTouchable
+            to={pill.href}
             key={pill.title}
-            accessibilityLabel={pill.title}
-            accessibilityRole="link"
-            testID={`pill-${pill.title}`}
-            variant="link"
             onPress={() => {
               tracking.tappedNavigationPillsGroup({
                 title: pill.title,
                 href: pill.href,
                 index: index,
               })
-              navigate(pill.href)
             }}
           >
-            <Text variant="xs" color="black100">
-              {pill.title}
-            </Text>
-          </Pill>
+            <Pill
+              accessibilityLabel={pill.title}
+              accessibilityRole="link"
+              testID={`pill-${pill.title}`}
+              variant="link"
+              Icon={SUPPORTED_ICONS[pill.icon as string]}
+            >
+              <Text variant="xs" color="black100">
+                {pill.title}
+              </Text>
+            </Pill>
+          </RouterLink>
         )}
       />
 
@@ -89,6 +109,7 @@ const sectionFragment = graphql`
       title
       href
       ownerType
+      icon
     }
   }
 `
@@ -163,18 +184,19 @@ export const HomeViewSectionNavigationPillsQueryRenderer: React.FC<SectionShared
 )
 
 export const NAVIGATION_LINKS_PLACEHOLDER: Array<NavigationPill> = [
-  { title: "Follows", href: "/favorites", ownerType: "whatever" },
-  { title: "Auctions", href: "/auctions", ownerType: "whatever" },
-  { title: "Saves", href: "/favorites/saves", ownerType: "whatever" },
-  {
-    title: "Art under $1000",
-    href: "/collect?price_range=%2A-1000",
-    ownerType: "whatever",
-  },
-  {
-    title: "Price Database",
-    href: "/price-database",
-    ownerType: "whatever",
-  },
-  { title: "Editorial", href: "/news", ownerType: "whatever" },
+  { title: "Follows", href: "/favorites", ownerType: "whatever", icon: "HeartIcon" },
+  { title: "Auctions", href: "/auctions", ownerType: "whatever", icon: "HeartIcon" },
+  { title: "Saves", href: "/favorites/saves", ownerType: "whatever", icon: "HeartIcon" },
+  { title: "Art under $1000", href: "/collect", ownerType: "whatever", icon: "HeartIcon" },
+  { title: "Price Database", href: "/price-database", ownerType: "whatever", icon: "HeartIcon" },
+  { title: "Editorial", href: "/news", ownerType: "whatever", icon: "HeartIcon" },
 ]
+
+const SUPPORTED_ICONS: Record<string, FC<IconProps>> = {
+  ArtworkIcon,
+  FairIcon,
+  FollowArtistIcon,
+  GavelIcon,
+  HeartStrokeIcon,
+  PublicationIcon,
+}

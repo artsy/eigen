@@ -2,8 +2,42 @@ import { SavedSearchAlertQuery } from "__generated__/SavedSearchAlertQuery.graph
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { graphql, QueryRenderer } from "react-relay"
 
+export const SavedSearchAlertScreenQuery = graphql`
+  query SavedSearchAlertQuery($savedSearchAlertId: String!) {
+    me {
+      alert(id: $savedSearchAlertId) {
+        acquireable
+        additionalGeneIDs
+        artistIDs
+        artistSeriesIDs
+        atAuction
+        attributionClass
+        colors
+        dimensionRange
+        displayName
+        sizes
+        height
+        inquireableOnly
+        locationCities
+        majorPeriods
+        materialsTerms
+        offerable
+        partnerIDs
+        priceRange
+        settings {
+          email
+          name
+          push
+          details
+        }
+        width
+      }
+    }
+  }
+`
+
 interface SearchCriteriaAlertBaseProps {
-  alertId: string
+  savedSearchAlertId: string
   render: (renderProps: {
     error: Error | null
     props: SavedSearchAlertQuery["response"] | null
@@ -12,47 +46,15 @@ interface SearchCriteriaAlertBaseProps {
 }
 
 export const SavedSearchAlertQueryRenderer: React.FC<SearchCriteriaAlertBaseProps> = (props) => {
-  const { alertId, render } = props
+  const { savedSearchAlertId, render } = props
 
   return (
     <QueryRenderer<SavedSearchAlertQuery>
       environment={getRelayEnvironment()}
-      query={graphql`
-        query SavedSearchAlertQuery($alertId: String!) {
-          me {
-            alert(id: $alertId) {
-              acquireable
-              additionalGeneIDs
-              artistIDs
-              artistSeriesIDs
-              atAuction
-              attributionClass
-              colors
-              dimensionRange
-              displayName
-              sizes
-              height
-              inquireableOnly
-              locationCities
-              majorPeriods
-              materialsTerms
-              offerable
-              partnerIDs
-              priceRange
-              settings {
-                email
-                name
-                push
-                details
-              }
-              width
-            }
-          }
-        }
-      `}
+      fetchPolicy="store-and-network"
+      query={SavedSearchAlertScreenQuery}
       render={render}
-      variables={{ alertId }}
-      cacheConfig={{ force: true }}
+      variables={{ savedSearchAlertId }}
     />
   )
 }

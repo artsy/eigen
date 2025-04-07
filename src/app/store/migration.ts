@@ -62,9 +62,13 @@ export const Versions = {
   AddSavedArtworksCountToInfiniteDiscoveryModel: 49,
   RemoveArworkSubmissionModel: 50,
   RemoveRequestPriceEstimateModel: 51,
+  RefactorDarkModeValues: 52,
+  RemoveDiscoveredArtworkIdsFromInfiniteDiscoveryModel: 53,
+  AddHasIntereactedWithOnboardingToInfiniteDiscoveryModel: 54,
+  AddHasSavedArtworksToInfiniteDiscoveryModel: 55,
 }
 
-export const CURRENT_APP_VERSION = Versions.RemoveRequestPriceEstimateModel
+export const CURRENT_APP_VERSION = Versions.AddHasSavedArtworksToInfiniteDiscoveryModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -357,6 +361,20 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.RemoveRequestPriceEstimateModel]: (state) => {
     delete state.requestedPriceEstimates
+  },
+  [Versions.RefactorDarkModeValues]: (state) => {
+    state.devicePrefs.darkModeOption = "system"
+    delete state.devicePrefs.usingSystemColorScheme
+    delete state.devicePrefs.forcedColorScheme
+  },
+  [Versions.RemoveDiscoveredArtworkIdsFromInfiniteDiscoveryModel]: (state) => {
+    delete state.infiniteDiscovery.discoveredArtworkIds
+  },
+  [Versions.AddHasIntereactedWithOnboardingToInfiniteDiscoveryModel]: (state) => {
+    state.infiniteDiscovery.hasInteractedWithOnboarding = false
+  },
+  [Versions.AddHasSavedArtworksToInfiniteDiscoveryModel]: (state) => {
+    state.infiniteDiscovery.hasSavedArtworks = false
   },
 }
 

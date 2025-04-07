@@ -1,7 +1,9 @@
 import { ActionType, OwnerType, Screen, tappedTabBar } from "@artsy/cohesion"
 import { Flex, Text, useColor } from "@artsy/palette-mobile"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { PlatformPressable } from "@react-navigation/elements"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { FavoritesTab } from "app/Navigation/AuthenticatedRoutes/FavoritesTab"
 import { HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
 import { InboxTab } from "app/Navigation/AuthenticatedRoutes/InboxTab"
 import { ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
@@ -16,9 +18,10 @@ import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { OnboardingQuiz } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
-import { useCallback } from "react"
+import { useCallback, useEffect } from "react"
 import { InteractionManager, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
@@ -31,18 +34,20 @@ export type AuthenticatedRoutesParams = {
   Search: undefined
   Profile: undefined
   Inbox: undefined
+  Favorites: undefined
 } & { [key in AppModule]: undefined }
 
 type TabRoutesParams = {
   home: undefined
   search: undefined
   inbox: undefined
+  favorites: undefined
   profile: undefined
 }
 
 const Tab = createBottomTabNavigator<TabRoutesParams>()
 
-const BOTTOM_TABS_HEIGHT = 60
+const BOTTOM_TABS_HEIGHT = 65
 
 const AppTabs: React.FC = () => {
   const { tabsBadges } = useBottomTabsBadges()
@@ -51,6 +56,10 @@ const AppTabs: React.FC = () => {
   const insets = useSafeAreaInsets()
 
   const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
+
+  useEffect(() => {
+    postEventToProviders(tabsTracks.tabScreenView(selectedTab))
+  }, [])
 
   const handleTabPress = useCallback(
     (e) => {
@@ -78,11 +87,14 @@ const AppTabs: React.FC = () => {
     borderTopWidth: 1,
   }
 
+  const showFavoritesTab = useFeatureFlag("AREnableFavoritesTab")
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => {
         const currentRoute = internal_navigationRef.current?.getCurrentRoute()?.name
         return {
+          animation: "fade",
           headerShown: false,
           tabBarStyle: {
             animate: true,
@@ -97,12 +109,14 @@ const AppTabs: React.FC = () => {
           },
           tabBarHideOnKeyboard: true,
           tabBarIcon: ({ focused }) => {
-            return (
-              <Flex flex={1}>
-                <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
-              </Flex>
-            )
+            return <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
           },
+          tabBarButton: (props) => (
+            <PlatformPressable
+              {...props}
+              android_ripple={{ color: "transparent" }} // Disables the ripple effect for Android
+            />
+          ),
           tabBarLabel: () => {
             return (
               <Flex
@@ -111,14 +125,9 @@ const AppTabs: React.FC = () => {
                 alignItems="flex-end"
                 justifyContent="flex-end"
                 height={BOTTOM_TABS_HEIGHT}
+                pb={1}
               >
-                <Text
-                  variant="xxs"
-                  style={{ top: Platform.OS === "ios" ? -4 : 0 }}
-                  selectable={false}
-                  textAlign="center"
-                  color="black100"
-                >
+                <Text variant="xxs" selectable={false} textAlign="center" color="black100">
                   {bottomTabsConfig[route.name].name}
                 </Text>
               </Flex>
@@ -140,6 +149,13 @@ const AppTabs: React.FC = () => {
       <Tab.Screen name="home" component={HomeTab} options={{ ...tabsBadges["home"] }} />
       <Tab.Screen name="search" component={SearchTab} />
       <Tab.Screen name="inbox" component={InboxTab} options={{ ...tabsBadges["inbox"] }} />
+      {!!showFavoritesTab && (
+        <Tab.Screen
+          name="favorites"
+          component={FavoritesTab}
+          options={{ ...tabsBadges["favorites"] }}
+        />
+      )}
       <Tab.Screen name="profile" component={ProfileTab} options={{ ...tabsBadges["profile"] }} />
     </Tab.Navigator>
   )
@@ -183,6 +199,9 @@ export const tabsTracks = {
         break
       case "search":
         tabScreen = OwnerType.search
+        break
+      case "favorites":
+        tabScreen = OwnerType.favorites
         break
     }
 

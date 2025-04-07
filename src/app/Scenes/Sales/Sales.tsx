@@ -43,7 +43,6 @@ export const Sales: React.FC = () => {
     {},
     {
       fetchPolicy: "store-and-network",
-      networkCacheConfig: { force: true },
     }
   )
 

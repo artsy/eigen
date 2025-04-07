@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Screen, useColor } from "@artsy/palette-mobile"
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native"
 import { TransitionPresets, createStackNavigator } from "@react-navigation/stack"
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { MediumOptions } from "app/Scenes/PriceDatabase/components/MediumOptions"
@@ -45,21 +45,21 @@ export const PriceDatabase = () => {
         })}
       >
         <FormikProvider value={formik}>
-          <NavigationContainer independent theme={theme}>
-            <Stack.Navigator
-              // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
-              detachInactiveScreens={false}
-              screenOptions={{
-                ...TransitionPresets.SlideFromRightIOS,
-                headerShown: false,
-                cardStyle: { backgroundColor: color("background") },
-              }}
-            >
-              <Stack.Screen name="PriceDatabaseSearch" component={PriceDatabaseSearch} />
-              <Stack.Screen name="MediumOptionsScreen" component={MediumOptions} />
-              <Stack.Screen name="SizesOptionsScreen" component={SizesOptions} />
-            </Stack.Navigator>
-          </NavigationContainer>
+          <NavigationIndependentTree>
+            <NavigationContainer theme={theme}>
+              <Stack.Navigator
+                screenOptions={{
+                  ...TransitionPresets.SlideFromRightIOS,
+                  headerShown: false,
+                  cardStyle: { backgroundColor: color("background") },
+                }}
+              >
+                <Stack.Screen name="PriceDatabaseSearch" component={PriceDatabaseSearch} />
+                <Stack.Screen name="MediumOptionsScreen" component={MediumOptions} />
+                <Stack.Screen name="SizesOptionsScreen" component={SizesOptions} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </NavigationIndependentTree>
         </FormikProvider>
       </ProvideScreenTrackingWithCohesionSchema>
     </Screen>

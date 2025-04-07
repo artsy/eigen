@@ -3,7 +3,7 @@ import { NavigationHeader } from "app/Components/NavigationHeader"
 import { goBack, switchTab } from "app/system/navigation/navigate"
 import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
 import React, { useState } from "react"
-import { Modal } from "react-native"
+import { InteractionManager, Modal } from "react-native"
 
 export const OfferSubmittedModal: React.FC = () => {
   const [visible, setVisible] = useState(false)
@@ -15,16 +15,16 @@ export const OfferSubmittedModal: React.FC = () => {
       setOfferData({ code: args.orderCode ?? "", message: args.message ?? "" })
       goBack()
       // Wait for the back animation to finish before showing the modal
-      requestAnimationFrame(() => {
+      setTimeout(() => {
         setVisible(true)
-      })
+      }, 2000)
     }
   )
 
   const onGoToInbox = () => {
     setVisible(false)
     // Go to inbox after the modal is closed
-    requestAnimationFrame(() => {
+    InteractionManager.runAfterInteractions(() => {
       switchTab("inbox")
     })
   }
@@ -34,7 +34,7 @@ export const OfferSubmittedModal: React.FC = () => {
   }
 
   return (
-    <Modal visible={visible} onRequestClose={onClose} animationType="fade" statusBarTranslucent>
+    <Modal visible={visible} onRequestClose={onClose} animationType="fade">
       <Screen>
         <NavigationHeader rightCloseButton onRightButtonPress={onClose}>
           Make Offer

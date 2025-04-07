@@ -200,12 +200,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableSignupLoginFusion",
   },
-  AREnableMarketingCollectionsCategories: {
-    description: "Enable marketing collections categories elements in the home view",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableMarketingCollectionsCategories",
-  },
   AREnablePaymentFailureBanner: {
     description: "Enable payment failure banner",
     readyForRelease: true,
@@ -220,8 +214,9 @@ export const features = {
   },
   AREnableInfiniteDiscovery: {
     description: "Enable infinite discovery",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
+    echoFlagKey: "AREnableInfiniteDiscovery",
   },
   AREnableViewPortPrefetching: {
     description: "Enable viewport prefetching",
@@ -261,8 +256,21 @@ export const features = {
   },
   AREnableHomeViewQuickLinks: {
     description: "Enable Home View Quick Links",
+    readyForRelease: true,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableHomeViewQuickLinks",
+  },
+  AREnableFavoritesTab: {
+    description: "Enable Favorites tab in bottom navigation",
     readyForRelease: false,
     showInDevMenu: true,
+    echoFlagKey: "AREnableFavoritesTab",
+  },
+  AREnableRedesignedSettings: {
+    description: "Enable redesigned settings tab",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnableRedesignedSettings",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 
@@ -280,6 +288,9 @@ export interface DevToggleDescriptor {
 export type DevToggleName = keyof typeof devToggles
 
 export const devToggles: { [key: string]: DevToggleDescriptor } = {
+  DTShowPrefetchingIndicator: {
+    description: "Show prefetching indicator",
+  },
   DTShowPlayground: {
     description: "Show Playground",
   },

@@ -35,6 +35,7 @@ export interface ArtworkRailProps extends ArtworkActionTrackingProps {
   itemHref?(artwork: Artwork): string
   onEndReached?: () => void
   onEndReachedThreshold?: number
+  moreHref?: string | null
   onMorePress?: () => void
   onViewableItemsChanged?: (info: { viewableItems: any[]; changed: any[] }) => void
   showSaveIcon?: boolean
@@ -56,6 +57,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
     showSaveIcon = false,
     viewabilityConfig,
     onViewableItemsChanged,
+    moreHref,
     onMorePress,
     hideIncreasedInterestSignal,
     hideCuratorsPickSignal,
@@ -100,8 +102,13 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
         keyExtractor={(item: Artwork) => item.internalID}
         ListFooterComponent={
           <>
-            {!!onMorePress && (
-              <BrowseMoreRailCard dark={dark} onPress={onMorePress} text="Browse All Artworks" />
+            {!!(onMorePress || moreHref) && (
+              <BrowseMoreRailCard
+                dark={dark}
+                href={moreHref}
+                onPress={onMorePress}
+                text="Browse All Artworks"
+              />
             )}
             {ListFooterComponent}
           </>

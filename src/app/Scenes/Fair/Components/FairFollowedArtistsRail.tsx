@@ -3,7 +3,6 @@ import { Flex } from "@artsy/palette-mobile"
 import { FairFollowedArtistsRail_fair$data } from "__generated__/FairFollowedArtistsRail_fair.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   CollectorSignals,
@@ -29,11 +28,11 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = (
       <Flex>
         <SectionTitle
           title="Works by artists you follow"
+          href={artworks.length > 2 ? `/fair/${fair.slug}/followedArtists` : undefined}
           onPress={
             artworks.length > 2
               ? () => {
                   trackEvent(tracks.tappedViewAll(fair))
-                  navigate(`/fair/${fair.slug}/followedArtists`)
                 }
               : undefined
           }

@@ -1,15 +1,7 @@
-import {
-  AvatarSize,
-  EntityHeader,
-  Flex,
-  FollowButton,
-  Text,
-  Touchable,
-  useColor,
-} from "@artsy/palette-mobile"
+import { AvatarSize, EntityHeader, Flex, FollowButton, Text, useColor } from "@artsy/palette-mobile"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { pluralize } from "app/utils/pluralize"
 import { Schema } from "app/utils/track"
@@ -84,7 +76,7 @@ const ArtistListItem: React.FC<Props> = ({
   theme = "light",
 }) => {
   const color = useColor()
-  const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
+  const { is_followed, initials, href, name, nationality, birthday, deathday } = artist
 
   const tracking = useTracking()
 
@@ -105,11 +97,6 @@ const ArtistListItem: React.FC<Props> = ({
     tracking.trackEvent(
       tracks.successfulUpdate(artist, contextModule, contextScreenOwnerId, contextScreenOwnerSlug)
     )
-  }
-
-  const handleTap = (href: string) => {
-    tracks.tapArtistGroup(artist)
-    navigate(href)
   }
 
   let meta
@@ -156,28 +143,27 @@ const ArtistListItem: React.FC<Props> = ({
   }
 
   return (
-    <Touchable
+    <RouterLink
       noFeedback={!withFeedback}
+      // Only navigate if there is an href and navigation is not disabled by passing `onPress` or
+      to={!disableNavigation ? href : undefined}
       onPress={() => {
-        if (onPress) {
-          onPress()
-          return
-        }
+        onPress?.()
 
         if (href && !disableNavigation) {
-          handleTap(href)
+          tracks.tapArtistGroup(artist)
         }
       }}
       underlayColor={color("black5")}
       style={containerStyle}
     >
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" width="100%">
         <Flex flex={1}>
           <EntityHeader
             mr={1}
             name={name}
             meta={meta}
-            imageUrl={image?.url ?? undefined}
+            imageUrl={artist.coverArtwork?.image?.url ?? artist.image?.url ?? undefined}
             initials={initials ?? undefined}
             avatarSize={avatarSize}
             RightButton={RightButton}
@@ -191,7 +177,7 @@ const ArtistListItem: React.FC<Props> = ({
           </Flex>
         )}
       </Flex>
-    </Touchable>
+    </RouterLink>
   )
 }
 
@@ -253,8 +239,15 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
       nationality
       birthday
       deathday
-      # TOFIX: we must use coverArtwork#image here instead, this replacement is fixing
-      # an Artist#coverImage got replaced by this component data with wrong data
+      coverArtwork {
+        image {
+          # Requesting "small" causes this fragment to be refetched unexpectedly because the relay
+          # store usually contains artists with "larger" cover artworks (see ArtistScreenQuery).
+          # We can also disable prefetching on the RouterLink to avoid this, but it is better to
+          # prefetch a larger image than it is to make a additional requests for a smaller one.
+          url(version: "larger")
+        }
+      }
       image {
         url(version: "small")
       }

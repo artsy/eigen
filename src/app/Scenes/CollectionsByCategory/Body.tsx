@@ -1,7 +1,8 @@
 import { Flex, Separator, Skeleton, SkeletonText, Text } from "@artsy/palette-mobile"
 import { useRoute } from "@react-navigation/native"
 import { FlashList } from "@shopify/flash-list"
-import { BodyCollectionsByCategory_marketingCollections$key } from "__generated__/BodyCollectionsByCategory_marketingCollections.graphql"
+import { BodyCollectionsByCategoryQuery } from "__generated__/BodyCollectionsByCategoryQuery.graphql"
+import { BodyCollectionsByCategory_viewer$key } from "__generated__/BodyCollectionsByCategory_viewer.graphql"
 import {
   CollectionRailPlaceholder,
   CollectionRailWithSuspense,
@@ -11,20 +12,19 @@ import {
   CollectionsChips,
   CollectionsChipsPlaceholder,
 } from "app/Scenes/CollectionsByCategory/CollectionsChips"
-import { marketingCollectionsQuery } from "app/Scenes/HomeView/Components/HomeViewSectionCardsCard"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { graphql, useFragment, usePreloadedQuery } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface BodyProps {
-  marketingCollections: BodyCollectionsByCategory_marketingCollections$key
+  viewer: BodyCollectionsByCategory_viewer$key
 }
 
-export const Body: React.FC<BodyProps> = ({ marketingCollections }) => {
-  const data = useFragment(fragment, marketingCollections)
+export const Body: React.FC<BodyProps> = ({ viewer }) => {
+  const data = useFragment(fragment, viewer)
   const { params } = useRoute<CollectionsByCategoriesRouteProp>()
   const category = params.category
 
-  if (!data) {
+  if (!data?.marketingCollections) {
     return null
   }
 
@@ -36,20 +36,20 @@ export const Body: React.FC<BodyProps> = ({ marketingCollections }) => {
         </Text>
         <Text px={2}>Explore collections by {category.toLowerCase()}</Text>
         {/* TODO: fix typings broken by some unknown reason here, prob related to @plural */}
-        <CollectionsChips marketingCollections={marketingCollections as any} />
+        <CollectionsChips marketingCollections={data.marketingCollections as any} />
       </Flex>
 
       <Separator borderColor="black10" />
 
       <FlashList
         estimatedItemSize={ESTIMATED_ITEM_SIZE}
-        data={data}
+        data={data.marketingCollections}
         keyExtractor={(item) => `artwork_rail_${item?.slug}`}
         renderItem={({ item, index }) => {
           return (
             <CollectionRailWithSuspense
               slug={item?.slug ?? ""}
-              lastElement={index === data.length - 1}
+              lastElement={index === data.marketingCollections.length - 1}
             />
           )
         }}
@@ -61,9 +61,12 @@ export const Body: React.FC<BodyProps> = ({ marketingCollections }) => {
 const ESTIMATED_ITEM_SIZE = 390
 
 const fragment = graphql`
-  fragment BodyCollectionsByCategory_marketingCollections on MarketingCollection
-  @relay(plural: true) {
-    slug @required(action: NONE)
+  fragment BodyCollectionsByCategory_viewer on Viewer
+  @argumentDefinitions(category: { type: "String" }) {
+    marketingCollections(category: $category, sort: CURATED, first: 20) {
+      ...CollectionsChips_marketingCollections
+      slug @required(action: NONE)
+    }
   }
 `
 
@@ -87,16 +90,26 @@ const BodyPlaceholder: React.FC = () => {
   )
 }
 
+export const collectionsByCategoryQuery = graphql`
+  query BodyCollectionsByCategoryQuery($category: String!) {
+    viewer {
+      ...BodyCollectionsByCategory_viewer @arguments(category: $category)
+    }
+  }
+`
+
 export const BodyWithSuspense = withSuspense({
   Component: () => {
     const { params } = useRoute<CollectionsByCategoriesRouteProp>()
-    const data = usePreloadedQuery(marketingCollectionsQuery, params.queryRef)
+    const data = useLazyLoadQuery<BodyCollectionsByCategoryQuery>(collectionsByCategoryQuery, {
+      category: params.entityID,
+    })
 
     if (!data.viewer) {
       return <BodyPlaceholder />
     }
 
-    return <Body marketingCollections={data.viewer.marketingCollections} />
+    return <Body viewer={data.viewer} />
   },
   LoadingFallback: BodyPlaceholder,
   ErrorFallback: NoFallback,

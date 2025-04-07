@@ -16,6 +16,7 @@ import {
   ArtworkFiltersModel,
   ArtworksFiltersStore,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
@@ -67,6 +68,8 @@ export const ArtworkFilterOptionsScreen: React.FC<
     (action) => action.clearFiltersZeroStateAction
   )
 
+  const { dismiss } = GlobalStore.actions.progressiveOnboarding
+
   const selectedFiltersCounts = useMemo(() => {
     const unitedFilters = getUnitedSelectedAndAppliedFilters({
       filterType: filterTypeState,
@@ -77,8 +80,10 @@ export const ArtworkFilterOptionsScreen: React.FC<
     return counts
   }, [filterTypeState, selectedFiltersState, previouslyAppliedFiltersState])
 
-  const navigateToNextFilterScreen = (screenName: keyof ArtworkFilterNavigationStack) => {
-    navigation.navigate(screenName)
+  const navigateToSpecificFilterOptionScreen = (screenName: keyof ArtworkFilterNavigationStack) => {
+    if (screenName !== "FilterOptionsScreen") {
+      navigation.navigate(screenName)
+    }
   }
 
   const concreteAggregations = aggregationsState ?? []
@@ -128,6 +133,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
   }
 
   const handleTappingCloseIcon = () => {
+    dismiss("alert-finish")
     closeModal()
   }
 
@@ -180,7 +186,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
                 item={item}
                 count={selectedFiltersCount}
                 onPress={() => {
-                  navigateToNextFilterScreen(
+                  navigateToSpecificFilterOptionScreen(
                     item.ScreenComponent as keyof ArtworkFilterNavigationStack
                   )
                 }}

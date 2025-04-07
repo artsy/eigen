@@ -1,12 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Text } from "@artsy/palette-mobile"
 import { ActiveLotStanding_saleArtwork$data } from "__generated__/ActiveLotStanding_saleArtwork.graphql"
-import { TimelySale } from "app/Scenes/MyBids/helpers/timely"
 import { navigate } from "app/system/navigation/navigate"
+import { useScreenDimensions } from "app/utils/hooks"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useScreenDimensions } from "app/utils/hooks"
 import { HighestBid, Outbid, ReserveNotMet } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
@@ -15,15 +14,19 @@ export const ActiveLotStanding = ({
 }: {
   saleArtwork: ActiveLotStanding_saleArtwork$data
 }) => {
-  const timelySale = TimelySale.create(saleArtwork?.sale!)
+  const tracking = useTracking()
+  const { isSmallScreen } = useScreenDimensions()
+
+  const sale = saleArtwork?.sale
+  if (!sale) {
+    return null
+  }
 
   const sellingPrice =
     saleArtwork?.currentBid?.display ||
     saleArtwork?.lotState?.sellingPrice?.display ||
     saleArtwork?.estimate
   const bidCount = saleArtwork?.lotState?.bidCount
-  const tracking = useTracking()
-  const { isSmallScreen } = useScreenDimensions()
 
   const displayBidCount = (): string | undefined => {
     if (isSmallScreen) {
@@ -46,13 +49,10 @@ export const ActiveLotStanding = ({
   }
 
   return (
-    saleArtwork && (
-      <TouchableOpacity
-        onPress={() => handleLotTap()}
-        style={{ marginHorizontal: 0, width: "100%" }}
-      >
-        <Flex flexDirection="row" justifyContent="space-between">
-          <Lot saleArtwork={saleArtwork} isSmallScreen={isSmallScreen} />
+    <TouchableOpacity onPress={() => handleLotTap()} style={{ marginHorizontal: 0, width: "100%" }}>
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Lot saleArtwork={saleArtwork} isSmallScreen={isSmallScreen} />
+        {!sale.isLiveOpen && (
           <Flex>
             <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
               <Text variant="xs">{sellingPrice}</Text>
@@ -62,7 +62,7 @@ export const ActiveLotStanding = ({
               </Text>
             </Flex>
             <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
-              {!timelySale.isLAI &&
+              {!sale.liveStartAt &&
               saleArtwork?.isHighestBidder &&
               saleArtwork?.lotState?.reserveStatus === "ReserveNotMet" ? (
                 <ReserveNotMet />
@@ -73,9 +73,9 @@ export const ActiveLotStanding = ({
               )}
             </Flex>
           </Flex>
-        </Flex>
-      </TouchableOpacity>
-    )
+        )}
+      </Flex>
+    </TouchableOpacity>
   )
 }
 
@@ -86,6 +86,7 @@ export const ActiveLotStandingFragmentContainer = createFragmentContainer(Active
       isHighestBidder
       sale {
         status
+        isLiveOpen
         liveStartAt
         endAt
       }

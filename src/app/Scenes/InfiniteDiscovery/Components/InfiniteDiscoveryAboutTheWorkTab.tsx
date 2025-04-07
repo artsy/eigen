@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   ArtworkIcon,
   CertificateIcon,
@@ -5,30 +6,33 @@ import {
   Flex,
   FlexProps,
   LinkText,
+  SimpleMessage,
   Skeleton,
   SkeletonBox,
   SkeletonText,
   Spacer,
+  Tabs,
   Text,
   TextProps,
   useSpace,
 } from "@artsy/palette-mobile"
 import { BottomSheetScrollView, useBottomSheet } from "@gorhom/bottom-sheet"
+import { InfiniteDiscoveryAboutTheWorkTabQuery } from "__generated__/InfiniteDiscoveryAboutTheWorkTabQuery.graphql"
 import { InfiniteDiscoveryAboutTheWorkTab_artwork$key } from "__generated__/InfiniteDiscoveryAboutTheWorkTab_artwork.graphql"
-import { InfiniteDiscoveryBottomSheetTabsQuery } from "__generated__/InfiniteDiscoveryBottomSheetTabsQuery.graphql"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
-import { ArtistListItemShort } from "app/Components/ArtistListItemShort"
+import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { Divider } from "app/Components/Bidding/Components/Divider"
 import { PartnerListItemShort } from "app/Components/PartnerListItemShort"
 import { dimensionsPresent } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkDimensionsClassificationAndAuthenticity"
 import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
-import { aboutTheWorkQuery } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { useSetArtworkAsRecentlyViewed } from "app/Scenes/InfiniteDiscovery/hooks/useSetArtworkAsRecentlyViewed"
+import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { navigate } from "app/system/navigation/navigate"
 import { Sentinel } from "app/utils/Sentinel"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { FC } from "react"
-import { graphql, PreloadedQuery, useFragment, usePreloadedQuery } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface AboutTheWorkTabProps {
   artwork: InfiniteDiscoveryAboutTheWorkTab_artwork$key
@@ -62,154 +66,161 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
 
   return (
     <BottomSheetScrollView>
-      <Flex flex={1} px={2} style={{ paddingTop: 50 + space(2) }} gap={2}>
-        <Flex gap={1}>
-          {!!attributionClass?.length && (
-            <Sentinel onChange={handleOnVisible}>
+      <AnalyticsContextProvider
+        contextModule={ContextModule.infiniteDiscoveryDrawer}
+        contextScreenOwnerType={OwnerType.infiniteDiscoveryArtwork}
+        contextScreenOwnerId={data.internalID}
+        contextScreenOwnerSlug={data.slug}
+      >
+        <Flex flex={1} px={2} style={{ paddingTop: 50 + space(2) }} gap={2}>
+          <Flex gap={1}>
+            {!!attributionClass?.length && (
+              <Sentinel onChange={handleOnVisible}>
+                <Flex flexDirection="row" gap={0.5} alignItems="center">
+                  <ArtworkIcon height={18} width={18} fill="black60" />
+                  <Text variant="xs">
+                    {attributionClass[0]}{" "}
+                    <LinkText variant="xs" onPress={() => onNavigate(`/artwork-classifications`)}>
+                      {attributionClass[1]}
+                    </LinkText>
+                  </Text>
+                </Flex>
+              </Sentinel>
+            )}
+
+            {!!hasCertificateOfAuthenticity && (
               <Flex flexDirection="row" gap={0.5} alignItems="center">
-                <ArtworkIcon height={18} width={18} fill="black60" />
+                <CertificateIcon height={18} width={18} fill="black60" testID="certificate-icon" />
                 <Text variant="xs">
-                  {attributionClass[0]}{" "}
-                  <LinkText variant="xs" onPress={() => onNavigate(`/artwork-classifications`)}>
-                    {attributionClass[1]}
+                  Includes a{" "}
+                  <LinkText
+                    variant="xs"
+                    onPress={() => onNavigate(`/artwork-certificate-of-authenticity`)}
+                  >
+                    Certificate of Authenticity
                   </LinkText>
                 </Text>
               </Flex>
-            </Sentinel>
-          )}
-
-          {!!hasCertificateOfAuthenticity && (
-            <Flex flexDirection="row" gap={0.5} alignItems="center">
-              <CertificateIcon height={18} width={18} fill="black60" testID="certificate-icon" />
-              <Text variant="xs">
-                Includes a{" "}
-                <LinkText
-                  variant="xs"
-                  onPress={() => onNavigate(`/artwork-certificate-of-authenticity`)}
-                >
-                  Certificate of Authenticity
-                </LinkText>
-              </Text>
-            </Flex>
-          )}
-        </Flex>
-
-        {!!attributionClass?.length && !!hasCertificateOfAuthenticity && <Divider />}
-
-        <Flex gap={1}>
-          <Flex flexDirection="row">
-            <Text {...labelStyle}>Materials</Text>
-            <Text {...valueStyle}>{data.medium}</Text>
+            )}
           </Flex>
 
-          {dimensionsPresent(data.dimensions) && (
-            <Flex flexDirection="row">
-              <Text {...labelStyle}>Dimensions</Text>
-              <Text {...valueStyle}>{`${data.dimensions?.in} | ${data.dimensions?.cm}`}</Text>
-            </Flex>
-          )}
+          {!!attributionClass?.length && !!hasCertificateOfAuthenticity && <Divider />}
 
-          <Flex flexDirection="row">
-            <Text {...labelStyle}>Rarity</Text>
-            <Text {...valueStyle}>{data.attributionClass?.name}</Text>
+          <Flex gap={1}>
+            <Flex flexDirection="row">
+              <Text {...labelStyle}>Materials</Text>
+              <Text {...valueStyle}>{data.medium}</Text>
+            </Flex>
+
+            {dimensionsPresent(data.dimensions) && (
+              <Flex flexDirection="row">
+                <Text {...labelStyle}>Dimensions</Text>
+                <Text {...valueStyle}>{`${data.dimensions?.in} | ${data.dimensions?.cm}`}</Text>
+              </Flex>
+            )}
+
+            <Flex flexDirection="row">
+              <Text {...labelStyle}>Rarity</Text>
+              <Text {...valueStyle}>{data.attributionClass?.name}</Text>
+            </Flex>
+
+            {!!data.mediumType?.name && (
+              <Flex flexDirection="row" width="100%">
+                <Text {...labelStyle}>Medium</Text>
+                <Text {...valueStyle}>{data.mediumType?.name}</Text>
+              </Flex>
+            )}
+
+            {!!data.condition?.displayText && (
+              <Flex flexDirection="row">
+                <Text {...labelStyle}>Condition</Text>
+                <Text {...valueStyle}>{data.condition.displayText}</Text>
+              </Flex>
+            )}
+
+            {!!data.signatureInfo?.details && (
+              <Flex flexDirection="row">
+                <Text {...labelStyle}>Signature</Text>
+                <Text {...valueStyle}>{data.signatureInfo.details}</Text>
+              </Flex>
+            )}
+
+            {!!data.certificateOfAuthenticity?.details && (
+              <Flex flexDirection="row">
+                <Text {...labelStyle}>Certificate of Authenticity</Text>
+                <Text {...valueStyle}>{data.certificateOfAuthenticity.details}</Text>
+              </Flex>
+            )}
+
+            {!!data.publisher && (
+              <Flex flexDirection="row">
+                <Text {...labelStyle}>Publisher</Text>
+                <Text {...valueStyle}>{data.publisher}</Text>
+              </Flex>
+            )}
+
+            <Flex flexDirection="row">
+              <Text {...labelStyle}>Frame</Text>
+              <Text {...valueStyle}>{data.isFramed ? "Frame included" : "Frame not included"}</Text>
+            </Flex>
           </Flex>
 
-          {!!data.mediumType?.name && (
-            <Flex flexDirection="row" width="100%">
-              <Text {...labelStyle}>Medium</Text>
-              <Text {...valueStyle}>{data.mediumType?.name}</Text>
-            </Flex>
-          )}
+          <Divider />
 
-          {!!data.condition?.displayText && (
-            <Flex flexDirection="row">
-              <Text {...labelStyle}>Condition</Text>
-              <Text {...valueStyle}>{data.condition.displayText}</Text>
-            </Flex>
-          )}
+          <Flex gap={1}>
+            {!!data.artists?.length && (
+              <Text variant="sm-display">Artist{data.artists.length > 1 ? `s` : ``}</Text>
+            )}
+            <Flex gap={2}>
+              {data.artists?.map((artist, index) => {
+                if (!artist) {
+                  return null
+                }
 
-          {!!data.signatureInfo?.details && (
-            <Flex flexDirection="row">
-              <Text {...labelStyle}>Signature</Text>
-              <Text {...valueStyle}>{data.signatureInfo.details}</Text>
+                return (
+                  <ArtistListItemContainer
+                    key={`artist-${index}`}
+                    artist={artist}
+                    onPress={() => collapse()}
+                  />
+                )
+              })}
             </Flex>
-          )}
-
-          {!!data.certificateOfAuthenticity?.details && (
-            <Flex flexDirection="row">
-              <Text {...labelStyle}>Certificate of Authenticity</Text>
-              <Text {...valueStyle}>{data.certificateOfAuthenticity.details}</Text>
-            </Flex>
-          )}
-
-          {!!data.publisher && (
-            <Flex flexDirection="row">
-              <Text {...labelStyle}>Publisher</Text>
-              <Text {...valueStyle}>{data.publisher}</Text>
-            </Flex>
-          )}
-
-          <Flex flexDirection="row">
-            <Text {...labelStyle}>Frame</Text>
-            <Text {...valueStyle}>{data.isFramed ? "Frame included" : "Frame not included"}</Text>
           </Flex>
-        </Flex>
 
-        <Divider />
+          <Divider />
 
-        <Flex gap={1}>
-          {!!data.artists?.length && (
-            <Text variant="sm-display">Artist{data.artists.length > 1 ? `s` : ``}</Text>
-          )}
-          <Flex gap={2}>
-            {data.artists?.map((artist, index) => {
-              if (!artist) {
-                return null
-              }
+          <Flex gap={1}>
+            <Text variant="sm-display">Gallery</Text>
 
-              return (
-                <ArtistListItemShort
-                  key={`artist-${index}`}
-                  artist={artist}
-                  onPress={() => collapse()}
-                />
-              )
-            })}
-          </Flex>
-        </Flex>
-
-        <Divider />
-
-        <Flex gap={1}>
-          <Text variant="sm-display">Gallery</Text>
-
-          <PartnerListItemShort
-            disabledLocation
-            partner={data.partner}
-            onPress={() => collapse()}
-          />
-          <Flex
-            flexDirection="row"
-            flexWrap="wrap"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Text variant="xs" color="black60">
-              Questions about this piece?
-            </Text>
-            <ContactGalleryButton
-              artwork={data}
-              me={me}
-              variant="outlineGray"
-              size="small"
-              icon={<EnvelopeIcon fill="black100" width={16} height={16} />}
+            <PartnerListItemShort
+              disabledLocation
+              partner={data.partner}
+              onPress={() => collapse()}
             />
+            <Flex
+              flexDirection="row"
+              flexWrap="wrap"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Text variant="xs" color="black60">
+                Questions about this piece?
+              </Text>
+              <ContactGalleryButton
+                artwork={data}
+                me={me}
+                variant="outlineGray"
+                size="small"
+                icon={<EnvelopeIcon fill="black100" width={16} height={16} />}
+              />
+            </Flex>
           </Flex>
         </Flex>
-      </Flex>
 
-      <Spacer y={12} />
-      <Spacer y={6} />
+        <Spacer y={12} />
+        <Spacer y={6} />
+      </AnalyticsContextProvider>
     </BottomSheetScrollView>
   )
 }
@@ -219,6 +230,7 @@ const fragment = graphql`
     ...ContactGalleryButton_artwork
 
     internalID @required(action: NONE)
+    slug
 
     attributionClass {
       shortArrayDescription
@@ -252,7 +264,7 @@ const fragment = graphql`
     isFramed
 
     artists(shallow: true) @required(action: NONE) {
-      ...ArtistListItemShort_artist
+      ...ArtistListItem_artist
     }
 
     partner(shallow: true) @required(action: NONE) {
@@ -262,20 +274,53 @@ const fragment = graphql`
 `
 
 interface InfiniteDiscoveryAboutTheWorkTabProps {
-  queryRef: PreloadedQuery<InfiniteDiscoveryBottomSheetTabsQuery>
+  artworkID: string
 }
 
-export const InfiniteDiscoveryAboutTheWorkTab: FC<InfiniteDiscoveryAboutTheWorkTabProps> = ({
-  queryRef,
-}) => {
-  const data = usePreloadedQuery(aboutTheWorkQuery, queryRef)
-
-  if (!data?.artwork || !data?.me) {
-    return <InfiniteDiscoveryAboutTheWorkTabSkeleton />
+const infiniteDiscoveryAboutTheWorkQuery = graphql`
+  query InfiniteDiscoveryAboutTheWorkTabQuery($id: String!) {
+    artwork(id: $id) {
+      ...InfiniteDiscoveryAboutTheWorkTab_artwork
+    }
+    me {
+      ...useSendInquiry_me
+      ...MyProfileEditModal_me
+      ...BidButton_me
+      ...InfiniteDiscoveryBottomSheetFooter_me
+    }
   }
+`
 
-  return <AboutTheWorkTab artwork={data.artwork} me={data.me} />
-}
+export const InfiniteDiscoveryAboutTheWorkTab: FC<InfiniteDiscoveryAboutTheWorkTabProps> =
+  withSuspense({
+    Component: ({ artworkID }) => {
+      const data = useLazyLoadQuery<InfiniteDiscoveryAboutTheWorkTabQuery>(
+        infiniteDiscoveryAboutTheWorkQuery,
+        {
+          id: artworkID,
+        }
+      )
+
+      if (!data?.artwork || !data?.me) {
+        return (
+          <Tabs.ScrollView>
+            {/* This should never be the case, but we'll handle it anyway */}
+            <SimpleMessage m={2}>No details available.</SimpleMessage>
+          </Tabs.ScrollView>
+        )
+      }
+
+      return <AboutTheWorkTab artwork={data.artwork} me={data.me} />
+    },
+    LoadingFallback: () => <InfiniteDiscoveryAboutTheWorkTabSkeleton />,
+    ErrorFallback: () => {
+      return (
+        <Tabs.ScrollView contentContainerStyle={{ marginTop: 20 }}>
+          <SimpleMessage m={2}>Cannot load work details.</SimpleMessage>
+        </Tabs.ScrollView>
+      )
+    },
+  })
 
 export const InfiniteDiscoveryAboutTheWorkTabSkeleton: FC = () => {
   const space = useSpace()

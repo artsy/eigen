@@ -5,7 +5,7 @@ import { ArtworkListsLoadingIndicator } from "app/Components/ArtworkLists/compon
 import { ArtworkListMode, ArtworkListOfferSettingsMode } from "app/Components/ArtworkLists/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { FC, useCallback, useEffect, useState } from "react"
+import { FC, useCallback, useEffect } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
 import { ArtworkListItem, PressedArtworkListItem } from "./ArtworkListItem"
 
@@ -18,7 +18,6 @@ type ArtworkList =
   | ExtractNodeType<ArtworkLists_me$data["customArtworkLists"]>
 
 export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
-  const [refreshing, setRefreshing] = useState(false)
   const {
     shareArtworkListIDs,
     keepArtworkListPrivateIDs,
@@ -26,7 +25,7 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
     removingArtworkListIDs,
     dispatch,
   } = useArtworkListsContext()
-  const { data, hasNext, loadNext, isLoadingNext, refetch } = usePaginationFragment(
+  const { data, hasNext, loadNext, isLoadingNext } = usePaginationFragment(
     ArtworkListsFragment,
     props.me
   )
@@ -45,19 +44,6 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
       payload: totalSelectedArtworkListsCount,
     })
   }, [totalSelectedArtworkListsCount])
-
-  const handleRefresh = () => {
-    setRefreshing(true)
-    refetch(
-      {},
-      {
-        fetchPolicy: "store-and-network",
-        onComplete: () => {
-          setRefreshing(false)
-        },
-      }
-    )
-  }
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
@@ -145,8 +131,6 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
     <BottomSheetFlatList
       data={artworkLists}
       keyExtractor={(item) => item.internalID}
-      onRefresh={handleRefresh}
-      refreshing={refreshing}
       renderItem={({ item }) => {
         return (
           <ArtworkListItem

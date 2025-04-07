@@ -4,7 +4,7 @@ import { Box, Text, TextProps } from "@artsy/palette-mobile"
 import { CuratedCollectionItem_collection$key } from "__generated__/CuratedCollectionItem_collection.graphql"
 import { CardRailCard, CardRailMetadataContainer } from "app/Components/CardRail/CardRailCard"
 import { ThreeUpImageLayout } from "app/Components/ThreeUpImageLayout"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { compact } from "lodash"
 import { isTablet } from "react-native-device-info"
@@ -28,24 +28,24 @@ export const CuratedCollectionItem: React.FC<CuratedCollectionItemProps> = ({
 
   const onPress = () => {
     tracking.trackEvent(trackingEvent.tappedCollectionGroup(item.internalID, item.slug, position))
-
-    navigate(`/collection/${item.slug}`)
   }
 
   return (
-    <CardRailCard onPress={onPress}>
-      <Box>
-        <ThreeUpImageLayout imageURLs={availableArtworkImageURLs} />
-        <CardRailMetadataContainer>
-          <Text variant={textVariant} numberOfLines={1}>
-            {item.title}
-          </Text>
-          <Text variant={textVariant} numberOfLines={1} color="black60">
-            Collection
-          </Text>
-        </CardRailMetadataContainer>
-      </Box>
-    </CardRailCard>
+    <RouterLink to={`/collection/${item.slug}`} onPress={onPress} hasChildTouchable>
+      <CardRailCard>
+        <Box>
+          <ThreeUpImageLayout imageURLs={availableArtworkImageURLs} />
+          <CardRailMetadataContainer>
+            <Text variant={textVariant} numberOfLines={1}>
+              {item.title}
+            </Text>
+            <Text variant={textVariant} numberOfLines={1} color="black60">
+              Collection
+            </Text>
+          </CardRailMetadataContainer>
+        </Box>
+      </CardRailCard>
+    </RouterLink>
   )
 }
 

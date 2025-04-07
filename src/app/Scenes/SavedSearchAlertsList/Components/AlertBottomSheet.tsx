@@ -44,9 +44,7 @@ export const AlertBottomSheet: React.FC<AlertBottomSheetProps> = ({
       <BottomSheetView style={bottomSheetViewStyles}>
         <Flex mb={4} mx={2} alignItems="center">
           <Join separator={<Spacer y={2} />}>
-            <Text variant="sm" fontWeight="bold">
-              {title}
-            </Text>
+            <Text variant="sm">{title}</Text>
 
             <Button onPress={navigateToEditScreen} block width={100}>
               Edit Alert

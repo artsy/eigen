@@ -1,7 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
 import { PortalHost } from "@gorhom/portal"
-import { useFocusEffect } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
 import { HomeViewFetchMeQuery } from "__generated__/HomeViewFetchMeQuery.graphql"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
@@ -15,23 +14,23 @@ import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHomeViewExperimentTracking"
-import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { Playground } from "app/Scenes/Playground/Playground"
 import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
-import { useActivityDotExperiment } from "app/utils/experiments/useActivityDotExperiment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsDeepLink } from "app/utils/hooks/useIsDeepLink"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
-import { memo, RefObject, Suspense, useCallback, useEffect, useState } from "react"
-import { FlatList, Linking, RefreshControl } from "react-native"
+import { memo, RefObject, Suspense, useEffect, useState } from "react"
+import { FlatList, Linking, RefreshControl, StatusBar } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const NUMBER_OF_SECTIONS_TO_LOAD = 10
@@ -58,10 +57,20 @@ export const HomeView: React.FC = memo(() => {
     }
   )
 
-  const { trackExperiment: trackActvityDotExperiment } = useActivityDotExperiment()
+  const { trackExperiment: trackInternalTestingExperiment } = useExperimentVariant(
+    "onyx_internal-testing-experiment"
+  )
+  const { trackExperiment: trackQuickLinksExperiment } = useExperimentVariant(
+    "onyx_quick-links-experiment"
+  )
+  const enableNavigationPills = useFeatureFlag("AREnableHomeViewQuickLinks")
 
   useEffect(() => {
-    trackActvityDotExperiment()
+    trackInternalTestingExperiment()
+
+    if (enableNavigationPills) {
+      trackQuickLinksExperiment()
+    }
   }, [])
 
   const { data, loadNext, hasNext } = usePaginationFragment<
@@ -76,7 +85,6 @@ export const HomeView: React.FC = memo(() => {
   useEnableProgressiveOnboarding()
 
   const prefetchUrl = usePrefetch()
-  const tracking = useHomeViewTracking()
   useHomeViewExperimentTracking(queryData.homeView?.experiments)
 
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
@@ -90,6 +98,7 @@ export const HomeView: React.FC = memo(() => {
         prefetchUrl<SearchQuery>("search", searchQueryDefaultVariables)
         prefetchUrl("my-profile")
         prefetchUrl("inbox")
+        prefetchUrl("infinite-discovery")
       }
     })
   }, [])
@@ -97,12 +106,6 @@ export const HomeView: React.FC = memo(() => {
   useEffect(() => {
     requestPushNotificationsPermission()
   }, [])
-
-  useFocusEffect(
-    useCallback(() => {
-      tracking.screen(OwnerType.home)
-    }, [])
-  )
 
   const fetchSavedArtworksCount = async () => {
     fetchQuery<HomeViewFetchMeQuery>(
@@ -187,9 +190,13 @@ export const HomeView: React.FC = memo(() => {
 const HomeViewScreenComponent: React.FC = () => {
   const artQuizState = GlobalStore.useAppState((state) => state.onboarding.onboardingArtQuizState)
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
+  const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+
   const showPlayground = useDevToggle("DTShowPlayground")
 
   const { isDeepLink } = useIsDeepLink()
+
+  StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content")
 
   useEffect(() => {
     if (artQuizState === "incomplete" && isNavigationReady) {

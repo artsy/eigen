@@ -1,12 +1,16 @@
-import { Box } from "@artsy/palette-mobile"
+import { Box, Flex, Join, Skeleton, Spacer } from "@artsy/palette-mobile"
 import { FullFeaturedArtistListQuery } from "__generated__/FullFeaturedArtistListQuery.graphql"
 import { FullFeaturedArtistList_collection$data } from "__generated__/FullFeaturedArtistList_collection.graphql"
-import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
+import {
+  ArtistListItemContainer as ArtistListItem,
+  ArtistListItemPlaceholder,
+} from "app/Components/ArtistListItem"
+import { LoadFailureView } from "app/Components/LoadFailureView"
+import { withSuspense } from "app/utils/hooks/withSuspense"
+import { compact, times } from "lodash"
 import React from "react"
 import { FlatList, ViewProps } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { createFragmentContainer, graphql, useLazyLoadQuery } from "react-relay"
 
 interface Props extends ViewProps {
   collection: FullFeaturedArtistList_collection$data
@@ -14,7 +18,9 @@ interface Props extends ViewProps {
 
 export class FullFeaturedArtistList extends React.Component<Props> {
   getFeaturedArtists = () => {
-    const allArtists = this.props.collection?.artworksConnection?.merchandisableArtists || []
+    const allArtists = compact(
+      this.props.collection?.artworksConnection?.merchandisableArtists || []
+    )
     const featuredArtistExclusionIds = this.props.collection?.featuredArtistExclusionIds || []
     const artistIDs = this.props.collection?.query?.artistIDs || []
 
@@ -27,8 +33,7 @@ export class FullFeaturedArtistList extends React.Component<Props> {
     // Some artist even though they are within the collection shouldn't be displayed as featured artists
     // https://artsyproduct.atlassian.net/browse/FX-1595
     if (featuredArtistExclusionIds.length > 0) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return allArtists.filter((artist) => !featuredArtistExclusionIds.includes(artist.internalID))
+      return allArtists.filter((artist) => !featuredArtistExclusionIds.includes(artist?.internalID))
     }
     return allArtists
   }
@@ -71,25 +76,46 @@ export const CollectionFeaturedArtistsContainer = createFragmentContainer(FullFe
   `,
 })
 
-export const CollectionFullFeaturedArtistListQueryRenderer: React.FC<{ collectionID: string }> = ({
+const FullFeaturedArtistListQueryRenderer: React.FC<{ collectionID: string }> = ({
   collectionID,
-}) => (
-  <QueryRenderer<FullFeaturedArtistListQuery>
-    environment={getRelayEnvironment()}
-    query={graphql`
+}) => {
+  const data = useLazyLoadQuery<FullFeaturedArtistListQuery>(
+    graphql`
       query FullFeaturedArtistListQuery($collectionID: String!) {
         collection: marketingCollection(slug: $collectionID) {
           ...FullFeaturedArtistList_collection
         }
       }
-    `}
-    variables={{
-      collectionID,
-    }}
-    cacheConfig={{
-      // Bypass Relay cache on retries.
-      force: true,
-    }}
-    render={renderWithLoadProgress(CollectionFeaturedArtistsContainer)}
-  />
-)
+    `,
+    { collectionID },
+    { fetchPolicy: "store-and-network" }
+  )
+
+  if (!data.collection) {
+    return null
+  }
+
+  return <CollectionFeaturedArtistsContainer collection={data.collection} />
+}
+
+const CollectionFullFeaturedArtistListPlacholder: React.FC = () => {
+  return (
+    <Skeleton>
+      <Flex mx={2} mt={2}>
+        <Join separator={<Spacer y={2} />}>
+          {times(6).map((i) => (
+            <ArtistListItemPlaceholder key={i} />
+          ))}
+        </Join>
+      </Flex>
+    </Skeleton>
+  )
+}
+
+export const CollectionFullFeaturedArtistListScreen = withSuspense({
+  Component: (props) => <FullFeaturedArtistListQueryRenderer {...props} />,
+  LoadingFallback: CollectionFullFeaturedArtistListPlacholder,
+  ErrorFallback: () => {
+    return <LoadFailureView trackErrorBoundary={false} />
+  },
+})

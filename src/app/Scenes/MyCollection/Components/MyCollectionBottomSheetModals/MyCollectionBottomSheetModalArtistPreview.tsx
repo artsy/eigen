@@ -188,7 +188,6 @@ export const MyCollectionBottomSheetModalArtistPreviewQueryRenderer: React.FC<{
           }
         }
       `}
-      cacheConfig={{ force: true }}
       variables={{
         artistID,
         interestId,

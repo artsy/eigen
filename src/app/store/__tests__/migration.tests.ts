@@ -1185,4 +1185,81 @@ describe("App version Versions.AddInfiniteDiscoveryModel", () => {
       expect(migratedState.requestedPriceEstimates).toEqual(undefined)
     })
   })
+
+  describe("App version Versions.RefactorDarkModeValues", () => {
+    it("update dark mode store values", () => {
+      const migrationToTest = Versions.RefactorDarkModeValues
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.devicePrefs.darkModeOption).toEqual("system")
+      expect(migratedState.devicePrefs.usingSystemColorScheme).toEqual(undefined)
+      expect(migratedState.devicePrefs.forcedColorScheme).toEqual(undefined)
+    })
+  })
+
+  describe("App version Versions.RemoveDiscoveredArtworkIdsFromInfiniteDiscoveryModel", () => {
+    it("removes discoveredArtworkIds from infiniteDiscovery model", () => {
+      const migrationToTest = Versions.RemoveDiscoveredArtworkIdsFromInfiniteDiscoveryModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      previousState.infiniteDiscovery.discoveredArtworkIds = ["artwork-1", "artwork-2"]
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.infiniteDiscovery.discoveredArtworkIds).toBeUndefined()
+    })
+  })
+
+  describe("App version Versions.AddNewWorksForYouArtworkIDsModel", () => {
+    it("adds hasSeenOnboarding as false", () => {
+      const migrationToTest = Versions.AddHasIntereactedWithOnboardingToInfiniteDiscoveryModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(previousState.infiniteDiscovery.hasInteractedWithOnboarding).toEqual(undefined)
+      expect(migratedState.infiniteDiscovery.hasInteractedWithOnboarding).toEqual(false)
+    })
+  })
+  describe("AddHasSavedArtworksToInfiniteDiscoveryModel", () => {
+    it("should add hasSavedArtworks as false", () => {
+      const migrationToTest = Versions.AddHasSavedArtworksToInfiniteDiscoveryModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(previousState.infiniteDiscovery.hasSavedArtworks).toEqual(undefined)
+      expect(migratedState.infiniteDiscovery.hasSavedArtworks).toEqual(false)
+    })
+  })
 })

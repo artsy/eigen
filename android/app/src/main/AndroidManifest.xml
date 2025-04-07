@@ -121,6 +121,7 @@ AQ==
         <data android:pathPrefix="/home-view"/>
         <data android:pathPrefix="/identity-verification-faq"/>
         <data android:pathPrefix="/inbox"/>
+        <data android:pathPrefix="/infinite-discovery" />
         <data android:pathPrefix="/inquiry"/>
         <data android:pathPrefix="/make-offer"/>
         <data android:pathPrefix="/purchase"/>

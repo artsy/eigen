@@ -171,6 +171,7 @@ jest.mock("react-native-device-info", () => ({
   getBuildNumber: () => "some-build-number",
   getSystemName: () => "some-system-name",
   getSystemVersion: () => "some-system-version",
+  getUserAgent: () => Promise.resolve("some-user-agent"),
   getVersion: jest.fn(),
   getModel: () => "testDevice",
   getUserAgentSync: jest.fn(),
@@ -366,6 +367,10 @@ jest.mock("@segment/analytics-react-native-plugin-braze", () => ({}))
 
 jest.mock("@braze/react-native-sdk", () => ({
   changeUser: jest.fn(),
+}))
+
+jest.mock("app/utils/hooks/useDebouncedValue", () => ({
+  useDebouncedValue: ({ value }: any) => ({ debouncedValue: value }),
 }))
 
 jest.mock("react-native-push-notification", () => ({

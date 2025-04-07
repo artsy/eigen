@@ -6,7 +6,7 @@ import {
 import { ImageCarouselVimeoVideo } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselVimeoVideo"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
-import { useCallback, useContext, useEffect, useMemo } from "react"
+import { useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { FlatList, Modal, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { createZoomListComponent } from "react-native-reanimated-zoom"
@@ -23,12 +23,11 @@ export const ImageCarouselFullScreenAndroid = () => {
   fullScreenState.useUpdates()
   const initialScrollIndex = useMemo(() => imageIndex.current, [])
   const { setIsDeepZoomModalVisible } = GlobalStore.actions.devicePrefs
+  const [showBackButton, setShowBackButton] = useState(false)
 
   const onClose = useCallback(() => {
-    if (fullScreenState.current === "entered") {
-      dispatch({ type: "FULL_SCREEN_DISMISSED" })
-      setIsDeepZoomModalVisible(false)
-    }
+    dispatch({ type: "FULL_SCREEN_DISMISSED" })
+    setIsDeepZoomModalVisible(false)
   }, [])
 
   useEffect(() => {
@@ -72,13 +71,16 @@ export const ImageCarouselFullScreenAndroid = () => {
     // on unmount we use it's built-in fade transition
     <Modal
       transparent
-      animated
+      animationType="fade"
       hardwareAccelerated
       supportedOrientations={["landscape", "portrait"]}
       statusBarTranslucent
       // 👇 responsible for closing the modal on android back button press
       onRequestClose={onClose}
+      onShow={() => setShowBackButton(true)}
     >
+      {!!showBackButton && <ImageCarouselCloseButton onClose={onClose} />}
+
       <GestureHandlerRootView style={{ flex: 1, backgroundColor: color("white100") }}>
         <ZoomFlatList<ImageCarouselMedia>
           data={media}
@@ -97,7 +99,6 @@ export const ImageCarouselFullScreenAndroid = () => {
           onScroll={onScroll}
           initialNumToRender={2}
         />
-        <ImageCarouselCloseButton onClose={onClose} />
         <IndexIndicator />
       </GestureHandlerRootView>
     </Modal>

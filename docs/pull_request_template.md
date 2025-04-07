@@ -4,11 +4,27 @@ This PR resolves [] <!-- eg [PROJECT-XXXX] -->
 
 <!-- Info, implementation, how to get there, before & after screenshots & videos, follow-up work, etc -->
 
+<!--  Please include screenshots or videos for visual changes, at least on Android -->
+<!-- Screenshots template:
+| Platform | Before | After |
+|---|---|---|
+| Android | <img src="xxx" width="400" /> | <img src="xxx" width="400" /> |
+| iOS | <img src="xxx" width="400" /> | <img src="xxx" width="400" /> |
+-->
+<!-- Videos template:
+| Platform | Before | After |
+|---|---|---|
+| Android | <video src="xxx" width="400" /> | <video src="xxx" width="400" /> |
+| iOS | <video src="xxx" width="400" /> | <video src="xxx" width="400" /> |
+-->
+
 ### PR Checklist
 
-- [ ] I have tested my changes on **iOS** and **Android**.
+- [ ] I have tested my changes on the following platforms:
+  - [ ] **Android**.
+  - [ ] **iOS**.
 - [ ] I hid my changes behind a **[feature flag]**, or they don't need one.
-- [ ] I have included **screenshots** or **videos**, or I have not changed the UI.
+- [ ] I have included **screenshots** or **videos** at least on **Android**, or I have not changed the UI.
 - [ ] I have added **tests**, or my changes don't require any.
 - [ ] I added an **[app state migration]**, or my changes do not require one.
 - [ ] I have documented any **follow-up work** that this PR will require, or it does not require any.

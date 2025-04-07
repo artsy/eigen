@@ -8,6 +8,7 @@ import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/Crea
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { noop } from "lodash"
+import { Keyboard, Platform } from "react-native"
 import { graphql } from "react-relay"
 
 describe("CreateNewArtworkListView", () => {
@@ -50,8 +51,20 @@ describe("CreateNewArtworkListView", () => {
     it("when artwork list name is empty", async () => {
       renderWithRelay()
 
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), helloWorldText)
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), "")
+      const input = screen.getByPlaceholderText(inputPlaceholder)
+      fireEvent.changeText(input, helloWorldText)
+      fireEvent.changeText(input, "")
+
+      expect(await screen.findByText("Name is required"))
+    })
+
+    it("submit (blur) when artwork list name is empty", async () => {
+      renderWithRelay()
+
+      const input = screen.getByPlaceholderText(inputPlaceholder)
+      fireEvent.changeText(input, "")
+
+      fireEvent(input, "submitEditing")
 
       expect(await screen.findByText("Name is required"))
     })
@@ -62,9 +75,12 @@ describe("CreateNewArtworkListView", () => {
       const errorMessage = "You already have a list with this name."
 
       const { mockResolveLastOperation } = renderWithRelay()
+      jest.spyOn(Keyboard, "isVisible").mockReturnValue(true)
 
-      fireEvent.changeText(screen.getByPlaceholderText(inputPlaceholder), helloWorldText)
-      fireEvent.press(screen.getByText("Save"))
+      const input = screen.getByPlaceholderText(inputPlaceholder)
+      fireEvent.changeText(input, helloWorldText)
+
+      fireEvent(input, "submitEditing")
 
       await waitFor(() => {
         mockResolveLastOperation({
@@ -90,7 +106,11 @@ describe("CreateNewArtworkListView", () => {
     })
   })
 
-  describe("Save button", () => {
+  describe("Save button, Android only", () => {
+    beforeEach(() => {
+      Platform.OS = "android"
+    })
+
     it("disabled by default", () => {
       renderWithRelay()
 
@@ -115,11 +135,83 @@ describe("CreateNewArtworkListView", () => {
     })
   })
 
+  describe("Sucess state Android", () => {
+    beforeEach(() => {
+      Platform.OS = "android"
+    })
+
+    it("when mutation returned success", async () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+      jest.spyOn(Keyboard, "isVisible").mockReturnValue(false)
+
+      const input = screen.getByPlaceholderText(inputPlaceholder)
+      fireEvent.changeText(input, helloWorldText)
+
+      fireEvent.press(screen.getByText("Save"))
+
+      await waitFor(() => {
+        mockResolveLastOperation({
+          Mutation: () => ({
+            createCollection: {
+              responseOrError: {
+                __typename: "CreateCollectionSuccess",
+                collection: {
+                  internalID: "artwork-list-id",
+                  name: helloWorldText,
+                  shareableWithPartners: true,
+                  artworksCount: 0,
+                },
+              },
+            },
+          }),
+        })
+      })
+
+      expect(screen.queryByText("Name is required")).not.toBeOnTheScreen()
+    })
+  })
+
+  describe("Sucess state iOS", () => {
+    beforeEach(() => {
+      Platform.OS = "ios"
+    })
+
+    it("when mutation returned success", async () => {
+      const { mockResolveLastOperation } = renderWithRelay()
+      jest.spyOn(Keyboard, "isVisible").mockReturnValue(false)
+
+      const input = screen.getByPlaceholderText(inputPlaceholder)
+      fireEvent.changeText(input, helloWorldText)
+
+      fireEvent(input, "submitEditing")
+
+      await waitFor(() => {
+        mockResolveLastOperation({
+          Mutation: () => ({
+            createCollection: {
+              responseOrError: {
+                __typename: "CreateCollectionSuccess",
+                collection: {
+                  internalID: "artwork-list-id",
+                  name: helloWorldText,
+                  shareableWithPartners: true,
+                  artworksCount: 0,
+                },
+              },
+            },
+          }),
+        })
+      })
+
+      expect(screen.queryByText("Name is required")).not.toBeOnTheScreen()
+    })
+  })
+
   describe("Textual content", () => {
     it("default state", () => {
       renderWithRelay()
 
-      expect(screen.getByText("Create a new list")).toBeOnTheScreen()
+      expect(screen.getByText("New list")).toBeOnTheScreen()
     })
 
     it("default state with AREnableArtworkListOfferability ff on", () => {
@@ -129,8 +221,15 @@ describe("CreateNewArtworkListView", () => {
 
       renderWithRelay()
 
-      expect(screen.getByText("Create a new list")).toBeOnTheScreen()
-      expect(screen.getByText("Shared list")).toBeOnTheScreen()
+      expect(screen.getByText("New list")).toBeOnTheScreen()
+      expect(screen.getByText("Share list with galleries")).toBeOnTheScreen()
+
+      // test that the explanatory text is not visible by default
+      expect(screen.queryByText("Shared lists are eligible to receive")).not.toBeOnTheScreen()
+      fireEvent.press(screen.getByText("Share list with galleries", { exact: false }))
+      expect(
+        screen.getByText("Shared lists are eligible to receive", { exact: false })
+      ).toBeOnTheScreen()
     })
   })
 

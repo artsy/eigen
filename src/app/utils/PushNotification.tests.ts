@@ -20,10 +20,6 @@ function mockFetchJsonOnce(json: object, status = 200) {
   })
 }
 
-beforeEach(() => {
-  mockFetch.mockClear()
-})
-
 describe("Push Notification Tests", () => {
   beforeEach(async () => {
     jest.clearAllMocks()
@@ -104,18 +100,6 @@ describe("Push Notification Tests", () => {
       userInteraction: true, // notification was tapped
     }
 
-    it("Saves tapped notification When a user is not logged in", () => {
-      Push.handleReceivedNotification(notification)
-      expect(
-        __globalStoreTestUtils__?.getCurrentState().pendingPushNotification.notification
-      ).toHaveProperty("tappedAt")
-      expect(
-        __globalStoreTestUtils__?.getCurrentState().pendingPushNotification.notification?.data
-      ).toEqual(notification.data)
-      // notification is not handled
-      expect(navigate).not.toHaveBeenCalled()
-    })
-
     it("Handles tapped notification instantly if user is logged in and nav is ready", async () => {
       mockFetchJsonOnce({
         xapp_token: "xapp-token",
@@ -152,6 +136,18 @@ describe("Push Notification Tests", () => {
         passProps: notification.data,
         ignoreDebounce: true,
       })
+    })
+
+    it("Saves tapped notification When a user is not logged in", () => {
+      Push.handleReceivedNotification(notification)
+      expect(
+        __globalStoreTestUtils__?.getCurrentState().pendingPushNotification.notification
+      ).toHaveProperty("tappedAt")
+      expect(
+        __globalStoreTestUtils__?.getCurrentState().pendingPushNotification.notification?.data
+      ).toEqual(notification.data)
+      // notification is not handled
+      expect(navigate).not.toHaveBeenCalled()
     })
 
     it("Pending Notification: navigates to appropriate screen when called", () => {

@@ -1,6 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import {
-  ArrowRightIcon,
   Button,
   Flex,
   FlexProps,
@@ -91,12 +90,12 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
               />
               <LinearGradient
                 colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
-                start={{ x: 0, y: 0 }}
+                start={{ x: 0, y: 0.3 }}
                 end={{ x: 0, y: 1 }}
                 style={{
                   position: "absolute",
                   width: "100%",
-                  height: "40%",
+                  height: "100%",
                   bottom: 0,
                 }}
               />
@@ -122,7 +121,7 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
               {title}
             </Text>
 
-            <Flex mt={0.5} justifyContent="space-between" flexDirection="row">
+            <Flex mt={0.5} justifyContent="space-between" flexDirection="row" alignItems="flex-end">
               <Flex flex={1} mr={2}>
                 <Text variant="sm-display" color={textColor}>
                   {subtitle}
@@ -135,7 +134,6 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
                     variant={hasImage && theme !== "dark" ? "outlineLight" : "fillDark"}
                     size="small"
                     onPress={onPress}
-                    icon={<ArrowRightIcon fill="white100" height={14} width={14} />}
                     iconPosition="right"
                   >
                     {buttonText}

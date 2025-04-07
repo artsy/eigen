@@ -1,14 +1,14 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Spacer, ArrowRightIcon, Flex, Text, useSpace } from "@artsy/palette-mobile"
+import { ArrowRightIcon, Flex, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import {
   MyCollectionArtworkArticles_article$data,
   MyCollectionArtworkArticles_article$key,
 } from "__generated__/MyCollectionArtworkArticles_article.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { Schema } from "app/utils/track"
-import { FlatList, TouchableOpacity } from "react-native"
-import { useFragment, graphql } from "react-relay"
+import { FlatList } from "react-native"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface MyCollectionArtworkArticlesProps {
@@ -29,10 +29,10 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
 
   return (
     <Flex mt={2}>
-      <TouchableOpacity
+      <RouterLink
+        to={`/artist/${props.artistSlug}/articles`}
         onPress={() => {
           trackEvent(tracks.tappedArticleGroup())
-          navigate(`/artist/${props.artistSlug}/articles`)
         }}
       >
         <Flex flexDirection="row" alignItems="flex-start" mb={2} px={2}>
@@ -49,7 +49,7 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
             <ArrowRightIcon width={12} fill="black60" ml={0.5} />
           </Flex>
         </Flex>
-      </TouchableOpacity>
+      </RouterLink>
 
       <FlatList<MyCollectionArtworkArticles_article$data[number]>
         testID="test-articles-flatlist"

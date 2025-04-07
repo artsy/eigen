@@ -62,17 +62,7 @@ export const TagQueryRenderer: React.FC<TagQueryRendererProps> = (props) => {
   return (
     <QueryRenderer<TagQuery>
       environment={getRelayEnvironment()}
-      query={graphql`
-        query TagQuery($tagID: String!, $input: FilterArtworksInput) {
-          tag(id: $tagID) @principalField {
-            slug
-            name
-            description
-            ...About_tag
-            ...TagArtworks_tag @arguments(input: $input)
-          }
-        }
-      `}
+      query={TagScreenQuery}
       variables={{ tagID }}
       render={renderWithPlaceholder({
         Container: Tag,
@@ -121,3 +111,15 @@ const TagSkeleton: React.FC = () => {
     </Screen>
   )
 }
+
+export const TagScreenQuery = graphql`
+  query TagQuery($tagID: String!, $input: FilterArtworksInput) {
+    tag(id: $tagID) @principalField {
+      slug
+      name
+      description
+      ...About_tag
+      ...TagArtworks_tag @arguments(input: $input)
+    }
+  }
+`

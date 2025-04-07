@@ -203,28 +203,16 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
 
     setRefreshing(true)
 
-    relay.refetch(
-      { artistID: internalID },
-      null,
-      () => {
-        setRefreshing(false)
-        cb?.()
-      },
-      {
-        force: true,
-      }
-    )
+    relay.refetch({ artistID: internalID }, null, () => {
+      setRefreshing(false)
+      cb?.()
+    })
   }
 
   const refetch = (cb?: () => any) => {
-    relay.refetch(
-      { artistID: internalID },
-      null,
-      () => {
-        cb?.()
-      },
-      { force: true }
-    )
+    relay.refetch({ artistID: internalID }, null, () => {
+      cb?.()
+    })
   }
 
   const handleModalDismissed = () => {
@@ -384,7 +372,12 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
       }
     }
 
-    if (isInAuction && artworkAboveTheFold?.sale && artworkAboveTheFold?.saleArtwork) {
+    if (
+      isInAuction &&
+      artworkAboveTheFold?.sale &&
+      artworkAboveTheFold?.saleArtwork &&
+      !artworkAboveTheFold.sale.isClosed
+    ) {
       sections.push({
         key: "lotDetailsSection",
         element: (
@@ -840,7 +833,6 @@ export const ArtworkQueryRenderer: React.FC<ArtworkScreenProps> = ({
         },
       }}
       fetchPolicy="store-and-network"
-      cacheConfig={{ force: true }}
     />
   )
 }

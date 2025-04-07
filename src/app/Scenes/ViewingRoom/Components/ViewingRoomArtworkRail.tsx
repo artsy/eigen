@@ -2,7 +2,6 @@ import { Flex } from "@artsy/palette-mobile"
 import { ViewingRoomArtworkRail_viewingRoom$data } from "__generated__/ViewingRoomArtworkRail_viewingRoom.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -30,8 +29,8 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = ({ 
             tracking.trackEvent(
               tracks.tappedArtworkGroupHeader(viewingRoom.internalID, viewingRoom.slug)
             )
-            navigate(`/viewing-room/${viewingRoom.slug}/artworks`)
           }}
+          href={`/viewing-room/${viewingRoom.slug}/artworks`}
         />
       </Flex>
       <ArtworkRail
@@ -46,7 +45,6 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = ({ 
               artwork.slug
             )
           )
-          navigate(`/viewing-room/${viewingRoom.slug}/${artwork.slug}`)
         }}
       />
     </Flex>

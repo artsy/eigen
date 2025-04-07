@@ -11,10 +11,10 @@ import { Versions } from "app/store/migration"
 import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMenuButtonItem"
 import { DevToggleItem } from "app/system/devTools/DevMenu/Components/DevToggleItem"
 import { eigenSentryReleaseName } from "app/system/errorReporting/setupSentry"
+import { useUnleashEnvironment } from "app/system/flags/hooks/useUnleashEnvironment"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
 import { saveToken } from "app/utils/PushNotification"
-import { useUnleashEnvironment } from "app/utils/experiments/hooks"
 import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
 import { capitalize, sortBy } from "lodash"
 import { useState } from "react"
@@ -125,12 +125,16 @@ export const DevTools: React.FC<{}> = () => {
             }}
           />
           <DevMenuButtonItem
-            title="Clear Infinite Discovery artworks"
+            title="Reset infinite discovery onboarding progress"
             onPress={() => {
-              GlobalStore.actions._forgetDiscoveredArtworks()
-              toast.show("Infinite Discovery artworks cleared ✅", "middle")
+              GlobalStore.actions.infiniteDiscovery.setHasInteractedWithOnboarding(false)
+              toast.show(
+                "Infinite discovery onboarding progress reset. It will now appear again when you open the infinite discovery.",
+                "middle"
+              )
             }}
           />
+
           <DevMenuButtonItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
 
           <DevMenuButtonItem

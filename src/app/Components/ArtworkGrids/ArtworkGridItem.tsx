@@ -22,7 +22,7 @@ import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionT
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
-import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
+import { ContextMenuArtwork, trackLongPress } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
 import { Disappearable } from "app/Components/Disappearable"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
@@ -42,7 +42,7 @@ import {
   tracks as artworkActionTracks,
 } from "app/utils/track/ArtworkActions"
 import React, { useRef, useState } from "react"
-import { View, ViewProps, Text as RNText } from "react-native"
+import { View, ViewProps, Text as RNText, Platform } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotProgressBar } from "./LotProgressBar"
@@ -120,6 +120,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const tracking = useTracking()
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
+  const enableContextMenuIOS = useFeatureFlag("AREnableArtworkCardContextMenuIOS")
+  const isIOS = Platform.OS === "ios"
 
   let filterParams: any = undefined
 
@@ -209,7 +211,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     } else if (contextScreenOwnerType) {
       const genericTapEvent: TappedMainArtworkGrid = {
         action: ActionType.tappedMainArtworkGrid,
-        context_module: ContextModule.artworkGrid,
+        context_module: contextModule || ContextModule.artworkGrid,
         context_screen: contextScreen,
         context_screen_owner_type: contextScreenOwnerType,
         context_screen_owner_id: contextScreenOwnerId,
@@ -260,7 +262,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     <Disappearable ref={disappearableRef}>
       <ContextMenuArtwork
         onSupressArtwork={handleSupress}
-        contextModule={contextModule}
+        contextModule={contextModule ?? ContextModule.artworkGrid}
         contextScreenOwnerType={contextScreenOwnerType}
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
         artwork={artwork}
@@ -272,7 +274,18 @@ export const Artwork: React.FC<ArtworkProps> = ({
           activeOpacity={0.8}
           onPress={handleTap}
           // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
-          onLongPress={() => {}}
+          onLongPress={() => {
+            // Adroid long press is tracked inside of the ContextMenuArtwork component
+            if (contextScreenOwnerType && isIOS && enableContextMenuIOS) {
+              tracking.trackEvent(
+                trackLongPress.longPressedArtwork(
+                  ContextModule.artworkGrid,
+                  contextScreenOwnerType,
+                  artwork.slug
+                )
+              )
+            }
+          }}
           delayLongPress={400}
           navigationProps={navigationProps}
           to={artwork.href}

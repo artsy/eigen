@@ -1,5 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { NavigationHeader } from "app/Components/NavigationHeader"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { appJson } from "app/utils/jsonFiles"
@@ -154,12 +155,12 @@ describe("ArtsyWebViewPage", () => {
 
   describe("sets the user agent correctly", () => {
     it("on iOS", () => {
+      ;(LegacyNativeModules.ARNotificationsManager.getConstants as jest.Mock).mockReturnValueOnce({
+        userAgent: "Native iOS User Agent",
+      })
+
       const view = render()
-      expect(webViewProps(view).userAgent).toBe(
-        `Artsy-Mobile ios some-system-name/some-system-version Artsy-Mobile/${
-          appJson().version
-        } Eigen/some-build-number/${appJson().version}`
-      )
+      expect(webViewProps(view).userAgent).toBe("Native iOS User Agent")
     })
 
     it("on Android", () => {

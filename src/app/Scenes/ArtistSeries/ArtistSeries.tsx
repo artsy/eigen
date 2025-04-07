@@ -1,27 +1,27 @@
 import {
-  Spacer,
+  Flex,
   Screen,
-  Tabs,
-  useScreenDimensions,
+  Separator,
   Skeleton,
   SkeletonBox,
-  Flex,
   SkeletonText,
-  Separator,
+  Spacer,
+  Tabs,
+  useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
 import { ArtistSeries_artistSeries$key } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
+import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
 import { ArtistSeriesArtworks } from "app/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesHeaderFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMetaFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { goBack } from "app/system/navigation/navigate"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ProvideScreenTracking } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
-import { graphql, QueryRenderer, useFragment } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface ArtistSeriesProps {
   artistSeries: ArtistSeries_artistSeries$key
@@ -127,29 +127,28 @@ const ArtistSeriesPlaceholder: React.FC = () => {
   )
 }
 
-export const ArtistSeriesQueryRenderer: React.FC<{ artistSeriesID: string }> = ({
-  artistSeriesID,
-}) => {
-  return (
-    <ArtworkFiltersStoreProvider>
-      <QueryRenderer<ArtistSeriesQuery>
-        environment={getRelayEnvironment()}
-        query={graphql`
-          query ArtistSeriesQuery($artistSeriesID: ID!) {
-            artistSeries(id: $artistSeriesID) {
-              ...ArtistSeries_artistSeries
-            }
-          }
-        `}
-        cacheConfig={{ force: true }}
-        variables={{
-          artistSeriesID,
-        }}
-        render={renderWithPlaceholder({
-          Container: ArtistSeries,
-          renderPlaceholder: () => <ArtistSeriesPlaceholder />,
-        })}
-      />
-    </ArtworkFiltersStoreProvider>
-  )
-}
+export const ArtistSeriesScreenQuery = graphql`
+  query ArtistSeriesQuery($artistSeriesID: ID!) {
+    artistSeries(id: $artistSeriesID) {
+      ...ArtistSeries_artistSeries
+    }
+  }
+`
+
+export const ArtistSeriesQueryRenderer: React.FC<{ artistSeriesID: string }> = withSuspense({
+  Component: ({ artistSeriesID }) => {
+    const data = useLazyLoadQuery<ArtistSeriesQuery>(ArtistSeriesScreenQuery, { artistSeriesID })
+
+    if (!data.artistSeries) return null
+
+    return (
+      <ArtworkFiltersStoreProvider>
+        <ArtistSeries artistSeries={data.artistSeries} />
+      </ArtworkFiltersStoreProvider>
+    )
+  },
+  LoadingFallback: ArtistSeriesPlaceholder,
+  ErrorFallback: (fallbackProps) => {
+    return <ActivityErrorScreen headerTitle="Artist Series" error={fallbackProps.error} />
+  },
+})

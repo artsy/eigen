@@ -7,9 +7,8 @@ import { getSnapToOffsets } from "app/Scenes/CollectionsByCategory/CollectionsCh
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { memo } from "react"
 import { FlatList } from "react-native"
@@ -48,7 +47,6 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
         section.contextModule as ContextModule,
         index
       )
-      navigate(card.href)
     }
   }
 
@@ -74,12 +72,17 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
 
               return (
                 <Flex minWidth={CHIP_WIDTH} key={`collectionChips-row-${index}`}>
-                  <Chip
-                    key={item.href}
-                    title={item.title}
-                    subtitle={item.subtitle as string | undefined}
+                  <RouterLink
+                    to={item.href}
+                    hasChildTouchable
                     onPress={() => handleOnChipPress(item, index)}
-                  />
+                  >
+                    <Chip
+                      key={item.href}
+                      title={item.title}
+                      subtitle={item.subtitle as string | undefined}
+                    />
+                  </RouterLink>
                 </Flex>
               )
             })}
@@ -111,7 +114,7 @@ const fragment = graphql`
           entityType @required(action: NONE)
           title
           subtitle
-          href
+          href @required(action: NONE)
         }
       }
     }
@@ -149,9 +152,9 @@ const HomeViewSectionCardsChipsPlaceholder: React.FC = () => {
 }
 
 const query = graphql`
-  query HomeViewSectionCardsChipsQuery($id: String!, $isEnabled: Boolean!) {
+  query HomeViewSectionCardsChipsQuery($id: String!) {
     homeView {
-      section(id: $id) @include(if: $isEnabled) {
+      section(id: $id) {
         ...HomeViewSectionCardsChips_section
       }
     }
@@ -161,13 +164,11 @@ const query = graphql`
 export const HomeViewSectionCardsChipsQueryRenderer: React.FC<SectionSharedProps> = memo(
   withSuspense({
     Component: ({ sectionID, index, ...flexProps }) => {
-      const isEnabled = useFeatureFlag("AREnableMarketingCollectionsCategories")
       const data = useLazyLoadQuery<HomeViewSectionCardsChipsQuery>(query, {
         id: sectionID,
-        isEnabled,
       })
 
-      if (!data?.homeView.section || !isEnabled) {
+      if (!data?.homeView.section) {
         return null
       }
 

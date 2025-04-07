@@ -9,7 +9,9 @@ type Environment = "staging" | "production"
 
 interface EnvironmentOptionDescriptor {
   readonly description: string
-  readonly presets: { readonly [k in Environment | "local"]: string }
+  readonly presets: { readonly [k in Environment | "local"]: string } & {
+    readonly reviewApp?: string
+  }
 }
 
 // helper to get good typings and intellisense
@@ -59,6 +61,7 @@ export const environment = defineEnvironmentOptions({
       local: "http://localhost:4000",
       staging: "https://staging.artsy.net",
       production: "https://www.artsy.net",
+      reviewApp: "https://express-checkout-mobile.artsy.net",
     },
   },
   causalityURL: {
