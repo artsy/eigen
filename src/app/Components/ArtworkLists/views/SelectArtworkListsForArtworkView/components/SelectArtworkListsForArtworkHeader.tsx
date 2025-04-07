@@ -9,7 +9,7 @@ import {
   quoteLeft,
   quoteRight,
 } from "@artsy/palette-mobile"
-import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 
 export const SelectArtworkListsForArtworkHeader = () => {
   const setCreateNewArtworkListViewVisible = ArtworkListsStore.useStoreActions(

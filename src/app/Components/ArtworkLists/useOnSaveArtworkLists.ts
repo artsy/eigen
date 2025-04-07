@@ -1,9 +1,9 @@
 import { dispatchArtworkSavedStateChanged } from "app/Components/ArtworkLists/ArtworkListEvents"
-import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
 import { useCallback } from "react"
 
-export const useArtworkListsModifiedToastHandler = () => {
+export const useOnSaveArtworkLists = () => {
   const { artwork, bottomPadding, addingArtworkLists, removingArtworkLists, modifiedActionType } =
     ArtworkListsStore.useStoreState((state) => ({
       artwork: state.artwork,
@@ -14,7 +14,7 @@ export const useArtworkListsModifiedToastHandler = () => {
     }))
   const toast = useArtworkListToast(bottomPadding)
 
-  const handleToastMessage = useCallback(() => {
+  const onSaveArtworkLists = useCallback(() => {
     if (!artwork) {
       return
     }
@@ -54,5 +54,5 @@ export const useArtworkListsModifiedToastHandler = () => {
     }
   }, [artwork, addingArtworkLists, removingArtworkLists, modifiedActionType, toast])
 
-  return { handleToastMessage }
+  return { onSaveArtworkLists }
 }

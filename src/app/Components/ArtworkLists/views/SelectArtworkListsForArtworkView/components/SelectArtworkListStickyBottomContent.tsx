@@ -4,7 +4,7 @@ import {
   BottomSheetFooterProps,
   useBottomSheetModal,
 } from "@gorhom/bottom-sheet"
-import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
 import { useSaveArtworkListsChanges } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useSaveArtworkListsChanges"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"

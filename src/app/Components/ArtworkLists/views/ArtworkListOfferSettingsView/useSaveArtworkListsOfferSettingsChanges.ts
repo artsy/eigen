@@ -1,5 +1,5 @@
 import { captureMessage } from "@sentry/react-native"
-import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
 import {
   MutationConfig,

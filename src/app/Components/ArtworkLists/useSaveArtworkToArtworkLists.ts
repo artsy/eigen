@@ -1,6 +1,6 @@
 import { useSaveArtworkToArtworkLists_artwork$key } from "__generated__/useSaveArtworkToArtworkLists_artwork.graphql"
 import { useArtworkListContext } from "app/Components/ArtworkLists/ArtworkListContext"
-import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ArtworkEntity } from "app/Components/ArtworkLists/types"
 import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
 import { SaveArtworkOptions, useSaveArtwork } from "app/utils/mutations/useSaveArtwork"

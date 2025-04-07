@@ -1,10 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
-import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsContext"
-import {
-  ARTWORK_LISTS_STORE_INITIAL_STATE,
-  ArtworkEntity,
-  ArtworkListsContextState,
-} from "app/Components/ArtworkLists/types"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
+import { ARTWORK_LISTS_STORE_INITIAL_STATE, ArtworkEntity } from "app/Components/ArtworkLists/types"
 import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListView"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -16,7 +12,7 @@ describe("CreateNewArtworkListView", () => {
   const inputPlaceholder = "Name your list"
   const helloWorldText = "Hello World"
 
-  const ContextValue: ArtworkListsContextState = {
+  const ContextValue = {
     state: {
       ...ARTWORK_LISTS_STORE_INITIAL_STATE,
       artwork: artworkEntity,

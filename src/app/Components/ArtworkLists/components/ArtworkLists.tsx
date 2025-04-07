@@ -1,6 +1,6 @@
 import { BottomSheetFlatList } from "@gorhom/bottom-sheet"
 import { ArtworkLists_me$data, ArtworkLists_me$key } from "__generated__/ArtworkLists_me.graphql"
-import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ArtworkListsLoadingIndicator } from "app/Components/ArtworkLists/components/ArtworkListsLoadingIndicator"
 import { ArtworkListMode, ArtworkListOfferSettingsMode } from "app/Components/ArtworkLists/types"
 import { extractNodes } from "app/utils/extractNodes"

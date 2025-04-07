@@ -5,7 +5,7 @@ import { ArtworkStickyBottomContent_partnerOffer$key } from "__generated__/Artwo
 import { BidButton_me$key } from "__generated__/BidButton_me.graphql"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
-import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { useScreenDimensions } from "app/utils/hooks"

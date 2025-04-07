@@ -1,5 +1,5 @@
 import { Flex, AddIcon, TagIcon, Touchable, Text, Spacer, Join } from "@artsy/palette-mobile"
-import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ProgressiveOnboardingOfferSettings } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingOfferSettings"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ScrollView } from "react-native"

@@ -2,7 +2,7 @@ import { Screen, ScreenDimensionsProvider, Spinner, Theme } from "@artsy/palette
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { PortalProvider } from "@gorhom/portal"
 import FlagProvider from "@unleash/proxy-client-react"
-import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ShareSheetProvider } from "app/Components/ShareSheet/ShareSheetContext"
 import { WrappedFlagProvider } from "app/system/flags/Components/WrappedFlagProvider"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"

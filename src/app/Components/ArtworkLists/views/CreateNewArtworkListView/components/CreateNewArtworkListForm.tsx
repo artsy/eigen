@@ -1,7 +1,7 @@
 import { ActionType, CreatedArtworkList, OwnerType } from "@artsy/cohesion"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { captureMessage } from "@sentry/react-native"
-import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import {
   CreateOrEditArtworkListForm,
   CreateOrEditArtworkListFormValues,

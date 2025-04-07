@@ -1,6 +1,6 @@
 import { Box, Flex, Join, Spacer } from "@artsy/palette-mobile"
 import { SelectArtworkListsForArtworkQuery } from "__generated__/SelectArtworkListsForArtworkQuery.graphql"
-import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ArtworkLists } from "app/Components/ArtworkLists/components/ArtworkLists"
 import { PlaceholderBox, RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"

@@ -1,6 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { SelectArtworkListsForArtworkQuery } from "__generated__/SelectArtworkListsForArtworkQuery.graphql"
-import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ArtworkEntity } from "app/Components/ArtworkLists/types"
 import * as utils from "app/Components/ArtworkLists/types"
 import { selectArtworkListsForArtworkQuery } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/components/SelectArtworkListsForArtwork"

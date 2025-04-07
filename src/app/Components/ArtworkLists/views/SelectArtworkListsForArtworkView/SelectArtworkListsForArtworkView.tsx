@@ -1,5 +1,5 @@
 import { Flex } from "@artsy/palette-mobile"
-import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import {
   SelectArtworkListStickyBottomContent,
   StickyBottomContentPlaceholder,

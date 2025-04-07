@@ -1,7 +1,7 @@
 import { ActionType, AddedArtworkToArtworkList, OwnerType } from "@artsy/cohesion"
 import { captureMessage } from "@sentry/react-native"
-import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsContext"
-import { useArtworkListsModifiedToastHandler } from "app/Components/ArtworkLists/useArtworkListsModifiedToastHandler"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
+import { useOnSaveArtworkLists } from "app/Components/ArtworkLists/useOnSaveArtworkLists"
 import { useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { useCallback } from "react"
 import { useTracking } from "react-tracking"
@@ -20,7 +20,7 @@ export const useSaveArtworkListsChanges = (options?: Options) => {
       removingArtworkListIDs: state.removingArtworkListIDs,
     })
   )
-  const { handleToastMessage } = useArtworkListsModifiedToastHandler()
+  const { onSaveArtworkLists } = useOnSaveArtworkLists()
   const analytics = useAnalyticsContext()
   const { trackEvent } = useTracking()
   const [commit, inProgress] = useUpdateArtworkListsForArtwork(artwork?.id ?? "")
@@ -57,7 +57,7 @@ export const useSaveArtworkListsChanges = (options?: Options) => {
           trackAddedArtworkToArtworkLists()
         }
 
-        handleToastMessage()
+        onSaveArtworkLists()
 
         options?.onCompleted?.(...args)
       },
@@ -71,7 +71,7 @@ export const useSaveArtworkListsChanges = (options?: Options) => {
         options?.onError?.(error)
       },
     })
-  }, [artwork?.internalID, addingArtworkListIDs, removingArtworkListIDs, handleToastMessage])
+  }, [artwork?.internalID, addingArtworkListIDs, removingArtworkListIDs, onSaveArtworkLists])
 
   return {
     save,
