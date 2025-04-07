@@ -2610,6 +2610,9 @@ type Artwork implements Node & Searchable & Sellable {
   isComparableWithAuctionResults: Boolean
   isDisliked: Boolean!
   isDownloadable: Boolean
+
+  # Whether this artwork is eligible for an ecommerce transaction
+  isEcommerce: Boolean
   isEdition: Boolean
 
   # Artwork is eligible for the Artsy Guarantee
@@ -10101,6 +10104,7 @@ type EditionSet implements Sellable {
   # A type-specific ID likely used as a database ID.
   internalID: ID!
   isAcquireable: Boolean
+  isEcommerce: Boolean
   isForSale: Boolean
 
   # Is the edition set parent-artwork part of an auction?
@@ -12592,7 +12596,6 @@ type Image {
 
   # Blurhash code for the image
   blurhash: String
-  blurhashDataURL(width: Int = 64): String
   caption: String
   cropped(
     height: Int!
@@ -19765,6 +19768,7 @@ interface Sellable {
 
   # Whether a piece can be purchased through e-commerce
   isAcquireable: Boolean
+  isEcommerce: Boolean
   isForSale: Boolean
   isInAuction: Boolean
   isInquireable: Boolean
@@ -19776,6 +19780,7 @@ interface Sellable {
   isOfferableFromInquiry: Boolean
   isPriceHidden: Boolean
   isSold: Boolean
+  priceListed: Money
   published: Boolean
   saleMessage: String
 }
