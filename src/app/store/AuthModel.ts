@@ -1040,6 +1040,12 @@ export const getAuthModel = (): AuthModel => ({
 
 const isTokenExpired = (expiresIn: string) => {
   const expirationDate = new Date(expiresIn)
+
+  if (isNaN(expirationDate.getTime())) {
+    // if expiresIn is not a valid date string, treat it as expired
+    return true
+  }
+
   const now = new Date()
   return expirationDate <= now
 }
