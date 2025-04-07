@@ -1,3 +1,4 @@
+import { ApplePayMarkIcon } from "@artsy/icons/native"
 import { InstitutionIcon, CreditCardIcon, CreditCardType, Flex, Text } from "@artsy/palette-mobile"
 import { OrderDetailsPayment_order$data } from "__generated__/OrderDetailsPayment_order.graphql"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -7,9 +8,20 @@ interface OrderDetailsPaymentProps {
 }
 
 const PaymentMethodDetails: React.FC<OrderDetailsPaymentProps> = ({
-  order: { paymentMethodDetails },
+  order: { paymentMethodDetails, creditCardWalletType },
 }) => {
   const getPaymentInfo = () => {
+    if (creditCardWalletType === "apple_pay") {
+      return (
+        <>
+          <ApplePayMarkIcon mr={1} width="17" />
+          <Text variant="sm" color="black60">
+            Apple Pay
+          </Text>
+        </>
+      )
+    }
+
     switch (paymentMethodDetails?.__typename) {
       case "BankAccount":
         return (
@@ -59,6 +71,7 @@ export const PaymentMethodSummaryItemFragmentContainer = createFragmentContainer
   {
     order: graphql`
       fragment OrderDetailsPayment_order on CommerceOrder {
+        creditCardWalletType
         paymentMethodDetails {
           __typename
           ... on CreditCard {
