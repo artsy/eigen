@@ -6,10 +6,10 @@ import { useCallback } from "react"
 export const useOnSaveArtworkLists = () => {
   const { artwork, bottomPadding, addingArtworkLists, removingArtworkLists, modifiedActionType } =
     ArtworkListsStore.useStoreState((state) => ({
-      artwork: state.artwork,
-      bottomPadding: state.toastBottomPadding,
-      addingArtworkLists: state.addingArtworkLists,
-      removingArtworkLists: state.removingArtworkLists,
+      artwork: state.state.artwork,
+      bottomPadding: state.state.toastBottomPadding,
+      addingArtworkLists: state.state.addingArtworkLists,
+      removingArtworkLists: state.state.removingArtworkLists,
       modifiedActionType: state.modifiedActionType,
     }))
   const toast = useArtworkListToast(bottomPadding)

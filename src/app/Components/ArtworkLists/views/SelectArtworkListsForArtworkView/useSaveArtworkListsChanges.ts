@@ -15,7 +15,7 @@ interface Options {
 export const useSaveArtworkListsChanges = (options?: Options) => {
   const { artwork, addingArtworkListIDs, removingArtworkListIDs } = ArtworkListsStore.useStoreState(
     (state) => ({
-      artwork: state.artwork,
+      artwork: state.state.artwork,
       addingArtworkListIDs: state.addingArtworkListIDs,
       removingArtworkListIDs: state.removingArtworkListIDs,
     })

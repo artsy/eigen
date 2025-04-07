@@ -2,15 +2,13 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet"
 import {
   getArtworkListsStoreInitialState,
   ArtworkListEntity,
-  ArtworkEntity,
-  RecentlyAddedArtworkList,
-  ArtworkListState,
 } from "app/Components/ArtworkLists/types"
 import { ArtworkListOfferSettingsView } from "app/Components/ArtworkLists/views/ArtworkListOfferSettingsView/ArtworkListOfferSettingsView"
 import { CreateNewArtworkListView } from "app/Components/ArtworkLists/views/CreateNewArtworkListView/CreateNewArtworkListView"
 import { SelectArtworkListsForArtworkView } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/SelectArtworkListsForArtworkView"
 import { Action, action, Computed, computed, createContextStore } from "easy-peasy"
 import { FC } from "react"
+import { ArtworkListState } from "./types"
 
 export type ModifiedListType =
   | "GENERIC_CHANGES"
@@ -22,19 +20,7 @@ export type ModifiedListType =
 
 export interface ArtworkListsModel {
   // State
-  selectArtworkListsViewVisible: boolean
-  createNewArtworkListViewVisible: boolean
-  artworkListOfferSettingsViewVisible: boolean
-  artwork: ArtworkEntity | null
-  artworkListID: string | null
-  recentlyAddedArtworkList: RecentlyAddedArtworkList | null
-  selectedTotalCount: number
-  addingArtworkLists: ArtworkListEntity[]
-  removingArtworkLists: ArtworkListEntity[]
-  sharingArtworkLists: ArtworkListEntity[]
-  keepingArtworkListsPrivate: ArtworkListEntity[]
-  hasUnsavedChanges: boolean
-  toastBottomPadding: number | null
+  state: ArtworkListState
   artworkListId?: string
 
   // Computed
@@ -64,26 +50,26 @@ export interface ArtworkListsModel {
 }
 
 export const getArtworkListsModel = (): ArtworkListsModel => ({
-  ...getArtworkListsStoreInitialState(),
+  state: getArtworkListsStoreInitialState(),
 
   // Computed properties
   addingArtworkListIDs: computed((state) =>
-    state.addingArtworkLists.map((entity) => entity.internalID)
+    state.state.addingArtworkLists.map((entity) => entity.internalID)
   ),
   removingArtworkListIDs: computed((state) =>
-    state.removingArtworkLists.map((entity) => entity.internalID)
+    state.state.removingArtworkLists.map((entity) => entity.internalID)
   ),
   shareArtworkListIDs: computed((state) =>
-    state.sharingArtworkLists.map((entity) => entity.internalID)
+    state.state.sharingArtworkLists.map((entity) => entity.internalID)
   ),
   keepArtworkListPrivateIDs: computed((state) =>
-    state.keepingArtworkListsPrivate.map((entity) => entity.internalID)
+    state.state.keepingArtworkListsPrivate.map((entity) => entity.internalID)
   ),
   modifiedActionType: computed((state) => {
     return () => {
-      if (!state.artworkListID) {
-        const addingArtworkLists = state.addingArtworkLists
-        const removingArtworkLists = state.removingArtworkLists
+      if (!state.state.artworkListID) {
+        const addingArtworkLists = state.state.addingArtworkLists
+        const removingArtworkLists = state.state.removingArtworkLists
         if (!!addingArtworkLists.length && !!removingArtworkLists.length) {
           return "GENERIC_CHANGES"
         }
@@ -105,14 +91,14 @@ export const getArtworkListsModel = (): ArtworkListsModel => ({
         throw new Error("Unexpected save result for artwork lists")
       }
 
-      const isArtworkListAdded = state.addingArtworkLists.some(
-        (list) => list.internalID === state.artworkListID
+      const isArtworkListAdded = state.state.addingArtworkLists.some(
+        (list) => list.internalID === state.state.artworkListID
       )
-      const isArtworkListRemoved = state.removingArtworkLists.some(
-        (list) => list.internalID === state.artworkListID
+      const isArtworkListRemoved = state.state.removingArtworkLists.some(
+        (list) => list.internalID === state.state.artworkListID
       )
 
-      if ((isArtworkListAdded || isArtworkListRemoved) && !!state.artwork) {
+      if ((isArtworkListAdded || isArtworkListRemoved) && !!state.state.artwork) {
         return "ADDED_AND_REMOVED_LIST"
       }
 
@@ -122,44 +108,35 @@ export const getArtworkListsModel = (): ArtworkListsModel => ({
 
   // Actions
   setToastBottomPadding: action((state, payload) => {
-    state.toastBottomPadding = payload
+    state.state.toastBottomPadding = payload
   }),
 
   setCreateNewArtworkListViewVisible: action((state, payload) => {
-    state.createNewArtworkListViewVisible = payload
+    state.state.createNewArtworkListViewVisible = payload
   }),
 
   openSelectArtworkListsView: action((state, payload) => {
-    state.artwork = payload
-    state.artworkListID = null
-    state.selectArtworkListsViewVisible = true
+    state.state.artwork = payload
+    state.state.artworkListID = null
+    state.state.selectArtworkListsViewVisible = true
   }),
 
   reset: action((state) => {
-    const initialState = getArtworkListsStoreInitialState()
-    state.selectArtworkListsViewVisible = initialState.selectArtworkListsViewVisible
-    state.createNewArtworkListViewVisible = initialState.createNewArtworkListViewVisible
-    state.artworkListOfferSettingsViewVisible = initialState.artworkListOfferSettingsViewVisible
-    state.artwork = initialState.artwork
-    state.artworkListID = initialState.artworkListID
-    state.recentlyAddedArtworkList = initialState.recentlyAddedArtworkList
-    state.selectedTotalCount = initialState.selectedTotalCount
-    state.addingArtworkLists = initialState.addingArtworkLists
-    state.removingArtworkLists = initialState.removingArtworkLists
-    state.keepingArtworkListsPrivate = initialState.keepingArtworkListsPrivate
-    state.sharingArtworkLists = initialState.sharingArtworkLists
-    state.hasUnsavedChanges = initialState.hasUnsavedChanges
+    state.state = {
+      ...getArtworkListsStoreInitialState(),
+      toastBottomPadding: state.state.toastBottomPadding,
+    }
   }),
 
   setRecentlyAddedArtworkList: action((state, payload) => {
-    state.recentlyAddedArtworkList = payload
+    state.state.recentlyAddedArtworkList = payload
   }),
 
   addOrRemoveArtworkList: action((state, payload) => {
     const { artworkList, mode } = payload
-    const artworkLists = state[mode]
+    const artworkLists = state.state[mode]
     const ids = artworkLists.map((artworkList) => artworkList.internalID)
-    const updatedState = { ...state }
+    const updatedState = { ...state.state }
 
     if (ids.includes(artworkList.internalID)) {
       updatedState[mode] = artworkLists.filter(
@@ -171,33 +148,35 @@ export const getArtworkListsModel = (): ArtworkListsModel => ({
 
     updatedState.hasUnsavedChanges = hasChanges(updatedState)
 
-    state = updatedState
+    state.state = updatedState
   }),
 
   setSelectedTotalCount: action((state, payload) => {
-    state.selectedTotalCount = payload
+    state.state.selectedTotalCount = payload
   }),
 
   setUnsavedChanges: action((state, payload) => {
-    state.hasUnsavedChanges = payload
+    state.state.hasUnsavedChanges = payload
   }),
 
   setOfferSettingsViewVisible: action((state, payload) => {
-    state.artworkListOfferSettingsViewVisible = payload
+    state.state.artworkListOfferSettingsViewVisible = payload
   }),
 
   shareOrKeepArtworkListPrivate: action((state, payload) => {
     const { artworkList, mode } = payload
-    const artworkLists = state[mode]
+    const artworkLists = state.state[mode]
     const ids = artworkLists.map((list) => list.internalID)
 
     if (ids.includes(artworkList.internalID)) {
-      state[mode] = artworkLists.filter((entity) => entity.internalID !== artworkList.internalID)
+      state.state[mode] = artworkLists.filter(
+        (entity) => entity.internalID !== artworkList.internalID
+      )
     } else {
-      state[mode] = [...artworkLists, artworkList]
+      state.state[mode] = [...artworkLists, artworkList]
     }
 
-    state.hasUnsavedChanges = hasOfferSettingChanges(state)
+    state.state.hasUnsavedChanges = hasOfferSettingChanges(state.state)
   }),
 })
 
@@ -221,10 +200,10 @@ const ListElements: FC = ({ children }) => {
     createNewArtworkListViewVisible,
     selectArtworkListsViewVisible,
   } = ArtworkListsStore.useStoreState((state) => ({
-    artwork: state.artwork,
-    artworkListOfferSettingsViewVisible: state.artworkListOfferSettingsViewVisible,
-    selectArtworkListsViewVisible: state.selectArtworkListsViewVisible,
-    createNewArtworkListViewVisible: state.createNewArtworkListViewVisible,
+    artwork: state.state.artwork,
+    artworkListOfferSettingsViewVisible: state.state.artworkListOfferSettingsViewVisible,
+    selectArtworkListsViewVisible: state.state.selectArtworkListsViewVisible,
+    createNewArtworkListViewVisible: state.state.createNewArtworkListViewVisible,
   }))
 
   return (

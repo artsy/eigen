@@ -10,7 +10,7 @@ import { graphql, useLazyLoadQuery } from "react-relay"
 const LOADING_PLACEHOLDER_COUNT = 10
 
 const SelectArtworkListsForArtworkContent = () => {
-  const artwork = ArtworkListsStore.useStoreState((state) => state.artwork)
+  const artwork = ArtworkListsStore.useStoreState((state) => state.state.artwork)
 
   const queryData = useLazyLoadQuery<SelectArtworkListsForArtworkQuery>(
     selectArtworkListsForArtworkQuery,
