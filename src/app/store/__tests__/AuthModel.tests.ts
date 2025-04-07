@@ -77,6 +77,34 @@ describe("AuthModel", () => {
       expect(__globalStoreTestUtils__?.getCurrentState().auth.xApptokenExpiresIn).toBe("never")
     })
 
+    it("will be fetched again if the token is expired", async () => {
+      const oneWeekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+      const oneWeekFromNow = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+
+      __globalStoreTestUtils__?.injectState({
+        auth: {
+          xAppToken: "my-special-token",
+          xApptokenExpiresIn: oneWeekAgo,
+        },
+      })
+
+      mockFetchJsonOnce({
+        xapp_token: "my-new-special-token",
+        expires_in: oneWeekFromNow,
+      })
+
+      const token = await GlobalStore.actions.auth.getXAppToken()
+
+      expect(mockFetch).toHaveBeenCalledTimes(1)
+      expect(token).toBe("my-new-special-token")
+      expect(__globalStoreTestUtils__?.getCurrentState().auth.xAppToken).toBe(
+        "my-new-special-token"
+      )
+      expect(__globalStoreTestUtils__?.getCurrentState().auth.xApptokenExpiresIn).toBe(
+        oneWeekFromNow
+      )
+    })
+
     it("will not be fetched more than once", async () => {
       mockFetchJsonOnce({
         xapp_token: "my-special-token",
