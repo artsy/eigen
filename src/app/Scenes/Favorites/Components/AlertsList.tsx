@@ -1,9 +1,8 @@
-import { Flex, Screen, SortIcon, Spacer, Spinner, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Screen, Spacer, Spinner } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import { AlertsList_me$data, AlertsList_me$key } from "__generated__/AlertsList_me.graphql"
 import { ALERTS_PAGE_SIZE } from "app/Components/constants"
-import { AlertsSortByModal, SortOption } from "app/Scenes/Favorites/Components/AlertsSortByModal"
 import {
   AlertBottomSheet,
   BottomSheetAlert,
@@ -13,9 +12,7 @@ import { SavedSearchListItem } from "app/Scenes/SavedSearchAlertsList/Components
 import { extractNodes } from "app/utils/extractNodes"
 import { RefreshEvents, SAVED_ALERT_REFRESH_KEY } from "app/utils/refreshHelpers"
 import React, { useEffect, useRef, useState } from "react"
-import { InteractionManager } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
-import usePrevious from "react-use/lib/usePrevious"
 
 interface AlertsListProps {
   me: AlertsList_me$data
@@ -25,11 +22,6 @@ interface AlertsListProps {
   onLoadMore: () => void
   onAlertPress: (alert: BottomSheetAlert) => void
 }
-
-const SORT_OPTIONS: SortOption[] = [
-  { value: "ENABLED_AT_DESC", text: "Recently Added" },
-  { value: "NAME_ASC", text: "Name (A-Z)" },
-]
 
 export const AlertsList: React.FC<AlertsListProps> = (props) => {
   const { me, isRefreshing, fetchingMore, onRefresh, onLoadMore, onAlertPress } = props
@@ -129,10 +121,7 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
   const isFocused = useIsFocused()
   const initialRender = useRef(true)
 
-  const [modalVisible, setModalVisible] = useState(false)
   const [selectedAlert, setSelectedAlert] = useState<BottomSheetAlert | null>(null)
-  const [selectedSortValue, setSelectedSortValue] = useState("ENABLED_AT_DESC")
-  const prevSelectedSortValue = usePrevious(selectedSortValue)
 
   // We want to make sure that the list is refreshed when the screen is focused
   // This is needed to make sure we don't show deleted alerts
@@ -163,9 +152,7 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
 
   const onRefresh = () => {
     refetch(
-      {
-        sort: selectedSortValue,
-      },
+      {},
       {
         onComplete: () => {},
         fetchPolicy: "store-and-network",
@@ -173,51 +160,8 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
     )
   }
 
-  const handleSelectOption = (option: SortOption) => {
-    setSelectedSortValue(option.value)
-    setModalVisible(false)
-  }
-
-  /**
-   * If we call `refetch` immediately after we have specified sort value,
-   * we get "freeze" screen on which nothing can be clicked or scrolled.
-   * For this reason, we call `refetch` only after the modal is closed completely.
-   *
-   * More context here: https://github.com/facebook/react-native/issues/16182#issuecomment-333814201
-   */
-  const handleSortByModalClosed = () => {
-    setModalVisible(false)
-
-    if (selectedSortValue === prevSelectedSortValue) {
-      return
-    }
-
-    InteractionManager.runAfterInteractions(() => {
-      refetch(
-        {
-          sort: selectedSortValue,
-        },
-        {
-          onComplete: () => {},
-          // We intentionally want to fetch the data from the network to avoid showing stale data
-          // Then removing it from the screen. This is mostly visible when the user switches between
-          // Sort modes
-          fetchPolicy: "network-only",
-        }
-      )
-    })
-  }
-
   return (
     <Flex flex={1}>
-      <Touchable
-        onPress={() => {
-          setModalVisible(true)
-        }}
-      >
-        <AlertsListSortByHeader />
-      </Touchable>
-
       <AlertsList
         me={data}
         fetchingMore={isLoadingNext}
@@ -227,14 +171,6 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
         onAlertPress={(alert: BottomSheetAlert) => {
           setSelectedAlert(alert)
         }}
-      />
-
-      <AlertsSortByModal
-        visible={modalVisible}
-        options={SORT_OPTIONS}
-        selectedValue={selectedSortValue}
-        onSelectOption={handleSelectOption}
-        onModalFinishedClosing={handleSortByModalClosed}
       />
 
       {!!selectedAlert && (
@@ -249,26 +185,11 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
   )
 }
 
-export const AlertsListSortByHeader: React.FC<{}> = () => {
-  return (
-    <Flex flexDirection="row" alignItems="center" mx={2} mb={1}>
-      <Text variant="sm-display" mr={0.5}>
-        Sort By
-      </Text>
-      <SortIcon />
-    </Flex>
-  )
-}
-
 const alertsListFragment = graphql`
   fragment AlertsList_me on Me
   @refetchable(queryName: "AlertsList_meRefetch")
-  @argumentDefinitions(
-    count: { type: "Int", defaultValue: 10 }
-    cursor: { type: "String" }
-    sort: { type: "AlertsConnectionSortEnum", defaultValue: ENABLED_AT_DESC }
-  ) {
-    alertsConnection(first: $count, after: $cursor, sort: $sort)
+  @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+    alertsConnection(first: $count, after: $cursor, sort: ENABLED_AT_DESC)
       @connection(key: "AlertsList_alertsConnection") {
       edges {
         node {
