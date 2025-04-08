@@ -89,7 +89,7 @@ const SECTIONS = [
           />
           <TitleWithIcon
             icon={<SettingsIcon />}
-            title="Signal your interest to galleries and you could receiving an offer on your saved artwork from a gallery. Read more."
+            title="Customize Alerts to match your budget, preferred medium, rarity or other criteria."
           />
         </Join>
       </Flex>
