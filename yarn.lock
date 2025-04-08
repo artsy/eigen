@@ -17,6 +17,11 @@
   dependencies:
     core-js "3"
 
+"@artsy/icons@3.27.0":
+  version "3.27.0"
+  resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.27.0.tgz#b4daf7331cb0962c44c07de9de0a1a117adfcd4b"
+  integrity sha512-bOlwS5O6/E4E+BmRVfI7/RWVoehnxiwgtQusVubZDjzMpZWxGh6QAPVsF9sIxISyV11f+Yw4KOTh9UvPNuRyNQ==
+
 "@artsy/palette-mobile@14.0.42":
   version "14.0.42"
   resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-14.0.42.tgz#d1b9445242cb836cd83e6bc70818bd269a82b5e8"
