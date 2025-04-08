@@ -89,7 +89,7 @@ export const NavigationHeader: React.FC<NavigationHeaderProps> = ({
               {rightButtonText ? (
                 <Text
                   variant="sm"
-                  color={rightButtonDisabled ? "black30" : "black100"}
+                  color={rightButtonDisabled ? "black60" : "black100"}
                   testID={rightButtonTestId}
                   disabled={rightButtonDisabled}
                   aria-disabled={rightButtonDisabled}
