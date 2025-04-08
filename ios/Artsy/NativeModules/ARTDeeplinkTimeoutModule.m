@@ -1,6 +1,6 @@
 #import "ARTDeeplinkTimeoutModule.h"
-#import "ARAppDelegate.h"
-#import "ARAppDelegate+DeeplinkTimeout.h"
+#import "AppDelegate.h"
+#import "AppDelegate+DeeplinkTimeout.h"
 
 @implementation ARTDeeplinkTimeoutModule
 

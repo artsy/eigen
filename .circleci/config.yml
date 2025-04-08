@@ -123,7 +123,7 @@ commands:
           at: ../workspace
       - restore_cache:
           keys:
-            - v16-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+            - v17-test-success-{{ checksum "../workspace/.manifests/android_native" }}
       - android/change-java-version:
           java-version: 17
       - run:
@@ -152,7 +152,7 @@ commands:
     steps:
       - restore_cache:
           keys:
-            - v10-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+            - v11-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
       - generate-query-map
       - run:
           name: Download fonts from s3
@@ -162,9 +162,10 @@ commands:
           command: ./scripts/setup/download-assets-android
       - run:
           name: Build App
+          no_output_timeout: 30m
           command: ./scripts/ci/ci-android
       - save_cache:
-          key: v10-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+          key: v11-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
           paths:
             - android/build
             - android/app/build
@@ -236,26 +237,23 @@ jobs:
       - run:
           name: Determine Deployment Type
           command: |
-            DEPLOYMENT_TYPE=$(./scripts/codepush/determine-deployment-type.sh)
+            DEPLOYMENT_TYPE=$(./scripts/deploys/expo-updates/determine-deployment-type)
             echo "export DEPLOYMENT_TYPE=$DEPLOYMENT_TYPE" >> $BASH_ENV
       - run:
           name: Handle Deployment for beta
           command: |
             if [ "$DEPLOYMENT_TYPE" == "beta" ]; then
               echo "Native code changed, new beta needed!"
-              ./scripts/codepush/maybe_notify_beta_needed.sh
+              ./scripts/deploys/expo-updates/maybe-notify-beta-needed
               circleci-agent step halt
             fi
       - install-node-modules
-      - run:
-          name: Install CodePush CLI
-          command: yarn global add appcenter-cli
       - run-relay-compiler
       - run:
-          name: Handle Deployment for codepush
+          name: Handle Deployment for expo updates
           command: |
-            echo "Triggering CodePush deployment..."
-            ./scripts/codepush/deploy-to-codepush.sh Staging
+            echo "Triggering Expo updates deployment..."
+            ./scripts/deploys/expo-updates/deploy-to-expo-updates staging
 
   test-js:
     parallelism: 8
@@ -464,8 +462,8 @@ jobs:
 
   build-test-app-android:
     docker:
-      - image: cimg/android:2024.01.1-node
-    resource_class: large
+      - image: cimg/android:2025.03.1-node
+    resource_class: xlarge
     steps:
       - prep-android-env
       - await-previous-builds:

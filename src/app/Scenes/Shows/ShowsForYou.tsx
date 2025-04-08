@@ -3,8 +3,8 @@ import { Flex, Screen, Spacer } from "@artsy/palette-mobile"
 import { ShowsForYouQuery } from "__generated__/ShowsForYouQuery.graphql"
 import { ShowsForYou_showsConnection$key } from "__generated__/ShowsForYou_showsConnection.graphql"
 import {
-  CardWithMetaDataListItem,
   CardsWithMetaDataListPlaceholder as ShowsForYouPlaceholder,
+  CardWithMetaDataListItem,
   useNumColumns,
 } from "app/Components/Cards/CardWithMetaData"
 import { ShowCardContainer } from "app/Components/ShowCard"
