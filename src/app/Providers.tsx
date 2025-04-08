@@ -9,17 +9,18 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { NavigationTestsProvider } from "app/utils/tests/NavigationTestsProvider"
-import { Component, Suspense } from "react"
+import { postEventToProviders } from "app/utils/track/providers"
+import { Suspense } from "react"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
+import { useTracking } from "react-tracking"
 import { PopoverMessageProvider } from "./Components/PopoverMessage/PopoverMessageProvider"
 import { AppWideErrorBoundary } from "./Components/RetryErrorBoundary"
 import { ToastProvider } from "./Components/Toast/toastHook"
 import { GlobalStore, GlobalStoreProvider } from "./store/GlobalStore"
 import { GravityWebsocketContextProvider } from "./utils/Websockets/GravityWebsocketContext"
 import { combineProviders } from "./utils/combineProviders"
-import { track } from "./utils/track"
 
 export const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   combineProviders(
@@ -99,14 +100,10 @@ const SuspenseProvider = (props: { children?: React.ReactNode }) => (
   <Suspense fallback={<Spinner />} {...props} />
 )
 
-// react-track has no provider, we make one using the decorator and a class wrapper
-const TrackingProvider = (props: { children?: React.ReactNode }) => <PureWrapper {...props} />
+const TrackingProvider: React.FC = ({ children }) => {
+  const { Track } = useTracking({}, { dispatch: (data) => postEventToProviders(data) })
 
-@track()
-class PureWrapper extends Component {
-  render() {
-    return this.props.children
-  }
+  return <Track>{children}</Track>
 }
 
 // theme with dark mode support
