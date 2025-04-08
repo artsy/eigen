@@ -1,9 +1,11 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, SortIcon, Spacer, Spinner, Text, Touchable } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import { AlertsList_me$data, AlertsList_me$key } from "__generated__/AlertsList_me.graphql"
 import { ALERTS_PAGE_SIZE } from "app/Components/constants"
 import { AlertsSortByModal, SortOption } from "app/Scenes/Favorites/Components/AlertsSortByModal"
+import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import {
   AlertBottomSheet,
   BottomSheetAlert,
@@ -136,6 +138,8 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
   const [selectedSortValue, setSelectedSortValue] = useState("ENABLED_AT_DESC")
   const prevSelectedSortValue = usePrevious(selectedSortValue)
 
+  const { trackTappedAlertsGroup } = useFavoritesTracking()
+
   // We want to make sure that the list is refreshed when the screen is focused
   // This is needed to make sure we don't show deleted alerts
   useEffect(() => {
@@ -233,6 +237,7 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
           onLoadMore={handleLoadMore}
           onAlertPress={(alert: BottomSheetAlert) => {
             setSelectedAlert(alert)
+            trackTappedAlertsGroup(alert.id)
           }}
         />
 
