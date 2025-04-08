@@ -30,7 +30,7 @@
         "keyid": "main",
         "alg": "rsa-v1_5-sha256"
       },
-      "url": "http://10.12.17.52:3000/api/manifest?project=eigen&channel=canary",
+      "url": "https://expo-updates-api.artsy.net/api/manifest?project=eigen&channel=canary",
       "requestHeaders": {
         "expo-channel-name": "canary"
       }

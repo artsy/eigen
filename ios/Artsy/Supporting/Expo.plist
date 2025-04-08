@@ -11,22 +11,22 @@
 	</dict>
 	<key>EXUpdatesCodeSigningCertificate</key>
 	<string>-----BEGIN CERTIFICATE-----
-MIICzTCCAbWgAwIBAgIJE93aAH2H6ghwMA0GCSqGSIb3DQEBCwUAMA8xDTALBgNV
-BAMTBHRlc3QwIBcNMjUwMzEzMTQwNTQxWhgPMjEyNTAzMTMxNDA1NDFaMA8xDTAL
-BgNVBAMTBHRlc3QwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDG8fCp
-iNgvVIBNkXsaStwG69ZD5cLzwFQLgu6Qp2sYqd8y0FiahuBAe1lmTzOyxmvwEUNF
-7ahBGQU30XT8XrCq7DuWMz59Vcg77WLqMjWbvQpcqfFlCDsMkprRV8mGkmMnpS6M
-z/OGDUDrGUd3T+JNdt5Yxg6Iylwd+3k28OzRLUgl0WZUN/tVFB9HAJMMN/zjPrha
-4tU5tg+z1wHpqvx5uK+YtuJfhG/YYYG0TRppO6kmqguDy7CqjWhr030PAszvJFY5
-mI4F+yko3gnQtbuLX1DD9Fq1BIi9Z05ES705g2TI3seaQnKEg/TMK6WEY+Fvkw7x
-p3AUmBjaVkUvTDSrAgMBAAGjKjAoMA4GA1UdDwEB/wQEAwIHgDAWBgNVHSUBAf8E
-DDAKBggrBgEFBQcDAzANBgkqhkiG9w0BAQsFAAOCAQEAxpNIT5dpQuVD6/F+rygd
-c551oSyvbJqWThp0zS3C9JHcalSWUoUkbZC3oTgPlfKpsv9iZfiBR+ymJcFEp9+2
-GTCP1qZefBtYgdaJU88AnUhc+1Cs4589Fp+Z7Sx3nQxf/+Jam+As0+gHerzXXIjt
-yw/6UM62zltglHmgZ+5IxE0Y93GG2HFmC6Rqeyh0/F6IXt2H3iSZabP1DdIqKAET
-y/GCNVvc/Z9KB1rI7ZB6IH1BesOeY1fbXIGH02V0fkYyvKD8Z1YeMvNrCb7HkOji
-iQ/RfWAKqhn3Ky5lGUEYeq1Hnfa9Elosc8j6LoKouajGcqpxc7CeLKlJHoeWcJXM
-AQ==
+MIICzTCCAbWgAwIBAgIJQkCG/E/6FxMEMA0GCSqGSIb3DQEBCwUAMA8xDTALBgNV
+BAMTBHRlc3QwIBcNMjUwNDA4MTQzODA2WhgPMjEyNTA0MDgxNDM4MDZaMA8xDTAL
+BgNVBAMTBHRlc3QwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCs2Jyh
+5U4Dr0XENdnTtiDXbn2oI6KH3Glzh65ZSPQcWAd0R7eNO6vQsylbcxRe0vv7AO/s
+J+5rV5ua7qPNtzr7qAE1fc/qakOtk1BfWp3p6mM+vMUCAntozrRIwhNhOBmRlzle
+lpYOdR3/YuyzS441Y7oXlAhX/fxofbgozdP6lCsz/+Ed+2EGQHzBNnnDY6RvDjjf
+SE99xCNwGrELmxzJkEF91rCFxHAzEbk4FEZu8dCQWDapnuDTO6XKXupUsZ6pH8z3
+j+3UXcvQkJFF4p/47uv+S8nKoqhheNs5A1cNTkWpyBdcAsYtBRnTjZaGZtPe4k6b
+/mHz9RgfGSF796XhAgMBAAGjKjAoMA4GA1UdDwEB/wQEAwIHgDAWBgNVHSUBAf8E
+DDAKBggrBgEFBQcDAzANBgkqhkiG9w0BAQsFAAOCAQEAmMyJBVFZ3LqHMGJmKcEX
+/RpEIBbmiIsjsBAEwBvZeVauvCFvl4CtRRZEcrX4afvu31hZGWYn2CbYBkNXgMOQ
+uJ2H72sCmPVkWZ1SDbDDqqZgtF6Z6ece+pWiEPPicmf3bbA/qPWjFS/kItCC04Z3
+X8FuJuHBkfLkaR385krC33oSJ3gMXAj/lN/y/Wb9emgThDIdbUMWFjRvHjhdftTA
+EkGiKCLCFCFeEb2jWUo2YyDUWWQenkfiwT8ECjKs/QmJxSYtDy87S9r06VEiMSYu
+xiD4Ur42oTOYB52P2e/1zXxWJqxEV1qK/GRpwSAwoQpz8EYu4+GTjlXJLeY3kJbd
+gw==
 -----END CERTIFICATE-----</string>
 	<key>EXUpdatesEnabled</key>
 	<true/>
@@ -35,7 +35,7 @@ AQ==
 	<key>EXUpdatesLaunchWaitMs</key>
 	<integer>0</integer>
 	<key>EXUpdatesURL</key>
-	<string>http://10.12.17.52:3000/api/manifest?project=eigen&amp;channel=canary</string>
+	<string>https://expo-updates-api.artsy.net/api/manifest?project=eigen&amp;channel=canary</string>
 	<key>EXUpdatesRuntimeVersion</key>
 	<string>1.0.0</string>
 	<key>EXUpdatesRequestHeaders</key>
