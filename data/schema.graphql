@@ -3273,22 +3273,22 @@ type ArtworkSavedSearch {
 
 type ArtworkSignatureMeta {
   # Whether the artwork has a signature
-  hasSignature: Boolean
+  hasSignature: Boolean!
 
   # Whether the artwork has a sticker label
-  hasStickerLabel: Boolean
+  hasStickerLabel: Boolean!
 
   # Whether the artwork is signed by the artist
-  isSignedByArtist: Boolean
+  isSignedByArtist: Boolean!
 
   # Whether the artwork is signed in plate
-  isSignedInPlate: Boolean
+  isSignedInPlate: Boolean!
 
   # Whether the artwork is signed by someone else
-  isSignedOther: Boolean
+  isSignedOther: Boolean!
 
   # Whether the artwork is stamped by the artist's estate
-  isStampedByArtistEstate: Boolean
+  isStampedByArtistEstate: Boolean!
 }
 
 enum ArtworkSignatureTypeEnum {
