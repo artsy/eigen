@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, Flex, useTheme, Text } from "@artsy/palette-mobile"
+import { ArrowLeftIcon, Flex, Text, useTheme } from "@artsy/palette-mobile"
 import { FadeInLeft } from "app/utils/animations/FadeInLeft"
 import { useEffect } from "react"
 import { TouchableOpacity, View } from "react-native"
@@ -61,7 +61,7 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
           <Text
             variant="sm"
             style={{ textDecorationLine: "underline" }}
-            color={rightButtonDisabled ? "black30" : "black100"}
+            color={rightButtonDisabled ? "black60" : "black100"}
           >
             {rightButtonText}
           </Text>

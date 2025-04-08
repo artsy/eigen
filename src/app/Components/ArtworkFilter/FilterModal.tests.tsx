@@ -17,16 +17,11 @@ import { mockNavigate } from "app/utils/tests/navigationMocks"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { closeModalMock, getEssentialProps, MockFilterScreen } from "./FilterTestHelper"
 
 const exitModalMock = jest.fn()
 const trackEvent = jest.fn()
-
-beforeEach(() => {
-  ;(useTracking as jest.Mock).mockImplementation(() => ({ trackEvent }))
-})
 
 const mockAggregations: Aggregations = [
   {
@@ -76,10 +71,6 @@ const initialState: ArtworkFiltersState = {
   showFilterArtworksModal: false,
   sizeMetric: "cm",
 }
-
-afterEach(() => {
-  jest.resetAllMocks()
-})
 
 const MockFilterModalNavigator = ({
   initialData = initialState,

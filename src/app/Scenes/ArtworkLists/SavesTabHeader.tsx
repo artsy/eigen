@@ -15,7 +15,7 @@ import {
   Text,
   TrendingIcon,
 } from "@artsy/palette-mobile"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { AutoHeightInfoModal } from "app/Components/Buttons/InfoButton"
 import { ProgressiveOnboardingOfferSettings } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingOfferSettings"
 import { ProgressiveOnboardingSignalInterest } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSignalInterest"
@@ -28,22 +28,20 @@ const PARTNER_OFFER_HELP_ARTICLE_URL = "https://support.artsy.net/s/article/Offe
 
 export const SavesTabHeader = () => {
   const [modalVisible, setModalVisible] = useState(false)
-  const { dispatch } = useArtworkListsContext()
+  const { setCreateNewArtworkListViewVisible, setOfferSettingsViewVisible } =
+    ArtworkListsStore.useStoreActions((actions) => ({
+      setCreateNewArtworkListViewVisible: actions.setCreateNewArtworkListViewVisible,
+      setOfferSettingsViewVisible: actions.setOfferSettingsViewVisible,
+    }))
   const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
   const tracking = useTracking()
 
   const handleCreateList = () => {
-    dispatch({
-      type: "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE",
-      payload: true,
-    })
+    setCreateNewArtworkListViewVisible(true)
   }
 
   const handleOfferSettings = () => {
-    dispatch({
-      type: "SET_OFFER_SETTINGS_VIEW_VISIBLE",
-      payload: true,
-    })
+    setOfferSettingsViewVisible(true)
   }
 
   return (

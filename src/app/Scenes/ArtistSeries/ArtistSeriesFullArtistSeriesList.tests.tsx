@@ -1,9 +1,9 @@
-import { Touchable } from "@artsy/palette-mobile"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtistSeriesFullArtistSeriesListTestsQuery } from "__generated__/ArtistSeriesFullArtistSeriesListTestsQuery.graphql"
 import { ArtistSeriesFullArtistSeriesListFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
@@ -36,8 +36,8 @@ describe("Full Artist Series List", () => {
     />
   )
 
-  const getWrapper = () => {
-    const { root } = renderWithWrappersLEGACY(<TestRenderer />)
+  it("renders the all of an artist's associated Artist Series", async () => {
+    renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
         errors: [],
@@ -46,21 +46,35 @@ describe("Full Artist Series List", () => {
         },
       })
     })
-    return root
-  }
 
-  it("renders the all of an artist's associated Artist Series", async () => {
-    const root = getWrapper()
-
-    expect(await root.findAllByType(ArtistSeriesListItem)).toHaveLength(6)
+    expect(screen.UNSAFE_getAllByType(ArtistSeriesListItem)).toHaveLength(6)
   })
 
   it("tracks clicks on an artist series", async () => {
-    const root = getWrapper()
-    const artistSeriesListItems = await root.findAllByType(ArtistSeriesListItem)
-    const seriesButton = await artistSeriesListItems[0].findByType(Touchable)
-    seriesButton.props.onPress()
+    renderWithWrappers(<TestRenderer />)
+    act(() => {
+      env.mock.resolveMostRecentOperation({
+        errors: [],
+        data: {
+          ...ArtistSeriesFullArtistSeriesListFixture,
+        },
+      })
+    })
+
+    // screenTrackEvent is called when the screen is loaded
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      [
+        {
+          "context_screen": "AllArtistSeries",
+          "context_screen_owner_type": "AllArtistSeries",
+        },
+      ]
+    `)
+
+    expect(screen.getByText("plums")).toBeOnTheScreen()
+    fireEvent.press(screen.getByText("plums"))
+
+    expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
       [
         {
           "action": "tappedArtistSeriesGroup",

@@ -5,7 +5,7 @@ import { ArtworkStickyBottomContent_partnerOffer$key } from "__generated__/Artwo
 import { BidButton_me$key } from "__generated__/BidButton_me.graphql"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore } from "app/Scenes/Artwork/ArtworkStore"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -36,7 +36,9 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
 
   const { bottom: bottomSafeAreaInset } = useScreenDimensions().safeAreaInsets
 
-  const { dispatch } = useArtworkListsContext()
+  const setToastBottomPadding = ArtworkListsStore.useStoreActions(
+    (actions) => actions.setToastBottomPadding
+  )
 
   const checkIsLotEnded = () => {
     const endAt = artworkData.saleArtwork?.extendedBiddingEndAt ?? artworkData.saleArtwork?.endAt
@@ -56,10 +58,7 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
 
   useEffect(() => {
     if (hideContent) {
-      dispatch({
-        type: "SET_TOAST_BOTTOM_PADDING",
-        payload: 0,
-      })
+      setToastBottomPadding(0)
     }
   }, [])
 
@@ -73,10 +72,7 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
       bg="white100"
       pb={`${safeAreaInsets.bottom}px`}
       onLayout={(e) => {
-        dispatch({
-          type: "SET_TOAST_BOTTOM_PADDING",
-          payload: e.nativeEvent.layout.height - bottomSafeAreaInset,
-        })
+        setToastBottomPadding(e.nativeEvent.layout.height - bottomSafeAreaInset)
       }}
     >
       <Separator />

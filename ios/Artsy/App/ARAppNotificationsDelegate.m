@@ -28,6 +28,8 @@
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
+    BOOL hasSeenPushDialog = [[NSUserDefaults standardUserDefaults] boolForKey:ARAPNSHasSeenPushDialog];
+    
     NSString *analyticsContext = @"";
     if (self.requestContext == ARAppNotificationsRequestContextArtistFollow) {
         analyticsContext = @"ArtistFollow";
@@ -37,11 +39,15 @@
         analyticsContext = @"Launch";
     }
     analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
-    [[AREmission sharedInstance] sendEvent:ARAnalyticsPushNotificationApple traits:@{
-        @"action_type" : @"Tap",
-        @"action_name" : @"Cancel",
-        @"context_screen"  : analyticsContext
-    }];
+    
+    if (!hasSeenPushDialog) {
+        [[AREmission sharedInstance] sendEvent:ARAnalyticsPushNotificationApple traits:@{
+            @"action_type" : @"Tap",
+            @"action_name" : @"Cancel",
+            @"context_screen"  : analyticsContext
+        }];
+    }
+    [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:ARAPNSHasSeenPushDialog];
 #if (TARGET_IPHONE_SIMULATOR == 0)
     ARErrorLog(@"Error registering for remote notifications: %@", error.localizedDescription);
 #endif
@@ -49,6 +55,8 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceTokenData
 {
+    BOOL hasSeenPushDialog = [[NSUserDefaults standardUserDefaults] boolForKey:ARAPNSHasSeenPushDialog];
+
     NSString *analyticsContext = @"";
     if (self.requestContext == ARAppNotificationsRequestContextArtistFollow) {
         analyticsContext = @"ArtistFollow";
@@ -58,12 +66,13 @@
         analyticsContext = @"Launch";
     }
     analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
-
-    [[AREmission sharedInstance] sendEvent:ARAnalyticsPushNotificationApple traits:@{
-        @"action_type" : @"Tap",
-        @"action_name" : @"Yes",
-        @"context_screen"  : analyticsContext
-    }];
+    if (!hasSeenPushDialog) {
+        [[AREmission sharedInstance] sendEvent:ARAnalyticsPushNotificationApple traits:@{
+            @"action_type" : @"Tap",
+            @"action_name" : @"Yes",
+            @"context_screen"  : analyticsContext
+        }];
+    }
 
     // http://stackoverflow.com/questions/9372815/how-can-i-convert-my-device-token-nsdata-into-an-nsstring
     const unsigned *tokenBytes = [deviceTokenData bytes];
@@ -77,7 +86,8 @@
 
     // Save device token for dev settings and to prevent excess calls to gravity if tokens don't change
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
-
+    [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:ARAPNSHasSeenPushDialog];
+    
     [[[ARAppDelegate braze] notifications] registerDeviceToken:deviceTokenData];
 
 // We only record device tokens on the Artsy service in case of Beta or App Store builds.

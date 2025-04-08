@@ -88,6 +88,10 @@ export const ArtworkCommercialButtons: React.FC<ArtworkCommercialButtonsProps> =
     )
   }
 
+  if ((!artworkData.editionSets || artworkData.editionSets.length > 1) && !selectedEditionId) {
+    return null
+  }
+
   if (artworkData.isOfferable && artworkData.isAcquireable) {
     return (
       <RowContainer>

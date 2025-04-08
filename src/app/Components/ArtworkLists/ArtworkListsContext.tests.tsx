@@ -1,33 +1,41 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { ArtworkListsContextTestQuery } from "__generated__/ArtworkListsContextTestQuery.graphql"
-import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { SelectArtworkListsForArtworkQuery } from "__generated__/SelectArtworkListsForArtworkQuery.graphql"
+import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ArtworkEntity } from "app/Components/ArtworkLists/types"
+import * as utils from "app/Components/ArtworkLists/types"
+import { selectArtworkListsForArtworkQuery } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/components/SelectArtworkListsForArtwork"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { graphql } from "react-relay"
 
 jest.mock("@gorhom/bottom-sheet", () => require("@gorhom/bottom-sheet/mock"))
 
 describe("ArtworkListsProvider", () => {
-  const { renderWithRelay } = setupTestWrapper<ArtworkListsContextTestQuery>({
-    Component: (props: any) => (
-      <ArtworkListsProvider
-        artwork={props?.artwork ?? artworkEntity}
-        selectArtworkListsViewVisible={props?.selectArtworkListsViewVisible ?? true}
-        artworkListOfferSettingsViewVisible={props?.artworkListOfferSettingsViewVisible ?? false}
-        {...props}
-      />
-    ),
-    query: graphql`
-      query ArtworkListsContextTestQuery @relay_test_operation {
-        ...ArtworkLists_collectionsConnection
-      }
-    `,
+  const initialStateSpy = jest.spyOn(utils, "getArtworkListsStoreInitialState")
+
+  const { renderWithRelay } = setupTestWrapper<SelectArtworkListsForArtworkQuery>({
+    Component: () => <ArtworkListsProvider />,
+    query: selectArtworkListsForArtworkQuery,
+    variables: { artworkID: "banksy" },
+    wrapperProps: { includeArtworkLists: false },
+  })
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+    initialStateSpy.mockReturnValue({
+      ...utils.ARTWORK_LISTS_STORE_INITIAL_STATE,
+      artwork: artworkEntity,
+      selectArtworkListsViewVisible: true,
+    })
   })
 
   describe("Select lists for artwork", () => {
     it("should not be displayed by default", () => {
-      renderWithRelay({}, { artwork: null })
+      initialStateSpy.mockReturnValue({
+        ...utils.ARTWORK_LISTS_STORE_INITIAL_STATE,
+        artwork: null,
+        selectArtworkListsViewVisible: true,
+      })
+      renderWithRelay()
 
       expect(
         screen.queryByText("Select where you’d like to save this artwork:")
@@ -316,11 +324,13 @@ describe("ArtworkListsProvider", () => {
 
   describe("Update artwork list offers settings", () => {
     const renderOfferSettings = (mockResolvers?: any, props?: any) => {
-      return renderWithRelay(mockResolvers, {
+      initialStateSpy.mockReturnValue({
+        ...utils.ARTWORK_LISTS_STORE_INITIAL_STATE,
         artworkListOfferSettingsViewVisible: true,
         selectArtworkListsViewVisible: false,
         ...props,
       })
+      return renderWithRelay(mockResolvers)
     }
 
     beforeEach(() => {

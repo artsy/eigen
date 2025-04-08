@@ -163,6 +163,7 @@ commands:
       - run:
           name: Build App
           command: ./scripts/ci/ci-android
+          no_output_timeout: 20m
       - save_cache:
           key: v10-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
           paths:

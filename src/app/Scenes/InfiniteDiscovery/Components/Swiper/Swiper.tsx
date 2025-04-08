@@ -150,7 +150,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
 
     const swipeLeftThenRight = (duration: number) => {
       const swipedCardIndex = _activeIndex.value
-      const swipedCardKey = cards[swipedCardIndex].internalID
+      const swipedCardKey = cards[swipedCardIndex]?.internalID
 
       if (swipedCardKey) {
         activeCardX.value = withSequence(

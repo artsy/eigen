@@ -191,7 +191,7 @@ describe("messages with order updates", () => {
     // get all elements and remove timestamps
     const messagesAndUpdates = tree.root
       .findAllByType(Text)
-      .filter((element) => element.props.color !== "black30")
+      .filter((element) => element.props.color !== "black60")
       .map((element) => extractText(element))
 
     // messages print in reverse order because FlatList is inverted

@@ -2,12 +2,12 @@ import {
   BellIcon,
   Box,
   Button,
-  useColor,
-  Text,
+  Flex,
   Separator,
   SpacingUnit,
   SpacingUnitsTheme,
-  Flex,
+  Text,
+  useColor,
 } from "@artsy/palette-mobile"
 import { ProgressiveOnboardingAlertFinish } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingAlertFinish"
 import { useState } from "react"

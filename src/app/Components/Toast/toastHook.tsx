@@ -1,31 +1,19 @@
 import { GlobalStore } from "app/store/GlobalStore"
-import { createContext, useContext, useMemo } from "react"
-import { Toast } from "./Toast"
+import { useMemo } from "react"
 import { ToastComponent } from "./ToastComponent"
-import { ToastDetails, ToastPlacement } from "./types"
-
-type ToastContextValue = typeof Toast
-
-const ToastContext = createContext<ToastContextValue>({
-  show: () => {},
-
-  hide: () => {},
-
-  hideOldest: () => {},
-})
-const useToastContext = () => useContext(ToastContext)
+import { ToastDetails, ToastOptions, ToastPlacement } from "./types"
 
 export const useToast = () => {
-  const contextValue = useToastContext()
+  const add = GlobalStore.actions.toast.add
+  const remove = GlobalStore.actions.toast.remove
+  const removeOldest = GlobalStore.actions.toast.removeOldest
 
-  return useMemo(
-    () => ({
-      show: contextValue.show,
-      hide: contextValue.hide,
-      hideOldest: contextValue.hideOldest,
-    }),
-    [contextValue]
-  )
+  return {
+    show: (message: string, placement: ToastPlacement, options?: ToastOptions) =>
+      add({ message, placement, options }),
+    hide: (id: number) => remove(id),
+    hideOldest: removeOldest,
+  }
 }
 
 const filterToastsAndPosition = (
@@ -47,11 +35,11 @@ export const ToastProvider = ({ children }: { children?: React.ReactNode }) => {
   const middleToasts = useMemo(() => filterToastsAndPosition(toasts, "middle"), [toasts])
 
   return (
-    <ToastContext.Provider value={{ ...Toast }}>
+    <>
       {children}
       {[...topToasts, ...bottomToasts, ...middleToasts].map((toastProps) => (
         <ToastComponent key={`${toastProps.id}`} {...toastProps} />
       ))}
-    </ToastContext.Provider>
+    </>
   )
 }

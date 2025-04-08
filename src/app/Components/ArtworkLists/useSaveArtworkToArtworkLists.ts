@@ -1,7 +1,8 @@
 import { useSaveArtworkToArtworkLists_artwork$key } from "__generated__/useSaveArtworkToArtworkLists_artwork.graphql"
 import { useArtworkListContext } from "app/Components/ArtworkLists/ArtworkListContext"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
-import { ArtworkEntity, ResultAction } from "app/Components/ArtworkLists/types"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
+import { ArtworkEntity } from "app/Components/ArtworkLists/types"
+import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
 import { SaveArtworkOptions, useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { graphql, useFragment } from "react-relay"
 
@@ -11,9 +12,13 @@ interface Options extends Pick<SaveArtworkOptions, "onCompleted" | "onError"> {
 }
 
 export const useSaveArtworkToArtworkLists = (options: Options) => {
+  const toast = useArtworkListToast(null)
   const { artworkFragmentRef, onCompleted, ...restOptions } = options
-  const { onSave, dispatch } = useArtworkListsContext()
   const { artworkListID, removedArtworkIDs } = useArtworkListContext()
+  const openSelectArtworkListsView = ArtworkListsStore.useStoreActions(
+    (actions) => actions.openSelectArtworkListsView
+  )
+
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
 
   const customArtworkListsCount = artwork.customArtworkLists?.totalCount ?? 0
@@ -57,29 +62,20 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
       }
 
       if (isArtworkSaved) {
-        onSave({
-          action: ResultAction.SavedToDefaultArtworkList,
-          artwork: artworkEntity,
+        toast.savedToDefaultArtworkList({
+          onToastPress: () => openSelectArtworkListsView(artworkEntity),
+          isInAuction: !!artworkEntity.isInAuction,
         })
 
         return
       }
 
-      onSave({
-        action: ResultAction.RemovedFromDefaultArtworkList,
-        artwork: artworkEntity,
-      })
+      toast.removedFromDefaultArtworkList()
     },
   })
 
   const openSelectArtworkListsForArtworkView = () => {
-    dispatch({
-      type: "OPEN_SELECT_ARTWORK_LISTS_VIEW",
-      payload: {
-        artwork: artworkEntity,
-        artworkListID,
-      },
-    })
+    openSelectArtworkListsView(artworkEntity)
   }
 
   const saveArtworkToLists = () => {

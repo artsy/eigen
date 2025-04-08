@@ -1,6 +1,6 @@
 import { BottomSheetFlatList } from "@gorhom/bottom-sheet"
 import { ArtworkLists_me$data, ArtworkLists_me$key } from "__generated__/ArtworkLists_me.graphql"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ArtworkListsLoadingIndicator } from "app/Components/ArtworkLists/components/ArtworkListsLoadingIndicator"
 import { ArtworkListMode, ArtworkListOfferSettingsMode } from "app/Components/ArtworkLists/types"
 import { extractNodes } from "app/utils/extractNodes"
@@ -20,11 +20,22 @@ type ArtworkList =
 export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
   const {
     shareArtworkListIDs,
-    keepArtworkListPrivateIDs,
     addingArtworkListIDs,
     removingArtworkListIDs,
-    dispatch,
-  } = useArtworkListsContext()
+    keepArtworkListPrivateIDs,
+  } = ArtworkListsStore.useStoreState((state) => ({
+    shareArtworkListIDs: state.shareArtworkListIDs,
+    addingArtworkListIDs: state.addingArtworkListIDs,
+    removingArtworkListIDs: state.removingArtworkListIDs,
+    keepArtworkListPrivateIDs: state.keepArtworkListPrivateIDs,
+  }))
+  const { setSelectedTotalCount, shareOrKeepArtworkListPrivate, addOrRemoveArtworkList } =
+    ArtworkListsStore.useStoreActions((actions) => ({
+      setSelectedTotalCount: actions.setSelectedTotalCount,
+      shareOrKeepArtworkListPrivate: actions.shareOrKeepArtworkListPrivate,
+      addOrRemoveArtworkList: actions.addOrRemoveArtworkList,
+    }))
+
   const { data, hasNext, loadNext, isLoadingNext } = usePaginationFragment(
     ArtworkListsFragment,
     props.me
@@ -39,10 +50,7 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
   }
 
   useEffect(() => {
-    dispatch({
-      type: "SET_SELECTED_TOTAL_COUNT",
-      payload: totalSelectedArtworkListsCount,
-    })
+    setSelectedTotalCount(totalSelectedArtworkListsCount)
   }, [totalSelectedArtworkListsCount])
 
   const handleLoadMore = () => {
@@ -99,14 +107,11 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
         ? ArtworkListOfferSettingsMode.KeepingArtworkListsPrivate
         : ArtworkListOfferSettingsMode.SharingArtworkLists
 
-      dispatch({
-        type: "SHARE_OR_KEEP_ARTWORK_LIST_PRIVATE",
-        payload: {
-          mode,
-          artworkList: {
-            internalID: artworkList.internalID,
-            name: artworkList.name,
-          },
+      shareOrKeepArtworkListPrivate({
+        mode,
+        artworkList: {
+          internalID: artworkList.internalID,
+          name: artworkList.name,
         },
       })
     } else {
@@ -114,14 +119,11 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
         ? ArtworkListMode.RemovingArtworkList
         : ArtworkListMode.AddingArtworkList
 
-      dispatch({
-        type: "ADD_OR_REMOVE_ARTWORK_LIST",
-        payload: {
-          mode,
-          artworkList: {
-            internalID: artworkList.internalID,
-            name: artworkList.name,
-          },
+      addOrRemoveArtworkList({
+        mode,
+        artworkList: {
+          internalID: artworkList.internalID,
+          name: artworkList.name,
         },
       })
     }

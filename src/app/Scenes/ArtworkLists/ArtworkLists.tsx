@@ -109,8 +109,7 @@ export const ArtworkLists: React.FC<ArtworkListsProps> = withSuspense({
     if (isTab) {
       return (
         <Tabs.FlatList
-          contentContainerStyle={{ padding: space(2) }}
-          style={{ paddingTop: space(2) }}
+          contentContainerStyle={{ paddingHorizontal: space(2) }}
           data={artworkSections}
           renderItem={({ item }) => item.content}
           numColumns={artworkListsColCount}
@@ -125,7 +124,7 @@ export const ArtworkLists: React.FC<ArtworkListsProps> = withSuspense({
 
     return (
       <Screen.FlatList
-        contentContainerStyle={{ padding: space(2) }}
+        contentContainerStyle={{ paddingHorizontal: space(2) }}
         data={artworkSections}
         renderItem={({ item }) => item.content}
         numColumns={artworkListsColCount}
