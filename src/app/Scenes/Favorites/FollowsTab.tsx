@@ -1,4 +1,4 @@
-import { ActionType, OwnerType } from "@artsy/cohesion"
+import { OwnerType } from "@artsy/cohesion"
 import {
   ArrowDownIcon,
   Flex,
@@ -13,13 +13,13 @@ import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/Automoun
 import { FollowedArtistsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedArtists"
 import { FollowedGalleriesQueryRenderer } from "app/Scenes/Favorites/Components/FollowedGalleries"
 import { FollowedShowsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedShows"
+import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useState } from "react"
 import Haptic from "react-native-haptic-feedback"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { useTracking } from "react-tracking"
 
 type FollowOption = "artists" | "shows" | "galleries"
 
@@ -44,9 +44,10 @@ const FOLLOW_OPTIONS: {
 export const FollowsTab = () => {
   const [followOption, setfollowOption] = useState<FollowOption>("artists")
   const { bottom } = useSafeAreaInsets()
-  const { trackEvent } = useTracking()
 
   const [showBottomSheet, setShowBottomSheet] = useState(false)
+
+  const { trackSelectedFromDrawer } = useFavoritesTracking()
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -104,11 +105,7 @@ export const FollowsTab = () => {
                       setTimeout(() => {
                         setShowBottomSheet(false)
                       }, 200)
-                      trackEvent({
-                        action: ActionType.selectedFromDrawer,
-                        context_screen_owner_type: OwnerType.favoritesFollows,
-                        subject: value,
-                      })
+                      trackSelectedFromDrawer(value)
                     }}
                     selected={followOption === value}
                     text={label}

@@ -1,15 +1,14 @@
-import { ActionType, OwnerType } from "@artsy/cohesion"
 import { EyeClosedIcon, Flex, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtworkListItem_collection$key } from "__generated__/ArtworkListItem_collection.graphql"
 import { FourUpImageLayout } from "app/Scenes/ArtworkLists/FourUpImageLayout"
 import { StackedImageLayout } from "app/Scenes/ArtworkLists/StackedImageLayout"
 import { useArtworkListsColCount } from "app/Scenes/ArtworkLists/useArtworkListsColCount"
+import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
-import { useTracking } from "react-tracking"
 
 interface ArtworkListItemProps {
   artworkList: ArtworkListItem_collection$key
@@ -32,17 +31,13 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = ({ artworkList, imagesL
   const artworkNodes = extractNodes(item.artworksConnection)
   const imageURLs = artworkNodes.map((node) => node.image?.resized?.url ?? null)
 
-  const { trackEvent } = useTracking()
+  const { trackTappedArtworkList } = useFavoritesTracking()
 
   return (
     <RouterLink
       to={`/artwork-list/${item.internalID}`}
       onPress={() => {
-        trackEvent({
-          action: ActionType.tappedArtworkList,
-          destination_screen: OwnerType.artworkList,
-          destination_screen_owner_id: item.internalID,
-        })
+        trackTappedArtworkList(item.internalID)
       }}
     >
       <Flex

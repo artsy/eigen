@@ -1,6 +1,6 @@
-import { ActionType, ContextModule } from "@artsy/cohesion"
 import {
   BellIcon,
+  DEFAULT_HIT_SLOP,
   Flex,
   HeartIcon,
   InstitutionIcon,
@@ -15,13 +15,12 @@ import {
 } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
-import { ICON_HIT_SLOP } from "app/Components/constants"
 import { CallapseWithTitle } from "app/Scenes/Favorites/Components/CollapseWithTitle"
 import { FavoritesContextStore } from "app/Scenes/Favorites/FavoritesContextStore"
+import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import React, { useState } from "react"
 import { Dimensions } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { useTracking } from "react-tracking"
 
 const ICON_SIZE = 18
 
@@ -104,37 +103,20 @@ export const FavoritesLearnMore = () => {
   const { activeTab } = FavoritesContextStore.useStoreState((state) => state)
   const [showBottomSheet, setShowBottomSheet] = useState(false)
   const { bottom } = useSafeAreaInsets()
+  const { trackTappedInfoBubble } = useFavoritesTracking()
 
   const { height } = Dimensions.get("screen")
   const SNAP_POINTS = [height * 0.8, height * 0.9]
-
-  const { trackEvent } = useTracking()
-
-  let contextScreen: ContextModule
-  switch (activeTab) {
-    case "saves":
-      contextScreen = ContextModule.favoritesSaves
-      break
-    case "follows":
-      contextScreen = ContextModule.favoritesFollows
-      break
-    case "alerts":
-      contextScreen = ContextModule.favoritesAlerts
-      break
-  }
 
   return (
     <>
       <Touchable
         onPress={() => {
           setShowBottomSheet(true)
-          trackEvent({
-            action: ActionType.tappedInfoBubble,
-            context_screen: contextScreen,
-          })
+          trackTappedInfoBubble(activeTab)
         }}
       >
-        <QuestionCircleIcon height={ICON_SIZE} width={ICON_SIZE} />
+        <QuestionCircleIcon height={ICON_SIZE} width={ICON_SIZE} hitSlop={DEFAULT_HIT_SLOP} />
       </Touchable>
 
       <AutomountedBottomSheetModal
