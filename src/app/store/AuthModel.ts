@@ -1038,16 +1038,16 @@ export const getAuthModel = (): AuthModel => ({
   }),
 })
 
-const isTokenExpired = (expiresIn: string) => {
-  const expirationDate = new Date(expiresIn)
+const isTokenExpired = (expiresIn: string, bufferMs = 300_000) => {
+  const expirationTime = new Date(expiresIn).getTime()
 
-  if (isNaN(expirationDate.getTime())) {
+  if (isNaN(expirationTime)) {
     // if expiresIn is not a valid date string, treat it as expired
     return true
   }
 
-  const now = new Date()
-  return expirationDate <= now
+  // check if the token is expired, considering a buffer to account for clock skew or delays
+  return Date.now() >= expirationTime - bufferMs
 }
 
 const tracks = {
