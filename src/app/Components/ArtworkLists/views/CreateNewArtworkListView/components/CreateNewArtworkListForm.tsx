@@ -1,7 +1,7 @@
 import { ActionType, CreatedArtworkList, OwnerType } from "@artsy/cohesion"
 import { useBottomSheetModal } from "@gorhom/bottom-sheet"
 import { captureMessage } from "@sentry/react-native"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import {
   CreateOrEditArtworkListForm,
   CreateOrEditArtworkListFormValues,
@@ -12,10 +12,15 @@ import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constant
 import { useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { FormikHelpers } from "formik"
+import { FC } from "react"
 import { useTracking } from "react-tracking"
 
-export const CreateNewArtworkListForm: React.FC = () => {
-  const { dispatch } = useArtworkListsContext()
+export const CreateNewArtworkListForm: FC = () => {
+  const { setRecentlyAddedArtworkList: _setRecentlyAddedArtworkList, addOrRemoveArtworkList } =
+    ArtworkListsStore.useStoreActions((actions) => ({
+      setRecentlyAddedArtworkList: actions.setRecentlyAddedArtworkList,
+      addOrRemoveArtworkList: actions.addOrRemoveArtworkList,
+    }))
   const { dismiss } = useBottomSheetModal()
   const analytics = useAnalyticsContext()
   const { trackEvent } = useTracking()
@@ -23,22 +28,16 @@ export const CreateNewArtworkListForm: React.FC = () => {
   const AREnableArtworkListOfferability = useFeatureFlag("AREnableArtworkListOfferability")
 
   const setRecentlyAddedArtworkList = (artworkList: ArtworkListEntity) => {
-    dispatch({
-      type: "SET_RECENTLY_ADDED_ARTWORK_LIST",
-      payload: {
-        internalID: artworkList.internalID,
-        name: artworkList.name,
-      },
+    _setRecentlyAddedArtworkList({
+      name: artworkList.name,
+      internalID: artworkList.internalID,
     })
   }
 
   const preselectRecentlyAddedArtworkList = (artworkList: ArtworkListEntity) => {
-    dispatch({
-      type: "ADD_OR_REMOVE_ARTWORK_LIST",
-      payload: {
-        mode: ArtworkListMode.AddingArtworkList,
-        artworkList,
-      },
+    addOrRemoveArtworkList({
+      mode: ArtworkListMode.AddingArtworkList,
+      artworkList,
     })
   }
 

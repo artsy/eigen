@@ -9,19 +9,28 @@ import {
   quoteLeft,
   quoteRight,
 } from "@artsy/palette-mobile"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 
 export const SelectArtworkListsForArtworkHeader = () => {
-  const { state, dispatch, addingArtworkListIDs, removingArtworkListIDs } = useArtworkListsContext()
-  const { selectedTotalCount } = state
+  const setCreateNewArtworkListViewVisible = ArtworkListsStore.useStoreActions(
+    (actions) => actions.setCreateNewArtworkListViewVisible
+  )
+  const {
+    selectedTotalCount,
+    addingArtworkListIDs,
+    removingArtworkListIDs,
+    recentlyAddedArtworkList,
+  } = ArtworkListsStore.useStoreState((state) => ({
+    selectedTotalCount: state.state.selectedTotalCount,
+    recentlyAddedArtworkList: state.state.recentlyAddedArtworkList,
+    addingArtworkListIDs: state.addingArtworkListIDs,
+    removingArtworkListIDs: state.removingArtworkListIDs,
+  }))
   const totalCount =
     selectedTotalCount + addingArtworkListIDs.length - removingArtworkListIDs.length
 
   const openCreateNewArtworkListView = () => {
-    dispatch({
-      type: "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE",
-      payload: true,
-    })
+    setCreateNewArtworkListViewVisible(true)
   }
 
   return (
@@ -49,11 +58,11 @@ export const SelectArtworkListsForArtworkHeader = () => {
         </Flex>
       </Box>
 
-      {!!state.recentlyAddedArtworkList && (
+      {!!recentlyAddedArtworkList && (
         <Message
           variant="success"
           title="List Created"
-          text={`Artwork will be added to ${quoteLeft}${state.recentlyAddedArtworkList.name}${quoteRight}`}
+          text={`Artwork will be added to ${quoteLeft}${recentlyAddedArtworkList.name}${quoteRight}`}
         />
       )}
     </>

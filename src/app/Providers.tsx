@@ -2,7 +2,7 @@ import { Screen, ScreenDimensionsProvider, Spinner, Theme } from "@artsy/palette
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { PortalProvider } from "@gorhom/portal"
 import FlagProvider from "@unleash/proxy-client-react"
-import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ShareSheetProvider } from "app/Components/ShareSheet/ShareSheetContext"
 import { WrappedFlagProvider } from "app/system/flags/Components/WrappedFlagProvider"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -50,11 +50,11 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
     children
   )
 
-export const TestProviders: React.FC<{ skipRelay?: boolean; includeNavigation?: boolean }> = ({
-  children,
-  skipRelay = false,
-  includeNavigation = false,
-}) => {
+export const TestProviders: React.FC<{
+  skipRelay?: boolean
+  includeNavigation?: boolean
+  includeArtworkLists?: boolean
+}> = ({ children, skipRelay = false, includeNavigation = false, includeArtworkLists = true }) => {
   return combineProviders(
     [
       includeNavigation && NavigationTestsProvider,
@@ -71,8 +71,8 @@ export const TestProviders: React.FC<{ skipRelay?: boolean; includeNavigation?: 
       Theme,
       Screen.ScreenScrollContextProvider,
       PopoverMessageProvider,
+      includeArtworkLists && ArtworkListsProvider,
       ToastProvider,
-      ArtworkListsProvider,
       ShareSheetProvider,
     ],
     children

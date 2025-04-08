@@ -1,25 +1,23 @@
 import { Flex, AddIcon, TagIcon, Touchable, Text, Spacer, Join } from "@artsy/palette-mobile"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ProgressiveOnboardingOfferSettings } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingOfferSettings"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ScrollView } from "react-native"
 
 export const SavesHeader = () => {
   const isArtworkListOfferabilityEnabled = useFeatureFlag("AREnableArtworkListOfferability")
-  const { dispatch } = useArtworkListsContext()
+  const { setOfferSettingsViewVisible, setCreateNewArtworkListViewVisible } =
+    ArtworkListsStore.useStoreActions((actions) => ({
+      setOfferSettingsViewVisible: actions.setOfferSettingsViewVisible,
+      setCreateNewArtworkListViewVisible: actions.setCreateNewArtworkListViewVisible,
+    }))
 
   const handleOfferSettings = () => {
-    dispatch({
-      type: "SET_OFFER_SETTINGS_VIEW_VISIBLE",
-      payload: true,
-    })
+    setOfferSettingsViewVisible(true)
   }
 
   const handleCreateList = () => {
-    dispatch({
-      type: "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE",
-      payload: true,
-    })
+    setCreateNewArtworkListViewVisible(true)
   }
 
   return (

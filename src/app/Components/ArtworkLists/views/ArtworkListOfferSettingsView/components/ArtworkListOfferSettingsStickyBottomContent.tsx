@@ -4,7 +4,7 @@ import {
   BottomSheetFooterProps,
   useBottomSheetModal,
 } from "@gorhom/bottom-sheet"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
 import { useSaveArtworkListsOfferSettingsChanges } from "app/Components/ArtworkLists/views/ArtworkListOfferSettingsView/useSaveArtworkListsOfferSettingsChanges"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
@@ -20,9 +20,9 @@ export const StickyBottomContentPlaceholder = () => {
 export const ArtworkListOfferSettingsStickyBottomContent: React.FC<BottomSheetFooterProps> = ({
   animatedFooterPosition,
 }) => {
-  const {
-    state: { hasUnsavedChanges },
-  } = useArtworkListsContext()
+  const hasUnsavedChanges = ArtworkListsStore.useStoreState(
+    (state) => state.state.hasUnsavedChanges
+  )
   const { dismiss } = useBottomSheetModal()
 
   const { save, inProgress } = useSaveArtworkListsOfferSettingsChanges({
