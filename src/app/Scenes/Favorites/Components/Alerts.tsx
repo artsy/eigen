@@ -1,10 +1,7 @@
 import { Flex, Spinner } from "@artsy/palette-mobile"
 import { AlertsQuery } from "__generated__/AlertsQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import {
-  AlertsListPaginationContainer,
-  AlertsListSortByHeader,
-} from "app/Scenes/Favorites/Components/AlertsList"
+import { AlertsListPaginationContainer } from "app/Scenes/Favorites/Components/AlertsList"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
@@ -34,7 +31,6 @@ export const AlertsQueryRenderer = withSuspense({
   },
   LoadingFallback: () => (
     <Flex flex={1}>
-      <AlertsListSortByHeader />
       <Flex flex={1} justifyContent="center" alignItems="center">
         <Spinner />
       </Flex>
