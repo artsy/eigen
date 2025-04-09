@@ -1,17 +1,18 @@
 import {
+  Box,
   Flex,
   Image,
+  Screen,
   SkeletonBox,
   SkeletonText,
   Spacer,
   Text,
-  useTheme,
-  Screen,
   useScreenDimensions,
-  Box,
+  useTheme,
 } from "@artsy/palette-mobile"
 import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { goBack } from "app/system/navigation/navigate"
 import {
   PlaceholderBox,
   ProvidePlaceholderContext,
@@ -120,7 +121,7 @@ export const CardsWithMetaDataListPlaceholder: React.FC<CardsWithMetaDataListPla
 
   return (
     <Screen>
-      <Screen.AnimatedHeader title={title} />
+      <Screen.AnimatedHeader onBack={goBack} title={title} />
       <Screen.Body fullwidth>
         <ProvidePlaceholderContext>
           <Flex testID={testID} flexDirection="column" justifyContent="space-between" height="100%">
