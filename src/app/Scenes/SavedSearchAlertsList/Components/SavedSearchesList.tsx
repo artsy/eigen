@@ -224,6 +224,8 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
    * More context here: https://github.com/facebook/react-native/issues/16182#issuecomment-333814201
    */
   const handleSortByModalClosed = () => {
+    handleCloseModal()
+
     if (selectedSortValue === prevSelectedSortValue && !__TEST__) {
       return
     }
@@ -328,14 +330,15 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
               setSelectedAlert(alert)
             }}
           />
+
           <SortByModal
             visible={modalVisible}
             options={SORT_OPTIONS}
             selectedValue={selectedSortValue}
-            onCloseModal={handleCloseModal}
             onSelectOption={handleSelectOption}
             onModalFinishedClosing={handleSortByModalClosed}
           />
+
           {!!enableTapToShowBottomSheet && !!selectedAlert && (
             <AlertBottomSheet
               alert={selectedAlert}
