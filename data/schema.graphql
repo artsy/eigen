@@ -8909,7 +8909,7 @@ input CreatePartnerLocationInput {
   email: String
 
   # ID of the partner
-  partnerID: String!
+  partnerId: String!
 
   # Primary phone of given location
   phone: String
@@ -9724,6 +9724,31 @@ union DeletePartnerContactOrError = DeletePartnerContactFailure | DeletePartnerC
 
 type DeletePartnerContactSuccess {
   partnerContact: Contact
+}
+
+type DeletePartnerLocationFailure {
+  mutationError: GravityMutationError
+}
+
+input DeletePartnerLocationMutationInput {
+  clientMutationId: String
+
+  # ID of the Location to delete
+  locationId: String!
+
+  # ID of the partner
+  partnerId: String!
+}
+
+type DeletePartnerLocationMutationPayload {
+  clientMutationId: String
+  partnerLocationOrError: DeletePartnerLocationOrError
+}
+
+union DeletePartnerLocationOrError = DeletePartnerLocationFailure | DeletePartnerLocationSuccess
+
+type DeletePartnerLocationSuccess {
+  location: Location
 }
 
 type DeletePartnerShowDocumentFailure {
@@ -13154,6 +13179,7 @@ type Location {
   daySchedules: [DaySchedule]
   display: String
   displayCountry: String
+  email: String
   euShippingLocation: Boolean
 
   # A globally unique ID.
@@ -14871,6 +14897,11 @@ type Mutation {
     input: DeletePartnerContactMutationInput!
   ): DeletePartnerContactMutationPayload
 
+  # Deletes a location for a partner
+  deletePartnerLocation(
+    input: DeletePartnerLocationMutationInput!
+  ): DeletePartnerLocationMutationPayload
+
   # Deletes a partner show.
   deletePartnerShow(input: DeletePartnerShowMutationInput!): DeletePartnerShowMutationPayload
 
@@ -15164,6 +15195,9 @@ type Mutation {
 
   # Updates an existing contact for a partner
   updatePartnerContact(input: UpdatePartnerContactInput!): UpdatePartnerContactPayload
+
+  # Updates a new location for a partner
+  updatePartnerLocation(input: UpdatePartnerLocationInput!): UpdatePartnerLocationPayload
 
   # Updates a partner show.
   updatePartnerShow(input: UpdatePartnerShowMutationInput!): UpdatePartnerShowMutationPayload
@@ -16161,6 +16195,12 @@ type Partner implements Node {
 
   # Indicates the partner is a trusted seller on Artsy
   isVerifiedSeller: Boolean
+
+  # A Singular Location belonging to the Partner
+  location(
+    # The slug or ID of the Contact
+    locationId: String!
+  ): Location
 
   # This field is deprecated and is being used in Eigen release predating the 6.0 release
   locations(size: Int = 25): [Location]
@@ -21603,6 +21643,47 @@ type UpdatePartnerContactSuccess {
   partnerContact: Contact
 }
 
+type UpdatePartnerLocationFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdatePartnerLocationInput {
+  address: String
+  address2: String
+  addressType: partnerLocationType
+  city: String
+  clientMutationId: String
+  country: String
+
+  # Primary email of given location
+  email: String
+
+  # ID of the location to update
+  locationId: String!
+
+  # ID of the partner
+  partnerId: String!
+
+  # Primary phone of given location
+  phone: String
+  postalCode: String
+
+  # Boolean flag that denotes whether a location is publicly viewable on Partner's Artsy Profile
+  publiclyViewable: Boolean
+  state: String
+}
+
+union UpdatePartnerLocationOrError = UpdatePartnerLocationFailure | UpdatePartnerLocationSuccess
+
+type UpdatePartnerLocationPayload {
+  clientMutationId: String
+  partnerLocationOrError: UpdatePartnerLocationOrError
+}
+
+type UpdatePartnerLocationSuccess {
+  location: Location
+}
+
 type UpdatePartnerShowDocumentFailure {
   mutationError: GravityMutationError
 }
@@ -24228,6 +24309,12 @@ enum locationType {
 
 type partnerBiographyBlurb {
   text: String
+}
+
+enum partnerLocationType {
+  BUSINESS
+  OTHER
+  TEMPORARY
 }
 
 type purchases {
