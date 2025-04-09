@@ -7,6 +7,7 @@ import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "app/Components/constants"
+import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useRefreshControl } from "app/utils/refreshHelpers"
@@ -28,6 +29,8 @@ export const FollowedArtists: React.FC<Props> = ({ me }) => {
   const artists = extractNodes(data.followsAndSaves?.artistsConnection)
 
   const RefreshControl = useRefreshControl(refetch)
+
+  const { trackTappedArtistFollowsGroup } = useFavoritesTracking()
 
   if (data.followsAndSaves?.artistsConnection?.totalCount === 0) {
     return (
@@ -66,6 +69,9 @@ export const FollowedArtists: React.FC<Props> = ({ me }) => {
             artist={item.artist}
             withFeedback
             containerStyle={{ paddingHorizontal: space(2) }}
+            onPress={() => {
+              trackTappedArtistFollowsGroup(item.artist?.slug, item.artist?.id)
+            }}
           />
         )
       }}
@@ -86,6 +92,7 @@ const followedArtistsFragment = graphql`
           node {
             artist {
               id
+              slug
               ...ArtistListItem_artist
             }
           }

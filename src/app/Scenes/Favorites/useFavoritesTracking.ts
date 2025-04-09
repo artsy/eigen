@@ -4,6 +4,7 @@ import {
   SelectedFromDrawerSubject,
   TappedAlertsGroup,
   TappedArtworkList,
+  TappedFollowsGroup,
   TappedNewArtworkList,
   TappedOfferSettings,
 } from "@artsy/cohesion/dist/Schema/Events/Favorites"
@@ -96,6 +97,36 @@ export const useFavoritesTracking = () => {
     trackEvent(payload)
   }
 
+  const trackTappedArtistFollowsGroup = (slug?: string, id?: string) => {
+    const payload: TappedFollowsGroup = {
+      action: ActionType.tappedFollowsGroup,
+      context_module: ContextModule.followedArtistListItem,
+      context_screen: OwnerType.favoritesFollows,
+      context_screen_owner_type: OwnerType.favoritesFollows,
+      destination_screen_owner_type: OwnerType.artist,
+      destination_screen_owner_id: id,
+      destination_screen_owner_slug: slug,
+      type: "thumbnail",
+    }
+
+    trackEvent(payload)
+  }
+
+  const trackTappedGalleryFollowsGroup = (slug?: string, id?: string) => {
+    const payload: TappedFollowsGroup = {
+      action: ActionType.tappedFollowsGroup,
+      context_module: ContextModule.followedGalleryListItem,
+      context_screen: OwnerType.favoritesFollows,
+      context_screen_owner_type: OwnerType.gallery,
+      destination_screen_owner_type: OwnerType.gallery,
+      destination_screen_owner_id: id,
+      destination_screen_owner_slug: slug,
+      type: "thumbnail",
+    }
+
+    trackEvent(payload)
+  }
+
   return {
     trackTappedNavigationTab,
     trackTappedInfoBubble,
@@ -104,5 +135,7 @@ export const useFavoritesTracking = () => {
     trackTappedArtworkList,
     trackSelectedFromDrawer,
     trackTappedAlertsGroup,
+    trackTappedArtistFollowsGroup,
+    trackTappedGalleryFollowsGroup,
   }
 }
