@@ -4,7 +4,11 @@ import { AlertsTab } from "app/Scenes/Favorites/AlertsTab"
 import { alertsQuery } from "app/Scenes/Favorites/Components/Alerts"
 import { FavoritesLearnMore } from "app/Scenes/Favorites/Components/FavoritesLearnMore"
 import { followedArtistsQuery } from "app/Scenes/Favorites/Components/FollowedArtists"
-import { FavoritesContextStore, FavoritesTab } from "app/Scenes/Favorites/FavoritesContextStore"
+import {
+  FavoritesContextStore,
+  FavoritesTab,
+  FavoritesTabType,
+} from "app/Scenes/Favorites/FavoritesContextStore"
 import { FollowsTab } from "app/Scenes/Favorites/FollowsTab"
 import { SavesTab } from "app/Scenes/Favorites/SavesTab"
 import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
@@ -15,11 +19,11 @@ const Content: React.FC = () => {
   const activeTab = FavoritesContextStore.useStoreState((state) => state.activeTab)
 
   switch (activeTab) {
-    case "saves":
+    case FavoritesTab.saves:
       return <SavesTab />
-    case "follows":
+    case FavoritesTab.follows:
       return <FollowsTab />
-    case "alerts":
+    case FavoritesTab.alerts:
       return <AlertsTab />
   }
 }
@@ -32,24 +36,30 @@ const Pills: {
   {
     Icon: HeartIcon,
     title: "Saves",
-    key: "saves",
+    key: FavoritesTab.saves,
   },
   {
     Icon: MultiplePersonsIcon,
     title: "Follows",
-    key: "follows",
+    key: FavoritesTab.follows,
   },
   {
     Icon: BellIcon,
     title: "Alerts",
-    key: "alerts",
+    key: FavoritesTab.alerts,
   },
 ]
 
-const FavoritesHeader = () => {
+const FavoritesHeader: React.FC<{ initialTab: FavoritesTabType }> = ({ initialTab }) => {
   const setActiveTab = FavoritesContextStore.useStoreActions((actions) => actions.setActiveTab)
   const { activeTab } = FavoritesContextStore.useStoreState((state) => state)
   const { trackTappedNavigationTab } = useFavoritesTracking()
+
+  useEffect(() => {
+    if (initialTab) {
+      setActiveTab(initialTab)
+    }
+  }, [initialTab, setActiveTab])
 
   return (
     <Flex flexDirection="row" gap={0.5} mx={2} mb={2} mt={1}>
@@ -77,7 +87,7 @@ const FavoritesHeader = () => {
   )
 }
 
-export const FavoritesScreen: React.FC = () => {
+export const FavoritesScreen: React.FC<{ initialTab: FavoritesTabType }> = ({ initialTab }) => {
   useEffect(() => {
     prefetchQuery({
       query: followedArtistsQuery,
@@ -100,7 +110,7 @@ export const FavoritesScreen: React.FC = () => {
       />
 
       <Screen.StickySubHeader title="Favorites" largeTitle separatorComponent={null}>
-        <FavoritesHeader />
+        <FavoritesHeader initialTab={initialTab} />
       </Screen.StickySubHeader>
 
       <Screen.Body fullwidth>
