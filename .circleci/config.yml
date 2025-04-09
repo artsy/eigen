@@ -469,7 +469,7 @@ jobs:
     resource_class: large
     steps:
       - restore_cache:
-          key: v15-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+          key: v16-test-success-{{ checksum "../workspace/.manifests/android_native" }}
       - prep-android-env
       - await-previous-builds:
           branch: beta-android
@@ -483,7 +483,7 @@ jobs:
           prefix: android-build
 
       - save_cache:
-          key: v15-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+          key: v16-test-success-{{ checksum "../workspace/.manifests/android_native" }}
           paths:
             - build-success.log
       - run:
