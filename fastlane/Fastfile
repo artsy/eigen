@@ -443,7 +443,6 @@ lane :deploy_to_expo_updates do |options|
   platform = options[:platform]
   deployment_name = options[:deployment_name]
   description = options[:description]
-  rollout_percentage = options[:rollout_percentage]
 
   # important! this must match the release version specified
   # in Eigen in order for sourcemaps to work correctly
@@ -451,12 +450,11 @@ lane :deploy_to_expo_updates do |options|
   # Will need to modify eigen code in any case
   release_name, dist_version, release_version = set_expo_release_values(deployment_name, platform)
 
-  expo_command = "eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}"
+  expo_auth_key = ENV['EXPO_UPLOAD_AUTH_KEY']
+  expo_api_server = ENV['EXPO_UPLOAD_API_SERVER']
 
-  # Append rollout flag if provided
-  if rollout_percentage
-    expo_command += " --branch=#{deployment_name} --rollout=#{rollout_percentage}"
-  end
+  # TODO: Can we add a description to this?
+  expo_command = "./scripts/deploys/expo-updates/expo-publish-selfhosted.sh #{deployment_name} . #{expo_auth_key} #{expo_api_server}"
 
   # Execute the command
   sh("pushd .. && \
@@ -467,7 +465,6 @@ lane :deploy_to_expo_updates do |options|
   tag_and_push(tag: release_name)
 
   puts "🚀 Deploying to #{deployment_name} with description '#{description}' for platform #{platform}"
-  puts "🎯 Rollout: #{rollout_percentage}%" if rollout_percentage
 end
 
 def set_expo_release_values(deployment_name, platform)
