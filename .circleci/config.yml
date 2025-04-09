@@ -145,6 +145,9 @@ commands:
       - install-gems
   build-app-android:
     steps:
+      - restore_cache:
+          keys:
+            - v10-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
       - generate-query-map
       - run:
           name: Download fonts from s3
