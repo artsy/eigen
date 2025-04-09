@@ -88,6 +88,7 @@ export const FollowsTab = () => {
                 <RadioButton
                   key={value}
                   block
+                  textVariant="sm-display"
                   onPress={() => {
                     setfollowOption(value)
                     // Dismiss after a short delay to make sure the user can verify their choice
