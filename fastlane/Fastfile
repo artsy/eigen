@@ -440,7 +440,6 @@ end
 # Expo updates
 
 lane :deploy_to_expo_updates do |options|
-  platform = options[:platform]
   deployment_name = options[:deployment_name]
   description = options[:description]
 
@@ -448,7 +447,7 @@ lane :deploy_to_expo_updates do |options|
   # in Eigen in order for sourcemaps to work correctly
   # TODO: Not sure if this is still needed or a variant needed
   # Will need to modify eigen code in any case
-  release_name, dist_version, release_version = set_expo_release_values(deployment_name, platform)
+  release_name, dist_version, release_version = set_expo_release_values(deployment_name)
 
   expo_auth_key = ENV['EXPO_UPLOAD_AUTH_KEY']
   expo_api_server = ENV['EXPO_UPLOAD_API_SERVER']
@@ -464,13 +463,13 @@ lane :deploy_to_expo_updates do |options|
 
   tag_and_push(tag: release_name)
 
-  puts "🚀 Deploying to #{deployment_name} with description '#{description}' for platform #{platform}"
+  puts "🚀 Deploying to #{deployment_name} with description '#{description}'"
 end
 
-def set_expo_release_values(deployment_name, platform)
+def set_expo_release_values(deployment_name)
   date_str = DateTime.now.strftime('%Y.%m.%d.%H')
   latest_version = $APP_JSON['version']
-  release_name = "expo-#{deployment_name.downcase}-#{platform.downcase}-#{latest_version}-#{date_str}"
+  release_name = "expo-#{deployment_name.downcase}-#{latest_version}-#{date_str}"
   $APP_JSON['expoReleaseName'] = release_name
   $APP_JSON['expoPushDist'] = date_str
   write_contents_to_file($APP_JSON_PATH, JSON.pretty_generate($APP_JSON))
