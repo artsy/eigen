@@ -540,7 +540,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                - brian+george/expo-again
 
       - test-js
 
