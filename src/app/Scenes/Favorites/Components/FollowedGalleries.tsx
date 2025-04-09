@@ -7,6 +7,7 @@ import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "app/Components/constants"
+import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useRefreshControl } from "app/utils/refreshHelpers"
@@ -19,6 +20,7 @@ interface Props {
 
 export const FollowedGalleries: React.FC<Props> = ({ me }) => {
   const space = useSpace()
+  const { trackTappedGalleryFollowsGroup } = useFavoritesTracking()
 
   const { data, loadNext, isLoadingNext, refetch, hasNext } = usePaginationFragment(
     followedGalleriesFragment,
@@ -61,7 +63,15 @@ export const FollowedGalleries: React.FC<Props> = ({ me }) => {
         )
       }
       renderItem={({ item }) => {
-        return <PartnerListItemShort partner={item} disabledLocation />
+        return (
+          <PartnerListItemShort
+            partner={item}
+            disabledLocation
+            onPress={() => {
+              trackTappedGalleryFollowsGroup(item.slug, item.id)
+            }}
+          />
+        )
       }}
     />
   )
@@ -78,6 +88,7 @@ const followedGalleriesFragment = graphql`
         edges {
           node {
             id
+            slug
             ...PartnerListItemShort_partner
           }
         }
