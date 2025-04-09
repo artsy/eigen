@@ -21,7 +21,7 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
 
   const artwork = useFragment(ArtworkFragment, artworkFragmentRef)
 
-  const customArtworkListsCount = artwork.customArtworkLists?.totalCount ?? 0
+  const customArtworkListsCount = artwork?.customArtworkLists?.totalCount ?? 0
   const isSavedToCustomArtworkLists = customArtworkListsCount > 0
   const artworkEntity: ArtworkEntity = {
     id: artwork.id,
