@@ -119,11 +119,6 @@ commands:
             - derived_data
   prep-android-env:
     steps:
-      - attach_workspace:
-          at: ../workspace
-      - restore_cache:
-          keys:
-            - v16-test-success-{{ checksum "../workspace/.manifests/android_native" }}
       - android/change-java-version:
           java-version: 17
       - run:
@@ -468,6 +463,11 @@ jobs:
       - image: cimg/android:2024.01.1-node
     resource_class: large
     steps:
+      - attach_workspace:
+          at: ../workspace
+      - restore_cache:
+          keys:
+            - v16-test-success-{{ checksum "../workspace/.manifests/android_native" }}
       - prep-android-env
       - await-previous-builds:
           branch: beta-android
@@ -481,7 +481,7 @@ jobs:
           prefix: android-build
 
       - save_cache:
-          key: v15-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+          key: v16-test-success-{{ checksum "../workspace/.manifests/android_native" }}
           paths:
             - build-success.log
       - run:
