@@ -7,6 +7,7 @@ import { followedArtistsQuery } from "app/Scenes/Favorites/Components/FollowedAr
 import { FavoritesContextStore, FavoritesTab } from "app/Scenes/Favorites/FavoritesContextStore"
 import { FollowsTab } from "app/Scenes/Favorites/FollowsTab"
 import { SavesTab } from "app/Scenes/Favorites/SavesTab"
+import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { useEffect } from "react"
 
@@ -48,6 +49,7 @@ const Pills: {
 const FavoritesHeader = () => {
   const setActiveTab = FavoritesContextStore.useStoreActions((actions) => actions.setActiveTab)
   const { activeTab } = FavoritesContextStore.useStoreState((state) => state)
+  const { trackTappedNavigationTab } = useFavoritesTracking()
 
   return (
     <Flex flexDirection="row" gap={0.5} mx={2} mb={2} mt={1}>
@@ -56,7 +58,10 @@ const FavoritesHeader = () => {
         return (
           <Pill
             selected={isActive}
-            onPress={() => setActiveTab(key)}
+            onPress={() => {
+              setActiveTab(key)
+              trackTappedNavigationTab(key)
+            }}
             Icon={() => (
               <Flex mr={0.5} justifyContent="center" bottom="1px">
                 <Icon fill={isActive ? "white100" : "black100"} />

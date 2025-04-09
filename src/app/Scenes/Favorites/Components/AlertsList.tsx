@@ -1,8 +1,10 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spacer, Spinner } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import { AlertsList_me$data, AlertsList_me$key } from "__generated__/AlertsList_me.graphql"
 import { ALERTS_PAGE_SIZE } from "app/Components/constants"
+import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import {
   AlertBottomSheet,
   BottomSheetAlert,
@@ -11,6 +13,8 @@ import { EmptyMessage } from "app/Scenes/SavedSearchAlertsList/Components/EmptyM
 import { SavedSearchListItem } from "app/Scenes/SavedSearchAlertsList/Components/SavedSearchListItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { RefreshEvents, SAVED_ALERT_REFRESH_KEY } from "app/utils/refreshHelpers"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import React, { useEffect, useRef, useState } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
 
@@ -123,6 +127,8 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
 
   const [selectedAlert, setSelectedAlert] = useState<BottomSheetAlert | null>(null)
 
+  const { trackTappedAlertsGroup } = useFavoritesTracking()
+
   // We want to make sure that the list is refreshed when the screen is focused
   // This is needed to make sure we don't show deleted alerts
   useEffect(() => {
@@ -161,27 +167,34 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
   }
 
   return (
-    <Flex flex={1}>
-      <AlertsList
-        me={data}
-        fetchingMore={isLoadingNext}
-        isRefreshing={isLoadingNext}
-        onRefresh={onRefresh}
-        onLoadMore={handleLoadMore}
-        onAlertPress={(alert: BottomSheetAlert) => {
-          setSelectedAlert(alert)
-        }}
-      />
-
-      {!!selectedAlert && (
-        <AlertBottomSheet
-          alert={selectedAlert}
-          onDismiss={() => {
-            setSelectedAlert(null)
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.favoritesAlerts,
+      })}
+    >
+      <Flex flex={1}>
+        <AlertsList
+          me={data}
+          fetchingMore={isLoadingNext}
+          isRefreshing={isLoadingNext}
+          onRefresh={onRefresh}
+          onLoadMore={handleLoadMore}
+          onAlertPress={(alert: BottomSheetAlert) => {
+            setSelectedAlert(alert)
+            trackTappedAlertsGroup(alert.id)
           }}
         />
-      )}
-    </Flex>
+
+        {!!selectedAlert && (
+          <AlertBottomSheet
+            alert={selectedAlert}
+            onDismiss={() => {
+              setSelectedAlert(null)
+            }}
+          />
+        )}
+      </Flex>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
