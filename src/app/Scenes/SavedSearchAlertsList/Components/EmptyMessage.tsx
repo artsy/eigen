@@ -10,8 +10,7 @@ import {
   Text,
 } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
-import { GlobalStore } from "app/store/GlobalStore"
-import { navigate, popToRoot } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { ScrollView } from "react-native"
 
 interface InfoSectionProps {
@@ -65,8 +64,6 @@ const t = {
 }
 
 export const EmptyMessage: React.FC = () => {
-  const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
-
   return (
     <ScrollView bounces={false}>
       <Box px={2}>
@@ -80,19 +77,11 @@ export const EmptyMessage: React.FC = () => {
           <InfoSection title={t.match.title} body={t.match.body} icon={<ArtworkIcon />} />
         </Join>
         <Spacer y={4} />
-        <Button
-          block
-          variant="outline"
-          onPress={() => {
-            if (selectedTab === "home") {
-              popToRoot()
-            } else {
-              navigate("/")
-            }
-          }}
-        >
-          {t.button.label}
-        </Button>
+        <RouterLink hasChildTouchable to="/search">
+          <Button block variant="outline">
+            {t.button.label}
+          </Button>
+        </RouterLink>
       </Box>
     </ScrollView>
   )

@@ -11,7 +11,7 @@ export const SavesTab = () => {
         context_screen_owner_type: OwnerType.favoritesSaves,
       })}
     >
-      <Flex flex={1} mt={-2}>
+      <Flex flex={1}>
         <ArtworkLists isTab={false} isFavorites={true} />
       </Flex>
     </ProvideScreenTrackingWithCohesionSchema>

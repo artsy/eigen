@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { SortByModal, SortByModalProps, SortOption } from "./SortByModal"
 
@@ -9,7 +9,6 @@ describe("SortByModal", () => {
         visible
         options={options}
         selectedValue="OPTION_ONE"
-        onCloseModal={jest.fn}
         onModalFinishedClosing={jest.fn}
         onSelectOption={jest.fn}
         {...props}
@@ -18,17 +17,17 @@ describe("SortByModal", () => {
   }
 
   it("should render options", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
-    expect(getByText("Option One")).toBeTruthy()
-    expect(getByText("Option Two")).toBeTruthy()
+    expect(screen.getByText("Option One")).toBeTruthy()
+    expect(screen.getByText("Option Two")).toBeTruthy()
   })
 
   it("should call `onSelectOption` with selected option", () => {
     const mockOnSelectOption = jest.fn()
-    const { getByText } = renderWithWrappers(<TestRenderer onSelectOption={mockOnSelectOption} />)
+    renderWithWrappers(<TestRenderer onSelectOption={mockOnSelectOption} />)
 
-    fireEvent.press(getByText("Option Two"))
+    fireEvent.press(screen.getByText("Option Two"))
 
     expect(mockOnSelectOption.mock.calls[0]).toMatchInlineSnapshot(`
       [
