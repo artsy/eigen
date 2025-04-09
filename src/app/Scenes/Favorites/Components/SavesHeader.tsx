@@ -1,6 +1,7 @@
 import { Flex, AddIcon, TagIcon, Touchable, Text, Spacer, Join } from "@artsy/palette-mobile"
 import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ProgressiveOnboardingOfferSettings } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingOfferSettings"
+import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ScrollView } from "react-native"
 
@@ -12,12 +13,16 @@ export const SavesHeader = () => {
       setCreateNewArtworkListViewVisible: actions.setCreateNewArtworkListViewVisible,
     }))
 
+  const { trackTappedOfferSettings, trackTappedNewArtworkList } = useFavoritesTracking()
+
   const handleOfferSettings = () => {
     setOfferSettingsViewVisible(true)
+    trackTappedOfferSettings()
   }
 
   const handleCreateList = () => {
     setCreateNewArtworkListViewVisible(true)
+    trackTappedNewArtworkList()
   }
 
   return (

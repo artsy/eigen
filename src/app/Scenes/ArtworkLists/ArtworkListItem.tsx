@@ -3,6 +3,7 @@ import { ArtworkListItem_collection$key } from "__generated__/ArtworkListItem_co
 import { FourUpImageLayout } from "app/Scenes/ArtworkLists/FourUpImageLayout"
 import { StackedImageLayout } from "app/Scenes/ArtworkLists/StackedImageLayout"
 import { useArtworkListsColCount } from "app/Scenes/ArtworkLists/useArtworkListsColCount"
+import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -30,8 +31,15 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = ({ artworkList, imagesL
   const artworkNodes = extractNodes(item.artworksConnection)
   const imageURLs = artworkNodes.map((node) => node.image?.resized?.url ?? null)
 
+  const { trackTappedArtworkList } = useFavoritesTracking()
+
   return (
-    <RouterLink to={`/artwork-list/${item.internalID}`}>
+    <RouterLink
+      to={`/artwork-list/${item.internalID}`}
+      onPress={() => {
+        trackTappedArtworkList(item.internalID)
+      }}
+    >
       <Flex
         justifyContent="space-between"
         width={itemWidth}
