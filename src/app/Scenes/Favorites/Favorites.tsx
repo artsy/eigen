@@ -1,4 +1,13 @@
-import { BellIcon, Flex, HeartIcon, MultiplePersonsIcon, Pill, Screen } from "@artsy/palette-mobile"
+import {
+  BellIcon,
+  Flex,
+  HeartIcon,
+  MultiplePersonsIcon,
+  Pill,
+  Screen,
+  Spacer,
+  Text,
+} from "@artsy/palette-mobile"
 import { PAGE_SIZE } from "app/Components/constants"
 import { AlertsTab } from "app/Scenes/Favorites/AlertsTab"
 import { alertsQuery } from "app/Scenes/Favorites/Components/Alerts"
@@ -52,27 +61,37 @@ const FavoritesHeader = () => {
   const { trackTappedNavigationTab } = useFavoritesTracking()
 
   return (
-    <Flex flexDirection="row" gap={0.5} mx={2} mb={2} mt={1}>
-      {Pills.map(({ Icon, title, key }) => {
-        const isActive = activeTab === key
-        return (
-          <Pill
-            selected={isActive}
-            onPress={() => {
-              setActiveTab(key)
-              trackTappedNavigationTab(key)
-            }}
-            Icon={() => (
-              <Flex mr={0.5} justifyContent="center" bottom="1px">
-                <Icon fill={isActive ? "white100" : "black100"} />
-              </Flex>
-            )}
-            key={key}
-          >
-            {title}
-          </Pill>
-        )
-      })}
+    <Flex mx={2}>
+      <Flex alignItems="flex-end">
+        <FavoritesLearnMore />
+        <Spacer y={2} />
+      </Flex>
+
+      <Text variant="xl">Favorites</Text>
+
+      <Spacer y={2} />
+      <Flex flexDirection="row" gap={0.5} mb={2}>
+        {Pills.map(({ Icon, title, key }) => {
+          const isActive = activeTab === key
+          return (
+            <Pill
+              selected={isActive}
+              onPress={() => {
+                setActiveTab(key)
+                trackTappedNavigationTab(key)
+              }}
+              Icon={() => (
+                <Flex mr={0.5} justifyContent="center" bottom="1px">
+                  <Icon fill={isActive ? "white100" : "black100"} />
+                </Flex>
+              )}
+              key={key}
+            >
+              {title}
+            </Pill>
+          )
+        })}
+      </Flex>
     </Flex>
   )
 }
@@ -93,15 +112,7 @@ export const FavoritesScreen: React.FC = () => {
 
   return (
     <Screen>
-      <Screen.AnimatedHeader
-        title="Favorites"
-        hideLeftElements
-        rightElements={<FavoritesLearnMore />}
-      />
-
-      <Screen.StickySubHeader title="Favorites" largeTitle separatorComponent={null}>
-        <FavoritesHeader />
-      </Screen.StickySubHeader>
+      <FavoritesHeader />
 
       <Screen.Body fullwidth>
         <Content />
