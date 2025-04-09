@@ -9,6 +9,7 @@ import {
 } from "__generated__/ConfirmationScreenMatchingArtworksQuery.graphql"
 import GenericGrid, { GenericGridPlaceholder } from "app/Components/ArtworkGrids/GenericGrid"
 import { NavigationHeader } from "app/Components/NavigationHeader"
+import { FavoritesTab } from "app/Scenes/Favorites/FavoritesContextStore"
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchPills"
@@ -18,6 +19,7 @@ import {
   CollectorSignals,
   getArtworkSignalTrackingFields,
 } from "app/utils/getArtworkSignalTrackingFields"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderRaggedText } from "app/utils/placeholders"
@@ -36,6 +38,7 @@ export const ConfirmationScreen: React.FC = () => {
   const route = useRoute<RouteProp<CreateSavedSearchAlertNavigationStack, "ConfirmationScreen">>()
   const { closeModal } = route.params
   const { bottom: bottomInset } = useSafeAreaInsets()
+  const enableFavoritesTab = useFeatureFlag("AREnableFavoritesTab")
 
   const pills = useSavedSearchPills()
 
@@ -55,7 +58,13 @@ export const ConfirmationScreen: React.FC = () => {
   const handleManageAlerts = () => {
     closeModal?.()
     requestAnimationFrame(() => {
-      navigate("/favorites/alerts")
+      enableFavoritesTab
+        ? navigate("/favorites", {
+            passProps: {
+              initialTab: FavoritesTab.alerts,
+            },
+          })
+        : navigate("/favorites/alerts")
     })
   }
 

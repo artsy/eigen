@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
+import { Button, Flex, Screen, Spinner } from "@artsy/palette-mobile"
 import { PortalHost } from "@gorhom/portal"
 import * as Sentry from "@sentry/react-native"
 import { HomeViewFetchMeQuery } from "__generated__/HomeViewFetchMeQuery.graphql"
@@ -9,6 +9,7 @@ import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
 import { RetryErrorBoundary, useRetryErrorBoundaryContext } from "app/Components/RetryErrorBoundary"
+import { FavoritesTab } from "app/Scenes/Favorites/FavoritesContextStore"
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/HomeView/Components/EmailConfirmationBanner"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
@@ -156,6 +157,18 @@ export const HomeView: React.FC = memo(() => {
   return (
     <Screen safeArea={true}>
       <Screen.Body fullwidth>
+        <Button
+          block
+          onPress={() => {
+            navigate("/favorites", {
+              passProps: {
+                initialTab: FavoritesTab.alerts,
+              },
+            })
+          }}
+        >
+          Press
+        </Button>
         <FlatList
           automaticallyAdjustKeyboardInsets
           keyboardDismissMode="on-drag"
