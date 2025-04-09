@@ -2017,7 +2017,7 @@ PODS:
     - React-Core
   - RNReactNativeHapticFeedback (1.13.0):
     - React-Core
-  - RNReanimated (3.16.7):
+  - RNReanimated (3.17.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2029,7 +2029,9 @@ PODS:
     - React-Fabric
     - React-featureflags
     - React-graphics
+    - React-hermes
     - React-ImageManager
+    - React-jsi
     - React-NativeModulesApple
     - React-RCTFabric
     - React-rendererdebug
@@ -2037,10 +2039,10 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated (= 3.16.7)
-    - RNReanimated/worklets (= 3.16.7)
+    - RNReanimated/reanimated (= 3.17.2)
+    - RNReanimated/worklets (= 3.17.2)
     - Yoga
-  - RNReanimated/reanimated (3.16.7):
+  - RNReanimated/reanimated (3.17.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2052,7 +2054,9 @@ PODS:
     - React-Fabric
     - React-featureflags
     - React-graphics
+    - React-hermes
     - React-ImageManager
+    - React-jsi
     - React-NativeModulesApple
     - React-RCTFabric
     - React-rendererdebug
@@ -2060,9 +2064,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated/apple (= 3.16.7)
+    - RNReanimated/reanimated/apple (= 3.17.2)
     - Yoga
-  - RNReanimated/reanimated/apple (3.16.7):
+  - RNReanimated/reanimated/apple (3.17.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2074,7 +2078,9 @@ PODS:
     - React-Fabric
     - React-featureflags
     - React-graphics
+    - React-hermes
     - React-ImageManager
+    - React-jsi
     - React-NativeModulesApple
     - React-RCTFabric
     - React-rendererdebug
@@ -2083,7 +2089,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNReanimated/worklets (3.16.7):
+  - RNReanimated/worklets (3.17.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2095,7 +2101,33 @@ PODS:
     - React-Fabric
     - React-featureflags
     - React-graphics
+    - React-hermes
     - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - RNReanimated/worklets/apple (= 3.17.2)
+    - Yoga
+  - RNReanimated/worklets/apple (3.17.2):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.10.14.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
     - React-NativeModulesApple
     - React-RCTFabric
     - React-rendererdebug
@@ -2893,7 +2925,7 @@ SPEC CHECKSUMS:
   rnmapbox-maps: 643bc08a87659b4f20e4c2ab93b14563a71578d3
   RNPermissions: 92430517fd4353d5b2b7217cd1ca48ddd2875245
   RNReactNativeHapticFeedback: 7601768ee65ffc86fc93d7c30dd917031144ed3d
-  RNReanimated: 9b650d028b9422148b548e80512043a372876c00
+  RNReanimated: 8f475f708b0faf3fd2334f23dd20174813e46033
   RNScreens: 638eae9d75bdf7d36f33fdb531e7fb8ea6847f43
   RNSentry: a8f0d86b88675719ce96cb31bd9258dbd793e535
   RNShare: 957619f74149c5c1f53df7dbac5cb38dedbf4163
