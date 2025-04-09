@@ -1,0 +1,15 @@
+#!/bin/bash
+set -euo pipefail
+
+# Prompt for manual confirmation before proceeding
+echo -e "\033[0;33mWarning: You are about to deploy to production\033[0m"
+echo -e "\033[0;33mPlease make sure your local code has no changes other than what should go to prod.\033[0m"
+read -p "Are you sure you want to continue? (y/N): " confirm
+if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
+  echo "Deployment aborted."
+  exit 1
+fi
+
+./scripts/deploys/expo-updates/deploy-to-expo-updates production
+
+echo "🚀 Production deployment completed successfully."

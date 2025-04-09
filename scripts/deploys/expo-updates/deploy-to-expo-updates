@@ -25,7 +25,7 @@ else
   description="Commit: $commit_hash, Description: $commit_description"
 fi
 
-bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description" platform:ios
-bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description" platform:android
+# TODO: Do we need to handle multiple platforms?
+bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description"
 
 echo "Release to $deployment deployment successful."
