@@ -90,24 +90,10 @@ curl --location --request POST "$APISERVER/upload" \
 --header "git-branch: $(git rev-parse --abbrev-ref HEAD)" \
 --header "git-commit: $(git log --oneline -n 1)"
 
-# TODO: debug - to remove
-CMD=$(cat <<EOF
-curl --location --request POST "$APISERVER/upload" \
---form "uri=@$PAYLOAD" \
---header "project: $SLUG" \
---header "version: $RUNTIMEVERSION" \
---header "release-channel: $RELEASECHANNEL" \
---header "upload-key: $UPLOADKEY" \
---header "git-branch: $(git rev-parse --abbrev-ref HEAD)" \
---header "git-commit: $(git log --oneline -n 1)"
-EOF
-)
-
 echo "$CMD"
 
-# TODO: uncomment
 # Cleanup
-# rm -rf $BUILDFOLDER
-# rm -f $BUILDFOLDER.zip
+rm -rf $BUILDFOLDER
+rm -f $BUILDFOLDER.zip
 
 printf "\n\nPublish Done"
