@@ -1,18 +1,16 @@
 import { Flex, Text } from "@artsy/palette-mobile"
-import themeGet from "@styled-system/theme-get"
 import {
   HomeViewSectionMarketingCollectionsItem_marketingCollection$data,
   HomeViewSectionMarketingCollectionsItem_marketingCollection$key,
 } from "__generated__/HomeViewSectionMarketingCollectionsItem_marketingCollection.graphql"
 
 import { FiveUpImageLayout } from "app/Components/FiveUpImageLayout"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { pluralize } from "app/utils/pluralize"
 import { compact } from "lodash"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
-import styled from "styled-components/native"
 
 interface HomeViewSectionMarketingCollectionsItemProps {
   marketingCollection: HomeViewSectionMarketingCollectionsItem_marketingCollection$key
@@ -35,16 +33,16 @@ export const HomeViewSectionMarketingCollectionsItem: FC<
   const artworksCount = marketingCollection.artworksConnection?.counts?.total || 0
 
   return (
-    <CollectionCard
-      testID={`collections-rail-card-${marketingCollection.slug}`}
+    <RouterLink
       onPress={
         marketingCollection?.slug
           ? () => {
               onPress?.(marketingCollection)
-              navigate(`/collection/${marketingCollection.slug}`)
             }
           : undefined
       }
+      testID={`collections-rail-card-${marketingCollection.slug}`}
+      to={`/collection/${marketingCollection.slug}`}
     >
       <Flex>
         <FiveUpImageLayout imageURLs={artworkImageURLs} />
@@ -63,7 +61,7 @@ export const HomeViewSectionMarketingCollectionsItem: FC<
           </Text>
         </Flex>
       </Flex>
-    </CollectionCard>
+    </RouterLink>
   )
 }
 
@@ -86,8 +84,3 @@ const fragment = graphql`
     }
   }
 `
-
-export const CollectionCard = styled.TouchableHighlight.attrs(() => ({
-  underlayColor: themeGet("colors.white100"),
-  activeOpacity: 0.8,
-}))``

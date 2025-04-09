@@ -46,7 +46,7 @@ describe("HomeViewSectionCard", () => {
     `,
   })
 
-  it("renders the section properly", async () => {
+  it("renders the section properly and handles button press", async () => {
     renderWithRelay({
       HomeViewSectionCard: () => ({
         internalID: "home-view-section-a-single-card-section",
