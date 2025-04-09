@@ -2,8 +2,6 @@
 
 ## Artsy Eigen
 
-test2
-
 ## Getting Started
 
 - [Getting Started](getting_started.md)
