@@ -25,6 +25,7 @@ export const useFavoritesTracking = () => {
 
   const trackTappedInfoBubble = (activeTab: FavoritesTab) => {
     let contextScreen: ContextModule
+
     switch (activeTab) {
       case "saves":
         contextScreen = ContextModule.favoritesSaves
@@ -35,6 +36,8 @@ export const useFavoritesTracking = () => {
       case "alerts":
         contextScreen = ContextModule.favoritesAlerts
         break
+      default:
+        throw new Error(`Unhandled tab: ${activeTab}`)
     }
 
     const payload: TappedInfoBubble = {
