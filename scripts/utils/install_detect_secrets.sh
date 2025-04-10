@@ -11,7 +11,11 @@ for package in "${pip_packages[@]}"; do
 done
 
 echo "legacy_version_file = yes" >> "$HOME/.asdfrc"
-asdf plugin add python
+if asdf plugin add --help &>/dev/null; then
+  asdf plugin add python
+else
+  asdf plugin-add python
+fi
 asdf install python latest
 
 if asdf set --help &>/dev/null; then
