@@ -21252,6 +21252,7 @@ input UpdateArtworkEditionSetInput {
   priceListed: String
   priceMax: Int
   priceMin: Int
+  published: Boolean
   shippingWeight: Float
   shippingWeightMetric: String
 }
@@ -21321,6 +21322,7 @@ input UpdateArtworkMutationInput {
   priceListed: String
   priceMax: Int
   priceMin: Int
+  published: Boolean
   shippingWeight: Float
   shippingWeightMetric: String
 }
