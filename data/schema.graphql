@@ -15203,6 +15203,11 @@ type Mutation {
   repositionInstallShotsInPartnerShow(
     input: RepositionInstallShotsInPartnerShowMutationInput!
   ): RepositionInstallShotsInPartnerShowMutationPayload
+
+  # Reposition partners locations in various CMS surfaces, settings, Artwork Form, etc.
+  repositionPartnerLocations(
+    input: RepositionPartnerLocationsMutationInput!
+  ): RepositionPartnerLocationsMutationPayload
   requestConditionReport(
     # Parameters for RequestConditionReport
     input: RequestConditionReportInput!
@@ -19307,6 +19312,33 @@ union RepositionInstallShotsInPartnerShowResponseOrError =
 type RepositionInstallShotsInPartnerShowSuccess {
   show: Show
 }
+
+type RepositionPartnerLocationsFailure {
+  mutationError: GravityMutationError
+}
+
+input RepositionPartnerLocationsMutationInput {
+  clientMutationId: String
+
+  # An ordered array of location IDs representing the new display order.
+  locationIds: [String!]!
+
+  # The ID partner.
+  partnerId: String!
+}
+
+type RepositionPartnerLocationsMutationPayload {
+  clientMutationId: String
+  partnerOrError: RepositionPartnerLocationsSuccessOrError
+}
+
+type RepositionPartnerLocationsSuccess {
+  partner: Partner
+}
+
+union RepositionPartnerLocationsSuccessOrError =
+    RepositionPartnerLocationsFailure
+  | RepositionPartnerLocationsSuccess
 
 type Request {
   # IP Address of the current request, useful for debugging
