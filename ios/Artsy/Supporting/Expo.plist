@@ -42,6 +42,8 @@ gw==
 	<dict>
 		<key>expo-channel-name</key>
 		<string>canary</string>
+		<key>expo-expect-signature</key>
+  	<string>true</string>
 	</dict>
 </dict>
 </plist>
