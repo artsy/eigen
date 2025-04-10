@@ -14,10 +14,10 @@ echo "legacy_version_file = yes" >> "$HOME/.asdfrc"
 asdf plugin add python
 asdf install python latest
 
-if asdf help set &>/dev/null; then
-  # Older asdf version
+if asdf set --help &>/dev/null; then
+  # Newer asdf version
   asdf set python latest --home
 else
-  # Newer asdf version
+  # Older asdf version
   asdf global python latest
 fi
