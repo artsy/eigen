@@ -64,9 +64,10 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
     const [activeIndex, setActiveIndex] = useState(_activeIndex.value)
 
     const swipedKeys = useSharedValue<Key[]>([])
-
     // a list of cards that the user has seen
     const seenCardKeys = useSharedValue<Key[]>([])
+
+    const initialSliceIndex = Math.max(activeIndex - 2, 0)
 
     // update the activeIndex state given changes on _activeIndex shared value
     useAnimatedReaction(
@@ -202,6 +203,10 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
       <GestureDetector gesture={pan}>
         <View style={containerStyle}>
           {cards.map((c, i) => {
+            if (i < initialSliceIndex) {
+              return null
+            }
+
             return (
               <AnimatedView
                 index={i}
