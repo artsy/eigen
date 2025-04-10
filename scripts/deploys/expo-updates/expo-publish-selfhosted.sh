@@ -64,12 +64,13 @@ BUILDFOLDER=/tmp/$SLUG-$RUNTIMEVERSION-$RELEASECHANNEL
 PAYLOAD="\"$BUILDFOLDER.zip\""
 
 # Idempotent cleanup
+
 rm -rf $BUILDFOLDER
 rm -f $BUILDFOLDER.zip
 mkdir $BUILDFOLDER
 
 # Build update
-yarn expo export --output-dir $BUILDFOLDER
+yarn expo export --output-dir $BUILDFOLDER --dump-sourcemap
 
 # Add app.json & package.json to the build for info & Metadata
 cp app.json $BUILDFOLDER/
@@ -90,10 +91,11 @@ curl --location --request POST "$APISERVER/upload" \
 --header "git-branch: $(git rev-parse --abbrev-ref HEAD)" \
 --header "git-commit: $(git log --oneline -n 1)"
 
-echo "$CMD"
-
 # Cleanup
-rm -rf $BUILDFOLDER
+# we keep the build folder around to enable sourcemap upload
+# rm -rf $BUILDFOLDER
 rm -f $BUILDFOLDER.zip
 
-printf "\n\nPublish Done"
+printf "\n\nPublish Done\n\n"
+
+echo "BUILDFOLDER_PATH=$BUILDFOLDER"

@@ -447,7 +447,7 @@ lane :deploy_to_expo_updates do |options|
   # in Eigen in order for sourcemaps to work correctly
   # TODO: Not sure if this is still needed or a variant needed
   # Will need to modify eigen code in any case
-  release_name, dist_version, release_version = set_expo_release_values(deployment_name)
+  release_name_base, dist_version, release_version = set_expo_release_values(deployment_name)
 
   expo_auth_key = ENV['EXPO_UPLOAD_AUTH_KEY']
   expo_api_server = ENV['EXPO_UPLOAD_API_SERVER']
@@ -455,13 +455,29 @@ lane :deploy_to_expo_updates do |options|
   # TODO: Can we add a description to this?
   expo_command = "./scripts/deploys/expo-updates/expo-publish-selfhosted.sh #{deployment_name} . #{expo_auth_key} #{expo_api_server}"
 
-  # Execute the command
-  sh("pushd .. && \
-      #{expo_command} && \
-      npx sentry-expo-upload-sourcemaps dist && \
-      popd")
+  # Execute the command and parse the returned folder
+  output = sh("pushd .. > /dev/null && \
+      #{expo_command} | tail -n1 && \
+      popd > /dev/null")
+  folder_line = output.lines.find { |line| line.start_with?("BUILDFOLDER_PATH=") }
+  folder = folder_line.split("=").last.strip
 
-  tag_and_push(tag: release_name)
+  sh("yarn add @sentry/cli -D")
+  sentry_cli_path = 'node_modules/@sentry/cli/bin/sentry-cli'
+
+  ['ios', 'android'].each do |platform|
+    upload_expo_sourcemaps(
+      sentry_cli_path: sentry_cli_path,
+      org_slug: 'artsynet',
+      project_slug: 'eigen',
+      platform: platform,
+      sentry_release_name: "#{platform}-#{release_name_base}",
+      dist: dist_version,
+      build_folder: folder,
+      silence_failures: true # we ship expo releases every commit to main, failures are noisy
+    )
+    tag_and_push(tag: "#{platform}-#{release_name_base}")
+  end
 
   puts "🚀 Deploying to #{deployment_name} with description '#{description}'"
 end
@@ -469,11 +485,11 @@ end
 def set_expo_release_values(deployment_name)
   date_str = DateTime.now.strftime('%Y.%m.%d.%H')
   latest_version = $APP_JSON['version']
-  release_name = "expo-#{deployment_name.downcase}-#{latest_version}-#{date_str}"
-  $APP_JSON['expoReleaseName'] = release_name
+  release_name_base = "expo-#{deployment_name.downcase}-#{latest_version}-#{date_str}"
+  $APP_JSON['expoReleaseNameBase'] = release_name_base
   $APP_JSON['expoPushDist'] = date_str
   write_contents_to_file($APP_JSON_PATH, JSON.pretty_generate($APP_JSON))
-  [release_name, date_str, latest_version]
+  [release_name_base, date_str, latest_version]
 end
 
 error do |lane, exception|
