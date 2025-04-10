@@ -33,10 +33,10 @@ export const AnimatedView: FC<AnimatedViewProps> = ({
   const width = useScreenWidthWithOffset()
 
   const isTopCard = useDerivedValue(() => activeIndex.value === index)
-  const isSecondCard = useDerivedValue(() => activeIndex.value - 1 === index)
+  const isSecondCard = useDerivedValue(() => activeIndex.value + 1 === index)
   const isSwiped = useDerivedValue(() => swipedKeys.value.includes(internalID as Key))
-  const isThirdOrMoreCard = useDerivedValue(() => index < activeIndex.value - 1 && !isSwiped.value)
-  const isLastSwiped = useDerivedValue(() => activeIndex.value + 1 === index)
+  const isThirdOrMoreCard = useDerivedValue(() => index > activeIndex.value + 1 && !isSwiped.value)
+  const isLastSwiped = useDerivedValue(() => activeIndex.value - 1 === index)
 
   const transformX = useDerivedValue(() => {
     if (isTopCard.value) {
@@ -134,7 +134,7 @@ export const AnimatedView: FC<AnimatedViewProps> = ({
           width: screenWidth,
           alignSelf: "center",
           position: "absolute",
-          zIndex: index,
+          zIndex: 9999 - index,
         },
       ]}
     >

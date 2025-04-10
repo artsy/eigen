@@ -20,10 +20,7 @@ import {
 /**
  * TODOS
  * - organize files
- * - integrate with InfiniteDiscovery
  * - to not render more than 2 swiped cards
- * - when closing the screen, swiped cards are being dragged
- * - remove gesture navigation
  */
 
 type SwiperProps = {
@@ -59,12 +56,11 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
     ref
   ) => {
     const width = useScreenWidthWithOffset()
-    const [numberExtraCardsAdded, setNumberExtraCardsAdded] = useState(0)
     const activeCardX = useSharedValue(0)
     const [cards, setCards] = useState(_cards)
     const swipedCardX = useSharedValue(-width)
     // TODO: remove underscore
-    const _activeIndex = useSharedValue(cards.length - 1)
+    const _activeIndex = useSharedValue(0)
     const [activeIndex, setActiveIndex] = useState(_activeIndex.value)
 
     const swipedKeys = useSharedValue<Key[]>([])
@@ -72,38 +68,23 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
     // a list of cards that the user has seen
     const seenCardKeys = useSharedValue<Key[]>([])
 
+    // update the activeIndex state given changes on _activeIndex shared value
     useAnimatedReaction(
       () => _activeIndex.value,
       (current, previous) => {
         if (current !== previous) {
-          runOnJS(setActiveIndex)(cards.length - current - 1)
+          runOnJS(setActiveIndex)(current)
         }
       }
     )
 
-    useImperativeHandle(ref, () => ({
-      swipeLeftThenRight,
-    }))
+    useImperativeHandle(ref, () => ({ swipeLeftThenRight }))
 
     useEffect(() => {
       if (cards.length < _cards.length) {
-        setNumberExtraCardsAdded(_cards.length - cards.length)
         setCards(_cards)
       }
     }, [_cards.length])
-
-    // Without this, we are only to rewind a few times
-    useEffect(() => {
-      if (cards) {
-        setCards(_cards)
-      }
-    }, [_cards])
-
-    useEffect(() => {
-      if (numberExtraCardsAdded !== 0) {
-        _activeIndex.value = _activeIndex.value + numberExtraCardsAdded
-      }
-    }, [cards.length, numberExtraCardsAdded])
 
     const swipeLeftThenRight = (duration: number) => {
       const swipedCardIndex = _activeIndex.value
@@ -149,18 +130,22 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
 
         // Swipe left
         const isSwipeLeft = translationX < 0
-        const isLastCard = _activeIndex.value === 0
+        const isLastCard = _activeIndex.value === cards.length - 1
 
-        // TODO: confirm that we are fetching more cards on the 3rd, 8th, 13th... swipe
-        if (isSwipeLeft && !isLastCard && _activeIndex.value === swipedIndexCallsOnTrigger) {
-          runOnJS(onTrigger)(_activeIndex.value - 1)
+        // Fetching more cards on the 3rd, 8th, 13th... swipe
+        if (
+          isSwipeLeft &&
+          !isLastCard &&
+          cards.length - 1 - _activeIndex.value === swipedIndexCallsOnTrigger
+        ) {
+          runOnJS(onTrigger)(_activeIndex.value + 1)
         }
 
         const swipedCardIndex = _activeIndex.value
         const swipedCardKey = cards[swipedCardIndex].internalID
 
         if (isSwipeLeft && !isLastCard && swipedCardKey) {
-          const nextCardIndex = swipedCardIndex - 1
+          const nextCardIndex = swipedCardIndex + 1
           const nextCardKey = cards[nextCardIndex]?.internalID as Key
 
           // if this is the first time that the user has navigated to this card, record it
@@ -171,7 +156,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
 
           activeCardX.value = withTiming(-width, { duration: 300, easing: Easing.linear }, () => {
             swipedKeys.value = [...swipedKeys.value, swipedCardKey]
-            _activeIndex.value = _activeIndex.value - 1
+            _activeIndex.value = _activeIndex.value + 1
             activeCardX.value = 0
             return
           })
@@ -188,13 +173,13 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
 
         // Swipe right then brings the card back to the deck
         activeCardX.value = 0
-        const hasSwipedCards = _activeIndex.value + 1 < cards.length
+        const hasSwipedCards = _activeIndex.value > 0
 
         let lastSwipedCardKey = null
 
         // TODO: clean up this minefield of if-statements
         if (hasSwipedCards) {
-          lastSwipedCardKey = cards[_activeIndex.value + 1].internalID
+          lastSwipedCardKey = cards[_activeIndex.value - 1].internalID
         }
         swipedCardX.value = withTiming(
           0,
@@ -202,7 +187,7 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
           () => {
             if (hasSwipedCards) {
               swipedKeys.value = swipedKeys.value.slice(0, -1)
-              _activeIndex.value = _activeIndex.value + 1
+              _activeIndex.value = _activeIndex.value - 1
             }
             swipedCardX.value = -width
           }
@@ -217,7 +202,6 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
       <GestureDetector gesture={pan}>
         <View style={containerStyle}>
           {cards.map((c, i) => {
-            const index = cards.length - i - 1
             return (
               <AnimatedView
                 index={i}
@@ -233,8 +217,8 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
                   key={c.internalID}
                   containerStyle={cardStyle}
                   isSaved={isArtworkSaved ? isArtworkSaved(i) : undefined}
-                  index={index}
-                  isTopCard={index === activeIndex}
+                  index={i}
+                  isTopCard={activeIndex === i}
                 />
               </AnimatedView>
             )
