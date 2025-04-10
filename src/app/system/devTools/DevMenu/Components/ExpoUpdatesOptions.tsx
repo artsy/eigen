@@ -57,6 +57,15 @@ export const ExpoUpdatesOptions = () => {
     Emergency Launch: ${updateMetadata?.isEmergencyLaunch ? "Yes" : "No"}
   `
 
+  const isErrorWithMessage = (error: unknown): error is { message: string } => {
+    return (
+      typeof error === "object" &&
+      error !== null &&
+      "message" in error &&
+      typeof (error as any).message === "string"
+    )
+  }
+
   const fetchAndApplyUpdate = async () => {
     setLoading(true)
     setLoadProgress(0)
@@ -75,6 +84,16 @@ export const ExpoUpdatesOptions = () => {
         setLoadStatus("No updates available for this channel.")
       }
     } catch (error) {
+      if (
+        isErrorWithMessage(error) &&
+        error?.message?.includes("Code signature validation failed") &&
+        error?.message?.includes("No expo-signature header specified")
+      ) {
+        // Expo mistakenly treats 304s as code signing errors when it actually means no updates available
+        setErrorMessage("No updates available for this channel.")
+        return
+      }
+
       console.error("Error fetching Expo update:", error)
       setErrorMessage(`Error fetching update: ${error}`)
     } finally {
