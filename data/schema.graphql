@@ -8941,6 +8941,41 @@ type CreatePageSuccess {
   page: Page
 }
 
+type CreatePartnerArtistDocumentFailure {
+  mutationError: GravityMutationError
+}
+
+input CreatePartnerArtistDocumentMutationInput {
+  # The ID of the artist.
+  artistId: String!
+  clientMutationId: String
+
+  # The ID of the partner.
+  partnerId: String!
+
+  # The URL of the document to upload.
+  remoteDocumentUrl: String!
+
+  # The title of the document.
+  title: String!
+}
+
+type CreatePartnerArtistDocumentMutationPayload {
+  clientMutationId: String
+
+  # On success: the created document. On error: the error that occurred.
+  documentOrError: CreatePartnerArtistDocumentResponseOrError
+}
+
+union CreatePartnerArtistDocumentResponseOrError =
+    CreatePartnerArtistDocumentFailure
+  | CreatePartnerArtistDocumentSuccess
+
+type CreatePartnerArtistDocumentSuccess {
+  document: PartnerDocument
+  partner: Partner
+}
+
 type CreatePartnerContactFailure {
   mutationError: GravityMutationError
 }
@@ -9786,6 +9821,38 @@ union DeletePageResponseOrError = DeletePageFailure | DeletePageSuccess
 
 type DeletePageSuccess {
   page: Page
+}
+
+type DeletePartnerArtistDocumentFailure {
+  mutationError: GravityMutationError
+}
+
+input DeletePartnerArtistDocumentMutationInput {
+  # The ID of the artist.
+  artistId: String!
+  clientMutationId: String
+
+  # The ID of the document to delete.
+  documentId: String!
+
+  # The ID of the partner.
+  partnerId: String!
+}
+
+type DeletePartnerArtistDocumentMutationPayload {
+  clientMutationId: String
+
+  # On success: the deleted document. On error: the error that occurred.
+  documentOrError: DeletePartnerArtistDocumentResponseOrError
+}
+
+union DeletePartnerArtistDocumentResponseOrError =
+    DeletePartnerArtistDocumentFailure
+  | DeletePartnerArtistDocumentSuccess
+
+type DeletePartnerArtistDocumentSuccess {
+  document: PartnerDocument
+  partner: Partner
 }
 
 type DeletePartnerContactFailure {
@@ -14871,6 +14938,11 @@ type Mutation {
   # Creates a static Markdown-backed page.
   createPage(input: CreatePageMutationInput!): CreatePageMutationPayload
 
+  # Creates a partner artist document.
+  createPartnerArtistDocument(
+    input: CreatePartnerArtistDocumentMutationInput!
+  ): CreatePartnerArtistDocumentMutationPayload
+
   # Creates a new contact for a partner
   createPartnerContact(input: CreatePartnerContactInput!): CreatePartnerContactPayload
 
@@ -14978,6 +15050,11 @@ type Mutation {
 
   # Deletes a page.
   deletePage(input: DeletePageMutationInput!): DeletePageMutationPayload
+
+  # Deletes a partner artist document.
+  deletePartnerArtistDocument(
+    input: DeletePartnerArtistDocumentMutationInput!
+  ): DeletePartnerArtistDocumentMutationPayload
 
   # Deletes a contact for a partner
   deletePartnerContact(
@@ -15279,6 +15356,11 @@ type Mutation {
 
   # Updates a page.
   updatePage(input: UpdatePageMutationInput!): UpdatePageMutationPayload
+
+  # Updates a partner artist document.
+  updatePartnerArtistDocument(
+    input: UpdatePartnerArtistDocumentMutationInput!
+  ): UpdatePartnerArtistDocumentMutationPayload
 
   # Updates an existing contact for a partner
   updatePartnerContact(input: UpdatePartnerContactInput!): UpdatePartnerContactPayload
@@ -21862,6 +21944,44 @@ union UpdatePageResponseOrError = UpdatePageFailure | UpdatePageSuccess
 
 type UpdatePageSuccess {
   page: Page
+}
+
+type UpdatePartnerArtistDocumentFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdatePartnerArtistDocumentMutationInput {
+  # The ID of the artist.
+  artistId: String!
+  clientMutationId: String
+
+  # The ID of the document to update.
+  documentId: String!
+
+  # The ID of the partner.
+  partnerId: String!
+
+  # The URL of the document to upload.
+  remoteDocumentUrl: String
+
+  # The updated title of the document.
+  title: String
+}
+
+type UpdatePartnerArtistDocumentMutationPayload {
+  clientMutationId: String
+
+  # On success: the updated document. On error: the error that occurred.
+  documentOrError: UpdatePartnerArtistDocumentResponseOrError
+}
+
+union UpdatePartnerArtistDocumentResponseOrError =
+    UpdatePartnerArtistDocumentFailure
+  | UpdatePartnerArtistDocumentSuccess
+
+type UpdatePartnerArtistDocumentSuccess {
+  document: PartnerDocument
+  partner: Partner
 }
 
 type UpdatePartnerContactFailure {
