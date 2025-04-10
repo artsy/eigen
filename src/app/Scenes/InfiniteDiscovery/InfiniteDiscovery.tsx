@@ -224,11 +224,15 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       title: topArtwork.title,
       message: message + "\n" + url,
       failOnCancel: false,
-    }).then((result) => {
-      if (result.success) {
-        trackEvent(tracks.share(topArtwork.internalID, topArtwork.slug, result.message))
-      }
     })
+      .then((result) => {
+        if (result.success) {
+          trackEvent(tracks.share(topArtwork.internalID, topArtwork.slug, result.message))
+        }
+      })
+      .catch((error) => {
+        console.error("InfiniteDiscovery.tsx", error)
+      })
   }
 
   // Get the last 2 artworks from the infinite discovery
