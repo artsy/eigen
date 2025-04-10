@@ -286,7 +286,7 @@ export type ModuleDescriptor<T = string> = {
   /**
    * Here variables can be specified for each query. The variables will be merged with the route params.
    */
-  queryVariables?: object[]
+  prepareQueryVariables?: ((params: any) => object)[]
   injectParams?: (params: any) => any
 }
 
@@ -436,7 +436,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [ArtistScreenQuery],
-    queryVariables: [defaultArtistVariables],
+    prepareQueryVariables: [() => defaultArtistVariables],
   },
   {
     path: "/artist/:artistID/articles",
@@ -550,7 +550,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [artworkListsQuery],
-    queryVariables: [artworkListVariables],
+    prepareQueryVariables: [() => artworkListVariables],
   },
   {
     path: "/artwork-list/:listID",
@@ -562,7 +562,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [ArtworkListScreenQuery],
-    queryVariables: [artworkListVariables],
+    prepareQueryVariables: [() => artworkListVariables],
   },
   {
     path: "/artwork-recommendations",
@@ -644,6 +644,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: SaleQueryRenderer,
     options: { screenOptions: { headerShown: false } },
     queries: [SaleScreenQuery],
+    prepareQueryVariables: [(params) => ({ saleSlug: params?.saleID })],
   },
   {
     path: "/auction/:saleID/bid/:artworkID",
@@ -933,7 +934,7 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "InfiniteDiscovery",
     Component: InfiniteDiscoveryQueryRenderer,
     queries: [infiniteDiscoveryQuery],
-    queryVariables: [infiniteDiscoveryVariables],
+    prepareQueryVariables: [() => infiniteDiscoveryVariables],
     options: {
       hidesBottomTabs: true,
       screenOptions: {
@@ -1421,7 +1422,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [artworkListsQuery],
-    queryVariables: [artworkListVariables],
+    prepareQueryVariables: [() => artworkListVariables],
   },
   {
     path: "/favorites/saves/:listID",
