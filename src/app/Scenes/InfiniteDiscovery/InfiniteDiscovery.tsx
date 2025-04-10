@@ -322,12 +322,11 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
   Component: () => {
     const data = useLazyLoadQuery<InfiniteDiscoveryQuery>(
       infiniteDiscoveryQuery,
-      infiniteDiscoveryVariables,
-      { fetchPolicy: "store-and-network" }
+      infiniteDiscoveryVariables
     )
 
     const { resetSavedArtworksCount } = GlobalStore.actions.infiniteDiscovery
-    const initialArtworks = extractNodes(data.discoverArtworks)
+    const initialArtworks = [...extractNodes(data.discoverArtworks).reverse()]
     const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>(initialArtworks)
 
     const fetchMoreArtworks = async (excludeArtworkIds: string[], isRetry = false) => {
@@ -335,14 +334,10 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
         const response = await fetchQuery<InfiniteDiscoveryQuery>(
           getRelayEnvironment(),
           infiniteDiscoveryQuery,
-          {
-            excludeArtworkIds,
-          },
-          {
-            fetchPolicy: "network-only",
-          }
+          { excludeArtworkIds },
+          { fetchPolicy: "network-only" }
         ).toPromise()
-        const newArtworks = extractNodes(response?.discoverArtworks)
+        const newArtworks = [...extractNodes(response?.discoverArtworks).reverse()]
         if (newArtworks.length) {
           setArtworks((previousArtworks) => newArtworks.concat(previousArtworks))
         }
