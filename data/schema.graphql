@@ -2119,6 +2119,90 @@ type ArtistPartnerEdge {
   # A cursor for use in pagination
   cursor: String!
 
+  # Retrieve all documents for this partner artist
+  documentsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): PartnerDocumentConnection
+
+  # Artworks Elastic Search results
+  filterArtworksConnection(
+    acquireable: Boolean
+    additionalGeneIDs: [String]
+    after: String
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    artistNationalities: [String]
+    artistSeriesID: String
+    artistSeriesIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    availability: String
+    before: String
+    color: String
+    colors: [String]
+    dimensionRange: String
+    excludeArtworkIDs: [String]
+    extraAggregationGeneIDs: [String]
+    first: Int
+    forSale: Boolean
+
+    # When true, will only return framed artworks.
+    framed: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    includeAllJSON: Boolean
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
+    input: FilterArtworksInput
+    inquireableOnly: Boolean
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    last: Int
+    locationCities: [String]
+    majorPeriods: [String]
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+    marketingCollectionID: String
+    materialsTerms: [String]
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    offerable: Boolean
+    page: Int
+    partnerCities: [String]
+    partnerID: ID
+    partnerIDs: [String]
+    period: String
+    periods: [String]
+    priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
+    saleID: ID
+
+    # When true, will only return signed artworks.
+    signed: Boolean
+    size: Int
+
+    # Filter results by Artwork sizes
+    sizes: [ArtworkSizes]
+    sold: Boolean
+    sort: String
+    tagID: String
+    visibilityLevel: String
+    width: String
+  ): FilterArtworksConnection
+
   # A globally unique ID.
   id: ID!
   image: Image
@@ -2134,6 +2218,9 @@ type ArtistPartnerEdge {
   node: Artist
   partner: Partner
   representedBy: Boolean
+
+  # A list of shows for this artist
+  showsConnection(after: String, before: String, first: Int, last: Int): ShowConnection
   sortableID: String
 }
 
@@ -16397,6 +16484,90 @@ type PartnerArtist {
   biographyBlurb(format: Format): PartnerArtistBlurb
   counts: PartnerArtistCounts
 
+  # Retrieve all documents for this partner artist
+  documentsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): PartnerDocumentConnection
+
+  # Artworks Elastic Search results
+  filterArtworksConnection(
+    acquireable: Boolean
+    additionalGeneIDs: [String]
+    after: String
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    artistNationalities: [String]
+    artistSeriesID: String
+    artistSeriesIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    availability: String
+    before: String
+    color: String
+    colors: [String]
+    dimensionRange: String
+    excludeArtworkIDs: [String]
+    extraAggregationGeneIDs: [String]
+    first: Int
+    forSale: Boolean
+
+    # When true, will only return framed artworks.
+    framed: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    includeAllJSON: Boolean
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
+    input: FilterArtworksInput
+    inquireableOnly: Boolean
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    last: Int
+    locationCities: [String]
+    majorPeriods: [String]
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+    marketingCollectionID: String
+    materialsTerms: [String]
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    offerable: Boolean
+    page: Int
+    partnerCities: [String]
+    partnerID: ID
+    partnerIDs: [String]
+    period: String
+    periods: [String]
+    priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
+    saleID: ID
+
+    # When true, will only return signed artworks.
+    signed: Boolean
+    size: Int
+
+    # Filter results by Artwork sizes
+    sizes: [ArtworkSizes]
+    sold: Boolean
+    sort: String
+    tagID: String
+    visibilityLevel: String
+    width: String
+  ): FilterArtworksConnection
+
   # A globally unique ID.
   id: ID!
   image: Image
@@ -16409,6 +16580,9 @@ type PartnerArtist {
   isUseDefaultBiography: Boolean
   partner: Partner
   representedBy: Boolean
+
+  # A list of shows for this artist
+  showsConnection(after: String, before: String, first: Int, last: Int): ShowConnection
   sortableID: String
 }
 
@@ -16491,6 +16665,90 @@ type PartnerArtistEdge {
   # A cursor for use in pagination
   cursor: String!
 
+  # Retrieve all documents for this partner artist
+  documentsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): PartnerDocumentConnection
+
+  # Artworks Elastic Search results
+  filterArtworksConnection(
+    acquireable: Boolean
+    additionalGeneIDs: [String]
+    after: String
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    artistNationalities: [String]
+    artistSeriesID: String
+    artistSeriesIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    availability: String
+    before: String
+    color: String
+    colors: [String]
+    dimensionRange: String
+    excludeArtworkIDs: [String]
+    extraAggregationGeneIDs: [String]
+    first: Int
+    forSale: Boolean
+
+    # When true, will only return framed artworks.
+    framed: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    includeAllJSON: Boolean
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
+    input: FilterArtworksInput
+    inquireableOnly: Boolean
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    last: Int
+    locationCities: [String]
+    majorPeriods: [String]
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+    marketingCollectionID: String
+    materialsTerms: [String]
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    offerable: Boolean
+    page: Int
+    partnerCities: [String]
+    partnerID: ID
+    partnerIDs: [String]
+    period: String
+    periods: [String]
+    priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
+    saleID: ID
+
+    # When true, will only return signed artworks.
+    signed: Boolean
+    size: Int
+
+    # Filter results by Artwork sizes
+    sizes: [ArtworkSizes]
+    sold: Boolean
+    sort: String
+    tagID: String
+    visibilityLevel: String
+    width: String
+  ): FilterArtworksConnection
+
   # A globally unique ID.
   id: ID!
   image: Image
@@ -16506,6 +16764,9 @@ type PartnerArtistEdge {
   node: Partner
   partner: Partner
   representedBy: Boolean
+
+  # A list of shows for this artist
+  showsConnection(after: String, before: String, first: Int, last: Int): ShowConnection
   sortableID: String
 }
 
