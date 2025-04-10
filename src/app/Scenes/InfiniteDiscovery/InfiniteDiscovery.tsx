@@ -73,7 +73,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   useEffect(() => {
     if (!topArtworkId && artworks.length > 0) {
       // TODO: beware! the artworks are being displayed in reverse order
-      const topArtwork = artworks[artworks.length - 1]
+      const topArtwork = artworks[0]
       setTopArtworkId(topArtwork.internalID)
 
       // Track initial shown artwork
@@ -82,9 +82,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       // send the first seen artwork to the server
       commitMutation({
         variables: {
-          input: {
-            artworkId: topArtwork.internalID,
-          },
+          input: { artworkId: topArtwork.internalID },
         },
         onError: (error) => {
           if (__DEV__) {
@@ -98,12 +96,11 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   }, [artworks])
 
   const currentIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
-  // TODO: beware! the artworks are being displayed in reverse order
-  const unswipedCardIds = artworks.slice(0, currentIndex).map((artwork) => artwork.internalID)
+  const unswipedCardIds = artworks
+    .slice(currentIndex, artworks.length)
+    .map((artwork) => artwork.internalID)
 
-  // TODO: beware! the artworks are being displayed in reverse order
-  const hideRewindButton =
-    !!artworks.length && topArtworkId === artworks[artworks.length - 1].internalID
+  const hideRewindButton = !!artworks.length && currentIndex === 0
 
   const handleBackPressed = () => {
     isRewindRequested.value = true
@@ -126,9 +123,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     // Tell the backend that the user has seen this artwork so that it doesn't show up again.
     commitMutation({
       variables: {
-        input: {
-          artworkId: artwork.internalID,
-        },
+        input: { artworkId: artwork.internalID },
       },
       onError: (error) => {
         if (__DEV__) {
@@ -344,7 +339,7 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
         ).toPromise()
         const newArtworks = extractNodes(response?.discoverArtworks)
         if (newArtworks.length) {
-          setArtworks((previousArtworks) => newArtworks.concat(previousArtworks))
+          setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
         }
       } catch (error) {
         if (!isRetry) {

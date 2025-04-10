@@ -296,8 +296,8 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
   }
 )
 
-const FIRST_REMINDER_SWIPES_COUNT = 5
-const SECOND_REMINDER_SWIPES_COUNT = 30
+const FIRST_REMINDER_SWIPES_COUNT = 4
+const SECOND_REMINDER_SWIPES_COUNT = 29
 
 const PopoverWrapper: React.FC<{
   isTopCard: boolean
