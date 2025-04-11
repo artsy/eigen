@@ -20319,6 +20319,7 @@ interface Sellable {
   isOfferableFromInquiry: Boolean
   isPriceHidden: Boolean
   isSold: Boolean
+  listPrice: ListPrice
   priceListed: Money
   published: Boolean
   saleMessage: String
