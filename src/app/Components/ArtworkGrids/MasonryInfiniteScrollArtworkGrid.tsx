@@ -73,11 +73,11 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   const shouldDisplaySpinner = !!artworks.length && !!isLoading && !!hasMore
   const shouldDisplayHeader = !!artworks.length && ListHeaderComponent !== undefined
 
-  const onEndReached = useCallback(() => {
+  const onEndReached = () => {
     if (!!hasMore && !isLoading && !!loadMore) {
       loadMore?.(pageSize)
     }
-  }, [hasMore, isLoading])
+  }
 
   const renderItem = useCallback(
     ({ item, index, columnIndex }: masonryRenderItemProps) => (
