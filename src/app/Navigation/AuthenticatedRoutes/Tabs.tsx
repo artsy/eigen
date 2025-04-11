@@ -109,7 +109,11 @@ const AppTabs: React.FC = () => {
           },
           tabBarHideOnKeyboard: true,
           tabBarIcon: ({ focused }) => {
-            return <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
+            return (
+              <Flex pt={1}>
+                <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
+              </Flex>
+            )
           },
           tabBarButton: (props) => (
             <PlatformPressable
@@ -125,7 +129,7 @@ const AppTabs: React.FC = () => {
                 alignItems="flex-end"
                 justifyContent="flex-end"
                 height={BOTTOM_TABS_HEIGHT}
-                pb={1}
+                pb={0.5}
               >
                 <Text variant="xxs" selectable={false} textAlign="center" color="black100">
                   {bottomTabsConfig[route.name].name}
