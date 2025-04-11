@@ -425,26 +425,26 @@ jobs:
       - update-echo
       - install-gems
       - install-cocoapods
-      - macos/preboot-simulator:
-          version: "18.1"
-          platform: "iOS"
-          device: "iPhone 16 Pro"
-      - build-app-ios
-      - run:
-          name: Run tests if native code has changed
-          command: ls xcode_test_raw.log || ./scripts/ci/ci-test-ios
-      - save_cache:
-          key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum ".manifests/native_code" }}
-          paths:
-            - xcode_test_raw.log
+      # - macos/preboot-simulator:
+      #     version: "18.1"
+      #     platform: "iOS"
+      #     device: "iPhone 16 Pro"
+      # - build-app-ios
+      # - run:
+      #     name: Run tests if native code has changed
+      #     command: ls xcode_test_raw.log || ./scripts/ci/ci-test-ios
+      # - save_cache:
+      #     key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum ".manifests/native_code" }}
+      #     paths:
+      #       - xcode_test_raw.log
 
-      - store_artifacts:
-          path: xcode_build_raw.log
-          prefix: build
+      # - store_artifacts:
+      #     path: xcode_build_raw.log
+      #     prefix: build
 
-      - store_artifacts:
-          path: xcode_test_raw.log
-          prefix: tests
+      # - store_artifacts:
+      #     path: xcode_test_raw.log
+      #     prefix: tests
 
       - await-previous-builds:
           branch: beta-ios

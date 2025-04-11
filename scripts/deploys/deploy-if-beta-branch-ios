@@ -4,6 +4,6 @@ set -euxo pipefail
 
 source ./scripts/ci/ci-setup-export-vars
 
-if [ "${LOCAL_BRANCH}" == "beta-ios" ]; then
-	./scripts/deploys/distribute-ios
-fi
+# if [ "${LOCAL_BRANCH}" == "beta-ios" ]; then
+./scripts/deploys/distribute-ios
+#fi
