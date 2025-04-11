@@ -93,7 +93,7 @@ commands:
           name: Install Pods
           command: cd ios; bundle exec pod check --ignore-dev-pods || bundle exec npx pod-install; cd ..;
       - save_cache:
-          key: v29-pods-{{ checksum ".manifests/cocoapods" }}
+          key: v30-pods-{{ checksum ".manifests/cocoapods" }}
           paths:
             - ios/Pods
             # this changes after pod install because we don't install dev tools on CI
@@ -146,8 +146,7 @@ commands:
   build-app-android:
     steps:
       - restore_cache:
-          keys:
-            - v10-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+          key: << pipeline.parameters.app_build_android_cache_key >>
       - generate-query-map
       - run:
           name: Download fonts from s3
@@ -160,7 +159,7 @@ commands:
           command: ./scripts/ci/ci-android
           no_output_timeout: 20m
       - save_cache:
-          key: v10-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+          key: << pipeline.parameters.app_build_android_cache_key >>
           paths:
             - android/build
             - android/app/build
@@ -397,6 +396,7 @@ jobs:
       - attach_workspace:
           at: ../workspace
       - restore_cache:
+          # no1
           keys:
             - v18-test-success-{{ checksum "../workspace/.manifests/native_code" }}
       # we can quit the macos build early if there were no native code changes
@@ -439,6 +439,7 @@ jobs:
           name: Run tests if native code has changed
           command: ls xcode_test_raw.log || ./scripts/ci/ci-test-ios
       - save_cache:
+          # no2
           key: v18-test-success-{{ checksum ".manifests/native_code" }}
           paths:
             - xcode_test_raw.log
@@ -466,8 +467,7 @@ jobs:
       - attach_workspace:
           at: ../workspace
       - restore_cache:
-          keys:
-            - v16-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+          key: << pipeline.parameters.android_native_cache_key >>
       - prep-android-env
       - await-previous-builds:
           branch: beta-android
@@ -481,7 +481,7 @@ jobs:
           prefix: android-build
 
       - save_cache:
-          key: v16-test-success-{{ checksum "../workspace/.manifests/android_native" }}
+          key: << pipeline.parameters.android_native_cache_key >>
           paths:
             - build-success.log
       - run:
@@ -495,6 +495,24 @@ parameters:
   run_workflow_test-build-deploy:
     type: boolean
     default: true
+  gems_cache_key:
+    type: string
+    default: v13-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+  cocoapods_cache_key:
+    type: string
+    default: v30-pods-{{ checksum ".manifests/cocoapods" }}
+  app_build_ios_cache_key:
+    type: string
+    default: v25-app_build_ios-{{ checksum ".manifests/app_build" }}
+  app_build_android_cache_key:
+    type: string
+    default: v10-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+  # native_code_cache_key:
+  #   type: string
+  #   default: v18-test-success-{{ checksum ".manifests/native_code" }}
+  android_native_cache_key:
+    type: string
+    default: v16-test-success-{{ checksum "../workspace/.manifests/android_native" }}
 
 workflows:
   version: 2
