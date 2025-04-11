@@ -1,15 +1,15 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import {
   HomeViewSectionMarketingCollectionsItem_marketingCollection$data,
   HomeViewSectionMarketingCollectionsItem_marketingCollection$key,
 } from "__generated__/HomeViewSectionMarketingCollectionsItem_marketingCollection.graphql"
-
 import { FiveUpImageLayout } from "app/Components/FiveUpImageLayout"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { pluralize } from "app/utils/pluralize"
 import { compact } from "lodash"
 import { FC } from "react"
+import { Text } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface HomeViewSectionMarketingCollectionsItemProps {
