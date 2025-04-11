@@ -1,4 +1,10 @@
-import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
+import {
+  ActionType,
+  ContextModule,
+  OwnerType,
+  ScreenOwnerType,
+  TappedInfoBubble,
+} from "@artsy/cohesion"
 import {
   SelectedFromDrawer,
   SelectedFromDrawerSubject,
@@ -8,7 +14,10 @@ import {
   TappedNewArtworkList,
   TappedOfferSettings,
 } from "@artsy/cohesion/dist/Schema/Events/Favorites"
+import { useIsFocused } from "@react-navigation/native"
 import { FavoritesTab } from "app/Scenes/Favorites/FavoritesContextStore"
+import { screen } from "app/utils/track/helpers"
+import { useEffect } from "react"
 import { useTracking } from "react-tracking"
 
 export const useFavoritesTracking = () => {
@@ -127,15 +136,36 @@ export const useFavoritesTracking = () => {
     trackEvent(payload)
   }
 
+  const trackScreen = (ownerType: ScreenOwnerType) => {
+    trackEvent(
+      screen({
+        context_screen_owner_type: ownerType,
+      })
+    )
+  }
+
   return {
-    trackTappedNavigationTab,
-    trackTappedInfoBubble,
-    trackTappedOfferSettings,
-    trackTappedNewArtworkList,
-    trackTappedArtworkList,
+    trackScreen,
     trackSelectedFromDrawer,
     trackTappedAlertsGroup,
     trackTappedArtistFollowsGroup,
+    trackTappedArtworkList,
     trackTappedGalleryFollowsGroup,
+    trackTappedInfoBubble,
+    trackTappedNavigationTab,
+    trackTappedNewArtworkList,
+    trackTappedOfferSettings,
   }
+}
+
+export const useFavoritesScrenTracking = (ownerType: ScreenOwnerType) => {
+  const { trackScreen } = useFavoritesTracking()
+
+  const isFocused = useIsFocused()
+
+  useEffect(() => {
+    if (isFocused) {
+      trackScreen(ownerType)
+    }
+  }, [isFocused])
 }

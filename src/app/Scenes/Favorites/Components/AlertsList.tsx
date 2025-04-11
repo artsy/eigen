@@ -1,4 +1,3 @@
-import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spacer, Spinner } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
@@ -13,8 +12,6 @@ import { EmptyMessage } from "app/Scenes/SavedSearchAlertsList/Components/EmptyM
 import { SavedSearchListItem } from "app/Scenes/SavedSearchAlertsList/Components/SavedSearchListItem"
 import { extractNodes } from "app/utils/extractNodes"
 import { RefreshEvents, SAVED_ALERT_REFRESH_KEY } from "app/utils/refreshHelpers"
-import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
-import { screen } from "app/utils/track/helpers"
 import React, { useEffect, useRef, useState } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
 
@@ -167,34 +164,28 @@ export const AlertsListPaginationContainer: React.FC<AlertsListPaginationContain
   }
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema
-      info={screen({
-        context_screen_owner_type: OwnerType.favoritesAlerts,
-      })}
-    >
-      <Flex flex={1}>
-        <AlertsList
-          me={data}
-          fetchingMore={isLoadingNext}
-          isRefreshing={isLoadingNext}
-          onRefresh={onRefresh}
-          onLoadMore={handleLoadMore}
-          onAlertPress={(alert: BottomSheetAlert) => {
-            setSelectedAlert(alert)
-            trackTappedAlertsGroup(alert.id)
+    <Flex flex={1}>
+      <AlertsList
+        me={data}
+        fetchingMore={isLoadingNext}
+        isRefreshing={isLoadingNext}
+        onRefresh={onRefresh}
+        onLoadMore={handleLoadMore}
+        onAlertPress={(alert: BottomSheetAlert) => {
+          setSelectedAlert(alert)
+          trackTappedAlertsGroup(alert.id)
+        }}
+      />
+
+      {!!selectedAlert && (
+        <AlertBottomSheet
+          alert={selectedAlert}
+          onDismiss={() => {
+            setSelectedAlert(null)
           }}
         />
-
-        {!!selectedAlert && (
-          <AlertBottomSheet
-            alert={selectedAlert}
-            onDismiss={() => {
-              setSelectedAlert(null)
-            }}
-          />
-        )}
-      </Flex>
-    </ProvideScreenTrackingWithCohesionSchema>
+      )}
+    </Flex>
   )
 }
 
