@@ -5,7 +5,7 @@
 #import <FLKAutoLayout/FLKAutoLayout.h>
 #import "UIFont+ArtsyFonts.h"
 #import <ORStackView/ORStackView.h>
-#import "UIView+BooleanAnimations.h"
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 
 @implementation InformationalViewState
 - (instancetype)init;

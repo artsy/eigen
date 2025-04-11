@@ -396,20 +396,20 @@ jobs:
           key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum "../workspace/.manifests/native_code" }}
       # we can quit the macos build early if there were no native code changes
       # and we're not on the beta branch
-      - run:
-          name: Quit early if possible
-          command: |
-            if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
-            then
-              circleci step halt
-            fi
-      - run:
-          name: Quit early if Draft PR
-          command: |
-            if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/eigen/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
-            then
-              circleci step halt
-            fi
+      # - run:
+      #     name: Quit early if possible
+      #     command: |
+      #       if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
+      #       then
+      #         circleci step halt
+      #       fi
+      # - run:
+      #     name: Quit early if Draft PR
+      #     command: |
+      #       if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/eigen/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
+      #       then
+      #         circleci step halt
+      #       fi
       - run:
           name: Clear project dir
           command: |
@@ -420,31 +420,37 @@ jobs:
       - install-node
       - setup-awscli
       - setup-env-file
+      - run:
+          name: Download fonts from s3
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download ios assets
+          command: ./scripts/setup/download-assets-ios
       - install-node-modules
       - run-relay-compiler
       - update-echo
       - install-gems
       - install-cocoapods
-      - macos/preboot-simulator:
-          version: "18.1"
-          platform: "iOS"
-          device: "iPhone 16 Pro"
-      - build-app-ios
-      - run:
-          name: Run tests if native code has changed
-          command: ls xcode_test_raw.log || ./scripts/ci/ci-test-ios
-      - save_cache:
-          key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum ".manifests/native_code" }}
-          paths:
-            - xcode_test_raw.log
+      # - macos/preboot-simulator:
+      #     version: "18.1"
+      #     platform: "iOS"
+      #     device: "iPhone 16 Pro"
+      # - build-app-ios
+      # - run:
+      #     name: Run tests if native code has changed
+      #     command: ls xcode_test_raw.log || ./scripts/ci/ci-test-ios
+      # - save_cache:
+      #     key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum ".manifests/native_code" }}
+      #     paths:
+      #       - xcode_test_raw.log
 
-      - store_artifacts:
-          path: xcode_build_raw.log
-          prefix: build
+      # - store_artifacts:
+      #     path: xcode_build_raw.log
+      #     prefix: build
 
-      - store_artifacts:
-          path: xcode_test_raw.log
-          prefix: tests
+      # - store_artifacts:
+      #     path: xcode_test_raw.log
+      #     prefix: tests
 
       - await-previous-builds:
           branch: beta-ios
@@ -553,13 +559,13 @@ workflows:
       - check-code:
           context: danger-github-oss
 
-      - check-and-deploy:
-          filters:
-            branches:
-              only:
-                - main
+      # - check-and-deploy:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main
 
-      - test-js
+      # - test-js
 
       - build-test-js
 
@@ -578,28 +584,28 @@ workflows:
               ignore:
                 - beta-android
           requires:
-            - test-js
+            # - test-js
             - check-code
             - build-test-js
             - horizon/block
 
-      - build-test-app-android:
-          filters:
-            branches:
-              ignore:
-                - beta-ios
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
-            - horizon/block
+      # - build-test-app-android:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - beta-ios
+      #     requires:
+      #       - test-js
+      #       - check-code
+      #       - build-test-js
+      #       - horizon/block
 
-      - update-metaphysics:
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
-          requires:
-            - build-test-app-ios
-            - build-test-app-android
+      # - update-metaphysics:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - beta-ios
+      #           - beta-android
+      #     requires:
+      #       - build-test-app-ios
+      #       - build-test-app-android

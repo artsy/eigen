@@ -1,6 +1,6 @@
 #import "ARSpinner.h"
 #import "UIView+ARSpinner.h"
-#import "UIView+BooleanAnimations.h"
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 
 
 @interface ARSpinner ()

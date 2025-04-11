@@ -2,7 +2,7 @@
 
 #import "UIColor+ArtsyColors.h"
 
-#import "UIView+BooleanAnimations.h"
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 
 #import "UIFont+ArtsyFonts.h"
 

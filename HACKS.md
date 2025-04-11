@@ -238,6 +238,20 @@ and when this issue is closed https://github.com/DylanVann/react-native-fast-ima
 
 https://artsynet.sentry.io/issues/4479226101/events/d98fd95bd4c74271a184596c901fac26/ started having some sentry crashes for this reason in iOS 17 and this patch fixes the issue (taken from the main branch of the fast-image repo but not released yet).
 
+## Modular headers for firebase deps in Podfile
+
+#### When we can remove this
+
+When we stop using flipper or this issue is resolved: https://github.com/invertase/react-native-firebase/issues/6425
+
+#### Explanation/Context
+
+The latest versions of react-native-firebase require using static frameworks, and unfortunately this breaks flipper.
+https://rnfirebase.io/#altering-cocoapods-to-use-frameworks
+The author of react-native-firebase basically said that people should just remove flipper since it is no longer going to be supported by
+react native in the future but a bit tough to pull off that bandaid so soon. If flipper does end up supporting this config: 1. remove the entries in the podfile
+that have `:modular_headers => true` and add the static frameworks line from the docs above.
+
 ## Custom lane google_play_track_rollout_percentages in fastlane dir + associated monkey patches in Fastfile
 
 #### When we can remove this:
@@ -293,14 +307,3 @@ https://github.com/numandev1/react-native-keys/issues/86#issuecomment-2546610160
 #### Explanation/Context:
 
 Android was unable to build correctly on react-native 76 without excluding `libreactnative.so`
-
-## Folly build flags
-
-#### When we can remove this
-
-Possibly if we update folly / react native and removing the flag does not cause build failures.
-
-#### Explanation/Context
-
-When we switched to use static frameworks building Folly broke in this way: https://github.com/facebook/folly/issues/2297
-The flag suggested in the comments was added as a workaround.

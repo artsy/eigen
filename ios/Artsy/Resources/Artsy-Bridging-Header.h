@@ -69,7 +69,7 @@
 #import <MARKRangeSlider/MARKRangeSlider.h>
 #import <ORStackView/ORStackScrollView.h>
 #import <SDWebImage/SDWebImagePrefetcher.h>
-#import "UIView+BooleanAnimations.h"
+#import <UIView+BooleanAnimations/UIView+BooleanAnimations.h>
 #import "AREmission.h"
 #import "ARNotificationView.h"
 
