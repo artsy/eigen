@@ -15231,6 +15231,11 @@ type Mutation {
     input: RepositionInstallShotsInPartnerShowMutationInput!
   ): RepositionInstallShotsInPartnerShowMutationPayload
 
+  # Reposition artworks for a partner artist, determining their display order.
+  repositionPartnerArtistArtworks(
+    input: RepositionPartnerArtistArtworksMutationInput!
+  ): RepositionPartnerArtistArtworksMutationPayload
+
   # Reposition partners locations in various CMS surfaces, settings, Artwork Form, etc.
   repositionPartnerLocations(
     input: RepositionPartnerLocationsMutationInput!
@@ -19350,6 +19355,35 @@ union RepositionInstallShotsInPartnerShowResponseOrError =
 
 type RepositionInstallShotsInPartnerShowSuccess {
   show: Show
+}
+
+type RepositionPartnerArtistArtworksFailure {
+  mutationError: GravityMutationError
+}
+
+input RepositionPartnerArtistArtworksMutationInput {
+  # The ID of the artist.
+  artistId: String!
+
+  # An ordered array of artwork IDs representing the new display order.
+  artworkIds: [String!]!
+  clientMutationId: String
+
+  # The ID of the partner.
+  partnerId: String!
+}
+
+type RepositionPartnerArtistArtworksMutationPayload {
+  clientMutationId: String
+  partnerOrError: RepositionPartnerArtistArtworksResponseOrError
+}
+
+union RepositionPartnerArtistArtworksResponseOrError =
+    RepositionPartnerArtistArtworksFailure
+  | RepositionPartnerArtistArtworksSuccess
+
+type RepositionPartnerArtistArtworksSuccess {
+  partner: Partner
 }
 
 type RepositionPartnerLocationsFailure {
