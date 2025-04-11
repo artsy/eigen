@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   ChevronIcon,
+  DEFAULT_HIT_SLOP,
   Flex,
   Screen,
   ShareIcon,
@@ -252,7 +253,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
               <Touchable
                 onPress={handleExitPressed}
                 testID="close-icon"
-                hitSlop={ICON_HIT_SLOP}
+                hitSlop={DEFAULT_HIT_SLOP}
                 haptic
               >
                 <ChevronIcon direction="down" />
@@ -263,10 +264,10 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
               <Touchable
                 onPress={handleSharePressed}
                 testID="share-icon"
-                hitSlop={ICON_HIT_SLOP}
+                hitSlop={DEFAULT_HIT_SLOP}
                 haptic
               >
-                <ShareIcon />
+                <ShareIcon width={24} height={24} />
               </Touchable>
             }
           />
