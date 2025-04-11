@@ -102,10 +102,7 @@ import { FaireMoreInfoScreenQuery, FairMoreInfoQueryRenderer } from "app/Scenes/
 import { FeaturedFairsScreen, featuredFairsScreenQuery } from "app/Scenes/Fair/FeaturedFairsScreen"
 import { Favorites } from "app/Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer, FeatureScreenQuery } from "app/Scenes/Feature/Feature"
-import {
-  GalleriesForYouQuery,
-  GalleriesForYouScreen,
-} from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
+import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
 import { GeneQueryRenderer, GeneScreenQuery } from "app/Scenes/Gene/Gene"
 import { HomeViewScreen, homeViewScreenQuery } from "app/Scenes/HomeView/HomeView"
 import {
@@ -194,7 +191,11 @@ import {
 } from "app/Scenes/SavedSearchAlert/EditSavedSearchAlert"
 import { SavedSearchAlertScreenQuery } from "app/Scenes/SavedSearchAlert/SavedSearchAlert"
 import { SavedSearchAlertsListQueryRenderer } from "app/Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
-import { SearchScreen, SearchScreenQuery } from "app/Scenes/Search/Search"
+import {
+  searchQueryDefaultVariables,
+  SearchScreen,
+  SearchScreenQuery,
+} from "app/Scenes/Search/Search"
 import {
   ShowMoreInfoQueryRenderer,
   ShowMoreInfoScreenQuery,
@@ -289,7 +290,7 @@ export type ModuleDescriptor<T = string> = {
   /**
    * Here variables can be specified for each query. The variables will be merged with the route params.
    */
-  queryVariables?: object[]
+  prepareVariables?: ((params: any) => object)[]
   injectParams?: (params: any) => any
 }
 
@@ -439,7 +440,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [ArtistScreenQuery],
-    queryVariables: [defaultArtistVariables],
+    prepareVariables: [({ artistID }) => ({ artistID, ...defaultArtistVariables })],
   },
   {
     path: "/artist/:artistID/articles",
@@ -560,7 +561,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [artworkListsQuery],
-    queryVariables: [artworkListVariables],
+    prepareVariables: [() => artworkListVariables],
   },
   {
     path: "/artwork-list/:listID",
@@ -572,7 +573,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [ArtworkListScreenQuery],
-    queryVariables: [artworkListVariables],
+    prepareVariables: [({ listID }) => ({ listID, ...artworkListVariables })],
   },
   {
     path: "/artwork-recommendations",
@@ -654,6 +655,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: SaleQueryRenderer,
     options: { screenOptions: { headerShown: false } },
     queries: [SaleScreenQuery],
+    prepareVariables: [({ saleID }) => ({ saleID, saleSlug: saleID })],
   },
   {
     path: "/auction/:saleID/bid/:artworkID",
@@ -888,7 +890,6 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    queries: [GalleriesForYouQuery],
   },
   {
     path: "/gene/:geneID",
@@ -930,7 +931,7 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "InfiniteDiscovery",
     Component: InfiniteDiscoveryQueryRenderer,
     queries: [infiniteDiscoveryQuery],
-    queryVariables: [infiniteDiscoveryVariables],
+    prepareVariables: [() => infiniteDiscoveryVariables],
     options: {
       hidesBottomTabs: true,
       screenOptions: {
@@ -1374,6 +1375,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [SearchScreenQuery],
+    prepareVariables: [() => searchQueryDefaultVariables],
   },
   {
     path: "/favorites",
@@ -1463,7 +1465,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [artworkListsQuery],
-    queryVariables: [artworkListVariables],
+    prepareVariables: [() => artworkListVariables],
   },
   {
     path: "/favorites/saves/:listID",

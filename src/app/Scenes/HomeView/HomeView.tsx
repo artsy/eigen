@@ -15,7 +15,6 @@ import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHomeViewExperimentTracking"
 import { Playground } from "app/Scenes/Playground/Playground"
-import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { navigate } from "app/system/navigation/navigate"
@@ -95,7 +94,7 @@ export const HomeView: React.FC = memo(() => {
     Linking.getInitialURL().then((url) => {
       const isDeepLink = !!url
       if (!isDeepLink) {
-        prefetchUrl<SearchQuery>("search", searchQueryDefaultVariables)
+        prefetchUrl<SearchQuery>("search")
         prefetchUrl("my-profile")
         prefetchUrl("inbox")
         prefetchUrl("infinite-discovery")
