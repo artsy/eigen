@@ -243,6 +243,9 @@ export interface ViewOptions {
   // If this module should only be shown in one particular tab, name it here
   onlyShowInTabName?: BottomTabType
   screenOptions?: NativeStackNavigationOptions
+  topTabsNavigatorOptions?: {
+    topTabName: string
+  }
 }
 // Default WebView Route Definition
 const webViewRoute = ({
@@ -545,6 +548,13 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "SavedArtworks",
     Component: SavedArtworks,
     options: {
+      topTabsNavigatorOptions: unsafe_getFeatureFlag("AREnableFavoritesTab")
+        ? {
+            topTabName: "saves",
+          }
+        : undefined,
+      isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
+      onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
       screenOptions: {
         headerShown: false,
       },
@@ -862,19 +872,6 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [featuredFairsScreenQuery],
-  },
-
-  {
-    path: "/favorites",
-    name: "Favorites",
-    Component: unsafe_getFeatureFlag("AREnableFavoritesTab") ? Favorites : LegacyFavorites,
-    options: {
-      isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
-      onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
-      screenOptions: {
-        headerShown: false,
-      },
-    },
   },
   {
     path: "/feature/:slug",
@@ -1379,10 +1376,29 @@ export const artsyDotNetRoutes = defineRoutes([
     queries: [SearchScreenQuery],
   },
   {
+    path: "/favorites",
+    name: "Favorites",
+    Component: unsafe_getFeatureFlag("AREnableFavoritesTab") ? Favorites : LegacyFavorites,
+    options: {
+      isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
+      onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  },
+  {
     path: "/favorites/alerts",
     name: "SavedSearchAlertsList",
     Component: SavedSearchAlertsListQueryRenderer,
     options: {
+      topTabsNavigatorOptions: unsafe_getFeatureFlag("AREnableFavoritesTab")
+        ? {
+            topTabName: "alerts",
+          }
+        : undefined,
+      isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
+      onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
       screenOptions: {
         headerShown: false,
       },
@@ -1412,10 +1428,36 @@ export const artsyDotNetRoutes = defineRoutes([
     },
   },
   {
+    path: "/favorites/follows",
+    name: "SavedArtworks",
+    Component: SavedArtworks,
+    options: {
+      topTabsNavigatorOptions: unsafe_getFeatureFlag("AREnableFavoritesTab")
+        ? {
+            topTabName: "follows",
+          }
+        : undefined,
+      isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
+      onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [artworkListsQuery],
+    queryVariables: [artworkListVariables],
+  },
+  {
     path: "/favorites/saves",
     name: "SavedArtworks",
     Component: SavedArtworks,
     options: {
+      topTabsNavigatorOptions: unsafe_getFeatureFlag("AREnableFavoritesTab")
+        ? {
+            topTabName: "saves",
+          }
+        : undefined,
+      isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
+      onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
       screenOptions: {
         headerShown: false,
       },
