@@ -42,7 +42,7 @@ import {
   tracks as artworkActionTracks,
 } from "app/utils/track/ArtworkActions"
 import React, { useRef, useState } from "react"
-import { View, ViewProps, Text as RNText, Platform } from "react-native"
+import { Platform, Text as RNText, View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotProgressBar } from "./LotProgressBar"
@@ -269,7 +269,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
         <RouterLink
           haptic
           underlayColor={color("white100")}
-          activeOpacity={0.8}
           onPress={handleTap}
           // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
           onLongPress={() => {

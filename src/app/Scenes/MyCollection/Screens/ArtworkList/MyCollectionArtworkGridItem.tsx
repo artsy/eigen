@@ -1,5 +1,5 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
-import { Box, Text, TrendingIcon, useColor } from "@artsy/palette-mobile"
+import { Box, Text, Touchable, TrendingIcon } from "@artsy/palette-mobile"
 import { MyCollectionArtworkGridItem_artwork$data } from "__generated__/MyCollectionArtworkGridItem_artwork.graphql"
 import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
@@ -7,7 +7,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { useLocalImage } from "app/utils/LocalImageStore"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { TouchableHighlight, View } from "react-native"
+import { View } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -17,7 +17,6 @@ interface MyCollectionArtworkGridItemProps {
 }
 
 const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({ artwork }) => {
-  const color = useColor()
   const { trackEvent } = useTracking()
   const displayImage = artwork.images?.find((i: any) => i?.isDefault) || artwork.images?.[0]
   const { width } = useScreenDimensions()
@@ -38,9 +37,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const showHighDemandIcon = isP1Artist && isHighDemand
 
   return (
-    <TouchableHighlight
-      underlayColor={color("white100")}
-      activeOpacity={0.8}
+    <Touchable
       accessibilityLabel="Go to artwork details"
       accessibilityRole="link"
       onPress={() => {
@@ -91,7 +88,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           )}
         </Box>
       </View>
-    </TouchableHighlight>
+    </Touchable>
   )
 }
 

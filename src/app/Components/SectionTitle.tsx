@@ -77,7 +77,6 @@ const Wrapper: React.FC<{ onPress?(): void; href?: string | null; navigationProp
         to={href}
         testID="touchable-wrapper"
         hitSlop={{ top: 10, bottom: 10 }}
-        activeOpacity={0.65}
       >
         {children}
       </RouterLink>

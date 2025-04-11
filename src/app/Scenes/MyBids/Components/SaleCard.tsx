@@ -94,7 +94,6 @@ export const SaleCard: React.FC<SaleCardProps> = ({
   return (
     <Touchable
       underlayColor="transparent"
-      activeOpacity={0.8}
       onPress={() => {
         tracking.trackEvent({
           action: ActionType.tappedAuctionGroup,

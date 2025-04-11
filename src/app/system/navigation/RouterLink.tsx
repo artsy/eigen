@@ -64,7 +64,6 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   }
 
   const touchableProps = {
-    activeOpacity: 0.65,
     onPress: handlePress,
     ...restProps,
   }

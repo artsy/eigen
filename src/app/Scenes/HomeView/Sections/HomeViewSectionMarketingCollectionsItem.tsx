@@ -1,4 +1,4 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { DEFAULT_ACTIVE_OPACITY, Flex, Text } from "@artsy/palette-mobile"
 import themeGet from "@styled-system/theme-get"
 import {
   HomeViewSectionMarketingCollectionsItem_marketingCollection$data,
@@ -89,5 +89,5 @@ const fragment = graphql`
 
 export const CollectionCard = styled.TouchableHighlight.attrs(() => ({
   underlayColor: themeGet("colors.white100"),
-  activeOpacity: 0.8,
+  activeOpacity: DEFAULT_ACTIVE_OPACITY,
 }))``

@@ -5,7 +5,7 @@ import {
   tappedEntityGroup,
   TappedEntityGroupArgs,
 } from "@artsy/cohesion"
-import { Box, Flex, Image, Text, useColor } from "@artsy/palette-mobile"
+import { Box, DEFAULT_ACTIVE_OPACITY, Flex, Image, Text, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { SaleArtworkTileRailCard_saleArtwork$data } from "__generated__/SaleArtworkTileRailCard_saleArtwork.graphql"
 import { CARD_WIDTH } from "app/Components/CardRail/CardRailCard"
@@ -21,7 +21,7 @@ export const CONTAINER_HEIGHT = 120
 
 const SaleArtworkCard = styled.TouchableHighlight.attrs(() => ({
   underlayColor: themeGet("colors.white100"),
-  activeOpacity: 0.8,
+  activeOpacity: DEFAULT_ACTIVE_OPACITY,
 }))``
 
 export interface SaleArtworkTileRailCardProps {
