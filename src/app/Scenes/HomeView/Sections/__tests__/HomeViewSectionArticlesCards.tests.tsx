@@ -8,9 +8,9 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 describe("HomeViewSectionArticlesCards", () => {
-  // afterEach(() => {
-  //   mockTrackEvent.mockClear()
-  // })
+  afterEach(() => {
+    mockTrackEvent.mockClear()
+  })
 
   const { renderWithRelay } = setupTestWrapper<HomeViewSectionArticlesCardsTestsQuery>({
     Component: (props) => {

@@ -29,13 +29,7 @@ export const HeroUnit: React.FC<HeroUnitItemProps> = ({ item, onPress }) => {
   const cardImageWidth = screenWidth > 700 ? screenWidth / 2 : CARD_IMAGE_WIDTH
 
   return (
-    <RouterLink
-      key={internalID}
-      to={url}
-      onPress={onPress}
-      haptic="impactLight"
-      activeOpacity={0.8}
-    >
+    <RouterLink key={internalID} to={url} onPress={onPress} haptic="impactLight">
       <Flex bg="black100" flexDirection="row" height={HERO_UNIT_CARD_HEIGHT} width={screenWidth}>
         <Image height={HERO_UNIT_CARD_HEIGHT} src={imageSrc} width={cardImageWidth} />
 
