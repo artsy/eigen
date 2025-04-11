@@ -70,7 +70,7 @@ export const FollowedArtists: React.FC<Props> = ({ me }) => {
             withFeedback
             containerStyle={{ paddingHorizontal: space(2) }}
             onPress={() => {
-              trackTappedArtistFollowsGroup(item.artist?.slug, item.artist?.id)
+              trackTappedArtistFollowsGroup(item.artist?.slug, item.artist?.internalID)
             }}
           />
         )
@@ -92,6 +92,7 @@ const followedArtistsFragment = graphql`
           node {
             artist {
               id
+              internalID
               slug
               ...ArtistListItem_artist
             }
