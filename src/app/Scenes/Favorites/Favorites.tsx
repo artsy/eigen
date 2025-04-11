@@ -70,6 +70,9 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
               onPress={() => {
                 setActiveTab(key)
 
+                // We are manually emitting the tabPress event here because
+                // the navigation library doesn't emit it when we use the
+                // navigation.navigate() method.
                 navigation.emit({
                   type: "tabPress",
                   target: key,
