@@ -420,6 +420,12 @@ jobs:
       - install-node
       - setup-awscli
       - setup-env-file
+      - run:
+          name: Download fonts from s3
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download ios assets
+          command: ./scripts/setup/download-assets-ios
       - install-node-modules
       - run-relay-compiler
       - update-echo
