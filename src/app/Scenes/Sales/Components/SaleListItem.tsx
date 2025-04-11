@@ -24,7 +24,10 @@ export const SaleListItem: React.FC<Props> = (props) => {
   const url = (liveURLIfOpen || href) as string
 
   return (
-    <RouterLink to={url}>
+    // saleSlug is actually saleID in the fragment that it's passed into when prefetching a Sale for
+    // a given SaleListItem.
+    // https://github.com/artsy/eigen/blob/ce7a894627239305d4d4cf9c5f593a8754729df3/src/app/Scenes/Sale/Sale.tsx#L383
+    <RouterLink to={url} prefetchVariables={{ saleID: sale.internalID, saleSlug: sale.internalID }}>
       <View
         style={{
           width: containerWidth,
@@ -60,6 +63,7 @@ export default createFragmentContainer(SaleListItem, {
       name
       href
       liveURLIfOpen
+      internalID
       formattedStartDateTime
       coverImage {
         url(version: "large")
