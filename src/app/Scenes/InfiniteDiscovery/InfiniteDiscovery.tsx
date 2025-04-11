@@ -1,9 +1,9 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
-  ArrowBackIcon,
-  CloseIcon,
+  ChevronIcon,
   Flex,
   Screen,
+  ShareIcon,
   Spacer,
   Spinner,
   Text,
@@ -15,6 +15,7 @@ import {
   InfiniteDiscoveryQuery$data,
 } from "__generated__/InfiniteDiscoveryQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
+import { getShareURL } from "app/Components/ShareSheet/helpers"
 
 import { useToast } from "app/Components/Toast/toastHook"
 import { ICON_HIT_SLOP } from "app/Components/constants"
@@ -30,8 +31,8 @@ import { withSuspense } from "app/utils/hooks/withSuspense"
 import { pluralize } from "app/utils/pluralize"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Key, useCallback, useEffect, useMemo, useState } from "react"
-import { useSharedValue } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
+import RNShare from "react-native-share"
 import { fetchQuery, graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -66,8 +67,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     [artworks, topArtworkId]
   )
 
-  const isRewindRequested = useSharedValue(false)
-
   const insets = useSafeAreaInsets()
 
   useEffect(() => {
@@ -100,15 +99,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const currentIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
   // TODO: beware! the artworks are being displayed in reverse order
   const unswipedCardIds = artworks.slice(0, currentIndex).map((artwork) => artwork.internalID)
-
-  // TODO: beware! the artworks are being displayed in reverse order
-  const hideRewindButton =
-    !!artworks.length && topArtworkId === artworks[artworks.length - 1].internalID
-
-  const handleBackPressed = () => {
-    isRewindRequested.value = true
-    // TODO: trackEvent(tracks.tappedRewind(artworkToRewind.internalID, artworkToRewind.slug))
-  }
 
   /**
    * The callack for when a card is displayed to the user for the first time.
@@ -143,16 +133,15 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   /**
    * The callback for when a swiped card is brought back.
    * @param key The key of the card that was brought back.
-   * @param wasSwiped True if the card was swiped back, false if it was tapped back.
    */
-  const handleRewind = (key: Key, wasSwiped = true) => {
+  const handleRewind = (key: Key) => {
     const artwork = artworks.find((artwork) => artwork.internalID === key)
 
     if (!artwork) {
       return
     }
 
-    trackEvent(tracks.tappedRewind(artwork.internalID, artwork.slug, wasSwiped ? "swipe" : "tap"))
+    trackEvent(tracks.tappedRewind(artwork.internalID, artwork.slug))
 
     setTopArtworkId(artwork.internalID)
   }
@@ -219,6 +208,33 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     goBack()
   }
 
+  const hideShareButton = !topArtwork || !topArtwork.slug || !topArtwork.title
+
+  const handleSharePressed = () => {
+    if (!topArtwork || !topArtwork.slug || !topArtwork.title) {
+      return
+    }
+
+    trackEvent(tracks.tappedShare(topArtwork.internalID, topArtwork.slug))
+
+    const url = getShareURL(`/artwork/${topArtwork.slug}?utm_content=discover-daily-share`)
+    const message = `View ${topArtwork.title} on Artsy`
+
+    RNShare.open({
+      title: topArtwork.title,
+      message: message + "\n" + url,
+      failOnCancel: false,
+    })
+      .then((result) => {
+        if (result.success) {
+          trackEvent(tracks.share(topArtwork.internalID, topArtwork.slug, result.message))
+        }
+      })
+      .catch((error) => {
+        console.error("InfiniteDiscovery.tsx", error)
+      })
+  }
+
   // Get the last 2 artworks from the infinite discovery
   // We are showing the last 2 artworks instead of 2 because we reverse the artworks array
   // Inside the Swiper component
@@ -234,23 +250,23 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
             title="Discover Daily"
             leftElements={
               <Touchable
-                onPress={handleBackPressed}
-                testID="back-icon"
-                hitSlop={ICON_HIT_SLOP}
-                haptic
-              >
-                <ArrowBackIcon />
-              </Touchable>
-            }
-            hideLeftElements={hideRewindButton}
-            rightElements={
-              <Touchable
                 onPress={handleExitPressed}
                 testID="close-icon"
                 hitSlop={ICON_HIT_SLOP}
                 haptic
               >
-                <CloseIcon fill="black100" />
+                <ChevronIcon direction="down" />
+              </Touchable>
+            }
+            hideRightElements={hideShareButton}
+            rightElements={
+              <Touchable
+                onPress={handleSharePressed}
+                testID="share-icon"
+                hitSlop={ICON_HIT_SLOP}
+                haptic
+              >
+                <ShareIcon />
               </Touchable>
             }
           />
@@ -258,7 +274,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         <Spacer y={1} />
         <Swiper
           cards={artworks}
-          isRewindRequested={isRewindRequested}
           onTrigger={handleFetchMore}
           swipedIndexCallsOnTrigger={2}
           onNewCardReached={handleNewCardReached}
@@ -268,6 +283,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         {!!topArtwork && (
           <InfiniteDiscoveryBottomSheet
             artworkID={topArtwork.internalID}
+            artworkSlug={topArtwork.slug}
             artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
           />
         )}
@@ -279,8 +295,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 const InfiniteDiscoveryHeader = () => (
   <Screen.Header
     title="Discover Daily"
-    hideLeftElements
-    rightElements={
+    leftElements={
       <Touchable
         onPress={() => {
           goBack()
@@ -289,9 +304,10 @@ const InfiniteDiscoveryHeader = () => (
         hitSlop={ICON_HIT_SLOP}
         haptic
       >
-        <CloseIcon fill="black100" />
+        <ChevronIcon direction="down" />
       </Touchable>
     }
+    hideRightElements
   />
 )
 
@@ -389,6 +405,7 @@ export const infiniteDiscoveryQuery = graphql`
             internalID @required(action: NONE)
           }
           slug
+          title
         }
       }
     }
@@ -402,6 +419,14 @@ const tracks = {
     context_screen_owner_slug: artworkSlug,
     context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
   }),
+  share: (artworkId: string, artworkSlug: string, service: string) => ({
+    action: ActionType.share,
+    context_module: ContextModule.infiniteDiscovery,
+    context_owner_type: OwnerType.infiniteDiscoveryArtwork,
+    context_owner_id: artworkId,
+    context_owner_slug: artworkSlug,
+    service,
+  }),
   swipedArtwork: (artworkId: string, artworkSlug: string) => ({
     action: ActionType.swipedInfiniteDiscoveryArtwork,
     context_module: ContextModule.infiniteDiscovery,
@@ -413,13 +438,20 @@ const tracks = {
     action: ActionType.tappedClose,
     context_module: ContextModule.infiniteDiscovery,
   }),
-  tappedRewind: (artworkId: string, artworkSlug: string, mode: "swipe" | "tap") => ({
+  tappedRewind: (artworkId: string, artworkSlug: string) => ({
     action: ActionType.tappedRewind,
     context_module: ContextModule.infiniteDiscovery,
     context_screen_owner_id: artworkId,
     context_screen_owner_slug: artworkSlug,
     context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
-    mode,
+    mode: "swipe",
+  }),
+  tappedShare: (artworkId: string, artworkSlug: string) => ({
+    action: ActionType.tappedShare,
+    context_module: ContextModule.infiniteDiscovery,
+    context_screen_owner_id: artworkId,
+    context_screen_owner_slug: artworkSlug,
+    context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
   }),
   tappedSummary: () => ({
     action: ActionType.tappedToast,

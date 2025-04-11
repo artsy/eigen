@@ -2,7 +2,6 @@ import { InfiniteDiscoveryArtworkCard } from "app/Scenes/InfiniteDiscovery/Compo
 import { AnimatedView } from "app/Scenes/InfiniteDiscovery/Components/Swiper/AnimatedView"
 import { useScreenWidthWithOffset } from "app/Scenes/InfiniteDiscovery/Components/Swiper/useScreenWidthWithOffset"
 import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
-import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { forwardRef, Key, useEffect, useImperativeHandle, useState } from "react"
 import { View, ViewStyle } from "react-native"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
@@ -11,7 +10,6 @@ import {
   Extrapolation,
   interpolate,
   runOnJS,
-  SharedValue,
   useAnimatedReaction,
   useSharedValue,
   withDelay,
@@ -30,9 +28,8 @@ import {
 
 type SwiperProps = {
   cards: InfiniteDiscoveryArtwork[]
-  isRewindRequested: SharedValue<boolean>
   onNewCardReached?: (key: Key) => void
-  onRewind: (key: Key, wasSwiped?: boolean) => void
+  onRewind: (key: Key) => void
   onSwipe: (swipedKey: Key, nextKey: Key) => void
   containerStyle?: ViewStyle
   cardStyle?: ViewStyle
@@ -50,7 +47,6 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
   (
     {
       cards: _cards,
-      isRewindRequested,
       onNewCardReached,
       onRewind,
       onSwipe,
@@ -96,12 +92,6 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
       }
     }, [_cards.length])
 
-    useBackHandler(() => {
-      rewindLastCard()
-
-      return true
-    })
-
     // Without this, we are only to rewind a few times
     useEffect(() => {
       if (cards) {
@@ -114,39 +104,6 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
         _activeIndex.value = _activeIndex.value + numberExtraCardsAdded
       }
     }, [cards.length, numberExtraCardsAdded])
-
-    const rewindLastCard = () => {
-      const hasSwipedCards = _activeIndex.value + 1 < cards.length
-
-      let lastSwipedCardKey = null
-
-      // TODO: clean up this minefield of if-statements
-      if (hasSwipedCards) {
-        lastSwipedCardKey = cards[_activeIndex.value + 1].internalID
-      }
-
-      swipedCardX.value = withTiming(0, { duration: 400, easing: Easing.out(Easing.cubic) }, () => {
-        if (hasSwipedCards) {
-          swipedKeys.value = swipedKeys.value.slice(0, -1)
-          _activeIndex.value = _activeIndex.value + 1
-        }
-        swipedCardX.value = -width
-      })
-
-      if (!!lastSwipedCardKey) {
-        runOnJS(onRewind)(lastSwipedCardKey as Key, false)
-      }
-    }
-    useAnimatedReaction(
-      () => isRewindRequested.value,
-      (current, previous) => {
-        if (current && !previous) {
-          runOnJS(rewindLastCard)()
-
-          isRewindRequested.value = false
-        }
-      }
-    )
 
     const swipeLeftThenRight = (duration: number) => {
       const swipedCardIndex = _activeIndex.value
