@@ -243,9 +243,9 @@ export interface ViewOptions {
   // If this module should only be shown in one particular tab, name it here
   onlyShowInTabName?: BottomTabType
   screenOptions?: NativeStackNavigationOptions
-  // This route is part of a material top tab navigator
-  isTopTap?: boolean
-  topTabName?: string
+  topTabsNavigatorOptions?: {
+    topTabName: string
+  }
 }
 // Default WebView Route Definition
 const webViewRoute = ({
@@ -548,8 +548,11 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "SavedArtworks",
     Component: SavedArtworks,
     options: {
-      isTopTap: unsafe_getFeatureFlag("AREnableFavoritesTab"),
-      topTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "saves" : undefined,
+      topTabsNavigatorOptions: unsafe_getFeatureFlag("AREnableFavoritesTab")
+        ? {
+            topTabName: "saves",
+          }
+        : undefined,
       isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
       onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
       screenOptions: {
@@ -1389,8 +1392,11 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "SavedSearchAlertsList",
     Component: SavedSearchAlertsListQueryRenderer,
     options: {
-      isTopTap: unsafe_getFeatureFlag("AREnableFavoritesTab"),
-      topTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "alerts" : undefined,
+      topTabsNavigatorOptions: unsafe_getFeatureFlag("AREnableFavoritesTab")
+        ? {
+            topTabName: "alerts",
+          }
+        : undefined,
       isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
       onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
       screenOptions: {
@@ -1426,8 +1432,11 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "SavedArtworks",
     Component: SavedArtworks,
     options: {
-      isTopTap: unsafe_getFeatureFlag("AREnableFavoritesTab"),
-      topTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "follows" : undefined,
+      topTabsNavigatorOptions: unsafe_getFeatureFlag("AREnableFavoritesTab")
+        ? {
+            topTabName: "follows",
+          }
+        : undefined,
       isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
       onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
       screenOptions: {
@@ -1442,8 +1451,11 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "SavedArtworks",
     Component: SavedArtworks,
     options: {
-      isTopTap: unsafe_getFeatureFlag("AREnableFavoritesTab"),
-      topTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "saves" : undefined,
+      topTabsNavigatorOptions: unsafe_getFeatureFlag("AREnableFavoritesTab")
+        ? {
+            topTabName: "saves",
+          }
+        : undefined,
       isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
       onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
       screenOptions: {

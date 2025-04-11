@@ -94,8 +94,8 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
       internal_navigationRef.current?.dispatch(StackActions.push(result.module, props))
     }
 
-    const topTabName = module?.options?.topTabName
-    if (module.options?.isTopTap && topTabName) {
+    const topTabName = module?.options?.topTabsNavigatorOptions?.topTabName
+    if (topTabName) {
       // We need to wait for the material top tab navigator to finish mounting
       //  before we can navigate to it
       setTimeout(() => {
