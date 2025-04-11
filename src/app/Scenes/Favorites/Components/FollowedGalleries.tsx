@@ -68,7 +68,7 @@ export const FollowedGalleries: React.FC<Props> = ({ me }) => {
             partner={item}
             disabledLocation
             onPress={() => {
-              trackTappedGalleryFollowsGroup(item.slug, item.id)
+              trackTappedGalleryFollowsGroup(item.slug, item.internalID)
             }}
           />
         )
@@ -88,6 +88,7 @@ const followedGalleriesFragment = graphql`
         edges {
           node {
             id
+            internalID
             slug
             ...PartnerListItemShort_partner
           }

@@ -73,7 +73,7 @@ export const AlertArtworksGrid: FC<AlertArtworksGridProps> = ({ alertId, fetchKe
         {artworksCount > 0 && (
           <Flex>
             <Text variant="sm">
-              {numWorks} ffffff currently on Artsy match your criteria. See our top picks for you:
+              {numWorks} currently on Artsy match your criteria. See our top picks for you:
             </Text>
             <Spacer y={1} />
             <GenericGrid

@@ -201,7 +201,10 @@ export const tabsTracks = {
         tabScreen = OwnerType.search
         break
       case "favorites":
-        tabScreen = OwnerType.favorites
+        /**
+         * Make sure tabScreen matches the default activeTab in FavoritesContextStore
+         */
+        tabScreen = OwnerType.favoritesSaves
         break
     }
 
