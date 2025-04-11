@@ -262,7 +262,7 @@ export const features = {
   },
   AREnableFavoritesTab: {
     description: "Enable Favorites tab in bottom navigation",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableFavoritesTab",
   },

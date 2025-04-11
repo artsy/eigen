@@ -1,5 +1,5 @@
 import { EventEmitter } from "events"
-import { StackActions, TabActions } from "@react-navigation/native"
+import { CommonActions, StackActions, TabActions } from "@react-navigation/native"
 import { tabsTracks } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { modules } from "app/Navigation/utils/modules"
@@ -92,6 +92,15 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
       }
     } else {
       internal_navigationRef.current?.dispatch(StackActions.push(result.module, props))
+    }
+
+    const topTabName = module?.options?.topTabsNavigatorOptions?.topTabName
+    if (topTabName) {
+      // We need to wait for the material top tab navigator to finish mounting
+      //  before we can navigate to it
+      setTimeout(() => {
+        internal_navigationRef.current?.dispatch(CommonActions.navigate(topTabName))
+      }, 200)
     }
   }
 }
