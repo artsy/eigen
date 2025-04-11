@@ -44,7 +44,14 @@ export const HomeViewSectionSalesItem: FC<HomeViewSectionSalesItemProps> = ({
 
   return (
     <CardRailCard key={sale.href}>
-      <RouterLink to={url} onPress={() => onPress?.(sale)}>
+      <RouterLink
+        to={url}
+        onPress={() => onPress?.(sale)}
+        // saleSlug is actually saleID in the fragment that it's passed into when prefetching a Sale
+        // for a given SalesItem RailCard.
+        // https://github.com/artsy/eigen/blob/ce7a894627239305d4d4cf9c5f593a8754729df3/src/app/Scenes/Sale/Sale.tsx#L383
+        prefetchVariables={{ saleID: sale.internalID, saleSlug: sale.internalID }}
+      >
         <ThreeUpImageLayout imageURLs={availableArtworkImageURLs} />
         <MetadataContainer>
           <Text numberOfLines={2} lineHeight="20px" variant="sm">
