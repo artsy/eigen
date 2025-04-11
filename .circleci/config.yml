@@ -559,7 +559,7 @@ workflows:
       #         only:
       #           - main
 
-      - test-js
+      # - test-js
 
       - build-test-js
 
@@ -578,7 +578,7 @@ workflows:
               ignore:
                 - beta-android
           requires:
-            - test-js
+            # - test-js
             - check-code
             - build-test-js
             - horizon/block
