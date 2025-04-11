@@ -553,11 +553,11 @@ workflows:
       - check-code:
           context: danger-github-oss
 
-      - check-and-deploy:
-          filters:
-            branches:
-              only:
-                - main
+      # - check-and-deploy:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main
 
       - test-js
 
@@ -583,23 +583,23 @@ workflows:
             - build-test-js
             - horizon/block
 
-      - build-test-app-android:
-          filters:
-            branches:
-              ignore:
-                - beta-ios
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
-            - horizon/block
+      # - build-test-app-android:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - beta-ios
+      #     requires:
+      #       - test-js
+      #       - check-code
+      #       - build-test-js
+      #       - horizon/block
 
-      - update-metaphysics:
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
-          requires:
-            - build-test-app-ios
-            - build-test-app-android
+      # - update-metaphysics:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - beta-ios
+      #           - beta-android
+      #     requires:
+      #       - build-test-app-ios
+      #       - build-test-app-android
