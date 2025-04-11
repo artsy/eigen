@@ -18,7 +18,7 @@ export const usePrefetch = () => {
 
 const prefetchRoute = async <TQuery extends OperationType>(
   route?: string | null,
-  variables?: VariablesOf<TQuery>,
+  extraVariables?: VariablesOf<TQuery>,
   onComplete?: () => void
 ) => {
   if (!route) return null
@@ -45,13 +45,22 @@ const prefetchRoute = async <TQuery extends OperationType>(
   }
 
   return queries.map((query, index) => {
-    const allVariables = {
-      ...module.prepareQueryVariables?.[index]?.(result.params),
-      ...result.params,
-      ...variables,
-    }
+    const variables = (() => {
+      const prepareVariables = module.prepareVariables?.[index]
 
-    return prefetchQuery({ query, variables: allVariables, route, onComplete })
+      if (!prepareVariables) {
+        return result.params
+      }
+
+      return prepareVariables(result.params)
+    })()
+
+    return prefetchQuery({
+      query,
+      variables: { ...variables, ...extraVariables },
+      route,
+      onComplete,
+    })
   })
 }
 
