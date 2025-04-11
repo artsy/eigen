@@ -11,7 +11,6 @@ import {
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -79,9 +78,6 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
                 section.contextModule as ContextModule,
                 index
               )
-              if (item.link.url) {
-                navigate(item.link.url)
-              }
             }}
           />
         )}

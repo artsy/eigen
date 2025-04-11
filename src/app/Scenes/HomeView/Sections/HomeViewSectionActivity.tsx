@@ -17,7 +17,6 @@ import {
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
@@ -50,26 +49,17 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
 
   const href = viewAll?.href || "/notifications"
 
-  const onHeaderPress = () => {
+  const onMorePress = () => {
     tracking.tappedActivityGroupViewAll(
       section.contextModule as ContextModule,
       (viewAll?.ownerType || OwnerType.activities) as ScreenOwnerType
     )
-  }
-
-  const onSectionViewAll = () => {
-    tracking.tappedActivityGroupViewAll(
-      section.contextModule as ContextModule,
-      (viewAll?.ownerType || OwnerType.activities) as ScreenOwnerType
-    )
-
-    navigate(href)
   }
 
   return (
     <Flex {...flexProps}>
       <Flex px={2}>
-        <SectionTitle href={href} title={section.component?.title} onPress={onHeaderPress} />
+        <SectionTitle href={href} title={section.component?.title} onPress={onMorePress} />
       </Flex>
 
       <FlatList
@@ -78,7 +68,7 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = (
         ListHeaderComponent={() => <Spacer x={2} />}
         ListFooterComponent={
           viewAll
-            ? () => <SeeAllCard buttonText={viewAll.buttonText} onPress={onSectionViewAll} />
+            ? () => <SeeAllCard buttonText={viewAll.buttonText} onPress={onMorePress} href={href} />
             : undefined
         }
         ItemSeparatorComponent={() => <Spacer x={2} />}

@@ -1,5 +1,8 @@
 import Geolocation from "@react-native-community/geolocation"
+import { fireEvent } from "@testing-library/react-native"
+import { navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import mockFetch from "jest-fetch-mock"
 import "react-native"
@@ -21,7 +24,7 @@ describe("ShowsRailContainer", () => {
   describe("with location enabled", () => {
     const environment = createMockEnvironment()
 
-    it("renders the title and the shows", async () => {
+    it("renders the title and the shows and handles title press", async () => {
       const { getByText } = renderWithHookWrappersTL(
         <ShowsRailContainer title="Shows for You" />,
         environment
@@ -39,13 +42,24 @@ describe("ShowsRailContainer", () => {
       expect(getByText("Shows for You")).toBeDefined()
 
       expect(getByText("Leeum Collection: Beyond Space")).toBeDefined()
+
+      fireEvent.press(getByText("Shows for You"))
+
+      expect(navigate).toHaveBeenCalledWith("/shows-for-you")
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: "tappedShowGroup",
+        context_module: "showsRail",
+        context_screen_owner_type: "home",
+        destination_screen_owner_type: "show",
+        type: "header",
+      })
     })
   })
 
   describe("with location disabled", () => {
     const environment = createMockEnvironment()
 
-    it("renders the title and the shows", async () => {
+    it("renders the title and the shows and handles title press", async () => {
       const { getByText } = renderWithHookWrappersTL(
         <ShowsRailContainer title="Shows for You" disableLocation />,
         environment
@@ -63,6 +77,17 @@ describe("ShowsRailContainer", () => {
       expect(getByText("Shows for You")).toBeDefined()
 
       expect(getByText("Leeum Collection: Beyond Space")).toBeDefined()
+
+      fireEvent.press(getByText("Shows for You"))
+
+      expect(navigate).toHaveBeenCalledWith("/shows-for-you")
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        action: "tappedShowGroup",
+        context_module: "showsRail",
+        context_screen_owner_type: "home",
+        destination_screen_owner_type: "show",
+        type: "header",
+      })
     })
   })
 })

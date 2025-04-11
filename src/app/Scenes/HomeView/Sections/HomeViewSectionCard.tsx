@@ -6,7 +6,6 @@ import {
   Skeleton,
   SkeletonBox,
   Text,
-  Touchable,
   useColor,
   useScreenDimensions,
   useSpace,
@@ -18,7 +17,7 @@ import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeView
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { GlobalStore } from "app/store/GlobalStore"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { memo } from "react"
@@ -60,10 +59,6 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
 
   const onPress = () => {
     tracking.tappedShowMore(buttonText, section.contextModule as ContextModule)
-
-    if (route) {
-      navigate(route)
-    }
   }
 
   return (
@@ -80,7 +75,7 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
           onPress={onPress}
         />
       ) : (
-        <Touchable onPress={onPress} haptic="impactLight">
+        <RouterLink onPress={onPress} to={route} haptic="impactLight">
           {!!hasImage && (
             <Flex position="absolute">
               <FastImage
@@ -130,19 +125,20 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
 
               {!!route && (
                 <Flex mt={0.5} maxWidth={150}>
-                  <Button
-                    variant={hasImage && theme !== "dark" ? "outlineLight" : "fillDark"}
-                    size="small"
-                    onPress={onPress}
-                    iconPosition="right"
-                  >
-                    {buttonText}
-                  </Button>
+                  <RouterLink hasChildTouchable onPress={onPress} to={route}>
+                    <Button
+                      variant={hasImage && theme !== "dark" ? "outlineLight" : "fillDark"}
+                      size="small"
+                      iconPosition="right"
+                    >
+                      {buttonText}
+                    </Button>
+                  </RouterLink>
                 </Flex>
               )}
             </Flex>
           </Flex>
-        </Touchable>
+        </RouterLink>
       )}
 
       <HomeViewSectionSentinel
