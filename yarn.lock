@@ -22,12 +22,12 @@
   resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.27.0.tgz#b4daf7331cb0962c44c07de9de0a1a117adfcd4b"
   integrity sha512-bOlwS5O6/E4E+BmRVfI7/RWVoehnxiwgtQusVubZDjzMpZWxGh6QAPVsF9sIxISyV11f+Yw4KOTh9UvPNuRyNQ==
 
-"@artsy/palette-mobile@14.0.43":
-  version "14.0.43"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-14.0.43.tgz#4b668434d2df6ef16f964fb0f53a45faec00204c"
-  integrity sha512-D2oWm1Qe+87QbJRzQtXlDX3EWhmBkd6IrjlIdzUFh3lWyV4ALOat1jmf5OwTJ8z8q8xae2L3vd6TAd9WIPQlvg==
+"@artsy/palette-mobile@14.0.44":
+  version "14.0.44"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-14.0.44.tgz#02c75eb440a62699ccd43c5545410ea8ddf200a0"
+  integrity sha512-NBAsnPmhz6U0YgoZq4nxvbMz4GvBK0eBYnmhilbnuI7ijxGeUQ6Ik1MowNstIooEnI/GOKGS4dCxge1TBgSVbA==
   dependencies:
-    "@artsy/palette-tokens" "^6.3.0"
+    "@artsy/palette-tokens" "^6.5.0"
     "@shopify/flash-list" "1.7.6"
     "@styled-system/core" "^5.1.2"
     "@styled-system/theme-get" "^5.1.2"
@@ -43,10 +43,10 @@
     react-spring "8.0.23"
     styled-system "^5.1.5"
 
-"@artsy/palette-tokens@^6.3.0":
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-tokens/-/palette-tokens-6.3.0.tgz#1eab1354f90644214a0d8d481c302b3c5e58699f"
-  integrity sha512-UmpwWW7aLeQ5cnQopBmq34IlXar8QedEEjwQVqgUIHTTkMz7Sk3/3QkXYjHhx6UEQprsv5X64f0gvLv6Y+6fFw==
+"@artsy/palette-tokens@^6.5.0":
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-tokens/-/palette-tokens-6.5.0.tgz#3289a4abdbfd33b436954be68ca440fd026a0eb4"
+  integrity sha512-d11MQGLZewAtqiG8Dx8vZE4Ljo2V/PTizdgRmpE0sIJzIy0tREXVKoyWMZR2Z7cy7mpqjhS6LFPeJW9l57VbwA==
 
 "@artsy/to-title-case@1.1.0":
   version "1.1.0"
