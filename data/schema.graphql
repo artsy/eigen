@@ -15315,6 +15315,9 @@ type Mutation {
     input: unsetOrderFulfillmentOptionInput!
   ): unsetOrderFulfillmentOptionPayload
 
+  # Unset payment method and credit card wallet type on an order
+  unsetOrderPaymentMethod(input: unsetOrderPaymentMethodInput!): unsetOrderPaymentMethodPayload
+
   # Create an alert
   updateAlert(input: updateAlertInput!): updateAlertPayload
   updateAppSecondFactor(input: UpdateAppSecondFactorInput!): UpdateAppSecondFactorPayload
@@ -24864,6 +24867,18 @@ input unsetOrderFulfillmentOptionInput {
 }
 
 type unsetOrderFulfillmentOptionPayload {
+  clientMutationId: String
+  orderOrError: SetOrderFulfillmentOptionResponse
+}
+
+input unsetOrderPaymentMethodInput {
+  clientMutationId: String
+
+  # Order id.
+  id: ID!
+}
+
+type unsetOrderPaymentMethodPayload {
   clientMutationId: String
   orderOrError: SetOrderFulfillmentOptionResponse
 }
