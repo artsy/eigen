@@ -553,11 +553,12 @@ workflows:
       - check-code:
           context: danger-github-oss
 
-      - check-and-deploy:
-          filters:
-            branches:
-              only:
-                - main
+      # TODO: Re-enable this after we use Exergy for OTA updates
+      # - check-and-deploy:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main
 
       - test-js
 
