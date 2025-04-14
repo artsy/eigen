@@ -993,6 +993,7 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       screenOptions: {
         headerTitle: "Account Settings",
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
       },
     },
     queries: [MyAccountScreenQuery],
