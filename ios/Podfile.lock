@@ -66,12 +66,12 @@ PODS:
     - CwlMachBadInstructionHandler (~> 2.2.2)
     - CwlPosixPreconditionTesting (~> 2.2.2)
   - DoubleConversion (1.1.6)
-  - EASClient (0.13.2):
+  - EASClient (0.13.3):
     - ExpoModulesCore
   - EXConstants (17.0.5):
     - ExpoModulesCore
   - EXJSONUtils (0.14.0)
-  - EXManifests (0.15.5):
+  - EXManifests (0.15.8):
     - ExpoModulesCore
   - Expecta (1.0.6)
   - "Expecta+Snapshots (3.2.0)":
@@ -120,7 +120,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - EXStructuredHeaders (4.0.0)
-  - EXUpdates (0.26.18):
+  - EXUpdates (0.27.4):
     - DoubleConversion
     - EASClient
     - EXManifests
@@ -2846,10 +2846,10 @@ SPEC CHECKSUMS:
   CwlPosixPreconditionTesting: ecd095aa2129e740b44301c34571e8d85906fb88
   CwlPreconditionTesting: 67a0047dd4de4382b93442c0e3f25207f984f35a
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
-  EASClient: d7420d607795707821b8bcd30ab7444159e802e0
+  EASClient: 68ffef26f551980423751c44c870759842b3340f
   EXConstants: aa93a3e70f8b37c81a80931cfd23f860b1819167
   EXJSONUtils: 01fc7492b66c234e395dcffdd5f53439c5c29c93
-  EXManifests: 81324537a654111964f6e7994dbc351a4233dcfa
+  EXManifests: 77e77c283c4c53a50b9bddebed25abe93f0b48f1
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": 7a3ac7ad2b9bae43aadb4dca08113bb495c98f3e
   Expo: eb362d6461fd355f2d50786daad5fc3c377599e3
@@ -2861,7 +2861,7 @@ SPEC CHECKSUMS:
   ExpoKeepAwake: 1f74cdf53ab3b3aeb7110f18eb053c92e7c3e710
   ExpoModulesCore: bb7e936abeeb9af042a167ed70287433fb19b2f9
   EXStructuredHeaders: 09c70347b282e3d2507e25fb4c747b1b885f87f6
-  EXUpdates: e923e052d3ee1d0287dce97b5de368fa100bca42
+  EXUpdates: e287d022bab17cad3c7cc3a54df67e7cdd830742
   EXUpdatesInterface: 1dcebac98ac5dad4289e6ff2bd5616822e894397
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
   FBAEMKit: 31a20c2d8744d8c57d3a5b7ae4e27b4fdd819193
