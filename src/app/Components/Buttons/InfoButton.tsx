@@ -11,8 +11,7 @@ import {
 } from "@artsy/palette-mobile"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { forwardRef, useImperativeHandle, useMemo, useState } from "react"
-import { Modal, Platform, ScrollView } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { Modal, Platform, ScrollView, SafeAreaView } from "react-native"
 import { FullWindowOverlay } from "react-native-screens"
 
 interface InfoButtonProps {

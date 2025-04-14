@@ -1,8 +1,7 @@
 import { Box, Button, CloseIcon, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { popToRoot } from "app/system/navigation/navigate"
-import { Modal } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { Modal, SafeAreaView } from "react-native"
 
 interface AbandonFlowModalProps {
   isVisible: boolean

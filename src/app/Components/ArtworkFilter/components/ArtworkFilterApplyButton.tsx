@@ -11,8 +11,7 @@ import {
 } from "@artsy/palette-mobile"
 import { ProgressiveOnboardingAlertFinish } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingAlertFinish"
 import { useState } from "react"
-import { Pressable } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { Pressable, SafeAreaView } from "react-native"
 import { ResponsiveValue } from "styled-system"
 
 export interface ArtworkFilterApplyButtonProps {
