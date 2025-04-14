@@ -3,7 +3,6 @@ import {
   HomeViewSectionMarketingCollectionsItem_marketingCollection$data,
   HomeViewSectionMarketingCollectionsItem_marketingCollection$key,
 } from "__generated__/HomeViewSectionMarketingCollectionsItem_marketingCollection.graphql"
-
 import { FiveUpImageLayout } from "app/Components/FiveUpImageLayout"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"

@@ -79,7 +79,7 @@ export const HomeViewSectionFeaturedCollection: React.FC<
   return (
     <Flex {...flexProps}>
       <Flex pb={2} backgroundColor="black100">
-        <RouterLink to={viewAllHref} onPress={onHeaderPress} activeOpacity={0.7}>
+        <RouterLink to={viewAllHref} onPress={onHeaderPress}>
           {!!component.backgroundImageURL && (
             <Image
               width={width}

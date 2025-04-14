@@ -79,7 +79,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
           <RouterLink
             to={href || artwork.href}
             underlayColor={backgroundColor}
-            activeOpacity={0.8}
             onPress={onPress}
             // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
             onLongPress={() => {
