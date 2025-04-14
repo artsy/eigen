@@ -243,11 +243,12 @@ jobs:
           name: Install CodePush CLI
           command: yarn global add appcenter-cli
       - run-relay-compiler
-      - run:
-          name: Handle Deployment for codepush
-          command: |
-            echo "Triggering CodePush deployment..."
-            ./scripts/codepush/deploy-to-codepush.sh Staging
+      # TODO: Replace this when we use Exergy for OTA updates
+      # - run:
+      #     name: Handle Deployment for codepush
+      #     command: |
+      #       echo "Triggering CodePush deployment..."
+      #       ./scripts/codepush/deploy-to-codepush.sh Staging
 
   test-js:
     parallelism: 8
