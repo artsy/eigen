@@ -2713,9 +2713,6 @@ type Artwork implements Node & Searchable & Sellable {
   isComparableWithAuctionResults: Boolean
   isDisliked: Boolean!
   isDownloadable: Boolean
-
-  # Whether this artwork is eligible for an ecommerce transaction
-  isEcommerce: Boolean
   isEdition: Boolean
 
   # Artwork is eligible for the Artsy Guarantee
@@ -2793,6 +2790,9 @@ type Artwork implements Node & Searchable & Sellable {
   layers: [ArtworkLayer]
   listPrice: ListPrice
   listedArtworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection!
+
+  # In CMS, has the artwork been marked as BNMO?
+  listingOptions: ArtworkListingOptions
   literature(format: Format): String
 
   # Represents partner's location
@@ -3288,6 +3288,11 @@ type ArtworkLayer {
   internalID: ID!
   name: String
   type: String
+}
+
+type ArtworkListingOptions {
+  isBuyNow: Boolean
+  isMakeOffer: Boolean
 }
 
 # Collection of fields that describe medium type, such as _Painting_. (This field is also commonly referred to as just "medium", but should not be confused with the artwork attribute called `medium`.)
@@ -10337,7 +10342,6 @@ type EditionSet implements Sellable {
   internalID: ID!
   inventory: EditionSetInventory
   isAcquireable: Boolean
-  isEcommerce: Boolean
   isForSale: Boolean
 
   # Is the edition set parent-artwork part of an auction?
@@ -10350,6 +10354,9 @@ type EditionSet implements Sellable {
   isPriceHidden: Boolean
   isSold: Boolean
   listPrice: ListPrice
+
+  # In CMS, has the artwork been marked as BNMO?
+  listingOptions: ArtworkListingOptions
   price: String
   priceDisplay: String
   priceListed: Money
@@ -20316,7 +20323,6 @@ interface Sellable {
 
   # Whether a piece can be purchased through e-commerce
   isAcquireable: Boolean
-  isEcommerce: Boolean
   isForSale: Boolean
   isInAuction: Boolean
   isInquireable: Boolean
@@ -20329,6 +20335,9 @@ interface Sellable {
   isPriceHidden: Boolean
   isSold: Boolean
   listPrice: ListPrice
+
+  # In CMS, has the artwork been marked as BNMO?
+  listingOptions: ArtworkListingOptions
   priceListed: Money
   published: Boolean
   saleMessage: String
