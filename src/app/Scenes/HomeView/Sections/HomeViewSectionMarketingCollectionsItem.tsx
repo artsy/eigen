@@ -1,4 +1,4 @@
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import {
   HomeViewSectionMarketingCollectionsItem_marketingCollection$data,
   HomeViewSectionMarketingCollectionsItem_marketingCollection$key,
@@ -9,7 +9,6 @@ import { extractNodes } from "app/utils/extractNodes"
 import { pluralize } from "app/utils/pluralize"
 import { compact } from "lodash"
 import { FC } from "react"
-import { Text } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface HomeViewSectionMarketingCollectionsItemProps {

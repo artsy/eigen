@@ -1446,7 +1446,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [artworkListsQuery],
-    queryVariables: [artworkListVariables],
+    prepareVariables: [() => artworkListVariables],
   },
   {
     path: "/favorites/saves",
