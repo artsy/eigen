@@ -4,7 +4,7 @@
 #import "ARSerifNavigationViewController.h"
 #import "UIApplicationStateEnum.h"
 #import "AREmission.h"
-#import <SEGAnalytics.h>
+#import <Analytics/SEGAnalytics.h>
 #import "UserNotifications/UNNotification.h"
 #import "UserNotifications/UNNotificationRequest.h"
 #import "UserNotifications/UNNotificationContent.h"
