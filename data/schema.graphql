@@ -18608,6 +18608,12 @@ type Query {
     size: Int = 10
     term: String!
   ): MatchConnection
+
+  # A Search for Artists
+  matchPartner(
+    # Your search term
+    query: String!
+  ): [Partner]
   me: Me
 
   # Fetches an object given its globally unique ID.
@@ -23858,6 +23864,12 @@ type Viewer {
     size: Int = 10
     term: String!
   ): MatchConnection
+
+  # A Search for Artists
+  matchPartner(
+    # Your search term
+    query: String!
+  ): [Partner]
   me: Me
 
   # Fetches an object given its globally unique ID.
