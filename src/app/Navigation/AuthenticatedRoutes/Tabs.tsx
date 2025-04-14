@@ -83,7 +83,7 @@ const AppTabs: React.FC = () => {
   )
 
   const stagingTabBarStyle = {
-    borderTopColor: color("devpurple"),
+    borderColor: color("devpurple"),
     borderTopWidth: 1,
   }
 
@@ -104,7 +104,6 @@ const AppTabs: React.FC = () => {
               currentRoute && modules[currentRoute as AppModule]?.options?.hidesBottomTabs
                 ? "none"
                 : "flex",
-
             ...(isStaging ? stagingTabBarStyle : {}),
           },
           tabBarHideOnKeyboard: true,
