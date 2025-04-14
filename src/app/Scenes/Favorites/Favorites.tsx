@@ -7,6 +7,7 @@ import {
   Screen,
   Spacer,
   Text,
+  useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
 import {
@@ -49,25 +50,23 @@ const Pills: {
 ]
 
 const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, navigation }) => {
-  const setActiveTab = FavoritesContextStore.useStoreActions((actions) => actions.setActiveTab)
+  const { setActiveTab, setHeaderHeight } = FavoritesContextStore.useStoreActions(
+    (actions) => actions
+  )
+
+  const { headerHeight } = FavoritesContextStore.useStoreState((state) => state)
   const { trackTappedNavigationTab } = useFavoritesTracking()
-  const { currentScrollYAnimated } = useScreenScrollContext()
 
   const activeRoute = state.routes[state.index].name
 
-  const animatedStyles = useAnimatedStyle(() => ({
-    height:
-      currentScrollYAnimated.value >= 150 ? 0 : 150 - Math.max(currentScrollYAnimated.value, 0),
-    transform: [
-      {
-        translateY:
-          currentScrollYAnimated.value >= 150 ? -150 : Math.min(-currentScrollYAnimated.value, 0),
-      },
-    ],
-  }))
-
   return (
-    <Animated.View style={animatedStyles}>
+    <Flex
+      onLayout={(event) => {
+        if (!headerHeight) {
+          setHeaderHeight(event.nativeEvent.layout.height)
+        }
+      }}
+    >
       <Flex mx={2}>
         <Flex alignItems="flex-end" mb={2}>
           <FavoritesLearnMore />
@@ -110,12 +109,50 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
           })}
         </Flex>
       </Flex>
-    </Animated.View>
+    </Flex>
   )
 }
 
 export const FavoriteTopNavigator = createMaterialTopTabNavigator()
 
+const Content = () => {
+  const { currentScrollYAnimated } = useScreenScrollContext()
+  const { headerHeight } = FavoritesContextStore.useStoreState((state) => state)
+  const { height: screenHeight } = useScreenDimensions()
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateY:
+          currentScrollYAnimated.value >= headerHeight
+            ? -headerHeight
+            : Math.min(-currentScrollYAnimated.value, 0),
+      },
+    ],
+  }))
+
+  return (
+    <Animated.View style={[animatedStyles, { height: screenHeight + headerHeight }]}>
+      <Screen.Body fullwidth>
+        <FavoriteTopNavigator.Navigator
+          tabBar={FavoritesHeaderTapBar}
+          screenOptions={{
+            swipeEnabled: false,
+          }}
+          initialRouteName="follows"
+        >
+          <FavoriteTopNavigator.Screen name="saves" navigationKey="saves" component={SavesTab} />
+          <FavoriteTopNavigator.Screen
+            name="follows"
+            navigationKey="follows"
+            component={FollowsTab}
+          />
+          <FavoriteTopNavigator.Screen name="alerts" navigationKey="alerts" component={AlertsTab} />
+        </FavoriteTopNavigator.Navigator>
+      </Screen.Body>
+    </Animated.View>
+  )
+}
 export const Favorites = () => {
   useEffect(() => {
     prefetchQuery({
@@ -133,27 +170,7 @@ export const Favorites = () => {
   return (
     <FavoritesContextStore.Provider>
       <Screen>
-        <Screen.Body fullwidth>
-          <FavoriteTopNavigator.Navigator
-            tabBar={FavoritesHeaderTapBar}
-            screenOptions={{
-              swipeEnabled: false,
-            }}
-            initialRouteName="follows"
-          >
-            <FavoriteTopNavigator.Screen name="saves" navigationKey="saves" component={SavesTab} />
-            <FavoriteTopNavigator.Screen
-              name="follows"
-              navigationKey="follows"
-              component={FollowsTab}
-            />
-            <FavoriteTopNavigator.Screen
-              name="alerts"
-              navigationKey="alerts"
-              component={AlertsTab}
-            />
-          </FavoriteTopNavigator.Navigator>
-        </Screen.Body>
+        <Content />
       </Screen>
     </FavoritesContextStore.Provider>
   )
