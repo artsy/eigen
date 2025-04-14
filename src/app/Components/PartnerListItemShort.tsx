@@ -29,7 +29,7 @@ export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({
     return null
   }
 
-  const image = data.profile?.image?.cropped?.url ?? undefined
+  const image = data.profile?.image?.url ?? undefined
   const locations = extractNodes(data.locationsConnection)
   const sortedLocations = location
     ? sortByDistance(locations as { coordinates?: Location }[], location)
@@ -71,9 +71,7 @@ const fragment = graphql`
 
     profile {
       image {
-        cropped(height: 45, width: 45) {
-          url
-        }
+        url(version: "small")
       }
     }
     locationsConnection(first: 20) {
