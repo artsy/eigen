@@ -7,10 +7,12 @@ import {
   Spacer,
   Text,
 } from "@artsy/palette-mobile"
+import * as Sentry from "@sentry/react-native"
 import { Expandable } from "app/Components/Expandable"
+import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import * as Updates from "expo-updates"
 import { useEffect, useState } from "react"
-import { TouchableOpacity } from "react-native"
+import { Alert, TouchableOpacity } from "react-native"
 
 type ExpoDeployment = "Canary" | "Staging" | "Production"
 
@@ -78,7 +80,6 @@ export const ExpoUpdatesOptions = () => {
         setLoadStatus("Update available, downloading...")
         await Updates.fetchUpdateAsync()
         setLoadProgress(100)
-        setLoadStatus("Update downloaded, restarting app...")
         await Updates.reloadAsync()
       } else {
         setLoadStatus("No updates available for this channel.")
@@ -115,7 +116,38 @@ export const ExpoUpdatesOptions = () => {
           {Object.keys(expoDeploymentChannels).map((deployment) => (
             <TouchableOpacity
               key={deployment}
-              onPress={() => setSelectedDeployment(deployment as ExpoDeployment)}
+              onPress={() => {
+                if (!ArtsyNativeModule.isBetaOrDev) {
+                  Alert.alert("Updates can only be changed in beta or dev mode.")
+                  return
+                }
+
+                setSelectedDeployment(deployment as ExpoDeployment)
+                const channelName = expoDeploymentChannels[deployment as ExpoDeployment]
+                Updates.setUpdateURLAndRequestHeadersOverride({
+                  updateUrl:
+                    "https://expo-updates-api.artsy.net/api/manifest?project=eigen&channel=" +
+                    channelName,
+                  requestHeaders: {
+                    "expo-channel-name": expoDeploymentChannels[deployment as ExpoDeployment],
+                  },
+                })
+
+                Alert.alert(
+                  "Deployment Changed",
+                  "Quit and restart the app to apply the new deployment.",
+                  [
+                    {
+                      text: "I will crash now!",
+                      style: "destructive",
+                      onPress: () => {
+                        // Crash the app to force a restart
+                        Sentry.nativeCrash()
+                      },
+                    },
+                  ]
+                )
+              }}
             >
               <Flex flexDirection="row" alignItems="center">
                 <RadioButton selected={deployment === selectedDeployment} />
