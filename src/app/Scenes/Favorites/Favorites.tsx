@@ -68,6 +68,8 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
             <Pill
               selected={isActive}
               onPress={() => {
+                // Make sure to track the tap before changing the active tab
+                trackTappedNavigationTab(key)
                 setActiveTab(key)
 
                 // We are manually emitting the tabPress event here because
@@ -80,7 +82,6 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
                 })
 
                 navigation.navigate(key)
-                trackTappedNavigationTab(key)
               }}
               Icon={() => (
                 <Flex mr={0.5} justifyContent="center" bottom="1px">

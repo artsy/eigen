@@ -16,7 +16,6 @@ import {
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { CallapseWithTitle } from "app/Scenes/Favorites/Components/CollapseWithTitle"
-import { FavoritesContextStore } from "app/Scenes/Favorites/FavoritesContextStore"
 import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import React, { useState } from "react"
 import { Dimensions } from "react-native"
@@ -100,7 +99,6 @@ const SECTIONS = [
 ]
 
 export const FavoritesLearnMore = () => {
-  const { activeTab } = FavoritesContextStore.useStoreState((state) => state)
   const [showBottomSheet, setShowBottomSheet] = useState(false)
   const { bottom } = useSafeAreaInsets()
   const { trackTappedInfoBubble } = useFavoritesTracking()
@@ -113,7 +111,7 @@ export const FavoritesLearnMore = () => {
       <Touchable
         onPress={() => {
           setShowBottomSheet(true)
-          trackTappedInfoBubble(activeTab)
+          trackTappedInfoBubble()
         }}
       >
         <QuestionCircleIcon height={ICON_SIZE} width={ICON_SIZE} hitSlop={DEFAULT_HIT_SLOP} />
