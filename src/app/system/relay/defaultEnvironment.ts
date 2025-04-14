@@ -30,7 +30,7 @@ const network = new RelayNetworkLayer(
     // middlewares use LIFO. The bottom ones in the array will run first after the fetch.
     cacheMiddleware({
       size: 500, // max 500 requests
-      ttl: 900000, // 1 hour
+      ttl: 900000, // 15 minutes
       clearOnMutation: true,
       onInit: (cache) => (_globalCacheRef = cache),
     }),
@@ -54,7 +54,7 @@ const network = new RelayNetworkLayer(
     noThrow: true,
   }
 )
-const store = new Store(new RecordSource())
+const store = new Store(new RecordSource(), { gcReleaseBufferSize: 100 })
 const defaultEnvironment = new Environment({ network, store })
 
 /**
