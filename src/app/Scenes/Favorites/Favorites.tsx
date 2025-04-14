@@ -139,7 +139,6 @@ const Content = () => {
           screenOptions={{
             swipeEnabled: false,
           }}
-          initialRouteName="follows"
         >
           <FavoriteTopNavigator.Screen name="saves" navigationKey="saves" component={SavesTab} />
           <FavoriteTopNavigator.Screen
