@@ -185,7 +185,7 @@ export const ArtworkListScreen: FC<ArtworkListScreenProps> = (props) => {
     <Screen>
       <ProvideScreenTrackingWithCohesionSchema
         info={screen({
-          context_screen_owner_type: OwnerType.saves, // artworkList, // TODO: update when cohesion is up
+          context_screen_owner_type: OwnerType.artworkList,
           context_screen_owner_id: props.listID,
         })}
       >
