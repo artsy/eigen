@@ -18,7 +18,7 @@ interface MyAccountEditEmailProps {
   me: MyAccountEditEmail_me$key
 }
 
-const MyAccountEditEmail: React.FC<MyAccountEditEmailProps> = (props) => {
+export const MyAccountEditEmail: React.FC<MyAccountEditEmailProps> = (props) => {
   const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
   const me = useFragment(meFragment, props.me)
   const toast = useToast()
