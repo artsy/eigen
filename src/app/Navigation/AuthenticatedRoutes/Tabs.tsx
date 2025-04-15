@@ -120,6 +120,7 @@ const AppTabs: React.FC = () => {
               android_ripple={{ color: "transparent" }} // Disables the ripple effect for Android
             />
           ),
+          tabBarLabelPosition: "below-icon",
           tabBarLabel: () => {
             return (
               <Flex
