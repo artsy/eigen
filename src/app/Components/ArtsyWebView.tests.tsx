@@ -200,7 +200,6 @@ describe("ArtsyWebViewPage", () => {
       const view = render()
       const source = webViewProps(view).source as any
 
-      expect(source?.headers["asdf"]).toBe("dark")
       expect(source?.headers["x-theme"]).toBe("dark")
     })
   })
