@@ -119,7 +119,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   useEffect(() => {
     if (scrollToArtworksGrid) {
       setTimeout(() => {
-        gridRef.current?.scrollToOffset({ offset: 0, animated: true })
+        gridRef.current?.scrollToOffset({ offset: -20, animated: true })
       }, 1000)
     }
   }, [scrollToArtworksGrid])
