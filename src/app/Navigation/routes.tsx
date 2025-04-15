@@ -1009,6 +1009,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: MyAccountEditEmailQueryRenderer,
     options: {
       screenOptions: {
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
         headerTitle: "Email",
       },
     },
@@ -1019,6 +1020,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: MyAccountEditPassword,
     options: {
       screenOptions: {
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
         headerTitle: "Password",
       },
     },
@@ -1029,6 +1031,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: MyAccountEditPhoneQueryRenderer,
     options: {
       screenOptions: {
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
         headerTitle: "Phone Number",
       },
     },

@@ -3,7 +3,10 @@ import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
 import { MyAccount_me$data } from "__generated__/MyAccount_me.graphql"
 import { MenuItem } from "app/Components/MenuItem"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
+import {
+  MyProfileScreenWrapper,
+  MyProfileScreenWrapperProps,
+} from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useAppleLink } from "app/utils/LinkedAccounts/apple"
@@ -13,7 +16,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { ActivityIndicator, Image, Platform, ScrollView, ScrollViewProps } from "react-native"
+import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { PRICE_BUCKETS } from "./MyAccountEditPriceRange"
 
@@ -114,11 +117,18 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
     : "Select a price range"
 
   const Wrapper = enableRedesignedSettings
-    ? (props: ScrollViewProps) => <MyProfileScreenWrapper title="Login & Security" {...props} />
+    ? (props: Omit<MyProfileScreenWrapperProps, "title">) => (
+        <MyProfileScreenWrapper title="Login & Security" {...props} />
+      )
     : ScrollView
 
   return (
-    <Wrapper contentContainerStyle={{ paddingTop: enableRedesignedSettings ? space(2) : space(1) }}>
+    <Wrapper
+      contentContainerStyle={{
+        paddingTop: enableRedesignedSettings ? space(2) : space(1),
+        paddingHorizontal: 0,
+      }}
+    >
       <MenuItem
         title="Email"
         value={me.email}
@@ -205,7 +215,13 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
       <Spacer y={2} />
 
       {enableRedesignedSettings ? (
-        <LinkText mx={2} color="black60" variant="xs" mt={2}>
+        <LinkText
+          mx={2}
+          color="black60"
+          variant="xs"
+          mt={2}
+          onPress={() => navigate("my-account/delete-account")}
+        >
           Delete My Account
         </LinkText>
       ) : (
@@ -219,13 +235,12 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
 
 const MyAccountPlaceholder: React.FC = () => {
   const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
-  const space = useSpace()
 
   if (enableRedesignedSettings) {
     return (
       <MyProfileScreenWrapper
         title="Login & Security"
-        contentContainerStyle={{ paddingTop: space(2) }}
+        contentContainerStyle={{ paddingHorizontal: 0 }}
       >
         <MenuItem title="Email" ellipsizeMode="middle" href="my-account/edit-email" />
         <MenuItem title="Password" ellipsizeMode="middle" href="my-account/edit-email" />
