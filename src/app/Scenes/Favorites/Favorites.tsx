@@ -7,7 +7,9 @@ import {
   Screen,
   Spacer,
   Text,
+  useScreenDimensions,
 } from "@artsy/palette-mobile"
+import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
 import {
   createMaterialTopTabNavigator,
   MaterialTopTabBarProps,
@@ -23,6 +25,7 @@ import { SavesTab } from "app/Scenes/Favorites/SavesTab"
 import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { useEffect } from "react"
+import Animated, { useAnimatedStyle } from "react-native-reanimated"
 
 const Pills: {
   Icon: React.FC<{ fill: string }>
@@ -47,52 +50,64 @@ const Pills: {
 ]
 
 const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, navigation }) => {
-  const setActiveTab = FavoritesContextStore.useStoreActions((actions) => actions.setActiveTab)
+  const { setActiveTab, setHeaderHeight } = FavoritesContextStore.useStoreActions(
+    (actions) => actions
+  )
+
+  const { headerHeight } = FavoritesContextStore.useStoreState((state) => state)
   const { trackTappedNavigationTab } = useFavoritesTracking()
 
   const activeRoute = state.routes[state.index].name
 
   return (
-    <Flex mx={2}>
-      <Flex alignItems="flex-end" mb={2}>
-        <FavoritesLearnMore />
-      </Flex>
+    <Flex
+      onLayout={(event) => {
+        if (!headerHeight) {
+          setHeaderHeight(event.nativeEvent.layout.height)
+        }
+      }}
+    >
+      <Flex mx={2}>
+        <Flex alignItems="flex-end" mb={2}>
+          <FavoritesLearnMore />
+        </Flex>
 
-      <Text variant="xl">Favorites</Text>
+        <Text variant="xl">Favorites</Text>
 
-      <Spacer y={2} />
-      <Flex flexDirection="row" gap={0.5} mb={2}>
-        {Pills.map(({ Icon, title, key }) => {
-          const isActive = activeRoute === key
-          return (
-            <Pill
-              selected={isActive}
-              onPress={() => {
-                setActiveTab(key)
+        <Spacer y={2} />
+        <Flex flexDirection="row" gap={0.5} mb={2}>
+          {Pills.map(({ Icon, title, key }) => {
+            const isActive = activeRoute === key
+            return (
+              <Pill
+                selected={isActive}
+                onPress={() => {
+                  setActiveTab(key)
 
-                // We are manually emitting the tabPress event here because
-                // the navigation library doesn't emit it when we use the
-                // navigation.navigate() method.
-                navigation.emit({
-                  type: "tabPress",
-                  target: key,
-                  canPreventDefault: true,
-                })
+                  // We are manually emitting the tabPress event here because
+                  // the navigation library doesn't emit it when we use the
+                  // navigation.navigate() method.
+                  navigation.emit({
+                    type: "tabPress",
+                    target: key,
+                    canPreventDefault: true,
+                  })
 
-                navigation.navigate(key)
-                trackTappedNavigationTab(key)
-              }}
-              Icon={() => (
-                <Flex mr={0.5} justifyContent="center" bottom="1px">
-                  <Icon fill={isActive ? "white100" : "black100"} />
-                </Flex>
-              )}
-              key={key}
-            >
-              {title}
-            </Pill>
-          )
-        })}
+                  navigation.navigate(key)
+                  trackTappedNavigationTab(key)
+                }}
+                Icon={() => (
+                  <Flex mr={0.5} justifyContent="center" bottom="1px">
+                    <Icon fill={isActive ? "white100" : "black100"} />
+                  </Flex>
+                )}
+                key={key}
+              >
+                {title}
+              </Pill>
+            )
+          })}
+        </Flex>
       </Flex>
     </Flex>
   )
@@ -100,6 +115,43 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
 
 export const FavoriteTopNavigator = createMaterialTopTabNavigator()
 
+const Content = () => {
+  const { currentScrollYAnimated } = useScreenScrollContext()
+  const { headerHeight } = FavoritesContextStore.useStoreState((state) => state)
+  const { height: screenHeight } = useScreenDimensions()
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateY:
+          currentScrollYAnimated.value >= headerHeight
+            ? -headerHeight
+            : Math.min(-currentScrollYAnimated.value, 0),
+      },
+    ],
+  }))
+
+  return (
+    <Animated.View style={[animatedStyles, { height: screenHeight + headerHeight }]}>
+      <Screen.Body fullwidth>
+        <FavoriteTopNavigator.Navigator
+          tabBar={FavoritesHeaderTapBar}
+          screenOptions={{
+            swipeEnabled: false,
+          }}
+        >
+          <FavoriteTopNavigator.Screen name="saves" navigationKey="saves" component={SavesTab} />
+          <FavoriteTopNavigator.Screen
+            name="follows"
+            navigationKey="follows"
+            component={FollowsTab}
+          />
+          <FavoriteTopNavigator.Screen name="alerts" navigationKey="alerts" component={AlertsTab} />
+        </FavoriteTopNavigator.Navigator>
+      </Screen.Body>
+    </Animated.View>
+  )
+}
 export const Favorites = () => {
   useEffect(() => {
     prefetchQuery({
@@ -117,26 +169,7 @@ export const Favorites = () => {
   return (
     <FavoritesContextStore.Provider>
       <Screen>
-        <Screen.Body fullwidth>
-          <FavoriteTopNavigator.Navigator
-            tabBar={FavoritesHeaderTapBar}
-            screenOptions={{
-              swipeEnabled: false,
-            }}
-          >
-            <FavoriteTopNavigator.Screen name="saves" navigationKey="saves" component={SavesTab} />
-            <FavoriteTopNavigator.Screen
-              name="follows"
-              navigationKey="follows"
-              component={FollowsTab}
-            />
-            <FavoriteTopNavigator.Screen
-              name="alerts"
-              navigationKey="alerts"
-              component={AlertsTab}
-            />
-          </FavoriteTopNavigator.Navigator>
-        </Screen.Body>
+        <Content />
       </Screen>
     </FavoritesContextStore.Provider>
   )
