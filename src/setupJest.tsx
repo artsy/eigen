@@ -565,8 +565,6 @@ jest.mock("app/system/navigation/navigate", () => ({
   goBack: jest.fn(),
   dismissModal: jest.fn(),
   popToRoot: jest.fn(),
-  navigateToEntity: jest.fn(),
-  navigateToPartner: jest.fn(),
   switchTab: jest.fn(),
   navigationEvents: new (require("events").EventEmitter)(),
   EntityType: { partner: "partner", fair: "fair" },

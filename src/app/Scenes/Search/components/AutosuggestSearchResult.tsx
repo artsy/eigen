@@ -12,16 +12,9 @@ import {
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { GlobalStore } from "app/store/GlobalStore"
-import {
-  EntityType,
-  navigate,
-  navigateToEntity,
-  navigateToPartner,
-  SlugType,
-} from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { Schema } from "app/utils/track"
 import { useContext } from "react"
-import { TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 import { ResultWithHighlight } from "./ResultWithHighlight"
 import { IMAGE_SIZE, SearchResultImage } from "./SearchResultImage"
@@ -35,8 +28,6 @@ type PassedProps = {
   initialTab: ArtistTabs
   scrollToArtworksGrid?: boolean
 }
-
-type HandleResultPress = (passProps?: PassedProps) => void
 
 const getResultType = (result: AutosuggestResult) => {
   if (result.displayType) {
@@ -74,17 +65,14 @@ export const AutosuggestSearchResult: React.FC<{
   const { queryRef } = useContext(SearchContext)
   const { trackEvent } = useTracking()
 
-
   const showNavigationButtons =
     showQuickNavigationButtons && !!result.statuses?.artworks && !!result.statuses?.auctionLots
 
-  const onPress: HandleResultPress = (passProps) => {
+  const onPress = () => {
     if (onResultPress) {
       onResultPress(result)
       return
     }
-
-    navigateToResult(result, passProps)
 
     if (updateRecentSearchesOnTap) {
       GlobalStore.actions.search.addRecentSearch({
@@ -118,80 +106,96 @@ export const AutosuggestSearchResult: React.FC<{
     secondaryLabel = result.formattedNationalityAndBirthday || undefined
   }
 
+  const href = getResultHref(result)
+
   return (
     <>
-      <TouchableOpacity
-        onPress={() => onPress()}
+      <RouterLink
+        to={href}
+        onPress={onPress}
         testID={`autosuggest-search-result-${result.displayLabel}`}
-        style={{ flexDirection: "row", alignItems: "center" }}
       >
-        <Flex flex={1}>
-          <Flex
-            height={secondaryLabel ? IMAGE_SIZE + 12 : IMAGE_SIZE}
-            flexDirection="row"
-            alignItems="center"
-          >
-            <SearchResultImage
-              imageURL={result.coverArtwork?.imageUrl || result.imageUrl}
-              initials={initials}
-              resultType={resultType}
-            />
-
-            <Spacer x={1} />
-
-            <Flex flex={1}>
-              <ResultWithHighlight
-                displayLabel={result.displayLabel ?? ""}
-                secondaryLabel={secondaryLabel}
-                highlight={highlight}
+        <Flex flex={1} flexDirection="row" alignItems="center">
+          <Flex flex={1}>
+            <Flex
+              height={secondaryLabel ? IMAGE_SIZE + 12 : IMAGE_SIZE}
+              flexDirection="row"
+              alignItems="center"
+            >
+              <SearchResultImage
+                imageURL={result.coverArtwork?.imageUrl || result.imageUrl}
+                initials={initials}
+                resultType={resultType}
               />
 
-              {!!showResultType && !!resultType && (
-                <Text variant="xs" color="black60">
-                  {resultType}
-                </Text>
+              <Spacer x={1} />
+
+              <Flex flex={1}>
+                <ResultWithHighlight
+                  displayLabel={result.displayLabel ?? ""}
+                  secondaryLabel={secondaryLabel}
+                  highlight={highlight}
+                />
+
+                {!!showResultType && !!resultType && (
+                  <Text variant="xs" color="black60">
+                    {resultType}
+                  </Text>
+                )}
+              </Flex>
+
+              {!!onDelete && (
+                <Touchable
+                  accessibilityLabel="Remove recent search item"
+                  onPress={onDelete}
+                  hitSlop={{
+                    bottom: 20,
+                    top: 20,
+                    left: 10,
+                    right: 20,
+                  }}
+                >
+                  <Flex pl={1}>
+                    <CloseIcon fill="black60" />
+                  </Flex>
+                </Touchable>
               )}
             </Flex>
-
-            {!!onDelete && (
-              <Touchable
-                accessibilityLabel="Remove recent search item"
-                onPress={onDelete}
-                hitSlop={{
-                  bottom: 20,
-                  top: 20,
-                  left: 10,
-                  right: 20,
-                }}
-              >
-                <Flex pl={1}>
-                  <CloseIcon fill="black60" />
-                </Flex>
-              </Touchable>
-            )}
           </Flex>
+          {!onDelete && (
+            <Flex pl={1}>
+              <ArrowRightIcon height={18} width={18} />
+            </Flex>
+          )}
         </Flex>
-        {!onDelete && (
-          <Flex pl={1}>
-            <ArrowRightIcon height={18} width={18} />
-          </Flex>
-        )}
-      </TouchableOpacity>
+      </RouterLink>
 
       {!!showNavigationButtons && (
         <>
           <Spacer y={1} />
           <Flex flexDirection="row" alignItems="center">
             <Spacer x={4} />
+            <Spacer x={1} />
+
+            <RouterLink
+              hasChildTouchable
+              to={getResultHref(result, { initialTab: "Artworks" })}
+              navigationProps={{ initialTab: "Artworks" }}
+              onPress={onPress}
+            >
+              <Pill Icon={ArtworkIcon}>Artworks</Pill>
+            </RouterLink>
 
             <Spacer x={1} />
-            <Pill Icon={ArtworkIcon} onPress={() => onPress({ initialTab: "Artworks" })}>
-              Artworks
-            </Pill>
-            <Spacer x={1} />
-            <Pill Icon={AuctionIcon} onPress={() => onPress({ initialTab: "Insights" })}>
-              Auction Results
-            </Pill>
+
+            <RouterLink
+              hasChildTouchable
+              to={getResultHref(result, { initialTab: "Insights" })}
+              navigationProps={{ initialTab: "Insights" }}
+              onPress={onPress}
+            >
+              <Pill Icon={AuctionIcon}>Auction Results</Pill>
+            </RouterLink>
           </Flex>
         </>
       )}
@@ -199,36 +203,22 @@ export const AutosuggestSearchResult: React.FC<{
   )
 }
 
-/**
- * For some entities (fairs, partners) we pass along some context
- * about the entity type to render the correct placeholder/skeleton loader
- * @param result
- */
-function navigateToResult(result: AutosuggestResult, props?: PassedProps) {
+const getResultHref: (result: AutosuggestResult, props?: PassedProps) => string | null = (
+  result,
+  props
+) => {
   if (!result.href) {
-    return
+    return null
   }
 
-  if (result.displayType === "Gallery" || result.displayType === "Institution") {
-    navigateToPartner(result.href)
-  } else if (result.displayType === "Fair") {
-    navigateToEntity(result.href, EntityType.Fair, SlugType.ProfileID)
-  } else if (result.__typename === "Artist") {
+  if (result.__typename === "Artist") {
     switch (props?.initialTab) {
       case "Insights":
-        navigate(`${result.href}/auction-results`, { passProps: props })
-        break
+        return `${result.href}/auction-results`
       case "Artworks":
-        navigate(`${result.href}/artworks`, {
-          passProps: props,
-        })
-        break
-
-      default:
-        navigate(result.href)
-        break
+        return `${result.href}/artworks`
     }
-  } else {
-    navigate(result.href)
   }
+
+  return result.href
 }
