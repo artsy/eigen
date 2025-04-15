@@ -1,5 +1,3 @@
-import { MyAccountEditPhoneQueryRenderer } from "./MyAccountEditPhone"
-
-describe(MyAccountEditPhoneQueryRenderer, () => {
+describe("MyAccountEditPhoneQueryRenderer", () => {
   it.todo("No tests yet")
 })
