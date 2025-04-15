@@ -28,7 +28,7 @@ import { prefetchQuery } from "app/utils/queryPrefetching"
 import { useEffect } from "react"
 import Animated, { useAnimatedStyle } from "react-native-reanimated"
 
-const Pills: {
+export const Pills: {
   Icon: React.FC<{ fill: string }>
   title: string
   key: FavoritesTab
