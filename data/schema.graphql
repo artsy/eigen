@@ -4506,6 +4506,14 @@ type CaptureHoldPayload {
   holdOrError: InventoryHoldOrErrorUnion!
 }
 
+type Card {
+  # The display brand of the card (e.g., Visa, Mastercard).
+  displayBrand: String!
+
+  # The last 4 digits of the card.
+  last4: String!
+}
+
 type CareerHighlight implements Node {
   artist: Artist!
   collected: Boolean!
@@ -7010,6 +7018,10 @@ type ConfirmPasswordPayload {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
   valid: Boolean!
+}
+
+type ConfirmationToken {
+  paymentMethodPreview: PaymentMethodPreview!
 }
 
 # Consignment
@@ -14008,6 +14020,12 @@ type Me implements Node {
   # Current user's collector profile.
   collectorProfile: CollectorProfileType
 
+  # Retrieve payment details of a Stripe confirmation token
+  confirmationToken(
+    # Stripe confirmation token
+    id: String!
+  ): ConfirmationToken
+
   # A conversation, usually between a user and a partner
   conversation(
     # The ID of the Conversation
@@ -17352,6 +17370,11 @@ enum PartnersSortType {
   RELATIVE_SIZE_DESC
   SORTABLE_ID_ASC
   SORTABLE_ID_DESC
+}
+
+type PaymentMethodPreview {
+  # Details of the card used in the payment method.
+  card: Card
 }
 
 union PaymentMethodUnion = BankAccount | CreditCard | WireTransfer
