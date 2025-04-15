@@ -298,7 +298,6 @@ export const ArtsyWebView = forwardRef<
           source={{
             uri,
             headers: {
-              asdf: colorScheme,
               ...(enableDarkMode && { "x-theme": colorScheme }),
               // Workaround for user agent breaking back behavior on Android
               // see: https://github.com/react-native-webview/react-native-webview/pull/3133
