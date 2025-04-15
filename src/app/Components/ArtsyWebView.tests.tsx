@@ -179,7 +179,7 @@ describe("ArtsyWebViewPage", () => {
   describe("with 'light' mode", () => {
     beforeEach(() => {
       __globalStoreTestUtils__?.injectFeatureFlags({ ARDarkModeSupport: true })
-      __globalStoreTestUtils__?.injectState({ devicePrefs: { colorScheme: "light" } })
+      __globalStoreTestUtils__?.injectState({ devicePrefs: { darkModeOption: "off" } })
     })
 
     it("sets 'x-theme' header correctly", () => {
@@ -193,7 +193,7 @@ describe("ArtsyWebViewPage", () => {
   describe("with 'dark' mode", () => {
     beforeEach(() => {
       __globalStoreTestUtils__?.injectFeatureFlags({ ARDarkModeSupport: true })
-      __globalStoreTestUtils__?.injectState({ devicePrefs: { colorScheme: "dark" } })
+      __globalStoreTestUtils__?.injectState({ devicePrefs: { darkModeOption: "on" } })
     })
 
     it("sets 'x-theme' header correctly", () => {
