@@ -52,6 +52,7 @@ export const Pills: {
 ]
 
 const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, navigation }) => {
+  const activeTab = FavoritesContextStore.useStoreState((state) => state.activeTab)
   const setActiveTab = FavoritesContextStore.useStoreActions((actions) => actions.setActiveTab)
   const { trackTappedNavigationTab } = useFavoritesTracking()
 
@@ -74,7 +75,7 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
               selected={isActive}
               onPress={() => {
                 // Make sure to track the tap before changing the active tab
-                trackTappedNavigationTab(key)
+                trackTappedNavigationTab(key, activeTab)
                 setActiveTab(key)
 
                 // We are manually emitting the tabPress event here because

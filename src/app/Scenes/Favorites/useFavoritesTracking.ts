@@ -16,17 +16,15 @@ import {
 } from "@artsy/cohesion/dist/Schema/Events/Favorites"
 import { useIsFocused } from "@react-navigation/native"
 import { Pills } from "app/Scenes/Favorites/Favorites"
-import { FavoritesContextStore, FavoritesTab } from "app/Scenes/Favorites/FavoritesContextStore"
+import { FavoritesTab } from "app/Scenes/Favorites/FavoritesContextStore"
 import { screen } from "app/utils/track/helpers"
 import { useEffect } from "react"
 import { useTracking } from "react-tracking"
 
 export const useFavoritesTracking = () => {
-  const activeTab = FavoritesContextStore.useStoreState((state) => state.activeTab)
-
   const { trackEvent } = useTracking()
 
-  const trackTappedNavigationTab = (key: FavoritesTab) => {
+  const trackTappedNavigationTab = (key: FavoritesTab, activeTab: FavoritesTab) => {
     const payload = {
       action: ActionType.tappedNavigationTab,
       context_module: activeTab,
@@ -36,7 +34,7 @@ export const useFavoritesTracking = () => {
     trackEvent(payload)
   }
 
-  const trackTappedInfoBubble = () => {
+  const trackTappedInfoBubble = (activeTab: FavoritesTab) => {
     const contextModule = Pills.find((pill) => pill.key === activeTab)?.contextModule
 
     const payload: TappedInfoBubble = {
