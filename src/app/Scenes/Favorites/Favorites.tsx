@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import {
   BellIcon,
   Flex,
@@ -24,25 +25,29 @@ import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { useEffect } from "react"
 
-const Pills: {
+export const Pills: {
   Icon: React.FC<{ fill: string }>
   title: string
   key: FavoritesTab
+  contextModule: ContextModule
 }[] = [
   {
     Icon: HeartIcon,
     title: "Saves",
     key: "saves",
+    contextModule: ContextModule.favoritesSaves,
   },
   {
     Icon: MultiplePersonsIcon,
     title: "Follows",
     key: "follows",
+    contextModule: ContextModule.favoritesFollows,
   },
   {
     Icon: BellIcon,
     title: "Alerts",
     key: "alerts",
+    contextModule: ContextModule.favoritesAlerts,
   },
 ]
 
