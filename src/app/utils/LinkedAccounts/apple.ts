@@ -7,10 +7,11 @@ import { apple_UnlinkAccountMutation } from "__generated__/apple_UnlinkAccountMu
 import { Toast } from "app/Components/Toast/Toast"
 import { AppleToken } from "app/Scenes/Onboarding/OnboardingSocialLink"
 import { unsafe_getUserEmail } from "app/store/GlobalStore"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useEffect, useRef, useState } from "react"
-import { commitMutation, Environment, graphql } from "react-relay"
+import { commitMutation, graphql } from "react-relay"
 
-export const useAppleLink = (relayEnvironment: Environment) => {
+export const useAppleLink = () => {
   const [loading, setIsLoading] = useState(false)
   const isMountedRef = useRef(false)
 
@@ -30,7 +31,7 @@ export const useAppleLink = (relayEnvironment: Environment) => {
   const linkUsingOauthToken = (email: string, name: string, token: AppleToken) => {
     const { appleUid, idToken } = token
     setLoading(true)
-    commitMutation<apple_LinkAccountMutation>(relayEnvironment, {
+    commitMutation<apple_LinkAccountMutation>(getRelayEnvironment(), {
       mutation: graphql`
         mutation apple_LinkAccountMutation(
           $provider: AuthenticationProvider!
@@ -119,7 +120,7 @@ export const useAppleLink = (relayEnvironment: Environment) => {
 
   const unlink = () => {
     setLoading(true)
-    commitMutation<apple_UnlinkAccountMutation>(relayEnvironment, {
+    commitMutation<apple_UnlinkAccountMutation>(getRelayEnvironment(), {
       mutation: graphql`
         mutation apple_UnlinkAccountMutation($provider: AuthenticationProvider!) {
           unlinkAuthentication(input: { provider: $provider }) {

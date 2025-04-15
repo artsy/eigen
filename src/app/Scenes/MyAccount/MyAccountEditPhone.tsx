@@ -4,12 +4,14 @@ import { MyAccountEditPhoneQuery } from "__generated__/MyAccountEditPhoneQuery.g
 import { MyAccountEditPhone_me$key } from "__generated__/MyAccountEditPhone_me.graphql"
 import { INPUT_HEIGHT } from "app/Components/Input"
 import { PhoneInput } from "app/Components/Input/PhoneInput/PhoneInput"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderBox } from "app/utils/placeholders"
 import React, { useEffect, useState } from "react"
+import { PixelRatio } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
@@ -70,7 +72,7 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me$key }> = (props) 
           style={{
             // We are setting a fixed height here to prevent the input from growing in height
             // and pushing the save button when an error is present
-            height: INPUT_HEIGHT + 15,
+            height: PixelRatio.getFontScale() * INPUT_HEIGHT + 15,
           }}
         >
           <PhoneInput
@@ -141,4 +143,14 @@ export const MyAccountEditPhoneQueryRenderer: React.FC<{}> = withSuspense({
     return <MyAccountEditPhone me={data?.me} />
   },
   LoadingFallback: MyAccountEditPhonePlaceholder,
+  ErrorFallback: (fallbackProps) => {
+    return (
+      <LoadFailureView
+        onRetry={fallbackProps.resetErrorBoundary}
+        useSafeArea={false}
+        error={fallbackProps.error}
+        trackErrorBoundary={false}
+      />
+    )
+  },
 })

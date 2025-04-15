@@ -2,6 +2,7 @@ import { Flex, Input, SkeletonBox, Text, Touchable } from "@artsy/palette-mobile
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountEditEmailQuery } from "__generated__/MyAccountEditEmailQuery.graphql"
 import { MyAccountEditEmail_me$key } from "__generated__/MyAccountEditEmail_me.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useToast } from "app/Components/Toast/toastHook"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { goBack } from "app/system/navigation/navigate"
@@ -154,4 +155,14 @@ export const MyAccountEditEmailQueryRenderer: React.FC<{}> = withSuspense({
     return <MyAccountEditEmail me={data?.me} />
   },
   LoadingFallback: MyAccountEditEmailPlaceholder,
+  ErrorFallback: (fallbackProps) => {
+    return (
+      <LoadFailureView
+        onRetry={fallbackProps.resetErrorBoundary}
+        useSafeArea={false}
+        error={fallbackProps.error}
+        trackErrorBoundary={false}
+      />
+    )
+  },
 })

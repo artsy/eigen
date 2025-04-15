@@ -1,23 +1,24 @@
 import { Button, Flex, LinkText, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
-import { MyAccount_me$data } from "__generated__/MyAccount_me.graphql"
+import { MyAccount_me$key } from "__generated__/MyAccount_me.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { MenuItem } from "app/Components/MenuItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import {
   MyProfileScreenWrapper,
   MyProfileScreenWrapperProps,
 } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { navigate } from "app/system/navigation/navigate"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useAppleLink } from "app/utils/LinkedAccounts/apple"
 import { useFacebookLink } from "app/utils/LinkedAccounts/facebook"
 import { useGoogleLink } from "app/utils/LinkedAccounts/google"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderText } from "app/utils/placeholders"
-import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { PRICE_BUCKETS } from "./MyAccountEditPriceRange"
 
 const MenuItemSocialItem = ({
@@ -55,12 +56,14 @@ const MenuItemSocialItem = ({
           </Flex>
         )
       }
-      onPress={isLoading || disabled ? () => null : () => onPress}
+      onPress={isLoading || disabled ? () => null : onPress}
     />
   )
 }
 
-const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, relay }) => {
+export const MyAccount: React.FC<{ me: MyAccount_me$key }> = (props) => {
+  const me = useFragment(meFragment, props.me)
+
   const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
   const space = useSpace()
 
@@ -76,21 +79,9 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
 
   const showLinkedAccounts = !me.secondFactors?.length
 
-  const {
-    link: linkFB,
-    unlink: unlinkFB,
-    isLoading: fbLoading,
-  } = useFacebookLink(relay.environment)
-  const {
-    link: linkGoogle,
-    unlink: unlinkGoogle,
-    isLoading: googleLoading,
-  } = useGoogleLink(relay.environment)
-  const {
-    link: linkApple,
-    unlink: unlinkApple,
-    isLoading: appleLoading,
-  } = useAppleLink(relay.environment)
+  const { link: linkFB, unlink: unlinkFB, isLoading: fbLoading } = useFacebookLink()
+  const { link: linkGoogle, unlink: unlinkGoogle, isLoading: googleLoading } = useGoogleLink()
+  const { link: linkApple, unlink: unlinkApple, isLoading: appleLoading } = useAppleLink()
 
   const providers = me.authentications.map((a) => a.provider)
   const facebookLinked = providers.includes("FACEBOOK")
@@ -225,9 +216,11 @@ const MyAccount: React.FC<{ me: MyAccount_me$data; relay: RelayProp }> = ({ me, 
           Delete My Account
         </LinkText>
       ) : (
-        <Button variant="text" block onPress={() => navigate("my-account/delete-account")}>
-          <Text color="red100">Delete My Account</Text>
-        </Button>
+        <RouterLink hasChildTouchable to="my-account/delete-account">
+          <Button variant="text" block>
+            <Text color="red100">Delete My Account</Text>
+          </Button>
+        </RouterLink>
       )}
     </Wrapper>
   )
@@ -316,25 +309,23 @@ const MyAccountPlaceholder: React.FC = () => {
   )
 }
 
-export const MyAccountContainer = createFragmentContainer(MyAccount, {
-  me: graphql`
-    fragment MyAccount_me on Me {
-      email
-      phone
-      paddleNumber
-      hasPassword
-      priceRange
-      priceRangeMax
-      priceRangeMin
-      authentications {
-        provider
-      }
-      secondFactors(kinds: [sms, app, backup]) {
-        kind
-      }
+const meFragment = graphql`
+  fragment MyAccount_me on Me {
+    email
+    phone
+    paddleNumber
+    hasPassword
+    priceRange
+    priceRangeMax
+    priceRangeMin
+    authentications {
+      provider
     }
-  `,
-})
+    secondFactors(kinds: [sms, app, backup]) {
+      kind
+    }
+  }
+`
 
 export const MyAccountScreenQuery = graphql`
   query MyAccountQuery {
@@ -344,16 +335,25 @@ export const MyAccountScreenQuery = graphql`
   }
 `
 
-export const MyAccountQueryRenderer: React.FC<{}> = () => {
-  return (
-    <QueryRenderer<MyAccountQuery>
-      environment={getRelayEnvironment()}
-      query={MyAccountScreenQuery}
-      render={renderWithPlaceholder({
-        Container: MyAccountContainer,
-        renderPlaceholder: () => <MyAccountPlaceholder />,
-      })}
-      variables={{}}
-    />
-  )
-}
+export const MyAccountQueryRenderer: React.FC<{}> = withSuspense({
+  Component: ({}) => {
+    const data = useLazyLoadQuery<MyAccountQuery>(MyAccountScreenQuery, {})
+
+    if (!data?.me) {
+      return null
+    }
+
+    return <MyAccount me={data?.me} />
+  },
+  LoadingFallback: MyAccountPlaceholder,
+  ErrorFallback: (fallbackProps) => {
+    return (
+      <LoadFailureView
+        onRetry={fallbackProps.resetErrorBoundary}
+        useSafeArea={false}
+        error={fallbackProps.error}
+        trackErrorBoundary={false}
+      />
+    )
+  },
+})

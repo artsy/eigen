@@ -2,8 +2,9 @@ import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-si
 import { google_LinkAccountMutation } from "__generated__/google_LinkAccountMutation.graphql"
 import { google_UnlinkAccountMutation } from "__generated__/google_UnlinkAccountMutation.graphql"
 import { Toast } from "app/Components/Toast/Toast"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useEffect, useRef, useState } from "react"
-import { Environment, commitMutation, graphql } from "react-relay"
+import { commitMutation, graphql } from "react-relay"
 
 // TODO:- Remove this interface and import NativeModuleError from "@react-native-google-signin/google-signin"
 // after upgrading to > v7.1
@@ -11,7 +12,7 @@ interface GoogleSignInNativeModuleError extends Error {
   code: string
 }
 
-export const useGoogleLink = (relayEnvironment: Environment) => {
+export const useGoogleLink = () => {
   const [loading, setIsLoading] = useState(false)
   const isMountedRef = useRef(false)
 
@@ -30,7 +31,7 @@ export const useGoogleLink = (relayEnvironment: Environment) => {
 
   const linkUsingOauthToken = (oauthToken: string) => {
     setLoading(true)
-    commitMutation<google_LinkAccountMutation>(relayEnvironment, {
+    commitMutation<google_LinkAccountMutation>(getRelayEnvironment(), {
       mutation: graphql`
         mutation google_LinkAccountMutation(
           $provider: AuthenticationProvider!
@@ -80,7 +81,7 @@ export const useGoogleLink = (relayEnvironment: Environment) => {
 
   const unlink = () => {
     setLoading(true)
-    commitMutation<google_UnlinkAccountMutation>(relayEnvironment, {
+    commitMutation<google_UnlinkAccountMutation>(getRelayEnvironment(), {
       mutation: graphql`
         mutation google_UnlinkAccountMutation($provider: AuthenticationProvider!) {
           unlinkAuthentication(input: { provider: $provider }) {

@@ -1,6 +1,5 @@
 import { Flex, Spinner } from "@artsy/palette-mobile"
 import { captureException } from "@sentry/react-native"
-import { LoadFailureView } from "app/Components/LoadFailureView"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ReactElement, Suspense } from "react"
 import { ErrorBoundary, FallbackProps } from "react-error-boundary"
@@ -32,7 +31,7 @@ type WithSuspenseOptions<T> = {
    * Pass `NoFallback` to skip rendering any error fallback, only use this for subcomponents that don't need to render anything, e.g. a rail.
    * Make sure to test your error component and make sure nav is available to navigate away from the error.
    */
-  ErrorFallback?:
+  ErrorFallback:
     | ((props: FallbackProps, componentProps: T) => ReactElement | null)
     | typeof NoFallback
 }
@@ -56,16 +55,7 @@ const DefaultLoadingFallback: React.FC = () => (
 export const withSuspense = <T extends Object | any>({
   Component,
   LoadingFallback,
-  ErrorFallback = (fallbackProps) => {
-    return (
-      <LoadFailureView
-        onRetry={fallbackProps.resetErrorBoundary}
-        useSafeArea={false}
-        error={fallbackProps.error}
-        trackErrorBoundary={false}
-      />
-    )
-  },
+  ErrorFallback,
 }: WithSuspenseOptions<T>): React.FC<T> => {
   const LoadingFallbackComponent =
     LoadingFallback === SpinnerFallback ? DefaultLoadingFallback : LoadingFallback
