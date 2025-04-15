@@ -1,10 +1,11 @@
-import { Flex, Input, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Input, SkeletonBox, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountEditEmailQuery } from "__generated__/MyAccountEditEmailQuery.graphql"
 import { MyAccountEditEmail_me$key } from "__generated__/MyAccountEditEmail_me.graphql"
-import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useToast } from "app/Components/Toast/toastHook"
+import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { goBack } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderBox } from "app/utils/placeholders"
 import React, { useEffect, useRef, useState } from "react"
@@ -18,7 +19,9 @@ interface MyAccountEditEmailProps {
 }
 
 const MyAccountEditEmail: React.FC<MyAccountEditEmailProps> = (props) => {
+  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
   const me = useFragment(meFragment, props.me)
+  const toast = useToast()
 
   const [email, setEmail] = useState<string>(me.email ?? "")
 
@@ -32,17 +35,19 @@ const MyAccountEditEmail: React.FC<MyAccountEditEmailProps> = (props) => {
   const isEmailValid = Boolean(email && string().email().isValidSync(email))
 
   useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => {
-        return (
-          <Touchable onPress={handleSave} disabled={!isEmailValid}>
-            <Text variant="xs" color={isEmailValid ? "black100" : "black60"}>
-              Save
-            </Text>
-          </Touchable>
-        )
-      },
-    })
+    if (!enableRedesignedSettings) {
+      navigation.setOptions({
+        headerRight: () => {
+          return (
+            <Touchable onPress={handleSave} disabled={!isEmailValid}>
+              <Text variant="xs" color={isEmailValid ? "black100" : "black60"}>
+                Save
+              </Text>
+            </Touchable>
+          )
+        },
+      })
+    }
   }, [navigation, email])
 
   const handleSave = async () => {
@@ -63,11 +68,9 @@ const MyAccountEditEmail: React.FC<MyAccountEditEmailProps> = (props) => {
 
   const editScreenRef = useRef<MyAccountFieldEditScreen>(null)
 
-  const toast = useToast()
-
-  return (
-    <>
-      <Flex p={2}>
+  if (enableRedesignedSettings) {
+    return (
+      <MyProfileScreenWrapper title="Email" onPress={handleSave} isValid={isEmailValid}>
         <Input
           accessibilityLabel="email-input"
           enableClearButton
@@ -77,15 +80,32 @@ const MyAccountEditEmail: React.FC<MyAccountEditEmailProps> = (props) => {
           autoCapitalize="none"
           autoCorrect={false}
           autoComplete="off"
-          onSubmitEditing={() => {
-            if (isEmailValid) {
-              editScreenRef.current?.save()
-            }
-          }}
+          onSubmitEditing={handleSave}
           error={receivedError}
         />
-      </Flex>
-    </>
+      </MyProfileScreenWrapper>
+    )
+  }
+
+  return (
+    <Flex p={2}>
+      <Input
+        accessibilityLabel="email-input"
+        enableClearButton
+        value={email}
+        onChangeText={setEmail}
+        autoFocus
+        autoCapitalize="none"
+        autoCorrect={false}
+        autoComplete="off"
+        onSubmitEditing={() => {
+          if (isEmailValid) {
+            editScreenRef.current?.save()
+          }
+        }}
+        error={receivedError}
+      />
+    </Flex>
   )
 }
 
@@ -104,6 +124,18 @@ const myAccountEditEmailQuery = graphql`
 `
 
 const MyAccountEditEmailPlaceholder: React.FC<{}> = () => {
+  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
+
+  if (enableRedesignedSettings) {
+    return (
+      <MyProfileScreenWrapper title="Email">
+        <Flex p={2}>
+          <SkeletonBox height={40} />
+        </Flex>
+      </MyProfileScreenWrapper>
+    )
+  }
+
   return (
     <Flex p={2}>
       <PlaceholderBox height={40} />
@@ -118,17 +150,8 @@ export const MyAccountEditEmailQueryRenderer: React.FC<{}> = withSuspense({
     if (!data?.me) {
       return null
     }
+
     return <MyAccountEditEmail me={data?.me} />
   },
   LoadingFallback: MyAccountEditEmailPlaceholder,
-  ErrorFallback: (fallbackProps) => {
-    return (
-      <LoadFailureView
-        onRetry={fallbackProps.resetErrorBoundary}
-        useSafeArea={false}
-        error={fallbackProps.error}
-        trackErrorBoundary={false}
-      />
-    )
-  },
 })
