@@ -57,6 +57,7 @@ export const Pills: {
 const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, navigation }) => {
   const color = useColor()
 
+  const activeTab = FavoritesContextStore.useStoreState((state) => state.activeTab)
   const { setActiveTab, setHeaderHeight } = FavoritesContextStore.useStoreActions(
     (actions) => actions
   )
@@ -117,7 +118,7 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
                   selected={isActive}
                   onPress={() => {
                     // Make sure to track the tap before changing the active tab
-                    trackTappedNavigationTab(key)
+                    trackTappedNavigationTab(key, activeTab)
 
                     setActiveTab(key)
 
@@ -131,7 +132,6 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
                     })
 
                     navigation.navigate(key)
-                    trackTappedNavigationTab(key)
                   }}
                   Icon={({ fill }) => (
                     <Flex mr={0.5} justifyContent="center">
