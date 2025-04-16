@@ -22203,11 +22203,20 @@ input UpdatePartnerArtistMutationInput {
   biography: String
   clientMutationId: String
 
+  # Whether to display the artist on the partner profile page.
+  displayOnPartnerProfile: Boolean
+
+  # Whether to hide the artist in presentation mode (Folio) for the partner.
+  hideInPresentationMode: Boolean
+
   # The ID of the partner artist to update.
   id: String!
 
   # The URL of the image to use for the partner artist.
   remoteImageUrl: String
+
+  # Whether the artist is represented by the partner.
+  representedBy: Boolean
 
   # Whether to use the default biography for the artist instead of the partner-provided one.
   useDefaultBiography: Boolean
