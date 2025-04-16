@@ -1,5 +1,6 @@
-This update includes a number of improvements and bug fixes.
+This update includes a number of improvements and bug fixes including:
 
-- Improved image loaders across the app
+- Select works are now available to purchase using Apple Pay
+- New Favorites Hub in the bottom navigation, see all your saved works, followed artists, and alerts in one place
 
 Have feedback? Email us at support@artsy.net
