@@ -15465,6 +15465,9 @@ type Mutation {
   # Updates a page.
   updatePage(input: UpdatePageMutationInput!): UpdatePageMutationPayload
 
+  # Updates general information on a partner.
+  updatePartner(input: UpdatePartnerMutationInput!): UpdatePartnerMutationPayload
+
   # Updates a partner artist.
   updatePartnerArtist(input: UpdatePartnerArtistMutationInput!): UpdatePartnerArtistMutationPayload
 
@@ -22263,6 +22266,10 @@ type UpdatePartnerContactSuccess {
   partnerContact: Contact
 }
 
+type UpdatePartnerFailure {
+  mutationError: GravityMutationError
+}
+
 type UpdatePartnerFlagsFailure {
   mutationError: GravityMutationError
 }
@@ -22338,6 +22345,81 @@ type UpdatePartnerLocationPayload {
 type UpdatePartnerLocationSuccess {
   location: Location
 }
+
+input UpdatePartnerMutationInput {
+  # Alternate names or synonyms for this partner.
+  alternateNames: [String]
+
+  # Whether to charge sales tax on ecommerce orders.
+  artsyCollectsSalesTax: Boolean
+  clientMutationId: String
+
+  # Commission paid by non-subscriber/fair partner.
+  commissionRate: Float
+
+  # Contract type.
+  contractType: String
+
+  # Whether the partner is directly contactable.
+  directlyContactable: Boolean
+
+  # Controls artists tab presence on gpp. Artists tab is hidden for Institutional partners and present for the rest of partners.
+  displayArtistsSection: Boolean
+
+  # The display name of the partner.
+  displayName: String
+
+  # Controls whether the works section is displayed.
+  displayWorksSection: Boolean
+
+  # Distinguish artists the partner represents on their profile page.
+  distinguishRepresentedArtists: Boolean
+
+  # The email of the partner.
+  email: String
+
+  # The given name of the partner.
+  givenName: String
+
+  # Profile completeness.
+  hasFullProfile: Boolean
+
+  # The id of the partner to update.
+  id: String!
+
+  # Whether the partner requires pre-qualification.
+  preQualify: Boolean
+
+  # Artists layout on the profile overview page.
+  profileArtistsLayout: String
+
+  # Banner display on the profile overview page.
+  profileBannerDisplay: String
+
+  # The region of the partner.
+  region: String
+
+  # The short name of the partner.
+  shortName: String
+
+  # The sortable name of the partner.
+  sortableName: String
+
+  # Type of the partner.
+  type: String
+
+  # The website of the partner.
+  website: String
+}
+
+type UpdatePartnerMutationPayload {
+  clientMutationId: String
+
+  # On success: the updated partner. On error: the error that occurred.
+  partnerOrError: UpdatePartnerResponseOrError
+}
+
+union UpdatePartnerResponseOrError = UpdatePartnerFailure | UpdatePartnerSuccess
 
 type UpdatePartnerShowDocumentFailure {
   mutationError: GravityMutationError
@@ -22481,6 +22563,10 @@ union UpdatePartnerShowResponseOrError = UpdatePartnerShowFailure | UpdatePartne
 
 type UpdatePartnerShowSuccess {
   show: Show
+}
+
+type UpdatePartnerSuccess {
+  partner: Partner
 }
 
 type UpdateSaleAgreementFailure {
