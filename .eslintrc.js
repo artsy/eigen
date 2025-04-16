@@ -16,6 +16,7 @@ module.exports = {
   ],
   extends: [
     "eslint:recommended",
+    "plugin:react-native-a11y/basic",
     "plugin:testing-library/react",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:@typescript-eslint/recommended",
