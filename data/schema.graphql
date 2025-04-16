@@ -22193,6 +22193,8 @@ type UpdatePartnerArtistFailure {
 }
 
 input UpdatePartnerArtistMutationInput {
+  # The partner-provided biography of the artist.
+  biography: String
   clientMutationId: String
 
   # The ID of the partner artist to update.
@@ -22200,6 +22202,9 @@ input UpdatePartnerArtistMutationInput {
 
   # The URL of the image to use for the partner artist.
   remoteImageUrl: String
+
+  # Whether to use the default biography for the artist instead of the partner-provided one.
+  useDefaultBiography: Boolean
 }
 
 type UpdatePartnerArtistMutationPayload {
