@@ -3123,7 +3123,6 @@ type ArtworkImportConnection {
 type ArtworkImportCreatedBy {
   # A globally unique ID.
   id: ID!
-  images: [ArtworkImportRowImage!]!
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
@@ -4401,6 +4400,9 @@ input BulkUpdateArtworksMetadataInput {
 
   # The price for the artworks
   priceListed: Float
+
+  # Publish or unpublish artworks
+  published: Boolean
 }
 
 type BulkUpdateArtworksMetadataMutationFailure {
@@ -18426,9 +18428,6 @@ type Query {
 
     # Weights for the KNN and MLT query
     osWeights: [Float] = [0.6, 0.4]
-
-    # Internal Redis tracking for the user seen artworks
-    useInternalTracking: Boolean = false
   ): ArtworkConnection
 
   # A namespace external partners (provided by Galaxy)
@@ -21530,15 +21529,6 @@ input UpdateArtworkEditionSetInput {
   framedMetric: String
   framedWidth: String
 
-  # Show/Hide the price range of an artwork
-  displayPriceRange: Boolean
-
-  # True for `Buy Now` artworks
-  ecommerce: Boolean
-
-  # A list of edition sets for the artwork
-  editionSets: [UpdateArtworkEditionSetInput]
-
   # The id of the artwork to update.
   id: String!
 
@@ -23850,9 +23840,6 @@ type Viewer {
 
     # Weights for the KNN and MLT query
     osWeights: [Float] = [0.6, 0.4]
-
-    # Internal Redis tracking for the user seen artworks
-    useInternalTracking: Boolean = false
   ): ArtworkConnection
 
   # A namespace external partners (provided by Galaxy)
