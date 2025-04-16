@@ -4400,6 +4400,9 @@ input BulkUpdateArtworksMetadataInput {
 
   # The price for the artworks
   priceListed: Float
+
+  # Publish or unpublish artworks
+  published: Boolean
 }
 
 type BulkUpdateArtworksMetadataMutationFailure {
