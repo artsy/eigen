@@ -9898,6 +9898,32 @@ type DeletePartnerArtistDocumentSuccess {
   partner: Partner
 }
 
+type DeletePartnerArtistFailure {
+  mutationError: GravityMutationError
+}
+
+input DeletePartnerArtistMutationInput {
+  # The ID of the artist to delete.
+  artistId: String!
+  clientMutationId: String
+
+  # The ID of the partner.
+  partnerId: String!
+}
+
+type DeletePartnerArtistMutationPayload {
+  clientMutationId: String
+
+  # On success: confirmation of deletion. On error: the error that occurred.
+  partnerArtistOrError: DeletePartnerArtistResponseOrError
+}
+
+union DeletePartnerArtistResponseOrError = DeletePartnerArtistFailure | DeletePartnerArtistSuccess
+
+type DeletePartnerArtistSuccess {
+  partner: Partner
+}
+
 type DeletePartnerContactFailure {
   mutationError: GravityMutationError
 }
@@ -15116,6 +15142,9 @@ type Mutation {
 
   # Deletes a page.
   deletePage(input: DeletePageMutationInput!): DeletePageMutationPayload
+
+  # Deletes a partner artist.
+  deletePartnerArtist(input: DeletePartnerArtistMutationInput!): DeletePartnerArtistMutationPayload
 
   # Deletes a partner artist document.
   deletePartnerArtistDocument(
