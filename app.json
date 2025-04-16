@@ -23,7 +23,7 @@
       "bundleIdentifier": "net.artsy.artsy"
     },
     "updates": {
-      "enabled": true,
+      "enabled": false,
       "fallbackToCacheTimeout": 0,
       "codeSigningCertificate": "./code-signing/certificate.pem",
       "codeSigningMetadata": {
