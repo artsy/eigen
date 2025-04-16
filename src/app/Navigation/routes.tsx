@@ -201,7 +201,7 @@ import {
   ShowMoreInfoScreenQuery,
 } from "app/Scenes/Show/Screens/ShowMoreInfo"
 import { ShowQueryRenderer, ShowScreenQuery } from "app/Scenes/Show/Show"
-import { ShowsForYouScreen, ShowsForYouScreenQuery } from "app/Scenes/Shows/ShowsForYou"
+import { ShowsForYouScreen } from "app/Scenes/Shows/ShowsForYou"
 import {
   SimilarToRecentlyViewedScreen,
   SimilarToRecentlyViewedScreenQuery,
@@ -1514,17 +1514,6 @@ export const artsyDotNetRoutes = defineRoutes([
     },
     //Not prefetching the query for now because it's dependent on the user's location.
     queries: [],
-  },
-  {
-    path: "/shows-for-you",
-    name: "ShowsForYou",
-    Component: ShowsForYouScreen,
-    options: {
-      screenOptions: {
-        headerShown: false,
-      },
-    },
-    queries: [ShowsForYouScreenQuery],
   },
   {
     path: "/similar-to-recently-viewed",
