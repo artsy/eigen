@@ -35,15 +35,13 @@ gw==
 	<key>EXUpdatesLaunchWaitMs</key>
 	<integer>0</integer>
 	<key>EXUpdatesURL</key>
-	<string>https://expo-updates-api.artsy.net/api/manifest?project=eigen&amp;channel=canary</string>
+	<string>https://expo-updates-api.artsy.net/api/manifest?project=eigen&amp;channel=production</string>
 	<key>EXUpdatesRuntimeVersion</key>
 	<string>1.0.0</string>
-	<key>EXUpdatesDisableAntiBrickingMeasures</key>
-	<true/>
 	<key>EXUpdatesRequestHeaders</key>
 	<dict>
 		<key>expo-channel-name</key>
-		<string>canary</string>
+		<string>production</string>
 		<key>expo-expect-signature</key>
 		<string>true</string>
 	</dict>
