@@ -33,7 +33,7 @@ describe("ActivityRail", () => {
     expect(screen.getByText(/mock-value-for-field-"headline"/)).toBeOnTheScreen()
   })
 
-  it("handles header tap", () => {
+  it("handles header press", () => {
     renderWithRelay({
       Viewer: () => ({
         notificationsConnection: {
@@ -61,7 +61,7 @@ describe("ActivityRail", () => {
     })
   })
 
-  it("handles See All tap", () => {
+  it("handles See All press", () => {
     renderWithRelay({
       Viewer: () => ({
         notificationsConnection: {
@@ -89,7 +89,7 @@ describe("ActivityRail", () => {
     })
   })
 
-  it("handles item tap", () => {
+  it("handles item press", () => {
     renderWithRelay({
       Viewer: () => ({
         notificationsConnection: {

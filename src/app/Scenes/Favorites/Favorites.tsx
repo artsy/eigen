@@ -1,4 +1,19 @@
-import { BellIcon, Flex, HeartIcon, MultiplePersonsIcon, Pill, Screen } from "@artsy/palette-mobile"
+import {
+  BellIcon,
+  Flex,
+  HeartIcon,
+  MultiplePersonsIcon,
+  Pill,
+  Screen,
+  Spacer,
+  Text,
+  useScreenDimensions,
+} from "@artsy/palette-mobile"
+import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
+import {
+  createMaterialTopTabNavigator,
+  MaterialTopTabBarProps,
+} from "@react-navigation/material-top-tabs"
 import { PAGE_SIZE } from "app/Components/constants"
 import { AlertsTab } from "app/Scenes/Favorites/AlertsTab"
 import { alertsQuery } from "app/Scenes/Favorites/Components/Alerts"
@@ -7,21 +22,10 @@ import { followedArtistsQuery } from "app/Scenes/Favorites/Components/FollowedAr
 import { FavoritesContextStore, FavoritesTab } from "app/Scenes/Favorites/FavoritesContextStore"
 import { FollowsTab } from "app/Scenes/Favorites/FollowsTab"
 import { SavesTab } from "app/Scenes/Favorites/SavesTab"
+import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { useEffect } from "react"
-
-const Content: React.FC = () => {
-  const activeTab = FavoritesContextStore.useStoreState((state) => state.activeTab)
-
-  switch (activeTab) {
-    case "saves":
-      return <SavesTab />
-    case "follows":
-      return <FollowsTab />
-    case "alerts":
-      return <AlertsTab />
-  }
-}
+import Animated, { useAnimatedStyle } from "react-native-reanimated"
 
 const Pills: {
   Icon: React.FC<{ fill: string }>
@@ -45,34 +49,110 @@ const Pills: {
   },
 ]
 
-const FavoritesHeader = () => {
-  const setActiveTab = FavoritesContextStore.useStoreActions((actions) => actions.setActiveTab)
-  const { activeTab } = FavoritesContextStore.useStoreState((state) => state)
+const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, navigation }) => {
+  const { setActiveTab, setHeaderHeight } = FavoritesContextStore.useStoreActions(
+    (actions) => actions
+  )
+
+  const { headerHeight } = FavoritesContextStore.useStoreState((state) => state)
+  const { trackTappedNavigationTab } = useFavoritesTracking()
+
+  const activeRoute = state.routes[state.index].name
 
   return (
-    <Flex flexDirection="row" gap={0.5} mx={2} mb={2} mt={1}>
-      {Pills.map(({ Icon, title, key }) => {
-        const isActive = activeTab === key
-        return (
-          <Pill
-            selected={isActive}
-            onPress={() => setActiveTab(key)}
-            Icon={() => (
-              <Flex mr={0.5} justifyContent="center" bottom="1px">
-                <Icon fill={isActive ? "white100" : "black100"} />
-              </Flex>
-            )}
-            key={key}
-          >
-            {title}
-          </Pill>
-        )
-      })}
+    <Flex
+      onLayout={(event) => {
+        if (!headerHeight) {
+          setHeaderHeight(event.nativeEvent.layout.height)
+        }
+      }}
+    >
+      <Flex mx={2}>
+        <Flex alignItems="flex-end" mb={2}>
+          <FavoritesLearnMore />
+        </Flex>
+
+        <Text variant="xl">Favorites</Text>
+
+        <Spacer y={2} />
+        <Flex flexDirection="row" gap={0.5} mb={2}>
+          {Pills.map(({ Icon, title, key }) => {
+            const isActive = activeRoute === key
+            return (
+              <Pill
+                selected={isActive}
+                onPress={() => {
+                  setActiveTab(key)
+
+                  // We are manually emitting the tabPress event here because
+                  // the navigation library doesn't emit it when we use the
+                  // navigation.navigate() method.
+                  navigation.emit({
+                    type: "tabPress",
+                    target: key,
+                    canPreventDefault: true,
+                  })
+
+                  navigation.navigate(key)
+                  trackTappedNavigationTab(key)
+                }}
+                Icon={() => (
+                  <Flex mr={0.5} justifyContent="center" bottom="1px">
+                    <Icon fill={isActive ? "white100" : "black100"} />
+                  </Flex>
+                )}
+                key={key}
+              >
+                {title}
+              </Pill>
+            )
+          })}
+        </Flex>
+      </Flex>
     </Flex>
   )
 }
 
-export const FavoritesScreen: React.FC = () => {
+export const FavoriteTopNavigator = createMaterialTopTabNavigator()
+
+const Content = () => {
+  const { currentScrollYAnimated } = useScreenScrollContext()
+  const { headerHeight } = FavoritesContextStore.useStoreState((state) => state)
+  const { height: screenHeight } = useScreenDimensions()
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateY:
+          currentScrollYAnimated.value >= headerHeight
+            ? -headerHeight
+            : Math.min(-currentScrollYAnimated.value, 0),
+      },
+    ],
+  }))
+
+  return (
+    <Animated.View style={[animatedStyles, { height: screenHeight + headerHeight }]}>
+      <Screen.Body fullwidth>
+        <FavoriteTopNavigator.Navigator
+          tabBar={FavoritesHeaderTapBar}
+          screenOptions={{
+            swipeEnabled: false,
+          }}
+        >
+          <FavoriteTopNavigator.Screen name="saves" navigationKey="saves" component={SavesTab} />
+          <FavoriteTopNavigator.Screen
+            name="follows"
+            navigationKey="follows"
+            component={FollowsTab}
+          />
+          <FavoriteTopNavigator.Screen name="alerts" navigationKey="alerts" component={AlertsTab} />
+        </FavoriteTopNavigator.Navigator>
+      </Screen.Body>
+    </Animated.View>
+  )
+}
+export const Favorites = () => {
   useEffect(() => {
     prefetchQuery({
       query: followedArtistsQuery,
@@ -87,28 +167,10 @@ export const FavoritesScreen: React.FC = () => {
   }, [])
 
   return (
-    <Screen>
-      <Screen.AnimatedHeader
-        title="Favorites"
-        hideLeftElements
-        rightElements={<FavoritesLearnMore />}
-      />
-
-      <Screen.StickySubHeader title="Favorites" largeTitle separatorComponent={null}>
-        <FavoritesHeader />
-      </Screen.StickySubHeader>
-
-      <Screen.Body fullwidth>
-        <Content />
-      </Screen.Body>
-    </Screen>
-  )
-}
-
-export const Favorites: React.FC<any> = (props) => {
-  return (
     <FavoritesContextStore.Provider>
-      <FavoritesScreen {...props} />
+      <Screen>
+        <Content />
+      </Screen>
     </FavoritesContextStore.Provider>
   )
 }

@@ -5,10 +5,8 @@ import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteD
 import { GlobalStore } from "app/store/GlobalStore"
 import { MotiView } from "moti"
 import { useEffect, useRef, useState } from "react"
-import { LayoutAnimation, Modal, TouchableWithoutFeedback } from "react-native"
+import { LayoutAnimation, Modal, SafeAreaView, TouchableWithoutFeedback } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
-import { useSharedValue } from "react-native-reanimated"
-import { SafeAreaView } from "react-native-safe-area-context"
 import { useTracking } from "react-tracking"
 
 interface InfiniteDiscoveryOnboardingProps {
@@ -39,7 +37,6 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
   }
 
   const [isVisible, setIsVisible] = useState(false)
-  const isRewindRequested = useSharedValue(false)
   const [enableTapToDismiss, setEnableTapToDismiss] = useState(false)
 
   const hasInteractedWithOnboarding = GlobalStore.useAppState(
@@ -154,7 +151,6 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
                     <Swiper
                       containerStyle={{ flex: 1, transform: [{ scale: 0.8 }] }}
                       cards={artworks}
-                      isRewindRequested={isRewindRequested}
                       onTrigger={() => {}}
                       swipedIndexCallsOnTrigger={2}
                       onNewCardReached={() => {}}

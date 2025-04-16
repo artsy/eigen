@@ -105,8 +105,9 @@
     "braces": "in the resolutions - needed to resolve a security dependency issue - need to remove this when the issue is resolved and packages are updated"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.249.0",
-    "@artsy/palette-mobile": "14.0.41",
+    "@artsy/cohesion": "4.255.0",
+    "@artsy/icons": "3.28.0",
+    "@artsy/palette-mobile": "14.0.44",
     "@artsy/to-title-case": "1.1.0",
     "@braze/react-native-sdk": "13.1.1",
     "@expo/react-native-action-sheet": "4.0.1",
@@ -123,6 +124,7 @@
     "@react-native-google-signin/google-signin": "11.0.1",
     "@react-navigation/bottom-tabs": "7.3.3",
     "@react-navigation/elements": "2.3.1",
+    "@react-navigation/material-top-tabs": "7.2.10",
     "@react-navigation/native": "7.0.19",
     "@react-navigation/native-stack": "7.3.3",
     "@react-navigation/stack": "7.2.3",
@@ -157,7 +159,7 @@
     "react-native": "0.76.9",
     "react-native-blob-util": "0.19.11",
     "react-native-blurhash": "2.1.1",
-    "react-native-bootsplash": "6.1.3",
+    "react-native-bootsplash": "6.3.4",
     "react-native-context-menu-view": "git+https://github.com/artsy/react-native-context-menu-view.git#v1.10.10-artsy",
     "react-native-device-info": "14.0.0",
     "react-native-document-picker": "9.3.0",

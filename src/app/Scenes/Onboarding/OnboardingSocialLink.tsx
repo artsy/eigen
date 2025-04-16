@@ -12,7 +12,6 @@ import { capitalize } from "lodash"
 import React, { useEffect, useState } from "react"
 import { Alert, Image, ImageSourcePropType, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { useRelayEnvironment } from "react-relay"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "./Onboarding"
 
@@ -47,11 +46,9 @@ export const OnboardingSocialLink: React.FC<
     permittedProviders.length === 1 && permittedProviders[0] === "email"
   )
 
-  const environment = useRelayEnvironment()
-
-  const { linkUsingOauthToken: linkFB, isLoading: fbLoading } = useFacebookLink(environment)
-  const { linkUsingOauthToken: linkGoogle, isLoading: googleLoading } = useGoogleLink(environment)
-  const { linkUsingOauthToken: linkApple, isLoading: appleLoading } = useAppleLink(environment)
+  const { linkUsingOauthToken: linkFB, isLoading: fbLoading } = useFacebookLink()
+  const { linkUsingOauthToken: linkGoogle, isLoading: googleLoading } = useGoogleLink()
+  const { linkUsingOauthToken: linkApple, isLoading: appleLoading } = useAppleLink()
 
   useEffect(
     () =>

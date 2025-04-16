@@ -1,5 +1,6 @@
 import {
   BellIcon,
+  DEFAULT_HIT_SLOP,
   Flex,
   HeartIcon,
   InstitutionIcon,
@@ -15,6 +16,8 @@ import {
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { CallapseWithTitle } from "app/Scenes/Favorites/Components/CollapseWithTitle"
+import { FavoritesContextStore } from "app/Scenes/Favorites/FavoritesContextStore"
+import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import React, { useState } from "react"
 import { Dimensions } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -88,7 +91,7 @@ const SECTIONS = [
           />
           <TitleWithIcon
             icon={<SettingsIcon />}
-            title="Signal your interest to galleries and you could receiving an offer on your saved artwork from a gallery. Read more."
+            title="Customize Alerts to match your budget, preferred medium, rarity or other criteria."
           />
         </Join>
       </Flex>
@@ -97,14 +100,25 @@ const SECTIONS = [
 ]
 
 export const FavoritesLearnMore = () => {
+  const { activeTab } = FavoritesContextStore.useStoreState((state) => state)
   const [showBottomSheet, setShowBottomSheet] = useState(false)
   const { bottom } = useSafeAreaInsets()
+  const { trackTappedInfoBubble } = useFavoritesTracking()
 
   const { height } = Dimensions.get("screen")
   const SNAP_POINTS = [height * 0.8, height * 0.9]
 
   return (
     <>
+      <Touchable
+        onPress={() => {
+          setShowBottomSheet(true)
+          trackTappedInfoBubble(activeTab)
+        }}
+      >
+        <QuestionCircleIcon height={ICON_SIZE} width={ICON_SIZE} hitSlop={DEFAULT_HIT_SLOP} />
+      </Touchable>
+
       <AutomountedBottomSheetModal
         visible={showBottomSheet}
         snapPoints={SNAP_POINTS}
@@ -135,9 +149,6 @@ export const FavoritesLearnMore = () => {
           <Spacer y={`${bottom}px`} />
         </BottomSheetScrollView>
       </AutomountedBottomSheetModal>
-      <Touchable onPress={() => setShowBottomSheet(true)}>
-        <QuestionCircleIcon height={ICON_SIZE} width={ICON_SIZE} />
-      </Touchable>
     </>
   )
 }

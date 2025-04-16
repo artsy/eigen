@@ -50,10 +50,6 @@ describe(SwitchMenu, () => {
 })
 
 describe(MyProfilePushNotificationsQueryRenderer, () => {
-  afterEach(() => {
-    jest.resetAllMocks()
-  })
-
   const { renderWithRelay } = setupTestWrapper<MyProfilePushNotificationsTestQuery>({
     Component: MyProfilePushNotificationsQueryRenderer,
     query: graphql`
@@ -128,7 +124,7 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
       ;(debounce as jest.Mock).mockImplementation((func) => func)
     })
 
-    it("should set the notification preference to true", async () => {
+    it("should set the notification preference to true and false", async () => {
       const { mockResolveLastOperation } = renderWithRelay()
       mockResolveLastOperation({ Me: () => mockNotificationsPreferences })
 
@@ -152,23 +148,12 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
           },
         })
       )
-    })
-
-    it("should set the notification preference to true", async () => {
-      const { mockResolveLastOperation } = renderWithRelay()
-      mockResolveLastOperation({
-        Me: () => ({ ...mockNotificationsPreferences, receiveNewWorksNotification: false }),
-      })
-
-      const switchElement = screen.getByTestId("newWorksSwitch")
-
-      expect(switchElement.props.on).toBe(false)
 
       fireEvent(switchElement, "onValueChange", true)
 
       expect(switchElement.props.on).toBe(true)
 
-      expect(relay.commitMutation).toHaveBeenCalledTimes(1)
+      expect(relay.commitMutation).toHaveBeenCalledTimes(2)
       expect(relay.commitMutation).toHaveBeenCalledWith(
         expect.anything(),
         expect.objectContaining({

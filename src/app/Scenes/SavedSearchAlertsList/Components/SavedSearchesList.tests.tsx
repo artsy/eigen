@@ -94,13 +94,13 @@ describe("SavedSearches", () => {
   it("should display Sort By button", () => {
     renderWithRelay()
 
-    expect(screen.getByText("Sort By")).toBeTruthy()
+    expect(screen.getByTestId("sortButton")).toBeTruthy()
   })
 
   it("should display sort options when Sort By button is pressed", async () => {
     renderWithRelay()
 
-    fireEvent.press(screen.getByText("Sort By"))
+    fireEvent.press(screen.getByTestId("sortButton"))
 
     // Wait for the modal to show up
     await flushPromiseQueue()
@@ -112,7 +112,7 @@ describe("SavedSearches", () => {
   it("should pass selected sort option to query variables", async () => {
     const { env } = renderWithRelay()
 
-    fireEvent.press(screen.getByText("Sort By"))
+    fireEvent.press(screen.getByTestId("sortButton"))
 
     // Wait for the modal to show up
     await flushPromiseQueue()

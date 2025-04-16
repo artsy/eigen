@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import {
   ArrowDownIcon,
   Flex,
@@ -12,6 +13,10 @@ import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/Automoun
 import { FollowedArtistsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedArtists"
 import { FollowedGalleriesQueryRenderer } from "app/Scenes/Favorites/Components/FollowedGalleries"
 import { FollowedShowsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedShows"
+import {
+  useFavoritesScrenTracking,
+  useFavoritesTracking,
+} from "app/Scenes/Favorites/useFavoritesTracking"
 import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
 import { useState } from "react"
 import Haptic from "react-native-haptic-feedback"
@@ -41,7 +46,11 @@ export const FollowsTab = () => {
   const [followOption, setfollowOption] = useState<FollowOption>("artists")
   const { bottom } = useSafeAreaInsets()
 
+  useFavoritesScrenTracking(OwnerType.favoritesFollows)
+
   const [showBottomSheet, setShowBottomSheet] = useState(false)
+
+  const { trackSelectedFromDrawer } = useFavoritesTracking()
 
   return (
     <Flex flex={1}>
@@ -88,12 +97,14 @@ export const FollowsTab = () => {
                 <RadioButton
                   key={value}
                   block
+                  textVariant="sm-display"
                   onPress={() => {
                     setfollowOption(value)
                     // Dismiss after a short delay to make sure the user can verify their choice
                     setTimeout(() => {
                       setShowBottomSheet(false)
                     }, 200)
+                    trackSelectedFromDrawer(value)
                   }}
                   selected={followOption === value}
                   text={label}

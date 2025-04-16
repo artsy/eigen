@@ -7,6 +7,7 @@ import {
   SkeletonBox,
   SkeletonText,
   Spacer,
+  Touchable,
 } from "@artsy/palette-mobile"
 import { HomeViewSectionMarketingCollectionsQuery } from "__generated__/HomeViewSectionMarketingCollectionsQuery.graphql"
 import {
@@ -22,10 +23,7 @@ import {
 } from "app/Components/FiveUpImageLayout"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
-import {
-  CollectionCard,
-  HomeViewSectionMarketingCollectionsItem,
-} from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollectionsItem"
+import { HomeViewSectionMarketingCollectionsItem } from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollectionsItem"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
@@ -151,7 +149,7 @@ const HomeViewSectionMarketingCollectionsPlaceholder: React.FC<FlexProps> = (fle
           <Flex flexDirection="row">
             <Join separator={<Spacer x="15px" />}>
               {times(2 + randomValue * 10).map((index) => (
-                <CollectionCard key={index}>
+                <Touchable key={index}>
                   <Flex>
                     <Flex flexDirection="row">
                       <SkeletonBox
@@ -198,7 +196,7 @@ const HomeViewSectionMarketingCollectionsPlaceholder: React.FC<FlexProps> = (fle
                       <SkeletonText>21 works</SkeletonText>
                     </Flex>
                   </Flex>
-                </CollectionCard>
+                </Touchable>
               ))}
             </Join>
           </Flex>

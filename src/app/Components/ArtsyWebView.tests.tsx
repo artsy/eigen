@@ -14,9 +14,9 @@ import WebView, { WebViewProps } from "react-native-webview"
 import { WebViewNavigation } from "react-native-webview/lib/WebViewTypes"
 
 import {
-  _test_expandGoogleAdLink as expandGoogleAdLink,
   ArtsyWebView,
   ArtsyWebViewPage,
+  _test_expandGoogleAdLink as expandGoogleAdLink,
   useWebViewCookies,
 } from "./ArtsyWebView"
 
@@ -173,6 +173,34 @@ describe("ArtsyWebViewPage", () => {
           appJson().version
         } Eigen/some-build-number/${appJson().version}`
       )
+    })
+  })
+
+  describe("with 'light' mode", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ ARDarkModeSupport: true })
+      __globalStoreTestUtils__?.injectState({ devicePrefs: { darkModeOption: "off" } })
+    })
+
+    it("sets 'x-theme' header correctly", () => {
+      const view = render()
+      const source = webViewProps(view).source as any
+
+      expect(source?.headers["x-theme"]).toBe("light")
+    })
+  })
+
+  describe("with 'dark' mode", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ ARDarkModeSupport: true })
+      __globalStoreTestUtils__?.injectState({ devicePrefs: { darkModeOption: "on" } })
+    })
+
+    it("sets 'x-theme' header correctly", () => {
+      const view = render()
+      const source = webViewProps(view).source as any
+
+      expect(source?.headers["x-theme"]).toBe("dark")
     })
   })
 

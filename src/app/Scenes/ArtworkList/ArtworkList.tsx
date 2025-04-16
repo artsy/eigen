@@ -63,6 +63,8 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   const RefreshControl = useRefreshControl(refetch, { sort: selectedSortValue })
 
   const handleSortByModalClosed = () => {
+    setSortModalVisible(false)
+
     if (selectedSortValue === prevSelectedSortValue) {
       return
     }
@@ -98,6 +100,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   return (
     <ArtworkListProvider artworkListID={listID}>
       <ArtworkListHeader me={queryData.me} />
+
       <MasonryInfiniteScrollArtworkGrid
         artworks={artworks}
         loadMore={(pageSize) => loadNext(pageSize)}
@@ -115,11 +118,11 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
         }
         refreshControl={RefreshControl}
       />
+
       <SortByModal
         visible={sortModalVisible}
         options={SORT_OPTIONS}
         selectedValue={selectedSortValue}
-        onCloseModal={closeSortModal}
         onSelectOption={handleSelectOption}
         onModalFinishedClosing={handleSortByModalClosed}
       />
@@ -182,7 +185,7 @@ export const ArtworkListScreen: FC<ArtworkListScreenProps> = (props) => {
     <Screen>
       <ProvideScreenTrackingWithCohesionSchema
         info={screen({
-          context_screen_owner_type: OwnerType.saves,
+          context_screen_owner_type: OwnerType.saves, // artworkList, // TODO: update when cohesion is up
           context_screen_owner_id: props.listID,
         })}
       >

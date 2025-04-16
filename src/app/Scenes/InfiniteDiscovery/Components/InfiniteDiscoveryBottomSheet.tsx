@@ -1,3 +1,4 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { useColor } from "@artsy/palette-mobile"
 import BottomSheet from "@gorhom/bottom-sheet"
 import { InfiniteDiscoveryBottomSheetBackdrop } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetBackdrop"
@@ -8,19 +9,23 @@ import { FC, useEffect, useState } from "react"
 import { Dimensions } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface InfiniteDiscoveryBottomSheetProps {
   artworkID: string
+  artworkSlug: string
   artistIDs: string[]
 }
 
 export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps> = ({
   artworkID,
+  artworkSlug,
   artistIDs,
 }) => {
   const { bottom } = useSafeAreaInsets()
   const [footerVisible, setFooterVisible] = useState(true)
   const color = useColor()
+  const { trackEvent } = useTracking()
 
   useEffect(() => {
     setFooterVisible(true)
@@ -59,6 +64,12 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
             <InfiniteDiscoveryBottomSheetFooterQueryRenderer artworkID={artworkID} {...props} />
           )
         }}
+        onChange={(index) => {
+          const maxSnapPointIndex = 1
+          if (index === maxSnapPointIndex) {
+            trackEvent(tracks.swipedUp(artworkID, artworkSlug))
+          }
+        }}
       >
         <InfiniteDiscoveryTabs
           artistIDs={artistIDs}
@@ -90,3 +101,13 @@ export const aboutTheWorkQuery = graphql`
     }
   }
 `
+
+const tracks = {
+  swipedUp: (artworkId: string, artworkSlug: string) => ({
+    action: ActionType.swipedUp,
+    context_module: ContextModule.infiniteDiscovery,
+    context_screen_owner_id: artworkId,
+    context_screen_owner_slug: artworkSlug,
+    context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+  }),
+}

@@ -343,6 +343,9 @@ type Alert {
     color: String
     colors: [String]
     dimensionRange: String
+
+    # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+    disableNotForSaleSorting: Boolean
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
     first: Int
@@ -1715,6 +1718,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     color: String
     colors: [String]
     dimensionRange: String
+
+    # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+    disableNotForSaleSorting: Boolean
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
     first: Int
@@ -2119,6 +2125,93 @@ type ArtistPartnerEdge {
   # A cursor for use in pagination
   cursor: String!
 
+  # Retrieve all documents for this partner artist
+  documentsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): PartnerDocumentConnection
+
+  # Artworks Elastic Search results
+  filterArtworksConnection(
+    acquireable: Boolean
+    additionalGeneIDs: [String]
+    after: String
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    artistNationalities: [String]
+    artistSeriesID: String
+    artistSeriesIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    availability: String
+    before: String
+    color: String
+    colors: [String]
+    dimensionRange: String
+
+    # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+    disableNotForSaleSorting: Boolean
+    excludeArtworkIDs: [String]
+    extraAggregationGeneIDs: [String]
+    first: Int
+    forSale: Boolean
+
+    # When true, will only return framed artworks.
+    framed: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    includeAllJSON: Boolean
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
+    input: FilterArtworksInput
+    inquireableOnly: Boolean
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    last: Int
+    locationCities: [String]
+    majorPeriods: [String]
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+    marketingCollectionID: String
+    materialsTerms: [String]
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    offerable: Boolean
+    page: Int
+    partnerCities: [String]
+    partnerID: ID
+    partnerIDs: [String]
+    period: String
+    periods: [String]
+    priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
+    saleID: ID
+
+    # When true, will only return signed artworks.
+    signed: Boolean
+    size: Int
+
+    # Filter results by Artwork sizes
+    sizes: [ArtworkSizes]
+    sold: Boolean
+    sort: String
+    tagID: String
+    visibilityLevel: String
+    width: String
+  ): FilterArtworksConnection
+
   # A globally unique ID.
   id: ID!
   image: Image
@@ -2134,6 +2227,9 @@ type ArtistPartnerEdge {
   node: Artist
   partner: Partner
   representedBy: Boolean
+
+  # A list of shows for this artist
+  showsConnection(after: String, before: String, first: Int, last: Int): ShowConnection
   sortableID: String
 }
 
@@ -2201,6 +2297,9 @@ type ArtistSeries implements Node {
     color: String
     colors: [String]
     dimensionRange: String
+
+    # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+    disableNotForSaleSorting: Boolean
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
     first: Int
@@ -2507,6 +2606,7 @@ type Artwork implements Node & Searchable & Sellable {
   depth: String
   depthCm: Float
   description(format: Format): String
+  diameter: Float
   diameterCm: Float
   dimensions: dimensions
   displayArtistBio: Boolean
@@ -2530,6 +2630,9 @@ type Artwork implements Node & Searchable & Sellable {
   euShippingOrigin: Boolean
   exhibitionHistory(format: Format): String
   fair: Fair
+
+  # Featured slot (if set, will boost the work to the top of the artwork grid. Should be set between 1 and 20).
+  featuredSlot: Int
 
   # A list of images and videos for the artwork
   figures(
@@ -2645,6 +2748,10 @@ type Artwork implements Node & Searchable & Sellable {
   # Whether a user can make an offer on the work through inquiry
   isOfferableFromInquiry: Boolean
   isOnHold: String
+  isPartnerPromoted: Boolean
+
+  # Whether a work is available for pickup
+  isPickupAvailable: Boolean
   isPriceEstimateRequestable: Boolean
   isPriceHidden: Boolean
   isPriceRange: Boolean
@@ -2683,6 +2790,9 @@ type Artwork implements Node & Searchable & Sellable {
   layers: [ArtworkLayer]
   listPrice: ListPrice
   listedArtworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection!
+
+  # In CMS, has the artwork been marked as BNMO?
+  listingOptions: ArtworkListingOptions
   literature(format: Format): String
 
   # Represents partner's location
@@ -2779,6 +2889,7 @@ type Artwork implements Node & Searchable & Sellable {
   signature(format: Format): String
   signatureDetails: String
   signatureInfo: ArtworkInfoRow
+  signatureMeta: ArtworkSignatureMeta
 
   # size bucket assigned to an artwork based on its dimensions
   sizeBucket: String
@@ -3180,6 +3291,11 @@ type ArtworkLayer {
   type: String
 }
 
+type ArtworkListingOptions {
+  isBuyNow: Boolean
+  isMakeOffer: Boolean
+}
+
 # Collection of fields that describe medium type, such as _Painting_. (This field is also commonly referred to as just "medium", but should not be confused with the artwork attribute called `medium`.)
 type ArtworkMedium {
   # The medium gene that corresponds to this medium type. Used for filtering purposes on our frontend, e.g. in artwork grids.
@@ -3259,6 +3375,26 @@ type ArtworkSavedSearch {
     first: Int
     last: Int
   ): ArtworkConnection
+}
+
+type ArtworkSignatureMeta {
+  # Whether the artwork has a signature
+  hasSignature: Boolean!
+
+  # Whether the artwork has a sticker label
+  hasStickerLabel: Boolean!
+
+  # Whether the artwork is signed by the artist
+  isSignedByArtist: Boolean!
+
+  # Whether the artwork is signed in plate
+  isSignedInPlate: Boolean!
+
+  # Whether the artwork is signed by someone else
+  isSignedOther: Boolean!
+
+  # Whether the artwork is stamped by the artist's estate
+  isStampedByArtistEstate: Boolean!
 }
 
 enum ArtworkSignatureTypeEnum {
@@ -4245,15 +4381,26 @@ type BidderPositionSuggestedNextBid {
 # exceed the size of a 32-bit integer, it's encoded as a string.
 scalar BigInt
 
+input BulkUpdateArtworksFilterInput {
+  # Filter artworks with matching ids
+  artworkIds: [String]
+
+  # Filter artworks by location
+  locationId: String
+
+  # Filter artworks by partner artist id
+  partnerArtistId: String
+}
+
 input BulkUpdateArtworksMetadataInput {
   # The category (medium type) to be assigned
   category: String
 
   # The partner location ID to assign
-  location_id: String
+  locationId: String
 
   # The price for the artworks
-  price_listed: Float
+  priceListed: Float
 }
 
 type BulkUpdateArtworksMetadataMutationFailure {
@@ -4262,6 +4409,9 @@ type BulkUpdateArtworksMetadataMutationFailure {
 
 input BulkUpdateArtworksMetadataMutationInput {
   clientMutationId: String
+
+  # Filter options to apply
+  filters: BulkUpdateArtworksFilterInput
 
   # ID of the partner
   id: String!
@@ -4369,6 +4519,14 @@ type CaptureHoldPayload {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
   holdOrError: InventoryHoldOrErrorUnion!
+}
+
+type Card {
+  # The display brand of the card (e.g., Visa, Mastercard).
+  displayBrand: String!
+
+  # The last 4 digits of the card.
+  last4: String!
 }
 
 type CareerHighlight implements Node {
@@ -6877,6 +7035,10 @@ type ConfirmPasswordPayload {
   valid: Boolean!
 }
 
+type ConfirmationToken {
+  paymentMethodPreview: PaymentMethodPreview!
+}
+
 # Consignment
 type Consignment {
   currency: String
@@ -8823,6 +8985,41 @@ type CreatePageSuccess {
   page: Page
 }
 
+type CreatePartnerArtistDocumentFailure {
+  mutationError: GravityMutationError
+}
+
+input CreatePartnerArtistDocumentMutationInput {
+  # The ID of the artist.
+  artistId: String!
+  clientMutationId: String
+
+  # The ID of the partner.
+  partnerId: String!
+
+  # The URL of the document to upload.
+  remoteDocumentUrl: String!
+
+  # The title of the document.
+  title: String!
+}
+
+type CreatePartnerArtistDocumentMutationPayload {
+  clientMutationId: String
+
+  # On success: the created document. On error: the error that occurred.
+  documentOrError: CreatePartnerArtistDocumentResponseOrError
+}
+
+union CreatePartnerArtistDocumentResponseOrError =
+    CreatePartnerArtistDocumentFailure
+  | CreatePartnerArtistDocumentSuccess
+
+type CreatePartnerArtistDocumentSuccess {
+  document: PartnerDocument
+  partner: Partner
+}
+
 type CreatePartnerContactFailure {
   mutationError: GravityMutationError
 }
@@ -8869,7 +9066,7 @@ type CreatePartnerLocationFailure {
 input CreatePartnerLocationInput {
   address: String
   address2: String
-  addressType: locationType
+  addressType: String
   city: String
   clientMutationId: String
   country: String
@@ -8878,7 +9075,7 @@ input CreatePartnerLocationInput {
   email: String
 
   # ID of the partner
-  partnerID: String!
+  partnerId: String!
 
   # Primary phone of given location
   phone: String
@@ -9670,6 +9867,64 @@ type DeletePageSuccess {
   page: Page
 }
 
+type DeletePartnerArtistDocumentFailure {
+  mutationError: GravityMutationError
+}
+
+input DeletePartnerArtistDocumentMutationInput {
+  # The ID of the artist.
+  artistId: String!
+  clientMutationId: String
+
+  # The ID of the document to delete.
+  documentId: String!
+
+  # The ID of the partner.
+  partnerId: String!
+}
+
+type DeletePartnerArtistDocumentMutationPayload {
+  clientMutationId: String
+
+  # On success: the deleted document. On error: the error that occurred.
+  documentOrError: DeletePartnerArtistDocumentResponseOrError
+}
+
+union DeletePartnerArtistDocumentResponseOrError =
+    DeletePartnerArtistDocumentFailure
+  | DeletePartnerArtistDocumentSuccess
+
+type DeletePartnerArtistDocumentSuccess {
+  document: PartnerDocument
+  partner: Partner
+}
+
+type DeletePartnerArtistFailure {
+  mutationError: GravityMutationError
+}
+
+input DeletePartnerArtistMutationInput {
+  # The ID of the artist to delete.
+  artistId: String!
+  clientMutationId: String
+
+  # The ID of the partner.
+  partnerId: String!
+}
+
+type DeletePartnerArtistMutationPayload {
+  clientMutationId: String
+
+  # On success: confirmation of deletion. On error: the error that occurred.
+  partnerArtistOrError: DeletePartnerArtistResponseOrError
+}
+
+union DeletePartnerArtistResponseOrError = DeletePartnerArtistFailure | DeletePartnerArtistSuccess
+
+type DeletePartnerArtistSuccess {
+  partner: Partner
+}
+
 type DeletePartnerContactFailure {
   mutationError: GravityMutationError
 }
@@ -9693,6 +9948,31 @@ union DeletePartnerContactOrError = DeletePartnerContactFailure | DeletePartnerC
 
 type DeletePartnerContactSuccess {
   partnerContact: Contact
+}
+
+type DeletePartnerLocationFailure {
+  mutationError: GravityMutationError
+}
+
+input DeletePartnerLocationMutationInput {
+  clientMutationId: String
+
+  # ID of the Location to delete
+  locationId: String!
+
+  # ID of the partner
+  partnerId: String!
+}
+
+type DeletePartnerLocationMutationPayload {
+  clientMutationId: String
+  partnerLocationOrError: DeletePartnerLocationOrError
+}
+
+union DeletePartnerLocationOrError = DeletePartnerLocationFailure | DeletePartnerLocationSuccess
+
+type DeletePartnerLocationSuccess {
+  location: Location
 }
 
 type DeletePartnerShowDocumentFailure {
@@ -10082,13 +10362,25 @@ input EditableLocation {
 }
 
 type EditionSet implements Sellable {
+  artistProofs: Boolean
   availability: String
+  availableEditions: [String]
+  depth: String
+  diameter: String
   dimensions: dimensions
 
   # The edition set parent-artwork display label (title)
   displayLabel: String
   displayPriceRange: Boolean
+  duration: String
   editionOf: String
+  editionSize: String
+  framedDepth: String
+  framedDiameter: String
+  framedHeight: String
+  framedMetric: String
+  framedWidth: String
+  height: String
 
   # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
   heightCm: Float
@@ -10101,6 +10393,7 @@ type EditionSet implements Sellable {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  inventory: EditionSetInventory
   isAcquireable: Boolean
   isForSale: Boolean
 
@@ -10114,22 +10407,34 @@ type EditionSet implements Sellable {
   isPriceHidden: Boolean
   isSold: Boolean
   listPrice: ListPrice
+
+  # In CMS, has the artwork been marked as BNMO?
+  listingOptions: ArtworkListingOptions
   price: String
   priceDisplay: String
   priceListed: Money
+  prototypes: String
 
   # Is the edition set parent-artwork published?
   published: Boolean
   saleMessage: String
+  shippingWeight: String
+  shippingWeightMetric: String
 
   # size bucket assigned to an artwork based on its dimensions
   sizeBucket: String
 
   # score assigned to an artwork based on its dimensions
   sizeScore: Float
+  width: String
 
   # If you need to render artwork dimensions as a string, prefer the `Artwork#dimensions` field
   widthCm: Float
+}
+
+type EditionSetInventory {
+  count: Int
+  isUnlimited: Boolean
 }
 
 enum EditionSetSorts {
@@ -10178,6 +10483,9 @@ interface EntityWithFilterArtworksConnectionInterface {
     color: String
     colors: [String]
     dimensionRange: String
+
+    # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+    disableNotForSaleSorting: Boolean
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
     first: Int
@@ -10437,6 +10745,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     color: String
     colors: [String]
     dimensionRange: String
+
+    # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+    disableNotForSaleSorting: Boolean
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
     first: Int
@@ -10958,6 +11269,9 @@ input FilterArtworksInput {
   color: String
   colors: [String]
   dimensionRange: String
+
+  # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+  disableNotForSaleSorting: Boolean
   excludeArtworkIDs: [String]
   extraAggregationGeneIDs: [String]
   first: Int
@@ -11462,6 +11776,9 @@ type Gene implements Node & Searchable {
     color: String
     colors: [String]
     dimensionRange: String
+
+    # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+    disableNotForSaleSorting: Boolean
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
     first: Int
@@ -12593,7 +12910,6 @@ type Image {
 
   # Blurhash code for the image
   blurhash: String
-  blurhashDataURL(width: Int = 64): String
   caption: String
   cropped(
     height: Int!
@@ -13101,6 +13417,7 @@ type Location {
   daySchedules: [DaySchedule]
   display: String
   displayCountry: String
+  email: String
   euShippingLocation: Boolean
 
   # A globally unique ID.
@@ -13358,6 +13675,9 @@ type MarketingCollection implements Node {
     color: String
     colors: [String]
     dimensionRange: String
+
+    # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+    disableNotForSaleSorting: Boolean
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
     first: Int
@@ -13740,6 +14060,12 @@ type Me implements Node {
 
   # Current user's collector profile.
   collectorProfile: CollectorProfileType
+
+  # Retrieve payment details of a Stripe confirmation token
+  confirmationToken(
+    # Stripe confirmation token
+    id: String!
+  ): ConfirmationToken
 
   # A conversation, usually between a user and a partner
   conversation(
@@ -14705,6 +15031,11 @@ type Mutation {
   # Creates a static Markdown-backed page.
   createPage(input: CreatePageMutationInput!): CreatePageMutationPayload
 
+  # Creates a partner artist document.
+  createPartnerArtistDocument(
+    input: CreatePartnerArtistDocumentMutationInput!
+  ): CreatePartnerArtistDocumentMutationPayload
+
   # Creates a new contact for a partner
   createPartnerContact(input: CreatePartnerContactInput!): CreatePartnerContactPayload
 
@@ -14813,10 +15144,23 @@ type Mutation {
   # Deletes a page.
   deletePage(input: DeletePageMutationInput!): DeletePageMutationPayload
 
+  # Deletes a partner artist.
+  deletePartnerArtist(input: DeletePartnerArtistMutationInput!): DeletePartnerArtistMutationPayload
+
+  # Deletes a partner artist document.
+  deletePartnerArtistDocument(
+    input: DeletePartnerArtistDocumentMutationInput!
+  ): DeletePartnerArtistDocumentMutationPayload
+
   # Deletes a contact for a partner
   deletePartnerContact(
     input: DeletePartnerContactMutationInput!
   ): DeletePartnerContactMutationPayload
+
+  # Deletes a location for a partner
+  deletePartnerLocation(
+    input: DeletePartnerLocationMutationInput!
+  ): DeletePartnerLocationMutationPayload
 
   # Deletes a partner show.
   deletePartnerShow(input: DeletePartnerShowMutationInput!): DeletePartnerShowMutationPayload
@@ -14955,6 +15299,16 @@ type Mutation {
   repositionInstallShotsInPartnerShow(
     input: RepositionInstallShotsInPartnerShowMutationInput!
   ): RepositionInstallShotsInPartnerShowMutationPayload
+
+  # Reposition artworks for a partner artist, determining their display order.
+  repositionPartnerArtistArtworks(
+    input: RepositionPartnerArtistArtworksMutationInput!
+  ): RepositionPartnerArtistArtworksMutationPayload
+
+  # Reposition partners locations in various CMS surfaces, settings, Artwork Form, etc.
+  repositionPartnerLocations(
+    input: RepositionPartnerLocationsMutationInput!
+  ): RepositionPartnerLocationsMutationPayload
   requestConditionReport(
     # Parameters for RequestConditionReport
     input: RequestConditionReportInput!
@@ -15029,6 +15383,9 @@ type Mutation {
   unsetOrderFulfillmentOption(
     input: unsetOrderFulfillmentOptionInput!
   ): unsetOrderFulfillmentOptionPayload
+
+  # Unset payment method and credit card wallet type on an order
+  unsetOrderPaymentMethod(input: unsetOrderPaymentMethodInput!): unsetOrderPaymentMethodPayload
 
   # Create an alert
   updateAlert(input: updateAlertInput!): updateAlertPayload
@@ -15109,8 +15466,25 @@ type Mutation {
   # Updates a page.
   updatePage(input: UpdatePageMutationInput!): UpdatePageMutationPayload
 
+  # Updates general information on a partner.
+  updatePartner(input: UpdatePartnerMutationInput!): UpdatePartnerMutationPayload
+
+  # Updates a partner artist.
+  updatePartnerArtist(input: UpdatePartnerArtistMutationInput!): UpdatePartnerArtistMutationPayload
+
+  # Updates a partner artist document.
+  updatePartnerArtistDocument(
+    input: UpdatePartnerArtistDocumentMutationInput!
+  ): UpdatePartnerArtistDocumentMutationPayload
+
   # Updates an existing contact for a partner
   updatePartnerContact(input: UpdatePartnerContactInput!): UpdatePartnerContactPayload
+
+  # Updates multiple flags on a partner simultaneously.
+  updatePartnerFlags(input: UpdatePartnerFlagsMutationInput!): UpdatePartnerFlagsMutationPayload
+
+  # Updates a new location for a partner
+  updatePartnerLocation(input: UpdatePartnerLocationInput!): UpdatePartnerLocationPayload
 
   # Updates a partner show.
   updatePartnerShow(input: UpdatePartnerShowMutationInput!): UpdatePartnerShowMutationPayload
@@ -16025,6 +16399,9 @@ type Partner implements Node {
     color: String
     colors: [String]
     dimensionRange: String
+
+    # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+    disableNotForSaleSorting: Boolean
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
     first: Int
@@ -16108,6 +16485,12 @@ type Partner implements Node {
 
   # Indicates the partner is a trusted seller on Artsy
   isVerifiedSeller: Boolean
+
+  # A Singular Location belonging to the Partner
+  location(
+    # The slug or ID of the Contact
+    locationId: String!
+  ): Location
 
   # This field is deprecated and is being used in Eigen release predating the 6.0 release
   locations(size: Int = 25): [Location]
@@ -16304,6 +16687,93 @@ type PartnerArtist {
   biographyBlurb(format: Format): PartnerArtistBlurb
   counts: PartnerArtistCounts
 
+  # Retrieve all documents for this partner artist
+  documentsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): PartnerDocumentConnection
+
+  # Artworks Elastic Search results
+  filterArtworksConnection(
+    acquireable: Boolean
+    additionalGeneIDs: [String]
+    after: String
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    artistNationalities: [String]
+    artistSeriesID: String
+    artistSeriesIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    availability: String
+    before: String
+    color: String
+    colors: [String]
+    dimensionRange: String
+
+    # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+    disableNotForSaleSorting: Boolean
+    excludeArtworkIDs: [String]
+    extraAggregationGeneIDs: [String]
+    first: Int
+    forSale: Boolean
+
+    # When true, will only return framed artworks.
+    framed: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    includeAllJSON: Boolean
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
+    input: FilterArtworksInput
+    inquireableOnly: Boolean
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    last: Int
+    locationCities: [String]
+    majorPeriods: [String]
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+    marketingCollectionID: String
+    materialsTerms: [String]
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    offerable: Boolean
+    page: Int
+    partnerCities: [String]
+    partnerID: ID
+    partnerIDs: [String]
+    period: String
+    periods: [String]
+    priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
+    saleID: ID
+
+    # When true, will only return signed artworks.
+    signed: Boolean
+    size: Int
+
+    # Filter results by Artwork sizes
+    sizes: [ArtworkSizes]
+    sold: Boolean
+    sort: String
+    tagID: String
+    visibilityLevel: String
+    width: String
+  ): FilterArtworksConnection
+
   # A globally unique ID.
   id: ID!
   image: Image
@@ -16316,6 +16786,9 @@ type PartnerArtist {
   isUseDefaultBiography: Boolean
   partner: Partner
   representedBy: Boolean
+
+  # A list of shows for this artist
+  showsConnection(after: String, before: String, first: Int, last: Int): ShowConnection
   sortableID: String
 }
 
@@ -16344,6 +16817,7 @@ type PartnerArtistCounts {
     format: String
     label: String
   ): FormattedNumber
+  documents: Int
   forSaleArtworks(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
@@ -16354,6 +16828,7 @@ type PartnerArtistCounts {
     format: String
     label: String
   ): FormattedNumber
+  shows: Int
   unlistedArtworks(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
@@ -16398,6 +16873,93 @@ type PartnerArtistEdge {
   # A cursor for use in pagination
   cursor: String!
 
+  # Retrieve all documents for this partner artist
+  documentsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): PartnerDocumentConnection
+
+  # Artworks Elastic Search results
+  filterArtworksConnection(
+    acquireable: Boolean
+    additionalGeneIDs: [String]
+    after: String
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    artistNationalities: [String]
+    artistSeriesID: String
+    artistSeriesIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    availability: String
+    before: String
+    color: String
+    colors: [String]
+    dimensionRange: String
+
+    # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+    disableNotForSaleSorting: Boolean
+    excludeArtworkIDs: [String]
+    extraAggregationGeneIDs: [String]
+    first: Int
+    forSale: Boolean
+
+    # When true, will only return framed artworks.
+    framed: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    includeAllJSON: Boolean
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
+    input: FilterArtworksInput
+    inquireableOnly: Boolean
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    last: Int
+    locationCities: [String]
+    majorPeriods: [String]
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+    marketingCollectionID: String
+    materialsTerms: [String]
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    offerable: Boolean
+    page: Int
+    partnerCities: [String]
+    partnerID: ID
+    partnerIDs: [String]
+    period: String
+    periods: [String]
+    priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
+    saleID: ID
+
+    # When true, will only return signed artworks.
+    signed: Boolean
+    size: Int
+
+    # Filter results by Artwork sizes
+    sizes: [ArtworkSizes]
+    sold: Boolean
+    sort: String
+    tagID: String
+    visibilityLevel: String
+    width: String
+  ): FilterArtworksConnection
+
   # A globally unique ID.
   id: ID!
   image: Image
@@ -16413,6 +16975,9 @@ type PartnerArtistEdge {
   node: Partner
   partner: Partner
   representedBy: Boolean
+
+  # A list of shows for this artist
+  showsConnection(after: String, before: String, first: Int, last: Int): ShowConnection
   sortableID: String
 }
 
@@ -16860,6 +17425,11 @@ enum PartnersSortType {
   RELATIVE_SIZE_DESC
   SORTABLE_ID_ASC
   SORTABLE_ID_DESC
+}
+
+type PaymentMethodPreview {
+  # Details of the card used in the payment method.
+  card: Card
 }
 
 union PaymentMethodUnion = BankAccount | CreditCard | WireTransfer
@@ -17523,6 +18093,9 @@ type Query {
     color: String
     colors: [String]
     dimensionRange: String
+
+    # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+    disableNotForSaleSorting: Boolean
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
     first: Int
@@ -18123,6 +18696,12 @@ type Query {
     size: Int = 10
     term: String!
   ): MatchConnection
+
+  # A Search for Artists
+  matchPartner(
+    # Your search term
+    query: String!
+  ): [Partner]
   me: Me
 
   # Fetches an object given its globally unique ID.
@@ -18874,6 +19453,62 @@ union RepositionInstallShotsInPartnerShowResponseOrError =
 type RepositionInstallShotsInPartnerShowSuccess {
   show: Show
 }
+
+type RepositionPartnerArtistArtworksFailure {
+  mutationError: GravityMutationError
+}
+
+input RepositionPartnerArtistArtworksMutationInput {
+  # The ID of the artist.
+  artistId: String!
+
+  # An ordered array of artwork IDs representing the new display order.
+  artworkIds: [String!]!
+  clientMutationId: String
+
+  # The ID of the partner.
+  partnerId: String!
+}
+
+type RepositionPartnerArtistArtworksMutationPayload {
+  clientMutationId: String
+  partnerOrError: RepositionPartnerArtistArtworksResponseOrError
+}
+
+union RepositionPartnerArtistArtworksResponseOrError =
+    RepositionPartnerArtistArtworksFailure
+  | RepositionPartnerArtistArtworksSuccess
+
+type RepositionPartnerArtistArtworksSuccess {
+  partner: Partner
+}
+
+type RepositionPartnerLocationsFailure {
+  mutationError: GravityMutationError
+}
+
+input RepositionPartnerLocationsMutationInput {
+  clientMutationId: String
+
+  # An ordered array of location IDs representing the new display order.
+  locationIds: [String!]!
+
+  # The ID partner.
+  partnerId: String!
+}
+
+type RepositionPartnerLocationsMutationPayload {
+  clientMutationId: String
+  partnerOrError: RepositionPartnerLocationsSuccessOrError
+}
+
+type RepositionPartnerLocationsSuccess {
+  partner: Partner
+}
+
+union RepositionPartnerLocationsSuccessOrError =
+    RepositionPartnerLocationsFailure
+  | RepositionPartnerLocationsSuccess
 
 type Request {
   # IP Address of the current request, useful for debugging
@@ -19780,6 +20415,11 @@ interface Sellable {
   isOfferableFromInquiry: Boolean
   isPriceHidden: Boolean
   isSold: Boolean
+  listPrice: ListPrice
+
+  # In CMS, has the artwork been marked as BNMO?
+  listingOptions: ArtworkListingOptions
+  priceListed: Money
   published: Boolean
   saleMessage: String
 }
@@ -20018,6 +20658,9 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     color: String
     colors: [String]
     dimensionRange: String
+
+    # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+    disableNotForSaleSorting: Boolean
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
     first: Int
@@ -20545,6 +21188,9 @@ type Tag implements Node {
     color: String
     colors: [String]
     dimensionRange: String
+
+    # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+    disableNotForSaleSorting: Boolean
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
     first: Int
@@ -20908,6 +21554,7 @@ input UpdateArtworkEditionSetInput {
   priceListed: String
   priceMax: Int
   priceMin: Int
+  published: Boolean
   shippingWeight: Float
   shippingWeightMetric: String
 }
@@ -20977,6 +21624,7 @@ input UpdateArtworkMutationInput {
   priceListed: String
   priceMax: Int
   priceMin: Int
+  published: Boolean
   shippingWeight: Float
   shippingWeightMetric: String
 }
@@ -21518,6 +22166,77 @@ type UpdatePageSuccess {
   page: Page
 }
 
+type UpdatePartnerArtistDocumentFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdatePartnerArtistDocumentMutationInput {
+  # The ID of the artist.
+  artistId: String!
+  clientMutationId: String
+
+  # The ID of the document to update.
+  documentId: String!
+
+  # The ID of the partner.
+  partnerId: String!
+
+  # The URL of the document to upload.
+  remoteDocumentUrl: String
+
+  # The updated title of the document.
+  title: String
+}
+
+type UpdatePartnerArtistDocumentMutationPayload {
+  clientMutationId: String
+
+  # On success: the updated document. On error: the error that occurred.
+  documentOrError: UpdatePartnerArtistDocumentResponseOrError
+}
+
+union UpdatePartnerArtistDocumentResponseOrError =
+    UpdatePartnerArtistDocumentFailure
+  | UpdatePartnerArtistDocumentSuccess
+
+type UpdatePartnerArtistDocumentSuccess {
+  document: PartnerDocument
+  partner: Partner
+}
+
+type UpdatePartnerArtistFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdatePartnerArtistMutationInput {
+  # The partner-provided biography of the artist.
+  biography: String
+  clientMutationId: String
+
+  # The ID of the partner artist to update.
+  id: String!
+
+  # The URL of the image to use for the partner artist.
+  remoteImageUrl: String
+
+  # Whether to use the default biography for the artist instead of the partner-provided one.
+  useDefaultBiography: Boolean
+}
+
+type UpdatePartnerArtistMutationPayload {
+  clientMutationId: String
+
+  # On success: the updated partner artist. On error: the error that occurred.
+  partnerArtistOrError: UpdatePartnerArtistResponseOrError
+}
+
+union UpdatePartnerArtistResponseOrError = UpdatePartnerArtistFailure | UpdatePartnerArtistSuccess
+
+type UpdatePartnerArtistSuccess {
+  partner: Partner
+  partnerArtist: PartnerArtist
+}
+
 type UpdatePartnerContactFailure {
   mutationError: GravityMutationError
 }
@@ -21559,6 +22278,161 @@ type UpdatePartnerContactPayload {
 type UpdatePartnerContactSuccess {
   partnerContact: Contact
 }
+
+type UpdatePartnerFailure {
+  mutationError: GravityMutationError
+}
+
+type UpdatePartnerFlagsFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdatePartnerFlagsMutationInput {
+  # The default currency to use for artworks. If null, the flag will be unset.
+  artworksDefaultCurrency: String
+
+  # The default metric system to use for artworks. If null, the flag will be unset.
+  artworksDefaultMetric: String
+
+  # The default partner location ID to use for artworks. If null, the flag will be unset.
+  artworksDefaultPartnerLocationId: String
+  clientMutationId: String
+
+  # The id of the partner to update.
+  id: String!
+
+  # Controls whether the partner has enabled the inquire availability price display. If null, the flag will be unset.
+  inquireAvailabilityPriceDisplayEnabledByPartner: Boolean
+}
+
+type UpdatePartnerFlagsMutationPayload {
+  clientMutationId: String
+
+  # On success: the updated partner. On error: the error that occurred.
+  partnerOrError: UpdatePartnerFlagsResponseOrError
+}
+
+union UpdatePartnerFlagsResponseOrError = UpdatePartnerFlagsFailure | UpdatePartnerFlagsSuccess
+
+type UpdatePartnerFlagsSuccess {
+  partner: Partner
+}
+
+type UpdatePartnerLocationFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdatePartnerLocationInput {
+  address: String
+  address2: String
+  addressType: String
+  city: String
+  clientMutationId: String
+  country: String
+
+  # Primary email of given location
+  email: String
+
+  # ID of the location to update
+  locationId: String!
+
+  # ID of the partner
+  partnerId: String!
+
+  # Primary phone of given location
+  phone: String
+  postalCode: String
+
+  # Boolean flag that denotes whether a location is publicly viewable on Partner's Artsy Profile
+  publiclyViewable: Boolean
+  state: String
+}
+
+union UpdatePartnerLocationOrError = UpdatePartnerLocationFailure | UpdatePartnerLocationSuccess
+
+type UpdatePartnerLocationPayload {
+  clientMutationId: String
+  partnerLocationOrError: UpdatePartnerLocationOrError
+}
+
+type UpdatePartnerLocationSuccess {
+  location: Location
+}
+
+input UpdatePartnerMutationInput {
+  # Alternate names or synonyms for this partner.
+  alternateNames: [String]
+
+  # Whether to charge sales tax on ecommerce orders.
+  artsyCollectsSalesTax: Boolean
+  clientMutationId: String
+
+  # Commission paid by non-subscriber/fair partner.
+  commissionRate: Float
+
+  # Contract type.
+  contractType: String
+
+  # Whether the partner is directly contactable.
+  directlyContactable: Boolean
+
+  # Controls artists tab presence on gpp. Artists tab is hidden for Institutional partners and present for the rest of partners.
+  displayArtistsSection: Boolean
+
+  # The display name of the partner.
+  displayName: String
+
+  # Controls whether the works section is displayed.
+  displayWorksSection: Boolean
+
+  # Distinguish artists the partner represents on their profile page.
+  distinguishRepresentedArtists: Boolean
+
+  # The email of the partner.
+  email: String
+
+  # The given name of the partner.
+  givenName: String
+
+  # Profile completeness.
+  hasFullProfile: Boolean
+
+  # The id of the partner to update.
+  id: String!
+
+  # Whether the partner requires pre-qualification.
+  preQualify: Boolean
+
+  # Artists layout on the profile overview page.
+  profileArtistsLayout: String
+
+  # Banner display on the profile overview page.
+  profileBannerDisplay: String
+
+  # The region of the partner.
+  region: String
+
+  # The short name of the partner.
+  shortName: String
+
+  # The sortable name of the partner.
+  sortableName: String
+
+  # Type of the partner.
+  type: String
+
+  # The website of the partner.
+  website: String
+}
+
+type UpdatePartnerMutationPayload {
+  clientMutationId: String
+
+  # On success: the updated partner. On error: the error that occurred.
+  partnerOrError: UpdatePartnerResponseOrError
+}
+
+union UpdatePartnerResponseOrError = UpdatePartnerFailure | UpdatePartnerSuccess
 
 type UpdatePartnerShowDocumentFailure {
   mutationError: GravityMutationError
@@ -21702,6 +22576,10 @@ union UpdatePartnerShowResponseOrError = UpdatePartnerShowFailure | UpdatePartne
 
 type UpdatePartnerShowSuccess {
   show: Show
+}
+
+type UpdatePartnerSuccess {
+  partner: Partner
 }
 
 type UpdateSaleAgreementFailure {
@@ -22758,6 +23636,9 @@ type Viewer {
     color: String
     colors: [String]
     dimensionRange: String
+
+    # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+    disableNotForSaleSorting: Boolean
     excludeArtworkIDs: [String]
     extraAggregationGeneIDs: [String]
     first: Int
@@ -23236,6 +24117,12 @@ type Viewer {
     size: Int = 10
     term: String!
   ): MatchConnection
+
+  # A Search for Artists
+  matchPartner(
+    # Your search term
+    query: String!
+  ): [Partner]
   me: Me
 
   # Fetches an object given its globally unique ID.
@@ -24180,12 +25067,6 @@ type dimensions {
   in: String
 }
 
-enum locationType {
-  BUSINESS
-  OTHER
-  TEMPORARY
-}
-
 type partnerBiographyBlurb {
   text: String
 }
@@ -24251,6 +25132,18 @@ input unsetOrderFulfillmentOptionInput {
 }
 
 type unsetOrderFulfillmentOptionPayload {
+  clientMutationId: String
+  orderOrError: SetOrderFulfillmentOptionResponse
+}
+
+input unsetOrderPaymentMethodInput {
+  clientMutationId: String
+
+  # Order id.
+  id: ID!
+}
+
+type unsetOrderPaymentMethodPayload {
   clientMutationId: String
   orderOrError: SetOrderFulfillmentOptionResponse
 }

@@ -67,7 +67,8 @@ lane :ship_beta_ios do
   sync_code_signing(app_identifier: ios_target_ids, type: 'appstore')
 
   IOS_TARGETS.each do |id, meta|
-    disable_automatic_code_signing(
+    update_code_signing_settings(
+      use_automatic_signing: false,
       path: 'ios/Artsy.xcodeproj',
       team_id: '23KMWZ572J',
       targets: [meta[:name]],

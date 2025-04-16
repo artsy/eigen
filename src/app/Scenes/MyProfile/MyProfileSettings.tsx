@@ -64,7 +64,7 @@ export const MyProfileSettings: React.FC = () => {
               Account
             </Text>
             <Spacer y={1} />
-            <MenuItem title="Login and security" href="my-profile/edit" />
+            <MenuItem title="Login and security" href="my-account" />
             <MenuItem title="Payments" href="my-profile/payment" />
             <MenuItem title="Notifications" href="my-profile/push-notifications" />
             <MenuItem

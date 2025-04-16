@@ -1,7 +1,8 @@
-import { Flex, Input, Separator, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Input, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
-import { Stack } from "app/Components/Stack"
+import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { getCurrentEmissionState, GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React, { useEffect, useState } from "react"
 import { Alert } from "react-native"
 
@@ -13,6 +14,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
   const [receivedErrorNew, setReceivedErrorNew] = useState<string | undefined>(undefined)
   const [receivedErrorConfirm, setReceivedErrorConfirm] = useState<string | undefined>(undefined)
   const navigation = useNavigation()
+  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
 
   // resetting the errors when user types
   useEffect(() => {
@@ -84,25 +86,85 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
     }
   }
 
-  useEffect(() => {
-    const isValid = Boolean(currentPassword && newPassword && passwordConfirmation)
+  const isValid = Boolean(currentPassword && newPassword && passwordConfirmation)
 
-    navigation.setOptions({
-      headerRight: () => {
-        return (
-          <Touchable onPress={handleSave} disabled={!isValid}>
-            <Text variant="xs" color={!!isValid ? "black100" : "black60"}>
-              Save
-            </Text>
-          </Touchable>
-        )
-      },
-    })
-  }, [navigation, currentPassword, newPassword, passwordConfirmation])
+  useEffect(() => {
+    if (!enableRedesignedSettings) {
+      navigation.setOptions({
+        headerRight: () => {
+          return (
+            <Touchable onPress={handleSave} disabled={!isValid}>
+              <Text variant="xs" color={!!isValid ? "black100" : "black60"}>
+                Save
+              </Text>
+            </Touchable>
+          )
+        },
+      })
+    }
+  }, [isValid])
+
+  if (enableRedesignedSettings) {
+    return (
+      <MyProfileScreenWrapper title="Password" onPress={handleSave} isValid={isValid}>
+        <Content
+          currentPassword={currentPassword}
+          setCurrentPassword={setCurrentPassword}
+          newPassword={newPassword}
+          setNewPassword={setNewPassword}
+          passwordConfirmation={passwordConfirmation}
+          setPasswordConfirmation={setPasswordConfirmation}
+          receivedErrorCurrent={receivedErrorCurrent}
+          receivedErrorNew={receivedErrorNew}
+          receivedErrorConfirm={receivedErrorConfirm}
+        />
+      </MyProfileScreenWrapper>
+    )
+  }
+  return (
+    <Flex px={2}>
+      <Content
+        currentPassword={currentPassword}
+        setCurrentPassword={setCurrentPassword}
+        newPassword={newPassword}
+        setNewPassword={setNewPassword}
+        passwordConfirmation={passwordConfirmation}
+        setPasswordConfirmation={setPasswordConfirmation}
+        receivedErrorCurrent={receivedErrorCurrent}
+        receivedErrorNew={receivedErrorNew}
+        receivedErrorConfirm={receivedErrorConfirm}
+      />
+    </Flex>
+  )
+}
+
+// Move back inside MyAccountEditPassword once we clear AREnableRedesignedSettings ff
+const Content: React.FC<{
+  currentPassword: string
+  setCurrentPassword: (value: string) => void
+  newPassword: string
+  setNewPassword: (value: string) => void
+  passwordConfirmation: string
+  setPasswordConfirmation: (value: string) => void
+  receivedErrorCurrent: string | undefined
+  receivedErrorNew: string | undefined
+  receivedErrorConfirm: string | undefined
+}> = ({
+  currentPassword,
+  setCurrentPassword,
+  newPassword,
+  setNewPassword,
+  passwordConfirmation,
+  setPasswordConfirmation,
+  receivedErrorCurrent,
+  receivedErrorNew,
+  receivedErrorConfirm,
+}) => {
+  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
 
   return (
     <Flex>
-      <Flex mx={2}>
+      <Flex>
         <Input
           autoComplete="password"
           autoFocus
@@ -114,28 +176,36 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
           error={receivedErrorCurrent}
         />
       </Flex>
-      <Separator mb={2} mt={4} />
-      <Stack mx={2}>
-        <Text>
-          Password must include at least one uppercase letter, one lowercase letter, and one number.
-        </Text>
-        <Input
-          onChangeText={setNewPassword}
-          secureTextEntry
-          enableClearButton
-          title="New password"
-          value={newPassword}
-          error={receivedErrorNew}
-        />
-        <Input
-          onChangeText={setPasswordConfirmation}
-          secureTextEntry
-          enableClearButton
-          title="Confirm new password"
-          value={passwordConfirmation}
-          error={receivedErrorConfirm}
-        />
-      </Stack>
+
+      <Spacer y={2} />
+
+      <Text variant="sm-display">New password</Text>
+
+      <Text
+        variant={!enableRedesignedSettings ? "sm-display" : "xs"}
+        color={!enableRedesignedSettings ? "black100" : "black60"}
+        mt={0.5}
+      >
+        Password must include at least one uppercase letter, one lowercase letter, and one number.
+      </Text>
+
+      <Input
+        onChangeText={setNewPassword}
+        secureTextEntry
+        enableClearButton
+        title="New password"
+        value={newPassword}
+        error={receivedErrorNew}
+      />
+
+      <Input
+        onChangeText={setPasswordConfirmation}
+        secureTextEntry
+        enableClearButton
+        title="Confirm new password"
+        value={passwordConfirmation}
+        error={receivedErrorConfirm}
+      />
     </Flex>
   )
 }

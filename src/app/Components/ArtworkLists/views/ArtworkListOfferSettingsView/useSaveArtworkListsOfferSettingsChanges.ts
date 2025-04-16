@@ -1,6 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
-import { ResultAction } from "app/Components/ArtworkLists/types"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
+import { useArtworkListToast } from "app/Components/ArtworkLists/useArtworkListsToast"
 import {
   MutationConfig,
   useUpdateArtworkListOfferSettings,
@@ -13,7 +13,16 @@ interface Options {
 }
 
 export const useSaveArtworkListsOfferSettingsChanges = (options?: Options) => {
-  const { shareArtworkListIDs, keepArtworkListPrivateIDs, onSave } = useArtworkListsContext()
+  const toast = useArtworkListToast()
+  const { shareArtworkListIDs, keepArtworkListPrivateIDs } = ArtworkListsStore.useStoreState(
+    (state) => ({
+      shareArtworkListIDs: state.shareArtworkListIDs,
+      keepArtworkListPrivateIDs: state.keepArtworkListPrivateIDs,
+    })
+  )
+  const setUnsavedChanges = ArtworkListsStore.useStoreActions(
+    (actions) => actions.setUnsavedChanges
+  )
   const [commit, inProgress] = useUpdateArtworkListOfferSettings()
 
   const save = useCallback(() => {
@@ -27,9 +36,8 @@ export const useSaveArtworkListsOfferSettingsChanges = (options?: Options) => {
         },
       },
       onCompleted: (...args) => {
-        onSave({
-          action: ResultAction.ModifiedArtworkListsOfferSettings,
-        })
+        toast.changesSaved()
+        setUnsavedChanges(false)
 
         options?.onCompleted?.(...args)
       },

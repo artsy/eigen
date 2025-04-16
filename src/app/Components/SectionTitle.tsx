@@ -14,6 +14,7 @@ export const SectionTitle: React.FC<
     href?: string | null
     title: React.ReactNode
     titleVariant?: TextProps["variant"]
+    titleColor?: TextProps["color"]
     subtitle?: React.ReactNode
     navigationProps?: object
     onPress?: () => any | null
@@ -26,6 +27,7 @@ export const SectionTitle: React.FC<
   navigationProps,
   title,
   titleVariant = "sm-display",
+  titleColor = "black100",
   subtitle,
   onPress,
   RightButtonContent = RightButton,
@@ -42,7 +44,13 @@ export const SectionTitle: React.FC<
     <Wrapper onPress={onPress} href={href} navigationProps={navigationProps}>
       <Flex mb={2} flexDirection="row" alignItems="flex-start" {...flexProps}>
         <Flex flex={1}>
-          <Text variant={titleVariant} ellipsizeMode="tail" numberOfLines={1} testID="title">
+          <Text
+            variant={titleVariant}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            testID="title"
+            color={titleColor}
+          >
             {typeof title === "string" ? titleText : title}
           </Text>
 
@@ -77,7 +85,6 @@ const Wrapper: React.FC<{ onPress?(): void; href?: string | null; navigationProp
         to={href}
         testID="touchable-wrapper"
         hitSlop={{ top: 10, bottom: 10 }}
-        activeOpacity={0.65}
       >
         {children}
       </RouterLink>

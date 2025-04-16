@@ -1,12 +1,14 @@
 import { facebook_LinkAccountMutation } from "__generated__/facebook_LinkAccountMutation.graphql"
 import { facebook_UnlinkAccountMutation } from "__generated__/facebook_UnlinkAccountMutation.graphql"
 import { Toast } from "app/Components/Toast/Toast"
+
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { AccessToken, LoginManager } from "react-native-fbsdk-next"
-import { Environment, commitMutation, graphql } from "react-relay"
+import { commitMutation, graphql } from "react-relay"
 
-export const useFacebookLink = (relayEnvironment: Environment) => {
+export const useFacebookLink = () => {
   const [loading, setIsLoading] = useState(false)
   const isMountedRef = useRef(false)
 
@@ -25,7 +27,7 @@ export const useFacebookLink = (relayEnvironment: Environment) => {
 
   const linkUsingOauthToken = (oauthToken: string) => {
     setLoading(true)
-    commitMutation<facebook_LinkAccountMutation>(relayEnvironment, {
+    commitMutation<facebook_LinkAccountMutation>(getRelayEnvironment(), {
       mutation: graphql`
         mutation facebook_LinkAccountMutation(
           $provider: AuthenticationProvider!
@@ -86,7 +88,7 @@ export const useFacebookLink = (relayEnvironment: Environment) => {
 
   const unlink = () => {
     setLoading(true)
-    commitMutation<facebook_UnlinkAccountMutation>(relayEnvironment, {
+    commitMutation<facebook_UnlinkAccountMutation>(getRelayEnvironment(), {
       mutation: graphql`
         mutation facebook_UnlinkAccountMutation($provider: AuthenticationProvider!) {
           unlinkAuthentication(input: { provider: $provider }) {

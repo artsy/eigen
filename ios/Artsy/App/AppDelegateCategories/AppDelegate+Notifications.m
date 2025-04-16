@@ -12,7 +12,7 @@
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
     BOOL hasSeenPushDialog = [[NSUserDefaults standardUserDefaults] boolForKey:ARAPNSHasSeenPushDialog];
-    
+
     NSString *analyticsContext = @"";
     if (self.requestContext == ARAppNotificationsRequestContextArtistFollow) {
         analyticsContext = @"ArtistFollow";
@@ -22,7 +22,7 @@
         analyticsContext = @"Launch";
     }
     analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
-    
+
     if (!hasSeenPushDialog) {
         [[AREmission sharedInstance] sendEvent:ARAnalyticsPushNotificationApple traits:@{
             @"action_type" : @"Tap",
@@ -70,7 +70,7 @@
     // Save device token for dev settings and to prevent excess calls to gravity if tokens don't change
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
     [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:ARAPNSHasSeenPushDialog];
-    
+
     [[[ARAppDelegate braze] notifications] registerDeviceToken:deviceTokenData];
 
 // We only record device tokens on the Artsy service in case of Beta or App Store builds.

@@ -75,6 +75,13 @@ describe("HomeViewSectionMarketingCollections", () => {
     fireEvent.press(screen.getByText("Marketing Collections"))
 
     expect(navigate).toHaveBeenCalledWith("/collections")
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedCollectionGroup",
+      context_module: '<mock-value-for-field-"contextModule">',
+      context_screen_owner_type: "home",
+      destination_screen_owner_type: '<mock-value-for-field-"ownerType">',
+      type: "viewAll",
+    })
   })
 
   it("navigates and tracks clicks on an individual collection", () => {

@@ -1,14 +1,14 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Screen, Text } from "@artsy/palette-mobile"
+import { Flex, Screen, Text, useColor } from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
 import { addBreadcrumb } from "@sentry/react-native"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { getCurrentEmissionState, GlobalStore } from "app/store/GlobalStore"
 import {
-  GoBackProps,
   dismissModal,
   goBack,
+  GoBackProps,
   navigate,
   navigationEvents,
 } from "app/system/navigation/navigate"
@@ -16,6 +16,7 @@ import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useEnvironment } from "app/utils/hooks/useEnvironment"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { debounce } from "lodash"
@@ -76,7 +77,6 @@ export const ArtsyWebViewPage = ({
   const [canGoBack, setCanGoBack] = useState(false)
   const webURL = useEnvironment().webURL
   const ref = useRef<WebViewWithShareTitleUrl>(null)
-
   const tracking = useTracking()
 
   const handleArticleShare = async () => {
@@ -199,6 +199,10 @@ export const ArtsyWebView = forwardRef<
     useImperativeHandle(ref, () => innerRef.current as WebViewWithShareTitleUrl)
     const { callWebViewEventCallback } = useWebViewCallback()
 
+    const enableDarkMode = useFeatureFlag("ARDarkModeSupport")
+    const colorScheme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+    const color = useColor()
+
     const showDevToggleIndicator = useDevToggle("DTShowWebviewIndicator")
 
     const webURL = useEnvironment().webURL
@@ -293,13 +297,12 @@ export const ArtsyWebView = forwardRef<
           decelerationRate="normal"
           source={{
             uri,
-            // Workaround for user agent breaking back behavior on Android
-            // see: https://github.com/react-native-webview/react-native-webview/pull/3133
-            ...(Platform.OS === "android" && {
-              headers: {
-                "User-Agent": emissionUserAgent,
-              },
-            }),
+            headers: {
+              ...(enableDarkMode && { "x-theme": colorScheme }),
+              // Workaround for user agent breaking back behavior on Android
+              // see: https://github.com/react-native-webview/react-native-webview/pull/3133
+              ...(Platform.OS === "android" && { "User-Agent": emissionUserAgent }),
+            },
           }}
           onHttpError={(error) => {
             const nativeEvent = error.nativeEvent
@@ -311,7 +314,7 @@ export const ArtsyWebView = forwardRef<
               })
             }
           }}
-          style={{ flex: 1 }}
+          style={{ flex: 1, backgroundColor: color("white100") }}
           userAgent={Platform.OS === "ios" ? userAgent : undefined}
           onMessage={({ nativeEvent }) => {
             const data = nativeEvent.data

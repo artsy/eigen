@@ -89,8 +89,12 @@ const fragment = graphql`
     cursor: { type: "String" }
     artistIDs: { type: "[String!]" }
   ) {
-    artworksConnection(first: $count, after: $cursor, artistIDs: $artistIDs)
-      @connection(key: "InfiniteDiscoveryMoreWorks_artworksConnection") {
+    artworksConnection(
+      first: $count
+      after: $cursor
+      artistIDs: $artistIDs
+      sort: "-decayed_merch"
+    ) @connection(key: "InfiniteDiscoveryMoreWorks_artworksConnection") {
       edges {
         node {
           ...ArtworkGridItem_artwork @arguments(includeAllImages: false)

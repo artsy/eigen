@@ -1,5 +1,5 @@
 import { Flex } from "@artsy/palette-mobile"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ArtworkListOfferSettings } from "app/Components/ArtworkLists/views/ArtworkListOfferSettingsView/components/ArtworkListOfferSettings"
 import { ArtworkListOfferSettingsHeader } from "app/Components/ArtworkLists/views/ArtworkListOfferSettingsView/components/ArtworkListOfferSettingsHeader"
 import {
@@ -12,7 +12,7 @@ import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/Automoun
 const SNAP_POINTS = ["50%", "95%"]
 
 export const ArtworkListOfferSettingsView = () => {
-  const { reset } = useArtworkListsContext()
+  const reset = ArtworkListsStore.useStoreActions((actions) => actions.reset)
 
   return (
     <AutomountedBottomSheetModal

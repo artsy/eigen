@@ -9,6 +9,6 @@ describe(MyAccountEditPassword, () => {
     renderWithWrappers(<MyAccountEditPassword />)
 
     expect(screen.getByText("Current password")).toBeTruthy()
-    expect(screen.getByText("New password")).toBeTruthy()
+    expect(screen.getAllByText("New password")).toBeTruthy()
   })
 })

@@ -115,7 +115,7 @@ export class ConversationSnippet extends React.Component<Props> {
                     </Flex>
                     <Flex flex={1} />
                     <Flex>
-                      <Text variant="sm" textAlign="right" color="black30">
+                      <Text variant="sm" textAlign="right" color="black60">
                         {date}
                       </Text>
                     </Flex>

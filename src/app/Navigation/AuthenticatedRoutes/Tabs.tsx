@@ -83,7 +83,7 @@ const AppTabs: React.FC = () => {
   )
 
   const stagingTabBarStyle = {
-    borderTopColor: color("devpurple"),
+    borderColor: color("devpurple"),
     borderTopWidth: 1,
   }
 
@@ -104,12 +104,15 @@ const AppTabs: React.FC = () => {
               currentRoute && modules[currentRoute as AppModule]?.options?.hidesBottomTabs
                 ? "none"
                 : "flex",
-
             ...(isStaging ? stagingTabBarStyle : {}),
           },
           tabBarHideOnKeyboard: true,
           tabBarIcon: ({ focused }) => {
-            return <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
+            return (
+              <Flex pt={1}>
+                <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
+              </Flex>
+            )
           },
           tabBarButton: (props) => (
             <PlatformPressable
@@ -117,6 +120,7 @@ const AppTabs: React.FC = () => {
               android_ripple={{ color: "transparent" }} // Disables the ripple effect for Android
             />
           ),
+          tabBarLabelPosition: "below-icon",
           tabBarLabel: () => {
             return (
               <Flex
@@ -125,7 +129,7 @@ const AppTabs: React.FC = () => {
                 alignItems="flex-end"
                 justifyContent="flex-end"
                 height={BOTTOM_TABS_HEIGHT}
-                pb={1}
+                pb={0.5}
               >
                 <Text variant="xxs" selectable={false} textAlign="center" color="black100">
                   {bottomTabsConfig[route.name].name}
@@ -201,7 +205,10 @@ export const tabsTracks = {
         tabScreen = OwnerType.search
         break
       case "favorites":
-        tabScreen = OwnerType.favorites
+        /**
+         * Make sure tabScreen matches the default activeTab in FavoritesContextStore
+         */
+        tabScreen = OwnerType.favoritesSaves
         break
     }
 
