@@ -9755,6 +9755,10 @@ type DeleteArtistSuccess {
 
 union DeleteArtistSuccessOrErrorType = DeleteArtistFailure | DeleteArtistSuccess
 
+type DeleteArtworkFailure {
+  mutationError: GravityMutationError
+}
+
 input DeleteArtworkImageInput {
   artworkID: String!
   clientMutationId: String
@@ -9764,6 +9768,25 @@ input DeleteArtworkImageInput {
 type DeleteArtworkImagePayload {
   artworkOrError: ArtworkMutationType
   clientMutationId: String
+}
+
+input DeleteArtworkMutationInput {
+  clientMutationId: String
+
+  # The ID of the artwork to delete.
+  id: String!
+}
+
+type DeleteArtworkMutationPayload {
+  # On success: the deleted artwork. On error: the error that occurred.
+  artworkOrError: DeleteArtworkResponseOrError
+  clientMutationId: String
+}
+
+union DeleteArtworkResponseOrError = DeleteArtworkFailure | DeleteArtworkSuccess
+
+type DeleteArtworkSuccess {
+  artwork: Artwork
 }
 
 input DeleteBankAccountInput {
@@ -15142,6 +15165,9 @@ type Mutation {
 
   # Delete an artist
   deleteArtist(input: DeleteArtistInput!): DeleteArtistPayload
+
+  # Deletes an artwork.
+  deleteArtwork(input: DeleteArtworkMutationInput!): DeleteArtworkMutationPayload
 
   # Deletes an image from an artwork in my collection
   deleteArtworkImage(input: DeleteArtworkImageInput!): DeleteArtworkImagePayload
