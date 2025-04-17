@@ -190,7 +190,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           description: (
             <Text
               variant="xs"
-              style={{ color: "white", textDecorationLine: "underline" }}
+              color="white100"
+              style={{ textDecorationLine: "underline" }}
               onPress={() => navigate("/favorites/saves")}
             >
               Tap to see all of your saved artworks.
