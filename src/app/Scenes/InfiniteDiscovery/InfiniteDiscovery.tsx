@@ -73,7 +73,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   useEffect(() => {
     if (!topArtworkId && artworks.length > 0) {
       // TODO: beware! the artworks are being displayed in reverse order
-      const topArtwork = artworks[artworks.length - 1]
+      const topArtwork = artworks[0]
       setTopArtworkId(topArtwork.internalID)
 
       // Track initial shown artwork
@@ -82,9 +82,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       // send the first seen artwork to the server
       commitMutation({
         variables: {
-          input: {
-            artworkId: topArtwork.internalID,
-          },
+          input: { artworkId: topArtwork.internalID },
         },
         onError: (error) => {
           if (__DEV__) {
@@ -97,9 +95,10 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     }
   }, [artworks])
 
-  const currentIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
-  // TODO: beware! the artworks are being displayed in reverse order
-  const unswipedCardIds = artworks.slice(0, currentIndex).map((artwork) => artwork.internalID)
+  const topCardIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
+  const unswipedCardIds = artworks
+    .slice(topCardIndex + 1, artworks.length)
+    .map((artwork) => artwork.internalID)
 
   /**
    * The callack for when a card is displayed to the user for the first time.
@@ -117,9 +116,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     // Tell the backend that the user has seen this artwork so that it doesn't show up again.
     commitMutation({
       variables: {
-        input: {
-          artworkId: artwork.internalID,
-        },
+        input: { artworkId: artwork.internalID },
       },
       onError: (error) => {
         if (__DEV__) {
@@ -239,7 +236,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   // Get the last 2 artworks from the infinite discovery
   // We are showing the last 2 artworks instead of 2 because we reverse the artworks array
   // Inside the Swiper component
-  const onboardingArtworks = artworks.slice(artworks.length - 3, artworks.length)
+  const onboardingArtworks = artworks.slice(0, artworks.length - 2)
 
   return (
     <Screen safeArea={false}>
@@ -343,7 +340,7 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
     )
 
     const { resetSavedArtworksCount } = GlobalStore.actions.infiniteDiscovery
-    const initialArtworks = [...extractNodes(data.discoverArtworks).reverse()]
+    const initialArtworks = extractNodes(data.discoverArtworks)
     const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>(initialArtworks)
 
     const fetchMoreArtworks = async (excludeArtworkIds: string[], isRetry = false) => {
@@ -354,9 +351,9 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
           { excludeArtworkIds },
           { fetchPolicy: "network-only" }
         ).toPromise()
-        const newArtworks = [...extractNodes(response?.discoverArtworks).reverse()]
+        const newArtworks = extractNodes(response?.discoverArtworks)
         if (newArtworks.length) {
-          setArtworks((previousArtworks) => newArtworks.concat(previousArtworks))
+          setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
         }
       } catch (error) {
         if (!isRetry) {
