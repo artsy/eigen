@@ -106,7 +106,7 @@ export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({
           left,
           width: width - 2 * borderWidth,
           height: height - 2 * borderWidth,
-          borderColor: color("black100"),
+          borderColor: color("mono100"),
           borderWidth,
           backgroundColor: !showing
             ? "rgba(255, 0, 0, 0.2)"

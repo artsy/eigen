@@ -28,9 +28,9 @@ export const Shipping: React.FC<ShippingProps> = ({ order }) => {
             Ship to
           </Text>
 
-          {!!name && <Text color="black60">{name}</Text>}
-          {!!addressLine1 && <Text color="black60">{addressLine1}</Text>}
-          <Text color="black60">{addressCondensed}</Text>
+          {!!name && <Text color="mono60">{name}</Text>}
+          {!!addressLine1 && <Text color="mono60">{addressLine1}</Text>}
+          <Text color="mono60">{addressCondensed}</Text>
         </Flex>
         <Separator />
       </>
@@ -48,7 +48,7 @@ export const Shipping: React.FC<ShippingProps> = ({ order }) => {
           {`Pick up (${order.lineItems.edges[0].node?.artwork?.shippingOrigin})`}
         </Text>
 
-        <Text color="black60">
+        <Text color="mono60">
           After your order is confirmed, a specialist will contact you within 2 business days to
           coordinate pickup.
         </Text>

@@ -49,7 +49,7 @@ export const StepTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, tabs }) =
                 />
                 {!!completed && <CheckIcon fill="green100" height={15} width={15} />}
               </Box>
-              <ChevronIcon fill="black60" height={10} width={10} />
+              <ChevronIcon fill="mono60" height={10} width={10} />
             </Box>
           </TouchableOpacity>
         )

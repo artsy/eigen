@@ -22,15 +22,7 @@ export const NoBids: React.FC<{ headerText: string }> = ({ headerText }) => {
       <Text variant="sm-display" textAlign="center" fontWeight="normal">
         {headerText}
       </Text>
-      <Text
-        mb={2}
-        mt={1}
-        mx={4}
-        variant="sm"
-        textAlign="center"
-        fontWeight="normal"
-        color="black60"
-      >
+      <Text mb={2} mt={1} mx={4} variant="sm" textAlign="center" fontWeight="normal" color="mono60">
         Browse and bid in auctions around the world, from online-only sales to benefit auctions—all
         in the Artsy app.
       </Text>

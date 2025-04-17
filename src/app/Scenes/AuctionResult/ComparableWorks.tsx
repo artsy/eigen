@@ -41,7 +41,7 @@ const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
           ))}
         </Join>
       ) : (
-        <Text color="black60">No comparable works</Text>
+        <Text color="mono60">No comparable works</Text>
       )}
     </Flex>
   )

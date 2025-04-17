@@ -21,7 +21,7 @@ export const InputTitle: React.FC<{ optional?: boolean; required?: boolean }> = 
         <Text
           variant="sm-display"
           style={{ fontSize: 13, textTransform: "none" }}
-          color={color("black60")}
+          color={color("mono60")}
         >
           {" "}
           Required
@@ -31,7 +31,7 @@ export const InputTitle: React.FC<{ optional?: boolean; required?: boolean }> = 
         <Text
           variant="sm-display"
           style={{ fontSize: 13, textTransform: "none" }}
-          color={color("black60")}
+          color={color("mono60")}
         >
           {" "}
           Optional

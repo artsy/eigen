@@ -45,12 +45,12 @@ const getColors = (dark: boolean): { backgroundColor: string; spinnerColor: Colo
   if (dark) {
     return {
       backgroundColor: "rgba(0, 0, 0, 0.7)",
-      spinnerColor: "white100",
+      spinnerColor: "mono0",
     }
   }
   return {
     backgroundColor: "rgba(255, 255, 255, 0.15)",
-    spinnerColor: "black100",
+    spinnerColor: "mono100",
   }
 }
 

@@ -196,7 +196,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
         onPress={handleContextPress}
         preview={artworkPreviewComponent(artwork, artworkDisplayProps)}
         hideShadows={true}
-        previewBackgroundColor={!!dark ? color("black100") : color("white100")}
+        previewBackgroundColor={!!dark ? color("mono100") : color("mono0")}
       >
         {children}
       </ContextMenu>
@@ -217,7 +217,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     return (
       <>
         <TouchableHighlight
-          underlayColor={dark ? color("black100") : color("white100")}
+          underlayColor={dark ? color("mono100") : color("mono0")}
           activeOpacity={0.8}
           onLongPress={handleAndroidLongPress}
           delayLongPress={1200} // To avoid the context menu from opening on a (long) normal press on Android.
@@ -235,7 +235,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
                 {artworkPreviewComponent(artwork, { ...artworkDisplayProps, dark: false })}
               </Flex>
 
-              <Join separator={<Separator borderColor="black10" my={1} />}>
+              <Join separator={<Separator borderColor="mono10" my={1} />}>
                 {contextActions.map((action, index) => {
                   return (
                     <Touchable

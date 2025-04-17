@@ -145,7 +145,7 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
   })
 
   return (
-    <Flex flex={1} backgroundColor="white100" flexGrow={1} pb={1}>
+    <Flex flex={1} backgroundColor="mono0" flexGrow={1} pb={1}>
       <KeyboardAvoidingView style={{ flex: 1 }}>
         <FormikProvider value={formik}>
           <NavigationIndependentTree>
@@ -201,7 +201,7 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<
 > = ({ onBackButtonPress, title, caption, children }) => {
   const color = useColor()
   return (
-    <Flex backgroundColor="white100" flexGrow={1}>
+    <Flex backgroundColor="mono0" flexGrow={1}>
       <ScrollView
         contentContainerStyle={{
           paddingHorizontal: 20,
@@ -217,7 +217,7 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<
           {!!caption && (
             <>
               <Spacer y={0.5} />
-              <Text variant="xs" color={color("black100")}>
+              <Text variant="xs" color={color("mono100")}>
                 {caption}
               </Text>
             </>
@@ -242,7 +242,7 @@ export const OnboardingCreateAccountButton: React.FC = () => {
   }, [errors.email])
 
   return (
-    <Flex px={2} paddingBottom={2} backgroundColor="white100" pt={0.5}>
+    <Flex px={2} paddingBottom={2} backgroundColor="mono0" pt={0.5}>
       <Button
         onPress={handleSubmit}
         block

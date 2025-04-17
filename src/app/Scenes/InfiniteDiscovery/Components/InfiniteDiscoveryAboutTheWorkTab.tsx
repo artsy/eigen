@@ -77,7 +77,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
             {!!attributionClass?.length && (
               <Sentinel onChange={handleOnVisible}>
                 <Flex flexDirection="row" gap={0.5} alignItems="center">
-                  <ArtworkIcon height={18} width={18} fill="black60" />
+                  <ArtworkIcon height={18} width={18} fill="mono60" />
                   <Text variant="xs">
                     {attributionClass[0]}{" "}
                     <LinkText variant="xs" onPress={() => onNavigate(`/artwork-classifications`)}>
@@ -90,7 +90,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
 
             {!!hasCertificateOfAuthenticity && (
               <Flex flexDirection="row" gap={0.5} alignItems="center">
-                <CertificateIcon height={18} width={18} fill="black60" testID="certificate-icon" />
+                <CertificateIcon height={18} width={18} fill="mono60" testID="certificate-icon" />
                 <Text variant="xs">
                   Includes a{" "}
                   <LinkText
@@ -204,7 +204,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Text variant="xs" color="black60">
+              <Text variant="xs" color="mono60">
                 Questions about this piece?
               </Text>
               <ContactGalleryButton
@@ -212,7 +212,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
                 me={me}
                 variant="outlineGray"
                 size="small"
-                icon={<EnvelopeIcon fill="black100" width={16} height={16} />}
+                icon={<EnvelopeIcon fill="mono100" width={16} height={16} />}
               />
             </Flex>
           </Flex>
@@ -391,7 +391,7 @@ export const InfiniteDiscoveryAboutTheWorkTabSkeleton: FC = () => {
 const labelStyle = {
   width: "35%",
   variant: "xs",
-  color: "black60",
+  color: "mono60",
 } satisfies TextProps | FlexProps
 
 const valueStyle = {

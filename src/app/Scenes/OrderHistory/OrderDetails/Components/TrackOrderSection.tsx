@@ -33,24 +33,24 @@ export const TrackOrderSection: React.FC<Props> = ({ section }) => {
           </Text>
         )}
         {!!shipment?.trackingNumber && (
-          <Text testID="trackingNumber" variant="sm" color="black60">
+          <Text testID="trackingNumber" variant="sm" color="mono60">
             Tracking:&nbsp;
-            <Text variant="sm" color="black60" weight="medium">
+            <Text variant="sm" color="mono60" weight="medium">
               {shipment?.trackingNumber}
             </Text>
           </Text>
         )}
 
         {!!trackingUrl === false && (
-          <Text testID="noTrackingNumber" variant="sm" color="black60">
+          <Text testID="noTrackingNumber" variant="sm" color="mono60">
             Tracking not available
           </Text>
         )}
 
         {(!!shipment?.deliveryStart || !!createdAt) && (
-          <Text testID="shippedOn" variant="sm" color="black60">
+          <Text testID="shippedOn" variant="sm" color="mono60">
             Shipped on&nbsp;
-            <Text variant="sm" color="black60" weight={!deliveredStatus ? "medium" : "regular"}>
+            <Text variant="sm" color="mono60" weight={!deliveredStatus ? "medium" : "regular"}>
               {DateTime.fromISO(shipment?.deliveryStart || createdAt).toLocaleString(
                 DateTime.DATE_MED
               )}
@@ -58,7 +58,7 @@ export const TrackOrderSection: React.FC<Props> = ({ section }) => {
           </Text>
         )}
         {!!deliveredStatus && !!shipment?.deliveryEnd && (
-          <Text testID="deliveredStatus" variant="sm" color="black60">
+          <Text testID="deliveredStatus" variant="sm" color="mono60">
             {"Delivered on "}
             {DateTime.fromISO(shipment?.deliveryEnd).toLocaleString(DateTime.DATE_MED)}
           </Text>
@@ -66,14 +66,14 @@ export const TrackOrderSection: React.FC<Props> = ({ section }) => {
         {!deliveredStatus && (
           <>
             {(!!shipment?.estimatedDeliveryWindow || !!estimatedDelivery) && (
-              <Text testID="estimatedDelivery" variant="sm" color="black60">
+              <Text testID="estimatedDelivery" variant="sm" color="mono60">
                 Estimated Delivery:&nbsp;
                 {!!estimatedDelivery ? (
-                  <Text variant="sm" color="black60" weight="medium">
+                  <Text variant="sm" color="mono60" weight="medium">
                     {DateTime.fromISO(estimatedDelivery).toLocaleString(DateTime.DATE_MED)}
                   </Text>
                 ) : (
-                  <Text variant="sm" color="black60" weight="medium">
+                  <Text variant="sm" color="mono60" weight="medium">
                     {shipment?.estimatedDeliveryWindow}
                   </Text>
                 )}

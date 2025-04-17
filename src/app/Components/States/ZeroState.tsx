@@ -21,7 +21,7 @@ export const ZeroState = (props: ZeroStateProps) => {
             variant="sm"
             lineHeight="20px"
             style={{ maxWidth: "90%" }}
-            color={color("black100")}
+            color={color("mono100")}
             textAlign="center"
           >
             {title}
@@ -29,7 +29,7 @@ export const ZeroState = (props: ZeroStateProps) => {
         )}
 
         {!!bigTitle && (
-          <Text variant="sm-display" textAlign="center" color={color("black100")}>
+          <Text variant="sm-display" textAlign="center" color={color("mono100")}>
             {bigTitle}
           </Text>
         )}
@@ -42,7 +42,7 @@ export const ZeroState = (props: ZeroStateProps) => {
             variant={bigTitle ? "xs" : "sm"}
             style={{ maxWidth: title || bigTitle ? "100%" : "80%" }}
             textAlign="center"
-            color={title || bigTitle ? color("black60") : color("black100")}
+            color={title || bigTitle ? color("mono60") : color("mono100")}
           >
             {subtitle}
           </Text>

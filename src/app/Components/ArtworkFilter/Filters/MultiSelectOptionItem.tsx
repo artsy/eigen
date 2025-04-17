@@ -41,7 +41,7 @@ export const MultiSelectOptionItem: React.FC<MultiSelectOptionItemProps> = memo(
         >
           <OptionListItem>
             <Box maxWidth={optionTextMaxWidth}>
-              <Text variant="xs" color="black100">
+              <Text variant="xs" color="mono100">
                 {item.displayText}
               </Text>
             </Box>

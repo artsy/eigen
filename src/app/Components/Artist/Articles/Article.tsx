@@ -41,13 +41,13 @@ export const Article: React.FC<ArticleProps> = ({ article, artist, headline = fa
           />
         </Flex>
         <Spacer y={1} />
-        <Text variant="xs" color="black100">
+        <Text variant="xs" color="mono100">
           {articleData.vertical}
         </Text>
         <Spacer y={1} />
         <Text variant={headline ? "lg-display" : "sm-display"}>{articleData.thumbnailTitle}</Text>
         <Spacer y={1} />
-        <Text variant="xs" color="black60">{`By ${articleData.byline}`}</Text>
+        <Text variant="xs" color="mono60">{`By ${articleData.byline}`}</Text>
         {!headline && <Spacer y={4} />}
       </Flex>
     </RouterLink>

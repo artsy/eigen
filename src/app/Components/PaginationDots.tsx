@@ -32,7 +32,7 @@ const PaginationDot: React.FC<PaginationDotProps> = (props) => {
       accessibilityLabel="Image Pagination Indicator"
       animate={{ opacity: active ? 1 : 0.1 }}
       style={{
-        backgroundColor: color("black100"),
+        backgroundColor: color("mono100"),
         borderRadius: diameter / 2,
         height: diameter,
         marginHorizontal: diameter * 0.8,

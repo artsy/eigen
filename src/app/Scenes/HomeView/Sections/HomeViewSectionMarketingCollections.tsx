@@ -156,21 +156,21 @@ const HomeViewSectionMarketingCollectionsPlaceholder: React.FC<FlexProps> = (fle
                         height={DEFAULT_LARGE_IMAGE_DIMENSIONS.height}
                         width={DEFAULT_LARGE_IMAGE_DIMENSIONS.width}
                         borderBottomWidth={GAP}
-                        borderColor="white100"
+                        borderColor="mono0"
                       />
                       <Flex>
                         <SkeletonBox
                           height={DEFAULT_SMALL_IMAGE_DIMENSIONS.height}
                           width={DEFAULT_SMALL_IMAGE_DIMENSIONS.width}
                           borderLeftWidth={GAP}
-                          borderColor="white100"
+                          borderColor="mono0"
                           borderBottomWidth={GAP}
                         />
                         <SkeletonBox
                           height={DEFAULT_SMALL_IMAGE_DIMENSIONS.height}
                           width={DEFAULT_SMALL_IMAGE_DIMENSIONS.width}
                           borderLeftWidth={GAP}
-                          borderColor="white100"
+                          borderColor="mono0"
                           borderBottomWidth={GAP}
                         />
                       </Flex>
@@ -179,13 +179,13 @@ const HomeViewSectionMarketingCollectionsPlaceholder: React.FC<FlexProps> = (fle
                       <SkeletonBox
                         height={DEFAULT_SMALL_IMAGE_DIMENSIONS.height}
                         width={DEFAULT_SMALL_IMAGE_DIMENSIONS.width}
-                        borderColor="white100"
+                        borderColor="mono0"
                       />
                       <SkeletonBox
                         height={DEFAULT_HORIZONTAL_IMAGE_DIMENSIONS.height}
                         width={DEFAULT_HORIZONTAL_IMAGE_DIMENSIONS.width}
                         borderLeftWidth={GAP}
-                        borderColor="white100"
+                        borderColor="mono0"
                       />
                     </Flex>
 

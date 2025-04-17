@@ -37,11 +37,11 @@ export class FairEventSectionCard extends Component<Props> {
           </Flex>
           <Box p={2} style={{ position: "absolute", bottom: 0, left: 0 }} zIndex={4}>
             <Flex flexDirection="column" flexGrow={1}>
-              <Text variant="sm" weight="medium" color="white100">
+              <Text variant="sm" weight="medium" color="mono0">
                 {name}
               </Text>
               {!!exhibition_period && (
-                <Text variant="sm" color="white100">
+                <Text variant="sm" color="mono0">
                   {exhibition_period}
                 </Text>
               )}
@@ -54,7 +54,7 @@ export class FairEventSectionCard extends Component<Props> {
 }
 
 const BackgroundImage = styled(Image)`
-  background: ${themeGet("colors.black60")};
+  background: ${themeGet("colors.mono60")};
 `
 
 const Container = styled(Box)`
@@ -62,7 +62,7 @@ const Container = styled(Box)`
   height: 310px;
   position: relative;
   overflow: hidden;
-  background: ${themeGet("colors.black60")};
+  background: ${themeGet("colors.mono60")};
 `
 
 // Set background color of overlay based on logo color

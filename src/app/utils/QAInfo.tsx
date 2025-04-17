@@ -30,7 +30,7 @@ export const QAInfoRow: React.FC<{ name: string; value: string }> = ({ name, val
     <Flex flexDirection="row">
       <Text>{name}: </Text>
       <Touchable
-        underlayColor={color("black5")}
+        underlayColor={color("mono5")}
         haptic
         onPress={() => {
           Clipboard.setString(value)

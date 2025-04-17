@@ -62,7 +62,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
 
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const backgroundColor = dark ? "black100" : "white100"
+  const backgroundColor = dark ? "mono100" : "mono0"
 
   const supressArtwork = () => {
     ;(artwork as DissapearableArtwork)?._disappearable?.disappear()

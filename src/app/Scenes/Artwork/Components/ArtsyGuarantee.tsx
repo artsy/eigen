@@ -38,7 +38,7 @@ export const ArtsyGuarantee: React.FC = () => {
 
   return (
     <Box>
-      <Text variant="md" color="black100">
+      <Text variant="md" color="mono100">
         Be covered by the Artsy Guarantee when you check out with Artsy
       </Text>
       <Spacer y={2} />
@@ -50,7 +50,7 @@ export const ArtsyGuarantee: React.FC = () => {
             accessibilityLabel="Secure Checkout Icon"
             {...iconProps}
           />
-          <Text variant="sm" color="black60">
+          <Text variant="sm" color="mono60">
             Secure Checkout
           </Text>
         </Flex>
@@ -60,7 +60,7 @@ export const ArtsyGuarantee: React.FC = () => {
             accessibilityLabel="Money-Back Guarantee Icon"
             {...iconProps}
           />
-          <Text variant="sm" color="black60">
+          <Text variant="sm" color="mono60">
             Money-Back Guarantee
           </Text>
         </Flex>
@@ -71,7 +71,7 @@ export const ArtsyGuarantee: React.FC = () => {
             accessibilityLabel="Authenticity Guarantee Icon"
             {...iconProps}
           />
-          <Text variant="sm" color="black60">
+          <Text variant="sm" color="mono60">
             Authenticity Guarantee
           </Text>
         </Flex>
@@ -82,7 +82,7 @@ export const ArtsyGuarantee: React.FC = () => {
           accessibilityLabel="Learn more about the Artsy Guarantee"
           onPress={() => handleLearnMorePress()}
           variant="xs"
-          color="black60"
+          color="mono60"
         >
           Learn more
         </LinkText>

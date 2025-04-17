@@ -71,11 +71,11 @@ const AuctionResultListItem: React.FC<Props> = ({
             width={AUCTION_RESULT_CARD_IMAGE_WIDTH}
             height={AUCTION_RESULT_CARD_IMAGE_HEIGHT}
             borderRadius={2}
-            backgroundColor="black5"
+            backgroundColor="mono5"
             alignItems="center"
             justifyContent="center"
           >
-            <NoArtworkIcon width={30} height={30} fill="black60" />
+            <NoArtworkIcon width={30} height={30} fill="mono60" />
           </Flex>
         ) : (
           <Flex
@@ -113,14 +113,14 @@ const AuctionResultListItem: React.FC<Props> = ({
           <Flex flex={4}>
             <Flex>
               {!!showArtistName && !!auctionResult.artist?.name && (
-                <Text variant="xs" color="black100" numberOfLines={2}>
+                <Text variant="xs" color="mono100" numberOfLines={2}>
                   {auctionResult.artist?.name}
                 </Text>
               )}
               <Text
                 variant="xs"
                 ellipsizeMode="middle"
-                color="black100"
+                color="mono100"
                 numberOfLines={1}
                 style={{ flexShrink: 1 }}
               >
@@ -132,13 +132,13 @@ const AuctionResultListItem: React.FC<Props> = ({
             </Flex>
 
             {!!auctionResult.mediumText && (
-              <Text variant="xs" color="black60" numberOfLines={1}>
+              <Text variant="xs" color="mono60" numberOfLines={1}>
                 {capitalize(auctionResult.mediumText)}
               </Text>
             )}
 
             {!!auctionResult.dimensionText && (
-              <Text variant="xs" color="black60" numberOfLines={1}>
+              <Text variant="xs" color="mono60" numberOfLines={1}>
                 {auctionResult.dimensionText}
               </Text>
             )}
@@ -146,7 +146,7 @@ const AuctionResultListItem: React.FC<Props> = ({
             <Spacer y={1} />
 
             {!!auctionResult.saleDate && (
-              <Text variant="xs" color="black60" numberOfLines={1} testID="saleInfo">
+              <Text variant="xs" color="mono60" numberOfLines={1} testID="saleInfo">
                 {moment(auctionResult.saleDate).utc().format("MMM D, YYYY")}
                 {` ${bullet} `}
                 {auctionResult.organization}

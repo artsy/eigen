@@ -39,7 +39,7 @@ export const CuratedCollectionItem: React.FC<CuratedCollectionItemProps> = ({
             <Text variant={textVariant} numberOfLines={1}>
               {item.title}
             </Text>
-            <Text variant={textVariant} numberOfLines={1} color="black60">
+            <Text variant={textVariant} numberOfLines={1} color="mono60">
               Collection
             </Text>
           </CardRailMetadataContainer>

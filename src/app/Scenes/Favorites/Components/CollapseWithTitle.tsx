@@ -29,7 +29,7 @@ export const CallapseWithTitle: React.FC<{ title: string }> = ({ children, title
               marginTop: 2,
             }}
           >
-            <ArrowDownIcon height={ICON_SIZE} width={ICON_SIZE} fill="black100" />
+            <ArrowDownIcon height={ICON_SIZE} width={ICON_SIZE} fill="mono100" />
           </MotiView>
         </Flex>
       </Touchable>

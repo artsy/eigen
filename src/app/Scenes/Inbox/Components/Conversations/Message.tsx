@@ -92,13 +92,13 @@ export class Message extends React.Component<Props> {
   render() {
     const { message, showTimeSince } = this.props
     const { isFromUser, body } = message
-    const textColor = isFromUser ? "white100" : "black100"
+    const textColor = isFromUser ? "mono0" : "mono100"
     const alignSelf = isFromUser ? "flex-end" : undefined
     const alignAttachments = isFromUser ? "flex-end" : "flex-start"
     return (
       <ThemeAwareClassTheme>
         {({ color }) => {
-          const backgroundColor = color(isFromUser ? "black100" : "black10")
+          const backgroundColor = color(isFromUser ? "mono100" : "mono10")
           return (
             <>
               <Flex
@@ -109,7 +109,7 @@ export class Message extends React.Component<Props> {
               >
                 <AttachmentContainer
                   style={{
-                    backgroundColor: color(isFromUser ? "black100" : "black10"),
+                    backgroundColor: color(isFromUser ? "mono100" : "mono10"),
                   }}
                 >
                   <Hyperlink

@@ -93,8 +93,8 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
             backgroundColor: color("background"),
             fontSize: textStyle.fontSize,
             fontFamily: textStyle.fontFamily,
-            textColor: color("black100"),
-            placeholderColor: color("black60"),
+            textColor: color("mono100"),
+            placeholderColor: color("mono60"),
           }}
           style={{ width: "100%", height: INPUT_MIN_HEIGHT }}
           postalCodeEnabled={false}
@@ -108,7 +108,7 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
       </AnimatedFlex>
 
       <Flex pointerEvents="none" style={{ position: "absolute" }}>
-        <AnimatedText style={[{ backgroundColor: color("white100") }, labelStyles]}>
+        <AnimatedText style={[{ backgroundColor: color("mono0") }, labelStyles]}>
           {hasSelectedValue || isFocused ? "Credit Card" : ""}
         </AnimatedText>
       </Flex>

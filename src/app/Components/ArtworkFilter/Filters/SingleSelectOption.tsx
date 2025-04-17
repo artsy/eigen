@@ -108,10 +108,10 @@ export const ListItem = ({
     <TouchableRow accessibilityState={{ selected }} onPress={() => onSelect(item)}>
       <OptionListItem>
         <InnerOptionListItem px={withExtraPadding && item.displayText !== "All" ? 4 : 2}>
-          <Text color="black100" variant="xs">
+          <Text color="mono100" variant="xs">
             {item.displayText}
             {!!item.count && (
-              <Text color="black60" variant="xs">
+              <Text color="mono60" variant="xs">
                 {" "}
                 ({item.count})
               </Text>

@@ -22,15 +22,7 @@ export const NoMessages: React.FC = () => {
       <Text variant="sm-display" textAlign="center" fontWeight="normal">
         Keep track of your conversations with galleries.
       </Text>
-      <Text
-        mb={2}
-        mt={1}
-        mx={4}
-        variant="sm"
-        textAlign="center"
-        fontWeight="normal"
-        color="black60"
-      >
+      <Text mb={2} mt={1} mx={4} variant="sm" textAlign="center" fontWeight="normal" color="mono60">
         Contact galleries to learn more about works you want to collect. Use your inbox to stay on
         top of your inquiries.
       </Text>

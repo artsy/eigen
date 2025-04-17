@@ -41,10 +41,10 @@ export const OfferSubmittedModal: React.FC = () => {
         </NavigationHeader>
         <Box flex={1} py={4} px={2}>
           <Text variant="lg-display">Thank you, your offer has been submitted</Text>
-          <Text variant="sm" color="black60">
+          <Text variant="sm" color="mono60">
             Offer #{offerData.code}
           </Text>
-          <Box mt={2} backgroundColor="black10" p={2}>
+          <Box mt={2} backgroundColor="mono10" p={2}>
             <Text>{offerData.message}</Text>
           </Box>
           <Text mt={2}>Negotiation with the gallery will continue in the Inbox.</Text>

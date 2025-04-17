@@ -19,7 +19,7 @@ export const ResultWithHighlight: React.FC<{
           <Text
             key={i}
             variant="xs"
-            color={part.highlight ? "blue100" : "black100"}
+            color={part.highlight ? "blue100" : "mono100"}
             weight={part.highlight ? "medium" : "regular"}
           >
             {part.text}
@@ -33,7 +33,7 @@ export const ResultWithHighlight: React.FC<{
           numberOfLines={1}
           textAlign={textAlign}
           ellipsizeMode="middle"
-          color="black60"
+          color="mono60"
         >
           {secondaryLabel}
         </Text>

@@ -60,7 +60,7 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
     {
       key: "filter",
       element: (
-        <Flex backgroundColor="white100">
+        <Flex backgroundColor="mono0">
           <Separator />
           <HeaderArtworksFilter
             animationValue={filterComponentAnimationValue}

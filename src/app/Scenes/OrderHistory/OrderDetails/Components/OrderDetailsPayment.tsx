@@ -12,7 +12,7 @@ const PaymentMethodDetails: React.FC<OrderDetailsPaymentProps> = ({
   const getPaymentInfo = () => {
     if (creditCardWalletType === "apple_pay") {
       return (
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="mono60">
           Apple Pay
         </Text>
       )
@@ -23,7 +23,7 @@ const PaymentMethodDetails: React.FC<OrderDetailsPaymentProps> = ({
         return (
           <>
             <InstitutionIcon mr={1} width="17" fill="green100" />
-            <Text variant="sm" color="black60">
+            <Text variant="sm" color="mono60">
               Bank transfer •••• {paymentMethodDetails.last4}
             </Text>
           </>
@@ -32,7 +32,7 @@ const PaymentMethodDetails: React.FC<OrderDetailsPaymentProps> = ({
         return (
           <>
             <InstitutionIcon mr={1} width="17" fill="green100" />
-            <Text variant="sm" color="black60">
+            <Text variant="sm" color="mono60">
               Wire transfer
             </Text>
           </>
@@ -41,14 +41,14 @@ const PaymentMethodDetails: React.FC<OrderDetailsPaymentProps> = ({
         return (
           <>
             <CreditCardIcon type={paymentMethodDetails.brand as CreditCardType} mr={1} width="17" />
-            <Text variant="sm" color="black60">
+            <Text variant="sm" color="mono60">
               {paymentMethodDetails.brand} ending in {paymentMethodDetails.lastDigits}
             </Text>
           </>
         )
       default:
         return (
-          <Text variant="sm" color="black60">
+          <Text variant="sm" color="mono60">
             N/A
           </Text>
         )

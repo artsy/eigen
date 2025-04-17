@@ -95,7 +95,7 @@ const LayoutMini: React.FC<LayoutProps> = ({ section, article, hideImage }) => {
 
   return (
     <Touchable onPress={handleOnPress}>
-      <Flex mx={hideImage ? 0 : 2} p={2} borderColor="black15" borderWidth={1}>
+      <Flex mx={hideImage ? 0 : 2} p={2} borderColor="mono15" borderWidth={1}>
         <Flex flexDirection="row" justifyContent="space-between">
           {!hideImage && !!cover?.image?.url && (
             <Image
@@ -109,7 +109,7 @@ const LayoutMini: React.FC<LayoutProps> = ({ section, article, hideImage }) => {
           <Flex flex={1} pl={hideImage ? 0 : 2} flexDirection="row" alignItems="center">
             <Flex flex={1} pr={2}>
               <Text variant="sm-display">{section.title}</Text>
-              <Text variant="sm-display" color="black60">
+              <Text variant="sm-display" color="mono60">
                 View Slideshow
               </Text>
             </Flex>
@@ -150,7 +150,7 @@ const LayoutFull: React.FC<LayoutProps> = ({ section, article, hideImage }) => {
         bottom={space(4)}
         left={space(4)}
         right={space(4)}
-        backgroundColor="white100"
+        backgroundColor="mono0"
       >
         <LayoutMini section={section} article={article} hideImage={hideImage} />
       </Flex>

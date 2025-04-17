@@ -50,7 +50,7 @@ export const ScrollBar: React.FC = () => {
           left: 0,
           right: 0,
           borderBottomWidth: 1,
-          borderBottomColor: color("black30"),
+          borderBottomColor: color("mono30"),
         }}
       />
       <Spacer y={2} />
@@ -59,7 +59,7 @@ export const ScrollBar: React.FC = () => {
         style={{
           height: 1,
           width: barWidth,
-          backgroundColor: color("black100"),
+          backgroundColor: color("mono100"),
           position: "absolute",
           bottom: 0,
           transform: [

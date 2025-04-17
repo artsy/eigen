@@ -37,12 +37,12 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
       ) : (
         <Flex
           testID="MyCollectionArtworkHeaderFallback"
-          bg={color("black5")}
+          bg={color("mono5")}
           height={dimensions.height / 2}
           justifyContent="center"
           mx={2}
         >
-          <NoImageIcon fill="black60" mx="auto" />
+          <NoImageIcon fill="mono60" mx="auto" />
         </Flex>
       )}
 
@@ -62,8 +62,8 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
             <Text variant="lg-display">{artistNames ?? NO_ARTIST_NAMES_TEXT}</Text>
           </TouchableOpacity>
         )}
-        <Text variant="lg-display" color="black60">
-          <Text variant="lg-display" color="black60" italic>
+        <Text variant="lg-display" color="mono60">
+          <Text variant="lg-display" color="mono60" italic>
             {title}
           </Text>
           {!!date && `, ${date}`}

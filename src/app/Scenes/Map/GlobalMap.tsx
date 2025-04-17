@@ -363,7 +363,7 @@ export class GlobalMap extends React.Component<Props, State> {
                 coordinate={[clusterLat, clusterLng]}
               >
                 <SelectedCluster width={radius} height={radius}>
-                  <Text variant="sm" weight="medium" color={color("white100")}>
+                  <Text variant="sm" weight="medium" color={color("mono0")}>
                     {pointCount}
                   </Text>
                 </SelectedCluster>
@@ -543,7 +543,7 @@ export class GlobalMap extends React.Component<Props, State> {
     return (
       <ClassTheme>
         {({ color }) => (
-          <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: color("black5") }}>
+          <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: color("mono5") }}>
             <LoadingScreen
               source={require("images/map-bg.webp")}
               resizeMode="cover"

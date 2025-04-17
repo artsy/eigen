@@ -45,7 +45,7 @@ export const SelectArtworkListStickyBottomContent: FC<BottomSheetFooterProps> = 
 
   return (
     <BottomSheetFooter animatedFooterPosition={animatedFooterPosition}>
-      <Box bg="white100">
+      <Box bg="mono0">
         <Box height={STICKY_BOTTOM_CONTENT_HEIGHT} px={2} pt={2}>
           <Button width="100%" block loading={inProgress} onPress={handleSave}>
             Done

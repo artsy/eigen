@@ -76,7 +76,7 @@ export const AuctionResult: React.FC<Props> = (props) => {
       </Flex>
       {options?.fullWidth ? (
         <Flex>
-          <Text color="black60" variant="xs" mb={1}>
+          <Text color="mono60" variant="xs" mb={1}>
             {label}
           </Text>
           <TextInput
@@ -93,7 +93,7 @@ export const AuctionResult: React.FC<Props> = (props) => {
         </Flex>
       ) : (
         <Flex flexDirection="row" justifyContent="space-between">
-          <Text style={{ width: "35%" }} variant="xs" color="black60">
+          <Text style={{ width: "35%" }} variant="xs" color="mono60">
             {label}
           </Text>
           <Flex width="65%" pl="15px">
@@ -192,7 +192,7 @@ export const AuctionResult: React.FC<Props> = (props) => {
               </Text>
 
               {!!showPriceUSD && (
-                <Text variant="xs" color="black60" testID="priceUSD">
+                <Text variant="xs" color="mono60" testID="priceUSD">
                   {auctionResult.priceRealized?.displayUSD}
                 </Text>
               )}
@@ -246,7 +246,7 @@ export const AuctionResult: React.FC<Props> = (props) => {
             </TouchableWithoutFeedback>
 
             <Text variant="sm-display">{auctionResult.title}</Text>
-            <Text variant="xs" color="black60" my={0.5}>
+            <Text variant="xs" color="mono60" my={0.5}>
               {[
                 moment(auctionResult.saleDate).utc().format("MMM D, YYYY"),
                 auctionResult.organization,
@@ -323,11 +323,11 @@ const AuctionResultImage = ({
   return (
     <Box
       style={{ height: containerLength, width: "100%" }}
-      backgroundColor="black10"
+      backgroundColor="mono10"
       alignItems="center"
       justifyContent="center"
     >
-      {!isLoading && <NoArtworkIcon width={30} height={30} fill="black60" />}
+      {!isLoading && <NoArtworkIcon width={30} height={30} fill="mono60" />}
     </Box>
   )
 }

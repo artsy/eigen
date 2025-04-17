@@ -76,8 +76,8 @@ export const RecentPriceRanges: React.FC<RecentPriceRangesProps> = ({
 
 const EmptyState = () => {
   return (
-    <Box bg="black5" p={2} mx={2}>
-      <Text variant="sm-display" color="black60" textAlign="center">
+    <Box bg="mono5" p={2} mx={2}>
+      <Text variant="sm-display" color="mono60" textAlign="center">
         Your recent price ranges will show here
       </Text>
     </Box>

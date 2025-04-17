@@ -164,7 +164,7 @@ export const OnboardingSocialLink: React.FC<
   if (showPasswordForm) {
     return (
       <FormikProvider value={formik}>
-        <Flex flex={1} backgroundColor="white100">
+        <Flex flex={1} backgroundColor="mono0">
           <BackButton onPress={() => navigation.goBack()} />
           <Flex px={2} mt={`${insets.top + NAVBAR_HEIGHT + 20}px`} mb={`${insets.bottom}px`}>
             <Text variant="lg-display">Link Accounts</Text>
@@ -201,7 +201,7 @@ export const OnboardingSocialLink: React.FC<
                 }
               }}
             >
-              <Text variant="sm" color="black60" style={{ textDecorationLine: "underline" }}>
+              <Text variant="sm" color="mono60" style={{ textDecorationLine: "underline" }}>
                 Forgot password?
               </Text>
             </Touchable>
@@ -238,7 +238,7 @@ export const OnboardingSocialLink: React.FC<
     )
   }
   return (
-    <Flex justifyContent="center" flex={1} backgroundColor="white100">
+    <Flex justifyContent="center" flex={1} backgroundColor="mono0">
       <BackButton onPress={() => navigation.goBack()} />
       <Flex flex={1} px={2} mt={`${insets.top + NAVBAR_HEIGHT + 20}px`} mb={`${insets.bottom}px`}>
         <Text variant="lg-display">Link Accounts</Text>

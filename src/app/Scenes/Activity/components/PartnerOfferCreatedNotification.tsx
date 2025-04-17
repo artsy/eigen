@@ -116,7 +116,7 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
 
             {!!item?.partnerOffer?.note && (
               <Flex width="100%" flexDirection="row" p={2}>
-                <Flex width="100%" flexDirection="row" bg="black5" p={1}>
+                <Flex width="100%" flexDirection="row" bg="mono5" p={1}>
                   {!!partnerIcon && (
                     <Flex mr={1}>
                       <ImageBackground
@@ -124,17 +124,17 @@ export const PartnerOfferCreatedNotification: React.FC<PartnerOfferCreatedNotifi
                         style={{ width: 30, height: 30 }}
                         imageStyle={{
                           borderRadius: 15,
-                          borderColor: color("black30"),
+                          borderColor: color("mono30"),
                           borderWidth: 1,
                         }}
                       />
                     </Flex>
                   )}
                   <Flex flex={1}>
-                    <Text variant="sm" color="black100" fontWeight="bold">
+                    <Text variant="sm" color="mono100" fontWeight="bold">
                       Note from the gallery
                     </Text>
-                    <Text variant="sm" color="black100">
+                    <Text variant="sm" color="mono100">
                       "{note}"
                     </Text>
                   </Flex>

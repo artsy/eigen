@@ -33,15 +33,15 @@ export const Footer: FC<FooterProps> = ({ cards, homeViewSectionId }) => {
   }
 
   return (
-    <Flex backgroundColor="black100" p={2} gap={2}>
-      <Text color="white100">Explore more categories</Text>
+    <Flex backgroundColor="mono100" p={2} gap={2}>
+      <Text color="mono0">Explore more categories</Text>
 
       {categories.map((c, index) => (
         <Touchable
           key={`category_rail_${index}`}
           onPress={() => handleCategoryPress(c.title, c.entityID)}
         >
-          <Text variant="xl" color="white100">
+          <Text variant="xl" color="mono0">
             {c.title}
           </Text>
         </Touchable>

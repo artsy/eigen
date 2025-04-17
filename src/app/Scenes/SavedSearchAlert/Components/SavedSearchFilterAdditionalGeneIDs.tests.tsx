@@ -9,7 +9,7 @@ import {
 import { gravityArtworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-const black100Hex = "#000000"
+const mono100Hex = "#000000"
 
 describe("SavedSearchFilterAdditionalGeneIDs", () => {
   it("shows all available categories unselected", () => {
@@ -22,7 +22,7 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
     gravityArtworkMediumCategories.slice(0, 7).forEach((option) => {
       expect(screen.getByText(option.label)).toBeOnTheScreen()
       expect(screen.getByText(option.label)).toHaveStyle({
-        color: black100Hex,
+        color: mono100Hex,
       })
     })
   })
@@ -38,11 +38,11 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
 
     gravityArtworkMediumCategories.slice(0, 7).forEach((option) => {
       if (option.value === "painting") {
-        expect(screen.getByText("Painting")).not.toHaveStyle({ color: black100Hex })
+        expect(screen.getByText("Painting")).not.toHaveStyle({ color: mono100Hex })
       } else {
         expect(screen.getByText(option.label)).toBeOnTheScreen()
         expect(screen.getByText(option.label)).toHaveStyle({
-          color: black100Hex,
+          color: mono100Hex,
         })
       }
     })
@@ -55,11 +55,11 @@ describe("SavedSearchFilterAdditionalGeneIDs", () => {
       </SavedSearchStoreProvider>
     )
 
-    expect(screen.getByText("Work on Paper")).toHaveStyle({ color: black100Hex })
+    expect(screen.getByText("Work on Paper")).toHaveStyle({ color: mono100Hex })
 
     fireEvent(screen.getByText("Work on Paper"), "onPress")
 
-    expect(screen.getByText("Work on Paper")).not.toHaveStyle({ color: black100Hex })
+    expect(screen.getByText("Work on Paper")).not.toHaveStyle({ color: mono100Hex })
   })
 
   it("Shows all categories if the user has already selected mediums", () => {

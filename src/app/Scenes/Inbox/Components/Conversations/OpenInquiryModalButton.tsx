@@ -27,21 +27,15 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
   return (
     <>
       <ShadowSeparator />
-      <Flex p={1} backgroundColor="white100">
+      <Flex p={1} backgroundColor="mono0">
         <Flex flexDirection="row">
           <ShieldIcon mr={1} mt="3px" />
           <Flex flexShrink={1}>
-            <Text
-              color="black60"
-              variant="sm-display"
-              mb={1}
-              adjustsFontSizeToFit
-              numberOfLines={2}
-            >
+            <Text color="mono60" variant="sm-display" mb={1} adjustsFontSizeToFit numberOfLines={2}>
               Always complete purchases with our secure checkout in order to be covered by{" "}
               <Text
                 style={{ textDecorationLine: "underline" }}
-                color="black100"
+                color="mono100"
                 variant="sm-display"
                 onPress={() => {
                   navigate(`/buyer-guarantee`)

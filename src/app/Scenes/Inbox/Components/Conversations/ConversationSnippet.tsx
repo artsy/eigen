@@ -14,7 +14,7 @@ const Unread = styled(Flex)`
   height: 14px;
   width: 14px;
   border-radius: 7px;
-  background-color: ${themeGet("colors.white100")};
+  background-color: ${themeGet("colors.mono0")};
   position: absolute;
   left: -7px;
   top: -7px;
@@ -88,7 +88,7 @@ export class ConversationSnippet extends React.Component<Props> {
     return (
       <ThemeAwareClassTheme>
         {({ color }) => (
-          <Touchable onPress={() => this.conversationSelected()} underlayColor={color("black5")}>
+          <Touchable onPress={() => this.conversationSelected()} underlayColor={color("mono5")}>
             <Flex py={2} px={2}>
               <Flex flexDirection="row">
                 <Flex>
@@ -108,20 +108,20 @@ export class ConversationSnippet extends React.Component<Props> {
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         mr="5px"
-                        color={conversation.unread ? "black100" : "black60"}
+                        color={conversation.unread ? "mono100" : "mono60"}
                       >
                         {partnerName}
                       </Text>
                     </Flex>
                     <Flex flex={1} />
                     <Flex>
-                      <Text variant="sm" textAlign="right" color="black60">
+                      <Text variant="sm" textAlign="right" color="mono60">
                         {date}
                       </Text>
                     </Flex>
                   </Flex>
                   {!!exclusiveAccess && (
-                    <Text variant="sm" numberOfLines={1} mr="5px" color="black100">
+                    <Text variant="sm" numberOfLines={1} mr="5px" color="mono100">
                       Exclusive Access
                     </Text>
                   )}
@@ -131,7 +131,7 @@ export class ConversationSnippet extends React.Component<Props> {
                       mr="15px"
                       ellipsizeMode="tail"
                       numberOfLines={3}
-                      color={conversation.unread ? "black100" : "black60"}
+                      color={conversation.unread ? "mono100" : "mono60"}
                     >
                       {conversationText}
                     </Text>

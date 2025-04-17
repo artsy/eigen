@@ -14,7 +14,7 @@ export class ZeroState extends React.Component {
           <Text variant="sm" weight="medium" textAlign="center">
             There are no upcoming auctions scheduled
           </Text>
-          <Text variant="sm" textAlign="center" color="black60">
+          <Text variant="sm" textAlign="center" color="mono60">
             Check back soon for new auctions on Artsy.
           </Text>
         </Flex>

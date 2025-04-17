@@ -21,7 +21,7 @@ export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose 
   return (
     <>
       <Flex mx={2}>
-        <Separator borderColor="black100" />
+        <Separator borderColor="mono100" />
       </Flex>
       <Spacer y={0.5} />
 
@@ -56,7 +56,7 @@ export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose 
           return (
             <TouchableHighlight
               key={key}
-              underlayColor={color("black5")}
+              underlayColor={color("mono5")}
               onPress={() => {
                 Alert.alert(
                   description,
@@ -82,14 +82,14 @@ export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose 
                 alignItems="center"
               >
                 <Flex>
-                  <Text variant="xs" color="black60" mb="0.5">
+                  <Text variant="xs" color="mono60" mb="0.5">
                     {description}
                   </Text>
                   <Flex key={key} flexDirection="row" justifyContent="space-between">
                     <Text variant="sm-display">{strings[key as EnvironmentKey]}</Text>
                   </Flex>
                 </Flex>
-                <ChevronIcon fill="black60" direction="right" />
+                <ChevronIcon fill="mono60" direction="right" />
               </Flex>
             </TouchableHighlight>
           )

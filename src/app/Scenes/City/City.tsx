@@ -201,7 +201,7 @@ const Handle = styled.View`
   width: 40px;
   height: 5px;
   border-radius: 2.5px;
-  background-color: ${themeGet("colors.black30")};
+  background-color: ${themeGet("colors.mono30")};
 `
 
 const Container = styled.View`

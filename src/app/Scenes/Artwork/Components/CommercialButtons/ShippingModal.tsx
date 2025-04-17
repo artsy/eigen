@@ -47,7 +47,7 @@ export const ShippingModal: React.FC<ShippingModalProps> = (props) => {
             initialLocation={location}
             floating
             FooterComponent={() => (
-              <Text mt={1} color="black60">
+              <Text mt={1} color="mono60">
                 Sharing your location with galleries helps them provide fast and accurate shipping
                 quotes.
               </Text>

@@ -9,7 +9,7 @@ export const ArtistInsightsEmpty: FC<BoxProps> = (props) => {
         There are currently no auction results for this artist.
       </Text>
 
-      <Text variant="md" textAlign="center" color="black60">
+      <Text variant="md" textAlign="center" color="mono60">
         We'll update this page when results become available. Meanwhile, you can check out free
         auction results and art market data for over 300,000 artists.
       </Text>

@@ -35,7 +35,7 @@ export class SavedEventSection extends Component<any> {
               {data.length > 1 ? data.length + " saved events" : data.length + " saved event"}
             </Text>
           </Flex>
-          <ChevronIcon color="black100" />
+          <ChevronIcon color="mono100" />
         </Flex>
       </TouchableWithoutFeedback>
     )
@@ -45,10 +45,10 @@ export class SavedEventSection extends Component<any> {
         <Flex flexDirection="row" alignItems="center">
           <PinSavedOff width={30} height={30} />
           <Flex ml="24px">
-            <Text variant="sm" color="black60" weight="medium">
+            <Text variant="sm" color="mono60" weight="medium">
               No saved events
             </Text>
-            <Text variant="sm" color="black60">
+            <Text variant="sm" color="mono60">
               Save a show to find it later
             </Text>
           </Flex>
@@ -69,5 +69,5 @@ export class SavedEventSection extends Component<any> {
 const SavedBox = styled(Box)`
   border-radius: 2px;
   border-width: 1px;
-  border-color: ${themeGet("colors.black30")};
+  border-color: ${themeGet("colors.mono30")};
 `

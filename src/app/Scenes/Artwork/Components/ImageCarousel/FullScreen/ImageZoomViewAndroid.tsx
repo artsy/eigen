@@ -74,7 +74,7 @@ export const ImageZoomViewAndroid: React.FC<ImageZoomViewAndroidProps> = ({ imag
             width: imageWidth,
             height: imageHeight,
             opacity,
-            backgroundColor: color("black10"),
+            backgroundColor: color("mono10"),
           }}
           resizeMode={FastImage.resizeMode.contain}
           onLoadStart={() => {
@@ -97,7 +97,7 @@ export const ImageZoomViewAndroid: React.FC<ImageZoomViewAndroidProps> = ({ imag
             pt={`${imageHeight / 2}px`}
             left={0}
             opacity={0.5}
-            backgroundColor="black10"
+            backgroundColor="mono10"
             width={screenWidth}
             height={imageHeight}
             alignItems="center"

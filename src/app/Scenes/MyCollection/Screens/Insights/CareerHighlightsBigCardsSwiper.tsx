@@ -129,7 +129,7 @@ const CareerHighlightsBigCardsSwiperScreen: React.FC<CareerHighlightsBigCardsSwi
           width: barWidth - space(1),
           marginRight: space(1),
           borderRadius: 2,
-          backgroundColor: color("black100"),
+          backgroundColor: color("mono100"),
           opacity: opacityAnim,
         }}
       />

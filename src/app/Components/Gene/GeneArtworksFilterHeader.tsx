@@ -12,7 +12,7 @@ export const GeneArtworksFilterHeader: React.FC<GeneArtworksFilterProps> = ({
   const appliedFiltersCount = useSelectedFiltersCount()
 
   return (
-    <Box backgroundColor="white100">
+    <Box backgroundColor="mono0">
       <ArtworksFilterHeader
         onFilterPress={() => openFilterArtworksModal("sortAndFilter")}
         selectedFiltersCount={appliedFiltersCount}

@@ -40,8 +40,8 @@ export const ArticleSectionArtworkCaption: React.FC<ArticleSectionArtworkCaption
       })}
 
       <Touchable onPress={() => handleOnNavigate(data.href)}>
-        <Text variant="sm-display" color="black60">
-          <Text variant="sm-display" color="black60" italic>
+        <Text variant="sm-display" color="mono60">
+          <Text variant="sm-display" color="mono60" italic>
             {data.title}
           </Text>
           {!!data.date && `, ${data.date}`}
@@ -49,7 +49,7 @@ export const ArticleSectionArtworkCaption: React.FC<ArticleSectionArtworkCaption
       </Touchable>
 
       <Touchable onPress={() => handleOnNavigate(data.partner?.href)}>
-        <Text variant="xs" color="black60">
+        <Text variant="xs" color="mono60">
           {data.partner?.name}
         </Text>
       </Touchable>

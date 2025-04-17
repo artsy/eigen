@@ -53,7 +53,7 @@ export const HomeViewSectionSalesItem: FC<HomeViewSectionSalesItemProps> = ({
           <Text
             numberOfLines={1}
             lineHeight="20px"
-            color="black60"
+            color="mono60"
             variant="sm"
             ellipsizeMode="middle"
           >

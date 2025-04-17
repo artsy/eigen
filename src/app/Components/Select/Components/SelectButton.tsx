@@ -100,7 +100,7 @@ export const SelectButton: React.FC<{
             haptic="impactLight"
             hitSlop={{ top: 10, bottom: 10 }}
           >
-            <Text underline variant="xs" color="black60">
+            <Text underline variant="xs" color="mono60">
               {tooltipText}
             </Text>
           </Touchable>
@@ -148,13 +148,13 @@ export const SelectButton: React.FC<{
               right: HORIZONTAL_PADDING,
             }}
           >
-            <TriangleDown fill="black60" height={16} width={16} />
+            <TriangleDown fill="mono60" height={16} width={16} />
           </Flex>
         </AnimatedFlex>
       </Touchable>
       {/* No need to show required if we have an error message */}
       {(!!required || !!optional) && !error ? (
-        <Text color="black60" variant="xs" pl={`${HORIZONTAL_PADDING}px`} mt={0.5}>
+        <Text color="mono60" variant="xs" pl={`${HORIZONTAL_PADDING}px`} mt={0.5}>
           {!!required && "* Required"}
           {!!optional && "* Optional"}
         </Text>

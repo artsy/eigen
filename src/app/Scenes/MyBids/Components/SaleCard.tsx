@@ -23,13 +23,13 @@ export const COVER_IMAGE_HEIGHT = 100
 export const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string }> = (props) => (
   <Touchable
     style={{ marginTop: 15 }}
-    underlayColor={props.navLink ? "black5" : "transparent"}
+    underlayColor={props.navLink ? "mono5" : "transparent"}
     onPress={() => props.navLink && navigate(props.navLink)}
   >
-    <Flex flexDirection="row" alignItems="center" justifyContent="center" py={1} bg="black5" mt={1}>
+    <Flex flexDirection="row" alignItems="center" justifyContent="center" py={1} bg="mono5" mt={1}>
       {!props.children && (
         <>
-          <ExclamationMarkCircleFill fill="black100" />
+          <ExclamationMarkCircleFill fill="mono100" />
           <Text mx={0.5} variant="sm">
             Complete registration
           </Text>
@@ -78,8 +78,8 @@ export const SaleCard: React.FC<SaleCardProps> = ({
     } else {
       RegistrationCTA = () => (
         <RegistrationCTAWrapper>
-          <ClockFill fill="black60" />
-          <Text ml={0.5} color="black60" variant="sm">
+          <ClockFill fill="mono60" />
+          <Text ml={0.5} color="mono60" variant="sm">
             Registration pending
           </Text>
         </RegistrationCTAWrapper>
@@ -108,7 +108,7 @@ export const SaleCard: React.FC<SaleCardProps> = ({
         navigate(sale?.href as string)
       }}
     >
-      <Flex overflow="hidden" borderWidth={1} borderStyle="solid" borderColor="black10">
+      <Flex overflow="hidden" borderWidth={1} borderStyle="solid" borderColor="mono10">
         {!!sale?.coverImage?.url && (
           <Image
             height={COVER_IMAGE_HEIGHT}
@@ -119,7 +119,7 @@ export const SaleCard: React.FC<SaleCardProps> = ({
 
         <Flex style={{ margin: smallScreen ? 10 : 15 }}>
           {!!sale.partner?.name && (
-            <Text variant="xs" color="black60">
+            <Text variant="xs" color="mono60">
               {sale?.partner?.name}
             </Text>
           )}

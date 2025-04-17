@@ -66,7 +66,7 @@ export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCards
 
   return (
     <Flex {...flexProps}>
-      <Flex mx={2} p={2} border="1px solid" borderColor="black30" gap={2}>
+      <Flex mx={2} p={2} border="1px solid" borderColor="mono30" gap={2}>
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
           <Text variant="lg-display">{section.component?.title}</Text>
           <Text variant="lg-display">{date()}</Text>
@@ -138,7 +138,7 @@ const HomeViewSectionArticlesCardsPlaceholder: React.FC<FlexProps> = (flexProps)
   return (
     <Skeleton>
       <Flex {...flexProps} testID="HomeViewSectionArticlesCardsPlaceholder">
-        <Flex mx={2} p={2} border="1px solid" borderColor="black30" gap={2}>
+        <Flex mx={2} p={2} border="1px solid" borderColor="mono30" gap={2}>
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <SkeletonText variant="lg-display">title</SkeletonText>
             <SkeletonText variant="lg-display">2021-12-31</SkeletonText>

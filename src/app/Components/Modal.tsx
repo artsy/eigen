@@ -29,7 +29,7 @@ const ModalBackgroundView = styled.View`
 
 const ModalInnerView = styled.View`
   width: 300;
-  background-color: ${themeGet("colors.white100")};
+  background-color: ${themeGet("colors.mono0")};
   padding: 20px;
   opacity: 1;
   border-radius: 2px;
@@ -65,7 +65,7 @@ export class Modal extends React.Component<ModalProps, ModalState> {
         ...DEFAULT_MARKDOWN_RULES.paragraph,
         react: (node, output, state) => {
           return (
-            <Text variant="sm" color="black60" key={state.key} textAlign={this.props.textAlign}>
+            <Text variant="sm" color="mono60" key={state.key} textAlign={this.props.textAlign}>
               {output(node.content, state)}
             </Text>
           )

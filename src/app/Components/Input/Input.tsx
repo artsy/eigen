@@ -155,7 +155,7 @@ export const Input = forwardRef<InputRef, InputProps>(
             accessibilityLabel={showPassword ? "hide password button" : "show password button"}
             hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
           >
-            {!showPassword ? <EyeClosedIcon fill="black30" /> : <EyeOpenedIcon fill="black60" />}
+            {!showPassword ? <EyeClosedIcon fill="mono30" /> : <EyeOpenedIcon fill="mono60" />}
           </TouchableOpacity>
         </Flex>
       )
@@ -234,14 +234,14 @@ export const Input = forwardRef<InputRef, InputProps>(
             {title}
           </InputTitle>
           {!!maxLength && !!showLimit && (
-            <Text color="black60" variant="xs" marginLeft="auto">
+            <Text color="mono60" variant="xs" marginLeft="auto">
               {maxLength - value.length}
             </Text>
           )}
         </Flex>
 
         {!!description && (
-          <Text color={descriptionColor ?? "black60"} variant="xs" mb={0.5}>
+          <Text color={descriptionColor ?? "mono60"} variant="xs" mb={0.5}>
             {description}
           </Text>
         )}
@@ -255,7 +255,7 @@ export const Input = forwardRef<InputRef, InputProps>(
                 borderWidth: 1,
                 borderColor: color(computeBorderColor({ disabled, error: !!error, focused })),
                 minHeight: multiline ? INPUT_HEIGHT_MULTILINE : INPUT_HEIGHT,
-                backgroundColor: disabled ? color("black5") : color("white100"),
+                backgroundColor: disabled ? color("mono5") : color("mono0"),
               },
             ]}
           >
@@ -282,7 +282,7 @@ export const Input = forwardRef<InputRef, InputProps>(
                   }
                 }}
                 ref={inputRef}
-                placeholderTextColor={color("black60")}
+                placeholderTextColor={color("mono60")}
                 style={{ flex: 1, fontSize, ...inputTextStyle }}
                 numberOfLines={multiline ? undefined : 1}
                 secureTextEntry={!showPassword}
@@ -313,7 +313,7 @@ export const Input = forwardRef<InputRef, InputProps>(
             </Flex>
             {!!fixedRightPlaceholder && value === "" && (
               <Flex pr={1} justifyContent="center" alignItems="center">
-                <Text variant="sm" color="black60">
+                <Text variant="sm" color="mono60">
                   {fixedRightPlaceholder}
                 </Text>
               </Flex>
@@ -323,7 +323,7 @@ export const Input = forwardRef<InputRef, InputProps>(
               <Flex pr={4} justifyContent="center" flexGrow={0}>
                 <Spinner
                   size="medium"
-                  style={{ marginLeft: 3, width: 15, height: 4, backgroundColor: color("black60") }}
+                  style={{ marginLeft: 3, width: 15, height: 4, backgroundColor: color("mono60") }}
                 />
               </Flex>
             ) : (
@@ -336,7 +336,7 @@ export const Input = forwardRef<InputRef, InputProps>(
                     hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
                     accessibilityLabel="Clear input button"
                   >
-                    <XCircleIcon fill="black30" />
+                    <XCircleIcon fill="mono30" />
                   </TouchableOpacity>
                 </Flex>
               )
@@ -366,15 +366,15 @@ export const computeBorderColor = (inputStatus: InputStatus): Color => {
   const { disabled, error, focused } = inputStatus
 
   if (disabled) {
-    return "black30"
+    return "mono30"
   }
   if (error) {
     return "red100"
   }
   if (focused) {
-    return "black60"
+    return "mono60"
   }
-  return "black30"
+  return "mono30"
 }
 
 const StyledInput = styled(TextInput)`

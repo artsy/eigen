@@ -29,20 +29,20 @@ export const ArticleHero: React.FC<ArticleHeroProps> = ({ article }) => {
       )}
 
       <Flex mx={2}>
-        <Text variant="xs" color="black100">
+        <Text variant="xs" color="mono100">
           {data.vertical}
         </Text>
 
-        <Text variant="lg-display" color="black100">
+        <Text variant="lg-display" color="mono100">
           {data.title}
         </Text>
 
-        <Text variant="xs" color="black100" mt={0.5}>
+        <Text variant="xs" color="mono100" mt={0.5}>
           {data.byline}
         </Text>
 
         {!!data.publishedAt && (
-          <Text color="black60" variant="xs" mt={0.5}>
+          <Text color="mono60" variant="xs" mt={0.5}>
             {DateTime.fromISO(data.publishedAt).toFormat("MMM d, yyyy")}
           </Text>
         )}

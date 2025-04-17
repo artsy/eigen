@@ -81,8 +81,8 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
               position="absolute"
               bottom={1}
               right="1"
-              backgroundColor="white100"
-              borderColor="black5"
+              backgroundColor="mono0"
+              borderColor="mono5"
               borderWidth={1}
               borderRadius={2}
             >
@@ -97,14 +97,14 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
           )}
         </Flex>
         <Box mt={2} mx={2}>
-          <Text variant="sm-display" color="black100">
+          <Text variant="sm-display" color="mono100">
             {selectedArtwork.artistNames}
           </Text>
-          <Text variant="sm" color="black60">
+          <Text variant="sm" color="mono60">
             {selectedArtwork.title}, {selectedArtwork.date}
           </Text>
           <Spacer y={2} />
-          <Text variant="sm" color="black100">
+          <Text variant="sm" color="mono100">
             {selectedArtwork.saleMessage}
           </Text>
           {!!selectedArtwork.additionalInformation && (

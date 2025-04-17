@@ -48,11 +48,11 @@ export const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey })
       }}
       value={
         isLocalOverrideInEffect ? (
-          <Text variant="sm-display" color="black100" fontWeight="bold">
+          <Text variant="sm-display" color="mono100" fontWeight="bold">
             {valText}
           </Text>
         ) : (
-          <Text variant="sm-display" color="black60">
+          <Text variant="sm-display" color="mono60">
             {valText}
           </Text>
         )

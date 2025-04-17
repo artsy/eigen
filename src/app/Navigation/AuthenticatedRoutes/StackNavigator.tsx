@@ -48,9 +48,9 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
               hitSlop={DEFAULT_HIT_SLOP}
             >
               {isModalScreen(module) ? (
-                <CloseIcon fill="black100" />
+                <CloseIcon fill="mono100" />
               ) : (
-                <ArrowLeftIcon fill="black100" />
+                <ArrowLeftIcon fill="mono100" />
               )}
             </Touchable>
           )

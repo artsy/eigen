@@ -25,12 +25,12 @@ export const LineGraphBands: React.FC<LineGraphBandProps> = ({
           >
             <Flex flexDirection="row" alignItems="center">
               <ColoredDot
-                color={!(selectedBand === band.name) ? color("black30") : color("black100")}
+                color={!(selectedBand === band.name) ? color("mono30") : color("mono100")}
                 size={6}
               />
               <Text
                 variant="xs"
-                color={!(selectedBand === band.name) ? color("black30") : color("black100")}
+                color={!(selectedBand === band.name) ? color("mono30") : color("mono100")}
                 fontWeight={selectedBand === band.name ? "500" : undefined}
               >
                 {band.name}

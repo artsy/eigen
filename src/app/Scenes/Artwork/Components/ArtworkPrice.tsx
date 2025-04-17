@@ -68,7 +68,7 @@ export const ArtworkPrice: React.FC<ArtworkPriceProps> = ({
             {partnerOfferData.priceWithDiscount?.display}
           </Text>
 
-          <Text variant="xs" color="black60" selectable={false}>
+          <Text variant="xs" color="mono60" selectable={false}>
             (List Price: {listPrice})
           </Text>
         </Flex>

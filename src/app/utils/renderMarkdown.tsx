@@ -83,7 +83,7 @@ export function defaultRules({
             {output(node.content, state)}
           </Text>
         ) : (
-          <Text variant="sm" color="black60" key={state.key} textAlign="center">
+          <Text variant="sm" color="mono60" key={state.key} textAlign="center">
             {output(node.content, state)}
           </Text>
         )
@@ -215,7 +215,7 @@ export function defaultRules({
           {({ color, space }) => (
             <View
               style={{
-                borderLeftColor: color("black10"),
+                borderLeftColor: color("mono10"),
                 borderLeftWidth: 2,
                 paddingLeft: space(1),
               }}

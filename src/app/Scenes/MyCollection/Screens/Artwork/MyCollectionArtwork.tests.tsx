@@ -45,7 +45,7 @@ describe("MyCollectionArtwork", () => {
       )
 
       expect(screen.getByText("Edit")).toBeOnTheScreen()
-      expect(screen.getByText("Edit").props.color).toEqual("black100")
+      expect(screen.getByText("Edit").props.color).toEqual("mono100")
 
       fireEvent.press(screen.getByText("Edit"))
       expect(navigate).toHaveBeenCalledWith(

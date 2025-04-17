@@ -15,7 +15,7 @@ export const ArtistItem: React.FC<ArtistItemProps> = ({ isFirst, onPress, ...res
   return (
     <Touchable
       testID={`artist-section-item-${artist.name}`}
-      underlayColor={color("black5")}
+      underlayColor={color("mono5")}
       onPress={() => onPress(artist.internalID)}
       haptic
     >
@@ -30,7 +30,7 @@ export const ArtistItem: React.FC<ArtistItemProps> = ({ isFirst, onPress, ...res
           width={40}
           height={40}
           borderRadius={20}
-          backgroundColor="black10"
+          backgroundColor="mono10"
           alignItems="center"
           justifyContent="center"
           overflow="hidden"
@@ -51,7 +51,7 @@ export const ArtistItem: React.FC<ArtistItemProps> = ({ isFirst, onPress, ...res
           )}
           {!!artist.formattedNationalityAndBirthday && (
             <Flex>
-              <Text variant="xs" ellipsizeMode="middle" color="black60">
+              <Text variant="xs" ellipsizeMode="middle" color="mono60">
                 {artist?.formattedNationalityAndBirthday}
               </Text>
             </Flex>

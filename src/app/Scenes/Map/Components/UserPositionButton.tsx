@@ -37,7 +37,7 @@ export class UserPositionButton extends Component<Props> {
       <TouchableOpacity onPress={onPress}>
         <Background flexDirection="row" alignItems="center" style={shadowDetails}>
           <Box style={{ marginLeft: "auto", marginRight: "auto" }}>
-            <Crosshair color={highlight ? "blue100" : "black100"} />
+            <Crosshair color={highlight ? "blue100" : "mono100"} />
           </Box>
         </Background>
       </TouchableOpacity>

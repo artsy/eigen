@@ -35,7 +35,7 @@ const IdentityVerificationRequiredMessage: React.FC<TextProps> = ({
   ...remainderProps
 }) => {
   return (
-    <Text variant="xs" mt={1} color="black60" pb="1" textAlign="center" {...remainderProps}>
+    <Text variant="xs" mt={1} color="mono60" pb="1" textAlign="center" {...remainderProps}>
       Identity verification required to bid.{" "}
       <Text style={{ textDecorationLine: "underline" }} onPress={onPress}>
         FAQ
@@ -169,7 +169,7 @@ export const BidButton: React.FC<BidButtonProps> = (props) => {
         {!!isWatchOnly && (
           <ThemeAwareClassTheme>
             {({ color }) => (
-              <Text variant="sm-display" color={color("black60")} pb={1} textAlign="center">
+              <Text variant="sm-display" color={color("mono60")} pb={1} textAlign="center">
                 Registration closed
               </Text>
             )}

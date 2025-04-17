@@ -118,12 +118,12 @@ export const Navigation = () => {
 
 const NavigationLoadingIndicator = () => {
   return (
-    <Flex backgroundColor="white100" flex={1} justifyContent="center">
+    <Flex backgroundColor="mono0" flex={1} justifyContent="center">
       {!!__DEV__ && (
-        <Flex px={2} mt={2} backgroundColor="white100" alignItems="center">
+        <Flex px={2} mt={2} backgroundColor="mono0" alignItems="center">
           <Spinner color="devpurple" size="large" />
           <Spacer y={4} />
-          <Text color="black100" variant="xs" textAlign="center">
+          <Text color="mono100" variant="xs" textAlign="center">
             Reloadig previous navigation state
           </Text>
         </Flex>

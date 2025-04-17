@@ -32,7 +32,7 @@ export const NetworkAwareProvider: React.FC<{}> = () => {
     >
       <Flex flex={1} justifyContent="flex-end" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
         <Flex
-          backgroundColor="white100"
+          backgroundColor="mono0"
           alignItems="center"
           px={2}
           py={2}
@@ -44,7 +44,7 @@ export const NetworkAwareProvider: React.FC<{}> = () => {
 
           <Spacer y={1} />
 
-          <Text textAlign="center" variant="sm" color="black60">
+          <Text textAlign="center" variant="sm" color="mono60">
             Oops! Looks like your device is not connected to the Internet.
           </Text>
 

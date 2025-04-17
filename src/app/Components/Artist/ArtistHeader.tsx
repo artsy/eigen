@@ -111,7 +111,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
           <Flex flex={1}>
             <Text variant="lg-display">{artistData.name}</Text>
             {!!bylineRequired && (
-              <Text variant="lg-display" color="black60">
+              <Text variant="lg-display" color="mono60">
                 {descriptiveString}
               </Text>
             )}
@@ -122,7 +122,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
       {!!hasVerifiedRepresentatives && (
         <Flex pointerEvents="box-none">
           <Flex pointerEvents="none" px={2}>
-            <Text pt={2} pb={1} variant="sm" color="black60">
+            <Text pt={2} pb={1} variant="sm" color="mono60">
               Featured representation
             </Text>
           </Flex>

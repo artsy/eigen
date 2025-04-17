@@ -95,10 +95,10 @@ export const CheckMarkOptionListItem = ({
         pr={2}
         height={60}
       >
-        <Text color="black100" variant="xs">
+        <Text color="mono100" variant="xs">
           {item.displayText}
           {!!item.count && (
-            <Text color="black60" variant="xs">
+            <Text color="mono60" variant="xs">
               {" "}
               ({item.count})
             </Text>
@@ -107,7 +107,7 @@ export const CheckMarkOptionListItem = ({
 
         {!!selected && (
           <Box testID={`selected-checkmark-${item.displayText}`}>
-            <CheckIcon fill="black100" />
+            <CheckIcon fill="mono100" />
           </Box>
         )}
       </Flex>

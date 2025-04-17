@@ -55,7 +55,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
             <Flex pb={1}>
               <GenomeIcon width={ICON_SIZE} height={ICON_SIZE} />
             </Flex>
-            <Text variant="xs" color={color("black100")} px={1} pb="1px">
+            <Text variant="xs" color={color("mono100")} px={1} pb="1px">
               You will lose all data on Artsy including all existing offers, inquiries and mesages
               with Galleries
             </Text>
@@ -65,7 +65,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
             <Flex pb={1}>
               <AuctionIcon width={ICON_SIZE} height={ICON_SIZE} />
             </Flex>
-            <Text variant="xs" color={color("black100")} px={1} pb="1px">
+            <Text variant="xs" color={color("mono100")} px={1} pb="1px">
               You won’t have access to any exclusive Artsy benefits, such as Artsy Curated Auctions,
               Private Sales, etc
             </Text>
@@ -79,7 +79,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
             error={!hasPassword ? error : undefined}
           />
           <Spacer y={4} />
-          <Text variant="xs" color={color("black100")} pb="1px">
+          <Text variant="xs" color={color("mono100")} pb="1px">
             After you submit your request, we will disable your account. It may take up to 7 days to
             fully delete and remove all of your data.
           </Text>

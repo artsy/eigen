@@ -15,7 +15,7 @@ export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
 
   if (!artworkItem) {
     return (
-      <Text variant="sm" color="black60">
+      <Text variant="sm" color="mono60">
         Related artwork has been deleted
       </Text>
     )
@@ -45,18 +45,18 @@ export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
           {artistNames}
         </Text>
         <Text>
-          <Text variant="sm" color="black60" testID="title">
+          <Text variant="sm" color="mono60" testID="title">
             {title + addedComma}
           </Text>
-          <Text variant="sm" color="black60" testID="date">
+          <Text variant="sm" color="mono60" testID="date">
             {date}
           </Text>
         </Text>
-        <Text variant="sm" color="black60" testID="medium">
+        <Text variant="sm" color="mono60" testID="medium">
           {medium}
         </Text>
         {!!dimensions?.in && !!dimensions?.cm && (
-          <Text variant="sm" color="black60">
+          <Text variant="sm" color="mono60">
             {LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
               ? dimensions?.in
               : dimensions?.cm}
@@ -64,7 +64,7 @@ export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
         )}
 
         {!!editionOf && (
-          <Text testID="editionOf" variant="sm" color="black60">
+          <Text testID="editionOf" variant="sm" color="mono60">
             {editionOf}
           </Text>
         )}

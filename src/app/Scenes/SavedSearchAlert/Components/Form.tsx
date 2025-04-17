@@ -191,7 +191,7 @@ export const Form: React.FC<FormProps> = ({
               <Text
                 onPress={handleUpdateEmailPreferencesPress}
                 variant="xs"
-                color="black60"
+                color="mono60"
                 style={{ textDecorationLine: "underline" }}
                 mt={1}
               >
@@ -210,7 +210,7 @@ export const Form: React.FC<FormProps> = ({
           mb={`${bottom}px`}
           pb={Platform.OS === "android" ? 2 : 0}
           borderTopWidth={1}
-          borderTopColor="black10"
+          borderTopColor="mono10"
         >
           <Button
             testID="save-alert-button"
@@ -239,7 +239,7 @@ export const Form: React.FC<FormProps> = ({
           )}
 
           {!isEditMode && (
-            <Text variant="xs" color="black60" textAlign="center" mt={2}>
+            <Text variant="xs" color="mono60" textAlign="center" mt={2}>
               Access all your alerts in your profile.
             </Text>
           )}

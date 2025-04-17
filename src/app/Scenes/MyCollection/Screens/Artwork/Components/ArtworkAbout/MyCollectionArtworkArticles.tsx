@@ -46,7 +46,7 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
           </Flex>
 
           <Flex my="auto">
-            <ArrowRightIcon width={12} fill="black60" ml={0.5} />
+            <ArrowRightIcon width={12} fill="mono60" ml={0.5} />
           </Flex>
         </Flex>
       </RouterLink>

@@ -48,7 +48,7 @@ export const InfiniteDiscoveryBottomSheetBackdrop: FC<BottomSheetDefaultBackdrop
     return [
       style,
       {
-        backgroundColor: color("black100"),
+        backgroundColor: color("mono100"),
         marginTop: -top,
       },
       containerAnimatedStyle,

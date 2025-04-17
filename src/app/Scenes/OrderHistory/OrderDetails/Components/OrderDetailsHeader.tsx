@@ -24,7 +24,7 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
           Order Date
         </Text>
 
-        <Text testID="date" color="black60" variant="sm" mb={1}>
+        <Text testID="date" color="mono60" variant="sm" mb={1}>
           {DateTime.fromISO(createdAt).toLocaleString(DateTime.DATE_MED)}
         </Text>
       </Flex>
@@ -34,7 +34,7 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
           Order Number
         </Text>
 
-        <Text testID="code" color="black60" variant="sm" mb={1}>
+        <Text testID="code" color="mono60" variant="sm" mb={1}>
           {code}
         </Text>
       </Flex>
@@ -47,7 +47,7 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
 
           <Text
             testID="status"
-            color="black60"
+            color="mono60"
             variant="sm"
             mb={1}
             style={{ textTransform: "capitalize" }}
@@ -62,7 +62,7 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
           Fulfillment
         </Text>
 
-        <Text testID="fulfillment" color="black60" variant="sm">
+        <Text testID="fulfillment" color="mono60" variant="sm">
           {!isPickupOrder ? "Delivery" : "Pickup"}
         </Text>
       </Flex>

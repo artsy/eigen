@@ -77,7 +77,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
 
         <Spacer y={1} />
 
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="mono60">
           {hasLostBid
             ? "We've created an alert for you for similar works. Browse hand picked artworks that match this lot"
             : "Get notified when similar works become available, or browse hand picked artworks that match this lot."}
@@ -93,7 +93,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
             onPress={() => {
               navigate("/favorites/alerts")
             }}
-            icon={<BellIcon fill="black100" />}
+            icon={<BellIcon fill="mono100" />}
             block
           >
             Manage your Alerts
@@ -107,7 +107,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
               trackCreateAlertTap()
               setShowCreateArtworkAlertModal(true)
             }}
-            icon={<BellIcon fill="white100" />}
+            icon={<BellIcon fill="mono0" />}
             block
           >
             Create Alert

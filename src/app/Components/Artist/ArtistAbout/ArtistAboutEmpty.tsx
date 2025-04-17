@@ -9,11 +9,11 @@ export const ArtistAboutEmpty: FC<BoxProps> = (props) => {
         We'll update this page when more information is available.
       </Text>
 
-      <Text variant="md" textAlign="center" color="black60">
+      <Text variant="md" textAlign="center" color="mono60">
         Do you represent this artist?
       </Text>
       <RouterLink to="https://partners.artsy.net" style={{ alignSelf: "center" }}>
-        <Text variant="md" color="black100" style={{ textDecorationLine: "underline" }}>
+        <Text variant="md" color="mono100" style={{ textDecorationLine: "underline" }}>
           Become a partner.
         </Text>
       </RouterLink>

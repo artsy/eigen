@@ -34,7 +34,7 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me$key }> = (props) 
         headerRight: () => {
           return (
             <Touchable onPress={handleSave} disabled={!isValid}>
-              <Text variant="xs" color={!!isValid ? "black100" : "black60"}>
+              <Text variant="xs" color={!!isValid ? "mono100" : "mono60"}>
                 Save
               </Text>
             </Touchable>

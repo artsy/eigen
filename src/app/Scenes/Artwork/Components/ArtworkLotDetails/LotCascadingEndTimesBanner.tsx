@@ -15,7 +15,7 @@ export const LotCascadingEndTimesBanner: React.FC<LotCascadingEndTimesBannerProp
   const { extendedBiddingIntervalMinutes, cascadingEndTimeIntervalMinutes } = data
 
   return (
-    <Flex backgroundColor="black10" py={1} px={2} mx={-2}>
+    <Flex backgroundColor="mono10" py={1} px={2} mx={-2}>
       <Text variant="sm" style={{ textAlign: "center" }}>
         {extendedBiddingIntervalMinutes
           ? "Closing times may vary due to last minute competitive bidding. "

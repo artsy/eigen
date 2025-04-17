@@ -56,7 +56,7 @@ export const ActiveLotStanding = ({
           <Flex>
             <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
               <Text variant="xs">{sellingPrice}</Text>
-              <Text variant="xs" color="black60">
+              <Text variant="xs" color="mono60">
                 {" "}
                 {displayBidCount()}
               </Text>

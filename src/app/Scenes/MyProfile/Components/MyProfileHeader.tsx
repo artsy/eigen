@@ -13,7 +13,7 @@ export const MyProfileHeader: React.FC = () => {
         <Flex
           minHeight={200}
           width={WIDTH}
-          backgroundColor="white100"
+          backgroundColor="mono0"
           borderRadius={20}
           style={{
             shadowColor: "black",

@@ -31,11 +31,11 @@ export const ItemShow: React.FC<ItemShowProps> = ({ show }) => {
                 {show.name}
               </Text>
               {!!show.partner && (
-                <Text variant="sm" color="black60" numberOfLines={1}>
+                <Text variant="sm" color="mono60" numberOfLines={1}>
                   {show.partner.name}
                 </Text>
               )}
-              <Text variant="sm" color="black60" numberOfLines={1}>
+              <Text variant="sm" color="mono60" numberOfLines={1}>
                 {show.exhibitionPeriod}
               </Text>
             </Flex>

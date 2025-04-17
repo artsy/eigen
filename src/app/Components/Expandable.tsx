@@ -36,7 +36,7 @@ export const Expandable: React.FC<ExpandableProps> = ({
       py={1}
       accessibilityHint="Toggles the accordion"
       maxWidth={MAX_WIDTH_BIO}
-      borderColor={color("black100")}
+      borderColor={color("mono100")}
     >
       <Touchable
         onPress={() => handleToggle()}
@@ -54,7 +54,7 @@ export const Expandable: React.FC<ExpandableProps> = ({
             style={{ transform: [{ rotate: !!expanded ? "-90deg" : "90deg" }] }}
             transition={{ type: "timing" }}
           >
-            <ChevronIcon fill="black100" />
+            <ChevronIcon fill="mono100" />
           </MotiView>
         </Flex>
       </Touchable>

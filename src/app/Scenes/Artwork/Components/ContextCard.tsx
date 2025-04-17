@@ -18,7 +18,7 @@ export const ContextCard: React.FC<ContextCardProps> = ({ artwork: { context } }
   return (
     <>
       <Box mb={2}>
-        <Text variant="md" color="black100">
+        <Text variant="md" color="mono100">
           Auction
         </Text>
       </Box>

@@ -173,7 +173,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     }
 
     return (
-      <Flex backgroundColor="white100" width="100%" style={containerStyle || { borderRadius: 10 }}>
+      <Flex backgroundColor="mono0" width="100%" style={containerStyle || { borderRadius: 10 }}>
         <Flex p={2}>
           <ArtistListItemContainer
             artist={artwork.artists?.[0]}
@@ -199,7 +199,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               savedArtworkAnimationStyles,
             ]}
           >
-            <HeartFillIcon height={64} width={64} fill="white100" />
+            <HeartFillIcon height={64} width={64} fill="mono0" />
           </Animated.View>
 
           <Flex
@@ -225,8 +225,8 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
             <Flex flexDirection="row">
               <RNText numberOfLines={1}>
-                <Text color="black60" variant="sm-display">
-                  <Text italic ellipsizeMode="tail" color="black60" variant="sm-display">
+                <Text color="mono60" variant="sm-display">
+                  <Text italic ellipsizeMode="tail" color="mono60" variant="sm-display">
                     {artwork.title}
                   </Text>
                   , {artwork.date}
@@ -264,7 +264,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                   width: SAVE_BUTTON_WIDTH,
                   height: HEART_CIRCLE_SIZE,
                   borderRadius: 30,
-                  backgroundColor: color("black5"),
+                  backgroundColor: color("mono5"),
                 }}
               >
                 {!!isSaved ? (
@@ -281,7 +281,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                     testID="empty-heart-icon"
                     height={HEART_ICON_SIZE}
                     width={HEART_ICON_SIZE}
-                    fill="black100"
+                    fill="mono100"
                   />
                 )}
                 <Text ml={0.5} variant="xs">
@@ -343,7 +343,7 @@ const PopoverWrapper: React.FC<{
         onDismiss={dismissPopover}
         onPressOutside={dismissPopover}
         title={
-          <Text variant="xs" color="white100" fontWeight="bold">
+          <Text variant="xs" color="mono0" fontWeight="bold">
             Save artworks to get better{"\n"}recommendations and to signal your{"\n"}interest to
             galleries.
           </Text>

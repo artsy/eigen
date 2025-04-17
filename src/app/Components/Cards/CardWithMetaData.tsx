@@ -79,12 +79,12 @@ export const CardWithMetaData: React.FC<CardWithMetaDataProps> = (props) => {
             </Text>
           )}
           {!!subtitle && (
-            <Text color="black60" variant="xs">
+            <Text color="mono60" variant="xs">
               {subtitle}
             </Text>
           )}
           {!!tag && (
-            <Text color="black100" variant="xs">
+            <Text color="mono100" variant="xs">
               {tag}
             </Text>
           )}

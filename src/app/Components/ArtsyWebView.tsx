@@ -314,7 +314,7 @@ export const ArtsyWebView = forwardRef<
               })
             }
           }}
-          style={{ flex: 1, backgroundColor: color("white100") }}
+          style={{ flex: 1, backgroundColor: color("mono0") }}
           userAgent={Platform.OS === "ios" ? userAgent : undefined}
           onMessage={({ nativeEvent }) => {
             const data = nativeEvent.data

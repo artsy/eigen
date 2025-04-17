@@ -99,7 +99,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
         onBack={goBack}
         rightElements={
           <TouchableOpacity onPress={handleEdit} hitSlop={DEFAULT_HIT_SLOP}>
-            <Text color="black100">Edit</Text>
+            <Text color="mono100">Edit</Text>
           </TouchableOpacity>
         }
       />
@@ -120,7 +120,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
           flatten
           separator={
             <Flex m={2}>
-              <Separator borderColor="black10" />
+              <Separator borderColor="mono10" />
             </Flex>
           }
         >

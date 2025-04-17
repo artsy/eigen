@@ -38,7 +38,7 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
           allowOverlap={false}
           values={sliderRange}
           trackStyle={{
-            backgroundColor: color("black30"),
+            backgroundColor: color("mono30"),
           }}
           selectedStyle={{
             backgroundColor: color("blue100"),
@@ -47,8 +47,8 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
             height: RANGE_DOT_SIZE,
             width: RANGE_DOT_SIZE,
             borderRadius: RANGE_DOT_SIZE / 2,
-            backgroundColor: color("white100"),
-            borderColor: color("black10"),
+            backgroundColor: color("mono0"),
+            borderColor: color("mono10"),
             borderWidth: 1,
             shadowRadius: 2,
             elevation: 5,
@@ -62,10 +62,10 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
       </Flex>
 
       <Flex flexDirection="row" justifyContent="space-between">
-        <Text variant="xs" color="black60">
+        <Text variant="xs" color="mono60">
           ${defaultMinValue}
         </Text>
-        <Text variant="xs" color="black60">
+        <Text variant="xs" color="mono60">
           ${defaultMaxValue}+
         </Text>
       </Flex>

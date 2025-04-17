@@ -126,8 +126,8 @@ export const Conversations: React.FC<Props> = (props) => {
             py={1}
             style={{
               borderBottomWidth: 1,
-              borderBottomColor: color("black10"),
-              backgroundColor: color("white100"),
+              borderBottomColor: color("mono10"),
+              backgroundColor: color("mono0"),
             }}
           >
             <Text variant="lg-display" mx={2} mt={1}>

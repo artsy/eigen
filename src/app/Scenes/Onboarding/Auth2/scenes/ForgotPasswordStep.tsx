@@ -94,7 +94,7 @@ const ForgotPasswordStepForm: React.FC = () => {
         <Text variant="sm-display">Forgot Password?</Text>
 
         {!requestedPasswordReset && (
-          <Text pt={0.5} color="black100" variant="xs">
+          <Text pt={0.5} color="mono100" variant="xs">
             Please enter the email address associated with your Artsy account to receive a reset
             link.
           </Text>
@@ -117,7 +117,7 @@ const ForgotPasswordStepForm: React.FC = () => {
               enableClearButton
               keyboardType="email-address"
               placeholder="Email address"
-              placeholderTextColor={color("black30")}
+              placeholderTextColor={color("mono30")}
               ref={forgotPasswordRef}
               returnKeyType="done"
               spellCheck={false}

@@ -47,12 +47,12 @@ export const ProgressiveOnboardingAlertReminder: React.FC<
       onOpenComplete={trackEvent}
       placement="bottom"
       title={
-        <Text variant="xs" color="white100" fontWeight="bold">
+        <Text variant="xs" color="mono0" fontWeight="bold">
           Searching for a particular artwork?
         </Text>
       }
       content={
-        <Text variant="xs" color="white100">
+        <Text variant="xs" color="mono0">
           Create an alert and we’ll let you know when there’s a match.
         </Text>
       }

@@ -52,7 +52,7 @@ export const BrowseSimilarWorksContent: React.FC<BrowseSimilarWorksContentProps>
           paddingHorizontal: space(2),
         }}
       >
-        <Text color="black60" mt={2} mb={1}>
+        <Text color="mono60" mt={2} mb={1}>
           Available works you may have missed based on similar filters listed below.
         </Text>
 

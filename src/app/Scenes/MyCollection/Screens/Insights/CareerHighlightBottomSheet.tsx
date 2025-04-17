@@ -95,12 +95,7 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
   // using our custom background to ensure backgroundColor is white
   const renderBackground = useCallback(
     (props) => (
-      <Flex
-        {...props}
-        backgroundColor="white100"
-        borderTopRightRadius={10}
-        borderTopLeftRadius={10}
-      />
+      <Flex {...props} backgroundColor="mono0" borderTopRightRadius={10} borderTopLeftRadius={10} />
     ),
     []
   )

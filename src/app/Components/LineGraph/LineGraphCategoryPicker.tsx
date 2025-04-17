@@ -127,8 +127,8 @@ export const CategoryPill: React.FC<CategoryPillProps> = ({
 
   const isEnabled = selectedCategory === category
 
-  const textColor = isEnabled ? color("black100") : color("black60")
-  const pillDotColor = isEnabled ? dotColor : color("black30")
+  const textColor = isEnabled ? color("mono100") : color("mono60")
+  const pillDotColor = isEnabled ? dotColor : color("mono30")
 
   const handlePress = () => {
     onCategorySelected(category)

@@ -41,7 +41,7 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
       >
         <AnimatedBottomButton buttonStyles={roundedButtonStyle} isVisible={props.isVisible}>
           <ViewWorksButton testID="view-works" px={2}>
-            <Text variant="sm" py={1} color="white100" weight="medium">
+            <Text variant="sm" py={1} color="mono0" weight="medium">
               View {pluralizedArtworksCount} ({artworksCount})
             </Text>
           </ViewWorksButton>
@@ -53,7 +53,7 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
 
 const ViewWorksButton = styled(Flex)`
   border-radius: 20px;
-  background-color: ${themeGet("colors.black100")};
+  background-color: ${themeGet("colors.mono100")};
   align-items: center;
   justify-content: center;
   flex-direction: row;

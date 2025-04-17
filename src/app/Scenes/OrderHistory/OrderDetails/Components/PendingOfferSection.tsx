@@ -14,8 +14,8 @@ export const PendingOfferSection: React.FC<Props> = ({ order }) => {
   }
 
   return (
-    <Box mt={2} p={2} bg="black5">
-      <Text color="black60">
+    <Box mt={2} p={2} bg="mono5">
+      <Text color="mono60">
         The seller will respond to your offer by {stateExpiresAt}. Keep in mind making an offer
         doesn’t guarantee you the work.
       </Text>

@@ -38,7 +38,7 @@ describe(SaleInfo, () => {
           <SaleInfo sale={saleFixture({ liveStartAt, status: "open" })} />
         )
       })
-      it("has a blue100 icon + note if live bidding is active, black60 otherwise", () => {
+      it("has a blue100 icon + note if live bidding is active, mono60 otherwise", () => {
         expect(tree.root.findByType(BoltFill).props.fill).toMatch("blue100")
       })
       it("has blue100 text", () => {

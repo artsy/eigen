@@ -56,17 +56,17 @@ const PartnerMap: React.FC<{
           </MapboxGL.MapView>
           <Box my={2}>
             {!!address && (
-              <Text variant="sm" color="black60" textAlign="center">
+              <Text variant="sm" color="mono60" textAlign="center">
                 {address}
               </Text>
             )}
             {!!address2 && (
-              <Text variant="sm" color="black60" textAlign="center">
+              <Text variant="sm" color="mono60" textAlign="center">
                 {address2}
               </Text>
             )}
             {(!!city || !!postalCode) && (
-              <Text variant="sm" color="black60" textAlign="center">
+              <Text variant="sm" color="mono60" textAlign="center">
                 {cityAndPostalCode(city, postalCode)}
               </Text>
             )}
@@ -97,5 +97,5 @@ export const PartnerMapContainer = createFragmentContainer(PartnerMap, {
 
 const MapWrapper = styled(Flex)`
   border-width: 1px;
-  border-color: ${themeGet("colors.black10")};
+  border-color: ${themeGet("colors.mono10")};
 `

@@ -27,7 +27,7 @@ export const ArtworkPartnerOfferNote: React.FC<ArtworkPartnerOfferNoteProps> = (
   }
 
   return (
-    <Flex flexDirection="row" p={1} backgroundColor="black5">
+    <Flex flexDirection="row" p={1} backgroundColor="mono5">
       {!!partnerIcon && (
         <Flex mr={1}>
           <ImageBackground
@@ -36,7 +36,7 @@ export const ArtworkPartnerOfferNote: React.FC<ArtworkPartnerOfferNoteProps> = (
             style={{ width: 30, height: 30 }}
             imageStyle={{
               borderRadius: 15,
-              borderColor: color("black30"),
+              borderColor: color("mono30"),
               borderWidth: 1,
             }}
           />
@@ -44,11 +44,11 @@ export const ArtworkPartnerOfferNote: React.FC<ArtworkPartnerOfferNoteProps> = (
       )}
 
       <Flex flex={1}>
-        <Text variant="sm-display" color="black100" fontWeight="bold">
+        <Text variant="sm-display" color="mono100" fontWeight="bold">
           Note from the gallery
         </Text>
 
-        <Text variant="sm" color="black100">
+        <Text variant="sm" color="mono100">
           “{note}”
         </Text>
       </Flex>
