@@ -70,12 +70,12 @@ export const InfoButton = forwardRef<
               </Text>
             )}
 
-            <InfoCircleIcon fill="black60" />
+            <InfoCircleIcon fill="mono60" />
           </Flex>
         </Touchable>
 
         {!!subTitle && (
-          <Text variant="xs" color="black60">
+          <Text variant="xs" color="mono60">
             {subTitle}
           </Text>
         )}
@@ -136,7 +136,7 @@ export const AutoHeightInfoModal: React.FC<{
         // This is a workaround to make to hide it
         Platform.OS === "android" && isPresentedModally
           ? {
-              backgroundColor: color("white100"),
+              backgroundColor: color("mono0"),
             }
           : undefined
       }

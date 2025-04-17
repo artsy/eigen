@@ -138,7 +138,7 @@ export const AutosuggestSearchResult: React.FC<{
                 />
 
                 {!!showResultType && !!resultType && (
-                  <Text variant="xs" color="black60">
+                  <Text variant="xs" color="mono60">
                     {resultType}
                   </Text>
                 )}
@@ -156,7 +156,7 @@ export const AutosuggestSearchResult: React.FC<{
                   }}
                 >
                   <Flex pl={1}>
-                    <CloseIcon fill="black60" />
+                    <CloseIcon fill="mono60" />
                   </Flex>
                 </Touchable>
               )}

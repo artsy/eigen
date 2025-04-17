@@ -66,13 +66,7 @@ export const HomeViewSectionCardsCard: FC<HomeViewSectionCardsCardProps> = ({
       <Flex borderRadius={5} overflow="hidden">
         <Image src={card.image?.url as string} width={imageWidth} aspectRatio={IMAGE_RATIO} />
 
-        <Flex
-          position="absolute"
-          top={space(1)}
-          left={space(1)}
-          backgroundColor="white100"
-          px={0.5}
-        >
+        <Flex position="absolute" top={space(1)} left={space(1)} backgroundColor="mono0" px={0.5}>
           <Text variant="md">{card.title}</Text>
         </Flex>
       </Flex>

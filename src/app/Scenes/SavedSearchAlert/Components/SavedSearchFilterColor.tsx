@@ -40,7 +40,7 @@ export const SavedSearchFilterColor = () => {
 
   return (
     <Flex>
-      <Separator my={2} borderColor="black10" />
+      <Separator my={2} borderColor="mono10" />
       <Text px={2} variant="sm" fontWeight="bold">
         Color
       </Text>

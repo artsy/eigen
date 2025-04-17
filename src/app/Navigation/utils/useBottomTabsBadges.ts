@@ -27,7 +27,7 @@ export const useBottomTabsBadges = () => {
     minWidth: VISUAL_CLUE_HEIGHT,
     maxHeight: VISUAL_CLUE_HEIGHT,
     borderRadius: VISUAL_CLUE_HEIGHT / 2,
-    borderColor: color("white100"),
+    borderColor: color("mono0"),
     borderWidth: 1,
   }
 

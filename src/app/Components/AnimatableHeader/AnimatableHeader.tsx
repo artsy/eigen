@@ -36,7 +36,7 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
         onPress={props.onLeftButtonPress}
         accessibilityLabel="Header back button"
       >
-        <ArrowLeftIcon fill="black100" mt="2px" />
+        <ArrowLeftIcon fill="mono100" mt="2px" />
       </TouchableOpacity>
 
       <Flex
@@ -61,7 +61,7 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
           <Text
             variant="sm"
             style={{ textDecorationLine: "underline" }}
-            color={rightButtonDisabled ? "black60" : "black100"}
+            color={rightButtonDisabled ? "mono60" : "mono100"}
           >
             {rightButtonText}
           </Text>

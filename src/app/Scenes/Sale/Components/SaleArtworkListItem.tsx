@@ -85,7 +85,7 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
 
           <Flex ml={2} height={100} flex={1} justifyContent="center">
             {!!artwork.saleArtwork?.lotLabel && (
-              <Text variant="sm" color="black60" numberOfLines={1}>
+              <Text variant="sm" color="mono60" numberOfLines={1}>
                 Lot {artwork.saleArtwork.lotLabel}
               </Text>
             )}
@@ -95,13 +95,13 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
               </Text>
             )}
             {!!artwork.title && (
-              <Text variant="sm" color="black60" numberOfLines={2}>
+              <Text variant="sm" color="mono60" numberOfLines={2}>
                 {artwork.title}
                 {!!artwork.date && `, ${artwork.date}`}
               </Text>
             )}
             {!!saleInfo && (
-              <Text variant="sm" color="black60" numberOfLines={1}>
+              <Text variant="sm" color="mono60" numberOfLines={1}>
                 {saleInfo}
               </Text>
             )}

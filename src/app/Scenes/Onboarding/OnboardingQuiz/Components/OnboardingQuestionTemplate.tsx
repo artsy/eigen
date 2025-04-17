@@ -148,7 +148,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
                   selected={selected(answer)}
                 >
                   {!!shouldShowPillTick && <Spacer x={1} />}
-                  <Text variant="sm" color={selected(answer) ? "white100" : "black100"}>
+                  <Text variant="sm" color={selected(answer) ? "mono0" : "mono100"}>
                     {answer}
                   </Text>
                 </AnimatedFadingPill>
@@ -169,7 +169,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
 }
 
 const CheckCircleFillIconWhite = () => {
-  return <CheckCircleFillIcon fill="white100" />
+  return <CheckCircleFillIcon fill="mono0" />
 }
 
 const STATE_KEYS: Record<Exclude<OnboardingContextAction["type"], "RESET">, keyof State> = {

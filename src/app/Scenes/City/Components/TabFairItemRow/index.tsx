@@ -36,14 +36,14 @@ export class TabFairItemRow extends React.Component<Props> {
                     </Text>
                   )}
                   {!!item.counts && !!item.counts.partners && (
-                    <Text variant="sm" color="black60" numberOfLines={1} ellipsizeMode="tail">
+                    <Text variant="sm" color="mono60" numberOfLines={1} ellipsizeMode="tail">
                       {item.counts.partners > 1
                         ? `${item.counts.partners} Exhibitors`
                         : `${item.counts.partners} Exhibitor`}
                     </Text>
                   )}
                   {!!item.exhibition_period && (
-                    <Text variant="sm" color="black60" numberOfLines={1} ellipsizeMode="tail">
+                    <Text variant="sm" color="mono60" numberOfLines={1} ellipsizeMode="tail">
                       {item.exhibition_period}
                     </Text>
                   )}

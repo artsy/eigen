@@ -126,7 +126,7 @@ const LoginPasswordStepForm: React.FC = () => {
         autoCorrect={false}
         blurOnSubmit={false}
         error={submitCount > 0 ? errors.password : undefined}
-        placeholderTextColor={color("black30")}
+        placeholderTextColor={color("mono30")}
         ref={passwordRef}
         returnKeyType="done"
         secureTextEntry
@@ -150,7 +150,7 @@ const LoginPasswordStepForm: React.FC = () => {
           resetForm()
         }}
       >
-        <Text variant="xs" color="black60" underline>
+        <Text variant="xs" color="mono60" underline>
           Forgot password?
         </Text>
       </Touchable>
@@ -172,7 +172,7 @@ const LoginPasswordStepForm: React.FC = () => {
         <>
           <Spacer y={1} />
 
-          <Text variant="xs" color="black60" textAlign="center">
+          <Text variant="xs" color="mono60" textAlign="center">
             Don't have an account?{" "}
             <LinkText
               variant="xs"

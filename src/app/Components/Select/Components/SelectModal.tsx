@@ -141,7 +141,7 @@ export const SelectModal: React.FC<{
             hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
             style={{ flex: 1, alignItems: "flex-end" }}
           >
-            <CloseIcon fill="black60" />
+            <CloseIcon fill="mono60" />
           </TouchableOpacity>
         </Flex>
         {!!enableSearch && (
@@ -197,7 +197,7 @@ export const SelectModal: React.FC<{
                     <Text
                       numberOfLines={1}
                       ellipsizeMode="tail"
-                      color={selected ? color("blue100") : color("black100")}
+                      color={selected ? color("blue100") : color("mono100")}
                       style={{ flexShrink: 1, textDecorationLine: selected ? "underline" : "none" }}
                     >
                       {item.label}

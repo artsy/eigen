@@ -121,7 +121,7 @@ const SignUpNameStepForm: React.FC = () => {
         error={errors.name}
         maxLength={128}
         placeholder="First and last name"
-        placeholderTextColor={color("black30")}
+        placeholderTextColor={color("mono30")}
         ref={nameRef}
         returnKeyType="done"
         spellCheck={false}

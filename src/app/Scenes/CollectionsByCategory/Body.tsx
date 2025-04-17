@@ -39,7 +39,7 @@ export const Body: React.FC<BodyProps> = ({ viewer }) => {
         <CollectionsChips marketingCollections={data.marketingCollections as any} />
       </Flex>
 
-      <Separator borderColor="black10" />
+      <Separator borderColor="mono10" />
 
       <FlashList
         estimatedItemSize={ESTIMATED_ITEM_SIZE}
@@ -82,7 +82,7 @@ const BodyPlaceholder: React.FC = () => {
           <CollectionsChipsPlaceholder />
         </Flex>
 
-        <Separator borderColor="black10" />
+        <Separator borderColor="mono10" />
 
         <CollectionRailPlaceholder />
       </Flex>

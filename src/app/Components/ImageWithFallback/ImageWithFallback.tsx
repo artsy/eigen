@@ -19,7 +19,7 @@ export const ImageWithFallback: React.FC<ImageWithFallbackProps> = ({
         testID="fallback-image"
         width={width}
         height={height}
-        backgroundColor="black10"
+        backgroundColor="mono10"
         borderRadius="md"
       />
     )

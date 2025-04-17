@@ -54,7 +54,7 @@ export const ContextMenuArtworkPreviewCardImage: React.FC<
   if (!src) {
     return (
       <Flex
-        bg={color("black30")}
+        bg={color("mono30")}
         width={containerWidth}
         height={ARTWORK_PREVIEW_IMAGE_MIN_HEIGHT}
         style={{ borderRadius: 2 }}

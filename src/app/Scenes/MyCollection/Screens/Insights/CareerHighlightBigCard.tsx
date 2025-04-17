@@ -44,7 +44,7 @@ const CardHeader: React.FC<{
           alignItems="center"
           justifyContent="center"
           border={1}
-          borderColor="black100"
+          borderColor="mono100"
           borderRadius={25}
         >
           {icon}
@@ -78,7 +78,7 @@ export const CareerHighlightBigCardBiennial: React.FC<CareerHighlightBigCardBien
       <CardHeader
         count={count}
         label={label}
-        icon={<Icon fill="black100" width={24} height={24} />}
+        icon={<Icon fill="mono100" width={24} height={24} />}
         onLayout={(event: LayoutChangeEvent) => {
           const layout = event.nativeEvent.layout
           setHeaderHeight(layout.height)
@@ -163,7 +163,7 @@ export const CareerHighlightBigCardCollected: React.FC<CareerHighlightBigCardCol
       <CardHeader
         count={count}
         label={label}
-        icon={<Icon fill="black100" width={24} height={24} />}
+        icon={<Icon fill="mono100" width={24} height={24} />}
         onLayout={(event: LayoutChangeEvent) => {
           const layout = event.nativeEvent.layout
           setHeaderHeight(layout.height)
@@ -249,7 +249,7 @@ export const CareerHighlightBigCardGroupShow: React.FC<CareerHighlightBigCardGro
       <CardHeader
         count={count}
         label={label}
-        icon={<Icon fill="black100" width={24} height={24} />}
+        icon={<Icon fill="mono100" width={24} height={24} />}
         onLayout={(event: LayoutChangeEvent) => {
           const layout = event.nativeEvent.layout
           setHeaderHeight(layout.height)
@@ -335,7 +335,7 @@ export const CareerHighlightBigCardSoloShow: React.FC<CareerHighlightBigCardSolo
       <CardHeader
         count={count}
         label={label}
-        icon={<Icon fill="black100" width={24} height={24} />}
+        icon={<Icon fill="mono100" width={24} height={24} />}
         onLayout={(event: LayoutChangeEvent) => {
           const layout = event.nativeEvent.layout
           setHeaderHeight(layout.height)
@@ -420,7 +420,7 @@ export const CareerHighlightBigCardReviewed: React.FC<CareerHighlightBigCardRevi
       <CardHeader
         count={count}
         label={label}
-        icon={<Icon fill="black100" width={24} height={24} />}
+        icon={<Icon fill="mono100" width={24} height={24} />}
         onLayout={(event: LayoutChangeEvent) => {
           const layout = event.nativeEvent.layout
           setHeaderHeight(layout.height)

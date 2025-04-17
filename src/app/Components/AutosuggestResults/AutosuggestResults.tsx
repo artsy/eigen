@@ -238,7 +238,7 @@ const EmptyList: React.FC<{ query: string }> = ({ query }) => {
         Sorry, we couldn’t find anything for {quoteLeft}
         {query}.{quoteRight}
       </Text>
-      <Text variant="sm-display" color="black60" textAlign="center">
+      <Text variant="sm-display" color="mono60" textAlign="center">
         Please try searching again with a different spelling.
       </Text>
     </>
@@ -382,7 +382,7 @@ export const AutosuggestResults: React.FC<{
                   <Text variant="sm-display" textAlign="center">
                     Something went wrong.
                   </Text>
-                  <Text variant="sm-display" color="black60" textAlign="center">
+                  <Text variant="sm-display" color="mono60" textAlign="center">
                     Please adjust your query or try again shortly.
                   </Text>
 
@@ -409,10 +409,10 @@ export const AutosuggestResults: React.FC<{
 
             return (
               <Flex py={4}>
-                <Text variant="sm" color="black60">
+                <Text variant="sm" color="mono60">
                   There seems to be a problem with the connection.
                 </Text>
-                <Text variant="sm-display" color="black60" textAlign="center">
+                <Text variant="sm-display" color="mono60" textAlign="center">
                   Please try again shortly.
                 </Text>
               </Flex>

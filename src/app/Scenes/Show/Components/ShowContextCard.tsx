@@ -115,7 +115,7 @@ const ContextCard: React.FC<ContextCardProps> = ({
             <Flex
               alignItems="center"
               justifyContent="center"
-              bg="white100"
+              bg="mono0"
               width={80}
               height={60}
               px={1}
@@ -133,7 +133,7 @@ const ContextCard: React.FC<ContextCardProps> = ({
         </Text>
 
         {!!subtitle && (
-          <Text variant="xs" color="black60">
+          <Text variant="xs" color="mono60">
             {subtitle}
           </Text>
         )}

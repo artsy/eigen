@@ -75,7 +75,7 @@ export const ArtworkPublishedNotification: FC<ArtworkPublishedNotificationProps>
             <Flex flexDirection="row">
               <Text fontWeight="bold">View all works by {artist.name}</Text>
               <Flex alignSelf="center">
-                <ArrowRightIcon fill="black30" ml={0.5} pl={0.3} />
+                <ArrowRightIcon fill="mono30" ml={0.5} pl={0.3} />
               </Flex>
             </Flex>
           </RouterLink>

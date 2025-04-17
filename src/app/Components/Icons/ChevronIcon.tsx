@@ -25,7 +25,7 @@ const ChevronIcon: React.FC<ChevronIconProps> = (props) => {
       <G transform={rotation}>
         <Path
           d="M18.192 7.92L32.498 27 18.192 46.08a1 1 0 0 0 .2 1.4l1.6 1.2a1 1 0 0 0 1.4-.2L36.597 28.2a2 2 0 0 0 0-2.4L21.392 5.52a1 1 0 0 0-1.4-.2l-1.6 1.2a1 1 0 0 0-.2 1.4z"
-          fill={color(props.color ?? "black30")}
+          fill={color(props.color ?? "mono30")}
           fillRule="evenodd"
         />
       </G>

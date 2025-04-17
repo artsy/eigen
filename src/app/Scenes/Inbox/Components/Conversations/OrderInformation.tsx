@@ -23,30 +23,30 @@ export const OrderInformation: React.FC<OrderInformationProps> = ({ artwork, ord
 
           <>
             <Flex justifyContent="space-between" flexDirection="row">
-              <Text color="black60">
+              <Text color="mono60">
                 {order.lastOffer?.fromParticipant === "SELLER" ? "Seller's offer" : "Your offer"}
               </Text>
-              <Text color="black60">{order.lastOffer?.amount}</Text>
+              <Text color="mono60">{order.lastOffer?.amount}</Text>
             </Flex>
 
             <Flex justifyContent="space-between" flexDirection="row">
-              <Text variant="xs" color="black60">
+              <Text variant="xs" color="mono60">
                 List price
               </Text>
-              <Text variant="xs" color="black60">
+              <Text variant="xs" color="mono60">
                 {artwork.listPrice?.display}
               </Text>
             </Flex>
           </>
 
           <Flex justifyContent="space-between" flexDirection="row">
-            <Text color="black60">Shipping</Text>
-            <Text color="black60">{order.shippingTotal ?? "—"}</Text>
+            <Text color="mono60">Shipping</Text>
+            <Text color="mono60">{order.shippingTotal ?? "—"}</Text>
           </Flex>
 
           <Flex justifyContent="space-between" flexDirection="row">
-            <Text color="black60">Tax</Text>
-            <Text color="black60">{order.taxTotal ?? "—"}</Text>
+            <Text color="mono60">Tax</Text>
+            <Text color="mono60">{order.taxTotal ?? "—"}</Text>
           </Flex>
 
           <Flex justifyContent="space-between" flexDirection="row">

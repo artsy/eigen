@@ -17,7 +17,7 @@ export const ArtistSearchResult: React.FC<{
           {result.displayLabel}
         </Text>
         {!!result.formattedNationalityAndBirthday && (
-          <Text variant="xs" numberOfLines={1} color="black60" ellipsizeMode="tail">
+          <Text variant="xs" numberOfLines={1} color="mono60" ellipsizeMode="tail">
             {result.formattedNationalityAndBirthday}
           </Text>
         )}

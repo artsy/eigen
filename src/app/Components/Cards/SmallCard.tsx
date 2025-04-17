@@ -28,7 +28,7 @@ export const SmallCard: React.FC<SmallCardProps> = ({ images, title, subtitle, t
           aspectRatio: 1.5 / 1.0,
         }}
       >
-        <Flex flex={2} bg="black10" my="auto" mr={2}>
+        <Flex flex={2} bg="mono10" my="auto" mr={2}>
           <FastImage source={{ uri: images[0] }} style={{ flex: 1, aspectRatio: 1 }} />
         </Flex>
 
@@ -56,7 +56,7 @@ export const SmallCard: React.FC<SmallCardProps> = ({ images, title, subtitle, t
       )}
 
       {!!subtitle && (
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="mono60">
           {subtitle}
         </Text>
       )}

@@ -24,7 +24,7 @@ export const SavedItemRow: React.FC<SavedItemRowProps> = ({
   return (
     <Flex>
       <Touchable
-        underlayColor={color("black5")}
+        underlayColor={color("mono5")}
         onPress={() => {
           navigate(href)
         }}

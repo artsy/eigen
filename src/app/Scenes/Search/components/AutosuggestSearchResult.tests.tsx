@@ -68,7 +68,7 @@ describe(AutosuggestSearchResult, () => {
     renderWithWrappers(<TestWrapper result={result} highlight="Ban" />)
 
     expect(screen.getByText("Ban")).toHaveProp("color", "blue100")
-    expect(screen.getByText("ksy")).toHaveProp("color", "black100")
+    expect(screen.getByText("ksy")).toHaveProp("color", "mono100")
   })
 
   it("does not render delete button when onDelete callback is not passed", async () => {

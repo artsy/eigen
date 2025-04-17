@@ -17,12 +17,12 @@ const ArtworkClassification: React.FC<ArtworkClassificationProps> = ({ artwork }
   return (
     <>
       <Flex testID="artwork-classification" flexDirection="row" alignContent="center">
-        <ArtworkIcon mr={0.5} fill="black60" height={25} width={25} />
-        <Text variant="sm" color="black60">
+        <ArtworkIcon mr={0.5} fill="mono60" height={25} width={25} />
+        <Text variant="sm" color="mono60">
           {shortArrayDescription[0]}{" "}
           <LinkText
             variant="sm"
-            color="black60"
+            color="mono60"
             onPress={() => navigate(`/artwork-classifications`)}
           >
             {shortArrayDescription[1]}

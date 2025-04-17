@@ -56,8 +56,8 @@ export const useColorsByType = (type?: PopoverMessageType) => {
   }
 
   return {
-    descriptionColor: color("black10"),
-    backgroundColor: color("black100"),
+    descriptionColor: color("mono10"),
+    backgroundColor: color("mono100"),
   }
 }
 
@@ -107,7 +107,7 @@ export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
         borderBottomWidth={12}
         borderLeftColor="transparent"
         borderRightColor="transparent"
-        borderBottomColor="black100"
+        borderBottomColor="mono100"
         style={{
           transform: [{ rotate: rotatePointer({ pointerDirection: withPointer }).rotate }],
         }}
@@ -121,7 +121,7 @@ export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
       <Flex py={1} px={2} backgroundColor={colors.backgroundColor}>
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex flex={1} mr={!!onUndoPress ? 1 : 0}>
-            <Text color="white100" variant="sm-display" textAlign={withPointer ? "center" : "left"}>
+            <Text color="mono0" variant="sm-display" textAlign={withPointer ? "center" : "left"}>
               {title}
             </Text>
             {!!message && (

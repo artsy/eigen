@@ -109,11 +109,7 @@ const ArtistListItem: React.FC<Props> = ({
         return (
           <Flex>
             {!!tombstoneText && (
-              <Text
-                variant="xs"
-                color={theme === "light" ? "black60" : "white100"}
-                numberOfLines={1}
-              >
+              <Text variant="xs" color={theme === "light" ? "mono60" : "mono0"} numberOfLines={1}>
                 {tombstoneText}
               </Text>
             )}
@@ -121,9 +117,7 @@ const ArtistListItem: React.FC<Props> = ({
             {Number.isInteger(uploadsCount) && (
               <Text
                 variant="xs"
-                color={
-                  theme === "light" ? (uploadsCount === 0 ? "black60" : "black100") : "white100"
-                }
+                color={theme === "light" ? (uploadsCount === 0 ? "mono60" : "mono100") : "mono0"}
               >
                 {uploadsCount} {pluralize("artwork", uploadsCount || 0)} uploaded
               </Text>
@@ -154,7 +148,7 @@ const ArtistListItem: React.FC<Props> = ({
           tracks.tapArtistGroup(artist)
         }
       }}
-      underlayColor={color("black5")}
+      underlayColor={color("mono5")}
       style={containerStyle}
     >
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" width="100%">

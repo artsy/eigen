@@ -164,10 +164,10 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
               testID={`delete-button-${alert.internalID}`}
             >
               <Flex flexDirection="row" alignItems="center" width="100%" height="100%">
-                <Text variant="sm-display" color="white100" selectable={false}>
+                <Text variant="sm-display" color="mono0" selectable={false}>
                   Delete
                 </Text>
-                <TrashIcon fill="white100" width="16px" height="16px" />
+                <TrashIcon fill="mono0" width="16px" height="16px" />
               </Flex>
             </Touchable>
           </Flex>
@@ -175,18 +175,18 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
           <Animated.View style={animatedStyles}>
             <Touchable
               onPress={handlePress}
-              underlayColor={color("black5")}
+              underlayColor={color("mono5")}
               activeOpacity={1}
               haptic
               onLongPress={handlePress}
             >
-              <Box px={2} py={1} backgroundColor="white100">
+              <Box px={2} py={1} backgroundColor="mono0">
                 <Flex flexDirection="row" alignItems="center" justifyContent="flex-start">
                   {!!displayImage && (
                     <Flex mr={1}>
                       <Flex
                         testID="Fallback"
-                        backgroundColor="black5"
+                        backgroundColor="mono5"
                         width={60}
                         height={60}
                         justifyContent="center"
@@ -201,7 +201,7 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
                             performResize={false}
                           />
                         ) : (
-                          <NoImageIcon fill="black60" mx="auto" />
+                          <NoImageIcon fill="mono60" mx="auto" />
                         )}
                       </Flex>
                     </Flex>
@@ -212,12 +212,12 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
                       {alert.title ?? FALLBACK_TITLE}
                     </Text>
                     {!!alert.subtitle && (
-                      <Text variant="sm" color="black60" selectable={false}>
+                      <Text variant="sm" color="mono60" selectable={false}>
                         {alert.subtitle}
                       </Text>
                     )}
                   </Flex>
-                  <ChevronIcon direction="right" fill="black60" />
+                  <ChevronIcon direction="right" fill="mono60" />
                 </Flex>
               </Box>
             </Touchable>

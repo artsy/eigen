@@ -40,7 +40,7 @@ export const NotFoundFailureView: React.FC<NotFoundFailureViewProps> = ({
           <Text variant="lg-display" mb={1} textAlign="center">
             {title ?? "Not Found"}
           </Text>
-          <Text variant="lg-display" color="black60" mb={4} textAlign="center">
+          <Text variant="lg-display" color="mono60" mb={4} textAlign="center">
             {text ?? "Sorry, the resource you were looking for doesn’t exist."}
           </Text>
 

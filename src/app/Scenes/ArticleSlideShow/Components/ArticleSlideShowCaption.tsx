@@ -28,7 +28,7 @@ export const ArticleSlideShowCaption: React.FC<ArticleSlideShowCaptionProps> = (
           margin="auto"
           tagStyles={{
             p: {
-              color: color("black60"),
+              color: color("mono60"),
             },
           }}
           mr={2}
@@ -40,8 +40,8 @@ export const ArticleSlideShowCaption: React.FC<ArticleSlideShowCaptionProps> = (
           {!!data.artist?.name && <Text variant="sm-display">{data.artist.name}</Text>}
 
           {!!data.title && (
-            <Text variant="sm-display" color="black60">
-              <Text variant="sm-display" color="black60" italic>
+            <Text variant="sm-display" color="mono60">
+              <Text variant="sm-display" color="mono60" italic>
                 {data.title}
               </Text>
               {!!data.date && `, ${data.date}`}
@@ -49,7 +49,7 @@ export const ArticleSlideShowCaption: React.FC<ArticleSlideShowCaptionProps> = (
           )}
 
           {!!data.partner?.name && (
-            <Text variant="xs" color="black60">
+            <Text variant="xs" color="mono60">
               {data.partner.name}
             </Text>
           )}

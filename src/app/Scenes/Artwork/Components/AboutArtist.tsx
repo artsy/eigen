@@ -26,8 +26,8 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
     return null
   }
 
-  const backgroundColor = artwork.isUnlisted ? "black100" : "white100"
-  const textColor = artwork.isUnlisted ? "white100" : "black100"
+  const backgroundColor = artwork.isUnlisted ? "mono100" : "mono0"
+  const textColor = artwork.isUnlisted ? "mono0" : "mono100"
 
   return (
     <Screen.FullWidthItem p={2} backgroundColor={backgroundColor}>

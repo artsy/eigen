@@ -202,7 +202,7 @@ export const FairPlaceholder: React.FC = () => {
             alignItems="center"
             px={2}
             pb={2}
-            borderBottomColor="black10"
+            borderBottomColor="mono10"
             borderBottomWidth={1}
           >
             <SkeletonText>Overview</SkeletonText>

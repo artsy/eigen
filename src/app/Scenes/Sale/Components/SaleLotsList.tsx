@@ -57,7 +57,7 @@ export const SaleLotsListSortMode = ({
       </Text>
 
       {!!filteredTotal && !!totalCount && (
-        <Text color="black60" variant="sm">{`Showing ${filteredTotal} of ${totalCount}`}</Text>
+        <Text color="mono60" variant="sm">{`Showing ${filteredTotal} of ${totalCount}`}</Text>
       )}
     </Flex>
   )

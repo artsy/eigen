@@ -13,7 +13,7 @@ export const CareerHighlightsPromotionalCard: React.FC = () => {
         <Text mt={2} variant="lg-display">
           Discover Career Highlights for Your Artists
         </Text>
-        <Text mt={2} variant="sm-display" color="black60">
+        <Text mt={2} variant="sm-display" color="mono60">
           Add artworks to reveal career highlights for your artists.
         </Text>
         <Button

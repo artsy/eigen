@@ -71,19 +71,19 @@ export const ArtworkDetailsCollectorSignal: React.FC<Props> = ({ artwork }) => {
 
   return (
     <Flex flexDirection="row" pt={4} pb={2}>
-      <SignalIcon mr={0.5} fill="black60" height={25} width={25} />
+      <SignalIcon mr={0.5} fill="mono60" height={25} width={25} />
 
       <Flex flex={1} flexDirection="column">
-        <Text variant="sm-display" color="black100">
+        <Text variant="sm-display" color="mono100">
           {singalTitle}
         </Text>
 
         {href ? (
-          <LinkText variant="sm" color="black60" onPress={() => navigate(href || "#")}>
+          <LinkText variant="sm" color="mono60" onPress={() => navigate(href || "#")}>
             {signalDescription}
           </LinkText>
         ) : (
-          <Text variant="sm" color="black60">
+          <Text variant="sm" color="mono60">
             {signalDescription}
           </Text>
         )}

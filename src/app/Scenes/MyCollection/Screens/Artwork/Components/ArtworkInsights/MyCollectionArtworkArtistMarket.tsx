@@ -164,7 +164,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
           )}
         />
       </View>
-      <Separator my={4} borderColor="black10" />
+      <Separator my={4} borderColor="mono10" />
     </Flex>
   )
 }

@@ -133,7 +133,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
                   >
                     <Join separator={<Separator my={1} />}>
                       {!!showNoBids && (
-                        <Text color="black60" py={1} textAlign="center">
+                        <Text color="mono60" py={1} textAlign="center">
                           You haven't placed any bids on this sale
                         </Text>
                       )}
@@ -196,7 +196,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
 }
 
 const BidTitle: React.FC<{ topBorder?: boolean }> = (props) => (
-  <Flex bg="white100">
+  <Flex bg="mono0">
     <Text variant="sm-display" mx={2} my={2}>
       {props.children}
     </Text>

@@ -78,7 +78,7 @@ export const HomeViewSectionFeaturedCollection: React.FC<
 
   return (
     <Flex {...flexProps}>
-      <Flex pb={2} backgroundColor="black100">
+      <Flex pb={2} backgroundColor="mono100">
         <RouterLink to={viewAllHref} onPress={onHeaderPress}>
           {!!component.backgroundImageURL && (
             <Image
@@ -89,10 +89,10 @@ export const HomeViewSectionFeaturedCollection: React.FC<
             />
           )}
           <Flex mx={2} mt={2}>
-            <Text color="white100" variant="lg-display" mb={0.5}>
+            <Text color="mono0" variant="lg-display" mb={0.5}>
               {component.title}
             </Text>
-            <Text color="white100" variant="xs">
+            <Text color="mono0" variant="xs">
               {component.description}
             </Text>
           </Flex>
@@ -158,10 +158,10 @@ const HomeViewSectionFeaturedCollectionPlaceholder: React.FC<FlexProps> = () => 
         <SkeletonBox height={HEADER_IMAGE_HEIGHT} />
 
         <Flex mx={2} mt={2} testID="HomeViewSectionFeaturedCollectionPlaceholder">
-          <SkeletonText color="white100" variant="lg-display" mb={0.5}>
+          <SkeletonText color="mono0" variant="lg-display" mb={0.5}>
             Section Title
           </SkeletonText>
-          <SkeletonText color="white100" variant="xs">
+          <SkeletonText color="mono0" variant="xs">
             Description of the section
           </SkeletonText>
         </Flex>

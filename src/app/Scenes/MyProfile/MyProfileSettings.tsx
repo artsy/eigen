@@ -40,7 +40,7 @@ export const MyProfileSettings: React.FC = () => {
   const { updateTapCount } = useSetDevMode()
   const { value: userIsDev } = GlobalStore.useAppState((store) => store.artsyPrefs.userIsDev)
   const tracking = useTracking()
-  const separatorColor = color("black5")
+  const separatorColor = color("mono5")
 
   if (enableRedesignedSettings) {
     return (
@@ -52,7 +52,7 @@ export const MyProfileSettings: React.FC = () => {
         </Text>
         <Join separator={<Spacer y={4} />}>
           <>
-            <Text variant="xs" color="black60" px={2} mt={2}>
+            <Text variant="xs" color="mono60" px={2} mt={2}>
               Transactions
             </Text>
             <Spacer y={1} />
@@ -60,7 +60,7 @@ export const MyProfileSettings: React.FC = () => {
           </>
 
           <>
-            <Text variant="xs" color="black60" px={2}>
+            <Text variant="xs" color="mono60" px={2}>
               Account
             </Text>
             <Spacer y={1} />
@@ -75,7 +75,7 @@ export const MyProfileSettings: React.FC = () => {
           </>
 
           <>
-            <Text variant="xs" color="black60" px={2}>
+            <Text variant="xs" color="mono60" px={2}>
               Support
             </Text>
             <Spacer y={1} />
@@ -96,7 +96,7 @@ export const MyProfileSettings: React.FC = () => {
           </>
 
           <>
-            <Text variant="xs" color="black60" px={2}>
+            <Text variant="xs" color="mono60" px={2}>
               Legal
             </Text>
             <Spacer y={1} />
@@ -123,7 +123,7 @@ export const MyProfileSettings: React.FC = () => {
             </LinkText>
             <Spacer y={4} />
             <Touchable onPress={() => updateTapCount((count) => count + 1)}>
-              <Text variant="xs" color={userIsDev ? "devpurple" : "black60"}>
+              <Text variant="xs" color={userIsDev ? "devpurple" : "mono60"}>
                 Version: {appVersion}
               </Text>
             </Touchable>
@@ -186,7 +186,7 @@ export const MyProfileSettings: React.FC = () => {
     <ScrollView
       contentContainerStyle={{ paddingTop: space(2), backgroundColor: color("background") }}
     >
-      <Text variant="xs" color="black60" px={2}>
+      <Text variant="xs" color="mono60" px={2}>
         Settings
       </Text>
       <Spacer y={2} />
@@ -216,7 +216,7 @@ export const MyProfileSettings: React.FC = () => {
 
       <Spacer y={4} />
 
-      <Text variant="xs" color="black60" px={2}>
+      <Text variant="xs" color="mono60" px={2}>
         Transactions
       </Text>
 

@@ -36,7 +36,7 @@ const MetadataContainer = styled.View`
 const Separator = styled.View`
   height: 1px;
   width: 100%;
-  background-color: ${themeGet("colors.black10")};
+  background-color: ${themeGet("colors.mono10")};
 `
 
 const StatusLabel = styled(MetadataText)`

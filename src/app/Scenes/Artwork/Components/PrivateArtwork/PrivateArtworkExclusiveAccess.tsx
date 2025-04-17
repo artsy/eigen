@@ -43,7 +43,7 @@ export const PrivateArtworkExclusiveAccess: React.FC<PrivateArtworkExclusiveAcce
   return (
     <Flex
       border="1px solid"
-      borderColor="black100"
+      borderColor="mono100"
       borderRadius={3}
       p={2}
       textAlign="center"

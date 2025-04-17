@@ -146,7 +146,7 @@ const MyCollectionInsightsPlaceholder = () => {
       {/* MyCollectionInsightsOverview */}
 
       {/* CareerHighlightsRail */}
-      <Flex py={1} pl={1} mb={4} backgroundColor={color("black5")} flexDirection="row">
+      <Flex py={1} pl={1} mb={4} backgroundColor={color("mono5")} flexDirection="row">
         {/* CareerHighlighCard */}
         {[...Array(3)].map((_, i) => (
           <Flex
@@ -157,7 +157,7 @@ const MyCollectionInsightsPlaceholder = () => {
             width={205}
             backgroundColor="background"
             border={1}
-            borderColor="black10"
+            borderColor="mono10"
           >
             <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
               <Flex
@@ -167,7 +167,7 @@ const MyCollectionInsightsPlaceholder = () => {
                 alignItems="center"
                 justifyContent="center"
                 border={1}
-                borderColor="black10"
+                borderColor="mono10"
                 borderRadius={24}
               >
                 <PlaceholderBox width={15} height={15} />

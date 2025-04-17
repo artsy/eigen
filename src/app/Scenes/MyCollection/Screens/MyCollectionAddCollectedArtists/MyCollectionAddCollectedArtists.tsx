@@ -49,10 +49,10 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
             pb={2}
             right={0}
             left={0}
-            backgroundColor="white100"
+            backgroundColor="mono0"
           >
             <Button block disabled={!count || isLoading} onPress={handleSubmit} mb={`${bottom}px`}>
-              <Text color="white100">
+              <Text color="mono0">
                 Add Selected {pluralize(`Artist`, count)} • {count}
               </Text>
             </Button>

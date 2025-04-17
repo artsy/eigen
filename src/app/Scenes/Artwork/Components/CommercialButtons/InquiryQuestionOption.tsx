@@ -60,7 +60,7 @@ export const InquiryQuestionOption: React.FC<InquiryQuestionOptionProps> = ({
       <TouchableOpacity onPress={setSelection}>
         <Flex
           style={{
-            borderColor: questionSelected ? color("black100") : color("black10"),
+            borderColor: questionSelected ? color("mono100") : color("mono10"),
             borderWidth: 1,
             borderRadius: 5,
             flexDirection: "column",
@@ -96,16 +96,16 @@ export const InquiryQuestionOption: React.FC<InquiryQuestionOptionProps> = ({
                 <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
                   {!state.shippingLocation ? (
                     <>
-                      <Text variant="sm" color="black60">
+                      <Text variant="sm" color="mono60">
                         Add your location
                       </Text>
                       <Box>
-                        <ChevronIcon color="black60" />
+                        <ChevronIcon color="mono60" />
                       </Box>
                     </>
                   ) : (
                     <>
-                      <Text variant="sm" color="black100" style={{ width: "70%" }}>
+                      <Text variant="sm" color="mono100" style={{ width: "70%" }}>
                         {state.shippingLocation.name}
                       </Text>
                       <Text variant="sm" color="blue100">

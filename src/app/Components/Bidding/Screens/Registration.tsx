@@ -58,7 +58,7 @@ interface RegistrationState {
 }
 
 const Hint: React.FC = ({ children }) => (
-  <Text variant="sm-display" mb={4} color="black60">
+  <Text variant="sm-display" mb={4} color="mono60">
     {children}
   </Text>
 )
@@ -427,7 +427,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           </Text>
 
           {saleTimeDetails.absolute !== null && (
-            <Text variant="sm-display" color="black60">
+            <Text variant="sm-display" color="mono60">
               {saleTimeDetails.absolute}
             </Text>
           )}

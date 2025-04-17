@@ -31,5 +31,5 @@ export const ratioColor = (ratioString: string) => {
     return "red100"
   }
 
-  return "black60"
+  return "mono60"
 }

@@ -19,7 +19,7 @@ export const PaymentMethod: React.FC<PaymentMethodProps> = ({ order }) => {
         <Text variant="sm-display" mb={1} weight="medium">
           Payment Method
         </Text>
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="mono60">
           {`•••• ${lastDigits} Exp ${expirationMonth.toString().padStart(2, "0")}/${expirationYear
             .toString()
             .slice(-2)}`}

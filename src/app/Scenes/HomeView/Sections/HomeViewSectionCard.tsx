@@ -53,7 +53,7 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
   const imageHeight = height * 0.5
 
   const hasImage = !!image?.imageURL
-  const textColor = hasImage && theme !== "dark" ? "white100" : "black100"
+  const textColor = hasImage && theme !== "dark" ? "mono0" : "mono100"
   const buttonText = btnText ?? "More"
   const route = getRoute(section.card)
 

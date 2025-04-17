@@ -191,7 +191,7 @@ describe("messages with order updates", () => {
     // get all elements and remove timestamps
     const messagesAndUpdates = tree.root
       .findAllByType(Text)
-      .filter((element) => element.props.color !== "black60")
+      .filter((element) => element.props.color !== "mono60")
       .map((element) => extractText(element))
 
     // messages print in reverse order because FlatList is inverted
@@ -223,7 +223,7 @@ describe("messages with order updates", () => {
     // get all elements and remove timestamps
     const messagesAndUpdates = tree.root
       .findAllByType(Text)
-      .filter((element) => element.props.color !== "black30")
+      .filter((element) => element.props.color !== "mono30")
       .map((element) => extractText(element))
 
     expect(messagesAndUpdates).not.toContain("Offer Accepted")
@@ -252,7 +252,7 @@ describe("messages with order updates", () => {
     // get all elements and remove timestamps
     const messagesAndUpdates = tree.root
       .findAllByType(Text)
-      .filter((element) => element.props.color !== "black30")
+      .filter((element) => element.props.color !== "mono30")
       .map((element) => extractText(element))
     expect(messagesAndUpdates).toContain("Offer Accepted")
   })

@@ -41,7 +41,7 @@ export const PartnerShowRailItem: React.FC<Props> = (props) => {
           {name}
         </Text>
         {!!(exhibitionPeriod && endAt) && (
-          <Text variant="sm" color="black60">
+          <Text variant="sm" color="mono60">
             {exhibitionDates(exhibitionPeriod, endAt)}
           </Text>
         )}

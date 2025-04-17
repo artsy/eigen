@@ -131,14 +131,14 @@ const AppTabs: React.FC = () => {
                 height={BOTTOM_TABS_HEIGHT}
                 pb={0.5}
               >
-                <Text variant="xxs" selectable={false} textAlign="center" color="black100">
+                <Text variant="xxs" selectable={false} textAlign="center" color="mono100">
                   {bottomTabsConfig[route.name].name}
                 </Text>
               </Flex>
             )
           },
-          tabBarActiveTintColor: color("black100"),
-          tabBarInactiveTintColor: color("black100"),
+          tabBarActiveTintColor: color("mono100"),
+          tabBarInactiveTintColor: color("mono100"),
         }
       }}
       screenListeners={{

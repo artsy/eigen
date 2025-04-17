@@ -41,7 +41,7 @@ const ShowGridItem: React.FC<ShowGridItemProps> = (props) => {
           )}
           <Spacer y={0.5} />
           <Text variant="sm">{show.name}</Text>
-          <Text variant="sm" color="black60">
+          <Text variant="sm" color="mono60">
             {show.exhibitionPeriod}
           </Text>
         </Box>
@@ -210,7 +210,7 @@ const GridItem = styled(Box)`
 
 const EmptyImage = styled(Box)`
   height: 120px;
-  background-color: ${themeGet("colors.black10")};
+  background-color: ${themeGet("colors.mono10")};
 `
 
 GridItem.displayName = "GridItem"

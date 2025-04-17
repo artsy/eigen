@@ -50,7 +50,7 @@ export const Exercice: React.FC<{}> = () => {
             description="Ephemera or Merchandise or Print, Limited Edition"
             onPress={() => {}}
             noFeedback
-            style={{ backgroundColor: color("white100") }}
+            style={{ backgroundColor: color("mono0") }}
           />
         </Flex>
       </Flex>
@@ -152,7 +152,7 @@ const Solution2 = () => {
             description="Ephemera or Merchandise or Print, Limited Edition"
             onPress={() => {}}
             noFeedback
-            style={{ backgroundColor: color("white100") }}
+            style={{ backgroundColor: color("mono0") }}
           />
         </Animated.View>
       </View>

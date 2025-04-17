@@ -113,7 +113,7 @@ export const NewSaleLotsList: React.FC<NewSaleLotsListProps> = ({
           Sorted by {sortMode?.displayText}
         </Text>
 
-        <Text color="black60" variant="sm">
+        <Text color="mono60" variant="sm">
           Showing {counts} of {totalCount}
         </Text>
       </Flex>

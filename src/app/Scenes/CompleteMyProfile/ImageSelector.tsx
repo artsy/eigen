@@ -67,7 +67,7 @@ export const ImageSelector: FC<ImageSelectorProps> = ({ src, onImageSelect }) =>
             width={AVATAR_SIZE}
             height={AVATAR_SIZE}
             border={displayInitials ? 1 : 0}
-            borderColor="black10"
+            borderColor="mono10"
             borderRadius={AVATAR_SIZE / 2}
           >
             {!!isLoading && (
@@ -101,7 +101,7 @@ export const ImageSelector: FC<ImageSelectorProps> = ({ src, onImageSelect }) =>
             right={ICON_SIZE / 4}
             width={ICON_SIZE}
             height={ICON_SIZE}
-            backgroundColor="white100"
+            backgroundColor="mono0"
             borderRadius={ICON_SIZE / 2}
           >
             {!!displayAvatar && (

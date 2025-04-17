@@ -245,7 +245,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
             modalContent={<AuctionResultsInfoModal />}
           />
         </Flex>
-        <Text variant="xs" color="black60">
+        <Text variant="xs" color="mono60">
           {!!artist.auctionResultsConnection?.totalCount
             ? new Intl.NumberFormat().format(artist.auctionResultsConnection.totalCount)
             : 0}{" "}
@@ -275,7 +275,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
           renderSectionHeader={({ section: { title, count } }) => (
             <Flex px={2} my={2}>
               <Text variant="sm-display">{title}</Text>
-              <Text variant="xs" color="black60">
+              <Text variant="xs" color="mono60">
                 {count} result{count > 1 ? "s" : ""}
               </Text>
             </Flex>

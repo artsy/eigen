@@ -51,12 +51,12 @@ export class Notification extends React.Component<Props> {
                 {!!notification.image && (
                   <Image
                     source={{ uri: notification.image.resized?.url }}
-                    style={[styles.artistAvatar, { backgroundColor: color("black5") }]}
+                    style={[styles.artistAvatar, { backgroundColor: color("mono5") }]}
                   />
                 )}
                 <View style={styles.metadataContainer}>
                   <Text variant="sm">{notification.artists}</Text>
-                  <Text variant="xs" color={color("black60")}>
+                  <Text variant="xs" color={color("mono60")}>
                     {notification.summary}
                   </Text>
                 </View>

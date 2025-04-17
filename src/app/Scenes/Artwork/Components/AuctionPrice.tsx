@@ -48,7 +48,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
       return null
     } else if (auctionState === AuctionTimerState.CLOSED) {
       return (
-        <Text variant="sm-display" weight="medium" color="black100">
+        <Text variant="sm-display" weight="medium" color="mono100">
           Bidding closed
         </Text>
       )
@@ -98,13 +98,13 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
         </Flex>
         <Flex flexDirection="row" flexWrap="nowrap" justifyContent="space-between">
           {!!bidText && (
-            <Text variant="xs" pr={1} color="black60">
+            <Text variant="xs" pr={1} color="mono60">
               {bidText}
             </Text>
           )}
 
           {!!myMaxBid && (
-            <Text variant="xs" color="black60" pl={1}>
+            <Text variant="xs" color="mono60" pl={1}>
               Your max: {myMaxBid}
             </Text>
           )}
@@ -112,7 +112,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
         {!!sale?.isWithBuyersPremium && (
           <>
             <Spacer y={1} />
-            <Text variant="sm" color="black60">
+            <Text variant="sm" color="mono60">
               This auction has a{" "}
               <Text
                 style={{ textDecorationLine: "underline" }}

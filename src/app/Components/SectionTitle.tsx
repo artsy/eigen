@@ -27,7 +27,7 @@ export const SectionTitle: React.FC<
   navigationProps,
   title,
   titleVariant = "sm-display",
-  titleColor = "black100",
+  titleColor = "mono100",
   subtitle,
   onPress,
   RightButtonContent = RightButton,
@@ -55,7 +55,7 @@ export const SectionTitle: React.FC<
           </Text>
 
           {!!subtitle && (
-            <Text variant="sm" color="black60" lineHeight="20px" testID="subtitle">
+            <Text variant="sm" color="mono60" lineHeight="20px" testID="subtitle">
               {subtitle}
             </Text>
           )}
@@ -97,7 +97,7 @@ const Wrapper: React.FC<{ onPress?(): void; href?: string | null; navigationProp
 const RightButton = () => (
   <Flex flexDirection="row" flex={1}>
     <Flex my="auto">
-      <ArrowRightIcon width={12} fill="black60" ml={0.5} />
+      <ArrowRightIcon width={12} fill="mono60" ml={0.5} />
     </Flex>
   </Flex>
 )

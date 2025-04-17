@@ -42,7 +42,7 @@ export const IndexIndicator: React.FC = () => {
           {
             borderRadius: 15,
             height: 30,
-            backgroundColor: color("white100"),
+            backgroundColor: color("mono0"),
             justifyContent: "center",
             paddingHorizontal: 10,
             opacity,

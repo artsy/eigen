@@ -24,7 +24,7 @@ class Metadata extends React.Component<Props> {
           {this.props.show.name}
         </Text>
         {!!showType && (
-          <Text variant="sm" color="black60">
+          <Text variant="sm" color="mono60">
             {showType}
           </Text>
         )}
@@ -49,7 +49,7 @@ class Metadata extends React.Component<Props> {
     if (city || exhibition_period) {
       const text = city ? city.trim() + ", " + exhibition_period : exhibition_period
       return (
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="mono60">
           {text}
         </Text>
       )
@@ -60,7 +60,7 @@ class Metadata extends React.Component<Props> {
   statusText() {
     if (this.props.show.status_update) {
       return (
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="mono60">
           {this.props.show.status_update}
         </Text>
       )

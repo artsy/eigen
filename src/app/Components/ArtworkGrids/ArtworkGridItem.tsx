@@ -268,7 +268,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       >
         <RouterLink
           haptic
-          underlayColor={color("white100")}
+          underlayColor={color("mono0")}
           onPress={handleTap}
           // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
           onLongPress={() => {
@@ -345,7 +345,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                       lineHeight="18px"
                       variant="xs"
                       weight="regular"
-                      color="black60"
+                      color="mono60"
                       {...titleTextStyle}
                     >
                       <Text lineHeight="18px" variant="xs" weight="regular">
@@ -359,7 +359,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   <Text
                     variant="xs"
                     lineHeight="18px"
-                    color="black60"
+                    color="mono60"
                     numberOfLines={1}
                     {...partnerNameTextStyle}
                   >
@@ -371,7 +371,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     <Text lineHeight="20px" variant="xs" numberOfLines={1} fontWeight="bold">
                       {priceOfferMessage.priceWithDiscountMessage}
                     </Text>
-                    <Text color="black60" variant="xs">
+                    <Text color="mono60" variant="xs">
                       {" "}
                       (List price: {priceOfferMessage.priceListedMessage})
                     </Text>
