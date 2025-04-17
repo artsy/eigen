@@ -10,6 +10,9 @@ extern NSString *const ARAnalyticsAppUsageCountProperty;
 extern NSString *const ARAnalyticsNotificationReceived;
 extern NSString *const ARAnalyticsNotificationTapped;
 
+extern NSString *const ARAnalyticsSegmentNativeNotificationReceived;
+extern NSString *const ARAnalyticsSegmentNativeNotificationTapped;
+
 // Push notifications
 
 extern NSString *const ARAnalyticsPushNotificationLocal;

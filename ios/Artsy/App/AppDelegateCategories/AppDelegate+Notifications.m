@@ -140,8 +140,7 @@
 {
     NSDictionary *normalizedInfo = [self normalizedNotificationInfo:notificationInfo];
     [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationReceived traits:normalizedInfo];
-    // TODO: Make sure we are tracking the same events
-//    [[SEGAnalytics sharedAnalytics] receivedRemoteNotification:notificationInfo];
+    [[AREmission sharedInstance] sendEvent:ARAnalyticsSegmentNativeNotificationReceived traits:normalizedInfo];
 }
 
 - (NSDictionary *)normalizedNotificationInfo:(NSDictionary *)notificationInfo {
@@ -159,6 +158,7 @@
 
     NSDictionary *normalizedInfo = [self normalizedNotificationInfo:notificationInfo];
     [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationTapped traits:normalizedInfo];
+    [[AREmission sharedInstance] sendEvent:ARAnalyticsSegmentNativeNotificationTapped traits:normalizedInfo];
 
     NSDictionary *props = [self filteredProps:notificationInfo];
     [[AREmission sharedInstance] navigate:url withProps:props];
