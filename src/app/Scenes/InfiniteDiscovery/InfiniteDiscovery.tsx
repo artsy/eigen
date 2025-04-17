@@ -95,9 +95,9 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     }
   }, [artworks])
 
-  const currentIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
+  const topCardIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
   const unswipedCardIds = artworks
-    .slice(currentIndex, artworks.length)
+    .slice(topCardIndex + 1, artworks.length)
     .map((artwork) => artwork.internalID)
 
   /**
