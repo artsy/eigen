@@ -49,7 +49,7 @@ const RadioMenuItem: React.FC<{
           <Text variant="sm-display">{title}</Text>
         </Flex>
         <Flex width={40} alignItems="flex-end">
-          <RadioButton selected={selected} />
+          <RadioButton selected={selected} onPress={onPress} />
         </Flex>
       </Flex>
     </TouchableOpacity>
