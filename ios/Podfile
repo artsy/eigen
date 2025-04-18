@@ -101,7 +101,6 @@ target 'Artsy' do
   pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
   pod 'FXBlurView', '1.6.4'
   pod 'ISO8601DateFormatter', git: 'https://github.com/artsy/iso-8601-date-formatter'
-  pod 'JSDecoupledAppDelegate'
   pod 'Mantle', '1.5.6'
   pod 'MMMarkdown', '0.4'
   pod 'UICKeyChainStore'
@@ -115,9 +114,6 @@ target 'Artsy' do
   # Language Enhancements
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
-
-  # Analytics
-  pod 'Analytics', '4.1.8'
 
   # For Stripe integration with Emission. Using a fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
   pod 'Pulley', git: 'https://github.com/artsy/Pulley.git', branch: 'master'
@@ -148,6 +144,12 @@ target 'Artsy' do
 
   # Used in Live Auctions to hold user-state
   pod 'JWTDecode', '2.0.0'
+
+
+  # Need static libs to fix expo compilation in app delegate
+  pod 'BrazeKit', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeKit.podspec'
+  pod 'BrazeUI', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeUI.podspec'
+  pod 'BrazeLocation', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeLocation.podspec'
 
   target 'ArtsyTests' do
     inherit! :search_paths

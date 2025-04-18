@@ -15,7 +15,6 @@ PODS:
   - AFNetworking/Reachability (2.7.0)
   - AFNetworking/Security (2.7.0)
   - AFNetworking/Serialization (2.7.0)
-  - Analytics (4.1.8)
   - AppAuth (1.7.3):
     - AppAuth/Core (= 1.7.3)
     - AppAuth/ExternalUserAgent (= 1.7.3)
@@ -246,7 +245,6 @@ PODS:
   - iOSSnapshotTestCase/SwiftSupport (8.0.0):
     - iOSSnapshotTestCase/Core
   - ISO8601DateFormatter (0.7.1)
-  - JSDecoupledAppDelegate (1.2.0)
   - JWT (3.0.0-beta.14):
     - Base64 (~> 1.1.2)
   - JWTDecode (2.0.0)
@@ -2324,10 +2322,12 @@ DEPENDENCIES:
   - AFNetworkActivityLogger
   - AFNetworking/NSURLConnection (= 2.7.0)
   - AFNetworking/NSURLSession (= 2.7.0)
-  - Analytics (= 4.1.8)
   - appcenter-core (from `../node_modules/appcenter`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - "braze-react-native-sdk (from `../node_modules/@braze/react-native-sdk`)"
+  - BrazeKit (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeKit.podspec`)
+  - BrazeLocation (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeLocation.podspec`)
+  - BrazeUI (from `https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeUI.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - CocoaLumberjack (= 3.7.2)
   - CodePush (from `../node_modules/react-native-code-push`)
@@ -2363,7 +2363,6 @@ DEPENDENCIES:
   - Interstellar/Core (from `https://github.com/artsy/Interstellar.git`, branch `observable-unsubscribe`)
   - INTUAnimationEngine
   - ISO8601DateFormatter (from `https://github.com/artsy/iso-8601-date-formatter`)
-  - JSDecoupledAppDelegate
   - JWTDecode (= 2.0.0)
   - Mantle (= 1.5.6)
   - MARKRangeSlider
@@ -2493,14 +2492,10 @@ SPEC REPOS:
   trunk:
     - AFNetworkActivityLogger
     - AFNetworking
-    - Analytics
     - AppAuth
     - AppCenter
     - AppCenterReactNativeShared
     - Base64
-    - BrazeKit
-    - BrazeLocation
-    - BrazeUI
     - CocoaLumberjack
     - CwlCatchException
     - CwlCatchExceptionSupport
@@ -2531,7 +2526,6 @@ SPEC REPOS:
     - GTMSessionFetcher
     - INTUAnimationEngine
     - iOSSnapshotTestCase
-    - JSDecoupledAppDelegate
     - JWT
     - JWTDecode
     - libwebp
@@ -2584,6 +2578,12 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   braze-react-native-sdk:
     :path: "../node_modules/@braze/react-native-sdk"
+  BrazeKit:
+    :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeKit.podspec
+  BrazeLocation:
+    :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeLocation.podspec
+  BrazeUI:
+    :podspec: https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeUI.podspec
   BVLinearGradient:
     :path: "../node_modules/react-native-linear-gradient"
   CodePush:
@@ -2851,7 +2851,6 @@ SPEC CHECKSUMS:
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
-  Analytics: 9655e0e1c71ea98107cfcb2b14891168acc6c6c9
   AppAuth: a13994980c1ec792f7e2e665acd4d4aa6be43240
   AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
   appcenter-core: e192ea8b373bebd3e44998882b43311078bd7dda
@@ -2859,9 +2858,9 @@ SPEC CHECKSUMS:
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: 1dca942403ed9342f98334bf4c3621f011aa7946
   braze-react-native-sdk: f95d5eeb844b0e66c00fb4d9da0c06e23b2d7717
-  BrazeKit: 879da791a0f4e247846a06c6de95f8b93f4579df
-  BrazeLocation: 59af48eafcf233a8ef16de3f6900955332113fe4
-  BrazeUI: 0785c09df3cc03aa6374ac3307215caef7e49bd3
+  BrazeKit: bc5feb3d7b899c3961f7238735423b8e603fd48e
+  BrazeLocation: bdcb39337d24624b8741f1935c1ebddab677f8ac
+  BrazeUI: d2a12504bc0183e14cd7255d574f8340807ab45a
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   CodePush: d892f13c5012e9e2cb36640f4929654b7be21fe5
@@ -2912,7 +2911,6 @@ SPEC CHECKSUMS:
   INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   iOSSnapshotTestCase: a670511f9ee3829c2b9c23e6e68f315fd7b6790f
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
-  JSDecoupledAppDelegate: 5905e144cbe6e0c889248eebbee6784510f315e1
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
@@ -3058,6 +3056,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: feb4910aba9742cfedc059e2b2902e22ffe9954a
 
-PODFILE CHECKSUM: b105e2df2069b737aed2911a2d06dc1faf0964a5
+PODFILE CHECKSUM: 4cae1850b4ea9f3bc825913eedf0d6d26e46e52d
 
 COCOAPODS: 1.16.2
