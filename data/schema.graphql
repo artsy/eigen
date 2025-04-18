@@ -9061,6 +9061,36 @@ type CreatePartnerContactSuccess {
   partnerContact: Contact
 }
 
+type CreatePartnerLocationDaySchedulesFailure {
+  mutationError: GravityMutationError
+}
+
+input CreatePartnerLocationDaySchedulesInput {
+  clientMutationId: String
+
+  # List of day schedules for the full week
+  daySchedules: [DayScheduleInput!]!
+
+  # ID of the location
+  locationId: String!
+
+  # ID of the partner
+  partnerId: String!
+}
+
+union CreatePartnerLocationDaySchedulesOrError =
+    CreatePartnerLocationDaySchedulesFailure
+  | CreatePartnerLocationDaySchedulesSuccess
+
+type CreatePartnerLocationDaySchedulesPayload {
+  clientMutationId: String
+  daySchedulesOrError: CreatePartnerLocationDaySchedulesOrError
+}
+
+type CreatePartnerLocationDaySchedulesSuccess {
+  daySchedules: [DaySchedule]
+}
+
 type CreatePartnerLocationFailure {
   mutationError: GravityMutationError
 }
@@ -9652,6 +9682,12 @@ type DaySchedule {
   startTime: Int
 }
 
+input DayScheduleInput {
+  day: Int
+  endTime: Int
+  startTime: Int
+}
+
 type DeepZoom {
   Image: DeepZoomImage
 }
@@ -9719,6 +9755,10 @@ type DeleteArtistSuccess {
 
 union DeleteArtistSuccessOrErrorType = DeleteArtistFailure | DeleteArtistSuccess
 
+type DeleteArtworkFailure {
+  mutationError: GravityMutationError
+}
+
 input DeleteArtworkImageInput {
   artworkID: String!
   clientMutationId: String
@@ -9728,6 +9768,25 @@ input DeleteArtworkImageInput {
 type DeleteArtworkImagePayload {
   artworkOrError: ArtworkMutationType
   clientMutationId: String
+}
+
+input DeleteArtworkMutationInput {
+  clientMutationId: String
+
+  # The ID of the artwork to delete.
+  id: String!
+}
+
+type DeleteArtworkMutationPayload {
+  # On success: the deleted artwork. On error: the error that occurred.
+  artworkOrError: DeleteArtworkResponseOrError
+  clientMutationId: String
+}
+
+union DeleteArtworkResponseOrError = DeleteArtworkFailure | DeleteArtworkSuccess
+
+type DeleteArtworkSuccess {
+  artwork: Artwork
 }
 
 input DeleteBankAccountInput {
@@ -15044,6 +15103,11 @@ type Mutation {
   # Creates a new location for a partner
   createPartnerLocation(input: CreatePartnerLocationInput!): CreatePartnerLocationPayload
 
+  # Creates a new weekly schedule for a partner location
+  createPartnerLocationDaySchedules(
+    input: CreatePartnerLocationDaySchedulesInput!
+  ): CreatePartnerLocationDaySchedulesPayload
+
   # Create a partner offer for the users
   createPartnerOffer(input: createPartnerOfferMutationInput!): createPartnerOfferMutationPayload
 
@@ -15101,6 +15165,9 @@ type Mutation {
 
   # Delete an artist
   deleteArtist(input: DeleteArtistInput!): DeleteArtistPayload
+
+  # Deletes an artwork.
+  deleteArtwork(input: DeleteArtworkMutationInput!): DeleteArtworkMutationPayload
 
   # Deletes an image from an artwork in my collection
   deleteArtworkImage(input: DeleteArtworkImageInput!): DeleteArtworkImagePayload
@@ -22203,11 +22270,20 @@ input UpdatePartnerArtistMutationInput {
   biography: String
   clientMutationId: String
 
+  # Whether to display the artist on the partner profile page.
+  displayOnPartnerProfile: Boolean
+
+  # Whether to hide the artist in presentation mode (Folio) for the partner.
+  hideInPresentationMode: Boolean
+
   # The ID of the partner artist to update.
   id: String!
 
   # The URL of the image to use for the partner artist.
   remoteImageUrl: String
+
+  # Whether the artist is represented by the partner.
+  representedBy: Boolean
 
   # Whether to use the default biography for the artist instead of the partner-provided one.
   useDefaultBiography: Boolean

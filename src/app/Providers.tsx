@@ -109,10 +109,15 @@ const TrackingProvider: React.FC = ({ children }) => {
 // theme with dark mode support
 function ThemeWithDarkModeSupport({ children }: { children?: React.ReactNode }) {
   const supportDarkMode = useFeatureFlag("ARDarkModeSupport")
-  const darkMode = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+  const colorScheme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+  const theme = supportDarkMode ? (colorScheme === "dark" ? "v3dark" : "v3light") : undefined
 
   return (
-    <Theme theme={supportDarkMode ? (darkMode === "dark" ? "v3dark" : "v3light") : undefined}>
+    <Theme
+      // Setting the key to force the whole app to re-render when the theme changes.
+      key={theme}
+      theme={theme}
+    >
       {children}
     </Theme>
   )
