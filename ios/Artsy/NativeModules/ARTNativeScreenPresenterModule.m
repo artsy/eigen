@@ -4,7 +4,7 @@
 #import "ARAugmentedFloorBasedVIRViewController.h"
 #import "ArtsyEcho.h"
 #import "AROptions.h"
-#import "ARAppDelegate+Echo.h"
+#import "AppDelegate+Echo.h"
 #import "ARAuctionWebViewController.h"
 #import "ARRouter.h"
 #import <SDWebImage/SDWebImageManager.h>

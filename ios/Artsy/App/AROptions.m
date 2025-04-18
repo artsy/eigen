@@ -1,6 +1,6 @@
 #import "AROptions.h"
 #import "AppDelegate.h"
-#import "ARAppDelegate+Emission.h"
+#import "AppDelegate+Emission.h"
 
 static NSDictionary *options = nil;
 

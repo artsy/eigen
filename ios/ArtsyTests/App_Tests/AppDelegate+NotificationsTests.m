@@ -1,10 +1,11 @@
-#import "ARAppNotificationsDelegate.h"
+#import "AppDelegate.h"
+#import "AppDelegate+Notifications.h"
+
 #import "ARAnalyticsConstants.h"
 #import "ARNotificationView.h"
 #import "ARSerifNavigationViewController.h"
 #import "UIApplicationStateEnum.h"
 #import "AREmission.h"
-#import <Analytics/SEGAnalytics.h>
 #import "UserNotifications/UNNotification.h"
 #import "UserNotifications/UNNotificationRequest.h"
 #import "UserNotifications/UNNotificationContent.h"
@@ -19,7 +20,7 @@ DictionaryWithAppState(NSDictionary *input, UIApplicationState appState)
     return [dictionary copy];
 }
 
-@interface ARAppNotificationsDelegate()
+@interface ARAppDelegate()
 - (UIViewController *)getGlobalTopViewController;
 @end
 
@@ -32,28 +33,22 @@ describe(@"receiveRemoteNotification", ^{
     };
 
     __block UIApplication *app = nil;
-    __block ARAppNotificationsDelegate *delegate = nil;
+    __block ARAppDelegate *delegate = nil;
     __block UIApplicationState appState = -1;
     __block id mockEmissionSharedInstance = nil;
-    __block id mockSegmentSharedInstance = nil;
     __block UNNotification *unNotification = nil;
     __block UNUserNotificationCenter *currentCenter = nil;
     __block void (^completionHandler)(UNNotificationPresentationOptions) = ^(UNNotificationPresentationOptions options) {};
 
     beforeEach(^{
         app = [UIApplication sharedApplication];
-        delegate = [[ARAppNotificationsDelegate alloc] init];
+        delegate = [ARAppDelegate sharedInstance];
 
         mockEmissionSharedInstance = [OCMockObject partialMockForObject:AREmission.sharedInstance];;
-
-        // Setup a segment shared instance otherwise the tests will crash
-        SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:@"GARBAGE"];
-        [SEGAnalytics setupWithConfiguration:configuration];
     });
 
     afterEach(^{
         [mockEmissionSharedInstance stopMocking];
-        [mockSegmentSharedInstance stopMocking];
     });
 
     sharedExamplesFor(@"when receiving a notification", ^(NSDictionary *prefs) {
