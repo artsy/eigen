@@ -11,7 +11,7 @@
 #import <CodePush/CodePush.h>
 #import <AppCenterReactNative.h>
 
-#import "ARAppDelegate.h"
+#import "AppDelegate.h"
 #import "ARAppDelegate+Emission.h"
 #import "ARAppDelegate+Echo.h"
 #import "ARAppNotificationsDelegate.h"
