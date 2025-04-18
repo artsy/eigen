@@ -141,6 +141,7 @@
     "autosuggest-highlight": "3.3.4",
     "easy-peasy": "6.0.5",
     "events": "3.3.0",
+    "expo": "^52.0.0",
     "formik": "2.2.9",
     "html-entities": "2.3.3",
     "jwt-decode": "4.0.0",
