@@ -10423,7 +10423,7 @@ input EditableLocation {
 }
 
 type EditionSet implements Sellable {
-  artistProofs: Boolean
+  artistProofs: String
   availability: String
   availableEditions: [String]
   depth: String
