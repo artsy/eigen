@@ -65,18 +65,16 @@ interface ArtistProps {
   searchCriteria: SearchCriteriaAttributes | null
 }
 
-export const Artist: React.FC<ArtistProps> = (props) => {
-  const {
-    artistAboveTheFold,
-    artistBelowTheFold,
-    auctionResultsInitialFilters,
-    fetchCriteriaError,
-    initialTab = INITIAL_TAB,
-    predefinedFilters,
-    scrollToArtworksGrid,
-    searchCriteria,
-  } = props
-
+export const Artist: React.FC<ArtistProps> = ({
+  artistAboveTheFold,
+  artistBelowTheFold,
+  auctionResultsInitialFilters,
+  fetchCriteriaError,
+  initialTab = INITIAL_TAB,
+  predefinedFilters,
+  scrollToArtworksGrid,
+  searchCriteria,
+}) => {
   const [headerHeight, setHeaderHeight] = useState(0)
   const popoverMessage = usePopoverMessage()
   const { showShareSheet } = useShareSheet()
@@ -225,19 +223,17 @@ export const defaultArtistVariables = {
   }),
 }
 
-export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) => {
-  const {
-    artistID,
-    categories,
-    environment,
-    initialTab,
-    predefinedFilters,
-    search_criteria_id,
-    scrollToArtworksGrid = false,
-    alertID,
-    sizes,
-  } = props
-
+export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
+  artistID,
+  categories,
+  environment,
+  initialTab,
+  predefinedFilters,
+  search_criteria_id,
+  scrollToArtworksGrid = false,
+  alertID,
+  sizes,
+}) => {
   // exctact filter params from the query string. This is needed when
   // the screen is opened via deeplink (/artist/kaws?attribution_class=..., for instance)
   // to make sure the filters are applied correctly
