@@ -48,7 +48,7 @@ describe("SwitchMenu", () => {
     const titleText = screen.getByText("Test Title")
     const descriptionText = screen.getByText("Test Description")
 
-    expect(titleText.props.color).toBe("black60")
-    expect(descriptionText.props.color).toBe("black30")
+    expect(titleText.props.color).toBe("mono60")
+    expect(descriptionText.props.color).toBe("mono30")
   })
 })

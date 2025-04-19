@@ -20,19 +20,19 @@ export const SoldBySection: React.FC<Props> = ({ soldBy }) => {
   return (
     <Box>
       <Box flexDirection="row" testID="soldByInfo">
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="mono60">
           {isForPickup ? "Pick up " : "Ships from "}
         </Text>
-        <Text testID="shippingOrigin" color="black60" variant="sm">
+        <Text testID="shippingOrigin" color="mono60" variant="sm">
           {isForPickup ? `(${artwork?.shippingOrigin})` : artwork?.shippingOrigin}
         </Text>
       </Box>
       {!!orderEstimatedDelivery && (
         <Box flexDirection="row">
-          <Text color="black60" variant="sm">
+          <Text color="mono60" variant="sm">
             Estimated Delivery:{" "}
           </Text>
-          <Text color="black60" testID="delivery" variant="sm">
+          <Text color="mono60" testID="delivery" variant="sm">
             {orderEstimatedDelivery.toLocaleString(DateTime.DATE_MED)}
           </Text>
         </Box>

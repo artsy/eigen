@@ -28,7 +28,7 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
       overflow="hidden"
       {...rest}
     >
-      <Flex flex={2} backgroundColor="black10">
+      <Flex flex={2} backgroundColor="mono10">
         <Image src={image} height={MEDIUM_CARD_HEIGHT} width={MEDIUM_CARD_WIDTH} />
       </Flex>
       <LinearGradient

@@ -154,7 +154,7 @@ const WhiteUnderlay: React.FC = () => {
   return (
     <Animated.View
       style={{
-        backgroundColor: color("white100"),
+        backgroundColor: color("mono0"),
         opacity,
         position: "absolute",
         left: 0,

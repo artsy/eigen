@@ -69,7 +69,7 @@ export const ArtworkStickyBottomContent: React.FC<ArtworkStickyBottomContentProp
   return (
     <Box
       accessibilityLabel="Sticky bottom commercial section"
-      bg="white100"
+      bg="mono0"
       pb={`${safeAreaInsets.bottom}px`}
       onLayout={(e) => {
         setToastBottomPadding(e.nativeEvent.layout.height - bottomSafeAreaInset)

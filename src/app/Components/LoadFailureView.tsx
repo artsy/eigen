@@ -125,13 +125,13 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
               }
               onRetry?.()
             })}
-            underlayColor={color("black5")}
+            underlayColor={color("mono5")}
             haptic
             style={{
               height: 40,
               width: 40,
               borderRadius: 20,
-              borderColor: color("black10"),
+              borderColor: color("mono10"),
               borderWidth: 1,
               justifyContent: "center",
               alignItems: "center",

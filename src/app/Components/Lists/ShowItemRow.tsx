@@ -127,7 +127,7 @@ export class ShowItemRow extends React.Component<Props, State> {
           <Flex flexDirection="row" alignItems="center">
             {!imageURL ? (
               <DefaultImageContainer p="15px">
-                <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
+                <Pin color={color("mono0")} pinHeight={30} pinWidth={30} />
               </DefaultImageContainer>
             ) : (
               <DefaultImageContainer>
@@ -139,7 +139,7 @@ export class ShowItemRow extends React.Component<Props, State> {
                 <Text
                   variant="sm"
                   lineHeight="20px"
-                  color="black100"
+                  color="mono100"
                   weight="medium"
                   numberOfLines={1}
                   ml="15px"
@@ -151,7 +151,7 @@ export class ShowItemRow extends React.Component<Props, State> {
                 <Text
                   variant="sm"
                   lineHeight="20px"
-                  color={color("black60")}
+                  color={color("mono60")}
                   ml="15px"
                   numberOfLines={1}
                 >
@@ -162,7 +162,7 @@ export class ShowItemRow extends React.Component<Props, State> {
                 <Text
                   variant="sm"
                   lineHeight="20px"
-                  color={color("black60")}
+                  color={color("mono60")}
                   ml="15px"
                   numberOfLines={1}
                 >
@@ -196,7 +196,7 @@ export class ShowItemRow extends React.Component<Props, State> {
       <ThemeAwareClassTheme>
         {({ color }) => (
           <Touchable
-            underlayColor={color("black5")}
+            underlayColor={color("mono5")}
             onPress={() => this.handleTap(show.slug, show.internalID)}
             style={{ paddingHorizontal: 20, paddingVertical: 5 }}
           >
@@ -248,7 +248,7 @@ export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
 
 const DefaultImageContainer = styled(Box)`
   align-items: center;
-  background-color: ${themeGet("colors.black10")};
+  background-color: ${themeGet("colors.mono10")};
   height: ${themeGet("space.6")};
   width: ${themeGet("space.6")};
 `

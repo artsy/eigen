@@ -9,7 +9,7 @@ import styled from "styled-components/native"
 import { FairEventSectionCard } from "./Components/FairEventSectionCard"
 
 const FairSectionBackground = styled(Box)`
-  background: ${themeGet("colors.black100")};
+  background: ${themeGet("colors.mono100")};
   margin-bottom: ${themeGet("space.1")};
 `
 
@@ -42,7 +42,7 @@ export class FairEventSection extends Component<Props> {
         {({ space }) => (
           <FairSectionBackground>
             <Box mt={4}>
-              <Text variant="lg-display" color="white100">
+              <Text variant="lg-display" color="mono0">
                 Fairs
               </Text>
             </Box>
@@ -58,7 +58,7 @@ export class FairEventSection extends Component<Props> {
                 <CaretButton
                   onPress={() => this.viewAllPressed()}
                   text={`View all ${data.length} fairs`}
-                  textColor="white100"
+                  textColor="mono0"
                 />
               </Box>
             )}

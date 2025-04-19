@@ -24,7 +24,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
         >
           <Flex flex={1} px={2} pt={6} justifyContent="flex-start">
             <Text variant="lg-display">Forgot Password?</Text>
-            <Text pt={0.5} color="black100" variant="xs">
+            <Text pt={0.5} color="mono100" variant="xs">
               Please enter the email address associated with your Artsy account to receive a reset
               link.
             </Text>
@@ -52,7 +52,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
                 }}
                 blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
                 placeholder="Email address"
-                placeholderTextColor={color("black30")}
+                placeholderTextColor={color("mono30")}
                 value={values.email}
                 returnKeyType="done"
                 spellCheck={false}

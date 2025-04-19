@@ -49,7 +49,7 @@ export const WatchedLot: React.FC<WatchedLotProps> = ({ saleArtwork }) => {
           <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
             <Text variant="xs">{sellingPrice}</Text>
             {!!bidCount && (
-              <Text variant="xs" color="black60">
+              <Text variant="xs" color="mono60">
                 {" "}
                 {displayBidCount()}
               </Text>

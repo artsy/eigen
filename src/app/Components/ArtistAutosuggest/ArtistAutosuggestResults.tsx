@@ -89,7 +89,7 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
           Sorry, we couldn’t find anything for {quoteLeft}
           {query}.{quoteRight}
         </Text>
-        <Text variant="sm-display" color="black60" textAlign="center">
+        <Text variant="sm-display" color="mono60" textAlign="center">
           Please try searching again with a different spelling.
         </Text>
       </AutoSuggestBoxContainer>

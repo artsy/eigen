@@ -84,7 +84,7 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
         backgroundColor: color("background"),
       }}
       handleIndicatorStyle={{
-        backgroundColor: color("black100"),
+        backgroundColor: color("mono100"),
         width: 40,
         height: 4,
         borderRadius: 2,

@@ -101,7 +101,7 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
             <Flex mr={1} flexShrink={1}>
               <Text variant="sm">{name}</Text>
               {!!sortedLocations[0] && (
-                <Text variant="sm-display" color="black60">
+                <Text variant="sm-display" color="mono60">
                   {sortedLocations[0].city}
                   {!!(sortedLocations.length > 1) &&
                     ` and ${sortedLocations.length - 1} more ${pluralize(

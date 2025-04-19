@@ -14,7 +14,7 @@ export const ArtistCustomArtist: React.FC<{
           {artist.name}
         </Text>
         {(!!artist.nationality || !!artist.birthYear) && (
-          <Text variant="xs" numberOfLines={1} color="black60" ellipsizeMode="tail">
+          <Text variant="xs" numberOfLines={1} color="mono60" ellipsizeMode="tail">
             {!!artist.nationality && artist.nationality + ","}{" "}
             {!!artist.birthYear && "b. " + artist.birthYear}
           </Text>

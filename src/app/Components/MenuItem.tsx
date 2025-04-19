@@ -36,7 +36,7 @@ export const MenuItem: React.FC<{
   chevron = (
     <ChevronIcon
       direction="right"
-      fill={disabled && allowDisabledVisualClue ? "black30" : "black60"}
+      fill={disabled && allowDisabledVisualClue ? "mono30" : "mono60"}
     />
   ),
   description,
@@ -61,7 +61,7 @@ export const MenuItem: React.FC<{
       noFeedback={noFeedback}
       onPress={onPress}
       to={href}
-      underlayColor="black5"
+      underlayColor="mono5"
       disabled={disabled}
     >
       <Flex
@@ -79,21 +79,18 @@ export const MenuItem: React.FC<{
         )}
         <Flex flex={7}>
           <Flex>
-            <Text variant="sm-display" color="black100">
+            <Text variant="sm-display" color="mono100">
               {title}
             </Text>
             {!!description && (
-              <Text variant="xs" color="black60">
+              <Text variant="xs" color="mono60">
                 {description}
               </Text>
             )}
           </Flex>
           {!!isBeta && (
-            <Flex px={0.5} mx={1} backgroundColor={color("black10")}>
-              <Text
-                variant="sm"
-                color={disabled && allowDisabledVisualClue ? "black30" : "black60"}
-              >
+            <Flex px={0.5} mx={1} backgroundColor={color("mono10")}>
+              <Text variant="sm" color={disabled && allowDisabledVisualClue ? "mono30" : "mono60"}>
                 Beta
               </Text>
             </Flex>
@@ -107,7 +104,7 @@ export const MenuItem: React.FC<{
             <Flex width={200}>
               <Text
                 variant="sm-display"
-                color={disabled && allowDisabledVisualClue ? "black30" : "black60"}
+                color={disabled && allowDisabledVisualClue ? "mono30" : "mono60"}
                 numberOfLines={1}
                 ellipsizeMode={ellipsizeMode}
                 textAlign="right"
@@ -120,7 +117,7 @@ export const MenuItem: React.FC<{
           {!!text && (
             <Text
               variant="sm-display"
-              color={disabled && allowDisabledVisualClue ? "black30" : "black60"}
+              color={disabled && allowDisabledVisualClue ? "mono30" : "mono60"}
             >
               {text}
             </Text>

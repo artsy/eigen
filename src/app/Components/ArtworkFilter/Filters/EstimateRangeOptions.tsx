@@ -69,7 +69,7 @@ export const EstimateRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> 
       filterOptions={options}
       ListHeaderComponent={
         <>
-          <Text variant="sm" color="black60" textAlign="center" my="15px">
+          <Text variant="sm" color="mono60" textAlign="center" my="15px">
             Based on the estimate for the lot
           </Text>
           <Separator />

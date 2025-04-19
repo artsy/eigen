@@ -52,7 +52,7 @@ export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps>
           )
         }}
         backgroundStyle={{
-          backgroundColor: color("white100"),
+          backgroundColor: color("mono0"),
         }}
         handleComponent={InfiniteDiscoveryBottomeSheetHandle}
         footerComponent={(props) => {

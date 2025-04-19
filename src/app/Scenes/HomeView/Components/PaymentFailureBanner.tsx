@@ -90,13 +90,13 @@ export const PaymentFailureBanner: React.FC = withSuspense({
 
     return (
       <Banner data-testid="PaymentFailureBanner" variant="error" dismissable>
-        <Text textAlign="left" variant="xs" color="white100">
+        <Text textAlign="left" variant="xs" color="mono0">
           {bannerText}
         </Text>
         <LinkText
           variant="xs"
           textAlign="left"
-          color="white100"
+          color="mono0"
           onPress={() => handleBannerLinkClick()}
         >
           {linkText}

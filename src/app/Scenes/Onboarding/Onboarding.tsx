@@ -141,7 +141,7 @@ export const OnboardingWelcomeScreens = () => {
               },
               headerTitle: "Dev Settings",
               headerShown: true,
-              headerTintColor: color("black100"),
+              headerTintColor: color("mono100"),
               headerLeft: () => <></>,
               headerRightContainerStyle: {
                 paddingRight: space(2),

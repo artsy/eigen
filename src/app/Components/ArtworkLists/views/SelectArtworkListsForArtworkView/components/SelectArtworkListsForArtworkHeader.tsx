@@ -52,7 +52,7 @@ export const SelectArtworkListsForArtworkHeader = () => {
             Create New List
           </Button>
 
-          <Text variant="xs" textAlign="center" color="black60" my="auto">
+          <Text variant="xs" textAlign="center" color="mono60" my="auto">
             {getSelectedListsCountText(totalCount)}
           </Text>
         </Flex>

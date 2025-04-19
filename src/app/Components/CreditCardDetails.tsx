@@ -10,14 +10,14 @@ const CreditCardDetails = ({
   <Flex alignItems="center" flexDirection="row">
     <CreditCardIcon type={brand as any} width={30} height={20} />
     <Flex flexDirection="row" alignItems="baseline">
-      <Text variant="sm-display" color="black100" mx={1}>
+      <Text variant="sm-display" color="mono100" mx={1}>
         {bullet}
         {bullet}
         {bullet}
         {bullet}
         {lastDigits}
       </Text>
-      <Text variant="sm" color="black60">
+      <Text variant="sm" color="mono60">
         Exp {expirationMonth.toString().padStart(2, "0")}/{expirationYear.toString().slice(-2)}
       </Text>
     </Flex>

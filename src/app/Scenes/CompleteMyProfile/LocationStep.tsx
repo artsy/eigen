@@ -53,7 +53,7 @@ export const LocationStep: FC = () => {
 
             <Spacer y={1} />
 
-            <Text color="black60">
+            <Text color="mono60">
               Receive recommendations for local galleries, shows, and offers on artworks.
             </Text>
 

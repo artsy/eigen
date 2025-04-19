@@ -43,7 +43,7 @@ export const HeaderButton: React.FC<HeaderButtonProps> = (props) => {
           width: BUTTON_SIZE,
           height: BUTTON_SIZE,
           borderRadius: BUTTON_SIZE / 2,
-          backgroundColor: color("white100"),
+          backgroundColor: color("mono0"),
           position: "absolute",
           left: position === "left" ? BUTTON_HORIZONTAL_OFFSET : undefined,
           right: position === "right" ? BUTTON_HORIZONTAL_OFFSET : undefined,

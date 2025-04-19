@@ -41,7 +41,7 @@ export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection }) 
   }
 
   return (
-    <Flex borderTopWidth={1} borderColor="black10">
+    <Flex borderTopWidth={1} borderColor="mono10">
       <HeaderArtworksFilter onPress={openFilterArtworksModal} hideArtworksCount />
       <ArtworkFilterNavigator
         id={collection.id}

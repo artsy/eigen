@@ -37,7 +37,7 @@ export const OtherCollectionsRail: React.FC<OtherCollectionsRailProps> = ({
                 variant="sm"
                 px={4}
                 py={2}
-                backgroundColor="black10"
+                backgroundColor="mono10"
                 style={{
                   overflow: "hidden",
                   borderRadius: 6,

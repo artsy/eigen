@@ -37,7 +37,7 @@ type ScreenWrapperProps = StackScreenProps<
 const ScreenWrapper: React.FC<ScreenWrapperProps> = (props) => {
   const color = useColor()
   return (
-    <View style={{ flex: 1, backgroundColor: color("white100") }}>
+    <View style={{ flex: 1, backgroundColor: color("mono0") }}>
       <props.route.params.Component
         {...props.route.params.props}
         navigator={props.route.params.navigator}

@@ -58,7 +58,7 @@ export const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ ...r
 
   return (
     <Flex
-      backgroundColor="black5"
+      backgroundColor="mono5"
       justifyContent="center"
       alignItems="center"
       height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT}

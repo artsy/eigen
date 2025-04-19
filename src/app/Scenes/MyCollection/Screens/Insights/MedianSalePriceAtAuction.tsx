@@ -71,7 +71,7 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
               width={40}
               height={40}
               borderRadius={20}
-              backgroundColor="black10"
+              backgroundColor="mono10"
               alignItems="center"
               justifyContent="center"
               overflow="hidden"
@@ -100,7 +100,7 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
                 haptic
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               >
-                <Text style={{ textDecorationLine: "underline" }} variant="xs" color="black60">
+                <Text style={{ textDecorationLine: "underline" }} variant="xs" color="mono60">
                   Change Artist
                 </Text>
               </Touchable>
@@ -227,7 +227,7 @@ const LoadingSkeleton = () => {
               width={40}
               height={40}
               borderRadius={20}
-              backgroundColor="black10"
+              backgroundColor="mono10"
               alignItems="center"
               justifyContent="center"
               overflow="hidden"

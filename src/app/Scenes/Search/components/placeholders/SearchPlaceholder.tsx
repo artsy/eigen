@@ -58,7 +58,7 @@ const TrendingArtistPlaceholder = () => {
 
 const CuratedCollectionCardPlaceholder: React.FC = (props) => {
   return (
-    <Box borderRadius={4} border="1px solid" borderColor="black10" overflow="hidden" {...props}>
+    <Box borderRadius={4} border="1px solid" borderColor="mono10" overflow="hidden" {...props}>
       <PlaceholderBox width={CARD_WIDTH} borderRadius={0} height={180} />
       <Box m="15px" mb={1}>
         <PlaceholderText width={120} height={20} />

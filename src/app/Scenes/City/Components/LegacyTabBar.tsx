@@ -46,7 +46,7 @@ const TabButton = styled.View<{ spaceEvenly?: boolean; active?: boolean }>`
     !p.spaceEvenly &&
     p.active &&
     `
-    border-color: ${themeGet("colors.black100")};
+    border-color: ${themeGet("colors.mono100")};
     border-bottom-width: 1px;
     margin-bottom: -1px;
   `};
@@ -71,7 +71,7 @@ export default class TabBar extends Component<TabBarProps> {
                 numberOfLines={1}
                 ellipsizeMode="tail"
                 weight="medium"
-                color={isTabActive ? "black100" : color("black30")}
+                color={isTabActive ? "mono100" : color("mono30")}
               >
                 {name}
               </Text>
@@ -109,7 +109,7 @@ export default class TabBar extends Component<TabBarProps> {
                         position: "absolute",
                         width: containerWidth / numberOfTabs,
                         height: 1,
-                        backgroundColor: color("black100"),
+                        backgroundColor: color("mono100"),
                         bottom: -1,
                         left: 0,
                         right: 0,
@@ -131,5 +131,5 @@ export default class TabBar extends Component<TabBarProps> {
 
 const Wrapper = styled(Box)`
   border-bottom-width: 1px;
-  border-bottom-color: ${themeGet("colors.black30")};
+  border-bottom-color: ${themeGet("colors.mono30")};
 `

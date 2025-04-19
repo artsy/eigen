@@ -30,7 +30,7 @@ export const FairHeader: FC<FairHeaderProps> = ({ fair }) => {
             <Flex
               alignItems="center"
               justifyContent="center"
-              bg="white100"
+              bg="mono0"
               width={80}
               height={60}
               px={1}

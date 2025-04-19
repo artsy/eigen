@@ -38,7 +38,7 @@ export const IdentityVerificationStep: FC = () => {
               <Spacer y={1} />
 
               <Flex gap={2}>
-                <Text color="black60">
+                <Text color="mono60">
                   Send an ID verification email and follow the link and instructions to verify your
                   account.
                 </Text>
@@ -46,12 +46,12 @@ export const IdentityVerificationStep: FC = () => {
                 {!isIdentityVerified ? (
                   <Button onPress={handleSendVerification}>Send verification Email</Button>
                 ) : (
-                  <Button icon={<CheckIcon fill="white100" />} variant="fillSuccess">
+                  <Button icon={<CheckIcon fill="mono0" />} variant="fillSuccess">
                     Email sent
                   </Button>
                 )}
 
-                <Text color="black60">
+                <Text color="mono60">
                   Identify Verification is required for some transactions. For more details, see our
                   <Text
                     style={{ textDecorationLine: "underline" }}
@@ -66,7 +66,7 @@ export const IdentityVerificationStep: FC = () => {
             </Flex>
 
             {!!isIdentityVerified && (
-              <Text color="white100" backgroundColor="green100" py={1} px={2}>
+              <Text color="mono0" backgroundColor="green100" py={1} px={2}>
                 ID verification email sent to {data?.email}.
               </Text>
             )}

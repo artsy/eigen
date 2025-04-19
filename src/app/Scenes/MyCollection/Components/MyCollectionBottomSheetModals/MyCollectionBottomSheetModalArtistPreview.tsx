@@ -97,7 +97,7 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
             >
               <>
                 <Text variant="xs">Share this artist with galleries during inquiries.</Text>
-                <Text variant="xs" color="black60">
+                <Text variant="xs" color="mono60">
                   Galleries are more likely to respond if they can see the artists you collect.
                 </Text>
               </>
@@ -134,7 +134,7 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
               <Message
                 variant="default"
                 title="To remove this artist, please remove their artworks from My Collection first."
-                IconComponent={() => <InfoCircleIcon width={18} height={18} fill="black100" />}
+                IconComponent={() => <InfoCircleIcon width={18} height={18} fill="mono100" />}
               />
             </>
           )}

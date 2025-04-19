@@ -23,7 +23,7 @@ export const Footer: FC<FooterProps> = ({ isFormDirty, onGoNext }) => {
         pb={Platform.OS === "ios" ? 4 : 2}
         px={2}
         borderTopWidth={1}
-        borderTopColor="black10"
+        borderTopColor="mono10"
       >
         <Touchable onPress={goBack}>
           <Text underline>Back</Text>

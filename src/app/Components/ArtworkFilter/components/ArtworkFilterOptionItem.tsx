@@ -23,7 +23,7 @@ export const ArtworkFilterOptionItem: React.FC<ArtworkFilterOptionItemProps> = (
         </Flex>
         <Flex alignItems="center" justifyContent="flex-end">
           {RightAccessoryItem || (
-            <ArrowRightIcon fill="black100" ml={1} testID="ArtworkFilterOptionItemArrowIcon" />
+            <ArrowRightIcon fill="mono100" ml={1} testID="ArtworkFilterOptionItemArrowIcon" />
           )}
         </Flex>
       </Flex>

@@ -26,14 +26,14 @@ export const InfiniteDiscoveryBottomeSheetHandle: FC<BottomSheetDefaultHandlePro
       borderRadius={20}
       alignItems="center"
       pt={0.5}
-      backgroundColor="white100"
+      backgroundColor="mono0"
     >
       <Animated.View style={animatedHandle}>
-        <ArrowUpIcon width={20} height={20} fill="black60" />
+        <ArrowUpIcon width={20} height={20} fill="mono60" />
       </Animated.View>
 
       <Animated.View style={[opacityStyle, heightTextStyle]}>
-        <Text selectable={false} color="black60">
+        <Text selectable={false} color="mono60">
           Swipe up for more details
         </Text>
       </Animated.View>

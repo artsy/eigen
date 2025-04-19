@@ -139,7 +139,7 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
               <GeneArtworksFilterHeader openFilterArtworksModal={openFilterArtworksModal} />
             </Tabs.SubTabBar>
             <Flex pt={1}>
-              <Text variant="xs" color="black60">
+              <Text variant="xs" color="mono60">
                 {`Showing ${artworksTotal} work${artworksTotal > 1 ? "s" : ""}`}
               </Text>
             </Flex>

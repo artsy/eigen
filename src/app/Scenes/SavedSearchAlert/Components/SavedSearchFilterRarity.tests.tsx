@@ -9,7 +9,7 @@ import {
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-const black100Hex = "#000000"
+const mono100Hex = "#000000"
 
 describe("SavedSearchFilterRarity", () => {
   it("shows all available rarity options unselected", () => {
@@ -22,7 +22,7 @@ describe("SavedSearchFilterRarity", () => {
     KNOWN_ATTRIBUTION_CLASS_OPTIONS.forEach((option) => {
       expect(getByText(option.displayText)).toBeDefined()
       expect(getByText(option.displayText)).toHaveStyle({
-        color: black100Hex,
+        color: mono100Hex,
       })
     })
   })
@@ -36,9 +36,9 @@ describe("SavedSearchFilterRarity", () => {
       </SavedSearchStoreProvider>
     )
 
-    expect(getByText("Unique")).not.toHaveStyle({ color: black100Hex })
-    expect(getByText("Limited Edition")).toHaveStyle({ color: black100Hex })
-    expect(getByText("Open Edition")).toHaveStyle({ color: black100Hex })
+    expect(getByText("Unique")).not.toHaveStyle({ color: mono100Hex })
+    expect(getByText("Limited Edition")).toHaveStyle({ color: mono100Hex })
+    expect(getByText("Open Edition")).toHaveStyle({ color: mono100Hex })
   })
 
   it("Updates selected filters on press", async () => {
@@ -50,7 +50,7 @@ describe("SavedSearchFilterRarity", () => {
 
     fireEvent(getByText("Unique"), "onPress")
 
-    expect(getByText("Unique")).not.toHaveStyle({ color: black100Hex })
+    expect(getByText("Unique")).not.toHaveStyle({ color: mono100Hex })
   })
 })
 

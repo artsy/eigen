@@ -72,7 +72,7 @@ export const Slide: React.FC<SlideProps> = ({ icon: Icon, text, title }) => {
       <Flex flex={1}>
         <Text variant="sm-display">{title}</Text>
         <Spacer y={0.5} />
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="mono60">
           {text}
         </Text>
       </Flex>

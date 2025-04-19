@@ -21,8 +21,8 @@ export const ArtworkInfo: FC<ArtworkInfoProps> = ({ artwork }) => {
           </Text>
         )}
 
-        <Text variant="sm" color="black60" numberOfLines={1}>
-          <Text variant="sm" color="black60" italic>
+        <Text variant="sm" color="mono60" numberOfLines={1}>
+          <Text variant="sm" color="mono60" italic>
             {artwork.title}
           </Text>
           {!!artwork.year && `, ${artwork.year}`}

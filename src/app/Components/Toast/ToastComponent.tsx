@@ -31,7 +31,7 @@ export const ToastComponent = ({
   description,
   onPress,
   Icon,
-  backgroundColor = "black100",
+  backgroundColor = "mono100",
   duration = "short",
   cta,
   imageURL,
@@ -84,8 +84,8 @@ export const ToastComponent = ({
   if (placement === "middle") {
     const innerMiddle = (
       <Flex flex={1} alignItems="center" justifyContent="center">
-        {Icon !== undefined && <Icon fill="white100" width={45} height={45} />}
-        <Text variant="xs" color="white100" textAlign="center" px={0.5}>
+        {Icon !== undefined && <Icon fill="mono0" width={45} height={45} />}
+        <Text variant="xs" color="mono0" textAlign="center" px={0.5}>
           {message}
         </Text>
       </Flex>
@@ -108,7 +108,7 @@ export const ToastComponent = ({
           <Touchable
             style={{ flex: 1 }}
             onPress={() => onPress({ id, showActionSheetWithOptions })}
-            underlayColor={color("black60")}
+            underlayColor={color("mono60")}
           >
             {innerMiddle}
           </Touchable>
@@ -122,22 +122,22 @@ export const ToastComponent = ({
   const innerTopBottom = (
     <Flex flex={1} justifyContent="center" m={1}>
       <Flex flexDirection="row" alignItems="flex-start">
-        {Icon !== undefined ? <Icon fill="white100" width={25} height={25} mr={1} /> : null}
+        {Icon !== undefined ? <Icon fill="mono0" width={25} height={25} mr={1} /> : null}
 
         {!!imageURL && (
-          <Box borderWidth={1} borderColor="white100" mr={1}>
+          <Box borderWidth={1} borderColor="mono0" mr={1}>
             <Image src={imageURL} width={IMAGE_SIZE} height={IMAGE_SIZE} />
           </Box>
         )}
 
         <Flex flex={1}>
-          <Text variant="sm-display" color="white100">
+          <Text variant="sm-display" color="mono0">
             {message}
           </Text>
         </Flex>
 
         {!!cta && (
-          <Text variant="xs" color="white100" ml={1} underline>
+          <Text variant="xs" color="mono0" ml={1} underline>
             {cta}
           </Text>
         )}
@@ -145,7 +145,7 @@ export const ToastComponent = ({
 
       {!!description && (
         <Flex flex={1} mt={0.5}>
-          <Text variant="xs" color="white100">
+          <Text variant="xs" color="mono0">
             {description}
           </Text>
         </Flex>

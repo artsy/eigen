@@ -90,7 +90,7 @@ const SignUpPasswordStepForm: React.FC = () => {
         autoComplete="password"
         autoCorrect={false}
         blurOnSubmit={false}
-        placeholderTextColor={color("black30")}
+        placeholderTextColor={color("mono30")}
         ref={passwordRef}
         returnKeyType="done"
         secureTextEntry
@@ -106,7 +106,7 @@ const SignUpPasswordStepForm: React.FC = () => {
 
       <Spacer y={1} />
 
-      <Text variant="xs" color="black60">
+      <Text variant="xs" color="mono60">
         Password must be at least 8 characters and include a lowercase letter, uppercase letter, and
         digit.
       </Text>
@@ -128,7 +128,7 @@ const SignUpPasswordStepForm: React.FC = () => {
         <>
           <Spacer y={1} />
 
-          <Text variant="xs" color="black60" textAlign="center">
+          <Text variant="xs" color="mono60" textAlign="center">
             Already have an account?{" "}
             <LinkText
               variant="xs"

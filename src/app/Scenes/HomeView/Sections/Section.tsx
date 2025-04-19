@@ -112,7 +112,7 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
     default:
       if (__DEV__) {
         return (
-          <Flex p={2} backgroundColor="black10">
+          <Flex p={2} backgroundColor="mono10">
             <Text>Non supported section:</Text>
             <Text color="devpurple">{section.__typename}</Text>
           </Flex>

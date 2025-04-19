@@ -45,7 +45,7 @@ export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({
       <ViewShot
         ref={shotRef}
         options={{ format: "png", result: "base64" }}
-        style={{ backgroundColor: color("white100") }}
+        style={{ backgroundColor: color("mono0") }}
       >
         <Image src={href} style={{ width, height }} resizeMode="contain" />
 

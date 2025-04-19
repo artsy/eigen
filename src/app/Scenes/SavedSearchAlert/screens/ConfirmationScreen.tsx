@@ -75,7 +75,7 @@ export const ConfirmationScreen: React.FC = () => {
             paddingHorizontal: space(2),
           }}
         >
-          <Text variant="sm" color="black60">
+          <Text variant="sm" color="mono60">
             We’ll let you know when matching works are added to Artsy.
           </Text>
 
@@ -114,7 +114,7 @@ const MatchingArtworksPlaceholder: React.FC = () => {
   const screen = useScreenDimensions()
   const { space } = useTheme()
   return (
-    <Box testID="MatchingArtworksPlaceholder" borderTopWidth={1} borderTopColor="black30" pt={1}>
+    <Box testID="MatchingArtworksPlaceholder" borderTopWidth={1} borderTopColor="mono30" pt={1}>
       <PlaceholderRaggedText numLines={2} textHeight={20} />
       <Spacer y={2} />
       <GenericGridPlaceholder width={screen.width - space(4)} />
@@ -142,7 +142,7 @@ const MatchingArtworksContainer: React.FC<{ closeModal?: () => void }> = withSus
   LoadingFallback: MatchingArtworksPlaceholder,
   ErrorFallback: () => {
     return (
-      <Text mb={2} p={2} bg="black10" color="black60">
+      <Text mb={2} p={2} bg="mono10" color="mono60">
         There aren't any works available that meet the criteria at this time.
       </Text>
     )
@@ -194,7 +194,7 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
 
   if (total === 0) {
     return (
-      <Text mb={2} p={2} bg="black10" color="black60">
+      <Text mb={2} p={2} bg="mono10" color="mono60">
         There aren't any works available that meet the criteria at this time.
       </Text>
     )
@@ -211,8 +211,8 @@ const MatchingArtworks: React.FC<MatchingArtworksProps> = ({ artworksConnection,
       )} ${numWorks} currently on Artsy that match your criteria:`
 
   return (
-    <Box borderTopWidth={1} borderTopColor="black30" pt={1}>
-      <Text variant="sm" color="black60">
+    <Box borderTopWidth={1} borderTopColor="mono30" pt={1}>
+      <Text variant="sm" color="mono60">
         {message}
       </Text>
 

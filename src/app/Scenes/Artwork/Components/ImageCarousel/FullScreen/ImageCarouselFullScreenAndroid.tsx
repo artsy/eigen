@@ -81,7 +81,7 @@ export const ImageCarouselFullScreenAndroid = () => {
     >
       {!!showBackButton && <ImageCarouselCloseButton onClose={onClose} />}
 
-      <GestureHandlerRootView style={{ flex: 1, backgroundColor: color("white100") }}>
+      <GestureHandlerRootView style={{ flex: 1, backgroundColor: color("mono0") }}>
         <ZoomFlatList<ImageCarouselMedia>
           data={media}
           pagingEnabled

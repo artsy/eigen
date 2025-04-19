@@ -19,38 +19,38 @@ const PriceSummary_: React.FC<PriceSummaryProps> = ({ calculatedCost }) => {
 
   return (
     <Box mx={4}>
-      <Text variant="sm-display" mb={1} weight="medium" color="black100">
+      <Text variant="sm-display" mb={1} weight="medium" color="mono100">
         Summary
       </Text>
 
       <Flex mb={1} flexDirection="row" justifyContent="space-between">
-        <Text variant="sm" color="black100">
+        <Text variant="sm" color="mono100">
           Your max bid
         </Text>
-        <Text variant="sm" color="black100">
+        <Text variant="sm" color="mono100">
           {`${selectedBid.display}.00`}
         </Text>
       </Flex>
 
       <Flex mb={1} flexDirection="row" justifyContent="space-between">
-        <Text variant="sm" color="black100">
+        <Text variant="sm" color="mono100">
           Buyer’s premium
         </Text>
-        <Text variant="sm" color="black100">
+        <Text variant="sm" color="mono100">
           {buyersPremium.display}
         </Text>
       </Flex>
 
       <Flex mb={1} flexDirection="row" justifyContent="space-between">
-        <Text variant="sm" color="black100">
+        <Text variant="sm" color="mono100">
           Subtotal
         </Text>
-        <Text variant="sm" color="black100">
+        <Text variant="sm" color="mono100">
           {subtotal.display}
         </Text>
       </Flex>
 
-      <Text variant="sm" color="black60">
+      <Text variant="sm" color="mono60">
         Plus any applicable shipping, taxes, and fees.
       </Text>
     </Box>

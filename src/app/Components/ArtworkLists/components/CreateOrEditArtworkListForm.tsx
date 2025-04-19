@@ -106,7 +106,7 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
                   />
                   <Touchable onPress={() => setIsExpanded(!isExpanded)}>
                     <Flex flexDirection="row">
-                      <Text variant="sm-display" color="black100" mr={0.5} ml={1}>
+                      <Text variant="sm-display" color="mono100" mr={0.5} ml={1}>
                         Share list with galleries
                       </Text>
 
@@ -114,14 +114,14 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
                         animate={{ transform: [{ rotate: !!isExpanded ? "-90deg" : "90deg" }] }}
                         transition={{ type: "timing" }}
                       >
-                        <ChevronIcon fill="black100" />
+                        <ChevronIcon fill="mono100" />
                       </MotiView>
                     </Flex>
                   </Touchable>
                 </Flex>
 
                 <Collapse opened={!!isExpanded}>
-                  <Text variant="xs" color="black60" mt={1}>
+                  <Text variant="xs" color="mono60" mt={1}>
                     Shared lists are eligible to receive offers from galleries. Switching sharing
                     off will make them visible only to you, and you won't receive offers. List names
                     are always private.

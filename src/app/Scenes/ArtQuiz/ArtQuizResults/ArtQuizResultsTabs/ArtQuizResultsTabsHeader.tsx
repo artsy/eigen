@@ -32,7 +32,7 @@ export const ArtQuizResultsTabsHeader = ({ subtitle }: ArtQuizResultsTabsHeaderP
 
   return (
     <Flex px={2}>
-      <Text variant="sm" color="black60">
+      <Text variant="sm" color="mono60">
         {subtitle}
       </Text>
       <Spacer y={1} />

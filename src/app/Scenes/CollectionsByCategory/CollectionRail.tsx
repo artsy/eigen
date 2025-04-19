@@ -59,7 +59,7 @@ export const CollectionRail: FC<CollectionRailProps> = ({
               RightButtonContent={() => (
                 <Flex flexDirection="row" flex={1}>
                   <Flex my="auto">
-                    <ArrowRightIcon fill="black60" ml={0.5} />
+                    <ArrowRightIcon fill="mono60" ml={0.5} />
                   </Flex>
                 </Flex>
               )}
@@ -76,7 +76,7 @@ export const CollectionRail: FC<CollectionRailProps> = ({
         />
       </Flex>
 
-      {!lastElement && <Separator borderColor="black10" my={4} />}
+      {!lastElement && <Separator borderColor="mono10" my={4} />}
     </>
   )
 }
@@ -113,11 +113,11 @@ export const CollectionRailPlaceholder: FC<Partial<CollectionRailProps>> = ({ la
 
         <Flex flexDirection="row">
           <ArtworkRailPlaceholder />
-          <Separator borderColor="black10" my={2} />
+          <Separator borderColor="mono10" my={2} />
         </Flex>
       </Flex>
 
-      {!lastElement && <Separator borderColor="black10" my={4} />}
+      {!lastElement && <Separator borderColor="mono10" my={4} />}
     </Skeleton>
   )
 }

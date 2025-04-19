@@ -82,7 +82,7 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
   const HeaderComponent = () => (
     <>
       <Flex flexDirection="row" py={1}>
-        <Text variant="xs" color="black60">
+        <Text variant="xs" color="mono60">
           Can't find the artist?{" "}
         </Text>
         <Touchable
@@ -92,7 +92,7 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
           testID="my-collection-artwork-form-artist-skip-button"
           hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
         >
-          <Text variant="xs" color="black60" underline>
+          <Text variant="xs" color="mono60" underline>
             Add their name.
           </Text>
         </Touchable>
@@ -241,7 +241,7 @@ const CollectedArtistListItem: React.FC<{
         <Flex width="100%" alignItems="center">
           <Flex
             position="absolute"
-            backgroundColor="black10"
+            backgroundColor="mono10"
             height={ARTIST_LIST_ITEM_HEIGHT}
             width={ARTIST_LIST_ITEM_HEIGHT}
             borderRadius={ARTIST_LIST_ITEM_HEIGHT / 2}
@@ -275,7 +275,7 @@ const Overlay: React.FC<{ disabled: boolean }> = ({ disabled }) => {
         height={ARTIST_LIST_ITEM_HEIGHT}
         width={ARTIST_LIST_ITEM_HEIGHT}
         borderRadius={ARTIST_LIST_ITEM_HEIGHT / 2}
-        backgroundColor={disabled ? "black100" : "blue100"}
+        backgroundColor={disabled ? "mono100" : "blue100"}
         opacity={0.6}
         position="absolute"
         zIndex={1}
@@ -289,7 +289,7 @@ const Overlay: React.FC<{ disabled: boolean }> = ({ disabled }) => {
         justifyContent="center"
         alignItems="center"
       >
-        <CheckIcon fill="white100" height={30} width={30} opacity={1} />
+        <CheckIcon fill="mono0" height={30} width={30} opacity={1} />
       </Flex>
     </>
   )

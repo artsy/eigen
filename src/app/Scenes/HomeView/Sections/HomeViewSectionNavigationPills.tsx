@@ -85,7 +85,7 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
               variant="link"
               Icon={SUPPORTED_ICONS[pill.icon as string]}
             >
-              <Text variant="xs" color="black100">
+              <Text variant="xs" color="mono100">
                 {pill.title}
               </Text>
             </Pill>
@@ -140,7 +140,7 @@ const HomeViewSectionNavigationPillsPlaceholder: React.FC<FlexProps> = (flexProp
           ItemSeparatorComponent={() => <Spacer x={0.5} />}
           renderItem={({ item: pill }) => (
             <Pill key={pill.title} variant="link" onPress={() => {}}>
-              <Text variant="xs" color="black100" opacity={0}>
+              <Text variant="xs" color="mono100" opacity={0}>
                 {pill.title}
               </Text>
             </Pill>

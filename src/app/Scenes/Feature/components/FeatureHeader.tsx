@@ -37,7 +37,7 @@ export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
     />
   )
   return isTablet() ? (
-    <Flex flexDirection="row" borderBottomWidth={1} borderBottomColor={color("black100")}>
+    <Flex flexDirection="row" borderBottomWidth={1} borderBottomColor={color("mono100")}>
       <Flex flex={1} alignItems="center" justifyContent="center">
         {image}
       </Flex>
@@ -47,7 +47,7 @@ export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
       </Stack>
     </Flex>
   ) : (
-    <Stack spacing={4} borderBottomWidth={1} borderBottomColor={color("black100")} pb={4}>
+    <Stack spacing={4} borderBottomWidth={1} borderBottomColor={color("mono100")} pb={4}>
       {image}
       <Stack mx={2} alignItems="center">
         {title}
@@ -74,7 +74,7 @@ export const FeatureHeaderPlaceholder: React.FC<{}> = ({}) => {
   const imageHeight = isTablet() ? height * 0.6 : width
 
   return isTablet() ? (
-    <Flex flexDirection="row" borderBottomWidth={1} borderBottomColor="black100">
+    <Flex flexDirection="row" borderBottomWidth={1} borderBottomColor="mono100">
       <PlaceholderBox height={imageHeight} flex={1} />
       <Stack px={2} alignItems="center" justifyContent="center" flex={1}>
         <PlaceholderText width={220} />
@@ -82,7 +82,7 @@ export const FeatureHeaderPlaceholder: React.FC<{}> = ({}) => {
       </Stack>
     </Flex>
   ) : (
-    <Stack spacing={4} borderBottomWidth={1} borderBottomColor="black100" pb={4}>
+    <Stack spacing={4} borderBottomWidth={1} borderBottomColor="mono100" pb={4}>
       <PlaceholderBox height={imageHeight} />
       <Stack mx={2} alignItems="center" justifyContent="center" minHeight={140}>
         <PlaceholderText width={220} />

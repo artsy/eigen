@@ -51,7 +51,7 @@ export const ProgressiveOnboardingOfferSettings: React.FC = ({ children }) => {
       onOpenComplete={trackEvent}
       placement="top"
       title={
-        <Text variant="xs" color="white100">
+        <Text variant="xs" color="mono0">
           Edit list settings to indicate to{"\n"}galleries which artworks you want{"\n"}to receive
           offers on.
         </Text>

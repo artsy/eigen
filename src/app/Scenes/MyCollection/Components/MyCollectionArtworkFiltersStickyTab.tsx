@@ -40,7 +40,7 @@ export const MyCollectionArtworkFilters: React.FC<FiltersProps> = (props) => {
   }, [query])
 
   return (
-    <Flex backgroundColor="white100" pb={1} px={2}>
+    <Flex backgroundColor="mono0" pb={1} px={2}>
       <Flex width={screenWidth - 2 * space(2) - FILTER_ICON_WIDTH}>
         <Input
           testID="MyCollectionSearchBarInput"

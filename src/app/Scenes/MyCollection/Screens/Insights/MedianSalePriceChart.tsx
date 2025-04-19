@@ -80,11 +80,11 @@ export const MedianSalePriceChart: React.FC = () => {
               width={CHART_WIDTH}
             >
               <Flex>
-                <Text variant="sm" color="black60">
+                <Text variant="sm" color="mono60">
                   No data currently available
                 </Text>
 
-                <Text variant="sm" color="black60">
+                <Text variant="sm" color="mono60">
                   Try a different timeframe or artist
                 </Text>
               </Flex>
@@ -127,11 +127,11 @@ export const MedianSalePriceChart: React.FC = () => {
               width={CHART_WIDTH}
             >
               <Flex>
-                <Text variant="sm" color="black60">
+                <Text variant="sm" color="mono60">
                   No data currently available
                 </Text>
 
-                <Text variant="sm" color="black60">
+                <Text variant="sm" color="mono60">
                   Try a different timeframe or artist
                 </Text>
               </Flex>

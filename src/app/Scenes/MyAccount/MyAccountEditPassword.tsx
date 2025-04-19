@@ -94,7 +94,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
         headerRight: () => {
           return (
             <Touchable onPress={handleSave} disabled={!isValid}>
-              <Text variant="xs" color={!!isValid ? "black100" : "black60"}>
+              <Text variant="xs" color={!!isValid ? "mono100" : "mono60"}>
                 Save
               </Text>
             </Touchable>
@@ -183,7 +183,7 @@ const Content: React.FC<{
 
       <Text
         variant={!enableRedesignedSettings ? "sm-display" : "xs"}
-        color={!enableRedesignedSettings ? "black100" : "black60"}
+        color={!enableRedesignedSettings ? "mono100" : "mono60"}
         mt={0.5}
       >
         Password must include at least one uppercase letter, one lowercase letter, and one number.

@@ -12,7 +12,7 @@ export const SavedSearchAlertsListPlaceholder: React.FC = () => {
               <PlaceholderText width={200 + Math.round(Math.random() * 100)} height={23} />
               <PlaceholderText width={200 + Math.round(Math.random() * 100)} height={23} />
             </Flex>
-            <Separator borderColor="black5" />
+            <Separator borderColor="mono5" />
           </Box>
         ))}
       </Box>

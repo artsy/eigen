@@ -16,19 +16,19 @@ const ArtworkDimensionsClassificationAndAuthenticity: React.FC<
   return (
     <Box>
       <Spacer y={2} />
-      <Text color="black60" variant="sm">
+      <Text color="mono60" variant="sm">
         {medium}
       </Text>
       {!!dimensionsPresent(dimensions) && (editionSets?.length ?? 0) < 2 && (
-        <Text color="black60" variant="sm">{`${dimensions?.in} | ${dimensions?.cm}`}</Text>
+        <Text color="mono60" variant="sm">{`${dimensions?.in} | ${dimensions?.cm}`}</Text>
       )}
       {!!getFrameString(framed?.details, isUnlisted) && (
-        <Text color="black60" variant="sm">
+        <Text color="mono60" variant="sm">
           {getFrameString(framed?.details, isUnlisted)}
         </Text>
       )}
       {!!editionOf && (
-        <Text color="black60" variant="sm">
+        <Text color="mono60" variant="sm">
           {editionOf}
         </Text>
       )}

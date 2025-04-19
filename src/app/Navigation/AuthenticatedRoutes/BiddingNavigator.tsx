@@ -65,7 +65,7 @@ export const BiddingNavigator: React.FC<BiddingNavigatorProps> = (props) => {
           screenOptions={{
             headerShown: false,
             gestureEnabled: false,
-            contentStyle: { flex: 1, backgroundColor: color("white100") },
+            contentStyle: { flex: 1, backgroundColor: color("mono0") },
           }}
           initialRouteName={props.initialRouteName}
         >

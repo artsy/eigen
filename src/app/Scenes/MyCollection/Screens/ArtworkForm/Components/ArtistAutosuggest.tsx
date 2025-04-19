@@ -89,7 +89,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
     return (
       <>
         <Flex flexDirection="row" mt={1} mb={2}>
-          <Text variant="xs" color="black60">
+          <Text variant="xs" color="mono60">
             Can't find the artist?{" "}
           </Text>
           <Touchable
@@ -97,7 +97,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
             testID="my-collection-artwork-form-artist-skip-button"
             hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
           >
-            <Text variant="xs" color="black60" underline>
+            <Text variant="xs" color="mono60" underline>
               Add their name.
             </Text>
           </Touchable>
@@ -170,15 +170,15 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
                     <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
                       <Flex
                         alignItems="center"
-                        backgroundColor="black5"
+                        backgroundColor="mono5"
                         border="1px solid"
-                        borderColor="black15"
+                        borderColor="mono15"
                         borderRadius={IMAGE_SIZE / 2}
                         height={IMAGE_SIZE}
                         justifyContent="center"
                         width={IMAGE_SIZE}
                       >
-                        <AddIcon height={IMAGE_SIZE / 2} width={IMAGE_SIZE / 2} fill="black60" />
+                        <AddIcon height={IMAGE_SIZE / 2} width={IMAGE_SIZE / 2} fill="mono60" />
                       </Flex>
                       <Spacer x={1} />
                       <Text variant="xs">Create New Artist</Text>

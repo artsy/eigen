@@ -109,7 +109,7 @@ export const PhoneInput = forwardRef<
           ref={ref}
           value={phoneNumber}
           placeholder={countryIndex[countryCode]?.mask?.replace(/9/g, "0")}
-          placeholderTextColor={color("black30")}
+          placeholderTextColor={color("mono30")}
           keyboardType="phone-pad"
           onValueChange={onValueChange}
           validate={handleValidation}
@@ -139,7 +139,7 @@ export const PhoneInput = forwardRef<
             return (
               <Touchable onPress={onPress}>
                 <Flex flex={1} flexDirection="row" style={{ width: "100%", height: "100%" }}>
-                  <Flex flexDirection="row" px={1} alignItems="center" backgroundColor="black10">
+                  <Flex flexDirection="row" px={1} alignItems="center" backgroundColor="mono10">
                     {/* selectedValue should always be present */}
                     <Text variant="sm-display">
                       {countryIndex[selectedValue ?? countryCode].flag}
@@ -148,7 +148,7 @@ export const PhoneInput = forwardRef<
                     <TriangleDown width="8" />
                   </Flex>
                   <Flex justifyContent="center" pl={1}>
-                    <Text variant="sm" color="black60">
+                    <Text variant="sm" color="mono60">
                       +{dialCode}
                     </Text>
                   </Flex>

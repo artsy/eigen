@@ -46,13 +46,13 @@ export const Axes: React.FC<AxisProps> = ({
   const STROKE_WIDTH = 1
   return (
     <G strokeDasharray={[4, 4]} strokeWidth={STROKE_WIDTH}>
-      <Path id={randomSVGId()} d={lineHorizontal} fill="transparent" stroke={color("black30")} />
+      <Path id={randomSVGId()} d={lineHorizontal} fill="transparent" stroke={color("mono30")} />
       <Path
         id={randomSVGId()}
         translateY={chartHeight}
         d={lineHorizontal}
         fill="transparent"
-        stroke={color("black30")}
+        stroke={color("mono30")}
       />
 
       {/** GRIDS */}
@@ -65,7 +65,7 @@ export const Axes: React.FC<AxisProps> = ({
             x={spacer * index}
             d={lineVertical}
             fill="transparent"
-            stroke={color("black30")}
+            stroke={color("mono30")}
           />
         )
       })}
@@ -100,7 +100,7 @@ export const YAxisLabels: React.FC<{
           labelFormatType
         )
         return (
-          <Text key={value} variant="xs" textAlign="right" color="black60">
+          <Text key={value} variant="xs" textAlign="right" color="mono60">
             {yLabel}
           </Text>
         )
@@ -118,7 +118,7 @@ export const XAxisLabels: React.FC<{
   return (
     <Flex style={style} flexDirection="row" justifyContent="space-between" width={width}>
       {xValues.map((value) => (
-        <Text key={value} variant="xs" color="black60">
+        <Text key={value} variant="xs" color="mono60">
           {formatter(value)}
         </Text>
       ))}

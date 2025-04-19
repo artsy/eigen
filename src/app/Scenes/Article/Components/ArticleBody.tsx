@@ -31,8 +31,8 @@ export const ArticleBody: React.FC<ArticleBodyProps> = ({ article }) => {
         data.authors.map((author) => {
           return (
             <Flex m={2} key={author.name}>
-              <Text color="black60">{author.name}</Text>
-              <Text variant="xs" color="black60">
+              <Text color="mono60">{author.name}</Text>
+              <Text variant="xs" color="mono60">
                 {author.bio}
               </Text>
             </Flex>
@@ -44,7 +44,7 @@ export const ArticleBody: React.FC<ArticleBodyProps> = ({ article }) => {
             html={data.postscript}
             tagStyles={{
               p: {
-                color: color("black60"),
+                color: color("mono60"),
                 fontFamily: FONTS.italic,
               },
             }}

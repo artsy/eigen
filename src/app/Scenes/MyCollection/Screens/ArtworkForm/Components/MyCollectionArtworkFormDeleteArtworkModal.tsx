@@ -72,7 +72,7 @@ export const MyCollectionArtworkFormDeleteArtworkModal: React.FC<MyCollectionArt
               accessibilityState={{ checked: shouldDeleteArtist }}
               accessibilityHint="If you remove the artist from your collection, they will no longer appear in your profile as a collected artist."
             >
-              <Text variant="xs" color={isLastArtwork ? "black100" : "black60"}>
+              <Text variant="xs" color={isLastArtwork ? "mono100" : "mono60"}>
                 Remove {data.artist?.name} from the artists you collect
               </Text>
             </Checkbox>
@@ -83,7 +83,7 @@ export const MyCollectionArtworkFormDeleteArtworkModal: React.FC<MyCollectionArt
                 <Message
                   variant="default"
                   title="To remove this artist, please remove all their other artworks from My Collection first."
-                  IconComponent={() => <InfoCircleIcon width={18} height={18} fill="black100" />}
+                  IconComponent={() => <InfoCircleIcon width={18} height={18} fill="mono100" />}
                 />
               </>
             )}

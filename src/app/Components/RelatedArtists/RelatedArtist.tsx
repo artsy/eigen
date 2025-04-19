@@ -41,7 +41,7 @@ class RelatedArtist extends Component<Props> {
           </Text>
           <ThemeAwareClassTheme>
             {({ color }) => (
-              <Text variant="sm" color={color("black60")}>
+              <Text variant="sm" color={color("mono60")}>
                 {this.artworksString(artist.counts)}
               </Text>
             )}

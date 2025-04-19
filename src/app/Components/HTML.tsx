@@ -66,28 +66,28 @@ export const HTML: React.FC<HTMLProps> = ({
           {
             a: {
               textDecorationLine: "underline",
-              textDecorationColor: color("black100"),
-              color: color("black100"),
+              textDecorationColor: color("mono100"),
+              color: color("mono100"),
               textDecorationStyle: "solid",
             },
             p: {
               fontFamily: FONTS.regular,
-              color: color("black100"),
+              color: color("mono100"),
               ...variantStyles,
             },
             em: {
               fontFamily: FONTS.italic,
-              color: color("black100"),
+              color: color("mono100"),
             },
             h2: {
               fontFamily: FONTS.medium,
               fontWeight: "normal",
-              color: color("black100"),
+              color: color("mono100"),
             },
             h3: {
               fontFamily: FONTS.regular,
               fontWeight: "normal",
-              color: color("black100"),
+              color: color("mono100"),
             },
           },
           tagStyles

@@ -18,7 +18,7 @@ import styled from "styled-components/native"
 const Container = styled.View`
   flex: 1;
   flex-direction: column;
-  background-color: ${themeGet("colors.white100")};
+  background-color: ${themeGet("colors.mono0")};
 `
 const Header = styled.View`
   align-self: stretch;

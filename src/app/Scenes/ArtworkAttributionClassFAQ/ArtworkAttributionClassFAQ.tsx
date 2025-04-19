@@ -35,7 +35,7 @@ export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttribution
 
               <Separator />
 
-              <Text color="black60">
+              <Text color="mono60">
                 Our partners are responsible for providing accurate classification information for
                 all works.
               </Text>

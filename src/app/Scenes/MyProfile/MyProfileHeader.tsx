@@ -63,7 +63,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
       </Flex>
 
       {/* Avatar */}
-      <Flex height={70} width={70} borderRadius={35} backgroundColor={color("black10")}>
+      <Flex height={70} width={70} borderRadius={35} backgroundColor={color("mono10")}>
         <TouchableOpacity
           onPress={() => {
             navigate("/my-profile/edit")
@@ -90,7 +90,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
       {/* Information */}
       <Flex>
         <Flex flexDirection="row" justifyContent="center" alignItems="center" gap={0.5}>
-          <Text variant="md" color={color("black100")}>
+          <Text variant="md" color={color("mono100")}>
             {me.name}
           </Text>
 

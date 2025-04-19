@@ -22,13 +22,13 @@ export const ArtistCareerHighlights: React.FC<ArtistCareerHighlightsProps> = ({ 
 
   return (
     <Flex px={2}>
-      <Text color="black60" pb={1}>
+      <Text color="mono60" pb={1}>
         Highlights and Achievements
       </Text>
       {insights.map(({ description, entities, label }, index) => {
         return (
           <Expandable label={label} key={`expandable-highlight-${index}`}>
-            <Text color="black60" my={1}>
+            <Text color="mono60" my={1}>
               {entities.length > 0
                 ? entities.join(", ").replace(/,\s([^,]+)$/, ", and $1")
                 : description}

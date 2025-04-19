@@ -48,7 +48,7 @@ const SavedSearchFilterArtistSeries: React.FC<SavedSearchFilterArtistSeriesProps
 
   return (
     <Flex px={2}>
-      <Separator my={2} borderColor="black10" />
+      <Separator my={2} borderColor="mono10" />
       <Text variant="sm" fontWeight="bold">
         Artist Series
       </Text>

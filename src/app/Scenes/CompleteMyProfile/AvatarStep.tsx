@@ -31,7 +31,7 @@ export const AvatarStep: FC = () => {
 
             <Spacer y={1} />
 
-            <Text color="black60">
+            <Text color="mono60">
               Make your profile more engaging and help foster trust with galleries on Artsy.
             </Text>
 

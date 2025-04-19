@@ -66,7 +66,7 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
           <Flex flex={1} flexDirection="column" justifyContent="center">
             <Text numberOfLines={1}>{artist.name}</Text>
             {!!artist.formattedNationalityAndBirthday && (
-              <Text numberOfLines={1} variant="xs" color="black60">
+              <Text numberOfLines={1} variant="xs" color="mono60">
                 {artist.formattedNationalityAndBirthday}
               </Text>
             )}
@@ -84,7 +84,7 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
           <Flex
             position="absolute"
             overflow="hidden"
-            backgroundColor={color("white100")}
+            backgroundColor={color("mono0")}
             alignItems="center"
             justifyContent="center"
             borderRadius={12}
@@ -95,7 +95,7 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
               activeOpacity={0.2}
               onPress={onDismiss}
             >
-              <CloseIcon fill="black60" width={16} height={16} />
+              <CloseIcon fill="mono60" width={16} height={16} />
             </Touchable>
           </Flex>
         )}
@@ -170,7 +170,7 @@ const ArtworkCardImages = ({
           )
         })
       ) : (
-        <Flex height={IMAGE_MAX_HEIGHT} width={ARTIST_CARD_WIDTH} backgroundColor="black10" />
+        <Flex height={IMAGE_MAX_HEIGHT} width={ARTIST_CARD_WIDTH} backgroundColor="mono10" />
       )}
     </Flex>
   )

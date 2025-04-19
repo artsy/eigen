@@ -36,11 +36,11 @@ export const ItemArtwork: React.FC<ItemArtworkProps> = ({ artwork }) => {
               <Text variant="sm" numberOfLines={1}>
                 {artwork.artistNames}
               </Text>
-              <Text variant="sm" color="black60" numberOfLines={1} italic>
+              <Text variant="sm" color="mono60" numberOfLines={1} italic>
                 {[artwork.title, artwork.date].join(", ")}
               </Text>
               {!!artwork.partner?.name && (
-                <Text variant="sm" color="black60" numberOfLines={1}>
+                <Text variant="sm" color="mono60" numberOfLines={1}>
                   {artwork.partner.name}
                 </Text>
               )}

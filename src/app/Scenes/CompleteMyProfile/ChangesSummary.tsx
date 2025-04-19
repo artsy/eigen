@@ -42,13 +42,13 @@ export const ChangesSummary: FC = () => {
             {isCompleted ? "Thank you for completing your profile." : "You’re almost there!"}
           </Text>
 
-          <Text color="black60" variant="sm">
+          <Text color="mono60" variant="sm">
             {isCompleted ? (
               <>
                 You can update your profile at any time in{" "}
                 <Text
                   variant="sm"
-                  backgroundColor="white100"
+                  backgroundColor="mono0"
                   style={{ textDecorationLine: "underline" }}
                   onPress={() => navigate(`my-profile/edit`)}
                   suppressHighlighting
@@ -66,9 +66,9 @@ export const ChangesSummary: FC = () => {
                 {hasLocation ? (
                   <CheckCircleFillIcon fill="green100" />
                 ) : (
-                  <CheckCircleIcon fill="black60" />
+                  <CheckCircleIcon fill="mono60" />
                 )}
-                <Text variant="md" color={hasLocation ? "black100" : "black60"}>
+                <Text variant="md" color={hasLocation ? "mono100" : "mono60"}>
                   Location
                 </Text>
               </Flex>
@@ -79,9 +79,9 @@ export const ChangesSummary: FC = () => {
                 {hasProfession ? (
                   <CheckCircleFillIcon fill="green100" />
                 ) : (
-                  <CheckCircleIcon fill="black60" />
+                  <CheckCircleIcon fill="mono60" />
                 )}
-                <Text variant="md" color={hasProfession ? "black100" : "black60"}>
+                <Text variant="md" color={hasProfession ? "mono100" : "mono60"}>
                   Profession
                 </Text>
               </Flex>
@@ -92,9 +92,9 @@ export const ChangesSummary: FC = () => {
                 {hasIconUrl ? (
                   <CheckCircleFillIcon fill="green100" />
                 ) : (
-                  <CheckCircleIcon fill="black60" />
+                  <CheckCircleIcon fill="mono60" />
                 )}
-                <Text variant="md" color={hasIconUrl ? "black100" : "black60"}>
+                <Text variant="md" color={hasIconUrl ? "mono100" : "mono60"}>
                   Profile Image
                 </Text>
               </Flex>
@@ -105,16 +105,16 @@ export const ChangesSummary: FC = () => {
                 {hasIsIdentityVerified ? (
                   <CheckCircleFillIcon fill="green100" />
                 ) : (
-                  <CheckCircleIcon fill="black60" />
+                  <CheckCircleIcon fill="mono60" />
                 )}
-                <Text variant="md" color={hasIsIdentityVerified ? "black100" : "black60"}>
+                <Text variant="md" color={hasIsIdentityVerified ? "mono100" : "mono60"}>
                   ID Verification Email
                 </Text>
               </Flex>
             )}
           </Flex>
 
-          <Text color="black60" variant="sm">
+          <Text color="mono60" variant="sm">
             {isCompleted ? (
               <>
                 Continue building your profile by adding artists or artworks to{" "}

@@ -84,9 +84,9 @@ export const AlertArtworksGrid: FC<AlertArtworksGridProps> = ({ alertId, fetchKe
           </Flex>
         )}
         {artworksCount === 0 && (
-          <Box bg="black10" p={2}>
-            <Text color="black100">No matches</Text>
-            <Text color="black60">
+          <Box bg="mono10" p={2}>
+            <Text color="mono100">No matches</Text>
+            <Text color="mono60">
               There aren't any works available that meet the criteria at this time.
             </Text>
           </Box>

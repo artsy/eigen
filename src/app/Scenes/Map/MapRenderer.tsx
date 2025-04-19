@@ -67,7 +67,7 @@ export const MapRenderer: React.FC<{
           return <GlobalMap {...computedProps} />
         } else {
           // This shouldn't happen in practice, but let's return something in case it does.
-          return <View style={{ backgroundColor: color("black5") }} />
+          return <View style={{ backgroundColor: color("mono5") }} />
         }
       }}
       cacheConfig={

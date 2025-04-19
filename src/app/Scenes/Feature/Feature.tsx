@@ -178,7 +178,7 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
           addSeparatorBetweenAllSections(
             contentSections,
             "content",
-            <Separator mt={4} mb={4} style={{ borderColor: color("black100") }} />
+            <Separator mt={4} mb={4} style={{ borderColor: color("mono100") }} />
           )
         ),
       ]}

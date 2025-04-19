@@ -39,13 +39,13 @@ export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
       </Text>
 
       {!!show.startAt && !!show.endAt && (
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="mono60">
           {formattedTime}
         </Text>
       )}
 
       {!!show.partner && (
-        <Text variant="sm" color="black60" mt={1}>
+        <Text variant="sm" color="mono60" mt={1}>
           {show.partner.name}
         </Text>
       )}

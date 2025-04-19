@@ -47,7 +47,7 @@ export const ProgressiveOnboardingAlertFilters: React.FC = ({ children }) => {
       onOpenComplete={trackEvent}
       placement="bottom"
       title={
-        <Text variant="xs" color="white100">
+        <Text variant="xs" color="mono0">
           First, select the relevant filters.
         </Text>
       }

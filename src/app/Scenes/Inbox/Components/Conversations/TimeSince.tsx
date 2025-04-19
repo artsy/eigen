@@ -42,7 +42,7 @@ export const TimeSince: React.FC<TimeSinceProps> = ({ variant = "xs", time, exac
   }
   return (
     <Box {...props}>
-      <Text variant={variant} color="black60">
+      <Text variant={variant} color="mono60">
         {exact ? exactDate(time) : relativeDate(time)}
       </Text>
     </Box>

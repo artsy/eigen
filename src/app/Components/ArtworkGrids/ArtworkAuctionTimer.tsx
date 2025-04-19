@@ -47,7 +47,7 @@ export const ArtworkAuctionTimer: React.FC<ArtworkAuctionTimerProps> = ({
     const formattedRegistrationEndsAt = DateTime.fromISO(registrationEndsAt).toFormat("MMM d")
 
     return (
-      <Text lineHeight={lineHeight} variant="xs" numberOfLines={1} color="black100">
+      <Text lineHeight={lineHeight} variant="xs" numberOfLines={1} color="mono100">
         Register by {formattedRegistrationEndsAt}
       </Text>
     )

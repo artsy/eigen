@@ -67,7 +67,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ viewer, type }) => {
             keyExtractor={keyExtractor}
             ItemSeparatorComponent={() => (
               <Flex mx={-2}>
-                <Separator borderColor="black5" />
+                <Separator borderColor="mono5" />
               </Flex>
             )}
             onEndReached={handleLoadMore}

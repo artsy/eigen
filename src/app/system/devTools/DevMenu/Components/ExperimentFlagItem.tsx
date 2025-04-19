@@ -71,7 +71,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
             <Flex
               minHeight={650}
               width="95%"
-              backgroundColor="white100"
+              backgroundColor="mono0"
               borderRadius={20}
               // This is needed to avoid closing the modal on taps
               onStartShouldSetResponder={() => true}
@@ -86,7 +86,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                   <Text>
                     Key: <Text fontWeight="bold">{flag}</Text>
                   </Text>
-                  <Text variant="xs" color="black60">
+                  <Text variant="xs" color="mono60">
                     - Unleash values have (default) around them.{"\n"}- The values you set here will
                     override the ones coming from Unleash.
                   </Text>
@@ -99,7 +99,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
 
                     {!isEmpty(localExperiment.variantSuggestions) ? (
                       <Flex flexDirection="row" mt={1} flexWrap="wrap" justifyContent="flex-end">
-                        <Text color="black100" variant="xs" mt="3px" mr={0.5}>
+                        <Text color="mono100" variant="xs" mt="3px" mr={0.5}>
                           Suggestions:
                         </Text>
                         {localExperiment.variantSuggestions?.map((variantSuggestion) => {
@@ -121,7 +121,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                       </Flex>
                     ) : (
                       <Flex flexDirection="row" mt={1} flexWrap="wrap" justifyContent="flex-end">
-                        <Text color="black100" variant="xs" mt="3px" mr={0.5}>
+                        <Text color="mono100" variant="xs" mt="3px" mr={0.5}>
                           Suggestions:
                         </Text>
                         <Pill
@@ -152,7 +152,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                     <CustomInput value={payload} onChangeText={setPayload} />
                     {!isEmpty(localExperiment.payloadSuggestions) && (
                       <Flex flexDirection="row" mt={1} flexWrap="wrap" justifyContent="flex-end">
-                        <Text color="black100" variant="xs" mt="3px" mr={0.5}>
+                        <Text color="mono100" variant="xs" mt="3px" mr={0.5}>
                           Suggestions:
                         </Text>
                         {localExperiment.payloadSuggestions?.map((payloadSuggestion) => {
@@ -231,7 +231,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
         {flag}
       </Text>
       <Text>
-        <Text color="black60">Status:</Text>{" "}
+        <Text color="mono60">Status:</Text>{" "}
         {unleashVariant.enabled ? (
           <Text fontWeight="bold" color="blue100">
             enabled
@@ -243,18 +243,18 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
         )}
       </Text>
       <Text>
-        <Text color="black60">Variant:</Text>{" "}
+        <Text color="mono60">Variant:</Text>{" "}
         <Text fontWeight="bold">{localVariantOverrides[flag] || unleashVariant.name}</Text>
         <TouchableOpacity
           onPress={() => {
             setVisible(true)
           }}
         >
-          <EditIcon fill={hasOverride ? "red100" : "black100"} ml={0.5} />
+          <EditIcon fill={hasOverride ? "red100" : "mono100"} ml={0.5} />
         </TouchableOpacity>
       </Text>
       <Flex flexDirection="row" flexWrap="wrap">
-        <Text color="black60">Payload: </Text>
+        <Text color="mono60">Payload: </Text>
         <Text fontWeight="bold" selectable>
           {unleashVariant.payload?.value || "--"}
           <TouchableOpacity
@@ -262,12 +262,12 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
               setVisible(true)
             }}
           >
-            <EditIcon fill={hasOverride ? "red100" : "black100"} ml={0.5} />
+            <EditIcon fill={hasOverride ? "red100" : "mono100"} ml={0.5} />
           </TouchableOpacity>
         </Text>
       </Flex>
       <Flex flexDirection="row">
-        <Text color="black60">Unleash Url: </Text>
+        <Text color="mono60">Unleash Url: </Text>
         <TouchableOpacity
           onPress={() => {
             Clipboard.setString(`https://unleash.artsy.net/projects/default/features/${flag}`)
@@ -280,7 +280,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
         </TouchableOpacity>
       </Flex>
       <Text>
-        <Text color="black60">Description:</Text> {description}
+        <Text color="mono60">Description:</Text> {description}
       </Text>
     </Flex>
   )

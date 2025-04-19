@@ -90,8 +90,8 @@ const WirePaymentSection: React.FC<Props> = ({ order: { code, currencyCode, sour
         </NumberedListItem>
       </Flex>
 
-      <Flex borderWidth={1} borderColor="black10" p={2}>
-        <Text fontWeight="bold" color="black100">
+      <Flex borderWidth={1} borderColor="mono10" p={2}>
+        <Text fontWeight="bold" color="mono100">
           Send wire transfer to
         </Text>
         {wireTransferArtsyBankDetails(code, currencyCode)}
@@ -114,7 +114,7 @@ const wireTransferArtsyBankDetails = (code: string, currencyCode: string) => {
 
           <Spacer y={2} />
 
-          <Text fontWeight="bold" color="black100">
+          <Text fontWeight="bold" color="mono100">
             Bank address
           </Text>
           <Spacer y={1} />
@@ -147,7 +147,7 @@ const wireTransferArtsyBankDetails = (code: string, currencyCode: string) => {
 
           <Spacer y={2} />
 
-          <Text fontWeight="bold" color="black100">
+          <Text fontWeight="bold" color="mono100">
             Bank address
           </Text>
           <Spacer y={1} />
@@ -180,7 +180,7 @@ const wireTransferArtsyBankDetails = (code: string, currencyCode: string) => {
 
           <Spacer y={2} />
 
-          <Text fontWeight="bold" color="black100">
+          <Text fontWeight="bold" color="mono100">
             Bank address
           </Text>
           <Spacer y={1} />

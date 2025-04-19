@@ -26,7 +26,7 @@ export const MyCollectionArtistsPromptFooter: FC<MyCollectionArtistsPromptFooter
       right={0}
       p={2}
       gap={2}
-      backgroundColor="white100"
+      backgroundColor="mono0"
       height={FOOTER_HEIGHT + bottom}
     >
       <Button disabled={count === 0} flex={1} onPress={onPress} loading={isLoading}>

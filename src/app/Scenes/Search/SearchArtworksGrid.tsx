@@ -102,7 +102,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
         onFilterPress={handleOpenFilterArtworksModal}
         selectedFiltersCount={appliedFiltersCount}
       >
-        <Text variant="xs" color="black60">
+        <Text variant="xs" color="mono60">
           {artworksCount} {artworksCount === 1 ? "Artwork" : "Artworks"}
         </Text>
       </ArtworksFilterHeader>
@@ -125,7 +125,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
                   Sorry, we couldn’t find any Artworks for {quoteLeft}
                   {keyword}.{quoteRight}
                 </Text>
-                <Text variant="sm-display" color="black60" textAlign="center">
+                <Text variant="sm-display" color="mono60" textAlign="center">
                   Please try searching again with a different spelling.
                 </Text>
               </Box>

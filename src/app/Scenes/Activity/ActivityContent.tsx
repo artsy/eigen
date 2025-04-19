@@ -45,7 +45,7 @@ export const activityContentQuery = graphql`
 export const ActivityContentPlaceholder = () => {
   return (
     <Flex flex={1} testID="activity-content-placeholder">
-      <Separator borderColor="black5" />
+      <Separator borderColor="mono5" />
 
       <Box mx={2}>
         {times(3).map((index) => (
@@ -53,7 +53,7 @@ export const ActivityContentPlaceholder = () => {
             <ActivityItemPlaceholder />
 
             <Flex mx={-2}>
-              <Separator borderColor="black5" />
+              <Separator borderColor="mono5" />
             </Flex>
           </Fragment>
         ))}

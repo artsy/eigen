@@ -41,7 +41,7 @@ export const MyCollectionArtworkComparableWorks: React.FC<
         </Flex>
       ))}
 
-      <Separator my={4} borderColor="black10" />
+      <Separator my={4} borderColor="mono10" />
     </Flex>
   )
 }

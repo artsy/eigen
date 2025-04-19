@@ -6,7 +6,7 @@ const NO_ICON_SIZE = 18
 export const ArtworkListNoImage: FC<FlexProps> = (props) => {
   return (
     <Flex justifyContent="center" alignItems="center" {...props}>
-      <NoImageIcon width={NO_ICON_SIZE} height={NO_ICON_SIZE} fill="black60" />
+      <NoImageIcon width={NO_ICON_SIZE} height={NO_ICON_SIZE} fill="mono60" />
     </Flex>
   )
 }

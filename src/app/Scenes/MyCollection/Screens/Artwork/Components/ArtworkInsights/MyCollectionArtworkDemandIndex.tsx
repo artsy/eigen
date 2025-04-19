@@ -45,7 +45,7 @@ export const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandI
 
       <Spacer y={1} />
       <DemandRankScale demandRank={demandRank} demandRankDisplayText={demandRankDisplayText} />
-      <Separator my={4} borderColor="black10" />
+      <Separator my={4} borderColor="mono10" />
     </Flex>
   )
 }
@@ -61,7 +61,7 @@ const DemandRankScale: React.FC<{
   const adjustedDemandRank = demandRank.toFixed(1) === "10.0" ? "9.9" : demandRank.toFixed(1)
 
   const isHighDemand = Number(demandRank) >= 9
-  const color = demandRank >= 7 ? "blue100" : "black60"
+  const color = demandRank >= 7 ? "blue100" : "mono60"
 
   return (
     <>
@@ -77,10 +77,10 @@ const DemandRankScale: React.FC<{
       <ProgressBar width={width} />
       <Spacer />
       <Flex flexDirection="row" justifyContent="space-between">
-        <Text variant="xs" color="black60">
+        <Text variant="xs" color="mono60">
           0.0
         </Text>
-        <Text variant="xs" color="black60">
+        <Text variant="xs" color="mono60">
           10.0
         </Text>
       </Flex>
@@ -100,7 +100,7 @@ const ProgressBar: React.FC<{ width: number }> = ({ width }) => {
           <TriangleDown />
         </Flex>
       </Flex>
-      <Flex height={24} width="100%" bg="black5">
+      <Flex height={24} width="100%" bg="mono5">
         <LinearGradient
           colors={["rgba(16, 35, 215, 0.5)", `rgba(16, 35, 215, ${opacity})`]}
           start={{ x: 0, y: 0 }}

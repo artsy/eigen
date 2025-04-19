@@ -9,7 +9,7 @@ const LargeHeadline: React.FC<TextProps> = (props) => {
   const style = [
     {
       fontSize: 30,
-      color: color("black100"),
+      color: color("mono100"),
       paddingLeft: 20,
       paddingRight: 20,
     },
@@ -29,9 +29,9 @@ const SmallHeadline: React.FC<TextProps & { disabled?: boolean }> = (props) => {
   const style = [
     {
       fontSize: 11,
-      color: color("black100"),
+      color: color("mono100"),
     },
-    props.disabled && { color: color("black30") },
+    props.disabled && { color: color("mono30") },
     props.style || {},
     { fontFamily: theme.fonts.sans.regular },
   ]
@@ -48,7 +48,7 @@ const Subtitle: React.FC<TextProps> = (props) => {
   const style = [
     {
       fontSize: 14,
-      color: color("black100"),
+      color: color("mono100"),
     },
     props.style || {},
     styles.subtitleRequired,
@@ -64,7 +64,7 @@ const Subtitle: React.FC<TextProps> = (props) => {
 const FromSignatureText: React.FC<TextProps> = (props) => {
   const { color } = useTheme()
   const children: string = (props as any).children
-  const style = [styles.fromSignatureDefault, { color: color("black30") }, props.style || {}]
+  const style = [styles.fromSignatureDefault, { color: color("mono30") }, props.style || {}]
   return (
     <Text key={children} style={style}>
       {children}
@@ -77,7 +77,7 @@ const MetadataText: React.FC<TextProps> = (props) => {
   const children: string = (props as any).children
   const style = [
     styles.metadataDefault,
-    { color: color("black30") },
+    { color: color("mono30") },
     props.style || {},
     { fontFamily: theme.fonts.sans.regular },
   ]
@@ -94,7 +94,7 @@ const PreviewText: React.FC<TextProps> = (props) => {
   const style = [
     {
       fontSize: 16,
-      color: color("black100"),
+      color: color("mono100"),
     },
     props.style || {},
     styles.bodyRequired,
@@ -112,9 +112,9 @@ const BodyText: React.FC<TextProps & { disabled?: boolean }> = (props) => {
   const style = [
     {
       fontSize: 16,
-      color: color("black100"),
+      color: color("mono100"),
     },
-    props.disabled && { color: color("black30") },
+    props.disabled && { color: color("mono30") },
     props.style || {},
     styles.bodyRequired,
   ]

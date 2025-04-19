@@ -58,7 +58,7 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
     <RouterLink
       accessibilityLabel="Artist Series List Item"
       accessibilityRole="button"
-      underlayColor={color("black5")}
+      underlayColor={color("mono5")}
       // the negative margin here is for resetting padding of 20 that all the parent components of this instance
       // have and to avoid changing the component tree in multiple spots.
       style={{ marginHorizontal: -20 }}
@@ -83,7 +83,7 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
                 {listItem?.node?.title}
               </Text>
               {!!artworksCountMessage && (
-                <Text variant="sm" color="black60" testID="count">
+                <Text variant="sm" color="mono60" testID="count">
                   {artworksCountMessage}
                 </Text>
               )}

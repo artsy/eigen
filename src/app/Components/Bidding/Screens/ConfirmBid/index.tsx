@@ -366,7 +366,7 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
               <Text
                 variant="xs"
                 italic
-                color="black60"
+                color="mono60"
                 textAlign="center"
                 numberOfLines={1}
                 ellipsizeMode="tail"
@@ -427,7 +427,7 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
               testID="disclaimer-checkbox"
               flex={undefined}
             >
-              <Text color="black60" variant="xs">
+              <Text color="mono60" variant="xs">
                 I agree to{" "}
                 <LinkText
                   variant="xs"
@@ -440,7 +440,7 @@ export const ConfirmBid: React.FC<ConfirmBidProps> = ({
             </Checkbox>
           ) : (
             <Flex alignItems="center" px={4} testID="disclaimer-text">
-              <Text variant="xs" mt={2} color="black60">
+              <Text variant="xs" mt={2} color="mono60">
                 I agree to{" "}
                 <LinkText
                   variant="xs"

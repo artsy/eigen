@@ -20,11 +20,11 @@ export const FullScreenLoadingImage: React.FC<FullScreenLoadingImageProps> = ({
       source={imgSource}
     >
       <Flex flex={1} alignItems="center" justifyContent="center">
-        <CircularSpinner color="white100" size="large" />
+        <CircularSpinner color="mono0" size="large" />
 
         <Spacer y={spacerHeight} />
 
-        <Text variant="sm-display" color="white100" textAlign="center">
+        <Text variant="sm-display" color="mono0" textAlign="center">
           {loadingText}
         </Text>
       </Flex>

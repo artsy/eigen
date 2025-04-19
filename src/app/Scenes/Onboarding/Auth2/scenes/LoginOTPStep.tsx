@@ -99,7 +99,7 @@ export const LoginOTPStep: React.FC = () => {
                 ? "Enter an authentication code"
                 : "Enter a recovery code"
             }
-            placeholderTextColor={color("black30")}
+            placeholderTextColor={color("mono30")}
             ref={otpRef}
             returnKeyType="done"
             title={codeType === "authentication" ? "Authentication code" : "Recovery code"}
@@ -148,7 +148,7 @@ export const LoginOTPStep: React.FC = () => {
                 }
               }}
             >
-              <Text variant="xs" color="black60" underline>
+              <Text variant="xs" color="mono60" underline>
                 {codeType === "authentication"
                   ? "Enter recovery code instead"
                   : "Enter authentication code"}

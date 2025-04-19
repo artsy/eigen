@@ -70,7 +70,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           </Text>
 
           {!!title ? (
-            <Text lineHeight="18px" variant="xs" weight="regular" numberOfLines={1} color="black60">
+            <Text lineHeight="18px" variant="xs" weight="regular" numberOfLines={1} color="mono60">
               <Text lineHeight="18px" variant="xs" weight="regular" italic>
                 {title}
               </Text>

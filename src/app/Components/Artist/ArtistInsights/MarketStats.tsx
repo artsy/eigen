@@ -79,7 +79,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
           modalContent={<InfoModalContent />}
         />
       </Flex>
-      <Text variant="xs" color="black60" my={0.5}>
+      <Text variant="xs" color="mono60" my={0.5}>
         Averages over last 36 months
       </Text>
       <Select
@@ -177,7 +177,7 @@ const LoadingSkeleton = () => {
           Market Signals
         </Text>
       </Flex>
-      <Text variant="xs" color="black60" my={0.5}>
+      <Text variant="xs" color="mono60" my={0.5}>
         Last 36 months
       </Text>
       <Spacer y={0.5} />

@@ -20,10 +20,10 @@ export const SwitchMenu = ({
   return (
     <Flex flexDirection="row" alignItems="flex-start" flexShrink={0} my={1}>
       <Flex style={{ width: "80%", justifyContent: "center" }}>
-        <Text variant="sm-display" color={disabled ? "black60" : "black100"}>
+        <Text variant="sm-display" color={disabled ? "mono60" : "mono100"}>
           {title}
         </Text>
-        <Text variant="sm" color={disabled ? "black30" : "black60"} py={0.5}>
+        <Text variant="sm" color={disabled ? "mono30" : "mono60"} py={0.5}>
           {description}
         </Text>
       </Flex>

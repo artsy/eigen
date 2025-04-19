@@ -63,12 +63,12 @@ export const SaleInfo = ({
       noteColor = "blue100"
       line1 = "Live bidding in progress"
     } else {
-      noteColor = "black60"
+      noteColor = "mono60"
       line1 = line1Message("Live bidding begins", endMoment)
     }
   } else {
     Icon = Stopwatch
-    noteColor = "black60"
+    noteColor = "mono60"
     line1 = line1Message("Closes", endMoment)
     line2 = line2Message("Ends", endMoment)
   }

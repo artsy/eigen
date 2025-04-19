@@ -32,7 +32,7 @@ export const ArtQuizTrendingCollection = ({
             content={collection.descriptionMarkdown}
             maxChars={textLimit}
             textStyle="new"
-            color="black60"
+            color="mono60"
             textVariant="sm"
             linkTextVariant="sm"
           />

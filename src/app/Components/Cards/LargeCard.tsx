@@ -30,7 +30,7 @@ export const LargeCard: React.FC<LargeCardProps> = ({ image, title, subtitle, ta
         flexDirection: "row",
       }}
     >
-      <Flex flex={2} backgroundColor="black10">
+      <Flex flex={2} backgroundColor="mono10">
         <Image src={image} width={width} height={400} />
       </Flex>
       <LinearGradient
@@ -50,11 +50,11 @@ export const LargeCard: React.FC<LargeCardProps> = ({ image, title, subtitle, ta
           right: space(6),
         }}
       >
-        <Text variant="sm-display" color={color("white100")}>
+        <Text variant="sm-display" color={color("mono0")}>
           {title}
         </Text>
         {!!subtitle && (
-          <Text variant="sm" color={color("white100")}>
+          <Text variant="sm" color={color("mono0")}>
             {subtitle}
           </Text>
         )}
