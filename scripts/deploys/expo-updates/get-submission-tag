@@ -1,8 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
-# fetch the latest description from the deployment history the naming patern is "some description version:codepush-canary-ios-8.39.0-2024.05.10.09"
-description=$(appcenter codepush deployment history -a mobile-artsy/Eigen Canary --output json | jq -r '.[-1][4]')
+# fetch the latest description from the deployment history the naming patern is "some description version:expo-canary-ios-8.39.0-2024.05.10.09"
+description=$(eas update:list --branch=canary --json --non-interactive | jq .currentPage[0].message)
 
 # extract the version from the description
 if [[ $description =~ version:(.*) ]]; then

@@ -1,7 +1,47 @@
 {
   "appName": "eigen",
+  "name": "Eigen",
+  "displayName": "Artsy",
   "version": "8.70.0",
   "isAndroidBeta": false,
-  "codePushReleaseName": "none",
-  "codePushDist": "none"
+  "slug": "eigen",
+  "expo": {
+    "platforms": ["ios", "android"],
+    "plugins": [
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "note": "Use SENTRY_AUTH_TOKEN env to authenticate with Sentry.",
+          "project": "eigen",
+          "organization": "artsynet"
+        }
+      ]
+    ],
+    "ios": {
+      "bundleIdentifier": "net.artsy.artsy"
+    },
+    "updates": {
+      "enabled": false,
+      "fallbackToCacheTimeout": 0,
+      "codeSigningCertificate": "./code-signing/certificate.pem",
+      "codeSigningMetadata": {
+        "keyid": "main",
+        "alg": "rsa-v1_5-sha256"
+      },
+      "url": "https://expo-updates-api.artsy.net/api/manifest?project=eigen&channel=production",
+      "requestHeaders": {
+        "expo-channel-name": "production"
+      }
+    },
+    "runtimeVersion": "1.0.0",
+    "extra": {
+      "eas": {
+        "projectId": "39b092dc-effa-4d59-a530-85107bdfd668"
+      }
+    },
+    "android": {
+      "bundleIdentifier": "net.artsy.app"
+    }
+  }
 }

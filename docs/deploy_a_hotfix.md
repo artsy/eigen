@@ -4,17 +4,9 @@ Occasionally a bug is found in a live release that requires a quick mitigation. 
 
 There are 2 methods of deploying hot fixes depending on the issue:
 
-1. **Codepush Releases**: If the issue only affects javascript code we can deploy a hotfix with Codepush and users will get the update automatically on the next run of the app.
+1. **Expo Updates (js) Releases**: If the issue only affects javascript code we can deploy a hotfix with Expo updates and users will get the update automatically on the next run of the app.
 
 2. **Native Releases**: If the issue affects native code we must deploy new build and send through the app review process as normal. Note this build will still need to go through the review process and user's will need to update so this is only a mitigation not an immediate fix. If a faster release is necessary you can request an expedited review for the app store but this should be done sparingly and is not guaranteed to be approved. Google Play does not offer expedited reviews but their review process is typically faster.
-
-## Install Prerequisites
-
-The first time you deploy a hotfix you will need to install the app-center cli:
-
-```
-yarn global add appcenter-cli
-```
 
 ## Get the release files and environment variables
 
@@ -57,15 +49,15 @@ We will want to checkout the tag `ios-7.2.0-2022.02.03.14-submission`:
 Get the commit hash for the bug fix you want to release in the hotfix. If it was merged into main you want the hash of the merge commit.
 You can find it in the github ui or by checking out main after the merge and running `git log --oneline`.
 
-Run the script `./scripts/codepush/apply-fix.sh <commit-hash>`
+Run the script `./scripts/deploys/expo-updates/apply-fix.sh <commit-hash>`
 Passing the commit hash of the fix, if there are multiple you can run multiple times.
 
-If you see output like: `Warning: native code changed you cannot use codepush for this hotfix, please follow the native beta deployment steps.`
+If you see output like: `Warning: native code changed you cannot use expo updates for this hotfix, please follow the native beta deployment steps.`
 The changes affected native code and cannot be deployed through codepush, please follow the `Native release hotfix process` section of this document.
-Otherwise follow the steps in `Codepush release hotfix process`.
+Otherwise follow the steps in `Expo updates release hotfix process`.
 
 <details>
-  <summary>Codepush release hotfix process</summary>
+  <summary>Expo updates release hotfix process</summary>
 
 ## Check if there is already a hot fix targeting this app version
 
@@ -74,7 +66,7 @@ Ask #practice-mobile if anything has been deployed as a hot fix previously targe
 ## Install dependencies
 
 Since the branch you are on is older than main it is likely some node deps are out of date locally. You will need to update your local deps otherwise the
-deployment to codepush will fail.
+deployment to expo updates will fail.
 
 `yarn setup:artsy`
 
@@ -83,25 +75,25 @@ deployment to codepush will fail.
 > [!IMPORTANT]
 > If the install results in changes to Podfile.lock you must do a Native Release Hotfix, please refer to that section of the docs.
 
-## Deploy your change to codepush canary deployment
+## Deploy your change to expo updates canary channel
 
-Let `#practice-mobile` know you will be deploying a hotfix and to hold off deploying to codepush or betas.
+Let `#practice-mobile` know you will be deploying a hotfix and to hold off deploying to expo updates or betas.
 
-Run the script to deploy the hotfix to the canary deployment:
-`./scripts/codepush/deploy-to-codepush.sh 'Canary' 'hotfix description'`
+Run the script to deploy the hotfix to the canary channel:
+`./scripts/deploys/expo-updates/deploy-to-expo-updates 'staging' 'hotfix description'`
 
-## Test your codepush change in the production app
+## Test your update in the production app
 
 Download the latest app from the app store or play store
-Enable the dev menu and download the codepush bundle from the staging deployment.
+Enable the dev menu and download the expo updates bundle from the staging deployment.
 Test that the fix is working as intended and do some basic QA to make sure the app is functioning correctly.
 
-## Promote the codepush bundle to production
+## Deploy the update to production
 
 If QA goes well run the script to promote the bundle to production.
 Make sure to monitor the app as it rolls out to users.
 
-`./scripts/codepush/promote-to-prod.sh <rollout_percentage>`
+`./scripts/deploys/expo-updates/deploy-to-prod <rollout_percentage>`
 
 For example if you wanted to rollout to 50% of users you would pass `50` for rollout_percentage. If it is critical to get the fix out fast
 you can pass `100` otherwise it is suggested you pass `50` and monitor before updating to 100%.
@@ -110,7 +102,7 @@ you can pass `100` otherwise it is suggested you pass `50` and monitor before up
 
 If all looks good with the fix you can update the rollout to all users:
 
-`./scripts/codepush/update_rollout.sh 100`
+`./scripts/deploys/expo-updates/update-rollout 100`
 
 </details>
 
@@ -147,22 +139,22 @@ Make sure to QA the bug fix changes and run through the QA script before releasi
 
 ## Gotchas and FAQS
 
-**Codepush was deployed but I am still not seeing my app update. What's going on?**
+**The expo update was deployed but I am still not seeing my app update. What's going on?**
 
-Updates aren't instant in mobile, even with codepush, but users on the latest should get updated over a few days automatically with a codepush rollout. If you want to try to force the update you can make sure you are on the latest version of the app in the app store and then kill and restart your app.
+Updates aren't instant in mobile, even with expo updates, but users on the latest should get updated over a few days automatically with the rollout. If you want to try to force the update you can make sure you are on the latest version of the app in the app store and then kill and restart your app.
 
-**I want to deploy to codepush and target multiple versions to get more users updated. How do I do that?**
+**I want to deploy to expo-updates and target multiple versions to get more users updated. How do I do that?**
 
-You probably should not, codepush will prioritize the latest mandatory update so releasing multiple will affect roll outs of the others and slow down how fast fixes get to users. Most users will update fairly quickly once a release is rolled out completely so it is best to target the latest and wait in most cases. If something is critical we can talk about options in the #practice-mobile channel. Most things are not critical and remember we do releases every 2 weeks.
+You probably should not, expo updates will prioritize the latest mandatory update so releasing multiple will affect roll outs of the others and slow down how fast fixes get to users. Most users will update fairly quickly once a release is rolled out completely so it is best to target the latest and wait in most cases. If something is critical we can talk about options in the #practice-mobile channel. Most things are not critical and remember we do releases every 2 weeks.
 
-**The latest version of the app is still rolling out so many users won't get updated if we target the latest with codepush. What do I do?**
+**The latest version of the app is still rolling out so many users won't get updated if we target the latest with expo updates. What do I do?**
 
 You have a couple options, check metrics for latest release:
 
 **Option 1 - if things look stable**:
 
 - Update the rollout in play store and app store to release the app to all users
-- Send out your codepush update targeting the latest release as usual and users should get updated over the next few days
+- Send out your update targeting the latest release as usual and users should get updated over the next few days
 
 **Option 2 - if things look unstable**:
 

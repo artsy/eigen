@@ -2,6 +2,5 @@
 set -exo pipefail
 
 pushd android
-./gradlew clean --no-daemon --max-workers 2
-yarn react-native build-android --mode=release --extra-params='--no-daemon --max-workers 2'
+yarn react-native build-android --mode=release --extra-params='--max-workers 2'
 popd

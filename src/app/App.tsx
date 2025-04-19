@@ -2,7 +2,6 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import * as Sentry from "@sentry/react-native"
 import { Navigation } from "app/Navigation/Navigation"
 import { GlobalStore, unsafe__getEnvironment, unsafe_getDevToggle } from "app/store/GlobalStore"
-import { codePushOptions } from "app/system/codepush"
 import { DevMenuWrapper } from "app/system/devTools/DevMenu/DevMenuWrapper"
 import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
 import { setupSentry } from "app/system/errorReporting/setupSentry"
@@ -20,7 +19,6 @@ import { useSiftConfig } from "app/utils/useSiftConfig"
 import { useStripeConfig } from "app/utils/useStripeConfig"
 import { useEffect } from "react"
 import { NativeModules, UIManager, View } from "react-native"
-import codePush from "react-native-code-push"
 import { Settings } from "react-native-fbsdk-next"
 import "react-native-get-random-values"
 import Keys from "react-native-keys"
@@ -135,4 +133,4 @@ const InnerApp = () => {
 }
 
 const SentryApp = !__DEV__ || debugSentry ? Sentry.wrap(InnerApp) : InnerApp
-export const App = codePush(codePushOptions)(SentryApp)
+export const App = SentryApp

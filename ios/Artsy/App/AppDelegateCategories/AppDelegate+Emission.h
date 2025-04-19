@@ -1,4 +1,4 @@
-#import "ARAppDelegate.h"
+#import "AppDelegate.h"
 #import "AREmission.h"
 
 @interface ARAppDelegate (Emission)

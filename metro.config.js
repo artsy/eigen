@@ -6,7 +6,8 @@
  */
 
 const path = require("path")
-const { getDefaultConfig, mergeConfig } = require("@react-native/metro-config")
+const { mergeConfig } = require("@react-native/metro-config")
+const { getSentryExpoConfig } = require("@sentry/react-native/metro")
 const { FileStore } = require("metro-cache")
 
 const config = {
@@ -33,4 +34,4 @@ const config = {
   },
 }
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config)
+module.exports = mergeConfig(getSentryExpoConfig(__dirname), config)

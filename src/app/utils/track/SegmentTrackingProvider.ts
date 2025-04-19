@@ -29,7 +29,11 @@ export const SegmentTrackingProvider: TrackingProvider = {
       return null
     }
 
-    analytics = createClient({ writeKey: writeKey })
+    analytics = createClient({
+      trackAppLifecycleEvents: true,
+      trackDeepLinks: true,
+      writeKey: writeKey,
+    })
     analytics.add({ plugin: new BrazePlugin() })
   },
 
