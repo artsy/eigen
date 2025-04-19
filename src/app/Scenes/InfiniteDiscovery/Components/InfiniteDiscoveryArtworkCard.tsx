@@ -59,13 +59,10 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const { incrementSavedArtworksCount, decrementSavedArtworksCount } =
       GlobalStore.actions.infiniteDiscovery
 
-    const artworkData = useFragment<InfiniteDiscoveryArtworkCard_artwork$key>(
+    const artwork = useFragment<InfiniteDiscoveryArtworkCard_artwork$key>(
       infiniteDiscoveryArtworkCardFragment,
       artworkProp
     )
-
-    // This is a workaround to avoid relay removing the fragment from the cache
-    const artwork = useRef(artworkData).current
 
     const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
       artworkFragmentRef: artwork,
