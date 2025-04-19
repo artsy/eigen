@@ -1,16 +1,7 @@
-#import "ARApplicationShortcutItemDelegate.h"
-
-#import "ARAppConstants.h"
-#import "User.h"
+#import "AppDelegate+ShortcutItems.h"
 #import "AREmission.h"
 
-
-@implementation ARApplicationShortcutItemDelegate
-
-+ (void)load
-{
-    [JSDecoupledAppDelegate sharedAppDelegate].shortcutItemDelegate = [[self alloc] init];
-}
+@implementation ARAppDelegate (ShortcutItems)
 
 - (NSArray<UIApplicationShortcutItem *> *)shortcutItems
 {

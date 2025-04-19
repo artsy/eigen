@@ -4,7 +4,7 @@
 int main(int argc, char *argv[])
 {
     @autoreleasepool {
-        NSString *appDelegate = @"JSDecoupledAppDelegate";
+        NSString *appDelegate = @"ARAppDelegate";
 #ifdef DEBUG
         if (NSClassFromString(@"XCTestCase")) {
             appDelegate = @"ARTestHelper";

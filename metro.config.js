@@ -6,7 +6,8 @@
  */
 
 const path = require("path")
-const { getDefaultConfig, mergeConfig } = require("@react-native/metro-config")
+const { mergeConfig } = require("@react-native/metro-config")
+const { getDefaultConfig } = require("expo/metro-config")
 const { FileStore } = require("metro-cache")
 
 const config = {

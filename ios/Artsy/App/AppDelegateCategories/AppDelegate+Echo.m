@@ -1,6 +1,4 @@
-#import "ARAppDelegate+Echo.h"
-#import "ARAppDelegate+Emission.h"
-#import "ARAppStatus.h"
+#import "AppDelegate+Echo.h"
 
 @implementation ARAppDelegate (Echo)
 

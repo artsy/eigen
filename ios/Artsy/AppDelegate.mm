@@ -2,42 +2,34 @@
 #import <SafariServices/SafariServices.h>
 #import <FBSDKCoreKit/FBSDKCoreKit-Swift.h>
 #import <Firebase.h>
-#import <BrazeKit/BrazeKit-Swift.h>
+
+#import <BrazeUI/BrazeUI-Swift.h>
 #import "BrazeReactBridge.h"
 #import "BrazeReactUtils.h"
 
-@import BrazeUI;
+#import "AppDelegate.h"
+#import "AppDelegate+Emission.h"
+#import "AppDelegate+Echo.h"
+#import "AppDelegate+Notifications.h"
+#import "AppDelegate+ActivityContinuation.h"
+#import "AppDelegate+ShortcutItems.h"
+#import "AppDelegate+DeeplinkTimeout.h"
 
-#import <CodePush/CodePush.h>
-#import <AppCenterReactNative.h>
-
-#import "ARAppDelegate.h"
-#import "ARAppDelegate+Emission.h"
-#import "ARAppDelegate+Echo.h"
-#import "ARAppNotificationsDelegate.h"
-#import "ARAppDelegate+DeeplinkTimeout.h"
 #import "ARUserManager.h"
-#import "ARFonts.h"
-#import <Analytics/SEGAnalytics.h>
-#import "ARAnalyticsConstants.h"
 #import "User.h"
+#import "ARFonts.h"
+#import "ARAnalyticsConstants.h"
 
 #import "ARWebViewCacheHost.h"
 #import "ARAppStatus.h"
 #import "ARLogger.h"
 
-#import "AREmission.h"
 #import "ARPHPhotoPickerModule.h"
 #import "ARCocoaConstantsModule.h"
 
 #import "Keys.h"
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import <React/RCTBundleURLProvider.h>
-#import "AREmission.h"
-#import "ARNotificationsManager.h"
-#import <React/RCTLinkingManager.h>
 #import "RNBootSplash.h"
-
 
 @interface ARAppDelegate ()
 @property (strong, nonatomic, readwrite) NSString *referralURLRepresentation;
@@ -53,9 +45,6 @@ static ARAppDelegate *_sharedInstance = nil;
 + (void)load
 {
     _sharedInstance = [[self alloc] init];
-    [JSDecoupledAppDelegate sharedAppDelegate].appStateDelegate = _sharedInstance;
-    [JSDecoupledAppDelegate sharedAppDelegate].appDefaultOrientationDelegate = (id)_sharedInstance;
-    [JSDecoupledAppDelegate sharedAppDelegate].URLResourceOpeningDelegate = (id)_sharedInstance;
 }
 
 + (ARAppDelegate *)sharedInstance
@@ -99,8 +88,6 @@ static ARAppDelegate *_sharedInstance = nil;
     // Temp Fix for: https://github.com/artsy/eigen/issues/602
     [self forceCacheCustomFonts];
 
-    [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = [[ARAppNotificationsDelegate alloc] init];
-
     [self countNumberOfRuns];
 
     _landingURLRepresentation = self.landingURLRepresentation ?: @"https://artsy.net";
@@ -108,9 +95,6 @@ static ARAppDelegate *_sharedInstance = nil;
     [[ARLogger sharedLogger] startLogging];
 
     [self setupSharedEmission];
-
-    [AppCenterReactNative register];
-
 
     self.moduleName = @"eigen";
 
@@ -132,7 +116,7 @@ static ARAppDelegate *_sharedInstance = nil;
     [self setupAnalytics:application withLaunchOptions:launchOptions];
     
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    center.delegate = [self remoteNotificationsDelegate];
+    center.delegate = self;
 
     [[FBSDKApplicationDelegate sharedInstance] application:application
         didFinishLaunchingWithOptions:launchOptions];
@@ -147,7 +131,13 @@ static ARAppDelegate *_sharedInstance = nil;
 }
 
 - (RCTBridge *)createBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate launchOptions:(NSDictionary *)launchOptions {
-    RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+    // TODO: This is off the beaten track for expo setup, we should probably find another way
+    // TODO: This is currently broken for expo updates
+    // can switch to this [super createBridgeWithDelegate:delegate launchOptions:launchOptions]; to fix expo updates
+    // however this breaks our stateful notificationManager native module because we are changing the bridge delegate
+    // and as a result extraModulesForBridge is not called causing the module to be instantiated 2x
+    // It will definitely not work on new architecture
+    RCTBridge *bridge = [super createBridgeWithDelegate:self launchOptions:launchOptions];
     AREmission *emission = [AREmission sharedInstance];
     [emission setBridge:bridge];
     return bridge;
@@ -178,17 +168,6 @@ static ARAppDelegate *_sharedInstance = nil;
     BrazeInAppMessageUI *inAppMessageUI = [[BrazeInAppMessageUI alloc] init];
     braze.inAppMessagePresenter = inAppMessageUI;
 
-    NSString *segmentWriteKey = [Keys secureFor:@"SEGMENT_STAGING_WRITE_KEY_IOS"];
-
-    if (![ARAppStatus isDev]) {
-        segmentWriteKey = [Keys secureFor:@"SEGMENT_PRODUCTION_WRITE_KEY_IOS"];
-    }
-
-    SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:segmentWriteKey];
-    configuration.trackApplicationLifecycleEvents = YES;
-    configuration.trackPushNotifications = YES;
-    configuration.trackDeepLinks = YES;
-    [SEGAnalytics setupWithConfiguration:configuration];
     [[BrazeReactUtils sharedInstance] populateInitialUrlFromLaunchOptions:launchOptions];
 }
 
@@ -203,17 +182,6 @@ static ARAppDelegate *_sharedInstance = nil;
     if (currentUserId) {
         [[ARAppDelegate braze] changeUser: currentUserId];
     }
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-    // MANUALLY track lifecycle event. Segment already does this if
-    // trackLifecycleSessions: true
-}
-
-- (ARAppNotificationsDelegate *)remoteNotificationsDelegate;
-{
-    return (ARAppNotificationsDelegate *)[[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
 }
 
 - (void)forceCacheCustomFonts
@@ -289,9 +257,9 @@ static ARAppDelegate *_sharedInstance = nil;
 - (NSURL *)bundleURL
 {
 #if DEBUG
-    return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
+    return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@".expo/.virtual-metro-entry"];
 #else
-    return [CodePush bundleURL];
+    return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
 }
 

@@ -1,5 +1,5 @@
 #import "ArtsyAPI.h"
-
+#import "AFHTTPRequestOperation.h"
 
 @interface ArtsyAPI (DeviceTokens)
 
