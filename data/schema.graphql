@@ -336,6 +336,9 @@ type Alert {
     artistNationalities: [String]
     artistSeriesID: String
     artistSeriesIDs: [String]
+
+    # When provided, will only return artworks with these IDs.
+    artworkIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     availability: String
@@ -1711,6 +1714,9 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     artistNationalities: [String]
     artistSeriesID: String
     artistSeriesIDs: [String]
+
+    # When provided, will only return artworks with these IDs.
+    artworkIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     availability: String
@@ -2145,6 +2151,9 @@ type ArtistPartnerEdge {
     artistNationalities: [String]
     artistSeriesID: String
     artistSeriesIDs: [String]
+
+    # When provided, will only return artworks with these IDs.
+    artworkIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     availability: String
@@ -2290,6 +2299,9 @@ type ArtistSeries implements Node {
     artistNationalities: [String]
     artistSeriesID: String
     artistSeriesIDs: [String]
+
+    # When provided, will only return artworks with these IDs.
+    artworkIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     availability: String
@@ -10537,6 +10549,9 @@ interface EntityWithFilterArtworksConnectionInterface {
     artistNationalities: [String]
     artistSeriesID: String
     artistSeriesIDs: [String]
+
+    # When provided, will only return artworks with these IDs.
+    artworkIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     availability: String
@@ -10799,6 +10814,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     artistNationalities: [String]
     artistSeriesID: String
     artistSeriesIDs: [String]
+
+    # When provided, will only return artworks with these IDs.
+    artworkIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     availability: String
@@ -11323,6 +11341,9 @@ input FilterArtworksInput {
   artistNationalities: [String]
   artistSeriesID: String
   artistSeriesIDs: [String]
+
+  # When provided, will only return artworks with these IDs.
+  artworkIDs: [String]
   atAuction: Boolean
   attributionClass: [String]
   availability: String
@@ -11830,6 +11851,9 @@ type Gene implements Node & Searchable {
     artistNationalities: [String]
     artistSeriesID: String
     artistSeriesIDs: [String]
+
+    # When provided, will only return artworks with these IDs.
+    artworkIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     availability: String
@@ -13729,6 +13753,9 @@ type MarketingCollection implements Node {
     artistNationalities: [String]
     artistSeriesID: String
     artistSeriesIDs: [String]
+
+    # When provided, will only return artworks with these IDs.
+    artworkIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     availability: String
@@ -16461,6 +16488,9 @@ type Partner implements Node {
     artistNationalities: [String]
     artistSeriesID: String
     artistSeriesIDs: [String]
+
+    # When provided, will only return artworks with these IDs.
+    artworkIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     availability: String
@@ -16776,6 +16806,9 @@ type PartnerArtist {
     artistNationalities: [String]
     artistSeriesID: String
     artistSeriesIDs: [String]
+
+    # When provided, will only return artworks with these IDs.
+    artworkIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     availability: String
@@ -16962,6 +16995,9 @@ type PartnerArtistEdge {
     artistNationalities: [String]
     artistSeriesID: String
     artistSeriesIDs: [String]
+
+    # When provided, will only return artworks with these IDs.
+    artworkIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     availability: String
@@ -18155,6 +18191,9 @@ type Query {
     artistNationalities: [String]
     artistSeriesID: String
     artistSeriesIDs: [String]
+
+    # When provided, will only return artworks with these IDs.
+    artworkIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     availability: String
@@ -20717,6 +20756,9 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     artistNationalities: [String]
     artistSeriesID: String
     artistSeriesIDs: [String]
+
+    # When provided, will only return artworks with these IDs.
+    artworkIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     availability: String
@@ -21247,6 +21289,9 @@ type Tag implements Node {
     artistNationalities: [String]
     artistSeriesID: String
     artistSeriesIDs: [String]
+
+    # When provided, will only return artworks with these IDs.
+    artworkIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     availability: String
@@ -23695,6 +23740,9 @@ type Viewer {
     artistNationalities: [String]
     artistSeriesID: String
     artistSeriesIDs: [String]
+
+    # When provided, will only return artworks with these IDs.
+    artworkIDs: [String]
     atAuction: Boolean
     attributionClass: [String]
     availability: String
