@@ -20,7 +20,6 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.soloader.SoLoader
 import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.google.firebase.messaging.FirebaseMessaging
-import com.microsoft.codepush.react.CodePush
 import com.segment.analytics.Analytics
 import io.sentry.react.RNSentryPackage
 import com.reactnativekeysjsi.KeysModule.getSecureFor
@@ -47,7 +46,6 @@ class MainApplication : Application(), ReactApplication {
   override val reactHost: ReactHost
     get() = ReactNativeHostWrapper.createReactHost(applicationContext, reactNativeHost)
 
-
     override fun onCreate() {
         super.onCreate()
         SoLoader.init(this, OpenSourceMergedSoMapping)
@@ -68,11 +66,11 @@ class MainApplication : Application(), ReactApplication {
         Analytics.setSingletonInstance(analytics)
 
         registerActivityLifecycleCallbacks(BrazeActivityLifecycleCallbackListener())
-      ApplicationLifecycleDispatcher.onApplicationCreate(this)
-  }
+        ApplicationLifecycleDispatcher.onApplicationCreate(this)
+    }
 
-  override fun onConfigurationChanged(newConfig: Configuration) {
-    super.onConfigurationChanged(newConfig)
-    ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig)
-  }
+    override fun onConfigurationChanged(newConfig: Configuration) {
+      super.onConfigurationChanged(newConfig)
+      ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig)
+    }
 }
