@@ -13,6 +13,7 @@ import {
 import { InfiniteDiscoveryArtworkCard_artwork$key } from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { PaginationDots } from "app/Components/PaginationDots"
 import { GlobalStore } from "app/store/GlobalStore"
 import {
   PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_1,
@@ -63,6 +64,9 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       infiniteDiscoveryArtworkCardFragment,
       artworkProp
     )
+
+    // State to track the current image index
+    const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
     const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
       artworkFragmentRef: artwork,
@@ -139,12 +143,19 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     }
 
     const MAX_ARTWORK_HEIGHT = screenHeight * 0.55
+    // Define pagination dots height to subtract from available image height
+    const PAGINATION_DOTS_HEIGHT = 20
 
-    const src = artwork.images?.[0]?.url
-    const width = artwork.images?.[0]?.width ?? 0
-    const height = artwork.images?.[0]?.height ?? 0
+    const images = artwork.images || []
+    const selectedImage = images[currentImageIndex]
+    const src = selectedImage?.url
+    const width = selectedImage?.width ?? 0
+    const height = selectedImage?.height ?? 0
 
-    const size = sizeToFit({ width, height }, { width: screenWidth, height: MAX_ARTWORK_HEIGHT })
+    // Adjust available height for image to account for pagination dots when multiple images exist
+    const imageMaxHeight =
+      images.length > 1 ? MAX_ARTWORK_HEIGHT - PAGINATION_DOTS_HEIGHT : MAX_ARTWORK_HEIGHT
+    const size = sizeToFit({ width, height }, { width: screenWidth, height: imageMaxHeight })
 
     const handleWrapperTaps = () => {
       const now = Date.now()
@@ -210,6 +221,18 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           />
 
           {!!src && <Image src={src} height={size.height} width={size.width} />}
+
+          {/* Show pagination dots when there are multiple images */}
+          {images.length > 1 && (
+            <Flex
+              mt={1}
+              height={PAGINATION_DOTS_HEIGHT}
+              alignItems="center"
+              justifyContent="center"
+            >
+              <PaginationDots currentIndex={currentImageIndex} length={images.length} />
+            </Flex>
+          )}
         </Flex>
         <Flex flexDirection="row" justifyContent="space-between" p={2} gap={1}>
           <Flex flex={1}>
