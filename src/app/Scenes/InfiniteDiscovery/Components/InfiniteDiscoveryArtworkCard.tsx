@@ -169,6 +169,10 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       const rightThird = locationX > screenThird * 2
       const middleThird = !leftThird && !rightThird
 
+      // Check if the Swiper is actively swiping
+      // Note: We'll use a special technique that lets the gesture go through
+      // if it's a vertical swipe intended for the Swiper component
+
       // Handle image navigation in left/right thirds with single tap
       if (images.length > 1) {
         if (leftThird && currentImageIndex > 0) {
@@ -239,7 +243,21 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           </Animated.View>
 
           <Flex
-            onStartShouldSetResponderCapture={handleWrapperTaps}
+            // Only handle initial touches
+            onStartShouldSetResponder={(event) => {
+              // Let parent handle multi-touch gestures (like pinch zoom)
+              if (event.nativeEvent.touches && event.nativeEvent.touches.length > 1) {
+                return false
+              }
+              return true
+            }}
+            // But don't capture them from children
+            onStartShouldSetResponderCapture={() => false}
+            // Don't try to handle moves (let the Swiper handle them)
+            onMoveShouldSetResponder={() => false}
+            onMoveShouldSetResponderCapture={() => false}
+            // Handle taps on release
+            onResponderRelease={handleWrapperTaps}
             style={{
               position: "absolute",
               width: "100%",
