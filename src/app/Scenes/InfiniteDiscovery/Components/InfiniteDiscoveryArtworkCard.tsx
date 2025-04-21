@@ -22,7 +22,7 @@ import {
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
-import { Text as RNText, ViewStyle } from "react-native"
+import { GestureResponderEvent, Text as RNText, ViewStyle } from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import Animated, {
   Easing,
@@ -157,26 +157,54 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       images.length > 1 ? MAX_ARTWORK_HEIGHT - PAGINATION_DOTS_HEIGHT : MAX_ARTWORK_HEIGHT
     const size = sizeToFit({ width, height }, { width: screenWidth, height: imageMaxHeight })
 
-    const handleWrapperTaps = () => {
+    const handleWrapperTaps = (event: GestureResponderEvent) => {
       const now = Date.now()
       const state = gestureState.current
+      const { nativeEvent } = event
+      const { locationX } = nativeEvent
+      const screenThird = screenWidth / 3
 
-      if (now - state.lastTapTimestamp < SAVES_MAX_DURATION_BETWEEN_TAPS) {
-        state.numTaps += 1
-      } else {
-        state.numTaps = 1
-      }
+      // Determine which third of the screen was tapped
+      const leftThird = locationX < screenThird
+      const rightThird = locationX > screenThird * 2
+      const middleThird = !leftThird && !rightThird
 
-      state.lastTapTimestamp = now
-
-      if (state.numTaps === 2) {
-        state.numTaps = 0
-        if (!isSaved) {
+      // Handle image navigation in left/right thirds with single tap
+      if (images.length > 1) {
+        if (leftThird && currentImageIndex > 0) {
+          // For left third, navigate to previous image on single tap
           Haptic.trigger("impactLight")
-          setShowScreenTapToSave(true)
-          saveArtworkToLists()
+          setCurrentImageIndex(currentImageIndex - 1)
+          return true
+        } else if (rightThird && currentImageIndex < images.length - 1) {
+          // For right third, navigate to next image on single tap
+          Haptic.trigger("impactLight")
+          setCurrentImageIndex(currentImageIndex + 1)
+          return true
         }
       }
+
+      // Handle double-tap to save only in the middle third
+      if (middleThird) {
+        if (now - state.lastTapTimestamp < SAVES_MAX_DURATION_BETWEEN_TAPS) {
+          state.numTaps += 1
+        } else {
+          state.numTaps = 1
+        }
+
+        state.lastTapTimestamp = now
+
+        if (state.numTaps === 2) {
+          state.numTaps = 0
+          if (!isSaved) {
+            Haptic.trigger("impactLight")
+            setShowScreenTapToSave(true)
+            saveArtworkToLists()
+          }
+          return true
+        }
+      }
+
       return false
     }
 
