@@ -8593,10 +8593,16 @@ input CreateArtworkMutationInput {
   clientMutationId: String
 
   # The S3 bucket where the artwork image is stored.
-  imageS3Bucket: String!
+  imageS3Bucket: String @deprecated(reason: "Use imageS3Buckets instead.")
+
+  # The S3 buckets where the artwork images are stored. This is a list of bucket names.
+  imageS3Buckets: [String!]
 
   # The S3 key for the artwork image.
-  imageS3Key: String!
+  imageS3Key: String @deprecated(reason: "Use imageS3Keys instead.")
+
+  # The S3 keys for the artwork images. This is a list of object keys.
+  imageS3Keys: [String!]
 
   # The ID of the partner under which the artwork is created.
   partnerId: String!
