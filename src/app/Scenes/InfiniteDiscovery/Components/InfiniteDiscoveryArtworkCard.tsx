@@ -13,6 +13,7 @@ import {
 import { InfiniteDiscoveryArtworkCard_artwork$key } from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
 import { GlobalStore } from "app/store/GlobalStore"
 import {
   PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_1,
@@ -142,8 +143,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     }
 
     const MAX_ARTWORK_HEIGHT = screenHeight * 0.55
-    // Define pagination dots height to subtract from available image height
-    const PAGINATION_DOTS_HEIGHT = 20
 
     const images = artwork.images || []
     const selectedImage = images[currentImageIndex]
@@ -151,10 +150,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const width = selectedImage?.width ?? 0
     const height = selectedImage?.height ?? 0
 
-    // Adjust available height for image to account for pagination dots when multiple images exist
-    const imageMaxHeight =
-      images.length > 1 ? MAX_ARTWORK_HEIGHT - PAGINATION_DOTS_HEIGHT : MAX_ARTWORK_HEIGHT
-    const size = sizeToFit({ width, height }, { width: screenWidth, height: imageMaxHeight })
+    const size = sizeToFit({ width, height }, { width: screenWidth, height: MAX_ARTWORK_HEIGHT })
 
     const handleWrapperTaps = (event: GestureResponderEvent) => {
       const now = Date.now()
@@ -266,21 +262,21 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           />
 
           {!!src && <Image src={src} height={size.height} width={size.width} />}
-
-          {/* Show pagination bars when there are multiple images */}
-          {images.length > 1 && (
-            <Flex
-              mt={1}
-              px={2}
-              height={PAGINATION_DOTS_HEIGHT}
-              alignItems="center"
-              justifyContent="center"
-              width="100%"
-            >
-              <PaginationBars currentIndex={currentImageIndex} length={images.length} />
-            </Flex>
-          )}
         </Flex>
+
+        {/* Show pagination bars when there are multiple images */}
+        {images.length > 1 && (
+          <Flex
+            pt={2}
+            px={1}
+            height={PAGINATION_BAR_HEIGHT}
+            alignItems="center"
+            justifyContent="center"
+            width="100%"
+          >
+            <PaginationBars currentIndex={currentImageIndex} length={images.length} />
+          </Flex>
+        )}
         <Flex flexDirection="row" justifyContent="space-between" p={2} gap={1}>
           <Flex flex={1}>
             {/* TODO: remove this when we are done with the infinite discovery */}
@@ -362,31 +358,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     )
   }
 )
-
-// Custom pagination bars for InfiniteDiscoveryArtworkCard
-interface PaginationBarsProps {
-  currentIndex: number
-  length: number
-}
-
-const PaginationBars: React.FC<PaginationBarsProps> = ({ currentIndex, length }) => {
-  const color = useColor()
-
-  return (
-    <Flex width="100%" flexDirection="row" justifyContent="space-between">
-      {Array.from(Array(length)).map((_, index) => (
-        <Flex
-          key={index}
-          height={1}
-          flex={1}
-          mx={0.5}
-          backgroundColor={currentIndex === index ? color("black60") : color("black10")}
-        />
-      ))}
-    </Flex>
-  )
-}
-
 const FIRST_REMINDER_SWIPES_COUNT = 4
 const SECOND_REMINDER_SWIPES_COUNT = 29
 
@@ -472,3 +443,4 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
 const HEART_ICON_SIZE = 18
 const HEART_CIRCLE_SIZE = 50
 const SAVE_BUTTON_WIDTH = 105
+const PAGINATION_BAR_HEIGHT = 12
