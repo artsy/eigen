@@ -16671,7 +16671,11 @@ type Partner implements Node {
   # A slug ID.
   slug: ID!
   type: String
+
+  # Returns VAT number or a fallback message based on the partner's VAT status.
+  vatInformation: String
   vatNumber: String
+  vatStatus: String
   viewingRoomsConnection(
     after: String
     before: String
