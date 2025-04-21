@@ -18,7 +18,6 @@ import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { memo } from "react"
 import { isTablet } from "react-native-device-info"
@@ -192,9 +191,7 @@ const homeViewSectionCardQuery = graphql`
 `
 
 export const HomeViewSectionCardQueryRenderer: React.FC<SectionSharedProps> = memo((props) => {
-  const isInfiniteDiscoveryEnabled = useFeatureFlag("AREnableInfiniteDiscovery")
-
-  if (props.sectionID === "home-view-section-infinite-discovery" && !isInfiniteDiscoveryEnabled) {
+  if (props.sectionID === "home-view-section-infinite-discovery") {
     return null
   }
 
