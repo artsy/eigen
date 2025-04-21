@@ -13,7 +13,6 @@ import {
 import { InfiniteDiscoveryArtworkCard_artwork$key } from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
-import { PaginationDots } from "app/Components/PaginationDots"
 import { GlobalStore } from "app/store/GlobalStore"
 import {
   PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_1,
@@ -268,15 +267,17 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
           {!!src && <Image src={src} height={size.height} width={size.width} />}
 
-          {/* Show pagination dots when there are multiple images */}
+          {/* Show pagination bars when there are multiple images */}
           {images.length > 1 && (
             <Flex
               mt={1}
+              px={2}
               height={PAGINATION_DOTS_HEIGHT}
               alignItems="center"
               justifyContent="center"
+              width="100%"
             >
-              <PaginationDots currentIndex={currentImageIndex} length={images.length} />
+              <PaginationBars currentIndex={currentImageIndex} length={images.length} />
             </Flex>
           )}
         </Flex>
@@ -361,6 +362,30 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     )
   }
 )
+
+// Custom pagination bars for InfiniteDiscoveryArtworkCard
+interface PaginationBarsProps {
+  currentIndex: number
+  length: number
+}
+
+const PaginationBars: React.FC<PaginationBarsProps> = ({ currentIndex, length }) => {
+  const color = useColor()
+
+  return (
+    <Flex width="100%" flexDirection="row" justifyContent="space-between">
+      {Array.from(Array(length)).map((_, index) => (
+        <Flex
+          key={index}
+          height={1}
+          flex={1}
+          mx={0.5}
+          backgroundColor={currentIndex === index ? color("black60") : color("black10")}
+        />
+      ))}
+    </Flex>
+  )
+}
 
 const FIRST_REMINDER_SWIPES_COUNT = 4
 const SECOND_REMINDER_SWIPES_COUNT = 29
