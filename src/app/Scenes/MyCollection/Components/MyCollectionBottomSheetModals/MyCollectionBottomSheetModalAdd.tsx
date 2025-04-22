@@ -30,9 +30,8 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
             })
           }}
           icon={<UserMultiIcon height={24} width={24} fill="black100" />}
-          py="40px"
         />
-        <Separator />
+
         <MenuItem
           title="Add Artworks"
           description="Upload images and details of an artwork in your collection."
@@ -46,7 +45,6 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
             })
           }}
           icon={<ArtworkIcon height={24} width={24} />}
-          py="40px"
         />
       </Flex>
     </BottomSheetView>

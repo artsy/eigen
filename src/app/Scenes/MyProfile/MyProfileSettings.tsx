@@ -190,29 +190,27 @@ export const MyProfileSettings: React.FC = () => {
         Settings
       </Text>
       <Spacer y={2} />
-      <Join separator={<Separator my={1} borderColor={separatorColor} />}>
-        {ACCOUNT_MENU_ITEMS.map((item, index) => {
-          return (
-            <MenuItem
-              key={index}
-              title={item.title}
-              href={item.href}
-              onPress={() => {
-                item.onPress?.()
-                if (item.ownerType) {
-                  tracking.trackEvent(
-                    tracks.trackMenuTap({
-                      subject: item.title,
-                      ownerType: item.ownerType,
-                      position: index,
-                    })
-                  )
-                }
-              }}
-            />
-          )
-        })}
-      </Join>
+      {ACCOUNT_MENU_ITEMS.map((item, index) => {
+        return (
+          <MenuItem
+            key={index}
+            title={item.title}
+            href={item.href}
+            onPress={() => {
+              item.onPress?.()
+              if (item.ownerType) {
+                tracking.trackEvent(
+                  tracks.trackMenuTap({
+                    subject: item.title,
+                    ownerType: item.ownerType,
+                    position: index,
+                  })
+                )
+              }
+            }}
+          />
+        )
+      })}
 
       <Spacer y={4} />
 
