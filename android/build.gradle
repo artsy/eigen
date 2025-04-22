@@ -8,8 +8,8 @@ buildscript {
         targetSdkVersion = 34
         firebaseIidVersion = "21.1.0" // Needed for react-native-device-info
         googlePlayServicesAuthVersion = "16.0.1"
-        ndkVersion = "26.1.10909125"
-        kotlinVersion = "1.9.24"
+        ndkVersion = "26.2.11394342"
+        kotlinVersion = findProperty('android.kotlinVersion') ?: '1.9.25'
     }
     repositories {
         google()

@@ -10,7 +10,6 @@ project.ext.keyFiles = [
 ]
 
 apply from: project(':react-native-keys').projectDir.getPath() + "/RNKeys.gradle"
-apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -62,6 +61,11 @@ react {
 
     /* Autolinking */
     autolinkLibrariesWithApp()
+    //
+    // Added by install-expo-modules
+    entryFile = file(["node", "-e", "require('expo/scripts/resolveAppEntry')", rootDir.getAbsoluteFile().getParentFile().getAbsolutePath(), "android", "absolute"].execute(null, rootDir).text.trim())
+    cliFile = new File(["node", "--print", "require.resolve('@expo/cli')"].execute(null, rootDir).text.trim())
+    bundleCommand = "export:embed"
 }
 
 /**

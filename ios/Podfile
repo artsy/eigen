@@ -1,3 +1,4 @@
+require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
 # frozen_string_literal: true
 
 source 'https://cdn.cocoapods.org/'
@@ -12,6 +13,9 @@ require Pod::Executable.execute_command('node', ['-p',
     "react-native/scripts/react_native_pods.rb",
     {paths: [process.argv[1]]},
   )', __dir__]).strip
+
+require 'json'
+podfile_properties = JSON.parse(File.read(File.join(__dir__, 'Podfile.properties.json'))) rescue {}
 
 project 'Artsy.xcodeproj'
 platform :ios, '16.6'
@@ -62,10 +66,28 @@ end
 
 target 'Artsy' do
 
-  config = use_native_modules!
+  use_expo_modules!
+
+  if ENV['EXPO_USE_COMMUNITY_AUTOLINKING'] == '1'
+    config_command = ['node', '-e', "process.argv=['', '', 'config'];require('@react-native-community/cli').run()"];
+  else
+    config_command = [
+      'node',
+      '--no-warnings',
+      '--eval',
+      'require(require.resolve(\'expo-modules-autolinking\', { paths: [require.resolve(\'expo/package.json\')] }))(process.argv.slice(1))',
+      'react-native-config',
+      '--json',
+      '--platform',
+      'ios'
+    ]
+  end
+
+  config = use_native_modules!(config_command)
 
   use_react_native!(
     :path => config[:reactNativePath],
+    :hermes_enabled => podfile_properties['expo.jsEngine'] == nil || podfile_properties['expo.jsEngine'] == 'hermes',
     :production => ENV['CIRCLE_BUILD_NUM'],
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/..",
@@ -83,7 +105,6 @@ target 'Artsy' do
   pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
   pod 'FXBlurView', '1.6.4'
   pod 'ISO8601DateFormatter', git: 'https://github.com/artsy/iso-8601-date-formatter'
-  pod 'JSDecoupledAppDelegate'
   pod 'Mantle', '1.5.6'
   pod 'MMMarkdown', '0.4'
   pod 'UICKeyChainStore'
@@ -97,9 +118,6 @@ target 'Artsy' do
   # Language Enhancements
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
-
-  # Analytics
-  pod 'Analytics', '4.1.8'
 
   # For Stripe integration with Emission. Using a fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
   pod 'Pulley', git: 'https://github.com/artsy/Pulley.git', branch: 'master'
@@ -130,6 +148,12 @@ target 'Artsy' do
 
   # Used in Live Auctions to hold user-state
   pod 'JWTDecode', '2.0.0'
+
+
+  # Need static libs to fix expo compilation in app delegate
+  pod 'BrazeKit', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeKit.podspec'
+  pod 'BrazeUI', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeUI.podspec'
+  pod 'BrazeLocation', :podspec => 'https://raw.githubusercontent.com/braze-inc/braze-swift-sdk-prebuilt-static/11.1.1/BrazeLocation.podspec'
 
   target 'ArtsyTests' do
     inherit! :search_paths
