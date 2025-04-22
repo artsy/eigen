@@ -145,7 +145,7 @@ module.exports = {
             name: "app/system/navigation/navigate",
             importNames: ["navigate"],
             message:
-              "Please use `RouterLink` instead for prefetching support. If this is not possible, you can import `navigate` with '// eslint-disable-next-line no-restricted-imports'.",
+              "Please use `RouterLink` instead of `navigate` (to support prefetching). If this is not possible, you can import `navigate` by adding a '// eslint-disable-next-line no-restricted-imports' comment.",
           },
         ],
       },
