@@ -17,7 +17,7 @@ export const PaginationBars: React.FC<PaginationBarsProps> = ({ currentIndex, le
           height={1}
           flex={1}
           mx={0.5}
-          backgroundColor={currentIndex === index ? color("black60") : color("black15")}
+          backgroundColor={currentIndex === index ? color("mono60") : color("mono15")}
         />
       ))}
     </Flex>
