@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
-import { EntityType, navigate, navigateToEntity, SlugType } from "app/system/navigation/navigate"
+import { navigate } from "app/system/navigation/navigate"
 import { CatchErrors } from "app/utils/CatchErrors"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Pressable, TouchableOpacity } from "react-native"
@@ -156,11 +156,7 @@ describe(AutosuggestSearchResult, () => {
       screen.UNSAFE_getByType(TouchableOpacity).props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
-    expect(navigateToEntity).toHaveBeenCalledWith(
-      "/art-expo-diff-profile-slug",
-      EntityType.Fair,
-      SlugType.ProfileID
-    )
+    expect(navigate).toHaveBeenCalledWith("/art-expo-diff-profile-slug")
   })
 
   it(`shows navigation buttons when enabled and available`, async () => {
