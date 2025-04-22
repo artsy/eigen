@@ -30,12 +30,14 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { pluralize } from "app/utils/pluralize"
+import { usePrefetch } from "app/utils/queryPrefetching"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { Key, useCallback, useEffect, useMemo, useState } from "react"
+import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import RNShare from "react-native-share"
 import { fetchQuery, graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
+import { commitLocalUpdate, createOperationDescriptor, Disposable, getRequest } from "relay-runtime"
 
 interface InfiniteDiscoveryProps {
   fetchMoreArtworks: (undiscoveredArtworks: string[]) => void
@@ -72,7 +74,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 
   useEffect(() => {
     if (!topArtworkId && artworks.length > 0) {
-      // TODO: beware! the artworks are being displayed in reverse order
       const topArtwork = artworks[0]
       setTopArtworkId(topArtwork.internalID)
 
@@ -237,7 +238,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   // Get the last 2 artworks from the infinite discovery
   // We are showing the last 2 artworks instead of 2 because we reverse the artworks array
   // Inside the Swiper component
-  const onboardingArtworks = artworks.slice(0, artworks.length - 2)
+  const onboardingArtworks = artworks.slice(0, Math.min(artworks.length - 2, 2))
 
   return (
     <Screen safeArea={false}>
@@ -339,15 +340,29 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
       infiniteDiscoveryQuery,
       infiniteDiscoveryVariables
     )
+    // Disposable queries to allow them to be GCed by Relay when calling dispose()
+    const queriesForDisposal = useRef<Disposable[]>([])
+    const usedExcludeArtworkIds = useRef<string[][]>([])
+    const env = getRelayEnvironment()
+    const prefetch = usePrefetch()
 
     const { resetSavedArtworksCount } = GlobalStore.actions.infiniteDiscovery
     const initialArtworks = extractNodes(data.discoverArtworks)
     const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>(initialArtworks)
 
+    // Retain the queries to not have them GCed when swiping many times
+    const retainQuery = useCallback((excludeArtworkIds: string[]) => {
+      const queryRequest = getRequest(infiniteDiscoveryQuery)
+      const descriptor = createOperationDescriptor(queryRequest, { excludeArtworkIds })
+      const disposable = env.retain(descriptor)
+      queriesForDisposal.current.push(disposable)
+      usedExcludeArtworkIds.current.push(excludeArtworkIds)
+    }, [])
+
     const fetchMoreArtworks = async (excludeArtworkIds: string[], isRetry = false) => {
       try {
         const response = await fetchQuery<InfiniteDiscoveryQuery>(
-          getRelayEnvironment(),
+          env,
           infiniteDiscoveryQuery,
           { excludeArtworkIds },
           { fetchPolicy: "network-only" }
@@ -356,6 +371,7 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
         if (newArtworks.length) {
           setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
         }
+        retainQuery(excludeArtworkIds)
       } catch (error) {
         if (!isRetry) {
           addBreadcrumb({
@@ -372,8 +388,27 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
     }
 
     useEffect(() => {
+      retainQuery(infiniteDiscoveryVariables.excludeArtworkIds)
       resetSavedArtworksCount()
-    }, [])
+
+      // Mark the queries to be disposed by GC, invalidate cache and prefetch a infinite discovery again
+      return () => {
+        queriesForDisposal.current.forEach((query) => {
+          if (!!query.dispose) {
+            query.dispose()
+          }
+        })
+        usedExcludeArtworkIds.current.forEach((id) => {
+          commitLocalUpdate(env, (store) => {
+            store
+              ?.getRoot()
+              ?.getLinkedRecord("discoverArtworks", { excludeArtworkIds: id })
+              ?.invalidateRecord()
+          })
+        })
+        prefetch("/infinite-discovery", infiniteDiscoveryVariables)
+      }
+    }, [retainQuery])
 
     return (
       <Flex flex={1}>
