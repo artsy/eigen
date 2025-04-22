@@ -13,6 +13,7 @@ import {
 import { InfiniteDiscoveryArtworkCard_artwork$key } from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
 import { GlobalStore } from "app/store/GlobalStore"
 import {
   PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_1,
@@ -21,7 +22,7 @@ import {
 import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
-import { Text as RNText, ViewStyle } from "react-native"
+import { GestureResponderEvent, Text as RNText, ViewStyle } from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import Animated, {
   Easing,
@@ -63,6 +64,9 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       infiniteDiscoveryArtworkCardFragment,
       artworkProp
     )
+
+    // State to track the current image index
+    const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
     const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
       artworkFragmentRef: artwork,
@@ -140,32 +144,66 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     const MAX_ARTWORK_HEIGHT = screenHeight * 0.55
 
-    const src = artwork.images?.[0]?.url
-    const width = artwork.images?.[0]?.width ?? 0
-    const height = artwork.images?.[0]?.height ?? 0
+    const images = artwork.images || []
+    const selectedImage = images[currentImageIndex]
+    const src = selectedImage?.url
+    const width = selectedImage?.width ?? 0
+    const height = selectedImage?.height ?? 0
 
     const size = sizeToFit({ width, height }, { width: screenWidth, height: MAX_ARTWORK_HEIGHT })
 
-    const handleWrapperTaps = () => {
+    const handleWrapperTaps = (event: GestureResponderEvent) => {
       const now = Date.now()
       const state = gestureState.current
+      const { nativeEvent } = event
+      const { locationX } = nativeEvent
+      const screenThird = screenWidth / 3
 
-      if (now - state.lastTapTimestamp < SAVES_MAX_DURATION_BETWEEN_TAPS) {
-        state.numTaps += 1
-      } else {
-        state.numTaps = 1
-      }
+      // Determine which third of the screen was tapped
+      const leftThird = locationX < screenThird
+      const rightThird = locationX > screenThird * 2
+      const middleThird = !leftThird && !rightThird
 
-      state.lastTapTimestamp = now
+      // Check if the Swiper is actively swiping
+      // Note: We'll use a special technique that lets the gesture go through
+      // if it's a vertical swipe intended for the Swiper component
 
-      if (state.numTaps === 2) {
-        state.numTaps = 0
-        if (!isSaved) {
+      // Handle image navigation in left/right thirds with single tap
+      if (images.length > 1) {
+        if (leftThird && currentImageIndex > 0) {
+          // For left third, navigate to previous image on single tap
           Haptic.trigger("impactLight")
-          setShowScreenTapToSave(true)
-          saveArtworkToLists()
+          setCurrentImageIndex(currentImageIndex - 1)
+          return true
+        } else if (rightThird && currentImageIndex < images.length - 1) {
+          // For right third, navigate to next image on single tap
+          Haptic.trigger("impactLight")
+          setCurrentImageIndex(currentImageIndex + 1)
+          return true
         }
       }
+
+      // Handle double-tap to save only in the middle third
+      if (middleThird) {
+        if (now - state.lastTapTimestamp < SAVES_MAX_DURATION_BETWEEN_TAPS) {
+          state.numTaps += 1
+        } else {
+          state.numTaps = 1
+        }
+
+        state.lastTapTimestamp = now
+
+        if (state.numTaps === 2) {
+          state.numTaps = 0
+          if (!isSaved) {
+            Haptic.trigger("impactLight")
+            setShowScreenTapToSave(true)
+            saveArtworkToLists()
+          }
+          return true
+        }
+      }
+
       return false
     }
 
@@ -200,7 +238,21 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           </Animated.View>
 
           <Flex
-            onStartShouldSetResponderCapture={handleWrapperTaps}
+            // Only handle initial touches
+            onStartShouldSetResponder={(event) => {
+              // Let parent handle multi-touch gestures (like pinch zoom)
+              if (event.nativeEvent.touches && event.nativeEvent.touches.length > 1) {
+                return false
+              }
+              return true
+            }}
+            // But don't capture them from children
+            onStartShouldSetResponderCapture={() => false}
+            // Don't try to handle moves (let the Swiper handle them)
+            onMoveShouldSetResponder={() => false}
+            onMoveShouldSetResponderCapture={() => false}
+            // Handle taps on release
+            onResponderRelease={handleWrapperTaps}
             style={{
               position: "absolute",
               width: "100%",
@@ -211,6 +263,20 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
           {!!src && <Image src={src} height={size.height} width={size.width} />}
         </Flex>
+
+        {/* Show pagination bars when there are multiple images */}
+        {images.length > 1 && (
+          <Flex
+            pt={2}
+            px={1}
+            height={PAGINATION_BAR_HEIGHT}
+            alignItems="center"
+            justifyContent="center"
+            width="100%"
+          >
+            <PaginationBars currentIndex={currentImageIndex} length={images.length} />
+          </Flex>
+        )}
         <Flex flexDirection="row" justifyContent="space-between" p={2} gap={1}>
           <Flex flex={1}>
             {/* TODO: remove this when we are done with the infinite discovery */}
@@ -292,7 +358,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     )
   }
 )
-
 const FIRST_REMINDER_SWIPES_COUNT = 4
 const SECOND_REMINDER_SWIPES_COUNT = 29
 
@@ -378,3 +443,4 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
 const HEART_ICON_SIZE = 18
 const HEART_CIRCLE_SIZE = 50
 const SAVE_BUTTON_WIDTH = 105
+const PAGINATION_BAR_HEIGHT = 12
