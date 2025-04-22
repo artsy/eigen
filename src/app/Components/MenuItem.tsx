@@ -48,7 +48,7 @@ export const MenuItem: React.FC<{
           py={2}
         >
           {!!icon && (
-            <Flex flex={1} flexGrow={1} height="100%">
+            <Flex flex={1} flexGrow={1} justifyContent="center">
               {icon}
             </Flex>
           )}
