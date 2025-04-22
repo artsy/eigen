@@ -10,10 +10,11 @@ import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearch
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { Schema } from "app/utils/track"
-import { memo, Suspense, useEffect, useRef, useState } from "react"
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
+import React, { memo, Suspense, useEffect, useRef, useState } from "react"
+import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -41,6 +42,28 @@ export const searchQueryDefaultVariables: SearchQuery$variables = {
 }
 
 export const Search: React.FC = () => {
+  const { variant, trackExperiment } = useExperimentVariant("diamond_discover-tab")
+
+  trackExperiment({
+    context_owner_type: OwnerType.search,
+  })
+
+  if (variant.enabled) {
+    if (variant.name === "control") {
+      return <LegacySearch />
+    } else if (variant.name === "variant-a") {
+      return (
+        <View>
+          <Text>Hello, World</Text>
+        </View>
+      )
+    }
+  }
+
+  return <LegacySearch />
+}
+
+export const LegacySearch: React.FC = () => {
   const searchPillsRef = useRef<ScrollView>(null)
   const [searchQuery, setSearchQuery] = useState<string>("")
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
