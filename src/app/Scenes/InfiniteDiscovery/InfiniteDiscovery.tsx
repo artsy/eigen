@@ -10,11 +10,12 @@ import {
   Text,
   Touchable,
 } from "@artsy/palette-mobile"
-import { addBreadcrumb, captureException, captureMessage } from "@sentry/react-native"
+import { captureMessage } from "@sentry/react-native"
+import { InfiniteDiscoveryQuery } from "__generated__/InfiniteDiscoveryQuery.graphql"
 import {
-  InfiniteDiscoveryQuery,
-  InfiniteDiscoveryQuery$data,
-} from "__generated__/InfiniteDiscoveryQuery.graphql"
+  InfiniteDiscovery_query$data,
+  InfiniteDiscovery_query$key,
+} from "__generated__/InfiniteDiscovery_query.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 
@@ -26,35 +27,39 @@ import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { useCreateUserSeenArtwork } from "app/Scenes/InfiniteDiscovery/mutations/useCreateUserSeenArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { pluralize } from "app/utils/pluralize"
-import { usePrefetch } from "app/utils/queryPrefetching"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { Key, useCallback, useEffect, useMemo, useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import RNShare from "react-native-share"
-import { fetchQuery, graphql, useLazyLoadQuery } from "react-relay"
+import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import { commitLocalUpdate, createOperationDescriptor, Disposable, getRequest } from "relay-runtime"
 
 interface InfiniteDiscoveryProps {
-  fetchMoreArtworks: (undiscoveredArtworks: string[]) => void
-  artworks: InfiniteDiscoveryArtwork[]
+  query: InfiniteDiscovery_query$key
 }
 
 export type InfiniteDiscoveryArtwork = ExtractNodeType<
-  InfiniteDiscoveryQuery$data["discoverArtworks"]
+  InfiniteDiscovery_query$data["discoverArtworks"]
 >
 
-export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
-  fetchMoreArtworks,
-  artworks,
-}) => {
+export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({ query }) => {
   const toast = useToast()
   const { trackEvent } = useTracking()
   const [commitMutation] = useCreateUserSeenArtwork()
+
+  const { data, loadNext, isLoadingNext, refetch, hasNext } = usePaginationFragment(
+    discoverArtworksFragment,
+    query
+  )
+
+  const artworks = extractNodes(data.discoverArtworks)
+
+  const fetchMoreArtworks = async (excludeArtworkIds: string[], isRetry = false) => {
+    loadNext(5)
+  }
 
   const hasInteractedWithOnboarding = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
@@ -336,83 +341,17 @@ export const infiniteDiscoveryVariables = {
 
 export const InfiniteDiscoveryQueryRenderer = withSuspense({
   Component: () => {
-    const data = useLazyLoadQuery<InfiniteDiscoveryQuery>(
-      infiniteDiscoveryQuery,
-      infiniteDiscoveryVariables
-    )
-    // Disposable queries to allow them to be GCed by Relay when calling dispose()
-    const queriesForDisposal = useRef<Disposable[]>([])
-    const usedExcludeArtworkIds = useRef<string[][]>([])
-    const env = getRelayEnvironment()
-    const prefetch = usePrefetch()
+    const data = useLazyLoadQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, {})
 
     const { resetSavedArtworksCount } = GlobalStore.actions.infiniteDiscovery
-    const initialArtworks = extractNodes(data.discoverArtworks)
-    const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>(initialArtworks)
-
-    // Retain the queries to not have them GCed when swiping many times
-    const retainQuery = useCallback((excludeArtworkIds: string[]) => {
-      const queryRequest = getRequest(infiniteDiscoveryQuery)
-      const descriptor = createOperationDescriptor(queryRequest, { excludeArtworkIds })
-      const disposable = env.retain(descriptor)
-      queriesForDisposal.current.push(disposable)
-      usedExcludeArtworkIds.current.push(excludeArtworkIds)
-    }, [])
-
-    const fetchMoreArtworks = async (excludeArtworkIds: string[], isRetry = false) => {
-      try {
-        const response = await fetchQuery<InfiniteDiscoveryQuery>(
-          env,
-          infiniteDiscoveryQuery,
-          { excludeArtworkIds },
-          { fetchPolicy: "network-only" }
-        ).toPromise()
-        const newArtworks = extractNodes(response?.discoverArtworks)
-        if (newArtworks.length) {
-          setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
-        }
-        retainQuery(excludeArtworkIds)
-      } catch (error) {
-        if (!isRetry) {
-          addBreadcrumb({
-            message: "Failed to fetch more artworks, retrying again",
-          })
-          fetchMoreArtworks(excludeArtworkIds, true)
-          return
-        }
-        addBreadcrumb({
-          message: "Failed to fetch more artworks",
-        })
-        captureException(error)
-      }
-    }
 
     useEffect(() => {
-      retainQuery(infiniteDiscoveryVariables.excludeArtworkIds)
       resetSavedArtworksCount()
-
-      // Mark the queries to be disposed by GC, invalidate cache and prefetch a infinite discovery again
-      return () => {
-        queriesForDisposal.current.forEach((query) => {
-          if (!!query.dispose) {
-            query.dispose()
-          }
-        })
-        usedExcludeArtworkIds.current.forEach((id) => {
-          commitLocalUpdate(env, (store) => {
-            store
-              ?.getRoot()
-              ?.getLinkedRecord("discoverArtworks", { excludeArtworkIds: id })
-              ?.invalidateRecord()
-          })
-        })
-        prefetch("/infinite-discovery", infiniteDiscoveryVariables)
-      }
-    }, [retainQuery])
+    }, [])
 
     return (
       <Flex flex={1}>
-        <InfiniteDiscovery fetchMoreArtworks={fetchMoreArtworks} artworks={artworks} />
+        <InfiniteDiscovery query={data} />
       </Flex>
     )
   },
@@ -428,8 +367,21 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
 })
 
 export const infiniteDiscoveryQuery = graphql`
-  query InfiniteDiscoveryQuery($excludeArtworkIds: [String!]!) {
-    discoverArtworks(excludeArtworkIds: $excludeArtworkIds) {
+  query InfiniteDiscoveryQuery {
+    ...InfiniteDiscovery_query
+  }
+`
+
+const discoverArtworksFragment = graphql`
+  fragment InfiniteDiscovery_query on Query
+  @refetchable(queryName: "InfiniteDiscovery_queryRefetch")
+  @argumentDefinitions(
+    count: { type: "Int", defaultValue: 10 }
+    cursor: { type: "String" }
+    excludeArtworkIds: { type: "[String]", defaultValue: [] }
+  ) {
+    discoverArtworks(excludeArtworkIds: $excludeArtworkIds, first: $count, after: $cursor)
+      @connection(key: "InfiniteDiscovery_query_discoverArtworks") {
       edges {
         node {
           ...InfiniteDiscoveryArtworkCard_artwork
