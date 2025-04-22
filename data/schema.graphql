@@ -15588,6 +15588,11 @@ type Mutation {
   # Updates a new location for a partner
   updatePartnerLocation(input: UpdatePartnerLocationInput!): UpdatePartnerLocationPayload
 
+  # Updates the icon or cover image for a partner's profile page
+  updatePartnerProfileImage(
+    input: UpdatePartnerProfileImageInput!
+  ): UpdatePartnerProfileImagePayload
+
   # Updates a partner show.
   updatePartnerShow(input: UpdatePartnerShowMutationInput!): UpdatePartnerShowMutationPayload
 
@@ -22551,6 +22556,39 @@ type UpdatePartnerMutationPayload {
 
   # On success: the updated partner. On error: the error that occurred.
   partnerOrError: UpdatePartnerResponseOrError
+}
+
+type UpdatePartnerProfileImageFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdatePartnerProfileImageInput {
+  clientMutationId: String
+
+  # ID of the partner
+  partnerId: String!
+
+  # S3 bucket containing the image to be uploaded
+  remoteImageS3Bucket: String!
+
+  # S3 key of the image to be uploaded
+  remoteImageS3Key: String!
+
+  # Can be of type Cover or Icon
+  type: String!
+}
+
+union UpdatePartnerProfileImageOrError =
+    UpdatePartnerProfileImageFailure
+  | UpdatePartnerProfileImageSuccess
+
+type UpdatePartnerProfileImagePayload {
+  clientMutationId: String
+  partnerOrError: UpdatePartnerProfileImageOrError
+}
+
+type UpdatePartnerProfileImageSuccess {
+  partner: Partner
 }
 
 union UpdatePartnerResponseOrError = UpdatePartnerFailure | UpdatePartnerSuccess
