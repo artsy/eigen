@@ -22,12 +22,12 @@
   resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.28.0.tgz#1018d01bb6c5b7a8d15c7c2443327fdaefc0c0bb"
   integrity sha512-gbvB3edjSe85JKwUiNuWmgwUYiZNyXxNuePLj+5ZBGnMeDGbG5t+sbe18yLPBNfeglMDhB64pqy15TW/JjwwwQ==
 
-"@artsy/palette-mobile@14.0.45--canary.331.3541.0":
-  version "14.0.45--canary.331.3541.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-14.0.45--canary.331.3541.0.tgz#bd722c5bc342741592a3223bae39d98d9357bf79"
-  integrity sha512-K0oVMpAze0veqkMJs+PyYEUgvt968bsTYxCpTEE+CDvQ/bDWM11+jQ9RgVXBgJV3YUaZPyt6o4BraBi60ZSQ9A==
+"@artsy/palette-mobile@17.0.0":
+  version "17.0.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.0.0.tgz#c6adc6f4ccb288e82d60a0abdd3d3e19a1b08617"
+  integrity sha512-MeRgrjeLLSEdWkCQoLoY5JowusDg0gxd4ViAPqPcVkRNLnsWNKBggELhmkC7WXgd5KDGFXpWtxOyJ51zo7afRA==
   dependencies:
-    "@artsy/palette-tokens" "7.0.0-canary.1433.31866.0"
+    "@artsy/palette-tokens" "^7.0.0"
     "@shopify/flash-list" "1.7.6"
     "@styled-system/core" "^5.1.2"
     "@styled-system/theme-get" "^5.1.2"
@@ -43,10 +43,10 @@
     react-spring "8.0.23"
     styled-system "^5.1.5"
 
-"@artsy/palette-tokens@7.0.0-canary.1433.31866.0":
-  version "7.0.0-canary.1433.31866.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-tokens/-/palette-tokens-7.0.0-canary.1433.31866.0.tgz#86a917329f4d3293a23b7377ed1183962bef419c"
-  integrity sha512-tWWxD7fW+GqTD8JgBAGJMWyCKYvjIKfdSCuK3jD3x1cf/k+v5JHyhgxNm2j5ZpzTIcH5RanpC7cXpMwrKiUslg==
+"@artsy/palette-tokens@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-tokens/-/palette-tokens-7.0.0.tgz#4c104f8504bb591e2b468f52d393c3da2573fbd7"
+  integrity sha512-psM2CZt/4d9YHTMM/jMu+ueZjjGlHcrq9E+FA5XZvl/UtlK0AwL1me3nxbIA8pXPsfOWfQ+PPLJumB8UKSYV1g==
 
 "@artsy/to-title-case@1.1.0":
   version "1.1.0"
