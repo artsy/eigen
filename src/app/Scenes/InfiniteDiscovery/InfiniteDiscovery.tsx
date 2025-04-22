@@ -339,8 +339,9 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
       infiniteDiscoveryQuery,
       infiniteDiscoveryVariables
     )
-    const disposableQueries = useRef<Disposable[]>([])
-    const queryIds = useRef<string[][]>([])
+    // Disposable queries to allow them to be GCed by Relay when calling dispose()
+    const queriesForDisposal = useRef<Disposable[]>([])
+    const usedExcludeArtworkIds = useRef<string[][]>([])
     const env = getRelayEnvironment()
     const prefetch = usePrefetch()
 
@@ -348,12 +349,13 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
     const initialArtworks = extractNodes(data.discoverArtworks)
     const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>(initialArtworks)
 
+    // Retain the queries to not have them GCed when swiping many times
     const retainQuery = useCallback((excludeArtworkIds: string[]) => {
       const queryRequest = getRequest(infiniteDiscoveryQuery)
       const descriptor = createOperationDescriptor(queryRequest, { excludeArtworkIds })
       const disposable = env.retain(descriptor)
-      disposableQueries.current.push(disposable)
-      queryIds.current.push(excludeArtworkIds)
+      queriesForDisposal.current.push(disposable)
+      usedExcludeArtworkIds.current.push(excludeArtworkIds)
     }, [])
 
     const fetchMoreArtworks = async (excludeArtworkIds: string[], isRetry = false) => {
@@ -390,12 +392,12 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
 
       // Mark the queries to be disposed by GC, invalidate cache and prefetch a infinite discovery again
       return () => {
-        disposableQueries.current.forEach((disposable) => {
-          if (!!disposable.dispose) {
-            disposable.dispose()
+        queriesForDisposal.current.forEach((query) => {
+          if (!!query.dispose) {
+            query.dispose()
           }
         })
-        queryIds.current.forEach((id) => {
+        usedExcludeArtworkIds.current.forEach((id) => {
           commitLocalUpdate(env, (store) => {
             store
               ?.getRoot()
