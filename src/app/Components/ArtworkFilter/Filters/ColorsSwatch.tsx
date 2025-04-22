@@ -13,7 +13,7 @@ export const ColorsSwatch: React.FC<ColorsSwatchProps> = ({
   width,
   name,
   backgroundColor,
-  foregroundColor = "white100",
+  foregroundColor = "mono0",
   selected,
   ...rest
 }) => {

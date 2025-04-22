@@ -37,7 +37,7 @@ export const PlaceholderBox: React.FC<ViewStyle & { testID?: string }> = ({
   return (
     <Animated.View
       testID={testID}
-      style={[{ borderRadius: 2, backgroundColor: color("black10") }, animatedStyle, styles]}
+      style={[{ borderRadius: 2, backgroundColor: color("mono10") }, animatedStyle, styles]}
     >
       {children}
     </Animated.View>

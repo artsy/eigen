@@ -63,13 +63,13 @@ export const InquirySuccessNotification: React.FC = () => {
           }}
         >
           <TouchableOpacity onPress={navigateToConversation}>
-            <Flex p={1} backgroundColor="white100">
+            <Flex p={1} backgroundColor="mono0">
               <Flex flexDirection="row" justifyContent="space-between">
                 <Text color="green100" variant="sm">
                   Message Sent
                 </Text>
               </Flex>
-              <Text color="black60" variant="sm">
+              <Text color="mono60" variant="sm">
                 Expect a response within 1-3 business days.
               </Text>
             </Flex>
@@ -86,6 +86,6 @@ const SuccessfulInquirySentContainer = styled(Flex)`
   height: 75px;
   margin: 10px;
   flex-direction: column;
-  background-color: ${themeGet("colors.white100")};
+  background-color: ${themeGet("colors.mono0")};
   padding: 0.5px;
 `

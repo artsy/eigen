@@ -8,10 +8,10 @@ export const HomeViewSectionGeneric: React.FC<{ section: any }> = (props) => {
   const title = data.component?.title
 
   return (
-    <Flex bg="black5" alignItems="center">
-      <Text color="black60" p={2}>
+    <Flex bg="mono5" alignItems="center">
+      <Text color="mono60" p={2}>
         Need to render the{" "}
-        <Text color="black100" fontSize="80%">
+        <Text color="mono100" fontSize="80%">
           {section.internalID}
         </Text>{" "}
         section as a{" "}
@@ -19,7 +19,7 @@ export const HomeViewSectionGeneric: React.FC<{ section: any }> = (props) => {
           {section.__typename}
         </Text>{" "}
         component, titled{" "}
-        <Text color="black100" fontWeight="bold">
+        <Text color="mono100" fontWeight="bold">
           {title}
         </Text>{" "}
       </Text>

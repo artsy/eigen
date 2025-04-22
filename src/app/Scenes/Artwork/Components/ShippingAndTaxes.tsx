@@ -39,17 +39,17 @@ const ShippingAndTaxes: React.FC<ShippingAndTaxesProps> = ({ artwork }) => {
       )}
 
       {!!shippingOrigin && (
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="mono60">
           Ships from {shippingOrigin}
         </Text>
       )}
       {!!shippingInfo && (
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="mono60">
           {shippingInfo}
         </Text>
       )}
       {!!pickupAvailable && (
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="mono60">
           Pickup available
         </Text>
       )}
@@ -57,13 +57,13 @@ const ShippingAndTaxes: React.FC<ShippingAndTaxesProps> = ({ artwork }) => {
       {(!!priceIncludesTaxDisplay || !!taxInfo) && <Spacer y={2} />}
 
       {!!priceIncludesTaxDisplay && (
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="mono60">
           {priceIncludesTaxDisplay}
         </Text>
       )}
 
       {!!taxInfo && (
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="mono60">
           {taxInfo.displayText}{" "}
           <LinkText variant="sm" onPress={handleLearnMorePress}>
             {taxInfo.moreInfo.displayText}

@@ -50,7 +50,7 @@ export const ProgressiveOnboardingSignalInterest: React.FC = ({ children }) => {
       onOpenComplete={trackEvent}
       placement="top"
       title={
-        <Text variant="xs" color="white100">
+        <Text variant="xs" color="mono0">
           Learn more about saves and how to{"\n"}manage your preferences.
         </Text>
       }

@@ -52,7 +52,7 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
           trackCreateAlertTap()
           setShowCreateArtworkAlertModal(true)
         }}
-        icon={<BellIcon fill={isForSale ? "black100" : "white100"} />}
+        icon={<BellIcon fill={isForSale ? "mono100" : "mono0"} />}
       >
         Create Alert
       </Button>

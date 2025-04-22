@@ -205,7 +205,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
                 width="99"
                 mr={2}
                 borderRadius="50"
-                backgroundColor={color("black10")}
+                backgroundColor={color("mono10")}
                 justifyContent="center"
                 alignItems="center"
               >
@@ -217,7 +217,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
               </Box>
             </Touchable>
             <Touchable haptic onPress={chooseImageHandler}>
-              <Text style={{ textDecorationLine: "underline" }} color="black100">
+              <Text style={{ textDecorationLine: "underline" }} color="mono100">
                 Choose an Image
               </Text>
             </Touchable>
@@ -329,8 +329,8 @@ const VerifiedRow: React.FC<{ title: string; subtitle: string }> = ({ title, sub
         <CheckCircleFillIcon height={ICON_SIZE} width={ICON_SIZE} fill="green100" />
       </Flex>
       <Flex ml={1}>
-        <Text color="black100">{title}</Text>
-        <Text color="black60">{subtitle}</Text>
+        <Text color="mono100">{title}</Text>
+        <Text color="mono60">{subtitle}</Text>
       </Flex>
     </Flex>
   )
@@ -362,21 +362,21 @@ const ProfileVerifications = ({
       ) : (
         <Flex flexDirection="row">
           <Flex mt="3px">
-            <CheckCircleIcon height={ICON_SIZE} width={ICON_SIZE} fill="black30" />
+            <CheckCircleIcon height={ICON_SIZE} width={ICON_SIZE} fill="mono30" />
           </Flex>
           <Flex ml={1}>
             <Text
               onPress={handleIDVerification}
               style={{ textDecorationLine: "underline" }}
-              color="black100"
+              color="mono100"
             >
               Verify Your ID
             </Text>
-            <Text color={color("black60")}>
+            <Text color={color("mono60")}>
               For details, see{" "}
               <Text
                 style={{ textDecorationLine: "underline" }}
-                color="black100"
+                color="mono100"
                 onPress={() => navigate(`https://www.artsy.net/identity-verification-faq`)}
               >
                 FAQs
@@ -385,7 +385,7 @@ const ProfileVerifications = ({
               <Text
                 style={{ textDecorationLine: "underline" }}
                 onPress={() => sendEmail("verification@artsy.net", { subject: "ID Verification" })}
-                color="black100"
+                color="mono100"
               >
                 verification@artsy.net
               </Text>
@@ -406,7 +406,7 @@ const ProfileVerifications = ({
       ) : (
         <Flex flexDirection="row">
           <Flex mt="3px">
-            <CheckCircleIcon height={ICON_SIZE} width={ICON_SIZE} fill="black30" />
+            <CheckCircleIcon height={ICON_SIZE} width={ICON_SIZE} fill="mono30" />
           </Flex>
           <Flex ml={1}>
             {canRequestEmailConfirmation ? (
@@ -420,14 +420,14 @@ const ProfileVerifications = ({
             ) : (
               <Text
                 style={{ textDecorationLine: "none" }}
-                color="black60"
+                color="mono60"
                 testID="verify-your-email"
               >
                 Verify Your Email
               </Text>
             )}
 
-            <Text color="black60">
+            <Text color="mono60">
               Secure your account and receive updates about your transactions on Artsy.
             </Text>
           </Flex>
@@ -445,14 +445,14 @@ const VerificationBanner = ({ resultText }: { resultText: string }) => {
       px={2}
       py={1}
       // Avoid system bottom navigation bar
-      backgroundColor="black100"
+      backgroundColor="mono100"
       flexDirection="row"
       justifyContent="space-between"
       alignItems="center"
       testID="verification-confirmation-banner"
     >
       <Flex flexDirection="row" width="100%" justifyContent="space-between" alignItems="center">
-        <Text color={color("white100")} numberOfLines={2}>
+        <Text color={color("mono0")} numberOfLines={2}>
           {resultText}
         </Text>
       </Flex>

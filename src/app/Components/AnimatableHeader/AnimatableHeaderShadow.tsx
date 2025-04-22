@@ -42,8 +42,8 @@ export const AnimatableHeaderShadow = () => {
           {
             width: "100%",
             height: SHADOW_CONTAINER_HEIGHT,
-            backgroundColor: color("white100"),
-            shadowColor: color("black100"),
+            backgroundColor: color("mono0"),
+            shadowColor: color("mono100"),
             shadowOffset: {
               width: 0,
               height: 1,

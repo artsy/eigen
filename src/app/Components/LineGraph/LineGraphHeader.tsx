@@ -20,7 +20,7 @@ export const LineGraphHeader: React.FC<LineGraphHeaderProps> = ({
       {!!description && (
         <Flex flexDirection="row" alignItems="center">
           <ColoredDot color={tintColor ?? "transparent"} />
-          <Text variant="xs" color="black60">
+          <Text variant="xs" color="mono60">
             {description}
           </Text>
         </Flex>
@@ -29,7 +29,7 @@ export const LineGraphHeader: React.FC<LineGraphHeaderProps> = ({
         // We need to have a fixed height here to make sure in case the text is too long,
         // it doesn't push the graph content down
         <Flex>
-          <Text variant="xs" color="black60" numberOfLines={2}>
+          <Text variant="xs" color="mono60" numberOfLines={2}>
             {text}
           </Text>
         </Flex>

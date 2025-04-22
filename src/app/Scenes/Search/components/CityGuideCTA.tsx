@@ -13,7 +13,7 @@ export const CityGuideCTA: React.FC = () => {
         <Flex
           style={{
             borderWidth: 1,
-            borderColor: color("black10"),
+            borderColor: color("mono10"),
             borderRadius: 4,
             overflow: "hidden",
           }}
@@ -25,7 +25,7 @@ export const CityGuideCTA: React.FC = () => {
               City Guide
             </Text>
 
-            <Text variant="sm" style={{ color: color("black60") }}>
+            <Text variant="sm" style={{ color: color("mono60") }}>
               Browse fairs and shows in different cities
             </Text>
 

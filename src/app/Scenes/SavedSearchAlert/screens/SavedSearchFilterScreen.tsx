@@ -49,12 +49,7 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
         <Spacer y={2} />
       </ScrollView>
 
-      <Flex
-        p={2}
-        pb={Platform.OS === "android" ? 2 : 0}
-        borderTopWidth={1}
-        borderTopColor="black10"
-      >
+      <Flex p={2} pb={Platform.OS === "android" ? 2 : 0} borderTopWidth={1} borderTopColor="mono10">
         <Button block onPress={navigation.goBack} haptic mb={`${bottom}px`}>
           Set Filters
         </Button>
@@ -111,7 +106,7 @@ export const ClearAllButton = () => {
         animate={{ opacity: disabled ? 0.3 : 1 }}
         transition={{ type: "timing", duration: 200 }}
       >
-        <Text underline color="black100">
+        <Text underline color="mono100">
           Clear All
         </Text>
       </MotiView>

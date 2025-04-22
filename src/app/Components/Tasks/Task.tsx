@@ -81,7 +81,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
         testID={`user-task-${task.internalID}`}
         ref={ref}
         actionComponent={
-          <Text variant="xs" color="white100">
+          <Text variant="xs" color="mono0">
             Clear
           </Text>
         }
@@ -91,28 +91,28 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
         onSwipeableWillOpen={onOpenTask}
         enabled={!disableSwipeable}
       >
-        <Flex backgroundColor="white100" borderRadius={5}>
+        <Flex backgroundColor="mono0" borderRadius={5}>
           <Touchable onPress={handlePressTask}>
             <Flex
               p={1}
               ml={2}
               flexDirection="row"
               border="1px solid"
-              borderColor="black100"
+              borderColor="mono100"
               borderRadius={5}
               zIndex={3}
-              backgroundColor="black100"
+              backgroundColor="mono100"
             >
               <Flex pr={1}>
                 <Image src={task.imageUrl} width={TASK_IMAGE_SIZE} height={TASK_IMAGE_SIZE} />
               </Flex>
 
               <Flex flex={1} pr={1}>
-                <Text color="white100" variant="xs" fontWeight="bold">
+                <Text color="mono0" variant="xs" fontWeight="bold">
                   {task.title}
                 </Text>
 
-                <Text color="white100" variant="xs">
+                <Text color="mono0" variant="xs">
                   {task.message}
                 </Text>
               </Flex>

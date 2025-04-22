@@ -35,7 +35,7 @@ export const ContextGridCTA: React.FC<ContextGridCTAProps> = ({ href, label, con
           {label}
         </Text>
         <Flex alignSelf="center">
-          <ArrowRightIcon fill="black30" ml={1} />
+          <ArrowRightIcon fill="mono30" ml={1} />
         </Flex>
       </Flex>
     </RouterLink>

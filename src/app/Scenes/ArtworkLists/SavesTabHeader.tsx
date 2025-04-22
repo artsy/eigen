@@ -47,11 +47,11 @@ export const SavesTabHeader = () => {
   return (
     <Box>
       <ProgressiveOnboardingSignalInterest>
-        <Text variant="xs" color="black60">
+        <Text variant="xs" color="mono60">
           Curate your own lists of the works you love and{" "}
           <LinkText
             variant="xs"
-            color="black60"
+            color="mono60"
             onPress={() => {
               tracking.trackEvent(tracks.tapFollowsInfo())
               setModalVisible(true)

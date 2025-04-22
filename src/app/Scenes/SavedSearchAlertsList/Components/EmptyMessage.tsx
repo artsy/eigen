@@ -29,7 +29,7 @@ const InfoSection: React.FC<InfoSectionProps> = (props) => {
         <Text variant="sm" lineHeight="20px">
           {props.title}
         </Text>
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="mono60">
           {props.body}
         </Text>
       </Box>

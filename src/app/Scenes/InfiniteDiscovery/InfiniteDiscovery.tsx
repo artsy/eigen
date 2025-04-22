@@ -191,7 +191,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           description: (
             <Text
               variant="xs"
-              color="white100"
+              color="mono0"
               style={{ textDecorationLine: "underline" }}
               onPress={() => navigate("/favorites/saves")}
             >

@@ -77,12 +77,12 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
                   src={heroArticle.thumbnailImage.url}
                 />
               )}
-              <Box bg="white100" pt={2} px={2} width="85%" position="absolute" bottom={0} right={0}>
+              <Box bg="mono0" pt={2} px={2} width="85%" position="absolute" bottom={0} right={0}>
                 <Text variant="sm-display" mb={1}>
                   {heroArticle?.title}
                 </Text>
 
-                <Text variant="xs" color="black60">
+                <Text variant="xs" color="mono60">
                   {heroArticle?.author?.name}
                 </Text>
 
@@ -117,7 +117,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
                       {article?.title}
                     </Text>
 
-                    <Text color="black60" variant="xs">
+                    <Text color="mono60" variant="xs">
                       {article?.author?.name}
                     </Text>
 

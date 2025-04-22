@@ -56,7 +56,7 @@ export const ArtQuizArtist = ({
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex flex={1}>
             <Text variant="lg-display">{artist?.name}</Text>
-            <Text variant="lg-display" color="black60">
+            <Text variant="lg-display" color="mono60">
               {artist?.formattedNationalityAndBirthday}
             </Text>
           </Flex>

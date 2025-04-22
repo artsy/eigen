@@ -47,7 +47,7 @@ const InnerButton: React.FC<Button> = (props) => {
         {icon}
         <Text
           variant="xs"
-          color="white100"
+          color="mono0"
           lineHeight="14px"
           style={{ textDecorationLine: isPressed ? "underline" : "none" }}
         >
@@ -74,7 +74,7 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
     return (
       <SafeAreaView
         style={{
-          shadowColor: color("black100"),
+          shadowColor: color("mono100"),
           shadowOffset: {
             width: 0,
             height: 7,
@@ -82,19 +82,19 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
           shadowOpacity: 0.1,
           shadowRadius: 12,
           elevation: 12,
-          backgroundColor: color("white100"),
+          backgroundColor: color("mono0"),
           // the bottom padding that is created by safeareaview in almost all > X apple devices
           // is somewhere around 35px. This is a hack to make sure that the button is
           // displayed 40px above the bottom of the screen.
           paddingBottom: -15,
         }}
       >
-        <Box p={2} backgroundColor="white100">
+        <Box p={2} backgroundColor="mono0">
           <Box
             height={50}
             borderRadius={50}
             px={1}
-            backgroundColor="black100"
+            backgroundColor="mono100"
             flexDirection="row"
             alignItems="center"
           >
@@ -104,23 +104,23 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
                   <ProgressiveOnboardingAlertFinish>
                     <InnerButton
                       label="Create Alert"
-                      icon={<BellIcon fill="white100" width="15px" height="15px" mr={1} />}
+                      icon={<BellIcon fill="mono0" width="15px" height="15px" mr={1} />}
                       onPress={onCreateAlertPress}
                     />
                   </ProgressiveOnboardingAlertFinish>
                 </Flex>
 
-                <Box width="1" height={20} backgroundColor="white100" mx={1} />
+                <Box width="1" height={20} backgroundColor="mono0" mx={1} />
               </>
             )}
             {!!shouldShowCreateAlertButton && !progressiveOnboardingEnabled && (
               <>
                 <InnerButton
                   label="Create Alert"
-                  icon={<BellIcon fill="white100" width="15px" height="15px" mr={1} />}
+                  icon={<BellIcon fill="mono0" width="15px" height="15px" mr={1} />}
                   onPress={onCreateAlertPress}
                 />
-                <Box width="1" height={20} backgroundColor="white100" mx={1} />
+                <Box width="1" height={20} backgroundColor="mono0" mx={1} />
               </>
             )}
             <InnerButton disabled={disabled} label="Show Results" onPress={onPress} />

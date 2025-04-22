@@ -16,10 +16,10 @@ export default class DarkNavigationButton extends React.Component<Props, any> {
     return (
       <ThemeAwareClassTheme>
         {({ color }) => (
-          <Box px={2} py={1} style={{ backgroundColor: color("black100") }}>
+          <Box px={2} py={1} style={{ backgroundColor: color("mono100") }}>
             <TouchableWithoutFeedback onPress={this.openLink.bind(this)}>
               <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                <Text variant="sm" color={color("white100")}>
+                <Text variant="sm" color={color("mono0")}>
                   {this.props.title}
                 </Text>
                 {!!showNavArrow && (

@@ -13,7 +13,7 @@ export const AlertsListPlaceholder: React.FC = () => {
         </Flex>
 
         {times(10).map((index: number) => (
-          <Box key={index} px={2} py={1} backgroundColor="white100">
+          <Box key={index} px={2} py={1} backgroundColor="mono0">
             <Flex flexDirection="row" alignItems="center" justifyContent="flex-start">
               <Flex mr={1}>
                 <SkeletonBox width={60} height={60} />

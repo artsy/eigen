@@ -45,7 +45,7 @@ export const MyCollectionArtistsAutosuggestListHeader: FC<
         <>
           <Flex>
             <Flex flexDirection="row">
-              <Text variant="xs" color="black60">
+              <Text variant="xs" color="mono60">
                 Can't find the artist?{" "}
               </Text>
               <Touchable
@@ -56,7 +56,7 @@ export const MyCollectionArtistsAutosuggestListHeader: FC<
                 }}
                 hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
               >
-                <Text variant="xs" color="black60" underline>
+                <Text variant="xs" color="mono60" underline>
                   Add their name.
                 </Text>
               </Touchable>

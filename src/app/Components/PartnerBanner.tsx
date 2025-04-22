@@ -8,20 +8,20 @@ export interface PartnerBannerProps extends BoxProps {
 
 export const PartnerBanner: React.FC<PartnerBannerProps> = ({ bannerText, textVariant = "xs" }) => {
   return (
-    <Flex flexDirection="row" justifyContent="space-around" bg="black10" py={0.5}>
-      <Text variant={textVariant} color="black100">
+    <Flex flexDirection="row" justifyContent="space-around" bg="mono10" py={0.5}>
+      <Text variant={textVariant} color="mono100">
         •
       </Text>
-      <Text variant={textVariant} color="black100">
+      <Text variant={textVariant} color="mono100">
         {bannerText}
       </Text>
-      <Text variant={textVariant} color="black100">
+      <Text variant={textVariant} color="mono100">
         •
       </Text>
-      <Text variant={textVariant} color="black100">
+      <Text variant={textVariant} color="mono100">
         {bannerText}
       </Text>
-      <Text variant={textVariant} color="black100">
+      <Text variant={textVariant} color="mono100">
         •
       </Text>
     </Flex>

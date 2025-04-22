@@ -102,7 +102,7 @@ const OnboardingWelcome = () => {
   }, [])
 
   return (
-    <Flex flex={1} backgroundColor="black100">
+    <Flex flex={1} backgroundColor="mono100">
       {/* Welcome to Artsy Screen */}
       <AnimatedFlex
         position="absolute"
@@ -110,11 +110,11 @@ const OnboardingWelcome = () => {
         height={screenHeight}
         width={screenWidth}
         flex={1}
-        backgroundColor="black100"
+        backgroundColor="mono100"
         justifyContent="center"
       >
         <ArtsyLogoAbsoluteHeader />
-        <Text variant="xl" color="white100">
+        <Text variant="xl" color="mono0">
           Welcome{"\n"}
           to Artsy,{"\n"}
           {me?.name}
@@ -138,7 +138,7 @@ const OnboardingWelcome = () => {
       <AnimatedFlex
         position="absolute"
         flex={1}
-        backgroundColor="black100"
+        backgroundColor="mono100"
         justifyContent="center"
         px={2}
         height={screenHeight}
@@ -147,13 +147,13 @@ const OnboardingWelcome = () => {
       >
         <ArtsyLogoAbsoluteHeader />
         <Flex flex={1} justifyContent="center">
-          <Text variant="xl" color="white100">
+          <Text variant="xl" color="mono0">
             Ready to find{"\n"}
             art you love?
           </Text>
           <Spacer y={4} />
           <AnimatedFlex entering={enteringAnim}>
-            <Text variant="lg-display" color="white100">
+            <Text variant="lg-display" color="mono0">
               Start building your profile and tailor Artsy to your tastes.
             </Text>
           </AnimatedFlex>
@@ -193,9 +193,9 @@ const OnboardingWelcome = () => {
 }
 
 const Placeholder = () => (
-  <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="black100">
+  <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="mono100">
     <ArtsyLogoAbsoluteHeader />
-    <Spinner color="white100" />
+    <Spinner color="mono0" />
   </Flex>
 )
 
@@ -204,7 +204,7 @@ const ArtsyLogoAbsoluteHeader = () => {
 
   return (
     <Box position="absolute" top={`${top + 44}px`} left={2}>
-      <ArtsyLogoBlackIcon fill="white100" />
+      <ArtsyLogoBlackIcon fill="mono0" />
     </Box>
   )
 }

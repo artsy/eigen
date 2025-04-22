@@ -79,7 +79,7 @@ const Artist: React.FC<{ artist: ArtistElement }> = ({ artist }) => {
         </Flex>
 
         <Text variant="xs">{artist?.artistName}</Text>
-        <Text variant="xs" color="black60">
+        <Text variant="xs" color="mono60">
           {artist?.artistNationality}, {artist?.artistBirthday}
         </Text>
       </Flex>

@@ -40,7 +40,7 @@ export const ArtworkListHeader: FC<ArtworkListHeaderProps> = ({ me }) => {
           if (artworkListEntity) {
             return (
               <MoreIcon
-                fill="black100"
+                fill="mono100"
                 width={24}
                 height={24}
                 accessibilityLabel="Contextual Menu Button"

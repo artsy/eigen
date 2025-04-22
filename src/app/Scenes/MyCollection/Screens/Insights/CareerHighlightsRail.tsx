@@ -39,7 +39,7 @@ export const CareerHighlightsRail: React.FC<CareerHighlightsRailProps> = (props)
   })
 
   return (
-    <Flex py={1} mb={4} backgroundColor={color("black5")}>
+    <Flex py={1} mb={4} backgroundColor={color("mono5")}>
       <EmbeddedCarousel
         testID="career-highlight-cards-flatlist"
         ListFooterComponent={() => (

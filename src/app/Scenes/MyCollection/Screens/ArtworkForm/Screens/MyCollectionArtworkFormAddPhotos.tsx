@@ -129,7 +129,7 @@ const AddPhotosButton: React.FC<{ imageSize: number }> = ({ imageSize }) => {
     >
       <BorderBox
         mt={0.5}
-        bg={color("white100")}
+        bg={color("mono0")}
         width={imageSize}
         height={imageSize}
         key="addMorePhotos"
@@ -184,7 +184,7 @@ const LoadingOverlay: React.FC = () => {
       justifyContent="center"
       zIndex={10000}
     >
-      <ActivityIndicator color={color("black60")} />
+      <ActivityIndicator color={color("mono60")} />
     </Flex>
   )
 }

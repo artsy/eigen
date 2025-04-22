@@ -20,7 +20,7 @@ import styled from "styled-components/native"
 export const CONTAINER_HEIGHT = 120
 
 const SaleArtworkCard = styled.TouchableHighlight.attrs(() => ({
-  underlayColor: themeGet("colors.white100"),
+  underlayColor: themeGet("colors.mono0"),
   activeOpacity: DEFAULT_ACTIVE_OPACITY,
 }))``
 
@@ -98,7 +98,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
     </Flex>
   ) : (
     <Box
-      bg={color("black30")}
+      bg={color("mono30")}
       width={IMAGE_CONTAINER_WIDTH}
       height={IMAGE_CONTAINER_WIDTH}
       style={{ borderRadius: 2 }}
@@ -107,7 +107,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
 
   const artistNamesDisplay = artwork.artistNames ? (
     <Text
-      color="black60"
+      color="mono60"
       lineHeight="20px"
       numberOfLines={1}
       variant={enableNewSaleArtworkTileRailCard ? "xs" : "sm"}
@@ -141,7 +141,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   const titleAndDateDisplay =
     artwork.title || artwork.date ? (
       <Text
-        color="black60"
+        color="mono60"
         lineHeight="20px"
         numberOfLines={1}
         variant={enableNewSaleArtworkTileRailCard ? "xs" : "sm"}

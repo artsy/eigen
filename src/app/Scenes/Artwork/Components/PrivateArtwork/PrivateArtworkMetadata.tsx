@@ -53,7 +53,7 @@ export const PrivateArtworkMetadata: React.FC<PrivateArtworkMetadataProps> = ({ 
             <Spacer y={1} />
             <LinkText
               variant="xs"
-              color="black60"
+              color="mono60"
               onPress={() =>
                 navigate(`https://help.artsy.net/s/article/Artsy-Condition-Definitions`)
               }

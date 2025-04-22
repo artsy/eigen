@@ -7,7 +7,7 @@ const EMPTY_VALUE = "----"
 export const Field: React.FC<{
   label: string
   value: string | null
-  color?: "black100" | "black60"
+  color?: "mono100" | "mono60"
   /** The length of text after which we truncate and add a read more button */
   truncateLimit?: number
 }> = ({ label, value, color, truncateLimit = 0 }) => {
@@ -27,12 +27,12 @@ export const Field: React.FC<{
 
   return (
     <Flex flexDirection="row" my={1}>
-      <Text variant="xs" color="black100" pr={1} style={{ minWidth: 120 }}>
+      <Text variant="xs" color="mono100" pr={1} style={{ minWidth: 120 }}>
         {label}
       </Text>
 
       <Flex maxWidth="70%">
-        <Text style={{ flex: 1 }} variant="xs" color={color ?? "black100"}>
+        <Text style={{ flex: 1 }} variant="xs" color={color ?? "mono100"}>
           {expanded ? value : truncatedValue}
         </Text>
         {!!canExpand && (
@@ -41,7 +41,7 @@ export const Field: React.FC<{
               <Text
                 style={{ textDecorationLine: "underline" }}
                 variant="xs"
-                color={color ?? "black100"}
+                color={color ?? "mono100"}
                 mt={1}
               >
                 {expanded ? "Read Less" : "Read More"}
@@ -63,7 +63,7 @@ export const MetaDataField: React.FC<{
     <Field
       label={label}
       value={value || EMPTY_VALUE}
-      color={!value ? "black60" : "black100"}
+      color={!value ? "mono60" : "mono100"}
       truncateLimit={truncateLimit}
     />
   )

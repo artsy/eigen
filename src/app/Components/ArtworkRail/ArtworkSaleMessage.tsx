@@ -48,7 +48,7 @@ export const ArtworkSaleMessage: React.FC<ArtworkSaleMessageProps> = ({
                   key={index}
                   lineHeight="20px"
                   variant="xs"
-                  color="black60"
+                  color="mono60"
                   numberOfLines={1}
                   style={{ textDecorationLine: "line-through" }}
                 >

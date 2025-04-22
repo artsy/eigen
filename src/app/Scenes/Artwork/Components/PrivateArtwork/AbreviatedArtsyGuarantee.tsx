@@ -21,7 +21,7 @@ export const AbreviatedArtsyGuarantee: React.FC = () => {
 
   return (
     <>
-      <Text variant="xs" color="black60">
+      <Text variant="xs" color="mono60">
         Be covered by the Artsy Guarantee when you checkout with Artsy{" "}
         <LinkText
           onPress={() => {

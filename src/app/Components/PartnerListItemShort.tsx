@@ -45,7 +45,7 @@ export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({
         meta={
           <>
             {!!sortedLocations[0] && (
-              <Text variant="xs" color="black60">
+              <Text variant="xs" color="mono60">
                 {sortedLocations[0].city}
                 {!!(sortedLocations.length > 1) &&
                   ` and ${sortedLocations.length - 1} more ${pluralize(

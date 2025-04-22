@@ -63,7 +63,7 @@ const SavedSearchFilterPriceRange: React.FC<SavedSearchFilterPriceRangeProps> = 
 
   return (
     <Flex>
-      <Separator my={2} borderColor="black10" />
+      <Separator my={2} borderColor="mono10" />
       <Text variant="sm" fontWeight="bold" px={2}>
         Price Range
       </Text>

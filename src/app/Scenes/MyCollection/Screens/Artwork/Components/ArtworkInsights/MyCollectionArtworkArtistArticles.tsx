@@ -41,7 +41,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
                   <Flex flexDirection="row">
                     <Text style={{ flex: 1 }}>{thumbnailTitle}</Text>
                   </Flex>
-                  <Text color="black60" my={0.5}>
+                  <Text color="mono60" my={0.5}>
                     {publishedAt}
                   </Text>
                 </Box>

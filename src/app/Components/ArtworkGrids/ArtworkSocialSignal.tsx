@@ -16,13 +16,13 @@ export const ArtworkSocialSignal: React.FC<ArtworkSocialSignalProps> = ({
 }) => {
   const { curatorsPick, increasedInterest } = useFragment(fragment, collectorSignals)
 
-  const primaryColor = dark ? "white100" : "black100"
+  const primaryColor = dark ? "mono0" : "mono100"
 
   switch (true) {
     case curatorsPick && !hideCuratorsPick:
       return (
         <Box alignItems="center" flexDirection="row">
-          <FireIcon fill="black100" />
+          <FireIcon fill="mono100" />
           <Text color={primaryColor} variant="xs" textAlign="center">
             {" "}
             Curators’ Pick
@@ -33,7 +33,7 @@ export const ArtworkSocialSignal: React.FC<ArtworkSocialSignalProps> = ({
     case increasedInterest && !hideIncreasedInterest:
       return (
         <Box flexDirection="row" alignItems="center">
-          <ArrowUpRightIcon fill="black100" />
+          <ArrowUpRightIcon fill="mono100" />
           <Text color={primaryColor} variant="xs">
             {" "}
             Increased Interest

@@ -64,7 +64,7 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
                 mb={1}
                 key={`filter-label-${label?.displayValue}`}
                 disabled
-                borderColor="black30"
+                borderColor="mono30"
               >
                 {label?.displayValue}
               </Pill>
@@ -91,7 +91,7 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
             <Flex flexDirection="row">
               <Text fontWeight="bold">View all works by {artist.name}</Text>
               <Flex alignSelf="center">
-                <ArrowRightIcon fill="black30" ml={0.5} pl={0.3} />
+                <ArrowRightIcon fill="mono30" ml={0.5} pl={0.3} />
               </Flex>
             </Flex>
           </RouterLink>

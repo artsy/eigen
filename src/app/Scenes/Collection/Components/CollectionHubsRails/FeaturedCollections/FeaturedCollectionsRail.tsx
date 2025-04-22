@@ -34,7 +34,7 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
           react: (node, output, state) => (
             <Text
               variant="sm"
-              color="black100"
+              color="mono100"
               key={state.key}
               numberOfLines={titleLength > 32 ? 3 : 4}
             >
@@ -104,7 +104,7 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
                   {result.title}
                 </Text>
                 {!!result.priceGuidance && (
-                  <Text variant="sm" color={color("black60")} mb={1} testID={"price-" + index}>
+                  <Text variant="sm" color={color("mono60")} mb={1} testID={"price-" + index}>
                     {"From $" + `${result.priceGuidance.toLocaleString()}`}
                   </Text>
                 )}
@@ -119,7 +119,7 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
 }
 
 export const ImageWrapper = styled(Flex)`
-  border: solid 1px ${themeGet("colors.black10")};
+  border: solid 1px ${themeGet("colors.mono10")};
   height: 385px;
   width: 260px;
   border-radius: 5px;

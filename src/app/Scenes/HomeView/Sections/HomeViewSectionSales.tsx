@@ -168,14 +168,14 @@ const HomeViewSectionSalesPlaceholder: React.FC<FlexProps> = (flexProps) => {
                           height={SMALL_IMAGE_SIZE}
                           width={SMALL_IMAGE_SIZE}
                           borderLeftWidth={2}
-                          borderColor="white100"
+                          borderColor="mono0"
                           borderBottomWidth={1}
                         />
                         <SkeletonBox
                           height={SMALL_IMAGE_SIZE}
                           width={SMALL_IMAGE_SIZE}
                           borderLeftWidth={2}
-                          borderColor="white100"
+                          borderColor="mono0"
                           borderTopWidth={1}
                         />
                       </Flex>

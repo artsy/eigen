@@ -22,7 +22,7 @@ export const CompleteRegistrationCTAWrapper: React.FunctionComponent<
   return (
     <Touchable
       style={{ marginTop: 15 }}
-      underlayColor="black5"
+      underlayColor="mono5"
       onPress={() => {
         tracking.trackEvent({
           action: "tappedVerifyIdentity",
@@ -40,11 +40,11 @@ export const CompleteRegistrationCTAWrapper: React.FunctionComponent<
         alignItems="center"
         justifyContent="center"
         py={1}
-        bg="black5"
+        bg="mono5"
         mt={1}
       >
         <>
-          <ExclamationMarkCircleFill fill="black100" />
+          <ExclamationMarkCircleFill fill="mono100" />
           <Text mx={0.5} variant="sm">
             Complete registration
           </Text>

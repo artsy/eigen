@@ -136,7 +136,7 @@ const LoginWelcomeStepForm: React.FC = () => {
         importantForAutofill="yes"
         autoCorrect={false}
         blurOnSubmit={false}
-        placeholderTextColor={color("black30")}
+        placeholderTextColor={color("mono30")}
         ref={emailRef}
         spellCheck={false}
         keyboardType="email-address"
@@ -189,7 +189,7 @@ const LoginWelcomeStepForm: React.FC = () => {
 
         <Spacer y={1} />
 
-        <Text variant="xxs" color="black60" textAlign="center">
+        <Text variant="xxs" color="mono60" textAlign="center">
           By tapping Continue with Apple, Facebook, or Google, you agree to Artsy’s{" "}
           <LinkText
             variant="xxs"

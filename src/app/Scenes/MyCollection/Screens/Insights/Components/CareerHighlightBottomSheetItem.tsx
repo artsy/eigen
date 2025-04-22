@@ -93,7 +93,7 @@ const SectionedHighlight: React.FC<{ header: string; body: string[] }> = ({ head
         <Flex>
           <Text>{HeaderObj.text}</Text>
           {uniq(body).map((b) => (
-            <Text key={b} color="black60">
+            <Text key={b} color="mono60">
               {b}
             </Text>
           ))}

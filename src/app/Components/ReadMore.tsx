@@ -37,7 +37,7 @@ export const ReadMore = React.memo(
     content,
     maxChars,
     presentLinksModally,
-    color = "black100",
+    color = "mono100",
     trackingFlow,
     contextModule,
     showReadLessButton = false,
@@ -98,7 +98,7 @@ export const ReadMore = React.memo(
               testID={`linktext-${state.key}`}
               onPress={() => openUrl(node.target)}
               variant={linkTextVariant}
-              color={color || "black100"}
+              color={color || "mono100"}
             >
               {output(node.content, state)}
             </LinkText>
@@ -113,7 +113,7 @@ export const ReadMore = React.memo(
           state: SimpleMarkdown.State
         ) => {
           return (
-            <TextComponent {...textProps} color={color || "black100"} key={state.key}>
+            <TextComponent {...textProps} color={color || "mono100"} key={state.key}>
               {!isExpanded && Number(state.key) > 0 ? ` ${emdash} ` : null}
               {output(node.content, state)}
             </TextComponent>
@@ -185,7 +185,7 @@ export const ReadMore = React.memo(
  * traversing and adds a 'read more' button to the highest text node at that part of the tree.
  */
 function truncate({
-  color = "white100",
+  color = "mono0",
   root,
   maxChars,
   linkTextVariant,

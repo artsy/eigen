@@ -46,22 +46,22 @@ export const NavigationHeader: React.FC<NavigationHeaderProps> = ({
   const { space } = useTheme()
   const leftButton = () => {
     if (useXButton) {
-      return <CloseIcon fill="black100" />
+      return <CloseIcon fill="mono100" />
     } else {
-      return <ArrowLeftIcon fill="black100" />
+      return <ArrowLeftIcon fill="mono100" />
     }
   }
 
   const rightButton = () => {
     if (useShareButton) {
-      return <ShareIcon fill="black100" height="25px" width="25px" />
+      return <ShareIcon fill="mono100" height="25px" width="25px" />
     }
     if (rightCloseButton) {
-      return <CloseIcon fill="black100" />
+      return <CloseIcon fill="mono100" />
     } else if (renderRightButton) {
       return renderRightButton()
     } else {
-      return <ArrowRightIcon fill="black100" />
+      return <ArrowRightIcon fill="mono100" />
     }
   }
 
@@ -89,7 +89,7 @@ export const NavigationHeader: React.FC<NavigationHeaderProps> = ({
               {rightButtonText ? (
                 <Text
                   variant="sm"
-                  color={rightButtonDisabled ? "black60" : "black100"}
+                  color={rightButtonDisabled ? "mono60" : "mono100"}
                   testID={rightButtonTestId}
                   disabled={rightButtonDisabled}
                   aria-disabled={rightButtonDisabled}
@@ -109,7 +109,7 @@ export const NavigationHeader: React.FC<NavigationHeaderProps> = ({
           alignItems={alignItems || "center"}
           pointerEvents="none"
         >
-          <Text variant="sm" color="black100">
+          <Text variant="sm" color="mono100">
             {children}
           </Text>
         </Flex>

@@ -19,7 +19,7 @@ export const StatusBarOverlay: React.FC = () => {
         left: 0,
         opacity,
         height: safeAreaInsets.top,
-        backgroundColor: color("white100"),
+        backgroundColor: color("mono0"),
       }}
     />
   )

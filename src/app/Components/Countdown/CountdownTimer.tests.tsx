@@ -17,10 +17,10 @@ const CountdownText: React.FC<CountdownTimerProps> = ({ duration, label }) => (
   <Flex justifyContent="center" alignItems="center">
     <LabeledTicker
       renderSeparator={() => <Spacer x={0.5} />}
-      textProps={{ color: "white100", variant: "sm" }}
+      textProps={{ color: "mono0", variant: "sm" }}
       duration={duration}
     />
-    <Text variant="xs" color="white100">
+    <Text variant="xs" color="mono0">
       {label}
     </Text>
   </Flex>

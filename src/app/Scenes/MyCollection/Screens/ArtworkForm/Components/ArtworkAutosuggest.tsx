@@ -45,11 +45,11 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
           testID="my-collection-artwork-form-artwork-skip-button"
         >
           <Flex flexDirection="row" my={1}>
-            <Text variant="xs" color="black60">
+            <Text variant="xs" color="mono60">
               Or skip ahead to{" "}
             </Text>
 
-            <Text variant="xs" color="black60" underline>
+            <Text variant="xs" color="mono60" underline>
               add artwork details
             </Text>
           </Flex>

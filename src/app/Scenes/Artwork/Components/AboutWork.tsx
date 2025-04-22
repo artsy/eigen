@@ -35,7 +35,7 @@ export const AboutWork: React.FC<AboutWorkProps> = ({ artwork }) => {
       {!!description && (
         <Flex>
           {!isInAuction && (
-            <Text variant="xs" color="black60" mb="3px">
+            <Text variant="xs" color="mono60" mb="3px">
               From Artsy Specialist:
             </Text>
           )}

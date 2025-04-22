@@ -7,17 +7,10 @@ export const DevMenuButtonItem: React.FC<{
   titleColor?: string
   value?: React.ReactNode
   direction?: "right" | "left" | "up" | "down"
-}> = ({
-  disabled = false,
-  onPress,
-  title,
-  titleColor = "black100",
-  value,
-  direction = "right",
-}) => {
+}> = ({ disabled = false, onPress, title, titleColor = "mono100", value, direction = "right" }) => {
   const color = useColor()
   return (
-    <Touchable onPress={onPress} underlayColor={color("black30")} disabled={disabled}>
+    <Touchable onPress={onPress} underlayColor={color("mono30")} disabled={disabled}>
       <Flex
         flexDirection="row"
         alignItems="center"
@@ -34,12 +27,12 @@ export const DevMenuButtonItem: React.FC<{
         {!!value && (
           <Flex flex={3} flexDirection="row" alignItems="center">
             <Flex flex={3}>
-              <Text variant="sm-display" color="black60" numberOfLines={1} textAlign="right">
+              <Text variant="sm-display" color="mono60" numberOfLines={1} textAlign="right">
                 {value}
               </Text>
             </Flex>
             <Flex ml={1} flex={1}>
-              <ChevronIcon left={0.5} height={20} width={20} direction={direction} fill="black60" />
+              <ChevronIcon left={0.5} height={20} width={20} direction={direction} fill="mono60" />
             </Flex>
           </Flex>
         )}

@@ -218,7 +218,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
           Get notified when new works are available
         </Text>
 
-        <Text variant="md" textAlign="center" color="black60">
+        <Text variant="md" textAlign="center" color="mono60">
           There are currently no works for sale for this artist. Create an alert, and we’ll let you
           know when new works are added.
         </Text>
@@ -274,7 +274,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const shouldShowCreateAlertReminder = artworks.length >= CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD
 
   return (
-    <Flex backgroundColor={color("white100")} flex={1}>
+    <Flex backgroundColor={color("mono0")} flex={1}>
       <Tabs.Masonry
         data={artworks}
         numColumns={NUM_COLUMNS_MASONRY}

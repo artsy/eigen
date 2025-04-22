@@ -20,9 +20,9 @@ export const ArtworkListArtworksGridHeader: FC<ArtworkListArtworksGridHeaderProp
     <Flex>
       <ArtworkListTitle title={title} shareableWithPartners={shareableWithPartners} />
 
-      <Separator borderColor="black10" mt={1} />
+      <Separator borderColor="mono10" mt={1} />
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-        <Text ml={2} variant="xs" color="black60">
+        <Text ml={2} variant="xs" color="mono60">
           {artworksCount} {artworksCount === 1 ? "Artwork" : "Artworks"}
         </Text>
 

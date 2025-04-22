@@ -75,7 +75,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
                   alignItems: "center",
                 }}
               >
-                <Text variant="sm-display" fontWeight="500" color="white100">
+                <Text variant="sm-display" fontWeight="500" color="mono0">
                   Auction closed
                 </Text>
               </Flex>
@@ -85,7 +85,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
       )}
       <View
         style={{
-          backgroundColor: color("white100"),
+          backgroundColor: color("mono0"),
           marginTop: !!sale.coverImage?.url ? COVER_IMAGE_HEIGHT : saInsets.top + 40,
         }}
       >
@@ -148,7 +148,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
                 </Text>
               )}
               {!!saleTimeDetails.relative && (
-                <Text variant="sm" color="black60">
+                <Text variant="sm" color="mono60">
                   {saleTimeDetails.relative}
                 </Text>
               )}

@@ -15,7 +15,7 @@ MapboxGL.setAccessToken(Keys.secureFor("MAPBOX_API_CLIENT_KEY"))
 
 const MapWrapper = styled(Flex)`
   border-width: 1px;
-  border-color: ${themeGet("colors.black10")};
+  border-color: ${themeGet("colors.mono10")};
 `
 
 interface Props {
@@ -175,11 +175,11 @@ export const LocationMap: React.FC<Props> = (props) => {
     return (
       <Box m={2}>
         {!!partnerName && (
-          <Text variant="sm" color="black100" textAlign="center">
+          <Text variant="sm" color="mono100" textAlign="center">
             {partnerName}
           </Text>
         )}
-        <Text variant="sm" color="black60" textAlign="center">
+        <Text variant="sm" color="mono60" textAlign="center">
           {summary}
         </Text>
       </Box>
@@ -190,22 +190,22 @@ export const LocationMap: React.FC<Props> = (props) => {
     return (
       <Box m={2}>
         {!!partnerName && (
-          <Text variant="sm" color="black100" textAlign="center">
+          <Text variant="sm" color="mono100" textAlign="center">
             {partnerName}
           </Text>
         )}
         {!!address && (
-          <Text variant="sm" color="black60" textAlign="center">
+          <Text variant="sm" color="mono60" textAlign="center">
             {address}
           </Text>
         )}
         {!!address2 && (
-          <Text variant="sm" color="black60" textAlign="center">
+          <Text variant="sm" color="mono60" textAlign="center">
             {address2}
           </Text>
         )}
         {(!!city || !!postalCode) && (
-          <Text variant="sm" color="black60" textAlign="center">
+          <Text variant="sm" color="mono60" textAlign="center">
             {cityAndPostalCode(city, postalCode)}
           </Text>
         )}

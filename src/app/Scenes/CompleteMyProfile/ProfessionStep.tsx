@@ -30,7 +30,7 @@ export const ProfessionStep: FC = () => {
 
             <Spacer y={1} />
 
-            <Text color="black60">
+            <Text color="mono60">
               Accelerate conversations with galleries by providing quick insights into your
               background.
             </Text>

@@ -73,7 +73,7 @@ export const AuctionResultsList: React.FC<AuctionResultsListProps> = ({
         ListHeaderComponent={ListHeaderComponent}
         ItemSeparatorComponent={() => <Flex mt={2} />}
         renderSectionHeader={({ section: { sectionTitle } }) => (
-          <Flex backgroundColor="white100" mx={2}>
+          <Flex backgroundColor="mono0" mx={2}>
             <Text my={2} variant="sm-display">
               {sectionTitle}
             </Text>
@@ -139,7 +139,7 @@ export const LoadingSkeleton: React.FC<{ title: string; listHeader: React.ReactE
           </Flex>
         </Flex>
         <Spacer y={1} />
-        <Separator borderColor="black10" />
+        <Separator borderColor="mono10" />
       </React.Fragment>
     )
   }
@@ -152,7 +152,7 @@ export const LoadingSkeleton: React.FC<{ title: string; listHeader: React.ReactE
         <Spacer y={2} />
         <PlaceholderText height={24} width={100 + Math.random() * 50} />
         <Spacer y={1} />
-        <Separator borderColor="black10" />
+        <Separator borderColor="mono10" />
         {placeholderResults}
       </Flex>
     </ProvidePlaceholderContext>

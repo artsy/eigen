@@ -48,12 +48,12 @@ const ArtworkEditionSetItem: React.FC<ArtworkEditionSetItemProps> = ({
 
         <Flex flex={1}>
           {!!metric && (
-            <Text variant="sm-display" color="black60">
+            <Text variant="sm-display" color="mono60">
               {metric}
             </Text>
           )}
           {!!editionOf && (
-            <Text variant="sm-display" color="black60">
+            <Text variant="sm-display" color="mono60">
               {editionOf}
             </Text>
           )}

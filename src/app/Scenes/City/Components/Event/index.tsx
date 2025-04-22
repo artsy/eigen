@@ -146,7 +146,7 @@ export class Event extends React.Component<Props, State> {
                     {name}
                   </Text>
                   {!!exhibition_period && !!end_at && (
-                    <Text variant="xs" color={color("black60")}>
+                    <Text variant="xs" color={color("mono60")}>
                       {exhibitionDates(exhibition_period, end_at)}
                     </Text>
                   )}

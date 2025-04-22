@@ -172,7 +172,7 @@ const AnimatedCloseIcon: React.FC<{
         >
           <Flex
             alignItems="center"
-            borderColor="black30"
+            borderColor="mono30"
             borderRadius={PILL_DIAMETER / 2}
             borderWidth="1px"
             height={PILL_DIAMETER}

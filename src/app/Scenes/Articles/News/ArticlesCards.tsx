@@ -23,7 +23,7 @@ export const ArticlesCards: React.FC<ArticleNewsProps> = ({ viewer }) => {
   }
 
   return (
-    <Flex m={2} p={2} border="1px solid" borderColor="black30" gap={2}>
+    <Flex m={2} p={2} border="1px solid" borderColor="mono30" gap={2}>
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Text variant="lg-display">News</Text>
         <Text variant="lg-display">{date}</Text>

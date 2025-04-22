@@ -155,18 +155,18 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
         minHeight={60}
       >
         <Flex flexDirection="row">
-          <Icon mt="3px" fill="white100" />
+          <Icon mt="3px" fill="mono0" />
           <Flex flexDirection="column" pl={1}>
-            <Text color="white100" variant="sm">
+            <Text color="mono0" variant="sm">
               {message}
             </Text>
-            <Text color="white100" variant="xs">
+            <Text color="mono0" variant="xs">
               {subMessage}
             </Text>
           </Flex>
         </Flex>
         <Flex>
-          <ArrowRightIcon fill="white100" />
+          <ArrowRightIcon fill="mono0" />
         </Flex>
       </Flex>
     </TouchableWithoutFeedback>

@@ -14,7 +14,7 @@ export const RemainingCharactersLabel = ({
   const label = `${remainingCount} character${remainingCount === 1 ? "" : "s"} remaining`
 
   return (
-    <Text variant="xs" color="black60" {...rest}>
+    <Text variant="xs" color="mono60" {...rest}>
       {label}
     </Text>
   )

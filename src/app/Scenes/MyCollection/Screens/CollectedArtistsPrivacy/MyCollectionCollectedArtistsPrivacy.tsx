@@ -73,7 +73,7 @@ const SubmitButton: React.FC = () => {
   }
 
   return (
-    <Flex position="absolute" p={2} bottom={0} backgroundColor="white100">
+    <Flex position="absolute" p={2} bottom={0} backgroundColor="mono0">
       <Button block onPress={handleSubmit} loading={isLoading}>
         Done
       </Button>

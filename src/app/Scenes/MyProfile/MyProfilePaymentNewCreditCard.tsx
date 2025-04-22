@@ -109,7 +109,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
             }}
             disabled={!isValid}
           >
-            <Text variant="xs" color={!!isValid ? "black100" : "black60"}>
+            <Text variant="xs" color={!!isValid ? "mono100" : "mono60"}>
               Save
             </Text>
           </Touchable>

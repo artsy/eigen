@@ -140,7 +140,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
                 width={1}
                 zIndex={5}
               >
-                <Text variant="xs" color="white100">
+                <Text variant="xs" color="mono0">
                   Sorry, we were unable to send this message. Please try again.
                 </Text>
               </Flex>
@@ -192,7 +192,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
                 <Box flexDirection="row">
                   <InfoCircleIcon mr={0.5} style={{ marginTop: 2 }} />
                   <Box flex={1}>
-                    <Text variant="xs" color="black60">
+                    <Text variant="xs" color="mono60">
                       By clicking send, we will share your profile with {artwork.partner?.name}.
                       Update your profile at any time in{" "}
                       <Text variant="xs" onPress={handleSettingsPress}>

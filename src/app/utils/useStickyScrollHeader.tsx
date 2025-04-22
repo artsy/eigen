@@ -27,7 +27,7 @@ export const useStickyScrollHeader = ({
   const calculatedFadeInEnd: number = !!fadeInEnd ? fadeInEnd : fadeInStart + FADE_LENGTH
   header =
     !header && !!headerText ? (
-      <Flex backgroundColor="white100">
+      <Flex backgroundColor="mono0">
         <NavigationHeader>
           <Flex flex={1} pt={0.5} flexDirection="row">
             <Text variant="sm-display" numberOfLines={1} style={{ flexShrink: 1 }}>
@@ -37,7 +37,7 @@ export const useStickyScrollHeader = ({
         </NavigationHeader>
       </Flex>
     ) : (
-      <Flex backgroundColor="white100">
+      <Flex backgroundColor="mono0">
         <NavigationHeader>{header}</NavigationHeader>
       </Flex>
     )

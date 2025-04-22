@@ -50,7 +50,7 @@ export const HomeViewSectionMarketingCollectionsItem: FC<
           <Text variant="sm-display" numberOfLines={1} weight="medium">
             {marketingCollection?.title}
           </Text>
-          <Text variant="xs" numberOfLines={1} color="black60">
+          <Text variant="xs" numberOfLines={1} color="mono60">
             {marketingCollection?.artworksConnection?.counts?.total
               ? `${marketingCollection.artworksConnection.counts.total} ${pluralize(
                   "work",

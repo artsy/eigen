@@ -29,7 +29,7 @@ export class AttachmentPreview extends React.Component<Props> {
       <ThemeAwareClassTheme>
         {({ color }) => (
           <Touchable
-            underlayColor={color("black5")}
+            underlayColor={color("mono5")}
             onPress={() => onSelected?.(findNodeHandle(this)!, attachment.internalID)}
           >
             <Container>{children}</Container>

@@ -62,10 +62,10 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = ({ artworkList, imagesL
             </Flex>
 
             {!item.shareableWithPartners && !!isArtworkListOfferabilityEnabled && (
-              <EyeClosedIcon ml={0.5} fill="black100" />
+              <EyeClosedIcon ml={0.5} fill="mono100" />
             )}
           </Flex>
-          <Text variant="xs" color="black60" numberOfLines={1}>
+          <Text variant="xs" color="mono60" numberOfLines={1}>
             {item.artworksCount} {item.artworksCount === 1 ? "Artwork" : "Artworks"}
           </Text>
         </Flex>

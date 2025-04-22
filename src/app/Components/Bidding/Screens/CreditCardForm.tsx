@@ -242,7 +242,7 @@ export const CreditCardForm: React.FC<CreditCardFormProps> = ({
 
         <Spacer y={2} />
 
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="mono60">
           Registration is free.
           {"\n"}
           {"\n"}A valid credit card is required in order to bid. Please enter your credit card

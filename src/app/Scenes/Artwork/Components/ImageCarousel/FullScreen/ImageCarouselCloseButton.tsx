@@ -49,7 +49,7 @@ export const ImageCarouselCloseButton = ({ onClose }: { onClose(): void }) => {
                   width: 40,
                   height: 40,
                   borderRadius: 20,
-                  backgroundColor: color("white100"),
+                  backgroundColor: color("mono0"),
                   alignItems: "center",
                   justifyContent: "center",
                 },
