@@ -127,7 +127,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
 
   if (enableRedesignedSettings) {
     return (
-      <MyProfileScreenWrapper title="Payments" /* onPress={handleSave} isValid={isEmailValid}  */>
+      <MyProfileScreenWrapper title="Payments">
         <Text>Add your payment details for a faster checkout experience.</Text>
         <Spacer y={2} />
         <FlatList

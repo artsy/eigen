@@ -1,4 +1,4 @@
-import { Button, Flex, Input, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Input, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { useStripe } from "@stripe/stripe-react-native"
 import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
@@ -261,28 +261,19 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
 
   if (enableRedesignedSettings) {
     return (
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+      <MyProfileScreenWrapper
+        title="Add new card"
+        onPress={() => handleSave()}
+        isValid={state.allPresent}
+        loading={isLoading}
       >
-        <MyProfileScreenWrapper title="Login & Security">
-          <ScrollView ref={scrollViewRef}>
-            <Flex py={2}>
-              {creaditCardForm}
-              <Button
-                mt={2}
-                disabled={!state.allPresent}
-                loading={isLoading}
-                onPress={() => handleSave()}
-                block
-              >
-                Save
-              </Button>
-            </Flex>
-          </ScrollView>
-        </MyProfileScreenWrapper>
-      </KeyboardAvoidingView>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          {creaditCardForm}
+        </KeyboardAvoidingView>
+      </MyProfileScreenWrapper>
     )
   }
 
