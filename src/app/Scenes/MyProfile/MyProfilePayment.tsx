@@ -1,27 +1,17 @@
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { MyProfilePaymentDeleteCardMutation } from "__generated__/MyProfilePaymentDeleteCardMutation.graphql"
 import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graphql"
 import { MyProfilePayment_me$data } from "__generated__/MyProfilePayment_me.graphql"
 import { CreditCardDetailsContainer } from "app/Components/CreditCardDetails"
 import { MenuItem } from "app/Components/MenuItem"
-import {
-  MyProfileScreenWrapper,
-  MyProfileScreenWrapperProps,
-} from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
+import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"
 import { Suspense, useCallback, useEffect, useReducer, useState } from "react"
-import {
-  ActivityIndicator,
-  Alert,
-  FlatList,
-  LayoutAnimation,
-  RefreshControl,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native"
+import { ActivityIndicator, Alert, FlatList, LayoutAnimation, RefreshControl } from "react-native"
 import {
   commitMutation,
   createPaginationContainer,
@@ -135,47 +125,63 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
 
   const creditCards = extractNodes(me.creditCards)
 
-  const Wrapper = enableRedesignedSettings
-    ? (props: Omit<MyProfileScreenWrapperProps, "title">) => (
-        <MyProfileScreenWrapper title="Payments" {...props} />
-      )
-    : ScrollView
+  if (enableRedesignedSettings) {
+    return (
+      <MyProfileScreenWrapper title="Payments" /* onPress={handleSave} isValid={isEmailValid}  */>
+        <Text>Add your payment details for a faster checkout experience.</Text>
+        <Spacer y={2} />
+        <FlatList
+          style={{ flex: 1 }}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+          data={creditCards}
+          keyExtractor={(item) => item.internalID}
+          renderItem={({ item }) => (
+            <CreditCardDetailsContainer
+              card={item}
+              onPress={() => onRemove(item.internalID)}
+              isDeleting={deletingIDs[item.internalID]}
+            />
+          )}
+          onEndReached={onLoadMore}
+          ItemSeparatorComponent={() => <Spacer y={1} />}
+          ListFooterComponent={
+            <Flex pt={2}>
+              <Button block onPress={() => navigate("/my-profile/payment/new-card")}>
+                Add new card
+              </Button>
+              {!!isLoadingMore && <ActivityIndicator style={{ marginTop: 30 }} />}
+            </Flex>
+          }
+        />
+      </MyProfileScreenWrapper>
+    )
+  }
 
   return (
-    <Wrapper>
-      <FlatList
-        style={{ flex: 1 }}
-        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-        data={creditCards}
-        keyExtractor={(item) => item.internalID}
-        contentContainerStyle={{ paddingTop: creditCards.length === 0 ? 10 : 20 }}
-        renderItem={({ item }) => (
-          <Flex flexDirection="row" justifyContent="space-between" px={2}>
-            <CreditCardDetailsContainer card={item} />
-            {deletingIDs[item.internalID] ? (
-              <ActivityIndicator size="small" />
-            ) : (
-              <TouchableOpacity
-                onPress={() => onRemove(item.internalID)}
-                hitSlop={{ top: 10, left: 20, right: 20, bottom: 10 }}
-              >
-                <Text variant="sm-display" color="red100">
-                  Remove
-                </Text>
-              </TouchableOpacity>
-            )}
-          </Flex>
-        )}
-        onEndReached={onLoadMore}
-        ItemSeparatorComponent={() => <Spacer y={1} />}
-        ListFooterComponent={
-          <Flex pt={creditCards.length === 0 ? undefined : 2}>
-            <MenuItem title="Add New Card" href="/my-profile/payment/new-card" />
-            {!!isLoadingMore && <ActivityIndicator style={{ marginTop: 30 }} />}
-          </Flex>
-        }
-      />
-    </Wrapper>
+    <FlatList
+      style={{ flex: 1 }}
+      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+      data={creditCards}
+      keyExtractor={(item) => item.internalID}
+      contentContainerStyle={{ paddingTop: creditCards.length === 0 ? 10 : 20 }}
+      renderItem={({ item }) => (
+        <Flex px={2}>
+          <CreditCardDetailsContainer
+            card={item}
+            onPress={() => onRemove(item.internalID)}
+            isDeleting={deletingIDs[item.internalID]}
+          />
+        </Flex>
+      )}
+      onEndReached={onLoadMore}
+      ItemSeparatorComponent={() => <Spacer y={1} />}
+      ListFooterComponent={
+        <Flex pt={creditCards.length === 0 ? undefined : 2}>
+          <MenuItem title="Add New Card" href="/my-profile/payment/new-card" />
+          {!!isLoadingMore && <ActivityIndicator style={{ marginTop: 30 }} />}
+        </Flex>
+      }
+    />
   )
 }
 
