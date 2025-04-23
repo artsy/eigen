@@ -108,10 +108,15 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
 export const navigationEvents = new EventEmitter()
 
 export function switchTab(tab: BottomTabType, props?: object) {
-  // root tabs are only mounted once so cannot be tracked
-  // like other screens manually track screen views here
-  // home handles this on its own since it is default tab
-  if (tab !== "home") {
+  if (
+    // root tabs are only mounted once so cannot be tracked
+    // like other screens manually track screen views here
+    // home handles this on its own since it is default tab
+    tab !== "home" &&
+    // we are handling the tracking of the favorites tab withing the screen
+    // https://artsy.slack.com/archives/C05EQL4R5N0/p1744919145046069
+    tab !== "favorites"
+  ) {
     postEventToProviders(tabsTracks.tabScreenView(tab))
   }
 
