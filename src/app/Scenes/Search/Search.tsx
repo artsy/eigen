@@ -10,6 +10,7 @@ import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearch
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { Schema } from "app/utils/track"
 import { memo, Suspense, useEffect, useRef, useState } from "react"
@@ -146,6 +147,15 @@ export const SearchScreenQuery = graphql`
 type SearchScreenProps = StackScreenProps<any>
 
 const SearchScreenInner: React.FC<SearchScreenProps> = () => {
+  const { trackExperiment } = useExperimentVariant("diamond_discover-tab")
+
+  // Track the experiment when the screen is viewed
+  useEffect(() => {
+    trackExperiment({
+      context_owner_type: OwnerType.search,
+    })
+  }, [])
+
   return (
     <>
       <Screen>
