@@ -27,10 +27,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.29.0.tgz#c4c010ee3bb1c19e417d0b529eafb3be804118ea"
   integrity sha512-5d0/hYbEW9+nCrQZWDdPB5Lvm46EhCGolMnp/6gSvr+sZIDDePG/jfIeNecq2dtgYOHnTr97XThDqHjSZEyjjw==
 
-"@artsy/palette-mobile@17.0.0":
-  version "17.0.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.0.0.tgz#c6adc6f4ccb288e82d60a0abdd3d3e19a1b08617"
-  integrity sha512-MeRgrjeLLSEdWkCQoLoY5JowusDg0gxd4ViAPqPcVkRNLnsWNKBggELhmkC7WXgd5KDGFXpWtxOyJ51zo7afRA==
+"@artsy/palette-mobile@17.1.0":
+  version "17.1.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.1.0.tgz#c898f267f8cc1025f485c3b1efb4c7b4429f16b1"
+  integrity sha512-PDuNeu8GxONngh3+mCHHsoXVjwpXvtALH6oi1qq42TPQdWDKHfHkh1hPqe3MR7gdlMe6FJa8CATXHrLtnhND/A==
   dependencies:
     "@artsy/palette-tokens" "^7.0.0"
     "@shopify/flash-list" "1.7.6"
