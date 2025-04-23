@@ -148,6 +148,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const src = selectedImage?.url
     const width = selectedImage?.width ?? 0
     const height = selectedImage?.height ?? 0
+    const blurhash = selectedImage?.blurhash ?? undefined
 
     const size = sizeToFit({ width, height }, { width: screenWidth, height: MAX_ARTWORK_HEIGHT })
 
@@ -156,16 +157,13 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       const state = gestureState.current
       const { nativeEvent } = event
       const { locationX } = nativeEvent
+      // TODO: make this 20%
       const screenThird = screenWidth / 3
 
       // Determine which third of the screen was tapped
       const leftThird = locationX < screenThird
       const rightThird = locationX > screenThird * 2
       const middleThird = !leftThird && !rightThird
-
-      // Check if the Swiper is actively swiping
-      // Note: We'll use a special technique that lets the gesture go through
-      // if it's a vertical swipe intended for the Swiper component
 
       // Handle image navigation in left/right thirds with single tap
       if (images.length > 1) {
@@ -184,8 +182,10 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         }
       }
 
-      // Handle double-tap to save only in the middle third
-      if (middleThird) {
+      // Handle double-tap to save:
+      // For single images, allow double-tap anywhere on the image
+      // For multiple images, only allow double-tap in the middle third
+      if (images.length === 1 || middleThird) {
         if (now - state.lastTapTimestamp < SAVES_MAX_DURATION_BETWEEN_TAPS) {
           state.numTaps += 1
         } else {
@@ -237,7 +237,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           >
             <HeartFillIcon height={64} width={64} fill="mono0" />
           </Animated.View>
-
           <Flex
             // Only handle initial touches
             onStartShouldSetResponder={(event) => {
@@ -261,11 +260,11 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               zIndex: 100,
             }}
           />
-
-          {!!src && <Image src={src} height={size.height} width={size.width} />}
+          {!!src && <Image src={src} height={size.height} width={size.width} blurhash={blurhash} />}
         </Flex>
 
         {/* Show pagination bars when there are multiple images */}
+        {/* TODO: this is pushing the content down */}
         {images.length > 1 && (
           <Flex
             pt={2}
@@ -280,7 +279,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         )}
         <Flex flexDirection="row" justifyContent="space-between" p={2} gap={1}>
           <Flex flex={1}>
-            {/* TODO: remove this when we are done with the infinite discovery */}
             {!!__DEV__ && (
               <Text color="blue" variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>
                 {artwork.internalID}
@@ -432,6 +430,7 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
       url(version: "large")
       width
       height
+      blurhash
     }
     isSaved
     saleMessage
