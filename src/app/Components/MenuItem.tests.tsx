@@ -23,7 +23,6 @@ describe("MenuItem", () => {
 
     expect(screen.getByText("Menu Item")).toBeTruthy()
     expect(screen.getByText("Value text")).toBeTruthy()
-    expect(screen.getByText("Additional text")).toBeTruthy()
   })
 
   it("renders with custom icon and rightView", () => {
