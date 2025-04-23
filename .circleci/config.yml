@@ -153,8 +153,8 @@ commands:
           command: ./scripts/setup/download-assets-android
       - run:
           name: Build App
+          no_output_timeout: 30m
           command: ./scripts/ci/ci-android
-          no_output_timeout: 20m
       - save_cache:
           key: << pipeline.parameters.app_build_android_cache_key >>
           paths:
@@ -228,27 +228,23 @@ jobs:
       - run:
           name: Determine Deployment Type
           command: |
-            DEPLOYMENT_TYPE=$(./scripts/codepush/determine-deployment-type.sh)
+            DEPLOYMENT_TYPE=$(./scripts/deploys/expo-updates/determine-deployment-type)
             echo "export DEPLOYMENT_TYPE=$DEPLOYMENT_TYPE" >> $BASH_ENV
       - run:
           name: Handle Deployment for beta
           command: |
             if [ "$DEPLOYMENT_TYPE" == "beta" ]; then
               echo "Native code changed, new beta needed!"
-              ./scripts/codepush/maybe_notify_beta_needed.sh
+              ./scripts/deploys/expo-updates/maybe-notify-beta-needed
               circleci-agent step halt
             fi
       - install-node-modules
-      - run:
-          name: Install CodePush CLI
-          command: yarn global add appcenter-cli
       - run-relay-compiler
-      # TODO: Replace this when we use Exergy for OTA updates
       # - run:
-      #     name: Handle Deployment for codepush
+      #     name: Handle Deployment for expo updates
       #     command: |
-      #       echo "Triggering CodePush deployment..."
-      #       ./scripts/codepush/deploy-to-codepush.sh Staging
+      #       echo "Triggering Expo updates deployment..."
+      #       ./scripts/deploys/expo-updates/deploy-to-expo-updates staging
 
   test-js:
     parallelism: 8

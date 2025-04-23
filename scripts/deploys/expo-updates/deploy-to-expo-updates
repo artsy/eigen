@@ -1,0 +1,31 @@
+#!/bin/bash
+set -euxo pipefail
+
+if [ "$#" -lt 1 ] || [ "$#" -gt 3 ]; then
+  echo "Usage: $0 <deployment> [description] [rollout_percentage]"
+  echo "Deployment must be either 'canary', 'staging' or 'production'."
+  exit 1
+fi
+
+deployment=$1
+
+if [ "$deployment" != "canary" ] && [ "$deployment" != "staging" ] && [ "$deployment" != "production" ]; then
+  echo "Invalid deployment option: $deployment"
+  echo "Deployment must be either 'canary', 'staging' or 'production'."
+  exit 1
+fi
+
+# Get the description from the command-line argument if provided, otherwise use the last commit hash and description
+description=""
+if [ -n "${2:-}" ]; then
+  description="$2"
+else
+  commit_hash=$(git rev-parse --short HEAD)
+  commit_description=$(git log -1 --pretty=%s)
+  description="Commit: $commit_hash, Description: $commit_description"
+fi
+
+# TODO: Do we need to handle multiple platforms?
+bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description"
+
+echo "Release to $deployment deployment successful."
