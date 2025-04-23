@@ -153,7 +153,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     // When there are multiple images, adjust the max height to allow space for pagination bar
     const adjustedMaxHeight = hasMultipleImages
-      ? MAX_ARTWORK_HEIGHT - PAGINATION_BAR_HEIGHT
+      ? MAX_ARTWORK_HEIGHT - PAGINATION_BAR_HEIGHT - PAGINATION_BAR_MARGIN_TOP
       : MAX_ARTWORK_HEIGHT
 
     const size = sizeToFit({ width, height }, { width: screenWidth, height: adjustedMaxHeight })
@@ -270,6 +270,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
         {!!hasMultipleImages && (
           <Flex
+            mt={1} // keep consistent with PAGINATION_BAR_MARGIN_TOP to resize image
             height={PAGINATION_BAR_HEIGHT}
             alignItems="center"
             justifyContent="center"
@@ -280,12 +281,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         )}
         <Flex flexDirection="row" justifyContent="space-between" p={2} gap={1}>
           <Flex flex={1}>
-            {!!__DEV__ && (
-              <Text color="blue" variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>
-                {artwork.internalID}
-              </Text>
-            )}
-
             <Flex flexDirection="row">
               <RNText numberOfLines={1}>
                 <Text color="mono60" variant="sm-display">
@@ -444,7 +439,8 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
 const HEART_ICON_SIZE = 18
 const HEART_CIRCLE_SIZE = 50
 const SAVE_BUTTON_WIDTH = 105
-const PAGINATION_BAR_HEIGHT = 12
+const PAGINATION_BAR_HEIGHT = 11
+const PAGINATION_BAR_MARGIN_TOP = 10
 
 const tracks = {
   artworkImageSwipe: () => ({
