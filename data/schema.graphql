@@ -22786,9 +22786,6 @@ input UpdateProfileMutationInput {
   # Location.
   location: String
 
-  # Menu color class.
-  menuColorClass: String
-
   # Website.
   website: String
 }
