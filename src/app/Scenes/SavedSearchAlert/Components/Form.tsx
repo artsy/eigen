@@ -139,9 +139,11 @@ export const Form: React.FC<FormProps> = ({
                 </Pill>
               ))}
             </Flex>
-          </Box>
 
-          <SavedSearchSuggestedFiltersQueryRenderer />
+            <Spacer y={2} />
+
+            <SavedSearchSuggestedFiltersQueryRenderer />
+          </Box>
 
           <Flex>
             <Text>Tell us more about what you’re looking for</Text>

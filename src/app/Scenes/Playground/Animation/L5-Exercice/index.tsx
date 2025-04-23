@@ -10,8 +10,6 @@ import Animated, {
 } from "react-native-reanimated"
 
 export const Exercice: React.FC<{}> = () => {
-  const color = useColor()
-
   return (
     <ScrollView>
       <Flex px={2}>
@@ -49,8 +47,6 @@ export const Exercice: React.FC<{}> = () => {
             title="Yayoi Kusama"
             description="Ephemera or Merchandise or Print, Limited Edition"
             onPress={() => {}}
-            noFeedback
-            style={{ backgroundColor: color("mono0") }}
           />
         </Flex>
       </Flex>
@@ -143,6 +139,7 @@ const Solution2 = () => {
             {
               width: "100%",
               alignSelf: "center",
+              backgroundColor: color("white100"),
             },
             animatedStyles,
           ]}
@@ -151,8 +148,6 @@ const Solution2 = () => {
             title="Yayoi Kusama"
             description="Ephemera or Merchandise or Print, Limited Edition"
             onPress={() => {}}
-            noFeedback
-            style={{ backgroundColor: color("mono0") }}
           />
         </Animated.View>
       </View>

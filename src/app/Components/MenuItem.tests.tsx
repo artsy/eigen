@@ -18,19 +18,11 @@ describe("MenuItem", () => {
     expect(screen.getByText("Test description")).toBeTruthy()
   })
 
-  it("renders with value and text", () => {
-    renderWithWrappers(<MenuItem title="Menu Item" value="Value text" text="Additional text" />)
+  it("renders with value", () => {
+    renderWithWrappers(<MenuItem title="Menu Item" value="Value text" />)
 
     expect(screen.getByText("Menu Item")).toBeTruthy()
     expect(screen.getByText("Value text")).toBeTruthy()
-    expect(screen.getByText("Additional text")).toBeTruthy()
-  })
-
-  it("shows Beta label when isBeta is true", () => {
-    renderWithWrappers(<MenuItem title="Beta Feature" isBeta />)
-
-    expect(screen.getByText("Beta Feature")).toBeTruthy()
-    expect(screen.getByText("Beta")).toBeTruthy()
   })
 
   it("renders with custom icon and rightView", () => {

@@ -1,4 +1,5 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
+import { BagIcon, CreditCardIcon, FilterIcon, LockIcon, MobileIcon } from "@artsy/icons/native"
 import {
   Button,
   Flex,
@@ -55,22 +56,27 @@ export const MyProfileSettings: React.FC = () => {
             <Text variant="xs" color="mono60" px={2} mt={2}>
               Transactions
             </Text>
-            <Spacer y={1} />
-            <MenuItem title="Your Orders" href="/orders" />
+
+            <MenuItem title="Your Orders" href="/orders" icon={<BagIcon />} />
           </>
 
           <>
             <Text variant="xs" color="mono60" px={2}>
               Account
             </Text>
-            <Spacer y={1} />
-            <MenuItem title="Login and security" href="my-account" />
-            <MenuItem title="Payments" href="my-profile/payment" />
-            <MenuItem title="Notifications" href="my-profile/push-notifications" />
+
+            <MenuItem title="Login and security" href="my-account" icon={<LockIcon />} />
+            <MenuItem title="Payments" href="my-profile/payment" icon={<CreditCardIcon />} />
+            <MenuItem
+              title="Notifications"
+              href="my-profile/push-notifications"
+              icon={<MobileIcon />}
+            />
             <MenuItem
               title="Preferences"
               // Jira ticket: ONYX-1642
               href="my-profile/preferences"
+              icon={<FilterIcon />}
             />
           </>
 
@@ -78,7 +84,6 @@ export const MyProfileSettings: React.FC = () => {
             <Text variant="xs" color="mono60" px={2}>
               Support
             </Text>
-            <Spacer y={1} />
 
             <MenuItem
               title="Help Center"
@@ -86,7 +91,6 @@ export const MyProfileSettings: React.FC = () => {
                 navigate("help.artsy.net")
               }}
             />
-
             <MenuItem
               title="Send Feedback"
               onPress={() =>
@@ -99,7 +103,7 @@ export const MyProfileSettings: React.FC = () => {
             <Text variant="xs" color="mono60" px={2}>
               Legal
             </Text>
-            <Spacer y={1} />
+
             <MenuItem
               title="Terms and Conditions"
               onPress={() => {
@@ -108,7 +112,6 @@ export const MyProfileSettings: React.FC = () => {
                 navigate("my-profile/terms-and-conditions")
               }}
             />
-
             <MenuItem
               title="Privacy"
               onPress={() => {
@@ -190,29 +193,27 @@ export const MyProfileSettings: React.FC = () => {
         Settings
       </Text>
       <Spacer y={2} />
-      <Join separator={<Separator my={1} borderColor={separatorColor} />}>
-        {ACCOUNT_MENU_ITEMS.map((item, index) => {
-          return (
-            <MenuItem
-              key={index}
-              title={item.title}
-              href={item.href}
-              onPress={() => {
-                item.onPress?.()
-                if (item.ownerType) {
-                  tracking.trackEvent(
-                    tracks.trackMenuTap({
-                      subject: item.title,
-                      ownerType: item.ownerType,
-                      position: index,
-                    })
-                  )
-                }
-              }}
-            />
-          )
-        })}
-      </Join>
+      {ACCOUNT_MENU_ITEMS.map((item, index) => {
+        return (
+          <MenuItem
+            key={index}
+            title={item.title}
+            href={item.href}
+            onPress={() => {
+              item.onPress?.()
+              if (item.ownerType) {
+                tracking.trackEvent(
+                  tracks.trackMenuTap({
+                    subject: item.title,
+                    ownerType: item.ownerType,
+                    position: index,
+                  })
+                )
+              }
+            }}
+          />
+        )
+      })}
 
       <Spacer y={4} />
 
