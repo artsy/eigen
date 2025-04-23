@@ -454,7 +454,7 @@ lane :deploy_to_expo_updates do |options|
   expo_api_server = ENV['EXPO_UPLOAD_API_SERVER']
 
   # TODO: Can we add a description to this?
-  expo_command = "./scripts/deploys/expo-updates/expo-publish-selfhosted.sh #{deployment_name} . #{expo_auth_key} #{expo_api_server}"
+  expo_command = "./scripts/deploys/expo-updates/expo-publish-selfhosted #{deployment_name} . #{expo_auth_key} #{expo_api_server}"
 
   # Execute the command and parse the returned folder
   output = sh("pushd .. > /dev/null && \

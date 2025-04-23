@@ -102,7 +102,7 @@ lane :upload_expo_sourcemaps do |options|
   platform = options[:platform]
 
   sourcemap_dir = "#{build_folder}/_expo/static/js"
-  file_base = Dir.glob("#{dist_dir}/#{platform}/index-common-*.hbc").first
+  file_base = Dir.glob("#{sourcemap_dir}/#{platform}/index-common-*.hbc").first
 
   unless file_base
     raise "JS bundle not found for platform: #{platform}"
@@ -115,8 +115,8 @@ lane :upload_expo_sourcemaps do |options|
     sentry_cli_path: sentry_cli_path,
     org_slug: org_slug,
     project_slug: project_slug,
-    sentry_release_name: release_name,
-    dist: dist_version,
+    sentry_release_name: sentry_release_name,
+    dist: dist,
     bundle_path: bundle_path,
     sourcemap_path: sourcemap_path,
     silence_failures: true # we ship expo releases every commit to main, failures are noisy
