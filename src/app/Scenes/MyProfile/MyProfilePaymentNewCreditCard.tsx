@@ -1,4 +1,4 @@
-import { Button, Flex, Input, Join, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { Button, Flex, Input, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { useStripe } from "@stripe/stripe-react-native"
 import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
@@ -11,7 +11,7 @@ import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Action, Computed, action, computed, useLocalStore } from "easy-peasy"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Alert, KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 import { commitMutation, graphql } from "react-relay"
 import { __triggerRefresh } from "./MyProfilePayment"
@@ -67,6 +67,7 @@ interface Store {
 
 export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
   const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
+  const [isLoading, setIsLoading] = useState(false)
 
   const { createToken } = useStripe()
 
@@ -138,6 +139,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
 
   const handleSave = async () => {
     try {
+      setIsLoading(true)
       const tokenBody = buildTokenParams()
       const stripeResult = await createToken(tokenBody)
       const tokenId = stripeResult.token?.id
@@ -158,8 +160,11 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
           )}`
         )
       }
+
+      setIsLoading(false)
       goBack()
     } catch (e) {
+      setIsLoading(false)
       console.error(e)
       Alert.alert(
         "Something went wrong while attempting to save your credit card. Please try again or contact us."
@@ -168,7 +173,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
   }
 
   const creaditCardForm = (
-    <Join separator={<Spacer y={2} />}>
+    <>
       <CreditCardField
         onCardChange={(cardDetails) => {
           actions.fields.creditCard.setValue({
@@ -229,7 +234,6 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
         returnKeyType="next"
         onSubmitEditing={() => stateRef.current?.focus()}
       />
-
       <Input
         ref={stateRef}
         title="State, province, or region"
@@ -245,12 +249,14 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
         returnKeyType="next"
       />
 
+      <Spacer y={2} />
+
       <CountrySelect
         ref={countryRef}
         onSelectValue={actions.fields.country.setValue}
         value={state.fields.country.value}
       />
-    </Join>
+    </>
   )
 
   if (enableRedesignedSettings) {
@@ -264,7 +270,13 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
           <ScrollView ref={scrollViewRef}>
             <Flex py={2}>
               {creaditCardForm}
-              <Button mt={2} disabled={!state.allPresent} block onPress={() => handleSave()}>
+              <Button
+                mt={2}
+                disabled={!state.allPresent}
+                loading={isLoading}
+                onPress={() => handleSave()}
+                block
+              >
                 Save
               </Button>
             </Flex>
