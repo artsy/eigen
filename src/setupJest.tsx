@@ -120,6 +120,23 @@ jest.mock("sift-react-native", () => ({
 // Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
 jest.mock("react-tracking/build/dispatchTrackingEvent")
 
+jest.mock("expo-updates", () => {
+  return {
+    fetchUpdateAsync: jest.fn(),
+    checkForUpdateAsync: jest.fn(),
+    reloadAsync: jest.fn(),
+    channel: "channel",
+    runtimeVersion: "runtimeVersion",
+    updateId: "updateId",
+    manifest: {
+      sdkVersion: "sdkVersion",
+      version: "version",
+      id: "id",
+      releaseChannel: "releaseChannel",
+    },
+  }
+})
+
 jest.mock("@react-navigation/native", () => {
   const { useEffect } = require("react")
   const actualNav = jest.requireActual("@react-navigation/native")

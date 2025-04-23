@@ -246,6 +246,7 @@ lane :ship_beta_android do |options|
   # workaround for duplicate resources errors from codepush
   # https://github.com/microsoft/react-native-code-push/issues/2497
   # should be able to get rid of once resolved there
+  # TODO: We should try to remove this now that codepush is gone!!
   gradle(
     task: 'clean',
     project_dir: 'android/',
@@ -437,102 +438,59 @@ lane :update_rollout_if_necessary do
   end
 end
 
-# Codepush
+# Expo updates
 
-lane :deploy_to_codepush do |options|
-  platform = options[:platform]
+lane :deploy_to_expo_updates do |options|
   deployment_name = options[:deployment_name]
   description = options[:description]
 
   # important! this must match the release version specified
   # in Eigen in order for sourcemaps to work correctly
-  release_name, dist_version, release_version = set_codepush_release_values(deployment_name, platform)
+  # TODO: Not sure if this is still needed or a variant needed
+  # Will need to modify eigen code in any case
+  release_name_base, dist_version, release_version = set_expo_release_values(deployment_name)
 
-  app_name = platform == 'ios' ? 'Eigen' : 'Eigen-Android'
-  sourcemap_output = platform == 'ios' ? './build/CodePush/main.jsbundle.map' : './build/CodePush/index.android.bundle.map'
-  bundle_path = platform == 'ios' ? './build/CodePush/main.jsbundle' : './build/CodePush/index.android.bundle'
+  expo_auth_key = ENV['EXPO_UPLOAD_AUTH_KEY']
+  expo_api_server = ENV['EXPO_UPLOAD_API_SERVER']
 
-  appcenter_codepush_release_react(
-    api_token: ENV['APP_CENTER_API_TOKEN'],
-    owner_name: 'mobile-artsy',
-    app_name: app_name,
-    description: "#{description} version:#{release_name}",
-    deployment: deployment_name,
-    sourcemap_output: sourcemap_output,
-    output_dir: './build',
-    mandatory: false,
-    no_duplicate_release_error: true,
-    target_version: release_version
-  )
+  # TODO: Can we add a description to this?
+  expo_command = "./scripts/deploys/expo-updates/expo-publish-selfhosted #{deployment_name} . #{expo_auth_key} #{expo_api_server}"
 
-  # Sentry config
+  # Execute the command and parse the returned folder
+  output = sh("pushd .. > /dev/null && \
+      #{expo_command} | tail -n1 && \
+      popd > /dev/null")
+  folder_line = output.lines.find { |line| line.start_with?("BUILDFOLDER_PATH=") }
+  folder = folder_line.split("=").last.strip
+
   sh("yarn add @sentry/cli -D")
   sentry_cli_path = 'node_modules/@sentry/cli/bin/sentry-cli'
-  project_slug = 'eigen'
-  org_slug = 'artsynet'
 
-  upload_sentry_sourcemaps(
-    sentry_cli_path: sentry_cli_path,
-    org_slug: org_slug,
-    project_slug: project_slug,
-    sentry_release_name: release_name,
-    dist: dist_version,
-    bundle_path: bundle_path,
-    sourcemap_path: sourcemap_output,
-    silence_failures: true # we ship codepush releases every commit to main, failures are noisy
-  )
-
-  tag_and_push(tag: release_name)
-
-  puts "Deploying to #{deployment_name} with description #{description} for platform #{platform}"
-end
-
-lane :promote_codepush do |options|
-  token = ENV['APP_CENTER_API_TOKEN']
-
-  rolloutPercentage = options[:rollout_percentage]
-  androidAppName = 'mobile-artsy/Eigen-Android'
-  iosAppName = 'mobile-artsy/Eigen'
-
-  sh("appcenter login --token #{token}")
-
-  sourceDeployment = 'Canary'
-  targetDeployment = 'Production'
-
-  submission_tag = sh("../scripts/codepush/get-submission-tag.sh")
-
-  if submission_tag && !submission_tag.empty?
-    tag_and_push(tag: submission_tag)
-  else
-    UI.warn("Submission tag could not be added! Please add one yourself so we can find the release code!")
+  ['ios', 'android'].each do |platform|
+    upload_expo_sourcemaps(
+      sentry_cli_path: sentry_cli_path,
+      org_slug: 'artsynet',
+      project_slug: 'eigen',
+      platform: platform,
+      sentry_release_name: "#{platform}-#{release_name_base}",
+      dist: dist_version,
+      build_folder: folder,
+      silence_failures: true # we ship expo releases every commit to main, failures are noisy
+    )
+    tag_and_push(tag: "#{platform}-#{release_name_base}")
   end
 
-  # Promote to prod with rollout percentage, make it mandatory
-  sh("appcenter codepush promote -a #{androidAppName} -s #{sourceDeployment} -d #{targetDeployment} -r #{rolloutPercentage} --mandatory")
-  sh("appcenter codepush promote -a #{iosAppName} -s #{sourceDeployment} -d #{targetDeployment} -r #{rolloutPercentage} --mandatory")
+  puts "🚀 Deploying to #{deployment_name} with description '#{description}'"
 end
 
-lane :update_codepush_rollout do |options|
-  token = ENV['APP_CENTER_API_TOKEN']
-  sh("appcenter login --token #{token}")
-
-  androidAppName = 'mobile-artsy/Eigen-Android'
-  iosAppName = 'mobile-artsy/Eigen'
-  targetDeployment = 'Production'
-
-  rolloutPercentage = options[:rollout_percentage]
-  sh("appcenter codepush patch -a #{androidAppName} #{targetDeployment} -r #{rolloutPercentage}")
-  sh("appcenter codepush patch -a #{iosAppName} #{targetDeployment} -r #{rolloutPercentage}")
-end
-
-def set_codepush_release_values(deployment_name, platform)
+def set_expo_release_values(deployment_name)
   date_str = DateTime.now.strftime('%Y.%m.%d.%H')
   latest_version = $APP_JSON['version']
-  release_name = "codepush-#{deployment_name.downcase}-#{platform.downcase}-#{latest_version}-#{date_str}"
-  $APP_JSON['codePushReleaseName'] = release_name
-  $APP_JSON['codePushDist'] = date_str
+  release_name_base = "expo-#{deployment_name.downcase}-#{latest_version}-#{date_str}"
+  $APP_JSON['expoReleaseNameBase'] = release_name_base
+  $APP_JSON['expoPushDist'] = date_str
   write_contents_to_file($APP_JSON_PATH, JSON.pretty_generate($APP_JSON))
-  [release_name, date_str, latest_version]
+  [release_name_base, date_str, latest_version]
 end
 
 error do |lane, exception|
