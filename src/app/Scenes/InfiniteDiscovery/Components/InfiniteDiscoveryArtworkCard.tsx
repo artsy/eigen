@@ -172,11 +172,13 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         if (leftThird && currentImageIndex > 0) {
           // For left third, navigate to previous image on single tap
           Haptic.trigger("impactLight")
+          trackEvent(tracks.artworkImageSwipe())
           setCurrentImageIndex(currentImageIndex - 1)
           return true
         } else if (rightThird && currentImageIndex < images.length - 1) {
           // For right third, navigate to next image on single tap
           Haptic.trigger("impactLight")
+          trackEvent(tracks.artworkImageSwipe())
           setCurrentImageIndex(currentImageIndex + 1)
           return true
         }
@@ -443,3 +445,11 @@ const HEART_ICON_SIZE = 18
 const HEART_CIRCLE_SIZE = 50
 const SAVE_BUTTON_WIDTH = 105
 const PAGINATION_BAR_HEIGHT = 12
+
+const tracks = {
+  artworkImageSwipe: () => ({
+    action_name: Schema.ActionNames.ArtworkImageSwipe,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: ContextModule.infiniteDiscoveryArtworkCard,
+  }),
+}
