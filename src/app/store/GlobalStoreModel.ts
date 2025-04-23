@@ -31,6 +31,7 @@ import { assignDeep, sanitize } from "./persistence"
 type SessionState = {
   isHydrated: boolean
   isNavigationReady: boolean
+  isSplashScreenVisible: boolean
 }
 interface GlobalStoreStateModel {
   version: number
@@ -118,6 +119,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
     // we don't perform hydration at test time so let's set it to always true for tests
     isHydrated: __TEST__,
     isNavigationReady: false,
+    isSplashScreenVisible: true,
   },
 
   // NATIVE MIGRATION STATE
