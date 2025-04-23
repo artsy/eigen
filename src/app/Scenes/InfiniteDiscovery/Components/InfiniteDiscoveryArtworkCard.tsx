@@ -157,24 +157,23 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       const state = gestureState.current
       const { nativeEvent } = event
       const { locationX } = nativeEvent
-      // TODO: make this 20%
-      const screenThird = screenWidth / 3
+      const screenFifth = screenWidth / 5
 
-      // Determine which third of the screen was tapped
-      const leftThird = locationX < screenThird
-      const rightThird = locationX > screenThird * 2
-      const middleThird = !leftThird && !rightThird
+      // Determine which part of the screen was tapped
+      const leftFifth = locationX < screenFifth
+      const rightFifth = locationX > screenWidth - screenFifth
+      const middleSection = !leftFifth && !rightFifth
 
-      // Handle image navigation in left/right thirds with single tap
+      // Handle image navigation in left/right fifths with single tap
       if (images.length > 1) {
-        if (leftThird && currentImageIndex > 0) {
-          // For left third, navigate to previous image on single tap
+        if (leftFifth && currentImageIndex > 0) {
+          // For left fifth, navigate to previous image on single tap
           Haptic.trigger("impactLight")
           trackEvent(tracks.artworkImageSwipe())
           setCurrentImageIndex(currentImageIndex - 1)
           return true
-        } else if (rightThird && currentImageIndex < images.length - 1) {
-          // For right third, navigate to next image on single tap
+        } else if (rightFifth && currentImageIndex < images.length - 1) {
+          // For right fifth, navigate to next image on single tap
           Haptic.trigger("impactLight")
           trackEvent(tracks.artworkImageSwipe())
           setCurrentImageIndex(currentImageIndex + 1)
@@ -184,8 +183,8 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
       // Handle double-tap to save:
       // For single images, allow double-tap anywhere on the image
-      // For multiple images, only allow double-tap in the middle third
-      if (images.length === 1 || middleThird) {
+      // For multiple images, only allow double-tap in the middle 60%
+      if (images.length === 1 || middleSection) {
         if (now - state.lastTapTimestamp < SAVES_MAX_DURATION_BETWEEN_TAPS) {
           state.numTaps += 1
         } else {
