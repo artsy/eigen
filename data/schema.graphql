@@ -343,6 +343,7 @@ type Alert {
     attributionClass: [String]
     availability: String
     before: String
+    categories: [String]
     color: String
     colors: [String]
     dimensionRange: String
@@ -1721,6 +1722,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     attributionClass: [String]
     availability: String
     before: String
+    categories: [String]
     color: String
     colors: [String]
     dimensionRange: String
@@ -2158,6 +2160,7 @@ type ArtistPartnerEdge {
     attributionClass: [String]
     availability: String
     before: String
+    categories: [String]
     color: String
     colors: [String]
     dimensionRange: String
@@ -2306,6 +2309,7 @@ type ArtistSeries implements Node {
     attributionClass: [String]
     availability: String
     before: String
+    categories: [String]
     color: String
     colors: [String]
     dimensionRange: String
@@ -10562,6 +10566,7 @@ interface EntityWithFilterArtworksConnectionInterface {
     attributionClass: [String]
     availability: String
     before: String
+    categories: [String]
     color: String
     colors: [String]
     dimensionRange: String
@@ -10827,6 +10832,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     attributionClass: [String]
     availability: String
     before: String
+    categories: [String]
     color: String
     colors: [String]
     dimensionRange: String
@@ -11354,6 +11360,7 @@ input FilterArtworksInput {
   attributionClass: [String]
   availability: String
   before: String
+  categories: [String]
   color: String
   colors: [String]
   dimensionRange: String
@@ -11864,6 +11871,7 @@ type Gene implements Node & Searchable {
     attributionClass: [String]
     availability: String
     before: String
+    categories: [String]
     color: String
     colors: [String]
     dimensionRange: String
@@ -13766,6 +13774,7 @@ type MarketingCollection implements Node {
     attributionClass: [String]
     availability: String
     before: String
+    categories: [String]
     color: String
     colors: [String]
     dimensionRange: String
@@ -16506,6 +16515,7 @@ type Partner implements Node {
     attributionClass: [String]
     availability: String
     before: String
+    categories: [String]
     color: String
     colors: [String]
     dimensionRange: String
@@ -16828,6 +16838,7 @@ type PartnerArtist {
     attributionClass: [String]
     availability: String
     before: String
+    categories: [String]
     color: String
     colors: [String]
     dimensionRange: String
@@ -17017,6 +17028,7 @@ type PartnerArtistEdge {
     attributionClass: [String]
     availability: String
     before: String
+    categories: [String]
     color: String
     colors: [String]
     dimensionRange: String
@@ -18213,6 +18225,7 @@ type Query {
     attributionClass: [String]
     availability: String
     before: String
+    categories: [String]
     color: String
     colors: [String]
     dimensionRange: String
@@ -20778,6 +20791,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     attributionClass: [String]
     availability: String
     before: String
+    categories: [String]
     color: String
     colors: [String]
     dimensionRange: String
@@ -21311,6 +21325,7 @@ type Tag implements Node {
     attributionClass: [String]
     availability: String
     before: String
+    categories: [String]
     color: String
     colors: [String]
     dimensionRange: String
@@ -23795,6 +23810,7 @@ type Viewer {
     attributionClass: [String]
     availability: String
     before: String
+    categories: [String]
     color: String
     colors: [String]
     dimensionRange: String
