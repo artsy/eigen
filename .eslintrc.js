@@ -11,8 +11,8 @@ module.exports = {
     "react-hooks",
     "testing-library",
     "unused-imports",
-    "no-autofix",
     "artsy",
+    "local-rules",
   ],
   extends: [
     "eslint:recommended",
@@ -38,11 +38,13 @@ module.exports = {
     react: {
       version: "detect",
     },
+    "local-rules": "./eslint-rules",
   },
   rules: {
     /**
      * Errors
      */
+    "local-rules/no-palette-icon-imports": ERR,
     "artsy/no-uselazyloadquery-inside-suspense": ERR,
     "import/order": [
       ERR,
@@ -57,7 +59,6 @@ module.exports = {
     "react/jsx-no-leaked-render": [ERR, { validStrategies: ["coerce", "ternary"] }],
     "react-hooks/rules-of-hooks": ERR,
     "unused-imports/no-unused-imports": OFF, // look below
-    "no-autofix/unused-imports/no-unused-imports": ERR,
 
     /**
      * Rules for tests see https://github.com/testing-library/eslint-plugin-testing-library#supported-rules for details
