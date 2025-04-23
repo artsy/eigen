@@ -212,12 +212,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAvailabilityFilter",
   },
-  AREnableInfiniteDiscovery: {
-    description: "Enable infinite discovery",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableInfiniteDiscovery",
-  },
   AREnableViewPortPrefetching: {
     description: "Enable viewport prefetching",
     readyForRelease: true,
