@@ -151,11 +151,11 @@ export const ArtworkLists: React.FC<ArtworkListsProps> = withSuspense({
       <Spinner />
     </Flex>
   ),
-  ErrorFallback: (fallbackProps) => {
+  ErrorFallback: (fallbackProps, props) => {
     return (
       <LoadFailureView
         onRetry={fallbackProps.resetErrorBoundary}
-        showBackButton={true}
+        showBackButton={!props.isFavorites}
         useSafeArea={false}
         error={fallbackProps.error}
         trackErrorBoundary={false}
