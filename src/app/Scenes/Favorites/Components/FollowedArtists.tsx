@@ -7,6 +7,7 @@ import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "app/Components/constants"
+import { FollowOptionPicker } from "app/Scenes/Favorites/FollowsTab"
 import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -52,6 +53,7 @@ export const FollowedArtists: React.FC<Props> = ({ me }) => {
       keyExtractor={(item, index) => item.artist?.id || index.toString()}
       onEndReachedThreshold={0.2}
       refreshControl={RefreshControl}
+      ListHeaderComponent={FollowOptionPicker}
       ItemSeparatorComponent={() => <Spacer y={2} />}
       ListFooterComponent={
         isLoadingNext && hasNext ? (

@@ -7,6 +7,7 @@ import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "app/Components/constants"
+import { FollowOptionPicker } from "app/Scenes/Favorites/FollowsTab"
 import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -48,6 +49,7 @@ export const FollowedGalleries: React.FC<Props> = ({ me }) => {
       onEndReached={() => {
         loadNext(PAGE_SIZE)
       }}
+      ListHeaderComponent={FollowOptionPicker}
       keyExtractor={(item, index) => item.id || index.toString()}
       contentContainerStyle={{ paddingHorizontal: space(2) }}
       onEndReachedThreshold={0.2}

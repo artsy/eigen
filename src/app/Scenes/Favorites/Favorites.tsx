@@ -10,6 +10,7 @@ import {
   useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
+import { BOTTOM_TABS_HEIGHT } from "@artsy/palette-mobile/dist/elements/Screen/StickySubHeader"
 import {
   createMaterialTopTabNavigator,
   MaterialTopTabBarProps,
@@ -25,6 +26,7 @@ import { SavesTab } from "app/Scenes/Favorites/SavesTab"
 import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { useEffect } from "react"
+import { Platform } from "react-native"
 import Animated, { useAnimatedStyle } from "react-native-reanimated"
 
 const Pills: {
@@ -97,7 +99,7 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
                   trackTappedNavigationTab(key)
                 }}
                 Icon={() => (
-                  <Flex mr={0.5} justifyContent="center" bottom="1px">
+                  <Flex mr={0.5} justifyContent="center">
                     <Icon fill={isActive ? "mono0" : "mono100"} />
                   </Flex>
                 )}
@@ -138,6 +140,19 @@ const Content = () => {
           tabBar={FavoritesHeaderTapBar}
           screenOptions={{
             swipeEnabled: false,
+          }}
+          layout={({ children }) => {
+            return (
+              <Flex
+                flex={1}
+                style={{
+                  //   // Extra padding to make sure the last item is not covered
+                  paddingBottom: Platform.OS === "ios" ? headerHeight : BOTTOM_TABS_HEIGHT,
+                }}
+              >
+                {children}
+              </Flex>
+            )
           }}
         >
           <FavoriteTopNavigator.Screen name="saves" navigationKey="saves" component={SavesTab} />

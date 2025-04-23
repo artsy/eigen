@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import {
-  ArrowDownIcon,
+  ChevronIcon,
   Flex,
   Join,
   RadioButton,
@@ -13,16 +13,16 @@ import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/Automoun
 import { FollowedArtistsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedArtists"
 import { FollowedGalleriesQueryRenderer } from "app/Scenes/Favorites/Components/FollowedGalleries"
 import { FollowedShowsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedShows"
+import { FavoritesContextStore } from "app/Scenes/Favorites/FavoritesContextStore"
 import {
   useFavoritesScrenTracking,
   useFavoritesTracking,
 } from "app/Scenes/Favorites/useFavoritesTracking"
 import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
-import { useState } from "react"
 import Haptic from "react-native-haptic-feedback"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-type FollowOption = "artists" | "shows" | "galleries"
+export type FollowOption = "artists" | "shows" | "galleries"
 
 const FOLLOW_OPTIONS: {
   value: FollowOption
@@ -42,45 +42,63 @@ const FOLLOW_OPTIONS: {
   },
 ]
 
+export const FollowOptionPicker: React.FC<{}> = () => {
+  const { followOption } = FavoritesContextStore.useStoreState((state) => state)
+  const { setShowFollowsBottomSheet } = FavoritesContextStore.useStoreActions((actions) => actions)
+
+  return (
+    <Flex px={2} pb={2}>
+      <Touchable
+        haptic
+        onPress={() => {
+          Haptic.trigger("impactLight")
+          setShowFollowsBottomSheet(true)
+        }}
+      >
+        <Flex flexDirection="row" alignItems="center">
+          <Text variant="sm-display" mr={0.5}>
+            {FOLLOW_OPTIONS.find(({ value }) => value === followOption)?.label}
+          </Text>
+          <ChevronIcon
+            direction="down"
+            style={{
+              // We are manually adding a tiny padding here to make sure that the arrow is centered
+              // This is a workaround our icon
+              marginTop: 2,
+            }}
+          />
+        </Flex>
+      </Touchable>
+    </Flex>
+  )
+}
+
 export const FollowsTab = () => {
-  const [followOption, setfollowOption] = useState<FollowOption>("artists")
   const { bottom } = useSafeAreaInsets()
 
   useFavoritesScrenTracking(OwnerType.favoritesFollows)
 
-  const [showBottomSheet, setShowBottomSheet] = useState(false)
+  const { showFollowsBottomSheet, followOption } = FavoritesContextStore.useStoreState(
+    (state) => state
+  )
+  const { setShowFollowsBottomSheet, setFollowOption } = FavoritesContextStore.useStoreActions(
+    (actions) => actions
+  )
 
   const { trackSelectedFromDrawer } = useFavoritesTracking()
 
   return (
     <Flex flex={1}>
-      <Flex px={2} pb={2}>
-        <Touchable
-          haptic
-          onPress={() => {
-            Haptic.trigger("impactLight")
-            setShowBottomSheet(true)
-          }}
-        >
-          <Flex flexDirection="row" alignItems="center">
-            <Text variant="sm-display" mr={0.5}>
-              {FOLLOW_OPTIONS.find(({ value }) => value === followOption)?.label}
-            </Text>
-            <ArrowDownIcon />
-          </Flex>
-        </Touchable>
-      </Flex>
-
       {followOption === "artists" && <FollowedArtistsQueryRenderer />}
       {followOption === "shows" && <FollowedShowsQueryRenderer />}
       {followOption === "galleries" && <FollowedGalleriesQueryRenderer />}
 
       <AutomountedBottomSheetModal
-        visible={showBottomSheet}
+        visible={showFollowsBottomSheet}
         snapPoints={SNAP_POINTS}
         enableDynamicSizing
         onDismiss={() => {
-          setShowBottomSheet(false)
+          setShowFollowsBottomSheet(false)
         }}
         name="FollowsBottomSheet"
       >
@@ -99,10 +117,10 @@ export const FollowsTab = () => {
                   block
                   textVariant="sm-display"
                   onPress={() => {
-                    setfollowOption(value)
+                    setFollowOption(value)
                     // Dismiss after a short delay to make sure the user can verify their choice
                     setTimeout(() => {
-                      setShowBottomSheet(false)
+                      setShowFollowsBottomSheet(false)
                     }, 200)
                     trackSelectedFromDrawer(value)
                   }}

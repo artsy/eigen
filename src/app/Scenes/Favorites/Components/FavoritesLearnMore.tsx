@@ -129,13 +129,13 @@ export const FavoritesLearnMore = () => {
         name="LearnMoreBottomSheet"
       >
         <BottomSheetScrollView>
-          <Flex px={2} pb={1}>
+          <Flex px={2} p={2}>
             <Text variant="lg-display">Learn more</Text>
 
             <Spacer y={2} />
           </Flex>
 
-          <Join separator={<Spacer y={1} />}>
+          <Join separator={<Spacer y={2} />}>
             {SECTIONS.map(({ title, content }) => {
               return (
                 <CallapseWithTitle title={title} key={title}>
