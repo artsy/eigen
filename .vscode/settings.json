@@ -1,6 +1,6 @@
 {
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
-  "eslint.run": "onType", // or "onSave"
+  "eslint.run": "onSave",
   "biome.enabled": false,
   "cSpell.diagnosticLevel": "Hint",
   "editor.codeActionsOnSave": {
