@@ -139,6 +139,19 @@ const Content = () => {
           screenOptions={{
             swipeEnabled: false,
           }}
+          layout={({ children }) => {
+            return (
+              <Flex
+                flex={1}
+                style={{
+                  //   // Extra padding to make sure the last item is not covered
+                  paddingBottom: headerHeight,
+                }}
+              >
+                {children}
+              </Flex>
+            )
+          }}
         >
           <FavoriteTopNavigator.Screen name="saves" navigationKey="saves" component={SavesTab} />
           <FavoriteTopNavigator.Screen
