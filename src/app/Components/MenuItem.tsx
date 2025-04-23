@@ -39,7 +39,7 @@ export const MenuItem: React.FC<{
   value,
 }) => {
   return (
-    <RouterLink onPress={onPress} to={href} underlayColor="black5" disabled={disabled}>
+    <RouterLink onPress={onPress} to={href} underlayColor="mono5" disabled={disabled}>
       <Flex px={px ?? 2}>
         <Flex
           flexDirection="row"
@@ -54,11 +54,11 @@ export const MenuItem: React.FC<{
           )}
           <Flex flex={7}>
             <Flex>
-              <Text variant="sm-display" color="black100">
+              <Text variant="sm-display" color="mono100">
                 {title}
               </Text>
               {!!description && (
-                <Text variant="xs" color="black60">
+                <Text variant="xs" color="mono60">
                   {description}
                 </Text>
               )}
@@ -72,7 +72,7 @@ export const MenuItem: React.FC<{
               <Flex width={200}>
                 <Text
                   variant="sm-display"
-                  color={disabled && allowDisabledVisualClue ? "black30" : "black60"}
+                  color={disabled && allowDisabledVisualClue ? "mono30" : "mono60"}
                   numberOfLines={1}
                   ellipsizeMode={ellipsizeMode}
                   textAlign="right"
@@ -88,14 +88,14 @@ export const MenuItem: React.FC<{
               <Flex ml={1} justifyContent="center">
                 <ChevronIcon
                   direction="right"
-                  fill={disabled && allowDisabledVisualClue ? "black30" : "black60"}
+                  fill={disabled && allowDisabledVisualClue ? "mono30" : "mono60"}
                 />
               </Flex>
             )}
           </Flex>
         </Flex>
 
-        <Separator borderColor="black10" />
+        <Separator borderColor="mono10" />
       </Flex>
     </RouterLink>
   )

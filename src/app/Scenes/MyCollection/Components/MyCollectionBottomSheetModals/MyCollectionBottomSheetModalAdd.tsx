@@ -26,7 +26,7 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
               },
             })
           }}
-          icon={<UserMultiIcon height={24} width={24} fill="black100" />}
+          icon={<UserMultiIcon height={24} width={24} fill="mono100" />}
         />
 
         <MenuItem
