@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import {
-  ArrowDownIcon,
+  ChevronIcon,
   Flex,
   Join,
   RadioButton,
@@ -59,7 +59,14 @@ export const FollowOptionPicker: React.FC<{}> = () => {
           <Text variant="sm-display" mr={0.5}>
             {FOLLOW_OPTIONS.find(({ value }) => value === followOption)?.label}
           </Text>
-          <ArrowDownIcon />
+          <ChevronIcon
+            direction="down"
+            style={{
+              // We are manually adding a tiny padding here to make sure that the arrow is centered
+              // This is a workaround our icon
+              marginTop: 2,
+            }}
+          />
         </Flex>
       </Touchable>
     </Flex>
