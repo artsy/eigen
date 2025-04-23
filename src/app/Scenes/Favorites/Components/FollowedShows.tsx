@@ -7,6 +7,7 @@ import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "app/Components/constants"
+import { FollowOptionPicker } from "app/Scenes/Favorites/FollowsTab"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useRefreshControl } from "app/utils/refreshHelpers"
@@ -48,6 +49,7 @@ export const FollowedShows: React.FC<Props> = ({ me }) => {
       onEndReachedThreshold={0.2}
       refreshControl={RefreshControl}
       style={{ paddingHorizontal: 0 }}
+      ListHeaderComponent={FollowOptionPicker}
       ItemSeparatorComponent={() => <Spacer y={1} />}
       ListFooterComponent={
         isLoadingNext && hasNext ? (

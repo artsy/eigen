@@ -1,13 +1,18 @@
 import { screen } from "@testing-library/react-native"
 import { AlertsListTestsQuery } from "__generated__/AlertsListTestsQuery.graphql"
 import { AlertsListPaginationContainer } from "app/Scenes/Favorites/Components/AlertsList"
+import { FavoritesContextStore } from "app/Scenes/Favorites/FavoritesContextStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 describe("AlertsList", () => {
   const { renderWithRelay } = setupTestWrapper<AlertsListTestsQuery>({
     Component: ({ me }) => {
-      return <AlertsListPaginationContainer me={me} />
+      return (
+        <FavoritesContextStore.Provider>
+          <AlertsListPaginationContainer me={me} />
+        </FavoritesContextStore.Provider>
+      )
     },
     query: graphql`
       query AlertsListTestsQuery @relay_test_operation {
