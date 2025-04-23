@@ -1197,6 +1197,7 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       screenOptions: {
         headerTitle: "Add new card",
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
       },
     },
   },

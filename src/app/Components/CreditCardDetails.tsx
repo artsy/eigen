@@ -10,7 +10,7 @@ const CreditCardDetails = ({
   isDeleting,
 }: {
   card: CreditCardDetails_card$data
-  onPress: (onPress) => void
+  onPress: () => void
   isDeleting?: boolean
 }) => {
   const expirationDate = `Exp ${expirationMonth.toString().padStart(2, "0")}/${expirationYear
