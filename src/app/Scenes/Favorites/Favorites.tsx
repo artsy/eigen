@@ -97,7 +97,7 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
                   trackTappedNavigationTab(key)
                 }}
                 Icon={() => (
-                  <Flex mr={0.5} justifyContent="center" bottom="1px">
+                  <Flex mr={0.5} justifyContent="center">
                     <Icon fill={isActive ? "mono0" : "mono100"} />
                   </Flex>
                 )}
