@@ -107,7 +107,7 @@
   "dependencies": {
     "@artsy/cohesion": "4.257.0",
     "@artsy/icons": "3.29.0",
-    "@artsy/palette-mobile": "17.0.0",
+    "@artsy/palette-mobile": "17.1.0",
     "@artsy/to-title-case": "1.1.0",
     "@braze/react-native-sdk": "13.1.1",
     "@expo/react-native-action-sheet": "4.0.1",
@@ -299,7 +299,7 @@
     "lint-staged": "13.2.3",
     "ora": "5.4.0",
     "patch-package": "6.4.7",
-    "pod-install": "0.3.5",
+    "pod-install": "0.3.7",
     "postinstall-prepare": "1.0.1",
     "prettier": "3.1.1",
     "prompt-sync": "4.2.0",

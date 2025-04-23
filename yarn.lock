@@ -27,10 +27,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.29.0.tgz#c4c010ee3bb1c19e417d0b529eafb3be804118ea"
   integrity sha512-5d0/hYbEW9+nCrQZWDdPB5Lvm46EhCGolMnp/6gSvr+sZIDDePG/jfIeNecq2dtgYOHnTr97XThDqHjSZEyjjw==
 
-"@artsy/palette-mobile@17.0.0":
-  version "17.0.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.0.0.tgz#c6adc6f4ccb288e82d60a0abdd3d3e19a1b08617"
-  integrity sha512-MeRgrjeLLSEdWkCQoLoY5JowusDg0gxd4ViAPqPcVkRNLnsWNKBggELhmkC7WXgd5KDGFXpWtxOyJ51zo7afRA==
+"@artsy/palette-mobile@17.1.0":
+  version "17.1.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.1.0.tgz#c898f267f8cc1025f485c3b1efb4c7b4429f16b1"
+  integrity sha512-PDuNeu8GxONngh3+mCHHsoXVjwpXvtALH6oi1qq42TPQdWDKHfHkh1hPqe3MR7gdlMe6FJa8CATXHrLtnhND/A==
   dependencies:
     "@artsy/palette-tokens" "^7.0.0"
     "@shopify/flash-list" "1.7.6"
@@ -13774,10 +13774,10 @@ pngjs@^3.3.0:
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-3.4.0.tgz#99ca7d725965fb655814eaf65f38f12bbdbf555f"
   integrity sha512-NCrCHhWmnQklfH4MtJMRjZ2a8c80qXeMlQMv2uVp9ISJMTt562SbGd6n2oq0PaPgKm7Z6pL9E2UlLIhC+SHL3w==
 
-pod-install@0.3.5:
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/pod-install/-/pod-install-0.3.5.tgz#e9cf2c88783ac4b20b485a442b9bd24bd25f9b15"
-  integrity sha512-dtZGb0NYFMKd4DETfGgLt0m8mszlHfbijTJoslU4AZZe2JQe+HlDn489ieKr2WanidvfYPDEGJnJmIcab+vbOg==
+pod-install@0.3.7:
+  version "0.3.7"
+  resolved "https://registry.yarnpkg.com/pod-install/-/pod-install-0.3.7.tgz#a29637880d433603289b21424341fea4547203bf"
+  integrity sha512-8/wF5c3phqqNZdKhdkGnoZu35ddUkxqLTyo9gpqs0LnNDTXTkNsrCBoBe1DTpmxqoTosX9PXKg0osr03/pKXyw==
 
 popmotion@11.0.3:
   version "11.0.3"

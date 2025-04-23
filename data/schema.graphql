@@ -3159,6 +3159,7 @@ enum ArtworkImportError {
   INVALID_DEPTH
   INVALID_DIAMETER
   INVALID_HEIGHT
+  INVALID_MEDIUM
   INVALID_PRICE
   INVALID_WIDTH
   MISSING_ARTIST
@@ -3248,6 +3249,7 @@ type ArtworkImportTransformedData {
   diameter: String
   height: String
   imageFileNames: String
+  medium: String
   price: String
   width: String
 }
@@ -16105,6 +16107,7 @@ type Order {
 
 enum OrderCreditCardWalletTypeEnum {
   APPLE_PAY
+  GOOGLE_PAY
 }
 
 enum OrderModeEnum {

@@ -1,6 +1,7 @@
 import { screen } from "@testing-library/react-native"
 import { FollowedGalleriesTestsQuery } from "__generated__/FollowedGalleriesTestsQuery.graphql"
 import { FollowedGalleries } from "app/Scenes/Favorites/Components/FollowedGalleries"
+import { FavoritesContextStore } from "app/Scenes/Favorites/FavoritesContextStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -12,7 +13,11 @@ jest.mock("app/Components/PartnerFollowButton", () => ({
 
 describe("FollowedGalleries", () => {
   const { renderWithRelay } = setupTestWrapper<FollowedGalleriesTestsQuery>({
-    Component: ({ me }) => <FollowedGalleries me={me} />,
+    Component: ({ me }) => (
+      <FavoritesContextStore.Provider>
+        <FollowedGalleries me={me} />
+      </FavoritesContextStore.Provider>
+    ),
     query: graphql`
       query FollowedGalleriesTestsQuery @relay_test_operation {
         me @required(action: NONE) {

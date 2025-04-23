@@ -1,12 +1,17 @@
 import { screen } from "@testing-library/react-native"
 import { FollowedShowsTestsQuery } from "__generated__/FollowedShowsTestsQuery.graphql"
 import { FollowedShows } from "app/Scenes/Favorites/Components/FollowedShows"
+import { FavoritesContextStore } from "app/Scenes/Favorites/FavoritesContextStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 describe("FollowedShows", () => {
   const { renderWithRelay } = setupTestWrapper<FollowedShowsTestsQuery>({
-    Component: ({ me }) => <FollowedShows me={me} />,
+    Component: ({ me }) => (
+      <FavoritesContextStore.Provider>
+        <FollowedShows me={me} />
+      </FavoritesContextStore.Provider>
+    ),
     query: graphql`
       query FollowedShowsTestsQuery @relay_test_operation {
         me @required(action: NONE) {
