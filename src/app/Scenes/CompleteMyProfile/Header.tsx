@@ -30,7 +30,7 @@ export const Header: FC = () => {
   const isCompleted = completedStepsLength === steps.length - 1
 
   return (
-    <Flex backgroundColor="white100" pb={1} px={2} style={{ paddingTop: safeAreaInsets.top }}>
+    <Flex backgroundColor="mono0" pb={1} px={2} style={{ paddingTop: safeAreaInsets.top }}>
       <Flex py={1} justifyContent="space-between" flexDirection="row">
         {!isChangesSummary ? (
           <Text variant="xs">{`${currentStep} of ${lastStep}`}</Text>
@@ -62,7 +62,7 @@ export const Header: FC = () => {
             {isCompleted ? (
               <CheckCircleFillIcon fill="green100" />
             ) : (
-              <CheckCircleIcon fill="black60" />
+              <CheckCircleIcon fill="mono60" />
             )}
           </Flex>
         )}

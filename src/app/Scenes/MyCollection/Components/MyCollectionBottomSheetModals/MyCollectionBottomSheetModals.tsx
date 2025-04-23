@@ -46,13 +46,13 @@ export const MyCollectionBottomSheetModals: React.FC<{}> = () => {
         enablePanDownToClose
         backdropComponent={renderBackdrop}
         handleIndicatorStyle={{
-          backgroundColor: color("black100"),
+          backgroundColor: color("mono100"),
           width: 40,
           height: 4,
           borderRadius: 2,
         }}
         backgroundStyle={{
-          backgroundColor: color("white100"),
+          backgroundColor: color("mono0"),
         }}
       >
         {view === "Add" && <MyCollectionBottomSheetModalAdd />}

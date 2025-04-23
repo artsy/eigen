@@ -14,7 +14,7 @@ import { MyProfilePushNotificationsQueryRenderer } from "./MyProfilePushNotifica
 jest.mock("lodash/debounce", () => jest.fn())
 
 describe(SwitchMenu, () => {
-  it("title is set to black100 when enabled", async () => {
+  it("title is set to mono100 when enabled", async () => {
     const props = {
       onChange: jest.fn(),
       value: false,
@@ -28,10 +28,10 @@ describe(SwitchMenu, () => {
     const switchTextElements = await root.findAllByType(Text)
 
     expect(switchElement.props.disabled).toBe(false)
-    expect(switchTextElements[0].props.color).toEqual("black100")
+    expect(switchTextElements[0].props.color).toEqual("mono100")
   })
 
-  it("title is set to black60 when disabled", async () => {
+  it("title is set to mono60 when disabled", async () => {
     const props = {
       onChange: jest.fn(),
       value: false,
@@ -45,7 +45,7 @@ describe(SwitchMenu, () => {
     const switchTextElements = await root.findAllByType(Text)
 
     expect(switchElement.props.disabled).toBe(true)
-    expect(switchTextElements[0].props.color).toEqual("black60")
+    expect(switchTextElements[0].props.color).toEqual("mono60")
   })
 })
 

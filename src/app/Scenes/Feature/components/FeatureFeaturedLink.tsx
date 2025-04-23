@@ -36,11 +36,11 @@ const FeatureFeaturedLink: React.FC<FeatureFeaturedLinkProps> = ({ featuredLink,
             bottom: 20,
           }}
         >
-          <Text variant="lg-display" color="white100">
+          <Text variant="lg-display" color="mono0">
             {featuredLink.title}
           </Text>
           {!!featuredLink.subtitle && (
-            <FeatureMarkdown content={featuredLink.subtitle} textProps={{ color: "white100" }} />
+            <FeatureMarkdown content={featuredLink.subtitle} textProps={{ color: "mono0" }} />
           )}
         </Flex>
       </TouchableOpacity>

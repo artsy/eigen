@@ -41,7 +41,7 @@ export const MyAccountEditEmail: React.FC<MyAccountEditEmailProps> = (props) => 
         headerRight: () => {
           return (
             <Touchable onPress={handleSave} disabled={!isEmailValid}>
-              <Text variant="xs" color={isEmailValid ? "black100" : "black60"}>
+              <Text variant="xs" color={isEmailValid ? "mono100" : "mono60"}>
                 Save
               </Text>
             </Touchable>

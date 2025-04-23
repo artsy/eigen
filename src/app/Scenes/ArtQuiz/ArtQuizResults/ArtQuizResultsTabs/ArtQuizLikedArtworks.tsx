@@ -32,7 +32,7 @@ export const ArtQuizLikedArtworks = ({
         width={dimensions.width}
         hidePartner
         artistNamesTextStyle={{ weight: "regular" }}
-        saleInfoTextStyle={{ weight: "medium", color: "black100" }}
+        saleInfoTextStyle={{ weight: "medium", color: "mono100" }}
       />
     </Tabs.ScrollView>
   )

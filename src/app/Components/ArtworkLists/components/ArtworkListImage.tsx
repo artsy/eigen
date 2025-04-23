@@ -15,14 +15,14 @@ export const ArtworkListImage: FC<ArtworkListImageProps> = ({
   ...rest
 }) => {
   return (
-    <Flex bg="black5" {...rest}>
+    <Flex bg="mono5" {...rest}>
       {imageURL ? (
         <Image src={imageURL} width={size} height={size} performResize={false} />
       ) : (
         <ArtworkListNoImage
           width={size}
           height={size}
-          borderColor="black15"
+          borderColor="mono15"
           borderWidth={withoutBorder ? 0 : 1}
         />
       )}

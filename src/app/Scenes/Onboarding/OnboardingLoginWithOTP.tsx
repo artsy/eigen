@@ -95,14 +95,14 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
               placeholder={
                 recoveryCodeMode ? "Enter a recovery code" : "Enter an authentication code"
               }
-              placeholderTextColor={color("black30")}
+              placeholderTextColor={color("mono30")}
               title={recoveryCodeMode ? "Recovery code" : undefined}
               returnKeyType="done"
               value={values.otp}
               error={errors.otp}
             />
             <Spacer y={1} />
-            <LinkText variant="sm" color="black60" onPress={() => setRecoveryCodeMode((v) => !v)}>
+            <LinkText variant="sm" color="mono60" onPress={() => setRecoveryCodeMode((v) => !v)}>
               {recoveryCodeMode ? "Enter authentication code" : "Enter recovery code instead"}
             </LinkText>
 

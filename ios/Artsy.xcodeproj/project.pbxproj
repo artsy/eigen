@@ -42,10 +42,12 @@
 		1AE9F2692902DA87002A561B /* Shared.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F2612902DA87002A561B /* Shared.xcconfig */; };
 		1AE9F26A2902DA87002A561B /* App-Store.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F2622902DA87002A561B /* App-Store.xcconfig */; };
 		1AE9F26B2902DA87002A561B /* Tests-Store.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F2632902DA87002A561B /* Tests-Store.xcconfig */; };
+		21D8C8C1B81EE62FB631812C /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2351227D6671F3227F07250E /* ExpoModulesProvider.swift */; };
+		23C39D44BA79846C3803A74E /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D4E35184C4A1196A06A1A7 /* ExpoModulesProvider.swift */; };
 		41C4F9EA2F4426F255F9C051 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FF9A08D850B10E68492E49 /* libPods-Artsy.a */; };
 		5E14D748482D1C91EDFD78D5 /* Pods_ArtsyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E85EAB2C3E6196CF3F118F7 /* Pods_ArtsyTests.framework */; };
 		7448C2EC42E1DD4A032A6C70 /* Pods_ArtsyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C1B6860831AE690075CFD4C /* Pods_ArtsyTests.framework */; };
-		8E4207792A055D2D006888BD /* ARAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8E4207782A055D2D006888BD /* ARAppDelegate.mm */; };
+		8E4207792A055D2D006888BD /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8E4207782A055D2D006888BD /* AppDelegate.mm */; };
 		CB0D52052AF56984000E6C08 /* LiveAuctionTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0D52042AF56984000E6C08 /* LiveAuctionTestUtils.swift */; };
 		CB18282829CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB18282729CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift */; };
 		CB18282B29D35F29006A0805 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB18282A29D35F29006A0805 /* GoogleService-Info.plist */; };
@@ -134,8 +136,8 @@
 		CB43288F27E8FEE500B29DD6 /* ORStackViewArtsyCategoriesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43275A27E8FEE300B29DD6 /* ORStackViewArtsyCategoriesTests.m */; };
 		CB43289027E8FEE500B29DD6 /* ARTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43275B27E8FEE300B29DD6 /* ARTextViewTests.m */; };
 		CB43289127E8FEE500B29DD6 /* ARCustomEigenLabelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43275C27E8FEE300B29DD6 /* ARCustomEigenLabelTests.m */; };
-		CB43289427E8FEE500B29DD6 /* ARAppActivityContinuationDelegateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276027E8FEE300B29DD6 /* ARAppActivityContinuationDelegateTests.m */; };
-		CB43289527E8FEE500B29DD6 /* ARAppNotificationsDelegateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276127E8FEE300B29DD6 /* ARAppNotificationsDelegateTests.m */; };
+		CB43289427E8FEE500B29DD6 /* AppDelegate+ContinuationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276027E8FEE300B29DD6 /* AppDelegate+ContinuationTests.m */; };
+		CB43289527E8FEE500B29DD6 /* AppDelegate+NotificationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276127E8FEE300B29DD6 /* AppDelegate+NotificationsTests.m */; };
 		CB43289627E8FEE500B29DD6 /* ARWebViewCacheHostSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276227E8FEE300B29DD6 /* ARWebViewCacheHostSpec.m */; };
 		CB43289827E8FEE500B29DD6 /* ProfileTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276527E8FEE400B29DD6 /* ProfileTests.m */; };
 		CB43289927E8FEE500B29DD6 /* SaleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276627E8FEE400B29DD6 /* SaleTests.m */; };
@@ -224,11 +226,10 @@
 		CB762B3C2911A5E100881194 /* ARVIRModalClose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B342911A5E100881194 /* ARVIRModalClose@2x.png */; };
 		CB762B3D2911A5E100881194 /* ARVIRShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B352911A5E100881194 /* ARVIRShadow.png */; };
 		CB762B3E2911A5E100881194 /* ar_vir_opening_frame.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */; };
-		CBA500F32C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA500F22C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.m */; };
+		CBA500F32C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA500F22C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.m */; };
 		CBA500F62C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA500F52C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.m */; };
 		CBD794D72BBB5622003B3CB5 /* StarscreamExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD794D62BBB5622003B3CB5 /* StarscreamExtensions.swift */; };
 		CBD794DB2BBC40A4003B3CB5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = CBD794DA2BBC40A4003B3CB5 /* PrivacyInfo.xcprivacy */; };
-		CBE0D12E2C20C8D800DFF17E /* libBrazeUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CBE0D12D2C20C8D800DFF17E /* libBrazeUI.a */; };
 		CBE2946229E4C19000AA77DD /* VirtualArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE2946129E4C19000AA77DD /* VirtualArtwork.swift */; };
 		CBE3266F27E275A300395A93 /* ARAppConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3245D27E275A100395A93 /* ARAppConstants.m */; };
 		CBE3267027E275A300395A93 /* ARDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3245E27E275A100395A93 /* ARDefaults.m */; };
@@ -254,17 +255,17 @@
 		CBE3268727E275A300395A93 /* ORStackView+ArtsyViews.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248927E275A100395A93 /* ORStackView+ArtsyViews.m */; };
 		CBE3268827E275A300395A93 /* Interstellar+Artsy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248A27E275A100395A93 /* Interstellar+Artsy.swift */; };
 		CBE3268927E275A300395A93 /* AFHTTPRequestOperation+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248C27E275A100395A93 /* AFHTTPRequestOperation+JSON.m */; };
-		CBE3269127E275A300395A93 /* ARAppActivityContinuationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249727E275A100395A93 /* ARAppActivityContinuationDelegate.m */; };
-		CBE3269227E275A300395A93 /* ARAppNotificationsDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249827E275A100395A93 /* ARAppNotificationsDelegate.m */; };
+		CBE3269127E275A300395A93 /* AppDelegate+ActivityContinuation.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249727E275A100395A93 /* AppDelegate+ActivityContinuation.m */; };
+		CBE3269227E275A300395A93 /* AppDelegate+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249827E275A100395A93 /* AppDelegate+Notifications.m */; };
 		CBE3269327E275A300395A93 /* ARAppStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249A27E275A100395A93 /* ARAppStatus.m */; };
 		CBE3269427E275A300395A93 /* ARAnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */; };
 		CBE3269627E275A300395A93 /* ArtsyEcho.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249F27E275A100395A93 /* ArtsyEcho.m */; };
-		CBE3269727E275A300395A93 /* ARApplicationShortcutItemDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A127E275A100395A93 /* ARApplicationShortcutItemDelegate.m */; };
+		CBE3269727E275A300395A93 /* AppDelegate+ShortcutItems.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A127E275A100395A93 /* AppDelegate+ShortcutItems.m */; };
 		CBE3269927E275A300395A93 /* SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A327E275A100395A93 /* SwiftExtensions.swift */; };
 		CBE3269A27E275A300395A93 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A927E275A100395A93 /* main.m */; };
-		CBE3269B27E275A300395A93 /* ARAppDelegate+Echo.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324AC27E275A100395A93 /* ARAppDelegate+Echo.m */; };
+		CBE3269B27E275A300395A93 /* AppDelegate+Echo.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324AC27E275A100395A93 /* AppDelegate+Echo.m */; };
 		CBE3269C27E275A300395A93 /* ARTArtsyNativeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324AE27E275A100395A93 /* ARTArtsyNativeModule.m */; };
-		CBE3269D27E275A300395A93 /* ARAppDelegate+Emission.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324B027E275A100395A93 /* ARAppDelegate+Emission.m */; };
+		CBE3269D27E275A300395A93 /* AppDelegate+Emission.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324B027E275A100395A93 /* AppDelegate+Emission.m */; };
 		CBE3269E27E275A300395A93 /* AROptions.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324B227E275A100395A93 /* AROptions.m */; };
 		CBE3269F27E275A300395A93 /* EchoNew.json in Resources */ = {isa = PBXBuildFile; fileRef = CBE324B527E275A100395A93 /* EchoNew.json */; };
 		CBE326A027E275A300395A93 /* ARUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324B627E275A100395A93 /* ARUserActivity.m */; };
@@ -494,7 +495,6 @@
 		CBE327A027E275A400395A93 /* Bidder.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266527E275A300395A93 /* Bidder.m */; };
 		CBE327A127E275A400395A93 /* BidderPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266627E275A300395A93 /* BidderPosition.m */; };
 		CBE327A227E275A400395A93 /* SystemTime.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266927E275A300395A93 /* SystemTime.m */; };
-		E15070752CCFE89B00615118 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		E15070762CCFE8A900615118 /* ARTLiveAuctionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259A27E275A200395A93 /* ARTLiveAuctionViewManager.m */; };
 		E15070772CCFE8C400615118 /* LiveAuctionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259B27E275A200395A93 /* LiveAuctionView.swift */; };
 		E1856EA22C98923B00849C0E /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E1856EA12C98923B00849C0E /* BootSplash.storyboard */; };
@@ -612,12 +612,14 @@
 		1AE9F2612902DA87002A561B /* Shared.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
 		1AE9F2622902DA87002A561B /* App-Store.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "App-Store.xcconfig"; sourceTree = "<group>"; };
 		1AE9F2632902DA87002A561B /* Tests-Store.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "Tests-Store.xcconfig"; sourceTree = "<group>"; };
+		2351227D6671F3227F07250E /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-ArtsyTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		36B80F603A77F1EFD957AB24 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 		4C1B6860831AE690075CFD4C /* Pods_ArtsyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ArtsyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8E4207782A055D2D006888BD /* ARAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ARAppDelegate.mm; sourceTree = "<group>"; };
+		8E4207782A055D2D006888BD /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		A13D613770ABA09F958CEC44 /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
 		A7FF9A08D850B10E68492E49 /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6786672018842FE1C6B598E /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
+		B6D4E35184C4A1196A06A1A7 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Artsy/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		CB0D52042AF56984000E6C08 /* LiveAuctionTestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAuctionTestUtils.swift; sourceTree = "<group>"; };
 		CB18282729CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARAugmentedWallBasedVIRViewController.swift; sourceTree = "<group>"; };
 		CB18282A29D35F29006A0805 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "Artsy/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -712,8 +714,8 @@
 		CB43275A27E8FEE300B29DD6 /* ORStackViewArtsyCategoriesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORStackViewArtsyCategoriesTests.m; sourceTree = "<group>"; };
 		CB43275B27E8FEE300B29DD6 /* ARTextViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTextViewTests.m; sourceTree = "<group>"; };
 		CB43275C27E8FEE300B29DD6 /* ARCustomEigenLabelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCustomEigenLabelTests.m; sourceTree = "<group>"; };
-		CB43276027E8FEE300B29DD6 /* ARAppActivityContinuationDelegateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppActivityContinuationDelegateTests.m; sourceTree = "<group>"; };
-		CB43276127E8FEE300B29DD6 /* ARAppNotificationsDelegateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppNotificationsDelegateTests.m; sourceTree = "<group>"; };
+		CB43276027E8FEE300B29DD6 /* AppDelegate+ContinuationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+ContinuationTests.m"; sourceTree = "<group>"; };
+		CB43276127E8FEE300B29DD6 /* AppDelegate+NotificationsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+NotificationsTests.m"; sourceTree = "<group>"; };
 		CB43276227E8FEE300B29DD6 /* ARWebViewCacheHostSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWebViewCacheHostSpec.m; sourceTree = "<group>"; };
 		CB43276527E8FEE400B29DD6 /* ProfileTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileTests.m; sourceTree = "<group>"; };
 		CB43276627E8FEE400B29DD6 /* SaleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaleTests.m; sourceTree = "<group>"; };
@@ -933,8 +935,8 @@
 		CB762B342911A5E100881194 /* ARVIRModalClose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRModalClose@2x.png"; sourceTree = "<group>"; };
 		CB762B352911A5E100881194 /* ARVIRShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRShadow.png; sourceTree = "<group>"; };
 		CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ar_vir_opening_frame.jpg; sourceTree = "<group>"; };
-		CBA500F12C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+DeeplinkTimeout.h"; sourceTree = "<group>"; };
-		CBA500F22C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+DeeplinkTimeout.m"; sourceTree = "<group>"; };
+		CBA500F12C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+DeeplinkTimeout.h"; sourceTree = "<group>"; };
+		CBA500F22C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+DeeplinkTimeout.m"; sourceTree = "<group>"; };
 		CBA500F42C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTDeeplinkTimeoutModule.h; sourceTree = "<group>"; };
 		CBA500F52C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTDeeplinkTimeoutModule.m; sourceTree = "<group>"; };
 		CBA7CF22282BF6310025AEA5 /* Artsy_Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Artsy_Tests-Info.plist"; sourceTree = "<group>"; };
@@ -984,34 +986,34 @@
 		CBE3248A27E275A100395A93 /* Interstellar+Artsy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Interstellar+Artsy.swift"; sourceTree = "<group>"; };
 		CBE3248C27E275A100395A93 /* AFHTTPRequestOperation+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFHTTPRequestOperation+JSON.m"; sourceTree = "<group>"; };
 		CBE3248D27E275A100395A93 /* AFHTTPRequestOperation+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFHTTPRequestOperation+JSON.h"; sourceTree = "<group>"; };
-		CBE3249727E275A100395A93 /* ARAppActivityContinuationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppActivityContinuationDelegate.m; sourceTree = "<group>"; };
-		CBE3249827E275A100395A93 /* ARAppNotificationsDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppNotificationsDelegate.m; sourceTree = "<group>"; };
+		CBE3249727E275A100395A93 /* AppDelegate+ActivityContinuation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+ActivityContinuation.m"; sourceTree = "<group>"; };
+		CBE3249827E275A100395A93 /* AppDelegate+Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Notifications.m"; sourceTree = "<group>"; };
 		CBE3249927E275A100395A93 /* ARTArtsyNativeModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTArtsyNativeModule.h; sourceTree = "<group>"; };
 		CBE3249A27E275A100395A93 /* ARAppStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppStatus.m; sourceTree = "<group>"; };
 		CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnalyticsConstants.m; sourceTree = "<group>"; };
-		CBE3249C27E275A100395A93 /* ARAppDelegate+Echo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Echo.h"; sourceTree = "<group>"; };
+		CBE3249C27E275A100395A93 /* AppDelegate+Echo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Echo.h"; sourceTree = "<group>"; };
 		CBE3249E27E275A100395A93 /* AROptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROptions.h; sourceTree = "<group>"; };
 		CBE3249F27E275A100395A93 /* ArtsyEcho.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtsyEcho.m; sourceTree = "<group>"; };
-		CBE324A027E275A100395A93 /* ARAppDelegate+Emission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Emission.h"; sourceTree = "<group>"; };
-		CBE324A127E275A100395A93 /* ARApplicationShortcutItemDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARApplicationShortcutItemDelegate.m; sourceTree = "<group>"; };
+		CBE324A027E275A100395A93 /* AppDelegate+Emission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Emission.h"; sourceTree = "<group>"; };
+		CBE324A127E275A100395A93 /* AppDelegate+ShortcutItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+ShortcutItems.m"; sourceTree = "<group>"; };
 		CBE324A327E275A100395A93 /* SwiftExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftExtensions.swift; sourceTree = "<group>"; };
 		CBE324A427E275A100395A93 /* ARMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMacros.h; sourceTree = "<group>"; };
 		CBE324A527E275A100395A93 /* ARUserActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserActivity.h; sourceTree = "<group>"; };
-		CBE324A627E275A100395A93 /* ARAppNotificationsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppNotificationsDelegate.h; sourceTree = "<group>"; };
-		CBE324A727E275A100395A93 /* ARAppActivityContinuationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppActivityContinuationDelegate.h; sourceTree = "<group>"; };
+		CBE324A627E275A100395A93 /* AppDelegate+Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Notifications.h"; sourceTree = "<group>"; };
+		CBE324A727E275A100395A93 /* AppDelegate+ActivityContinuation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+ActivityContinuation.h"; sourceTree = "<group>"; };
 		CBE324A927E275A100395A93 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CBE324AB27E275A100395A93 /* ARAnalyticsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnalyticsConstants.h; sourceTree = "<group>"; };
-		CBE324AC27E275A100395A93 /* ARAppDelegate+Echo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Echo.m"; sourceTree = "<group>"; };
+		CBE324AC27E275A100395A93 /* AppDelegate+Echo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Echo.m"; sourceTree = "<group>"; };
 		CBE324AD27E275A100395A93 /* ARAppStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppStatus.h; sourceTree = "<group>"; };
 		CBE324AE27E275A100395A93 /* ARTArtsyNativeModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTArtsyNativeModule.m; sourceTree = "<group>"; };
-		CBE324AF27E275A100395A93 /* ARApplicationShortcutItemDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARApplicationShortcutItemDelegate.h; sourceTree = "<group>"; };
-		CBE324B027E275A100395A93 /* ARAppDelegate+Emission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Emission.m"; sourceTree = "<group>"; };
+		CBE324AF27E275A100395A93 /* AppDelegate+ShortcutItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+ShortcutItems.h"; sourceTree = "<group>"; };
+		CBE324B027E275A100395A93 /* AppDelegate+Emission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Emission.m"; sourceTree = "<group>"; };
 		CBE324B127E275A100395A93 /* ArtsyEcho.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtsyEcho.h; sourceTree = "<group>"; };
 		CBE324B227E275A100395A93 /* AROptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROptions.m; sourceTree = "<group>"; };
 		CBE324B427E275A100395A93 /* ARFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFonts.h; sourceTree = "<group>"; };
 		CBE324B527E275A100395A93 /* EchoNew.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EchoNew.json; sourceTree = "<group>"; };
 		CBE324B627E275A100395A93 /* ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivity.m; sourceTree = "<group>"; };
-		CBE324B727E275A100395A93 /* ARAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppDelegate.h; sourceTree = "<group>"; };
+		CBE324B727E275A100395A93 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CBE324B927E275A100395A93 /* ARDefaultNavigationTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDefaultNavigationTransition.m; sourceTree = "<group>"; };
 		CBE324BA27E275A100395A93 /* ARNavigationTransitionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationTransitionController.m; sourceTree = "<group>"; };
 		CBE324BB27E275A100395A93 /* ARNavigationTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationTransition.m; sourceTree = "<group>"; };
@@ -1368,7 +1370,6 @@
 				CB43299227FDFE4700B29DD6 /* iAd.framework in Frameworks */,
 				CB43299427FDFE5300B29DD6 /* MessageUI.framework in Frameworks */,
 				CB43299827FDFE6400B29DD6 /* StoreKit.framework in Frameworks */,
-				CBE0D12E2C20C8D800DFF17E /* libBrazeUI.a in Frameworks */,
 				41C4F9EA2F4426F255F9C051 /* libPods-Artsy.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1548,6 +1549,15 @@
 			path = Configs;
 			sourceTree = SOURCE_ROOT;
 		};
+		2D00E4C0985C8FA9A33AF0C2 /* ExpoModulesProviders */ = {
+			isa = PBXGroup;
+			children = (
+				D244ECF9D06E265194B305D7 /* Artsy */,
+				F4E9830CBE6D72DEB8A5BB08 /* ArtsyTests */,
+			);
+			name = ExpoModulesProviders;
+			sourceTree = "<group>";
+		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1583,6 +1593,8 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				CB8672711C005915043C63E8 /* Pods */,
+				CB51280C2DB2D95B00C6A884 /* Recovered References */,
+				2D00E4C0985C8FA9A33AF0C2 /* ExpoModulesProviders */,
 			);
 			indentWidth = 4;
 			sourceTree = "<group>";
@@ -1877,8 +1889,8 @@
 		CB43275E27E8FEE300B29DD6 /* App_Tests */ = {
 			isa = PBXGroup;
 			children = (
-				CB43276027E8FEE300B29DD6 /* ARAppActivityContinuationDelegateTests.m */,
-				CB43276127E8FEE300B29DD6 /* ARAppNotificationsDelegateTests.m */,
+				CB43276027E8FEE300B29DD6 /* AppDelegate+ContinuationTests.m */,
+				CB43276127E8FEE300B29DD6 /* AppDelegate+NotificationsTests.m */,
 				CB43276227E8FEE300B29DD6 /* ARWebViewCacheHostSpec.m */,
 			);
 			path = App_Tests;
@@ -2401,6 +2413,33 @@
 			path = Stubs;
 			sourceTree = "<group>";
 		};
+		CB51280C2DB2D95B00C6A884 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				4C1B6860831AE690075CFD4C /* Pods_ArtsyTests.framework */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		CB51280D2DB2EBCE00C6A884 /* AppDelegateCategories */ = {
+			isa = PBXGroup;
+			children = (
+				CBE324A727E275A100395A93 /* AppDelegate+ActivityContinuation.h */,
+				CBE3249727E275A100395A93 /* AppDelegate+ActivityContinuation.m */,
+				CBA500F12C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.h */,
+				CBA500F22C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.m */,
+				CBE3249C27E275A100395A93 /* AppDelegate+Echo.h */,
+				CBE324AC27E275A100395A93 /* AppDelegate+Echo.m */,
+				CBE324A027E275A100395A93 /* AppDelegate+Emission.h */,
+				CBE324B027E275A100395A93 /* AppDelegate+Emission.m */,
+				CBE324A627E275A100395A93 /* AppDelegate+Notifications.h */,
+				CBE3249827E275A100395A93 /* AppDelegate+Notifications.m */,
+				CBE324AF27E275A100395A93 /* AppDelegate+ShortcutItems.h */,
+				CBE324A127E275A100395A93 /* AppDelegate+ShortcutItems.m */,
+			);
+			path = AppDelegateCategories;
+			sourceTree = "<group>";
+		};
 		CB762B2E2911A5E100881194 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -2430,6 +2469,8 @@
 		CBE3210527D9615000395A93 /* Artsy */ = {
 			isa = PBXGroup;
 			children = (
+				CBE324B727E275A100395A93 /* AppDelegate.h */,
+				8E4207782A055D2D006888BD /* AppDelegate.mm */,
 				CB18283429D36A3A006A0805 /* fonts */,
 				1AE9F25B2902DA87002A561B /* Configs */,
 				1A4E5115283F91BA0008EF35 /* ArtsyUIButtons */,
@@ -2540,21 +2581,7 @@
 		CBE3249427E275A100395A93 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				CBE324B727E275A100395A93 /* ARAppDelegate.h */,
-				8E4207782A055D2D006888BD /* ARAppDelegate.mm */,
-				CBE324A727E275A100395A93 /* ARAppActivityContinuationDelegate.h */,
-				CBE3249727E275A100395A93 /* ARAppActivityContinuationDelegate.m */,
-				CBE324A627E275A100395A93 /* ARAppNotificationsDelegate.h */,
-				CBE3249827E275A100395A93 /* ARAppNotificationsDelegate.m */,
-				CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */,
-				CBE3249C27E275A100395A93 /* ARAppDelegate+Echo.h */,
-				CBE324AC27E275A100395A93 /* ARAppDelegate+Echo.m */,
-				CBE324A027E275A100395A93 /* ARAppDelegate+Emission.h */,
-				CBE324B027E275A100395A93 /* ARAppDelegate+Emission.m */,
-				CBE324AF27E275A100395A93 /* ARApplicationShortcutItemDelegate.h */,
-				CBE324A127E275A100395A93 /* ARApplicationShortcutItemDelegate.m */,
-				CBA500F12C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.h */,
-				CBA500F22C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.m */,
+				CB51280D2DB2EBCE00C6A884 /* AppDelegateCategories */,
 				CBE3249927E275A100395A93 /* ARTArtsyNativeModule.h */,
 				CBE324AE27E275A100395A93 /* ARTArtsyNativeModule.m */,
 				CBE324AD27E275A100395A93 /* ARAppStatus.h */,
@@ -2564,6 +2591,7 @@
 				CBE324A527E275A100395A93 /* ARUserActivity.h */,
 				CBE324B627E275A100395A93 /* ARUserActivity.m */,
 				CBE324AB27E275A100395A93 /* ARAnalyticsConstants.h */,
+				CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */,
 				CBE324B427E275A100395A93 /* ARFonts.h */,
 				CBE324A427E275A100395A93 /* ARMacros.h */,
 				CBE324B127E275A100395A93 /* ArtsyEcho.h */,
@@ -3331,6 +3359,22 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		D244ECF9D06E265194B305D7 /* Artsy */ = {
+			isa = PBXGroup;
+			children = (
+				B6D4E35184C4A1196A06A1A7 /* ExpoModulesProvider.swift */,
+			);
+			name = Artsy;
+			sourceTree = "<group>";
+		};
+		F4E9830CBE6D72DEB8A5BB08 /* ArtsyTests */ = {
+			isa = PBXGroup;
+			children = (
+				2351227D6671F3227F07250E /* ExpoModulesProvider.swift */,
+			);
+			name = ArtsyTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3340,6 +3384,7 @@
 			buildPhases = (
 				400905DA34751CB03A2B22D1 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
+				DAB4153D308BDB0605061789 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
@@ -3365,6 +3410,7 @@
 			buildConfigurationList = CB43266E27E8F39B00B29DD6 /* Build configuration list for PBXNativeTarget "ArtsyStickers" */;
 			buildPhases = (
 				CB43266127E8F39900B29DD6 /* Resources */,
+				7AEEFCEF011ACA98F124D663 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -3414,6 +3460,7 @@
 			buildConfigurationList = CB43272227E8FE5400B29DD6 /* Build configuration list for PBXNativeTarget "ArtsyTests" */;
 			buildPhases = (
 				21D9FBA2AAC48EBB99241E8F /* [CP] Check Pods Manifest.lock */,
+				9CD09F5D4E3EE42D4514E2A8 /* [Expo] Configure project */,
 				CB43271827E8FE5400B29DD6 /* Sources */,
 				CB43271927E8FE5400B29DD6 /* Frameworks */,
 				CB43271A27E8FE5400B29DD6 /* Resources */,
@@ -3644,7 +3691,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export SOURCEMAP_FILE=\"$PROJECT_DIR/../main.jsbundle.map\"\n\nset -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
+			shellScript = "if [[ -f \"$PODS_ROOT/../.xcode.env\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env\"\nfi\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n# The project root by default is one level up from the ios directory\nexport PROJECT_ROOT=\"$PROJECT_DIR\"/..\n\nif [[ \"$CONFIGURATION\" = *Debug* ]]; then\n  export SKIP_BUNDLING=1\nfi\nif [[ -z \"$ENTRY_FILE\" ]]; then\n  # Set the entry JS file using the bundler's entry resolution.\n  export ENTRY_FILE=\"$(\"$NODE_BINARY\" -e \"require('expo/scripts/resolveAppEntry')\" \"$PROJECT_ROOT\" ios absolute | tail -n 1)\"\nfi\n\nif [[ -z \"$CLI_PATH\" ]]; then\n  # Use Expo CLI\n  export CLI_PATH=\"$(\"$NODE_BINARY\" --print \"require.resolve('@expo/cli')\")\"\nfi\nif [[ -z \"$BUNDLE_COMMAND\" ]]; then\n  # Default Expo CLI command for bundling\n  export BUNDLE_COMMAND=\"export:embed\"\nfi\n\n`\"$NODE_BINARY\" --print \"require('path').dirname(require.resolve('react-native/package.json')) + '/scripts/react-native-xcode.sh'\"`\n";
 		};
 		21D9FBA2AAC48EBB99241E8F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3724,6 +3771,44 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		9CD09F5D4E3EE42D4514E2A8 /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-ArtsyTests/expo-configure-project.sh\"\n";
+		};
+		DAB4153D308BDB0605061789 /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-Artsy/expo-configure-project.sh\"\n";
+		};
 		DDA4AEB493C5BCB609AE7E60 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3757,7 +3842,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
+			shellScript = "if [[ -f \"$PODS_ROOT/../.xcode.env\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env\"\nfi\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\nexport RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > `$NODE_BINARY --print \"require('path').dirname(require.resolve('react-native/package.json')) + '/scripts/.packager.env'\"`\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open `$NODE_BINARY --print \"require('path').dirname(require.resolve('expo/package.json')) + '/scripts/launchPackager.command'\"` || echo \"Can't start packager automatically\"\n  fi\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -3769,14 +3854,13 @@
 			files = (
 				E15070772CCFE8C400615118 /* LiveAuctionView.swift in Sources */,
 				E15070762CCFE8A900615118 /* ARTLiveAuctionViewManager.m in Sources */,
-				E15070752CCFE89B00615118 /* BuildFile in Sources */,
 				1A4B97C7283CDD5A00878EAE /* ARMapContainerViewController.m in Sources */,
 				CBE3279227E275A400395A93 /* User.m in Sources */,
 				CBE3277927E275A400395A93 /* ArtsyAPI+Notifications.m in Sources */,
 				CBE3267327E275A300395A93 /* Int+Metrification.swift in Sources */,
 				CBE326CE27E275A300395A93 /* LiveAuctionBidButton.swift in Sources */,
 				CBE326DE27E275A300395A93 /* UIViewController+InnermostTopViewController.m in Sources */,
-				8E4207792A055D2D006888BD /* ARAppDelegate.mm in Sources */,
+				8E4207792A055D2D006888BD /* AppDelegate.mm in Sources */,
 				CBE326DD27E275A300395A93 /* ARURLItemProvider.m in Sources */,
 				CBE326E727E275A300395A93 /* ARHTTPRequestOperationLogger.m in Sources */,
 				CBE326E827E275A300395A93 /* ARLogger.m in Sources */,
@@ -3815,7 +3899,7 @@
 				CBE326AF27E275A300395A93 /* LiveAuctionLoadingView.swift in Sources */,
 				CBE326E127E275A300395A93 /* ARFileUtils.m in Sources */,
 				1A4B97C8283CDD5A00878EAE /* ARPHPhotoPickerModule.m in Sources */,
-				CBE3269727E275A300395A93 /* ARApplicationShortcutItemDelegate.m in Sources */,
+				CBE3269727E275A300395A93 /* AppDelegate+ShortcutItems.m in Sources */,
 				CBE326E627E275A300395A93 /* UIApplicationStateEnum.m in Sources */,
 				CBE3270E27E275A300395A93 /* AuctionTitleView.swift in Sources */,
 				CBE326C027E275A300395A93 /* LiveAuctionsAdminViewController.swift in Sources */,
@@ -3833,7 +3917,7 @@
 				CBE3269327E275A300395A93 /* ARAppStatus.m in Sources */,
 				CBE326AB27E275A300395A93 /* LiveAuctionLotViewModel.swift in Sources */,
 				CBE326D027E275A300395A93 /* SerifModalWebNavigationController.swift in Sources */,
-				CBE3269D27E275A300395A93 /* ARAppDelegate+Emission.m in Sources */,
+				CBE3269D27E275A300395A93 /* AppDelegate+Emission.m in Sources */,
 				CBE326A227E275A300395A93 /* ARNavigationTransitionController.m in Sources */,
 				CBE326B127E275A300395A93 /* LiveAuctionViewController.swift in Sources */,
 				1A4B97C0283CDD5A00878EAE /* AREmission.m in Sources */,
@@ -3894,7 +3978,7 @@
 				CBE3270D27E275A300395A93 /* SaleViewModel.swift in Sources */,
 				CBE3271C27E275A300395A93 /* RefinableType.swift in Sources */,
 				CBE327A227E275A400395A93 /* SystemTime.m in Sources */,
-				CBE3269B27E275A300395A93 /* ARAppDelegate+Echo.m in Sources */,
+				CBE3269B27E275A300395A93 /* AppDelegate+Echo.m in Sources */,
 				CB18284629DF3DED006A0805 /* FocusSquareSegment.swift in Sources */,
 				CBE3279F27E275A400395A93 /* Bid.m in Sources */,
 				1A4B97BC283CDD5A00878EAE /* ARCocoaConstantsModule.m in Sources */,
@@ -3946,14 +4030,14 @@
 				CBE3271027E275A300395A93 /* SaleArtworkViewModel.swift in Sources */,
 				CBE3277B27E275A400395A93 /* ArtsyAPI+CurrentUserFunctions.m in Sources */,
 				CBE3278B27E275A400395A93 /* Location.m in Sources */,
-				CBA500F32C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.m in Sources */,
+				CBA500F32C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.m in Sources */,
 				CBE326BA27E275A300395A93 /* LiveAuctionBidViewModel.swift in Sources */,
 				CBE3268927E275A300395A93 /* AFHTTPRequestOperation+JSON.m in Sources */,
 				CBE3279C27E275A400395A93 /* Sale.m in Sources */,
 				CBE3279727E275A400395A93 /* LiveEvent.m in Sources */,
 				CBE3278E27E275A400395A93 /* AuctionLot.m in Sources */,
 				CBE3277D27E275A400395A93 /* ARUserManager.m in Sources */,
-				CBE3269127E275A300395A93 /* ARAppActivityContinuationDelegate.m in Sources */,
+				CBE3269127E275A300395A93 /* AppDelegate+ActivityContinuation.m in Sources */,
 				CBE326BE27E275A300395A93 /* LiveAuctionLotBidHistoryGestureController.swift in Sources */,
 				CBE3271627E275A300395A93 /* ARWhitespaceGobbler.m in Sources */,
 				CBE3268127E275A300395A93 /* UIViewController+SimpleChildren.m in Sources */,
@@ -3965,7 +4049,7 @@
 				1A4E511F283F91BA0008EF35 /* UIView+ARSpinner.m in Sources */,
 				CBE3268627E275A300395A93 /* PanDirectionGestureRecognizer.swift in Sources */,
 				CB18282829CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift in Sources */,
-				CBE3269227E275A300395A93 /* ARAppNotificationsDelegate.m in Sources */,
+				CBE3269227E275A300395A93 /* AppDelegate+Notifications.m in Sources */,
 				CBE3271E27E275A300395A93 /* AuctionCircularButtons.swift in Sources */,
 				CBE3277527E275A400395A93 /* ARKeychainable.m in Sources */,
 				CBE3270527E275A300395A93 /* LiveAuctionPlainLotCollectionViewLayout.swift in Sources */,
@@ -3997,6 +4081,14 @@
 				CBE3271127E275A300395A93 /* TextStack.swift in Sources */,
 				CBE3269627E275A300395A93 /* ArtsyEcho.m in Sources */,
 				CBE326BB27E275A300395A93 /* LiveActionStateReconciler.swift in Sources */,
+				23C39D44BA79846C3803A74E /* ExpoModulesProvider.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7AEEFCEF011ACA98F124D663 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4053,7 +4145,7 @@
 				CB43288E27E8FEE500B29DD6 /* ARBidButtonTests.m in Sources */,
 				CB43294E27E8FEE600B29DD6 /* ARSharingControllerTests.m in Sources */,
 				CB43296327E9104E00B29DD6 /* Article.swift in Sources */,
-				CB43289527E8FEE500B29DD6 /* ARAppNotificationsDelegateTests.m in Sources */,
+				CB43289527E8FEE500B29DD6 /* AppDelegate+NotificationsTests.m in Sources */,
 				CB4328AC27E8FEE500B29DD6 /* EXPMatcher+UINavigationController.m in Sources */,
 				CB4328A427E8FEE500B29DD6 /* UserTests.m in Sources */,
 				CB43295027E8FEE600B29DD6 /* UIApplicationStateEnumTests.m in Sources */,
@@ -4104,7 +4196,7 @@
 				CB43288F27E8FEE500B29DD6 /* ORStackViewArtsyCategoriesTests.m in Sources */,
 				CB43295427E8FEE600B29DD6 /* ARUserManager+Stubs.m in Sources */,
 				CB43287527E8FEE500B29DD6 /* ARAugmentedVIRViewControllerSpec.m in Sources */,
-				CB43289427E8FEE500B29DD6 /* ARAppActivityContinuationDelegateTests.m in Sources */,
+				CB43289427E8FEE500B29DD6 /* AppDelegate+ContinuationTests.m in Sources */,
 				CB4328BA27E8FEE500B29DD6 /* ArtsyAPI+GraphQLTests.m in Sources */,
 				CB43289C27E8FEE500B29DD6 /* PartnerTests.m in Sources */,
 				CB43295327E8FEE600B29DD6 /* NSDate+RangeTests.m in Sources */,
@@ -4145,6 +4237,7 @@
 				CB4328AB27E8FEE500B29DD6 /* ARExpectaExtensions.m in Sources */,
 				CB43287D27E8FEE500B29DD6 /* LiveAuctionBidButtonTests.swift in Sources */,
 				CB43288127E8FEE500B29DD6 /* LiveAuctionLotListStickyCellCollectionViewLayoutTests.swift in Sources */,
+				21D8C8C1B81EE62FB631812C /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4237,20 +4330,16 @@
 				MARKETING_VERSION = 6.7.7;
 				OTHER_CFLAGS = (
 					"$(inherited)",
-					"-iframework",
 					"-DFOLLY_NO_CONFIG",
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
-					"-DRNVERSION=69",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
-					"$(OTHER_CFLAGS)",
+					"$(inherited)",
 					"-DFOLLY_NO_CONFIG",
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
-					"-fcxx-modules",
-					"-fmodules",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
 				OTHER_LDFLAGS = (
@@ -4258,6 +4347,7 @@
 					"-ObjC",
 					"-lc++",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUN_CLANG_STATIC_ANALYZER = NO;
@@ -4317,20 +4407,16 @@
 				MARKETING_VERSION = 6.7.7;
 				OTHER_CFLAGS = (
 					"$(inherited)",
-					"-iframework",
 					"-DFOLLY_NO_CONFIG",
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
-					"-DRNVERSION=69",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
-					"$(OTHER_CFLAGS)",
+					"$(inherited)",
 					"-DFOLLY_NO_CONFIG",
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
-					"-fcxx-modules",
-					"-fmodules",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
 				OTHER_LDFLAGS = (
@@ -4340,6 +4426,7 @@
 					"-Wl",
 					"-ld_classic",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy";
 				RUN_CLANG_STATIC_ANALYZER = NO;
@@ -4441,6 +4528,7 @@
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				SWIFT_VERSION = 5.0;
 				USE_HERMES = true;
 			};
 			name = Debug;
@@ -4519,6 +4607,7 @@
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
 				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -4552,11 +4641,13 @@
 				MARKETING_VERSION = 6.7.7;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Stickers";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -4589,11 +4680,13 @@
 				);
 				MARKETING_VERSION = 6.7.7;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Stickers";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy.Artsy-Stickers";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Store;
@@ -4632,6 +4725,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
@@ -4677,6 +4771,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy.BrazePushServiceExtension";
 				SKIP_INSTALL = YES;
@@ -4724,6 +4819,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
@@ -4771,6 +4867,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy.ArtsyWidget";
 				SKIP_INSTALL = YES;
@@ -4825,6 +4922,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4871,6 +4969,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

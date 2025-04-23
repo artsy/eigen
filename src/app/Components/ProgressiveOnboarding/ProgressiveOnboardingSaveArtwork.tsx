@@ -44,7 +44,7 @@ export const ProgressiveOnboardingSaveArtwork: React.FC<{ contextScreenOwnerType
 
   if (debounceIsVisible) {
     const content = (
-      <Text color="white100">
+      <Text color="mono0">
         {isPartnerOfferEnabled
           ? "Tap the heart to save an artwork\nand signal your interest to galleries."
           : "Hit the heart to save an artwork."}
@@ -59,7 +59,7 @@ export const ProgressiveOnboardingSaveArtwork: React.FC<{ contextScreenOwnerType
         onCloseComplete={clearActivePopover}
         onOpenComplete={trackEvent}
         title={
-          <Text weight="medium" color="white100">
+          <Text weight="medium" color="mono0">
             Like what you see?
           </Text>
         }

@@ -98,7 +98,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
                     {!!shouldDisplayCounts && (
                       <Text
                         variant="xs"
-                        color="black60"
+                        color="mono60"
                         accessibilityLabel="Remaining artworks count"
                       >
                         + {remainingArtworksCount}

@@ -222,9 +222,9 @@ const LocationPredictions = ({
           },
           isFloating ? { position: "absolute", top: 72 } : {},
         ]}
-        backgroundColor="white100"
+        backgroundColor="mono0"
         borderWidth={1}
-        borderColor="black10"
+        borderColor="mono10"
         width="100%"
       >
         {predictions.map((p) => (
@@ -244,7 +244,7 @@ const LocationPredictions = ({
           </Touchable>
         ))}
         {!!emptyResults && (
-          <Text m={1} variant="sm-display" color="black60" textAlign="center">
+          <Text m={1} variant="sm-display" color="mono60" textAlign="center">
             Please try searching again with a different spelling.
           </Text>
         )}

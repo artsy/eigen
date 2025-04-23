@@ -14,22 +14,22 @@ export const tagForStatus = (
 ): CardTagProps | undefined => {
   switch (status) {
     case "closed":
-      return { text: "Closed", textColor: "white100", color: "black100" }
+      return { text: "Closed", textColor: "mono0", color: "mono100" }
     case "live":
       if (distanceToClose === null) {
         return undefined
       }
       return {
         text: `${distanceToClose} left`,
-        textColor: "black60",
-        color: "white100",
-        borderColor: "black5",
+        textColor: "mono60",
+        color: "mono0",
+        borderColor: "mono5",
       }
     case "scheduled":
       if (distanceToOpen === null) {
         return undefined
       }
-      return { text: "Opening soon", textColor: "white100", color: "black100" }
+      return { text: "Opening soon", textColor: "mono0", color: "mono100" }
   }
   return undefined
 }

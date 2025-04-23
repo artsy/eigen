@@ -27,7 +27,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
       title: "Medium",
       value: artworkData?.mediumType?.name && (
         <RouterLink to={`/artwork/${artworkData.slug}/medium`} disablePrefetch>
-          <Text variant="xs" color="black100" style={{ textDecorationLine: "underline" }}>
+          <Text variant="xs" color="mono100" style={{ textDecorationLine: "underline" }}>
             {artworkData?.mediumType?.name}
           </Text>
         </RouterLink>
@@ -53,7 +53,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
     {
       title: "Certificate of Authenticity",
       value: artworkData?.certificateOfAuthenticity?.details && (
-        <Text variant="xs" color="black100">
+        <Text variant="xs" color="mono100">
           {artworkData?.certificateOfAuthenticity?.details}
         </Text>
       ),
@@ -107,7 +107,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({
             mt={1}
             ml={1}
             variant="xs"
-            color="black100"
+            color="mono100"
             textAlign="center"
             underline
             onPress={() => handleReadMoreTap()}

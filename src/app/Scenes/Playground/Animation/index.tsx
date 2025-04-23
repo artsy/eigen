@@ -31,7 +31,7 @@ export const Animations = () => {
 
   return (
     <Flex>
-      <Flex backgroundColor="black10" p={2}>
+      <Flex backgroundColor="mono10" p={2}>
         <Text variant="sm-display" fontWeight="bold" textAlign="center">
           Animations with Reanimated 3
         </Text>

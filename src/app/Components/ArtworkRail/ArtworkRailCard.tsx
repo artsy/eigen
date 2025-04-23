@@ -11,12 +11,12 @@ import {
   ArtworkRailCardMeta,
 } from "app/Components/ArtworkRail/ArtworkRailCardMeta"
 import { ContextMenuArtwork, trackLongPress } from "app/Components/ContextMenu/ContextMenuArtwork"
-import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
+import { Disappearable } from "app/Components/Disappearable"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { GestureResponderEvent, PixelRatio, Platform } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -59,17 +59,18 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const { trackEvent } = useTracking()
 
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
+  const disappearableRef = useRef<Disappearable>(null)
 
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const backgroundColor = dark ? "black100" : "white100"
+  const backgroundColor = dark ? "mono100" : "mono0"
 
   const supressArtwork = () => {
-    ;(artwork as DissapearableArtwork)?._disappearable?.disappear()
+    disappearableRef.current?.disappear()
   }
 
   return (
-    <Disappearable ref={(ref) => ((artwork as DissapearableArtwork)._disappearable = ref)}>
+    <Disappearable ref={disappearableRef}>
       <AnalyticsContextProvider
         contextScreenOwnerId={contextScreenOwnerId}
         contextScreenOwnerSlug={contextScreenOwnerSlug}

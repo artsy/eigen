@@ -28,12 +28,12 @@ export const ArtworkListEmptyState = ({ me, refreshControl }: ArtworkListEmptySt
           shareableWithPartners={artworkList?.shareableWithPartners ?? false}
         />
 
-        <Separator borderColor="black10" mt={1} />
+        <Separator borderColor="mono10" mt={1} />
 
         <Flex px={2} mt={4}>
           <Text variant="sm">{text.title}</Text>
 
-          <Text variant="xs" color="black60">
+          <Text variant="xs" color="mono60">
             {text.description}
           </Text>
 

@@ -28,15 +28,15 @@ export const MarketingCollectionHeader: React.FC<MarketingCollectionHeaderProps>
   return (
     <ImageBackground resizeMode="cover" source={images[collectionSlug]}>
       <Flex pt={6} px={2}>
-        <Text variant="xl" color="white100">
+        <Text variant="xl" color="mono0">
           {collection.title}
         </Text>
         <Spacer y={2} />
-        <Text variant="sm" color="white100">
+        <Text variant="sm" color="mono0">
           {description}
         </Text>
         <Spacer y={2} />
-        <Text variant="sm" color="white100">
+        <Text variant="sm" color="mono0">
           {SAVE_INSTRUCTIONS}
         </Text>
         <Spacer y={4} />

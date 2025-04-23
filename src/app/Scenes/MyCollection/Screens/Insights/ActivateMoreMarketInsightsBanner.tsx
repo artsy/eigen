@@ -20,13 +20,13 @@ export const ActivateMoreMarketInsightsBanner = () => {
         style={{ width: screenDimensions.width / 2 }}
         alignItems="flex-start"
         justifyContent="center"
-        backgroundColor="black5"
+        backgroundColor="mono5"
       >
         <Flex mx={2}>
-          <Text variant={isIPad ? "lg-display" : "sm-display"} color="black100" mt={2}>
+          <Text variant={isIPad ? "lg-display" : "sm-display"} color="mono100" mt={2}>
             Unlock More Insights
           </Text>
-          <Text mt={1} mb={2} variant={isIPad ? "md" : "xs"} color="black60">
+          <Text mt={1} mb={2} variant={isIPad ? "md" : "xs"} color="mono60">
             Add your artworks and get more market insights about your collection.
           </Text>
           <Button

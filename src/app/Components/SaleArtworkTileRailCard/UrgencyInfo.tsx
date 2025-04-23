@@ -34,13 +34,13 @@ export const UrgencyInfo: React.FC<UrgencyInfoProps> = (props) => {
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Flex flexDirection="row" alignItems="center">
           <TimerIcon height={16} width={16} fill={color} />
-          <Text variant="xs" italic color={color ?? "black100"}>
+          <Text variant="xs" italic color={color ?? "mono100"}>
             {" "}
             {timeText}
           </Text>
         </Flex>
         {!!showDate && (
-          <Text variant="xs" color="black60">
+          <Text variant="xs" color="mono60">
             {formattedDate}
           </Text>
         )}

@@ -38,7 +38,7 @@ export const ShowItem: React.FC<ShowItemProps> = ({ displayViewShowButton = fals
       </Text>
       <Text variant="sm-display">{data.partner?.name}</Text>
       {!!data.exhibitionPeriod && (
-        <Text variant="sm-display" color="black60">
+        <Text variant="sm-display" color="mono60">
           {data.exhibitionPeriod}
         </Text>
       )}

@@ -34,7 +34,7 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event, conversationId 
     const { offer } = event
     const isCounter = offer.respondsTo !== null
     if (offer.fromParticipant === "BUYER") {
-      color = "black100"
+      color = "mono100"
       message = `You sent ${isCounter ? "a counteroffer" : "an offer"} for ${event.offer.amount}`
       if (!isCounter) {
         action = {
@@ -65,21 +65,21 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event, conversationId 
     } else if (orderUpdateState === "offer_processing_approval") {
       Icon = AlertCircleFillIcon
       color = "yellow100"
-      textColor = "black100"
+      textColor = "mono100"
       message = "Offer accepted. Payment Processing"
     } else if (orderUpdateState === "buy_processing_approval") {
       Icon = AlertCircleFillIcon
       color = "yellow100"
-      textColor = "black100"
+      textColor = "mono100"
       message = "Order approved. Payment Processing"
     } else if (orderUpdateState === "offer_rejected") {
       color = "red100"
       message = `Offer Declined`
     } else if (state === "CANCELED" && reasonLapsed) {
-      color = "black60"
+      color = "mono60"
       message = `${orderUpdateState === "offer_lapsed" ? "Offer" : "Purchase"} Expired`
     } else if (orderUpdateState === "buy_submitted") {
-      color = "black100"
+      color = "mono100"
       message = `You purchased this artwork`
       action = {
         label: "See details",

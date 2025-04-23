@@ -46,11 +46,11 @@ const MenuItemSocialItem = ({
       icon={enableRedesignedSettings ? icon : undefined}
       rightView={
         isLoading ? (
-          <ActivityIndicator size="small" color="black100" />
+          <ActivityIndicator size="small" color="mono100" />
         ) : (
           <Flex flexDirection="row" alignItems="center">
             {!enableRedesignedSettings && icon}
-            <Text variant="sm-display" color="black60" lineHeight="18px">
+            <Text variant="sm-display" color="mono60" lineHeight="18px">
               {isLinked ? "Linked" : "Link"}
             </Text>
           </Flex>
@@ -144,7 +144,7 @@ export const MyAccount: React.FC<{ me: MyAccount_me$key }> = (props) => {
           <SectionTitle
             title="Linked Accounts"
             titleVariant={enableRedesignedSettings ? "xs" : "sm-display"}
-            titleColor={enableRedesignedSettings ? "black60" : "black100"}
+            titleColor={enableRedesignedSettings ? "mono60" : "mono100"}
             mx={2}
           />
 
@@ -208,7 +208,7 @@ export const MyAccount: React.FC<{ me: MyAccount_me$key }> = (props) => {
       {enableRedesignedSettings ? (
         <LinkText
           mx={2}
-          color="black60"
+          color="mono60"
           variant="xs"
           mt={2}
           onPress={() => navigate("my-account/delete-account")}
@@ -243,7 +243,7 @@ const MyAccountPlaceholder: React.FC = () => {
           <SectionTitle
             title="Linked Accounts"
             titleVariant={enableRedesignedSettings ? "xs" : "sm-display"}
-            titleColor={enableRedesignedSettings ? "black60" : "black100"}
+            titleColor={enableRedesignedSettings ? "mono60" : "mono100"}
             mx={2}
           />
 

@@ -34,7 +34,7 @@ export const SaleActiveBidItem: React.FC<SaleActiveBidItemProps> = ({ lotStandin
           {!saleArtwork.sale?.isLiveOpen && (
             <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
               <Text variant="xs">{sellingPrice}</Text>
-              <Text variant="xs" color="black60">
+              <Text variant="xs" color="mono60">
                 {" "}
                 ({bidCount} {bidCount === 1 ? "bid" : "bids"})
               </Text>

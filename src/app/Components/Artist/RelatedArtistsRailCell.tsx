@@ -71,7 +71,7 @@ export const RelatedArtistsRailCell: React.FC<RelatedArtistsRailCellProps> = ({
       <Flex flexDirection="row" justifyContent="space-between" my={1}>
         <Flex>
           <Text variant="sm-display">{relatedArtistData.name}</Text>
-          <Text variant="xs" color="black60">
+          <Text variant="xs" color="mono60">
             {relatedArtistData.formattedNationalityAndBirthday}
           </Text>
         </Flex>

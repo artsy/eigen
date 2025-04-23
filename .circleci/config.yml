@@ -456,8 +456,8 @@ jobs:
 
   build-test-app-android:
     docker:
-      - image: cimg/android:2024.01.1-node
-    resource_class: large
+      - image: cimg/android:2025.03.1-node
+    resource_class: xlarge
     steps:
       - attach_workspace:
           at: ../workspace

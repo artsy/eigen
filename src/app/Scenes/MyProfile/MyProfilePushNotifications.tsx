@@ -38,11 +38,11 @@ export type UserPushNotificationSettings =
 
 export const OpenSettingsBanner = () => (
   <>
-    <Flex py={4} px={2} backgroundColor="black5" alignItems="center">
-      <Text variant="sm-display" weight="medium" color="black100">
+    <Flex py={4} px={2} backgroundColor="mono5" alignItems="center">
+      <Text variant="sm-display" weight="medium" color="mono100">
         Artsy would like to send you notifications
       </Text>
-      <Text variant="sm" textAlign="center" color="black60" marginTop={1} marginBottom={2}>
+      <Text variant="sm" textAlign="center" color="mono60" marginTop={1} marginBottom={2}>
         {INSTRUCTIONS}
       </Text>
       <Button
@@ -63,11 +63,11 @@ export const OpenSettingsBanner = () => (
 
 export const AllowPushNotificationsBanner = () => (
   <>
-    <Flex py={4} px={2} backgroundColor="black5" alignItems="center">
-      <Text variant="sm-display" weight="medium" color="black100">
+    <Flex py={4} px={2} backgroundColor="mono5" alignItems="center">
+      <Text variant="sm-display" weight="medium" color="mono100">
         Artsy would like to send you notifications
       </Text>
-      <Text variant="sm" textAlign="center" color="black60" marginTop={1} marginBottom={2}>
+      <Text variant="sm" textAlign="center" color="mono60" marginTop={1} marginBottom={2}>
         We need your permission to send push notifications, which may include alerts, artwork
         reminders or purchase updates.
       </Text>
@@ -94,7 +94,7 @@ const NotificationPermissionsBox = ({
   isLoading: boolean
 }) => (
   <Box py={1} px={2}>
-    <Text variant="sm-display" color={isLoading ? "black60" : "black100"} weight="medium" py={1}>
+    <Text variant="sm-display" color={isLoading ? "mono60" : "mono100"} weight="medium" py={1}>
       {title}
     </Text>
     {children}

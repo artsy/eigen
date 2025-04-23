@@ -37,7 +37,7 @@ export const Tab: React.FC<TabProps> = ({
         >
           <Text
             {...(variant ? { variant } : { fontSize: 16 })}
-            color={active ? color("black100") : pressed ? color("blue100") : color("black60")}
+            color={active ? color("mono100") : pressed ? color("blue100") : color("mono60")}
             style={{
               textDecorationLine: pressed ? "underline" : "none",
             }}

@@ -105,7 +105,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
               }}
               onBlur={() => validateForm()}
               blurOnSubmit={false} // This is needed to avoid UI jump when the user submits
-              placeholderTextColor={color("black30")}
+              placeholderTextColor={color("mono30")}
               title="Email"
               returnKeyType="next"
               spellCheck={false}
@@ -140,7 +140,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
                 }
               }}
               onBlur={() => validateForm()}
-              placeholderTextColor={color("black30")}
+              placeholderTextColor={color("mono30")}
               ref={passwordInputRef}
               secureTextEntry
               title="Password"
@@ -158,7 +158,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
               navigation.navigate("ForgotPassword")
             }}
           >
-            <Text variant="sm" color="black60" style={{ textDecorationLine: "underline" }}>
+            <Text variant="sm" color="mono60" style={{ textDecorationLine: "underline" }}>
               Forgot password?
             </Text>
           </Touchable>

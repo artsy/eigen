@@ -1,4 +1,7 @@
 package net.artsy.app
+import android.content.res.Configuration
+import expo.modules.ApplicationLifecycleDispatcher
+import expo.modules.ReactNativeHostWrapper
 
 import android.app.Application
 import android.content.Context
@@ -17,7 +20,6 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.soloader.SoLoader
 import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.google.firebase.messaging.FirebaseMessaging
-import com.microsoft.codepush.react.CodePush
 import com.segment.analytics.Analytics
 import io.sentry.react.RNSentryPackage
 import com.reactnativekeysjsi.KeysModule.getSecureFor
@@ -25,7 +27,7 @@ import com.reactnativekeysjsi.KeysModule.getSecureFor
 class MainApplication : Application(), ReactApplication {
 
     override val reactNativeHost: ReactNativeHost =
-      object : DefaultReactNativeHost(this) {
+      ReactNativeHostWrapper(this, object : DefaultReactNativeHost(this) {
         override fun getPackages(): List<ReactPackage> =
             PackageList(this).packages.apply {
               // Packages that cannot be autolinked yet can be added manually here, for example:
@@ -39,11 +41,10 @@ class MainApplication : Application(), ReactApplication {
 
         override val isNewArchEnabled: Boolean = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
         override val isHermesEnabled: Boolean = BuildConfig.IS_HERMES_ENABLED
-      }
+      })
 
   override val reactHost: ReactHost
-    get() = getDefaultReactHost(applicationContext, reactNativeHost)
-
+    get() = ReactNativeHostWrapper.createReactHost(applicationContext, reactNativeHost)
 
     override fun onCreate() {
         super.onCreate()
@@ -65,5 +66,11 @@ class MainApplication : Application(), ReactApplication {
         Analytics.setSingletonInstance(analytics)
 
         registerActivityLifecycleCallbacks(BrazeActivityLifecycleCallbackListener())
+        ApplicationLifecycleDispatcher.onApplicationCreate(this)
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+      super.onConfigurationChanged(newConfig)
+      ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig)
     }
 }

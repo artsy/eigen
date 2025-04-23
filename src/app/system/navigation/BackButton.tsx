@@ -31,7 +31,7 @@ export const BackButton: React.FC<{
           position: "absolute",
           top: 13 + useScreenDimensions().safeAreaInsets.top,
           left: 10,
-          backgroundColor: color("white100"),
+          backgroundColor: color("mono0"),
           width: 40,
           height: 40,
           borderRadius: 20,
@@ -45,9 +45,9 @@ export const BackButton: React.FC<{
         style={{ width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}
       >
         {showCloseIcon ? (
-          <CloseIcon fill="black100" width={26} height={26} />
+          <CloseIcon fill="mono100" width={26} height={26} />
         ) : (
-          <ChevronIcon direction="left" fill="black100" />
+          <ChevronIcon direction="left" fill="mono100" />
         )}
       </TouchableOpacity>
     </Animated.View>

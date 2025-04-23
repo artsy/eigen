@@ -24,11 +24,11 @@ const Container = styled.View`
   justify-content: space-between;
   align-items: flex-start;
   border-top-width: 1px;
-  border-top-color: ${themeGet("colors.black10")};
-  border-bottom-color: ${themeGet("colors.black10")};
+  border-top-color: ${themeGet("colors.mono10")};
+  border-bottom-color: ${themeGet("colors.mono10")};
   border-bottom-width: 1px;
   padding: 10px;
-  background-color: ${(p: ContainerProps) => (p.active ? "white100" : themeGet("colors.black5"))};
+  background-color: ${(p: ContainerProps) => (p.active ? "mono0" : themeGet("colors.mono5"))};
 `
 
 interface Props {
@@ -111,7 +111,7 @@ export default class Composer extends React.Component<Props, State> {
                 <Container active={this.state.active}>
                   <TextInput
                     placeholder="Type your message"
-                    placeholderTextColor={color("black60")}
+                    placeholderTextColor={color("mono60")}
                     keyboardAppearance="dark"
                     onEndEditing={() => this.setState({ active: false })}
                     onFocus={() => this.setState({ active: this.input.isFocused() })}

@@ -24,7 +24,7 @@ import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSav
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { ContextMenuArtwork, trackLongPress } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
-import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
+import { Disappearable } from "app/Components/Disappearable"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
@@ -114,6 +114,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
   hideCreateAlertOnArtworkPreview = false,
 }) => {
   const itemRef = useRef<any>()
+  const disappearableRef = useRef<Disappearable>(null)
+
   const color = useColor()
   const tracking = useTracking()
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
@@ -249,17 +251,17 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const displayLimitedTimeOfferSignal =
     collectorSignals?.partnerOffer?.isAvailable && !isAuction && !displayPriceOfferMessage
 
-  const handleSupress = async (item: DissapearableArtwork) => {
-    await item._disappearable?.disappear()
+  const handleSupress = () => {
+    disappearableRef.current?.disappear()
   }
 
   const displayArtworkSocialSignal =
     !isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals
 
   return (
-    <Disappearable ref={(ref) => ((artwork as any)._disappearable = ref)}>
+    <Disappearable ref={disappearableRef}>
       <ContextMenuArtwork
-        onSupressArtwork={() => handleSupress(artwork as any)}
+        onSupressArtwork={handleSupress}
         contextModule={contextModule ?? ContextModule.artworkGrid}
         contextScreenOwnerType={contextScreenOwnerType}
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
@@ -268,7 +270,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       >
         <RouterLink
           haptic
-          underlayColor={color("white100")}
+          underlayColor={color("mono0")}
           onPress={handleTap}
           // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
           onLongPress={() => {
@@ -345,7 +347,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                       lineHeight="18px"
                       variant="xs"
                       weight="regular"
-                      color="black60"
+                      color="mono60"
                       {...titleTextStyle}
                     >
                       <Text lineHeight="18px" variant="xs" weight="regular">
@@ -359,7 +361,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   <Text
                     variant="xs"
                     lineHeight="18px"
-                    color="black60"
+                    color="mono60"
                     numberOfLines={1}
                     {...partnerNameTextStyle}
                   >
@@ -371,7 +373,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     <Text lineHeight="20px" variant="xs" numberOfLines={1} fontWeight="bold">
                       {priceOfferMessage.priceWithDiscountMessage}
                     </Text>
-                    <Text color="black60" variant="xs">
+                    <Text color="mono60" variant="xs">
                       {" "}
                       (List price: {priceOfferMessage.priceListedMessage})
                     </Text>

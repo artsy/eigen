@@ -70,12 +70,12 @@ export const ProgressiveOnboardingLongPressContextMenu: React.FC = ({ children }
       onOpenComplete={trackEvent}
       placement="top"
       title={
-        <Text variant="xs" color="white100" fontWeight={500}>
+        <Text variant="xs" color="mono0" fontWeight={500}>
           Quick tip:
         </Text>
       }
       content={
-        <Text variant="xs" color="white100">
+        <Text variant="xs" color="mono0">
           Reveal more options and actions on an artwork card by pressing and holding an artwork.
         </Text>
       }

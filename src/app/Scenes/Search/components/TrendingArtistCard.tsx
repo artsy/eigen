@@ -30,7 +30,7 @@ export const TrendingArtistCard: React.FC<TrendingArtistCardProps> = ({ artist, 
           </Text>
 
           {!!data.formattedNationalityAndBirthday && (
-            <Text variant="xs" numberOfLines={1} color="black60">
+            <Text variant="xs" numberOfLines={1} color="mono60">
               {data.formattedNationalityAndBirthday}
             </Text>
           )}

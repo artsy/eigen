@@ -56,7 +56,7 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
         }}
         blurOnSubmit={false}
         placeholder="First and last name"
-        placeholderTextColor={color("black30")}
+        placeholderTextColor={color("mono30")}
         returnKeyType="done"
         maxLength={128}
         error={errors.name}

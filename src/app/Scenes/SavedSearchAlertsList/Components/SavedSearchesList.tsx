@@ -105,7 +105,7 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
       onRefresh={() => {
         onRefresh("default")
       }}
-      ItemSeparatorComponent={() => <Separator borderColor="black5" />}
+      ItemSeparatorComponent={() => <Separator borderColor="mono5" />}
       renderItem={({ item }) => {
         return (
           <SavedSearchListItem

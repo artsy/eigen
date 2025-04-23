@@ -1,35 +1,18 @@
-#import "ARAppNotificationsDelegate.h"
-
-#import "ArtsyAPI+Notifications.h"
-#import "ArtsyAPI+DeviceTokens.h"
-
-#import "ARAppDelegate.h"
+#import "AppDelegate+Notifications.h"
 #import "ARAppConstants.h"
 #import "ARAnalyticsConstants.h"
-#import <Analytics/SEGAnalytics.h>
 #import "UIApplicationStateEnum.h"
-#import "ARNotificationView.h"
-#import "ARSerifNavigationViewController.h"
 #import "ARLogger.h"
-#import "ARDefaults.h"
-#import "User.h"
-#import "AROptions.h"
-#import "ARDispatchManager.h"
 #import "AREmission.h"
-#import "ARNotificationsManager.h"
-#import <UserNotifications/UserNotifications.h>
-#import <BrazeKit/BrazeKit-Swift.h>
+#import "ArtsyAPI+DeviceTokens.h"
+#import "User.h"
 
-
-@implementation ARAppNotificationsDelegate
-
-#pragma mark -
-#pragma mark Push Notification Delegate
+@implementation ARAppDelegate (Notifications)
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
     BOOL hasSeenPushDialog = [[NSUserDefaults standardUserDefaults] boolForKey:ARAPNSHasSeenPushDialog];
-    
+
     NSString *analyticsContext = @"";
     if (self.requestContext == ARAppNotificationsRequestContextArtistFollow) {
         analyticsContext = @"ArtistFollow";
@@ -39,7 +22,7 @@
         analyticsContext = @"Launch";
     }
     analyticsContext = [@[@"PushNotification", analyticsContext] componentsJoinedByString:@""];
-    
+
     if (!hasSeenPushDialog) {
         [[AREmission sharedInstance] sendEvent:ARAnalyticsPushNotificationApple traits:@{
             @"action_type" : @"Tap",
@@ -87,7 +70,7 @@
     // Save device token for dev settings and to prevent excess calls to gravity if tokens don't change
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
     [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:ARAPNSHasSeenPushDialog];
-    
+
     [[[ARAppDelegate braze] notifications] registerDeviceToken:deviceTokenData];
 
 // We only record device tokens on the Artsy service in case of Beta or App Store builds.
@@ -157,7 +140,6 @@
 {
     NSDictionary *normalizedInfo = [self normalizedNotificationInfo:notificationInfo];
     [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationReceived traits:normalizedInfo];
-    [[SEGAnalytics sharedAnalytics] receivedRemoteNotification:notificationInfo];
 }
 
 - (NSDictionary *)normalizedNotificationInfo:(NSDictionary *)notificationInfo {

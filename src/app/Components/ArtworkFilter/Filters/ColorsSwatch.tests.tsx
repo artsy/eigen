@@ -7,7 +7,7 @@ describe("Colors swatch", () => {
     const selectedTree = renderWithWrappersLEGACY(
       <ColorsSwatch
         width={30}
-        backgroundColor="black100"
+        backgroundColor="mono100"
         foregroundColor="#fff"
         name="blue"
         selected
@@ -19,7 +19,7 @@ describe("Colors swatch", () => {
     const unselectedTree = renderWithWrappersLEGACY(
       <ColorsSwatch
         width={30}
-        backgroundColor="black100"
+        backgroundColor="mono100"
         foregroundColor="#fff"
         name="blue"
         selected={false}

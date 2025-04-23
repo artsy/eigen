@@ -209,7 +209,7 @@ const ArtworkListPlaceholder = () => {
         <SkeletonText mb={2} variant="lg">
           Saved Artworks
         </SkeletonText>
-        <Separator borderColor="black10" mt={1} mb={2} />
+        <Separator borderColor="mono10" mt={1} mb={2} />
         <Flex justifyContent="space-between" flexDirection="row" mb={2}>
           <SkeletonText variant="xs">3 Artworks</SkeletonText>
           <SkeletonBox width={80} height={22} />

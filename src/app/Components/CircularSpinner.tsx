@@ -48,7 +48,7 @@ const getSize = (props: SpinnerProps | CircleProps) => {
  */
 export const CircularSpinner: React.FC<SpinnerProps> = ({
   size = "medium",
-  color: theColor = "black100",
+  color: theColor = "mono100",
   ...rest
 }) => {
   const color = useColor()

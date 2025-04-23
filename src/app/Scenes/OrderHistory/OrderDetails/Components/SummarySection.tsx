@@ -41,18 +41,18 @@ export const SummarySection: React.FC<Props> = ({ section }) => {
       </Flex>
       <Flex alignItems="flex-end">
         {isBuyOrder ? (
-          <Text variant="sm" color="black60" testID="totalListPrice">
+          <Text variant="sm" color="mono60" testID="totalListPrice">
             {totalListPrice}
           </Text>
         ) : (
-          <Text variant="sm" color="black60" testID="lastOffer">
+          <Text variant="sm" color="mono60" testID="lastOffer">
             {(!!lastOffer && lastOffer.amount) || "—"}
           </Text>
         )}
-        <Text variant="sm" color="black60" testID="shippingTotal" mt={0.5}>
+        <Text variant="sm" color="mono60" testID="shippingTotal" mt={0.5}>
           {shippingTotal}
         </Text>
-        <Text variant="sm" color="black60" testID="taxTotal" mt={0.5}>
+        <Text variant="sm" color="mono60" testID="taxTotal" mt={0.5}>
           {taxTotal}
         </Text>
         <Text variant="sm" mt={0.5} testID="buyerTotal">

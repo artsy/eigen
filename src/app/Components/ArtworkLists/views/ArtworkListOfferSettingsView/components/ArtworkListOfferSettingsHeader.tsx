@@ -12,10 +12,10 @@ export const ArtworkListOfferSettingsHeader = () => {
 
       <Spacer y={2} />
 
-      <Text variant="xs" color="black60">
+      <Text variant="xs" color="mono60">
         Shared lists are eligible to receive offers from galleries. Switching sharing off will make
         them visible only to you, and you won't receive offers.{" "}
-        <LinkText onPress={handleLearnMoreTap} variant="xs" color="black60">
+        <LinkText onPress={handleLearnMoreTap} variant="xs" color="mono60">
           Learn more
         </LinkText>
         .

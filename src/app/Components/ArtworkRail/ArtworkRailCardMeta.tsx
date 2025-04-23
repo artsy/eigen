@@ -36,7 +36,7 @@ export interface ArtworkRailCardCommonProps extends ArtworkActionTrackingProps {
 // These are the props that specific to ArtworkRailCardMeta
 export interface ArtworkRailCardMetaProps extends ArtworkRailCardCommonProps {
   artwork: ArtworkRailCardMeta_artwork$key
-  backgroundColor: "black100" | "white100"
+  backgroundColor: "mono100" | "mono0"
 }
 
 export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({

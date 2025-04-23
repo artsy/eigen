@@ -11,14 +11,14 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 const Container = styled.View`
-  background-color: ${themeGet("colors.black100")};
+  background-color: ${themeGet("colors.mono100")};
   border-radius: 15px;
   overflow: hidden;
   margin-bottom: 5px;
 `
 
 const ImageContainer = styled(Flex)`
-  background-color: ${themeGet("colors.black10")};
+  background-color: ${themeGet("colors.mono10")};
   padding: 10px;
   flex: 1;
 `
@@ -62,7 +62,7 @@ export const ArtworkPreview: React.FC<ArtworkPreviewProps> = ({ artwork, onSelec
   }
 
   return (
-    <Touchable underlayColor={color("black10")} onPress={attachmentSelected}>
+    <Touchable underlayColor={color("mono10")} onPress={attachmentSelected}>
       <Container>
         {!!artworkImage && (
           <ImageContainer>
@@ -75,12 +75,12 @@ export const ArtworkPreview: React.FC<ArtworkPreviewProps> = ({ artwork, onSelec
           </ImageContainer>
         )}
         <TextContainer>
-          <Text variant="sm" color="white100">
+          <Text variant="sm" color="mono0">
             {artworkData.artistNames}
           </Text>
           <TitleAndDate>
             {/* Nested Text components are necessary for the correct behaviour on both short and long titles + dates */}
-            <Text variant="xs" color="white100" numberOfLines={1} ellipsizeMode="middle">
+            <Text variant="xs" color="mono0" numberOfLines={1} ellipsizeMode="middle">
               {`${artworkData.title} / ${artworkData.date}`}
             </Text>
           </TitleAndDate>

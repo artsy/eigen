@@ -44,7 +44,7 @@ export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) =
 
         {(fair.articles.totalCount ?? 0) > 5 && (
           <RouterLink to={`/fair/${fair.slug}/articles`}>
-            <Text variant="sm" color="black60">
+            <Text variant="sm" color="mono60">
               View all
             </Text>
           </RouterLink>
@@ -73,7 +73,7 @@ export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) =
               <Box flex={1} pr={2}>
                 <Text variant="sm-display">{article.title}</Text>
 
-                <Text variant="sm" color="black60">
+                <Text variant="sm" color="mono60">
                   {article.publishedAt}
                 </Text>
               </Box>

@@ -25,7 +25,7 @@ const shadowDetails: any = {
 }
 
 const Background = styled(Box)`
-  background: ${themeGet("colors.white100")};
+  background: ${themeGet("colors.mono0")};
   height: 82px;
   border-radius: 2px;
 `
@@ -45,7 +45,7 @@ interface ShowCardState {
 const PageIndicator = styled(Box)`
   height: ${themeGet("space.2")};
   border-radius: ${themeGet("space.1")};
-  background: ${themeGet("colors.white100")};
+  background: ${themeGet("colors.mono0")};
   margin-left: 15px;
   margin-right: auto;
   margin-top: -15px;

@@ -124,8 +124,8 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
               height: 32,
               width: 32,
               borderRadius: 16,
-              backgroundColor: color("white100"),
-              borderColor: color("black10"),
+              backgroundColor: color("mono0"),
+              borderColor: color("mono10"),
               borderWidth: 1,
               shadowRadius: 2,
               elevation: 5,
@@ -171,7 +171,7 @@ export const OptionItem = ({ onPress, text, selected }: OptionItemProps) => (
         <Text variant="xs">{text}</Text>
         {!!selected && (
           <Box>
-            <CheckIcon fill="black100" />
+            <CheckIcon fill="mono100" />
           </Box>
         )}
       </Flex>

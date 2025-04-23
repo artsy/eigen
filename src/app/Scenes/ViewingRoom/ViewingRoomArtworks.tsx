@@ -61,10 +61,10 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
                 )}
                 <Box mt={1} mx={2}>
                   <Text variant="sm">{artwork.artistNames}</Text>
-                  <Text variant="sm" color="black60" key={index}>
+                  <Text variant="sm" color="mono60" key={index}>
                     {artwork.title}
                   </Text>
-                  <Text variant="sm" color="black60">
+                  <Text variant="sm" color="mono60">
                     {artwork.saleMessage}
                   </Text>
                 </Box>

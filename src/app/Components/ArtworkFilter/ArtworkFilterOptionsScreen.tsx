@@ -295,7 +295,7 @@ export const getFilterScreenSortByMode =
   }
 
 export const FilterArtworkButton = styled(Flex)`
-  background-color: ${themeGet("colors.black100")};
+  background-color: ${themeGet("colors.mono100")};
   align-items: center;
   justify-content: center;
   flex-direction: row;
@@ -365,16 +365,16 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
   return (
     <AnimatedBottomButton isVisible={isVisible} onPress={onPress} buttonStyles={roundedButtonStyle}>
       <FilterArtworkButton px={2} style={roundedButtonStyle}>
-        <FilterIcon fill="white100" />
-        <Text variant="sm" pl={1} py={1} color="white100" weight="medium">
+        <FilterIcon fill="mono0" />
+        <Text variant="sm" pl={1} py={1} color="mono0" weight="medium">
           {text}
         </Text>
         {getFiltersCount() > 0 && (
           <>
-            <Text variant="sm" pl={0.5} py={1} color="white100" weight="medium">
+            <Text variant="sm" pl={0.5} py={1} color="mono0" weight="medium">
               {"\u2022"}
             </Text>
-            <Text variant="sm" pl={0.5} py={1} color="white100" weight="medium">
+            <Text variant="sm" pl={0.5} py={1} color="mono0" weight="medium">
               {getFiltersCount()}
             </Text>
           </>

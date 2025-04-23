@@ -16,7 +16,7 @@ export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) =>
 
   return (
     <Flex flexDirection="column" alignItems="center" px={4}>
-      <Text textAlign="center" color="black100" variant="sm">
+      <Text textAlign="center" color="mono100" variant="sm">
         No results found{"\n"}Please try another search.
       </Text>
       <Flex pt={2}>

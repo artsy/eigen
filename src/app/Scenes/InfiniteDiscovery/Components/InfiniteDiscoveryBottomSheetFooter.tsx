@@ -81,7 +81,7 @@ export const InfiniteDiscoveryBottomSheetFooter: FC<InfiniteDiscoveryBottomSheet
           py={2}
           px={2}
           gap={1}
-          backgroundColor="white100"
+          backgroundColor="mono0"
           style={{ paddingBottom: space(2) + bottom }}
         >
           <AuctionWebsocketContextProvider
@@ -191,7 +191,7 @@ const InfiniteDiscoveryBottomSheetFooterErrorFallback: React.FC<
   return (
     <BottomSheetFooter
       {...props}
-      style={{ paddingBottom: space(2), backgroundColor: color("white100") }}
+      style={{ paddingBottom: space(2), backgroundColor: color("mono0") }}
     >
       <Divider />
       <Skeleton>
@@ -225,7 +225,7 @@ export const InfiniteDiscoveryBottomSheetFooterSkeleton: FC<BottomSheetFooterPro
   return (
     <BottomSheetFooter
       {...props}
-      style={{ paddingBottom: bottom, backgroundColor: color("white100") }}
+      style={{ paddingBottom: bottom, backgroundColor: color("mono0") }}
     >
       <Divider />
       <Skeleton>

@@ -208,7 +208,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
       <Defs>
         <LinearGradient id="gradientStroke" gradientTransform="rotate(90)">
           <Stop offset="0%" stopColor={shadedTintColor} stopOpacity="20%" />
-          <Stop offset="100%" stopColor={color("white100")} />
+          <Stop offset="100%" stopColor={color("mono0")} />
         </LinearGradient>
       </Defs>
     ),
@@ -239,7 +239,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
             />
           }
           style={{
-            background: { fill: color("white100") },
+            background: { fill: color("mono0") },
           }}
           padding={{ left: 40, right: 40, bottom: 20, top: 40 }}
           width={chartWidth}
@@ -290,11 +290,11 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
           <VictoryAxis
             dependentAxis
             style={{
-              axis: { stroke: color("black15"), strokeDasharray: 2 },
+              axis: { stroke: color("mono15"), strokeDasharray: 2 },
               ticks: { size: 0 },
               grid: {
                 stroke: ({ tick }: { tick: number }) =>
-                  Number(tick * maxima) === minMaxDomainY.max ? color("black15") : "transparent",
+                  Number(tick * maxima) === minMaxDomainY.max ? color("mono15") : "transparent",
                 strokeDasharray: 3,
               },
             }}
@@ -316,17 +316,17 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
           <VictoryAxis
             crossAxis
             style={{
-              axis: { stroke: color("black30"), strokeDasharray: 2 },
+              axis: { stroke: color("mono30"), strokeDasharray: 2 },
               ticks: { size: 0 },
               grid: {
                 stroke: ({ tick }: { tick: number }) => {
                   if (tick === lastPressedDatum?.x) {
-                    return color("black100")
+                    return color("mono100")
                   }
                   if (xValues.length > 1) {
-                    return xAxisTickMap[tick] ? color("black15") : "transparent"
+                    return xAxisTickMap[tick] ? color("mono15") : "transparent"
                   }
-                  return color("black15")
+                  return color("mono15")
                 },
                 strokeDasharray: 3,
               },
@@ -403,7 +403,7 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
       </Flex>
       {!!lastPressedDatum && (
         <Flex position="absolute" top={70} left={lastPressedDatum.left}>
-          <Text color="black60" variant="xs">
+          <Text color="mono60" variant="xs">
             {lastPressedDatum.x}
           </Text>
         </Flex>

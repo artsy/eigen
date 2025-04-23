@@ -75,7 +75,7 @@ export const DeleteArtworkListView: FC<DeleteArtworkListViewProps> = ({
           Delete {artworkListEntity.title} list?
         </ArtworkListsBottomSheetSectionTitle>
 
-        <Text variant="sm" my={2} color="black60">
+        <Text variant="sm" my={2} color="mono60">
           You’ll lose any works that are only saved on this list.
         </Text>
 

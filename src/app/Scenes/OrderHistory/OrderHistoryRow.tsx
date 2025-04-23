@@ -35,7 +35,7 @@ const getStateColor = (displayState: BuyerDisplayStateEnum) => {
     case "OFFER_RECEIVED":
       return "blue100"
     default:
-      return "black60"
+      return "mono60"
   }
 }
 
@@ -132,7 +132,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
                 testID="image"
               />
             ) : (
-              <Box width={50} height={50} backgroundColor="black10" testID="image-box" />
+              <Box width={50} height={50} backgroundColor="mono10" testID="image-box" />
             )}
           </Flex>
           <Flex width="40%" flexGrow={1} mr={2}>
@@ -141,14 +141,14 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             </Text>
             <Text
               variant="xs"
-              color="black60"
+              color="mono60"
               testID="partner-name"
               ellipsizeMode="tail"
               numberOfLines={1}
             >
               {artwork?.partner?.name}
             </Text>
-            <Text variant="xs" color="black60" testID="date">
+            <Text variant="xs" color="mono60" testID="date">
               {moment(order.createdAt).format("l")}
             </Text>
           </Flex>
