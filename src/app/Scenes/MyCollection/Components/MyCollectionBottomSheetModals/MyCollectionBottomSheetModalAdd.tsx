@@ -27,6 +27,7 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
             })
           }}
           icon={<UserMultiIcon height={24} width={24} fill="mono100" />}
+          alignItems="flex-start"
         />
 
         <MenuItem
@@ -42,6 +43,7 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
             })
           }}
           icon={<ArtworkIcon height={24} width={24} />}
+          alignItems="flex-start"
         />
       </Flex>
     </BottomSheetView>

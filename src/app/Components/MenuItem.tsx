@@ -24,6 +24,7 @@ export const MenuItem: React.FC<{
   rightView?: React.ReactNode
   title: React.ReactNode
   value?: React.ReactNode
+  alignItems?: "center" | "flex-start"
 }> = ({
   allowDisabledVisualClue = false,
   disabled = false,
@@ -37,18 +38,19 @@ export const MenuItem: React.FC<{
   rightView,
   title,
   value,
+  alignItems = "center",
 }) => {
   return (
     <RouterLink onPress={onPress} to={href} underlayColor="mono5" disabled={disabled}>
       <Flex px={px ?? 2}>
         <Flex
           flexDirection="row"
-          alignItems="center"
+          alignItems={alignItems}
           opacity={disabled && allowDisabledVisualClue ? 0.5 : 1}
           py={2}
         >
           {!!icon && (
-            <Flex flex={1} flexGrow={1} justifyContent="center">
+            <Flex flex={1} flexGrow={1}>
               {icon}
             </Flex>
           )}
