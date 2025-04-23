@@ -144,13 +144,19 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const MAX_ARTWORK_HEIGHT = screenHeight * 0.55
 
     const images = artwork.images || []
+    const hasMultipleImages = images.length > 1
     const selectedImage = images[currentImageIndex]
     const src = selectedImage?.url
     const width = selectedImage?.width ?? 0
     const height = selectedImage?.height ?? 0
     const blurhash = selectedImage?.blurhash ?? undefined
 
-    const size = sizeToFit({ width, height }, { width: screenWidth, height: MAX_ARTWORK_HEIGHT })
+    // When there are multiple images, adjust the max height to allow space for pagination bar
+    const adjustedMaxHeight = hasMultipleImages
+      ? MAX_ARTWORK_HEIGHT - PAGINATION_BAR_HEIGHT
+      : MAX_ARTWORK_HEIGHT
+
+    const size = sizeToFit({ width, height }, { width: screenWidth, height: adjustedMaxHeight })
 
     const handleWrapperTaps = (event: GestureResponderEvent) => {
       const now = Date.now()
@@ -219,7 +225,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             contextScreenOwnerSlug={artwork.slug}
           />
         </Flex>
-        <Flex alignItems="center" minHeight={MAX_ARTWORK_HEIGHT} justifyContent="center">
+        <Flex alignItems="center" minHeight={adjustedMaxHeight} justifyContent="center">
           <Animated.View
             style={[
               {
@@ -262,12 +268,8 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           {!!src && <Image src={src} height={size.height} width={size.width} blurhash={blurhash} />}
         </Flex>
 
-        {/* Show pagination bars when there are multiple images */}
-        {/* TODO: this is pushing the content down */}
-        {images.length > 1 && (
+        {!!hasMultipleImages && (
           <Flex
-            pt={2}
-            px={1}
             height={PAGINATION_BAR_HEIGHT}
             alignItems="center"
             justifyContent="center"
