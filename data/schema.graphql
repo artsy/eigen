@@ -15617,6 +15617,9 @@ type Mutation {
     input: UpdatePartnerShowEventMutationInput!
   ): UpdatePartnerShowEventMutationPayload
 
+  # Updates a profile.
+  updateProfile(input: UpdateProfileMutationInput!): UpdateProfileMutationPayload
+
   # Update a quiz artwork interacted_with flag
   updateQuiz(input: updateQuizMutationInput!): updateQuizMutationPayload
 
@@ -22757,6 +22760,50 @@ type UpdatePartnerShowSuccess {
 
 type UpdatePartnerSuccess {
   partner: Partner
+}
+
+type UpdateProfileFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateProfileMutationInput {
+  # Short bio (275 character max).
+  bio: String
+  clientMutationId: String
+
+  # Full bio (800 character max).
+  fullBio: String
+
+  # Unique handle.
+  handle: String
+
+  # The id of the profile to update.
+  id: String!
+
+  # Private profiles hide certain features for non admins.
+  isPrivate: Boolean
+
+  # Location.
+  location: String
+
+  # Menu color class.
+  menuColorClass: String
+
+  # Website.
+  website: String
+}
+
+type UpdateProfileMutationPayload {
+  clientMutationId: String
+
+  # On success: the updated profile. On error: the error that occurred.
+  profileOrError: UpdateProfileResponseOrError
+}
+
+union UpdateProfileResponseOrError = UpdateProfileFailure | UpdateProfileSuccess
+
+type UpdateProfileSuccess {
+  profile: Profile
 }
 
 type UpdateSaleAgreementFailure {
