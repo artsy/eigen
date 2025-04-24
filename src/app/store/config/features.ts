@@ -48,6 +48,7 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
     description: "Support dark mode",
+    echoFlagKey: "ARDarkModeSupport",
   },
   AREnableEditorialNews: {
     readyForRelease: true,
