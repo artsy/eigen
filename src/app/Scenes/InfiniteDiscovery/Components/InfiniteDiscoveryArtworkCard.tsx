@@ -1,8 +1,7 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
 import {
   Flex,
-  HeartFillIcon,
-  HeartIcon,
   Image,
   Popover,
   Text,
@@ -340,7 +339,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                     />
                   </Animated.View>
                 ) : (
-                  <HeartIcon
+                  <HeartStrokeIcon
                     testID="empty-heart-icon"
                     height={HEART_ICON_SIZE}
                     width={HEART_ICON_SIZE}

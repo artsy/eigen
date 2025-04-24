@@ -191,10 +191,6 @@ const homeViewSectionCardQuery = graphql`
 `
 
 export const HomeViewSectionCardQueryRenderer: React.FC<SectionSharedProps> = memo((props) => {
-  if (props.sectionID === "home-view-section-infinite-discovery") {
-    return null
-  }
-
   return withSuspense({
     Component: ({ sectionID, index, ...flexProps }) => {
       const data = useLazyLoadQuery<HomeViewSectionCardQuery>(
