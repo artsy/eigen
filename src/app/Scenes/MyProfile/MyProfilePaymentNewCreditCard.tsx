@@ -172,7 +172,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
     }
   }
 
-  const creaditCardForm = (
+  const creditCardForm = (
     <>
       <CreditCardField
         onCardChange={(cardDetails) => {
@@ -271,7 +271,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
           style={{ flex: 1 }}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-          {creaditCardForm}
+          {creditCardForm}
         </KeyboardAvoidingView>
       </MyProfileScreenWrapper>
     )
@@ -285,7 +285,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
     >
       <ScrollView ref={scrollViewRef}>
         <Flex px={enableRedesignedSettings ? 0 : 2} py={2}>
-          {creaditCardForm}
+          {creditCardForm}
         </Flex>
       </ScrollView>
     </KeyboardAvoidingView>
