@@ -24,25 +24,25 @@ export const useSaveArtworkToArtworkLists = (options: Options) => {
   const customArtworkListsCount = artwork?.customArtworkLists?.totalCount ?? 0
   const isSavedToCustomArtworkLists = customArtworkListsCount > 0
   const artworkEntity: ArtworkEntity = {
-    id: artwork.id,
-    internalID: artwork.internalID,
-    title: artwork.title || "",
-    year: artwork.date,
-    artistNames: artwork.artistNames,
-    imageURL: artwork.preview?.url ?? null,
-    isInAuction: !!artwork.isInAuction,
+    id: artwork?.id,
+    internalID: artwork?.internalID,
+    title: artwork?.title || "",
+    year: artwork?.date,
+    artistNames: artwork?.artistNames,
+    imageURL: artwork?.preview?.url ?? null,
+    isInAuction: !!artwork?.isInAuction,
   }
-  let isSaved = artwork.isSaved
+  let isSaved = artwork?.isSaved
 
   if (!options.saveToDefaultCollectionOnly) {
     if (artworkListID !== null) {
       const isArtworkRemovedFromArtworkList = removedArtworkIDs.find(
-        (artworkID) => artworkID === artwork.internalID
+        (artworkID) => artworkID === artwork?.internalID
       )
 
       isSaved = !isArtworkRemovedFromArtworkList
     } else {
-      isSaved = artwork.isSaved || isSavedToCustomArtworkLists
+      isSaved = artwork?.isSaved || isSavedToCustomArtworkLists
     }
   }
 
