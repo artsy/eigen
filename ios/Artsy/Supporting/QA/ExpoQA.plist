@@ -29,7 +29,7 @@ xiD4Ur42oTOYB52P2e/1zXxWJqxEV1qK/GRpwSAwoQpz8EYu4+GTjlXJLeY3kJbd
 gw==
 -----END CERTIFICATE-----</string>
 	<key>EXUpdatesEnabled</key>
-	<false/>
+	<true/>
 	<key>EXUpdatesCheckOnLaunch</key>
 	<string>NEVER</string>
 	<key>EXUpdatesLaunchWaitMs</key>
