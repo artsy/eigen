@@ -24,6 +24,7 @@ import { FavoritesContextStore, FavoritesTab } from "app/Scenes/Favorites/Favori
 import { FollowsTab } from "app/Scenes/Favorites/FollowsTab"
 import { SavesTab } from "app/Scenes/Favorites/SavesTab"
 import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
+import { GlobalStore } from "app/store/GlobalStore"
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { useEffect } from "react"
 import { Platform } from "react-native"
@@ -58,7 +59,7 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
 
   const { headerHeight } = FavoritesContextStore.useStoreState((state) => state)
   const { trackTappedNavigationTab } = useFavoritesTracking()
-
+  const colorScheme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
   const activeRoute = state.routes[state.index].name
 
   return (
@@ -80,6 +81,11 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
         <Flex flexDirection="row" gap={0.5} mb={2}>
           {Pills.map(({ Icon, title, key }) => {
             const isActive = activeRoute === key
+
+            // We are setting the active fill color to mono100 for dark mode in this case
+            const activeFillColor = colorScheme === "dark" ? "mono100" : "mono0"
+            const color = isActive ? activeFillColor : "mono100"
+
             return (
               <Pill
                 selected={isActive}
@@ -100,12 +106,12 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
                 }}
                 Icon={() => (
                   <Flex mr={0.5} justifyContent="center">
-                    <Icon fill={isActive ? "mono0" : "mono100"} />
+                    <Icon fill={color} />
                   </Flex>
                 )}
                 key={key}
               >
-                {title}
+                <Text color={color}>{title}</Text>
               </Pill>
             )
           })}
