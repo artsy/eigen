@@ -1,10 +1,9 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ShareIcon, ChevronDownIcon } from "@artsy/icons/native"
 import {
-  ChevronIcon,
   DEFAULT_HIT_SLOP,
   Flex,
   Screen,
-  ShareIcon,
   Spacer,
   Spinner,
   Text,
@@ -217,7 +216,9 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
 
     trackEvent(tracks.tappedShare(topArtwork.internalID, topArtwork.slug))
 
-    const url = getShareURL(`/artwork/${topArtwork.slug}?utm_content=discover-daily-share`)
+    const url = getShareURL(
+      `/artwork/${topArtwork.slug}?utm_content=discover-daily-share&utm_medium=product-share`
+    )
     const message = `View ${topArtwork.title} on Artsy`
 
     RNShare.open({
@@ -255,7 +256,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
                 hitSlop={DEFAULT_HIT_SLOP}
                 haptic
               >
-                <ChevronIcon direction="down" />
+                <ChevronDownIcon />
               </Touchable>
             }
             hideRightElements={hideShareButton}
@@ -304,7 +305,7 @@ const InfiniteDiscoveryHeader = () => (
         hitSlop={ICON_HIT_SLOP}
         haptic
       >
-        <ChevronIcon direction="down" />
+        <ChevronDownIcon />
       </Touchable>
     }
     hideRightElements
