@@ -119,29 +119,28 @@ end
 
 lane :test_firebase_ios do
   # # Builds the app
-  # ios_target_ids = IOS_TARGETS.keys
-  # sync_code_signing(app_identifier: ios_target_ids, type: 'appstore')
+  ios_target_ids = IOS_TARGETS.keys
+  sync_code_signing(app_identifier: ios_target_ids, type: 'adhoc')
 
-  # IOS_TARGETS.each do |id, meta|
-  #   update_code_signing_settings(
-  #     use_automatic_signing: false,
-  #     path: 'ios/Artsy.xcodeproj',
-  #     team_id: '23KMWZ572J',
-  #     targets: [meta[:name]],
-  #     profile_name: "match AppStore #{id}"
-  #   )
-  # end
+  IOS_TARGETS.each do |id, meta|
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: 'ios/Artsy.xcodeproj',
+      team_id: '23KMWZ572J',
+      targets: [meta[:name]],
+      profile_name: "match AdHoc #{id}"
+    )
+  end
 
+  sh('yarn bundle:ios')
+  # Workaround for timeout in ci
+  ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
 
-  # sh('yarn bundle:ios')
-  # # Workaround for timeout in ci
-  # ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
-
-  # build_ios_app(
-  #   workspace: 'ios/Artsy.xcworkspace',
-  #   configuration: 'Store',
-  #   silent: true
-  # )
+  build_ios_app(
+    workspace: 'ios/Artsy.xcworkspace',
+    configuration: 'Store',
+    silent: true
+  )
 
   firebase_app_distribution(
     app: ENV['FIREBASE_APP_ID'],
