@@ -14,11 +14,13 @@ export const useHideSplashScreen = () => {
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => state.auth.userAccessToken)
+  const { setSessionState } = GlobalStore.actions
 
   const prefetchUrl = usePrefetch()
 
   useEffect(() => {
     const hideSplashScreen = async () => {
+      setSessionState({ isSplashScreenVisible: false })
       await RNBootSplash.hide({ fade: true })
     }
 

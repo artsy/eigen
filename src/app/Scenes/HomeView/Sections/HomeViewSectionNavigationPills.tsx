@@ -23,10 +23,12 @@ import {
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
+import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { FC, memo } from "react"
-import { FlatList } from "react-native"
+import { FlatList, Platform } from "react-native"
+import Animated, { Easing, useAnimatedStyle, withTiming } from "react-native-reanimated"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionNavigationPillsProps {
@@ -45,11 +47,25 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
 }) => {
   const section = useFragment(sectionFragment, sectionProp)
   const tracking = useHomeViewTracking()
+  const { isSplashScreenVisible } = GlobalStore.useAppState((state) => state.sessionState)
   const space = useSpace()
 
   const navigationPills = section.navigationPills.filter(
     (pill) => pill?.title && pill.href
   ) as NavigationPill[]
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateX: withTiming(isSplashScreenVisible ? -150 : 0, {
+          duration: 500,
+          easing: Easing.out(Easing.cubic),
+        }),
+      },
+    ],
+    // Extra width to be conservative and making sure that we don't have a white section
+    width: "200%",
+  }))
 
   if (!navigationPills.length) {
     return null
@@ -57,46 +73,48 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
 
   return (
     <Flex {...flexProps} mt={1}>
-      <FlatList
-        data={navigationPills}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingHorizontal: space(2),
-        }}
-        ItemSeparatorComponent={() => <Spacer x={0.5} />}
-        renderItem={({ item: pill, index }) => (
-          <RouterLink
-            hasChildTouchable
-            to={pill.href}
-            key={pill.title}
-            onPress={() => {
-              tracking.tappedNavigationPillsGroup({
-                title: pill.title,
-                href: pill.href,
-                index: index,
-              })
-            }}
-          >
-            <Pill
-              accessibilityLabel={pill.title}
-              accessibilityRole="link"
-              testID={`pill-${pill.title}`}
-              variant="link"
-              Icon={SUPPORTED_ICONS[pill.icon as string]}
+      <Animated.View style={animatedStyles}>
+        <FlatList
+          data={navigationPills}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingHorizontal: space(2),
+          }}
+          ItemSeparatorComponent={() => <Spacer x={0.5} />}
+          renderItem={({ item: pill, index }) => (
+            <RouterLink
+              hasChildTouchable
+              to={pill.href}
+              key={pill.title}
+              onPress={() => {
+                tracking.tappedNavigationPillsGroup({
+                  title: pill.title,
+                  href: pill.href,
+                  index: index,
+                })
+              }}
             >
-              <Text variant="xs" color="mono100">
-                {pill.title}
-              </Text>
-            </Pill>
-          </RouterLink>
-        )}
-      />
+              <Pill
+                accessibilityLabel={pill.title}
+                accessibilityRole="link"
+                testID={`pill-${pill.title}`}
+                variant="link"
+                Icon={SUPPORTED_ICONS[pill.icon as string]}
+              >
+                <Text variant="xs" color="mono100">
+                  {pill.title}
+                </Text>
+              </Pill>
+            </RouterLink>
+          )}
+        />
 
-      <HomeViewSectionSentinel
-        contextModule={section.contextModule as ContextModule}
-        index={index}
-      />
+        <HomeViewSectionSentinel
+          contextModule={section.contextModule as ContextModule}
+          index={index}
+        />
+      </Animated.View>
     </Flex>
   )
 }
@@ -140,9 +158,15 @@ const HomeViewSectionNavigationPillsPlaceholder: React.FC<FlexProps> = (flexProp
           ItemSeparatorComponent={() => <Spacer x={0.5} />}
           renderItem={({ item: pill }) => (
             <Pill key={pill.title} variant="link" onPress={() => {}}>
-              <Text variant="xs" color="mono100" opacity={0}>
-                {pill.title}
-              </Text>
+              {Platform.OS === "ios" ? (
+                <Text variant="xs" color="mono100" opacity={0}>
+                  {pill.title}
+                </Text>
+              ) : (
+                // 0 opacity text on android shows the text for a split second and breaks the experience
+                // We want to avoid that. I'ts working fine on iOS
+                <Flex width={50} />
+              )}
             </Pill>
           )}
         />

@@ -12,7 +12,6 @@ if [ -z "$PLATFORM" ]; then
   exit 1
 fi
 
-# Determine the CircleCI path based on the platform
 if [ "$PLATFORM" = "ios" ]; then
   CIRCLECI_PATH="beta-ios"
 elif [ "$PLATFORM" = "android" ]; then
@@ -22,11 +21,9 @@ else
   exit 1
 fi
 
-# Check if there is a build in progress
 echo "Checking if there is a $PLATFORM build in progress..."
 build_status=$(curl "https://circleci.com/api/v1.1/project/github/artsy/eigen/tree/$CIRCLECI_PATH?filter=running&limit=1&shallow=true" -s -H 'Cache-Control: no-cache' | jq -r '.[0].status')
 
-# Check if the build status is "running"
 if [ "$build_status" = "running" ]; then
     echo "Another $PLATFORM build is running."
     read -p "There is a build currently running? Are you sure you want to overwrite it? (y/n) " -n 1 -r

@@ -45,9 +45,10 @@ export type FeatureName = keyof typeof features
 
 export const features = {
   ARDarkModeSupport: {
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     description: "Support dark mode",
+    echoFlagKey: "ARDarkModeSupport",
   },
   AREnableEditorialNews: {
     readyForRelease: true,
@@ -211,12 +212,6 @@ export const features = {
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableAvailabilityFilter",
-  },
-  AREnableInfiniteDiscovery: {
-    description: "Enable infinite discovery",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableInfiniteDiscovery",
   },
   AREnableViewPortPrefetching: {
     description: "Enable viewport prefetching",
