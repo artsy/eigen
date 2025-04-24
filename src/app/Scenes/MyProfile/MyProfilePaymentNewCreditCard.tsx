@@ -161,7 +161,6 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
         )
       }
 
-      setIsLoading(false)
       goBack()
     } catch (e) {
       setIsLoading(false)
@@ -169,6 +168,8 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
       Alert.alert(
         "Something went wrong while attempting to save your credit card. Please try again or contact us."
       )
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -267,12 +268,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
         isValid={state.allPresent}
         loading={isLoading}
       >
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-          {creditCardForm}
-        </KeyboardAvoidingView>
+        {creditCardForm}
       </MyProfileScreenWrapper>
     )
   }

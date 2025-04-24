@@ -131,10 +131,8 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
         <Text>Add your payment details for a faster checkout experience.</Text>
         <Spacer y={2} />
         <FlatList
-          style={{ flex: 1 }}
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
           data={creditCards}
-          keyExtractor={(item) => item.internalID}
           renderItem={({ item }) => (
             <CreditCardDetailsContainer
               card={item}
@@ -145,7 +143,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
           onEndReached={onLoadMore}
           ItemSeparatorComponent={() => <Spacer y={1} />}
           ListFooterComponent={
-            <Flex pt={2}>
+            <Flex py={2}>
               <Button block onPress={() => navigate("/my-profile/payment/new-card")}>
                 Add new card
               </Button>

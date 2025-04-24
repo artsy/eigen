@@ -1,4 +1,4 @@
-import { Button, Flex, Screen, useSpace } from "@artsy/palette-mobile"
+import { Button, Flex, Screen, Spacer, useSpace } from "@artsy/palette-mobile"
 import { goBack } from "app/system/navigation/navigate"
 import { ViewStyle } from "react-native"
 
@@ -38,7 +38,7 @@ export const MyProfileScreenWrapper: React.FC<MyProfileScreenWrapperProps> = ({
         >
           {children}
           {!!onPress && (
-            <Flex mt={2}>
+            <Flex my={2}>
               <Button block onPress={onPress} disabled={!isValid} loading={loading}>
                 Save
               </Button>
