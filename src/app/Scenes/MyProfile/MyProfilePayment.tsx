@@ -127,11 +127,13 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
 
   if (enableRedesignedSettings) {
     return (
-      <MyProfileScreenWrapper title="Payments">
+      <MyProfileScreenWrapper
+        title="Payments"
+        RefreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+      >
         <Text>Add your payment details for a faster checkout experience.</Text>
         <Spacer y={2} />
         <FlatList
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
           data={creditCards}
           renderItem={({ item }) => (
             <CreditCardDetailsContainer
