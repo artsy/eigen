@@ -1,7 +1,8 @@
-import { bullet, CreditCardIcon, Text } from "@artsy/palette-mobile"
+import { bullet, CreditCardIcon, DEFAULT_HIT_SLOP, Text, Touchable } from "@artsy/palette-mobile"
 import { CreditCardDetails_card$data } from "__generated__/CreditCardDetails_card.graphql"
 import { MenuItem } from "app/Components/MenuItem"
-import { ActivityIndicator, TouchableOpacity } from "react-native"
+import { DateTime } from "luxon"
+import { ActivityIndicator } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 const CreditCardDetails = ({
@@ -13,27 +14,25 @@ const CreditCardDetails = ({
   onPress: () => void
   isDeleting?: boolean
 }) => {
-  const expirationDate = `Exp ${expirationMonth.toString().padStart(2, "0")}/${expirationYear
-    .toString()
-    .slice(-2)}`
+  const formattedExpirationDate = DateTime.fromObject({
+    month: expirationMonth,
+    year: expirationYear,
+  }).toFormat("MM/yy")
 
   return (
     <MenuItem
       title={bullet.repeat(4) + " " + lastDigits}
       icon={<CreditCardIcon type={brand as any} width={30} height={20} />}
-      subtitle={expirationDate}
+      subtitle={formattedExpirationDate}
       rightView={
         isDeleting ? (
           <ActivityIndicator size="small" />
         ) : (
-          <TouchableOpacity
-            onPress={onPress}
-            hitSlop={{ top: 10, left: 20, right: 20, bottom: 10 }}
-          >
+          <Touchable onPress={onPress} hitSlop={DEFAULT_HIT_SLOP}>
             <Text variant="sm-display" color="red100">
               Remove
             </Text>
-          </TouchableOpacity>
+          </Touchable>
         )
       }
       px={0}
