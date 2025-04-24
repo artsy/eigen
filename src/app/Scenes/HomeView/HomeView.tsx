@@ -109,11 +109,13 @@ export const HomeView: React.FC = memo(() => {
     requestPushNotificationsPermission()
   }, [])
 
-  useFocusEffect(
-    useCallback(() => {
-      tracking.screen(OwnerType.home)
-    }, [])
-  )
+  const trackHomeScreenView = useCallback(() => {
+    tracking.screen(OwnerType.home)
+  }, [tracking])
+
+  useFocusEffect(() => {
+    trackHomeScreenView()
+  })
 
   const fetchSavedArtworksCount = async () => {
     fetchQuery<HomeViewFetchMeQuery>(
