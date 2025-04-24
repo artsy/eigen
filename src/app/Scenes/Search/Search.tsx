@@ -40,6 +40,7 @@ export const searchQueryDefaultVariables: SearchQuery$variables = {
   term: "",
   skipSearchQuery: true,
   skipTrendingArtists: false,
+  skipCuratedCollections: false,
 }
 
 export const Search: React.FC = () => {
@@ -58,6 +59,7 @@ export const Search: React.FC = () => {
   const searchQueryVariables = {
     ...searchQueryDefaultVariables,
     skipTrendingArtists: isDiscoverVariant,
+    skipCuratedCollections: isDiscoverVariant,
   }
 
   const {
@@ -130,7 +132,7 @@ export const Search: React.FC = () => {
           ) : (
             <Scrollable ref={scrollableRef}>
               {!isDiscoverVariant && <TrendingArtists data={queryData} mb={4} />}
-              <CuratedCollections collections={queryData} mb={4} />
+              {!isDiscoverVariant && <CuratedCollections collections={queryData} mb={4} />}
 
               <HorizontalPadding>{!!shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
 
@@ -144,11 +146,16 @@ export const Search: React.FC = () => {
 }
 
 export const SearchScreenQuery = graphql`
-  query SearchQuery($term: String!, $skipSearchQuery: Boolean!, $skipTrendingArtists: Boolean!) {
+  query SearchQuery(
+    $term: String!
+    $skipSearchQuery: Boolean!
+    $skipTrendingArtists: Boolean!
+    $skipCuratedCollections: Boolean!
+  ) {
     viewer @skip(if: $skipSearchQuery) {
       ...SearchPills_viewer @arguments(term: $term)
     }
-    ...CuratedCollections_collections
+    ...CuratedCollections_collections @skip(if: $skipCuratedCollections)
     ...TrendingArtists_query @skip(if: $skipTrendingArtists)
   }
 `
