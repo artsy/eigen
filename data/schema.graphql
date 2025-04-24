@@ -17956,6 +17956,63 @@ type PublishViewingRoomPayload {
   viewingRoom: ViewingRoom!
 }
 
+type Purchase implements Node {
+  artsyCommission: Float
+  artwork: Artwork
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+
+  # Person who found the sale
+  discoverAdmin: User
+  email: String
+  fair: Fair
+
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID.
+  internalID: ID!
+  note: String
+  ownerType: String
+  sale: Sale
+
+  # Person who facilitated the sale
+  saleAdmin: User
+  saleDate(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  salePrice: Float
+  source: String
+  user: User
+}
+
+# A connection to a list of items.
+type PurchasesConnection {
+  # A list of edges.
+  edges: [PurchasesEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type PurchasesEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Purchase
+}
+
 type Query {
   # Do not use (only used internally for stitching)
   _do_not_use_conversation(
@@ -19076,6 +19133,28 @@ type Query {
     # If present, will search by term
     term: String
   ): ProfileConnection
+
+  # A list of purchases made by users.
+  purchasesConnection(
+    after: String
+
+    # The ID or slug of the artist to filter purchases by.
+    artistId: String
+
+    # The ID or slug of the artwork to filter purchases by.
+    artworkId: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+
+    # The ID of the sale to filter purchases by.
+    saleId: String
+    size: Int
+
+    # The ID of the user to filter purchases by.
+    userId: String
+  ): PurchasesConnection
 
   # Static set of recently sold artworks for the SWA landing page
   recentlySoldArtworks(
@@ -24530,6 +24609,28 @@ type Viewer {
     # If present, will search by term
     term: String
   ): ProfileConnection
+
+  # A list of purchases made by users.
+  purchasesConnection(
+    after: String
+
+    # The ID or slug of the artist to filter purchases by.
+    artistId: String
+
+    # The ID or slug of the artwork to filter purchases by.
+    artworkId: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+
+    # The ID of the sale to filter purchases by.
+    saleId: String
+    size: Int
+
+    # The ID of the user to filter purchases by.
+    userId: String
+  ): PurchasesConnection
 
   # Static set of recently sold artworks for the SWA landing page
   recentlySoldArtworks(
