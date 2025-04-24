@@ -1,4 +1,4 @@
-import { Button, Flex, Screen, Spacer, useSpace } from "@artsy/palette-mobile"
+import { Button, Flex, Screen, useSpace } from "@artsy/palette-mobile"
 import { goBack } from "app/system/navigation/navigate"
 import { ViewStyle } from "react-native"
 
