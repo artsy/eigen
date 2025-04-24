@@ -1,21 +1,17 @@
-import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { MyProfilePaymentDeleteCardMutation } from "__generated__/MyProfilePaymentDeleteCardMutation.graphql"
 import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graphql"
 import { MyProfilePayment_me$data } from "__generated__/MyProfilePayment_me.graphql"
 import { CreditCardDetailsContainer } from "app/Components/CreditCardDetails"
 import { MenuItem } from "app/Components/MenuItem"
+import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderText } from "app/utils/placeholders"
 import { times } from "lodash"
-import React, { Suspense, useCallback, useEffect, useReducer, useState } from "react"
-import {
-  ActivityIndicator,
-  Alert,
-  FlatList,
-  LayoutAnimation,
-  RefreshControl,
-  TouchableOpacity,
-} from "react-native"
+import { Suspense, useCallback, useEffect, useReducer, useState } from "react"
+import { ActivityIndicator, Alert, FlatList, LayoutAnimation, RefreshControl } from "react-native"
 import {
   commitMutation,
   createPaginationContainer,
@@ -37,6 +33,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
   relay,
   me,
 }) => {
+  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [deletingIDs, dispatch] = useReducer(
@@ -128,6 +125,36 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
 
   const creditCards = extractNodes(me.creditCards)
 
+  if (enableRedesignedSettings) {
+    return (
+      <MyProfileScreenWrapper title="Payments">
+        <Text>Add your payment details for a faster checkout experience.</Text>
+        <Spacer y={2} />
+        <FlatList
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+          data={creditCards}
+          renderItem={({ item }) => (
+            <CreditCardDetailsContainer
+              card={item}
+              onPress={() => onRemove(item.internalID)}
+              isDeleting={deletingIDs[item.internalID]}
+            />
+          )}
+          onEndReached={onLoadMore}
+          ItemSeparatorComponent={() => <Spacer y={1} />}
+          ListFooterComponent={
+            <Flex py={2}>
+              <Button block onPress={() => navigate("/my-profile/payment/new-card")}>
+                Add new card
+              </Button>
+              {!!isLoadingMore && <ActivityIndicator style={{ marginTop: 30 }} />}
+            </Flex>
+          }
+        />
+      </MyProfileScreenWrapper>
+    )
+  }
+
   return (
     <FlatList
       style={{ flex: 1 }}
@@ -136,20 +163,12 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
       keyExtractor={(item) => item.internalID}
       contentContainerStyle={{ paddingTop: creditCards.length === 0 ? 10 : 20 }}
       renderItem={({ item }) => (
-        <Flex flexDirection="row" justifyContent="space-between" px={2}>
-          <CreditCardDetailsContainer card={item} />
-          {deletingIDs[item.internalID] ? (
-            <ActivityIndicator size="small" />
-          ) : (
-            <TouchableOpacity
-              onPress={() => onRemove(item.internalID)}
-              hitSlop={{ top: 10, left: 20, right: 20, bottom: 10 }}
-            >
-              <Text variant="sm-display" color="red100">
-                Remove
-              </Text>
-            </TouchableOpacity>
-          )}
+        <Flex px={2}>
+          <CreditCardDetailsContainer
+            card={item}
+            onPress={() => onRemove(item.internalID)}
+            isDeleting={deletingIDs[item.internalID]}
+          />
         </Flex>
       )}
       onEndReached={onLoadMore}
@@ -216,15 +235,17 @@ const MyProfilePaymentContainer = createPaginationContainer(
   }
 )
 
+export const MyProfilePaymentScreenQuery = graphql`
+  query MyProfilePaymentQuery($count: Int!) {
+    me {
+      ...MyProfilePayment_me @arguments(count: $count)
+    }
+  }
+`
+
 const MyProfilePaymentSuspense: React.FC = () => {
   const data = useLazyLoadQuery<MyProfilePaymentQuery>(
-    graphql`
-      query MyProfilePaymentQuery($count: Int!) {
-        me {
-          ...MyProfilePayment_me @arguments(count: $count)
-        }
-      }
-    `,
+    MyProfilePaymentScreenQuery,
     { count: NUM_CARDS_TO_FETCH },
     { fetchPolicy: "store-and-network" }
   )

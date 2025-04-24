@@ -1,28 +1,44 @@
-import { bullet, CreditCardIcon, Flex, Text } from "@artsy/palette-mobile"
+import { bullet, CreditCardIcon, DEFAULT_HIT_SLOP, Text, Touchable } from "@artsy/palette-mobile"
 import { CreditCardDetails_card$data } from "__generated__/CreditCardDetails_card.graphql"
+import { MenuItem } from "app/Components/MenuItem"
+import { DateTime } from "luxon"
+import { ActivityIndicator } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 const CreditCardDetails = ({
   card: { brand, lastDigits, expirationMonth, expirationYear },
+  onPress,
+  isDeleting,
 }: {
   card: CreditCardDetails_card$data
-}) => (
-  <Flex alignItems="center" flexDirection="row">
-    <CreditCardIcon type={brand as any} width={30} height={20} />
-    <Flex flexDirection="row" alignItems="baseline">
-      <Text variant="sm-display" color="mono100" mx={1}>
-        {bullet}
-        {bullet}
-        {bullet}
-        {bullet}
-        {lastDigits}
-      </Text>
-      <Text variant="sm" color="mono60">
-        Exp {expirationMonth.toString().padStart(2, "0")}/{expirationYear.toString().slice(-2)}
-      </Text>
-    </Flex>
-  </Flex>
-)
+  onPress: () => void
+  isDeleting?: boolean
+}) => {
+  const formattedExpirationDate = DateTime.fromObject({
+    month: expirationMonth,
+    year: expirationYear,
+  }).toFormat("MM/yy")
+
+  return (
+    <MenuItem
+      title={bullet.repeat(4) + " " + lastDigits}
+      icon={<CreditCardIcon type={brand as any} width={30} height={20} />}
+      subtitle={formattedExpirationDate}
+      rightView={
+        isDeleting ? (
+          <ActivityIndicator size="small" />
+        ) : (
+          <Touchable onPress={onPress} hitSlop={DEFAULT_HIT_SLOP}>
+            <Text variant="sm-display" color="red100">
+              Remove
+            </Text>
+          </Touchable>
+        )
+      }
+      px={0}
+    />
+  )
+}
 
 export const CreditCardDetailsContainer = createFragmentContainer(CreditCardDetails, {
   card: graphql`

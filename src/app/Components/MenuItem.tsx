@@ -23,6 +23,7 @@ export const MenuItem: React.FC<{
   px?: ResponsiveValue<SpacingUnit, SpacingUnitsTheme>
   rightView?: React.ReactNode
   title: React.ReactNode
+  subtitle?: string
   value?: React.ReactNode
   alignItems?: "center" | "flex-start"
 }> = ({
@@ -37,6 +38,7 @@ export const MenuItem: React.FC<{
   px,
   rightView,
   title,
+  subtitle,
   value,
   alignItems = "center",
 }) => {
@@ -49,16 +51,19 @@ export const MenuItem: React.FC<{
           opacity={disabled && allowDisabledVisualClue ? 0.5 : 1}
           py={2}
         >
-          {!!icon && (
-            <Flex flex={1} flexGrow={1}>
-              {icon}
-            </Flex>
-          )}
-          <Flex flex={7}>
+          {!!icon && <Flex mr={1}>{icon}</Flex>}
+          <Flex>
             <Flex>
-              <Text variant="sm-display" color="mono100">
-                {title}
-              </Text>
+              <Flex flexDirection="row" alignItems="center">
+                <Text variant="sm-display" color="mono100">
+                  {title}
+                </Text>
+                {!!subtitle && (
+                  <Text color="mono60" ml={1}>
+                    {subtitle}
+                  </Text>
+                )}
+              </Flex>
               {!!description && (
                 <Text variant="xs" color="mono60">
                   {description}

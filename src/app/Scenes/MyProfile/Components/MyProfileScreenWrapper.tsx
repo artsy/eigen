@@ -38,7 +38,7 @@ export const MyProfileScreenWrapper: React.FC<MyProfileScreenWrapperProps> = ({
         >
           {children}
           {!!onPress && (
-            <Flex mt={2}>
+            <Flex my={2}>
               <Button block onPress={onPress} disabled={!isValid} loading={loading}>
                 Save
               </Button>

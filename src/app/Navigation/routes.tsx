@@ -160,7 +160,10 @@ import {
   MyProfileEditFormScreenQuery,
 } from "app/Scenes/MyProfile/MyProfileEditForm"
 import { MyProfileHeaderScreenQuery } from "app/Scenes/MyProfile/MyProfileHeader"
-import { MyProfilePaymentQueryRenderer } from "app/Scenes/MyProfile/MyProfilePayment"
+import {
+  MyProfilePaymentQueryRenderer,
+  MyProfilePaymentScreenQuery,
+} from "app/Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "app/Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { MyProfilePushNotificationsQueryRenderer } from "app/Scenes/MyProfile/MyProfilePushNotifications"
 import { MyProfileSettings } from "app/Scenes/MyProfile/MyProfileSettings"
@@ -1182,8 +1185,10 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       screenOptions: {
         headerTitle: "Payment",
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
       },
     },
+    queries: [MyProfilePaymentScreenQuery],
   },
   {
     path: "/my-profile/payment/new-card",
@@ -1192,6 +1197,7 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       screenOptions: {
         headerTitle: "Add new card",
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
       },
     },
   },
