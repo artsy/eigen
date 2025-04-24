@@ -111,7 +111,9 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
                 )}
                 key={key}
               >
-                <Text color={color}>{title}</Text>
+                <Text variant="xs" color={color} style={{ marginBottom: 2 }}>
+                  {title}
+                </Text>
               </Pill>
             )
           })}
