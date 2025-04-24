@@ -10,6 +10,7 @@ import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMen
 import { DevTools } from "app/system/devTools/DevMenu/Components/DevTools"
 import { EnvironmentOptions } from "app/system/devTools/DevMenu/Components/EnvironmentOptions"
 import { Experiments } from "app/system/devTools/DevMenu/Components/Experiments"
+import { ExpoUpdatesOptions } from "app/system/devTools/DevMenu/Components/ExpoUpdatesOptions"
 import { FeatureFlags } from "app/system/devTools/DevMenu/Components/FeatureFlags"
 import { NavButtons } from "app/system/devTools/DevMenu/Components/NavButtons"
 import { NavigateTo } from "app/system/devTools/DevMenu/Components/NavigateTo"
@@ -97,6 +98,7 @@ export const DevMenu: React.FC<{}> = () => {
       <Join separator={<Spacer y={1} />}>
         <NavigateTo />
         <EnvironmentOptions onClose={goBack} />
+        <ExpoUpdatesOptions />
         <FeatureFlags />
         <Experiments />
         <DevTools />
