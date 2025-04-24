@@ -30,6 +30,14 @@ IOS_TARGETS = {
                                                    plist_path: '../ios/BrazePushServiceExtension/Info.plist' }
 }
 
+IOS_QA_TARGETS = {
+  'net.artsy.qa' => { name: 'Artsy', plist_path: APP_PLIST },
+  'net.artsy.qa.Artsy-Stickers' => { name: 'ArtsyStickers', plist_path: '../ios/ArtsyStickers/Info.plist' },
+  'net.artsy.qa.ArtsyWidget' => { name: 'ArtsyWidgetExtension', plist_path: '../ios/ArtsyWidget/Info.plist' },
+  'net.artsy.qa.BrazePushServiceExtension' => { name: 'BrazePushServiceExtension',
+                                                   plist_path: '../ios/BrazePushServiceExtension/Info.plist' }
+}
+
 BETA_LANES = %i[ship_beta ship_beta_ios ship_beta_android].freeze
 
 GIT_COMMIT_SHORT_HASH = `git log -n1 --format='%h'`.chomp
@@ -119,10 +127,10 @@ end
 
 lane :test_firebase_ios do
   # # Builds the app
-  ios_target_ids = IOS_TARGETS.keys
+  ios_target_ids = IOS_QA_TARGETS.keys
   sync_code_signing(app_identifier: ios_target_ids, type: 'adhoc')
 
-  IOS_TARGETS.each do |id, meta|
+  IOS_QA_TARGETS.each do |id, meta|
     update_code_signing_settings(
       use_automatic_signing: false,
       path: 'ios/Artsy.xcodeproj',
@@ -137,8 +145,9 @@ lane :test_firebase_ios do
   ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
 
   build_ios_app(
+    export_method: "ad-hoc",
     workspace: 'ios/Artsy.xcworkspace',
-    configuration: 'Store',
+    configuration: 'QA',
     silent: true
   )
 
