@@ -39,6 +39,7 @@ export const SEARCH_INPUT_PLACEHOLDER = [
 export const searchQueryDefaultVariables: SearchQuery$variables = {
   term: "",
   skipSearchQuery: true,
+  skipTrendingArtists: false,
 }
 
 export const Search: React.FC = () => {
@@ -49,13 +50,21 @@ export const Search: React.FC = () => {
   const { trackEvent } = useTracking()
   const isAndroid = Platform.OS === "android"
   const navigation = useNavigation()
+  const { variant } = useExperimentVariant("diamond_discover-tab")
+  const isDiscoverVariant = variant.name === "variant-a" && variant.enabled
 
   const shouldShowCityGuide = Platform.OS === "ios" && !isTablet()
+
+  const searchQueryVariables = {
+    ...searchQueryDefaultVariables,
+    skipTrendingArtists: isDiscoverVariant,
+  }
+
   const {
     data: queryData,
     refetch,
     isLoading,
-  } = useSearchQuery<SearchQuery>(SearchScreenQuery, searchQueryDefaultVariables)
+  } = useSearchQuery<SearchQuery>(SearchScreenQuery, searchQueryVariables)
 
   useRefetchWhenQueryChanged({ query: searchQuery, refetch })
 
@@ -120,7 +129,7 @@ export const Search: React.FC = () => {
             </>
           ) : (
             <Scrollable ref={scrollableRef}>
-              <TrendingArtists data={queryData} mb={4} />
+              {!isDiscoverVariant && <TrendingArtists data={queryData} mb={4} />}
               <CuratedCollections collections={queryData} mb={4} />
 
               <HorizontalPadding>{!!shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
@@ -135,12 +144,12 @@ export const Search: React.FC = () => {
 }
 
 export const SearchScreenQuery = graphql`
-  query SearchQuery($term: String!, $skipSearchQuery: Boolean!) {
+  query SearchQuery($term: String!, $skipSearchQuery: Boolean!, $skipTrendingArtists: Boolean!) {
     viewer @skip(if: $skipSearchQuery) {
       ...SearchPills_viewer @arguments(term: $term)
     }
     ...CuratedCollections_collections
-    ...TrendingArtists_query
+    ...TrendingArtists_query @skip(if: $skipTrendingArtists)
   }
 `
 
