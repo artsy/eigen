@@ -165,7 +165,7 @@ import {
   MyProfilePaymentScreenQuery,
 } from "app/Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "app/Scenes/MyProfile/MyProfilePaymentNewCreditCard"
-import { MyProfilePreferences } from "app/Scenes/MyProfile/MyProfilePreferences"
+import { MyProfilePreferencesQueryRenderer } from "app/Scenes/MyProfile/MyProfilePreferences"
 import { MyProfilePushNotificationsQueryRenderer } from "app/Scenes/MyProfile/MyProfilePushNotifications"
 import { MyProfileSettings } from "app/Scenes/MyProfile/MyProfileSettings"
 import { NewWorksForYouQueryRenderer } from "app/Scenes/NewWorksForYou/NewWorksForYou"
@@ -1046,6 +1046,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: MyAccountEditPriceRangeQueryRenderer,
     options: {
       screenOptions: {
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
         headerTitle: "Price Range",
       },
     },
@@ -1216,7 +1217,7 @@ export const artsyDotNetRoutes = defineRoutes([
   {
     path: "/my-profile/preferences",
     name: "MyProfilePreferences",
-    Component: MyProfilePreferences,
+    Component: MyProfilePreferencesQueryRenderer,
     options: {
       screenOptions: {
         headerShown: false,
@@ -1505,6 +1506,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: DarkModeSettings,
     options: {
       screenOptions: {
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
         headerTitle: "Dark Mode",
       },
     },

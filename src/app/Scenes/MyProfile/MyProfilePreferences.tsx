@@ -2,6 +2,7 @@ import { MyProfilePreferencesQuery } from "__generated__/MyProfilePreferencesQue
 import { MyProfilePreferences_me$key } from "__generated__/MyProfilePreferences_me.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { MenuItem } from "app/Components/MenuItem"
+import { PRICE_BUCKETS } from "app/Scenes/MyAccount/MyAccountEditPriceRange"
 import { navigate } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -14,7 +15,7 @@ export const MyProfilePreferences = (props: { me?: MyProfilePreferences_me$key }
     <MyProfileScreenWrapper title="Preferences" contentContainerStyle={{ paddingHorizontal: 0 }}>
       <MenuItem
         title="Price Range"
-        value={data?.priceRange}
+        value={PRICE_BUCKETS.find((bucket) => bucket.value === data?.priceRange)?.label}
         onPress={() => {
           navigate("/my-account/edit-price-range")
         }}
@@ -45,7 +46,7 @@ const myProfilePreferencesQuery = graphql`
   }
 `
 
-export const MyAccountEditEmailQueryRenderer: React.FC<{}> = withSuspense({
+export const MyProfilePreferencesQueryRenderer: React.FC<{}> = withSuspense({
   Component: ({}) => {
     const data = useLazyLoadQuery<MyProfilePreferencesQuery>(myProfilePreferencesQuery, {})
 
