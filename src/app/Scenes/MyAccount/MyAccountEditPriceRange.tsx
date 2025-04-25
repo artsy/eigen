@@ -13,7 +13,7 @@ import React, { useEffect, useState } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
-const MyAccountEditPriceRange: React.FC<{
+export const MyAccountEditPriceRange: React.FC<{
   me: MyAccountEditPriceRange_me$key
 }> = (props) => {
   const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")

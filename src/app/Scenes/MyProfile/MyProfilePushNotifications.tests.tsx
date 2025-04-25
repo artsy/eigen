@@ -3,15 +3,19 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { MyProfilePushNotificationsTestQuery } from "__generated__/MyProfilePushNotificationsTestQuery.graphql"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { debounce } from "lodash"
 import { Platform } from "react-native"
 import relay, { graphql } from "react-relay"
-import { MyProfilePushNotificationsQueryRenderer } from "./MyProfilePushNotifications"
+import { MyProfilePushNotifications } from "./MyProfilePushNotifications"
 
 jest.mock("lodash/debounce", () => jest.fn())
+jest.mock("app/utils/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: () => false,
+}))
 
 describe(SwitchMenu, () => {
   it("title is set to mono100 when enabled", async () => {
@@ -49,9 +53,14 @@ describe(SwitchMenu, () => {
   })
 })
 
-describe(MyProfilePushNotificationsQueryRenderer, () => {
+describe("MyProfilePushNotificationsQueryRenderer", () => {
   const { renderWithRelay } = setupTestWrapper<MyProfilePushNotificationsTestQuery>({
-    Component: MyProfilePushNotificationsQueryRenderer,
+    Component: (props) => {
+      if (props?.me) {
+        return <MyProfilePushNotifications me={props.me} />
+      }
+      return null
+    },
     query: graphql`
       query MyProfilePushNotificationsTestQuery @relay_test_operation {
         me {
@@ -122,11 +131,17 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
 
     beforeEach(() => {
       ;(debounce as jest.Mock).mockImplementation((func) => func)
+      mockFetchNotificationPermissions(false).mockImplementationOnce((cb) =>
+        cb(null, PushAuthorizationStatus.Authorized)
+      )
     })
 
     it("should set the notification preference to true and false", async () => {
-      const { mockResolveLastOperation } = renderWithRelay()
-      mockResolveLastOperation({ Me: () => mockNotificationsPreferences })
+      renderWithRelay({
+        Me: () => mockNotificationsPreferences,
+      })
+
+      await flushPromiseQueue()
 
       const switchElement = await screen.findByTestId("newWorksSwitch")
 
@@ -181,4 +196,5 @@ const mockNotificationsPreferences = {
   receiveViewingRoomNotification: true,
   receivePartnerShowNotification: true,
   receivePartnerOfferNotification: true,
+  id: "1",
 }
