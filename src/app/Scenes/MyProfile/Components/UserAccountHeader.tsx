@@ -1,0 +1,201 @@
+import {
+  MapPinIcon,
+  PersonIcon,
+  ShieldIcon,
+  BriefcaseIcon,
+  InstitutionIcon,
+} from "@artsy/icons/native"
+import {
+  Flex,
+  SimpleMessage,
+  Text,
+  Touchable,
+  useScreenDimensions,
+  useSpace,
+  Image,
+  useColor,
+  Join,
+  Spacer,
+  Button,
+} from "@artsy/palette-mobile"
+import { UserAccountHeaderQuery } from "__generated__/UserAccountHeaderQuery.graphql"
+import { UserAccountHeader_me$key } from "__generated__/UserAccountHeader_me.graphql"
+import { navigate } from "app/system/navigation/navigate"
+import { withSuspense } from "app/utils/hooks/withSuspense"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
+
+interface UserAccountHeaderProps {
+  meProps: UserAccountHeader_me$key
+}
+const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps }) => {
+  const me = useFragment<UserAccountHeader_me$key>(userAccountHeaderFragment, meProps)
+
+  const { width } = useScreenDimensions()
+  const space = useSpace()
+  const color = useColor()
+  const WIDTH = width - 2 * space(2)
+
+  const isProfileComplete =
+    !!me.location?.display && !!me.profession && !!me.icon?.url && !!me.isIdentityVerified
+
+  console.log("LOGD UserAccountHeader me", me.collectorProfile)
+  return (
+    <Flex justifyContent="center" alignItems="center" mt={2}>
+      <Touchable onPress={() => navigate("my-collection")}>
+        <Flex
+          minHeight={200}
+          width={WIDTH}
+          backgroundColor="mono0"
+          borderRadius={20}
+          borderColor="mono10"
+          borderWidth={1}
+          alignItems="center"
+          p={2}
+        >
+          <Join separator={<Spacer y={2} />}>
+            {/* Avatar */}
+            <Flex
+              height={70}
+              width={70}
+              borderRadius={35}
+              backgroundColor={color("mono10")}
+              borderWidth={me?.icon?.url ? undefined : 1}
+              borderColor={me?.icon?.url ? undefined : color("mono30")}
+              alignItems="center"
+              justifyContent="center"
+              testID="profile-image"
+            >
+              {!!me?.icon?.url ? (
+                <Flex overflow="hidden" borderRadius={35}>
+                  <Image src={me.icon.url} height={70} width={70} performResize={false} />
+                </Flex>
+              ) : (
+                <PersonIcon width={18} height={18} />
+              )}
+              {!!me.isIdentityVerified && (
+                <Flex
+                  width={22}
+                  height={22}
+                  borderRadius={11}
+                  backgroundColor="blue100"
+                  alignItems="center"
+                  justifyContent="center"
+                  position="absolute"
+                  right={0}
+                  bottom={0}
+                >
+                  <ShieldIcon fill="mono0" />
+                </Flex>
+              )}
+            </Flex>
+
+            {/* Name */}
+            <Text variant="lg-display" color={color("mono100")}>
+              {me.name}
+            </Text>
+
+            {/* Information */}
+            <Flex flexDirection="row" flexWrap="wrap" justifyContent="center">
+              <Join separator={<Spacer x={2} />}>
+                {!!me?.location?.display && (
+                  <Flex flexDirection="row" justifyContent="center" alignItems="center">
+                    <MapPinIcon />
+                    <Text variant="xs" ml={0.5}>
+                      {me.location.display}
+                    </Text>
+                  </Flex>
+                )}
+                {!!me?.profession && (
+                  <Flex flexDirection="row" justifyContent="center" alignItems="center">
+                    <BriefcaseIcon />
+                    <Text variant="xs" ml={0.5}>
+                      {me.profession}
+                    </Text>
+                  </Flex>
+                )}
+                {!!me?.otherRelevantPositions && (
+                  <Flex flexDirection="row" justifyContent="center" alignItems="center">
+                    <InstitutionIcon />
+                    <Text variant="xs" ml={0.5}>
+                      {me.otherRelevantPositions}otherRelevantPositions
+                    </Text>
+                  </Flex>
+                )}
+              </Join>
+            </Flex>
+            {!isProfileComplete && (
+              <Flex alignItems="center">
+                <Button
+                  variant="outline"
+                  size="small"
+                  onPress={() => {
+                    navigate("/complete-my-profile", { passProps: { meKey: me } })
+                  }}
+                >
+                  Complete Profile
+                </Button>
+              </Flex>
+            )}
+          </Join>
+        </Flex>
+      </Touchable>
+    </Flex>
+  )
+}
+
+export const UserAccountHeaderQueryRenderer = withSuspense({
+  Component: (props) => {
+    const data = useLazyLoadQuery<UserAccountHeaderQuery>(
+      UserAccountHeaderScreenQuery,
+      {},
+      {
+        fetchPolicy: "store-and-network",
+      }
+    )
+
+    if (!data.me) {
+      return <SimpleMessage m={2}>Failed to load profile. Please check back later.</SimpleMessage>
+    }
+
+    return <UserAccountHeader meProps={data.me} {...props} />
+  },
+  LoadingFallback: () => <Text>TODO: placeholder</Text>,
+  ErrorFallback: () => {
+    // TODO: test error fallback
+    return <SimpleMessage m={2}>Failed to load profile. Please check back later.</SimpleMessage>
+  },
+})
+
+export const UserAccountHeaderScreenQuery = graphql`
+  query UserAccountHeaderQuery {
+    me {
+      ...UserAccountHeader_me
+    }
+  }
+`
+
+const userAccountHeaderFragment = graphql`
+  fragment UserAccountHeader_me on Me {
+    ...useCompleteMyProfileSteps_me
+
+    internalID
+    name
+    location {
+      display
+    }
+    profession
+    otherRelevantPositions
+    icon {
+      url(version: "thumbnail")
+    }
+    isIdentityVerified
+    counts @required(action: NONE) {
+      followedArtists
+      savedArtworks
+      savedSearches
+    }
+    collectorProfile @required(action: NONE) {
+      confirmedBuyerAt
+    }
+  }
+`
