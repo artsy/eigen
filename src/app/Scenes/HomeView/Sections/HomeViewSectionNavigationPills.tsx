@@ -1,11 +1,11 @@
 import { ContextModule } from "@artsy/cohesion"
 import {
   ArtworkIcon,
+  AuctionIcon as GavelIcon,
   FairIcon,
   Flex,
   FlexProps,
   FollowArtistIcon,
-  AuctionIcon as GavelIcon,
   HeartIcon as HeartStrokeIcon,
   IconProps,
   Pill,
@@ -59,12 +59,11 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
       {
         translateX: withTiming(isSplashScreenVisible ? -150 : 0, {
           duration: 1000,
-          easing: Easing.out(Easing.cubic),
+          easing: Easing.bezier(0.25, 0.1, 0.25, 1.0),
         }),
       },
     ],
-    // Extra width to be conservative and making sure that we don't have a white section
-    width: "200%",
+    overflow: "visible",
   }))
 
   if (!navigationPills.length) {
@@ -73,48 +72,49 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
 
   return (
     <Flex {...flexProps} mt={1}>
-      <Animated.View style={animatedStyles}>
-        <FlatList
-          data={navigationPills}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
+      <Animated.FlatList
+        data={navigationPills}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={animatedStyles}
+        contentContainerStyle={[
+          {
             paddingHorizontal: space(2),
-          }}
-          ItemSeparatorComponent={() => <Spacer x={0.5} />}
-          renderItem={({ item: pill, index }) => (
-            <RouterLink
-              hasChildTouchable
-              to={pill.href}
-              key={pill.title}
-              onPress={() => {
-                tracking.tappedNavigationPillsGroup({
-                  title: pill.title,
-                  href: pill.href,
-                  index: index,
-                })
-              }}
+          },
+        ]}
+        ItemSeparatorComponent={() => <Spacer x={0.5} />}
+        renderItem={({ item: pill, index }) => (
+          <RouterLink
+            hasChildTouchable
+            to={pill.href}
+            key={pill.title}
+            onPress={() => {
+              tracking.tappedNavigationPillsGroup({
+                title: pill.title,
+                href: pill.href,
+                index: index,
+              })
+            }}
+          >
+            <Pill
+              accessibilityLabel={pill.title}
+              accessibilityRole="link"
+              testID={`pill-${pill.title}`}
+              variant="link"
+              Icon={SUPPORTED_ICONS[pill.icon as string]}
             >
-              <Pill
-                accessibilityLabel={pill.title}
-                accessibilityRole="link"
-                testID={`pill-${pill.title}`}
-                variant="link"
-                Icon={SUPPORTED_ICONS[pill.icon as string]}
-              >
-                <Text variant="xs" color="mono100">
-                  {pill.title}
-                </Text>
-              </Pill>
-            </RouterLink>
-          )}
-        />
+              <Text variant="xs" color="mono100">
+                {pill.title}
+              </Text>
+            </Pill>
+          </RouterLink>
+        )}
+      />
 
-        <HomeViewSectionSentinel
-          contextModule={section.contextModule as ContextModule}
-          index={index}
-        />
-      </Animated.View>
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
