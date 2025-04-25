@@ -3249,6 +3249,7 @@ type ArtworkImportTransformedData {
   diameter: String
   height: String
   imageFileNames: String
+  inventoryId: String
   medium: String
   price: String
   width: String
@@ -8599,13 +8600,13 @@ input CreateArtworkMutationInput {
   clientMutationId: String
 
   # The S3 bucket where the artwork image is stored.
-  imageS3Bucket: String @deprecated(reason: "Use imageS3Buckets instead.")
+  imageS3Bucket: String
 
   # The S3 buckets where the artwork images are stored. This is a list of bucket names.
   imageS3Buckets: [String!]
 
   # The S3 key for the artwork image.
-  imageS3Key: String @deprecated(reason: "Use imageS3Keys instead.")
+  imageS3Key: String
 
   # The S3 keys for the artwork images. This is a list of object keys.
   imageS3Keys: [String!]
@@ -22590,6 +22591,9 @@ type UpdatePartnerLocationSuccess {
 }
 
 input UpdatePartnerMutationInput {
+  # Admin assigned for this partner.
+  adminId: String
+
   # Alternate names or synonyms for this partner.
   alternateNames: [String]
 
@@ -22597,11 +22601,17 @@ input UpdatePartnerMutationInput {
   artsyCollectsSalesTax: Boolean
   clientMutationId: String
 
+  # Partner could opt their works to buy now / make offer and accept payments using their merchant account.
+  commerceEnabled: Boolean
+
   # Commission paid by non-subscriber/fair partner.
   commissionRate: Float
 
   # Contract type.
   contractType: String
+
+  # Include in Criteo artwork report.
+  criteoEligible: Boolean
 
   # Whether the partner is directly contactable.
   directlyContactable: Boolean
@@ -22621,14 +22631,41 @@ input UpdatePartnerMutationInput {
   # The email of the partner.
   email: String
 
+  # Whether the partner should have access to ACH payment method on subscriptions.
+  enableAchPaymentMethod: Boolean
+
+  # Triggers partner on platform transaction notifications.
+  enforceOnPlatformTransactions: Boolean
+
+  # Suggested filters for associated artworks.
+  featuredKeywords: [String]
+
   # The given name of the partner.
   givenName: String
 
   # Profile completeness.
   hasFullProfile: Boolean
 
+  # Whether this partner has limited Folio access.
+  hasLimitedFolioAccess: Boolean
+
   # The id of the partner to update.
   id: String!
+
+  # Partner can have artworks implictly enrolled as 'Make Offer' on the artwork page.
+  implicitOfferEnabled: Boolean
+
+  # Partner could list artworks for purchasing from inquiry conversations.
+  inquiryOrderEnabled: Boolean
+
+  # Whether the partner is managed by ERP for subscriptions.
+  managedByErp: Boolean
+
+  # Admin that signed up this partner.
+  outreachAdminId: String
+
+  # Array of partner slugs to assign to this partner.
+  partnerCategories: [String]
 
   # Whether the partner requires pre-qualification.
   preQualify: Boolean
@@ -22639,8 +22676,17 @@ input UpdatePartnerMutationInput {
   # Banner display on the profile overview page.
   profileBannerDisplay: String
 
+  # Admin that referred this partner and gets the commission.
+  referralContactId: String
+
   # The region of the partner.
   region: String
+
+  # Size of the partner.
+  relativeSize: Int
+
+  # Partner is required to configure a merchant account.
+  requiresMerchantAccount: Boolean
 
   # The short name of the partner.
   shortName: String
@@ -22651,8 +22697,23 @@ input UpdatePartnerMutationInput {
   # Type of the partner.
   type: String
 
+  # Whether the partner's VAT exempt status is approved by Artsy.
+  vatExemptApproved: Boolean
+
+  # The VAT identification number belonging to this partner.
+  vatNumber: String
+
+  # Whether the partner is registered, registered_and_exempt, exempt, or ineligible for a VAT identification number.
+  vatStatus: String
+
+  # Indicates the partner is a trusted seller on Artsy.
+  verifiedSeller: Boolean
+
   # The website of the partner.
   website: String
+
+  # Indicates the partner is eligible for manual wire transfers.
+  wireTransferEnabled: Boolean
 }
 
 type UpdatePartnerMutationPayload {
