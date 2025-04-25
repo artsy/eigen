@@ -1207,6 +1207,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: MyProfilePushNotificationsQueryRenderer,
     options: {
       screenOptions: {
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
         headerTitle: "Push Notifications",
       },
     },
