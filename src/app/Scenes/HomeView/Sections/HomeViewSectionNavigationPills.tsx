@@ -58,7 +58,7 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
     transform: [
       {
         translateX: withTiming(isSplashScreenVisible ? -150 : 0, {
-          duration: 500,
+          duration: 1000,
           easing: Easing.out(Easing.cubic),
         }),
       },
