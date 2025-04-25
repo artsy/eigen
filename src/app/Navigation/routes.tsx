@@ -168,6 +168,7 @@ import { MyProfilePaymentNewCreditCard } from "app/Scenes/MyProfile/MyProfilePay
 import { MyProfilePreferencesQueryRenderer } from "app/Scenes/MyProfile/MyProfilePreferences"
 import { MyProfilePushNotificationsQueryRenderer } from "app/Scenes/MyProfile/MyProfilePushNotifications"
 import { MyProfileSettings } from "app/Scenes/MyProfile/MyProfileSettings"
+import { MyProfileTermsAndConditions } from "app/Scenes/MyProfile/MyProfileTermsAndConditions"
 import { NewWorksForYouQueryRenderer } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { NewWorksFromGalleriesYouFollowScreenQuery } from "app/Scenes/NewWorksFromGalleriesYouFollow/Components/NewWorksFromGalleriesYouFollow"
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
@@ -1235,6 +1236,16 @@ export const artsyDotNetRoutes = defineRoutes([
     },
   },
   {
+    path: "/my-profile/terms-and-conditions",
+    name: "MyProfileTermsAndConditions",
+    Component: MyProfileTermsAndConditions,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  },
+  {
     path: "/news",
     name: "News",
     Component: NewsScreen,
@@ -1670,6 +1681,12 @@ export const artsyDotNetRoutes = defineRoutes([
   }),
   webViewRoute({
     path: "/terms",
+    config: {
+      alwaysPresentModally: true,
+    },
+  }),
+  webViewRoute({
+    path: "/supplemental-cos",
     config: {
       alwaysPresentModally: true,
     },
