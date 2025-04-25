@@ -12,7 +12,6 @@ import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useRefreshControl } from "app/utils/refreshHelpers"
-import React from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface Props {

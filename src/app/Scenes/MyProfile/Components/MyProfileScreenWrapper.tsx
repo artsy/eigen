@@ -9,6 +9,7 @@ export interface MyProfileScreenWrapperProps {
   loading?: boolean
   hideLeftElements?: boolean
   contentContainerStyle?: ViewStyle
+  RefreshControl?: JSX.Element
 }
 export const MyProfileScreenWrapper: React.FC<MyProfileScreenWrapperProps> = ({
   children,
@@ -18,6 +19,7 @@ export const MyProfileScreenWrapper: React.FC<MyProfileScreenWrapperProps> = ({
   loading,
   hideLeftElements = false,
   contentContainerStyle,
+  RefreshControl,
 }) => {
   const space = useSpace()
 
@@ -35,6 +37,7 @@ export const MyProfileScreenWrapper: React.FC<MyProfileScreenWrapperProps> = ({
             paddingHorizontal: space(2),
             ...contentContainerStyle,
           }}
+          refreshControl={RefreshControl}
         >
           {children}
           {!!onPress && (
