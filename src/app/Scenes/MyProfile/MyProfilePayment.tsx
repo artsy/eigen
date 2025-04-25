@@ -135,6 +135,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
         <Spacer y={2} />
         <FlatList
           data={creditCards}
+          scrollEnabled={false}
           renderItem={({ item }) => (
             <CreditCardDetailsContainer
               card={item}
