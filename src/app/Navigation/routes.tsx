@@ -166,6 +166,7 @@ import {
 } from "app/Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "app/Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { MyProfilePreferencesQueryRenderer } from "app/Scenes/MyProfile/MyProfilePreferences"
+import { MyProfilePrivacy } from "app/Scenes/MyProfile/MyProfilePrivacy"
 import { MyProfilePushNotificationsQueryRenderer } from "app/Scenes/MyProfile/MyProfilePushNotifications"
 import { MyProfileSettings } from "app/Scenes/MyProfile/MyProfileSettings"
 import { MyProfileTermsAndConditions } from "app/Scenes/MyProfile/MyProfileTermsAndConditions"
@@ -1236,6 +1237,16 @@ export const artsyDotNetRoutes = defineRoutes([
     },
   },
   {
+    path: "/my-profile/privacy",
+    name: "MyProfilePrivacy",
+    Component: MyProfilePrivacy,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  },
+  {
     path: "/my-profile/terms-and-conditions",
     name: "MyProfileTermsAndConditions",
     Component: MyProfileTermsAndConditions,
@@ -1371,6 +1382,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: PrivacyRequest,
     options: {
       screenOptions: {
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
         headerTitle: "Personal Data Request",
       },
     },
