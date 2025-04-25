@@ -165,6 +165,7 @@ import {
   MyProfilePaymentScreenQuery,
 } from "app/Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "app/Scenes/MyProfile/MyProfilePaymentNewCreditCard"
+import { MyProfilePreferences } from "app/Scenes/MyProfile/MyProfilePreferences"
 import { MyProfilePushNotificationsQueryRenderer } from "app/Scenes/MyProfile/MyProfilePushNotifications"
 import { MyProfileSettings } from "app/Scenes/MyProfile/MyProfileSettings"
 import { NewWorksForYouQueryRenderer } from "app/Scenes/NewWorksForYou/NewWorksForYou"
@@ -1209,6 +1210,16 @@ export const artsyDotNetRoutes = defineRoutes([
       screenOptions: {
         headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
         headerTitle: "Push Notifications",
+      },
+    },
+  },
+  {
+    path: "/my-profile/preferences",
+    name: "MyProfilePreferences",
+    Component: MyProfilePreferences,
+    options: {
+      screenOptions: {
+        headerShown: false,
       },
     },
   },
