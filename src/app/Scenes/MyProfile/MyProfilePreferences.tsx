@@ -38,7 +38,7 @@ const myProfilePreferencesFragment = graphql`
   }
 `
 
-const myProfilePreferencesQuery = graphql`
+export const myProfilePreferencesQuery = graphql`
   query MyProfilePreferencesQuery {
     me {
       ...MyProfilePreferences_me

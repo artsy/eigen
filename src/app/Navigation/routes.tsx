@@ -136,7 +136,10 @@ import { MyAccountDeleteAccountQueryRenderer } from "app/Scenes/MyAccount/MyAcco
 import { MyAccountEditEmailQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditEmail"
 import { MyAccountEditPassword } from "app/Scenes/MyAccount/MyAccountEditPassword"
 import { MyAccountEditPhoneQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditPhone"
-import { MyAccountEditPriceRangeQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditPriceRange"
+import {
+  myAccountEditPriceRangeQuery,
+  MyAccountEditPriceRangeQueryRenderer,
+} from "app/Scenes/MyAccount/MyAccountEditPriceRange"
 import {
   MyCollectionQueryRenderer,
   MyCollectionScreenQuery,
@@ -165,7 +168,10 @@ import {
   MyProfilePaymentScreenQuery,
 } from "app/Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "app/Scenes/MyProfile/MyProfilePaymentNewCreditCard"
-import { MyProfilePreferencesQueryRenderer } from "app/Scenes/MyProfile/MyProfilePreferences"
+import {
+  myProfilePreferencesQuery,
+  MyProfilePreferencesQueryRenderer,
+} from "app/Scenes/MyProfile/MyProfilePreferences"
 import { MyProfilePrivacy } from "app/Scenes/MyProfile/MyProfilePrivacy"
 import { MyProfilePushNotificationsQueryRenderer } from "app/Scenes/MyProfile/MyProfilePushNotifications"
 import { MyProfileSettings } from "app/Scenes/MyProfile/MyProfileSettings"
@@ -1046,6 +1052,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/my-account/edit-price-range",
     name: "MyAccountEditPriceRange",
     Component: MyAccountEditPriceRangeQueryRenderer,
+    queries: [myAccountEditPriceRangeQuery],
     options: {
       screenOptions: {
         headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
@@ -1220,6 +1227,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/my-profile/preferences",
     name: "MyProfilePreferences",
     Component: MyProfilePreferencesQueryRenderer,
+    queries: [myProfilePreferencesQuery],
     options: {
       screenOptions: {
         headerShown: false,

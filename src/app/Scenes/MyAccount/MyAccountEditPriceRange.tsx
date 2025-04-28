@@ -130,7 +130,7 @@ const meFragment = graphql`
   }
 `
 
-const myAccountEditPriceRangeQuery = graphql`
+export const myAccountEditPriceRangeQuery = graphql`
   query MyAccountEditPriceRangeQuery {
     me {
       ...MyAccountEditPriceRange_me
