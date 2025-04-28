@@ -71,7 +71,7 @@ const MyCollection: React.FC = () => {
                 </Touchable>
               </Flex>
             }
-            usePills
+            variant="pills"
           >
             <Tabs.Tab name={Tab.artworks} label={Tab.artworks}>
               <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="red10">
