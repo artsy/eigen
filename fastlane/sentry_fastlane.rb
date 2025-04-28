@@ -102,7 +102,7 @@ lane :upload_expo_sourcemaps do |options|
   platform = options[:platform]
 
   sourcemap_dir = "#{build_folder}/_expo/static/js"
-  file_base = Dir.glob("#{sourcemap_dir}/#{platform}/index-common-*.hbc").first
+  file_base = Dir.glob("#{sourcemap_dir}/#{platform}/index*.hbc").first
 
   unless file_base
     raise "JS bundle not found for platform: #{platform}"
