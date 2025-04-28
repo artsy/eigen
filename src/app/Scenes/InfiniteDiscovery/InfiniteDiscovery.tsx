@@ -1,7 +1,7 @@
 import { ChevronDownIcon, ShareIcon } from "@artsy/icons/native"
 import { DEFAULT_HIT_SLOP, Flex, Screen, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
-import { InfiniteDiscoveryQuery$data } from "__generated__/InfiniteDiscoveryQuery.graphql"
+import { InfiniteDiscoveryQueryRendererQuery$data } from "__generated__/InfiniteDiscoveryQueryRendererQuery.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
@@ -23,7 +23,7 @@ interface InfiniteDiscoveryProps {
 }
 
 export type InfiniteDiscoveryArtwork = ExtractNodeType<
-  InfiniteDiscoveryQuery$data["discoverArtworks"]
+  InfiniteDiscoveryQueryRendererQuery$data["discoverArtworks"]
 >
 
 export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
