@@ -249,7 +249,6 @@ lane :ship_beta_android do |options|
 
   sentry_release_name = "android-#{vname}-#{vcode}"
 
-  sh('yarn bundle:android')
   sh("yarn react-native build-android --mode=release --extra-params='--no-daemon --max-workers 2'")
 
   upload_sentry_artifacts(
