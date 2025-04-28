@@ -3,7 +3,7 @@
 NODE_OPTIONS=--max_old_space_size=8192
 BUNDLE_DIR="dist"
 
-react-native bundle \
+npx expo export:embed \
 --dev false \
 --platform ios \
 --entry-file index.js \
