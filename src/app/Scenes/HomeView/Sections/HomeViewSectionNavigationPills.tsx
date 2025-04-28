@@ -4,6 +4,8 @@ import {
   FairIcon,
   GavelIcon,
   HeartStrokeIcon,
+  ImageSetIcon,
+  InstitutionIcon,
   PublicationIcon,
 } from "@artsy/icons/native"
 import {
@@ -225,5 +227,7 @@ const SUPPORTED_ICONS: Record<string, React.FC> = {
   FollowArtistIcon,
   GavelIcon,
   HeartStrokeIcon,
+  ImageSetIcon,
+  InstitutionIcon,
   PublicationIcon,
 }
