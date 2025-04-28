@@ -10,12 +10,21 @@ const PaymentMethodDetails: React.FC<OrderDetailsPaymentProps> = ({
   order: { paymentMethodDetails, creditCardWalletType },
 }) => {
   const getPaymentInfo = () => {
-    if (creditCardWalletType === "apple_pay") {
-      return (
-        <Text variant="sm" color="mono60">
-          Apple Pay
-        </Text>
-      )
+    if (!!creditCardWalletType) {
+      switch (creditCardWalletType) {
+        case "apple_pay":
+          return (
+            <Text variant="sm" color="mono60">
+              Apple Pay
+            </Text>
+          )
+        case "google_pay":
+          return (
+            <Text variant="sm" color="mono60">
+              Google Pay
+            </Text>
+          )
+      }
     }
 
     switch (paymentMethodDetails?.__typename) {
