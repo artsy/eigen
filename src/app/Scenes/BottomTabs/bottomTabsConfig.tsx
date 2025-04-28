@@ -42,8 +42,9 @@ export const bottomTabsConfig: {
 
 export const useSearchTabName = (): string => {
   const { variant } = useExperimentVariant("diamond_discover-tab")
+  const isDiscoverVariant = variant.name === "variant-a" && variant.enabled
 
-  if (variant.name === "variant-a" && variant.enabled) {
+  if (isDiscoverVariant) {
     return "Discover"
   }
 
