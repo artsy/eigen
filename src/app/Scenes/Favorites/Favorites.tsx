@@ -104,6 +104,7 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
                   </Flex>
                 )}
                 key={key}
+                variant="link"
               >
                 {title}
               </Pill>
