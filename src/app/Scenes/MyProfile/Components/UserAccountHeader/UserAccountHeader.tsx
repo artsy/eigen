@@ -35,8 +35,12 @@ const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps }) => {
   const color = useColor()
   const WIDTH = width - 2 * space(2)
 
-  const isProfileComplete = true
-  //  !!me.location?.display && !!me.profession && !!me.icon?.url && !!me.isIdentityVerified
+  if (!me) {
+    return <SimpleMessage m={2}>Failed to load profile. Please check back later.</SimpleMessage>
+  }
+
+  const isProfileComplete =
+    !!me.location?.display && !!me.profession && !!me.icon?.url && !!me.isIdentityVerified
 
   return (
     <Flex justifyContent="center" alignItems="center" mt={2}>
