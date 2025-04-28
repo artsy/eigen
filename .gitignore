@@ -119,6 +119,11 @@ local.properties
 !debug.keystore
 android-secret.json
 
+# Android bundle artifacts
+/android/app/src/main/assets/
+/android/app/src/main/res/drawable-*
+/android/app/src/main/res/raw/*
+
 # Fonts
 android/app/src/main/assets/fonts/*
 ios/Artsy/fonts/*
