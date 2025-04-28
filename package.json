@@ -10,7 +10,7 @@
   "reactNativePermissionsIOS": [
     "Notifications"
   ],
-  "main": "index-common.js",
+  "main": "index.js",
   "scripts": {
     "android": "react-native run-android --active-arch-only",
     "bundle:android": "yarn bundle:android:js && yarn bundle:android:hermes && yarn bundle:android:sourcemap",
