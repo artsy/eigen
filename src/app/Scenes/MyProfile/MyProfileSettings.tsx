@@ -15,7 +15,7 @@ import {
 } from "@artsy/palette-mobile"
 import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
-import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/UserAccountHeader"
+import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useSetDevMode } from "app/system/devTools/useSetDevMode"
 import { navigate } from "app/system/navigation/navigate"

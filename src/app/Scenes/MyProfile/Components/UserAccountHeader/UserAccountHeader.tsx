@@ -35,10 +35,9 @@ const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps }) => {
   const color = useColor()
   const WIDTH = width - 2 * space(2)
 
-  const isProfileComplete =
-    !!me.location?.display && !!me.profession && !!me.icon?.url && !!me.isIdentityVerified
+  const isProfileComplete = true
+  //  !!me.location?.display && !!me.profession && !!me.icon?.url && !!me.isIdentityVerified
 
-  console.log("LOGD UserAccountHeader me", me.collectorProfile)
   return (
     <Flex justifyContent="center" alignItems="center" mt={2}>
       <Touchable onPress={() => navigate("my-collection")}>
@@ -123,7 +122,7 @@ const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps }) => {
                 )}
               </Join>
             </Flex>
-            {!isProfileComplete && (
+            {!isProfileComplete ? (
               <Flex alignItems="center">
                 <Button
                   variant="outline"
@@ -135,6 +134,8 @@ const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps }) => {
                   Complete Profile
                 </Button>
               </Flex>
+            ) : (
+              <Text>My collection empty state</Text>
             )}
           </Join>
         </Flex>
