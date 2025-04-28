@@ -9,6 +9,7 @@ import {
   WorksForYouQueryRenderer,
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
+import { PAGE_SIZE } from "app/Components/constants"
 import { CityGuideView } from "app/NativeModules/CityGuideView"
 import { LiveAuctionView } from "app/NativeModules/LiveAuctionView"
 import { About } from "app/Scenes/About/About"
@@ -153,6 +154,7 @@ import { AuctionResultsForArtistsYouCollect } from "app/Scenes/MyCollection/Scre
 import { CareerHighlightsBigCardsSwiper } from "app/Scenes/MyCollection/Screens/Insights/CareerHighlightsBigCardsSwiper"
 import { MedianSalePriceAtAuction } from "app/Scenes/MyCollection/Screens/Insights/MedianSalePriceAtAuction"
 import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists"
+import { UserAccountHeaderScreenQuery } from "app/Scenes/MyProfile/Components/UserAccountHeader"
 import { DarkModeSettings } from "app/Scenes/MyProfile/DarkModeSettings"
 import { MyProfile } from "app/Scenes/MyProfile/MyProfile"
 import {
@@ -161,6 +163,7 @@ import {
 } from "app/Scenes/MyProfile/MyProfileEditForm"
 import { MyProfileHeaderScreenQuery } from "app/Scenes/MyProfile/MyProfileHeader"
 import {
+  myProfilePaymentQueryDefaultVariables,
   MyProfilePaymentQueryRenderer,
   MyProfilePaymentScreenQuery,
 } from "app/Scenes/MyProfile/MyProfilePayment"
@@ -235,7 +238,6 @@ import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
 import { goBack } from "app/system/navigation/navigate"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
 import { compact } from "lodash"
-import React from "react"
 import { Platform } from "react-native"
 import { GraphQLTaggedNode } from "react-relay"
 
@@ -1188,6 +1190,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
       },
     },
+    prepareVariables: [() => myProfilePaymentQueryDefaultVariables],
     queries: [MyProfilePaymentScreenQuery],
   },
   {
@@ -1220,6 +1223,8 @@ export const artsyDotNetRoutes = defineRoutes([
         headerTitle: "Account",
       },
     },
+    prepareVariables: [() => ({ count: PAGE_SIZE })],
+    queries: [UserAccountHeaderScreenQuery],
   },
   {
     path: "/news",
