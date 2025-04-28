@@ -10,7 +10,6 @@ export interface VisualClueModel {
   addClue: Action<this, VisualClueName | string>
   seenVisualClues: Array<VisualClueName | string>
   setVisualClueAsSeen: Action<this, VisualClueName | string>
-  _removeVisualClueAsSeen: Action<this, VisualClueName | string>
 }
 
 /**
@@ -47,14 +46,5 @@ export const getVisualClueModel = (): VisualClueModel => ({
 
       state.seenVisualClues = [...state.seenVisualClues, clueName]
     }
-  }),
-  // Method used to clean the store for easier DX
-  _removeVisualClueAsSeen: action((state, clueName) => {
-    const index = state.seenVisualClues.indexOf(clueName)
-    if (index === -1) {
-      return
-    }
-
-    state.seenVisualClues = state.seenVisualClues.filter((_, i) => i !== index)
   }),
 })

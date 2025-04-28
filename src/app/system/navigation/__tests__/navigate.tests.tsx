@@ -6,11 +6,6 @@ import { Linking } from "react-native"
 
 jest.unmock("../navigate")
 
-jest.mock("app/utils/hooks/useVisualClue", () => ({
-  addClue: jest.fn(),
-  setVisualClueAsSeen: jest.fn(),
-}))
-
 jest.mock("app/store/GlobalStore", () => ({
   unsafe__getSelectedTab: jest.fn().mockReturnValue("home"),
   unsafe__getEnvironment: jest.fn().mockReturnValue({

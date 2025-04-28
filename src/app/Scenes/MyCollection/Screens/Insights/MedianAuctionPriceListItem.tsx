@@ -1,16 +1,5 @@
-import {
-  Flex,
-  Image,
-  NoArtworkIcon,
-  Text,
-  ToolTip,
-  Touchable,
-  useColor,
-} from "@artsy/palette-mobile"
+import { Flex, Image, NoArtworkIcon, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { MedianAuctionPriceRail_me$data } from "__generated__/MedianAuctionPriceRail_me.graphql"
-import { VisualCluesConstMap } from "app/store/config/visualClues"
-import { setVisualClueAsSeen } from "app/utils/hooks/useVisualClue"
-import { isNil } from "lodash"
 
 export type MedianSalePriceArtwork = NonNullable<
   NonNullable<NonNullable<MedianAuctionPriceRail_me$data["priceInsightUpdates"]>["edges"]>[0]
@@ -18,15 +7,10 @@ export type MedianSalePriceArtwork = NonNullable<
 
 interface Props {
   artworks: MedianSalePriceArtwork[]
-  enableToolTip?: boolean
   onPress?: (medium?: string) => void
 }
 
-export const MedianAuctionPriceListItem: React.FC<Props> = ({
-  artworks,
-  enableToolTip = false,
-  onPress,
-}) => {
+export const MedianAuctionPriceListItem: React.FC<Props> = ({ artworks, onPress }) => {
   const color = useColor()
 
   const firstItem = artworks[0]
@@ -75,25 +59,9 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({
             <Text variant="xs">{firstItem?.mediumType?.name}</Text>
           </Flex>
           <Flex alignItems="flex-end">
-            {!isNil(firstMedianSalePriceDisplayText) && enableToolTip ? (
-              <ToolTip
-                enabled
-                initialToolTipText="Tap to interact with graph"
-                position="TOP"
-                tapToDismiss
-                onPress={() => {
-                  setVisualClueAsSeen(VisualCluesConstMap.MedianAuctionPriceListItemTooltip)
-                }}
-              >
-                <Text variant="xs" weight="medium">
-                  {firstMedianSalePriceDisplayText}
-                </Text>
-              </ToolTip>
-            ) : (
-              <Text variant="xs" weight="medium">
-                {firstMedianSalePriceDisplayText}
-              </Text>
-            )}
+            <Text variant="xs" weight="medium">
+              {firstMedianSalePriceDisplayText}
+            </Text>
           </Flex>
         </Flex>
       </Touchable>

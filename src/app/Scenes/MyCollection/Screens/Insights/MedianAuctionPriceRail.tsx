@@ -7,14 +7,12 @@ import {
 import { Flex } from "@artsy/palette-mobile"
 import { MedianAuctionPriceRail_me$key } from "__generated__/MedianAuctionPriceRail_me.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { VisualCluesConstMap } from "app/store/config/visualClues"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import { getVortexMedium } from "app/utils/marketPriceInsightHelpers"
 import { groupBy } from "lodash"
 import { FlatList } from "react-native"
-import { useFragment, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MedianAuctionPriceListItem } from "./MedianAuctionPriceListItem"
 
@@ -27,12 +25,6 @@ export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (pr
   const artworks = extractNodes(me.priceInsightUpdates)
 
   const tracking = useTracking()
-
-  const { seenVisualClues } = useVisualClue()
-
-  const hasSeenTooltip = !!seenVisualClues.find(
-    (clue) => clue === VisualCluesConstMap.MedianAuctionPriceListItemTooltip
-  )
 
   if (artworks.length === 0) {
     return <></>
@@ -70,19 +62,10 @@ export const MedianAuctionPriceRail: React.FC<MedianAuctionPriceRailProps> = (pr
             />
           </Flex>
         )}
-        renderItem={({ item, index }) => (
+        renderItem={({ item }) => (
           <MedianAuctionPriceListItem
             artworks={item}
-            enableToolTip={index === 0 && !hasSeenTooltip}
             onPress={(medium) => {
-              try {
-                setVisualClueAsSeen(VisualCluesConstMap.MedianAuctionPriceListItemTooltip)
-              } catch (e) {
-                // Ignore
-                if (__DEV__) {
-                  console.error("failed to remove tooltip:", e)
-                }
-              }
               const artistID = item[0].artist?.internalID
               const category =
                 medium || getVortexMedium(item[0].medium ?? "", item[0].mediumType?.name ?? "")

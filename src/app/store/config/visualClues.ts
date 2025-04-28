@@ -21,24 +21,15 @@ export const visualClues = defineVisualClues({
   MyCollectionInsightsIncompleteMessage: {
     description: "The message that indicates that only some artworks have insights",
   },
-  MedianAuctionPriceListItemTooltip: {
-    description: "Tooltip on the first item of median auction price list",
-  },
-  MyCollectionArtistsCollectedOnboarding: {
-    description: "Tha modal that shows the onboarding for the collected artists",
-  },
-  MyCollectionArtistsCollectedOnboardingTooltip1: {
-    description: "Collected Artists: Tap to review your artist tooltip",
-  },
-  MyCollectionArtistsCollectedOnboardingTooltip2: {
-    description: "Collected Artists: Tap to add more artists or artworks tooltip.",
-  },
 })
 
 export const visualClueNames = Object.keys(visualClues)
 
-export const VisualCluesConstMap = (visualClueNames as [VisualClueName]).reduce((obj, key) => {
-  // @ts-ignore
-  obj[key] = key
-  return obj
-}, {} as { [K in VisualClueName]: K })
+export const VisualCluesConstMap = (visualClueNames as [VisualClueName]).reduce(
+  (obj, key) => {
+    // @ts-ignore
+    obj[key] = key
+    return obj
+  },
+  {} as { [K in VisualClueName]: K }
+)

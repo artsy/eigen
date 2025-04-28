@@ -9,7 +9,6 @@ export const bottomTabsConfig: {
     route: BottomTabRoute
     analyticsDescription: TappedTabBarArgs["tab"]
     name: string
-    visualClues?: string[]
   }
 } = {
   home: {

@@ -20,11 +20,9 @@ import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/Components/MyC
 import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyCollectionZeroState"
 import { MyCollectionZeroStateArtworks } from "app/Scenes/MyCollection/Components/MyCollectionZeroStateArtworks"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
-import { VisualCluesConstMap } from "app/store/config/visualClues"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import { RandomWidthPlaceholderText } from "app/utils/placeholders"
 import {
   MY_COLLECTION_REFRESH_KEY,
@@ -56,6 +54,7 @@ const MyCollection: React.FC<{
   me: MyCollection_me$data
 }> = ({ relay, me }) => {
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
+  const toast = useToast()
 
   const [hasMarketSignals, setHasMarketSignals] = useState(false)
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
@@ -63,29 +62,10 @@ const MyCollection: React.FC<{
   const [showNewWorksMessage, setShowNewWorksMessage] = useState(false)
 
   const filtersCount = useSelectedFiltersCount()
-
   const artworks = extractNodes(me?.myCollectionConnection)
   const { reInitializeLocalArtworkFilter } = useLocalArtworkFilter(artworks)
-
   const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
-
-  const toast = useToast()
-
   const hasCollectedArtists = (me?.userInterestsConnection?.totalCount ?? 0) > 0
-
-  const { showVisualClue } = useVisualClue()
-  const showMyCollectionCollectedArtistsOnboarding = !!showVisualClue(
-    "MyCollectionArtistsCollectedOnboarding"
-  )
-
-  useEffect(() => {
-    // Don't show onboarding tooltips if user's have already been onboarded
-    // because the tooltip onboarding was introduced two weeks after the feature was released
-    if (!showMyCollectionCollectedArtistsOnboarding) {
-      setVisualClueAsSeen(VisualCluesConstMap.MyCollectionArtistsCollectedOnboardingTooltip1)
-      setVisualClueAsSeen(VisualCluesConstMap.MyCollectionArtistsCollectedOnboardingTooltip2)
-    }
-  }, [])
 
   useEffect(() => {
     RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, refetch)

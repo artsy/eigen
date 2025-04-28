@@ -1,7 +1,5 @@
 import { useColor } from "@artsy/palette-mobile"
-import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
-import { useVisualClue } from "app/utils/hooks/useVisualClue"
 import { useTabBarBadge } from "app/utils/useTabBarBadge"
 import { StyleProp, TextStyle } from "react-native"
 
@@ -16,7 +14,6 @@ type BadgeProps = { tabBarBadge?: string | number; tabBarBadgeStyle: StyleProp<T
 export const useBottomTabsBadges = () => {
   const color = useColor()
 
-  const { showVisualClue } = useVisualClue()
   const { unreadConversationsCount, hasUnseenNotifications } = useTabBarBadge()
 
   const tabsBadges: Record<string, BadgeProps> = {}
@@ -31,15 +28,6 @@ export const useBottomTabsBadges = () => {
     borderWidth: 1,
   }
 
-  const hasVisualCluesForTab = (tab: BottomTabType) => {
-    const visualClues = bottomTabsConfig[tab].visualClues
-    if (!visualClues) {
-      return false
-    }
-
-    return visualClues?.find(showVisualClue)
-  }
-
   Object.keys(bottomTabsConfig).forEach((tab) => {
     const defaultBadgeProps: BadgeProps = {
       tabBarBadge: undefined,
@@ -47,15 +35,6 @@ export const useBottomTabsBadges = () => {
     }
 
     tabsBadges[tab] = defaultBadgeProps
-
-    if (hasVisualCluesForTab(tab as BottomTabType)) {
-      tabsBadges[tab] = {
-        tabBarBadge: "",
-        tabBarBadgeStyle: {
-          ...visualClueStyles,
-        },
-      }
-    }
 
     switch (tab) {
       case "home": {

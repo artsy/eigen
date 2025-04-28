@@ -28,5 +28,3 @@ export const addClue = GlobalStore.actions.visualClue.addClue
  * @deprecated use dismiss from ProgressiveOnboardingModel instead
  */
 export const setVisualClueAsSeen = GlobalStore.actions.visualClue.setVisualClueAsSeen
-
-export const _removeVisualClueAsSeen = GlobalStore.actions.visualClue._removeVisualClueAsSeen
