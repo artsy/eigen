@@ -7,6 +7,8 @@ import { withProfiler } from "@sentry/react-native"
 import * as Sentry from "@sentry/react-native"
 import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
+import { HomeViewSectionCardsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionCards"
+import { HomeViewSectionCardsChipsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionCardsChips"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
@@ -39,8 +41,7 @@ export const SEARCH_INPUT_PLACEHOLDER = [
 export const searchQueryDefaultVariables: SearchQuery$variables = {
   term: "",
   skipSearchQuery: true,
-  skipTrendingArtists: false,
-  skipCuratedCollections: false,
+  isDiscoverVariant: false,
 }
 
 export const Search: React.FC = () => {
@@ -58,8 +59,7 @@ export const Search: React.FC = () => {
 
   const searchQueryVariables = {
     ...searchQueryDefaultVariables,
-    skipTrendingArtists: isDiscoverVariant,
-    skipCuratedCollections: isDiscoverVariant,
+    isDiscoverVariant,
   }
 
   const {
@@ -134,6 +134,19 @@ export const Search: React.FC = () => {
               {!isDiscoverVariant && <TrendingArtists data={queryData} mb={4} />}
               {!isDiscoverVariant && <CuratedCollections collections={queryData} mb={4} />}
 
+              {!!isDiscoverVariant && (
+                <HomeViewSectionCardsChipsQueryRenderer
+                  sectionID="home-view-section-discover-something-new"
+                  index={0}
+                />
+              )}
+              {!!isDiscoverVariant && (
+                <HomeViewSectionCardsQueryRenderer
+                  sectionID="home-view-section-explore-by-category"
+                  index={0}
+                />
+              )}
+
               <HorizontalPadding>{!!shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
 
               <Spacer y={4} />
@@ -149,14 +162,13 @@ export const SearchScreenQuery = graphql`
   query SearchQuery(
     $term: String!
     $skipSearchQuery: Boolean!
-    $skipTrendingArtists: Boolean!
-    $skipCuratedCollections: Boolean!
+    $isDiscoverVariant: Boolean = false
   ) {
     viewer @skip(if: $skipSearchQuery) {
       ...SearchPills_viewer @arguments(term: $term)
     }
-    ...CuratedCollections_collections @skip(if: $skipCuratedCollections)
-    ...TrendingArtists_query @skip(if: $skipTrendingArtists)
+    ...CuratedCollections_collections @skip(if: $isDiscoverVariant)
+    ...TrendingArtists_query @skip(if: $isDiscoverVariant)
   }
 `
 
