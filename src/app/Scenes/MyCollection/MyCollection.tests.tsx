@@ -51,7 +51,7 @@ describe("MyCollection", () => {
     query: graphql`
       query MyCollectionTestsQuery @relay_test_operation {
         me {
-          ...MyCollection_me
+          ...MyCollectionLegacy_me
         }
       }
     `,

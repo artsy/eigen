@@ -731,6 +731,16 @@ export const artsyDotNetRoutes = defineRoutes([
     queries: [CitySectionListScreenQuery],
   },
   {
+    path: "/collector-profile/my-collection",
+    name: "CollectorProfileMyCollection",
+    Component: MyCollectionQueryRenderer,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  },
+  {
     path: "/collections-by-category/:category",
     name: "CollectionsByCategory",
     Component: CollectionsByCategory,

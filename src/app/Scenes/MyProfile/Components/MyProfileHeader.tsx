@@ -9,7 +9,7 @@ export const MyProfileHeader: React.FC = () => {
 
   return (
     <Flex justifyContent="center" alignItems="center" mt={2}>
-      <Touchable onPress={() => navigate("my-collection")}>
+      <Touchable onPress={() => navigate("/collector-profile/my-collection")}>
         <Flex
           minHeight={200}
           width={WIDTH}
