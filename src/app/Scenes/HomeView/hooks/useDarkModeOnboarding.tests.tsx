@@ -28,13 +28,6 @@ describe("useDarkModeOnboarding on HomeView", () => {
     },
     query: graphql`
       query useDarkModeOnboardingTestsQuery($count: Int!, $cursor: String) @relay_test_operation {
-        homeView {
-          experiments {
-            name
-            variant
-            enabled
-          }
-        }
         viewer {
           ...HomeViewSectionsConnection_viewer @arguments(count: $count, cursor: $cursor)
         }
