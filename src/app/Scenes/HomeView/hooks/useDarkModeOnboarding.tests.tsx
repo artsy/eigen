@@ -31,6 +31,13 @@ describe("useDarkModeOnboarding on HomeView", () => {
         viewer {
           ...HomeViewSectionsConnection_viewer @arguments(count: $count, cursor: $cursor)
         }
+        homeView {
+          experiments {
+            name
+            variant
+            enabled
+          }
+        }
       }
     `,
   })
