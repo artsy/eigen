@@ -1,15 +1,20 @@
 import { ContextModule } from "@artsy/cohesion"
 import {
   ArtworkIcon,
-  AuctionIcon as GavelIcon,
   FairIcon,
+  GavelIcon,
+  HeartStrokeIcon,
+  ImageSetIcon,
+  InstitutionIcon,
+  PublicationIcon,
+} from "@artsy/icons/native"
+import {
   Flex,
   FlexProps,
+  // TODO: migrate FollowArtistIcon to artsy/icons (MOPRAT-848)
+  // eslint-disable-next-line local-rules/no-palette-icon-imports
   FollowArtistIcon,
-  HeartIcon as HeartStrokeIcon,
-  IconProps,
   Pill,
-  PublicationIcon,
   Skeleton,
   Spacer,
   Text,
@@ -27,7 +32,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { FC, memo } from "react"
+import React, { memo } from "react"
 import { FlatList, Platform } from "react-native"
 import Animated, { Easing, useAnimatedStyle, withTiming } from "react-native-reanimated"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -222,11 +227,13 @@ export const NAVIGATION_LINKS_PLACEHOLDER: Array<NavigationPill> = [
   { title: "Editorial", href: "/news", ownerType: "whatever", icon: "HeartIcon" },
 ]
 
-const SUPPORTED_ICONS: Record<string, FC<IconProps>> = {
+const SUPPORTED_ICONS: Record<string, React.FC> = {
   ArtworkIcon,
   FairIcon,
   FollowArtistIcon,
   GavelIcon,
   HeartStrokeIcon,
+  ImageSetIcon,
+  InstitutionIcon,
   PublicationIcon,
 }
