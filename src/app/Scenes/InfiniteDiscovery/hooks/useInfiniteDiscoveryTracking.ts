@@ -83,5 +83,11 @@ export const useInfiniteDiscoveryTracking = () => {
         context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
       })
     },
+    onboardingView: () => {
+      trackEvent({
+        action: ActionType.screen,
+        context_screen_owner_type: OwnerType.infiniteDiscoveryOnboarding,
+      })
+    },
   }
 }
