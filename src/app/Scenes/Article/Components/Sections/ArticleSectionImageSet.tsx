@@ -3,14 +3,13 @@ import {
   Image,
   ImageSetIcon,
   Text,
-  Touchable,
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
 import { ArticleSectionImageSet_article$data } from "__generated__/ArticleSectionImageSet_article.graphql"
 import { ArticleSectionImageSet_section$data } from "__generated__/ArticleSectionImageSet_section.graphql"
-import { navigate } from "app/system/navigation/navigate"
-import { useFragment, graphql } from "react-relay"
+import { RouterLink } from "app/system/navigation/RouterLink"
+import { graphql, useFragment } from "react-relay"
 
 interface ArticleSectionImageSetProps {
   article: any
@@ -89,12 +88,11 @@ const LayoutMini: React.FC<LayoutProps> = ({ section, article, hideImage }) => {
 
   const cover = section.cover
 
-  const handleOnPress = () => {
-    navigate(`article/${article.internalID}/slideshow`, { passProps: { coverId: cover.id } })
-  }
-
   return (
-    <Touchable onPress={handleOnPress}>
+    <RouterLink
+      to={`article/${article.internalID}/slideshow`}
+      navigationProps={{ coverId: cover.id }}
+    >
       <Flex mx={hideImage ? 0 : 2} p={2} borderColor="mono15" borderWidth={1}>
         <Flex flexDirection="row" justifyContent="space-between">
           {!hideImage && !!cover?.image?.url && (
@@ -118,7 +116,7 @@ const LayoutMini: React.FC<LayoutProps> = ({ section, article, hideImage }) => {
           </Flex>
         </Flex>
       </Flex>
-    </Touchable>
+    </RouterLink>
   )
 }
 

@@ -6,11 +6,10 @@ import {
 } from "__generated__/ArtQuizArtist_artist.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { ReadMore } from "app/Components/ReadMore"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { debounce } from "lodash"
-import { TouchableOpacity } from "react-native"
 import { graphql, useFragment, useMutation } from "react-relay"
 
 export const ArtQuizArtist = ({
@@ -48,11 +47,7 @@ export const ArtQuizArtist = ({
 
   return (
     <Flex pt={2}>
-      <TouchableOpacity
-        onPress={() => {
-          navigate(`/artist/${artist?.slug}`)
-        }}
-      >
+      <RouterLink to={`/artist/${artist?.slug}`}>
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex flex={1}>
             <Text variant="lg-display">{artist?.name}</Text>
@@ -83,7 +78,7 @@ export const ArtQuizArtist = ({
         <Flex mx={-2}>
           <ArtworkRail artworks={artworks} />
         </Flex>
-      </TouchableOpacity>
+      </RouterLink>
     </Flex>
   )
 }
