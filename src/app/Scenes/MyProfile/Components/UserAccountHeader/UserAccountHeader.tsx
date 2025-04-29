@@ -20,7 +20,7 @@ import {
 } from "@artsy/palette-mobile"
 import { UserAccountHeaderQuery } from "__generated__/UserAccountHeaderQuery.graphql"
 import { UserAccountHeader_me$key } from "__generated__/UserAccountHeader_me.graphql"
-import { MyCollectionBannerEmptyState } from "app/Scenes/MyProfile/Components/UserAccountHeader/MyCollectionBannerEmptyState"
+import { MyCollectionPreview } from "app/Scenes/MyProfile/Components/UserAccountHeader/MyCollectionPreview"
 import { navigate } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -134,6 +134,8 @@ export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps })
               </Join>
             </Flex>
 
+            <MyCollectionPreview me={me} />
+
             {!isProfileComplete && (
               <Flex alignItems="center">
                 <Button
@@ -148,8 +150,6 @@ export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps })
                 </Button>
               </Flex>
             )}
-
-            <MyCollectionBannerEmptyState />
           </Join>
         </Flex>
       </Touchable>
@@ -191,6 +191,7 @@ export const UserAccountHeaderScreenQuery = graphql`
 const userAccountHeaderFragment = graphql`
   fragment UserAccountHeader_me on Me {
     ...useCompleteMyProfileSteps_me
+    ...MyCollectionPreview_me
 
     internalID
     name

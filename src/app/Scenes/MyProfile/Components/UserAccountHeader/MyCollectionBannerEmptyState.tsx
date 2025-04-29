@@ -4,7 +4,7 @@ import { Image } from "react-native"
 
 export const MyCollectionBannerEmptyState: React.FC = () => {
   return (
-    <Touchable onPress={() => navigate("my-collection")} testID="my-collection-banner">
+    <Touchable onPress={() => navigate("my-collection")} testID="my-collection-banner-empty-state">
       <Flex width="100%" flexDirection="row" p={1} backgroundColor="mono5" borderRadius={10}>
         <Join separator={<Spacer x={1} />}>
           <Flex flex={1} flexDirection="column" justifyContent="center">

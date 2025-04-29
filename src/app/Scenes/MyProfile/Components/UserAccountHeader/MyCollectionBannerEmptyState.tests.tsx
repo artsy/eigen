@@ -11,7 +11,7 @@ describe("MyCollectionBannerEmptyState", () => {
 
   it("navigates to my-collection when pressed", () => {
     renderWithWrappers(<MyCollectionBannerEmptyState />)
-    fireEvent.press(screen.getByTestId("my-collection-banner"))
+    fireEvent.press(screen.getByTestId("my-collection-banner-empty-state"))
     expect(navigate).toHaveBeenCalledWith("my-collection")
   })
 })
