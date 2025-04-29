@@ -13025,6 +13025,7 @@ type Image {
     width: Int!
   ): CroppedImageUrl
   deepZoom: DeepZoom
+  geminiToken: String
   height: Int
   href: String
   imageURL: String
