@@ -293,6 +293,32 @@ lane :ship_beta_android do |options|
   deploy_android_beta(deployment_target: deployment_target)
 end
 
+lane :test_firebase_android do
+  sh('yarn relay')
+
+  is_android_beta = true
+  flag_android_beta(is_android_beta: is_android_beta)
+
+  vname, vcode = set_build_version_android
+  set_git_properties_android
+
+  sentry_release_name = "android-#{vname}-#{vcode}"
+
+  sh("yarn react-native build-android --mode=beta --extra-params='--no-daemon --max-workers 2 --mode betaRelease'")
+
+  upload_sentry_artifacts(
+    sentry_release_name: sentry_release_name,
+    dist_version: "#{vcode}",
+    platform: 'android'
+  )
+
+  firebase_app_distribution(
+    app: ENV['FIREBASE_APP_ID'],
+    groups: 'artsy-people',
+    android_artifact_path: './android/app/build/outputs/bundle/release/app-release.aab'
+  )
+end
+
 def deploy_android_beta(deployment_target:)
   if deployment_target == 'play_store'
     supply(
