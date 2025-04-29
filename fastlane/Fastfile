@@ -138,7 +138,6 @@ lane :test_firebase_ios do
     )
   end
 
-  sh('yarn bundle:ios')
   # Workaround for timeout in ci
   ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
 
