@@ -132,7 +132,7 @@ export const FollowedGalleriesQueryRenderer = withSuspense({
     return (
       <LoadFailureView
         onRetry={fallbackProps.resetErrorBoundary}
-        showBackButton={true}
+        showBackButton={false}
         useSafeArea={false}
         error={fallbackProps.error}
         trackErrorBoundary={false}
