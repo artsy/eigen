@@ -20,6 +20,7 @@ import {
 } from "@artsy/palette-mobile"
 import { UserAccountHeaderQuery } from "__generated__/UserAccountHeaderQuery.graphql"
 import { UserAccountHeader_me$key } from "__generated__/UserAccountHeader_me.graphql"
+import { MyCollectionBannerEmptyState } from "app/Scenes/MyProfile/Components/UserAccountHeader/MyCollectionBannerEmptyState"
 import { navigate } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -27,7 +28,7 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 interface UserAccountHeaderProps {
   meProps: UserAccountHeader_me$key
 }
-const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps }) => {
+export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps }) => {
   const me = useFragment<UserAccountHeader_me$key>(userAccountHeaderFragment, meProps)
 
   const { width } = useScreenDimensions()
@@ -44,7 +45,7 @@ const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps }) => {
 
   return (
     <Flex justifyContent="center" alignItems="center" mt={2}>
-      <Touchable onPress={() => navigate("my-collection")}>
+      <Touchable testID="account-card" onPress={() => navigate("my-collection")}>
         <Flex
           minHeight={200}
           width={WIDTH}
@@ -66,11 +67,16 @@ const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps }) => {
               borderColor={me?.icon?.url ? undefined : color("mono30")}
               alignItems="center"
               justifyContent="center"
-              testID="profile-image"
             >
               {!!me?.icon?.url ? (
                 <Flex overflow="hidden" borderRadius={35}>
-                  <Image src={me.icon.url} height={70} width={70} performResize={false} />
+                  <Image
+                    src={me.icon.url}
+                    height={70}
+                    width={70}
+                    performResize={false}
+                    testID="profile-image"
+                  />
                 </Flex>
               ) : (
                 <PersonIcon width={18} height={18} />
@@ -86,6 +92,7 @@ const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps }) => {
                   position="absolute"
                   right={0}
                   bottom={0}
+                  testID="identity-verified-icon"
                 >
                   <ShieldIcon fill="mono0" />
                 </Flex>
@@ -120,13 +127,14 @@ const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps }) => {
                   <Flex flexDirection="row" justifyContent="center" alignItems="center">
                     <InstitutionIcon />
                     <Text variant="xs" ml={0.5}>
-                      {me.otherRelevantPositions}otherRelevantPositions
+                      {me.otherRelevantPositions}
                     </Text>
                   </Flex>
                 )}
               </Join>
             </Flex>
-            {!isProfileComplete ? (
+
+            {!isProfileComplete && (
               <Flex alignItems="center">
                 <Button
                   variant="outline"
@@ -134,13 +142,14 @@ const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps }) => {
                   onPress={() => {
                     navigate("/complete-my-profile", { passProps: { meKey: me } })
                   }}
+                  testID="complete-profile-button"
                 >
                   Complete Profile
                 </Button>
               </Flex>
-            ) : (
-              <Text>My collection empty state</Text>
             )}
+
+            <MyCollectionBannerEmptyState />
           </Join>
         </Flex>
       </Touchable>
@@ -194,11 +203,6 @@ const userAccountHeaderFragment = graphql`
       url(version: "thumbnail")
     }
     isIdentityVerified
-    counts @required(action: NONE) {
-      followedArtists
-      savedArtworks
-      savedSearches
-    }
     collectorProfile @required(action: NONE) {
       confirmedBuyerAt
     }
