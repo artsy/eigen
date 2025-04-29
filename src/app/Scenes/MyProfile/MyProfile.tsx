@@ -45,8 +45,6 @@ export const MyProfileLegacy: React.FC<MyProfileProps> = memo(() => {
 export const MyProfileNew: React.FC<MyProfileProps> = memo(() => {
   return (
     <Screen>
-      <Screen.AnimatedHeader title="Account" hideLeftElements />
-      <Screen.StickySubHeader title="Account" />
       <Screen.Body fullwidth>
         <MyProfileSettings />
       </Screen.Body>

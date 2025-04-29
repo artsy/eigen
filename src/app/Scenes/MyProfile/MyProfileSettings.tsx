@@ -49,7 +49,7 @@ export const MyProfileSettings: React.FC = () => {
         <UserAccountHeaderQueryRenderer />
 
         <Text variant="lg-display" px={2} mt={4}>
-          Profile
+          Account
         </Text>
         <Join separator={<Spacer y={4} />}>
           <>

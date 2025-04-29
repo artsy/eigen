@@ -7,7 +7,6 @@ import {
 } from "@artsy/icons/native"
 import {
   Flex,
-  SimpleMessage,
   Text,
   Touchable,
   useScreenDimensions,
@@ -17,9 +16,11 @@ import {
   Join,
   Spacer,
   Button,
+  Spinner,
 } from "@artsy/palette-mobile"
 import { UserAccountHeaderQuery } from "__generated__/UserAccountHeaderQuery.graphql"
 import { UserAccountHeader_me$key } from "__generated__/UserAccountHeader_me.graphql"
+import { ErrorMessageComponent } from "app/Scenes/MyProfile/Components/UserAccountHeader/ErrorMessageComponent"
 import { MyCollectionPreview } from "app/Scenes/MyProfile/Components/UserAccountHeader/MyCollectionPreview"
 import { navigate } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -37,7 +38,7 @@ export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps })
   const WIDTH = width - 2 * space(2)
 
   if (!me) {
-    return <SimpleMessage m={2}>Failed to load profile. Please check back later.</SimpleMessage>
+    return ErrorMessageComponent
   }
 
   const isProfileComplete =
@@ -158,6 +159,7 @@ export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps })
 }
 
 export const userAccountHeaderQueryVariables = { count: 4 }
+
 export const UserAccountHeaderQueryRenderer = withSuspense({
   Component: (props) => {
     const data = useLazyLoadQuery<UserAccountHeaderQuery>(
@@ -169,15 +171,14 @@ export const UserAccountHeaderQueryRenderer = withSuspense({
     )
 
     if (!data.me) {
-      return <SimpleMessage m={2}>Failed to load profile. Please check back later.</SimpleMessage>
+      return ErrorMessageComponent
     }
 
     return <UserAccountHeader meProps={data.me} {...props} />
   },
-  LoadingFallback: () => <Text>TODO: placeholder</Text>,
+  LoadingFallback: () => <Placeholder />,
   ErrorFallback: () => {
-    // TODO: test error fallback
-    return <SimpleMessage m={2}>Failed to load profile. Please check back later.</SimpleMessage>
+    return ErrorMessageComponent
   },
 })
 
@@ -211,3 +212,28 @@ const userAccountHeaderFragment = graphql`
     }
   }
 `
+
+const Placeholder: React.FC = () => {
+  const { width } = useScreenDimensions()
+
+  const space = useSpace()
+  const WIDTH = width - 2 * space(2)
+
+  return (
+    <Flex justifyContent="center" alignItems="center" mt={2}>
+      <Flex
+        minHeight={200}
+        width={WIDTH}
+        backgroundColor="mono0"
+        borderRadius={20}
+        borderColor="mono10"
+        borderWidth={1}
+        alignItems="center"
+        justifyContent="center"
+        p={2}
+      >
+        <Spinner />
+      </Flex>
+    </Flex>
+  )
+}
