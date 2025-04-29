@@ -292,11 +292,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             }}
             testID="save-artwork-icon"
           >
-            <InfiniteDiscoveryArtworkCardPopover
-              index={index}
-              internalID={artwork.internalID}
-              isTopCard={isTopCard}
-            >
+            <InfiniteDiscoveryArtworkCardPopover index={index} isTopCard={isTopCard}>
               <Flex
                 flexDirection="row"
                 alignItems="center"

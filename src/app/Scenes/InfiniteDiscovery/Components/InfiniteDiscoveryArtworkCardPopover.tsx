@@ -5,12 +5,15 @@ import {
   PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_2,
 } from "app/store/ProgressiveOnboardingModel"
 
-export const InfiniteDiscoveryArtworkCardPopover: React.FC<{
+interface InfiniteDiscoveryArtworkCardPopoverProps {
   isTopCard: boolean
   index: number
-  internalID: string
   children: JSX.Element
-}> = ({ children, index, isTopCard }) => {
+}
+
+export const InfiniteDiscoveryArtworkCardPopover: React.FC<
+  InfiniteDiscoveryArtworkCardPopoverProps
+> = ({ children, index, isTopCard }) => {
   const { dismiss } = GlobalStore.actions.progressiveOnboarding
   const {
     isDismissed,
