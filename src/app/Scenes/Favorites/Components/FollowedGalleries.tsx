@@ -35,6 +35,7 @@ export const FollowedGalleries: React.FC<Props> = ({ me }) => {
   if (galleries.length === 0) {
     return (
       <Screen.ScrollView refreshControl={RefreshControl}>
+        <FollowOptionPicker />
         <ZeroState
           title="You haven’t followed any galleries yet"
           subtitle="When you save galleries, they will show up here."

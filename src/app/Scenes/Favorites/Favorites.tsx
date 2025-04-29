@@ -8,6 +8,7 @@ import {
   Spacer,
   Text,
   useScreenDimensions,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
 import { BOTTOM_TABS_HEIGHT } from "@artsy/palette-mobile/dist/elements/Screen/StickySubHeader"
@@ -119,6 +120,7 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
 export const FavoriteTopNavigator = createMaterialTopTabNavigator()
 
 const Content = () => {
+  const space = useSpace()
   const { currentScrollYAnimated } = useScreenScrollContext()
   const { headerHeight } = FavoritesContextStore.useStoreState((state) => state)
   const { height: screenHeight } = useScreenDimensions()
@@ -135,7 +137,7 @@ const Content = () => {
   }))
 
   return (
-    <Animated.View style={[animatedStyles, { height: screenHeight + headerHeight }]}>
+    <Animated.View style={[animatedStyles, { height: screenHeight + headerHeight + space(1) }]}>
       <Screen.Body fullwidth>
         <FavoriteTopNavigator.Navigator
           tabBar={FavoritesHeaderTapBar}
