@@ -251,13 +251,14 @@ lane :ship_beta_android do |options|
 
   sh("yarn react-native build-android --mode=release --extra-params='--no-daemon --max-workers 2'")
 
-  upload_sentry_artifacts(
-    sentry_release_name: sentry_release_name,
-    dist_version: "#{vcode}",
-    platform: 'android'
-  )
-
-  s3_upload_android_build(app_version: vcode, app_path: "../android/app/build/outputs/bundle/release/app-release.aab")
+  if (deployment_target == 'play_store')
+    upload_sentry_artifacts(
+      sentry_release_name: sentry_release_name,
+      dist_version: "#{vcode}",
+      platform: 'android'
+    )
+    s3_upload_android_build(app_version: vcode, app_path: "../android/app/build/outputs/bundle/release/app-release.aab")
+  end
 
   deploy_android_beta(deployment_target: deployment_target)
 end
