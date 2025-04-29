@@ -77,8 +77,7 @@ export const MyCollectionPreview: React.FC<MyCollectionPreviewProps> = ({ me }) 
 }
 
 const myCollectionPreviewFragment = graphql`
-  fragment MyCollectionPreview_me on Me
-  @argumentDefinitions(count: { type: "Int", defaultValue: 4 }) {
+  fragment MyCollectionPreview_me on Me @argumentDefinitions(count: { type: "Int" }) {
     myCollectionConnection(first: $count, sort: CREATED_AT_DESC)
       @connection(key: "MyCollectionPreview_myCollectionConnection", filters: []) {
       edges {

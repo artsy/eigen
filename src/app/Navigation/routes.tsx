@@ -9,7 +9,6 @@ import {
   WorksForYouQueryRenderer,
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
-import { PAGE_SIZE } from "app/Components/constants"
 import { CityGuideView } from "app/NativeModules/CityGuideView"
 import { LiveAuctionView } from "app/NativeModules/LiveAuctionView"
 import { About } from "app/Scenes/About/About"
@@ -155,7 +154,10 @@ import { AuctionResultsForArtistsYouCollect } from "app/Scenes/MyCollection/Scre
 import { CareerHighlightsBigCardsSwiper } from "app/Scenes/MyCollection/Screens/Insights/CareerHighlightsBigCardsSwiper"
 import { MedianSalePriceAtAuction } from "app/Scenes/MyCollection/Screens/Insights/MedianSalePriceAtAuction"
 import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists"
-import { UserAccountHeaderScreenQuery } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
+import {
+  userAccountHeaderQueryVariables,
+  UserAccountHeaderScreenQuery,
+} from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
 import { DarkModeSettings } from "app/Scenes/MyProfile/DarkModeSettings"
 import { MyProfile } from "app/Scenes/MyProfile/MyProfile"
 import {
@@ -1254,7 +1256,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerTitle: "Account",
       },
     },
-    prepareVariables: [() => ({ count: PAGE_SIZE })],
+    prepareVariables: [() => userAccountHeaderQueryVariables],
     queries: [UserAccountHeaderScreenQuery],
   },
   {

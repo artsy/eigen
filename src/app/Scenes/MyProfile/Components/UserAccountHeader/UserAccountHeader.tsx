@@ -68,7 +68,7 @@ export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps })
               alignItems="center"
               justifyContent="center"
             >
-              {!!me?.icon?.url ? (
+              {me?.icon?.url ? (
                 <Flex overflow="hidden" borderRadius={35}>
                   <Image
                     src={me.icon.url}
@@ -157,11 +157,12 @@ export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps })
   )
 }
 
+export const userAccountHeaderQueryVariables = { count: 4 }
 export const UserAccountHeaderQueryRenderer = withSuspense({
   Component: (props) => {
     const data = useLazyLoadQuery<UserAccountHeaderQuery>(
       UserAccountHeaderScreenQuery,
-      {},
+      userAccountHeaderQueryVariables,
       {
         fetchPolicy: "store-and-network",
       }
@@ -181,17 +182,18 @@ export const UserAccountHeaderQueryRenderer = withSuspense({
 })
 
 export const UserAccountHeaderScreenQuery = graphql`
-  query UserAccountHeaderQuery {
+  query UserAccountHeaderQuery($count: Int!) {
     me {
-      ...UserAccountHeader_me
+      ...UserAccountHeader_me @arguments(count: $count)
+      ...MyCollectionPreview_me @arguments(count: $count)
     }
   }
 `
 
 const userAccountHeaderFragment = graphql`
-  fragment UserAccountHeader_me on Me {
+  fragment UserAccountHeader_me on Me @argumentDefinitions(count: { type: "Int" }) {
     ...useCompleteMyProfileSteps_me
-    ...MyCollectionPreview_me
+    ...MyCollectionPreview_me @arguments(count: $count)
 
     internalID
     name

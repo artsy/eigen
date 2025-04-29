@@ -115,7 +115,7 @@ export const MyProfileSettings: React.FC = () => {
             <MenuItem
               title="Privacy"
               onPress={() => {
-                navigate("my-profile/privacy")
+                navigate("my-profile/terms-and-conditions")
               }}
             />
           </>
