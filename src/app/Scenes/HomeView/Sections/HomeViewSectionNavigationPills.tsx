@@ -25,6 +25,7 @@ import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { FC, memo } from "react"
 import { FlatList, Platform } from "react-native"
@@ -45,10 +46,15 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
   index,
   ...flexProps
 }) => {
-  const section = useFragment(sectionFragment, sectionProp)
-  const tracking = useHomeViewTracking()
-  const { isSplashScreenVisible } = GlobalStore.useAppState((state) => state.sessionState)
   const space = useSpace()
+
+  const section = useFragment(sectionFragment, sectionProp)
+
+  const enableQuickLinksAnimation = useFeatureFlag("AREnableQuickLinksAnimation")
+
+  const tracking = useHomeViewTracking()
+
+  const { isSplashScreenVisible } = GlobalStore.useAppState((state) => state.sessionState)
 
   const navigationPills = section.navigationPills.filter(
     (pill) => pill?.title && pill.href
@@ -76,7 +82,7 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
         data={navigationPills}
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={animatedStyles}
+        style={enableQuickLinksAnimation ? animatedStyles : undefined}
         contentContainerStyle={[
           {
             paddingHorizontal: space(2),
