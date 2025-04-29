@@ -1,4 +1,5 @@
 import { useColor } from "@artsy/palette-mobile"
+import { PixelRatio } from "react-native"
 import Svg, { Path } from "react-native-svg"
 import { BottomTabType } from "./BottomTabType"
 
@@ -118,8 +119,8 @@ export const BottomTabsIcon: React.FC<{ tab: BottomTabType; state: "active" | "i
 
   return (
     <Svg
-      width={ICON_WIDTH}
-      height={ICON_HEIGHT}
+      width={ICON_WIDTH * PixelRatio.getFontScale()}
+      height={ICON_HEIGHT * PixelRatio.getFontScale()}
       viewBox={`1 0 ${ICON_WIDTH} ${ICON_HEIGHT}`}
       fill={color("mono100")}
     >

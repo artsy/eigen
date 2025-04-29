@@ -22,7 +22,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
 import { useCallback } from "react"
-import { InteractionManager, Platform } from "react-native"
+import { InteractionManager, PixelRatio, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 if (Platform.OS === "ios") {
@@ -47,7 +47,7 @@ type TabRoutesParams = {
 
 const Tab = createBottomTabNavigator<TabRoutesParams>()
 
-const BOTTOM_TABS_HEIGHT = 65
+const BOTTOM_TABS_HEIGHT = PixelRatio.getFontScale() < 1.5 ? 65 : 85
 
 const AppTabs: React.FC = () => {
   const { tabsBadges } = useBottomTabsBadges()
@@ -131,7 +131,13 @@ const AppTabs: React.FC = () => {
                 height={BOTTOM_TABS_HEIGHT}
                 pb={0.5}
               >
-                <Text variant="xxs" selectable={false} textAlign="center" color="mono100">
+                <Text
+                  variant="xxs"
+                  selectable={false}
+                  textAlign="center"
+                  color="mono100"
+                  numberOfLines={1}
+                >
                   {bottomTabsConfig[route.name].name}
                 </Text>
               </Flex>
