@@ -3250,6 +3250,7 @@ type ArtworkImportTransformedData {
   height: String
   imageFileNames: String
   inventoryId: String
+  materials: String
   medium: String
   price: String
   width: String
