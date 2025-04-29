@@ -33,7 +33,7 @@ export const Footer: FC<FooterProps> = ({ cards, homeViewSectionId }) => {
       {categories.map((c, index) => (
         <RouterLink
           key={`category_rail_${index}`}
-          to={`/collections-by-category/${category}?homeViewSectionId=${homeViewSectionId}&entityID=${c.entityID}`}
+          to={`/collections-by-category/${c.title}?homeViewSectionId=${homeViewSectionId}&entityID=${c.entityID}`}
         >
           <Text variant="xl" color="mono0">
             {c.title}
