@@ -19,7 +19,7 @@ export const MyCollectionArtistFilters: React.FC<{}> = () => {
   }, [query])
 
   return (
-    <Flex pb={1} px={2}>
+    <Flex pb={1}>
       <Input
         testID="MyCollectionSearchBarInput"
         icon={<SearchIcon width={18} height={18} />}

@@ -2,6 +2,7 @@ import { AddIcon, FilterIcon, MoreIcon } from "@artsy/icons/native"
 import { Flex, Screen, Tabs, Text, Touchable } from "@artsy/palette-mobile"
 import { DEFAULT_ICON_SIZE, ICON_HIT_SLOP } from "app/Components/constants"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
+import { MyCollectionCollectedArtistsQueryRenderer } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtists"
 import {
   MyCollectionNavigationTab,
   MyCollectionTabsStore,
@@ -78,11 +79,13 @@ const MyCollection: React.FC = () => {
                 <Text>Artworks</Text>
               </Flex>
             </Tabs.Tab>
+
             <Tabs.Tab name={Tab.artists} label={Tab.artists}>
-              <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="blue10">
-                <Text>Artists</Text>
-              </Flex>
+              <Tabs.ScrollView>
+                <MyCollectionCollectedArtistsQueryRenderer />
+              </Tabs.ScrollView>
             </Tabs.Tab>
+
             <Tabs.Tab name={Tab.insights} label={Tab.insights}>
               <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="green10">
                 <Text>Insights</Text>
