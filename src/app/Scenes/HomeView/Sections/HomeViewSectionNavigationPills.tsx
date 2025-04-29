@@ -2,14 +2,19 @@ import { ContextModule } from "@artsy/cohesion"
 import {
   ArtworkIcon,
   FairIcon,
+  GavelIcon,
+  HeartStrokeIcon,
+  ImageSetIcon,
+  InstitutionIcon,
+  PublicationIcon,
+} from "@artsy/icons/native"
+import {
   Flex,
   FlexProps,
+  // TODO: migrate FollowArtistIcon to artsy/icons (MOPRAT-848)
+  // eslint-disable-next-line local-rules/no-palette-icon-imports
   FollowArtistIcon,
-  AuctionIcon as GavelIcon,
-  HeartIcon as HeartStrokeIcon,
-  IconProps,
   Pill,
-  PublicationIcon,
   Skeleton,
   Spacer,
   Text,
@@ -25,8 +30,9 @@ import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { FC, memo } from "react"
+import React, { memo } from "react"
 import { FlatList, Platform } from "react-native"
 import Animated, { Easing, useAnimatedStyle, withTiming } from "react-native-reanimated"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -45,10 +51,15 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
   index,
   ...flexProps
 }) => {
-  const section = useFragment(sectionFragment, sectionProp)
-  const tracking = useHomeViewTracking()
-  const { isSplashScreenVisible } = GlobalStore.useAppState((state) => state.sessionState)
   const space = useSpace()
+
+  const section = useFragment(sectionFragment, sectionProp)
+
+  const enableQuickLinksAnimation = useFeatureFlag("AREnableQuickLinksAnimation")
+
+  const tracking = useHomeViewTracking()
+
+  const { isSplashScreenVisible } = GlobalStore.useAppState((state) => state.sessionState)
 
   const navigationPills = section.navigationPills.filter(
     (pill) => pill?.title && pill.href
@@ -58,13 +69,12 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
     transform: [
       {
         translateX: withTiming(isSplashScreenVisible ? -150 : 0, {
-          duration: 500,
-          easing: Easing.out(Easing.cubic),
+          duration: 1000,
+          easing: Easing.bezier(0.25, 0.1, 0.25, 1.0),
         }),
       },
     ],
-    // Extra width to be conservative and making sure that we don't have a white section
-    width: "200%",
+    overflow: "visible",
   }))
 
   if (!navigationPills.length) {
@@ -73,48 +83,49 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
 
   return (
     <Flex {...flexProps} mt={1}>
-      <Animated.View style={animatedStyles}>
-        <FlatList
-          data={navigationPills}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
+      <Animated.FlatList
+        data={navigationPills}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={enableQuickLinksAnimation ? animatedStyles : undefined}
+        contentContainerStyle={[
+          {
             paddingHorizontal: space(2),
-          }}
-          ItemSeparatorComponent={() => <Spacer x={0.5} />}
-          renderItem={({ item: pill, index }) => (
-            <RouterLink
-              hasChildTouchable
-              to={pill.href}
-              key={pill.title}
-              onPress={() => {
-                tracking.tappedNavigationPillsGroup({
-                  title: pill.title,
-                  href: pill.href,
-                  index: index,
-                })
-              }}
+          },
+        ]}
+        ItemSeparatorComponent={() => <Spacer x={0.5} />}
+        renderItem={({ item: pill, index }) => (
+          <RouterLink
+            hasChildTouchable
+            to={pill.href}
+            key={pill.title}
+            onPress={() => {
+              tracking.tappedNavigationPillsGroup({
+                title: pill.title,
+                href: pill.href,
+                index: index,
+              })
+            }}
+          >
+            <Pill
+              accessibilityLabel={pill.title}
+              accessibilityRole="link"
+              testID={`pill-${pill.title}`}
+              variant="link"
+              Icon={SUPPORTED_ICONS[pill.icon as string]}
             >
-              <Pill
-                accessibilityLabel={pill.title}
-                accessibilityRole="link"
-                testID={`pill-${pill.title}`}
-                variant="link"
-                Icon={SUPPORTED_ICONS[pill.icon as string]}
-              >
-                <Text variant="xs" color="mono100">
-                  {pill.title}
-                </Text>
-              </Pill>
-            </RouterLink>
-          )}
-        />
+              <Text variant="xs" color="mono100">
+                {pill.title}
+              </Text>
+            </Pill>
+          </RouterLink>
+        )}
+      />
 
-        <HomeViewSectionSentinel
-          contextModule={section.contextModule as ContextModule}
-          index={index}
-        />
-      </Animated.View>
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
@@ -216,11 +227,13 @@ export const NAVIGATION_LINKS_PLACEHOLDER: Array<NavigationPill> = [
   { title: "Editorial", href: "/news", ownerType: "whatever", icon: "HeartIcon" },
 ]
 
-const SUPPORTED_ICONS: Record<string, FC<IconProps>> = {
+const SUPPORTED_ICONS: Record<string, React.FC> = {
   ArtworkIcon,
   FairIcon,
   FollowArtistIcon,
   GavelIcon,
   HeartStrokeIcon,
+  ImageSetIcon,
+  InstitutionIcon,
   PublicationIcon,
 }

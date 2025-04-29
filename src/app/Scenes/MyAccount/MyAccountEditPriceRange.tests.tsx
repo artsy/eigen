@@ -3,12 +3,9 @@ import { MyAccountEditPriceRangeTestsQuery } from "__generated__/MyAccountEditPr
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import {
-  MyAccountEditPriceRangeContainer,
-  MyAccountEditPriceRangeQueryRenderer,
-} from "./MyAccountEditPriceRange"
+import { MyAccountEditPriceRange } from "./MyAccountEditPriceRange"
 
-describe(MyAccountEditPriceRangeQueryRenderer, () => {
+describe("MyAccountEditPriceRangeQueryRenderer", () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
@@ -16,7 +13,7 @@ describe(MyAccountEditPriceRangeQueryRenderer, () => {
   const { renderWithRelay } = setupTestWrapper<MyAccountEditPriceRangeTestsQuery>({
     Component: (props) => {
       if (props?.me) {
-        return <MyAccountEditPriceRangeContainer me={props.me} />
+        return <MyAccountEditPriceRange me={props.me} />
       }
       return null
     },

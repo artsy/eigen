@@ -9,6 +9,7 @@ import {
   TextProps,
 } from "@artsy/palette-mobile"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { PixelRatio } from "react-native"
 import { ResponsiveValue } from "styled-system"
 
 export const MenuItem: React.FC<{
@@ -23,6 +24,7 @@ export const MenuItem: React.FC<{
   px?: ResponsiveValue<SpacingUnit, SpacingUnitsTheme>
   rightView?: React.ReactNode
   title: React.ReactNode
+  subtitle?: string
   value?: React.ReactNode
   alignItems?: "center" | "flex-start"
 }> = ({
@@ -37,28 +39,34 @@ export const MenuItem: React.FC<{
   px,
   rightView,
   title,
+  subtitle,
   value,
   alignItems = "center",
 }) => {
+  const showInline = PixelRatio.getFontScale() < 1.5 || !value
+
   return (
     <RouterLink onPress={onPress} to={href} underlayColor="mono5" disabled={disabled}>
       <Flex px={px ?? 2}>
         <Flex
-          flexDirection="row"
-          alignItems={alignItems}
+          flexDirection={!showInline ? "column" : "row"}
+          alignItems={showInline ? alignItems : "flex-start"}
           opacity={disabled && allowDisabledVisualClue ? 0.5 : 1}
           py={2}
         >
-          {!!icon && (
-            <Flex flex={1} flexGrow={1}>
-              {icon}
-            </Flex>
-          )}
-          <Flex flex={7}>
+          {!!icon && <Flex mr={1}>{icon}</Flex>}
+          <Flex>
             <Flex>
-              <Text variant="sm-display" color="mono100">
-                {title}
-              </Text>
+              <Flex flexDirection="row" alignItems="center">
+                <Text variant="sm-display" color="mono100">
+                  {title}
+                </Text>
+                {!!subtitle && (
+                  <Text color="mono60" ml={1}>
+                    {subtitle}
+                  </Text>
+                )}
+              </Flex>
               {!!description && (
                 <Text variant="xs" color="mono60">
                   {description}
@@ -69,9 +77,16 @@ export const MenuItem: React.FC<{
 
           <Spacer x={2} />
 
-          <Flex flexDirection="row" justifyContent="flex-end" flex={1} flexGrow={3} height="100%">
+          <Flex
+            flexDirection="row"
+            justifyContent={showInline ? "flex-end" : "space-between"}
+            flex={1}
+            width="100%"
+            flexGrow={3}
+            height="100%"
+          >
             {!!value && (
-              <Flex width={200}>
+              <Flex width={showInline ? 200 : undefined}>
                 <Text
                   variant="sm-display"
                   color={disabled && allowDisabledVisualClue ? "mono30" : "mono60"}

@@ -11,7 +11,7 @@ import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import { MyCollectionContainer } from "./MyCollection"
+import { MyCollectionContainer } from "./MyCollectionLegacy"
 
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native")
@@ -51,7 +51,7 @@ describe("MyCollection", () => {
     query: graphql`
       query MyCollectionTestsQuery @relay_test_operation {
         me {
-          ...MyCollection_me
+          ...MyCollectionLegacy_me
         }
       }
     `,

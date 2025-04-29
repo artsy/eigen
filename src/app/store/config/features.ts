@@ -45,9 +45,10 @@ export type FeatureName = keyof typeof features
 
 export const features = {
   ARDarkModeSupport: {
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     description: "Support dark mode",
+    echoFlagKey: "ARDarkModeSupport",
   },
   AREnableEditorialNews: {
     readyForRelease: true,
@@ -265,6 +266,18 @@ export const features = {
     readyForRelease: false,
     showInDevMenu: true,
     echoFlagKey: "AREnableRedesignedSettings",
+  },
+  ARDarkModeOnboarding: {
+    readyForRelease: true,
+    showInDevMenu: true,
+    description: "Enable Dark mode onboarding task",
+    echoFlagKey: "ARDarkModeOnboarding",
+  },
+  AREnableQuickLinksAnimation: {
+    readyForRelease: true,
+    showInDevMenu: true,
+    description: "Enable quick links animation",
+    echoFlagKey: "AREnableQuickLinksAnimation",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

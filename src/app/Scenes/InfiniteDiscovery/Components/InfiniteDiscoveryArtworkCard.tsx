@@ -1,8 +1,7 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
 import {
   Flex,
-  HeartFillIcon,
-  HeartIcon,
   Image,
   Popover,
   Text,
@@ -145,46 +144,53 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const MAX_ARTWORK_HEIGHT = screenHeight * 0.55
 
     const images = artwork.images || []
+    const hasMultipleImages = images.length > 1
     const selectedImage = images[currentImageIndex]
     const src = selectedImage?.url
     const width = selectedImage?.width ?? 0
     const height = selectedImage?.height ?? 0
+    const blurhash = selectedImage?.blurhash ?? undefined
 
-    const size = sizeToFit({ width, height }, { width: screenWidth, height: MAX_ARTWORK_HEIGHT })
+    // When there are multiple images, adjust the max height to allow space for pagination bar
+    const adjustedMaxHeight = hasMultipleImages
+      ? MAX_ARTWORK_HEIGHT - PAGINATION_BAR_HEIGHT - PAGINATION_BAR_MARGIN_TOP
+      : MAX_ARTWORK_HEIGHT
+
+    const size = sizeToFit({ width, height }, { width: screenWidth, height: adjustedMaxHeight })
 
     const handleWrapperTaps = (event: GestureResponderEvent) => {
       const now = Date.now()
       const state = gestureState.current
       const { nativeEvent } = event
       const { locationX } = nativeEvent
-      const screenThird = screenWidth / 3
+      const screenFifth = screenWidth / 5
 
-      // Determine which third of the screen was tapped
-      const leftThird = locationX < screenThird
-      const rightThird = locationX > screenThird * 2
-      const middleThird = !leftThird && !rightThird
+      // Determine which part of the screen was tapped
+      const leftFifth = locationX < screenFifth
+      const rightFifth = locationX > screenWidth - screenFifth
+      const middleSection = !leftFifth && !rightFifth
 
-      // Check if the Swiper is actively swiping
-      // Note: We'll use a special technique that lets the gesture go through
-      // if it's a vertical swipe intended for the Swiper component
-
-      // Handle image navigation in left/right thirds with single tap
+      // Handle image navigation in left/right fifths with single tap
       if (images.length > 1) {
-        if (leftThird && currentImageIndex > 0) {
-          // For left third, navigate to previous image on single tap
+        if (leftFifth && currentImageIndex > 0) {
+          // For left fifth, navigate to previous image on single tap
           Haptic.trigger("impactLight")
+          trackEvent(tracks.artworkImageSwipe())
           setCurrentImageIndex(currentImageIndex - 1)
           return true
-        } else if (rightThird && currentImageIndex < images.length - 1) {
-          // For right third, navigate to next image on single tap
+        } else if (rightFifth && currentImageIndex < images.length - 1) {
+          // For right fifth, navigate to next image on single tap
           Haptic.trigger("impactLight")
+          trackEvent(tracks.artworkImageSwipe())
           setCurrentImageIndex(currentImageIndex + 1)
           return true
         }
       }
 
-      // Handle double-tap to save only in the middle third
-      if (middleThird) {
+      // Handle double-tap to save:
+      // For single images, allow double-tap anywhere on the image
+      // For multiple images, only allow double-tap in the middle 60%
+      if (images.length === 1 || middleSection) {
         if (now - state.lastTapTimestamp < SAVES_MAX_DURATION_BETWEEN_TAPS) {
           state.numTaps += 1
         } else {
@@ -219,7 +225,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             contextScreenOwnerSlug={artwork.slug}
           />
         </Flex>
-        <Flex alignItems="center" minHeight={MAX_ARTWORK_HEIGHT} justifyContent="center">
+        <Flex alignItems="center" minHeight={adjustedMaxHeight} justifyContent="center">
           <Animated.View
             style={[
               {
@@ -236,7 +242,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
           >
             <HeartFillIcon height={64} width={64} fill="mono0" />
           </Animated.View>
-
           <Flex
             // Only handle initial touches
             onStartShouldSetResponder={(event) => {
@@ -260,15 +265,12 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               zIndex: 100,
             }}
           />
-
-          {!!src && <Image src={src} height={size.height} width={size.width} />}
+          {!!src && <Image src={src} height={size.height} width={size.width} blurhash={blurhash} />}
         </Flex>
 
-        {/* Show pagination bars when there are multiple images */}
-        {images.length > 1 && (
+        {!!hasMultipleImages && (
           <Flex
-            pt={2}
-            px={1}
+            mt={1} // keep consistent with PAGINATION_BAR_MARGIN_TOP to resize image
             height={PAGINATION_BAR_HEIGHT}
             alignItems="center"
             justifyContent="center"
@@ -279,13 +281,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         )}
         <Flex flexDirection="row" justifyContent="space-between" p={2} gap={1}>
           <Flex flex={1}>
-            {/* TODO: remove this when we are done with the infinite discovery */}
-            {!!__DEV__ && (
-              <Text color="blue" variant="sm-display" ellipsizeMode="tail" numberOfLines={1}>
-                {artwork.internalID}
-              </Text>
-            )}
-
             <Flex flexDirection="row">
               <RNText numberOfLines={1}>
                 <Text color="mono60" variant="sm-display">
@@ -340,7 +335,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                     />
                   </Animated.View>
                 ) : (
-                  <HeartIcon
+                  <HeartStrokeIcon
                     testID="empty-heart-icon"
                     height={HEART_ICON_SIZE}
                     width={HEART_ICON_SIZE}
@@ -431,6 +426,7 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
       url(version: "large")
       width
       height
+      blurhash
     }
     isSaved
     saleMessage
@@ -443,4 +439,13 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
 const HEART_ICON_SIZE = 18
 const HEART_CIRCLE_SIZE = 50
 const SAVE_BUTTON_WIDTH = 105
-const PAGINATION_BAR_HEIGHT = 12
+const PAGINATION_BAR_HEIGHT = 11
+const PAGINATION_BAR_MARGIN_TOP = 10
+
+const tracks = {
+  artworkImageSwipe: () => ({
+    action_name: Schema.ActionNames.ArtworkImageSwipe,
+    action_type: Schema.ActionTypes.Tap,
+    context_module: ContextModule.infiniteDiscoveryArtworkCard,
+  }),
+}

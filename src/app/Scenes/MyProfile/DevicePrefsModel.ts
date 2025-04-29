@@ -59,16 +59,17 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
   }),
   updateStatusBarStyle: effectOn([(state) => state], (_, change) => {
     const [state] = change.current
+
     if (state.colorScheme === "dark") {
       StatusBar.setBarStyle("light-content")
-      Appearance.setColorScheme("dark")
+
       if (Platform.OS === "android") {
         ArtsyNativeModule.setNavigationBarColor("#000000")
         ArtsyNativeModule.setAppLightContrast(true)
       }
     } else {
       StatusBar.setBarStyle("dark-content")
-      Appearance.setColorScheme("light")
+
       if (Platform.OS === "android") {
         ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
         ArtsyNativeModule.setAppLightContrast(false)

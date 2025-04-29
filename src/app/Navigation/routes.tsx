@@ -136,11 +136,12 @@ import { MyAccountDeleteAccountQueryRenderer } from "app/Scenes/MyAccount/MyAcco
 import { MyAccountEditEmailQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditEmail"
 import { MyAccountEditPassword } from "app/Scenes/MyAccount/MyAccountEditPassword"
 import { MyAccountEditPhoneQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditPhone"
-import { MyAccountEditPriceRangeQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditPriceRange"
 import {
-  MyCollectionQueryRenderer,
-  MyCollectionScreenQuery,
-} from "app/Scenes/MyCollection/MyCollection"
+  myAccountEditPriceRangeQuery,
+  MyAccountEditPriceRangeQueryRenderer,
+} from "app/Scenes/MyAccount/MyAccountEditPriceRange"
+import { MyCollectionQueryRenderer } from "app/Scenes/MyCollection/MyCollection"
+import { myCollectionScreenQuery } from "app/Scenes/MyCollection/MyCollectionLegacy"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import {
   MyCollectionArtworkScreen,
@@ -160,10 +161,19 @@ import {
   MyProfileEditFormScreenQuery,
 } from "app/Scenes/MyProfile/MyProfileEditForm"
 import { MyProfileHeaderScreenQuery } from "app/Scenes/MyProfile/MyProfileHeader"
-import { MyProfilePaymentQueryRenderer } from "app/Scenes/MyProfile/MyProfilePayment"
+import {
+  MyProfilePaymentQueryRenderer,
+  MyProfilePaymentScreenQuery,
+} from "app/Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "app/Scenes/MyProfile/MyProfilePaymentNewCreditCard"
+import {
+  myProfilePreferencesQuery,
+  MyProfilePreferencesQueryRenderer,
+} from "app/Scenes/MyProfile/MyProfilePreferences"
+import { MyProfilePrivacy } from "app/Scenes/MyProfile/MyProfilePrivacy"
 import { MyProfilePushNotificationsQueryRenderer } from "app/Scenes/MyProfile/MyProfilePushNotifications"
 import { MyProfileSettings } from "app/Scenes/MyProfile/MyProfileSettings"
+import { MyProfileTermsAndConditions } from "app/Scenes/MyProfile/MyProfileTermsAndConditions"
 import { NewWorksForYouQueryRenderer } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { NewWorksFromGalleriesYouFollowScreenQuery } from "app/Scenes/NewWorksFromGalleriesYouFollow/Components/NewWorksFromGalleriesYouFollow"
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
@@ -719,6 +729,16 @@ export const artsyDotNetRoutes = defineRoutes([
     queries: [CitySectionListScreenQuery],
   },
   {
+    path: "/collector-profile/my-collection",
+    name: "CollectorProfileMyCollection",
+    Component: MyCollectionQueryRenderer,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  },
+  {
     path: "/collections-by-category/:category",
     name: "CollectionsByCategory",
     Component: CollectionsByCategory,
@@ -1040,8 +1060,10 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/my-account/edit-price-range",
     name: "MyAccountEditPriceRange",
     Component: MyAccountEditPriceRangeQueryRenderer,
+    queries: [myAccountEditPriceRangeQuery],
     options: {
       screenOptions: {
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
         headerTitle: "Price Range",
       },
     },
@@ -1162,7 +1184,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    queries: [MyProfileHeaderScreenQuery, MyCollectionScreenQuery],
+    queries: [MyProfileHeaderScreenQuery, myCollectionScreenQuery],
   },
   {
     path: "/my-profile/edit",
@@ -1182,8 +1204,10 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       screenOptions: {
         headerTitle: "Payment",
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
       },
     },
+    queries: [MyProfilePaymentScreenQuery],
   },
   {
     path: "/my-profile/payment/new-card",
@@ -1192,6 +1216,7 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       screenOptions: {
         headerTitle: "Add new card",
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
       },
     },
   },
@@ -1201,7 +1226,19 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: MyProfilePushNotificationsQueryRenderer,
     options: {
       screenOptions: {
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
         headerTitle: "Push Notifications",
+      },
+    },
+  },
+  {
+    path: "/my-profile/preferences",
+    name: "MyProfilePreferences",
+    Component: MyProfilePreferencesQueryRenderer,
+    queries: [myProfilePreferencesQuery],
+    options: {
+      screenOptions: {
+        headerShown: false,
       },
     },
   },
@@ -1212,6 +1249,26 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       screenOptions: {
         headerTitle: "Account",
+      },
+    },
+  },
+  {
+    path: "/my-profile/privacy",
+    name: "MyProfilePrivacy",
+    Component: MyProfilePrivacy,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  },
+  {
+    path: "/my-profile/terms-and-conditions",
+    name: "MyProfileTermsAndConditions",
+    Component: MyProfileTermsAndConditions,
+    options: {
+      screenOptions: {
+        headerShown: false,
       },
     },
   },
@@ -1341,6 +1398,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: PrivacyRequest,
     options: {
       screenOptions: {
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
         headerTitle: "Personal Data Request",
       },
     },
@@ -1487,6 +1545,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: DarkModeSettings,
     options: {
       screenOptions: {
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
         headerTitle: "Dark Mode",
       },
     },
@@ -1650,6 +1709,12 @@ export const artsyDotNetRoutes = defineRoutes([
   }),
   webViewRoute({
     path: "/terms",
+    config: {
+      alwaysPresentModally: true,
+    },
+  }),
+  webViewRoute({
+    path: "/supplemental-cos",
     config: {
       alwaysPresentModally: true,
     },

@@ -1,13 +1,13 @@
-import { Flex, Skeleton, SkeletonText, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Skeleton, SkeletonText, Text } from "@artsy/palette-mobile"
 import { useRoute } from "@react-navigation/native"
 import { FooterCollectionsByCategoryQuery } from "__generated__/FooterCollectionsByCategoryQuery.graphql"
 import { Footer_homeViewSectionCards$key } from "__generated__/Footer_homeViewSectionCards.graphql"
 import { CollectionsByCategoriesRouteProp } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { FC } from "react"
-import { graphql, useLazyLoadQuery, useFragment } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface FooterProps {
   cards: Footer_homeViewSectionCards$key
@@ -26,25 +26,19 @@ export const Footer: FC<FooterProps> = ({ cards, homeViewSectionId }) => {
     return null
   }
 
-  const handleCategoryPress = (category: string, entityID: string) => {
-    navigate(
-      `/collections-by-category/${category}?homeViewSectionId=${homeViewSectionId}&entityID=${entityID}`
-    )
-  }
-
   return (
     <Flex backgroundColor="mono100" p={2} gap={2}>
       <Text color="mono0">Explore more categories</Text>
 
       {categories.map((c, index) => (
-        <Touchable
+        <RouterLink
           key={`category_rail_${index}`}
-          onPress={() => handleCategoryPress(c.title, c.entityID)}
+          to={`/collections-by-category/${c.title}?homeViewSectionId=${homeViewSectionId}&entityID=${c.entityID}`}
         >
           <Text variant="xl" color="mono0">
             {c.title}
           </Text>
-        </Touchable>
+        </RouterLink>
       ))}
     </Flex>
   )

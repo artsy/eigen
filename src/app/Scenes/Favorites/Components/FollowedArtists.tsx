@@ -12,7 +12,6 @@ import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { useRefreshControl } from "app/utils/refreshHelpers"
-import React from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface Props {
@@ -36,6 +35,7 @@ export const FollowedArtists: React.FC<Props> = ({ me }) => {
   if (data.followsAndSaves?.artistsConnection?.totalCount === 0) {
     return (
       <Screen.ScrollView refreshControl={RefreshControl}>
+        <FollowOptionPicker />
         <ZeroState
           title="You haven’t followed any artists yet"
           subtitle="When you’ve found an artist you like, follow them to get updates on new works that become available."
@@ -136,7 +136,7 @@ export const FollowedArtistsQueryRenderer = withSuspense({
     return (
       <LoadFailureView
         onRetry={fallbackProps.resetErrorBoundary}
-        showBackButton={true}
+        showBackButton={false}
         useSafeArea={false}
         error={fallbackProps.error}
         trackErrorBoundary={false}

@@ -1,6 +1,6 @@
-import { Spacer, Flex, useColor, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 
 interface SavedItemRowProps {
   href: string
@@ -19,17 +19,10 @@ export const SavedItemRow: React.FC<SavedItemRowProps> = ({
   square_image,
   size = 60,
 }) => {
-  const color = useColor()
   const imageURL = image?.url
   return (
     <Flex>
-      <Touchable
-        underlayColor={color("mono5")}
-        onPress={() => {
-          navigate(href)
-        }}
-        style={{ paddingVertical: 5 }}
-      >
+      <RouterLink to={href} style={{ paddingVertical: 5 }}>
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-start" px={2}>
           <Flex
             height={size}
@@ -44,7 +37,7 @@ export const SavedItemRow: React.FC<SavedItemRowProps> = ({
             {name}
           </Text>
         </Flex>
-      </Touchable>
+      </RouterLink>
     </Flex>
   )
 }

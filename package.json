@@ -10,17 +10,9 @@
   "reactNativePermissionsIOS": [
     "Notifications"
   ],
-  "main": "index-common.js",
+  "main": "index.js",
   "scripts": {
     "android": "react-native run-android --active-arch-only",
-    "bundle:android": "yarn bundle:android:js && yarn bundle:android:hermes && yarn bundle:android:sourcemap",
-    "bundle:android:js": "./scripts/hermes/hermes-android-bundle.sh",
-    "bundle:android:sourcemap": "./scripts/hermes/hermes-android-sourcemap.sh",
-    "bundle:android:hermes": "./scripts/hermes/hermes-android-bundle-bytecode.sh",
-    "bundle:ios": "yarn bundle:ios:js && yarn bundle:ios:hermes && yarn bundle:ios:sourcemap",
-    "bundle:ios:js": "./scripts/hermes/hermes-ios-bundle.sh",
-    "bundle:ios:hermes": "./scripts/hermes/hermes-ios-bundle-bytecode.sh",
-    "bundle:ios:sourcemap": "./scripts/hermes/hermes-ios-bundle-sourcemap.sh",
     "check-flags": "./scripts/check-flags/check-flags.js",
     "ci": "yarn ci:type-check && yarn ci:lint && yarn prettier-project -l && rm -rf src/__generated__ && yarn relay && yarn ci:test",
     "ci:lint": "yarn lint --format json --out eslint-errors.json",
@@ -105,9 +97,9 @@
     "braces": "in the resolutions - needed to resolve a security dependency issue - need to remove this when the issue is resolved and packages are updated"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.257.0",
-    "@artsy/icons": "3.29.0",
-    "@artsy/palette-mobile": "17.1.0",
+    "@artsy/cohesion": "4.258.0",
+    "@artsy/icons": "3.29.1",
+    "@artsy/palette-mobile": "17.6.0",
     "@artsy/to-title-case": "1.1.0",
     "@braze/react-native-sdk": "13.1.1",
     "@expo/react-native-action-sheet": "4.0.1",
@@ -279,7 +271,7 @@
     "eslint-plugin-artsy": "file:./eslint-rules",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-jest": "27.2.1",
-    "eslint-plugin-no-autofix": "1.2.3",
+    "eslint-plugin-local-rules": "3.0.2",
     "eslint-plugin-no-relative-import-paths": "1.5.2",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-react": "7.32.1",

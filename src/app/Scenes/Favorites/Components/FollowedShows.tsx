@@ -31,6 +31,7 @@ export const FollowedShows: React.FC<Props> = ({ me }) => {
   if (shows.length === 0) {
     return (
       <Screen.ScrollView refreshControl={RefreshControl}>
+        <FollowOptionPicker />
         <ZeroState
           title="You haven’t saved any shows yet"
           subtitle="When you save shows, they will show up here for future use."
@@ -117,7 +118,7 @@ export const FollowedShowsQueryRenderer = withSuspense({
     return (
       <LoadFailureView
         onRetry={fallbackProps.resetErrorBoundary}
-        showBackButton={true}
+        showBackButton={false}
         useSafeArea={false}
         error={fallbackProps.error}
         trackErrorBoundary={false}

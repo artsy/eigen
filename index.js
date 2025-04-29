@@ -14,13 +14,20 @@ if (__DEV__) {
   try {
     const fileContents = require("./metaflags.json")
     metaflags = { ...metaflags, ...fileContents }
-  } catch {}
+  } catch {
+    // ignore error
+  }
 }
 
 import "react-native-url-polyfill/auto"
-const { AppRegistry } = require("react-native")
+const { AppRegistry, Platform } = require("react-native")
 
 const appName = require("./app.json").appName
 require("react-native-gesture-handler")
 const { App } = require("./src/app/App")
+
+if (Platform.OS === "android") {
+  require("./src/app/utils/PushNotification").configure()
+}
+
 AppRegistry.registerComponent(appName, () => App)
