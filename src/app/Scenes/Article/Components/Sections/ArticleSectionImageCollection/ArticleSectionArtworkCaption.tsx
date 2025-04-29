@@ -1,7 +1,7 @@
-import { Button, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { Button, Flex, Text } from "@artsy/palette-mobile"
 import { ArticleSectionArtworkCaption_artwork$key } from "__generated__/ArticleSectionArtworkCaption_artwork.graphql"
-import { navigate } from "app/system/navigation/navigate"
-import { useFragment, graphql } from "react-relay"
+import { RouterLink } from "app/system/navigation/RouterLink"
+import { graphql, useFragment } from "react-relay"
 
 interface ArticleSectionArtworkCaptionProps {
   artwork: ArticleSectionArtworkCaption_artwork$key
@@ -18,41 +18,35 @@ export const ArticleSectionArtworkCaption: React.FC<ArticleSectionArtworkCaption
     return null
   }
 
-  const handleOnNavigate = (href: string | null = null) => {
-    if (href) {
-      navigate(href)
-    }
-  }
-
   return (
     <Flex pr={2}>
       {data.artists?.map((artist, i) => {
         if (!artist || !artist.href || !artist.name) return null
 
         return (
-          <Touchable key={i} onPress={() => handleOnNavigate(artist.href)}>
+          <RouterLink key={i} to={artist.href}>
             <Text variant="sm-display">
               {artist.name}
               {i !== data.artists!.length - 1 && ", "}
             </Text>
-          </Touchable>
+          </RouterLink>
         )
       })}
 
-      <Touchable onPress={() => handleOnNavigate(data.href)}>
+      <RouterLink to={data.href}>
         <Text variant="sm-display" color="mono60">
           <Text variant="sm-display" color="mono60" italic>
             {data.title}
           </Text>
           {!!data.date && `, ${data.date}`}
         </Text>
-      </Touchable>
+      </RouterLink>
 
-      <Touchable onPress={() => handleOnNavigate(data.partner?.href)}>
+      <RouterLink to={data.partner?.href}>
         <Text variant="xs" color="mono60">
           {data.partner?.name}
         </Text>
-      </Touchable>
+      </RouterLink>
 
       {!!data.saleMessage && (
         <Text variant="xs" weight="medium">
@@ -61,9 +55,11 @@ export const ArticleSectionArtworkCaption: React.FC<ArticleSectionArtworkCaption
       )}
 
       {!!showViewArtworkCTA && (
-        <Button mt={1} size="small" variant="outline" onPress={() => handleOnNavigate(data.href)}>
-          View Artwork
-        </Button>
+        <RouterLink hasChildTouchable to={data.href}>
+          <Button mt={1} size="small" variant="outline">
+            View Artwork
+          </Button>
+        </RouterLink>
       )}
     </Flex>
   )

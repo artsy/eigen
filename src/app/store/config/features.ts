@@ -267,6 +267,12 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableRedesignedSettings",
   },
+  ARDarkModeOnboarding: {
+    readyForRelease: true,
+    showInDevMenu: true,
+    description: "Enable Dark mode onboarding task",
+    echoFlagKey: "ARDarkModeOnboarding",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

@@ -1,9 +1,9 @@
-import { Flex, Box, Text, Image } from "@artsy/palette-mobile"
+import { Box, Flex, Image, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { Fair } from "app/Scenes/Map/types"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { Component } from "react"
-import { Dimensions, TouchableWithoutFeedback } from "react-native"
+import { Dimensions } from "react-native"
 import styled from "styled-components/native"
 
 interface Props {
@@ -11,10 +11,6 @@ interface Props {
 }
 
 export class FairEventSectionCard extends Component<Props> {
-  handleTap() {
-    navigate(`/fair/${this.props.fair.slug}`)
-  }
-
   // @TODO: Implement tests for this component https://artsyproduct.atlassian.net/browse/LD-549
   render() {
     const {
@@ -24,7 +20,7 @@ export class FairEventSectionCard extends Component<Props> {
     const width = Dimensions.get("window").width / 2 + 50
 
     return (
-      <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
+      <RouterLink to={`/fair/${this.props.fair.slug}`}>
         <Container>
           {!!image?.url && (
             <BackgroundImage src={image.url} height={310} width={width} zIndex={1} />
@@ -48,7 +44,7 @@ export class FairEventSectionCard extends Component<Props> {
             </Flex>
           </Box>
         </Container>
-      </TouchableWithoutFeedback>
+      </RouterLink>
     )
   }
 }

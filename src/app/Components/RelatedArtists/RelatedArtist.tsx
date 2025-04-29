@@ -1,9 +1,9 @@
 import { Image, Spacer, Text } from "@artsy/palette-mobile"
 import { RelatedArtist_artist$data } from "__generated__/RelatedArtist_artist.graphql"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { Component } from "react"
-import { TouchableWithoutFeedback, View } from "react-native"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
@@ -15,17 +15,11 @@ interface Props {
 }
 
 class RelatedArtist extends Component<Props> {
-  handleTap() {
-    if (this.props.artist.href) {
-      navigate(this.props.artist.href)
-    }
-  }
-
   render() {
     const artist = this.props.artist
 
     return (
-      <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
+      <RouterLink to={this.props.artist.href}>
         <View style={{ width: this.props.imageSize.width }}>
           {!!artist.coverArtwork?.image?.url && (
             <Image
@@ -47,7 +41,7 @@ class RelatedArtist extends Component<Props> {
             )}
           </ThemeAwareClassTheme>
         </View>
-      </TouchableWithoutFeedback>
+      </RouterLink>
     )
   }
 

@@ -12,16 +12,21 @@ type ViewPayload =
       artistId: string
       interestId: string
     }
+
+export type MyCollectionNavigationTab = "Artworks" | "Artists" | "Insights"
 export interface MyCollectionTabsStoreModel {
+  activeNavigationTab: MyCollectionNavigationTab
   selectedTab: CollectedTab
   viewKind: MyCollectionBottomSheetModalKind
   artistId: string | null
   interestId: string | null
   setSelectedTab: Action<this, CollectedTab>
   setViewKind: Action<this, ViewPayload>
+  setActiveNavigationTab: Action<this, MyCollectionNavigationTab>
 }
 
 export const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
+  activeNavigationTab: "Artworks",
   selectedTab: null,
   viewKind: null,
   artistId: null,
@@ -48,6 +53,9 @@ export const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
         state.interestId = payload.interestId
         break
     }
+  }),
+  setActiveNavigationTab: action((state, payload) => {
+    state.activeNavigationTab = payload
   }),
 }
 

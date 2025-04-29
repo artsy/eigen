@@ -1,25 +1,30 @@
 import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountEditPriceRangeQuery } from "__generated__/MyAccountEditPriceRangeQuery.graphql"
-import { MyAccountEditPriceRange_me$data } from "__generated__/MyAccountEditPriceRange_me.graphql"
+import { MyAccountEditPriceRange_me$key } from "__generated__/MyAccountEditPriceRange_me.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { Select, SelectOption } from "app/Components/Select"
+import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { goBack } from "app/system/navigation/navigate"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderBox } from "app/utils/placeholders"
-import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import React, { useEffect, useState } from "react"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
-const MyAccountEditPriceRange: React.FC<{
-  me: MyAccountEditPriceRange_me$data
-}> = ({ me }) => {
-  const navigation = useNavigation()
+export const MyAccountEditPriceRange: React.FC<{
+  me: MyAccountEditPriceRange_me$key
+}> = (props) => {
+  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
+  const me = useFragment(meFragment, props.me)
+  const [isLoading, setIsLoading] = useState(false)
 
   const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
   const [priceRange, setPriceRange] = useState<string>(me.priceRange ?? "")
   const [priceRangeMax, setPriceRangeMax] = useState<number | null | undefined>(me.priceRangeMax)
   const [priceRangeMin, setPriceRangeMin] = useState<number | null | undefined>(me.priceRangeMin)
+  const navigation = useNavigation()
 
   useEffect(() => {
     setReceivedError(undefined)
@@ -28,31 +33,43 @@ const MyAccountEditPriceRange: React.FC<{
   useEffect(() => {
     const isValid = !!priceRange && priceRange !== me.priceRange
 
-    navigation.setOptions({
-      headerRight: () => {
-        return (
-          <Touchable onPress={handleSave} disabled={!isValid}>
-            <Text variant="xs" color={!!isValid ? "mono100" : "mono60"}>
-              Save
-            </Text>
-          </Touchable>
-        )
-      },
-    })
-  }, [navigation, priceRange, me.priceRange])
+    if (enableRedesignedSettings) {
+      navigation.setOptions({
+        headerRight: () => {
+          return (
+            <Touchable onPress={handleSave} disabled={!isValid}>
+              <Text variant="xs" color={!!isValid ? "mono100" : "mono60"}>
+                Save
+              </Text>
+            </Touchable>
+          )
+        },
+      })
+    }
+  }, [navigation, priceRange, me.priceRange, enableRedesignedSettings])
 
   const handleSave = async () => {
     try {
+      setIsLoading(true)
       await updateMyUserProfile({ priceRangeMin, priceRangeMax })
       goBack()
     } catch (e: any) {
       setReceivedError(e)
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  return (
-    <>
-      <Flex p={2}>
+  const isValid = !!priceRange && priceRange !== me.priceRange
+
+  if (enableRedesignedSettings) {
+    return (
+      <MyProfileScreenWrapper
+        title="Price Range"
+        onPress={handleSave}
+        isValid={isValid}
+        loading={isLoading}
+      >
         <Select
           title="Price Range"
           options={PRICE_BUCKETS}
@@ -60,56 +77,89 @@ const MyAccountEditPriceRange: React.FC<{
           value={priceRange}
           onSelectValue={(value) => {
             setPriceRange(value)
-
-            // We don't actually accept a priceRange,
-            // so have to split it into min/max
             const [priceRangeMinFin, priceRangeMaxFin] = value
               .split(":")
               .map((n) => parseInt(n, 10))
-
             setPriceRangeMin(priceRangeMinFin)
             setPriceRangeMax(priceRangeMaxFin)
           }}
           hasError={!!receivedError}
         />
-      </Flex>
-    </>
+      </MyProfileScreenWrapper>
+    )
+  }
+
+  return (
+    <Flex p={2}>
+      <Select
+        title="Price Range"
+        options={PRICE_BUCKETS}
+        enableSearch={false}
+        value={priceRange}
+        onSelectValue={(value) => {
+          setPriceRange(value)
+          const [priceRangeMinFin, priceRangeMaxFin] = value.split(":").map((n) => parseInt(n, 10))
+          setPriceRangeMin(priceRangeMinFin)
+          setPriceRangeMax(priceRangeMaxFin)
+        }}
+        hasError={!!receivedError}
+      />
+    </Flex>
   )
 }
 
-const MyAccountEditPriceRangePlaceholder: React.FC<{}> = ({}) => {
+const MyAccountEditPriceRangePlaceholder: React.FC<{}> = () => {
+  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
+
+  if (enableRedesignedSettings) {
+    return (
+      <MyProfileScreenWrapper title="Price Range">
+        <PlaceholderBox height={40} />
+      </MyProfileScreenWrapper>
+    )
+  }
+
   return <PlaceholderBox height={40} />
 }
 
-export const MyAccountEditPriceRangeContainer = createFragmentContainer(MyAccountEditPriceRange, {
-  me: graphql`
-    fragment MyAccountEditPriceRange_me on Me {
-      priceRange
-      priceRangeMin
-      priceRangeMax
-    }
-  `,
-})
+const meFragment = graphql`
+  fragment MyAccountEditPriceRange_me on Me {
+    priceRange
+    priceRangeMin
+    priceRangeMax
+  }
+`
 
-export const MyAccountEditPriceRangeQueryRenderer: React.FC<{}> = () => {
-  return (
-    <QueryRenderer<MyAccountEditPriceRangeQuery>
-      environment={getRelayEnvironment()}
-      query={graphql`
-        query MyAccountEditPriceRangeQuery {
-          me {
-            ...MyAccountEditPriceRange_me
-          }
-        }
-      `}
-      render={renderWithPlaceholder({
-        Container: MyAccountEditPriceRangeContainer,
-        renderPlaceholder: () => <MyAccountEditPriceRangePlaceholder />,
-      })}
-      variables={{}}
-    />
-  )
-}
+export const myAccountEditPriceRangeQuery = graphql`
+  query MyAccountEditPriceRangeQuery {
+    me {
+      ...MyAccountEditPriceRange_me
+    }
+  }
+`
+
+export const MyAccountEditPriceRangeQueryRenderer: React.FC<{}> = withSuspense({
+  Component: ({}) => {
+    const data = useLazyLoadQuery<MyAccountEditPriceRangeQuery>(myAccountEditPriceRangeQuery, {})
+
+    if (!data?.me) {
+      return null
+    }
+
+    return <MyAccountEditPriceRange me={data.me} />
+  },
+  LoadingFallback: MyAccountEditPriceRangePlaceholder,
+  ErrorFallback: (fallbackProps) => {
+    return (
+      <LoadFailureView
+        onRetry={fallbackProps.resetErrorBoundary}
+        useSafeArea={false}
+        error={fallbackProps.error}
+        trackErrorBoundary={false}
+      />
+    )
+  },
+})
 
 export const PRICE_BUCKETS: Array<SelectOption<string>> = [
   { label: "Select a price range", value: "" },

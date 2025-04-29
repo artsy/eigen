@@ -41,6 +41,17 @@ describe("PaymentSection", () => {
     expect(screen.getByText("Apple Pay")).toBeOnTheScreen()
   })
 
+  it("renders when payment method is google pay", () => {
+    renderWithRelay({
+      CommerceOrder: () => ({
+        paymentMethodDetails: { __typename: "CreditCard", brand: "visa", lastDigits: "4242" },
+        creditCardWalletType: "google_pay",
+      }),
+    })
+
+    expect(screen.getByText("Google Pay")).toBeOnTheScreen()
+  })
+
   it("renders when payment method is wire transfer", () => {
     renderWithRelay({
       CommerceOrder: () => ({ paymentMethodDetails: { __typename: "WireTransfer" } }),

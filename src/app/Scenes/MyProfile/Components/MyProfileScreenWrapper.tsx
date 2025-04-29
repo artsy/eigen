@@ -1,6 +1,6 @@
 import { Button, Flex, Screen, useSpace } from "@artsy/palette-mobile"
 import { goBack } from "app/system/navigation/navigate"
-import { ViewStyle } from "react-native"
+import { RefreshControlProps, ViewStyle } from "react-native"
 
 export interface MyProfileScreenWrapperProps {
   title: string
@@ -9,6 +9,7 @@ export interface MyProfileScreenWrapperProps {
   loading?: boolean
   hideLeftElements?: boolean
   contentContainerStyle?: ViewStyle
+  RefreshControl?: React.ReactElement<RefreshControlProps>
 }
 export const MyProfileScreenWrapper: React.FC<MyProfileScreenWrapperProps> = ({
   children,
@@ -18,6 +19,7 @@ export const MyProfileScreenWrapper: React.FC<MyProfileScreenWrapperProps> = ({
   loading,
   hideLeftElements = false,
   contentContainerStyle,
+  RefreshControl,
 }) => {
   const space = useSpace()
 
@@ -35,6 +37,7 @@ export const MyProfileScreenWrapper: React.FC<MyProfileScreenWrapperProps> = ({
             paddingHorizontal: space(2),
             ...contentContainerStyle,
           }}
+          refreshControl={RefreshControl}
         >
           {children}
           {!!onPress && (
