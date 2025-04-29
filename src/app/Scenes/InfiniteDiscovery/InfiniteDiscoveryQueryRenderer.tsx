@@ -1,6 +1,6 @@
 import { Flex, Screen } from "@artsy/palette-mobile"
 import { addBreadcrumb, captureException } from "@sentry/react-native"
-import { InfiniteDiscoveryQuery } from "__generated__/InfiniteDiscoveryQuery.graphql"
+import { InfiniteDiscoveryQueryRendererQuery } from "__generated__/InfiniteDiscoveryQueryRendererQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { InfiniteDiscoveryHeader } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryHeader"
 import { InfiniteDiscoverySpinner } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoverySpinner"
@@ -23,7 +23,7 @@ export const infiniteDiscoveryVariables = {
 
 export const InfiniteDiscoveryQueryRenderer = withSuspense({
   Component: () => {
-    const data = useLazyLoadQuery<InfiniteDiscoveryQuery>(
+    const data = useLazyLoadQuery<InfiniteDiscoveryQueryRendererQuery>(
       infiniteDiscoveryQuery,
       infiniteDiscoveryVariables
     )
@@ -48,7 +48,7 @@ export const InfiniteDiscoveryQueryRenderer = withSuspense({
 
     const fetchMoreArtworks = async (excludeArtworkIds: string[], isRetry = false) => {
       try {
-        const response = await fetchQuery<InfiniteDiscoveryQuery>(
+        const response = await fetchQuery<InfiniteDiscoveryQueryRendererQuery>(
           env,
           infiniteDiscoveryQuery,
           { excludeArtworkIds },

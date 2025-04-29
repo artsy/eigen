@@ -1,4 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Schema } from "app/utils/track"
 import { useTracking } from "react-tracking"
 
 export const useInfiniteDiscoveryTracking = () => {
@@ -63,6 +64,23 @@ export const useInfiniteDiscoveryTracking = () => {
         context_module: ContextModule.infiniteDiscovery,
         context_screen_owner_type: OwnerType.home,
         subject: "Tap here to navigate to your Saves area in your profile.",
+      })
+    },
+    artworkImageSwipe: () => {
+      trackEvent({
+        action_name: Schema.ActionNames.ArtworkImageSwipe,
+        action_type: Schema.ActionTypes.Tap,
+        context_module: ContextModule.infiniteDiscoveryArtworkCard,
+      })
+    },
+    savedArtwork: (isSaved: boolean, ownerId: string, ownerSlug: string) => {
+      trackEvent({
+        action_name: isSaved ? Schema.ActionNames.ArtworkSave : Schema.ActionNames.ArtworkUnsave,
+        action_type: Schema.ActionTypes.Success,
+        context_module: ContextModule.infiniteDiscoveryArtworkCard,
+        context_screen_owner_id: ownerId,
+        context_screen_owner_slug: ownerSlug,
+        context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
       })
     },
   }
