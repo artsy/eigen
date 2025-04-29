@@ -36,6 +36,7 @@ export const FollowedArtists: React.FC<Props> = ({ me }) => {
   if (data.followsAndSaves?.artistsConnection?.totalCount === 0) {
     return (
       <Screen.ScrollView refreshControl={RefreshControl}>
+        <FollowOptionPicker />
         <ZeroState
           title="You haven’t followed any artists yet"
           subtitle="When you’ve found an artist you like, follow them to get updates on new works that become available."
@@ -136,7 +137,7 @@ export const FollowedArtistsQueryRenderer = withSuspense({
     return (
       <LoadFailureView
         onRetry={fallbackProps.resetErrorBoundary}
-        showBackButton={true}
+        showBackButton={false}
         useSafeArea={false}
         error={fallbackProps.error}
         trackErrorBoundary={false}
