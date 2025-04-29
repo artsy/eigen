@@ -1,5 +1,5 @@
-import { Flex, Touchable, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
-import { navigate } from "app/system/navigation/navigate"
+import { Flex, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { RouterLink } from "app/system/navigation/RouterLink"
 
 export const MyProfileHeader: React.FC = () => {
   const { width } = useScreenDimensions()
@@ -9,7 +9,7 @@ export const MyProfileHeader: React.FC = () => {
 
   return (
     <Flex justifyContent="center" alignItems="center" mt={2}>
-      <Touchable onPress={() => navigate("my-collection")}>
+      <RouterLink to="/collector-profile/my-collection">
         <Flex
           minHeight={200}
           width={WIDTH}
@@ -27,7 +27,7 @@ export const MyProfileHeader: React.FC = () => {
             elevation: 2,
           }}
         />
-      </Touchable>
+      </RouterLink>
     </Flex>
   )
 }

@@ -140,10 +140,8 @@ import {
   myAccountEditPriceRangeQuery,
   MyAccountEditPriceRangeQueryRenderer,
 } from "app/Scenes/MyAccount/MyAccountEditPriceRange"
-import {
-  MyCollectionQueryRenderer,
-  MyCollectionScreenQuery,
-} from "app/Scenes/MyCollection/MyCollection"
+import { MyCollectionQueryRenderer } from "app/Scenes/MyCollection/MyCollection"
+import { myCollectionScreenQuery } from "app/Scenes/MyCollection/MyCollectionLegacy"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import {
   MyCollectionArtworkScreen,
@@ -731,6 +729,16 @@ export const artsyDotNetRoutes = defineRoutes([
     queries: [CitySectionListScreenQuery],
   },
   {
+    path: "/collector-profile/my-collection",
+    name: "CollectorProfileMyCollection",
+    Component: MyCollectionQueryRenderer,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  },
+  {
     path: "/collections-by-category/:category",
     name: "CollectionsByCategory",
     Component: CollectionsByCategory,
@@ -1176,7 +1184,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    queries: [MyProfileHeaderScreenQuery, MyCollectionScreenQuery],
+    queries: [MyProfileHeaderScreenQuery, myCollectionScreenQuery],
   },
   {
     path: "/my-profile/edit",

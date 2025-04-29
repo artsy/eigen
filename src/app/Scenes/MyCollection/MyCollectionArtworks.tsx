@@ -1,5 +1,5 @@
 import { Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
-import { MyCollection_me$data } from "__generated__/MyCollection_me.graphql"
+import { MyCollectionLegacy_me$data } from "__generated__/MyCollectionLegacy_me.graphql"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -11,12 +11,12 @@ import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { useEffect } from "react"
 import { Alert, InteractionManager } from "react-native"
 import { RelayPaginationProp, graphql } from "react-relay"
-import { MyCollectionArtworkEdge } from "./MyCollection"
+import { MyCollectionArtworkEdge } from "./MyCollectionLegacy"
 import { myCollectionDeleteArtwork } from "./mutations/myCollectionDeleteArtwork"
 import { localSortAndFilterArtworks } from "./utils/localArtworkSortAndFilter"
 
 interface MyCollectionArtworksProps {
-  me: MyCollection_me$data
+  me: MyCollectionLegacy_me$data
   relay: RelayPaginationProp
 }
 
