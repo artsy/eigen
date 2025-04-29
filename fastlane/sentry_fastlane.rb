@@ -156,8 +156,8 @@ def platform_settings(platform)
       bundle_path: 'dist/ios/main.jsbundle'
     },
     android: {
-      sourcemap_path: 'android/app/src/main/assets/index.android.bundle.map',
-      bundle_path: 'android/app/src/main/assets/index.android.bundle'
+      sourcemap_path: 'android/app/build/generated/sourcemaps/react/release/index.android.bundle.map',
+      bundle_path: 'android/app/build/generated/assets/createBundleReleaseJsAndAssets/index.android.bundle'
     }
   }
   settings[platform.to_sym]
