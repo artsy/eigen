@@ -127,6 +127,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            resValue "string", "EXUpdatesDisableAntiBrickingMeasures", "false"
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -134,6 +135,7 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            resValue "string", "EXUpdatesDisableAntiBrickingMeasures", "false"
         }
         beta {
             initWith release
