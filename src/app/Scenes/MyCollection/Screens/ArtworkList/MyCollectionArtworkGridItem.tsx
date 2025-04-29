@@ -1,9 +1,9 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
-import { Box, Text, Touchable, TrendingIcon } from "@artsy/palette-mobile"
+import { Box, Text, TrendingIcon } from "@artsy/palette-mobile"
 import { MyCollectionArtworkGridItem_artwork$data } from "__generated__/MyCollectionArtworkGridItem_artwork.graphql"
 import { DEFAULT_SECTION_MARGIN } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { MyCollectionImageView } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { useLocalImage } from "app/utils/LocalImageStore"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -37,19 +37,18 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
   const showHighDemandIcon = isP1Artist && isHighDemand
 
   return (
-    <Touchable
+    <RouterLink
       accessibilityLabel="Go to artwork details"
       accessibilityRole="link"
+      to={"/my-collection/artwork/" + slug}
+      navigationProps={{
+        medium,
+        category: mediumType?.name,
+        artistInternalID: artist?.internalID,
+      }}
       onPress={() => {
         if (!!artist) {
           trackEvent(tracks.tappedCollectedArtwork(internalID, slug))
-          navigate("/my-collection/artwork/" + slug, {
-            passProps: {
-              medium,
-              category: mediumType?.name,
-              artistInternalID: artist.internalID,
-            },
-          })
         } else {
           console.warn("MyCollectionArtworkGridItem: Error: Missing artist.artistID")
         }
@@ -88,7 +87,7 @@ const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = 
           )}
         </Box>
       </View>
-    </Touchable>
+    </RouterLink>
   )
 }
 
