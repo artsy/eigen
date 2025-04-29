@@ -82,13 +82,19 @@ lane :ship_beta_ios do
   # in Eigen in order for sourcemaps to work correctly
   sentry_release_name = "ios-#{latest_version}-#{bundle_version}"
 
-  sh('yarn bundle:ios')
   # Workaround for timeout in ci
   ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
   build_ios_app(
+    build_path: "archives",
     workspace: 'ios/Artsy.xcworkspace',
     configuration: 'Store',
     silent: true
+  )
+
+  extract_ios_bundle_and_sourcemap(
+    archive_root: "../archives",
+    dist_dir: "../dist/ios",
+    app_name: "Artsy"
   )
 
   upload_sentry_artifacts(
@@ -243,24 +249,16 @@ lane :ship_beta_android do |options|
 
   sentry_release_name = "android-#{vname}-#{vcode}"
 
-  # workaround for duplicate resources errors from codepush
-  # https://github.com/microsoft/react-native-code-push/issues/2497
-  # should be able to get rid of once resolved there
-  # TODO: We should try to remove this now that codepush is gone!!
-  gradle(
-    task: 'clean',
-    project_dir: 'android/',
-    flags: '--no-daemon --max-workers 2'
-  )
   sh("yarn react-native build-android --mode=release --extra-params='--no-daemon --max-workers 2'")
 
-  upload_sentry_artifacts(
-    sentry_release_name: sentry_release_name,
-    dist_version: "#{vcode}",
-    platform: 'android'
-  )
-
-  s3_upload_android_build(app_version: vcode, app_path: "../android/app/build/outputs/bundle/release/app-release.aab")
+  if (deployment_target == 'play_store')
+    upload_sentry_artifacts(
+      sentry_release_name: sentry_release_name,
+      dist_version: "#{vcode}",
+      platform: 'android'
+    )
+    s3_upload_android_build(app_version: vcode, app_path: "../android/app/build/outputs/bundle/release/app-release.aab")
+  end
 
   deploy_android_beta(deployment_target: deployment_target)
 end

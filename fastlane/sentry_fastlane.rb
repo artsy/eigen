@@ -152,8 +152,8 @@ end
 def platform_settings(platform)
   settings = {
     ios: {
-      sourcemap_path: 'dist/main.jsbundle.map',
-      bundle_path: 'dist/main.jsbundle'
+      sourcemap_path: 'dist/ios/main.jsbundle.map',
+      bundle_path: 'dist/ios/main.jsbundle'
     },
     android: {
       sourcemap_path: 'android/app/build/generated/sourcemaps/react/release/index.android.bundle.map',
@@ -199,6 +199,38 @@ lane :sentry_slack_android do |options|
     success: true,
     default_payloads: []
   )
+end
+
+def extract_ios_bundle_and_sourcemap(archive_root: "../archives", dist_dir: "../dist/ios", app_name: "Artsy")
+  # Find latest archive
+  pattern = File.join(archive_root, "#{app_name}*.xcarchive")
+  matching_archives = Dir.glob(pattern)
+
+  unless matching_archives.any?
+    UI.user_error!("No .xcarchive found matching pattern #{pattern}")
+  end
+
+  latest_archive = matching_archives.max_by { |f| File.mtime(f) }
+  puts "Found archive at: #{latest_archive}"
+
+  app_path = File.join(latest_archive, "Products/Applications/#{app_name}.app")
+  bundle_path = File.join(app_path, "main.jsbundle")
+  sourcemap_source = File.expand_path("../main.jsbundle.map", __dir__) # project root relative to Fastfile
+  dist_dir = File.expand_path(dist_dir, __dir__)
+
+  unless File.exist?(bundle_path)
+    UI.user_error!("main.jsbundle not found at #{bundle_path}")
+  end
+
+  unless File.exist?(sourcemap_source)
+    UI.user_error!("main.jsbundle.map not found at #{sourcemap_source}")
+  end
+
+  FileUtils.mkdir_p(dist_dir)
+  FileUtils.cp(bundle_path, File.join(dist_dir, "main.jsbundle"))
+  FileUtils.cp(sourcemap_source, File.join(dist_dir, "main.jsbundle.map"))
+
+  UI.success("✅ Successfully copied iOS bundle and sourcemap to #{dist_dir}/")
 end
 
 def handle_error(e, message)
