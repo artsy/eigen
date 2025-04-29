@@ -1,5 +1,3 @@
-// MyCollectionPreview
-
 import { screen } from "@testing-library/react-native"
 import { MyCollectionPreviewTestQuery } from "__generated__/MyCollectionPreviewTestQuery.graphql"
 import { MyCollectionPreview } from "app/Scenes/MyProfile/Components/UserAccountHeader/MyCollectionPreview"
@@ -8,7 +6,12 @@ import { graphql } from "react-relay"
 
 describe("MyCollectionPreview", () => {
   const { renderWithRelay } = setupTestWrapper<MyCollectionPreviewTestQuery>({
-    Component: MyCollectionPreview,
+    Component: ({ me }) => {
+      if (!me) {
+        return null
+      }
+      return <MyCollectionPreview me={me} />
+    },
     query: graphql`
       query MyCollectionPreviewTestQuery @relay_test_operation {
         me {
