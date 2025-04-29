@@ -273,6 +273,12 @@ export const features = {
     description: "Enable Dark mode onboarding task",
     echoFlagKey: "ARDarkModeOnboarding",
   },
+  AREnableQuickLinksAnimation: {
+    readyForRelease: true,
+    showInDevMenu: true,
+    description: "Enable quick links animation",
+    echoFlagKey: "AREnableQuickLinksAnimation",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
