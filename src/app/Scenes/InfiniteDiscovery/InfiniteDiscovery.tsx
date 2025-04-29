@@ -254,8 +254,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         <Spacer y={1} />
         <Swiper
           cards={artworks}
-          onTrigger={handleFetchMore}
-          swipedIndexCallsOnTrigger={2}
+          onReachTriggerIndex={handleFetchMore}
+          triggerIndex={2}
           onNewCardReached={handleNewCardReached}
           onRewind={handleRewind}
           onSwipe={handleSwipe}

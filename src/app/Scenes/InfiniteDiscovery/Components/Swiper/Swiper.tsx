@@ -26,8 +26,8 @@ type SwiperProps = {
   cardStyle?: ViewStyle
   isArtworkSaved?: (index: number) => boolean
 } & (
-  | { onTrigger?: never; swipedIndexCallsOnTrigger?: never }
-  | { onTrigger: (activeIndex: number) => void; swipedIndexCallsOnTrigger: number }
+  | { onReachTriggerIndex?: never; triggerIndex?: never }
+  | { onReachTriggerIndex: (activeIndex: number) => void; triggerIndex: number }
 )
 
 export type SwiperRefProps = {
@@ -41,8 +41,8 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
       onNewCardReached,
       onRewind,
       onSwipe,
-      onTrigger,
-      swipedIndexCallsOnTrigger,
+      onReachTriggerIndex,
+      triggerIndex,
       containerStyle,
       cardStyle,
       isArtworkSaved,
@@ -179,12 +179,8 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
         const isLastCard = _activeIndex.value === cards.length - 1
 
         // Fetching more cards on the 3rd, 8th, 13th... swipe
-        if (
-          isSwipeLeft &&
-          !isLastCard &&
-          cards.length - 1 - _activeIndex.value === swipedIndexCallsOnTrigger
-        ) {
-          runOnJS(onTrigger)(_activeIndex.value + 1)
+        if (isSwipeLeft && !isLastCard && cards.length - 1 - _activeIndex.value === triggerIndex) {
+          runOnJS(onReachTriggerIndex)(_activeIndex.value + 1)
         }
 
         const swipedCardIndex = _activeIndex.value
