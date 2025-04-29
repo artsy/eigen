@@ -14,6 +14,7 @@ import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/HomeView/Co
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
+import { useDarkModeOnboarding } from "app/Scenes/HomeView/hooks/useDarkModeOnboarding"
 import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHomeViewExperimentTracking"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { Playground } from "app/Scenes/Playground/Playground"
@@ -160,6 +161,8 @@ export const HomeView: React.FC = memo(() => {
       },
     })
   }
+
+  useDarkModeOnboarding()
 
   return (
     <Screen safeArea={true}>
