@@ -245,11 +245,12 @@ export const MyProfilePaymentScreenQuery = graphql`
     }
   }
 `
+export const myProfilePaymentQueryDefaultVariables = { count: NUM_CARDS_TO_FETCH }
 
 const MyProfilePaymentSuspense: React.FC = () => {
   const data = useLazyLoadQuery<MyProfilePaymentQuery>(
     MyProfilePaymentScreenQuery,
-    { count: NUM_CARDS_TO_FETCH },
+    { ...myProfilePaymentQueryDefaultVariables },
     { fetchPolicy: "store-and-network" }
   )
 
