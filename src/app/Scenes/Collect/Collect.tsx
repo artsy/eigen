@@ -68,6 +68,8 @@ export const CollectContent: React.FC<CollectContentProps> = ({ viewer }) => {
           <Flex mx={-2} gap={1}>
             <Flex px={2}>
               <Text variant="lg-display">Collect</Text>
+              <Spacer y={0.5} />
+              <Text variant="sm-display">Collect art and design online</Text>
             </Flex>
 
             <ArtworksFilterHeader
@@ -141,7 +143,7 @@ export const viewerFragment = graphql`
   }
 `
 
-const collectQuery = graphql`
+export const collectQuery = graphql`
   query CollectQuery {
     viewer @required(action: THROW) {
       ...CollectArtworks_viewer
@@ -162,6 +164,8 @@ const CollectQueryRenderer: React.FC = withSuspense({
     <>
       <Flex px={2}>
         <Text variant="lg-display">Collect</Text>
+        <Spacer y={0.5} />
+        <Text variant="sm-display">Collect art and design online</Text>
       </Flex>
       <ArtworksFilterHeader
         selectedFiltersCount={0}
