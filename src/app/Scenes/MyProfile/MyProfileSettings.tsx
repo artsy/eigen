@@ -15,7 +15,7 @@ import {
 } from "@artsy/palette-mobile"
 import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
-import { MyProfileHeader } from "app/Scenes/MyProfile/Components/MyProfileHeader"
+import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useSetDevMode } from "app/system/devTools/useSetDevMode"
 import { navigate } from "app/system/navigation/navigate"
@@ -46,10 +46,10 @@ export const MyProfileSettings: React.FC = () => {
   if (enableRedesignedSettings) {
     return (
       <Screen.ScrollView>
-        <MyProfileHeader />
+        <UserAccountHeaderQueryRenderer />
 
         <Text variant="lg-display" px={2} mt={4}>
-          Profile
+          Account
         </Text>
         <Join separator={<Spacer y={4} />}>
           <>
@@ -115,7 +115,7 @@ export const MyProfileSettings: React.FC = () => {
             <MenuItem
               title="Privacy"
               onPress={() => {
-                navigate("my-profile/privacy")
+                navigate("my-profile/terms-and-conditions")
               }}
             />
           </>
