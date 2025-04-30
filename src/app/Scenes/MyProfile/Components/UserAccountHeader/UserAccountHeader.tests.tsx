@@ -75,7 +75,7 @@ describe("UserAccountHeader", () => {
     expect(profileCard).toBeTruthy()
     fireEvent.press(profileCard)
     expect(navigate).toHaveBeenCalledTimes(1)
-    expect(navigate).toHaveBeenCalledWith("my-collection")
+    expect(navigate).toHaveBeenCalledWith("/my-collection")
   })
 
   it("on complete profile press navigates to the complete profile flow", () => {
@@ -85,9 +85,24 @@ describe("UserAccountHeader", () => {
     const completeProfileButton = screen.getByTestId("complete-profile-button")
 
     expect(completeProfileButton).toBeTruthy()
+    expect(screen.queryByTestId("identity-verified-icon")).not.toBeOnTheScreen()
+
     fireEvent.press(completeProfileButton)
     expect(navigate).toHaveBeenCalledTimes(1)
     expect(navigate).toHaveBeenCalledWith("/complete-my-profile", { passProps: expect.any(Object) })
+  })
+
+  it("on view full profile press navigates to the full profile", () => {
+    renderWithRelay({
+      Me: () => me,
+    })
+    const viewFullProfileButton = screen.getByTestId("view-full-profile-button")
+
+    expect(viewFullProfileButton).toBeTruthy()
+    expect(screen.getByTestId("identity-verified-icon")).toBeOnTheScreen()
+    fireEvent.press(viewFullProfileButton)
+    expect(navigate).toHaveBeenCalledTimes(1)
+    expect(navigate).toHaveBeenCalledWith("/my-collection")
   })
 })
 

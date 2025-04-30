@@ -46,7 +46,7 @@ export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps })
 
   return (
     <Flex justifyContent="center" alignItems="center" mt={2}>
-      <Touchable testID="account-card" onPress={() => navigate("my-collection")}>
+      <Touchable testID="account-card" onPress={() => navigate("/my-collection")}>
         <Flex
           minHeight={200}
           width={WIDTH}
@@ -63,9 +63,9 @@ export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps })
               height={70}
               width={70}
               borderRadius={35}
-              backgroundColor={color("mono10")}
+              backgroundColor={color("mono5")}
               borderWidth={me?.icon?.url ? undefined : 1}
-              borderColor={me?.icon?.url ? undefined : color("mono30")}
+              borderColor={me?.icon?.url ? undefined : color("mono10")}
               alignItems="center"
               justifyContent="center"
             >
@@ -137,19 +137,30 @@ export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({ meProps })
 
             <MyCollectionPreview me={me} />
 
-            {!isProfileComplete && (
-              <Flex alignItems="center">
-                <Button
-                  variant="outline"
-                  size="small"
-                  onPress={() => {
-                    navigate("/complete-my-profile", { passProps: { meKey: me } })
-                  }}
-                  testID="complete-profile-button"
-                >
-                  Complete Profile
-                </Button>
-              </Flex>
+            {isProfileComplete ? (
+              <Button
+                variant="outline"
+                size="small"
+                onPress={() => navigate("/my-collection")}
+                haptic
+                accessibilityLabel="View Full Profile"
+                testID="view-full-profile-button"
+              >
+                View Full Profile
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                size="small"
+                onPress={() => {
+                  navigate("/complete-my-profile", { passProps: { meKey: me } })
+                }}
+                haptic
+                accessibilityLabel="Complete Profile"
+                testID="complete-profile-button"
+              >
+                Complete Profile
+              </Button>
             )}
           </Join>
         </Flex>
