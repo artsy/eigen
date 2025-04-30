@@ -122,7 +122,17 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
 export const MyCollectionInsightsQR: React.FC<{}> = withSuspense({
   Component: MyCollectionInsights,
   LoadingFallback: () => <MyCollectionInsightsPlaceholder />,
-  ErrorFallback: NoFallback,
+  ErrorFallback: (fallbackProps) => {
+    return (
+      <LoadFailureView
+        onRetry={fallbackProps.resetErrorBoundary}
+        showBackButton={false}
+        useSafeArea={false}
+        error={fallbackProps.error}
+        trackErrorBoundary={false}
+      />
+    )
+  },
 })
 
 const MyCollectionInsightsPlaceholder = () => {
