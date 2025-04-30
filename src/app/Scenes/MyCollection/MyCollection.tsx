@@ -37,6 +37,8 @@ export enum Tab {
   insights = "Insights",
 }
 
+const DOT_DIAMETER = 6 * PixelRatio.getFontScale()
+
 const MyCollection: React.FC = () => {
   const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
   const { setActiveNavigationTab, setIsFilterModalVisible } = MyCollectionTabsStore.useStoreActions(
@@ -78,7 +80,7 @@ const MyCollection: React.FC = () => {
                   >
                     {!!filtersCount && (
                       <Flex position="absolute" right={0} top={0}>
-                        <VisualClueDot diameter={6 * PixelRatio.getFontScale()} />
+                        <VisualClueDot diameter={DOT_DIAMETER} />
                       </Flex>
                     )}
 

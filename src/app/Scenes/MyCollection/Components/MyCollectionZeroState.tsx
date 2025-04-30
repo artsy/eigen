@@ -3,7 +3,7 @@ import { Box, Button, Flex, Tabs, Text, useScreenDimensions, useSpace } from "@a
 import { ZeroState } from "app/Components/States/ZeroState"
 import { ModalCarousel } from "app/Scenes/HomeView/Components/ModalCarouselComponents/ModalCarousel"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
-import { isLargeText } from "app/utils/accessibility"
+import { isFontScaleLarge } from "app/utils/accessibility"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { debounce } from "lodash"
 import { useState } from "react"
@@ -60,7 +60,7 @@ export const MyCollectionZeroState: React.FC<{
             callToAction={
               <Flex
                 gap={2}
-                flexDirection={isLargeText() ? "column" : "row"}
+                flexDirection={isFontScaleLarge() ? "column" : "row"}
                 justifyContent="space-around"
               >
                 <Button
@@ -69,7 +69,7 @@ export const MyCollectionZeroState: React.FC<{
                     trackEvent(tracks.addCollectedArtwork())
                     showAddToMyCollectionBottomSheet()
                   }}
-                  block={isLargeText()}
+                  block={isFontScaleLarge()}
                 >
                   Add Artworks
                 </Button>
@@ -78,7 +78,7 @@ export const MyCollectionZeroState: React.FC<{
                   onPress={() => {
                     setIsMyCollectionModalVisible(true)
                   }}
-                  block={isLargeText()}
+                  block={isFontScaleLarge()}
                 >
                   Learn More
                 </Button>

@@ -1,5 +1,5 @@
 import { PixelRatio } from "react-native"
 
-export const isLargeText = () => {
+export const isFontScaleLarge = () => {
   return PixelRatio.getFontScale() >= 1.5
 }
