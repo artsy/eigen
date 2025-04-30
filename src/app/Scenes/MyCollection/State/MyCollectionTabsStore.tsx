@@ -16,21 +16,27 @@ type ViewPayload =
 export type MyCollectionNavigationTab = "Artworks" | "Artists" | "Insights"
 export interface MyCollectionTabsStoreModel {
   activeNavigationTab: MyCollectionNavigationTab
-  selectedTab: CollectedTab
-  viewKind: MyCollectionBottomSheetModalKind
   artistId: string | null
+  filtersCount: number
   interestId: string | null
+  isFilterModalVisible: boolean
+  selectedTab: CollectedTab
+  setActiveNavigationTab: Action<this, MyCollectionNavigationTab>
+  setFiltersCount: Action<this, number>
+  setIsFilterModalVisible: Action<this, boolean>
   setSelectedTab: Action<this, CollectedTab>
   setViewKind: Action<this, ViewPayload>
-  setActiveNavigationTab: Action<this, MyCollectionNavigationTab>
+  viewKind: MyCollectionBottomSheetModalKind
 }
 
 export const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
   activeNavigationTab: "Artworks",
+  artistId: null,
+  filtersCount: 0,
+  interestId: null,
+  isFilterModalVisible: false,
   selectedTab: null,
   viewKind: null,
-  artistId: null,
-  interestId: null,
   setSelectedTab: action((state, payload) => {
     state.selectedTab = payload
   }),
@@ -56,6 +62,12 @@ export const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
   }),
   setActiveNavigationTab: action((state, payload) => {
     state.activeNavigationTab = payload
+  }),
+  setIsFilterModalVisible: action((state, payload) => {
+    state.isFilterModalVisible = payload
+  }),
+  setFiltersCount: action((state, payload) => {
+    state.filtersCount = payload
   }),
 }
 
