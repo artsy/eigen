@@ -1,6 +1,6 @@
 import { AddIcon, FilterIcon, MoreIcon } from "@artsy/icons/native"
-import { Flex, Screen, Tabs, Text, Touchable } from "@artsy/palette-mobile"
-import { DEFAULT_ICON_SIZE, ICON_HIT_SLOP } from "app/Components/constants"
+import { Flex, Screen, Tabs, Text, Touchable, VisualClueDot } from "@artsy/palette-mobile"
+import { ACCESSIBLE_DEFAULT_ICON_SIZE, ICON_HIT_SLOP } from "app/Components/constants"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
 import { MyCollectionArtworksQueryRenderer } from "app/Scenes/MyCollection/MyCollectionArtworks"
 import {
@@ -10,6 +10,7 @@ import {
 } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { PixelRatio } from "react-native"
 import { MyCollectionQueryRenderer as MyCollectionLegacyQueryRenderer } from "./MyCollectionLegacy"
 
 // TODO: To be replace with the real collector profile card
@@ -38,8 +39,11 @@ export enum Tab {
 
 const MyCollection: React.FC = () => {
   const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
-  const setActiveNavigationTab = MyCollectionTabsStore.useStoreActions(
-    (actions) => actions.setActiveNavigationTab
+  const { setActiveNavigationTab, setIsFilterModalVisible } = MyCollectionTabsStore.useStoreActions(
+    (actions) => actions
+  )
+  const { activeNavigationTab, filtersCount } = MyCollectionTabsStore.useStoreState(
+    (state) => state
   )
   return (
     <>
@@ -67,11 +71,32 @@ const MyCollection: React.FC = () => {
             }}
             stickyTabBarComponent={
               <Flex flexDirection="row" alignItems="center" gap={1} pr={2}>
+                {/* Filtering is only available for artworks */}
+                {activeNavigationTab === "Artworks" && (
+                  <Touchable
+                    hitSlop={ICON_HIT_SLOP}
+                    onPress={() => {
+                      setIsFilterModalVisible(true)
+                    }}
+                  >
+                    {!!filtersCount && (
+                      <Flex position="absolute" right={0} top={0}>
+                        <VisualClueDot diameter={6 * PixelRatio.getFontScale()} />
+                      </Flex>
+                    )}
+
+                    <FilterIcon
+                      height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                      width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                    />
+                  </Touchable>
+                )}
+
                 <Touchable hitSlop={ICON_HIT_SLOP} onPress={() => {}}>
-                  <FilterIcon height={DEFAULT_ICON_SIZE} width={DEFAULT_ICON_SIZE} />
-                </Touchable>
-                <Touchable hitSlop={ICON_HIT_SLOP} onPress={() => {}}>
-                  <AddIcon height={DEFAULT_ICON_SIZE} width={DEFAULT_ICON_SIZE} />
+                  <AddIcon
+                    height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                    width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                  />
                 </Touchable>
               </Flex>
             }

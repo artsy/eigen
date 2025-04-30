@@ -2,10 +2,12 @@ import { OwnerType } from "@artsy/cohesion"
 import { Box, Flex, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionArtworksQuery } from "__generated__/MyCollectionArtworksQuery.graphql"
 import { MyCollectionArtworks_me$key } from "__generated__/MyCollectionArtworks_me.graphql"
+import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import {
   ArtworkFiltersStoreProvider,
   ArtworksFiltersStore,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { useSelectedFiltersCount } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { LoadFailureView } from "app/Components/LoadFailureView"
@@ -13,6 +15,7 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyCollectionZeroState"
 import { MyCollectionArtworkGridItemFragmentContainer } from "app/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
+import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { cleanLocalImages } from "app/utils/LocalImageStore"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -25,7 +28,10 @@ import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMaso
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { useCallback, useEffect } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
-import { localSortAndFilterArtworks } from "./utils/localArtworkSortAndFilter"
+import {
+  localSortAndFilterArtworks,
+  useLocalArtworkFilter,
+} from "./utils/localArtworkSortAndFilter"
 
 interface MyCollectionArtworksProps {
   me: MyCollectionArtworks_me$key
@@ -35,9 +41,19 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }
   const space = useSpace()
   const { width } = useScreenDimensions()
 
+  const { setIsFilterModalVisible, setFiltersCount } = MyCollectionTabsStore.useStoreActions(
+    (actions) => actions
+  )
+  const { isFilterModalVisible } = MyCollectionTabsStore.useStoreState((state) => state)
+
   const { data, loadNext, isLoadingNext, hasNext, refetch } = usePaginationFragment(meFragment, me)
 
   const artworks = extractNodes(data?.myCollectionConnection)
+
+  useLocalArtworkFilter(artworks)
+
+  const filtersCount = useSelectedFiltersCount()
+
   const query = MyCollectionArtworksKeywordStore.useStoreState((state) => state.keyword)
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
@@ -49,6 +65,10 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }
     filterOptions,
     query
   )
+
+  useEffect(() => {
+    setFiltersCount(filtersCount)
+  }, [filtersCount])
 
   useEffect(() => {
     cleanLocalImages()
@@ -93,29 +113,37 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }
   const shouldDisplaySpinner = isLoadingNext && hasNext
 
   return (
-    <Tabs.Masonry
-      data={filteredArtworks}
-      numColumns={NUM_COLUMNS_MASONRY}
-      estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
-      keyboardShouldPersistTaps="handled"
-      ListEmptyComponent={
-        <Box mb="80px" pt={2}>
-          <FilteredArtworkGridZeroState hideClearButton />
-        </Box>
-      }
-      keyExtractor={(item) => item.id}
-      renderItem={renderItem}
-      onEndReached={() => {
-        if (hasNext && !isLoadingNext) {
-          loadNext(PAGE_SIZE)
+    <Flex flex={1}>
+      <ArtworkFilterNavigator
+        visible={isFilterModalVisible}
+        mode={FilterModalMode.Custom}
+        closeModal={() => setIsFilterModalVisible(false)}
+        exitModal={() => setIsFilterModalVisible(false)}
+      />
+      <Tabs.Masonry
+        data={filteredArtworks}
+        numColumns={NUM_COLUMNS_MASONRY}
+        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
+        keyboardShouldPersistTaps="handled"
+        ListEmptyComponent={
+          <Box mb="80px" pt={2}>
+            <FilteredArtworkGridZeroState hideClearButton />
+          </Box>
         }
-      }}
-      onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
-      ListFooterComponent={
-        <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
-      }
-      refreshControl={RefreshControl}
-    />
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        onEndReached={() => {
+          if (hasNext && !isLoadingNext) {
+            loadNext(PAGE_SIZE)
+          }
+        }}
+        onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
+        ListFooterComponent={
+          <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
+        }
+        refreshControl={RefreshControl}
+      />
+    </Flex>
   )
 }
 
