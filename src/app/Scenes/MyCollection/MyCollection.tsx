@@ -60,9 +60,6 @@ const MyCollection: React.FC = () => {
           <Tabs
             renderHeader={MyCollectionCollectorProfileHeader}
             headerHeight={500}
-            containerStyle={{
-              paddingHorizontal: 0,
-            }}
             pagerProps={{
               scrollEnabled: false,
             }}
