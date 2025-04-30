@@ -2,7 +2,14 @@ import { AddIcon, FilterIcon, MoreIcon } from "@artsy/icons/native"
 import { Flex, Screen, Tabs, Text, Touchable } from "@artsy/palette-mobile"
 import { DEFAULT_ICON_SIZE, ICON_HIT_SLOP } from "app/Components/constants"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
-import { MyCollectionCollectedArtistsQueryRenderer } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtists"
+import {
+  myCollectionCollectedArtistsQuery,
+  MyCollectionCollectedArtistsQueryRenderer,
+} from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtists"
+import {
+  MyCollectionInsightsQR,
+  MyCollectionInsightsScreenQuery,
+} from "app/Scenes/MyCollection/Screens/Insights/MyCollectionInsights"
 import {
   MyCollectionNavigationTab,
   MyCollectionTabsStore,
@@ -10,6 +17,8 @@ import {
 } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { prefetchQuery } from "app/utils/queryPrefetching"
+import { useEffect } from "react"
 import { MyCollectionQueryRenderer as MyCollectionLegacyQueryRenderer } from "./MyCollectionLegacy"
 
 // TODO: To be replace with the real collector profile card
@@ -41,6 +50,12 @@ const MyCollection: React.FC = () => {
   const setActiveNavigationTab = MyCollectionTabsStore.useStoreActions(
     (actions) => actions.setActiveNavigationTab
   )
+
+  useEffect(() => {
+    prefetchQuery({ query: myCollectionCollectedArtistsQuery })
+    prefetchQuery({ query: MyCollectionInsightsScreenQuery })
+  }, [])
+
   return (
     <>
       <Screen>
@@ -87,9 +102,7 @@ const MyCollection: React.FC = () => {
             </Tabs.Tab>
 
             <Tabs.Tab name={Tab.insights} label={Tab.insights}>
-              <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="green10">
-                <Text>Insights</Text>
-              </Flex>
+              <MyCollectionInsightsQR />
             </Tabs.Tab>
           </Tabs>
         </Screen.Body>
