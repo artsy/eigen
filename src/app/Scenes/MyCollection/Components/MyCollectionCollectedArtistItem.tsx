@@ -1,4 +1,3 @@
-import { useSpace } from "@artsy/palette-mobile"
 import { MyCollectionCollectedArtistItem_artist$key } from "__generated__/MyCollectionCollectedArtistItem_artist.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
@@ -19,7 +18,6 @@ export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({
 }) => {
   const setViewKind = MyCollectionTabsStore.useStoreActions((state) => state.setViewKind)
   const artistData = useFragment<MyCollectionCollectedArtistItem_artist$key>(artistFragment, artist)
-  const space = useSpace()
 
   const showArtistPreview = () => {
     setViewKind({
@@ -34,7 +32,6 @@ export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({
       artist={artistData}
       showFollowButton={false}
       withFeedback
-      containerStyle={{ paddingHorizontal: space(2) }}
       disableNavigation
       onPress={showArtistPreview}
       isPrivate={isPrivate}
