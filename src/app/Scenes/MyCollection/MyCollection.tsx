@@ -2,17 +2,26 @@ import { AddIcon, FilterIcon, MoreIcon } from "@artsy/icons/native"
 import { Flex, Screen, Tabs, Text, Touchable, VisualClueDot } from "@artsy/palette-mobile"
 import { ACCESSIBLE_DEFAULT_ICON_SIZE, ICON_HIT_SLOP } from "app/Components/constants"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
-import { MyCollectionCollectedArtistsQueryRenderer } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtists"
-import { MyCollectionArtworksQueryRenderer } from "app/Scenes/MyCollection/MyCollectionArtworks"
+import {
+  myCollectionCollectedArtistsQuery,
+  MyCollectionCollectedArtistsQueryRenderer,
+} from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtists"
+import {
+  MyCollectionInsightsQR,
+  MyCollectionInsightsScreenQuery,
+} from "app/Scenes/MyCollection/Screens/Insights/MyCollectionInsights"
+import { goBack } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { prefetchQuery } from "app/utils/queryPrefetching"
+import { useEffect } from "react"
+import { PixelRatio } from "react-native"
+import { MyCollectionArtworksQueryRenderer } from "./MyCollectionArtworks"
+import { MyCollectionQueryRenderer as MyCollectionLegacyQueryRenderer } from "./MyCollectionLegacy"
 import {
   MyCollectionNavigationTab,
   MyCollectionTabsStore,
   MyCollectionTabsStoreProvider,
-} from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
-import { goBack } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { PixelRatio } from "react-native"
-import { MyCollectionQueryRenderer as MyCollectionLegacyQueryRenderer } from "./MyCollectionLegacy"
+} from "./State/MyCollectionTabsStore"
 
 // TODO: To be replace with the real collector profile card
 const MyCollectionCollectorProfileHeader = () => {
@@ -48,6 +57,12 @@ const MyCollection: React.FC = () => {
   const { activeNavigationTab, filtersCount } = MyCollectionTabsStore.useStoreState(
     (state) => state
   )
+
+  useEffect(() => {
+    prefetchQuery({ query: myCollectionCollectedArtistsQuery })
+    prefetchQuery({ query: MyCollectionInsightsScreenQuery })
+  }, [])
+
   return (
     <>
       <Screen>
@@ -113,9 +128,7 @@ const MyCollection: React.FC = () => {
             </Tabs.Tab>
 
             <Tabs.Tab name={Tab.insights} label={Tab.insights}>
-              <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="green10">
-                <Text>Insights</Text>
-              </Flex>
+              <MyCollectionInsightsQR />
             </Tabs.Tab>
           </Tabs>
         </Screen.Body>

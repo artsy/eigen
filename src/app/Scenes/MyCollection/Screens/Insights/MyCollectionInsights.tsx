@@ -6,6 +6,7 @@ import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWor
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import {
   PlaceholderBox,
   PlaceholderRaggedText,
@@ -17,9 +18,9 @@ import {
   MY_COLLECTION_REFRESH_KEY,
   RefreshEvents,
 } from "app/utils/refreshHelpers"
-import { Suspense, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
-import { useLazyLoadQuery, fetchQuery, graphql } from "react-relay"
+import { fetchQuery, graphql, useLazyLoadQuery } from "react-relay"
 import { ActivateMoreMarketInsightsBanner } from "./ActivateMoreMarketInsightsBanner"
 import { AuctionResultsForArtistsYouCollectRail } from "./AuctionResultsForArtistsYouCollectRail"
 import { CareerHighlightsRail } from "./CareerHighlightsRail"
@@ -118,11 +119,11 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
   )
 }
 
-export const MyCollectionInsightsQR: React.FC<{}> = () => (
-  <Suspense fallback={<MyCollectionInsightsPlaceholder />}>
-    <MyCollectionInsights />
-  </Suspense>
-)
+export const MyCollectionInsightsQR: React.FC<{}> = withSuspense({
+  Component: MyCollectionInsights,
+  LoadingFallback: () => <MyCollectionInsightsPlaceholder />,
+  ErrorFallback: NoFallback,
+})
 
 const MyCollectionInsightsPlaceholder = () => {
   const space = useSpace()
