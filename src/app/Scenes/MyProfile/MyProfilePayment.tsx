@@ -1,14 +1,14 @@
-import { Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { Button, Flex, SkeletonBox, SkeletonText, Spacer, Text } from "@artsy/palette-mobile"
 import { MyProfilePaymentDeleteCardMutation } from "__generated__/MyProfilePaymentDeleteCardMutation.graphql"
 import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graphql"
 import { MyProfilePayment_me$data } from "__generated__/MyProfilePayment_me.graphql"
 import { CreditCardDetailsContainer } from "app/Components/CreditCardDetails"
 import { MenuItem } from "app/Components/MenuItem"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { PlaceholderText } from "app/utils/placeholders"
+import { REFRESH_CREDIT_CARDS_LIST_KEY, RefreshEvents } from "app/utils/refreshHelpers"
 import { times } from "lodash"
 import { Suspense, useCallback, useEffect, useReducer, useState } from "react"
 import { ActivityIndicator, Alert, FlatList, LayoutAnimation, RefreshControl } from "react-native"
@@ -26,8 +26,6 @@ const NUM_CARDS_TO_FETCH = 100 // stupidly high because most people will have 1 
 // When creating a new card we need to wait for a refresh of this screen before navigating back.
 // At the moment the only way for these screens to communicate is via global state, since we can't
 // transmit react contexts accross screens.
-
-export let __triggerRefresh: null | (() => Promise<void>) = null
 
 const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPaginationProp }> = ({
   relay,
@@ -53,20 +51,16 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
     {}
   )
 
-  // set up the global refresh hook. this one doesn't need to update the loading state
   useEffect(() => {
-    const triggerRefresh = async () => {
-      await new Promise((resolve) => {
-        relay.refetchConnection(NUM_CARDS_TO_FETCH, resolve)
-      })
-    }
-    __triggerRefresh = triggerRefresh
+    RefreshEvents.addListener(REFRESH_CREDIT_CARDS_LIST_KEY, handleRefreshEvent)
     return () => {
-      if (__triggerRefresh === triggerRefresh) {
-        __triggerRefresh = null
-      }
+      RefreshEvents.removeListener(REFRESH_CREDIT_CARDS_LIST_KEY, handleRefreshEvent)
     }
   }, [])
+
+  const handleRefreshEvent = () => {
+    onRefresh()
+  }
 
   const onRefresh = useCallback(() => {
     setIsRefreshing(true)
@@ -74,6 +68,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
       setIsRefreshing(false)
     })
   }, [])
+
   const onLoadMore = useCallback(() => {
     if (!relay.hasMore() || relay.isLoading() || isLoadingMore) {
       return
@@ -83,6 +78,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
       setIsLoadingMore(false)
     })
   }, [isLoadingMore, relay])
+
   const onRemove = (internalID: string) => {
     dispatch({ type: "deleting", internalID })
     commitMutation<MyProfilePaymentDeleteCardMutation>(relay.environment, {
@@ -147,9 +143,9 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
           ItemSeparatorComponent={() => <Spacer y={1} />}
           ListFooterComponent={
             <Flex py={2}>
-              <Button block onPress={() => navigate("/my-profile/payment/new-card")}>
-                Add new card
-              </Button>
+              <RouterLink hasChildTouchable to="/my-profile/payment/new-card">
+                <Button block>Add new card</Button>
+              </RouterLink>
               {!!isLoadingMore && <ActivityIndicator style={{ marginTop: 30 }} />}
             </Flex>
           }
@@ -186,15 +182,26 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
   )
 }
 
-export const MyProfilePaymentPlaceholder: React.FC<{}> = () => (
-  <Flex px={2} py="15px">
-    {times(2).map((index: number) => (
-      <Flex key={index} py={1}>
-        <PlaceholderText width={100 + Math.random() * 100} />
+export const MyProfilePaymentPlaceholder: React.FC<{}> = () => {
+  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
+  return enableRedesignedSettings ? (
+    <MyProfileScreenWrapper title="Payments" contentContainerStyle={{ paddingHorizontal: 0 }}>
+      <Flex p={2}>
+        <SkeletonText>Add your payment details for a faster checkout</SkeletonText>
+        <Spacer y={2} />
+        <SkeletonBox height={40} />
       </Flex>
-    ))}
-  </Flex>
-)
+    </MyProfileScreenWrapper>
+  ) : (
+    <Flex p={2}>
+      {times(2).map((index: number) => (
+        <Flex key={index} py={1}>
+          <SkeletonText>Credit card </SkeletonText>
+        </Flex>
+      ))}
+    </Flex>
+  )
+}
 
 const MyProfilePaymentContainer = createPaginationContainer(
   MyProfilePayment,
