@@ -19,6 +19,7 @@ import { ARTIST_CIRCLE_DIAMETER } from "app/Scenes/MyCollection/Components/MyCol
 import { MyCollectionStickyHeader } from "app/Scenes/MyCollection/Components/MyCollectionStickyHeader"
 import { MyCollectionZeroState } from "app/Scenes/MyCollection/Components/MyCollectionZeroState"
 import { MyCollectionZeroStateArtworks } from "app/Scenes/MyCollection/Components/MyCollectionZeroStateArtworks"
+import { MyCollectionArtworks } from "app/Scenes/MyCollection/MyCollectionArtworksLegacy"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { VisualCluesConstMap } from "app/store/config/visualClues"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -45,7 +46,6 @@ import {
   fetchQuery,
   graphql,
 } from "react-relay"
-import { MyCollectionArtworks } from "./MyCollectionArtworks"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
 
