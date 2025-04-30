@@ -6,7 +6,7 @@ import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMen
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
 import { capitalize, compact } from "lodash"
 import { useState } from "react"
-import { Alert, AlertButton, TouchableHighlight } from "react-native"
+import { Alert, AlertButton, Platform, TouchableHighlight } from "react-native"
 
 export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const color = useColor()
@@ -51,6 +51,21 @@ export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose 
           )
         }}
       />
+      {Platform.OS === "android" && !!showCustomURLOptions && (
+        <Flex px={2}>
+          <Text color="red100" variant="xs">
+            You are using{" "}
+            <Text color="red100" fontWeight="bold" variant="xs">
+              Android
+            </Text>
+            . In order to use your local environment, you need to replace localhost inside{" "}
+            <Text color="red100" fontWeight="bold" variant="xs">
+              EnvironmentModel.tsx
+            </Text>{" "}
+            with your IP address and port.
+          </Text>
+        </Flex>
+      )}
       {!!showCustomURLOptions &&
         Object.entries(environment).map(([key, { description, presets }]) => {
           return (
