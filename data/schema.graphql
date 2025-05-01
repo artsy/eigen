@@ -393,6 +393,7 @@ type Alert {
     # When false, will only return unpublished artworks for authorized users.
     published: Boolean
     saleID: ID
+    showID: String
 
     # When true, will only return signed artworks.
     signed: Boolean
@@ -1772,6 +1773,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     # When false, will only return unpublished artworks for authorized users.
     published: Boolean
     saleID: ID
+    showID: String
 
     # When true, will only return signed artworks.
     signed: Boolean
@@ -2210,6 +2212,7 @@ type ArtistPartnerEdge {
     # When false, will only return unpublished artworks for authorized users.
     published: Boolean
     saleID: ID
+    showID: String
 
     # When true, will only return signed artworks.
     signed: Boolean
@@ -2359,6 +2362,7 @@ type ArtistSeries implements Node {
     # When false, will only return unpublished artworks for authorized users.
     published: Boolean
     saleID: ID
+    showID: String
 
     # When true, will only return signed artworks.
     signed: Boolean
@@ -10602,6 +10606,7 @@ interface EntityWithFilterArtworksConnectionInterface {
     # When false, will only return unpublished artworks for authorized users.
     published: Boolean
     saleID: ID
+    showID: String
 
     # When true, will only return signed artworks.
     signed: Boolean
@@ -10869,6 +10874,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     # When false, will only return unpublished artworks for authorized users.
     published: Boolean
     saleID: ID
+    showID: String
 
     # When true, will only return signed artworks.
     signed: Boolean
@@ -11396,6 +11402,7 @@ input FilterArtworksInput {
   # When false, will only return unpublished artworks for authorized users.
   published: Boolean
   saleID: ID
+  showID: String
 
   # When true, will only return signed artworks.
   signed: Boolean
@@ -11908,6 +11915,7 @@ type Gene implements Node & Searchable {
     # When false, will only return unpublished artworks for authorized users.
     published: Boolean
     saleID: ID
+    showID: String
 
     # When true, will only return signed artworks.
     signed: Boolean
@@ -13728,6 +13736,7 @@ type MarketingCollection implements Node {
     # When false, will only return unpublished artworks for authorized users.
     published: Boolean
     saleID: ID
+    showID: String
 
     # When true, will only return signed artworks.
     signed: Boolean
@@ -16470,6 +16479,7 @@ type Partner implements Node {
     # When false, will only return unpublished artworks for authorized users.
     published: Boolean
     saleID: ID
+    showID: String
 
     # When true, will only return signed artworks.
     signed: Boolean
@@ -16793,6 +16803,7 @@ type PartnerArtist {
     # When false, will only return unpublished artworks for authorized users.
     published: Boolean
     saleID: ID
+    showID: String
 
     # When true, will only return signed artworks.
     signed: Boolean
@@ -16983,6 +16994,7 @@ type PartnerArtistEdge {
     # When false, will only return unpublished artworks for authorized users.
     published: Boolean
     saleID: ID
+    showID: String
 
     # When true, will only return signed artworks.
     signed: Boolean
@@ -18237,6 +18249,7 @@ type Query {
     # When false, will only return unpublished artworks for authorized users.
     published: Boolean
     saleID: ID
+    showID: String
 
     # When true, will only return signed artworks.
     signed: Boolean
@@ -20829,6 +20842,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     # When false, will only return unpublished artworks for authorized users.
     published: Boolean
     saleID: ID
+    showID: String
 
     # When true, will only return signed artworks.
     signed: Boolean
@@ -21363,6 +21377,7 @@ type Tag implements Node {
     # When false, will only return unpublished artworks for authorized users.
     published: Boolean
     saleID: ID
+    showID: String
 
     # When true, will only return signed artworks.
     signed: Boolean
@@ -23949,6 +23964,7 @@ type Viewer {
     # When false, will only return unpublished artworks for authorized users.
     published: Boolean
     saleID: ID
+    showID: String
 
     # When true, will only return signed artworks.
     signed: Boolean
