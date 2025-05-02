@@ -1,42 +1,21 @@
-import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { ShareIcon, ChevronDownIcon } from "@artsy/icons/native"
-import {
-  DEFAULT_HIT_SLOP,
-  Flex,
-  Screen,
-  Spacer,
-  Spinner,
-  Text,
-  Touchable,
-} from "@artsy/palette-mobile"
-import { addBreadcrumb, captureException, captureMessage } from "@sentry/react-native"
-import {
-  InfiniteDiscoveryQuery,
-  InfiniteDiscoveryQuery$data,
-} from "__generated__/InfiniteDiscoveryQuery.graphql"
-import { LoadFailureView } from "app/Components/LoadFailureView"
+import { ChevronDownIcon, ShareIcon } from "@artsy/icons/native"
+import { DEFAULT_HIT_SLOP, Flex, Screen, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { captureMessage } from "@sentry/react-native"
+import { InfiniteDiscoveryQueryRendererQuery$data } from "__generated__/InfiniteDiscoveryQueryRendererQuery.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
-
 import { useToast } from "app/Components/Toast/toastHook"
-import { ICON_HIT_SLOP } from "app/Components/constants"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
 import { InfiniteDiscoveryOnboarding } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryOnboarding"
 import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
+import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
 import { useCreateUserSeenArtwork } from "app/Scenes/InfiniteDiscovery/mutations/useCreateUserSeenArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { extractNodes } from "app/utils/extractNodes"
-import { withSuspense } from "app/utils/hooks/withSuspense"
 import { pluralize } from "app/utils/pluralize"
-import { usePrefetch } from "app/utils/queryPrefetching"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { Key, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { Key, useCallback, useEffect, useMemo, useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import RNShare from "react-native-share"
-import { fetchQuery, graphql, useLazyLoadQuery } from "react-relay"
-import { useTracking } from "react-tracking"
-import { commitLocalUpdate, createOperationDescriptor, Disposable, getRequest } from "relay-runtime"
 
 interface InfiniteDiscoveryProps {
   fetchMoreArtworks: (undiscoveredArtworks: string[]) => void
@@ -44,7 +23,7 @@ interface InfiniteDiscoveryProps {
 }
 
 export type InfiniteDiscoveryArtwork = ExtractNodeType<
-  InfiniteDiscoveryQuery$data["discoverArtworks"]
+  InfiniteDiscoveryQueryRendererQuery$data["discoverArtworks"]
 >
 
 export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
@@ -52,7 +31,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   artworks,
 }) => {
   const toast = useToast()
-  const { trackEvent } = useTracking()
+  const track = useInfiniteDiscoveryTracking()
   const [commitMutation] = useCreateUserSeenArtwork()
 
   const hasInteractedWithOnboarding = GlobalStore.useAppState(
@@ -77,7 +56,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       setTopArtworkId(topArtwork.internalID)
 
       // Track initial shown artwork
-      trackEvent(tracks.displayedNewArtwork(topArtwork.internalID, topArtwork.slug))
+      track.displayedNewArtwork(topArtwork.internalID, topArtwork.slug)
 
       // send the first seen artwork to the server
       commitMutation({
@@ -111,7 +90,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       return
     }
 
-    trackEvent(tracks.displayedNewArtwork(artwork.internalID, artwork.slug))
+    track.displayedNewArtwork(artwork.internalID, artwork.slug)
 
     // Tell the backend that the user has seen this artwork so that it doesn't show up again.
     commitMutation({
@@ -139,7 +118,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       return
     }
 
-    trackEvent(tracks.tappedRewind(artwork.internalID, artwork.slug))
+    track.tappedRewind(artwork.internalID, artwork.slug)
 
     setTopArtworkId(artwork.internalID)
   }
@@ -156,7 +135,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       return
     }
 
-    trackEvent(tracks.swipedArtwork(swipedArtwork.internalID, swipedArtwork.slug))
+    track.swipedArtwork(swipedArtwork.internalID, swipedArtwork.slug)
 
     const nextArtwork = artworks.find((artwork) => artwork.internalID === nextKey)
 
@@ -183,7 +162,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         "bottom",
         {
           onPress: () => {
-            trackEvent(tracks.tappedSummary())
+            track.tappedSummary()
             navigate("/favorites/saves")
           },
           backgroundColor: "green100",
@@ -202,7 +181,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       )
     }
 
-    trackEvent(tracks.tappedExit())
+    track.tappedExit()
 
     goBack()
   }
@@ -214,7 +193,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       return
     }
 
-    trackEvent(tracks.tappedShare(topArtwork.internalID, topArtwork.slug))
+    track.tappedShare(topArtwork.internalID, topArtwork.slug)
 
     const url = getShareURL(
       `/artwork/${topArtwork.slug}?utm_content=discover-daily-share&utm_medium=product-share`
@@ -228,7 +207,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     })
       .then((result) => {
         if (result.success) {
-          trackEvent(tracks.share(topArtwork.internalID, topArtwork.slug, result.message))
+          track.share(topArtwork.internalID, topArtwork.slug, result.message)
         }
       })
       .catch((error) => {
@@ -275,8 +254,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
         <Spacer y={1} />
         <Swiper
           cards={artworks}
-          onTrigger={handleFetchMore}
-          swipedIndexCallsOnTrigger={2}
+          onReachTriggerIndex={handleFetchMore}
+          triggerIndex={2}
           onNewCardReached={handleNewCardReached}
           onRewind={handleRewind}
           onSwipe={handleSwipe}
@@ -291,207 +270,4 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       </Screen.Body>
     </Screen>
   )
-}
-
-const InfiniteDiscoveryHeader = () => (
-  <Screen.Header
-    title="Discover Daily"
-    leftElements={
-      <Touchable
-        onPress={() => {
-          goBack()
-        }}
-        testID="close-icon"
-        hitSlop={ICON_HIT_SLOP}
-        haptic
-      >
-        <ChevronDownIcon />
-      </Touchable>
-    }
-    hideRightElements
-  />
-)
-
-const InfiniteDiscoverySpinner: React.FC = () => (
-  <Screen>
-    <InfiniteDiscoveryHeader />
-    <Screen.Body fullwidth>
-      <Flex
-        flex={1}
-        justifyContent="center"
-        alignItems="center"
-        // This is to make sure the spinner is centered regardless of the insets
-        position="absolute"
-        height="100%"
-        width="100%"
-      >
-        <Spinner />
-      </Flex>
-    </Screen.Body>
-  </Screen>
-)
-
-export const infiniteDiscoveryVariables = {
-  excludeArtworkIds: [],
-}
-
-export const InfiniteDiscoveryQueryRenderer = withSuspense({
-  Component: () => {
-    const data = useLazyLoadQuery<InfiniteDiscoveryQuery>(
-      infiniteDiscoveryQuery,
-      infiniteDiscoveryVariables
-    )
-    // Disposable queries to allow them to be GCed by Relay when calling dispose()
-    const queriesForDisposal = useRef<Disposable[]>([])
-    const usedExcludeArtworkIds = useRef<string[][]>([])
-    const env = getRelayEnvironment()
-    const prefetch = usePrefetch()
-
-    const { resetSavedArtworksCount } = GlobalStore.actions.infiniteDiscovery
-    const initialArtworks = extractNodes(data.discoverArtworks)
-    const [artworks, setArtworks] = useState<InfiniteDiscoveryArtwork[]>(initialArtworks)
-
-    // Retain the queries to not have them GCed when swiping many times
-    const retainQuery = useCallback((excludeArtworkIds: string[]) => {
-      const queryRequest = getRequest(infiniteDiscoveryQuery)
-      const descriptor = createOperationDescriptor(queryRequest, { excludeArtworkIds })
-      const disposable = env.retain(descriptor)
-      queriesForDisposal.current.push(disposable)
-      usedExcludeArtworkIds.current.push(excludeArtworkIds)
-    }, [])
-
-    const fetchMoreArtworks = async (excludeArtworkIds: string[], isRetry = false) => {
-      try {
-        const response = await fetchQuery<InfiniteDiscoveryQuery>(
-          env,
-          infiniteDiscoveryQuery,
-          { excludeArtworkIds },
-          { fetchPolicy: "network-only" }
-        ).toPromise()
-        const newArtworks = extractNodes(response?.discoverArtworks)
-        if (newArtworks.length) {
-          setArtworks((previousArtworks) => previousArtworks.concat(newArtworks))
-        }
-        retainQuery(excludeArtworkIds)
-      } catch (error) {
-        if (!isRetry) {
-          addBreadcrumb({
-            message: "Failed to fetch more artworks, retrying again",
-          })
-          fetchMoreArtworks(excludeArtworkIds, true)
-          return
-        }
-        addBreadcrumb({
-          message: "Failed to fetch more artworks",
-        })
-        captureException(error)
-      }
-    }
-
-    useEffect(() => {
-      retainQuery(infiniteDiscoveryVariables.excludeArtworkIds)
-      resetSavedArtworksCount()
-
-      // Mark the queries to be disposed by GC, invalidate cache and prefetch a infinite discovery again
-      return () => {
-        queriesForDisposal.current.forEach((query) => {
-          if (!!query.dispose) {
-            query.dispose()
-          }
-        })
-        usedExcludeArtworkIds.current.forEach((id) => {
-          commitLocalUpdate(env, (store) => {
-            store
-              ?.getRoot()
-              ?.getLinkedRecord("discoverArtworks", { excludeArtworkIds: id })
-              ?.invalidateRecord()
-          })
-        })
-        prefetch("/infinite-discovery", infiniteDiscoveryVariables)
-      }
-    }, [retainQuery])
-
-    return (
-      <Flex flex={1}>
-        <InfiniteDiscovery fetchMoreArtworks={fetchMoreArtworks} artworks={artworks} />
-      </Flex>
-    )
-  },
-  LoadingFallback: InfiniteDiscoverySpinner,
-  ErrorFallback: () => (
-    <Screen>
-      <InfiniteDiscoveryHeader />
-      <Screen.Body fullwidth>
-        <LoadFailureView />
-      </Screen.Body>
-    </Screen>
-  ),
-})
-
-export const infiniteDiscoveryQuery = graphql`
-  query InfiniteDiscoveryQuery($excludeArtworkIds: [String!]!) {
-    discoverArtworks(excludeArtworkIds: $excludeArtworkIds) {
-      edges {
-        node {
-          ...InfiniteDiscoveryArtworkCard_artwork
-
-          internalID @required(action: NONE)
-          artists(shallow: true) @required(action: NONE) {
-            internalID @required(action: NONE)
-          }
-          slug
-          title
-        }
-      }
-    }
-  }
-`
-
-const tracks = {
-  displayedNewArtwork: (artworkId: string, artworkSlug: string) => ({
-    action: ActionType.screen,
-    context_screen_owner_id: artworkId,
-    context_screen_owner_slug: artworkSlug,
-    context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
-  }),
-  share: (artworkId: string, artworkSlug: string, service: string) => ({
-    action: ActionType.share,
-    context_module: ContextModule.infiniteDiscovery,
-    context_owner_type: OwnerType.infiniteDiscoveryArtwork,
-    context_owner_id: artworkId,
-    context_owner_slug: artworkSlug,
-    service,
-  }),
-  swipedArtwork: (artworkId: string, artworkSlug: string) => ({
-    action: ActionType.swipedInfiniteDiscoveryArtwork,
-    context_module: ContextModule.infiniteDiscovery,
-    context_screen_owner_id: artworkId,
-    context_screen_owner_slug: artworkSlug,
-    context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
-  }),
-  tappedExit: () => ({
-    action: ActionType.tappedClose,
-    context_module: ContextModule.infiniteDiscovery,
-  }),
-  tappedRewind: (artworkId: string, artworkSlug: string) => ({
-    action: ActionType.tappedRewind,
-    context_module: ContextModule.infiniteDiscovery,
-    context_screen_owner_id: artworkId,
-    context_screen_owner_slug: artworkSlug,
-    context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
-    mode: "swipe",
-  }),
-  tappedShare: (artworkId: string, artworkSlug: string) => ({
-    action: ActionType.tappedShare,
-    context_module: ContextModule.infiniteDiscovery,
-    context_screen_owner_id: artworkId,
-    context_screen_owner_slug: artworkSlug,
-    context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
-  }),
-  tappedSummary: () => ({
-    action: ActionType.tappedToast,
-    context_module: ContextModule.infiniteDiscovery,
-    context_screen_owner_type: OwnerType.home,
-    subject: "Tap here to navigate to your Saves area in your profile.",
-  }),
 }

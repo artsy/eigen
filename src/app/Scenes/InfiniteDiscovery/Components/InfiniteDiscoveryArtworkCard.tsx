@@ -1,24 +1,13 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { ContextModule } from "@artsy/cohesion"
 import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
-import {
-  Flex,
-  Image,
-  Popover,
-  Text,
-  Touchable,
-  useColor,
-  useScreenDimensions,
-} from "@artsy/palette-mobile"
+import { Flex, Image, Text, Touchable, useColor, useScreenDimensions } from "@artsy/palette-mobile"
 import { InfiniteDiscoveryArtworkCard_artwork$key } from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { InfiniteDiscoveryArtworkCardPopover } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCardPopover"
 import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
+import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
 import { GlobalStore } from "app/store/GlobalStore"
-import {
-  PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_1,
-  PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_2,
-} from "app/store/ProgressiveOnboardingModel"
-import { Schema } from "app/utils/track"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
 import { GestureResponderEvent, Text as RNText, ViewStyle } from "react-native"
@@ -33,7 +22,6 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated"
 import { graphql, useFragment } from "react-relay"
-import { useTracking } from "react-tracking"
 
 const SAVES_MAX_DURATION_BETWEEN_TAPS = 200
 
@@ -54,7 +42,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const setHasSavedArtwors = GlobalStore.actions.infiniteDiscovery.setHasSavedArtworks
     const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
 
-    const { trackEvent } = useTracking()
+    const track = useInfiniteDiscoveryTracking()
     const color = useColor()
     const { incrementSavedArtworksCount, decrementSavedArtworksCount } =
       GlobalStore.actions.infiniteDiscovery
@@ -70,16 +58,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
       artworkFragmentRef: artwork,
       onCompleted: (isArtworkSaved) => {
-        trackEvent({
-          action_name: isArtworkSaved
-            ? Schema.ActionNames.ArtworkSave
-            : Schema.ActionNames.ArtworkUnsave,
-          action_type: Schema.ActionTypes.Success,
-          context_module: ContextModule.infiniteDiscoveryArtworkCard,
-          context_screen_owner_id: artwork.internalID,
-          context_screen_owner_slug: artwork.slug,
-          context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
-        })
+        track.savedArtwork(isArtworkSaved, artwork.internalID, artwork.slug)
       },
       onError: () => {
         /**
@@ -175,13 +154,13 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         if (leftFifth && currentImageIndex > 0) {
           // For left fifth, navigate to previous image on single tap
           Haptic.trigger("impactLight")
-          trackEvent(tracks.artworkImageSwipe())
+          track.artworkImageSwipe()
           setCurrentImageIndex(currentImageIndex - 1)
           return true
         } else if (rightFifth && currentImageIndex < images.length - 1) {
           // For right fifth, navigate to next image on single tap
           Haptic.trigger("impactLight")
-          trackEvent(tracks.artworkImageSwipe())
+          track.artworkImageSwipe()
           setCurrentImageIndex(currentImageIndex + 1)
           return true
         }
@@ -313,7 +292,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             }}
             testID="save-artwork-icon"
           >
-            <PopoverWrapper index={index} internalID={artwork.internalID} isTopCard={isTopCard}>
+            <InfiniteDiscoveryArtworkCardPopover index={index} isTopCard={isTopCard}>
               <Flex
                 flexDirection="row"
                 alignItems="center"
@@ -346,73 +325,14 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                   {isSaved ? "Saved" : "Save"}
                 </Text>
               </Flex>
-            </PopoverWrapper>
+            </InfiniteDiscoveryArtworkCardPopover>
           </Touchable>
         </Flex>
       </Flex>
     )
   }
 )
-const FIRST_REMINDER_SWIPES_COUNT = 4
-const SECOND_REMINDER_SWIPES_COUNT = 29
 
-const PopoverWrapper: React.FC<{
-  isTopCard: boolean
-  index: number
-  internalID: string
-  children: JSX.Element
-}> = ({ children, index, isTopCard }) => {
-  const { dismiss } = GlobalStore.actions.progressiveOnboarding
-  const {
-    isDismissed,
-    sessionState: { isReady },
-  } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
-
-  const { hasSavedArtworks } = GlobalStore.useAppState((state) => state.infiniteDiscovery)
-
-  const showSaveAlertReminder1 =
-    index === FIRST_REMINDER_SWIPES_COUNT &&
-    !isDismissed(PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_1).status &&
-    isReady
-  const showSaveAlertReminder2 =
-    index === SECOND_REMINDER_SWIPES_COUNT &&
-    !isDismissed(PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_2).status &&
-    isReady
-
-  const dismissPopover = () => {
-    switch (index) {
-      case FIRST_REMINDER_SWIPES_COUNT:
-        dismiss(PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_1)
-        break
-
-      case SECOND_REMINDER_SWIPES_COUNT:
-        dismiss(PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_2)
-        break
-      default:
-        break
-    }
-  }
-
-  if (isTopCard && !hasSavedArtworks && (showSaveAlertReminder1 || showSaveAlertReminder2)) {
-    return (
-      <Popover
-        visible
-        onDismiss={dismissPopover}
-        onPressOutside={dismissPopover}
-        title={
-          <Text variant="xs" color="mono0" fontWeight="bold">
-            Save artworks to get better{"\n"}recommendations and to signal your{"\n"}interest to
-            galleries.
-          </Text>
-        }
-        placement="top"
-      >
-        {children}
-      </Popover>
-    )
-  }
-  return <Flex>{children}</Flex>
-}
 const infiniteDiscoveryArtworkCardFragment = graphql`
   fragment InfiniteDiscoveryArtworkCard_artwork on Artwork {
     artistNames
@@ -441,11 +361,3 @@ const HEART_CIRCLE_SIZE = 50
 const SAVE_BUTTON_WIDTH = 105
 const PAGINATION_BAR_HEIGHT = 11
 const PAGINATION_BAR_MARGIN_TOP = 10
-
-const tracks = {
-  artworkImageSwipe: () => ({
-    action_name: Schema.ActionNames.ArtworkImageSwipe,
-    action_type: Schema.ActionTypes.Tap,
-    context_module: ContextModule.infiniteDiscoveryArtworkCard,
-  }),
-}
