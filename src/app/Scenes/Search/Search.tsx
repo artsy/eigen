@@ -177,7 +177,6 @@ type SearchScreenProps = StackScreenProps<any>
 const SearchScreenInner: React.FC<SearchScreenProps> = () => {
   const { trackExperiment } = useExperimentVariant("diamond_discover-tab")
 
-  // Track the experiment when the screen is viewed
   useEffect(() => {
     trackExperiment({
       context_owner_type: OwnerType.search,

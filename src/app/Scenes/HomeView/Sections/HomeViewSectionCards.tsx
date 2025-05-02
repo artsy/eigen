@@ -65,6 +65,7 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
         })}
       </Flex>
 
+      {/* TODO: If we decide to keep the Discover tab and dismantle this A/B test, we will need to continue excluding the sentinel. Find an elegant way to do that. */}
       {!isDiscoverVariant && (
         <HomeViewSectionSentinel
           contextModule={section.contextModule as ContextModule}
