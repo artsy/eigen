@@ -26,6 +26,7 @@ import {
   Platform,
   RefreshControlProps,
   ScrollView,
+  ScrollViewProps,
   StyleSheet,
   View,
   ViewStyle,
@@ -122,6 +123,8 @@ export interface Props extends ArtworkActionTrackingProps {
   hideViewFollowsLink?: boolean
 
   hideCreateAlertOnArtworkPreview?: boolean
+
+  ScrollViewComponent?: React.ComponentType<ScrollViewProps>
 }
 
 interface PrivateProps {
@@ -207,6 +210,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   stickyHeaderIndices,
   updateRecentSearchesOnTap = false,
   useParentAwareScrollView = Platform.OS === "android",
+  ScrollViewComponent = ScrollView,
   width,
 }) => {
   const artworks = extractNodes(connection)
@@ -384,7 +388,7 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
 
   const boxPadding = shouldAddPadding ? 2 : 0
 
-  const ScrollViewWrapper = !!useParentAwareScrollView ? ParentAwareScrollView : ScrollView
+  const ScrollViewWrapper = !!useParentAwareScrollView ? ParentAwareScrollView : ScrollViewComponent
 
   return (
     <AnalyticsContextProvider
@@ -545,7 +549,7 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
             width
             height
             date
-            ...MyCollectionArtworks_filterProps @relay(mask: false)
+            ...MyCollectionArtworksLegacy_filterProps @relay(mask: false)
             ...ArtworkGridItem_artwork
               @skip(if: $skipArtworkGridItem)
               @arguments(includeAllImages: true)

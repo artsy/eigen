@@ -1,8 +1,9 @@
-import { Check, CHECK_SIZE, Flex, Box, useSpace, Text } from "@artsy/palette-mobile"
+import { Box, Check, CHECK_SIZE, Flex, Text, useSpace } from "@artsy/palette-mobile"
 import { FilterData } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { TouchableRow } from "app/Components/TouchableRow"
 import { useScreenDimensions } from "app/utils/hooks"
 import React, { memo } from "react"
+import { PixelRatio } from "react-native"
 import styled from "styled-components/native"
 
 const OPTIONS_MARGIN_LEFT = 0.5
@@ -32,7 +33,10 @@ export const MultiSelectOptionItem: React.FC<MultiSelectOptionItemProps> = memo(
     const optionTextMaxWidth = width - OPTION_PADDING * 3 - space(OPTIONS_MARGIN_LEFT) - CHECK_SIZE
 
     return (
-      <Box ml={OPTIONS_MARGIN_LEFT} height={MULTI_SELECT_OPTION_ITEM_HEIGHT}>
+      <Box
+        ml={OPTIONS_MARGIN_LEFT}
+        height={MULTI_SELECT_OPTION_ITEM_HEIGHT * PixelRatio.getFontScale()}
+      >
         <TouchableRow
           onPress={() => onPress(item)}
           disabled={disabled}

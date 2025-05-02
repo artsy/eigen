@@ -129,7 +129,7 @@ import {
   infiniteDiscoveryQuery,
   InfiniteDiscoveryQueryRenderer,
   infiniteDiscoveryVariables,
-} from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
+} from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryQueryRenderer"
 import { Favorites as LegacyFavorites } from "app/Scenes/LegacyFavorites/LegacyFavorites"
 import { MyAccountQueryRenderer, MyAccountScreenQuery } from "app/Scenes/MyAccount/MyAccount"
 import { MyAccountDeleteAccountQueryRenderer } from "app/Scenes/MyAccount/MyAccountDeleteAccount"

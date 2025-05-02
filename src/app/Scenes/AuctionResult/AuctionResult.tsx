@@ -7,6 +7,7 @@ import {
   Separator,
   Spacer,
   Text,
+  useColor,
   useSpace,
   useTheme,
 } from "@artsy/palette-mobile"
@@ -48,8 +49,10 @@ interface Props {
 export const AuctionResult: React.FC<Props> = (props) => {
   const artist = useFragment(artistFragment, props.artist)
   const auctionResult = useFragment(auctionResultFragment, props.auctionResult)
+
   const navigation = useNavigation<NavigationProp<AuthenticatedRoutesParams, "AuctionResult">>()
 
+  const color = useColor()
   const { theme } = useTheme()
 
   const tracking = useTracking()
@@ -85,6 +88,7 @@ export const AuctionResult: React.FC<Props> = (props) => {
             multiline
             scrollEnabled={false}
             style={{
+              color: color("mono100"),
               fontFamily: theme.fonts.sans.regular,
               fontSize: 13, // stands for xs
               lineHeight: 21,
