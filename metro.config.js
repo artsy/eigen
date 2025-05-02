@@ -30,6 +30,7 @@ const config = {
     resolverMainFields: ["sbmodern", "react-native", "browser", "main"], // needed for storybook
     extraNodeModules: {
       images: path.resolve(__dirname, "./images"), // Add this line for Metro to resolve 'images folder'
+      animations: path.resolve(__dirname, "./animations"), // Add this line for Metro to resolve 'animations folder'
     },
   },
 }

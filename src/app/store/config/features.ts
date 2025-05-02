@@ -279,6 +279,12 @@ export const features = {
     description: "Enable quick links animation",
     echoFlagKey: "AREnableQuickLinksAnimation",
   },
+  AREnableArtworkHeartIconAnimation: {
+    readyForRelease: false,
+    showInDevMenu: true,
+    description: "Enable artwork heart icon animation",
+    echoFlagKey: "AREnableArtworkHeartIconAnimation",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

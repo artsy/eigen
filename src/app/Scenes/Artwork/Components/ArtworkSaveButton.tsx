@@ -9,8 +9,10 @@ import {
   Touchable,
 } from "@artsy/palette-mobile"
 import { ArtworkSaveButton_artwork$key } from "__generated__/ArtworkSaveButton_artwork.graphql"
+import { ArtworkHeartIconAnimation } from "app/Components/ArtworkGrids/ArtworkHeartIcon"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { isOpenOrUpcomingSale } from "app/Scenes/Artwork/utils/isOpenOrUpcomingSale"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { StyleSheet } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -34,6 +36,12 @@ const WatchLotIcon: React.FC<IconProps> = ({ isSaved }) => {
 }
 
 const SaveButtonIcon: React.FC<IconProps> = ({ isSaved }) => {
+  const enableArtworkHeartIconAnimation = useFeatureFlag("AREnableArtworkHeartIconAnimation")
+
+  if (enableArtworkHeartIconAnimation) {
+    return <ArtworkHeartIconAnimation isSaved={!!isSaved} />
+  }
+
   if (isSaved) {
     return <HeartFillIcon accessibilityLabel="Saved icon" fill="blue100" />
   }

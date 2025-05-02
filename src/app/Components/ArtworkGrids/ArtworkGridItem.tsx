@@ -19,6 +19,7 @@ import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/Cr
 import { filterArtworksParams } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
+import { ArtworkHeartIconAnimation } from "app/Components/ArtworkGrids/ArtworkHeartIcon"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
@@ -444,6 +445,17 @@ const ArtworkHeartIcon: React.FC<{ isSaved: boolean | null; index?: number }> = 
   isSaved,
   index,
 }) => {
+  const enableArtworkHeartIconAnimation = useFeatureFlag("AREnableArtworkHeartIconAnimation")
+
+  if (enableArtworkHeartIconAnimation) {
+    return (
+      <ArtworkHeartIconAnimation
+        isSaved={!!isSaved}
+        testID={isSaved ? "filled-heart-icon" : "empty-heart-icon"}
+      />
+    )
+  }
+
   const iconProps = { height: HEART_ICON_SIZE, width: HEART_ICON_SIZE, testID: "empty-heart-icon" }
 
   if (isSaved) {
