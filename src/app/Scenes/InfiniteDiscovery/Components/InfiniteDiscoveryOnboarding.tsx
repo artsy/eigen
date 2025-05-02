@@ -21,6 +21,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
   artworks,
 }) => {
   const { trackEvent } = useTracking()
+  const colorScheme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
   const space = useSpace()
   const [showSavedHint, setShowSavedHint] = useState(false)
   const [showSwiper, setShowSwiper] = useState(false)
@@ -102,6 +103,11 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
     }, 1000)
   }, [setShowSavedHint, isVisible, showSwiper])
 
+  const gradientColors =
+    colorScheme === "dark"
+      ? ["rgb(0, 0, 0)", `rgba(24, 24, 24, 0.9)`]
+      : ["rgb(255, 255, 255)", `rgba(231, 231, 231, 0.9)`]
+
   return (
     <Modal
       animationType="fade"
@@ -127,7 +133,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
           <Flex flex={1} backgroundColor="transparent">
             <Flex flex={1}>
               <LinearGradient
-                colors={["rgb(255, 255, 255)", `rgba(231, 231, 231, 0.9)`]}
+                colors={gradientColors}
                 start={{ x: 0, y: 1 }}
                 end={{ x: 0, y: 0 }}
                 style={{
