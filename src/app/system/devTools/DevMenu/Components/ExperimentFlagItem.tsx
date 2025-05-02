@@ -8,6 +8,7 @@ import {
   Pill,
   Spacer,
   Text,
+  useColor,
   useSpace,
 } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
@@ -291,12 +292,15 @@ const CustomInput: React.FC<{
   value: string | undefined
   onChangeText: (text: string) => void
 }> = ({ value, onChangeText }) => {
+  const color = useColor()
+
   return (
     <TextInput
       value={value}
       onChangeText={onChangeText}
       autoCapitalize="none"
       style={{
+        color: color("mono100"),
         borderColor: "gray",
         borderWidth: 1,
         height: 45,
