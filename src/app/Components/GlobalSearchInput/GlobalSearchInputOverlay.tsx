@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native"
 import { FadeIn } from "app/Components/FadeIn"
 import { GlobalSearchInputOverlayEmptyState } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlayEmptyState"
 import { useSearch } from "app/Components/GlobalSearchInput/useSearch"
-import { DEFAULT_ICON_SIZE } from "app/Components/constants"
+import { DEFAULT_ICON_SIZE, ICON_HIT_SLOP } from "app/Components/constants"
 import { RecentSearches } from "app/Scenes/Search/RecentSearches"
 import { SEARCH_INPUT_PLACEHOLDER, shouldStartSearching } from "app/Scenes/Search/Search"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
@@ -142,7 +142,7 @@ export const GlobalSearchInputOverlay: React.FC<{
                   />
                 </Flex>
                 {!!enableCollect && (
-                  <RouterLink to="/collect">
+                  <RouterLink to="/collect" hitSlop={ICON_HIT_SLOP}>
                     <FilterIcon height={DEFAULT_ICON_SIZE} width={DEFAULT_ICON_SIZE} />
                   </RouterLink>
                 )}
