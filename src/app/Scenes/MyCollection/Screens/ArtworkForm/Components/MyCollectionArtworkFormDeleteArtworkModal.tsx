@@ -6,6 +6,7 @@ import {
   Message,
   Spacer,
   Text,
+  useColor,
 } from "@artsy/palette-mobile"
 import { MyCollectionArtworkFormDeleteArtworkModalQuery } from "__generated__/MyCollectionArtworkFormDeleteArtworkModalQuery.graphql"
 import LoadingModal from "app/Components/Modals/LoadingModal"
@@ -37,6 +38,8 @@ const myCollectionArtworkFormDeleteArtworkModalQuery = graphql`
 export const MyCollectionArtworkFormDeleteArtworkModal: React.FC<MyCollectionArtworkFormDeleteArtworkModalProps> =
   withSuspense({
     Component: ({ visible, hideModal, deleteArtwork, artistID }) => {
+      const color = useColor()
+
       const data = useLazyLoadQuery<MyCollectionArtworkFormDeleteArtworkModalQuery>(
         myCollectionArtworkFormDeleteArtworkModalQuery,
         {
@@ -57,7 +60,7 @@ export const MyCollectionArtworkFormDeleteArtworkModal: React.FC<MyCollectionArt
           onRequestClose={hideModal}
           animationType="slide"
         >
-          <Flex p={2}>
+          <Flex p={2} flex={1} backgroundColor={color("background")}>
             <Text variant="lg-display">Delete this artwork?</Text>
             <Spacer y={2} />
             <Text variant="sm">This artwork will be removed from My Collection.</Text>
