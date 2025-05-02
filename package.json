@@ -97,7 +97,7 @@
     "braces": "in the resolutions - needed to resolve a security dependency issue - need to remove this when the issue is resolved and packages are updated"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.258.0",
+    "@artsy/cohesion": "4.259.0",
     "@artsy/icons": "3.29.1",
     "@artsy/palette-mobile": "17.6.0",
     "@artsy/to-title-case": "1.1.0",

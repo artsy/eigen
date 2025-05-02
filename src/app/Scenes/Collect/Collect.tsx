@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, SimpleMessage, Spacer, Text } from "@artsy/palette-mobile"
 import { CollectArtworks_viewer$key } from "__generated__/CollectArtworks_viewer.graphql"
 import { CollectQuery } from "__generated__/CollectQuery.graphql"
@@ -61,8 +61,8 @@ export const CollectContent: React.FC<CollectContentProps> = ({ viewer }) => {
         pageSize={PAGE_SIZE}
         contextModule={ContextModule.artworkGrid}
         // TODO: Add tracking
-        // contextScreenOwnerType={ScreenOwnerType.collect}
-        // contextScreen={ScreenOwnerType.collect}
+        contextScreenOwnerType={OwnerType.collect}
+        contextScreen={OwnerType.collect}
         ListEmptyComponent={<SimpleMessage m={2}>No artworks found</SimpleMessage>}
         ListHeaderComponent={
           <Flex mx={-2} gap={1}>
@@ -83,7 +83,10 @@ export const CollectContent: React.FC<CollectContentProps> = ({ viewer }) => {
         }
         onScroll={scrollHandler}
         refreshControl={RefreshControl}
-        style={{ paddingBottom: 120 }}
+        style={{
+          // Extra padding at the bottom of the screen so it's clear that there's no more content
+          paddingBottom: 120,
+        }}
       />
 
       <ArtworkFilterNavigator
