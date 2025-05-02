@@ -10403,6 +10403,12 @@ type DismissTaskSuccess {
   task: Task!
 }
 
+# Display texts for the order based on its state
+type DisplayTexts {
+  # Title text to display for the order
+  titleText: String!
+}
+
 type DoNotUseThisPartner {
   displayName: String
   display_name: String @deprecated(reason: "Use displayName")
@@ -15997,6 +16003,9 @@ type Order {
 
   # Order code
   code: String!
+
+  # Display texts for the order based on its buyer_state
+  displayTexts: DisplayTexts!
 
   # Buyer fulfillment details for order
   fulfillmentDetails: FulfillmentDetails
