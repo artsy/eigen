@@ -19,6 +19,8 @@ const ONBOARDING_SAVED_HINT_DURATION = 1500
 export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingProps> = ({
   artworks,
 }) => {
+  const colorScheme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+
   const track = useInfiniteDiscoveryTracking()
   const space = useSpace()
   const [showSavedHint, setShowSavedHint] = useState(false)
@@ -101,6 +103,11 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
     }, 1000)
   }, [setShowSavedHint, isVisible, showSwiper])
 
+  const gradientColors =
+    colorScheme === "dark"
+      ? ["rgb(0, 0, 0)", `rgba(24, 24, 24, 0.9)`]
+      : ["rgb(255, 255, 255)", `rgba(231, 231, 231, 0.9)`]
+
   return (
     <Modal
       animationType="fade"
@@ -126,7 +133,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
           <Flex flex={1} backgroundColor="transparent">
             <Flex flex={1}>
               <LinearGradient
-                colors={["rgb(255, 255, 255)", `rgba(231, 231, 231, 0.9)`]}
+                colors={gradientColors}
                 start={{ x: 0, y: 1 }}
                 end={{ x: 0, y: 0 }}
                 style={{
