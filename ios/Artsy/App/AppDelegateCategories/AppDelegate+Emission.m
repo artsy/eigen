@@ -3,7 +3,6 @@
 #import "ARRouter.h"
 #import "AREmission.h"
 #import "ARTemporaryAPIModule.h"
-#import "AREventsModule.h"
 #import "ARUserManager.h"
 #import "User.h"
 #import "ARAnalyticsConstants.h"

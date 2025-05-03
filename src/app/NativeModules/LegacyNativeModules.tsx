@@ -75,9 +75,6 @@ interface LegacyNativeModules {
   ARTDeeplinkTimeoutModule: {
     invalidateDeeplinkTimeout(): void
   }
-  AREventsModule: {
-    requestAppStoreRating(): void
-  }
 }
 
 const LegacyNativeModulesAndroid = {
@@ -131,9 +128,6 @@ const LegacyNativeModulesAndroid = {
   ARPHPhotoPickerModule: {
     requestPhotos: noop("requestPhotos"),
   },
-  AREventsModule: {
-    requestAppStoreRating: noop("requestAppStoreRating"),
-  },
 }
 
 const LegacyNativeModulesIOS: LegacyNativeModules = {
@@ -144,7 +138,6 @@ const LegacyNativeModulesIOS: LegacyNativeModules = {
   ARNotificationsManager: AllNativeModules.ARNotificationsManager,
   ARTemporaryAPIModule: AllNativeModules.ARTemporaryAPIModule,
   ARPHPhotoPickerModule: AllNativeModules.ARPHPhotoPickerModule,
-  AREventsModule: AllNativeModules.AREventsModule,
 }
 
 const nativeModules = () => {

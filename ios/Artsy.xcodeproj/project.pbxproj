@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		161D209B2CC7D49800856E71 /* ARTCityGuideManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 161D209A2CC7D49800856E71 /* ARTCityGuideManager.m */; };
 		1A4B97BC283CDD5A00878EAE /* ARCocoaConstantsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */; };
-		1A4B97BD283CDD5A00878EAE /* AREventsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9793283CDD5900878EAE /* AREventsModule.m */; };
 		1A4B97BE283CDD5A00878EAE /* ARScrollViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.m */; };
 		1A4B97BF283CDD5A00878EAE /* RCTScrollView+Artsy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9796283CDD5900878EAE /* RCTScrollView+Artsy.m */; };
 		1A4B97C0283CDD5A00878EAE /* AREmission.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9798283CDD5900878EAE /* AREmission.m */; };
@@ -546,11 +545,9 @@
 		1973F4CD291679B41728F08A /* Pods-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCocoaConstantsModule.m; sourceTree = "<group>"; };
 		1A4B9792283CDD5900878EAE /* AREmission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREmission.h; sourceTree = "<group>"; };
-		1A4B9793283CDD5900878EAE /* AREventsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREventsModule.m; sourceTree = "<group>"; };
 		1A4B9794283CDD5900878EAE /* RCTScrollView+Artsy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTScrollView+Artsy.h"; sourceTree = "<group>"; };
 		1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARScrollViewHelpers.m; sourceTree = "<group>"; };
 		1A4B9796283CDD5900878EAE /* RCTScrollView+Artsy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTScrollView+Artsy.m"; sourceTree = "<group>"; };
-		1A4B9797283CDD5900878EAE /* AREventsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREventsModule.h; sourceTree = "<group>"; };
 		1A4B9798283CDD5900878EAE /* AREmission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREmission.m; sourceTree = "<group>"; };
 		1A4B9799283CDD5900878EAE /* ARCocoaConstantsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCocoaConstantsModule.h; sourceTree = "<group>"; };
 		1A4B979A283CDD5900878EAE /* ARScrollViewHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARScrollViewHelpers.h; sourceTree = "<group>"; };
@@ -1408,11 +1405,9 @@
 				1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */,
 				1A4B9792283CDD5900878EAE /* AREmission.h */,
 				1A4B9798283CDD5900878EAE /* AREmission.m */,
-				1A4B9793283CDD5900878EAE /* AREventsModule.m */,
 				1A4B9794283CDD5900878EAE /* RCTScrollView+Artsy.h */,
 				1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.m */,
 				1A4B9796283CDD5900878EAE /* RCTScrollView+Artsy.m */,
-				1A4B9797283CDD5900878EAE /* AREventsModule.h */,
 				1A4B9799283CDD5900878EAE /* ARCocoaConstantsModule.h */,
 				1A4B979A283CDD5900878EAE /* ARScrollViewHelpers.h */,
 			);
@@ -3920,7 +3915,6 @@
 				CBE3278C27E275A400395A93 /* Artist.m in Sources */,
 				CBE3277627E275A400395A93 /* ArtsyAPI+Following.m in Sources */,
 				CBE326C927E275A300395A93 /* LiveAuctionLotCollectionViewLayoutAttributes.swift in Sources */,
-				1A4B97BD283CDD5A00878EAE /* AREventsModule.m in Sources */,
 				CBE3268427E275A300395A93 /* UIView+OldSchoolSnapshots.m in Sources */,
 				CBE3272527E275A400395A93 /* ARTNativeScreenPresenterModule.m in Sources */,
 				CBE326D927E275A300395A93 /* ARScrollNavigationChief.m in Sources */,
