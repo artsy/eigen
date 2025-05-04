@@ -51,8 +51,10 @@ end
 
 # iOS Lanes
 
-desc 'Ships iOS beta to TestFlight'
-lane :ship_beta_ios do
+desc 'Ships iOS beta to TestFlight or Firebase'
+lane :ship_beta_ios do |options|
+  deployment_target = options[:deployment_target] || 'testflight' # default to 'testflight'
+
   api_key = generate_app_store_connect_api_key
 
   bundle_version = set_build_version_ios
@@ -60,67 +62,85 @@ lane :ship_beta_ios do
 
   latest_version = $APP_JSON['version']
 
-  beta_readme = 'Thanks for using the Artsy beta!'
-
   # Builds the app
+  sync_signing_ios(app_identifier: deployment_target)
+  tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
+
+  # Workaround for timeout in ci
+  ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
+  build_config = deployment_target == 'testflight' ? 'Store' : 'QA'
+  build_ios_app(
+    build_path: "archives",
+    workspace: 'ios/Artsy.xcworkspace',
+    configuration: build_config,
+    silent: true
+  )
+
+  # avoid duplicate uploads to sentry
+  if (deployment_target == 'testflight')
+    # important! this must match the release version specified
+    # in Eigen in order for sourcemaps to work correctly
+    sentry_release_name = "ios-#{latest_version}-#{bundle_version}"
+    extract_ios_bundle_and_sourcemap(
+      archive_root: "../archives",
+      dist_dir: "../dist/ios",
+      app_name: "Artsy"
+    )
+
+    upload_sentry_artifacts(
+      sentry_release_name: sentry_release_name,
+      dist_version: bundle_version,
+      platform: 'ios'
+    )
+  end
+
+  deploy_ios_beta(deployment_target: deployment_target)
+end
+
+def deploy_ios_beta(deployment_target:)
+  if deployment_target == 'testflight'
+    beta_readme = 'Thanks for using the Artsy beta!'
+    # Send to the app store
+    beta_app_review_info = {
+      contact_email: ENV['BETA_CONTACT_EMAIL'],
+      contact_first_name: ENV['BETA_CONTACT_FIRST_NAME'],
+      contact_last_name: ENV['BETA_CONTACT_LAST_NAME'],
+      contact_phone: ENV['BETA_CONTACT_PHONE'],
+      demo_account_name: ENV['BETA_DEMO_ACCOUNT_NAME'],
+      demo_account_password: ENV['BETA_DEMO_ACCOUNT_PWD']
+    }
+
+    pilot(
+      api_key: api_key,
+      beta_app_review_info: beta_app_review_info,
+      changelog: beta_readme,
+      itc_provider: 'ArtsyInc',
+      distribute_external: true,
+      groups: ['Artsy People', 'Applause People']
+    )
+  else
+    firebase_app_distribution(
+      app: ENV['FIREBASE_APP_ID'],
+      groups: 'artsy-people',
+    )
+  end
+end
+
+def sync_signing_ios(deployment_target:)
   ios_target_ids = IOS_TARGETS.keys
-  sync_code_signing(app_identifier: ios_target_ids, type: 'appstore')
+  code_signing_type = deployment_target == 'testflight' ? 'appstore' : 'adhoc'
+  sync_code_signing(app_identifier: ios_target_ids, type: code_signing_type)
 
   IOS_TARGETS.each do |id, meta|
+    code_signing_profile = deployment_target == 'testflight' ? "match AppStore #{id}" : "match AdHoc #{id}"
     update_code_signing_settings(
       use_automatic_signing: false,
       path: 'ios/Artsy.xcodeproj',
       team_id: '23KMWZ572J',
       targets: [meta[:name]],
-      profile_name: "match AppStore #{id}"
+      profile_name: code_signing_profile
     )
   end
-
-  tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
-
-  # important! this must match the release version specified
-  # in Eigen in order for sourcemaps to work correctly
-  sentry_release_name = "ios-#{latest_version}-#{bundle_version}"
-
-  # Workaround for timeout in ci
-  ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
-  build_ios_app(
-    build_path: "archives",
-    workspace: 'ios/Artsy.xcworkspace',
-    configuration: 'Store',
-    silent: true
-  )
-
-  extract_ios_bundle_and_sourcemap(
-    archive_root: "../archives",
-    dist_dir: "../dist/ios",
-    app_name: "Artsy"
-  )
-
-  upload_sentry_artifacts(
-    sentry_release_name: sentry_release_name,
-    dist_version: bundle_version,
-    platform: 'ios'
-  )
-
-  # Send to the app store
-  beta_app_review_info = {
-    contact_email: ENV['BETA_CONTACT_EMAIL'],
-    contact_first_name: ENV['BETA_CONTACT_FIRST_NAME'],
-    contact_last_name: ENV['BETA_CONTACT_LAST_NAME'],
-    contact_phone: ENV['BETA_CONTACT_PHONE'],
-    demo_account_name: ENV['BETA_DEMO_ACCOUNT_NAME'],
-    demo_account_password: ENV['BETA_DEMO_ACCOUNT_PWD']
-  }
-
-  pilot(
-    api_key: api_key,
-    beta_app_review_info: beta_app_review_info,
-    changelog: beta_readme,
-    itc_provider: 'ArtsyInc',
-    distribute_external: true,
-    groups: ['Artsy People', 'Applause People']
-  )
 end
 
 lane :test_firebase_ios do
@@ -277,11 +297,13 @@ lane :ship_beta_android do |options|
   set_git_properties_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
-  sentry_release_name = "android-#{vname}-#{vcode}"
-
-  sh("yarn react-native build-android --mode=release --extra-params='--no-daemon --max-workers 2'")
+  build_type = deployment_target == 'play_store' ? 'release' : 'beta'
+  sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2'")
 
   if (deployment_target == 'play_store')
+    # important! this must match the release version specified
+    # in Eigen in order for sourcemaps to work correctly
+    sentry_release_name = "android-#{vname}-#{vcode}"
     upload_sentry_artifacts(
       sentry_release_name: sentry_release_name,
       dist_version: "#{vcode}",
