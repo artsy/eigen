@@ -84,6 +84,7 @@ lane :ship_beta_ios do |options|
     workspace: 'ios/Artsy.xcworkspace',
     scheme: scheme,
     export_method: export_method,
+    codesigning_identity: 'Apple Distribution: Art.sy Inc. (23KMWZ572J)',
     silent: true
   )
 
@@ -147,6 +148,7 @@ def sync_signing_ios(deployment_target:)
     code_signing_profile = deployment_target == 'testflight' ? "match AppStore #{id}" : "match AdHoc #{id}"
     update_code_signing_settings(
       use_automatic_signing: false,
+      code_sign_identity: 'Apple Distribution: Art.sy Inc. (23KMWZ572J)',
       path: 'ios/Artsy.xcodeproj',
       team_id: '23KMWZ572J',
       targets: [meta[:name]],
