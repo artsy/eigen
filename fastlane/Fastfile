@@ -30,6 +30,15 @@ IOS_TARGETS = {
                                                    plist_path: '../ios/BrazePushServiceExtension/Info.plist' }
 }
 
+
+IOS_BETA_TARGETS = {
+  'net.artsy.qa' => { name: 'Artsy', plist_path: APP_PLIST },
+  'net.artsy.qa.Artsy-Stickers' => { name: 'ArtsyStickers', plist_path: '../ios/ArtsyStickers/Info.plist' },
+  'net.artsy.qa.ArtsyWidget' => { name: 'ArtsyWidgetExtension', plist_path: '../ios/ArtsyWidget/Info.plist' },
+  'net.artsy.qa.BrazePushServiceExtension' => { name: 'BrazePushServiceExtension',
+                                                   plist_path: '../ios/BrazePushServiceExtension/Info.plist' }
+}
+
 BETA_LANES = %i[ship_beta ship_beta_ios ship_beta_android].freeze
 
 GIT_COMMIT_SHORT_HASH = `git log -n1 --format='%h'`.chomp
@@ -129,11 +138,12 @@ def deploy_ios_beta(deployment_target:)
 end
 
 def sync_signing_ios(deployment_target:)
-  ios_target_ids = IOS_TARGETS.keys
+  ios_targets = deployment_target == 'testflight' ? IOS_TARGETS : IOS_BETA_TARGETS
   code_signing_type = deployment_target == 'testflight' ? 'appstore' : 'adhoc'
-  sync_code_signing(app_identifier: ios_target_ids, type: code_signing_type)
 
-  IOS_TARGETS.each do |id, meta|
+  sync_code_signing(app_identifier: ios_targets.keys, type: code_signing_type)
+
+  ios_targets.each do |id, meta|
     code_signing_profile = deployment_target == 'testflight' ? "match AppStore #{id}" : "match AdHoc #{id}"
     update_code_signing_settings(
       use_automatic_signing: false,
