@@ -1,6 +1,6 @@
-import { Flex, Box, Text, Separator, Touchable, Image } from "@artsy/palette-mobile"
+import { Box, Flex, Image, Separator, Text } from "@artsy/palette-mobile"
 import { ItemArtwork_artwork$data } from "__generated__/ItemArtwork_artwork.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -18,7 +18,7 @@ export const ItemArtwork: React.FC<ItemArtworkProps> = ({ artwork }) => {
           Artwork
         </Text>
 
-        <Touchable onPress={() => artwork.href && navigate(artwork.href)}>
+        <RouterLink to={artwork.href}>
           <Flex flexDirection="row">
             <Box height="100px" width="100px" justifyContent="center" backgroundColor="pink">
               {!!artwork.image?.thumbnailUrl && (
@@ -49,7 +49,7 @@ export const ItemArtwork: React.FC<ItemArtworkProps> = ({ artwork }) => {
               </Text>
             </Flex>
           </Flex>
-        </Touchable>
+        </RouterLink>
       </Flex>
       <Separator my={1} />
     </>

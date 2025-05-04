@@ -1,6 +1,6 @@
-import { Flex, Text, CertificateIcon, LinkText } from "@artsy/palette-mobile"
+import { CertificateIcon, Flex, LinkText, Text } from "@artsy/palette-mobile"
 import { ArtworkAuthenticityCertificate_artwork$data } from "__generated__/ArtworkAuthenticityCertificate_artwork.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtworkAuthenticityCertificateProps {
@@ -28,13 +28,11 @@ export const ArtworkAuthenticityCertificate: React.FC<ArtworkAuthenticityCertifi
         <CertificateIcon mr={0.5} fill="mono60" height={25} width={25} />
         <Text color="mono60" variant="sm">
           Includes a{" "}
-          <LinkText
-            color="mono60"
-            variant="sm"
-            onPress={() => navigate(`/artwork-certificate-of-authenticity`)}
-          >
-            Certificate of Authenticity
-          </LinkText>
+          <RouterLink to="/artwork-certificate-of-authenticity" hasChildTouchable>
+            <LinkText color="mono60" variant="sm">
+              Certificate of Authenticity
+            </LinkText>
+          </RouterLink>
         </Text>
       </Flex>
     </>

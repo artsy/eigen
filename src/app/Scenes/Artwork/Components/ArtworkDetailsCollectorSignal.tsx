@@ -1,5 +1,12 @@
-import { ArrowUpRightIcon, FairIcon, FireIcon } from "@artsy/icons"
-import { bullet, Flex, LinkText, Text } from "@artsy/palette-mobile"
+import {
+  ArrowUpRightIcon,
+  bullet,
+  FairIcon,
+  FireIcon,
+  Flex,
+  LinkText,
+  Text,
+} from "@artsy/palette-mobile"
 import { ArtworkDetailsCollectorSignal_artwork$key } from "__generated__/ArtworkDetailsCollectorSignal_artwork.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { DateTime } from "luxon"
