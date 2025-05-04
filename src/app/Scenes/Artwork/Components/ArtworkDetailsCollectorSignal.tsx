@@ -1,14 +1,7 @@
-import {
-  ArrowUpRightIcon,
-  bullet,
-  FairIcon,
-  FireIcon,
-  Flex,
-  LinkText,
-  Text,
-} from "@artsy/palette-mobile"
+import { ArrowUpRightIcon, FairIcon, FireIcon } from "@artsy/icons"
+import { bullet, Flex, LinkText, Text } from "@artsy/palette-mobile"
 import { ArtworkDetailsCollectorSignal_artwork$key } from "__generated__/ArtworkDetailsCollectorSignal_artwork.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { DateTime } from "luxon"
 import { graphql, useFragment } from "react-relay"
 
@@ -79,9 +72,11 @@ export const ArtworkDetailsCollectorSignal: React.FC<Props> = ({ artwork }) => {
         </Text>
 
         {href ? (
-          <LinkText variant="sm" color="mono60" onPress={() => navigate(href || "#")}>
-            {signalDescription}
-          </LinkText>
+          <RouterLink to={href} hasChildTouchable>
+            <LinkText variant="sm" color="mono60">
+              {signalDescription}
+            </LinkText>
+          </RouterLink>
         ) : (
           <Text variant="sm" color="mono60">
             {signalDescription}
