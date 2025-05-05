@@ -1,7 +1,7 @@
-import { Image, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
+import { Image, useScreenDimensions } from "@artsy/palette-mobile"
 import { ArticleSectionArtworkImage_artwork$key } from "__generated__/ArticleSectionArtworkImage_artwork.graphql"
-import { navigate } from "app/system/navigation/navigate"
-import { useFragment, graphql } from "react-relay"
+import { RouterLink } from "app/system/navigation/RouterLink"
+import { graphql, useFragment } from "react-relay"
 
 interface ArticleSectionArtworkImageProps {
   artwork: ArticleSectionArtworkImage_artwork$key
@@ -17,18 +17,12 @@ export const ArticleSectionArtworkImage: React.FC<ArticleSectionArtworkImageProp
     return null
   }
 
-  const handleOnPress = () => {
-    if (!!data.href) {
-      navigate(data.href)
-    }
-  }
-
   const widthShrinkPercentage = width / (data.image?.width ?? width)
   const height = (data.image?.height ?? width) * widthShrinkPercentage
   const aspectRatio = width / height
 
   return (
-    <Touchable onPress={handleOnPress}>
+    <RouterLink to={data.href}>
       <Image
         accessibilityLabel={`Image of ${data.title}`}
         src={data.image.url}
@@ -36,7 +30,7 @@ export const ArticleSectionArtworkImage: React.FC<ArticleSectionArtworkImageProp
         height={height}
         aspectRatio={aspectRatio}
       />
-    </Touchable>
+    </RouterLink>
   )
 }
 

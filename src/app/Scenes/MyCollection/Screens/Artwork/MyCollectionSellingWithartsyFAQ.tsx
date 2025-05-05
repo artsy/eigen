@@ -1,5 +1,5 @@
-import { Spacer, Flex, Box, Text, Join } from "@artsy/palette-mobile"
-import { navigate } from "app/system/navigation/navigate"
+import { Box, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { useScreenDimensions } from "app/utils/hooks"
 import { sendEmailWithMailTo } from "app/utils/sendEmail"
 import { ScrollView } from "react-native"
@@ -56,9 +56,9 @@ export const MyCollectionSellingWithArtsyFAQ = () => {
 
               <Text mb={2}>
                 For more information, see our{" "}
-                <Text underline onPress={() => navigate(article)}>
-                  Collector Help Center
-                </Text>
+                <RouterLink to={article} hasChildTouchable>
+                  <Text underline>Collector Help Center</Text>
+                </RouterLink>
               </Text>
 
               <Text>

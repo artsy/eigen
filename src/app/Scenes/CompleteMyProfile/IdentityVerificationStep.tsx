@@ -1,11 +1,11 @@
-import { Text, Screen, Button, Spacer, Flex, CheckIcon } from "@artsy/palette-mobile"
+import { Button, CheckIcon, Flex, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { IdentityVerificationStep_me$key } from "__generated__/IdentityVerificationStep_me.graphql"
 import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
 import { useCompleteMyProfileSteps } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { useHandleIDVerification } from "app/Scenes/MyProfile/useHandleVerification"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
 
@@ -53,13 +53,14 @@ export const IdentityVerificationStep: FC = () => {
 
                 <Text color="mono60">
                   Identify Verification is required for some transactions. For more details, see our
-                  <Text
-                    style={{ textDecorationLine: "underline" }}
-                    onPress={() => navigate(`https://www.artsy.net/identity-verification-faq`)}
-                    suppressHighlighting
+                  <RouterLink
+                    to="https://www.artsy.net/identity-verification-faq"
+                    hasChildTouchable
                   >
-                    {` FAQs`}
-                  </Text>
+                    <Text style={{ textDecorationLine: "underline" }} suppressHighlighting>
+                      {` FAQs`}
+                    </Text>
+                  </RouterLink>
                   .
                 </Text>
               </Flex>

@@ -28,7 +28,7 @@ import { dimensionsPresent } from "app/Scenes/Artwork/Components/ArtworkDimensio
 import { ContactGalleryButton } from "app/Scenes/Artwork/Components/CommercialButtons/ContactGalleryButton"
 import { useSetArtworkAsRecentlyViewed } from "app/Scenes/InfiniteDiscovery/hooks/useSetArtworkAsRecentlyViewed"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { Sentinel } from "app/utils/Sentinel"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { FC } from "react"
@@ -59,9 +59,8 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
     }
   }
 
-  const onNavigate = (link: string) => {
+  const handleCollapse = () => {
     collapse()
-    navigate(link)
   }
 
   return (
@@ -80,9 +79,13 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
                   <ArtworkIcon height={18} width={18} fill="mono60" />
                   <Text variant="xs">
                     {attributionClass[0]}{" "}
-                    <LinkText variant="xs" onPress={() => onNavigate(`/artwork-classifications`)}>
-                      {attributionClass[1]}
-                    </LinkText>
+                    <RouterLink
+                      to="/artwork-classifications"
+                      hasChildTouchable
+                      onPress={handleCollapse}
+                    >
+                      <LinkText variant="xs">{attributionClass[1]}</LinkText>
+                    </RouterLink>
                   </Text>
                 </Flex>
               </Sentinel>
@@ -93,12 +96,13 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
                 <CertificateIcon height={18} width={18} fill="mono60" testID="certificate-icon" />
                 <Text variant="xs">
                   Includes a{" "}
-                  <LinkText
-                    variant="xs"
-                    onPress={() => onNavigate(`/artwork-certificate-of-authenticity`)}
+                  <RouterLink
+                    to="/artwork-certificate-of-authenticity"
+                    hasChildTouchable
+                    onPress={handleCollapse}
                   >
-                    Certificate of Authenticity
-                  </LinkText>
+                    <LinkText variant="xs">Certificate of Authenticity</LinkText>
+                  </RouterLink>
                 </Text>
               </Flex>
             )}
@@ -181,7 +185,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
                   <ArtistListItemContainer
                     key={`artist-${index}`}
                     artist={artist}
-                    onPress={() => collapse()}
+                    onPress={() => handleCollapse()}
                   />
                 )
               })}
@@ -196,7 +200,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
             <PartnerListItemShort
               disabledLocation
               partner={data.partner}
-              onPress={() => collapse()}
+              onPress={() => handleCollapse()}
             />
             <Flex
               flexDirection="row"

@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedLearnMore } from "@artsy/cohesion"
 import { LinkText, Text } from "@artsy/palette-mobile"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { useTracking } from "react-tracking"
 
 export const AbreviatedArtsyGuarantee: React.FC = () => {
@@ -16,20 +16,21 @@ export const AbreviatedArtsyGuarantee: React.FC = () => {
     }
 
     trackEvent(payload)
-    navigate("https://www.artsy.net/buyer-guarantee")
   }
 
   return (
     <>
       <Text variant="xs" color="mono60">
         Be covered by the Artsy Guarantee when you checkout with Artsy{" "}
-        <LinkText
-          onPress={() => {
-            handleLearnMorePress()
-          }}
+        <RouterLink
+          to="https://www.artsy.net/buyer-guarantee"
+          hasChildTouchable
+          onPress={handleLearnMorePress}
         >
-          <Text variant="xs">Learn more</Text>
-        </LinkText>
+          <LinkText>
+            <Text variant="xs">Learn more</Text>
+          </LinkText>
+        </RouterLink>
       </Text>
     </>
   )

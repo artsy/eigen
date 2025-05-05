@@ -1,6 +1,6 @@
-import { Flex, Text, ArtworkIcon, LinkText } from "@artsy/palette-mobile"
+import { ArtworkIcon, Flex, LinkText, Text } from "@artsy/palette-mobile"
 import { ArtworkClassification_artwork$data } from "__generated__/ArtworkClassification_artwork.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ArtworkClassificationProps {
@@ -20,13 +20,11 @@ const ArtworkClassification: React.FC<ArtworkClassificationProps> = ({ artwork }
         <ArtworkIcon mr={0.5} fill="mono60" height={25} width={25} />
         <Text variant="sm" color="mono60">
           {shortArrayDescription[0]}{" "}
-          <LinkText
-            variant="sm"
-            color="mono60"
-            onPress={() => navigate(`/artwork-classifications`)}
-          >
-            {shortArrayDescription[1]}
-          </LinkText>
+          <RouterLink to="/artwork-classifications" hasChildTouchable>
+            <LinkText variant="sm" color="mono60">
+              {shortArrayDescription[1]}
+            </LinkText>
+          </RouterLink>
         </Text>
       </Flex>
     </>
