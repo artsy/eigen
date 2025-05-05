@@ -9,28 +9,11 @@ import {
   MyCollectionTabsStore,
   MyCollectionTabsStoreProvider,
 } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
+import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
 import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PixelRatio } from "react-native"
 import { MyCollectionQueryRenderer as MyCollectionLegacyQueryRenderer } from "./MyCollectionLegacy"
-
-// TODO: To be replace with the real collector profile card
-const MyCollectionCollectorProfileHeader = () => {
-  return (
-    <Flex
-      backgroundColor="mono5"
-      height={200}
-      justifyContent="center"
-      alignItems="center"
-      m={2}
-      borderRadius={20}
-    >
-      <Text variant="lg-display" textAlign="center">
-        Profile Header
-      </Text>
-    </Flex>
-  )
-}
 
 export enum Tab {
   artworks = "Artworks",
@@ -61,7 +44,7 @@ const MyCollection: React.FC = () => {
         />
         <Screen.Body fullwidth>
           <Tabs
-            renderHeader={MyCollectionCollectorProfileHeader}
+            renderHeader={() => <UserAccountHeaderQueryRenderer />}
             headerHeight={500}
             pagerProps={{
               scrollEnabled: false,

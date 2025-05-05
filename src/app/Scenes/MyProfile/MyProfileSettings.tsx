@@ -46,7 +46,12 @@ export const MyProfileSettings: React.FC = () => {
   if (enableRedesignedSettings) {
     return (
       <Screen.ScrollView>
-        <UserAccountHeaderQueryRenderer />
+        <UserAccountHeaderQueryRenderer
+          showBorder
+          showMyCollectionPreview
+          tappable
+          showCompleteProfile
+        />
 
         <Text variant="lg-display" px={2} mt={4}>
           Account

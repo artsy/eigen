@@ -1076,6 +1076,11 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/my-collection",
     name: "MyCollection",
     Component: MyCollectionQueryRenderer,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   },
   {
     path: "/my-collection/artists/new",
