@@ -8,10 +8,10 @@ import { dismissModal, goBack } from "app/system/navigation/navigate"
 import { pluralize } from "app/utils/pluralize"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { Suspense } from "react"
+import { Platform } from "react-native"
 
 export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
   const { bottom } = useScreenDimensions().safeAreaInsets
-
   const toast = useToast()
   const { submit, isSubmitting: isLoading } = useSubmitMyCollectionArtists(
     "MyCollectionAddCollectedArtists"
@@ -32,7 +32,8 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
   }
 
   return (
-    <Screen safeArea={false}>
+    // The extra area is only needed for Android.
+    <Screen safeArea={Platform.OS !== "ios"}>
       <Screen.Body>
         <Flex flex={1} mt={2}>
           <Suspense fallback={() => null}>
