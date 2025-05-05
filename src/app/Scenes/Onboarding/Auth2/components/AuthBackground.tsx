@@ -13,7 +13,8 @@ export const AuthBackground: React.FC = () => {
   const safeArea = useSafeAreaInsets()
 
   return (
-    <Flex backgroundColor="mono100" height="100%" pt="-200px" pb="-200px">
+    // Setting the background to black in dark and light mode.
+    <Flex backgroundColor="black" height="100%" pt="-200px" pb="-200px">
       <AnimatedBackground />
 
       <Flex alignItems="center" width="100%">
