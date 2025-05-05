@@ -32,7 +32,6 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
   }
 
   return (
-    // The extra area is only needed for Android.
     <Screen safeArea={Platform.OS !== "ios"}>
       <Screen.Body>
         <Flex flex={1} mt={2}>
@@ -47,7 +46,7 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
             bottom={0}
             alignItems="center"
             alignSelf="center"
-            pb={2}
+            pb={Platform.OS === "ios" ? 2 : 4}
             right={0}
             left={0}
             backgroundColor="mono0"
