@@ -205,11 +205,13 @@ export const MyAccount: React.FC<{ me: MyAccount_me$key }> = (props) => {
       <Spacer y={2} />
 
       {enableRedesignedSettings ? (
-        <RouterLink to="my-account/delete-account" hasChildTouchable>
-          <LinkText mx={2} color="mono60" variant="xs" mt={2}>
-            Delete My Account
-          </LinkText>
-        </RouterLink>
+        <Flex mx={2} mt={2}>
+          <RouterLink to="my-account/delete-account" hasChildTouchable>
+            <LinkText color="mono60" variant="xs">
+              Delete My Account
+            </LinkText>
+          </RouterLink>
+        </Flex>
       ) : (
         <RouterLink to="my-account/delete-account" hasChildTouchable>
           <Button variant="text" block>
