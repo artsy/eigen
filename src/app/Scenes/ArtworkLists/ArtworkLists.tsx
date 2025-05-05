@@ -124,7 +124,7 @@ export const ArtworkLists: React.FC<ArtworkListsProps> = withSuspense({
 
     return (
       <Screen.FlatList
-        contentContainerStyle={{ paddingHorizontal: space(2) }}
+        contentContainerStyle={{ paddingHorizontal: space(2), paddingBottom: 120 }}
         data={artworkSections}
         renderItem={({ item }) => item.content}
         numColumns={artworkListsColCount}
