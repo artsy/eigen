@@ -2,24 +2,14 @@ import { ContextModule } from "@artsy/cohesion"
 import {
   ArtworkIcon,
   FairIcon,
+  FollowArtistIcon,
   GavelIcon,
   HeartStrokeIcon,
   ImageSetIcon,
   InstitutionIcon,
   PublicationIcon,
 } from "@artsy/icons/native"
-import {
-  Flex,
-  FlexProps,
-  // TODO: migrate FollowArtistIcon to artsy/icons (MOPRAT-848)
-  // eslint-disable-next-line local-rules/no-palette-icon-imports
-  FollowArtistIcon,
-  Pill,
-  Skeleton,
-  Spacer,
-  Text,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { Flex, FlexProps, Pill, Skeleton, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { HomeViewSectionNavigationPillsQuery } from "__generated__/HomeViewSectionNavigationPillsQuery.graphql"
 import {
   HomeViewSectionNavigationPills_section$data,
