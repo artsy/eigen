@@ -108,17 +108,19 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
         )}
 
         {!!hasArtworksSuggestions && (
-          <RouterLink
-            to={`/artwork/${internalID}/browse-similar-works`}
-            hasChildTouchable
-            onPress={() => {
-              tracking.trackEvent(tracks.tappedBrowseSimilarWorksHeaderButton(internalID, slug))
-            }}
-          >
-            <Button size="large" variant="outline" haptic block mt={1}>
-              Browse Similar Artworks
-            </Button>
-          </RouterLink>
+          <Flex mt={1}>
+            <RouterLink
+              to={`/artwork/${internalID}/browse-similar-works`}
+              hasChildTouchable
+              onPress={() => {
+                tracking.trackEvent(tracks.tappedBrowseSimilarWorksHeaderButton(internalID, slug))
+              }}
+            >
+              <Button size="large" variant="outline" haptic block>
+                Browse Similar Artworks
+              </Button>
+            </RouterLink>
+          </Flex>
         )}
       </Flex>
     </>

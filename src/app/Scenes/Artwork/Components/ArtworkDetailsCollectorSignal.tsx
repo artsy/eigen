@@ -79,7 +79,7 @@ export const ArtworkDetailsCollectorSignal: React.FC<Props> = ({ artwork }) => {
         </Text>
 
         {href ? (
-          <RouterLink to={href} hasChildTouchable>
+          <RouterLink to={href || "#"} hasChildTouchable>
             <LinkText variant="sm" color="mono60">
               {signalDescription}
             </LinkText>

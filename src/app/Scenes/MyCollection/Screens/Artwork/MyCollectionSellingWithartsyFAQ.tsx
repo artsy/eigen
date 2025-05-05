@@ -34,7 +34,7 @@ export const MyCollectionSellingWithArtsyFAQ = () => {
               </Text>
 
               <Text mb={1}>
-                If your work is accepted, you'll receive competitive offers from Artsy's curated
+                If your work is accepted, you’ll receive competitive offers from Artsy’s curated
                 auctions, auction houses, and galleries.
               </Text>
             </Flex>
@@ -57,7 +57,7 @@ export const MyCollectionSellingWithArtsyFAQ = () => {
               <Text mb={2}>
                 For more information, see our{" "}
                 <RouterLink to={article} hasChildTouchable>
-                  <Text underline>Learn more about selling with Artsy</Text>
+                  <Text underline>Collector Help Center</Text>
                 </RouterLink>
               </Text>
 

@@ -23,7 +23,9 @@ export const CascadingEndTimesBanner: React.FC<CascadingEndTimesBannerProps> = (
           : `Lots will close at ${cascadingEndTimeInterval}-minute intervals. `}
 
         <RouterLink to={CASCADING_AUCTION_HELP_ARTICLE_LINK} hasChildTouchable>
-          <Text>Learn more about cascading end times</Text>
+          <Text style={{ textDecorationLine: "underline" }}>
+            Learn more about cascading end times
+          </Text>
         </RouterLink>
       </Text>
     </Flex>
