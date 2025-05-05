@@ -32,7 +32,7 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
   }
 
   return (
-    <Screen safeArea={Platform.OS !== "ios"}>
+    <Screen safeArea={false}>
       <Screen.Body>
         <Flex flex={1} mt={2}>
           <Suspense fallback={() => null}>
