@@ -51,9 +51,8 @@ const DOT_DIAMETER = 6 * PixelRatio.getFontScale()
 
 const MyCollection: React.FC = () => {
   const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
-  const { setActiveNavigationTab, setIsFilterModalVisible } = MyCollectionTabsStore.useStoreActions(
-    (actions) => actions
-  )
+  const { setActiveNavigationTab, setIsFilterModalVisible, setViewKind } =
+    MyCollectionTabsStore.useStoreActions((actions) => actions)
   const { activeNavigationTab, filtersCount } = MyCollectionTabsStore.useStoreState(
     (state) => state
   )
@@ -107,7 +106,12 @@ const MyCollection: React.FC = () => {
                   </Touchable>
                 )}
 
-                <Touchable hitSlop={ICON_HIT_SLOP} onPress={() => {}}>
+                <Touchable
+                  hitSlop={ICON_HIT_SLOP}
+                  onPress={() => {
+                    setViewKind({ viewKind: "Add" })
+                  }}
+                >
                   <AddIcon
                     height={ACCESSIBLE_DEFAULT_ICON_SIZE}
                     width={ACCESSIBLE_DEFAULT_ICON_SIZE}
@@ -132,8 +136,8 @@ const MyCollection: React.FC = () => {
             </Tabs.Tab>
           </Tabs>
         </Screen.Body>
+        {viewKind !== null && <MyCollectionBottomSheetModals />}
       </Screen>
-      {viewKind !== null && <MyCollectionBottomSheetModals />}
     </>
   )
 }
