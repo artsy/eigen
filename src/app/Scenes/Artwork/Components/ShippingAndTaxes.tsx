@@ -64,10 +64,8 @@ const ShippingAndTaxes: React.FC<ShippingAndTaxesProps> = ({ artwork }) => {
       {!!taxInfo && (
         <Text variant="sm" color="mono60">
           {taxInfo.displayText}{" "}
-          <RouterLink to={taxInfo.moreInfo.url} hasChildTouchable>
-            <LinkText variant="sm" onPress={handleLearnMorePress}>
-              {taxInfo.moreInfo.displayText}
-            </LinkText>
+          <RouterLink to={taxInfo.moreInfo.url} hasChildTouchable onPress={handleLearnMorePress}>
+            <LinkText variant="sm">{taxInfo.moreInfo.displayText}</LinkText>
           </RouterLink>
         </Text>
       )}
