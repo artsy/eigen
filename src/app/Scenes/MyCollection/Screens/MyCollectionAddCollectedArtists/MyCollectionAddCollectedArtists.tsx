@@ -8,10 +8,10 @@ import { dismissModal, goBack } from "app/system/navigation/navigate"
 import { pluralize } from "app/utils/pluralize"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { Suspense } from "react"
+import { Platform } from "react-native"
 
 export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
   const { bottom } = useScreenDimensions().safeAreaInsets
-
   const toast = useToast()
   const { submit, isSubmitting: isLoading } = useSubmitMyCollectionArtists(
     "MyCollectionAddCollectedArtists"
@@ -46,7 +46,7 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
             bottom={0}
             alignItems="center"
             alignSelf="center"
-            pb={2}
+            pb={Platform.OS === "ios" ? 2 : 4}
             right={0}
             left={0}
             backgroundColor="mono0"
