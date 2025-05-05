@@ -7,6 +7,7 @@ import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "app/Components/constants"
+import { FavoritesContextStore } from "app/Scenes/Favorites/FavoritesContextStore"
 import { FollowOptionPicker } from "app/Scenes/Favorites/FollowsTab"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -19,6 +20,8 @@ interface Props {
 }
 
 export const FollowedShows: React.FC<Props> = ({ me }) => {
+  const { headerHeight } = FavoritesContextStore.useStoreState((state) => state)
+
   const { data, loadNext, isLoadingNext, refetch, hasNext } = usePaginationFragment(
     followedShowsFragment,
     me
@@ -30,7 +33,10 @@ export const FollowedShows: React.FC<Props> = ({ me }) => {
 
   if (shows.length === 0) {
     return (
-      <Screen.ScrollView refreshControl={RefreshControl}>
+      <Screen.ScrollView
+        refreshControl={RefreshControl}
+        contentContainerStyle={{ paddingTop: headerHeight }}
+      >
         <FollowOptionPicker />
         <ZeroState
           title="You haven’t saved any shows yet"
@@ -50,6 +56,7 @@ export const FollowedShows: React.FC<Props> = ({ me }) => {
       onEndReachedThreshold={0.2}
       refreshControl={RefreshControl}
       style={{ paddingHorizontal: 0 }}
+      contentContainerStyle={{ paddingTop: headerHeight }}
       ListHeaderComponent={FollowOptionPicker}
       ItemSeparatorComponent={() => <Spacer y={1} />}
       ListFooterComponent={

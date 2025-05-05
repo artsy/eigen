@@ -43,6 +43,7 @@ export const MyCollectionZeroState: React.FC<{
           />
           <ZeroState
             minHeight={0}
+            showBorder
             bigTitle="Know Your Collection Better"
             subtitle="Manage your collection online and get free market insights."
             image={
