@@ -37,12 +37,12 @@ export const AuctionFaqSection: React.FC<AuctionFaqSectionProps> = ({ artwork, a
       <>
         <Text variant="xs" color="mono60">
           By placing a bid you agree to {partnerName(sale)}{" "}
-          <RouterLink to="/conditions-of-sale" hasChildTouchable>
-            <Text
-              variant="xs"
-              style={{ textDecorationLine: "underline" }}
-              onPress={() => handleConditionsOfSaleTap()}
-            >
+          <RouterLink
+            to="/conditions-of-sale"
+            hasChildTouchable
+            onPress={() => handleConditionsOfSaleTap()}
+          >
+            <Text variant="xs" style={{ textDecorationLine: "underline" }}>
               Conditions of Sale
             </Text>
           </RouterLink>
@@ -51,12 +51,12 @@ export const AuctionFaqSection: React.FC<AuctionFaqSectionProps> = ({ artwork, a
         <Spacer y={1} />
         <Text variant="xs" color="mono60">
           Have a question?{" "}
-          <RouterLink to="/auction-faq" hasChildTouchable>
-            <Text
-              variant="xs"
-              style={{ textDecorationLine: "underline" }}
-              onPress={() => handleReadOurAuctionFAQsTap()}
-            >
+          <RouterLink
+            to="/auction-faq"
+            hasChildTouchable
+            onPress={() => handleReadOurAuctionFAQsTap()}
+          >
+            <Text variant="xs" style={{ textDecorationLine: "underline" }}>
               Read our auction FAQs
             </Text>
           </RouterLink>{" "}
