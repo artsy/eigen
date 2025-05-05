@@ -159,9 +159,9 @@ const HomeViewSectionCardsChipsPlaceholder: React.FC = () => {
 }
 
 const query = graphql`
-  query HomeViewSectionCardsChipsQuery($id: String!) {
+  query HomeViewSectionCardsChipsQuery($id: String!, $overrideShouldBeDisplayed: Boolean = false) {
     homeView {
-      section(id: $id) {
+      section(id: $id, overrideShouldBeDisplayed: $overrideShouldBeDisplayed) {
         ...HomeViewSectionCardsChips_section
       }
     }
@@ -170,9 +170,10 @@ const query = graphql`
 
 export const HomeViewSectionCardsChipsQueryRenderer: React.FC<SectionSharedProps> = memo(
   withSuspense({
-    Component: ({ sectionID, index, ...flexProps }) => {
+    Component: ({ sectionID, index, overrideShouldBeDisplayed, ...flexProps }) => {
       const data = useLazyLoadQuery<HomeViewSectionCardsChipsQuery>(query, {
         id: sectionID,
+        overrideShouldBeDisplayed,
       })
 
       if (!data?.homeView.section) {
