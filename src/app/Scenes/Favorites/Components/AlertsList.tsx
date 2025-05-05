@@ -3,6 +3,7 @@ import { useIsFocused } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import { AlertsList_me$data, AlertsList_me$key } from "__generated__/AlertsList_me.graphql"
 import { ALERTS_PAGE_SIZE } from "app/Components/constants"
+import { FavoritesContextStore } from "app/Scenes/Favorites/FavoritesContextStore"
 import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import {
   AlertBottomSheet,
@@ -26,6 +27,8 @@ interface AlertsListProps {
 
 export const AlertsList: React.FC<AlertsListProps> = (props) => {
   const { me, isRefreshing, fetchingMore, onRefresh, onLoadMore, onAlertPress } = props
+  const { headerHeight } = FavoritesContextStore.useStoreState((state) => state)
+
   // enriching the items with the isSwipingActive state to manage the swipe-to-delete animation
   const [items, setItems] = useState(
     extractNodes(me.alertsConnection).map((node) => ({
@@ -103,6 +106,7 @@ export const AlertsList: React.FC<AlertsListProps> = (props) => {
           <Spacer y={6} />
         )
       }
+      contentContainerStyle={{ paddingTop: headerHeight }}
     />
   )
 }

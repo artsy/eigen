@@ -7,6 +7,7 @@ import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "app/Components/constants"
+import { FavoritesContextStore } from "app/Scenes/Favorites/FavoritesContextStore"
 import { FollowOptionPicker } from "app/Scenes/Favorites/FollowsTab"
 import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { extractNodes } from "app/utils/extractNodes"
@@ -21,6 +22,7 @@ interface Props {
 
 export const FollowedArtists: React.FC<Props> = ({ me }) => {
   const space = useSpace()
+  const { headerHeight } = FavoritesContextStore.useStoreState((state) => state)
 
   const { data, loadNext, isLoadingNext, refetch, hasNext } = usePaginationFragment(
     followedArtistsFragment,
@@ -35,7 +37,10 @@ export const FollowedArtists: React.FC<Props> = ({ me }) => {
 
   if (data.followsAndSaves?.artistsConnection?.totalCount === 0) {
     return (
-      <Screen.ScrollView refreshControl={RefreshControl}>
+      <Screen.ScrollView
+        refreshControl={RefreshControl}
+        contentContainerStyle={{ paddingTop: headerHeight }}
+      >
         <FollowOptionPicker />
         <ZeroState
           title="You haven’t followed any artists yet"
@@ -78,6 +83,7 @@ export const FollowedArtists: React.FC<Props> = ({ me }) => {
           />
         )
       }}
+      contentContainerStyle={{ paddingTop: headerHeight }}
     />
   )
 }
