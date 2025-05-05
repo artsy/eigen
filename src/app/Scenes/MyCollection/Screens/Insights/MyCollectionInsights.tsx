@@ -1,12 +1,13 @@
 import { Flex, Spacer, Tabs, useColor, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { TabsFlatList } from "app/Components/TabsFlatlist"
 import { MyCollectionArtworkUploadMessages } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkUploadMessages"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
-import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import {
   PlaceholderBox,
   PlaceholderRaggedText,
@@ -104,12 +105,14 @@ export const MyCollectionInsights: React.FC<{}> = ({}) => {
           />
         </Flex>
       </Tabs.SubTabBar>
-      <MyCollectionInsightsOverview myCollectionInfo={data.me?.myCollectionInfo!} />
+      {!!data.me?.myCollectionInfo && (
+        <MyCollectionInsightsOverview myCollectionInfo={data.me?.myCollectionInfo} />
+      )}
 
       {!!hasMarketSignals /* || average sale price data */ && (
         <>
-          <CareerHighlightsRail me={data.me!} />
-          <AuctionResultsForArtistsYouCollectRail me={data.me!} />
+          <CareerHighlightsRail me={data.me} />
+          <AuctionResultsForArtistsYouCollectRail me={data.me} />
           <MedianAuctionPriceRail me={data.me} />
           {/* TODO: The banner should be visible always as long as the user has at least an artwork with insights */}
           <ActivateMoreMarketInsightsBanner />
