@@ -5,6 +5,10 @@ export type ExperimentDescriptor = {
 }
 
 export const experiments = {
+  "diamond_discover-tab": {
+    description: "Experiment replacing Search tab with Discover tab",
+    variantSuggestions: ["control", "variant-a"],
+  },
   "eigen-new-works-for-you-recommendations-model": {
     description: "value controlling which model to use for new works for you recs",
   },
