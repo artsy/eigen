@@ -1,4 +1,5 @@
-import { FilterIcon, Flex, Text } from "@artsy/palette-mobile"
+import { FilterIcon } from "@artsy/icons/native"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { themeGet } from "@styled-system/theme-get"
 import { AnimatableHeader } from "app/Components/AnimatableHeader/AnimatableHeader"
@@ -43,6 +44,7 @@ export enum FilterModalMode {
   Tag = "Tag",
   Search = "Search",
   Custom = "Custom",
+  Collect = "Collect",
 }
 
 export const ArtworkFilterOptionsScreen: React.FC<
@@ -280,6 +282,9 @@ export const getFilterScreenSortByMode =
         break
       case FilterModalMode.Custom:
         sortOrder = (localFilterOptions ?? []).map((f) => f.filterType)
+        break
+      case FilterModalMode.Collect:
+        sortOrder = CollectFiltersSorted
         break
       default:
         assertNever(mode)
@@ -653,4 +658,22 @@ const AuctionResultsFiltersSorted: FilterScreen[] = [
   "sizes",
   "year",
   "organizations",
+]
+
+const CollectFiltersSorted: FilterScreen[] = [
+  "sort",
+  "artistIDs",
+  "attributionClass",
+  "additionalGeneIDs",
+  "priceRange",
+  "sizes",
+  "waysToBuy",
+  "availability",
+  "materialsTerms",
+  "artistNationalities",
+  "locationCities",
+  "majorPeriods",
+  "colors",
+  "partnerIDs",
+  "framed",
 ]

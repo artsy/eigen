@@ -1,4 +1,5 @@
-import { BellIcon, Box, DEFAULT_HIT_SLOP, VisualClueDot } from "@artsy/palette-mobile"
+import { BellIcon, Box, VisualClueDot } from "@artsy/palette-mobile"
+import { ICON_HIT_SLOP } from "app/Components/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import React from "react"
@@ -20,7 +21,7 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = (props) => {
       <RouterLink
         to="/notifications"
         accessibilityLabel="Activity"
-        hitSlop={DEFAULT_HIT_SLOP}
+        hitSlop={ICON_HIT_SLOP}
         onPress={navigateToActivityPanel}
       >
         <>

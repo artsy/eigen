@@ -279,6 +279,12 @@ export const features = {
     description: "Enable quick links animation",
     echoFlagKey: "AREnableQuickLinksAnimation",
   },
+  AREnableCollectSearch: {
+    readyForRelease: false,
+    showInDevMenu: true,
+    description: "Enable collect search",
+    echoFlagKey: "AREnableCollectSearch",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
