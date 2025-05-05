@@ -3,6 +3,7 @@ import { Box, Button, Flex, Tabs, Text, useScreenDimensions, useSpace } from "@a
 import { ZeroState } from "app/Components/States/ZeroState"
 import { ModalCarousel } from "app/Scenes/HomeView/Components/ModalCarouselComponents/ModalCarousel"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { isFontScaleLarge } from "app/utils/accessibility"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { debounce } from "lodash"
@@ -62,18 +63,19 @@ export const MyCollectionZeroState: React.FC<{
               <Flex
                 gap={2}
                 flexDirection={isFontScaleLarge() ? "column" : "row"}
-                justifyContent="space-around"
+                justifyContent="space-evenly"
               >
-                <Button
-                  testID="add-artwork-button-zero-state"
-                  onPress={() => {
-                    trackEvent(tracks.addCollectedArtwork())
-                    showAddToMyCollectionBottomSheet()
-                  }}
-                  block={isFontScaleLarge()}
-                >
-                  Add Artworks
-                </Button>
+                <RouterLink to="/my-collection/artworks/new" hasChildTouchable>
+                  <Button
+                    testID="add-artwork-button-zero-state"
+                    onPress={() => {
+                      trackEvent(tracks.addCollectedArtwork())
+                    }}
+                    block={isFontScaleLarge()}
+                  >
+                    Add Artworks
+                  </Button>
+                </RouterLink>
                 <Button
                   variant="outline"
                   onPress={() => {

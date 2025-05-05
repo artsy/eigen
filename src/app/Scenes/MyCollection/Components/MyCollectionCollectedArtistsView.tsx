@@ -4,6 +4,7 @@ import { FilteredArtworkGridZeroState as FilteredArtistsZeroState } from "app/Co
 import { MyCollectionArtistFilters } from "app/Scenes/MyCollection/Components/MyCollectionArtistFiltersStickyTab"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionCollectedArtistItem } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistItem"
+import { MyCollectionZeroArtists } from "app/Scenes/MyCollection/Components/MyCollectionZeroArtists"
 import { extractEdges } from "app/utils/extractEdges"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { stringIncludes } from "app/utils/stringHelpers"
@@ -47,7 +48,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
   const userInterests = extractEdges(data.userInterestsConnection)
 
   if (!userInterests.length) {
-    return null
+    return <MyCollectionZeroArtists />
   }
 
   const filteredUserInterests = userInterests?.filter((userInterest) => {
