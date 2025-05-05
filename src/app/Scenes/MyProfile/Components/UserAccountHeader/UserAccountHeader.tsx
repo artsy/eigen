@@ -28,16 +28,16 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 const PROFILE_IMAGE_SIZE = 70
 interface UserAccountHeaderProps extends UserAccountHeaderQRProps {
-  meProps: UserAccountHeader_me$key
+  meProp: UserAccountHeader_me$key
 }
 export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({
-  meProps,
+  meProp,
   showBorder,
   showMyCollectionPreview,
   showCompleteProfile,
   tappable,
 }) => {
-  const me = useFragment<UserAccountHeader_me$key>(userAccountHeaderFragment, meProps)
+  const me = useFragment<UserAccountHeader_me$key>(userAccountHeaderFragment, meProp)
 
   const color = useColor()
 
@@ -209,7 +209,7 @@ export const UserAccountHeaderQueryRenderer: React.FC<UserAccountHeaderQRProps> 
       return ProfileErrorMessage
     }
 
-    return <UserAccountHeader meProps={data.me} {...props} />
+    return <UserAccountHeader meProp={data.me} {...props} />
   },
   LoadingFallback: (props) => <Placeholder showBorder={props.showBorder} />,
   ErrorFallback: () => {

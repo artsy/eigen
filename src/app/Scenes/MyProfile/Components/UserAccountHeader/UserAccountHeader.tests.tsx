@@ -20,7 +20,9 @@ describe("UserAccountHeader", () => {
   })
 
   const { renderWithRelay } = setupTestWrapper<UserAccountHeaderTestQuery>({
-    Component: ({ me }) => <UserAccountHeader meProps={me!} />,
+    Component: ({ me }) => (
+      <UserAccountHeader meProp={me!} showCompleteProfile showMyCollectionPreview tappable />
+    ),
     query: graphql`
       query UserAccountHeaderTestQuery @relay_test_operation {
         me {
