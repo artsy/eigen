@@ -1,19 +1,28 @@
 import { AddIcon, FilterIcon, MoreIcon } from "@artsy/icons/native"
-import { Flex, Screen, Tabs, Text, Touchable, VisualClueDot } from "@artsy/palette-mobile"
+import { Flex, Screen, Tabs, Touchable, VisualClueDot } from "@artsy/palette-mobile"
 import { ACCESSIBLE_DEFAULT_ICON_SIZE, ICON_HIT_SLOP } from "app/Components/constants"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
-import { MyCollectionCollectedArtistsQueryRenderer } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtists"
-import { MyCollectionArtworksQueryRenderer } from "app/Scenes/MyCollection/MyCollectionArtworks"
+import {
+  myCollectionCollectedArtistsQuery,
+  MyCollectionCollectedArtistsQueryRenderer,
+} from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtists"
+import {
+  MyCollectionInsightsQR,
+  MyCollectionInsightsScreenQuery,
+} from "app/Scenes/MyCollection/Screens/Insights/MyCollectionInsights"
+import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
+import { goBack } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { prefetchQuery } from "app/utils/queryPrefetching"
+import { useEffect } from "react"
+import { PixelRatio } from "react-native"
+import { MyCollectionArtworksQueryRenderer } from "./MyCollectionArtworks"
+import { MyCollectionQueryRenderer as MyCollectionLegacyQueryRenderer } from "./MyCollectionLegacy"
 import {
   MyCollectionNavigationTab,
   MyCollectionTabsStore,
   MyCollectionTabsStoreProvider,
-} from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
-import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
-import { goBack } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { PixelRatio } from "react-native"
-import { MyCollectionQueryRenderer as MyCollectionLegacyQueryRenderer } from "./MyCollectionLegacy"
+} from "./State/MyCollectionTabsStore"
 
 export enum Tab {
   artworks = "Artworks",
@@ -25,12 +34,17 @@ const DOT_DIAMETER = 6 * PixelRatio.getFontScale()
 
 const MyCollection: React.FC = () => {
   const viewKind = MyCollectionTabsStore.useStoreState((state) => state.viewKind)
-  const { setActiveNavigationTab, setIsFilterModalVisible } = MyCollectionTabsStore.useStoreActions(
-    (actions) => actions
-  )
+  const { setActiveNavigationTab, setIsFilterModalVisible, setViewKind } =
+    MyCollectionTabsStore.useStoreActions((actions) => actions)
   const { activeNavigationTab, filtersCount } = MyCollectionTabsStore.useStoreState(
     (state) => state
   )
+
+  useEffect(() => {
+    prefetchQuery({ query: myCollectionCollectedArtistsQuery })
+    prefetchQuery({ query: MyCollectionInsightsScreenQuery })
+  }, [])
+
   return (
     <>
       <Screen>
@@ -75,7 +89,12 @@ const MyCollection: React.FC = () => {
                   </Touchable>
                 )}
 
-                <Touchable hitSlop={ICON_HIT_SLOP} onPress={() => {}}>
+                <Touchable
+                  hitSlop={ICON_HIT_SLOP}
+                  onPress={() => {
+                    setViewKind({ viewKind: "Add" })
+                  }}
+                >
                   <AddIcon
                     height={ACCESSIBLE_DEFAULT_ICON_SIZE}
                     width={ACCESSIBLE_DEFAULT_ICON_SIZE}
@@ -96,14 +115,12 @@ const MyCollection: React.FC = () => {
             </Tabs.Tab>
 
             <Tabs.Tab name={Tab.insights} label={Tab.insights}>
-              <Flex flex={1} justifyContent="center" alignItems="center" backgroundColor="green10">
-                <Text>Insights</Text>
-              </Flex>
+              <MyCollectionInsightsQR />
             </Tabs.Tab>
           </Tabs>
         </Screen.Body>
+        {viewKind !== null && <MyCollectionBottomSheetModals />}
       </Screen>
-      {viewKind !== null && <MyCollectionBottomSheetModals />}
     </>
   )
 }

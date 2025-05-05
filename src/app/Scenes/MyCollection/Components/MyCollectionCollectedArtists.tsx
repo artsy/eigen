@@ -60,7 +60,7 @@ export const MyCollectionCollectedArtistsQueryRenderer: React.FC = withSuspense(
   ErrorFallback: () => <CollectedArtistsError />,
 })
 
-const myCollectionCollectedArtistsQuery = graphql`
+export const myCollectionCollectedArtistsQuery = graphql`
   query MyCollectionCollectedArtistsQuery {
     me {
       ...MyCollectionCollectedArtistsView_me
