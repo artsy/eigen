@@ -1,5 +1,5 @@
 import { AddIcon, FilterIcon, MoreIcon } from "@artsy/icons/native"
-import { Flex, Screen, Tabs, Text, Touchable, VisualClueDot } from "@artsy/palette-mobile"
+import { Flex, Screen, Tabs, Touchable, VisualClueDot } from "@artsy/palette-mobile"
 import { ACCESSIBLE_DEFAULT_ICON_SIZE, ICON_HIT_SLOP } from "app/Components/constants"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
 import {
@@ -10,6 +10,7 @@ import {
   MyCollectionInsightsQR,
   MyCollectionInsightsScreenQuery,
 } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionInsights"
+import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
 import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { prefetchQuery } from "app/utils/queryPrefetching"
@@ -22,24 +23,6 @@ import {
   MyCollectionTabsStore,
   MyCollectionTabsStoreProvider,
 } from "./State/MyCollectionTabsStore"
-
-// TODO: To be replace with the real collector profile card
-const MyCollectionCollectorProfileHeader = () => {
-  return (
-    <Flex
-      backgroundColor="mono5"
-      height={200}
-      justifyContent="center"
-      alignItems="center"
-      m={2}
-      borderRadius={20}
-    >
-      <Text variant="lg-display" textAlign="center">
-        Profile Header
-      </Text>
-    </Flex>
-  )
-}
 
 export enum Tab {
   artworks = "Artworks",
@@ -75,7 +58,7 @@ const MyCollection: React.FC = () => {
         />
         <Screen.Body fullwidth>
           <Tabs
-            renderHeader={MyCollectionCollectorProfileHeader}
+            renderHeader={() => <UserAccountHeaderQueryRenderer />}
             headerHeight={500}
             pagerProps={{
               scrollEnabled: false,
