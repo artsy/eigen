@@ -9,6 +9,7 @@ interface ZeroStateProps {
   image?: JSX.Element
   callToAction?: JSX.Element
   minHeight?: number
+  showBorder?: boolean
 }
 
 export const ZeroState = (props: ZeroStateProps) => {
@@ -18,7 +19,7 @@ export const ZeroState = (props: ZeroStateProps) => {
 
   const { title, bigTitle, subtitle, image, callToAction, minHeight = 90 } = props
 
-  if (enableRedesignedSettings) {
+  if (enableRedesignedSettings && props.showBorder) {
     return (
       <Flex px={2} alignItems="center" mt={2}>
         <Flex borderRadius={20} borderWidth={1} borderColor="mono10" overflow="hidden" mb={2}>
