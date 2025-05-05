@@ -32,7 +32,13 @@ export const MyCollectionInsightsEmptyState = () => {
           }
           callToAction={
             <Flex>
-              <RouterLink to="/my-collection/artworks/new" hasChildTouchable>
+              <RouterLink
+                to="my-collection/artworks/new"
+                hasChildTouchable
+                navigationProps={{
+                  source: Tab.insights,
+                }}
+              >
                 <Button
                   testID="add-artwork-button-zero-state"
                   onPress={() => {
@@ -66,12 +72,10 @@ export const MyCollectionInsightsEmptyState = () => {
           callToAction={
             <>
               <RouterLink
-                to="/my-collection/artworks/new"
+                to="my-collection/artworks/new"
                 hasChildTouchable
                 navigationProps={{
-                  passProps: {
-                    source: Tab.insights,
-                  },
+                  source: Tab.insights,
                 }}
               >
                 <Button block>Upload Artwork</Button>
