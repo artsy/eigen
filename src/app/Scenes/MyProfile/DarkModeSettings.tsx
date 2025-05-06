@@ -1,13 +1,26 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Join, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
+import { DarkModeOption } from "app/Scenes/MyProfile/DevicePrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ScrollView, TouchableOpacity } from "react-native"
+import { useTracking } from "react-tracking"
 import { MyProfileScreenWrapper } from "./Components/MyProfileScreenWrapper"
 
 export const DarkModeSettings: React.FC<{}> = () => {
   const darkModeOption = GlobalStore.useAppState((state) => state.devicePrefs.darkModeOption)
   const setDarkModeOption = GlobalStore.actions.devicePrefs.setDarkModeOption
   const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
+  const { trackEvent } = useTracking()
+
+  const trackDarkMode = (option: DarkModeOption) => {
+    trackEvent({
+      action: ActionType.darkModeOptionUpdated,
+      context_module: ContextModule.accountSettings,
+      context_screen_owner_type: OwnerType.accountDarkMode,
+      dark_mode_option: option,
+    })
+  }
 
   const content = (
     <Flex px={2}>
@@ -17,6 +30,7 @@ export const DarkModeSettings: React.FC<{}> = () => {
           selected={darkModeOption === "system"}
           onPress={() => {
             setDarkModeOption("system")
+            trackDarkMode("system")
           }}
         />
         <RadioMenuItem
@@ -24,6 +38,7 @@ export const DarkModeSettings: React.FC<{}> = () => {
           selected={darkModeOption === "on"}
           onPress={() => {
             setDarkModeOption("on")
+            trackDarkMode("on")
           }}
         />
         <RadioMenuItem
@@ -31,6 +46,7 @@ export const DarkModeSettings: React.FC<{}> = () => {
           selected={darkModeOption === "off"}
           onPress={() => {
             setDarkModeOption("off")
+            trackDarkMode("off")
           }}
         />
       </Join>
