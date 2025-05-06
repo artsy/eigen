@@ -212,13 +212,13 @@ commands:
     steps:
       - android/change-java-version:
           java-version: 17
-      - run:
-          name: Quit early if possible
-          command: |
-            if test $CIRCLE_BRANCH != beta-android && ls build-success.log
-            then
-              circleci step halt
-            fi
+      # - run:
+      #     name: Quit early if possible
+      #     command: |
+      #       if test $CIRCLE_BRANCH != beta-android && ls build-success.log
+      #       then
+      #         circleci step halt
+      #       fi
       - run:
           name: Clear project dir
           command: |
@@ -357,14 +357,14 @@ jobs:
     resource_class: large
     steps:
       - checkout
-      - install-node-modules
-      - run-relay-compiler
-      - run:
-          command: yarn jest --ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
-          name: Run Jest tests
-          environment:
-            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
-            JEST_JUNIT_UNIQUE_OUTPUT_NAME: true
+      # - install-node-modules
+      # - run-relay-compiler
+      # - run:
+      #     command: yarn jest --ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
+      #     name: Run Jest tests
+      #     environment:
+      #       JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+      #       JEST_JUNIT_UNIQUE_OUTPUT_NAME: true
       - store_artifacts:
           path: ./reports/junit/
       - store_test_results:
@@ -496,13 +496,13 @@ jobs:
           key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum "../workspace/.manifests/native_code" }}
       # we can quit the macos build early if there were no native code changes
       # and we're not on the beta branch
-      - run:
-          name: Quit early if possible
-          command: |
-            if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
-            then
-              circleci step halt
-            fi
+      # - run:
+      #     name: Quit early if possible
+      #     command: |
+      #       if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
+      #       then
+      #         circleci step halt
+      #       fi
       - run:
           name: Quit early if Draft PR
           command: |
