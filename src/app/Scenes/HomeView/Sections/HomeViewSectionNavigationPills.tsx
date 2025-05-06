@@ -178,16 +178,15 @@ const HomeViewSectionNavigationPillsPlaceholder: React.FC<FlexProps> = (flexProp
 
 export const HomeViewSectionNavigationPillsQueryRenderer: React.FC<SectionSharedProps> = memo(
   withSuspense({
-    Component: ({ sectionID, index, ...flexProps }) => {
+    Component: ({ sectionID, index, refetchKey, ...flexProps }) => {
       const data = useLazyLoadQuery<HomeViewSectionNavigationPillsQuery>(
         homeViewSectionNavigationPillsQuery,
         {
           id: sectionID,
         },
         {
-          networkCacheConfig: {
-            force: false,
-          },
+          fetchKey: refetchKey,
+          fetchPolicy: "store-and-network",
         }
       )
 
