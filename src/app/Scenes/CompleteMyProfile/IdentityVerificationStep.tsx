@@ -1,4 +1,4 @@
-import { Button, CheckIcon, Flex, Screen, Spacer, Text } from "@artsy/palette-mobile"
+import { Button, CheckIcon, Flex, LinkText, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { IdentityVerificationStep_me$key } from "__generated__/IdentityVerificationStep_me.graphql"
 import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
@@ -52,14 +52,12 @@ export const IdentityVerificationStep: FC = () => {
                 )}
 
                 <Text color="mono60">
-                  Identify Verification is required for some transactions. For more details, see our
+                  Identify Verification is required for some transactions. For more details, see our{" "}
                   <RouterLink
                     to="https://www.artsy.net/identity-verification-faq"
                     hasChildTouchable
                   >
-                    <Text style={{ textDecorationLine: "underline" }} suppressHighlighting>
-                      {` FAQs`}
-                    </Text>
+                    <LinkText>FAQs</LinkText>
                   </RouterLink>
                   .
                 </Text>
