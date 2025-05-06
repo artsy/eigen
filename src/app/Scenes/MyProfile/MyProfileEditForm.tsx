@@ -6,6 +6,7 @@ import {
   Button,
   Flex,
   Join,
+  LinkText,
   Message,
   Spacer,
   Text,
@@ -19,6 +20,7 @@ import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.gra
 import { Image } from "app/Components/Bidding/Elements/Image"
 import { buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import LoadingModal from "app/Components/Modals/LoadingModal"
+import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
 import {
   UserProfileFields,
   UserProfileFormikSchema,
@@ -26,7 +28,7 @@ import {
 } from "app/Scenes/MyProfile/Components/UserProfileFields"
 import { fetchProfileData } from "app/Scenes/MyProfile/MyProfileHeader"
 import { useEditProfile } from "app/Scenes/MyProfile/hooks/useEditProfile"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
@@ -39,8 +41,6 @@ import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import * as Yup from "yup"
 import { useHandleEmailVerification, useHandleIDVerification } from "./useHandleVerification"
-
-const ICON_SIZE = 22
 
 interface EditMyProfileValuesSchema extends UserProfileFormikSchema {
   photo: string
@@ -340,38 +340,43 @@ const ProfileVerifications = ({
       <Flex flexDirection="row">
         <Flex mt="3px">
           {isIDVerified ? (
-            <CheckmarkFillIcon height={ICON_SIZE} width={ICON_SIZE} fill="green100" />
+            <CheckmarkFillIcon
+              height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+              width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+              fill="green100"
+            />
           ) : (
-            <CheckmarkStrokeIcon height={ICON_SIZE} width={ICON_SIZE} fill="mono30" />
+            <CheckmarkStrokeIcon
+              height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+              width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+              fill="mono30"
+            />
           )}
         </Flex>
-        <Flex ml={1}>
-          <Text
-            onPress={() => (isIDVerified ? {} : handleIDVerification())}
-            color="mono100"
-            style={isIDVerified ? {} : { textDecorationLine: "underline" }}
-          >
-            {isIDVerified ? "ID Verified" : "Verify your ID"}
-          </Text>
-          <Text color="mono60">
-            For more information, see{" "}
-            <Text
-              style={{ textDecorationLine: "underline" }}
-              color="mono60"
-              onPress={() => navigate(`https://www.artsy.net/identity-verification-faq`)}
-            >
-              FAQs
-            </Text>{" "}
-            or{" "}
-            <Text
-              style={{ textDecorationLine: "underline" }}
-              onPress={() => sendEmail("verification@artsy.net", { subject: "ID Verification" })}
-              color="mono60"
-            >
-              contact Artsy
+        <Flex ml={1} justifyContent="center">
+          <Touchable onPress={() => (isIDVerified ? {} : handleIDVerification())}>
+            <Text color="mono100" style={isIDVerified ? {} : { textDecorationLine: "underline" }}>
+              {isIDVerified ? "ID Verified" : "Verify your ID"}
             </Text>
-            .
-          </Text>
+          </Touchable>
+
+          <Flex flexDirection="row" flexWrap="wrap">
+            <Text color="mono60">For more information, see </Text>
+
+            <RouterLink to="https://www.artsy.net/identity-verification-faq">
+              <LinkText color="mono60">FAQs</LinkText>
+            </RouterLink>
+
+            <Text color="mono60"> or </Text>
+
+            <Touchable
+              onPress={() => sendEmail("verification@artsy.net", { subject: "ID Verification" })}
+            >
+              <LinkText color="mono60">contact Artsy</LinkText>
+            </Touchable>
+
+            <Text color="mono60">.</Text>
+          </Flex>
         </Flex>
       </Flex>
 
@@ -381,20 +386,29 @@ const ProfileVerifications = ({
       <Flex flexDirection="row">
         <Flex mt="3px">
           {isEmailConfirmed ? (
-            <CheckmarkFillIcon height={ICON_SIZE} width={ICON_SIZE} fill="green100" />
+            <CheckmarkFillIcon
+              height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+              width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+              fill="green100"
+            />
           ) : (
-            <CheckmarkStrokeIcon height={ICON_SIZE} width={ICON_SIZE} fill="mono30" />
+            <CheckmarkStrokeIcon
+              height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+              width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+              fill="mono30"
+            />
           )}
         </Flex>
         <Flex ml={1}>
           {canRequestEmailConfirmation ? (
-            <Text
-              onPress={() => (isEmailConfirmed ? {} : handleEmailVerification())}
-              testID="verify-your-email"
-              style={isEmailConfirmed ? {} : { textDecorationLine: "underline" }}
-            >
-              {isEmailConfirmed ? "Email verified" : "Verify your email"}
-            </Text>
+            <Touchable onPress={() => (isEmailConfirmed ? {} : handleEmailVerification())}>
+              <Text
+                testID="verify-your-email"
+                style={isEmailConfirmed ? {} : { textDecorationLine: "underline" }}
+              >
+                {isEmailConfirmed ? "Email verified" : "Verify your email"}
+              </Text>
+            </Touchable>
           ) : (
             <Text color="mono60" testID="verify-your-email">
               {isEmailConfirmed ? "Email verified" : "Verify your email"}
