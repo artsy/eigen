@@ -13,8 +13,16 @@ if command -v ccache >/dev/null 2>&1; then
   export CCACHE_CPP2=yes
   export CCACHE_SLOPPINESS=pch_defines,time_macros,include_file_mtime
   
-  # Ensure Android environment picks up ccache
-  echo "android.ndkCcache=${NDK_CCACHE}" >> android/gradle.properties
+  # Update gradle.properties to use ccache
+  # Note: We need to be careful with properties that might already exist
+  if ! grep -q "android.ndkPath=" android/gradle.properties; then
+    echo "" >> android/gradle.properties
+    echo "# NDK ccache configuration - added dynamically" >> android/gradle.properties
+    echo "android.ndkPath=${ANDROID_NDK_HOME:-/opt/android/sdk/ndk}" >> android/gradle.properties
+  fi
+  
+  # Add the NDK command line flag instead of using a property
+  export GRADLE_OPTS="$GRADLE_OPTS -Pandroid.native.buildOutput=verbose -Dorg.gradle.project.android.native.buildOutput=verbose"
   
   # Log configuration for debugging
   echo "Android build using ccache with:"

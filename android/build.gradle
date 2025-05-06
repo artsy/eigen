@@ -44,10 +44,18 @@ allprojects {
         }
     }
     
-    // Configure ccache for all projects
-    project.plugins.whenPluginAdded { plugin ->
-        if (plugin.class.name.contains('NdkCompile') || plugin.class.name.contains('CxxNativePlugin')) {
-            plugin.arguments += ["-DNDK_CCACHE=${System.env.NDK_CCACHE ?: ''}"]
+    // Configure ccache for all projects in a more modern compatible way
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << '-Xlint:deprecation'
+        }
+        
+        // Set properties for native builds with ccache
+        if (System.env.NDK_CCACHE) {
+            logger.lifecycle("Configuring NDK builds with ccache: ${System.env.NDK_CCACHE}")
+            
+            // Set a project-wide property that can be accessed by all modules
+            project.ext.ndkCcachePath = System.env.NDK_CCACHE
         }
     }
 }

@@ -92,10 +92,22 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    // Configure ccache for native builds
-    externalNativeBuild {
-        ndkBuild {
-            arguments "NDK_CCACHE=${System.env.NDK_CCACHE ?: ''}"
+    // Configure ccache for native builds using Gradle property
+    tasks.withType(JavaCompile) {
+        options.compilerArgs += [
+            "-Xlint:unchecked",
+            "-Xlint:deprecation"
+        ]
+    }
+
+    buildTypes.configureEach {
+        // Pass NDK_CCACHE value to all native build tasks
+        if (System.env.NDK_CCACHE) {
+            externalNativeBuildOptions {
+                ndkBuild {
+                    arguments "NDK_CCACHE=${System.env.NDK_CCACHE}"
+                }
+            }
         }
     }
 

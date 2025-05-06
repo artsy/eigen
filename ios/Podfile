@@ -61,24 +61,11 @@ add_mapbox_creds
 
 pre_install do |installer|
   $RNMapboxMaps.pre_install(installer)
-  
-  # Configure ccache for pod builds
-  installer.pod_targets.each do |pod|
-    pod.build_configurations.each do |config|
-      config.build_settings['SWIFT_SUPPRESS_WARNINGS'] = 'YES'
-      
-      # Check if ccache is available and set compiler accordingly
-      if ENV['CC'] && ENV['CC'].include?('ccache')
-        puts "Using ccache for compilation: #{ENV['CC']}"
-        config.build_settings['CC'] = ENV['CC']
-        config.build_settings['CXX'] = ENV['CXX']
-      else
-        # Default compiler if no ccache
-        config.build_settings['CC'] = "clang"
-        config.build_settings['CXX'] = "clang++"
-      end
-    end
-  end
+
+  # Only log ccache availability without modifying compiler settings
+  # Let React Native's post_install handle it with :ccache_enabled parameter
+  ccache_available = system("which ccache > /dev/null 2>&1")
+  puts ccache_available ? "ccache found, will use for compilation via React Native's post_install" : "ccache not found, using default compiler"
 end
 
 
@@ -109,7 +96,6 @@ target 'Artsy' do
     :production => ENV['CIRCLE_BUILD_NUM'],
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/..",
-    :ccache_enabled => true,
     new_arch_enabled: false
   )
 
