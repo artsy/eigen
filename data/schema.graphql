@@ -157,11 +157,17 @@ input AddInstallShotToPartnerShowMutationInput {
   caption: String
   clientMutationId: String
 
+  # Optional URL of the image to add as an installation shot. If provided, this will be used instead of the S3 bucket and key.
+  imageUrl: String
+
+  # Optional flag to indicate if this installation shot should be set as the default (cover) image for the show.
+  isDefault: Boolean
+
   # The S3 bucket where the image is stored.
-  s3Bucket: String!
+  s3Bucket: String
 
   # The S3 key for the image to add as an installation shot.
-  s3Key: String!
+  s3Key: String
 
   # The ID of the show.
   showId: String!
@@ -20921,7 +20927,15 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     # Number of images to return
     size: Int
   ): [Image]
-  imagesConnection(after: String, before: String, first: Int, last: Int): ImageConnection
+  imagesConnection(
+    after: String
+    before: String
+    first: Int
+
+    # When false, will exclude the cover image from the results
+    isDefault: Boolean
+    last: Int
+  ): ImageConnection
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
