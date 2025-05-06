@@ -24,7 +24,13 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import React, { memo } from "react"
 import { FlatList, Platform } from "react-native"
-import Animated, { Easing, useAnimatedStyle, withTiming } from "react-native-reanimated"
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  withDelay,
+  withSequence,
+  withTiming,
+} from "react-native-reanimated"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionNavigationPillsProps {
@@ -36,6 +42,8 @@ export type NavigationPill = NonNullable<
   NonNullable<NonNullable<HomeViewSectionNavigationPills_section$data>["navigationPills"]>[number]
 >
 
+const ANIMATION_DURATION = 250
+
 export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationPillsProps> = ({
   section: sectionProp,
   index,
@@ -45,7 +53,7 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
 
   const section = useFragment(sectionFragment, sectionProp)
 
-  const enableQuickLinksAnimation = useFeatureFlag("AREnableQuickLinksAnimation")
+  const enableQuickLinksAnimation = useFeatureFlag("AREnableQuickLinksAnimation2")
 
   const tracking = useHomeViewTracking()
 
@@ -55,17 +63,33 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
     (pill) => pill?.title && pill.href
   ) as NavigationPill[]
 
-  const animatedStyles = useAnimatedStyle(() => ({
-    transform: [
-      {
-        translateX: withTiming(isSplashScreenVisible ? -150 : 0, {
+  const animatedStyles = useAnimatedStyle(() => {
+    const translateX = isSplashScreenVisible
+      ? withTiming(0, {
           duration: 1000,
           easing: Easing.bezier(0.25, 0.1, 0.25, 1.0),
-        }),
-      },
-    ],
-    overflow: "visible",
-  }))
+        })
+      : withSequence(
+          withDelay(
+            // A small delay to make the animation is more clear to the user
+            // And to avoid showing the animation as soon as the screen is loaded
+            400,
+            withTiming(-20, {
+              duration: ANIMATION_DURATION,
+              easing: Easing.inOut(Easing.ease),
+            })
+          ),
+          withTiming(0, {
+            duration: ANIMATION_DURATION,
+            easing: Easing.inOut(Easing.ease),
+          })
+        )
+
+    return {
+      transform: [{ translateX }],
+      overflow: "visible",
+    }
+  })
 
   if (!navigationPills.length) {
     return null
