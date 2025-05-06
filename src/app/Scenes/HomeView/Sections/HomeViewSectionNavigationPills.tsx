@@ -42,7 +42,9 @@ export type NavigationPill = NonNullable<
   NonNullable<NonNullable<HomeViewSectionNavigationPills_section$data>["navigationPills"]>[number]
 >
 
-const ANIMATION_DURATION = 250
+const ANIMATION_DURATION = 500
+const DELAY_DURATION = 400
+const TRANSLATE_X = 20
 
 export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationPillsProps> = ({
   section: sectionProp,
@@ -73,14 +75,14 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
           withDelay(
             // A small delay to make the animation is more clear to the user
             // And to avoid showing the animation as soon as the screen is loaded
-            400,
-            withTiming(-20, {
-              duration: ANIMATION_DURATION,
+            DELAY_DURATION,
+            withTiming(-TRANSLATE_X, {
+              duration: ANIMATION_DURATION / 2,
               easing: Easing.inOut(Easing.ease),
             })
           ),
           withTiming(0, {
-            duration: ANIMATION_DURATION,
+            duration: ANIMATION_DURATION / 2,
             easing: Easing.inOut(Easing.ease),
           })
         )
