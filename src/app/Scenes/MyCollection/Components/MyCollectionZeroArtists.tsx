@@ -1,6 +1,7 @@
-import { Button, Flex, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Button, Flex, useSpace } from "@artsy/palette-mobile"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { ModalCarousel } from "app/Scenes/HomeView/Components/ModalCarouselComponents/ModalCarousel"
+import { useZeroStateDimensions } from "app/Scenes/MyCollection/utils/zeroStateWidth"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { isFontScaleLarge } from "app/utils/accessibility"
 import { useState } from "react"
@@ -8,8 +9,9 @@ import { Image } from "react-native"
 
 export const MyCollectionZeroArtists: React.FC<{}> = () => {
   const space = useSpace()
-  const { width: screenWidth } = useScreenDimensions()
   const [isModalVisible, setIsModalVisible] = useState(false)
+
+  const { width: zeroStateWidth } = useZeroStateDimensions()
 
   return (
     <Flex>
@@ -27,8 +29,7 @@ export const MyCollectionZeroArtists: React.FC<{}> = () => {
             source={require("images/my-collection-artists-empty-state.webp")}
             resizeMode="cover"
             style={{
-              // Avoid making the image too wide on wide screens
-              width: Math.min(screenWidth - 2 * space(2), 600),
+              width: zeroStateWidth,
               minHeight: 150,
               marginTop: space(2),
             }}

@@ -1,5 +1,6 @@
-import { Box, Button, Flex, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Tabs, useSpace } from "@artsy/palette-mobile"
 import { ZeroState } from "app/Components/States/ZeroState"
+import { useZeroStateDimensions } from "app/Scenes/MyCollection/utils/zeroStateWidth"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -7,7 +8,8 @@ import { Image } from "react-native"
 
 export const MyCollectionInsightsEmptyState = () => {
   const space = useSpace()
-  const { width: screenWidth } = useScreenDimensions()
+  const { width: zeroStateWidth } = useZeroStateDimensions()
+
   const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
 
   if (enableRedesignedSettings) {
@@ -23,8 +25,7 @@ export const MyCollectionInsightsEmptyState = () => {
               source={require("images/my-collection-insights-empty-state.webp")}
               resizeMode="cover"
               style={{
-                // Avoid making the image too wide on wide screens
-                width: Math.min(screenWidth - 2 * space(2), 600),
+                width: zeroStateWidth,
                 minHeight: 150,
                 marginTop: space(2),
               }}

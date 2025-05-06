@@ -1,8 +1,9 @@
 import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Box, Button, Flex, Tabs, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Tabs, Text, useSpace } from "@artsy/palette-mobile"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { ModalCarousel } from "app/Scenes/HomeView/Components/ModalCarouselComponents/ModalCarousel"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
+import { useZeroStateDimensions } from "app/Scenes/MyCollection/utils/zeroStateWidth"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { isFontScaleLarge } from "app/utils/accessibility"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -20,7 +21,7 @@ export const MyCollectionZeroState: React.FC<{
   const { trackEvent } = useTracking()
 
   const space = useSpace()
-  const { width: screenWidth } = useScreenDimensions()
+  const { width: zeroStateWidth } = useZeroStateDimensions()
 
   const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
 
@@ -52,8 +53,7 @@ export const MyCollectionZeroState: React.FC<{
                 source={require("images/my-collection-empty-state.webp")}
                 resizeMode="cover"
                 style={{
-                  // Avoid making the image too wide on wide screens
-                  width: Math.min(screenWidth - 2 * space(2), 600),
+                  width: zeroStateWidth,
                   minHeight: 150,
                   marginTop: space(2),
                 }}
