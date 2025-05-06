@@ -15,6 +15,7 @@ import { OrderDetailQuery } from "__generated__/OrderDetailQuery.graphql"
 import { OrderDetail_order$key } from "__generated__/OrderDetail_order.graphql"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { sizeToFit } from "app/utils/useSizeToFit"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface OrderDetailProps {
@@ -35,11 +36,9 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
 
   const orderArtwork = data.lineItems?.[0]?.artwork
 
-  const imageDimensions = getImageDimensions(
-    orderArtwork?.image?.height,
-    orderArtwork?.image?.width,
-    orderArtwork?.image?.aspectRatio,
-    screenWidth
+  const { height, width } = sizeToFit(
+    { height: orderArtwork?.image?.height ?? 0, width: orderArtwork?.image?.width ?? 0 },
+    { height: IMAGE_MAX_HEIGHT, width: screenWidth - 40 }
   )
 
   return (
@@ -83,8 +82,8 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
                 <Image
                   src={orderArtwork.image.url}
                   aspectRatio={orderArtwork.image.aspectRatio ?? 1}
-                  width={imageDimensions.width}
-                  height={imageDimensions.height}
+                  width={width}
+                  height={height}
                   blurhash={showBlurhash ? orderArtwork.image.blurhash : undefined}
                   geminiResizeMode="fit"
                   resizeMode="contain"
@@ -222,31 +221,6 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
       </Box>
     </Screen.ScrollView>
   )
-}
-
-const getImageDimensions = (
-  imageWidth: number | null | undefined,
-  imageHeight: number | null | undefined,
-  imageAspectRatio: number | undefined,
-  screenWidth: number
-) => {
-  const maxWidth = screenWidth - 40 // 20 padding on each side
-  const maxHeight = IMAGE_MAX_HEIGHT
-  const aspectRatio = imageAspectRatio ?? 1
-  let height = imageHeight ?? maxHeight
-  let width = imageWidth ?? maxWidth
-
-  if (height > maxHeight) {
-    height = maxHeight
-    width = height * aspectRatio
-  }
-
-  if (width > maxWidth) {
-    width = maxWidth
-    height = width / aspectRatio
-  }
-
-  return { width, height }
 }
 
 const orderDetailFragment = graphql`
