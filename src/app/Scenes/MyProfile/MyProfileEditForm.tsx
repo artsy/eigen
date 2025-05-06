@@ -1,10 +1,9 @@
 import { ActionType, ContextModule, EditedUserProfile, OwnerType } from "@artsy/cohesion"
+import { CheckmarkStrokeIcon, CheckmarkFillIcon } from "@artsy/icons/native"
 import {
   Avatar,
   Box,
   Button,
-  CheckCircleFillIcon,
-  CheckCircleIcon,
   Flex,
   Join,
   Message,
@@ -341,9 +340,9 @@ const ProfileVerifications = ({
       <Flex flexDirection="row">
         <Flex mt="3px">
           {isIDVerified ? (
-            <CheckCircleFillIcon height={ICON_SIZE} width={ICON_SIZE} fill="green100" />
+            <CheckmarkFillIcon height={ICON_SIZE} width={ICON_SIZE} fill="green100" />
           ) : (
-            <CheckCircleIcon height={ICON_SIZE} width={ICON_SIZE} fill="mono30" />
+            <CheckmarkStrokeIcon height={ICON_SIZE} width={ICON_SIZE} fill="mono30" />
           )}
         </Flex>
         <Flex ml={1}>
@@ -382,9 +381,9 @@ const ProfileVerifications = ({
       <Flex flexDirection="row">
         <Flex mt="3px">
           {isEmailConfirmed ? (
-            <CheckCircleFillIcon height={ICON_SIZE} width={ICON_SIZE} fill="green100" />
+            <CheckmarkFillIcon height={ICON_SIZE} width={ICON_SIZE} fill="green100" />
           ) : (
-            <CheckCircleIcon height={ICON_SIZE} width={ICON_SIZE} fill="mono30" />
+            <CheckmarkStrokeIcon height={ICON_SIZE} width={ICON_SIZE} fill="mono30" />
           )}
         </Flex>
         <Flex ml={1}>
