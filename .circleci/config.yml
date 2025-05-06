@@ -33,12 +33,10 @@ commands:
           name: Configure ccache
           command: |
             mkdir -p ~/.ccache
-            cat > ~/.ccache/ccache.conf << EOF
-            max_size = 5G
-            hash_dir = false
-            sloppiness = pch_defines,time_macros,include_file_mtime
-            EOF
-            
+            echo "max_size = 5G" > ~/.ccache/ccache.conf
+            echo "hash_dir = false" >> ~/.ccache/ccache.conf
+            echo "sloppiness = pch_defines,time_macros,include_file_mtime" >> ~/.ccache/ccache.conf
+
             # Set up environment variables for builds
             echo 'export CCACHE_DIR=~/.ccache' >> $BASH_ENV
             echo 'export CCACHE_MAXSIZE=5G' >> $BASH_ENV
@@ -46,7 +44,7 @@ commands:
             echo 'export CXX="ccache clang++"' >> $BASH_ENV
             echo 'export CCACHE_CPP2=yes' >> $BASH_ENV
             echo 'export CCACHE_SLOPPINESS=pch_defines,time_macros,include_file_mtime' >> $BASH_ENV
-            
+
             # Print ccache stats at the beginning
             ccache -z  # Zero stats
             ccache -s  # Print stats
@@ -77,19 +75,18 @@ commands:
       - run:
           name: Configure ccache
           command: |
-            cat > ~/.ccache/ccache.conf << EOF
-            max_size = 5G
-            hash_dir = false
-            sloppiness = pch_defines,time_macros,include_file_mtime
-            EOF
-            
+            mkdir -p ~/.ccache
+            echo "max_size = 5G" > ~/.ccache/ccache.conf
+            echo "hash_dir = false" >> ~/.ccache/ccache.conf
+            echo "sloppiness = pch_defines,time_macros,include_file_mtime" >> ~/.ccache/ccache.conf
+
             # Set up environment variables for Android native builds
             echo 'export CCACHE_DIR=~/.ccache' >> $BASH_ENV
             echo 'export CCACHE_MAXSIZE=5G' >> $BASH_ENV
             echo 'export NDK_CCACHE=/usr/bin/ccache' >> $BASH_ENV
             echo 'export CCACHE_CPP2=yes' >> $BASH_ENV
             echo 'export CCACHE_SLOPPINESS=pch_defines,time_macros,include_file_mtime' >> $BASH_ENV
-            
+
             # Print ccache stats at the beginning
             ccache -z  # Zero stats
             ccache -s  # Print stats
@@ -204,7 +201,7 @@ commands:
             export CXX="ccache clang++"
             export CCACHE_CPP2=yes
             export CCACHE_SLOPPINESS=pch_defines,time_macros,include_file_mtime
-            
+
             # Run the build script
             ./scripts/ci/ci-ios
       - save_cache:
@@ -258,7 +255,7 @@ commands:
             export NDK_CCACHE=/usr/bin/ccache
             export CCACHE_CPP2=yes
             export CCACHE_SLOPPINESS=pch_defines,time_macros,include_file_mtime
-            
+
             # Run the build script
             ./scripts/ci/ci-android
       - save_cache:

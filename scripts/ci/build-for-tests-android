@@ -1,17 +1,32 @@
 #!/usr/bin/env bash
 set -exo pipefail
 
-# Configure ccache environment variables if not already set
-if command -v ccache >/dev/null 2>&1 && [ -z "${CCACHE_DIR+x}" ]; then
+# Always reset and configure ccache for consistent behavior
+if command -v ccache >/dev/null 2>&1; then
+  # Set up ccache directory
   export CCACHE_DIR=~/.ccache
+  mkdir -p "$CCACHE_DIR"
+  
+  # Configure ccache settings
   export CCACHE_MAXSIZE=5G
   export NDK_CCACHE=/usr/bin/ccache
   export CCACHE_CPP2=yes
   export CCACHE_SLOPPINESS=pch_defines,time_macros,include_file_mtime
   
-  # Log ccache stats before build
+  # Ensure Android environment picks up ccache
+  echo "android.ndkCcache=${NDK_CCACHE}" >> android/gradle.properties
+  
+  # Log configuration for debugging
+  echo "Android build using ccache with:"
+  echo "  CCACHE_DIR=$CCACHE_DIR"
+  echo "  NDK_CCACHE=$NDK_CCACHE"
+  
+  # Reset and log ccache stats before build
   ccache -z
+  echo "Initial ccache stats:"
   ccache -s
+else
+  echo "ccache not found or not available"
 fi
 
 pushd android

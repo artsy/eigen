@@ -1,18 +1,35 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-# Configure ccache environment variables if not already set
-if command -v ccache >/dev/null 2>&1 && [ -z "${CCACHE_DIR+x}" ]; then
+# Always reset and configure ccache for consistent behavior
+if command -v ccache >/dev/null 2>&1; then
+  # Set up ccache directory
   export CCACHE_DIR=~/.ccache
+  mkdir -p "$CCACHE_DIR"
+  
+  # Configure ccache settings
   export CCACHE_MAXSIZE=5G
   export CC="ccache clang"
   export CXX="ccache clang++"
   export CCACHE_CPP2=yes
   export CCACHE_SLOPPINESS=pch_defines,time_macros,include_file_mtime
   
-  # Log ccache stats before build
+  # Log configuration for debugging
+  echo "iOS build using ccache with:"
+  echo "  CCACHE_DIR=$CCACHE_DIR"
+  echo "  CC=$CC"
+  echo "  CXX=$CXX"
+  
+  # Reset and log ccache stats before build
   ccache -z
+  echo "Initial ccache stats:"
   ccache -s
+  
+  # Add ccache info to xcodebuild environment
+  export XCODEBUILD_EXTRA="CC=$CC CXX=$CXX"
+else
+  echo "ccache not found or not available"
+  export XCODEBUILD_EXTRA=""
 fi
 
 # Run the build with ccache enabled

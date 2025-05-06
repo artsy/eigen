@@ -17,25 +17,34 @@ export CONFIGURATION="Release"
 
 # Configure ccache if available
 if command -v ccache >/dev/null 2>&1; then
+  echo "ccache found, configuring compilation cache"
+  
   # Common ccache settings
   export CCACHE_DIR="${CCACHE_DIR:-~/.ccache}"
   export CCACHE_MAXSIZE="${CCACHE_MAXSIZE:-5G}"
   export CCACHE_CPP2=yes
   export CCACHE_SLOPPINESS=pch_defines,time_macros,include_file_mtime
 
-  # Platform-specific compiler settings
-  if [[ "$LOCAL_BRANCH" == *"ios"* ]] || [[ "$LOCAL_BRANCH" == "app_store_submission" ]]; then
-    # iOS-specific settings
-    export CC="${CC:-ccache clang}"
-    export CXX="${CXX:-ccache clang++}"
-    
-    # Log ccache stats before build
-    ccache -s
-  elif [[ "$LOCAL_BRANCH" == *"android"* ]]; then
-    # Android-specific settings
-    export NDK_CCACHE="${NDK_CCACHE:-/usr/bin/ccache}"
-    
-    # Log ccache stats before build
-    ccache -s
-  fi
+  # Ensure ccache directory exists
+  mkdir -p "$CCACHE_DIR"
+  
+  # Always apply ccache settings for both platforms to ensure consistent behavior
+  # iOS-specific settings
+  export CC="ccache clang"
+  export CXX="ccache clang++"
+  
+  # Android-specific settings
+  export NDK_CCACHE="/usr/bin/ccache"
+  
+  # Log ccache configuration
+  echo "CCACHE_DIR: $CCACHE_DIR"
+  echo "CCACHE_MAXSIZE: $CCACHE_MAXSIZE" 
+  echo "CC: $CC"
+  echo "CXX: $CXX"
+  echo "NDK_CCACHE: $NDK_CCACHE"
+  
+  # Log ccache stats before build
+  ccache -s
+else
+  echo "ccache not found - compilation caching will not be available"
 fi
