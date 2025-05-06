@@ -247,11 +247,11 @@ jobs:
       #       ./scripts/deploys/expo-updates/deploy-to-expo-updates staging
 
   test-js:
-    parallelism: 32
+    parallelism: 16
     executor:
       name: node/default
       tag: "20.9.0"
-    resource_class: xlarge
+    resource_class: large
     steps:
       - checkout
       - install-node-modules
