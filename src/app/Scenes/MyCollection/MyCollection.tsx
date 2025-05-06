@@ -119,8 +119,8 @@ const MyCollection: React.FC = () => {
             </Tabs.Tab>
           </Tabs>
         </Screen.Body>
-        {viewKind !== null && <MyCollectionBottomSheetModals />}
       </Screen>
+      {viewKind !== null && <MyCollectionBottomSheetModals />}
     </>
   )
 }
