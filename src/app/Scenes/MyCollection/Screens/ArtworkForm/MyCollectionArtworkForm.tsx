@@ -23,6 +23,7 @@ import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWor
 import { GlobalStore } from "app/store/GlobalStore"
 import { dismissModal, goBack, popToRoot, switchTab } from "app/system/navigation/navigate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect, useRef, useState } from "react"
@@ -68,6 +69,8 @@ export type MyCollectionArtworkFormProps =
 const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (props) => {
+  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
+
   const color = useColor()
   const theme = useNavigationTheme()
   const enableShowError = useDevToggle("DTShowErrorInLoadFailureView")
@@ -129,14 +132,18 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       refreshMyCollection()
       refreshMyCollectionInsights({})
 
-      dismissModal()
-
-      switchTab("profile")
-
-      if (mode === "add") {
-        popToRoot()
+      if (enableRedesignedSettings) {
+        dismissModal()
       } else {
-        goBack()
+        dismissModal()
+
+        switchTab("profile")
+
+        if (mode === "add") {
+          popToRoot()
+        } else {
+          goBack()
+        }
       }
     } catch (error: any) {
       console.error("Artwork could not be saved", error)

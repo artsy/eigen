@@ -25,8 +25,12 @@ import {
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
-import { useRefreshControl } from "app/utils/refreshHelpers"
-import { useCallback, useEffect } from "react"
+import {
+  MY_COLLECTION_REFRESH_KEY,
+  RefreshEvents,
+  useRefreshControl,
+} from "app/utils/refreshHelpers"
+import { useCallback, useEffect, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import {
   localSortAndFilterArtworks,
@@ -260,7 +264,27 @@ const MyCollectionArtworksPlaceholder: React.FC<{}> = () => {
 
 export const MyCollectionArtworksQueryRenderer = withSuspense({
   Component: () => {
-    const data = useLazyLoadQuery<MyCollectionArtworksQuery>(myCollectionArtworksQuery, {})
+    const [fetchKey, setFetchKey] = useState(0)
+
+    const data = useLazyLoadQuery<MyCollectionArtworksQuery>(
+      myCollectionArtworksQuery,
+      {},
+      {
+        fetchKey,
+        fetchPolicy: "store-and-network",
+      }
+    )
+
+    const refetch = () => {
+      setFetchKey((prev) => prev + 1)
+    }
+
+    useEffect(() => {
+      RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, refetch)
+      return () => {
+        RefreshEvents.removeListener(MY_COLLECTION_REFRESH_KEY, refetch)
+      }
+    }, [])
 
     if (!data.me) {
       return null
