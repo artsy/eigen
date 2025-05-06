@@ -1,8 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedNewsSection } from "@artsy/cohesion"
-import { Flex, Separator, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Separator, Text } from "@artsy/palette-mobile"
 import { ArticlesCards_viewer$key } from "__generated__/ArticlesCards_viewer.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { navigate } from "app/system/navigation/navigate"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -40,12 +39,9 @@ export const ArticlesCards: React.FC<ArticleNewsProps> = ({ viewer }) => {
           {index !== data.articles.length - 1 && <Separator />}
         </Flex>
       ))}
-      <Touchable
-        onPress={() => navigate("/news")}
-        style={{ flexDirection: "row", justifyContent: "flex-end" }}
-      >
+      <RouterLink to="/news" style={{ flexDirection: "row", justifyContent: "flex-end" }}>
         <Text variant="sm-display">More in News</Text>
-      </Touchable>
+      </RouterLink>
     </Flex>
   )
 }

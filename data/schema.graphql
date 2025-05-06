@@ -157,11 +157,17 @@ input AddInstallShotToPartnerShowMutationInput {
   caption: String
   clientMutationId: String
 
+  # Optional URL of the image to add as an installation shot. If provided, this will be used instead of the S3 bucket and key.
+  imageUrl: String
+
+  # Optional flag to indicate if this installation shot should be set as the default (cover) image for the show.
+  isDefault: Boolean
+
   # The S3 bucket where the image is stored.
-  s3Bucket: String!
+  s3Bucket: String
 
   # The S3 key for the image to add as an installation shot.
-  s3Key: String!
+  s3Key: String
 
   # The ID of the show.
   showId: String!
@@ -11816,10 +11822,13 @@ type FulfillmentDetails {
   name: String
 
   # Phone number of the buyer
-  phoneNumber: String
+  phoneNumber: PhoneNumberType
 
   # Country code of the buyer's phone number
   phoneNumberCountryCode: String
+    @deprecated(
+      reason: "Use `phoneNumber.regionCode` for the alpha-2 country code or phoneNumber.countryCode for the numeric country code"
+    )
 
   # Shipping address postal code
   postalCode: String
@@ -12380,6 +12389,9 @@ type HomeView {
   section(
     # The ID of the section
     id: String!
+
+    # Overrides shouldBeDisplayed to show sections that would otherwise be hidden
+    overrideShouldBeDisplayed: Boolean = false
   ): HomeViewSectionGeneric
 
   # A paginated list of home view sections
@@ -17519,11 +17531,16 @@ enum PhoneNumberFormats {
 }
 
 type PhoneNumberType {
+  # Numeric phone number country code
   countryCode: String
+
+  # A formatted phone number if the number could be parsed
   display(format: PhoneNumberFormats): String
   error: PhoneNumberErrors
   isValid: Boolean
   originalNumber: String
+
+  # Two-letter region code (ISO 3166-1 alpha-2)
   regionCode: String
 }
 
@@ -19022,7 +19039,13 @@ type Query {
   ): PartnerConnection
 
   # Phone number information
-  phoneNumber(phoneNumber: String!, regionCode: String): PhoneNumberType
+  phoneNumber(
+    # Phone number to parse
+    phoneNumber: String!
+
+    # Two-letter region code (ISO 3166-1 alpha-2)
+    regionCode: String
+  ): PhoneNumberType
 
   # A previewed saved search
   previewSavedSearch(
@@ -20904,7 +20927,15 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     # Number of images to return
     size: Int
   ): [Image]
-  imagesConnection(after: String, before: String, first: Int, last: Int): ImageConnection
+  imagesConnection(
+    after: String
+    before: String
+    first: Int
+
+    # When false, will exclude the cover image from the results
+    isDefault: Boolean
+    last: Int
+  ): ImageConnection
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
@@ -24584,7 +24615,13 @@ type Viewer {
   ): PartnerConnection
 
   # Phone number information
-  phoneNumber(phoneNumber: String!, regionCode: String): PhoneNumberType
+  phoneNumber(
+    # Phone number to parse
+    phoneNumber: String!
+
+    # Two-letter region code (ISO 3166-1 alpha-2)
+    regionCode: String
+  ): PhoneNumberType
 
   # A previewed saved search
   previewSavedSearch(

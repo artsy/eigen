@@ -69,7 +69,7 @@ export const useInfiniteDiscoveryTracking = () => {
     artworkImageSwipe: () => {
       trackEvent({
         action_name: Schema.ActionNames.ArtworkImageSwipe,
-        action_type: Schema.ActionTypes.Tap,
+        action_type: Schema.ActionTypes.Swipe,
         context_module: ContextModule.infiniteDiscoveryArtworkCard,
       })
     },

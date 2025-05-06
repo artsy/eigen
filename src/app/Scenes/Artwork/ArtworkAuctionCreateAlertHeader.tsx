@@ -5,7 +5,7 @@ import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/Cr
 import { hasBiddingEnded } from "app/Scenes/Artwork/utils/hasBiddingEnded"
 import { isLotClosed } from "app/Scenes/Artwork/utils/isLotClosed"
 import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { FC, useState } from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -86,18 +86,11 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
         <Spacer y={2} />
 
         {hasLostBid ? (
-          <Button
-            size="large"
-            variant="outline"
-            haptic
-            onPress={() => {
-              navigate("/favorites/alerts")
-            }}
-            icon={<BellIcon fill="mono100" />}
-            block
-          >
-            Manage your Alerts
-          </Button>
+          <RouterLink to="/favorites/alerts" hasChildTouchable>
+            <Button size="large" variant="outline" haptic icon={<BellIcon fill="mono100" />} block>
+              Manage your Alerts
+            </Button>
+          </RouterLink>
         ) : (
           <Button
             size="large"
@@ -115,19 +108,19 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
         )}
 
         {!!hasArtworksSuggestions && (
-          <Button
-            size="large"
-            variant="outline"
-            haptic
-            onPress={() => {
-              tracking.trackEvent(tracks.tappedBrowseSimilarWorksHeaderButton(internalID, slug))
-              navigate(`/artwork/${internalID}/browse-similar-works`)
-            }}
-            block
-            mt={1}
-          >
-            Browse Similar Artworks
-          </Button>
+          <Flex mt={1}>
+            <RouterLink
+              to={`/artwork/${internalID}/browse-similar-works`}
+              hasChildTouchable
+              onPress={() => {
+                tracking.trackEvent(tracks.tappedBrowseSimilarWorksHeaderButton(internalID, slug))
+              }}
+            >
+              <Button size="large" variant="outline" haptic block>
+                Browse Similar Artworks
+              </Button>
+            </RouterLink>
+          </Flex>
         )}
       </Flex>
     </>

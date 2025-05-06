@@ -1,5 +1,6 @@
 import { Box, Button, Join, Screen, Spacer, Text } from "@artsy/palette-mobile"
-import { goBack, navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
+import { goBack } from "app/system/navigation/navigate"
 import { ScrollView } from "react-native"
 
 export const CertificateOfAuthenticity: React.FC = () => {
@@ -23,16 +24,12 @@ export const CertificateOfAuthenticity: React.FC = () => {
               </Text>
               <Text>
                 Read more about artwork authenticity in our{" "}
-                <Text
-                  underline
-                  onPress={() =>
-                    navigate(
-                      "https://support.artsy.net/s/article/What-Counts-as-an-Artworks-Proof-of-Authenticity"
-                    )
-                  }
+                <RouterLink
+                  to="https://support.artsy.net/s/article/What-Counts-as-an-Artworks-Proof-of-Authenticity"
+                  hasChildTouchable
                 >
-                  Help Center
-                </Text>
+                  <Text underline>Help Center</Text>
+                </RouterLink>
                 .
               </Text>
               <Button onPress={() => goBack()} block>

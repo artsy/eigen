@@ -9,7 +9,6 @@ import {
   MyProfileScreenWrapperProps,
 } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { navigate } from "app/system/navigation/navigate"
 import { useAppleLink } from "app/utils/LinkedAccounts/apple"
 import { useFacebookLink } from "app/utils/LinkedAccounts/facebook"
 import { useGoogleLink } from "app/utils/LinkedAccounts/google"
@@ -206,17 +205,15 @@ export const MyAccount: React.FC<{ me: MyAccount_me$key }> = (props) => {
       <Spacer y={2} />
 
       {enableRedesignedSettings ? (
-        <LinkText
-          mx={2}
-          color="mono60"
-          variant="xs"
-          mt={2}
-          onPress={() => navigate("my-account/delete-account")}
-        >
-          Delete My Account
-        </LinkText>
+        <Flex mx={2} mt={2}>
+          <RouterLink to="my-account/delete-account" hasChildTouchable>
+            <LinkText color="mono60" variant="xs">
+              Delete My Account
+            </LinkText>
+          </RouterLink>
+        </Flex>
       ) : (
-        <RouterLink hasChildTouchable to="my-account/delete-account">
+        <RouterLink to="my-account/delete-account" hasChildTouchable>
           <Button variant="text" block>
             <Text color="red100">Delete My Account</Text>
           </Button>

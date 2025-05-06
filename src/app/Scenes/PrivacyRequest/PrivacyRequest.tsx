@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Join, LinkText, Spacer, Text } from "@artsy/palette-mobile"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React from "react"
 
@@ -20,6 +20,7 @@ export const PrivacyRequest: React.FC = () => {
   }
   return <Content />
 }
+
 export const Content: React.FC = () => {
   return (
     <Flex flex={1}>
@@ -27,9 +28,11 @@ export const Content: React.FC = () => {
       <Box mx={2}>
         <Join separator={<Spacer y={2} />}>
           <Text variant="sm" textAlign="left">
-            Please see Artsy’s{" "}
-            <LinkText onPress={() => navigate("/privacy")}>Privacy Policy</LinkText> for more
-            information about the information we collect, how we use it, and why we use it.
+            Please see Artsy's{" "}
+            <RouterLink to="/privacy" hasChildTouchable>
+              <LinkText>Privacy Policy</LinkText>
+            </RouterLink>{" "}
+            for more information about the information we collect, how we use it, and why we use it.
           </Text>
           <Text variant="sm" textAlign="left">
             To submit a personal data request tap the button below or email{" "}

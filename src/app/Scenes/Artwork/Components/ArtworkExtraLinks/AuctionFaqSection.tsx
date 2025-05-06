@@ -1,7 +1,7 @@
 import { Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkExtraLinks_artwork$data } from "__generated__/ArtworkExtraLinks_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { sendEmail } from "app/utils/sendEmail"
 import { Schema } from "app/utils/track"
 import { useTracking } from "react-tracking"
@@ -18,11 +18,9 @@ export const AuctionFaqSection: React.FC<AuctionFaqSectionProps> = ({ artwork, a
 
   const handleReadOurAuctionFAQsTap = () => {
     trackEvent(tracks.tappedAuctionFAQs())
-    navigate(`/auction-faq`)
   }
   const handleConditionsOfSaleTap = () => {
     trackEvent(tracks.tappedConditionsOfSale())
-    navigate(`/conditions-of-sale`)
   }
 
   const handleAskASpecialistTap = (emailAddress: string) => {
@@ -39,25 +37,29 @@ export const AuctionFaqSection: React.FC<AuctionFaqSectionProps> = ({ artwork, a
       <>
         <Text variant="xs" color="mono60">
           By placing a bid you agree to {partnerName(sale)}{" "}
-          <Text
-            variant="xs"
-            style={{ textDecorationLine: "underline" }}
+          <RouterLink
+            to="/conditions-of-sale"
+            hasChildTouchable
             onPress={() => handleConditionsOfSaleTap()}
           >
-            Conditions of Sale
-          </Text>
+            <Text variant="xs" style={{ textDecorationLine: "underline" }}>
+              Conditions of Sale
+            </Text>
+          </RouterLink>
           .
         </Text>
         <Spacer y={1} />
         <Text variant="xs" color="mono60">
           Have a question?{" "}
-          <Text
-            variant="xs"
-            style={{ textDecorationLine: "underline" }}
+          <RouterLink
+            to="/auction-faq"
+            hasChildTouchable
             onPress={() => handleReadOurAuctionFAQsTap()}
           >
-            Read our auction FAQs
-          </Text>{" "}
+            <Text variant="xs" style={{ textDecorationLine: "underline" }}>
+              Read our auction FAQs
+            </Text>
+          </RouterLink>{" "}
           or{" "}
           <Text
             variant="xs"

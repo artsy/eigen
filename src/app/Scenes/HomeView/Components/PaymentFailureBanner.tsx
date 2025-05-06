@@ -4,10 +4,10 @@ import { PaymentFailureBannerQuery } from "__generated__/PaymentFailureBannerQue
 import { PaymentFailureBannerRefetchQuery } from "__generated__/PaymentFailureBannerRefetchQuery.graphql"
 import { PaymentFailureBanner_Fragment$key } from "__generated__/PaymentFailureBanner_Fragment.graphql"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
-import { useCallback, useEffect } from "react"
+import { useEffect } from "react"
 import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 
 export const PaymentFailureBanner: React.FC = withSuspense({
@@ -63,20 +63,16 @@ export const PaymentFailureBanner: React.FC = withSuspense({
       }
     }, [failedPayments, tracking])
 
-    const handleBannerLinkClick = useCallback(() => {
+    const handleBannerLinkClick = () => {
       tracking.tappedChangePaymentMethod(failedPayments)
-
-      const route =
-        failedPayments.length === 1
-          ? `orders/${failedPayments[0].internalID}/payment/new`
-          : `orders`
-
-      navigate(route)
-    }, [failedPayments, tracking])
+    }
 
     if (failedPayments.length === 0) {
       return null
     }
+
+    const route =
+      failedPayments.length === 1 ? `orders/${failedPayments[0].internalID}/payment/new` : `orders`
 
     const bannerText =
       failedPayments.length === 1
@@ -93,14 +89,11 @@ export const PaymentFailureBanner: React.FC = withSuspense({
         <Text textAlign="left" variant="xs" color="mono0">
           {bannerText}
         </Text>
-        <LinkText
-          variant="xs"
-          textAlign="left"
-          color="mono0"
-          onPress={() => handleBannerLinkClick()}
-        >
-          {linkText}
-        </LinkText>
+        <RouterLink to={route} hasChildTouchable onPress={handleBannerLinkClick}>
+          <LinkText variant="xs" textAlign="left" color="mono0">
+            {linkText}
+          </LinkText>
+        </RouterLink>
       </Banner>
     )
   },
