@@ -247,7 +247,7 @@ jobs:
       #       ./scripts/deploys/expo-updates/deploy-to-expo-updates staging
 
   test-js:
-    parallelism: 8
+    parallelism: 16
     executor:
       name: node/default
       tag: "20.9.0"
