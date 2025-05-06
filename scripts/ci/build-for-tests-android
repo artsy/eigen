@@ -21,8 +21,12 @@ if command -v ccache >/dev/null 2>&1; then
     echo "android.ndkPath=${ANDROID_NDK_HOME:-/opt/android/sdk/ndk}" >> android/gradle.properties
   fi
   
-  # Add the NDK command line flag instead of using a property
-  export GRADLE_OPTS="$GRADLE_OPTS -Pandroid.native.buildOutput=verbose -Dorg.gradle.project.android.native.buildOutput=verbose"
+  # Add NDK flags as Gradle system properties instead of command line options
+  export GRADLE_OPTS="$GRADLE_OPTS -Dorg.gradle.project.android.native.buildOutput=verbose"
+  
+  # Prepare NDK environment for ccache integration
+  echo "android.useAndroidX=true" >> android/gradle.properties
+  echo "android.enableJetifier=true" >> android/gradle.properties
   
   # Log configuration for debugging
   echo "Android build using ccache with:"
@@ -39,7 +43,8 @@ fi
 
 pushd android
 # Run the build with ccache enabled in the gradle.properties
-yarn react-native build-android --mode=release --extra-params='--max-workers 2'
+# Pass JVM args directly to gradlew to avoid the P flag issue
+yarn react-native build-android --mode=release --extra-params='--no-daemon --max-workers 2 -Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"'
 popd
 
 # Log ccache stats after build

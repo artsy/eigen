@@ -100,16 +100,8 @@ android {
         ]
     }
 
-    buildTypes.configureEach {
-        // Pass NDK_CCACHE value to all native build tasks
-        if (System.env.NDK_CCACHE) {
-            externalNativeBuildOptions {
-                ndkBuild {
-                    arguments "NDK_CCACHE=${System.env.NDK_CCACHE}"
-                }
-            }
-        }
-    }
+    // Set NDK ccache through system environment variable
+    // This avoids issues with different Gradle versions
 
     namespace "net.artsy.app"
     defaultConfig {

@@ -19,22 +19,26 @@ export CONFIGURATION="Release"
 if command -v ccache >/dev/null 2>&1; then
   echo "ccache found, configuring compilation cache"
   
+  # Find ccache full path
+  CCACHE_PATH=$(which ccache)
+  echo "Found ccache at: $CCACHE_PATH"
+  
   # Common ccache settings
   export CCACHE_DIR="${CCACHE_DIR:-~/.ccache}"
   export CCACHE_MAXSIZE="${CCACHE_MAXSIZE:-5G}"
   export CCACHE_CPP2=yes
-  export CCACHE_SLOPPINESS=pch_defines,time_macros,include_file_mtime
+  export CCACHE_SLOPPINESS=pch_defines,time_macros,include_file_mtime,file_macro
 
   # Ensure ccache directory exists
   mkdir -p "$CCACHE_DIR"
   
   # Always apply ccache settings for both platforms to ensure consistent behavior
-  # iOS-specific settings
-  export CC="ccache clang"
-  export CXX="ccache clang++"
+  # iOS-specific settings - use full paths to avoid "not found" errors in Xcode
+  export CC="$CCACHE_PATH /usr/bin/clang"
+  export CXX="$CCACHE_PATH /usr/bin/clang++"
   
   # Android-specific settings
-  export NDK_CCACHE="/usr/bin/ccache"
+  export NDK_CCACHE="$CCACHE_PATH"
   
   # Log ccache configuration
   echo "CCACHE_DIR: $CCACHE_DIR"
