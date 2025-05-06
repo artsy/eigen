@@ -33,7 +33,7 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
     return null
   }
 
-  const orderArtwork = data.lineItems?.edges?.[0]?.node?.artwork
+  const orderArtwork = data.lineItems?.[0]?.artwork
 
   const imageDimensions = getImageDimensions(
     orderArtwork?.image?.height,
@@ -166,7 +166,7 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
         <Spacer y={2} />
 
         {/* 5th Part: Artsy Buyer Protection */}
-        <Message variant="default">
+        <Message variant="default" containerStyle={{ px: 1 }}>
           <Flex flexDirection="row" alignItems="flex-start">
             <ShieldIcon fill="mono100" mr={0.5} mt="2px" />
 
@@ -250,25 +250,18 @@ const getImageDimensions = (
 }
 
 const orderDetailFragment = graphql`
-  fragment OrderDetail_order on CommerceOrder {
+  fragment OrderDetail_order on Order {
     id
     internalID
 
-    lineItems(first: 1) {
-      edges {
-        node {
-          artwork {
-            image {
-              blurhash
-              # resized(height: 380) {
-              #   url
-              # }
-              url(version: ["larger", "large", "medium", "small", "square"])
-              aspectRatio
-              height
-              width
-            }
-          }
+    lineItems {
+      artwork {
+        image {
+          blurhash
+          url(version: ["larger", "large", "medium", "small", "square"])
+          aspectRatio
+          height
+          width
         }
       }
     }
@@ -279,20 +272,22 @@ export const OrderDetailQR: React.FC<{ orderID: string }> = withSuspense({
   Component: ({ orderID }) => {
     const data = useLazyLoadQuery<OrderDetailQuery>(orderDetailQRQuery, { orderID })
 
-    if (!data.order) {
+    if (!data.me?.order) {
       return null
     }
 
-    return <OrderDetail order={data.order} />
+    return <OrderDetail order={data.me.order} />
   },
   LoadingFallback: SpinnerFallback,
   ErrorFallback: NoFallback,
 })
 
 const orderDetailQRQuery = graphql`
-  query OrderDetailQuery($orderID: ID!) {
-    order: commerceOrder(id: $orderID) {
-      ...OrderDetail_order
+  query OrderDetailQuery($orderID: String!) {
+    me {
+      order(id: $orderID) {
+        ...OrderDetail_order
+      }
     }
   }
 `
