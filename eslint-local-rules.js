@@ -7,7 +7,7 @@ module.exports = {
       },
       messages: {
         useIconsInstead:
-          "Do not import '{{name}}' from @artsy/palette-mobile. Import it from @artsy/icons instead.",
+          "Do not import '{{name}}' from @artsy/palette-mobile. Import it from @artsy/icons/native instead.",
       },
       schema: [],
     },
