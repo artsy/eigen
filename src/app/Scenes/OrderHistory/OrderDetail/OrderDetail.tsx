@@ -187,7 +187,7 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
       {/* 6th Part: Shipping */}
       <Box px={2}>
         <Text variant="sm" fontWeight="bold">
-          Ships to
+          Ship to
         </Text>
 
         <Spacer y={0.5} />
