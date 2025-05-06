@@ -61,6 +61,15 @@ add_mapbox_creds
 
 pre_install do |installer|
   $RNMapboxMaps.pre_install(installer)
+  
+  # Configure ccache for pod builds
+  installer.pod_targets.each do |pod|
+    pod.build_configurations.each do |config|
+      config.build_settings['SWIFT_SUPPRESS_WARNINGS'] = 'YES'
+      config.build_settings['CC'] = ENV['CC'] || "clang"
+      config.build_settings['CXX'] = ENV['CXX'] || "clang++"
+    end
+  end
 end
 
 
@@ -91,6 +100,7 @@ target 'Artsy' do
     :production => ENV['CIRCLE_BUILD_NUM'],
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/..",
+    :ccache_enabled => true,
     new_arch_enabled: false
   )
 
@@ -178,7 +188,7 @@ target 'Artsy' do
       installer,
       config[:reactNativePath],
       :mac_catalyst_enabled => false,
-      # :ccache_enabled => true
+      :ccache_enabled => true
     )
 
     $RNMapboxMaps.post_install(installer)

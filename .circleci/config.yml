@@ -17,6 +17,93 @@ commands:
       - queue/until_front_of_line:
           time: "30" # how long a queue will wait until the job exits
           only-on-branch: <<parameters.branch>> # restrict queueing to a specific branch (default *)
+  # NEW: Install and setup ccache for iOS builds
+  setup-ccache-ios:
+    steps:
+      - run:
+          name: Install ccache
+          command: brew install ccache
+      - restore_cache:
+          name: Restore ccache cache
+          keys:
+            - ccache-ios-v1-{{ checksum ".manifests/native_code" }}-{{ checksum ".manifests/cocoapods" }}
+            - ccache-ios-v1-{{ checksum ".manifests/native_code" }}
+            - ccache-ios-v1-
+      - run:
+          name: Configure ccache
+          command: |
+            mkdir -p ~/.ccache
+            cat > ~/.ccache/ccache.conf << EOF
+            max_size = 5G
+            hash_dir = false
+            sloppiness = pch_defines,time_macros,include_file_mtime
+            EOF
+            
+            # Set up environment variables for builds
+            echo 'export CCACHE_DIR=~/.ccache' >> $BASH_ENV
+            echo 'export CCACHE_MAXSIZE=5G' >> $BASH_ENV
+            echo 'export CC="ccache clang"' >> $BASH_ENV
+            echo 'export CXX="ccache clang++"' >> $BASH_ENV
+            echo 'export CCACHE_CPP2=yes' >> $BASH_ENV
+            echo 'export CCACHE_SLOPPINESS=pch_defines,time_macros,include_file_mtime' >> $BASH_ENV
+            
+            # Print ccache stats at the beginning
+            ccache -z  # Zero stats
+            ccache -s  # Print stats
+  # NEW: Save ccache for iOS builds
+  save-ccache-ios:
+    steps:
+      - run:
+          name: Print ccache stats
+          command: ccache -s
+      - save_cache:
+          name: Save ccache
+          key: ccache-ios-v1-{{ checksum ".manifests/native_code" }}-{{ checksum ".manifests/cocoapods" }}
+          paths:
+            - ~/.ccache
+  # NEW: Install and setup ccache for Android builds
+  setup-ccache-android:
+    steps:
+      - run:
+          name: Install ccache
+          command: |
+            sudo apt-get update && sudo apt-get install -y ccache
+            mkdir -p ~/.ccache
+      - restore_cache:
+          name: Restore ccache cache
+          keys:
+            - ccache-android-v1-{{ checksum ".manifests/android_native" }}
+            - ccache-android-v1-
+      - run:
+          name: Configure ccache
+          command: |
+            cat > ~/.ccache/ccache.conf << EOF
+            max_size = 5G
+            hash_dir = false
+            sloppiness = pch_defines,time_macros,include_file_mtime
+            EOF
+            
+            # Set up environment variables for Android native builds
+            echo 'export CCACHE_DIR=~/.ccache' >> $BASH_ENV
+            echo 'export CCACHE_MAXSIZE=5G' >> $BASH_ENV
+            echo 'export NDK_CCACHE=/usr/bin/ccache' >> $BASH_ENV
+            echo 'export CCACHE_CPP2=yes' >> $BASH_ENV
+            echo 'export CCACHE_SLOPPINESS=pch_defines,time_macros,include_file_mtime' >> $BASH_ENV
+            
+            # Print ccache stats at the beginning
+            ccache -z  # Zero stats
+            ccache -s  # Print stats
+  # NEW: Save ccache for Android builds
+  save-ccache-android:
+    steps:
+      - run:
+          name: Print ccache stats
+          command: ccache -s
+      - save_cache:
+          name: Save ccache
+          key: ccache-android-v1-{{ checksum ".manifests/android_native" }}
+          paths:
+            - ~/.ccache
   install-node:
     steps:
       - node/install:
@@ -109,7 +196,17 @@ commands:
           command: ./scripts/setup/download-assets-ios
       - run:
           name: Build App
-          command: ./scripts/ci/ci-ios
+          command: |
+            # Use ccache for iOS build
+            export CCACHE_DIR=~/.ccache
+            export CCACHE_MAXSIZE=5G
+            export CC="ccache clang"
+            export CXX="ccache clang++"
+            export CCACHE_CPP2=yes
+            export CCACHE_SLOPPINESS=pch_defines,time_macros,include_file_mtime
+            
+            # Run the build script
+            ./scripts/ci/ci-ios
       - save_cache:
           key: << pipeline.parameters.app_build_ios_cache_key >>
           paths:
@@ -154,7 +251,16 @@ commands:
       - run:
           name: Build App
           no_output_timeout: 30m
-          command: ./scripts/ci/ci-android
+          command: |
+            # Use ccache for Android build
+            export CCACHE_DIR=~/.ccache
+            export CCACHE_MAXSIZE=5G
+            export NDK_CCACHE=/usr/bin/ccache
+            export CCACHE_CPP2=yes
+            export CCACHE_SLOPPINESS=pch_defines,time_macros,include_file_mtime
+            
+            # Run the build script
+            ./scripts/ci/ci-android
       - save_cache:
           key: << pipeline.parameters.app_build_android_cache_key >>
           paths:
@@ -422,6 +528,8 @@ jobs:
       - update-echo
       - install-gems
       - install-cocoapods
+      # NEW: Setup ccache for iOS
+      - setup-ccache-ios
       - macos/preboot-simulator:
           version: "18.1"
           platform: "iOS"
@@ -430,6 +538,8 @@ jobs:
       - run:
           name: Run tests if native code has changed
           command: ls xcode_test_raw.log || ./scripts/ci/ci-test-ios
+      # NEW: Save ccache after build
+      - save-ccache-ios
       - save_cache:
           key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum ".manifests/native_code" }}
           paths:
@@ -460,9 +570,13 @@ jobs:
       - restore_cache:
           key: << pipeline.parameters.android_native_cache_key >>
       - prep-android-env
+      # NEW: Setup ccache for Android
+      - setup-ccache-android
       - await-previous-builds:
           branch: beta-android
       - build-app-android
+      # NEW: Save ccache after build
+      - save-ccache-android
       - run:
           name: Save success file
           command: echo yes > 'build-success.log'

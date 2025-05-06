@@ -92,6 +92,13 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
+    // Configure ccache for native builds
+    externalNativeBuild {
+        ndkBuild {
+            arguments "NDK_CCACHE=${System.env.NDK_CCACHE ?: ''}"
+        }
+    }
+
     namespace "net.artsy.app"
     defaultConfig {
         applicationId "net.artsy.app"
