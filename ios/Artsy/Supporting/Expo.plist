@@ -37,7 +37,7 @@ gw==
 	<key>EXUpdatesURL</key>
 	<string>https://expo-updates-api.artsy.net/api/manifest?project=eigen&amp;channel=production</string>
 	<key>EXUpdatesRuntimeVersion</key>
-	<string>1.0.0</string>
+	<string>fingerprint</string>
 	<key>EXUpdatesRequestHeaders</key>
 	<dict>
 		<key>expo-channel-name</key>

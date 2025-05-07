@@ -5,6 +5,8 @@
   "slug": "eigen",
   "expo": {
     "platforms": ["ios", "android"],
-    "runtimeVersion": "1.0.0"
+    "runtimeVersion": {
+      "policy": "fingerprint"
+    }
   }
 }
