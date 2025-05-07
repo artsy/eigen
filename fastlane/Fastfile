@@ -523,7 +523,7 @@ def set_expo_release_values(deployment_name)
   latest_version = $APP_JSON['version']
   release_name_base = "expo-#{deployment_name.downcase}-#{latest_version}-#{date_str}"
   $APP_JSON['expoReleaseNameBase'] = release_name_base
-  $APP_JSON['expoPushDist'] = date_str
+  $APP_JSON['expoDist'] = date_str
   write_contents_to_file($APP_JSON_PATH, JSON.pretty_generate($APP_JSON))
   [release_name_base, date_str, latest_version]
 end
