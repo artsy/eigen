@@ -1,8 +1,9 @@
+import { CloseIcon } from "@artsy/icons/native"
 import { Flex, Text, Spinner } from "@artsy/palette-mobile"
 import { EmailConfirmationBanner_me$data } from "__generated__/EmailConfirmationBanner_me.graphql"
 import { verifyEmail } from "app/utils/verifyEmail"
 import { useState } from "react"
-import { Image, TouchableWithoutFeedback } from "react-native"
+import { TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 export interface Props {
@@ -81,7 +82,7 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
               </Text>
 
               <TouchableWithoutFeedback onPress={() => toggleVisible(false)}>
-                <Image source={require("images/close-x.webp")} />
+                <CloseIcon fill="mono0" />
               </TouchableWithoutFeedback>
             </Flex>
           </TouchableWithoutFeedback>
