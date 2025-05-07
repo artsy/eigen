@@ -40,7 +40,8 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const saveAnimationProgress = useSharedValue(0)
     const { hasSavedArtworks } = GlobalStore.useAppState((state) => state.infiniteDiscovery)
     const setHasSavedArtwors = GlobalStore.actions.infiniteDiscovery.setHasSavedArtworks
-    const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
+    const timeoutRef = useRef<NodeJS.Timeout>()
+    const timeoutRunningRef = useRef<"ready" | "ended" | "running">("ready")
 
     const track = useInfiniteDiscoveryTracking()
     const color = useColor()
@@ -104,6 +105,10 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       })
     }, [isSavedProp])
 
+    useEffect(() => {
+      return () => clearTimeout(timeoutRef.current)
+    }, [])
+
     const savedArtworkAnimationStyles = useAnimatedStyle(() => {
       return {
         opacity:
@@ -137,56 +142,61 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     const size = sizeToFit({ width, height }, { width: screenWidth, height: adjustedMaxHeight })
 
+    const doubleTap = () => {
+      clearTimeout(timeoutRef.current)
+      timeoutRunningRef.current = "ready"
+      if (!isSaved) {
+        Haptic.trigger("impactLight")
+        setShowScreenTapToSave(true)
+        saveArtworkToLists()
+      }
+    }
+
     const handleWrapperTaps = (event: GestureResponderEvent) => {
-      const now = Date.now()
-      const state = gestureState.current
       const { nativeEvent } = event
       const { locationX } = nativeEvent
-      const screenFifth = screenWidth / 5
 
-      // Determine which part of the screen was tapped
-      const leftFifth = locationX < screenFifth
-      const rightFifth = locationX > screenWidth - screenFifth
-      const middleSection = !leftFifth && !rightFifth
+      const halfScreen = screenWidth / 2
+      const isLeft = locationX < halfScreen
+      const isRight = locationX > halfScreen
 
-      // Handle image navigation in left/right fifths with single tap
-      if (images.length > 1) {
-        if (leftFifth && currentImageIndex > 0) {
-          // For left fifth, navigate to previous image on single tap
+      if (timeoutRunningRef.current === "running" && (isLeft || isRight)) {
+        doubleTap()
+        return true
+      }
+
+      if (isLeft && currentImageIndex > 0) {
+        timeoutRunningRef.current = "running"
+        timeoutRef.current = setTimeout(() => {
           Haptic.trigger("impactLight")
           track.artworkImageSwipe()
           setCurrentImageIndex(currentImageIndex - 1)
-          return true
-        } else if (rightFifth && currentImageIndex < images.length - 1) {
-          // For right fifth, navigate to next image on single tap
+          timeoutRunningRef.current = "ended"
+        }, SAVES_MAX_DURATION_BETWEEN_TAPS)
+        return true
+      }
+      if (isLeft) {
+        timeoutRunningRef.current = "running"
+        timeoutRef.current = setTimeout(() => {
+          timeoutRunningRef.current = "ended"
+        }, SAVES_MAX_DURATION_BETWEEN_TAPS)
+      }
+
+      if (isRight && currentImageIndex < images.length - 1) {
+        timeoutRunningRef.current = "running"
+        timeoutRef.current = setTimeout(() => {
           Haptic.trigger("impactLight")
           track.artworkImageSwipe()
           setCurrentImageIndex(currentImageIndex + 1)
-          return true
-        }
+          timeoutRunningRef.current = "ended"
+        }, SAVES_MAX_DURATION_BETWEEN_TAPS)
+        return true
       }
-
-      // Handle double-tap to save:
-      // For single images, allow double-tap anywhere on the image
-      // For multiple images, only allow double-tap in the middle 60%
-      if (images.length === 1 || middleSection) {
-        if (now - state.lastTapTimestamp < SAVES_MAX_DURATION_BETWEEN_TAPS) {
-          state.numTaps += 1
-        } else {
-          state.numTaps = 1
-        }
-
-        state.lastTapTimestamp = now
-
-        if (state.numTaps === 2) {
-          state.numTaps = 0
-          if (!isSaved) {
-            Haptic.trigger("impactLight")
-            setShowScreenTapToSave(true)
-            saveArtworkToLists()
-          }
-          return true
-        }
+      if (isRight) {
+        timeoutRunningRef.current = "running"
+        timeoutRef.current = setTimeout(() => {
+          timeoutRunningRef.current = "ended"
+        }, SAVES_MAX_DURATION_BETWEEN_TAPS)
       }
 
       return false
