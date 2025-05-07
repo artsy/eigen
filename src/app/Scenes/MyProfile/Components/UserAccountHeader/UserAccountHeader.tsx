@@ -275,17 +275,27 @@ const AccountCardWapper: React.FC<{
   showBorder?: boolean
   scrollEnabled?: boolean
 }> = ({ children, showBorder, scrollEnabled }) => {
-  return (
+  return showBorder ? (
     <Flex
       minHeight={200}
-      backgroundColor="mono0"
       borderRadius={20}
-      borderColor={showBorder ? "mono10" : undefined}
-      borderWidth={showBorder ? 1 : undefined}
+      borderColor="mono10"
+      borderWidth={1}
       alignItems="center"
       justifyContent="center"
       p={2}
-      m={showBorder ? 2 : undefined}
+      mx={2}
+      pointerEvents={scrollEnabled ? "box-none" : undefined}
+    >
+      {children}
+    </Flex>
+  ) : (
+    <Flex
+      borderRadius={20}
+      alignItems="center"
+      px={2}
+      pb={1}
+      mb={2}
       pointerEvents={scrollEnabled ? "box-none" : undefined}
     >
       {children}
