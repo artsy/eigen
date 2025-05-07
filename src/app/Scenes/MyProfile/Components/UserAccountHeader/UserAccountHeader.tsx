@@ -15,7 +15,10 @@ import {
   Text,
   useColor,
 } from "@artsy/palette-mobile"
-import { UserAccountHeaderQuery } from "__generated__/UserAccountHeaderQuery.graphql"
+import {
+  UserAccountHeaderQuery,
+  UserAccountHeaderQuery$data,
+} from "__generated__/UserAccountHeaderQuery.graphql"
 import {
   UserAccountHeader_me$data,
   UserAccountHeader_me$key,
@@ -28,7 +31,7 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 const PROFILE_IMAGE_SIZE = 70
 interface UserAccountHeaderProps extends UserAccountHeaderQRProps {
-  meProp: UserAccountHeader_me$key
+  meProp: UserAccountHeaderQuery$data["me"]
 }
 export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({
   meProp,
@@ -186,8 +189,6 @@ const CompleteProfileButton: React.FC<{
   )
 }
 
-export const userAccountHeaderQueryVariables = { count: 4 }
-
 interface UserAccountHeaderQRProps {
   showBorder?: boolean
   showCompleteProfile?: boolean
@@ -199,7 +200,7 @@ export const UserAccountHeaderQueryRenderer: React.FC<UserAccountHeaderQRProps> 
   Component: (props) => {
     const data = useLazyLoadQuery<UserAccountHeaderQuery>(
       UserAccountHeaderScreenQuery,
-      userAccountHeaderQueryVariables,
+      {},
       {
         fetchPolicy: "store-and-network",
       }
@@ -218,18 +219,17 @@ export const UserAccountHeaderQueryRenderer: React.FC<UserAccountHeaderQRProps> 
 })
 
 export const UserAccountHeaderScreenQuery = graphql`
-  query UserAccountHeaderQuery($count: Int!) {
+  query UserAccountHeaderQuery {
     me {
-      ...UserAccountHeader_me @arguments(count: $count)
-      ...MyCollectionPreview_me @arguments(count: $count)
+      ...UserAccountHeader_me
     }
   }
 `
 
 const userAccountHeaderFragment = graphql`
-  fragment UserAccountHeader_me on Me @argumentDefinitions(count: { type: "Int" }) {
+  fragment UserAccountHeader_me on Me {
     ...useCompleteMyProfileSteps_me
-    ...MyCollectionPreview_me @arguments(count: $count)
+    ...MyCollectionPreview_me
 
     internalID
     name
