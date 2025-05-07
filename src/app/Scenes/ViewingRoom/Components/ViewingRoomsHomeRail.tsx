@@ -12,7 +12,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Schema } from "app/utils/track"
-import { times } from "lodash"
+import { times, uniqBy } from "lodash"
 import React, { memo, Suspense } from "react"
 import { FlatList } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -80,7 +80,7 @@ export const ViewingRoomsRailPlaceholder = () => (
 interface ViewingRoomsHomeRailProps {
   trackInfo?: { screen: string; ownerType: string; contextModule?: ContextModule }
   onPress?: (
-    viewingRoom: ExtractNodeType<ViewingRoomsHomeRailQuery$data["viewingRoomsConnection"]>,
+    viewingRoom: ExtractNodeType<ViewingRoomsHomeRailQuery$data["viewingRooms"]>,
     index: number
   ) => void
 }
@@ -90,7 +90,11 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({
   onPress,
 }) => {
   const queryData = useLazyLoadQuery<ViewingRoomsHomeRailQuery>(ViewingRoomsHomeRailMainQuery, {})
-  const regular = extractNodes(queryData.viewingRoomsConnection)
+  const regular = extractNodes(queryData.viewingRooms)
+  const featured = extractNodes(queryData.featuredViewingRooms)
+  const combined = featured.concat(regular)
+  const viewingRooms = uniqBy(combined, (vr) => vr.internalID).slice(0, 12)
+
   const { trackEvent } = useTracking()
 
   return (
@@ -99,7 +103,7 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({
         horizontal
         ListHeaderComponent={() => <Spacer x={2} />}
         ListFooterComponent={() => <Spacer x={2} />}
-        data={regular}
+        data={viewingRooms}
         initialNumToRender={isTablet() ? 10 : 5}
         keyExtractor={(item) => `${item.internalID}`}
         renderItem={({ item, index }) => {
@@ -144,7 +148,28 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({
 
 const ViewingRoomsHomeRailMainQuery = graphql`
   query ViewingRoomsHomeRailQuery {
-    viewingRoomsConnection(first: 10) {
+    viewingRooms: viewingRoomsConnection(first: 12) {
+      edges {
+        node {
+          internalID
+          title
+          slug
+          heroImage: image {
+            imageURLs {
+              normalized
+            }
+          }
+          status
+          distanceToOpen(short: true)
+          distanceToClose(short: true)
+          partner {
+            name
+          }
+        }
+      }
+    }
+
+    featuredViewingRooms: viewingRoomsConnection(first: 12, featured: true) {
       edges {
         node {
           internalID
