@@ -40,16 +40,11 @@
 
 @implementation ARAppDelegate
 
-static ARAppDelegate *_sharedInstance = nil;
-
-+ (void)load
-{
-    _sharedInstance = [[self alloc] init];
-}
-
 + (ARAppDelegate *)sharedInstance
 {
-    return _sharedInstance;
+    id delegate = [UIApplication sharedApplication].delegate;
+    NSAssert([delegate isKindOfClass:[ARAppDelegate class]], @"Unexpected app delegate class");
+    return (ARAppDelegate *)delegate;
 }
 
 // Because we‘ve locked the launch screen on iPhone to portrait mode, we now have to unlock all of them again such that
