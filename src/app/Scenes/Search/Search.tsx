@@ -177,14 +177,6 @@ export const SearchScreenQuery = graphql`
 type SearchScreenProps = StackScreenProps<any>
 
 const SearchScreenInner: React.FC<SearchScreenProps> = () => {
-  const { trackExperiment } = useExperimentVariant("diamond_discover-tab")
-
-  useEffect(() => {
-    trackExperiment({
-      context_owner_type: OwnerType.search,
-    })
-  }, [])
-
   return (
     <>
       <Screen>
