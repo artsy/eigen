@@ -42,7 +42,7 @@ export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> =
         <Flex mx={2}>
           <SectionTitle
             title={title}
-            href={`/viewing-rooms`}
+            href="/viewing-rooms"
             onPress={() => {
               trackEvent(tracks.tappedViewingRoomsHeader())
             }}
