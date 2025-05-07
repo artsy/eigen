@@ -257,7 +257,7 @@ const Placeholder: React.FC<{ showBorder?: boolean }> = ({ showBorder }) => {
         borderRadius={PROFILE_IMAGE_SIZE / 2}
         backgroundColor="mono5"
         alignItems="center"
-        justifyContent="center"
+        justifyContent={showBorder ? "center" : undefined}
       />
 
       <Spacer y={2} />
@@ -275,17 +275,25 @@ const AccountCardWapper: React.FC<{
   showBorder?: boolean
   scrollEnabled?: boolean
 }> = ({ children, showBorder, scrollEnabled }) => {
-  return (
+  return showBorder ? (
     <Flex
       minHeight={200}
-      backgroundColor="mono0"
       borderRadius={20}
-      borderColor={showBorder ? "mono10" : undefined}
-      borderWidth={showBorder ? 1 : undefined}
+      borderColor="mono10"
+      borderWidth={1}
       alignItems="center"
       justifyContent="center"
       p={2}
-      m={showBorder ? 2 : undefined}
+      m={2}
+      pointerEvents={scrollEnabled ? "box-none" : undefined}
+    >
+      {children}
+    </Flex>
+  ) : (
+    <Flex
+      borderRadius={20}
+      alignItems="center"
+      pb={2}
       pointerEvents={scrollEnabled ? "box-none" : undefined}
     >
       {children}
