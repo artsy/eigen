@@ -257,7 +257,7 @@ const Placeholder: React.FC<{ showBorder?: boolean }> = ({ showBorder }) => {
         borderRadius={PROFILE_IMAGE_SIZE / 2}
         backgroundColor="mono5"
         alignItems="center"
-        justifyContent={showBorder ? "center" : undefined}
+        justifyContent="center"
       />
 
       <Spacer y={2} />
@@ -293,7 +293,9 @@ const AccountCardWapper: React.FC<{
     <Flex
       borderRadius={20}
       alignItems="center"
-      pb={2}
+      px={2}
+      pb={1}
+      mb={2}
       pointerEvents={scrollEnabled ? "box-none" : undefined}
     >
       {children}
