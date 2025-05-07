@@ -7,8 +7,10 @@
 @interface ARAppDelegate : EXAppDelegateWrapper
 
 + (ARAppDelegate *)sharedInstance;
++ (void)setSharedInstanceForTesting:(ARAppDelegate *)instance;
 + (Braze *)braze;
 - (NSURL *)bundleURL;
+
 
 @property (strong, nonatomic) ARWindow *window;
 @property (strong, nonatomic) UIViewController *viewController;
