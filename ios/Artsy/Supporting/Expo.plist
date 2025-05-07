@@ -31,7 +31,7 @@ gw==
 	<key>EXUpdatesEnabled</key>
 	<false/>
 	<key>EXUpdatesCheckOnLaunch</key>
-	<string>NEVER</string>
+	<string>ON_LOAD</string>
 	<key>EXUpdatesLaunchWaitMs</key>
 	<integer>0</integer>
 	<key>EXUpdatesURL</key>
