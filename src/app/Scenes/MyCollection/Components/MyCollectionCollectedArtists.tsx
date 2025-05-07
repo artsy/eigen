@@ -1,6 +1,6 @@
 import { Flex, SimpleMessage } from "@artsy/palette-mobile"
-import { MyCollectionCollectedArtists_me$key } from "__generated__/MyCollectionCollectedArtists_me.graphql"
 import { MyCollectionCollectedArtistsQuery } from "__generated__/MyCollectionCollectedArtistsQuery.graphql"
+import { MyCollectionCollectedArtists_me$key } from "__generated__/MyCollectionCollectedArtists_me.graphql"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
 import { MyCollectionCollectedArtistsRail } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsRail"
 import { MyCollectionCollectedArtistsView } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsView"
@@ -52,7 +52,7 @@ export const MyCollectionCollectedArtistsQueryRenderer: React.FC = withSuspense(
 
     return (
       <MyCollectionArtworksKeywordStore.Provider>
-        <MyCollectionCollectedArtistsView me={data.me} />
+        <MyCollectionCollectedArtistsView me={data.me} showMoreIcon />
       </MyCollectionArtworksKeywordStore.Provider>
     )
   },
