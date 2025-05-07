@@ -281,6 +281,29 @@ PODS:
   - libwebp/sharpyuv (1.3.2)
   - libwebp/webp (1.3.2):
     - libwebp/sharpyuv
+  - lottie-ios (4.5.0)
+  - lottie-react-native (7.2.2):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - lottie-ios (= 4.5.0)
+    - RCT-Folly (= 2024.10.14.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - Mantle (1.5.6):
     - Mantle/extobjc (= 1.5.6)
   - Mantle/extobjc (1.5.6)
@@ -2389,6 +2412,7 @@ DEPENDENCIES:
   - INTUAnimationEngine
   - ISO8601DateFormatter (from `https://github.com/artsy/iso-8601-date-formatter`)
   - JWTDecode (= 2.0.0)
+  - lottie-react-native (from `../node_modules/lottie-react-native`)
   - Mantle (= 1.5.6)
   - MARKRangeSlider
   - MMMarkdown (= 0.4)
@@ -2550,6 +2574,7 @@ SPEC REPOS:
     - iOSSnapshotTestCase
     - JWTDecode
     - libwebp
+    - lottie-ios
     - Mantle
     - MapboxCommon
     - MapboxCoreMaps
@@ -2656,6 +2681,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/artsy/Interstellar.git
   ISO8601DateFormatter:
     :git: https://github.com/artsy/iso-8601-date-formatter
+  lottie-react-native:
+    :path: "../node_modules/lottie-react-native"
   Pulley:
     :branch: master
     :git: https://github.com/artsy/Pulley.git
@@ -2943,6 +2970,8 @@ SPEC CHECKSUMS:
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
+  lottie-ios: a881093fab623c467d3bce374367755c272bdd59
+  lottie-react-native: 9d58d80ad945d89519ba4c9e8d4d9bb28b726205
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
   MapboxCommon: 119f3759f7dc9457f0695848108ab323eb643cb4
   MapboxCoreMaps: ca17f67baced23f8c952166ac6314c35bad3f66c

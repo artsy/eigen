@@ -3,11 +3,13 @@ import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
 import { Flex, Image, Text, Touchable, useColor, useScreenDimensions } from "@artsy/palette-mobile"
 import { InfiniteDiscoveryArtworkCard_artwork$key } from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
+import { ArtworkHeartIconAnimation } from "app/Components/ArtworkGrids/ArtworkHeartIcon"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { InfiniteDiscoveryArtworkCardPopover } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCardPopover"
 import { PaginationBars } from "app/Scenes/InfiniteDiscovery/Components/PaginationBars"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
 import { GestureResponderEvent, Text as RNText, ViewStyle } from "react-native"
@@ -304,23 +306,10 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
                   backgroundColor: color("mono5"),
                 }}
               >
-                {!!isSaved ? (
-                  <Animated.View style={animatedSaveButtonStyles}>
-                    <HeartFillIcon
-                      testID="filled-heart-icon"
-                      height={HEART_ICON_SIZE}
-                      width={HEART_ICON_SIZE}
-                      fill="blue100"
-                    />
-                  </Animated.View>
-                ) : (
-                  <HeartStrokeIcon
-                    testID="empty-heart-icon"
-                    height={HEART_ICON_SIZE}
-                    width={HEART_ICON_SIZE}
-                    fill="mono100"
-                  />
-                )}
+                <HeartIconContainer
+                  isSaved={!!isSaved}
+                  animatedSaveButtonStyles={animatedSaveButtonStyles}
+                />
                 <Text ml={0.5} variant="xs">
                   {isSaved ? "Saved" : "Save"}
                 </Text>
@@ -332,6 +321,39 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     )
   }
 )
+
+const HeartIconContainer: React.FC<{
+  isSaved: boolean
+  animatedSaveButtonStyles: ReturnType<typeof useAnimatedStyle>
+}> = ({ isSaved, animatedSaveButtonStyles }) => {
+  const enableArtworkHeartIconAnimation = useFeatureFlag("AREnableArtworkHeartIconAnimation")
+
+  if (enableArtworkHeartIconAnimation) {
+    return <ArtworkHeartIconAnimation isSaved={!!isSaved} />
+  }
+
+  if (isSaved) {
+    return (
+      <Animated.View style={animatedSaveButtonStyles}>
+        <HeartFillIcon
+          testID="filled-heart-icon"
+          height={HEART_ICON_SIZE}
+          width={HEART_ICON_SIZE}
+          fill="blue100"
+        />
+      </Animated.View>
+    )
+  }
+
+  return (
+    <HeartStrokeIcon
+      testID="empty-heart-icon"
+      height={HEART_ICON_SIZE}
+      width={HEART_ICON_SIZE}
+      fill="mono100"
+    />
+  )
+}
 
 const infiniteDiscoveryArtworkCardFragment = graphql`
   fragment InfiniteDiscoveryArtworkCard_artwork on Artwork {
