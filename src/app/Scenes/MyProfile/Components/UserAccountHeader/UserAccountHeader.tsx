@@ -284,7 +284,7 @@ const AccountCardWapper: React.FC<{
       alignItems="center"
       justifyContent="center"
       p={2}
-      m={2}
+      mx={2}
       pointerEvents={scrollEnabled ? "box-none" : undefined}
     >
       {children}
