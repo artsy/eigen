@@ -110,13 +110,13 @@ describe("GlobalStoreModel", () => {
     ).toStrictEqual({})
     expect(
       __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.flags.ARDarkModeSupport
-    ).toStrictEqual(false)
-    __globalStoreTestUtils__?.injectFeatureFlags({ ARDarkModeSupport: true })
+    ).toStrictEqual(true)
+    __globalStoreTestUtils__?.injectFeatureFlags({ ARDarkModeSupport: false })
     expect(
       __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.localOverrides
-    ).toStrictEqual({ ARDarkModeSupport: true })
+    ).toStrictEqual({ ARDarkModeSupport: false })
     expect(
       __globalStoreTestUtils__?.getCurrentState().artsyPrefs.features.flags.ARDarkModeSupport
-    ).toStrictEqual(true)
+    ).toStrictEqual(false)
   })
 })
