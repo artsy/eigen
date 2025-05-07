@@ -69,7 +69,7 @@ const MyCollection: React.FC = () => {
             stickyTabBarComponent={
               <Flex flexDirection="row" alignItems="center" gap={1} pr={2}>
                 {/* Filtering is only available for artworks */}
-                {activeNavigationTab === "Artworks" && (
+                {activeNavigationTab === Tab.artworks && (
                   <Touchable
                     hitSlop={ICON_HIT_SLOP}
                     onPress={() => {
@@ -89,17 +89,19 @@ const MyCollection: React.FC = () => {
                   </Touchable>
                 )}
 
-                <Touchable
-                  hitSlop={ICON_HIT_SLOP}
-                  onPress={() => {
-                    setViewKind({ viewKind: "Add" })
-                  }}
-                >
-                  <AddIcon
-                    height={ACCESSIBLE_DEFAULT_ICON_SIZE}
-                    width={ACCESSIBLE_DEFAULT_ICON_SIZE}
-                  />
-                </Touchable>
+                {activeNavigationTab !== Tab.insights && (
+                  <Touchable
+                    hitSlop={ICON_HIT_SLOP}
+                    onPress={() => {
+                      setViewKind({ viewKind: "Add" })
+                    }}
+                  >
+                    <AddIcon
+                      height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                      width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                    />
+                  </Touchable>
+                )}
               </Flex>
             }
             variant="pills"
