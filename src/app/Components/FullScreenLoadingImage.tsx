@@ -1,4 +1,4 @@
-import { Spacer, SpacerProps, Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Spacer, SpacerProps, Text } from "@artsy/palette-mobile"
 import { CircularSpinner } from "app/Components/CircularSpinner"
 import { ImageBackground, ImageSourcePropType, StyleSheet } from "react-native"
 
@@ -20,11 +20,12 @@ export const FullScreenLoadingImage: React.FC<FullScreenLoadingImageProps> = ({
       source={imgSource}
     >
       <Flex flex={1} alignItems="center" justifyContent="center">
-        <CircularSpinner color="mono0" size="large" />
+        <CircularSpinner color="white" size="large" />
 
         <Spacer y={spacerHeight} />
 
-        <Text variant="sm-display" color="mono0" textAlign="center">
+        {/* Setting the text color to white in light and dark mode because of the background image. */}
+        <Text variant="sm-display" color="white" textAlign="center">
           {loadingText}
         </Text>
       </Flex>

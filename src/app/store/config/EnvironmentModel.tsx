@@ -34,6 +34,8 @@ export const environment = defineEnvironmentOptions({
   metaphysicsCDNURL: {
     description: "Metaphysics CDN URL",
     presets: {
+      // for android, replace with http://[your-ip]:5001/v2
+      // Usually you can get your IP with `ipconfig getifaddr en0`
       local: "http://localhost:5001/v2",
       staging: "https://metaphysics-cdn-staging.artsy.net/v2",
       production: "https://metaphysics-cdn.artsy.net/v2",

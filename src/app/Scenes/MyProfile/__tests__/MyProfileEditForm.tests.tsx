@@ -47,7 +47,7 @@ describe("MyProfileEditForm", () => {
             isEmailConfirmed: true,
           }),
         })
-        expect(screen.getByText("Email Address Verified")).toBeTruthy()
+        expect(screen.getByText("Email verified")).toBeTruthy()
       })
     })
 
@@ -59,11 +59,11 @@ describe("MyProfileEditForm", () => {
             isEmailConfirmed: false,
           }),
         })
-        expect(screen.getByText("Verify Your Email")).toBeTruthy()
+        expect(screen.getByText("Verify your email")).toBeTruthy()
       })
 
       describe("when canRequestEmailConfirmation is set to true", () => {
-        it("triggers the email verification when the user presses on Verify Your Email", async () => {
+        it("triggers the email verification when the user presses on Verify your email", async () => {
           const { env } = renderWithRelay({
             Me: () => ({
               canRequestEmailConfirmation: true,
@@ -129,7 +129,7 @@ describe("MyProfileEditForm", () => {
           isIdentityVerified: false,
         }),
       })
-      expect(screen.getByText("Verify Your ID")).toBeTruthy()
+      expect(screen.getByText("Verify your ID")).toBeTruthy()
     })
 
     describe("requesting IDV", () => {
@@ -140,7 +140,7 @@ describe("MyProfileEditForm", () => {
               isIdentityVerified: false,
             }),
           })
-          const VerifyIdentityButton = screen.getByText("Verify Your ID")
+          const VerifyIdentityButton = screen.getByText("Verify your ID")
           expect(VerifyIdentityButton).toBeTruthy()
 
           fireEvent(VerifyIdentityButton, "onPress")
@@ -173,7 +173,7 @@ describe("MyProfileEditForm", () => {
               isIdentityVerified: false,
             }),
           })
-          const VerifyIdentityButton = screen.getByText("Verify Your ID")
+          const VerifyIdentityButton = screen.getByText("Verify your ID")
           expect(VerifyIdentityButton).toBeTruthy()
 
           fireEvent(VerifyIdentityButton, "onPress")
@@ -236,7 +236,7 @@ describe("MyProfileEditForm", () => {
               isIdentityVerified: false,
             }),
           })
-          const VerifyIdentityButton = screen.getByText("Verify Your ID")
+          const VerifyIdentityButton = screen.getByText("Verify your ID")
           expect(VerifyIdentityButton).toBeTruthy()
 
           fireEvent(VerifyIdentityButton, "onPress")

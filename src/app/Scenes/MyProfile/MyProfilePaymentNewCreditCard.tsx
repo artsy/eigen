@@ -10,11 +10,11 @@ import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfil
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { refreshCreditCardsList } from "app/utils/refreshHelpers"
 import { Action, Computed, action, computed, useLocalStore } from "easy-peasy"
 import { useEffect, useRef, useState } from "react"
 import { Alert, KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 import { commitMutation, graphql } from "react-relay"
-import { __triggerRefresh } from "./MyProfilePayment"
 
 interface CreditCardInputParams {
   expMonth: number
@@ -151,7 +151,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
       }
       const gravityResult = await saveCreditCard(tokenId)
       if (gravityResult.createCreditCard?.creditCardOrError?.creditCard) {
-        await __triggerRefresh?.()
+        refreshCreditCardsList()
       } else {
         // TODO: we can probably present these errors to the user?
         throw new Error(

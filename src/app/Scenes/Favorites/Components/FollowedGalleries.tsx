@@ -7,6 +7,7 @@ import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
 
 import { PAGE_SIZE } from "app/Components/constants"
+import { FavoritesContextStore } from "app/Scenes/Favorites/FavoritesContextStore"
 import { FollowOptionPicker } from "app/Scenes/Favorites/FollowsTab"
 import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { extractNodes } from "app/utils/extractNodes"
@@ -20,6 +21,8 @@ interface Props {
 }
 
 export const FollowedGalleries: React.FC<Props> = ({ me }) => {
+  const { headerHeight } = FavoritesContextStore.useStoreState((state) => state)
+
   const space = useSpace()
   const { trackTappedGalleryFollowsGroup } = useFavoritesTracking()
 
@@ -34,7 +37,10 @@ export const FollowedGalleries: React.FC<Props> = ({ me }) => {
 
   if (galleries.length === 0) {
     return (
-      <Screen.ScrollView refreshControl={RefreshControl}>
+      <Screen.ScrollView
+        refreshControl={RefreshControl}
+        contentContainerStyle={{ paddingTop: headerHeight }}
+      >
         <FollowOptionPicker />
         <ZeroState
           title="You haven’t followed any galleries yet"
@@ -52,7 +58,7 @@ export const FollowedGalleries: React.FC<Props> = ({ me }) => {
       }}
       ListHeaderComponent={FollowOptionPicker}
       keyExtractor={(item, index) => item.id || index.toString()}
-      contentContainerStyle={{ paddingHorizontal: space(2) }}
+      contentContainerStyle={{ paddingHorizontal: space(2), paddingTop: headerHeight }}
       onEndReachedThreshold={0.2}
       refreshControl={RefreshControl}
       ItemSeparatorComponent={() => <Spacer y={2} />}

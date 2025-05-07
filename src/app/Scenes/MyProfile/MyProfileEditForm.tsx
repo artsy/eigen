@@ -1,12 +1,12 @@
 import { ActionType, ContextModule, EditedUserProfile, OwnerType } from "@artsy/cohesion"
+import { CheckmarkStrokeIcon, CheckmarkFillIcon } from "@artsy/icons/native"
 import {
   Avatar,
   Box,
   Button,
-  CheckCircleFillIcon,
-  CheckCircleIcon,
   Flex,
   Join,
+  LinkText,
   Message,
   Spacer,
   Text,
@@ -20,6 +20,7 @@ import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.gra
 import { Image } from "app/Components/Bidding/Elements/Image"
 import { buildLocationDisplay } from "app/Components/LocationAutocomplete"
 import LoadingModal from "app/Components/Modals/LoadingModal"
+import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
 import {
   UserProfileFields,
   UserProfileFormikSchema,
@@ -27,7 +28,7 @@ import {
 } from "app/Scenes/MyProfile/Components/UserProfileFields"
 import { fetchProfileData } from "app/Scenes/MyProfile/MyProfileHeader"
 import { useEditProfile } from "app/Scenes/MyProfile/hooks/useEditProfile"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
@@ -40,8 +41,6 @@ import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import * as Yup from "yup"
 import { useHandleEmailVerification, useHandleIDVerification } from "./useHandleVerification"
-
-const ICON_SIZE = 22
 
 interface EditMyProfileValuesSchema extends UserProfileFormikSchema {
   photo: string
@@ -222,7 +221,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
               </Text>
             </Touchable>
           </Flex>
-          <Flex m={2} gap={2}>
+          <Flex m={2} gap={4}>
             <FormikProvider value={formikBag}>
               <UserProfileFields />
             </FormikProvider>
@@ -322,20 +321,6 @@ const LoadingSkeleton = () => {
   )
 }
 
-const VerifiedRow: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => {
-  return (
-    <Flex flexDirection="row">
-      <Flex mt="3px">
-        <CheckCircleFillIcon height={ICON_SIZE} width={ICON_SIZE} fill="green100" />
-      </Flex>
-      <Flex ml={1}>
-        <Text color="mono100">{title}</Text>
-        <Text color="mono60">{subtitle}</Text>
-      </Flex>
-    </Flex>
-  )
-}
-
 const ProfileVerifications = ({
   canRequestEmailConfirmation,
   isEmailConfirmed,
@@ -349,90 +334,92 @@ const ProfileVerifications = ({
   handleIDVerification: () => void
   isIDVerified: boolean
 }) => {
-  const color = useColor()
-
   return (
     <Flex testID="profile-verifications" pr={2}>
       {/* ID Verification */}
-      {isIDVerified ? (
-        <VerifiedRow
-          title="ID Verified"
-          subtitle="For details, see FAQs or contact verification@artsy.net"
-        />
-      ) : (
-        <Flex flexDirection="row">
-          <Flex mt="3px">
-            <CheckCircleIcon height={ICON_SIZE} width={ICON_SIZE} fill="mono30" />
-          </Flex>
-          <Flex ml={1}>
-            <Text
-              onPress={handleIDVerification}
-              style={{ textDecorationLine: "underline" }}
-              color="mono100"
+      <Flex flexDirection="row">
+        <Flex mt="3px">
+          {isIDVerified ? (
+            <CheckmarkFillIcon
+              height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+              width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+              fill="green100"
+            />
+          ) : (
+            <CheckmarkStrokeIcon
+              height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+              width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+              fill="mono30"
+            />
+          )}
+        </Flex>
+        <Flex ml={1} justifyContent="center">
+          <Touchable onPress={() => (isIDVerified ? {} : handleIDVerification())}>
+            <Text color="mono100" style={isIDVerified ? {} : { textDecorationLine: "underline" }}>
+              {isIDVerified ? "ID Verified" : "Verify your ID"}
+            </Text>
+          </Touchable>
+
+          <Flex flexDirection="row" flexWrap="wrap">
+            <Text color="mono60">For more information, see </Text>
+
+            <RouterLink to="https://www.artsy.net/identity-verification-faq">
+              <LinkText color="mono60">FAQs</LinkText>
+            </RouterLink>
+
+            <Text color="mono60"> or </Text>
+
+            <Touchable
+              onPress={() => sendEmail("verification@artsy.net", { subject: "ID Verification" })}
             >
-              Verify Your ID
-            </Text>
-            <Text color={color("mono60")}>
-              For details, see{" "}
-              <Text
-                style={{ textDecorationLine: "underline" }}
-                color="mono100"
-                onPress={() => navigate(`https://www.artsy.net/identity-verification-faq`)}
-              >
-                FAQs
-              </Text>{" "}
-              or contact{" "}
-              <Text
-                style={{ textDecorationLine: "underline" }}
-                onPress={() => sendEmail("verification@artsy.net", { subject: "ID Verification" })}
-                color="mono100"
-              >
-                verification@artsy.net
-              </Text>
-              .
-            </Text>
+              <LinkText color="mono60">contact Artsy</LinkText>
+            </Touchable>
+
+            <Text color="mono60">.</Text>
           </Flex>
         </Flex>
-      )}
+      </Flex>
 
       <Spacer y={4} />
 
       {/* Email Verification */}
-      {isEmailConfirmed ? (
-        <VerifiedRow
-          title="Email Address Verified"
-          subtitle="Secure your account and receive updates about your transactions on Artsy."
-        />
-      ) : (
-        <Flex flexDirection="row">
-          <Flex mt="3px">
-            <CheckCircleIcon height={ICON_SIZE} width={ICON_SIZE} fill="mono30" />
-          </Flex>
-          <Flex ml={1}>
-            {canRequestEmailConfirmation ? (
-              <Text
-                style={{ textDecorationLine: "underline" }}
-                onPress={handleEmailVerification}
-                testID="verify-your-email"
-              >
-                Verify Your Email
-              </Text>
-            ) : (
-              <Text
-                style={{ textDecorationLine: "none" }}
-                color="mono60"
-                testID="verify-your-email"
-              >
-                Verify Your Email
-              </Text>
-            )}
-
-            <Text color="mono60">
-              Secure your account and receive updates about your transactions on Artsy.
-            </Text>
-          </Flex>
+      <Flex flexDirection="row">
+        <Flex mt="3px">
+          {isEmailConfirmed ? (
+            <CheckmarkFillIcon
+              height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+              width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+              fill="green100"
+            />
+          ) : (
+            <CheckmarkStrokeIcon
+              height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+              width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+              fill="mono30"
+            />
+          )}
         </Flex>
-      )}
+        <Flex ml={1}>
+          {canRequestEmailConfirmation ? (
+            <Touchable onPress={() => (isEmailConfirmed ? {} : handleEmailVerification())}>
+              <Text
+                testID="verify-your-email"
+                style={isEmailConfirmed ? {} : { textDecorationLine: "underline" }}
+              >
+                {isEmailConfirmed ? "Email verified" : "Verify your email"}
+              </Text>
+            </Touchable>
+          ) : (
+            <Text color="mono60" testID="verify-your-email">
+              {isEmailConfirmed ? "Email verified" : "Verify your email"}
+            </Text>
+          )}
+
+          <Text color="mono60">
+            Secure your account and receive updates about your transactions on Artsy.
+          </Text>
+        </Flex>
+      </Flex>
     </Flex>
   )
 }

@@ -1,5 +1,5 @@
 import { Flex, Text } from "@artsy/palette-mobile"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 
 interface CascadingEndTimesBannerProps {
   cascadingEndTimeInterval: number
@@ -22,13 +22,11 @@ export const CascadingEndTimesBanner: React.FC<CascadingEndTimesBannerProps> = (
           ? "Closing times may be extended due to last-minute competitive bidding. "
           : `Lots will close at ${cascadingEndTimeInterval}-minute intervals. `}
 
-        <Text
-          color="mono0"
-          onPress={() => navigate(CASCADING_AUCTION_HELP_ARTICLE_LINK)}
-          style={{ textDecorationLine: "underline" }}
-        >
-          Learn more.
-        </Text>
+        <RouterLink to={CASCADING_AUCTION_HELP_ARTICLE_LINK} hasChildTouchable>
+          <Text style={{ textDecorationLine: "underline" }}>
+            Learn more about cascading end times
+          </Text>
+        </RouterLink>
       </Text>
     </Flex>
   )

@@ -1,5 +1,5 @@
-import { fireEvent } from "@testing-library/react-native"
-import * as navigation from "app/system/navigation/navigate"
+import { fireEvent, screen } from "@testing-library/react-native"
+import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { ItemArtworkFragmentContainer } from "./ItemArtwork"
@@ -17,7 +17,7 @@ describe("ItemArtworkFragmentContainer", () => {
   })
 
   it("render", () => {
-    const { getByText, getByTestId } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => ({
         title: "Test Artwork",
         date: "December, 2021",
@@ -32,25 +32,23 @@ describe("ItemArtworkFragmentContainer", () => {
       }),
     })
 
-    expect(getByText("Artwork")).toBeDefined()
-    expect(getByText("Test Artwork, December, 2021")).toBeDefined()
-    expect(getByText("Test Artists")).toBeDefined()
-    expect(getByText("Test Partner")).toBeDefined()
-    expect(getByText("Price on request")).toBeDefined()
-    expect(getByTestId("artworkImage")).toBeDefined()
+    expect(screen.getByText("Artwork")).toBeDefined()
+    expect(screen.getByText("Test Artwork, December, 2021")).toBeDefined()
+    expect(screen.getByText("Test Artists")).toBeDefined()
+    expect(screen.getByText("Test Partner")).toBeDefined()
+    expect(screen.getByText("Price on request")).toBeDefined()
+    expect(screen.getByTestId("artworkImage")).toBeDefined()
   })
 
   it("navigates when clicked", () => {
-    const navigateSpy = jest.spyOn(navigation, "navigate")
-    const { getByTestId } = renderWithRelay({
+    renderWithRelay({
       Artwork: () => ({
         href: "https://testhref",
       }),
     })
 
-    fireEvent.press(getByTestId("artworkImage"))
+    fireEvent.press(screen.getByTestId("artworkImage"))
 
-    expect(navigateSpy).toHaveBeenCalledTimes(1)
-    expect(navigateSpy).toHaveBeenCalledWith("https://testhref")
+    expect(navigate).toHaveBeenCalledWith("https://testhref")
   })
 })

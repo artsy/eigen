@@ -17,12 +17,6 @@ import {
   withTiming,
 } from "react-native-reanimated"
 
-/**
- * TODOS
- * - organize files
- * - to not render more than 2 swiped cards
- */
-
 type SwiperProps = {
   cards: InfiniteDiscoveryArtwork[]
   onNewCardReached?: (key: Key) => void
@@ -32,8 +26,8 @@ type SwiperProps = {
   cardStyle?: ViewStyle
   isArtworkSaved?: (index: number) => boolean
 } & (
-  | { onTrigger?: never; swipedIndexCallsOnTrigger?: never }
-  | { onTrigger: (activeIndex: number) => void; swipedIndexCallsOnTrigger: number }
+  | { onReachTriggerIndex?: never; triggerIndex?: never }
+  | { onReachTriggerIndex: (activeIndex: number) => void; triggerIndex: number }
 )
 
 export type SwiperRefProps = {
@@ -47,8 +41,8 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
       onNewCardReached,
       onRewind,
       onSwipe,
-      onTrigger,
-      swipedIndexCallsOnTrigger,
+      onReachTriggerIndex,
+      triggerIndex,
       containerStyle,
       cardStyle,
       isArtworkSaved,
@@ -59,7 +53,6 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
     const activeCardX = useSharedValue(0)
     const [cards, setCards] = useState(_cards)
     const swipedCardX = useSharedValue(-width)
-    // TODO: remove underscore
     const _activeIndex = useSharedValue(0)
     const [activeIndex, setActiveIndex] = useState(_activeIndex.value)
 
@@ -121,31 +114,12 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
         }
       })
       .onFinalize(({ translationX }) => {
-        const swipeOverThreshold = Math.abs(translationX) > SWIPE_THRESHOLD
-
-        if (!swipeOverThreshold) {
+        const dragCardBackToTheDeck = () => {
           activeCardX.value = withTiming(0)
           swipedCardX.value = withTiming(-width)
-          return
         }
 
-        // Swipe left
-        const isSwipeLeft = translationX < 0
-        const isLastCard = _activeIndex.value === cards.length - 1
-
-        // Fetching more cards on the 3rd, 8th, 13th... swipe
-        if (
-          isSwipeLeft &&
-          !isLastCard &&
-          cards.length - 1 - _activeIndex.value === swipedIndexCallsOnTrigger
-        ) {
-          runOnJS(onTrigger)(_activeIndex.value + 1)
-        }
-
-        const swipedCardIndex = _activeIndex.value
-        const swipedCardKey = cards[swipedCardIndex].internalID
-
-        if (isSwipeLeft && !isLastCard && swipedCardKey) {
+        const swipeLeft = (swipedCardKey: string, swipedCardIndex: number) => {
           const nextCardIndex = swipedCardIndex + 1
           const nextCardKey = cards[nextCardIndex]?.internalID as Key
 
@@ -163,40 +137,66 @@ export const Swiper = forwardRef<SwiperRefProps, SwiperProps>(
           })
 
           runOnJS(onSwipe)(swipedCardKey, nextCardKey)
-          return
         }
 
-        // when it's the last card drag it back to the deck nicely
-        if (isSwipeLeft && isLastCard) {
-          activeCardX.value = withTiming(0, { duration: 200, easing: Easing.cubic })
-          return
-        }
+        const swipeRight = () => {
+          // Swipe right then brings the card back to the deck
+          activeCardX.value = 0
+          const hasSwipedCards = _activeIndex.value > 0
 
-        // Swipe right then brings the card back to the deck
-        activeCardX.value = 0
-        const hasSwipedCards = _activeIndex.value > 0
-
-        let lastSwipedCardKey = null
-
-        // TODO: clean up this minefield of if-statements
-        if (hasSwipedCards) {
-          lastSwipedCardKey = cards[_activeIndex.value - 1].internalID
-        }
-        swipedCardX.value = withTiming(
-          0,
-          { duration: 400, easing: Easing.out(Easing.cubic) },
-          () => {
-            if (hasSwipedCards) {
-              swipedKeys.value = swipedKeys.value.slice(0, -1)
-              _activeIndex.value = _activeIndex.value - 1
-            }
-            swipedCardX.value = -width
+          if (hasSwipedCards) {
+            const lastSwipedCardKey = cards[_activeIndex.value - 1].internalID
+            swipedCardX.value = withTiming(
+              0,
+              { duration: 400, easing: Easing.out(Easing.cubic) },
+              () => {
+                swipedKeys.value = swipedKeys.value.slice(0, -1)
+                _activeIndex.value = _activeIndex.value - 1
+                swipedCardX.value = -width
+              }
+            )
+            runOnJS(onRewind)(lastSwipedCardKey as Key)
+            return
           }
-        )
 
-        if (!!lastSwipedCardKey) {
-          runOnJS(onRewind)(lastSwipedCardKey as Key)
+          swipedCardX.value = withTiming(
+            0,
+            { duration: 400, easing: Easing.out(Easing.cubic) },
+            () => {
+              swipedCardX.value = -width
+            }
+          )
         }
+
+        const swipeOverThreshold = Math.abs(translationX) > SWIPE_THRESHOLD
+
+        if (!swipeOverThreshold) {
+          dragCardBackToTheDeck()
+          return
+        }
+
+        const isSwipeLeft = translationX < 0
+        const isLastCard = _activeIndex.value === cards.length - 1
+
+        // Fetching more cards on the 3rd, 8th, 13th... swipe
+        if (isSwipeLeft && !isLastCard && cards.length - 1 - _activeIndex.value === triggerIndex) {
+          runOnJS(onReachTriggerIndex)(_activeIndex.value + 1)
+        }
+
+        const swipedCardIndex = _activeIndex.value
+        const swipedCardKey = cards[swipedCardIndex].internalID
+
+        if (isSwipeLeft && !isLastCard && swipedCardKey) {
+          swipeLeft(swipedCardKey, swipedCardIndex)
+          return
+        }
+
+        if (isSwipeLeft && isLastCard) {
+          dragCardBackToTheDeck()
+          return
+        }
+
+        swipeRight()
       })
 
     return (

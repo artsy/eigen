@@ -20,7 +20,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { compact } from "lodash"
 import { useState } from "react"
-import { RefreshControl } from "react-native"
+import { RefreshControl, StyleProp, ViewStyle } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -42,10 +42,11 @@ const PAGE_SIZE = isTablet() ? 23 : 11
 interface ArtworkListsProps {
   isTab?: boolean
   isFavorites?: boolean
+  style?: StyleProp<ViewStyle>
 }
 
 export const ArtworkLists: React.FC<ArtworkListsProps> = withSuspense({
-  Component: ({ isTab = true, isFavorites = false }) => {
+  Component: ({ isTab = true, isFavorites = false, style }) => {
     const space = useSpace()
     const artworkListsColCount = useArtworkListsColCount()
     const [refreshing, setRefreshing] = useState(false)
@@ -109,7 +110,7 @@ export const ArtworkLists: React.FC<ArtworkListsProps> = withSuspense({
     if (isTab) {
       return (
         <Tabs.FlatList
-          contentContainerStyle={{ paddingHorizontal: space(2) }}
+          contentContainerStyle={[{ paddingHorizontal: space(2) }, style]}
           data={artworkSections}
           renderItem={({ item }) => item.content}
           numColumns={artworkListsColCount}
@@ -124,7 +125,7 @@ export const ArtworkLists: React.FC<ArtworkListsProps> = withSuspense({
 
     return (
       <Screen.FlatList
-        contentContainerStyle={{ paddingHorizontal: space(2) }}
+        contentContainerStyle={[{ paddingHorizontal: space(2) }, style]}
         data={artworkSections}
         renderItem={({ item }) => item.content}
         numColumns={artworkListsColCount}

@@ -1,4 +1,5 @@
 import { OwnerType, TappedTabBarArgs } from "@artsy/cohesion"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { BottomTabType } from "./BottomTabType"
 
 export type BottomTabRoute = "/" | "/search" | "/inbox" | "/favorites" | "/my-profile"
@@ -37,4 +38,15 @@ export const bottomTabsConfig: {
     analyticsDescription: OwnerType.profile,
     name: "Profile",
   },
+}
+
+export const useSearchTabName = (): string => {
+  const { variant } = useExperimentVariant("diamond_discover-tab")
+  const isDiscoverVariant = variant.name === "variant-a" && variant.enabled
+
+  if (isDiscoverVariant) {
+    return "Discover"
+  }
+
+  return "Search"
 }

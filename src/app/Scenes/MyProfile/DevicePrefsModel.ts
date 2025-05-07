@@ -8,6 +8,7 @@ import { action, Action, computed, Computed, effectOn, EffectOn } from "easy-pea
 import { Appearance, Platform, StatusBar } from "react-native"
 
 export type DarkModeOption = "on" | "off" | "system"
+
 export interface DevicePrefsModel {
   environment: EnvironmentModel
   sessionState: {

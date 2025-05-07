@@ -15,7 +15,7 @@ import {
 } from "@artsy/palette-mobile"
 import { MenuItem } from "app/Components/MenuItem"
 import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
-import { MyProfileHeader } from "app/Scenes/MyProfile/Components/MyProfileHeader"
+import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useSetDevMode } from "app/system/devTools/useSetDevMode"
 import { navigate } from "app/system/navigation/navigate"
@@ -46,10 +46,15 @@ export const MyProfileSettings: React.FC = () => {
   if (enableRedesignedSettings) {
     return (
       <Screen.ScrollView>
-        <MyProfileHeader />
+        <UserAccountHeaderQueryRenderer
+          showBorder
+          showMyCollectionPreview
+          tappable
+          showCompleteProfile
+        />
 
         <Text variant="lg-display" px={2} mt={4}>
-          Profile
+          Account
         </Text>
         <Join separator={<Spacer y={4} />}>
           <>
@@ -65,7 +70,7 @@ export const MyProfileSettings: React.FC = () => {
               Account
             </Text>
 
-            <MenuItem title="Login and security" href="my-account" icon={<LockIcon />} />
+            <MenuItem title="Login and Security" href="my-account" icon={<LockIcon />} />
             <MenuItem title="Payments" href="my-profile/payment" icon={<CreditCardIcon />} />
             <MenuItem
               title="Notifications"
@@ -88,7 +93,7 @@ export const MyProfileSettings: React.FC = () => {
             <MenuItem
               title="Help Center"
               onPress={() => {
-                navigate("help.artsy.net")
+                navigate("https://support.artsy.net/")
               }}
             />
             <MenuItem
@@ -107,8 +112,6 @@ export const MyProfileSettings: React.FC = () => {
             <MenuItem
               title="Terms and Conditions"
               onPress={() => {
-                // TODO: add new route
-                // Jira ONYX - 1642
                 navigate("my-profile/terms-and-conditions")
               }}
             />
@@ -122,7 +125,7 @@ export const MyProfileSettings: React.FC = () => {
 
           <Flex justifyContent="center" px={2} pb={2}>
             <LinkText onPress={confirmLogout} variant="sm">
-              Log Out
+              Log out
             </LinkText>
             <Spacer y={4} />
             <Touchable onPress={() => updateTapCount((count) => count + 1)}>
@@ -240,7 +243,7 @@ export const MyProfileSettings: React.FC = () => {
 
       <Flex flexDirection="row" alignItems="center" justifyContent="center" py="7.5px" px={2}>
         <Button variant="fillDark" haptic onPress={confirmLogout} block>
-          Log Out
+          Log out
         </Button>
       </Flex>
       <Spacer y={1} />

@@ -1,13 +1,12 @@
-import { ActionType, OwnerType } from "@artsy/cohesion"
 import { Flex, LinkText, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { Swiper, SwiperRefProps } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
+import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { MotiView } from "moti"
 import { useEffect, useRef, useState } from "react"
 import { LayoutAnimation, Modal, SafeAreaView, TouchableWithoutFeedback } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
-import { useTracking } from "react-tracking"
 
 interface InfiniteDiscoveryOnboardingProps {
   artworks: InfiniteDiscoveryArtwork[]
@@ -20,14 +19,16 @@ const ONBOARDING_SAVED_HINT_DURATION = 1500
 export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingProps> = ({
   artworks,
 }) => {
-  const { trackEvent } = useTracking()
+  const colorScheme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+
+  const track = useInfiniteDiscoveryTracking()
   const space = useSpace()
   const [showSavedHint, setShowSavedHint] = useState(false)
   const [showSwiper, setShowSwiper] = useState(false)
 
   const swiperRef = useRef<SwiperRefProps>(null)
 
-  const isAtworkSaved = (index: number) => {
+  const isArtworkSaved = (index: number) => {
     // We want to only enable saving the upper card
     if (index === artworks.length - 1) {
       return showSavedHint
@@ -65,7 +66,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
 
   useEffect(() => {
     if (isVisible) {
-      trackEvent(tracks.screenView())
+      track.onboardingView
     }
   }, [isVisible])
 
@@ -102,6 +103,11 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
     }, 1000)
   }, [setShowSavedHint, isVisible, showSwiper])
 
+  const gradientColors =
+    colorScheme === "dark"
+      ? ["rgb(0, 0, 0)", `rgba(24, 24, 24, 0.9)`]
+      : ["rgb(255, 255, 255)", `rgba(231, 231, 231, 0.9)`]
+
   return (
     <Modal
       animationType="fade"
@@ -127,7 +133,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
           <Flex flex={1} backgroundColor="transparent">
             <Flex flex={1}>
               <LinearGradient
-                colors={["rgb(255, 255, 255)", `rgba(231, 231, 231, 0.9)`]}
+                colors={gradientColors}
                 start={{ x: 0, y: 1 }}
                 end={{ x: 0, y: 0 }}
                 style={{
@@ -151,9 +157,6 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
                     <Swiper
                       containerStyle={{ flex: 1, transform: [{ scale: 0.8 }] }}
                       cards={artworks}
-                      onTrigger={() => {}}
-                      swipedIndexCallsOnTrigger={2}
-                      onNewCardReached={() => {}}
                       onRewind={() => {}}
                       onSwipe={() => {}}
                       ref={swiperRef}
@@ -167,7 +170,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
                         shadowOffset: { height: 0, width: 0 },
                         elevation: 2,
                       }}
-                      isArtworkSaved={isAtworkSaved}
+                      isArtworkSaved={isArtworkSaved}
                     />
                   </Flex>
                 </MotiView>
@@ -210,11 +213,4 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
       </TouchableWithoutFeedback>
     </Modal>
   )
-}
-
-const tracks = {
-  screenView: () => ({
-    action: ActionType.screen,
-    context_screen_owner_type: OwnerType.infiniteDiscoveryOnboarding,
-  }),
 }

@@ -5,6 +5,7 @@ import { GlobalStore, unsafe__getEnvironment, unsafe_getDevToggle } from "app/st
 import { DevMenuWrapper } from "app/system/devTools/DevMenu/DevMenuWrapper"
 import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
 import { setupSentry } from "app/system/errorReporting/setupSentry"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { usePurgeCacheOnAppUpdate } from "app/system/relay/usePurgeCacheOnAppUpdate"
 import { addTrackingProvider } from "app/utils/track"
 import {
@@ -64,6 +65,10 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 
 const Main = () => {
   useRageShakeDevMenu()
+
+  const { trackExperiment: trackDiscoverTabExperiment } =
+    useExperimentVariant("diamond_discover-tab")
+
   useEffect(() => {
     const oss = Keys.OSS
     if (oss === "true") {
@@ -73,6 +78,8 @@ const Main = () => {
       webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
     })
     Settings.initializeSDK()
+
+    trackDiscoverTabExperiment()
   }, [])
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isUserIdentified = GlobalStore.useAppState(

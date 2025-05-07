@@ -4,11 +4,13 @@ import { LoadFailureView } from "app/Components/LoadFailureView"
 import { MenuItem } from "app/Components/MenuItem"
 import { PRICE_BUCKETS } from "app/Scenes/MyAccount/MyAccountEditPriceRange"
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { MyProfileScreenWrapper } from "./Components/MyProfileScreenWrapper"
 
 export const MyProfilePreferences = (props: { me?: MyProfilePreferences_me$key }) => {
+  const supportsDarkMode = useFeatureFlag("ARDarkModeSupport")
   const data = useFragment(myProfilePreferencesFragment, props.me)
 
   return (
@@ -20,12 +22,14 @@ export const MyProfilePreferences = (props: { me?: MyProfilePreferences_me$key }
           navigate("/my-account/edit-price-range")
         }}
       />
-      <MenuItem
-        title="Dark Mode"
-        onPress={() => {
-          navigate("/settings/dark-mode")
-        }}
-      />
+      {!!supportsDarkMode && (
+        <MenuItem
+          title="Dark Mode"
+          onPress={() => {
+            navigate("/settings/dark-mode")
+          }}
+        />
+      )}
     </MyProfileScreenWrapper>
   )
 }

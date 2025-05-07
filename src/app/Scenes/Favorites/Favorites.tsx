@@ -7,11 +7,9 @@ import {
   Screen,
   Spacer,
   Text,
-  useScreenDimensions,
-  useSpace,
+  useColor,
 } from "@artsy/palette-mobile"
 import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
-import { BOTTOM_TABS_HEIGHT } from "@artsy/palette-mobile/dist/elements/Screen/StickySubHeader"
 import {
   createMaterialTopTabNavigator,
   MaterialTopTabBarProps,
@@ -27,7 +25,6 @@ import { SavesTab } from "app/Scenes/Favorites/SavesTab"
 import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { useEffect } from "react"
-import { Platform } from "react-native"
 import Animated, { useAnimatedStyle } from "react-native-reanimated"
 
 const Pills: {
@@ -53,6 +50,8 @@ const Pills: {
 ]
 
 const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, navigation }) => {
+  const color = useColor()
+
   const { setActiveTab, setHeaderHeight } = FavoritesContextStore.useStoreActions(
     (actions) => actions
   )
@@ -60,114 +59,111 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
   const { headerHeight } = FavoritesContextStore.useStoreState((state) => state)
   const { trackTappedNavigationTab } = useFavoritesTracking()
 
+  const { currentScrollYAnimated } = useScreenScrollContext()
+
+  const animatedStyles = useAnimatedStyle(() => {
+    const translateY =
+      currentScrollYAnimated.value >= headerHeight
+        ? -headerHeight
+        : Math.min(-currentScrollYAnimated.value, 0)
+
+    return {
+      transform: [
+        {
+          translateY,
+        },
+      ],
+    }
+  })
   const activeRoute = state.routes[state.index].name
 
   return (
-    <Flex
-      onLayout={(event) => {
-        if (!headerHeight) {
-          setHeaderHeight(event.nativeEvent.layout.height)
-        }
-      }}
+    <Animated.View
+      style={[
+        animatedStyles,
+        {
+          position: "absolute",
+          zIndex: 1000,
+          backgroundColor: color("mono0"),
+          width: "100%",
+        },
+      ]}
     >
-      <Flex mx={2}>
-        <Flex alignItems="flex-end" mb={2}>
-          <FavoritesLearnMore />
-        </Flex>
+      <Flex
+        onLayout={(event) => {
+          if (!headerHeight) {
+            setHeaderHeight(event.nativeEvent.layout.height)
+          }
+        }}
+      >
+        <Flex mx={2}>
+          <Flex alignItems="flex-end" mb={2}>
+            <FavoritesLearnMore />
+          </Flex>
 
-        <Text variant="xl">Favorites</Text>
+          <Text variant="xl">Favorites</Text>
 
-        <Spacer y={2} />
-        <Flex flexDirection="row" gap={0.5} mb={2}>
-          {Pills.map(({ Icon, title, key }) => {
-            const isActive = activeRoute === key
-            return (
-              <Pill
-                selected={isActive}
-                onPress={() => {
-                  setActiveTab(key)
+          <Spacer y={2} />
+          <Flex flexDirection="row" gap={0.5} mb={2}>
+            {Pills.map(({ Icon, title, key }) => {
+              const isActive = activeRoute === key
+              return (
+                <Pill
+                  selected={isActive}
+                  onPress={() => {
+                    setActiveTab(key)
 
-                  // We are manually emitting the tabPress event here because
-                  // the navigation library doesn't emit it when we use the
-                  // navigation.navigate() method.
-                  navigation.emit({
-                    type: "tabPress",
-                    target: key,
-                    canPreventDefault: true,
-                  })
+                    // We are manually emitting the tabPress event here because
+                    // the navigation library doesn't emit it when we use the
+                    // navigation.navigate() method.
+                    navigation.emit({
+                      type: "tabPress",
+                      target: key,
+                      canPreventDefault: true,
+                    })
 
-                  navigation.navigate(key)
-                  trackTappedNavigationTab(key)
-                }}
-                Icon={({ fill }) => (
-                  <Flex mr={0.5} justifyContent="center">
-                    <Icon fill={fill || "mono100"} />
-                  </Flex>
-                )}
-                key={key}
-                variant="link"
-              >
-                {title}
-              </Pill>
-            )
-          })}
+                    navigation.navigate(key)
+                    trackTappedNavigationTab(key)
+                  }}
+                  Icon={({ fill }) => (
+                    <Flex mr={0.5} justifyContent="center">
+                      <Icon fill={fill || "mono100"} />
+                    </Flex>
+                  )}
+                  key={key}
+                  variant="link"
+                >
+                  {title}
+                </Pill>
+              )
+            })}
+          </Flex>
         </Flex>
       </Flex>
-    </Flex>
+    </Animated.View>
   )
 }
 
 export const FavoriteTopNavigator = createMaterialTopTabNavigator()
 
 const Content = () => {
-  const space = useSpace()
-  const { currentScrollYAnimated } = useScreenScrollContext()
-  const { headerHeight } = FavoritesContextStore.useStoreState((state) => state)
-  const { height: screenHeight } = useScreenDimensions()
-
-  const animatedStyles = useAnimatedStyle(() => ({
-    transform: [
-      {
-        translateY:
-          currentScrollYAnimated.value >= headerHeight
-            ? -headerHeight
-            : Math.min(-currentScrollYAnimated.value, 0),
-      },
-    ],
-  }))
-
   return (
-    <Animated.View style={[animatedStyles, { height: screenHeight + headerHeight + space(1) }]}>
-      <Screen.Body fullwidth>
-        <FavoriteTopNavigator.Navigator
-          tabBar={FavoritesHeaderTapBar}
-          screenOptions={{
-            swipeEnabled: false,
-          }}
-          layout={({ children }) => {
-            return (
-              <Flex
-                flex={1}
-                style={{
-                  //   // Extra padding to make sure the last item is not covered
-                  paddingBottom: Platform.OS === "ios" ? headerHeight : BOTTOM_TABS_HEIGHT,
-                }}
-              >
-                {children}
-              </Flex>
-            )
-          }}
-        >
-          <FavoriteTopNavigator.Screen name="saves" navigationKey="saves" component={SavesTab} />
-          <FavoriteTopNavigator.Screen
-            name="follows"
-            navigationKey="follows"
-            component={FollowsTab}
-          />
-          <FavoriteTopNavigator.Screen name="alerts" navigationKey="alerts" component={AlertsTab} />
-        </FavoriteTopNavigator.Navigator>
-      </Screen.Body>
-    </Animated.View>
+    <Screen.Body fullwidth>
+      <FavoriteTopNavigator.Navigator
+        tabBar={FavoritesHeaderTapBar}
+        screenOptions={{
+          swipeEnabled: false,
+        }}
+      >
+        <FavoriteTopNavigator.Screen name="saves" navigationKey="saves" component={SavesTab} />
+        <FavoriteTopNavigator.Screen
+          name="follows"
+          navigationKey="follows"
+          component={FollowsTab}
+        />
+        <FavoriteTopNavigator.Screen name="alerts" navigationKey="alerts" component={AlertsTab} />
+      </FavoriteTopNavigator.Navigator>
+    </Screen.Body>
   )
 }
 export const Favorites = () => {

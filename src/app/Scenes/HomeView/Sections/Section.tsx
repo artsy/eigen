@@ -32,6 +32,7 @@ export interface SectionProps extends FlexProps {
 export interface SectionSharedProps extends FlexProps {
   index: number
   sectionID: string
+  overrideShouldBeDisplayed?: boolean
   refetchKey?: number
 }
 

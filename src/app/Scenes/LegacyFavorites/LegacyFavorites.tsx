@@ -1,14 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import {
-  BellIcon,
-  Flex,
-  FollowArtistIcon,
-  Join,
-  Spacer,
-  Tabs,
-  Text,
-  TrendingIcon,
-} from "@artsy/palette-mobile"
+import { BellStrokeIcon, FollowArtistIcon, TrendingIcon } from "@artsy/icons/native"
+import { Flex, Join, Spacer, Tabs, Text } from "@artsy/palette-mobile"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
@@ -105,7 +97,7 @@ export const Favorites: React.FC = () => {
                     </Flex>
                   </Flex>
                   <Flex flexDirection="row" alignItems="flex-start">
-                    <BellIcon mr={0.5} />
+                    <BellStrokeIcon mr={0.5} />
                     <Flex flex={1}>
                       <Text variant="sm-display">
                         Never miss out by exploring your Activity and receiving timely email

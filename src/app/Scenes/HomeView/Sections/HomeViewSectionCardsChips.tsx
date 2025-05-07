@@ -7,6 +7,7 @@ import { getSnapToOffsets } from "app/Scenes/CollectionsByCategory/CollectionsCh
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -30,6 +31,9 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
   const tracking = useHomeViewTracking()
   const section = useFragment(fragment, sectionProp)
   const cards = extractNodes(section.cardsConnection)
+
+  const { variant } = useExperimentVariant("diamond_discover-tab")
+  const isDiscoverVariant = variant.name === "variant-a" && variant.enabled
 
   if (cards.length === 0) return null
 
@@ -90,10 +94,13 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
         )}
       />
 
-      <HomeViewSectionSentinel
-        contextModule={section.contextModule as ContextModule}
-        index={index}
-      />
+      {/* TODO: If we decide to keep the Discover tab and dismantle this A/B test, we will need to continue excluding the sentinel. Find an elegant way to do that. */}
+      {!isDiscoverVariant && (
+        <HomeViewSectionSentinel
+          contextModule={section.contextModule as ContextModule}
+          index={index}
+        />
+      )}
     </Flex>
   )
 }
@@ -152,9 +159,9 @@ const HomeViewSectionCardsChipsPlaceholder: React.FC = () => {
 }
 
 const query = graphql`
-  query HomeViewSectionCardsChipsQuery($id: String!) {
+  query HomeViewSectionCardsChipsQuery($id: String!, $overrideShouldBeDisplayed: Boolean = false) {
     homeView {
-      section(id: $id) {
+      section(id: $id, overrideShouldBeDisplayed: $overrideShouldBeDisplayed) {
         ...HomeViewSectionCardsChips_section
       }
     }
@@ -163,9 +170,10 @@ const query = graphql`
 
 export const HomeViewSectionCardsChipsQueryRenderer: React.FC<SectionSharedProps> = memo(
   withSuspense({
-    Component: ({ sectionID, index, ...flexProps }) => {
+    Component: ({ sectionID, index, overrideShouldBeDisplayed, ...flexProps }) => {
       const data = useLazyLoadQuery<HomeViewSectionCardsChipsQuery>(query, {
         id: sectionID,
+        overrideShouldBeDisplayed,
       })
 
       if (!data?.homeView.section) {

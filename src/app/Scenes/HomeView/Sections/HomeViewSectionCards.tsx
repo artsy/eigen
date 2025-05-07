@@ -15,6 +15,7 @@ import {
 } from "app/Scenes/HomeView/Components/HomeViewSectionCardsCard"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import React, { memo } from "react"
@@ -33,6 +34,9 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
   const { width } = useScreenDimensions()
   const space = useSpace()
   const section = useFragment(fragment, _section)
+
+  const { variant } = useExperimentVariant("diamond_discover-tab")
+  const isDiscoverVariant = variant.name === "variant-a" && variant.enabled
 
   const columns = !isTablet() ? 2 : 3
 
@@ -61,10 +65,13 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
         })}
       </Flex>
 
-      <HomeViewSectionSentinel
-        contextModule={section.contextModule as ContextModule}
-        index={index}
-      />
+      {/* TODO: If we decide to keep the Discover tab and dismantle this A/B test, we will need to continue excluding the sentinel. Find an elegant way to do that. */}
+      {!isDiscoverVariant && (
+        <HomeViewSectionSentinel
+          contextModule={section.contextModule as ContextModule}
+          index={index}
+        />
+      )}
     </Flex>
   )
 }
@@ -88,9 +95,9 @@ const fragment = graphql`
 `
 
 const query = graphql`
-  query HomeViewSectionCardsQuery($id: String!) {
+  query HomeViewSectionCardsQuery($id: String!, $overrideShouldBeDisplayed: Boolean = false) {
     homeView {
-      section(id: $id) {
+      section(id: $id, overrideShouldBeDisplayed: $overrideShouldBeDisplayed) {
         ...HomeViewSectionCards_section
       }
     }
@@ -126,9 +133,12 @@ const HomeViewCardsPlaceholder: React.FC = () => {
 }
 
 export const HomeViewSectionCardsQueryRenderer = memo(
-  withSuspense<Pick<SectionSharedProps, "sectionID" | "index">>({
-    Component: ({ sectionID, index }) => {
-      const data = useLazyLoadQuery<HomeViewSectionCardsQuery>(query, { id: sectionID })
+  withSuspense<Pick<SectionSharedProps, "sectionID" | "index" | "overrideShouldBeDisplayed">>({
+    Component: ({ sectionID, index, overrideShouldBeDisplayed }) => {
+      const data = useLazyLoadQuery<HomeViewSectionCardsQuery>(query, {
+        id: sectionID,
+        overrideShouldBeDisplayed,
+      })
 
       if (!data?.homeView.section) {
         return null

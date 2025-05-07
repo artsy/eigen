@@ -86,6 +86,7 @@ export default class Composer extends React.Component<Props, State> {
         {({ color }) => {
           // The TextInput loses its isFocused() callback as a styled component
           const inputStyles = {
+            color: color("mono100"),
             flex: 1,
             fontSize: 13,
             paddingLeft: 10,
