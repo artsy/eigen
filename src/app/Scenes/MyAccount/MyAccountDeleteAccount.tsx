@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import {
   Spacer,
   GenomeIcon,
@@ -15,6 +16,8 @@ import { DeleteAccountInput } from "__generated__/deleteUserAccountMutation.grap
 import { GlobalStore } from "app/store/GlobalStore"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import React, { useState } from "react"
 import { Alert, InteractionManager, KeyboardAvoidingView, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -40,9 +43,14 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
     : explanation.length > 0
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }}>
-      <ScrollView>
-        <Box pr={2} pl={2}>
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.accountDeleteMyAccount,
+      })}
+    >
+      <KeyboardAvoidingView style={{ flex: 1 }}>
+        <ScrollView>
+          <Box pr={2} pl={2}>
           <Text variant="lg-display" mt="6">
             Delete My Account
           </Text>
@@ -141,6 +149,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
         </Box>
       </ScrollView>
     </KeyboardAvoidingView>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 

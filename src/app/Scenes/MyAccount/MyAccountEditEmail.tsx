@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Flex, Input, SkeletonBox, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountEditEmailQuery } from "__generated__/MyAccountEditEmailQuery.graphql"
@@ -9,6 +10,8 @@ import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderBox } from "app/utils/placeholders"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import React, { useEffect, useRef, useState } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { string } from "yup"
@@ -71,7 +74,36 @@ export const MyAccountEditEmail: React.FC<MyAccountEditEmailProps> = (props) => 
 
   if (enableRedesignedSettings) {
     return (
-      <MyProfileScreenWrapper title="Email" onPress={handleSave} isValid={isEmailValid}>
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({
+          context_screen_owner_type: OwnerType.accountEmail,
+        })}
+      >
+        <MyProfileScreenWrapper title="Email" onPress={handleSave} isValid={isEmailValid}>
+          <Input
+            accessibilityLabel="email-input"
+            enableClearButton
+            value={email}
+            onChangeText={setEmail}
+            autoFocus
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="off"
+            onSubmitEditing={handleSave}
+            error={receivedError}
+          />
+        </MyProfileScreenWrapper>
+      </ProvideScreenTrackingWithCohesionSchema>
+    )
+  }
+
+  return (
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.accountEmail,
+      })}
+    >
+      <Flex p={2}>
         <Input
           accessibilityLabel="email-input"
           enableClearButton
@@ -81,32 +113,15 @@ export const MyAccountEditEmail: React.FC<MyAccountEditEmailProps> = (props) => 
           autoCapitalize="none"
           autoCorrect={false}
           autoComplete="off"
-          onSubmitEditing={handleSave}
+          onSubmitEditing={() => {
+            if (isEmailValid) {
+              editScreenRef.current?.save()
+            }
+          }}
           error={receivedError}
         />
-      </MyProfileScreenWrapper>
-    )
-  }
-
-  return (
-    <Flex p={2}>
-      <Input
-        accessibilityLabel="email-input"
-        enableClearButton
-        value={email}
-        onChangeText={setEmail}
-        autoFocus
-        autoCapitalize="none"
-        autoCorrect={false}
-        autoComplete="off"
-        onSubmitEditing={() => {
-          if (isEmailValid) {
-            editScreenRef.current?.save()
-          }
-        }}
-        error={receivedError}
-      />
-    </Flex>
+      </Flex>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 

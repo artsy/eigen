@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Box, Flex, Separator, Text, useTheme } from "@artsy/palette-mobile"
 import { OrderHistoryQuery } from "__generated__/OrderHistoryQuery.graphql"
 import { OrderHistory_me$data } from "__generated__/OrderHistory_me.graphql"
@@ -5,6 +6,8 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
@@ -40,32 +43,38 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me$data; relay: RelayPagi
   const orders = extractNodes(me.orders)
 
   return (
-    <FlatList
-      style={{ flex: 1 }}
-      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-      data={orders}
-      keyExtractor={(order) => order.code}
-      contentContainerStyle={{ flexGrow: 1, paddingTop: space(2) }}
-      renderItem={({ item }) => (
-        <Flex flexDirection="row" justifyContent="space-between" px="15px">
-          <OrderHistoryRowContainer order={item} key={item.code} />
-        </Flex>
-      )}
-      ListEmptyComponent={
-        <Flex flex={1} flexDirection="column" justifyContent="center" alignItems="center" px="15px">
-          <Text variant="sm-display" color={color("mono60")}>
-            No orders
-          </Text>
-        </Flex>
-      }
-      onEndReachedThreshold={0.25}
-      onEndReached={onLoadMore}
-      ItemSeparatorComponent={() => (
-        <Flex flexDirection="column" justifyContent="center" alignItems="center" px="15px">
-          <Separator mt={10} mb={20} />
-        </Flex>
-      )}
-    />
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.accountOrders,
+      })}
+    >
+      <FlatList
+        style={{ flex: 1 }}
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+        data={orders}
+        keyExtractor={(order) => order.code}
+        contentContainerStyle={{ flexGrow: 1, paddingTop: space(2) }}
+        renderItem={({ item }) => (
+          <Flex flexDirection="row" justifyContent="space-between" px="15px">
+            <OrderHistoryRowContainer order={item} key={item.code} />
+          </Flex>
+        )}
+        ListEmptyComponent={
+          <Flex flex={1} flexDirection="column" justifyContent="center" alignItems="center" px="15px">
+            <Text variant="sm-display" color={color("mono60")}>
+              No orders
+            </Text>
+          </Flex>
+        }
+        onEndReachedThreshold={0.25}
+        onEndReached={onLoadMore}
+        ItemSeparatorComponent={() => (
+          <Flex flexDirection="column" justifyContent="center" alignItems="center" px="15px">
+            <Separator mt={10} mb={20} />
+          </Flex>
+        )}
+      />
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
