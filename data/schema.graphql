@@ -25625,11 +25625,6 @@ type updateNotificationPreferencesMutationPayload {
 }
 
 input updateOrderInput {
-  # Buyer's phone number
-  buyerPhoneNumber: String
-
-  # Buyer's phone number country code
-  buyerPhoneNumberCountryCode: String
   clientMutationId: String
 
   # Credit card wallet type
@@ -25640,27 +25635,6 @@ input updateOrderInput {
 
   # Payment method.
   paymentMethod: OrderPaymentMethodEnum
-
-  # Shipping address line 1
-  shippingAddressLine1: String
-
-  # Shipping address line 2
-  shippingAddressLine2: String
-
-  # Shipping address city
-  shippingCity: String
-
-  # Shipping address country
-  shippingCountry: String
-
-  # Shipping address name
-  shippingName: String
-
-  # Shipping address postal code
-  shippingPostalCode: String
-
-  # Shipping address state/province/region
-  shippingRegion: String
 }
 
 type updateOrderPayload {
