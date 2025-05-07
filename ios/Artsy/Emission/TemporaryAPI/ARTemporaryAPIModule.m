@@ -1,6 +1,8 @@
 #import "ARTemporaryAPIModule.h"
 #import <UserNotifications/UserNotifications.h>
 #import "AREmission.h"
+#import "ArtsyAPI+Notifications.h"
+#import "React/RCTUtils.h"
 
 @implementation ARTemporaryAPIModule
 
@@ -27,8 +29,11 @@ RCT_EXPORT_METHOD(fetchNotificationPermissions:(RCTResponseSenderBlock)callback)
 
 RCT_EXPORT_METHOD(markNotificationsRead:(RCTResponseSenderBlock)block)
 {
-    /* In eigen, this should mark the notifications as read using ArtsyAPI */
-    self.notificationReadStatusAssigner(block);
+    [ArtsyAPI markUserNotificationsReadWithSuccess:^(id response) {
+        block(@[[NSNull null]]);
+    } failure:^(NSError *error) {
+        block(@[ RCTJSErrorFromNSError(error)]);
+    }];
 }
 
 RCT_EXPORT_METHOD(setApplicationIconBadgeNumber:(nonnull NSNumber *)count)

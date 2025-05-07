@@ -5,8 +5,9 @@ apply plugin: "com.facebook.react"
 apply plugin: "org.jetbrains.kotlin.android"
 
 project.ext.keyFiles = [
- debug: "keys.shared.json",
- release: "keys.shared.json",
+  debug: "keys.shared.json",
+  release: "keys.shared.json",
+  beta: "keys.shared.json",
 ]
 
 apply from: project(':react-native-keys').projectDir.getPath() + "/RNKeys.gradle"
@@ -126,6 +127,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            resValue "string", "EXUpdatesDisableAntiBrickingMeasures", "false"
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -133,6 +135,15 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            resValue "string", "EXUpdatesDisableAntiBrickingMeasures", "false"
+        }
+        beta {
+            initWith release
+            signingConfig signingConfigs.release
+            matchingFallbacks = ['release'] // Important: fallback to release if needed
+            // You can set beta-specific settings here
+            resValue "string", "EXUpdatesDisableAntiBrickingMeasures", "true"
+            buildConfigField "boolean", "IS_BETA", "true"
         }
     }
 }

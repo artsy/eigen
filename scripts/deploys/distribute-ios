@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-
 ./scripts/setup/download-assets-ios
-bundle exec fastlane ship_beta_ios
+
+DISTRIBUTION_TARGET="${1-"TESTFLIGHT"}"
+if [ $DISTRIBUTION_TARGET == "FIREBASE" ]; then
+  bundle exec fastlane ship_beta_ios deployment_target:firebase
+elif [ $DISTRIBUTION_TARGET == "TESTFLIGHT" ]; then
+  bundle exec fastlane ship_beta_ios deployment_target:testflight
+elif [ $DISTRIBUTION_TARGET == "BOTH" ]; then
+  bundle exec fastlane ship_beta_ios deployment_target:firebase
+  bundle exec fastlane ship_beta_ios deployment_target:testflight
+fi

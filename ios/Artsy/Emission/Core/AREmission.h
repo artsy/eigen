@@ -3,8 +3,7 @@
 #import <React/RCTBridgeModule.h>
 #import "ARNotificationsManager.h"
 
-@class AREventsModule, ARTemporaryAPIModule, RCTBridge;
-
+@class ARTemporaryAPIModule, RCTBridge;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,7 +15,6 @@ extern NSString *const AREnvTest;
 @interface AREmission : NSObject
 
 @property (nonatomic, strong, readonly) RCTBridge *bridge;
-@property (nonatomic, strong, readonly) AREventsModule *eventsModule;
 @property (nonatomic, strong, readonly) ARTemporaryAPIModule *APIModule;
 @property (nonatomic, strong, readonly) ARNotificationsManager *notificationsManagerModule;
 

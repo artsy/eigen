@@ -440,9 +440,6 @@ function getNativeModules(): OurNativeModules {
     ARPHPhotoPickerModule: {
       requestPhotos: jest.fn(),
     },
-    AREventsModule: {
-      requestAppStoreRating: jest.fn(),
-    },
     ArtsyNativeModule: {
       launchCount: 3,
       setAppStyling: jest.fn(),
@@ -497,9 +494,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
     },
     ARPHPhotoPickerModule: {
       requestPhotos: jest.fn(),
-    },
-    AREventsModule: {
-      requestAppStoreRating: jest.fn(),
     },
     ArtsyNativeModule: {
       launchCount: 3,

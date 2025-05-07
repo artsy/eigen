@@ -2882,7 +2882,7 @@ SPEC CHECKSUMS:
   AFNetworking: 9d57de7506959955d82fb5274ee4bec86b930e52
   AppAuth: a13994980c1ec792f7e2e665acd4d4aa6be43240
   boost: 1dca942403ed9342f98334bf4c3621f011aa7946
-  braze-react-native-sdk: 26f35621b05635fd43a672e9f59853083ec1cef8
+  braze-react-native-sdk: ec6aad9669adc605a28207a968a5a7702838cb05
   BrazeKit: bc5feb3d7b899c3961f7238735423b8e603fd48e
   BrazeLocation: bdcb39337d24624b8741f1935c1ebddab677f8ac
   BrazeUI: d2a12504bc0183e14cd7255d574f8340807ab45a
@@ -2894,22 +2894,22 @@ SPEC CHECKSUMS:
   CwlPosixPreconditionTesting: a125dee731883f2582715f548c6b6c92c7fde145
   CwlPreconditionTesting: ccfd08aca58d14e04062b2a3dd2fd52e09857453
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
-  EASClient: 88b5fd19d0787186a0c7e6ba76deb2d4f96395ce
-  EXConstants: fcfc75800824ac2d5c592b5bc74130bad17b146b
+  EASClient: b79a04168deb0f7b2bf28ce4027db85962ee61c2
+  EXConstants: d3c8e5d33237b0a90d82e30775c44ecb897152ab
   EXJSONUtils: 01fc7492b66c234e395dcffdd5f53439c5c29c93
-  EXManifests: a19d50504b8826546a4782770317bc83fffec87d
+  EXManifests: 25311a466147f18315c4319f851628cf42832834
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": 7a3ac7ad2b9bae43aadb4dca08113bb495c98f3e
   Expo: a6ff273c618506b12129a0d06f2a08201bfbcf43
   ExpoAdapterFBSDKNext: 7e281be5078ab6eda58ac8c489ea2c2b8ea31b70
   ExpoAdapterGoogleSignIn: 3a02de846d07a35ed9d505bb45f66592d20c1de0
   ExpoAsset: 48386d40d53a8c1738929b3ed509bcad595b5516
-  ExpoFileSystem: 42d363d3b96f9afab980dcef60d5657a4443c655
+  ExpoFileSystem: 33f5f7755b14fed9397b9f6ed510b33ec1616b8b
   ExpoFont: f354e926f8feae5e831ec8087f36652b44a0b188
   ExpoKeepAwake: b0171a73665bfcefcfcc311742a72a956e6aa680
-  ExpoModulesCore: 725faec070d590810d2ea5983d9f78f7cf6a38ec
+  ExpoModulesCore: 6aa468bd7133a8125290a5bf2a7f96dad2be5e18
   EXStructuredHeaders: 09c70347b282e3d2507e25fb4c747b1b885f87f6
-  EXUpdates: 6cb35d269f033f8f72aaf25c6f18ad14678771b5
+  EXUpdates: c8d0fa91f384d7c959e62fc24b2926ef7b404ae7
   EXUpdatesInterface: 7c977640bdd8b85833c19e3959ba46145c5719db
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
   FBAEMKit: 31a20c2d8744d8c57d3a5b7ae4e27b4fdd819193
@@ -2975,8 +2975,8 @@ SPEC CHECKSUMS:
   React-debug: 817160c07dc8d24d020fbd1eac7b3558ffc08964
   React-defaultsnativemodule: 21f216e8db975897eb32b5f13247f5bbfaa97f41
   React-domnativemodule: 19270ad4b8d33312838d257f24731a0026809d49
-  React-Fabric: f6dade7007533daeb785ba5925039d83f343be4b
-  React-FabricComponents: b0655cc3e1b5ae12a4a1119aa7d8308f0ad33520
+  React-Fabric: 853920aef3ae3fa2cfbef56337b33c31f525d44e
+  React-FabricComponents: cface9812c318b2b7704e3d8d1bad00229e0a30c
   React-FabricImage: 9b157c4c01ac2bf433f834f0e1e5fe234113a576
   React-featureflags: f2792b067a351d86fdc7bec23db3b9a2f2c8d26c
   React-featureflagsnativemodule: 3a8731d8fd9f755be57e00d9fa8a7f92aa77e87d
@@ -3038,19 +3038,19 @@ SPEC CHECKSUMS:
   ReactCommon: 300d8d9c5cb1a6cd79a67cf5d8f91e4d477195f9
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   RNAppleAuthentication: 98f367520bd647ea4c094dc3e133106ac523798a
-  RNBootSplash: c7b7beb415eed621671ccf17c8c0e7888c84243b
+  RNBootSplash: 4441a5896cb2452bc309f4ca9f66c8562e55b2a3
   RNCAsyncStorage: b9f5f78da5d16a853fe3dc22e8268d932fc45a83
   RNCClipboard: e1d17c9d093d8129ef50b39b63a17a0e8ccd0ade
   RNDeviceInfo: f632df5f5d9262794c03eac265e4a0f6dbb14f0a
   RNFastImage: 118468000fe3eed2a8267e610351b0291024dc28
-  RNFlashList: 38e63c7f8e9ce22f765ce9b381ea8f7ced3cb88c
+  RNFlashList: f5634862f067f1025ae8095a5a86784ad0a3ae72
   RNGestureHandler: e9ff57ef12ccdb4ec8687e95b8d5194f4a2350c5
   RNGoogleSignin: b8f09e3ec56e09497e1e53b0ff66d5a45916c6b1
   RNImageCropPicker: b0afedeefd8655254a15c34103718455fde6ce59
   RNKeychain: 09ce2f1d9251a3ebc49bf55f2d271a720e6d2086
-  RNLocalize: 8493c6dd9ed1d4b52325796cdb81d794fc04f3bf
+  RNLocalize: fb36c4f780d586e75da6499a372ec3e2901b600f
   rnmapbox-maps: 42fe0ccc373fe24032aa224736feb4c39a24d604
-  RNPermissions: 92430517fd4353d5b2b7217cd1ca48ddd2875245
+  RNPermissions: a4e9557445232fac2bbe1990b6503ad168a1ca58
   RNReactNativeHapticFeedback: 7601768ee65ffc86fc93d7c30dd917031144ed3d
   RNReanimated: 6d22a1aec06a9787b797bc0c40fc2779be0599a5
   RNScreens: 5cac36d8f7b3d92fb4304abcb44c5de336413df8

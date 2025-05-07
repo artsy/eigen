@@ -446,9 +446,9 @@ jobs:
       - await-previous-builds:
           branch: beta-ios
       - run:
-          name: Deploy if beta
+          name: Deploy if beta testflight and firebase
           no_output_timeout: 20m
-          command: ./scripts/deploys/deploy-if-beta-branch-ios
+          command: ./scripts/deploys/deploy-if-beta-branch-ios BOTH
 
   build-test-app-android:
     docker:

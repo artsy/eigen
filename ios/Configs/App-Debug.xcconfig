@@ -1,5 +1,0 @@
-#include "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"
-#include "App.xcconfig"
-
-
-DISPLAY_NAME = Δrtsy
