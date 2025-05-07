@@ -32,7 +32,7 @@ export const IdentityVerificationStep: FC = () => {
       <Screen.Body pt={2} fullwidth>
         <Flex flex={1} justifyContent="space-between">
           <Flex flex={1} justifyContent="space-between" px={2}>
-            <Flex>
+            <Flex flexDirection="row" flexWrap="wrap">
               <Text variant="lg-display">Verify your ID</Text>
 
               <Spacer y={1} />
@@ -51,16 +51,19 @@ export const IdentityVerificationStep: FC = () => {
                   </Button>
                 )}
 
-                <Text color="mono60">
-                  Identify Verification is required for some transactions. For more details, see our{" "}
+                <Flex flexDirection="row" flexWrap="wrap">
+                  <Text color="mono60">
+                    Identify Verification is required for some transactions. For more details, see
+                    our{" "}
+                  </Text>
                   <RouterLink
                     to="https://www.artsy.net/identity-verification-faq"
                     hasChildTouchable
                   >
-                    <LinkText>FAQs</LinkText>
+                    <LinkText color="mono60">FAQs</LinkText>
                   </RouterLink>
-                  .
-                </Text>
+                  <Text color="mono60">.</Text>
+                </Flex>
               </Flex>
             </Flex>
 
