@@ -161,16 +161,6 @@ const ViewingRoomsHomeRailMainQuery = graphql`
           partner {
             name
           }
-          artworksConnection(first: 2) {
-            edges {
-              node {
-                image {
-                  square: url(version: "square")
-                  regular: url(version: "larger")
-                }
-              }
-            }
-          }
         }
       }
     }
