@@ -32,7 +32,6 @@ describe(@"receiveRemoteNotification", ^{
         @"url": @"http://artsy.net/works-for-you",
     };
 
-    __block UIApplication *app = nil;
     __block ARAppDelegate *delegate = nil;
     __block UIApplicationState appState = -1;
     __block id mockEmissionSharedInstance = nil;
@@ -41,14 +40,15 @@ describe(@"receiveRemoteNotification", ^{
     __block void (^completionHandler)(UNNotificationPresentationOptions) = ^(UNNotificationPresentationOptions options) {};
 
     beforeEach(^{
-        app = [UIApplication sharedApplication];
-        delegate = [ARAppDelegate sharedInstance];
+        delegate = [[ARAppDelegate alloc] init];
+        [ARAppDelegate setSharedInstanceForTesting:delegate];
 
         mockEmissionSharedInstance = [OCMockObject partialMockForObject:AREmission.sharedInstance];;
     });
 
     afterEach(^{
         [mockEmissionSharedInstance stopMocking];
+        [ARAppDelegate setSharedInstanceForTesting:nil];
     });
 
     sharedExamplesFor(@"when receiving a notification", ^(NSDictionary *prefs) {

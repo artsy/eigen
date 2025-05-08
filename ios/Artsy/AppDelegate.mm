@@ -40,16 +40,21 @@
 
 @implementation ARAppDelegate
 
-static ARAppDelegate *_sharedInstance = nil;
-
-+ (void)load
-{
-    _sharedInstance = [[self alloc] init];
-}
+static ARAppDelegate *_sharedInstanceOverride = nil;
 
 + (ARAppDelegate *)sharedInstance
 {
-    return _sharedInstance;
+    if (_sharedInstanceOverride) {
+        return _sharedInstanceOverride;
+    }
+    id delegate = [UIApplication sharedApplication].delegate;
+    NSAssert([delegate isKindOfClass:[ARAppDelegate class]], @"Unexpected app delegate class");
+    return (ARAppDelegate *)delegate;
+}
+
+// To allow overrides in testing
++ (void)setSharedInstanceForTesting:(ARAppDelegate *)instance {
+    _sharedInstanceOverride = instance;
 }
 
 // Because we‘ve locked the launch screen on iPhone to portrait mode, we now have to unlock all of them again such that
