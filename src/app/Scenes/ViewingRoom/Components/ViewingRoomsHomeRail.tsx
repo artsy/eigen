@@ -9,6 +9,7 @@ import { MediumCard } from "app/Components/Cards"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
+import { useStableShuffle } from "app/utils/hooks/useStableShuffle"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Schema } from "app/utils/track"
@@ -90,9 +91,13 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({
   onPress,
 }) => {
   const queryData = useLazyLoadQuery<ViewingRoomsHomeRailQuery>(ViewingRoomsHomeRailMainQuery, {})
+
+  // assemble a list of all featured viewing rooms, shuffled,
+  // plus any regular viewing rooms needed to fill the rail
   const regular = extractNodes(queryData.viewingRooms)
   const featured = extractNodes(queryData.featuredViewingRooms)
-  const combined = featured.concat(regular)
+  const { shuffled: featuredAndShuffled } = useStableShuffle({ items: featured })
+  const combined = featuredAndShuffled.concat(regular)
   const viewingRooms = uniqBy(combined, (vr) => vr.internalID).slice(0, 12)
 
   const { trackEvent } = useTracking()
