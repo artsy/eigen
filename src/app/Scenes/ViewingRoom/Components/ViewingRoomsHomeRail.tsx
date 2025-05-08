@@ -4,67 +4,20 @@ import {
   ViewingRoomsHomeRailQuery,
   ViewingRoomsHomeRailQuery$data,
 } from "__generated__/ViewingRoomsHomeRailQuery.graphql"
-import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { MediumCard } from "app/Components/Cards"
-import { SectionTitle } from "app/Components/SectionTitle"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { useStableShuffle } from "app/utils/hooks/useStableShuffle"
 import { PlaceholderBox, ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { Schema } from "app/utils/track"
 import { times, uniqBy } from "lodash"
-import React, { memo, Suspense } from "react"
+import React from "react"
 import { FlatList } from "react-native"
 import { isTablet } from "react-native-device-info"
-import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
+import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
-import {
-  featuredFragment,
-  FeaturedRail,
-  tracks as featuredTracks,
-} from "./ViewingRoomsListFeatured"
+import { tracks as featuredTracks } from "./ViewingRoomsListFeatured"
 import { tagForStatus } from "./ViewingRoomsListItem"
-
-interface ViewingRoomsHomeMainRailProps {
-  featured: ViewingRoomsListFeatured_featured$key
-  title: string
-}
-
-export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> = memo(
-  ({ featured, title }) => {
-    const { trackEvent } = useTracking()
-
-    const featuredData = useFragment(featuredFragment, featured)
-    const featuredLength = extractNodes(featuredData).length
-
-    return (
-      <Flex>
-        <Flex mx={2}>
-          <SectionTitle
-            title={title}
-            href="/viewing-rooms"
-            onPress={() => {
-              trackEvent(tracks.tappedViewingRoomsHeader())
-            }}
-          />
-        </Flex>
-        {featuredLength > 0 ? (
-          <FeaturedRail
-            featured={featured}
-            trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
-          />
-        ) : (
-          <Suspense fallback={<ViewingRoomsRailPlaceholder />}>
-            <ViewingRoomsHomeRail
-              trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
-            />
-          </Suspense>
-        )}
-      </Flex>
-    )
-  }
-)
 
 export const ViewingRoomsRailPlaceholder = () => (
   <ProvidePlaceholderContext>
@@ -196,14 +149,3 @@ const ViewingRoomsHomeRailMainQuery = graphql`
     }
   }
 `
-
-const tracks = {
-  tappedViewingRoomsHeader: () => ({
-    action: Schema.ActionNames.TappedViewingRoomGroup,
-    context_module: Schema.ContextModules.FeaturedViewingRoomsRail,
-    context_screen: Schema.PageNames.Home,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Home,
-    destination_screen_owner_type: Schema.PageNames.ViewingRoomsList,
-    type: "header",
-  }),
-}
