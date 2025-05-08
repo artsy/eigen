@@ -69,6 +69,7 @@ describe("ForgotPasswordStep", () => {
       renderWithWrappers(<ForgotPasswordStep />)
       fireEvent.press(screen.getByText("Send Reset Link"))
       await waitFor(() => expect(screen.queryByA11yHint("Enter your email address")).toBeNull())
+      await waitFor(() => expect(screen.getByText("Send Again")).toBeEnabled())
       fireEvent.press(screen.getByText("Send Again"))
       await waitFor(() => expect(GlobalStore.actions.auth.forgotPassword).toHaveBeenCalledTimes(2))
     })
