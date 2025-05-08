@@ -4426,8 +4426,14 @@ type BidderPositionSuggestedNextBid {
 scalar BigInt
 
 input BulkUpdateArtworksFilterInput {
+  # Filter artworks by artist id
+  artistId: String
+
   # Filter artworks with matching ids
   artworkIds: [String]
+
+  # Filter artworks by availability
+  availability: Availability
 
   # Filter artworks by location
   locationId: String
@@ -4443,8 +4449,14 @@ input BulkUpdateArtworksMetadataInput {
   # The category (medium type) to be assigned
   category: String
 
+  # Whether the artworks must be listed as Purchase
+  ecommerce: Boolean
+
   # The partner location ID to assign
   locationId: String
+
+  # Whether the artworks must be listed as Make Offer
+  offer: Boolean
 
   # The price for the artworks
   priceListed: Float
