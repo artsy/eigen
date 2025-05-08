@@ -1,3 +1,5 @@
+import "expo-asset"
+
 global.__TEST__ = false
 
 // for more info about metaflags, look [here](/docs/metaflags.md)
