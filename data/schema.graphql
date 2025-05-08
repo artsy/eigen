@@ -10412,8 +10412,11 @@ type DismissTaskSuccess {
   task: Task!
 }
 
-# Display texts for the order based on its state
+# Display texts for the order based on its state and order shipping/payment states
 type DisplayTexts {
+  # First paragraph of the message text for the order
+  messageText(format: Format = MARKDOWN): String
+
   # Title text to display for the order
   titleText: String!
 }
@@ -16027,7 +16030,7 @@ type Order {
   # Order code
   code: String!
 
-  # Display texts for the order based on its buyer_state
+  # Display texts for the order based on its buyer_state and order shipping/payment states
   displayTexts: DisplayTexts!
 
   # Buyer fulfillment details for order
