@@ -9,8 +9,7 @@
  */
 
 import { Flex } from "@artsy/palette-mobile"
-import { useFocusEffect } from "@react-navigation/native"
-import { FC, ReactNode, useCallback, useEffect, useRef, useState } from "react"
+import { FC, ReactNode, useEffect, useRef, useState } from "react"
 import { Dimensions, View } from "react-native"
 
 const DEFAULT_THRESHOLD = 1
@@ -42,12 +41,10 @@ export const Sentinel: FC<Props> = ({ children, onChange, threshold = DEFAULT_TH
 
   let interval: any = null
 
-  useFocusEffect(
-    useCallback(() => {
-      startWatching()
-      return stopWatching
-    }, [])
-  )
+  useEffect(() => {
+    startWatching()
+    return stopWatching
+  }, [])
 
   const startWatching = () => {
     if (interval) {
