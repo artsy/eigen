@@ -17,7 +17,6 @@ import {
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
-import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -130,10 +129,6 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
       </Flex>
     )
   }, [])
-
-  if (!collection.collectionArtworks) {
-    return <PlaceholderGrid />
-  }
 
   return (
     <>
