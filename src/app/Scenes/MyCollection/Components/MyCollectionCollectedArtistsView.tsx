@@ -15,11 +15,13 @@ import { graphql, usePaginationFragment } from "react-relay"
 interface MyCollectionCollectedArtistsViewProps {
   me: MyCollectionCollectedArtistsView_me$key
   showFilter?: boolean
+  showMoreIcon?: boolean
 }
 
 export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArtistsViewProps> = ({
   me,
   showFilter,
+  showMoreIcon,
 }) => {
   const { data, hasNext, loadNext, isLoadingNext, refetch } = usePaginationFragment(
     collectedArtistsPaginationFragment,
@@ -75,6 +77,7 @@ export const MyCollectionCollectedArtistsView: React.FC<MyCollectionCollectedArt
                   compact
                   interestId={item.internalID}
                   isPrivate={item.private}
+                  showMoreIcon={showMoreIcon}
                 />
               )
             }

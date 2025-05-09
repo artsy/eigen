@@ -9,12 +9,14 @@ interface ArtistItem {
   compact?: boolean
   isPrivate?: boolean
   interestId: string
+  showMoreIcon?: boolean
 }
 
 export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({
   artist,
   isPrivate,
   interestId,
+  showMoreIcon,
 }) => {
   const setViewKind = MyCollectionTabsStore.useStoreActions((state) => state.setViewKind)
   const artistData = useFragment<MyCollectionCollectedArtistItem_artist$key>(artistFragment, artist)
@@ -35,6 +37,7 @@ export const MyCollectionCollectedArtistItem: React.FC<ArtistItem> = ({
       disableNavigation
       onPress={showArtistPreview}
       isPrivate={isPrivate}
+      showMoreIcon={showMoreIcon}
     />
   )
 }
