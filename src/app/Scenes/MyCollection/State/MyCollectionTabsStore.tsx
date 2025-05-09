@@ -53,6 +53,10 @@ export const myCollectionTabsStoreModel: MyCollectionTabsStoreModel = {
         state.viewKind = "Add"
         break
 
+      case "Profile":
+        state.viewKind = "Profile"
+        break
+
       default:
         state.viewKind = payload.viewKind
         state.artistId = payload.artistId
