@@ -6,6 +6,7 @@ import { MediumCard } from "app/Components/Cards"
 import { RailScrollProps } from "app/Scenes/HomeView/Components/types"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
+import { useStableShuffle } from "app/utils/hooks/useStableShuffle"
 import { Schema } from "app/utils/track"
 import { FC, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
@@ -48,6 +49,7 @@ export const FeaturedRail: FC<FeaturedRailProps & Partial<RailScrollProps>> = ({
 }) => {
   const featuredData = useFragment(featuredFragment, props.featured)
   const featured = extractNodes(featuredData)
+  const { shuffled: featuredAndShuffled } = useStableShuffle({ items: featured })
   const { trackEvent } = useTracking()
   const listRef = useRef<FlatList<any>>(null)
   useImperativeHandle(scrollRef, () => ({
@@ -64,7 +66,7 @@ export const FeaturedRail: FC<FeaturedRailProps & Partial<RailScrollProps>> = ({
         showsHorizontalScrollIndicator={false}
         initialNumToRender={2}
         keyExtractor={(item) => item.internalID}
-        data={featured}
+        data={featuredAndShuffled}
         ItemSeparatorComponent={() => <Spacer x="15px" />}
         renderItem={({ item }) => {
           const tag = tagForStatus(item.status, item.distanceToOpen, item.distanceToClose)
