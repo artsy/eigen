@@ -14,7 +14,7 @@ describe("MyCollectionBottomSheetModalProfile", () => {
   const TestRenderer = () => {
     return (
       <BottomSheet index={0} snapPoints={["50%"]}>
-        <MyCollectionBottomSheetModalProfile isVisible={false} onDismiss={() => {}} />
+        <MyCollectionBottomSheetModalProfile isVisible={true} />
       </BottomSheet>
     )
   }
