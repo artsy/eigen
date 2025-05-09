@@ -1,6 +1,7 @@
 import BottomSheet from "@gorhom/bottom-sheet"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { MyCollectionBottomSheetModalProfile } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalProfile"
+import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -13,9 +14,11 @@ jest.mock("react-native/Libraries/Interaction/InteractionManager", () => ({
 describe("MyCollectionBottomSheetModalProfile", () => {
   const TestRenderer = () => {
     return (
-      <BottomSheet index={0} snapPoints={["50%"]}>
-        <MyCollectionBottomSheetModalProfile isVisible={true} />
-      </BottomSheet>
+      <MyCollectionTabsStoreProvider injections={{ view: "Add" }}>
+        <BottomSheet index={0} snapPoints={["50%"]}>
+          <MyCollectionBottomSheetModalProfile isVisible={true} />
+        </BottomSheet>
+      </MyCollectionTabsStoreProvider>
     )
   }
 
