@@ -119,13 +119,7 @@ export const CollectionContent: React.FC<CollectionProps> = ({ collection }) => 
 }
 
 const CollectionQueryRenderer: React.FC<CollectionScreenProps> = ({ collectionID }) => {
-  const data = useLazyLoadQuery<CollectionQuery>(
-    CollectionScreenQuery,
-    { collectionID },
-    {
-      fetchPolicy: "store-and-network",
-    }
-  )
+  const data = useLazyLoadQuery<CollectionQuery>(CollectionScreenQuery, { collectionID })
 
   if (!data?.collection) {
     return null
@@ -180,7 +174,7 @@ const CollectionPlaceholder: React.FC = () => {
 }
 
 export const CollectionScreenQuery = graphql`
-  query CollectionQuery($collectionID: String!) @cacheable {
+  query CollectionQuery($collectionID: String!) {
     collection: marketingCollection(slug: $collectionID) @principalField {
       ...Collection_collection
     }
