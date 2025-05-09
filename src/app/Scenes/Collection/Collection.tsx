@@ -1,9 +1,9 @@
+import { ShareIcon } from "@artsy/icons/native"
 import {
   Box,
   Flex,
   Screen,
   Separator,
-  ShareIcon,
   Skeleton,
   SkeletonBox,
   SkeletonText,
@@ -24,7 +24,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { isEmpty } from "lodash"
-import { Suspense, useCallback } from "react"
+import React, { Suspense, useCallback } from "react"
 import { TouchableOpacity } from "react-native"
 import RNShare from "react-native-share"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -71,7 +71,7 @@ export const CollectionContent: React.FC<CollectionProps> = ({ collection }) => 
         message: message + "\n" + url,
         failOnCancel: true,
       })
-      showToast("Copied to Clipboard", "middle", { Icon: ShareIcon })
+      showToast("Copied to Clipboard", "middle", { Icon: ShareIcon as React.FC })
     } catch (error) {
       if (typeof error === "string" && error.includes("User did not share")) {
         console.error("Collection.tsx", error)
