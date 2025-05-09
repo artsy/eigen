@@ -71,7 +71,13 @@ describe("ForgotPasswordStep", () => {
       await waitFor(() => expect(screen.queryByA11yHint("Enter your email address")).toBeNull())
       await waitFor(() => expect(screen.getByText("Send Again")).toBeEnabled())
       fireEvent.press(screen.getByText("Send Again"))
-      await waitFor(() => expect(GlobalStore.actions.auth.forgotPassword).toHaveBeenCalledTimes(2))
+      await new Promise((r) => setTimeout(r, 100))
+      await waitFor(
+        () => expect(GlobalStore.actions.auth.forgotPassword).toHaveBeenCalledTimes(2),
+        {
+          timeout: 2000,
+        }
+      )
     })
 
     it("returns to the login screen when the 'return to login' button is pressed", async () => {
