@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Flex, Input, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { useStripe } from "@stripe/stripe-react-native"
@@ -11,6 +12,8 @@ import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshCreditCardsList } from "app/utils/refreshHelpers"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { Action, Computed, action, computed, useLocalStore } from "easy-peasy"
 import { useEffect, useRef, useState } from "react"
 import { Alert, KeyboardAvoidingView, Platform, ScrollView } from "react-native"
@@ -262,29 +265,41 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
 
   if (enableRedesignedSettings) {
     return (
-      <MyProfileScreenWrapper
-        title="Add new card"
-        onPress={() => handleSave()}
-        isValid={state.allPresent}
-        loading={isLoading}
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({
+          context_screen_owner_type: OwnerType.accountAddPayment,
+        })}
       >
-        {creditCardForm}
-      </MyProfileScreenWrapper>
+        <MyProfileScreenWrapper
+          title="Add new card"
+          onPress={() => handleSave()}
+          isValid={state.allPresent}
+          loading={isLoading}
+        >
+          {creditCardForm}
+        </MyProfileScreenWrapper>
+      </ProvideScreenTrackingWithCohesionSchema>
     )
   }
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.accountAddPayment,
+      })}
     >
-      <ScrollView ref={scrollViewRef}>
-        <Flex px={enableRedesignedSettings ? 0 : 2} py={2}>
-          {creditCardForm}
-        </Flex>
-      </ScrollView>
-    </KeyboardAvoidingView>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+      >
+        <ScrollView ref={scrollViewRef}>
+          <Flex px={enableRedesignedSettings ? 0 : 2} py={2}>
+            {creditCardForm}
+          </Flex>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 

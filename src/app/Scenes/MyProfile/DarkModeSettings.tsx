@@ -3,6 +3,8 @@ import { Flex, Join, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
 import { DarkModeOption } from "app/Scenes/MyProfile/DevicePrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { ScrollView, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 import { MyProfileScreenWrapper } from "./Components/MyProfileScreenWrapper"
@@ -55,17 +57,29 @@ export const DarkModeSettings: React.FC<{}> = () => {
 
   if (enableRedesignedSettings) {
     return (
-      <MyProfileScreenWrapper title="Dark Mode" contentContainerStyle={{ paddingHorizontal: 0 }}>
-        {content}
-      </MyProfileScreenWrapper>
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({
+          context_screen_owner_type: OwnerType.accountDarkMode,
+        })}
+      >
+        <MyProfileScreenWrapper title="Dark Mode" contentContainerStyle={{ paddingHorizontal: 0 }}>
+          {content}
+        </MyProfileScreenWrapper>
+      </ProvideScreenTrackingWithCohesionSchema>
     )
   }
 
   return (
-    <ScrollView>
-      <Spacer y={2} />
-      {content}
-    </ScrollView>
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.accountDarkMode,
+      })}
+    >
+      <ScrollView>
+        <Spacer y={2} />
+        {content}
+      </ScrollView>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 

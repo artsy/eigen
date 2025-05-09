@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Box, Button, Flex, Join, Separator, Text } from "@artsy/palette-mobile"
 import { MyProfilePushNotificationsQuery } from "__generated__/MyProfilePushNotificationsQuery.graphql"
 import {
@@ -16,6 +17,8 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import useAppState from "app/utils/useAppState"
 import { debounce } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
@@ -217,17 +220,43 @@ export const MyProfilePushNotifications: React.FC<{
 
   if (enableRedesignedSettings) {
     return (
-      <MyProfileScreenWrapper
-        title="Notifications"
-        contentContainerStyle={{
-          // Override the default paddingHorizontal of MyProfileScreenWrapper
-          paddingHorizontal: 0,
-        }}
-        RefreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({
+          context_screen_owner_type: OwnerType.accountNotifications,
+        })}
       >
-        {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && (
-          <OpenSettingsBanner />
-        )}
+        <MyProfileScreenWrapper
+          title="Notifications"
+          contentContainerStyle={{
+            // Override the default paddingHorizontal of MyProfileScreenWrapper
+            paddingHorizontal: 0,
+          }}
+          RefreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+        >
+          {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && (
+            <OpenSettingsBanner />
+          )}
+          {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined &&
+            Platform.OS === "ios" && <AllowPushNotificationsBanner />}
+          <Content
+            userNotificationSettings={userNotificationSettings}
+            isLoading={isLoading}
+            handleUpdateUserNotificationSettings={handleUpdateUserNotificationSettings}
+            notificationAuthorizationStatus={notificationAuthorizationStatus}
+          />
+        </MyProfileScreenWrapper>
+      </ProvideScreenTrackingWithCohesionSchema>
+    )
+  }
+
+  return (
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.accountNotifications,
+      })}
+    >
+      <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
+        {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && <OpenSettingsBanner />}
         {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined &&
           Platform.OS === "ios" && <AllowPushNotificationsBanner />}
         <Content
@@ -236,22 +265,8 @@ export const MyProfilePushNotifications: React.FC<{
           handleUpdateUserNotificationSettings={handleUpdateUserNotificationSettings}
           notificationAuthorizationStatus={notificationAuthorizationStatus}
         />
-      </MyProfileScreenWrapper>
-    )
-  }
-
-  return (
-    <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
-      {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && <OpenSettingsBanner />}
-      {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined &&
-        Platform.OS === "ios" && <AllowPushNotificationsBanner />}
-      <Content
-        userNotificationSettings={userNotificationSettings}
-        isLoading={isLoading}
-        handleUpdateUserNotificationSettings={handleUpdateUserNotificationSettings}
-        notificationAuthorizationStatus={notificationAuthorizationStatus}
-      />
-    </ScrollView>
+      </ScrollView>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
