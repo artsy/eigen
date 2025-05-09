@@ -1,4 +1,13 @@
-import { AvatarSize, EntityHeader, Flex, FollowButton, Text, useColor } from "@artsy/palette-mobile"
+import { MoreIcon } from "@artsy/icons/native"
+import {
+  AvatarSize,
+  EntityHeader,
+  Flex,
+  FollowButton,
+  Text,
+  Touchable,
+  useColor,
+} from "@artsy/palette-mobile"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
@@ -34,6 +43,7 @@ interface Props {
   uploadsCount?: number | null
   withFeedback?: boolean
   theme?: "dark" | "light"
+  showMoreIcon?: boolean
 }
 
 export const formatTombstoneText = (
@@ -74,6 +84,7 @@ const ArtistListItem: React.FC<Props> = ({
   uploadsCount,
   withFeedback = false,
   theme = "light",
+  showMoreIcon = false,
 }) => {
   const color = useColor()
   const { is_followed, initials, href, name, nationality, birthday, deathday } = artist
@@ -136,20 +147,27 @@ const ArtistListItem: React.FC<Props> = ({
     return null
   }
 
+  const callOnPress = () => {
+    onPress?.()
+
+    if (href && !disableNavigation) {
+      tracks.tapArtistGroup(artist)
+    }
+  }
   return (
     <RouterLink
       noFeedback={!withFeedback}
       // Only navigate if there is an href and navigation is not disabled by passing `onPress` or
       to={!disableNavigation ? href : undefined}
       onPress={() => {
-        onPress?.()
-
-        if (href && !disableNavigation) {
-          tracks.tapArtistGroup(artist)
-        }
+        if (showMoreIcon) {
+          // do not navigate if ellipsus is displayed
+          return
+        } else callOnPress()
       }}
       underlayColor={color("mono5")}
       style={containerStyle}
+      hasChildTouchable={showMoreIcon || showFollowButton}
     >
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" width="100%">
         <Flex flex={1}>
@@ -165,9 +183,19 @@ const ArtistListItem: React.FC<Props> = ({
             theme={theme}
           />
         </Flex>
+        {!!showMoreIcon && (
+          <Touchable onPress={() => callOnPress()} testID="more-icon">
+            <MoreIcon />
+          </Touchable>
+        )}
         {!!showFollowButton && (
           <Flex>
-            <FollowButton haptic isFollowed={!!is_followed} onPress={handleFollowArtist} />
+            <FollowButton
+              testID="follow-artist-button"
+              haptic
+              isFollowed={!!is_followed}
+              onPress={handleFollowArtist}
+            />
           </Flex>
         )}
       </Flex>
