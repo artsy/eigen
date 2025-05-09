@@ -58,6 +58,16 @@ export function setupSentry(props: SetupSentryProps = { debug: false }) {
     profilesSampleRate: props.debug ? 1.0 : 0.05,
     debug: props.debug,
     integrations: [navigationInstrumentation],
+    beforeSend(event) {
+      if (
+        typeof event.exception?.values?.[0]?.value === "string" &&
+        event.exception?.values?.[0]?.value.includes("Object captured as exception")
+      ) {
+        console.warn("Potential bad error object:", event.extra)
+        return null // Discards the event completely since it is not useful and does not result in a crash
+      }
+      return event
+    },
     ...props,
   })
 }
