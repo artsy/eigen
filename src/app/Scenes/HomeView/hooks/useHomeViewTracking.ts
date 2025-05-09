@@ -286,12 +286,13 @@ export const useHomeViewTracking = () => {
       entityType: ScreenOwnerType,
       href: string,
       contextModule: ContextModule,
-      index: number
+      index: number,
+      screenOwnerType: ScreenOwnerType
     ) => {
       const payload: TappedCardGroup = {
         action: ActionType.tappedCardGroup,
         context_module: contextModule,
-        context_screen_owner_type: OwnerType.home,
+        context_screen_owner_type: screenOwnerType,
         destination_screen_owner_type: entityType,
         destination_path: href,
         destination_screen_owner_id: entityID,
