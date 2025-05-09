@@ -14,11 +14,12 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { MenuItem } from "app/Components/MenuItem"
-import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useSetDevMode } from "app/system/devTools/useSetDevMode"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
+import { presentEmailComposer } from "app/utils/email/presentEmailComposer"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { compact } from "lodash"
 import { Alert, ScrollView } from "react-native"
