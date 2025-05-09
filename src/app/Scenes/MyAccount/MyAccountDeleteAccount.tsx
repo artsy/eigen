@@ -1,13 +1,5 @@
-import {
-  Spacer,
-  GenomeIcon,
-  AuctionIcon,
-  Flex,
-  Box,
-  Text,
-  Button,
-  Input,
-} from "@artsy/palette-mobile"
+import { GenomeIcon, GavelIcon } from "@artsy/icons/native"
+import { Spacer, Flex, Box, Text, Button, Input } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountDeleteAccountQuery } from "__generated__/MyAccountDeleteAccountQuery.graphql"
 import { MyAccountDeleteAccount_me$data } from "__generated__/MyAccountDeleteAccount_me.graphql"
@@ -43,7 +35,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
     <KeyboardAvoidingView style={{ flex: 1 }}>
       <ScrollView>
         <Box pr={2} pl={2}>
-          <Text variant="lg-display" mt="6">
+          <Text variant="lg-display" mt={2}>
             Delete My Account
           </Text>
           <Spacer y={4} />
@@ -63,7 +55,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
           <Spacer y={2} />
           <Flex flexDirection="row" alignItems="center" pr={1}>
             <Flex pb={1}>
-              <AuctionIcon width={ICON_SIZE} height={ICON_SIZE} />
+              <GavelIcon width={ICON_SIZE} height={ICON_SIZE} />
             </Flex>
             <Text variant="xs" color={color("mono100")} px={1} pb="1px">
               You won’t have access to any exclusive Artsy benefits, such as Artsy Curated Auctions,
