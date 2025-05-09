@@ -157,17 +157,18 @@ lane :check_flags do
 
   hidden_flags_message = ''
   hidden_flags.each do |flag_name|
-    hidden_flags_message += "\n :x: #{flag_name}"
+    hidden_flags_message += "\n :alert-orange: #{flag_name}"
   end
 
   message = <<~MSG
-    :checkered_flag: :steam_locomotive:
+    :alert-orange: :checkered_flag: :steam_locomotive: :alert-orange:
     We are getting ready for an app release!
-    Are your features ready?
+
+    *Did you forget to set readyForRelease to true :interrobang:*
     *Features HIDDEN in the upcoming release*:
     #{hidden_flags_message}
-    If a feature here should be going out this release please follow the docs here
-    ahead of release QA:
+
+    If a feature here should be going out this release please follow the docs here:
     https://github.com/artsy/eigen/blob/main/docs/developing_a_feature.md#releasing-a-feature
     @onyx-devs @phires @amber-devs @diamond-devs @emerald-devs
   MSG
