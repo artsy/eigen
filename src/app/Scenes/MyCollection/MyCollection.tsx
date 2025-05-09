@@ -1,7 +1,6 @@
 import { AddIcon, FilterIcon, MoreIcon } from "@artsy/icons/native"
 import { Flex, Screen, Tabs, Touchable, VisualClueDot } from "@artsy/palette-mobile"
 import { ACCESSIBLE_DEFAULT_ICON_SIZE, ICON_HIT_SLOP } from "app/Components/constants"
-import { MyCollectionBottomSheetModalProfile } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalProfile"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
 import {
   myCollectionCollectedArtistsQuery,
@@ -12,10 +11,12 @@ import {
   MyCollectionInsightsScreenQuery,
 } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionInsights"
 import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
-import { goBack } from "app/system/navigation/navigate"
+// eslint-disable-next-line no-restricted-imports
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { prefetchQuery } from "app/utils/queryPrefetching"
-import { useEffect, useState } from "react"
+import { debounce } from "lodash"
+import { useEffect } from "react"
 import { PixelRatio } from "react-native"
 import { MyCollectionArtworksQueryRenderer } from "./MyCollectionArtworks"
 import { MyCollectionQueryRenderer as MyCollectionLegacyQueryRenderer } from "./MyCollectionLegacy"
@@ -41,12 +42,33 @@ const MyCollection: React.FC = () => {
   const { activeNavigationTab, filtersCount } = MyCollectionTabsStore.useStoreState(
     (state) => state
   )
-  const [showBottomSheet, setShowBottomSheet] = useState(false)
 
   useEffect(() => {
     prefetchQuery({ query: myCollectionCollectedArtistsQuery })
     prefetchQuery({ query: MyCollectionInsightsScreenQuery })
   }, [])
+
+  const showAddToMyCollectionBottomSheet = debounce(() => {
+    setViewKind({ viewKind: "Add" })
+  }, 100)
+
+  const handleCreateButtonPress = () => {
+    switch (activeNavigationTab) {
+      case "Artists":
+        navigate("my-collection/collected-artists/new")
+        break
+      case "Artworks":
+        navigate("my-collection/artworks/new", {
+          passProps: {
+            source: Tab.collection,
+          },
+        })
+        break
+      default:
+        showAddToMyCollectionBottomSheet()
+        break
+    }
+  }
 
   return (
     <>
@@ -57,7 +79,7 @@ const MyCollection: React.FC = () => {
             <Touchable
               hitSlop={ICON_HIT_SLOP}
               onPress={() => {
-                setShowBottomSheet(true)
+                setViewKind({ viewKind: "Profile" })
               }}
             >
               <MoreIcon fill="mono100" />
@@ -65,11 +87,6 @@ const MyCollection: React.FC = () => {
           }
         />
         <Screen.Body fullwidth>
-          <MyCollectionBottomSheetModalProfile
-            isVisible={showBottomSheet}
-            onDismiss={() => setShowBottomSheet(false)}
-          />
-
           <Tabs
             renderHeader={() => <UserAccountHeaderQueryRenderer />}
             headerHeight={500}
@@ -103,12 +120,7 @@ const MyCollection: React.FC = () => {
                 )}
 
                 {activeNavigationTab !== Tab.insights && (
-                  <Touchable
-                    hitSlop={ICON_HIT_SLOP}
-                    onPress={() => {
-                      setViewKind({ viewKind: "Add" })
-                    }}
-                  >
+                  <Touchable hitSlop={ICON_HIT_SLOP} onPress={() => handleCreateButtonPress()}>
                     <AddIcon
                       height={ACCESSIBLE_DEFAULT_ICON_SIZE}
                       width={ACCESSIBLE_DEFAULT_ICON_SIZE}

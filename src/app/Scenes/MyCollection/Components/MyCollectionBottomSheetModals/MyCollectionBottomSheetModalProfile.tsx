@@ -3,6 +3,7 @@ import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
 import { Tab } from "app/Scenes/MyCollection/MyCollection"
+import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { InteractionManager } from "react-native"
@@ -10,16 +11,18 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export const MyCollectionBottomSheetModalProfile: React.FC<{
   isVisible: boolean
-  onDismiss: () => void
-}> = ({ isVisible, onDismiss }) => {
+}> = ({ isVisible }) => {
   const { bottom } = useSafeAreaInsets()
+  const setViewKind = MyCollectionTabsStore.useStoreActions((state) => state.setViewKind)
 
   return (
     <AutomountedBottomSheetModal
       visible={isVisible}
       snapPoints={SNAP_POINTS}
       enableDynamicSizing
-      onDismiss={onDismiss}
+      onDismiss={() => {
+        setViewKind({ viewKind: null })
+      }}
       name="LearnMoreBottomSheet"
     >
       <BottomSheetScrollView>
@@ -33,7 +36,7 @@ export const MyCollectionBottomSheetModalProfile: React.FC<{
           <Join separator={<Spacer y={1} />}>
             <Touchable
               onPress={() => {
-                onDismiss()
+                setViewKind({ viewKind: null })
                 InteractionManager.runAfterInteractions(() => {
                   navigate("/my-profile/edit")
                 })
@@ -43,7 +46,7 @@ export const MyCollectionBottomSheetModalProfile: React.FC<{
             </Touchable>
             <Touchable
               onPress={() => {
-                onDismiss()
+                setViewKind({ viewKind: null })
                 InteractionManager.runAfterInteractions(() => {
                   navigate("my-collection/artworks/new", {
                     passProps: {
@@ -57,7 +60,7 @@ export const MyCollectionBottomSheetModalProfile: React.FC<{
             </Touchable>
             <Touchable
               onPress={() => {
-                onDismiss()
+                setViewKind({ viewKind: null })
                 InteractionManager.runAfterInteractions(() => {
                   navigate("my-collection/collected-artists/new", {
                     passProps: {

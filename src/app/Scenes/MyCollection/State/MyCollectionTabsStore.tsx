@@ -5,7 +5,7 @@ export type CollectedTab = "Artworks" | "Artists" | null
 
 type ViewPayload =
   | {
-      viewKind: "Add" | null
+      viewKind: "Add" | "Profile" | null
     }
   | {
       viewKind: "Artist"
