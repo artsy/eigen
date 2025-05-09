@@ -1,6 +1,7 @@
 import { AddIcon, FilterIcon, MoreIcon } from "@artsy/icons/native"
 import { Flex, Screen, Tabs, Touchable, VisualClueDot } from "@artsy/palette-mobile"
 import { ACCESSIBLE_DEFAULT_ICON_SIZE, ICON_HIT_SLOP } from "app/Components/constants"
+import { MyCollectionBottomSheetModalProfile } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalProfile"
 import { MyCollectionBottomSheetModals } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModals"
 import {
   myCollectionCollectedArtistsQuery,
@@ -14,7 +15,7 @@ import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/
 import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { prefetchQuery } from "app/utils/queryPrefetching"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { PixelRatio } from "react-native"
 import { MyCollectionArtworksQueryRenderer } from "./MyCollectionArtworks"
 import { MyCollectionQueryRenderer as MyCollectionLegacyQueryRenderer } from "./MyCollectionLegacy"
@@ -28,6 +29,7 @@ export enum Tab {
   artworks = "Artworks",
   artists = "Artists",
   insights = "Insights",
+  collection = "My Collection",
 }
 
 const DOT_DIAMETER = 6 * PixelRatio.getFontScale()
@@ -39,6 +41,7 @@ const MyCollection: React.FC = () => {
   const { activeNavigationTab, filtersCount } = MyCollectionTabsStore.useStoreState(
     (state) => state
   )
+  const [showBottomSheet, setShowBottomSheet] = useState(false)
 
   useEffect(() => {
     prefetchQuery({ query: myCollectionCollectedArtistsQuery })
@@ -51,12 +54,22 @@ const MyCollection: React.FC = () => {
         <Screen.Header
           onBack={goBack}
           rightElements={
-            <Touchable hitSlop={ICON_HIT_SLOP} onPress={() => {}}>
+            <Touchable
+              hitSlop={ICON_HIT_SLOP}
+              onPress={() => {
+                setShowBottomSheet(true)
+              }}
+            >
               <MoreIcon fill="mono100" />
             </Touchable>
           }
         />
         <Screen.Body fullwidth>
+          <MyCollectionBottomSheetModalProfile
+            isVisible={showBottomSheet}
+            onDismiss={() => setShowBottomSheet(false)}
+          />
+
           <Tabs
             renderHeader={() => <UserAccountHeaderQueryRenderer />}
             headerHeight={500}
