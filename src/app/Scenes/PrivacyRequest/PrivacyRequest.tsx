@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Join, LinkText, Spacer, Text } from "@artsy/palette-mobile"
-import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { presentEmailComposer } from "app/utils/email/presentEmailComposer"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React from "react"
 
