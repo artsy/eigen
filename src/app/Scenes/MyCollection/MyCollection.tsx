@@ -97,7 +97,7 @@ const MyCollection: React.FC = () => {
               setActiveNavigationTab(tab as MyCollectionNavigationTab)
             }}
             stickyTabBarComponent={
-              <Flex flexDirection="row" alignItems="center" gap={1} pr={2}>
+              <Flex flexDirection="row" alignItems="center" gap={2} mr={2}>
                 {/* Filtering is only available for artworks */}
                 {activeNavigationTab === Tab.artworks && (
                   <Touchable
