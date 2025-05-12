@@ -479,6 +479,7 @@ lane :deploy_to_expo_updates do |options|
   deployment_name = options[:deployment_name]
   description = options[:description]
   rollout_percentage = options[:rollout_percentage]
+  platform = options[:platform]
 
   # important! this must match the release version specified
   # in Eigen in order for sourcemaps to work correctly
@@ -492,29 +493,25 @@ lane :deploy_to_expo_updates do |options|
     expo_command += " --branch=#{deployment_name} --rollout=#{rollout_percentage}"
   end
 
-  # Execute the command and parse the returned folder
-  output = sh("pushd .. > /dev/null && \
+  sh("pushd .. > /dev/null && \
       #{expo_command} | tail -n1 && \
       popd > /dev/null")
-  folder_line = output.lines.find { |line| line.start_with?("BUILDFOLDER_PATH=") }
-  folder = folder_line.split("=").last.strip
+  build_folder = File.expand_path("../dist/")
 
   sh("yarn add @sentry/cli -D")
   sentry_cli_path = 'node_modules/@sentry/cli/bin/sentry-cli'
 
-  ['ios', 'android'].each do |platform|
-    upload_expo_sourcemaps(
-      sentry_cli_path: sentry_cli_path,
-      org_slug: 'artsynet',
-      project_slug: 'eigen',
-      platform: platform,
-      sentry_release_name: "#{platform}-#{release_name_base}",
-      dist: dist_version,
-      build_folder: folder,
-      silence_failures: true # we ship expo releases every commit to main, failures are noisy
-    )
-    tag_and_push(tag: "#{platform}-#{release_name_base}")
-  end
+  upload_expo_sourcemaps(
+    sentry_cli_path: sentry_cli_path,
+    org_slug: 'artsynet',
+    project_slug: 'eigen',
+    platform: platform,
+    sentry_release_name: "#{platform}-#{release_name_base}",
+    dist: dist_version,
+    build_folder: build_folder,
+    silence_failures: true # we ship expo releases every commit to main, failures are noisy
+  )
+  tag_and_push(tag: "#{platform}-#{release_name_base}")
 
   puts "🚀 Deploying to #{deployment_name} with description '#{description}' for platform #{platform}"
   puts "🎯 Rollout: #{rollout_percentage}%" if rollout_percentage
