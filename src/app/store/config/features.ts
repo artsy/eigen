@@ -263,7 +263,7 @@ export const features = {
   },
   AREnableRedesignedSettings: {
     description: "Enable redesigned settings tab",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableRedesignedSettings",
   },
