@@ -154,6 +154,7 @@ const ArtistListItem: React.FC<Props> = ({
       tracks.tapArtistGroup(artist)
     }
   }
+
   return (
     <RouterLink
       noFeedback={!withFeedback}
@@ -167,7 +168,6 @@ const ArtistListItem: React.FC<Props> = ({
       }}
       underlayColor={color("mono5")}
       style={containerStyle}
-      hasChildTouchable={showMoreIcon || showFollowButton}
     >
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" width="100%">
         <Flex flex={1}>
