@@ -15,9 +15,7 @@
 + (NSString *)authenticationToken { return @"authenticationToken"; }
 + (NSString *)launchCount { return @"launchCount"; }
 + (NSString *)userEmail { return @"userEmail"; }
-
 + (NSString *)userAgent { return @"userAgent"; }
-
 + (NSString *)env { return @"env"; }
 @end
 
@@ -31,16 +29,6 @@
 + (NSString *)userIsDev { return @"userIsDev"; }
 @end
 
-
-@interface ARNotificationsManager ()
-@property (nonatomic, assign, readwrite) BOOL isBeingObserved;
-@property (strong, nonatomic, readwrite) NSDictionary *state;
-@property (strong, nonatomic, readwrite) NSMutableDictionary *reactState;
-
-@property (readwrite, nonatomic, strong) NSMutableArray<void (^)(void)> *bootstrapQueue;
-@property (readwrite, nonatomic, assign) BOOL didBootStrap;
-@end
-
 // event keys
 // These should match the values in src/app/store/NativeModel.ts
 static NSString *notificationReceived = @"NOTIFICATION_RECEIVED";
@@ -52,17 +40,60 @@ static NSString *requestModalDismiss = @"REQUEST_MODAL_DISMISS";
 static NSString *eventTracking = @"EVENT_TRACKING";
 static NSString *identifyTracking = @"IDENTIFY_TRACKING";
 
+// Singleton instance
+static ARNotificationsManager *_sharedInstance = nil;
 
+@interface ARNotificationsManager ()
+
+@property (nonatomic, assign, readwrite) BOOL isBeingObserved;
+@property (strong, nonatomic, readwrite) NSDictionary *state;
+@property (strong, nonatomic, readwrite) NSMutableDictionary *reactState;
+@property (readwrite, nonatomic, strong) NSMutableArray<void (^)(void)> *bootstrapQueue;
+@property (readwrite, nonatomic, assign) BOOL didBootStrap;
+
+@end
 
 @implementation ARNotificationsManager
 
 RCT_EXPORT_MODULE();
 
-- (instancetype)initWithState:(NSDictionary *)state
-{
+#pragma mark - Singleton Management
+
+
++ (instancetype)sharedInstance {
+    return _sharedInstance;
+}
+
+- (instancetype)initWithState:(NSDictionary *)state {
+    ARNotificationsManager *instance = _sharedInstance;
+
+    if (!instance) {
+        instance = [super init];
+        _sharedInstance = instance;
+
+        instance->_bootstrapQueue = [[NSMutableArray alloc] init];
+        instance->_reactState = [[NSMutableDictionary alloc] init];
+    }
+
+    // Apply the state regardless of whether it was already initialized
+    if (state) {
+        instance->_state = [state copy];
+    }
+
+    return instance;
+}
+
+- (instancetype)init {
+    if (_sharedInstance) {
+        return _sharedInstance;
+    }
+
     self = [super init];
     if (self) {
-        _state = [state copy];
+        _sharedInstance = self;
+
+        // Default initialization in case RN got here first
+        _state = @{};
         _bootstrapQueue = [[NSMutableArray alloc] init];
         _reactState = [[NSMutableDictionary alloc] init];
     }
