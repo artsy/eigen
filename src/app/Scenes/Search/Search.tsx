@@ -138,14 +138,12 @@ export const Search: React.FC = () => {
                 <HomeViewSectionCardsChipsQueryRenderer
                   sectionID="home-view-section-discover-something-new"
                   index={0}
-                  overrideShouldBeDisplayed={true}
                 />
               )}
               {!!isDiscoverVariant && (
                 <HomeViewSectionCardsQueryRenderer
                   sectionID="home-view-section-explore-by-category"
                   index={0}
-                  overrideShouldBeDisplayed={true}
                 />
               )}
 
