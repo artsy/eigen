@@ -8,6 +8,9 @@ project.ext.keyFiles = [
   debug: "keys.shared.json",
   release: "keys.shared.json",
   beta: "keys.shared.json",
+  debug: "keys.shared.json",
+  release: "keys.shared.json",
+  beta: "keys.shared.json",
 ]
 
 apply from: project(':react-native-keys').projectDir.getPath() + "/RNKeys.gradle"

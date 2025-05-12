@@ -263,7 +263,7 @@ export const features = {
   },
   AREnableRedesignedSettings: {
     description: "Enable redesigned settings tab",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableRedesignedSettings",
   },
@@ -278,6 +278,12 @@ export const features = {
     showInDevMenu: true,
     description: "Enable quick links animation",
     echoFlagKey: "AREnableQuickLinksAnimation",
+  },
+  AREnableNewOrderDetails: {
+    readyForRelease: false,
+    showInDevMenu: true,
+    description: "Enable new order details screen",
+    echoFlagKey: "AREnableNewOrderDetails",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

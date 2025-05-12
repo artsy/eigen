@@ -11,9 +11,11 @@ import {
   MyCollectionInsightsScreenQuery,
 } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionInsights"
 import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
-import { goBack } from "app/system/navigation/navigate"
+// eslint-disable-next-line no-restricted-imports
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { prefetchQuery } from "app/utils/queryPrefetching"
+import { debounce } from "lodash"
 import { useEffect } from "react"
 import { PixelRatio } from "react-native"
 import { MyCollectionArtworksQueryRenderer } from "./MyCollectionArtworks"
@@ -28,6 +30,7 @@ export enum Tab {
   artworks = "Artworks",
   artists = "Artists",
   insights = "Insights",
+  collection = "My Collection",
 }
 
 const DOT_DIAMETER = 6 * PixelRatio.getFontScale()
@@ -45,13 +48,40 @@ const MyCollection: React.FC = () => {
     prefetchQuery({ query: MyCollectionInsightsScreenQuery })
   }, [])
 
+  const showAddToMyCollectionBottomSheet = debounce(() => {
+    setViewKind({ viewKind: "Add" })
+  }, 100)
+
+  const handleCreateButtonPress = () => {
+    switch (activeNavigationTab) {
+      case "Artists":
+        navigate("my-collection/collected-artists/new")
+        break
+      case "Artworks":
+        navigate("my-collection/artworks/new", {
+          passProps: {
+            source: Tab.collection,
+          },
+        })
+        break
+      default:
+        showAddToMyCollectionBottomSheet()
+        break
+    }
+  }
+
   return (
     <>
       <Screen>
         <Screen.Header
           onBack={goBack}
           rightElements={
-            <Touchable hitSlop={ICON_HIT_SLOP} onPress={() => {}}>
+            <Touchable
+              hitSlop={ICON_HIT_SLOP}
+              onPress={() => {
+                setViewKind({ viewKind: "Profile" })
+              }}
+            >
               <MoreIcon fill="mono100" />
             </Touchable>
           }
@@ -90,12 +120,7 @@ const MyCollection: React.FC = () => {
                 )}
 
                 {activeNavigationTab !== Tab.insights && (
-                  <Touchable
-                    hitSlop={ICON_HIT_SLOP}
-                    onPress={() => {
-                      setViewKind({ viewKind: "Add" })
-                    }}
-                  >
+                  <Touchable hitSlop={ICON_HIT_SLOP} onPress={() => handleCreateButtonPress()}>
                     <AddIcon
                       height={ACCESSIBLE_DEFAULT_ICON_SIZE}
                       width={ACCESSIBLE_DEFAULT_ICON_SIZE}

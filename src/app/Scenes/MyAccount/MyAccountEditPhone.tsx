@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Flex, SkeletonBox, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountEditPhoneQuery } from "__generated__/MyAccountEditPhoneQuery.graphql"
@@ -10,6 +11,8 @@ import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderBox } from "app/utils/placeholders"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import React, { useEffect, useState } from "react"
 import { PixelRatio } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -67,37 +70,49 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me$key }> = (props) 
 
   if (enableRedesignedSettings) {
     return (
-      <MyProfileScreenWrapper title="Phone" onPress={handleSave} isValid={isValidNumber}>
-        <Flex
-          style={{
-            // We are setting a fixed height here to prevent the input from growing in height
-            // and pushing the save button when an error is present
-            height: PixelRatio.getFontScale() * INPUT_HEIGHT + 15,
-          }}
-        >
-          <PhoneInput
-            setValidation={setIsValidNumber}
-            enableClearButton
-            value={phone}
-            onChangeText={setPhone}
-            autoFocus
-            error={receivedError}
-          />
-        </Flex>
-      </MyProfileScreenWrapper>
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({
+          context_screen_owner_type: OwnerType.accountPhoneNumber,
+        })}
+      >
+        <MyProfileScreenWrapper title="Phone" onPress={handleSave} isValid={isValidNumber}>
+          <Flex
+            style={{
+              // We are setting a fixed height here to prevent the input from growing in height
+              // and pushing the save button when an error is present
+              height: PixelRatio.getFontScale() * INPUT_HEIGHT + 15,
+            }}
+          >
+            <PhoneInput
+              setValidation={setIsValidNumber}
+              enableClearButton
+              value={phone}
+              onChangeText={setPhone}
+              autoFocus
+              error={receivedError}
+            />
+          </Flex>
+        </MyProfileScreenWrapper>
+      </ProvideScreenTrackingWithCohesionSchema>
     )
   }
   return (
-    <Flex p={2}>
-      <PhoneInput
-        setValidation={setIsValidNumber}
-        enableClearButton
-        value={phone}
-        onChangeText={setPhone}
-        autoFocus
-        error={receivedError}
-      />
-    </Flex>
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.accountPhoneNumber,
+      })}
+    >
+      <Flex p={2}>
+        <PhoneInput
+          setValidation={setIsValidNumber}
+          enableClearButton
+          value={phone}
+          onChangeText={setPhone}
+          autoFocus
+          error={receivedError}
+        />
+      </Flex>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 

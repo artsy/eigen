@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountEditPriceRangeQuery } from "__generated__/MyAccountEditPriceRangeQuery.graphql"
@@ -9,6 +10,8 @@ import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderBox } from "app/utils/placeholders"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import React, { useEffect, useState } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { updateMyUserProfile } from "./updateMyUserProfile"
@@ -64,12 +67,44 @@ export const MyAccountEditPriceRange: React.FC<{
 
   if (enableRedesignedSettings) {
     return (
-      <MyProfileScreenWrapper
-        title="Price Range"
-        onPress={handleSave}
-        isValid={isValid}
-        loading={isLoading}
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({
+          context_screen_owner_type: OwnerType.accountPriceRange,
+        })}
       >
+        <MyProfileScreenWrapper
+          title="Price Range"
+          onPress={handleSave}
+          isValid={isValid}
+          loading={isLoading}
+        >
+          <Select
+            title="Price Range"
+            options={PRICE_BUCKETS}
+            enableSearch={false}
+            value={priceRange}
+            onSelectValue={(value) => {
+              setPriceRange(value)
+              const [priceRangeMinFin, priceRangeMaxFin] = value
+                .split(":")
+                .map((n) => parseInt(n, 10))
+              setPriceRangeMin(priceRangeMinFin)
+              setPriceRangeMax(priceRangeMaxFin)
+            }}
+            hasError={!!receivedError}
+          />
+        </MyProfileScreenWrapper>
+      </ProvideScreenTrackingWithCohesionSchema>
+    )
+  }
+
+  return (
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.accountPriceRange,
+      })}
+    >
+      <Flex p={2}>
         <Select
           title="Price Range"
           options={PRICE_BUCKETS}
@@ -77,34 +112,14 @@ export const MyAccountEditPriceRange: React.FC<{
           value={priceRange}
           onSelectValue={(value) => {
             setPriceRange(value)
-            const [priceRangeMinFin, priceRangeMaxFin] = value
-              .split(":")
-              .map((n) => parseInt(n, 10))
+            const [priceRangeMinFin, priceRangeMaxFin] = value.split(":").map((n) => parseInt(n, 10))
             setPriceRangeMin(priceRangeMinFin)
             setPriceRangeMax(priceRangeMaxFin)
           }}
           hasError={!!receivedError}
         />
-      </MyProfileScreenWrapper>
-    )
-  }
-
-  return (
-    <Flex p={2}>
-      <Select
-        title="Price Range"
-        options={PRICE_BUCKETS}
-        enableSearch={false}
-        value={priceRange}
-        onSelectValue={(value) => {
-          setPriceRange(value)
-          const [priceRangeMinFin, priceRangeMaxFin] = value.split(":").map((n) => parseInt(n, 10))
-          setPriceRangeMin(priceRangeMinFin)
-          setPriceRangeMax(priceRangeMaxFin)
-        }}
-        hasError={!!receivedError}
-      />
-    </Flex>
+      </Flex>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 

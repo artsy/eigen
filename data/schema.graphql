@@ -4426,8 +4426,14 @@ type BidderPositionSuggestedNextBid {
 scalar BigInt
 
 input BulkUpdateArtworksFilterInput {
+  # Filter artworks by artist id
+  artistId: String
+
   # Filter artworks with matching ids
   artworkIds: [String]
+
+  # Filter artworks by availability
+  availability: Availability
 
   # Filter artworks by location
   locationId: String
@@ -4443,8 +4449,14 @@ input BulkUpdateArtworksMetadataInput {
   # The category (medium type) to be assigned
   category: String
 
+  # Whether the artworks must be listed as Purchase
+  ecommerce: Boolean
+
   # The partner location ID to assign
   locationId: String
+
+  # Whether the artworks must be listed as Make Offer
+  offer: Boolean
 
   # The price for the artworks
   priceListed: Float
@@ -10412,8 +10424,11 @@ type DismissTaskSuccess {
   task: Task!
 }
 
-# Display texts for the order based on its state
+# Display texts for the order based on its state and order shipping/payment states
 type DisplayTexts {
+  # First paragraph of the message text for the order
+  messageText(format: Format = MARKDOWN): String
+
   # Title text to display for the order
   titleText: String!
 }
@@ -16027,7 +16042,7 @@ type Order {
   # Order code
   code: String!
 
-  # Display texts for the order based on its buyer_state
+  # Display texts for the order based on its buyer_state and order shipping/payment states
   displayTexts: DisplayTexts!
 
   # Buyer fulfillment details for order

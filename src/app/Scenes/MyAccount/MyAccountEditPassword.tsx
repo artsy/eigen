@@ -1,8 +1,11 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Flex, Input, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { getCurrentEmissionState, GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import React, { useEffect, useState } from "react"
 import { Alert } from "react-native"
 
@@ -106,7 +109,34 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
 
   if (enableRedesignedSettings) {
     return (
-      <MyProfileScreenWrapper title="Password" onPress={handleSave} isValid={isValid}>
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({
+          context_screen_owner_type: OwnerType.accountPassword,
+        })}
+      >
+        <MyProfileScreenWrapper title="Password" onPress={handleSave} isValid={isValid}>
+          <Content
+            currentPassword={currentPassword}
+            setCurrentPassword={setCurrentPassword}
+            newPassword={newPassword}
+            setNewPassword={setNewPassword}
+            passwordConfirmation={passwordConfirmation}
+            setPasswordConfirmation={setPasswordConfirmation}
+            receivedErrorCurrent={receivedErrorCurrent}
+            receivedErrorNew={receivedErrorNew}
+            receivedErrorConfirm={receivedErrorConfirm}
+          />
+        </MyProfileScreenWrapper>
+      </ProvideScreenTrackingWithCohesionSchema>
+    )
+  }
+  return (
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.accountPassword,
+      })}
+    >
+      <Flex px={2}>
         <Content
           currentPassword={currentPassword}
           setCurrentPassword={setCurrentPassword}
@@ -118,23 +148,8 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
           receivedErrorNew={receivedErrorNew}
           receivedErrorConfirm={receivedErrorConfirm}
         />
-      </MyProfileScreenWrapper>
-    )
-  }
-  return (
-    <Flex px={2}>
-      <Content
-        currentPassword={currentPassword}
-        setCurrentPassword={setCurrentPassword}
-        newPassword={newPassword}
-        setNewPassword={setNewPassword}
-        passwordConfirmation={passwordConfirmation}
-        setPasswordConfirmation={setPasswordConfirmation}
-        receivedErrorCurrent={receivedErrorCurrent}
-        receivedErrorNew={receivedErrorNew}
-        receivedErrorConfirm={receivedErrorConfirm}
-      />
-    </Flex>
+      </Flex>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
