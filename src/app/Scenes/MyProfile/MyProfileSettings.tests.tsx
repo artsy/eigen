@@ -1,52 +1,160 @@
-import { screen } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { Linking, Alert } from "react-native"
 import { MyProfileSettings } from "./MyProfileSettings"
 
 jest.mock("./LoggedInUserInfo")
+jest.spyOn(Alert, "alert")
 
-describe(MyProfileSettings, () => {
-  it("renders Edit Profile", () => {
-    renderWithWrappers(<MyProfileSettings />)
-    expect(screen.getByText("Edit Profile")).toBeOnTheScreen()
+describe("MyProfileSettings", () => {
+  describe("when AREnableRedesignedSettings is true", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableRedesignedSettings: true })
+      jest.spyOn(Linking, "openURL").mockImplementation(() => Promise.resolve())
+    })
+
+    it("renders Transactions section", () => {
+      renderWithWrappers(<MyProfileSettings />)
+
+      expect(screen.getByText("Transactions")).toBeOnTheScreen()
+
+      const transactions = screen.getByText("Your Orders")
+      expect(transactions).toBeOnTheScreen()
+      fireEvent.press(transactions)
+      expect(navigate).toHaveBeenCalledWith("/orders")
+    })
+
+    it("renders Account section", () => {
+      renderWithWrappers(<MyProfileSettings />)
+
+      expect(screen.getAllByText("Account")).toHaveLength(2)
+
+      const loginAndSecurity = screen.getByText("Login and Security")
+      expect(loginAndSecurity).toBeOnTheScreen()
+      fireEvent.press(loginAndSecurity)
+      expect(navigate).toHaveBeenCalledWith("my-account")
+
+      const payments = screen.getByText("Payments")
+      expect(payments).toBeOnTheScreen()
+      fireEvent.press(payments)
+      expect(navigate).toHaveBeenCalledWith("my-profile/payment")
+
+      const notifications = screen.getByText("Notifications")
+      expect(notifications).toBeOnTheScreen()
+      fireEvent.press(notifications)
+      expect(navigate).toHaveBeenCalledWith("my-profile/push-notifications")
+
+      const preferences = screen.getByText("Preferences")
+      expect(preferences).toBeOnTheScreen()
+      fireEvent.press(preferences)
+      expect(navigate).toHaveBeenCalledWith("my-profile/preferences")
+    })
+
+    it("renders Support section", () => {
+      renderWithWrappers(<MyProfileSettings />)
+
+      expect(screen.getByText("Support")).toBeOnTheScreen()
+
+      const helpCenter = screen.getByText("Help Center")
+      expect(helpCenter).toBeOnTheScreen()
+      fireEvent.press(helpCenter)
+      expect(navigate).toHaveBeenCalledWith("https://support.artsy.net/")
+
+      const sendFeedback = screen.getByText("Send Feedback")
+      expect(sendFeedback).toBeOnTheScreen()
+      fireEvent.press(sendFeedback)
+      expect(Linking.openURL).toHaveBeenCalledWith(
+        expect.stringMatching(
+          /^mailto:support@artsy.net\?subject=Feedback%20from%20the%20Artsy%20app*$/
+        )
+      )
+    })
+
+    it("renders Legal section", () => {
+      renderWithWrappers(<MyProfileSettings />)
+
+      expect(screen.getByText("Legal")).toBeOnTheScreen()
+
+      const termsAndConditions = screen.getByText("Terms and Conditions")
+      expect(termsAndConditions).toBeOnTheScreen()
+      fireEvent.press(termsAndConditions)
+      expect(navigate).toHaveBeenCalledWith("my-profile/terms-and-conditions")
+
+      const privacy = screen.getByText("Privacy")
+      expect(privacy).toBeOnTheScreen()
+      fireEvent.press(privacy)
+      expect(navigate).toHaveBeenCalledWith("my-profile/privacy")
+    })
+
+    it("renders Log out", () => {
+      renderWithWrappers(<MyProfileSettings />)
+
+      const logOut = screen.getByText("Log out")
+
+      expect(logOut).toBeOnTheScreen()
+      fireEvent.press(logOut)
+      expect(Alert.alert).toHaveBeenCalled()
+    })
+
+    /* it("renders version number", () => {
+      renderWithWrappers(<MyProfileSettings />)
+
+      const version = screen.getByText("Version 2.0.0")
+
+      expect(version).toBeOnTheScreen()
+    }) */
   })
 
-  it("renders Account Settings", () => {
-    renderWithWrappers(<MyProfileSettings />)
-    expect(screen.getByText("Account Settings")).toBeOnTheScreen()
-  })
+  describe("when AREnableRedesignedSettings is false", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableRedesignedSettings: false })
+    })
 
-  it("renders Payment", () => {
-    renderWithWrappers(<MyProfileSettings />)
-    expect(screen.getByText("Payment")).toBeOnTheScreen()
-  })
+    it("renders Edit Profile", () => {
+      renderWithWrappers(<MyProfileSettings />)
+      expect(screen.getByText("Edit Profile")).toBeOnTheScreen()
+    })
 
-  it("renders Push Notifications", () => {
-    renderWithWrappers(<MyProfileSettings />)
-    expect(screen.getByText("Push Notifications")).toBeOnTheScreen()
-  })
+    it("renders Account Settings", () => {
+      renderWithWrappers(<MyProfileSettings />)
+      expect(screen.getByText("Account Settings")).toBeOnTheScreen()
+    })
 
-  it("renders Send Feedback", () => {
-    renderWithWrappers(<MyProfileSettings />)
-    expect(screen.getByText("Send Feedback")).toBeOnTheScreen()
-  })
+    it("renders Payment", () => {
+      renderWithWrappers(<MyProfileSettings />)
+      expect(screen.getByText("Payment")).toBeOnTheScreen()
+    })
 
-  it("renders Personal Data Request", () => {
-    renderWithWrappers(<MyProfileSettings />)
-    expect(screen.getByText("Personal Data Request")).toBeOnTheScreen()
-  })
+    it("renders Push Notifications", () => {
+      renderWithWrappers(<MyProfileSettings />)
+      expect(screen.getByText("Push Notifications")).toBeOnTheScreen()
+    })
 
-  it("renders Recently Viewed", () => {
-    renderWithWrappers(<MyProfileSettings />)
-    expect(screen.getByText("Recently Viewed")).toBeOnTheScreen()
-  })
+    it("renders Send Feedback", () => {
+      renderWithWrappers(<MyProfileSettings />)
+      expect(screen.getByText("Send Feedback")).toBeOnTheScreen()
+    })
 
-  it("renders About", () => {
-    renderWithWrappers(<MyProfileSettings />)
-    expect(screen.getByText("About")).toBeOnTheScreen()
-  })
+    it("renders Personal Data Request", () => {
+      renderWithWrappers(<MyProfileSettings />)
+      expect(screen.getByText("Personal Data Request")).toBeOnTheScreen()
+    })
 
-  it("renders Order history", () => {
-    renderWithWrappers(<MyProfileSettings />)
-    expect(screen.getByText("Order History")).toBeOnTheScreen
+    it("renders Recently Viewed", () => {
+      renderWithWrappers(<MyProfileSettings />)
+      expect(screen.getByText("Recently Viewed")).toBeOnTheScreen()
+    })
+
+    it("renders About", () => {
+      renderWithWrappers(<MyProfileSettings />)
+      expect(screen.getByText("About")).toBeOnTheScreen()
+    })
+
+    it("renders Order history", () => {
+      renderWithWrappers(<MyProfileSettings />)
+      expect(screen.getByText("Order History")).toBeOnTheScreen
+    })
   })
 })
