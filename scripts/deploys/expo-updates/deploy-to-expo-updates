@@ -4,6 +4,7 @@ set -euxo pipefail
 if [ "$#" -lt 1 ] || [ "$#" -gt 3 ]; then
   echo "Usage: $0 <deployment> [description] [rollout_percentage]"
   echo "Deployment must be either 'canary', 'staging' or 'production'."
+  echo "Rollout percentage is optional (integer from 0 to 100)."
   exit 1
 fi
 
@@ -25,7 +26,17 @@ else
   description="Commit: $commit_hash, Description: $commit_description"
 fi
 
-# TODO: Do we need to handle multiple platforms?
-bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description"
+rollout=""
+if [ -n "${3:-}" ]; then
+  rollout="rollout_percentage:$3"
+fi
+
+if [ -n "$rollout" ]; then
+  bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description" platform:ios "$rollout"
+  bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description" platform:android "$rollout"
+else
+  bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description" platform:ios
+  bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description" platform:android
+fi
 
 echo "Release to $deployment deployment successful."

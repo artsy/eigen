@@ -1,8 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
+if [ "$#" -lt 1 ] || [ "$#" -gt 1 ]; then
+  echo "Usage: $0 <rollout_percentage e.g. 50>"
+  exit 1
+fi
+
+rollout_percentage=$1
+
 # Prompt for manual confirmation before proceeding
-echo -e "\033[0;33mWarning: You are about to deploy to production\033[0m"
+echo -e "\033[0;33mWarning: You are about to deploy to production with a rollout of $rollout_percentage%.\033[0m"
 echo -e "\033[0;33mPlease make sure your local code has no changes other than what should go to prod.\033[0m"
 read -p "Are you sure you want to continue? (y/N): " confirm
 if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
@@ -10,6 +17,6 @@ if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
   exit 1
 fi
 
-./scripts/deploys/expo-updates/deploy-to-expo-updates production
+./scripts/deploys/expo-updates/deploy-to-expo-updates production "Rolling out to production" "$rollout_percentage"
 
-echo "🚀 Production deployment completed successfully."
+echo "🚀 Production deployment with $rollout_percentage% rollout completed successfully."
