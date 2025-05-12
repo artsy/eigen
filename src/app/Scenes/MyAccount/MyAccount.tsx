@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Button, Flex, LinkText, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
 import { MyAccount_me$key } from "__generated__/MyAccount_me.graphql"
@@ -15,6 +16,8 @@ import { useGoogleLink } from "app/utils/LinkedAccounts/google"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderText } from "app/utils/placeholders"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -113,30 +116,35 @@ export const MyAccount: React.FC<{ me: MyAccount_me$key }> = (props) => {
     : ScrollView
 
   return (
-    <Wrapper
-      contentContainerStyle={{
-        paddingTop: enableRedesignedSettings ? space(2) : space(1),
-        paddingHorizontal: 0,
-      }}
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.accountLoginAndSecurity,
+      })}
     >
-      <MenuItem
-        title="Email"
-        value={me.email}
-        ellipsizeMode="middle"
-        href="my-account/edit-email"
-      />
+      <Wrapper
+        contentContainerStyle={{
+          paddingTop: enableRedesignedSettings ? space(2) : space(1),
+          paddingHorizontal: 0,
+        }}
+      >
+        <MenuItem
+          title="Email"
+          value={me.email}
+          ellipsizeMode="middle"
+          href="my-account/edit-email"
+        />
 
-      {!!me.hasPassword && (
-        <MenuItem title="Password" value="Change password" href="my-account/edit-password" />
-      )}
+        {!!me.hasPassword && (
+          <MenuItem title="Password" value="Change password" href="my-account/edit-password" />
+        )}
 
-      <MenuItem title="Phone" value={me.phone || "Add phone"} href="my-account/edit-phone" />
+        <MenuItem title="Phone" value={me.phone || "Add phone"} href="my-account/edit-phone" />
 
-      {!enableRedesignedSettings && (
-        <MenuItem title="Price Range" value={priceRangeValue} href="my-account/edit-price-range" />
-      )}
+        {!enableRedesignedSettings && (
+          <MenuItem title="Price Range" value={priceRangeValue} href="my-account/edit-price-range" />
+        )}
 
-      {!!me.paddleNumber && <MenuItem title="Paddle Number" value={me.paddleNumber} />}
+        {!!me.paddleNumber && <MenuItem title="Paddle Number" value={me.paddleNumber} />}
 
       {!!showLinkedAccounts && (
         <Flex mt={4}>
@@ -220,6 +228,7 @@ export const MyAccount: React.FC<{ me: MyAccount_me$key }> = (props) => {
         </RouterLink>
       )}
     </Wrapper>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 

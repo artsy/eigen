@@ -1,5 +1,5 @@
+import { ChevronRightIcon } from "@artsy/icons/native"
 import {
-  ChevronIcon,
   Flex,
   Separator,
   Spacer,
@@ -102,9 +102,8 @@ export const MenuItem: React.FC<{
             {rightView}
 
             {!!((onPress || href) && !hideShevron) && (
-              <Flex ml={1} justifyContent="center">
-                <ChevronIcon
-                  direction="right"
+              <Flex pl={1} justifyContent="center">
+                <ChevronRightIcon
                   fill={disabled && allowDisabledVisualClue ? "mono30" : "mono60"}
                 />
               </Flex>

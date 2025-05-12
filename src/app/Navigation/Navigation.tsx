@@ -124,7 +124,7 @@ const NavigationLoadingIndicator = () => {
           <Spinner color="devpurple" size="large" />
           <Spacer y={4} />
           <Text color="mono100" variant="xs" textAlign="center">
-            Reloadig previous navigation state
+            Reloading previous navigation state
           </Text>
         </Flex>
       )}

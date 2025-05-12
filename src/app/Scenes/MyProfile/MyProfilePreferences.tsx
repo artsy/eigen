@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { MyProfilePreferencesQuery } from "__generated__/MyProfilePreferencesQuery.graphql"
 import { MyProfilePreferences_me$key } from "__generated__/MyProfilePreferences_me.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
@@ -6,6 +7,8 @@ import { PRICE_BUCKETS } from "app/Scenes/MyAccount/MyAccountEditPriceRange"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { MyProfileScreenWrapper } from "./Components/MyProfileScreenWrapper"
 
@@ -14,23 +17,29 @@ export const MyProfilePreferences = (props: { me?: MyProfilePreferences_me$key }
   const data = useFragment(myProfilePreferencesFragment, props.me)
 
   return (
-    <MyProfileScreenWrapper title="Preferences" contentContainerStyle={{ paddingHorizontal: 0 }}>
-      <MenuItem
-        title="Price Range"
-        value={PRICE_BUCKETS.find((bucket) => bucket.value === data?.priceRange)?.label}
-        onPress={() => {
-          navigate("/my-account/edit-price-range")
-        }}
-      />
-      {!!supportsDarkMode && (
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.accountPreferences,
+      })}
+    >
+      <MyProfileScreenWrapper title="Preferences" contentContainerStyle={{ paddingHorizontal: 0 }}>
         <MenuItem
-          title="Dark Mode"
+          title="Price Range"
+          value={PRICE_BUCKETS.find((bucket) => bucket.value === data?.priceRange)?.label}
           onPress={() => {
-            navigate("/settings/dark-mode")
+            navigate("/my-account/edit-price-range")
           }}
         />
-      )}
-    </MyProfileScreenWrapper>
+        {!!supportsDarkMode && (
+          <MenuItem
+            title="Dark Mode"
+            onPress={() => {
+              navigate("/settings/dark-mode")
+            }}
+          />
+        )}
+      </MyProfileScreenWrapper>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 

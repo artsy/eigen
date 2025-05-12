@@ -51,7 +51,8 @@ describe(@"concerning loading a VC from a URL and reporting analytics", ^{
         emissionMock = [OCMockObject partialMockForObject:[AREmission sharedInstance]];
         [[emissionMock expect] navigate:@"/artwork/andy-warhol-tree-frog"];
 
-        appDelegateMock = [OCMockObject partialMockForObject:[ARAppDelegate sharedInstance]];
+        ARAppDelegate *delegate = [[ARAppDelegate alloc] init];
+        appDelegateMock = [OCMockObject partialMockForObject:delegate];
 
         apiMock = [OCMockObject mockForClass:ArtsyAPI.class];
     });

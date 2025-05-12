@@ -366,6 +366,7 @@ type Alert {
     geneID: String
     geneIDs: [String]
     height: String
+    importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
@@ -1746,6 +1747,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     geneID: String
     geneIDs: [String]
     height: String
+    importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
@@ -2185,6 +2187,7 @@ type ArtistPartnerEdge {
     geneID: String
     geneIDs: [String]
     height: String
+    importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
@@ -2335,6 +2338,7 @@ type ArtistSeries implements Node {
     geneID: String
     geneIDs: [String]
     height: String
+    importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
@@ -4422,8 +4426,14 @@ type BidderPositionSuggestedNextBid {
 scalar BigInt
 
 input BulkUpdateArtworksFilterInput {
+  # Filter artworks by artist id
+  artistId: String
+
   # Filter artworks with matching ids
   artworkIds: [String]
+
+  # Filter artworks by availability
+  availability: Availability
 
   # Filter artworks by location
   locationId: String
@@ -4439,8 +4449,14 @@ input BulkUpdateArtworksMetadataInput {
   # The category (medium type) to be assigned
   category: String
 
+  # Whether the artworks must be listed as Purchase
+  ecommerce: Boolean
+
   # The partner location ID to assign
   locationId: String
+
+  # Whether the artworks must be listed as Make Offer
+  offer: Boolean
 
   # The price for the artworks
   priceListed: Float
@@ -10408,8 +10424,11 @@ type DismissTaskSuccess {
   task: Task!
 }
 
-# Display texts for the order based on its state
+# Display texts for the order based on its state and order shipping/payment states
 type DisplayTexts {
+  # First paragraph of the message text for the order
+  messageText(format: Format = MARKDOWN): String
+
   # Title text to display for the order
   titleText: String!
 }
@@ -10598,6 +10617,7 @@ interface EntityWithFilterArtworksConnectionInterface {
     geneID: String
     geneIDs: [String]
     height: String
+    importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
@@ -10865,6 +10885,7 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
     geneID: String
     geneIDs: [String]
     height: String
+    importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
@@ -11394,6 +11415,7 @@ input FilterArtworksInput {
   geneID: String
   geneIDs: [String]
   height: String
+  importSources: [String]
   includeAllJSON: Boolean
   includeArtworksByFollowedArtists: Boolean
   includeMediumFilterInAggregation: Boolean
@@ -11909,6 +11931,7 @@ type Gene implements Node & Searchable {
     geneID: String
     geneIDs: [String]
     height: String
+    importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
@@ -13733,6 +13756,7 @@ type MarketingCollection implements Node {
     geneID: String
     geneIDs: [String]
     height: String
+    importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
@@ -14706,6 +14730,9 @@ type Money {
 
   # The symbol used for the currency
   currencyPrefix: String
+
+  # The symbol used for the currency without disambiguation
+  currencySymbol: String
 
   # A pre-formatted price.
   display: String
@@ -16015,7 +16042,7 @@ type Order {
   # Order code
   code: String!
 
-  # Display texts for the order based on its buyer_state
+  # Display texts for the order based on its buyer_state and order shipping/payment states
   displayTexts: DisplayTexts!
 
   # Buyer fulfillment details for order
@@ -16032,6 +16059,9 @@ type Order {
   itemsTotal: Money
   lineItems: [LineItem]!
   mode: OrderModeEnum!
+
+  # Order pricing breakdown lines
+  pricingBreakdownLines: [PricingBreakdownLineUnion]!
 
   # The selected fulfillment option for the order
   selectedFulfillmentOption: FulfillmentOption
@@ -16479,6 +16509,7 @@ type Partner implements Node {
     geneID: String
     geneIDs: [String]
     height: String
+    importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
@@ -16803,6 +16834,7 @@ type PartnerArtist {
     geneID: String
     geneIDs: [String]
     height: String
+    importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
@@ -16994,6 +17026,7 @@ type PartnerArtistEdge {
     geneID: String
     geneIDs: [String]
     height: String
+    importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
@@ -17837,6 +17870,9 @@ type PriceRange {
   minPrice: Money
 }
 
+# Pricing breakdown line
+union PricingBreakdownLineUnion = ShippingLine | SubtotalLine | TaxLine | TotalLine
+
 type Profile {
   bio: String
   cached: Int
@@ -18254,6 +18290,7 @@ type Query {
     geneID: String
     geneIDs: [String]
     height: String
+    importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
@@ -20730,6 +20767,18 @@ type Services {
 
 union SetOrderFulfillmentOptionResponse = OrderMutationError | OrderMutationSuccess
 
+# Shipping line
+type ShippingLine {
+  # The monetary amount for the line
+  amount: Money
+
+  # Fallback text if no monetary amount is available
+  amountFallbackText: String
+
+  # Display name of the shipping line
+  displayName: String!
+}
+
 type Shortcut {
   # A globally unique ID.
   id: ID!
@@ -20853,6 +20902,7 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
     geneID: String
     geneIDs: [String]
     height: String
+    importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
@@ -21305,6 +21355,18 @@ type SubmittedPriceEstimateParams {
   requesterPhoneNumber: String
 }
 
+# Subtotal line
+type SubtotalLine {
+  # The monetary amount for the line
+  amount: Money
+
+  # Fallback text if no monetary amount is available
+  amountFallbackText: String
+
+  # Display name of the subtotal line
+  displayName: String!
+}
+
 type SuggestedAddress {
   addressLine1: String!
   addressLine2: String
@@ -21396,6 +21458,7 @@ type Tag implements Node {
     geneID: String
     geneIDs: [String]
     height: String
+    importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
@@ -21553,9 +21616,33 @@ type TaxInfo {
   moreInfo: TaxMoreInfo!
 }
 
+# Tax line
+type TaxLine {
+  # The monetary amount for the line
+  amount: Money
+
+  # Fallback text if no monetary amount is available
+  amountFallbackText: String
+
+  # Display name of the tax line
+  displayName: String!
+}
+
 type TaxMoreInfo {
   displayText: String!
   url: String!
+}
+
+# Total line
+type TotalLine {
+  # The monetary amount for the line
+  amount: Money
+
+  # Fallback text if no monetary amount is available
+  amountFallbackText: String
+
+  # Display name of the total line
+  displayName: String!
 }
 
 # Autogenerated input type of TransferMyCollection
@@ -23086,6 +23173,7 @@ input UpdateUserMutationInput {
   clientMutationId: String
   dataTransferOptOut: Boolean
   email: String
+  enabled: Boolean
   id: String!
   name: String
   phone: String
@@ -23194,6 +23282,9 @@ type User implements Node {
     # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+
+  # If the user is enabled
+  enabled: Boolean!
   follows: UserFollows
 
   # A globally unique ID.
@@ -23983,6 +24074,7 @@ type Viewer {
     geneID: String
     geneIDs: [String]
     height: String
+    importSources: [String]
     includeAllJSON: Boolean
     includeArtworksByFollowedArtists: Boolean
     includeMediumFilterInAggregation: Boolean
@@ -25605,11 +25697,6 @@ type updateNotificationPreferencesMutationPayload {
 }
 
 input updateOrderInput {
-  # Buyer's phone number
-  buyerPhoneNumber: String
-
-  # Buyer's phone number country code
-  buyerPhoneNumberCountryCode: String
   clientMutationId: String
 
   # Credit card wallet type
@@ -25620,27 +25707,6 @@ input updateOrderInput {
 
   # Payment method.
   paymentMethod: OrderPaymentMethodEnum
-
-  # Shipping address line 1
-  shippingAddressLine1: String
-
-  # Shipping address line 2
-  shippingAddressLine2: String
-
-  # Shipping address city
-  shippingCity: String
-
-  # Shipping address country
-  shippingCountry: String
-
-  # Shipping address name
-  shippingName: String
-
-  # Shipping address postal code
-  shippingPostalCode: String
-
-  # Shipping address state/province/region
-  shippingRegion: String
 }
 
 type updateOrderPayload {

@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Button, Flex, SkeletonBox, SkeletonText, Spacer, Text } from "@artsy/palette-mobile"
 import { MyProfilePaymentDeleteCardMutation } from "__generated__/MyProfilePaymentDeleteCardMutation.graphql"
 import { MyProfilePaymentQuery } from "__generated__/MyProfilePaymentQuery.graphql"
@@ -9,6 +10,8 @@ import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { REFRESH_CREDIT_CARDS_LIST_KEY, RefreshEvents } from "app/utils/refreshHelpers"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { times } from "lodash"
 import { Suspense, useCallback, useEffect, useReducer, useState } from "react"
 import { ActivityIndicator, Alert, FlatList, LayoutAnimation, RefreshControl } from "react-native"
@@ -123,62 +126,74 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me$data; relay: RelayPag
 
   if (enableRedesignedSettings) {
     return (
-      <MyProfileScreenWrapper
-        title="Payments"
-        RefreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({
+          context_screen_owner_type: OwnerType.accountPayment,
+        })}
       >
-        <Text>Add your payment details for a faster checkout experience.</Text>
-        <Spacer y={2} />
-        <FlatList
-          data={creditCards}
-          scrollEnabled={false}
-          renderItem={({ item }) => (
+        <MyProfileScreenWrapper
+          title="Payments"
+          RefreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+        >
+          <Text>Add your payment details for a faster checkout experience.</Text>
+          <Spacer y={2} />
+          <FlatList
+            data={creditCards}
+            scrollEnabled={false}
+            renderItem={({ item }) => (
+              <CreditCardDetailsContainer
+                card={item}
+                onPress={() => onRemove(item.internalID)}
+                isDeleting={deletingIDs[item.internalID]}
+              />
+            )}
+            onEndReached={onLoadMore}
+            ItemSeparatorComponent={() => <Spacer y={1} />}
+            ListFooterComponent={
+              <Flex py={2}>
+                <RouterLink hasChildTouchable to="/my-profile/payment/new-card">
+                  <Button block>Add new card</Button>
+                </RouterLink>
+                {!!isLoadingMore && <ActivityIndicator style={{ marginTop: 30 }} />}
+              </Flex>
+            }
+          />
+        </MyProfileScreenWrapper>
+      </ProvideScreenTrackingWithCohesionSchema>
+    )
+  }
+
+  return (
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.accountPayment,
+      })}
+    >
+      <FlatList
+        style={{ flex: 1 }}
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+        data={creditCards}
+        keyExtractor={(item) => item.internalID}
+        contentContainerStyle={{ paddingTop: creditCards.length === 0 ? 10 : 20 }}
+        renderItem={({ item }) => (
+          <Flex px={2}>
             <CreditCardDetailsContainer
               card={item}
               onPress={() => onRemove(item.internalID)}
               isDeleting={deletingIDs[item.internalID]}
             />
-          )}
-          onEndReached={onLoadMore}
-          ItemSeparatorComponent={() => <Spacer y={1} />}
-          ListFooterComponent={
-            <Flex py={2}>
-              <RouterLink hasChildTouchable to="/my-profile/payment/new-card">
-                <Button block>Add new card</Button>
-              </RouterLink>
-              {!!isLoadingMore && <ActivityIndicator style={{ marginTop: 30 }} />}
-            </Flex>
-          }
-        />
-      </MyProfileScreenWrapper>
-    )
-  }
-
-  return (
-    <FlatList
-      style={{ flex: 1 }}
-      refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-      data={creditCards}
-      keyExtractor={(item) => item.internalID}
-      contentContainerStyle={{ paddingTop: creditCards.length === 0 ? 10 : 20 }}
-      renderItem={({ item }) => (
-        <Flex px={2}>
-          <CreditCardDetailsContainer
-            card={item}
-            onPress={() => onRemove(item.internalID)}
-            isDeleting={deletingIDs[item.internalID]}
-          />
-        </Flex>
-      )}
-      onEndReached={onLoadMore}
-      ItemSeparatorComponent={() => <Spacer y={1} />}
-      ListFooterComponent={
-        <Flex pt={creditCards.length === 0 ? undefined : 2}>
-          <MenuItem title="Add New Card" href="/my-profile/payment/new-card" />
-          {!!isLoadingMore && <ActivityIndicator style={{ marginTop: 30 }} />}
-        </Flex>
-      }
-    />
+          </Flex>
+        )}
+        onEndReached={onLoadMore}
+        ItemSeparatorComponent={() => <Spacer y={1} />}
+        ListFooterComponent={
+          <Flex pt={creditCards.length === 0 ? undefined : 2}>
+            <MenuItem title="Add New Card" href="/my-profile/payment/new-card" />
+            {!!isLoadingMore && <ActivityIndicator style={{ marginTop: 30 }} />}
+          </Flex>
+        }
+      />
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 

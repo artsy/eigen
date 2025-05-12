@@ -1,9 +1,11 @@
-import { ArtworkIcon, Flex, Text, UserMultiIcon, useSpace } from "@artsy/palette-mobile"
+import { ArtworkIcon, GroupIcon } from "@artsy/icons/native"
+import { Flex, Text, useSpace } from "@artsy/palette-mobile"
 import { BOTTOM_TABS_HEIGHT } from "@artsy/palette-mobile/dist/elements/Screen/StickySubHeader"
 import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { MenuItem } from "app/Components/MenuItem"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -38,7 +40,7 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
               },
             })
           }}
-          icon={<UserMultiIcon height={24} width={24} fill="mono100" />}
+          icon={<GroupIcon height={24} width={24} fill="mono100" />}
           alignItems="flex-start"
         />
 
