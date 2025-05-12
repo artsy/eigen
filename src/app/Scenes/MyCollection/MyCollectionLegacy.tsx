@@ -1,6 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Button, Flex, Separator, SkeletonBox, Spacer, Tabs } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { refresh } from "@react-native-community/netinfo"
 import { InfiniteScrollArtworksGrid_myCollectionConnection$data } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import { MyCollectionLegacyFetchAuctionResultsQuery } from "__generated__/MyCollectionLegacyFetchAuctionResultsQuery.graphql"
 import { MyCollectionLegacyQuery } from "__generated__/MyCollectionLegacyQuery.graphql"
@@ -29,8 +30,8 @@ import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClu
 import { RandomWidthPlaceholderText } from "app/utils/placeholders"
 import {
   MY_COLLECTION_REFRESH_KEY,
-  RefreshEvents,
   refreshMyCollectionInsights,
+  useRefreshFetchKey,
 } from "app/utils/refreshHelpers"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
@@ -87,12 +88,7 @@ const MyCollection: React.FC<{
     }
   }, [])
 
-  useEffect(() => {
-    RefreshEvents.addListener(MY_COLLECTION_REFRESH_KEY, refetch)
-    return () => {
-      RefreshEvents.removeListener(MY_COLLECTION_REFRESH_KEY, refetch)
-    }
-  }, [])
+  useRefreshFetchKey(MY_COLLECTION_REFRESH_KEY, refresh)
 
   const refetch = () => {
     setIsRefreshing(true)
