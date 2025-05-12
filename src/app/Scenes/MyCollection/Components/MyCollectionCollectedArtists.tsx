@@ -6,6 +6,7 @@ import { MyCollectionCollectedArtistsRail } from "app/Scenes/MyCollection/Compon
 import { MyCollectionCollectedArtistsView } from "app/Scenes/MyCollection/Components/MyCollectionCollectedArtistsView"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { withSuspense } from "app/utils/hooks/withSuspense"
+import { MY_COLLECTION_REFRESH_KEY, useRefreshFetchKey } from "app/utils/refreshHelpers"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface MyCollectionCollectedArtists {
@@ -41,9 +42,15 @@ const collectedArtistsFragment = graphql`
 
 export const MyCollectionCollectedArtistsQueryRenderer: React.FC = withSuspense({
   Component: () => {
+    const fetchKey = useRefreshFetchKey(MY_COLLECTION_REFRESH_KEY)
+
     const data = useLazyLoadQuery<MyCollectionCollectedArtistsQuery>(
       myCollectionCollectedArtistsQuery,
-      {}
+      {},
+      {
+        fetchKey,
+        fetchPolicy: "store-and-network",
+      }
     )
 
     if (!data?.me) {
