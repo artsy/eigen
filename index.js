@@ -1,3 +1,4 @@
+import { registerRootComponent } from "expo"
 import "expo-asset"
 
 global.__TEST__ = false
@@ -22,9 +23,8 @@ if (__DEV__) {
 }
 
 import "react-native-url-polyfill/auto"
-const { AppRegistry, Platform } = require("react-native")
+const { Platform } = require("react-native")
 
-const appName = require("./app.json").appName
 require("react-native-gesture-handler")
 const { App } = require("./src/app/App")
 
@@ -32,4 +32,4 @@ if (Platform.OS === "android") {
   require("./src/app/utils/PushNotification").configure()
 }
 
-AppRegistry.registerComponent(appName, () => App)
+export default registerRootComponent(App)
