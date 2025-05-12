@@ -5,12 +5,14 @@ import { MyCollectionAddCollectedArtistsAutosuggest } from "app/Scenes/MyCollect
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
 import { useSubmitMyCollectionArtists } from "app/Scenes/MyCollection/hooks/useSubmitMyCollectionArtists"
 import { dismissModal, goBack } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { pluralize } from "app/utils/pluralize"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { Suspense } from "react"
 import { Platform } from "react-native"
 
 export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
+  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
   const { bottom } = useScreenDimensions().safeAreaInsets
   const toast = useToast()
   const { submit, isSubmitting: isLoading } = useSubmitMyCollectionArtists(
@@ -26,8 +28,12 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
     if (addingUserInterestsSucceeded) {
       refreshMyCollection()
       toast.show("Saved.", "bottom", { backgroundColor: "green100" })
-      dismissModal()
-      goBack()
+      if (enableRedesignedSettings) {
+        dismissModal()
+      } else {
+        dismissModal()
+        goBack()
+      }
     }
   }
 
