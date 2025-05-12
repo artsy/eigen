@@ -7,7 +7,17 @@
     "platforms": ["ios", "android"],
     "runtimeVersion": {
       "policy": "fingerprint"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "39b092dc-effa-4d59-a530-85107bdfd668"
+      }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668"
+    },
+    "android": {},
+    "ios": {}
   },
   "expoReleaseNameBase": "none",
   "expoDist": "none"
