@@ -12412,9 +12412,6 @@ type HomeView {
   section(
     # The ID of the section
     id: String!
-
-    # Overrides shouldBeDisplayed to show sections that would otherwise be hidden
-    overrideShouldBeDisplayed: Boolean = false
   ): HomeViewSectionGeneric
 
   # A paginated list of home view sections
@@ -21818,6 +21815,7 @@ input UpdateArtworkEditionSetInput {
 
   # True for `Make Offer` artworks
   offer: Boolean
+  partnerLocationId: String
   priceCurrency: String
 
   # Show/Hide the price of an artwork
@@ -21888,6 +21886,7 @@ input UpdateArtworkMutationInput {
 
   # True for `Make Offer` artworks
   offer: Boolean
+  partnerLocationId: String
   priceCurrency: String
 
   # Show/Hide the price of an artwork
