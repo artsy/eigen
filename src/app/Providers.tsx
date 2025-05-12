@@ -113,7 +113,7 @@ function ThemeWithDarkModeSupport({ children }: { children?: React.ReactNode }) 
 
   const theme = useMemo(() => {
     return supportDarkMode ? (colorScheme === "dark" ? "v3dark" : "v3light") : undefined
-  }, [colorScheme])
+  }, [colorScheme, supportDarkMode])
 
   return (
     <Theme
