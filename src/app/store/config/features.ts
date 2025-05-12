@@ -279,6 +279,12 @@ export const features = {
     description: "Enable quick links animation",
     echoFlagKey: "AREnableQuickLinksAnimation",
   },
+  AREnableNewOrderDetails: {
+    readyForRelease: false,
+    showInDevMenu: true,
+    description: "Enable new order details screen",
+    echoFlagKey: "AREnableNewOrderDetails",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
