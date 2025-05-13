@@ -39,6 +39,8 @@ export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({
   showMyCollectionPreview,
   showCompleteProfile,
   tappable,
+  onCardPress,
+  onAvatarPress,
 }) => {
   const me = useFragment<UserAccountHeader_me$key>(userAccountHeaderFragment, meProp)
 
@@ -57,11 +59,12 @@ export const UserAccountHeader: React.FC<UserAccountHeaderProps> = ({
       testID="account-card"
       disablePrefetch={!tappable}
       hasChildTouchable={!tappable}
+      onPress={onCardPress}
     >
       <AccountCardWapper showBorder={showBorder} scrollEnabled={!tappable}>
         <Join separator={<Spacer y={2} />}>
           {/* Avatar */}
-          <RouterLink to="/my-profile/edit">
+          <RouterLink to="/my-profile/edit" onPress={onAvatarPress}>
             <Flex
               height={PROFILE_IMAGE_SIZE}
               width={PROFILE_IMAGE_SIZE}
@@ -194,6 +197,8 @@ interface UserAccountHeaderQRProps {
   showCompleteProfile?: boolean
   showMyCollectionPreview?: boolean
   tappable?: boolean
+  onCardPress?: () => void
+  onAvatarPress?: () => void
 }
 
 export const UserAccountHeaderQueryRenderer: React.FC<UserAccountHeaderQRProps> = withSuspense({
