@@ -6,6 +6,8 @@ import {
   CommerceBuyerOfferActionEnum,
   CommerceOrderModeEnum,
 } from "__generated__/OrderHistoryRow_order.graphql"
+import { RouterLink } from "app/system/navigation/RouterLink"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus } from "app/utils/getOrderStatus"
@@ -83,18 +85,13 @@ const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, ord
     case "PROCESSING_APPROVAL":
     case "IN_TRANSIT":
       return (
-        <Button
-          block
-          variant="fillGray"
-          onPress={() =>
-            navigate(
-              AREnableNewOrderDetails ? `/orders/${orderId}/details` : `/user/purchases/${orderId}`
-            )
-          }
-          testID="view-order-button"
+        <RouterLink
+          to={AREnableNewOrderDetails ? `/orders/${orderId}/details` : `/user/purchases/${orderId}`}
         >
-          {mode == "OFFER" ? "View Offer" : "View Order"}
-        </Button>
+          <Button block variant="fillGray" testID="view-order-button">
+            {mode == "OFFER" ? "View Offer" : "View Order"}
+          </Button>
+        </RouterLink>
       )
     default:
       return null
