@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { AddIcon, FilterIcon, MoreIcon } from "@artsy/icons/native"
 import { Flex, Screen, Tabs, Touchable, VisualClueDot } from "@artsy/palette-mobile"
 import { ACCESSIBLE_DEFAULT_ICON_SIZE, ICON_HIT_SLOP } from "app/Components/constants"
@@ -15,6 +16,8 @@ import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { prefetchQuery } from "app/utils/queryPrefetching"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { debounce } from "lodash"
 import { useEffect } from "react"
 import { PixelRatio } from "react-native"
@@ -157,9 +160,15 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 
   if (enableRedesignedSettings) {
     return (
-      <MyCollectionTabsStoreProvider>
-        <MyCollection />
-      </MyCollectionTabsStoreProvider>
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({
+          context_screen_owner_type: OwnerType.myCollection,
+        })}
+      >
+        <MyCollectionTabsStoreProvider>
+          <MyCollection />
+        </MyCollectionTabsStoreProvider>
+      </ProvideScreenTrackingWithCohesionSchema>
     )
   }
 
