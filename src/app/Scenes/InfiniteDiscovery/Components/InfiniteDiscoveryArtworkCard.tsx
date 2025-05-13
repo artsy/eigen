@@ -10,7 +10,7 @@ import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks
 import { GlobalStore } from "app/store/GlobalStore"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
-import { GestureResponderEvent, Text as RNText, ViewStyle } from "react-native"
+import { FlatList, GestureResponderEvent, Text as RNText, ViewStyle } from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import Animated, {
   Easing,
@@ -42,6 +42,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const setHasSavedArtwors = GlobalStore.actions.infiniteDiscovery.setHasSavedArtworks
     const timeoutRef = useRef<NodeJS.Timeout>()
     const timeoutRunningRef = useRef<"ready" | "ended" | "running">("ready")
+    const imageCarouselRef = useRef<FlatList>(null)
 
     const track = useInfiniteDiscoveryTracking()
     const color = useColor()
@@ -57,9 +58,9 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
     const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
-      artworkFragmentRef: artwork,
+      artworkFragmentRef: artwork as any,
       onCompleted: (isArtworkSaved) => {
-        track.savedArtwork(isArtworkSaved, artwork.internalID, artwork.slug)
+        track.savedArtwork(isArtworkSaved, artwork?.internalID as any, artwork?.slug as any)
       },
       onError: () => {
         /**
@@ -127,20 +128,20 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     const MAX_ARTWORK_HEIGHT = screenHeight * 0.55
 
-    const images = artwork.images || []
+    const images = artwork.images
     const hasMultipleImages = images.length > 1
-    const selectedImage = images[currentImageIndex]
-    const src = selectedImage?.url
-    const width = selectedImage?.width ?? 0
-    const height = selectedImage?.height ?? 0
-    const blurhash = selectedImage?.blurhash ?? undefined
+    // const selectedImage = images[currentImageIndex]
+    // const src = selectedImage?.url
+    // const width = selectedImage?.width ?? 0
+    // const height = selectedImage?.height ?? 0
+    // const blurhash = selectedImage?.blurhash ?? undefined
 
     // When there are multiple images, adjust the max height to allow space for pagination bar
     const adjustedMaxHeight = hasMultipleImages
       ? MAX_ARTWORK_HEIGHT - PAGINATION_BAR_HEIGHT - PAGINATION_BAR_MARGIN_TOP
       : MAX_ARTWORK_HEIGHT
 
-    const size = sizeToFit({ width, height }, { width: screenWidth, height: adjustedMaxHeight })
+    // const size = sizeToFit({ width, height }, { width: screenWidth, height: adjustedMaxHeight })
 
     const doubleTap = () => {
       clearTimeout(timeoutRef.current)
@@ -170,7 +171,9 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         timeoutRef.current = setTimeout(() => {
           Haptic.trigger("impactLight")
           track.artworkImageSwipe()
+          imageCarouselRef.current?.scrollToIndex({ index: currentImageIndex - 1 })
           setCurrentImageIndex(currentImageIndex - 1)
+          imageCarouselRef.current
           timeoutRunningRef.current = "ended"
         }, SAVES_MAX_DURATION_BETWEEN_TAPS)
         return true
@@ -187,6 +190,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         timeoutRef.current = setTimeout(() => {
           Haptic.trigger("impactLight")
           track.artworkImageSwipe()
+          imageCarouselRef.current?.scrollToIndex({ index: currentImageIndex + 1 })
           setCurrentImageIndex(currentImageIndex + 1)
           timeoutRunningRef.current = "ended"
         }, SAVES_MAX_DURATION_BETWEEN_TAPS)
@@ -254,7 +258,34 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               zIndex: 100,
             }}
           />
-          {!!src && <Image src={src} height={size.height} width={size.width} blurhash={blurhash} />}
+          <FlatList
+            data={artwork.images}
+            ref={imageCarouselRef}
+            renderItem={({ item }) => {
+              const size = sizeToFit(
+                { width: item?.width ?? 0, height: item?.height ?? 0 },
+                { width: screenWidth, height: adjustedMaxHeight }
+              )
+
+              return (
+                <Flex width={screenWidth} alignItems="center">
+                  <Image
+                    src={item?.url ?? ""}
+                    width={size.width}
+                    height={size.height}
+                    blurhash={item?.blurhash}
+                  />
+                </Flex>
+              )
+            }}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          />
+          {/* {!!src && <Image src={src} height={size.height} width={size.width} blurhash={blurhash} />} */}
         </Flex>
 
         {!!hasMultipleImages && (
@@ -353,7 +384,7 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
     date
     id
     internalID
-    images {
+    images @required(action: NONE) {
       url(version: "large")
       width
       height
