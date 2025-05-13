@@ -160,12 +160,7 @@ const ArtistListItem: React.FC<Props> = ({
       noFeedback={!withFeedback}
       // Only navigate if there is an href and navigation is not disabled by passing `onPress` or
       to={!disableNavigation ? href : undefined}
-      onPress={() => {
-        if (showMoreIcon) {
-          // do not navigate if ellipsus is displayed
-          return
-        } else callOnPress()
-      }}
+      onPress={() => callOnPress()}
       underlayColor={color("mono5")}
       style={containerStyle}
     >
