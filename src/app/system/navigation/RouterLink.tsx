@@ -58,7 +58,12 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
       navigationOptions.modal = true
     }
 
-    navigate(to, navigationOptions)
+    // check if there's any navigation options
+    if (Object.keys(navigationOptions).length > 0) {
+      navigate(to, navigationOptions)
+    } else {
+      navigate(to)
+    }
   }
 
   const handleVisible = (isVisible: boolean) => {
