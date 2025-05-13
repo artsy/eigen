@@ -1,4 +1,10 @@
-import { ActionType, OwnerType } from "@artsy/cohesion"
+import {
+  ActionType,
+  ContextModule,
+  OwnerType,
+  TappedEditedProfile,
+  TappedMyCollection,
+} from "@artsy/cohesion"
 import { BagIcon, CreditCardIcon, FilterIcon, LockIcon, MobileIcon } from "@artsy/icons/native"
 import {
   Button,
@@ -52,6 +58,12 @@ export const MyProfileSettings: React.FC = () => {
           showMyCollectionPreview
           tappable
           showCompleteProfile
+          onAvatarPress={() => {
+            tracking.trackEvent(tracks.trackTappedEditedProfile())
+          }}
+          onCardPress={() => {
+            tracking.trackEvent(tracks.trackTappedMyCollection())
+          }}
         />
 
         <Text variant="lg-display" px={2} mt={4}>
@@ -281,5 +293,15 @@ const tracks = {
     context_module: ownerType,
     context_screen_owner_type: OwnerType.account,
     position,
+  }),
+  trackTappedMyCollection: (): TappedMyCollection => ({
+    action: ActionType.tappedMyCollection,
+    context_module: ContextModule.collectorProfileCard,
+    context_screen: OwnerType.profile,
+  }),
+  trackTappedEditedProfile: (): TappedEditedProfile => ({
+    action: ActionType.tappedEditedProfile,
+    context_module: ContextModule.collectorProfileCard,
+    context_screen: OwnerType.profile,
   }),
 }
