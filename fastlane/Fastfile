@@ -30,6 +30,14 @@ IOS_TARGETS = {
                                                    plist_path: '../ios/BrazePushServiceExtension/Info.plist' }
 }
 
+IOS_BETA_TARGETS = {
+  'net.artsy.qa' => { name: 'Artsy', plist_path: APP_PLIST },
+  'net.artsy.qa.Artsy-Stickers' => { name: 'ArtsyStickers', plist_path: '../ios/ArtsyStickers/Info.plist' },
+  'net.artsy.qa.ArtsyWidget' => { name: 'ArtsyWidgetExtension', plist_path: '../ios/ArtsyWidget/Info.plist' },
+  'net.artsy.qa.BrazePushServiceExtension' => { name: 'BrazePushServiceExtension',
+                                                   plist_path: '../ios/BrazePushServiceExtension/Info.plist' }
+}
+
 BETA_LANES = %i[ship_beta ship_beta_ios ship_beta_android].freeze
 
 GIT_COMMIT_SHORT_HASH = `git log -n1 --format='%h'`.chomp
@@ -51,76 +59,103 @@ end
 
 # iOS Lanes
 
-desc 'Ships iOS beta to TestFlight'
-lane :ship_beta_ios do
-  api_key = generate_app_store_connect_api_key
+desc 'Ships iOS beta to TestFlight or Firebase'
+lane :ship_beta_ios do |options|
+  deployment_target = options[:deployment_target] || 'testflight' # default to 'testflight'
 
   bundle_version = set_build_version_ios
   set_git_properties_ios
 
   latest_version = $APP_JSON['version']
 
-  beta_readme = 'Thanks for using the Artsy beta!'
-
   # Builds the app
-  ios_target_ids = IOS_TARGETS.keys
-  sync_code_signing(app_identifier: ios_target_ids, type: 'appstore')
-
-  IOS_TARGETS.each do |id, meta|
-    update_code_signing_settings(
-      use_automatic_signing: false,
-      path: 'ios/Artsy.xcodeproj',
-      team_id: '23KMWZ572J',
-      targets: [meta[:name]],
-      profile_name: "match AppStore #{id}"
-    )
-  end
-
+  sync_signing_ios(deployment_target: deployment_target)
   tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
-
-  # important! this must match the release version specified
-  # in Eigen in order for sourcemaps to work correctly
-  sentry_release_name = "ios-#{latest_version}-#{bundle_version}"
 
   # Workaround for timeout in ci
   ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
+  export_method = deployment_target == 'testflight' ? 'app-store' : 'ad-hoc'
+  scheme = deployment_target == 'testflight' ? 'Artsy' : 'Artsy (QA)'
   build_ios_app(
     build_path: "archives",
     workspace: 'ios/Artsy.xcworkspace',
-    configuration: 'Store',
+    scheme: scheme,
+    export_method: export_method,
+    codesigning_identity: 'Apple Distribution: Art.sy Inc. (23KMWZ572J)',
     silent: true
   )
 
-  extract_ios_bundle_and_sourcemap(
-    archive_root: "../archives",
-    dist_dir: "../dist/ios",
-    app_name: "Artsy"
-  )
+  # avoid duplicate uploads to sentry
+  if (deployment_target == 'testflight')
+    # important! this must match the release version specified
+    # in Eigen in order for sourcemaps to work correctly
+    sentry_release_name = "ios-#{latest_version}-#{bundle_version}"
+    extract_ios_bundle_and_sourcemap(
+      archive_root: "../archives",
+      dist_dir: "../dist/ios",
+      app_name: "Artsy"
+    )
 
-  upload_sentry_artifacts(
-    sentry_release_name: sentry_release_name,
-    dist_version: bundle_version,
-    platform: 'ios'
-  )
+    upload_sentry_artifacts(
+      sentry_release_name: sentry_release_name,
+      dist_version: bundle_version,
+      platform: 'ios'
+    )
+  end
 
-  # Send to the app store
-  beta_app_review_info = {
-    contact_email: ENV['BETA_CONTACT_EMAIL'],
-    contact_first_name: ENV['BETA_CONTACT_FIRST_NAME'],
-    contact_last_name: ENV['BETA_CONTACT_LAST_NAME'],
-    contact_phone: ENV['BETA_CONTACT_PHONE'],
-    demo_account_name: ENV['BETA_DEMO_ACCOUNT_NAME'],
-    demo_account_password: ENV['BETA_DEMO_ACCOUNT_PWD']
-  }
+  deploy_ios_beta(deployment_target: deployment_target)
+end
 
-  pilot(
-    api_key: api_key,
-    beta_app_review_info: beta_app_review_info,
-    changelog: beta_readme,
-    itc_provider: 'ArtsyInc',
-    distribute_external: true,
-    groups: ['Artsy People', 'Applause People']
-  )
+def deploy_ios_beta(deployment_target:)
+  if deployment_target == 'testflight'
+    api_key = generate_app_store_connect_api_key
+
+    beta_readme = 'Thanks for using the Artsy beta!'
+    # Send to the app store
+    beta_app_review_info = {
+      contact_email: ENV['BETA_CONTACT_EMAIL'],
+      contact_first_name: ENV['BETA_CONTACT_FIRST_NAME'],
+      contact_last_name: ENV['BETA_CONTACT_LAST_NAME'],
+      contact_phone: ENV['BETA_CONTACT_PHONE'],
+      demo_account_name: ENV['BETA_DEMO_ACCOUNT_NAME'],
+      demo_account_password: ENV['BETA_DEMO_ACCOUNT_PWD']
+    }
+
+    pilot(
+      api_key: api_key,
+      ipa: './Artsy.ipa',
+      beta_app_review_info: beta_app_review_info,
+      changelog: beta_readme,
+      itc_provider: 'ArtsyInc',
+      distribute_external: true,
+      groups: ['Artsy People', 'Applause People']
+    )
+  else
+    firebase_app_distribution(
+      app: ENV['FIREBASE_IOS_APP_ID'],
+      ipa_path:  './Artsy.ipa',
+      groups: 'artsy-people',
+    )
+  end
+end
+
+def sync_signing_ios(deployment_target:)
+  ios_targets = deployment_target == 'testflight' ? IOS_TARGETS : IOS_BETA_TARGETS
+  code_signing_type = deployment_target == 'testflight' ? 'appstore' : 'adhoc'
+
+  sync_code_signing(app_identifier: ios_targets.keys, type: code_signing_type)
+
+  ios_targets.each do |id, meta|
+    code_signing_profile = deployment_target == 'testflight' ? "match AppStore #{id}" : "match AdHoc #{id}"
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      code_sign_identity: 'Apple Distribution: Art.sy Inc. (23KMWZ572J)',
+      path: 'ios/Artsy.xcodeproj',
+      team_id: '23KMWZ572J',
+      targets: [meta[:name]],
+      profile_name: code_signing_profile
+    )
+  end
 end
 
 desc 'Promote a testflight iOS beta to the app store'
@@ -247,11 +282,13 @@ lane :ship_beta_android do |options|
   set_git_properties_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
-  sentry_release_name = "android-#{vname}-#{vcode}"
-
-  sh("yarn react-native build-android --mode=release --extra-params='--no-daemon --max-workers 2'")
+  build_type = deployment_target == 'play_store' ? 'release' : 'beta'
+  sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2'")
 
   if (deployment_target == 'play_store')
+    # important! this must match the release version specified
+    # in Eigen in order for sourcemaps to work correctly
+    sentry_release_name = "android-#{vname}-#{vcode}"
     upload_sentry_artifacts(
       sentry_release_name: sentry_release_name,
       dist_version: "#{vcode}",
@@ -278,7 +315,7 @@ def deploy_android_beta(deployment_target:)
     firebase_app_distribution(
       app: ENV['FIREBASE_APP_ID'],
       groups: 'artsy-people',
-      android_artifact_path: './android/app/build/outputs/bundle/release/app-release.aab'
+      android_artifact_path: './android/app/build/outputs/bundle/beta/app-beta.aab'
     )
   else
     UI.error("Unknown deployment target: #{deployment_target}")

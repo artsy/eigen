@@ -13,7 +13,6 @@ import { Platform } from "react-native"
 
 export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
   const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
-
   const { bottom } = useScreenDimensions().safeAreaInsets
   const toast = useToast()
   const { submit, isSubmitting: isLoading } = useSubmitMyCollectionArtists(
@@ -29,7 +28,6 @@ export const MyCollectionAddCollectedArtists: React.FC<{}> = () => {
     if (addingUserInterestsSucceeded) {
       refreshMyCollection()
       toast.show("Saved.", "bottom", { backgroundColor: "green100" })
-
       if (enableRedesignedSettings) {
         dismissModal()
       } else {

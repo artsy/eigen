@@ -87,6 +87,7 @@ gw==
         <meta-data android:name="expo.modules.updates.EXPO_RUNTIME_VERSION" android:value="@string/expo_runtime_version"/>
         <meta-data android:name="expo.modules.updates.UPDATES_CONFIGURATION_REQUEST_HEADERS_KEY" android:value="{&quot;expo-channel-name&quot;:&quot;production&quot;, &quot;expo-expect-signature&quot;:&quot;true&quot;}" />
         <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://expo-updates-api.artsy.net/api/manifest?project=eigen&amp;channel=production"/>
+        <meta-data android:name="expo.modules.updates.EXUpdatesDisableAntiBrickingMeasures" android:value="@string/EXUpdatesDisableAntiBrickingMeasures" />
 
         <activity
             android:name="com.facebook.FacebookActivity"

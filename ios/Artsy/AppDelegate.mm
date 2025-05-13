@@ -136,13 +136,7 @@ static ARAppDelegate *_sharedInstanceOverride = nil;
 }
 
 - (RCTBridge *)createBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate launchOptions:(NSDictionary *)launchOptions {
-    // TODO: This is off the beaten track for expo setup, we should probably find another way
-    // TODO: This is currently broken for expo updates
-    // can switch to this [super createBridgeWithDelegate:delegate launchOptions:launchOptions]; to fix expo updates
-    // however this breaks our stateful notificationManager native module because we are changing the bridge delegate
-    // and as a result extraModulesForBridge is not called causing the module to be instantiated 2x
-    // It will definitely not work on new architecture
-    RCTBridge *bridge = [super createBridgeWithDelegate:self launchOptions:launchOptions];
+    RCTBridge *bridge = [super createBridgeWithDelegate:delegate launchOptions:launchOptions];
     AREmission *emission = [AREmission sharedInstance];
     [emission setBridge:bridge];
     return bridge;
@@ -266,17 +260,6 @@ static ARAppDelegate *_sharedInstanceOverride = nil;
 #else
     return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
-}
-
-- (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge
-{
-    return @[
-        [[AREmission sharedInstance] eventsModule],
-        [[AREmission sharedInstance] APIModule],
-        [ARPHPhotoPickerModule new],
-        [[AREmission sharedInstance] notificationsManagerModule],
-        [ARCocoaConstantsModule new],
-    ];
 }
 
 #pragma mark - AppDelegate.braze

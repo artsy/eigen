@@ -1,6 +1,6 @@
-import EventEmitter from "events"
 import { PAGE_SIZE } from "app/Components/constants"
-import { useState } from "react"
+import EventEmitter from "events"
+import { useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
 
 export const RefreshEvents = new EventEmitter()
@@ -43,6 +43,31 @@ export const refreshCreditCardsList = () => {
 
 interface RefreshArgs extends Record<string, any> {
   pageSize?: number
+}
+
+/**
+ * This function returns a fetch key that is incremented when a specific event is emitted.
+ * It can be used to trigger a refetch of data in a component when the event occurs.
+ * @param eventKey - The key of the event to listen to.
+ * @param onRefresh - An optional callback function to be called when the event is emitted.
+ * @returns The current fetch key.
+ */
+export const useRefreshFetchKey = (eventKey: string, onRefresh?: () => void) => {
+  const [fetchKey, setFetchKey] = useState(0)
+
+  const refetch = () => {
+    onRefresh?.()
+    setFetchKey((prev) => prev + 1)
+  }
+
+  useEffect(() => {
+    RefreshEvents.addListener(eventKey, refetch)
+    return () => {
+      RefreshEvents.removeListener(eventKey, refetch)
+    }
+  }, [])
+
+  return fetchKey
 }
 
 export const useRefreshControl = (refetch: any, args?: RefreshArgs) => {
