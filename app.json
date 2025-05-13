@@ -5,9 +5,7 @@
   "slug": "eigen",
   "expo": {
     "platforms": ["ios", "android"],
-    "runtimeVersion": {
-      "policy": "fingerprint"
-    },
+    "runtimeVersion": "1.0.0",
     "extra": {
       "eas": {
         "projectId": "39b092dc-effa-4d59-a530-85107bdfd668"
