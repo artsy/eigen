@@ -20,6 +20,7 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracki
 import { Playground } from "app/Scenes/Playground/Playground"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
@@ -65,9 +66,12 @@ export const HomeView: React.FC = memo(() => {
   const { trackExperiment: trackQuickLinksExperiment } = useExperimentVariant(
     "onyx_quick-links-experiment"
   )
+  const { trackExperiment: trackDiscoverTabExperiment } =
+    useExperimentVariant("diamond_discover-tab")
   const enableNavigationPills = useFeatureFlag("AREnableHomeViewQuickLinks")
 
   useEffect(() => {
+    trackDiscoverTabExperiment()
     trackInternalTestingExperiment()
 
     if (enableNavigationPills) {

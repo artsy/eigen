@@ -1,4 +1,4 @@
-import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { Chip, Flex, Skeleton, SkeletonBox, Spacer, useSpace } from "@artsy/palette-mobile"
 import { HomeViewSectionCardsChipsQuery } from "__generated__/HomeViewSectionCardsChipsQuery.graphql"
 import { HomeViewSectionCardsChips_section$key } from "__generated__/HomeViewSectionCardsChips_section.graphql"
@@ -49,7 +49,9 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
         card.entityType as ScreenOwnerType,
         card.href,
         section.contextModule as ContextModule,
-        index
+        index,
+        // TODO: remove the screenOwnerType parameter when the A/B test is dismantled
+        isDiscoverVariant ? OwnerType.search : OwnerType.home
       )
     }
   }
