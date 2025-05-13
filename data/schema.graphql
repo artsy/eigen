@@ -3258,6 +3258,7 @@ enum ArtworkImportState {
 
 type ArtworkImportTransformedData {
   artistNames: String
+  artworkCondition: String
   artworkTitle: String
   certificateOfAuthenticity: String
   date: String
@@ -3269,6 +3270,7 @@ type ArtworkImportTransformedData {
   materials: String
   medium: String
   price: String
+  signatureDetails: String
   width: String
 }
 
