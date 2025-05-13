@@ -86,9 +86,10 @@ const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, ord
     case "IN_TRANSIT":
       return (
         <RouterLink
+          testID="view-order-button"
           to={AREnableNewOrderDetails ? `/orders/${orderId}/details` : `/user/purchases/${orderId}`}
         >
-          <Button block variant="fillGray" testID="view-order-button">
+          <Button block variant="fillGray">
             {mode == "OFFER" ? "View Offer" : "View Order"}
           </Button>
         </RouterLink>
