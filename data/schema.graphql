@@ -3880,6 +3880,21 @@ enum AuctionResultsState {
   UPCOMING
 }
 
+# Classification of users based on auction activity
+enum AuctionSegmentationType {
+  # Users with recent auction-related activity
+  ADJACENT
+
+  # Users who have not engaged with auctions recently
+  DISENGAGED
+
+  # Users with a recent auction registration
+  ENGAGED
+
+  # Users with recently created accounts
+  NEW
+}
+
 enum AuctionState {
   CLOSED
   OPEN
@@ -14063,6 +14078,9 @@ type Me implements Node {
     # State of the returned auction results (can be past, upcoming, or all)
     state: AuctionResultsState = ALL
   ): AuctionResultConnection
+
+  # Classification of the user based on their auction-related activity
+  auctionSegmentation: AuctionSegmentationType
   auctionsLotStandingConnection(
     after: String
     before: String
