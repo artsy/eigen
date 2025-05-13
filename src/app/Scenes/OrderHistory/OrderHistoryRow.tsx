@@ -40,6 +40,8 @@ const getStateColor = (displayState: BuyerDisplayStateEnum) => {
 }
 
 const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, orderId, mode }) => {
+  const AREnableNewOrderDetails = useFeatureFlag("AREnableNewOrderDetails")
+
   switch (displayState) {
     case "PAYMENT_FAILED":
       return (
@@ -84,7 +86,11 @@ const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, ord
         <Button
           block
           variant="fillGray"
-          onPress={() => navigate(`/user/purchases/${orderId}`)}
+          onPress={() =>
+            navigate(
+              AREnableNewOrderDetails ? `/orders/${orderId}/details` : `/user/purchases/${orderId}`
+            )
+          }
           testID="view-order-button"
         >
           {mode == "OFFER" ? "View Offer" : "View Order"}
