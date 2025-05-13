@@ -1,5 +1,5 @@
 import { Flex, Touchable, TouchableProps } from "@artsy/palette-mobile"
-import { navigate } from "app/system/navigation/navigate"
+import { navigate, NavigateOptions } from "app/system/navigation/navigate"
 import { Sentinel } from "app/utils/Sentinel"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -10,7 +10,8 @@ import { Variables } from "relay-runtime"
 
 export interface RouterLinkProps {
   disablePrefetch?: boolean
-  navigationProps?: Object
+  navigationProps?: NavigateOptions["passProps"]
+  isWeb?: boolean
   to?: string | null | undefined
   // Indicates whether the child component is a touchable element, preventing duplicate touch handlers
   hasChildTouchable?: boolean
@@ -32,6 +33,7 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   navigationProps,
   children,
   hasChildTouchable,
+  isWeb,
   ...restProps
 }) => {
   const enablePrefetchingIndicator = useDevToggle("DTShowPrefetchingIndicator")
@@ -39,18 +41,24 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
   const [prefetchState, setPrefetchState] = useState<PrefetchState>(null)
 
-  const isPrefetchingEnabled = !disablePrefetch && enableViewPortPrefetching && to
+  const isPrefetchingEnabled = !isWeb && !disablePrefetch && enableViewPortPrefetching && to
 
   const handlePress = (event: GestureResponderEvent) => {
     onPress?.(event)
 
     if (!to) return
 
+    const navigationOptions: NavigateOptions = {}
+
     if (navigationProps) {
-      navigate(to, { passProps: navigationProps })
-    } else {
-      navigate(to)
+      navigationOptions.passProps = navigationProps
     }
+
+    if (isWeb) {
+      navigationOptions.modal = true
+    }
+
+    navigate(to, navigationOptions)
   }
 
   const handleVisible = (isVisible: boolean) => {
