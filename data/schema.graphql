@@ -3176,6 +3176,7 @@ enum ArtworkImportError {
   INVALID_HEIGHT
   INVALID_MEDIUM
   INVALID_PRICE
+  INVALID_SIGNATURE
   INVALID_WIDTH
   MISSING_ARTIST
   MISSING_DATE
@@ -3270,6 +3271,7 @@ type ArtworkImportTransformedData {
   materials: String
   medium: String
   price: String
+  signature: [String]
   signatureDetails: String
   width: String
 }
