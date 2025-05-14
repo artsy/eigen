@@ -36,6 +36,7 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       // @ts-ignore
       ScreenDimensionsProvider,
       RelayDefaultEnvProvider,
+      ThemeWithDarkModeSupport, // uses: GlobalStoreProvider
       // TODO: rename to ScreenContextProvider
       Screen.ScreenScrollContextProvider,
       AppWideErrorBoundary,
@@ -81,23 +82,6 @@ export const TestProviders: React.FC<{
 
 // Provider for the dark mode support
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const supportDarkMode = useFeatureFlag("ARDarkModeSupport")
-  const colorScheme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
-
-  const theme = supportDarkMode ? (colorScheme === "dark" ? "v3dark" : "v3light") : undefined
-
-  return (
-    <Theme
-      // Setting the key to force the whole app to re-render when the theme changes.
-      key={theme}
-      theme={theme}
-    >
-      {children}
-    </Theme>
-  )
-}
-
 // Providers with preset props
 
 const TestFlagProvider: React.FC = ({ children }) => {
@@ -122,4 +106,22 @@ const TrackingProvider: React.FC = ({ children }) => {
   const { Track } = useTracking({}, { dispatch: (data) => postEventToProviders(data) })
 
   return <Track>{children}</Track>
+}
+
+// theme with dark mode support
+function ThemeWithDarkModeSupport({ children }: { children?: React.ReactNode }) {
+  const supportDarkMode = useFeatureFlag("ARDarkModeSupport")
+  const colorScheme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+
+  const theme = supportDarkMode ? (colorScheme === "dark" ? "v3dark" : "v3light") : undefined
+
+  return (
+    <Theme
+      // Setting the key to force the whole app to re-render when the theme changes.
+      key={theme}
+      theme={theme}
+    >
+      {children}
+    </Theme>
+  )
 }
