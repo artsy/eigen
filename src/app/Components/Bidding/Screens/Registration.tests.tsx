@@ -258,7 +258,7 @@ describe("when pressing register button", () => {
 
     expect(mockNavigator.navigate).not.toHaveBeenCalled()
 
-    creditCardRow.props.onPress()
+    creditCardRow?.props?.onPress()
 
     expect(mockNavigator.navigate).not.toHaveBeenCalled()
 
