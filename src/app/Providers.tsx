@@ -10,7 +10,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { NavigationTestsProvider } from "app/utils/tests/NavigationTestsProvider"
 import { postEventToProviders } from "app/utils/track/providers"
-import { Suspense, useMemo } from "react"
+import { Suspense } from "react"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
@@ -36,7 +36,6 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       // @ts-ignore
       ScreenDimensionsProvider,
       RelayDefaultEnvProvider,
-      ThemeWithDarkModeSupport, // uses: GlobalStoreProvider
       // TODO: rename to ScreenContextProvider
       Screen.ScreenScrollContextProvider,
       AppWideErrorBoundary,
@@ -80,6 +79,25 @@ export const TestProviders: React.FC<{
   )
 }
 
+// Provider for the dark mode support
+
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const supportDarkMode = useFeatureFlag("ARDarkModeSupport")
+  const colorScheme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+
+  const theme = supportDarkMode ? (colorScheme === "dark" ? "v3dark" : "v3light") : undefined
+
+  return (
+    <Theme
+      // Setting the key to force the whole app to re-render when the theme changes.
+      key={theme}
+      theme={theme}
+    >
+      {children}
+    </Theme>
+  )
+}
+
 // Providers with preset props
 
 const TestFlagProvider: React.FC = ({ children }) => {
@@ -104,24 +122,4 @@ const TrackingProvider: React.FC = ({ children }) => {
   const { Track } = useTracking({}, { dispatch: (data) => postEventToProviders(data) })
 
   return <Track>{children}</Track>
-}
-
-// theme with dark mode support
-function ThemeWithDarkModeSupport({ children }: { children?: React.ReactNode }) {
-  const supportDarkMode = useFeatureFlag("ARDarkModeSupport")
-  const colorScheme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
-
-  const theme = useMemo(() => {
-    return supportDarkMode ? (colorScheme === "dark" ? "v3dark" : "v3light") : undefined
-  }, [colorScheme, supportDarkMode])
-
-  return (
-    <Theme
-      // Setting the key to force the whole app to re-render when the theme changes.
-      key={theme}
-      theme={theme}
-    >
-      {children}
-    </Theme>
-  )
 }

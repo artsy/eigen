@@ -23,7 +23,7 @@ import { Settings } from "react-native-fbsdk-next"
 import "react-native-get-random-values"
 import Keys from "react-native-keys"
 import { useWebViewCookies } from "./Components/ArtsyWebView"
-import { Providers } from "./Providers"
+import { Providers, ThemeProvider } from "./Providers"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { DynamicIslandStagingIndicator } from "./utils/DynamicIslandStagingIndicator"
 import { createAllChannels, savePendingToken } from "./utils/PushNotification"
@@ -115,7 +115,11 @@ const Main = () => {
   }
 
   if (forceUpdateMessage) {
-    return <ForceUpdate forceUpdateMessage={forceUpdateMessage} />
+    return (
+      <ThemeProvider>
+        <ForceUpdate forceUpdateMessage={forceUpdateMessage} />
+      </ThemeProvider>
+    )
   }
 
   return <Navigation />

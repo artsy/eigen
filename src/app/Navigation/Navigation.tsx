@@ -10,6 +10,7 @@ import {
   AuthenticatedRoutesParams,
 } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
+import { ThemeProvider } from "app/Providers"
 import { OnboardingWelcomeScreens } from "app/Scenes/Onboarding/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigationInstrumentation } from "app/system/errorReporting/setupSentry"
@@ -54,7 +55,11 @@ export const Navigation = () => {
   }
 
   if (!isReady) {
-    return <NavigationLoadingIndicator />
+    return (
+      <ThemeProvider>
+        <NavigationLoadingIndicator />
+      </ThemeProvider>
+    )
   }
 
   const trackSiftAndroid = Platform.OS === "android" && enableAdditionalSiftAndroidTracking
@@ -108,8 +113,10 @@ export const Navigation = () => {
           }
         }}
       >
-        {!isLoggedIn && <OnboardingWelcomeScreens />}
-        {!!isLoggedIn && <AuthenticatedRoutes />}
+        <ThemeProvider>
+          {!isLoggedIn && <OnboardingWelcomeScreens />}
+          {!!isLoggedIn && <AuthenticatedRoutes />}
+        </ThemeProvider>
       </NavigationContainer>
       {!!fpsCounter && <FPSCounter style={{ bottom: Platform.OS === "ios" ? 40 : undefined }} />}
     </Fragment>
