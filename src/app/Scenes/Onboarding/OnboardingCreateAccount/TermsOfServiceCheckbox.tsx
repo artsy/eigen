@@ -15,7 +15,14 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
   navigation,
 }) => {
   return (
-    <Checkbox error={error} checked={checked} onPress={() => setChecked(!checked)} mt={0.5}>
+    <Checkbox
+      error={error}
+      checked={checked}
+      onPress={() => setChecked(!checked)}
+      mt={0.5}
+      accessibilityLabel="Accept terms and privacy policy"
+      accessibilityHint="Check this element to accept Artsy's terms and privacy policy"
+    >
       <Text variant="xs" testID="disclaimer">
         I accept Artsy's{" "}
         <Text
