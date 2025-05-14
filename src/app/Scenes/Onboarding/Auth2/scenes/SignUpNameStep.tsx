@@ -145,15 +145,14 @@ const SignUpNameStepForm: React.FC = () => {
         }}
       />
 
-      <Spacer y={2} />
-
-      <Flex>
+      <Flex my={2}>
         <TermsOfServiceCheckbox
           setChecked={() => setFieldValue("acceptedTerms", !values.acceptedTerms)}
           checked={values.acceptedTerms}
           error={highlightTerms}
           navigation={parentNavigation}
         />
+        <Spacer y={2} />
         {!isAutomaticallySubscribed ? (
           <EmailSubscriptionCheckbox
             setChecked={() => setFieldValue("agreedToReceiveEmails", !values.agreedToReceiveEmails)}
