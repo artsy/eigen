@@ -80,8 +80,6 @@ export const TestProviders: React.FC<{
   )
 }
 
-// Provider for the dark mode support
-
 // Providers with preset props
 
 const TestFlagProvider: React.FC = ({ children }) => {
