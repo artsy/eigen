@@ -2,24 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>EXUpdatesEnabled</key>
-	<true/>
 	<key>EXUpdatesCheckOnLaunch</key>
 	<string>NEVER</string>
+	<key>EXUpdatesDisableAntiBrickingMeasures</key>
+	<true/>
+	<key>EXUpdatesEnabled</key>
+	<true/>
 	<key>EXUpdatesLaunchWaitMs</key>
 	<integer>0</integer>
-	<key>EXUpdatesURL</key>
-	<string>https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668</string>
-	<key>EXUpdatesRuntimeVersion</key>
-	<string>1.0.0</string>
 	<key>EXUpdatesRequestHeaders</key>
 	<dict>
 		<key>expo-channel-name</key>
 		<string>staging</string>
-		<key>expo-expect-signature</key>
-		<string>true</string>
 	</dict>
-	<key>EXUpdatesDisableAntiBrickingMeasures</key>
-	<true/>
+	<key>EXUpdatesRuntimeVersion</key>
+	<string>720ec9103aac453718dc8283f579f0e21d4f4794</string>
+	<key>EXUpdatesURL</key>
+	<string>https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668</string>
 </dict>
 </plist>

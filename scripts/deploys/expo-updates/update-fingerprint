@@ -3,7 +3,7 @@
 # === CONFIG ===
 IOS_PLIST_PATH="ios/Artsy/Supporting/Expo.plist"
 IOS_QA_PLIST_PATH="ios/Artsy/Supporting/QA/ExpoQA.plist"
-ANDROID_MANIFEST_PATH="android/app/src/main/AndroidManifest.xml"
+ANDROID_STRINGS_PATH="android/app/src/main/res/values/strings.xml"
 
 native_fingerprint=$(npx @expo/fingerprint fingerprint:generate | jq -r '.hash')
 
@@ -14,7 +14,6 @@ echo "Updating iOS ExpoQA.plist with runtimeVersion = $native_fingerprint"
 /usr/libexec/PlistBuddy -c "Set :EXUpdatesRuntimeVersion $native_fingerprint" "$IOS_QA_PLIST_PATH"
 
 echo "Updating Android AndroidManifest.xml with runtimeVersion = $native_fingerprint"
-# Use sed to replace the value inside the appropriate meta-data tag
-sed -i '' "s|<meta-data android:name=\"expo.modules.updates.EXPO_RUNTIME_VERSION\" android:value=\"[^\"]*\"|<meta-data android:name=\"expo.modules.updates.EXPO_RUNTIME_VERSION\" android:value=\"$final_fingerprint\"|g" "$ANDROID_MANIFEST_PATH"
+sed -i '' "s|\(<string name=\"expo_runtime_version\">\)[^<]*\(</string>\)|\1$native_fingerprint\2|" "$ANDROID_STRINGS_PATH"
 
 echo -e "\033[0;32mRuntime version updated successfully in both platforms.\033[0m"
