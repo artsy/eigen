@@ -168,9 +168,6 @@ export const HomeView: React.FC = memo(() => {
   return (
     <Screen safeArea={true}>
       <Screen.Body fullwidth>
-        <Flex backgroundColor="purple">
-          <Text color="white">I would love to see this in an update!</Text>
-        </Flex>
         <FlatList
           automaticallyAdjustKeyboardInsets
           keyboardDismissMode="on-drag"
