@@ -21,6 +21,7 @@ import { goBack } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ProvideScreenTracking } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
+import { Suspense } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface ArtistSeriesProps {
@@ -53,7 +54,9 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
         >
           <Tabs.Tab name="Artworks" label="Artworks">
             <Tabs.Lazy>
-              <ArtistSeriesArtworks artistSeries={data} />
+              <Suspense fallback={<PlaceholderGrid />}>
+                <ArtistSeriesArtworks artistSeries={data} />
+              </Suspense>
             </Tabs.Lazy>
           </Tabs.Tab>
           <Tabs.Tab name="About" label="About">
@@ -117,11 +120,16 @@ const ArtistSeriesPlaceholder: React.FC = () => {
             <SkeletonText variant="xs">Artworks</SkeletonText>
             <SkeletonText variant="xs">About</SkeletonText>
           </Flex>
+          <Separator my={1} />
         </Skeleton>
 
-        <Separator mt={1} mb={4} />
-
-        <PlaceholderGrid />
+        <Flex flex={1} alignItems="center">
+          <Flex width="100%" justifyContent="space-between" p={2} flexDirection="row">
+            <SkeletonText variant="xs">Showing X works</SkeletonText>
+            <SkeletonText variant="xs">Sort & Filter</SkeletonText>
+          </Flex>
+          <PlaceholderGrid />
+        </Flex>
       </Screen.Body>
     </Screen>
   )
