@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   Flex,
+  // eslint-disable-next-line local-rules/no-palette-icon-imports
   ShareIcon,
   Skeleton,
   SkeletonBox,
@@ -17,6 +18,7 @@ import { FairArtworks } from "app/Scenes/Fair/Components/FairArtworks"
 import { FairExhibitorsFragmentContainer } from "app/Scenes/Fair/Components/FairExhibitors"
 import { FairOverview } from "app/Scenes/Fair/FairOverview"
 import { goBack } from "app/system/navigation/navigate"
+import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { Suspense } from "react"
 import { TouchableOpacity } from "react-native"
@@ -116,7 +118,19 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
         <Tabs.Tab name="Artworks" label="Artworks">
           <ArtworkFiltersStoreProvider>
-            <FairArtworks fair={data} />
+            <Suspense
+              fallback={
+                <Flex flex={1} alignItems="center">
+                  <Flex width="100%" justifyContent="space-between" py={2} flexDirection="row">
+                    <SkeletonText variant="xs">Showing X works</SkeletonText>
+                    <SkeletonText variant="xs">Sort & Filter</SkeletonText>
+                  </Flex>
+                  <PlaceholderGrid />
+                </Flex>
+              }
+            >
+              <FairArtworks fair={data} />
+            </Suspense>
           </ArtworkFiltersStoreProvider>
         </Tabs.Tab>
       </Tabs.TabsWithHeader>
