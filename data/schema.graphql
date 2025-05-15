@@ -16586,7 +16586,7 @@ type Partner implements Node {
   hasFairPartnership: Boolean
 
   # If the partner has more than 500 follows
-  hasFollows: Boolean!
+  hasVisibleFollowsCount: Boolean!
 
   # The url for a partner. May be `null` if partner is not eligible for page.
   href: String
