@@ -1,0 +1,26 @@
+diff --git a/node_modules/expo-updates/ios/EXUpdates/AppLoader/AppLoaderTask.swift b/node_modules/expo-updates/ios/EXUpdates/AppLoader/AppLoaderTask.swift
+index 9a7c544..a565075 100644
+--- a/node_modules/expo-updates/ios/EXUpdates/AppLoader/AppLoaderTask.swift
++++ b/node_modules/expo-updates/ios/EXUpdates/AppLoader/AppLoaderTask.swift
+@@ -37,7 +37,7 @@ public protocol AppLoaderTaskDelegate: AnyObject {
+   func appLoaderTaskDidFinishAllLoading(_: AppLoaderTask)
+ }
+ 
+-public enum RemoteCheckResultNotAvailableReason {
++public enum RemoteCheckResultNotAvailableReason: String {
+   /**
+    * No update manifest or rollback directive received from the update server.
+    */
+diff --git a/node_modules/expo-updates/ios/EXUpdates/UpdatesModule.swift b/node_modules/expo-updates/ios/EXUpdates/UpdatesModule.swift
+index 517f137..f197d37 100644
+--- a/node_modules/expo-updates/ios/EXUpdates/UpdatesModule.swift
++++ b/node_modules/expo-updates/ios/EXUpdates/UpdatesModule.swift
+@@ -50,7 +50,7 @@ public final class UpdatesModule: Module, UpdatesEventManagerObserver {
+           promise.resolve([
+             "isAvailable": false,
+             "isRollBackToEmbedded": false,
+-            "reason": reason
++            "reason": reason.rawValue
+           ])
+           return
+         case .updateAvailable(let manifest):
