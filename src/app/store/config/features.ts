@@ -273,11 +273,11 @@ export const features = {
     description: "Enable Dark mode onboarding task",
     echoFlagKey: "ARDarkModeOnboarding",
   },
-  AREnableQuickLinksAnimation: {
+  AREnableQuickLinksAnimation2: {
     readyForRelease: true,
     showInDevMenu: true,
     description: "Enable quick links animation",
-    echoFlagKey: "AREnableQuickLinksAnimation",
+    echoFlagKey: "AREnableQuickLinksAnimation2",
   },
   AREnableNewOrderDetails: {
     readyForRelease: false,
