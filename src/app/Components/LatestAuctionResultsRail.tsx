@@ -1,12 +1,9 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex } from "@artsy/palette-mobile"
+import { Flex, Spacer } from "@artsy/palette-mobile"
 import { LatestAuctionResultsRail_me$key } from "__generated__/LatestAuctionResultsRail_me.graphql"
 import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
-import {
-  AuctionResultListItemFragmentContainer,
-  AuctionResultListSeparator,
-} from "app/Components/Lists/AuctionResultListItem"
+import { AuctionResultListItemFragmentContainer } from "app/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { AUCTION_RESULT_CARD_WIDTH } from "app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults"
 import {
@@ -47,13 +44,14 @@ export const LatestAuctionResultsRail: React.FC<Props> = ({ me }) => {
         initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
         showsHorizontalScrollIndicator={false}
-        ItemSeparatorComponent={AuctionResultListSeparator}
+        ItemSeparatorComponent={() => <Spacer x={2} />}
         renderItem={({ item, index }) => {
           return (
             <AuctionResultListItemFragmentContainer
               showArtistName
               auctionResult={item}
               width={AUCTION_RESULT_CARD_WIDTH}
+              withHorizontalPadding={false}
               onPress={() => {
                 trackEvent(tracks.tappedThumbnail(item.internalID, index))
               }}
