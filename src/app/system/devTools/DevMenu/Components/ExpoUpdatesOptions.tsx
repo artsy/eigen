@@ -82,7 +82,11 @@ export const ExpoUpdatesOptions = () => {
         setLoadProgress(100)
         await Updates.reloadAsync()
       } else {
-        setLoadStatus("No updates available for this channel.")
+        if (update.reason) {
+          setErrorMessage(`Update check failed: ${update.reason}`)
+        } else {
+          setErrorMessage("No new update available.")
+        }
       }
     } catch (error) {
       if (
