@@ -57,7 +57,7 @@ for sha in $SHAS; do
     if [ "$SUBMISSION" = true ]; then
       git tag --list "$e-*-submission" --contains $sha | sort -Vr | head -1
     else
-      git tag --list "$e-*" --contains $sha | sort -Vr | head -1
+      git tag --list "$e-*" --contains $sha | grep -v '-expo-' | sort -Vr | head -1
     fi
   done
 done
