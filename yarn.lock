@@ -22,10 +22,10 @@
   dependencies:
     core-js "3"
 
-"@artsy/icons@3.30.0":
-  version "3.30.0"
-  resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.30.0.tgz#b5a75f91f2f89997646dfd402639d596170160f9"
-  integrity sha512-t3bHuoNeNk1njN/Wv/XktgqYWMBhaYkTxqcck159OI2burJ6N8Z1pxvlfikxTJ++9N37yzX8XS1zete1sWmLNQ==
+"@artsy/icons@3.35.0":
+  version "3.35.0"
+  resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.35.0.tgz#ccb27e1ebbc25aada6f83f8a7c8773de72e7b797"
+  integrity sha512-y42KbC+fhfHfwt2E/bLuSmy9GSf3CvTpYSEg8xvyqla7ebEHHN9KQnhbPm4lYDi8t0bCtYhu+C54yiuf0Ttw/A==
 
 "@artsy/palette-mobile@17.9.0":
   version "17.9.0"
