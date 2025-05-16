@@ -1,7 +1,6 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { OrderHistoryRowTestsQuery } from "__generated__/OrderHistoryRowTestsQuery.graphql"
 import { navigate } from "app/system/navigation/navigate"
-import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 import { OrderHistoryRowContainer } from "./OrderHistoryRow"
@@ -37,10 +36,7 @@ const mockOrder = {
 describe("OrderHistoryRow", () => {
   const { renderWithRelay } = setupTestWrapper<OrderHistoryRowTestsQuery>({
     Component: (props) => {
-      if (props?.commerceOrder) {
-        return <OrderHistoryRowContainer order={props.commerceOrder} />
-      }
-      return null
+      return <OrderHistoryRowContainer order={props.commerceOrder} />
     },
     query: graphql`
       query OrderHistoryRowTestsQuery @relay_test_operation {
@@ -85,7 +81,7 @@ describe("OrderHistoryRow", () => {
     it("displays the image", () => {
       renderWithRelay({ CommerceOrder: () => mockOrder })
 
-      expect(screen.getByTestId("image")).toBeTruthy()
+      expect(screen.getByTestId("image")).toBeOnTheScreen()
     })
 
     it("displays a gray box unless there is an image", () => {
@@ -111,7 +107,7 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(screen.getByTestId("image-box")).toBeTruthy()
+      expect(screen.getByTestId("image-box")).toBeOnTheScreen()
     })
   })
 
@@ -134,7 +130,7 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(screen.getByTestId("track-package-button")).toBeTruthy()
+      expect(screen.getByTestId("track-package-button")).toBeOnTheScreen()
     })
 
     it("is visible when a tracking number is provided", () => {
@@ -155,7 +151,7 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(screen.getByTestId("track-package-button")).toBeTruthy()
+      expect(screen.getByTestId("track-package-button")).toBeOnTheScreen()
     })
 
     it("is visible when a tracking ID is provided", () => {
@@ -176,7 +172,7 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(screen.getByTestId("track-package-button")).toBeTruthy()
+      expect(screen.getByTestId("track-package-button")).toBeOnTheScreen()
     })
 
     it("is not visible unless tracking information is provided", () => {
@@ -197,7 +193,7 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(screen.queryByTestId("track-package-button")).toBeNull()
+      expect(screen.queryByTestId("track-package-button")).not.toBeOnTheScreen()
     })
   })
 
@@ -214,7 +210,7 @@ describe("OrderHistoryRow", () => {
       screen.getByText("payment failed")
 
       const button = screen.getByTestId("update-payment-button")
-      expect(button).toBeVisible()
+      expect(button).toBeOnTheScreen()
 
       fireEvent.press(button!)
 
@@ -233,7 +229,7 @@ describe("OrderHistoryRow", () => {
       })
 
       const button = screen.queryByTestId("update-payment-button")
-      expect(button).toBeNull()
+      expect(button).not.toBeOnTheScreen()
     })
   })
 
@@ -246,7 +242,7 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(screen.getByTestId("view-order-button")).toBeTruthy()
+      expect(screen.getByTestId("view-order-button")).toBeOnTheScreen()
     })
 
     it("is not visible when the order is canceled", () => {
@@ -257,7 +253,7 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(screen.queryByTestId("view-order-button")).toBeNull()
+      expect(screen.queryByTestId("view-order-button")).not.toBeOnTheScreen()
     })
 
     it("is not visible when the order is refunded", () => {
@@ -268,7 +264,7 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(screen.queryByTestId("view-order-button")).toBeNull()
+      expect(screen.queryByTestId("view-order-button")).not.toBeOnTheScreen()
     })
 
     it("shows 'view order' when the order is submitted", () => {
@@ -280,7 +276,7 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(extractText(screen.getByTestId("view-order-button"))).toContain("View Order")
+      expect(screen.getByTestId("view-order-button")).toHaveTextContent("View Order")
     })
 
     it("shows 'view offer' when the order has a submitted offer", () => {
@@ -292,7 +288,7 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(extractText(screen.getByTestId("view-order-button"))).toContain("View Offer")
+      expect(screen.getByTestId("view-order-button")).toHaveTextContent("View Offer")
     })
 
     it("shows 'view offer' when the order has an approved offer", () => {
@@ -304,7 +300,7 @@ describe("OrderHistoryRow", () => {
         }),
       })
 
-      expect(extractText(screen.getByTestId("view-order-button"))).toContain("View Offer")
+      expect(screen.getByTestId("view-order-button")).toHaveTextContent("View Offer")
     })
 
     it("navigates to the counteroffer when the order has a submitted offer", () => {
@@ -317,7 +313,7 @@ describe("OrderHistoryRow", () => {
           buyerAction: "OFFER_RECEIVED",
         }),
       })
-      const button = screen.UNSAFE_getByProps({ testID: "counteroffer-button" })
+      const button = screen.getByTestId("counteroffer-button")
 
       fireEvent.press(button)
 

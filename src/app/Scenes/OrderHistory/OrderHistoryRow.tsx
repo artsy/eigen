@@ -6,7 +6,7 @@ import {
   CommerceBuyerOfferActionEnum,
   CommerceOrderModeEnum,
 } from "__generated__/OrderHistoryRow_order.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"
@@ -40,39 +40,40 @@ const getStateColor = (displayState: BuyerDisplayStateEnum) => {
 }
 
 const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, orderId, mode }) => {
+  const AREnableNewOrderDetails = useFeatureFlag("AREnableNewOrderDetails")
+
   switch (displayState) {
     case "PAYMENT_FAILED":
       return (
-        <Button
-          block
-          variant="fillDark"
+        <RouterLink
+          hasChildTouchable
+          to={`/orders/${orderId}/payment/new`}
+          isWeb
+          navigationProps={{ orderID: orderId, title: "Update Payment Details" }}
           onPress={() => {
             tracks.tappedChangePaymentMethod({ id: orderId })
-            navigate(`/orders/${orderId}/payment/new`, {
-              modal: true,
-              passProps: { orderID: orderId, title: "Update Payment Details" },
-            })
           }}
           testID="update-payment-button"
         >
-          Update Payment Method
-        </Button>
+          <Button block variant="fillDark">
+            Update Payment Method
+          </Button>
+        </RouterLink>
       )
+
     case "OFFER_RECEIVED":
       return (
-        <Button
-          block
-          variant="fillDark"
-          onPress={() =>
-            navigate(`/orders/${orderId}`, {
-              modal: true,
-              passProps: { orderID: orderId, title: "Review Offer" },
-            })
-          }
+        <RouterLink
+          hasChildTouchable
+          to={`/orders/${orderId}`}
+          isWeb
+          navigationProps={{ orderID: orderId, title: "Review Offer" }}
           testID="counteroffer-button"
         >
-          Respond to Counteroffer
-        </Button>
+          <Button block variant="fillDark">
+            Respond to Counteroffer
+          </Button>
+        </RouterLink>
       )
     case "SUBMITTED":
     case "APPROVED":
@@ -81,14 +82,15 @@ const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, ord
     case "PROCESSING_APPROVAL":
     case "IN_TRANSIT":
       return (
-        <Button
-          block
-          variant="fillGray"
-          onPress={() => navigate(`/user/purchases/${orderId}`)}
+        <RouterLink
+          hasChildTouchable
           testID="view-order-button"
+          to={AREnableNewOrderDetails ? `/orders/${orderId}/details` : `/user/purchases/${orderId}`}
         >
-          {mode == "OFFER" ? "View Offer" : "View Order"}
-        </Button>
+          <Button block variant="fillGray">
+            {mode == "OFFER" ? "View Offer" : "View Order"}
+          </Button>
+        </RouterLink>
       )
     default:
       return null
