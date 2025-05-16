@@ -20,11 +20,12 @@ interface ArticlesRailProps {
   onTitlePress?: () => void
   onPress?: (article: ExtractNodeType<ArticlesRail_articlesConnection$data>, index: number) => void
   title: string
+  subtitle?: string
   titleHref?: string | null
 }
 
 export const ArticlesRail: React.FC<ArticlesRailProps> = memo(
-  ({ onTitlePress, onPress, title, titleHref, ...restProps }) => {
+  ({ onTitlePress, onPress, title, subtitle, titleHref, ...restProps }) => {
     const articlesConnection = useFragment(articlesConnectionFragment, restProps.articlesConnection)
 
     const articles = extractNodes(articlesConnection)
@@ -35,7 +36,13 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = memo(
 
     return (
       <Flex>
-        <SectionTitle href={titleHref} mx={2} onPress={onTitlePress} title={title} />
+        <SectionTitle
+          href={titleHref}
+          mx={2}
+          onPress={onTitlePress}
+          title={title}
+          subtitle={subtitle}
+        />
 
         <Flex>
           <FlatList
