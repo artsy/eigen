@@ -10445,11 +10445,33 @@ type DismissTaskSuccess {
 
 # Display texts for the order based on its state and order shipping/payment states
 type DisplayTexts {
-  # First paragraph of the message text for the order
+  # Fomatted full message text for the order
   message(format: Format = MARKDOWN): String
 
-  # Title text to display for the order
+  # Granular order states specific type that should be directly interpreted by clients
+  messageType: DisplayTextsMessageTypeEnum!
+
+  # Text to display as a first message on the page (header)
   title: String!
+}
+
+enum DisplayTextsMessageTypeEnum {
+  APPROVED_PICKUP
+  APPROVED_SHIP
+  APPROVED_SHIP_EXPRESS
+  APPROVED_SHIP_STANDARD
+  APPROVED_SHIP_WHITE_GLOVE
+  CANCELLED_ORDER
+  COMPLETED_PICKUP
+  COMPLETED_SHIP
+  PAYMENT_FAILED
+  PROCESSING_PAYMENT_PICKUP
+  PROCESSING_PAYMENT_SHIP
+  PROCESSING_WIRE
+  SHIPPED
+  SUBMITTED_OFFER
+  SUBMITTED_ORDER
+  UNKNOWN
 }
 
 type DoNotUseThisPartner {
@@ -16054,6 +16076,9 @@ type Order {
 
   # Phone number of the buyer
   buyerPhoneNumber: String @deprecated(reason: "Use `order.fulfillmentDetails.phoneNumber`")
+
+  # Expiration for the current state of the order
+  buyerStateExpiresAt: String
 
   # The total amount the buyer is expected to pay
   buyerTotal: Money
