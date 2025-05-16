@@ -70,6 +70,8 @@
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
     "test:watch": "jest --watch",
     "type-check": "yarn relay; yarn tsc",
+    "which-build": "./scripts/deploys/which-build",
+    "which-submission": "./scripts/deploys/which-build --submission",
     "update-metaphysics": "node scripts/update-metaphysics.js"
   },
   "repository": {
