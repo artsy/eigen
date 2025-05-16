@@ -1,13 +1,10 @@
 {
   "appName": "eigen",
-  "version": "8.72.0",
+  "version": "8.73.0",
   "isAndroidBeta": false,
   "slug": "eigen",
   "expo": {
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "runtimeVersion": "1.0.0"
   }
 }
