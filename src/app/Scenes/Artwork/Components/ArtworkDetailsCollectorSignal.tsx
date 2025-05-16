@@ -1,12 +1,7 @@
-import {
-  ArrowUpRightIcon,
-  bullet,
-  FairIcon,
-  FireIcon,
-  Flex,
-  LinkText,
-  Text,
-} from "@artsy/palette-mobile"
+import { ArrowUpRightIcon } from "@artsy/icons/native"
+// TODO: MOPRAT-837 & MOPRAT-846
+// eslint-disable-next-line local-rules/no-palette-icon-imports
+import { bullet, FairIcon, FireIcon, Flex, LinkText, Text } from "@artsy/palette-mobile"
 import { ArtworkDetailsCollectorSignal_artwork$key } from "__generated__/ArtworkDetailsCollectorSignal_artwork.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { DateTime } from "luxon"
