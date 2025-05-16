@@ -1,4 +1,7 @@
-import { ArrowUpRightIcon, Box, FireIcon, Text } from "@artsy/palette-mobile"
+import { ArrowUpRightIcon } from "@artsy/icons/native"
+// TODO: MOPRAT-846
+// eslint-disable-next-line local-rules/no-palette-icon-imports
+import { Box, FireIcon, Text } from "@artsy/palette-mobile"
 import { ArtworkSocialSignal_collectorSignals$key } from "__generated__/ArtworkSocialSignal_collectorSignals.graphql"
 import { graphql, useFragment } from "react-relay"
 
