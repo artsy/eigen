@@ -257,7 +257,7 @@ export const OrderDetailQR: React.FC<{ orderID: string }> = withSuspense({
 })
 
 const orderDetailQRQuery = graphql`
-  query OrderDetailQuery($orderID: String!) {
+  query OrderDetailQuery($orderID: ID!) {
     me {
       order(id: $orderID) {
         ...OrderDetail_order

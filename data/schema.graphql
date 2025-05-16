@@ -14363,7 +14363,7 @@ type Me implements Node {
     # The ID of the Notification
     id: String!
   ): Notification
-  order(id: String!): Order
+  order(id: ID!): Order
   orders(
     after: String
     before: String
