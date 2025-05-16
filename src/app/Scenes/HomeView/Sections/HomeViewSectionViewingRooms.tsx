@@ -52,7 +52,13 @@ export const HomeViewSectionViewingRooms: React.FC<HomeViewSectionViewingRoomsPr
 
   return (
     <Flex {...flexProps}>
-      <SectionTitle href={href} px={2} title={section.component?.title} onPress={onHeaderPress} />
+      <SectionTitle
+        href={href}
+        px={2}
+        title={section.component?.title}
+        subtitle={section.component?.description}
+        onPress={onHeaderPress}
+      />
 
       <Suspense fallback={<ViewingRoomsRailPlaceholder />}>
         <LegacyViewingRoomsHomeRail
@@ -83,6 +89,7 @@ const viewingRoomsFragment = graphql`
     contextModule
     component {
       title
+      description
       behaviors {
         viewAll {
           href
