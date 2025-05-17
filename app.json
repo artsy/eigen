@@ -4,7 +4,10 @@
   "isAndroidBeta": false,
   "slug": "eigen",
   "expo": {
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "runtimeVersion": "1.0.0"
   }
 }
