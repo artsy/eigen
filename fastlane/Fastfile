@@ -224,6 +224,11 @@ lane :set_git_properties_ios do
   set_info_plist_value(path: absolute_path, key: 'GITRemoteOriginURL', value: GIT_REMOTE_ORIGIN_URL)
 end
 
+lane :test_next_version do
+  update_version_string(version: '8.74.0')
+  pr_url = prepare_version_update_pr(commit_message: "chore: prepare for next release")
+end
+
 desc 'Create a new version in app store connect if one does not exist'
 lane :create_next_version_if_needed do
   api_token = generate_spaceship_token
