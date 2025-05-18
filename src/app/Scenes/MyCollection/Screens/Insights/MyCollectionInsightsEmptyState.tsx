@@ -39,14 +39,11 @@ export const MyCollectionInsightsEmptyState = () => {
                 navigationProps={{
                   source: Tab.insights,
                 }}
+                onPress={() => {
+                  // TODO: Implement analytics
+                }}
               >
-                <Button
-                  testID="add-artwork-button-zero-state"
-                  onPress={() => {
-                    // TODO: Implement analytics
-                  }}
-                  block
-                >
+                <Button testID="add-artwork-button-zero-state" block>
                   Add Artworks
                 </Button>
               </RouterLink>
