@@ -45,7 +45,7 @@ describe("MyCollectionInsights", () => {
 
     await flushPromiseQueue()
 
-    expect(getByText("Gain Deeper Knowledge of your Collection")).toBeTruthy()
+    expect(getByText("Gain deeper knowledge of your collection")).toBeTruthy()
   })
 })
 
