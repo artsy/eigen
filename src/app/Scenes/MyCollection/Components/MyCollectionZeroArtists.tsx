@@ -41,14 +41,14 @@ export const MyCollectionZeroArtists: React.FC<{}> = () => {
             flexDirection={isFontScaleLarge() ? "column" : "row"}
             justifyContent="space-evenly"
           >
-            <RouterLink to="/my-collection/collected-artists/new" hasChildTouchable>
-              <Button
-                testID="add-artwork-button-zero-state"
-                block={isFontScaleLarge()}
-                onPress={() => {
-                  // TODO: Implement analytics
-                }}
-              >
+            <RouterLink
+              to="/my-collection/collected-artists/new"
+              onPress={() => {
+                // TODO: Implement analytics
+              }}
+              hasChildTouchable
+            >
+              <Button testID="add-artwork-button-zero-state" block={isFontScaleLarge()}>
                 Add Artists
               </Button>
             </RouterLink>

@@ -65,14 +65,14 @@ export const MyCollectionZeroState: React.FC<{
                 flexDirection={isFontScaleLarge() ? "column" : "row"}
                 justifyContent="space-evenly"
               >
-                <RouterLink to="/my-collection/artworks/new" hasChildTouchable>
-                  <Button
-                    testID="add-artwork-button-zero-state"
-                    onPress={() => {
-                      trackEvent(tracks.addCollectedArtwork())
-                    }}
-                    block={isFontScaleLarge()}
-                  >
+                <RouterLink
+                  to="/my-collection/artworks/new"
+                  onPress={() => {
+                    trackEvent(tracks.addCollectedArtwork())
+                  }}
+                  hasChildTouchable
+                >
+                  <Button testID="add-artwork-button-zero-state" block={isFontScaleLarge()}>
                     Add Artworks
                   </Button>
                 </RouterLink>
