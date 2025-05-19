@@ -3,7 +3,6 @@
 # === CONFIG ===
 IOS_PLIST_PATH="ios/Artsy/Supporting/Expo.plist"
 IOS_QA_PLIST_PATH="ios/Artsy/Supporting/QA/ExpoQA.plist"
-ANDROID_STRINGS_PATH="android/app/src/main/res/values/strings.xml"
 APP_JSON_PATH="app.json"
 
 native_fingerprint=$(npx @expo/fingerprint fingerprint:generate | jq -r '.hash')
@@ -14,13 +13,10 @@ echo "Updating iOS Expo.plist with runtimeVersion = $native_fingerprint"
 echo "Updating iOS ExpoQA.plist with runtimeVersion = $native_fingerprint"
 /usr/libexec/PlistBuddy -c "Set :EXUpdatesRuntimeVersion $native_fingerprint" "$IOS_QA_PLIST_PATH"
 
-echo "Updating Android AndroidManifest.xml with runtimeVersion = $native_fingerprint"
-sed -i '' "s|\(<string name=\"expo_runtime_version\">\)[^<]*\(</string>\)|\1$native_fingerprint\2|" "$ANDROID_STRINGS_PATH"
-
 # Update app.json
 echo "Updating app.json with runtimeVersion = $native_fingerprint"
 tmpfile=$(mktemp)
 jq --arg version "$native_fingerprint" '.expo.runtimeVersion = $version' "$APP_JSON_PATH" > "$tmpfile" && mv "$tmpfile" "$APP_JSON_PATH"
 
 # Done
-echo -e "\033[0;32mRuntime version updated successfully in iOS, Android, and app.json.\033[0m"
+echo -e "\033[0;32mRuntime version updated successfully in iOS and app.json.\033[0m"
