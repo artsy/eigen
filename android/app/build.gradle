@@ -131,8 +131,9 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-            resValue "string", "EXUpdatesDisableAntiBrickingMeasures", "false"
-            resValue "string", "EXUpdatesCheckOnLaunch", "NEVER"
+            resValue "string", "expo_updates_enabled", "false"
+            resValue "string", "expo_updates_disable_antibricking_measures", "false"
+            resValue "string", "expo_updates_check_on_launch", "NEVER"
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -140,16 +141,18 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            resValue "string", "EXUpdatesDisableAntiBrickingMeasures", "false"
-            resValue "string", "EXUpdatesCheckOnLaunch", "ON_LOAD"
+            resValue "string", "expo_updates_enabled", "true"
+            resValue "string", "expo_updates_disable_antibricking_measures", "false"
+            resValue "string", "expo_updates_check_on_launch", "ON_LOAD"
         }
         beta {
             initWith release
             signingConfig signingConfigs.release
             matchingFallbacks = ['release'] // Important: fallback to release if needed
             // You can set beta-specific settings here
-            resValue "string", "EXUpdatesDisableAntiBrickingMeasures", "true"
-            resValue "string", "EXUpdatesCheckOnLaunch", "NEVER"
+            resValue "string", "expo_updates_enabled", "true"
+            resValue "string", "expo_updates_disable_antibricking_measures", "true"
+            resValue "string", "expo_updates_check_on_launch", "NEVER"
             buildConfigField "boolean", "IS_BETA", "true"
         }
     }
