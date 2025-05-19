@@ -58,7 +58,7 @@ export const MyCollectionInsightsEmptyState = () => {
     <Tabs.ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <Box mt={4}>
         <ZeroState
-          bigTitle="Gain Deeper Knowledge of your Collection"
+          bigTitle="Gain deeper knowledge of your collection"
           subtitle="Get free market insights about the artists you collect."
           image={
             <Image

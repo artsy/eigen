@@ -7,7 +7,7 @@ import { MyCollectionInsightsEmptyState } from "./MyCollectionInsightsEmptyState
 describe("MyCollectionInsightsEmptyState", () => {
   it("navigates to add work page when the user presses on add works", () => {
     renderWithWrappers(<MyCollectionInsightsEmptyState />)
-    const uploadArtworkButton = screen.getAllByText("Upload Artwork")[0]
+    const uploadArtworkButton = screen.getAllByText("Add Artworks")[0]
 
     fireEvent(uploadArtworkButton, "press")
     expect(navigate).toHaveBeenCalledWith("my-collection/artworks/new", {
