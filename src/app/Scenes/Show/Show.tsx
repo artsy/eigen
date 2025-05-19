@@ -46,7 +46,7 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
     setVisible(false)
   }
 
-  const artworkProps = { show, visible, openeFilterArtworksModal, closeFilterArtworksModal }
+  const artworkProps = { show, visible, closeFilterArtworksModal }
 
   const sections: Section[] = [
     { key: "header", element: <ShowHeader show={show} mx={2} mt={2} /> },
