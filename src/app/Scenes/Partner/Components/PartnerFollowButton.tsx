@@ -94,13 +94,12 @@ export class PartnerFollowButton extends React.Component<Props, State> {
 
   render() {
     const { partner } = this.props
-    const hasFollows = partner.profile?.counts?.follows >= 500
     return (
       <FollowButton
         haptic
         isFollowed={!!partner.profile?.isFollowed}
         onPress={this.handleFollowPartner.bind(this)}
-        {...(hasFollows && {
+        {...(partner.hasVisibleFollowsCount && {
           followCount: partner.profile?.counts?.follows,
           longestText: "Following 999.9k",
         })}
@@ -114,6 +113,7 @@ export const PartnerFollowButtonFragmentContainer = createFragmentContainer(Part
     fragment PartnerFollowButton_deprecated_partner on Partner {
       internalID
       slug
+      hasVisibleFollowsCount
       profile {
         id
         internalID
