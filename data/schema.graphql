@@ -4459,6 +4459,9 @@ input BulkUpdateArtworksFilterInput {
 
   # Filter artworks by partner artist id
   partnerArtistId: String
+
+  # Filter artworks by published status
+  published: Boolean
 }
 
 input BulkUpdateArtworksMetadataInput {
@@ -4467,6 +4470,9 @@ input BulkUpdateArtworksMetadataInput {
 
   # The category (medium type) to be assigned
   category: String
+
+  # Flat fee for domestic shipping. It must be entered in cents.
+  domestic_shipping_fee_cents: Int
 
   # Whether the artworks must be listed as Purchase
   ecommerce: Boolean
