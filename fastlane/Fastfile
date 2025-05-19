@@ -237,7 +237,15 @@ lane :create_next_version_if_needed do
   edit_version_ready = edit_version && edit_version.app_store_state == 'PREPARE_FOR_SUBMISSION'
   live_version_ready = live_version && live_version.app_store_state == 'READY_FOR_SALE'
   if live_version_ready and !edit_version_ready then
-    UI.message("There is a live app version but there is no editable version")
+    UI.message("There is a live app version but there is no editable version ready")
+
+    non_editable_states = ['WAITING_FOR_REVIEW', 'IN_REVIEW', 'PENDING_APPLE_RELEASE', 'PROCESSING_FOR_APP_STORE']
+    if edit_version && non_editable_states.include?(edit_version.app_store_state)
+      UI.message("An editable version exists but is not editable (state: #{edit_version.app_store_state})")
+      UI.message("We can't create a new version until the editable version is approved and ready")
+      next
+    end
+
     next_version = increment_version_number(live_version.version_string)
     UI.message("Creating new version #{next_version}")
     update_version_string(version: next_version)
