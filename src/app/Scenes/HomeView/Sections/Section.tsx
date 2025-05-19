@@ -40,6 +40,9 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
   const { variant: quickLinksExperimentVariant } = useExperimentVariant(
     "onyx_quick-links-experiment"
   )
+  const { variant: discoverTabExperimentVariant } = useExperimentVariant("diamond_discover-tab")
+  const isDiscoverVariant =
+    discoverTabExperimentVariant.name === "variant-a" && discoverTabExperimentVariant.enabled
 
   if (!section.internalID) {
     if (__DEV__) {
@@ -56,6 +59,10 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
     case "ArticlesCard":
       return <HomeViewSectionArticlesCardsQueryRenderer sectionID={section.internalID} {...rest} />
     case "Chips":
+      if (section.internalID === "home-view-section-discover-something-new" && isDiscoverVariant) {
+        return null
+      }
+
       return <HomeViewSectionCardsChipsQueryRenderer sectionID={section.internalID} {...rest} />
   }
 
@@ -77,6 +84,10 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
     case "HomeViewSectionHeroUnits":
       return <HomeViewSectionHeroUnitsQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionCards":
+      if (section.internalID === "home-view-section-explore-by-category" && isDiscoverVariant) {
+        return null
+      }
+
       return <HomeViewSectionCardsQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionFairs":
       return <HomeViewSectionFairsQueryRenderer sectionID={section.internalID} {...rest} />

@@ -39,14 +39,11 @@ export const MyCollectionInsightsEmptyState = () => {
                 navigationProps={{
                   source: Tab.insights,
                 }}
+                onPress={() => {
+                  // TODO: Implement analytics
+                }}
               >
-                <Button
-                  testID="add-artwork-button-zero-state"
-                  onPress={() => {
-                    // TODO: Implement analytics
-                  }}
-                  block
-                >
+                <Button testID="add-artwork-button-zero-state" block>
                   Add Artworks
                 </Button>
               </RouterLink>
@@ -61,7 +58,7 @@ export const MyCollectionInsightsEmptyState = () => {
     <Tabs.ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <Box mt={4}>
         <ZeroState
-          bigTitle="Gain Deeper Knowledge of your Collection"
+          bigTitle="Gain deeper knowledge of your collection"
           subtitle="Get free market insights about the artists you collect."
           image={
             <Image

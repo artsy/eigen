@@ -1,4 +1,4 @@
-import { Flex, Input, useColor } from "@artsy/palette-mobile"
+import { Flex, Input, Spacer, useColor } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
 import React, { useState } from "react"
@@ -70,6 +70,7 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
           error={highlightTerms}
           navigation={navigation as any}
         />
+        <Spacer y={2} />
         <EmailSubscriptionCheckbox
           setChecked={() => setFieldValue("agreedToReceiveEmails", !values.agreedToReceiveEmails)}
           checked={values.agreedToReceiveEmails}

@@ -70,6 +70,8 @@
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand",
     "test:watch": "jest --watch",
     "type-check": "yarn relay; yarn tsc",
+    "which-build": "./scripts/deploys/which-build",
+    "which-submission": "./scripts/deploys/which-build --submission",
     "update-metaphysics": "node scripts/update-metaphysics.js"
   },
   "repository": {
@@ -97,9 +99,9 @@
     "braces": "in the resolutions - needed to resolve a security dependency issue - need to remove this when the issue is resolved and packages are updated"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.263.0",
-    "@artsy/icons": "3.30.0",
-    "@artsy/palette-mobile": "17.8.0",
+    "@artsy/cohesion": "4.264.0",
+    "@artsy/icons": "3.39.0",
+    "@artsy/palette-mobile": "17.9.0",
     "@artsy/to-title-case": "1.1.0",
     "@braze/react-native-sdk": "13.1.1",
     "@expo/react-native-action-sheet": "4.0.1",

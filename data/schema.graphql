@@ -3176,6 +3176,7 @@ enum ArtworkImportError {
   INVALID_HEIGHT
   INVALID_MEDIUM
   INVALID_PRICE
+  INVALID_SIGNATURE
   INVALID_WIDTH
   MISSING_ARTIST
   MISSING_DATE
@@ -3258,6 +3259,7 @@ enum ArtworkImportState {
 
 type ArtworkImportTransformedData {
   artistNames: String
+  artworkCondition: String
   artworkTitle: String
   certificateOfAuthenticity: String
   date: String
@@ -3269,6 +3271,8 @@ type ArtworkImportTransformedData {
   materials: String
   medium: String
   price: String
+  signature: [String]
+  signatureDetails: String
   width: String
 }
 
@@ -3874,6 +3878,21 @@ enum AuctionResultsState {
   ALL
   PAST
   UPCOMING
+}
+
+# Classification of users based on auction activity
+enum AuctionSegmentationType {
+  # Users with recent auction-related activity
+  ADJACENT
+
+  # Users who have not engaged with auctions recently
+  DISENGAGED
+
+  # Users with a recent auction registration
+  ENGAGED
+
+  # Users with recently created accounts
+  NEW
 }
 
 enum AuctionState {
@@ -10426,11 +10445,33 @@ type DismissTaskSuccess {
 
 # Display texts for the order based on its state and order shipping/payment states
 type DisplayTexts {
-  # First paragraph of the message text for the order
-  messageText(format: Format = MARKDOWN): String
+  # Fomatted full message text for the order
+  message(format: Format = MARKDOWN): String
 
-  # Title text to display for the order
-  titleText: String!
+  # Granular order states specific type that should be directly interpreted by clients
+  messageType: DisplayTextsMessageTypeEnum!
+
+  # Text to display as a first message on the page (header)
+  title: String!
+}
+
+enum DisplayTextsMessageTypeEnum {
+  APPROVED_PICKUP
+  APPROVED_SHIP
+  APPROVED_SHIP_EXPRESS
+  APPROVED_SHIP_STANDARD
+  APPROVED_SHIP_WHITE_GLOVE
+  CANCELLED_ORDER
+  COMPLETED_PICKUP
+  COMPLETED_SHIP
+  PAYMENT_FAILED
+  PROCESSING_PAYMENT_PICKUP
+  PROCESSING_PAYMENT_SHIP
+  PROCESSING_WIRE
+  SHIPPED
+  SUBMITTED_OFFER
+  SUBMITTED_ORDER
+  UNKNOWN
 }
 
 type DoNotUseThisPartner {
@@ -12412,9 +12453,6 @@ type HomeView {
   section(
     # The ID of the section
     id: String!
-
-    # Overrides shouldBeDisplayed to show sections that would otherwise be hidden
-    overrideShouldBeDisplayed: Boolean = false
   ): HomeViewSectionGeneric
 
   # A paginated list of home view sections
@@ -14062,6 +14100,9 @@ type Me implements Node {
     # State of the returned auction results (can be past, upcoming, or all)
     state: AuctionResultsState = ALL
   ): AuctionResultConnection
+
+  # Classification of the user based on their auction-related activity
+  auctionSegmentation: AuctionSegmentationType
   auctionsLotStandingConnection(
     after: String
     before: String
@@ -14344,7 +14385,7 @@ type Me implements Node {
     # The ID of the Notification
     id: String!
   ): Notification
-  order(id: String!): Order
+  order(id: ID!): Order
   orders(
     after: String
     before: String
@@ -16036,6 +16077,9 @@ type Order {
   # Phone number of the buyer
   buyerPhoneNumber: String @deprecated(reason: "Use `order.fulfillmentDetails.phoneNumber`")
 
+  # Expiration for the current state of the order
+  buyerStateExpiresAt: String
+
   # The total amount the buyer is expected to pay
   buyerTotal: Money
 
@@ -16559,6 +16603,9 @@ type Partner implements Node {
   ): FilterArtworksConnection
   fullProfileEligible: Boolean @deprecated(reason: "Prefer displayFullPartnerPage")
   hasFairPartnership: Boolean
+
+  # If the partner has more than 500 follows
+  hasVisibleFollowsCount: Boolean!
 
   # The url for a partner. May be `null` if partner is not eligible for page.
   href: String
@@ -21818,6 +21865,7 @@ input UpdateArtworkEditionSetInput {
 
   # True for `Make Offer` artworks
   offer: Boolean
+  partnerLocationId: String
   priceCurrency: String
 
   # Show/Hide the price of an artwork
@@ -21888,6 +21936,7 @@ input UpdateArtworkMutationInput {
 
   # True for `Make Offer` artworks
   offer: Boolean
+  partnerLocationId: String
   priceCurrency: String
 
   # Show/Hide the price of an artwork
