@@ -16,7 +16,7 @@
 		<string>staging</string>
 	</dict>
 	<key>EXUpdatesRuntimeVersion</key>
-	<string>257035bdc63217c4adf6e7c7f0bfeea9ca986f22</string>
+	<string>replaced-at-build-time</string>
 	<key>EXUpdatesURL</key>
 	<string>https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668</string>
 </dict>
