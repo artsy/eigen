@@ -158,6 +158,7 @@ gw==
                 <data android:pathPrefix="/auctions" />
                 <data android:pathPrefix="/buy-now-feature-faq" />
                 <data android:pathPrefix="/buyer-guarantee" />
+                <data android:pathPrefix="/collect" />
                 <data android:pathPrefix="/collection" />
                 <data android:pathPrefix="/collections" />
                 <data android:pathPrefix="/conditions-of-sale" />

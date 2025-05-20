@@ -129,6 +129,7 @@ export const getSortDefaultValueByFilterType = (filterType: FilterType) => {
     geneArtwork: "-partner_updated_at",
     tagArtwork: "-partner_updated_at",
     local: "",
+    collect: "-decayed_merch",
   }[filterType]
 }
 
@@ -257,6 +258,7 @@ export type FilterType =
   | "geneArtwork"
   | "tagArtwork"
   | "local"
+  | "collect"
 
 export interface FilterCounts {
   total: number | null
@@ -361,6 +363,7 @@ const getDefaultParamsByType = (filterType: FilterType) => {
     geneArtwork: DEFAULT_GENE_ARTWORK_PARAMS,
     tagArtwork: DEFAULT_TAG_ARTWORK_PARAMS,
     local: DEFAULT_ARTWORKS_PARAMS,
+    collect: DEFAULT_ARTWORKS_PARAMS,
   }[filterType]
 }
 
