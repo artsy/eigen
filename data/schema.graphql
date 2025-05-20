@@ -10451,9 +10451,6 @@ type DismissTaskSuccess {
 
 # Display texts for the order based on its state and order shipping/payment states
 type DisplayTexts {
-  # Fomatted full message text for the order
-  message(format: Format = MARKDOWN): String
-
   # Granular order states specific type that should be directly interpreted by clients
   messageType: DisplayTextsMessageTypeEnum!
 
@@ -16091,6 +16088,9 @@ type Order {
 
   # Order code
   code: String!
+
+  # Currency code
+  currencyCode: String!
 
   # Display texts for the order based on its buyer_state and order shipping/payment states
   displayTexts: DisplayTexts!
