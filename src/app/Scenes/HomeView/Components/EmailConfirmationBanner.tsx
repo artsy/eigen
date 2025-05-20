@@ -70,7 +70,10 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
             </Flex>
           </>
         ) : (
-          <TouchableWithoutFeedback onPress={confirmed ? undefined : didTapSendConfirmationEmail}>
+          <TouchableWithoutFeedback
+            onPress={confirmed ? undefined : didTapSendConfirmationEmail}
+            testID="confirmEmailButton"
+          >
             <Flex
               flexDirection="row"
               width="100%"
@@ -81,7 +84,7 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
                 {message}
               </Text>
 
-              <Pressable onPress={() => toggleVisible(false)}>
+              <Pressable onPress={() => toggleVisible(false)} testID="closeButton">
                 <CloseIcon fill="mono0" />
               </Pressable>
             </Flex>
