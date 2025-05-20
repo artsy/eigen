@@ -1,5 +1,13 @@
 import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
-import { Chip, Flex, Skeleton, SkeletonBox, Spacer, useSpace } from "@artsy/palette-mobile"
+import {
+  Chip,
+  Flex,
+  FlexProps,
+  Skeleton,
+  SkeletonBox,
+  Spacer,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { HomeViewSectionCardsChipsQuery } from "__generated__/HomeViewSectionCardsChipsQuery.graphql"
 import { HomeViewSectionCardsChips_section$key } from "__generated__/HomeViewSectionCardsChips_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -26,6 +34,7 @@ const CHIP_WIDTH = 230
 export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps> = ({
   section: sectionProp,
   index,
+  ...flexProps
 }) => {
   const space = useSpace()
   const tracking = useHomeViewTracking()
@@ -57,7 +66,7 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
   }
 
   return (
-    <Flex py={2}>
+    <Flex {...flexProps}>
       <SectionTitle title={section.component?.title} mx={2} />
 
       <FlatList
@@ -130,7 +139,7 @@ const fragment = graphql`
   }
 `
 
-const HomeViewSectionCardsChipsPlaceholder: React.FC = () => {
+const HomeViewSectionCardsChipsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const space = useSpace()
 
   const listSize = 9
@@ -138,7 +147,7 @@ const HomeViewSectionCardsChipsPlaceholder: React.FC = () => {
 
   return (
     <Skeleton>
-      <Flex py={2} testID="HomeViewSectionCardsChipsPlaceholder">
+      <Flex {...flexProps} testID="HomeViewSectionCardsChipsPlaceholder">
         <SectionTitle title="Discover Something New" mx={2} />
 
         <FlatList
