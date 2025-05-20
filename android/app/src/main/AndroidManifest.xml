@@ -30,6 +30,7 @@
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="${expoUpdatesCheckOnLaunch}" />
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0" />
     <meta-data android:name="expo.modules.updates.EXPO_RUNTIME_VERSION" android:value="${expoRuntimeVersion}" />
+    <meta-data android:name="expo.modules.updates.UPDATES_CONFIGURATION_REQUEST_HEADERS_KEY" android:value="{&quot;expo-channel-name&quot;:&quot;${expoUpdatesChannel}&quot;}"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668" />
     <meta-data android:name="expo.modules.updates.EXUpdatesDisableAntiBrickingMeasures" android:value="${expoUpdatesDisableAntibrickingMeasures}" />
     <activity android:name="com.facebook.FacebookActivity" android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" android:label="@string/app_name"/>

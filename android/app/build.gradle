@@ -145,6 +145,7 @@ android {
             manifestPlaceholders = [
                 expoUpdatesEnabled: "false",
                 expoUpdatesCheckOnLaunch: "NEVER",
+                expoUpdatesChannel: "staging",
                 expoRuntimeVersion: getRuntimeVersion(),
                 expoUpdatesDisableAntibrickingMeasures: "false"
             ]
@@ -160,6 +161,7 @@ android {
             manifestPlaceholders = [
                 expoUpdatesEnabled: "true",
                 expoUpdatesCheckOnLaunch: "ON_LOAD",
+                expoUpdatesChannel: "production",
                 expoRuntimeVersion: getRuntimeVersion(),
                 expoUpdatesDisableAntibrickingMeasures: "false"
             ]
@@ -174,6 +176,7 @@ android {
             manifestPlaceholders = [
                 expoUpdatesEnabled: "true",
                 expoUpdatesCheckOnLaunch: "NEVER",
+                expoUpdatesChannel: "staging",
                 expoRuntimeVersion: getRuntimeVersion(),
                 expoUpdatesDisableAntibrickingMeasures: "true"
             ]
