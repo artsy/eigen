@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
+import { Flex, Screen, Spinner, Text } from "@artsy/palette-mobile"
 import { PortalHost } from "@gorhom/portal"
 import { useFocusEffect } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
@@ -172,6 +172,15 @@ export const HomeView: React.FC = memo(() => {
   return (
     <Screen safeArea={true}>
       <Screen.Body fullwidth>
+        <Flex
+          height={100}
+          backgroundColor="orange"
+          alignContent="center"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Text>Expo updates works on Android!</Text>
+        </Flex>
         <FlatList
           automaticallyAdjustKeyboardInsets
           keyboardDismissMode="on-drag"
