@@ -106,7 +106,7 @@ export const Search: React.FC = () => {
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <KeyboardAvoidingView style={{ flex: 1 }}>
-        <Flex p={2} pb={1}>
+        <Flex px={2} pt={2}>
           <GlobalSearchInput ownerType={OwnerType.search} />
         </Flex>
         <Flex flex={1} collapsable={false}>
