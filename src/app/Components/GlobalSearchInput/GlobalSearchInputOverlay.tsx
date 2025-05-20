@@ -1,12 +1,10 @@
 import { OwnerType } from "@artsy/cohesion"
-import { FilterIcon } from "@artsy/icons/native"
 import { Box, Flex, RoundSearchInput, Spacer, Spinner, useSpace } from "@artsy/palette-mobile"
 import { Portal } from "@gorhom/portal"
 import { useNavigation } from "@react-navigation/native"
 import { FadeIn } from "app/Components/FadeIn"
 import { GlobalSearchInputOverlayEmptyState } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlayEmptyState"
 import { useSearch } from "app/Components/GlobalSearchInput/useSearch"
-import { DEFAULT_ICON_SIZE, ICON_HIT_SLOP } from "app/Components/constants"
 import { RecentSearches } from "app/Scenes/Search/RecentSearches"
 import { SEARCH_INPUT_PLACEHOLDER, shouldStartSearching } from "app/Scenes/Search/Search"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
@@ -14,9 +12,7 @@ import { useRecentSearches } from "app/Scenes/Search/SearchModel"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { SearchResults } from "app/Scenes/Search/SearchResults"
 import { SEARCH_PILLS } from "app/Scenes/Search/constants"
-import { RouterLink } from "app/system/navigation/RouterLink"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Suspense, useEffect, useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -93,8 +89,6 @@ export const GlobalSearchInputOverlay: React.FC<{
   const insets = useSafeAreaInsets()
   const { goBack, canGoBack } = useNavigation()
 
-  const enableCollect = useFeatureFlag("AREnableCollectSearch")
-
   useBackHandler(() => {
     if (!!canGoBack()) {
       goBack()
@@ -125,28 +119,19 @@ export const GlobalSearchInputOverlay: React.FC<{
         <Flex style={{ ...StyleSheet.absoluteFillObject }}>
           <Flex flex={1} backgroundColor="mono0" style={{ ...insets }}>
             <Flex px={2} pt={2}>
-              <Flex flexDirection="row" alignItems="center" gap={1}>
-                <Flex flex={1}>
-                  <RoundSearchInput
-                    placeholder={SEARCH_INPUT_PLACEHOLDER}
-                    accessibilityHint="Search artists, artworks, galleries etc."
-                    accessibilityLabel="Search artists, artworks, galleries etc."
-                    maxLength={55}
-                    numberOfLines={1}
-                    onChangeText={setQuery}
-                    autoFocus
-                    multiline={false}
-                    onLeftIconPress={() => {
-                      hideModal()
-                    }}
-                  />
-                </Flex>
-                {!!enableCollect && (
-                  <RouterLink to="/collect" hitSlop={ICON_HIT_SLOP}>
-                    <FilterIcon height={DEFAULT_ICON_SIZE} width={DEFAULT_ICON_SIZE} />
-                  </RouterLink>
-                )}
-              </Flex>
+              <RoundSearchInput
+                placeholder={SEARCH_INPUT_PLACEHOLDER}
+                accessibilityHint="Search artists, artworks, galleries etc."
+                accessibilityLabel="Search artists, artworks, galleries etc."
+                maxLength={55}
+                numberOfLines={1}
+                onChangeText={setQuery}
+                autoFocus
+                multiline={false}
+                onLeftIconPress={() => {
+                  hideModal()
+                }}
+              />
             </Flex>
 
             <Spacer y={2} />

@@ -1,9 +1,20 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, SimpleMessage, Spacer, Text } from "@artsy/palette-mobile"
+import { StackScreenProps } from "@react-navigation/stack"
 import { CollectArtworks_viewer$key } from "__generated__/CollectArtworks_viewer.graphql"
-import { CollectQuery } from "__generated__/CollectQuery.graphql"
+import { CollectQuery, FilterArtworksInput } from "__generated__/CollectQuery.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
-import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  FilterArray,
+  filterArtworksParams,
+  FilterParams,
+  getFilterParamsFromRouteParams,
+  prepareFilterArtworksParamsForInput,
+} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  ArtworkFiltersStoreProvider,
+  getArtworkFiltersModel,
+} from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import {
   useArtworkFilters,
   useSelectedFiltersCount,
@@ -23,6 +34,34 @@ import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface CollectContentProps {
   viewer: CollectArtworks_viewer$key
+}
+
+interface CollectHeaderProps {
+  appliedFiltersCount: number
+  setIsArtworksFilterModalVisible: (visible: boolean) => void
+}
+
+const CollectHeader: React.FC<CollectHeaderProps> = ({
+  appliedFiltersCount,
+  setIsArtworksFilterModalVisible,
+}) => {
+  return (
+    <Flex mx={-2} gap={1}>
+      <Flex px={2}>
+        <Text variant="lg-display">Collect</Text>
+        <Spacer y={0.5} />
+        <Text variant="sm-display">Collect art and design online</Text>
+      </Flex>
+
+      <ArtworksFilterHeader
+        selectedFiltersCount={appliedFiltersCount}
+        onFilterPress={() => setIsArtworksFilterModalVisible(true)}
+        childrenPosition="left"
+      >
+        <Flex />
+      </ArtworksFilterHeader>
+    </Flex>
+  )
 }
 
 export const CollectContent: React.FC<CollectContentProps> = ({ viewer }) => {
@@ -63,23 +102,21 @@ export const CollectContent: React.FC<CollectContentProps> = ({ viewer }) => {
         // TODO: Add tracking
         contextScreenOwnerType={OwnerType.collect}
         contextScreen={OwnerType.collect}
-        ListEmptyComponent={<SimpleMessage m={2}>No artworks found</SimpleMessage>}
-        ListHeaderComponent={
-          <Flex mx={-2} gap={1}>
-            <Flex px={2}>
-              <Text variant="lg-display">Collect</Text>
-              <Spacer y={0.5} />
-              <Text variant="sm-display">Collect art and design online</Text>
-            </Flex>
+        ListEmptyComponent={
+          <Flex mx={2}>
+            <CollectHeader
+              appliedFiltersCount={appliedFiltersCount}
+              setIsArtworksFilterModalVisible={setIsArtworksFilterModalVisible}
+            />
 
-            <ArtworksFilterHeader
-              selectedFiltersCount={appliedFiltersCount}
-              onFilterPress={() => setIsArtworksFilterModalVisible(true)}
-              childrenPosition="left"
-            >
-              <Flex />
-            </ArtworksFilterHeader>
+            <SimpleMessage my={2}>No artworks found</SimpleMessage>
           </Flex>
+        }
+        ListHeaderComponent={
+          <CollectHeader
+            appliedFiltersCount={appliedFiltersCount}
+            setIsArtworksFilterModalVisible={setIsArtworksFilterModalVisible}
+          />
         }
         onScroll={scrollHandler}
         refreshControl={RefreshControl}
@@ -112,6 +149,7 @@ export const viewerFragment = graphql`
       after: $cursor
       input: $input
       aggregations: [
+        ARTIST
         ARTIST_SERIES
         COLOR
         DIMENSION_RANGE
@@ -127,7 +165,6 @@ export const viewerFragment = graphql`
       aggregations {
         slice
         counts {
-          count
           name
           value
         }
@@ -147,18 +184,34 @@ export const viewerFragment = graphql`
 `
 
 export const collectQuery = graphql`
-  query CollectQuery {
+  query CollectQuery($input: FilterArtworksInput!) {
     viewer @required(action: THROW) {
-      ...CollectArtworks_viewer
+      ...CollectArtworks_viewer @arguments(input: $input)
     }
   }
 `
-const CollectQueryRenderer: React.FC = withSuspense({
-  Component: () => {
-    const data = useLazyLoadQuery<CollectQuery>(collectQuery, {})
+
+type CollectQueryRendererProps = StackScreenProps<any, any>
+
+const CollectQueryRenderer: React.FC<CollectQueryRendererProps> = withSuspense({
+  Component: ({ route }) => {
+    const filters: FilterArray = getFilterParamsFromRouteParams(route.params || {})
+    const filterParams = filterArtworksParams(filters ?? [], "collect")
+    const input = prepareFilterArtworksParamsForInput(filterParams as FilterParams)
+
+    const data = useLazyLoadQuery<CollectQuery>(collectQuery, {
+      input: input as FilterArtworksInput,
+    })
 
     return (
-      <ArtworkFiltersStoreProvider>
+      <ArtworkFiltersStoreProvider
+        runtimeModel={{
+          ...getArtworkFiltersModel(),
+          appliedFilters: filters,
+          previouslyAppliedFilters: filters,
+          applyFilters: false,
+        }}
+      >
         <CollectContent viewer={data.viewer} />
       </ArtworkFiltersStoreProvider>
     )
@@ -185,7 +238,6 @@ const CollectQueryRenderer: React.FC = withSuspense({
     return (
       <LoadFailureView
         onRetry={fallbackProps.resetErrorBoundary}
-        showBackButton
         useSafeArea={false}
         error={fallbackProps.error}
         trackErrorBoundary={false}
@@ -194,13 +246,13 @@ const CollectQueryRenderer: React.FC = withSuspense({
   },
 })
 
-export const Collect: React.FC = () => {
+export const Collect: React.FC<CollectQueryRendererProps> = (props) => {
   return (
     <Screen>
       <Screen.AnimatedHeader onBack={goBack} title="Collect" />
 
       <Screen.Body fullwidth>
-        <CollectQueryRenderer />
+        <CollectQueryRenderer {...props} />
       </Screen.Body>
     </Screen>
   )

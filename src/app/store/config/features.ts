@@ -285,12 +285,6 @@ export const features = {
     description: "Enable new order details screen",
     echoFlagKey: "AREnableNewOrderDetails",
   },
-  AREnableCollectSearch: {
-    readyForRelease: false,
-    showInDevMenu: true,
-    description: "Enable collect search",
-    echoFlagKey: "AREnableCollectSearch",
-  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
