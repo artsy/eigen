@@ -1,4 +1,5 @@
 import { Flex, Touchable, TouchableProps } from "@artsy/palette-mobile"
+// eslint-disable-next-line no-restricted-imports
 import { navigate, NavigateOptions } from "app/system/navigation/navigate"
 import { Sentinel } from "app/utils/Sentinel"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"

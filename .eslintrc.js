@@ -160,7 +160,7 @@ module.exports = {
       },
     },
     {
-      files: ["*.tests.ts", "*.tests.tsx", "src/app/system/navigation/RouterLink.tsx"],
+      files: ["*.tests.ts", "*.tests.tsx"],
       rules: {
         "no-restricted-imports": OFF,
       },
