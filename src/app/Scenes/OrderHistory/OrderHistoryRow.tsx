@@ -48,7 +48,7 @@ const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, ord
         <RouterLink
           hasChildTouchable
           to={`/orders/${orderId}/payment/new`}
-          isWeb
+          isWebView
           navigationProps={{ orderID: orderId, title: "Update Payment Details" }}
           onPress={() => {
             tracks.tappedChangePaymentMethod({ id: orderId })
@@ -66,7 +66,7 @@ const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, ord
         <RouterLink
           hasChildTouchable
           to={`/orders/${orderId}`}
-          isWeb
+          isWebView
           navigationProps={{ orderID: orderId, title: "Review Offer" }}
           testID="counteroffer-button"
         >
