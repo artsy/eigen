@@ -99,6 +99,11 @@ export const ExpoUpdatesOptions = () => {
         return
       }
 
+      if (isErrorWithMessage(error)) {
+        setErrorMessage(`Error fetching update: ${error.message}`)
+        return
+      }
+
       console.error("Error fetching Expo update:", error)
       setErrorMessage(`Error fetching update: ${error}`)
     } finally {
