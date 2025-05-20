@@ -4472,7 +4472,7 @@ input BulkUpdateArtworksMetadataInput {
   category: String
 
   # Flat fee for domestic shipping. It must be entered in cents.
-  domestic_shipping_fee_cents: Int
+  domesticShippingFeeCents: Int
 
   # Whether the artworks must be listed as Purchase
   ecommerce: Boolean
