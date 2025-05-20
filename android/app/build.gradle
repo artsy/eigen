@@ -140,10 +140,14 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-            resValue "string", "expo_updates_enabled", "false"
-            resValue "string", "expo_updates_disable_antibricking_measures", "false"
-            resValue "string", "expo_updates_check_on_launch", "NEVER"
-            resValue "string", "expo_runtime_version", "\"${getRuntimeVersion()}\""
+             resValue "string", "expo_runtime_version", "\"${getRuntimeVersion()}\""
+
+            manifestPlaceholders = [
+                expoUpdatesEnabled: "false",
+                expoUpdatesCheckOnLaunch: "NEVER",
+                expoRuntimeVersion: getRuntimeVersion(),
+                expoUpdatesDisableAntibrickingMeasures: "false"
+            ]
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -151,21 +155,28 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            resValue "string", "expo_updates_enabled", "true"
-            resValue "string", "expo_updates_disable_antibricking_measures", "false"
-            resValue "string", "expo_updates_check_on_launch", "ON_LOAD"
             resValue "string", "expo_runtime_version", "\"${getRuntimeVersion()}\""
+
+            manifestPlaceholders = [
+                expoUpdatesEnabled: "true",
+                expoUpdatesCheckOnLaunch: "ON_LOAD",
+                expoRuntimeVersion: getRuntimeVersion(),
+                expoUpdatesDisableAntibrickingMeasures: "false"
+            ]
         }
         beta {
             initWith release
             signingConfig signingConfigs.release
-            matchingFallbacks = ['release'] // Important: fallback to release if needed
-            // You can set beta-specific settings here
-            resValue "string", "expo_updates_enabled", "true"
-            resValue "string", "expo_updates_disable_antibricking_measures", "true"
-            resValue "string", "expo_updates_check_on_launch", "NEVER"
-            resValue "string", "expo_runtime_version", "\"${getRuntimeVersion()}\""
+            matchingFallbacks = ['release']
             buildConfigField "boolean", "IS_BETA", "true"
+            resValue "string", "expo_runtime_version", "\"${getRuntimeVersion()}\""
+
+            manifestPlaceholders = [
+                expoUpdatesEnabled: "true",
+                expoUpdatesCheckOnLaunch: "NEVER",
+                expoRuntimeVersion: getRuntimeVersion(),
+                expoUpdatesDisableAntibrickingMeasures: "true"
+            ]
         }
     }
 }
