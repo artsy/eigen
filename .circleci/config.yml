@@ -257,7 +257,7 @@ jobs:
       - install-node-modules
       - run-relay-compiler
       - run:
-          command: yarn jest --ci --forceExit --logHeapUsage --runInBand --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
+          command: yarn jest --ci --forceExit --logHeapUsage --maxWorkers=50% --reporters=default --reporters=jest-junit --shard=$(expr $CIRCLE_NODE_INDEX + 1)/$CIRCLE_NODE_TOTAL
           name: Run Jest tests
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
