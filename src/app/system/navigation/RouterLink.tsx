@@ -1,5 +1,6 @@
 import { Flex, Touchable, TouchableProps } from "@artsy/palette-mobile"
-import { navigate } from "app/system/navigation/navigate"
+// eslint-disable-next-line no-restricted-imports
+import { navigate, NavigateOptions } from "app/system/navigation/navigate"
 import { Sentinel } from "app/utils/Sentinel"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -10,7 +11,7 @@ import { Variables } from "relay-runtime"
 
 export interface RouterLinkProps {
   disablePrefetch?: boolean
-  navigationProps?: Object
+  navigationProps?: NavigateOptions["passProps"]
   to?: string | null | undefined
   // Indicates whether the child component is a touchable element, preventing duplicate touch handlers
   hasChildTouchable?: boolean

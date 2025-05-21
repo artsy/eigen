@@ -6,6 +6,8 @@ import {
   CommerceBuyerOfferActionEnum,
   CommerceOrderModeEnum,
 } from "__generated__/OrderHistoryRow_order.graphql"
+import { RouterLink } from "app/system/navigation/RouterLink"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus } from "app/utils/getOrderStatus"
@@ -40,6 +42,8 @@ const getStateColor = (displayState: BuyerDisplayStateEnum) => {
 }
 
 const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, orderId, mode }) => {
+  const AREnableNewOrderDetails = useFeatureFlag("AREnableNewOrderDetails")
+
   switch (displayState) {
     case "PAYMENT_FAILED":
       return (
@@ -58,6 +62,7 @@ const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, ord
           Update Payment Method
         </Button>
       )
+
     case "OFFER_RECEIVED":
       return (
         <Button
@@ -81,14 +86,15 @@ const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, ord
     case "PROCESSING_APPROVAL":
     case "IN_TRANSIT":
       return (
-        <Button
-          block
-          variant="fillGray"
-          onPress={() => navigate(`/user/purchases/${orderId}`)}
+        <RouterLink
+          hasChildTouchable
           testID="view-order-button"
+          to={AREnableNewOrderDetails ? `/orders/${orderId}/details` : `/user/purchases/${orderId}`}
         >
-          {mode == "OFFER" ? "View Offer" : "View Order"}
-        </Button>
+          <Button block variant="fillGray">
+            {mode == "OFFER" ? "View Offer" : "View Order"}
+          </Button>
+        </RouterLink>
       )
     default:
       return null
