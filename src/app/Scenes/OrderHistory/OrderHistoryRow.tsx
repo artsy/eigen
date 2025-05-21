@@ -7,6 +7,8 @@ import {
   CommerceOrderModeEnum,
 } from "__generated__/OrderHistoryRow_order.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { getOrderStatus } from "app/utils/getOrderStatus"
 import { getTrackingUrl } from "app/utils/getTrackingUrl"
@@ -45,35 +47,36 @@ const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, ord
   switch (displayState) {
     case "PAYMENT_FAILED":
       return (
-        <RouterLink
-          hasChildTouchable
-          to={`/orders/${orderId}/payment/new`}
-          isWebView
-          navigationProps={{ orderID: orderId, title: "Update Payment Details" }}
+        <Button
+          block
+          variant="fillDark"
           onPress={() => {
             tracks.tappedChangePaymentMethod({ id: orderId })
+            navigate(`/orders/${orderId}/payment/new`, {
+              modal: true,
+              passProps: { orderID: orderId, title: "Update Payment Details" },
+            })
           }}
           testID="update-payment-button"
         >
-          <Button block variant="fillDark">
-            Update Payment Method
-          </Button>
-        </RouterLink>
+          Update Payment Method
+        </Button>
       )
 
     case "OFFER_RECEIVED":
       return (
-        <RouterLink
-          hasChildTouchable
-          to={`/orders/${orderId}`}
-          isWebView
-          navigationProps={{ orderID: orderId, title: "Review Offer" }}
-          testID="counteroffer-button"
+        <Button
+          block
+          variant="fillDark"
+          onPress={() =>
+            navigate(`/orders/${orderId}`, {
+              modal: true,
+              passProps: { orderID: orderId, title: "Review Offer" },
+            })
+          }
         >
-          <Button block variant="fillDark">
-            Respond to Counteroffer
-          </Button>
-        </RouterLink>
+          Respond to Counteroffer
+        </Button>
       )
     case "SUBMITTED":
     case "APPROVED":

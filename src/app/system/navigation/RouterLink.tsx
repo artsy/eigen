@@ -12,7 +12,6 @@ import { Variables } from "relay-runtime"
 export interface RouterLinkProps {
   disablePrefetch?: boolean
   navigationProps?: NavigateOptions["passProps"]
-  isWebView?: boolean
   to?: string | null | undefined
   // Indicates whether the child component is a touchable element, preventing duplicate touch handlers
   hasChildTouchable?: boolean
@@ -34,7 +33,6 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   navigationProps,
   children,
   hasChildTouchable,
-  isWebView,
   ...restProps
 }) => {
   const enablePrefetchingIndicator = useDevToggle("DTShowPrefetchingIndicator")
@@ -42,26 +40,15 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   const enableViewPortPrefetching = useFeatureFlag("AREnableViewPortPrefetching")
   const [prefetchState, setPrefetchState] = useState<PrefetchState>(null)
 
-  const isPrefetchingEnabled = !isWebView && !disablePrefetch && enableViewPortPrefetching && to
+  const isPrefetchingEnabled = !disablePrefetch && enableViewPortPrefetching && to
 
   const handlePress = (event: GestureResponderEvent) => {
     onPress?.(event)
 
     if (!to) return
 
-    const navigationOptions: NavigateOptions = {}
-
     if (navigationProps) {
-      navigationOptions.passProps = navigationProps
-    }
-
-    if (isWebView) {
-      navigationOptions.modal = true
-    }
-
-    // check if there's any navigation options
-    if (Object.keys(navigationOptions).length > 0) {
-      navigate(to, navigationOptions)
+      navigate(to, { passProps: navigationProps })
     } else {
       navigate(to)
     }
