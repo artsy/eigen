@@ -113,7 +113,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
   const [userLocation, setUserLocation] = useState(currentLocation)
 
   const [bucketResults, setBucketResults] = useState<BucketResults>(emptyBucketResults)
-  const previousBucketResults = usePrevious(bucketResults)
 
   const [featureCollections, setFeatureCollections] = useState<
     { [key in BucketKey]: FilterData } | {}
@@ -174,19 +173,14 @@ export const GlobalMap: React.FC<Props> = (props) => {
   }, [])
 
   useEffect(() => {
-    if (didMountRef.current && bucketResults && previousBucketResults) {
-      const shouldUpdate = !isEqual(
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        previousBucketResults.saved.map((g) => g.is_followed),
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        bucketResults.saved.map((g) => g.is_followed)
-      )
+    if (didMountRef.current) {
+      // const shouldUpdate = !isEqual(bucketResults, previousBucketResults)
 
-      if (shouldUpdate) {
-        updateClusterMap()
-      }
+      // if (shouldUpdate) {
+      updateClusterMap()
+      // }
     }
-  }, [bucketResults, previousBucketResults, didMountRef.current])
+  }, [bucketResults, didMountRef.current, userLocation, activePin, activeIndex])
 
   useEffect(() => {
     updateShowIdMap()
@@ -205,7 +199,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
       updateClusterMap()
     }
     // }
-  }, [viewer])
+  }, [viewer, userLocation])
 
   const handleFilterChange = (activeIndex: number) => {
     setActiveIndex(activeIndex)
@@ -218,11 +212,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
   }
 
   const updateClusterMap = () => {
-    console.log("DEBUG: updateClusterMap")
-    if (!viewer) {
-      return
-    }
-
     const newFeatureCollections = {}
     cityTabs.forEach((tab) => {
       const newShows = tab.getShows(bucketResults)
@@ -240,7 +229,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
 
       clusterEngine.load(geoJSONFeature.features as any)
 
-      console.log("DEBUG: newFeatureCollections", tab.id, newFeatureCollections)
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       newFeatureCollections[tab.id] = {
         featureCollection: geoJSONFeature,
@@ -273,7 +261,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
 
   const updateShowIdMap = () => {
     if (!viewer) {
-      console.log("=======")
       return
     }
 
@@ -602,9 +589,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
     })
   }
 
-  console.log("DEBUG: filterID", cityTabs[activeIndex].id)
-  console.log("DEBUG: city", city)
-  console.log("DEBUG: featureCollections", featureCollections)
   return (
     <ProvideScreenTracking
       info={{
