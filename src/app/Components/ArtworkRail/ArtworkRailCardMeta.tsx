@@ -1,12 +1,14 @@
 import { Flex, HeartFillIcon, HeartIcon, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtworkRailCardMeta_artwork$key } from "__generated__/ArtworkRailCardMeta_artwork.graphql"
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
+import { ArtworkHeartIconAnimation } from "app/Components/ArtworkGrids/ArtworkHeartIcon"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtils"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
@@ -205,25 +207,42 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
             testID="save-artwork-icon"
             underlayColor={backgroundColor}
           >
-            {isSaved ? (
-              <HeartFillIcon
-                testID="filled-heart-icon"
-                height={HEART_ICON_SIZE}
-                width={HEART_ICON_SIZE}
-                fill="blue100"
-              />
-            ) : (
-              <HeartIcon
-                testID="empty-heart-icon"
-                height={HEART_ICON_SIZE}
-                width={HEART_ICON_SIZE}
-                fill={primaryColor}
-              />
-            )}
+            <HeartIconContainer isSaved={!!isSaved} primaryColor={primaryColor} />
           </Touchable>
         </Flex>
       )}
     </Flex>
+  )
+}
+
+const HeartIconContainer: React.FC<{ isSaved: boolean; primaryColor: string }> = ({
+  isSaved,
+  primaryColor,
+}) => {
+  const enableArtworkHeartIconAnimation = useFeatureFlag("AREnableArtworkHeartIconAnimation")
+
+  if (enableArtworkHeartIconAnimation) {
+    return <ArtworkHeartIconAnimation isSaved={!!isSaved} />
+  }
+
+  if (isSaved) {
+    return (
+      <HeartFillIcon
+        testID="filled-heart-icon"
+        height={HEART_ICON_SIZE}
+        width={HEART_ICON_SIZE}
+        fill="blue100"
+      />
+    )
+  }
+
+  return (
+    <HeartIcon
+      testID="empty-heart-icon"
+      height={HEART_ICON_SIZE}
+      width={HEART_ICON_SIZE}
+      fill={primaryColor}
+    />
   )
 }
 

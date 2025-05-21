@@ -285,6 +285,12 @@ export const features = {
     description: "Enable new order details screen",
     echoFlagKey: "AREnableNewOrderDetails",
   },
+  AREnableArtworkHeartIconAnimation: {
+    readyForRelease: false,
+    showInDevMenu: true,
+    description: "Enable artwork heart icon animation",
+    echoFlagKey: "AREnableArtworkHeartIconAnimation",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
