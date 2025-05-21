@@ -74,6 +74,7 @@ const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, ord
               passProps: { orderID: orderId, title: "Review Offer" },
             })
           }
+          testID="counteroffer-button"
         >
           Respond to Counteroffer
         </Button>
