@@ -297,7 +297,7 @@ https://github.com/software-mansion/react-native-reanimated/pull/6573
 
 In the HomeView Tasks, we want to update the FlatList's `CellRendererComponent` to update the `zIndex` of the rendered elements so they can be on top of each other, and to animate them we need to use Reanimated's FlatList, but it doesn't support updating the `CellRendererComponent` prop since they have their own implementation, so we added this patch to update the style of the component in Reanimated's FlatList.
 
-## patch-pacakge for react-native-keys
+## patch-package for react-native-keys
 
 #### When can we remove this:
 
@@ -307,3 +307,12 @@ https://github.com/numandev1/react-native-keys/issues/86#issuecomment-2546610160
 #### Explanation/Context:
 
 Android was unable to build correctly on react-native 76 without excluding `libreactnative.so`
+
+## patch-package for expo-updates
+
+When expo-updates merges and releases this change:
+https://github.com/expo/expo/pull/36893
+
+#### Explanation/Context:
+
+Expo updates was not returning the reason an update failed to be available on iOS making debugging difficult.

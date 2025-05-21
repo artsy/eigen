@@ -16,7 +16,7 @@ const appVersion = (version: string) => ({
   version,
   isAndroidBeta: false,
   appName: "eigen",
-  expoReleaseName: "none",
+  expoReleaseNameBase: "none",
   expoDist: "none",
 })
 

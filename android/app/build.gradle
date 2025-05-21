@@ -12,6 +12,15 @@ project.ext.keyFiles = [
 
 apply from: project(':react-native-keys').projectDir.getPath() + "/RNKeys.gradle"
 
+def getRuntimeVersion() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'node', '../../scripts/deploys/expo-updates/get-runtime-version.js'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+println "✅ [Gradle] Using expo_runtime_version: ${runtimeVersion}"
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -59,6 +68,10 @@ react {
     //
     //   The list of flags to pass to the Hermes compiler. By default is "-O", "-output-source-map"
     // hermesFlags = ["-O", "-output-source-map"]
+    // Override `hermesEnabled` by `expo.jsEngine`
+    ext {
+        hermesEnabled = (findProperty('expo.jsEngine') ?: "hermes") == "hermes"
+    }
 
     /* Autolinking */
     autolinkLibrariesWithApp()
@@ -127,7 +140,15 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-            resValue "string", "EXUpdatesDisableAntiBrickingMeasures", "false"
+             resValue "string", "expo_runtime_version", "\"${getRuntimeVersion()}\""
+
+            manifestPlaceholders = [
+                expoUpdatesEnabled: "false",
+                expoUpdatesCheckOnLaunch: "NEVER",
+                expoUpdatesChannel: "staging",
+                expoRuntimeVersion: getRuntimeVersion(),
+                expoUpdatesDisableAntibrickingMeasures: "false"
+            ]
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -135,15 +156,30 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            resValue "string", "EXUpdatesDisableAntiBrickingMeasures", "false"
+            resValue "string", "expo_runtime_version", "\"${getRuntimeVersion()}\""
+
+            manifestPlaceholders = [
+                expoUpdatesEnabled: "true",
+                expoUpdatesCheckOnLaunch: "ON_LOAD",
+                expoUpdatesChannel: "production",
+                expoRuntimeVersion: getRuntimeVersion(),
+                expoUpdatesDisableAntibrickingMeasures: "false"
+            ]
         }
         beta {
             initWith release
             signingConfig signingConfigs.release
-            matchingFallbacks = ['release'] // Important: fallback to release if needed
-            // You can set beta-specific settings here
-            resValue "string", "EXUpdatesDisableAntiBrickingMeasures", "true"
+            matchingFallbacks = ['release']
             buildConfigField "boolean", "IS_BETA", "true"
+            resValue "string", "expo_runtime_version", "\"${getRuntimeVersion()}\""
+
+            manifestPlaceholders = [
+                expoUpdatesEnabled: "true",
+                expoUpdatesCheckOnLaunch: "NEVER",
+                expoUpdatesChannel: "staging",
+                expoRuntimeVersion: getRuntimeVersion(),
+                expoUpdatesDisableAntibrickingMeasures: "true"
+            ]
         }
     }
 }

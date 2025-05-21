@@ -1,223 +1,140 @@
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.camera.front"
-        android:required="false" />
-    <uses-permission
-        android:name="com.google.android.gms.permission.AD_ID"
-        tools:node="remove" />
-
-    <queries>
-        <intent>
-            <action android:name="android.intent.action.SEND_MULTIPLE" />
-            <data android:mimeType="*/*" />
-        </intent>
-    </queries>
-
-    <application
-        android:name=".MainApplication"
-        android:launchMode="singleTask"
-        android:label="@string/app_name"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:allowBackup="false"
-        android:theme="@style/AppTheme"
-        android:supportsRtl="true">
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-        <meta-data
-            android:name="com.facebook.sdk.ClientToken"
-            android:value="@string/facebook_client_token" />
-        <meta-data
-            android:name="com.facebook.sdk.AutoLogAppEventsEnabled"
-            android:value="false" />
-
-        <meta-data
-            android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@mipmap/ic_notification" />
-
-        <meta-data
-            android:name="com.dieam.reactnativepushnotification.notification_foreground"
-            android:value="false" />
-
-        <meta-data
-            android:name="com.dieam.reactnativepushnotification.notification_color"
-            android:resource="@color/white" />
-
-        <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/white"/>
-
-        <meta-data android:name="expo.modules.updates.CODE_SIGNING_CERTIFICATE" android:value="-----BEGIN CERTIFICATE-----
-MIICzTCCAbWgAwIBAgIJQkCG/E/6FxMEMA0GCSqGSIb3DQEBCwUAMA8xDTALBgNV
-BAMTBHRlc3QwIBcNMjUwNDA4MTQzODA2WhgPMjEyNTA0MDgxNDM4MDZaMA8xDTAL
-BgNVBAMTBHRlc3QwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCs2Jyh
-5U4Dr0XENdnTtiDXbn2oI6KH3Glzh65ZSPQcWAd0R7eNO6vQsylbcxRe0vv7AO/s
-J+5rV5ua7qPNtzr7qAE1fc/qakOtk1BfWp3p6mM+vMUCAntozrRIwhNhOBmRlzle
-lpYOdR3/YuyzS441Y7oXlAhX/fxofbgozdP6lCsz/+Ed+2EGQHzBNnnDY6RvDjjf
-SE99xCNwGrELmxzJkEF91rCFxHAzEbk4FEZu8dCQWDapnuDTO6XKXupUsZ6pH8z3
-j+3UXcvQkJFF4p/47uv+S8nKoqhheNs5A1cNTkWpyBdcAsYtBRnTjZaGZtPe4k6b
-/mHz9RgfGSF796XhAgMBAAGjKjAoMA4GA1UdDwEB/wQEAwIHgDAWBgNVHSUBAf8E
-DDAKBggrBgEFBQcDAzANBgkqhkiG9w0BAQsFAAOCAQEAmMyJBVFZ3LqHMGJmKcEX
-/RpEIBbmiIsjsBAEwBvZeVauvCFvl4CtRRZEcrX4afvu31hZGWYn2CbYBkNXgMOQ
-uJ2H72sCmPVkWZ1SDbDDqqZgtF6Z6ece+pWiEPPicmf3bbA/qPWjFS/kItCC04Z3
-X8FuJuHBkfLkaR385krC33oSJ3gMXAj/lN/y/Wb9emgThDIdbUMWFjRvHjhdftTA
-EkGiKCLCFCFeEb2jWUo2YyDUWWQenkfiwT8ECjKs/QmJxSYtDy87S9r06VEiMSYu
-xiD4Ur42oTOYB52P2e/1zXxWJqxEV1qK/GRpwSAwoQpz8EYu4+GTjlXJLeY3kJbd
-gw==
------END CERTIFICATE-----"/>
-        <meta-data android:name="expo.modules.updates.CODE_SIGNING_METADATA" android:value="{&quot;keyid&quot;:&quot;main&quot;,&quot;alg&quot;:&quot;rsa-v1_5-sha256&quot;}"/>
-        <meta-data android:name="expo.modules.updates.ENABLED" android:value="false"/>
-        <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="NEVER"/>
-        <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0"/>
-        <meta-data android:name="expo.modules.updates.EXPO_RUNTIME_VERSION" android:value="@string/expo_runtime_version"/>
-        <meta-data android:name="expo.modules.updates.UPDATES_CONFIGURATION_REQUEST_HEADERS_KEY" android:value="{&quot;expo-channel-name&quot;:&quot;production&quot;, &quot;expo-expect-signature&quot;:&quot;true&quot;}" />
-        <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://expo-updates-api.artsy.net/api/manifest?project=eigen&amp;channel=production"/>
-        <meta-data android:name="expo.modules.updates.EXUpdatesDisableAntiBrickingMeasures" android:value="@string/EXUpdatesDisableAntiBrickingMeasures" />
-
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
-
-        <activity
-            android:name="com.facebook.CustomTabActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="@string/fb_login_protocol_scheme" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="true"
-            android:fitsSystemWindows="true"
-            android:theme="@style/BootTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="artsy" />
-            </intent-filter>
-
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data
-                    android:scheme="https"
-                    android:host="www.artsy.net" />
-                <data
-                    android:scheme="https"
-                    android:host="artsy.net" />
-                <data android:scheme="http" />
-                <data android:pathPrefix="/about" />
-                <data android:pathPrefix="/activity" />
-                <data android:pathPrefix="/art-quiz" />
-                <data android:pathPrefix="/art-quiz/artworks" />
-                <data android:pathPrefix="/art-quiz/results" />
-                <data android:pathPrefix="/artist-series" />
-                <data android:pathPrefix="/article" />
-                <data android:pathPrefix="/articles" />
-                <data android:pathPrefix="/artist" />
-                <data android:pathPrefix="/artists" />
-                <data android:pathPrefix="/artwork-classifications" />
-                <data android:pathPrefix="/artwork-certificate-of-authenticity" />
-                <data android:pathPrefix="/artwork" />
-                <data android:pathPrefix="/artworks" />
-                <data android:pathPrefix="/auction-faq" />
-                <data android:pathPrefix="/auction-registration" />
-                <data android:pathPrefix="/auction-results-for-artists-you-follow" />
-                <data android:pathPrefix="/auction" />
-                <data android:pathPrefix="/auctions" />
-                <data android:pathPrefix="/buy-now-feature-faq" />
-                <data android:pathPrefix="/buyer-guarantee" />
-                <data android:pathPrefix="/collect" />
-                <data android:pathPrefix="/collection" />
-                <data android:pathPrefix="/collections" />
-                <data android:pathPrefix="/conditions-of-sale" />
-                <data android:pathPrefix="/conversation" />
-                <data android:pathPrefix="/infinite-discovery" />
-                <data android:pathPrefix="/fair" />
-                <data android:pathPrefix="/fairs" />
-                <data android:pathPrefix="/favorites" />
-                <data android:pathPrefix="/feature" />
-                <data android:pathPrefix="/galleries" />
-                <data android:pathPrefix="/galleries-for-you" />
-                <data android:pathPrefix="/gallery" />
-                <data android:pathPrefix="/gene" />
-                <data android:pathPrefix="/home-view" />
-                <data android:pathPrefix="/identity-verification-faq" />
-                <data android:pathPrefix="/inbox" />
-                <data android:pathPrefix="/inquiry" />
-                <data android:pathPrefix="/make-offer" />
-                <data android:pathPrefix="/purchase" />
-                <data android:pathPrefix="/my-account" />
-                <data android:pathPrefix="/my-collection" />
-                <data android:pathPrefix="/my-profile" />
-                <data android:pathPrefix="/new-for-you" />
-                <data android:pathPrefix="/orders" />
-                <data android:pathPrefix="/partner" />
-                <data android:pathPrefix="/partner-offer" />
-                <data android:pathPrefix="/price-database" />
-                <data android:pathPrefix="/privacy-request" />
-                <data android:pathPrefix="/search" />
-                <data android:pathPrefix="/settings" />
-                <data android:pathPrefix="/show" />
-                <data android:pathPrefix="/tag" />
-                <data android:pathPrefix="/user/conversations" />
-                <data android:pathPrefix="/user/purchases" />
-                <data android:pathPrefix="/upcoming-auction-results" />
-                <data android:pathPrefix="/viewing-room" />
-                <data android:pathPrefix="/viewing-rooms" />
-                <data android:pathPrefix="/works-for-you" />
-            </intent-filter>
-        </activity>
-
-        <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions" />
-        <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />
-        <receiver
-            android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
-            </intent-filter>
-        </receiver>
-
-        <service
-            android:name=".BrazePushListenerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-    </application>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.CAMERA"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <uses-permission android:name="android.permission.VIBRATE"/>
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+  <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+  <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
+  <uses-feature android:name="android.hardware.camera" android:required="false"/>
+  <uses-feature android:name="android.hardware.camera.front" android:required="false"/>
+  <queries>
+    <intent>
+      <action android:name="android.intent.action.SEND_MULTIPLE"/>
+      <data android:mimeType="*/*"/>
+    </intent>
+  </queries>
+  <application android:name=".MainApplication" android:launchMode="singleTask" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="false" android:theme="@style/AppTheme" android:supportsRtl="true">
+    <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+    <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+    <meta-data android:name="com.facebook.sdk.AutoLogAppEventsEnabled" android:value="false"/>
+    <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notification"/>
+    <meta-data android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="false"/>
+    <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/white"/>
+    <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/white"/>
+    <meta-data android:name="expo.modules.updates.ENABLED" android:value="${expoUpdatesEnabled}" />
+    <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="${expoUpdatesCheckOnLaunch}" />
+    <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0" />
+    <meta-data android:name="expo.modules.updates.EXPO_RUNTIME_VERSION" android:value="${expoRuntimeVersion}" />
+    <meta-data android:name="expo.modules.updates.UPDATES_CONFIGURATION_REQUEST_HEADERS_KEY" android:value="{&quot;expo-channel-name&quot;:&quot;${expoUpdatesChannel}&quot;}"/>
+    <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668" />
+    <meta-data android:name="expo.modules.updates.EXUpdatesDisableAntiBrickingMeasures" android:value="${expoUpdatesDisableAntibrickingMeasures}" />
+    <activity android:name="com.facebook.FacebookActivity" android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" android:label="@string/app_name"/>
+    <activity android:name="com.facebook.CustomTabActivity" android:exported="true">
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:scheme="@string/fb_login_protocol_scheme"/>
+      </intent-filter>
+    </activity>
+    <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize" android:exported="true" android:fitsSystemWindows="true" android:theme="@style/BootTheme">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+      <intent-filter android:autoVerify="true">
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:scheme="artsy"/>
+      </intent-filter>
+      <intent-filter android:autoVerify="true">
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:scheme="https" android:host="www.artsy.net"/>
+        <data android:scheme="https" android:host="artsy.net"/>
+        <data android:scheme="http"/>
+        <data android:pathPrefix="/about"/>
+        <data android:pathPrefix="/activity"/>
+        <data android:pathPrefix="/art-quiz"/>
+        <data android:pathPrefix="/art-quiz/artworks"/>
+        <data android:pathPrefix="/art-quiz/results"/>
+        <data android:pathPrefix="/artist-series"/>
+        <data android:pathPrefix="/article"/>
+        <data android:pathPrefix="/articles"/>
+        <data android:pathPrefix="/artist"/>
+        <data android:pathPrefix="/artists"/>
+        <data android:pathPrefix="/artwork-classifications"/>
+        <data android:pathPrefix="/artwork-certificate-of-authenticity"/>
+        <data android:pathPrefix="/artwork"/>
+        <data android:pathPrefix="/artworks"/>
+        <data android:pathPrefix="/auction-faq"/>
+        <data android:pathPrefix="/auction-registration"/>
+        <data android:pathPrefix="/auction-results-for-artists-you-follow"/>
+        <data android:pathPrefix="/auction"/>
+        <data android:pathPrefix="/auctions"/>
+        <data android:pathPrefix="/buy-now-feature-faq"/>
+        <data android:pathPrefix="/buyer-guarantee"/>
+        <data android:pathPrefix="/collect"/>
+        <data android:pathPrefix="/collection"/>
+        <data android:pathPrefix="/collections"/>
+        <data android:pathPrefix="/conditions-of-sale"/>
+        <data android:pathPrefix="/conversation"/>
+        <data android:pathPrefix="/infinite-discovery"/>
+        <data android:pathPrefix="/fair"/>
+        <data android:pathPrefix="/fairs"/>
+        <data android:pathPrefix="/favorites"/>
+        <data android:pathPrefix="/feature"/>
+        <data android:pathPrefix="/galleries"/>
+        <data android:pathPrefix="/galleries-for-you"/>
+        <data android:pathPrefix="/gallery"/>
+        <data android:pathPrefix="/gene"/>
+        <data android:pathPrefix="/home-view"/>
+        <data android:pathPrefix="/identity-verification-faq"/>
+        <data android:pathPrefix="/inbox"/>
+        <data android:pathPrefix="/inquiry"/>
+        <data android:pathPrefix="/make-offer"/>
+        <data android:pathPrefix="/purchase"/>
+        <data android:pathPrefix="/my-account"/>
+        <data android:pathPrefix="/my-collection"/>
+        <data android:pathPrefix="/my-profile"/>
+        <data android:pathPrefix="/new-for-you"/>
+        <data android:pathPrefix="/orders"/>
+        <data android:pathPrefix="/partner"/>
+        <data android:pathPrefix="/partner-offer"/>
+        <data android:pathPrefix="/price-database"/>
+        <data android:pathPrefix="/privacy-request"/>
+        <data android:pathPrefix="/search"/>
+        <data android:pathPrefix="/settings"/>
+        <data android:pathPrefix="/show"/>
+        <data android:pathPrefix="/tag"/>
+        <data android:pathPrefix="/user/conversations"/>
+        <data android:pathPrefix="/user/purchases"/>
+        <data android:pathPrefix="/upcoming-auction-results"/>
+        <data android:pathPrefix="/viewing-room"/>
+        <data android:pathPrefix="/viewing-rooms"/>
+        <data android:pathPrefix="/works-for-you"/>
+      </intent-filter>
+    </activity>
+    <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions"/>
+    <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher"/>
+    <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver" android:exported="false">
+      <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED"/>
+        <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+        <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+      </intent-filter>
+    </receiver>
+    <service android:name=".BrazePushListenerService" android:exported="false">
+      <intent-filter>
+        <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+      </intent-filter>
+    </service>
+  </application>
 </manifest>

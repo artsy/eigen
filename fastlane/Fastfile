@@ -486,6 +486,8 @@ end
 lane :deploy_to_expo_updates do |options|
   deployment_name = options[:deployment_name]
   description = options[:description]
+  rollout_percentage = options[:rollout_percentage]
+  platform = options[:platform]
 
   # important! this must match the release version specified
   # in Eigen in order for sourcemaps to work correctly
@@ -493,37 +495,34 @@ lane :deploy_to_expo_updates do |options|
   # Will need to modify eigen code in any case
   release_name_base, dist_version, release_version = set_expo_release_values(deployment_name)
 
-  expo_auth_key = ENV['EXPO_UPLOAD_AUTH_KEY']
-  expo_api_server = ENV['EXPO_UPLOAD_API_SERVER']
+  expo_command = "eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}"
 
-  # TODO: Can we add a description to this?
-  expo_command = "./scripts/deploys/expo-updates/expo-publish-selfhosted #{deployment_name} . #{expo_auth_key} #{expo_api_server}"
+  if rollout_percentage
+    expo_command += " --branch=#{deployment_name} --rollout=#{rollout_percentage}"
+  end
 
-  # Execute the command and parse the returned folder
-  output = sh("pushd .. > /dev/null && \
+  sh("pushd .. > /dev/null && \
       #{expo_command} | tail -n1 && \
       popd > /dev/null")
-  folder_line = output.lines.find { |line| line.start_with?("BUILDFOLDER_PATH=") }
-  folder = folder_line.split("=").last.strip
+  build_folder = File.expand_path("../dist/")
 
   sh("yarn add @sentry/cli -D")
   sentry_cli_path = 'node_modules/@sentry/cli/bin/sentry-cli'
 
-  ['ios', 'android'].each do |platform|
-    upload_expo_sourcemaps(
-      sentry_cli_path: sentry_cli_path,
-      org_slug: 'artsynet',
-      project_slug: 'eigen',
-      platform: platform,
-      sentry_release_name: "#{platform}-#{release_name_base}",
-      dist: dist_version,
-      build_folder: folder,
-      silence_failures: true # we ship expo releases every commit to main, failures are noisy
-    )
-    tag_and_push(tag: "#{platform}-#{release_name_base}")
-  end
+  upload_expo_sourcemaps(
+    sentry_cli_path: sentry_cli_path,
+    org_slug: 'artsynet',
+    project_slug: 'eigen',
+    platform: platform,
+    sentry_release_name: "#{platform}-#{release_name_base}",
+    dist: dist_version,
+    build_folder: build_folder,
+    silence_failures: true # we ship expo releases every commit to main, failures are noisy
+  )
+  tag_and_push(tag: "#{platform}-#{release_name_base}")
 
-  puts "🚀 Deploying to #{deployment_name} with description '#{description}'"
+  puts "🚀 Deploying to #{deployment_name} with description '#{description}' for platform #{platform}"
+  puts "🎯 Rollout: #{rollout_percentage}%" if rollout_percentage
 end
 
 def set_expo_release_values(deployment_name)
@@ -531,7 +530,7 @@ def set_expo_release_values(deployment_name)
   latest_version = $APP_JSON['version']
   release_name_base = "expo-#{deployment_name.downcase}-#{latest_version}-#{date_str}"
   $APP_JSON['expoReleaseNameBase'] = release_name_base
-  $APP_JSON['expoPushDist'] = date_str
+  $APP_JSON['expoDist'] = date_str
   write_contents_to_file($APP_JSON_PATH, JSON.pretty_generate($APP_JSON))
   [release_name_base, date_str, latest_version]
 end

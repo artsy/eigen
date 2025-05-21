@@ -6,6 +6,8 @@ type AppConfig = {
   appName: string
   version: string
   isAndroidBeta: boolean
+  expoReleaseNameBase: string
+  expoDist: string
 }
 
 export const appJson = () => appJsonFile as AppConfig

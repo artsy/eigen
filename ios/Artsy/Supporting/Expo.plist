@@ -2,48 +2,20 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>EXUpdatesCodeSigningMetadata</key>
-	<dict>
-		<key>alg</key>
-		<string>rsa-v1_5-sha256</string>
-		<key>keyid</key>
-		<string>main</string>
-	</dict>
-	<key>EXUpdatesCodeSigningCertificate</key>
-	<string>-----BEGIN CERTIFICATE-----
-MIICzTCCAbWgAwIBAgIJQkCG/E/6FxMEMA0GCSqGSIb3DQEBCwUAMA8xDTALBgNV
-BAMTBHRlc3QwIBcNMjUwNDA4MTQzODA2WhgPMjEyNTA0MDgxNDM4MDZaMA8xDTAL
-BgNVBAMTBHRlc3QwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCs2Jyh
-5U4Dr0XENdnTtiDXbn2oI6KH3Glzh65ZSPQcWAd0R7eNO6vQsylbcxRe0vv7AO/s
-J+5rV5ua7qPNtzr7qAE1fc/qakOtk1BfWp3p6mM+vMUCAntozrRIwhNhOBmRlzle
-lpYOdR3/YuyzS441Y7oXlAhX/fxofbgozdP6lCsz/+Ed+2EGQHzBNnnDY6RvDjjf
-SE99xCNwGrELmxzJkEF91rCFxHAzEbk4FEZu8dCQWDapnuDTO6XKXupUsZ6pH8z3
-j+3UXcvQkJFF4p/47uv+S8nKoqhheNs5A1cNTkWpyBdcAsYtBRnTjZaGZtPe4k6b
-/mHz9RgfGSF796XhAgMBAAGjKjAoMA4GA1UdDwEB/wQEAwIHgDAWBgNVHSUBAf8E
-DDAKBggrBgEFBQcDAzANBgkqhkiG9w0BAQsFAAOCAQEAmMyJBVFZ3LqHMGJmKcEX
-/RpEIBbmiIsjsBAEwBvZeVauvCFvl4CtRRZEcrX4afvu31hZGWYn2CbYBkNXgMOQ
-uJ2H72sCmPVkWZ1SDbDDqqZgtF6Z6ece+pWiEPPicmf3bbA/qPWjFS/kItCC04Z3
-X8FuJuHBkfLkaR385krC33oSJ3gMXAj/lN/y/Wb9emgThDIdbUMWFjRvHjhdftTA
-EkGiKCLCFCFeEb2jWUo2YyDUWWQenkfiwT8ECjKs/QmJxSYtDy87S9r06VEiMSYu
-xiD4Ur42oTOYB52P2e/1zXxWJqxEV1qK/GRpwSAwoQpz8EYu4+GTjlXJLeY3kJbd
-gw==
------END CERTIFICATE-----</string>
-	<key>EXUpdatesEnabled</key>
-	<false/>
 	<key>EXUpdatesCheckOnLaunch</key>
-	<string>NEVER</string>
+	<string>ALWAYS</string>
+	<key>EXUpdatesEnabled</key>
+	<true/>
 	<key>EXUpdatesLaunchWaitMs</key>
 	<integer>0</integer>
-	<key>EXUpdatesURL</key>
-	<string>https://expo-updates-api.artsy.net/api/manifest?project=eigen&amp;channel=production</string>
-	<key>EXUpdatesRuntimeVersion</key>
-	<string>1.0.0</string>
 	<key>EXUpdatesRequestHeaders</key>
 	<dict>
 		<key>expo-channel-name</key>
 		<string>production</string>
-		<key>expo-expect-signature</key>
-		<string>true</string>
 	</dict>
+	<key>EXUpdatesRuntimeVersion</key>
+	<string>replaced-at-build-time</string>
+	<key>EXUpdatesURL</key>
+	<string>https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668</string>
 </dict>
 </plist>

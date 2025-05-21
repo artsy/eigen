@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/react-native"
+import { appJson } from "app/utils/jsonFiles"
 import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import Keys from "react-native-keys"
@@ -10,14 +11,25 @@ export const navigationInstrumentation = Sentry.reactNavigationIntegration({
 // important! this must match the release version specified
 // in fastfile in order for sourcemaps/sentry stacktraces to work
 export const eigenSentryReleaseName = () => {
-  const prefix = Platform.OS === "ios" ? "ios" : "android"
-  const buildNumber = DeviceInfo.getBuildNumber()
-  const version = DeviceInfo.getVersion()
-  return prefix + "-" + version + "-" + buildNumber
+  const expoReleaseNameBase = appJson().expoReleaseNameBase
+  if (expoReleaseNameBase && expoReleaseNameBase !== "none") {
+    const prefix = Platform.OS === "ios" ? "ios" : "android"
+    return prefix + "-" + expoReleaseNameBase
+  } else {
+    const prefix = Platform.OS === "ios" ? "ios" : "android"
+    const buildNumber = DeviceInfo.getBuildNumber()
+    const version = DeviceInfo.getVersion()
+    return prefix + "-" + version + "-" + buildNumber
+  }
 }
 
 const eigenSentryDist = () => {
-  return DeviceInfo.getBuildNumber()
+  const expoDist = appJson().expoDist
+  if (expoDist && expoDist !== "none") {
+    return expoDist
+  } else {
+    return DeviceInfo.getBuildNumber()
+  }
 }
 
 interface SetupSentryProps extends Partial<Sentry.ReactNativeOptions> {

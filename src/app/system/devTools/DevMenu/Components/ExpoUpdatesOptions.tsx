@@ -82,7 +82,11 @@ export const ExpoUpdatesOptions = () => {
         setLoadProgress(100)
         await Updates.reloadAsync()
       } else {
-        setLoadStatus("No updates available for this channel.")
+        if (update.reason) {
+          setErrorMessage(`Update check failed: ${update.reason}`)
+        } else {
+          setErrorMessage("No new update available.")
+        }
       }
     } catch (error) {
       if (
@@ -92,6 +96,11 @@ export const ExpoUpdatesOptions = () => {
       ) {
         // Expo mistakenly treats 304s as code signing errors when it actually means no updates available
         setErrorMessage("No updates available for this channel.")
+        return
+      }
+
+      if (isErrorWithMessage(error)) {
+        setErrorMessage(`Error fetching update: ${error.message}`)
         return
       }
 

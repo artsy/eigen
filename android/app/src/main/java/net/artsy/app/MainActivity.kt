@@ -28,7 +28,7 @@ class MainActivity : ReactActivity() {
      * used to schedule
      * rendering of the component.
      */
-    override fun getMainComponentName(): String = "eigen"
+    override fun getMainComponentName(): String = "main"
 
     /**
      * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
