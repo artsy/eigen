@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import themeGet from "@styled-system/theme-get"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
@@ -35,8 +35,9 @@ export class CitySwitcherButton extends Component<Props> {
     return isLoading || city ? (
       <ThemeAwareClassTheme>
         {({}) => (
-          <TouchableWithoutFeedback
+          <Touchable
             onPress={() => {
+              console.log("onPressCitySwitcherButton")
               if (this.props.onPress) {
                 this.props.onPress()
               }
@@ -75,7 +76,7 @@ export class CitySwitcherButton extends Component<Props> {
                 </Flex>
               )}
             </Background>
-          </TouchableWithoutFeedback>
+          </Touchable>
         )}
       </ThemeAwareClassTheme>
     ) : null
