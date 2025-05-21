@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react-native"
 import { PartnerFollowButtonTestQuery } from "__generated__/PartnerFollowButtonTestQuery.graphql"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -16,8 +17,9 @@ describe("PartnerFollowButton", () => {
   })
 
   it("renders the followers count correctly", async () => {
-    const { queryByText } = renderWithRelay({
+    renderWithRelay({
       Partner: () => ({
+        hasVisibleFollowsCount: true,
         profile: {
           name: "White Cube",
           isFollowed: true,
@@ -28,27 +30,25 @@ describe("PartnerFollowButton", () => {
       }),
     })
 
-    expect(queryByText(/Following 670/)).toBeOnTheScreen()
+    expect(screen.getByText(/Following 670/)).toBeOnTheScreen()
   })
 
   it("renders without followers count correctly", async () => {
-    const { queryByText } = renderWithRelay({
+    renderWithRelay({
       Partner: () => ({
+        hasVisibleFollowsCount: false,
         profile: {
           name: "White Cube",
           isFollowed: true,
-          counts: {
-            follows: 499,
-          },
         },
       }),
     })
 
-    expect(queryByText(/Following/)).toBeOnTheScreen()
+    expect(screen.getByText(/Following/)).toBeOnTheScreen()
   })
 
   it("renders button state correctly", async () => {
-    const { queryByText } = renderWithRelay({
+    renderWithRelay({
       Partner: () => ({
         profile: {
           name: "White Cube",
@@ -58,6 +58,6 @@ describe("PartnerFollowButton", () => {
       }),
     })
 
-    expect(queryByText(/Follow/)).toBeOnTheScreen()
+    expect(screen.getByText(/Follow/)).toBeOnTheScreen()
   })
 })
