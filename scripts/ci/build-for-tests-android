@@ -1,6 +1,53 @@
 #!/usr/bin/env bash
 set -exo pipefail
 
+# Always reset and configure ccache for consistent behavior
+if command -v ccache >/dev/null 2>&1; then
+  # Set up ccache directory
+  export CCACHE_DIR=~/.ccache
+  mkdir -p "$CCACHE_DIR"
+  
+  # Configure ccache settings
+  export CCACHE_MAXSIZE=5G
+  export NDK_CCACHE=/usr/bin/ccache
+  export CCACHE_CPP2=yes
+  export CCACHE_SLOPPINESS=pch_defines,time_macros,include_file_mtime
+  
+  # Update gradle.properties to use ccache
+  # Note: We need to be careful with properties that might already exist
+  if ! grep -q "android.ndkPath=" android/gradle.properties; then
+    echo "" >> android/gradle.properties
+    echo "# NDK ccache configuration - added dynamically" >> android/gradle.properties
+    echo "android.ndkPath=${ANDROID_NDK_HOME:-/opt/android/sdk/ndk}" >> android/gradle.properties
+  fi
+  
+  # Add NDK flags as Gradle system properties instead of command line options
+  export GRADLE_OPTS="$GRADLE_OPTS -Dorg.gradle.project.android.native.buildOutput=verbose"
+  
+  # Prepare NDK environment for ccache integration
+  echo "android.useAndroidX=true" >> android/gradle.properties
+  echo "android.enableJetifier=true" >> android/gradle.properties
+  
+  # Log configuration for debugging
+  echo "Android build using ccache with:"
+  echo "  CCACHE_DIR=$CCACHE_DIR"
+  echo "  NDK_CCACHE=$NDK_CCACHE"
+  
+  # Reset and log ccache stats before build
+  ccache -z
+  echo "Initial ccache stats:"
+  ccache -s
+else
+  echo "ccache not found or not available"
+fi
+
 pushd android
-yarn react-native build-android --mode=release --extra-params='--max-workers 2'
+# Run the build with ccache enabled in the gradle.properties
+# Pass JVM args directly to gradlew to avoid the P flag issue
+yarn react-native build-android --mode=release --extra-params='--no-daemon --max-workers 2 -Dorg.gradle.jvmargs="-Xmx4096m -XX:+HeapDumpOnOutOfMemoryError"'
 popd
+
+# Log ccache stats after build
+if command -v ccache >/dev/null 2>&1; then
+  ccache -s
+fi

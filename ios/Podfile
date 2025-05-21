@@ -61,6 +61,11 @@ add_mapbox_creds
 
 pre_install do |installer|
   $RNMapboxMaps.pre_install(installer)
+
+  # Only log ccache availability without modifying compiler settings
+  # Let React Native's post_install handle it with :ccache_enabled parameter
+  ccache_available = system("which ccache > /dev/null 2>&1")
+  puts ccache_available ? "ccache found, will use for compilation via React Native's post_install" : "ccache not found, using default compiler"
 end
 
 
@@ -178,7 +183,7 @@ target 'Artsy' do
       installer,
       config[:reactNativePath],
       :mac_catalyst_enabled => false,
-      # :ccache_enabled => true
+      :ccache_enabled => true
     )
 
     $RNMapboxMaps.post_install(installer)
