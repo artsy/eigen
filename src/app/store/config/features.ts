@@ -285,6 +285,12 @@ export const features = {
     description: "Enable new order details screen",
     echoFlagKey: "AREnableNewOrderDetails",
   },
+  AREnableCrossPlatformCityGuide: {
+    readyForRelease: false,
+    showInDevMenu: true,
+    description: "Enable cross-platform city guide",
+    echoFlagKey: "AREnableCrossPlatformCityGuide",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
