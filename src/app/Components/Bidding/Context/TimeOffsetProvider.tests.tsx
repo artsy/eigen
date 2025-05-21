@@ -1,5 +1,5 @@
 import { Text } from "@artsy/palette-mobile"
-import { waitFor } from "@testing-library/react-native"
+import { screen } from "@testing-library/react-native"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
@@ -39,7 +39,7 @@ describe("TimeOffsetProvider", () => {
   })
 
   it("injects timeOffsetInMilliSeconds as a context", async () => {
-    const { queryByText } = renderWithWrappers(<TestWrapper />)
+    renderWithWrappers(<TestWrapper />)
 
     // Set up a situation where the phone's clock is ahead of Gravity's clock by 10 minutes.
     resolveMostRecentRelayOperation(mockEnvironment, {
@@ -50,6 +50,6 @@ describe("TimeOffsetProvider", () => {
       }),
     })
 
-    await waitFor(() => expect(queryByText(`Time Offset: ${10 * MINUTES}`)).toBeTruthy())
+    await screen.findByText(`Time Offset: ${10 * MINUTES}`)
   })
 })

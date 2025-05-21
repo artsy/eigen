@@ -1,5 +1,5 @@
-import { PAGE_SIZE } from "app/Components/constants"
 import EventEmitter from "events"
+import { PAGE_SIZE } from "app/Components/constants"
 import { useEffect, useState } from "react"
 import { RefreshControl } from "react-native"
 
