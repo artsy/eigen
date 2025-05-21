@@ -1,10 +1,8 @@
+import { AppleIcon, FacebookIcon, GoogleIcon } from "@artsy/icons/native"
 import {
-  AppleIcon,
   BackButton,
   Button,
-  FacebookIcon,
   Flex,
-  GoogleIcon,
   Input,
   LinkText,
   Spacer,
@@ -245,6 +243,7 @@ const SocialLoginButtons: React.FC = () => {
             variant="outline"
             onPress={handleApplePress}
             accessibilityHint="Sign in with Apple"
+            accessibilityLabel="Apple"
           >
             <Flex alignItems="center" justifyContent="center">
               {/* On iOS, the icons need to be nudged down to be centered in the button. */}
@@ -256,6 +255,7 @@ const SocialLoginButtons: React.FC = () => {
           variant="outline"
           onPress={handleGooglePress}
           accessibilityHint="Sign in with Google"
+          accessibilityLabel="Google"
         >
           <Flex alignItems="center" justifyContent="center">
             <GoogleIcon width={23} height={23} style={Platform.OS === "ios" && { top: 4 }} />
@@ -265,6 +265,7 @@ const SocialLoginButtons: React.FC = () => {
           variant="outline"
           onPress={handleFacebookPress}
           accessibilityHint="Sign in with Facebook"
+          accessibilityLabel="Facebook"
         >
           <Flex alignItems="center" justifyContent="center">
             <FacebookIcon width={23} height={23} style={Platform.OS === "ios" && { top: 4 }} />
