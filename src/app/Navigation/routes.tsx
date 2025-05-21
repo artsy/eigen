@@ -9,6 +9,7 @@ import {
   WorksForYouQueryRenderer,
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
+import { BACK_BUTTON_SIZE_SIZE } from "app/Components/constants"
 import { CityGuideView } from "app/NativeModules/CityGuideView"
 import { LiveAuctionView } from "app/NativeModules/LiveAuctionView"
 import { About } from "app/Scenes/About/About"
@@ -972,17 +973,27 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       screenOptions: {
         headerTransparent: true,
+        headerShadowVisible: false,
         headerLeft: () => {
           return (
-            <BackButton
-              style={{
-                top: 0,
-                left: 0,
-              }}
-              onPress={() => {
-                goBack()
-              }}
-            />
+            <Flex
+              borderRadius={BACK_BUTTON_SIZE_SIZE / 2}
+              backgroundColor="mono0"
+              width={BACK_BUTTON_SIZE_SIZE}
+              height={BACK_BUTTON_SIZE_SIZE}
+              justifyContent="center"
+              alignItems="center"
+            >
+              <BackButton
+                style={{
+                  top: 0,
+                  left: 0,
+                }}
+                onPress={() => {
+                  goBack()
+                }}
+              />
+            </Flex>
           )
         },
       },
