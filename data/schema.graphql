@@ -3173,6 +3173,10 @@ enum ArtworkImportError {
   INVALID_CERTIFICATE_OF_AUTHENTICITY
   INVALID_DEPTH
   INVALID_DIAMETER
+  INVALID_FRAMED_DEPTH
+  INVALID_FRAMED_DIAMETER
+  INVALID_FRAMED_HEIGHT
+  INVALID_FRAMED_WIDTH
   INVALID_HEIGHT
   INVALID_MEDIUM
   INVALID_PRICE
@@ -3265,6 +3269,10 @@ type ArtworkImportTransformedData {
   date: String
   depth: String
   diameter: String
+  framedDepth: String
+  framedDiameter: String
+  framedHeight: String
+  framedWidth: String
   height: String
   imageFileNames: String
   inventoryId: String
