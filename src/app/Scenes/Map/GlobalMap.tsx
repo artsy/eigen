@@ -1,7 +1,11 @@
-import { Box, ClassTheme, Flex, Text } from "@artsy/palette-mobile"
+import { OwnerType } from "@artsy/cohesion"
+import { Box, ClassTheme, Flex, Text, useColor, useSpace } from "@artsy/palette-mobile"
+import { BOTTOM_TABS_HEIGHT } from "@artsy/palette-mobile/dist/elements/Screen/StickySubHeader"
+import { useNavigation } from "@react-navigation/native"
 import MapboxGL from "@rnmapbox/maps"
 import { themeGet } from "@styled-system/theme-get"
-import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
+import { screen } from "@testing-library/react-native"
+import { GlobalMap_viewer$data, GlobalMap_viewer$key } from "__generated__/GlobalMap_viewer.graphql"
 import { Pin } from "app/Components/Icons/Pin"
 import PinFairSelected from "app/Components/Icons/PinFairSelected"
 import PinSavedSelected from "app/Components/Icons/PinSavedSelected"
@@ -14,12 +18,20 @@ import {
 } from "app/utils/convertCityToGeoJSON"
 import { extractNodes } from "app/utils/extractNodes"
 import { SafeAreaInsets } from "app/utils/hooks"
-import { Schema, screenTrack, track } from "app/utils/track"
-import { get, isEqual, uniq } from "lodash"
-import React from "react"
-import { Animated, Dimensions, Image } from "react-native"
+import {
+  ProvideScreenTracking,
+  ProvideScreenTrackingWithCohesionSchema,
+  Schema,
+  screenTrack,
+  track,
+} from "app/utils/track"
+import { get, isEqual, uniq, values } from "lodash"
+import React, { useEffect, useRef, useState } from "react"
+import { Animated, Dimensions, Image, Platform } from "react-native"
 import Keys from "react-native-keys"
-import { createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { createFragmentContainer, graphql, RelayProp, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
+import { usePrevious } from "react-use"
 import styled from "styled-components/native"
 import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
@@ -65,8 +77,7 @@ interface Props {
   initialCoordinates?: { lat: number; lng: number }
   /** Should the map buttons be hidden...  */
   hideMapButtons: boolean
-  /** The map API entry-point */
-  viewer?: GlobalMap_viewer$data
+
   /** API stuff */
   relay?: RelayProp
   /** Tracking */
@@ -81,31 +92,8 @@ interface Props {
   safeAreaInsets: SafeAreaInsets
   /** Error from Relay (MapRenderer.tsx). Needed here to send over the EventEmitter. */
   relayErrorState?: RelayErrorState
-}
-
-interface State {
-  /** The index from the City selector */
-  activeIndex: number
-  /** Shows which are selected and should show as highlights above the map */
-  activeShows: Array<Fair | Show>
-  /** An object of objects describing all the artsy elements we want to map */
-  bucketResults: BucketResults
-  /** The center location for the map right now */
-  currentLocation?: { lat: number; lng: number }
-  /** The users's location from core location */
-  userLocation?: { lat: number; lng: number }
-  /** A set of GeoJSON features, which right now is our show clusters */
-  featureCollections: { [key in BucketKey]: FilterData } | {}
-  /** Has the map fully rendered? */
-  mapLoaded: boolean
-  /** In the process of saving a show */
-  isSavingShow: boolean
-  /** Cluster map data used to populate selected cluster annotation */
-  nearestFeature: PointFeature<ClusterProperties & AnyProps> | PointFeature<AnyProps> | null
-  /** Cluster map data used currently in view window */
-  activePin: GeoJSON.Feature | null
-  /** Current map zoom level */
-  currentZoom: number
+  /** The viewer data */
+  viewer: GlobalMap_viewer$key
 }
 
 export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfoak"
@@ -121,134 +109,140 @@ enum DrawerPosition {
   partiallyRevealed = "partiallyRevealed",
 }
 
-@screenTrack<Props>((props) => {
-  return {
-    context_screen: Schema.PageNames.CityGuideMap,
-    context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
-    context_screen_owner_slug: props.citySlug,
-    context_screen_owner_id: props.citySlug,
-  }
-})
-export class GlobalMap extends React.Component<Props, State> {
-  /** Makes sure we're consistently using { lat, lng } internally */
-  static longCoordsToLocation(coords: { longitude: number; latitude: number }) {
-    return { lat: coords.latitude, lng: coords.longitude }
-  }
+export const GlobalMap: React.FC<Props> = (props) => {
+  const color = useColor()
+  const space = useSpace()
 
-  map: React.RefObject<MapboxGL.MapView>
-  camera: React.RefObject<MapboxGL.Camera>
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  filters: { [key: string]: FilterData }
-  hideButtons = new Animated.Value(0)
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  currentZoom: number
+  const viewer = useFragment(globalMapFragment, props.viewer)
+  const { trackEvent } = useTracking()
 
-  shows: { [id: string]: Show } = {}
-  fairs: { [id: string]: Fair } = {}
+  const didMountRef = useRef(false)
+  const mapRef = useRef<MapboxGL.MapView>(null)
+  const cameraRef = useRef<MapboxGL.Camera>(null)
+  const hideButtons = new Animated.Value(0)
+  let currentZoom = DefaultZoomLevel
+  const shows: { [key: string]: Show } = {}
+  const fairs: { [key: string]: Fair } = {}
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  constructor(props) {
-    super(props)
+  const [activeShows, setActiveShows] = useState<Array<Fair | Show>>([])
+  const [activeIndex, setActiveIndex] = useState(0)
+  const currentLocation = props.initialCoordinates || viewer.city?.coordinates
+  const [userLocation, setUserLocation] = useState(currentLocation)
 
-    this.map = React.createRef()
-    this.camera = React.createRef()
+  const [bucketResults, setBucketResults] = useState(emptyBucketResults)
+  const previousBucketResults = usePrevious(bucketResults)
 
-    const currentLocation =
-      this.props.initialCoordinates || get(this.props, "viewer.city.coordinates")
-    this.state = {
-      activeShows: [],
-      activeIndex: 0,
-      currentLocation,
-      bucketResults: emptyBucketResults,
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      featureCollections: null,
-      mapLoaded: false,
-      isSavingShow: false,
-      nearestFeature: null,
-      activePin: null,
-      currentZoom: DefaultZoomLevel,
+  const [featureCollections, setFeatureCollections] = useState<
+    { [key in BucketKey]: FilterData } | {}
+  >({})
+  const [mapLoaded, setMapLoaded] = useState(false)
+  const [isSavingShow, setIsSavingShow] = useState(false)
+  const [nearestFeature, setNearestFeature] = useState<
+    PointFeature<ClusterProperties & AnyProps> | PointFeature<AnyProps> | null
+  >(null)
+  const [activePin, setActivePin] = useState<GeoJSON.Feature | null>(null)
+
+  const navigation = useNavigation()
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <Animated.View
+            style={{
+              transform: [
+                {
+                  translateY: hideButtons.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, -(props.safeAreaInsets.top + 12 + 50)],
+                  }),
+                },
+              ],
+            }}
+          >
+            <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end">
+              <CitySwitcherButton
+                city={city}
+                isLoading={!city}
+                onPress={onPressCitySwitcherButton}
+              />
+              {!!(userLocation && userLocationWithinCity) && (
+                <Box style={{ marginLeft: 10 }}>
+                  <UserPositionButton
+                    highlight={userLocation === currentLocation}
+                    onPress={onPressUserPositionButton}
+                  />
+                </Box>
+              )}
+            </Flex>
+          </Animated.View>
+        )
+      },
+    })
+  }, [navigation, viewer, userLocation])
+
+  useEffect(() => {
+    updateShowIdMap()
+    EventEmitter.subscribe("filters:change", handleFilterChange)
+    didMountRef.current = true
+    return () => {
+      EventEmitter.unsubscribe("filters:change", handleFilterChange)
     }
+  }, [])
 
-    this.updateShowIdMap()
-  }
-
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  handleFilterChange = (activeIndex) => {
-    this.setState({ activeIndex, activePin: null, activeShows: [] })
-  }
-
-  componentDidMount() {
-    EventEmitter.subscribe("filters:change", this.handleFilterChange)
-  }
-
-  componentWillUnmount() {
-    EventEmitter.unsubscribe("filters:change", this.handleFilterChange)
-  }
-
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  componentDidUpdate(_, prevState) {
-    // Update the clusterMap if new bucket results
-    if (this.state.bucketResults) {
+  useEffect(() => {
+    if (didMountRef.current && bucketResults && previousBucketResults) {
       const shouldUpdate = !isEqual(
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        prevState.bucketResults.saved.map((g) => g.is_followed),
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        this.state.bucketResults.saved.map((g) => g.is_followed)
+        previousBucketResults.saved.map((g) => g.is_followed),
+        bucketResults.saved.map((g) => g.is_followed)
       )
 
       if (shouldUpdate) {
-        this.updateClusterMap()
+        updateClusterMap()
       }
     }
-  }
+  }, [bucketResults])
 
-  UNSAFE_componentWillReceiveProps(nextProps: Props) {
-    const { relayErrorState } = this.props
+  useEffect(() => {
+    updateShowIdMap()
+  }, [viewer])
 
-    // If there is a new city, enity it and update our map.
-    if (nextProps.viewer) {
+  useEffect(() => {
+    // if (didMountRef.current) {
+    // If there is a new city, set it and update our map.
+    if (viewer) {
       // TODO: This is currently really inefficient.
-      const bucketResults = bucketCityResults(nextProps.viewer)
+      const bucketResults = bucketCityResults(viewer)
 
-      this.setState({ bucketResults }, () => {
-        this.emitFilteredBucketResults()
-        this.updateShowIdMap()
-        this.updateClusterMap()
-      })
+      setBucketResults(bucketResults)
+      emitFilteredBucketResults()
+      updateShowIdMap()
+      updateClusterMap()
     }
-    // If the relayErrorState changes, emit a new event.
-    if (!!relayErrorState !== !!nextProps.relayErrorState) {
-      EventEmitter.dispatch("map:error", { relayErrorState: nextProps.relayErrorState })
-    }
+    // }
+  }, [viewer])
+
+  const handleFilterChange = (activeIndex: number) => {
+    setActiveIndex(activeIndex)
+    setActivePin(null)
+    setActiveShows([])
   }
 
-  @track((__, _, args) => {
-    const actionName = args[0]
-    const show = args[1]
-    const type = args[2]
-    return {
-      action_name: actionName,
-      action_type: Schema.ActionTypes.Tap,
-      owner_id: !!show ? show[0].internalID : "",
-      owner_slug: !!show ? show[0].id : "",
-      owner_type: !!type ? type : "",
-    } as any
-  })
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  trackPinTap(_actionName, _show, _type) {
-    return null
+  const trackPinTap = (actionName: string, show: any, type: string) => {
+    trackEvent(tracks.trackPinTap(actionName, show, type))
   }
 
-  updateClusterMap() {
-    if (!this.props.viewer) {
+  const updateClusterMap = () => {
+    console.log("DEBUG: updateClusterMap")
+    if (!viewer) {
       return
     }
 
-    const featureCollections: State["featureCollections"] = {}
+    const newFeatureCollections = {}
     cityTabs.forEach((tab) => {
-      const shows = tab.getShows(this.state.bucketResults)
-      const fairs = tab.getFairs(this.state.bucketResults)
-      const showData = showsToGeoCityShow(shows)
+      const newShows = tab.getShows(bucketResults)
+      const fairs = tab.getFairs(bucketResults)
+      const showData = showsToGeoCityShow(newShows)
       const fairData = fairToGeoCityFairs(fairs)
       const data = showData.concat(fairData as any as Show[])
       const geoJSONFeature = convertCityToGeoJSON(data)
@@ -261,56 +255,54 @@ export class GlobalMap extends React.Component<Props, State> {
 
       clusterEngine.load(geoJSONFeature.features as any)
 
+      console.log("DEBUG: newFeatureCollections", tab.id, newFeatureCollections)
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      featureCollections[tab.id] = {
+      newFeatureCollections[tab.id] = {
         featureCollection: geoJSONFeature,
         filter: tab.id,
         clusterEngine,
       }
     })
 
-    this.setState({
-      featureCollections,
-    })
+    setFeatureCollections(newFeatureCollections)
   }
 
-  emitFilteredBucketResults() {
-    if (!this.props.viewer) {
+  const emitFilteredBucketResults = () => {
+    if (!viewer) {
       return
     }
 
-    const filter = cityTabs[this.state.activeIndex]
-    const {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      city: { name: cityName, slug: citySlug },
-    } = this.props.viewer
+    const filter = cityTabs[activeIndex]
+
+    const cityName = viewer.city?.name
+    const citySlug = viewer.city?.slug
 
     EventEmitter.dispatch("map:change", {
       filter,
-      buckets: this.state.bucketResults,
+      buckets: bucketResults,
       cityName,
       citySlug,
-      relay: this.props.relay,
+      relay: props.relay,
     })
   }
 
-  updateShowIdMap() {
-    if (!this.props.viewer) {
+  const updateShowIdMap = () => {
+    if (!viewer) {
       return
     }
 
-    const { city } = this.props.viewer
+    const { city } = viewer
     if (city) {
       const savedUpcomingShows = extractNodes(city.upcomingShows).filter((node) => node.is_followed)
-      const shows = extractNodes(city.shows)
-      const concatedShows = uniq(shows.concat(savedUpcomingShows))
+      const newShows = extractNodes(city.shows)
+      const concatedShows = uniq(newShows.concat(savedUpcomingShows))
 
       concatedShows.forEach((node) => {
         if (!node || !node.location || !node.location.coordinates) {
           return null
         }
 
-        this.shows[node.slug] = node
+        shows[node.slug] = node
       })
 
       extractNodes(city.fairs).forEach((node) => {
@@ -318,7 +310,7 @@ export class GlobalMap extends React.Component<Props, State> {
           return null
         }
 
-        this.fairs[node.slug] = {
+        fairs[node.slug] = {
           ...node,
           type: "Fair",
         }
@@ -326,9 +318,8 @@ export class GlobalMap extends React.Component<Props, State> {
     }
   }
 
-  renderSelectedPin() {
-    const { activeShows, activePin } = this.state
-    if (activePin === null || activePin.properties === null) {
+  const renderSelectedPin = () => {
+    if (activePin === null || activePin.properties === null || !nearestFeature?.properties) {
       return null
     }
 
@@ -337,10 +328,7 @@ export class GlobalMap extends React.Component<Props, State> {
     } = activePin
 
     if (cluster) {
-      const {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        nearestFeature: { properties, geometry },
-      } = this.state
+      const { properties, geometry } = nearestFeature
       const [clusterLat, clusterLng] = geometry.coordinates
 
       const clusterId = properties.cluster_id.toString()
@@ -413,19 +401,18 @@ export class GlobalMap extends React.Component<Props, State> {
     }
   }
 
-  renderShowCard() {
-    const { activeShows } = this.state
+  const renderShowCard = () => {
     const hasShows = activeShows.length > 0
 
     // Check if it's an iPhone with ears (iPhone X, Xr, Xs, etc...)
-    const iPhoneHasEars = this.props.safeAreaInsets.top > 20
+    const iPhoneHasEars = props.safeAreaInsets.top > 20
 
     // We need to update activeShows in case of a mutation (save show)
     const updatedShows: Array<Fair | Show> = activeShows.map((item: any) => {
       if (item.type === "Show") {
-        return this.shows[item.slug]
+        return shows[item.slug]
       } else if (item.type === "Fair") {
-        return this.fairs[item.slug]
+        return fairs[item.slug]
       }
       return item
     })
@@ -443,13 +430,12 @@ export class GlobalMap extends React.Component<Props, State> {
         {!!hasShows && (
           <ShowCard
             shows={updatedShows}
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            relay={this.props.relay}
+            relay={props.relay}
             onSaveStarted={() => {
-              this.setState({ isSavingShow: true })
+              setIsSavingShow(true)
             }}
             onSaveEnded={() => {
-              this.setState({ isSavingShow: false })
+              setIsSavingShow(false)
             }}
           />
         )}
@@ -457,180 +443,75 @@ export class GlobalMap extends React.Component<Props, State> {
     )
   }
 
-  onUserLocationUpdate = (location: MapboxGL.Location) => {
+  const onUserLocationUpdate = (location: MapboxGL.Location) => {
     if (!location || !location.coords) {
       return
     }
 
-    this.setState({
-      userLocation: GlobalMap.longCoordsToLocation(location.coords),
-    })
+    setUserLocation(longCoordsToLocation(location.coords))
   }
 
-  onRegionIsChanging = async () => {
-    if (!this.map.current) {
+  const onRegionIsChanging = async () => {
+    if (!mapRef.current) {
       return
     }
-    const zoom = Math.floor((await this.map.current.getZoom()) ?? DefaultZoomLevel)
+    const zoom = Math.floor((await mapRef.current.getZoom()) ?? DefaultZoomLevel)
 
-    if (!this.currentZoom) {
-      this.currentZoom = zoom
+    if (!currentZoom && currentZoom !== zoom) {
+      currentZoom = zoom
     }
 
-    if (this.currentZoom !== zoom) {
-      this.setState({
-        activePin: null,
-      })
+    if (currentZoom !== zoom) {
+      setActivePin(null)
     }
   }
 
-  onDidFinishRenderingMapFully = () => {
+  const onDidFinishRenderingMapFully = () => {
     LegacyNativeModules.ARNotificationsManager.postNotificationName(
       "ARLocalDiscoveryMapHasRendered",
       {}
     )
-    this.setState({ mapLoaded: true })
+    setMapLoaded(true)
   }
 
-  onPressMap = () => {
-    if (!this.state.isSavingShow) {
-      this.setState({
-        activeShows: [],
-        activePin: null,
-      })
+  const onPressMap = () => {
+    if (!isSavingShow) {
+      setActiveShows([])
+      setActivePin(null)
     }
   }
 
-  onPressCitySwitcherButton = () => {
-    this.setState({
-      activeShows: [],
-      activePin: null,
-    })
+  const onPressCitySwitcherButton = () => {
+    setActiveShows([])
+    setActivePin(null)
   }
 
-  onPressUserPositionButton = () => {
+  const onPressUserPositionButton = () => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const { lat, lng } = this.state.userLocation
-    this.camera.current?.setCamera({
+    const { lat, lng } = userLocation
+    cameraRef.current?.setCamera({
       centerCoordinate: [lng, lat],
       zoomLevel: DefaultZoomLevel,
       animationDuration: 500,
     })
   }
 
-  get currentFeatureCollection(): FilterData {
-    const filterID = cityTabs[this.state.activeIndex].id
+  const currentFeatureCollection = (): FilterData => {
+    const filterID = cityTabs[activeIndex].id
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    return this.state.featureCollections[filterID]
+    return featureCollections[filterID]
   }
 
-  // @TODO: Implement tests for this component https://artsyproduct.atlassian.net/browse/LD-564
-  render() {
-    const city = get(this.props, "viewer.city")
-    const { relayErrorState, userLocationWithinCity } = this.props
-    const { lat: centerLat, lng: centerLng } =
-      this.props.initialCoordinates || get(city, "coordinates")
-    const { mapLoaded, activeShows, activePin } = this.state
+  const { city } = viewer
+  const { userLocationWithinCity } = props
+  const { lat: centerLat, lng: centerLng } = props.initialCoordinates || city?.coordinates
 
-    const mapProps = {
-      styleURL: ArtsyMapStyleURL,
-      userTrackingMode: MapboxGL.UserTrackingModes.Follow,
-      logoEnabled: !!city,
-      attributionEnabled: false,
-      compassEnabled: false,
-    }
-
-    return (
-      <ClassTheme>
-        {({ color }) => (
-          <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: color("mono5") }}>
-            <LoadingScreen
-              source={require("images/map-bg.webp")}
-              resizeMode="cover"
-              style={{ ...this.backgroundImageSize }}
-            />
-
-            {/* TODO: safeArea insets are being reported back incorrectly here, so we have to subtract, we should look further into why, possibly with how we register these components, possibly because they are partially native.
-             */}
-            <TopButtonsContainer style={{ top: this.props.safeAreaInsets.top - 12 - 10 }}>
-              <Animated.View
-                style={{
-                  transform: [
-                    {
-                      translateY: this.hideButtons.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0, -(this.props.safeAreaInsets.top + 12 + 50)],
-                      }),
-                    },
-                  ],
-                }}
-              >
-                <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end" px={4}>
-                  <CitySwitcherButton
-                    city={city}
-                    isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
-                    onPress={this.onPressCitySwitcherButton}
-                  />
-                  {!!(this.state.userLocation && userLocationWithinCity) && (
-                    <Box style={{ marginLeft: 10 }}>
-                      <UserPositionButton
-                        highlight={this.state.userLocation === this.state.currentLocation}
-                        onPress={this.onPressUserPositionButton}
-                      />
-                    </Box>
-                  )}
-                </Flex>
-              </Animated.View>
-            </TopButtonsContainer>
-
-            <Flex flex={1}>
-              <MapboxGL.MapView
-                ref={this.map}
-                style={{ width: "100%", height: Dimensions.get("window").height }}
-                {...mapProps}
-                onCameraChanged={this.onRegionIsChanging}
-                onDidFinishLoadingMap={this.onDidFinishRenderingMapFully}
-                attributionEnabled
-                logoEnabled
-                logoPosition={{ bottom: 150, left: 10 }}
-                onPress={this.onPressMap}
-              >
-                <MapboxGL.Camera
-                  ref={this.camera}
-                  animationMode="flyTo"
-                  zoomLevel={DefaultZoomLevel}
-                  minZoomLevel={MinZoomLevel}
-                  maxZoomLevel={MaxZoomLevel}
-                  centerCoordinate={[centerLng, centerLat]}
-                />
-                <MapboxGL.UserLocation onUpdate={this.onUserLocationUpdate} />
-                {!!city && (
-                  <>
-                    {!!this.state.featureCollections && (
-                      <PinsShapeLayer
-                        filterID={cityTabs[this.state.activeIndex].id}
-                        featureCollections={this.state.featureCollections}
-                        onPress={(e) => this.handleFeaturePress(e)}
-                      />
-                    )}
-                    <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
-                    {!!mapLoaded && !!activeShows && !!activePin && this.renderSelectedPin()}
-                  </>
-                )}
-              </MapboxGL.MapView>
-            </Flex>
-          </Flex>
-        )}
-      </ClassTheme>
-    )
-  }
-
-  get backgroundImageSize() {
-    const { width, height } = Dimensions.get("window")
-    return {
-      width,
-      height,
-    }
+  const mapProps = {
+    styleURL: ArtsyMapStyleURL,
+    userTrackingMode: MapboxGL.UserTrackingModes.Follow,
+    logoEnabled: !!city,
+    attributionEnabled: false,
+    compassEnabled: false,
   }
 
   /**
@@ -638,8 +519,8 @@ export class GlobalMap extends React.Component<Props, State> {
    * What's happening is that we have to replicate a subset of the map's clustering algorithm to get
    * access to the shows that the user has tapped on.
    */
-  async handleFeaturePress(event: any) {
-    if (!this.map.current) {
+  const handleFeaturePress = async (event: any) => {
+    if (!mapRef.current) {
       return
     }
     const {
@@ -647,7 +528,7 @@ export class GlobalMap extends React.Component<Props, State> {
       geometry: { coordinates },
     } = event.features[0]
 
-    this.updateDrawerPosition(DrawerPosition.collapsed)
+    updateDrawerPosition(DrawerPosition.collapsed)
 
     let activeShows: Array<Fair | Show> = []
 
@@ -658,11 +539,11 @@ export class GlobalMap extends React.Component<Props, State> {
     // maps pins and cards will remain the same for now.
     if (!cluster) {
       if (type === "Show") {
-        activeShows = [this.shows[slug]]
-        this.trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Show)
+        activeShows = [shows[slug]]
+        trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Show)
       } else if (type === "Fair") {
-        activeShows = [this.fairs[slug]]
-        this.trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Fair)
+        activeShows = [fairs[slug]]
+        trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Fair)
       }
     }
 
@@ -672,40 +553,36 @@ export class GlobalMap extends React.Component<Props, State> {
     // 2. Sort them by distance to the user tap coordinates
     // 3. Retrieve points within the cluster and map them back to shows
     else {
-      this.trackPinTap(Schema.ActionNames.ClusteredMapPin, null, Schema.OwnerEntityTypes.Show)
+      trackPinTap(Schema.ActionNames.ClusteredMapPin, null, Schema.OwnerEntityTypes.Show)
       // Get map zoom level and coordinates of where the user tapped
-      const zoom = Math.floor(await this.map.current.getZoom())
+      const zoom = Math.floor(await mapRef.current.getZoom())
       const [lat, lng] = coordinates
 
       // Get coordinates of the map's current viewport bounds
-      const visibleBounds = await this.map.current.getVisibleBounds()
+      const visibleBounds = await mapRef.current.getVisibleBounds()
       const [ne, sw] = visibleBounds
       const [eastLng, northLat] = ne
       const [westLng, southLat] = sw
 
-      const clusterEngine = this.currentFeatureCollection.clusterEngine
+      const clusterEngine = currentFeatureCollection().clusterEngine
       const visibleFeatures = clusterEngine.getClusters(
         [westLng, southLat, eastLng, northLat],
         zoom
       )
-      const nearestFeature = this.getNearestPointToLatLongInCollection(
-        { lat, lng },
-        visibleFeatures
-      )
+      const nearestFeature = getNearestPointToLatLongInCollection({ lat, lng }, visibleFeatures)
       const points = clusterEngine.getLeaves(nearestFeature?.properties?.cluster_id, Infinity)
       activeShows = points.map((a) => a.properties) as any
-      this.setState({
-        nearestFeature,
-      })
+      setNearestFeature(nearestFeature)
     }
 
-    this.setState({
-      activeShows,
-      activePin: event.features[0],
-    })
+    setActiveShows(activeShows)
+    setActivePin(event.features[0])
   }
 
-  getNearestPointToLatLongInCollection(values: { lat: number; lng: number }, features: any[]) {
+  const getNearestPointToLatLongInCollection = (
+    values: { lat: number; lng: number },
+    features: any[]
+  ) => {
     // https://stackoverflow.com/a/21623206
     function distance(lat1: number, lon1: number, lat2: number, lon2: number) {
       const p = 0.017453292519943295 // Math.PI / 180
@@ -731,12 +608,80 @@ export class GlobalMap extends React.Component<Props, State> {
     return distances[0]
   }
 
-  updateDrawerPosition(position: DrawerPosition) {
+  const updateDrawerPosition = (position: DrawerPosition) => {
     const notificationName = "ARLocalDiscoveryUpdateDrawerPosition"
     LegacyNativeModules.ARNotificationsManager.postNotificationName(notificationName, {
       position,
     })
   }
+
+  console.log("DEBUG: filterID", cityTabs[activeIndex].id)
+  console.log("DEBUG: city", city)
+  console.log("DEBUG: featureCollections", featureCollections)
+  return (
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.CityGuideMap,
+        context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
+        context_screen_owner_slug: props.citySlug,
+        context_screen_owner_id: props.citySlug,
+      }}
+    >
+      <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: color("mono5") }}>
+        <LoadingScreen
+          source={require("images/map-bg.webp")}
+          resizeMode="cover"
+          style={{
+            width: Dimensions.get("window").width,
+            height: Dimensions.get("window").height,
+          }}
+        />
+
+        <MapboxGL.MapView
+          ref={mapRef}
+          style={{ width: "100%", height: Dimensions.get("window").height }}
+          {...mapProps}
+          onCameraChanged={onRegionIsChanging}
+          onDidFinishLoadingMap={onDidFinishRenderingMapFully}
+          attributionEnabled
+          logoEnabled
+          logoPosition={{
+            bottom: Platform.OS === "ios" ? BOTTOM_TABS_HEIGHT + space(2) : space(2),
+            left: space(2),
+          }}
+          onPress={onPressMap}
+        >
+          <MapboxGL.Camera
+            ref={cameraRef}
+            animationMode="flyTo"
+            zoomLevel={DefaultZoomLevel}
+            minZoomLevel={MinZoomLevel}
+            maxZoomLevel={MaxZoomLevel}
+            centerCoordinate={[centerLng, centerLat]}
+          />
+          <MapboxGL.UserLocation onUpdate={onUserLocationUpdate} />
+          {!!city && (
+            <>
+              {!!featureCollections && (
+                <PinsShapeLayer
+                  filterID={cityTabs[activeIndex].id}
+                  featureCollections={featureCollections}
+                  onPress={(e) => handleFeaturePress(e)}
+                />
+              )}
+              <ShowCardContainer>{renderShowCard()}</ShowCardContainer>
+              {!!mapLoaded && !!activeShows && !!activePin && renderSelectedPin()}
+            </>
+          )}
+        </MapboxGL.MapView>
+      </Flex>
+    </ProvideScreenTracking>
+  )
+}
+
+/** Makes sure we're consistently using { lat, lng } internally */
+const longCoordsToLocation = (coords: { longitude: number; latitude: number }) => {
+  return { lat: coords.latitude, lng: coords.longitude }
 }
 
 const SelectedCluster = styled(Flex)`
@@ -747,150 +692,157 @@ const SelectedCluster = styled(Flex)`
   align-items: center;
 `
 
-// FIXME:
-// * This should not take the Query type but just City.
-// * Use fragments to reduce the size of this fragment.
-// * Test if there are unnused field selections.
-//
-// NOTE: Not renamed the prop from `viewer` becuase there's too much indirection in how the city data is used and it's
-//       too easy to miss a place that needs to be updated. This should be cleaned up when the above FIXME is addressed.
-export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
-  viewer: graphql`
-    fragment GlobalMap_viewer on Query
-    @argumentDefinitions(citySlug: { type: "String!" }, maxInt: { type: "Int!" }) {
-      city(slug: $citySlug) {
-        name
-        slug
-        coordinates {
-          lat
-          lng
-        }
-        upcomingShows: showsConnection(
-          includeStubShows: true
-          status: UPCOMING
-          dayThreshold: 14
-          first: $maxInt
-          sort: START_AT_ASC
-        ) {
-          edges {
-            node {
-              slug
-              internalID
-              id
-              isStubShow
-              name
-              status
-              href
-              is_followed: isFollowed
-              exhibition_period: exhibitionPeriod(format: SHORT)
-              cover_image: coverImage {
-                url
-              }
-              location {
-                coordinates {
-                  lat
-                  lng
-                }
-              }
-              type
-              start_at: startAt
-              end_at: endAt
-              partner {
-                ... on Partner {
-                  name
-                  type
-                  profile {
-                    image {
-                      url(version: "square")
-                    }
-                  }
-                }
+const tracks = {
+  trackPinTap: (_: any, __: any, args: any) => {
+    const actionName = args[0]
+    const show = args[1]
+    const type = args[2]
+
+    return {
+      action_name: actionName,
+      action_type: Schema.ActionTypes.Tap,
+      owner_id: !!show ? show[0].internalID : "",
+      owner_slug: !!show ? show[0].id : "",
+      owner_type: !!type ? type : "",
+    } as any
+  },
+}
+
+const globalMapFragment = graphql`
+  fragment GlobalMap_viewer on Viewer
+  @argumentDefinitions(citySlug: { type: "String!" }, maxInt: { type: "Int!" }) {
+    city(slug: $citySlug) {
+      name
+      slug
+      coordinates {
+        lat
+        lng
+      }
+      upcomingShows: showsConnection(
+        includeStubShows: true
+        status: UPCOMING
+        dayThreshold: 14
+        first: $maxInt
+        sort: START_AT_ASC
+      ) {
+        edges {
+          node {
+            slug
+            internalID
+            id
+            isStubShow
+            name
+            status
+            href
+            is_followed: isFollowed
+            exhibition_period: exhibitionPeriod(format: SHORT)
+            cover_image: coverImage {
+              url
+            }
+            location {
+              coordinates {
+                lat
+                lng
               }
             }
-          }
-        }
-        shows: showsConnection(
-          includeStubShows: true
-          status: RUNNING
-          first: $maxInt
-          sort: PARTNER_ASC
-        ) {
-          edges {
-            node {
-              slug
-              internalID
-              id
-              isStubShow
-              name
-              status
-              href
-              is_followed: isFollowed
-              exhibition_period: exhibitionPeriod(format: SHORT)
-              cover_image: coverImage {
-                url
-              }
-              location {
-                coordinates {
-                  lat
-                  lng
-                }
-              }
-              type
-              start_at: startAt
-              end_at: endAt
-              partner {
-                ... on Partner {
-                  name
-                  type
-                  profile {
-                    image {
-                      url(version: "square")
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-        fairs: fairsConnection(first: $maxInt, status: CURRENT, sort: START_AT_ASC) {
-          edges {
-            node {
-              id
-              slug
-              name
-              exhibition_period: exhibitionPeriod(format: SHORT)
-              counts {
-                partners
-              }
-              location {
-                coordinates {
-                  lat
-                  lng
-                }
-              }
-              image {
-                image_url: imageURL
-                aspect_ratio: aspectRatio
-                url
-              }
-              profile {
-                icon {
-                  internalID
-                  href
-                  height
-                  width
-                  url(version: "square140")
-                }
-                id
-                slug
+            type
+            start_at: startAt
+            end_at: endAt
+            partner {
+              ... on Partner {
                 name
+                type
+                profile {
+                  image {
+                    url(version: "square")
+                  }
+                }
               }
-              start_at: startAt
-              end_at: endAt
             }
           }
         }
       }
+      shows: showsConnection(
+        includeStubShows: true
+        status: RUNNING
+        first: $maxInt
+        sort: PARTNER_ASC
+      ) {
+        edges {
+          node {
+            slug
+            internalID
+            id
+            isStubShow
+            name
+            status
+            href
+            is_followed: isFollowed
+            exhibition_period: exhibitionPeriod(format: SHORT)
+            cover_image: coverImage {
+              url
+            }
+            location {
+              coordinates {
+                lat
+                lng
+              }
+            }
+            type
+            start_at: startAt
+            end_at: endAt
+            partner {
+              ... on Partner {
+                name
+                type
+                profile {
+                  image {
+                    url(version: "square")
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      fairs: fairsConnection(first: $maxInt, status: CURRENT, sort: START_AT_ASC) {
+        edges {
+          node {
+            id
+            slug
+            name
+            exhibition_period: exhibitionPeriod(format: SHORT)
+            counts {
+              partners
+            }
+            location {
+              coordinates {
+                lat
+                lng
+              }
+            }
+            image {
+              image_url: imageURL
+              aspect_ratio: aspectRatio
+              url
+            }
+            profile {
+              icon {
+                internalID
+                href
+                height
+                width
+                url(version: "square140")
+              }
+              id
+              slug
+              name
+            }
+            start_at: startAt
+            end_at: endAt
+          }
+        }
+      }
     }
-  `,
-})
+  }
+`

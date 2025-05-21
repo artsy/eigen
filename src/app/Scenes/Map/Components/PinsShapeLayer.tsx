@@ -105,6 +105,7 @@ export class PinsShapeLayer extends Component<Props, State> {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const collection: MapGeoFeatureCollection = featureCollections[filterID].featureCollection
 
+    console.log("DEBUG: collection", collection)
     return (
       <MapboxGL.Animated.ShapeSource
         id="shows"

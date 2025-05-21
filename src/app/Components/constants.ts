@@ -18,3 +18,4 @@ export const ICON_HIT_SLOP = {
   bottom: 5,
   left: 5,
 }
+export const BACK_BUTTON_SIZE_SIZE = 40
