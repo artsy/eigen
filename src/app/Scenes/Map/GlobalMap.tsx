@@ -1,11 +1,9 @@
-import { OwnerType } from "@artsy/cohesion"
 import { Box, ClassTheme, Flex, Text, useColor, useSpace } from "@artsy/palette-mobile"
 import { BOTTOM_TABS_HEIGHT } from "@artsy/palette-mobile/dist/elements/Screen/StickySubHeader"
 import { useNavigation } from "@react-navigation/native"
 import MapboxGL from "@rnmapbox/maps"
 import { themeGet } from "@styled-system/theme-get"
-import { screen } from "@testing-library/react-native"
-import { GlobalMap_viewer$data, GlobalMap_viewer$key } from "__generated__/GlobalMap_viewer.graphql"
+import { GlobalMap_viewer$key } from "__generated__/GlobalMap_viewer.graphql"
 import { Pin } from "app/Components/Icons/Pin"
 import PinFairSelected from "app/Components/Icons/PinFairSelected"
 import PinSavedSelected from "app/Components/Icons/PinSavedSelected"
@@ -18,18 +16,12 @@ import {
 } from "app/utils/convertCityToGeoJSON"
 import { extractNodes } from "app/utils/extractNodes"
 import { SafeAreaInsets } from "app/utils/hooks"
-import {
-  ProvideScreenTracking,
-  ProvideScreenTrackingWithCohesionSchema,
-  Schema,
-  screenTrack,
-  track,
-} from "app/utils/track"
-import { get, isEqual, uniq, values } from "lodash"
+import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { isEqual, uniq } from "lodash"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Dimensions, Image, Platform } from "react-native"
 import Keys from "react-native-keys"
-import { createFragmentContainer, graphql, RelayProp, useFragment } from "react-relay"
+import { graphql, RelayProp, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { usePrevious } from "react-use"
 import styled from "styled-components/native"
@@ -61,15 +53,6 @@ const LoadingScreen = styled(Image)`
   position: absolute;
   left: 0px;
   top: 0px;
-`
-
-const TopButtonsContainer = styled(Box)`
-  position: absolute;
-  left: 0px;
-  right: 0px;
-  z-index: 1;
-  width: 100%;
-  height: 100px;
 `
 
 interface Props {
@@ -121,15 +104,15 @@ export const GlobalMap: React.FC<Props> = (props) => {
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const hideButtons = new Animated.Value(0)
   let currentZoom = DefaultZoomLevel
-  const shows: { [key: string]: Show } = {}
-  const fairs: { [key: string]: Fair } = {}
+  const showsRef = useRef<{ [key: string]: Show }>({})
+  const fairsRef = useRef<{ [key: string]: Fair }>({})
 
   const [activeShows, setActiveShows] = useState<Array<Fair | Show>>([])
   const [activeIndex, setActiveIndex] = useState(0)
   const currentLocation = props.initialCoordinates || viewer.city?.coordinates
   const [userLocation, setUserLocation] = useState(currentLocation)
 
-  const [bucketResults, setBucketResults] = useState(emptyBucketResults)
+  const [bucketResults, setBucketResults] = useState<BucketResults>(emptyBucketResults)
   const previousBucketResults = usePrevious(bucketResults)
 
   const [featureCollections, setFeatureCollections] = useState<
@@ -193,7 +176,9 @@ export const GlobalMap: React.FC<Props> = (props) => {
   useEffect(() => {
     if (didMountRef.current && bucketResults && previousBucketResults) {
       const shouldUpdate = !isEqual(
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         previousBucketResults.saved.map((g) => g.is_followed),
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         bucketResults.saved.map((g) => g.is_followed)
       )
 
@@ -201,7 +186,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
         updateClusterMap()
       }
     }
-  }, [bucketResults])
+  }, [bucketResults, previousBucketResults, didMountRef.current])
 
   useEffect(() => {
     updateShowIdMap()
@@ -241,9 +226,9 @@ export const GlobalMap: React.FC<Props> = (props) => {
     const newFeatureCollections = {}
     cityTabs.forEach((tab) => {
       const newShows = tab.getShows(bucketResults)
-      const fairs = tab.getFairs(bucketResults)
+      const newFairs = tab.getFairs(bucketResults)
       const showData = showsToGeoCityShow(newShows)
-      const fairData = fairToGeoCityFairs(fairs)
+      const fairData = fairToGeoCityFairs(newFairs)
       const data = showData.concat(fairData as any as Show[])
       const geoJSONFeature = convertCityToGeoJSON(data)
 
@@ -288,21 +273,22 @@ export const GlobalMap: React.FC<Props> = (props) => {
 
   const updateShowIdMap = () => {
     if (!viewer) {
+      console.log("=======")
       return
     }
 
     const { city } = viewer
     if (city) {
       const savedUpcomingShows = extractNodes(city.upcomingShows).filter((node) => node.is_followed)
-      const newShows = extractNodes(city.shows)
-      const concatedShows = uniq(newShows.concat(savedUpcomingShows))
+      const shows = extractNodes(city.shows)
+      const concatedShows = uniq(shows.concat(savedUpcomingShows))
 
       concatedShows.forEach((node) => {
         if (!node || !node.location || !node.location.coordinates) {
           return null
         }
 
-        shows[node.slug] = node
+        showsRef.current[node.slug] = node
       })
 
       extractNodes(city.fairs).forEach((node) => {
@@ -310,7 +296,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
           return null
         }
 
-        fairs[node.slug] = {
+        fairsRef.current[node.slug] = {
           ...node,
           type: "Fair",
         }
@@ -410,9 +396,9 @@ export const GlobalMap: React.FC<Props> = (props) => {
     // We need to update activeShows in case of a mutation (save show)
     const updatedShows: Array<Fair | Show> = activeShows.map((item: any) => {
       if (item.type === "Show") {
-        return shows[item.slug]
+        return showsRef.current[item.slug]
       } else if (item.type === "Fair") {
-        return fairs[item.slug]
+        return fairsRef.current[item.slug]
       }
       return item
     })
@@ -504,7 +490,8 @@ export const GlobalMap: React.FC<Props> = (props) => {
 
   const { city } = viewer
   const { userLocationWithinCity } = props
-  const { lat: centerLat, lng: centerLng } = props.initialCoordinates || city?.coordinates
+  const centerLat = props.initialCoordinates?.lat || city?.coordinates?.lat || 0
+  const centerLng = props.initialCoordinates?.lng || city?.coordinates?.lng || 0
 
   const mapProps = {
     styleURL: ArtsyMapStyleURL,
@@ -539,10 +526,10 @@ export const GlobalMap: React.FC<Props> = (props) => {
     // maps pins and cards will remain the same for now.
     if (!cluster) {
       if (type === "Show") {
-        activeShows = [shows[slug]]
+        activeShows = [showsRef.current[slug]]
         trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Show)
       } else if (type === "Fair") {
-        activeShows = [fairs[slug]]
+        activeShows = [fairsRef.current[slug]]
         trackPinTap(Schema.ActionNames.SingleMapPin, activeShows, Schema.OwnerEntityTypes.Fair)
       }
     }
