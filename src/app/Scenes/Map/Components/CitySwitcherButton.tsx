@@ -1,12 +1,11 @@
 import { Box, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import themeGet from "@styled-system/theme-get"
+import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import Spinner from "app/Components/Spinner"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { City } from "app/Scenes/Map/types"
 import { Component } from "react"
-import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
 // Because it will raise errors in VS Code
@@ -25,7 +24,7 @@ const Background = styled(Flex)`
 
 interface Props {
   onPress?: () => void
-  city: City
+  city: GlobalMap_viewer$data["city"]
   isLoading: boolean
 }
 

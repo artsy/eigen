@@ -21,7 +21,7 @@ import { isEqual, uniq } from "lodash"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Dimensions, Image, Platform } from "react-native"
 import Keys from "react-native-keys"
-import { graphql, RelayProp, useFragment } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { usePrevious } from "react-use"
 import styled from "styled-components/native"
@@ -61,8 +61,6 @@ interface Props {
   /** Should the map buttons be hidden...  */
   hideMapButtons: boolean
 
-  /** API stuff */
-  relay?: RelayProp
   /** Tracking */
   tracking?: any
   /** city slug */
@@ -99,7 +97,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
   const viewer = useFragment(globalMapFragment, props.viewer)
   const { trackEvent } = useTracking()
 
-  const didMountRef = useRef(false)
   const mapRef = useRef<MapboxGL.MapView>(null)
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const hideButtons = new Animated.Value(0)
@@ -113,6 +110,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
   const [userLocation, setUserLocation] = useState(currentLocation)
 
   const [bucketResults, setBucketResults] = useState<BucketResults>(emptyBucketResults)
+  const previousBucketResults = usePrevious(bucketResults)
 
   const [featureCollections, setFeatureCollections] = useState<
     { [key in BucketKey]: FilterData } | {}
@@ -144,8 +142,8 @@ export const GlobalMap: React.FC<Props> = (props) => {
           >
             <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end">
               <CitySwitcherButton
-                city={city}
-                isLoading={!city}
+                city={viewer.city}
+                isLoading={!viewer.city}
                 onPress={onPressCitySwitcherButton}
               />
               {!!(userLocation && userLocationWithinCity) && (
@@ -166,40 +164,44 @@ export const GlobalMap: React.FC<Props> = (props) => {
   useEffect(() => {
     updateShowIdMap()
     EventEmitter.subscribe("filters:change", handleFilterChange)
-    didMountRef.current = true
     return () => {
       EventEmitter.unsubscribe("filters:change", handleFilterChange)
     }
   }, [])
 
   useEffect(() => {
-    if (didMountRef.current) {
-      // const shouldUpdate = !isEqual(bucketResults, previousBucketResults)
+    if (!bucketResults) return
 
-      // if (shouldUpdate) {
-      updateClusterMap()
-      // }
+    if (previousBucketResults) {
+      const prevFollowed = previousBucketResults.saved?.map((g) => g?.is_followed)
+      const currentFollowed = bucketResults.saved?.map((g) => g?.is_followed)
+
+      const shouldUpdate = !isEqual(prevFollowed, currentFollowed)
+
+      if (shouldUpdate) {
+        updateClusterMap(bucketResults)
+      }
     }
-  }, [bucketResults, didMountRef.current, userLocation, activePin, activeIndex])
+  }, [bucketResults])
 
   useEffect(() => {
     updateShowIdMap()
   }, [viewer])
 
   useEffect(() => {
-    // if (didMountRef.current) {
-    // If there is a new city, set it and update our map.
     if (viewer) {
       // TODO: This is currently really inefficient.
-      const bucketResults = bucketCityResults(viewer)
+      const newBucketResults = bucketCityResults(viewer)
 
-      setBucketResults(bucketResults)
-      emitFilteredBucketResults()
-      updateShowIdMap()
-      updateClusterMap()
+      setBucketResults(newBucketResults)
+      requestAnimationFrame(() => {
+        emitFilteredBucketResults(newBucketResults)
+        updateShowIdMap()
+        console.log("DEBUG: Update")
+        updateClusterMap(newBucketResults)
+      })
     }
-    // }
-  }, [viewer, userLocation])
+  }, [props, viewer])
 
   const handleFilterChange = (activeIndex: number) => {
     setActiveIndex(activeIndex)
@@ -211,11 +213,11 @@ export const GlobalMap: React.FC<Props> = (props) => {
     trackEvent(tracks.trackPinTap(actionName, show, type))
   }
 
-  const updateClusterMap = () => {
+  const updateClusterMap = (newBucketResults: BucketResults) => {
     const newFeatureCollections = {}
     cityTabs.forEach((tab) => {
-      const newShows = tab.getShows(bucketResults)
-      const newFairs = tab.getFairs(bucketResults)
+      const newShows = tab.getShows(newBucketResults)
+      const newFairs = tab.getFairs(newBucketResults)
       const showData = showsToGeoCityShow(newShows)
       const fairData = fairToGeoCityFairs(newFairs)
       const data = showData.concat(fairData as any as Show[])
@@ -240,7 +242,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
     setFeatureCollections(newFeatureCollections)
   }
 
-  const emitFilteredBucketResults = () => {
+  const emitFilteredBucketResults = (newBucketResults: BucketResults) => {
     if (!viewer) {
       return
     }
@@ -252,10 +254,9 @@ export const GlobalMap: React.FC<Props> = (props) => {
 
     EventEmitter.dispatch("map:change", {
       filter,
-      buckets: bucketResults,
+      buckets: newBucketResults,
       cityName,
       citySlug,
-      relay: props.relay,
     })
   }
 
@@ -403,7 +404,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
         {!!hasShows && (
           <ShowCard
             shows={updatedShows}
-            relay={props.relay}
             onSaveStarted={() => {
               setIsSavingShow(true)
             }}

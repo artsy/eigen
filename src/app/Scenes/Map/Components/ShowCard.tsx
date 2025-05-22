@@ -4,6 +4,7 @@ import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { ShowItemRow } from "app/Components/Lists/ShowItemRow"
 import { TabFairItemRow } from "app/Scenes/City/Components/TabFairItemRow"
 import { Fair, Show } from "app/Scenes/Map/types"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { isEqual } from "lodash"
 import { Component } from "react"
@@ -14,7 +15,6 @@ import {
   NativeSyntheticEvent,
   TouchableOpacity,
 } from "react-native"
-import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
 
 const shadowDetails: any = {
@@ -31,7 +31,6 @@ const Background = styled(Box)`
 `
 
 interface ShowCardProps {
-  relay: RelayProp
   shows: Array<Show | Fair>
   onSaveStarted?: () => void
   onSaveEnded?: () => void
@@ -95,7 +94,6 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
           {item.type === "Show" ? (
             <ShowItemRow
               show={item}
-              relay={this.props.relay}
               onSaveStarted={this.props.onSaveStarted}
               onSaveEnded={this.props.onSaveEnded}
               shouldHideSaveButton
