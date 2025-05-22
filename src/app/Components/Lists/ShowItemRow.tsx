@@ -6,17 +6,17 @@ import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { Pin } from "app/Components/Icons/Pin"
 import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
 import { navigate } from "app/system/navigation/navigate"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { hrefForPartialShow } from "app/utils/router"
 import { track as _track, Schema, Track } from "app/utils/track"
 import { debounce } from "lodash"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { commitMutation, createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 interface Props {
   show: ShowItemRow_show$data
-  relay?: RelayProp
   onSaveStarted?: () => void
   onSaveEnded?: () => void
   shouldHideSaveButton?: boolean
@@ -66,7 +66,7 @@ export class ShowItemRow extends React.Component<Props, State> {
           isFollowedSaving: true,
         },
         () => {
-          return commitMutation<ShowItemRowMutation>(this.props.relay?.environment!, {
+          return commitMutation<ShowItemRowMutation>(getRelayEnvironment(), {
             onCompleted: () => this.handleShowSuccessfullyUpdated(),
             mutation: graphql`
               mutation ShowItemRowMutation($input: FollowShowInput!) {
