@@ -19,6 +19,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { SafeAreaInsets } from "app/utils/hooks"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { isEqual, uniq } from "lodash"
+import { AnimatePresence } from "moti"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Dimensions, Image, Platform } from "react-native"
 import Keys from "react-native-keys"
@@ -122,6 +123,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
     PointFeature<ClusterProperties & AnyProps> | PointFeature<AnyProps> | null
   >(null)
   const [activePin, setActivePin] = useState<GeoJSON.Feature | null>(null)
+  const [showCityPicker, setShowCityPicker] = useState(false)
 
   const navigation = useNavigation()
 
@@ -195,12 +197,9 @@ export const GlobalMap: React.FC<Props> = (props) => {
       const newBucketResults = bucketCityResults(viewer)
 
       setBucketResults(newBucketResults)
-      requestAnimationFrame(() => {
-        emitFilteredBucketResults(newBucketResults)
-        updateShowIdMap()
-        console.log("DEBUG: Update")
-        updateClusterMap(newBucketResults)
-      })
+      emitFilteredBucketResults(newBucketResults)
+      updateShowIdMap()
+      updateClusterMap(newBucketResults)
     }
   }, [props, viewer])
 
@@ -456,6 +455,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
   }
 
   const onPressCitySwitcherButton = () => {
+    setShowCityPicker(true)
     setActiveShows([])
     setActivePin(null)
   }
@@ -599,7 +599,10 @@ export const GlobalMap: React.FC<Props> = (props) => {
         context_screen_owner_id: props.citySlug,
       }}
     >
-      <CityPicker selectedCity={city?.name ?? ""} />
+      {/* TODO: think of a better way to animate the appearance of the city picker */}
+      <AnimatePresence>
+        {!!showCityPicker && <CityPicker selectedCity={city?.name ?? ""} />}
+      </AnimatePresence>
 
       <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: color("mono5") }}>
         <LoadingScreen

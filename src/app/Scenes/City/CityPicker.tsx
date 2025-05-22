@@ -41,6 +41,7 @@ export const CityPicker: React.FC<Props> = (props) => {
   const { height: screenHeight } = useScreenDimensions()
 
   // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
+
   return (
     <Flex
       position="absolute"
