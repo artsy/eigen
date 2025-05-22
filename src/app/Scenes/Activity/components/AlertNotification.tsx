@@ -1,4 +1,5 @@
 import {
+  // eslint-disable-next-line local-rules/no-palette-icon-imports
   ArrowRightIcon,
   Button,
   DEFAULT_HIT_SLOP,
@@ -11,8 +12,8 @@ import {
 import { AlertNotification_notification$key } from "__generated__/AlertNotification_notification.graphql"
 import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
 import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
-import { goBack } from "app/system/navigation/navigate"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { goBack } from "app/system/navigation/navigate"
 import { FC } from "react"
 import { ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
