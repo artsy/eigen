@@ -27,51 +27,50 @@ interface Props {
   isLoading: boolean
 }
 
-export class CitySwitcherButton extends Component<Props> {
-  render() {
-    const { city, isLoading } = this.props
-    return isLoading || city ? (
-      <ThemeAwareClassTheme>
-        {({}) => (
-          <Touchable
-            onPress={() => {
-              if (this.props.onPress) {
-                this.props.onPress()
-              }
-            }}
-          >
-            <Background
-              flexDirection="row"
-              alignItems="center"
-              style={
-                {
-                  shadowOffset: { height: 0, width: 0 },
-                  width: city ? "auto" : 40,
-                } as any
-              }
-            >
-              {city ? (
-                <>
-                  <Text variant="sm" weight="medium" ml={4}>
-                    {city.name}
-                  </Text>
-                  <Box ml={2} mr={4}>
-                    <ChevronIcon initialDirection="down" color="mono100" width={20} height={20} />
-                  </Box>
-                </>
-              ) : (
-                <Flex alignItems="center" justifyContent="center" flexGrow={1}>
-                  <Spinner
-                    spinnerColor="mono60"
-                    style={{ backgroundColor: "transparent" }}
-                    size="medium"
-                  />
-                </Flex>
-              )}
-            </Background>
-          </Touchable>
-        )}
-      </ThemeAwareClassTheme>
-    ) : null
+export const CitySwitcherButton: React.FC<Props> = (props) => {
+  const { city, isLoading } = props
+
+  if (!city && !isLoading) {
+    return null
   }
+
+  return (
+    <Touchable
+      onPress={() => {
+        if (props.onPress) {
+          props.onPress()
+        }
+      }}
+    >
+      <Background
+        flexDirection="row"
+        alignItems="center"
+        style={
+          {
+            shadowOffset: { height: 0, width: 0 },
+            width: city ? "auto" : 40,
+          } as any
+        }
+      >
+        {city ? (
+          <>
+            <Text variant="sm" weight="medium" ml={4}>
+              {city.name}
+            </Text>
+            <Box ml={2} mr={4}>
+              <ChevronIcon initialDirection="down" color="mono100" width={20} height={20} />
+            </Box>
+          </>
+        ) : (
+          <Flex alignItems="center" justifyContent="center" flexGrow={1}>
+            <Spinner
+              spinnerColor="mono60"
+              style={{ backgroundColor: "transparent" }}
+              size="medium"
+            />
+          </Flex>
+        )}
+      </Background>
+    </Touchable>
+  )
 }
