@@ -32,5 +32,5 @@ export const useMaestroInitialization = () => {
       console.log("LaunchArgs: Signing out")
       GlobalStore.actions.auth.signOut()
     }
-  }, [isLoggedIn])
+  }, [])
 }
