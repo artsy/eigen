@@ -20,7 +20,7 @@ import { requestSystemPermissions } from "app/utils/requestPushNotificationsPerm
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import useAppState from "app/utils/useAppState"
-import { debounce } from "lodash"
+import { debounce, omit } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
 import { Alert, Linking, Platform, RefreshControl, ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
@@ -213,7 +213,8 @@ export const MyProfilePushNotifications: React.FC<{
 
   const updateNotificationPermissions = useCallback(
     debounce(async (updatedPermissions: MyProfilePushNotifications_me$data) => {
-      await updateMyUserProfile(updatedPermissions)
+      const validUpdatedPermissions = omit(updatedPermissions, "id")
+      await updateMyUserProfile(validUpdatedPermissions)
     }, 500),
     []
   )
