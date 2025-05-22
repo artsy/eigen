@@ -1,2 +1,4 @@
+appId: net.artsy.artsy
+---
 flows:
   - "flows/*"
