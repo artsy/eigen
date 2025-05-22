@@ -255,8 +255,12 @@ export const MyProfilePushNotifications: React.FC<{
         context_screen_owner_type: OwnerType.accountNotifications,
       })}
     >
-      <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
-        {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && <OpenSettingsBanner />}
+      <ScrollView
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+      >
+        {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && (
+          <OpenSettingsBanner />
+        )}
         {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined &&
           Platform.OS === "ios" && <AllowPushNotificationsBanner />}
         <Content
@@ -270,7 +274,7 @@ export const MyProfilePushNotifications: React.FC<{
   )
 }
 
-const Content: React.FC<{
+interface ContentProps {
   userNotificationSettings: MyProfilePushNotifications_me$data
   isLoading: boolean
   handleUpdateUserNotificationSettings: (
@@ -278,12 +282,16 @@ const Content: React.FC<{
     value: boolean
   ) => void
   notificationAuthorizationStatus: PushAuthorizationStatus
-}> = ({
-  userNotificationSettings,
-  isLoading,
-  handleUpdateUserNotificationSettings,
-  notificationAuthorizationStatus,
-}) => {
+}
+
+const Content: React.FC<ContentProps> = (props) => {
+  const {
+    userNotificationSettings,
+    isLoading,
+    handleUpdateUserNotificationSettings,
+    notificationAuthorizationStatus,
+  } = props
+
   const enablePartnerOffersNotificationSwitch = useFeatureFlag(
     "AREnablePartnerOffersNotificationSwitch"
   )
