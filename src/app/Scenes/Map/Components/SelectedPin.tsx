@@ -11,8 +11,6 @@ export const SelectedPin: React.FC<{
   nearestFeature: PointFeature<ClusterProperties & AnyProps> | PointFeature<AnyProps> | null
   activeShows: Array<Fair | Show>
 }> = ({ activePin, nearestFeature, activeShows }) => {
-  const color = useColor()
-
   if (activePin === null || activePin.properties === null || !nearestFeature?.properties) {
     return null
   }
@@ -28,7 +26,7 @@ export const SelectedPin: React.FC<{
     const clusterId = properties.cluster_id.toString()
     let pointCount = properties.point_count
 
-    const radius = pointCount < 4 ? 40 : pointCount < 21 ? 50 : 65
+    const diameter = pointCount < 4 ? 40 : pointCount < 21 ? 50 : 65
     pointCount = pointCount.toString()
 
     return (
@@ -44,14 +42,14 @@ export const SelectedPin: React.FC<{
         >
           <Flex
             backgroundColor="blue100"
-            borderRadius={60}
+            borderRadius={diameter / 2}
             flexDirection="row"
             justifyContent="center"
             alignItems="center"
-            width={radius}
-            height={radius}
+            width={diameter}
+            height={diameter}
           >
-            <Text variant="sm" weight="medium" color={color("mono0")}>
+            <Text variant="sm" weight="medium" color="mono0">
               {pointCount}
             </Text>
           </Flex>

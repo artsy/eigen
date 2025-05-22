@@ -5,7 +5,7 @@ import MapboxGL from "@rnmapbox/maps"
 import { GlobalMap_viewer$key } from "__generated__/GlobalMap_viewer.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { CityBottomSheet } from "app/Scenes/City/CityBottomSheet"
-import { CityPicker } from "app/Scenes/City/CityPicker"
+import { CityData, CityPicker } from "app/Scenes/City/CityPicker"
 import { cityTabs } from "app/Scenes/City/cityTabs"
 import { SelectedPin } from "app/Scenes/Map/Components/SelectedPin"
 import {
@@ -100,7 +100,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
   const mapRef = useRef<MapboxGL.MapView>(null)
   const cameraRef = useRef<MapboxGL.Camera>(null)
   const hideButtons = new Animated.Value(0)
-  let currentZoom = DefaultZoomLevel
+  let currentZoom = useRef(DefaultZoomLevel).current
   const showsRef = useRef<{ [key: string]: Show }>({})
   const fairsRef = useRef<{ [key: string]: Fair }>({})
 
@@ -348,12 +348,12 @@ export const GlobalMap: React.FC<Props> = (props) => {
     }
     const zoom = Math.floor((await mapRef.current.getZoom()) ?? DefaultZoomLevel)
 
-    if (!currentZoom && currentZoom !== zoom) {
-      currentZoom = zoom
-    }
-
     if (currentZoom !== zoom) {
       setActivePin(null)
+    }
+
+    if (!currentZoom) {
+      currentZoom = zoom
     }
   }
 
@@ -506,6 +506,10 @@ export const GlobalMap: React.FC<Props> = (props) => {
     setDrawerPosition(position)
   }
 
+  const onSelectCity = (newCity: CityData) => {
+    setShowCityPicker(false)
+  }
+
   return (
     <ProvideScreenTracking
       info={{
@@ -517,7 +521,9 @@ export const GlobalMap: React.FC<Props> = (props) => {
     >
       {/* TODO: think of a better way to animate the appearance of the city picker */}
       <AnimatePresence>
-        {!!showCityPicker && <CityPicker selectedCity={city?.name ?? ""} />}
+        {!!showCityPicker && (
+          <CityPicker selectedCity={city?.name ?? ""} onSelectCity={onSelectCity} />
+        )}
       </AnimatePresence>
       <Flex flexDirection="column" style={{ backgroundColor: color("mono5") }}>
         <LoadingScreen
@@ -553,18 +559,18 @@ export const GlobalMap: React.FC<Props> = (props) => {
           <MapboxGL.UserLocation onUpdate={onUserLocationUpdate} />
           {!!city && (
             <>
-              {!!featureCollections && (
-                <PinsShapeLayer
-                  filterID={cityTabs[activeIndex].id}
-                  featureCollections={featureCollections}
-                  onPress={(e) => handleFeaturePress(e)}
-                />
-              )}
               {!!mapLoaded && !!activeShows && !!activePin && (
                 <SelectedPin
                   activePin={activePin}
                   nearestFeature={nearestFeature}
                   activeShows={activeShows}
+                />
+              )}
+              {!!featureCollections && (
+                <PinsShapeLayer
+                  filterID={cityTabs[activeIndex].id}
+                  featureCollections={featureCollections}
+                  onPress={(e) => handleFeaturePress(e)}
                 />
               )}
             </>
