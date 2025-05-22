@@ -5,7 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin"
 import * as Sentry from "@sentry/react-native"
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+// import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { clearNavState } from "app/system/navigation/useReloadedDevNavigationState"
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
 import {
