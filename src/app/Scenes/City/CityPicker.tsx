@@ -9,7 +9,6 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { CircleWhiteCheckIcon } from "app/Components/Icons/CircleWhiteCheckIcon"
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { useScreenDimensions } from "app/utils/hooks"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect, useState } from "react"
@@ -17,11 +16,11 @@ import { ScrollView } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import cities from "../../../../data/cityDataSortedByDisplayPreference.json"
 
+export type CityData = (typeof cities)[0]
 interface Props {
   selectedCity: string
+  onSelectCity: (city: CityData) => void
 }
-
-const cityList = cities.map((city) => city.name)
 
 const BORDER_RADIUS = 10
 
@@ -31,14 +30,9 @@ export const CityPicker: React.FC<Props> = (props) => {
   const space = useSpace()
   const insets = useSafeAreaInsets()
 
-  const selectCity = (city: string, index: number) => {
-    setSelectedCity(city)
-    LegacyNativeModules.ARNotificationsManager.postNotificationName(
-      "ARLocalDiscoveryUserSelectedCity",
-      {
-        cityIndex: index,
-      }
-    )
+  const selectCity = (city: (typeof cities)[0]) => {
+    setSelectedCity(city.name)
+    props.onSelectCity(city)
   }
 
   useEffect(() => {
@@ -77,9 +71,9 @@ export const CityPicker: React.FC<Props> = (props) => {
             </Text>
           </Box>
           <Join separator={<Separator />}>
-            {cityList.map((city, i) => (
+            {cities.map((city, i) => (
               <Box key={i}>
-                <Touchable onPress={() => selectCity(city, i)} haptic>
+                <Touchable onPress={() => selectCity(city)} haptic>
                   <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
                     <Text
                       selectable={false}
@@ -88,7 +82,7 @@ export const CityPicker: React.FC<Props> = (props) => {
                     >
                       {city}
                     </Text>
-                    {selectedCity === city && (
+                    {selectedCity === city.name && (
                       <Box mb={2} mt={2}>
                         <CircleWhiteCheckIcon width={26} height={26} />
                       </Box>
