@@ -19,7 +19,7 @@ export const SingleIndexEmptyResultsMessage: React.FC<SingleIndexEmptyResultsMes
       <Text variant="sm-display" textAlign="center">
         {`Sorry, we couldn${apostrophe}t find ${article} ${selectedPill.displayName} for ${quoteLeft}${query}.${quoteRight}`}
       </Text>
-      <Text variant="sm-display" color="black60" textAlign="center">
+      <Text variant="sm-display" color="mono60" textAlign="center">
         Please try searching again with a different spelling.
       </Text>
     </Box>

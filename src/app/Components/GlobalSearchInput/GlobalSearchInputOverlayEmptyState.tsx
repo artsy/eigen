@@ -5,7 +5,7 @@ export const GlobalSearchInputOverlayEmptyState = () => {
     <Flex>
       <Flex alignItems="center" mt={6} mb={1}>
         <MagnifyingGlassIcon
-          fill="black100"
+          fill="mono100"
           width={48}
           height={52}
           style={{
@@ -20,7 +20,7 @@ export const GlobalSearchInputOverlayEmptyState = () => {
       <Text selectable={false} variant="lg-display" textAlign="center">
         Find the art you love
       </Text>
-      <Text selectable={false} variant="sm" textAlign="center" mt={1} color="black60">
+      <Text selectable={false} variant="sm" textAlign="center" mt={1} color="mono60">
         Search for artists, artworks, galleries, and more. Save for later or add alerts.
       </Text>
     </Flex>

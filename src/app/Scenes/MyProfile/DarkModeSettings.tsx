@@ -1,38 +1,103 @@
-import { Flex, Text } from "@artsy/palette-mobile"
-import { PageWithSimpleHeader } from "app/Components/PageWithSimpleHeader"
-import { SwitchMenu } from "app/Components/SwitchMenu"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Flex, Join, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
+import { DarkModeOption } from "app/Scenes/MyProfile/DevicePrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
+import { ScrollView, TouchableOpacity } from "react-native"
+import { useTracking } from "react-tracking"
+import { MyProfileScreenWrapper } from "./Components/MyProfileScreenWrapper"
 
-export function DarkModeSettings() {
-  const syncWithSystem = GlobalStore.useAppState(
-    (state) => state.devicePrefs.usingSystemColorScheme
+export const DarkModeSettings: React.FC<{}> = () => {
+  const darkModeOption = GlobalStore.useAppState((state) => state.devicePrefs.darkModeOption)
+  const setDarkModeOption = GlobalStore.actions.devicePrefs.setDarkModeOption
+  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
+  const { trackEvent } = useTracking()
+
+  const trackDarkMode = (option: DarkModeOption) => {
+    trackEvent({
+      action: ActionType.darkModeOptionUpdated,
+      context_module: ContextModule.accountSettings,
+      context_screen_owner_type: OwnerType.accountDarkMode,
+      dark_mode_option: option,
+    })
+  }
+
+  const content = (
+    <Flex px={2}>
+      <Join separator={<Spacer y={2} />}>
+        <RadioMenuItem
+          title="Sync with system"
+          selected={darkModeOption === "system"}
+          onPress={() => {
+            setDarkModeOption("system")
+            trackDarkMode("system")
+          }}
+        />
+        <RadioMenuItem
+          title="On"
+          selected={darkModeOption === "on"}
+          onPress={() => {
+            setDarkModeOption("on")
+            trackDarkMode("on")
+          }}
+        />
+        <RadioMenuItem
+          title="Off"
+          selected={darkModeOption === "off"}
+          onPress={() => {
+            setDarkModeOption("off")
+            trackDarkMode("off")
+          }}
+        />
+      </Join>
+    </Flex>
   )
-  const forceMode = GlobalStore.useAppState((state) => state.devicePrefs.forcedColorScheme)
+
+  if (enableRedesignedSettings) {
+    return (
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({
+          context_screen_owner_type: OwnerType.accountDarkMode,
+        })}
+      >
+        <MyProfileScreenWrapper title="Dark Mode" contentContainerStyle={{ paddingHorizontal: 0 }}>
+          {content}
+        </MyProfileScreenWrapper>
+      </ProvideScreenTrackingWithCohesionSchema>
+    )
+  }
 
   return (
-    <PageWithSimpleHeader title="Dark Mode Settings">
-      <Text variant="lg-display" textAlign="center">
-        Choose your destiny
-      </Text>
-      <Flex mx={2} mt={2}>
-        <SwitchMenu
-          title="Sync with system"
-          description="Automatically turn dark mode on or off based on the system's dark mode setting."
-          value={syncWithSystem}
-          onChange={(value) => {
-            GlobalStore.actions.devicePrefs.setUsingSystemColorScheme(value)
-          }}
-        />
-        <SwitchMenu
-          title="Dark Mode always on"
-          description="Always use Dark Mode."
-          value={forceMode === "dark"}
-          disabled={syncWithSystem}
-          onChange={(value) => {
-            GlobalStore.actions.devicePrefs.setForcedColorScheme(value ? "dark" : "light")
-          }}
-        />
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.accountDarkMode,
+      })}
+    >
+      <ScrollView>
+        <Spacer y={2} />
+        {content}
+      </ScrollView>
+    </ProvideScreenTrackingWithCohesionSchema>
+  )
+}
+
+const RadioMenuItem: React.FC<{
+  title: string
+  selected: boolean
+  onPress: () => void
+}> = ({ title, selected, onPress }) => {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <Flex flexDirection="row" alignItems="center">
+        <Flex flex={1}>
+          <Text variant="sm-display">{title}</Text>
+        </Flex>
+        <Flex width={40} alignItems="flex-end">
+          <RadioButton selected={selected} onPress={onPress} />
+        </Flex>
       </Flex>
-    </PageWithSimpleHeader>
+    </TouchableOpacity>
   )
 }

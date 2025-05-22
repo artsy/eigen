@@ -1,11 +1,11 @@
-import { Text, Screen, Button, Spacer, Flex, CheckIcon } from "@artsy/palette-mobile"
+import { Button, CheckIcon, Flex, LinkText, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { IdentityVerificationStep_me$key } from "__generated__/IdentityVerificationStep_me.graphql"
 import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
 import { useCompleteMyProfileSteps } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { useHandleIDVerification } from "app/Scenes/MyProfile/useHandleVerification"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
 
@@ -32,13 +32,13 @@ export const IdentityVerificationStep: FC = () => {
       <Screen.Body pt={2} fullwidth>
         <Flex flex={1} justifyContent="space-between">
           <Flex flex={1} justifyContent="space-between" px={2}>
-            <Flex>
+            <Flex flexDirection="row" flexWrap="wrap">
               <Text variant="lg-display">Verify your ID</Text>
 
               <Spacer y={1} />
 
               <Flex gap={2}>
-                <Text color="black60">
+                <Text color="mono60">
                   Send an ID verification email and follow the link and instructions to verify your
                   account.
                 </Text>
@@ -46,27 +46,29 @@ export const IdentityVerificationStep: FC = () => {
                 {!isIdentityVerified ? (
                   <Button onPress={handleSendVerification}>Send verification Email</Button>
                 ) : (
-                  <Button icon={<CheckIcon fill="white100" />} variant="fillSuccess">
+                  <Button icon={<CheckIcon fill="mono0" />} variant="fillSuccess">
                     Email sent
                   </Button>
                 )}
 
-                <Text color="black60">
-                  Identify Verification is required for some transactions. For more details, see our
-                  <Text
-                    style={{ textDecorationLine: "underline" }}
-                    onPress={() => navigate(`https://www.artsy.net/identity-verification-faq`)}
-                    suppressHighlighting
-                  >
-                    {` FAQs`}
+                <Flex flexDirection="row" flexWrap="wrap">
+                  <Text color="mono60">
+                    Identify Verification is required for some transactions. For more details, see
+                    our{" "}
                   </Text>
-                  .
-                </Text>
+                  <RouterLink
+                    to="https://www.artsy.net/identity-verification-faq"
+                    hasChildTouchable
+                  >
+                    <LinkText color="mono60">FAQs</LinkText>
+                  </RouterLink>
+                  <Text color="mono60">.</Text>
+                </Flex>
               </Flex>
             </Flex>
 
             {!!isIdentityVerified && (
-              <Text color="white100" backgroundColor="green100" py={1} px={2}>
+              <Text color="mono0" backgroundColor="green100" py={1} px={2}>
                 ID verification email sent to {data?.email}.
               </Text>
             )}

@@ -3,14 +3,15 @@ import { Screen } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import { ArticleSorts, ArticlesQuery } from "__generated__/ArticlesQuery.graphql"
 import { Articles_articlesConnection$key } from "__generated__/Articles_articlesConnection.graphql"
+import { CardsWithMetaDataListPlaceholder as ArticlesPlaceholder } from "app/Components/Cards/CardWithMetaData"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import React, { Suspense, useState } from "react"
+import { Suspense, useState } from "react"
 import { useLazyLoadQuery, usePaginationFragment, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ArticlesList, ArticlesPlaceholder } from "./ArticlesList"
+import { ArticlesList } from "./ArticlesList"
 
 export const Articles: React.FC = () => {
   const queryData = useLazyLoadQuery<ArticlesQuery>(ArticlesScreenQuery, articlesQueryVariables, {
@@ -75,7 +76,7 @@ export const Articles: React.FC = () => {
 
 export const ArticlesScreen: React.FC = () => {
   return (
-    <Suspense fallback={<ArticlesPlaceholder />}>
+    <Suspense fallback={<ArticlesPlaceholder testID="articles-screen-placeholder" />}>
       <Articles />
     </Suspense>
   )

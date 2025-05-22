@@ -34,6 +34,7 @@ net.artsy.artsy.dev.pem
 ios/Artsy/App/Echo.json
 ios/Artsy/App/EchoNew.json
 **/.xcode.env.local
+ios/tmp.xcconfig
 
 # Fastlane
 Preview.html
@@ -103,6 +104,9 @@ native-hash.txt
 **/.env*
 !.env.example
 
+# Ignore key env files
+**/keys.shared.json
+
 # Android/IntelliJ
 .gradle
 .idea
@@ -157,3 +161,7 @@ tsconfig.tsbuildinfo
 #########################################################
 
 main.jsbundle.map
+# Expo
+.expo
+dist/
+web-build/

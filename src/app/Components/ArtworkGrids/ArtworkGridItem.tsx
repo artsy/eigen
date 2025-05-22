@@ -22,14 +22,12 @@ import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionT
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
-import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
+import { ContextMenuArtwork, trackLongPress } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { DurationProvider } from "app/Components/Countdown"
-import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
+import { Disappearable } from "app/Components/Disappearable"
 import { ProgressiveOnboardingSaveArtwork } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
-import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
-import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
 import { GlobalStore } from "app/store/GlobalStore"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBidding"
@@ -37,7 +35,6 @@ import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTracki
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { RandomNumberGenerator } from "app/utils/placeholders"
 import {
@@ -45,7 +42,7 @@ import {
   tracks as artworkActionTracks,
 } from "app/utils/track/ArtworkActions"
 import React, { useRef, useState } from "react"
-import { View, ViewProps } from "react-native"
+import { Platform, Text as RNText, View, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { LotProgressBar } from "./LotProgressBar"
@@ -66,7 +63,6 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   hideRegisterBySignal?: boolean
   hideSaleInfo?: boolean
   hideSaveIcon?: boolean
-  hideFollowIcon?: boolean
   /** Pass Tap to override generic ing, used for home tracking in rails */
   itemIndex?: number
   lotLabelTextStyle?: TextProps
@@ -83,8 +79,6 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   trackingFlow?: string
   /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
-  numColumns?: number
-  hideViewFollowsLink?: boolean
   hideCreateAlertOnArtworkPreview?: boolean
 }
 
@@ -106,7 +100,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
   hideRegisterBySignal = false,
   hideSaleInfo = false,
   hideSaveIcon = false,
-  hideFollowIcon = false,
   itemIndex,
   lotLabelTextStyle,
   onPress,
@@ -118,31 +111,17 @@ export const Artwork: React.FC<ArtworkProps> = ({
   titleTextStyle,
   trackTap,
   updateRecentSearchesOnTap = false,
-  numColumns = NUM_COLUMNS_MASONRY,
-  hideViewFollowsLink = false,
   hideCreateAlertOnArtworkPreview = false,
 }) => {
   const itemRef = useRef<any>()
+  const disappearableRef = useRef<Disappearable>(null)
+
   const color = useColor()
   const tracking = useTracking()
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
-  const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
-    "AREnableNewSaveAndFollowOnArtworkCard"
-  )
-  const {
-    enabled,
-    enableShowOldSaveCTA,
-    enableNewSaveCTA,
-    enableNewSaveAndFollowCTAs,
-    positionCTAs,
-  } = useGetNewSaveAndFollowOnArtworkCardExperimentVariant(
-    "onyx_artwork-card-save-and-follow-cta-redesign",
-    numColumns
-  )
-
-  const showOldSaveCTA =
-    !hideSaveIcon && (!enableNewSaveAndFollowOnArtworkCard || !enabled || !!enableShowOldSaveCTA)
+  const enableContextMenuIOS = useFeatureFlag("AREnableArtworkCardContextMenuIOS")
+  const isIOS = Platform.OS === "ios"
 
   let filterParams: any = undefined
 
@@ -232,7 +211,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     } else if (contextScreenOwnerType) {
       const genericTapEvent: TappedMainArtworkGrid = {
         action: ActionType.tappedMainArtworkGrid,
-        context_module: ContextModule.artworkGrid,
+        context_module: contextModule || ContextModule.artworkGrid,
         context_screen: contextScreen,
         context_screen_owner_type: contextScreenOwnerType,
         context_screen_owner_id: contextScreenOwnerId,
@@ -272,18 +251,18 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const displayLimitedTimeOfferSignal =
     collectorSignals?.partnerOffer?.isAvailable && !isAuction && !displayPriceOfferMessage
 
-  const handleSupress = async (item: DissapearableArtwork) => {
-    await item._disappearable?.disappear()
+  const handleSupress = () => {
+    disappearableRef.current?.disappear()
   }
 
   const displayArtworkSocialSignal =
     !isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals
 
   return (
-    <Disappearable ref={(ref) => ((artwork as any)._disappearable = ref)}>
+    <Disappearable ref={disappearableRef}>
       <ContextMenuArtwork
-        onSupressArtwork={() => handleSupress(artwork as any)}
-        contextModule={contextModule}
+        onSupressArtwork={handleSupress}
+        contextModule={contextModule ?? ContextModule.artworkGrid}
         contextScreenOwnerType={contextScreenOwnerType}
         onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
         artwork={artwork}
@@ -291,11 +270,21 @@ export const Artwork: React.FC<ArtworkProps> = ({
       >
         <RouterLink
           haptic
-          underlayColor={color("white100")}
-          activeOpacity={0.8}
+          underlayColor={color("mono0")}
           onPress={handleTap}
           // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
-          onLongPress={() => {}}
+          onLongPress={() => {
+            // Adroid long press is tracked inside of the ContextMenuArtwork component
+            if (contextScreenOwnerType && isIOS && enableContextMenuIOS) {
+              tracking.trackEvent(
+                trackLongPress.longPressedArtwork(
+                  ContextModule.artworkGrid,
+                  contextScreenOwnerType,
+                  artwork.slug
+                )
+              )
+            }
+          }}
           delayLongPress={400}
           navigationProps={navigationProps}
           to={artwork.href}
@@ -330,15 +319,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
             )}
 
             <Flex
-              flexDirection={positionCTAs}
+              flexDirection="row"
               justifyContent="space-between"
               mt={1}
               style={artworkMetaStyle}
             >
-              <Flex
-                flexGrow={positionCTAs === "column" ? 1 : undefined}
-                flex={positionCTAs === "row" ? 1 : undefined}
-              >
+              <Flex flex={1}>
                 {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
                   <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
                     Lot {artwork.saleArtwork.lotLabel}
@@ -356,25 +342,26 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   </Text>
                 )}
                 {!!artwork.title && (
-                  <Text
-                    lineHeight="18px"
-                    variant="xs"
-                    weight="regular"
-                    color="black60"
-                    numberOfLines={1}
-                    {...titleTextStyle}
-                  >
-                    <Text lineHeight="18px" variant="xs" weight="regular">
-                      {artwork.title}
+                  <RNText numberOfLines={1}>
+                    <Text
+                      lineHeight="18px"
+                      variant="xs"
+                      weight="regular"
+                      color="mono60"
+                      {...titleTextStyle}
+                    >
+                      <Text lineHeight="18px" variant="xs" weight="regular">
+                        {artwork.title}
+                      </Text>
+                      {artwork.date ? `, ${artwork.date}` : ""}
                     </Text>
-                    {artwork.date ? `, ${artwork.date}` : ""}
-                  </Text>
+                  </RNText>
                 )}
                 {!hidePartner && !!artwork.partner?.name && (
                   <Text
                     variant="xs"
                     lineHeight="18px"
-                    color="black60"
+                    color="mono60"
                     numberOfLines={1}
                     {...partnerNameTextStyle}
                   >
@@ -386,7 +373,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     <Text lineHeight="20px" variant="xs" numberOfLines={1} fontWeight="bold">
                       {priceOfferMessage.priceWithDiscountMessage}
                     </Text>
-                    <Text color="black60" variant="xs">
+                    <Text color="mono60" variant="xs">
                       {" "}
                       (List price: {priceOfferMessage.priceListedMessage})
                     </Text>
@@ -423,7 +410,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 )}
               </Flex>
 
-              {!!showOldSaveCTA && (
+              {!hideSaveIcon && (
                 <Flex flexDirection="row" alignItems="flex-start">
                   {!!isAuction && !!collectorSignals?.auction?.lotWatcherCount && (
                     <Text lineHeight="18px" variant="xs" numberOfLines={1}>
@@ -439,23 +426,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
                   </Touchable>
                 </Flex>
               )}
-
-              {!!enableNewSaveAndFollowOnArtworkCard &&
-                !!(enableNewSaveCTA || enableNewSaveAndFollowCTAs) && (
-                  <Spacer y={positionCTAs === "column" ? 0.5 : 0} />
-                )}
-
-              <ArtworkItemCTAs
-                artwork={artwork}
-                showSaveIcon={!hideSaveIcon}
-                showFollowIcon={!hideFollowIcon}
-                hideViewFollowsLink={hideViewFollowsLink}
-                contextModule={contextModule}
-                contextScreen={contextScreen}
-                contextScreenOwnerId={contextScreenOwnerId}
-                contextScreenOwnerSlug={contextScreenOwnerSlug}
-                contextScreenOwnerType={contextScreenOwnerType}
-              />
             </Flex>
           </View>
         </RouterLink>
@@ -497,7 +467,6 @@ export default createFragmentContainer(Artwork, {
       includeAllImages: { type: "Boolean", defaultValue: false }
       width: { type: "Int" }
     ) {
-      ...ArtworkItemCTAs_artwork
       ...CreateArtworkAlertModal_artwork
       ...ContextMenuArtwork_artwork @arguments(width: $width)
       availability

@@ -1,4 +1,14 @@
-import { Checkbox, Flex, InfoCircleIcon, Join, Message, Spacer, Text } from "@artsy/palette-mobile"
+import {
+  Checkbox,
+  Flex,
+  InfoCircleIcon,
+  Join,
+  Message,
+  Spacer,
+  Text,
+  useSpace,
+} from "@artsy/palette-mobile"
+import { BOTTOM_TABS_HEIGHT } from "@artsy/palette-mobile/dist/elements/Screen/StickySubHeader"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { MyCollectionBottomSheetModalArtistPreviewQuery } from "__generated__/MyCollectionBottomSheetModalArtistPreviewQuery.graphql"
@@ -11,9 +21,11 @@ import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectio
 import { deleteUserInterest } from "app/Scenes/MyCollection/mutations/deleteUserInterest"
 import { updateUserInterest } from "app/Scenes/MyCollection/mutations/updateUserInterest"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useState } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { QueryRenderer, createFragmentContainer, graphql } from "react-relay"
 import useDebounce from "react-use/lib/useDebounce"
 
@@ -35,6 +47,11 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
 
   const toast = useToast()
+  const { bottom } = useSafeAreaInsets()
+
+  const space = useSpace()
+
+  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
 
   useDebounce(
     () => {
@@ -75,7 +92,11 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   }
 
   return (
-    <BottomSheetView>
+    <BottomSheetView
+      style={{
+        paddingBottom: enableRedesignedSettings ? bottom + BOTTOM_TABS_HEIGHT + space(2) : 0,
+      }}
+    >
       <Flex px={2} pt={2}>
         <Join separator={<Spacer y={2} />}>
           <ArtistListItemContainer
@@ -97,7 +118,7 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
             >
               <>
                 <Text variant="xs">Share this artist with galleries during inquiries.</Text>
-                <Text variant="xs" color="black60">
+                <Text variant="xs" color="mono60">
                   Galleries are more likely to respond if they can see the artists you collect.
                 </Text>
               </>
@@ -134,7 +155,7 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
               <Message
                 variant="default"
                 title="To remove this artist, please remove their artworks from My Collection first."
-                IconComponent={() => <InfoCircleIcon width={18} height={18} fill="black100" />}
+                IconComponent={() => <InfoCircleIcon width={18} height={18} fill="mono100" />}
               />
             </>
           )}
@@ -188,7 +209,6 @@ export const MyCollectionBottomSheetModalArtistPreviewQueryRenderer: React.FC<{
           }
         }
       `}
-      cacheConfig={{ force: true }}
       variables={{
         artistID,
         interestId,

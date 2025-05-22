@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		161D209B2CC7D49800856E71 /* ARTCityGuideManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 161D209A2CC7D49800856E71 /* ARTCityGuideManager.m */; };
 		1A4B97BC283CDD5A00878EAE /* ARCocoaConstantsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */; };
-		1A4B97BD283CDD5A00878EAE /* AREventsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9793283CDD5900878EAE /* AREventsModule.m */; };
 		1A4B97BE283CDD5A00878EAE /* ARScrollViewHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.m */; };
 		1A4B97BF283CDD5A00878EAE /* RCTScrollView+Artsy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9796283CDD5900878EAE /* RCTScrollView+Artsy.m */; };
 		1A4B97C0283CDD5A00878EAE /* AREmission.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4B9798283CDD5900878EAE /* AREmission.m */; };
@@ -34,17 +33,12 @@
 		1A4E5123283F91BA0008EF35 /* UIFont+ArtsyFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5114283F91B90008EF35 /* UIFont+ArtsyFonts.m */; };
 		1A4E5124283F91BA0008EF35 /* ARButtonSubclasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A4E5116283F91BA0008EF35 /* ARButtonSubclasses.m */; };
 		1A550F0E282AE4D300126D22 /* ARAuctionWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */; };
-		1AE9F2642902DA87002A561B /* App.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F25C2902DA87002A561B /* App.xcconfig */; };
-		1AE9F2652902DA87002A561B /* App-Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F25D2902DA87002A561B /* App-Debug.xcconfig */; };
-		1AE9F2662902DA87002A561B /* WidgetExt.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F25E2902DA87002A561B /* WidgetExt.xcconfig */; };
-		1AE9F2672902DA87002A561B /* BrazeExt.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F25F2902DA87002A561B /* BrazeExt.xcconfig */; };
-		1AE9F2682902DA87002A561B /* Tests-Debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F2602902DA87002A561B /* Tests-Debug.xcconfig */; };
-		1AE9F2692902DA87002A561B /* Shared.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F2612902DA87002A561B /* Shared.xcconfig */; };
-		1AE9F26A2902DA87002A561B /* App-Store.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F2622902DA87002A561B /* App-Store.xcconfig */; };
-		1AE9F26B2902DA87002A561B /* Tests-Store.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 1AE9F2632902DA87002A561B /* Tests-Store.xcconfig */; };
+		21D8C8C1B81EE62FB631812C /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2351227D6671F3227F07250E /* ExpoModulesProvider.swift */; };
+		23C39D44BA79846C3803A74E /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D4E35184C4A1196A06A1A7 /* ExpoModulesProvider.swift */; };
+		41C4F9EA2F4426F255F9C051 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FF9A08D850B10E68492E49 /* libPods-Artsy.a */; };
+		5E14D748482D1C91EDFD78D5 /* Pods_ArtsyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E85EAB2C3E6196CF3F118F7 /* Pods_ArtsyTests.framework */; };
 		7448C2EC42E1DD4A032A6C70 /* Pods_ArtsyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C1B6860831AE690075CFD4C /* Pods_ArtsyTests.framework */; };
-		8E4207792A055D2D006888BD /* ARAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8E4207782A055D2D006888BD /* ARAppDelegate.mm */; };
-		C0AD8A5C831EECD4FC46E80E /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C35034239854793E0E5C1F6A /* libPods-Artsy.a */; };
+		8E4207792A055D2D006888BD /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8E4207782A055D2D006888BD /* AppDelegate.mm */; };
 		CB0D52052AF56984000E6C08 /* LiveAuctionTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0D52042AF56984000E6C08 /* LiveAuctionTestUtils.swift */; };
 		CB18282829CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB18282729CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift */; };
 		CB18282B29D35F29006A0805 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB18282A29D35F29006A0805 /* GoogleService-Info.plist */; };
@@ -66,15 +60,6 @@
 		CB43268C27E8FA6B00B29DD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB43268B27E8FA6B00B29DD6 /* Assets.xcassets */; };
 		CB43269227E8FA6B00B29DD6 /* ArtsyWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB43268227E8FA6900B29DD6 /* ArtsyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CB4326EF27E8FBEF00B29DD6 /* ArtsyWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326B927E8FAD900B29DD6 /* ArtsyWidgets.swift */; };
-		CB4326F027E8FC0200B29DD6 /* FeaturedArtworks+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326A327E8FAD900B29DD6 /* FeaturedArtworks+View.swift */; };
-		CB4326F127E8FC0200B29DD6 /* FeaturedArtworks+Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326A227E8FAD900B29DD6 /* FeaturedArtworks+Provider.swift */; };
-		CB4326F227E8FC0200B29DD6 /* FeaturedArtworks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326A427E8FAD900B29DD6 /* FeaturedArtworks.swift */; };
-		CB4326F327E8FC0200B29DD6 /* FeaturedArtworks+Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326A127E8FAD900B29DD6 /* FeaturedArtworks+Widget.swift */; };
-		CB4326F427E8FC0200B29DD6 /* FeaturedArtworks+Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43269E27E8FAD900B29DD6 /* FeaturedArtworks+Entry.swift */; };
-		CB4326F527E8FC0200B29DD6 /* FeaturedArtworks+SmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43269F27E8FAD900B29DD6 /* FeaturedArtworks+SmallView.swift */; };
-		CB4326F627E8FC0200B29DD6 /* FeaturedArtworks+Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326A027E8FAD900B29DD6 /* FeaturedArtworks+Timeline.swift */; };
-		CB4326F727E8FC0200B29DD6 /* FeaturedArtworks+LargeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326A527E8FAD900B29DD6 /* FeaturedArtworks+LargeView.swift */; };
-		CB4326F827E8FC0200B29DD6 /* FeaturedArtworks+MediumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326A627E8FAD900B29DD6 /* FeaturedArtworks+MediumView.swift */; };
 		CB4326F927E8FC0600B29DD6 /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326AE27E8FAD900B29DD6 /* Fixtures.swift */; };
 		CB4326FA27E8FC0D00B29DD6 /* FullBleed+Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43269727E8FAD900B29DD6 /* FullBleed+Entry.swift */; };
 		CB4326FB27E8FC0D00B29DD6 /* FullBleed+Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43269C27E8FAD900B29DD6 /* FullBleed+Widget.swift */; };
@@ -82,13 +67,10 @@
 		CB4326FD27E8FC0D00B29DD6 /* FullBleed+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43269B27E8FAD900B29DD6 /* FullBleed+View.swift */; };
 		CB4326FE27E8FC0D00B29DD6 /* FullBleed+Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43269927E8FAD900B29DD6 /* FullBleed+Timeline.swift */; };
 		CB4326FF27E8FC0D00B29DD6 /* FullBleed+Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43269827E8FAD900B29DD6 /* FullBleed+Provider.swift */; };
-		CB43270027E8FC1600B29DD6 /* LatestArticles+MediumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326B327E8FAD900B29DD6 /* LatestArticles+MediumView.swift */; };
 		CB43270127E8FC1600B29DD6 /* LatestArticles+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326B027E8FAD900B29DD6 /* LatestArticles+View.swift */; };
 		CB43270227E8FC1600B29DD6 /* LatestArticles+Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326B427E8FAD900B29DD6 /* LatestArticles+Timeline.swift */; };
-		CB43270327E8FC1600B29DD6 /* LatestArticles+SmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326B727E8FAD900B29DD6 /* LatestArticles+SmallView.swift */; };
 		CB43270427E8FC1600B29DD6 /* LatestArticles.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326B827E8FAD900B29DD6 /* LatestArticles.swift */; };
 		CB43270527E8FC1600B29DD6 /* LatestArticles+Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326B127E8FAD900B29DD6 /* LatestArticles+Entry.swift */; };
-		CB43270627E8FC1600B29DD6 /* LatestArticles+LargeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326B527E8FAD900B29DD6 /* LatestArticles+LargeView.swift */; };
 		CB43270727E8FC1600B29DD6 /* LatestArticles+Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326B627E8FAD900B29DD6 /* LatestArticles+Provider.swift */; };
 		CB43270827E8FC1600B29DD6 /* LatestArticles+Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326B227E8FAD900B29DD6 /* LatestArticles+Widget.swift */; };
 		CB43270927E8FC1F00B29DD6 /* ArticleParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4326C427E8FAD900B29DD6 /* ArticleParser.swift */; };
@@ -145,8 +127,8 @@
 		CB43288F27E8FEE500B29DD6 /* ORStackViewArtsyCategoriesTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43275A27E8FEE300B29DD6 /* ORStackViewArtsyCategoriesTests.m */; };
 		CB43289027E8FEE500B29DD6 /* ARTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43275B27E8FEE300B29DD6 /* ARTextViewTests.m */; };
 		CB43289127E8FEE500B29DD6 /* ARCustomEigenLabelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43275C27E8FEE300B29DD6 /* ARCustomEigenLabelTests.m */; };
-		CB43289427E8FEE500B29DD6 /* ARAppActivityContinuationDelegateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276027E8FEE300B29DD6 /* ARAppActivityContinuationDelegateTests.m */; };
-		CB43289527E8FEE500B29DD6 /* ARAppNotificationsDelegateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276127E8FEE300B29DD6 /* ARAppNotificationsDelegateTests.m */; };
+		CB43289427E8FEE500B29DD6 /* AppDelegate+ContinuationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276027E8FEE300B29DD6 /* AppDelegate+ContinuationTests.m */; };
+		CB43289527E8FEE500B29DD6 /* AppDelegate+NotificationsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276127E8FEE300B29DD6 /* AppDelegate+NotificationsTests.m */; };
 		CB43289627E8FEE500B29DD6 /* ARWebViewCacheHostSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276227E8FEE300B29DD6 /* ARWebViewCacheHostSpec.m */; };
 		CB43289827E8FEE500B29DD6 /* ProfileTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276527E8FEE400B29DD6 /* ProfileTests.m */; };
 		CB43289927E8FEE500B29DD6 /* SaleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CB43276627E8FEE400B29DD6 /* SaleTests.m */; };
@@ -235,11 +217,10 @@
 		CB762B3C2911A5E100881194 /* ARVIRModalClose@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B342911A5E100881194 /* ARVIRModalClose@2x.png */; };
 		CB762B3D2911A5E100881194 /* ARVIRShadow.png in Resources */ = {isa = PBXBuildFile; fileRef = CB762B352911A5E100881194 /* ARVIRShadow.png */; };
 		CB762B3E2911A5E100881194 /* ar_vir_opening_frame.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */; };
-		CBA500F32C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA500F22C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.m */; };
+		CBA500F32C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA500F22C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.m */; };
 		CBA500F62C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA500F52C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.m */; };
 		CBD794D72BBB5622003B3CB5 /* StarscreamExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD794D62BBB5622003B3CB5 /* StarscreamExtensions.swift */; };
 		CBD794DB2BBC40A4003B3CB5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = CBD794DA2BBC40A4003B3CB5 /* PrivacyInfo.xcprivacy */; };
-		CBE0D12E2C20C8D800DFF17E /* libBrazeUI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CBE0D12D2C20C8D800DFF17E /* libBrazeUI.a */; };
 		CBE2946229E4C19000AA77DD /* VirtualArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE2946129E4C19000AA77DD /* VirtualArtwork.swift */; };
 		CBE3266F27E275A300395A93 /* ARAppConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3245D27E275A100395A93 /* ARAppConstants.m */; };
 		CBE3267027E275A300395A93 /* ARDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3245E27E275A100395A93 /* ARDefaults.m */; };
@@ -265,17 +246,17 @@
 		CBE3268727E275A300395A93 /* ORStackView+ArtsyViews.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248927E275A100395A93 /* ORStackView+ArtsyViews.m */; };
 		CBE3268827E275A300395A93 /* Interstellar+Artsy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248A27E275A100395A93 /* Interstellar+Artsy.swift */; };
 		CBE3268927E275A300395A93 /* AFHTTPRequestOperation+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3248C27E275A100395A93 /* AFHTTPRequestOperation+JSON.m */; };
-		CBE3269127E275A300395A93 /* ARAppActivityContinuationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249727E275A100395A93 /* ARAppActivityContinuationDelegate.m */; };
-		CBE3269227E275A300395A93 /* ARAppNotificationsDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249827E275A100395A93 /* ARAppNotificationsDelegate.m */; };
+		CBE3269127E275A300395A93 /* AppDelegate+ActivityContinuation.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249727E275A100395A93 /* AppDelegate+ActivityContinuation.m */; };
+		CBE3269227E275A300395A93 /* AppDelegate+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249827E275A100395A93 /* AppDelegate+Notifications.m */; };
 		CBE3269327E275A300395A93 /* ARAppStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249A27E275A100395A93 /* ARAppStatus.m */; };
 		CBE3269427E275A300395A93 /* ARAnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */; };
 		CBE3269627E275A300395A93 /* ArtsyEcho.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249F27E275A100395A93 /* ArtsyEcho.m */; };
-		CBE3269727E275A300395A93 /* ARApplicationShortcutItemDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A127E275A100395A93 /* ARApplicationShortcutItemDelegate.m */; };
+		CBE3269727E275A300395A93 /* AppDelegate+ShortcutItems.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A127E275A100395A93 /* AppDelegate+ShortcutItems.m */; };
 		CBE3269927E275A300395A93 /* SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A327E275A100395A93 /* SwiftExtensions.swift */; };
 		CBE3269A27E275A300395A93 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A927E275A100395A93 /* main.m */; };
-		CBE3269B27E275A300395A93 /* ARAppDelegate+Echo.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324AC27E275A100395A93 /* ARAppDelegate+Echo.m */; };
+		CBE3269B27E275A300395A93 /* AppDelegate+Echo.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324AC27E275A100395A93 /* AppDelegate+Echo.m */; };
 		CBE3269C27E275A300395A93 /* ARTArtsyNativeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324AE27E275A100395A93 /* ARTArtsyNativeModule.m */; };
-		CBE3269D27E275A300395A93 /* ARAppDelegate+Emission.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324B027E275A100395A93 /* ARAppDelegate+Emission.m */; };
+		CBE3269D27E275A300395A93 /* AppDelegate+Emission.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324B027E275A100395A93 /* AppDelegate+Emission.m */; };
 		CBE3269E27E275A300395A93 /* AROptions.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324B227E275A100395A93 /* AROptions.m */; };
 		CBE3269F27E275A300395A93 /* EchoNew.json in Resources */ = {isa = PBXBuildFile; fileRef = CBE324B527E275A100395A93 /* EchoNew.json */; };
 		CBE326A027E275A300395A93 /* ARUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324B627E275A100395A93 /* ARUserActivity.m */; };
@@ -505,7 +486,6 @@
 		CBE327A027E275A400395A93 /* Bidder.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266527E275A300395A93 /* Bidder.m */; };
 		CBE327A127E275A400395A93 /* BidderPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266627E275A300395A93 /* BidderPosition.m */; };
 		CBE327A227E275A400395A93 /* SystemTime.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3266927E275A300395A93 /* SystemTime.m */; };
-		E15070752CCFE89B00615118 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		E15070762CCFE8A900615118 /* ARTLiveAuctionViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259A27E275A200395A93 /* ARTLiveAuctionViewManager.m */; };
 		E15070772CCFE8C400615118 /* LiveAuctionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE3259B27E275A200395A93 /* LiveAuctionView.swift */; };
 		E1856EA22C98923B00849C0E /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E1856EA12C98923B00849C0E /* BootSplash.storyboard */; };
@@ -559,16 +539,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0E85EAB2C3E6196CF3F118F7 /* Pods_ArtsyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ArtsyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* Artsy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Artsy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		161D209A2CC7D49800856E71 /* ARTCityGuideManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTCityGuideManager.m; sourceTree = "<group>"; };
 		1973F4CD291679B41728F08A /* Pods-ArtsyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.debug.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCocoaConstantsModule.m; sourceTree = "<group>"; };
 		1A4B9792283CDD5900878EAE /* AREmission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREmission.h; sourceTree = "<group>"; };
-		1A4B9793283CDD5900878EAE /* AREventsModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREventsModule.m; sourceTree = "<group>"; };
 		1A4B9794283CDD5900878EAE /* RCTScrollView+Artsy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTScrollView+Artsy.h"; sourceTree = "<group>"; };
 		1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARScrollViewHelpers.m; sourceTree = "<group>"; };
 		1A4B9796283CDD5900878EAE /* RCTScrollView+Artsy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTScrollView+Artsy.m"; sourceTree = "<group>"; };
-		1A4B9797283CDD5900878EAE /* AREventsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AREventsModule.h; sourceTree = "<group>"; };
 		1A4B9798283CDD5900878EAE /* AREmission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AREmission.m; sourceTree = "<group>"; };
 		1A4B9799283CDD5900878EAE /* ARCocoaConstantsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCocoaConstantsModule.h; sourceTree = "<group>"; };
 		1A4B979A283CDD5900878EAE /* ARScrollViewHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARScrollViewHelpers.h; sourceTree = "<group>"; };
@@ -614,20 +593,16 @@
 		1A4E5117283F91BA0008EF35 /* ARButtonSubclasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARButtonSubclasses.h; sourceTree = "<group>"; };
 		1A550F0C282AE4D200126D22 /* ARAuctionWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAuctionWebViewController.h; sourceTree = "<group>"; };
 		1A550F0D282AE4D200126D22 /* ARAuctionWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionWebViewController.m; sourceTree = "<group>"; };
-		1AE9F25C2902DA87002A561B /* App.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = App.xcconfig; sourceTree = "<group>"; };
-		1AE9F25D2902DA87002A561B /* App-Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "App-Debug.xcconfig"; sourceTree = "<group>"; };
-		1AE9F25E2902DA87002A561B /* WidgetExt.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = WidgetExt.xcconfig; sourceTree = "<group>"; };
-		1AE9F25F2902DA87002A561B /* BrazeExt.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = BrazeExt.xcconfig; sourceTree = "<group>"; };
-		1AE9F2602902DA87002A561B /* Tests-Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "Tests-Debug.xcconfig"; sourceTree = "<group>"; };
-		1AE9F2612902DA87002A561B /* Shared.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
-		1AE9F2622902DA87002A561B /* App-Store.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "App-Store.xcconfig"; sourceTree = "<group>"; };
-		1AE9F2632902DA87002A561B /* Tests-Store.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "Tests-Store.xcconfig"; sourceTree = "<group>"; };
+		2351227D6671F3227F07250E /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-ArtsyTests/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		331E1048CEBC170BAC51E1AF /* Pods-ArtsyTests.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.qa.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.qa.xcconfig"; sourceTree = "<group>"; };
 		36B80F603A77F1EFD957AB24 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 		4C1B6860831AE690075CFD4C /* Pods_ArtsyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ArtsyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8E4207782A055D2D006888BD /* ARAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ARAppDelegate.mm; sourceTree = "<group>"; };
+		8329A607F98AD2DF9F290C93 /* Pods-Artsy.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.qa.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.qa.xcconfig"; sourceTree = "<group>"; };
+		8E4207782A055D2D006888BD /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		A13D613770ABA09F958CEC44 /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
+		A7FF9A08D850B10E68492E49 /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6786672018842FE1C6B598E /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
-		C35034239854793E0E5C1F6A /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6D4E35184C4A1196A06A1A7 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Artsy/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		CB0D52042AF56984000E6C08 /* LiveAuctionTestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAuctionTestUtils.swift; sourceTree = "<group>"; };
 		CB18282729CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARAugmentedWallBasedVIRViewController.swift; sourceTree = "<group>"; };
 		CB18282A29D35F29006A0805 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "Artsy/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -657,15 +632,6 @@
 		CB43269A27E8FAD900B29DD6 /* FullBleed.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullBleed.swift; sourceTree = "<group>"; };
 		CB43269B27E8FAD900B29DD6 /* FullBleed+View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FullBleed+View.swift"; sourceTree = "<group>"; };
 		CB43269C27E8FAD900B29DD6 /* FullBleed+Widget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FullBleed+Widget.swift"; sourceTree = "<group>"; };
-		CB43269E27E8FAD900B29DD6 /* FeaturedArtworks+Entry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FeaturedArtworks+Entry.swift"; sourceTree = "<group>"; };
-		CB43269F27E8FAD900B29DD6 /* FeaturedArtworks+SmallView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FeaturedArtworks+SmallView.swift"; sourceTree = "<group>"; };
-		CB4326A027E8FAD900B29DD6 /* FeaturedArtworks+Timeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FeaturedArtworks+Timeline.swift"; sourceTree = "<group>"; };
-		CB4326A127E8FAD900B29DD6 /* FeaturedArtworks+Widget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FeaturedArtworks+Widget.swift"; sourceTree = "<group>"; };
-		CB4326A227E8FAD900B29DD6 /* FeaturedArtworks+Provider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FeaturedArtworks+Provider.swift"; sourceTree = "<group>"; };
-		CB4326A327E8FAD900B29DD6 /* FeaturedArtworks+View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FeaturedArtworks+View.swift"; sourceTree = "<group>"; };
-		CB4326A427E8FAD900B29DD6 /* FeaturedArtworks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeaturedArtworks.swift; sourceTree = "<group>"; };
-		CB4326A527E8FAD900B29DD6 /* FeaturedArtworks+LargeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FeaturedArtworks+LargeView.swift"; sourceTree = "<group>"; };
-		CB4326A627E8FAD900B29DD6 /* FeaturedArtworks+MediumView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FeaturedArtworks+MediumView.swift"; sourceTree = "<group>"; };
 		CB4326A827E8FAD900B29DD6 /* PrimaryText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrimaryText.swift; sourceTree = "<group>"; };
 		CB4326A927E8FAD900B29DD6 /* ImageUrl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageUrl.swift; sourceTree = "<group>"; };
 		CB4326AA27E8FAD900B29DD6 /* Schedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
@@ -676,11 +642,8 @@
 		CB4326B027E8FAD900B29DD6 /* LatestArticles+View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LatestArticles+View.swift"; sourceTree = "<group>"; };
 		CB4326B127E8FAD900B29DD6 /* LatestArticles+Entry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LatestArticles+Entry.swift"; sourceTree = "<group>"; };
 		CB4326B227E8FAD900B29DD6 /* LatestArticles+Widget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LatestArticles+Widget.swift"; sourceTree = "<group>"; };
-		CB4326B327E8FAD900B29DD6 /* LatestArticles+MediumView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LatestArticles+MediumView.swift"; sourceTree = "<group>"; };
 		CB4326B427E8FAD900B29DD6 /* LatestArticles+Timeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LatestArticles+Timeline.swift"; sourceTree = "<group>"; };
-		CB4326B527E8FAD900B29DD6 /* LatestArticles+LargeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LatestArticles+LargeView.swift"; sourceTree = "<group>"; };
 		CB4326B627E8FAD900B29DD6 /* LatestArticles+Provider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LatestArticles+Provider.swift"; sourceTree = "<group>"; };
-		CB4326B727E8FAD900B29DD6 /* LatestArticles+SmallView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LatestArticles+SmallView.swift"; sourceTree = "<group>"; };
 		CB4326B827E8FAD900B29DD6 /* LatestArticles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LatestArticles.swift; sourceTree = "<group>"; };
 		CB4326B927E8FAD900B29DD6 /* ArtsyWidgets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtsyWidgets.swift; sourceTree = "<group>"; };
 		CB4326BB27E8FAD900B29DD6 /* ArticleStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArticleStore.swift; sourceTree = "<group>"; };
@@ -734,8 +697,8 @@
 		CB43275A27E8FEE300B29DD6 /* ORStackViewArtsyCategoriesTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ORStackViewArtsyCategoriesTests.m; sourceTree = "<group>"; };
 		CB43275B27E8FEE300B29DD6 /* ARTextViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTextViewTests.m; sourceTree = "<group>"; };
 		CB43275C27E8FEE300B29DD6 /* ARCustomEigenLabelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCustomEigenLabelTests.m; sourceTree = "<group>"; };
-		CB43276027E8FEE300B29DD6 /* ARAppActivityContinuationDelegateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppActivityContinuationDelegateTests.m; sourceTree = "<group>"; };
-		CB43276127E8FEE300B29DD6 /* ARAppNotificationsDelegateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppNotificationsDelegateTests.m; sourceTree = "<group>"; };
+		CB43276027E8FEE300B29DD6 /* AppDelegate+ContinuationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+ContinuationTests.m"; sourceTree = "<group>"; };
+		CB43276127E8FEE300B29DD6 /* AppDelegate+NotificationsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+NotificationsTests.m"; sourceTree = "<group>"; };
 		CB43276227E8FEE300B29DD6 /* ARWebViewCacheHostSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARWebViewCacheHostSpec.m; sourceTree = "<group>"; };
 		CB43276527E8FEE400B29DD6 /* ProfileTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileTests.m; sourceTree = "<group>"; };
 		CB43276627E8FEE400B29DD6 /* SaleTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaleTests.m; sourceTree = "<group>"; };
@@ -944,6 +907,8 @@
 		CB43299527FDFE5C00B29DD6 /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
 		CB43299727FDFE6400B29DD6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		CB43299927FDFE6B00B29DD6 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		CB51280F2DB82CFD00C6A884 /* Expo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
+		CB5275182DBA7043001AC28E /* ExpoQA.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ExpoQA.plist; sourceTree = "<group>"; };
 		CB762B29291054D500881194 /* LiveAuctionReportProblemButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAuctionReportProblemButton.swift; sourceTree = "<group>"; };
 		CB762B2B29119F0700881194 /* ARSentryReporter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARSentryReporter.h; sourceTree = "<group>"; };
 		CB762B2C29119F0700881194 /* ARSentryReporter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARSentryReporter.m; sourceTree = "<group>"; };
@@ -955,8 +920,8 @@
 		CB762B342911A5E100881194 /* ARVIRModalClose@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ARVIRModalClose@2x.png"; sourceTree = "<group>"; };
 		CB762B352911A5E100881194 /* ARVIRShadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ARVIRShadow.png; sourceTree = "<group>"; };
 		CB762B362911A5E100881194 /* ar_vir_opening_frame.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ar_vir_opening_frame.jpg; sourceTree = "<group>"; };
-		CBA500F12C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+DeeplinkTimeout.h"; sourceTree = "<group>"; };
-		CBA500F22C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+DeeplinkTimeout.m"; sourceTree = "<group>"; };
+		CBA500F12C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+DeeplinkTimeout.h"; sourceTree = "<group>"; };
+		CBA500F22C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+DeeplinkTimeout.m"; sourceTree = "<group>"; };
 		CBA500F42C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTDeeplinkTimeoutModule.h; sourceTree = "<group>"; };
 		CBA500F52C6553FF00DDBCC0 /* ARTDeeplinkTimeoutModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTDeeplinkTimeoutModule.m; sourceTree = "<group>"; };
 		CBA7CF22282BF6310025AEA5 /* Artsy_Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Artsy_Tests-Info.plist"; sourceTree = "<group>"; };
@@ -1006,34 +971,34 @@
 		CBE3248A27E275A100395A93 /* Interstellar+Artsy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Interstellar+Artsy.swift"; sourceTree = "<group>"; };
 		CBE3248C27E275A100395A93 /* AFHTTPRequestOperation+JSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFHTTPRequestOperation+JSON.m"; sourceTree = "<group>"; };
 		CBE3248D27E275A100395A93 /* AFHTTPRequestOperation+JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFHTTPRequestOperation+JSON.h"; sourceTree = "<group>"; };
-		CBE3249727E275A100395A93 /* ARAppActivityContinuationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppActivityContinuationDelegate.m; sourceTree = "<group>"; };
-		CBE3249827E275A100395A93 /* ARAppNotificationsDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppNotificationsDelegate.m; sourceTree = "<group>"; };
+		CBE3249727E275A100395A93 /* AppDelegate+ActivityContinuation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+ActivityContinuation.m"; sourceTree = "<group>"; };
+		CBE3249827E275A100395A93 /* AppDelegate+Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Notifications.m"; sourceTree = "<group>"; };
 		CBE3249927E275A100395A93 /* ARTArtsyNativeModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARTArtsyNativeModule.h; sourceTree = "<group>"; };
 		CBE3249A27E275A100395A93 /* ARAppStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppStatus.m; sourceTree = "<group>"; };
 		CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAnalyticsConstants.m; sourceTree = "<group>"; };
-		CBE3249C27E275A100395A93 /* ARAppDelegate+Echo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Echo.h"; sourceTree = "<group>"; };
+		CBE3249C27E275A100395A93 /* AppDelegate+Echo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Echo.h"; sourceTree = "<group>"; };
 		CBE3249E27E275A100395A93 /* AROptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AROptions.h; sourceTree = "<group>"; };
 		CBE3249F27E275A100395A93 /* ArtsyEcho.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtsyEcho.m; sourceTree = "<group>"; };
-		CBE324A027E275A100395A93 /* ARAppDelegate+Emission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Emission.h"; sourceTree = "<group>"; };
-		CBE324A127E275A100395A93 /* ARApplicationShortcutItemDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARApplicationShortcutItemDelegate.m; sourceTree = "<group>"; };
+		CBE324A027E275A100395A93 /* AppDelegate+Emission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Emission.h"; sourceTree = "<group>"; };
+		CBE324A127E275A100395A93 /* AppDelegate+ShortcutItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+ShortcutItems.m"; sourceTree = "<group>"; };
 		CBE324A327E275A100395A93 /* SwiftExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftExtensions.swift; sourceTree = "<group>"; };
 		CBE324A427E275A100395A93 /* ARMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARMacros.h; sourceTree = "<group>"; };
 		CBE324A527E275A100395A93 /* ARUserActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserActivity.h; sourceTree = "<group>"; };
-		CBE324A627E275A100395A93 /* ARAppNotificationsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppNotificationsDelegate.h; sourceTree = "<group>"; };
-		CBE324A727E275A100395A93 /* ARAppActivityContinuationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppActivityContinuationDelegate.h; sourceTree = "<group>"; };
+		CBE324A627E275A100395A93 /* AppDelegate+Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Notifications.h"; sourceTree = "<group>"; };
+		CBE324A727E275A100395A93 /* AppDelegate+ActivityContinuation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+ActivityContinuation.h"; sourceTree = "<group>"; };
 		CBE324A927E275A100395A93 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CBE324AB27E275A100395A93 /* ARAnalyticsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnalyticsConstants.h; sourceTree = "<group>"; };
-		CBE324AC27E275A100395A93 /* ARAppDelegate+Echo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Echo.m"; sourceTree = "<group>"; };
+		CBE324AC27E275A100395A93 /* AppDelegate+Echo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Echo.m"; sourceTree = "<group>"; };
 		CBE324AD27E275A100395A93 /* ARAppStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppStatus.h; sourceTree = "<group>"; };
 		CBE324AE27E275A100395A93 /* ARTArtsyNativeModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARTArtsyNativeModule.m; sourceTree = "<group>"; };
-		CBE324AF27E275A100395A93 /* ARApplicationShortcutItemDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARApplicationShortcutItemDelegate.h; sourceTree = "<group>"; };
-		CBE324B027E275A100395A93 /* ARAppDelegate+Emission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Emission.m"; sourceTree = "<group>"; };
+		CBE324AF27E275A100395A93 /* AppDelegate+ShortcutItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+ShortcutItems.h"; sourceTree = "<group>"; };
+		CBE324B027E275A100395A93 /* AppDelegate+Emission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Emission.m"; sourceTree = "<group>"; };
 		CBE324B127E275A100395A93 /* ArtsyEcho.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtsyEcho.h; sourceTree = "<group>"; };
 		CBE324B227E275A100395A93 /* AROptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AROptions.m; sourceTree = "<group>"; };
 		CBE324B427E275A100395A93 /* ARFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFonts.h; sourceTree = "<group>"; };
 		CBE324B527E275A100395A93 /* EchoNew.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EchoNew.json; sourceTree = "<group>"; };
 		CBE324B627E275A100395A93 /* ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivity.m; sourceTree = "<group>"; };
-		CBE324B727E275A100395A93 /* ARAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppDelegate.h; sourceTree = "<group>"; };
+		CBE324B727E275A100395A93 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		CBE324B927E275A100395A93 /* ARDefaultNavigationTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDefaultNavigationTransition.m; sourceTree = "<group>"; };
 		CBE324BA27E275A100395A93 /* ARNavigationTransitionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationTransitionController.m; sourceTree = "<group>"; };
 		CBE324BB27E275A100395A93 /* ARNavigationTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationTransition.m; sourceTree = "<group>"; };
@@ -1390,8 +1355,7 @@
 				CB43299227FDFE4700B29DD6 /* iAd.framework in Frameworks */,
 				CB43299427FDFE5300B29DD6 /* MessageUI.framework in Frameworks */,
 				CB43299827FDFE6400B29DD6 /* StoreKit.framework in Frameworks */,
-				CBE0D12E2C20C8D800DFF17E /* libBrazeUI.a in Frameworks */,
-				C0AD8A5C831EECD4FC46E80E /* libPods-Artsy.a in Frameworks */,
+				41C4F9EA2F4426F255F9C051 /* libPods-Artsy.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1416,6 +1380,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7448C2EC42E1DD4A032A6C70 /* Pods_ArtsyTests.framework in Frameworks */,
+				5E14D748482D1C91EDFD78D5 /* Pods_ArtsyTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1440,11 +1405,9 @@
 				1A4B9791283CDD5900878EAE /* ARCocoaConstantsModule.m */,
 				1A4B9792283CDD5900878EAE /* AREmission.h */,
 				1A4B9798283CDD5900878EAE /* AREmission.m */,
-				1A4B9793283CDD5900878EAE /* AREventsModule.m */,
 				1A4B9794283CDD5900878EAE /* RCTScrollView+Artsy.h */,
 				1A4B9795283CDD5900878EAE /* ARScrollViewHelpers.m */,
 				1A4B9796283CDD5900878EAE /* RCTScrollView+Artsy.m */,
-				1A4B9797283CDD5900878EAE /* AREventsModule.h */,
 				1A4B9799283CDD5900878EAE /* ARCocoaConstantsModule.h */,
 				1A4B979A283CDD5900878EAE /* ARScrollViewHelpers.h */,
 			);
@@ -1554,20 +1517,14 @@
 			path = ArtsyUIButtons;
 			sourceTree = "<group>";
 		};
-		1AE9F25B2902DA87002A561B /* Configs */ = {
+		2D00E4C0985C8FA9A33AF0C2 /* ExpoModulesProviders */ = {
 			isa = PBXGroup;
 			children = (
-				1AE9F25C2902DA87002A561B /* App.xcconfig */,
-				1AE9F25D2902DA87002A561B /* App-Debug.xcconfig */,
-				1AE9F25E2902DA87002A561B /* WidgetExt.xcconfig */,
-				1AE9F25F2902DA87002A561B /* BrazeExt.xcconfig */,
-				1AE9F2602902DA87002A561B /* Tests-Debug.xcconfig */,
-				1AE9F2612902DA87002A561B /* Shared.xcconfig */,
-				1AE9F2622902DA87002A561B /* App-Store.xcconfig */,
-				1AE9F2632902DA87002A561B /* Tests-Store.xcconfig */,
+				D244ECF9D06E265194B305D7 /* Artsy */,
+				F4E9830CBE6D72DEB8A5BB08 /* ArtsyTests */,
 			);
-			path = Configs;
-			sourceTree = SOURCE_ROOT;
+			name = ExpoModulesProviders;
+			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
@@ -1587,8 +1544,8 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				CB43268327E8FA6900B29DD6 /* WidgetKit.framework */,
 				CB43268527E8FA6900B29DD6 /* SwiftUI.framework */,
-				C35034239854793E0E5C1F6A /* libPods-Artsy.a */,
-				4C1B6860831AE690075CFD4C /* Pods_ArtsyTests.framework */,
+				A7FF9A08D850B10E68492E49 /* libPods-Artsy.a */,
+				0E85EAB2C3E6196CF3F118F7 /* Pods_ArtsyTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1604,6 +1561,8 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				CB8672711C005915043C63E8 /* Pods */,
+				CB51280C2DB2D95B00C6A884 /* Recovered References */,
+				2D00E4C0985C8FA9A33AF0C2 /* ExpoModulesProviders */,
 			);
 			indentWidth = 4;
 			sourceTree = "<group>";
@@ -1676,14 +1635,13 @@
 			children = (
 				CB4326B927E8FAD900B29DD6 /* ArtsyWidgets.swift */,
 				CB4326AD27E8FAD900B29DD6 /* Assets.xcassets */,
-				CB43269D27E8FAD900B29DD6 /* FeaturedArtworks */,
+				CB43268B27E8FA6B00B29DD6 /* Assets.xcassets */,
 				CB4326AE27E8FAD900B29DD6 /* Fixtures.swift */,
 				CB43269627E8FAD800B29DD6 /* FullBleed */,
+				CB43268D27E8FA6B00B29DD6 /* Info.plist */,
 				CB4326AF27E8FAD900B29DD6 /* LatestArticles */,
 				CB4326BA27E8FAD900B29DD6 /* Models */,
 				CB4326A727E8FAD900B29DD6 /* Shared */,
-				CB43268B27E8FA6B00B29DD6 /* Assets.xcassets */,
-				CB43268D27E8FA6B00B29DD6 /* Info.plist */,
 			);
 			path = ArtsyWidget;
 			sourceTree = "<group>";
@@ -1691,40 +1649,24 @@
 		CB43269627E8FAD800B29DD6 /* FullBleed */ = {
 			isa = PBXGroup;
 			children = (
+				CB43269A27E8FAD900B29DD6 /* FullBleed.swift */,
 				CB43269727E8FAD900B29DD6 /* FullBleed+Entry.swift */,
 				CB43269827E8FAD900B29DD6 /* FullBleed+Provider.swift */,
 				CB43269927E8FAD900B29DD6 /* FullBleed+Timeline.swift */,
-				CB43269A27E8FAD900B29DD6 /* FullBleed.swift */,
 				CB43269B27E8FAD900B29DD6 /* FullBleed+View.swift */,
 				CB43269C27E8FAD900B29DD6 /* FullBleed+Widget.swift */,
 			);
 			path = FullBleed;
 			sourceTree = "<group>";
 		};
-		CB43269D27E8FAD900B29DD6 /* FeaturedArtworks */ = {
-			isa = PBXGroup;
-			children = (
-				CB43269E27E8FAD900B29DD6 /* FeaturedArtworks+Entry.swift */,
-				CB43269F27E8FAD900B29DD6 /* FeaturedArtworks+SmallView.swift */,
-				CB4326A027E8FAD900B29DD6 /* FeaturedArtworks+Timeline.swift */,
-				CB4326A127E8FAD900B29DD6 /* FeaturedArtworks+Widget.swift */,
-				CB4326A227E8FAD900B29DD6 /* FeaturedArtworks+Provider.swift */,
-				CB4326A327E8FAD900B29DD6 /* FeaturedArtworks+View.swift */,
-				CB4326A427E8FAD900B29DD6 /* FeaturedArtworks.swift */,
-				CB4326A527E8FAD900B29DD6 /* FeaturedArtworks+LargeView.swift */,
-				CB4326A627E8FAD900B29DD6 /* FeaturedArtworks+MediumView.swift */,
-			);
-			path = FeaturedArtworks;
-			sourceTree = "<group>";
-		};
 		CB4326A727E8FAD900B29DD6 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				CB4326A827E8FAD900B29DD6 /* PrimaryText.swift */,
 				CB4326A927E8FAD900B29DD6 /* ImageUrl.swift */,
+				CB4326A827E8FAD900B29DD6 /* PrimaryText.swift */,
 				CB4326AA27E8FAD900B29DD6 /* Schedule.swift */,
-				CB4326AB27E8FAD900B29DD6 /* WidgetUrl.swift */,
 				CB4326AC27E8FAD900B29DD6 /* SecondaryText.swift */,
+				CB4326AB27E8FAD900B29DD6 /* WidgetUrl.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1732,15 +1674,12 @@
 		CB4326AF27E8FAD900B29DD6 /* LatestArticles */ = {
 			isa = PBXGroup;
 			children = (
-				CB4326B027E8FAD900B29DD6 /* LatestArticles+View.swift */,
-				CB4326B127E8FAD900B29DD6 /* LatestArticles+Entry.swift */,
-				CB4326B227E8FAD900B29DD6 /* LatestArticles+Widget.swift */,
-				CB4326B327E8FAD900B29DD6 /* LatestArticles+MediumView.swift */,
-				CB4326B427E8FAD900B29DD6 /* LatestArticles+Timeline.swift */,
-				CB4326B527E8FAD900B29DD6 /* LatestArticles+LargeView.swift */,
-				CB4326B627E8FAD900B29DD6 /* LatestArticles+Provider.swift */,
-				CB4326B727E8FAD900B29DD6 /* LatestArticles+SmallView.swift */,
 				CB4326B827E8FAD900B29DD6 /* LatestArticles.swift */,
+				CB4326B127E8FAD900B29DD6 /* LatestArticles+Entry.swift */,
+				CB4326B627E8FAD900B29DD6 /* LatestArticles+Provider.swift */,
+				CB4326B427E8FAD900B29DD6 /* LatestArticles+Timeline.swift */,
+				CB4326B027E8FAD900B29DD6 /* LatestArticles+View.swift */,
+				CB4326B227E8FAD900B29DD6 /* LatestArticles+Widget.swift */,
 			);
 			path = LatestArticles;
 			sourceTree = "<group>";
@@ -1748,16 +1687,16 @@
 		CB4326BA27E8FAD900B29DD6 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				CB4326BB27E8FAD900B29DD6 /* ArticleStore.swift */,
-				CB4326BC27E8FAD900B29DD6 /* VolleyClient.swift */,
-				CB4326BD27E8FAD900B29DD6 /* VolleyPayload.swift */,
-				CB4326BE27E8FAD900B29DD6 /* ArtworkImage.swift */,
-				CB4326BF27E8FAD900B29DD6 /* Artist.swift */,
-				CB4326C027E8FAD900B29DD6 /* ArtworkStore.swift */,
-				CB4326C127E8FAD900B29DD6 /* VolleyMetric.swift */,
-				CB4326C227E8FAD900B29DD6 /* Artwork.swift */,
 				CB4326C327E8FAD900B29DD6 /* Article.swift */,
 				CB4326C427E8FAD900B29DD6 /* ArticleParser.swift */,
+				CB4326BB27E8FAD900B29DD6 /* ArticleStore.swift */,
+				CB4326BF27E8FAD900B29DD6 /* Artist.swift */,
+				CB4326C227E8FAD900B29DD6 /* Artwork.swift */,
+				CB4326BE27E8FAD900B29DD6 /* ArtworkImage.swift */,
+				CB4326C027E8FAD900B29DD6 /* ArtworkStore.swift */,
+				CB4326BC27E8FAD900B29DD6 /* VolleyClient.swift */,
+				CB4326C127E8FAD900B29DD6 /* VolleyMetric.swift */,
+				CB4326BD27E8FAD900B29DD6 /* VolleyPayload.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1918,8 +1857,8 @@
 		CB43275E27E8FEE300B29DD6 /* App_Tests */ = {
 			isa = PBXGroup;
 			children = (
-				CB43276027E8FEE300B29DD6 /* ARAppActivityContinuationDelegateTests.m */,
-				CB43276127E8FEE300B29DD6 /* ARAppNotificationsDelegateTests.m */,
+				CB43276027E8FEE300B29DD6 /* AppDelegate+ContinuationTests.m */,
+				CB43276127E8FEE300B29DD6 /* AppDelegate+NotificationsTests.m */,
 				CB43276227E8FEE300B29DD6 /* ARWebViewCacheHostSpec.m */,
 			);
 			path = App_Tests;
@@ -2442,6 +2381,50 @@
 			path = Stubs;
 			sourceTree = "<group>";
 		};
+		CB51280C2DB2D95B00C6A884 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				4C1B6860831AE690075CFD4C /* Pods_ArtsyTests.framework */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		CB51280D2DB2EBCE00C6A884 /* AppDelegateCategories */ = {
+			isa = PBXGroup;
+			children = (
+				CBE324A727E275A100395A93 /* AppDelegate+ActivityContinuation.h */,
+				CBE3249727E275A100395A93 /* AppDelegate+ActivityContinuation.m */,
+				CBA500F12C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.h */,
+				CBA500F22C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.m */,
+				CBE3249C27E275A100395A93 /* AppDelegate+Echo.h */,
+				CBE324AC27E275A100395A93 /* AppDelegate+Echo.m */,
+				CBE324A027E275A100395A93 /* AppDelegate+Emission.h */,
+				CBE324B027E275A100395A93 /* AppDelegate+Emission.m */,
+				CBE324A627E275A100395A93 /* AppDelegate+Notifications.h */,
+				CBE3249827E275A100395A93 /* AppDelegate+Notifications.m */,
+				CBE324AF27E275A100395A93 /* AppDelegate+ShortcutItems.h */,
+				CBE324A127E275A100395A93 /* AppDelegate+ShortcutItems.m */,
+			);
+			path = AppDelegateCategories;
+			sourceTree = "<group>";
+		};
+		CB5128102DB82CFD00C6A884 /* Supporting */ = {
+			isa = PBXGroup;
+			children = (
+				CB5275152DBA6D0C001AC28E /* QA */,
+				CB51280F2DB82CFD00C6A884 /* Expo.plist */,
+			);
+			path = Supporting;
+			sourceTree = "<group>";
+		};
+		CB5275152DBA6D0C001AC28E /* QA */ = {
+			isa = PBXGroup;
+			children = (
+				CB5275182DBA7043001AC28E /* ExpoQA.plist */,
+			);
+			path = QA;
+			sourceTree = "<group>";
+		};
 		CB762B2E2911A5E100881194 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -2464,6 +2447,8 @@
 				B6786672018842FE1C6B598E /* Pods-Artsy.store.xcconfig */,
 				1973F4CD291679B41728F08A /* Pods-ArtsyTests.debug.xcconfig */,
 				A13D613770ABA09F958CEC44 /* Pods-ArtsyTests.store.xcconfig */,
+				8329A607F98AD2DF9F290C93 /* Pods-Artsy.qa.xcconfig */,
+				331E1048CEBC170BAC51E1AF /* Pods-ArtsyTests.qa.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -2471,8 +2456,9 @@
 		CBE3210527D9615000395A93 /* Artsy */ = {
 			isa = PBXGroup;
 			children = (
+				CBE324B727E275A100395A93 /* AppDelegate.h */,
+				8E4207782A055D2D006888BD /* AppDelegate.mm */,
 				CB18283429D36A3A006A0805 /* fonts */,
-				1AE9F25B2902DA87002A561B /* Configs */,
 				1A4E5115283F91BA0008EF35 /* ArtsyUIButtons */,
 				1A4E510D283F91B90008EF35 /* ArtsyUIColors */,
 				1A4E5112283F91B90008EF35 /* ArtsyUIFonts */,
@@ -2489,6 +2475,7 @@
 				CBE324B827E275A100395A93 /* Navigation_Transitions */,
 				CBE325EC27E275A200395A93 /* Networking */,
 				CBE3262727E275A300395A93 /* Protocols */,
+				CB5128102DB82CFD00C6A884 /* Supporting */,
 				CBE325A327E275A200395A93 /* Resources */,
 				CBE3259427E275A200395A93 /* Stringify.swift */,
 				CBE3256727E275A100395A93 /* Tooling */,
@@ -2581,21 +2568,7 @@
 		CBE3249427E275A100395A93 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				CBE324B727E275A100395A93 /* ARAppDelegate.h */,
-				8E4207782A055D2D006888BD /* ARAppDelegate.mm */,
-				CBE324A727E275A100395A93 /* ARAppActivityContinuationDelegate.h */,
-				CBE3249727E275A100395A93 /* ARAppActivityContinuationDelegate.m */,
-				CBE324A627E275A100395A93 /* ARAppNotificationsDelegate.h */,
-				CBE3249827E275A100395A93 /* ARAppNotificationsDelegate.m */,
-				CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */,
-				CBE3249C27E275A100395A93 /* ARAppDelegate+Echo.h */,
-				CBE324AC27E275A100395A93 /* ARAppDelegate+Echo.m */,
-				CBE324A027E275A100395A93 /* ARAppDelegate+Emission.h */,
-				CBE324B027E275A100395A93 /* ARAppDelegate+Emission.m */,
-				CBE324AF27E275A100395A93 /* ARApplicationShortcutItemDelegate.h */,
-				CBE324A127E275A100395A93 /* ARApplicationShortcutItemDelegate.m */,
-				CBA500F12C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.h */,
-				CBA500F22C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.m */,
+				CB51280D2DB2EBCE00C6A884 /* AppDelegateCategories */,
 				CBE3249927E275A100395A93 /* ARTArtsyNativeModule.h */,
 				CBE324AE27E275A100395A93 /* ARTArtsyNativeModule.m */,
 				CBE324AD27E275A100395A93 /* ARAppStatus.h */,
@@ -2605,6 +2578,7 @@
 				CBE324A527E275A100395A93 /* ARUserActivity.h */,
 				CBE324B627E275A100395A93 /* ARUserActivity.m */,
 				CBE324AB27E275A100395A93 /* ARAnalyticsConstants.h */,
+				CBE3249B27E275A100395A93 /* ARAnalyticsConstants.m */,
 				CBE324B427E275A100395A93 /* ARFonts.h */,
 				CBE324A427E275A100395A93 /* ARMacros.h */,
 				CBE324B127E275A100395A93 /* ArtsyEcho.h */,
@@ -3372,6 +3346,22 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		D244ECF9D06E265194B305D7 /* Artsy */ = {
+			isa = PBXGroup;
+			children = (
+				B6D4E35184C4A1196A06A1A7 /* ExpoModulesProvider.swift */,
+			);
+			name = Artsy;
+			sourceTree = "<group>";
+		};
+		F4E9830CBE6D72DEB8A5BB08 /* ArtsyTests */ = {
+			isa = PBXGroup;
+			children = (
+				2351227D6671F3227F07250E /* ExpoModulesProvider.swift */,
+			);
+			name = ArtsyTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3380,8 +3370,9 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Artsy" */;
 			buildPhases = (
 				400905DA34751CB03A2B22D1 /* [CP] Check Pods Manifest.lock */,
-				1A08BBFB291E6B7000062A70 /* Setup .env from react-native-config */,
 				FD10A7F022414F080027D42C /* Start Packager */,
+				DAB4153D308BDB0605061789 /* [Expo] Configure project */,
+				CB52751A2DBA70AE001AC28E /* [Expo Updates] Update Config Plist */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
@@ -3407,6 +3398,7 @@
 			buildConfigurationList = CB43266E27E8F39B00B29DD6 /* Build configuration list for PBXNativeTarget "ArtsyStickers" */;
 			buildPhases = (
 				CB43266127E8F39900B29DD6 /* Resources */,
+				7AEEFCEF011ACA98F124D663 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -3456,6 +3448,7 @@
 			buildConfigurationList = CB43272227E8FE5400B29DD6 /* Build configuration list for PBXNativeTarget "ArtsyTests" */;
 			buildPhases = (
 				21D9FBA2AAC48EBB99241E8F /* [CP] Check Pods Manifest.lock */,
+				9CD09F5D4E3EE42D4514E2A8 /* [Expo] Configure project */,
 				CB43271827E8FE5400B29DD6 /* Sources */,
 				CB43271927E8FE5400B29DD6 /* Frameworks */,
 				CB43271A27E8FE5400B29DD6 /* Resources */,
@@ -3504,7 +3497,6 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
@@ -3530,9 +3522,7 @@
 				CBE326B627E275A300395A93 /* LiveAuctions.storyboard in Resources */,
 				CBE326FB27E275A300395A93 /* live_auctions_socket.json in Resources */,
 				CBE3275D27E275A400395A93 /* CloseButtonLargeHighlighted@2x.png in Resources */,
-				1AE9F26B2902DA87002A561B /* Tests-Store.xcconfig in Resources */,
 				CBE3276B27E275A400395A93 /* navigation_more_arrow_horizontal@2x.png in Resources */,
-				1AE9F2682902DA87002A561B /* Tests-Debug.xcconfig in Resources */,
 				CBE3272D27E275A400395A93 /* ViewInRoom_Bench@2x.png in Resources */,
 				CBE3275227E275A400395A93 /* RefreshIcon@2x.png in Resources */,
 				CBE3274F27E275A400395A93 /* CircleXRed.png in Resources */,
@@ -3572,22 +3562,18 @@
 				CB762B372911A5E100881194 /* ARVIRModalClose.png in Resources */,
 				CBE3274D27E275A400395A93 /* ARVIRRefresh@3x.png in Resources */,
 				CBE3273927E275A400395A93 /* followButtonChecked@2x.png in Resources */,
-				1AE9F2692902DA87002A561B /* Shared.xcconfig in Resources */,
 				CBE3276A27E275A400395A93 /* CircleXRed@2x.png in Resources */,
 				CBE3274227E275A400395A93 /* paddle.png in Resources */,
 				CBE3273C27E275A400395A93 /* AttentionIcon@2x.png in Resources */,
 				CBE3275E27E275A400395A93 /* CircleXRed@3x.png in Resources */,
 				CBE3274827E275A400395A93 /* CircularInfoButton.png in Resources */,
-				1AE9F26A2902DA87002A561B /* App-Store.xcconfig in Resources */,
 				CBE3274727E275A400395A93 /* BackChevron.png in Resources */,
 				CBE3272E27E275A400395A93 /* ViewInRoom_BaseNoBench@2x.png in Resources */,
 				CB762B3C2911A5E100881194 /* ARVIRModalClose@2x.png in Resources */,
 				CB18283C29D36A3A006A0805 /* Unica77LL-MediumItalic.otf in Resources */,
-				1AE9F2672902DA87002A561B /* BrazeExt.xcconfig in Resources */,
 				CBE3273727E275A400395A93 /* navigation_more_arrow_vertical@2x.png in Resources */,
 				CBE3275327E275A400395A93 /* CircleCheckGreen@2x.png in Resources */,
 				CBE3275727E275A400395A93 /* paddle@3x.png in Resources */,
-				1AE9F2652902DA87002A561B /* App-Debug.xcconfig in Resources */,
 				CBE3274E27E275A400395A93 /* CloseButtonLarge@2x.png in Resources */,
 				CBE3278527E275A400395A93 /* InfoPlist.strings in Resources */,
 				CBE3275F27E275A400395A93 /* BackChevron@2x.png in Resources */,
@@ -3611,7 +3597,6 @@
 				CBE3275927E275A400395A93 /* CircleCheckGreen.png in Resources */,
 				CB762B3B2911A5E100881194 /* ARVIRTick@3x.png in Resources */,
 				CBE3276127E275A400395A93 /* CircularCancelButton.png in Resources */,
-				1AE9F2642902DA87002A561B /* App.xcconfig in Resources */,
 				CB18283D29D36A3A006A0805 /* Unica77LL-Regular.otf in Resources */,
 				CBE3276927E275A400395A93 /* BackChevron@3x.png in Resources */,
 				CB762B382911A5E100881194 /* ARVIRTick.png in Resources */,
@@ -3619,7 +3604,6 @@
 				CBE3273227E275A400395A93 /* SearchButton@3x.png in Resources */,
 				CBE3276827E275A400395A93 /* Thumb.png in Resources */,
 				CBE3274027E275A400395A93 /* SearchButton@2x.png in Resources */,
-				1AE9F2662902DA87002A561B /* WidgetExt.xcconfig in Resources */,
 				CBE3273327E275A400395A93 /* Hash@3x.png in Resources */,
 				CB18284429DEFA6D006A0805 /* LICENSE.txt in Resources */,
 				CB18283E29D36A3A006A0805 /* Unica77LL-Italic.otf in Resources */,
@@ -3686,25 +3670,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export SOURCEMAP_FILE=\"$PROJECT_DIR/../main.jsbundle.map\"\n\nset -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
-		};
-		1A08BBFB291E6B7000062A70 /* Setup .env from react-native-config */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Setup .env from react-native-config";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cp \"${PROJECT_DIR}/../.env.shared\" \"${PROJECT_DIR}/../.env\"\n";
+			shellScript = "export SOURCEMAP_FILE=\"$PROJECT_DIR/../main.jsbundle.map\"\n\nif [[ -f \"$PODS_ROOT/../.xcode.env\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env\"\nfi\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n# The project root by default is one level up from the ios directory\nexport PROJECT_ROOT=\"$PROJECT_DIR\"/..\n\nif [[ \"$CONFIGURATION\" = *Debug* ]]; then\n  export SKIP_BUNDLING=1\nfi\nif [[ -z \"$ENTRY_FILE\" ]]; then\n  # Set the entry JS file using the bundler's entry resolution.\n  export ENTRY_FILE=\"$(\"$NODE_BINARY\" -e \"require('expo/scripts/resolveAppEntry')\" \"$PROJECT_ROOT\" ios absolute | tail -n 1)\"\n  echo \"ENTRY_FILE is $ENTRY_FILE\"\nfi\n\nif [[ -z \"$CLI_PATH\" ]]; then\n  # Use Expo CLI\n  export CLI_PATH=\"$(\"$NODE_BINARY\" --print \"require.resolve('@expo/cli')\")\"\nfi\nif [[ -z \"$BUNDLE_COMMAND\" ]]; then\n  # Default Expo CLI command for bundling\n  export BUNDLE_COMMAND=\"export:embed\"\nfi\n\n`\"$NODE_BINARY\" --print \"require('path').dirname(require.resolve('react-native/package.json')) + '/scripts/react-native-xcode.sh'\"`\n";
 		};
 		21D9FBA2AAC48EBB99241E8F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3784,6 +3750,62 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		9CD09F5D4E3EE42D4514E2A8 /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-ArtsyTests/expo-configure-project.sh\"\n";
+		};
+		CB52751A2DBA70AE001AC28E /* [Expo Updates] Update Config Plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo Updates] Update Config Plist";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "DEFAULT_EXPO_PLIST=\"${SRCROOT}/Artsy/Supporting/Expo.plist\"\n\nCONFIG_EXPO_PLIST=\"${EXPO_PLIST_PATH:-$DEFAULT_EXPO_PLIST}\"\n\nTARGET_PLIST=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Expo.plist\"\n\necho \"📦 Copying $CONFIG_EXPO_PLIST to $TARGET_PLIST\"\ncp \"$CONFIG_EXPO_PLIST\" \"$TARGET_PLIST\"\n\n# Extract runtimeVersion from app.json\nRUNTIME_VERSION=$(node <<'EOF'\nconst fs = require(\"fs\");\nconst path = require(\"path\");\n\nconst appJsonPath = path.resolve(__dirname, \"../../app.json\");\nconst appJson = JSON.parse(fs.readFileSync(appJsonPath, \"utf8\"));\nconst version = appJson.expo.runtimeVersion;\nconsole.log(version);\nEOF\n)\n\necho \"🛠 Setting runtimeVersion = $RUNTIME_VERSION in $TARGET_PLIST\"\n/usr/libexec/PlistBuddy -c \"Set :EXUpdatesRuntimeVersion $RUNTIME_VERSION\" \"$TARGET_PLIST\"\n\necho \"✅ Expo runtimeVersion updated in $TARGET_PLIST\"\n";
+		};
+		DAB4153D308BDB0605061789 /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-Artsy/expo-configure-project.sh\"\n";
+		};
 		DDA4AEB493C5BCB609AE7E60 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3817,7 +3839,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
+			shellScript = "if [[ -f \"$PODS_ROOT/../.xcode.env\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env\"\nfi\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\nexport RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > `$NODE_BINARY --print \"require('path').dirname(require.resolve('react-native/package.json')) + '/scripts/.packager.env'\"`\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open `$NODE_BINARY --print \"require('path').dirname(require.resolve('expo/package.json')) + '/scripts/launchPackager.command'\"` || echo \"Can't start packager automatically\"\n  fi\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -3829,14 +3851,13 @@
 			files = (
 				E15070772CCFE8C400615118 /* LiveAuctionView.swift in Sources */,
 				E15070762CCFE8A900615118 /* ARTLiveAuctionViewManager.m in Sources */,
-				E15070752CCFE89B00615118 /* BuildFile in Sources */,
 				1A4B97C7283CDD5A00878EAE /* ARMapContainerViewController.m in Sources */,
 				CBE3279227E275A400395A93 /* User.m in Sources */,
 				CBE3277927E275A400395A93 /* ArtsyAPI+Notifications.m in Sources */,
 				CBE3267327E275A300395A93 /* Int+Metrification.swift in Sources */,
 				CBE326CE27E275A300395A93 /* LiveAuctionBidButton.swift in Sources */,
 				CBE326DE27E275A300395A93 /* UIViewController+InnermostTopViewController.m in Sources */,
-				8E4207792A055D2D006888BD /* ARAppDelegate.mm in Sources */,
+				8E4207792A055D2D006888BD /* AppDelegate.mm in Sources */,
 				CBE326DD27E275A300395A93 /* ARURLItemProvider.m in Sources */,
 				CBE326E727E275A300395A93 /* ARHTTPRequestOperationLogger.m in Sources */,
 				CBE326E827E275A300395A93 /* ARLogger.m in Sources */,
@@ -3875,14 +3896,13 @@
 				CBE326AF27E275A300395A93 /* LiveAuctionLoadingView.swift in Sources */,
 				CBE326E127E275A300395A93 /* ARFileUtils.m in Sources */,
 				1A4B97C8283CDD5A00878EAE /* ARPHPhotoPickerModule.m in Sources */,
-				CBE3269727E275A300395A93 /* ARApplicationShortcutItemDelegate.m in Sources */,
+				CBE3269727E275A300395A93 /* AppDelegate+ShortcutItems.m in Sources */,
 				CBE326E627E275A300395A93 /* UIApplicationStateEnum.m in Sources */,
 				CBE3270E27E275A300395A93 /* AuctionTitleView.swift in Sources */,
 				CBE326C027E275A300395A93 /* LiveAuctionsAdminViewController.swift in Sources */,
 				CBE3278C27E275A400395A93 /* Artist.m in Sources */,
 				CBE3277627E275A400395A93 /* ArtsyAPI+Following.m in Sources */,
 				CBE326C927E275A300395A93 /* LiveAuctionLotCollectionViewLayoutAttributes.swift in Sources */,
-				1A4B97BD283CDD5A00878EAE /* AREventsModule.m in Sources */,
 				CBE3268427E275A300395A93 /* UIView+OldSchoolSnapshots.m in Sources */,
 				CBE3272527E275A400395A93 /* ARTNativeScreenPresenterModule.m in Sources */,
 				CBE326D927E275A300395A93 /* ARScrollNavigationChief.m in Sources */,
@@ -3893,7 +3913,7 @@
 				CBE3269327E275A300395A93 /* ARAppStatus.m in Sources */,
 				CBE326AB27E275A300395A93 /* LiveAuctionLotViewModel.swift in Sources */,
 				CBE326D027E275A300395A93 /* SerifModalWebNavigationController.swift in Sources */,
-				CBE3269D27E275A300395A93 /* ARAppDelegate+Emission.m in Sources */,
+				CBE3269D27E275A300395A93 /* AppDelegate+Emission.m in Sources */,
 				CBE326A227E275A300395A93 /* ARNavigationTransitionController.m in Sources */,
 				CBE326B127E275A300395A93 /* LiveAuctionViewController.swift in Sources */,
 				1A4B97C0283CDD5A00878EAE /* AREmission.m in Sources */,
@@ -3954,7 +3974,7 @@
 				CBE3270D27E275A300395A93 /* SaleViewModel.swift in Sources */,
 				CBE3271C27E275A300395A93 /* RefinableType.swift in Sources */,
 				CBE327A227E275A400395A93 /* SystemTime.m in Sources */,
-				CBE3269B27E275A300395A93 /* ARAppDelegate+Echo.m in Sources */,
+				CBE3269B27E275A300395A93 /* AppDelegate+Echo.m in Sources */,
 				CB18284629DF3DED006A0805 /* FocusSquareSegment.swift in Sources */,
 				CBE3279F27E275A400395A93 /* Bid.m in Sources */,
 				1A4B97BC283CDD5A00878EAE /* ARCocoaConstantsModule.m in Sources */,
@@ -4006,14 +4026,14 @@
 				CBE3271027E275A300395A93 /* SaleArtworkViewModel.swift in Sources */,
 				CBE3277B27E275A400395A93 /* ArtsyAPI+CurrentUserFunctions.m in Sources */,
 				CBE3278B27E275A400395A93 /* Location.m in Sources */,
-				CBA500F32C654F8400DDBCC0 /* ARAppDelegate+DeeplinkTimeout.m in Sources */,
+				CBA500F32C654F8400DDBCC0 /* AppDelegate+DeeplinkTimeout.m in Sources */,
 				CBE326BA27E275A300395A93 /* LiveAuctionBidViewModel.swift in Sources */,
 				CBE3268927E275A300395A93 /* AFHTTPRequestOperation+JSON.m in Sources */,
 				CBE3279C27E275A400395A93 /* Sale.m in Sources */,
 				CBE3279727E275A400395A93 /* LiveEvent.m in Sources */,
 				CBE3278E27E275A400395A93 /* AuctionLot.m in Sources */,
 				CBE3277D27E275A400395A93 /* ARUserManager.m in Sources */,
-				CBE3269127E275A300395A93 /* ARAppActivityContinuationDelegate.m in Sources */,
+				CBE3269127E275A300395A93 /* AppDelegate+ActivityContinuation.m in Sources */,
 				CBE326BE27E275A300395A93 /* LiveAuctionLotBidHistoryGestureController.swift in Sources */,
 				CBE3271627E275A300395A93 /* ARWhitespaceGobbler.m in Sources */,
 				CBE3268127E275A300395A93 /* UIViewController+SimpleChildren.m in Sources */,
@@ -4025,7 +4045,7 @@
 				1A4E511F283F91BA0008EF35 /* UIView+ARSpinner.m in Sources */,
 				CBE3268627E275A300395A93 /* PanDirectionGestureRecognizer.swift in Sources */,
 				CB18282829CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift in Sources */,
-				CBE3269227E275A300395A93 /* ARAppNotificationsDelegate.m in Sources */,
+				CBE3269227E275A300395A93 /* AppDelegate+Notifications.m in Sources */,
 				CBE3271E27E275A300395A93 /* AuctionCircularButtons.swift in Sources */,
 				CBE3277527E275A400395A93 /* ARKeychainable.m in Sources */,
 				CBE3270527E275A300395A93 /* LiveAuctionPlainLotCollectionViewLayout.swift in Sources */,
@@ -4057,6 +4077,14 @@
 				CBE3271127E275A300395A93 /* TextStack.swift in Sources */,
 				CBE3269627E275A300395A93 /* ArtsyEcho.m in Sources */,
 				CBE326BB27E275A300395A93 /* LiveActionStateReconciler.swift in Sources */,
+				23C39D44BA79846C3803A74E /* ExpoModulesProvider.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7AEEFCEF011ACA98F124D663 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4074,16 +4102,12 @@
 			files = (
 				CB43271227E8FC1F00B29DD6 /* ArtworkStore.swift in Sources */,
 				CB4326EF27E8FBEF00B29DD6 /* ArtsyWidgets.swift in Sources */,
-				CB4326F627E8FC0200B29DD6 /* FeaturedArtworks+Timeline.swift in Sources */,
 				CB43271327E8FC2900B29DD6 /* WidgetUrl.swift in Sources */,
-				CB43270327E8FC1600B29DD6 /* LatestArticles+SmallView.swift in Sources */,
 				CB43270827E8FC1600B29DD6 /* LatestArticles+Widget.swift in Sources */,
 				CB43270727E8FC1600B29DD6 /* LatestArticles+Provider.swift in Sources */,
-				CB4326F827E8FC0200B29DD6 /* FeaturedArtworks+MediumView.swift in Sources */,
 				CB4326FC27E8FC0D00B29DD6 /* FullBleed.swift in Sources */,
 				CB43270127E8FC1600B29DD6 /* LatestArticles+View.swift in Sources */,
 				CB4326FE27E8FC0D00B29DD6 /* FullBleed+Timeline.swift in Sources */,
-				CB4326F127E8FC0200B29DD6 /* FeaturedArtworks+Provider.swift in Sources */,
 				CB43270C27E8FC1F00B29DD6 /* Artwork.swift in Sources */,
 				CB4326FA27E8FC0D00B29DD6 /* FullBleed+Entry.swift in Sources */,
 				CB43270A27E8FC1F00B29DD6 /* VolleyClient.swift in Sources */,
@@ -4091,24 +4115,16 @@
 				CB43270B27E8FC1F00B29DD6 /* VolleyPayload.swift in Sources */,
 				CB43271027E8FC1F00B29DD6 /* Article.swift in Sources */,
 				CB43271527E8FC2900B29DD6 /* ImageUrl.swift in Sources */,
-				CB43270027E8FC1600B29DD6 /* LatestArticles+MediumView.swift in Sources */,
 				CB43271427E8FC2900B29DD6 /* SecondaryText.swift in Sources */,
-				CB4326F227E8FC0200B29DD6 /* FeaturedArtworks.swift in Sources */,
 				CB43270227E8FC1600B29DD6 /* LatestArticles+Timeline.swift in Sources */,
-				CB4326F427E8FC0200B29DD6 /* FeaturedArtworks+Entry.swift in Sources */,
 				CB43270427E8FC1600B29DD6 /* LatestArticles.swift in Sources */,
 				CB43270927E8FC1F00B29DD6 /* ArticleParser.swift in Sources */,
-				CB43270627E8FC1600B29DD6 /* LatestArticles+LargeView.swift in Sources */,
 				CB4326FF27E8FC0D00B29DD6 /* FullBleed+Provider.swift in Sources */,
 				CB43270527E8FC1600B29DD6 /* LatestArticles+Entry.swift in Sources */,
 				CB43271727E8FC2900B29DD6 /* PrimaryText.swift in Sources */,
-				CB4326F027E8FC0200B29DD6 /* FeaturedArtworks+View.swift in Sources */,
 				CB4326F927E8FC0600B29DD6 /* Fixtures.swift in Sources */,
 				CB43270D27E8FC1F00B29DD6 /* ArticleStore.swift in Sources */,
 				CB43270E27E8FC1F00B29DD6 /* ArtworkImage.swift in Sources */,
-				CB4326F527E8FC0200B29DD6 /* FeaturedArtworks+SmallView.swift in Sources */,
-				CB4326F727E8FC0200B29DD6 /* FeaturedArtworks+LargeView.swift in Sources */,
-				CB4326F327E8FC0200B29DD6 /* FeaturedArtworks+Widget.swift in Sources */,
 				CB43270F27E8FC1F00B29DD6 /* VolleyMetric.swift in Sources */,
 				CB4326FB27E8FC0D00B29DD6 /* FullBleed+Widget.swift in Sources */,
 				CB43271627E8FC2900B29DD6 /* Schedule.swift in Sources */,
@@ -4125,7 +4141,7 @@
 				CB43288E27E8FEE500B29DD6 /* ARBidButtonTests.m in Sources */,
 				CB43294E27E8FEE600B29DD6 /* ARSharingControllerTests.m in Sources */,
 				CB43296327E9104E00B29DD6 /* Article.swift in Sources */,
-				CB43289527E8FEE500B29DD6 /* ARAppNotificationsDelegateTests.m in Sources */,
+				CB43289527E8FEE500B29DD6 /* AppDelegate+NotificationsTests.m in Sources */,
 				CB4328AC27E8FEE500B29DD6 /* EXPMatcher+UINavigationController.m in Sources */,
 				CB4328A427E8FEE500B29DD6 /* UserTests.m in Sources */,
 				CB43295027E8FEE600B29DD6 /* UIApplicationStateEnumTests.m in Sources */,
@@ -4176,7 +4192,7 @@
 				CB43288F27E8FEE500B29DD6 /* ORStackViewArtsyCategoriesTests.m in Sources */,
 				CB43295427E8FEE600B29DD6 /* ARUserManager+Stubs.m in Sources */,
 				CB43287527E8FEE500B29DD6 /* ARAugmentedVIRViewControllerSpec.m in Sources */,
-				CB43289427E8FEE500B29DD6 /* ARAppActivityContinuationDelegateTests.m in Sources */,
+				CB43289427E8FEE500B29DD6 /* AppDelegate+ContinuationTests.m in Sources */,
 				CB4328BA27E8FEE500B29DD6 /* ArtsyAPI+GraphQLTests.m in Sources */,
 				CB43289C27E8FEE500B29DD6 /* PartnerTests.m in Sources */,
 				CB43295327E8FEE600B29DD6 /* NSDate+RangeTests.m in Sources */,
@@ -4217,6 +4233,7 @@
 				CB4328AB27E8FEE500B29DD6 /* ARExpectaExtensions.m in Sources */,
 				CB43287D27E8FEE500B29DD6 /* LiveAuctionBidButtonTests.swift in Sources */,
 				CB43288127E8FEE500B29DD6 /* LiveAuctionLotListStickyCellCollectionViewLayoutTests.swift in Sources */,
+				21D8C8C1B81EE62FB631812C /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4267,10 +4284,11 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1AE9F25D2902DA87002A561B /* App-Debug.xcconfig */;
+			baseConfigurationReference = 36B80F603A77F1EFD957AB24 /* Pods-Artsy.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				BUNDLE_IDENTIFIER = net.artsy.artsy;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
@@ -4282,6 +4300,7 @@
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				EXPO_PLIST_PATH = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -4297,7 +4316,7 @@
 				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/Artsy/App_Resources/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4309,25 +4328,25 @@
 				MARKETING_VERSION = 6.7.7;
 				OTHER_CFLAGS = (
 					"$(inherited)",
-					"-iframework",
 					"-DFOLLY_NO_CONFIG",
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
-					"-DRNVERSION=69",
+					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
-					"$(OTHER_CFLAGS)",
+					"$(inherited)",
 					"-DFOLLY_NO_CONFIG",
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
-					"-fcxx-modules",
-					"-fmodules",
+					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy;
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUN_CLANG_STATIC_ANALYZER = NO;
@@ -4346,10 +4365,11 @@
 		};
 		13B07F951A680F5B00A75B9A /* Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1AE9F2622902DA87002A561B /* App-Store.xcconfig */;
+			baseConfigurationReference = B6786672018842FE1C6B598E /* Pods-Artsy.store.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				BUNDLE_IDENTIFIER = net.artsy.artsy;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
@@ -4361,6 +4381,7 @@
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				EXPO_PLIST_PATH = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -4375,7 +4396,7 @@
 				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
 				GCC_WARN_UNDECLARED_SELECTOR = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/Artsy/App_Resources/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4387,19 +4408,17 @@
 				MARKETING_VERSION = 6.7.7;
 				OTHER_CFLAGS = (
 					"$(inherited)",
-					"-iframework",
 					"-DFOLLY_NO_CONFIG",
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
-					"-DRNVERSION=69",
+					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
-					"$(OTHER_CFLAGS)",
+					"$(inherited)",
 					"-DFOLLY_NO_CONFIG",
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
-					"-fcxx-modules",
-					"-fmodules",
+					"-DFOLLY_CFG_NO_COROUTINES=1",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -4408,6 +4427,8 @@
 					"-Wl",
 					"-ld_classic",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy;
 				PRODUCT_NAME = Artsy;
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy";
 				RUN_CLANG_STATIC_ANALYZER = NO;
@@ -4509,6 +4530,7 @@
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				SWIFT_VERSION = 5.0;
 				USE_HERMES = true;
 			};
 			name = Debug;
@@ -4587,6 +4609,7 @@
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
 				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -4612,7 +4635,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ArtsyStickers/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Artsy Stickers";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
 					"$(inherited)",
@@ -4620,11 +4643,13 @@
 				MARKETING_VERSION = 6.7.7;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Stickers";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -4650,25 +4675,26 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ArtsyStickers/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Artsy Stickers";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
 					"$(inherited)",
 				);
 				MARKETING_VERSION = 6.7.7;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Stickers";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy.Artsy-Stickers";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Store;
 		};
 		CB43267B27E8F6F900B29DD6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1AE9F25F2902DA87002A561B /* BrazeExt.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -4687,7 +4713,7 @@
 				INFOPLIST_FILE = BrazePushServiceExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = BrazePushServiceExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Artsy. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4700,6 +4726,8 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.BrazePushServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
@@ -4713,7 +4741,6 @@
 		};
 		CB43267C27E8F6F900B29DD6 /* Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1AE9F25F2902DA87002A561B /* BrazeExt.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -4721,19 +4748,21 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 23KMWZ572J;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 23KMWZ572J;
 				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BrazePushServiceExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = BrazePushServiceExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Artsy. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4745,8 +4774,11 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.BrazePushServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy.BrazePushServiceExtension";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore net.artsy.artsy.BrazePushServiceExtension";
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -4758,7 +4790,6 @@
 		};
 		CB43269427E8FA6B00B29DD6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1AE9F25E2902DA87002A561B /* WidgetExt.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -4779,7 +4810,7 @@
 				INFOPLIST_FILE = ArtsyWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ArtsyWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Artsy. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4792,6 +4823,8 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.ArtsyWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
@@ -4805,7 +4838,6 @@
 		};
 		CB43269527E8FA6B00B29DD6 /* Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1AE9F25E2902DA87002A561B /* WidgetExt.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
@@ -4815,19 +4847,21 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 23KMWZ572J;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 23KMWZ572J;
 				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ArtsyWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ArtsyWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Artsy. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -4839,8 +4873,11 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.ArtsyWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore net.artsy.artsy.ArtsyWidget";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore net.artsy.artsy.ArtsyWidget";
 				SKIP_INSTALL = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -4852,7 +4889,7 @@
 		};
 		CB43272327E8FE5400B29DD6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1AE9F2602902DA87002A561B /* Tests-Debug.xcconfig */;
+			baseConfigurationReference = 1973F4CD291679B41728F08A /* Pods-ArtsyTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -4885,7 +4922,7 @@
 				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "ArtsyTests/Supporting_Files/Artsy_Tests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
 					"$(inherited)",
@@ -4893,6 +4930,7 @@
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4910,7 +4948,7 @@
 		};
 		CB43272427E8FE5400B29DD6 /* Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1AE9F2632902DA87002A561B /* Tests-Store.xcconfig */;
+			baseConfigurationReference = A13D613770ABA09F958CEC44 /* Pods-ArtsyTests.store.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -4932,13 +4970,14 @@
 				GCC_PREFIX_HEADER = "ArtsyTests/Supporting_Files/Artsy_Tests-Prefix.pch";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "ArtsyTests/Supporting_Files/Artsy_Tests-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
 					"$(inherited)",
 				);
 				MARKETING_VERSION = 1.0;
 				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4955,6 +4994,348 @@
 			};
 			name = Store;
 		};
+		CB52750F2DBA64AC001AC28E /* QA */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				CXX = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_ARCHS = "";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION,
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon/ReactCommon.framework/Headers/react/nativemodule/core",
+					"${PODS_CONFIGURATION_BUILD_DIR}/ReactCommon-Samples/ReactCommon_Samples.framework/Headers/platform/ios",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-NativeModulesApple/React_NativeModulesApple.framework/Headers",
+					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers/react/renderer/graphics/platform/ios",
+				);
+				LD = "";
+				LDPLUSPLUS = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					/usr/lib/swift,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SDKROOT)/usr/lib/swift\"",
+					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
+					"\"$(inherited)\"",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
+				RUN_CLANG_STATIC_ANALYZER = NO;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				USE_HERMES = true;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = QA;
+		};
+		CB5275102DBA64AC001AC28E /* QA */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8329A607F98AD2DF9F290C93 /* Pods-Artsy.qa.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				BUNDLE_IDENTIFIER = net.artsy.qa;
+				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
+				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.Store.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2019.05.24.09;
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				ENABLE_BITCODE = NO;
+				EXCLUDED_ARCHS = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				EXPO_PLIST_PATH = "$(SRCROOT)/Artsy/Supporting/QA/ExpoQA.plist";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"FBSDKCOCOAPODS=1",
+					"$(inherited)",
+					"PB_FIELD_32BIT=1",
+					"PB_NO_PACKED_STRUCTS=1",
+					"PB_ENABLE_MALLOC=1",
+				);
+				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = NO;
+				GCC_WARN_STRICT_SELECTOR_MATCH = NO;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
+				INFOPLIST_FILE = "$(SRCROOT)/Artsy/App_Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
+				);
+				MARKETING_VERSION = 6.7.7;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DFOLLY_NO_CONFIG",
+					"-DFOLLY_MOBILE=1",
+					"-DFOLLY_USE_LIBCPP=1",
+					"-DFOLLY_CFG_NO_COROUTINES=1",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-DFOLLY_NO_CONFIG",
+					"-DFOLLY_MOBILE=1",
+					"-DFOLLY_USE_LIBCPP=1",
+					"-DFOLLY_CFG_NO_COROUTINES=1",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-lc++",
+					"-Wl",
+					"-ld_classic",
+				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.qa;
+				PRODUCT_NAME = Artsy;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				RUN_CLANG_STATIC_ANALYZER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "Artsy/Resources/Artsy-Bridging-Header.h";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				WARNING_CFLAGS = (
+					"-Wno-unknown-warning-option",
+					"-Wobjc-missing-super-calls",
+				);
+			};
+			name = QA;
+		};
+		CB5275112DBA64AC001AC28E /* QA */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 2019.05.24.09;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				EXCLUDED_ARCHS = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ArtsyStickers/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Artsy Stickers";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
+				);
+				MARKETING_VERSION = 6.7.7;
+				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.qa.Artsy-Stickers";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = QA;
+		};
+		CB5275122DBA64AC001AC28E /* QA */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				EXCLUDED_ARCHS = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BrazePushServiceExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BrazePushServiceExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Artsy. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.qa.BrazePushServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = QA;
+		};
+		CB5275132DBA64AC001AC28E /* QA */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				EXCLUDED_ARCHS = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ArtsyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ArtsyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Artsy. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.qa.ArtsyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = QA;
+		};
+		CB5275142DBA64AC001AC28E /* QA */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 331E1048CEBC170BAC51E1AF /* Pods-ArtsyTests.qa.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ArtsyTests/Supporting_Files/Artsy_Tests-Prefix.pch";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "ArtsyTests/Supporting_Files/Artsy_Tests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
+				);
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "ArtsyTests/Supporting_Files/Artsy-Tests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Artsy.app/Artsy";
+				VALIDATE_PRODUCT = NO;
+			};
+			name = QA;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -4963,6 +5344,7 @@
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
 				13B07F951A680F5B00A75B9A /* Store */,
+				CB5275102DBA64AC001AC28E /* QA */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -4972,6 +5354,7 @@
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
 				83CBBA211A601CBA00E9B192 /* Store */,
+				CB52750F2DBA64AC001AC28E /* QA */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -4981,6 +5364,7 @@
 			buildConfigurations = (
 				CB43266C27E8F39B00B29DD6 /* Debug */,
 				CB43266D27E8F39B00B29DD6 /* Store */,
+				CB5275112DBA64AC001AC28E /* QA */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -4990,6 +5374,7 @@
 			buildConfigurations = (
 				CB43267B27E8F6F900B29DD6 /* Debug */,
 				CB43267C27E8F6F900B29DD6 /* Store */,
+				CB5275122DBA64AC001AC28E /* QA */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -4999,6 +5384,7 @@
 			buildConfigurations = (
 				CB43269427E8FA6B00B29DD6 /* Debug */,
 				CB43269527E8FA6B00B29DD6 /* Store */,
+				CB5275132DBA64AC001AC28E /* QA */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -5008,6 +5394,7 @@
 			buildConfigurations = (
 				CB43272327E8FE5400B29DD6 /* Debug */,
 				CB43272427E8FE5400B29DD6 /* Store */,
+				CB5275142DBA64AC001AC28E /* QA */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

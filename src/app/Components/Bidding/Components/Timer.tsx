@@ -176,13 +176,13 @@ export const Countdown: React.FC<CountdownProps> = ({
           hasBeenExtended={!!hasBeenExtended}
         />
       )}
-      <Text variant="xs" weight="medium" color="black60">
+      <Text variant="xs" weight="medium" color="mono60">
         {label}
       </Text>
       {!!extendedBiddingPeriodMinutes && (
         <>
           <Spacer y={1} />
-          <Text variant="xs" color="black60" textAlign="center">
+          <Text variant="xs" color="mono60" textAlign="center">
             *Closure times may be extended to accommodate last-minute bids
           </Text>
         </>

@@ -1,11 +1,11 @@
 import {
   Box,
   Flex,
+  quoteLeft,
+  quoteRight,
   Spacer,
   Spinner,
   Text,
-  quoteLeft,
-  quoteRight,
   useSpace,
 } from "@artsy/palette-mobile"
 import { MasonryFlashList } from "@shopify/flash-list"
@@ -90,7 +90,7 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
               Sorry, we couldn’t find any Artworks for {quoteLeft}
               {keyword}.{quoteRight}
             </Text>
-            <Text variant="sm-display" color="black60" textAlign="center">
+            <Text variant="sm-display" color="mono60" textAlign="center">
               Please try searching again with a different spelling.
             </Text>
           </Box>
@@ -218,7 +218,6 @@ export const ArtworkAutosuggestResultsQueryRenderer: React.FC<{
         ),
       })}
       variables={{ count: 20, keyword, input: { artistIDs: [artistSlug] } }}
-      cacheConfig={{ force: true }}
     />
   )
 }

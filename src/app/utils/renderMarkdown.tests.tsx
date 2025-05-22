@@ -63,7 +63,7 @@ describe("renderMarkdown", () => {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         react: (node, output, state) => {
           return (
-            <Text variant="sm" color="black60" key={state.key}>
+            <Text variant="sm" color="mono60" key={state.key}>
               {output(node.content, state)}
             </Text>
           )
@@ -89,7 +89,7 @@ describe("renderMarkdown", () => {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         react: (node, output, state) => {
           return (
-            <Text variant="sm" color="black60" key={state.key}>
+            <Text variant="sm" color="mono60" key={state.key}>
               {output(node.content, state)}
             </Text>
           )
@@ -118,7 +118,7 @@ describe("renderMarkdown", () => {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         react: (node, output, state) => {
           return (
-            <Text variant="sm" color="black60" key={state.key}>
+            <Text variant="sm" color="mono60" key={state.key}>
               {output(node.content, state)}
             </Text>
           )

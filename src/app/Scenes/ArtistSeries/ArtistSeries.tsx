@@ -1,27 +1,28 @@
 import {
-  Spacer,
+  Flex,
   Screen,
-  Tabs,
-  useScreenDimensions,
+  Separator,
   Skeleton,
   SkeletonBox,
-  Flex,
   SkeletonText,
-  Separator,
+  Spacer,
+  Tabs,
+  useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
 import { ArtistSeries_artistSeries$key } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
+import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
 import { ArtistSeriesArtworks } from "app/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesHeaderFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesHeader"
 import { ArtistSeriesMetaFragmentContainer } from "app/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { goBack } from "app/system/navigation/navigate"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ProvideScreenTracking } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
-import { graphql, QueryRenderer, useFragment } from "react-relay"
+import { Suspense } from "react"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface ArtistSeriesProps {
   artistSeries: ArtistSeries_artistSeries$key
@@ -53,7 +54,9 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
         >
           <Tabs.Tab name="Artworks" label="Artworks">
             <Tabs.Lazy>
-              <ArtistSeriesArtworks artistSeries={data} />
+              <Suspense fallback={<PlaceholderGrid />}>
+                <ArtistSeriesArtworks artistSeries={data} />
+              </Suspense>
             </Tabs.Lazy>
           </Tabs.Tab>
           <Tabs.Tab name="About" label="About">
@@ -117,39 +120,43 @@ const ArtistSeriesPlaceholder: React.FC = () => {
             <SkeletonText variant="xs">Artworks</SkeletonText>
             <SkeletonText variant="xs">About</SkeletonText>
           </Flex>
+          <Separator my={1} />
         </Skeleton>
 
-        <Separator mt={1} mb={4} />
-
-        <PlaceholderGrid />
+        <Flex flex={1} alignItems="center">
+          <Flex width="100%" justifyContent="space-between" p={2} flexDirection="row">
+            <SkeletonText variant="xs">Showing X works</SkeletonText>
+            <SkeletonText variant="xs">Sort & Filter</SkeletonText>
+          </Flex>
+          <PlaceholderGrid />
+        </Flex>
       </Screen.Body>
     </Screen>
   )
 }
 
-export const ArtistSeriesQueryRenderer: React.FC<{ artistSeriesID: string }> = ({
-  artistSeriesID,
-}) => {
-  return (
-    <ArtworkFiltersStoreProvider>
-      <QueryRenderer<ArtistSeriesQuery>
-        environment={getRelayEnvironment()}
-        query={graphql`
-          query ArtistSeriesQuery($artistSeriesID: ID!) {
-            artistSeries(id: $artistSeriesID) {
-              ...ArtistSeries_artistSeries
-            }
-          }
-        `}
-        cacheConfig={{ force: true }}
-        variables={{
-          artistSeriesID,
-        }}
-        render={renderWithPlaceholder({
-          Container: ArtistSeries,
-          renderPlaceholder: () => <ArtistSeriesPlaceholder />,
-        })}
-      />
-    </ArtworkFiltersStoreProvider>
-  )
-}
+export const ArtistSeriesScreenQuery = graphql`
+  query ArtistSeriesQuery($artistSeriesID: ID!) {
+    artistSeries(id: $artistSeriesID) {
+      ...ArtistSeries_artistSeries
+    }
+  }
+`
+
+export const ArtistSeriesQueryRenderer: React.FC<{ artistSeriesID: string }> = withSuspense({
+  Component: ({ artistSeriesID }) => {
+    const data = useLazyLoadQuery<ArtistSeriesQuery>(ArtistSeriesScreenQuery, { artistSeriesID })
+
+    if (!data.artistSeries) return null
+
+    return (
+      <ArtworkFiltersStoreProvider>
+        <ArtistSeries artistSeries={data.artistSeries} />
+      </ArtworkFiltersStoreProvider>
+    )
+  },
+  LoadingFallback: ArtistSeriesPlaceholder,
+  ErrorFallback: (fallbackProps) => {
+    return <ActivityErrorScreen headerTitle="Artist Series" error={fallbackProps.error} />
+  },
+})

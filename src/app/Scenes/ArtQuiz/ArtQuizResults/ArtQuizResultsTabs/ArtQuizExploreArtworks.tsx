@@ -33,10 +33,10 @@ export const ArtQuizExploreArtworks = ({
           width={dimensions.width}
           hidePartner
           artistNamesTextStyle={{ weight: "regular" }}
-          saleInfoTextStyle={{ weight: "medium", color: "black100" }}
+          saleInfoTextStyle={{ weight: "medium", color: "mono100" }}
         />
       ) : (
-        <Text variant="xs" color="black60" textAlign="center">
+        <Text variant="xs" color="mono60" textAlign="center">
           We don't have any recommendations for you at this time.
         </Text>
       )}

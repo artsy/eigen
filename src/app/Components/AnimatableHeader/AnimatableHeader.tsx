@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, Flex, useTheme, Text } from "@artsy/palette-mobile"
+import { ArrowLeftIcon, Flex, Text, useTheme } from "@artsy/palette-mobile"
 import { FadeInLeft } from "app/utils/animations/FadeInLeft"
 import { useEffect } from "react"
 import { TouchableOpacity, View } from "react-native"
@@ -14,7 +14,7 @@ export interface AnimatableHeaderProps {
 
 export const AnimatableHeader = (props: AnimatableHeaderProps) => {
   const { title, rightButtonDisabled, rightButtonText, onRightButtonPress } = props
-  const { space } = useTheme()
+  const { space, color } = useTheme()
   const { headerHeight, setTitle, titleShown } = useAnimatableHeaderContext()
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
         paddingHorizontal: space(2),
         alignItems: "center",
         height: headerHeight,
-        backgroundColor: "white",
+        backgroundColor: color("background"),
       }}
     >
       <TouchableOpacity
@@ -36,7 +36,7 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
         onPress={props.onLeftButtonPress}
         accessibilityLabel="Header back button"
       >
-        <ArrowLeftIcon fill="black100" mt="2px" />
+        <ArrowLeftIcon fill="mono100" mt="2px" />
       </TouchableOpacity>
 
       <Flex
@@ -61,7 +61,7 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
           <Text
             variant="sm"
             style={{ textDecorationLine: "underline" }}
-            color={rightButtonDisabled ? "black30" : "black100"}
+            color={rightButtonDisabled ? "mono60" : "mono100"}
           >
             {rightButtonText}
           </Text>

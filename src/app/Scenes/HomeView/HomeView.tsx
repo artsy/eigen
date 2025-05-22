@@ -12,28 +12,28 @@ import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboar
 import { RetryErrorBoundary, useRetryErrorBoundaryContext } from "app/Components/RetryErrorBoundary"
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/HomeView/Components/EmailConfirmationBanner"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
-import { HomeViewStore, HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
+import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
+import { useDarkModeOnboarding } from "app/Scenes/HomeView/hooks/useDarkModeOnboarding"
 import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHomeViewExperimentTracking"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { Playground } from "app/Scenes/Playground/Playground"
-import { searchQueryDefaultVariables } from "app/Scenes/Search/Search"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
-import { useActivityDotExperiment } from "app/utils/experiments/useActivityDotExperiment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsDeepLink } from "app/utils/hooks/useIsDeepLink"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
-import { useSwitchStatusBarStyle } from "app/utils/useStatusBarStyle"
 import { memo, RefObject, Suspense, useCallback, useEffect, useState } from "react"
-import { FlatList, Linking, RefreshControl } from "react-native"
+import { FlatList, Linking, RefreshControl, StatusBar } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const NUMBER_OF_SECTIONS_TO_LOAD = 10
@@ -44,6 +44,7 @@ export const homeViewScreenQueryVariables = () => ({
 
 export const HomeView: React.FC = memo(() => {
   const flashlistRef = useBottomTabsScrollToTop()
+
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const { fetchKey } = useRetryErrorBoundaryContext()
@@ -59,22 +60,23 @@ export const HomeView: React.FC = memo(() => {
     }
   )
 
-  const trackedSectionTypes = HomeViewStore.useStoreState((state) => state.trackedSectionTypes)
-
-  const { trackExperiment: trackCardRedesignExperiment } = useExperimentVariant(
-    "onyx_artwork-card-save-and-follow-cta-redesign"
+  const { trackExperiment: trackInternalTestingExperiment } = useExperimentVariant(
+    "onyx_internal-testing-experiment"
   )
+  const { trackExperiment: trackQuickLinksExperiment } = useExperimentVariant(
+    "onyx_quick-links-experiment"
+  )
+  const { trackExperiment: trackDiscoverTabExperiment } =
+    useExperimentVariant("diamond_discover-tab")
+  const enableNavigationPills = useFeatureFlag("AREnableHomeViewQuickLinks")
 
   useEffect(() => {
-    if (trackedSectionTypes.includes("HomeViewSectionArtworks")) {
-      trackCardRedesignExperiment()
+    trackDiscoverTabExperiment()
+    trackInternalTestingExperiment()
+
+    if (enableNavigationPills) {
+      trackQuickLinksExperiment()
     }
-  }, [trackedSectionTypes.includes("HomeViewSectionArtworks")])
-
-  const { trackExperiment: trackActvityDotExperiment } = useActivityDotExperiment()
-
-  useEffect(() => {
-    trackActvityDotExperiment()
   }, [])
 
   const { data, loadNext, hasNext } = usePaginationFragment<
@@ -87,9 +89,10 @@ export const HomeView: React.FC = memo(() => {
 
   useDismissSavedArtwork(savedArtworksCount > 0)
   useEnableProgressiveOnboarding()
+
   const prefetchUrl = usePrefetch()
-  const tracking = useHomeViewTracking()
   useHomeViewExperimentTracking(queryData.homeView?.experiments)
+  const tracking = useHomeViewTracking()
 
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
 
@@ -99,10 +102,11 @@ export const HomeView: React.FC = memo(() => {
     Linking.getInitialURL().then((url) => {
       const isDeepLink = !!url
       if (!isDeepLink) {
-        prefetchUrl<SearchQuery>("search", searchQueryDefaultVariables)
+        prefetchUrl<SearchQuery>("search")
         prefetchUrl("my-profile")
+        prefetchUrl("my-profile/settings")
         prefetchUrl("inbox")
-        prefetchUrl("sell")
+        prefetchUrl("infinite-discovery")
       }
     })
   }, [])
@@ -163,6 +167,8 @@ export const HomeView: React.FC = memo(() => {
     })
   }
 
+  useDarkModeOnboarding()
+
   return (
     <Screen safeArea={true}>
       <Screen.Body fullwidth>
@@ -198,21 +204,21 @@ export const HomeView: React.FC = memo(() => {
 })
 
 const HomeViewScreenComponent: React.FC = () => {
-  const artQuizState = GlobalStore.useAppState((state) => state.auth.onboardingArtQuizState)
+  const artQuizState = GlobalStore.useAppState((state) => state.onboarding.onboardingArtQuizState)
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
+  const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+
   const showPlayground = useDevToggle("DTShowPlayground")
 
   const { isDeepLink } = useIsDeepLink()
 
-  useSwitchStatusBarStyle("dark-content", "dark-content")
+  StatusBar.setBarStyle(theme === "dark" ? "light-content" : "dark-content")
 
   useEffect(() => {
     if (artQuizState === "incomplete" && isNavigationReady) {
       // Wait for react-navigation to start drawing the screen before navigating to ArtQuiz
       requestAnimationFrame(() => {
-        navigate("/art-quiz", {
-          replaceActiveScreen: true,
-        })
+        navigate("/art-quiz")
       })
       return
     }

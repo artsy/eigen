@@ -3,7 +3,6 @@ import {
   HORIZONTAL_PADDING,
   INPUT_BORDER_RADIUS,
   INPUT_MIN_HEIGHT,
-  INPUT_VARIANTS,
   InputState,
   InputVariant,
   Text,
@@ -11,7 +10,10 @@ import {
   TriangleDown,
   getInputState,
   getInputVariant,
+  getInputVariants,
+  useColor,
   useSpace,
+  useTheme,
 } from "@artsy/palette-mobile"
 import { THEME } from "@artsy/palette-tokens"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
@@ -47,6 +49,7 @@ export const SelectButton: React.FC<{
   error,
 }) => {
   const space = useSpace()
+  const color = useColor()
 
   const variant: InputVariant = getInputVariant({
     hasError: !!hasError || !!error,
@@ -61,17 +64,19 @@ export const SelectButton: React.FC<{
 
   const hasSelectedValue = !!value
 
+  const { theme } = useTheme()
+  const inputVariants = getInputVariants(theme)
+
   const animatedStyles = useAnimatedStyle(() => {
     return {
-      borderColor: withTiming(INPUT_VARIANTS[variant][animatedState.value].inputBorderColor),
+      borderColor: withTiming(inputVariants[variant][animatedState.value].inputBorderColor),
     }
   })
 
   const labelStyles = useAnimatedStyle(() => {
     return {
-      backgroundColor: "white",
       paddingHorizontal: withTiming(hasSelectedValue ? 5 : 0),
-      color: withTiming(INPUT_VARIANTS[variant][animatedState.value].labelColor),
+      color: withTiming(inputVariants[variant][animatedState.value].labelColor),
       top: withTiming(hasSelectedValue ? -INPUT_MIN_HEIGHT / 2 : 0),
       fontSize: withTiming(
         hasSelectedValue
@@ -95,7 +100,7 @@ export const SelectButton: React.FC<{
             haptic="impactLight"
             hitSlop={{ top: 10, bottom: 10 }}
           >
-            <Text underline variant="xs" color="black60">
+            <Text underline variant="xs" color="mono60">
               {tooltipText}
             </Text>
           </Touchable>
@@ -115,7 +120,11 @@ export const SelectButton: React.FC<{
           ]}
           flexDirection="row"
         >
-          {!!title && <AnimatedText style={labelStyles}>{title}</AnimatedText>}
+          {!!title && (
+            <AnimatedText style={[{ backgroundColor: color("background") }, labelStyles]}>
+              {title}
+            </AnimatedText>
+          )}
 
           {!!value && (
             <Text
@@ -139,13 +148,13 @@ export const SelectButton: React.FC<{
               right: HORIZONTAL_PADDING,
             }}
           >
-            <TriangleDown fill="black60" height={16} width={16} />
+            <TriangleDown fill="mono60" height={16} width={16} />
           </Flex>
         </AnimatedFlex>
       </Touchable>
       {/* No need to show required if we have an error message */}
       {(!!required || !!optional) && !error ? (
-        <Text color="black60" variant="xs" pl={`${HORIZONTAL_PADDING}px`} mt={0.5}>
+        <Text color="mono60" variant="xs" pl={`${HORIZONTAL_PADDING}px`} mt={0.5}>
           {!!required && "* Required"}
           {!!optional && "* Optional"}
         </Text>

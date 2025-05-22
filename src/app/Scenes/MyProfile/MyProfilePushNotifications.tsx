@@ -1,21 +1,29 @@
+import { OwnerType } from "@artsy/cohesion"
 import { Box, Button, Flex, Join, Separator, Text } from "@artsy/palette-mobile"
 import { MyProfilePushNotificationsQuery } from "__generated__/MyProfilePushNotificationsQuery.graphql"
-import { MyProfilePushNotifications_me$data } from "__generated__/MyProfilePushNotifications_me.graphql"
+import {
+  MyProfilePushNotifications_me$data,
+  MyProfilePushNotifications_me$key,
+} from "__generated__/MyProfilePushNotifications_me.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
 } from "app/utils/PushNotification"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { withSuspense } from "app/utils/hooks/withSuspense"
+import { PlaceholderBox } from "app/utils/placeholders"
 import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import useAppState from "app/utils/useAppState"
 import { debounce } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
-import { Alert, Linking, Platform, RefreshControl, ScrollView, View } from "react-native"
-import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { Alert, Linking, Platform, RefreshControl, ScrollView } from "react-native"
+import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 
 const INSTRUCTIONS = Platform.select({
   ios: `To receive push notifications from Artsy, you will need to enable them in your iOS Settings. Tap 'Artsy' and
@@ -34,17 +42,15 @@ export type UserPushNotificationSettings =
   | "receivePurchaseNotification"
   | "receiveSaleOpeningClosingNotification"
   | "receiveOrderNotification"
-  | "receiveViewingRoomNotification"
-  | "receivePartnerShowNotification"
   | "receivePartnerOfferNotification"
 
 export const OpenSettingsBanner = () => (
   <>
-    <Flex py={4} px={2} backgroundColor="black5" alignItems="center">
-      <Text variant="sm-display" weight="medium" color="black">
+    <Flex py={4} px={2} backgroundColor="mono5" alignItems="center">
+      <Text variant="sm-display" weight="medium" color="mono100">
         Artsy would like to send you notifications
       </Text>
-      <Text variant="sm" textAlign="center" color="black60" marginTop={1} marginBottom={2}>
+      <Text variant="sm" textAlign="center" color="mono60" marginTop={1} marginBottom={2}>
         {INSTRUCTIONS}
       </Text>
       <Button
@@ -65,11 +71,11 @@ export const OpenSettingsBanner = () => (
 
 export const AllowPushNotificationsBanner = () => (
   <>
-    <Flex py={4} px={2} backgroundColor="black5" alignItems="center">
-      <Text variant="sm-display" weight="medium" color="black">
+    <Flex py={4} px={2} backgroundColor="mono5" alignItems="center">
+      <Text variant="sm-display" weight="medium" color="mono100">
         Artsy would like to send you notifications
       </Text>
-      <Text variant="sm" textAlign="center" color="black60" marginTop={1} marginBottom={2}>
+      <Text variant="sm" textAlign="center" color="mono60" marginTop={1} marginBottom={2}>
         We need your permission to send push notifications, which may include alerts, artwork
         reminders or purchase updates.
       </Text>
@@ -96,27 +102,76 @@ const NotificationPermissionsBox = ({
   isLoading: boolean
 }) => (
   <Box py={1} px={2}>
-    <Text variant="sm-display" color={isLoading ? "black60" : "black100"} weight="medium" py={1}>
+    <Text variant="sm-display" color={isLoading ? "mono60" : "mono100"} weight="medium" py={1}>
       {title}
     </Text>
     {children}
   </Box>
 )
 
+const MyProfilePushNotificationsPlaceholder: React.FC<{}> = () => {
+  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
+
+  if (enableRedesignedSettings) {
+    return (
+      <MyProfileScreenWrapper
+        title="Notifications"
+        contentContainerStyle={{ paddingHorizontal: 0 }}
+      >
+        <Flex>
+          <Content
+            userNotificationSettings={
+              {
+                id: "1",
+                receiveLotOpeningSoonNotification: false,
+                receiveNewSalesNotification: false,
+                receiveNewWorksNotification: false,
+                receiveOrderNotification: false,
+                receiveOutbidNotification: false,
+                receivePartnerOfferNotification: false,
+                receivePartnerShowNotification: false,
+                receivePromotionNotification: false,
+                receivePurchaseNotification: false,
+                receiveSaleOpeningClosingNotification: false,
+                receiveViewingRoomNotification: false,
+              } as MyProfilePushNotifications_me$data
+            }
+            isLoading={true}
+            handleUpdateUserNotificationSettings={() => {}}
+            notificationAuthorizationStatus={PushAuthorizationStatus.NotDetermined}
+          />
+        </Flex>
+      </MyProfileScreenWrapper>
+    )
+  }
+
+  return (
+    <Flex p={2}>
+      <PlaceholderBox height={40} />
+      <Separator my={1} />
+      <PlaceholderBox height={40} />
+      <Separator my={1} />
+      <PlaceholderBox height={40} />
+    </Flex>
+  )
+}
+
 export const MyProfilePushNotifications: React.FC<{
-  me: MyProfilePushNotifications_me$data
-  relay: RelayRefetchProp
-  isLoading: boolean
-}> = ({ me, relay, isLoading = false }) => {
+  me: MyProfilePushNotifications_me$key
+  isLoading?: boolean
+}> = ({ me, isLoading = false }) => {
+  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
+
   const [notificationAuthorizationStatus, setNotificationAuthorizationStatus] =
     useState<PushAuthorizationStatus>(PushAuthorizationStatus.NotDetermined)
-  const [userNotificationSettings, setUserNotificationSettings] =
-    useState<MyProfilePushNotifications_me$data>(me)
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
 
-  const enablePartnerOffersNotificationSwitch = useFeatureFlag(
-    "AREnablePartnerOffersNotificationSwitch"
-  )
+  const [fragmentData, refetch] = useRefetchableFragment<
+    MyProfilePushNotificationsQuery,
+    MyProfilePushNotifications_me$key
+  >(meFragment, me)
+
+  const [userNotificationSettings, setUserNotificationSettings] = useState(fragmentData)
 
   useEffect(() => {
     getPermissionStatus()
@@ -134,13 +189,10 @@ export const MyProfilePushNotifications: React.FC<{
   }
 
   const onRefresh = useCallback(() => {
-    if (relay) {
-      setIsRefreshing(true)
-      relay.refetch(() => {
-        setIsRefreshing(false)
-      })
-    }
-  }, [])
+    setIsRefreshing(true)
+    refetch({}, { fetchPolicy: "store-and-network" })
+    setIsRefreshing(false)
+  }, [refetch])
 
   const handleUpdateUserNotificationSettings = useCallback(
     async (notificationType: UserPushNotificationSettings, value: boolean) => {
@@ -166,12 +218,79 @@ export const MyProfilePushNotifications: React.FC<{
     []
   )
 
-  // Render list of enabled push notification permissions
-  const renderContent = () => (
-    <View
-      style={{
-        opacity: notificationAuthorizationStatus === PushAuthorizationStatus.Authorized ? 1 : 0.5,
-      }}
+  if (enableRedesignedSettings) {
+    return (
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({
+          context_screen_owner_type: OwnerType.accountNotifications,
+        })}
+      >
+        <MyProfileScreenWrapper
+          title="Notifications"
+          contentContainerStyle={{
+            // Override the default paddingHorizontal of MyProfileScreenWrapper
+            paddingHorizontal: 0,
+          }}
+          RefreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+        >
+          {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && (
+            <OpenSettingsBanner />
+          )}
+          {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined &&
+            Platform.OS === "ios" && <AllowPushNotificationsBanner />}
+          <Content
+            userNotificationSettings={userNotificationSettings}
+            isLoading={isLoading}
+            handleUpdateUserNotificationSettings={handleUpdateUserNotificationSettings}
+            notificationAuthorizationStatus={notificationAuthorizationStatus}
+          />
+        </MyProfileScreenWrapper>
+      </ProvideScreenTrackingWithCohesionSchema>
+    )
+  }
+
+  return (
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.accountNotifications,
+      })}
+    >
+      <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
+        {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && <OpenSettingsBanner />}
+        {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined &&
+          Platform.OS === "ios" && <AllowPushNotificationsBanner />}
+        <Content
+          userNotificationSettings={userNotificationSettings}
+          isLoading={isLoading}
+          handleUpdateUserNotificationSettings={handleUpdateUserNotificationSettings}
+          notificationAuthorizationStatus={notificationAuthorizationStatus}
+        />
+      </ScrollView>
+    </ProvideScreenTrackingWithCohesionSchema>
+  )
+}
+
+const Content: React.FC<{
+  userNotificationSettings: MyProfilePushNotifications_me$data
+  isLoading: boolean
+  handleUpdateUserNotificationSettings: (
+    notificationType: UserPushNotificationSettings,
+    value: boolean
+  ) => void
+  notificationAuthorizationStatus: PushAuthorizationStatus
+}> = ({
+  userNotificationSettings,
+  isLoading,
+  handleUpdateUserNotificationSettings,
+  notificationAuthorizationStatus,
+}) => {
+  const enablePartnerOffersNotificationSwitch = useFeatureFlag(
+    "AREnablePartnerOffersNotificationSwitch"
+  )
+
+  return (
+    <Flex
+      opacity={notificationAuthorizationStatus === PushAuthorizationStatus.Authorized ? 1 : 0.5}
       pointerEvents={
         notificationAuthorizationStatus === PushAuthorizationStatus.Authorized ? "auto" : "none"
       }
@@ -260,24 +379,6 @@ export const MyProfilePushNotifications: React.FC<{
             }}
           />
           <SwitchMenu
-            title="New Viewing Rooms for You"
-            description="New viewing rooms added by galleries you follow"
-            value={!!userNotificationSettings.receiveViewingRoomNotification}
-            disabled={isLoading}
-            onChange={(value) => {
-              handleUpdateUserNotificationSettings("receiveViewingRoomNotification", value)
-            }}
-          />
-          <SwitchMenu
-            title="New Shows for You"
-            description="New shows added by galleries you follow"
-            value={!!userNotificationSettings.receivePartnerShowNotification}
-            disabled={isLoading}
-            onChange={(value) => {
-              handleUpdateUserNotificationSettings("receivePartnerShowNotification", value)
-            }}
-          />
-          <SwitchMenu
             title="Promotions"
             description="Updates on Artsy's latest campaigns and special offers."
             value={!!userNotificationSettings.receivePromotionNotification}
@@ -288,66 +389,55 @@ export const MyProfilePushNotifications: React.FC<{
           />
         </NotificationPermissionsBox>
       </Join>
-    </View>
-  )
-
-  // TODO: the below logic may be broken on Android 13 with runtime push permissions
-  return (
-    <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
-      {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && <OpenSettingsBanner />}
-      {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined &&
-        Platform.OS === "ios" && <AllowPushNotificationsBanner />}
-      {renderContent()}
-    </ScrollView>
+    </Flex>
   )
 }
 
-const MyProfilePushNotificationsContainer = createRefetchContainer(
-  MyProfilePushNotifications,
-  {
-    me: graphql`
-      fragment MyProfilePushNotifications_me on Me {
-        receiveLotOpeningSoonNotification
-        receiveNewSalesNotification
-        receiveNewWorksNotification
-        receiveOutbidNotification
-        receivePromotionNotification
-        receivePurchaseNotification
-        receiveSaleOpeningClosingNotification
-        receiveOrderNotification
-        receiveViewingRoomNotification
-        receivePartnerShowNotification
-        receivePartnerOfferNotification
-      }
-    `,
-  },
-  graphql`
-    query MyProfilePushNotificationsRefetchQuery {
-      me {
-        ...MyProfilePushNotifications_me
-      }
-    }
-  `
-)
+const meFragment = graphql`
+  fragment MyProfilePushNotifications_me on Me
+  @refetchable(queryName: "MyProfilePushNotificationsRefetchQuery") {
+    receiveLotOpeningSoonNotification
+    receiveNewSalesNotification
+    receiveNewWorksNotification
+    receiveOutbidNotification
+    receivePromotionNotification
+    receivePurchaseNotification
+    receiveSaleOpeningClosingNotification
+    receiveOrderNotification
+    receiveViewingRoomNotification
+    receivePartnerShowNotification
+    receivePartnerOfferNotification
+  }
+`
 
-export const MyProfilePushNotificationsQueryRenderer: React.FC<{}> = ({}) => {
-  return (
-    <QueryRenderer<MyProfilePushNotificationsQuery>
-      environment={getRelayEnvironment()}
-      query={graphql`
+export const MyProfilePushNotificationsQueryRenderer: React.FC<{}> = withSuspense({
+  Component: ({}) => {
+    const data = useLazyLoadQuery<MyProfilePushNotificationsQuery>(
+      graphql`
         query MyProfilePushNotificationsQuery {
           me {
             ...MyProfilePushNotifications_me
           }
         }
-      `}
-      render={renderWithPlaceholder({
-        Container: MyProfilePushNotificationsContainer,
-        renderPlaceholder: () => (
-          <MyProfilePushNotifications isLoading me={{} as any} relay={null as any} />
-        ),
-      })}
-      variables={{}}
-    />
-  )
-}
+      `,
+      {}
+    )
+
+    if (!data.me) {
+      return null
+    }
+
+    return <MyProfilePushNotifications me={data.me} />
+  },
+  LoadingFallback: MyProfilePushNotificationsPlaceholder,
+  ErrorFallback: (fallbackProps) => {
+    return (
+      <LoadFailureView
+        onRetry={fallbackProps.resetErrorBoundary}
+        useSafeArea={false}
+        error={fallbackProps.error}
+        trackErrorBoundary={false}
+      />
+    )
+  },
+})

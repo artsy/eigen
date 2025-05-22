@@ -8,7 +8,7 @@ describe("ViewingRoomArtwork", () => {
     Component: () => {
       return (
         <ViewingRoomArtworkScreen
-          viewing_room_id="zero-dot-dot-dot-alessandro-pessoli"
+          viewingRoomID="zero-dot-dot-dot-alessandro-pessoli"
           artwork_id="alessandro-pessoli-ardente-primavera-number-1"
         />
       )

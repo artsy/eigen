@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedLearnMore } from "@artsy/cohesion"
-import { Spacer, Box, Text, LinkText } from "@artsy/palette-mobile"
+import { Box, LinkText, Spacer, Text } from "@artsy/palette-mobile"
 import { ShippingAndTaxes_artwork$data } from "__generated__/ShippingAndTaxes_artwork.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -10,7 +10,8 @@ interface ShippingAndTaxesProps {
 }
 
 const ShippingAndTaxes: React.FC<ShippingAndTaxesProps> = ({ artwork }) => {
-  const { shippingInfo, shippingOrigin, priceIncludesTaxDisplay, taxInfo } = artwork
+  const { shippingInfo, shippingOrigin, pickupAvailable, priceIncludesTaxDisplay, taxInfo } =
+    artwork
   const { trackEvent } = useTracking()
 
   const handleLearnMorePress = () => {
@@ -24,7 +25,6 @@ const ShippingAndTaxes: React.FC<ShippingAndTaxesProps> = ({ artwork }) => {
       }
 
       trackEvent(payload)
-      navigate(taxInfo.moreInfo.url)
     }
   }
 
@@ -33,34 +33,40 @@ const ShippingAndTaxes: React.FC<ShippingAndTaxesProps> = ({ artwork }) => {
       {!artwork.isUnlisted && (
         <>
           <Text variant="md">Shipping and taxes</Text>
-          <Spacer y={1} />
+          <Spacer y={2} />
         </>
       )}
 
       {!!shippingOrigin && (
-        <Text variant="sm" color="black60" mb={0.5}>
+        <Text variant="sm" color="mono60">
           Ships from {shippingOrigin}
         </Text>
       )}
-
       {!!shippingInfo && (
-        <Text variant="xs" color="black60">
+        <Text variant="sm" color="mono60">
           {shippingInfo}
         </Text>
       )}
+      {!!pickupAvailable && (
+        <Text variant="sm" color="mono60">
+          Pickup available
+        </Text>
+      )}
+
+      {(!!priceIncludesTaxDisplay || !!taxInfo) && <Spacer y={2} />}
 
       {!!priceIncludesTaxDisplay && (
-        <Text variant="xs" color="black60">
+        <Text variant="sm" color="mono60">
           {priceIncludesTaxDisplay}
         </Text>
       )}
 
       {!!taxInfo && (
-        <Text variant="xs" color="black60">
+        <Text variant="sm" color="mono60">
           {taxInfo.displayText}{" "}
-          <LinkText variant="xs" onPress={handleLearnMorePress}>
-            {taxInfo.moreInfo.displayText}
-          </LinkText>
+          <RouterLink to={taxInfo.moreInfo.url} hasChildTouchable onPress={handleLearnMorePress}>
+            <LinkText variant="sm">{taxInfo.moreInfo.displayText}</LinkText>
+          </RouterLink>
         </Text>
       )}
     </Box>
@@ -73,6 +79,7 @@ export const ShippingAndTaxesFragmentContainer = createFragmentContainer(Shippin
       isUnlisted
       shippingOrigin
       shippingInfo
+      pickupAvailable
       priceIncludesTaxDisplay
       taxInfo {
         displayText

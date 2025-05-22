@@ -172,7 +172,7 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
     <>
       <Flex flexDirection="row" flexWrap="wrap" justifyContent="space-between" alignItems="center">
         {!!artwork.saleArtwork?.lotLabel && (
-          <Text variant="md" color="black100">
+          <Text variant="md" color="mono100">
             Lot {artwork.saleArtwork.lotLabel}
           </Text>
         )}
@@ -205,7 +205,7 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
       {!!shouldShowTimer && (
         <>
           <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
-            <Text variant="xs" color="black60">
+            <Text variant="xs" color="mono60">
               {!!collectorSignals?.auction?.lotWatcherCount
                 ? `${collectorSignals.auction.lotWatcherCount} Watcher${
                     collectorSignals.auction.lotWatcherCount > 1 ? "s" : ""
@@ -213,7 +213,7 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
                 : ""}
             </Text>
 
-            <Text variant="xs" color="black60" textAlign="right">
+            <Text variant="xs" color="mono60" textAlign="right">
               {label}
             </Text>
           </Flex>

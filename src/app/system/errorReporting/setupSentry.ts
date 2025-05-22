@@ -1,19 +1,20 @@
 import * as Sentry from "@sentry/react-native"
 import { appJson } from "app/utils/jsonFiles"
 import { Platform } from "react-native"
-import Config from "react-native-config"
 import DeviceInfo from "react-native-device-info"
+import Keys from "react-native-keys"
 
-export const routingInstrumentation = Sentry.reactNavigationIntegration({
+export const navigationInstrumentation = Sentry.reactNavigationIntegration({
   enableTimeToInitialDisplay: true,
 })
 
 // important! this must match the release version specified
 // in fastfile in order for sourcemaps/sentry stacktraces to work
 export const eigenSentryReleaseName = () => {
-  const codePushReleaseName = appJson().codePushReleaseName
-  if (codePushReleaseName && codePushReleaseName !== "none") {
-    return codePushReleaseName
+  const expoReleaseNameBase = appJson().expoReleaseNameBase
+  if (expoReleaseNameBase && expoReleaseNameBase !== "none") {
+    const prefix = Platform.OS === "ios" ? "ios" : "android"
+    return prefix + "-" + expoReleaseNameBase
   } else {
     const prefix = Platform.OS === "ios" ? "ios" : "android"
     const buildNumber = DeviceInfo.getBuildNumber()
@@ -23,9 +24,9 @@ export const eigenSentryReleaseName = () => {
 }
 
 const eigenSentryDist = () => {
-  const codePushDist = appJson().codePushDist
-  if (codePushDist && codePushDist !== "none") {
-    return codePushDist
+  const expoDist = appJson().expoDist
+  if (expoDist && expoDist !== "none") {
+    return expoDist
   } else {
     return DeviceInfo.getBuildNumber()
   }
@@ -36,8 +37,9 @@ interface SetupSentryProps extends Partial<Sentry.ReactNativeOptions> {
 }
 
 export function setupSentry(props: SetupSentryProps = { debug: false }) {
-  const sentryDSN = Config.SENTRY_DSN
-  const ossUser = Config.OSS === "true"
+  const sentryDSN = Keys.secureFor("SENTRY_DSN")
+  const oss = Keys.OSS
+  const ossUser = oss === "true"
 
   // In DEV, enabling this will clober stack traces in errors and logs, obscuring
   // the source of the error. So we disable it in dev mode.
@@ -67,11 +69,7 @@ export function setupSentry(props: SetupSentryProps = { debug: false }) {
     tracesSampleRate: props.debug ? 1.0 : 0.05,
     profilesSampleRate: props.debug ? 1.0 : 0.05,
     debug: props.debug,
-    integrations: [
-      Sentry.reactNativeTracingIntegration({
-        routingInstrumentation,
-      }),
-    ],
+    integrations: [navigationInstrumentation],
     ...props,
   })
 }

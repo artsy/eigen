@@ -1,17 +1,8 @@
-import {
-  bullet,
-  Flex,
-  NoArtworkIcon,
-  Spacer,
-  Stopwatch,
-  Text,
-  useColor,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { bullet, Flex, NoArtworkIcon, Spacer, Stopwatch, Text } from "@artsy/palette-mobile"
 import { addBreadcrumb } from "@sentry/react-native"
 import { AuctionResultListItem_auctionResult$data } from "__generated__/AuctionResultListItem_auctionResult.graphql"
 import { auctionResultHasPrice, auctionResultText } from "app/Scenes/AuctionResult/helpers"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { QAInfoManualPanel, QAInfoRow } from "app/utils/QAInfo"
 import { capitalize } from "lodash"
 import moment from "moment"
@@ -46,8 +37,6 @@ const AuctionResultListItem: React.FC<Props> = ({
   const tracking = useTracking()
   const [couldNotLoadImage, setCouldNotLoadImage] = useState(false)
 
-  const color = useColor()
-
   const QAInfo: React.FC = () => (
     <QAInfoManualPanel position="absolute" top={0} left={95}>
       <QAInfoRow name="id" value={auctionResult.internalID} />
@@ -65,17 +54,16 @@ const AuctionResultListItem: React.FC<Props> = ({
     } else if (trackingEventPayload) {
       tracking.trackEvent(trackingEventPayload)
     }
-
-    // For upcoming auction results that are happening in Artsy we want to navigate to the lot page
-    if (auctionResult.isUpcoming && auctionResult.isInArtsyAuction && auctionResult.externalURL) {
-      navigate(auctionResult.externalURL)
-    } else {
-      navigate(`/artist/${auctionResult.artistID}/auction-result/${auctionResult.internalID}`)
-    }
   }
 
+  // For upcoming auction results that are happening in Artsy we want to navigate to the lot page
+  const href =
+    auctionResult.isUpcoming && auctionResult.isInArtsyAuction && auctionResult.externalURL
+      ? auctionResult.externalURL
+      : `/artist/${auctionResult.artistID}/auction-result/${auctionResult.internalID}`
+
   return (
-    <Touchable underlayColor={color("black5")} onPress={handlePress}>
+    <RouterLink onPress={handlePress} to={href}>
       <Flex px={withHorizontalPadding ? 2 : 0} flexDirection="row" width={width}>
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url || couldNotLoadImage ? (
@@ -83,11 +71,11 @@ const AuctionResultListItem: React.FC<Props> = ({
             width={AUCTION_RESULT_CARD_IMAGE_WIDTH}
             height={AUCTION_RESULT_CARD_IMAGE_HEIGHT}
             borderRadius={2}
-            backgroundColor="black5"
+            backgroundColor="mono5"
             alignItems="center"
             justifyContent="center"
           >
-            <NoArtworkIcon width={30} height={30} fill="black60" />
+            <NoArtworkIcon width={30} height={30} fill="mono60" />
           </Flex>
         ) : (
           <Flex
@@ -125,14 +113,14 @@ const AuctionResultListItem: React.FC<Props> = ({
           <Flex flex={4}>
             <Flex>
               {!!showArtistName && !!auctionResult.artist?.name && (
-                <Text variant="xs" color="black100" numberOfLines={2}>
+                <Text variant="xs" color="mono100" numberOfLines={2}>
                   {auctionResult.artist?.name}
                 </Text>
               )}
               <Text
                 variant="xs"
                 ellipsizeMode="middle"
-                color="black100"
+                color="mono100"
                 numberOfLines={1}
                 style={{ flexShrink: 1 }}
               >
@@ -144,13 +132,13 @@ const AuctionResultListItem: React.FC<Props> = ({
             </Flex>
 
             {!!auctionResult.mediumText && (
-              <Text variant="xs" color="black60" numberOfLines={1}>
+              <Text variant="xs" color="mono60" numberOfLines={1}>
                 {capitalize(auctionResult.mediumText)}
               </Text>
             )}
 
             {!!auctionResult.dimensionText && (
-              <Text variant="xs" color="black60" numberOfLines={1}>
+              <Text variant="xs" color="mono60" numberOfLines={1}>
                 {auctionResult.dimensionText}
               </Text>
             )}
@@ -158,7 +146,7 @@ const AuctionResultListItem: React.FC<Props> = ({
             <Spacer y={1} />
 
             {!!auctionResult.saleDate && (
-              <Text variant="xs" color="black60" numberOfLines={1} testID="saleInfo">
+              <Text variant="xs" color="mono60" numberOfLines={1} testID="saleInfo">
                 {moment(auctionResult.saleDate).utc().format("MMM D, YYYY")}
                 {` ${bullet} `}
                 {auctionResult.organization}
@@ -170,7 +158,7 @@ const AuctionResultListItem: React.FC<Props> = ({
         </Flex>
       </Flex>
       <QAInfo />
-    </Touchable>
+    </RouterLink>
   )
 }
 

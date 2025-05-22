@@ -1,7 +1,6 @@
-import { Touchable } from "@artsy/palette-mobile"
 import { ViewingRoomsListItem_item$key } from "__generated__/ViewingRoomsListItem_item.graphql"
 import { CardTagProps, SmallCard } from "app/Components/Cards"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { Schema } from "app/utils/track"
 import { View } from "react-native"
@@ -15,22 +14,22 @@ export const tagForStatus = (
 ): CardTagProps | undefined => {
   switch (status) {
     case "closed":
-      return { text: "Closed", textColor: "white100", color: "black100" }
+      return { text: "Closed", textColor: "mono0", color: "mono100" }
     case "live":
       if (distanceToClose === null) {
         return undefined
       }
       return {
         text: `${distanceToClose} left`,
-        textColor: "black60",
-        color: "white100",
-        borderColor: "black5",
+        textColor: "mono60",
+        color: "mono0",
+        borderColor: "mono5",
       }
     case "scheduled":
       if (distanceToOpen === null) {
         return undefined
       }
-      return { text: "Opening soon", textColor: "white100", color: "black100" }
+      return { text: "Opening soon", textColor: "mono0", color: "mono100" }
   }
   return undefined
 }
@@ -89,11 +88,11 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = (props)
 
   return (
     <View>
-      <Touchable
+      <RouterLink
         onPress={() => {
           trackEvent(tracks.tapViewingRoomListItem(internalID, slug))
-          navigate(`/viewing-room/${slug}`)
         }}
+        to={`/viewing-room/${slug}`}
       >
         <SmallCard
           images={images}
@@ -101,7 +100,7 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = (props)
           subtitle={item.partner?.name ?? undefined}
           tag={tag}
         />
-      </Touchable>
+      </RouterLink>
     </View>
   )
 }

@@ -1,11 +1,8 @@
 import { graphql } from "react-relay"
-import {
-  AuctionResultsScreenScreenWrapperQueryQueryRenderer,
-  AuctionResultsState,
-} from "./AuctionResultsScreenWrapper"
+import { AuctionResultsScreenWrapper, AuctionResultsState } from "./AuctionResultsScreenWrapper"
 
 export const AuctionResultsForArtistsYouFollowQueryRenderer = () => {
-  return <AuctionResultsScreenScreenWrapperQueryQueryRenderer state={AuctionResultsState.PAST} />
+  return <AuctionResultsScreenWrapper state={AuctionResultsState.PAST} />
 }
 
 export const AuctionResultsForArtistsYouFollowPrefetchQuery = graphql`

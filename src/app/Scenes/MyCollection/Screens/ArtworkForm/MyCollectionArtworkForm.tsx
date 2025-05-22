@@ -1,11 +1,16 @@
 import { ActionType, ContextModule, OwnerType, SaveCollectedArtwork } from "@artsy/cohesion"
-import { Flex, Screen } from "@artsy/palette-mobile"
-import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
+import { Flex, Screen, useColor } from "@artsy/palette-mobile"
+import {
+  NavigationContainer,
+  NavigationContainerRef,
+  NavigationIndependentTree,
+} from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { MyCollectionArtworkEditQuery } from "__generated__/MyCollectionArtworkEditQuery.graphql"
 import { LengthUnitPreference } from "__generated__/UserPrefsModelQuery.graphql"
 import { FadeIn } from "app/Components/FadeIn"
 import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
+import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import {
   AddMyCollectionArtist,
@@ -18,6 +23,7 @@ import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWor
 import { GlobalStore } from "app/store/GlobalStore"
 import { dismissModal, goBack, popToRoot, switchTab } from "app/system/navigation/navigate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect, useRef, useState } from "react"
@@ -63,6 +69,10 @@ export type MyCollectionArtworkFormProps =
 const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (props) => {
+  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
+
+  const color = useColor()
+  const theme = useNavigationTheme()
   const enableShowError = useDevToggle("DTShowErrorInLoadFailureView")
   const { trackEvent } = useTracking()
   const { formValues, dirtyFormCheckValues } = GlobalStore.useAppState(
@@ -122,14 +132,18 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       refreshMyCollection()
       refreshMyCollectionInsights({})
 
-      dismissModal()
-
-      switchTab("profile")
-
-      if (mode === "add") {
-        popToRoot()
+      if (enableRedesignedSettings) {
+        dismissModal()
       } else {
-        goBack()
+        dismissModal()
+
+        switchTab("profile")
+
+        if (mode === "add") {
+          popToRoot()
+        } else {
+          goBack()
+        }
       }
     } catch (error: any) {
       console.error("Artwork could not be saved", error)
@@ -155,70 +169,70 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
   const { width, height } = Dimensions.get("screen")
 
   return (
-    <NavigationContainer independent ref={navContainerRef}>
-      <FormikProvider value={formik}>
-        <Stack.Navigator
-          // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
-          detachInactiveScreens={false}
-          screenOptions={{
-            headerShown: false,
-            cardStyle: { backgroundColor: "white" },
-          }}
-        >
-          {mode === "add" && (
-            <Stack.Screen name="ArtworkFormArtist" component={MyCollectionArtworkFormArtist} />
-          )}
-          {mode === "add" && (
-            <Stack.Screen name="ArtworkFormArtwork" component={MyCollectionArtworkFormArtwork} />
-          )}
-          {mode === "add" && (
-            <Stack.Screen
-              name="AddMyCollectionArtist"
-              component={AddMyCollectionArtist} // TODO: Rename this component
-            />
-          )}
-          <Stack.Screen name="ArtworkFormMain" component={MyCollectionArtworkFormMain} />
-          <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />
-        </Stack.Navigator>
-
-        {mode === "add" && loading ? (
-          <FadeIn style={{ position: "absolute" }} slide>
-            <Flex
-              height={height}
-              width={width}
-              left={0}
-              bottom={0}
-              top={0}
-              right={0}
-              position="absolute"
-              testID="saving-artwork-modal"
-            >
-              <SavingArtworkModal
-                testID="saving-artwork-modal"
-                isVisible={loading}
-                loadingText={isArtworkSaved ? savingArtworkModalDisplayText : "Saving artwork"}
+    <NavigationIndependentTree>
+      <NavigationContainer ref={navContainerRef} theme={theme}>
+        <FormikProvider value={formik}>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+              cardStyle: { backgroundColor: color("background") },
+            }}
+          >
+            {mode === "add" && (
+              <Stack.Screen name="ArtworkFormArtist" component={MyCollectionArtworkFormArtist} />
+            )}
+            {mode === "add" && (
+              <Stack.Screen name="ArtworkFormArtwork" component={MyCollectionArtworkFormArtwork} />
+            )}
+            {mode === "add" && (
+              <Stack.Screen
+                name="AddMyCollectionArtist"
+                component={AddMyCollectionArtist} // TODO: Rename this component
               />
-            </Flex>
-          </FadeIn>
-        ) : null}
+            )}
+            <Stack.Screen name="ArtworkFormMain" component={MyCollectionArtworkFormMain} />
+            <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />
+          </Stack.Navigator>
 
-        {mode === "edit" && loading ? (
-          <FadeIn style={{ position: "absolute" }} slide>
-            <Flex
-              height={height}
-              width={width}
-              left={0}
-              bottom={0}
-              top={0}
-              right={0}
-              testID="saving-artwork-modal"
-            >
-              <LoadingSpinner />
-            </Flex>
-          </FadeIn>
-        ) : null}
-      </FormikProvider>
-    </NavigationContainer>
+          {mode === "add" && loading ? (
+            <FadeIn style={{ position: "absolute" }} slide>
+              <Flex
+                height={height}
+                width={width}
+                left={0}
+                bottom={0}
+                top={0}
+                right={0}
+                position="absolute"
+                testID="saving-artwork-modal"
+              >
+                <SavingArtworkModal
+                  testID="saving-artwork-modal"
+                  isVisible={loading}
+                  loadingText={isArtworkSaved ? savingArtworkModalDisplayText : "Saving artwork"}
+                />
+              </Flex>
+            </FadeIn>
+          ) : null}
+
+          {mode === "edit" && loading ? (
+            <FadeIn style={{ position: "absolute" }} slide>
+              <Flex
+                height={height}
+                width={width}
+                left={0}
+                bottom={0}
+                top={0}
+                right={0}
+                testID="saving-artwork-modal"
+              >
+                <LoadingSpinner />
+              </Flex>
+            </FadeIn>
+          ) : null}
+        </FormikProvider>
+      </NavigationContainer>
+    </NavigationIndependentTree>
   )
 }
 

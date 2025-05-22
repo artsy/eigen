@@ -8,7 +8,6 @@ export interface MyCollectionImageViewProps {
   imageHeight?: number
   aspectRatio?: number
   artworkSlug: string
-  artworkSubmissionId?: string | null
   useRawURL?: boolean
   internalID?: string | null
   versions?: string[]
@@ -30,12 +29,12 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
     return (
       <Flex
         testID="Fallback"
-        bg={color("black5")}
+        bg={color("mono5")}
         width={imageWidth ?? 120}
         height={120}
         justifyContent="center"
       >
-        <NoImageIcon fill="black60" mx="auto" />
+        <NoImageIcon fill="mono60" mx="auto" />
       </Flex>
     )
   }

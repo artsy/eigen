@@ -1,6 +1,6 @@
 import { Pill, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { ArtistAboutRelatedGenes_genes$key } from "__generated__/ArtistAboutRelatedGenes_genes.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { Fragment } from "react"
 import { ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
@@ -21,10 +21,6 @@ export const ArtistAboutRelatedGenes: React.FC<ArtistAboutRelatedGenesProps> = (
     return null
   }
 
-  const handlePillPress = (href: string) => {
-    navigate(href)
-  }
-
   return (
     <>
       <Text variant="sm-display" pb={4} px={2}>
@@ -41,9 +37,9 @@ export const ArtistAboutRelatedGenes: React.FC<ArtistAboutRelatedGenesProps> = (
       >
         {data.slice(0, MAX_GENES).map(({ name, href, internalID }) => (
           <Fragment key={`gene-${internalID}`}>
-            <Pill variant="default" onPress={() => href && handlePillPress(href)}>
-              {name}
-            </Pill>
+            <RouterLink hasChildTouchable to={href}>
+              <Pill variant="default">{name}</Pill>
+            </RouterLink>
             <Spacer x={1} y={4} />
           </Fragment>
         ))}

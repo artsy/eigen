@@ -1,20 +1,26 @@
-import { OwnerType } from "@artsy/cohesion"
-import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { Box, Flex, LinkText, Screen, Spinner, Text } from "@artsy/palette-mobile"
 import { SalesQuery } from "__generated__/SalesQuery.graphql"
-import { Stack } from "app/Components/Stack"
+import { LatestAuctionResultsRail } from "app/Components/LatestAuctionResultsRail"
 import { RecommendedAuctionLotsRail } from "app/Scenes/HomeView/Components/RecommendedAuctionLotsRail"
-import { goBack } from "app/system/navigation/navigate"
+import { SaleListActiveBids } from "app/Scenes/Sales/Components/SaleListActiveBids"
+// eslint-disable-next-line no-restricted-imports
+import { goBack, navigate } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Suspense, useRef, useState } from "react"
 import { RefreshControl } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
+import { useTracking } from "react-tracking"
 import { ZeroState } from "./Components/ZeroState"
 import {
   CurrentlyRunningAuctions,
   CurrentlyRunningAuctionsRefetchType,
 } from "./CurrentlyRunningAuctions"
 import { UpcomingAuctions, UpcomingAuctionsRefetchType } from "./UpcomingAuctions"
+
+export const SUPPORT_ARTICLE_URL =
+  "https://support.artsy.net/s/article/The-Complete-Guide-to-Auctions-on-Artsy"
 
 export const SalesScreenQuery = graphql`
   query SalesQuery {
@@ -27,6 +33,12 @@ export const SalesScreenQuery = graphql`
     recommendedAuctionLots: viewer {
       ...RecommendedAuctionLotsRail_artworkConnection
     }
+    me {
+      ...SaleListActiveBids_me
+    }
+    latestAuctioResults: me {
+      ...LatestAuctionResultsRail_me
+    }
   }
 `
 
@@ -36,7 +48,6 @@ export const Sales: React.FC = () => {
     {},
     {
       fetchPolicy: "store-and-network",
-      networkCacheConfig: { force: true },
     }
   )
 
@@ -66,6 +77,17 @@ export const Sales: React.FC = () => {
 
   const totalSalesCount = currentSalesCount + upcomingSalesCount
 
+  const { trackEvent } = useTracking()
+
+  const trackArticleTap = () => {
+    trackEvent({
+      action: ActionType.tappedLink,
+      context_module: ContextModule.header,
+      context_screen_owner_type: OwnerType.auctions,
+      destination_path: SUPPORT_ARTICLE_URL,
+    })
+  }
+
   if (totalSalesCount < 1) {
     return <ZeroState />
   }
@@ -79,12 +101,33 @@ export const Sales: React.FC = () => {
         testID="Sales-Screen-ScrollView"
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
       >
-        <Stack py={2} spacing={4}>
+        <Flex pb={2} gap={4}>
+          <Box mx={2}>
+            <Text variant="sm-display">
+              Bid on works you love with Artsy’s daily auctions.{" "}
+              <LinkText
+                variant="sm-display"
+                accessibilityRole="link"
+                accessibilityHint="Redirects to Artsy auctions guide"
+                onPress={() => {
+                  trackArticleTap()
+                  navigate(SUPPORT_ARTICLE_URL)
+                }}
+              >
+                Learn more about bidding on Artsy.
+              </LinkText>
+            </Text>
+          </Box>
+
+          <SaleListActiveBids me={data.me} />
+
           <RecommendedAuctionLotsRail
             title="Auction Lots for You"
             artworkConnection={data.recommendedAuctionLots}
             contextScreenOwnerType={OwnerType.auctions}
           />
+
+          <LatestAuctionResultsRail me={data.latestAuctioResults} />
 
           <CurrentlyRunningAuctions
             sales={data.currentlyRunningAuctions}
@@ -97,7 +140,7 @@ export const Sales: React.FC = () => {
             setRefetchPropOnParent={setUpcomongAuctionsRefreshProp}
             setSalesCountOnParent={(count: number) => setUpcomingSalesCount(count)}
           />
-        </Stack>
+        </Flex>
       </Screen.ScrollView>
     </Screen>
   )

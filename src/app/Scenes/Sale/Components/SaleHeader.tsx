@@ -1,4 +1,4 @@
-import { ShareIcon, Flex, Text, Touchable, Image } from "@artsy/palette-mobile"
+import { ShareIcon, Flex, Text, Touchable, Image, useColor } from "@artsy/palette-mobile"
 import { SaleHeader_sale$data } from "__generated__/SaleHeader_sale.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
@@ -19,6 +19,7 @@ interface Props {
 
 export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
   const { showShareSheet } = useShareSheet()
+  const color = useColor()
   const saInsets = useSafeAreaInsets()
 
   const saleTimeDetails = saleTime(sale)
@@ -74,7 +75,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
                   alignItems: "center",
                 }}
               >
-                <Text variant="sm-display" fontWeight="500" color="white">
+                <Text variant="sm-display" fontWeight="500" color="mono0">
                   Auction closed
                 </Text>
               </Flex>
@@ -84,7 +85,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
       )}
       <View
         style={{
-          backgroundColor: "white",
+          backgroundColor: color("mono0"),
           marginTop: !!sale.coverImage?.url ? COVER_IMAGE_HEIGHT : saInsets.top + 40,
         }}
       >
@@ -147,7 +148,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
                 </Text>
               )}
               {!!saleTimeDetails.relative && (
-                <Text variant="sm" color="black60">
+                <Text variant="sm" color="mono60">
                   {saleTimeDetails.relative}
                 </Text>
               )}

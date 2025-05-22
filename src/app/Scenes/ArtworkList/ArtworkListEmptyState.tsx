@@ -1,8 +1,8 @@
-import { Button, Flex, Separator, Text } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Separator, Text } from "@artsy/palette-mobile"
 import { ArtworkListEmptyState_me$key } from "__generated__/ArtworkListEmptyState_me.graphql"
 import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
 import { ArtworkListTitle } from "app/Scenes/ArtworkList/ArtworkListTitle"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
@@ -28,23 +28,22 @@ export const ArtworkListEmptyState = ({ me, refreshControl }: ArtworkListEmptySt
           shareableWithPartners={artworkList?.shareableWithPartners ?? false}
         />
 
-        <Separator borderColor="black10" mt={1} />
+        <Separator borderColor="mono10" mt={1} />
 
         <Flex px={2} mt={4}>
           <Text variant="sm">{text.title}</Text>
 
-          <Text variant="xs" color="black60">
+          <Text variant="xs" color="mono60">
             {text.description}
           </Text>
 
-          <Button
-            mt={2}
-            variant="outline"
-            size="small"
-            onPress={() => navigate("/collection/trending-this-week")}
-          >
-            Browse Works
-          </Button>
+          <Box mt={2}>
+            <RouterLink to="/collection/trending-this-week" hasChildTouchable>
+              <Button variant="outline" size="small">
+                Browse Works
+              </Button>
+            </RouterLink>
+          </Box>
         </Flex>
       </ScrollView>
     </Flex>

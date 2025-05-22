@@ -21,7 +21,11 @@ export const artworkInquiryStateReducer = (
 ): ArtworkInquiryContextState => {
   switch (action.type) {
     case "resetForm":
-      return initialArtworkInquiryState
+      return {
+        ...inquiryState,
+        inquiryQuestions: [],
+        shippingLocation: null,
+      }
 
     case "selectShippingLocation":
       return {

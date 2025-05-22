@@ -1,9 +1,9 @@
-import { EntityHeader, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { EntityHeader, Text } from "@artsy/palette-mobile"
 import { PartnerListItemShortQuery } from "__generated__/PartnerListItemShortQuery.graphql"
 import { PartnerListItemShort_partner$key } from "__generated__/PartnerListItemShort_partner.graphql"
 import { PartnerFollowButtonQueryRenderer } from "app/Components/PartnerFollowButton"
 import { sortByDistance } from "app/Scenes/GalleriesForYou/helpers"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -13,53 +13,52 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface PartnerListItemShortProps {
   partner: PartnerListItemShort_partner$key
+  disabledLocation?: boolean
+  onPress?: () => void
 }
 
-export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({ partner }) => {
+export const PartnerListItemShort: FC<PartnerListItemShortProps> = ({
+  partner,
+  onPress,
+  disabledLocation,
+}) => {
   const data = useFragment(fragment, partner)
-  const { location } = useLocation()
+  const { location } = useLocation({ disabled: !!disabledLocation })
 
   if (!data) {
     return null
   }
 
-  const image = data.profile?.image?.cropped?.url ?? undefined
+  const image = data.profile?.image?.url ?? undefined
   const locations = extractNodes(data.locationsConnection)
   const sortedLocations = location
     ? sortByDistance(locations as { coordinates?: Location }[], location)
     : locations
 
-  const handleOnPress = () => {
-    navigate(data.href)
-  }
-
   return (
-    <>
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-        <Touchable onPress={handleOnPress} style={{ flex: 1 }}>
-          <EntityHeader
-            name={data.name}
-            initials={data.initials}
-            imageUrl={image}
-            meta={
-              <>
-                {!!sortedLocations[0] && (
-                  <Text variant="xs" color="black60">
-                    {sortedLocations[0].city}
-                    {!!(sortedLocations.length > 1) &&
-                      ` and ${sortedLocations.length - 1} more ${pluralize(
-                        "location",
-                        sortedLocations.length - 1
-                      )}`}
-                  </Text>
-                )}
-              </>
-            }
-            RightButton={<PartnerFollowButtonQueryRenderer partnerID={data.internalID} />}
-          />
-        </Touchable>
-      </Flex>
-    </>
+    <RouterLink to={data.href} onPress={onPress} style={{ flex: 1 }}>
+      <EntityHeader
+        avatarSize="sm"
+        name={data.name}
+        initials={data.initials}
+        imageUrl={image}
+        meta={
+          <>
+            {!!sortedLocations[0] && (
+              <Text variant="xs" color="mono60">
+                {sortedLocations[0].city}
+                {!!(sortedLocations.length > 1) &&
+                  ` and ${sortedLocations.length - 1} more ${pluralize(
+                    "location",
+                    sortedLocations.length - 1
+                  )}`}
+              </Text>
+            )}
+          </>
+        }
+        RightButton={<PartnerFollowButtonQueryRenderer partnerID={data.internalID} />}
+      />
+    </RouterLink>
   )
 }
 
@@ -72,9 +71,7 @@ const fragment = graphql`
 
     profile {
       image {
-        cropped(height: 45, width: 45) {
-          url
-        }
+        url(version: "small")
       }
     }
     locationsConnection(first: 20) {

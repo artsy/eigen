@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedNewsSection } from "@artsy/cohesion"
-import { Flex, Separator, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Separator, Text } from "@artsy/palette-mobile"
 import { ArticlesCards_viewer$key } from "__generated__/ArticlesCards_viewer.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -17,35 +17,31 @@ export const ArticlesCards: React.FC<ArticleNewsProps> = ({ viewer }) => {
     return null
   }
 
-  const handleOnPress = (href: string) => {
+  const handleArticlePress = () => {
     tracking.trackEvent(tracks.tappedNewsSection())
-    navigate(href)
   }
 
   return (
-    <Flex m={2} p={2} border="1px solid" borderColor="black30" gap={2}>
+    <Flex m={2} p={2} border="1px solid" borderColor="mono30" gap={2}>
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Text variant="lg-display">News</Text>
         <Text variant="lg-display">{date}</Text>
       </Flex>
       {data.articles.map((article, index) => (
         <Flex key={index} gap={2}>
-          <Touchable onPress={() => handleOnPress(article.href ?? "")}>
+          <RouterLink to={article.href} onPress={handleArticlePress}>
             <Flex flexDirection="row" alignItems="center">
               <Text variant="sm-display" numberOfLines={3}>
                 {article.title}
               </Text>
             </Flex>
-          </Touchable>
+          </RouterLink>
           {index !== data.articles.length - 1 && <Separator />}
         </Flex>
       ))}
-      <Touchable
-        onPress={() => navigate("/news")}
-        style={{ flexDirection: "row", justifyContent: "flex-end" }}
-      >
+      <RouterLink to="/news" style={{ flexDirection: "row", justifyContent: "flex-end" }}>
         <Text variant="sm-display">More in News</Text>
-      </Touchable>
+      </RouterLink>
     </Flex>
   )
 }

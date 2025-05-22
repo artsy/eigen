@@ -1,226 +1,273 @@
-import {
-  Button,
-  EntityHeader,
-  Flex,
-  Image,
-  Screen,
-  Spacer,
-  Text,
-  Touchable,
-  useScreenDimensions,
-  useTheme,
-} from "@artsy/palette-mobile"
-import { InfiniteDiscoveryRefetchQuery } from "__generated__/InfiniteDiscoveryRefetchQuery.graphql"
-import { InfiniteDiscovery_Fragment$key } from "__generated__/InfiniteDiscovery_Fragment.graphql"
-import { FancySwiper } from "app/Components/FancySwiper/FancySwiper"
+import { ChevronDownIcon, ShareIcon } from "@artsy/icons/native"
+import { DEFAULT_HIT_SLOP, Flex, Screen, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { captureMessage } from "@sentry/react-native"
+import { InfiniteDiscoveryQueryRendererQuery$data } from "__generated__/InfiniteDiscoveryQueryRendererQuery.graphql"
+import { getShareURL } from "app/Components/ShareSheet/helpers"
+import { useToast } from "app/Components/Toast/toastHook"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
-import { goBack } from "app/system/navigation/navigate"
-import { extractNodes } from "app/utils/extractNodes"
-import { NoFallback, SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { sizeToFit } from "app/utils/useSizeToFit"
-import { useEffect, useState } from "react"
-import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
-import type {
-  InfiniteDiscoveryQuery,
-  InfiniteDiscoveryQuery$data,
-} from "__generated__/InfiniteDiscoveryQuery.graphql"
-import type { Card } from "app/Components/FancySwiper/FancySwiperCard"
+import { InfiniteDiscoveryOnboarding } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryOnboarding"
+import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
+import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
+import { useCreateUserSeenArtwork } from "app/Scenes/InfiniteDiscovery/mutations/useCreateUserSeenArtwork"
+import { GlobalStore } from "app/store/GlobalStore"
+import { goBack, navigate } from "app/system/navigation/navigate"
+import { pluralize } from "app/utils/pluralize"
+import { ExtractNodeType } from "app/utils/relayHelpers"
+import { Key, useCallback, useEffect, useMemo, useState } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+import RNShare from "react-native-share"
 
 interface InfiniteDiscoveryProps {
-  artworks: InfiniteDiscoveryQuery$data
+  fetchMoreArtworks: (undiscoveredArtworks: string[]) => void
+  artworks: InfiniteDiscoveryArtwork[]
 }
 
-export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({ artworks: _artworks }) => {
-  const [data, refetch] = useRefetchableFragment<
-    InfiniteDiscoveryRefetchQuery,
-    InfiniteDiscovery_Fragment$key
-  >(infiniteDiscoveryFragment, _artworks)
+export type InfiniteDiscoveryArtwork = ExtractNodeType<
+  InfiniteDiscoveryQueryRendererQuery$data["discoverArtworks"]
+>
 
-  const REFETCH_BUFFER = 2
+export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
+  fetchMoreArtworks,
+  artworks,
+}) => {
+  const toast = useToast()
+  const track = useInfiniteDiscoveryTracking()
+  const [commitMutation] = useCreateUserSeenArtwork()
 
-  const { color } = useTheme()
-  const { width: screenWidth } = useScreenDimensions()
+  const hasInteractedWithOnboarding = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
+  )
 
-  const [index, setIndex] = useState(0)
-  const [artworks, setArtworks] = useState(extractNodes(data.discoverArtworks))
+  const savedArtworksCount = GlobalStore.useAppState(
+    (state) => state.infiniteDiscovery.savedArtworksCount
+  )
+
+  const [topArtworkId, setTopArtworkId] = useState<string | null>(null)
+  const topArtwork = useMemo(
+    () => artworks.find((artwork) => artwork.internalID === topArtworkId),
+    [artworks, topArtworkId]
+  )
+
+  const insets = useSafeAreaInsets()
 
   useEffect(() => {
-    setArtworks((previousArtworks) => {
-      // only add new artworks to the list by filtering-out existing artworks
-      const newArtworks = extractNodes(data.discoverArtworks).filter(
-        (newArtwork) =>
-          !previousArtworks.some((artwork) => artwork.internalID === newArtwork.internalID)
-      )
+    if (!topArtworkId && artworks.length > 0) {
+      const topArtwork = artworks[0]
+      setTopArtworkId(topArtwork.internalID)
 
-      return [...previousArtworks, ...newArtworks]
-    })
-  }, [data, extractNodes, setArtworks])
+      // Track initial shown artwork
+      track.displayedNewArtwork(topArtwork.internalID, topArtwork.slug)
 
-  const goToPrevious = () => {
-    if (index > 0) {
-      setIndex(index - 1)
+      // send the first seen artwork to the server
+      commitMutation({
+        variables: {
+          input: { artworkId: topArtwork.internalID },
+        },
+        onError: (error) => {
+          if (__DEV__) {
+            console.error(error)
+          } else {
+            captureMessage(`useCreateUserSeenArtwork ${error?.message}`)
+          }
+        },
+      })
     }
+  }, [artworks])
+
+  const topCardIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
+  const unswipedCardIds = artworks
+    .slice(topCardIndex + 1, artworks.length)
+    .map((artwork) => artwork.internalID)
+
+  /**
+   * The callack for when a card is displayed to the user for the first time.
+   * @param key The key of the new card.
+   */
+  const handleNewCardReached = (key: Key) => {
+    const artwork = artworks.find((artwork) => artwork.internalID === key)
+
+    if (!artwork) {
+      return
+    }
+
+    track.displayedNewArtwork(artwork.internalID, artwork.slug)
+
+    // Tell the backend that the user has seen this artwork so that it doesn't show up again.
+    commitMutation({
+      variables: {
+        input: { artworkId: artwork.internalID },
+      },
+      onError: (error) => {
+        if (__DEV__) {
+          console.error(error)
+        } else {
+          captureMessage(`useCreateUserSeenArtwork ${error?.message}`)
+        }
+      },
+    })
   }
 
-  const goToNext = () => {
-    if (index < artworks.length - 1) {
-      setIndex(index + 1)
+  /**
+   * The callback for when a swiped card is brought back.
+   * @param key The key of the card that was brought back.
+   */
+  const handleRewind = (key: Key) => {
+    const artwork = artworks.find((artwork) => artwork.internalID === key)
+
+    if (!artwork) {
+      return
     }
 
-    // fetch more artworks when the user is about to reach the end of the list
-    if (index === artworks.length - REFETCH_BUFFER) {
-      refetch(
-        { excludeArtworkIds: artworks.map((artwork) => artwork.internalID) },
+    track.tappedRewind(artwork.internalID, artwork.slug)
+
+    setTopArtworkId(artwork.internalID)
+  }
+
+  /**
+   * The callback for when a card is swiped away.
+   * @param swipedKey The key of the card that was swiped away.
+   * @param nextKey They key of the card under the card that was swiped away.
+   */
+  const handleSwipe = (swipedKey: Key, nextKey: Key) => {
+    const swipedArtwork = artworks.find((artwork) => artwork.internalID === swipedKey)
+
+    if (!swipedArtwork) {
+      return
+    }
+
+    track.swipedArtwork(swipedArtwork.internalID, swipedArtwork.slug)
+
+    const nextArtwork = artworks.find((artwork) => artwork.internalID === nextKey)
+
+    if (!nextArtwork) {
+      return
+    }
+
+    // If this is the first time the user swipes, dismiss the onboarding.
+    if (!hasInteractedWithOnboarding) {
+      GlobalStore.actions.infiniteDiscovery.setHasInteractedWithOnboarding(true)
+    }
+
+    setTopArtworkId(nextArtwork.internalID)
+  }
+
+  const handleFetchMore = useCallback(() => {
+    fetchMoreArtworks(unswipedCardIds)
+  }, [fetchMoreArtworks, unswipedCardIds])
+
+  const handleExitPressed = () => {
+    if (savedArtworksCount > 0) {
+      toast.show(
+        `Nice! You saved ${savedArtworksCount} ${pluralize("artwork", savedArtworksCount)}.`,
+        "bottom",
         {
-          fetchPolicy: "network-only",
+          onPress: () => {
+            track.tappedSummary()
+            navigate("/favorites/saves")
+          },
+          backgroundColor: "green100",
+          description: (
+            <Text
+              variant="xs"
+              color="mono0"
+              style={{ textDecorationLine: "underline" }}
+              onPress={() => navigate("/favorites/saves")}
+            >
+              Tap to see all of your saved artworks.
+            </Text>
+          ),
+          duration: "long",
         }
       )
     }
-  }
 
-  const handleBackPressed = () => {
-    goToPrevious()
-  }
+    track.tappedExit()
 
-  const handleExitPressed = () => {
     goBack()
   }
 
-  const handleSwipedLeft = () => {
-    goToNext()
+  const hideShareButton = !topArtwork || !topArtwork.slug || !topArtwork.title
+
+  const handleSharePressed = () => {
+    if (!topArtwork || !topArtwork.slug || !topArtwork.title) {
+      return
+    }
+
+    track.tappedShare(topArtwork.internalID, topArtwork.slug)
+
+    const url = getShareURL(
+      `/artwork/${topArtwork.slug}?utm_content=discover-daily-share&utm_medium=product-share`
+    )
+    const message = `View ${topArtwork.title} on Artsy`
+
+    RNShare.open({
+      title: topArtwork.title,
+      message: message + "\n" + url,
+      failOnCancel: false,
+    })
+      .then((result) => {
+        if (result.success) {
+          track.share(topArtwork.internalID, topArtwork.slug, result.message)
+        }
+      })
+      .catch((error) => {
+        console.error("InfiniteDiscovery.tsx", error)
+      })
   }
 
-  const artworkCards: Card[] = artworks.slice(index).map((artwork) => {
-    const src = !!artwork?.images?.[0]?.url ? artwork.images[0].url : undefined
-    const width = !!artwork?.images?.[0]?.width ? artwork.images[0].width : 0
-    const height = !!artwork?.images?.[0]?.height ? artwork.images[0].height : 0
-
-    const size = sizeToFit({ width: width, height: height }, { width: screenWidth, height: 500 })
-
-    return {
-      jsx: (
-        <Flex backgroundColor={color("white100")} width="100%" height={800}>
-          <EntityHeader
-            name={artwork?.artistNames ?? ""}
-            meta={artwork?.artists?.[0]?.formattedNationalityAndBirthday ?? undefined}
-            imageUrl={artwork?.artists?.[0]?.coverArtwork?.images?.[0]?.url ?? undefined}
-            initials={artwork?.artists?.[0]?.initials ?? undefined}
-            RightButton={
-              <Button variant="outlineGray" size="small">
-                Follow
-              </Button>
-            }
-            p={1}
-          />
-          <Spacer y={2} />
-
-          <Flex alignItems="center" backgroundColor={color("purple60")}>
-            {!!src && <Image src={src} height={size.height} width={size.width} />}
-          </Flex>
-          <Flex flexDirection="row" justifyContent="space-between" p={1}>
-            <Flex>
-              <Flex flexDirection="row" maxWidth={screenWidth - 200}>
-                {/* TODO: maxWidth above and ellipsizeMode + numberOfLines below are used to */}
-                {/* prevent long artwork titles from pushing the save button off of the card, */}
-                {/* it doesn't work as expected on Android. */}
-                <Text
-                  color={color("black60")}
-                  italic
-                  variant="sm-display"
-                  ellipsizeMode="tail"
-                  numberOfLines={1}
-                >
-                  {artwork.title}
-                </Text>
-                <Text color={color("black60")} variant="sm-display">
-                  , {artwork.date}
-                </Text>
-              </Flex>
-              <Text variant="sm-display">{artwork.saleMessage}</Text>
-            </Flex>
-            <Button variant="fillGray">Save</Button>
-          </Flex>
-        </Flex>
-      ),
-      id: artwork.internalID,
-    }
-  })
+  // Get the last 2 artworks from the infinite discovery
+  // We are showing the last 2 artworks instead of 2 because we reverse the artworks array
+  // Inside the Swiper component
+  const onboardingArtworks = artworks.slice(0, Math.min(artworks.length - 2, 2))
 
   return (
-    <Screen>
-      <Screen.Body fullwidth>
+    <Screen safeArea={false}>
+      <InfiniteDiscoveryOnboarding artworks={onboardingArtworks} />
+
+      <Screen.Body fullwidth style={{ marginTop: insets.top }}>
         <Flex zIndex={-100}>
           <Screen.Header
-            title="Discovery"
+            title="Discover Daily"
             leftElements={
-              <Touchable onPress={handleBackPressed}>
-                <Text variant="xs">Back</Text>
+              <Touchable
+                onPress={handleExitPressed}
+                testID="close-icon"
+                hitSlop={DEFAULT_HIT_SLOP}
+                haptic
+              >
+                <ChevronDownIcon />
               </Touchable>
             }
-            hideLeftElements={index === 0}
+            hideRightElements={hideShareButton}
             rightElements={
-              <Touchable onPress={handleExitPressed}>
-                <Text variant="xs">Exit</Text>
+              <Touchable
+                onPress={handleSharePressed}
+                testID="share-icon"
+                hitSlop={DEFAULT_HIT_SLOP}
+                haptic
+              >
+                <ShareIcon width={24} height={24} />
               </Touchable>
             }
           />
         </Flex>
-        <FancySwiper cards={artworkCards} hideActionButtons onSwipeLeft={handleSwipedLeft} />
-
-        <InfiniteDiscoveryBottomSheet artworkID={artworks[index].internalID} />
+        <Spacer y={1} />
+        <Swiper
+          cards={artworks}
+          onReachTriggerIndex={handleFetchMore}
+          triggerIndex={2}
+          onNewCardReached={handleNewCardReached}
+          onRewind={handleRewind}
+          onSwipe={handleSwipe}
+        />
+        {!!topArtwork && (
+          <InfiniteDiscoveryBottomSheet
+            artworkID={topArtwork.internalID}
+            artworkSlug={topArtwork.slug}
+            artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
+          />
+        )}
       </Screen.Body>
     </Screen>
   )
 }
-
-export const InfiniteDiscoveryQueryRenderer = withSuspense({
-  Component: () => {
-    const initialData = useLazyLoadQuery<InfiniteDiscoveryQuery>(infiniteDiscoveryQuery, {})
-
-    if (!initialData) {
-      return null
-    }
-
-    return <InfiniteDiscovery artworks={initialData} />
-  },
-  LoadingFallback: SpinnerFallback,
-  ErrorFallback: NoFallback,
-})
-
-const infiniteDiscoveryFragment = graphql`
-  fragment InfiniteDiscovery_Fragment on Query
-  @refetchable(queryName: "InfiniteDiscoveryRefetchQuery")
-  @argumentDefinitions(excludeArtworkIds: { type: "[String!]" }) {
-    discoverArtworks(excludeArtworkIds: $excludeArtworkIds) {
-      edges {
-        node {
-          artistNames
-          artists(shallow: true) {
-            coverArtwork {
-              images {
-                url(version: "small")
-              }
-            }
-            formattedNationalityAndBirthday
-            initials
-          }
-          date
-          internalID @required(action: NONE)
-          images {
-            url(version: "large")
-            width
-            height
-          }
-          saleMessage
-          title
-        }
-      }
-    }
-  }
-`
-
-export const infiniteDiscoveryQuery = graphql`
-  query InfiniteDiscoveryQuery {
-    ...InfiniteDiscovery_Fragment
-  }
-`

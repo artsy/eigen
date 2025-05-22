@@ -125,7 +125,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
         <Box
           height={!!data.leadingItem && !!data.trailingSection ? 2 : 0}
           mt={data.leadingItem && data.trailingSection ? 2 : 0}
-          backgroundColor="black10"
+          backgroundColor="mono10"
           flexDirection="column"
           justifyContent="center"
           alignItems="center"

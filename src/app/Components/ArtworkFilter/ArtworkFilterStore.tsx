@@ -272,6 +272,11 @@ export const selectedOptionsUnion = ({
       paramValue: "",
       displayText: "Recommended",
     },
+    collect: {
+      paramName: FilterParamName.sort,
+      paramValue: "-decayed_merch",
+      displayText: "Recommended",
+    },
   }[filterType]
 
   const defaultFilters: FilterArray = [defaultSortFilter, ...DEFAULT_FILTERS]
@@ -287,10 +292,13 @@ export function createArtworkFiltersStore() {
       assignDeep(state, injectedState)
     })
   }
-  const store = createContextStore<ArtworkFiltersModel>((initialData) => ({
-    ...getArtworkFiltersModel(),
-    ...initialData,
-  }))
+
+  const store = createContextStore<ArtworkFiltersModel>((initialData) => {
+    return {
+      ...getArtworkFiltersModel(),
+      ...initialData,
+    }
+  })
   return store
 }
 

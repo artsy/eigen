@@ -1,3 +1,4 @@
+import { MoreIcon } from "@artsy/icons/native"
 import {
   AvatarSize,
   EntityHeader,
@@ -9,7 +10,7 @@ import {
 } from "@artsy/palette-mobile"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import { ArtistListItem_artist$data } from "__generated__/ArtistListItem_artist.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { pluralize } from "app/utils/pluralize"
 import { Schema } from "app/utils/track"
@@ -29,9 +30,12 @@ interface Props {
   Component?: any
   containerStyle?: StyleProp<ViewStyle>
   contextModule?: string
+  contextScreenOwnerId?: string
+  contextScreenOwnerSlug?: string
   disableNavigation?: boolean
   onFollowFinish?: () => void
   onPress?: () => void
+  includeTombstone?: boolean
   isPrivate?: boolean
   relay: RelayProp
   RightButton?: JSX.Element
@@ -39,6 +43,7 @@ interface Props {
   uploadsCount?: number | null
   withFeedback?: boolean
   theme?: "dark" | "light"
+  showMoreIcon?: boolean
 }
 
 export const formatTombstoneText = (
@@ -66,9 +71,12 @@ const ArtistListItem: React.FC<Props> = ({
   avatarSize = "sm",
   containerStyle = {},
   contextModule,
+  contextScreenOwnerId,
+  contextScreenOwnerSlug,
   disableNavigation,
   onFollowFinish,
   onPress,
+  includeTombstone = true,
   isPrivate,
   relay,
   RightButton,
@@ -76,9 +84,10 @@ const ArtistListItem: React.FC<Props> = ({
   uploadsCount,
   withFeedback = false,
   theme = "light",
+  showMoreIcon = false,
 }) => {
   const color = useColor()
-  const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
+  const { is_followed, initials, href, name, nationality, birthday, deathday } = artist
 
   const tracking = useTracking()
 
@@ -96,69 +105,72 @@ const ArtistListItem: React.FC<Props> = ({
   }
 
   const handleShowSuccessfullyUpdated = () => {
-    tracking.trackEvent(tracks.successfulUpdate(artist, contextModule))
+    tracking.trackEvent(
+      tracks.successfulUpdate(artist, contextModule, contextScreenOwnerId, contextScreenOwnerSlug)
+    )
   }
 
-  const handleTap = (href: string) => {
-    tracks.tapArtistGroup(artist)
-    navigate(href)
-  }
+  let meta
 
-  const getMeta = () => {
-    const tombstoneText = formatTombstoneText(nationality, birthday, deathday)
+  if (includeTombstone) {
+    const getMeta = () => {
+      const tombstoneText = formatTombstoneText(nationality, birthday, deathday)
 
-    if (tombstoneText || Number.isInteger(uploadsCount)) {
-      return (
-        <Flex>
-          {!!tombstoneText && (
-            <Text variant="xs" color={theme === "light" ? "black60" : "white100"} numberOfLines={1}>
-              {tombstoneText}
-            </Text>
-          )}
+      if (tombstoneText || Number.isInteger(uploadsCount)) {
+        return (
+          <Flex>
+            {!!tombstoneText && (
+              <Text variant="xs" color={theme === "light" ? "mono60" : "mono0"} numberOfLines={1}>
+                {tombstoneText}
+              </Text>
+            )}
 
-          {Number.isInteger(uploadsCount) && (
-            <Text
-              variant="xs"
-              color={theme === "light" ? (uploadsCount === 0 ? "black60" : "black100") : "white100"}
-            >
-              {uploadsCount} {pluralize("artwork", uploadsCount || 0)} uploaded
-            </Text>
-          )}
-        </Flex>
-      )
+            {Number.isInteger(uploadsCount) && (
+              <Text
+                variant="xs"
+                color={theme === "light" ? (uploadsCount === 0 ? "mono60" : "mono100") : "mono0"}
+              >
+                {uploadsCount} {pluralize("artwork", uploadsCount || 0)} uploaded
+              </Text>
+            )}
+          </Flex>
+        )
+      }
+
+      return undefined
     }
 
-    return undefined
+    meta = getMeta()
   }
-  const meta = getMeta()
 
   if (!name) {
     return null
   }
 
-  return (
-    <Touchable
-      noFeedback={!withFeedback}
-      onPress={() => {
-        if (onPress) {
-          onPress()
-          return
-        }
+  const callOnPress = () => {
+    onPress?.()
 
-        if (href && !disableNavigation) {
-          handleTap(href)
-        }
-      }}
-      underlayColor={color("black5")}
+    if (href && !disableNavigation) {
+      tracks.tapArtistGroup(artist)
+    }
+  }
+
+  return (
+    <RouterLink
+      noFeedback={!withFeedback}
+      // Only navigate if there is an href and navigation is not disabled by passing `onPress` or
+      to={!disableNavigation ? href : undefined}
+      onPress={() => callOnPress()}
+      underlayColor={color("mono5")}
       style={containerStyle}
     >
-      <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" width="100%">
         <Flex flex={1}>
           <EntityHeader
             mr={1}
             name={name}
             meta={meta}
-            imageUrl={image?.url ?? undefined}
+            imageUrl={artist.coverArtwork?.image?.url ?? artist.image?.url ?? undefined}
             initials={initials ?? undefined}
             avatarSize={avatarSize}
             RightButton={RightButton}
@@ -166,13 +178,23 @@ const ArtistListItem: React.FC<Props> = ({
             theme={theme}
           />
         </Flex>
+        {!!showMoreIcon && (
+          <Touchable onPress={() => callOnPress()} testID="more-icon">
+            <MoreIcon />
+          </Touchable>
+        )}
         {!!showFollowButton && (
           <Flex>
-            <FollowButton haptic isFollowed={!!is_followed} onPress={handleFollowArtist} />
+            <FollowButton
+              testID="follow-artist-button"
+              haptic
+              isFollowed={!!is_followed}
+              onPress={handleFollowArtist}
+            />
           </Flex>
         )}
       </Flex>
-    </Touchable>
+    </RouterLink>
   )
 }
 
@@ -234,8 +256,15 @@ export const ArtistListItemContainer = createFragmentContainer(ArtistListItem, {
       nationality
       birthday
       deathday
-      # TOFIX: we must use coverArtwork#image here instead, this replacement is fixing
-      # an Artist#coverImage got replaced by this component data with wrong data
+      coverArtwork {
+        image {
+          # Requesting "small" causes this fragment to be refetched unexpectedly because the relay
+          # store usually contains artists with "larger" cover artworks (see ArtistScreenQuery).
+          # We can also disable prefetching on the RouterLink to avoid this, but it is better to
+          # prefetch a larger image than it is to make a additional requests for a smaller one.
+          url(version: "larger")
+        }
+      }
       image {
         url(version: "small")
       }
@@ -271,14 +300,21 @@ const tracks = {
     owner_type: Schema.OwnerEntityTypes.Artist,
   }),
 
-  successfulUpdate: (artist: Props["artist"], contextModule: string | undefined) => ({
+  successfulUpdate: (
+    artist: Props["artist"],
+    contextModule: string | undefined,
+    contextScreenOwnerId?: string | undefined,
+    contextScreenOwnerSlug?: string | undefined
+  ) => ({
     action_name: artist.is_followed
-      ? Schema.ActionNames.ArtistFollow
-      : Schema.ActionNames.ArtistUnfollow,
+      ? Schema.ActionNames.ArtistUnfollow
+      : Schema.ActionNames.ArtistFollow,
     action_type: Schema.ActionTypes.Success,
     owner_id: artist.internalID,
     owner_slug: artist.slug,
     owner_type: Schema.OwnerEntityTypes.Artist,
     context_module: contextModule,
+    context_screen_owner_id: contextScreenOwnerId,
+    context_screen_owner_slug: contextScreenOwnerSlug,
   }),
 }

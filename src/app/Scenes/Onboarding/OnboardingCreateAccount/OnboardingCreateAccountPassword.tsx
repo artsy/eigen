@@ -41,7 +41,7 @@ export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPa
         }}
         onSubmitEditing={handleSubmit}
         blurOnSubmit={false}
-        placeholderTextColor={color("black30")}
+        placeholderTextColor={color("mono30")}
         placeholder="Password"
         secureTextEntry
         returnKeyType="done"

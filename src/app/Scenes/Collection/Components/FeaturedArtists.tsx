@@ -80,7 +80,7 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
                 })
               }}
             >
-              <Text variant="sm-display" color="black60" textAlign="center">
+              <Text variant="sm-display" color="mono60" textAlign="center">
                 View all
               </Text>
             </TouchableOpacity>

@@ -9,7 +9,7 @@ import {
 export const ReserveNotMet = () => (
   <>
     <ExclamationMarkCircleFill />
-    <Text variant="xs" color="black60">
+    <Text variant="xs" color="mono60">
       {" "}
       Reserve not met
     </Text>
@@ -49,15 +49,24 @@ export const Lost = () => (
 )
 
 export const Passed = () => (
-  <Text variant="xs" color="black60">
+  <Text variant="xs" color="mono60">
     Passed
   </Text>
+)
+
+export const BiddingLiveNow = () => (
+  <>
+    <Text variant="xs" color="blue100">
+      {" "}
+      Bidding live now
+    </Text>
+  </>
 )
 
 export const Watching = () => (
   <>
     <BookmarkFill />
-    <Text variant="xs" color="black60">
+    <Text variant="xs" color="mono60">
       {" "}
       Watching
     </Text>

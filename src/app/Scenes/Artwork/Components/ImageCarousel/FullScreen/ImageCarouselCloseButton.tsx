@@ -1,6 +1,7 @@
-import { CloseIcon } from "@artsy/palette-mobile"
+import { CloseIcon, useColor } from "@artsy/palette-mobile"
 import { ImageCarouselContext } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { useScreenDimensions } from "app/utils/hooks"
+import { MotiView } from "moti"
 import { useContext } from "react"
 import { TouchableOpacity, View } from "react-native"
 import { boxShadow } from "./boxShadow"
@@ -10,18 +11,18 @@ const CLOSE_BUTTON_MARGIN = 12
 
 export const ImageCarouselCloseButton = ({ onClose }: { onClose(): void }) => {
   const { safeAreaInsets } = useScreenDimensions()
+  const color = useColor()
+
   const { fullScreenState } = useContext(ImageCarouselContext)
   fullScreenState.useUpdates()
 
-  const showCloseButton =
-    fullScreenState.current === "entered" ||
-    fullScreenState.current === "animating entry transition"
   return (
     <View
       style={{
         position: "absolute",
         top: safeAreaInsets.top,
         left: safeAreaInsets.left,
+        zIndex: 1,
       }}
     >
       <TouchableOpacity onPress={onClose}>
@@ -30,27 +31,33 @@ export const ImageCarouselCloseButton = ({ onClose }: { onClose(): void }) => {
             width: 40,
             height: 40,
             paddingLeft: CLOSE_BUTTON_MARGIN,
-            paddingTop: CLOSE_BUTTON_MARGIN,
+            paddingTop: 2,
             paddingRight: 20,
             paddingBottom: 20,
           }}
         >
-          <View
-            style={[
-              boxShadow,
-              {
-                opacity: showCloseButton ? 1 : 0,
-                width: 40,
-                height: 40,
-                borderRadius: 20,
-                backgroundColor: "white",
-                alignItems: "center",
-                justifyContent: "center",
-              },
-            ]}
+          <MotiView
+            from={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ type: "timing", duration: 200, delay: 400 }}
           >
-            <CloseIcon />
-          </View>
+            <View
+              style={[
+                boxShadow,
+                {
+                  opacity: 1,
+                  width: 40,
+                  height: 40,
+                  borderRadius: 20,
+                  backgroundColor: color("mono0"),
+                  alignItems: "center",
+                  justifyContent: "center",
+                },
+              ]}
+            >
+              <CloseIcon />
+            </View>
+          </MotiView>
         </View>
       </TouchableOpacity>
     </View>

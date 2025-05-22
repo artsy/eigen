@@ -1,4 +1,4 @@
-import { DEFAULT_HIT_SLOP, MoreIcon, Screen, Separator, Touchable } from "@artsy/palette-mobile"
+import { DEFAULT_HIT_SLOP, MoreIcon, Screen, Touchable } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { ActivityContent, ActivityContentPlaceholder } from "app/Scenes/Activity/ActivityContent"
 import { ActivityScreenStore } from "app/Scenes/Activity/ActivityScreenStore"
@@ -47,15 +47,12 @@ export const Activity: React.FC = () => {
               )
             }}
           >
-            <MoreIcon fill="black100" accessibilityLabel="Notifications menu" top="2px" />
+            <MoreIcon fill="mono100" accessibilityLabel="Notifications menu" top="2px" />
           </Touchable>
         }
       />
 
-      <Screen.StickySubHeader
-        title="Activity"
-        separatorComponent={<Separator borderColor="black5" />}
-      >
+      <Screen.StickySubHeader title="Activity" largeTitle separatorComponent={null}>
         <Suspense fallback={null}>
           <ActivityHeader />
         </Suspense>

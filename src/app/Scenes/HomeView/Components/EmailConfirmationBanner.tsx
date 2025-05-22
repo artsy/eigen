@@ -1,8 +1,9 @@
+import { CloseIcon } from "@artsy/icons/native"
 import { Flex, Text, Spinner } from "@artsy/palette-mobile"
 import { EmailConfirmationBanner_me$data } from "__generated__/EmailConfirmationBanner_me.graphql"
 import { verifyEmail } from "app/utils/verifyEmail"
 import { useState } from "react"
-import { Image, TouchableWithoutFeedback } from "react-native"
+import { Pressable, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 export interface Props {
@@ -53,36 +54,39 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
       <Flex
         px={2}
         py={1}
-        backgroundColor="black100"
+        backgroundColor="mono100"
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
       >
         {isLoading ? (
           <>
-            <Text variant="sm" color="white100">
+            <Text variant="sm" color="mono0">
               Sending a confirmation email...
             </Text>
 
             <Flex pr={1}>
-              <Spinner size="small" color="white100" />
+              <Spinner size="small" color="mono0" />
             </Flex>
           </>
         ) : (
-          <TouchableWithoutFeedback onPress={confirmed ? undefined : didTapSendConfirmationEmail}>
+          <TouchableWithoutFeedback
+            onPress={confirmed ? undefined : didTapSendConfirmationEmail}
+            testID="confirmEmailButton"
+          >
             <Flex
               flexDirection="row"
               width="100%"
               justifyContent="space-between"
               alignItems="center"
             >
-              <Text variant="sm" color="white100">
+              <Text variant="sm" color="mono0">
                 {message}
               </Text>
 
-              <TouchableWithoutFeedback onPress={() => toggleVisible(false)}>
-                <Image source={require("images/close-x.webp")} />
-              </TouchableWithoutFeedback>
+              <Pressable onPress={() => toggleVisible(false)} testID="closeButton">
+                <CloseIcon fill="mono0" />
+              </Pressable>
             </Flex>
           </TouchableWithoutFeedback>
         )}

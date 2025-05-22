@@ -11,8 +11,8 @@ module.exports = {
     "react-hooks",
     "testing-library",
     "unused-imports",
-    "no-autofix",
     "artsy",
+    "local-rules",
   ],
   extends: [
     "eslint:recommended",
@@ -38,11 +38,14 @@ module.exports = {
     react: {
       version: "detect",
     },
+    "local-rules": "./eslint-rules",
   },
   rules: {
     /**
      * Errors
      */
+    "local-rules/no-palette-icon-imports": ERR,
+    "local-rules/no-onpress-in-routerlink": ERR,
     "artsy/no-uselazyloadquery-inside-suspense": ERR,
     "import/order": [
       ERR,
@@ -57,7 +60,6 @@ module.exports = {
     "react/jsx-no-leaked-render": [ERR, { validStrategies: ["coerce", "ternary"] }],
     "react-hooks/rules-of-hooks": ERR,
     "unused-imports/no-unused-imports": OFF, // look below
-    "no-autofix/unused-imports/no-unused-imports": ERR,
 
     /**
      * Rules for tests see https://github.com/testing-library/eslint-plugin-testing-library#supported-rules for details
@@ -140,6 +142,12 @@ module.exports = {
             importNames: ["graphql"],
             message: "Please import `graphql` from `react-relay`.",
           },
+          {
+            name: "app/system/navigation/navigate",
+            importNames: ["navigate"],
+            message:
+              "Please use `RouterLink` instead of `navigate` (to support prefetching). If this is not possible, you can import `navigate` by adding a '// eslint-disable-next-line no-restricted-imports' comment.",
+          },
         ],
       },
     ],
@@ -149,6 +157,12 @@ module.exports = {
       files: ["*.tests.ts", "*.tests.tsx"],
       rules: {
         "@typescript-eslint/no-non-null-assertion": OFF,
+      },
+    },
+    {
+      files: ["*.tests.ts", "*.tests.tsx"],
+      rules: {
+        "no-restricted-imports": OFF,
       },
     },
     {

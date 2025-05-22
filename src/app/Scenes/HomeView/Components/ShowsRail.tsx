@@ -5,8 +5,9 @@ import {
   ShowsRail_showsConnection$data,
   ShowsRail_showsConnection$key,
 } from "__generated__/ShowsRail_showsConnection.graphql"
+import { CardWithMetaDataSkeleton as SkeletonShowCard } from "app/Components/Cards/CardWithMetaData"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { ShowCardContainer, SkeletonShowCard } from "app/Components/ShowCard"
+import { ShowCardContainer } from "app/Components/ShowCard"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
@@ -57,7 +58,14 @@ export const ShowsRail: React.FC<ShowsRailProps> = memo(
 
     return (
       <Flex {...flexProps}>
-        <SectionTitle title={title} mx={2} />
+        <SectionTitle
+          title={title}
+          mx={2}
+          href="/shows-for-you"
+          onPress={() => {
+            tracking.trackEvent(tracks.tappedHeader())
+          }}
+        />
 
         <FlatList
           horizontal
@@ -118,7 +126,7 @@ const showsFragment = graphql`
 
 export const tracks = {
   tappedHeader: () => ({
-    action: ActionType.tappedArtworkGroup,
+    action: ActionType.tappedShowGroup,
     context_module: ContextModule.showsRail,
     context_screen_owner_type: OwnerType.home,
     destination_screen_owner_type: OwnerType.show,

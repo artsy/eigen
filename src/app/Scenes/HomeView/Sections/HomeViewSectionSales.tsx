@@ -24,7 +24,6 @@ import {
 } from "app/Scenes/HomeView/helpers/constants"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
@@ -54,19 +53,17 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
   const href = getHomeViewSectionHref(viewAll?.href, section)
 
   const onHeaderPress = () => {
-    tracking.tappedAuctionResultGroupViewAll(
+    tracking.tappedAuctionGroupViewAll(
       section.contextModule as ContextModule,
       viewAll?.ownerType as ScreenOwnerType
     )
   }
 
   const onViewAllPress = () => {
-    tracking.tappedAuctionResultGroupViewAll(
+    tracking.tappedAuctionGroupViewAll(
       section.contextModule as ContextModule,
       (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
     )
-
-    navigate(href)
   }
 
   if (sales.length === 0) return null
@@ -74,11 +71,14 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
   return (
     <Flex {...flexProps}>
       <Flex px={2}>
-        <SectionTitle href={href} title={section.component?.title} onPress={onHeaderPress} />
+        <SectionTitle
+          href={href}
+          title={section.component?.title}
+          onPress={href ? onHeaderPress : undefined}
+        />
       </Flex>
+
       <CardRailFlatList
-        prefetchUrlExtractor={(item) => item?.href}
-        prefetchVariablesExtractor={(item) => ({ saleSlug: item?.slug })}
         listRef={listRef}
         data={sales}
         initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
@@ -101,6 +101,7 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
         ListFooterComponent={
           viewAll ? (
             <BrowseMoreRailCard
+              href={viewAll.href}
               onPress={onViewAllPress}
               text={viewAll.buttonText ?? "Browse All Auctions"}
             />
@@ -167,14 +168,14 @@ const HomeViewSectionSalesPlaceholder: React.FC<FlexProps> = (flexProps) => {
                           height={SMALL_IMAGE_SIZE}
                           width={SMALL_IMAGE_SIZE}
                           borderLeftWidth={2}
-                          borderColor="white100"
+                          borderColor="mono0"
                           borderBottomWidth={1}
                         />
                         <SkeletonBox
                           height={SMALL_IMAGE_SIZE}
                           width={SMALL_IMAGE_SIZE}
                           borderLeftWidth={2}
-                          borderColor="white100"
+                          borderColor="mono0"
                           borderTopWidth={1}
                         />
                       </Flex>

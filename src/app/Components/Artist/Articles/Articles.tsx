@@ -1,11 +1,11 @@
 import { ActionType, ContextModule, OwnerType, TappedArticleGroup } from "@artsy/cohesion"
-import { Flex, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { Articles_articles$key } from "__generated__/Articles_articles.graphql"
 import { Articles_artist$key } from "__generated__/Articles_artist.graphql"
 import { MasonryStatic } from "app/Components/MasonryStatic"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { Dimensions } from "react-native"
-import { useFragment, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { Article } from "./Article"
 
@@ -21,7 +21,6 @@ export const Articles: React.FC<Props> = ({ articles, artist }) => {
 
   const handleViewAll = () => {
     tracking.trackEvent(tracks.tappedViewAll())
-    navigate(`artist/${artistData.slug}/articles`)
   }
 
   return (
@@ -36,11 +35,11 @@ export const Articles: React.FC<Props> = ({ articles, artist }) => {
             pr={1}
           >{`Artsy Editorial Featuring ${artistData.name}`}</Text>
         </Flex>
-        <Touchable onPress={handleViewAll}>
+        <RouterLink onPress={handleViewAll} to={`artist/${artistData.slug}/articles`}>
           <Text variant="xs" underline>
             View All
           </Text>
-        </Touchable>
+        </RouterLink>
       </Flex>
 
       <Spacer y={4} />

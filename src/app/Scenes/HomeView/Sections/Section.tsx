@@ -14,10 +14,13 @@ import { HomeViewSectionFeaturedCollectionQueryRenderer } from "app/Scenes/HomeV
 import { HomeViewSectionGeneric } from "app/Scenes/HomeView/Sections/HomeViewSectionGeneric"
 import { HomeViewSectionHeroUnitsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionHeroUnits"
 import { HomeViewSectionMarketingCollectionsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionMarketingCollections"
+import { HomeViewSectionNavigationPillsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionNavigationPills"
 import { HomeViewSectionSalesQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionSales"
 import { HomeViewSectionShowsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
 import { HomeViewSectionTasksQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionTasks"
 import { HomeViewSectionViewingRoomsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionViewingRooms"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
 
 export interface SectionProps extends FlexProps {
@@ -33,6 +36,14 @@ export interface SectionSharedProps extends FlexProps {
 }
 
 export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
+  const enableNavigationPills = useFeatureFlag("AREnableHomeViewQuickLinks")
+  const { variant: quickLinksExperimentVariant } = useExperimentVariant(
+    "onyx_quick-links-experiment"
+  )
+  const { variant: discoverTabExperimentVariant } = useExperimentVariant("diamond_discover-tab")
+  const isDiscoverVariant =
+    discoverTabExperimentVariant.name === "variant-a" && discoverTabExperimentVariant.enabled
+
   if (!section.internalID) {
     if (__DEV__) {
       throw new Error("Section has no internalID")
@@ -48,6 +59,10 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
     case "ArticlesCard":
       return <HomeViewSectionArticlesCardsQueryRenderer sectionID={section.internalID} {...rest} />
     case "Chips":
+      if (section.internalID === "home-view-section-discover-something-new" && isDiscoverVariant) {
+        return null
+      }
+
       return <HomeViewSectionCardsChipsQueryRenderer sectionID={section.internalID} {...rest} />
   }
 
@@ -69,6 +84,10 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
     case "HomeViewSectionHeroUnits":
       return <HomeViewSectionHeroUnitsQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionCards":
+      if (section.internalID === "home-view-section-explore-by-category" && isDiscoverVariant) {
+        return null
+      }
+
       return <HomeViewSectionCardsQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionFairs":
       return <HomeViewSectionFairsQueryRenderer sectionID={section.internalID} {...rest} />
@@ -87,10 +106,24 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
       return <HomeViewSectionSalesQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionTasks":
       return <HomeViewSectionTasksQueryRenderer sectionID={section.internalID} {...rest} />
+    case "HomeViewSectionNavigationPills": {
+      if (
+        enableNavigationPills &&
+        quickLinksExperimentVariant.enabled &&
+        quickLinksExperimentVariant.name === "experiment"
+      ) {
+        return (
+          <HomeViewSectionNavigationPillsQueryRenderer sectionID={section.internalID} {...rest} />
+        )
+      }
+
+      return null
+    }
+
     default:
       if (__DEV__) {
         return (
-          <Flex p={2} backgroundColor="black10">
+          <Flex p={2} backgroundColor="mono10">
             <Text>Non supported section:</Text>
             <Text color="devpurple">{section.__typename}</Text>
           </Flex>

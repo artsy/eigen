@@ -1,11 +1,11 @@
 import { BottomSheetFlatList } from "@gorhom/bottom-sheet"
 import { ArtworkLists_me$data, ArtworkLists_me$key } from "__generated__/ArtworkLists_me.graphql"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ArtworkListsLoadingIndicator } from "app/Components/ArtworkLists/components/ArtworkListsLoadingIndicator"
 import { ArtworkListMode, ArtworkListOfferSettingsMode } from "app/Components/ArtworkLists/types"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { FC, useCallback, useEffect, useState } from "react"
+import { FC, useCallback, useEffect } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
 import { ArtworkListItem, PressedArtworkListItem } from "./ArtworkListItem"
 
@@ -18,15 +18,25 @@ type ArtworkList =
   | ExtractNodeType<ArtworkLists_me$data["customArtworkLists"]>
 
 export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
-  const [refreshing, setRefreshing] = useState(false)
   const {
     shareArtworkListIDs,
-    keepArtworkListPrivateIDs,
     addingArtworkListIDs,
     removingArtworkListIDs,
-    dispatch,
-  } = useArtworkListsContext()
-  const { data, hasNext, loadNext, isLoadingNext, refetch } = usePaginationFragment(
+    keepArtworkListPrivateIDs,
+  } = ArtworkListsStore.useStoreState((state) => ({
+    shareArtworkListIDs: state.shareArtworkListIDs,
+    addingArtworkListIDs: state.addingArtworkListIDs,
+    removingArtworkListIDs: state.removingArtworkListIDs,
+    keepArtworkListPrivateIDs: state.keepArtworkListPrivateIDs,
+  }))
+  const { setSelectedTotalCount, shareOrKeepArtworkListPrivate, addOrRemoveArtworkList } =
+    ArtworkListsStore.useStoreActions((actions) => ({
+      setSelectedTotalCount: actions.setSelectedTotalCount,
+      shareOrKeepArtworkListPrivate: actions.shareOrKeepArtworkListPrivate,
+      addOrRemoveArtworkList: actions.addOrRemoveArtworkList,
+    }))
+
+  const { data, hasNext, loadNext, isLoadingNext } = usePaginationFragment(
     ArtworkListsFragment,
     props.me
   )
@@ -40,24 +50,8 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
   }
 
   useEffect(() => {
-    dispatch({
-      type: "SET_SELECTED_TOTAL_COUNT",
-      payload: totalSelectedArtworkListsCount,
-    })
+    setSelectedTotalCount(totalSelectedArtworkListsCount)
   }, [totalSelectedArtworkListsCount])
-
-  const handleRefresh = () => {
-    setRefreshing(true)
-    refetch(
-      {},
-      {
-        fetchPolicy: "store-and-network",
-        onComplete: () => {
-          setRefreshing(false)
-        },
-      }
-    )
-  }
 
   const handleLoadMore = () => {
     if (!hasNext || isLoadingNext) {
@@ -113,14 +107,11 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
         ? ArtworkListOfferSettingsMode.KeepingArtworkListsPrivate
         : ArtworkListOfferSettingsMode.SharingArtworkLists
 
-      dispatch({
-        type: "SHARE_OR_KEEP_ARTWORK_LIST_PRIVATE",
-        payload: {
-          mode,
-          artworkList: {
-            internalID: artworkList.internalID,
-            name: artworkList.name,
-          },
+      shareOrKeepArtworkListPrivate({
+        mode,
+        artworkList: {
+          internalID: artworkList.internalID,
+          name: artworkList.name,
         },
       })
     } else {
@@ -128,14 +119,11 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
         ? ArtworkListMode.RemovingArtworkList
         : ArtworkListMode.AddingArtworkList
 
-      dispatch({
-        type: "ADD_OR_REMOVE_ARTWORK_LIST",
-        payload: {
-          mode,
-          artworkList: {
-            internalID: artworkList.internalID,
-            name: artworkList.name,
-          },
+      addOrRemoveArtworkList({
+        mode,
+        artworkList: {
+          internalID: artworkList.internalID,
+          name: artworkList.name,
         },
       })
     }
@@ -145,8 +133,6 @@ export const ArtworkLists: FC<ArtworkListsProps> = (props) => {
     <BottomSheetFlatList
       data={artworkLists}
       keyExtractor={(item) => item.internalID}
-      onRefresh={handleRefresh}
-      refreshing={refreshing}
       renderItem={({ item }) => {
         return (
           <ArtworkListItem

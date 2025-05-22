@@ -18,6 +18,7 @@ import {
   TappedCollectionGroup,
   TappedFairGroup,
   TappedHeroUnitGroup,
+  TappedNavigationPillsGroup,
   TappedNotificationsBell,
   TappedShowGroup,
   TappedShowMore,
@@ -285,12 +286,13 @@ export const useHomeViewTracking = () => {
       entityType: ScreenOwnerType,
       href: string,
       contextModule: ContextModule,
-      index: number
+      index: number,
+      screenOwnerType: ScreenOwnerType
     ) => {
       const payload: TappedCardGroup = {
         action: ActionType.tappedCardGroup,
         context_module: contextModule,
-        context_screen_owner_type: OwnerType.home,
+        context_screen_owner_type: screenOwnerType,
         destination_screen_owner_type: entityType,
         destination_path: href,
         destination_screen_owner_id: entityID,
@@ -398,6 +400,28 @@ export const useHomeViewTracking = () => {
         context_screen_owner_type: OwnerType.home,
         destination_screen_owner_type: destinationOwnerType,
         type: "viewAll",
+      }
+
+      trackEvent(payload)
+    },
+
+    tappedNavigationPillsGroup: ({
+      title,
+      href,
+      index,
+    }: {
+      title: string
+      href: string
+      index: number
+    }) => {
+      const payload: TappedNavigationPillsGroup = {
+        action: ActionType.tappedNavigationPillsGroup,
+        context_module: ContextModule.quickLinks,
+        context_screen_owner_type: OwnerType.home,
+        title,
+        href,
+        horizontal_slide_position: index,
+        type: "pill",
       }
 
       trackEvent(payload)

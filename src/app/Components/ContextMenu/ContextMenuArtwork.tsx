@@ -1,19 +1,22 @@
 import { ActionType, ContextModule, LongPressedArtwork, ScreenOwnerType } from "@artsy/cohesion"
-import { useColor } from "@artsy/palette-mobile"
+import { Box, Flex, Join, Separator, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { ContextMenuArtworkPreviewCard_artwork$key } from "__generated__/ContextMenuArtworkPreviewCard_artwork.graphql"
 import { ContextMenuArtwork_artwork$key } from "__generated__/ContextMenuArtwork_artwork.graphql"
-import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { ArtworkRailCardProps } from "app/Components/ArtworkRail/ArtworkRailCard"
+import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { ContextMenuArtworkPreviewCard } from "app/Components/ContextMenu/ContextMenuArtworkPreviewCard"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 import { cm2in } from "app/utils/conversions"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { isDislikeArtworksEnabledFor } from "app/utils/isDislikeArtworksEnabledFor"
 import { useDislikeArtwork } from "app/utils/mutations/useDislikeArtwork"
 import { Schema } from "app/utils/track"
-import { isEmpty } from "lodash"
-import { InteractionManager, Platform } from "react-native"
+import { useState } from "react"
+import { InteractionManager, Platform, SafeAreaView } from "react-native"
 import ContextMenu, { ContextMenuAction, ContextMenuProps } from "react-native-context-menu-view"
+import { TouchableHighlight } from "react-native-gesture-handler"
 import { HapticFeedbackTypes, trigger } from "react-native-haptic-feedback"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -33,40 +36,10 @@ interface ContextMenuArtworkProps {
   onSupressArtwork?: () => void
   haptic?: HapticFeedbackTypes | boolean
   artworkDisplayProps?: ArtworkDisplayProps
-  contextScreenOwnerType?: ScreenOwnerType
   contextModule?: ContextModule
+  contextScreenOwnerType?: ScreenOwnerType
   hideCreateAlertOnArtworkPreview?: boolean
 }
-
-const artworkFragment = graphql`
-  fragment ContextMenuArtwork_artwork on Artwork @argumentDefinitions(width: { type: "Int" }) {
-    ...ContextMenuArtworkPreviewCard_artwork @arguments(width: $width)
-    ...useSaveArtworkToArtworkLists_artwork
-
-    title
-    href
-    artistNames
-    artists(shallow: true) {
-      name
-    }
-    slug
-    internalID
-    id
-    isHangable
-    contextMenuImage: image {
-      url(version: ["larger", "large", "medium", "small", "square"])
-    }
-    image(includeAll: false) {
-      url(version: ["larger", "large", "medium", "small", "square"])
-    }
-    sale {
-      isAuction
-      isClosed
-    }
-    heightCm
-    widthCm
-  }
-`
 
 export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   children,
@@ -74,8 +47,8 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
   artworkDisplayProps,
   onCreateAlertActionPress,
   onSupressArtwork,
-  contextScreenOwnerType,
   contextModule,
+  contextScreenOwnerType,
   hideCreateAlertOnArtworkPreview,
   ...restProps
 }) => {
@@ -83,27 +56,25 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
-  const enableContextMenu = useFeatureFlag("AREnableArtworkCardContextMenuIOS")
+  const enableContextMenuIOS = useFeatureFlag("AREnableArtworkCardContextMenuIOS")
+  const enableContextMenuAndroid = useFeatureFlag("AREnableArtworkCardContextMenuAndroid")
   const { submitMutation: dislikeArtworkMutation } = useDislikeArtwork()
   const isIOS = Platform.OS === "ios"
   const color = useColor()
 
   const dark = artworkDisplayProps?.dark ?? false
 
-  const { title, href, artists, slug, internalID, id, isHangable, image, sale } = artwork
+  const { title, href, artists, slug, internalID, id, isHangable, image } = artwork
 
-  const shouldDisplayContextMenu = isIOS && enableContextMenu
   const enableCreateAlerts = !!artwork.artists?.length
   const enableViewInRoom = LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable
-  const enableSupressArtwork = contextModule == "newWorksForYouRail"
+  const enableSupressArtwork = isDislikeArtworksEnabledFor(contextModule)
 
-  const isOpenSale = !isEmpty(sale) && sale?.isAuction && !sale?.isClosed
-
-  const { isSaved, saveArtworkToLists } = useSaveArtworkToArtworkLists({
-    artworkFragmentRef: artwork,
-    onCompleted:
-      // TODO: Do we need to track anything here?
-      () => null,
+  const { trackCreateAlertTap } = useCreateAlertTracking({
+    contextScreenOwnerType: contextScreenOwnerType ?? ("unknown" as ScreenOwnerType),
+    contextScreenOwnerId: artwork.internalID,
+    contextScreenOwnerSlug: artwork.slug,
+    contextModule: ContextModule.longPressContextMenu,
   })
 
   const openViewInRoom = () => {
@@ -152,21 +123,6 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
       },
     ]
 
-    if (!enableSupressArtwork) {
-      let saveTitle = isSaved ? "Remove from saved" : "Save"
-      if (isOpenSale) {
-        saveTitle = "Watch Lot"
-      }
-
-      contextMenuActions.unshift({
-        title: saveTitle,
-        systemIcon: isSaved ? "heart.fill" : "heart",
-        onPress: () => {
-          saveArtworkToLists()
-        },
-      })
-    }
-
     if (enableViewInRoom) {
       contextMenuActions.push({
         title: "View in room",
@@ -199,6 +155,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
         systemIcon: "bell",
         onPress: () => {
           InteractionManager.runAfterInteractions(() => {
+            trackCreateAlertTap()
             onCreateAlertActionPress?.()
           })
         },
@@ -217,55 +174,134 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
 
     const onPressToCall = contextActions[event.nativeEvent.index].onPress
 
-    if (contextModule && contextScreenOwnerType) {
-      trackEvent(tracks.longPressedArtwork(contextModule, contextScreenOwnerType, artwork.id))
-    }
-
     onPressToCall?.()
   }
 
-  const handleContextCancel: ContextMenuProps["onCancel"] = () => {
-    // There is not an event for callback for when context menu shows so instead track
-    // the 2 possibilities, an action was taken or the menu was cancelled
-    if (contextModule && contextScreenOwnerType) {
-      trackEvent(tracks.longPressedArtwork(contextModule, contextScreenOwnerType, artwork.id))
-    }
-  }
-
-  const tracks = {
-    longPressedArtwork: (
-      contextModule: ContextModule,
-      screenOwnerType: ScreenOwnerType,
-      artworkId: string
-    ): LongPressedArtwork => ({
-      action: ActionType.longPressedArtwork,
-      context_module: contextModule,
-      context_screen_owner_type: screenOwnerType,
-      context_screen_owner_id: artworkId,
-    }),
-  }
-
-  if (!shouldDisplayContextMenu) {
-    return <>{children}</>
-  }
-
-  const artworkPreviewComponent = (artwork: ContextMenuArtworkPreviewCard_artwork$key) => {
+  const artworkPreviewComponent = (
+    artwork: ContextMenuArtworkPreviewCard_artwork$key,
+    artworkDisplayProps: ArtworkDisplayProps | undefined
+  ) => {
     return (
       <ContextMenuArtworkPreviewCard artwork={artwork} artworkDisplayProps={artworkDisplayProps} />
     )
   }
 
-  return (
-    <ContextMenu
-      actions={contextActions}
-      onPress={handleContextPress}
-      onCancel={handleContextCancel}
-      preview={artworkPreviewComponent(artwork)}
-      hideShadows={true}
-      previewBackgroundColor={!!dark ? color("black100") : color("white100")}
-      disabled={!shouldDisplayContextMenu}
-    >
-      {children}
-    </ContextMenu>
-  )
+  const [androidVisible, setAndroidVisible] = useState(false)
+
+  // TODO: Enable in test enrivonment and fix broken tests
+  if (isIOS && enableContextMenuIOS && !__TEST__) {
+    return (
+      <ContextMenu
+        actions={contextActions}
+        onPress={handleContextPress}
+        preview={artworkPreviewComponent(artwork, artworkDisplayProps)}
+        hideShadows={true}
+        previewBackgroundColor={!!dark ? color("mono100") : color("mono0")}
+      >
+        {children}
+      </ContextMenu>
+    )
+  }
+
+  const handleAndroidLongPress = () => {
+    if (contextModule && contextScreenOwnerType) {
+      trackEvent(
+        trackLongPress.longPressedArtwork(contextModule, contextScreenOwnerType, artwork.slug)
+      )
+    }
+    setAndroidVisible(true)
+  }
+
+  // Fall back to a bottom sheet on Android
+  if (!isIOS && enableContextMenuAndroid) {
+    return (
+      <>
+        <TouchableHighlight
+          underlayColor={dark ? color("mono100") : color("mono0")}
+          activeOpacity={0.8}
+          onLongPress={handleAndroidLongPress}
+          delayLongPress={1200} // To avoid the context menu from opening on a (long) normal press on Android.
+          onPress={undefined}
+          testID="android-context-menu-trigger"
+        >
+          {children}
+        </TouchableHighlight>
+
+        <AutoHeightBottomSheet visible={androidVisible} onDismiss={() => setAndroidVisible(false)}>
+          <SafeAreaView>
+            <Flex mx={2} mb={4}>
+              <Flex ml={-1} mb={1}>
+                {/* Always show light mode on Android for the bottom sheet */}
+                {artworkPreviewComponent(artwork, { ...artworkDisplayProps, dark: false })}
+              </Flex>
+
+              <Join separator={<Separator borderColor="mono10" my={1} />}>
+                {contextActions.map((action, index) => {
+                  return (
+                    <Touchable
+                      key={index}
+                      onPress={() => {
+                        setAndroidVisible(false)
+
+                        action.onPress?.()
+                      }}
+                    >
+                      <Box>
+                        <Text>{action.title}</Text>
+                      </Box>
+                    </Touchable>
+                  )
+                })}
+              </Join>
+            </Flex>
+          </SafeAreaView>
+        </AutoHeightBottomSheet>
+      </>
+    )
+  }
+
+  return <>{children}</>
+}
+
+const artworkFragment = graphql`
+  fragment ContextMenuArtwork_artwork on Artwork @argumentDefinitions(width: { type: "Int" }) {
+    ...ContextMenuArtworkPreviewCard_artwork @arguments(width: $width)
+    ...useSaveArtworkToArtworkLists_artwork
+
+    title
+    href
+    artistNames
+    artists(shallow: true) {
+      name
+    }
+    slug
+    internalID
+    id
+    isHangable
+    contextMenuImage: image {
+      url(version: ["larger", "large", "medium", "small", "square"])
+    }
+    image(includeAll: false) {
+      url(version: ["larger", "large", "medium", "small", "square"])
+    }
+    sale {
+      isAuction
+      isClosed
+    }
+    heightCm
+    widthCm
+  }
+`
+
+export const trackLongPress = {
+  longPressedArtwork: (
+    contextModule: ContextModule,
+    screenOwnerType: ScreenOwnerType,
+    artworkId: string
+  ): LongPressedArtwork => ({
+    action: ActionType.longPressedArtwork,
+    context_module: contextModule,
+    context_screen_owner_type: screenOwnerType,
+    context_screen_owner_id: artworkId,
+  }),
 }

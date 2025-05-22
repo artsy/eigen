@@ -108,17 +108,14 @@ export const SavedSearchSuggestedFilters: React.FC<{}> = () => {
       <MenuItem
         title="Add Filters"
         description="Including Price Range, Rarity, Medium, Color"
-        onPress={() => {
-          navigation.navigate("SavedSearchFilterScreen")
-        }}
+        onPress={() => navigation.navigate("SavedSearchFilterScreen")}
         px={0}
-        py={0}
       />
     )
   }
 
   return (
-    <Flex>
+    <Flex mt={2}>
       <Text variant="sm-display">Add Filters</Text>
 
       <Flex flexDirection="row" flexWrap="wrap" mt={0.5} mx={-0.5} alignItems="center">
@@ -163,7 +160,7 @@ const MoreFiltersButton: React.FC<{ text: string }> = ({ text }) => {
       }}
     >
       <Flex px={1} flexDirection="row" alignItems="center">
-        <Text color="blue" variant="xs">
+        <Text color="blue100" variant="xs">
           {text}
         </Text>
         <ChevronIcon

@@ -1,10 +1,10 @@
-import { Flex, Box, Text, Image, Spacer } from "@artsy/palette-mobile"
+import { Box, Flex, Image, Spacer, Text } from "@artsy/palette-mobile"
 import { ViewingRoomHeader_viewingRoom$data } from "__generated__/ViewingRoomHeader_viewingRoom.graphql"
 import { durationSections } from "app/Components/Countdown"
 import { CountdownTimer, CountdownTimerProps } from "app/Components/Countdown/CountdownTimer"
 import { ViewingRoomStatus } from "app/Scenes/ViewingRoom/ViewingRoom"
-import { navigate } from "app/system/navigation/navigate"
-import { Dimensions, TouchableWithoutFeedback, View } from "react-native"
+import { RouterLink } from "app/system/navigation/RouterLink"
+import { Dimensions, View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
@@ -24,7 +24,12 @@ const CountdownText: React.FC<CountdownTimerProps> = ({ duration }) => {
   const separator = "  "
   const sections = duration ? durationSections(duration, ["d", "h", "m", "s"]) : []
   return (
-    <Text variant="xs" fontWeight={500} color="white100">
+    <Text
+      variant="xs"
+      fontWeight={500}
+      // We want to set the color to white here regardless of the theme
+      color="white"
+    >
       {sections
         .map(({ time, label }, idx) =>
           idx < sections.length - 1 ? time + label + separator : time + label
@@ -54,7 +59,12 @@ const Countdown: React.FC<{ startAt: string; endAt: string; status: string }> = 
 
   return (
     <>
-      <Text variant="xs" fontWeight={500} color="white100">
+      <Text
+        variant="xs"
+        fontWeight={500}
+        // We want to set the color to white here regardless of the theme
+        color="white"
+      >
         {finalText}
       </Text>
       {status !== ViewingRoomStatus.CLOSED ? (
@@ -102,17 +112,19 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
           mb={0.5}
         >
           <Flex alignItems="center" flexDirection="column" flexGrow={1}>
-            <Text testID="title" variant="lg-display" textAlign="center" color="white100">
+            <Text
+              testID="title"
+              variant="lg-display"
+              textAlign="center"
+              // We want to set the color to white here regardless of the theme
+              color="white"
+            >
               {title}
             </Text>
+
             <Spacer y={1} />
-            <TouchableWithoutFeedback
-              onPress={() => {
-                if (partner?.href) {
-                  navigate(partner.href)
-                }
-              }}
-            >
+
+            <RouterLink noFeedback to={partner?.href}>
               <Flex flexDirection="row" justifyContent="center" alignItems="center">
                 {!!partnerIconImageURL && (
                   <Box mr={0.5}>
@@ -122,11 +134,18 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
                     />
                   </Box>
                 )}
-                <Text variant="xs" fontWeight={500} color="white100" testID="partner-name">
+                <Text
+                  variant="xs"
+                  fontWeight={500}
+                  // We want to set the color to white here regardless of the theme
+                  color="white"
+                  testID="partner-name"
+                >
                   {partner?.name}
                 </Text>
               </Flex>
-            </TouchableWithoutFeedback>
+            </RouterLink>
+
             <Flex flexDirection="row">
               <Countdown startAt={startAt as string} endAt={endAt as string} status={status} />
             </Flex>

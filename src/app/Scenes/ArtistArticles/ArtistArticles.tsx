@@ -3,20 +3,21 @@ import { Screen } from "@artsy/palette-mobile"
 import { ArticleCard_article$data } from "__generated__/ArticleCard_article.graphql"
 import { ArtistArticlesResultQuery } from "__generated__/ArtistArticlesResultQuery.graphql"
 import { ArtistArticles_artist$data } from "__generated__/ArtistArticles_artist.graphql"
-import { ArticlesList, ArticlesPlaceholder } from "app/Scenes/Articles/ArticlesList"
+import { CardsWithMetaDataListPlaceholder as ArticlesPlaceholder } from "app/Components/Cards/CardWithMetaData"
+import { ArticlesList } from "app/Scenes/Articles/ArticlesList"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import React, { useState } from "react"
+import { useState } from "react"
 import {
   createPaginationContainer,
+  Environment,
+  graphql,
   QueryRenderer,
   RelayPaginationProp,
-  graphql,
-  Environment,
 } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -125,23 +126,25 @@ export const ArtistArticlesQueryRenderer: React.FC<{
   return (
     <QueryRenderer<ArtistArticlesResultQuery>
       environment={environment || getRelayEnvironment()}
-      query={graphql`
-        query ArtistArticlesResultQuery($artistID: String!) {
-          artist(id: $artistID) {
-            ...ArtistArticles_artist
-          }
-        }
-      `}
+      query={ArtistArticlesResultScreenQuery}
       variables={{
         artistID,
       }}
       render={renderWithPlaceholder({
         Container: ArtistArticlesContainer,
-        renderPlaceholder: () => <ArticlesPlaceholder />,
+        renderPlaceholder: () => <ArticlesPlaceholder testID="articles-screen-placeholder" />,
       })}
     />
   )
 }
+
+export const ArtistArticlesResultScreenQuery = graphql`
+  query ArtistArticlesResultQuery($artistID: String!) {
+    artist(id: $artistID) {
+      ...ArtistArticles_artist
+    }
+  }
+`
 
 export const tracks = {
   tapArticlesListItem: (articleId: string, articleSlug: string) => ({

@@ -51,7 +51,7 @@ export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = (pro
             )}
             {!!subsection.caption && (
               <Box mx={2}>
-                <Text mt={1} variant="xs" color="black60">
+                <Text mt={1} variant="xs" color="mono60">
                   {subsection.caption}
                 </Text>
               </Box>

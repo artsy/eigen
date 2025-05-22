@@ -2,7 +2,6 @@ import { Box, Flex, Spacer } from "@artsy/palette-mobile"
 import { ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import {
-  ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   ARTWORK_RAIL_CARD_MAX_WIDTH,
   ARTWORK_RAIL_CARD_MIN_WIDTH,
   ArtworkRailCardImage,
@@ -11,17 +10,16 @@ import {
   ArtworkRailCardCommonProps,
   ArtworkRailCardMeta,
 } from "app/Components/ArtworkRail/ArtworkRailCardMeta"
-import { ContextMenuArtwork } from "app/Components/ContextMenu/ContextMenuArtwork"
-import { Disappearable, DissapearableArtwork } from "app/Components/Disappearable"
-import { ArtworkItemCTAs } from "app/Scenes/Artwork/Components/ArtworkItemCTAs"
-import { useGetNewSaveAndFollowOnArtworkCardExperimentVariant } from "app/Scenes/Artwork/utils/useGetNewSaveAndFollowOnArtworkCardExperimentVariant"
+import { ContextMenuArtwork, trackLongPress } from "app/Components/ContextMenu/ContextMenuArtwork"
+import { Disappearable } from "app/Components/Disappearable"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
-import { useState } from "react"
-import { GestureResponderEvent, PixelRatio } from "react-native"
+import { useRef, useState } from "react"
+import { GestureResponderEvent, PixelRatio, Platform } from "react-native"
 import { graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 
 const fontScale = PixelRatio.getFontScale()
 export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = fontScale * 100
@@ -55,72 +53,66 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   testID,
   ...restProps
 }) => {
-  const enableNewSaveAndFollowOnArtworkCard = useFeatureFlag(
-    "AREnableNewSaveAndFollowOnArtworkCard"
-  )
+  const enableContextMenuIOS = useFeatureFlag("AREnableArtworkCardContextMenuIOS")
+  const isIOS = Platform.OS === "ios"
 
-  const { enableNewSaveCTA, enableNewSaveAndFollowCTAs } =
-    useGetNewSaveAndFollowOnArtworkCardExperimentVariant(
-      "onyx_artwork-card-save-and-follow-cta-redesign"
-    )
+  const { trackEvent } = useTracking()
 
   const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
+  const disappearableRef = useRef<Disappearable>(null)
 
   const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const backgroundColor = dark ? "black100" : "white100"
+  const backgroundColor = dark ? "mono100" : "mono0"
 
   const supressArtwork = () => {
-    ;(artwork as DissapearableArtwork)?._disappearable?.disappear()
+    disappearableRef.current?.disappear()
   }
 
-  // 36 = 20 (padding) + 18 (icon size) + 5 (top padding) + 2 (border radius when dark background)
-  const likeAndFollowCTAPadding =
-    showSaveIcon &&
-    enableNewSaveAndFollowOnArtworkCard &&
-    (enableNewSaveCTA || enableNewSaveAndFollowCTAs)
-      ? fontScale * (43 + (dark ? 2 : 0))
-      : 0
-  const artworkRailCardMetaPadding = fontScale * 10
-  const artworkRailCardMetaDataHeight =
-    ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + artworkRailCardMetaPadding + likeAndFollowCTAPadding
-
   return (
-    <Disappearable ref={(ref) => ((artwork as DissapearableArtwork)._disappearable = ref)}>
+    <Disappearable ref={disappearableRef}>
       <AnalyticsContextProvider
         contextScreenOwnerId={contextScreenOwnerId}
         contextScreenOwnerSlug={contextScreenOwnerSlug}
         contextScreenOwnerType={contextScreenOwnerType}
       >
-        <ContextMenuArtwork
-          contextModule={contextModule}
-          contextScreenOwnerType={contextScreenOwnerType}
-          onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
-          onSupressArtwork={supressArtwork}
-          artwork={artwork}
-          artworkDisplayProps={{
-            dark,
-            showPartnerName,
-            hideArtistName,
-            lotLabel,
-            SalePriceComponent,
-          }}
-        >
-          <Box pr={2}>
-            <RouterLink
-              to={href || artwork.href}
-              underlayColor={backgroundColor}
-              activeOpacity={0.8}
-              onPress={onPress}
-              // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
-              onLongPress={() => {}}
-              delayLongPress={400}
-              testID={testID}
+        <Box pr={2}>
+          <RouterLink
+            to={href || artwork.href}
+            underlayColor={backgroundColor}
+            onPress={onPress}
+            // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
+            onLongPress={() => {
+              // Android long press is tracked inside of the ContextMenuArtwork component
+              if (contextModule && contextScreenOwnerType && isIOS && enableContextMenuIOS) {
+                trackEvent(
+                  trackLongPress.longPressedArtwork(
+                    contextModule,
+                    contextScreenOwnerType,
+                    artwork.slug
+                  )
+                )
+              }
+            }}
+            delayLongPress={400}
+            testID={testID}
+          >
+            <ContextMenuArtwork
+              contextModule={contextModule}
+              contextScreenOwnerType={contextScreenOwnerType}
+              onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
+              onSupressArtwork={supressArtwork}
+              artwork={artwork}
+              artworkDisplayProps={{
+                dark,
+                showPartnerName,
+                hideArtistName,
+                lotLabel,
+                SalePriceComponent,
+              }}
             >
               <Flex
-                height={
-                  containerHeight ?? ARTWORK_RAIL_CARD_IMAGE_HEIGHT + artworkRailCardMetaDataHeight
-                }
+                height={containerHeight ?? "auto"}
                 justifyContent="flex-start"
                 minWidth={ARTWORK_RAIL_CARD_MIN_WIDTH}
                 maxWidth={ARTWORK_RAIL_CARD_MAX_WIDTH}
@@ -146,24 +138,10 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                   showSaveIcon={showSaveIcon}
                   backgroundColor={backgroundColor}
                 />
-
-                {!!enableNewSaveAndFollowOnArtworkCard &&
-                  !!(enableNewSaveCTA || enableNewSaveAndFollowCTAs) && <Spacer y={0.5} />}
-
-                <ArtworkItemCTAs
-                  artwork={artwork}
-                  showSaveIcon={showSaveIcon}
-                  dark={dark}
-                  contextModule={contextModule}
-                  contextScreen={contextScreen}
-                  contextScreenOwnerId={contextScreenOwnerId}
-                  contextScreenOwnerSlug={contextScreenOwnerSlug}
-                  contextScreenOwnerType={contextScreenOwnerType}
-                />
               </Flex>
-            </RouterLink>
-          </Box>
-        </ContextMenuArtwork>
+            </ContextMenuArtwork>
+          </RouterLink>
+        </Box>
 
         <CreateArtworkAlertModal
           artwork={artwork}
@@ -184,6 +162,5 @@ const artworkFragment = graphql`
     ...ArtworkRailCardMeta_artwork
     ...ContextMenuArtwork_artwork
     ...CreateArtworkAlertModal_artwork
-    ...ArtworkItemCTAs_artwork
   }
 `

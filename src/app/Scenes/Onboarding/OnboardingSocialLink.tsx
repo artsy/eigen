@@ -12,7 +12,6 @@ import { capitalize } from "lodash"
 import React, { useEffect, useState } from "react"
 import { Alert, Image, ImageSourcePropType, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { useRelayEnvironment } from "react-relay"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "./Onboarding"
 
@@ -47,11 +46,9 @@ export const OnboardingSocialLink: React.FC<
     permittedProviders.length === 1 && permittedProviders[0] === "email"
   )
 
-  const environment = useRelayEnvironment()
-
-  const { linkUsingOauthToken: linkFB, isLoading: fbLoading } = useFacebookLink(environment)
-  const { linkUsingOauthToken: linkGoogle, isLoading: googleLoading } = useGoogleLink(environment)
-  const { linkUsingOauthToken: linkApple, isLoading: appleLoading } = useAppleLink(environment)
+  const { linkUsingOauthToken: linkFB, isLoading: fbLoading } = useFacebookLink()
+  const { linkUsingOauthToken: linkGoogle, isLoading: googleLoading } = useGoogleLink()
+  const { linkUsingOauthToken: linkApple, isLoading: appleLoading } = useAppleLink()
 
   useEffect(
     () =>
@@ -167,7 +164,7 @@ export const OnboardingSocialLink: React.FC<
   if (showPasswordForm) {
     return (
       <FormikProvider value={formik}>
-        <Flex flex={1} backgroundColor="white100">
+        <Flex flex={1} backgroundColor="mono0">
           <BackButton onPress={() => navigation.goBack()} />
           <Flex px={2} mt={`${insets.top + NAVBAR_HEIGHT + 20}px`} mb={`${insets.bottom}px`}>
             <Text variant="lg-display">Link Accounts</Text>
@@ -204,7 +201,7 @@ export const OnboardingSocialLink: React.FC<
                 }
               }}
             >
-              <Text variant="sm" color="black60" style={{ textDecorationLine: "underline" }}>
+              <Text variant="sm" color="mono60" style={{ textDecorationLine: "underline" }}>
                 Forgot password?
               </Text>
             </Touchable>
@@ -241,7 +238,7 @@ export const OnboardingSocialLink: React.FC<
     )
   }
   return (
-    <Flex justifyContent="center" flex={1} backgroundColor="white">
+    <Flex justifyContent="center" flex={1} backgroundColor="mono0">
       <BackButton onPress={() => navigation.goBack()} />
       <Flex flex={1} px={2} mt={`${insets.top + NAVBAR_HEIGHT + 20}px`} mb={`${insets.bottom}px`}>
         <Text variant="lg-display">Link Accounts</Text>

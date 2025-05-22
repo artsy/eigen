@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+# which-build: Find commits and their corresponding builds across iOS and Android platforms
+#
+# This script helps identify which commits are included in which builds by showing the latest tag
+# for each platform (iOS and Android) that contains a specific commit. Useful for tracking
+# beta and release status of recent changes.
+#
+# Usage examples:
+#   ./scripts/deploys/which-build                           # Default: Shows all builds from the last 2 weeks
+#   ./scripts/deploys/which-build --since="1 month ago"     # Shows all builds from the last month
+#   ./scripts/deploys/which-build --submission              # Shows submission builds only
+#   ./scripts/deploys/which-build --since="2023-01-01" --submission  # Shows submission builds since Jan 1, 2023
+#   ./scripts/deploys/which-build --author="Jane Doe"       # Shows builds with commits by Jane Doe from the last 2 weeks
+
+# Default --since value
+SINCE="2 weeks ago"
+
+# Default --submission value
+SUBMISSION=false
+
+# Default --author value (empty means all authors)
+AUTHOR=""
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --since=*)
+      SINCE="${1#*=}"
+      shift
+      ;;
+    --since)
+      SINCE="$2"
+      shift 2
+      ;;
+    --author=*)
+      AUTHOR="${1#*=}"
+      shift
+      ;;
+    --author)
+      AUTHOR="$2"
+      shift 2
+      ;;
+    --submission)
+      SUBMISSION=true
+      shift
+      ;;
+    *)
+      echo "Unknown option: $1"
+      echo "Usage: $(basename "$0") [--since=\"time spec\"] [--author=\"author name\"] [--submission]"
+      echo "Example: $(basename "$0") --since=\"4 weeks ago\" --author=\"Jane Doe\" --submission"
+      exit 1
+      ;;
+  esac
+done
+
+# update tags from remotes
+git fetch --all > /dev/null
+
+# get SHAs for relevant commits
+# by default: all non MP, non-deps commits from the last month
+if [ -n "$AUTHOR" ]; then
+  SHAS=$(git log --format="%H %s" --since="$SINCE" --author="$AUTHOR" | grep -v 'chore: update metaphysics' | grep -v 'chore(deps)' | cut -c 1-40)
+else
+  SHAS=$(git log --format="%H %s" --since="$SINCE" | grep -v 'chore: update metaphysics' | grep -v 'chore(deps)' | cut -c 1-40)
+fi
+
+# iterate over SHAs
+for sha in $SHAS; do
+  git show -s --pretty="%C(yellow)%s %C(white)%h %C(green)%aN %C(blue)%ar%C(reset)" $sha
+  # find the latest tag for each platform that includes that commit
+  for e in ios android; do
+    if [ "$SUBMISSION" = true ]; then
+      git tag --list "$e-*-submission" --contains $sha | sort -Vr | head -1
+    else
+      git tag --list "$e-*" --contains $sha | grep -v '-expo-' | sort -Vr | head -1
+    fi
+  done
+done

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>EXUpdatesCheckOnLaunch</key>
+	<string>NEVER</string>
+	<key>EXUpdatesDisableAntiBrickingMeasures</key>
+	<true/>
+	<key>EXUpdatesEnabled</key>
+	<true/>
+	<key>EXUpdatesLaunchWaitMs</key>
+	<integer>0</integer>
+	<key>EXUpdatesRequestHeaders</key>
+	<dict>
+		<key>expo-channel-name</key>
+		<string>staging</string>
+	</dict>
+	<key>EXUpdatesRuntimeVersion</key>
+	<string>replaced-at-build-time</string>
+	<key>EXUpdatesURL</key>
+	<string>https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668</string>
+</dict>
+</plist>

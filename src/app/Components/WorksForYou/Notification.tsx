@@ -1,6 +1,7 @@
-import { ClassTheme, Text } from "@artsy/palette-mobile"
+import { Text } from "@artsy/palette-mobile"
 import { Notification_notification$data } from "__generated__/Notification_notification.graphql"
 import GenericGrid from "app/Components/ArtworkGrids/GenericGrid"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import React from "react"
@@ -42,7 +43,7 @@ export class Notification extends React.Component<Props> {
     }
 
     return (
-      <ClassTheme>
+      <ThemeAwareClassTheme>
         {({ color }) => (
           <View style={styles.container}>
             <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this)}>
@@ -50,12 +51,12 @@ export class Notification extends React.Component<Props> {
                 {!!notification.image && (
                   <Image
                     source={{ uri: notification.image.resized?.url }}
-                    style={[styles.artistAvatar, { backgroundColor: color("black5") }]}
+                    style={[styles.artistAvatar, { backgroundColor: color("mono5") }]}
                   />
                 )}
                 <View style={styles.metadataContainer}>
                   <Text variant="sm">{notification.artists}</Text>
-                  <Text variant="xs" color={color("black60")}>
+                  <Text variant="xs" color={color("mono60")}>
                     {notification.summary}
                   </Text>
                 </View>
@@ -66,7 +67,7 @@ export class Notification extends React.Component<Props> {
             </View>
           </View>
         )}
-      </ClassTheme>
+      </ThemeAwareClassTheme>
     )
   }
 }

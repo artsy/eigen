@@ -1,26 +1,32 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Screen, Text } from "@artsy/palette-mobile"
+import { Flex, Screen, Text, useColor } from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
 import { addBreadcrumb } from "@sentry/react-native"
+import { NavigationHeader } from "app/Components/NavigationHeader"
 import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
-import { GlobalStore, getCurrentEmissionState } from "app/store/GlobalStore"
-import { GoBackProps, dismissModal, goBack, navigate } from "app/system/navigation/navigate"
+import { getCurrentEmissionState, GlobalStore } from "app/store/GlobalStore"
+import {
+  dismissModal,
+  goBack,
+  GoBackProps,
+  navigate,
+  navigationEvents,
+} from "app/system/navigation/navigate"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useEnvironment } from "app/utils/hooks/useEnvironment"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { debounce } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
-import { Platform } from "react-native"
+import { KeyboardAvoidingView, Platform } from "react-native"
 import { Edge } from "react-native-safe-area-context"
 import Share from "react-native-share"
 import WebView, { WebViewNavigation, WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
-import { NavigationHeader } from "app/Components/NavigationHeader"
 
 export interface ArtsyWebViewConfig {
   title?: string
@@ -71,7 +77,6 @@ export const ArtsyWebViewPage = ({
   const [canGoBack, setCanGoBack] = useState(false)
   const webURL = useEnvironment().webURL
   const ref = useRef<WebViewWithShareTitleUrl>(null)
-
   const tracking = useTracking()
 
   const handleArticleShare = async () => {
@@ -90,6 +95,18 @@ export const ArtsyWebViewPage = ({
       }
     }
   }
+
+  const handleModalDismiss = () => {
+    dismissModal()
+  }
+
+  useEffect(() => {
+    const emitter = navigationEvents.addListener("requestModalDismiss", handleModalDismiss)
+
+    return () => {
+      emitter.removeListener("requestModalDismiss", handleModalDismiss)
+    }
+  }, [])
 
   const handleGoBack = () => {
     if (backAction) {
@@ -130,8 +147,8 @@ export const ArtsyWebViewPage = ({
 
   return (
     <Screen>
-      <Flex flex={1} backgroundColor="white">
-        <ArtsyKeyboardAvoidingView>
+      <Flex flex={1} backgroundColor="background">
+        <KeyboardAvoidingView style={{ flex: 1 }}>
           <NavigationHeader
             useXButton={!!isPresentedModally && !canGoBack}
             onLeftButtonPress={leftButton}
@@ -156,7 +173,7 @@ export const ArtsyWebViewPage = ({
                 : undefined
             }
           />
-        </ArtsyKeyboardAvoidingView>
+        </KeyboardAvoidingView>
       </Flex>
     </Screen>
   )
@@ -176,9 +193,15 @@ export const ArtsyWebView = forwardRef<
     ref
   ) => {
     const innerRef = useRef<WebViewWithShareTitleUrl>(null)
+    const emissionUserAgent = getCurrentEmissionState().userAgent
+    // adding the optional chaining to prevent the app from crashing on Android
+    const userAgent = GlobalStore.useAppState((state) => state.native?.sessionState?.userAgent)
     useImperativeHandle(ref, () => innerRef.current as WebViewWithShareTitleUrl)
-    const userAgent = getCurrentEmissionState().userAgent
     const { callWebViewEventCallback } = useWebViewCallback()
+
+    const enableDarkMode = useFeatureFlag("ARDarkModeSupport")
+    const colorScheme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+    const color = useColor()
 
     const showDevToggleIndicator = useDevToggle("DTShowWebviewIndicator")
 
@@ -206,6 +229,14 @@ export const ArtsyWebView = forwardRef<
       // to the articles route, which would cause a loop and once in the webview to
       // redirect you to either a native article view or an article webview
       if (result.type === "match" && result.module === "Article") {
+        return
+      }
+
+      // TODO: For not we are not redirecting to home from webviews because of artsy logo
+      // in purchase flow breaking things. We should instead hide the artsy logo or not redirect to home
+      // when in eigen purchase flow.
+      if (result.type === "match" && result.module === "Home") {
+        stopLoading(true)
         return
       }
 
@@ -258,6 +289,7 @@ export const ArtsyWebView = forwardRef<
     return (
       <Flex flex={1}>
         <WebView
+          enableApplePay
           ref={innerRef}
           // sharedCookiesEnabled is required on iOS for the user to be implicitly logged into force/prediction
           // on android it works without it
@@ -265,13 +297,12 @@ export const ArtsyWebView = forwardRef<
           decelerationRate="normal"
           source={{
             uri,
-            // Workaround for user agent breaking back behavior on Android
-            // see: https://github.com/react-native-webview/react-native-webview/pull/3133
-            ...(Platform.OS === "android" && {
-              headers: {
-                "User-Agent": userAgent,
-              },
-            }),
+            headers: {
+              ...(enableDarkMode && { "x-theme": colorScheme }),
+              // Workaround for user agent breaking back behavior on Android
+              // see: https://github.com/react-native-webview/react-native-webview/pull/3133
+              ...(Platform.OS === "android" && { "User-Agent": emissionUserAgent }),
+            },
           }}
           onHttpError={(error) => {
             const nativeEvent = error.nativeEvent
@@ -283,7 +314,7 @@ export const ArtsyWebView = forwardRef<
               })
             }
           }}
-          style={{ flex: 1 }}
+          style={{ flex: 1, backgroundColor: color("mono0") }}
           userAgent={Platform.OS === "ios" ? userAgent : undefined}
           onMessage={({ nativeEvent }) => {
             const data = nativeEvent.data

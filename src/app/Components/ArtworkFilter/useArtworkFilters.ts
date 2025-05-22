@@ -140,6 +140,7 @@ export const useArtworkFiltersAggregation = ({ paramName }: { paramName: FilterP
 
 export const useSelectedFiltersCount = () => {
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+
   return useMemo(
     () =>
       Object.values(getSelectedFiltersCounts(appliedFilters)).reduce(

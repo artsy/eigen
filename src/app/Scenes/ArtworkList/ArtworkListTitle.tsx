@@ -29,7 +29,7 @@ export const ArtworkListTitle: React.FC<ArtworkListTitleProps> = ({
             onDismiss={handleDismiss}
             onPressOutside={handleDismiss}
             title={
-              <Text variant="xs" color="white100">
+              <Text variant="xs" color="mono0">
                 Artworks in this list are only visible{"\n"}to you and not eligible to receive
                 {"\n"}offers.
               </Text>
@@ -47,7 +47,7 @@ export const ArtworkListTitle: React.FC<ArtworkListTitleProps> = ({
                   accessibilityLabel="EyeClosedIcon"
                   mt={0.5}
                   ml={0.5}
-                  fill="black100"
+                  fill="mono100"
                 />
               </Touchable>
             </Flex>

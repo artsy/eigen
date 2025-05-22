@@ -12,7 +12,7 @@ import { CollectionRail_marketingCollection$key } from "__generated__/Collection
 import { ArtworkRail, ArtworkRailPlaceholder } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { useCollectionByCategoryTracking } from "app/Scenes/CollectionsByCategory/hooks/useCollectionByCategoryTracking"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { FC } from "react"
@@ -42,7 +42,6 @@ export const CollectionRail: FC<CollectionRailProps> = ({
 
   const handleTitlePress = () => {
     trackArtworkRailViewAllTap(collection.slug)
-    navigate(`/collection/${collection.slug}`)
   }
 
   if (!artworks.length) {
@@ -53,19 +52,21 @@ export const CollectionRail: FC<CollectionRailProps> = ({
     <>
       <Flex px={2}>
         <Flex justifyContent="center">
-          <SectionTitle
-            title={collection.title}
-            titleVariant="md"
-            onPress={handleTitlePress}
-            RightButtonContent={() => (
-              <Flex flexDirection="row" flex={1}>
-                <Flex my="auto">
-                  <ArrowRightIcon fill="black60" ml={0.5} />
+          <RouterLink to={`/collection/${collection.slug}`} onPress={handleTitlePress}>
+            <SectionTitle
+              title={collection.title}
+              titleVariant="md"
+              RightButtonContent={() => (
+                <Flex flexDirection="row" flex={1}>
+                  <Flex my="auto">
+                    <ArrowRightIcon fill="mono60" ml={0.5} />
+                  </Flex>
                 </Flex>
-              </Flex>
-            )}
-          />
+              )}
+            />
+          </RouterLink>
         </Flex>
+
         <ArtworkRail
           onPress={handleArtworkPress}
           artworks={artworks}
@@ -75,7 +76,7 @@ export const CollectionRail: FC<CollectionRailProps> = ({
         />
       </Flex>
 
-      {!lastElement && <Separator borderColor="black10" my={4} />}
+      {!lastElement && <Separator borderColor="mono10" my={4} />}
     </>
   )
 }
@@ -112,16 +113,16 @@ export const CollectionRailPlaceholder: FC<Partial<CollectionRailProps>> = ({ la
 
         <Flex flexDirection="row">
           <ArtworkRailPlaceholder />
-          <Separator borderColor="black10" my={2} />
+          <Separator borderColor="mono10" my={2} />
         </Flex>
       </Flex>
 
-      {!lastElement && <Separator borderColor="black10" my={4} />}
+      {!lastElement && <Separator borderColor="mono10" my={4} />}
     </Skeleton>
   )
 }
 
-const query = graphql`
+export const CollectionsByCategoryCollectionRailQuery = graphql`
   query CollectionRailCollectionsByCategoryQuery($slug: String!) {
     marketingCollection(slug: $slug) {
       ...CollectionRail_marketingCollection
@@ -141,7 +142,7 @@ export const CollectionRailWithSuspense = withSuspense<
 >({
   Component: ({ slug, lastElement }) => {
     const data = useLazyLoadQuery<CollectionRailCollectionsByCategoryQuery>(
-      query,
+      CollectionsByCategoryCollectionRailQuery,
       { slug },
       { fetchPolicy: "store-and-network" }
     )

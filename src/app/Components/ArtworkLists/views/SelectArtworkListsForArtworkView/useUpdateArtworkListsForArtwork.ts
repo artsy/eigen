@@ -35,7 +35,7 @@ export const useUpdateArtworkListsForArtwork = (artworkID: string): MutationResu
           return
         }
 
-        const response = data.artworksCollectionsBatchUpdate?.responseOrError
+        const response = data?.artworksCollectionsBatchUpdate?.responseOrError
         const addedCounts = getArtworkListsCountByType(response?.addedToArtworkLists)
         const removedCounts = getArtworkListsCountByType(response?.removedFromArtworkLists)
 

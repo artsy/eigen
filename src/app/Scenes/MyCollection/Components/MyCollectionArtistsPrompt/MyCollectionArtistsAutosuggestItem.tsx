@@ -48,7 +48,7 @@ export const MyCollectionArtistsAutosuggestItem: FC<MyCollectionArtistsAutosugge
 
           <Flex flexWrap="wrap">
             <Text variant="sm-display">{artist.name}</Text>
-            <Text variant="sm-display" color="black60">
+            <Text variant="sm-display" color="mono60">
               {artist.formattedNationalityAndBirthday}
             </Text>
           </Flex>
@@ -56,7 +56,7 @@ export const MyCollectionArtistsAutosuggestItem: FC<MyCollectionArtistsAutosugge
 
         <Button
           size="small"
-          icon={selected ? <CheckIcon fill="white100" /> : undefined}
+          icon={selected ? <CheckIcon fill="mono0" /> : undefined}
           variant={selected ? "fillSuccess" : "outline"}
           onPress={handleOnPress}
         >

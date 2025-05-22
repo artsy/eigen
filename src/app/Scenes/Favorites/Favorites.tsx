@@ -1,151 +1,190 @@
-import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import {
   BellIcon,
   Flex,
-  FollowArtistIcon,
-  Join,
+  HeartIcon,
+  MultiplePersonsIcon,
+  Pill,
+  Screen,
   Spacer,
-  Tabs,
   Text,
-  TrendingIcon,
+  useColor,
 } from "@artsy/palette-mobile"
-import { InfoButton } from "app/Components/Buttons/InfoButton"
-import { goBack } from "app/system/navigation/navigate"
-import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
+import {
+  createMaterialTopTabNavigator,
+  MaterialTopTabBarProps,
+} from "@react-navigation/material-top-tabs"
+import { PAGE_SIZE } from "app/Components/constants"
+import { AlertsTab } from "app/Scenes/Favorites/AlertsTab"
+import { alertsQuery } from "app/Scenes/Favorites/Components/Alerts"
+import { FavoritesLearnMore } from "app/Scenes/Favorites/Components/FavoritesLearnMore"
+import { followedArtistsQuery } from "app/Scenes/Favorites/Components/FollowedArtists"
+import { FavoritesContextStore, FavoritesTab } from "app/Scenes/Favorites/FavoritesContextStore"
+import { FollowsTab } from "app/Scenes/Favorites/FollowsTab"
+import { SavesTab } from "app/Scenes/Favorites/SavesTab"
+import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
+import { prefetchQuery } from "app/utils/queryPrefetching"
+import { useEffect } from "react"
+import Animated, { useAnimatedStyle } from "react-native-reanimated"
 
-import { IndexChangeEventData } from "react-native-collapsible-tab-view/lib/typescript/src/types"
-import { useTracking } from "react-tracking"
-import { FavoriteArtistsQueryRenderer } from "./FavoriteArtists"
-import { FavoriteCategoriesQueryRenderer } from "./FavoriteCategories"
-import { FavoriteShowsQueryRenderer } from "./FavoriteShows"
-
-const Tab = {
-  works: {
-    label: "Works",
-    name: "works",
+const Pills: {
+  Icon: React.FC<{ fill: string }>
+  title: string
+  key: FavoritesTab
+}[] = [
+  {
+    Icon: HeartIcon,
+    title: "Saves",
+    key: "saves",
   },
-  artists: {
-    label: "Artists",
-    name: "artists",
+  {
+    Icon: MultiplePersonsIcon,
+    title: "Follows",
+    key: "follows",
   },
-  shows: {
-    label: "Shows",
-    name: "shows",
+  {
+    Icon: BellIcon,
+    title: "Alerts",
+    key: "alerts",
   },
-  categories: {
-    label: "Categories",
-    name: "categories",
-  },
-} as const
+]
 
-export const Favorites: React.FC = () => {
-  const tracking = useTracking()
+const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, navigation }) => {
+  const color = useColor()
 
-  const fireTabSelectionAnalytics = (selectedTab: IndexChangeEventData) => {
-    let eventDetails
+  const { setActiveTab, setHeaderHeight } = FavoritesContextStore.useStoreActions(
+    (actions) => actions
+  )
 
-    if (selectedTab.tabName === Tab.works.name) {
-      eventDetails = { action_name: Schema.ActionNames.SavesAndFollowsWorks }
-    } else if (selectedTab.tabName === Tab.artists.name) {
-      eventDetails = { action_name: Schema.ActionNames.SavesAndFollowsArtists }
-    } else if (selectedTab.tabName === Tab.categories.name) {
-      eventDetails = { action_name: Schema.ActionNames.SavesAndFollowsCategories }
-    } else if (selectedTab.tabName === Tab.shows.name) {
-      eventDetails = {
-        action_name: Schema.ActionNames.SavesAndFollowsShows,
-        context_screen: Schema.PageNames.SavesAndFollows,
-      }
+  const { headerHeight } = FavoritesContextStore.useStoreState((state) => state)
+  const { trackTappedNavigationTab } = useFavoritesTracking()
+
+  const { currentScrollYAnimated } = useScreenScrollContext()
+
+  const animatedStyles = useAnimatedStyle(() => {
+    const translateY =
+      currentScrollYAnimated.value >= headerHeight
+        ? -headerHeight
+        : Math.min(-currentScrollYAnimated.value, 0)
+
+    return {
+      transform: [
+        {
+          translateY,
+        },
+      ],
     }
-
-    tracking.trackEvent({
-      ...eventDetails,
-      action_type: Schema.ActionTypes.Tap,
-    })
-  }
+  })
+  const activeRoute = state.routes[state.index].name
 
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.SavesAndFollows,
-        context_screen_owner_type: null,
-      }}
+    <Animated.View
+      style={[
+        animatedStyles,
+        {
+          position: "absolute",
+          zIndex: 1000,
+          backgroundColor: color("mono0"),
+          width: "100%",
+        },
+      ]}
     >
-      <Tabs.TabsWithHeader
-        title="Follows"
-        showLargeHeaderText={false}
-        BelowTitleHeaderComponent={() => (
-          <Flex px={2}>
-            <InfoButton
-              trackEvent={() => {
-                tracking.trackEvent(tracks.tapFollowsInfo())
-              }}
-              titleElement={
-                <Text variant="lg-display" mr={1}>
-                  Follows
-                </Text>
-              }
-              modalTitle="Follows"
-              modalContent={
-                <Join separator={<Spacer y={2} />}>
-                  <Flex flexDirection="row" alignItems="flex-start">
-                    <FollowArtistIcon mr={0.5} />
-                    <Flex flex={1}>
-                      <Text variant="sm-display">
-                        Get updates on your favorite artists, including new artworks, shows,
-                        exhibitions and more.
-                      </Text>
-                    </Flex>
-                  </Flex>
-                  <Flex flexDirection="row" alignItems="flex-start">
-                    <TrendingIcon mr={0.5} />
-                    <Flex flex={1}>
-                      <Text variant="sm-display">
-                        Tailor your experience, helping you discover artworks that match your taste.
-                      </Text>
-                    </Flex>
-                  </Flex>
-                  <Flex flexDirection="row" alignItems="flex-start">
-                    <BellIcon mr={0.5} />
-                    <Flex flex={1}>
-                      <Text variant="sm-display">
-                        Never miss out by exploring your Activity and receiving timely email
-                        updates.
-                      </Text>
-                    </Flex>
-                  </Flex>
-                </Join>
-              }
-            />
-          </Flex>
-        )}
-        onTabChange={fireTabSelectionAnalytics}
-        headerProps={{ onBack: goBack }}
+      <Flex
+        onLayout={(event) => {
+          if (!headerHeight) {
+            setHeaderHeight(event.nativeEvent.layout.height)
+          }
+        }}
       >
-        <Tabs.Tab name={Tab.artists.name} label={Tab.artists.label}>
-          <Tabs.Lazy>
-            <FavoriteArtistsQueryRenderer />
-          </Tabs.Lazy>
-        </Tabs.Tab>
-        <Tabs.Tab name={Tab.shows.name} label={Tab.shows.label}>
-          <Tabs.Lazy>
-            <FavoriteShowsQueryRenderer />
-          </Tabs.Lazy>
-        </Tabs.Tab>
-        <Tabs.Tab name={Tab.categories.name} label={Tab.categories.label}>
-          <Tabs.Lazy>
-            <FavoriteCategoriesQueryRenderer />
-          </Tabs.Lazy>
-        </Tabs.Tab>
-      </Tabs.TabsWithHeader>
-    </ProvideScreenTracking>
+        <Flex mx={2}>
+          <Flex alignItems="flex-end" mb={2}>
+            <FavoritesLearnMore />
+          </Flex>
+
+          <Text variant="xl">Favorites</Text>
+
+          <Spacer y={2} />
+          <Flex flexDirection="row" gap={0.5} mb={2}>
+            {Pills.map(({ Icon, title, key }) => {
+              const isActive = activeRoute === key
+              return (
+                <Pill
+                  selected={isActive}
+                  onPress={() => {
+                    setActiveTab(key)
+
+                    // We are manually emitting the tabPress event here because
+                    // the navigation library doesn't emit it when we use the
+                    // navigation.navigate() method.
+                    navigation.emit({
+                      type: "tabPress",
+                      target: key,
+                      canPreventDefault: true,
+                    })
+
+                    navigation.navigate(key)
+                    trackTappedNavigationTab(key)
+                  }}
+                  Icon={({ fill }) => (
+                    <Flex mr={0.5} justifyContent="center">
+                      <Icon fill={fill || "mono100"} />
+                    </Flex>
+                  )}
+                  key={key}
+                  variant="link"
+                >
+                  {title}
+                </Pill>
+              )
+            })}
+          </Flex>
+        </Flex>
+      </Flex>
+    </Animated.View>
   )
 }
 
-const tracks = {
-  tapFollowsInfo: (): TappedInfoBubble => ({
-    action: ActionType.tappedInfoBubble,
-    context_module: ContextModule.follows,
-    context_screen_owner_type: OwnerType.follows,
-    subject: "followsHeader",
-  }),
+export const FavoriteTopNavigator = createMaterialTopTabNavigator()
+
+const Content = () => {
+  return (
+    <Screen.Body fullwidth>
+      <FavoriteTopNavigator.Navigator
+        tabBar={FavoritesHeaderTapBar}
+        screenOptions={{
+          swipeEnabled: false,
+        }}
+      >
+        <FavoriteTopNavigator.Screen name="saves" navigationKey="saves" component={SavesTab} />
+        <FavoriteTopNavigator.Screen
+          name="follows"
+          navigationKey="follows"
+          component={FollowsTab}
+        />
+        <FavoriteTopNavigator.Screen name="alerts" navigationKey="alerts" component={AlertsTab} />
+      </FavoriteTopNavigator.Navigator>
+    </Screen.Body>
+  )
+}
+export const Favorites = () => {
+  useEffect(() => {
+    prefetchQuery({
+      query: followedArtistsQuery,
+      variables: {
+        count: PAGE_SIZE,
+      },
+    })
+
+    prefetchQuery({
+      query: alertsQuery,
+    })
+  }, [])
+
+  return (
+    <FavoritesContextStore.Provider>
+      <Screen>
+        <Content />
+      </Screen>
+    </FavoritesContextStore.Provider>
+  )
 }

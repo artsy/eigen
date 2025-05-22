@@ -248,7 +248,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               </Button>
             </>
 
-            <Text variant="xs" color="black60" textAlign="center" testID="disclaimer">
+            <Text variant="xs" color="mono60" textAlign="center" testID="disclaimer">
               By tapping Continue with Email, Facebook, Google
               {isIOS ? " or Apple" : ""}, you agree to Artsy's{" "}
               <Text

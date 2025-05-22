@@ -32,7 +32,6 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   hasMore?: boolean
   hideSaleInfo?: boolean
   hideSaveIcon?: boolean
-  hideFollowIcon?: boolean
   isLoading?: boolean
   loadMore?: (pageSize: number) => void
   onPress?: (artworkID: string) => void
@@ -59,7 +58,6 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   hasMore,
   hideSaleInfo,
   hideSaveIcon,
-  hideFollowIcon,
   isLoading,
   ListEmptyComponent,
   ListHeaderComponent,
@@ -75,11 +73,11 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   const shouldDisplaySpinner = !!artworks.length && !!isLoading && !!hasMore
   const shouldDisplayHeader = !!artworks.length && ListHeaderComponent !== undefined
 
-  const onEndReached = useCallback(() => {
+  const onEndReached = () => {
     if (!!hasMore && !isLoading && !!loadMore) {
       loadMore?.(pageSize)
     }
-  }, [hasMore, isLoading])
+  }
 
   const renderItem = useCallback(
     ({ item, index, columnIndex }: masonryRenderItemProps) => (
@@ -105,7 +103,6 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         onPress={onPress}
         hideSaleInfo={hideSaleInfo}
         hideSaveIcon={hideSaveIcon}
-        hideFollowIcon={hideFollowIcon}
       />
     ),
     [rest.numColumns]

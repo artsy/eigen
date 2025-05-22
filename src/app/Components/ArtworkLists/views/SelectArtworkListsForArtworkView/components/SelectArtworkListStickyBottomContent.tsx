@@ -4,7 +4,7 @@ import {
   BottomSheetFooterProps,
   useBottomSheetModal,
 } from "@gorhom/bottom-sheet"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
 import { useSaveArtworkListsChanges } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useSaveArtworkListsChanges"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
@@ -22,9 +22,9 @@ export const StickyBottomContentPlaceholder = () => {
 export const SelectArtworkListStickyBottomContent: FC<BottomSheetFooterProps> = ({
   animatedFooterPosition,
 }) => {
-  const {
-    state: { hasUnsavedChanges },
-  } = useArtworkListsContext()
+  const hasUnsavedChanges = ArtworkListsStore.useStoreState(
+    (state) => state.state.hasUnsavedChanges
+  )
   const { setProfileTabSavedArtwork } = useOnSaveArtwork()
   const { dismiss } = useBottomSheetModal()
 
@@ -45,7 +45,7 @@ export const SelectArtworkListStickyBottomContent: FC<BottomSheetFooterProps> = 
 
   return (
     <BottomSheetFooter animatedFooterPosition={animatedFooterPosition}>
-      <Box bg="white100">
+      <Box bg="mono0">
         <Box height={STICKY_BOTTOM_CONTENT_HEIGHT} px={2} pt={2}>
           <Button width="100%" block loading={inProgress} onPress={handleSave}>
             Done

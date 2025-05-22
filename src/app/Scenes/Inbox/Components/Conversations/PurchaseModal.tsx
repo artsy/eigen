@@ -99,6 +99,14 @@ export const PurchaseModalFragmentContainer = createFragmentContainer(PurchaseMo
   `,
 })
 
+export const PurchaseModalScreenQuery = graphql`
+  query PurchaseModalQuery($artworkID: String!) {
+    artwork(id: $artworkID) {
+      ...PurchaseModal_artwork
+    }
+  }
+`
+
 export const PurchaseModalQueryRenderer: React.FC<{
   artworkID: string
   conversationID: string
@@ -113,13 +121,7 @@ export const PurchaseModalQueryRenderer: React.FC<{
     >
       <QueryRenderer<PurchaseModalQuery>
         environment={getRelayEnvironment()}
-        query={graphql`
-          query PurchaseModalQuery($artworkID: String!) {
-            artwork(id: $artworkID) {
-              ...PurchaseModal_artwork
-            }
-          }
-        `}
+        query={PurchaseModalScreenQuery}
         variables={{
           artworkID,
         }}

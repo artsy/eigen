@@ -1,20 +1,29 @@
 import { render, RenderOptions } from "@testing-library/react-native"
 import { TestProviders } from "app/Providers"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { track } from "app/utils/track"
-import { Component, Suspense } from "react"
+import { Suspense } from "react"
 import { Environment, RelayEnvironmentProvider } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 
-interface WrappersProps {
+export interface WrappersProps {
   skipRelay?: boolean
   includeNavigation?: boolean
+  includeArtworkLists?: boolean
 }
 
-const Wrappers: React.FC<WrappersProps> = ({ skipRelay, includeNavigation, children }) => {
+const Wrappers: React.FC<WrappersProps> = ({
+  skipRelay,
+  includeNavigation,
+  includeArtworkLists,
+  children,
+}) => {
   return (
-    <TestProviders includeNavigation={includeNavigation} skipRelay={skipRelay}>
+    <TestProviders
+      includeNavigation={includeNavigation}
+      includeArtworkLists={includeArtworkLists}
+      skipRelay={skipRelay}
+    >
       {children}
     </TestProviders>
   )
@@ -48,18 +57,6 @@ export const renderWithWrappersLEGACY = (component: ReactElement) => {
     return renderedComponent
   } catch (error: any) {
     throw new Error(error.stack)
-  }
-}
-
-// react-track has no provider, we make one using the decorator and a class wrapper
-export const TrackingProvider = (props: { children?: React.ReactNode }) => (
-  <PureWrapper {...props} />
-)
-
-@track()
-class PureWrapper extends Component {
-  render() {
-    return this.props.children
   }
 }
 

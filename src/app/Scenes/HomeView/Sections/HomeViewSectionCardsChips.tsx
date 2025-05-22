@@ -1,5 +1,13 @@
-import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
-import { Chip, Flex, Skeleton, SkeletonBox, Spacer, useSpace } from "@artsy/palette-mobile"
+import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
+import {
+  Chip,
+  Flex,
+  FlexProps,
+  Skeleton,
+  SkeletonBox,
+  Spacer,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { HomeViewSectionCardsChipsQuery } from "__generated__/HomeViewSectionCardsChipsQuery.graphql"
 import { HomeViewSectionCardsChips_section$key } from "__generated__/HomeViewSectionCardsChips_section.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -7,9 +15,9 @@ import { getSnapToOffsets } from "app/Scenes/CollectionsByCategory/CollectionsCh
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { memo } from "react"
 import { FlatList } from "react-native"
@@ -26,11 +34,15 @@ const CHIP_WIDTH = 230
 export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps> = ({
   section: sectionProp,
   index,
+  ...flexProps
 }) => {
   const space = useSpace()
   const tracking = useHomeViewTracking()
   const section = useFragment(fragment, sectionProp)
   const cards = extractNodes(section.cardsConnection)
+
+  const { variant } = useExperimentVariant("diamond_discover-tab")
+  const isDiscoverVariant = variant.name === "variant-a" && variant.enabled
 
   if (cards.length === 0) return null
 
@@ -46,14 +58,15 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
         card.entityType as ScreenOwnerType,
         card.href,
         section.contextModule as ContextModule,
-        index
+        index,
+        // TODO: remove the screenOwnerType parameter when the A/B test is dismantled
+        isDiscoverVariant ? OwnerType.search : OwnerType.home
       )
-      navigate(card.href)
     }
   }
 
   return (
-    <Flex py={2}>
+    <Flex {...flexProps}>
       <SectionTitle title={section.component?.title} mx={2} />
 
       <FlatList
@@ -74,12 +87,17 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
 
               return (
                 <Flex minWidth={CHIP_WIDTH} key={`collectionChips-row-${index}`}>
-                  <Chip
-                    key={item.href}
-                    title={item.title}
-                    subtitle={item.subtitle as string | undefined}
+                  <RouterLink
+                    to={item.href}
+                    hasChildTouchable
                     onPress={() => handleOnChipPress(item, index)}
-                  />
+                  >
+                    <Chip
+                      key={item.href}
+                      title={item.title}
+                      subtitle={item.subtitle as string | undefined}
+                    />
+                  </RouterLink>
                 </Flex>
               )
             })}
@@ -87,10 +105,13 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
         )}
       />
 
-      <HomeViewSectionSentinel
-        contextModule={section.contextModule as ContextModule}
-        index={index}
-      />
+      {/* TODO: If we decide to keep the Discover tab and dismantle this A/B test, we will need to continue excluding the sentinel. Find an elegant way to do that. */}
+      {!isDiscoverVariant && (
+        <HomeViewSectionSentinel
+          contextModule={section.contextModule as ContextModule}
+          index={index}
+        />
+      )}
     </Flex>
   )
 }
@@ -111,14 +132,14 @@ const fragment = graphql`
           entityType @required(action: NONE)
           title
           subtitle
-          href
+          href @required(action: NONE)
         }
       }
     }
   }
 `
 
-const HomeViewSectionCardsChipsPlaceholder: React.FC = () => {
+const HomeViewSectionCardsChipsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const space = useSpace()
 
   const listSize = 9
@@ -126,7 +147,7 @@ const HomeViewSectionCardsChipsPlaceholder: React.FC = () => {
 
   return (
     <Skeleton>
-      <Flex py={2} testID="HomeViewSectionCardsChipsPlaceholder">
+      <Flex {...flexProps} testID="HomeViewSectionCardsChipsPlaceholder">
         <SectionTitle title="Discover Something New" mx={2} />
 
         <FlatList
@@ -149,9 +170,9 @@ const HomeViewSectionCardsChipsPlaceholder: React.FC = () => {
 }
 
 const query = graphql`
-  query HomeViewSectionCardsChipsQuery($id: String!, $isEnabled: Boolean!) {
+  query HomeViewSectionCardsChipsQuery($id: String!) {
     homeView {
-      section(id: $id) @include(if: $isEnabled) {
+      section(id: $id) {
         ...HomeViewSectionCardsChips_section
       }
     }
@@ -161,13 +182,11 @@ const query = graphql`
 export const HomeViewSectionCardsChipsQueryRenderer: React.FC<SectionSharedProps> = memo(
   withSuspense({
     Component: ({ sectionID, index, ...flexProps }) => {
-      const isEnabled = useFeatureFlag("AREnableMarketingCollectionsCategories")
       const data = useLazyLoadQuery<HomeViewSectionCardsChipsQuery>(query, {
         id: sectionID,
-        isEnabled,
       })
 
-      if (!data?.homeView.section || !isEnabled) {
+      if (!data?.homeView.section) {
         return null
       }
 

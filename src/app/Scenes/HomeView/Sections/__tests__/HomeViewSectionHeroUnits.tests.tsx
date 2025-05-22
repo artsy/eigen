@@ -95,6 +95,7 @@ describe("HomeViewSectionHeroUnits", () => {
     })
 
     fireEvent.press(screen.getByText("See Collection"))
+
     expect(navigate).toHaveBeenCalledWith("/collection/collection-1")
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
      [

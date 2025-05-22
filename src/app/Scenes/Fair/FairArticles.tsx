@@ -1,18 +1,17 @@
 import {
-  Spacer,
   Box,
-  useSpace,
-  Text,
-  Join,
-  SimpleMessage,
   Button,
-  Touchable,
-  Screen,
   Image,
+  Join,
+  Screen,
+  SimpleMessage,
+  Spacer,
+  Text,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { FairArticlesQuery } from "__generated__/FairArticlesQuery.graphql"
 import { FairArticles_fair$data } from "__generated__/FairArticles_fair.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useEnvironment } from "app/utils/hooks/useEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
@@ -69,13 +68,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
     <ScrollView>
       <Box px={2} py={6}>
         <Join separator={<Spacer y={4} />}>
-          <Touchable
-            onPress={() => {
-              if (heroArticle?.href) {
-                navigate(heroArticle.href)
-              }
-            }}
-          >
+          <RouterLink to={heroArticle?.href}>
             <Box position="relative">
               {!!heroArticle?.thumbnailImage?.url && (
                 <Image
@@ -84,12 +77,12 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
                   src={heroArticle.thumbnailImage.url}
                 />
               )}
-              <Box bg="white100" pt={2} px={2} width="85%" position="absolute" bottom={0} right={0}>
+              <Box bg="mono0" pt={2} px={2} width="85%" position="absolute" bottom={0} right={0}>
                 <Text variant="sm-display" mb={1}>
                   {heroArticle?.title}
                 </Text>
 
-                <Text variant="xs" color="black60">
+                <Text variant="xs" color="mono60">
                   {heroArticle?.author?.name}
                 </Text>
 
@@ -102,7 +95,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
                 />
               </Box>
             </Box>
-          </Touchable>
+          </RouterLink>
 
           <FlatList<(typeof remainingArticles)[number]>
             data={remainingArticles}
@@ -110,13 +103,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
             ItemSeparatorComponent={() => <Spacer y={4} />}
             renderItem={({ item: { node: article } }) => {
               return (
-                <Touchable
-                  onPress={() => {
-                    if (article?.href) {
-                      navigate(article.href)
-                    }
-                  }}
-                >
+                <RouterLink to={article?.href}>
                   {!!article?.thumbnailImage?.url && (
                     <Image
                       width={imageWidth}
@@ -130,7 +117,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
                       {article?.title}
                     </Text>
 
-                    <Text color="black60" variant="xs">
+                    <Text color="mono60" variant="xs">
                       {article?.author?.name}
                     </Text>
 
@@ -142,7 +129,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
                       url={`${webURL}${article?.href}`}
                     />
                   </Box>
-                </Touchable>
+                </RouterLink>
               )
             }}
           />

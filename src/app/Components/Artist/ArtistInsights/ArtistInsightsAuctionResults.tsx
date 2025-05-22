@@ -20,7 +20,6 @@ import {
 import Spinner from "app/Components/Spinner"
 import { PAGE_SIZE } from "app/Components/constants"
 import { AuctionResultsState } from "app/Scenes/AuctionResults/AuctionResultsScreenWrapper"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { ExtractNodeType } from "app/utils/relayHelpers"
@@ -246,7 +245,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
             modalContent={<AuctionResultsInfoModal />}
           />
         </Flex>
-        <Text variant="xs" color="black60">
+        <Text variant="xs" color="mono60">
           {!!artist.auctionResultsConnection?.totalCount
             ? new Intl.NumberFormat().format(artist.auctionResultsConnection.totalCount)
             : 0}{" "}
@@ -270,14 +269,13 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({
               auctionResult={item}
               onPress={() => {
                 tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.internalID))
-                navigate(`/artist/${artist?.slug}/auction-result/${item.internalID}`)
               }}
             />
           )}
           renderSectionHeader={({ section: { title, count } }) => (
             <Flex px={2} my={2}>
               <Text variant="sm-display">{title}</Text>
-              <Text variant="xs" color="black60">
+              <Text variant="xs" color="mono60">
                 {count} result{count > 1 ? "s" : ""}
               </Text>
             </Flex>

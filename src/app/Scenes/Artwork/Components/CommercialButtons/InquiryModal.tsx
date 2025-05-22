@@ -15,8 +15,8 @@ import { InquiryQuestionIDs } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes
 import { LocationWithDetails } from "app/utils/googleMaps"
 import { useUpdateCollectorProfile } from "app/utils/mutations/useUpdateCollectorProfile"
 import { Schema } from "app/utils/track"
-import React, { useCallback, useRef, useState } from "react"
-import { Modal, ScrollView } from "react-native"
+import React, { useCallback, useEffect, useRef, useState } from "react"
+import { KeyboardAvoidingView, Modal, Platform, ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
@@ -39,17 +39,26 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
   const [addMessageYCoordinate, setAddMessageYCoordinate] = useState<number>(0)
   const [shippingModalVisibility, setShippingModalVisibility] = useState(false)
 
-  const resetAndExit = () => {
-    setMessage(randomAutomatedMessage())
-    dispatch({ type: "resetForm", payload: null })
+  const exit = () => {
     dispatch({ type: "setInquiryModalVisible", payload: false })
   }
 
   const { sendInquiry, error } = useSendInquiry({
-    onCompleted: resetAndExit,
+    onCompleted: exit,
     artwork,
     me,
   })
+
+  useEffect(() => {
+    if (state.inquiryModalVisible) {
+      return
+    }
+
+    setTimeout(() => setMessage(randomAutomatedMessage()), 500)
+    if (state.shippingLocation || state.inquiryQuestions.length) {
+      dispatch({ type: "resetForm", payload: null })
+    }
+  }, [state.inquiryQuestions.length, state.shippingLocation, state.inquiryModalVisible])
 
   const scrollToInput = useCallback(() => {
     scrollViewRef.current?.scrollTo({ y: addMessageYCoordinate })
@@ -64,12 +73,12 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
 
   const handleSettingsPress = () => {
     navigate("my-profile/edit")
-    resetAndExit()
+    exit()
   }
 
   const handleDismiss = () => {
     tracking.trackEvent(tracks.dismissedTheModal(artwork.internalID, artwork.slug))
-    resetAndExit()
+    exit()
   }
 
   const handleProfilePromptDismiss = () => {
@@ -100,8 +109,16 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
   }
 
   return (
-    <>
-      <Modal visible={state.inquiryModalVisible} onDismiss={handleDismiss} statusBarTranslucent>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <Modal
+        visible={state.inquiryModalVisible}
+        onDismiss={handleDismiss}
+        statusBarTranslucent
+        animationType="slide"
+      >
         <Screen>
           <NavigationHeader
             leftButtonText="Cancel"
@@ -122,12 +139,17 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
               width={1}
               zIndex={5}
             >
-              <Text variant="xs" color="white">
+              <Text variant="xs" color="mono0">
                 Sorry, we were unable to send this message. Please try again.
               </Text>
             </Flex>
           )}
-          <ScrollView ref={scrollViewRef}>
+          <ScrollView
+            ref={scrollViewRef}
+            contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
+            contentInsetAdjustmentBehavior="automatic"
+            keyboardShouldPersistTaps="handled"
+          >
             <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
             <Box px={2}>
               <Box my={2}>
@@ -169,7 +191,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
               <Box flexDirection="row">
                 <InfoCircleIcon mr={0.5} style={{ marginTop: 2 }} />
                 <Box flex={1}>
-                  <Text variant="xs" color="black60">
+                  <Text variant="xs" color="mono60">
                     By clicking send, we will share your profile with {artwork.partner?.name}.
                     Update your profile at any time in{" "}
                     <Text variant="xs" onPress={handleSettingsPress}>
@@ -202,7 +224,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
         title="Inquiry sent! Tell us about the artists in your collection."
         onDismiss={handleCollectionPromptDismiss}
       />
-    </>
+    </KeyboardAvoidingView>
   )
 }
 

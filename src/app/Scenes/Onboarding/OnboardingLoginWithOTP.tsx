@@ -12,20 +12,17 @@ import {
 import { StackScreenProps } from "@react-navigation/stack"
 import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { useScreenDimensions } from "app/utils/hooks"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import React, { useRef, useState } from "react"
-import { ScrollView } from "react-native"
+import { KeyboardAvoidingView, ScrollView } from "react-native"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "./Onboarding"
 
-export interface OnboardingLoginWithOTPProps
-  extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWithOTP"> {
-  email: string
-  password: string
-  otpMode: OTPMode
-}
+export type OnboardingLoginWithOTPProps = StackScreenProps<
+  OnboardingNavigationStack,
+  "OnboardingLoginWithOTP"
+>
 
 export interface OnboardingLoginWithOTPFormProps
   extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWithOTP"> {
@@ -66,8 +63,8 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
   const [recoveryCodeMode, setRecoveryCodeMode] = useState(false)
 
   return (
-    <Flex flex={1} backgroundColor="white" flexGrow={1} pb={1}>
-      <ArtsyKeyboardAvoidingView>
+    <Flex flex={1} backgroundColor="background" flexGrow={1} pb={1}>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         <ScrollView
           contentContainerStyle={{
             paddingTop: useScreenDimensions().safeAreaInsets.top,
@@ -98,14 +95,14 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
               placeholder={
                 recoveryCodeMode ? "Enter a recovery code" : "Enter an authentication code"
               }
-              placeholderTextColor={color("black30")}
+              placeholderTextColor={color("mono30")}
               title={recoveryCodeMode ? "Recovery code" : undefined}
               returnKeyType="done"
               value={values.otp}
               error={errors.otp}
             />
             <Spacer y={1} />
-            <LinkText variant="sm" color="black60" onPress={() => setRecoveryCodeMode((v) => !v)}>
+            <LinkText variant="sm" color="mono60" onPress={() => setRecoveryCodeMode((v) => !v)}>
               {recoveryCodeMode ? "Enter authentication code" : "Enter recovery code instead"}
             </LinkText>
 
@@ -135,7 +132,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProp
             Log in
           </Button>
         </Flex>
-      </ArtsyKeyboardAvoidingView>
+      </KeyboardAvoidingView>
     </Flex>
   )
 }

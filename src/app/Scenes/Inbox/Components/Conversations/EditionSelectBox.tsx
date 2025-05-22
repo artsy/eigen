@@ -31,11 +31,11 @@ export const EditionSelectBox: React.FC<Props> = ({ editionSet, selected, onPres
           onPress={() => onPress(editionSet.internalID, available)}
         />
         <Flex mx={1} flexGrow={1}>
-          <Text color={available ? "black100" : "black30"}>{editionSet.dimensions?.in}</Text>
-          <Text color={available ? "black60" : "black30"} variant="xs">
+          <Text color={available ? "mono100" : "mono30"}>{editionSet.dimensions?.in}</Text>
+          <Text color={available ? "mono60" : "mono30"} variant="xs">
             {editionSet.dimensions?.cm}
           </Text>
-          <Text color={available ? "black60" : "black30"}>{editionSet.editionOf}</Text>
+          <Text color={available ? "mono60" : "mono30"}>{editionSet.editionOf}</Text>
         </Flex>
         {available ? (
           <Text>{editionSet.listPrice?.display || "Price on request"}</Text>

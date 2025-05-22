@@ -10,7 +10,7 @@ import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { LARGE_IMAGE_SIZE, SMALL_IMAGE_SIZE } from "app/Components/ThreeUpImageLayout"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
-import { HomeViewSectionFairsFairItem } from "app/Scenes/HomeView/Sections/HomeViewSectionFairsFairItem"
+import { FairCard } from "app/Scenes/HomeView/Sections/FairCard"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import {
   HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
@@ -44,7 +44,13 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
   const viewAll = section.component?.behaviors?.viewAll
 
   const fairs = extractNodes(section.fairsConnection)
-  const href = getHomeViewSectionHref(viewAll?.href, section)
+
+  let href = viewAll && getHomeViewSectionHref(viewAll?.href, section)
+
+  // Only apply the "Featured Fairs" href to the specific "Featured Fairs" section instance.
+  if (!href && section.internalID === "home-view-section-featured-fairs") {
+    href = "/featured-fairs"
+  }
 
   const onViewAllPress = () => {
     tracking.tappedFairGroupViewAll(
@@ -61,24 +67,16 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
         href={href}
         title={section.component?.title}
         subtitle={section.component?.description}
-        onPress={onViewAllPress}
+        onPress={href ? onViewAllPress : undefined}
         mx={2}
       />
 
       <CardRailFlatList<FairItem>
         data={fairs}
         initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
-        prefetchUrlExtractor={(fair) => {
-          return `/fair/${fair?.slug}`
-        }}
-        prefetchVariablesExtractor={(item) => {
-          return {
-            fairID: item?.slug,
-          }
-        }}
         renderItem={({ item, index }) => {
           return (
-            <HomeViewSectionFairsFairItem
+            <FairCard
               key={item.internalID}
               fair={item}
               onPress={(fair) => {
@@ -124,7 +122,7 @@ const fragment = graphql`
           href
           internalID
           slug
-          ...HomeViewSectionFairsFairItem_fair
+          ...FairCard_fair
         }
       }
     }
@@ -134,6 +132,7 @@ const fragment = graphql`
 
 const HomeViewSectionFairsPlaceholder: React.FC<FlexProps> = (flexProps) => {
   const randomValue = useMemoizedRandom()
+
   return (
     <Skeleton>
       <Flex {...flexProps}>
@@ -154,14 +153,14 @@ const HomeViewSectionFairsPlaceholder: React.FC<FlexProps> = (flexProps) => {
                           height={SMALL_IMAGE_SIZE}
                           width={SMALL_IMAGE_SIZE}
                           borderLeftWidth={2}
-                          borderColor="white100"
+                          borderColor="mono0"
                           borderBottomWidth={1}
                         />
                         <SkeletonBox
                           height={SMALL_IMAGE_SIZE}
                           width={SMALL_IMAGE_SIZE}
                           borderLeftWidth={2}
-                          borderColor="white100"
+                          borderColor="mono0"
                           borderTopWidth={1}
                         />
                       </Flex>

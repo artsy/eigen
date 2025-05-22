@@ -1,7 +1,7 @@
 import { ActionType, AddedArtworkToArtworkList, OwnerType } from "@artsy/cohesion"
 import { captureMessage } from "@sentry/react-native"
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
-import { ArtworkEntity, ResultAction } from "app/Components/ArtworkLists/types"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
+import { useOnSaveArtworkLists } from "app/Components/ArtworkLists/useOnSaveArtworkLists"
 import { useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
 import { useCallback } from "react"
 import { useTracking } from "react-tracking"
@@ -13,11 +13,17 @@ interface Options {
 }
 
 export const useSaveArtworkListsChanges = (options?: Options) => {
-  const { state, addingArtworkListIDs, removingArtworkListIDs, onSave } = useArtworkListsContext()
+  const { artwork, addingArtworkListIDs, removingArtworkListIDs } = ArtworkListsStore.useStoreState(
+    (state) => ({
+      artwork: state.state.artwork,
+      addingArtworkListIDs: state.addingArtworkListIDs,
+      removingArtworkListIDs: state.removingArtworkListIDs,
+    })
+  )
+  const { onSaveArtworkLists } = useOnSaveArtworkLists()
   const analytics = useAnalyticsContext()
   const { trackEvent } = useTracking()
-  const artwork = state.artwork as ArtworkEntity
-  const [commit, inProgress] = useUpdateArtworkListsForArtwork(artwork.id)
+  const [commit, inProgress] = useUpdateArtworkListsForArtwork(artwork?.id ?? "")
 
   const trackAddedArtworkToArtworkLists = () => {
     const event: AddedArtworkToArtworkList = {
@@ -25,7 +31,7 @@ export const useSaveArtworkListsChanges = (options?: Options) => {
       context_owner_id: analytics.contextScreenOwnerId,
       context_owner_slug: analytics.contextScreenOwnerSlug,
       context_owner_type: analytics.contextScreenOwnerType || OwnerType.artwork,
-      artwork_ids: [artwork.internalID],
+      artwork_ids: [artwork?.internalID ?? ""],
       owner_ids: addingArtworkListIDs,
     }
 
@@ -33,6 +39,10 @@ export const useSaveArtworkListsChanges = (options?: Options) => {
   }
 
   const save = useCallback(() => {
+    if (!artwork) {
+      return
+    }
+
     commit({
       variables: {
         artworkID: artwork.internalID,
@@ -47,10 +57,7 @@ export const useSaveArtworkListsChanges = (options?: Options) => {
           trackAddedArtworkToArtworkLists()
         }
 
-        onSave({
-          action: ResultAction.ModifiedArtworkLists,
-          artwork,
-        })
+        onSaveArtworkLists()
 
         options?.onCompleted?.(...args)
       },
@@ -64,7 +71,7 @@ export const useSaveArtworkListsChanges = (options?: Options) => {
         options?.onError?.(error)
       },
     })
-  }, [artwork.internalID, addingArtworkListIDs, removingArtworkListIDs])
+  }, [artwork?.internalID, addingArtworkListIDs, removingArtworkListIDs, onSaveArtworkLists])
 
   return {
     save,

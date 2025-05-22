@@ -1,19 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import {
-  ArtsyKeyboardAvoidingView,
-  Flex,
-  Spacer,
-  Text,
-  Button,
-  BackButton,
-  useTheme,
-} from "@artsy/palette-mobile"
+import { BackButton, Button, Flex, Spacer, Text, useTheme } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtistAutosuggest } from "app/Components/ArtistAutosuggest/ArtistAutosuggest"
-import { ArtworkFilterNavigationStack } from "app/Components/ArtworkFilter"
 import { FilterDisplayName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFilterOptionItem } from "app/Components/ArtworkFilter/components/ArtworkFilterOptionItem"
 import { useToast } from "app/Components/Toast/toastHook"
+import { PriceDatabaseNavigationStack } from "app/Scenes/PriceDatabase/PriceDatabase"
 import { PriceDatabaseBenefits } from "app/Scenes/PriceDatabase/components/PriceDatabaseBenefits"
 import {
   ALLOWED_FILTERS,
@@ -24,12 +16,15 @@ import { PriceDatabaseSearchModel } from "app/Scenes/PriceDatabase/validation"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { useFormikContext } from "formik"
 import { stringify } from "query-string"
-import { ScrollView } from "react-native"
+import { KeyboardAvoidingView, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 
-export const PriceDatabaseSearch: React.FC<StackScreenProps<ArtworkFilterNavigationStack>> = ({
-  navigation,
-}) => {
+type PriceDatabaseScreenProps = StackScreenProps<
+  PriceDatabaseNavigationStack,
+  "PriceDatabaseSearch"
+>
+
+export const PriceDatabaseSearch: React.FC<PriceDatabaseScreenProps> = ({ navigation }) => {
   const toast = useToast()
   const { trackEvent } = useTracking()
   const { space } = useTheme()
@@ -59,7 +54,7 @@ export const PriceDatabaseSearch: React.FC<StackScreenProps<ArtworkFilterNavigat
   }
 
   return (
-    <ArtsyKeyboardAvoidingView>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
       <ScrollView keyboardShouldPersistTaps="handled">
         <BackButton
           onPress={() => goBack()}
@@ -123,7 +118,7 @@ export const PriceDatabaseSearch: React.FC<StackScreenProps<ArtworkFilterNavigat
           <PriceDatabaseBenefits />
         </Flex>
       </ScrollView>
-    </ArtsyKeyboardAvoidingView>
+    </KeyboardAvoidingView>
   )
 }
 

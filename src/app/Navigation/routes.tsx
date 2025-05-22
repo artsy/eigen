@@ -2,7 +2,7 @@ import { BackButton, Flex } from "@artsy/palette-mobile"
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack"
 import { ArtsyWebViewConfig, ArtsyWebViewPage } from "app/Components/ArtsyWebView"
 import { BidFlow } from "app/Components/Containers/BidFlow"
-import { InboxQueryRenderer, InboxScreenQuery } from "app/Components/Containers/Inbox"
+import { InboxScreen, InboxScreenQuery } from "app/Components/Containers/Inbox"
 import { InquiryQueryRenderer } from "app/Components/Containers/Inquiry"
 import { RegistrationFlow } from "app/Components/Containers/RegistrationFlow"
 import {
@@ -19,9 +19,12 @@ import {
 } from "app/Scenes/Activity/ActivityItemScreen"
 import { ActivityScreen } from "app/Scenes/Activity/ActivityScreen"
 import { activityHeaderQuery } from "app/Scenes/Activity/components/ActivityHeader"
-import { ArtQuiz } from "app/Scenes/ArtQuiz/ArtQuiz"
-import { ArtQuizResults } from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
-import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
+import { ArtQuiz, ArtQuizScreenQuery } from "app/Scenes/ArtQuiz/ArtQuiz"
+import {
+  ArtQuizResults,
+  ArtQuizResultsScreenQuery,
+} from "app/Scenes/ArtQuiz/ArtQuizResults/ArtQuizResults"
+import { ArticleScreen, articleScreenQuery } from "app/Scenes/Article/ArticleScreen"
 import { ArticlesSlideShowScreen } from "app/Scenes/ArticleSlideShow/ArticleSlideShow"
 import { ArticlesScreen, ArticlesScreenQuery } from "app/Scenes/Articles/Articles"
 import { NewsScreen, NewsScreenQuery } from "app/Scenes/Articles/News/News"
@@ -30,68 +33,121 @@ import {
   ArtistScreenQuery,
   defaultArtistVariables,
 } from "app/Scenes/Artist/Artist"
-import { ArtistArticlesQueryRenderer } from "app/Scenes/ArtistArticles/ArtistArticles"
-import { ArtistSeriesQueryRenderer } from "app/Scenes/ArtistSeries/ArtistSeries"
-import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
-import { ArtistShows2QueryRenderer } from "app/Scenes/ArtistShows/ArtistShows2"
+import {
+  ArtistArticlesQueryRenderer,
+  ArtistArticlesResultScreenQuery,
+} from "app/Scenes/ArtistArticles/ArtistArticles"
+import {
+  ArtistSeriesQueryRenderer,
+  ArtistSeriesScreenQuery,
+} from "app/Scenes/ArtistSeries/ArtistSeries"
+import {
+  ArtistSeriesFullArtistSeriesListQueryRenderer,
+  ArtistSeriesFullArtistSeriesScreenQuery,
+} from "app/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
+import {
+  ArtistShowsQueryRenderer,
+  ArtistShowsScreenQuery,
+} from "app/Scenes/ArtistShows/ArtistShows"
 import { ArtworkScreen, ArtworkScreenQuery } from "app/Scenes/Artwork/Artwork"
-import { BrowseSimilarWorksQueryRenderer } from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
+import {
+  BrowseSimilarWorksQueryRenderer,
+  BrowseSimilarWorksScreenQuery,
+} from "app/Scenes/Artwork/Components/BrowseSimilarWorks/BrowseSimilarWorks"
 import { CertificateOfAuthenticity } from "app/Scenes/Artwork/Components/CertificateAuthenticity"
 import { UnlistedArtworksFAQScreen } from "app/Scenes/Artwork/Components/UnlistedArtworksFAQScreen"
-import { ArtworkAttributionClassFAQQueryRenderer } from "app/Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ"
-import { ArtworkListScreen } from "app/Scenes/ArtworkList/ArtworkList"
-import { ArtworkMediumQueryRenderer } from "app/Scenes/ArtworkMedium/ArtworkMedium"
+import {
+  ArtworkAttributionClassFAQQueryRenderer,
+  ArtworkAttributionClassFAQScreenQuery,
+} from "app/Scenes/ArtworkAttributionClassFAQ/ArtworkAttributionClassFAQ"
+import {
+  ArtworkListScreen,
+  ArtworkListScreenQuery,
+  artworkListVariables,
+} from "app/Scenes/ArtworkList/ArtworkList"
+import { artworkListsQuery } from "app/Scenes/ArtworkLists/ArtworkLists"
+import {
+  ARTWORK_MEDIUM_QUERY,
+  ArtworkMediumQueryRenderer,
+} from "app/Scenes/ArtworkMedium/ArtworkMedium"
 import { ArtworkRecommendationsScreen } from "app/Scenes/ArtworkRecommendations/ArtworkRecommendations"
 import { AuctionBuyersPremiumQueryRenderer } from "app/Scenes/AuctionBuyersPremium/AuctionBuyersPremium"
-import { AuctionResultQueryRenderer } from "app/Scenes/AuctionResult/AuctionResult"
+import {
+  AuctionResultQueryRenderer,
+  AuctionResultScreenQuery,
+} from "app/Scenes/AuctionResult/AuctionResult"
 import {
   AuctionResultsForArtistsYouFollowPrefetchQuery,
   AuctionResultsForArtistsYouFollowQueryRenderer,
 } from "app/Scenes/AuctionResults/AuctionResultsForArtistsYouFollow"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
-import { CityFairListQueryRenderer } from "app/Scenes/City/CityFairList"
-import { CitySavedListQueryRenderer } from "app/Scenes/City/CitySavedList"
-import { CitySectionListQueryRenderer } from "app/Scenes/City/CitySectionList"
-import { CollectionScreen } from "app/Scenes/Collection/Collection"
-import { CollectionFullFeaturedArtistListQueryRenderer } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
+import { CityFairListQueryRenderer, CityFairListScreenQuery } from "app/Scenes/City/CityFairList"
+import { CitySavedListQueryRenderer, CitySavedListScreenQuery } from "app/Scenes/City/CitySavedList"
+import {
+  CitySectionListQueryRenderer,
+  CitySectionListScreenQuery,
+} from "app/Scenes/City/CitySectionList"
+import { Collect, collectQuery } from "app/Scenes/Collect/Collect"
+import { CollectionScreen, CollectionScreenQuery } from "app/Scenes/Collection/Collection"
+import { CollectionFullFeaturedArtistListScreen } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
+import { collectionsByCategoryQuery } from "app/Scenes/CollectionsByCategory/Body"
 import { CollectionsByCategory } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
 import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import { FairScreen, FairScreenQuery } from "app/Scenes/Fair/Fair"
-import { FairAllFollowedArtistsQueryRenderer } from "app/Scenes/Fair/FairAllFollowedArtists"
+import {
+  FairAllFollowedArtistsQueryRenderer,
+  FairAllFollowedArtistsScreenQuery,
+} from "app/Scenes/Fair/FairAllFollowedArtists"
 import { FairArticlesQueryRenderer } from "app/Scenes/Fair/FairArticles"
-import { FairMoreInfoQueryRenderer } from "app/Scenes/Fair/FairMoreInfo"
+import { FaireMoreInfoScreenQuery, FairMoreInfoQueryRenderer } from "app/Scenes/Fair/FairMoreInfo"
+import { FeaturedFairsScreen, featuredFairsScreenQuery } from "app/Scenes/Fair/FeaturedFairsScreen"
 import { Favorites } from "app/Scenes/Favorites/Favorites"
-import { FeatureQueryRenderer } from "app/Scenes/Feature/Feature"
+import { FeatureQueryRenderer, FeatureScreenQuery } from "app/Scenes/Feature/Feature"
 import { GalleriesForYouScreen } from "app/Scenes/GalleriesForYou/GalleriesForYouScreen"
-import { GeneQueryRenderer } from "app/Scenes/Gene/Gene"
+import { GeneQueryRenderer, GeneScreenQuery } from "app/Scenes/Gene/Gene"
 import { HomeViewScreen, homeViewScreenQuery } from "app/Scenes/HomeView/HomeView"
 import {
   HOME_SECTION_SCREEN_QUERY,
   HomeViewSectionScreenQueryRenderer,
 } from "app/Scenes/HomeViewSectionScreen/HomeViewSectionScreen"
-import { MakeOfferModalQueryRenderer } from "app/Scenes/Inbox/Components/Conversations/MakeOfferModal"
-import { PurchaseModalQueryRenderer } from "app/Scenes/Inbox/Components/Conversations/PurchaseModal"
-import { ConversationQueryRenderer } from "app/Scenes/Inbox/Screens/Conversation"
-import { ConversationDetailsQueryRenderer } from "app/Scenes/Inbox/Screens/ConversationDetails"
-import { InfiniteDiscoveryQueryRenderer } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
-import { MyAccountQueryRenderer } from "app/Scenes/MyAccount/MyAccount"
+import {
+  MakeOfferModalQueryRenderer,
+  MakeOfferModalScreenQuery,
+} from "app/Scenes/Inbox/Components/Conversations/MakeOfferModal"
+import {
+  PurchaseModalQueryRenderer,
+  PurchaseModalScreenQuery,
+} from "app/Scenes/Inbox/Components/Conversations/PurchaseModal"
+import {
+  ConversationQueryRenderer,
+  ConversationScreenQuery,
+} from "app/Scenes/Inbox/Screens/Conversation"
+import {
+  ConversationDetailsQueryRenderer,
+  ConversationDetailsScreenQuery,
+} from "app/Scenes/Inbox/Screens/ConversationDetails"
+import {
+  infiniteDiscoveryQuery,
+  InfiniteDiscoveryQueryRenderer,
+  infiniteDiscoveryVariables,
+} from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryQueryRenderer"
+import { Favorites as LegacyFavorites } from "app/Scenes/LegacyFavorites/LegacyFavorites"
+import { MyAccountQueryRenderer, MyAccountScreenQuery } from "app/Scenes/MyAccount/MyAccount"
 import { MyAccountDeleteAccountQueryRenderer } from "app/Scenes/MyAccount/MyAccountDeleteAccount"
 import { MyAccountEditEmailQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditEmail"
 import { MyAccountEditPassword } from "app/Scenes/MyAccount/MyAccountEditPassword"
 import { MyAccountEditPhoneQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditPhone"
-import { MyAccountEditPriceRangeQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditPriceRange"
 import {
-  MyCollectionQueryRenderer,
-  MyCollectionScreenQuery,
-} from "app/Scenes/MyCollection/MyCollection"
+  myAccountEditPriceRangeQuery,
+  MyAccountEditPriceRangeQueryRenderer,
+} from "app/Scenes/MyAccount/MyAccountEditPriceRange"
+import { MyCollectionQueryRenderer } from "app/Scenes/MyCollection/MyCollection"
+import { myCollectionScreenQuery } from "app/Scenes/MyCollection/MyCollectionLegacy"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
-import { RequestForPriceEstimateConfirmationScreen } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/RequestForPriceEstimate/RequestForPriceEstimateConfirmationScreen"
-import { RequestForPriceEstimateScreen } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/RequestForPriceEstimate/RequestForPriceEstimateScreen"
 import {
   MyCollectionArtworkScreen,
   MyCollectionArtworkScreenQuery,
 } from "app/Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
-import { MyCollectionSellingWithArtsyFAQ } from "app/Scenes/MyCollection/Screens/Artwork/MyCollectionSellingWithartsyFAQ"
 import { MyCollectionArtworkAdd } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionArtworkEditQueryRenderer } from "app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkEdit"
 import { MyCollectionCollectedArtistsPrivacyQueryRenderer } from "app/Scenes/MyCollection/Screens/CollectedArtistsPrivacy/MyCollectionCollectedArtistsPrivacy"
@@ -99,19 +155,39 @@ import { AuctionResultsForArtistsYouCollect } from "app/Scenes/MyCollection/Scre
 import { CareerHighlightsBigCardsSwiper } from "app/Scenes/MyCollection/Screens/Insights/CareerHighlightsBigCardsSwiper"
 import { MedianSalePriceAtAuction } from "app/Scenes/MyCollection/Screens/Insights/MedianSalePriceAtAuction"
 import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists"
+import { UserAccountHeaderScreenQuery } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
 import { DarkModeSettings } from "app/Scenes/MyProfile/DarkModeSettings"
 import { MyProfile } from "app/Scenes/MyProfile/MyProfile"
-import { MyProfileEditFormScreen } from "app/Scenes/MyProfile/MyProfileEditForm"
-import { MyProfilePaymentQueryRenderer } from "app/Scenes/MyProfile/MyProfilePayment"
+import {
+  MyProfileEditFormScreen,
+  MyProfileEditFormScreenQuery,
+} from "app/Scenes/MyProfile/MyProfileEditForm"
+import { MyProfileHeaderScreenQuery } from "app/Scenes/MyProfile/MyProfileHeader"
+import {
+  myProfilePaymentQueryDefaultVariables,
+  MyProfilePaymentQueryRenderer,
+  MyProfilePaymentScreenQuery,
+} from "app/Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "app/Scenes/MyProfile/MyProfilePaymentNewCreditCard"
+import {
+  myProfilePreferencesQuery,
+  MyProfilePreferencesQueryRenderer,
+} from "app/Scenes/MyProfile/MyProfilePreferences"
+import { MyProfilePrivacy } from "app/Scenes/MyProfile/MyProfilePrivacy"
 import { MyProfilePushNotificationsQueryRenderer } from "app/Scenes/MyProfile/MyProfilePushNotifications"
 import { MyProfileSettings } from "app/Scenes/MyProfile/MyProfileSettings"
+import { MyProfileTermsAndConditions } from "app/Scenes/MyProfile/MyProfileTermsAndConditions"
 import { NewWorksForYouQueryRenderer } from "app/Scenes/NewWorksForYou/NewWorksForYou"
+import { NewWorksFromGalleriesYouFollowScreenQuery } from "app/Scenes/NewWorksFromGalleriesYouFollow/Components/NewWorksFromGalleriesYouFollow"
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
+import { OrderDetailQR } from "app/Scenes/OrderHistory/OrderDetail/OrderDetail"
 import { OrderDetailsQueryRender } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetails"
 import { OrderHistoryQueryRender } from "app/Scenes/OrderHistory/OrderHistory"
-import { PartnerQueryRenderer } from "app/Scenes/Partner/Partner"
-import { PartnerLocationsQueryRenderer } from "app/Scenes/Partner/Screens/PartnerLocations"
+import { PartnerQueryRenderer, PartnerScreenQuery } from "app/Scenes/Partner/Partner"
+import {
+  PartnerLocationsQueryRenderer,
+  PartnerLocationsScreenQuery,
+} from "app/Scenes/Partner/Screens/PartnerLocations"
 import { PartnerOfferContainer } from "app/Scenes/PartnerOffer/PartnerOfferContainer"
 import { PriceDatabase } from "app/Scenes/PriceDatabase/PriceDatabase"
 import { PrivacyRequest } from "app/Scenes/PrivacyRequest/PrivacyRequest"
@@ -123,35 +199,53 @@ import { SaleInfoQueryRenderer } from "app/Scenes/SaleInfo/SaleInfo"
 import { SalesScreen, SalesScreenQuery } from "app/Scenes/Sales/Sales"
 import { SavedArtworks } from "app/Scenes/SavedArtworks/SavedArtworks"
 import { AlertArtworks } from "app/Scenes/SavedSearchAlert/AlertArtworks"
-import { EditSavedSearchAlertQueryRenderer } from "app/Scenes/SavedSearchAlert/EditSavedSearchAlert"
+import {
+  EditSavedSearchAlertDetailsScreenQuery,
+  EditSavedSearchAlertQueryRenderer,
+} from "app/Scenes/SavedSearchAlert/EditSavedSearchAlert"
+import { SavedSearchAlertScreenQuery } from "app/Scenes/SavedSearchAlert/SavedSearchAlert"
 import { SavedSearchAlertsListQueryRenderer } from "app/Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
-import { SearchScreen, SearchScreenQuery } from "app/Scenes/Search/Search"
-import { SubmitArtworkForm } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkForm"
-import { SubmitArtworkFormEditContainer } from "app/Scenes/SellWithArtsy/ArtworkForm/SubmitArtworkFormEdit"
-import { ConsignmentInquiryScreen } from "app/Scenes/SellWithArtsy/ConsignmentInquiry/ConsignmentInquiryScreen"
-import { SellWithArtsyHomeScreenQuery } from "app/Scenes/SellWithArtsy/SellWithArtsyHome"
-import { SellWithArtsy } from "app/Scenes/SellWithArtsy/SubmitArtwork/UploadPhotos/utils"
-import { ShowMoreInfoQueryRenderer } from "app/Scenes/Show/Screens/ShowMoreInfo"
+import {
+  searchQueryDefaultVariables,
+  SearchScreen,
+  SearchScreenQuery,
+} from "app/Scenes/Search/Search"
+import {
+  ShowMoreInfoQueryRenderer,
+  ShowMoreInfoScreenQuery,
+} from "app/Scenes/Show/Screens/ShowMoreInfo"
 import { ShowQueryRenderer, ShowScreenQuery } from "app/Scenes/Show/Show"
-import { SimilarToRecentlyViewedScreen } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
-import { TagQueryRenderer } from "app/Scenes/Tag/Tag"
-import { VanityURLEntityRenderer } from "app/Scenes/VanityURL/VanityURLEntity"
+import { ShowsForYouScreen } from "app/Scenes/Shows/ShowsForYou"
+import {
+  SimilarToRecentlyViewedScreen,
+  SimilarToRecentlyViewedScreenQuery,
+} from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
+import { TagQueryRenderer, TagScreenQuery } from "app/Scenes/Tag/Tag"
+import {
+  VanityURLEntityRenderer,
+  VanityURLEntityScreenQuery,
+} from "app/Scenes/VanityURL/VanityURLEntity"
 import {
   ViewingRoomQueryRenderer,
   ViewingRoomScreenQuery,
 } from "app/Scenes/ViewingRoom/ViewingRoom"
-import { ViewingRoomArtworkScreen } from "app/Scenes/ViewingRoom/ViewingRoomArtwork"
-import { ViewingRoomArtworksQueryRenderer } from "app/Scenes/ViewingRoom/ViewingRoomArtworks"
+import {
+  ViewingRoomArtworkScreen,
+  ViewingRoomArtworkScreenQuery,
+} from "app/Scenes/ViewingRoom/ViewingRoomArtwork"
+import {
+  ViewingRoomArtworksQueryRenderer,
+  ViewingRoomArtworksScreenQuery,
+} from "app/Scenes/ViewingRoom/ViewingRoomArtworks"
 import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "app/Scenes/ViewingRoom/ViewingRoomsList"
-import { unsafe__getEnvironment } from "app/store/GlobalStore"
+import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "app/store/GlobalStore"
 import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
 import { goBack } from "app/system/navigation/navigate"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
 import { compact } from "lodash"
-import React from "react"
 import { Platform } from "react-native"
 import { GraphQLTaggedNode } from "react-relay"
 
@@ -163,6 +257,9 @@ export interface ViewOptions {
   // If this module should only be shown in one particular tab, name it here
   onlyShowInTabName?: BottomTabType
   screenOptions?: NativeStackNavigationOptions
+  topTabsNavigatorOptions?: {
+    topTabName: string
+  }
 }
 // Default WebView Route Definition
 const webViewRoute = ({
@@ -206,7 +303,7 @@ export type ModuleDescriptor<T = string> = {
   /**
    * Here variables can be specified for each query. The variables will be merged with the route params.
    */
-  queryVariables?: object[]
+  prepareVariables?: ((params: any) => object)[]
   injectParams?: (params: any) => any
 }
 
@@ -276,6 +373,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
       hidesBottomTabs: true,
     },
+    queries: [ArtQuizScreenQuery],
   },
   {
     path: "/art-quiz/artworks",
@@ -287,6 +385,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
       hidesBottomTabs: true,
     },
+    queries: [ArtQuizScreenQuery],
   },
   {
     path: "/art-quiz/results",
@@ -298,6 +397,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [ArtQuizResultsScreenQuery],
   },
   {
     path: "/article/:articleID",
@@ -308,6 +408,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [articleScreenQuery],
   },
   {
     path: "/article/:articleID/slideshow",
@@ -340,6 +441,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [ArtistSeriesScreenQuery],
   },
   {
     path: "/artist/:artistID",
@@ -351,7 +453,7 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [ArtistScreenQuery],
-    queryVariables: [defaultArtistVariables],
+    prepareVariables: [({ artistID }) => ({ artistID, ...defaultArtistVariables })],
   },
   {
     path: "/artist/:artistID/articles",
@@ -362,6 +464,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [ArtistArticlesResultScreenQuery],
   },
   {
     path: "/artist/:artistID/artist-series",
@@ -372,11 +475,13 @@ export const artsyDotNetRoutes = defineRoutes([
         headerTitle: "Artist Series",
       },
     },
+    queries: [ArtistSeriesFullArtistSeriesScreenQuery],
   },
   {
     path: "/artist/:artistID/auction-result/:auctionResultInternalID",
     name: "AuctionResult",
     Component: AuctionResultQueryRenderer,
+    queries: [AuctionResultScreenQuery],
   },
   {
     path: "/artist/:artistID/auction-results",
@@ -413,7 +518,8 @@ export const artsyDotNetRoutes = defineRoutes([
   {
     path: "/artist/:artistID/shows",
     name: "ArtistShows",
-    Component: ArtistShows2QueryRenderer,
+    Component: ArtistShowsQueryRenderer,
+    queries: [ArtistShowsScreenQuery],
   },
   // Routes `/artist/:artistID/*` and `"/:profile_id_ignored/artist/:artistID"`
   // MUST go together The following two
@@ -449,16 +555,26 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/artwork-classifications",
     name: "ArtworkAttributionClassFAQ",
     Component: ArtworkAttributionClassFAQQueryRenderer,
+    queries: [ArtworkAttributionClassFAQScreenQuery],
   },
   {
     path: "/artwork-lists",
     name: "SavedArtworks",
     Component: SavedArtworks,
     options: {
+      topTabsNavigatorOptions: unsafe_getFeatureFlag("AREnableFavoritesTab")
+        ? {
+            topTabName: "saves",
+          }
+        : undefined,
+      isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
+      onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
       screenOptions: {
         headerShown: false,
       },
     },
+    queries: [artworkListsQuery],
+    prepareVariables: [() => artworkListVariables],
   },
   {
     path: "/artwork-list/:listID",
@@ -469,6 +585,8 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [ArtworkListScreenQuery],
+    prepareVariables: [({ listID }) => ({ listID, ...artworkListVariables })],
   },
   {
     path: "/artwork-recommendations",
@@ -496,6 +614,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/artwork/:artworkID/medium",
     name: "ArtworkMedium",
     Component: ArtworkMediumQueryRenderer,
+    queries: [ARTWORK_MEDIUM_QUERY],
   },
   {
     path: "/artwork/:artworkID/browse-similar-works",
@@ -507,6 +626,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [BrowseSimilarWorksScreenQuery],
   },
   {
     path: "/auction-registration/:saleID",
@@ -548,6 +668,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: SaleQueryRenderer,
     options: { screenOptions: { headerShown: false } },
     queries: [SaleScreenQuery],
+    prepareVariables: [({ saleID }) => ({ saleID, saleSlug: saleID })],
   },
   {
     path: "/auction/:saleID/bid/:artworkID",
@@ -596,16 +717,40 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/city-fair/:citySlug",
     name: "CityFairList",
     Component: CityFairListQueryRenderer,
+    queries: [CityFairListScreenQuery],
   },
   {
     path: "/city-save/:citySlug",
     name: "CitySavedList",
     Component: CitySavedListQueryRenderer,
+    queries: [CitySavedListScreenQuery],
   },
   {
     path: "/city/:citySlug/:section",
     name: "CitySectionList",
     Component: CitySectionListQueryRenderer,
+    queries: [CitySectionListScreenQuery],
+  },
+  {
+    path: "/collect",
+    name: "Collect",
+    Component: Collect,
+    queries: [collectQuery],
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  },
+  {
+    path: "/collector-profile/my-collection",
+    name: "CollectorProfileMyCollection",
+    Component: MyCollectionQueryRenderer,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   },
   {
     path: "/collections-by-category/:category",
@@ -616,6 +761,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [collectionsByCategoryQuery],
   },
   {
     path: "/collection/:collectionID",
@@ -626,21 +772,17 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [CollectionScreenQuery],
   },
   {
     path: "/collection/:collectionID/artists",
     name: "FullFeaturedArtistList",
-    Component: CollectionFullFeaturedArtistListQueryRenderer,
+    Component: CollectionFullFeaturedArtistListScreen,
     options: {
       screenOptions: {
         headerTitle: "Featured Artists",
       },
     },
-  },
-  {
-    path: "/collections/my-collection/marketing-landing",
-    name: "SellNotRootTabView",
-    Component: SellWithArtsy,
   },
   {
     path: "/conversation/:conversationID",
@@ -652,6 +794,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [ConversationScreenQuery],
   },
   {
     path: "/conversation/:conversationID/details",
@@ -662,6 +805,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerTitle: "Details",
       },
     },
+    queries: [ConversationDetailsScreenQuery],
   },
   {
     path: "/dev-menu",
@@ -741,6 +885,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerTitle: "Artworks",
       },
     },
+    queries: [FairAllFollowedArtistsScreenQuery],
   },
   {
     path: "/fair/:fairID/info",
@@ -751,21 +896,24 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [FaireMoreInfoScreenQuery],
   },
   {
-    path: "/favorites",
-    name: "Favorites",
-    Component: Favorites,
+    path: "/featured-fairs",
+    name: "Featured Fairs",
+    Component: FeaturedFairsScreen,
     options: {
       screenOptions: {
         headerShown: false,
       },
     },
+    queries: [featuredFairsScreenQuery],
   },
   {
     path: "/feature/:slug",
     name: "Feature",
     Component: FeatureQueryRenderer,
+    queries: [FeatureScreenQuery],
   },
   {
     path: "/galleries-for-you",
@@ -786,6 +934,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [GeneScreenQuery],
   },
   {
     path: "/home-view/sections/:id",
@@ -801,7 +950,7 @@ export const artsyDotNetRoutes = defineRoutes([
   {
     path: "/inbox",
     name: "Inbox",
-    Component: InboxQueryRenderer,
+    Component: InboxScreen,
     options: {
       isRootViewForTabName: "inbox",
       onlyShowInTabName: "inbox",
@@ -815,9 +964,13 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/infinite-discovery",
     name: "InfiniteDiscovery",
     Component: InfiniteDiscoveryQueryRenderer,
+    queries: [infiniteDiscoveryQuery],
+    prepareVariables: [() => infiniteDiscoveryVariables],
     options: {
       hidesBottomTabs: true,
       screenOptions: {
+        animation: "slide_from_bottom",
+        gestureEnabled: false,
         headerShown: false,
       },
     },
@@ -865,6 +1018,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [MakeOfferModalScreenQuery],
   },
   {
     path: "/my-account",
@@ -873,8 +1027,10 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       screenOptions: {
         headerTitle: "Account Settings",
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
       },
     },
+    queries: [MyAccountScreenQuery],
   },
   {
     path: "/my-account/delete-account",
@@ -887,6 +1043,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: MyAccountEditEmailQueryRenderer,
     options: {
       screenOptions: {
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
         headerTitle: "Email",
       },
     },
@@ -897,6 +1054,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: MyAccountEditPassword,
     options: {
       screenOptions: {
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
         headerTitle: "Password",
       },
     },
@@ -907,6 +1065,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: MyAccountEditPhoneQueryRenderer,
     options: {
       screenOptions: {
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
         headerTitle: "Phone Number",
       },
     },
@@ -915,8 +1074,10 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/my-account/edit-price-range",
     name: "MyAccountEditPriceRange",
     Component: MyAccountEditPriceRangeQueryRenderer,
+    queries: [myAccountEditPriceRangeQuery],
     options: {
       screenOptions: {
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
         headerTitle: "Price Range",
       },
     },
@@ -925,6 +1086,11 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/my-collection",
     name: "MyCollection",
     Component: MyCollectionQueryRenderer,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   },
   {
     path: "/my-collection/artists/new",
@@ -950,21 +1116,6 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [MyCollectionArtworkScreenQuery],
-  },
-  {
-    path: "/my-collection/artwork/:artworkID/price-estimate",
-    name: "RequestForPriceEstimateScreen",
-    Component: RequestForPriceEstimateScreen,
-  },
-  {
-    path: "/my-collection/artwork/:artworkID/price-estimate/success",
-    name: "RequestForPriceEstimateConfirmationScreen",
-    Component: RequestForPriceEstimateConfirmationScreen,
-    options: {
-      screenOptions: {
-        headerShown: false,
-      },
-    },
   },
   {
     path: "/my-collection/artworks/:artworkID/edit",
@@ -1052,7 +1203,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    queries: [MyCollectionScreenQuery],
+    queries: [MyProfileHeaderScreenQuery, myCollectionScreenQuery],
   },
   {
     path: "/my-profile/edit",
@@ -1063,6 +1214,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerTitle: "Edit Profile",
       },
     },
+    queries: [MyProfileEditFormScreenQuery],
   },
   {
     path: "/my-profile/payment",
@@ -1071,8 +1223,11 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       screenOptions: {
         headerTitle: "Payment",
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
       },
     },
+    prepareVariables: [() => myProfilePaymentQueryDefaultVariables],
+    queries: [MyProfilePaymentScreenQuery],
   },
   {
     path: "/my-profile/payment/new-card",
@@ -1081,6 +1236,7 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       screenOptions: {
         headerTitle: "Add new card",
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
       },
     },
   },
@@ -1090,7 +1246,19 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: MyProfilePushNotificationsQueryRenderer,
     options: {
       screenOptions: {
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
         headerTitle: "Push Notifications",
+      },
+    },
+  },
+  {
+    path: "/my-profile/preferences",
+    name: "MyProfilePreferences",
+    Component: MyProfilePreferencesQueryRenderer,
+    queries: [myProfilePreferencesQuery],
+    options: {
+      screenOptions: {
+        headerShown: false,
       },
     },
   },
@@ -1101,6 +1269,27 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       screenOptions: {
         headerTitle: "Account",
+      },
+    },
+    queries: [UserAccountHeaderScreenQuery],
+  },
+  {
+    path: "/my-profile/privacy",
+    name: "MyProfilePrivacy",
+    Component: MyProfilePrivacy,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+  },
+  {
+    path: "/my-profile/terms-and-conditions",
+    name: "MyProfileTermsAndConditions",
+    Component: MyProfileTermsAndConditions,
+    options: {
+      screenOptions: {
+        headerShown: false,
       },
     },
   },
@@ -1135,6 +1324,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [NewWorksFromGalleriesYouFollowScreenQuery],
   },
   {
     path: "/orders",
@@ -1150,6 +1340,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/partner-locations/:partnerID",
     name: "PartnerLocations",
     Component: PartnerLocationsQueryRenderer,
+    queries: [PartnerLocationsScreenQuery],
   },
   {
     path: "/partner-offer/:partnerOfferID/checkout",
@@ -1171,6 +1362,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [PartnerScreenQuery],
   },
   {
     path: "/partner/:partnerID/artists/:artistID",
@@ -1227,6 +1419,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: PrivacyRequest,
     options: {
       screenOptions: {
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
         headerTitle: "Personal Data Request",
       },
     },
@@ -1240,6 +1433,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [PurchaseModalScreenQuery],
   },
   {
     path: "/recently-viewed",
@@ -1253,19 +1447,6 @@ export const artsyDotNetRoutes = defineRoutes([
     queries: [RecentlyViewedScreenQuery],
   },
   {
-    path: "/sell",
-    name: "Sell",
-    Component: SellWithArtsy,
-    options: {
-      isRootViewForTabName: "sell",
-      onlyShowInTabName: "sell",
-      screenOptions: {
-        headerShown: false,
-      },
-    },
-    queries: [SellWithArtsyHomeScreenQuery],
-  },
-  {
     path: "/search",
     name: "Search",
     Component: SearchScreen,
@@ -1277,52 +1458,32 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [SearchScreenQuery],
+    prepareVariables: [() => searchQueryDefaultVariables],
   },
   {
-    path: "/sell/inquiry",
-    name: "ConsignmentInquiry",
-    Component: ConsignmentInquiryScreen,
+    path: "/favorites",
+    name: "Favorites",
+    Component: unsafe_getFeatureFlag("AREnableFavoritesTab") ? Favorites : LegacyFavorites,
     options: {
+      isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
+      onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
       screenOptions: {
-        gestureEnabled: false,
-      },
-    },
-  },
-  {
-    path: "/sell/submissions/new",
-    name: "SubmitArtwork",
-    Component: SubmitArtworkForm,
-    options: {
-      alwaysPresentModally: true,
-      screenOptions: {
-        gestureEnabled: false,
         headerShown: false,
       },
     },
-  },
-  {
-    path: "/sell/submissions/:externalID/edit",
-    name: "SubmitArtworkEdit",
-    Component: SubmitArtworkFormEditContainer,
-    options: {
-      alwaysPresentModally: true,
-      hidesBottomTabs: true,
-      screenOptions: {
-        gestureEnabled: false,
-        headerShown: false,
-      },
-    },
-  },
-  {
-    path: "/selling-with-artsy",
-    name: "MyCollectionSellingWithartsyFAQ",
-    Component: MyCollectionSellingWithArtsyFAQ,
   },
   {
     path: "/favorites/alerts",
     name: "SavedSearchAlertsList",
     Component: SavedSearchAlertsListQueryRenderer,
     options: {
+      topTabsNavigatorOptions: unsafe_getFeatureFlag("AREnableFavoritesTab")
+        ? {
+            topTabName: "alerts",
+          }
+        : undefined,
+      isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
+      onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
       screenOptions: {
         headerShown: false,
       },
@@ -1338,6 +1499,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [SavedSearchAlertScreenQuery, EditSavedSearchAlertDetailsScreenQuery],
   },
   {
     path: "/favorites/alerts/:alertId/artworks",
@@ -1351,14 +1513,42 @@ export const artsyDotNetRoutes = defineRoutes([
     },
   },
   {
-    path: "/favorites/saves",
+    path: "/favorites/follows",
     name: "SavedArtworks",
     Component: SavedArtworks,
     options: {
+      topTabsNavigatorOptions: unsafe_getFeatureFlag("AREnableFavoritesTab")
+        ? {
+            topTabName: "follows",
+          }
+        : undefined,
+      isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
+      onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
       screenOptions: {
         headerShown: false,
       },
     },
+    queries: [artworkListsQuery],
+    prepareVariables: [() => artworkListVariables],
+  },
+  {
+    path: "/favorites/saves",
+    name: "SavedArtworks",
+    Component: SavedArtworks,
+    options: {
+      topTabsNavigatorOptions: unsafe_getFeatureFlag("AREnableFavoritesTab")
+        ? {
+            topTabName: "saves",
+          }
+        : undefined,
+      isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
+      onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [artworkListsQuery],
+    prepareVariables: [() => artworkListVariables],
   },
   {
     path: "/favorites/saves/:listID",
@@ -1374,6 +1564,12 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/settings/dark-mode",
     name: "DarkModeSettings",
     Component: DarkModeSettings,
+    options: {
+      screenOptions: {
+        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
+        headerTitle: "Dark Mode",
+      },
+    },
   },
   {
     path: "/show/:showID",
@@ -1385,6 +1581,19 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/show/:showID/info",
     name: "ShowMoreInfo",
     Component: ShowMoreInfoQueryRenderer,
+    queries: [ShowMoreInfoScreenQuery],
+  },
+  {
+    path: "/shows-for-you",
+    name: "ShowsForYou",
+    Component: ShowsForYouScreen,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    //Not prefetching the query for now because it's dependent on the user's location.
+    queries: [],
   },
   {
     path: "/similar-to-recently-viewed",
@@ -1395,6 +1604,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [SimilarToRecentlyViewedScreenQuery],
   },
   {
     path: "/tag/:tagID",
@@ -1405,6 +1615,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [TagScreenQuery],
   },
   {
     path: "/unlisted-artworks-faq",
@@ -1426,7 +1637,22 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    queries: [ConversationScreenQuery],
   },
+  ...(unsafe_getFeatureFlag("AREnableNewOrderDetails")
+    ? [
+        {
+          path: "/orders/:orderID/details",
+          name: "OrderDetail",
+          Component: OrderDetailQR,
+          options: {
+            screenOptions: {
+              headerTitle: "Order Details",
+            },
+          },
+        },
+      ]
+    : []),
   {
     path: "/user/purchases/:orderID",
     name: "OrderDetails",
@@ -1438,20 +1664,22 @@ export const artsyDotNetRoutes = defineRoutes([
     },
   },
   {
-    path: "/viewing-room/:viewing_room_id",
+    path: "/viewing-room/:viewingRoomID",
     name: "ViewingRoom",
     Component: ViewingRoomQueryRenderer,
     queries: [ViewingRoomScreenQuery],
   },
   {
-    path: "/viewing-room/:viewing_room_id/artworks",
+    path: "/viewing-room/:viewingRoomID/artworks",
     name: "ViewingRoomArtworks",
     Component: ViewingRoomArtworksQueryRenderer,
+    queries: [ViewingRoomArtworksScreenQuery],
   },
   {
-    path: "/viewing-room/:viewing_room_id/:artwork_id",
+    path: "/viewing-room/:viewingRoomID/:artwork_id",
     name: "ViewingRoomArtwork",
     Component: ViewingRoomArtworkScreen,
+    queries: [ViewingRoomArtworkScreenQuery],
   },
   {
     path: "/viewing-rooms",
@@ -1520,6 +1748,12 @@ export const artsyDotNetRoutes = defineRoutes([
       alwaysPresentModally: true,
     },
   }),
+  webViewRoute({
+    path: "/supplemental-cos",
+    config: {
+      alwaysPresentModally: true,
+    },
+  }),
   webViewRoute({ path: "/unsubscribe" }),
 
   // Every other route needs to go above
@@ -1527,8 +1761,19 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/:slug",
     name: "VanityURLEntity",
     Component: VanityURLEntityRenderer,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [VanityURLEntityScreenQuery],
   },
-  webViewRoute({ path: "/*" }),
+  webViewRoute({
+    path: "/*",
+    screenOptions: {
+      headerShown: false,
+    },
+  }),
 ])
 
 export const liveDotArtsyRoutes = defineRoutes([

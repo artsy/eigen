@@ -1,27 +1,22 @@
+import { NavigationProp } from "@react-navigation/native"
 import { FlexProps } from "app/Components/Bidding/Elements/Flex"
-import { PhoneNumberForm } from "app/Components/Bidding/Screens/PhoneNumberForm"
-import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
+import { BiddingNavigationStackParams } from "app/Navigation/AuthenticatedRoutes/BiddingNavigator"
 import { View } from "react-native"
 
 import { BidInfoRow } from "./BidInfoRow"
 import { Divider } from "./Divider"
 
 interface PhoneInfoProps extends FlexProps {
-  navigator: NavigatorIOS
+  navigator: NavigationProp<BiddingNavigationStackParams, "RegisterToBid">
   onPhoneAdded: (phoneNumber: string) => void
   phoneNumber?: string
 }
 
 export const PhoneInfo: React.FC<PhoneInfoProps> = (props) => {
   const presentPhoneForm = (): void => {
-    props.navigator.push({
-      component: PhoneNumberForm,
-      title: "",
-      passProps: {
-        onSubmit: (phone: string) => props.onPhoneAdded(phone),
-        billingAddress: props.phoneNumber,
-        navigator: props.navigator,
-      },
+    props.navigator.navigate("PhoneNumberForm", {
+      onSubmit: (phone: string) => props.onPhoneAdded(phone),
+      phoneNumber: props.phoneNumber,
     })
   }
 

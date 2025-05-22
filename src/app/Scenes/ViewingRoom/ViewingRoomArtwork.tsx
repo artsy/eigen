@@ -1,20 +1,11 @@
-import {
-  Spacer,
-  EyeOpenedIcon,
-  Flex,
-  Box,
-  Text,
-  Separator,
-  Touchable,
-  Button,
-} from "@artsy/palette-mobile"
+import { Box, Button, EyeOpenedIcon, Flex, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
 import { LargeCard } from "app/Components/Cards"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ImageCarousel } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { cm2in } from "app/utils/conversions"
 import { useScreenDimensions } from "app/utils/hooks"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "app/utils/placeholders"
@@ -90,8 +81,8 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
               position="absolute"
               bottom={1}
               right="1"
-              backgroundColor="white100"
-              borderColor="black5"
+              backgroundColor="mono0"
+              borderColor="mono5"
               borderWidth={1}
               borderRadius={2}
             >
@@ -106,14 +97,14 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
           )}
         </Flex>
         <Box mt={2} mx={2}>
-          <Text variant="sm-display" color="black100">
+          <Text variant="sm-display" color="mono100">
             {selectedArtwork.artistNames}
           </Text>
-          <Text variant="sm" color="black60">
+          <Text variant="sm" color="mono60">
             {selectedArtwork.title}, {selectedArtwork.date}
           </Text>
           <Spacer y={2} />
-          <Text variant="sm" color="black100">
+          <Text variant="sm" color="mono100">
             {selectedArtwork.saleMessage}
           </Text>
           {!!selectedArtwork.additionalInformation && (
@@ -123,9 +114,9 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
             </>
           )}
           <Spacer y={4} />
-          <Button
-            variant="fillDark"
-            block
+          <RouterLink
+            to={selectedArtwork.href}
+            hasChildTouchable
             onPress={() => {
               if (!!selectedArtwork.href) {
                 trackEvent(
@@ -136,12 +127,13 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
                     selectedArtwork.slug
                   )
                 )
-                navigate(selectedArtwork.href)
               }
             }}
           >
-            View more details
-          </Button>
+            <Button variant="fillDark" block>
+              View more details
+            </Button>
+          </RouterLink>
         </Box>
 
         {moreImages.length > 0 && (
@@ -171,20 +163,14 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
           <Text variant="sm">In viewing room</Text>
           <Spacer y={2} />
         </Box>
-        <Touchable
-          onPress={() => {
-            if (!!vrInfo.slug) {
-              navigate(`/viewing-room/${vrInfo.slug}`)
-            }
-          }}
-        >
+        <RouterLink to={vrInfo.slug ? `/viewing-room/${vrInfo.slug}` : undefined}>
           <LargeCard
             title={vrInfo.title}
             subtitle={vrInfo?.partner?.name ?? ""}
             image={vrInfo.heroImage?.imageURLs?.normalized ?? ""}
             tag={tag}
           />
-        </Touchable>
+        </RouterLink>
       </ScrollView>
     </ProvideScreenTracking>
   )
@@ -202,7 +188,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkContainerPr
   return <ViewingRoomArtwork selectedArtwork={data.artwork} viewingRoomInfo={data.viewingRoom} />
 }
 
-const ViewingRoomArtworkScreenQuery = graphql`
+export const ViewingRoomArtworkScreenQuery = graphql`
   query ViewingRoomArtworkQuery($viewingRoomID: ID!, $artworkID: String!) {
     artwork(id: $artworkID) {
       ...ViewingRoomArtwork_selectedArtwork
@@ -215,9 +201,9 @@ const ViewingRoomArtworkScreenQuery = graphql`
 `
 
 export const ViewingRoomArtworkScreen: React.FC<{
-  viewing_room_id: string
+  viewingRoomID: string
   artwork_id: string
-}> = ({ viewing_room_id: viewingRoomID, artwork_id: artworkID }) => {
+}> = ({ viewingRoomID, artwork_id: artworkID }) => {
   const [queryRef, loadQuery] = useQueryLoader<ViewingRoomArtworkQuery>(
     ViewingRoomArtworkScreenQuery
   )

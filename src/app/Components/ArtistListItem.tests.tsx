@@ -1,5 +1,6 @@
-import { Touchable } from "@artsy/palette-mobile"
+import { screen } from "@testing-library/react-native"
 import { ArtistListItemTestsQuery } from "__generated__/ArtistListItemTestsQuery.graphql"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { graphql, QueryRenderer } from "react-relay"
@@ -12,7 +13,9 @@ describe("ArtistListItem", () => {
   const TestRenderer: React.FC<{
     withFeedback?: boolean
     uploadsCount?: number | null
-  }> = ({ withFeedback = false, uploadsCount }) => (
+    showMoreIcon?: boolean
+    showFollowButton?: boolean
+  }> = ({ withFeedback = false, uploadsCount, showMoreIcon = false, showFollowButton = false }) => (
     <QueryRenderer<ArtistListItemTestsQuery>
       environment={mockEnvironment}
       query={graphql`
@@ -30,6 +33,8 @@ describe("ArtistListItem", () => {
               artist={props.artist}
               withFeedback={withFeedback}
               uploadsCount={uploadsCount}
+              showMoreIcon={showMoreIcon}
+              showFollowButton={showFollowButton}
             />
           )
         }
@@ -45,25 +50,37 @@ describe("ArtistListItem", () => {
   it("renders without feedback without throwing an error", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
     resolveMostRecentRelayOperation(mockEnvironment)
-    expect(tree.findByType(Touchable).props.noFeedback).toBe(true)
+    expect(tree.findByType(RouterLink).props.noFeedback).toBe(true)
   })
 
   it("renders with feedback without throwing an error", () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer withFeedback />).root
     resolveMostRecentRelayOperation(mockEnvironment)
-    expect(tree.findByType(Touchable).props.noFeedback).toBe(false)
+    expect(tree.findByType(RouterLink).props.noFeedback).toBe(false)
   })
 
   it("shows uploaded artworks counts when specified", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer withFeedback uploadsCount={3} />)
+    renderWithWrappers(<TestRenderer withFeedback uploadsCount={3} />)
     resolveMostRecentRelayOperation(mockEnvironment)
-    expect(getByText("3 artworks uploaded")).toBeTruthy()
+    expect(screen.getByText("3 artworks uploaded")).toBeTruthy()
   })
 
   it("shows uploaded artworks counts when no count is specified", () => {
-    const { getByText } = renderWithWrappers(<TestRenderer withFeedback />)
+    renderWithWrappers(<TestRenderer withFeedback />)
     resolveMostRecentRelayOperation(mockEnvironment)
-    expect(() => getByText("uploaded")).toThrow()
+    expect(() => screen.getByText("uploaded")).toThrow()
+  })
+
+  it("shows the MoreIcon", () => {
+    renderWithWrappers(<TestRenderer withFeedback showMoreIcon />)
+    resolveMostRecentRelayOperation(mockEnvironment)
+    expect(() => screen.getByTestId("more-icon")).toBeTruthy()
+  })
+
+  it("shows the FollowButton", () => {
+    renderWithWrappers(<TestRenderer withFeedback showFollowButton />)
+    resolveMostRecentRelayOperation(mockEnvironment)
+    expect(() => screen.getByTestId("follow-artist-button")).toBeTruthy()
   })
 })
 

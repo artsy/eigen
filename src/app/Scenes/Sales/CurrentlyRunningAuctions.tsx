@@ -1,4 +1,4 @@
-import { Box } from "@artsy/palette-mobile"
+import { Box, Flex } from "@artsy/palette-mobile"
 import { CurrentlyRunningAuctionsRefetchQuery } from "__generated__/CurrentlyRunningAuctionsRefetchQuery.graphql"
 import { CurrentlyRunningAuctions_viewer$key } from "__generated__/CurrentlyRunningAuctions_viewer.graphql"
 
@@ -42,11 +42,11 @@ export const CurrentlyRunningAuctions: React.FC<CurrentlyRunningAuctionsProps> =
   }, [nodes])
 
   return (
-    <>
+    <Flex>
       {!!liveAuctions.length && <SaleList title="Current Live Auctions" sales={liveAuctions} />}
       {!!liveAuctions.length && !!timedAuctions.length && <Box pb={4} />}
       {!!timedAuctions.length && <SaleList title="Current Timed Auctions" sales={timedAuctions} />}
-    </>
+    </Flex>
   )
 }
 

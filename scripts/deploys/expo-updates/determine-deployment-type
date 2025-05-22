@@ -1,0 +1,24 @@
+#!/bin/bash
+set -euxo pipefail
+
+S3_BUCKET_PATH="s3://artsy-citadel/eigen/expo-native-hash.txt"
+
+current_native_hash=$(npx @expo/fingerprint fingerprint:generate | jq -r '.hash')
+
+aws s3 cp $S3_BUCKET_PATH ./native-hash.txt > /dev/null || echo "No previous native hash found." >&2
+
+if [ -f ./native-hash.txt ]; then
+  previous_native_hash=$(cat ./native-hash.txt)
+else
+  previous_native_hash=""
+fi
+
+if [ "$current_native_hash" != "$previous_native_hash" ]; then
+  # Save the current native hash to S3
+  echo $current_native_hash | aws s3 cp - $S3_BUCKET_PATH > /dev/null
+  # If the native hash has changed, then we need to deploy a new native build
+  echo "beta"
+else
+  # If the native hash has not changed, then we can deploy using expo-updates
+  echo "expo-updates"
+fi

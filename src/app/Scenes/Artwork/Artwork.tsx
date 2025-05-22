@@ -6,7 +6,6 @@ import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRec
 import { Artwork_artworkAboveTheFold$data } from "__generated__/Artwork_artworkAboveTheFold.graphql"
 import { Artwork_artworkBelowTheFold$data } from "__generated__/Artwork_artworkBelowTheFold.graphql"
 import { Artwork_me$data } from "__generated__/Artwork_me.graphql"
-import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
 import { AuctionTimerState, currentTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { ArtworkAuctionCreateAlertHeader } from "app/Scenes/Artwork/ArtworkAuctionCreateAlertHeader"
@@ -50,7 +49,6 @@ import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutA
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { AboveTheFoldPlaceholder } from "./Components/AboveTheFoldArtworkPlaceholder"
 import { ArtsyGuarantee } from "./Components/ArtsyGuarantee"
-import { ArtworkConsignments } from "./Components/ArtworkConsignments"
 import { ArtworkDetails } from "./Components/ArtworkDetails"
 import { ArtworkEditionSetInformationFragmentContainer as ArtworkEditionSetInformation } from "./Components/ArtworkEditionSetInformation"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
@@ -166,21 +164,6 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
     return (artist?.artistSeriesConnection?.totalCount ?? 0) > 0
   }
 
-  const shouldRenderConsignmentsSection = () => {
-    if (artworkAboveTheFold?.isUnlisted) {
-      return false
-    }
-
-    const { isAcquireable, isOfferable } = artworkAboveTheFold ?? {}
-    const { isForSale, sale } = artworkBelowTheFold ?? {}
-    const artists = artworkBelowTheFold?.artists ?? []
-    const consignableArtists = artists.filter((currentArtist) => !!currentArtist?.isConsignable)
-    const isBiddableInAuction =
-      isInAuction && sale && auctionTimerState !== AuctionTimerState.CLOSED && isForSale
-
-    return consignableArtists.length || isAcquireable || isOfferable || isBiddableInAuction
-  }
-
   useEffect(() => {
     markArtworkAsRecentlyViewed()
     navigationEvents.addListener("modalDismissed", handleModalDismissed)
@@ -219,28 +202,16 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
 
     setRefreshing(true)
 
-    relay.refetch(
-      { artistID: internalID },
-      null,
-      () => {
-        setRefreshing(false)
-        cb?.()
-      },
-      {
-        force: true,
-      }
-    )
+    relay.refetch({ artistID: internalID }, null, () => {
+      setRefreshing(false)
+      cb?.()
+    })
   }
 
   const refetch = (cb?: () => any) => {
-    relay.refetch(
-      { artistID: internalID },
-      null,
-      () => {
-        cb?.()
-      },
-      { force: true }
-    )
+    relay.refetch({ artistID: internalID }, null, () => {
+      cb?.()
+    })
   }
 
   const handleModalDismissed = () => {
@@ -400,7 +371,12 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
       }
     }
 
-    if (isInAuction && artworkAboveTheFold?.sale && artworkAboveTheFold?.saleArtwork) {
+    if (
+      isInAuction &&
+      artworkAboveTheFold?.sale &&
+      artworkAboveTheFold?.saleArtwork &&
+      !artworkAboveTheFold.sale.isClosed
+    ) {
       sections.push({
         key: "lotDetailsSection",
         element: (
@@ -455,13 +431,6 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
         key: "privateArtworkMetadata",
         element: <PrivateArtworkMetadata artwork={artworkBelowTheFold} />,
         excludeSeparator: !!artworkAboveTheFold?.isUnlisted,
-      })
-    }
-
-    if (shouldRenderConsignmentsSection()) {
-      sections.push({
-        key: "consignments",
-        element: <ArtworkConsignments artwork={artworkBelowTheFold} />,
       })
     }
 
@@ -656,9 +625,7 @@ const ArtworkProvidersContainer: React.FC<ArtworkProps> = (props) => {
               auctionState: getInitialAuctionTimerState(),
             }}
           >
-            <ArtworkListsProvider>
-              <Artwork {...props} />
-            </ArtworkListsProvider>
+            <Artwork {...props} />
           </ArtworkStoreProvider>
         </AuctionWebsocketContextProvider>
       </AnalyticsContextProvider>
@@ -719,7 +686,6 @@ export const ArtworkContainer = createRefetchContainer(
         ...ArtworkHistory_artwork
         ...ArtworksInSeriesRail_artwork
         ...ShippingAndTaxes_artwork
-        ...ArtworkConsignments_artwork
         ...PrivateArtworkMetadata_artwork
         additionalInformation
         description
@@ -772,9 +738,6 @@ export const ArtworkContainer = createRefetchContainer(
               }
             }
           }
-        }
-        artists(shallow: true) {
-          isConsignable
         }
         isEligibleForArtsyGuarantee
       }
@@ -867,7 +830,6 @@ export const ArtworkQueryRenderer: React.FC<ArtworkScreenProps> = ({
         },
       }}
       fetchPolicy="store-and-network"
-      cacheConfig={{ force: true }}
     />
   )
 }

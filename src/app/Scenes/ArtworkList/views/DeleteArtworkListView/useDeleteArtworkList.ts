@@ -12,7 +12,7 @@ export const useDeleteArtworkList = (): Response => {
     return initialCommit({
       ...config,
       updater: (store, data) => {
-        const { responseOrError } = data.deleteCollection ?? {}
+        const { responseOrError } = data?.deleteCollection ?? {}
 
         if (responseOrError?.__typename !== "DeleteCollectionSuccess") {
           return

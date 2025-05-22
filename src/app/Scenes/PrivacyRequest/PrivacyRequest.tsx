@@ -1,19 +1,38 @@
-import { Box, Button, Join, LinkText, Spacer, Text } from "@artsy/palette-mobile"
-import { presentEmailComposer } from "app/NativeModules/presentEmailComposer"
-import { navigate } from "app/system/navigation/navigate"
+import { Box, Button, Flex, Join, LinkText, Spacer, Text } from "@artsy/palette-mobile"
+import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
+import { RouterLink } from "app/system/navigation/RouterLink"
+import { presentEmailComposer } from "app/utils/email/presentEmailComposer"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React from "react"
-import { View } from "react-native"
 
 export const PrivacyRequest: React.FC = () => {
+  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
+
+  if (enableRedesignedSettings) {
+    return (
+      <MyProfileScreenWrapper
+        title="Personal Data Request"
+        contentContainerStyle={{ paddingHorizontal: 0 }}
+      >
+        <Content />
+      </MyProfileScreenWrapper>
+    )
+  }
+  return <Content />
+}
+
+export const Content: React.FC = () => {
   return (
-    <View style={{ flex: 1 }}>
+    <Flex flex={1}>
       <Spacer y={1} />
       <Box mx={2}>
         <Join separator={<Spacer y={2} />}>
           <Text variant="sm" textAlign="left">
-            Please see Artsy’s{" "}
-            <LinkText onPress={() => navigate("/privacy")}>Privacy Policy</LinkText> for more
-            information about the information we collect, how we use it, and why we use it.
+            Please see Artsy's{" "}
+            <RouterLink to="/privacy" hasChildTouchable>
+              <LinkText>Privacy Policy</LinkText>
+            </RouterLink>{" "}
+            for more information about the information we collect, how we use it, and why we use it.
           </Text>
           <Text variant="sm" textAlign="left">
             To submit a personal data request tap the button below or email{" "}
@@ -40,6 +59,6 @@ export const PrivacyRequest: React.FC = () => {
           </Button>
         </Join>
       </Box>
-    </View>
+    </Flex>
   )
 }

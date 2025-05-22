@@ -3,18 +3,22 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { MyProfilePushNotificationsTestQuery } from "__generated__/MyProfilePushNotificationsTestQuery.graphql"
 import { SwitchMenu } from "app/Components/SwitchMenu"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { debounce } from "lodash"
 import { Platform } from "react-native"
 import relay, { graphql } from "react-relay"
-import { MyProfilePushNotificationsQueryRenderer } from "./MyProfilePushNotifications"
+import { MyProfilePushNotifications } from "./MyProfilePushNotifications"
 
 jest.mock("lodash/debounce", () => jest.fn())
+jest.mock("app/utils/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: () => false,
+}))
 
 describe(SwitchMenu, () => {
-  it("title is set to black100 when enabled", async () => {
+  it("title is set to mono100 when enabled", async () => {
     const props = {
       onChange: jest.fn(),
       value: false,
@@ -28,10 +32,10 @@ describe(SwitchMenu, () => {
     const switchTextElements = await root.findAllByType(Text)
 
     expect(switchElement.props.disabled).toBe(false)
-    expect(switchTextElements[0].props.color).toEqual("black100")
+    expect(switchTextElements[0].props.color).toEqual("mono100")
   })
 
-  it("title is set to black60 when disabled", async () => {
+  it("title is set to mono60 when disabled", async () => {
     const props = {
       onChange: jest.fn(),
       value: false,
@@ -45,17 +49,18 @@ describe(SwitchMenu, () => {
     const switchTextElements = await root.findAllByType(Text)
 
     expect(switchElement.props.disabled).toBe(true)
-    expect(switchTextElements[0].props.color).toEqual("black60")
+    expect(switchTextElements[0].props.color).toEqual("mono60")
   })
 })
 
-describe(MyProfilePushNotificationsQueryRenderer, () => {
-  afterEach(() => {
-    jest.resetAllMocks()
-  })
-
+describe("MyProfilePushNotificationsQueryRenderer", () => {
   const { renderWithRelay } = setupTestWrapper<MyProfilePushNotificationsTestQuery>({
-    Component: MyProfilePushNotificationsQueryRenderer,
+    Component: (props) => {
+      if (props?.me) {
+        return <MyProfilePushNotifications me={props.me} />
+      }
+      return null
+    },
     query: graphql`
       query MyProfilePushNotificationsTestQuery @relay_test_operation {
         me {
@@ -126,11 +131,17 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
 
     beforeEach(() => {
       ;(debounce as jest.Mock).mockImplementation((func) => func)
+      mockFetchNotificationPermissions(false).mockImplementationOnce((cb) =>
+        cb(null, PushAuthorizationStatus.Authorized)
+      )
     })
 
-    it("should set the notification preference to true", async () => {
-      const { mockResolveLastOperation } = renderWithRelay()
-      mockResolveLastOperation({ Me: () => mockNotificationsPreferences })
+    it("should set the notification preference to true and false", async () => {
+      renderWithRelay({
+        Me: () => mockNotificationsPreferences,
+      })
+
+      await flushPromiseQueue()
 
       const switchElement = await screen.findByTestId("newWorksSwitch")
 
@@ -152,23 +163,12 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
           },
         })
       )
-    })
-
-    it("should set the notification preference to true", async () => {
-      const { mockResolveLastOperation } = renderWithRelay()
-      mockResolveLastOperation({
-        Me: () => ({ ...mockNotificationsPreferences, receiveNewWorksNotification: false }),
-      })
-
-      const switchElement = screen.getByTestId("newWorksSwitch")
-
-      expect(switchElement.props.on).toBe(false)
 
       fireEvent(switchElement, "onValueChange", true)
 
       expect(switchElement.props.on).toBe(true)
 
-      expect(relay.commitMutation).toHaveBeenCalledTimes(1)
+      expect(relay.commitMutation).toHaveBeenCalledTimes(2)
       expect(relay.commitMutation).toHaveBeenCalledWith(
         expect.anything(),
         expect.objectContaining({
@@ -196,4 +196,5 @@ const mockNotificationsPreferences = {
   receiveViewingRoomNotification: true,
   receivePartnerShowNotification: true,
   receivePartnerOfferNotification: true,
+  id: "1",
 }

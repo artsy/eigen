@@ -1,13 +1,13 @@
 import { ActionType, OwnerType, Screen, tappedTabBar } from "@artsy/cohesion"
 import { Flex, Text, useColor } from "@artsy/palette-mobile"
-import { THEME } from "@artsy/palette-tokens"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { PlatformPressable } from "@react-navigation/elements"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { FavoritesTab } from "app/Navigation/AuthenticatedRoutes/FavoritesTab"
 import { HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
 import { InboxTab } from "app/Navigation/AuthenticatedRoutes/InboxTab"
 import { ProfileTab } from "app/Navigation/AuthenticatedRoutes/ProfileTab"
 import { SearchTab } from "app/Navigation/AuthenticatedRoutes/SearchTab"
-import { SellTab } from "app/Navigation/AuthenticatedRoutes/SellTab"
 import { modalRoutes } from "app/Navigation/AuthenticatedRoutes/modalRoutes"
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { AppModule } from "app/Navigation/routes"
@@ -15,13 +15,14 @@ import { modules } from "app/Navigation/utils/modules"
 import { useBottomTabsBadges } from "app/Navigation/utils/useBottomTabsBadges"
 import { BottomTabOption, BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
-import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
+import { useSearchTabName, bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { OnboardingQuiz } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
 import { useCallback } from "react"
-import { InteractionManager, Platform } from "react-native"
+import { InteractionManager, PixelRatio, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 if (Platform.OS === "ios") {
@@ -33,26 +34,27 @@ export type AuthenticatedRoutesParams = {
   Search: undefined
   Profile: undefined
   Inbox: undefined
-  Sell: undefined
+  Favorites: undefined
 } & { [key in AppModule]: undefined }
 
 type TabRoutesParams = {
   home: undefined
   search: undefined
   inbox: undefined
-  sell: undefined
+  favorites: undefined
   profile: undefined
 }
 
 const Tab = createBottomTabNavigator<TabRoutesParams>()
 
-const BOTTOM_TABS_HEIGHT = 60
+const BOTTOM_TABS_HEIGHT = PixelRatio.getFontScale() < 1.5 ? 65 : 85
 
 const AppTabs: React.FC = () => {
   const { tabsBadges } = useBottomTabsBadges()
   const color = useColor()
   const isStaging = useIsStaging()
   const insets = useSafeAreaInsets()
+  const searchTabName = useSearchTabName()
 
   const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
 
@@ -71,22 +73,29 @@ const AppTabs: React.FC = () => {
             contextScreenOwnerType: BottomTabOption[tabName as BottomTabType],
           })
         )
-        postEventToProviders(tabsTracks.tabScreenView(tabName))
+        // we are handling the tracking of the favorites tab withing the screen
+        // https://artsy.slack.com/archives/C05EQL4R5N0/p1744919145046069
+        if (tabName !== "favorites") {
+          postEventToProviders(tabsTracks.tabScreenView(tabName))
+        }
       }
     },
     [selectedTab]
   )
 
   const stagingTabBarStyle = {
-    borderTopColor: color("devpurple"),
+    borderColor: color("devpurple"),
     borderTopWidth: 1,
   }
+
+  const showFavoritesTab = useFeatureFlag("AREnableFavoritesTab")
 
   return (
     <Tab.Navigator
       screenOptions={({ route }) => {
         const currentRoute = internal_navigationRef.current?.getCurrentRoute()?.name
         return {
+          animation: "fade",
           headerShown: false,
           tabBarStyle: {
             animate: true,
@@ -96,18 +105,27 @@ const AppTabs: React.FC = () => {
               currentRoute && modules[currentRoute as AppModule]?.options?.hidesBottomTabs
                 ? "none"
                 : "flex",
-
             ...(isStaging ? stagingTabBarStyle : {}),
           },
           tabBarHideOnKeyboard: true,
           tabBarIcon: ({ focused }) => {
             return (
-              <Flex flex={1}>
+              <Flex pt={1}>
                 <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
               </Flex>
             )
           },
+          tabBarButton: (props) => (
+            <PlatformPressable
+              {...props}
+              android_ripple={{ color: "transparent" }} // Disables the ripple effect for Android
+            />
+          ),
+          tabBarLabelPosition: "below-icon",
           tabBarLabel: () => {
+            const tabName =
+              route.name === "search" ? searchTabName : bottomTabsConfig[route.name].name
+
             return (
               <Flex
                 flex={1}
@@ -115,20 +133,22 @@ const AppTabs: React.FC = () => {
                 alignItems="flex-end"
                 justifyContent="flex-end"
                 height={BOTTOM_TABS_HEIGHT}
+                pb={0.5}
               >
                 <Text
                   variant="xxs"
-                  style={{ top: Platform.OS === "ios" ? -4 : 0 }}
                   selectable={false}
                   textAlign="center"
+                  color="mono100"
+                  numberOfLines={1}
                 >
-                  {bottomTabsConfig[route.name].name}
+                  {tabName}
                 </Text>
               </Flex>
             )
           },
-          tabBarActiveTintColor: THEME.colors["black100"],
-          tabBarInactiveTintColor: THEME.colors["black60"],
+          tabBarActiveTintColor: color("mono100"),
+          tabBarInactiveTintColor: color("mono100"),
         }
       }}
       screenListeners={{
@@ -143,7 +163,13 @@ const AppTabs: React.FC = () => {
       <Tab.Screen name="home" component={HomeTab} options={{ ...tabsBadges["home"] }} />
       <Tab.Screen name="search" component={SearchTab} />
       <Tab.Screen name="inbox" component={InboxTab} options={{ ...tabsBadges["inbox"] }} />
-      <Tab.Screen name="sell" component={SellTab} />
+      {!!showFavoritesTab && (
+        <Tab.Screen
+          name="favorites"
+          component={FavoritesTab}
+          options={{ ...tabsBadges["favorites"] }}
+        />
+      )}
       <Tab.Screen name="profile" component={ProfileTab} options={{ ...tabsBadges["profile"] }} />
     </Tab.Navigator>
   )
@@ -152,7 +178,7 @@ const AppTabs: React.FC = () => {
 export const AuthenticatedRoutesStack = createNativeStackNavigator()
 
 export const AuthenticatedRoutes: React.FC = () => {
-  const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
+  const onboardingState = GlobalStore.useAppState((state) => state.onboarding.onboardingState)
 
   if (onboardingState === "incomplete") {
     return <OnboardingQuiz />
@@ -188,8 +214,11 @@ export const tabsTracks = {
       case "search":
         tabScreen = OwnerType.search
         break
-      case "sell":
-        tabScreen = OwnerType.sell
+      case "favorites":
+        /**
+         * Make sure tabScreen matches the default activeTab in FavoritesContextStore
+         */
+        tabScreen = OwnerType.favoritesSaves
         break
     }
 

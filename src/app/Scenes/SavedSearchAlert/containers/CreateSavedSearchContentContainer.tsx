@@ -1,6 +1,7 @@
 import { Box } from "@artsy/palette-mobile"
 import { useFocusEffect } from "@react-navigation/core"
 import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import { StackScreenProps } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
 import { CreateSavedSearchContentContainerQuery } from "__generated__/CreateSavedSearchContentContainerQuery.graphql"
 import { CreateSavedSearchContentContainer_viewer$data } from "__generated__/CreateSavedSearchContentContainer_viewer.graphql"
@@ -16,7 +17,12 @@ import useAppState from "app/utils/useAppState"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 
-interface CreateSavedSearchAlertContentProps {
+type ScreenNavigationProps = StackScreenProps<
+  CreateSavedSearchAlertNavigationStack,
+  "CreateSavedSearchAlert"
+>
+
+interface CreateSavedSearchAlertContentProps extends ScreenNavigationProps {
   relay: RelayRefetchProp
   viewer?: CreateSavedSearchContentContainer_viewer$data | null
   loading: boolean
@@ -32,7 +38,7 @@ const CreateSavedSearchAlertContent: React.FC<CreateSavedSearchAlertContentProps
   const isPreviouslyFocused = useRef(false)
   const [refetching, setRefetching] = useState(false)
   const [enablePushNotifications, setEnablePushNotifications] = useState(true)
-  const isCustomAlertsNotificationsEnabled = viewer?.notificationPreferences.some((preference) => {
+  const isCustomAlertsNotificationsEnabled = viewer?.notificationPreferences?.some((preference) => {
     return (
       preference.channel === "email" &&
       preference.name === "custom_alerts" &&
@@ -56,14 +62,9 @@ const CreateSavedSearchAlertContent: React.FC<CreateSavedSearchAlertContentProps
 
   const refetch = () => {
     setRefetching(true)
-    relay.refetch(
-      {},
-      null,
-      () => {
-        setRefetching(false)
-      },
-      { force: true }
-    )
+    relay.refetch({}, null, () => {
+      setRefetching(false)
+    })
   }
 
   useFocusEffect(
@@ -119,9 +120,9 @@ const CreateSavedSearchContentContainer = createRefetchContainer(
   `
 )
 
-export const CreateSavedSearchAlertContentQueryRenderer: React.FC<
-  CreateSavedSearchAlertContentProps
-> = (props) => {
+export const CreateSavedSearchAlertContentQueryRenderer: React.FC<ScreenNavigationProps> = (
+  props
+) => {
   return (
     <QueryRenderer<CreateSavedSearchContentContainerQuery>
       environment={getRelayEnvironment()}
@@ -150,7 +151,6 @@ export const CreateSavedSearchAlertContentQueryRenderer: React.FC<
         )
       }}
       variables={{}}
-      cacheConfig={{ force: true }}
     />
   )
 }

@@ -1,38 +1,41 @@
-import { fireEvent } from "@testing-library/react-native"
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { Linking } from "react-native"
 import { PrivacyRequest } from "./PrivacyRequest"
 
-describe(PrivacyRequest, () => {
-  it("handles privacy policy link taps", () => {
-    const { getByText } = renderWithWrappers(<PrivacyRequest />)
+describe("PrivacyRequest", () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+    jest.spyOn(Linking, "openURL").mockImplementation(() => Promise.resolve())
+  })
 
-    fireEvent.press(getByText("Privacy Policy"))
+  it("handles privacy policy link taps", () => {
+    renderWithWrappers(<PrivacyRequest />)
+
+    fireEvent.press(screen.getByText("Privacy Policy"))
 
     expect(navigate).toHaveBeenCalledWith("/privacy")
   })
 
   it("handles email link taps", () => {
-    const { getByText } = renderWithWrappers(<PrivacyRequest />)
-    fireEvent.press(getByText("privacy@artsy.net."))
+    renderWithWrappers(<PrivacyRequest />)
+    fireEvent.press(screen.getByText("privacy@artsy.net."))
 
-    expect(
-      LegacyNativeModules.ARTNativeScreenPresenterModule.presentEmailComposerWithSubject
-    ).toHaveBeenCalledWith("Personal Data Request", "privacy@artsy.net")
+    expect(Linking.openURL).toHaveBeenCalledWith(
+      expect.stringMatching(/^mailto:privacy@artsy.net\?subject=Personal%20Data%20Request*$/)
+    )
   })
 
   it("handles CCPA button presses", () => {
-    const { getByText } = renderWithWrappers(<PrivacyRequest />)
+    renderWithWrappers(<PrivacyRequest />)
 
-    fireEvent.press(getByText("Do not sell my personal information"))
+    fireEvent.press(screen.getByText("Do not sell my personal information"))
 
-    expect(
-      LegacyNativeModules.ARTNativeScreenPresenterModule.presentEmailComposerWithBody
-    ).toHaveBeenCalledWith(
-      "Hello, I'm contacting you to ask that...",
-      "Personal Data Request",
-      "privacy@artsy.net"
+    expect(Linking.openURL).toHaveBeenCalledWith(
+      expect.stringMatching(
+        /^mailto:privacy@artsy.net\?subject=Personal%20Data%20Request&body=Hello%2C%20I'm%20contacting%20you%20to%20ask%20that\.\.\.*$/
+      )
     )
   })
 })

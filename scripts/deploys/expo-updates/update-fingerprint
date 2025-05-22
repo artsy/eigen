@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# === CONFIG ===
+APP_JSON_PATH="app.json"
+
+native_fingerprint=$(npx @expo/fingerprint fingerprint:generate | jq -r '.hash')
+
+# Update app.json
+echo "Updating app.json with runtimeVersion = $native_fingerprint"
+tmpfile=$(mktemp)
+jq --arg version "$native_fingerprint" '.expo.runtimeVersion = $version' "$APP_JSON_PATH" > "$tmpfile" && mv "$tmpfile" "$APP_JSON_PATH"
+
+# DONE
+echo -e "\033[0;32mRuntime version updated successfully in app.json.\033[0m"

@@ -1,13 +1,13 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Popover, Text } from "@artsy/palette-mobile"
 import { useIsFocused } from "@react-navigation/native"
+import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { GlobalStore } from "app/store/GlobalStore"
-import { ElementInView } from "app/utils/ElementInView"
+import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { useState } from "react"
 
 export const ProgressiveOnboardingSignalInterest: React.FC = ({ children }) => {
-  const [isInView, setIsInView] = useState(false)
   const {
     isDismissed,
     sessionState: { isReady },
@@ -15,39 +15,47 @@ export const ProgressiveOnboardingSignalInterest: React.FC = ({ children }) => {
   const { dismiss, setIsReady } = GlobalStore.actions.progressiveOnboarding
   const isFocused = useIsFocused()
   const isPartnerOfferEnabled = useFeatureFlag("AREnablePartnerOffer")
+  const progressiveOnboardingAlerts = useFeatureFlag("AREnableProgressiveOnboardingAlerts")
+
+  const { trackEvent } = useProgressiveOnboardingTracking({
+    name: "signal-interest",
+    contextScreenOwnerType: OwnerType.saves,
+    contextModule: ContextModule.saves,
+  })
 
   const isDisplayable =
     isPartnerOfferEnabled &&
+    progressiveOnboardingAlerts &&
     isReady &&
     !isDismissed("signal-interest").status &&
-    isFocused &&
-    isInView
+    isFocused
 
-  const { clearActivePopover } = useSetActivePopover(isDisplayable)
+  const { isActive, clearActivePopover } = useSetActivePopover(isDisplayable)
 
   const handleDismiss = () => {
     setIsReady(false)
     dismiss("signal-interest")
   }
 
-  if (isInView) {
-    return (
-      <Popover
-        visible={!!isDisplayable}
-        onDismiss={handleDismiss}
-        onPressOutside={handleDismiss}
-        onCloseComplete={clearActivePopover}
-        placement="top"
-        title={
-          <Text variant="xs" color="white100">
-            Learn more about saves and how to{"\n"}manage your preferences.
-          </Text>
-        }
-      >
-        <Flex>{children}</Flex>
-      </Popover>
-    )
-  }
+  const isVisible = !!isDisplayable && isActive
 
-  return <ElementInView onVisible={() => setIsInView(true)}>{children}</ElementInView>
+  const { debouncedValue: debounceIsVisible } = useDebouncedValue({ value: isVisible, delay: 200 })
+
+  return (
+    <Popover
+      visible={debounceIsVisible}
+      onDismiss={handleDismiss}
+      onPressOutside={handleDismiss}
+      onCloseComplete={clearActivePopover}
+      onOpenComplete={trackEvent}
+      placement="top"
+      title={
+        <Text variant="xs" color="mono0">
+          Learn more about saves and how to{"\n"}manage your preferences.
+        </Text>
+      }
+    >
+      <Flex>{children}</Flex>
+    </Popover>
+  )
 }

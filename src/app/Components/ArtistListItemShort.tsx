@@ -1,9 +1,9 @@
-import { EntityHeader, Flex, Touchable } from "@artsy/palette-mobile"
+import { EntityHeader, Flex } from "@artsy/palette-mobile"
 import { ArtistListItemShortQuery } from "__generated__/ArtistListItemShortQuery.graphql"
 import { ArtistListItemShort_artist$key } from "__generated__/ArtistListItemShort_artist.graphql"
 import { ArtistFollowButtonQueryRenderer } from "app/Components/ArtistFollowButton"
 import { ReadMore } from "app/Components/ReadMore"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { FC } from "react"
@@ -11,9 +11,10 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface ArtistListItemShortProps {
   artist: ArtistListItemShort_artist$key
+  onPress?: () => void
 }
 
-export const ArtistListItemShort: FC<ArtistListItemShortProps> = ({ artist }) => {
+export const ArtistListItemShort: FC<ArtistListItemShortProps> = ({ artist, onPress }) => {
   const data = useFragment(fragment, artist)
 
   if (!data) {
@@ -24,14 +25,10 @@ export const ArtistListItemShort: FC<ArtistListItemShortProps> = ({ artist }) =>
   const bio = data?.biographyBlurb?.text
   const bioTextLimit = truncatedTextLimit()
 
-  const handleOnPress = () => {
-    navigate(data.href)
-  }
-
   return (
     <>
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-        <Touchable onPress={handleOnPress} style={{ flex: 1 }}>
+        <RouterLink to={data.href} onPress={onPress} style={{ flex: 1 }}>
           <EntityHeader
             name={data.name}
             initials={data.initials}
@@ -39,7 +36,7 @@ export const ArtistListItemShort: FC<ArtistListItemShortProps> = ({ artist }) =>
             meta={data.formattedNationalityAndBirthday ?? undefined}
             RightButton={<ArtistFollowButtonQueryRenderer artistID={data.internalID} />}
           />
-        </Touchable>
+        </RouterLink>
       </Flex>
 
       {!!bio && (

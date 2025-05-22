@@ -3,6 +3,7 @@ import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { MotiView } from "moti"
 import React, { useEffect, useState } from "react"
 import { Image } from "react-native"
+import { isTablet } from "react-native-device-info"
 import LinearGradient from "react-native-linear-gradient"
 import { Easing } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -12,7 +13,8 @@ export const AuthBackground: React.FC = () => {
   const safeArea = useSafeAreaInsets()
 
   return (
-    <Flex backgroundColor="black100" height="100%" pt="-200px" pb="-200px">
+    // Setting the background to black in dark and light mode.
+    <Flex backgroundColor="black" height="100%" pt="-200px" pb="-200px">
       <AnimatedBackground />
 
       <Flex alignItems="center" width="100%">
@@ -44,14 +46,22 @@ export const AuthBackground: React.FC = () => {
             easing: isMounted ? Easing.linear : Easing.out(Easing.circle),
           }}
         >
-          <Text variant="xl" color="white">
+          <Text
+            variant="xl"
+            // We want to show this text in white regardless of the theme to make sure it can be read clearly
+            color="white"
+          >
             Collect Art by the World’s Leading Artists
           </Text>
 
           <Spacer y={1} />
 
-          <Text variant="sm" color="white">
-            Build your personalized profile, get market insights, buy and sell art with confidence.
+          <Text
+            variant="sm"
+            // We want to show this text in white regardless of the theme to make sure it can be read clearly
+            color="white"
+          >
+            Build your personalized profile, get market insights and buy art with confidence.
           </Text>
 
           <Spacer y={2} />
@@ -70,6 +80,10 @@ const AnimatedBackground: React.FC = React.memo(() => {
   })
 
   useEffect(() => {
+    if (isTablet()) {
+      return
+    }
+
     const imgProps = Image.resolveAssetSource(require("images/WelcomeImage.webp"))
 
     // We want to animate the background only when the device width is smaller than the scaled image width

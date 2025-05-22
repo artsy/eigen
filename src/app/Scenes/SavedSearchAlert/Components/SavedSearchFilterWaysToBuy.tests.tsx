@@ -9,7 +9,7 @@ import {
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-const black100Hex = "#000000"
+const mono100Hex = "#000000"
 
 describe("SavedSearchFilterWaysToBuy", () => {
   it("shows all available ways to buy options unselected", () => {
@@ -22,7 +22,7 @@ describe("SavedSearchFilterWaysToBuy", () => {
     WAYS_TO_BUY_OPTIONS.forEach((option) => {
       expect(getByText(option.displayText)).toBeDefined()
       expect(getByText(option.displayText)).toHaveStyle({
-        color: black100Hex,
+        color: mono100Hex,
       })
     })
   })
@@ -37,11 +37,11 @@ describe("SavedSearchFilterWaysToBuy", () => {
     WAYS_TO_BUY_OPTIONS.forEach((option) => {
       if (option.paramName === "atAuction") {
         expect(getByText(option.displayText)).not.toHaveStyle({
-          color: black100Hex,
+          color: mono100Hex,
         })
       } else {
         expect(getByText(option.displayText)).toHaveStyle({
-          color: black100Hex,
+          color: mono100Hex,
         })
       }
     })
@@ -54,11 +54,11 @@ describe("SavedSearchFilterWaysToBuy", () => {
       </SavedSearchStoreProvider>
     )
 
-    expect(getByText("Bid")).toHaveStyle({ color: black100Hex })
+    expect(getByText("Bid")).toHaveStyle({ color: mono100Hex })
 
     fireEvent(getByText("Bid"), "onPress")
 
-    expect(getByText("Bid")).not.toHaveStyle({ color: black100Hex })
+    expect(getByText("Bid")).not.toHaveStyle({ color: mono100Hex })
   })
 })
 

@@ -1,17 +1,20 @@
-import { Spacer, Flex, Box, useColor, Text, Button } from "@artsy/palette-mobile"
-import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
+import { Box, Button, Flex, Spacer, Text, useColor } from "@artsy/palette-mobile"
+import {
+  NavigationContainer,
+  NavigationContainerRef,
+  NavigationIndependentTree,
+} from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/Onboarding"
 import { OnboardingSocialPick } from "app/Scenes/Onboarding/OnboardingSocialPick"
 import { OnboardingWebView, OnboardingWebViewRoute } from "app/Scenes/Onboarding/OnboardingWebView"
 import { GlobalStore } from "app/store/GlobalStore"
 import { BackButton } from "app/system/navigation/BackButton"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
 import { showBlockedAuthError } from "app/utils/auth/authHelpers"
 import { useScreenDimensions } from "app/utils/hooks"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import React, { useEffect, useRef, useState } from "react"
-import { Alert, Animated, ScrollView } from "react-native"
+import { Alert, Animated, KeyboardAvoidingView, ScrollView } from "react-native"
 import * as Yup from "yup"
 import {
   OnboardingCreateAccountEmail,
@@ -24,7 +27,7 @@ export const OnboardingCreateAccount: React.FC = () => <OnboardingSocialPick mod
 
 export type OnboardingCreateAccountProps = StackScreenProps<
   OnboardingNavigationStack,
-  "OnboardingCreateAccount"
+  "OnboardingCreateAccountWithEmail"
 >
 
 export type OnboardingCreateAccountNavigationStack = {
@@ -142,46 +145,47 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
   })
 
   return (
-    <Flex flex={1} backgroundColor="white" flexGrow={1} pb={1}>
-      <ArtsyKeyboardAvoidingView>
+    <Flex flex={1} backgroundColor="mono0" flexGrow={1} pb={1}>
+      <KeyboardAvoidingView style={{ flex: 1 }}>
         <FormikProvider value={formik}>
-          <NavigationContainer
-            onStateChange={(state) => {
-              const routes = state?.routes
-              const index = state?.index
-              if (index !== undefined && routes) {
-                setCurrentRoute(routes[index].name as any)
-              }
-            }}
-            ref={__unsafe__createAccountNavigationRef}
-            independent
-          >
-            <StackNavigator.Navigator
-              screenOptions={{
-                ...TransitionPresets.SlideFromRightIOS,
-                headerShown: false,
-                headerMode: "screen",
+          <NavigationIndependentTree>
+            <NavigationContainer
+              onStateChange={(state) => {
+                const routes = state?.routes
+                const index = state?.index
+                if (index !== undefined && routes) {
+                  setCurrentRoute(routes[index].name as any)
+                }
               }}
+              ref={__unsafe__createAccountNavigationRef}
             >
-              <StackNavigator.Screen
-                name="OnboardingCreateAccountEmail"
-                component={OnboardingCreateAccountEmail}
-                initialParams={{ navigateToWelcomeScreen: navigation.goBack }}
-              />
-              <StackNavigator.Screen
-                name="OnboardingCreateAccountPassword"
-                component={OnboardingCreateAccountPassword}
-              />
-              <StackNavigator.Screen
-                name="OnboardingCreateAccountName"
-                component={OnboardingCreateAccountName}
-              />
-              <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
-            </StackNavigator.Navigator>
-            {currentRoute !== "OnboardingWebView" && <OnboardingCreateAccountButton />}
-          </NavigationContainer>
+              <StackNavigator.Navigator
+                screenOptions={{
+                  ...TransitionPresets.SlideFromRightIOS,
+                  headerShown: false,
+                  headerMode: "screen",
+                }}
+              >
+                <StackNavigator.Screen
+                  name="OnboardingCreateAccountEmail"
+                  component={OnboardingCreateAccountEmail}
+                  initialParams={{ navigateToWelcomeScreen: navigation.goBack }}
+                />
+                <StackNavigator.Screen
+                  name="OnboardingCreateAccountPassword"
+                  component={OnboardingCreateAccountPassword}
+                />
+                <StackNavigator.Screen
+                  name="OnboardingCreateAccountName"
+                  component={OnboardingCreateAccountName}
+                />
+                <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
+              </StackNavigator.Navigator>
+              {currentRoute !== "OnboardingWebView" && <OnboardingCreateAccountButton />}
+            </NavigationContainer>
+          </NavigationIndependentTree>
         </FormikProvider>
-      </ArtsyKeyboardAvoidingView>
+      </KeyboardAvoidingView>
     </Flex>
   )
 }
@@ -197,7 +201,7 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<
 > = ({ onBackButtonPress, title, caption, children }) => {
   const color = useColor()
   return (
-    <Flex backgroundColor="white" flexGrow={1}>
+    <Flex backgroundColor="mono0" flexGrow={1}>
       <ScrollView
         contentContainerStyle={{
           paddingHorizontal: 20,
@@ -213,7 +217,7 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<
           {!!caption && (
             <>
               <Spacer y={0.5} />
-              <Text variant="xs" color={color("black100")}>
+              <Text variant="xs" color={color("mono100")}>
                 {caption}
               </Text>
             </>
@@ -238,7 +242,7 @@ export const OnboardingCreateAccountButton: React.FC = () => {
   }, [errors.email])
 
   return (
-    <Flex px={2} paddingBottom={2} backgroundColor="white" pt={0.5}>
+    <Flex px={2} paddingBottom={2} backgroundColor="mono0" pt={0.5}>
       <Button
         onPress={handleSubmit}
         block

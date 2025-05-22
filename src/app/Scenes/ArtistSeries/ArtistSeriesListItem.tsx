@@ -5,9 +5,9 @@ import {
   ScreenOwnerType,
   TappedArtistSeriesGroup,
 } from "@artsy/cohesion"
-import { ArrowRightIcon, Flex, useColor, Text, Touchable, Image } from "@artsy/palette-mobile"
+import { ArrowRightIcon, Flex, Image, Text, useColor } from "@artsy/palette-mobile"
 import { ArtistSeriesConnectionEdge } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { useTracking } from "react-tracking"
 
 interface ArtistSeriesListItemProps {
@@ -55,17 +55,17 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
   }
 
   return (
-    <Touchable
+    <RouterLink
       accessibilityLabel="Artist Series List Item"
       accessibilityRole="button"
-      underlayColor={color("black5")}
+      underlayColor={color("mono5")}
       // the negative margin here is for resetting padding of 20 that all the parent components of this instance
       // have and to avoid changing the component tree in multiple spots.
       style={{ marginHorizontal: -20 }}
       onPress={() => {
         trackArtworkClick()
-        navigate(`/artist-series/${listItem?.node?.slug}`)
       }}
+      to={`/artist-series/${listItem?.node?.slug}`}
     >
       <Flex px={2} my={1} flexDirection="row" justifyContent="space-between">
         <Flex flexDirection="row" justifyContent="space-between" width="100%">
@@ -83,7 +83,7 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
                 {listItem?.node?.title}
               </Text>
               {!!artworksCountMessage && (
-                <Text variant="sm" color="black60" testID="count">
+                <Text variant="sm" color="mono60" testID="count">
                   {artworksCountMessage}
                 </Text>
               )}
@@ -94,6 +94,6 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
           </Flex>
         </Flex>
       </Flex>
-    </Touchable>
+    </RouterLink>
   )
 }

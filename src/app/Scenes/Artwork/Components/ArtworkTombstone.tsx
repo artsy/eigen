@@ -18,7 +18,7 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork, ref
 
       <ArtworkMakerTitleFragmentContainer artwork={artwork} />
       <Flex flexDirection="row" flexWrap="wrap">
-        <Text color="black60">
+        <Text color="mono60">
           <Text variant="lg-display" italic>
             {artwork.title}
             {!!artwork.date && `${comma} `}
@@ -29,7 +29,7 @@ export const ArtworkTombstone: React.FC<ArtworkTombstoneProps> = ({ artwork, ref
       {!!shouldDisplaySaleMessage && (
         <>
           <Spacer y={2} />
-          <Text variant="md" color="black100">
+          <Text variant="md" color="mono100">
             {artwork.saleMessage}
           </Text>
         </>

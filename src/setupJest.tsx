@@ -102,7 +102,12 @@ require("jest-fetch-mock").enableMocks()
 
 jest.mock("react-tracking")
 ;(track as jest.Mock).mockImplementation(() => (x: any) => x)
-;(useTracking as jest.Mock).mockImplementation(() => ({ trackEvent: mockTrackEvent }))
+;(useTracking as jest.Mock).mockImplementation(() => ({
+  // Mock the Track component that's used in Providers.tsx
+  Track: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  // Keep the existing trackEvent mock for other components
+  trackEvent: mockTrackEvent,
+}))
 
 jest.mock("@stripe/stripe-react-native", () => mockStripe)
 
@@ -114,6 +119,23 @@ jest.mock("sift-react-native", () => ({
 
 // Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
 jest.mock("react-tracking/build/dispatchTrackingEvent")
+
+jest.mock("expo-updates", () => {
+  return {
+    fetchUpdateAsync: jest.fn(),
+    checkForUpdateAsync: jest.fn(),
+    reloadAsync: jest.fn(),
+    channel: "channel",
+    runtimeVersion: "runtimeVersion",
+    updateId: "updateId",
+    manifest: {
+      sdkVersion: "sdkVersion",
+      version: "version",
+      id: "id",
+      releaseChannel: "releaseChannel",
+    },
+  }
+})
 
 jest.mock("@react-navigation/native", () => {
   const { useEffect } = require("react")
@@ -153,6 +175,7 @@ jest.mock("react-native-device-info", () => ({
   getBuildNumber: () => "some-build-number",
   getSystemName: () => "some-system-name",
   getSystemVersion: () => "some-system-version",
+  getUserAgent: () => Promise.resolve("some-user-agent"),
   getVersion: jest.fn(),
   getModel: () => "testDevice",
   getUserAgentSync: jest.fn(),
@@ -221,6 +244,7 @@ jest.mock("@invertase/react-native-apple-authentication", () => ({
 
 jest.mock("@sentry/react-native", () => ({
   captureMessage: jest.fn(),
+  captureException: jest.fn(),
   init() {},
   setUser() {},
   addBreadcrumb() {},
@@ -283,8 +307,30 @@ jest.mock("react-native-image-crop-picker", () => ({
   clean: jest.fn(),
 }))
 
-jest.mock("react-native-config", () => {
-  const mockConfig = {
+jest.mock("react-native-keys", () => {
+  interface MockConfig {
+    secureFor: (key: keyof typeof secrets) => string
+    secrets: {
+      ARTSY_DEV_API_CLIENT_SECRET: string
+      ARTSY_DEV_API_CLIENT_KEY: string
+      ARTSY_PROD_API_CLIENT_SECRET: string
+      ARTSY_PROD_API_CLIENT_KEY: string
+      ARTSY_FACEBOOK_APP_ID: string
+      SEGMENT_PRODUCTION_WRITE_KEY_IOS: string
+      SEGMENT_PRODUCTION_WRITE_KEY_ANDROID: string
+      SEGMENT_STAGING_WRITE_KEY_IOS: string
+      SEGMENT_STAGING_WRITE_KEY_ANDROID: string
+      SENTRY_DSN: string
+      GOOGLE_MAPS_API_KEY: string
+      MAPBOX_API_CLIENT_KEY: string
+      UNLEASH_PROXY_CLIENT_KEY_PRODUCTION: string
+      UNLEASH_PROXY_CLIENT_KEY_STAGING: string
+      UNLEASH_PROXY_URL_PRODUCTION: string
+      UNLEASH_PROXY_URL_STAGING: string
+    }
+  }
+
+  const secrets = {
     ARTSY_DEV_API_CLIENT_SECRET: "artsy_api_client_secret", // pragma: allowlist secret
     ARTSY_DEV_API_CLIENT_KEY: "artsy_api_client_key", // pragma: allowlist secret
     ARTSY_PROD_API_CLIENT_SECRET: "artsy_api_client_secret", // pragma: allowlist secret
@@ -302,8 +348,15 @@ jest.mock("react-native-config", () => {
     UNLEASH_PROXY_URL_PRODUCTION: "https://unleash_proxy_url_production", // pragma: allowlist secret
     UNLEASH_PROXY_URL_STAGING: "https://unleash_proxy_url_staging", // pragma: allowlist secret
   }
-  // support both default and named export
-  return { ...mockConfig, Config: mockConfig }
+
+  const mockConfig: MockConfig = {
+    secureFor: (key) => {
+      return secrets[key]
+    },
+    secrets,
+  }
+
+  return mockConfig
 })
 
 jest.mock("react-native-view-shot", () => ({}))
@@ -318,6 +371,10 @@ jest.mock("@segment/analytics-react-native-plugin-braze", () => ({}))
 
 jest.mock("@braze/react-native-sdk", () => ({
   changeUser: jest.fn(),
+}))
+
+jest.mock("app/utils/hooks/useDebouncedValue", () => ({
+  useDebouncedValue: ({ value }: any) => ({ debouncedValue: value }),
 }))
 
 jest.mock("react-native-push-notification", () => ({
@@ -383,9 +440,6 @@ function getNativeModules(): OurNativeModules {
     ARPHPhotoPickerModule: {
       requestPhotos: jest.fn(),
     },
-    AREventsModule: {
-      requestAppStoreRating: jest.fn(),
-    },
     ArtsyNativeModule: {
       launchCount: 3,
       setAppStyling: jest.fn(),
@@ -440,9 +494,6 @@ jest.mock("app/NativeModules/LegacyNativeModules", () => ({
     },
     ARPHPhotoPickerModule: {
       requestPhotos: jest.fn(),
-    },
-    AREventsModule: {
-      requestAppStoreRating: jest.fn(),
     },
     ArtsyNativeModule: {
       launchCount: 3,
@@ -525,8 +576,6 @@ jest.mock("app/system/navigation/navigate", () => ({
   goBack: jest.fn(),
   dismissModal: jest.fn(),
   popToRoot: jest.fn(),
-  navigateToEntity: jest.fn(),
-  navigateToPartner: jest.fn(),
   switchTab: jest.fn(),
   navigationEvents: new (require("events").EventEmitter)(),
   EntityType: { partner: "partner", fair: "fair" },
@@ -579,11 +628,6 @@ jest.mock("prettier", () => ({
   format: jest.fn((content) => content), // just return content as-is for tests
 }))
 
-jest.mock("react-native-code-push", () => ({
-  checkForUpdate: jest.fn(),
-  sync: jest.fn(),
-}))
-
 jest.mock("@react-native-community/geolocation", () => ({
   addListener: jest.fn(),
   getCurrentPosition: jest.fn(),
@@ -603,3 +647,12 @@ jest.mock("react-native-document-picker", () => ({
 jest.mock("app/utils/queryPrefetching", () => ({
   usePrefetch: jest.fn(() => jest.fn()),
 }))
+
+jest.mock("app/utils/Sentinel", () => {
+  const { View } = require("react-native")
+
+  return {
+    __esModule: true,
+    Sentinel: View,
+  }
+})

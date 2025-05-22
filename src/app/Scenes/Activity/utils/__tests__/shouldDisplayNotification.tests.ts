@@ -28,7 +28,10 @@ describe("shouldDisplayNotification", () => {
     const result4 = shouldDisplayNotification({
       notificationType: "VIEWING_ROOM_PUBLISHED",
       artworks: undefined,
-      item: { viewingRoomsConnection: { totalCount: 1 } },
+      item: {
+        viewingRoomsConnection: { totalCount: 1 },
+        __typename: "ViewingRoomPublishedNotificationItem",
+      },
     })
     expect(result4).toEqual(true)
 
@@ -36,7 +39,7 @@ describe("shouldDisplayNotification", () => {
     const result5 = shouldDisplayNotification({
       notificationType: "ARTICLE_FEATURED_ARTIST",
       artworks: undefined,
-      item: { article: { internalID: "1" } },
+      item: { article: { internalID: "1" }, __typename: "ArticleFeaturedArtistNotificationItem" },
     })
     expect(result5).toEqual(true)
   })
@@ -68,7 +71,10 @@ describe("shouldDisplayNotification", () => {
     const result4 = shouldDisplayNotification({
       notificationType: "VIEWING_ROOM_PUBLISHED",
       artworks: undefined,
-      item: { viewingRoomsConnection: { totalCount: 0 } },
+      item: {
+        viewingRoomsConnection: { totalCount: 0 },
+        __typename: "ViewingRoomPublishedNotificationItem",
+      },
     })
     expect(result4).toEqual(false)
 
@@ -76,7 +82,10 @@ describe("shouldDisplayNotification", () => {
     const result5 = shouldDisplayNotification({
       notificationType: "ARTICLE_FEATURED_ARTIST",
       artworks: undefined,
-      item: {},
+      item: {
+        article: null,
+        __typename: "ArticleFeaturedArtistNotificationItem",
+      },
     })
     expect(result5).toEqual(false)
   })

@@ -7,7 +7,6 @@ import {
   SkeletonBox,
   SkeletonText,
   Text,
-  Touchable,
 } from "@artsy/palette-mobile"
 import { HomeViewSectionArticlesCardsQuery } from "__generated__/HomeViewSectionArticlesCardsQuery.graphql"
 import {
@@ -17,7 +16,7 @@ import {
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
@@ -53,8 +52,6 @@ export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCards
         section.contextModule as ContextModule,
         index
       )
-
-      navigate(article.href)
     }
   }
 
@@ -64,36 +61,34 @@ export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCards
         section.contextModule as ContextModule,
         viewAll?.ownerType as ScreenOwnerType
       )
-
-      navigate(viewAll.href)
     }
   }
 
   return (
     <Flex {...flexProps}>
-      <Flex mx={2} p={2} border="1px solid" borderColor="black30" gap={2}>
+      <Flex mx={2} p={2} border="1px solid" borderColor="mono30" gap={2}>
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
           <Text variant="lg-display">{section.component?.title}</Text>
           <Text variant="lg-display">{date()}</Text>
         </Flex>
         {articles.map((article, index) => (
           <Flex key={index} gap={2}>
-            <Touchable onPress={() => onItemPress(article, index)}>
+            <RouterLink onPress={() => onItemPress(article, index)} to={article.href}>
               <Flex flexDirection="row" alignItems="center">
                 <Text variant="sm-display" numberOfLines={3}>
                   {article.title}
                 </Text>
               </Flex>
-            </Touchable>
+            </RouterLink>
             {index !== articles.length - 1 && <Separator />}
           </Flex>
         ))}
         {!!viewAll && (
-          <Touchable onPress={onViewAllPress}>
+          <RouterLink onPress={onViewAllPress} to={viewAll.href}>
             <Flex flexDirection="row" justifyContent="flex-end">
               <Text variant="sm-display">{viewAll.buttonText}</Text>
             </Flex>
-          </Touchable>
+          </RouterLink>
         )}
       </Flex>
 
@@ -143,7 +138,7 @@ const HomeViewSectionArticlesCardsPlaceholder: React.FC<FlexProps> = (flexProps)
   return (
     <Skeleton>
       <Flex {...flexProps} testID="HomeViewSectionArticlesCardsPlaceholder">
-        <Flex mx={2} p={2} border="1px solid" borderColor="black30" gap={2}>
+        <Flex mx={2} p={2} border="1px solid" borderColor="mono30" gap={2}>
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
             <SkeletonText variant="lg-display">title</SkeletonText>
             <SkeletonText variant="lg-display">2021-12-31</SkeletonText>

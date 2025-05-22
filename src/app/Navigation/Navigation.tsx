@@ -1,19 +1,19 @@
-import { Flex, Text } from "@artsy/palette-mobile"
-import { DefaultTheme, NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
+import { Flex, Spacer, Spinner, Text } from "@artsy/palette-mobile"
+import { useLogger } from "@react-navigation/devtools"
+import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { addBreadcrumb } from "@sentry/react-native"
 import { FPSCounter } from "app/Components/FPSCounter"
-import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import {
   AuthenticatedRoutes,
   AuthenticatedRoutesParams,
 } from "app/Navigation/AuthenticatedRoutes/Tabs"
+import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { OnboardingWelcomeScreens } from "app/Scenes/Onboarding/Onboarding"
 import { GlobalStore } from "app/store/GlobalStore"
-import { routingInstrumentation } from "app/system/errorReporting/setupSentry"
+import { navigationInstrumentation } from "app/system/errorReporting/setupSentry"
 import { useReloadedDevNavigationState } from "app/system/navigation/useReloadedDevNavigationState"
-
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { logNavigation } from "app/utils/loggers"
@@ -37,6 +37,8 @@ export const Navigation = () => {
   const isLoggedIn = GlobalStore.useAppState((state) => state.auth.userID)
   const fpsCounter = useDevToggle("DTFPSCounter")
 
+  const theme = useNavigationTheme()
+
   const { setSessionState: setNavigationReady } = GlobalStore.actions
 
   // Code for Sift tracking; needs to be manually fired on Android
@@ -44,6 +46,13 @@ export const Navigation = () => {
   const enableAdditionalSiftAndroidTracking = useFeatureFlag(
     "AREnableAdditionalSiftAndroidTracking"
   )
+
+  if (__DEV__) {
+    // It's safe to break the rul of hooks here because we are only using it in dev
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useLogger(internal_navigationRef)
+  }
+
   if (!isReady) {
     return <NavigationLoadingIndicator />
   }
@@ -57,7 +66,7 @@ export const Navigation = () => {
         theme={theme}
         initialState={initialState}
         onReady={() => {
-          routingInstrumentation.registerNavigationContainer(internal_navigationRef)
+          navigationInstrumentation.registerNavigationContainer(internal_navigationRef)
 
           setNavigationReady({ isNavigationReady: true })
           LegacyNativeModules.ARNotificationsManager.didFinishBootstrapping()
@@ -107,24 +116,18 @@ export const Navigation = () => {
   )
 }
 
-const theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    background: "#FFF",
-  },
-}
-
 const NavigationLoadingIndicator = () => {
   return (
-    <LoadingSpinner>
+    <Flex backgroundColor="mono0" flex={1} justifyContent="center">
       {!!__DEV__ && (
-        <Flex px={2} mt={2}>
-          <Text color="devpurple" variant="xs" italic textAlign="center">
-            This spinner is only visible in DEV mode.{"\n"}
+        <Flex px={2} mt={2} backgroundColor="mono0" alignItems="center">
+          <Spinner color="devpurple" size="large" />
+          <Spacer y={4} />
+          <Text color="mono100" variant="xs" textAlign="center">
+            Reloading previous navigation state
           </Text>
         </Flex>
       )}
-    </LoadingSpinner>
+    </Flex>
   )
 }

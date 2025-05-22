@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   BellIcon,
   Box,
@@ -8,13 +8,13 @@ import {
   Spacer,
   Tabs,
   Text,
+  useColor,
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
 import { MasonryFlashListRef } from "@shopify/flash-list"
 import { ArtistArtworks_artist$data } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
-import { CreateSavedSearchModal } from "app/Components/Artist/ArtistArtworks/CreateSavedSearchModal"
 import { useCreateSavedSearchModalFilters } from "app/Components/Artist/ArtistArtworks/hooks/useCreateSavedSearchModalFilters"
 import { useShowArtworksFilterModal } from "app/Components/Artist/ArtistArtworks/hooks/useShowArtworksFilterModal"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -27,6 +27,13 @@ import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilter
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { ProgressiveOnboardingAlertReminder } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingAlertReminder"
+import {
+  CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD,
+  useDismissAlertReminder,
+} from "app/Components/ProgressiveOnboarding/useDismissAlertReminder"
+import { CreateSavedSearchModal } from "app/Scenes/SavedSearchAlert/CreateSavedSearchModal"
+import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import {
@@ -37,7 +44,7 @@ import {
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { Schema } from "app/utils/track"
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { RelayPaginationProp, createPaginationContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -57,6 +64,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   searchCriteria,
   ...props
 }) => {
+  const color = useColor()
+
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const { showFilterArtworksModal, closeFilterArtworksModal } = useShowArtworksFilterModal({
@@ -71,6 +80,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const gridRef = useRef<MasonryFlashListRef<(typeof artworks)[0]>>(null)
 
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+
+  const { dismissAllCreateAlertReminder } = useDismissAlertReminder()
 
   useArtworkFilters({
     relay,
@@ -108,7 +119,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   useEffect(() => {
     if (scrollToArtworksGrid) {
       setTimeout(() => {
-        gridRef.current?.scrollToOffset({ offset: 0, animated: true })
+        gridRef.current?.scrollToOffset({ offset: -20, animated: true })
       }, 1000)
     }
   }, [scrollToArtworksGrid])
@@ -150,7 +161,14 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     }
   }, [relay.hasMore(), relay.isLoading()])
 
-  const CreateAlertButton = () => {
+  const CreateAlertButton: React.FC<{ contextModule: ContextModule }> = ({ contextModule }) => {
+    const { trackCreateAlertTap } = useCreateAlertTracking({
+      contextScreenOwnerType: OwnerType.artist,
+      contextScreenOwnerId: artist.internalID,
+      contextScreenOwnerSlug: artist.slug,
+      contextModule: contextModule,
+    })
+
     return (
       <Button
         variant="outline"
@@ -158,11 +176,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         icon={<BellIcon />}
         size="small"
         onPress={() => {
-          // Could be useful to differenciate between the two at a later point
-          tracking.trackEvent(
-            tracks.tappedCreateAlert({ artistId: artist.internalID, artistSlug: artist.slug })
-          )
-
+          trackCreateAlertTap()
           setIsCreateAlertModalVisible(true)
         }}
       >
@@ -204,14 +218,14 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
           Get notified when new works are available
         </Text>
 
-        <Text variant="md" textAlign="center" color="black60">
+        <Text variant="md" textAlign="center" color="mono60">
           There are currently no works for sale for this artist. Create an alert, and we’ll let you
           know when new works are added.
         </Text>
 
         <Spacer y={2} />
 
-        <CreateAlertButton />
+        <CreateAlertButton contextModule={ContextModule.artworkGridEmptyState} />
 
         <Spacer y={6} />
 
@@ -247,7 +261,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
             title="Get notified when new works are added."
             containerStyle={{ my: 2 }}
             IconComponent={() => {
-              return <CreateAlertButton />
+              return <CreateAlertButton contextModule={ContextModule.artistArtworksGridEnd} />
             }}
             iconPosition="right"
           />
@@ -257,8 +271,10 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     )
   }
 
+  const shouldShowCreateAlertReminder = artworks.length >= CREATE_ALERT_REMINDER_ARTWORK_THRESHOLD
+
   return (
-    <>
+    <Flex backgroundColor={color("mono0")} flex={1}>
       <Tabs.Masonry
         data={artworks}
         numColumns={NUM_COLUMNS_MASONRY}
@@ -285,10 +301,21 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         ListHeaderComponent={
           <>
             <Tabs.SubTabBar>
-              <ArtistArtworksFilterHeader
-                artist={artist}
-                showCreateAlertModal={() => setIsCreateAlertModalVisible(true)}
-              />
+              <Flex flexDirection="row">
+                <ProgressiveOnboardingAlertReminder visible={!!shouldShowCreateAlertReminder} />
+                <Flex flex={1}>
+                  <ArtistArtworksFilterHeader
+                    artist={artist}
+                    showCreateAlertModal={() => {
+                      if (shouldShowCreateAlertReminder) {
+                        dismissAllCreateAlertReminder()
+                      }
+
+                      setIsCreateAlertModalVisible(true)
+                    }}
+                  />
+                </Flex>
+              </Flex>
             </Tabs.SubTabBar>
             <Flex pt={1}>
               <Text variant="xs" weight="medium">{`${artworksCount} Artwork${
@@ -299,6 +326,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         }
         ListFooterComponent={<ListFooterComponenet />}
       />
+
       <ArtworkFilterNavigator
         {...props}
         id={artist.internalID}
@@ -310,6 +338,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         mode={FilterModalMode.ArtistArtworks}
         shouldShowCreateAlertButton
       />
+
       <CreateSavedSearchModal
         attributes={attributes}
         closeModal={() => setIsCreateAlertModalVisible(false)}
@@ -317,7 +346,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         onComplete={handleCompleteSavedSearch}
         visible={isCreateAlertModalVisible}
       />
-    </>
+    </Flex>
   )
 }
 
@@ -413,13 +442,3 @@ export default createPaginationContainer(
     `,
   }
 )
-
-const tracks = {
-  tappedCreateAlert: ({ artistId, artistSlug }: { artistId: string; artistSlug: string }) => ({
-    action: ActionType.tappedCreateAlert,
-    context_screen_owner_type: OwnerType.artist,
-    context_screen_owner_id: artistId,
-    context_screen_owner_slug: artistSlug,
-    context_module: ContextModule.artistArtworksGridEnd,
-  }),
-}

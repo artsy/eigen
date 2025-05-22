@@ -1,13 +1,11 @@
-import { AddIcon, CloseIcon, Flex, Spacer, Touchable, useSpace, Pill } from "@artsy/palette-mobile"
+import { AddIcon, CloseIcon } from "@artsy/icons/native"
+import { Flex, Pill, Spacer, Touchable, useSpace } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { MyCollectionArtworkFilters } from "app/Scenes/MyCollection/Components/MyCollectionArtworkFiltersStickyTab"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
-import { HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER } from "app/Scenes/MyCollection/MyCollection"
+import { HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER } from "app/Scenes/MyCollection/MyCollectionLegacy"
 import { MyCollectionArtworkUploadMessages } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkUploadMessages"
-import {
-  PurchasedArtworkAddedMessage,
-  SubmittedArtworkAddedMessage,
-} from "app/Scenes/MyCollection/Screens/Insights/MyCollectionMessages"
+import { PurchasedArtworkAddedMessage } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionMessages"
 import {
   CollectedTab,
   MyCollectionTabsStore,
@@ -15,7 +13,6 @@ import {
 import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { navigate } from "app/system/navigation/navigate"
 import { useMeasure } from "app/utils/hooks/useMeasure"
-import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 import { debounce } from "lodash"
 import { MotiView } from "moti"
 import { useMemo, useRef } from "react"
@@ -40,9 +37,6 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
   showModal,
   showNewWorksMessage,
 }) => {
-  const { showVisualClue } = useVisualClue()
-
-  const showSubmissionMessage = showVisualClue("ArtworkSubmissionMessage")
   const selectedTab = MyCollectionTabsStore.useStoreState((state) => state.selectedTab)
 
   const showArtworkFilters = useMemo(() => {
@@ -50,12 +44,8 @@ export const MyCollectionStickyHeader: React.FC<MyCollectionStickyHeaderProps> =
   }, [selectedTab, hasArtworks])
 
   return (
-    <Flex px={2} backgroundColor="white100">
-      <Messages
-        showNewWorksMessage={showNewWorksMessage}
-        showSubmissionMessage={showSubmissionMessage}
-        hasMarketSignals={hasMarketSignals}
-      />
+    <Flex px={2} backgroundColor="background">
+      <Messages showNewWorksMessage={showNewWorksMessage} hasMarketSignals={hasMarketSignals} />
 
       <MainStickyHeader hasArtworks={hasArtworks} />
 
@@ -183,7 +173,7 @@ const AnimatedCloseIcon: React.FC<{
         >
           <Flex
             alignItems="center"
-            borderColor="black30"
+            borderColor="mono30"
             borderRadius={PILL_DIAMETER / 2}
             borderWidth="1px"
             height={PILL_DIAMETER}
@@ -260,9 +250,8 @@ const AnimatedPill: React.FC<{
 const Messages: React.FC<{
   hasMarketSignals: boolean
   showNewWorksMessage: boolean
-  showSubmissionMessage: boolean
-}> = ({ hasMarketSignals, showNewWorksMessage, showSubmissionMessage }) => {
-  if (!hasMarketSignals && !showNewWorksMessage && !showSubmissionMessage) {
+}> = ({ hasMarketSignals, showNewWorksMessage }) => {
+  if (!hasMarketSignals && !showNewWorksMessage) {
     return null
   }
 
@@ -271,11 +260,6 @@ const Messages: React.FC<{
       {!!showNewWorksMessage && (
         <PurchasedArtworkAddedMessage
           onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
-        />
-      )}
-      {!!showSubmissionMessage && (
-        <SubmittedArtworkAddedMessage
-          onClose={() => setVisualClueAsSeen("ArtworkSubmissionMessage")}
         />
       )}
       <MyCollectionArtworkUploadMessages

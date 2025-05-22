@@ -39,19 +39,20 @@ const SORT_OPTIONS: SortOption[] = [
 
 const DEFAULT_SORT_OPTION = SORT_OPTIONS[0].value as CollectionArtworkSorts
 
+export const artworkListVariables = { count: PAGE_SIZE, sort: DEFAULT_SORT_OPTION }
+
 export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   const [sortModalVisible, setSortModalVisible] = useState(false)
   const [selectedSortValue, setSelectedSortValue] = useState(DEFAULT_SORT_OPTION)
   const prevSelectedSortValue = usePrevious(selectedSortValue)
 
   const queryData = useLazyLoadQuery<ArtworkListQuery>(
-    artworkListScreenQuery,
+    ArtworkListScreenQuery,
     {
       listID,
-      count: PAGE_SIZE,
-      sort: DEFAULT_SORT_OPTION,
+      ...artworkListVariables,
     },
-    { fetchPolicy: "network-only" }
+    { fetchPolicy: "store-and-network" }
   )
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
@@ -62,6 +63,8 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   const RefreshControl = useRefreshControl(refetch, { sort: selectedSortValue })
 
   const handleSortByModalClosed = () => {
+    setSortModalVisible(false)
+
     if (selectedSortValue === prevSelectedSortValue) {
       return
     }
@@ -97,6 +100,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   return (
     <ArtworkListProvider artworkListID={listID}>
       <ArtworkListHeader me={queryData.me} />
+
       <MasonryInfiniteScrollArtworkGrid
         artworks={artworks}
         loadMore={(pageSize) => loadNext(pageSize)}
@@ -114,11 +118,11 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
         }
         refreshControl={RefreshControl}
       />
+
       <SortByModal
         visible={sortModalVisible}
         options={SORT_OPTIONS}
         selectedValue={selectedSortValue}
-        onCloseModal={closeSortModal}
         onSelectOption={handleSelectOption}
         onModalFinishedClosing={handleSortByModalClosed}
       />
@@ -126,7 +130,7 @@ export const ArtworkList: FC<ArtworkListScreenProps> = ({ listID }) => {
   )
 }
 
-export const artworkListScreenQuery = graphql`
+export const ArtworkListScreenQuery = graphql`
   query ArtworkListQuery(
     $listID: String!
     $count: Int
@@ -181,7 +185,7 @@ export const ArtworkListScreen: FC<ArtworkListScreenProps> = (props) => {
     <Screen>
       <ProvideScreenTrackingWithCohesionSchema
         info={screen({
-          context_screen_owner_type: OwnerType.saves,
+          context_screen_owner_type: OwnerType.saves, // artworkList, // TODO: update when cohesion is up
           context_screen_owner_id: props.listID,
         })}
       >
@@ -205,7 +209,7 @@ const ArtworkListPlaceholder = () => {
         <SkeletonText mb={2} variant="lg">
           Saved Artworks
         </SkeletonText>
-        <Separator borderColor="black10" mt={1} mb={2} />
+        <Separator borderColor="mono10" mt={1} mb={2} />
         <Flex justifyContent="space-between" flexDirection="row" mb={2}>
           <SkeletonText variant="xs">3 Artworks</SkeletonText>
           <SkeletonBox width={80} height={22} />

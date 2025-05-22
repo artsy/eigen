@@ -1,12 +1,13 @@
-import { Flex, Box, ClassTheme, Text, Button, Touchable, Image } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Image, Text, Touchable } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
 import { ShowItemRow_show$data } from "__generated__/ShowItemRow_show.graphql"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { Pin } from "app/Components/Icons/Pin"
 import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
 import { navigate } from "app/system/navigation/navigate"
 import { hrefForPartialShow } from "app/utils/router"
-import { Schema, Track, track as _track } from "app/utils/track"
+import { track as _track, Schema, Track } from "app/utils/track"
 import { debounce } from "lodash"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
@@ -121,12 +122,12 @@ export class ShowItemRow extends React.Component<Props, State> {
 
     const imageURL = mainCoverImageURL || galleryProfileIcon
     return (
-      <ClassTheme>
+      <ThemeAwareClassTheme>
         {({ color }) => (
           <Flex flexDirection="row" alignItems="center">
             {!imageURL ? (
               <DefaultImageContainer p="15px">
-                <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
+                <Pin color={color("mono0")} pinHeight={30} pinWidth={30} />
               </DefaultImageContainer>
             ) : (
               <DefaultImageContainer>
@@ -138,7 +139,7 @@ export class ShowItemRow extends React.Component<Props, State> {
                 <Text
                   variant="sm"
                   lineHeight="20px"
-                  color="black"
+                  color="mono100"
                   weight="medium"
                   numberOfLines={1}
                   ml="15px"
@@ -150,7 +151,7 @@ export class ShowItemRow extends React.Component<Props, State> {
                 <Text
                   variant="sm"
                   lineHeight="20px"
-                  color={color("black60")}
+                  color={color("mono60")}
                   ml="15px"
                   numberOfLines={1}
                 >
@@ -161,7 +162,7 @@ export class ShowItemRow extends React.Component<Props, State> {
                 <Text
                   variant="sm"
                   lineHeight="20px"
-                  color={color("black60")}
+                  color={color("mono60")}
                   ml="15px"
                   numberOfLines={1}
                 >
@@ -184,7 +185,7 @@ export class ShowItemRow extends React.Component<Props, State> {
             )}
           </Flex>
         )}
-      </ClassTheme>
+      </ThemeAwareClassTheme>
     )
   }
 
@@ -192,17 +193,17 @@ export class ShowItemRow extends React.Component<Props, State> {
     const { show, isListItem } = this.props
 
     return isListItem ? (
-      <ClassTheme>
+      <ThemeAwareClassTheme>
         {({ color }) => (
           <Touchable
-            underlayColor={color("black5")}
+            underlayColor={color("mono5")}
             onPress={() => this.handleTap(show.slug, show.internalID)}
             style={{ paddingHorizontal: 20, paddingVertical: 5 }}
           >
             {this.renderItemDetails()}
           </Touchable>
         )}
-      </ClassTheme>
+      </ThemeAwareClassTheme>
     ) : (
       <TouchableWithoutFeedback onPress={() => this.handleTap(show.slug, show.internalID)}>
         {this.renderItemDetails()}
@@ -247,7 +248,7 @@ export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
 
 const DefaultImageContainer = styled(Box)`
   align-items: center;
-  background-color: ${themeGet("colors.black10")};
+  background-color: ${themeGet("colors.mono10")};
   height: ${themeGet("space.6")};
   width: ${themeGet("space.6")};
 `

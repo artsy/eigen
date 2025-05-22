@@ -1,6 +1,7 @@
-import { Flex, ClassTheme, Text, Touchable } from "@artsy/palette-mobile"
+import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ConversationSnippet_conversation$data } from "__generated__/ConversationSnippet_conversation.graphql"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import { Schema, Track, track as _track } from "app/utils/track"
 import moment from "moment"
@@ -13,7 +14,7 @@ const Unread = styled(Flex)`
   height: 14px;
   width: 14px;
   border-radius: 7px;
-  background-color: ${themeGet("colors.white100")};
+  background-color: ${themeGet("colors.mono0")};
   position: absolute;
   left: -7px;
   top: -7px;
@@ -85,9 +86,9 @@ export class ConversationSnippet extends React.Component<Props> {
       conversation.lastMessage && conversation.lastMessage.replace(/\n/g, " ")
     const date = moment(conversation.lastMessageAt).fromNow(true) + " ago"
     return (
-      <ClassTheme>
+      <ThemeAwareClassTheme>
         {({ color }) => (
-          <Touchable onPress={() => this.conversationSelected()} underlayColor={color("black5")}>
+          <Touchable onPress={() => this.conversationSelected()} underlayColor={color("mono5")}>
             <Flex py={2} px={2}>
               <Flex flexDirection="row">
                 <Flex>
@@ -107,20 +108,20 @@ export class ConversationSnippet extends React.Component<Props> {
                         ellipsizeMode="tail"
                         numberOfLines={1}
                         mr="5px"
-                        color={conversation.unread ? "black" : "black60"}
+                        color={conversation.unread ? "mono100" : "mono60"}
                       >
                         {partnerName}
                       </Text>
                     </Flex>
                     <Flex flex={1} />
                     <Flex>
-                      <Text variant="sm" textAlign="right" color="black30">
+                      <Text variant="sm" textAlign="right" color="mono60">
                         {date}
                       </Text>
                     </Flex>
                   </Flex>
                   {!!exclusiveAccess && (
-                    <Text variant="sm" numberOfLines={1} mr="5px" color="black">
+                    <Text variant="sm" numberOfLines={1} mr="5px" color="mono100">
                       Exclusive Access
                     </Text>
                   )}
@@ -130,7 +131,7 @@ export class ConversationSnippet extends React.Component<Props> {
                       mr="15px"
                       ellipsizeMode="tail"
                       numberOfLines={3}
-                      color={conversation.unread ? "black" : "black60"}
+                      color={conversation.unread ? "mono100" : "mono60"}
                     >
                       {conversationText}
                     </Text>
@@ -140,7 +141,7 @@ export class ConversationSnippet extends React.Component<Props> {
             </Flex>
           </Touchable>
         )}
-      </ClassTheme>
+      </ThemeAwareClassTheme>
     )
   }
 }

@@ -1,6 +1,7 @@
-import { Flex, ClassTheme, Text, Touchable, Image } from "@artsy/palette-mobile"
+import { Flex, Image, Text, Touchable } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ShowPreview_show$data } from "__generated__/ShowPreview_show.graphql"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { Schema, Track, track as _track } from "app/utils/track"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -8,14 +9,14 @@ import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 const Container = styled.View`
-  background-color: ${themeGet("colors.black100")};
+  background-color: ${themeGet("colors.mono100")};
   border-radius: 15px;
   overflow: hidden;
   margin-bottom: 5px;
 `
 
 const ImageContainer = styled(Flex)`
-  background-color: ${themeGet("colors.black10")};
+  background-color: ${themeGet("colors.mono10")};
   padding: 10px;
   flex: 1;
 `
@@ -56,10 +57,10 @@ export class ShowPreview extends React.Component<Props> {
     const name = show.fair ? show.fair.name : show.name
 
     return (
-      <ClassTheme>
+      <ThemeAwareClassTheme>
         {({ color }) => (
           <Touchable
-            underlayColor={color("black5")}
+            underlayColor={color("mono5")}
             onPress={() => this.attachmentSelected()}
             style={{ maxWidth: "66.67%", flex: 1 }}
           >
@@ -72,17 +73,17 @@ export class ShowPreview extends React.Component<Props> {
                 />
               </ImageContainer>
               <TextContainer>
-                <Text variant="sm" color="white100">
+                <Text variant="sm" color="mono0">
                   {name}
                 </Text>
-                <Text variant="xs" color="white100" numberOfLines={1} ellipsizeMode="middle">
+                <Text variant="xs" color="mono0" numberOfLines={1} ellipsizeMode="middle">
                   {show.partner?.name}
                 </Text>
               </TextContainer>
             </Container>
           </Touchable>
         )}
-      </ClassTheme>
+      </ThemeAwareClassTheme>
     )
   }
 }

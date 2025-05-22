@@ -41,7 +41,7 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({
       <Touchable
         testID="artistTouchable"
         disabled={!onPress}
-        underlayColor={color("black5")}
+        underlayColor={color("mono5")}
         onPress={() => onPress?.()}
       >
         <Flex mx={2} flexDirection="row" alignItems="center">
@@ -49,7 +49,7 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({
             width={40}
             height={40}
             borderRadius={20}
-            backgroundColor="black10"
+            backgroundColor="mono10"
             alignItems="center"
             justifyContent="center"
             overflow="hidden"
@@ -65,7 +65,7 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({
             <Text variant="xs" ellipsizeMode="middle">
               {artist?.name}
             </Text>
-            <Text variant="xs" ellipsizeMode="middle" color="black60">
+            <Text variant="xs" ellipsizeMode="middle" color="mono60">
               {artist?.formattedNationalityAndBirthday}
             </Text>
           </Flex>

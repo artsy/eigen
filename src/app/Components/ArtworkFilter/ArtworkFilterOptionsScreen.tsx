@@ -1,4 +1,5 @@
-import { FilterIcon, Flex, Text } from "@artsy/palette-mobile"
+import { FilterIcon } from "@artsy/icons/native"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { themeGet } from "@styled-system/theme-get"
 import { AnimatableHeader } from "app/Components/AnimatableHeader/AnimatableHeader"
@@ -16,6 +17,7 @@ import {
   ArtworkFiltersModel,
   ArtworksFiltersStore,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
@@ -42,6 +44,7 @@ export enum FilterModalMode {
   Tag = "Tag",
   Search = "Search",
   Custom = "Custom",
+  Collect = "Collect",
 }
 
 export const ArtworkFilterOptionsScreen: React.FC<
@@ -49,6 +52,8 @@ export const ArtworkFilterOptionsScreen: React.FC<
 > = ({ navigation, route }) => {
   const enableArtistSeriesFilter = useFeatureFlag("AREnableArtistSeriesFilter")
   const enableAvailabilityFilter = useFeatureFlag("AREnableAvailabilityFilter")
+  const enableFramedFilter = useFeatureFlag("AREnableFramedFilter")
+
   const tracking = useTracking()
   const { closeModal, id, mode, slug, title = "Sort & Filter" } = route.params
 
@@ -65,6 +70,8 @@ export const ArtworkFilterOptionsScreen: React.FC<
     (action) => action.clearFiltersZeroStateAction
   )
 
+  const { dismiss } = GlobalStore.actions.progressiveOnboarding
+
   const selectedFiltersCounts = useMemo(() => {
     const unitedFilters = getUnitedSelectedAndAppliedFilters({
       filterType: filterTypeState,
@@ -75,8 +82,10 @@ export const ArtworkFilterOptionsScreen: React.FC<
     return counts
   }, [filterTypeState, selectedFiltersState, previouslyAppliedFiltersState])
 
-  const navigateToNextFilterScreen = (screenName: keyof ArtworkFilterNavigationStack) => {
-    navigation.navigate(screenName)
+  const navigateToSpecificFilterOptionScreen = (screenName: keyof ArtworkFilterNavigationStack) => {
+    if (screenName !== "FilterOptionsScreen") {
+      navigation.navigate(screenName)
+    }
   }
 
   const concreteAggregations = aggregationsState ?? []
@@ -106,7 +115,8 @@ export const ArtworkFilterOptionsScreen: React.FC<
     .filter(
       (filterOption) =>
         (enableArtistSeriesFilter || filterOption.filterType !== "artistSeriesIDs") &&
-        (enableAvailabilityFilter || filterOption.filterType !== "availability")
+        (enableAvailabilityFilter || filterOption.filterType !== "availability") &&
+        (enableFramedFilter || filterOption.filterType !== "framed")
     )
 
   const clearAllFilters = () => {
@@ -125,6 +135,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
   }
 
   const handleTappingCloseIcon = () => {
+    dismiss("alert-finish")
     closeModal()
   }
 
@@ -177,7 +188,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
                 item={item}
                 count={selectedFiltersCount}
                 onPress={() => {
-                  navigateToNextFilterScreen(
+                  navigateToSpecificFilterOptionScreen(
                     item.ScreenComponent as keyof ArtworkFilterNavigationStack
                   )
                 }}
@@ -197,6 +208,7 @@ export const getStaticFilterOptionsByMode = (
   switch (mode) {
     case FilterModalMode.SaleArtworks:
       return [
+        filterOptionToDisplayConfigMap.framed,
         filterOptionToDisplayConfigMap.estimateRange,
         filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.viewAs,
@@ -216,6 +228,7 @@ export const getStaticFilterOptionsByMode = (
 
     default:
       return [
+        filterOptionToDisplayConfigMap.framed,
         filterOptionToDisplayConfigMap.attributionClass,
         filterOptionToDisplayConfigMap.availability,
         filterOptionToDisplayConfigMap.sort,
@@ -270,6 +283,9 @@ export const getFilterScreenSortByMode =
       case FilterModalMode.Custom:
         sortOrder = (localFilterOptions ?? []).map((f) => f.filterType)
         break
+      case FilterModalMode.Collect:
+        sortOrder = CollectFiltersSorted
+        break
       default:
         assertNever(mode)
     }
@@ -284,7 +300,7 @@ export const getFilterScreenSortByMode =
   }
 
 export const FilterArtworkButton = styled(Flex)`
-  background-color: ${themeGet("colors.black100")};
+  background-color: ${themeGet("colors.mono100")};
   align-items: center;
   justify-content: center;
   flex-direction: row;
@@ -354,16 +370,16 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
   return (
     <AnimatedBottomButton isVisible={isVisible} onPress={onPress} buttonStyles={roundedButtonStyle}>
       <FilterArtworkButton px={2} style={roundedButtonStyle}>
-        <FilterIcon fill="white100" />
-        <Text variant="sm" pl={1} py={1} color="white100" weight="medium">
+        <FilterIcon fill="mono0" />
+        <Text variant="sm" pl={1} py={1} color="mono0" weight="medium">
           {text}
         </Text>
         {getFiltersCount() > 0 && (
           <>
-            <Text variant="sm" pl={0.5} py={1} color="white100" weight="medium">
+            <Text variant="sm" pl={0.5} py={1} color="mono0" weight="medium">
               {"\u2022"}
             </Text>
-            <Text variant="sm" pl={0.5} py={1} color="white100" weight="medium">
+            <Text variant="sm" pl={0.5} py={1} color="mono0" weight="medium">
               {getFiltersCount()}
             </Text>
           </>
@@ -413,6 +429,11 @@ export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig>
     displayText: FilterDisplayName.estimateRange,
     filterType: "estimateRange",
     ScreenComponent: "EstimateRangeOptionsScreen",
+  },
+  framed: {
+    displayText: FilterDisplayName.framed,
+    filterType: "framed",
+    ScreenComponent: "FramedOptionsScreen",
   },
   availability: {
     displayText: FilterDisplayName.availability,
@@ -503,6 +524,7 @@ const CollectionFiltersSorted: FilterScreen[] = [
   "majorPeriods",
   "colors",
   "partnerIDs",
+  "framed",
 ]
 const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "sort",
@@ -519,6 +541,7 @@ const ArtistArtworksFiltersSorted: FilterScreen[] = [
   "majorPeriods",
   "colors",
   "partnerIDs",
+  "framed",
 ]
 const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "sort",
@@ -534,6 +557,7 @@ const ArtistSeriesFiltersSorted: FilterScreen[] = [
   "majorPeriods",
   "colors",
   "partnerIDs",
+  "framed",
 ]
 const ArtworksFiltersSorted: FilterScreen[] = [
   "sort",
@@ -550,6 +574,7 @@ const ArtworksFiltersSorted: FilterScreen[] = [
   "majorPeriods",
   "colors",
   "partnerIDs",
+  "framed",
 ]
 const FairFiltersSorted: FilterScreen[] = [
   "partnerIDs",
@@ -565,6 +590,7 @@ const FairFiltersSorted: FilterScreen[] = [
   "locationCities",
   "majorPeriods",
   "colors",
+  "framed",
 ]
 const SaleArtworksFiltersSorted: FilterScreen[] = [
   "sort",
@@ -573,6 +599,7 @@ const SaleArtworksFiltersSorted: FilterScreen[] = [
   "medium",
   "additionalGeneIDs",
   "estimateRange",
+  "framed",
 ]
 
 const ShowFiltersSorted: FilterScreen[] = [
@@ -588,6 +615,7 @@ const ShowFiltersSorted: FilterScreen[] = [
   "artistNationalities",
   "majorPeriods",
   "colors",
+  "framed",
 ]
 
 const PartnerFiltersSorted: FilterScreen[] = [
@@ -603,6 +631,7 @@ const PartnerFiltersSorted: FilterScreen[] = [
   "artistNationalities",
   "majorPeriods",
   "colors",
+  "framed",
 ]
 
 const TagAndGeneFiltersSorted: FilterScreen[] = [
@@ -620,6 +649,7 @@ const TagAndGeneFiltersSorted: FilterScreen[] = [
   "majorPeriods",
   "colors",
   "partnerIDs",
+  "framed",
 ]
 
 const AuctionResultsFiltersSorted: FilterScreen[] = [
@@ -628,4 +658,22 @@ const AuctionResultsFiltersSorted: FilterScreen[] = [
   "sizes",
   "year",
   "organizations",
+]
+
+const CollectFiltersSorted: FilterScreen[] = [
+  "sort",
+  "artistIDs",
+  "attributionClass",
+  "additionalGeneIDs",
+  "priceRange",
+  "sizes",
+  "waysToBuy",
+  "availability",
+  "materialsTerms",
+  "artistNationalities",
+  "locationCities",
+  "majorPeriods",
+  "colors",
+  "partnerIDs",
+  "framed",
 ]

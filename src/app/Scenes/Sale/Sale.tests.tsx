@@ -51,10 +51,7 @@ describe("Sale", () => {
     expect(navigate).toHaveBeenCalledTimes(0)
     await waitFor(() => expect(navigate).toHaveBeenCalledTimes(1))
     await waitFor(() =>
-      expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug", {
-        replaceActiveModal: true,
-        replaceActiveScreen: true,
-      })
+      expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug", {})
     )
   })
 
@@ -80,10 +77,7 @@ describe("Sale", () => {
     expect(navigate).toHaveBeenCalledTimes(0)
     await waitFor(() => expect(navigate).toHaveBeenCalledTimes(1))
     await waitFor(() =>
-      expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug", {
-        replaceActiveModal: true,
-        replaceActiveScreen: true,
-      })
+      expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug", {})
     )
   })
 

@@ -1,13 +1,16 @@
+import { useColor } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetProps } from "@gorhom/bottom-sheet"
 import { DefaultBottomSheetBackdrop } from "app/Components/BottomSheet/DefaultBottomSheetBackdrop"
 import { MyCollectionBottomSheetModalAdd } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalAdd"
 import { MyCollectionBottomSheetModalArtistPreviewQueryRenderer } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistPreview"
+import { MyCollectionBottomSheetModalProfile } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalProfile"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { useCallback, useMemo, useRef } from "react"
 
-export type MyCollectionBottomSheetModalKind = "Add" | "Artist" | null
+export type MyCollectionBottomSheetModalKind = "Add" | "Artist" | "Profile" | null
 
 export const MyCollectionBottomSheetModals: React.FC<{}> = () => {
+  const color = useColor()
   const bottomSheetRef = useRef<BottomSheet>(null)
 
   const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
@@ -43,7 +46,15 @@ export const MyCollectionBottomSheetModals: React.FC<{}> = () => {
         snapPoints={snapPoints}
         enablePanDownToClose
         backdropComponent={renderBackdrop}
-        handleIndicatorStyle={{ backgroundColor: "black", width: 40, height: 4, borderRadius: 2 }}
+        handleIndicatorStyle={{
+          backgroundColor: color("mono100"),
+          width: 40,
+          height: 4,
+          borderRadius: 2,
+        }}
+        backgroundStyle={{
+          backgroundColor: color("mono0"),
+        }}
       >
         {view === "Add" && <MyCollectionBottomSheetModalAdd />}
         {view === "Artist" && !!artistId && !!interestId ? (
@@ -52,6 +63,9 @@ export const MyCollectionBottomSheetModals: React.FC<{}> = () => {
             interestId={interestId}
           />
         ) : null}
+        {view === "Profile" && (
+          <MyCollectionBottomSheetModalProfile isVisible={view === "Profile"} />
+        )}
       </BottomSheet>
     </>
   )

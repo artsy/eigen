@@ -15,8 +15,8 @@ import {
 } from "app/Scenes/HomeView/Components/HomeViewSectionCardsCard"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
+import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import React, { memo } from "react"
 import { isTablet } from "react-native-device-info"
@@ -34,6 +34,9 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
   const { width } = useScreenDimensions()
   const space = useSpace()
   const section = useFragment(fragment, _section)
+
+  const { variant } = useExperimentVariant("diamond_discover-tab")
+  const isDiscoverVariant = variant.name === "variant-a" && variant.enabled
 
   const columns = !isTablet() ? 2 : 3
 
@@ -62,10 +65,13 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
         })}
       </Flex>
 
-      <HomeViewSectionSentinel
-        contextModule={section.contextModule as ContextModule}
-        index={index}
-      />
+      {/* TODO: If we decide to keep the Discover tab and dismantle this A/B test, we will need to continue excluding the sentinel. Find an elegant way to do that. */}
+      {!isDiscoverVariant && (
+        <HomeViewSectionSentinel
+          contextModule={section.contextModule as ContextModule}
+          index={index}
+        />
+      )}
     </Flex>
   )
 }
@@ -89,9 +95,9 @@ const fragment = graphql`
 `
 
 const query = graphql`
-  query HomeViewSectionCardsQuery($id: String!, $isEnabled: Boolean!) {
+  query HomeViewSectionCardsQuery($id: String!) {
     homeView {
-      section(id: $id) @include(if: $isEnabled) {
+      section(id: $id) {
         ...HomeViewSectionCards_section
       }
     }
@@ -129,10 +135,11 @@ const HomeViewCardsPlaceholder: React.FC = () => {
 export const HomeViewSectionCardsQueryRenderer = memo(
   withSuspense<Pick<SectionSharedProps, "sectionID" | "index">>({
     Component: ({ sectionID, index }) => {
-      const isEnabled = useFeatureFlag("AREnableMarketingCollectionsCategories")
-      const data = useLazyLoadQuery<HomeViewSectionCardsQuery>(query, { id: sectionID, isEnabled })
+      const data = useLazyLoadQuery<HomeViewSectionCardsQuery>(query, {
+        id: sectionID,
+      })
 
-      if (!data?.homeView.section || !isEnabled) {
+      if (!data?.homeView.section) {
         return null
       }
 

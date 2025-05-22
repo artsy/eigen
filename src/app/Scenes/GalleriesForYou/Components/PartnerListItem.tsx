@@ -1,15 +1,8 @@
-import {
-  Flex,
-  FollowButton,
-  Text,
-  Touchable,
-  useScreenDimensions,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { Flex, FollowButton, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { PartnerListItem_partner$key } from "__generated__/PartnerListItem_partner.graphql"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import { sortByDistance } from "app/Scenes/GalleriesForYou/helpers"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { Location } from "app/utils/hooks/useLocation"
 import { useFollowProfile } from "app/utils/mutations/useFollowProfile"
@@ -60,12 +53,6 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
     followProfile()
   }
 
-  const handlePress = () => {
-    navigate("/partner/" + internalID)
-
-    onPress?.()
-  }
-
   if (!profile) {
     return null
   }
@@ -76,7 +63,7 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
 
   return (
     <Flex mx={2}>
-      <Touchable onPress={handlePress}>
+      <RouterLink to={`/partner/${internalID}`} onPress={onPress}>
         <Flex width={width} mx="auto">
           <Flex>
             <ImageWithFallback src={imageUrl} height={width / 1.33} width={width} />
@@ -101,7 +88,7 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
             <Flex mr={1} flexShrink={1}>
               <Text variant="sm">{name}</Text>
               {!!sortedLocations[0] && (
-                <Text variant="sm-display" color="black60">
+                <Text variant="sm-display" color="mono60">
                   {sortedLocations[0].city}
                   {!!(sortedLocations.length > 1) &&
                     ` and ${sortedLocations.length - 1} more ${pluralize(
@@ -122,7 +109,7 @@ export const PartnerListItem: React.FC<PartnerListItemProps> = ({
             </Flex>
           </Flex>
         </Flex>
-      </Touchable>
+      </RouterLink>
     </Flex>
   )
 }

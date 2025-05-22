@@ -1,5 +1,5 @@
 import { EventEmitter } from "events"
-import { StackActions, TabActions } from "@react-navigation/native"
+import { CommonActions, StackActions, TabActions } from "@react-navigation/native"
 import { tabsTracks } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { modules } from "app/Navigation/utils/modules"
@@ -93,16 +93,30 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     } else {
       internal_navigationRef.current?.dispatch(StackActions.push(result.module, props))
     }
+
+    const topTabName = module?.options?.topTabsNavigatorOptions?.topTabName
+    if (topTabName) {
+      // We need to wait for the material top tab navigator to finish mounting
+      //  before we can navigate to it
+      setTimeout(() => {
+        internal_navigationRef.current?.dispatch(CommonActions.navigate(topTabName))
+      }, 200)
+    }
   }
 }
 
 export const navigationEvents = new EventEmitter()
 
 export function switchTab(tab: BottomTabType, props?: object) {
-  // root tabs are only mounted once so cannot be tracked
-  // like other screens manually track screen views here
-  // home handles this on its own since it is default tab
-  if (tab !== "home") {
+  if (
+    // root tabs are only mounted once so cannot be tracked
+    // like other screens manually track screen views here
+    // home handles this on its own since it is default tab
+    tab !== "home" &&
+    // we are handling the tracking of the favorites tab withing the screen
+    // https://artsy.slack.com/archives/C05EQL4R5N0/p1744919145046069
+    tab !== "favorites"
+  ) {
     postEventToProviders(tabsTracks.tabScreenView(tab))
   }
 
@@ -151,23 +165,10 @@ export enum SlugType {
   FairID = "fairID",
 }
 
+export const PartnerNavigationProps = { entity: EntityType.Partner, slugType: SlugType.ProfileID }
+
 export function navigateToPartner(href: string) {
   navigate(href, {
-    passProps: { entity: EntityType.Partner, slugType: SlugType.ProfileID },
+    passProps: PartnerNavigationProps,
   })
-}
-
-/**
- * Looks up the entity by slug passed in and presents appropriate viewController
- * @param component: ignored, kept for compatibility
- * @param slug: identifier for the entity to be presented
- * @param entity: type of entity we are routing to, this is currently used to determine what loading
- * state to show, either 'fair' or 'partner'
- * @param slugType: type of slug or id being passed, this determines how the entity is looked up
- * in the api, if we have a fairID we can route directly to fair component and load the fair, if
- * we have a profileID we must first fetch the profile and find the ownerType which can be a fair
- * partner or other.
- */
-export function navigateToEntity(slug: string, entity: EntityType, slugType: SlugType) {
-  navigate(slug, { passProps: { entity, slugType } })
 }

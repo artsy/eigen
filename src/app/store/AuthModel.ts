@@ -16,7 +16,6 @@ import {
   handleSignUpError,
   showError,
 } from "app/utils/auth/authHelpers"
-import { updateExperimentsContext } from "app/utils/experiments/helpers"
 import { isArtsyEmail } from "app/utils/general"
 import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
 import { postEventToProviders } from "app/utils/track/providers"
@@ -24,9 +23,9 @@ import { postEventToProviders } from "app/utils/track/providers"
 import { Action, Computed, StateMapper, Thunk, action, computed, thunk } from "easy-peasy"
 import { stringify } from "qs"
 import { Platform } from "react-native"
-import Config from "react-native-config"
 import { LoginManager, LoginTracking } from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
+import Keys from "react-native-keys"
 import SiftReactNative from "sift-react-native"
 import { AuthError } from "./AuthError"
 import { GlobalStore, getCurrentEmissionState } from "./GlobalStore"
@@ -89,9 +88,6 @@ type OAuthParams =
   | AppleOAuthParams
   | FacebookLimitedOAuthParams
 
-type OnboardingState = "none" | "incomplete" | "complete"
-type OnboardingArtQuizState = "none" | "incomplete" | "complete"
-
 export interface AuthPromiseResolveType {
   success: boolean
 }
@@ -123,8 +119,6 @@ export interface AuthModel {
   userAccessTokenExpiresIn: string | null
   xAppToken: string | null
   xApptokenExpiresIn: string | null
-  onboardingState: OnboardingState
-  onboardingArtQuizState: OnboardingArtQuizState
   userEmail: string | null
   previousSessionUserID: string | null
 
@@ -137,7 +131,7 @@ export interface AuthModel {
   getUser: Thunk<this, { accessToken: string }, {}, GlobalStoreModel>
   signIn: Thunk<
     this,
-    { email: string; onboardingState?: OnboardingState; onSignIn?: () => void } & OAuthParams,
+    { email: string; onSignIn?: () => void } & OAuthParams,
     {},
     GlobalStoreModel,
     Promise<SignInStatus>
@@ -187,7 +181,6 @@ export interface AuthModel {
     GlobalStoreModel,
     ReturnType<typeof fetch>
   >
-  setArtQuizState: Action<this, OnboardingArtQuizState>
   identifyUser: Action<this>
   signOut: Thunk<this>
   verifyUser: Thunk<
@@ -199,10 +192,12 @@ export interface AuthModel {
   >
 }
 
-const clientKey = __DEV__ ? Config.ARTSY_DEV_API_CLIENT_KEY : Config.ARTSY_PROD_API_CLIENT_KEY
+const clientKey = __DEV__
+  ? Keys.secureFor("ARTSY_DEV_API_CLIENT_KEY")
+  : Keys.secureFor("ARTSY_PROD_API_CLIENT_KEY")
 const clientSecret = __DEV__
-  ? Config.ARTSY_DEV_API_CLIENT_SECRET
-  : Config.ARTSY_PROD_API_CLIENT_SECRET
+  ? Keys.secureFor("ARTSY_DEV_API_CLIENT_SECRET")
+  : Keys.secureFor("ARTSY_PROD_API_CLIENT_SECRET")
 
 export const getAuthModel = (): AuthModel => ({
   sessionState: {
@@ -214,8 +209,6 @@ export const getAuthModel = (): AuthModel => ({
   userAccessTokenExpiresIn: null,
   xAppToken: null,
   xApptokenExpiresIn: null,
-  onboardingState: "none",
-  onboardingArtQuizState: "none",
   userEmail: null,
   previousSessionUserID: null,
   userHasArtsyEmail: computed((state) => isArtsyEmail(state.userEmail ?? "")),
@@ -226,8 +219,8 @@ export const getAuthModel = (): AuthModel => ({
   }),
   getXAppToken: thunk(async (actions, _payload, context) => {
     const xAppToken = context.getState().xAppToken
-    if (xAppToken) {
-      // TODO: handle expiry
+    const xAppTokenExpiresIn = context.getState().xApptokenExpiresIn
+    if (xAppToken && xAppTokenExpiresIn && !isTokenExpired(xAppTokenExpiresIn)) {
       return xAppToken
     }
     const gravityBaseURL = context.getStoreState().devicePrefs.environment.strings.gravityURL
@@ -303,7 +296,7 @@ export const getAuthModel = (): AuthModel => ({
     ).json()
   }),
   signIn: thunk(async (actions, args, store) => {
-    const { oauthProvider, oauthMode, email, onboardingState, onSignIn } = args
+    const { oauthProvider, oauthMode, email, onSignIn } = args
 
     const grantTypeMap = {
       accessToken: "oauth_token",
@@ -351,9 +344,9 @@ export const getAuthModel = (): AuthModel => ({
         userAccessTokenExpiresIn: expires_in,
         userID: user.id,
         userEmail: email,
-        onboardingState: onboardingState ?? "complete",
       })
 
+      GlobalStore.actions.onboarding.setOnboardingState("complete")
       // TODO: do we need to set requested push permissions false here
 
       if (oauthProvider === "email") {
@@ -431,7 +424,6 @@ export const getAuthModel = (): AuthModel => ({
             oauthMode,
             email,
             accessToken: args.accessToken,
-            onboardingState: "incomplete",
           })
           break
         case "jwt":
@@ -440,7 +432,6 @@ export const getAuthModel = (): AuthModel => ({
             oauthMode,
             email,
             jwt: args.jwt,
-            onboardingState: "incomplete",
           })
           break
         case "idToken":
@@ -450,7 +441,6 @@ export const getAuthModel = (): AuthModel => ({
             email,
             idToken: args.idToken,
             appleUid: args.appleUid,
-            onboardingState: "incomplete",
           })
           break
         case "email":
@@ -459,7 +449,6 @@ export const getAuthModel = (): AuthModel => ({
             oauthMode,
             email,
             password: args.password,
-            onboardingState: "incomplete",
           })
           break
         default:
@@ -468,6 +457,7 @@ export const getAuthModel = (): AuthModel => ({
 
       // Setting up user prefs from gravity after successsfull registration.
       GlobalStore.actions.userPrefs.fetchRemoteUserPrefs()
+      GlobalStore.actions.onboarding.setOnboardingState("incomplete")
 
       return { success: true, message: "" }
     }
@@ -967,9 +957,6 @@ export const getAuthModel = (): AuthModel => ({
       }
     })
   }),
-  setArtQuizState: action((state, artQuizState) => {
-    state.onboardingArtQuizState = artQuizState
-  }),
   identifyUser: action((state) => {
     const { userID: userId } = state
 
@@ -981,7 +968,6 @@ export const getAuthModel = (): AuthModel => ({
       // upload events for Android devices. If they update the package, we can remove it.
       SiftReactNative.upload()
       SegmentTrackingProvider.identify?.(userId, { is_temporary_user: 0 })
-      updateExperimentsContext({ userId })
     }
 
     state.sessionState.isUserIdentified = true
@@ -1004,7 +990,6 @@ export const getAuthModel = (): AuthModel => ({
     GlobalStore.actions.artsyPrefs.pushPromptLogic.setPushPermissionsRequestedThisSession(false)
     SiftReactNative.unsetUserId()
     SegmentTrackingProvider.identify?.(undefined, { is_temporary_user: 1 })
-    updateExperimentsContext({ userId: undefined })
 
     await Promise.all([
       // TODO: Figure out why this is breaking for Maestro
@@ -1037,10 +1022,12 @@ export const getAuthModel = (): AuthModel => ({
         },
       })
     } catch (error) {
+      Sentry.captureMessage(`AuthModel verifyUser error ${error}`)
       return "something_went_wrong"
     }
 
     if (result.status !== 201) {
+      Sentry.captureMessage(`AuthModel verifyUser result status ${result.status}`)
       return "something_went_wrong"
     }
 
@@ -1053,6 +1040,18 @@ export const getAuthModel = (): AuthModel => ({
     }
   }),
 })
+
+const isTokenExpired = (expiresIn: string, bufferMs = 300_000) => {
+  const expirationTime = new Date(expiresIn).getTime()
+
+  if (isNaN(expirationTime)) {
+    // if expiresIn is not a valid date string, treat it as expired
+    return true
+  }
+
+  // check if the token is expired, considering a buffer to account for clock skew or delays
+  return Date.now() >= expirationTime - bufferMs
+}
 
 const tracks = {
   createdAccount: ({ signUpMethod }: { signUpMethod: AuthService }): Partial<CreatedAccount> => ({

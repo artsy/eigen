@@ -7,7 +7,7 @@ export const CardRailCard = styled.TouchableHighlight.attrs(() => ({
   underlayColor: "transparent",
 }))`
   width: ${CARD_WIDTH}px;
-  border: 1px solid ${themeGet("colors.black10")};
+  border: 1px solid ${themeGet("colors.mono10")};
   border-radius: 4px;
   overflow: hidden;
 `

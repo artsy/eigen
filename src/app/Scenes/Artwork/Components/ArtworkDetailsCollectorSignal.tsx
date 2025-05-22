@@ -1,14 +1,9 @@
-import {
-  ArrowUpRightIcon,
-  bullet,
-  FairIcon,
-  FireIcon,
-  Flex,
-  LinkText,
-  Text,
-} from "@artsy/palette-mobile"
+import { ArrowUpRightIcon } from "@artsy/icons/native"
+// TODO: MOPRAT-837 & MOPRAT-846
+// eslint-disable-next-line local-rules/no-palette-icon-imports
+import { bullet, FairIcon, FireIcon, Flex, LinkText, Text } from "@artsy/palette-mobile"
 import { ArtworkDetailsCollectorSignal_artwork$key } from "__generated__/ArtworkDetailsCollectorSignal_artwork.graphql"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { DateTime } from "luxon"
 import { graphql, useFragment } from "react-relay"
 
@@ -71,19 +66,21 @@ export const ArtworkDetailsCollectorSignal: React.FC<Props> = ({ artwork }) => {
 
   return (
     <Flex flexDirection="row" pt={4} pb={2}>
-      <SignalIcon mr={0.5} fill="black60" height={25} width={25} />
+      <SignalIcon mr={0.5} fill="mono60" height={25} width={25} />
 
       <Flex flex={1} flexDirection="column">
-        <Text variant="sm-display" color="black100">
+        <Text variant="sm-display" color="mono100">
           {singalTitle}
         </Text>
 
         {href ? (
-          <LinkText variant="sm" color="black60" onPress={() => navigate(href || "#")}>
-            {signalDescription}
-          </LinkText>
+          <RouterLink to={href || "#"} hasChildTouchable>
+            <LinkText variant="sm" color="mono60">
+              {signalDescription}
+            </LinkText>
+          </RouterLink>
         ) : (
-          <Text variant="sm" color="black60">
+          <Text variant="sm" color="mono60">
             {signalDescription}
           </Text>
         )}

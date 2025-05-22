@@ -1,4 +1,5 @@
 import { Text, TextProps, Button } from "@artsy/palette-mobile"
+import themeGet from "@styled-system/theme-get"
 import { defaultRules, MarkdownRules } from "app/utils/renderMarkdown"
 import React from "react"
 import { Modal as RNModal, TouchableWithoutFeedback, View, ViewProps } from "react-native"
@@ -28,7 +29,7 @@ const ModalBackgroundView = styled.View`
 
 const ModalInnerView = styled.View`
   width: 300;
-  background-color: white;
+  background-color: ${themeGet("colors.mono0")};
   padding: 20px;
   opacity: 1;
   border-radius: 2px;
@@ -64,7 +65,7 @@ export class Modal extends React.Component<ModalProps, ModalState> {
         ...DEFAULT_MARKDOWN_RULES.paragraph,
         react: (node, output, state) => {
           return (
-            <Text variant="sm" color="black60" key={state.key} textAlign={this.props.textAlign}>
+            <Text variant="sm" color="mono60" key={state.key} textAlign={this.props.textAlign}>
               {output(node.content, state)}
             </Text>
           )

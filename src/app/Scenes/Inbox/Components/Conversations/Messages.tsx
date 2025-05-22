@@ -8,8 +8,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { sortBy } from "lodash"
 import { DateTime } from "luxon"
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
-import { FlatList, RefreshControl, ViewStyle } from "react-native"
-import { isTablet } from "react-native-device-info"
+import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import styled from "styled-components/native"
 import { MessageGroup } from "./MessageGroup"
@@ -131,13 +130,6 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
 
   const refreshControl = <RefreshControl refreshing={reloadingData} onRefresh={reload} />
 
-  const messagesStyles: Partial<ViewStyle> = isTablet()
-    ? {
-        width: 708,
-        alignSelf: "center",
-      }
-    : {}
-
   return (
     <>
       <ToastComponent
@@ -147,7 +139,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
         placement="top"
         backgroundColor="blue100"
         duration="long"
-        Icon={() => <ShieldIcon shieldColor="white100" checkColor="white100" mr={1} />}
+        Icon={() => <ShieldIcon shieldColor="mono0" checkColor="mono0" mr={1} />}
       />
       <FlatList
         key={conversation.internalID}
@@ -171,7 +163,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
         onEndReached={loadMore}
         onEndReachedThreshold={0.2}
         refreshControl={refreshControl}
-        style={{ ...messagesStyles, paddingHorizontal: 10, flex: 0 }}
+        style={{ paddingHorizontal: 10, flex: 0 }}
         contentContainerStyle={{ justifyContent: "flex-end", flexGrow: 1 }}
         ListFooterComponent={<LoadingIndicator animating={fetchingMoreData} hidesWhenStopped />}
       />

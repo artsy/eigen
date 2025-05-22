@@ -179,6 +179,7 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigation
     geneArtwork: [DEFAULT_GENE_SORT, ...ORDERED_ARTWORK_SORTS],
     tagArtwork: [DEFAULT_TAG_SORT, ...ORDERED_ARTWORK_SORTS],
     local: localSortOptions ?? [],
+    collect: [DEFAULT_ARTWORK_SORT, ...ORDERED_ARTWORK_SORTS],
   }[filterType]
 
   const selectOption = (option: FilterData) => selectFiltersAction(option)

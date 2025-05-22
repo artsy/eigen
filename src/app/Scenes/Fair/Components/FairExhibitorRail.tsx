@@ -3,7 +3,6 @@ import { Flex } from "@artsy/palette-mobile"
 import { FairExhibitorRail_show$data } from "__generated__/FairExhibitorRail_show.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   CollectorSignals,
@@ -31,13 +30,11 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
         <SectionTitle
           title={partnerName}
           subtitle={`${count} works`}
+          href={viewAllUrl}
           onPress={() => {
-            if (!viewAllUrl) {
-              return
-            }
+            if (!viewAllUrl) return
 
             trackEvent(tracks.tappedShow(show))
-            navigate(viewAllUrl)
           }}
         />
       </Flex>

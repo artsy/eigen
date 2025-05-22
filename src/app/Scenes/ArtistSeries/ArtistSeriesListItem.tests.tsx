@@ -1,14 +1,13 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Touchable } from "@artsy/palette-mobile"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtistSeriesListItem } from "app/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { ArtistSeriesConnectionEdge } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { navigate } from "app/system/navigation/navigate"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { act } from "react-test-renderer"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("ArtistSeriesListItem", () => {
   it("navigates to the artist series when tapped", () => {
-    const artistSeriesListItem = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <ArtistSeriesListItem
         horizontalSlidePosition={2}
         contextScreenOwnerType={OwnerType.artist}
@@ -16,15 +15,13 @@ describe("ArtistSeriesListItem", () => {
       />
     )
 
-    const instance = artistSeriesListItem.root.findAllByType(Touchable)[0]
-
-    act(() => instance.props.onPress())
+    fireEvent.press(screen.getByTestId("list-item-image"))
 
     expect(navigate).toHaveBeenCalledWith("/artist-series/yayoi-kusama-pumpkins")
   })
 
   it("shows the artist series title, image and for sale artwork counts", () => {
-    const artistSeriesListItem = renderWithWrappersLEGACY(
+    renderWithWrappers(
       <ArtistSeriesListItem
         horizontalSlidePosition={2}
         contextScreenOwnerType={OwnerType.artist}
@@ -32,13 +29,14 @@ describe("ArtistSeriesListItem", () => {
       />
     )
 
-    const instance = artistSeriesListItem.root.findAllByType(Touchable)[0]
+    expect(screen.getByText("Pumpkins")).toBeOnTheScreen()
+    expect(screen.getByText("25 available")).toBeOnTheScreen()
 
-    expect(instance.findAllByProps({ testID: "list-item-image" })[0].props.src).toBe(
-      "https://d32dm0rphc51dk.cloudfront.net/dL3hz4h6f_tMHQjVHsdO4w/medium.jpg"
-    )
-    expect(instance.findByProps({ testID: "count" }).props.children).toBe("25 available")
-    expect(instance.findByProps({ testID: "title" }).props.children).toBe("Pumpkins")
+    expect(screen.getByTestId("list-item-image")).toBeOnTheScreen()
+
+    fireEvent.press(screen.getByLabelText("Artist Series List Item"))
+
+    expect(navigate).toHaveBeenCalledWith("/artist-series/yayoi-kusama-pumpkins")
   })
 })
 

@@ -1,10 +1,8 @@
+import { AppleIcon, FacebookIcon, GoogleIcon } from "@artsy/icons/native"
 import {
-  AppleIcon,
   BackButton,
   Button,
-  FacebookIcon,
   Flex,
-  GoogleIcon,
   Input,
   LinkText,
   Spacer,
@@ -137,7 +135,7 @@ const LoginWelcomeStepForm: React.FC = () => {
         importantForAutofill="yes"
         autoCorrect={false}
         blurOnSubmit={false}
-        placeholderTextColor={color("black30")}
+        placeholderTextColor={color("mono30")}
         ref={emailRef}
         spellCheck={false}
         keyboardType="email-address"
@@ -190,7 +188,7 @@ const LoginWelcomeStepForm: React.FC = () => {
 
         <Spacer y={1} />
 
-        <Text variant="xxs" color="black60" textAlign="center">
+        <Text variant="xxs" color="mono60" textAlign="center">
           By tapping Continue with Apple, Facebook, or Google, you agree to Artsy’s{" "}
           <LinkText
             variant="xxs"
@@ -246,6 +244,7 @@ const SocialLoginButtons: React.FC = () => {
             variant="outline"
             onPress={handleApplePress}
             accessibilityHint="Sign in with Apple"
+            accessibilityLabel="Apple"
           >
             <Flex alignItems="center" justifyContent="center">
               {/* On iOS, the icons need to be nudged down to be centered in the button. */}
@@ -257,6 +256,7 @@ const SocialLoginButtons: React.FC = () => {
           variant="outline"
           onPress={handleGooglePress}
           accessibilityHint="Sign in with Google"
+          accessibilityLabel="Google"
         >
           <Flex alignItems="center" justifyContent="center">
             <GoogleIcon width={23} height={23} style={Platform.OS === "ios" && { top: 4 }} />
@@ -266,6 +266,7 @@ const SocialLoginButtons: React.FC = () => {
           variant="outline"
           onPress={handleFacebookPress}
           accessibilityHint="Sign in with Facebook"
+          accessibilityLabel="Facebook"
         >
           <Flex alignItems="center" justifyContent="center">
             <FacebookIcon width={23} height={23} style={Platform.OS === "ios" && { top: 4 }} />

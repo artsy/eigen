@@ -4,17 +4,17 @@ import {
   AboveTheFoldFlatListProps,
 } from "app/Components/AboveTheFoldFlatList"
 import Spinner from "app/Components/Spinner"
-import { View } from "react-native"
+import { Ref } from "react"
+import { FlatListProps, View } from "react-native"
 
 export const INTER_CARD_PADDING = 15
 
 type CardRailFlatList<ItemType> = AboveTheFoldFlatListProps<ItemType>
 
-export function CardRailFlatList<ItemType>({
-  initialNumToRender: initialNumToRenderProp,
-  ...restProps
-}: CardRailFlatList<ItemType>) {
-  const initialNumToRender = initialNumToRenderProp || 2
+export function CardRailFlatList<ItemType>(
+  props: { listRef?: Ref<ItemType | any> } & FlatListProps<ItemType>
+) {
+  const initialNumToRender = props.initialNumToRender || 2
 
   return (
     <AboveTheFoldFlatList<ItemType>
@@ -26,7 +26,7 @@ export function CardRailFlatList<ItemType>({
       showsHorizontalScrollIndicator={false}
       scrollsToTop={false}
       initialNumToRender={initialNumToRender}
-      {...restProps}
+      {...props}
     />
   )
 }

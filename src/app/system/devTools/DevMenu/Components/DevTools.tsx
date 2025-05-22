@@ -11,18 +11,18 @@ import { Versions } from "app/store/migration"
 import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMenuButtonItem"
 import { DevToggleItem } from "app/system/devTools/DevMenu/Components/DevToggleItem"
 import { eigenSentryReleaseName } from "app/system/errorReporting/setupSentry"
+import { useUnleashEnvironment } from "app/system/flags/hooks/useUnleashEnvironment"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
 import { saveToken } from "app/utils/PushNotification"
-import { useUnleashEnvironment } from "app/utils/experiments/hooks"
 import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
 import { capitalize, sortBy } from "lodash"
 import { useState } from "react"
 import { Alert, Button, Platform } from "react-native"
-import Config from "react-native-config"
 import DeviceInfo from "react-native-device-info"
 import FastImage from "react-native-fast-image"
 import Keychain from "react-native-keychain"
+import Keys from "react-native-keys"
 
 const configurableDevToggleKeys = sortBy(
   Object.entries(devToggles),
@@ -124,15 +124,26 @@ export const DevTools: React.FC<{}> = () => {
               toast.show("Progressive Onboarding progress cleared ✅", "middle")
             }}
           />
+          <DevMenuButtonItem
+            title="Reset infinite discovery onboarding progress"
+            onPress={() => {
+              GlobalStore.actions.infiniteDiscovery.setHasInteractedWithOnboarding(false)
+              toast.show(
+                "Infinite discovery onboarding progress reset. It will now appear again when you open the infinite discovery.",
+                "middle"
+              )
+            }}
+          />
+
           <DevMenuButtonItem title={`Active Unleash env: ${capitalize(unleashEnv)}`} />
 
           <DevMenuButtonItem
             title="Throw Sentry Error"
             onPress={() => {
-              if (!Config.SENTRY_DSN) {
+              if (!Keys.secureFor("SENTRY_DSN")) {
                 Alert.alert(
                   "No Sentry DSN available",
-                  __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
+                  __DEV__ ? "Set it in keys.shared.json and re-build the app." : undefined
                 )
                 return
               }
@@ -142,10 +153,10 @@ export const DevTools: React.FC<{}> = () => {
           <DevMenuButtonItem
             title="Trigger Sentry Native Crash"
             onPress={() => {
-              if (!Config.SENTRY_DSN) {
+              if (!Keys.secureFor("SENTRY_DSN")) {
                 Alert.alert(
                   "No Sentry DSN available",
-                  __DEV__ ? "Set it in .env.shared and re-build the app." : undefined
+                  __DEV__ ? "Set it in keys.shared.json and re-build the app." : undefined
                 )
                 return
               }

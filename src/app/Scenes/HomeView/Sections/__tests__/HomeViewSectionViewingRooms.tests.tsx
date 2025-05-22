@@ -115,20 +115,18 @@ describe("HomeViewSectionViewingRooms", () => {
 
     fireEvent.press(screen.getByText("viewing room 1"))
 
-    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
-      [
-        {
-          "action": "tappedViewingRoomGroup",
-          "context_module": "<mock-value-for-field-"contextModule">",
-          "context_screen_owner_type": "home",
-          "destination_screen_owner_id": "one",
-          "destination_screen_owner_slug": "alessandro-pessoli-ardente-primavera-number-1",
-          "destination_screen_owner_type": "viewingRoom",
-          "horizontal_slide_position": 0,
-          "type": "thumbnail",
-        },
-      ]
-  `)
+    expect(mockTrackEvent.mock.calls[0]).toEqual([
+      {
+        action: "tappedViewingRoomGroup",
+        context_module: '<mock-value-for-field-"contextModule">',
+        context_screen_owner_type: "home",
+        destination_screen_owner_id: "one",
+        destination_screen_owner_slug: "alessandro-pessoli-ardente-primavera-number-1",
+        destination_screen_owner_type: "viewingRoom",
+        horizontal_slide_position: expect.any(Number),
+        type: "thumbnail",
+      },
+    ])
 
     expect(navigate).toHaveBeenCalledWith(
       "/viewing-room/alessandro-pessoli-ardente-primavera-number-1"

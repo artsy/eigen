@@ -48,9 +48,9 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
               hitSlop={DEFAULT_HIT_SLOP}
             >
               {isModalScreen(module) ? (
-                <CloseIcon fill="black100" />
+                <CloseIcon fill="mono100" />
               ) : (
-                <ArrowLeftIcon fill="onBackgroundHigh" />
+                <ArrowLeftIcon fill="mono100" />
               )}
             </Touchable>
           )
@@ -61,6 +61,7 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
         gestureEnabled: true,
         headerShadowVisible: Platform.OS === "ios",
         headerTitleStyle: {
+          fontWeight: "400",
           fontFamily: THEMES.v3.fonts.sans.regular,
           ...THEMES.v3.textTreatments["sm-display"],
           ...((module.options?.screenOptions?.headerTitleStyle as {} | undefined) ?? {}),

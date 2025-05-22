@@ -1,3 +1,4 @@
+import { fireEvent, screen } from "@testing-library/react-native"
 import { AutosuggestResultsPaginationQuery$rawResponse } from "__generated__/AutosuggestResultsPaginationQuery.graphql"
 import { AutosuggestResultsQuery$rawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
 import { InfiniteScrollFlashList } from "app/Components/InfiniteScrollFlashList"
@@ -6,10 +7,8 @@ import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { AutosuggestSearchResult } from "app/Scenes/Search/components/AutosuggestSearchResult"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { CatchErrors } from "app/utils/CatchErrors"
-import { extractText } from "app/utils/tests/extractText"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { FlatList } from "react-native"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { AutosuggestResults } from "./AutosuggestResults"
@@ -159,13 +158,15 @@ describe("AutosuggestResults", () => {
   })
 
   it(`has no elements to begin with`, async () => {
-    const tree = renderWithWrappersLEGACY(<TestWrapper query="" />)
-    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(0)
+    renderWithWrappers(<TestWrapper query="" />)
+
+    expect(screen.UNSAFE_queryByType(AutosuggestSearchResult)).not.toBeOnTheScreen()
   })
 
   it(`has some elements to begin with if you give it some`, async () => {
-    const tree = renderWithWrappersLEGACY(<TestWrapper query="michael" />)
-    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(0)
+    renderWithWrappers(<TestWrapper query="michael" />)
+
+    expect(screen.UNSAFE_queryByType(AutosuggestSearchResult)).toBeFalsy()
 
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
       "AutosuggestResultsQuery"
@@ -176,27 +177,26 @@ describe("AutosuggestResults", () => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
     })
 
-    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(1)
+    expect(screen.UNSAFE_getByType(AutosuggestSearchResult)).toBeTruthy()
   })
 
   it(`doesn't call loadMore until you start scrolling`, () => {
-    const tree = renderWithWrappersLEGACY(<TestWrapper query="michael" />)
+    renderWithWrappers(<TestWrapper query="michael" />)
     act(() => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
     })
-    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(1)
+
+    expect(screen.UNSAFE_getByType(AutosuggestSearchResult)).toBeTruthy()
 
     expect(env.mock.getAllOperations()).toHaveLength(0)
 
     // even if InfiniteScrollFlashList calls onEndReached, we ignore it until the user explicitly scrolls
-    act(() => {
-      tree.root.findByType(InfiniteScrollFlashList).props.onEndReached()
-    })
+    fireEvent(screen.UNSAFE_getByType(InfiniteScrollFlashList), "onEndReached")
+
     expect(env.mock.getAllOperations()).toHaveLength(0)
 
-    act(() => {
-      tree.root.findByType(InfiniteScrollFlashList).props.onScrollBeginDrag()
-    })
+    fireEvent(screen.UNSAFE_getByType(InfiniteScrollFlashList), "onScrollBeginDrag")
+
     expect(env.mock.getAllOperations()).toHaveLength(1)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
       "AutosuggestResultsPaginationQuery"
@@ -207,14 +207,12 @@ describe("AutosuggestResults", () => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage2 })
     })
 
-    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(2)
-    expect(extractText(tree.root)).toContain("Banksy")
-    expect(extractText(tree.root)).toContain("Andy Warhol")
+    expect(screen.UNSAFE_queryAllByType(AutosuggestSearchResult)).toHaveLength(2)
+    expect(screen.getByText("Banksy")).toBeOnTheScreen()
+    expect(screen.getByText("Andy Warhol")).toBeOnTheScreen()
 
     // and it works if onEndReached is called now
-    act(() => {
-      tree.root.findByType(InfiniteScrollFlashList).props.onEndReached()
-    })
+    fireEvent(screen.UNSAFE_getByType(InfiniteScrollFlashList), "onEndReached")
     expect(env.mock.getAllOperations()).toHaveLength(1)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
       "AutosuggestResultsPaginationQuery"
@@ -225,105 +223,86 @@ describe("AutosuggestResults", () => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage3 })
     })
 
-    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(3)
-    expect(extractText(tree.root)).toContain("Banksy")
-    expect(extractText(tree.root)).toContain("Andy Warhol")
-    expect(extractText(tree.root)).toContain("Alex Katz")
-  })
+    expect(screen.UNSAFE_queryAllByType(AutosuggestSearchResult)).toHaveLength(3)
 
-  it(`scrolls back to the top when the query changes`, async () => {
-    const tree = renderWithWrappersLEGACY(<TestWrapper query="michael" />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
-    })
-    const scrollToOffsetMock = jest.fn()
-    tree.root.findByType(InfiniteScrollFlashList).findByType(FlatList).instance.scrollToOffset =
-      scrollToOffsetMock
-
-    act(() => {
-      tree.update(<TestWrapper query="michaela" />)
-    })
-    act(() => {
-      env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
-    })
-
-    expect(scrollToOffsetMock).toHaveBeenCalledWith({ animated: true, offset: 0 })
+    expect(screen.getByText("Andy Warhol")).toBeOnTheScreen()
+    expect(screen.getByText("Alex Katz")).toBeOnTheScreen()
+    expect(screen.getByText("Banksy")).toBeOnTheScreen()
   })
 
   it(`shows the loading spinner until there's no more data`, async () => {
-    const tree = renderWithWrappersLEGACY(<TestWrapper query="michael" />)
+    renderWithWrappers(<TestWrapper query="michael" />)
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
-    expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
 
-    act(() => tree.root.findByType(InfiniteScrollFlashList).props.onScrollBeginDrag())
+    expect(screen.UNSAFE_getByType(Spinner)).toBeTruthy()
+
+    fireEvent(screen.UNSAFE_getByType(InfiniteScrollFlashList), "onScrollBeginDrag")
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage2 }))
 
-    expect(tree.root.findAllByType(Spinner)).toHaveLength(1)
+    expect(screen.UNSAFE_getByType(Spinner)).toBeTruthy()
 
-    act(() => tree.root.findByType(InfiniteScrollFlashList).props.onEndReached())
+    fireEvent(screen.UNSAFE_getByType(InfiniteScrollFlashList), "onEndReached")
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage3 }))
 
-    expect(tree.root.findAllByType(Spinner)).toHaveLength(0)
+    expect(screen.UNSAFE_queryByType(Spinner)).toBeFalsy()
   })
 
   it(`gives an appropriate message when there's no search results`, () => {
-    const tree = renderWithWrappersLEGACY(<TestWrapper query="michael" />)
+    renderWithWrappers(<TestWrapper query="michael" />)
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixtureEmpty }))
 
-    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(0)
-    expect(extractText(tree.root)).toContain("Sorry, we couldn’t find anything for “michael.”")
-    expect(extractText(tree.root)).toContain(
-      "Please try searching again with a different spelling."
-    )
+    expect(screen.UNSAFE_queryByType(AutosuggestSearchResult)).toBeFalsy()
+    expect(screen.getByText("Sorry, we couldn’t find anything for “michael.”")).toBeOnTheScreen()
+    expect(
+      screen.getByText("Please try searching again with a different spelling.")
+    ).toBeOnTheScreen()
   })
 
   it(`optionally hides the result type`, () => {
-    const tree = renderWithWrappersLEGACY(<TestWrapper query="michael" showResultType={false} />)
+    renderWithWrappers(<TestWrapper query="michael" showResultType={false} />)
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
-    expect(extractText(tree.root)).not.toContain("Artist")
+
+    expect(screen.queryByText("Artist")).not.toBeOnTheScreen()
   })
 
   it(`allows for custom touch handlers on search result items`, () => {
     const spy = jest.fn()
-    const tree = renderWithWrappersLEGACY(
-      <TestWrapper query="michael" showResultType={false} onResultPress={spy} />
-    )
+    renderWithWrappers(<TestWrapper query="michael" showResultType={false} onResultPress={spy} />)
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
-    tree.root.findByType(AutosuggestSearchResult).props.onResultPress()
+
+    fireEvent(screen.UNSAFE_getByType(AutosuggestSearchResult), "onResultPress")
     expect(spy).toHaveBeenCalled()
   })
 
   it("should show the loading placeholder ", () => {
-    const { getByLabelText } = renderWithWrappers(<TestWrapper query="michael" />)
+    renderWithWrappers(<TestWrapper query="michael" />)
 
-    expect(getByLabelText("Autosuggest results are loading")).toBeTruthy()
+    expect(screen.getByLabelText("Autosuggest results are loading")).toBeOnTheScreen()
   })
 
   it("should hide the loading placeholder when results are received", () => {
-    const { queryByLabelText } = renderWithWrappers(<TestWrapper query="michael" />)
+    renderWithWrappers(<TestWrapper query="michael" />)
 
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
 
-    expect(queryByLabelText("Autosuggest results are loading")).toBeFalsy()
+    expect(screen.queryByLabelText("Autosuggest results are loading")).toBeFalsy()
   })
 
   it("should show the default error message", async () => {
-    const { getByText } = renderWithWrappers(<TestWrapper query="michael" />)
+    renderWithWrappers(<TestWrapper query="michael" />)
 
     rejectMostRecentRelayOperation(env, new Error("Bad connection"))
 
-    expect(getByText("There seems to be a problem with the connection.")).toBeTruthy()
-    expect(getByText("Please try again shortly.")).toBeTruthy()
+    expect(screen.getByText("There seems to be a problem with the connection.")).toBeTruthy()
+    expect(screen.getByText("Please try again shortly.")).toBeTruthy()
   })
 
   it("should show the unable to load error message when showOnRetryErrorMessage prop is true", () => {
-    const { getByText } = renderWithWrappers(
-      <TestWrapper query="michael" showOnRetryErrorMessage />
-    )
+    renderWithWrappers(<TestWrapper query="michael" showOnRetryErrorMessage />)
 
     rejectMostRecentRelayOperation(env, new Error("Bad connection"))
 
-    expect(getByText("Something went wrong.")).toBeTruthy()
-    expect(getByText("Please adjust your query or try again shortly.")).toBeTruthy()
+    expect(screen.getByText("Something went wrong.")).toBeTruthy()
+    expect(screen.getByText("Please adjust your query or try again shortly.")).toBeTruthy()
   })
 })

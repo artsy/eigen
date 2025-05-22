@@ -1,6 +1,5 @@
 #import "AREmission.h"
-#import "AREventsModule.h"
-#import "ARAppDelegate.h"
+#import "AppDelegate.h"
 #import "ARTemporaryAPIModule.h"
 
 @implementation AREmission
@@ -28,7 +27,6 @@ static AREmission *_sharedInstance = nil;
     NSParameterAssert(state);
 
     if ((self = [super init])) {
-        _eventsModule = [AREventsModule new];
         _APIModule = [ARTemporaryAPIModule new];
         _notificationsManagerModule = [[ARNotificationsManager alloc] initWithState:state];
     }

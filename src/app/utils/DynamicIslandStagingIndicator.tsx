@@ -39,7 +39,7 @@ export const DynamicIslandStagingIndicator = () => {
       alignItems="center"
       justifyContent="center"
     >
-      <Flex backgroundColor="white" width={127} height={37.5} borderRadius={40} overflow="hidden" />
+      <Flex backgroundColor="mono0" width={127} height={37.5} borderRadius={40} overflow="hidden" />
     </Flex>
   )
 }

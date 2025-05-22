@@ -1,5 +1,5 @@
-import { Flex, Spacer, Text, Touchable } from "@artsy/palette-mobile"
-import { navigate } from "app/system/navigation/navigate"
+import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { ScrollView } from "react-native-gesture-handler"
 import { NotificationType } from "./types"
 
@@ -9,19 +9,19 @@ interface ActivityEmptyViewProps {
 }
 
 const artistLink = (
-  <Touchable onPress={() => navigate("/artists")}>
+  <RouterLink to="/artists">
     <Text variant="xs" underline>
       Artists
     </Text>
-  </Touchable>
+  </RouterLink>
 )
 
 const galleriesLink = (
-  <Touchable onPress={() => navigate("/galleries")}>
+  <RouterLink to="/galleries">
     <Text variant="xs" underline>
       Galleries
     </Text>
-  </Touchable>
+  </RouterLink>
 )
 
 const entityByType: Record<
@@ -74,12 +74,12 @@ export const ActivityEmptyView: React.FC<ActivityEmptyViewProps> = ({ type, refr
         <Flex mx={4} accessibilityLabel="Activities are empty" pt={4}>
           <Text variant="sm-display">{entity.title}</Text>
           <Spacer y={2} />
-          <Text variant="xs" color="black60">
+          <Text variant="xs" color="mono60">
             {entity.message}
           </Text>
           <Spacer y={2} />
           <Flex flexDirection="row" gap={1}>
-            <Text variant="xs" color="black60">
+            <Text variant="xs" color="mono60">
               {entity.geStartedMessage}
             </Text>
             {entity.links}
@@ -93,7 +93,7 @@ export const ActivityEmptyView: React.FC<ActivityEmptyViewProps> = ({ type, refr
     <Flex mx={2} accessibilityLabel="Activities are empty" pt={0}>
       <Text textAlign="center">{entity.title}</Text>
       <Spacer y={2} />
-      <Text variant="xs" color="black60" textAlign="center">
+      <Text variant="xs" color="mono60" textAlign="center">
         {entity.message}
       </Text>
     </Flex>

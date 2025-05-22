@@ -1,9 +1,20 @@
-import { NavigationContainer, NavigationContainerRef, StackActions } from "@react-navigation/native"
+import { useColor } from "@artsy/palette-mobile"
+import {
+  NavigationContainer,
+  NavigationContainerRef,
+  NavigationIndependentTree,
+  StackActions,
+} from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { StackScreenProps } from "@react-navigation/stack"
 import React from "react"
 import { View } from "react-native"
 
-const Stack = createNativeStackNavigator()
+type StackScreens = {
+  screen: ScreenProps
+}
+
+const Stack = createNativeStackNavigator<StackScreens>()
 interface ScreenProps {
   Component: React.ComponentType<any>
   props: object
@@ -16,9 +27,17 @@ export interface NavigatorIOSPushArgs {
   passProps?: object
 }
 
-const ScreenWrapper: React.FC<{ route: { params: ScreenProps } }> = (props) => {
+type ScreenWrapperProps = StackScreenProps<
+  {
+    screen: ScreenProps
+  },
+  "screen"
+>
+
+const ScreenWrapper: React.FC<ScreenWrapperProps> = (props) => {
+  const color = useColor()
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: color("mono0") }}>
       <props.route.params.Component
         {...props.route.params.props}
         navigator={props.route.params.navigator}
@@ -27,6 +46,9 @@ const ScreenWrapper: React.FC<{ route: { params: ScreenProps } }> = (props) => {
   )
 }
 
+/**
+ * @deprecated Please use react-navigation instead
+ */
 class NavigatorIOS extends React.Component<{
   initialRoute: { component: React.ComponentType<any>; passProps?: object }
 }> {
@@ -52,15 +74,17 @@ class NavigatorIOS extends React.Component<{
       navigator: this,
     }
     return (
-      <NavigationContainer ref={(ref) => (this.navigator = ref)} independent>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen
-            component={ScreenWrapper}
-            name="screen"
-            initialParams={initialScreenParams}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <NavigationIndependentTree>
+        <NavigationContainer ref={(ref) => (this.navigator = ref)}>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen
+              component={ScreenWrapper}
+              name="screen"
+              initialParams={initialScreenParams}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </NavigationIndependentTree>
     )
   }
 }

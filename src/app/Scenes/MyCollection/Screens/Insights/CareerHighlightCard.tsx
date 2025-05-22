@@ -40,7 +40,14 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
 
   return (
     <Touchable haptic onPress={onPress} testID="career-highlight-card-item">
-      <Flex p={1} height={135} width={205} backgroundColor="white" border={1} borderColor="black10">
+      <Flex
+        p={1}
+        height={135}
+        width={205}
+        backgroundColor="background"
+        border={1}
+        borderColor="mono10"
+      >
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
           <Flex
             width={26}
@@ -49,17 +56,17 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
             alignItems="center"
             justifyContent="center"
             border={1}
-            borderColor="black100"
+            borderColor="mono100"
             borderRadius={24}
           >
-            <Icon fill="black100" width={21} height={21} />
+            <Icon fill="mono100" width={21} height={21} />
           </Flex>
         </Flex>
         <Flex justifyContent="flex-end" flex={1}>
           <Text variant="lg-display" color="blue100">
             {count}
           </Text>
-          <Text variant="xs" color="black100">
+          <Text variant="xs" color="mono100">
             {label}
           </Text>
         </Flex>
@@ -82,10 +89,10 @@ export const CareerHighlightPromotionalCard: React.FC<CareerHighlightPromotional
       <Flex
         width={200}
         height={135}
-        backgroundColor="white100"
+        backgroundColor="background"
         flexDirection="row"
         border={1}
-        borderColor="black10"
+        borderColor="mono10"
       >
         <Flex p={1} flex={1}>
           <Flex flex={1} justifyContent="center">

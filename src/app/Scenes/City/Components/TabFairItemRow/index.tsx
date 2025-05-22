@@ -1,4 +1,5 @@
-import { Flex, Box, ClassTheme, Text } from "@artsy/palette-mobile"
+import { Flex, Box, Text } from "@artsy/palette-mobile"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import { Fair } from "app/Scenes/Map/types"
 import { navigate } from "app/system/navigation/navigate"
@@ -19,7 +20,7 @@ export class TabFairItemRow extends React.Component<Props> {
     const { item } = this.props
     const fairImage = item.image ? item.image.url : null
     return (
-      <ClassTheme>
+      <ThemeAwareClassTheme>
         {({ space }) => {
           const boxWidth = Dimensions.get("window").width - 62 - space(4) - space(1)
           return (
@@ -35,14 +36,14 @@ export class TabFairItemRow extends React.Component<Props> {
                     </Text>
                   )}
                   {!!item.counts && !!item.counts.partners && (
-                    <Text variant="sm" color="black60" numberOfLines={1} ellipsizeMode="tail">
+                    <Text variant="sm" color="mono60" numberOfLines={1} ellipsizeMode="tail">
                       {item.counts.partners > 1
                         ? `${item.counts.partners} Exhibitors`
                         : `${item.counts.partners} Exhibitor`}
                     </Text>
                   )}
                   {!!item.exhibition_period && (
-                    <Text variant="sm" color="black60" numberOfLines={1} ellipsizeMode="tail">
+                    <Text variant="sm" color="mono60" numberOfLines={1} ellipsizeMode="tail">
                       {item.exhibition_period}
                     </Text>
                   )}
@@ -51,7 +52,7 @@ export class TabFairItemRow extends React.Component<Props> {
             </TouchableWithoutFeedback>
           )
         }}
-      </ClassTheme>
+      </ThemeAwareClassTheme>
     )
   }
 }

@@ -1,6 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Box, Flex, RoundSearchInput, Spacer, Spinner, useSpace } from "@artsy/palette-mobile"
 import { Portal } from "@gorhom/portal"
+import { useNavigation } from "@react-navigation/native"
 import { FadeIn } from "app/Components/FadeIn"
 import { GlobalSearchInputOverlayEmptyState } from "app/Components/GlobalSearchInput/GlobalSearchInputOverlayEmptyState"
 import { useSearch } from "app/Components/GlobalSearchInput/useSearch"
@@ -86,11 +87,19 @@ export const GlobalSearchInputOverlay: React.FC<{
 }> = ({ hideModal, ownerType, visible }) => {
   const [query, setQuery] = useState("")
   const insets = useSafeAreaInsets()
+  const { goBack, canGoBack } = useNavigation()
 
   useBackHandler(() => {
+    if (!!canGoBack()) {
+      goBack()
+      return true
+    }
+
     if (visible) {
       hideModal()
+      return true
     }
+
     return false
   })
 
@@ -108,7 +117,7 @@ export const GlobalSearchInputOverlay: React.FC<{
     <FadeIn style={{ flex: 1 }} slide={false}>
       <Portal hostName={`${ownerType}-SearchOverlay`}>
         <Flex style={{ ...StyleSheet.absoluteFillObject }}>
-          <Flex flex={1} backgroundColor="white100" style={{ ...insets }}>
+          <Flex flex={1} backgroundColor="mono0" style={{ ...insets }}>
             <Flex px={2} pt={2}>
               <RoundSearchInput
                 placeholder={SEARCH_INPUT_PLACEHOLDER}

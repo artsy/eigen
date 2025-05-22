@@ -18,7 +18,8 @@ export const usePrefetch = () => {
 
 const prefetchRoute = async <TQuery extends OperationType>(
   route?: string | null,
-  variables?: VariablesOf<TQuery>
+  extraVariables?: VariablesOf<TQuery>,
+  onComplete?: () => void
 ) => {
   if (!route) return null
 
@@ -38,40 +39,57 @@ const prefetchRoute = async <TQuery extends OperationType>(
   const queries = module.queries
 
   if (!queries) {
-    if (logPrefetching) console.error(`[queryPrefetching] Cannot not find queries for ${route}.`)
+    if (logPrefetching) console.error(`[queryPrefetching] Cannot find queries for ${route}.`)
 
     return
   }
 
   return queries.map((query, index) => {
-    const allVariables = { ...module.queryVariables?.[index], ...result.params, ...variables }
+    const variables = (() => {
+      const prepareVariables = module.prepareVariables?.[index]
 
-    return prefetchQuery({ query, variables: allVariables, route })
+      if (!prepareVariables) {
+        return result.params
+      }
+
+      return prepareVariables(result.params)
+    })()
+
+    return prefetchQuery({
+      query,
+      variables: { ...variables, ...extraVariables },
+      route,
+      onComplete,
+    })
   })
 }
 
-const prefetchQuery = async ({
+export const prefetchQuery = async ({
   query,
   variables,
   route,
+  onComplete,
 }: {
   query: GraphQLTaggedNode
   variables?: Variables
   route?: string
+  onComplete?: () => void
 }) => {
   const environment = getRelayEnvironment()
 
   return fetchQuery(environment, query, variables ?? {}, {
     fetchPolicy: "store-or-network",
-    networkCacheConfig: {
-      force: false,
-    },
   }).subscribe({
     complete: () => {
-      if (logPrefetching)
+      if (logPrefetching) {
         console.log("[queryPrefetching] Completed prefetching", route, {
           variables,
         })
+      }
+
+      if (onComplete) {
+        onComplete()
+      }
     },
     error: () => {
       console.error("[queryPrefetching] Error prefetching", route, { variables })

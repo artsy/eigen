@@ -24,7 +24,6 @@ import {
   HORIZONTAL_FLATLIST_WINDOW_SIZE,
 } from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
@@ -39,7 +38,7 @@ interface HomeViewSectionAuctionResultsProps {
 }
 
 // Avoid the card width to be too wide on tablets
-const AUCTION_RESULT_CARD_WIDTH = Math.min(400, Dimensions.get("window").width * 0.9)
+export const AUCTION_RESULT_CARD_WIDTH = Math.min(400, Dimensions.get("window").width * 0.9)
 
 export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResultsProps> = ({
   section: sectionProp,
@@ -73,8 +72,6 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
         section.contextModule as ContextModule,
         (viewAll?.ownerType || OwnerType.auctionResultsForArtistsYouFollow) as ScreenOwnerType
       )
-
-      navigate(href)
     }
   }
 
@@ -113,7 +110,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
         keyExtractor={(item) => item.internalID}
         ListFooterComponent={
           viewAll ? (
-            <BrowseMoreRailCard onPress={onViewAllPress} text={viewAll.buttonText} />
+            <BrowseMoreRailCard href={href} onPress={onViewAllPress} text={viewAll.buttonText} />
           ) : undefined
         }
       />

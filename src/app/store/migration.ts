@@ -57,9 +57,18 @@ export const Versions = {
   DeleteDirtyArtworkDetails: 44,
   AddSubmissionDraft: 45,
   DeleteArtworkAndArtistViewOption: 46,
+  AddInfiniteDiscoveryModel: 47,
+  MoveOnboardingStateToOnboardingModel: 48,
+  AddSavedArtworksCountToInfiniteDiscoveryModel: 49,
+  RemoveArworkSubmissionModel: 50,
+  RemoveRequestPriceEstimateModel: 51,
+  RefactorDarkModeValues: 52,
+  RemoveDiscoveredArtworkIdsFromInfiniteDiscoveryModel: 53,
+  AddHasIntereactedWithOnboardingToInfiniteDiscoveryModel: 54,
+  AddHasSavedArtworksToInfiniteDiscoveryModel: 55,
 }
 
-export const CURRENT_APP_VERSION = Versions.DeleteArtworkAndArtistViewOption
+export const CURRENT_APP_VERSION = Versions.AddHasSavedArtworksToInfiniteDiscoveryModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -329,6 +338,43 @@ export const artsyAppMigrations: Migrations = {
   [Versions.DeleteArtworkAndArtistViewOption]: (state) => {
     delete state.userPrefs.artworkViewOption
     delete state.userPrefs.artistViewOption
+  },
+  [Versions.AddInfiniteDiscoveryModel]: (state) => {
+    state.infiniteDiscovery = {
+      discoveredArtworkIds: [],
+    }
+  },
+  [Versions.MoveOnboardingStateToOnboardingModel]: (state) => {
+    state.onboarding = {
+      onboardingState:
+        state.auth.onboardingState === "none" ? "incomplete" : state.auth.onboardingState,
+      onboardingArtQuizState: state.auth.onboardingArtQuizState,
+    }
+    delete state.auth.onboardingState
+    delete state.auth.onboardingArtQuizState
+  },
+  [Versions.AddSavedArtworksCountToInfiniteDiscoveryModel]: (state) => {
+    state.infiniteDiscovery.savedArtworksCount = 0
+  },
+  [Versions.RemoveArworkSubmissionModel]: (state) => {
+    delete state.artworkSubmission
+  },
+  [Versions.RemoveRequestPriceEstimateModel]: (state) => {
+    delete state.requestedPriceEstimates
+  },
+  [Versions.RefactorDarkModeValues]: (state) => {
+    state.devicePrefs.darkModeOption = "system"
+    delete state.devicePrefs.usingSystemColorScheme
+    delete state.devicePrefs.forcedColorScheme
+  },
+  [Versions.RemoveDiscoveredArtworkIdsFromInfiniteDiscoveryModel]: (state) => {
+    delete state.infiniteDiscovery.discoveredArtworkIds
+  },
+  [Versions.AddHasIntereactedWithOnboardingToInfiniteDiscoveryModel]: (state) => {
+    state.infiniteDiscovery.hasInteractedWithOnboarding = false
+  },
+  [Versions.AddHasSavedArtworksToInfiniteDiscoveryModel]: (state) => {
+    state.infiniteDiscovery.hasSavedArtworks = false
   },
 }
 

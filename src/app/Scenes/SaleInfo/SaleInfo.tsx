@@ -7,7 +7,6 @@ import { Markdown } from "app/Components/Markdown"
 import { MenuItem } from "app/Components/MenuItem"
 import { RegisterToBidButtonContainer } from "app/Scenes/Sale/Components/RegisterToBidButton"
 import { saleStatus } from "app/Scenes/Sale/helpers"
-import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { PlaceholderText, PlaceholderBox } from "app/utils/placeholders"
 import { defaultRules } from "app/utils/renderMarkdown"
@@ -30,12 +29,7 @@ const AuctionSupport = () => {
       <Text variant="sm-display" px={2} mb="15px">
         Auction support
       </Text>
-      <MenuItem
-        title="Auction FAQs"
-        onPress={() => {
-          navigate("/auction-faq")
-        }}
-      />
+      <MenuItem title="Auction FAQs" href="/auction-faq" />
       <MenuItem
         title="Contact us for help"
         onPress={() => {
@@ -51,7 +45,7 @@ const AuctionIsLive = () => (
     <Text variant="sm-display" mb={2} mt={1}>
       This is a live auction
     </Text>
-    <Text variant="sm" color="black" fontSize={15}>
+    <Text variant="sm" color="mono100" fontSize={15}>
       Participating in a live auction means you’ll be competing against bidders in real time on an
       auction room floor. You can place max bids which will be represented by Artsy in the auction
       room or you can bid live when the auction opens.
@@ -80,10 +74,10 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
 
     return (
       <Flex mb={1}>
-        <Text variant="sm" color="black" fontSize={15} mt={25} fontWeight="500">
+        <Text variant="sm" color="mono100" fontSize={15} mt={25} fontWeight="500">
           Live bidding opens on
         </Text>
-        <Text variant="sm" color="black" fontSize={15}>
+        <Text variant="sm" color="mono100" fontSize={15}>
           {`${moment(sale.liveStartAt).format("dddd, MMMM, D, YYYY")} at ${moment(sale.liveStartAt)
             .tz(tz)
             .format("h:mma z")}`}

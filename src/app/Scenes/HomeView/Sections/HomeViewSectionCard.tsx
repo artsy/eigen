@@ -6,8 +6,9 @@ import {
   Skeleton,
   SkeletonBox,
   Text,
-  Touchable,
+  useColor,
   useScreenDimensions,
+  useSpace,
 } from "@artsy/palette-mobile"
 import { HomeViewSectionCardQuery } from "__generated__/HomeViewSectionCardQuery.graphql"
 import { HomeViewSectionCard_section$key } from "__generated__/HomeViewSectionCard_section.graphql"
@@ -15,8 +16,8 @@ import { HeroUnit } from "app/Scenes/HomeView/Components/HeroUnit"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { navigate } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { GlobalStore } from "app/store/GlobalStore"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { memo } from "react"
 import { isTablet } from "react-native-device-info"
@@ -35,6 +36,9 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
   ...flexProps
 }) => {
   const tracking = useHomeViewTracking()
+  const theme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+  const space = useSpace()
+  const color = useColor()
 
   const { width, height } = useScreenDimensions()
   const section = useFragment(HomeViewSectionCardFragment, sectionProp)
@@ -43,21 +47,17 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
     return null
   }
 
-  const { title, subtitle, image, buttonText: btnText } = section.card
+  const { title, subtitle, image, buttonText: btnText, badgeText } = section.card
 
   const imageHeight = height * 0.5
 
   const hasImage = !!image?.imageURL
-  const textColor = hasImage ? "white100" : "black100"
+  const textColor = hasImage && theme !== "dark" ? "mono0" : "mono100"
   const buttonText = btnText ?? "More"
   const route = getRoute(section.card)
 
   const onPress = () => {
     tracking.tappedShowMore(buttonText, section.contextModule as ContextModule)
-
-    if (route) {
-      navigate(route)
-    }
   }
 
   return (
@@ -74,7 +74,7 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
           onPress={onPress}
         />
       ) : (
-        <Touchable onPress={onPress} haptic="impactLight">
+        <RouterLink onPress={onPress} to={route} haptic="impactLight">
           {!!hasImage && (
             <Flex position="absolute">
               <FastImage
@@ -84,12 +84,12 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
               />
               <LinearGradient
                 colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 1)"]}
-                start={{ x: 0, y: 0 }}
+                start={{ x: 0, y: 0.3 }}
                 end={{ x: 0, y: 1 }}
                 style={{
                   position: "absolute",
                   width: "100%",
-                  height: "40%",
+                  height: "100%",
                   bottom: 0,
                 }}
               />
@@ -97,11 +97,25 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
           )}
 
           <Flex justifyContent="flex-end" px={2} pb={2} height={hasImage ? imageHeight : undefined}>
+            {!!badgeText && (
+              <Flex flexDirection="row" mb={0.5}>
+                <Text
+                  // We want to always show the badge text on white to make sure it's accessible on dark mode
+                  color="white"
+                  backgroundColor={color("blue100")}
+                  style={{ paddingHorizontal: space(0.5) }}
+                  variant="xs"
+                >
+                  {badgeText}
+                </Text>
+              </Flex>
+            )}
+
             <Text variant="lg-display" color={textColor}>
               {title}
             </Text>
 
-            <Flex mt={0.5} justifyContent="space-between" flexDirection="row">
+            <Flex mt={0.5} justifyContent="space-between" flexDirection="row" alignItems="flex-end">
               <Flex flex={1} mr={2}>
                 <Text variant="sm-display" color={textColor}>
                   {subtitle}
@@ -110,18 +124,20 @@ export const HomeViewSectionCard: React.FC<HomeViewSectionCardProps> = ({
 
               {!!route && (
                 <Flex mt={0.5} maxWidth={150}>
-                  <Button
-                    variant={hasImage ? "outlineLight" : "fillDark"}
-                    size="small"
-                    onPress={onPress}
-                  >
-                    {buttonText}
-                  </Button>
+                  <RouterLink hasChildTouchable onPress={onPress} to={route}>
+                    <Button
+                      variant={hasImage && theme !== "dark" ? "outlineLight" : "fillDark"}
+                      size="small"
+                      iconPosition="right"
+                    >
+                      {buttonText}
+                    </Button>
+                  </RouterLink>
                 </Flex>
               )}
             </Flex>
           </Flex>
-        </Touchable>
+        </RouterLink>
       )}
 
       <HomeViewSectionSentinel
@@ -141,6 +157,7 @@ const HomeViewSectionCardFragment = graphql`
       title
       subtitle
       href
+      badgeText
       buttonText
       image {
         imageURL
@@ -174,12 +191,6 @@ const homeViewSectionCardQuery = graphql`
 `
 
 export const HomeViewSectionCardQueryRenderer: React.FC<SectionSharedProps> = memo((props) => {
-  const isInfiniteDiscoveryEnabled = useFeatureFlag("AREnableInfiniteDiscovery")
-
-  if (props.sectionID === "home-view-section-infinite-discovery" && !isInfiniteDiscoveryEnabled) {
-    return null
-  }
-
   return withSuspense({
     Component: ({ sectionID, index, ...flexProps }) => {
       const data = useLazyLoadQuery<HomeViewSectionCardQuery>(

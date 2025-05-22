@@ -1,21 +1,20 @@
-import { useArtworkListsContext } from "app/Components/ArtworkLists/ArtworkListsContext"
+import { Flex, Spacer } from "@artsy/palette-mobile"
+import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ArtworkListsBottomSheetSectionTitle } from "app/Components/ArtworkLists/components/ArtworkListsBottomSheetSectionTitle"
 import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
 import { ArtworkListsViewName } from "app/Components/ArtworkLists/views/constants"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
-import { useCallback } from "react"
 import { CreateNewArtworkListForm } from "./components/CreateNewArtworkListForm"
 
 export const CreateNewArtworkListView = () => {
-  const { dispatch } = useArtworkListsContext()
+  const setCreateNewArtworkListViewVisible = ArtworkListsStore.useStoreActions(
+    (actions) => actions.setCreateNewArtworkListViewVisible
+  )
   const bottomOffset = useArtworkListsBottomOffset(2)
 
-  const closeCurrentView = useCallback(() => {
-    dispatch({
-      type: "SET_CREATE_NEW_ARTWORK_LIST_VIEW_VISIBLE",
-      payload: false,
-    })
-  }, [dispatch])
+  const closeCurrentView = () => {
+    setCreateNewArtworkListViewVisible(false)
+  }
 
   return (
     <AutoHeightBottomSheet
@@ -23,9 +22,13 @@ export const CreateNewArtworkListView = () => {
       name={ArtworkListsViewName.CreateNewArtworkLists}
       onDismiss={closeCurrentView}
     >
-      <ArtworkListsBottomSheetSectionTitle>Create a new list</ArtworkListsBottomSheetSectionTitle>
+      <Flex px={2} mt={2} mb={`${bottomOffset}px`}>
+        <ArtworkListsBottomSheetSectionTitle>New list</ArtworkListsBottomSheetSectionTitle>
 
-      <CreateNewArtworkListForm m={2} mb={`${bottomOffset}px`} />
+        <Spacer y={2} />
+
+        <CreateNewArtworkListForm />
+      </Flex>
     </AutoHeightBottomSheet>
   )
 }

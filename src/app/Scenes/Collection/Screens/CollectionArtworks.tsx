@@ -118,7 +118,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
       >
         <ArtworkGridItem
           itemIndex={index}
-          contextScreenOwnerType={OwnerType.artist}
+          contextScreenOwnerType={OwnerType.collection}
           contextScreenOwnerId={collection.id}
           contextScreenOwnerSlug={collection.slug}
           artwork={item}
@@ -171,7 +171,6 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
         exitModal={handleFilterClose}
         closeModal={handleFilterClose}
         mode={FilterModalMode.ArtistArtworks}
-        shouldShowCreateAlertButton
       />
     </>
   )

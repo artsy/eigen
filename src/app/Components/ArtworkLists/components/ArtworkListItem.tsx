@@ -62,7 +62,7 @@ const Item: FC<ArtworkListItemProps> = (props) => {
 
   return (
     <TouchableOpacity disabled={!!offerSettingsList} onPress={handlePress} testID="artworkListItem">
-      <Flex py={1} px={2} flexDirection="row" alignItems="center">
+      <Flex pb={1} px={2} flexDirection="row" alignItems="center">
         <Join separator={<Spacer x={1} />}>
           <ArtworkListImagePreview imageURL={imageURL} />
 
@@ -75,10 +75,10 @@ const Item: FC<ArtworkListItemProps> = (props) => {
               </Flex>
 
               {!props.shareableWithPartners && !!isArtworkListOfferabilityEnabled && (
-                <EyeClosedIcon accessibilityLabel="EyeClosedIcon" ml={0.5} fill="black100" />
+                <EyeClosedIcon accessibilityLabel="EyeClosedIcon" ml={0.5} fill="mono100" />
               )}
             </Flex>
-            <Text variant="xs" color="black60">
+            <Text variant="xs" color="mono60">
               {getArtworksCountText()}
             </Text>
           </Flex>

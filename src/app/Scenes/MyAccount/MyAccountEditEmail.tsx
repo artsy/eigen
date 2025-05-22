@@ -1,22 +1,32 @@
-import { Flex, Input, Text, Touchable } from "@artsy/palette-mobile"
+import { OwnerType } from "@artsy/cohesion"
+import { Flex, Input, SkeletonBox, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountEditEmailQuery } from "__generated__/MyAccountEditEmailQuery.graphql"
-import { MyAccountEditEmail_me$data } from "__generated__/MyAccountEditEmail_me.graphql"
+import { MyAccountEditEmail_me$key } from "__generated__/MyAccountEditEmail_me.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useToast } from "app/Components/Toast/toastHook"
+import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { goBack } from "app/system/navigation/navigate"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderBox } from "app/utils/placeholders"
-import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import React, { useEffect, useRef, useState } from "react"
-import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { string } from "yup"
 import { MyAccountFieldEditScreen } from "./Components/MyAccountFieldEditScreen"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
-const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me$data; relay: RelayProp }> = ({
-  me,
-  relay,
-}) => {
+interface MyAccountEditEmailProps {
+  me: MyAccountEditEmail_me$key
+}
+
+export const MyAccountEditEmail: React.FC<MyAccountEditEmailProps> = (props) => {
+  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
+  const me = useFragment(meFragment, props.me)
+  const toast = useToast()
+
   const [email, setEmail] = useState<string>(me.email ?? "")
 
   const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
@@ -29,22 +39,24 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me$data; relay: Rela
   const isEmailValid = Boolean(email && string().email().isValidSync(email))
 
   useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => {
-        return (
-          <Touchable onPress={handleSave} disabled={!isEmailValid}>
-            <Text variant="xs" color={isEmailValid ? "black100" : "black60"}>
-              Save
-            </Text>
-          </Touchable>
-        )
-      },
-    })
+    if (!enableRedesignedSettings) {
+      navigation.setOptions({
+        headerRight: () => {
+          return (
+            <Touchable onPress={handleSave} disabled={!isEmailValid}>
+              <Text variant="xs" color={isEmailValid ? "mono100" : "mono60"}>
+                Save
+              </Text>
+            </Touchable>
+          )
+        },
+      })
+    }
   }, [navigation, email])
 
   const handleSave = async () => {
     try {
-      await updateMyUserProfile({ email }, relay.environment)
+      await updateMyUserProfile({ email })
 
       if (email !== me.email) {
         toast.show("Please confirm your new email for this update to take effect", "middle", {
@@ -60,10 +72,37 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me$data; relay: Rela
 
   const editScreenRef = useRef<MyAccountFieldEditScreen>(null)
 
-  const toast = useToast()
+  if (enableRedesignedSettings) {
+    return (
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({
+          context_screen_owner_type: OwnerType.accountEmail,
+        })}
+      >
+        <MyProfileScreenWrapper title="Email" onPress={handleSave} isValid={isEmailValid}>
+          <Input
+            accessibilityLabel="email-input"
+            enableClearButton
+            value={email}
+            onChangeText={setEmail}
+            autoFocus
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoComplete="off"
+            onSubmitEditing={handleSave}
+            error={receivedError}
+          />
+        </MyProfileScreenWrapper>
+      </ProvideScreenTrackingWithCohesionSchema>
+    )
+  }
 
   return (
-    <>
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.accountEmail,
+      })}
+    >
       <Flex p={2}>
         <Input
           accessibilityLabel="email-input"
@@ -82,11 +121,37 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me$data; relay: Rela
           error={receivedError}
         />
       </Flex>
-    </>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
+const meFragment = graphql`
+  fragment MyAccountEditEmail_me on Me {
+    email
+  }
+`
+
+const myAccountEditEmailQuery = graphql`
+  query MyAccountEditEmailQuery {
+    me {
+      ...MyAccountEditEmail_me
+    }
+  }
+`
+
 const MyAccountEditEmailPlaceholder: React.FC<{}> = () => {
+  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
+
+  if (enableRedesignedSettings) {
+    return (
+      <MyProfileScreenWrapper title="Email">
+        <Flex p={2}>
+          <SkeletonBox height={40} />
+        </Flex>
+      </MyProfileScreenWrapper>
+    )
+  }
+
   return (
     <Flex p={2}>
       <PlaceholderBox height={40} />
@@ -94,30 +159,25 @@ const MyAccountEditEmailPlaceholder: React.FC<{}> = () => {
   )
 }
 
-export const MyAccountEditEmailContainer = createFragmentContainer(MyAccountEditEmail, {
-  me: graphql`
-    fragment MyAccountEditEmail_me on Me {
-      email
-    }
-  `,
-})
+export const MyAccountEditEmailQueryRenderer: React.FC<{}> = withSuspense({
+  Component: ({}) => {
+    const data = useLazyLoadQuery<MyAccountEditEmailQuery>(myAccountEditEmailQuery, {})
 
-export const MyAccountEditEmailQueryRenderer: React.FC<{}> = () => {
-  return (
-    <QueryRenderer<MyAccountEditEmailQuery>
-      environment={getRelayEnvironment()}
-      query={graphql`
-        query MyAccountEditEmailQuery {
-          me {
-            ...MyAccountEditEmail_me
-          }
-        }
-      `}
-      render={renderWithPlaceholder({
-        Container: MyAccountEditEmailContainer,
-        renderPlaceholder: () => <MyAccountEditEmailPlaceholder />,
-      })}
-      variables={{}}
-    />
-  )
-}
+    if (!data?.me) {
+      return null
+    }
+
+    return <MyAccountEditEmail me={data?.me} />
+  },
+  LoadingFallback: MyAccountEditEmailPlaceholder,
+  ErrorFallback: (fallbackProps) => {
+    return (
+      <LoadFailureView
+        onRetry={fallbackProps.resetErrorBoundary}
+        useSafeArea={false}
+        error={fallbackProps.error}
+        trackErrorBoundary={false}
+      />
+    )
+  },
+})

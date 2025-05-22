@@ -143,14 +143,14 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           animate={{ opacity: 1 }}
           transition={{ type: "timing", duration: 1500 }}
         >
-          <Text variant="xl" color="white">
+          <Text variant="xl" color="mono0">
             Collect Art by the World’s Leading Artists
           </Text>
 
           <Spacer y={1} />
 
-          <Text variant="sm" color="white">
-            Build your personalized profile, get market insights, buy and sell art with confidence.
+          <Text variant="sm" color="mono0">
+            Build your personalized profile, get market insights and buy art with confidence.
           </Text>
 
           <Spacer y={2} />
@@ -183,9 +183,9 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
             </Flex>
           </Flex>
 
-          <Text textAlign="center" color="black30" mt={4}>
+          <Text textAlign="center" color="mono30" mt={4}>
             Faith Ringgold{" "}
-            <Text fontStyle="italic" color="black30">
+            <Text fontStyle="italic" color="mono30">
               Groovin' High, 1996
             </Text>
             .

@@ -25,7 +25,7 @@ export const Questions: React.FC<QuestionsProps> = (props) => {
           me={props.me}
           variant="outline"
           size="small"
-          icon={<EnvelopeIcon fill="black100" width="16px" height="16px" />}
+          icon={<EnvelopeIcon fill="mono100" width="16px" height="16px" />}
         />
       </Flex>
     </Flex>

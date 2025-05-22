@@ -11,11 +11,10 @@ import {
   PopIn,
   Touchable,
 } from "@artsy/palette-mobile"
-import { FancyModal } from "app/Components/FancyModal/FancyModal"
 import { INPUT_HEIGHT, InputTitle } from "app/Components/Input"
 import { SearchInput } from "app/Components/SearchInput"
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { FlatList, TextInput, TouchableOpacity } from "react-native"
+import { FlatList, Modal, TextInput, TouchableOpacity } from "react-native"
 
 export interface SelectOption<ValueType> {
   value: ValueType
@@ -124,7 +123,7 @@ const SelectButton: React.FC<{
       <InputTitle>{title}</InputTitle>
 
       {subTitle ? (
-        <Text variant="xs" mb={0.5} color={color("black60")}>
+        <Text variant="xs" mb={0.5} color={color("mono60")}>
           {subTitle}
         </Text>
       ) : (
@@ -136,16 +135,16 @@ const SelectButton: React.FC<{
           flexDirection="row"
           height={INPUT_HEIGHT}
           borderWidth={1}
-          borderColor={hasError ? color("red100") : color("black10")}
+          borderColor={hasError ? color("red100") : color("mono10")}
           justifyContent="space-between"
           alignItems="center"
         >
           {value ? (
-            <Text variant="sm" color="black100">
+            <Text variant="sm" color="mono100">
               {value}
             </Text>
           ) : (
-            <Text variant="sm" color="black60">
+            <Text variant="sm" color="mono60">
               {placeholder ?? "Pick an option"}
             </Text>
           )}
@@ -249,12 +248,7 @@ const SelectModal: React.FC<{
   }, [searchTerm, props.visible])
 
   return (
-    <FancyModal
-      visible={props.visible}
-      onBackgroundPressed={props.onDismiss}
-      maxHeight={props.maxHeight}
-      onModalFinishedClosing={props.onModalFinishedClosing}
-    >
+    <Modal visible={props.visible} onDismiss={props.onDismiss} onRequestClose={props.onDismiss}>
       <Flex p={2} pb="15px" flexDirection="row" alignItems="center" flexGrow={0}>
         <Flex flex={1} />
         <Flex flex={2} alignItems="center">
@@ -267,7 +261,7 @@ const SelectModal: React.FC<{
           hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
           style={{ flex: 1, alignItems: "flex-end" }}
         >
-          <CloseIcon fill="black60" />
+          <CloseIcon fill="mono60" />
         </TouchableOpacity>
       </Flex>
       {!!props.enableSearch && (
@@ -297,7 +291,7 @@ const SelectModal: React.FC<{
         onLayout={(e) => (flatListHeight.current = e.nativeEvent.layout.height)}
         renderItem={({ item, index }) => (
           <Touchable
-            underlayColor={color("black10")}
+            underlayColor={color("mono10")}
             onPress={() => {
               setValue(item.value)
               // give the pop-in animation a chance to play
@@ -315,7 +309,7 @@ const SelectModal: React.FC<{
               justifyContent="space-between"
               height={ROW_HEIGHT}
               alignItems="center"
-              backgroundColor={localValue === item.value ? "black5" : "white"}
+              backgroundColor={localValue === item.value ? "mono5" : "mono0"}
               flexGrow={0}
             >
               {props.renderItemLabel?.(item) ?? (
@@ -337,6 +331,6 @@ const SelectModal: React.FC<{
           </Touchable>
         )}
       />
-    </FancyModal>
+    </Modal>
   )
 }

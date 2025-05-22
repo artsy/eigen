@@ -1,4 +1,4 @@
-import { Box, Flex, Text, useColor } from "@artsy/palette-mobile"
+import { Flex, Text, useColor } from "@artsy/palette-mobile"
 import { ArtworkPartnerOfferNote_artwork$key } from "__generated__/ArtworkPartnerOfferNote_artwork.graphql"
 import { ArtworkPartnerOfferNote_partnerOffer$key } from "__generated__/ArtworkPartnerOfferNote_partnerOffer.graphql"
 import { ImageBackground } from "react-native"
@@ -27,7 +27,7 @@ export const ArtworkPartnerOfferNote: React.FC<ArtworkPartnerOfferNoteProps> = (
   }
 
   return (
-    <Flex flexDirection="row" p={1} backgroundColor="black5">
+    <Flex flexDirection="row" p={1} backgroundColor="mono5">
       {!!partnerIcon && (
         <Flex mr={1}>
           <ImageBackground
@@ -36,22 +36,22 @@ export const ArtworkPartnerOfferNote: React.FC<ArtworkPartnerOfferNoteProps> = (
             style={{ width: 30, height: 30 }}
             imageStyle={{
               borderRadius: 15,
-              borderColor: color("black30"),
+              borderColor: color("mono30"),
               borderWidth: 1,
             }}
           />
         </Flex>
       )}
 
-      <Box>
-        <Text variant="sm-display" color="black100" fontWeight="bold">
+      <Flex flex={1}>
+        <Text variant="sm-display" color="mono100" fontWeight="bold">
           Note from the gallery
         </Text>
 
-        <Text variant="sm" color="black100">
+        <Text variant="sm" color="mono100">
           “{note}”
         </Text>
-      </Box>
+      </Flex>
     </Flex>
   )
 }

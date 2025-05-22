@@ -92,6 +92,37 @@ lane :upload_sentry_sourcemaps do |options|
   end
 end
 
+lane :upload_expo_sourcemaps do |options|
+  sentry_cli_path = options[:sentry_cli_path]
+  org_slug = options[:org_slug]
+  project_slug = options[:project_slug]
+  sentry_release_name = options[:sentry_release_name]
+  dist = options[:dist]
+  build_folder = options[:build_folder]
+  platform = options[:platform]
+
+  sourcemap_dir = "#{build_folder}/_expo/static/js"
+  file_base = Dir.glob("#{sourcemap_dir}/#{platform}/index*.hbc").first
+
+  unless file_base
+    raise "JS bundle not found for platform: #{platform}"
+  end
+
+  bundle_path = file_base
+  sourcemap_path = "#{file_base}.map"
+
+  upload_sentry_sourcemaps(
+    sentry_cli_path: sentry_cli_path,
+    org_slug: org_slug,
+    project_slug: project_slug,
+    sentry_release_name: sentry_release_name,
+    dist: dist,
+    bundle_path: bundle_path,
+    sourcemap_path: sourcemap_path,
+    silence_failures: true # we ship expo releases every commit to main, failures are noisy
+  )
+end
+
 private_lane :upload_dsyms_to_sentry do |options|
   org_slug = options[:org_slug]
   project_slug = options[:project_slug]
@@ -105,11 +136,14 @@ private_lane :upload_dsyms_to_sentry do |options|
 
   Dir.glob(File.join(dsyms_path, '*.dSYM')).each do |dsym_path|
     # No need to specify `dist` as the build number is encoded in the dSYM's Info.plist
-    sentry_upload_dsym(auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
-                       sentry_cli_path: sentry_cli_path,
-                       org_slug: org_slug,
-                       project_slug: project_slug,
-                       dsym_path: dsym_path)
+    sentry_debug_files_upload(
+      auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
+      sentry_cli_path: sentry_cli_path,
+      org_slug: org_slug,
+      project_slug: project_slug,
+      path: dsym_path
+    )
+
     puts "Uploaded dsym for #{project_slug}"
   end
   sh "rm -rf #{dsyms_path}"
@@ -118,8 +152,8 @@ end
 def platform_settings(platform)
   settings = {
     ios: {
-      sourcemap_path: 'dist/main.jsbundle.map',
-      bundle_path: 'dist/main.jsbundle'
+      sourcemap_path: 'dist/ios/main.jsbundle.map',
+      bundle_path: 'dist/ios/main.jsbundle'
     },
     android: {
       sourcemap_path: 'android/app/build/generated/sourcemaps/react/release/index.android.bundle.map',
@@ -133,7 +167,7 @@ lane :sentry_slack_ios do |options|
   build_number = options[:build_number]
   version = options[:version]
 
-  sentry_url = "https://artsynet.sentry.io/releases/ios-#{version}-#{build_number}/?project=5867225"
+  sentry_url = "https://artsynet.sentry.io/releases/ios-#{version}-#{build_number}/?environment=production&project=5867225"
   message = <<~MSG
                 :apple: :iphone: :tada:
                 iOS #{version} (#{build_number}) was submitted to the app store!
@@ -152,7 +186,7 @@ lane :sentry_slack_android do |options|
   build_number = options[:build_number]
   version = options[:version]
 
-  sentry_url = "https://artsynet.sentry.io/releases/android-#{version}-#{build_number}/?project=5867225"
+  sentry_url = "https://artsynet.sentry.io/releases/android-#{version}-#{build_number}/?environment=production&project=5867225"
   message = <<~MSG
                 :android-2: :tada:
                 Android #{version} (#{build_number}) was submitted to the app store!
@@ -165,6 +199,38 @@ lane :sentry_slack_android do |options|
     success: true,
     default_payloads: []
   )
+end
+
+def extract_ios_bundle_and_sourcemap(archive_root: "../archives", dist_dir: "../dist/ios", app_name: "Artsy")
+  # Find latest archive
+  pattern = File.join(archive_root, "#{app_name}*.xcarchive")
+  matching_archives = Dir.glob(pattern)
+
+  unless matching_archives.any?
+    UI.user_error!("No .xcarchive found matching pattern #{pattern}")
+  end
+
+  latest_archive = matching_archives.max_by { |f| File.mtime(f) }
+  puts "Found archive at: #{latest_archive}"
+
+  app_path = File.join(latest_archive, "Products/Applications/#{app_name}.app")
+  bundle_path = File.join(app_path, "main.jsbundle")
+  sourcemap_source = File.expand_path("../main.jsbundle.map", __dir__) # project root relative to Fastfile
+  dist_dir = File.expand_path(dist_dir, __dir__)
+
+  unless File.exist?(bundle_path)
+    UI.user_error!("main.jsbundle not found at #{bundle_path}")
+  end
+
+  unless File.exist?(sourcemap_source)
+    UI.user_error!("main.jsbundle.map not found at #{sourcemap_source}")
+  end
+
+  FileUtils.mkdir_p(dist_dir)
+  FileUtils.cp(bundle_path, File.join(dist_dir, "main.jsbundle"))
+  FileUtils.cp(sourcemap_source, File.join(dist_dir, "main.jsbundle.map"))
+
+  UI.success("✅ Successfully copied iOS bundle and sourcemap to #{dist_dir}/")
 end
 
 def handle_error(e, message)

@@ -1,10 +1,16 @@
-import { Flex, ClassTheme, Button } from "@artsy/palette-mobile"
+import { Button, Flex } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { Composer_conversation$data } from "__generated__/Composer_conversation.graphql"
-import { ArtsyKeyboardAvoidingView } from "app/utils/ArtsyKeyboardAvoidingView"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { Schema, Track, track as _track } from "app/utils/track"
 import React from "react"
-import { Keyboard, TextInput, TouchableWithoutFeedback } from "react-native"
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  TextInput,
+  TouchableWithoutFeedback,
+} from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import styled from "styled-components/native"
 import { ConversationCTAFragmentContainer } from "./ConversationCTA"
@@ -18,11 +24,11 @@ const Container = styled.View`
   justify-content: space-between;
   align-items: flex-start;
   border-top-width: 1px;
-  border-top-color: ${themeGet("colors.black10")};
-  border-bottom-color: ${themeGet("colors.black10")};
+  border-top-color: ${themeGet("colors.mono10")};
+  border-bottom-color: ${themeGet("colors.mono10")};
   border-bottom-width: 1px;
   padding: 10px;
-  background-color: ${(p: ContainerProps) => (p.active ? "white" : themeGet("colors.black5"))};
+  background-color: ${(p: ContainerProps) => (p.active ? "mono0" : themeGet("colors.mono5"))};
 `
 
 interface Props {
@@ -76,10 +82,11 @@ export default class Composer extends React.Component<Props, State> {
     const disableSendButton = !(this.state.text && this.state.text.length) || this.props.disabled
 
     return (
-      <ClassTheme>
+      <ThemeAwareClassTheme>
         {({ color }) => {
           // The TextInput loses its isFocused() callback as a styled component
           const inputStyles = {
+            color: color("mono100"),
             flex: 1,
             fontSize: 13,
             paddingLeft: 10,
@@ -91,7 +98,11 @@ export default class Composer extends React.Component<Props, State> {
             fontFamily: "Unica77LL-Regular",
           }
           return (
-            <ArtsyKeyboardAvoidingView>
+            <KeyboardAvoidingView
+              behavior="padding"
+              keyboardVerticalOffset={Platform.OS === "ios" ? 120 : 80}
+              style={{ flex: 1, justifyContent: "space-between" }}
+            >
               {this.props.children}
               <Flex flexDirection="column">
                 <ConversationCTAFragmentContainer
@@ -101,7 +112,7 @@ export default class Composer extends React.Component<Props, State> {
                 <Container active={this.state.active}>
                   <TextInput
                     placeholder="Type your message"
-                    placeholderTextColor={color("black60")}
+                    placeholderTextColor={color("mono60")}
                     keyboardAppearance="dark"
                     onEndEditing={() => this.setState({ active: false })}
                     onFocus={() => this.setState({ active: this.input.isFocused() })}
@@ -121,10 +132,10 @@ export default class Composer extends React.Component<Props, State> {
                   </TouchableWithoutFeedback>
                 </Container>
               </Flex>
-            </ArtsyKeyboardAvoidingView>
+            </KeyboardAvoidingView>
           )
         }}
-      </ClassTheme>
+      </ThemeAwareClassTheme>
     )
   }
 }

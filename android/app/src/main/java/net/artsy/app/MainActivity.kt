@@ -1,4 +1,5 @@
 package net.artsy.app
+import expo.modules.ReactActivityDelegateWrapper
 
 import android.graphics.Color
 import android.os.Build
@@ -27,14 +28,14 @@ class MainActivity : ReactActivity() {
      * used to schedule
      * rendering of the component.
      */
-    override fun getMainComponentName(): String = "eigen"
+    override fun getMainComponentName(): String = "main"
 
     /**
      * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
      * which allows you to enable New Architecture with a single boolean flag [fabricEnabled].
      */
     override fun createReactActivityDelegate(): ReactActivityDelegate =
-        DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
+        ReactActivityDelegateWrapper(this, BuildConfig.IS_NEW_ARCHITECTURE_ENABLED, DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled))
 
     private fun isTablet(): Boolean {
         return (this.resources.configuration.screenLayout

@@ -3,7 +3,7 @@ import { MyAccountEditEmailTestsQuery } from "__generated__/MyAccountEditEmailTe
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
-import { MyAccountEditEmailContainer, MyAccountEditEmailQueryRenderer } from "./MyAccountEditEmail"
+import { MyAccountEditEmail } from "./MyAccountEditEmail"
 
 const mockShow = jest.fn()
 const mockHide = jest.fn()
@@ -18,7 +18,7 @@ jest.mock("app/Components/Toast/toastHook", () => ({
   }),
 }))
 
-describe(MyAccountEditEmailQueryRenderer, () => {
+describe("MyAccountEditEmailQueryRenderer", () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
@@ -26,7 +26,7 @@ describe(MyAccountEditEmailQueryRenderer, () => {
   const { renderWithRelay } = setupTestWrapper<MyAccountEditEmailTestsQuery>({
     Component: (props) => {
       if (props?.me) {
-        return <MyAccountEditEmailContainer me={props.me} />
+        return <MyAccountEditEmail me={props.me} />
       }
       return null
     },

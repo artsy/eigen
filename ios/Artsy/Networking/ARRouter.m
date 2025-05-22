@@ -20,7 +20,7 @@
 #import "UIDevice-Hardware.h"
 
 #import <UICKeyChainStore/UICKeyChainStore.h>
-#import <react-native-config/ReactNativeConfig.h>
+#import "Keys.h"
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <AFNetworking/AFHTTPRequestOperation.h>
 #import <AFNetworking/AFNetworkReachabilityManager.h>
@@ -273,8 +273,8 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)newXAppTokenRequest
 {
-    NSString *clientId = [ARAppStatus isDev] ? [ReactNativeConfig envFor:@"ARTSY_DEV_API_CLIENT_KEY"] : [ReactNativeConfig envFor:@"ARTSY_PROD_API_CLIENT_KEY"];
-    NSString *clientSecret = [ARAppStatus isDev] ? [ReactNativeConfig envFor:@"ARTSY_DEV_API_CLIENT_SECRET"] : [ReactNativeConfig envFor:@"ARTSY_PROD_API_CLIENT_SECRET"];
+    NSString *clientId = [ARAppStatus isDev] ? [Keys secureFor:@"ARTSY_DEV_API_CLIENT_KEY"] : [Keys secureFor:@"ARTSY_PROD_API_CLIENT_KEY"];
+    NSString *clientSecret = [ARAppStatus isDev] ? [Keys secureFor:@"ARTSY_DEV_API_CLIENT_SECRET"] : [Keys secureFor:@"ARTSY_PROD_API_CLIENT_SECRET"];
     NSDictionary *params = @{
         @"client_id" : clientId,
         @"client_secret" : clientSecret,

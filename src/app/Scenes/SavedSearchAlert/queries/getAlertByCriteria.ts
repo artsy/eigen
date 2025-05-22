@@ -19,16 +19,7 @@ export const getAlertByCriteria = async (criteria: SearchCriteriaAttributes) => 
     }
   `
 
-  const request = fetchQuery<getAlertByCriteriaQuery>(
-    getRelayEnvironment(),
-    query,
-    { criteria },
-    {
-      networkCacheConfig: {
-        force: true,
-      },
-    }
-  )
+  const request = fetchQuery<getAlertByCriteriaQuery>(getRelayEnvironment(), query, { criteria })
   const response = await request.toPromise()
 
   const alerts = extractNodes(response?.me?.alertsConnection)

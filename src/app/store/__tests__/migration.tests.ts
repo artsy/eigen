@@ -1,6 +1,5 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { DEFAULT_VIEW_OPTION } from "app/Scenes/Search/UserPrefsModel"
-import { artworkDetailsEmptyInitialValues } from "app/Scenes/SellWithArtsy/SubmitArtwork/ArtworkDetails/validation"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { CURRENT_APP_VERSION, migrate, Versions } from "app/store/migration"
 import { sanitize } from "app/store/persistence"
@@ -986,9 +985,35 @@ describe("App version Versions.AddProgressiveOnboardingModel", () => {
         toVersion: migrationToTest - 1,
       }) as any
 
-      expect(previousState.artworkSubmission.submission.dirtyArtworkDetailsValues).toEqual(
-        artworkDetailsEmptyInitialValues
-      )
+      expect(previousState.artworkSubmission.submission.dirtyArtworkDetailsValues).toEqual({
+        artist: "",
+        artistId: "",
+        attributionClass: null,
+        category: null,
+        depth: "",
+        dimensionsMetric: "in",
+        editionNumber: "",
+        editionSizeFormatted: "",
+        height: "",
+        location: {
+          city: "",
+          state: "",
+          country: "",
+          countryCode: "",
+          zipCode: "",
+        },
+        medium: "",
+        myCollectionArtworkID: null,
+        provenance: "",
+        source: null,
+        state: "DRAFT",
+        utmMedium: "",
+        utmSource: "",
+        utmTerm: "",
+        width: "",
+        title: "",
+        year: "",
+      })
 
       const migratedState = migrate({
         state: previousState,
@@ -1038,6 +1063,203 @@ describe("App version Versions.AddProgressiveOnboardingModel", () => {
       expect(migratedState.artworkSubmission.submission.artworkViewOption).toEqual(undefined)
 
       expect(migratedState.artworkSubmission.submission.artistViewOption).toEqual(undefined)
+    })
+  })
+})
+
+describe("App version Versions.AddInfiniteDiscoveryModel", () => {
+  it("adds infiniteScrolling to the UserPrefs model", () => {
+    const migrationToTest = Versions.AddInfiniteDiscoveryModel
+
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.infiniteDiscovery).toEqual({
+      discoveredArtworkIds: [],
+    })
+  })
+
+  describe("App version Versions.MoveOnboardingStateToOnboardingModel", () => {
+    it("moves onboardingState and onboardingArtQuizState to the Onboarding model", () => {
+      const migrationToTest = Versions.MoveOnboardingStateToOnboardingModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      previousState.auth.onboardingState = "incomplete"
+      previousState.auth.onboardingArtQuizState = "none"
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.auth.onboardingState).toEqual(undefined)
+      expect(migratedState.auth.onboardingArtQuizState).toEqual(undefined)
+
+      expect(migratedState.onboarding.onboardingState).toEqual("incomplete")
+      expect(migratedState.onboarding.onboardingArtQuizState).toEqual("none")
+    })
+  })
+
+  describe("App version Versions.AddSavedArtworksCountToInfiniteDiscoveryModel", () => {
+    it("adds savedArtworksCount to the InfiniteDiscovery model", () => {
+      const migrationToTest = Versions.AddSavedArtworksCountToInfiniteDiscoveryModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      previousState.infiniteDiscovery.discoveredArtworkIds = ["artwork-1", "artwork-2"]
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.infiniteDiscovery.discoveredArtworkIds).toEqual([
+        "artwork-1",
+        "artwork-2",
+      ])
+      expect(migratedState.infiniteDiscovery.savedArtworksCount).toEqual(0)
+    })
+  })
+
+  describe("App version Versions.RemoveArworkSubmissionModel", () => {
+    it("Remove artworkSubmission model", () => {
+      const migrationToTest = Versions.RemoveArworkSubmissionModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      previousState.artworkSubmission = {
+        submission: {
+          submissionId: "submission-id",
+        },
+      }
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.artworkSubmission).toEqual(undefined)
+    })
+  })
+
+  describe("App version Versions.RemoveRequestPriceEstimateModel", () => {
+    it("remove requestedPriceEstimates model", () => {
+      const migrationToTest = Versions.RemoveRequestPriceEstimateModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      previousState.requestedPriceEstimates = {
+        requestedPriceEstimates: {
+          id: {
+            artworkId: "id",
+            requestedAt: "random-value",
+          },
+        },
+      }
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.requestedPriceEstimates).toEqual(undefined)
+    })
+  })
+
+  describe("App version Versions.RefactorDarkModeValues", () => {
+    it("update dark mode store values", () => {
+      const migrationToTest = Versions.RefactorDarkModeValues
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.devicePrefs.darkModeOption).toEqual("system")
+      expect(migratedState.devicePrefs.usingSystemColorScheme).toEqual(undefined)
+      expect(migratedState.devicePrefs.forcedColorScheme).toEqual(undefined)
+    })
+  })
+
+  describe("App version Versions.RemoveDiscoveredArtworkIdsFromInfiniteDiscoveryModel", () => {
+    it("removes discoveredArtworkIds from infiniteDiscovery model", () => {
+      const migrationToTest = Versions.RemoveDiscoveredArtworkIdsFromInfiniteDiscoveryModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      previousState.infiniteDiscovery.discoveredArtworkIds = ["artwork-1", "artwork-2"]
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(migratedState.infiniteDiscovery.discoveredArtworkIds).toBeUndefined()
+    })
+  })
+
+  describe("App version Versions.AddNewWorksForYouArtworkIDsModel", () => {
+    it("adds hasSeenOnboarding as false", () => {
+      const migrationToTest = Versions.AddHasIntereactedWithOnboardingToInfiniteDiscoveryModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(previousState.infiniteDiscovery.hasInteractedWithOnboarding).toEqual(undefined)
+      expect(migratedState.infiniteDiscovery.hasInteractedWithOnboarding).toEqual(false)
+    })
+  })
+  describe("AddHasSavedArtworksToInfiniteDiscoveryModel", () => {
+    it("should add hasSavedArtworks as false", () => {
+      const migrationToTest = Versions.AddHasSavedArtworksToInfiniteDiscoveryModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(previousState.infiniteDiscovery.hasSavedArtworks).toEqual(undefined)
+      expect(migratedState.infiniteDiscovery.hasSavedArtworks).toEqual(false)
     })
   })
 })

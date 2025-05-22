@@ -89,7 +89,11 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   }
 
   if (items.length === 0) {
-    return <EmptyMessage />
+    return (
+      <Flex pt={4}>
+        <EmptyMessage />
+      </Flex>
+    )
   }
 
   return (
@@ -101,25 +105,23 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
       onRefresh={() => {
         onRefresh("default")
       }}
-      ItemSeparatorComponent={() => <Separator borderColor="black5" />}
+      ItemSeparatorComponent={() => <Separator borderColor="mono5" />}
       renderItem={({ item }) => {
         return (
           <SavedSearchListItem
-            id={item.internalID}
-            title={item.title}
-            subtitle={item.subtitle}
+            alert={item}
             isSwipingActive={item.isSwipingActive}
-            onPress={() => {
+            onPress={(alert) => {
               if (!!enableTapToShowBottomSheet) {
-                const artworksCount = item.artworksConnection?.counts?.total ?? 0
+                const artworksCount = alert.artworksConnection?.counts?.total ?? 0
 
                 onAlertPress({
-                  id: item.internalID,
-                  title: item.title,
+                  id: alert.internalID,
+                  title: alert.title,
                   artworksCount: artworksCount,
                 })
               } else {
-                navigate(`favorites/alerts/${item.internalID}/edit`)
+                navigate(`favorites/alerts/${alert.internalID}/edit`)
               }
             }}
             onDelete={(id) => {
@@ -164,6 +166,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
 
   const handleCloseModal = () => {
     setModalVisible(false)
+
     // onDismiss doesn't get called on TEST Environments so we need to manually call it
     if (__TEST__) {
       handleSortByModalClosed()
@@ -222,6 +225,8 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
    * More context here: https://github.com/facebook/react-native/issues/16182#issuecomment-333814201
    */
   const handleSortByModalClosed = () => {
+    setModalVisible(false)
+
     if (selectedSortValue === prevSelectedSortValue && !__TEST__) {
       return
     }
@@ -266,7 +271,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
         <Screen.AnimatedHeader
           onBack={goBack}
           title="Alerts"
-          rightElements={<SortButton onPress={() => setModalVisible(true)} />}
+          rightElements={<SortButton testID="sortButton" onPress={() => setModalVisible(true)} />}
         />
 
         <Flex px={2}>
@@ -326,14 +331,15 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
               setSelectedAlert(alert)
             }}
           />
+
           <SortByModal
             visible={modalVisible}
             options={SORT_OPTIONS}
             selectedValue={selectedSortValue}
-            onCloseModal={handleCloseModal}
             onSelectOption={handleSelectOption}
             onModalFinishedClosing={handleSortByModalClosed}
           />
+
           {!!enableTapToShowBottomSheet && !!selectedAlert && (
             <AlertBottomSheet
               alert={selectedAlert}
@@ -368,14 +374,7 @@ export const SavedSearchesListPaginationContainer = createPaginationContainer(
           edges {
             node {
               internalID
-              artistSeriesIDs
-              title: displayName(only: [artistIDs])
-              subtitle: displayName(except: [artistIDs])
-              artworksConnection(first: 1) {
-                counts {
-                  total
-                }
-              }
+              ...SavedSearchListItem_alert
             }
           }
         }

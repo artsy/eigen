@@ -18,16 +18,6 @@ describe("artsy.net routes", () => {
     expect(matchRoute("https://staging.artsy.net/")).toEqual(expected)
   })
 
-  it("routes to Sell", () => {
-    expect(matchRoute("/sell")).toMatchInlineSnapshot(`
-      {
-        "module": "Sell",
-        "params": {},
-        "type": "match",
-      }
-    `)
-  })
-
   it("routes to Search", () => {
     expect(matchRoute("/search")).toMatchInlineSnapshot(`
       {
@@ -440,7 +430,7 @@ describe("artsy.net routes", () => {
       {
         "module": "ViewingRoom",
         "params": {
-          "viewing_room_id": "red",
+          "viewingRoomID": "red",
         },
         "type": "match",
       }
@@ -449,7 +439,7 @@ describe("artsy.net routes", () => {
       {
         "module": "ViewingRoom",
         "params": {
-          "viewing_room_id": "blue",
+          "viewingRoomID": "blue",
         },
         "type": "match",
       }
@@ -461,7 +451,7 @@ describe("artsy.net routes", () => {
       {
         "module": "ViewingRoomArtworks",
         "params": {
-          "viewing_room_id": "red",
+          "viewingRoomID": "red",
         },
         "type": "match",
       }
@@ -470,7 +460,7 @@ describe("artsy.net routes", () => {
       {
         "module": "ViewingRoomArtworks",
         "params": {
-          "viewing_room_id": "blue",
+          "viewingRoomID": "blue",
         },
         "type": "match",
       }
@@ -484,7 +474,7 @@ describe("artsy.net routes", () => {
         "module": "ViewingRoomArtwork",
         "params": {
           "artwork_id": "josef-albers-homage-to-the-square",
-          "viewing_room_id": "red",
+          "viewingRoomID": "red",
         },
         "type": "match",
       }
@@ -494,7 +484,7 @@ describe("artsy.net routes", () => {
         "module": "ViewingRoomArtwork",
         "params": {
           "artwork_id": "yayoi-kusama-red-pumpkin",
-          "viewing_room_id": "blue",
+          "viewingRoomID": "blue",
         },
         "type": "match",
       }
@@ -709,7 +699,7 @@ describe("artsy.net routes", () => {
     `)
   })
 
-  it("routes to Favorites", () => {
+  it("routes to Favorites ", () => {
     expect(matchRoute("/favorites")).toMatchInlineSnapshot(`
       {
         "module": "Favorites",
@@ -854,16 +844,6 @@ describe("artsy.net routes", () => {
     expect(matchRoute("/my-collection")).toMatchInlineSnapshot(`
       {
         "module": "MyCollection",
-        "params": {},
-        "type": "match",
-      }
-    `)
-  })
-
-  it("routes to Sell", () => {
-    expect(matchRoute("/collections/my-collection/marketing-landing")).toMatchInlineSnapshot(`
-      {
-        "module": "SellNotRootTabView",
         "params": {},
         "type": "match",
       }

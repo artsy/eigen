@@ -20,10 +20,6 @@ function mockFetchJsonOnce(json: object, status = 200) {
   })
 }
 
-beforeEach(() => {
-  mockFetch.mockClear()
-})
-
 describe("Push Notification Tests", () => {
   beforeEach(async () => {
     jest.clearAllMocks()
@@ -42,9 +38,11 @@ describe("Push Notification Tests", () => {
 
   describe("saveToken", () => {
     it("sends token to gravity if user is logged in", async () => {
+      const oneWeekFromNow = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+
       mockFetchJsonOnce({
         xapp_token: "xapp-token",
-        expires_in: "never",
+        expires_in: oneWeekFromNow,
       })
       await GlobalStore.actions.auth.getXAppToken()
       mockFetch.mockClear()
@@ -104,22 +102,12 @@ describe("Push Notification Tests", () => {
       userInteraction: true, // notification was tapped
     }
 
-    it("Saves tapped notification When a user is not logged in", () => {
-      Push.handleReceivedNotification(notification)
-      expect(
-        __globalStoreTestUtils__?.getCurrentState().pendingPushNotification.notification
-      ).toHaveProperty("tappedAt")
-      expect(
-        __globalStoreTestUtils__?.getCurrentState().pendingPushNotification.notification?.data
-      ).toEqual(notification.data)
-      // notification is not handled
-      expect(navigate).not.toHaveBeenCalled()
-    })
-
     it("Handles tapped notification instantly if user is logged in and nav is ready", async () => {
+      const oneWeekFromNow = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+
       mockFetchJsonOnce({
         xapp_token: "xapp-token",
-        expires_in: "never",
+        expires_in: oneWeekFromNow,
       })
       await GlobalStore.actions.auth.getXAppToken()
       mockFetch.mockClear()
@@ -152,6 +140,18 @@ describe("Push Notification Tests", () => {
         passProps: notification.data,
         ignoreDebounce: true,
       })
+    })
+
+    it("Saves tapped notification When a user is not logged in", () => {
+      Push.handleReceivedNotification(notification)
+      expect(
+        __globalStoreTestUtils__?.getCurrentState().pendingPushNotification.notification
+      ).toHaveProperty("tappedAt")
+      expect(
+        __globalStoreTestUtils__?.getCurrentState().pendingPushNotification.notification?.data
+      ).toEqual(notification.data)
+      // notification is not handled
+      expect(navigate).not.toHaveBeenCalled()
     })
 
     it("Pending Notification: navigates to appropriate screen when called", () => {

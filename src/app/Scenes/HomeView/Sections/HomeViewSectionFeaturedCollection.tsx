@@ -1,4 +1,4 @@
-import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import {
   Flex,
   FlexProps,
@@ -23,7 +23,6 @@ import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { memo } from "react"
@@ -49,7 +48,7 @@ export const HomeViewSectionFeaturedCollection: React.FC<
   if (!component) return null
 
   const artworks = extractNodes(section.artworksConnection)
-  const href = getHomeViewSectionHref(viewAll?.href, section)
+  const viewAllHref = getHomeViewSectionHref(viewAll?.href, section)
 
   const onHeaderPress = () => {
     tracking.tappedArtworkGroupViewAll(
@@ -63,8 +62,6 @@ export const HomeViewSectionFeaturedCollection: React.FC<
       section.contextModule as ContextModule,
       (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
     )
-
-    navigate(href)
   }
 
   const handleOnArtworkPress = (artwork: ArtworkRail_artworks$data[0], index: number) => {
@@ -81,8 +78,8 @@ export const HomeViewSectionFeaturedCollection: React.FC<
 
   return (
     <Flex {...flexProps}>
-      <Flex pb={2} backgroundColor="black100">
-        <RouterLink to={href} onPress={onHeaderPress} activeOpacity={0.7}>
+      <Flex pb={2} backgroundColor="mono100">
+        <RouterLink to={viewAllHref} onPress={onHeaderPress}>
           {!!component.backgroundImageURL && (
             <Image
               width={width}
@@ -92,10 +89,10 @@ export const HomeViewSectionFeaturedCollection: React.FC<
             />
           )}
           <Flex mx={2} mt={2}>
-            <Text color="white100" variant="lg-display" mb={0.5}>
+            <Text color="mono0" variant="lg-display" mb={0.5}>
               {component.title}
             </Text>
-            <Text color="white100" variant="xs">
+            <Text color="mono0" variant="xs">
               {component.description}
             </Text>
           </Flex>
@@ -104,10 +101,13 @@ export const HomeViewSectionFeaturedCollection: React.FC<
         <Spacer y={4} />
 
         <ArtworkRail
+          contextModule={section.contextModule as ContextModule}
+          contextScreenOwnerType={OwnerType.home}
           dark
           showPartnerName
           artworks={artworks}
           onPress={handleOnArtworkPress}
+          moreHref={viewAllHref}
           onMorePress={onSectionViewAll}
           hideCuratorsPickSignal
           hideIncreasedInterestSignal
@@ -158,10 +158,10 @@ const HomeViewSectionFeaturedCollectionPlaceholder: React.FC<FlexProps> = () => 
         <SkeletonBox height={HEADER_IMAGE_HEIGHT} />
 
         <Flex mx={2} mt={2} testID="HomeViewSectionFeaturedCollectionPlaceholder">
-          <SkeletonText color="white100" variant="lg-display" mb={0.5}>
+          <SkeletonText color="mono0" variant="lg-display" mb={0.5}>
             Section Title
           </SkeletonText>
-          <SkeletonText color="white100" variant="xs">
+          <SkeletonText color="mono0" variant="xs">
             Description of the section
           </SkeletonText>
         </Flex>

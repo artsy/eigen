@@ -31,7 +31,7 @@ export const AuctionBuyersPremium: React.FC<AuctionBuyersPremiumProps> = ({ sale
             onPress={() => goBack()}
             hitSlop={{ top: space(2), left: space(2), bottom: space(2), right: space(2) }}
           >
-            <CloseIcon fill="black100" />
+            <CloseIcon fill="mono100" />
           </Touchable>
         }
       />
@@ -125,7 +125,7 @@ const AuctionBuyersPremiumLoadingPlaceholder: React.FC = () => {
             onPress={() => goBack()}
             hitSlop={{ top: space(2), left: space(2), bottom: space(2), right: space(2) }}
           >
-            <CloseIcon fill="black100" />
+            <CloseIcon fill="mono100" />
           </Touchable>
         }
       />

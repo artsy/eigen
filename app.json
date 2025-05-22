@@ -1,7 +1,22 @@
 {
   "appName": "eigen",
-  "version": "8.61.0",
+  "version": "8.74.0",
   "isAndroidBeta": false,
-  "codePushReleaseName": "none",
-  "codePushDist": "none"
+  "slug": "eigen",
+  "expo": {
+    "platforms": ["ios", "android"],
+    "runtimeVersion": "257035bdc63217c4adf6e7c7f0bfeea9ca986f22",
+    "extra": {
+      "eas": {
+        "projectId": "39b092dc-effa-4d59-a530-85107bdfd668"
+      }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668"
+    },
+    "android": {},
+    "ios": {}
+  },
+  "expoReleaseNameBase": "none",
+  "expoDist": "none"
 }

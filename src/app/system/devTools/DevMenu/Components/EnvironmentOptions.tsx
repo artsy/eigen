@@ -6,7 +6,7 @@ import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMen
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
 import { capitalize, compact } from "lodash"
 import { useState } from "react"
-import { Alert, AlertButton, TouchableHighlight } from "react-native"
+import { Alert, AlertButton, Platform, TouchableHighlight } from "react-native"
 
 export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const color = useColor()
@@ -21,7 +21,7 @@ export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose 
   return (
     <>
       <Flex mx={2}>
-        <Separator borderColor="black" />
+        <Separator borderColor="mono100" />
       </Flex>
       <Spacer y={0.5} />
 
@@ -51,12 +51,27 @@ export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose 
           )
         }}
       />
+      {Platform.OS === "android" && !!showCustomURLOptions && (
+        <Flex px={2}>
+          <Text color="red100" variant="xs">
+            You are using{" "}
+            <Text color="red100" fontWeight="bold" variant="xs">
+              Android
+            </Text>
+            . In order to use your local environment, you need to replace localhost inside{" "}
+            <Text color="red100" fontWeight="bold" variant="xs">
+              EnvironmentModel.tsx
+            </Text>{" "}
+            with your IP address and port.
+          </Text>
+        </Flex>
+      )}
       {!!showCustomURLOptions &&
         Object.entries(environment).map(([key, { description, presets }]) => {
           return (
             <TouchableHighlight
               key={key}
-              underlayColor={color("black5")}
+              underlayColor={color("mono5")}
               onPress={() => {
                 Alert.alert(
                   description,
@@ -82,14 +97,14 @@ export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose 
                 alignItems="center"
               >
                 <Flex>
-                  <Text variant="xs" color="black60" mb="0.5">
+                  <Text variant="xs" color="mono60" mb="0.5">
                     {description}
                   </Text>
                   <Flex key={key} flexDirection="row" justifyContent="space-between">
                     <Text variant="sm-display">{strings[key as EnvironmentKey]}</Text>
                   </Flex>
                 </Flex>
-                <ChevronIcon fill="black60" direction="right" />
+                <ChevronIcon fill="mono60" direction="right" />
               </Flex>
             </TouchableHighlight>
           )

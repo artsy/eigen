@@ -1,7 +1,8 @@
-import { act, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { CurrentlyRunningAuctions } from "./CurrentlyRunningAuctions"
-import { SalesScreen } from "./Sales"
+import { SalesScreen, SUPPORT_ARTICLE_URL } from "./Sales"
 import { UpcomingAuctions } from "./UpcomingAuctions"
 
 describe("Sales", () => {
@@ -49,6 +50,30 @@ describe("Sales", () => {
 
     expect(screen.getByText("Auction Lots for You")).toBeOnTheScreen()
   })
+
+  it("renders LatestAuctionResultsRail", async () => {
+    renderWithRelay({
+      Query: () => me,
+    })
+    await waitForElementToBeRemoved(() => screen.queryByTestId("SalePlaceholder"))
+
+    expect(screen.getByText("Latest Auction Results")).toBeOnTheScreen()
+  })
+
+  it("tracks article tap with the correct event data", async () => {
+    renderWithRelay()
+    await waitForElementToBeRemoved(() => screen.queryByTestId("SalePlaceholder"))
+
+    const learnMoreLink = screen.getByText("Learn more about bidding on Artsy.")
+    fireEvent.press(learnMoreLink)
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedLink",
+      context_module: "header",
+      context_screen_owner_type: "auctions",
+      destination_path: SUPPORT_ARTICLE_URL,
+    })
+  })
 })
 
 const artwork = {
@@ -77,5 +102,18 @@ const viewer = {
     first: 10,
     onlyAtAuction: true,
     edges: [{ node: artwork }],
+  },
+}
+
+const me = {
+  auctionResultsByFollowedArtists: {
+    first: 10,
+    edges: [
+      {
+        node: {
+          id: "an-id",
+        },
+      },
+    ],
   },
 }

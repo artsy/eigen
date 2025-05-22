@@ -169,7 +169,7 @@ const Step = ({ isActive = false, goToStep }: { isActive?: boolean; goToStep: ()
       onPress={goToStep}
       hitSlop={{ top: 10, left: 5, right: 5, bottom: 10 }}
     >
-      <Flex flex={1} backgroundColor="black100" opacity={isActive ? 1 : 0.2} />
+      <Flex flex={1} backgroundColor="mono100" opacity={isActive ? 1 : 0.2} />
     </TouchableOpacity>
   )
 }
@@ -223,7 +223,7 @@ export const FooterButtons = ({
             switchTab("profile")
             dismissModal()
             requestAnimationFrame(() => {
-              navigate("my-collection/artists/new", {
+              navigate("my-collection/collected-artists/new", {
                 passProps: {
                   source: Tab.collection,
                 },

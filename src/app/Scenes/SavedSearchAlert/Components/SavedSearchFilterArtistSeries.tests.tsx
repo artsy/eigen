@@ -8,7 +8,7 @@ import {
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
-const black100Hex = "#000000"
+const mono100Hex = "#000000"
 
 describe("SavedSearchFilterArtistSeriesQR", () => {
   it("renders options when artist series present", async () => {
@@ -102,14 +102,14 @@ describe("SavedSearchFilterArtistSeriesQR", () => {
     })
     await waitForElementToBeRemoved(() => screen.queryByTestId("loading-skeleton"))
 
-    expect(screen.getByText("Series 1")).not.toHaveStyle({ color: black100Hex })
-    expect(screen.getByText("Series 2")).toHaveStyle({ color: black100Hex })
+    expect(screen.getByText("Series 1")).not.toHaveStyle({ color: mono100Hex })
+    expect(screen.getByText("Series 2")).toHaveStyle({ color: mono100Hex })
 
     fireEvent(screen.getByText("Series 1"), "onPress")
     fireEvent(screen.getByText("Series 2"), "onPress")
 
-    expect(screen.getByText("Series 1")).toHaveStyle({ color: black100Hex })
-    expect(screen.getByText("Series 2")).not.toHaveStyle({ color: black100Hex })
+    expect(screen.getByText("Series 1")).toHaveStyle({ color: mono100Hex })
+    expect(screen.getByText("Series 2")).not.toHaveStyle({ color: mono100Hex })
   })
 
   it("truncates when necessary", async () => {

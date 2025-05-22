@@ -18,7 +18,7 @@ import { Schema, screenTrack, track } from "app/utils/track"
 import { get, isEqual, uniq } from "lodash"
 import React from "react"
 import { Animated, Dimensions, Image } from "react-native"
-import Config from "react-native-config"
+import Keys from "react-native-keys"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"
@@ -35,7 +35,7 @@ import {
 } from "./bucketCityResults"
 import { Fair, FilterData, RelayErrorState, Show } from "./types"
 
-MapboxGL.setAccessToken(Config.MAPBOX_API_CLIENT_KEY)
+MapboxGL.setAccessToken(Keys.secureFor("MAPBOX_API_CLIENT_KEY"))
 
 const ShowCardContainer = styled(Box)`
   position: absolute;
@@ -363,7 +363,7 @@ export class GlobalMap extends React.Component<Props, State> {
                 coordinate={[clusterLat, clusterLng]}
               >
                 <SelectedCluster width={radius} height={radius}>
-                  <Text variant="sm" weight="medium" color={color("white100")}>
+                  <Text variant="sm" weight="medium" color={color("mono0")}>
                     {pointCount}
                   </Text>
                 </SelectedCluster>
@@ -543,7 +543,7 @@ export class GlobalMap extends React.Component<Props, State> {
     return (
       <ClassTheme>
         {({ color }) => (
-          <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: color("black5") }}>
+          <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: color("mono5") }}>
             <LoadingScreen
               source={require("images/map-bg.webp")}
               resizeMode="cover"

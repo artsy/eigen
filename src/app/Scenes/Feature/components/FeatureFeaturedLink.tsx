@@ -1,4 +1,4 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { DEFAULT_ACTIVE_OPACITY, Flex, Text } from "@artsy/palette-mobile"
 import { FeatureFeaturedLink_featuredLink$data } from "__generated__/FeatureFeaturedLink_featuredLink.graphql"
 import { ImageWithFallback } from "app/Components/ImageWithFallback/ImageWithFallback"
 import { navigate } from "app/system/navigation/navigate"
@@ -16,7 +16,7 @@ const FeatureFeaturedLink: React.FC<FeatureFeaturedLinkProps> = ({ featuredLink,
   return (
     <Flex style={{ width }}>
       <TouchableOpacity
-        activeOpacity={0.9}
+        activeOpacity={DEFAULT_ACTIVE_OPACITY}
         onPress={() => {
           if (featuredLink.href) {
             navigate(featuredLink.href)
@@ -36,11 +36,11 @@ const FeatureFeaturedLink: React.FC<FeatureFeaturedLinkProps> = ({ featuredLink,
             bottom: 20,
           }}
         >
-          <Text variant="lg-display" color="white">
+          <Text variant="lg-display" color="mono0">
             {featuredLink.title}
           </Text>
           {!!featuredLink.subtitle && (
-            <FeatureMarkdown content={featuredLink.subtitle} textProps={{ color: "white" }} />
+            <FeatureMarkdown content={featuredLink.subtitle} textProps={{ color: "mono0" }} />
           )}
         </Flex>
       </TouchableOpacity>

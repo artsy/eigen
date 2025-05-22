@@ -1,85 +1,94 @@
-import { ArrowUpIcon, Flex, Text } from "@artsy/palette-mobile"
-import { InfiniteDiscoveryBottomSheetTabsQuery } from "__generated__/InfiniteDiscoveryBottomSheetTabsQuery.graphql"
-import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { useColor } from "@artsy/palette-mobile"
+import BottomSheet from "@gorhom/bottom-sheet"
+import { InfiniteDiscoveryBottomSheetBackdrop } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetBackdrop"
 import { InfiniteDiscoveryBottomSheetFooterQueryRenderer } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetFooter"
-import {
-  InfiniteDiscoveryTabs,
-  InfiniteDiscoveryTabsSkeleton,
-} from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetTabs"
+import { InfiniteDiscoveryBottomeSheetHandle } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetHandle"
+import { InfiniteDiscoveryTabs } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheetTabs"
 import { FC, useEffect, useState } from "react"
 import { Dimensions } from "react-native"
-import { Gesture, GestureDetector } from "react-native-gesture-handler"
-import { runOnJS } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { graphql, useQueryLoader } from "react-relay"
+import { graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface InfiniteDiscoveryBottomSheetProps {
-  // TODO: should come from the context
   artworkID: string
+  artworkSlug: string
+  artistIDs: string[]
 }
 
 export const InfiniteDiscoveryBottomSheet: FC<InfiniteDiscoveryBottomSheetProps> = ({
   artworkID,
+  artworkSlug,
+  artistIDs,
 }) => {
-  const [visible, setVisible] = useState(false)
   const { bottom } = useSafeAreaInsets()
-  const [queryRef, loadQuery] =
-    useQueryLoader<InfiniteDiscoveryBottomSheetTabsQuery>(aboutTheWorkQuery)
+  const [footerVisible, setFooterVisible] = useState(true)
+  const color = useColor()
+  const { trackEvent } = useTracking()
 
   useEffect(() => {
-    loadQuery({ id: artworkID })
+    setFooterVisible(true)
   }, [artworkID])
 
-  const pan = Gesture.Pan().onUpdate((event) => {
-    if (event.translationY < TRANSLATE_Y_THRESHOLD) {
-      runOnJS(setVisible)(true)
-    }
-  })
-
-  const handleOnDismiss = () => {
-    setVisible(false)
+  const handleOnTabChange = () => {
+    setFooterVisible((prev) => !prev)
   }
 
   return (
     <>
-      <AutomountedBottomSheetModal
-        visible={visible}
+      <BottomSheet
         enableDynamicSizing={false}
-        snapPoints={SNAP_POINTS}
-        onDismiss={handleOnDismiss}
+        enablePanDownToClose={false}
+        snapPoints={[bottom + 60, height * 0.88]}
+        index={0}
+        backdropComponent={(props) => {
+          return (
+            <InfiniteDiscoveryBottomSheetBackdrop
+              {...props}
+              disappearsOnIndex={0}
+              appearsOnIndex={1}
+            />
+          )
+        }}
+        backgroundStyle={{
+          backgroundColor: color("mono0"),
+        }}
+        handleComponent={InfiniteDiscoveryBottomeSheetHandle}
         footerComponent={(props) => {
-          if (!queryRef) {
+          if (!footerVisible) {
             return null
           }
-          return <InfiniteDiscoveryBottomSheetFooterQueryRenderer queryRef={queryRef} {...props} />
+
+          return (
+            <InfiniteDiscoveryBottomSheetFooterQueryRenderer artworkID={artworkID} {...props} />
+          )
+        }}
+        onChange={(index) => {
+          const maxSnapPointIndex = 1
+          if (index === maxSnapPointIndex) {
+            trackEvent(tracks.swipedUp(artworkID, artworkSlug))
+          }
         }}
       >
-        {/* This if is to make TS happy, usePreloadedQuery will always require a queryRef */}
-        {!queryRef ? (
-          <InfiniteDiscoveryTabsSkeleton />
-        ) : (
-          <InfiniteDiscoveryTabs queryRef={queryRef} />
-        )}
-      </AutomountedBottomSheetModal>
-
-      <GestureDetector gesture={pan}>
-        <Flex justifyContent="center" alignItems="center" style={{ marginBottom: bottom }}>
-          <ArrowUpIcon fill="black60" />
-
-          <Text color="black60">Swipe up for more details</Text>
-        </Flex>
-      </GestureDetector>
+        <InfiniteDiscoveryTabs
+          artistIDs={artistIDs}
+          artworkID={artworkID}
+          onTabChange={handleOnTabChange}
+          // this key resets the state of the tabs when the artwork changes
+          key={`infinite_discovery_tabs_${artworkID}`}
+        />
+      </BottomSheet>
     </>
   )
 }
 
 const { height } = Dimensions.get("screen")
 
-const SNAP_POINTS = [height * 0.88]
-const TRANSLATE_Y_THRESHOLD = -50
-
 export const aboutTheWorkQuery = graphql`
-  query InfiniteDiscoveryBottomSheetTabsQuery($id: String!) {
+  query InfiniteDiscoveryBottomSheetTabsQuery($id: String!, $artistIDs: [String!]!) {
+    ...InfiniteDiscoveryMoreWorksTab_artworks @arguments(artistIDs: $artistIDs)
+
     me {
       ...useSendInquiry_me
       ...MyProfileEditModal_me
@@ -92,3 +101,13 @@ export const aboutTheWorkQuery = graphql`
     }
   }
 `
+
+const tracks = {
+  swipedUp: (artworkId: string, artworkSlug: string) => ({
+    action: ActionType.swipedUp,
+    context_module: ContextModule.infiniteDiscovery,
+    context_screen_owner_id: artworkId,
+    context_screen_owner_slug: artworkSlug,
+    context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+  }),
+}

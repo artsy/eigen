@@ -66,12 +66,12 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
           )}
           <Flex ml={2} flex={1}>
             <Text>{artwork.artistNames}</Text>
-            <Text color="black60" variant="xs">
+            <Text color="mono60" variant="xs">
               {artwork.title}
               {artwork.date && artwork.date.trim() !== "" ? `, ${artwork.date}` : ""}
             </Text>
           </Flex>
-          <ChevronIcon color="black100" expanded={isExpanded} initialDirection="down" />
+          <ChevronIcon color="mono100" expanded={isExpanded} initialDirection="down" />
         </Flex>
       </TouchableOpacity>
       <Collapse opened={isExpanded}>

@@ -56,7 +56,6 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
 
     return (
       <RouterLink
-        activeOpacity={0.65}
         onPress={handlePress}
         to={isCollectorProfileUpdate ? undefined : href}
         navigationProps={passProps}
@@ -99,7 +98,7 @@ export const ActivityItem: React.FC<ActivityItemProps> = memo(
                     {!!shouldDisplayCounts && (
                       <Text
                         variant="xs"
-                        color="black60"
+                        color="mono60"
                         accessibilityLabel="Remaining artworks count"
                       >
                         + {remainingArtworksCount}

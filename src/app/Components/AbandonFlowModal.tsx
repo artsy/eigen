@@ -1,8 +1,7 @@
-import { Box, Button, CloseIcon, Spacer, Text } from "@artsy/palette-mobile"
+import { Box, Button, CloseIcon, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { popToRoot } from "app/system/navigation/navigate"
-import { Modal } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { Modal, SafeAreaView } from "react-native"
 
 interface AbandonFlowModalProps {
   isVisible: boolean
@@ -23,9 +22,11 @@ export const AbandonFlowModal: React.FC<AbandonFlowModalProps> = ({
   onDismiss,
   onLeave,
 }) => {
+  const color = useColor()
+
   return (
     <Modal visible={isVisible} presentationStyle="pageSheet" animationType="slide">
-      <SafeAreaView>
+      <SafeAreaView style={{ flex: 1, backgroundColor: color("background") }}>
         <NavigationHeader
           hideBottomDivider
           renderRightButton={() => <CloseIcon width={26} height={26} />}

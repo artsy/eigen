@@ -5,7 +5,6 @@ import {
   SpacingUnit,
   Text,
   TextProps,
-  useTheme,
 } from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
 import { RouterLink } from "app/system/navigation/RouterLink"
@@ -15,9 +14,10 @@ export const SectionTitle: React.FC<
     href?: string | null
     title: React.ReactNode
     titleVariant?: TextProps["variant"]
+    titleColor?: TextProps["color"]
     subtitle?: React.ReactNode
     navigationProps?: object
-    onPress?: () => any
+    onPress?: () => any | null
     RightButtonContent?: React.FC
     mb?: SpacingUnit
     capitalized?: boolean
@@ -27,13 +27,13 @@ export const SectionTitle: React.FC<
   navigationProps,
   title,
   titleVariant = "sm-display",
+  titleColor = "mono100",
   subtitle,
   onPress,
   RightButtonContent = RightButton,
   capitalized = true,
   ...flexProps
 }) => {
-  const { color } = useTheme()
   let titleText
 
   if (typeof title === "string") {
@@ -44,12 +44,18 @@ export const SectionTitle: React.FC<
     <Wrapper onPress={onPress} href={href} navigationProps={navigationProps}>
       <Flex mb={2} flexDirection="row" alignItems="flex-start" {...flexProps}>
         <Flex flex={1}>
-          <Text variant={titleVariant} ellipsizeMode="tail" numberOfLines={1} testID="title">
+          <Text
+            variant={titleVariant}
+            ellipsizeMode="tail"
+            numberOfLines={1}
+            testID="title"
+            color={titleColor}
+          >
             {typeof title === "string" ? titleText : title}
           </Text>
 
           {!!subtitle && (
-            <Text variant="sm" color={color("black60")} lineHeight="20px" testID="subtitle">
+            <Text variant="sm" color="mono60" lineHeight="20px" testID="subtitle">
               {subtitle}
             </Text>
           )}
@@ -79,7 +85,6 @@ const Wrapper: React.FC<{ onPress?(): void; href?: string | null; navigationProp
         to={href}
         testID="touchable-wrapper"
         hitSlop={{ top: 10, bottom: 10 }}
-        activeOpacity={0.65}
       >
         {children}
       </RouterLink>
@@ -92,7 +97,7 @@ const Wrapper: React.FC<{ onPress?(): void; href?: string | null; navigationProp
 const RightButton = () => (
   <Flex flexDirection="row" flex={1}>
     <Flex my="auto">
-      <ArrowRightIcon width={12} fill="black60" ml={0.5} />
+      <ArrowRightIcon width={12} fill="mono60" ml={0.5} />
     </Flex>
   </Flex>
 )

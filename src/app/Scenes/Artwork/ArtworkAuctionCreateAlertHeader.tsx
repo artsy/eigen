@@ -4,7 +4,8 @@ import { ArtworkAuctionCreateAlertHeader_artwork$key } from "__generated__/Artwo
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { hasBiddingEnded } from "app/Scenes/Artwork/utils/hasBiddingEnded"
 import { isLotClosed } from "app/Scenes/Artwork/utils/isLotClosed"
-import { navigate } from "app/system/navigation/navigate"
+import { useCreateAlertTracking } from "app/Scenes/SavedSearchAlert/useCreateAlertTracking"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { FC, useState } from "react"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -42,6 +43,13 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
   const displayAuctionCreateAlertHeader =
     isEligibleToCreateAlert && isInAuction && isLotClosedOrBiddingEnded
 
+  const { trackCreateAlertTap } = useCreateAlertTracking({
+    contextScreenOwnerType: OwnerType.artwork,
+    contextScreenOwnerId: internalID,
+    contextScreenOwnerSlug: slug,
+    contextModule: ContextModule.artworkClosedLotHeader,
+  })
+
   if (!displayAuctionCreateAlertHeader) {
     return null
   }
@@ -55,7 +63,6 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
       <CreateArtworkAlertModal
         artwork={artworkData}
         onClose={() => setShowCreateArtworkAlertModal(false)}
-        contextModule={ContextModule.artworkClosedLotHeader}
         visible={showCreateArtworkAlertModal}
       />
 
@@ -70,7 +77,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
 
         <Spacer y={1} />
 
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="mono60">
           {hasLostBid
             ? "We've created an alert for you for similar works. Browse hand picked artworks that match this lot"
             : "Get notified when similar works become available, or browse hand picked artworks that match this lot."}
@@ -79,25 +86,21 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
         <Spacer y={2} />
 
         {hasLostBid ? (
-          <Button
-            size="large"
-            variant="outline"
-            haptic
-            onPress={() => {
-              navigate("/favorites/alerts")
-            }}
-            icon={<BellIcon fill="black100" />}
-            block
-          >
-            Manage your Alerts
-          </Button>
+          <RouterLink to="/favorites/alerts" hasChildTouchable>
+            <Button size="large" variant="outline" haptic icon={<BellIcon fill="mono100" />} block>
+              Manage your Alerts
+            </Button>
+          </RouterLink>
         ) : (
           <Button
             size="large"
             variant="fillDark"
             haptic
-            onPress={() => setShowCreateArtworkAlertModal(true)}
-            icon={<BellIcon fill="white100" />}
+            onPress={() => {
+              trackCreateAlertTap()
+              setShowCreateArtworkAlertModal(true)
+            }}
+            icon={<BellIcon fill="mono0" />}
             block
           >
             Create Alert
@@ -105,19 +108,19 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
         )}
 
         {!!hasArtworksSuggestions && (
-          <Button
-            size="large"
-            variant="outline"
-            haptic
-            onPress={() => {
-              tracking.trackEvent(tracks.tappedBrowseSimilarWorksHeaderButton(internalID, slug))
-              navigate(`/artwork/${internalID}/browse-similar-works`)
-            }}
-            block
-            mt={1}
-          >
-            Browse Similar Artworks
-          </Button>
+          <Flex mt={1}>
+            <RouterLink
+              to={`/artwork/${internalID}/browse-similar-works`}
+              hasChildTouchable
+              onPress={() => {
+                tracking.trackEvent(tracks.tappedBrowseSimilarWorksHeaderButton(internalID, slug))
+              }}
+            >
+              <Button size="large" variant="outline" haptic block>
+                Browse Similar Artworks
+              </Button>
+            </RouterLink>
+          </Flex>
         )}
       </Flex>
     </>

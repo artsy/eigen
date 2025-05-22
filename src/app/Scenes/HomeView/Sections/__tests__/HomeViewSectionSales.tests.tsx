@@ -169,7 +169,7 @@ describe("HomeViewSectionSales", () => {
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
-        action: "tappedAuctionResultGroup",
+        action: "tappedAuctionGroup",
         context_module: "auctionRail",
         context_screen_owner_type: "home",
         destination_screen_owner_type: "auctions",

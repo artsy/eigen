@@ -2,4 +2,4 @@
 set -euxo pipefail
 
 aws s3 cp s3://artsy-citadel/eigen/GoogleService-Info.plist ios/Artsy/GoogleService-Info.plist
-aws s3 cp s3://artsy-citadel/eigen/AppCenter-Config.plist ios/Artsy/AppCenter-Config.plist
+aws s3 cp s3://artsy-citadel/eigen/eigen-firebase-app-distribution.json eigen-firebase-app-distribution.json

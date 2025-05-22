@@ -1,25 +1,26 @@
 import { Screen, ScreenDimensionsProvider, Spinner, Theme } from "@artsy/palette-mobile"
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { PortalProvider } from "@gorhom/portal"
-import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsContext"
+import FlagProvider from "@unleash/proxy-client-react"
+import { ArtworkListsProvider } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ShareSheetProvider } from "app/Components/ShareSheet/ShareSheetContext"
+import { WrappedFlagProvider } from "app/system/flags/Components/WrappedFlagProvider"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { NavigationTestsProvider } from "app/utils/tests/NavigationTestsProvider"
-import { Component, Suspense } from "react"
+import { postEventToProviders } from "app/utils/track/providers"
+import { Suspense, useMemo } from "react"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
-import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
+import { useTracking } from "react-tracking"
 import { PopoverMessageProvider } from "./Components/PopoverMessage/PopoverMessageProvider"
 import { AppWideErrorBoundary } from "./Components/RetryErrorBoundary"
 import { ToastProvider } from "./Components/Toast/toastHook"
 import { GlobalStore, GlobalStoreProvider } from "./store/GlobalStore"
 import { GravityWebsocketContextProvider } from "./utils/Websockets/GravityWebsocketContext"
 import { combineProviders } from "./utils/combineProviders"
-import { UnleashProvider } from "./utils/experiments/UnleashProvider"
-import { track } from "./utils/track"
 
 export const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   combineProviders(
@@ -28,7 +29,7 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       GestureHandlerProvider,
       TrackingProvider,
       GlobalStoreProvider,
-      UnleashProvider, // uses: GlobalStoreProvider
+      WrappedFlagProvider,
       SafeAreaProvider,
       ProvideScreenDimensions, // uses: SafeAreaProvider
       // FIXME: Only use one from palette-mobile
@@ -42,7 +43,6 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
       SuspenseProvider,
       ActionSheetProvider,
       PopoverMessageProvider,
-      _FancyModalPageWrapper,
       ToastProvider, // uses: GlobalStoreProvider
       GravityWebsocketContextProvider, // uses GlobalStoreProvider
       ArtworkListsProvider,
@@ -51,16 +51,17 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
     children
   )
 
-export const TestProviders: React.FC<{ skipRelay?: boolean; includeNavigation?: boolean }> = ({
-  children,
-  skipRelay = false,
-  includeNavigation = false,
-}) => {
+export const TestProviders: React.FC<{
+  skipRelay?: boolean
+  includeNavigation?: boolean
+  includeArtworkLists?: boolean
+}> = ({ children, skipRelay = false, includeNavigation = false, includeArtworkLists = true }) => {
   return combineProviders(
     [
       includeNavigation && NavigationTestsProvider,
       TrackingProvider,
       GlobalStoreProvider,
+      TestFlagProvider,
       SafeAreaProvider,
       PortalProvider,
       ProvideScreenDimensions,
@@ -71,8 +72,8 @@ export const TestProviders: React.FC<{ skipRelay?: boolean; includeNavigation?: 
       Theme,
       Screen.ScreenScrollContextProvider,
       PopoverMessageProvider,
+      includeArtworkLists && ArtworkListsProvider,
       ToastProvider,
-      ArtworkListsProvider,
       ShareSheetProvider,
     ],
     children
@@ -80,6 +81,10 @@ export const TestProviders: React.FC<{ skipRelay?: boolean; includeNavigation?: 
 }
 
 // Providers with preset props
+
+const TestFlagProvider: React.FC = ({ children }) => {
+  return <FlagProvider startClient={false}>{children}</FlagProvider>
+}
 
 const GestureHandlerProvider = (props: { children?: React.ReactNode }) => (
   <GestureHandlerRootView style={{ flex: 1 }} {...props} />
@@ -95,23 +100,27 @@ const SuspenseProvider = (props: { children?: React.ReactNode }) => (
   <Suspense fallback={<Spinner />} {...props} />
 )
 
-// react-track has no provider, we make one using the decorator and a class wrapper
-const TrackingProvider = (props: { children?: React.ReactNode }) => <PureWrapper {...props} />
+const TrackingProvider: React.FC = ({ children }) => {
+  const { Track } = useTracking({}, { dispatch: (data) => postEventToProviders(data) })
 
-@track()
-class PureWrapper extends Component {
-  render() {
-    return this.props.children
-  }
+  return <Track>{children}</Track>
 }
 
 // theme with dark mode support
 function ThemeWithDarkModeSupport({ children }: { children?: React.ReactNode }) {
   const supportDarkMode = useFeatureFlag("ARDarkModeSupport")
-  const darkMode = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+  const colorScheme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
+
+  const theme = useMemo(() => {
+    return supportDarkMode ? (colorScheme === "dark" ? "v3dark" : "v3light") : undefined
+  }, [colorScheme, supportDarkMode])
 
   return (
-    <Theme theme={supportDarkMode ? (darkMode === "dark" ? "v3dark" : "v3light") : undefined}>
+    <Theme
+      // Setting the key to force the whole app to re-render when the theme changes.
+      key={theme}
+      theme={theme}
+    >
       {children}
     </Theme>
   )

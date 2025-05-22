@@ -1,5 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { NavigationHeader } from "app/Components/NavigationHeader"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { appJson } from "app/utils/jsonFiles"
@@ -13,9 +14,9 @@ import WebView, { WebViewProps } from "react-native-webview"
 import { WebViewNavigation } from "react-native-webview/lib/WebViewTypes"
 
 import {
-  _test_expandGoogleAdLink as expandGoogleAdLink,
   ArtsyWebView,
   ArtsyWebViewPage,
+  _test_expandGoogleAdLink as expandGoogleAdLink,
   useWebViewCookies,
 } from "./ArtsyWebView"
 
@@ -154,12 +155,12 @@ describe("ArtsyWebViewPage", () => {
 
   describe("sets the user agent correctly", () => {
     it("on iOS", () => {
+      ;(LegacyNativeModules.ARNotificationsManager.getConstants as jest.Mock).mockReturnValueOnce({
+        userAgent: "Native iOS User Agent",
+      })
+
       const view = render()
-      expect(webViewProps(view).userAgent).toBe(
-        `Artsy-Mobile ios some-system-name/some-system-version Artsy-Mobile/${
-          appJson().version
-        } Eigen/some-build-number/${appJson().version}`
-      )
+      expect(webViewProps(view).userAgent).toBe("Native iOS User Agent")
     })
 
     it("on Android", () => {
@@ -172,6 +173,34 @@ describe("ArtsyWebViewPage", () => {
           appJson().version
         } Eigen/some-build-number/${appJson().version}`
       )
+    })
+  })
+
+  describe("with 'light' mode", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ ARDarkModeSupport: true })
+      __globalStoreTestUtils__?.injectState({ devicePrefs: { darkModeOption: "off" } })
+    })
+
+    it("sets 'x-theme' header correctly", () => {
+      const view = render()
+      const source = webViewProps(view).source as any
+
+      expect(source?.headers["x-theme"]).toBe("light")
+    })
+  })
+
+  describe("with 'dark' mode", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ ARDarkModeSupport: true })
+      __globalStoreTestUtils__?.injectState({ devicePrefs: { darkModeOption: "on" } })
+    })
+
+    it("sets 'x-theme' header correctly", () => {
+      const view = render()
+      const source = webViewProps(view).source as any
+
+      expect(source?.headers["x-theme"]).toBe("dark")
     })
   })
 

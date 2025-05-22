@@ -1,5 +1,4 @@
-import { Spacer, GraphIcon, Text, ArtworkIcon, Flex, Join, IconProps } from "@artsy/palette-mobile"
-import { SellWithEaseIcon } from "app/Components/Icons/HomeFeedOnboarding/SellWithEaseIcon"
+import { ArtworkIcon, Flex, GraphIcon, IconProps, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { ModalCarouselContainer } from "./ModalCarouselContainer"
 import { ModalCarouselScreenWrapper } from "./ModalCarouselScreenWrapper"
 
@@ -52,16 +51,6 @@ const HowItWorksScreenNew = () => {
           text="Get free insights into the markets and careers of the artists in your collection."
           icon={GraphIcon}
         />
-        <Slide
-          title="Request a Price Estimate"
-          text="On eligible works, request an estimate from our specialists."
-          icon={SellWithEaseIcon}
-        />
-        <Slide
-          title="Sell with Ease"
-          text="Inquire about sales options directly from My Collection for eligible artworks."
-          icon={SellWithEaseIcon}
-        />
       </Join>
     </Flex>
   )
@@ -83,7 +72,7 @@ export const Slide: React.FC<SlideProps> = ({ icon: Icon, text, title }) => {
       <Flex flex={1}>
         <Text variant="sm-display">{title}</Text>
         <Spacer y={0.5} />
-        <Text variant="sm" color="black60">
+        <Text variant="sm" color="mono60">
           {text}
         </Text>
       </Flex>

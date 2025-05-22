@@ -16,7 +16,7 @@ export const SavedSearchFilterWaysToBuy = () => {
 
   return (
     <Flex px={2}>
-      <Separator my={2} borderColor="black10" />
+      <Separator my={2} borderColor="mono10" />
       <Text variant="sm" fontWeight="bold">
         Ways to Buy
       </Text>

@@ -1,130 +1,118 @@
+import { ChevronRightIcon } from "@artsy/icons/native"
 import {
-  ChevronIcon,
   Flex,
+  Separator,
   Spacer,
   SpacingUnit,
   SpacingUnitsTheme,
   Text,
   TextProps,
-  Touchable,
-  useColor,
 } from "@artsy/palette-mobile"
-import { StyleProp, ViewStyle } from "react-native"
+import { RouterLink } from "app/system/navigation/RouterLink"
+import { PixelRatio } from "react-native"
 import { ResponsiveValue } from "styled-system"
 
 export const MenuItem: React.FC<{
   allowDisabledVisualClue?: boolean // grays out with reduced opacity when disabled
-  chevron?: React.ReactNode
+  hideShevron?: boolean
   description?: string
   disabled?: boolean
   ellipsizeMode?: TextProps["ellipsizeMode"]
+  href?: string | null
   icon?: React.ReactNode
-  isBeta?: boolean
   onPress?: () => void
-  noFeedback?: boolean
   px?: ResponsiveValue<SpacingUnit, SpacingUnitsTheme>
-  py?: ResponsiveValue<SpacingUnit, SpacingUnitsTheme>
   rightView?: React.ReactNode
-  style?: StyleProp<ViewStyle>
-  text?: string
   title: React.ReactNode
+  subtitle?: string
   value?: React.ReactNode
+  alignItems?: "center" | "flex-start"
 }> = ({
   allowDisabledVisualClue = false,
   disabled = false,
-  chevron = (
-    <ChevronIcon
-      direction="right"
-      fill={disabled && allowDisabledVisualClue ? "black30" : "black60"}
-    />
-  ),
+  hideShevron = false,
   description,
   ellipsizeMode,
+  href,
   icon,
-  isBeta,
-  noFeedback = false,
   onPress,
   px,
-  py,
   rightView,
-  style,
-  text,
   title,
+  subtitle,
   value,
+  alignItems = "center",
 }) => {
-  const color = useColor()
+  const showInline = PixelRatio.getFontScale() < 1.5 || !value
 
   return (
-    <Touchable noFeedback={noFeedback} onPress={onPress} underlayColor="black5" disabled={disabled}>
-      <Flex
-        flexDirection="row"
-        alignItems="center"
-        py={py ?? "7.5px"}
-        px={px ?? 2}
-        style={style}
-        opacity={disabled && allowDisabledVisualClue ? 0.5 : 1}
-      >
-        {!!icon && (
-          <Flex flex={1} flexGrow={1} height="100%">
-            {icon}
-          </Flex>
-        )}
-        <Flex flex={7}>
+    <RouterLink onPress={onPress} to={href} underlayColor="mono5" disabled={disabled}>
+      <Flex px={px ?? 2}>
+        <Flex
+          flexDirection={!showInline ? "column" : "row"}
+          alignItems={showInline ? alignItems : "flex-start"}
+          opacity={disabled && allowDisabledVisualClue ? 0.5 : 1}
+          py={2}
+        >
+          {!!icon && <Flex mr={1}>{icon}</Flex>}
           <Flex>
-            <Text variant="sm-display">{title}</Text>
-            {!!description && (
-              <Text variant="xs" color="black60">
-                {description}
-              </Text>
+            <Flex>
+              <Flex flexDirection="row" alignItems="center">
+                <Text variant="sm-display" color="mono100">
+                  {title}
+                </Text>
+                {!!subtitle && (
+                  <Text color="mono60" ml={1}>
+                    {subtitle}
+                  </Text>
+                )}
+              </Flex>
+              {!!description && (
+                <Text variant="xs" color="mono60">
+                  {description}
+                </Text>
+              )}
+            </Flex>
+          </Flex>
+
+          <Spacer x={2} />
+
+          <Flex
+            flexDirection="row"
+            justifyContent={showInline ? "flex-end" : "space-between"}
+            flex={1}
+            width="100%"
+            flexGrow={3}
+            height="100%"
+          >
+            {!!value && (
+              <Flex width={showInline ? 200 : undefined}>
+                <Text
+                  variant="sm-display"
+                  color={disabled && allowDisabledVisualClue ? "mono30" : "mono60"}
+                  numberOfLines={1}
+                  ellipsizeMode={ellipsizeMode}
+                  textAlign="right"
+                >
+                  {value}
+                </Text>
+              </Flex>
+            )}
+
+            {rightView}
+
+            {!!((onPress || href) && !hideShevron) && (
+              <Flex pl={1} justifyContent="center">
+                <ChevronRightIcon
+                  fill={disabled && allowDisabledVisualClue ? "mono30" : "mono60"}
+                />
+              </Flex>
             )}
           </Flex>
-          {!!isBeta && (
-            <Flex px={0.5} mx={1} backgroundColor={color("black10")}>
-              <Text
-                variant="sm"
-                color={disabled && allowDisabledVisualClue ? "black30" : "black60"}
-              >
-                Beta
-              </Text>
-            </Flex>
-          )}
         </Flex>
 
-        <Spacer x={2} />
-
-        <Flex flexDirection="row" justifyContent="flex-end" flex={1} flexGrow={3} height="100%">
-          {!!value && (
-            <Flex width={200}>
-              <Text
-                variant="sm-display"
-                color={disabled && allowDisabledVisualClue ? "black30" : "black60"}
-                numberOfLines={1}
-                ellipsizeMode={ellipsizeMode}
-                textAlign="right"
-              >
-                {value}
-              </Text>
-            </Flex>
-          )}
-
-          {!!text && (
-            <Text
-              variant="sm-display"
-              color={disabled && allowDisabledVisualClue ? "black30" : "black60"}
-            >
-              {text}
-            </Text>
-          )}
-
-          {rightView}
-
-          {!!(onPress && chevron) && (
-            <Flex ml={1} justifyContent="center">
-              {chevron}
-            </Flex>
-          )}
-        </Flex>
+        <Separator borderColor="mono10" />
       </Flex>
-    </Touchable>
+    </RouterLink>
   )
 }

@@ -31,11 +31,13 @@ type WithSuspenseOptions<T> = {
    * Pass `NoFallback` to skip rendering any error fallback, only use this for subcomponents that don't need to render anything, e.g. a rail.
    * Make sure to test your error component and make sure nav is available to navigate away from the error.
    */
-  ErrorFallback: ((props: FallbackProps) => ReactElement | null) | typeof NoFallback
+  ErrorFallback:
+    | ((props: FallbackProps, componentProps: T) => ReactElement | null)
+    | typeof NoFallback
 }
 
 const DefaultLoadingFallback: React.FC = () => (
-  <Flex flex={1} justifyContent="center" alignItems="center">
+  <Flex testID="default-loading-feedback" flex={1} justifyContent="center" alignItems="center">
     <Spinner />
   </Flex>
 )
@@ -67,7 +69,7 @@ export const withSuspense = <T extends Object | any>({
             // No fallback means render nothing when an error occurs
             return null
           }
-          return ErrorFallback ? ErrorFallback(error) : null
+          return ErrorFallback ? ErrorFallback(error, props) : null
         }}
         // onError captures the exception and sends it to Sentry
         onError={(error) => captureException(error)}

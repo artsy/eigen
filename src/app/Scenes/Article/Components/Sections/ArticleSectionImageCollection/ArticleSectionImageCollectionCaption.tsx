@@ -31,7 +31,7 @@ export const ArticleSectionImageCollectionCaption: React.FC<
       margin="auto"
       tagStyles={{
         p: {
-          color: color("black60"),
+          color: color("mono60"),
           textAlign: "center",
         },
       }}

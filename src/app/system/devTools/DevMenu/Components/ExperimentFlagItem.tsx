@@ -8,18 +8,15 @@ import {
   Pill,
   Spacer,
   Text,
+  useColor,
   useSpace,
 } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
+import { IVariant, useFlags } from "@unleash/proxy-client-react"
 import { FONTS } from "app/Components/HTML"
 import { useToast } from "app/Components/Toast/toastHook"
 import { GlobalStore } from "app/store/GlobalStore"
-import {
-  EXPERIMENT_NAME,
-  ExperimentDescriptor,
-  experiments,
-} from "app/utils/experiments/experiments"
-import { useExperimentVariant } from "app/utils/experiments/hooks"
+import { EXPERIMENT_NAME, ExperimentDescriptor, experiments } from "app/system/flags/experiments"
 import { isEmpty } from "lodash"
 import { useState } from "react"
 import { Alert, Modal, TextInput, TouchableOpacity, TouchableWithoutFeedback } from "react-native"
@@ -28,7 +25,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
   description,
   flag,
 }) => {
-  const experiment = useExperimentVariant(flag)
+  const unleashVariant = useFlags().find((e) => e.name === flag)?.variant as IVariant
   const localPayloadOverrides = GlobalStore.useAppState(
     (s) => s.artsyPrefs.experiments.localPayloadOverrides
   )
@@ -42,8 +39,8 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
   const localExperiment = experiments[flag] as ExperimentDescriptor
 
   const toast = useToast()
-  const [variant, setVariant] = useState(experiment.variant)
-  const [payload, setPayload] = useState(experiment.payload)
+  const [variant, setVariant] = useState(localVariantOverrides[flag])
+  const [payload, setPayload] = useState(localPayloadOverrides[flag])
   const space = useSpace()
   const [visible, setVisible] = useState(false)
 
@@ -75,7 +72,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
             <Flex
               minHeight={650}
               width="95%"
-              backgroundColor="white100"
+              backgroundColor="mono0"
               borderRadius={20}
               // This is needed to avoid closing the modal on taps
               onStartShouldSetResponder={() => true}
@@ -90,7 +87,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                   <Text>
                     Key: <Text fontWeight="bold">{flag}</Text>
                   </Text>
-                  <Text variant="xs" color="black60">
+                  <Text variant="xs" color="mono60">
                     - Unleash values have (default) around them.{"\n"}- The values you set here will
                     override the ones coming from Unleash.
                   </Text>
@@ -103,7 +100,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
 
                     {!isEmpty(localExperiment.variantSuggestions) ? (
                       <Flex flexDirection="row" mt={1} flexWrap="wrap" justifyContent="flex-end">
-                        <Text color="black100" variant="xs" mt="3px" mr={0.5}>
+                        <Text color="mono100" variant="xs" mt="3px" mr={0.5}>
                           Suggestions:
                         </Text>
                         {localExperiment.variantSuggestions?.map((variantSuggestion) => {
@@ -117,14 +114,15 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                                 setVariant(variantSuggestion)
                               }}
                             >
-                              {variantSuggestion}
+                              {variantSuggestion}{" "}
+                              {unleashVariant?.name === variantSuggestion && "(default)"}
                             </Pill>
                           )
                         })}
                       </Flex>
                     ) : (
                       <Flex flexDirection="row" mt={1} flexWrap="wrap" justifyContent="flex-end">
-                        <Text color="black100" variant="xs" mt="3px" mr={0.5}>
+                        <Text color="mono100" variant="xs" mt="3px" mr={0.5}>
                           Suggestions:
                         </Text>
                         <Pill
@@ -134,7 +132,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                             setVariant("control")
                           }}
                         >
-                          control {experiment.unleashVariant === "control" && "(default)"}
+                          control {unleashVariant.name === "control" && "(default)"}
                         </Pill>
                         <Pill
                           variant="badge"
@@ -142,7 +140,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                             setVariant("experiment")
                           }}
                         >
-                          experiment {experiment.unleashVariant === "experiment" && "(default)"}
+                          experiment {unleashVariant.name === "experiment" && "(default)"}
                         </Pill>
                       </Flex>
                     )}
@@ -155,7 +153,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                     <CustomInput value={payload} onChangeText={setPayload} />
                     {!isEmpty(localExperiment.payloadSuggestions) && (
                       <Flex flexDirection="row" mt={1} flexWrap="wrap" justifyContent="flex-end">
-                        <Text color="black100" variant="xs" mt="3px" mr={0.5}>
+                        <Text color="mono100" variant="xs" mt="3px" mr={0.5}>
                           Suggestions:
                         </Text>
                         {localExperiment.payloadSuggestions?.map((payloadSuggestion) => {
@@ -170,7 +168,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                               }}
                             >
                               {payloadSuggestion}{" "}
-                              {experiment.unleashPayload === payloadSuggestion && "(default)"}
+                              {unleashVariant.payload?.value === payloadSuggestion && "(default)"}
                             </Pill>
                           )
                         })}
@@ -183,7 +181,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
               <Flex position="absolute" bottom={space(2)} px={2}>
                 <Button
                   block
-                  disabled={hasOverride}
+                  disabled={!hasOverride}
                   variant="outline"
                   onPress={() => {
                     Alert.alert(
@@ -197,8 +195,8 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
                         {
                           text: "Reset",
                           onPress: () => {
-                            setVariant(experiment.variant)
-                            setPayload(experiment.payload)
+                            setVariant("")
+                            setPayload("")
                             setLocalVariantOverride({ key: flag, value: null })
                             setLocalPayloadOverride({ key: flag, value: null })
                             setVisible(false)
@@ -234,8 +232,8 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
         {flag}
       </Text>
       <Text>
-        <Text color="black60">Status:</Text>{" "}
-        {experiment.enabled ? (
+        <Text color="mono60">Status:</Text>{" "}
+        {unleashVariant.enabled ? (
           <Text fontWeight="bold" color="blue100">
             enabled
           </Text>
@@ -246,30 +244,31 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
         )}
       </Text>
       <Text>
-        <Text color="black60">Variant:</Text> <Text fontWeight="bold">{experiment.variant}</Text>
+        <Text color="mono60">Variant:</Text>{" "}
+        <Text fontWeight="bold">{localVariantOverrides[flag] || unleashVariant.name}</Text>
         <TouchableOpacity
           onPress={() => {
             setVisible(true)
           }}
         >
-          <EditIcon fill={hasOverride ? "red100" : "black100"} ml={0.5} />
+          <EditIcon fill={hasOverride ? "red100" : "mono100"} ml={0.5} />
         </TouchableOpacity>
       </Text>
       <Flex flexDirection="row" flexWrap="wrap">
-        <Text color="black60">Payload: </Text>
+        <Text color="mono60">Payload: </Text>
         <Text fontWeight="bold" selectable>
-          {experiment.payload || "--"}
+          {unleashVariant.payload?.value || "--"}
           <TouchableOpacity
             onPress={() => {
               setVisible(true)
             }}
           >
-            <EditIcon fill={hasOverride ? "red100" : "black100"} ml={0.5} />
+            <EditIcon fill={hasOverride ? "red100" : "mono100"} ml={0.5} />
           </TouchableOpacity>
         </Text>
       </Flex>
       <Flex flexDirection="row">
-        <Text color="black60">Unleash Url: </Text>
+        <Text color="mono60">Unleash Url: </Text>
         <TouchableOpacity
           onPress={() => {
             Clipboard.setString(`https://unleash.artsy.net/projects/default/features/${flag}`)
@@ -282,7 +281,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
         </TouchableOpacity>
       </Flex>
       <Text>
-        <Text color="black60">Description:</Text> {description}
+        <Text color="mono60">Description:</Text> {description}
       </Text>
     </Flex>
   )
@@ -293,12 +292,15 @@ const CustomInput: React.FC<{
   value: string | undefined
   onChangeText: (text: string) => void
 }> = ({ value, onChangeText }) => {
+  const color = useColor()
+
   return (
     <TextInput
       value={value}
       onChangeText={onChangeText}
       autoCapitalize="none"
       style={{
+        color: color("mono100"),
         borderColor: "gray",
         borderWidth: 1,
         height: 45,

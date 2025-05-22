@@ -1,9 +1,9 @@
-import { Flex, Box, Text, Image } from "@artsy/palette-mobile"
+import { Box, Flex, Image, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { Fair } from "app/Scenes/Map/types"
-import { navigate } from "app/system/navigation/navigate"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { Component } from "react"
-import { Dimensions, TouchableWithoutFeedback } from "react-native"
+import { Dimensions } from "react-native"
 import styled from "styled-components/native"
 
 interface Props {
@@ -11,10 +11,6 @@ interface Props {
 }
 
 export class FairEventSectionCard extends Component<Props> {
-  handleTap() {
-    navigate(`/fair/${this.props.fair.slug}`)
-  }
-
   // @TODO: Implement tests for this component https://artsyproduct.atlassian.net/browse/LD-549
   render() {
     const {
@@ -24,7 +20,7 @@ export class FairEventSectionCard extends Component<Props> {
     const width = Dimensions.get("window").width / 2 + 50
 
     return (
-      <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
+      <RouterLink to={`/fair/${this.props.fair.slug}`}>
         <Container>
           {!!image?.url && (
             <BackgroundImage src={image.url} height={310} width={width} zIndex={1} />
@@ -37,24 +33,24 @@ export class FairEventSectionCard extends Component<Props> {
           </Flex>
           <Box p={2} style={{ position: "absolute", bottom: 0, left: 0 }} zIndex={4}>
             <Flex flexDirection="column" flexGrow={1}>
-              <Text variant="sm" weight="medium" color="white">
+              <Text variant="sm" weight="medium" color="mono0">
                 {name}
               </Text>
               {!!exhibition_period && (
-                <Text variant="sm" color="white">
+                <Text variant="sm" color="mono0">
                   {exhibition_period}
                 </Text>
               )}
             </Flex>
           </Box>
         </Container>
-      </TouchableWithoutFeedback>
+      </RouterLink>
     )
   }
 }
 
 const BackgroundImage = styled(Image)`
-  background: ${themeGet("colors.black60")};
+  background: ${themeGet("colors.mono60")};
 `
 
 const Container = styled(Box)`
@@ -62,7 +58,7 @@ const Container = styled(Box)`
   height: 310px;
   position: relative;
   overflow: hidden;
-  background: ${themeGet("colors.black60")};
+  background: ${themeGet("colors.mono60")};
 `
 
 // Set background color of overlay based on logo color
