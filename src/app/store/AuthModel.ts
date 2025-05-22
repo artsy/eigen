@@ -1021,10 +1021,12 @@ export const getAuthModel = (): AuthModel => ({
         },
       })
     } catch (error) {
+      Sentry.captureMessage(`AuthModel verifyUser error ${error}`)
       return "something_went_wrong"
     }
 
     if (result.status !== 201) {
+      Sentry.captureMessage(`AuthModel verifyUser result status ${result.status}`)
       return "something_went_wrong"
     }
 
