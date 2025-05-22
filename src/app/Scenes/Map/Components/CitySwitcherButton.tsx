@@ -1,10 +1,8 @@
 import { Box, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import themeGet from "@styled-system/theme-get"
 import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
-import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import Spinner from "app/Components/Spinner"
-import { Component } from "react"
 import styled from "styled-components/native"
 
 // Because it will raise errors in VS Code
