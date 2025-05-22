@@ -1,15 +1,13 @@
-import { Box, ClassTheme, Flex, Text, useColor, useSpace } from "@artsy/palette-mobile"
+import { Box, Flex, useColor, useSpace } from "@artsy/palette-mobile"
 import { BOTTOM_TABS_HEIGHT } from "@artsy/palette-mobile/dist/elements/Screen/StickySubHeader"
 import { useNavigation } from "@react-navigation/native"
 import MapboxGL from "@rnmapbox/maps"
-import { themeGet } from "@styled-system/theme-get"
 import { GlobalMap_viewer$key } from "__generated__/GlobalMap_viewer.graphql"
-import { Pin } from "app/Components/Icons/Pin"
-import PinFairSelected from "app/Components/Icons/PinFairSelected"
-import PinSavedSelected from "app/Components/Icons/PinSavedSelected"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { CityBottomSheet } from "app/Scenes/City/CityBottomSheet"
 import { CityPicker } from "app/Scenes/City/CityPicker"
 import { cityTabs } from "app/Scenes/City/cityTabs"
+import { SelectedPin } from "app/Scenes/Map/Components/SelectedPin"
 import {
   convertCityToGeoJSON,
   fairToGeoCityFairs,
@@ -85,7 +83,7 @@ const DefaultZoomLevel = 11
 const MinZoomLevel = 9
 const MaxZoomLevel = 17.5
 
-enum DrawerPosition {
+export enum DrawerPosition {
   open = "open",
   closed = "closed",
   collapsed = "collapsed",
@@ -124,6 +122,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
   >(null)
   const [activePin, setActivePin] = useState<GeoJSON.Feature | null>(null)
   const [showCityPicker, setShowCityPicker] = useState(false)
+  const [drawerPosition, setDrawerPosition] = useState<DrawerPosition>(DrawerPosition.closed)
 
   const navigation = useNavigation()
 
@@ -292,94 +291,13 @@ export const GlobalMap: React.FC<Props> = (props) => {
     }
   }
 
-  const renderSelectedPin = () => {
-    if (activePin === null || activePin.properties === null || !nearestFeature?.properties) {
-      return null
-    }
-
-    const {
-      properties: { cluster, type },
-    } = activePin
-
-    if (cluster) {
-      const { properties, geometry } = nearestFeature
-      const [clusterLat, clusterLng] = geometry.coordinates
-
-      const clusterId = properties.cluster_id.toString()
-      let pointCount = properties.point_count
-
-      const radius = pointCount < 4 ? 40 : pointCount < 21 ? 50 : 65
-      pointCount = pointCount.toString()
-
-      return (
-        clusterId &&
-        clusterLat &&
-        clusterLng &&
-        pointCount && (
-          <ClassTheme>
-            {({ color }) => (
-              <MapboxGL.PointAnnotation
-                key={clusterId}
-                id={clusterId}
-                selected
-                coordinate={[clusterLat, clusterLng]}
-              >
-                <SelectedCluster width={radius} height={radius}>
-                  <Text variant="sm" weight="medium" color={color("mono0")}>
-                    {pointCount}
-                  </Text>
-                </SelectedCluster>
-              </MapboxGL.PointAnnotation>
-            )}
-          </ClassTheme>
-        )
-      )
-    }
-
-    const item = activeShows[0]
-
-    if (!item || !item.location) {
-      return null
-    }
-
-    const lat = item.location.coordinates?.lat
-    const lng = item.location.coordinates?.lng
-    const id = item.slug
-
-    if (type === "Fair") {
-      return (
-        lat &&
-        lng &&
-        id && (
-          <MapboxGL.PointAnnotation key={id} id={id} coordinate={[lng, lat]}>
-            <PinFairSelected />
-          </MapboxGL.PointAnnotation>
-        )
-      )
-    } else if (type === "Show") {
-      const isSaved = (item as Show).is_followed
-
-      return (
-        lat &&
-        lng &&
-        id && (
-          <MapboxGL.PointAnnotation key={id} id={id} selected coordinate={[lng, lat]}>
-            {isSaved ? (
-              <PinSavedSelected pinHeight={45} pinWidth={45} />
-            ) : (
-              <Pin pinHeight={45} pinWidth={45} selected />
-            )}
-          </MapboxGL.PointAnnotation>
-        )
-      )
-    }
-  }
-
   const renderShowCard = () => {
     const hasShows = activeShows.length > 0
 
     // Check if it's an iPhone with ears (iPhone X, Xr, Xs, etc...)
     const iPhoneHasEars = props.safeAreaInsets.top > 20
+
+    const platformBottom = Platform.OS === "ios" ? (iPhoneHasEars ? 80 : 45) : 0
 
     // We need to update activeShows in case of a mutation (save show)
     const updatedShows: Array<Fair | Show> = activeShows.map((item: any) => {
@@ -394,7 +312,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
     return (
       <Flex
         style={{
-          bottom: hasShows ? (iPhoneHasEars ? 80 : 45) : -150,
+          bottom: hasShows ? platformBottom : -150,
           left: 0,
           right: 0,
           position: "absolute",
@@ -530,7 +448,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
     else {
       trackPinTap(Schema.ActionNames.ClusteredMapPin, null, Schema.OwnerEntityTypes.Show)
       // Get map zoom level and coordinates of where the user tapped
-      const zoom = Math.floor(await mapRef.current.getZoom())
+      const zoom = Math.ceil(await mapRef.current.getZoom())
       const [lat, lng] = coordinates
 
       // Get coordinates of the map's current viewport bounds
@@ -545,6 +463,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
         zoom
       )
       const nearestFeature = getNearestPointToLatLongInCollection({ lat, lng }, visibleFeatures)
+
       const points = clusterEngine.getLeaves(nearestFeature?.properties?.cluster_id, Infinity)
       activeShows = points.map((a) => a.properties) as any
       setNearestFeature(nearestFeature)
@@ -584,10 +503,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
   }
 
   const updateDrawerPosition = (position: DrawerPosition) => {
-    const notificationName = "ARLocalDiscoveryUpdateDrawerPosition"
-    LegacyNativeModules.ARNotificationsManager.postNotificationName(notificationName, {
-      position,
-    })
+    setDrawerPosition(position)
   }
 
   return (
@@ -603,8 +519,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
       <AnimatePresence>
         {!!showCityPicker && <CityPicker selectedCity={city?.name ?? ""} />}
       </AnimatePresence>
-
-      <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: color("mono5") }}>
+      <Flex flexDirection="column" style={{ backgroundColor: color("mono5") }}>
         <LoadingScreen
           source={require("images/map-bg.webp")}
           resizeMode="cover"
@@ -645,12 +560,19 @@ export const GlobalMap: React.FC<Props> = (props) => {
                   onPress={(e) => handleFeaturePress(e)}
                 />
               )}
-              <ShowCardContainer>{renderShowCard()}</ShowCardContainer>
-              {!!mapLoaded && !!activeShows && !!activePin && renderSelectedPin()}
+              {!!mapLoaded && !!activeShows && !!activePin && (
+                <SelectedPin
+                  activePin={activePin}
+                  nearestFeature={nearestFeature}
+                  activeShows={activeShows}
+                />
+              )}
             </>
           )}
         </MapboxGL.MapView>
+        {!!city && <ShowCardContainer>{renderShowCard()}</ShowCardContainer>}
       </Flex>
+      <CityBottomSheet drawerPosition={drawerPosition} citySlug={viewer.city?.slug || ""} />
     </ProvideScreenTracking>
   )
 }
@@ -659,14 +581,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
 const longCoordsToLocation = (coords: { longitude: number; latitude: number }) => {
   return { lat: coords.latitude, lng: coords.longitude }
 }
-
-const SelectedCluster = styled(Flex)`
-  background-color: ${themeGet("colors.blue100")};
-  border-radius: 60px;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`
 
 const tracks = {
   trackPinTap: (_: any, __: any, args: any) => {

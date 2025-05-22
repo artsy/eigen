@@ -13,10 +13,9 @@ import { AllEvents } from "./Components/AllEvents"
 import { EventList } from "./Components/EventList"
 import { cityTabs } from "./cityTabs"
 
-interface Props {
+export interface CityViewProps {
   isDrawerOpen?: boolean
   citySlug: string
-  tracking: any
 }
 
 interface State {
@@ -28,13 +27,13 @@ interface State {
   relayErrorState?: RelayErrorState
 }
 
-@screenTrack<Props>((props) => ({
+@screenTrack<CityViewProps>((props) => ({
   context_screen: Schema.PageNames.CityGuide,
   context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
   context_screen_owner_slug: props.citySlug,
   context_screen_owner_id: props.citySlug,
 }))
-export class CityView extends Component<Props, State> {
+export class CityView extends Component<CityViewProps, State> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   state = {
     buckets: null,
@@ -148,7 +147,13 @@ export class CityView extends Component<Props, State> {
     const { buckets, cityName, citySlug, relayErrorState } = this.state
 
     return buckets || relayErrorState ? (
-      <Container style={{ flex: 1 }}>
+      <Container
+        style={{
+          flex: 1,
+          // Allow for extra padding to make it easier to tell that there is no more content
+          paddingBottom: 50,
+        }}
+      >
         <Flex py={1} alignItems="center">
           <Handle />
         </Flex>
@@ -206,6 +211,7 @@ const Handle = styled.View`
 
 const Container = styled.View`
   background-color: ${themeGet("colors.background")};
+  border-radius: 10px;
 `
 
 // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
