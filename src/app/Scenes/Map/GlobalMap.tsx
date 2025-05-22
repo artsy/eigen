@@ -8,6 +8,7 @@ import { Pin } from "app/Components/Icons/Pin"
 import PinFairSelected from "app/Components/Icons/PinFairSelected"
 import PinSavedSelected from "app/Components/Icons/PinSavedSelected"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { CityPicker } from "app/Scenes/City/CityPicker"
 import { cityTabs } from "app/Scenes/City/cityTabs"
 import {
   convertCityToGeoJSON,
@@ -598,6 +599,8 @@ export const GlobalMap: React.FC<Props> = (props) => {
         context_screen_owner_id: props.citySlug,
       }}
     >
+      <CityPicker selectedCity={city?.name ?? ""} />
+
       <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: color("mono5") }}>
         <LoadingScreen
           source={require("images/map-bg.webp")}
@@ -607,7 +610,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
             height: Dimensions.get("window").height,
           }}
         />
-
         <MapboxGL.MapView
           ref={mapRef}
           style={{ width: "100%", height: Dimensions.get("window").height }}
