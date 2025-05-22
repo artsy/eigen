@@ -62,7 +62,7 @@ export const RecommendedAuctionLotsRail: React.FC<RecommendedAuctionLotsRailProp
           onMorePress={() => {
             trackEvent(tracks.tappedMoreCard(contextScreenOwnerType))
           }}
-          moreHref={"/auctions/lots-for-you-ending-soon"}
+          moreHref="/auctions/lots-for-you-ending-soon"
         />
       </View>
     )
