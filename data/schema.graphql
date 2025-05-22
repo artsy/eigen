@@ -8633,6 +8633,7 @@ type CreateArtworkImportFailure {
 input CreateArtworkImportInput {
   clientMutationId: String
   fileName: String
+  parseWithAI: Boolean
   partnerID: String!
   s3Bucket: String!
   s3Key: String!
