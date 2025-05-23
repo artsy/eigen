@@ -8631,6 +8631,7 @@ type CreateArtworkImportFailure {
 }
 
 input CreateArtworkImportInput {
+  async: Boolean
   clientMutationId: String
   fileName: String
   parseWithAI: Boolean
@@ -8648,6 +8649,7 @@ union CreateArtworkImportResponseOrError = CreateArtworkImportFailure | CreateAr
 
 type CreateArtworkImportSuccess {
   artworkImport: ArtworkImport
+  queued: Boolean
 }
 
 input CreateArtworkMutationInput {
