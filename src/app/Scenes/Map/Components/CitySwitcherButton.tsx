@@ -1,8 +1,12 @@
-import { Box, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { Box, Flex, Text } from "@artsy/palette-mobile"
 import themeGet from "@styled-system/theme-get"
-import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
+import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import Spinner from "app/Components/Spinner"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { City } from "app/Scenes/Map/types"
+import { Component } from "react"
+import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
 // Because it will raise errors in VS Code
@@ -21,27 +25,26 @@ const Background = styled(Flex)`
 
 interface Props {
   onPress?: () => void
-  city: GlobalMap_viewer$data["city"]
+  city: City
   isLoading: boolean
 }
 
-<<<<<<< HEAD
 export class CitySwitcherButton extends Component<Props> {
   render() {
     const { city, isLoading } = this.props
     return isLoading || city ? (
       <ThemeAwareClassTheme>
         {({}) => (
-<<<<<<< HEAD
           <TouchableWithoutFeedback
             accessibilityRole="button"
-=======
-          <Touchable
->>>>>>> c25bf74f87 (feat: cross platform city guide: WIP 1)
             onPress={() => {
               if (this.props.onPress) {
                 this.props.onPress()
               }
+              LegacyNativeModules.ARNotificationsManager.postNotificationName(
+                "ARLocalDiscoveryOpenCityPicker",
+                {}
+              )
             }}
           >
             <Background
@@ -73,56 +76,9 @@ export class CitySwitcherButton extends Component<Props> {
                 </Flex>
               )}
             </Background>
-          </Touchable>
+          </TouchableWithoutFeedback>
         )}
       </ThemeAwareClassTheme>
     ) : null
-=======
-export const CitySwitcherButton: React.FC<Props> = (props) => {
-  const { city, isLoading } = props
-
-  if (!city && !isLoading) {
-    return null
->>>>>>> b3718c54b5 (feat: cross platform city guide: WIP 5 add city picker 2)
   }
-
-  return (
-    <Touchable
-      onPress={() => {
-        if (props.onPress) {
-          props.onPress()
-        }
-      }}
-    >
-      <Background
-        flexDirection="row"
-        alignItems="center"
-        style={
-          {
-            shadowOffset: { height: 0, width: 0 },
-            width: city ? "auto" : 40,
-          } as any
-        }
-      >
-        {city ? (
-          <>
-            <Text variant="sm" weight="medium" ml={4}>
-              {city.name}
-            </Text>
-            <Box ml={2} mr={4}>
-              <ChevronIcon initialDirection="down" color="mono100" width={20} height={20} />
-            </Box>
-          </>
-        ) : (
-          <Flex alignItems="center" justifyContent="center" flexGrow={1}>
-            <Spinner
-              spinnerColor="mono60"
-              style={{ backgroundColor: "transparent" }}
-              size="medium"
-            />
-          </Flex>
-        )}
-      </Background>
-    </Touchable>
-  )
 }

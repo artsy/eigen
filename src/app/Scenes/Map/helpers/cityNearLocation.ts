@@ -1,7 +1,7 @@
 import { CityData } from "app/Scenes/City/CityPicker"
 import { ShortCoordinates } from "app/Scenes/Map/MapContainer"
 
-const CITY_RADIUS_M = 100 * 500 // 500km
+const CITY_RADIUS_M = 100 * 200 // 500km
 
 // Helper: Haversine formula to calculate distance between two lat/lng points in meters
 function distanceInMeters(lat1: number, lon1: number, lat2: number, lon2: number) {

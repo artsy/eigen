@@ -49,6 +49,9 @@ export const CityBottomSheet: React.FC<CityBottomSheetProps> = ({ ...props }) =>
         ...defaultIndicatorHandleStyle(color),
         backgroundColor: color("mono30"),
       }}
+      handleStyle={{
+        backgroundColor: color("mono0"),
+      }}
       backdropComponent={renderBackdrop}
     >
       <CityView {...props} />

@@ -1,5 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
 import { GlobalStore } from "app/store/GlobalStore"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useEffect, useRef } from "react"
 import { Linking } from "react-native"
