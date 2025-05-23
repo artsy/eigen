@@ -1,3 +1,4 @@
+import { CheckmarkStrokeIcon } from "@artsy/icons/native"
 import {
   Box,
   Flex,
@@ -8,7 +9,7 @@ import {
   Touchable,
   useSpace,
 } from "@artsy/palette-mobile"
-import { CircleWhiteCheckIcon } from "app/Components/Icons/CircleWhiteCheckIcon"
+import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
 import { useScreenDimensions } from "app/utils/hooks"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect, useState } from "react"
@@ -84,7 +85,10 @@ export const CityPicker: React.FC<Props> = (props) => {
                     </Text>
                     {selectedCity === city.name && (
                       <Box mb={2} mt={2}>
-                        <CircleWhiteCheckIcon width={26} height={26} />
+                        <CheckmarkStrokeIcon
+                          width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                          height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+                        />
                       </Box>
                     )}
                   </Flex>
