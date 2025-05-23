@@ -2,4 +2,4 @@ platforms:
   rubygems:
     colored:
       tests:
-        unmaintained: skip 
+        unmaintained: skip

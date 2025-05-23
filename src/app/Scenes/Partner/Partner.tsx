@@ -163,7 +163,7 @@ export const PartnerSkeleton: React.FC = () => {
       <Screen.Header />
       <Screen.Body fullwidth>
         <Skeleton>
-          <Flex px={2} flexDirection="column">
+          <Flex px={2} flexDirection="column" testID="PartnerPlaceholder">
             <SkeletonText variant="xl">Gallery Name</SkeletonText>
 
             <Spacer y={1} />

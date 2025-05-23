@@ -195,7 +195,7 @@ export const FairPlaceholder: React.FC = () => {
   const { safeAreaInsets } = useScreenDimensions()
 
   return (
-    <Flex top={safeAreaInsets.top}>
+    <Flex top={safeAreaInsets.top} testID="FairPlaceholder">
       <Skeleton>
         <Flex p={2}>
           <SkeletonBox width={18} height={18} />

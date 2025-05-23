@@ -255,8 +255,12 @@ export const MyProfilePushNotifications: React.FC<{
         context_screen_owner_type: OwnerType.accountNotifications,
       })}
     >
-      <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
-        {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && <OpenSettingsBanner />}
+      <ScrollView
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+      >
+        {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && (
+          <OpenSettingsBanner />
+        )}
         {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined &&
           Platform.OS === "ios" && <AllowPushNotificationsBanner />}
         <Content
