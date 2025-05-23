@@ -16139,6 +16139,9 @@ type Order {
 
   # The total amount for tax
   taxTotal: Money
+
+  # The total list price of items (accounting for limited partner offer if applicable)
+  totalListPrice: Money
 }
 
 enum OrderCreditCardWalletTypeEnum {
