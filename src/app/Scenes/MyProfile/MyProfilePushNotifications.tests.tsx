@@ -196,5 +196,4 @@ const mockNotificationsPreferences = {
   receiveViewingRoomNotification: true,
   receivePartnerShowNotification: true,
   receivePartnerOfferNotification: true,
-  id: "1",
 }
