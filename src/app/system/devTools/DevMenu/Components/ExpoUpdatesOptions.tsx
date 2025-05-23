@@ -22,6 +22,13 @@ const expoDeploymentChannels: Record<ExpoDeployment, string> = {
   Canary: "canary",
 }
 
+const channelToDeployment: Record<string, ExpoDeployment> = Object.fromEntries(
+  Object.entries(expoDeploymentChannels).map(([deployment, channel]) => [
+    channel,
+    deployment as ExpoDeployment,
+  ])
+)
+
 export const ExpoUpdatesOptions = () => {
   const [selectedDeployment, setSelectedDeployment] = useState<ExpoDeployment>("Staging")
   const [updateMetadata, setUpdateMetadata] = useState<any>(null)
@@ -39,6 +46,10 @@ export const ExpoUpdatesOptions = () => {
         isEmbeddedLaunch: Updates.isEmbeddedLaunch,
         isEmergencyLaunch: Updates.isEmergencyLaunch,
         manifest: Updates.manifest,
+      }
+      if (Updates.channel) {
+        const deployment = channelToDeployment[Updates.channel]
+        setSelectedDeployment(deployment)
       }
       setUpdateMetadata(info)
     } catch (error) {
