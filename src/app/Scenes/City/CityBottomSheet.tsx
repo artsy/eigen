@@ -11,6 +11,8 @@ interface CityBottomSheetProps extends CityViewProps {
   drawerPosition: DrawerPosition
 }
 
+const BORDER_RADIUS = 10
+
 export const CityBottomSheet: React.FC<CityBottomSheetProps> = ({ ...props }) => {
   const { bottom } = useSafeAreaInsets()
   const { height } = useScreenDimensions()
@@ -43,7 +45,7 @@ export const CityBottomSheet: React.FC<CityBottomSheetProps> = ({ ...props }) =>
       ref={bottomSheetRef}
       enableDynamicSizing={false}
       enablePanDownToClose={false}
-      snapPoints={[bottom + 90, height * 0.88]}
+      snapPoints={[bottom + 95, height * 0.88]}
       index={-1}
       handleIndicatorStyle={{
         ...defaultIndicatorHandleStyle(color),
@@ -51,6 +53,11 @@ export const CityBottomSheet: React.FC<CityBottomSheetProps> = ({ ...props }) =>
       }}
       handleStyle={{
         backgroundColor: color("mono0"),
+        height: BORDER_RADIUS,
+        borderTopLeftRadius: BORDER_RADIUS,
+        borderTopRightRadius: BORDER_RADIUS,
+        borderTopWidth: 1,
+        borderTopColor: color("mono10"),
       }}
       backdropComponent={renderBackdrop}
     >

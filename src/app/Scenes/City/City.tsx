@@ -77,12 +77,7 @@ export class CityView extends Component<CityViewProps, State> {
 
   handleError = ({ relayErrorState }: { relayErrorState: RelayErrorState }) => {
     // We have a Relay error; post a notification so that the ARMapContainerViewController can finalize the native UI (ie: show the drawer partially).
-    this.setState({ relayErrorState }, () => {
-      LegacyNativeModules.ARNotificationsManager.postNotificationName(
-        "ARLocalDiscoveryQueryReceived",
-        {}
-      )
-    })
+    this.setState({ relayErrorState })
   }
 
   UNSAFE_componentWillMount() {
@@ -97,10 +92,6 @@ export class CityView extends Component<CityViewProps, State> {
 
   setSelectedTab(index: number) {
     EventEmitter.dispatch("filters:change", index)
-    LegacyNativeModules.ARNotificationsManager.postNotificationName(
-      "ARLocalDiscoveryCityGotScrollView",
-      {}
-    )
   }
 
   @track((__, _, args) => {
@@ -201,9 +192,6 @@ export class CityView extends Component<CityViewProps, State> {
 
 const Container = styled.View`
   background-color: ${themeGet("colors.background")};
-  border-radius: 10px;
-  border-width: 1px;
-  border-color: ${themeGet("colors.mono10")};
 `
 
 // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
