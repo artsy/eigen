@@ -17,18 +17,14 @@ import { BottomTabOption, BottomTabType } from "app/Scenes/BottomTabs/BottomTabT
 import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { bottomTabsConfig, useSearchTabName } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { OnboardingQuiz } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
-import { GlobalStore, unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
 import { useCallback } from "react"
 import { InteractionManager, PixelRatio, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
-if (
-  Platform.OS === "ios" &&
-  // No need to register the native screens since that will be handled in the RN side
-  !unsafe_getFeatureFlag("AREnableCrossPlatformCityGuide")
-) {
+if (Platform.OS === "ios") {
   require("app/Navigation/AuthenticatedRoutes/NativeScreens")
 }
 
