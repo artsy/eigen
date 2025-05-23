@@ -3,8 +3,8 @@ import { cityNearLocation } from "./cityNearLocation"
 
 const cities = [
   { name: "Paris", coordinates: { lat: 48.8566, lng: 2.3522 } },
-  { name: "London", co: { lat: 51.5074, lng: -0.1278 } },
-  { name: "Berlin", co: { lat: 52.52, lng: 13.405 } },
+  { name: "London", coordinates: { lat: 51.5074, lng: -0.1278 } },
+  { name: "Berlin", coordinates: { lat: 52.52, lng: 13.405 } },
 ] as CityData[]
 
 describe("cityNearLocation", () => {

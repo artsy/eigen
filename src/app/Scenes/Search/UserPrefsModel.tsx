@@ -45,7 +45,7 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
   metric: DEFAULT_METRIC,
   priceRange: DEFAULT_PRICE_RANGE,
   defaultViewOption: "list",
-  previouslySelectedCitySlug: "",
+  previouslySelectedCitySlug: null,
   setCurrency: action((state, currency) => {
     if (currencies.includes(currency)) {
       state.currency = currency
