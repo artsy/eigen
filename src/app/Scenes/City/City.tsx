@@ -154,9 +154,6 @@ export class CityView extends Component<CityViewProps, State> {
           paddingBottom: 50,
         }}
       >
-        <Flex py={1} alignItems="center">
-          <Handle />
-        </Flex>
         {relayErrorState ? (
           <ErrorScreen relayErrorState={relayErrorState} key="error" />
         ) : (
@@ -202,16 +199,11 @@ export class CityView extends Component<CityViewProps, State> {
   }
 }
 
-const Handle = styled.View`
-  width: 40px;
-  height: 5px;
-  border-radius: 2.5px;
-  background-color: ${themeGet("colors.mono30")};
-`
-
 const Container = styled.View`
   background-color: ${themeGet("colors.background")};
   border-radius: 10px;
+  border-width: 1px;
+  border-color: ${themeGet("colors.mono10")};
 `
 
 // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
