@@ -43,5 +43,7 @@ export const useHideSplashScreen = () => {
         hideSplashScreen()
       }
     }
+
+    hideSplashScreen()
   }, [isHydrated, isLoggedIn, isNavigationReady, isUnleashReady])
 }
