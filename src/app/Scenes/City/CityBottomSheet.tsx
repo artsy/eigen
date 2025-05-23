@@ -1,5 +1,6 @@
-import { useScreenDimensions } from "@artsy/palette-mobile"
+import { useColor, useScreenDimensions } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetProps } from "@gorhom/bottom-sheet"
+import { defaultIndicatorHandleStyle } from "app/Components/BottomSheet/defaultIndicatorHandleStyle"
 import { CityView, CityViewProps } from "app/Scenes/City/City"
 import { CityBottomSheetBackdrop } from "app/Scenes/City/Components/CityBottomSheetBackdrop"
 import { DrawerPosition } from "app/Scenes/Map/GlobalMap"
@@ -13,6 +14,7 @@ interface CityBottomSheetProps extends CityViewProps {
 export const CityBottomSheet: React.FC<CityBottomSheetProps> = ({ ...props }) => {
   const { bottom } = useSafeAreaInsets()
   const { height } = useScreenDimensions()
+  const color = useColor()
   const bottomSheetRef = useRef<BottomSheet>(null)
 
   useEffect(() => {
@@ -21,11 +23,9 @@ export const CityBottomSheet: React.FC<CityBottomSheetProps> = ({ ...props }) =>
         bottomSheetRef.current?.expand()
         break
       case DrawerPosition.closed:
-        console.log("DEBUG: closing bottom sheet")
         bottomSheetRef.current?.close()
         break
       case DrawerPosition.collapsed:
-        console.log("DEBUG: closing bottom sheet")
         bottomSheetRef.current?.collapse()
         break
       case DrawerPosition.partiallyRevealed:
@@ -45,7 +45,10 @@ export const CityBottomSheet: React.FC<CityBottomSheetProps> = ({ ...props }) =>
       enablePanDownToClose={false}
       snapPoints={[bottom + 90, height * 0.88]}
       index={-1}
-      handleComponent={() => null}
+      handleIndicatorStyle={{
+        ...defaultIndicatorHandleStyle(color),
+        backgroundColor: color("mono30"),
+      }}
       backdropComponent={renderBackdrop}
     >
       <CityView {...props} />

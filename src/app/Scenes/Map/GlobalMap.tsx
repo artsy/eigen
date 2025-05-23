@@ -3,11 +3,11 @@ import { BOTTOM_TABS_HEIGHT } from "@artsy/palette-mobile/dist/elements/Screen/S
 import { useNavigation } from "@react-navigation/native"
 import MapboxGL from "@rnmapbox/maps"
 import { GlobalMap_viewer$key } from "__generated__/GlobalMap_viewer.graphql"
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { CityBottomSheet } from "app/Scenes/City/CityBottomSheet"
 import { CityData, CityPicker } from "app/Scenes/City/CityPicker"
 import { cityTabs } from "app/Scenes/City/cityTabs"
 import { SelectedPin } from "app/Scenes/Map/Components/SelectedPin"
+import { MAX_GRAPHQL_INT } from "app/Scenes/Map/MapRenderer"
 import {
   convertCityToGeoJSON,
   fairToGeoCityFairs,
@@ -21,7 +21,7 @@ import { AnimatePresence } from "moti"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Dimensions, Image, Platform } from "react-native"
 import Keys from "react-native-keys"
-import { graphql, useFragment } from "react-relay"
+import { graphql, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { usePrevious } from "react-use"
 import styled from "styled-components/native"
@@ -94,7 +94,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
   const color = useColor()
   const space = useSpace()
 
-  const viewer = useFragment(globalMapFragment, props.viewer)
+  const [viewer, refetch] = useRefetchableFragment(globalMapFragment, props.viewer)
   const { trackEvent } = useTracking()
 
   const mapRef = useRef<MapboxGL.MapView>(null)
@@ -346,7 +346,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
     if (!mapRef.current) {
       return
     }
-    const zoom = Math.floor((await mapRef.current.getZoom()) ?? DefaultZoomLevel)
+    const zoom = Math.ceil((await mapRef.current.getZoom()) ?? DefaultZoomLevel)
 
     if (currentZoom !== zoom) {
       setActivePin(null)
@@ -358,10 +358,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
   }
 
   const onDidFinishRenderingMapFully = () => {
-    LegacyNativeModules.ARNotificationsManager.postNotificationName(
-      "ARLocalDiscoveryMapHasRendered",
-      {}
-    )
     setMapLoaded(true)
   }
 
@@ -448,7 +444,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
     else {
       trackPinTap(Schema.ActionNames.ClusteredMapPin, null, Schema.OwnerEntityTypes.Show)
       // Get map zoom level and coordinates of where the user tapped
-      const zoom = Math.ceil(await mapRef.current.getZoom())
+      const zoom = Math.floor(await mapRef.current.getZoom())
       const [lat, lng] = coordinates
 
       // Get coordinates of the map's current viewport bounds
@@ -508,6 +504,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
 
   const onSelectCity = (newCity: CityData) => {
     setShowCityPicker(false)
+    refetch({ citySlug: newCity.slug, maxInt: MAX_GRAPHQL_INT })
   }
 
   return (
@@ -543,7 +540,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
           attributionEnabled
           logoEnabled
           logoPosition={{
-            bottom: Platform.OS === "ios" ? BOTTOM_TABS_HEIGHT + space(2) : space(2),
+            bottom: Platform.OS === "ios" ? BOTTOM_TABS_HEIGHT + space(2) : space(4),
             left: space(2),
           }}
           onPress={onPressMap}
@@ -606,6 +603,7 @@ const tracks = {
 
 const globalMapFragment = graphql`
   fragment GlobalMap_viewer on Viewer
+  @refetchable(queryName: "GlobalMap_viewerRefetch")
   @argumentDefinitions(citySlug: { type: "String!" }, maxInt: { type: "Int!" }) {
     city(slug: $citySlug) {
       name
