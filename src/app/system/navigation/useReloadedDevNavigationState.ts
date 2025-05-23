@@ -30,8 +30,8 @@ export const useReloadedDevNavigationState = (key: string) => {
     "DTDisableNavigationStateRehydration"
   )
 
-  // We only rehydrate navigation state on dev builds and if the toggle is disabled
-  const isNavigationStateRehydrationEnabled = __DEV__ && !isNavigationStateRehydrationDisabledToggle
+  // We only rehydrate navigation state if the toggle is disabled
+  const isNavigationStateRehydrationEnabled = !isNavigationStateRehydrationDisabledToggle
 
   const [isReady, setIsReady] = useState(isNavigationStateRehydrationEnabled ? false : true)
   const launchCount = ArtsyNativeModule.launchCount
