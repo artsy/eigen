@@ -161,7 +161,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
         )
       },
     })
-  }, [navigation, viewer, userLocation, showCityPicker])
+  }, [navigation, viewer, userLocation, showCityPicker, activePin])
 
   useEffect(() => {
     updateShowIdMap()
