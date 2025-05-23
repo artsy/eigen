@@ -161,7 +161,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
         )
       },
     })
-  }, [navigation, viewer, userLocation])
+  }, [navigation, viewer, userLocation, showCityPicker])
 
   useEffect(() => {
     updateShowIdMap()
@@ -369,9 +369,15 @@ export const GlobalMap: React.FC<Props> = (props) => {
   }
 
   const onPressCitySwitcherButton = () => {
-    setShowCityPicker(true)
-    setActiveShows([])
-    setActivePin(null)
+    if (!showCityPicker) {
+      // Show the city picker
+      setShowCityPicker(true)
+      setActiveShows([])
+      setActivePin(null)
+    } else {
+      // Hide the city picker
+      setShowCityPicker(false)
+    }
   }
 
   const onPressUserPositionButton = () => {
