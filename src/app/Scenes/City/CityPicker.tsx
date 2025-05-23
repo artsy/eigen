@@ -71,7 +71,7 @@ export const CityPicker: React.FC<Props> = (props) => {
                       variant={dimensions(screenHeight)[size].cityFontSize}
                       lineHeight={`${dimensions(screenHeight)[size].lineHeight}px`}
                     >
-                      {city}
+                      {city.name}
                     </Text>
                     {selectedCity === city.name && (
                       <Box mb={2} mt={2}>

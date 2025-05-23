@@ -9,7 +9,7 @@ import { GlobalMap } from "./GlobalMap"
 
 // This sentinel value essentially means, load /all/ records.
 // See https://github.com/artsy/metaphysics/pull/1533
-const MAX_GRAPHQL_INT = 2147483647
+export const MAX_GRAPHQL_INT = 2147483647
 
 interface MapRendererProps {
   citySlug: string

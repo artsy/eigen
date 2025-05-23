@@ -1,10 +1,10 @@
-import { Flex, Text, useColor } from "@artsy/palette-mobile"
+import { Flex, Text } from "@artsy/palette-mobile"
 import MapboxGL from "@rnmapbox/maps"
 import { Pin } from "app/Components/Icons/Pin"
 import PinFairSelected from "app/Components/Icons/PinFairSelected"
 import PinSavedSelected from "app/Components/Icons/PinSavedSelected"
 import { Fair, Show } from "app/Scenes/Map/types"
-import { PointFeature, ClusterProperties, AnyProps } from "supercluster"
+import { AnyProps, ClusterProperties, PointFeature } from "supercluster"
 
 export const SelectedPin: React.FC<{
   activePin: GeoJSON.Feature

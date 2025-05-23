@@ -1262,4 +1262,22 @@ describe("App version Versions.AddInfiniteDiscoveryModel", () => {
       expect(migratedState.infiniteDiscovery.hasSavedArtworks).toEqual(false)
     })
   })
+  describe("App version Versions.AddPreviouslySelectedCitySlugToUserPrefsModel", () => {
+    it("should add previouslySelectedCitySlug as null", () => {
+      const migrationToTest = Versions.AddPreviouslySelectedCitySlugToUserPrefsModel
+
+      const previousState = migrate({
+        state: { version: 0 },
+        toVersion: migrationToTest - 1,
+      }) as any
+
+      const migratedState = migrate({
+        state: previousState,
+        toVersion: migrationToTest,
+      }) as any
+
+      expect(previousState.userPrefs.previouslySelectedCitySlug).toEqual(undefined)
+      expect(migratedState.userPrefs.previouslySelectedCitySlug).toEqual(null)
+    })
+  })
 })
