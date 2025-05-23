@@ -13,10 +13,9 @@ import { AllEvents } from "./Components/AllEvents"
 import { EventList } from "./Components/EventList"
 import { cityTabs } from "./cityTabs"
 
-interface Props {
+export interface CityViewProps {
   isDrawerOpen?: boolean
   citySlug: string
-  tracking: any
 }
 
 interface State {
@@ -28,13 +27,13 @@ interface State {
   relayErrorState?: RelayErrorState
 }
 
-@screenTrack<Props>((props) => ({
+@screenTrack<CityViewProps>((props) => ({
   context_screen: Schema.PageNames.CityGuide,
   context_screen_owner_type: Schema.OwnerEntityTypes.CityGuide,
   context_screen_owner_slug: props.citySlug,
   context_screen_owner_id: props.citySlug,
 }))
-export class CityView extends Component<Props, State> {
+export class CityView extends Component<CityViewProps, State> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   state = {
     buckets: null,
@@ -78,12 +77,7 @@ export class CityView extends Component<Props, State> {
 
   handleError = ({ relayErrorState }: { relayErrorState: RelayErrorState }) => {
     // We have a Relay error; post a notification so that the ARMapContainerViewController can finalize the native UI (ie: show the drawer partially).
-    this.setState({ relayErrorState }, () => {
-      LegacyNativeModules.ARNotificationsManager.postNotificationName(
-        "ARLocalDiscoveryQueryReceived",
-        {}
-      )
-    })
+    this.setState({ relayErrorState })
   }
 
   UNSAFE_componentWillMount() {
@@ -98,10 +92,6 @@ export class CityView extends Component<Props, State> {
 
   setSelectedTab(index: number) {
     EventEmitter.dispatch("filters:change", index)
-    LegacyNativeModules.ARNotificationsManager.postNotificationName(
-      "ARLocalDiscoveryCityGotScrollView",
-      {}
-    )
   }
 
   @track((__, _, args) => {
@@ -148,10 +138,13 @@ export class CityView extends Component<Props, State> {
     const { buckets, cityName, citySlug, relayErrorState } = this.state
 
     return buckets || relayErrorState ? (
-      <Container style={{ flex: 1 }}>
-        <Flex py={1} alignItems="center">
-          <Handle />
-        </Flex>
+      <Container
+        style={{
+          flex: 1,
+          // Allow for extra padding to make it easier to tell that there is no more content
+          paddingBottom: 50,
+        }}
+      >
         {relayErrorState ? (
           <ErrorScreen relayErrorState={relayErrorState} key="error" />
         ) : (
@@ -196,13 +189,6 @@ export class CityView extends Component<Props, State> {
     ) : null
   }
 }
-
-const Handle = styled.View`
-  width: 40px;
-  height: 5px;
-  border-radius: 2.5px;
-  background-color: ${themeGet("colors.mono30")};
-`
 
 const Container = styled.View`
   background-color: ${themeGet("colors.background")};
