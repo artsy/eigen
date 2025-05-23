@@ -141,93 +141,97 @@ export const MyAccount: React.FC<{ me: MyAccount_me$key }> = (props) => {
         <MenuItem title="Phone" value={me.phone || "Add phone"} href="my-account/edit-phone" />
 
         {!enableRedesignedSettings && (
-          <MenuItem title="Price Range" value={priceRangeValue} href="my-account/edit-price-range" />
+          <MenuItem
+            title="Price Range"
+            value={priceRangeValue}
+            href="my-account/edit-price-range"
+          />
         )}
 
         {!!me.paddleNumber && <MenuItem title="Paddle Number" value={me.paddleNumber} />}
 
-      {!!showLinkedAccounts && (
-        <Flex mt={4}>
-          <SectionTitle
-            title="Linked Accounts"
-            titleVariant={enableRedesignedSettings ? "xs" : "sm-display"}
-            titleColor={enableRedesignedSettings ? "mono60" : "mono100"}
-            mx={2}
-          />
+        {!!showLinkedAccounts && (
+          <Flex mt={4}>
+            <SectionTitle
+              title="Linked Accounts"
+              titleVariant={enableRedesignedSettings ? "xs" : "sm-display"}
+              titleColor={enableRedesignedSettings ? "mono60" : "mono100"}
+              mx={2}
+            />
 
-          <MenuItemSocialItem
-            title="Facebook"
-            disabled={loading || onlyExistingAuthFor("FACEBOOK")}
-            isLinked={facebookLinked}
-            isLoading={fbLoading}
-            icon={
-              <Image
-                source={require(`images/facebook.webp`)}
-                resizeMode="contain"
-                style={{ marginRight: 10 }}
-              />
-            }
-            onPress={() => {
-              linkOrUnlink("facebook")
-            }}
-          />
-
-          <MenuItemSocialItem
-            title="Google"
-            disabled={loading || onlyExistingAuthFor("GOOGLE")}
-            icon={
-              <Image
-                source={require(`images/google.webp`)}
-                resizeMode="contain"
-                style={{ marginRight: 10 }}
-              />
-            }
-            isLinked={googleLinked}
-            isLoading={googleLoading}
-            onPress={() => {
-              linkOrUnlink("google")
-            }}
-          />
-
-          {!!showLinkApple && (
             <MenuItemSocialItem
-              title="Apple"
-              disabled={loading || onlyExistingAuthFor("APPLE")}
-              isLinked={appleLinked}
-              isLoading={appleLoading}
-              onPress={() => {
-                linkOrUnlink("apple")
-              }}
+              title="Facebook"
+              disabled={loading || onlyExistingAuthFor("FACEBOOK")}
+              isLinked={facebookLinked}
+              isLoading={fbLoading}
               icon={
                 <Image
-                  source={require(`images/apple.webp`)}
+                  source={require(`images/facebook.webp`)}
                   resizeMode="contain"
-                  style={{ marginRight: 10, tintColor: "black" }}
+                  style={{ marginRight: 10 }}
                 />
               }
+              onPress={() => {
+                linkOrUnlink("facebook")
+              }}
             />
-          )}
-        </Flex>
-      )}
 
-      <Spacer y={2} />
+            <MenuItemSocialItem
+              title="Google"
+              disabled={loading || onlyExistingAuthFor("GOOGLE")}
+              icon={
+                <Image
+                  source={require(`images/google.webp`)}
+                  resizeMode="contain"
+                  style={{ marginRight: 10 }}
+                />
+              }
+              isLinked={googleLinked}
+              isLoading={googleLoading}
+              onPress={() => {
+                linkOrUnlink("google")
+              }}
+            />
 
-      {enableRedesignedSettings ? (
-        <Flex mx={2} mt={2}>
+            {!!showLinkApple && (
+              <MenuItemSocialItem
+                title="Apple"
+                disabled={loading || onlyExistingAuthFor("APPLE")}
+                isLinked={appleLinked}
+                isLoading={appleLoading}
+                onPress={() => {
+                  linkOrUnlink("apple")
+                }}
+                icon={
+                  <Image
+                    source={require(`images/apple.webp`)}
+                    resizeMode="contain"
+                    style={{ marginRight: 10, tintColor: "black" }}
+                  />
+                }
+              />
+            )}
+          </Flex>
+        )}
+
+        <Spacer y={2} />
+
+        {enableRedesignedSettings ? (
+          <Flex mx={2} mt={2}>
+            <RouterLink to="my-account/delete-account" hasChildTouchable>
+              <LinkText color="mono60" variant="xs">
+                Delete My Account
+              </LinkText>
+            </RouterLink>
+          </Flex>
+        ) : (
           <RouterLink to="my-account/delete-account" hasChildTouchable>
-            <LinkText color="mono60" variant="xs">
-              Delete My Account
-            </LinkText>
+            <Button variant="text" block>
+              <Text color="red100">Delete My Account</Text>
+            </Button>
           </RouterLink>
-        </Flex>
-      ) : (
-        <RouterLink to="my-account/delete-account" hasChildTouchable>
-          <Button variant="text" block>
-            <Text color="red100">Delete My Account</Text>
-          </Button>
-        </RouterLink>
-      )}
-    </Wrapper>
+        )}
+      </Wrapper>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }

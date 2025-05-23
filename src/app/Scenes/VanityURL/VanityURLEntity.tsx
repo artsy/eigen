@@ -86,6 +86,7 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
                     flexDirection="row"
                     alignItems="center"
                     justifyContent="center"
+                    testID="LoadingSpinner"
                   >
                     <Spinner />
                   </Flex>

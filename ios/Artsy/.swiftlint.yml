@@ -12,7 +12,7 @@ opt_in_rules:
   - empty_count
   - force_unwrapping
 
-excluded: 
+excluded:
   - Pods
   - iOSInjectionProject
   - Artsy_WatchKit_App
@@ -28,5 +28,5 @@ file_length:
 variable_name:
   max_length: 100
   excluded:
-  - a
-  - b
+    - a
+    - b

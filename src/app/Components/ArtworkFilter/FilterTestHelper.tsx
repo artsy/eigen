@@ -31,7 +31,7 @@ export const getEssentialProps = (params: {} = {}) =>
       },
     },
     // navigation
-  } as unknown as StackScreenProps<ArtworkFilterNavigationStack, "FilterOptionsScreen">)
+  }) as unknown as StackScreenProps<ArtworkFilterNavigationStack, "FilterOptionsScreen">
 
 export const MockFilterScreen = ({ initialState }: { initialState?: ArtworkFiltersState }) => (
   <ArtworkFiltersStoreProvider

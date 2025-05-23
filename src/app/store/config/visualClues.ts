@@ -37,8 +37,11 @@ export const visualClues = defineVisualClues({
 
 export const visualClueNames = Object.keys(visualClues)
 
-export const VisualCluesConstMap = (visualClueNames as [VisualClueName]).reduce((obj, key) => {
-  // @ts-ignore
-  obj[key] = key
-  return obj
-}, {} as { [K in VisualClueName]: K })
+export const VisualCluesConstMap = (visualClueNames as [VisualClueName]).reduce(
+  (obj, key) => {
+    // @ts-ignore
+    obj[key] = key
+    return obj
+  },
+  {} as { [K in VisualClueName]: K }
+)

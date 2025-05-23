@@ -25,9 +25,8 @@ export const ArtworkFilterOptionCheckboxItem: React.FC<ArtworkFilterOptionCheckb
 
   const selectedOptions = useSelectedOptionsDisplay()
 
-  const selectedOption = selectedOptions.find(
-    (option) => option.paramName === item.filterType
-  )?.paramValue
+  const selectedOption = selectedOptions.find((option) => option.paramName === item.filterType)
+    ?.paramValue
 
   const setValueOnFilters = (value: boolean | string) => {
     selectFiltersAction({

@@ -30,7 +30,7 @@ describe("useOnboardingTracking", () => {
         "trackAnsweredQuestionOne" | "trackAnsweredQuestionTwo" | "trackAnsweredQuestionThree",
         ActionType,
         ContextModule,
-        string | string[]
+        string | string[],
       ]
     >([
       [
@@ -90,7 +90,7 @@ describe("useOnboardingTracking", () => {
         string,
         boolean,
         OwnerType,
-        OwnerType
+        OwnerType,
       ]
     >([
       [

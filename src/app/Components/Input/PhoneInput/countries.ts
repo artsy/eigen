@@ -2077,7 +2077,7 @@ export const countries: CountryData[] = [
   },
 ]
 
-type Country = typeof countries[0]
+type Country = (typeof countries)[0]
 
 export const countryIndex: Record<string, Country> = {}
 

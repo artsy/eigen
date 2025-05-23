@@ -11,4 +11,4 @@ export const getEssentialProps = (params: {} = {}) =>
       },
     },
     // navigation
-  } as any)
+  }) as any

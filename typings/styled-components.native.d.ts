@@ -27,19 +27,24 @@ declare module "styled-components/native" {
 
   export type ReactNativeThemedStyledFunction<
     C extends React.ComponentType<any>,
-    T extends object
+    T extends object,
   > = ThemedStyledFunction<ExtractProps<C>, T>
 
   // Copied over from "ThemedBaseStyledInterface" in index.d.ts in order to remove DOM element typings
-  type ReactNativeThemedBaseStyledInterface<T extends object> = <C extends React.ComponentType<any>>(
+  type ReactNativeThemedBaseStyledInterface<T extends object> = <
+    C extends React.ComponentType<any>,
+  >(
     // unfortunately using a conditional type to validate that it can receive a `theme?: Theme`
     // causes tests to fail in TS 3.1
     component: C
   ) => ThemedStyledFunction<ExtractProps<C>, T>
 
-  type ReactNativeThemedStyledInterface<T extends object> = ReactNativeThemedBaseStyledInterface<AnyIfEmpty<T>>
+  type ReactNativeThemedStyledInterface<T extends object> = ReactNativeThemedBaseStyledInterface<
+    AnyIfEmpty<T>
+  >
 
-  export interface ReactNativeStyledInterface<T extends object> extends ReactNativeThemedStyledInterface<T> {
+  export interface ReactNativeStyledInterface<T extends object>
+    extends ReactNativeThemedStyledInterface<T> {
     ActivityIndicator: ReactNativeThemedStyledFunction<typeof ReactNative.ActivityIndicator, T>
     ActivityIndicatorIOS: ReactNativeThemedStyledFunction<typeof ReactNative.ActivityIndicator, T>
     Button: ReactNativeThemedStyledFunction<typeof ReactNative.Button, T>
@@ -47,7 +52,10 @@ declare module "styled-components/native" {
     DrawerLayoutAndroid: ReactNativeThemedStyledFunction<typeof ReactNative.DrawerLayoutAndroid, T>
     Image: ReactNativeThemedStyledFunction<typeof ReactNative.Image, T>
     ImageBackground: ReactNativeThemedStyledFunction<typeof ReactNative.ImageBackground, T>
-    KeyboardAvoidingView: ReactNativeThemedStyledFunction<typeof ReactNative.KeyboardAvoidingView, T>
+    KeyboardAvoidingView: ReactNativeThemedStyledFunction<
+      typeof ReactNative.KeyboardAvoidingView,
+      T
+    >
     ListView: ReactNativeThemedStyledFunction<typeof ReactNative.ListView, T>
     Modal: ReactNativeThemedStyledFunction<typeof ReactNative.Modal, T>
     NavigatorIOS: ReactNativeThemedStyledFunction<typeof ReactNative.NavigatorIOS, T>
@@ -59,7 +67,10 @@ declare module "styled-components/native" {
     SliderIOS: ReactNativeThemedStyledFunction<typeof ReactNative.Slider, T>
     SnapshotViewIOS: ReactNativeThemedStyledFunction<typeof ReactNative.SnapshotViewIOS, T>
     Switch: ReactNativeThemedStyledFunction<typeof ReactNative.Switch, T>
-    RecyclerViewBackedScrollView: ReactNativeThemedStyledFunction<typeof ReactNative.RecyclerViewBackedScrollView, T>
+    RecyclerViewBackedScrollView: ReactNativeThemedStyledFunction<
+      typeof ReactNative.RecyclerViewBackedScrollView,
+      T
+    >
     RefreshControl: ReactNativeThemedStyledFunction<typeof ReactNative.RefreshControl, T>
     SafeAreaView: ReactNativeThemedStyledFunction<typeof ReactNative.SafeAreaView, T>
     StatusBar: ReactNativeThemedStyledFunction<typeof ReactNative.StatusBar, T>
@@ -70,9 +81,15 @@ declare module "styled-components/native" {
     Text: ReactNativeThemedStyledFunction<typeof ReactNative.Text, T>
     TextInput: ReactNativeThemedStyledFunction<typeof ReactNative.TextInput, T>
     TouchableHighlight: ReactNativeThemedStyledFunction<typeof ReactNative.TouchableHighlight, T>
-    TouchableNativeFeedback: ReactNativeThemedStyledFunction<typeof ReactNative.TouchableNativeFeedback, T>
+    TouchableNativeFeedback: ReactNativeThemedStyledFunction<
+      typeof ReactNative.TouchableNativeFeedback,
+      T
+    >
     TouchableOpacity: ReactNativeThemedStyledFunction<typeof ReactNative.TouchableOpacity, T>
-    TouchableWithoutFeedback: ReactNativeThemedStyledFunction<typeof ReactNative.TouchableWithoutFeedback, T>
+    TouchableWithoutFeedback: ReactNativeThemedStyledFunction<
+      typeof ReactNative.TouchableWithoutFeedback,
+      T
+    >
     View: ReactNativeThemedStyledFunction<typeof ReactNative.View, T>
     ViewPagerAndroid: ReactNativeThemedStyledFunction<typeof ReactNative.ViewPagerAndroid, T>
     FlatList: ReactNativeThemedStyledFunction<typeof ReactNative.FlatList, T>
