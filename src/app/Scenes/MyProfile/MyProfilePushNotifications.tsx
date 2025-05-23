@@ -20,7 +20,7 @@ import { requestSystemPermissions } from "app/utils/requestPushNotificationsPerm
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import useAppState from "app/utils/useAppState"
-import { debounce } from "lodash"
+import { debounce, omit } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
 import { Alert, Linking, Platform, RefreshControl, ScrollView } from "react-native"
 import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
@@ -213,7 +213,8 @@ export const MyProfilePushNotifications: React.FC<{
 
   const updateNotificationPermissions = useCallback(
     debounce(async (updatedPermissions: MyProfilePushNotifications_me$data) => {
-      await updateMyUserProfile(updatedPermissions)
+      const validUpdatedPermissions = omit(updatedPermissions, "id")
+      await updateMyUserProfile(validUpdatedPermissions)
     }, 500),
     []
   )
@@ -255,8 +256,12 @@ export const MyProfilePushNotifications: React.FC<{
         context_screen_owner_type: OwnerType.accountNotifications,
       })}
     >
-      <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
-        {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && <OpenSettingsBanner />}
+      <ScrollView
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+      >
+        {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && (
+          <OpenSettingsBanner />
+        )}
         {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined &&
           Platform.OS === "ios" && <AllowPushNotificationsBanner />}
         <Content
@@ -270,7 +275,7 @@ export const MyProfilePushNotifications: React.FC<{
   )
 }
 
-const Content: React.FC<{
+interface ContentProps {
   userNotificationSettings: MyProfilePushNotifications_me$data
   isLoading: boolean
   handleUpdateUserNotificationSettings: (
@@ -278,12 +283,16 @@ const Content: React.FC<{
     value: boolean
   ) => void
   notificationAuthorizationStatus: PushAuthorizationStatus
-}> = ({
-  userNotificationSettings,
-  isLoading,
-  handleUpdateUserNotificationSettings,
-  notificationAuthorizationStatus,
-}) => {
+}
+
+const Content: React.FC<ContentProps> = (props) => {
+  const {
+    userNotificationSettings,
+    isLoading,
+    handleUpdateUserNotificationSettings,
+    notificationAuthorizationStatus,
+  } = props
+
   const enablePartnerOffersNotificationSwitch = useFeatureFlag(
     "AREnablePartnerOffersNotificationSwitch"
   )
