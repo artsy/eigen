@@ -22,6 +22,7 @@ const shadowDetails: any = {
   shadowColor: "black",
   shadowOpacity: 0.3,
   shadowOffset: { height: 0, width: 0 },
+  elevation: 2,
 }
 
 const Background = styled(Box)`
