@@ -3793,7 +3793,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "DEFAULT_EXPO_PLIST=\"${SRCROOT}/Artsy/Supporting/Expo.plist\"\n\nCONFIG_EXPO_PLIST=\"${EXPO_PLIST_PATH:-$DEFAULT_EXPO_PLIST}\"\n\nTARGET_PLIST=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Expo.plist\"\n\necho \"📦 Copying $CONFIG_EXPO_PLIST to $TARGET_PLIST\"\ncp \"$CONFIG_EXPO_PLIST\" \"$TARGET_PLIST\"\n\n# Extract runtimeVersion from app.json\nRUNTIME_VERSION=$(plutil -convert xml1 -o - \"$SRCROOT/../app.json\" \\\n  | grep -A1 '<key>runtimeVersion</key>' \\\n  | tail -n1 \\\n  | sed -E 's/<string>(.*)<\\/string>/\\1/')\n\nsay \"Setting runtimeVersion = $RUNTIME_VERSION\"\necho \"🛠 Setting runtimeVersion = $RUNTIME_VERSION\"\n/usr/libexec/PlistBuddy -c \"Set :EXUpdatesRuntimeVersion $RUNTIME_VERSION\" \"$TARGET_PLIST\"\n\necho \"✅ Expo runtimeVersion updated in $TARGET_PLIST\"\n\n";
+			shellScript = "DEFAULT_EXPO_PLIST=\"${SRCROOT}/Artsy/Supporting/Expo.plist\"\n\nCONFIG_EXPO_PLIST=\"${EXPO_PLIST_PATH:-$DEFAULT_EXPO_PLIST}\"\n\nTARGET_PLIST=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Expo.plist\"\n\necho \"📦 Copying $CONFIG_EXPO_PLIST to $TARGET_PLIST\"\ncp \"$CONFIG_EXPO_PLIST\" \"$TARGET_PLIST\"\n\n# Extract runtimeVersion from app.json\nRUNTIME_VERSION=$(plutil -convert xml1 -o - \"$SRCROOT/../app.json\" \\\n  | grep -A1 '<key>runtimeVersion</key>' \\\n  | tail -n1 \\\n  | sed -E 's/<string>(.*)<\\/string>/\\1/')\n\necho \"🛠 Setting runtimeVersion = $RUNTIME_VERSION\"\n/usr/libexec/PlistBuddy -c \"Set :EXUpdatesRuntimeVersion $RUNTIME_VERSION\" \"$TARGET_PLIST\"\n\necho \"✅ Expo runtimeVersion updated in $TARGET_PLIST\"\n\n";
 		};
 		DAB4153D308BDB0605061789 /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
