@@ -1,10 +1,9 @@
 import {
-  ArrowUpCircleFillIcon,
-  ArrowDownCircleFillIcon,
-  ExclamationMarkCircleFill,
-  BookmarkFill,
-  Text,
-} from "@artsy/palette-mobile"
+  ArrowheadUpCircleFillIcon,
+  ArrowheadDownCircleFillIcon,
+  BookmarkFillIcon,
+} from "@artsy/icons/native"
+import { ExclamationMarkCircleFill, Text } from "@artsy/palette-mobile"
 
 export const ReserveNotMet = () => (
   <>
@@ -18,7 +17,7 @@ export const ReserveNotMet = () => (
 
 export const HighestBid = () => (
   <>
-    <ArrowUpCircleFillIcon fill="green100" />
+    <ArrowheadUpCircleFillIcon fill="green100" />
     <Text variant="xs" color="green100">
       {" "}
       Highest bid
@@ -28,7 +27,7 @@ export const HighestBid = () => (
 
 export const Outbid = () => (
   <>
-    <ArrowDownCircleFillIcon fill="red100" />
+    <ArrowheadDownCircleFillIcon fill="red100" />
     <Text variant="xs" color="red100">
       {" "}
       Outbid
@@ -65,7 +64,7 @@ export const BiddingLiveNow = () => (
 
 export const Watching = () => (
   <>
-    <BookmarkFill />
+    <BookmarkFillIcon />
     <Text variant="xs" color="mono60">
       {" "}
       Watching

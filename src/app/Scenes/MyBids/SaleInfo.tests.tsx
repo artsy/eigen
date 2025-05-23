@@ -1,4 +1,5 @@
-import { BoltFill, Stopwatch, Text } from "@artsy/palette-mobile"
+import { BoltFillIcon } from "@artsy/icons/native"
+import { Stopwatch, Text } from "@artsy/palette-mobile"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { merge } from "lodash"
@@ -26,7 +27,7 @@ describe(SaleInfo, () => {
       expect(
         renderWithWrappersLEGACY(
           <SaleInfo sale={saleFixture({ liveStartAt: "2020-08-01T15:00:00+00:00" })} />
-        ).root.findAllByType(BoltFill).length
+        ).root.findAllByType(BoltFillIcon).length
       ).toEqual(1)
     })
 
@@ -39,7 +40,7 @@ describe(SaleInfo, () => {
         )
       })
       it("has a blue100 icon + note if live bidding is active, mono60 otherwise", () => {
-        expect(tree.root.findByType(BoltFill).props.fill).toMatch("blue100")
+        expect(tree.root.findByType(BoltFillIcon).props.fill).toMatch("blue100")
       })
       it("has blue100 text", () => {
         expect(tree.root.findByType(Text).props.color).toEqual("blue100")

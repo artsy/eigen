@@ -1,4 +1,5 @@
-import { BoltFill, IconProps, Stopwatch, Flex, Box, Text } from "@artsy/palette-mobile"
+import { BoltFillIcon } from "@artsy/icons/native"
+import { IconProps, Stopwatch, Flex, Box, Text } from "@artsy/palette-mobile"
 import { TimelySale } from "app/Scenes/MyBids/helpers/timely"
 import { DateTime } from "luxon"
 import ordinal from "ordinal"
@@ -8,7 +9,7 @@ export const SaleInfo = ({
 }: {
   sale: { liveStartAt?: string | null; endAt?: string | null; status?: string | null }
 }) => {
-  let Icon: React.ComponentType<IconProps>
+  let Icon: React.ComponentType<IconProps> | typeof BoltFillIcon
   let noteColor: string
   let line1: string
   let line2: string | undefined
@@ -57,7 +58,7 @@ export const SaleInfo = ({
   }
 
   if (tSale.isLAI) {
-    Icon = BoltFill
+    Icon = BoltFillIcon
     line2 = line2Message("Opens", endMoment)
     if (tSale.isLiveBiddingNow()) {
       noteColor = "blue100"
