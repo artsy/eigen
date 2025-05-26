@@ -34,12 +34,12 @@ export const Activity: React.FC = () => {
                       break
                     case 1:
                       navigate("favorites/alerts", {
-                        showInTabName: "profile",
+                        showInTabName: "favorites",
                       })
                       break
                     case 2:
-                      navigate("favorites", {
-                        showInTabName: "profile",
+                      navigate("favorites/follows", {
+                        showInTabName: "favorites",
                       })
                       break
                   }
