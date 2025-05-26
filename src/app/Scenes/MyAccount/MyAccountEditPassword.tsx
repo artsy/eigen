@@ -96,7 +96,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
       navigation.setOptions({
         headerRight: () => {
           return (
-            <Touchable onPress={handleSave} disabled={!isValid}>
+            <Touchable accessibilityRole="button" onPress={handleSave} disabled={!isValid}>
               <Text variant="xs" color={!!isValid ? "mono100" : "mono60"}>
                 Save
               </Text>

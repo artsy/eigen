@@ -198,7 +198,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
         <Join separator={<Spacer y={1} />}>
           <Flex flexDirection="row" alignItems="center" px={2} mt={2}>
-            <Touchable onPress={chooseImageHandler}>
+            <Touchable accessibilityRole="button" onPress={chooseImageHandler}>
               <Box
                 height="99"
                 width="99"
@@ -215,7 +215,7 @@ export const MyProfileEditForm: React.FC<MyProfileEditFormProps> = () => {
                 )}
               </Box>
             </Touchable>
-            <Touchable haptic onPress={chooseImageHandler}>
+            <Touchable accessibilityRole="button" haptic onPress={chooseImageHandler}>
               <Text style={{ textDecorationLine: "underline" }} color="mono100">
                 Choose an Image
               </Text>
@@ -354,7 +354,10 @@ const ProfileVerifications = ({
           )}
         </Flex>
         <Flex ml={1} justifyContent="center">
-          <Touchable onPress={() => (isIDVerified ? {} : handleIDVerification())}>
+          <Touchable
+            accessibilityRole="button"
+            onPress={() => (isIDVerified ? {} : handleIDVerification())}
+          >
             <Text color="mono100" style={isIDVerified ? {} : { textDecorationLine: "underline" }}>
               {isIDVerified ? "ID Verified" : "Verify your ID"}
             </Text>
@@ -370,6 +373,7 @@ const ProfileVerifications = ({
             <Text color="mono60"> or </Text>
 
             <Touchable
+              accessibilityRole="button"
               onPress={() => sendEmail("verification@artsy.net", { subject: "ID Verification" })}
             >
               <LinkText color="mono60">contact Artsy</LinkText>
@@ -401,7 +405,10 @@ const ProfileVerifications = ({
         </Flex>
         <Flex ml={1}>
           {canRequestEmailConfirmation ? (
-            <Touchable onPress={() => (isEmailConfirmed ? {} : handleEmailVerification())}>
+            <Touchable
+              accessibilityRole="button"
+              onPress={() => (isEmailConfirmed ? {} : handleEmailVerification())}
+            >
               <Text
                 testID="verify-your-email"
                 style={isEmailConfirmed ? {} : { textDecorationLine: "underline" }}

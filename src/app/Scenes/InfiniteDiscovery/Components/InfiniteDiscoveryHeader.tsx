@@ -9,6 +9,8 @@ export const InfiniteDiscoveryHeader: React.FC = () => {
       title="Discover Daily"
       leftElements={
         <Touchable
+          accessibilityRole="button"
+          accessibilityLabel="Close"
           onPress={() => {
             goBack()
           }}

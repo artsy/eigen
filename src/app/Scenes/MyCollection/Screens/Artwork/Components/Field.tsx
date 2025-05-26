@@ -36,7 +36,11 @@ export const Field: React.FC<{
           {expanded ? value : truncatedValue}
         </Text>
         {!!canExpand && (
-          <TouchableWithoutFeedback onPress={toggle} testID="ReadMoreButton">
+          <TouchableWithoutFeedback
+            accessibilityRole="button"
+            onPress={toggle}
+            testID="ReadMoreButton"
+          >
             <Flex>
               <Text
                 style={{ textDecorationLine: "underline" }}

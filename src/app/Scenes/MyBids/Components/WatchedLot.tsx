@@ -42,7 +42,11 @@ export const WatchedLot: React.FC<WatchedLotProps> = ({ saleArtwork }) => {
   }
 
   return (
-    <TouchableOpacity style={{ marginHorizontal: 0, width: "100%" }} onPress={handleLotTap}>
+    <TouchableOpacity
+      accessibilityRole="button"
+      style={{ marginHorizontal: 0, width: "100%" }}
+      onPress={handleLotTap}
+    >
       <Flex flexDirection="row" justifyContent="space-between">
         <Lot saleArtwork={saleArtwork} isSmallScreen={isSmallScreen} />
         <Flex>

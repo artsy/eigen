@@ -21,6 +21,7 @@ export const CompleteRegistrationCTAWrapper: React.FunctionComponent<
 
   return (
     <Touchable
+      accessibilityRole="button"
       style={{ marginTop: 15 }}
       underlayColor="mono5"
       onPress={() => {

@@ -36,6 +36,7 @@ export class CitySwitcherButton extends Component<Props> {
       <ThemeAwareClassTheme>
         {({}) => (
           <TouchableWithoutFeedback
+            accessibilityRole="button"
             onPress={() => {
               if (this.props.onPress) {
                 this.props.onPress()

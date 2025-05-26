@@ -91,7 +91,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
 
     return (
       <Background ml={1} p={1} style={shadowDetails} {...props}>
-        <TouchableOpacity onPress={this.handleTap.bind(this, item)}>
+        <TouchableOpacity accessibilityRole="button" onPress={this.handleTap.bind(this, item)}>
           {item.type === "Show" ? (
             <ShowItemRow
               show={item}

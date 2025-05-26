@@ -43,7 +43,7 @@ export const MyAccountEditEmail: React.FC<MyAccountEditEmailProps> = (props) => 
       navigation.setOptions({
         headerRight: () => {
           return (
-            <Touchable onPress={handleSave} disabled={!isEmailValid}>
+            <Touchable accessibilityRole="button" onPress={handleSave} disabled={!isEmailValid}>
               <Text variant="xs" color={isEmailValid ? "mono100" : "mono60"}>
                 Save
               </Text>

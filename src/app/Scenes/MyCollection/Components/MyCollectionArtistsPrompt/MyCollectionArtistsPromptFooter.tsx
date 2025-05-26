@@ -32,7 +32,7 @@ export const MyCollectionArtistsPromptFooter: FC<MyCollectionArtistsPromptFooter
       <Button disabled={count === 0} flex={1} onPress={onPress} loading={isLoading}>
         Add Selected Artist{count !== 1 ? "s" : ""} • {count}
       </Button>
-      <Touchable onPress={() => close()} disabled={!!isLoading}>
+      <Touchable accessibilityRole="button" onPress={() => close()} disabled={!!isLoading}>
         <Text underline textAlign="center">
           I haven’t started a collection yet
         </Text>

@@ -121,6 +121,7 @@ const AddPhotosButton: React.FC<{ imageSize: number }> = ({ imageSize }) => {
 
   return (
     <TouchableOpacity
+      accessibilityRole="button"
       onPress={() => {
         showPhotoActionSheet(showActionSheetWithOptions, true).then((images) => {
           artworkActions.addPhotos(images)
@@ -151,6 +152,7 @@ const DeletePhotoButton: React.FC<{ photo: ImageProps; onDelete: () => void }> =
   return (
     <Box position="absolute" right={-4} top={-5}>
       <TouchableOpacity
+        accessibilityRole="button"
         hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }}
         onPress={() => {
           onDelete()

@@ -98,7 +98,11 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
       <Screen.Header
         onBack={goBack}
         rightElements={
-          <TouchableOpacity onPress={handleEdit} hitSlop={DEFAULT_HIT_SLOP}>
+          <TouchableOpacity
+            accessibilityRole="button"
+            onPress={handleEdit}
+            hitSlop={DEFAULT_HIT_SLOP}
+          >
             <Text color="mono100">Edit</Text>
           </TouchableOpacity>
         }

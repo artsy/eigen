@@ -22,6 +22,7 @@ export const COVER_IMAGE_HEIGHT = 100
 
 export const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string }> = (props) => (
   <Touchable
+    accessibilityRole="button"
     style={{ marginTop: 15 }}
     underlayColor={props.navLink ? "mono5" : "transparent"}
     onPress={() => props.navLink && navigate(props.navLink)}
@@ -93,6 +94,7 @@ export const SaleCard: React.FC<SaleCardProps> = ({
 
   return (
     <Touchable
+      accessibilityRole="button"
       underlayColor="transparent"
       onPress={() => {
         tracking.trackEvent({

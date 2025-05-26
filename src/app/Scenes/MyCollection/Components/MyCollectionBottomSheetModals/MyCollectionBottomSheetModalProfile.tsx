@@ -35,6 +35,7 @@ export const MyCollectionBottomSheetModalProfile: React.FC<{
 
           <Join separator={<Spacer y={1} />}>
             <Touchable
+              accessibilityRole="button"
               onPress={() => {
                 setViewKind({ viewKind: null })
                 InteractionManager.runAfterInteractions(() => {
@@ -45,6 +46,7 @@ export const MyCollectionBottomSheetModalProfile: React.FC<{
               <Text py={2}>Edit Profile</Text>
             </Touchable>
             <Touchable
+              accessibilityRole="button"
               onPress={() => {
                 setViewKind({ viewKind: null })
                 InteractionManager.runAfterInteractions(() => {
@@ -59,6 +61,7 @@ export const MyCollectionBottomSheetModalProfile: React.FC<{
               <Text py={2}>Add Artwork</Text>
             </Touchable>
             <Touchable
+              accessibilityRole="button"
               onPress={() => {
                 setViewKind({ viewKind: null })
                 InteractionManager.runAfterInteractions(() => {

@@ -36,7 +36,7 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me$key }> = (props) 
       navigation.setOptions({
         headerRight: () => {
           return (
-            <Touchable onPress={handleSave} disabled={!isValid}>
+            <Touchable accessibilityRole="button" onPress={handleSave} disabled={!isValid}>
               <Text variant="xs" color={!!isValid ? "mono100" : "mono60"}>
                 Save
               </Text>

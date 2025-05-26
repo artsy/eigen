@@ -94,6 +94,7 @@ export const Artist: React.FC<{
 
   return (
     <Touchable
+      accessibilityRole="button"
       haptic
       onPress={() => {
         setViewKind({
@@ -103,7 +104,7 @@ export const Artist: React.FC<{
         })
         onPress?.()
       }}
-      accessibilityHint={`View more details ${data.name}`}
+      accessibilityLabel={`View more details ${data.name}`}
     >
       <Flex mr={1} width={ARTIST_CIRCLE_DIAMETER}>
         <Avatar

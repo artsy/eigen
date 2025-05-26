@@ -86,6 +86,7 @@ export const MyCollectionAddCollectedArtistsAutosuggest: React.FC<{}> = ({}) => 
           Can't find the artist?{" "}
         </Text>
         <Touchable
+          accessibilityRole="button"
           onPress={() => {
             navigate("/my-collection/artists/new", navigationProps)
           }}
@@ -237,7 +238,7 @@ const CollectedArtistListItem: React.FC<{
       mt={2}
       m="auto"
     >
-      <Touchable onPress={handlePress} disabled={disabled}>
+      <Touchable accessibilityRole="button" onPress={handlePress} disabled={disabled}>
         <Flex width="100%" alignItems="center">
           <Flex
             position="absolute"

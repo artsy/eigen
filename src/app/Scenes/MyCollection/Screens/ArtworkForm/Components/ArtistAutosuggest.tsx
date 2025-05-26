@@ -93,6 +93,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
             Can't find the artist?{" "}
           </Text>
           <Touchable
+            accessibilityRole="button"
             onPress={() => onSkipPress?.(trimmedQuery)}
             testID="my-collection-artwork-form-artist-skip-button"
             hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
