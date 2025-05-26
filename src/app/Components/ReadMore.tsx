@@ -152,6 +152,7 @@ export const ReadMore = React.memo(
           <LinkText
             mt={0.5}
             mb={1}
+            accessibilityRole="button"
             onPress={() => {
               LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
 
@@ -165,7 +166,11 @@ export const ReadMore = React.memo(
         )}
       </Flex>
     ) : (
-      <TouchableWithoutFeedback onPress={onExpandPress}>
+      <TouchableWithoutFeedback
+        accessibilityRole="button"
+        accessibilityLabel="Read More"
+        onPress={onExpandPress}
+      >
         <Flex testID={testID}>
           {truncate({
             color,

@@ -36,7 +36,7 @@ export const CollectorUpdateNotification: FC<CollectorUpdateNotificationProps> =
 
   return (
     <>
-      <Touchable onPress={handleOnPress}>
+      <Touchable accessibilityRole="button" onPress={handleOnPress}>
         <Flex flex={1} py={2} pr={2}>
           <Text variant="sm-display" fontWeight={500}>
             {itemInfo.title}

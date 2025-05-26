@@ -30,6 +30,7 @@ export const QAInfoRow: React.FC<{ name: string; value: string }> = ({ name, val
     <Flex flexDirection="row">
       <Text>{name}: </Text>
       <Touchable
+        accessibilityRole="button"
         underlayColor={color("mono5")}
         haptic
         onPress={() => {

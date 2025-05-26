@@ -15,7 +15,7 @@ export class BidInfoRow extends React.Component<BidInfoRowProps> {
     const { label, value, onPress, ...props } = this.props
 
     return (
-      <TouchableWithoutFeedback onPress={onPress}>
+      <TouchableWithoutFeedback accessibilityRole="button" onPress={onPress}>
         <Row p={2} pb="1" mb={1} {...props}>
           <Col>
             <Text variant="sm-display">{label}</Text>

@@ -41,6 +41,13 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
 
           return (
             <Touchable
+              accessibilityRole="button"
+              accessibilityLabel={isModalScreen(module) ? "Close modal" : "Go back"}
+              accessibilityHint={
+                isModalScreen(module)
+                  ? "Closes the modal screen"
+                  : "Goes back to the previous screen"
+              }
               onPress={() => {
                 goBack()
               }}

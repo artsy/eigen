@@ -30,6 +30,7 @@ export function FPSCounter({ style }: { style?: ViewStyle }) {
       }}
     >
       <TouchableOpacity
+        accessibilityRole="button"
         onPress={() => {
           setOpacity(opacity === 1 ? 0.15 : 1)
         }}

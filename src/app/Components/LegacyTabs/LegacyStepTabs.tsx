@@ -22,7 +22,11 @@ export const StepTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, tabs }) =
     <TabBarContainer scrollEnabled={false} activeTabIndex={activeTab} tabLayouts={tabLayouts}>
       {tabs.map(({ label, completed }, index) => {
         return (
-          <TouchableOpacity onPress={() => onTabSelect(label, index)} key={label + index}>
+          <TouchableOpacity
+            accessibilityRole="button"
+            onPress={() => onTabSelect(label, index)}
+            key={label + index}
+          >
             <Box
               width={tabWidth}
               justifyContent="space-between"

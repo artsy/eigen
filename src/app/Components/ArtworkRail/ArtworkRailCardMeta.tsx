@@ -199,6 +199,8 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
           )}
 
           <Touchable
+            accessibilityRole="button"
+            accessibilityLabel={isSaved ? "Remove from saved artworks" : "Save artwork"}
             haptic
             hitSlop={{ bottom: 5, right: 5, left: 5, top: 5 }}
             onPress={saveArtworkToLists}

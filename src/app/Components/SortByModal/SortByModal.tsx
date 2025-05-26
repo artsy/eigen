@@ -44,7 +44,11 @@ export const SortByModal: React.FC<SortByModalProps> = (props) => {
               const selected = selectedValue === option.value
 
               return (
-                <TouchableOpacity key={option.text} accessibilityState={{ selected }}>
+                <TouchableOpacity
+                  accessibilityRole="radio"
+                  key={option.text}
+                  accessibilityState={{ selected }}
+                >
                   <RadioButton
                     key={option.value}
                     onPress={() => onSelectOption(option)}

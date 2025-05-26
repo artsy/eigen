@@ -217,6 +217,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
     return (
       <>
         <TouchableHighlight
+          accessibilityRole="button"
           underlayColor={dark ? color("mono100") : color("mono0")}
           activeOpacity={0.8}
           onLongPress={handleAndroidLongPress}
@@ -239,6 +240,7 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
                 {contextActions.map((action, index) => {
                   return (
                     <Touchable
+                      accessibilityRole="button"
                       key={index}
                       onPress={() => {
                         setAndroidVisible(false)

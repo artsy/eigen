@@ -62,7 +62,7 @@ export const InquirySuccessNotification: React.FC = () => {
             shadowRadius: 5.0,
           }}
         >
-          <TouchableOpacity onPress={navigateToConversation}>
+          <TouchableOpacity accessibilityRole="button" onPress={navigateToConversation}>
             <Flex p={1} backgroundColor="mono0">
               <Flex flexDirection="row" justifyContent="space-between">
                 <Text color="green100" variant="sm">

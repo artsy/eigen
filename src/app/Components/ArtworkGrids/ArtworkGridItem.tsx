@@ -418,6 +418,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
                     </Text>
                   )}
                   <Touchable
+                    accessibilityRole="button"
+                    accessibilityLabel={
+                      isSaved ? "Remove from saved artworks" : "Save artwork to lists"
+                    }
                     haptic
                     onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
                     testID="save-artwork-icon"

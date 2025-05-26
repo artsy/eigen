@@ -79,7 +79,7 @@ export const Swipeable = forwardRef<SwipeableMethods, SwipeableComponentProps>((
     })
 
     return (
-      <Touchable haptic onPress={actionOnPress}>
+      <Touchable accessibilityRole="button" haptic onPress={actionOnPress}>
         <Flex flex={1} ml={1} flexDirection="column" width={actionComponentWidth}>
           <Animated.View
             style={[

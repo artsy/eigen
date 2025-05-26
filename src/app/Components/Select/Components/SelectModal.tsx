@@ -136,6 +136,8 @@ export const SelectModal: React.FC<{
           )}
 
           <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityLabel="Close"
             onPress={onDismiss}
             testID="select-close-button"
             hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
@@ -176,6 +178,7 @@ export const SelectModal: React.FC<{
 
             return (
               <Touchable
+                accessibilityRole="button"
                 onPress={() => {
                   setValue(item.value)
                   onDismiss()

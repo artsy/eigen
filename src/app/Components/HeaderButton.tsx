@@ -54,6 +54,7 @@ export const HeaderButton: React.FC<HeaderButtonProps> = (props) => {
       {...rest}
     >
       <Touchable
+        accessibilityRole="button"
         style={{
           width: "100%",
           height: "100%",

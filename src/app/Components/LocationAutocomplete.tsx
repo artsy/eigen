@@ -198,7 +198,7 @@ const LocationPredictions = ({
 
   return (
     <>
-      <TouchableWithoutFeedback onPress={onOutsidePress}>
+      <TouchableWithoutFeedback accessibilityRole="button" onPress={onOutsidePress}>
         <Flex
           position="absolute"
           width="100%"
@@ -229,6 +229,7 @@ const LocationPredictions = ({
       >
         {predictions.map((p) => (
           <Touchable
+            accessibilityRole="button"
             haptic
             key={p.id}
             onPress={() => onSelect(p)}

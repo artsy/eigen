@@ -104,7 +104,7 @@ export const CreateOrEditArtworkListForm: FC<CreateOrEditArtworkListFormProps> =
                     value={formik.values.shareableWithPartners}
                     onValueChange={(value) => formik.setFieldValue("shareableWithPartners", value)}
                   />
-                  <Touchable onPress={() => setIsExpanded(!isExpanded)}>
+                  <Touchable accessibilityRole="button" onPress={() => setIsExpanded(!isExpanded)}>
                     <Flex flexDirection="row">
                       <Text variant="sm-display" color="mono100" mr={0.5} ml={1}>
                         Share list with galleries

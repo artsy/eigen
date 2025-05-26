@@ -23,6 +23,7 @@ jest.mock("@stripe/stripe-react-native", () => {
       testID: string
     }) => (
       <TextInput
+        accessibilityLabel="Text input field"
         testID={testID}
         onChangeText={(text: string) => {
           const validCard = text === "4242424242424242"

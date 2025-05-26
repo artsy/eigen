@@ -45,7 +45,10 @@ export const EntityList: React.FC<EntityListProps> = ({
           <Text variant="sm" lineHeight="19px">
             {" and "}
           </Text>
-          <TouchableOpacity onPress={() => onViewAllPressed && onViewAllPressed()}>
+          <TouchableOpacity
+            accessibilityRole="button"
+            onPress={() => onViewAllPressed && onViewAllPressed()}
+          >
             <Text variant="sm" weight="medium" lineHeight="19px">
               {count - displayedItems + " others"}
             </Text>

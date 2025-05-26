@@ -28,7 +28,7 @@ const CreditCardDetails = ({
         isDeleting ? (
           <ActivityIndicator size="small" />
         ) : (
-          <Touchable onPress={onPress} hitSlop={DEFAULT_HIT_SLOP}>
+          <Touchable accessibilityRole="button" onPress={onPress} hitSlop={DEFAULT_HIT_SLOP}>
             <Text variant="sm-display" color="red100">
               Remove
             </Text>

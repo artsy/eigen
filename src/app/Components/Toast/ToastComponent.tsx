@@ -106,6 +106,7 @@ export const ToastComponent = ({
       >
         {onPress !== undefined ? (
           <Touchable
+            accessibilityRole="button"
             style={{ flex: 1 }}
             onPress={() => onPress({ id, showActionSheetWithOptions })}
             underlayColor={color("mono60")}
@@ -181,7 +182,11 @@ export const ToastComponent = ({
       zIndex={999}
     >
       {onPress !== undefined ? (
-        <Touchable style={{ flex: 1 }} onPress={() => onPress({ id, showActionSheetWithOptions })}>
+        <Touchable
+          accessibilityRole="button"
+          style={{ flex: 1 }}
+          onPress={() => onPress({ id, showActionSheetWithOptions })}
+        >
           {innerTopBottom}
         </Touchable>
       ) : (

@@ -179,7 +179,7 @@ const ArtistListItem: React.FC<Props> = ({
           />
         </Flex>
         {!!showMoreIcon && (
-          <Touchable onPress={() => callOnPress()} testID="more-icon">
+          <Touchable accessibilityRole="button" onPress={() => callOnPress()} testID="more-icon">
             <MoreIcon />
           </Touchable>
         )}

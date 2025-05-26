@@ -14,6 +14,7 @@ interface Props {
 export const ArtistAutosuggestRow: React.FC<Props> = ({ result, highlight, onResultPress }) => {
   return (
     <TouchableWithoutFeedback
+      accessibilityRole="button"
       onPress={() => onResultPress(result)}
       testID={`artist-suggestion-${result.internalID}`}
     >

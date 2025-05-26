@@ -81,30 +81,28 @@ export class Modal extends React.Component<ModalProps, ModalState> {
           transparent
           visible={this.state.modalVisible}
         >
-          <TouchableWithoutFeedback onPress={() => this.closeModal()}>
+          <TouchableWithoutFeedback accessibilityRole="button" onPress={() => this.closeModal()}>
             <ModalBackgroundView>
-              <TouchableWithoutFeedback>
-                <ModalInnerView>
-                  <View style={{ paddingBottom: 10 }}>
-                    <Text variant="sm" weight="medium" textAlign={this.props.textAlign}>
-                      {headerText}
-                    </Text>
-                  </View>
-                  <Markdown rules={markdownRules} pb="15px">
-                    {detailText}
-                  </Markdown>
-                  <Button
-                    onPress={() => {
-                      this.closeModal()
-                    }}
-                    block
-                    width={100}
-                    variant="outline"
-                  >
-                    Ok
-                  </Button>
-                </ModalInnerView>
-              </TouchableWithoutFeedback>
+              <ModalInnerView>
+                <View style={{ paddingBottom: 10 }}>
+                  <Text variant="sm" weight="medium" textAlign={this.props.textAlign}>
+                    {headerText}
+                  </Text>
+                </View>
+                <Markdown rules={markdownRules} pb="15px">
+                  {detailText}
+                </Markdown>
+                <Button
+                  onPress={() => {
+                    this.closeModal()
+                  }}
+                  block
+                  width={100}
+                  variant="outline"
+                >
+                  Ok
+                </Button>
+              </ModalInnerView>
             </ModalBackgroundView>
           </TouchableWithoutFeedback>
         </RNModal>

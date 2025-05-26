@@ -196,6 +196,7 @@ export class ShowItemRow extends React.Component<Props, State> {
       <ThemeAwareClassTheme>
         {({ color }) => (
           <Touchable
+            accessibilityRole="button"
             underlayColor={color("mono5")}
             onPress={() => this.handleTap(show.slug, show.internalID)}
             style={{ paddingHorizontal: 20, paddingVertical: 5 }}
@@ -205,7 +206,10 @@ export class ShowItemRow extends React.Component<Props, State> {
         )}
       </ThemeAwareClassTheme>
     ) : (
-      <TouchableWithoutFeedback onPress={() => this.handleTap(show.slug, show.internalID)}>
+      <TouchableWithoutFeedback
+        accessibilityRole="button"
+        onPress={() => this.handleTap(show.slug, show.internalID)}
+      >
         {this.renderItemDetails()}
       </TouchableWithoutFeedback>
     )

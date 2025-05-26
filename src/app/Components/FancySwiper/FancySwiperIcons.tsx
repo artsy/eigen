@@ -64,7 +64,7 @@ export const FancySwiperIcons = ({ onDislike, onLike, swiper }: FancySwiperIcons
           </Touchable>
         </Animated.View>
         <Animated.View style={[likeFilledIconAnimatedStyle, { position: "absolute" }]}>
-          <Touchable onPress={() => onLike()}>
+          <Touchable accessibilityRole="button" onPress={() => onLike()}>
             <HeartFillIcon height={40} width={50} />
           </Touchable>
         </Animated.View>

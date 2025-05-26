@@ -17,6 +17,7 @@ export const GlobalSearchInput: React.FC<{
   return (
     <Fragment>
       <Touchable
+        accessibilityRole="button"
         onPress={() => {
           tracking.trackEvent(
             tracks.tappedGlobalSearchBar({

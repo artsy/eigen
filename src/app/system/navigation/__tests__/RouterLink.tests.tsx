@@ -42,7 +42,7 @@ describe("RouterLink", () => {
         onPress={touchableOnPress}
         {...props}
       >
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback accessibilityRole="button">
           <Text>Test Link</Text>
         </TouchableWithoutFeedback>
       </RouterLink>
