@@ -1,3 +1,4 @@
+import { ContextModule } from "@artsy/cohesion"
 import {
   BellIcon,
   Flex,
@@ -27,31 +28,36 @@ import { prefetchQuery } from "app/utils/queryPrefetching"
 import { useEffect } from "react"
 import Animated, { useAnimatedStyle } from "react-native-reanimated"
 
-const Pills: {
+export const Pills: {
   Icon: React.FC<{ fill: string }>
   title: string
   key: FavoritesTab
+  contextModule: ContextModule
 }[] = [
   {
     Icon: HeartIcon,
     title: "Saves",
     key: "saves",
+    contextModule: ContextModule.favoritesSaves,
   },
   {
     Icon: MultiplePersonsIcon,
     title: "Follows",
     key: "follows",
+    contextModule: ContextModule.favoritesFollows,
   },
   {
     Icon: BellIcon,
     title: "Alerts",
     key: "alerts",
+    contextModule: ContextModule.favoritesAlerts,
   },
 ]
 
 const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, navigation }) => {
   const color = useColor()
 
+  const activeTab = FavoritesContextStore.useStoreState((state) => state.activeTab)
   const { setActiveTab, setHeaderHeight } = FavoritesContextStore.useStoreActions(
     (actions) => actions
   )
@@ -111,6 +117,9 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
                 <Pill
                   selected={isActive}
                   onPress={() => {
+                    // Make sure to track the tap before changing the active tab
+                    trackTappedNavigationTab(key, activeTab)
+
                     setActiveTab(key)
 
                     // We are manually emitting the tabPress event here because
@@ -123,7 +132,6 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
                     })
 
                     navigation.navigate(key)
-                    trackTappedNavigationTab(key)
                   }}
                   Icon={({ fill }) => (
                     <Flex mr={0.5} justifyContent="center">

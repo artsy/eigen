@@ -100,7 +100,7 @@ const SECTIONS = [
 ]
 
 export const FavoritesLearnMore = () => {
-  const { activeTab } = FavoritesContextStore.useStoreState((state) => state)
+  const activeTab = FavoritesContextStore.useStoreState((state) => state.activeTab)
   const [showBottomSheet, setShowBottomSheet] = useState(false)
   const { bottom } = useSafeAreaInsets()
   const { trackTappedInfoBubble } = useFavoritesTracking()
