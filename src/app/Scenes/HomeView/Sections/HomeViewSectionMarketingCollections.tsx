@@ -149,7 +149,7 @@ const HomeViewSectionMarketingCollectionsPlaceholder: React.FC<FlexProps> = (fle
           <Flex flexDirection="row">
             <Join separator={<Spacer x="15px" />}>
               {times(2 + randomValue * 10).map((index) => (
-                <Touchable key={index}>
+                <Touchable accessibilityRole="button" key={index}>
                   <Flex>
                     <Flex flexDirection="row">
                       <SkeletonBox

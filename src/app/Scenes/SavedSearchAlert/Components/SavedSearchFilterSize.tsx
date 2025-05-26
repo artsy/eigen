@@ -97,6 +97,7 @@ export const SavedSearchFilterSize = () => {
           const isSelected = unit === currentMetric
           return (
             <Touchable
+              accessibilityRole="radio"
               onPress={() => {
                 setUnitAction(currentMetric)
               }}

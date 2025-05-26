@@ -93,6 +93,8 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
           onBack: goBack,
           rightElements: (
             <TouchableOpacity
+              accessibilityRole="button"
+              accessibilityLabel="Share Fair"
               onPress={() => {
                 handleSharePress()
               }}

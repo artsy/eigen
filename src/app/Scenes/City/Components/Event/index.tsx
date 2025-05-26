@@ -130,7 +130,7 @@ export class Event extends React.Component<Props, State> {
     return (
       <ThemeAwareClassTheme>
         {({ color }) => (
-          <TouchableWithoutFeedback onPress={() => this.handleTap()}>
+          <TouchableWithoutFeedback accessibilityRole="button" onPress={() => this.handleTap()}>
             <Box mb={2}>
               {!!url && (
                 <Box mb={2} justifyContent="center" overflow="hidden">

@@ -111,6 +111,8 @@ export const FavoritesLearnMore = () => {
   return (
     <>
       <Touchable
+        accessibilityRole="button"
+        accessibilityLabel="Learn more about Favorites"
         onPress={() => {
           setShowBottomSheet(true)
           trackTappedInfoBubble(activeTab)

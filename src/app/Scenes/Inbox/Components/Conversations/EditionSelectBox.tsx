@@ -24,7 +24,7 @@ export const EditionSelectBox: React.FC<Props> = ({ editionSet, selected, onPres
     !!editionSet.isOfferableFromInquiry || !!editionSet.isOfferable || !!editionSet.isAcquireable
 
   return (
-    <Touchable onPress={() => onPress(editionSet.internalID, available)}>
+    <Touchable accessibilityRole="button" onPress={() => onPress(editionSet.internalID, available)}>
       <BorderBox p={2} my={0.5} flexDirection="row">
         <RadioButton
           selected={selected}

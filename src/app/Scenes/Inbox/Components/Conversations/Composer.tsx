@@ -111,6 +111,7 @@ export default class Composer extends React.Component<Props, State> {
                 />
                 <Container active={this.state.active}>
                   <TextInput
+                    accessibilityLabel="Text input field"
                     placeholder="Type your message"
                     placeholderTextColor={color("mono60")}
                     keyboardAppearance="dark"
@@ -123,6 +124,7 @@ export default class Composer extends React.Component<Props, State> {
                     value={this.state.text || undefined}
                   />
                   <TouchableWithoutFeedback
+                    accessibilityRole="button"
                     disabled={disableSendButton}
                     onPress={this.submitText.bind(this)}
                   >

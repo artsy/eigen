@@ -65,6 +65,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
       {/* Avatar */}
       <Flex height={70} width={70} borderRadius={35} backgroundColor={color("mono10")}>
         <TouchableOpacity
+          accessibilityRole="button"
           onPress={() => {
             navigate("/my-profile/edit")
           }}
@@ -133,7 +134,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
           <Spacer y={1} />
           <Flex flexDirection="row" px={2} alignSelf="stretch" justifyContent="space-between">
             <Flex flex={1}>
-              <Touchable onPress={() => navigate("favorites/saves")}>
+              <Touchable accessibilityRole="button" onPress={() => navigate("favorites/saves")}>
                 <Flex justifyContent="center" alignItems="center">
                   <Text variant="sm-display" weight="medium">
                     {me.counts.savedArtworks ?? "0"}
@@ -147,7 +148,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
             </Flex>
 
             <Flex flex={1}>
-              <Touchable onPress={() => navigate("favorites")}>
+              <Touchable accessibilityRole="button" onPress={() => navigate("favorites")}>
                 <Flex justifyContent="center" alignItems="center">
                   <Text variant="sm-display" weight="medium">
                     {me.counts.followedArtists ?? "0"}
@@ -161,7 +162,7 @@ export const MyProfileHeader: React.FC<MyProfileHeaderProps> = ({ meProp }) => {
             </Flex>
 
             <Flex flex={1}>
-              <Touchable onPress={() => navigate("favorites/alerts")}>
+              <Touchable accessibilityRole="button" onPress={() => navigate("favorites/alerts")}>
                 <Flex justifyContent="center" alignItems="center">
                   <Text variant="sm-display" weight="medium">
                     {me.counts.savedSearches ?? "0"}

@@ -142,6 +142,7 @@ const LoginPasswordStepForm: React.FC = () => {
       <Spacer y={1} />
 
       <Touchable
+        accessibilityRole="button"
         onPress={() => {
           navigation.navigate({
             name: "ForgotPasswordStep",

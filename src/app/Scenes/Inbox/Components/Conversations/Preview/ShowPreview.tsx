@@ -60,6 +60,7 @@ export class ShowPreview extends React.Component<Props> {
       <ThemeAwareClassTheme>
         {({ color }) => (
           <Touchable
+            accessibilityRole="button"
             underlayColor={color("mono5")}
             onPress={() => this.attachmentSelected()}
             style={{ maxWidth: "66.67%", flex: 1 }}

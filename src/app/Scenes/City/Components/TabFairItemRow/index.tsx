@@ -24,7 +24,10 @@ export class TabFairItemRow extends React.Component<Props> {
         {({ space }) => {
           const boxWidth = Dimensions.get("window").width - 62 - space(4) - space(1)
           return (
-            <TouchableWithoutFeedback onPress={() => this.handleTap(item)}>
+            <TouchableWithoutFeedback
+              accessibilityRole="button"
+              onPress={() => this.handleTap(item)}
+            >
               <Flex flexWrap="nowrap" flexDirection="row" alignItems="center" mr={1}>
                 <RoundedImageWrapper>
                   <ImageWithFallback height={58} width={58} src={fairImage} />

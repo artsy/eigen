@@ -71,6 +71,7 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
           </>
         ) : (
           <TouchableWithoutFeedback
+            accessibilityRole="button"
             onPress={confirmed ? undefined : didTapSendConfirmationEmail}
             testID="confirmEmailButton"
           >
@@ -84,7 +85,12 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
                 {message}
               </Text>
 
-              <Pressable onPress={() => toggleVisible(false)} testID="closeButton">
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel="Close"
+                onPress={() => toggleVisible(false)}
+                testID="closeButton"
+              >
                 <CloseIcon fill="mono0" />
               </Pressable>
             </Flex>

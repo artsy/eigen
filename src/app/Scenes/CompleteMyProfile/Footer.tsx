@@ -25,7 +25,7 @@ export const Footer: FC<FooterProps> = ({ isFormDirty, onGoNext }) => {
         borderTopWidth={1}
         borderTopColor="mono10"
       >
-        <Touchable onPress={goBack}>
+        <Touchable accessibilityRole="button" onPress={goBack}>
           <Text underline>Back</Text>
         </Touchable>
 

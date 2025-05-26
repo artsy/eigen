@@ -82,6 +82,7 @@ export const ClearAllButton = () => {
 
   return (
     <Touchable
+      accessibilityRole="button"
       haptic={disabled ? undefined : "impactMedium"}
       disabled={disabled}
       accessibilityState={{ disabled }}

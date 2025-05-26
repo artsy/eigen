@@ -195,6 +195,7 @@ export const OnboardingSocialLink: React.FC<
             />
             <Spacer y={1} />
             <Touchable
+              accessibilityRole="button"
               onPress={() => {
                 if (navigation?.replace) {
                   navigation.replace("ForgotPassword")

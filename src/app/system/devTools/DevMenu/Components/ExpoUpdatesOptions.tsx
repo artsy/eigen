@@ -135,6 +135,7 @@ export const ExpoUpdatesOptions = () => {
 
           {Object.keys(expoDeploymentChannels).map((deployment) => (
             <TouchableOpacity
+              accessibilityRole="button"
               key={deployment}
               onPress={() => {
                 if (!ArtsyNativeModule.isBetaOrDev) {

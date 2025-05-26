@@ -141,6 +141,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
 
   return (
     <TouchableWithoutFeedback
+      accessibilityRole="button"
       onPress={() => {
         navigateToConversation(url, modalTitle)
       }}

@@ -35,13 +35,13 @@ export const Header: FC = () => {
         {!isChangesSummary ? (
           <Text variant="xs">{`${currentStep} of ${lastStep}`}</Text>
         ) : (
-          <Touchable onPress={goBack}>
+          <Touchable accessibilityRole="button" onPress={goBack}>
             <Text variant="xs">Back</Text>
           </Touchable>
         )}
 
         {!isChangesSummary && (
-          <Touchable onPress={saveAndExit}>
+          <Touchable accessibilityRole="button" onPress={saveAndExit}>
             <Text variant="xs">Save & Exit</Text>
           </Touchable>
         )}

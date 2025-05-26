@@ -76,6 +76,7 @@ const SavedSearchFilterArtistSeries: React.FC<SavedSearchFilterArtistSeriesProps
 
         {options.length > MAX_OPTIONS && (
           <TouchableOpacity
+            accessibilityRole="button"
             onPress={() => {
               setShowAll(!showAll)
             }}

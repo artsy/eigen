@@ -154,6 +154,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
           </Box>
           <Spacer y={4} />
           <Touchable
+            accessibilityRole="button"
             onPress={() => {
               navigation.navigate("ForgotPassword")
             }}

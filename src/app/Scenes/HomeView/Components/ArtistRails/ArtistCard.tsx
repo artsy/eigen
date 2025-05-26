@@ -91,6 +91,8 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({
             style={{ top: 6, right: 6, width: 24, height: 24 }}
           >
             <Touchable
+              accessibilityRole="button"
+              accessibilityLabel="Close"
               hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
               activeOpacity={0.2}
               onPress={onDismiss}

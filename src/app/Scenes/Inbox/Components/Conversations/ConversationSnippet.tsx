@@ -88,7 +88,11 @@ export class ConversationSnippet extends React.Component<Props> {
     return (
       <ThemeAwareClassTheme>
         {({ color }) => (
-          <Touchable onPress={() => this.conversationSelected()} underlayColor={color("mono5")}>
+          <Touchable
+            accessibilityRole="button"
+            onPress={() => this.conversationSelected()}
+            underlayColor={color("mono5")}
+          >
             <Flex py={2} px={2}>
               <Flex flexDirection="row">
                 <Flex>

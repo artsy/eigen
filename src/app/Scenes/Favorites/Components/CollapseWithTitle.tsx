@@ -10,6 +10,7 @@ export const CallapseWithTitle: React.FC<{ title: string }> = ({ children, title
   return (
     <Flex px={2}>
       <Touchable
+        accessibilityRole="button"
         onPress={() => {
           // Animate the height of the content
           LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)

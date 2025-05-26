@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedArticleShare } from "@artsy/cohesion"
-import { DEFAULT_HIT_SLOP } from "@artsy/palette-mobile"
 import { ShareIcon } from "@artsy/icons/native"
+import { DEFAULT_HIT_SLOP } from "@artsy/palette-mobile"
 import { ArticleShareButton_article$key } from "__generated__/ArticleShareButton_article.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { TouchableOpacity } from "react-native"

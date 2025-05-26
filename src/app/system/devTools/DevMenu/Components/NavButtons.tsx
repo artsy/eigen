@@ -11,6 +11,7 @@ export const NavButtons: React.FC<{ onClose(): void }> = ({ onClose }) => {
       <Join separator={<Spacer x={2} />}>
         {!!isLoggedIn && (
           <TouchableOpacity
+            accessibilityRole="button"
             onPress={() => {
               Alert.alert("Log out", undefined, [
                 {
@@ -33,6 +34,7 @@ export const NavButtons: React.FC<{ onClose(): void }> = ({ onClose }) => {
 
         {!!__DEV__ && (
           <TouchableOpacity
+            accessibilityRole="button"
             onPress={() => {
               _globalCacheRef?.clear()
               onClose()
@@ -43,7 +45,11 @@ export const NavButtons: React.FC<{ onClose(): void }> = ({ onClose }) => {
             <ReloadIcon width={20} height={20} />
           </TouchableOpacity>
         )}
-        <TouchableOpacity onPress={onClose} hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+        <TouchableOpacity
+          accessibilityRole="button"
+          onPress={onClose}
+          hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
+        >
           <CloseIcon width={24} height={24} />
         </TouchableOpacity>
       </Join>

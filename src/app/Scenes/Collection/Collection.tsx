@@ -91,6 +91,8 @@ export const CollectionContent: React.FC<CollectionProps> = ({ collection }) => 
             onBack: goBack,
             rightElements: (
               <TouchableOpacity
+                accessibilityRole="button"
+                accessibilityLabel="Share Collection"
                 onPress={() => {
                   handleSharePress()
                 }}

@@ -54,7 +54,7 @@ interface TouchableElementProps {
 
 const TouchableElement: React.FC<TouchableElementProps> = ({ onPress, children }) => {
   return (
-    <Touchable onPress={onPress}>
+    <Touchable accessibilityRole="button" onPress={onPress}>
       <Flex flexDirection="row" alignItems="center">
         <Join separator={<Spacer x={0.5} />}>{children}</Join>
       </Flex>

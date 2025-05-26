@@ -158,6 +158,7 @@ export class Conversation extends React.Component<Props, State> {
         noSeparator
         right={
           <Touchable
+            accessibilityRole="button"
             onPress={() => {
               navigate(`/conversation/${this.props.me?.conversation?.internalID}/details`)
             }}

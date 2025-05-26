@@ -86,7 +86,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
               borderWidth={1}
               borderRadius={2}
             >
-              <TouchableWithoutFeedback onPress={viewInAR}>
+              <TouchableWithoutFeedback accessibilityRole="button" onPress={viewInAR}>
                 <Flex flexDirection="row" mx={1} height={24} alignItems="center">
                   <EyeOpenedIcon />
                   <Spacer x={0.5} />

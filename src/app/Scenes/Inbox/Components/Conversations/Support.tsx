@@ -8,6 +8,7 @@ export const Support = () => {
         Support
       </Text>
       <Touchable
+        accessibilityRole="button"
         onPress={() => {
           navigate("https://support.artsy.net/s/topic/0TO3b000000UevEGAS/contacting-a-gallery", {
             modal: true,

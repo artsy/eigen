@@ -16,6 +16,7 @@ const FeatureFeaturedLink: React.FC<FeatureFeaturedLinkProps> = ({ featuredLink,
   return (
     <Flex style={{ width }}>
       <TouchableOpacity
+        accessibilityRole="button"
         activeOpacity={DEFAULT_ACTIVE_OPACITY}
         onPress={() => {
           if (featuredLink.href) {

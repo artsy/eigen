@@ -62,7 +62,11 @@ export const ArtworkPreview: React.FC<ArtworkPreviewProps> = ({ artwork, onSelec
   }
 
   return (
-    <Touchable underlayColor={color("mono10")} onPress={attachmentSelected}>
+    <Touchable
+      accessibilityRole="button"
+      underlayColor={color("mono10")}
+      onPress={attachmentSelected}
+    >
       <Container>
         {!!artworkImage && (
           <ImageContainer>

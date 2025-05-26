@@ -10,7 +10,12 @@ export const DevMenuButtonItem: React.FC<{
 }> = ({ disabled = false, onPress, title, titleColor = "mono100", value, direction = "right" }) => {
   const color = useColor()
   return (
-    <Touchable onPress={onPress} underlayColor={color("mono30")} disabled={disabled}>
+    <Touchable
+      accessibilityRole="button"
+      onPress={onPress}
+      underlayColor={color("mono30")}
+      disabled={disabled}
+    >
       <Flex
         flexDirection="row"
         alignItems="center"

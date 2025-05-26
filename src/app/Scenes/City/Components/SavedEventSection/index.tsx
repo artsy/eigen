@@ -27,7 +27,7 @@ export class SavedEventSection extends Component<any> {
     const { data } = this.props
     const hasSaves = data.length > 0
     const hasSavesComponent = (
-      <TouchableWithoutFeedback onPress={this.handleTap}>
+      <TouchableWithoutFeedback accessibilityRole="button" onPress={this.handleTap}>
         <Flex flexDirection="row" alignItems="center" justifyContent="space-between">
           <Flex flexDirection="row" alignItems="center">
             <PinSavedOn pinWidth={30} pinHeight={30} />
