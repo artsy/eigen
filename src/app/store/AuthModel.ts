@@ -364,6 +364,7 @@ export const getAuthModel = (): AuthModel => ({
 
         storeActions.search.clearRecentSearches()
         storeActions.recentPriceRanges.clearAllPriceRanges()
+        storeActions.progressiveOnboarding.reset()
       }
 
       postEventToProviders(tracks.loggedIn(oauthProvider))

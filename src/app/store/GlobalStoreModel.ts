@@ -33,6 +33,7 @@ type SessionState = {
   isNavigationReady: boolean
   isSplashScreenVisible: boolean
 }
+
 interface GlobalStoreStateModel {
   version: number
   sessionState: SessionState
@@ -69,6 +70,14 @@ export interface GlobalStoreModel extends GlobalStoreStateModel {
   __manipulate: Action<this, (store: this) => void>
 }
 
+const PERSIST_AFTER_SIGN_OUT_MODELS: (keyof GlobalStoreStateModel)[] = [
+  "artsyPrefs",
+  "devicePrefs",
+  "progressiveOnboarding",
+  "search",
+  "recentPriceRanges",
+]
+
 export const getGlobalStoreModel = (): GlobalStoreModel => ({
   // META STATE
   version: CURRENT_APP_VERSION,
@@ -90,23 +99,18 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
     (a) => a.auth.signOut,
     (actions, _, store) => {
       const {
-        artsyPrefs: existingArtsyConfig,
-        devicePrefs: existingDeviceConfig,
-        search,
         auth: { userID },
-        recentPriceRanges,
       } = store.getState()
 
-      // keep existing config state
-      const artsyConfig = sanitize(existingArtsyConfig) as typeof existingArtsyConfig
-      const deviceConfig = sanitize(existingDeviceConfig) as typeof existingDeviceConfig
-      actions.reset({
-        artsyPrefs: artsyConfig,
-        devicePrefs: deviceConfig,
-        search,
-        recentPriceRanges,
-        auth: { previousSessionUserID: userID },
-      })
+      const configToPersist = PERSIST_AFTER_SIGN_OUT_MODELS.reduce(
+        (acc, key) => {
+          acc[key] = sanitize(store.getState()[key])
+          return acc
+        },
+        {} as Record<keyof GlobalStoreStateModel, any>
+      )
+
+      actions.reset({ ...configToPersist, auth: { previousSessionUserID: userID } })
     }
   ),
   didRehydrate: thunkOn(

@@ -298,6 +298,54 @@ describe("AuthModel", () => {
       expect(clearRecentSearchesSpy).toHaveBeenCalled()
     })
 
+    it("does not reset progressive onboarding if user id has not changed after the previous session", async () => {
+      const resetProgressiveOnboardingSpy = jest.spyOn(
+        GlobalStore.actions.progressiveOnboarding,
+        "reset"
+      )
+      __globalStoreTestUtils__?.injectState({
+        auth: {
+          userID: null,
+          previousSessionUserID: "my-user-id",
+        },
+      })
+      mockFetchJsonOnce({ access_token: "my-access-token" }, 201)
+      mockFetchJsonOnce({
+        id: "my-user-id",
+      })
+      await GlobalStore.actions.auth.signIn({
+        oauthProvider: "email",
+        oauthMode: "email",
+        email: "user@example.com",
+        password: "hunter2", // pragma: allowlist secret
+      })
+      expect(resetProgressiveOnboardingSpy).not.toHaveBeenCalled()
+    })
+
+    it("resets progressive onboarding if user id has changed after the previous session", async () => {
+      const resetProgressiveOnboardingSpy = jest.spyOn(
+        GlobalStore.actions.progressiveOnboarding,
+        "reset"
+      )
+      __globalStoreTestUtils__?.injectState({
+        auth: {
+          userID: null,
+          previousSessionUserID: "prev-user-id",
+        },
+      })
+      mockFetchJsonOnce({ access_token: "my-access-token" }, 201)
+      mockFetchJsonOnce({
+        id: "my-user-id",
+      })
+      await GlobalStore.actions.auth.signIn({
+        oauthProvider: "email",
+        oauthMode: "email",
+        email: "user@example.com",
+        password: "hunter2", // pragma: allowlist secret
+      })
+      expect(resetProgressiveOnboardingSpy).toHaveBeenCalled()
+    })
+
     it("saves credentials to keychain", async () => {
       mockFetchJsonOnce({ access_token: "my-access-token" }, 201)
       mockFetchJsonOnce({ id: "my-user-id" })
@@ -1352,6 +1400,14 @@ describe("AuthModel", () => {
             },
           ],
         },
+        progressiveOnboarding: {
+          dismissed: [
+            {
+              key: "dark-mode",
+              timestamp: 1716806400,
+            },
+          ],
+        },
       })
     })
 
@@ -1391,6 +1447,20 @@ describe("AuthModel", () => {
             href: "/amoako-boafo",
             displayLabel: "Amoako Boafo",
           },
+        })
+      )
+    })
+
+    it("saves progressive onboarding state", async () => {
+      await GlobalStore.actions.auth.signOut()
+      expect(__globalStoreTestUtils__?.getCurrentState().progressiveOnboarding).toEqual(
+        expect.objectContaining({
+          dismissed: [
+            {
+              key: "dark-mode",
+              timestamp: 1716806400,
+            },
+          ],
         })
       )
     })
