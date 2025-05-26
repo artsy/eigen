@@ -131,7 +131,6 @@ import {
   InfiniteDiscoveryQueryRenderer,
   infiniteDiscoveryVariables,
 } from "app/Scenes/InfiniteDiscovery/InfiniteDiscoveryQueryRenderer"
-import { Favorites as LegacyFavorites } from "app/Scenes/LegacyFavorites/LegacyFavorites"
 import { MyAccountQueryRenderer, MyAccountScreenQuery } from "app/Scenes/MyAccount/MyAccount"
 import { MyAccountDeleteAccountQueryRenderer } from "app/Scenes/MyAccount/MyAccountDeleteAccount"
 import { MyAccountEditEmailQueryRenderer } from "app/Scenes/MyAccount/MyAccountEditEmail"
@@ -554,25 +553,6 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "ArtworkAttributionClassFAQ",
     Component: ArtworkAttributionClassFAQQueryRenderer,
     queries: [ArtworkAttributionClassFAQScreenQuery],
-  },
-  {
-    path: "/artwork-lists",
-    name: "SavedArtworks",
-    Component: SavedArtworks,
-    options: {
-      topTabsNavigatorOptions: unsafe_getFeatureFlag("AREnableFavoritesTab")
-        ? {
-            topTabName: "saves",
-          }
-        : undefined,
-      isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
-      onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
-      screenOptions: {
-        headerShown: false,
-      },
-    },
-    queries: [artworkListsQuery],
-    prepareVariables: [() => artworkListVariables],
   },
   {
     path: "/artwork-list/:listID",
@@ -1452,10 +1432,10 @@ export const artsyDotNetRoutes = defineRoutes([
   {
     path: "/favorites",
     name: "Favorites",
-    Component: unsafe_getFeatureFlag("AREnableFavoritesTab") ? Favorites : LegacyFavorites,
+    Component: Favorites,
     options: {
-      isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
-      onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
+      isRootViewForTabName: "favorites",
+      onlyShowInTabName: "favorites",
       screenOptions: {
         headerShown: false,
       },
@@ -1466,13 +1446,11 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "SavedSearchAlertsList",
     Component: SavedSearchAlertsListQueryRenderer,
     options: {
-      topTabsNavigatorOptions: unsafe_getFeatureFlag("AREnableFavoritesTab")
-        ? {
-            topTabName: "alerts",
-          }
-        : undefined,
-      isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
-      onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
+      topTabsNavigatorOptions: {
+        topTabName: "alerts",
+      },
+      isRootViewForTabName: "favorites",
+      onlyShowInTabName: "favorites",
       screenOptions: {
         headerShown: false,
       },
@@ -1506,13 +1484,11 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "SavedArtworks",
     Component: SavedArtworks,
     options: {
-      topTabsNavigatorOptions: unsafe_getFeatureFlag("AREnableFavoritesTab")
-        ? {
-            topTabName: "follows",
-          }
-        : undefined,
-      isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
-      onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
+      topTabsNavigatorOptions: {
+        topTabName: "follows",
+      },
+      isRootViewForTabName: "favorites",
+      onlyShowInTabName: "favorites",
       screenOptions: {
         headerShown: false,
       },
@@ -1525,13 +1501,11 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "SavedArtworks",
     Component: SavedArtworks,
     options: {
-      topTabsNavigatorOptions: unsafe_getFeatureFlag("AREnableFavoritesTab")
-        ? {
-            topTabName: "saves",
-          }
-        : undefined,
-      isRootViewForTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
-      onlyShowInTabName: unsafe_getFeatureFlag("AREnableFavoritesTab") ? "favorites" : undefined,
+      topTabsNavigatorOptions: {
+        topTabName: "saves",
+      },
+      isRootViewForTabName: "favorites",
+      onlyShowInTabName: "favorites",
       screenOptions: {
         headerShown: false,
       },

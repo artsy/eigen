@@ -154,26 +154,6 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
 
 export const FavoriteTopNavigator = createMaterialTopTabNavigator()
 
-const Content = () => {
-  return (
-    <Screen.Body fullwidth>
-      <FavoriteTopNavigator.Navigator
-        tabBar={FavoritesHeaderTapBar}
-        screenOptions={{
-          swipeEnabled: false,
-        }}
-      >
-        <FavoriteTopNavigator.Screen name="saves" navigationKey="saves" component={SavesTab} />
-        <FavoriteTopNavigator.Screen
-          name="follows"
-          navigationKey="follows"
-          component={FollowsTab}
-        />
-        <FavoriteTopNavigator.Screen name="alerts" navigationKey="alerts" component={AlertsTab} />
-      </FavoriteTopNavigator.Navigator>
-    </Screen.Body>
-  )
-}
 export const Favorites = () => {
   useEffect(() => {
     prefetchQuery({
@@ -191,7 +171,26 @@ export const Favorites = () => {
   return (
     <FavoritesContextStore.Provider>
       <Screen>
-        <Content />
+        <Screen.Body fullwidth>
+          <FavoriteTopNavigator.Navigator
+            tabBar={FavoritesHeaderTapBar}
+            screenOptions={{
+              swipeEnabled: false,
+            }}
+          >
+            <FavoriteTopNavigator.Screen name="saves" navigationKey="saves" component={SavesTab} />
+            <FavoriteTopNavigator.Screen
+              name="follows"
+              navigationKey="follows"
+              component={FollowsTab}
+            />
+            <FavoriteTopNavigator.Screen
+              name="alerts"
+              navigationKey="alerts"
+              component={AlertsTab}
+            />
+          </FavoriteTopNavigator.Navigator>
+        </Screen.Body>
       </Screen>
     </FavoritesContextStore.Provider>
   )

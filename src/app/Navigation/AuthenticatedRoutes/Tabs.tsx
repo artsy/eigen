@@ -15,10 +15,9 @@ import { modules } from "app/Navigation/utils/modules"
 import { useBottomTabsBadges } from "app/Navigation/utils/useBottomTabsBadges"
 import { BottomTabOption, BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
-import { useSearchTabName, bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
+import { bottomTabsConfig, useSearchTabName } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { OnboardingQuiz } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
 import { useCallback } from "react"
@@ -87,8 +86,6 @@ const AppTabs: React.FC = () => {
     borderColor: color("devpurple"),
     borderTopWidth: 1,
   }
-
-  const showFavoritesTab = useFeatureFlag("AREnableFavoritesTab")
 
   return (
     <Tab.Navigator
@@ -163,13 +160,11 @@ const AppTabs: React.FC = () => {
       <Tab.Screen name="home" component={HomeTab} options={{ ...tabsBadges["home"] }} />
       <Tab.Screen name="search" component={SearchTab} />
       <Tab.Screen name="inbox" component={InboxTab} options={{ ...tabsBadges["inbox"] }} />
-      {!!showFavoritesTab && (
-        <Tab.Screen
-          name="favorites"
-          component={FavoritesTab}
-          options={{ ...tabsBadges["favorites"] }}
-        />
-      )}
+      <Tab.Screen
+        name="favorites"
+        component={FavoritesTab}
+        options={{ ...tabsBadges["favorites"] }}
+      />
       <Tab.Screen name="profile" component={ProfileTab} options={{ ...tabsBadges["profile"] }} />
     </Tab.Navigator>
   )
