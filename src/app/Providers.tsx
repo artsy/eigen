@@ -115,5 +115,9 @@ function ThemeWithDarkModeSupport({ children }: { children?: React.ReactNode }) 
     return supportDarkMode ? (colorScheme === "dark" ? "v3dark" : "v3light") : undefined
   }, [colorScheme, supportDarkMode])
 
-  return <Theme theme={theme}>{children}</Theme>
+  return (
+    <Theme key={colorScheme} theme={theme}>
+      {children}
+    </Theme>
+  )
 }

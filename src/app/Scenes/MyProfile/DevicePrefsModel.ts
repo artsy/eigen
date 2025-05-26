@@ -13,6 +13,7 @@ export interface DevicePrefsModel {
   environment: EnvironmentModel
   sessionState: {
     isDeepZoomModalVisible: boolean
+    hasChangedColorScheme: boolean
   }
   // color scheme
   darkModeOption: DarkModeOption
@@ -21,6 +22,7 @@ export interface DevicePrefsModel {
   setDarkModeOption: Action<this, DarkModeOption>
   setIsDeepZoomModalVisible: Action<this, this["sessionState"]["isDeepZoomModalVisible"]>
   updateStatusBarStyle: EffectOn<this>
+  setSessionState: Action<this, Partial<DevicePrefsModel["sessionState"]>>
 }
 
 export const getDevicePrefsModel = (): DevicePrefsModel => ({
@@ -28,6 +30,7 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
 
   sessionState: {
     isDeepZoomModalVisible: false,
+    hasChangedColorScheme: false,
   },
 
   darkModeOption: "system",
@@ -53,6 +56,7 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
   }),
 
   setDarkModeOption: action((state, option) => {
+    state.sessionState.hasChangedColorScheme = true
     state.darkModeOption = option
   }),
   setIsDeepZoomModalVisible: action((state, isVisible) => {
@@ -75,6 +79,12 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
         ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
         ArtsyNativeModule.setAppLightContrast(false)
       }
+    }
+  }),
+  setSessionState: action((state, sessionState) => {
+    state.sessionState = {
+      ...state.sessionState,
+      ...sessionState,
     }
   }),
 })

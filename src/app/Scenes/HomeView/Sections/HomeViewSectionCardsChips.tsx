@@ -18,7 +18,6 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracki
 import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
-import { withRefreshOnColorSchemeChange } from "app/utils/hooks/withRefreshOnColorSchemeChange"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { memo } from "react"
 import { FlatList } from "react-native"
@@ -32,87 +31,90 @@ interface HomeViewSectionCardsChipsProps {
 
 const CHIP_WIDTH = 230
 
-export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps> =
-  withRefreshOnColorSchemeChange(({ section: sectionProp, index, ...flexProps }) => {
-    const space = useSpace()
-    const tracking = useHomeViewTracking()
-    const section = useFragment(fragment, sectionProp)
-    const cards = extractNodes(section.cardsConnection)
+export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps> = ({
+  section: sectionProp,
+  index,
+  ...flexProps
+}) => {
+  const space = useSpace()
+  const tracking = useHomeViewTracking()
+  const section = useFragment(fragment, sectionProp)
+  const cards = extractNodes(section.cardsConnection)
 
-    const { variant } = useExperimentVariant("diamond_discover-tab")
-    const isDiscoverVariant = variant.name === "variant-a" && variant.enabled
+  const { variant } = useExperimentVariant("diamond_discover-tab")
+  const isDiscoverVariant = variant.name === "variant-a" && variant.enabled
 
-    if (cards.length === 0) return null
+  if (cards.length === 0) return null
 
-    const numRows = !isTablet() ? 3 : 2
-    const numColumns = Math.ceil(cards.length / 3)
-    const rows = getColumns(cards, numRows, numColumns)
-    const snapToOffsets = getSnapToOffsets(numColumns, space(1), space(1), CHIP_WIDTH)
+  const numRows = !isTablet() ? 3 : 2
+  const numColumns = Math.ceil(cards.length / 3)
+  const rows = getColumns(cards, numRows, numColumns)
+  const snapToOffsets = getSnapToOffsets(numColumns, space(1), space(1), CHIP_WIDTH)
 
-    const handleOnChipPress = (card: (typeof cards)[number], index: number) => {
-      if (card.href) {
-        tracking.tappedCardGroup(
-          card.entityID,
-          card.entityType as ScreenOwnerType,
-          card.href,
-          section.contextModule as ContextModule,
-          index,
-          // TODO: remove the screenOwnerType parameter when the A/B test is dismantled
-          isDiscoverVariant ? OwnerType.search : OwnerType.home
-        )
-      }
+  const handleOnChipPress = (card: (typeof cards)[number], index: number) => {
+    if (card.href) {
+      tracking.tappedCardGroup(
+        card.entityID,
+        card.entityType as ScreenOwnerType,
+        card.href,
+        section.contextModule as ContextModule,
+        index,
+        // TODO: remove the screenOwnerType parameter when the A/B test is dismantled
+        isDiscoverVariant ? OwnerType.search : OwnerType.home
+      )
     }
+  }
 
-    return (
-      <Flex {...flexProps}>
-        <SectionTitle title={section.component?.title} mx={2} />
+  return (
+    <Flex {...flexProps}>
+      <SectionTitle title={section.component?.title} mx={2} />
 
-        <FlatList
-          horizontal
-          pagingEnabled
-          snapToEnd={false}
-          snapToOffsets={snapToOffsets}
-          decelerationRate="fast"
-          contentContainerStyle={{ paddingHorizontal: space(2), gap: space(1) }}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          data={rows}
-          keyExtractor={(item, index) => `item_${index}_${item[0].entityID}`}
-          renderItem={({ item }) => (
-            <Flex gap={1}>
-              {item.map((item, index) => {
-                if (!item?.title) return null
+      <FlatList
+        horizontal
+        pagingEnabled
+        snapToEnd={false}
+        snapToOffsets={snapToOffsets}
+        decelerationRate="fast"
+        contentContainerStyle={{ paddingHorizontal: space(2), gap: space(1) }}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        data={rows}
+        keyExtractor={(item, index) => `item_${index}_${item[0].entityID}`}
+        renderItem={({ item }) => (
+          <Flex gap={1}>
+            {item.map((item, index) => {
+              if (!item?.title) return null
 
-                return (
-                  <Flex minWidth={CHIP_WIDTH} key={`collectionChips-row-${index}`}>
-                    <RouterLink
-                      to={item.href}
-                      hasChildTouchable
-                      onPress={() => handleOnChipPress(item, index)}
-                    >
-                      <Chip
-                        key={item.href}
-                        title={item.title}
-                        subtitle={item.subtitle as string | undefined}
-                      />
-                    </RouterLink>
-                  </Flex>
-                )
-              })}
-            </Flex>
-          )}
-        />
-
-        {/* TODO: If we decide to keep the Discover tab and dismantle this A/B test, we will need to continue excluding the sentinel. Find an elegant way to do that. */}
-        {!isDiscoverVariant && (
-          <HomeViewSectionSentinel
-            contextModule={section.contextModule as ContextModule}
-            index={index}
-          />
+              return (
+                <Flex minWidth={CHIP_WIDTH} key={`collectionChips-row-${index}`}>
+                  <RouterLink
+                    to={item.href}
+                    hasChildTouchable
+                    onPress={() => handleOnChipPress(item, index)}
+                  >
+                    <Chip
+                      key={item.href}
+                      title={item.title}
+                      subtitle={item.subtitle as string | undefined}
+                    />
+                  </RouterLink>
+                </Flex>
+              )
+            })}
+          </Flex>
         )}
-      </Flex>
-    )
-  })
+      />
+
+      {/* TODO: If we decide to keep the Discover tab and dismantle this A/B test, we will need to continue excluding the sentinel. Find an elegant way to do that. */}
+      {!isDiscoverVariant && (
+        <HomeViewSectionSentinel
+          contextModule={section.contextModule as ContextModule}
+          index={index}
+        />
+      )}
+    </Flex>
+  )
+}
 
 const fragment = graphql`
   fragment HomeViewSectionCardsChips_section on HomeViewSectionCards {

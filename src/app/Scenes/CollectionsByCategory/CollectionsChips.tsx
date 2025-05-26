@@ -5,7 +5,6 @@ import {
 } from "__generated__/CollectionsChips_marketingCollections.graphql"
 import { useCollectionByCategoryTracking } from "app/Scenes/CollectionsByCategory/hooks/useCollectionByCategoryTracking"
 import { navigate } from "app/system/navigation/navigate"
-import { withRefreshOnColorSchemeChange } from "app/utils/hooks/withRefreshOnColorSchemeChange"
 import { Dimensions, FlatList, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
@@ -17,61 +16,61 @@ interface CollectionsChipsProps {
   marketingCollections: CollectionsChips_marketingCollections$key
 }
 
-export const CollectionsChips: React.FC<CollectionsChipsProps> = withRefreshOnColorSchemeChange(
-  ({ marketingCollections: _marketingCollections }) => {
-    const marketingCollections = useFragment(fragment, _marketingCollections)
-    const space = useSpace()
-    const { trackChipTap } = useCollectionByCategoryTracking()
+export const CollectionsChips: React.FC<CollectionsChipsProps> = ({
+  marketingCollections: _marketingCollections,
+}) => {
+  const marketingCollections = useFragment(fragment, _marketingCollections)
+  const space = useSpace()
+  const { trackChipTap } = useCollectionByCategoryTracking()
 
-    if (!marketingCollections) {
-      return null
-    }
-
-    const numRows = !isTablet() ? 3 : 2
-    const numColumns = Math.ceil(marketingCollections.length / 3)
-    const rows = getRows(marketingCollections, numRows)
-    const snapToOffsets = getSnapToOffsets(numColumns, space(1), space(1))
-
-    const handleChipPress = (slug: string, index: number) => {
-      trackChipTap(slug, index)
-      navigate(`/collection/${slug}`)
-    }
-
-    return (
-      <FlatList
-        horizontal
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        pagingEnabled
-        snapToEnd={false}
-        data={rows}
-        snapToOffsets={snapToOffsets}
-        decelerationRate="fast"
-        contentContainerStyle={{ paddingHorizontal: space(2), gap: space(1) }}
-        keyExtractor={(item, index) => `item_${index}_${item[0]?.internalID}`}
-        renderItem={({ item }) => (
-          <Flex gap={1}>
-            {item.map((item, index) => {
-              return (
-                <Flex minWidth={CHIP_WIDTH} key={`collectionChips-row-${index}`}>
-                  <Chip
-                    key={item.internalID}
-                    title={item.title}
-                    onPress={() => {
-                      if (item?.slug) {
-                        handleChipPress(item.slug, index)
-                      }
-                    }}
-                  />
-                </Flex>
-              )
-            })}
-          </Flex>
-        )}
-      />
-    )
+  if (!marketingCollections) {
+    return null
   }
-)
+
+  const numRows = !isTablet() ? 3 : 2
+  const numColumns = Math.ceil(marketingCollections.length / 3)
+  const rows = getRows(marketingCollections, numRows)
+  const snapToOffsets = getSnapToOffsets(numColumns, space(1), space(1))
+
+  const handleChipPress = (slug: string, index: number) => {
+    trackChipTap(slug, index)
+    navigate(`/collection/${slug}`)
+  }
+
+  return (
+    <FlatList
+      horizontal
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
+      pagingEnabled
+      snapToEnd={false}
+      data={rows}
+      snapToOffsets={snapToOffsets}
+      decelerationRate="fast"
+      contentContainerStyle={{ paddingHorizontal: space(2), gap: space(1) }}
+      keyExtractor={(item, index) => `item_${index}_${item[0]?.internalID}`}
+      renderItem={({ item }) => (
+        <Flex gap={1}>
+          {item.map((item, index) => {
+            return (
+              <Flex minWidth={CHIP_WIDTH} key={`collectionChips-row-${index}`}>
+                <Chip
+                  key={item.internalID}
+                  title={item.title}
+                  onPress={() => {
+                    if (item?.slug) {
+                      handleChipPress(item.slug, index)
+                    }
+                  }}
+                />
+              </Flex>
+            )
+          })}
+        </Flex>
+      )}
+    />
+  )
+}
 
 const fragment = graphql`
   fragment CollectionsChips_marketingCollections on MarketingCollection @relay(plural: true) {

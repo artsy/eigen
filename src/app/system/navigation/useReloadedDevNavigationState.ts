@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { NavigationState } from "@react-navigation/native"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
+import { GlobalStore } from "app/store/GlobalStore"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useEffect, useState } from "react"
 
@@ -29,9 +30,14 @@ export const useReloadedDevNavigationState = (key: string) => {
   const isNavigationStateRehydrationDisabledToggle = useDevToggle(
     "DTDisableNavigationStateRehydration"
   )
+  const hasChangedColorScheme = GlobalStore.useAppState(
+    (state) => state.devicePrefs.sessionState.hasChangedColorScheme
+  )
+  const setSessionState = GlobalStore.actions.devicePrefs.setSessionState
 
   // We only rehydrate navigation state on dev builds and if the toggle is disabled
-  const isNavigationStateRehydrationEnabled = __DEV__ && !isNavigationStateRehydrationDisabledToggle
+  const isNavigationStateRehydrationEnabled =
+    (__DEV__ && !isNavigationStateRehydrationDisabledToggle) || hasChangedColorScheme
 
   const [isReady, setIsReady] = useState(isNavigationStateRehydrationEnabled ? false : true)
   const launchCount = ArtsyNativeModule.launchCount
@@ -40,6 +46,7 @@ export const useReloadedDevNavigationState = (key: string) => {
   // const globalLaunchCount = GlobalStore.useAppState(
   //   (state) => state.native.sessionState.launchCount
   // )
+
   const [initialState, setInitialState] = useState()
 
   useEffect(() => {
@@ -74,6 +81,8 @@ export const useReloadedDevNavigationState = (key: string) => {
     if (!isReady) {
       restoreState()
     }
+    // We need to reset the hasChangedColorScheme flag to avoid accidentally rehydrating the navigation state after restart
+    setSessionState({ hasChangedColorScheme: false })
   }, [isReady])
 
   const saveSession = (state: NavigationState | undefined) => {
@@ -83,7 +92,7 @@ export const useReloadedDevNavigationState = (key: string) => {
   }
 
   return {
-    isReady: isReady,
+    isReady,
     initialState,
     saveSession,
   }
