@@ -14,8 +14,9 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { useSetDevMode } from "app/system/devTools/useSetDevMode"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
+import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { presentEmailComposer } from "app/utils/email/presentEmailComposer"
-import { Alert } from "react-native"
+import { Alert, ScrollView } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { useTracking } from "react-tracking"
 
@@ -25,11 +26,13 @@ export const MyProfileSettings: React.FC = () => {
   const { value: userIsDev } = GlobalStore.useAppState((store) => store.artsyPrefs.userIsDev)
   const tracking = useTracking()
 
+  const scrollableRef = useBottomTabsScrollToTop() as React.RefObject<ScrollView>
+
   return (
     <Screen>
       <Screen.Body fullwidth>
         <Sentry.TimeToInitialDisplay record>
-          <Screen.ScrollView>
+          <ScrollView ref={scrollableRef}>
             <UserAccountHeaderQueryRenderer
               showBorder
               showMyCollectionPreview
@@ -125,7 +128,7 @@ export const MyProfileSettings: React.FC = () => {
                 </Touchable>
               </Flex>
             </Join>
-          </Screen.ScrollView>
+          </ScrollView>
         </Sentry.TimeToInitialDisplay>
       </Screen.Body>
     </Screen>
