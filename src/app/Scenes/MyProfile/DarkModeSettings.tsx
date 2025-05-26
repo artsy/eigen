@@ -37,37 +37,6 @@ export const DarkModeSettings: React.FC<{}> = () => {
     })
   }
 
-  const content = (
-    <Flex px={2}>
-      <Join separator={<Spacer y={2} />}>
-        <RadioMenuItem
-          title={DARK_MODE_OPTIONS.system.title}
-          selected={darkModeOption === "system"}
-          onPress={() => {
-            setDarkModeOption("system")
-            trackDarkMode("system")
-          }}
-        />
-        <RadioMenuItem
-          title={DARK_MODE_OPTIONS.on.title}
-          selected={darkModeOption === "on"}
-          onPress={() => {
-            setDarkModeOption("on")
-            trackDarkMode("on")
-          }}
-        />
-        <RadioMenuItem
-          title={DARK_MODE_OPTIONS.off.title}
-          selected={darkModeOption === "off"}
-          onPress={() => {
-            setDarkModeOption("off")
-            trackDarkMode("off")
-          }}
-        />
-      </Join>
-    </Flex>
-  )
-
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
@@ -75,7 +44,34 @@ export const DarkModeSettings: React.FC<{}> = () => {
       })}
     >
       <MyProfileScreenWrapper title="Dark Mode" contentContainerStyle={{ paddingHorizontal: 0 }}>
-        {content}
+        <Flex px={2}>
+          <Join separator={<Spacer y={2} />}>
+            <RadioMenuItem
+              title={DARK_MODE_OPTIONS.system.title}
+              selected={darkModeOption === "system"}
+              onPress={() => {
+                setDarkModeOption("system")
+                trackDarkMode("system")
+              }}
+            />
+            <RadioMenuItem
+              title={DARK_MODE_OPTIONS.on.title}
+              selected={darkModeOption === "on"}
+              onPress={() => {
+                setDarkModeOption("on")
+                trackDarkMode("on")
+              }}
+            />
+            <RadioMenuItem
+              title={DARK_MODE_OPTIONS.off.title}
+              selected={darkModeOption === "off"}
+              onPress={() => {
+                setDarkModeOption("off")
+                trackDarkMode("off")
+              }}
+            />
+          </Join>
+        </Flex>
       </MyProfileScreenWrapper>
     </ProvideScreenTrackingWithCohesionSchema>
   )

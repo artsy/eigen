@@ -115,13 +115,5 @@ function ThemeWithDarkModeSupport({ children }: { children?: React.ReactNode }) 
     return supportDarkMode ? (colorScheme === "dark" ? "v3dark" : "v3light") : undefined
   }, [colorScheme, supportDarkMode])
 
-  return (
-    <Theme
-      // Setting the key to force the whole app to re-render when the theme changes.
-      // key={theme}
-      theme={theme}
-    >
-      {children}
-    </Theme>
-  )
+  return <Theme theme={theme}>{children}</Theme>
 }
