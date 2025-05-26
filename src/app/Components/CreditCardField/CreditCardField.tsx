@@ -15,7 +15,8 @@ import {
 import { THEME } from "@artsy/palette-tokens"
 import { CardField } from "@stripe/stripe-react-native"
 import { Details } from "@stripe/stripe-react-native/lib/typescript/src/types/components/CardFieldInput"
-import { useMemo, useState } from "react"
+import { useAfterTransitionEnd } from "app/Scenes/MyAccount/utils/useFocusAfterTransitionEnd"
+import { useMemo, useRef, useState } from "react"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 
 interface CreditCardFieldProps {
@@ -25,6 +26,8 @@ interface CreditCardFieldProps {
 const STRIPE_CREDIT_CARD_ICON_CONTAINER_WIDTH = 60
 
 export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }) => {
+  const cardFieldRef = useRef<any>(null)
+
   const color = useColor()
   const { theme } = useTheme()
   const [cardDetails, setCardDetails] = useState<Details>()
@@ -39,6 +42,10 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
   )
 
   animatedState.set(getInputState({ isFocused, value: cardDetails?.number }))
+
+  useAfterTransitionEnd(() => {
+    cardFieldRef.current?.focus()
+  })
 
   const hasSelectedValue = useMemo(() => {
     return (
@@ -86,7 +93,7 @@ export const CreditCardField: React.FC<CreditCardFieldProps> = ({ onCardChange }
         flexDirection="row"
       >
         <CardField
-          autofocus
+          ref={cardFieldRef}
           testID="credit-card-field"
           cardStyle={{
             borderWidth: 0, // avoid repeat border

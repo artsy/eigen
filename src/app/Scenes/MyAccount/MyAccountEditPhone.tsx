@@ -5,22 +5,28 @@ import { MyAccountEditPhone_me$key } from "__generated__/MyAccountEditPhone_me.g
 import { INPUT_HEIGHT } from "app/Components/Input"
 import { PhoneInput } from "app/Components/Input/PhoneInput/PhoneInput"
 import { LoadFailureView } from "app/Components/LoadFailureView"
+import { useAfterTransitionEnd } from "app/Scenes/MyAccount/utils/useFocusAfterTransitionEnd"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { goBack } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { PixelRatio } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
 const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me$key }> = (props) => {
   const me = useFragment(meFragment, props.me)
+  const phoneInputRef = useRef<any>(null)
 
   const [phone, setPhone] = useState<string>(me.phone ?? "")
   const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
   const [isValidNumber, setIsValidNumber] = useState<boolean>(false)
+
+  useAfterTransitionEnd(() => {
+    phoneInputRef.current?.focus()
+  })
 
   useEffect(() => {
     setReceivedError(undefined)
@@ -50,11 +56,11 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me$key }> = (props) 
           }}
         >
           <PhoneInput
+            ref={phoneInputRef as any}
             setValidation={setIsValidNumber}
             enableClearButton
             value={phone}
             onChangeText={setPhone}
-            autoFocus
             error={receivedError}
           />
         </Flex>
