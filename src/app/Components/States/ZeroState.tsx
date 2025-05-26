@@ -1,5 +1,4 @@
 import { Flex, Text, useColor } from "@artsy/palette-mobile"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
 interface ZeroStateProps {
   title?: string
@@ -13,13 +12,11 @@ interface ZeroStateProps {
 }
 
 export const ZeroState = (props: ZeroStateProps) => {
-  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
-
   const color = useColor()
 
   const { title, bigTitle, subtitle, image, callToAction, showBorder, minHeight = 90 } = props
 
-  if (enableRedesignedSettings && showBorder) {
+  if (showBorder) {
     return (
       <Flex>
         <Flex px={2} alignItems="center" mt={2}>

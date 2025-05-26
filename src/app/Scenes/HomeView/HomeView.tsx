@@ -104,7 +104,6 @@ export const HomeView: React.FC = memo(() => {
       if (!isDeepLink) {
         prefetchUrl<SearchQuery>("search")
         prefetchUrl("my-profile")
-        prefetchUrl("my-profile/settings")
         prefetchUrl("inbox")
         prefetchUrl("infinite-discovery")
       }

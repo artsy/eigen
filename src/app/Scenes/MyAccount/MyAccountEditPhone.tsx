@@ -1,6 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, SkeletonBox, Text, Touchable } from "@artsy/palette-mobile"
-import { useNavigation } from "@react-navigation/native"
+import { Flex, SkeletonBox } from "@artsy/palette-mobile"
 import { MyAccountEditPhoneQuery } from "__generated__/MyAccountEditPhoneQuery.graphql"
 import { MyAccountEditPhone_me$key } from "__generated__/MyAccountEditPhone_me.graphql"
 import { INPUT_HEIGHT } from "app/Components/Input"
@@ -8,9 +7,7 @@ import { PhoneInput } from "app/Components/Input/PhoneInput/PhoneInput"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { goBack } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
-import { PlaceholderBox } from "app/utils/placeholders"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import React, { useEffect, useState } from "react"
@@ -19,41 +16,11 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
 const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me$key }> = (props) => {
-  const navigation = useNavigation()
-
   const me = useFragment(meFragment, props.me)
 
   const [phone, setPhone] = useState<string>(me.phone ?? "")
   const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
   const [isValidNumber, setIsValidNumber] = useState<boolean>(false)
-
-  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
-
-  useEffect(() => {
-    const isValid = canSave()
-
-    if (!enableRedesignedSettings) {
-      navigation.setOptions({
-        headerRight: () => {
-          return (
-            <Touchable onPress={handleSave} disabled={!isValid}>
-              <Text variant="xs" color={!!isValid ? "mono100" : "mono60"}>
-                Save
-              </Text>
-            </Touchable>
-          )
-        },
-      })
-    }
-  }, [navigation, phone, isValidNumber])
-
-  const canSave = () => {
-    if (!isValidNumber || phone.trim().length == 0) {
-      return false
-    } else {
-      return true
-    }
-  }
 
   useEffect(() => {
     setReceivedError(undefined)
@@ -68,68 +35,39 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me$key }> = (props) 
     }
   }
 
-  if (enableRedesignedSettings) {
-    return (
-      <ProvideScreenTrackingWithCohesionSchema
-        info={screen({
-          context_screen_owner_type: OwnerType.accountPhoneNumber,
-        })}
-      >
-        <MyProfileScreenWrapper title="Phone" onPress={handleSave} isValid={isValidNumber}>
-          <Flex
-            style={{
-              // We are setting a fixed height here to prevent the input from growing in height
-              // and pushing the save button when an error is present
-              height: PixelRatio.getFontScale() * INPUT_HEIGHT + 15,
-            }}
-          >
-            <PhoneInput
-              setValidation={setIsValidNumber}
-              enableClearButton
-              value={phone}
-              onChangeText={setPhone}
-              autoFocus
-              error={receivedError}
-            />
-          </Flex>
-        </MyProfileScreenWrapper>
-      </ProvideScreenTrackingWithCohesionSchema>
-    )
-  }
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
         context_screen_owner_type: OwnerType.accountPhoneNumber,
       })}
     >
-      <Flex p={2}>
-        <PhoneInput
-          setValidation={setIsValidNumber}
-          enableClearButton
-          value={phone}
-          onChangeText={setPhone}
-          autoFocus
-          error={receivedError}
-        />
-      </Flex>
+      <MyProfileScreenWrapper title="Phone" onPress={handleSave} isValid={isValidNumber}>
+        <Flex
+          style={{
+            // We are setting a fixed height here to prevent the input from growing in height
+            // and pushing the save button when an error is present
+            height: PixelRatio.getFontScale() * INPUT_HEIGHT + 15,
+          }}
+        >
+          <PhoneInput
+            setValidation={setIsValidNumber}
+            enableClearButton
+            value={phone}
+            onChangeText={setPhone}
+            autoFocus
+            error={receivedError}
+          />
+        </Flex>
+      </MyProfileScreenWrapper>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
 const MyAccountEditPhonePlaceholder: React.FC<{}> = ({}) => {
-  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
-
-  if (enableRedesignedSettings) {
-    return (
-      <MyProfileScreenWrapper title="Phone">
-        <SkeletonBox height={40} />
-      </MyProfileScreenWrapper>
-    )
-  }
   return (
-    <Flex p={2}>
-      <PlaceholderBox height={40} />
-    </Flex>
+    <MyProfileScreenWrapper title="Phone">
+      <SkeletonBox height={40} />
+    </MyProfileScreenWrapper>
   )
 }
 

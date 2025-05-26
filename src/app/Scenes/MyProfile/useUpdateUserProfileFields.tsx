@@ -6,7 +6,6 @@ export const useUpdateUserProfileFields = () => {
     mutation useUpdateUserProfileFieldsMutation($input: UpdateMyProfileInput!) {
       updateMyUserProfile(input: $input) {
         me {
-          ...MyProfileHeader_me
           ...MyProfileEditForm_me
           ...useSendInquiry_me
           ...MyProfileEditModal_me

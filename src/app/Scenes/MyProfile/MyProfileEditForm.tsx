@@ -26,7 +26,7 @@ import {
   UserProfileFormikSchema,
   userProfileYupSchema,
 } from "app/Scenes/MyProfile/Components/UserProfileFields"
-import { fetchProfileData } from "app/Scenes/MyProfile/MyProfileHeader"
+import { fetchProfileData } from "app/Scenes/MyProfile/fetchProfileData"
 import { useEditProfile } from "app/Scenes/MyProfile/hooks/useEditProfile"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { getConvertedImageUrlFromS3 } from "app/utils/getConvertedImageUrlFromS3"

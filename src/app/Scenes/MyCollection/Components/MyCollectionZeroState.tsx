@@ -1,13 +1,10 @@
 import { ActionType, AddCollectedArtwork, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Box, Button, Flex, Tabs, Text, useSpace } from "@artsy/palette-mobile"
+import { Button, Flex, Tabs, useSpace } from "@artsy/palette-mobile"
 import { ZeroState } from "app/Components/States/ZeroState"
 import { ModalCarousel } from "app/Scenes/HomeView/Components/ModalCarouselComponents/ModalCarousel"
-import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { useZeroStateDimensions } from "app/Scenes/MyCollection/utils/zeroStateWidth"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { isFontScaleLarge } from "app/utils/accessibility"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { debounce } from "lodash"
 import { useState } from "react"
 import { Image, RefreshControlProps } from "react-native"
 import { useTracking } from "react-tracking"
@@ -23,121 +20,61 @@ export const MyCollectionZeroState: React.FC<{
   const space = useSpace()
   const { width: zeroStateWidth } = useZeroStateDimensions()
 
-  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
-
   const [isMyCollectionModalVisible, setIsMyCollectionModalVisible] = useState(false)
 
-  const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
-
-  const image = require("images/my-collection-empty-state.webp")
-
-  const showAddToMyCollectionBottomSheet = debounce(() => {
-    setViewKind({ viewKind: "Add" })
-  }, 100)
-
-  if (enableRedesignedSettings) {
-    return (
-      <Tabs.ScrollView contentContainerStyle={{ flexGrow: 1 }} refreshControl={RefreshControl}>
-        <Flex>
-          <ModalCarousel
-            isVisible={isMyCollectionModalVisible}
-            toggleModal={(isVisible) => setIsMyCollectionModalVisible(isVisible)}
-          />
-          <ZeroState
-            minHeight={0}
-            showBorder
-            bigTitle="Know Your Collection Better"
-            subtitle="Manage your collection online and get free market insights."
-            image={
-              <Image
-                source={require("images/my-collection-empty-state.webp")}
-                resizeMode="cover"
-                style={{
-                  width: zeroStateWidth,
-                  minHeight: 150,
-                  marginTop: space(2),
-                }}
-              />
-            }
-            callToAction={
-              <Flex
-                gap={2}
-                flexDirection={isFontScaleLarge() ? "column" : "row"}
-                justifyContent="space-evenly"
-              >
-                <RouterLink
-                  to="/my-collection/artworks/new"
-                  onPress={() => {
-                    trackEvent(tracks.addCollectedArtwork())
-                  }}
-                  hasChildTouchable
-                >
-                  <Button testID="add-artwork-button-zero-state" block={isFontScaleLarge()}>
-                    Add Artworks
-                  </Button>
-                </RouterLink>
-                <Button
-                  variant="outline"
-                  onPress={() => {
-                    setIsMyCollectionModalVisible(true)
-                  }}
-                  block={isFontScaleLarge()}
-                >
-                  Learn More
-                </Button>
-              </Flex>
-            }
-          />
-        </Flex>
-      </Tabs.ScrollView>
-    )
-  }
-
   return (
-    <Tabs.ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <Box mt={4}>
+    <Tabs.ScrollView contentContainerStyle={{ flexGrow: 1 }} refreshControl={RefreshControl}>
+      <Flex>
         <ModalCarousel
           isVisible={isMyCollectionModalVisible}
           toggleModal={(isVisible) => setIsMyCollectionModalVisible(isVisible)}
         />
         <ZeroState
+          minHeight={0}
+          showBorder
           bigTitle="Know Your Collection Better"
           subtitle="Manage your collection online and get free market insights."
           image={
             <Image
-              source={image}
-              resizeMode="contain"
+              source={require("images/my-collection-empty-state.webp")}
+              resizeMode="cover"
               style={{
-                alignSelf: "center",
-                marginVertical: space(2),
+                width: zeroStateWidth,
+                minHeight: 150,
+                marginTop: space(2),
               }}
             />
           }
           callToAction={
-            <>
-              <Button
-                testID="add-artwork-button-zero-state"
+            <Flex
+              gap={2}
+              flexDirection={isFontScaleLarge() ? "column" : "row"}
+              justifyContent="space-evenly"
+            >
+              <RouterLink
+                to="/my-collection/artworks/new"
                 onPress={() => {
                   trackEvent(tracks.addCollectedArtwork())
-                  showAddToMyCollectionBottomSheet()
                 }}
-                block
+                hasChildTouchable
               >
-                Add to My Collection
+                <Button testID="add-artwork-button-zero-state" block={isFontScaleLarge()}>
+                  Add Artworks
+                </Button>
+              </RouterLink>
+              <Button
+                variant="outline"
+                onPress={() => {
+                  setIsMyCollectionModalVisible(true)
+                }}
+                block={isFontScaleLarge()}
+              >
+                Learn More
               </Button>
-              <Flex alignItems="center" pt={2}>
-                <Text
-                  onPress={() => {
-                    setIsMyCollectionModalVisible(true)
-                  }}
-                >
-                  Learn More
-                </Text>
-              </Flex>
-            </>
+            </Flex>
           }
         />
-      </Box>
+      </Flex>
     </Tabs.ScrollView>
   )
 }

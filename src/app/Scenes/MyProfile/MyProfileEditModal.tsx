@@ -9,6 +9,7 @@ import {
   UserProfileFormikSchema,
   userProfileYupSchema,
 } from "app/Scenes/MyProfile/Components/UserProfileFields"
+import { fetchProfileData } from "app/Scenes/MyProfile/fetchProfileData"
 import { useUpdateUserProfileFields } from "app/Scenes/MyProfile/useUpdateUserProfileFields"
 import { FormikProvider, useFormik } from "formik"
 import { useState } from "react"
@@ -77,6 +78,7 @@ export const MyProfileEditModal: React.FC<MyProfileEditModalProps> = ({
         },
         onCompleted: () => {
           trackEvent(tracks.editedUserProfile())
+          fetchProfileData()
           setLoading(false)
           onDismiss()
         },

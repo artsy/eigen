@@ -14,7 +14,6 @@ import {
 import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
 // eslint-disable-next-line no-restricted-imports
 import { goBack, navigate } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -22,7 +21,6 @@ import { debounce } from "lodash"
 import { useEffect } from "react"
 import { PixelRatio } from "react-native"
 import { MyCollectionArtworksQueryRenderer } from "./MyCollectionArtworks"
-import { MyCollectionQueryRenderer as MyCollectionLegacyQueryRenderer } from "./MyCollectionLegacy"
 import {
   MyCollectionNavigationTab,
   MyCollectionTabsStore,
@@ -156,21 +154,15 @@ const MyCollection: React.FC = () => {
 }
 
 export const MyCollectionQueryRenderer: React.FC = () => {
-  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
-
-  if (enableRedesignedSettings) {
-    return (
-      <ProvideScreenTrackingWithCohesionSchema
-        info={screen({
-          context_screen_owner_type: OwnerType.myCollection,
-        })}
-      >
-        <MyCollectionTabsStoreProvider>
-          <MyCollection />
-        </MyCollectionTabsStoreProvider>
-      </ProvideScreenTrackingWithCohesionSchema>
-    )
-  }
-
-  return <MyCollectionLegacyQueryRenderer />
+  return (
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({
+        context_screen_owner_type: OwnerType.myCollection,
+      })}
+    >
+      <MyCollectionTabsStoreProvider>
+        <MyCollection />
+      </MyCollectionTabsStoreProvider>
+    </ProvideScreenTrackingWithCohesionSchema>
+  )
 }

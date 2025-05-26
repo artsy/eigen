@@ -4,6 +4,8 @@ import { MyProfilePreferences_me$key } from "__generated__/MyProfilePreferences_
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { MenuItem } from "app/Components/MenuItem"
 import { PRICE_BUCKETS } from "app/Scenes/MyAccount/MyAccountEditPriceRange"
+import { DARK_MODE_OPTIONS } from "app/Scenes/MyProfile/DarkModeSettings"
+import { GlobalStore } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -15,6 +17,7 @@ import { MyProfileScreenWrapper } from "./Components/MyProfileScreenWrapper"
 export const MyProfilePreferences = (props: { me?: MyProfilePreferences_me$key }) => {
   const supportsDarkMode = useFeatureFlag("ARDarkModeSupport")
   const data = useFragment(myProfilePreferencesFragment, props.me)
+  const darkModeOption = GlobalStore.useAppState((state) => state.devicePrefs.darkModeOption)
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -33,6 +36,7 @@ export const MyProfilePreferences = (props: { me?: MyProfilePreferences_me$key }
         {!!supportsDarkMode && (
           <MenuItem
             title="Dark Mode"
+            value={DARK_MODE_OPTIONS[darkModeOption].title}
             onPress={() => {
               navigate("/settings/dark-mode")
             }}

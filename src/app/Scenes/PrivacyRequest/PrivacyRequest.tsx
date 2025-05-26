@@ -2,23 +2,17 @@ import { Box, Button, Flex, Join, LinkText, Spacer, Text } from "@artsy/palette-
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { presentEmailComposer } from "app/utils/email/presentEmailComposer"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React from "react"
 
 export const PrivacyRequest: React.FC = () => {
-  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
-
-  if (enableRedesignedSettings) {
-    return (
-      <MyProfileScreenWrapper
-        title="Personal Data Request"
-        contentContainerStyle={{ paddingHorizontal: 0 }}
-      >
-        <Content />
-      </MyProfileScreenWrapper>
-    )
-  }
-  return <Content />
+  return (
+    <MyProfileScreenWrapper
+      title="Personal Data Request"
+      contentContainerStyle={{ paddingHorizontal: 0 }}
+    >
+      <Content />
+    </MyProfileScreenWrapper>
+  )
 }
 
 export const Content: React.FC = () => {

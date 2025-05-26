@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { BackButton, Button, Flex, useSpace } from "@artsy/palette-mobile"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { Tab } from "app/Scenes/MyCollection/MyCollection"
 import { navigate, switchTab } from "app/system/navigation/navigate"
 import { screen } from "app/utils/track/helpers"
 import { useEffect, useRef, useState } from "react"
