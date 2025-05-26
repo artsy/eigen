@@ -9,6 +9,7 @@ jest.mock("react-native", () => ({
   },
   Platform: {
     OS: "ios",
+    select: (obj: { ios: any; android: any }) => obj.ios,
   },
   NativeModules: {
     ArtsyNativeModule: {
