@@ -8,6 +8,10 @@ jest.mock("./LoggedInUserInfo")
 jest.spyOn(Alert, "alert")
 
 describe("MyProfileSettings", () => {
+  beforeEach(() => {
+    jest.spyOn(Linking, "openURL").mockImplementation(() => Promise.resolve())
+  })
+
   it("renders Transactions section", () => {
     renderWithWrappers(<MyProfileSettings />)
 
