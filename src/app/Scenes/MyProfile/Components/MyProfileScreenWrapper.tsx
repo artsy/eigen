@@ -31,7 +31,6 @@ export const MyProfileScreenWrapper: React.FC<MyProfileScreenWrapperProps> = ({
         <Screen.ScrollView
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
-          automaticallyAdjustKeyboardInsets
           contentContainerStyle={{
             paddingTop: space(2),
             paddingHorizontal: space(2),

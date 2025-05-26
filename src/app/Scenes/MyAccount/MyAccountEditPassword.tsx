@@ -1,19 +1,26 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
+import { useAfterTransitionEnd } from "app/Scenes/MyAccount/utils/useFocusAfterTransitionEnd"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { getCurrentEmissionState, GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 
 export const MyAccountEditPassword: React.FC<{}> = ({}) => {
+  const currentPasswordRef = useRef<Input>(null)
+
   const [currentPassword, setCurrentPassword] = useState<string>("")
   const [newPassword, setNewPassword] = useState<string>("")
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("")
   const [receivedErrorCurrent, setReceivedErrorCurrent] = useState<string | undefined>(undefined)
   const [receivedErrorNew, setReceivedErrorNew] = useState<string | undefined>(undefined)
   const [receivedErrorConfirm, setReceivedErrorConfirm] = useState<string | undefined>(undefined)
+
+  useAfterTransitionEnd(() => {
+    currentPasswordRef.current?.focus()
+  })
 
   // resetting the errors when user types
   useEffect(() => {
@@ -97,8 +104,8 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
         <Flex>
           <Flex>
             <Input
+              ref={currentPasswordRef}
               autoComplete="password"
-              autoFocus
               onChangeText={setCurrentPassword}
               secureTextEntry
               enableClearButton

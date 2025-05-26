@@ -4,12 +4,13 @@ import { MyAccountEditEmailQuery } from "__generated__/MyAccountEditEmailQuery.g
 import { MyAccountEditEmail_me$key } from "__generated__/MyAccountEditEmail_me.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { useToast } from "app/Components/Toast/toastHook"
+import { useAfterTransitionEnd } from "app/Scenes/MyAccount/utils/useFocusAfterTransitionEnd"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { goBack } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { string } from "yup"
 import { updateMyUserProfile } from "./updateMyUserProfile"
@@ -21,10 +22,15 @@ interface MyAccountEditEmailProps {
 export const MyAccountEditEmail: React.FC<MyAccountEditEmailProps> = (props) => {
   const me = useFragment(meFragment, props.me)
   const toast = useToast()
+  const inputRef = useRef<Input>(null)
 
   const [email, setEmail] = useState<string>(me.email ?? "")
 
   const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
+
+  useAfterTransitionEnd(() => {
+    inputRef.current?.focus()
+  })
 
   useEffect(() => {
     setReceivedError(undefined)
@@ -56,11 +62,11 @@ export const MyAccountEditEmail: React.FC<MyAccountEditEmailProps> = (props) => 
     >
       <MyProfileScreenWrapper title="Email" onPress={handleSave} isValid={isEmailValid}>
         <Input
+          ref={inputRef}
           accessibilityLabel="email-input"
           enableClearButton
           value={email}
           onChangeText={setEmail}
-          autoFocus
           autoCapitalize="none"
           autoCorrect={false}
           autoComplete="off"
