@@ -12,9 +12,11 @@ jest.mock("app/utils/Sentinel", () => ({
 }))
 
 jest.mock("@react-navigation/native", () => {
+  const { useEffect } = require("react")
   const actualNav = jest.requireActual("@react-navigation/native")
   return {
     ...actualNav,
+    useFocusEffect: useEffect,
     useNavigation: () => ({
       getId: () => "onboarding-marketing-collection-id",
       navigate: mockedNavigate,
