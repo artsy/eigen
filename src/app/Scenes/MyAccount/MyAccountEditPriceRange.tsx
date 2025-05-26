@@ -112,7 +112,9 @@ export const MyAccountEditPriceRange: React.FC<{
           value={priceRange}
           onSelectValue={(value) => {
             setPriceRange(value)
-            const [priceRangeMinFin, priceRangeMaxFin] = value.split(":").map((n) => parseInt(n, 10))
+            const [priceRangeMinFin, priceRangeMaxFin] = value
+              .split(":")
+              .map((n) => parseInt(n, 10))
             setPriceRangeMin(priceRangeMinFin)
             setPriceRangeMax(priceRangeMaxFin)
           }}

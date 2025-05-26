@@ -253,8 +253,8 @@ export const FullFeaturedArtistListCollectionFixture: FullFeaturedArtistListTest
           coverArtwork: {
             id: "cover-artwork-picasso",
             image: {
-              url: "https://example.com/picasso-cover.jpg"
-            }
+              url: "https://example.com/picasso-cover.jpg",
+            },
           },
           birthday: "1877",
           nationality: "American",
@@ -274,8 +274,8 @@ export const FullFeaturedArtistListCollectionFixture: FullFeaturedArtistListTest
           coverArtwork: {
             id: "cover-artwork-warhol",
             image: {
-              url: "https://example.com/warhol-cover.jpg"
-            }
+              url: "https://example.com/warhol-cover.jpg",
+            },
           },
           birthday: "1947",
           nationality: "American",
@@ -295,8 +295,8 @@ export const FullFeaturedArtistListCollectionFixture: FullFeaturedArtistListTest
           coverArtwork: {
             id: "cover-artwork-miro",
             image: {
-              url: "https://example.com/miro-cover.jpg"
-            }
+              url: "https://example.com/miro-cover.jpg",
+            },
           },
           birthday: "1877",
           nationality: "Spanish",
@@ -316,8 +316,8 @@ export const FullFeaturedArtistListCollectionFixture: FullFeaturedArtistListTest
           coverArtwork: {
             id: "cover-artwork-basquiat",
             image: {
-              url: "https://example.com/basquiat-cover.jpg"
-            }
+              url: "https://example.com/basquiat-cover.jpg",
+            },
           },
           birthday: "1960",
           nationality: "American",
@@ -337,8 +337,8 @@ export const FullFeaturedArtistListCollectionFixture: FullFeaturedArtistListTest
           coverArtwork: {
             id: "cover-artwork-scharf",
             image: {
-              url: "https://example.com/scarf-cover.jpg"
-            }
+              url: "https://example.com/scarf-cover.jpg",
+            },
           },
           birthday: "1958",
           nationality: "American",

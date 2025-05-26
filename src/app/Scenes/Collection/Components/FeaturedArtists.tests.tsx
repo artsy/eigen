@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { FeaturedArtistsTestsQuery } from "__generated__/FeaturedArtistsTestsQuery.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
@@ -28,8 +28,8 @@ const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQuery["rawResponse"][
           coverArtwork: {
             id: "cover-artwork-picasso",
             image: {
-              url: "https://example.com/picasso-cover.jpg"
-            }
+              url: "https://example.com/picasso-cover.jpg",
+            },
           },
           birthday: "1877",
           nationality: "American",
@@ -49,8 +49,8 @@ const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQuery["rawResponse"][
           coverArtwork: {
             id: "cover-artwork-warhol",
             image: {
-              url: "https://example.com/warhol-cover.jpg"
-            }
+              url: "https://example.com/warhol-cover.jpg",
+            },
           },
           birthday: "1947",
           nationality: "American",
@@ -70,8 +70,8 @@ const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQuery["rawResponse"][
           coverArtwork: {
             id: "cover-artwork-miro",
             image: {
-              url: "https://example.com/miro-cover.jpg"
-            }
+              url: "https://example.com/miro-cover.jpg",
+            },
           },
           birthday: "1877",
           nationality: "Spanish",
@@ -91,8 +91,8 @@ const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQuery["rawResponse"][
           coverArtwork: {
             id: "cover-artwork-basquiat",
             image: {
-              url: "https://example.com/basquiat-cover.jpg"
-            }
+              url: "https://example.com/basquiat-cover.jpg",
+            },
           },
           birthday: "1960",
           nationality: "American",
@@ -112,8 +112,8 @@ const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQuery["rawResponse"][
           coverArtwork: {
             id: "cover-artwork-scharf",
             image: {
-              url: "https://example.com/scharf-cover.jpg"
-            }
+              url: "https://example.com/scharf-cover.jpg",
+            },
           },
           birthday: "1958",
           nationality: "American",
@@ -162,22 +162,22 @@ describe("FeaturedArtists", () => {
   }
 
   it("renders an EntityHeader for each featured artist", async () => {
-    const { queryByText } = await renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(env, {
       MarketingCollection: () => ({ ...FeaturedArtistCollectionFixture }),
     })
 
-    expect(queryByText("Featured Artists")).toBeTruthy()
+    expect(screen.getByText("Featured Artists")).toBeOnTheScreen()
 
-    expect(queryByText("Pablo Picasso")).toBeTruthy()
-    expect(queryByText("Andy Warhol")).toBeTruthy()
-    expect(queryByText("Joan Miro")).toBeTruthy()
-    expect(queryByText("View all")).toBeTruthy()
+    expect(screen.getByText("Pablo Picasso")).toBeOnTheScreen()
+    expect(screen.getByText("Andy Warhol")).toBeOnTheScreen()
+    expect(screen.getByText("Joan Miro")).toBeOnTheScreen()
+    expect(screen.getByText("View all")).toBeOnTheScreen()
   })
 
   it("does not render an EntityHeader for excluded artists", async () => {
-    const { queryByText } = await renderWithWrappers(<TestRenderer />)
+    renderWithWrappers(<TestRenderer />)
 
     resolveMostRecentRelayOperation(env, {
       MarketingCollection: () => ({
@@ -186,18 +186,18 @@ describe("FeaturedArtists", () => {
       }),
     })
 
-    expect(queryByText("Featured Artists")).toBeTruthy()
+    expect(screen.getByText("Featured Artists")).toBeOnTheScreen()
 
-    expect(queryByText("Joan Miro")).toBeTruthy()
-    expect(queryByText("Andy Warhol")).toBeNull()
-    expect(queryByText("Pablo Picasso")).toBeNull()
-    expect(queryByText("Jean-Michel Basquiat")).toBeTruthy()
-    expect(queryByText("Kenny Scharf")).toBeTruthy()
+    expect(screen.getByText("Joan Miro")).toBeOnTheScreen()
+    expect(screen.queryByText("Andy Warhol")).toBeNull()
+    expect(screen.queryByText("Pablo Picasso")).toBeNull()
+    expect(screen.getByText("Jean-Michel Basquiat")).toBeOnTheScreen()
+    expect(screen.getByText("Kenny Scharf")).toBeOnTheScreen()
   })
 
   describe("when artist ids are explicitly requested", () => {
     it("does not render an EntityHeader for any non-requested artists", async () => {
-      const { queryByText } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(env, {
         MarketingCollection: () => ({
@@ -206,15 +206,15 @@ describe("FeaturedArtists", () => {
         }),
       })
 
-      expect(queryByText("Andy Warhol")).toBeTruthy()
-      expect(queryByText("Joan Miro")).toBeNull()
-      expect(queryByText("Pablo Picasso")).toBeNull()
+      expect(screen.getByText("Andy Warhol")).toBeOnTheScreen()
+      expect(screen.queryByText("Joan Miro")).toBeNull()
+      expect(screen.queryByText("Pablo Picasso")).toBeNull()
     })
   })
 
   describe("View all", () => {
     it("shows more artists when 'View more' is tapped", async () => {
-      const { getByText, queryByText } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(env, {
         MarketingCollection: () => ({
@@ -222,16 +222,16 @@ describe("FeaturedArtists", () => {
         }),
       })
 
-      expect(queryByText("View all")).toBeTruthy()
-      expect(queryByText("Jean-Michel Basquiat")).toBeNull()
-      expect(queryByText("Kenny Scharf")).toBeNull()
+      expect(screen.getByText("View all")).toBeOnTheScreen()
+      expect(screen.queryByText("Jean-Michel Basquiat")).toBeNull()
+      expect(screen.queryByText("Kenny Scharf")).toBeNull()
 
-      fireEvent.press(getByText("View all"))
+      fireEvent.press(screen.getByText("View all"))
       expect(navigate).toHaveBeenCalledWith("/collection/some-collection/artists")
     })
 
     it("tracks an event when 'View more' is tapped", async () => {
-      const { getByText, queryByText } = renderWithWrappers(<TestRenderer />)
+      renderWithWrappers(<TestRenderer />)
 
       resolveMostRecentRelayOperation(env, {
         MarketingCollection: () => ({
@@ -239,8 +239,8 @@ describe("FeaturedArtists", () => {
         }),
       })
 
-      expect(queryByText("View all")).toBeTruthy()
-      fireEvent.press(getByText("View all"))
+      expect(screen.getByText("View all")).toBeOnTheScreen()
+      fireEvent.press(screen.getByText("View all"))
 
       expect(postEventToProviders).toHaveBeenCalledWith({
         action_type: "tap",

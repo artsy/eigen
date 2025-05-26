@@ -60,7 +60,13 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me$data; relay: RelayPagi
           </Flex>
         )}
         ListEmptyComponent={
-          <Flex flex={1} flexDirection="column" justifyContent="center" alignItems="center" px="15px">
+          <Flex
+            flex={1}
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            px="15px"
+          >
             <Text variant="sm-display" color={color("mono60")}>
               No orders
             </Text>
