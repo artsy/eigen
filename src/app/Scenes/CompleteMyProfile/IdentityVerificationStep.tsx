@@ -5,7 +5,6 @@ import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
 import { useCompleteMyProfileSteps } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { useHandleIDVerification } from "app/Scenes/MyProfile/useHandleVerification"
-import { RouterLink } from "app/system/navigation/RouterLink"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
 
@@ -54,15 +53,8 @@ export const IdentityVerificationStep: FC = () => {
                 <Flex flexDirection="row" flexWrap="wrap">
                   <Text color="mono60">
                     Identify Verification is required for some transactions. For more details, see
-                    our{" "}
+                    our <LinkText color="mono60">FAQs</LinkText>.
                   </Text>
-                  <RouterLink
-                    to="https://www.artsy.net/identity-verification-faq"
-                    hasChildTouchable
-                  >
-                    <LinkText color="mono60">FAQs</LinkText>
-                  </RouterLink>
-                  <Text color="mono60">.</Text>
                 </Flex>
               </Flex>
             </Flex>
