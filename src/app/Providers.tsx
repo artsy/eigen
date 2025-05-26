@@ -10,7 +10,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { NavigationTestsProvider } from "app/utils/tests/NavigationTestsProvider"
 import { postEventToProviders } from "app/utils/track/providers"
-import { Suspense, useMemo } from "react"
+import { Suspense } from "react"
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
@@ -111,9 +111,7 @@ function ThemeWithDarkModeSupport({ children }: { children?: React.ReactNode }) 
   const supportDarkMode = useFeatureFlag("ARDarkModeSupport")
   const colorScheme = GlobalStore.useAppState((state) => state.devicePrefs.colorScheme)
 
-  const theme = useMemo(() => {
-    return supportDarkMode ? (colorScheme === "dark" ? "v3dark" : "v3light") : undefined
-  }, [colorScheme, supportDarkMode])
+  const theme = supportDarkMode ? (colorScheme === "dark" ? "v3dark" : "v3light") : undefined
 
   return (
     <Theme
