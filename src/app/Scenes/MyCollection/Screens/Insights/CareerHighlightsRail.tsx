@@ -1,7 +1,7 @@
 import { Flex, useColor } from "@artsy/palette-mobile"
 import { CareerHighlightsRail_me$key } from "__generated__/CareerHighlightsRail_me.graphql"
 import { EmbeddedCarousel } from "app/Components/EmbeddedCarousel"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { Tab } from "app/Scenes/MyCollection/MyCollection"
 import { navigate } from "app/system/navigation/navigate"
 import React from "react"
 import { useFragment, graphql } from "react-relay"

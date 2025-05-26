@@ -3,11 +3,10 @@ import { Flex, Text, useSpace } from "@artsy/palette-mobile"
 import { BOTTOM_TABS_HEIGHT } from "@artsy/palette-mobile/dist/elements/Screen/StickySubHeader"
 import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { MenuItem } from "app/Components/MenuItem"
+import { Tab } from "app/Scenes/MyCollection/MyCollection"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
@@ -16,12 +15,10 @@ export const MyCollectionBottomSheetModalAdd: React.FC<{}> = () => {
   const { bottom } = useSafeAreaInsets()
   const space = useSpace()
 
-  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
-
   return (
     <BottomSheetView
       style={{
-        paddingBottom: enableRedesignedSettings ? bottom + BOTTOM_TABS_HEIGHT + space(2) : 0,
+        paddingBottom: bottom + BOTTOM_TABS_HEIGHT + space(2),
       }}
     >
       <Flex pb={1}>

@@ -16,7 +16,6 @@ export const updateMyUserProfile = async (
         mutation updateMyUserProfileMutation($input: UpdateMyProfileInput!) {
           updateMyUserProfile(input: $input) {
             me {
-              ...MyProfileHeader_me
               ...MyProfileEditForm_me
               email
               name

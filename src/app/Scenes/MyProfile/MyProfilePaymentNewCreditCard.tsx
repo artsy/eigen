@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Input, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { Input, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { useStripe } from "@stripe/stripe-react-native"
 import { CreateCardTokenParams } from "@stripe/stripe-react-native/lib/typescript/src/types/Token"
@@ -10,13 +10,12 @@ import { Select } from "app/Components/Select/SelectV2"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshCreditCardsList } from "app/utils/refreshHelpers"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { Action, Computed, action, computed, useLocalStore } from "easy-peasy"
 import { useEffect, useRef, useState } from "react"
-import { Alert, KeyboardAvoidingView, Platform, ScrollView } from "react-native"
+import { Alert, ScrollView } from "react-native"
 import { commitMutation, graphql } from "react-relay"
 
 interface CreditCardInputParams {
@@ -69,7 +68,6 @@ interface Store {
 }
 
 export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
-  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
   const [isLoading, setIsLoading] = useState(false)
 
   const { createToken } = useStripe()
@@ -263,42 +261,20 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
     </>
   )
 
-  if (enableRedesignedSettings) {
-    return (
-      <ProvideScreenTrackingWithCohesionSchema
-        info={screen({
-          context_screen_owner_type: OwnerType.accountAddPayment,
-        })}
-      >
-        <MyProfileScreenWrapper
-          title="Add new card"
-          onPress={() => handleSave()}
-          isValid={state.allPresent}
-          loading={isLoading}
-        >
-          {creditCardForm}
-        </MyProfileScreenWrapper>
-      </ProvideScreenTrackingWithCohesionSchema>
-    )
-  }
-
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
         context_screen_owner_type: OwnerType.accountAddPayment,
       })}
     >
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+      <MyProfileScreenWrapper
+        title="Add new card"
+        onPress={() => handleSave()}
+        isValid={state.allPresent}
+        loading={isLoading}
       >
-        <ScrollView ref={scrollViewRef}>
-          <Flex px={enableRedesignedSettings ? 0 : 2} py={2}>
-            {creditCardForm}
-          </Flex>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        {creditCardForm}
+      </MyProfileScreenWrapper>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }

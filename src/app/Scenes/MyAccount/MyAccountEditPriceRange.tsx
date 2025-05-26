@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountEditPriceRangeQuery } from "__generated__/MyAccountEditPriceRangeQuery.graphql"
 import { MyAccountEditPriceRange_me$key } from "__generated__/MyAccountEditPriceRange_me.graphql"
@@ -7,7 +7,6 @@ import { LoadFailureView } from "app/Components/LoadFailureView"
 import { Select, SelectOption } from "app/Components/Select"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { goBack } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderBox } from "app/utils/placeholders"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -19,7 +18,6 @@ import { updateMyUserProfile } from "./updateMyUserProfile"
 export const MyAccountEditPriceRange: React.FC<{
   me: MyAccountEditPriceRange_me$key
 }> = (props) => {
-  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
   const me = useFragment(meFragment, props.me)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -36,20 +34,18 @@ export const MyAccountEditPriceRange: React.FC<{
   useEffect(() => {
     const isValid = !!priceRange && priceRange !== me.priceRange
 
-    if (enableRedesignedSettings) {
-      navigation.setOptions({
-        headerRight: () => {
-          return (
-            <Touchable onPress={handleSave} disabled={!isValid}>
-              <Text variant="xs" color={!!isValid ? "mono100" : "mono60"}>
-                Save
-              </Text>
-            </Touchable>
-          )
-        },
-      })
-    }
-  }, [navigation, priceRange, me.priceRange, enableRedesignedSettings])
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <Touchable onPress={handleSave} disabled={!isValid}>
+            <Text variant="xs" color={!!isValid ? "mono100" : "mono60"}>
+              Save
+            </Text>
+          </Touchable>
+        )
+      },
+    })
+  }, [navigation, priceRange, me.priceRange])
 
   const handleSave = async () => {
     try {
@@ -65,46 +61,18 @@ export const MyAccountEditPriceRange: React.FC<{
 
   const isValid = !!priceRange && priceRange !== me.priceRange
 
-  if (enableRedesignedSettings) {
-    return (
-      <ProvideScreenTrackingWithCohesionSchema
-        info={screen({
-          context_screen_owner_type: OwnerType.accountPriceRange,
-        })}
-      >
-        <MyProfileScreenWrapper
-          title="Price Range"
-          onPress={handleSave}
-          isValid={isValid}
-          loading={isLoading}
-        >
-          <Select
-            title="Price Range"
-            options={PRICE_BUCKETS}
-            enableSearch={false}
-            value={priceRange}
-            onSelectValue={(value) => {
-              setPriceRange(value)
-              const [priceRangeMinFin, priceRangeMaxFin] = value
-                .split(":")
-                .map((n) => parseInt(n, 10))
-              setPriceRangeMin(priceRangeMinFin)
-              setPriceRangeMax(priceRangeMaxFin)
-            }}
-            hasError={!!receivedError}
-          />
-        </MyProfileScreenWrapper>
-      </ProvideScreenTrackingWithCohesionSchema>
-    )
-  }
-
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
         context_screen_owner_type: OwnerType.accountPriceRange,
       })}
     >
-      <Flex p={2}>
+      <MyProfileScreenWrapper
+        title="Price Range"
+        onPress={handleSave}
+        isValid={isValid}
+        loading={isLoading}
+      >
         <Select
           title="Price Range"
           options={PRICE_BUCKETS}
@@ -120,23 +88,17 @@ export const MyAccountEditPriceRange: React.FC<{
           }}
           hasError={!!receivedError}
         />
-      </Flex>
+      </MyProfileScreenWrapper>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
 const MyAccountEditPriceRangePlaceholder: React.FC<{}> = () => {
-  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
-
-  if (enableRedesignedSettings) {
-    return (
-      <MyProfileScreenWrapper title="Price Range">
-        <PlaceholderBox height={40} />
-      </MyProfileScreenWrapper>
-    )
-  }
-
-  return <PlaceholderBox height={40} />
+  return (
+    <MyProfileScreenWrapper title="Price Range">
+      <PlaceholderBox height={40} />
+    </MyProfileScreenWrapper>
+  )
 }
 
 const meFragment = graphql`

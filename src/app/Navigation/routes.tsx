@@ -142,7 +142,7 @@ import {
   MyAccountEditPriceRangeQueryRenderer,
 } from "app/Scenes/MyAccount/MyAccountEditPriceRange"
 import { MyCollectionQueryRenderer } from "app/Scenes/MyCollection/MyCollection"
-import { myCollectionScreenQuery } from "app/Scenes/MyCollection/MyCollectionLegacy"
+import { myCollectionArtworksQuery } from "app/Scenes/MyCollection/MyCollectionArtworks"
 import { AddMyCollectionArtist } from "app/Scenes/MyCollection/Screens/Artist/AddMyCollectionArtist"
 import {
   MyCollectionArtworkScreen,
@@ -157,12 +157,10 @@ import { MedianSalePriceAtAuction } from "app/Scenes/MyCollection/Screens/Insigh
 import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists"
 import { UserAccountHeaderScreenQuery } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
 import { DarkModeSettings } from "app/Scenes/MyProfile/DarkModeSettings"
-import { MyProfile } from "app/Scenes/MyProfile/MyProfile"
 import {
   MyProfileEditFormScreen,
   MyProfileEditFormScreenQuery,
 } from "app/Scenes/MyProfile/MyProfileEditForm"
-import { MyProfileHeaderScreenQuery } from "app/Scenes/MyProfile/MyProfileHeader"
 import {
   myProfilePaymentQueryDefaultVariables,
   MyProfilePaymentQueryRenderer,
@@ -746,6 +744,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/collector-profile/my-collection",
     name: "CollectorProfileMyCollection",
     Component: MyCollectionQueryRenderer,
+    queries: [myCollectionArtworksQuery],
     options: {
       screenOptions: {
         headerShown: false,
@@ -1027,7 +1026,7 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       screenOptions: {
         headerTitle: "Account Settings",
-        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
+        headerShown: false,
       },
     },
     queries: [MyAccountScreenQuery],
@@ -1043,7 +1042,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: MyAccountEditEmailQueryRenderer,
     options: {
       screenOptions: {
-        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
+        headerShown: false,
         headerTitle: "Email",
       },
     },
@@ -1054,7 +1053,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: MyAccountEditPassword,
     options: {
       screenOptions: {
-        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
+        headerShown: false,
         headerTitle: "Password",
       },
     },
@@ -1065,7 +1064,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: MyAccountEditPhoneQueryRenderer,
     options: {
       screenOptions: {
-        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
+        headerShown: false,
         headerTitle: "Phone Number",
       },
     },
@@ -1077,7 +1076,7 @@ export const artsyDotNetRoutes = defineRoutes([
     queries: [myAccountEditPriceRangeQuery],
     options: {
       screenOptions: {
-        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
+        headerShown: false,
         headerTitle: "Price Range",
       },
     },
@@ -1086,6 +1085,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/my-collection",
     name: "MyCollection",
     Component: MyCollectionQueryRenderer,
+    queries: [myCollectionArtworksQuery],
     options: {
       screenOptions: {
         headerShown: false,
@@ -1195,7 +1195,7 @@ export const artsyDotNetRoutes = defineRoutes([
   {
     path: "/my-profile",
     name: "MyProfile",
-    Component: MyProfile,
+    Component: MyProfileSettings,
     options: {
       isRootViewForTabName: "profile",
       onlyShowInTabName: "profile",
@@ -1203,7 +1203,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    queries: [MyProfileHeaderScreenQuery, myCollectionScreenQuery],
+    queries: [UserAccountHeaderScreenQuery],
   },
   {
     path: "/my-profile/edit",
@@ -1223,7 +1223,7 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       screenOptions: {
         headerTitle: "Payment",
-        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
+        headerShown: false,
       },
     },
     prepareVariables: [() => myProfilePaymentQueryDefaultVariables],
@@ -1236,7 +1236,7 @@ export const artsyDotNetRoutes = defineRoutes([
     options: {
       screenOptions: {
         headerTitle: "Add new card",
-        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
+        headerShown: false,
       },
     },
   },
@@ -1246,7 +1246,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: MyProfilePushNotificationsQueryRenderer,
     options: {
       screenOptions: {
-        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
+        headerShown: false,
         headerTitle: "Push Notifications",
       },
     },
@@ -1261,17 +1261,6 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-  },
-  {
-    path: "/my-profile/settings",
-    name: "MyProfileSettings",
-    Component: MyProfileSettings,
-    options: {
-      screenOptions: {
-        headerTitle: "Account",
-      },
-    },
-    queries: [UserAccountHeaderScreenQuery],
   },
   {
     path: "/my-profile/privacy",
@@ -1419,7 +1408,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: PrivacyRequest,
     options: {
       screenOptions: {
-        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
+        headerShown: false,
         headerTitle: "Personal Data Request",
       },
     },
@@ -1566,7 +1555,7 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: DarkModeSettings,
     options: {
       screenOptions: {
-        headerShown: !unsafe_getFeatureFlag("AREnableRedesignedSettings"),
+        headerShown: false,
         headerTitle: "Dark Mode",
       },
     },

@@ -1,8 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { MyCollectionAddCollectedArtistsScreen } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists"
-import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
+import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -12,118 +11,37 @@ describe("MyCollectionAddCollectedArtists", () => {
     Component: MyCollectionAddCollectedArtistsScreen,
   })
 
-  describe("when AREnableRedesignedSettings is true", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableRedesignedSettings: true })
-    })
-    it("renders MyCollectionAddCollectedArtists", async () => {
-      renderWithRelay()
+  it("renders MyCollectionAddCollectedArtists", async () => {
+    renderWithRelay()
 
-      await flushPromiseQueue()
+    await flushPromiseQueue()
 
-      expect(screen.getByPlaceholderText("Search for artists on Artsy")).toBeOnTheScreen()
-    })
-
-    it("adds collected artists by creating user interests", async () => {
-      const { env } = renderWithRelay({
-        Me: () => ({ userInterestsConnection: { edges: [] } }),
-      })
-
-      expect(screen.queryByText("Add Selected Artists • 0")).toBeDisabled()
-
-      await flushPromiseQueue()
-
-      fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "banksy")
-
-      resolveMostRecentRelayOperation(env, { SearchableConnection: () => mockArtistSearchResult })
-
-      fireEvent.press(screen.getByText("Banksy"))
-
-      fireEvent.press(screen.getByText("Add Selected Artist • 1"))
-
-      await flushPromiseQueue()
-
-      const mockOperations = env.mock.getAllOperations()
-
-      const createUserInterestsOperation = mockOperations[0]
-      expect(createUserInterestsOperation.request.variables).toMatchInlineSnapshot(`
-        {
-          "input": {
-            "userInterests": [
-              {
-                "category": "COLLECTED_BEFORE",
-                "interestId": "internal-id",
-                "interestType": "ARTIST",
-                "private": false,
-              },
-            ],
-          },
-        }
-      `)
-
-      resolveMostRecentRelayOperation(env, {})
-      await flushPromiseQueue()
-
-      expect(dismissModal).toHaveBeenCalledWith()
-    })
-
-    it("creates custom artists", async () => {
-      const { env } = renderWithRelay({
-        Me: () => ({ userInterestsConnection: { edges: [] } }),
-      })
-
-      expect(screen.queryByText("Add Selected Artists • 0")).toBeDisabled()
-
-      await flushPromiseQueue()
-
-      fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "My Artist")
-
-      resolveMostRecentRelayOperation(env, { SearchableConnection: () => mockArtistSearchResult })
-
-      fireEvent.press(screen.getByText("Add their name."))
-
-      expect(navigate).toHaveBeenCalledWith("/my-collection/artists/new", {
-        passProps: { artistDisplayName: "My Artist", onSubmit: expect.any(Function) },
-      })
-    })
+    expect(screen.getByPlaceholderText("Search for artists on Artsy")).toBeOnTheScreen()
   })
 
-  describe("when AREnableRedesignedSettings is false", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableRedesignedSettings: false })
+  it("adds collected artists by creating user interests", async () => {
+    const { env } = renderWithRelay({
+      Me: () => ({ userInterestsConnection: { edges: [] } }),
     })
 
-    it("renders MyCollectionAddCollectedArtists", async () => {
-      renderWithRelay()
+    expect(screen.queryByText("Add Selected Artists • 0")).toBeDisabled()
 
-      await flushPromiseQueue()
+    await flushPromiseQueue()
 
-      expect(screen.getByPlaceholderText("Search for artists on Artsy")).toBeOnTheScreen()
-    })
+    fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "banksy")
 
-    it("adds collected artists by creating user interests", async () => {
-      const { env } = renderWithRelay({
-        Me: () => ({ userInterestsConnection: { edges: [] } }),
-      })
+    resolveMostRecentRelayOperation(env, { SearchableConnection: () => mockArtistSearchResult })
 
-      expect(screen.queryByText("Add Selected Artists • 0")).toBeDisabled()
+    fireEvent.press(screen.getByText("Banksy"))
 
-      await flushPromiseQueue()
+    fireEvent.press(screen.getByText("Add Selected Artist • 1"))
 
-      fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "banksy")
+    await flushPromiseQueue()
 
-      resolveMostRecentRelayOperation(env, { SearchableConnection: () => mockArtistSearchResult })
+    const mockOperations = env.mock.getAllOperations()
 
-      fireEvent.press(screen.getByText("Banksy"))
-
-      fireEvent.press(screen.getByText("Add Selected Artist • 1"))
-
-      await flushPromiseQueue()
-
-      const mockOperations = env.mock.getAllOperations()
-
-      const createUserInterestsOperation = mockOperations[0]
-      expect(createUserInterestsOperation.request.variables).toMatchInlineSnapshot(`
+    const createUserInterestsOperation = mockOperations[0]
+    expect(createUserInterestsOperation.request.variables).toMatchInlineSnapshot(`
         {
           "input": {
             "userInterests": [
@@ -138,31 +56,29 @@ describe("MyCollectionAddCollectedArtists", () => {
         }
       `)
 
-      resolveMostRecentRelayOperation(env, {})
-      await flushPromiseQueue()
+    resolveMostRecentRelayOperation(env, {})
+    await flushPromiseQueue()
 
-      expect(dismissModal).toHaveBeenCalledWith()
-      expect(goBack).toHaveBeenCalledWith()
+    expect(dismissModal).toHaveBeenCalledWith()
+  })
+
+  it("creates custom artists", async () => {
+    const { env } = renderWithRelay({
+      Me: () => ({ userInterestsConnection: { edges: [] } }),
     })
 
-    it("creates custom artists", async () => {
-      const { env } = renderWithRelay({
-        Me: () => ({ userInterestsConnection: { edges: [] } }),
-      })
+    expect(screen.queryByText("Add Selected Artists • 0")).toBeDisabled()
 
-      expect(screen.queryByText("Add Selected Artists • 0")).toBeDisabled()
+    await flushPromiseQueue()
 
-      await flushPromiseQueue()
+    fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "My Artist")
 
-      fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "My Artist")
+    resolveMostRecentRelayOperation(env, { SearchableConnection: () => mockArtistSearchResult })
 
-      resolveMostRecentRelayOperation(env, { SearchableConnection: () => mockArtistSearchResult })
+    fireEvent.press(screen.getByText("Add their name."))
 
-      fireEvent.press(screen.getByText("Add their name."))
-
-      expect(navigate).toHaveBeenCalledWith("/my-collection/artists/new", {
-        passProps: { artistDisplayName: "My Artist", onSubmit: expect.any(Function) },
-      })
+    expect(navigate).toHaveBeenCalledWith("/my-collection/artists/new", {
+      passProps: { artistDisplayName: "My Artist", onSubmit: expect.any(Function) },
     })
   })
 })

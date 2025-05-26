@@ -261,12 +261,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableFavoritesTab",
   },
-  AREnableRedesignedSettings: {
-    description: "Enable redesigned settings tab",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableRedesignedSettings",
-  },
   ARDarkModeOnboarding: {
     readyForRelease: true,
     showInDevMenu: true,

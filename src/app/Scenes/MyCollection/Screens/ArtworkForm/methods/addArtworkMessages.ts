@@ -1,4 +1,4 @@
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { Tab } from "app/Scenes/MyCollection/MyCollection"
 import { addClue, setVisualClueAsSeen } from "app/utils/hooks/useVisualClue"
 
 export const addArtworkMessages = async ({
