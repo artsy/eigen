@@ -1,6 +1,5 @@
 import { Show } from "app/Scenes/Map/types"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { RelayProp } from "react-relay"
 import { Event } from "./index"
 
 const eventData = {
@@ -22,9 +21,7 @@ const eventData = {
 
 describe("CityEvent", () => {
   it("renders properly", () => {
-    const { queryByText } = renderWithWrappers(
-      <Event event={eventData} relay={{ environment: {} } as RelayProp} />
-    )
+    const { queryByText } = renderWithWrappers(<Event event={eventData} />)
 
     expect(queryByText("Pacita Abad Art Estate")).toBeTruthy()
   })
