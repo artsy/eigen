@@ -16103,6 +16103,9 @@ type Order {
   # Order code
   code: String!
 
+  # Express Checkout wallet type
+  creditCardWalletType: OrderCreditCardWalletTypeEnum
+
   # Currency code
   currencyCode: String!
 
@@ -16123,6 +16126,12 @@ type Order {
   itemsTotal: Money
   lineItems: [LineItem]!
   mode: OrderModeEnum!
+
+  # Payment method used for the order
+  paymentMethod: OrderPaymentMethodEnum
+
+  # The payment method details that was used for the order
+  paymentMethodDetails: PaymentMethodUnion
 
   # Order pricing breakdown lines
   pricingBreakdownLines: [PricingBreakdownLineUnion]!
@@ -16168,6 +16177,9 @@ union OrderParty = Partner | User
 
 enum OrderPaymentMethodEnum {
   CREDIT_CARD
+  SEPA_DEBIT
+  US_BANK_ACCOUNT
+  WIRE_TRANSFER
 }
 
 enum OrderSourceEnum {
