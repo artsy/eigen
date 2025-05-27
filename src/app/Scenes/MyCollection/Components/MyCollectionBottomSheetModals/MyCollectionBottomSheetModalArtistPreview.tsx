@@ -21,7 +21,6 @@ import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectio
 import { deleteUserInterest } from "app/Scenes/MyCollection/mutations/deleteUserInterest"
 import { updateUserInterest } from "app/Scenes/MyCollection/mutations/updateUserInterest"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useState } from "react"
@@ -50,8 +49,6 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   const { bottom } = useSafeAreaInsets()
 
   const space = useSpace()
-
-  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
 
   useDebounce(
     () => {
@@ -94,7 +91,7 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   return (
     <BottomSheetView
       style={{
-        paddingBottom: enableRedesignedSettings ? bottom + BOTTOM_TABS_HEIGHT + space(2) : 0,
+        paddingBottom: bottom + BOTTOM_TABS_HEIGHT + space(2),
       }}
     >
       <Flex px={2} pt={2}>

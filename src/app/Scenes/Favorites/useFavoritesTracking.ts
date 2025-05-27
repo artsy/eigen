@@ -15,6 +15,7 @@ import {
   TappedOfferSettings,
 } from "@artsy/cohesion/dist/Schema/Events/Favorites"
 import { useIsFocused } from "@react-navigation/native"
+import { Pills } from "app/Scenes/Favorites/Favorites"
 import { FavoritesTab } from "app/Scenes/Favorites/FavoritesContextStore"
 import { screen } from "app/utils/track/helpers"
 import { useEffect } from "react"
@@ -23,10 +24,10 @@ import { useTracking } from "react-tracking"
 export const useFavoritesTracking = () => {
   const { trackEvent } = useTracking()
 
-  const trackTappedNavigationTab = (key: FavoritesTab) => {
+  const trackTappedNavigationTab = (key: FavoritesTab, activeTab: FavoritesTab) => {
     const payload = {
       action: ActionType.tappedNavigationTab,
-      context_module: key,
+      context_module: activeTab,
       subject: key,
     }
 
@@ -34,23 +35,12 @@ export const useFavoritesTracking = () => {
   }
 
   const trackTappedInfoBubble = (activeTab: FavoritesTab) => {
-    let contextScreen: ContextModule
-    switch (activeTab) {
-      case "saves":
-        contextScreen = ContextModule.favoritesSaves
-        break
-      case "follows":
-        contextScreen = ContextModule.favoritesFollows
-        break
-      case "alerts":
-        contextScreen = ContextModule.favoritesAlerts
-        break
-    }
+    const contextModule = Pills.find((pill) => pill.key === activeTab)?.contextModule
 
     const payload: TappedInfoBubble = {
       action: ActionType.tappedInfoBubble,
       context_screen_owner_type: OwnerType.favorites,
-      context_module: contextScreen,
+      context_module: contextModule as ContextModule,
       subject: "favoritesHeader",
     }
 

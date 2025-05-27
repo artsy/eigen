@@ -1,6 +1,6 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
 import { Button, Flex, Text } from "@artsy/palette-mobile"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { Tab } from "app/Scenes/MyCollection/MyCollection"
 import { navigate } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
 import { ImageBackground } from "react-native"

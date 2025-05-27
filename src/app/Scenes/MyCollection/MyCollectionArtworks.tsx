@@ -238,7 +238,7 @@ const meFragment = graphql`
   }
 `
 
-const myCollectionArtworksQuery = graphql`
+export const myCollectionArtworksQuery = graphql`
   query MyCollectionArtworksQuery {
     me {
       ...MyCollectionArtworks_me

@@ -12,6 +12,7 @@ import { FadeIn } from "app/Components/FadeIn"
 import { LoadingSpinner } from "app/Components/Modals/LoadingModal"
 import { useNavigationTheme } from "app/Navigation/useNavigationTheme"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
+import { Tab } from "app/Scenes/MyCollection/MyCollection"
 import {
   AddMyCollectionArtist,
   MyCollectionCustomArtistSchema,
@@ -19,11 +20,9 @@ import {
 import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkStore"
 import { saveOrUpdateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm/methods/uploadArtwork"
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
 import { GlobalStore } from "app/store/GlobalStore"
-import { dismissModal, goBack, popToRoot, switchTab } from "app/system/navigation/navigate"
+import { dismissModal } from "app/system/navigation/navigate"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect, useRef, useState } from "react"
@@ -69,8 +68,6 @@ export type MyCollectionArtworkFormProps =
 const navContainerRef = { current: null as NavigationContainerRef<any> | null }
 
 export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (props) => {
-  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
-
   const color = useColor()
   const theme = useNavigationTheme()
   const enableShowError = useDevToggle("DTShowErrorInLoadFailureView")
@@ -132,19 +129,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       refreshMyCollection()
       refreshMyCollectionInsights({})
 
-      if (enableRedesignedSettings) {
-        dismissModal()
-      } else {
-        dismissModal()
-
-        switchTab("profile")
-
-        if (mode === "add") {
-          popToRoot()
-        } else {
-          goBack()
-        }
-      }
+      dismissModal()
     } catch (error: any) {
       console.error("Artwork could not be saved", error)
       setLoading(false)

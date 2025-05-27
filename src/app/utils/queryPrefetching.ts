@@ -39,7 +39,10 @@ const prefetchRoute = async <TQuery extends OperationType>(
   const queries = module.queries
 
   if (!queries) {
-    if (logPrefetching) console.error(`[queryPrefetching] Cannot find queries for ${route}.`)
+    if (logPrefetching)
+      console.warn(
+        `[queryPrefetching] can not prefetch ${route} because no matching queries were found. Did you forget to add "queries" to routes.tsx?`
+      )
 
     return
   }

@@ -15,14 +15,13 @@ import {
 } from "app/utils/PushNotification"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
-import { PlaceholderBox } from "app/utils/placeholders"
 import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import useAppState from "app/utils/useAppState"
 import { debounce, omit } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
-import { Alert, Linking, Platform, RefreshControl, ScrollView } from "react-native"
+import { Alert, Linking, Platform, RefreshControl } from "react-native"
 import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 
 const INSTRUCTIONS = Platform.select({
@@ -110,49 +109,32 @@ const NotificationPermissionsBox = ({
 )
 
 const MyProfilePushNotificationsPlaceholder: React.FC<{}> = () => {
-  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
-
-  if (enableRedesignedSettings) {
-    return (
-      <MyProfileScreenWrapper
-        title="Notifications"
-        contentContainerStyle={{ paddingHorizontal: 0 }}
-      >
-        <Flex>
-          <Content
-            userNotificationSettings={
-              {
-                id: "1",
-                receiveLotOpeningSoonNotification: false,
-                receiveNewSalesNotification: false,
-                receiveNewWorksNotification: false,
-                receiveOrderNotification: false,
-                receiveOutbidNotification: false,
-                receivePartnerOfferNotification: false,
-                receivePartnerShowNotification: false,
-                receivePromotionNotification: false,
-                receivePurchaseNotification: false,
-                receiveSaleOpeningClosingNotification: false,
-                receiveViewingRoomNotification: false,
-              } as MyProfilePushNotifications_me$data
-            }
-            isLoading={true}
-            handleUpdateUserNotificationSettings={() => {}}
-            notificationAuthorizationStatus={PushAuthorizationStatus.NotDetermined}
-          />
-        </Flex>
-      </MyProfileScreenWrapper>
-    )
-  }
-
   return (
-    <Flex p={2}>
-      <PlaceholderBox height={40} />
-      <Separator my={1} />
-      <PlaceholderBox height={40} />
-      <Separator my={1} />
-      <PlaceholderBox height={40} />
-    </Flex>
+    <MyProfileScreenWrapper title="Notifications" contentContainerStyle={{ paddingHorizontal: 0 }}>
+      <Flex>
+        <Content
+          userNotificationSettings={
+            {
+              id: "1",
+              receiveLotOpeningSoonNotification: false,
+              receiveNewSalesNotification: false,
+              receiveNewWorksNotification: false,
+              receiveOrderNotification: false,
+              receiveOutbidNotification: false,
+              receivePartnerOfferNotification: false,
+              receivePartnerShowNotification: false,
+              receivePromotionNotification: false,
+              receivePurchaseNotification: false,
+              receiveSaleOpeningClosingNotification: false,
+              receiveViewingRoomNotification: false,
+            } as MyProfilePushNotifications_me$data
+          }
+          isLoading={true}
+          handleUpdateUserNotificationSettings={() => {}}
+          notificationAuthorizationStatus={PushAuthorizationStatus.NotDetermined}
+        />
+      </Flex>
+    </MyProfileScreenWrapper>
   )
 }
 
@@ -160,8 +142,6 @@ export const MyProfilePushNotifications: React.FC<{
   me: MyProfilePushNotifications_me$key
   isLoading?: boolean
 }> = ({ me, isLoading = false }) => {
-  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
-
   const [notificationAuthorizationStatus, setNotificationAuthorizationStatus] =
     useState<PushAuthorizationStatus>(PushAuthorizationStatus.NotDetermined)
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
@@ -219,45 +199,19 @@ export const MyProfilePushNotifications: React.FC<{
     []
   )
 
-  if (enableRedesignedSettings) {
-    return (
-      <ProvideScreenTrackingWithCohesionSchema
-        info={screen({
-          context_screen_owner_type: OwnerType.accountNotifications,
-        })}
-      >
-        <MyProfileScreenWrapper
-          title="Notifications"
-          contentContainerStyle={{
-            // Override the default paddingHorizontal of MyProfileScreenWrapper
-            paddingHorizontal: 0,
-          }}
-          RefreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
-        >
-          {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && (
-            <OpenSettingsBanner />
-          )}
-          {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined &&
-            Platform.OS === "ios" && <AllowPushNotificationsBanner />}
-          <Content
-            userNotificationSettings={userNotificationSettings}
-            isLoading={isLoading}
-            handleUpdateUserNotificationSettings={handleUpdateUserNotificationSettings}
-            notificationAuthorizationStatus={notificationAuthorizationStatus}
-          />
-        </MyProfileScreenWrapper>
-      </ProvideScreenTrackingWithCohesionSchema>
-    )
-  }
-
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
         context_screen_owner_type: OwnerType.accountNotifications,
       })}
     >
-      <ScrollView
-        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+      <MyProfileScreenWrapper
+        title="Notifications"
+        contentContainerStyle={{
+          // Override the default paddingHorizontal of MyProfileScreenWrapper
+          paddingHorizontal: 0,
+        }}
+        RefreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
       >
         {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && (
           <OpenSettingsBanner />
@@ -270,7 +224,7 @@ export const MyProfilePushNotifications: React.FC<{
           handleUpdateUserNotificationSettings={handleUpdateUserNotificationSettings}
           notificationAuthorizationStatus={notificationAuthorizationStatus}
         />
-      </ScrollView>
+      </MyProfileScreenWrapper>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }

@@ -255,18 +255,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableHomeViewQuickLinks",
   },
-  AREnableFavoritesTab: {
-    description: "Enable Favorites tab in bottom navigation",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableFavoritesTab",
-  },
-  AREnableRedesignedSettings: {
-    description: "Enable redesigned settings tab",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableRedesignedSettings",
-  },
   ARDarkModeOnboarding: {
     readyForRelease: true,
     showInDevMenu: true,

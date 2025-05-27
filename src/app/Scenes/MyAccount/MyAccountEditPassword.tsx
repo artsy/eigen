@@ -1,23 +1,26 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Input, Spacer, Text, Touchable } from "@artsy/palette-mobile"
-import { useNavigation } from "@react-navigation/native"
+import { Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
+import { useAfterTransitionEnd } from "app/Scenes/MyAccount/utils/useFocusAfterTransitionEnd"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { getCurrentEmissionState, GlobalStore, unsafe__getEnvironment } from "app/store/GlobalStore"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 
 export const MyAccountEditPassword: React.FC<{}> = ({}) => {
+  const currentPasswordRef = useRef<Input>(null)
+
   const [currentPassword, setCurrentPassword] = useState<string>("")
   const [newPassword, setNewPassword] = useState<string>("")
   const [passwordConfirmation, setPasswordConfirmation] = useState<string>("")
   const [receivedErrorCurrent, setReceivedErrorCurrent] = useState<string | undefined>(undefined)
   const [receivedErrorNew, setReceivedErrorNew] = useState<string | undefined>(undefined)
   const [receivedErrorConfirm, setReceivedErrorConfirm] = useState<string | undefined>(undefined)
-  const navigation = useNavigation()
-  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
+
+  useAfterTransitionEnd(() => {
+    currentPasswordRef.current?.focus()
+  })
 
   // resetting the errors when user types
   useEffect(() => {
@@ -91,136 +94,55 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
 
   const isValid = Boolean(currentPassword && newPassword && passwordConfirmation)
 
-  useEffect(() => {
-    if (!enableRedesignedSettings) {
-      navigation.setOptions({
-        headerRight: () => {
-          return (
-            <Touchable accessibilityRole="button" onPress={handleSave} disabled={!isValid}>
-              <Text variant="xs" color={!!isValid ? "mono100" : "mono60"}>
-                Save
-              </Text>
-            </Touchable>
-          )
-        },
-      })
-    }
-  }, [isValid])
-
-  if (enableRedesignedSettings) {
-    return (
-      <ProvideScreenTrackingWithCohesionSchema
-        info={screen({
-          context_screen_owner_type: OwnerType.accountPassword,
-        })}
-      >
-        <MyProfileScreenWrapper title="Password" onPress={handleSave} isValid={isValid}>
-          <Content
-            currentPassword={currentPassword}
-            setCurrentPassword={setCurrentPassword}
-            newPassword={newPassword}
-            setNewPassword={setNewPassword}
-            passwordConfirmation={passwordConfirmation}
-            setPasswordConfirmation={setPasswordConfirmation}
-            receivedErrorCurrent={receivedErrorCurrent}
-            receivedErrorNew={receivedErrorNew}
-            receivedErrorConfirm={receivedErrorConfirm}
-          />
-        </MyProfileScreenWrapper>
-      </ProvideScreenTrackingWithCohesionSchema>
-    )
-  }
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
         context_screen_owner_type: OwnerType.accountPassword,
       })}
     >
-      <Flex px={2}>
-        <Content
-          currentPassword={currentPassword}
-          setCurrentPassword={setCurrentPassword}
-          newPassword={newPassword}
-          setNewPassword={setNewPassword}
-          passwordConfirmation={passwordConfirmation}
-          setPasswordConfirmation={setPasswordConfirmation}
-          receivedErrorCurrent={receivedErrorCurrent}
-          receivedErrorNew={receivedErrorNew}
-          receivedErrorConfirm={receivedErrorConfirm}
-        />
-      </Flex>
+      <MyProfileScreenWrapper title="Password" onPress={handleSave} isValid={isValid}>
+        <Flex>
+          <Flex>
+            <Input
+              ref={currentPasswordRef}
+              autoComplete="password"
+              onChangeText={setCurrentPassword}
+              secureTextEntry
+              enableClearButton
+              title="Current password"
+              value={currentPassword}
+              error={receivedErrorCurrent}
+            />
+          </Flex>
+
+          <Spacer y={2} />
+
+          <Text variant="sm-display">New password</Text>
+
+          <Text variant="xs" color="mono60" mt={0.5}>
+            Password must include at least one uppercase letter, one lowercase letter, and one
+            number.
+          </Text>
+
+          <Input
+            onChangeText={setNewPassword}
+            secureTextEntry
+            enableClearButton
+            title="New password"
+            value={newPassword}
+            error={receivedErrorNew}
+          />
+
+          <Input
+            onChangeText={setPasswordConfirmation}
+            secureTextEntry
+            enableClearButton
+            title="Confirm new password"
+            value={passwordConfirmation}
+            error={receivedErrorConfirm}
+          />
+        </Flex>
+      </MyProfileScreenWrapper>
     </ProvideScreenTrackingWithCohesionSchema>
-  )
-}
-
-// Move back inside MyAccountEditPassword once we clear AREnableRedesignedSettings ff
-const Content: React.FC<{
-  currentPassword: string
-  setCurrentPassword: (value: string) => void
-  newPassword: string
-  setNewPassword: (value: string) => void
-  passwordConfirmation: string
-  setPasswordConfirmation: (value: string) => void
-  receivedErrorCurrent: string | undefined
-  receivedErrorNew: string | undefined
-  receivedErrorConfirm: string | undefined
-}> = ({
-  currentPassword,
-  setCurrentPassword,
-  newPassword,
-  setNewPassword,
-  passwordConfirmation,
-  setPasswordConfirmation,
-  receivedErrorCurrent,
-  receivedErrorNew,
-  receivedErrorConfirm,
-}) => {
-  const enableRedesignedSettings = useFeatureFlag("AREnableRedesignedSettings")
-
-  return (
-    <Flex>
-      <Flex>
-        <Input
-          autoComplete="password"
-          autoFocus
-          onChangeText={setCurrentPassword}
-          secureTextEntry
-          enableClearButton
-          title="Current password"
-          value={currentPassword}
-          error={receivedErrorCurrent}
-        />
-      </Flex>
-
-      <Spacer y={2} />
-
-      <Text variant="sm-display">New password</Text>
-
-      <Text
-        variant={!enableRedesignedSettings ? "sm-display" : "xs"}
-        color={!enableRedesignedSettings ? "mono100" : "mono60"}
-        mt={0.5}
-      >
-        Password must include at least one uppercase letter, one lowercase letter, and one number.
-      </Text>
-
-      <Input
-        onChangeText={setNewPassword}
-        secureTextEntry
-        enableClearButton
-        title="New password"
-        value={newPassword}
-        error={receivedErrorNew}
-      />
-
-      <Input
-        onChangeText={setPasswordConfirmation}
-        secureTextEntry
-        enableClearButton
-        title="Confirm new password"
-        value={passwordConfirmation}
-        error={receivedErrorConfirm}
-      />
-    </Flex>
   )
 }

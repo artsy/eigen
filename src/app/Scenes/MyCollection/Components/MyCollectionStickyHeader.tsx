@@ -10,7 +10,7 @@ import {
   CollectedTab,
   MyCollectionTabsStore,
 } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
-import { Tab } from "app/Scenes/MyProfile/MyProfileHeaderMyCollectionAndSavedWorks"
+import { Tab } from "app/Scenes/MyCollection/MyCollection"
 import { navigate } from "app/system/navigation/navigate"
 import { useMeasure } from "app/utils/hooks/useMeasure"
 import { debounce } from "lodash"
