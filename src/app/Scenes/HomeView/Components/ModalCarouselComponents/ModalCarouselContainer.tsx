@@ -87,6 +87,7 @@ export const ModalCarouselContainer: React.FC<FullScreenCarouselProps> = ({
             }
           }}
         />
+
         <Flex
           alignItems="flex-end"
           right={2}
@@ -98,7 +99,6 @@ export const ModalCarouselContainer: React.FC<FullScreenCarouselProps> = ({
             top: topInset - 1,
           }}
           position="absolute"
-          zIndex={102}
         >
           <BackButton
             onPress={handleCloseModal}
@@ -106,6 +106,7 @@ export const ModalCarouselContainer: React.FC<FullScreenCarouselProps> = ({
             hitSlop={{ top: 5, left: 5, right: 5, bottom: 5 }}
           />
         </Flex>
+
         <SafeAreaView style={{ flex: 1, backgroundColor: color("mono0") }}>
           <PagerView
             style={{ flex: 1 }}
@@ -145,7 +146,6 @@ const Steps = ({
       pl={1}
       style={{ paddingTop: topInset + 10 }}
       pr={6}
-      zIndex={101}
       backgroundColor="mono0"
     >
       {Array.from({ length: numberOfSteps }).map((_, index) => (
