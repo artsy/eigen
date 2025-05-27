@@ -18,14 +18,16 @@ const ArtworkClassification: React.FC<ArtworkClassificationProps> = ({ artwork }
     <>
       <Flex testID="artwork-classification" flexDirection="row" alignContent="center">
         <ArtworkIcon mr={0.5} fill="mono60" height={25} width={25} />
+
         <Text variant="sm" color="mono60">
           {shortArrayDescription[0]}{" "}
-          <RouterLink to="/artwork-classifications" hasChildTouchable>
-            <LinkText variant="sm" color="mono60">
-              {shortArrayDescription[1]}
-            </LinkText>
-          </RouterLink>
         </Text>
+
+        <RouterLink to="/artwork-classifications" hasChildTouchable>
+          <LinkText variant="sm" color="mono60">
+            {shortArrayDescription[1]}
+          </LinkText>
+        </RouterLink>
       </Flex>
     </>
   )
