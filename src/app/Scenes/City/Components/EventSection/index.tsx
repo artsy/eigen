@@ -3,11 +3,9 @@ import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { Event } from "app/Scenes/City/Components/Event"
 import { navigate } from "app/system/navigation/navigate"
 import React from "react"
-import { RelayProp } from "react-relay"
 
 export interface Props {
   title: string
-  relay: RelayProp
   data: any
   section: string
   citySlug: string
@@ -32,7 +30,7 @@ export class EventSection extends React.Component<Props> {
       return finalShowsForPreviewBricks.map((event) => {
         return (
           <Box key={event.id}>
-            <Event event={event} relay={this.props.relay} />
+            <Event event={event} />
           </Box>
         )
       })

@@ -1,4 +1,5 @@
-import { Flex, Box } from "@artsy/palette-mobile"
+import { Box, Flex } from "@artsy/palette-mobile"
+import themeGet from "@styled-system/theme-get"
 import Crosshair from "app/Components/Icons/Crosshair"
 import { Component } from "react"
 import { TouchableOpacity } from "react-native"
@@ -17,7 +18,7 @@ const shadowDetails: any = {
 }
 
 const Background = styled(Flex)`
-  background: white;
+  background: ${themeGet("colors.mono0")};
   height: 40px;
   width: 40px;
   border-radius: 20px;

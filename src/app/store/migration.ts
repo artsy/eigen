@@ -66,9 +66,10 @@ export const Versions = {
   RemoveDiscoveredArtworkIdsFromInfiniteDiscoveryModel: 53,
   AddHasIntereactedWithOnboardingToInfiniteDiscoveryModel: 54,
   AddHasSavedArtworksToInfiniteDiscoveryModel: 55,
+  AddPreviouslySelectedCitySlugToUserPrefsModel: 56,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddHasSavedArtworksToInfiniteDiscoveryModel
+export const CURRENT_APP_VERSION = Versions.AddPreviouslySelectedCitySlugToUserPrefsModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -375,6 +376,9 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddHasSavedArtworksToInfiniteDiscoveryModel]: (state) => {
     state.infiniteDiscovery.hasSavedArtworks = false
+  },
+  [Versions.AddPreviouslySelectedCitySlugToUserPrefsModel]: (state) => {
+    state.userPrefs.previouslySelectedCitySlug = null
   },
 }
 
