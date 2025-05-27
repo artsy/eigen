@@ -25,9 +25,7 @@ interface Props {
   isLoading: boolean
 }
 
-export const CitySwitcherButton: React.FC<Props> = (props) => {
-  const { city, isLoading } = props
-
+export const CitySwitcherButton: React.FC<Props> = ({ city, isLoading, onPress }) => {
   if (!city && !isLoading) {
     return null
   }
@@ -35,9 +33,7 @@ export const CitySwitcherButton: React.FC<Props> = (props) => {
   return (
     <Touchable
       onPress={() => {
-        if (props.onPress) {
-          props.onPress()
-        }
+        onPress?.()
       }}
     >
       <Background
