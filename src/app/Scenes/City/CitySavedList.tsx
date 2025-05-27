@@ -58,7 +58,6 @@ class CitySavedList extends React.Component<Props, State> {
         cityName={this.props.city.name}
         bucket={extractNodes(this.props.me.followsAndSaves?.shows)}
         type="saved"
-        relay={this.props.relay as any}
         onScroll={isCloseToBottom(this.fetchData) as any}
         fetchingNextPage={fetchingNextPage}
       />

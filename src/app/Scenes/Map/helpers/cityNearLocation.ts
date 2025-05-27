@@ -1,5 +1,4 @@
 import { CityData } from "app/Scenes/City/CityPicker"
-import { ShortCoordinates } from "app/Scenes/Map/MapContainer"
 
 const CITY_RADIUS_M = 100 * 200 // 500km
 
@@ -21,7 +20,7 @@ function distanceInMeters(lat1: number, lon1: number, lat2: number, lon2: number
  * @param {Object} location - Object with { latitude, longitude }
  * @returns {Object|null} - Closest city within 100km, or null
  */
-export function cityNearLocation(cities: CityData[], location: ShortCoordinates) {
+export function cityNearLocation(cities: CityData[], location: { lat: number; lng: number }) {
   if (cities.length === 0) return null
 
   let closestCity = null

@@ -92,7 +92,7 @@ export class EventList extends React.Component<Props> {
         ListHeaderComponent={() => {
           if (!!header) {
             return (
-              <Box pt={6} mt={4} mb={2}>
+              <Box mb={2}>
                 <Text variant="lg-display">{header}</Text>
               </Box>
             )

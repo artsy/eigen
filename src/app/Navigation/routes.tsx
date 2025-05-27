@@ -709,6 +709,11 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "CitySectionList",
     Component: CitySectionListQueryRenderer,
     queries: [CitySectionListScreenQuery],
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   },
   {
     path: "/collect",
