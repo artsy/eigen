@@ -55,7 +55,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
               <Flex pb={1}>
                 <GenomeIcon width={ICON_SIZE} height={ICON_SIZE} />
               </Flex>
-              <Text variant="xs" color={color("mono100")} px={1} pb="1px">
+              <Text variant="xs" color="mono100" px={1} pb="1px">
                 You will lose all data on Artsy including all existing offers, inquiries and mesages
                 with Galleries
               </Text>
@@ -65,7 +65,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
               <Flex pb={1}>
                 <GavelIcon width={ICON_SIZE} height={ICON_SIZE} />
               </Flex>
-              <Text variant="xs" color={color("mono100")} px={1} pb="1px">
+              <Text variant="xs" color="mono100" px={1} pb="1px">
                 You won’t have access to any exclusive Artsy benefits, such as Artsy Curated
                 Auctions, Private Sales, etc
               </Text>
