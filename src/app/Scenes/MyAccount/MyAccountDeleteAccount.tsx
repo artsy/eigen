@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
-import { GenomeIcon, GavelIcon } from "@artsy/icons/native"
-import { Spacer, Flex, Box, Text, Button, Input } from "@artsy/palette-mobile"
+import { GavelIcon, GenomeIcon } from "@artsy/icons/native"
+import { Box, Button, Flex, Input, Spacer, Text } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountDeleteAccountQuery } from "__generated__/MyAccountDeleteAccountQuery.graphql"
 import { MyAccountDeleteAccount_me$data } from "__generated__/MyAccountDeleteAccount_me.graphql"
@@ -13,7 +13,6 @@ import { screen } from "app/utils/track/helpers"
 import React, { useState } from "react"
 import { Alert, InteractionManager, KeyboardAvoidingView, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { color } from "styled-system"
 import { deleteUserAccount } from "./deleteUserAccount"
 
 const ICON_SIZE = 16
@@ -55,7 +54,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
               <Flex pb={1}>
                 <GenomeIcon width={ICON_SIZE} height={ICON_SIZE} />
               </Flex>
-              <Text variant="xs" color={color("mono100")} px={1} pb="1px">
+              <Text variant="xs" color="mono100" px={1} pb="1px">
                 You will lose all data on Artsy including all existing offers, inquiries and mesages
                 with Galleries
               </Text>
@@ -65,7 +64,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
               <Flex pb={1}>
                 <GavelIcon width={ICON_SIZE} height={ICON_SIZE} />
               </Flex>
-              <Text variant="xs" color={color("mono100")} px={1} pb="1px">
+              <Text variant="xs" color="mono100" px={1} pb="1px">
                 You won’t have access to any exclusive Artsy benefits, such as Artsy Curated
                 Auctions, Private Sales, etc
               </Text>
@@ -79,7 +78,7 @@ const MyAccountDeleteAccount: React.FC<MyAccountDeleteAccountProps> = ({ me: { h
               error={!hasPassword ? error : undefined}
             />
             <Spacer y={4} />
-            <Text variant="xs" color={color("mono100")} pb="1px">
+            <Text variant="xs" color="mono100" pb="1px">
               After you submit your request, we will disable your account. It may take up to 7 days
               to fully delete and remove all of your data.
             </Text>
