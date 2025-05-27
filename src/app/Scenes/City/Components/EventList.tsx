@@ -1,4 +1,4 @@
-import { Box, Text, Separator, SimpleMessage, Tabs } from "@artsy/palette-mobile"
+import { Box, Separator, SimpleMessage, Tabs, Text } from "@artsy/palette-mobile"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { ShowItemRow } from "app/Components/Lists/ShowItemRow"
 import Spinner from "app/Components/Spinner"
@@ -7,7 +7,6 @@ import { navigate } from "app/system/navigation/navigate"
 import { isEqual } from "lodash"
 import React from "react"
 import { FlatList, FlatListProps } from "react-native"
-import { RelayProp } from "react-relay"
 import { TabFairItemRow } from "./TabFairItemRow"
 
 /**
@@ -28,7 +27,6 @@ interface Props {
   citySlug?: string
   cityName: string
   header?: string
-  relay: RelayProp
   onScroll?: FlatListProps<any>["onScroll"]
   fetchingNextPage?: boolean
   renderedInTab?: boolean

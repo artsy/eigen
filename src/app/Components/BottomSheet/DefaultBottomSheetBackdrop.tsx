@@ -21,7 +21,6 @@ export const DefaultBottomSheetBackdrop: React.FC<DefaultBottomSheetBackdrop> = 
   // animated variables
   const containerAnimatedStyle = useAnimatedStyle(() => {
     "worklet"
-    console.log("DEBUG: animatedIndex.value", animatedIndex.value)
 
     return {
       opacity: interpolate(animatedIndex.value, [-1, 0], [0, MAX_OPACITY], Extrapolate.CLAMP),

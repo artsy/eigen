@@ -1,12 +1,8 @@
-import { Box, Flex, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Text, Touchable } from "@artsy/palette-mobile"
 import themeGet from "@styled-system/theme-get"
-import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
+import { GlobalMap_viewer$data } from "__generated__/GlobalMap_viewer.graphql"
 import ChevronIcon from "app/Components/Icons/ChevronIcon"
 import Spinner from "app/Components/Spinner"
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { City } from "app/Scenes/Map/types"
-import { Component } from "react"
-import { TouchableWithoutFeedback } from "react-native"
 import styled from "styled-components/native"
 
 // Because it will raise errors in VS Code
@@ -25,60 +21,51 @@ const Background = styled(Flex)`
 
 interface Props {
   onPress?: () => void
-  city: City
+  city: GlobalMap_viewer$data["city"]
   isLoading: boolean
 }
 
-export class CitySwitcherButton extends Component<Props> {
-  render() {
-    const { city, isLoading } = this.props
-    return isLoading || city ? (
-      <ThemeAwareClassTheme>
-        {({}) => (
-          <TouchableWithoutFeedback
-            accessibilityRole="button"
-            onPress={() => {
-              if (this.props.onPress) {
-                this.props.onPress()
-              }
-              LegacyNativeModules.ARNotificationsManager.postNotificationName(
-                "ARLocalDiscoveryOpenCityPicker",
-                {}
-              )
-            }}
-          >
-            <Background
-              flexDirection="row"
-              alignItems="center"
-              style={
-                {
-                  shadowOffset: { height: 0, width: 0 },
-                  width: city ? "auto" : 40,
-                } as any
-              }
-            >
-              {city ? (
-                <>
-                  <Text variant="sm" weight="medium" ml={4}>
-                    {city.name}
-                  </Text>
-                  <Box ml={2} mr={4}>
-                    <ChevronIcon initialDirection="down" color="mono100" width={20} height={20} />
-                  </Box>
-                </>
-              ) : (
-                <Flex alignItems="center" justifyContent="center" flexGrow={1}>
-                  <Spinner
-                    spinnerColor="mono60"
-                    style={{ backgroundColor: "transparent" }}
-                    size="medium"
-                  />
-                </Flex>
-              )}
-            </Background>
-          </TouchableWithoutFeedback>
-        )}
-      </ThemeAwareClassTheme>
-    ) : null
+export const CitySwitcherButton: React.FC<Props> = ({ city, isLoading, onPress }) => {
+  if (!city && !isLoading) {
+    return null
   }
+
+  return (
+    <Touchable
+      accessibilityRole="button"
+      onPress={() => {
+        onPress?.()
+      }}
+    >
+      <Background
+        flexDirection="row"
+        alignItems="center"
+        style={
+          {
+            shadowOffset: { height: 0, width: 0 },
+            width: city ? "auto" : 40,
+          } as any
+        }
+      >
+        {city ? (
+          <>
+            <Text variant="sm" weight="medium" ml={4}>
+              {city.name}
+            </Text>
+            <Box ml={2} mr={4}>
+              <ChevronIcon initialDirection="down" color="mono100" width={20} height={20} />
+            </Box>
+          </>
+        ) : (
+          <Flex alignItems="center" justifyContent="center" flexGrow={1}>
+            <Spinner
+              spinnerColor="mono60"
+              style={{ backgroundColor: "transparent" }}
+              size="medium"
+            />
+          </Flex>
+        )}
+      </Background>
+    </Touchable>
+  )
 }

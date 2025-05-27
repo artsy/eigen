@@ -1,6 +1,5 @@
 import { MapRendererQuery } from "__generated__/MapRendererQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { SafeAreaInsets } from "app/utils/hooks"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { GlobalMap } from "./GlobalMap"
@@ -13,10 +12,6 @@ export const MAX_GRAPHQL_INT = 2147483647
 
 interface MapRendererProps {
   citySlug: string
-  hideMapButtons: boolean
-  initialCoordinates?: { lat: number; lng: number }
-  safeAreaInsets: SafeAreaInsets
-  userLocationWithinCity: boolean
 }
 
 const mapRendererQuery = graphql`

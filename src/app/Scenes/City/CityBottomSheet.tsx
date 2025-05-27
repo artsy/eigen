@@ -28,8 +28,6 @@ export const CityBottomSheet: React.FC<CityBottomSheetProps> = ({ ...props }) =>
         bottomSheetRef.current?.close()
         break
       case DrawerPosition.collapsed:
-        bottomSheetRef.current?.collapse()
-        break
       case DrawerPosition.partiallyRevealed:
         bottomSheetRef.current?.collapse()
         break

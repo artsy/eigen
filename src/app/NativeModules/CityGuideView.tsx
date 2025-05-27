@@ -1,5 +1,5 @@
 import { Flex, Spinner } from "@artsy/palette-mobile"
-import { MapContainer } from "app/Scenes/Map/MapContainer"
+import { MapRenderer } from "app/Scenes/Map/MapRenderer"
 import { cityNearLocation } from "app/Scenes/Map/helpers/cityNearLocation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useLocation } from "app/utils/hooks/useLocation"
@@ -10,14 +10,13 @@ export const CityGuideView: React.FC = () => {
   const previouslySelectedCitySlug = GlobalStore.useAppState(
     (state) => state.userPrefs.previouslySelectedCitySlug
   )
+  const { setPreviouslySelectedCitySlug } = GlobalStore.actions.userPrefs
 
   const { location, isLoading } = useLocation()
 
   useEffect(() => {
     if (location && cityNearLocation(cities, location)) {
-      GlobalStore.actions.userPrefs.setPreviouslySelectedCitySlug(
-        cityNearLocation(cities, location)?.slug ?? ""
-      )
+      setPreviouslySelectedCitySlug(cityNearLocation(cities, location)?.slug ?? "")
     }
   }, [location])
 
@@ -29,13 +28,5 @@ export const CityGuideView: React.FC = () => {
     )
   }
 
-  return (
-    <MapContainer
-      citySlug={previouslySelectedCitySlug ?? "new-york-ny-usa"}
-      hideMapButtons={false}
-      safeAreaInsets={{ top: 0, right: 0, bottom: 0, left: 0 }}
-      initialCoordinates={location ?? undefined}
-      userLocationWithinCity={true}
-    />
-  )
+  return <MapRenderer citySlug={previouslySelectedCitySlug ?? "new-york-ny-usa"} />
 }

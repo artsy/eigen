@@ -14,17 +14,16 @@ import {
   showsToGeoCityShow,
 } from "app/utils/convertCityToGeoJSON"
 import { extractNodes } from "app/utils/extractNodes"
-import { SafeAreaInsets } from "app/utils/hooks"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { isEqual, uniq } from "lodash"
 import { AnimatePresence } from "moti"
 import React, { useEffect, useRef, useState } from "react"
-import { Animated, Dimensions, Image, Platform } from "react-native"
+import { Animated, Dimensions, Platform } from "react-native"
 import Keys from "react-native-keys"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { usePrevious } from "react-use"
-import styled from "styled-components/native"
 import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
 import { PinsShapeLayer } from "./Components/PinsShapeLayer"
@@ -37,42 +36,16 @@ import {
   BucketResults,
   emptyBucketResults,
 } from "./bucketCityResults"
-import { Fair, FilterData, RelayErrorState, Show } from "./types"
+import { Fair, FilterData, Show } from "./types"
 
 MapboxGL.setAccessToken(Keys.secureFor("MAPBOX_API_CLIENT_KEY"))
 
-const ShowCardContainer = styled(Box)`
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  height: 200px;
-`
-
-const LoadingScreen = styled(Image)`
-  position: absolute;
-  left: 0px;
-  top: 0px;
-`
-
 interface Props {
-  /** Where to center the map initially?  */
-  initialCoordinates?: { lat: number; lng: number }
-  /** Should the map buttons be hidden...  */
-  hideMapButtons: boolean
-
-  /** Tracking */
-  tracking?: any
   /** city slug */
   citySlug: string
-  /** Whether the bottom sheet drawer is opened */
-  isDrawerOpen?: boolean
-  /** Whether the user is geographically within the city we're currently rendering. */
-  userLocationWithinCity: boolean
-  /** Reflects the area not covered by navigation bars, tab bars, toolbars, and other ancestors  */
-  safeAreaInsets: SafeAreaInsets
+  // TODO: Rethink this
   /** Error from Relay (MapRenderer.tsx). Needed here to send over the EventEmitter. */
-  relayErrorState?: RelayErrorState
+  // relayErrorState?: RelayErrorState
   /** The viewer data */
   viewer: GlobalMap_viewer$key
 }
@@ -93,6 +66,7 @@ export enum DrawerPosition {
 export const GlobalMap: React.FC<Props> = (props) => {
   const color = useColor()
   const space = useSpace()
+  const safeAreaInsets = useSafeAreaInsets()
 
   const [viewer, refetch] = useRefetchableFragment(globalMapFragment, props.viewer)
   const { trackEvent } = useTracking()
@@ -106,7 +80,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
 
   const [activeShows, setActiveShows] = useState<Array<Fair | Show>>([])
   const [activeIndex, setActiveIndex] = useState(0)
-  const currentLocation = props.initialCoordinates || viewer.city?.coordinates
+  const currentLocation = viewer.city?.coordinates
   const [userLocation, setUserLocation] = useState(currentLocation)
 
   const [bucketResults, setBucketResults] = useState<BucketResults>(emptyBucketResults)
@@ -136,7 +110,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
                 {
                   translateY: hideButtons.interpolate({
                     inputRange: [0, 1],
-                    outputRange: [0, -(props.safeAreaInsets.top + 12 + 50)],
+                    outputRange: [0, -(safeAreaInsets.top + 12 + 50)],
                   }),
                 },
               ],
@@ -148,7 +122,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
                 isLoading={!viewer.city}
                 onPress={onPressCitySwitcherButton}
               />
-              {!!(userLocation && userLocationWithinCity) && (
+              {!!userLocation && (
                 <Box style={{ marginLeft: 10 }}>
                   <UserPositionButton
                     highlight={userLocation === currentLocation}
@@ -268,7 +242,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
     if (city) {
       const savedUpcomingShows = extractNodes(city.upcomingShows).filter((node) => node.is_followed)
       const shows = extractNodes(city.shows)
-      const concatedShows = uniq(shows.concat(savedUpcomingShows))
+      const concatedShows = uniq(shows.concat(savedUpcomingShows as any))
 
       concatedShows.forEach((node) => {
         if (!node || !node.location || !node.location.coordinates) {
@@ -295,7 +269,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
     const hasShows = activeShows.length > 0
 
     // Check if it's an iPhone with ears (iPhone X, Xr, Xs, etc...)
-    const iPhoneHasEars = props.safeAreaInsets.top > 20
+    const iPhoneHasEars = safeAreaInsets.top > 20
 
     const platformBottom = Platform.OS === "ios" ? (iPhoneHasEars ? 80 : 45) : 0
 
@@ -397,9 +371,8 @@ export const GlobalMap: React.FC<Props> = (props) => {
   }
 
   const { city } = viewer
-  const { userLocationWithinCity } = props
-  const centerLat = props.initialCoordinates?.lat || city?.coordinates?.lat || 0
-  const centerLng = props.initialCoordinates?.lng || city?.coordinates?.lng || 0
+  const centerLat = city?.coordinates?.lat || 0
+  const centerLng = city?.coordinates?.lng || 0
 
   const mapProps = {
     styleURL: ArtsyMapStyleURL,
@@ -529,14 +502,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
         )}
       </AnimatePresence>
       <Flex flexDirection="column" style={{ backgroundColor: color("mono5") }}>
-        <LoadingScreen
-          source={require("images/map-bg.webp")}
-          resizeMode="cover"
-          style={{
-            width: Dimensions.get("window").width,
-            height: Dimensions.get("window").height,
-          }}
-        />
         <MapboxGL.MapView
           ref={mapRef}
           style={{ width: "100%", height: Dimensions.get("window").height }}
@@ -579,7 +544,11 @@ export const GlobalMap: React.FC<Props> = (props) => {
             </>
           )}
         </MapboxGL.MapView>
-        {!!city && <ShowCardContainer>{renderShowCard()}</ShowCardContainer>}
+        {!!city && (
+          <Flex position="absolute" bottom={0} left={0} right={0} height={200}>
+            {renderShowCard()}
+          </Flex>
+        )}
       </Flex>
       <CityBottomSheet drawerPosition={drawerPosition} citySlug={viewer.city?.slug || ""} />
     </ProvideScreenTracking>
@@ -670,6 +639,7 @@ const globalMapFragment = graphql`
       ) {
         edges {
           node {
+            ...ShowItemRow_show
             slug
             internalID
             id

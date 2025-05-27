@@ -4,10 +4,11 @@ import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
 import { Show } from "app/Scenes/Map/types"
 import { navigate } from "app/system/navigation/navigate"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { track as _track, Schema, Track } from "app/utils/track"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { commitMutation, graphql, RelayProp } from "react-relay"
+import { commitMutation, graphql } from "react-relay"
 import styled from "styled-components/native"
 
 const TextContainer = styled(Box)`
@@ -15,7 +16,6 @@ const TextContainer = styled(Box)`
 `
 
 interface Props {
-  relay: RelayProp
   event: Show
 }
 
@@ -59,7 +59,7 @@ export class Event extends React.Component<Props, State> {
           isFollowedSaving: true,
         },
         () => {
-          return commitMutation<EventMutation>(this.props.relay.environment, {
+          return commitMutation<EventMutation>(getRelayEnvironment(), {
             onCompleted: () => this.handleShowSuccessfullyUpdated(),
             mutation: graphql`
               mutation EventMutation($input: FollowShowInput!) {
