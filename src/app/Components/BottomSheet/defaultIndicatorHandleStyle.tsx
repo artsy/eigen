@@ -1,6 +1,6 @@
-import { useColor } from "@artsy/palette-mobile"
+import { ColorFn } from "@artsy/palette-mobile"
 
-export const defaultIndicatorHandleStyle = (color: ReturnType<typeof useColor>) => {
+export const defaultIndicatorHandleStyle = (color: ColorFn) => {
   return {
     backgroundColor: color("mono100"),
     width: 40,

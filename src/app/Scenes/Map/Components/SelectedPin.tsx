@@ -11,7 +11,7 @@ export const SelectedPin: React.FC<{
   nearestFeature: PointFeature<ClusterProperties & AnyProps> | PointFeature<AnyProps> | null
   activeShows: Array<Fair | Show>
 }> = ({ activePin, nearestFeature, activeShows }) => {
-  if (activePin === null || activePin.properties === null || !nearestFeature?.properties) {
+  if (!activePin.properties || !nearestFeature?.properties) {
     return null
   }
 
