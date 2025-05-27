@@ -1,6 +1,5 @@
 import { EventSection } from "app/Scenes/City/Components/EventSection/index"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { RelayProp } from "react-relay"
 
 const data = [
   {
@@ -21,13 +20,7 @@ const data = [
 describe("CityEvent", () => {
   it("renders properly", () => {
     const { queryByText } = renderWithWrappers(
-      <EventSection
-        title="Gallery shows"
-        section="galleries"
-        citySlug="new-york"
-        relay={{ environment: {} } as RelayProp}
-        data={data}
-      />
+      <EventSection title="Gallery shows" section="galleries" citySlug="new-york" data={data} />
     )
 
     expect(queryByText("Gallery shows")).toBeTruthy()
