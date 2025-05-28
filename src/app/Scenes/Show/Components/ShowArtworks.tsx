@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box } from "@artsy/palette-mobile"
+import { Button, Screen, Spacer } from "@artsy/palette-mobile"
 import { ShowArtworks_show$key } from "__generated__/ShowArtworks_show.graphql"
 import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -7,9 +7,11 @@ import { aggregationsType, FilterArray } from "app/Components/ArtworkFilter/Artw
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { SHOW2_ARTWORKS_PAGE_SIZE } from "app/Components/constants"
+import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
+import { PAGE_SIZE } from "app/Components/constants"
 import { ShowArtworksEmptyStateFragmentContainer } from "app/Scenes/Show/Components/ShowArtworksEmptyState"
+import { extractNodes } from "app/utils/extractNodes"
+import { useRefreshControl } from "app/utils/refreshHelpers"
 import React, { useEffect, useRef } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
 
@@ -27,7 +29,7 @@ interface ArtworkProps {
 export const ShowArtworksWithNavigation = (props: ArtworkProps) => {
   const { show, visible, closeFilterArtworksModal } = props
   return (
-    <Box px={2}>
+    <>
       <ShowArtworks show={show} />
       <ArtworkFilterNavigator
         visible={visible}
@@ -37,18 +39,16 @@ export const ShowArtworksWithNavigation = (props: ArtworkProps) => {
         exitModal={closeFilterArtworksModal}
         closeModal={closeFilterArtworksModal}
       />
-    </Box>
+    </>
   )
 }
 
 export const ShowArtworks: React.FC<Props> = ({ show, initiallyAppliedFilter }) => {
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment(fragment, show)
-  
   const { internalID, slug } = data
-  const artworks = data.showArtworks
-  const artworksTotal = artworks?.counts?.total ?? 0
+  const artworksTotal = data?.showArtworks?.counts?.total ?? 0
   const unfilteredArtworksTotalCount = useRef(artworksTotal)
-  const artworkAggregations = (artworks?.aggregations ?? []) as aggregationsType
+  const artworkAggregations = (data?.showArtworks?.aggregations ?? []) as aggregationsType
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setInitialFilterStateAction
@@ -60,12 +60,14 @@ export const ShowArtworks: React.FC<Props> = ({ show, initiallyAppliedFilter }) 
     (state) => state.setFiltersCountAction
   )
   const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
+  const { scrollHandler } = Screen.useListenForScreenScroll()
+  const RefreshControl = useRefreshControl(refetch)
 
   useArtworkFilters({
     refetch,
     aggregations: artworkAggregations,
     componentPath: "Show/ShowArtworks",
-    pageSize: SHOW2_ARTWORKS_PAGE_SIZE,
+    pageSize: PAGE_SIZE,
   })
 
   useEffect(() => {
@@ -80,6 +82,10 @@ export const ShowArtworks: React.FC<Props> = ({ show, initiallyAppliedFilter }) 
     setFiltersCountAction({ ...counts, total: artworksTotal })
   }, [artworksTotal])
 
+  if (!data.showArtworks) {
+    return null
+  }
+
   // No artworks are available for this show
   if (unfilteredArtworksTotalCount.current === 0) {
     return <ShowArtworksEmptyStateFragmentContainer show={data} />
@@ -87,32 +93,47 @@ export const ShowArtworks: React.FC<Props> = ({ show, initiallyAppliedFilter }) 
 
   // No artworks match the applied filters
   if (artworksTotal === 0) {
-    return <FilteredArtworkGridZeroState id={internalID} slug={slug} />
+    return (
+      <>
+        <FilteredArtworkGridZeroState id={internalID} slug={slug} />
+        <Spacer y={2} />
+      </>
+    )
   }
 
+  const artworks = extractNodes(data.showArtworks)
+
   return (
-    <Box>
-      <InfiniteScrollArtworksGridContainer
-        connection={artworks}
-        loadMore={(count: number, cb?: () => void) => {
-          loadNext(count, {
-            onComplete: (error) => {
-              if (error) {
-                console.error("ShowArtworks.tsx", error.message)
-              }
-              cb?.()
-            },
-          })
-        }}
-        hasMore={hasNext}
+    <>
+      <MasonryInfiniteScrollArtworkGrid
+        animated
+        artworks={artworks}
         isLoading={isLoadingNext}
-        autoFetch={false}
-        pageSize={SHOW2_ARTWORKS_PAGE_SIZE}
+        hasMore={hasNext}
+        disableAutoLayout
+        pageSize={PAGE_SIZE}
         contextScreenOwnerType={OwnerType.show}
         contextScreenOwnerId={data.internalID}
         contextScreenOwnerSlug={data.slug}
+        onScroll={scrollHandler}
+        refreshControl={RefreshControl}
+        ListFooterComponent={() => {
+          return (
+            <Button
+              mt={4}
+              variant="fillGray"
+              block
+              size="large"
+              onPress={() => loadNext(PAGE_SIZE)}
+              loading={isLoadingNext}
+            >
+              Show more
+            </Button>
+          )
+        }}
       />
-    </Box>
+      <Spacer y={4} />
+    </>
   )
 }
 
@@ -120,7 +141,7 @@ const fragment = graphql`
   fragment ShowArtworks_show on Show
   @refetchable(queryName: "ShowArtworksPaginationQuery")
   @argumentDefinitions(
-    count: { type: "Int", defaultValue: 30 }
+    count: { type: "Int", defaultValue: 10 }
     cursor: { type: "String" }
     input: { type: "FilterArtworksInput" }
   ) {
@@ -143,13 +164,17 @@ const fragment = graphql`
       }
       edges {
         node {
+          ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
           id
+          slug
+          image(includeAll: false) {
+            aspectRatio
+          }
         }
       }
       counts {
         total
       }
-      ...InfiniteScrollArtworksGrid_connection
     }
   }
 `
