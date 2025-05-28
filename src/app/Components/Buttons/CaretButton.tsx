@@ -11,7 +11,7 @@ interface Props {
 
 export const CaretButton: React.FC<Props> = ({ text, onPress, textColor, testID }) => {
   return (
-    <TouchableOpacity onPress={onPress} testID={testID}>
+    <TouchableOpacity accessibilityRole="button" onPress={onPress} testID={testID}>
       <Flex flexDirection="row" align-items="base-line">
         <Text variant="sm" weight="medium" color={textColor}>
           {text}

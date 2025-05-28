@@ -92,7 +92,7 @@ export const Task = forwardRef<SwipeableMethods, TaskProps>(
         enabled={!disableSwipeable}
       >
         <Flex backgroundColor="mono0" borderRadius={5}>
-          <Touchable onPress={handlePressTask}>
+          <Touchable accessibilityRole="button" onPress={handlePressTask}>
             <Flex
               p={1}
               ml={2}

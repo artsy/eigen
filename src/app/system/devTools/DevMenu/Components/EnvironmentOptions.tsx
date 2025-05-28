@@ -70,6 +70,7 @@ export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose 
         Object.entries(environment).map(([key, { description, presets }]) => {
           return (
             <TouchableHighlight
+              accessibilityRole="button"
               key={key}
               underlayColor={color("mono5")}
               onPress={() => {

@@ -140,6 +140,7 @@ export const LoginOTPStep: React.FC = () => {
 
           {screen.params?.otpMode === "standard" && (
             <Touchable
+              accessibilityRole="button"
               onPress={() => {
                 if (codeType === "authentication") {
                   setCodeType("recovery")

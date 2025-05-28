@@ -68,6 +68,8 @@ export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
           <Text variant="sm-display">{headlineLabel}</Text>
           {artists.length > artistCount && (
             <TouchableOpacity
+              accessibilityRole="button"
+              accessibilityLabel="View all featured artists"
               onPress={() => {
                 navigate(`/collection/${this.props.collection.slug}/artists`)
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

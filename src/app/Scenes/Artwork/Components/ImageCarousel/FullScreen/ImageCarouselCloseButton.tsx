@@ -25,7 +25,7 @@ export const ImageCarouselCloseButton = ({ onClose }: { onClose(): void }) => {
         zIndex: 1,
       }}
     >
-      <TouchableOpacity onPress={onClose}>
+      <TouchableOpacity accessibilityRole="button" accessibilityLabel="Close" onPress={onClose}>
         <View
           style={{
             width: 40,

@@ -41,6 +41,11 @@ export const BackButton: React.FC<{
       ]}
     >
       <TouchableOpacity
+        accessibilityRole="button"
+        accessibilityLabel={showCloseIcon ? "Close" : "Back"}
+        accessibilityHint={
+          showCloseIcon ? "Closes the current screen" : "Goes back to the previous screen"
+        }
         onPress={() => onPress()}
         style={{ width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}
       >

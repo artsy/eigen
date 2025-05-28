@@ -46,7 +46,10 @@ export class Notification extends React.Component<Props> {
       <ThemeAwareClassTheme>
         {({ color }) => (
           <View style={styles.container}>
-            <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this)}>
+            <TouchableWithoutFeedback
+              accessibilityRole="button"
+              onPress={this.handleArtistTap.bind(this)}
+            >
               <View style={styles.header}>
                 {!!notification.image && (
                   <Image

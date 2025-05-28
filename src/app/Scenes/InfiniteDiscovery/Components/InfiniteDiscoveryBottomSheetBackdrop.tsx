@@ -57,7 +57,7 @@ export const InfiniteDiscoveryBottomSheetBackdrop: FC<BottomSheetDefaultBackdrop
 
   return (
     <Animated.View style={containerStyle} animatedProps={animatedProps}>
-      <Pressable style={() => style} onPress={() => collapse()}>
+      <Pressable accessibilityRole="button" style={() => style} onPress={() => collapse()}>
         <Animated.View style={containerStyle} animatedProps={animatedProps} />
       </Pressable>
     </Animated.View>

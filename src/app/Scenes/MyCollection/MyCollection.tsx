@@ -78,6 +78,7 @@ const MyCollection: React.FC = () => {
           onBack={goBack}
           rightElements={
             <Touchable
+              accessibilityRole="button"
               hitSlop={ICON_HIT_SLOP}
               onPress={() => {
                 setViewKind({ viewKind: "Profile" })
@@ -102,6 +103,7 @@ const MyCollection: React.FC = () => {
                 {/* Filtering is only available for artworks */}
                 {activeNavigationTab === Tab.artworks && (
                   <Touchable
+                    accessibilityRole="button"
                     hitSlop={ICON_HIT_SLOP}
                     onPress={() => {
                       setIsFilterModalVisible(true)
@@ -121,7 +123,11 @@ const MyCollection: React.FC = () => {
                 )}
 
                 {activeNavigationTab !== Tab.insights && (
-                  <Touchable hitSlop={ICON_HIT_SLOP} onPress={() => handleCreateButtonPress()}>
+                  <Touchable
+                    accessibilityRole="button"
+                    hitSlop={ICON_HIT_SLOP}
+                    onPress={() => handleCreateButtonPress()}
+                  >
                     <AddIcon
                       height={ACCESSIBLE_DEFAULT_ICON_SIZE}
                       width={ACCESSIBLE_DEFAULT_ICON_SIZE}

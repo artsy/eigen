@@ -155,6 +155,7 @@ const MoreFiltersButton: React.FC<{ text: string }> = ({ text }) => {
 
   return (
     <Touchable
+      accessibilityRole="button"
       onPress={() => {
         navigation.navigate("SavedSearchFilterScreen")
       }}
@@ -193,6 +194,7 @@ export const SavedSearchSuggestedFiltersPlaceholder: React.FC = ({}) => {
   return (
     <Flex>
       <Touchable
+        accessibilityRole="button"
         onPress={() => {
           navigation.navigate("SavedSearchFilterScreen")
         }}

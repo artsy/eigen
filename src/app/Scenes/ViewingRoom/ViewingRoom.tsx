@@ -46,7 +46,12 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
     navigation.setOptions({
       headerRight: () => {
         return (
-          <TouchableOpacity onPress={handleViewingRoomShare} testID="share-button">
+          <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityLabel="Share Viewing Room"
+            onPress={handleViewingRoomShare}
+            testID="share-button"
+          >
             <ShareIcon width={24} height={24} />
           </TouchableOpacity>
         )

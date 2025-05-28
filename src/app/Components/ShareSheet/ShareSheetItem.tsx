@@ -12,7 +12,7 @@ export const CustomShareSheetItem: React.FC<CustomShareSheetItemProps> = ({
   onPress,
 }) => {
   return (
-    <Touchable onPress={onPress}>
+    <Touchable accessibilityRole="button" onPress={onPress}>
       <Flex width="100%" height={60} flexDirection="row" alignItems="center" px={2}>
         {Icon}
         <Text variant="sm" ml="2">

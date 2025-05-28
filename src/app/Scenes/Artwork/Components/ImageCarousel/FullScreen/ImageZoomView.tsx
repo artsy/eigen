@@ -356,7 +356,7 @@ export const ImageZoomView =
             },
           ]}
         >
-          <TouchableWithoutFeedback onPress={handleDoubleTapToZoom}>
+          <TouchableWithoutFeedback accessibilityRole="button" onPress={handleDoubleTapToZoom}>
             {/* wrapper to apply transform to underlying image */}
             <Animated.View
               style={{

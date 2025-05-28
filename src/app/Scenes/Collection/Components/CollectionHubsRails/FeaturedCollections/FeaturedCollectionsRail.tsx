@@ -71,6 +71,7 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
         renderItem={({ item: result, index }) => {
           return (
             <Touchable
+              accessibilityRole="button"
               underlayColor="transparent"
               onPress={() => {
                 tracking.trackEvent({

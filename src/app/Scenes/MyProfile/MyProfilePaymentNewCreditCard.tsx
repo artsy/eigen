@@ -109,6 +109,7 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
       headerRight: () => {
         return (
           <Touchable
+            accessibilityRole="button"
             onPress={() => {
               handleSave()
             }}

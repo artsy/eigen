@@ -44,12 +44,13 @@ describe("useMultiSelect", () => {
 
     return (
       <View>
-        <TouchableHighlight onPress={handleClear}>
+        <TouchableHighlight accessibilityRole="button" onPress={handleClear}>
           <Text>Clear</Text>
         </TouchableHighlight>
 
         {OPTIONS.map((option) => (
           <TouchableWithoutFeedback
+            accessibilityRole="button"
             key={option.paramValue}
             onPress={() => {
               handleSelect(option, !isSelected(option))

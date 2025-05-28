@@ -95,6 +95,7 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
 
             {!!enableChangeArtist && (
               <Touchable
+                accessibilityRole="button"
                 testID="change-artist-touchable"
                 onPress={() => setVisible(true)}
                 haptic

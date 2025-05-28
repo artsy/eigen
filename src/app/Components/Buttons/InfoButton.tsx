@@ -54,6 +54,7 @@ export const InfoButton = forwardRef<
     return (
       <>
         <Touchable
+          accessibilityRole="button"
           onPress={() => {
             setModalVisible(true)
             trackEvent?.()

@@ -14,6 +14,7 @@ const TestRenderer: React.FC<{ toastOptions?: ToastOptions; placement?: ToastPla
 
   return (
     <Touchable
+      accessibilityRole="button"
       onPress={() => toast.show("Consider yourself toasted!", placement, { ...toastOptions })}
     >
       <Text>Some button text</Text>

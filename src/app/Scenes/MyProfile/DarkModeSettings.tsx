@@ -83,7 +83,7 @@ const RadioMenuItem: React.FC<{
   onPress: () => void
 }> = ({ title, selected, onPress }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity accessibilityRole="radio" onPress={onPress}>
       <Flex flexDirection="row" alignItems="center">
         <Flex flex={1}>
           <Text variant="sm-display">{title}</Text>

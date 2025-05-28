@@ -73,7 +73,7 @@ export const ArticleSlideShow: React.FC<ArticleSlideShowProps> = ({ article, cov
           </Text>
         </MotiView>
 
-        <Touchable onPress={() => goBack()}>
+        <Touchable accessibilityRole="button" accessibilityLabel="Close" onPress={() => goBack()}>
           <CloseIcon height={24} width={24} />
         </Touchable>
       </Flex>

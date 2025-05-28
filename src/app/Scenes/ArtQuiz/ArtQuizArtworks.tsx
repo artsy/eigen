@@ -171,7 +171,7 @@ const ArtQuizArtworksScreen = () => {
         onBack={handleOnBack}
         title={`${activeCardIndex + 1}/${artworks.length}`}
         rightElements={
-          <Touchable haptic="impactLight" onPress={handleOnSkip}>
+          <Touchable accessibilityRole="button" haptic="impactLight" onPress={handleOnSkip}>
             <Flex height="100%" justifyContent="center">
               <Text textAlign="right" variant="xs">
                 Close

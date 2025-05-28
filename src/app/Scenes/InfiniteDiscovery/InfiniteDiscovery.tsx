@@ -230,6 +230,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
             title="Discover Daily"
             leftElements={
               <Touchable
+                accessibilityRole="button"
+                accessibilityLabel="Exit Discover Daily"
                 onPress={handleExitPressed}
                 testID="close-icon"
                 hitSlop={DEFAULT_HIT_SLOP}
@@ -241,6 +243,8 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
             hideRightElements={hideShareButton}
             rightElements={
               <Touchable
+                accessibilityRole="button"
+                accessibilityLabel="Share Artwork"
                 onPress={handleSharePressed}
                 testID="share-icon"
                 hitSlop={DEFAULT_HIT_SLOP}

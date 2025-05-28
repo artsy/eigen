@@ -49,7 +49,11 @@ export const ActiveLotStanding = ({
   }
 
   return (
-    <TouchableOpacity onPress={() => handleLotTap()} style={{ marginHorizontal: 0, width: "100%" }}>
+    <TouchableOpacity
+      accessibilityRole="button"
+      onPress={() => handleLotTap()}
+      style={{ marginHorizontal: 0, width: "100%" }}
+    >
       <Flex flexDirection="row" justifyContent="space-between">
         <Lot saleArtwork={saleArtwork} isSmallScreen={isSmallScreen} />
         {!sale.isLiveOpen && (

@@ -58,6 +58,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
         }}
       >
         <TouchableWithoutFeedback
+          accessibilityRole="button"
           onPress={() => {
             setVisible(false)
           }}
@@ -79,7 +80,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
             >
               <Flex px={2} pt={4}>
                 <Flex position="absolute" right={space(2)} top={space(2)}>
-                  <TouchableOpacity onPress={() => setVisible(false)}>
+                  <TouchableOpacity accessibilityRole="button" onPress={() => setVisible(false)}>
                     <CloseIcon height={24} width={24} />
                   </TouchableOpacity>
                 </Flex>
@@ -247,6 +248,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
         <Text color="mono60">Variant:</Text>{" "}
         <Text fontWeight="bold">{localVariantOverrides[flag] || unleashVariant.name}</Text>
         <TouchableOpacity
+          accessibilityRole="button"
           onPress={() => {
             setVisible(true)
           }}
@@ -259,6 +261,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
         <Text fontWeight="bold" selectable>
           {unleashVariant.payload?.value || "--"}
           <TouchableOpacity
+            accessibilityRole="button"
             onPress={() => {
               setVisible(true)
             }}
@@ -270,6 +273,7 @@ export const ExperimentFlagItem: React.FC<{ description: string; flag: EXPERIMEN
       <Flex flexDirection="row">
         <Text color="mono60">Unleash Url: </Text>
         <TouchableOpacity
+          accessibilityRole="button"
           onPress={() => {
             Clipboard.setString(`https://unleash.artsy.net/projects/default/features/${flag}`)
             toast.show("URL copied to clipboard", "bottom")
@@ -296,6 +300,7 @@ const CustomInput: React.FC<{
 
   return (
     <TextInput
+      accessibilityLabel="Text input field"
       value={value}
       onChangeText={onChangeText}
       autoCapitalize="none"

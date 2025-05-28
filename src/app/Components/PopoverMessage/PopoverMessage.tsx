@@ -132,7 +132,11 @@ export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
           </Flex>
           {!!onUndoPress && (
             <Box>
-              <Touchable noFeedback onPress={handlePopoverMessageUndoPress}>
+              <Touchable
+                accessibilityRole="button"
+                noFeedback
+                onPress={handlePopoverMessageUndoPress}
+              >
                 <Text
                   variant="xs"
                   color={colors.descriptionColor}
@@ -179,7 +183,7 @@ export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
       ]}
     >
       {typeof onPress !== "undefined" ? (
-        <Touchable noFeedback onPress={handlePopoverMessagePress}>
+        <Touchable accessibilityRole="button" noFeedback onPress={handlePopoverMessagePress}>
           {content}
         </Touchable>
       ) : (

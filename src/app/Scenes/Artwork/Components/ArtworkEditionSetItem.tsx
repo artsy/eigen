@@ -40,7 +40,7 @@ const ArtworkEditionSetItem: React.FC<ArtworkEditionSetItemProps> = ({
   const metric = getMetricLabel()
 
   return (
-    <TouchableWithoutFeedback onPress={handlePress} disabled={disabled}>
+    <TouchableWithoutFeedback accessibilityRole="button" onPress={handlePress} disabled={disabled}>
       <Flex flexDirection="row" justifyContent="flex-start" py={2}>
         <RadioButton selected={isSelected} onPress={handlePress} disabled={disabled} />
 

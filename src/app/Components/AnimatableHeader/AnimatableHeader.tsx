@@ -54,6 +54,7 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
 
       {!!onRightButtonPress && !!rightButtonText && (
         <TouchableOpacity
+          accessibilityRole="button"
           hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
           onPress={onRightButtonPress}
           disabled={rightButtonDisabled}

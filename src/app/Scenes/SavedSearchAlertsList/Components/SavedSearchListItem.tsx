@@ -160,6 +160,7 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
             width={DELETE_BUTTON_WIDTH}
           >
             <Touchable
+              accessibilityRole="button"
               onPress={() => handleDeleteAlert()}
               testID={`delete-button-${alert.internalID}`}
             >
@@ -174,6 +175,7 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
 
           <Animated.View style={animatedStyles}>
             <Touchable
+              accessibilityRole="button"
               onPress={handlePress}
               underlayColor={color("mono5")}
               activeOpacity={1}

@@ -84,7 +84,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
     <KeyboardAvoidingView style={{ flex: 1 }}>
       <PageWithSimpleHeader
         left={
-          <TouchableOpacity onPress={() => goBack()}>
+          <TouchableOpacity accessibilityRole="button" onPress={() => goBack()}>
             <Text variant="sm" textAlign="left">
               Cancel
             </Text>

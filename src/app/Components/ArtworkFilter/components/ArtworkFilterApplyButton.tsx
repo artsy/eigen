@@ -37,6 +37,7 @@ const InnerButton: React.FC<Button> = (props) => {
 
   return (
     <Pressable
+      accessibilityRole="button"
       onPressIn={() => setIsPressed(true)}
       onPressOut={() => setIsPressed(false)}
       onPress={onPress}

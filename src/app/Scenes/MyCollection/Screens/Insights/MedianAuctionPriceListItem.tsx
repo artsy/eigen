@@ -39,6 +39,7 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({
   return (
     <Flex pt={0.5} pb={2}>
       <Touchable
+        accessibilityRole="button"
         testID="artistTouchable"
         disabled={!onPress}
         underlayColor={color("mono5")}
@@ -99,6 +100,7 @@ export const MedianAuctionPriceListItem: React.FC<Props> = ({
       </Touchable>
       {restItems.map((artwork, index) => (
         <Touchable
+          accessibilityRole="button"
           testID="categoryTouchable"
           key={artwork?.internalID}
           onPress={() => {

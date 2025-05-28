@@ -36,7 +36,11 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
 
   return (
     <Flex flexDirection="row" alignItems="center" justifyContent="flex-end" width={185} py={1}>
-      <TouchableOpacity onPress={onSharePress}>
+      <TouchableOpacity
+        accessibilityRole="button"
+        accessibilityLabel="Share"
+        onPress={onSharePress}
+      >
         <ShareIcon width={23} height={23} />
       </TouchableOpacity>
 

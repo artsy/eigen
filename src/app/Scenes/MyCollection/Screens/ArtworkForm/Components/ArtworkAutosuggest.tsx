@@ -41,6 +41,7 @@ export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
 
       {!!showSkipAheadToAddArtworkLink && (
         <Touchable
+          accessibilityRole="button"
           onPress={() => onSkipPress?.(trimmedArtworkQuery)}
           testID="my-collection-artwork-form-artwork-skip-button"
         >

@@ -482,7 +482,7 @@ const PhotosButton: React.FC<{ onPress: () => void; testID?: string }> = ({ onPr
   return (
     <>
       <Separator />
-      <TouchableOpacity onPress={onPress} testID={testID}>
+      <TouchableOpacity accessibilityRole="button" onPress={onPress} testID={testID}>
         <Spacer y={2} />
         <ScreenMargin>
           <ArrowDetails>

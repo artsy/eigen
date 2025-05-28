@@ -125,6 +125,7 @@ export const MainStickyHeader: React.FC<{ hasArtworks: boolean }> = ({ hasArtwor
         {/* Seach and Add */}
         <Flex flexDirection="row">
           <Touchable
+            accessibilityRole="button"
             onPress={() => {
               handleCreateButtonPress()
             }}
@@ -165,6 +166,7 @@ const AnimatedCloseIcon: React.FC<{
         delay={selectedTab !== null ? 300 : 0}
       >
         <Touchable
+          accessibilityRole="button"
           onPress={() => {
             setKeyword("")
             setSelectedTab(null)

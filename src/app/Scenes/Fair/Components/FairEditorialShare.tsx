@@ -20,6 +20,8 @@ export const FairEditorialShare: React.FC<FairEditorialShareProps> = ({
 }) => (
   <Box display="flex" flexDirection="row" alignItems="center" {...rest}>
     <Touchable
+      accessibilityRole="button"
+      accessibilityLabel="Share this article on Facebook"
       onPress={() => {
         Linking.openURL(`https://www.facebook.com/sharer/sharer.php?u=${url}`)
       }}
@@ -28,6 +30,8 @@ export const FairEditorialShare: React.FC<FairEditorialShareProps> = ({
     </Touchable>
 
     <Touchable
+      accessibilityRole="button"
+      accessibilityLabel="Share this article via email"
       onPress={() => {
         Linking.openURL(`mailto:?subject=${subject}&amp;body=Check out ${subject} on Artsy: ${url}`)
       }}
@@ -36,6 +40,8 @@ export const FairEditorialShare: React.FC<FairEditorialShareProps> = ({
     </Touchable>
 
     <Touchable
+      accessibilityRole="button"
+      accessibilityLabel="Share this article on X"
       onPress={() => {
         Linking.openURL(
           `https://twitter.com/intent/tweet?original_referer=${url}&amp;text=${subject}&amp;url=${url}&amp;via=artsy`

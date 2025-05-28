@@ -34,6 +34,7 @@ const PartnerMap: React.FC<{
       </Text>
       <Spacer y={0.5} />
       <TouchableOpacity
+        accessibilityRole="button"
         onPress={() =>
           showActionSheetWithOptions(
             ...tappedOnMap(lat, lng, address, null, null, city, postalCode)

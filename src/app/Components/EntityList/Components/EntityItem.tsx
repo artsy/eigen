@@ -29,7 +29,7 @@ export const EntityItem: React.FC<EntityItemProps> = ({
 
   return (
     // FIXME: Should this be a slug or internalID?
-    <TouchableOpacity onPress={() => onPress(href, slug, internalID)}>
+    <TouchableOpacity accessibilityRole="button" onPress={() => onPress(href, slug, internalID)}>
       <Text variant="sm" weight="medium" lineHeight="19px">
         {text}
       </Text>

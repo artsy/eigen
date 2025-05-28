@@ -72,6 +72,7 @@ export const SavedSearchFilterAdditionalGeneIDs = () => {
             : null}
 
           <TouchableOpacity
+            accessibilityRole="button"
             onPress={() => {
               setShowAll(!showAll)
             }}

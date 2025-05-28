@@ -10,7 +10,7 @@ const TestRenderer: React.FC<{ options: PopoverMessageItem }> = (props) => {
   const popoverMessage = usePopoverMessage()
 
   return (
-    <Touchable onPress={() => popoverMessage.show(props.options)}>
+    <Touchable accessibilityRole="button" onPress={() => popoverMessage.show(props.options)}>
       <Text>Some button text</Text>
     </Touchable>
   )

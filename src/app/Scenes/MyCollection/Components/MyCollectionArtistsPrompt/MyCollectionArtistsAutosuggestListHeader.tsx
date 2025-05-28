@@ -49,6 +49,7 @@ export const MyCollectionArtistsAutosuggestListHeader: FC<
                 Can't find the artist?{" "}
               </Text>
               <Touchable
+                accessibilityRole="button"
                 onPress={() => {
                   navigate("/my-collection/artists/new", {
                     passProps: customArtistNavigationProps,

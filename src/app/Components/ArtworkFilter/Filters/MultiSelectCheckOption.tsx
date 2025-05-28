@@ -82,6 +82,7 @@ export const CheckMarkOptionListItem = ({
   hasExtraLeftPadding?: boolean
 }) => (
   <TouchableOpacity
+    accessibilityRole="button"
     onPress={() => onSelect(item, !item.paramValue)}
     testID="multi-select-option-button"
   >

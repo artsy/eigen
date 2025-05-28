@@ -41,6 +41,7 @@ export const DefaultBottomSheetBackdrop: React.FC<DefaultBottomSheetBackdrop> = 
 
   return (
     <TouchableWithoutFeedback
+      accessibilityRole="button"
       onPress={() => {
         if (pressBehavior === "close") {
           onClose?.()

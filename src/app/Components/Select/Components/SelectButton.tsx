@@ -96,6 +96,7 @@ export const SelectButton: React.FC<{
           }}
         >
           <Touchable
+            accessibilityRole="button"
             onPress={onTooltipPress}
             haptic="impactLight"
             hitSlop={{ top: 10, bottom: 10 }}

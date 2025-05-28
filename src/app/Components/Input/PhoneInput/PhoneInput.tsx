@@ -137,7 +137,7 @@ export const PhoneInput = forwardRef<
           titleForSelect="Country code"
           renderButtonForSelect={({ selectedValue, onPress }) => {
             return (
-              <Touchable onPress={onPress}>
+              <Touchable accessibilityRole="button" onPress={onPress}>
                 <Flex flex={1} flexDirection="row" style={{ width: "100%", height: "100%" }}>
                   <Flex flexDirection="row" px={1} alignItems="center" backgroundColor="mono10">
                     {/* selectedValue should always be present */}

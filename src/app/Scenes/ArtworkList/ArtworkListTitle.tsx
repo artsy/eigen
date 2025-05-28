@@ -38,6 +38,7 @@ export const ArtworkListTitle: React.FC<ArtworkListTitleProps> = ({
           >
             <Flex>
               <Touchable
+                accessibilityRole="button"
                 onPress={() => {
                   setIsToolTipVisible(!isToolTipVisible)
                 }}

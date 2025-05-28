@@ -16,6 +16,7 @@ module.exports = {
   ],
   extends: [
     "eslint:recommended",
+    "plugin:react-native-a11y/basic",
     "plugin:testing-library/react",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:@typescript-eslint/recommended",
@@ -133,6 +134,7 @@ module.exports = {
     "react/prop-types": OFF,
     "react-native/no-inline-styles": OFF,
     "react-hooks/exhaustive-deps": OFF, // we don't care about this rule, since it's often wrong. it's helpful, but often wrong.
+    "react-native-a11y/has-accessibility-hint": OFF,
     "no-restricted-imports": [
       "error",
       {

@@ -57,7 +57,7 @@ export const InquiryQuestionOption: React.FC<InquiryQuestionOptionProps> = ({
 
   return (
     <>
-      <TouchableOpacity onPress={setSelection}>
+      <TouchableOpacity accessibilityRole="button" onPress={setSelection}>
         <Flex
           style={{
             borderColor: questionSelected ? color("mono100") : color("mono10"),
@@ -86,6 +86,7 @@ export const InquiryQuestionOption: React.FC<InquiryQuestionOptionProps> = ({
               <Separator my={2} />
 
               <TouchableOpacity
+                accessibilityRole="button"
                 testID="toggle-shipping-modal"
                 onPress={() => {
                   if (typeof setShippingModalVisibility === "function") {

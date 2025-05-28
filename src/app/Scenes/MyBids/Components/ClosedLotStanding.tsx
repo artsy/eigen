@@ -76,6 +76,7 @@ export const ClosedLotStanding = ({
 
   return (
     <TouchableOpacity
+      accessibilityRole="button"
       onPress={() => handleLotTap()}
       style={{ marginHorizontal: 0, width: "100%" }}
       testID={testID}

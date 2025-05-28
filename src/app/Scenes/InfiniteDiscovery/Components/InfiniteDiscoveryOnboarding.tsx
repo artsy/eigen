@@ -116,6 +116,7 @@ export const InfiniteDiscoveryOnboarding: React.FC<InfiniteDiscoveryOnboardingPr
       onRequestClose={() => setIsVisible(false)}
     >
       <TouchableWithoutFeedback
+        accessibilityRole="button"
         onPress={() => {
           if (enableTapToDismiss) {
             setIsVisible(false)

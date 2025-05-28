@@ -22,7 +22,7 @@ export const Tab: React.FC<TabProps> = ({
 }) => {
   const color = useColor()
   return (
-    <Pressable onPress={onPress}>
+    <Pressable accessibilityRole="button" onPress={onPress}>
       {({ pressed }) => (
         <View
           onLayout={onLayout}

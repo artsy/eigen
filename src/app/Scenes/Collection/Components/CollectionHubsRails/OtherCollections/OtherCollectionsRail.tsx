@@ -29,6 +29,7 @@ export const OtherCollectionsRail: React.FC<OtherCollectionsRailProps> = ({
         renderItem={({ item: { slug, title } }) => {
           return (
             <TouchableOpacity
+              accessibilityRole="button"
               onPress={() => {
                 navigate(`/collection/${slug}`)
               }}

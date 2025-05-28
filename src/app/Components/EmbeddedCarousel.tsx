@@ -30,7 +30,7 @@ export const EmbeddedCarousel: React.FC<EmbeddedCarouselProps & FlatListProps<an
         data={data}
         renderItem={(item: any) =>
           onCardPress ? (
-            <Touchable haptic onPress={onCardPress}>
+            <Touchable accessibilityRole="button" haptic onPress={onCardPress}>
               {renderItem(item)}
             </Touchable>
           ) : (

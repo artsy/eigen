@@ -117,7 +117,7 @@ export const MoneyInput = forwardRef<
         titleForSelect="Currency"
         renderButtonForSelect={({ selectedValue, onPress }) => {
           return (
-            <Touchable onPress={onPress}>
+            <Touchable accessibilityRole="button" onPress={onPress}>
               <Flex
                 flex={1}
                 flexDirection="row"

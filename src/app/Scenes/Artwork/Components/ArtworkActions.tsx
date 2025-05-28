@@ -83,6 +83,7 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
         <ArtworkSaveButton artwork={artwork} saveToDefaultCollectionOnly={openOrUpcomingSale} />
         {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && isHangable) && (
           <Touchable
+            accessibilityRole="button"
             hitSlop={{
               top: space(1),
               bottom: space(1),
@@ -97,6 +98,7 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
           </Touchable>
         )}
         <Touchable
+          accessibilityRole="button"
           hitSlop={{
             top: space(1),
             bottom: space(1),

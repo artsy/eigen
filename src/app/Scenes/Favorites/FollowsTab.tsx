@@ -49,6 +49,7 @@ export const FollowOptionPicker: React.FC<{}> = () => {
   return (
     <Flex px={2} pb={2}>
       <Touchable
+        accessibilityRole="button"
         haptic
         onPress={() => {
           Haptic.trigger("impactLight")

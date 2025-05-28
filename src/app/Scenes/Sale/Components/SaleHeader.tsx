@@ -99,6 +99,8 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
             <Flex flex={0.1}>
               {!!shouldShowShareButton && (
                 <Touchable
+                  accessibilityRole="button"
+                  accessibilityLabel="Share this auction"
                   onPress={() => {
                     !!shouldShowShareButton &&
                       showShareSheet({

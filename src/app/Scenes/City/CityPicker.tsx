@@ -56,7 +56,7 @@ export const CityPicker: React.FC<Props> = (props) => {
           <Join separator={<Separator />}>
             {cityList.map((city, i) => (
               <Box key={i}>
-                <TouchableOpacity onPress={() => selectCity(city, i)}>
+                <TouchableOpacity accessibilityRole="button" onPress={() => selectCity(city, i)}>
                   <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
                     <Text
                       mt={1}

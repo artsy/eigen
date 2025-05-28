@@ -39,7 +39,12 @@ export const CareerHighlightsCard: React.FC<CareerHighlightsCardProps> = ({
   const { label, Icon } = getCareerHiglight(type, count)
 
   return (
-    <Touchable haptic onPress={onPress} testID="career-highlight-card-item">
+    <Touchable
+      accessibilityRole="button"
+      haptic
+      onPress={onPress}
+      testID="career-highlight-card-item"
+    >
       <Flex
         p={1}
         height={135}
@@ -85,7 +90,7 @@ export const CareerHighlightPromotionalCard: React.FC<CareerHighlightPromotional
   onButtonPress,
 }) => {
   return (
-    <Touchable haptic onPress={onPress}>
+    <Touchable accessibilityRole="button" haptic onPress={onPress}>
       <Flex
         width={200}
         height={135}

@@ -83,6 +83,7 @@ export const AuctionResult: React.FC<Props> = (props) => {
             {label}
           </Text>
           <TextInput
+            accessibilityLabel="Text input field"
             editable={false}
             value={value}
             multiline
@@ -243,6 +244,7 @@ export const AuctionResult: React.FC<Props> = (props) => {
 
           <Flex px={2} mt={2}>
             <TouchableWithoutFeedback
+              accessibilityRole="button"
               onPress={() => artist?.href && navigate(artist.href)}
               hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
             >

@@ -273,6 +273,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
             <Text variant="sm-display">{artwork.saleMessage}</Text>
           </Flex>
           <Touchable
+            accessibilityRole="button"
             haptic
             hitSlop={{ bottom: 10, right: 10, left: 10, top: 10 }}
             onPress={() => {

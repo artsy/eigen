@@ -119,6 +119,9 @@ export const LoadFailureView: React.FC<LoadFailureViewProps & BoxProps> = ({
 
         {!!onRetry && (
           <Touchable
+            accessibilityRole="button"
+            accessibilityLabel="Retry"
+            accessibilityHint="Reloads the current screen"
             onPress={debounce(() => {
               if (!isAnimating) {
                 playAnimation()

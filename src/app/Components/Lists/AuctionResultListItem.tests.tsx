@@ -1,7 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { AuctionResultListItemTestsQuery } from "__generated__/AuctionResultListItemTestsQuery.graphql"
-import * as navigation from "app/system/navigation/navigate"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import * as navigation from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"

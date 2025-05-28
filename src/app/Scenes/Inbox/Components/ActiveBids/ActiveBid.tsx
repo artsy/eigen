@@ -141,7 +141,7 @@ class ActiveBid extends React.Component<Props, State> {
         })`
 
     return (
-      <TouchableWithoutFeedback onPress={this.handleTap}>
+      <TouchableWithoutFeedback accessibilityRole="button" onPress={this.handleTap}>
         <Container>
           <Content>
             <ImageView src={imageURL} blurhash={blurhash} width={80} height={80} />

@@ -1,5 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedArticleShare } from "@artsy/cohesion"
-import { DEFAULT_HIT_SLOP, ShareIcon } from "@artsy/palette-mobile"
+import { ShareIcon } from "@artsy/icons/native"
+import { DEFAULT_HIT_SLOP } from "@artsy/palette-mobile"
 import { ArticleShareButton_article$key } from "__generated__/ArticleShareButton_article.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { TouchableOpacity } from "react-native"
@@ -45,7 +46,14 @@ export const ArticleShareButton: React.FC<ArticleShareButtonProps> = (props) => 
   }
 
   return (
-    <TouchableOpacity onPress={handleSharePress} hitSlop={DEFAULT_HIT_SLOP} testID="shareButton">
+    <TouchableOpacity
+      accessibilityRole="button"
+      accessibilityLabel="Share article"
+      accessibilityHint="Opens the native share sheet"
+      onPress={handleSharePress}
+      hitSlop={DEFAULT_HIT_SLOP}
+      testID="shareButton"
+    >
       <ShareIcon fill="mono100" width="25px" height="25px" top="2px" />
     </TouchableOpacity>
   )

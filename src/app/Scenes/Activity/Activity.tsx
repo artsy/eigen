@@ -19,6 +19,7 @@ export const Activity: React.FC = () => {
         title="Activity"
         rightElements={
           <Touchable
+            accessibilityRole="button"
             hitSlop={DEFAULT_HIT_SLOP}
             onPress={() => {
               showActionSheetWithOptions(

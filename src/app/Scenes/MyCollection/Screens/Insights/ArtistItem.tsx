@@ -14,6 +14,7 @@ export const ArtistItem: React.FC<ArtistItemProps> = ({ isFirst, onPress, ...res
 
   return (
     <Touchable
+      accessibilityRole="button"
       testID={`artist-section-item-${artist.name}`}
       underlayColor={color("mono5")}
       onPress={() => onPress(artist.internalID)}

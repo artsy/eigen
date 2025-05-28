@@ -257,6 +257,8 @@ const SelectModal: React.FC<{
           </Text>
         </Flex>
         <TouchableOpacity
+          accessibilityRole="button"
+          accessibilityLabel="Close Select Modal"
           onPress={props.onDismiss}
           hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
           style={{ flex: 1, alignItems: "flex-end" }}
@@ -291,6 +293,7 @@ const SelectModal: React.FC<{
         onLayout={(e) => (flatListHeight.current = e.nativeEvent.layout.height)}
         renderItem={({ item, index }) => (
           <Touchable
+            accessibilityRole="button"
             underlayColor={color("mono10")}
             onPress={() => {
               setValue(item.value)
