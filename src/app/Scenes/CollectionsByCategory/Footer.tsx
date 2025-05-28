@@ -32,6 +32,7 @@ export const Footer: FC<FooterProps> = ({ cards, homeViewSectionId }) => {
 
       {categories.map((c, index) => (
         <RouterLink
+          disablePrefetch
           key={`category_rail_${index}`}
           to={`/collections-by-category/${c.title}?homeViewSectionId=${homeViewSectionId}&entityID=${c.entityID}`}
         >
