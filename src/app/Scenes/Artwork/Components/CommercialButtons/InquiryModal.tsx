@@ -5,7 +5,6 @@ import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { CompleteProfilePrompt } from "app/Scenes/Artwork/Components/CommercialButtons/CompleteProfilePrompt"
 import { InquiryQuestionOption } from "app/Scenes/Artwork/Components/CommercialButtons/InquiryQuestionOption"
-import { InquirySuccessNotification } from "app/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
 import { randomAutomatedMessage } from "app/Scenes/Artwork/Components/CommercialButtons/constants"
 import { useSendInquiry } from "app/Scenes/Artwork/hooks/useSendInquiry"
 import { MyCollectionBottomSheetModalArtistsPrompt } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
@@ -211,7 +210,6 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
           />
         </Screen>
       </Modal>
-      <InquirySuccessNotification />
 
       <CompleteProfilePrompt
         artwork={artwork}

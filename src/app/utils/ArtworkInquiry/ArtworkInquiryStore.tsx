@@ -10,7 +10,6 @@ export const initialArtworkInquiryState: ArtworkInquiryContextState = {
   shippingLocation: null,
   inquiryQuestions: [],
   inquiryModalVisible: false,
-  successNotificationVisible: false,
   collectionPromptVisible: false,
   profilePromptVisible: false,
 }
@@ -49,11 +48,6 @@ export const artworkInquiryStateReducer = (
       return {
         ...inquiryState,
         inquiryModalVisible: action.payload,
-      }
-    case "setSuccessNotificationVisible":
-      return {
-        ...inquiryState,
-        successNotificationVisible: action.payload,
       }
     case "setCollectionPromptVisible":
       return {
