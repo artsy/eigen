@@ -9,10 +9,15 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { graphql, RelayEnvironmentProvider, useLazyLoadQuery } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
+jest.mock("app/Scenes/Artwork/Components/CommercialButtons/useInquirySuccessPopover", () => ({
+  useInquirySuccessPopover: jest.fn(),
+}))
+
 const env = createMockEnvironment()
 
 describe("useSendInquiry", () => {
   const dispatch = jest.fn()
+  const mockShowPopover = jest.fn()
 
   beforeEach(() => {
     jest.spyOn(artworkInquiryStore, "useArtworkInquiryContext").mockReturnValue({
@@ -24,6 +29,11 @@ describe("useSendInquiry", () => {
         onCompleted()
       }),
     ])
+
+    const {
+      useInquirySuccessPopover,
+    } = require("app/Scenes/Artwork/Components/CommercialButtons/useInquirySuccessPopover")
+    useInquirySuccessPopover.mockReturnValue(mockShowPopover)
   })
 
   afterEach(() => {
@@ -60,12 +70,7 @@ describe("useSendInquiry", () => {
       owner_id: '<mock-value-for-field-"internalID">',
       owner_slug: '<mock-value-for-field-"slug">',
     })
-    await waitFor(() =>
-      expect(dispatch).toHaveBeenCalledWith({
-        type: "setSuccessNotificationVisible",
-        payload: true,
-      })
-    )
+    await waitFor(() => expect(mockShowPopover).toHaveBeenCalled())
   })
 
   it("returns an error when sendInquiry fails", async () => {
@@ -215,12 +220,7 @@ describe("useSendInquiry", () => {
 
     act(() => result.current.sendInquiry("message"))
 
-    await waitFor(() =>
-      expect(dispatch).toHaveBeenCalledWith({
-        type: "setSuccessNotificationVisible",
-        payload: true,
-      })
-    )
+    await waitFor(() => expect(mockShowPopover).toHaveBeenCalled())
   })
 })
 

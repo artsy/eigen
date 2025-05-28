@@ -2,6 +2,7 @@ import { useSendInquiry_artwork$key } from "__generated__/useSendInquiry_artwork
 import { useSendInquiry_collectorProfile$key } from "__generated__/useSendInquiry_collectorProfile.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { InquiryQuestionInput } from "__generated__/useSubmitInquiryRequestMutation.graphql"
+import { useInquirySuccessPopover } from "app/Scenes/Artwork/Components/CommercialButtons/useInquirySuccessPopover"
 import { useSubmitInquiryRequest } from "app/Scenes/Artwork/Components/CommercialButtons/useSubmitInquiryRequest"
 import { useArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import {
@@ -29,6 +30,8 @@ export const useSendInquiry = ({
 
   const { state, dispatch } = useArtworkInquiryContext()
   const [commit] = useSubmitInquiryRequest()
+
+  const showSuccessPopover = useInquirySuccessPopover()
 
   const artwork = useFragment(FRAGMENT_ARTWORK, _artwork)
   const me = useFragment(FRAGMENT_ME, _me)
@@ -109,9 +112,7 @@ export const useSendInquiry = ({
           return
         }
 
-        setTimeout(() => {
-          dispatch({ type: "setSuccessNotificationVisible", payload: true })
-        }, 500)
+        showSuccessPopover()
       },
     })
   }

@@ -5,8 +5,8 @@ import {
   BottomSheetModalProps,
 } from "@gorhom/bottom-sheet"
 import { DefaultBottomSheetBackdrop } from "app/Components/BottomSheet/DefaultBottomSheetBackdrop"
-import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { FC, useCallback, useEffect, useRef, useState } from "react"
+import { BackHandler } from "react-native"
 
 export interface AutomountedBottomSheetModalProps extends BottomSheetModalProps {
   visible: boolean
@@ -24,7 +24,7 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
   const { height: screenHeight, safeAreaInsets } = useScreenDimensions()
 
   // dismiss modal on back button press on Android
-  useBackHandler(() => {
+  const androidBackHandler = useCallback(() => {
     if (ref.current && modalIsPresented && visible) {
       ref.current.dismiss()
       return true
@@ -32,7 +32,7 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
       // modal is not presented, let the default back button behavior happen
       return false
     }
-  })
+  }, [modalIsPresented, visible])
 
   const handlePresent = () => {
     setModalIsPresented(true)
@@ -49,6 +49,12 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
       ref.current?.dismiss()
     }
   }, [visible])
+
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", androidBackHandler)
+
+    return () => BackHandler.removeEventListener("hardwareBackPress", androidBackHandler)
+  }, [androidBackHandler])
 
   const renderBackdrop = useCallback(
     (props: BottomSheetBackdropProps) => {

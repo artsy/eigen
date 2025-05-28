@@ -26,6 +26,7 @@ export interface ProgressiveOnboardingModel {
   setIsReady: Action<this, boolean>
   setActivePopover: Action<this, string | undefined>
   __clearDissmissed: Action<this>
+  reset: Action<this>
 }
 
 export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => ({
@@ -60,6 +61,10 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
   }),
   __clearDissmissed: action((state) => {
     state.dismissed = []
+  }),
+  reset: action((state) => {
+    state.dismissed = []
+    state.sessionState = { isReady: false }
   }),
 })
 

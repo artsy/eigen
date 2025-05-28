@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { BackButton, Button, Flex, useSpace } from "@artsy/palette-mobile"
+import { BackButton, Button, Flex, useColor, useSpace } from "@artsy/palette-mobile"
 import { Tab } from "app/Scenes/MyCollection/MyCollection"
 import { navigate, switchTab } from "app/system/navigation/navigate"
 import { screen } from "app/utils/track/helpers"
@@ -22,6 +22,7 @@ export const ModalCarouselContainer: React.FC<FullScreenCarouselProps> = ({
   toggleModal,
 }) => {
   const { trackEvent } = useTracking()
+  const color = useColor()
 
   if (!Array.isArray(children) || children.length === 0) {
     throw new Error("FullScreenCarousel requires at least one child")
@@ -86,6 +87,7 @@ export const ModalCarouselContainer: React.FC<FullScreenCarouselProps> = ({
             }
           }}
         />
+
         <Flex
           alignItems="flex-end"
           right={2}
@@ -97,7 +99,6 @@ export const ModalCarouselContainer: React.FC<FullScreenCarouselProps> = ({
             top: topInset - 1,
           }}
           position="absolute"
-          zIndex={100}
         >
           <BackButton
             onPress={handleCloseModal}
@@ -105,7 +106,8 @@ export const ModalCarouselContainer: React.FC<FullScreenCarouselProps> = ({
             hitSlop={{ top: 5, left: 5, right: 5, bottom: 5 }}
           />
         </Flex>
-        <SafeAreaView style={{ flex: 1 }}>
+
+        <SafeAreaView style={{ flex: 1, backgroundColor: color("mono0") }}>
           <PagerView
             style={{ flex: 1 }}
             initialPage={0}
@@ -142,9 +144,9 @@ const Steps = ({
       flexDirection="row"
       justifyContent="space-between"
       pl={1}
-      style={{ marginTop: topInset + 10 }}
+      style={{ paddingTop: topInset + 10 }}
       pr={6}
-      zIndex={101}
+      backgroundColor="mono0"
     >
       {Array.from({ length: numberOfSteps }).map((_, index) => (
         <Step key={index} isActive={activeStep === index} goToStep={() => goToStep(index)} />
