@@ -55,6 +55,9 @@ export const LoginWelcomeStep: React.FC = () => {
         onSubmit={async ({ email }, { resetForm }) => {
           // FIXME
           if (!token) {
+            console.log(
+              `[LoginWelcomeStep] didn't receive a token, navigating to LoginPasswordStep`
+            )
             navigation.navigate({
               name: "LoginPasswordStep",
               params: { email, showSignUpLink: true },
@@ -62,13 +65,17 @@ export const LoginWelcomeStep: React.FC = () => {
             return
           }
 
+          console.log(`[LoginWelcomeStep] Verifying user with email: ${email} and token: ${token}`)
           const res = await GlobalStore.actions.auth.verifyUser({ email, recaptchaToken: token })
 
           if (res === "user_exists") {
+            console.log(`[LoginWelcomeStep] User exists, navigating to LoginPasswordStep`)
             navigation.navigate({ name: "LoginPasswordStep", params: { email } })
           } else if (res === "user_does_not_exist") {
+            console.log(`[LoginWelcomeStep] User does not exist, navigating to SignUpPasswordStep`)
             navigation.navigate({ name: "SignUpPasswordStep", params: { email } })
           } else if (res === "something_went_wrong") {
+            console.log(`[LoginWelcomeStep] Something went wrong, navigating to LoginPasswordStep`)
             navigation.navigate({
               name: "LoginPasswordStep",
               params: { email, showSignUpLink: true },

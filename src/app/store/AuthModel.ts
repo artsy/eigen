@@ -1023,15 +1023,22 @@ export const getAuthModel = (): AuthModel => ({
       })
     } catch (error) {
       Sentry.captureMessage(`AuthModel verifyUser error ${error}`)
+      console.log(`[AuthModel] verifyUser error: ${error}`)
       return "something_went_wrong"
     }
 
     if (result.status !== 201) {
       Sentry.captureMessage(`AuthModel verifyUser result status ${result.status}`)
+      const json = await result.json()
+      console.log(`[AuthModel] verifyUser result:\n${JSON.stringify(json, null, 2)}`)
       return "something_went_wrong"
     }
 
-    const { exists } = await result.json()
+    const json = await result.json()
+
+    const exists = json.exists
+
+    console.log(`[AuthModel] verifyUser result: ${json}`)
 
     if (exists) {
       return "user_exists"

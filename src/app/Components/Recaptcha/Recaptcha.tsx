@@ -10,6 +10,7 @@ export const useRecaptcha = ({ source, action }: UseRecaptchaProps) => {
   const [state, setState] = useState<State>()
 
   const handleOnToken = (token: string) => {
+    console.log(`[Recaptcha token received for source ${source} and action ${action}]`, token)
     setToken(token)
   }
 
@@ -26,6 +27,8 @@ export const useRecaptcha = ({ source, action }: UseRecaptchaProps) => {
     if (!active) {
       return null
     }
+
+    console.log(`[Recaptcha] rendering for source ${source} and action ${action}`)
 
     return (
       <Box height={0}>
