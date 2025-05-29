@@ -16142,6 +16142,9 @@ type Order {
   # The seller of the order
   seller: SellerType
 
+  # Display short version of order's artwork location
+  shippingOrigin: String
+
   # The total amount for shipping
   shippingTotal: Money
 
