@@ -225,7 +225,7 @@ jobs:
       - setup-awscli
       - run:
           name: Download app zip
-          command: aws s3 cp s3://artsy-citadel/eigen/Artsy.zip ./Artsy.zip
+          command: aws s3 cp s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip ./Artsy.zip
       - run:
           name: Unzip the app
           command: unzip Artsy.zip
@@ -236,6 +236,7 @@ jobs:
           name: Run Maestro Tests
           no_output_timeout: 25m
           command: ./run_maestro_shard.sh
+
   deploy-nightly-beta:
     environment:
       BUNDLE_PATH: .vendor

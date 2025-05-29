@@ -70,6 +70,46 @@ lane :notify_beta_needed do
   )
 end
 
+# Build and upload iOS and Android builds to S3
+
+lane :s3_upload_ios_build do |options|
+  UI.message("Uploading iOS build to S3...")
+
+  app_version = options[:app_version]
+  archive_root = options[:archive_root] || "../archives"
+  app_name = options[:app_name] || "Artsy"
+
+  # Find latest archive
+  pattern = File.join(archive_root, "#{app_name}*.xcarchive")
+  matching_archives = Dir.glob(pattern)
+
+  UI.user_error!("No .xcarchive found matching pattern #{pattern}") unless matching_archives.any?
+
+  latest_archive = matching_archives.max_by { |f| File.mtime(f) }
+  app_path = File.join(latest_archive, "Products/Applications/#{app_name}.app")
+  UI.user_error!("App not found at #{app_path}") unless File.exist?(app_path)
+
+  # Create zip
+  zip_name = "#{app_name}-#{app_version}.zip"
+  zip_path = File.join(archive_root, zip_name)
+  latest_zip_path = File.join(archive_root, "#{app_name}-latest.zip")
+
+  sh("zip -r #{zip_path} '#{app_path}'")
+  FileUtils.cp(zip_path, latest_zip_path)
+
+  # Upload both versioned and "latest"
+  sh("aws s3 cp #{zip_path} #{S3_IOS_BUILDS_PATH}#{zip_name}")
+  sh("aws s3 cp #{latest_zip_path} #{S3_IOS_BUILDS_PATH}#{app_name}-latest.zip")
+
+  UI.success("✅ Uploaded #{zip_name} and latest to S3")
+end
+
+lane :s3_upload_android_build do |options|
+  app_version = options[:app_version]
+  app_path = options[:app_path]
+  sh('aws s3 cp ' + app_path + ' ' + S3_ANDROID_BUILDS_PATH + app_version.to_s + '.aab')
+end
+
 lane :tag_and_push do |options|
   # Do a tag, we use a http git remote so we can have push access
   # as the default remote for circle is read-only
