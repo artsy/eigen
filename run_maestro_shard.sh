@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TEST_FILES=$(find e2e -name "*.yml" | sort | awk "NR % ${CIRCLE_NODE_TOTAL} == ${CIRCLE_NODE_INDEX}")
+TEST_FILES=$(find e2e/flows -name "*.yml" | sort | awk "NR % ${CIRCLE_NODE_TOTAL} == ${CIRCLE_NODE_INDEX}")
 
 EXIT_CODE=0
 
