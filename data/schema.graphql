@@ -10582,6 +10582,9 @@ type EditionSet implements Sellable {
 
   # In CMS, has the artwork been marked as BNMO?
   listingOptions: ArtworkListingOptions
+
+  # The unit of length of the edition set, expressed in `in` or `cm`
+  metric: String
   price: String
   priceDisplay: String
   priceListed: Money
