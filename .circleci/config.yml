@@ -565,14 +565,17 @@ workflows:
     jobs:
       - deploy-nightly-beta
       - run-nightly-tasks
+      - run-e2e-tests:
+          requires:
+            - deploy-nightly-beta
 
   run-e2e:
     jobs:
       - run-e2e-tests:
-        filters:
-          branches:
-            only:
-              - brian/e2e-again
+          filters:
+            branches:
+              only:
+                - brian/e2e-again
 
   flag-check:
     triggers:
