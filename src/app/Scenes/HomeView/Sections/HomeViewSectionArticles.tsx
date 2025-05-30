@@ -54,6 +54,7 @@ export const HomeViewSectionArticles: React.FC<HomeViewSectionArticlesProps> = (
           )
         }}
         title={section.component?.title ?? ""}
+        subtitle={section.component?.description ?? ""}
         titleHref={viewAll?.href}
       />
 
@@ -71,6 +72,7 @@ const sectionFragment = graphql`
     contextModule
     component {
       title
+      description
       behaviors {
         viewAll {
           href
