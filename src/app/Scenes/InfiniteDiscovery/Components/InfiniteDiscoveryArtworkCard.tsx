@@ -1,7 +1,10 @@
 import { ContextModule } from "@artsy/cohesion"
 import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
 import { Flex, Image, Text, Touchable, useColor, useScreenDimensions } from "@artsy/palette-mobile"
-import { InfiniteDiscoveryArtworkCard_artwork$key } from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
+import {
+  InfiniteDiscoveryArtworkCard_artwork$data,
+  InfiniteDiscoveryArtworkCard_artwork$key,
+} from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { InfiniteDiscoveryArtworkCardPopover } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCardPopover"
@@ -40,8 +43,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const saveAnimationProgress = useSharedValue(0)
     const { hasSavedArtworks } = GlobalStore.useAppState((state) => state.infiniteDiscovery)
     const setHasSavedArtwors = GlobalStore.actions.infiniteDiscovery.setHasSavedArtworks
-    const timeoutRef = useRef<NodeJS.Timeout>()
-    const timeoutRunningRef = useRef<"ready" | "ended" | "running">("ready")
+    const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
     const imageCarouselRef = useRef<FlatList>(null)
 
     const track = useInfiniteDiscoveryTracking()
@@ -58,9 +60,11 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
     const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
-      artworkFragmentRef: artwork as any,
+      artworkFragmentRef: artwork as NonNullable<InfiniteDiscoveryArtworkCard_artwork$data>,
       onCompleted: (isArtworkSaved) => {
-        track.savedArtwork(isArtworkSaved, artwork?.internalID as any, artwork?.slug as any)
+        if (!!artwork) {
+          track.savedArtwork(isArtworkSaved, artwork.internalID, artwork.slug)
+        }
       },
       onError: () => {
         /**
@@ -106,10 +110,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       })
     }, [isSavedProp])
 
-    useEffect(() => {
-      return () => clearTimeout(timeoutRef.current)
-    }, [])
-
     const savedArtworkAnimationStyles = useAnimatedStyle(() => {
       return {
         opacity:
@@ -130,80 +130,58 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     const images = artwork.images
     const hasMultipleImages = images.length > 1
-    // const selectedImage = images[currentImageIndex]
-    // const src = selectedImage?.url
-    // const width = selectedImage?.width ?? 0
-    // const height = selectedImage?.height ?? 0
-    // const blurhash = selectedImage?.blurhash ?? undefined
 
     // When there are multiple images, adjust the max height to allow space for pagination bar
     const adjustedMaxHeight = hasMultipleImages
       ? MAX_ARTWORK_HEIGHT - PAGINATION_BAR_HEIGHT - PAGINATION_BAR_MARGIN_TOP
       : MAX_ARTWORK_HEIGHT
 
-    // const size = sizeToFit({ width, height }, { width: screenWidth, height: adjustedMaxHeight })
-
-    const doubleTap = () => {
-      clearTimeout(timeoutRef.current)
-      timeoutRunningRef.current = "ready"
-      if (!isSaved) {
-        Haptic.trigger("impactLight")
-        setShowScreenTapToSave(true)
-        saveArtworkToLists()
-      }
-    }
-
     const handleWrapperTaps = (event: GestureResponderEvent) => {
+      const now = Date.now()
+      const state = gestureState.current
       const { nativeEvent } = event
       const { locationX } = nativeEvent
 
-      const halfScreen = screenWidth / 2
-      const isLeft = locationX < halfScreen
-      const isRight = locationX > halfScreen
+      const screenFifth = screenWidth / 5
+      // Determine which part of the screen was tapped
+      const leftFifth = locationX < screenFifth
+      const rightFifth = locationX > screenWidth - screenFifth
+      const middleSection = !leftFifth && !rightFifth
 
-      if (timeoutRunningRef.current === "running" && (isLeft || isRight)) {
-        doubleTap()
+      if (middleSection || images.length === 1) {
+        if (now - state.lastTapTimestamp < SAVES_MAX_DURATION_BETWEEN_TAPS) {
+          state.numTaps += 1
+        } else {
+          state.numTaps = 1
+        }
+
+        state.lastTapTimestamp = now
+
+        if (state.numTaps === 2) {
+          state.numTaps = 0
+          if (!isSaved) {
+            Haptic.trigger("impactLight")
+            setShowScreenTapToSave(true)
+            saveArtworkToLists()
+          }
+          return true
+        }
+      }
+
+      if (leftFifth && currentImageIndex > 0) {
+        Haptic.trigger("impactLight")
+        track.artworkImageSwipe()
+        imageCarouselRef.current?.scrollToIndex({ index: currentImageIndex - 1 })
+        setCurrentImageIndex(currentImageIndex - 1)
         return true
       }
 
-      if (isLeft && currentImageIndex > 0) {
-        timeoutRunningRef.current = "running"
-        timeoutRef.current = setTimeout(() => {
-          Haptic.trigger("impactLight")
-          track.artworkImageSwipe()
-          imageCarouselRef.current?.scrollToIndex({ index: currentImageIndex - 1 })
-          setCurrentImageIndex(currentImageIndex - 1)
-          imageCarouselRef.current
-          timeoutRunningRef.current = "ended"
-        }, SAVES_MAX_DURATION_BETWEEN_TAPS)
-        return true
+      if (rightFifth && currentImageIndex < images.length - 1) {
+        Haptic.trigger("impactLight")
+        track.artworkImageSwipe()
+        imageCarouselRef.current?.scrollToIndex({ index: currentImageIndex + 1 })
+        setCurrentImageIndex(currentImageIndex + 1)
       }
-      if (isLeft) {
-        timeoutRunningRef.current = "running"
-        timeoutRef.current = setTimeout(() => {
-          timeoutRunningRef.current = "ended"
-        }, SAVES_MAX_DURATION_BETWEEN_TAPS)
-      }
-
-      if (isRight && currentImageIndex < images.length - 1) {
-        timeoutRunningRef.current = "running"
-        timeoutRef.current = setTimeout(() => {
-          Haptic.trigger("impactLight")
-          track.artworkImageSwipe()
-          imageCarouselRef.current?.scrollToIndex({ index: currentImageIndex + 1 })
-          setCurrentImageIndex(currentImageIndex + 1)
-          timeoutRunningRef.current = "ended"
-        }, SAVES_MAX_DURATION_BETWEEN_TAPS)
-        return true
-      }
-      if (isRight) {
-        timeoutRunningRef.current = "running"
-        timeoutRef.current = setTimeout(() => {
-          timeoutRunningRef.current = "ended"
-        }, SAVES_MAX_DURATION_BETWEEN_TAPS)
-      }
-
-      return false
     }
 
     return (
@@ -285,7 +263,6 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               alignItems: "center",
             }}
           />
-          {/* {!!src && <Image src={src} height={size.height} width={size.width} blurhash={blurhash} />} */}
         </Flex>
 
         {!!hasMultipleImages && (
@@ -383,7 +360,7 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
     }
     date
     id
-    internalID
+    internalID @required(action: NONE)
     images @required(action: NONE) {
       url(version: "large")
       width
@@ -392,7 +369,7 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
     }
     isSaved
     saleMessage
-    slug
+    slug @required(action: NONE)
     title
     ...useSaveArtworkToArtworkLists_artwork
   }
