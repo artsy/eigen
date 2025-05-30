@@ -1,0 +1,13 @@
+appId: ${MAESTRO_APP_ID}
+---
+- launchApp:
+    clearState: false
+    arguments:
+      shouldSignOut: "true"
+- assertVisible: "Sign up or log in"
+- tapOn: "Email Input"
+- inputText: ${MAESTRO_TEST_EMAIL}
+- tapOn: "Continue.*"
+- inputText: ${MAESTRO_TEST_PASSWORD}
+- tapOn: "Continue.*"
+- assertVisible: "New Works for You"
