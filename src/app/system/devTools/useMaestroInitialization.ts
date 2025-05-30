@@ -16,13 +16,11 @@ export const useMaestroInitialization = () => {
     if (!ArtsyNativeModule.isBetaOrDev) return
 
     const args = LaunchArguments.value<MaestroLaunchArguments>()
-    console.log("LaunchArgs: ", args)
     const email = args.email
     const password = args.password
     const shouldSignOut = args.shouldSignOut
 
     if (email && password) {
-      console.log("LaunchArgs: Signing in with email and password")
       GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
         oauthMode: "email",
@@ -30,7 +28,6 @@ export const useMaestroInitialization = () => {
         password,
       })
     } else if (shouldSignOut && isLoggedIn) {
-      console.log("LaunchArgs: Signing out")
       GlobalStore.actions.auth.signOut()
     }
   }, [])
