@@ -42,6 +42,7 @@ export const MultiSelectOptionItem: React.FC<MultiSelectOptionItemProps> = memo(
           disabled={disabled}
           testID="multi-select-option-button"
           accessibilityState={{ checked: selected }}
+          accessibilityRole="checkbox"
         >
           <OptionListItem>
             <Box maxWidth={optionTextMaxWidth}>

@@ -6,7 +6,6 @@ import mockClipboard from "@react-native-clipboard/clipboard/jest/clipboard-mock
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
 // @ts-ignore-next-line
 import mockStripe from "@stripe/stripe-react-native/jest/mock.js"
-import "@testing-library/react-native/extend-expect"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks"

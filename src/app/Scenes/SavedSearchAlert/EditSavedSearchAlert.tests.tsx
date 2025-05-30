@@ -157,7 +157,10 @@ describe("EditSavedSearchAlert", () => {
         })
       })
 
-      expect(screen.queryAllByA11yState({ selected: true })).toHaveLength(2)
+      expect(screen.getByLabelText("Email Toggler")).toBeOnTheScreen()
+      expect(screen.getByLabelText("Email Toggler")).toBeSelected()
+      expect(screen.getByLabelText("Push Notifications Toggler")).toBeOnTheScreen()
+      expect(screen.getByLabelText("Push Notifications Toggler")).toBeSelected()
     })
 
     it("email and push toggles are disabled", async () => {
