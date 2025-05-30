@@ -8635,6 +8635,7 @@ input CreateArtworkImportInput {
   clientMutationId: String
   fileName: String
   parseWithAI: Boolean
+  parseWithAIModel: String
   partnerID: String!
   s3Bucket: String!
   s3Key: String!
