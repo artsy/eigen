@@ -158,10 +158,14 @@ describe("AdditionalGeneIDsOptions Screen", () => {
 
     renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={injectedState} />)
 
-    expect(screen.queryAllByA11yState({ checked: true })).toHaveLength(2)
+    const checkbox = screen.getAllByRole("checkbox")
+
+    expect(checkbox[0]).toBeChecked()
+    expect(checkbox[2]).toBeChecked()
 
     fireEvent.press(screen.getByText("Clear"))
 
-    expect(screen.queryAllByA11yState({ checked: true })).toHaveLength(0)
+    expect(checkbox[0]).not.toBeChecked()
+    expect(checkbox[2]).not.toBeChecked()
   })
 })

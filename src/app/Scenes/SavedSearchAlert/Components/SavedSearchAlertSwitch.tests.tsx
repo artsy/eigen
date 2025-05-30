@@ -22,9 +22,10 @@ describe("SavedSearchAlertSwitch", () => {
   })
 
   it("should render active state", () => {
-    const { getByA11yState } = renderWithWrappers(<TestRenderer active />)
+    renderWithWrappers(<TestRenderer active />)
 
-    expect(getByA11yState({ selected: true })).toBeTruthy()
+    expect(screen.getByLabelText("Label Toggler")).toBeOnTheScreen()
+    expect(screen.getByLabelText("Label Toggler")).toBeSelected()
   })
 
   it('should call "onChange" handler when the toggle is pressed', () => {

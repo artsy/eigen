@@ -33,7 +33,11 @@ describe("VanityURLEntity", () => {
       __renderWithPlaceholderTestUtils__.allowFallbacksAtTestTime = true
     }
     renderWithWrappers(<TestRenderer entity="unknown" slug="a-cool-new-url" />)
-    env.mock.resolveMostRecentOperation({ data: undefined, errors: [{ message: "404" }] })
+
+    act(() => {
+      env.mock.resolveMostRecentOperation({ data: undefined, errors: [{ message: "404" }] })
+    })
+
     expect(screen.UNSAFE_getAllByType(VanityURLPossibleRedirect)).toHaveLength(1)
   })
 

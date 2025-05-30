@@ -376,7 +376,8 @@ describe("SavedSearchAlertForm", () => {
       await flushPromiseQueue()
 
       expect(spyAlert).toBeCalled()
-      expect(screen.queryAllByA11yState({ selected: true })).toHaveLength(0)
+
+      expect(screen.getByLabelText("Push Notifications Toggler")).not.toBeSelected()
     })
 
     it("push toggle keeps in the same state when push permissions are not not determined", async () => {
@@ -394,7 +395,8 @@ describe("SavedSearchAlertForm", () => {
       await flushPromiseQueue()
 
       expect(spyAlert).toBeCalled()
-      expect(screen.queryAllByA11yState({ selected: true })).toHaveLength(0)
+
+      expect(screen.getByLabelText("Push Notifications Toggler")).not.toBeSelected()
     })
 
     it("push toggle turns on when push permissions are enabled", async () => {
@@ -407,7 +409,7 @@ describe("SavedSearchAlertForm", () => {
       await flushPromiseQueue()
 
       expect(spyAlert).not.toBeCalled()
-      expect(screen.queryAllByA11yState({ selected: true })).toHaveLength(1)
+      expect(screen.getByLabelText("Push Notifications Toggler")).toBeSelected()
     })
   })
 

@@ -81,11 +81,11 @@ describe("Artist options screen", () => {
       showFilterArtworksModal: false,
       sizeMetric: "cm",
     }
-    const { getAllByA11yState } = renderWithWrappers(
-      <MockArtistScreen initialData={injectedState} />
-    )
+    renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
 
-    expect(getAllByA11yState({ checked: false })).toHaveLength(6)
+    const checkboxes = screen.getAllByRole("checkbox")
+
+    expect(checkboxes).toHaveLength(6)
   })
 
   describe("selecting an artist option", () => {

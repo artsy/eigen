@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { ArtworkCommercialButtons_Test_Query } from "__generated__/ArtworkCommercialButtons_Test_Query.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { ArtworkStore, ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
@@ -693,7 +693,9 @@ describe("ArtworkCommercialButtons", () => {
       it("renders the Purchase and Make Offer buttons when edition set is selected ", () => {
         renderWithRelay({ Artwork: () => artworkWithEditionSets, Me: () => meFixture })
 
-        mockArtworkStore.getActions().setSelectedEditionId(editionSets[0].internalID)
+        act(() => {
+          mockArtworkStore.getActions().setSelectedEditionId(editionSets[0].internalID)
+        })
 
         expect(screen.getByText("Purchase")).toBeOnTheScreen()
         expect(screen.getByText("Make an Offer")).toBeOnTheScreen()
@@ -712,7 +714,9 @@ describe("ArtworkCommercialButtons", () => {
       it("renders the Purchase and Make Offer buttons even if the edition set is not selected ", () => {
         renderWithRelay({ Artwork: () => artworkWithEditionSets, Me: () => meFixture })
 
-        mockArtworkStore.getActions().setSelectedEditionId(null)
+        act(() => {
+          mockArtworkStore.getActions().setSelectedEditionId(null)
+        })
 
         expect(screen.getByText("Purchase")).toBeOnTheScreen()
         expect(screen.getByText("Make an Offer")).toBeOnTheScreen()
