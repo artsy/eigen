@@ -1,3 +1,4 @@
+import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
 import { LaunchArguments } from "react-native-launch-arguments"
@@ -8,12 +9,12 @@ interface MaestroLaunchArguments {
   shouldSignOut?: boolean
 }
 
-// TODO: We should not have this installed as a dependency in the app
-// figure out how to get this conditionally working for maestro builds
 export const useMaestroInitialization = () => {
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
 
   useEffect(() => {
+    if (!ArtsyNativeModule.isBetaOrDev) return
+
     const args = LaunchArguments.value<MaestroLaunchArguments>()
     console.log("LaunchArgs: ", args)
     const email = args.email
