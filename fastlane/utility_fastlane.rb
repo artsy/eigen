@@ -1,3 +1,5 @@
+require "pathname"
+
 # Utility functions
 
 desc "Updates the version string in app.json"
@@ -93,8 +95,11 @@ lane :s3_upload_ios_build do |options|
   zip_name = "#{app_name}-#{app_version}.zip"
   zip_path = File.join(archive_root, zip_name)
   latest_zip_path = File.join(archive_root, "#{app_name}-latest.zip")
+  app_dir = File.dirname(app_path)
+  app_folder = File.basename(app_path)
+  zip_path_absolute = Pathname.new(zip_path).realpath.to_s rescue Pathname.new(zip_path).expand_path.to_s
 
-  sh("zip -r #{zip_path} '#{app_path}'")
+  sh("cd '#{app_dir}' && zip -r '#{zip_path_absolute}' '#{app_folder}'")
   FileUtils.cp(zip_path, latest_zip_path)
 
   # Upload both versioned and "latest"
