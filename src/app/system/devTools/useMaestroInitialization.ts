@@ -11,9 +11,12 @@ interface MaestroLaunchArguments {
 
 export const useMaestroInitialization = () => {
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
+  const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
 
   useEffect(() => {
-    if (!ArtsyNativeModule.isBetaOrDev) return
+    if (!ArtsyNativeModule.isBetaOrDev || !isHydrated) {
+      return
+    }
 
     const args = LaunchArguments.value<MaestroLaunchArguments>()
     const email = args.email
@@ -30,5 +33,5 @@ export const useMaestroInitialization = () => {
     } else if (shouldSignOut && isLoggedIn) {
       GlobalStore.actions.auth.signOut()
     }
-  }, [])
+  }, [isHydrated])
 }

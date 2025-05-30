@@ -5,7 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin, statusCodes } from "@react-native-google-signin/google-signin"
 import * as Sentry from "@sentry/react-native"
-// import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { clearNavState } from "app/system/navigation/useReloadedDevNavigationState"
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
 import {
@@ -992,10 +992,9 @@ export const getAuthModel = (): AuthModel => ({
     SegmentTrackingProvider.identify?.(undefined, { is_temporary_user: 1 })
 
     await Promise.all([
-      // TODO: Figure out why this is breaking for Maestro
-      // Platform.OS === "ios"
-      //   ? await LegacyNativeModules.ArtsyNativeModule.clearUserData()
-      //   : Promise.resolve(),
+      Platform.OS === "ios"
+        ? await LegacyNativeModules.ArtsyNativeModule.clearUserData()
+        : Promise.resolve(),
       __DEV__ && (await clearNavState()),
       await signOutGoogle(),
       LoginManager.logOut(),
