@@ -1,5 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
 import { GlobalStore } from "app/store/GlobalStore"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useEffect, useRef } from "react"
 import { Linking } from "react-native"
@@ -15,22 +16,31 @@ export function useDeepLinks() {
   const { trackEvent } = useTracking()
 
   useEffect(() => {
+    captureMessage("NAV DEBUG: first useEffect", "debug")
     if (!isNavigationReady) {
+      captureMessage("NAV DEBUG: first useEffect navigation NOT Ready", "debug")
       return
     }
 
     Linking.getInitialURL().then((url) => {
       if (url) {
+        captureMessage(
+          "NAV DEBUG: first useEffect navigation Ready with url handleDeeplink",
+          "debug"
+        )
         handleDeepLink(url)
       }
     })
   }, [isNavigationReady])
 
   useEffect(() => {
+    captureMessage("NAV DEBUG: second useEffect", "debug")
     if (!isNavigationReady) {
+      captureMessage("NAV DEBUG: second useEffect navigation NOT Ready", "debug")
       return
     }
 
+    captureMessage("NAV DEBUG: second useEffect navigation Ready SUBSCRIPTION Added", "debug")
     const subscription = Linking.addListener("url", ({ url }) => {
       handleDeepLink(url)
     })
@@ -66,9 +76,22 @@ export function useDeepLinks() {
     // We track the deep link opened event
     trackEvent(tracks.deepLink(deepLinkUrl))
 
+    captureMessage(
+      `NAV DEBUG Before CHECK ${isHydrated ? "Hydrated" : "Not Hydrated"} and ${
+        isLoggedIn ? "Logged In" : "Not Logged In"
+      } isNavigationReady: ${isNavigationReady}`,
+      "debug"
+    )
+
     // If the state is hydrated and the user is logged in
     // We navigate them to the the deep link
     if (isHydrated && isLoggedIn && isNavigationReady) {
+      captureMessage(
+        `NAV DEBUG ${isHydrated ? "Hydrated" : "Not Hydrated"} and ${
+          isLoggedIn ? "Logged In" : "Not Logged In"
+        } isNavigationReady: ${isNavigationReady}`,
+        "debug"
+      )
       // and we track the deep link
       navigate(deepLinkUrl)
       return

@@ -43,10 +43,10 @@ export function setupSentry(props: SetupSentryProps = { debug: false }) {
 
   // In DEV, enabling this will clober stack traces in errors and logs, obscuring
   // the source of the error. So we disable it in dev mode.
-  if (__DEV__ && !props.debug) {
-    console.log("[dev] Sentry disabled in dev mode.")
-    return
-  }
+  // if (__DEV__ && !props.debug) {
+  //   console.log("[dev] Sentry disabled in dev mode.")
+  //   return
+  // }
 
   if (ossUser) {
     console.log("[oss] Sentry disabled in for oss user.")
