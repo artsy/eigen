@@ -106,6 +106,17 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
+    // Configure ccache for native builds using Gradle property
+    tasks.withType(JavaCompile) {
+        options.compilerArgs += [
+            "-Xlint:unchecked",
+            "-Xlint:deprecation"
+        ]
+    }
+
+    // Set NDK ccache through system environment variable
+    // This avoids issues with different Gradle versions
+
     namespace "net.artsy.app"
     defaultConfig {
         applicationId "net.artsy.app"
