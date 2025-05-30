@@ -10,7 +10,6 @@ module.exports = {
     "no-relative-import-paths",
     "react-hooks",
     "testing-library",
-    "unused-imports",
     "artsy",
     "local-rules",
   ],
@@ -60,8 +59,6 @@ module.exports = {
     "react/jsx-curly-brace-presence": ERR,
     "react/jsx-no-leaked-render": [ERR, { validStrategies: ["coerce", "ternary"] }],
     "react-hooks/rules-of-hooks": ERR,
-    "unused-imports/no-unused-imports": OFF, // look below
-
     /**
      * Rules for tests see https://github.com/testing-library/eslint-plugin-testing-library#supported-rules for details
      * on default enabled rules or to remove rules.

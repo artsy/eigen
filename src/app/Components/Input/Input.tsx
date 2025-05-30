@@ -1,6 +1,9 @@
 import {
+  // eslint-disable-next-line local-rules/no-palette-icon-imports
   XCircleIcon,
+  // eslint-disable-next-line local-rules/no-palette-icon-imports
   EyeOpenedIcon,
+  // eslint-disable-next-line local-rules/no-palette-icon-imports
   EyeClosedIcon,
   Flex,
   useTheme,
@@ -245,7 +248,10 @@ export const Input = forwardRef<InputRef, InputProps>(
             {description}
           </Text>
         )}
-        <TouchableWithoutFeedback onPressIn={() => inputRef.current?.focus()}>
+        <TouchableWithoutFeedback
+          accessibilityRole="button"
+          onPressIn={() => inputRef.current?.focus()}
+        >
           <View
             style={[
               rest.style,

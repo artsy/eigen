@@ -121,7 +121,10 @@ export const MyProfileSettings: React.FC = () => {
                   Log out
                 </LinkText>
                 <Spacer y={4} />
-                <Touchable onPress={() => updateTapCount((count) => count + 1)}>
+                <Touchable
+                  accessibilityRole="button"
+                  onPress={() => updateTapCount((count) => count + 1)}
+                >
                   <Text variant="xs" color={userIsDev ? "devpurple" : "mono60"}>
                     Version: {appVersion}
                   </Text>
