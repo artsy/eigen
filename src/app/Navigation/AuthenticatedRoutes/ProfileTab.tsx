@@ -9,6 +9,10 @@ export const ProfileTab: React.FC = () => {
         name: "MyProfile",
         module: modules["MyProfile"],
       })}
+      {registerScreen({
+        name: "MyCollection",
+        module: modules["MyCollection"],
+      })}
 
       {sharedRoutes()}
     </StackNavigator.Navigator>
