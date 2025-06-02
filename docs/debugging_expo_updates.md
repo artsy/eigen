@@ -44,7 +44,7 @@ Deploy an update using these [instructions](./deploy_to_expo_updates.md) and pul
 
 #### Code changes not auto refreshing app
 
-The QA scheme uses bundled JS, to see any changes you will need to rebuild from Xcode, even then expo updates tends to use the latest downloaded update, you may have to delete the app and then rebuild.
+The QA scheme uses bundled JS. To see any changes you will need to rebuild from Xcode; even then, Expo updates tend to use the latest downloaded update and you may have to delete the app and then rebuild.
 
 #### Update is not applied after fetch
 
