@@ -56,6 +56,9 @@ If you see output like: `Warning: native code changed you cannot use expo update
 The changes affected native code and cannot be deployed through codepush, please follow the `Native release hotfix process` section of this document.
 Otherwise follow the steps in `Expo updates release hotfix process`.
 
+> [!IMPORTANT]
+> Expo Updates is not yet available for hotfixes, please follow the `Native release hotfix process`
+
 <details>
   <summary>Expo updates release hotfix process</summary>
 
