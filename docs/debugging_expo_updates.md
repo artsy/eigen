@@ -1,4 +1,20 @@
-# Debugging Expo Updates
+# Debugging Expo Updates (Devs)
+
+The most common problem is fetching an update and it does not run or crashes on launch. This likely means the native code in the beta is different and is incompatible with the code that your update needs to run on.
+
+**Note:** Native code includes not just our native code but any native code in dependencies our app relies on.
+
+If:
+
+- Your updates native code is **behind** the latest beta, try rebasing on main and redeploying your update
+- Your updates native code is **ahead** of the latest beta, try deploying a new beta and redploying your update.
+
+For other issues please reach out to #product-sapphire and feel free to update this doc!
+
+# Debugging Expo Updates (Integration)
+
+If something is going wrong with the expo updates integration or it needs to be updated it can be helpful debug downloading an update in a
+dev build. For everyday use devs should not have to do this and should stick to running updates from betas.
 
 This is a condensed version of the expo docs [here](https://docs.expo.dev/eas-update/debug/#ios-local-builds). Check the official docs if anything does not work.
 
