@@ -721,17 +721,6 @@ export const artsyDotNetRoutes = defineRoutes([
     },
   },
   {
-    path: "/collector-profile/my-collection",
-    name: "CollectorProfileMyCollection",
-    Component: MyCollectionQueryRenderer,
-    queries: [myCollectionArtworksQuery],
-    options: {
-      screenOptions: {
-        headerShown: false,
-      },
-    },
-  },
-  {
     path: "/collections-by-category/:category",
     name: "CollectionsByCategory",
     Component: CollectionsByCategory,
@@ -1070,6 +1059,7 @@ export const artsyDotNetRoutes = defineRoutes([
       screenOptions: {
         headerShown: false,
       },
+      onlyShowInTabName: "profile",
     },
   },
   {
