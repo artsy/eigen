@@ -102,10 +102,6 @@ lane :ship_beta_ios do |options|
       dist_version: bundle_version,
       platform: 'ios'
     )
-
-    s3_upload_ios_build(
-      app_version: bundle_version
-    )
   end
 
   deploy_ios_beta(deployment_target: deployment_target)

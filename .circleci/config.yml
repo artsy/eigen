@@ -215,9 +215,6 @@ jobs:
           name: Install idb
           command: brew tap facebook/fb && brew install idb-companion
       - run:
-          name: Test maestro install
-          command: maestro --version
-      - run:
           name: Clear project dir
           command: |
             rm -rf  /Users/distiller/project/*
