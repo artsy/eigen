@@ -3172,6 +3172,7 @@ type ArtworkImportEdge {
 enum ArtworkImportError {
   ARTWORK_CREATION_FAILED
   INVALID_CERTIFICATE_OF_AUTHENTICITY
+  INVALID_CLASSIFICATION
   INVALID_DEPTH
   INVALID_DIAMETER
   INVALID_FRAMED_DEPTH
@@ -3267,6 +3268,7 @@ type ArtworkImportTransformedData {
   artworkCondition: String
   artworkTitle: String
   certificateOfAuthenticity: String
+  classification: String
   date: String
   depth: String
   diameter: String
