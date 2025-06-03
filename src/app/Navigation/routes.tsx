@@ -10,7 +10,6 @@ import {
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
 import { BACK_BUTTON_SIZE_SIZE } from "app/Components/constants"
-import { CityGuideView } from "app/NativeModules/CityGuideView"
 import { LiveAuctionView } from "app/NativeModules/LiveAuctionView"
 import { About } from "app/Scenes/About/About"
 import { activityContentQuery } from "app/Scenes/Activity/ActivityContent"
@@ -88,6 +87,7 @@ import {
   CitySectionListQueryRenderer,
   CitySectionListScreenQuery,
 } from "app/Scenes/City/CitySectionList"
+import { CityGuide } from "app/Scenes/CityGuide/CityGuide"
 import { Collect, collectQuery } from "app/Scenes/Collect/Collect"
 import { CollectionScreen, CollectionScreenQuery } from "app/Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListScreen } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
@@ -963,7 +963,7 @@ export const artsyDotNetRoutes = defineRoutes([
   {
     path: "/local-discovery",
     name: "LocalDiscovery",
-    Component: CityGuideView,
+    Component: CityGuide,
     options: {
       screenOptions: {
         headerTransparent: true,
