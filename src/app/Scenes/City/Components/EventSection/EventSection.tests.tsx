@@ -1,5 +1,5 @@
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { EventSection } from "./index"
+import { EventSection } from "./EventSection"
 
 const data = [
   {

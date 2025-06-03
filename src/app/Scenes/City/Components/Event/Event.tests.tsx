@@ -1,6 +1,6 @@
 import { Show } from "app/Scenes/Map/types"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Event } from "./index"
+import { Event } from "./Event"
 
 const eventData = {
   name: "PALAY, Trapunto Murals by Pacita Abad",

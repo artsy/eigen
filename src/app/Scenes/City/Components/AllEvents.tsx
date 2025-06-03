@@ -1,12 +1,12 @@
 import { Box, Separator, Spacer, Tabs, Text } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
-import { EventSection } from "app/Scenes/City/Components/EventSection"
+import { EventSection } from "app/Scenes/City/Components/EventSection/EventSection"
 import { BucketResults } from "app/Scenes/Map/bucketCityResults"
 import { isEqual } from "lodash"
 import React, { Fragment } from "react"
 import { Platform, ViewProps } from "react-native"
-import { FairEventSection } from "./FairEventSection"
-import { SavedEventSection } from "./SavedEventSection"
+import { FairEventSection } from "./FairEventSection/FairEventSection"
+import { SavedEventSection } from "./SavedEventSection/SavedEventSection"
 
 interface Props extends ViewProps {
   buckets: BucketResults

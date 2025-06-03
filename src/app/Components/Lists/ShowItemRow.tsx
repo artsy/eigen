@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Image, Text, Touchable } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Image, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
 import { ShowItemRow_show$data, ShowItemRow_show$key } from "__generated__/ShowItemRow_show.graphql"
@@ -32,6 +32,7 @@ export const ShowItemRow: React.FC<Props> = ({
   shouldHideSaveButton,
   isListItem,
 }) => {
+  const color = useColor()
   const show = useFragment(showFragment, showProp)
   const [isFollowedSaving, setIsFollowedSaving] = useState(false)
   const { trackEvent } = useTracking()
@@ -168,20 +169,20 @@ export const ShowItemRow: React.FC<Props> = ({
     )
   }
 
-  return isListItem ? (
-    <ThemeAwareClassTheme>
-      {({ color }) => (
-        <Touchable
-          accessibilityRole="button"
-          underlayColor={color("mono5")}
-          onPress={() => handleTap(show.slug, show.internalID)}
-          style={{ paddingHorizontal: 20, paddingVertical: 5 }}
-        >
-          {renderItemDetails()}
-        </Touchable>
-      )}
-    </ThemeAwareClassTheme>
-  ) : (
+  if (isListItem) {
+    return (
+      <Touchable
+        accessibilityRole="button"
+        underlayColor={color("mono5")}
+        onPress={() => handleTap(show.slug, show.internalID)}
+        style={{ paddingHorizontal: 20, paddingVertical: 5 }}
+      >
+        {renderItemDetails()}
+      </Touchable>
+    )
+  }
+
+  return (
     <TouchableWithoutFeedback
       onPress={() => handleTap(show.slug, show.internalID)}
       accessibilityRole="button"

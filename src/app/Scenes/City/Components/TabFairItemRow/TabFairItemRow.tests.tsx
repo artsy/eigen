@@ -1,6 +1,6 @@
 import { Fair } from "app/Scenes/Map/types"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { TabFairItemRow } from "./index"
+import { TabFairItemRow } from "./TabFairItemRow"
 
 // @TODO: We are already stubbing Fair data for tests in src/app/Scenes/Fair/__fixtures__/index.ts; can we modularize this test by importing that fixture?
 // @TODO: Can we expand on this test by mocking the navigation function https://artsyproduct.atlassian.net/browse/LD-549
