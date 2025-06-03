@@ -27,19 +27,18 @@ export const clearNavState = async () => {
  * It will save the navigation state to AsyncStorage and reload it when the app is reloaded.
  */
 export const useReloadedDevNavigationState = (key: string) => {
-  const isNavigationStateRehydrationDisabledToggle = useDevToggle(
-    "DTDisableNavigationStateRehydration"
-  )
+  const disableNavigationStateRehydration = useDevToggle("DTDisableNavigationStateRehydration")
   const hasChangedColorScheme = GlobalStore.useAppState(
     (state) => state.devicePrefs.sessionState.hasChangedColorScheme
   )
   const setSessionState = GlobalStore.actions.devicePrefs.setSessionState
 
-  // We only rehydrate navigation state on dev builds and if the toggle is disabled
-  const isNavigationStateRehydrationEnabled =
-    (__DEV__ && !isNavigationStateRehydrationDisabledToggle) || hasChangedColorScheme
+  const [hasHydratedState, setHasHydratedState] = useState(false)
 
-  const [isReady, setIsReady] = useState(isNavigationStateRehydrationEnabled ? false : true)
+  // We only rehydrate navigation state on dev builds and if the toggle is disabled
+  const enableNavigationStateRehydration =
+    (__DEV__ && !disableNavigationStateRehydration) ||
+    (hasChangedColorScheme && !disableNavigationStateRehydration)
 
   const launchCount = ArtsyNativeModule.launchCount
   // TODO: This seems to be unreliable and return undefined in some cases
@@ -50,16 +49,8 @@ export const useReloadedDevNavigationState = (key: string) => {
 
   const [initialState, setInitialState] = useState()
 
-  // We need to set isReady to false if the color scheme has changed
-  // This is required to trigger a restart to update the dark mode values
   useEffect(() => {
-    if (hasChangedColorScheme) {
-      setIsReady(false)
-    }
-  }, [hasChangedColorScheme])
-
-  useEffect(() => {
-    if (!isNavigationStateRehydrationEnabled) {
+    if (!enableNavigationStateRehydration) {
       return
     }
 
@@ -79,7 +70,7 @@ export const useReloadedDevNavigationState = (key: string) => {
           setInitialState(state)
         }
       } finally {
-        setIsReady(true)
+        setHasHydratedState(true)
         // We need to reset the hasChangedColorScheme flag to avoid accidentally rehydrating the navigation state after restart
         setSessionState({ hasChangedColorScheme: false })
         if (launchCount !== undefined) {
@@ -89,19 +80,19 @@ export const useReloadedDevNavigationState = (key: string) => {
       }
     }
 
-    if (!isReady) {
+    if (!hasHydratedState || hasChangedColorScheme) {
       restoreState()
     }
-  }, [isReady])
+  }, [hasHydratedState, hasChangedColorScheme])
 
   const saveSession = (state: NavigationState | undefined) => {
-    if (isNavigationStateRehydrationEnabled) {
+    if (enableNavigationStateRehydration) {
       AsyncStorage.setItem(key, JSON.stringify(state))
     }
   }
 
   return {
-    isReady,
+    isReady: !enableNavigationStateRehydration ? true : hasHydratedState,
     initialState,
     saveSession,
   }

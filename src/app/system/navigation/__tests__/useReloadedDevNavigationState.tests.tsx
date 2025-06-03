@@ -113,6 +113,35 @@ describe("useReloadedDevNavigationState", () => {
       expect(injectedState).toEqual(undefined)
     })
   })
+  describe("when the user switched the color scheme", () => {
+    it("should rehydrate the navigation state", async () => {
+      __globalStoreTestUtils__?.injectState({
+        devicePrefs: {
+          sessionState: {
+            hasChangedColorScheme: true,
+          },
+        },
+      })
+
+      jest
+        .spyOn(AsyncStorage, "getItem")
+        .mockResolvedValueOnce(JSON.stringify(reactNavigationMockState))
+      jest.spyOn(AsyncStorage, "getItem").mockResolvedValueOnce("1")
+      jest.spyOn(AsyncStorage, "setItem").mockResolvedValueOnce()
+
+      renderWithWrappers(<Test />)
+
+      expect(screen.getByTestId("spinner")).toBeTruthy()
+
+      expect(AsyncStorage.getItem).toHaveBeenCalledWith(MOCK_NAVIGATION_STATE_KEY)
+
+      await flushPromiseQueue()
+
+      expect(AsyncStorage.getItem).toHaveBeenCalledWith(PREVIOUS_LAUNCH_COUNT_KEY)
+
+      expect(screen.getByTestId("content")).toBeTruthy()
+    })
+  })
 })
 
 const reactNavigationMockState = {
