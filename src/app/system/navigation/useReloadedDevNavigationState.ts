@@ -36,10 +36,9 @@ export const useReloadedDevNavigationState = (key: string) => {
   const setSessionState = GlobalStore.actions.devicePrefs.setSessionState
 
   // We only rehydrate navigation state on dev builds and if the toggle is disabled
-  const isNavigationStateRehydrationEnabled =
-    (__DEV__ && !isNavigationStateRehydrationDisabledToggle) || hasChangedColorScheme
+  const isNavigationStateRehydrationEnabled = __DEV__ && !isNavigationStateRehydrationDisabledToggle
 
-  const [isReady, setIsReady] = useState(isNavigationStateRehydrationEnabled ? false : true)
+  const [isReady, setIsReady] = useState(!isNavigationStateRehydrationEnabled)
 
   const launchCount = ArtsyNativeModule.launchCount
   // TODO: This seems to be unreliable and return undefined in some cases
@@ -49,14 +48,6 @@ export const useReloadedDevNavigationState = (key: string) => {
   // )
 
   const [initialState, setInitialState] = useState()
-
-  // We need to set isReady to false if the color scheme has changed
-  // This is required to trigger a restart to update the dark mode values
-  useEffect(() => {
-    if (hasChangedColorScheme) {
-      setIsReady(false)
-    }
-  }, [hasChangedColorScheme])
 
   useEffect(() => {
     if (!isNavigationStateRehydrationEnabled) {
@@ -89,10 +80,10 @@ export const useReloadedDevNavigationState = (key: string) => {
       }
     }
 
-    if (!isReady) {
+    if (!isReady || hasChangedColorScheme) {
       restoreState()
     }
-  }, [isReady])
+  }, [isReady, hasChangedColorScheme])
 
   const saveSession = (state: NavigationState | undefined) => {
     if (isNavigationStateRehydrationEnabled) {
