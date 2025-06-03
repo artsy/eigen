@@ -50,6 +50,14 @@ export const useReloadedDevNavigationState = (key: string) => {
 
   const [initialState, setInitialState] = useState()
 
+  // We need to set isReady to false if the color scheme has changed
+  // This is required to trigger a restart to update the dark mode values
+  useEffect(() => {
+    if (hasChangedColorScheme) {
+      setIsReady(false)
+    }
+  }, [hasChangedColorScheme])
+
   useEffect(() => {
     if (!isNavigationStateRehydrationEnabled) {
       return
