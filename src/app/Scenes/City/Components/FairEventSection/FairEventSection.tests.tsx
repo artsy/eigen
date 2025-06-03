@@ -1,5 +1,9 @@
-import { FairEventSection } from "app/Scenes/City/Components/FairEventSection/FairEventSection"
+import { FairEventSection } from "app/Scenes/City/Components/FairEventSection/index"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+<<<<<<<< HEAD:src/app/Scenes/City/Components/FairEventSection/__tests__/index.tests.tsx
+========
+import { FairEventSection } from "./FairEventSection"
+>>>>>>>> fcccc5ef80 (chore: address review comments):src/app/Scenes/City/Components/FairEventSection/FairEventSection.tests.tsx
 
 const data = [
   {

@@ -1,6 +1,6 @@
 import { Box, Text } from "@artsy/palette-mobile"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
-import { Event } from "app/Scenes/City/Components/Event"
+import { Event } from "app/Scenes/City/Components/Event/Event"
 import { navigate } from "app/system/navigation/navigate"
 import React from "react"
 

@@ -15,7 +15,7 @@ import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVarian
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { Schema } from "app/utils/track"
 import { memo, RefObject, Suspense, useRef, useState } from "react"
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
+import { KeyboardAvoidingView, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"

@@ -1,5 +1,9 @@
-import { EventSection } from "app/Scenes/City/Components/EventSection/EventSection"
+import { EventSection } from "app/Scenes/City/Components/EventSection/index"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+<<<<<<<< HEAD:src/app/Scenes/City/Components/EventSection/__tests__/index.tests.tsx
+========
+import { EventSection } from "./EventSection"
+>>>>>>>> fcccc5ef80 (chore: address review comments):src/app/Scenes/City/Components/EventSection/EventSection.tests.tsx
 
 const data = [
   {

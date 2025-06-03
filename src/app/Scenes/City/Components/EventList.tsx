@@ -7,7 +7,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { isEqual } from "lodash"
 import React from "react"
 import { FlatList, FlatListProps } from "react-native"
-import { TabFairItemRow } from "./TabFairItemRow"
+import { TabFairItemRow } from "./TabFairItemRow/TabFairItemRow"
 
 /**
  * This hard value is needed so we can tell the FlatList upfront what rows will look like and the FlatList can ahead of
