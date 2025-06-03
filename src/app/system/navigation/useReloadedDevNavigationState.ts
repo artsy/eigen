@@ -40,6 +40,7 @@ export const useReloadedDevNavigationState = (key: string) => {
     (__DEV__ && !isNavigationStateRehydrationDisabledToggle) || hasChangedColorScheme
 
   const [isReady, setIsReady] = useState(isNavigationStateRehydrationEnabled ? false : true)
+
   const launchCount = ArtsyNativeModule.launchCount
   // TODO: This seems to be unreliable and return undefined in some cases
   // Look if should be removed in favor of the native module
@@ -71,6 +72,8 @@ export const useReloadedDevNavigationState = (key: string) => {
         }
       } finally {
         setIsReady(true)
+        // We need to reset the hasChangedColorScheme flag to avoid accidentally rehydrating the navigation state after restart
+        setSessionState({ hasChangedColorScheme: false })
         if (launchCount !== undefined) {
           // Save the current launch count for the next time
           AsyncStorage.setItem(PREVIOUS_LAUNCH_COUNT_KEY, launchCount.toString())
@@ -81,8 +84,6 @@ export const useReloadedDevNavigationState = (key: string) => {
     if (!isReady) {
       restoreState()
     }
-    // We need to reset the hasChangedColorScheme flag to avoid accidentally rehydrating the navigation state after restart
-    setSessionState({ hasChangedColorScheme: false })
   }, [isReady])
 
   const saveSession = (state: NavigationState | undefined) => {
