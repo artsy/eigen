@@ -564,11 +564,12 @@ workflows:
               only:
                 - main
     jobs:
+      - build-test-app-ios
       - deploy-nightly-beta
       - run-nightly-tasks
       - run-e2e-tests:
           requires:
-            - deploy-nightly-beta
+            - build-test-app-ios
 
   flag-check:
     triggers:
