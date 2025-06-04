@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
@@ -29,17 +29,19 @@ describe("Artist", () => {
 
   function mockMostRecentOperation(name: ArtistQueries, mockResolvers: MockResolvers = {}) {
     expect(mockEnvironment.mock.getMostRecentOperation().request.node.operation.name).toBe(name)
-    mockEnvironment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        ID({ path }) {
-          // need to make sure artist id is stable between above-and-below-the-fold queries to avoid cache weirdness
-          if (isEqual(path, ["artist", "id"])) {
-            return "artist-id"
-          }
-        },
-        ...mockResolvers,
+    act(() => {
+      mockEnvironment.mock.resolveMostRecentOperation((operation) => {
+        const result = MockPayloadGenerator.generate(operation, {
+          ID({ path }) {
+            // need to make sure artist id is stable between above-and-below-the-fold queries to avoid cache weirdness
+            if (isEqual(path, ["artist", "id"])) {
+              return "artist-id"
+            }
+          },
+          ...mockResolvers,
+        })
+        return result
       })
-      return result
     })
   }
 

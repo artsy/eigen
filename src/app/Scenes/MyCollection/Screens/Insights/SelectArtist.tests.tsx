@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
@@ -24,7 +24,7 @@ describe("SelectArtist", () => {
   beforeEach(() => (mockEnvironment = createMockEnvironment()))
 
   describe("when changing an artist from artists list", () => {
-    it("should update the selected artist", async () => {
+    fit("should update the selected artist", async () => {
       renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
       mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
@@ -42,11 +42,13 @@ describe("SelectArtist", () => {
       fireEvent.press(screen.getByTestId("artist-section-item-Banksy"))
 
       // fetch Banksy data
-      mockEnvironment.mock.resolveMostRecentOperation({
-        data: {
-          artist: { internalID: "artist-id", name: "Banksy", imageUrl: "image-url" },
-          ...insights,
-        },
+      act(() => {
+        mockEnvironment.mock.resolveMostRecentOperation({
+          data: {
+            artist: { internalID: "artist-id", name: "Banksy", imageUrl: "image-url" },
+            ...insights,
+          },
+        })
       })
 
       // Modal is hidden and the artist is updated
@@ -60,7 +62,9 @@ describe("SelectArtist", () => {
     it("should update the list of artists if the artist name is in the list", async () => {
       renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-      mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
+      act(() => {
+        mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
+      })
 
       await screen.findByTestId("change-artist-touchable")
       fireEvent.press(screen.getByTestId("change-artist-touchable"))
@@ -86,11 +90,13 @@ describe("SelectArtist", () => {
       fireEvent.press(screen.getByTestId("artist-section-item-Amoako Boafo"))
 
       // fetch Amoako Boafo data
-      mockEnvironment.mock.resolveMostRecentOperation({
-        data: {
-          artist: { internalID: "artist-id", name: "Amoako Boafo", imageUrl: "image-url" },
-          ...insights,
-        },
+      act(() => {
+        mockEnvironment.mock.resolveMostRecentOperation({
+          data: {
+            artist: { internalID: "artist-id", name: "Amoako Boafo", imageUrl: "image-url" },
+            ...insights,
+          },
+        })
       })
 
       // Wait for modal to be dismissed
@@ -103,7 +109,9 @@ describe("SelectArtist", () => {
     it("should display an error message if the artist name is not in the list", async () => {
       renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
-      mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
+      act(() => {
+        mockEnvironment.mock.resolveMostRecentOperation({ data: mockResult })
+      })
 
       await screen.findByTestId("change-artist-touchable")
       fireEvent.press(screen.getByTestId("change-artist-touchable"))

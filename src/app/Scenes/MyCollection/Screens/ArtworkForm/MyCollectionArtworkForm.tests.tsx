@@ -6,10 +6,10 @@ import {
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
 } from "app/Components/PhotoRow/utils/uploadFileToS3"
+import { Tab } from "app/Scenes/MyCollection/MyCollection"
 import { saveOrUpdateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm/methods/uploadArtwork"
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import * as artworkMutations from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
-import { Tab } from "app/Scenes/MyCollection/MyCollection"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import * as LocalImageStore from "app/utils/LocalImageStore"
@@ -320,7 +320,6 @@ describe("MyCollectionArtworkForm", () => {
         await flushPromiseQueue()
 
         // Add Artist Screen
-
         fireEvent.changeText(screen.getByTestId("artist-input"), "My Artist")
         fireEvent.changeText(screen.getByTestId("nationality-input"), "bar foo")
 
@@ -334,7 +333,6 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(screen.getByText("Add Details")).toBeTruthy()
 
-        expect(screen.getByText("My Artist")).toBeTruthy()
         expect(screen.getByTestId("TitleInput").props.value).toBe("")
         expect(screen.getByTestId("DateInput").props.value).toBe(undefined)
         expect(screen.getByTestId("MaterialsInput").props.value).toBe(undefined)

@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { rejectMostRecentRelayOperation } from "app/utils/tests/rejectMostRecentRelayOperation"
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
@@ -55,17 +55,19 @@ describe("Saved search banner on artist screen", () => {
 
   function mockMostRecentOperation(name: ArtistQueries, mockResolvers: MockResolvers = {}) {
     expect(environment.mock.getMostRecentOperation().request.node.operation.name).toBe(name)
-    environment.mock.resolveMostRecentOperation((operation) => {
-      const result = MockPayloadGenerator.generate(operation, {
-        ID({ path }) {
-          // need to make sure artist id is stable between above-and-below-the-fold queries to avoid cache weirdness
-          if (isEqual(path, ["artist", "id"])) {
-            return "artist-id"
-          }
-        },
-        ...mockResolvers,
+    act(() => {
+      environment.mock.resolveMostRecentOperation((operation) => {
+        const result = MockPayloadGenerator.generate(operation, {
+          ID({ path }) {
+            // need to make sure artist id is stable between above-and-below-the-fold queries to avoid cache weirdness
+            if (isEqual(path, ["artist", "id"])) {
+              return "artist-id"
+            }
+          },
+          ...mockResolvers,
+        })
+        return result
       })
-      return result
     })
   }
 
