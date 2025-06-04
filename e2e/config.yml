@@ -1,9 +1,4 @@
 appId: ${MAESTRO_APP_ID}
 ---
-- runFlow:
-    file: flows/onboarding/login.yml
-- runFlow:
-    file: flows/onboarding/signupWithoutOnboarding.yml
-# This flow is broken because of performance issues and hangs of the Art Taste Quiz Screen
-# - runFlow:
-# file: flows/onboarding/onboardingQuiz.yml
+flows:
+  - "flows/*"

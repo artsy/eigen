@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+APP_NAME="Artsy"
+DERIVED_DATA_PATH="${DERIVED_DATA_PATH:-derived_data}"
+S3_DEST="s3://artsy-citadel/eigen/builds/ios/${APP_NAME}-latest.zip"
+
+# Find the .app bundle
+APP_PATH=$(find "$DERIVED_DATA_PATH/Build/Products/Debug-iphonesimulator" -name "${APP_NAME}.app" -type d | head -n1)
+
+if [ -z "$APP_PATH" ]; then
+  echo "❌ .app not found!" >&2
+  exit 1
+fi
+
+echo "✅ Found app at: $APP_PATH"
+
+# Zip the .app bundle
+ZIP_NAME="${APP_NAME}-latest.zip"
+cd "$(dirname "$APP_PATH")"
+zip -r "$ZIP_NAME" "$(basename "$APP_PATH")"
+
+# Upload to S3
+aws s3 cp "$ZIP_NAME" "$S3_DEST"
+
+echo "✅ Uploaded $ZIP_NAME to $S3_DEST"

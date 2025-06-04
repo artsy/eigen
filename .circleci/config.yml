@@ -175,7 +175,7 @@ jobs:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 16.1
+      xcode: 16.2
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -191,12 +191,58 @@ jobs:
           name: Update rollout if needed
           command: ./scripts/deploys/update-android-rollout-if-needed
 
+  run-e2e-tests:
+    parallelism: 4
+
+    environment:
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
+
+    macos:
+      xcode: 16.2
+      resource_class: m2pro.medium
+
+    steps:
+      - attach_workspace:
+          at: ../workspace
+      - macos/preboot-simulator:
+          version: "18.2"
+          platform: "iOS"
+          device: "iPhone 16 Pro"
+      - run:
+          name: Install maestro
+          command: curl -Ls "https://get.maestro.mobile.dev" | bash
+      - run:
+          name: Install idb
+          command: brew tap facebook/fb && brew install idb-companion
+      - run:
+          name: Clear project dir
+          command: |
+            rm -rf  /Users/distiller/project/*
+      - checkout
+      - setup-awscli
+      - run:
+          name: Set up maestro env
+          command: ./scripts/setup/setup-maestro-env.sh
+      - run:
+          name: Download app zip
+          command: aws s3 cp s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip ./Artsy.zip
+      - run:
+          name: Unzip the app
+          command: unzip Artsy.zip
+      - run:
+          name: Install app in booted sims
+          command: ./scripts/utils/install_app_in_booted_sims.sh
+      - run:
+          name: Run Maestro Tests
+          no_output_timeout: 25m
+          command: ./scripts/utils/run_maestro_shard.sh
+
   deploy-nightly-beta:
     environment:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 16.1
+      xcode: 16.2
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -217,7 +263,7 @@ jobs:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 16.1
+      xcode: 16.2
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -309,7 +355,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 16.1
+      xcode: 16.2
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -383,7 +429,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 16.1
+      xcode: 16.2
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -423,7 +469,7 @@ jobs:
       - install-gems
       - install-cocoapods
       - macos/preboot-simulator:
-          version: "18.1"
+          version: "18.2"
           platform: "iOS"
           device: "iPhone 16 Pro"
       - build-app-ios
@@ -518,8 +564,12 @@ workflows:
               only:
                 - main
     jobs:
+      - build-test-app-ios
       - deploy-nightly-beta
       - run-nightly-tasks
+      - run-e2e-tests:
+          requires:
+            - build-test-app-ios
 
   flag-check:
     triggers:
@@ -600,3 +650,11 @@ workflows:
           requires:
             - build-test-app-ios
             - build-test-app-android
+
+      - run-e2e-tests:
+          filters:
+            branches:
+              only:
+                - beta-ios
+          requires:
+            - build-test-app-ios

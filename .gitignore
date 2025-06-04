@@ -151,6 +151,9 @@ tsconfig.tsbuildinfo
 # Temporary files created by Metro to check the health of the file watcher
 .metro-health-check*
 
+# maestro test artifacts
+.maestro/*
+
 #########################################################
 # Keep this rule last.
 # Keep these, so we can keep the folders these appear in.

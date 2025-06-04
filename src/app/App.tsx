@@ -3,6 +3,7 @@ import * as Sentry from "@sentry/react-native"
 import { Navigation } from "app/Navigation/Navigation"
 import { GlobalStore, unsafe__getEnvironment, unsafe_getDevToggle } from "app/store/GlobalStore"
 import { DevMenuWrapper } from "app/system/devTools/DevMenu/DevMenuWrapper"
+import { useMaestroInitialization } from "app/system/devTools/useMaestroInitialization"
 import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
 import { setupSentry } from "app/system/errorReporting/setupSentry"
 import { usePurgeCacheOnAppUpdate } from "app/system/relay/usePurgeCacheOnAppUpdate"
@@ -64,6 +65,7 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 
 const Main = () => {
   useRageShakeDevMenu()
+  useMaestroInitialization()
 
   useEffect(() => {
     const oss = Keys.OSS

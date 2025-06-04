@@ -47,6 +47,7 @@ GIT_REMOTE_ORIGIN_URL = `git config --get remote.origin.url`.chomp
 
 S3_PATH = 's3://artsy-citadel/eigen'
 S3_ANDROID_BUILDS_PATH = S3_PATH + '/builds/android/'
+S3_IOS_BUILDS_PATH = S3_PATH + '/builds/ios/'
 
 import 'utility_fastlane.rb'
 import 'sentry_fastlane.rb'
@@ -359,12 +360,6 @@ lane :create_android_apk do
     apk_output_path: selected_version_code + '.apk',
     verbose: true
   )
-end
-
-lane :s3_upload_android_build do |options|
-  app_version = options[:app_version]
-  app_path = options[:app_path]
-  sh('aws s3 cp ' + app_path + ' ' + S3_ANDROID_BUILDS_PATH + app_version.to_s + '.aab')
 end
 
 lane :select_android_build do |options|

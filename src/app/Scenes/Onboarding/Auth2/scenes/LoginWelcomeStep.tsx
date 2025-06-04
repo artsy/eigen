@@ -129,6 +129,7 @@ const LoginWelcomeStepForm: React.FC = () => {
 
       <Input
         accessibilityHint="Enter your email address"
+        accessibilityLabel="Email Input"
         autoCapitalize="none"
         autoComplete="username"
         importantForAutofill="yes"
