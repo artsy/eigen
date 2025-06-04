@@ -14,6 +14,7 @@ import {
 } from "app/utils/track/SegmentTrackingProvider"
 import { useAndroidAppStyling } from "app/utils/useAndroidAppStyling"
 import { useDeepLinks } from "app/utils/useDeepLinks"
+import { useFontScaleTracking } from "app/utils/useFontScaleTracking"
 import { useHideSplashScreen } from "app/utils/useHideSplashScreen"
 import { useIdentifyUser } from "app/utils/useIdentifyUser"
 import { useListenToThemeChange } from "app/utils/useListenToThemeChange"
@@ -107,6 +108,7 @@ const Main = () => {
   useHideSplashScreen()
   useAndroidAppStyling()
   useListenToThemeChange()
+  useFontScaleTracking()
 
   useEffect(() => {
     if (isLoggedIn) {
