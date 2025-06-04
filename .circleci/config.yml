@@ -221,6 +221,9 @@ jobs:
       - checkout
       - setup-awscli
       - run:
+          name: Set up maestro env
+          command: ./scripts/setup/setup-maestro-env.sh
+      - run:
           name: Download app zip
           command: aws s3 cp s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip ./Artsy.zip
       - run:
@@ -232,7 +235,7 @@ jobs:
       - run:
           name: Run Maestro Tests
           no_output_timeout: 25m
-          command: ./run_maestro_shard.sh
+          command: ./scripts/utils/run_maestro_shard.sh
 
   deploy-nightly-beta:
     environment:

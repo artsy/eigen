@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+
+read -p "Are you sure you want to update the env vars in S3? " -n 1 -r
+
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+  aws s3 cp .env.maestro s3://artsy-citadel/eigen/.env.maestro
+
+  RED='\033[0;31m'
+  RST='\033[0m'
+
+  printf "${RED}Don't forget to update on 1Password and CircleCI too!${RST}\n"
+fi
