@@ -1,139 +1,101 @@
+import { screen } from "@testing-library/react-native"
 import { SaleInfoTestsQuery } from "__generated__/SaleInfoTestsQuery.graphql"
-import { RegisterToBidButtonContainer } from "app/Scenes/Sale/Components/RegisterToBidButton"
-import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { RegisterToBidButton } from "app/Scenes/Sale/Components/RegisterToBidButton"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { SaleInfoContainer, tests } from "./SaleInfo"
 
 describe("SaleInfo", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const TestRenderer = () => (
-    <QueryRenderer<SaleInfoTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query SaleInfoTestsQuery($saleID: String!) @relay_test_operation {
-          sale(id: $saleID) {
-            ...SaleInfo_sale
-          }
-          me {
-            ...SaleInfo_me
-          }
+  const { renderWithRelay } = setupTestWrapper<SaleInfoTestsQuery>({
+    Component: ({ sale, me }) => <SaleInfoContainer sale={sale} me={me} />,
+    query: graphql`
+      query SaleInfoTestsQuery($saleID: String!) @relay_test_operation {
+        sale(id: $saleID) {
+          ...SaleInfo_sale
         }
-      `}
-      variables={{ saleID: "sale-id" }}
-      render={({ props }) => {
-        if (props?.sale && props?.me) {
-          return <SaleInfoContainer sale={props.sale} me={props.me} />
+        me {
+          ...SaleInfo_me
         }
-        return null
-      }}
-    />
-  )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+      }
+    `,
+    variables: { saleID: "sale-id" },
   })
 
   it("shows register to bid button", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithRelay({
+      Sale: () => mockSale,
+    })
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => mockSale,
-      })
-    )
-
-    expect(tree.root.findAllByType(RegisterToBidButtonContainer)).toBeTruthy()
+    expect(screen.UNSAFE_getAllByType(RegisterToBidButton)).toBeTruthy()
   })
 
   it("hides register to bid button if auction is over", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithRelay({
+      Sale: () => ({
+        ...mockSale,
+        startAt: "2022-09-01T15:00:00",
+        endAt: "2024-09-01T15:00:00",
+      }),
+    })
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => ({
-          ...mockSale,
-          endAt: "2020-08-01T15:00:00",
-        }),
-      })
-    )
-
-    expect(tree.root.findAllByType(RegisterToBidButtonContainer)).toEqual([])
+    expect(screen.queryByTestId("register-to-bid-button")).toBeFalsy()
   })
 
   it("shows Auction is live View shows up when an auction is live", () => {
-    const { UNSAFE_queryAllByType } = renderWithWrappers(<TestRenderer />)
+    renderWithRelay({
+      Sale: () => liveMockSale,
+    })
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => liveMockSale,
-      })
-    )
-
-    expect(UNSAFE_queryAllByType(tests.AuctionIsLive)).toHaveLength(1)
+    expect(screen.UNSAFE_queryAllByType(tests.AuctionIsLive)).toHaveLength(1)
   })
 
   it("doesn't show Auction is live view when an auction is not live", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithRelay({
+      Sale: () => mockSale,
+    })
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => mockSale,
-      })
-    )
-
-    expect(tree.root.findAllByType(tests.AuctionIsLive)).toHaveLength(0)
+    expect(screen.UNSAFE_queryAllByType(tests.AuctionIsLive)).toHaveLength(0)
   })
 
   it("shows the buyers premium correctly for a single percentage", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+    renderWithRelay({
+      Sale: () => mockSale,
+    })
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => mockSale,
-      })
-    )
-
-    expect(extractText(tree.root)).toContain("20% on the hammer price")
+    expect(screen.getByText("20% on the hammer price")).toBeTruthy()
   })
 
   it("shows the buyers premium correctly for range of percentages", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
-    const sale = {
-      ...mockSale,
-      isWithBuyersPremium: true,
-      buyersPremium: [
-        {
-          amount: "$0",
-          percent: 0.25,
-        },
-        {
-          amount: "$150,000",
-          percent: 0.2,
-        },
-        {
-          amount: "$3,000,000",
-          percent: 0.12,
-        },
-      ],
-    }
+    renderWithRelay({
+      Sale: () => ({
+        ...mockSale,
+        isWithBuyersPremium: true,
+        buyersPremium: [
+          {
+            amount: "$0",
+            percent: 0.25,
+          },
+          {
+            amount: "$150,000",
+            percent: 0.2,
+          },
+          {
+            amount: "$3,000,000",
+            percent: 0.12,
+          },
+        ],
+      }),
+    })
 
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Sale: () => sale,
-      })
-    )
-
-    expect(extractText(tree.root)).toContain(
-      "On the hammer price up to and including $150,000: 25%"
-    )
-    expect(extractText(tree.root)).toContain(
-      "On the hammer price in excess of $150,000 up to and including $3,000,000: 20%"
-    )
-    expect(extractText(tree.root)).toContain(
-      "On the portion of the hammer price in excess of $3,000,000: 12%"
-    )
+    expect(screen.getByText("On the hammer price up to and including $150,000: 25%")).toBeTruthy()
+    expect(
+      screen.getByText(
+        "On the hammer price in excess of $150,000 up to and including $3,000,000: 20%"
+      )
+    ).toBeTruthy()
+    expect(
+      screen.getByText("On the portion of the hammer price in excess of $3,000,000: 12%")
+    ).toBeTruthy()
   })
 })
 
@@ -142,17 +104,16 @@ const mockSale = {
   name: "sale name",
   internalID: "the-sale-internal",
   description: "sale description",
-  endAt: "2021-08-01T15:00:00",
+  endAt: "2034-08-01T15:00:00",
   liveStartAt: null,
-  startAt: "2020-09-01T15:00:00",
+  startAt: "2026-09-01T15:00:00",
   timeZone: "Europe/Berlin",
   requireIdentityVerification: false,
-  registrationStatus: null,
   isWithBuyersPremium: true,
   buyersPremium: [{ amount: "CHF0", percent: 0.2 }],
 }
 
 const liveMockSale = {
   ...mockSale,
-  liveStartAt: "2020-10-01T15:00:00",
+  liveStartAt: "2026-10-01T15:00:00",
 }

@@ -262,7 +262,8 @@ describe("SizesOptionsScreen", () => {
       renderWithWrappers(<TestRenderer />)
 
       fireEvent.changeText(screen.getByLabelText("Minimum Width Input"), "5")
-      fireEvent.press(screen.getAllByA11yState({ checked: true })[0])
+
+      fireEvent.press(screen.getAllByRole("checkbox")[0])
 
       const filters = getFilters(screen.getByTestId("debug"))
       const widthFilter = getWidthFilterOption(filters)

@@ -97,7 +97,7 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
               {sale.name}
             </Text>
             {saleStatus(sale.startAt, sale.endAt, sale.registrationEndsAt) === "closed" || (
-              <Flex mb={4}>
+              <Flex mb={4} testID="register-to-bid-button">
                 <RegisterToBidButtonContainer
                   sale={sale}
                   contextType={OwnerType.saleInformation}

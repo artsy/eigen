@@ -1,5 +1,5 @@
 import { createToken } from "@stripe/stripe-react-native"
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { BidderPositionQuery$data } from "__generated__/BidderPositionQuery.graphql"
 import {
   BidFlowContextProvider,
@@ -95,7 +95,11 @@ describe("BidFlow", () => {
 
     // Select Max Bid
     expect(screen.getByText("$35,000")).toBeOnTheScreen()
-    mockStore.getActions().setSelectedBidIndex(2)
+
+    act(() => {
+      mockStore.getActions().setSelectedBidIndex(2)
+    })
+
     expect(screen.getByText("$45,000")).toBeOnTheScreen()
     fireEvent.press(screen.getByText("Next"))
 
@@ -140,7 +144,9 @@ describe("BidFlow", () => {
 
     // Select Max Bid
     expect(screen.getByText("$35,000")).toBeOnTheScreen()
-    mockStore.getActions().setSelectedBidIndex(2)
+    act(() => {
+      mockStore.getActions().setSelectedBidIndex(2)
+    })
     expect(screen.getByText("$45,000")).toBeOnTheScreen()
     fireEvent.press(screen.getByText("Next"))
 
@@ -153,8 +159,10 @@ describe("BidFlow", () => {
     )
 
     // mimic adding a credit card
-    mockStore.getActions().setBillingAddress(billingAddress)
-    mockStore.getActions().setCreditCardToken(stripeToken as any)
+    act(() => {
+      mockStore.getActions().setBillingAddress(billingAddress)
+      mockStore.getActions().setCreditCardToken(stripeToken as any)
+    })
 
     expect(
       screen.getByText(/I agree to Artsy's General Terms and Conditions of Sale/)

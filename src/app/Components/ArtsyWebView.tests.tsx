@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
@@ -102,10 +102,14 @@ describe("ArtsyWebViewPage", () => {
 
   it("renders a back button when presented modally and internal navigation is has happened", () => {
     const view = render({ isPresentedModally: true })
-    webViewProps(view).onNavigationStateChange?.({
-      ...mockOnNavigationStateChange,
-      canGoBack: true,
+
+    act(() => {
+      webViewProps(view).onNavigationStateChange?.({
+        ...mockOnNavigationStateChange,
+        canGoBack: true,
+      })
     })
+
     expect(screen.UNSAFE_getByType(NavigationHeader).props.useXButton).toBeFalsy()
   })
 
@@ -120,9 +124,11 @@ describe("ArtsyWebViewPage", () => {
       url: "https://staging.artsy.net/non-native/this-doesnt-have-a-native-view-1",
     })
 
-    webViewProps(view).onNavigationStateChange?.({
-      ...mockOnNavigationStateChange,
-      url: "https://staging.artsy.net/non-native/this-doesnt-have-a-native-view-2",
+    act(() => {
+      webViewProps(view).onNavigationStateChange?.({
+        ...mockOnNavigationStateChange,
+        url: "https://staging.artsy.net/non-native/this-doesnt-have-a-native-view-2",
+      })
     })
 
     fireEvent.press(screen.getByTestId("fancy-modal-header-right-button"))
@@ -206,13 +212,21 @@ describe("ArtsyWebViewPage", () => {
 
   it("receives messages from the browser", () => {
     const view = render()
-    webViewProps(view).onMessage?.({ nativeEvent: { data: '{"event":"event data"}' } } as any)
+
+    act(() => {
+      webViewProps(view).onMessage?.({ nativeEvent: { data: '{"event":"event data"}' } } as any)
+    })
+
     expect(mockCallWebViewEventCallback).toHaveBeenCalledWith({ event: "event data" })
   })
 
   it("doesn't call the event hook given onMessage data in the wrong format", () => {
     const view = render()
-    webViewProps(view).onMessage?.({ nativeEvent: { data: "some text" } } as any)
+
+    act(() => {
+      webViewProps(view).onMessage?.({ nativeEvent: { data: "some text" } } as any)
+    })
+
     expect(mockCallWebViewEventCallback).not.toHaveBeenCalled()
   })
 
@@ -226,9 +240,11 @@ describe("ArtsyWebViewPage", () => {
       ;(goBack as any).mockReset()
       mockSystemBackAction.mockReset()
 
-      webViewProps(view).onNavigationStateChange?.({
-        ...mockOnNavigationStateChange,
-        canGoBack: true,
+      act(() => {
+        webViewProps(view).onNavigationStateChange?.({
+          ...mockOnNavigationStateChange,
+          canGoBack: true,
+        })
       })
 
       fireEvent.press(screen.getByTestId("fancy-modal-header-left-button"))
@@ -239,10 +255,11 @@ describe("ArtsyWebViewPage", () => {
     it("can be overridden", () => {
       const mockSystemBackAction = jest.fn()
       const view = render({ mimicBrowserBackButton: false, systemBackAction: mockSystemBackAction })
-
-      webViewProps(view).onNavigationStateChange?.({
-        ...mockOnNavigationStateChange,
-        canGoBack: true,
+      act(() => {
+        webViewProps(view).onNavigationStateChange?.({
+          ...mockOnNavigationStateChange,
+          canGoBack: true,
+        })
       })
 
       fireEvent.press(screen.getByTestId("fancy-modal-header-left-button"))
@@ -257,28 +274,33 @@ describe("ArtsyWebViewPage", () => {
       const googleURL =
         "https://googleads.g.doubleclick.net/pcs/click?" +
         stringify({ adurl: "https://staging.artsy.net/artist/banksy" })
-
-      webViewProps(view).onNavigationStateChange?.({
-        ...mockOnNavigationStateChange,
-        url: googleURL,
+      act(() => {
+        webViewProps(view).onNavigationStateChange?.({
+          ...mockOnNavigationStateChange,
+          url: googleURL,
+        })
       })
       expect(navigate).toHaveBeenCalledWith("https://staging.artsy.net/artist/banksy")
     })
 
     it("allows inner navigation by default for other webview urls", () => {
       const view = render()
-      webViewProps(view).onNavigationStateChange?.({
-        ...mockOnNavigationStateChange,
-        url: "https://staging.artsy.net/orders/order-id",
+      act(() => {
+        webViewProps(view).onNavigationStateChange?.({
+          ...mockOnNavigationStateChange,
+          url: "https://staging.artsy.net/orders/order-id",
+        })
       })
       expect(navigate).not.toHaveBeenCalled()
     })
 
     it("always calls navigate for external urls", () => {
       const view = render()
-      webViewProps(view).onNavigationStateChange?.({
-        ...mockOnNavigationStateChange,
-        url: "https://google.com",
+      act(() => {
+        webViewProps(view).onNavigationStateChange?.({
+          ...mockOnNavigationStateChange,
+          url: "https://google.com",
+        })
       })
       expect(navigate).toHaveBeenCalledWith("https://google.com")
     })
@@ -286,10 +308,11 @@ describe("ArtsyWebViewPage", () => {
     describe("the inner WebView's goBack method", () => {
       it("is called when the URL matches a route that is not loaded in a web view", () => {
         const view = render()
-
-        webViewProps(view).onNavigationStateChange?.({
-          ...mockOnNavigationStateChange,
-          url: "https://staging.artsy.net/artwork/foo",
+        act(() => {
+          webViewProps(view).onNavigationStateChange?.({
+            ...mockOnNavigationStateChange,
+            url: "https://staging.artsy.net/artwork/foo",
+          })
         })
 
         expect(mockGoBack).toHaveBeenCalled()
@@ -297,10 +320,11 @@ describe("ArtsyWebViewPage", () => {
 
       it("is not called when the URL does not match any route", () => {
         const view = render()
-
-        webViewProps(view).onNavigationStateChange?.({
-          ...mockOnNavigationStateChange,
-          url: "https://support.artsy.net/",
+        act(() => {
+          webViewProps(view).onNavigationStateChange?.({
+            ...mockOnNavigationStateChange,
+            url: "https://support.artsy.net/",
+          })
         })
 
         expect(mockGoBack).not.toHaveBeenCalled()
@@ -308,10 +332,11 @@ describe("ArtsyWebViewPage", () => {
 
       it("is not called when the URL matches a ModalWebView route", () => {
         const view = render()
-
-        webViewProps(view).onNavigationStateChange?.({
-          ...mockOnNavigationStateChange,
-          url: "https://staging.artsy.net/orders/foo",
+        act(() => {
+          webViewProps(view).onNavigationStateChange?.({
+            ...mockOnNavigationStateChange,
+            url: "https://staging.artsy.net/orders/foo",
+          })
         })
 
         expect(mockGoBack).not.toHaveBeenCalled()
@@ -319,10 +344,11 @@ describe("ArtsyWebViewPage", () => {
 
       it("is not called when the URL matches a ReactWebView route", () => {
         const view = render()
-
-        webViewProps(view).onNavigationStateChange?.({
-          ...mockOnNavigationStateChange,
-          url: "https://staging.artsy.net/meet-the-specialists",
+        act(() => {
+          webViewProps(view).onNavigationStateChange?.({
+            ...mockOnNavigationStateChange,
+            url: "https://staging.artsy.net/meet-the-specialists",
+          })
         })
 
         expect(mockGoBack).not.toHaveBeenCalled()
@@ -330,10 +356,11 @@ describe("ArtsyWebViewPage", () => {
 
       it("is not called when the URL matches a VanityURLEntity route", () => {
         const view = render()
-
-        webViewProps(view).onNavigationStateChange?.({
-          ...mockOnNavigationStateChange,
-          url: "https://staging.artsy.net/foo",
+        act(() => {
+          webViewProps(view).onNavigationStateChange?.({
+            ...mockOnNavigationStateChange,
+            url: "https://staging.artsy.net/foo",
+          })
         })
 
         expect(mockGoBack).not.toHaveBeenCalled()

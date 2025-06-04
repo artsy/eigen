@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { Aggregations, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
@@ -52,13 +52,13 @@ describe("ArtistNationalitiesOptionsScreen", () => {
   }
 
   it("renders the options", () => {
-    const { getByText } = renderWithWrappers(<TestWrapper />)
+    renderWithWrappers(<TestWrapper />)
 
-    expect(getByText("American")).toBeTruthy()
-    expect(getByText("British")).toBeTruthy()
-    expect(getByText("German")).toBeTruthy()
-    expect(getByText("Italian")).toBeTruthy()
-    expect(getByText("Japanese")).toBeTruthy()
+    expect(screen.getByText("American")).toBeOnTheScreen()
+    expect(screen.getByText("British")).toBeOnTheScreen()
+    expect(screen.getByText("German")).toBeOnTheScreen()
+    expect(screen.getByText("Italian")).toBeOnTheScreen()
+    expect(screen.getByText("Japanese")).toBeOnTheScreen()
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
@@ -73,10 +73,16 @@ describe("ArtistNationalitiesOptionsScreen", () => {
       ],
     }
 
-    const { getAllByA11yState } = renderWithWrappers(<TestWrapper initialData={initialData} />)
+    renderWithWrappers(<TestWrapper initialData={initialData} />)
 
-    expect(getAllByA11yState({ checked: true })).toHaveLength(2)
-    expect(getAllByA11yState({ checked: false })).toHaveLength(3)
+    const checkboxes = screen.getAllByRole("checkbox")
+    expect(checkboxes).toHaveLength(5)
+
+    expect(checkboxes[0]).toBeChecked() // American
+    expect(checkboxes[1]).toBeChecked() // British
+    expect(checkboxes[2]).not.toBeChecked() // German
+    expect(checkboxes[3]).not.toBeChecked() // Italian
+    expect(checkboxes[4]).not.toBeChecked() // Japanese
   })
 
   it("clears all when `Clear` button is tapped", () => {
@@ -91,12 +97,22 @@ describe("ArtistNationalitiesOptionsScreen", () => {
       ],
     }
 
-    const { getByText, queryAllByA11yState } = renderWithWrappers(
-      <TestWrapper initialData={initialData} />
-    )
+    renderWithWrappers(<TestWrapper initialData={initialData} />)
 
-    expect(queryAllByA11yState({ checked: true })).toHaveLength(2)
-    fireEvent.press(getByText("Clear"))
-    expect(queryAllByA11yState({ checked: true })).toHaveLength(0)
+    const checkboxes = screen.getAllByRole("checkbox")
+
+    expect(checkboxes[0]).toBeChecked() // American
+    expect(checkboxes[1]).toBeChecked() // British
+    expect(checkboxes[2]).not.toBeChecked() // German
+    expect(checkboxes[3]).not.toBeChecked() // Italian
+    expect(checkboxes[4]).not.toBeChecked() // Japanese
+
+    fireEvent.press(screen.getByText("Clear"))
+
+    expect(checkboxes[0]).not.toBeChecked() // American
+    expect(checkboxes[1]).not.toBeChecked() // British
+    expect(checkboxes[2]).not.toBeChecked() // German
+    expect(checkboxes[3]).not.toBeChecked() // Italian
+    expect(checkboxes[4]).not.toBeChecked() // Japanese
   })
 })

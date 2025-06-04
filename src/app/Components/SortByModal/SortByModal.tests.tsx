@@ -40,11 +40,16 @@ describe("SortByModal", () => {
   })
 
   it("should render selected option state when `selectedValue` prop is passed", () => {
-    const { getAllByA11yState } = renderWithWrappers(<TestRenderer />)
-    const selectedOptions = getAllByA11yState({ selected: true })
+    renderWithWrappers(<TestRenderer />)
 
-    expect(selectedOptions).toHaveLength(1)
-    expect(selectedOptions[0]).toHaveTextContent("Option One")
+    const radioButtons = screen.getAllByRole("radio")
+    expect(radioButtons).toHaveLength(2)
+
+    expect(radioButtons[0]).toBeSelected()
+    expect(radioButtons[0]).toHaveTextContent("Option One")
+
+    expect(radioButtons[1]).not.toBeSelected()
+    expect(radioButtons[1]).toHaveTextContent("Option Two")
   })
 })
 

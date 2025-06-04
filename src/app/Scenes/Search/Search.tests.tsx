@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { SearchScreen } from "./Search"
 
@@ -15,15 +15,17 @@ describe("Search", () => {
   it("should render a text input with placeholder and no pills", async () => {
     renderWithRelay()
 
+    await waitForElementToBeRemoved(() => screen.queryByTestId("search-placeholder"))
+
     const searchInput = screen.getByPlaceholderText("Search Artsy")
 
-    expect(searchInput).toBeTruthy()
+    expect(searchInput).toBeOnTheScreen()
 
     // Pill should not be visible
-    expect(screen.queryByText("Artists")).toBeFalsy()
+    expect(screen.queryByText("Artists")).not.toBeOnTheScreen()
 
     // should show City Guide
-    expect(screen.getByText("City Guide")).toBeTruthy()
+    expect(screen.getByText("City Guide")).toBeOnTheScreen()
 
     fireEvent.changeText(searchInput, "Ba")
   })

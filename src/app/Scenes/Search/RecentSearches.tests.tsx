@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react-native"
+import { act, screen } from "@testing-library/react-native"
 import { GlobalStore } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { RecentSearches } from "./RecentSearches"
@@ -35,36 +35,42 @@ describe("Recent Searches", () => {
   it("has an empty state", () => {
     renderWithWrappers(<TestPage />)
 
-    expect(screen.queryByText("We’ll save your recent searches here")).toBeTruthy()
+    expect(screen.getByText("We’ll save your recent searches here")).toBeOnTheScreen()
   })
 
   it("shows recent searches if there were any", () => {
     renderWithWrappers(<TestPage />)
 
-    GlobalStore.actions.search.addRecentSearch(banksy)
+    act(() => {
+      GlobalStore.actions.search.addRecentSearch(banksy)
+    })
 
-    expect(screen.queryByText("Banksy")).toBeTruthy()
+    expect(screen.getByText("Banksy")).toBeOnTheScreen()
 
-    GlobalStore.actions.search.addRecentSearch(andyWarhol)
+    act(() => {
+      GlobalStore.actions.search.addRecentSearch(andyWarhol)
+    })
 
-    expect(screen.queryByText("Banksy")).toBeTruthy()
+    expect(screen.getByText("Banksy")).toBeOnTheScreen()
   })
 
   it("shows all recent searches", () => {
     renderWithWrappers(<TestPage />)
 
-    GlobalStore.actions.search.addRecentSearch(banksy)
-    GlobalStore.actions.search.addRecentSearch(andyWarhol)
-    GlobalStore.actions.search.addRecentSearch(keithHaring)
-    GlobalStore.actions.search.addRecentSearch(yayoiKusama)
-    GlobalStore.actions.search.addRecentSearch(joanMitchell)
-    GlobalStore.actions.search.addRecentSearch(anniAlbers)
+    act(() => {
+      GlobalStore.actions.search.addRecentSearch(banksy)
+      GlobalStore.actions.search.addRecentSearch(andyWarhol)
+      GlobalStore.actions.search.addRecentSearch(keithHaring)
+      GlobalStore.actions.search.addRecentSearch(yayoiKusama)
+      GlobalStore.actions.search.addRecentSearch(joanMitchell)
+      GlobalStore.actions.search.addRecentSearch(anniAlbers)
+    })
 
-    expect(screen.queryByText("Banksy")).toBeTruthy()
-    expect(screen.queryByText("Andy Warhol")).toBeTruthy()
-    expect(screen.queryByText("Keith Haring")).toBeTruthy()
-    expect(screen.queryByText("Yayoi Kusama")).toBeTruthy()
-    expect(screen.queryByText("Joan Mitchell")).toBeTruthy()
-    expect(screen.queryByText("Anni Albers")).toBeTruthy()
+    expect(screen.getByText("Banksy")).toBeOnTheScreen()
+    expect(screen.getByText("Andy Warhol")).toBeOnTheScreen()
+    expect(screen.getByText("Keith Haring")).toBeOnTheScreen()
+    expect(screen.getByText("Yayoi Kusama")).toBeOnTheScreen()
+    expect(screen.getByText("Joan Mitchell")).toBeOnTheScreen()
+    expect(screen.getByText("Anni Albers")).toBeOnTheScreen()
   })
 })

@@ -1,19 +1,23 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { CollapsibleArtworkDetailsTestsQuery } from "__generated__/CollapsibleArtworkDetailsTestsQuery.graphql"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
 
 describe("CollapsibleArtworkDetails", () => {
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper<CollapsibleArtworkDetailsTestsQuery>({
+    Component: ({ artwork }) => <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />,
+    query: graphql`
+      query CollapsibleArtworkDetailsTestsQuery @relay_test_operation {
+        artwork(id: "some-slug") {
+          ...CollapsibleArtworkDetails_artwork
+        }
+      }
+    `,
   })
 
   it("displays basic artwork details when collapsed", () => {
-    renderWithWrappers(<TestRenderer />)
-
-    resolveData({
+    renderWithRelay({
       Artwork: () => ({
         title: "Artwork Title",
         date: "Artwork Date",
@@ -27,9 +31,7 @@ describe("CollapsibleArtworkDetails", () => {
   })
 
   it("displays additonal artwork details when expanded", async () => {
-    renderWithWrappers(<TestRenderer />)
-
-    resolveData({
+    renderWithRelay({
       Artwork: () => ({
         title: "Artwork Title",
         date: "Artwork Date",
@@ -86,9 +88,7 @@ describe("CollapsibleArtworkDetails", () => {
   })
 
   it("doesn't display missing artwork details when expanded", async () => {
-    renderWithWrappers(<TestRenderer />)
-
-    resolveData({
+    renderWithRelay({
       Artwork: () => ({
         saleMessage: "Artwork Sale Message",
         manufacturer: null,
@@ -110,9 +110,7 @@ describe("CollapsibleArtworkDetails", () => {
   })
 
   it("diplays 'not included' when the artwork is not framed", async () => {
-    renderWithWrappers(<TestRenderer />)
-
-    resolveData({
+    renderWithRelay({
       Artwork: () => ({
         isFramed: false,
       }),
@@ -128,31 +126,3 @@ describe("CollapsibleArtworkDetails", () => {
     expect(screen.getByText("Not included")).toBeVisible()
   })
 })
-
-let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-const TestRenderer = () => (
-  <QueryRenderer<CollapsibleArtworkDetailsTestsQuery>
-    environment={mockEnvironment}
-    query={graphql`
-      query CollapsibleArtworkDetailsTestsQuery @relay_test_operation {
-        artwork(id: "some-slug") {
-          ...CollapsibleArtworkDetails_artwork
-        }
-      }
-    `}
-    variables={{}}
-    render={({ props }) => {
-      if (props?.artwork) {
-        return <CollapsibleArtworkDetailsFragmentContainer artwork={props.artwork} />
-      }
-      return null
-    }}
-  />
-)
-
-const resolveData = (passedProps = {}) => {
-  mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-    MockPayloadGenerator.generate(operation, passedProps)
-  )
-}

@@ -42,28 +42,28 @@ describe(useGlobalState, () => {
   it("does not cause the wrapper to be updated by default", () => {
     renderWithWrappers(<TestComponent />)
 
-    expect(screen.queryByText("Hello 0")).toBeOnTheScreen()
+    expect(screen.getByText("Hello 0")).toBeOnTheScreen()
 
-    setN(5)
+    act(() => setN(5))
 
-    expect(screen.queryByText("Hello 0")).toBeOnTheScreen()
+    expect(screen.getByText("Hello 0")).toBeOnTheScreen()
 
-    setN(-245)
+    act(() => setN(-245))
 
-    expect(screen.queryByText("Hello 0")).toBeOnTheScreen()
+    expect(screen.getByText("Hello 0")).toBeOnTheScreen()
   })
 
   it("does cause the wrapper to be updated when listening", () => {
     renderWithWrappers(<TestComponent listen />)
 
-    expect(screen.queryByText("Hello 0")).toBeOnTheScreen()
+    expect(screen.getByText("Hello 0")).toBeOnTheScreen()
 
-    setN(5)
+    act(() => setN(5))
 
-    expect(screen.queryByText("Hello 5")).toBeOnTheScreen()
+    expect(screen.getByText("Hello 5")).toBeOnTheScreen()
 
-    setN(-245)
+    act(() => setN(-245))
 
-    expect(screen.queryByText("Hello -245")).toBeOnTheScreen()
+    expect(screen.getByText("Hello -245")).toBeOnTheScreen()
   })
 })

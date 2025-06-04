@@ -2,7 +2,6 @@ import { Flex, Join, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
-import { TouchableOpacity } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 export interface SortOption {
@@ -44,20 +43,17 @@ export const SortByModal: React.FC<SortByModalProps> = (props) => {
               const selected = selectedValue === option.value
 
               return (
-                <TouchableOpacity
-                  accessibilityRole="radio"
-                  key={option.text}
-                  accessibilityState={{ selected }}
-                >
-                  <RadioButton
-                    key={option.value}
-                    onPress={() => onSelectOption(option)}
-                    textVariant="sm-display"
-                    selected={selected}
-                    text={option.text}
-                    block
-                  />
-                </TouchableOpacity>
+                <RadioButton
+                  accessibilityState={{
+                    selected,
+                  }}
+                  key={option.value}
+                  onPress={() => onSelectOption(option)}
+                  textVariant="sm-display"
+                  selected={selected}
+                  text={option.text}
+                  block
+                />
               )
             })}
           </Join>
