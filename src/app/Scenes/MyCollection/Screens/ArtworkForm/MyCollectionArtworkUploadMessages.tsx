@@ -1,10 +1,10 @@
 import { Flex } from "@artsy/palette-mobile"
+import { Tab } from "app/Scenes/MyCollection/MyCollection"
 import {
   AddedArtworkWithInsightsMessage,
   AddedArtworkWithoutAnyCollectionInsightsMessage,
   AddedArtworkWithoutInsightsMessage,
 } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionMessages"
-import { Tab } from "app/Scenes/MyCollection/MyCollection"
 import { setVisualClueAsSeen, useVisualClue } from "app/utils/hooks/useVisualClue"
 
 interface MyCollectionArtworkUploadMessagesProps {

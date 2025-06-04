@@ -3,6 +3,7 @@ import { Flex, Pill, Spacer, Touchable, useSpace } from "@artsy/palette-mobile"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { MyCollectionArtworkFilters } from "app/Scenes/MyCollection/Components/MyCollectionArtworkFiltersStickyTab"
 import { MyCollectionArtworksKeywordStore } from "app/Scenes/MyCollection/Components/MyCollectionArtworksKeywordStore"
+import { Tab } from "app/Scenes/MyCollection/MyCollection"
 import { HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER } from "app/Scenes/MyCollection/MyCollectionLegacy"
 import { MyCollectionArtworkUploadMessages } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkUploadMessages"
 import { PurchasedArtworkAddedMessage } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionMessages"
@@ -10,7 +11,7 @@ import {
   CollectedTab,
   MyCollectionTabsStore,
 } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
-import { Tab } from "app/Scenes/MyCollection/MyCollection"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useMeasure } from "app/utils/hooks/useMeasure"
 import { debounce } from "lodash"

@@ -6,10 +6,10 @@ import {
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
 } from "app/Components/PhotoRow/utils/uploadFileToS3"
+import { Tab } from "app/Scenes/MyCollection/MyCollection"
 import { saveOrUpdateArtwork } from "app/Scenes/MyCollection/Screens/ArtworkForm/methods/uploadArtwork"
 import { ArtworkFormValues } from "app/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import * as artworkMutations from "app/Scenes/MyCollection/mutations/myCollectionCreateArtwork"
-import { Tab } from "app/Scenes/MyCollection/MyCollection"
 import { GlobalStore } from "app/store/GlobalStore"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import * as LocalImageStore from "app/utils/LocalImageStore"
