@@ -344,7 +344,6 @@ const fragment = graphql`
       aggregations: [
         ARTIST
         ARTIST_NATIONALITY
-        DIMENSION_RANGE
         FOLLOWED_ARTISTS
         LOCATION_CITY
         MAJOR_PERIOD

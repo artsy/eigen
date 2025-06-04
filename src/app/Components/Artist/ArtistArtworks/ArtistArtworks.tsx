@@ -372,7 +372,6 @@ export default createPaginationContainer(
           first: 0
           aggregations: [
             ARTIST_SERIES
-            DIMENSION_RANGE
             LOCATION_CITY
             MAJOR_PERIOD
             MATERIALS_TERMS

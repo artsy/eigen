@@ -218,7 +218,6 @@ export type AggregationName =
   | "ARTIST_NATIONALITY"
   | "ARTIST_SERIES"
   | "ARTIST"
-  | "DIMENSION_RANGE"
   | "earliestCreatedYear"
   | "FOLLOWED_ARTISTS"
   | "latestCreatedYear"
@@ -274,7 +273,6 @@ export const filterKeyFromAggregation: Record<
   ARTIST_NATIONALITY: FilterParamName.artistNationalities,
   ARTIST: "artistIDs",
   ARTIST_SERIES: "artistSeriesIDs",
-  DIMENSION_RANGE: FilterParamName.sizes,
   earliestCreatedYear: "earliestCreatedYear",
   FOLLOWED_ARTISTS: "artistsIFollow",
   latestCreatedYear: "earliestCreatedYear",
@@ -415,7 +413,6 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   materialsTerms: "MATERIALS_TERMS",
   medium: "MEDIUM",
   partnerIDs: "PARTNER",
-  sizes: "DIMENSION_RANGE",
   state: "state",
 }
 

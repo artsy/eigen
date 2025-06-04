@@ -238,6 +238,7 @@ export const getStaticFilterOptionsByMode = (
         filterOptionToDisplayConfigMap.framed,
         filterOptionToDisplayConfigMap.priceRange,
         filterOptionToDisplayConfigMap.sort,
+        filterOptionToDisplayConfigMap.sizes,
         filterOptionToDisplayConfigMap.waysToBuy,
       ]
   }

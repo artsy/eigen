@@ -187,7 +187,6 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
           aggregations: [
             ARTIST
             MEDIUM
-            DIMENSION_RANGE
             MATERIALS_TERMS
             ARTIST_NATIONALITY
             LOCATION_CITY
