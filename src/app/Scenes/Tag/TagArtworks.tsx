@@ -183,7 +183,6 @@ export const TagArtworksPaginationContainer = createPaginationContainer(
           aggregations: [
             LOCATION_CITY
             ARTIST_NATIONALITY
-            COLOR
             DIMENSION_RANGE
             PARTNER
             MAJOR_PERIOD

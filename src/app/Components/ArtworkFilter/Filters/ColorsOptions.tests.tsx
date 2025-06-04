@@ -1,8 +1,4 @@
-import {
-  aggregationForFilter,
-  Aggregations,
-  FilterParamName,
-} from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { Aggregations, FilterParamName } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
   ArtworkFiltersStoreProvider,
@@ -10,55 +6,19 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { act, ReactTestRenderer } from "react-test-renderer"
-import { ColorsOptionsScreen } from "./ColorsOptions"
+import { COLORS, ColorsOptionsScreen } from "./ColorsOptions"
 import { ColorsSwatch } from "./ColorsSwatch"
 import { getEssentialProps } from "./helper"
 
 describe("Colors options screen", () => {
-  const mockAggregations: Aggregations = [
-    {
-      slice: "COLOR",
-      counts: [
-        {
-          name: "Black and White",
-          count: 2956,
-          value: "black-and-white",
-        },
-        {
-          name: "Orange",
-          count: 513,
-          value: "orange",
-        },
-        {
-          name: "Blue",
-          count: 277,
-          value: "blue",
-        },
-        {
-          name: "Yellow",
-          count: 149,
-          value: "yellow",
-        },
-        {
-          name: "Purple",
-          count: 145,
-          value: "purple",
-        },
-        {
-          name: "Brown",
-          count: 133,
-          value: "brown",
-        },
-      ],
-    },
-  ]
+  const []: Aggregations = []
 
   const initialState: ArtworkFiltersState = {
     selectedFilters: [],
     appliedFilters: [],
     previouslyAppliedFilters: [],
     applyFilters: false,
-    aggregations: mockAggregations,
+    aggregations: [],
     filterType: "artwork",
     counts: {
       total: null,
@@ -91,48 +51,12 @@ describe("Colors options screen", () => {
     )
   }
 
-  const aggregation = aggregationForFilter(FilterParamName.colors, mockAggregations)
-
   it("shows the correct number of color options", () => {
     const tree = renderWithWrappersLEGACY(
-      <MockColorScreen
-        aggregations={mockAggregations}
-        {...getEssentialProps()}
-        initialData={initialState}
-      />
+      <MockColorScreen aggregations={[]} {...getEssentialProps()} initialData={initialState} />
     )
 
-    expect(tree.root.findAllByType(ColorsSwatch)).toHaveLength(aggregation!.counts.length)
-  })
-
-  describe("with unrecognized colors", () => {
-    const updatedMockAggregations: Aggregations = [
-      {
-        ...mockAggregations[0],
-        counts: [
-          ...mockAggregations[0].counts,
-          {
-            name: "Stanky Bean",
-            count: 197,
-            value: "stanky-bean",
-          },
-        ],
-      },
-    ]
-    const updatedAggregation = aggregationForFilter(FilterParamName.colors, updatedMockAggregations)
-
-    it("it does not try to render swatches for them", () => {
-      const tree = renderWithWrappersLEGACY(
-        <MockColorScreen
-          aggregations={updatedMockAggregations}
-          {...getEssentialProps()}
-          initialData={initialState}
-        />
-      )
-
-      const expectedSwatchCount = updatedAggregation!.counts.length
-      expect(tree.root.findAllByType(ColorsSwatch)).toHaveLength(expectedSwatchCount - 1)
-    })
+    expect(tree.root.findAllByType(ColorsSwatch)).toHaveLength(COLORS.length)
   })
 
   describe("selecting a color filter", () => {
@@ -141,14 +65,14 @@ describe("Colors options screen", () => {
         selectedFilters: [
           {
             paramName: FilterParamName.colors,
-            paramValue: [aggregation!.counts[0].value],
-            displayText: aggregation!.counts[0].name,
+            paramValue: [COLORS[0].value],
+            displayText: COLORS[0].name,
           },
         ],
         appliedFilters: [],
         previouslyAppliedFilters: [],
         applyFilters: false,
-        aggregations: mockAggregations,
+        aggregations: [],
         filterType: "artwork",
         counts: {
           total: null,
@@ -163,7 +87,7 @@ describe("Colors options screen", () => {
       )
 
       const selectedOption = selectedColorOptions(component)[0]
-      expect(selectedOption.props.name).toMatch(aggregation!.counts[0].name)
+      expect(selectedOption.props.name).toMatch(COLORS[0].name)
     })
 
     it("allows multiple color options to be selected when several are tapped", () => {
@@ -171,14 +95,14 @@ describe("Colors options screen", () => {
         selectedFilters: [
           {
             paramName: FilterParamName.colors,
-            paramValue: aggregation!.counts[0].value,
-            displayText: aggregation!.counts[0].name,
+            paramValue: COLORS[0].value,
+            displayText: COLORS[0].name,
           },
         ],
         appliedFilters: [],
         previouslyAppliedFilters: [],
         applyFilters: false,
-        aggregations: mockAggregations,
+        aggregations: [],
         filterType: "artwork",
         counts: {
           total: null,
@@ -203,9 +127,9 @@ describe("Colors options screen", () => {
       const selectedOptions = selectedColorOptions(tree)
       expect(selectedOptions).toHaveLength(3)
       expect(selectedOptions.map((option) => option.props.name)).toEqual([
-        aggregation!.counts[1].name,
-        aggregation!.counts[3].name,
-        aggregation!.counts[2].name,
+        COLORS[0].name,
+        COLORS[1].name,
+        COLORS[2].name,
       ])
     })
 
@@ -215,7 +139,7 @@ describe("Colors options screen", () => {
         appliedFilters: [],
         previouslyAppliedFilters: [],
         applyFilters: false,
-        aggregations: mockAggregations,
+        aggregations: [],
         filterType: "artwork",
         counts: {
           total: null,
@@ -235,7 +159,7 @@ describe("Colors options screen", () => {
 
       const selectedOptions = selectedColorOptions(tree)
       expect(selectedOptions).toHaveLength(1)
-      expect(selectedOptions[0].props.name).toMatch(aggregation!.counts[3].name)
+      expect(selectedOptions[0].props.name).toMatch(COLORS[1].name)
 
       act(() => secondOptionInstance.props.onPress())
 

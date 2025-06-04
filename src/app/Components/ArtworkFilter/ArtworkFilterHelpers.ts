@@ -218,7 +218,6 @@ export type AggregationName =
   | "ARTIST_NATIONALITY"
   | "ARTIST_SERIES"
   | "ARTIST"
-  | "COLOR"
   | "DIMENSION_RANGE"
   | "earliestCreatedYear"
   | "FOLLOWED_ARTISTS"
@@ -275,7 +274,6 @@ export const filterKeyFromAggregation: Record<
   ARTIST_NATIONALITY: FilterParamName.artistNationalities,
   ARTIST: "artistIDs",
   ARTIST_SERIES: "artistSeriesIDs",
-  COLOR: FilterParamName.colors,
   DIMENSION_RANGE: FilterParamName.sizes,
   earliestCreatedYear: "earliestCreatedYear",
   FOLLOWED_ARTISTS: "artistsIFollow",
@@ -410,7 +408,6 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   artistNationalities: "ARTIST_NATIONALITY",
   artistSeriesIDs: "ARTIST_SERIES",
   artistsIFollow: "FOLLOWED_ARTISTS",
-  colors: "COLOR",
   earliestCreatedYear: "earliestCreatedYear",
   latestCreatedYear: "latestCreatedYear",
   locationCities: "LOCATION_CITY",

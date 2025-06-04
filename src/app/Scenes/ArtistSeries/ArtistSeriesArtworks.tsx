@@ -176,7 +176,6 @@ const fragment = graphql`
       first: $count
       after: $cursor
       aggregations: [
-        COLOR
         DIMENSION_RANGE
         LOCATION_CITY
         MAJOR_PERIOD

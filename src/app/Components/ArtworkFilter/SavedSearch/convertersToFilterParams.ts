@@ -110,19 +110,19 @@ export const convertSizeToFilterParams = (
 
 export const convertColorsToFilterParam = (
   criteria: SearchCriteriaAttributes,
-  aggregation: AggregationByFilterParamName
+  _aggregation: AggregationByFilterParamName = {}
 ): FilterData | null => {
-  const colorsValue = criteria[SearchCriteria.colors]
+  const availableColors = criteria[SearchCriteria.colors]
 
-  if (Array.isArray(colorsValue) && colorsValue.length > 0) {
-    const colorFromAggregationByValue = keyBy(aggregation[SearchCriteria.colors], "value")
-    const availableColors = colorsValue.filter((color) => !!colorFromAggregationByValue[color])
-    const colorNames = availableColors.map((color) => COLORS_INDEXED_BY_VALUE[color].name)
+  if (Array.isArray(availableColors) && availableColors.length > 0) {
+    const validColors = availableColors.filter((color) => !!COLORS_INDEXED_BY_VALUE[color])
+    const validColorsNames = validColors.map((color) => COLORS_INDEXED_BY_VALUE[color].name)
+    const validColorsValues = validColors.map((color) => COLORS_INDEXED_BY_VALUE[color].value)
 
-    if (availableColors.length > 0) {
+    if (validColorsNames.length > 0) {
       return {
-        displayText: colorNames.join(", "),
-        paramValue: availableColors,
+        displayText: validColorsNames.join(", "),
+        paramValue: validColorsValues,
         paramName: FilterParamName.colors,
       }
     }

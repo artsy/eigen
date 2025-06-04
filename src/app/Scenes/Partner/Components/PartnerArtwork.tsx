@@ -145,7 +145,6 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
           first: $count
           after: $cursor
           aggregations: [
-            COLOR
             DIMENSION_RANGE
             ARTIST
             MAJOR_PERIOD

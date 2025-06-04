@@ -192,7 +192,6 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
             ARTIST_NATIONALITY
             LOCATION_CITY
             MAJOR_PERIOD
-            COLOR
             PARTNER
             FOLLOWED_ARTISTS
           ]

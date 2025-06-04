@@ -208,21 +208,23 @@ export const getStaticFilterOptionsByMode = (
   switch (mode) {
     case FilterModalMode.SaleArtworks:
       return [
-        filterOptionToDisplayConfigMap.framed,
+        filterOptionToDisplayConfigMap.colors,
         filterOptionToDisplayConfigMap.estimateRange,
+        filterOptionToDisplayConfigMap.framed,
+        filterOptionToDisplayConfigMap.priceRange,
         filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.viewAs,
-        filterOptionToDisplayConfigMap.priceRange,
       ]
 
     case FilterModalMode.AuctionResults:
       return [
         filterOptionToDisplayConfigMap.categories,
+        filterOptionToDisplayConfigMap.colors,
         filterOptionToDisplayConfigMap.organizations,
+        filterOptionToDisplayConfigMap.priceRange,
         filterOptionToDisplayConfigMap.sizes,
         filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.year,
-        filterOptionToDisplayConfigMap.priceRange,
       ]
 
     case FilterModalMode.Custom:
@@ -230,12 +232,13 @@ export const getStaticFilterOptionsByMode = (
 
     default:
       return [
-        filterOptionToDisplayConfigMap.framed,
         filterOptionToDisplayConfigMap.attributionClass,
         filterOptionToDisplayConfigMap.availability,
+        filterOptionToDisplayConfigMap.colors,
+        filterOptionToDisplayConfigMap.framed,
+        filterOptionToDisplayConfigMap.priceRange,
         filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.waysToBuy,
-        filterOptionToDisplayConfigMap.priceRange,
       ]
   }
 }

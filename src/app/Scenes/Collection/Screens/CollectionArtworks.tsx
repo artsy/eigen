@@ -195,7 +195,6 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
           aggregations: [
             ARTIST
             ARTIST_NATIONALITY
-            COLOR
             DIMENSION_RANGE
             LOCATION_CITY
             MAJOR_PERIOD
