@@ -148,7 +148,16 @@ export const viewerFragment = graphql`
       first: $count
       after: $cursor
       input: $input
-      aggregations: [ARTIST, ARTIST_NATIONALITY, LOCATION_CITY, MATERIALS_TERMS, PARTNER, TOTAL]
+      aggregations: [
+        ARTIST
+        ARTIST_NATIONALITY
+        LOCATION_CITY
+        MAJOR_PERIOD
+        MATERIALS_TERMS
+        MEDIUM
+        PARTNER
+        TOTAL
+      ]
     ) @connection(key: "CollectArtworks_artworksConnection") {
       aggregations {
         slice
