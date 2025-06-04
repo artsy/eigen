@@ -1,12 +1,23 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Join, RadioButton, Spacer, Text } from "@artsy/palette-mobile"
+import {
+  BackButton,
+  Flex,
+  Join,
+  RadioButton,
+  Spacer,
+  Text,
+  useColor,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { DarkModeOption } from "app/Scenes/MyProfile/DevicePrefsModel"
 import { GlobalStore } from "app/store/GlobalStore"
+import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
-import { TouchableOpacity } from "react-native"
+import { MotiView } from "moti"
+import { ScrollView, TouchableOpacity } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useTracking } from "react-tracking"
-import { MyProfileScreenWrapper } from "./Components/MyProfileScreenWrapper"
 
 export const DARK_MODE_OPTIONS = {
   on: {
@@ -27,6 +38,10 @@ export const DarkModeSettings: React.FC<{}> = () => {
   const darkModeOption = GlobalStore.useAppState((state) => state.devicePrefs.darkModeOption)
   const setDarkModeOption = GlobalStore.actions.devicePrefs.setDarkModeOption
   const { trackEvent } = useTracking()
+  const space = useSpace()
+  const color = useColor()
+
+  const safeAreaInsets = useSafeAreaInsets()
 
   const trackDarkMode = (option: DarkModeOption) => {
     trackEvent({
@@ -43,8 +58,30 @@ export const DarkModeSettings: React.FC<{}> = () => {
         context_screen_owner_type: OwnerType.accountDarkMode,
       })}
     >
-      <MyProfileScreenWrapper title="Dark Mode" contentContainerStyle={{ paddingHorizontal: 0 }}>
-        <Flex px={2}>
+      <MotiView
+        style={{ paddingTop: safeAreaInsets.top, flex: 1 }}
+        animate={{ backgroundColor: color("mono0") }}
+        transition={{
+          backgroundColor: {
+            type: "timing",
+          },
+        }}
+      >
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+          scrollEnabled={false}
+          contentContainerStyle={{
+            paddingTop: space(2),
+            paddingHorizontal: space(2),
+          }}
+        >
+          <BackButton onPress={goBack} style={{ marginBottom: space(2) }} />
+
+          <Text variant="lg-display" mb={4}>
+            Dark Mode
+          </Text>
+
           <Join separator={<Spacer y={2} />}>
             <RadioMenuItem
               title={DARK_MODE_OPTIONS.system.title}
@@ -71,8 +108,8 @@ export const DarkModeSettings: React.FC<{}> = () => {
               }}
             />
           </Join>
-        </Flex>
-      </MyProfileScreenWrapper>
+        </ScrollView>
+      </MotiView>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
