@@ -87,7 +87,7 @@ import {
   CitySectionListQueryRenderer,
   CitySectionListScreenQuery,
 } from "app/Scenes/City/CitySectionList"
-import { Collect, collectQuery } from "app/Scenes/Collect/Collect"
+import { Collect, collectQuery, prepareCollectVariables } from "app/Scenes/Collect/Collect"
 import { CollectionScreen, CollectionScreenQuery } from "app/Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListScreen } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
 import { collectionsByCategoryQuery } from "app/Scenes/CollectionsByCategory/Body"
@@ -714,6 +714,7 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "Collect",
     Component: Collect,
     queries: [collectQuery],
+    prepareVariables: [(props) => prepareCollectVariables(props)],
     options: {
       screenOptions: {
         headerShown: false,

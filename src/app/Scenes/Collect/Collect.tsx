@@ -190,11 +190,19 @@ export const collectQuery = graphql`
 
 type CollectQueryRendererProps = StackScreenProps<any, any>
 
+export const prepareCollectVariables = (params: {
+  [key: string]: string | number | boolean | string[]
+}) => {
+  const filters: FilterArray = getFilterParamsFromRouteParams(params || {})
+  const filterParams = filterArtworksParams(filters ?? [], "collect")
+  const input = prepareFilterArtworksParamsForInput(filterParams as FilterParams)
+
+  return { input: input as FilterArtworksInput, filters }
+}
+
 const CollectQueryRenderer: React.FC<CollectQueryRendererProps> = withSuspense({
   Component: ({ route }) => {
-    const filters: FilterArray = getFilterParamsFromRouteParams(route.params || {})
-    const filterParams = filterArtworksParams(filters ?? [], "collect")
-    const input = prepareFilterArtworksParamsForInput(filterParams as FilterParams)
+    const { input, filters } = prepareCollectVariables(route.params || {})
 
     const data = useLazyLoadQuery<CollectQuery>(collectQuery, {
       input: input as FilterArtworksInput,
