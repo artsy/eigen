@@ -5,4 +5,4 @@ xcodebuild -workspace "$WORKSPACE" -scheme "$SCHEME" -configuration Debug -sdk i
 	tee ./xcode_build_raw.log |
 	bundle exec xcpretty -c
 
-./scripts/ci/upload_sim_app.sh
+./scripts/ci/upload_sim_app
