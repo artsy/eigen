@@ -1,21 +1,22 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Box } from "@artsy/palette-mobile"
-import { ShowArtworks_show$data } from "__generated__/ShowArtworks_show.graphql"
+import { Button, Screen, Spacer } from "@artsy/palette-mobile"
+import { ShowArtworks_show$key } from "__generated__/ShowArtworks_show.graphql"
 import { Show_show$data } from "__generated__/Show_show.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { aggregationsType, FilterArray } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { SHOW2_ARTWORKS_PAGE_SIZE } from "app/Components/constants"
+import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
+import { PAGE_SIZE } from "app/Components/constants"
 import { ShowArtworksEmptyStateFragmentContainer } from "app/Scenes/Show/Components/ShowArtworksEmptyState"
+import { extractNodes } from "app/utils/extractNodes"
+import { useRefreshControl } from "app/utils/refreshHelpers"
 import React, { useEffect, useRef } from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { graphql, usePaginationFragment } from "react-relay"
 
 interface Props {
-  show: ShowArtworks_show$data
-  relay: RelayPaginationProp
+  show: ShowArtworks_show$key
   initiallyAppliedFilter?: FilterArray
 }
 
@@ -28,8 +29,8 @@ interface ArtworkProps {
 export const ShowArtworksWithNavigation = (props: ArtworkProps) => {
   const { show, visible, closeFilterArtworksModal } = props
   return (
-    <Box px={2}>
-      <ShowArtworksPaginationContainer show={show} />
+    <>
+      <ShowArtworks show={show} />
       <ArtworkFilterNavigator
         visible={visible}
         id={show.internalID}
@@ -38,16 +39,16 @@ export const ShowArtworksWithNavigation = (props: ArtworkProps) => {
         exitModal={closeFilterArtworksModal}
         closeModal={closeFilterArtworksModal}
       />
-    </Box>
+    </>
   )
 }
 
-const ShowArtworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) => {
-  const { internalID, slug } = show
-  const artworks = show.showArtworks
-  const artworksTotal = artworks?.counts?.total ?? 0
+export const ShowArtworks: React.FC<Props> = ({ show, initiallyAppliedFilter }) => {
+  const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment(fragment, show)
+  const { internalID, slug } = data
+  const artworksTotal = data?.showArtworks?.counts?.total ?? 0
   const unfilteredArtworksTotalCount = useRef(artworksTotal)
-  const artworkAggregations = (artworks?.aggregations ?? []) as aggregationsType
+  const artworkAggregations = (data?.showArtworks?.aggregations ?? []) as aggregationsType
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setInitialFilterStateAction
@@ -59,12 +60,14 @@ const ShowArtworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) 
     (state) => state.setFiltersCountAction
   )
   const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
+  const { scrollHandler } = Screen.useListenForScreenScroll()
+  const RefreshControl = useRefreshControl(refetch)
 
   useArtworkFilters({
-    relay,
+    refetch,
     aggregations: artworkAggregations,
     componentPath: "Show/ShowArtworks",
-    pageSize: SHOW2_ARTWORKS_PAGE_SIZE,
+    pageSize: PAGE_SIZE,
   })
 
   useEffect(() => {
@@ -79,100 +82,99 @@ const ShowArtworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) 
     setFiltersCountAction({ ...counts, total: artworksTotal })
   }, [artworksTotal])
 
+  if (!data.showArtworks) {
+    return null
+  }
+
   // No artworks are available for this show
   if (unfilteredArtworksTotalCount.current === 0) {
-    return <ShowArtworksEmptyStateFragmentContainer show={show} />
+    return <ShowArtworksEmptyStateFragmentContainer show={data} />
   }
 
   // No artworks match the applied filters
   if (artworksTotal === 0) {
-    return <FilteredArtworkGridZeroState id={internalID} slug={slug} />
+    return (
+      <>
+        <FilteredArtworkGridZeroState id={internalID} slug={slug} />
+        <Spacer y={2} />
+      </>
+    )
   }
 
+  const artworks = extractNodes(data.showArtworks)
+
   return (
-    <Box>
-      <InfiniteScrollArtworksGridContainer
-        connection={artworks}
-        loadMore={relay.loadMore}
-        hasMore={relay.hasMore}
-        autoFetch={false}
-        pageSize={SHOW2_ARTWORKS_PAGE_SIZE}
+    <>
+      <MasonryInfiniteScrollArtworkGrid
+        animated
+        artworks={artworks}
+        isLoading={isLoadingNext}
+        hasMore={hasNext}
+        disableAutoLayout
+        pageSize={PAGE_SIZE}
         contextScreenOwnerType={OwnerType.show}
-        contextScreenOwnerId={show.internalID}
-        contextScreenOwnerSlug={show.slug}
+        contextScreenOwnerId={data.internalID}
+        contextScreenOwnerSlug={data.slug}
+        onScroll={scrollHandler}
+        refreshControl={RefreshControl}
+        ListFooterComponent={() => {
+          return (
+            <Button
+              mt={4}
+              variant="fillGray"
+              block
+              size="large"
+              onPress={() => loadNext(PAGE_SIZE)}
+              loading={isLoadingNext}
+            >
+              Show more
+            </Button>
+          )
+        }}
       />
-    </Box>
+      <Spacer y={4} />
+    </>
   )
 }
 
-export const ShowArtworksPaginationContainer = createPaginationContainer(
-  ShowArtworks,
-  {
-    show: graphql`
-      fragment ShowArtworks_show on Show
-      @argumentDefinitions(
-        count: { type: "Int", defaultValue: 30 }
-        cursor: { type: "String" }
-        input: { type: "FilterArtworksInput" }
-      ) {
-        slug
-        internalID
-        ...ShowArtworksEmptyState_show
-        showArtworks: filterArtworksConnection(
-          first: $count
-          after: $cursor
-          aggregations: [MEDIUM, TOTAL, MAJOR_PERIOD, ARTIST_NATIONALITY, MATERIALS_TERMS, ARTIST]
-          input: $input
-        ) @connection(key: "Show_showArtworks") {
-          aggregations {
-            slice
-            counts {
-              count
-              name
-              value
-            }
-          }
-          edges {
-            node {
-              id
-            }
-          }
-          counts {
-            total
-          }
-          ...InfiniteScrollArtworksGrid_connection
+const fragment = graphql`
+  fragment ShowArtworks_show on Show
+  @refetchable(queryName: "ShowArtworksPaginationQuery")
+  @argumentDefinitions(
+    count: { type: "Int", defaultValue: 10 }
+    cursor: { type: "String" }
+    input: { type: "FilterArtworksInput" }
+  ) {
+    slug
+    internalID
+    ...ShowArtworksEmptyState_show
+    showArtworks: filterArtworksConnection(
+      first: $count
+      after: $cursor
+      aggregations: [MEDIUM, TOTAL, MAJOR_PERIOD, ARTIST_NATIONALITY, MATERIALS_TERMS, ARTIST]
+      input: $input
+    ) @connection(key: "Show_showArtworks") {
+      aggregations {
+        slice
+        counts {
+          count
+          name
+          value
         }
       }
-    `,
-  },
-  {
-    getFragmentVariables(previousVariables, count) {
-      return {
-        ...previousVariables,
-        count,
-      }
-    },
-    getVariables(props, { count, cursor }, fragmentVariables) {
-      return {
-        input: fragmentVariables.input,
-        props,
-        count,
-        cursor,
-        id: props.show.slug,
-      }
-    },
-    query: graphql`
-      query ShowArtworksInfiniteScrollGridQuery(
-        $id: String!
-        $count: Int!
-        $cursor: String
-        $input: FilterArtworksInput
-      ) {
-        show(id: $id) {
-          ...ShowArtworks_show @arguments(count: $count, cursor: $cursor, input: $input)
-          ...ShowArtworksEmptyState_show
+      edges {
+        node {
+          ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
+          id
+          slug
+          image(includeAll: false) {
+            aspectRatio
+          }
         }
       }
-    `,
+      counts {
+        total
+      }
+    }
   }
-)
+`

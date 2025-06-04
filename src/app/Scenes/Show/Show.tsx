@@ -9,7 +9,7 @@ import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { times } from "lodash"
-import React, { useRef, useState } from "react"
+import React, { Suspense, useRef, useState } from "react"
 import { Animated } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ShowArtworksWithNavigation as ShowArtworks } from "./Components/ShowArtworks"
@@ -46,7 +46,7 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
     setVisible(false)
   }
 
-  const artworkProps = { show, visible, openeFilterArtworksModal, closeFilterArtworksModal }
+  const artworkProps = { show, visible, closeFilterArtworksModal }
 
   const sections: Section[] = [
     { key: "header", element: <ShowHeader show={show} mx={2} mt={2} /> },
@@ -62,11 +62,7 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
       element: (
         <Flex backgroundColor="mono0">
           <Separator />
-          <HeaderArtworksFilter
-            animationValue={filterComponentAnimationValue}
-            onPress={openeFilterArtworksModal}
-            disableYAxisAnimation
-          />
+          <HeaderArtworksFilter onPress={openeFilterArtworksModal} />
         </Flex>
       ),
     },
@@ -77,7 +73,11 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
 
     {
       key: "artworks",
-      element: <ShowArtworks {...artworkProps} />,
+      element: (
+        <Suspense fallback={<PlaceholderGrid />}>
+          <ShowArtworks {...artworkProps} />
+        </Suspense>
+      ),
     },
 
     {

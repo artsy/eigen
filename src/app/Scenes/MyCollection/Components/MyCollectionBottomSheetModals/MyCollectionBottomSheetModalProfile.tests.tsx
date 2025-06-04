@@ -1,8 +1,8 @@
 import BottomSheet from "@gorhom/bottom-sheet"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { MyCollectionBottomSheetModalProfile } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalProfile"
-import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { Tab } from "app/Scenes/MyCollection/MyCollection"
+import { MyCollectionTabsStoreProvider } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 

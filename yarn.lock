@@ -15,10 +15,10 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@artsy/cohesion@4.264.1":
-  version "4.264.1"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.264.1.tgz#c919b1b36eb4466aef5c3f6704bbb1931b993129"
-  integrity sha512-AeKzj3vVUd1grz4wJiAsDfWPOkO/JF/xxmQohn2L87P8DGNzf6R37BG6SyBbP6j2vhCpJ6VYpVrxA0Hvt9iwUQ==
+"@artsy/cohesion@4.265.0":
+  version "4.265.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.265.0.tgz#d15fc880cfe1f5605936ad270b562b10e41a8233"
+  integrity sha512-d8w/Ym74YCuD0Q+akSMGtrI03U92OpxT8/dtXYOtzWo9yE4PPV2x8bLWkvLKKN7P+EL2RCgdUtvDIuatNTToew==
   dependencies:
     core-js "3"
 
@@ -8947,18 +8947,6 @@ eslint-plugin-testing-library@6.5.0:
   integrity sha512-Ls5TUfLm5/snocMAOlofSOJxNN0aKqwTlco7CrNtMjkTdQlkpSMaeTCDHCuXfzrI97xcx2rSCNeKeJjtpkNC1w==
   dependencies:
     "@typescript-eslint/utils" "^5.62.0"
-
-eslint-plugin-unused-imports@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-unused-imports/-/eslint-plugin-unused-imports-2.0.0.tgz#d8db8c4d0cfa0637a8b51ce3fd7d1b6bc3f08520"
-  integrity sha512-3APeS/tQlTrFa167ThtP0Zm0vctjr4M44HMpeg1P4bK6wItarumq0Ma82xorMKdFsWpphQBlRPzw/pxiVELX1A==
-  dependencies:
-    eslint-rule-composer "^0.3.0"
-
-eslint-rule-composer@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/eslint-rule-composer/-/eslint-rule-composer-0.3.0.tgz#79320c927b0c5c0d3d3d2b76c8b4a488f25bbaf9"
-  integrity sha512-bt+Sh8CtDmn2OajxvNO+BX7Wn4CIWMpTRm3MaiKPCQcnnlm0CS2mhui6QaoeQugs+3Kj2ESKEEGJUdVafwhiCg==
 
 eslint-scope@5.1.1, eslint-scope@^5.1.1:
   version "5.1.1"

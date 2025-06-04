@@ -10,7 +10,6 @@ module.exports = {
     "no-relative-import-paths",
     "react-hooks",
     "testing-library",
-    "unused-imports",
     "artsy",
     "local-rules",
   ],
@@ -60,8 +59,6 @@ module.exports = {
     "react/jsx-curly-brace-presence": ERR,
     "react/jsx-no-leaked-render": [ERR, { validStrategies: ["coerce", "ternary"] }],
     "react-hooks/rules-of-hooks": ERR,
-    "unused-imports/no-unused-imports": OFF, // look below
-
     /**
      * Rules for tests see https://github.com/testing-library/eslint-plugin-testing-library#supported-rules for details
      * on default enabled rules or to remove rules.
@@ -133,7 +130,7 @@ module.exports = {
     "react/react-in-jsx-scope": OFF,
     "react/prop-types": OFF,
     "react-native/no-inline-styles": OFF,
-    "react-hooks/exhaustive-deps": OFF, // we don't care about this rule, since it's often wrong. it's helpful, but often wrong.
+    "react-hooks/exhaustive-deps": WARN, // we don't care about this rule, since it's often wrong. it's helpful, but often wrong.
     "react-native-a11y/has-accessibility-hint": OFF,
     "no-restricted-imports": [
       "error",
