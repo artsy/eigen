@@ -13,7 +13,7 @@ import {
   masonryRenderItemProps,
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
-import { useCallback } from "react"
+import React, { FC, useCallback } from "react"
 import Animated from "react-native-reanimated"
 
 type MasonryFlashListOmittedProps = Omit<
@@ -67,6 +67,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   partnerOffer,
   priceOfferMessage,
   refreshControl,
+  ListFooterComponent,
   ...rest
 }) => {
   const space = useSpace()
@@ -140,11 +141,29 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       refreshControl={refreshControl}
       renderItem={renderItem}
       ListFooterComponent={
-        hasMore ? <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} /> : null
+        hasMore ? (
+          <Footer ListFooterComponent={ListFooterComponent} isLoading={shouldDisplaySpinner} />
+        ) : null
       }
       onScroll={rest.onScroll}
     />
   )
+}
+
+const Footer: FC<{
+  ListFooterComponent: React.ComponentType<any> | React.ReactElement | null | undefined
+  isLoading: boolean
+}> = ({ ListFooterComponent, isLoading }) => {
+  if (!ListFooterComponent) {
+    return <AnimatedMasonryListFooter shouldDisplaySpinner={isLoading} />
+  }
+
+  if (React.isValidElement(ListFooterComponent)) {
+    return ListFooterComponent
+  }
+
+  const Component = ListFooterComponent as React.ComponentType<any>
+  return <Component />
 }
 
 const AnimatedMasonryFlashList = Animated.createAnimatedComponent(
