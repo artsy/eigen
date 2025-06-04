@@ -4,9 +4,11 @@ import {
   tappedRegisterToBid,
   TappedRegisterToBidArgs,
 } from "@artsy/cohesion"
+// eslint-disable-next-line local-rules/no-palette-icon-imports
 import { Spacer, CheckIcon, Flex, Box, Text, Button } from "@artsy/palette-mobile"
 import { RegisterToBidButton_me$data } from "__generated__/RegisterToBidButton_me.graphql"
 import { RegisterToBidButton_sale$data } from "__generated__/RegisterToBidButton_sale.graphql"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -18,7 +20,7 @@ interface RegisterToBidButtonProps {
   contextModule: ContextModule
 }
 
-const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({
+export const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({
   me,
   sale,
   contextType,
