@@ -93,7 +93,7 @@ export const CollectContent: React.FC<CollectContentProps> = ({ viewer }) => {
         animated
         artworks={artworks}
         isLoading={isLoadingNext}
-        loadMore={loadNext}
+        loadMore={() => loadNext(PAGE_SIZE)}
         hasMore={hasNext}
         numColumns={NUM_COLUMNS_MASONRY}
         disableAutoLayout
