@@ -1,3 +1,4 @@
+import { act, screen } from "@testing-library/react-native"
 import { UrgencyInfo } from "app/Components/SaleArtworkTileRailCard/UrgencyInfo"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
@@ -16,34 +17,39 @@ describe("UrgencyInfo", () => {
   it('shows "Live in" when sale is live type and has not started', () => {
     const start = new Date(new Date().getTime() + 11 * DAY + 10 * MIN).toISOString()
     const end = new Date(new Date().getTime() + 20 * DAY).toISOString()
-    const { getByText } = renderWithWrappers(
+    renderWithWrappers(
       <UrgencyInfo startAt={start} endAt={end} isLiveAuction saleTimeZone="America/New_York" />
     )
 
-    jest.advanceTimersByTime(2000)
-    expect(getByText("Live in 11 days")).toBeDefined()
+    act(() => {
+      jest.advanceTimersByTime(2000)
+    })
+
+    expect(screen.getByText("Live in 11 days")).toBeOnTheScreen()
   })
 
   it("shows time left when sale has started", () => {
     const start = new Date(new Date().getTime() - 10).toISOString()
     const end = new Date(new Date().getTime() + 3 * DAY + HR).toISOString()
-    const { getByText } = renderWithWrappers(
-      <UrgencyInfo startAt={start} endAt={end} saleTimeZone="America/New_York" />
-    )
+    renderWithWrappers(<UrgencyInfo startAt={start} endAt={end} saleTimeZone="America/New_York" />)
 
-    jest.advanceTimersByTime(2000)
-    expect(getByText("3 days left")).toBeDefined()
+    act(() => {
+      jest.advanceTimersByTime(2000)
+    })
+
+    expect(screen.getByText("3 days left")).toBeOnTheScreen()
   })
 
   it('shows "In Progress" if event has started but has no end date', () => {
     const start = new Date(new Date().getTime() - 10).toISOString()
     const end = ""
-    const { getByText } = renderWithWrappers(
-      <UrgencyInfo startAt={start} endAt={end} saleTimeZone="America/New_York" />
-    )
+    renderWithWrappers(<UrgencyInfo startAt={start} endAt={end} saleTimeZone="America/New_York" />)
 
-    jest.advanceTimersByTime(2000)
-    expect(getByText("In progress")).toBeDefined()
+    act(() => {
+      jest.advanceTimersByTime(2000)
+    })
+
+    expect(screen.getByText("In progress")).toBeOnTheScreen()
   })
 
   it.skip("calls onTimerEnd function when timer ends", () => {
@@ -70,22 +76,24 @@ describe("UrgencyInfo", () => {
     it("text color is red when time is less than 1 hour", () => {
       const start = new Date(new Date().getTime() - 10).toISOString()
       const end = new Date(new Date().getTime() + HR - MIN).toISOString()
-      const { getByText } = renderWithWrappers(
+      renderWithWrappers(
         <UrgencyInfo startAt={start} endAt={end} saleTimeZone="America/New_York" />
       )
-
-      jest.advanceTimersByTime(2000)
-      expect(getByText("58m 59s left")).toHaveStyle({ color: "#D71023" })
+      act(() => {
+        jest.advanceTimersByTime(2000)
+      })
+      expect(screen.getByText("58m 59s left")).toHaveStyle({ color: "#D71023" })
     })
     it("text color is blue when time is greater than 1 hour", () => {
       const start = new Date(new Date().getTime() - 10).toISOString()
       const end = new Date(new Date().getTime() + 2 * HR).toISOString()
-      const { getByText } = renderWithWrappers(
+      renderWithWrappers(
         <UrgencyInfo startAt={start} endAt={end} saleTimeZone="America/New_York" />
       )
-
-      jest.advanceTimersByTime(2000)
-      expect(getByText("1h 59m left")).toHaveStyle({ color: "#1023D7" })
+      act(() => {
+        jest.advanceTimersByTime(2000)
+      })
+      expect(screen.getByText("1h 59m left")).toHaveStyle({ color: "#1023D7" })
     })
   })
 })

@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react-native"
+import { act, screen } from "@testing-library/react-native"
 import { SaleHeaderTestsQuery } from "__generated__/SaleHeaderTestsQuery.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { mockTimezone } from "app/utils/tests/mockTimezone"
@@ -169,7 +169,9 @@ describe("SaleHeader", () => {
             }),
           })
 
-          jest.advanceTimersByTime(1000)
+          act(() => {
+            jest.advanceTimersByTime(1000)
+          })
 
           const relativeTime = screen.queryByText("10m 0s Until Bidding Starts")
           expect(relativeTime).toBeOnTheScreen()
@@ -186,7 +188,9 @@ describe("SaleHeader", () => {
             }),
           })
 
-          jest.advanceTimersByTime(1000)
+          act(() => {
+            jest.advanceTimersByTime(1000)
+          })
 
           const relativeTime = screen.queryByText("3 Days Until Bidding Starts")
           expect(relativeTime).toBeOnTheScreen()
@@ -203,7 +207,9 @@ describe("SaleHeader", () => {
             }),
           })
 
-          jest.advanceTimersByTime(1000)
+          act(() => {
+            jest.advanceTimersByTime(1000)
+          })
 
           const relativeTime = screen.queryByText("6 Days Until Lots Start Closing")
           expect(relativeTime).toBeOnTheScreen()
@@ -221,7 +227,9 @@ describe("SaleHeader", () => {
             }),
           })
 
-          jest.advanceTimersByTime(1000)
+          act(() => {
+            jest.advanceTimersByTime(1000)
+          })
 
           const relativeTime = screen.queryByText("9h 37m Until Lots Start Closing")
           expect(relativeTime).toBeOnTheScreen()
@@ -240,7 +248,9 @@ describe("SaleHeader", () => {
             }),
           })
 
-          jest.advanceTimersByTime(1000)
+          act(() => {
+            jest.advanceTimersByTime(1000)
+          })
 
           const relativeTime = screen.queryByText("37m 28s Until Lots Start Closing")
           expect(relativeTime).toBeOnTheScreen()
@@ -257,7 +267,9 @@ describe("SaleHeader", () => {
             }),
           })
 
-          jest.advanceTimersByTime(1000)
+          act(() => {
+            jest.advanceTimersByTime(1000)
+          })
 
           const relativeTime = screen.queryByText("Lots are closing")
           expect(relativeTime).toBeOnTheScreen()

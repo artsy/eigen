@@ -1,5 +1,5 @@
 import { Text } from "@artsy/palette-mobile"
-import { screen } from "@testing-library/react-native"
+import { act, screen } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import moment from "moment"
 import { DurationProvider } from "./DurationProvider"
@@ -35,7 +35,10 @@ describe("DurationProvider", () => {
         <DurationConsumer />
       </DurationProvider>
     )
-    jest.advanceTimersByTime(1000)
+
+    act(() => {
+      jest.advanceTimersByTime(1000)
+    })
 
     const duration = moment.duration(0).toString()
     expect(screen.getByText(duration)).toBeTruthy()

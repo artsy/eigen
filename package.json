@@ -290,7 +290,7 @@
     "jest-fetch-mock": "3.0.3",
     "jest-junit": "15.0.0",
     "jest-raw-loader": "1.0.1",
-    "jest-watch-typeahead": "0.6.1",
+    "jest-watch-typeahead": "2.2.2",
     "json5": "2.2.3",
     "lint-staged": "13.2.3",
     "ora": "5.4.0",
