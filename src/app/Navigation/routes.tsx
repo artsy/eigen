@@ -1522,6 +1522,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
         headerTitle: "Dark Mode",
       },
+      hidesBottomTabs: true,
     },
   },
   {
