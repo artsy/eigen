@@ -13,6 +13,7 @@ import {
 } from "app/utils/track/SegmentTrackingProvider"
 import { useAndroidAppStyling } from "app/utils/useAndroidAppStyling"
 import { useDeepLinks } from "app/utils/useDeepLinks"
+import { useFontScaleTracking } from "app/utils/useFontScaleTracking"
 import { useHideSplashScreen } from "app/utils/useHideSplashScreen"
 import { useIdentifyUser } from "app/utils/useIdentifyUser"
 import { useSiftConfig } from "app/utils/useSiftConfig"
@@ -103,6 +104,7 @@ const Main = () => {
   usePurgeCacheOnAppUpdate()
   useHideSplashScreen()
   useAndroidAppStyling()
+  useFontScaleTracking()
 
   useEffect(() => {
     if (isLoggedIn) {
