@@ -212,6 +212,7 @@ export const getStaticFilterOptionsByMode = (
         filterOptionToDisplayConfigMap.estimateRange,
         filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.viewAs,
+        filterOptionToDisplayConfigMap.priceRange,
       ]
 
     case FilterModalMode.AuctionResults:
@@ -221,6 +222,7 @@ export const getStaticFilterOptionsByMode = (
         filterOptionToDisplayConfigMap.sizes,
         filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.year,
+        filterOptionToDisplayConfigMap.priceRange,
       ]
 
     case FilterModalMode.Custom:
@@ -233,6 +235,7 @@ export const getStaticFilterOptionsByMode = (
         filterOptionToDisplayConfigMap.availability,
         filterOptionToDisplayConfigMap.sort,
         filterOptionToDisplayConfigMap.waysToBuy,
+        filterOptionToDisplayConfigMap.priceRange,
       ]
   }
 }

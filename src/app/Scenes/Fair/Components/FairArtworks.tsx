@@ -352,7 +352,6 @@ const fragment = graphql`
         MATERIALS_TERMS
         MEDIUM
         PARTNER
-        PRICE_RANGE
       ]
       input: $input
     ) @connection(key: "Fair_fairArtworks") {

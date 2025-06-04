@@ -98,7 +98,6 @@ export const FairAllFollowedArtistsFragmentContainer = createFragmentContainer(
             PARTNER
             MAJOR_PERIOD
             MEDIUM
-            PRICE_RANGE
             FOLLOWED_ARTISTS
             ARTIST
           ]

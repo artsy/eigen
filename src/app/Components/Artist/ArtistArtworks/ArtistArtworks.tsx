@@ -379,7 +379,6 @@ export default createPaginationContainer(
             MATERIALS_TERMS
             MEDIUM
             PARTNER
-            PRICE_RANGE
             SIMPLE_PRICE_HISTOGRAM
           ]
         ) {

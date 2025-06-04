@@ -228,7 +228,6 @@ export type AggregationName =
   | "MATERIALS_TERMS"
   | "MEDIUM"
   | "PARTNER"
-  | "PRICE_RANGE"
   | "SIMPLE_PRICE_HISTOGRAM"
   | "state"
 
@@ -286,7 +285,6 @@ export const filterKeyFromAggregation: Record<
   MATERIALS_TERMS: FilterParamName.materialsTerms,
   MEDIUM: FilterParamName.additionalGeneIDs,
   PARTNER: FilterParamName.partnerIDs,
-  PRICE_RANGE: FilterParamName.priceRange,
   SIMPLE_PRICE_HISTOGRAM: "SIMPLE_PRICE_HISTOGRAM",
   state: "state",
 }
@@ -420,7 +418,6 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   materialsTerms: "MATERIALS_TERMS",
   medium: "MEDIUM",
   partnerIDs: "PARTNER",
-  priceRange: "PRICE_RANGE",
   sizes: "DIMENSION_RANGE",
   state: "state",
 }

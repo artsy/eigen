@@ -150,7 +150,6 @@ export const PartnerArtworkFragmentContainer = createPaginationContainer(
             ARTIST
             MAJOR_PERIOD
             MEDIUM
-            PRICE_RANGE
             MATERIALS_TERMS
             ARTIST_NATIONALITY
           ]

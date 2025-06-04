@@ -183,7 +183,6 @@ const fragment = graphql`
         MATERIALS_TERMS
         MEDIUM
         PARTNER
-        PRICE_RANGE
         SIMPLE_PRICE_HISTOGRAM
       ]
       input: $input

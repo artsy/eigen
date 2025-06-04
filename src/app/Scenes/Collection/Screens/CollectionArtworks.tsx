@@ -202,7 +202,6 @@ export const CollectionArtworksFragmentContainer = createPaginationContainer(
             MATERIALS_TERMS
             MEDIUM
             PARTNER
-            PRICE_RANGE
           ]
           input: $input
         ) @connection(key: "Collection_collectionArtworks") {

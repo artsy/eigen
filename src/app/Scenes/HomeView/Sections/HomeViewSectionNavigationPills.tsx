@@ -114,6 +114,7 @@ export const HomeViewSectionNavigationPills: React.FC<HomeViewSectionNavigationP
           <RouterLink
             hasChildTouchable
             to={pill.href}
+            disablePrefetch
             key={pill.title}
             onPress={() => {
               tracking.tappedNavigationPillsGroup({
