@@ -10392,6 +10392,24 @@ type Delivery {
   ): String
 }
 
+# Shipment details for an order
+type DeliveryInfo {
+  # Estimated delivery date saved on the order as date stringr
+  estimatedDelivery: String
+
+  # Estimated delivery window saved on the otder as display text
+  estimatedDeliveryWindow: String
+
+  # The carrier handling the shipment as saved on the order (e.g., UPS, FedEx, DHL, USPS)
+  shipperName: String
+
+  # The tracking number for the shipment
+  trackingNumber: String
+
+  # The URL to track the shipment
+  trackingURL: String
+}
+
 type Department {
   id: ID!
   jobs: [Job!]! @deprecated
@@ -16115,6 +16133,9 @@ type Order {
 
   # Currency code
   currencyCode: String!
+
+  # Details about the shipment of an order
+  deliveryInfo: DeliveryInfo
 
   # Display texts for the order based on its buyer_state and order shipping/payment states
   displayTexts: DisplayTexts!
