@@ -228,7 +228,7 @@ jobs:
           command: unzip Artsy.zip
       - run:
           name: Install app in booted sims
-          command: ./install_app_in_booted_sims.sh
+          command: ./scripts/utils/install_app_in_booted_sims.sh
       - run:
           name: Run Maestro Tests
           no_output_timeout: 25m
