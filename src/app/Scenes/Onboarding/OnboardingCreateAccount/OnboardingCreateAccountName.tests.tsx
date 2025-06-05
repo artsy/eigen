@@ -79,7 +79,7 @@ describe("OnboardingCreateAccountName", () => {
   describe("Checkboxes", () => {
     it("sets acceptedTerms to true when the user presses on the checkbox", async () => {
       renderWithWrappers(<Test name="Andy warhol" />)
-      const termsCheckbox = screen.getByLabelText("Accept terms and privacy policy")
+      const termsCheckbox = screen.getByLabelText("Accept terms and privacy policy checkbox")
 
       fireEvent(termsCheckbox, "setChecked")
 
@@ -89,7 +89,9 @@ describe("OnboardingCreateAccountName", () => {
     it("sets agreedToReceiveEmails to true when the user presses on the checkbox", async () => {
       renderWithWrappers(<Test name="Andy warhol" />)
 
-      const emailsSubscriptionCheckbox = screen.getByLabelText("Agree to receive Artsy's emails")
+      const emailsSubscriptionCheckbox = screen.getByLabelText(
+        "Agree to receive Artsy's emails checkbox"
+      )
       fireEvent(emailsSubscriptionCheckbox, "setChecked")
 
       expect(emailsSubscriptionCheckbox).toBeChecked()
