@@ -21109,6 +21109,9 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   # Is this something we can display to the front-end?
   isDisplayable: Boolean
 
+  # Should this show be displayed on the partner profile page?
+  isDisplayableOnPartnerProfile: Boolean
+
   # Does the show exist as a fair booth?
   isFairBooth: Boolean
   isFeatured: Boolean
@@ -23021,6 +23024,9 @@ input UpdatePartnerShowMutationInput {
 
   # The description of the show.
   description: String
+
+  # Should the show be displayed on the partner profile page?
+  displayOnPartnerProfile: Boolean
 
   # The end date of the show.
   endAt: String
