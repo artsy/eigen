@@ -16,14 +16,17 @@ export const EmailSubscriptionCheckbox: React.FC<EmailSubscriptionCheckboxProps>
 
   return (
     <Flex pr={2} flexDirection="row">
-      <Checkbox
-        error={error}
-        checked={checked}
-        onPress={() => setChecked(!checked)}
-        mt={0.5}
-        accessibilityLabel="Agree to receive Artsy's emails checkbox"
-        accessibilityHint="Check this element to receive Artsy's emails"
-      />
+      <Flex>
+        <Checkbox
+          hitSlop={{ top: 25, bottom: 25, left: 25, right: 25 }}
+          error={error}
+          checked={checked}
+          onPress={() => setChecked(!checked)}
+          mt={0.5}
+          accessibilityLabel="Agree to receive Artsy's emails checkbox"
+          accessibilityHint="Check this element to receive Artsy's emails"
+        />
+      </Flex>
       <Flex paddingLeft={1} pt={0.5}>
         {signupLoginFusionEnabled ? (
           <Text variant="xs">

@@ -18,6 +18,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({
     <Flex flexDirection="row" alignItems="center" mr={2}>
       <Flex>
         <Checkbox
+          hitSlop={{ top: 25, bottom: 25, left: 25, right: 25 }}
           error={error}
           checked={checked}
           onPress={() => setChecked(!checked)}
