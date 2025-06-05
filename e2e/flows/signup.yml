@@ -16,6 +16,5 @@ appId: ${MAESTRO_APP_ID}
 - inputText: "Test McTest"
 - runFlow:
     commands:
-      - tapOn:
-          point: 15%,36%
+      - tapOn: Accept terms and privacy policy checkbox
 - tapOn: "Continue.*"
