@@ -10,6 +10,11 @@
 	<true/>
 	<key>EXUpdatesLaunchWaitMs</key>
 	<integer>0</integer>
+	<key>EXUpdatesRequestHeaders</key>
+	<dict>
+		<key>expo-channel-name</key>
+		<string>staging</string>
+	</dict>
 	<key>EXUpdatesRuntimeVersion</key>
 	<string>replaced-at-build-time</string>
 	<key>EXUpdatesURL</key>
