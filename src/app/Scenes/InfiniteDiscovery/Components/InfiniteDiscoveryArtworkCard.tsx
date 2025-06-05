@@ -1,7 +1,10 @@
 import { ContextModule } from "@artsy/cohesion"
 import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
 import { Flex, Image, Text, Touchable, useColor, useScreenDimensions } from "@artsy/palette-mobile"
-import { InfiniteDiscoveryArtworkCard_artwork$key } from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
+import {
+  InfiniteDiscoveryArtworkCard_artwork$data,
+  InfiniteDiscoveryArtworkCard_artwork$key,
+} from "__generated__/InfiniteDiscoveryArtworkCard_artwork.graphql"
 import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { InfiniteDiscoveryArtworkCardPopover } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCardPopover"
@@ -10,7 +13,7 @@ import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks
 import { GlobalStore } from "app/store/GlobalStore"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { memo, useEffect, useRef, useState } from "react"
-import { GestureResponderEvent, Text as RNText, ViewStyle } from "react-native"
+import { FlatList, GestureResponderEvent, Text as RNText, ViewStyle } from "react-native"
 import Haptic from "react-native-haptic-feedback"
 import Animated, {
   Easing,
@@ -41,6 +44,7 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const { hasSavedArtworks } = GlobalStore.useAppState((state) => state.infiniteDiscovery)
     const setHasSavedArtwors = GlobalStore.actions.infiniteDiscovery.setHasSavedArtworks
     const gestureState = useRef({ lastTapTimestamp: 0, numTaps: 0 })
+    const imageCarouselRef = useRef<FlatList>(null)
 
     const track = useInfiniteDiscoveryTracking()
     const color = useColor()
@@ -56,9 +60,11 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
     const { isSaved: isSavedToArtworkList, saveArtworkToLists } = useSaveArtworkToArtworkLists({
-      artworkFragmentRef: artwork,
+      artworkFragmentRef: artwork as NonNullable<InfiniteDiscoveryArtworkCard_artwork$data>,
       onCompleted: (isArtworkSaved) => {
-        track.savedArtwork(isArtworkSaved, artwork.internalID, artwork.slug)
+        if (!!artwork) {
+          track.savedArtwork(isArtworkSaved, artwork.internalID, artwork.slug)
+        }
       },
       onError: () => {
         /**
@@ -122,54 +128,27 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
 
     const MAX_ARTWORK_HEIGHT = screenHeight * 0.55
 
-    const images = artwork.images || []
+    const images = artwork.images
     const hasMultipleImages = images.length > 1
-    const selectedImage = images[currentImageIndex]
-    const src = selectedImage?.url
-    const width = selectedImage?.width ?? 0
-    const height = selectedImage?.height ?? 0
-    const blurhash = selectedImage?.blurhash ?? undefined
 
     // When there are multiple images, adjust the max height to allow space for pagination bar
     const adjustedMaxHeight = hasMultipleImages
       ? MAX_ARTWORK_HEIGHT - PAGINATION_BAR_HEIGHT - PAGINATION_BAR_MARGIN_TOP
       : MAX_ARTWORK_HEIGHT
 
-    const size = sizeToFit({ width, height }, { width: screenWidth, height: adjustedMaxHeight })
-
     const handleWrapperTaps = (event: GestureResponderEvent) => {
       const now = Date.now()
       const state = gestureState.current
       const { nativeEvent } = event
       const { locationX } = nativeEvent
-      const screenFifth = screenWidth / 5
 
+      const screenFifth = screenWidth / 5
       // Determine which part of the screen was tapped
       const leftFifth = locationX < screenFifth
       const rightFifth = locationX > screenWidth - screenFifth
       const middleSection = !leftFifth && !rightFifth
 
-      // Handle image navigation in left/right fifths with single tap
-      if (images.length > 1) {
-        if (leftFifth && currentImageIndex > 0) {
-          // For left fifth, navigate to previous image on single tap
-          Haptic.trigger("impactLight")
-          track.artworkImageSwipe()
-          setCurrentImageIndex(currentImageIndex - 1)
-          return true
-        } else if (rightFifth && currentImageIndex < images.length - 1) {
-          // For right fifth, navigate to next image on single tap
-          Haptic.trigger("impactLight")
-          track.artworkImageSwipe()
-          setCurrentImageIndex(currentImageIndex + 1)
-          return true
-        }
-      }
-
-      // Handle double-tap to save:
-      // For single images, allow double-tap anywhere on the image
-      // For multiple images, only allow double-tap in the middle 60%
-      if (images.length === 1 || middleSection) {
+      if (middleSection || images.length === 1) {
         if (now - state.lastTapTimestamp < SAVES_MAX_DURATION_BETWEEN_TAPS) {
           state.numTaps += 1
         } else {
@@ -189,7 +168,20 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
         }
       }
 
-      return false
+      if (leftFifth && currentImageIndex > 0) {
+        Haptic.trigger("impactLight")
+        track.artworkImageSwipe()
+        imageCarouselRef.current?.scrollToIndex({ index: currentImageIndex - 1 })
+        setCurrentImageIndex(currentImageIndex - 1)
+        return true
+      }
+
+      if (rightFifth && currentImageIndex < images.length - 1) {
+        Haptic.trigger("impactLight")
+        track.artworkImageSwipe()
+        imageCarouselRef.current?.scrollToIndex({ index: currentImageIndex + 1 })
+        setCurrentImageIndex(currentImageIndex + 1)
+      }
     }
 
     return (
@@ -244,7 +236,33 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
               zIndex: 100,
             }}
           />
-          {!!src && <Image src={src} height={size.height} width={size.width} blurhash={blurhash} />}
+          <FlatList
+            data={artwork.images}
+            ref={imageCarouselRef}
+            renderItem={({ item }) => {
+              const size = sizeToFit(
+                { width: item?.width ?? 0, height: item?.height ?? 0 },
+                { width: screenWidth, height: adjustedMaxHeight }
+              )
+
+              return (
+                <Flex width={screenWidth} alignItems="center">
+                  <Image
+                    src={item?.url ?? ""}
+                    width={size.width}
+                    height={size.height}
+                    blurhash={item?.blurhash}
+                  />
+                </Flex>
+              )
+            }}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          />
         </Flex>
 
         {!!hasMultipleImages && (
@@ -342,8 +360,8 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
     }
     date
     id
-    internalID
-    images {
+    internalID @required(action: NONE)
+    images @required(action: NONE) {
       url(version: "large")
       width
       height
@@ -351,7 +369,7 @@ const infiniteDiscoveryArtworkCardFragment = graphql`
     }
     isSaved
     saleMessage
-    slug
+    slug @required(action: NONE)
     title
     ...useSaveArtworkToArtworkLists_artwork
   }
