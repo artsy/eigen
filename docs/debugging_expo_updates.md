@@ -24,7 +24,7 @@ Set the debug flag in terminal and reinstall pods:
 
 ```
 export EX_UPDATES_NATIVE_DEBUG=1
-npx pod-install
+bundle exec npx pod-install
 ```
 
 Set flag in project to create a js bundle on every build:
@@ -40,6 +40,10 @@ Run the application from Xcode using the Artsy (QA) scheme.
 
 Deploy an update using these [instructions](./deploy_to_expo_updates.md) and pull down using the dev menu.
 
+#### If you want to use lldb / xcode debugger
+
+The QA configuration is a release configuration, code is optimized so debugging doesn't work properly, you can change the optimization level to None in build settings if you need this.
+
 ### Known gotchas
 
 #### Code changes not auto refreshing app
@@ -49,3 +53,8 @@ The QA scheme uses bundled JS. To see any changes you will need to rebuild from 
 #### Update is not applied after fetch
 
 Expo updates has a bunch of native code checks to see if the local code is newer than the update it is trying to apply. These can be manually disabled by commenting out, or you can make sure you don't change any code after shipping an update, but this makes the feedback loop painful. Ask #product-sapphire for help if you have trouble.
+
+#### Crash on launch after switching channels
+
+In dev mode there are assertions for valid state transitions that fail after switching channels, this may be a bug worth investigating and possibly PR back to expo?
+To get arround it you can comment out the assertions in the transition function in UpdatesStateMachine.swift when debugging in dev.
