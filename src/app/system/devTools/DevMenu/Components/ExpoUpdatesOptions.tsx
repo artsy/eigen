@@ -146,11 +146,9 @@ export const ExpoUpdatesOptions = () => {
                 setSelectedDeployment(deployment as ExpoDeployment)
                 const channelName = expoDeploymentChannels[deployment as ExpoDeployment]
                 Updates.setUpdateURLAndRequestHeadersOverride({
-                  updateUrl:
-                    "https://expo-updates-api.artsy.net/api/manifest?project=eigen&channel=" +
-                    channelName,
+                  updateUrl: "https://u.expo.dev/39b092dc-effa-4d59-a530-85107bdfd668",
                   requestHeaders: {
-                    "expo-channel-name": expoDeploymentChannels[deployment as ExpoDeployment],
+                    "expo-channel-name": channelName,
                   },
                 })
 
@@ -162,8 +160,10 @@ export const ExpoUpdatesOptions = () => {
                       text: "I will crash now!",
                       style: "destructive",
                       onPress: () => {
-                        // Crash the app to force a restart
-                        Sentry.nativeCrash()
+                        if (!__DEV__) {
+                          // Crash the app to force a restart
+                          Sentry.nativeCrash()
+                        }
                       },
                     },
                   ]
