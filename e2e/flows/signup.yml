@@ -10,7 +10,8 @@ appId: ${MAESTRO_APP_ID}
 - tapOn: "Email Input"
 - inputText: ${output.signup.email}
 - tapOn: "Continue.*"
-- assertVisible: "Welcome to Artsy"
+- assertVisible:
+    id: "password"
 - inputText: ${output.signup.password}
 - tapOn: "Continue.*"
 - inputText: "Test McTest"
