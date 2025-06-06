@@ -1,10 +1,9 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Box, Flex, Screen, Spacer } from "@artsy/palette-mobile"
+import { Box, Flex, Screen, Spacer, useSpace } from "@artsy/palette-mobile"
 import { PortalHost } from "@gorhom/portal"
-import { useNavigation } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
-import { withProfiler } from "@sentry/react-native"
 import * as Sentry from "@sentry/react-native"
+import { withProfiler } from "@sentry/react-native"
 import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
 import { HomeViewSectionCardsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionCards"
@@ -15,14 +14,12 @@ import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { Schema } from "app/utils/track"
-import { memo, Suspense, useEffect, useRef, useState } from "react"
+import { memo, RefObject, Suspense, useRef, useState } from "react"
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
 import { CuratedCollections } from "./CuratedCollections"
-import { SearchContext, useSearchProviderValues } from "./SearchContext"
 import { SearchResults } from "./SearchResults"
 import { TrendingArtists } from "./TrendingArtists"
 import { CityGuideCTA } from "./components/CityGuideCTA"
@@ -45,13 +42,16 @@ export const searchQueryDefaultVariables: SearchQuery$variables = {
 }
 
 export const Search: React.FC = () => {
+  const space = useSpace()
+
   const searchPillsRef = useRef<ScrollView>(null)
+  const searchInputRef = useRef<GlobalSearchInput>(null)
+
   const [searchQuery, setSearchQuery] = useState<string>("")
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
-  const searchProviderValues = useSearchProviderValues(searchQuery)
+
+  const scrollYOffset = useRef(0)
   const { trackEvent } = useTracking()
-  const isAndroid = Platform.OS === "android"
-  const navigation = useNavigation()
   const { variant } = useExperimentVariant("diamond_discover-tab")
   const isDiscoverVariant = variant.name === "variant-a" && variant.enabled
 
@@ -72,7 +72,9 @@ export const Search: React.FC = () => {
 
   const scrollableRef = useBottomTabsScrollToTop(() => {
     // Focus input and open keyboard on bottom nav Search tab double-tab
-    searchProviderValues.inputRef.current?.focus()
+    if (scrollYOffset.current <= 0) {
+      searchInputRef.current?.focus()
+    }
   })
 
   // TODO: to be removed on ES results PR
@@ -91,70 +93,66 @@ export const Search: React.FC = () => {
     return selectedPill.key === pill.key
   }
 
-  useEffect(() => {
-    if (searchProviderValues.inputRef?.current && isAndroid) {
-      const unsubscribe = navigation?.addListener("focus", () => {
-        // setTimeout here is to make sure that the search screen is focused in order to focus on text input
-        // without that the searchInput is not focused
-        setTimeout(() => searchProviderValues.inputRef.current?.focus(), 200)
-      })
-
-      return unsubscribe
-    }
-  }, [navigation, searchProviderValues.inputRef.current])
+  const handleScroll = (event: any) => {
+    scrollYOffset.current = event.nativeEvent.contentOffset.y
+  }
 
   return (
-    <SearchContext.Provider value={searchProviderValues}>
-      <KeyboardAvoidingView style={{ flex: 1 }}>
-        <Flex px={2} pt={2}>
-          <GlobalSearchInput ownerType={OwnerType.search} />
-        </Flex>
-        <Flex flex={1} collapsable={false}>
-          {shouldStartSearching(searchQuery) && !!queryData.viewer ? (
-            <>
-              <Box pt={2} pb={1}>
-                <SearchPills
-                  viewer={queryData.viewer}
-                  ref={searchPillsRef}
-                  pills={SEARCH_PILLS}
-                  onPillPress={handlePillPress}
-                  isSelected={isSelected}
-                  isLoading={isLoading}
-                />
-              </Box>
-              <SearchResults
-                selectedPill={selectedPill}
-                query={searchQuery}
-                // TODO: to be removed on ES results PR
-                onRetry={handleRetry}
+    <KeyboardAvoidingView style={{ flex: 1 }}>
+      <Flex px={2} pt={2}>
+        <GlobalSearchInput ownerType={OwnerType.search} ref={searchInputRef} />
+      </Flex>
+      <Flex flex={1} collapsable={false}>
+        {shouldStartSearching(searchQuery) && !!queryData.viewer ? (
+          <>
+            <Box pt={2} pb={1}>
+              <SearchPills
+                viewer={queryData.viewer}
+                ref={searchPillsRef}
+                pills={SEARCH_PILLS}
+                onPillPress={handlePillPress}
+                isSelected={isSelected}
+                isLoading={isLoading}
               />
-            </>
-          ) : (
-            <Scrollable ref={scrollableRef}>
-              {!isDiscoverVariant && <TrendingArtists data={queryData} mb={4} />}
-              {!isDiscoverVariant && <CuratedCollections collections={queryData} mb={4} />}
+            </Box>
+            <SearchResults
+              selectedPill={selectedPill}
+              query={searchQuery}
+              // TODO: to be removed on ES results PR
+              onRetry={handleRetry}
+            />
+          </>
+        ) : (
+          <ScrollView
+            ref={scrollableRef as RefObject<ScrollView>}
+            onScroll={handleScroll}
+            keyboardDismissMode="on-drag"
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={{ paddingTop: space(2), flex: 1 }}
+          >
+            {!isDiscoverVariant && <TrendingArtists data={queryData} mb={4} />}
+            {!isDiscoverVariant && <CuratedCollections collections={queryData} mb={4} />}
 
-              {!!isDiscoverVariant && (
-                <HomeViewSectionCardsChipsQueryRenderer
-                  sectionID="home-view-section-discover-something-new"
-                  index={0}
-                />
-              )}
-              {!!isDiscoverVariant && (
-                <HomeViewSectionCardsQueryRenderer
-                  sectionID="home-view-section-explore-by-category"
-                  index={0}
-                />
-              )}
+            {!!isDiscoverVariant && (
+              <HomeViewSectionCardsChipsQueryRenderer
+                sectionID="home-view-section-discover-something-new"
+                index={0}
+              />
+            )}
+            {!!isDiscoverVariant && (
+              <HomeViewSectionCardsQueryRenderer
+                sectionID="home-view-section-explore-by-category"
+                index={0}
+              />
+            )}
 
-              <HorizontalPadding>{!!shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
+            <HorizontalPadding>{!!shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
 
-              <Spacer y={4} />
-            </Scrollable>
-          )}
-        </Flex>
-      </KeyboardAvoidingView>
-    </SearchContext.Provider>
+            <Spacer y={4} />
+          </ScrollView>
+        )}
+      </Flex>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -190,14 +188,6 @@ const SearchScreenInner: React.FC<SearchScreenProps> = () => {
 }
 
 export const SearchScreen = memo(withProfiler(SearchScreenInner, { name: "Search" }))
-
-const Scrollable = styled(ScrollView).attrs(() => ({
-  keyboardDismissMode: "on-drag",
-  keyboardShouldPersistTaps: "handled",
-}))`
-  flex: 1;
-  padding-top: 20px;
-`
 
 const HorizontalPadding: React.FC = ({ children }) => {
   return <Box px={2}>{children}</Box>
