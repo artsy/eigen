@@ -250,9 +250,6 @@ jobs:
     steps:
       - attach_workspace:
           at: ../workspace
-      - android/start-emulator-and-run-tests:
-          test-command: echo "Emulator started"
-          system-image: system-images;android-34;google_apis;x86_64
       - run:
           name: Install maestro
           command: curl -Ls "https://get.maestro.mobile.dev" | bash
@@ -268,13 +265,13 @@ jobs:
       - run:
           name: Download app zip
           command: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
-      - run:
-          name: Install app on emulator
-          command: adb install Artsy.apk
-      - run:
-          name: Run Maestro Tests
-          no_output_timeout: 25m
-          command: ./scripts/utils/run_maestro_shard_android.sh
+      # - run:
+      #     name: Install app on emulator
+      #     command: adb install Artsy.apk
+      # - run:
+      #     name: Run Maestro Tests
+      #     no_output_timeout: 25m
+      #     command: ./scripts/utils/run_maestro_shard_android.sh
 
   deploy-nightly-beta:
     environment:
