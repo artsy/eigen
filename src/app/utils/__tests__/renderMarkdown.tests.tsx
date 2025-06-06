@@ -140,7 +140,7 @@ describe("renderMarkdown", () => {
 
   it(`renders all the markdown elements`, async () => {
     const basicRules = defaultRules({})
-    const kitchenSink = readFileSync(join(__dirname, "markdown-kitchen-sink.md")).toString()
+    const kitchenSink = readFileSync(join(__dirname, "../markdown-kitchen-sink.md")).toString()
 
     const tree = renderMarkdown(kitchenSink, basicRules)
 

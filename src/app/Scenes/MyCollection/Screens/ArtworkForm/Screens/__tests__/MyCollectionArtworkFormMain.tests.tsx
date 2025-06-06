@@ -18,11 +18,11 @@ jest.mock("app/Components/ArtistAutosuggest/ArtistAutosuggest", () => ({
   ArtistAutosuggest: () => null,
 }))
 
-jest.mock("../Components/CategoryPicker", () => ({
+jest.mock("app/Scenes/MyCollection/Screens/ArtworkForm/Components/CategoryPicker", () => ({
   CategoryPicker: () => null,
 }))
 
-jest.mock("../Components/Dimensions", () => ({
+jest.mock("app/Scenes/MyCollection/Screens/ArtworkForm/Components/Dimensions", () => ({
   Dimensions: () => null,
 }))
 

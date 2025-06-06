@@ -1,51 +1,28 @@
-import { act, screen } from "@testing-library/react-native"
+import { screen } from "@testing-library/react-native"
 import { SimilarToRecentlyViewedTestsQuery } from "__generated__/SimilarToRecentlyViewedTestsQuery.graphql"
 import { SimilarToRecentlyViewed } from "app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-import { Suspense } from "react"
-import { graphql, QueryRenderer } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 describe("SimilarToRecentlyViewed", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  const TestRenderer = () => (
-    <QueryRenderer<SimilarToRecentlyViewedTestsQuery>
-      query={graphql`
-        query SimilarToRecentlyViewedTestsQuery {
-          me {
-            ...SimilarToRecentlyViewed_artworksConnection @arguments(count: 10)
-          }
+  const { renderWithRelay } = setupTestWrapper<SimilarToRecentlyViewedTestsQuery>({
+    Component: (props) => <SimilarToRecentlyViewed {...props} />,
+    query: graphql`
+      query SimilarToRecentlyViewedTestsQuery {
+        me {
+          ...SimilarToRecentlyViewed_artworksConnection @arguments(count: 10)
         }
-      `}
-      render={() => {
-        return (
-          <Suspense fallback={null}>
-            <SimilarToRecentlyViewed />
-          </Suspense>
-        )
-      }}
-      variables={{}}
-      environment={mockEnvironment}
-    />
-  )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+      }
+    `,
   })
 
-  it("renders SimilarToRecentlyViewed", () => {
-    renderWithWrappers(<TestRenderer />)
-
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Query: () => mockResponse,
-        })
-      )
+  it("renders SimilarToRecentlyViewed", async () => {
+    renderWithRelay({
+      Query: () => mockResponse,
     })
 
-    expect(screen.getByText("Similar to Works You've Viewed")).toBeTruthy()
+    expect(screen.getAllByText("Similar to Works You've Viewed")).toBeTruthy()
+
     expect(screen.getByText("Sunflower Seeds Exhibition")).toBeTruthy()
     expect(
       screen.getByText("JEAN-MICHEL BASQUIAT- HOLLYWOOD AFRICANS TRIPTYCH SKATE DECKS")
