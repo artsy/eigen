@@ -7,9 +7,7 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
-import { useArtworkFiltersAggregation } from "app/Components/ArtworkFilter/useArtworkFilters"
 import { useLayout } from "app/utils/useLayout"
-import { compact, sortBy } from "lodash"
 import { ColorsSwatch } from "./ColorsSwatch"
 import { useMultiSelect } from "./useMultiSelect"
 
@@ -53,28 +51,7 @@ export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ naviga
   const space = useSpace()
   const { layout, handleLayout } = useLayout()
 
-  const { aggregation } = useArtworkFiltersAggregation({
-    paramName: FilterParamName.colors,
-  })
-
-  // Convert aggregations to filter options
-  const options: FilterData[] = compact(
-    (aggregation?.counts ?? []).map(({ value }) => {
-      if (COLORS_INDEXED_BY_VALUE[value]?.name) {
-        return {
-          // names returned by Metaphysics are actually the slugs
-          displayText: COLORS_INDEXED_BY_VALUE[value].name,
-          paramValue: value,
-          paramName: FilterParamName.colors,
-        }
-      }
-    })
-  )
-
-  // Sort according to order of COLORS constant
-  const sortedOptions = sortBy(options, (option) => {
-    return COLORS.findIndex(({ value }) => value === option.paramValue)
-  })
+  const options: FilterData[] = COLOR_OPTIONS
 
   const { handleSelect, isSelected, handleClear, isActive } = useMultiSelect({
     options,
@@ -90,7 +67,7 @@ export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ naviga
       />
 
       <Flex p={1} flexWrap="wrap" flexDirection="row" justifyContent="flex-start">
-        {sortedOptions.map((option, i) => {
+        {options.map((option, i) => {
           const color = COLORS_INDEXED_BY_VALUE[String(option.paramValue)]
           const selected = isSelected(option)
 

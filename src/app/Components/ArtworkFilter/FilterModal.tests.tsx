@@ -34,17 +34,6 @@ const mockAggregations: Aggregations = [
     ],
   },
   {
-    slice: "PRICE_RANGE",
-    counts: [
-      { name: "for Sale", count: 2028, value: "*-*" },
-      { name: "between $10,000 & $50,000", count: 598, value: "10000-50000" },
-      { name: "between $1,000 & $5,000", count: 544, value: "1000-5000" },
-      { name: "Under $1,000", count: 393, value: "*-1000" },
-      { name: "between $5,000 & $10,000", count: 251, value: "5000-10000" },
-      { name: "over $50,000", count: 233, value: "50000-*" },
-    ],
-  },
-  {
     slice: "MAJOR_PERIOD",
     counts: [
       { name: "Late 19th Century", count: 6, value: "Late 19th Century" },

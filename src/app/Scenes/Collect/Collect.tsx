@@ -93,7 +93,7 @@ export const CollectContent: React.FC<CollectContentProps> = ({ viewer }) => {
         animated
         artworks={artworks}
         isLoading={isLoadingNext}
-        loadMore={loadNext}
+        loadMore={() => loadNext(PAGE_SIZE)}
         hasMore={hasNext}
         numColumns={NUM_COLUMNS_MASONRY}
         disableAutoLayout
@@ -150,16 +150,13 @@ export const viewerFragment = graphql`
       input: $input
       aggregations: [
         ARTIST
-        ARTIST_SERIES
-        COLOR
-        DIMENSION_RANGE
+        ARTIST_NATIONALITY
         LOCATION_CITY
         MAJOR_PERIOD
         MATERIALS_TERMS
         MEDIUM
         PARTNER
-        PRICE_RANGE
-        ARTIST_NATIONALITY
+        TOTAL
       ]
     ) @connection(key: "CollectArtworks_artworksConnection") {
       aggregations {
@@ -193,11 +190,19 @@ export const collectQuery = graphql`
 
 type CollectQueryRendererProps = StackScreenProps<any, any>
 
+export const prepareCollectVariables = (params: {
+  [key: string]: string | number | boolean | string[]
+}) => {
+  const filters: FilterArray = getFilterParamsFromRouteParams(params || {})
+  const filterParams = filterArtworksParams(filters ?? [], "collect")
+  const input = prepareFilterArtworksParamsForInput(filterParams as FilterParams)
+
+  return { input: input as FilterArtworksInput, filters }
+}
+
 const CollectQueryRenderer: React.FC<CollectQueryRendererProps> = withSuspense({
   Component: ({ route }) => {
-    const filters: FilterArray = getFilterParamsFromRouteParams(route.params || {})
-    const filterParams = filterArtworksParams(filters ?? [], "collect")
-    const input = prepareFilterArtworksParamsForInput(filterParams as FilterParams)
+    const { input, filters } = prepareCollectVariables(route.params || {})
 
     const data = useLazyLoadQuery<CollectQuery>(collectQuery, {
       input: input as FilterArtworksInput,

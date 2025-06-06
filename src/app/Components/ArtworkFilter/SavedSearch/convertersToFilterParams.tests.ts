@@ -4,7 +4,6 @@ import {
   FilterParamName,
 } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
-  AggregationByFilterParamName,
   convertAggregationValueNamesToFilterParam,
   convertAttributionToFilterParam,
   convertColorsToFilterParam,
@@ -185,26 +184,12 @@ describe("convertSizeToFilterParams", () => {
 
 describe("convertColorsToFilterParam", () => {
   it("returns the color filter", () => {
-    const aggregation: AggregationByFilterParamName = {
-      colors: [
-        {
-          count: 11359,
-          name: "yellow",
-          value: "yellow",
-        },
-        {
-          count: 406,
-          name: "red",
-          value: "red",
-        },
-      ],
-    }
     const criteria: SearchCriteriaAttributes = {
       colors: ["yellow", "red"],
       additionalGeneIDs: ["prints"],
     }
 
-    expect(convertColorsToFilterParam(criteria, aggregation)).toEqual({
+    expect(convertColorsToFilterParam(criteria)).toEqual({
       displayText: "Yellow, Red",
       paramValue: ["yellow", "red"],
       paramName: FilterParamName.colors,
@@ -212,25 +197,11 @@ describe("convertColorsToFilterParam", () => {
   })
 
   it("returns only the available colors in the color filter", () => {
-    const aggregation: AggregationByFilterParamName = {
-      colors: [
-        {
-          count: 13,
-          name: "purple",
-          value: "purple",
-        },
-        {
-          count: 83,
-          name: "pink",
-          value: "pink",
-        },
-      ],
-    }
     const criteria: SearchCriteriaAttributes = {
       colors: ["pink", "purple", "deep-purple"],
     }
 
-    expect(convertColorsToFilterParam(criteria, aggregation)).toEqual({
+    expect(convertColorsToFilterParam(criteria)).toEqual({
       displayText: "Pink, Purple",
       paramValue: ["pink", "purple"],
       paramName: FilterParamName.colors,
@@ -238,14 +209,11 @@ describe("convertColorsToFilterParam", () => {
   })
 
   it("returns nothing", () => {
-    expect(convertColorsToFilterParam({}, {})).toBeNull()
+    expect(convertColorsToFilterParam({})).toBeNull()
     expect(
-      convertColorsToFilterParam(
-        {
-          colors: null,
-        },
-        {}
-      )
+      convertColorsToFilterParam({
+        colors: null,
+      })
     ).toBeNull()
   })
 })
@@ -466,26 +434,6 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
             count: 578,
             name: "Tate Ward Auctions",
             value: "tate-ward-auctions",
-          },
-        ],
-      },
-      {
-        slice: "COLOR",
-        counts: [
-          {
-            count: 11359,
-            name: "yellow",
-            value: "yellow",
-          },
-          {
-            count: 7211,
-            name: "blue",
-            value: "blue",
-          },
-          {
-            count: 406,
-            name: "red",
-            value: "red",
           },
         ],
       },

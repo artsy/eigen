@@ -344,15 +344,12 @@ const fragment = graphql`
       aggregations: [
         ARTIST
         ARTIST_NATIONALITY
-        COLOR
-        DIMENSION_RANGE
         FOLLOWED_ARTISTS
         LOCATION_CITY
         MAJOR_PERIOD
         MATERIALS_TERMS
         MEDIUM
         PARTNER
-        PRICE_RANGE
       ]
       input: $input
     ) @connection(key: "Fair_fairArtworks") {

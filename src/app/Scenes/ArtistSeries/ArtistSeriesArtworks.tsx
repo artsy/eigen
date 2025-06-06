@@ -176,14 +176,11 @@ const fragment = graphql`
       first: $count
       after: $cursor
       aggregations: [
-        COLOR
-        DIMENSION_RANGE
         LOCATION_CITY
         MAJOR_PERIOD
         MATERIALS_TERMS
         MEDIUM
         PARTNER
-        PRICE_RANGE
         SIMPLE_PRICE_HISTOGRAM
       ]
       input: $input

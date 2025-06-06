@@ -372,14 +372,11 @@ export default createPaginationContainer(
           first: 0
           aggregations: [
             ARTIST_SERIES
-            COLOR
-            DIMENSION_RANGE
             LOCATION_CITY
             MAJOR_PERIOD
             MATERIALS_TERMS
             MEDIUM
             PARTNER
-            PRICE_RANGE
             SIMPLE_PRICE_HISTOGRAM
           ]
         ) {

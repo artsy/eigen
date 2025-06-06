@@ -177,13 +177,9 @@ export const GeneArtworksPaginationContainer = createPaginationContainer(
           aggregations: [
             LOCATION_CITY
             ARTIST_NATIONALITY
-            PRICE_RANGE
-            COLOR
-            DIMENSION_RANGE
             PARTNER
             MAJOR_PERIOD
             MEDIUM
-            PRICE_RANGE
             ARTIST
             LOCATION_CITY
             MATERIALS_TERMS
