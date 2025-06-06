@@ -604,14 +604,15 @@ workflows:
                 - main
     jobs:
       - build-test-app-ios
+      - build-test-app-android
       - deploy-nightly-beta
       - run-nightly-tasks
       - run-e2e-tests-ios:
           requires:
             - build-test-app-ios
-      # - run-e2e-tests-android:
-      #     requires:
-      #       - build-test-app-android
+      - run-e2e-tests-android:
+          requires:
+            - build-test-app-android
 
   flag-check:
     triggers:
@@ -694,12 +695,16 @@ workflows:
             - build-test-app-android
 
       - run-e2e-tests-ios:
+          # filters:
+          #   branches:
+          #     only:
+          #       - beta-ios
           requires:
             - build-test-app-ios
-      - run-e2e-tests-android:
-          filters:
-            branches:
-              only:
-                - beta-android
-          requires:
-            - build-test-app-android
+      # - run-e2e-tests-android:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - beta-android
+      #     requires:
+      #       - build-test-app-android
