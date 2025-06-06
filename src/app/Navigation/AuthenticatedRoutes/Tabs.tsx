@@ -1,6 +1,6 @@
 import { ActionType, OwnerType, Screen, tappedTabBar } from "@artsy/cohesion"
 import { Flex, Text, useColor } from "@artsy/palette-mobile"
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { BottomTabBarProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { PlatformPressable } from "@react-navigation/elements"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { FavoritesTab } from "app/Navigation/AuthenticatedRoutes/FavoritesTab"
@@ -22,6 +22,7 @@ import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
 import { useCallback } from "react"
 import { InteractionManager, PixelRatio, Platform } from "react-native"
+import Animated, { useAnimatedStyle, withTiming } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 if (Platform.OS === "ios") {
@@ -48,11 +49,94 @@ const Tab = createBottomTabNavigator<TabRoutesParams>()
 
 const BOTTOM_TABS_HEIGHT = PixelRatio.getFontScale() < 1.5 ? 65 : 85
 
+const TabBar = (props: BottomTabBarProps) => {
+  const color = useColor()
+  const insets = useSafeAreaInsets()
+  const searchTabName = useSearchTabName()
+  const isStaging = useIsStaging()
+
+  const currentRoute = internal_navigationRef.current?.getCurrentRoute()?.name
+
+  const stagingTabBarStyle = {
+    borderColor: color("devpurple"),
+    borderTopWidth: 1,
+  }
+
+  const hideBottomTabs =
+    currentRoute && modules[currentRoute as AppModule]?.options?.hidesBottomTabs
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      height: withTiming(hideBottomTabs ? 0 : BOTTOM_TABS_HEIGHT + insets.bottom, {
+        duration: 200,
+      }),
+      // animate: true,
+      ...(isStaging ? stagingTabBarStyle : {}),
+    }
+  })
+
+  return (
+    <Animated.View
+      style={[
+        animatedStyle,
+        {
+          position: "absolute",
+          width: "100%",
+          bottom: 0,
+          backgroundColor: "red",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        },
+      ]}
+    >
+      {props.navigation.getState().routes.map((route) => {
+        const isActive =
+          route.name === props.navigation.getState().routes[props.navigation.getState().index].name
+
+        const tabName =
+          route.name === "search"
+            ? searchTabName
+            : bottomTabsConfig[route.name as BottomTabType].name
+
+        return (
+          <Flex key={route.key}>
+            <PlatformPressable
+              {...props.descriptors[route.key].options.tabBarButton}
+              android_ripple={{ color: "transparent" }} // Disables the ripple effect for Android
+            >
+              <BottomTabsIcon
+                tab={route.name as BottomTabType}
+                state={isActive ? "active" : "inactive"}
+              />
+
+              <Flex
+                // flex={1}
+                // position="absolute"
+                // alignItems="flex-end"
+                alignItems="center"
+                backgroundColor="blue10"
+              >
+                <Text
+                  variant="xxs"
+                  selectable={false}
+                  textAlign="center"
+                  color="mono100"
+                  numberOfLines={1}
+                >
+                  {tabName}
+                </Text>
+              </Flex>
+            </PlatformPressable>
+          </Flex>
+        )
+      })}
+    </Animated.View>
+  )
+}
+
 const AppTabs: React.FC = () => {
   const { tabsBadges } = useBottomTabsBadges()
   const color = useColor()
-  const isStaging = useIsStaging()
-  const insets = useSafeAreaInsets()
   const searchTabName = useSearchTabName()
 
   const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
@@ -82,28 +166,13 @@ const AppTabs: React.FC = () => {
     [selectedTab]
   )
 
-  const stagingTabBarStyle = {
-    borderColor: color("devpurple"),
-    borderTopWidth: 1,
-  }
-
   return (
     <Tab.Navigator
+      tabBar={(props) => <TabBar {...props} />}
       screenOptions={({ route }) => {
-        const currentRoute = internal_navigationRef.current?.getCurrentRoute()?.name
         return {
           animation: "fade",
           headerShown: false,
-          tabBarStyle: {
-            animate: true,
-            position: "absolute",
-            height: BOTTOM_TABS_HEIGHT + insets.bottom,
-            display:
-              currentRoute && modules[currentRoute as AppModule]?.options?.hidesBottomTabs
-                ? "none"
-                : "flex",
-            ...(isStaging ? stagingTabBarStyle : {}),
-          },
           tabBarHideOnKeyboard: true,
           tabBarIcon: ({ focused }) => {
             return (
