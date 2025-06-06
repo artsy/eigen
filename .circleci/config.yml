@@ -694,17 +694,17 @@ workflows:
             - build-test-app-ios
             - build-test-app-android
 
-      - run-e2e-tests-ios:
+      # - run-e2e-tests-ios:
+      #     # filters:
+      #     #   branches:
+      #     #     only:
+      #     #       - beta-ios
+      #     requires:
+      #       - build-test-app-ios
+      - run-e2e-tests-android:
           # filters:
           #   branches:
           #     only:
-          #       - beta-ios
+          #       - beta-android
           requires:
-            - build-test-app-ios
-      # - run-e2e-tests-android:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - beta-android
-      #     requires:
-      #       - build-test-app-android
+            - build-test-app-android
