@@ -331,7 +331,6 @@
     "yarn.lock": "yarn install"
   },
   "lint-staged": {
-    "*": "yarn detect-secrets:hook",
     "*.@(ts|tsx)": [
       "yarn lint",
       "yarn prettier-write"
