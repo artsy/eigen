@@ -1,17 +1,17 @@
-import { Spacer, Flex, Box } from "@artsy/palette-mobile"
+import { Box, Flex, Spacer } from "@artsy/palette-mobile"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import {
   ExpiredOfferMessage,
   UnavailableOfferMessage,
 } from "app/Scenes/Artwork/Components/ArtworkMessages"
-import { useScreenDimensions } from "app/utils/hooks"
+import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { Schema } from "app/utils/track"
 import { guardFactory } from "app/utils/types/guardFactory"
 import { isEmpty } from "lodash"
 import { useState } from "react"
-import { Button, Modal } from "react-native"
+import { Button, Dimensions, Modal } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ArtworkActionsFragmentContainer as ArtworkActions } from "./ArtworkActions"
@@ -32,11 +32,12 @@ export enum VisibilityLevels {
   UNLISTED = "UNLISTED",
 }
 
+export const CARD_HEIGHT = Dimensions.get("window").width >= 375 ? 340 : 290
+
 export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   const { trackEvent } = useTracking()
   const { showShareSheet } = useShareSheet()
   const { artwork, refetchArtwork, artworkOfferExpired, artworkOfferUnavailable } = props
-  const screenDimensions = useScreenDimensions()
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const debugInstagramShot = useDevToggle("DTShowInstagramShot")
   const [showInstagramShot, setShowInstagramShot] = useState(false)
@@ -51,6 +52,8 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
 
   return (
     <>
+      <ArtworkScreenHeader artwork={artwork} />
+
       <Box>
         {!!artworkOfferUnavailable && (
           <Flex mb={1}>
@@ -66,7 +69,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
         <ImageCarouselFragmentContainer
           figures={artwork.figures}
           setVideoAsCover={artwork.isSetVideoAsCover ?? false}
-          cardHeight={screenDimensions.width >= 375 ? 340 : 290}
+          cardHeight={CARD_HEIGHT}
           onImageIndexChange={(imageIndex: number) => setCurrentImageIndex(imageIndex)}
         />
 
@@ -101,7 +104,6 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
           <ArtworkTombstone artwork={artwork} refetchArtwork={refetchArtwork} />
         </Box>
       </Box>
-
       {debugInstagramShot && showInstagramShot && currentImageUrl ? (
         <Modal visible={showInstagramShot} onRequestClose={() => setShowInstagramShot(false)}>
           <InstagramStoryViewShot
@@ -121,6 +123,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
 export const ArtworkHeaderFragmentContainer = createFragmentContainer(ArtworkHeader, {
   artwork: graphql`
     fragment ArtworkHeader_artwork on Artwork {
+      ...ArtworkScreenHeader_artwork
       ...ArtworkActions_artwork
       ...ArtworkTombstone_artwork
 

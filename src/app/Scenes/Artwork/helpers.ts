@@ -43,7 +43,7 @@ export const useImagePlaceholder = (artworkID?: string) => {
   const screenDimensions = useScreenDimensions()
 
   // Try to find the image for the artwork in the Relay store
-  const artwork = findRelayRecord("slug", artworkID)
+  const artwork = findRelayRecord("slug", artworkID) || findRelayRecord("id", artworkID)
   const imageRef = (artwork?.image as Record)?.__ref as string
   const image = findRelayRecordByDataID(imageRef)
 
