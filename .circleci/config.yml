@@ -224,8 +224,8 @@ jobs:
           name: print working dir
           command: pwd
       - run:
-          name: Set up maestro env
-          command: ./scripts/setup/setup-maestro-env.sh
+          name: Set up maestro env for iOS
+          command: ./scripts/setup/setup-env-for-maestro-ios
       - run:
           name: Download app zip
           command: aws s3 cp s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip ./Artsy.zip
@@ -263,8 +263,8 @@ jobs:
       - checkout
       - setup-awscli
       - run:
-          name: Set up maestro env
-          command: ./scripts/setup/setup-maestro-env.sh
+          name: Set up maestro env for Android
+          command: ./scripts/setup/setup-env-for-maestro-android
       - run:
           name: Download app zip
           command: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
