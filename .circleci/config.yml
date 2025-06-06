@@ -222,7 +222,7 @@ jobs:
       - setup-awscli
       - run:
           name: Set up maestro env
-          command: ./scripts/setup/setup-maestro-env.sh
+          command: ./scripts/setup/setup-env-for-maestro
       - run:
           name: Download app zip
           command: aws s3 cp s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip ./Artsy.zip
