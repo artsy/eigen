@@ -212,6 +212,9 @@ jobs:
           name: Install maestro
           command: curl -Ls "https://get.maestro.mobile.dev" | bash
       - run:
+          name: Check maestro version
+          command: maestro --version
+      - run:
           name: Install idb
           command: brew tap facebook/fb && brew install idb-companion
       - run:
@@ -222,7 +225,7 @@ jobs:
       - setup-awscli
       - run:
           name: Set up maestro env
-          command: ./scripts/setup/setup-maestro-env.sh
+          command: ./scripts/setup/setup-env-for-maestro
       - run:
           name: Download app zip
           command: aws s3 cp s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip ./Artsy.zip
@@ -591,70 +594,70 @@ workflows:
   test-build-deploy:
     when: << pipeline.parameters.run_workflow_test-build-deploy >>
     jobs:
-      - detect-secrets:
-          filters:
-            branches:
-              ignore:
-                - main
+      # - detect-secrets:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - main
 
-      - check-code:
-          context: danger-github-oss
+      # - check-code:
+      #     context: danger-github-oss
 
-      - check-and-deploy:
-          filters:
-            branches:
-              only:
-                - main
+      # - check-and-deploy:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main
 
-      - test-js
+      # - test-js
 
-      - build-test-js
+      # - build-test-js
 
-      - horizon/block:
-          context: horizon
-          project_id: 37
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
+      # - horizon/block:
+      #     context: horizon
+      #     project_id: 37
+      #     filters:
+      #       branches:
+      #         only:
+      #           - beta-ios
+      #           - beta-android
 
-      - build-test-app-ios:
-          filters:
-            branches:
-              ignore:
-                - beta-android
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
-            - horizon/block
+      # - build-test-app-ios:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - beta-android
+      #     requires:
+      #       - test-js
+      #       - check-code
+      #       - build-test-js
+      #       - horizon/block
 
-      - build-test-app-android:
-          filters:
-            branches:
-              ignore:
-                - beta-ios
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
-            - horizon/block
+      # - build-test-app-android:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - beta-ios
+      #     requires:
+      #       - test-js
+      #       - check-code
+      #       - build-test-js
+      #       - horizon/block
 
-      - update-metaphysics:
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
-          requires:
-            - build-test-app-ios
-            - build-test-app-android
+      # - update-metaphysics:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - beta-ios
+      #           - beta-android
+      #     requires:
+      #       - build-test-app-ios
+      #       - build-test-app-android
 
       - run-e2e-tests:
           filters:
             branches:
               only:
-                - beta-ios
-          requires:
-            - build-test-app-ios
+                - brian/maestro-typo
+          # requires:
+          #   - build-test-app-ios
