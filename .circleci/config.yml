@@ -238,7 +238,7 @@ jobs:
       - run:
           name: Run Maestro Tests
           no_output_timeout: 25m
-          command: ./scripts/utils/run_maestro_shard.sh
+          command: ./scripts/utils/run_maestro_shard_ios.sh
 
   run-e2e-tests-android:
     parallelism: 4
@@ -274,7 +274,7 @@ jobs:
       - run:
           name: Run Maestro Tests
           no_output_timeout: 25m
-          command: ./scripts/utils/run_maestro_shard.sh
+          command: ./scripts/utils/run_maestro_shard_android.sh
 
   deploy-nightly-beta:
     environment:
