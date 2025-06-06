@@ -55,7 +55,7 @@ export const Search: React.FC = () => {
   const { variant } = useExperimentVariant("diamond_discover-tab")
   const isDiscoverVariant = variant.name === "variant-a" && variant.enabled
 
-  const shouldShowCityGuide = Platform.OS === "ios" && !isTablet()
+  const shouldShowCityGuide = !isTablet()
 
   const searchQueryVariables = {
     ...searchQueryDefaultVariables,

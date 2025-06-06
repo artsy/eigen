@@ -1,18 +1,17 @@
-import { Spacer, Box, Text, Separator, Tabs } from "@artsy/palette-mobile"
-import { EventSection } from "app/Scenes/City/Components/EventSection"
+import { Box, Separator, Spacer, Tabs, Text } from "@artsy/palette-mobile"
+import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
+import { EventSection } from "app/Scenes/City/Components/EventSection/EventSection"
 import { BucketResults } from "app/Scenes/Map/bucketCityResults"
 import { isEqual } from "lodash"
-import React from "react"
-import { ViewProps } from "react-native"
-import { RelayProp } from "react-relay"
-import { FairEventSection } from "./FairEventSection"
-import { SavedEventSection } from "./SavedEventSection"
+import React, { Fragment } from "react"
+import { Platform, ViewProps } from "react-native"
+import { FairEventSection } from "./FairEventSection/FairEventSection"
+import { SavedEventSection } from "./SavedEventSection/SavedEventSection"
 
 interface Props extends ViewProps {
   buckets: BucketResults
   cityName: string
   citySlug: string
-  relay: RelayProp
 }
 
 interface State {
@@ -134,43 +133,19 @@ export class AllEvents extends React.Component<Props, State> {
         return <FairEventSection citySlug={citySlug} data={data} />
       case "galleries":
         return (
-          <EventSection
-            title="Gallery shows"
-            data={data}
-            section="galleries"
-            citySlug={citySlug}
-            relay={this.props.relay}
-          />
+          <EventSection title="Gallery shows" data={data} section="galleries" citySlug={citySlug} />
         )
       case "museums":
         return (
-          <EventSection
-            title="Museum shows"
-            data={data}
-            section="museums"
-            citySlug={citySlug}
-            relay={this.props.relay}
-          />
+          <EventSection title="Museum shows" data={data} section="museums" citySlug={citySlug} />
         )
       case "opening":
         return (
-          <EventSection
-            title="Opening soon"
-            data={data}
-            section="opening"
-            citySlug={citySlug}
-            relay={this.props.relay}
-          />
+          <EventSection title="Opening soon" data={data} section="opening" citySlug={citySlug} />
         )
       case "closing":
         return (
-          <EventSection
-            title="Closing soon"
-            data={data}
-            section="closing"
-            citySlug={citySlug}
-            relay={this.props.relay}
-          />
+          <EventSection title="Closing soon" data={data} section="closing" citySlug={citySlug} />
         )
       case "saved":
         return <SavedEventSection data={data} citySlug={citySlug} />
@@ -184,15 +159,22 @@ export class AllEvents extends React.Component<Props, State> {
   // @TODO: Implement test for the AllEvents component https://artsyproduct.atlassian.net/browse/LD-562
   render() {
     const { sections } = this.state
+
+    // We need to wrap the flatlist with a BottomSheetScrollView on Android to allow scrolling
+    // On iOS it's not required because the bottom sheet is scrollable by default
+    const Wrapper = Platform.OS === "android" ? BottomSheetScrollView : Fragment
+
     return (
-      <Tabs.FlatList
-        data={sections}
-        ItemSeparatorComponent={this.renderItemSeparator}
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        keyExtractor={(item) => item.type}
-        renderItem={(item) => this.renderItem(item)}
-        ListFooterComponent={() => <Spacer y={4} />}
-      />
+      <Wrapper>
+        <Tabs.FlatList
+          data={sections}
+          ItemSeparatorComponent={this.renderItemSeparator}
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          keyExtractor={(item) => item.type}
+          renderItem={(item) => this.renderItem(item)}
+          ListFooterComponent={() => <Spacer y={4} />}
+        />
+      </Wrapper>
     )
   }
 }

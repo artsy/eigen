@@ -10,7 +10,7 @@ import { Schema, screenTrack } from "app/utils/track"
 import React from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { TabFairItemRow } from "./Components/TabFairItemRow"
+import { TabFairItemRow } from "./Components/TabFairItemRow/TabFairItemRow"
 
 interface Props extends Pick<CityFairListQuery["variables"], "citySlug"> {
   city: CityFairList_city$data

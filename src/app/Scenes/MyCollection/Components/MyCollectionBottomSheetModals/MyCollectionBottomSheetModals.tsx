@@ -1,6 +1,7 @@
 import { useColor } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetProps } from "@gorhom/bottom-sheet"
 import { DefaultBottomSheetBackdrop } from "app/Components/BottomSheet/DefaultBottomSheetBackdrop"
+import { defaultIndicatorHandleStyle } from "app/Components/BottomSheet/defaultIndicatorHandleStyle"
 import { MyCollectionBottomSheetModalAdd } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalAdd"
 import { MyCollectionBottomSheetModalArtistPreviewQueryRenderer } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistPreview"
 import { MyCollectionBottomSheetModalProfile } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalProfile"
@@ -46,12 +47,7 @@ export const MyCollectionBottomSheetModals: React.FC<{}> = () => {
         snapPoints={snapPoints}
         enablePanDownToClose
         backdropComponent={renderBackdrop}
-        handleIndicatorStyle={{
-          backgroundColor: color("mono100"),
-          width: 40,
-          height: 4,
-          borderRadius: 2,
-        }}
+        handleIndicatorStyle={defaultIndicatorHandleStyle(color)}
         backgroundStyle={{
           backgroundColor: color("mono0"),
         }}

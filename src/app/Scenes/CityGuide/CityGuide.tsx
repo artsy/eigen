@@ -4,9 +4,9 @@ import { cityNearLocation } from "app/Scenes/Map/helpers/cityNearLocation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useLocation } from "app/utils/hooks/useLocation"
 import { useEffect } from "react"
-import cities from "../../../data/cityDataSortedByDisplayPreference.json"
+import cities from "../../../../data/cityDataSortedByDisplayPreference.json"
 
-export const CityGuideView: React.FC = () => {
+export const CityGuide: React.FC = () => {
   const previouslySelectedCitySlug = GlobalStore.useAppState(
     (state) => state.userPrefs.previouslySelectedCitySlug
   )

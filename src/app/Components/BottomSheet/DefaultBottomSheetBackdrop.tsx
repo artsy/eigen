@@ -31,7 +31,6 @@ export const DefaultBottomSheetBackdrop: React.FC<DefaultBottomSheetBackdrop> = 
     () => [
       style,
       {
-        // We intentionally want the background color to be black regardless of the theme
         backgroundColor: color("mono100"),
       },
       containerAnimatedStyle,

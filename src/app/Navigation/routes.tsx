@@ -9,7 +9,7 @@ import {
   WorksForYouQueryRenderer,
   WorksForYouScreenQuery,
 } from "app/Components/Containers/WorksForYou"
-import { CityGuideView } from "app/NativeModules/CityGuideView"
+import { BACK_BUTTON_SIZE_SIZE } from "app/Components/constants"
 import { LiveAuctionView } from "app/NativeModules/LiveAuctionView"
 import { About } from "app/Scenes/About/About"
 import { activityContentQuery } from "app/Scenes/Activity/ActivityContent"
@@ -87,6 +87,7 @@ import {
   CitySectionListQueryRenderer,
   CitySectionListScreenQuery,
 } from "app/Scenes/City/CitySectionList"
+import { CityGuide } from "app/Scenes/CityGuide/CityGuide"
 import { Collect, collectQuery, prepareCollectVariables } from "app/Scenes/Collect/Collect"
 import { CollectionScreen, CollectionScreenQuery } from "app/Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListScreen } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
@@ -708,6 +709,11 @@ export const artsyDotNetRoutes = defineRoutes([
     name: "CitySectionList",
     Component: CitySectionListQueryRenderer,
     queries: [CitySectionListScreenQuery],
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   },
   {
     path: "/collect",
@@ -958,21 +964,31 @@ export const artsyDotNetRoutes = defineRoutes([
   {
     path: "/local-discovery",
     name: "LocalDiscovery",
-    Component: CityGuideView,
+    Component: CityGuide,
     options: {
       screenOptions: {
         headerTransparent: true,
+        headerShadowVisible: false,
         headerLeft: () => {
           return (
-            <BackButton
-              style={{
-                top: 0,
-                left: 0,
-              }}
-              onPress={() => {
-                goBack()
-              }}
-            />
+            <Flex
+              borderRadius={BACK_BUTTON_SIZE_SIZE / 2}
+              backgroundColor="mono0"
+              width={BACK_BUTTON_SIZE_SIZE}
+              height={BACK_BUTTON_SIZE_SIZE}
+              justifyContent="center"
+              alignItems="center"
+            >
+              <BackButton
+                style={{
+                  top: 0,
+                  left: 0,
+                }}
+                onPress={() => {
+                  goBack()
+                }}
+              />
+            </Flex>
           )
         },
       },

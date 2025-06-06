@@ -1,7 +1,7 @@
 import { Flex, Screen, Spacer } from "@artsy/palette-mobile"
 import { FollowedShowsQuery } from "__generated__/FollowedShowsQuery.graphql"
 import { FollowedShows_me$key } from "__generated__/FollowedShows_me.graphql"
-import { ShowItemRowContainer } from "app/Components/Lists/ShowItemRow"
+import { ShowItemRow } from "app/Components/Lists/ShowItemRow"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import Spinner from "app/Components/Spinner"
 import { ZeroState } from "app/Components/States/ZeroState"
@@ -69,7 +69,7 @@ export const FollowedShows: React.FC<Props> = ({ me }) => {
         )
       }
       renderItem={({ item }) => {
-        return <ShowItemRowContainer show={item} isListItem />
+        return <ShowItemRow show={item} isListItem />
       }}
     />
   )

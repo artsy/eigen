@@ -4040,10 +4040,10 @@
     "@react-navigation/elements" "^2.3.1"
     color "^4.2.3"
 
-"@rnmapbox/maps@10.1.33":
-  version "10.1.33"
-  resolved "https://registry.yarnpkg.com/@rnmapbox/maps/-/maps-10.1.33.tgz#ef2bbe4b4d7af8c1822d1d5840b8b9b4ffa4ba57"
-  integrity sha512-+J1aJnZ6q0N3044doCb6To/Eftpsn3Eq78AYPMa/Ig9x/u1eWpmbt5WbXJCehkOltGsjvTCenn+/gZKsXMZfww==
+"@rnmapbox/maps@10.1.36":
+  version "10.1.36"
+  resolved "https://registry.yarnpkg.com/@rnmapbox/maps/-/maps-10.1.36.tgz#6d78434fc17453b637dce6d57256e2b22f92f68c"
+  integrity sha512-wZ0rC6wIoSUaOhjqPfroOFdpclT1klaABZeSr7JbQcRZxmepEQQ+Cpol+C/mJ//n96WSyoDnQ2kD+BlobVc3GA==
   dependencies:
     "@turf/along" "6.5.0"
     "@turf/distance" "6.5.0"

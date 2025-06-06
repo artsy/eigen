@@ -1,4 +1,4 @@
-import { Box, Text, Separator, SimpleMessage, Tabs } from "@artsy/palette-mobile"
+import { Box, Separator, SimpleMessage, Tabs, Text } from "@artsy/palette-mobile"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { ShowItemRow } from "app/Components/Lists/ShowItemRow"
 import Spinner from "app/Components/Spinner"
@@ -7,8 +7,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { isEqual } from "lodash"
 import React from "react"
 import { FlatList, FlatListProps } from "react-native"
-import { RelayProp } from "react-relay"
-import { TabFairItemRow } from "./TabFairItemRow"
+import { TabFairItemRow } from "./TabFairItemRow/TabFairItemRow"
 
 /**
  * This hard value is needed so we can tell the FlatList upfront what rows will look like and the FlatList can ahead of
@@ -28,7 +27,6 @@ interface Props {
   citySlug?: string
   cityName: string
   header?: string
-  relay: RelayProp
   onScroll?: FlatListProps<any>["onScroll"]
   fetchingNextPage?: boolean
   renderedInTab?: boolean
@@ -41,11 +39,7 @@ export class EventList extends React.Component<Props> {
     const { type } = this.props
     return (
       <Box height={RowHeight} py={2}>
-        {type === "fairs" ? (
-          <TabFairItemRow item={item} />
-        ) : (
-          <ShowItemRow show={item} relay={this.props.relay} />
-        )}
+        {type === "fairs" ? <TabFairItemRow item={item} /> : <ShowItemRow show={item} />}
       </Box>
     )
   }
@@ -98,7 +92,7 @@ export class EventList extends React.Component<Props> {
         ListHeaderComponent={() => {
           if (!!header) {
             return (
-              <Box pt={6} mt={4} mb={2}>
+              <Box mb={2}>
                 <Text variant="lg-display">{header}</Text>
               </Box>
             )

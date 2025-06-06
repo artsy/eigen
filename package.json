@@ -124,7 +124,7 @@
     "@react-navigation/native": "7.0.19",
     "@react-navigation/native-stack": "7.3.3",
     "@react-navigation/stack": "7.2.3",
-    "@rnmapbox/maps": "10.1.33",
+    "@rnmapbox/maps": "10.1.36",
     "@segment/analytics-react-native": "2.20.3",
     "@segment/analytics-react-native-plugin-braze": "0.6.1",
     "@segment/sovran-react-native": "1.1.1",
