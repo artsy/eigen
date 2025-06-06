@@ -13,7 +13,6 @@ import { ArtworkDetailsCollectorSignal } from "app/Scenes/Artwork/Components/Art
 import { ArtworkDimensionsClassificationAndAuthenticityFragmentContainer } from "app/Scenes/Artwork/Components/ArtworkDimensionsClassificationAndAuthenticity/ArtworkDimensionsClassificationAndAuthenticity"
 import { ArtworkErrorScreen } from "app/Scenes/Artwork/Components/ArtworkError"
 import { ArtworkPartnerOfferNote } from "app/Scenes/Artwork/Components/ArtworkPartnerOfferNote"
-import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { AbreviatedArtsyGuarantee } from "app/Scenes/Artwork/Components/PrivateArtwork/AbreviatedArtsyGuarantee"
 import { PrivateArtworkExclusiveAccess } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkExclusiveAccess"
 import { PrivateArtworkMetadata } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkMetadata"
@@ -70,7 +69,6 @@ interface ArtworkProps {
   artworkBelowTheFold: Artwork_artworkBelowTheFold$data | null | undefined
   me: Artwork_me$data
   isVisible: boolean
-  onLoad: (artworkProps: ArtworkProps) => void
   relay: RelayRefetchProp
   tracking?: TrackingProp
   artworkOfferUnavailable?: boolean
@@ -85,7 +83,6 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
     artworkBelowTheFold,
     isVisible,
     me,
-    onLoad,
     relay,
     artworkOfferUnavailable,
     artworkOfferExpired,
@@ -172,11 +169,6 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
       navigationEvents.removeListener("modalDismissed", handleModalDismissed)
     }
   }, [])
-
-  // TODO: Remove feature flag once we're ready to launch.
-  useEffect(() => {
-    onLoad(props)
-  }, [artworkAboveTheFold?.slug])
 
   // This is a hack to make useEffect behave exactly like didComponentUpdate.
   const firstUpdate = useRef(true)
@@ -839,19 +831,12 @@ interface ArtworkScreenProps {
   isVisible: boolean
   environment?: Environment | RelayMockEnvironment
   tracking?: TrackingProp
-  onLoad: ArtworkProps["onLoad"]
 }
 
 export const ArtworkScreen: React.FC<ArtworkScreenProps> = (props) => {
-  const [artworkProps, setArtworkProps] = useState<ArtworkProps | null>(null)
-
   return (
     <Screen>
-      {!!artworkProps?.artworkAboveTheFold && (
-        <ArtworkScreenHeader artwork={artworkProps.artworkAboveTheFold} />
-      )}
-
-      <ArtworkQueryRenderer {...props} onLoad={(props) => setArtworkProps(props)} />
+      <ArtworkQueryRenderer {...props} />
     </Screen>
   )
 }
