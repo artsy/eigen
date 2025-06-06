@@ -1,5 +1,8 @@
 import { screen } from "@testing-library/react-native"
-import { MyCollectionImageView, MyCollectionImageViewProps } from "app/Scenes/MyCollection/Components/MyCollectionImageView"
+import {
+  MyCollectionImageView,
+  MyCollectionImageViewProps,
+} from "app/Scenes/MyCollection/Components/MyCollectionImageView"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("MyCollectionImageView", () => {

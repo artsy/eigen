@@ -1,5 +1,9 @@
 import { screen } from "@testing-library/react-native"
-import { PlaceholderBox, PlaceholderRaggedText, ProvidePlaceholderContext } from "app/utils/placeholders"
+import {
+  PlaceholderBox,
+  PlaceholderRaggedText,
+  ProvidePlaceholderContext,
+} from "app/utils/placeholders"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("PlaceholderBox", () => {

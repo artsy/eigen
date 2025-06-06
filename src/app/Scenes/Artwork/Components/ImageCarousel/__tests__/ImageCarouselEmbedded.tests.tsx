@@ -1,5 +1,8 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { ImageCarouselContext, useNewImageCarouselContext } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
+import {
+  ImageCarouselContext,
+  useNewImageCarouselContext,
+} from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { ImageCarouselEmbedded } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselEmbedded"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 

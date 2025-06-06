@@ -1,7 +1,6 @@
 import { saleStatus } from "app/Scenes/Sale/helpers"
 import moment from "moment"
 
-
 const dAdd = (date: number, amount: number, type: "day" | "days") =>
   moment(date).add(amount, type).toISOString()
 const dSub = (date: number, amount: number, type: "day" | "days") =>

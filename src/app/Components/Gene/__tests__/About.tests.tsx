@@ -4,7 +4,6 @@ import { Tabs } from "@artsy/palette-mobile"
 import About from "app/Components/Gene/About"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
-
 it("renders without throwing a error", () => {
   const gene = {
     description: `Deep time refers to the concept of an expansive time that stretches far beyond human history to

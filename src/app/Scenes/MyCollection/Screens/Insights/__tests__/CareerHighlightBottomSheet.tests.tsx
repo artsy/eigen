@@ -1,6 +1,9 @@
 import { screen } from "@testing-library/react-native"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
-import { CareerHighlightBottomSheet, makeCareerHighlightMap } from "app/Scenes/MyCollection/Screens/Insights/CareerHighlightBottomSheet"
+import {
+  CareerHighlightBottomSheet,
+  makeCareerHighlightMap,
+} from "app/Scenes/MyCollection/Screens/Insights/CareerHighlightBottomSheet"
 import { MedianSalePriceAtAuctionScreenQuery } from "app/Scenes/MyCollection/Screens/Insights/MedianSalePriceAtAuction"
 import {
   initialValues as medianSalePriceChartDataContextInitialValues,

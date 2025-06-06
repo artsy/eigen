@@ -12,7 +12,10 @@ import {
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollArtworksGridContainer } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { SaleArtworkListContainer } from "app/Scenes/Sale/Components/SaleArtworkList"
-import { SaleLotsListContainer, SaleLotsListSortMode } from "app/Scenes/Sale/Components/SaleLotsList"
+import {
+  SaleLotsListContainer,
+  SaleLotsListSortMode,
+} from "app/Scenes/Sale/Components/SaleLotsList"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"

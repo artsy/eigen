@@ -1,5 +1,9 @@
 import { Touchable } from "@artsy/palette-mobile"
-import { AnimatedFlex, PopoverMessage, PopoverMessageItem } from "app/Components/PopoverMessage/PopoverMessage"
+import {
+  AnimatedFlex,
+  PopoverMessage,
+  PopoverMessageItem,
+} from "app/Components/PopoverMessage/PopoverMessage"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"

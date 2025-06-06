@@ -1,4 +1,7 @@
-import { ArtworkListEntity, getArtworkListsCountByType } from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
+import {
+  ArtworkListEntity,
+  getArtworkListsCountByType,
+} from "app/Components/ArtworkLists/views/SelectArtworkListsForArtworkView/useUpdateArtworkListsForArtwork"
 
 describe("getArtworkListsCountByType", () => {
   describe("should return correct count of default artwork lists", () => {

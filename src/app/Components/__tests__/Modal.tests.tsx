@@ -3,7 +3,6 @@ import { Modal } from "app/Components/Modal"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Linking } from "react-native"
 
-
 describe("Modal", () => {
   afterEach(() => {
     jest.clearAllMocks()

@@ -1,4 +1,8 @@
-import { findClosestIndex, fitInside, getMeasurements } from "app/Scenes/Artwork/Components/ImageCarousel/geometry"
+import {
+  findClosestIndex,
+  fitInside,
+  getMeasurements,
+} from "app/Scenes/Artwork/Components/ImageCarousel/geometry"
 
 describe(fitInside, () => {
   it("returns one of the given boxes if they are the same", () => {

@@ -1,7 +1,10 @@
 import { MoneyFillIcon, AlertCircleFillIcon, Flex, Color } from "@artsy/palette-mobile"
 import { ConversationCTATestsQuery } from "__generated__/ConversationCTATestsQuery.graphql"
 import { CTAPopUp } from "app/Scenes/Inbox/Components/Conversations/CTAPopUp"
-import { ConversationCTA, ConversationCTAFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/ConversationCTA"
+import {
+  ConversationCTA,
+  ConversationCTAFragmentContainer,
+} from "app/Scenes/Inbox/Components/Conversations/ConversationCTA"
 import { OpenInquiryModalButton } from "app/Scenes/Inbox/Components/Conversations/OpenInquiryModalButton"
 import { ReviewOfferButton } from "app/Scenes/Inbox/Components/Conversations/ReviewOfferButton"
 import { extractText } from "app/utils/tests/extractText"

@@ -1,6 +1,9 @@
 import { ViewingRoomHeaderTestsQuery } from "__generated__/ViewingRoomHeaderTestsQuery.graphql"
 import { CountdownTimer } from "app/Components/Countdown/CountdownTimer"
-import { PartnerIconImage, ViewingRoomHeaderContainer } from "app/Scenes/ViewingRoom/Components/ViewingRoomHeader"
+import {
+  PartnerIconImage,
+  ViewingRoomHeaderContainer,
+} from "app/Scenes/ViewingRoom/Components/ViewingRoomHeader"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"

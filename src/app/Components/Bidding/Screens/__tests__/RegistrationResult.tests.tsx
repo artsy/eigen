@@ -1,7 +1,10 @@
 import { LinkText } from "@artsy/palette-mobile"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { Icon20 } from "app/Components/Bidding/Components/Icon"
-import { RegistrationResult, RegistrationStatus } from "app/Components/Bidding/Screens/RegistrationResult"
+import {
+  RegistrationResult,
+  RegistrationStatus,
+} from "app/Components/Bidding/Screens/RegistrationResult"
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappers, renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"

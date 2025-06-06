@@ -1,4 +1,7 @@
-import { ARTWORK_MEDIUM_QUERY, ArtworkMediumFragmentContainer } from "app/Scenes/ArtworkMedium/ArtworkMedium"
+import {
+  ARTWORK_MEDIUM_QUERY,
+  ArtworkMediumFragmentContainer,
+} from "app/Scenes/ArtworkMedium/ArtworkMedium"
 import { extractText } from "app/utils/tests/extractText"
 import { setupTestWrapper_LEGACY } from "app/utils/tests/setupTestWrapper"
 

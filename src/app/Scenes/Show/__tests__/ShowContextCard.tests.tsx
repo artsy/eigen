@@ -1,6 +1,9 @@
 import { ShowContextCardTestsQuery } from "__generated__/ShowContextCardTestsQuery.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { ShowContextCard, ShowContextCardFragmentContainer } from "app/Scenes/Show/Components/ShowContextCard"
+import {
+  ShowContextCard,
+  ShowContextCardFragmentContainer,
+} from "app/Scenes/Show/Components/ShowContextCard"
 import { navigate } from "app/system/navigation/navigate"
 import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"

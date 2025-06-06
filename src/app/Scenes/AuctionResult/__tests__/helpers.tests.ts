@@ -1,4 +1,8 @@
-import { auctionResultHasPrice, AuctionResultHelperData, auctionResultText } from "app/Scenes/AuctionResult/helpers"
+import {
+  auctionResultHasPrice,
+  AuctionResultHelperData,
+  auctionResultText,
+} from "app/Scenes/AuctionResult/helpers"
 import moment from "moment"
 
 describe("auction result helpers", () => {

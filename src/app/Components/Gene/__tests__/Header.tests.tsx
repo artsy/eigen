@@ -1,7 +1,6 @@
 import Header from "app/Components/Gene/Header"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
-
 it("renders without throwing a error", () => {
   const gene = {
     id: "gene-deep-time",

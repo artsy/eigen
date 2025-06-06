@@ -1,5 +1,8 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { FormikSchema, nameSchema } from "app/Scenes/Onboarding/OnboardingCreateAccount/OnboardingCreateAccount"
+import {
+  FormikSchema,
+  nameSchema,
+} from "app/Scenes/Onboarding/OnboardingCreateAccount/OnboardingCreateAccount"
 import { OnboardingCreateAccountName } from "app/Scenes/Onboarding/OnboardingCreateAccount/OnboardingCreateAccountName"
 import { BackButton } from "app/system/navigation/BackButton"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"

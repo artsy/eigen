@@ -5,7 +5,6 @@ import {
 } from "app/Components/Bidding/Components/ArtworkAuctionProgressBar"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
-
 describe("ArtworkAuctionProgressBar", () => {
   describe("when the lot hasn't been extended and isn't within the extended bidding period", () => {
     it("doesn't show a progress bar", () => {

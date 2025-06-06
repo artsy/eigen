@@ -5,7 +5,6 @@ import { defaultRules, MarkdownRules } from "app/utils/renderMarkdown"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Linking, Text } from "react-native"
 
-
 describe("Markdown", () => {
   it("renders multiple paragraphs as Text elements", () => {
     const markdown = renderWithWrappersLEGACY(

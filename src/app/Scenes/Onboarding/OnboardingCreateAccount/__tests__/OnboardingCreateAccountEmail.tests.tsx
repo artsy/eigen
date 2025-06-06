@@ -1,5 +1,8 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { emailSchema, UserSchema } from "app/Scenes/Onboarding/OnboardingCreateAccount/OnboardingCreateAccount"
+import {
+  emailSchema,
+  UserSchema,
+} from "app/Scenes/Onboarding/OnboardingCreateAccount/OnboardingCreateAccount"
 import { OnboardingCreateAccountEmail } from "app/Scenes/Onboarding/OnboardingCreateAccount/OnboardingCreateAccountEmail"
 import { BackButton } from "app/system/navigation/BackButton"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"

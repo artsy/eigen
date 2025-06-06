@@ -1,7 +1,9 @@
 import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
 import "react-native"
 
-import RelayGenericArtworksGrid, { GenericArtworksGrid } from "app/Components/ArtworkGrids/GenericGrid"
+import RelayGenericArtworksGrid, {
+  GenericArtworksGrid,
+} from "app/Components/ArtworkGrids/GenericGrid"
 
 it("renders without throwing an error", () => {
   const artworks = [artwork(), artwork(), artwork()]

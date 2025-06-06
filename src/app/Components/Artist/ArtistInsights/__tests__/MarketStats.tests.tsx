@@ -1,6 +1,9 @@
 import { DecreaseIcon, IncreaseIcon } from "@artsy/palette-mobile"
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
-import { MarketStatsFragmentContainer, MarketStatsQueryRenderer } from "app/Components/Artist/ArtistInsights/MarketStats"
+import {
+  MarketStatsFragmentContainer,
+  MarketStatsQueryRenderer,
+} from "app/Components/Artist/ArtistInsights/MarketStats"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
 import { extractText } from "app/utils/tests/extractText"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"

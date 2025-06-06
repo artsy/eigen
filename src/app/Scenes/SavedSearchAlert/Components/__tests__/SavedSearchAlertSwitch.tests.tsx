@@ -1,5 +1,8 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { SavedSearchAlertSwitch, SavedSearchAlertSwitchProps } from "app/Scenes/SavedSearchAlert/Components/SavedSearchAlertSwitch"
+import {
+  SavedSearchAlertSwitch,
+  SavedSearchAlertSwitchProps,
+} from "app/Scenes/SavedSearchAlert/Components/SavedSearchAlertSwitch"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("SavedSearchAlertSwitch", () => {

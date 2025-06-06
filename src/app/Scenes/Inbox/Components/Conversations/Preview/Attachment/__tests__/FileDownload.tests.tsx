@@ -5,7 +5,6 @@ import { CleanRelayFragment } from "app/utils/relayHelpers"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Linking } from "react-native"
 
-
 Linking.openURL = jest.fn()
 it("opens file url when it is selected", async () => {
   const component = renderWithWrappersLEGACY(<FileDownload attachment={attachment as any} />)

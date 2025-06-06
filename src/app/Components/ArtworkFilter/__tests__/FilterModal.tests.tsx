@@ -12,7 +12,11 @@ import {
   ArtworkFiltersStoreProvider,
   getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { closeModalMock, getEssentialProps, MockFilterScreen } from "app/Components/ArtworkFilter/FilterTestHelper"
+import {
+  closeModalMock,
+  getEssentialProps,
+  MockFilterScreen,
+} from "app/Components/ArtworkFilter/FilterTestHelper"
 import { CollectionArtworksFragmentContainer } from "app/Scenes/Collection/Screens/CollectionArtworks"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"

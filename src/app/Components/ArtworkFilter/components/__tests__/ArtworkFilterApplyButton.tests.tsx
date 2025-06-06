@@ -1,5 +1,8 @@
 import { fireEvent } from "@testing-library/react-native"
-import { ArtworkFilterApplyButton, ArtworkFilterApplyButtonProps } from "app/Components/ArtworkFilter/components/ArtworkFilterApplyButton"
+import {
+  ArtworkFilterApplyButton,
+  ArtworkFilterApplyButtonProps,
+} from "app/Components/ArtworkFilter/components/ArtworkFilterApplyButton"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 const defaultProps: ArtworkFilterApplyButtonProps = {

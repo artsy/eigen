@@ -5,7 +5,10 @@ import {
   ArtworkFiltersState,
   getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { InnerOptionListItem, OptionListItem } from "app/Components/ArtworkFilter/Filters/SingleSelectOption"
+import {
+  InnerOptionListItem,
+  OptionListItem,
+} from "app/Components/ArtworkFilter/Filters/SingleSelectOption"
 import { SortOptionsScreen } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { getEssentialProps } from "app/Components/ArtworkFilter/Filters/helper"
 import { extractText } from "app/utils/tests/extractText"

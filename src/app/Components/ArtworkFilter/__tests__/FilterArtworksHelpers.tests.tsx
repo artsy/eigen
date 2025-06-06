@@ -1,7 +1,6 @@
 import {
   FilterArray,
   getUnitedSelectedAndAppliedFilters,
-
   aggregationsWithFollowedArtists,
   changedFiltersParams,
   filterArtworksParams,

@@ -1,6 +1,9 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ViewingRoomViewWorksButtonTestsQuery } from "__generated__/ViewingRoomViewWorksButtonTestsQuery.graphql"
-import { tracks, ViewingRoomViewWorksButtonContainer } from "app/Scenes/ViewingRoom/Components/ViewingRoomViewWorksButton"
+import {
+  tracks,
+  ViewingRoomViewWorksButtonContainer,
+} from "app/Scenes/ViewingRoom/Components/ViewingRoomViewWorksButton"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"

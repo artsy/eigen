@@ -1,7 +1,10 @@
 import { screen } from "@testing-library/react-native"
 import { PartnerLocationSectionTestQuery } from "__generated__/PartnerLocationSectionTestQuery.graphql"
 import { PartnerLocationSection_partner$data } from "__generated__/PartnerLocationSection_partner.graphql"
-import { PartnerLocationSectionContainer, createLocationsString } from "app/Scenes/Partner/Components/PartnerLocationSection"
+import {
+  PartnerLocationSectionContainer,
+  createLocationsString,
+} from "app/Scenes/Partner/Components/PartnerLocationSection"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 

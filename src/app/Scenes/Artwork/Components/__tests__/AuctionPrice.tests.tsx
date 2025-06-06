@@ -1,6 +1,9 @@
 import { AuctionPriceTestsQuery } from "__generated__/AuctionPriceTestsQuery.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { AuctionPriceFragmentContainer, AuctionPriceProps } from "app/Scenes/Artwork/Components/AuctionPrice"
+import {
+  AuctionPriceFragmentContainer,
+  AuctionPriceProps,
+} from "app/Scenes/Artwork/Components/AuctionPrice"
 import {
   AuctionPreview,
   AuctionPreviewNoStartingBid,

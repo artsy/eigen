@@ -1,7 +1,11 @@
 import { waitFor } from "@testing-library/react-native"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { MyCollectionArtworkStore } from "app/Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkStore"
-import { DELAY_TIME_MS, MyCollectionAddPhotos, tests } from "app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkFormAddPhotos"
+import {
+  DELAY_TIME_MS,
+  MyCollectionAddPhotos,
+  tests,
+} from "app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkFormAddPhotos"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"

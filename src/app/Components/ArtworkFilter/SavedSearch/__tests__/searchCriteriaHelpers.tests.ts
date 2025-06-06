@@ -6,7 +6,11 @@ import {
   getSearchCriteriaFromFilters,
   prepareFilterDataForSaveSearchInput,
 } from "app/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
-import { SavedSearchEntity, SavedSearchEntityArtist, SavedSearchEntityOwner } from "app/Components/ArtworkFilter/SavedSearch/types"
+import {
+  SavedSearchEntity,
+  SavedSearchEntityArtist,
+  SavedSearchEntityOwner,
+} from "app/Components/ArtworkFilter/SavedSearch/types"
 
 describe("getOnlyFilledSearchCriteriaValues", () => {
   it("should return nothing", () => {

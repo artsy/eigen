@@ -2,7 +2,11 @@ import { ViewingRoomTestsQuery } from "__generated__/ViewingRoomTestsQuery.graph
 import { AnimatedBottomButton } from "app/Components/AnimatedBottomButton"
 import { ViewingRoomArtworkRailContainer } from "app/Scenes/ViewingRoom/Components/ViewingRoomArtworkRail"
 import { ViewingRoomSubsections } from "app/Scenes/ViewingRoom/Components/ViewingRoomSubsections"
-import { ClosedNotice, tracks, ViewingRoomFragmentContainer } from "app/Scenes/ViewingRoom/ViewingRoom"
+import {
+  ClosedNotice,
+  tracks,
+  ViewingRoomFragmentContainer,
+} from "app/Scenes/ViewingRoom/ViewingRoom"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"

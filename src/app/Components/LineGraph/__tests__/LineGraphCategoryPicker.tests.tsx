@@ -1,5 +1,8 @@
 import { fireEvent } from "@testing-library/react-native"
-import { CategoryPill, LineGraphCategoryPicker } from "app/Components/LineGraph/LineGraphCategoryPicker"
+import {
+  CategoryPill,
+  LineGraphCategoryPicker,
+} from "app/Components/LineGraph/LineGraphCategoryPicker"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("LineGraphCategoryPicker", () => {

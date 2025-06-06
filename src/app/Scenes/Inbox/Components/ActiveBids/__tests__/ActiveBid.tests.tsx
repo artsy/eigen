@@ -2,7 +2,6 @@ import ActiveBid from "app/Scenes/Inbox/Components/ActiveBids/ActiveBid"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
-
 it("renders without throwing a error", () => {
   renderWithWrappersLEGACY(<ActiveBid bid={bid()} />)
 })

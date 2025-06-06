@@ -7,7 +7,11 @@ import {
   ArtworksFiltersStore,
   getArtworkFiltersModel,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
-import { ALLOW_EMPTY_CREATED_DATES_FILTER, OptionItem, YearOptionsScreen } from "app/Components/ArtworkFilter/Filters/YearOptions"
+import {
+  ALLOW_EMPTY_CREATED_DATES_FILTER,
+  OptionItem,
+  YearOptionsScreen,
+} from "app/Components/ArtworkFilter/Filters/YearOptions"
 import { getEssentialProps } from "app/Components/ArtworkFilter/Filters/helper"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"

@@ -1,6 +1,9 @@
 import { Checkbox } from "@artsy/palette-mobile"
 import { fireEvent } from "@testing-library/react-native"
-import { ArtworkFilterOptionItem, ArtworkFilterOptionItemProps } from "app/Components/ArtworkFilter/components/ArtworkFilterOptionItem"
+import {
+  ArtworkFilterOptionItem,
+  ArtworkFilterOptionItemProps,
+} from "app/Components/ArtworkFilter/components/ArtworkFilterOptionItem"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 const defaultProps: ArtworkFilterOptionItemProps = {

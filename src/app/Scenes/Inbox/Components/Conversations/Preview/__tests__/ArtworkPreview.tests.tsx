@@ -1,7 +1,10 @@
 import { Touchable } from "@artsy/palette-mobile"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkPreviewTestsQuery } from "__generated__/ArtworkPreviewTestsQuery.graphql"
-import { ArtworkPreview, ArtworkPreviewProps } from "app/Scenes/Inbox/Components/Conversations/Preview/ArtworkPreview"
+import {
+  ArtworkPreview,
+  ArtworkPreviewProps,
+} from "app/Scenes/Inbox/Components/Conversations/Preview/ArtworkPreview"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 

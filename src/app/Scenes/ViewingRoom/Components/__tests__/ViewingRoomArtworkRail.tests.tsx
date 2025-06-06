@@ -1,6 +1,9 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ViewingRoomArtworkRailTestsQuery } from "__generated__/ViewingRoomArtworkRailTestsQuery.graphql"
-import { tracks, ViewingRoomArtworkRailContainer } from "app/Scenes/ViewingRoom/Components/ViewingRoomArtworkRail"
+import {
+  tracks,
+  ViewingRoomArtworkRailContainer,
+} from "app/Scenes/ViewingRoom/Components/ViewingRoomArtworkRail"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { postEventToProviders } from "app/utils/track/providers"

@@ -3,7 +3,6 @@ import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/HomeView/Co
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-
 const originalError = console.error
 
 describe("EmailConfirmationBanner", () => {

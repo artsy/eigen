@@ -1,7 +1,10 @@
 import { fireEvent } from "@testing-library/react-native"
 import { ArtworkLotDetails_TestQuery } from "__generated__/ArtworkLotDetails_TestQuery.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
-import { ArtworkLotDetails, ArtworkLotDetailsProps } from "app/Scenes/Artwork/Components/ArtworkLotDetails/ArtworkLotDetails"
+import {
+  ArtworkLotDetails,
+  ArtworkLotDetailsProps,
+} from "app/Scenes/Artwork/Components/ArtworkLotDetails/ArtworkLotDetails"
 import { formatLotDateTime } from "app/Scenes/Artwork/Components/ArtworkLotDetails/utils/formatLotDateTime"
 import {
   AuctionPreview,

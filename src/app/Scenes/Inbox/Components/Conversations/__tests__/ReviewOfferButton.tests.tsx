@@ -1,6 +1,10 @@
 import { AlertCircleFillIcon, MoneyFillIcon } from "@artsy/palette-mobile"
 import { ConversationCTA_conversation$data } from "__generated__/ConversationCTA_conversation.graphql"
-import { ReviewOfferButton, ReviewOfferButtonProps, ReviewOfferCTAKind } from "app/Scenes/Inbox/Components/Conversations/ReviewOfferButton"
+import {
+  ReviewOfferButton,
+  ReviewOfferButtonProps,
+  ReviewOfferCTAKind,
+} from "app/Scenes/Inbox/Components/Conversations/ReviewOfferButton"
 import { navigate } from "app/system/navigation/navigate"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { extractText } from "app/utils/tests/extractText"
@@ -8,7 +12,6 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { DateTime } from "luxon"
 import { TouchableWithoutFeedback } from "react-native"
-
 
 describe("ReviewOfferButton", () => {
   const getWrapper = (

@@ -1,7 +1,6 @@
 import { SavedItemRow } from "app/Components/Lists/SavedItemRow"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
-
 const props = {
   href: "/artist/petra-collins",
   name: "Petra Collins",

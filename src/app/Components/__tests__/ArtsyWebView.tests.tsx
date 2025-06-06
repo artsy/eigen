@@ -19,7 +19,6 @@ import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { WebViewNavigation } from "react-native-webview/lib/WebViewTypes"
 
-
 const mockCallWebViewEventCallback = jest.fn()
 jest.mock("app/utils/useWebViewEvent", () => ({
   useWebViewCallback: () => ({

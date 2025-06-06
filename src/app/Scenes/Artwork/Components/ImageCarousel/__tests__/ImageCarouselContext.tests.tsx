@@ -1,5 +1,8 @@
 import { render } from "@testing-library/react-native"
-import { ImageCarouselContext, useNewImageCarouselContext } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
+import {
+  ImageCarouselContext,
+  useNewImageCarouselContext,
+} from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 
 const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
