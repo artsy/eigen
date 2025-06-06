@@ -54,13 +54,12 @@ jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
 describe("Artwork", () => {
   let environment: ReturnType<typeof createMockEnvironment>
 
-  const TestRenderer = ({ isVisible = true, onLoad = jest.fn() }) => (
+  const TestRenderer = ({ isVisible = true }) => (
     <ArtworkScreen
       isVisible={isVisible}
       artworkID="ignored"
       environment={environment}
       tracking={{ trackEvent: jest.fn() } as any}
-      onLoad={onLoad}
     />
   )
 

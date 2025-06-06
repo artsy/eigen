@@ -1,4 +1,5 @@
-import { Flex, Join, Spacer, useSpace } from "@artsy/palette-mobile"
+import { Flex, Join, Spacer } from "@artsy/palette-mobile"
+import { CARD_HEIGHT } from "app/Scenes/Artwork/Components/ArtworkHeader"
 import { useImagePlaceholder } from "app/Scenes/Artwork/helpers"
 import { PlaceholderBox, PlaceholderText, RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
@@ -9,18 +10,9 @@ interface AboveTheFoldPlaceholderProps {
 }
 
 const ArtworkActionsPlaceholder = () => {
-  const space = useSpace()
-
   return (
     <Flex flexDirection="row" justifyContent="center">
-      {times(3).map((index) => (
-        <PlaceholderBox
-          key={`auction-${index}`}
-          width={50}
-          height={18}
-          marginHorizontal={space(1)}
-        />
-      ))}
+      <PlaceholderBox width={200} height={22} />
     </Flex>
   )
 }
@@ -68,12 +60,14 @@ export const AboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = (
         </Flex>
       </Flex>
 
+      <Spacer y={2} />
+
       {/* Artwork thumbnail */}
-      <Flex mx="auto" pt={2}>
+      <Flex mx="auto" py={2} height={CARD_HEIGHT} justifyContent="center">
         <PlaceholderBox width={width} height={height} />
       </Flex>
 
-      <Spacer y={1} />
+      <Spacer y={4} />
 
       {/* Content */}
       <Flex px={2}>
