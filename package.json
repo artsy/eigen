@@ -223,7 +223,6 @@
     "@react-native/metro-config": "0.76.9",
     "@react-native/typescript-config": "0.76.9",
     "@react-navigation/devtools": "7.0.20",
-    "@sentry/cli": "2.46.0",
     "@testing-library/react-hooks": "8.0.1",
     "@testing-library/react-native": "13.2.0",
     "@types/argparse": "2.0.10",
