@@ -176,9 +176,9 @@ export const HomeView: React.FC = memo(() => {
           alignItems="center"
           justifyContent="center"
           height={100}
-          backgroundColor="green"
+          backgroundColor="blue"
         >
-          <Text color="white">Expo Updates QA!</Text>
+          <Text color="white">Expo Updates QA! Has anything changed?</Text>
         </Flex>
         <FlatList
           automaticallyAdjustKeyboardInsets
