@@ -160,7 +160,7 @@ android {
 
             manifestPlaceholders = [
                 expoUpdatesEnabled: "true",
-                expoUpdatesCheckOnLaunch: "ON_LOAD",
+                expoUpdatesCheckOnLaunch: "ALWAYS",
                 expoUpdatesChannel: "production",
                 expoRuntimeVersion: getRuntimeVersion(),
                 expoUpdatesDisableAntibrickingMeasures: "false"
@@ -175,7 +175,7 @@ android {
 
             manifestPlaceholders = [
                 expoUpdatesEnabled: "true",
-                expoUpdatesCheckOnLaunch: "ON_LOAD",
+                expoUpdatesCheckOnLaunch: "ALWAYS",
                 expoUpdatesChannel: "canary",
                 expoRuntimeVersion: getRuntimeVersion(),
                 expoUpdatesDisableAntibrickingMeasures: "true"
