@@ -138,10 +138,10 @@ export const ExpoUpdatesOptions = () => {
               accessibilityRole="button"
               key={deployment}
               onPress={() => {
-                if (!ArtsyNativeModule.isBetaOrDev) {
-                  Alert.alert("Updates can only be changed in beta or dev mode.")
-                  return
-                }
+                // if (!ArtsyNativeModule.isBetaOrDev) {
+                //   Alert.alert("Updates can only be changed in beta or dev mode.")
+                //   return
+                // }
 
                 setSelectedDeployment(deployment as ExpoDeployment)
                 const channelName = expoDeploymentChannels[deployment as ExpoDeployment]
