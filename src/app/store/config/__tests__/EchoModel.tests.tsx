@@ -14,7 +14,6 @@ const laterDate = originalDate.clone().add(2, "days")
 
 const appVersion = (version: string) => ({
   version,
-  isAndroidBeta: false,
   appName: "eigen",
   expoReleaseNameBase: "none",
   expoDist: "none",

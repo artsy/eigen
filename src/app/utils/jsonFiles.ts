@@ -5,7 +5,6 @@ import echoLaunchJsonFile from "../../../ios/Artsy/App/EchoNew.json"
 type AppConfig = {
   appName: string
   version: string
-  isAndroidBeta: boolean
   expoReleaseNameBase: string
   expoDist: string
 }

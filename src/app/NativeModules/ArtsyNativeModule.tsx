@@ -1,4 +1,3 @@
-import { appJson } from "app/utils/jsonFiles"
 import { NativeModules, PixelRatio, Platform } from "react-native"
 import { LegacyNativeModules } from "./LegacyNativeModules"
 
@@ -55,5 +54,5 @@ export const ArtsyNativeModule = {
   isBetaOrDev:
     Platform.OS === "ios"
       ? NativeModules.ArtsyNativeModule.isBetaOrDev
-      : appJson().isAndroidBeta || __DEV__,
+      : (NativeModules.ArtsyNativeModule.getConstants().isBeta as boolean) || __DEV__,
 }
