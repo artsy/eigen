@@ -1,7 +1,7 @@
 {
   "appName": "eigen",
   "version": "8.75.0",
-  "isAndroidBeta": false,
+  "isAndroidBeta": true,
   "slug": "eigen",
   "expo": {
     "platforms": ["ios", "android"],
@@ -17,6 +17,6 @@
     "android": {},
     "ios": {}
   },
-  "expoReleaseNameBase": "none",
-  "expoDist": "none"
+  "expoReleaseNameBase": "expo-canary-8.75.0-2025.06.09.08",
+  "expoDist": "2025.06.09.08"
 }
