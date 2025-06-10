@@ -31,7 +31,10 @@ const INSTRUCTIONS = Platform.select({
   default: "",
 })
 
-export type UserPushNotificationSettings = keyof MyProfilePushNotifications_me$data
+export type UserPushNotificationSettings = keyof Omit<
+  MyProfilePushNotifications_me$data,
+  "id" | " $fragmentType"
+>
 
 export const OpenSettingsBanner = () => (
   <>
