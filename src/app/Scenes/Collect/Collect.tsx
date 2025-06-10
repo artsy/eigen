@@ -138,7 +138,7 @@ export const CollectContent: React.FC<CollectContentProps> = ({ viewer }) => {
 
 export const viewerFragment = graphql`
   fragment CollectArtworks_viewer on Viewer
-  @refetchable(queryName: "CollectArtwork_RefetchQuery")
+  @refetchable(queryName: "CollectArtworks_RefetchQuery")
   @argumentDefinitions(
     count: { type: "Int", defaultValue: 20 }
     cursor: { type: "String" }
@@ -158,7 +158,11 @@ export const viewerFragment = graphql`
         PARTNER
         TOTAL
       ]
-    ) @connection(key: "CollectArtworks_artworksConnection") {
+    ) @connection(key: "CollectArtworks_artworksConnection", filters: ["input"]) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
       aggregations {
         slice
         counts {
