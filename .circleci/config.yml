@@ -271,6 +271,7 @@ jobs:
       - install-node
       - install-gems
       - setup-awscli
+      - install-node-modules
       - run:
           name: Determine Deployment Type
           command: |
@@ -284,7 +285,6 @@ jobs:
               ./scripts/deploys/expo-updates/maybe-notify-beta-needed
               circleci-agent step halt
             fi
-      - install-node-modules
       - run-relay-compiler
       # - run:
       #     name: Handle Deployment for expo updates
