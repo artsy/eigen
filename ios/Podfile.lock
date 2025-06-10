@@ -1695,7 +1695,7 @@ PODS:
     - Yoga
   - react-native-render-html (6.3.4):
     - React-Core
-  - react-native-safe-area-context (5.3.0):
+  - react-native-safe-area-context (5.4.1):
     - React-Core
   - react-native-shake (5.5.2):
     - DoubleConversion
@@ -3011,7 +3011,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: ce102083db558237dac20cf64172ef569ebe2dd9
   react-native-pager-view: c8b6ddfc7747d272ad953e632f1296e98ad59e28
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd
-  react-native-safe-area-context: fdb0a66feac038cb6eb1edafcf2ccee2b5cf0284
+  react-native-safe-area-context: dde2052b903c11d677c320b599c3244021c34ce8
   react-native-shake: 264c8fb4a8554f0a0ac319347bb4f513ed065cf4
   react-native-view-shot: 0ad68286bf0ac3717e56bfb02c7a7a63da4932bb
   react-native-webview: 508a7967877321541cc7ff68740f2c294243415c
