@@ -114,6 +114,9 @@ export const AutosuggestSearchResult: React.FC<{
         to={href}
         onPress={onPress}
         testID={`autosuggest-search-result-${result.displayLabel}`}
+        style={{
+          flex: 1,
+        }}
       >
         <Flex flex={1} flexDirection="row" alignItems="center">
           <Flex flex={1}>
