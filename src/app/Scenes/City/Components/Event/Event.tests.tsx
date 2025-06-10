@@ -1,10 +1,6 @@
-import { Event } from "app/Scenes/City/Components/Event/index"
+import { Event } from "app/Scenes/City/Components/Event/Event"
 import { Show } from "app/Scenes/Map/types"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
-<<<<<<<< HEAD:src/app/Scenes/City/Components/Event/__tests__/index.tests.tsx
-========
-import { Event } from "./Event"
->>>>>>>> fcccc5ef80 (chore: address review comments):src/app/Scenes/City/Components/Event/Event.tests.tsx
 
 const eventData = {
   name: "PALAY, Trapunto Murals by Pacita Abad",
