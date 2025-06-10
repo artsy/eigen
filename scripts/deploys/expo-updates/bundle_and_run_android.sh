@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# convenience script to bundle the beta app and run it on an Android device locally
+
 yarn expo export:embed \
 	--platform android \
 	--bundle-output android/app/src/main/assets/index.android.bundle \
