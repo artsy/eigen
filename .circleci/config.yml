@@ -605,7 +605,6 @@ workflows:
             branches:
               only:
                 - main
-                - brian/main-break
 
       - test-js
 
