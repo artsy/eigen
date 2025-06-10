@@ -1,121 +1,101 @@
-import { Box, Button, Flex, Image, Text, Touchable } from "@artsy/palette-mobile"
+import { Box, Button, Flex, Image, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
-import { ShowItemRow_show$data } from "__generated__/ShowItemRow_show.graphql"
+import { ShowItemRow_show$data, ShowItemRow_show$key } from "__generated__/ShowItemRow_show.graphql"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { Pin } from "app/Components/Icons/Pin"
 import { exhibitionDates } from "app/Scenes/Map/exhibitionPeriodParser"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { hrefForPartialShow } from "app/utils/router"
-import { track as _track, Schema, Track } from "app/utils/track"
+import { Schema } from "app/utils/track"
 import { debounce } from "lodash"
-import React from "react"
+import React, { useState } from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
+import { commitMutation, graphql, useFragment } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 interface Props {
-  show: ShowItemRow_show$data
-  relay?: RelayProp
+  show: ShowItemRow_show$key
   onSaveStarted?: () => void
   onSaveEnded?: () => void
   shouldHideSaveButton?: boolean
   isListItem?: boolean
 }
 
-interface State {
-  isFollowedSaving: boolean
-}
+export const ShowItemRow: React.FC<Props> = ({
+  show: showProp,
+  onSaveStarted,
+  onSaveEnded,
+  shouldHideSaveButton,
+  isListItem,
+}) => {
+  const color = useColor()
+  const show = useFragment(showFragment, showProp)
+  const [isFollowedSaving, setIsFollowedSaving] = useState(false)
+  const { trackEvent } = useTracking()
 
-const track: Track<Props, {}> = _track
-
-@track()
-export class ShowItemRow extends React.Component<Props, State> {
-  state = {
-    isFollowedSaving: false,
-  }
-  handleTap = debounce((_slug: string, _internalID: string) => {
-    const href = hrefForPartialShow(this.props.show)
+  const handleTap = debounce((_slug: string, _internalID: string) => {
+    const href = hrefForPartialShow(show)
     navigate(href)
   })
 
-  @track((props) => {
-    const {
-      show: { slug, internalID, is_followed },
-    } = props
-    return {
-      action_name: is_followed ? Schema.ActionNames.UnsaveShow : Schema.ActionNames.SaveShow,
-      action_type: Schema.ActionTypes.Success,
-      owner_type: Schema.OwnerEntityTypes.Show,
-      owner_id: internalID,
-      owner_slug: slug,
-    } as any
-  })
-  handleSave() {
-    const {
-      show: { slug: showSlug, id: nodeID, internalID: showID, is_followed: isShowFollowed },
-    } = this.props
+  const handleSave = () => {
+    const { slug: showSlug, id: nodeID, internalID: showID, is_followed: isShowFollowed } = show
 
-    if (showID && showSlug && nodeID && !this.state.isFollowedSaving) {
-      if (this.props.onSaveStarted) {
-        this.props.onSaveStarted()
-      }
+    if (showID && showSlug && nodeID && !isFollowedSaving) {
+      trackEvent(tracks.trackSave(show))
 
-      this.setState(
-        {
-          isFollowedSaving: true,
-        },
-        () => {
-          return commitMutation<ShowItemRowMutation>(this.props.relay?.environment!, {
-            onCompleted: () => this.handleShowSuccessfullyUpdated(),
-            mutation: graphql`
-              mutation ShowItemRowMutation($input: FollowShowInput!) {
-                followShow(input: $input) {
-                  show {
-                    slug
-                    internalID
-                    is_followed: isFollowed
-                  }
-                }
+      onSaveStarted?.()
+
+      setIsFollowedSaving(true)
+      commitMutation<ShowItemRowMutation>(getRelayEnvironment(), {
+        onCompleted: () => handleShowSuccessfullyUpdated(),
+        mutation: graphql`
+          mutation ShowItemRowMutation($input: FollowShowInput!) {
+            followShow(input: $input) {
+              show {
+                slug
+                internalID
+                is_followed: isFollowed
               }
-            `,
-            variables: {
-              input: {
-                partnerShowID: showID,
-                unfollow: isShowFollowed,
-              },
+            }
+          }
+        `,
+        variables: {
+          input: {
+            partnerShowID: showID,
+            unfollow: isShowFollowed,
+          },
+        },
+        // @ts-ignore RELAY 12 MIGRATION
+        optimisticResponse: {
+          followShow: {
+            show: {
+              slug: showSlug,
+              internalID: showID,
+              is_followed: !isShowFollowed,
             },
-            // @ts-ignore RELAY 12 MIGRATION
-            optimisticResponse: {
-              followShow: {
-                show: {
-                  slug: showSlug,
-                  internalID: showID,
-                  is_followed: !isShowFollowed,
-                },
-              },
-            },
-            updater: (store) => {
-              store!.get(nodeID)!.setValue(!isShowFollowed, "is_followed")
-            },
-          })
-        }
-      )
+          },
+        },
+        updater: (store) => {
+          const show = store?.get(nodeID)
+          if (show) {
+            show.setValue(!isShowFollowed, "is_followed")
+          }
+        },
+      })
     }
   }
 
-  handleShowSuccessfullyUpdated() {
-    if (this.props.onSaveEnded) {
-      this.props.onSaveEnded()
-    }
-
-    this.setState({
-      isFollowedSaving: false,
-    })
+  const handleShowSuccessfullyUpdated = () => {
+    onSaveEnded?.()
+    setIsFollowedSaving(false)
   }
 
-  renderItemDetails() {
-    const { show, shouldHideSaveButton } = this.props
+  const renderItemDetails = () => {
     const mainCoverImageURL = show.cover_image && show.cover_image.url
 
     const galleryProfileIcon = show.isStubShow && show.partner?.profile?.image?.url
@@ -176,8 +156,8 @@ export class ShowItemRow extends React.Component<Props, State> {
               <Button
                 variant={show.is_followed ? "outline" : "fillDark"}
                 size="small"
-                onPress={() => this.handleSave()}
-                loading={this.state.isFollowedSaving}
+                onPress={handleSave}
+                loading={isFollowedSaving}
                 longestText="Saved"
               >
                 {show.is_followed ? "Saved" : "Save"}
@@ -189,66 +169,60 @@ export class ShowItemRow extends React.Component<Props, State> {
     )
   }
 
-  render() {
-    const { show, isListItem } = this.props
-
-    return isListItem ? (
-      <ThemeAwareClassTheme>
-        {({ color }) => (
-          <Touchable
-            accessibilityRole="button"
-            underlayColor={color("mono5")}
-            onPress={() => this.handleTap(show.slug, show.internalID)}
-            style={{ paddingHorizontal: 20, paddingVertical: 5 }}
-          >
-            {this.renderItemDetails()}
-          </Touchable>
-        )}
-      </ThemeAwareClassTheme>
-    ) : (
-      <TouchableWithoutFeedback
+  if (isListItem) {
+    return (
+      <Touchable
         accessibilityRole="button"
-        onPress={() => this.handleTap(show.slug, show.internalID)}
+        underlayColor={color("mono5")}
+        onPress={() => handleTap(show.slug, show.internalID)}
+        style={{ paddingHorizontal: 20, paddingVertical: 5 }}
       >
-        {this.renderItemDetails()}
-      </TouchableWithoutFeedback>
+        {renderItemDetails()}
+      </Touchable>
     )
   }
+
+  return (
+    <TouchableWithoutFeedback
+      onPress={() => handleTap(show.slug, show.internalID)}
+      accessibilityRole="button"
+    >
+      {renderItemDetails()}
+    </TouchableWithoutFeedback>
+  )
 }
 
 /// NOTE: To make sure that this is consistent across all places where we
 ///       show it (e.g. Favs, inside the City Map tray ) - you need to make
 ///       sure that any data changes are included in GlobalMap's query.
-export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
-  show: graphql`
-    fragment ShowItemRow_show on Show {
-      id
-      slug
-      internalID
-      is_followed: isFollowed
-      name
-      isStubShow
-      partner {
-        ... on Partner {
-          name
-          profile {
-            image {
-              url(version: "square")
-            }
+const showFragment = graphql`
+  fragment ShowItemRow_show on Show {
+    id
+    slug
+    internalID
+    is_followed: isFollowed
+    name
+    isStubShow
+    partner {
+      ... on Partner {
+        name
+        profile {
+          image {
+            url(version: "square")
           }
         }
       }
-      href
-      exhibition_period: exhibitionPeriod(format: SHORT)
-      status
-      cover_image: coverImage {
-        url
-      }
-      is_fair_booth: isFairBooth
-      end_at: endAt
     }
-  `,
-})
+    href
+    exhibition_period: exhibitionPeriod(format: SHORT)
+    status
+    cover_image: coverImage {
+      url
+    }
+    is_fair_booth: isFairBooth
+    end_at: endAt
+  }
+`
 
 const DefaultImageContainer = styled(Box)`
   align-items: center;
@@ -256,3 +230,15 @@ const DefaultImageContainer = styled(Box)`
   height: ${themeGet("space.6")};
   width: ${themeGet("space.6")};
 `
+
+const tracks = {
+  trackSave: (show: ShowItemRow_show$data) => {
+    return {
+      action_name: show.is_followed ? Schema.ActionNames.UnsaveShow : Schema.ActionNames.SaveShow,
+      action_type: Schema.ActionTypes.Success,
+      owner_type: Schema.OwnerEntityTypes.Show,
+      owner_id: show.internalID,
+      owner_slug: show.slug,
+    } as any
+  },
+}

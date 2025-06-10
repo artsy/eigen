@@ -5,6 +5,7 @@ import {
   BottomSheetModalProps,
 } from "@gorhom/bottom-sheet"
 import { DefaultBottomSheetBackdrop } from "app/Components/BottomSheet/DefaultBottomSheetBackdrop"
+import { defaultIndicatorHandleStyle } from "app/Components/BottomSheet/defaultIndicatorHandleStyle"
 import { FC, useCallback, useEffect, useRef, useState } from "react"
 import { BackHandler } from "react-native"
 
@@ -89,12 +90,7 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
         ...(rest?.backgroundStyle as any),
         backgroundColor: color("background"),
       }}
-      handleIndicatorStyle={{
-        backgroundColor: color("mono100"),
-        width: 40,
-        height: 4,
-        borderRadius: 2,
-      }}
+      handleIndicatorStyle={defaultIndicatorHandleStyle(color)}
       {...rest}
     />
   )
