@@ -97,6 +97,39 @@ commands:
             # this changes after pod install because we don't install dev tools on CI
             # so we save it to the cache to avoid comparison errors with Pods/Manifest.lock
             - ios/Podfile.lock
+  prep-ios-env:
+    steps:
+      # we can quit the macos build early if there were no native code changes
+      # and we're not on the beta branch
+      - run:
+          name: Quit early if possible
+          command: |
+            if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
+            then
+              circleci step halt
+            fi
+      - run:
+          name: Quit early if Draft PR
+          command: |
+            if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/eigen/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
+            then
+              circleci step halt
+            fi
+      - run:
+          name: Clear project dir
+          command: |
+            rm -rf  /Users/distiller/project/*
+      - checkout
+      - attach_workspace:
+          at: .
+      - install-node
+      - setup-awscli
+      - setup-env-file
+      - install-node-modules
+      - run-relay-compiler
+      - update-echo
+      - install-gems
+      - install-cocoapods
   build-app-ios:
     steps:
       - restore_cache:
@@ -428,6 +461,11 @@ jobs:
             fi
 
   build-test-app-ios:
+    parameters:
+      build_type:
+        type: string
+        default: "debug"
+
     environment:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
@@ -440,37 +478,7 @@ jobs:
           at: ../workspace
       - restore_cache:
           key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum "../workspace/.manifests/native_code" }}
-      # we can quit the macos build early if there were no native code changes
-      # and we're not on the beta branch
-      - run:
-          name: Quit early if possible
-          command: |
-            if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
-            then
-              circleci step halt
-            fi
-      - run:
-          name: Quit early if Draft PR
-          command: |
-            if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/eigen/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
-            then
-              circleci step halt
-            fi
-      - run:
-          name: Clear project dir
-          command: |
-            rm -rf  /Users/distiller/project/*
-      - checkout
-      - attach_workspace:
-          at: .
-      - install-node
-      - setup-awscli
-      - setup-env-file
-      - install-node-modules
-      - run-relay-compiler
-      - update-echo
-      - install-gems
-      - install-cocoapods
+      - prep-ios-env
       - macos/preboot-simulator:
           version: "18.2"
           platform: "iOS"
