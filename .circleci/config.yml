@@ -692,10 +692,10 @@ workflows:
       #       - build-test-app-android
 
       - run-e2e-tests-ios:
-        filters:
-          branches:
-            only:
-              - gkartalis/PHIRE-1847
+          filters:
+            branches:
+              only:
+                - gkartalis/PHIRE-1847
       #     requires:
       #       - build-test-app-ios
       # - run-e2e-tests-android:
@@ -703,5 +703,5 @@ workflows:
       #       branches:
       #         only:
       #           - gkartalis/PHIRE-1847
-      # requires:
+      #     # requires:
       #   - build-test-app-android
