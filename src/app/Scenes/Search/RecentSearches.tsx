@@ -1,35 +1,38 @@
-import { SimpleMessage } from "@artsy/palette-mobile"
+import { SimpleMessage, Spacer } from "@artsy/palette-mobile"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { GlobalStore } from "app/store/GlobalStore"
-import { LayoutAnimation } from "react-native"
+import Animated, { LinearTransition } from "react-native-reanimated"
 import { useRecentSearches } from "./SearchModel"
 import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
-import { SearchResultList } from "./components/SearchResultList"
 
 export const RecentSearches: React.FC = () => {
   const recentSearches = useRecentSearches()
+
   return (
     <>
       <SectionTitle title="Recent Searches" />
 
       {recentSearches.length ? (
-        <SearchResultList
-          results={recentSearches.map(({ props: result }) => (
+        <Animated.FlatList
+          data={recentSearches}
+          ItemSeparatorComponent={() => <Spacer y={2} />}
+          scrollEnabled={false}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+          itemLayoutAnimation={LinearTransition}
+          keyExtractor={(item, index) => item.props.internalID ?? index.toString()}
+          renderItem={({ item }) => (
             <AutosuggestSearchResult
-              key={result.internalID}
-              result={result}
+              key={item.props.internalID}
+              result={item.props}
               showResultType
               updateRecentSearchesOnTap={false}
               displayingRecentResult
               onDelete={() => {
-                LayoutAnimation.configureNext({
-                  ...LayoutAnimation.Presets.easeInEaseOut,
-                  duration: 230,
-                })
-                GlobalStore.actions.search.deleteRecentSearch(result)
+                GlobalStore.actions.search.deleteRecentSearch(item.props)
               }}
             />
-          ))}
+          )}
         />
       ) : (
         <SimpleMessage>We’ll save your recent searches here</SimpleMessage>
