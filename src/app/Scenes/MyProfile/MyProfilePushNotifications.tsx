@@ -19,7 +19,6 @@ import { requestSystemPermissions } from "app/utils/requestPushNotificationsPerm
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import useAppState from "app/utils/useAppState"
-import { debounce, omit } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
 import { Alert, Linking, Platform, RefreshControl } from "react-native"
 import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
@@ -32,16 +31,7 @@ const INSTRUCTIONS = Platform.select({
   default: "",
 })
 
-export type UserPushNotificationSettings =
-  | "receiveLotOpeningSoonNotification"
-  | "receiveNewSalesNotification"
-  | "receiveNewWorksNotification"
-  | "receiveOutbidNotification"
-  | "receivePromotionNotification"
-  | "receivePurchaseNotification"
-  | "receiveSaleOpeningClosingNotification"
-  | "receiveOrderNotification"
-  | "receivePartnerOfferNotification"
+export type UserPushNotificationSettings = keyof MyProfilePushNotifications_me$data
 
 export const OpenSettingsBanner = () => (
   <>
@@ -182,21 +172,13 @@ export const MyProfilePushNotifications: React.FC<{
           [notificationType]: value,
         }
         setUserNotificationSettings(updatedUserNotificationSettings)
-        await updateNotificationPermissions(updatedUserNotificationSettings)
+        await updateMyUserProfile({ [notificationType]: value })
       } catch (error) {
         setUserNotificationSettings(userNotificationSettings)
         Alert.alert(typeof error === "string" ? error : "Something went wrong.")
       }
     },
     [userNotificationSettings]
-  )
-
-  const updateNotificationPermissions = useCallback(
-    debounce(async (updatedPermissions: MyProfilePushNotifications_me$data) => {
-      const validUpdatedPermissions = omit(updatedPermissions, "id")
-      await updateMyUserProfile(validUpdatedPermissions)
-    }, 500),
-    []
   )
 
   return (
