@@ -124,11 +124,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableProgressiveOnboardingAlerts",
   },
-  AREnableAlertsFiltersArtistSeriesFiltering: {
-    description: 'Enable artist series selection on "More Filters" screen',
-    readyForRelease: true,
-    echoFlagKey: "AREnableAlertsFiltersArtistSeriesFiltering",
-  },
   AREnableArtworksFeedView: {
     description: "Enable artworks feed view",
     readyForRelease: true,
