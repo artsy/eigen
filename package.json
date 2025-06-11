@@ -27,6 +27,7 @@
     "detect-secrets:rebuild": "scripts/detect-secrets/detect-secrets.sh rebuild",
     "doctor": "./scripts/utils/doctor.js",
     "export-notion-to-jira": "tsx scripts/utils/exportNotionTicketsToJira.ts",
+    "assign-team-labels-pbrw-tickets": "tsx scripts/utils/assignPBRWTicketsToTeams.ts",
     "flip_table": "./scripts/utils/flip-table",
     "flip_table_extreme": "./scripts/utils/flip-table-extreme",
     "generate-cities-cache": "node scripts/city-guide/generate-cities-cache.js",
