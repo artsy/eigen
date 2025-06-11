@@ -337,7 +337,12 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   return (
     <NavigationIndependentTree>
       <NavigationContainer theme={theme}>
-        <Modal visible={props.visible} onDismiss={handleClosingModal} animationType="slide">
+        <Modal
+          visible={props.visible}
+          onDismiss={handleClosingModal}
+          animationType="slide"
+          testID="artwork-filter-navigator"
+        >
           <SafeAreaView edges={["top"]} style={{ flex: 1, backgroundColor: color("background") }}>
             <Stack.Navigator
               // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
