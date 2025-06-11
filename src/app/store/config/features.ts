@@ -86,11 +86,6 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "ARShowCreateAlertInArtistArtworksListFooter",
   },
-  AREnableLatestActivityRail: {
-    description: "Enable Latest Activity Rail",
-    readyForRelease: true,
-    echoFlagKey: "AREnableLatestActivityRail",
-  },
   AREnableAlertsFilters: {
     description: "Enable filters in alerts screen",
     readyForRelease: true,
