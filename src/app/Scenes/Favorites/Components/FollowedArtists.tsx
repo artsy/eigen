@@ -30,7 +30,7 @@ export const FollowedArtists: React.FC<Props> = ({ me }) => {
 
   const artists = extractNodes(data.followsAndSaves?.artistsConnection)
 
-  const RefreshControl = useRefreshControl(refetch)
+  const RefreshControl = useRefreshControl(refetch, { progressViewOffset: headerHeight })
 
   const { trackTappedArtistFollowsGroup } = useFavoritesTracking()
 

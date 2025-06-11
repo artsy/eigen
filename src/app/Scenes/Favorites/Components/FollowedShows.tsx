@@ -29,7 +29,7 @@ export const FollowedShows: React.FC<Props> = ({ me }) => {
 
   const shows = extractNodes(data.followsAndSaves?.showsConnection)
 
-  const RefreshControl = useRefreshControl(refetch)
+  const RefreshControl = useRefreshControl(refetch, { progressViewOffset: headerHeight })
 
   if (shows.length === 0) {
     return (
