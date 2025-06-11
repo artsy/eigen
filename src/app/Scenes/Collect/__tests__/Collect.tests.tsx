@@ -184,8 +184,7 @@ describe("Collect", () => {
         }),
       })
 
-      // Now the grid should contain both artworks
-      expect(screen.getByTestId("masonry-artwork-grid")).toBeOnTheScreen()
+      expect(screen.getByText("Artwork 2")).toBeOnTheScreen()
     })
 
     it("uses artworks filter aggregations", async () => {
