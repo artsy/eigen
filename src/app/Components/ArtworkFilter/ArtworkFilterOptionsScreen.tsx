@@ -18,7 +18,6 @@ import {
   ArtworksFiltersStore,
 } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { GlobalStore } from "app/store/GlobalStore"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
 import { compact } from "lodash"
@@ -50,10 +49,6 @@ export enum FilterModalMode {
 export const ArtworkFilterOptionsScreen: React.FC<
   StackScreenProps<ArtworkFilterNavigationStack, "FilterOptionsScreen">
 > = ({ navigation, route }) => {
-  const enableArtistSeriesFilter = useFeatureFlag("AREnableArtistSeriesFilter")
-  const enableAvailabilityFilter = useFeatureFlag("AREnableAvailabilityFilter")
-  const enableFramedFilter = useFeatureFlag("AREnableFramedFilter")
-
   const tracking = useTracking()
   const { closeModal, id, mode, slug, title = "Sort & Filter" } = route.params
 
@@ -111,13 +106,6 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const sortedFilterOptions = filterOptions
     .sort(getFilterScreenSortByMode(mode, localFilterOptions))
     .filter((filterOption) => filterOption.filterType)
-    // Filter out the Artist Series filter if the feature flag is disabled
-    .filter(
-      (filterOption) =>
-        (enableArtistSeriesFilter || filterOption.filterType !== "artistSeriesIDs") &&
-        (enableAvailabilityFilter || filterOption.filterType !== "availability") &&
-        (enableFramedFilter || filterOption.filterType !== "framed")
-    )
 
   const clearAllFilters = () => {
     clearFiltersZeroStateAction()
