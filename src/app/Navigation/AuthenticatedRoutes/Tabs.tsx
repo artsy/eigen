@@ -47,6 +47,8 @@ type TabRoutesParams = {
 const Tab = createBottomTabNavigator<TabRoutesParams>()
 
 const BOTTOM_TABS_HEIGHT = PixelRatio.getFontScale() < 1.5 ? 65 : 85
+export const TAB_BAR_SHOW_ANIMATION_DURATION = 200
+export const TAB_BAR_HIDE_ANIMATION_DURATION = 350
 
 const AppTabs: React.FC = () => {
   const { tabsBadges } = useBottomTabsBadges()
@@ -107,6 +109,22 @@ const AppTabs: React.FC = () => {
           },
           tabBarHideOnKeyboard: true,
           tabBarVisible: hidesBottomTabs,
+          tabBarVisibilityAnimationConfig: {
+            show: {
+              animation: "timing",
+              config: {
+                duration: TAB_BAR_SHOW_ANIMATION_DURATION,
+              },
+            },
+            hide: {
+              animation: "spring",
+              config: {
+                duration: TAB_BAR_HIDE_ANIMATION_DURATION,
+                stiffness: 100,
+                damping: 10,
+              },
+            },
+          },
           tabBarIcon: ({ focused }) => {
             return (
               <Flex pt={1}>
