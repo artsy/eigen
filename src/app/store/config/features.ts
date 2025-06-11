@@ -50,12 +50,6 @@ export const features = {
     description: "Support dark mode",
     echoFlagKey: "ARDarkModeSupport",
   },
-  AREnableEditorialNews: {
-    readyForRelease: true,
-    description: "Enable news app in the home screen",
-    echoFlagKey: "AREnableEditorialNews",
-    showInDevMenu: true,
-  },
   // TODO: need to refresh it before releasing to avoid leaking the feature in not ready releases, marked as ready since 15 months ago
   AREnableArtworksConnectionForAuction: {
     readyForRelease: true,
