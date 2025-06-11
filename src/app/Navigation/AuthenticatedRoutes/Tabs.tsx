@@ -21,7 +21,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
 import { useCallback } from "react"
-import { InteractionManager, PixelRatio, Platform } from "react-native"
+import { Easing, InteractionManager, PixelRatio, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 if (Platform.OS === "ios") {
@@ -47,6 +47,7 @@ type TabRoutesParams = {
 const Tab = createBottomTabNavigator<TabRoutesParams>()
 
 const BOTTOM_TABS_HEIGHT = PixelRatio.getFontScale() < 1.5 ? 65 : 85
+export const TAB_BAR_ANIMATION_DURATION = 250
 
 const AppTabs: React.FC = () => {
   const { tabsBadges } = useBottomTabsBadges()
@@ -107,6 +108,22 @@ const AppTabs: React.FC = () => {
           },
           tabBarHideOnKeyboard: true,
           tabBarVisible: hidesBottomTabs,
+          tabBarVisibilityAnimationConfig: {
+            show: {
+              animation: "timing",
+              config: {
+                duration: TAB_BAR_ANIMATION_DURATION,
+                easing: Easing.inOut(Easing.ease),
+              },
+            },
+            hide: {
+              animation: "timing",
+              config: {
+                duration: TAB_BAR_ANIMATION_DURATION,
+                easing: Easing.inOut(Easing.ease),
+              },
+            },
+          },
           tabBarIcon: ({ focused }) => {
             return (
               <Flex pt={1}>
