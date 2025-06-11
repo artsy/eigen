@@ -102,11 +102,6 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnableArtistSeriesFilter",
   },
-  AREnableAlertsSuggestedFilters: {
-    description: "Enable alerts suggested filters",
-    readyForRelease: true,
-    echoFlagKey: "AREnableAlertsSuggestedFilters",
-  },
   AREnablePartnerOffersNotificationSwitch: {
     description: "Enable partner offers notification switch",
     readyForRelease: true,
