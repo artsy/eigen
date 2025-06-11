@@ -10,7 +10,10 @@ import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { debounce } from "lodash"
 import { Platform } from "react-native"
 import relay, { graphql } from "react-relay"
-import { MyProfilePushNotifications } from "./MyProfilePushNotifications"
+import {
+  MyProfilePushNotifications,
+  UserPushNotificationSettings,
+} from "./MyProfilePushNotifications"
 
 jest.mock("lodash/debounce", () => jest.fn())
 jest.mock("app/utils/hooks/useFeatureFlag", () => ({
@@ -157,12 +160,13 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
         expect.objectContaining({
           variables: {
             input: {
-              ...mockNotificationsPreferences,
               receiveNewWorksNotification: false,
             },
           },
         })
       )
+
+      await flushPromiseQueue()
 
       fireEvent(switchElement, "onValueChange", true)
 
@@ -174,7 +178,6 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
         expect.objectContaining({
           variables: {
             input: {
-              ...mockNotificationsPreferences,
               receiveNewWorksNotification: true,
             },
           },
@@ -184,7 +187,7 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
   })
 })
 
-const mockNotificationsPreferences = {
+const mockNotificationsPreferences: Record<UserPushNotificationSettings, boolean> = {
   receiveLotOpeningSoonNotification: true,
   receiveNewSalesNotification: true,
   receiveNewWorksNotification: true,
@@ -193,7 +196,5 @@ const mockNotificationsPreferences = {
   receivePurchaseNotification: true,
   receiveSaleOpeningClosingNotification: true,
   receiveOrderNotification: true,
-  receiveViewingRoomNotification: true,
-  receivePartnerShowNotification: true,
   receivePartnerOfferNotification: true,
 }
