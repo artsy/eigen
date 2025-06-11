@@ -2,7 +2,10 @@ import { Switch, Text } from "@artsy/palette-mobile"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { MyProfilePushNotificationsTestQuery } from "__generated__/MyProfilePushNotificationsTestQuery.graphql"
 import { SwitchMenu } from "app/Components/SwitchMenu"
-import { MyProfilePushNotifications } from "app/Scenes/MyProfile/MyProfilePushNotifications"
+import {
+  MyProfilePushNotifications,
+  UserPushNotificationSettings,
+} from "app/Scenes/MyProfile/MyProfilePushNotifications"
 import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
@@ -157,12 +160,13 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
         expect.objectContaining({
           variables: {
             input: {
-              ...mockNotificationsPreferences,
               receiveNewWorksNotification: false,
             },
           },
         })
       )
+
+      await flushPromiseQueue()
 
       fireEvent(switchElement, "onValueChange", true)
 
@@ -174,7 +178,6 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
         expect.objectContaining({
           variables: {
             input: {
-              ...mockNotificationsPreferences,
               receiveNewWorksNotification: true,
             },
           },
@@ -184,7 +187,7 @@ describe("MyProfilePushNotificationsQueryRenderer", () => {
   })
 })
 
-const mockNotificationsPreferences = {
+const mockNotificationsPreferences: Record<UserPushNotificationSettings, boolean> = {
   receiveLotOpeningSoonNotification: true,
   receiveNewSalesNotification: true,
   receiveNewWorksNotification: true,
@@ -193,7 +196,5 @@ const mockNotificationsPreferences = {
   receivePurchaseNotification: true,
   receiveSaleOpeningClosingNotification: true,
   receiveOrderNotification: true,
-  receiveViewingRoomNotification: true,
-  receivePartnerShowNotification: true,
   receivePartnerOfferNotification: true,
 }
