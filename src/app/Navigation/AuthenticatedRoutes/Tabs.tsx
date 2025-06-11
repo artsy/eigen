@@ -91,6 +91,10 @@ const AppTabs: React.FC = () => {
     <Tab.Navigator
       screenOptions={({ route }) => {
         const currentRoute = internal_navigationRef.current?.getCurrentRoute()?.name
+
+        const hidesBottomTabs =
+          currentRoute && modules[currentRoute as AppModule]?.options?.hidesBottomTabs
+
         return {
           animation: "fade",
           headerShown: false,
@@ -98,13 +102,11 @@ const AppTabs: React.FC = () => {
             animate: true,
             position: "absolute",
             height: BOTTOM_TABS_HEIGHT + insets.bottom,
-            display:
-              currentRoute && modules[currentRoute as AppModule]?.options?.hidesBottomTabs
-                ? "none"
-                : "flex",
+
             ...(isStaging ? stagingTabBarStyle : {}),
           },
           tabBarHideOnKeyboard: true,
+          tabBarVisible: hidesBottomTabs,
           tabBarIcon: ({ focused }) => {
             return (
               <Flex pt={1}>
