@@ -97,11 +97,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableAlertsFiltersSizeFiltering",
   },
-  AREnableAlertDetailsInput: {
-    description: "Enable 'details' text input for alerts",
-    readyForRelease: true,
-    echoFlagKey: "AREnableAlertDetailsInput",
-  },
   AREnableArtistSeriesFilter: {
     description: "Enable artist series filter on Artist screen",
     readyForRelease: true,
