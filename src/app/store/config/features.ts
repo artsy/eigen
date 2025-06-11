@@ -71,11 +71,6 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnableShowsForYouLocation",
   },
-  AREnableGalleriesForYou: {
-    description: "Enable Galleries For You",
-    readyForRelease: true,
-    echoFlagKey: "AREnableGalleriesForYou",
-  },
   AREnableAdditionalSiftAndroidTracking: {
     description: "Send additional events to Sift on Android",
     readyForRelease: true,
