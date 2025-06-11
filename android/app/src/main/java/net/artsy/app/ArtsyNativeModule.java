@@ -54,6 +54,7 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
         constants.put("launchCount", ArtsyNativeModule.launchCount);
         constants.put("navigationBarHeight", getNavigationBarSize(this.getReactApplicationContext()));
         constants.put("gitCommitShortHash", BuildConfig.GITCommitShortHash);
+        constants.put("isBeta", BuildConfig.IS_BETA);
         return constants;
     }
 
