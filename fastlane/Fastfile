@@ -490,7 +490,7 @@ lane :deploy_to_expo_updates do |options|
   # Will need to modify eigen code in any case
   release_name_base, dist_version, release_version = set_expo_release_values(deployment_name)
 
-  expo_command = "eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}"
+  expo_command = "npx eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}"
 
   if rollout_percentage
     expo_command += " --branch=#{deployment_name} --rollout=#{rollout_percentage}"
