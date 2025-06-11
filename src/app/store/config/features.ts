@@ -118,11 +118,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableExpiredPartnerOffers",
   },
-  AREnableArtistSeriesSuggestions: {
-    description: "Enable artist series suggestions",
-    readyForRelease: true,
-    echoFlagKey: "AREnableArtistSeriesSuggestions",
-  },
   AREnableProgressiveOnboardingAlerts: {
     description: "Enable progressive onboarding alerts",
     readyForRelease: true,
