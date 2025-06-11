@@ -124,12 +124,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableProgressiveOnboardingAlerts",
   },
-  AREnableArtworksFeedView: {
-    description: "Enable artworks feed view",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableArtworksFeedView",
-  },
   AREnableArtworkListOfferability: {
     description: "Enable Parnter Offer v1.5, edit sharing artwork list with partners for offers",
     readyForRelease: true,
