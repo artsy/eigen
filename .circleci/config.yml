@@ -97,6 +97,11 @@ commands:
             # this changes after pod install because we don't install dev tools on CI
             # so we save it to the cache to avoid comparison errors with Pods/Manifest.lock
             - ios/Podfile.lock
+  install-bin-modules:
+    steps:
+      - run:
+          name: Install bin modules
+          command: ./scripts/setup/install-bin
   build-app-ios:
     steps:
       - restore_cache:
@@ -491,6 +496,7 @@ jobs:
 
       - await-previous-builds:
           branch: beta-ios
+      - install-bin-modules
       - run:
           name: Deploy if beta testflight and firebase
           no_output_timeout: 20m
@@ -521,6 +527,7 @@ jobs:
           key: << pipeline.parameters.android_native_cache_key >>
           paths:
             - build-success.log
+      - install-bin-modules
       - run:
           name: Deploy if beta - play store and firebase
           command: ./scripts/deploys/deploy-if-beta-branch-android BOTH
