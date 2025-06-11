@@ -10,7 +10,6 @@ import {
 import { ShowCardContainer } from "app/Components/ShowCard"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Location, useLocation } from "app/utils/hooks/useLocation"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -23,11 +22,9 @@ interface ShowsForYouProps {
 }
 
 const ShowsForYou: React.FC<ShowsForYouProps> = ({ location }) => {
-  const enableShowsForYouLocation = useFeatureFlag("AREnableShowsForYouLocation")
-
   const showsForYouQueryVariables = location
     ? { near: location, count: 10 }
-    : { includeShowsNearIpBasedLocation: enableShowsForYouLocation && !location, count: 10 }
+    : { includeShowsNearIpBasedLocation: true, count: 10 }
 
   const queryData = useLazyLoadQuery<ShowsForYouQuery>(
     ShowsForYouScreenQuery,
@@ -112,10 +109,8 @@ export const ShowsForYouList: React.FC<{ me: any }> = ({ me }) => {
 }
 
 export const ShowsForYouScreen: React.FC = () => {
-  const enableShowsForYouLocation = useFeatureFlag("AREnableShowsForYouLocation")
-
   const { location, isLoading } = useLocation({
-    disabled: !enableShowsForYouLocation,
+    disabled: false,
     skipPermissionRequests: true,
   })
 

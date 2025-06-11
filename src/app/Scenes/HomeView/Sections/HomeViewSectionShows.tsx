@@ -6,7 +6,6 @@ import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeView
 import { ShowsRailContainer, ShowsRailPlaceholder } from "app/Scenes/HomeView/Components/ShowsRail"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { memo } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -21,7 +20,6 @@ export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({
   index,
   ...flexProps
 }) => {
-  const enableShowsForYouLocation = useFeatureFlag("AREnableShowsForYouLocation")
   const section = useFragment(fragment, sectionProp)
   const component = section.component
   const tracking = useHomeViewTracking()
@@ -30,7 +28,6 @@ export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({
     <Flex>
       <ShowsRailContainer
         title={component?.title || "Shows"}
-        disableLocation={!enableShowsForYouLocation}
         onTrack={(show, index) => {
           tracking.tappedShowGroup(
             show.internalID,
