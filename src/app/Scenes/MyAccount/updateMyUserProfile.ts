@@ -37,9 +37,10 @@ export const updateMyUserProfile = async (
               receiveLotOpeningSoonNotification
               receiveNewSalesNotification
               receiveNewWorksNotification
-              receiveOutbidNotification
-              receivePromotionNotification
               receiveOrderNotification
+              receiveOutbidNotification
+              receivePartnerOfferNotification
+              receivePromotionNotification
               receivePurchaseNotification
               receiveSaleOpeningClosingNotification
               priceRangeMin
