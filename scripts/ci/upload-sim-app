@@ -4,9 +4,10 @@
  APP_NAME="Artsy"
  DERIVED_DATA_PATH="${DERIVED_DATA_PATH:-derived_data}"
  S3_DEST="s3://artsy-citadel/eigen/builds/ios/${APP_NAME}-latest.zip"
+ CONFIGURATION="QA"
 
  # Find the .app bundle
- APP_PATH=$(find "$DERIVED_DATA_PATH/Build/Products/Debug-iphonesimulator" -name "${APP_NAME}.app" -type d | head -n1)
+ APP_PATH=$(find "$DERIVED_DATA_PATH/Build/Products/$CONFIGURATION-iphonesimulator" -name "${APP_NAME}.app" -type d | head -n1)
 
  if [ -z "$APP_PATH" ]; then
    echo "❌ .app not found!" >&2
