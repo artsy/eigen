@@ -66,11 +66,6 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "AREnableNewAuctionsRailCard",
   },
-  AREnableShowsForYouLocation: {
-    description: "Enable Shows For You Location",
-    readyForRelease: true,
-    echoFlagKey: "AREnableShowsForYouLocation",
-  },
   AREnableAdditionalSiftAndroidTracking: {
     description: "Send additional events to Sift on Android",
     readyForRelease: true,

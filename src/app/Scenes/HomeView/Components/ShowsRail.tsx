@@ -23,7 +23,6 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ShowsRailProps extends FlexProps {
-  disableLocation: boolean
   location?: Location | null
   contextModule?: ContextModule
   onTrack?: (show: ExtractNodeType<ShowsRail_showsConnection$data>, index: number) => void
@@ -34,12 +33,10 @@ interface ShowsRailProps extends FlexProps {
 const NUMBER_OF_SHOWS = 10
 
 export const ShowsRail: React.FC<ShowsRailProps> = memo(
-  ({ disableLocation, location, contextModule, onTrack, title, ...flexProps }) => {
+  ({ location, contextModule, onTrack, title, ...flexProps }) => {
     const tracking = useTracking()
 
-    const queryVariables = location
-      ? { near: location }
-      : { includeShowsNearIpBasedLocation: !disableLocation && !location }
+    const queryVariables = location ? { near: location } : { includeShowsNearIpBasedLocation: true }
 
     const queryData = useLazyLoadQuery<ShowsRailQuery>(ShowsQuery, queryVariables)
 
@@ -151,13 +148,11 @@ export const tracks = {
 
 interface ShowsRailContainerProps extends FlexProps {
   title: string
-  disableLocation?: boolean
   contextModule?: ContextModule
   onTrack?: (show: ExtractNodeType<ShowsRail_showsConnection$data>, index: number) => void
 }
 
 export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
-  disableLocation = false,
   contextModule,
   onTrack,
   ...flexProps
@@ -165,7 +160,6 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
   const visualizeLocation = useDevToggle("DTLocationDetectionVisialiser")
 
   const { location, isLoading } = useLocation({
-    disabled: disableLocation,
     skipPermissionRequests: true,
   })
 
@@ -184,7 +178,6 @@ export const ShowsRailContainer: React.FC<ShowsRailContainerProps> = ({
       <ShowsRail
         {...flexProps}
         location={location}
-        disableLocation={disableLocation}
         contextModule={contextModule}
         onTrack={onTrack}
       />
