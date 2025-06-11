@@ -239,9 +239,15 @@ jobs:
     steps:
       - attach_workspace:
           at: ../workspace
+      - restore_cache:
+          key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum "../workspace/.manifests/native_code" }}
       - prep-ios-env
       - build-app-ios:
           build_type: "qa"
+      - save_cache:
+          key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum ".manifests/native_code" }}
+          paths:
+            - xcode_test_raw.log
 
   run-e2e-tests-ios:
     parallelism: 4
@@ -254,6 +260,8 @@ jobs:
       resource_class: m2pro.medium
 
     steps:
+      - checkout
+      - generate-checksums
       - attach_workspace:
           at: ../workspace
       - macos/preboot-simulator:
@@ -269,7 +277,6 @@ jobs:
       - run:
           name: Install idb
           command: brew tap facebook/fb && brew install idb-companion
-      - checkout
       - setup-awscli
       - run:
           name: Set up maestro env
