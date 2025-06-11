@@ -12,10 +12,6 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe(ArtistSeriesOptionsScreen, () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtistSeriesFilter: true })
-  })
-
   const initialState: ArtworkFiltersState = {
     aggregations: [
       {

@@ -12,10 +12,6 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe(FramedOptionsScreen, () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableFramedFilter: true })
-  })
-
   const initialState: ArtworkFiltersState = {
     aggregations: [],
     appliedFilters: [],

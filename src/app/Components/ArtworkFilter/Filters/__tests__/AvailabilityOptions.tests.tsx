@@ -12,10 +12,6 @@ import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe(AvailabilityOptionsScreen, () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAvailabilityFilter: true })
-  })
-
   const initialState: ArtworkFiltersState = {
     aggregations: [],
     appliedFilters: [],
