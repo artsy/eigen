@@ -43,10 +43,11 @@ interface ArtworkListsProps {
   isTab?: boolean
   isFavorites?: boolean
   style?: StyleProp<ViewStyle>
+  headerHeight?: number
 }
 
 export const ArtworkLists: React.FC<ArtworkListsProps> = withSuspense({
-  Component: ({ isTab = true, isFavorites = false, style }) => {
+  Component: ({ isTab = true, isFavorites = false, style, headerHeight }) => {
     const space = useSpace()
     const artworkListsColCount = useArtworkListsColCount()
     const [refreshing, setRefreshing] = useState(false)
@@ -118,7 +119,13 @@ export const ArtworkLists: React.FC<ArtworkListsProps> = withSuspense({
           onEndReached={handleLoadMore}
           ListFooterComponent={!!hasNext ? <LoadingIndicator /> : <Spacer x={2} />}
           ListHeaderComponent={isPartnerOfferEnabled ? <SavesTabHeader /> : null}
-          refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
+          refreshControl={
+            <RefreshControl
+              onRefresh={handleRefresh}
+              refreshing={refreshing}
+              progressViewOffset={headerHeight}
+            />
+          }
         />
       )
     }
@@ -143,7 +150,13 @@ export const ArtworkLists: React.FC<ArtworkListsProps> = withSuspense({
         ListHeaderComponent={
           isPartnerOfferEnabled ? isFavorites ? <SavesHeader /> : <SavesTabHeader /> : null
         }
-        refreshControl={<RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
+        refreshControl={
+          <RefreshControl
+            onRefresh={handleRefresh}
+            refreshing={refreshing}
+            progressViewOffset={headerHeight}
+          />
+        }
       />
     )
   },
