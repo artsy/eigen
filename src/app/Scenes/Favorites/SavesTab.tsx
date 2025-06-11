@@ -10,7 +10,12 @@ export const SavesTab = () => {
 
   return (
     <Flex flex={1}>
-      <ArtworkLists isTab={false} isFavorites={true} style={{ paddingTop: headerHeight }} />
+      <ArtworkLists
+        isTab={false}
+        isFavorites={true}
+        style={{ paddingTop: headerHeight }}
+        headerHeight={headerHeight}
+      />
     </Flex>
   )
 }

@@ -14,6 +14,7 @@ import { SavedSearchListItem } from "app/Scenes/SavedSearchAlertsList/Components
 import { extractNodes } from "app/utils/extractNodes"
 import { RefreshEvents, SAVED_ALERT_REFRESH_KEY } from "app/utils/refreshHelpers"
 import React, { useEffect, useRef, useState } from "react"
+import { RefreshControl } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
 
 interface AlertsListProps {
@@ -60,10 +61,15 @@ export const AlertsList: React.FC<AlertsListProps> = (props) => {
     <Screen.FlatList
       data={items.filter((item) => !item.isDeleted)}
       keyExtractor={(item) => item.internalID}
-      refreshing={isRefreshing}
       ListEmptyComponent={<EmptyMessage />}
-      onRefresh={onRefresh}
       onEndReachedThreshold={0.5}
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={onRefresh}
+          progressViewOffset={headerHeight}
+        />
+      }
       renderItem={({ item }) => {
         return (
           <SavedSearchListItem
