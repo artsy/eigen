@@ -10,4 +10,5 @@ appId: ${MAESTRO_APP_ID}
 - tapOn: "Continue.*"
 - inputText: ${MAESTRO_TEST_PASSWORD}
 - tapOn: "Continue.*"
-- assertVisible: "New Works for You"
+- assertVisible:
+    id: "search-button"
