@@ -285,6 +285,7 @@ jobs:
           name: Install idb
           command: brew tap facebook/fb && brew install idb-companion
       - setup-awscli
+      - install-gems
       - run:
           name: Set up maestro env
           command: ./scripts/setup/setup-env-for-maestro
