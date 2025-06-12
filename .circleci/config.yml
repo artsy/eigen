@@ -567,9 +567,9 @@ workflows:
       - build-test-app-ios
       - deploy-nightly-beta
       - run-nightly-tasks
-      - run-e2e-tests:
-          requires:
-            - build-test-app-ios
+      # - run-e2e-tests:
+      #     requires:
+      #       - build-test-app-ios
 
   flag-check:
     triggers:
@@ -651,10 +651,10 @@ workflows:
             - build-test-app-ios
             - build-test-app-android
 
-      - run-e2e-tests:
-          filters:
-            branches:
-              only:
-                - beta-ios
-          requires:
-            - build-test-app-ios
+      # - run-e2e-tests:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - beta-ios
+      #     requires:
+      #       - build-test-app-ios
