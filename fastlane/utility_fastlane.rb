@@ -54,6 +54,7 @@ lane :report_maestro_failure do |options|
               See circle job for more details.
             MSG
   slack(
+    channel: '#bot-testing',
     message: message,
     success: false,
     payload: {
