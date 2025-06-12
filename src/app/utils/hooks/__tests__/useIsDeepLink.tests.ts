@@ -2,6 +2,7 @@ import { renderHook } from "@testing-library/react-hooks"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { useIsDeepLink } from "app/utils/hooks/useIsDeepLink"
 import { Linking } from "react-native"
+
 const mockUseIsFocusedMock = jest.fn()
 jest.mock("@react-navigation/native", () => ({
   useIsFocused: () => mockUseIsFocusedMock(),
@@ -69,6 +70,47 @@ describe("useIsDeepLink", () => {
 
     // Wait for async effects to resolve
     await waitForNextUpdate()
+
+    expect(result.current.isDeepLink).toEqual(false)
+    expect(mockUseIsFocusedMock).toHaveBeenCalled()
+    expect(mockLinkingGetInitialURL).toHaveBeenCalled()
+    expect(mockMatchRoute).toHaveBeenCalled()
+  })
+
+  it("should return true if opened from a valid marketing url", async () => {
+    // Setup the mock to return null
+    mockLinkingGetInitialURL.mockResolvedValue("https://click.artsy.net/track/123")
+    mockMatchRoute.mockReturnValue({ type: "match", module: "Artwork" })
+    mockUseIsFocusedMock.mockReturnValue(true)
+
+    // Render the hook under test
+    const { result, waitForNextUpdate } = renderHook(() => useIsDeepLink())
+
+    // Wait for async effects to resolve
+    await waitForNextUpdate()
+
+    expect(result.current.isDeepLink).toEqual(true)
+    expect(mockUseIsFocusedMock).toHaveBeenCalled()
+    expect(mockLinkingGetInitialURL).toHaveBeenCalled()
+    expect(mockMatchRoute).toHaveBeenCalled()
+  })
+
+  it("should return false if opened from a marketing url that returns an error", async () => {
+    // Setup the mock to return null
+    mockLinkingGetInitialURL.mockResolvedValue("https://click.artsy.net/track/invalid")
+    // Mock fetch to return error
+    fetchMock.mockRejectedValue(new Error("Invalid link"))
+
+    mockMatchRoute.mockReturnValue({ type: "match", module: "Home" })
+    mockUseIsFocusedMock.mockReturnValue(true)
+
+    // Render the hook under test
+    const { result, waitForNextUpdate } = renderHook(() => useIsDeepLink())
+
+    // Wait for async effects to resolve
+    await waitForNextUpdate()
+
+    expect(mockMatchRoute).toHaveBeenCalledWith("/")
 
     expect(result.current.isDeepLink).toEqual(false)
     expect(mockUseIsFocusedMock).toHaveBeenCalled()
