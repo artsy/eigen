@@ -237,6 +237,8 @@ jobs:
       resource_class: m2pro.medium
 
     steps:
+      - checkout
+      - generate-checksums
       - attach_workspace:
           at: ../workspace
       - restore_cache:
