@@ -480,19 +480,18 @@ lane :deploy_to_expo_updates do |options|
   # Will need to modify eigen code in any case
   release_name_base, dist_version, release_version = set_expo_release_values(deployment_name)
 
-  expo_command = "eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}"
+  expo_command = "./bin/node_modules/.bin/eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}"
 
   if rollout_percentage
     expo_command += " --branch=#{deployment_name} --rollout=#{rollout_percentage}"
   end
 
-  sh("pushd .. > /dev/null && \
+  sh("pushd ../ > /dev/null && \
       #{expo_command} | tail -n1 && \
       popd > /dev/null")
   build_folder = File.expand_path("../dist/")
 
-  sh("yarn add @sentry/cli -D")
-  sentry_cli_path = 'node_modules/@sentry/cli/bin/sentry-cli'
+  sentry_cli_path = 'bin/node_modules/@sentry/cli/bin/sentry-cli'
 
   upload_expo_sourcemaps(
     sentry_cli_path: sentry_cli_path,

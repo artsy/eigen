@@ -11,14 +11,12 @@
 const { spawnSync } = require("child_process")
 const fs = require("fs")
 const chalk = require("chalk")
-const { check } = require("yargs")
 
 const desiredVersions = {
   xcode: "16.1",
   androidStudio: "2022.3",
   ruby: "3.1.6",
   bundler: "2.4.3",
-  eas: "16.9.0",
 }
 
 const exec = (command, cwd) => {
@@ -272,33 +270,6 @@ const checkAndroidStudioVersion = () => {
   }
 }
 
-const checkEASCLIVersion = () => {
-  try {
-    const fullOutput = exec("eas --version").trim()
-    const match = fullOutput.match(/^eas-cli\/(\d+\.\d+\.\d+)/)
-
-    if (!match) {
-      throw new Error(`Could not parse eas-cli version from output: "${fullOutput}"`)
-    }
-
-    const actualVersion = match[1]
-
-    if (actualVersion === desiredVersions.eas) {
-      YES(`eas-cli version: ${fullOutput}`)
-    } else {
-      WARN(
-        `eas-cli version is ${fullOutput}, but ${desiredVersions.eas} is expected.`,
-        `Run ${g(`npm install -g eas-cli@${desiredVersions.eas}`)} and ${g(`asdf reshim nodejs`)}.`
-      )
-    }
-  } catch (e) {
-    NO(
-      `Could not determine eas-cli version.`,
-      `Make sure it's installed globally via ${g(`npm install -g eas-cli@${desiredVersions.eas}`)}.`
-    )
-  }
-}
-
 const main = async () => {
   checkEnvJSONVariablesAreUpToDate()
   checkDotEnvVariablesAreUpToDate()
@@ -315,7 +286,6 @@ const main = async () => {
   checkDetectSecretsExists()
   checkXcodeVersion()
   checkAndroidStudioVersion()
-  checkEASCLIVersion()
 }
 
 main()

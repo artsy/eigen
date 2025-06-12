@@ -75,6 +75,13 @@ deployment to expo updates will fail.
 
 `yarn install:all`
 
+You will also need the release vars and bin deps:
+
+```
+yarn setup:releases
+./scripts/setup/install-bin
+```
+
 > [!IMPORTANT]
 > If the install results in changes to Podfile.lock you must do a Native Release Hotfix, please refer to that section of the docs.
 
