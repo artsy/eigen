@@ -13,6 +13,10 @@ yarn setup:releases
 ./scripts/setup/install-bin
 ```
 
+You will need to be logged in to the `artsy_mobile` account, credentials in 1pass:
+
+`./bin/node_modules/.bin/eas login`
+
 ### Deploying
 
 Make your changes in typescript, commit, and run the script to deploy.
