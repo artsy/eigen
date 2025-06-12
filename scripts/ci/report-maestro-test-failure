@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e
+
+# Get latest Maestro test directory
+# Parse out the flow file and error message
+# Upload screenshots to S3 and report failure via Fastlane
+pushd ~/.maestro/tests
+LATEST=$(ls -1d 20* | LC_ALL=C sort | tail -n 1)
+echo "Latest Maestro test directory: $LATEST"
+SCREENSHOTS_DIR="$HOME/.maestro/tests/$LATEST"
+FLOW_FILE=$(find "$LATEST" -name 'commands-(*).json' | head -n 1)
+echo "Flow file: $FLOW_FILE"
+FLOW_NAME=$(basename "$FLOW_FILE" | sed -E 's/commands-\((.*)\.yml\)\.json/\1/')
+echo "Flow name: $FLOW_NAME"
+ERROR_MESSAGE=$(jq -r '.[] | select(.metadata.status == "FAILED") | .metadata.error.message' "$FLOW_FILE")
+echo "Error message: $ERROR_MESSAGE"
+popd
+
+for screenshot in "$SCREENSHOTS_DIR"/*.png; do
+  BASENAME=$(basename "$screenshot")
+  S3_PATH="s3://artsy-citadel/eigen/screenshots/$LATEST/$BASENAME"
+
+  aws s3 cp "$screenshot" "$S3_PATH"
+  URL=$(aws s3 presign "$S3_PATH" --expires-in 86400)
+
+  bundle exec fastlane report_maestro_failure s3_url:$URL error_message:"$ERROR_MESSAGE" flow_name:"$FLOW_NAME"
+done
