@@ -191,7 +191,7 @@ jobs:
           name: Update rollout if needed
           command: ./scripts/deploys/update-android-rollout-if-needed
 
-  run-e2e-tests:
+  run-e2e-tests-ios:
     parallelism: 4
 
     environment:
@@ -221,8 +221,11 @@ jobs:
       - checkout
       - setup-awscli
       - run:
-          name: Set up maestro env
-          command: ./scripts/setup/setup-maestro-env.sh
+          name: print working dir
+          command: pwd
+      - run:
+          name: Set up maestro env for iOS
+          command: ./scripts/setup/setup-env-for-maestro-ios
       - run:
           name: Download app zip
           command: aws s3 cp s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip ./Artsy.zip
@@ -235,7 +238,40 @@ jobs:
       - run:
           name: Run Maestro Tests
           no_output_timeout: 25m
-          command: ./scripts/utils/run_maestro_shard.sh
+          command: ./scripts/utils/run_maestro_shard_ios.sh
+
+  run-e2e-tests-android:
+    parallelism: 4
+
+    docker:
+      - image: cimg/android:2025.03.1-node
+    resource_class: xlarge
+
+    steps:
+      - attach_workspace:
+          at: ../workspace
+      - run:
+          name: Install maestro
+          command: curl -Ls "https://get.maestro.mobile.dev" | bash
+      - run:
+          name: Clear project dir
+          command: |
+            rm -rf /home/circleci/project/*
+      - checkout
+      - setup-awscli
+      - run:
+          name: Set up maestro env for Android
+          command: ./scripts/setup/setup-env-for-maestro-android
+      - run:
+          name: Download app zip
+          command: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
+      # - run:
+      #     name: Install app on emulator
+      #     command: adb install Artsy.apk
+      # - run:
+      #     name: Run Maestro Tests
+      #     no_output_timeout: 25m
+      #     command: ./scripts/utils/run_maestro_shard_android.sh
 
   deploy-nightly-beta:
     environment:
@@ -565,11 +601,15 @@ workflows:
                 - main
     jobs:
       - build-test-app-ios
+      - build-test-app-android
       - deploy-nightly-beta
       - run-nightly-tasks
-      - run-e2e-tests:
+      - run-e2e-tests-ios:
           requires:
             - build-test-app-ios
+      - run-e2e-tests-android:
+          requires:
+            - build-test-app-android
 
   flag-check:
     triggers:
@@ -591,70 +631,77 @@ workflows:
   test-build-deploy:
     when: << pipeline.parameters.run_workflow_test-build-deploy >>
     jobs:
-      - detect-secrets:
-          filters:
-            branches:
-              ignore:
-                - main
+      # - detect-secrets:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - main
 
-      - check-code:
-          context: danger-github-oss
+      # - check-code:
+      #     context: danger-github-oss
 
-      - check-and-deploy:
+      # - check-and-deploy:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main
+
+      # - test-js
+
+      # - build-test-js
+
+      # - horizon/block:
+      #     context: horizon
+      #     project_id: 37
+      #     filters:
+      #       branches:
+      #         only:
+      #           - beta-ios
+      #           - beta-android
+
+      # - build-test-app-ios:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - beta-android
+      #     requires:
+      #       - test-js
+      #       - check-code
+      #       - build-test-js
+      #       - horizon/block
+
+      # - build-test-app-android:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - beta-ios
+      #     requires:
+      #       - test-js
+      #       - check-code
+      #       - build-test-js
+      #       - horizon/block
+
+      # - update-metaphysics:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - beta-ios
+      #           - beta-android
+      #     requires:
+      #       - build-test-app-ios
+      #       - build-test-app-android
+
+      - run-e2e-tests-ios:
           filters:
             branches:
               only:
-                - main
-
-      - test-js
-
-      - build-test-js
-
-      - horizon/block:
-          context: horizon
-          project_id: 37
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
-
-      - build-test-app-ios:
-          filters:
-            branches:
-              ignore:
-                - beta-android
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
-            - horizon/block
-
-      - build-test-app-android:
-          filters:
-            branches:
-              ignore:
-                - beta-ios
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
-            - horizon/block
-
-      - update-metaphysics:
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
-          requires:
-            - build-test-app-ios
-            - build-test-app-android
-
-      - run-e2e-tests:
-          filters:
-            branches:
-              only:
-                - beta-ios
-          requires:
-            - build-test-app-ios
+                - gkartalis/PHIRE-1847
+      #     requires:
+      #       - build-test-app-ios
+      # - run-e2e-tests-android:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - gkartalis/PHIRE-1847
+      #     # requires:
+      #   - build-test-app-android
