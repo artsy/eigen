@@ -9302,6 +9302,26 @@ type CreatePartnerShowFailure {
   mutationError: GravityMutationError
 }
 
+input CreatePartnerShowFairLocationInput {
+  # The booth of the show in the fair.
+  booth: String
+
+  # The floor of the show in the fair.
+  floor: String
+
+  # The hall of the show in the fair.
+  hall: String
+
+  # The pier of the show in the fair.
+  pier: String
+
+  # The room of the show in the fair.
+  room: String
+
+  # The section of the show in the fair.
+  section: String
+}
+
 input CreatePartnerShowMutationInput {
   clientMutationId: String
 
@@ -9311,11 +9331,9 @@ input CreatePartnerShowMutationInput {
   # The end date of the show.
   endAt: String!
 
-  # The booth of the fair to create the show for.
-  fairBooth: String
-
   # The id of the fair to create the show for.
   fairId: String
+  fairLocation: CreatePartnerShowFairLocationInput
 
   # Is the show featured?
   featured: Boolean
@@ -13549,6 +13567,7 @@ type Location {
 
   # Buisness, temporary, or private address
   addressType: String
+  booth: String
   cached: Int
   city: String
   coordinates: LatLng
@@ -13561,6 +13580,8 @@ type Location {
   displayCountry: String
   email: String
   euShippingLocation: Boolean
+  floor: String
+  hall: String
 
   # A globally unique ID.
   id: ID!
@@ -13571,10 +13592,13 @@ type Location {
   # Union returning opening hours in formatted structure or a string
   openingHours: OpeningHoursUnion
   phone: String
+  pier: String
   postalCode: String
 
   # Boolean flag that denotes whether a location is publicly viewable on Partner's Artsy Profile
   publiclyViewable: Boolean
+  room: String
+  section: String
   state: String
   summary: String
 }
@@ -23020,6 +23044,26 @@ type UpdatePartnerShowFailure {
   mutationError: GravityMutationError
 }
 
+input UpdatePartnerShowFairLocationInput {
+  # The booth of the show in the fair.
+  booth: String
+
+  # The floor of the show in the fair
+  floor: String
+
+  # The hall of the show in the fair
+  hall: String
+
+  # The pier of the show in the fair
+  pier: String
+
+  # The room of the show in the fair
+  room: String
+
+  # The section of the show in the fair
+  section: String
+}
+
 input UpdatePartnerShowMutationInput {
   clientMutationId: String
 
@@ -23032,11 +23076,9 @@ input UpdatePartnerShowMutationInput {
   # The end date of the show.
   endAt: String
 
-  # The booth of the fair to update the show for.
-  fairBooth: String
-
   # The id of the fair to update the show for.
   fairId: String
+  fairLocation: UpdatePartnerShowFairLocationInput
 
   # Is the show featured?
   featured: Boolean
