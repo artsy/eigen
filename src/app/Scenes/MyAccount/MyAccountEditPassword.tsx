@@ -108,7 +108,6 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
               autoComplete="password"
               onChangeText={setCurrentPassword}
               secureTextEntry
-              enableClearButton
               title="Current password"
               value={currentPassword}
               error={receivedErrorCurrent}
@@ -127,7 +126,6 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
           <Input
             onChangeText={setNewPassword}
             secureTextEntry
-            enableClearButton
             title="New password"
             value={newPassword}
             error={receivedErrorNew}
@@ -136,7 +134,6 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
           <Input
             onChangeText={setPasswordConfirmation}
             secureTextEntry
-            enableClearButton
             title="Confirm new password"
             value={passwordConfirmation}
             error={receivedErrorConfirm}
