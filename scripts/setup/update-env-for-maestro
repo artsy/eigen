@@ -11,5 +11,5 @@ then
   RED='\033[0;31m'
   RST='\033[0m'
 
-  printf "${RED}Don't forget to update on 1Password and CircleCI too!${RST}\n"
+  printf "${RED}Don't forget to update on 1Password too!${RST}\n"
 fi
