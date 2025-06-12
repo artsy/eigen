@@ -9,8 +9,8 @@ import {
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
 import { getAlertByCriteria } from "app/Scenes/SavedSearchAlert/queries/getAlertByCriteria"
 import { GlobalStore } from "app/store/GlobalStore"
+// eslint-disable-next-line no-restricted-imports
 import { goBack, navigate, popToRoot } from "app/system/navigation/navigate"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { refreshSavedAlerts } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect, useState } from "react"
@@ -58,7 +58,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     onComplete,
     ...other
   } = props
-  const enableAlertsFiltersSizeFiltering = useFeatureFlag("AREnableAlertsFiltersSizeFiltering")
 
   const isUpdateForm = !!savedSearchAlertId
   const isFirstRender = useFirstMountState()
@@ -98,23 +97,19 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
       try {
         const clearedAttributes = clearDefaultAttributes(
-          enableAlertsFiltersSizeFiltering
-            ? // Our backend currently suports storing only inches for size
-              localizeHeightAndWidthAttributes({
-                attributes: attributes as SearchCriteriaAttributes,
-                from: unit,
-                to: "in",
-              })
-            : attributes
+          // Our backend currently supports storing only inches for size
+          localizeHeightAndWidthAttributes({
+            attributes: attributes as SearchCriteriaAttributes,
+            from: unit,
+            to: "in",
+          })
         )
 
-        if (enableAlertsFiltersSizeFiltering) {
-          // Update the user profile metric to be the same as the selected metric
-          updateMyUserProfile({
-            lengthUnitPreference: unit.toUpperCase() as LengthUnitPreference,
-          })
-          GlobalStore.actions.userPrefs.setMetric(unit)
-        }
+        // Update the user profile metric to be the same as the selected metric
+        updateMyUserProfile({
+          lengthUnitPreference: unit.toUpperCase() as LengthUnitPreference,
+        })
+        GlobalStore.actions.userPrefs.setMetric(unit)
 
         const submitHandler = isUpdateForm ? handleUpdateAlert : handleCreateAlert
         let duplicateAlertID: string | undefined
