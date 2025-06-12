@@ -81,12 +81,6 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "ARShowCreateAlertInArtistArtworksListFooter",
   },
-  AREnableAlertsFiltersSizeFiltering: {
-    description: "Enable size filtering in alerts filters screen",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableAlertsFiltersSizeFiltering",
-  },
   AREnablePartnerOffersNotificationSwitch: {
     description: "Enable partner offers notification switch",
     readyForRelease: true,

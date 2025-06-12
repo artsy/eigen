@@ -12,7 +12,6 @@ import { SavedSearchFilterRarity } from "app/Scenes/SavedSearchAlert/Components/
 import { SavedSearchFilterSize } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterSize"
 import { SavedSearchFilterWaysToBuy } from "app/Scenes/SavedSearchAlert/Components/SavedSearchFilterWaysToBuy"
 import { SavedSearchStore } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { MotiView } from "moti"
@@ -21,7 +20,6 @@ import { Alert, Platform, ScrollView } from "react-native"
 export const SavedSearchFilterScreen: React.FC<{}> = () => {
   const navigation = useNavigation()
   const { bottom } = useScreenDimensions().safeAreaInsets
-  const enableAlertsFiltersSizeFiltering = useFeatureFlag("AREnableAlertsFiltersSizeFiltering")
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -43,7 +41,7 @@ export const SavedSearchFilterScreen: React.FC<{}> = () => {
         <SavedSearchFilterRarity />
         <SavedSearchFilterPriceRangeQR />
         <SavedSearchFilterArtistSeriesQR />
-        {!!enableAlertsFiltersSizeFiltering && <SavedSearchFilterSize />}
+        <SavedSearchFilterSize />
         <SavedSearchFilterWaysToBuy />
         <SavedSearchFilterColor />
         <Spacer y={2} />
