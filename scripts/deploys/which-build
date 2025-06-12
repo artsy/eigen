@@ -2,7 +2,7 @@
 
 # which-build: Find commits and their corresponding builds across iOS and Android platforms
 #
-# This script helps identify which commits are included in which builds by showing the latest tag
+# This script helps identify which commits are included in which builds by showing the latest or earliest tag
 # for each platform (iOS and Android) that contains a specific commit. Useful for tracking
 # beta and release status of recent changes.
 #
@@ -12,6 +12,8 @@
 #   ./scripts/deploys/which-build --submission              # Shows submission builds only
 #   ./scripts/deploys/which-build --since="2023-01-01" --submission  # Shows submission builds since Jan 1, 2023
 #   ./scripts/deploys/which-build --author="Jane Doe"       # Shows builds with commits by Jane Doe from the last 2 weeks
+#   ./scripts/deploys/which-build --version=earliest        # Shows the earliest tag that contains each commit
+#   ./scripts/deploys/which-build --version=latest          # Shows the latest tag that contains each commit (default)
 
 # Default --since value
 SINCE="2 weeks ago"
@@ -21,6 +23,9 @@ SUBMISSION=false
 
 # Default --author value (empty means all authors)
 AUTHOR=""
+
+# Default --version value
+VERSION="latest"
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
@@ -45,10 +50,26 @@ while [[ $# -gt 0 ]]; do
       SUBMISSION=true
       shift
       ;;
+    --version=*)
+      VERSION="${1#*=}"
+      if [[ "$VERSION" != "latest" && "$VERSION" != "earliest" ]]; then
+        echo "Error: --version must be either 'latest' or 'earliest'"
+        exit 1
+      fi
+      shift
+      ;;
+    --version)
+      VERSION="$2"
+      if [[ "$VERSION" != "latest" && "$VERSION" != "earliest" ]]; then
+        echo "Error: --version must be either 'latest' or 'earliest'"
+        exit 1
+      fi
+      shift 2
+      ;;
     *)
       echo "Unknown option: $1"
-      echo "Usage: $(basename "$0") [--since=\"time spec\"] [--author=\"author name\"] [--submission]"
-      echo "Example: $(basename "$0") --since=\"4 weeks ago\" --author=\"Jane Doe\" --submission"
+      echo "Usage: $(basename "$0") [--since=\"time spec\"] [--author=\"author name\"] [--submission] [--version=latest|earliest]"
+      echo "Example: $(basename "$0") --since=\"4 weeks ago\" --author=\"Jane Doe\" --submission --version=earliest"
       exit 1
       ;;
   esac
@@ -68,12 +89,20 @@ fi
 # iterate over SHAs
 for sha in $SHAS; do
   git show -s --pretty="%C(yellow)%s %C(white)%h %C(green)%aN %C(blue)%ar%C(reset)" $sha
-  # find the latest tag for each platform that includes that commit
+  # find the latest or earliest tag for each platform that includes that commit
   for e in ios android; do
     if [ "$SUBMISSION" = true ]; then
-      git tag --list "$e-*-submission" --contains $sha | sort -Vr | head -1
+      if [ "$VERSION" = "earliest" ]; then
+        git tag --list "$e-*-submission" --contains $sha | sort -V | head -1
+      else
+        git tag --list "$e-*-submission" --contains $sha | sort -Vr | head -1
+      fi
     else
-      git tag --list "$e-*" --contains $sha | grep -v '-expo-' | sort -Vr | head -1
+      if [ "$VERSION" = "earliest" ]; then
+        git tag --list "$e-*" --contains $sha | grep -v '-expo-' | sort -V | head -1
+      else
+        git tag --list "$e-*" --contains $sha | grep -v '-expo-' | sort -Vr | head -1
+      fi
     fi
   done
 done
