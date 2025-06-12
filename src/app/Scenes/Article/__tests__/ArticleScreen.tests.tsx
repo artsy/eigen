@@ -50,7 +50,7 @@ describe("ArticleScreen", () => {
       }),
     })
 
-    await screen.findByText("Article Title")
+    await screen.findByTestId("ArticleWebViewScreen")
 
     expect(screen.getByTestId("ArticleWebViewScreen")).toBeOnTheScreen()
   })
