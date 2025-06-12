@@ -33,7 +33,7 @@ export const FollowedGalleries: React.FC<Props> = ({ me }) => {
 
   const galleries = extractNodes(data.followsAndSaves?.galleriesConnection)
 
-  const RefreshControl = useRefreshControl(refetch)
+  const RefreshControl = useRefreshControl(refetch, { progressViewOffset: headerHeight })
 
   if (galleries.length === 0) {
     return (

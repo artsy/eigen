@@ -43,6 +43,7 @@ export const refreshCreditCardsList = () => {
 
 interface RefreshArgs extends Record<string, any> {
   pageSize?: number
+  progressViewOffset?: number
 }
 
 /**
@@ -89,5 +90,11 @@ export const useRefreshControl = (refetch: any, args?: RefreshArgs) => {
     )
   }
 
-  return <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
+  return (
+    <RefreshControl
+      refreshing={isRefreshing}
+      onRefresh={handleRefresh}
+      progressViewOffset={args?.progressViewOffset}
+    />
+  )
 }

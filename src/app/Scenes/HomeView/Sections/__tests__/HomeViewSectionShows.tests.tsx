@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { HomeViewSectionShowsTestsQuery } from "__generated__/HomeViewSectionShowsTestsQuery.graphql"
 import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { HomeViewSectionShows } from "app/Scenes/HomeView/Sections/HomeViewSectionShows"
@@ -46,21 +46,23 @@ describe("HomeViewSectionShows", () => {
       }),
     })
 
-    mockResolveLastOperation({
-      ShowConnection: () => ({
-        edges: [
-          {
-            node: {
-              name: "show 1",
+    act(() => {
+      mockResolveLastOperation({
+        ShowConnection: () => ({
+          edges: [
+            {
+              node: {
+                name: "show 1",
+              },
             },
-          },
-          {
-            node: {
-              name: "show 2",
+            {
+              node: {
+                name: "show 2",
+              },
             },
-          },
-        ],
-      }),
+          ],
+        }),
+      })
     })
 
     await waitForElementToBeRemoved(() => screen.queryByTestId("show-rail-placeholder"))
@@ -80,27 +82,29 @@ describe("HomeViewSectionShows", () => {
       }),
     })
 
-    mockResolveLastOperation({
-      ShowConnection: () => ({
-        edges: [
-          {
-            node: {
-              internalID: "show-1-id",
-              slug: "show-1-slug",
-              name: "show 1",
-              href: "/show-1-href",
+    act(() => {
+      mockResolveLastOperation({
+        ShowConnection: () => ({
+          edges: [
+            {
+              node: {
+                internalID: "show-1-id",
+                slug: "show-1-slug",
+                name: "show 1",
+                href: "/show-1-href",
+              },
             },
-          },
-          {
-            node: {
-              internalID: "show-2-id",
-              slug: "show-2-slug",
-              name: "show 2",
-              href: "/show-2-href",
+            {
+              node: {
+                internalID: "show-2-id",
+                slug: "show-2-slug",
+                name: "show 2",
+                href: "/show-2-href",
+              },
             },
-          },
-        ],
-      }),
+          ],
+        }),
+      })
     })
 
     await waitForElementToBeRemoved(() => screen.queryByTestId("show-rail-placeholder"))

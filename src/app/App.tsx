@@ -16,6 +16,7 @@ import { useAndroidAppStyling } from "app/utils/useAndroidAppStyling"
 import { useDeepLinks } from "app/utils/useDeepLinks"
 import { useHideSplashScreen } from "app/utils/useHideSplashScreen"
 import { useIdentifyUser } from "app/utils/useIdentifyUser"
+import { useListenToThemeChange } from "app/utils/useListenToThemeChange"
 import { useSiftConfig } from "app/utils/useSiftConfig"
 import { useStripeConfig } from "app/utils/useStripeConfig"
 import { useEffect } from "react"
@@ -105,6 +106,7 @@ const Main = () => {
   usePurgeCacheOnAppUpdate()
   useHideSplashScreen()
   useAndroidAppStyling()
+  useListenToThemeChange()
 
   useEffect(() => {
     if (isLoggedIn) {

@@ -6,11 +6,16 @@ In order to allow faster testing for typescript changes on real devices you can 
 
 You will need to have the latest beta downloaded from firebase in order to run expo updates. If you need help getting access please ask in the **#practice-mobile** channel.
 
-You will need the release environment vars to deploy to expo updates:
+You will need the release environment vars to deploy to expo updates as well as the cli tools in the bin directory:
 
 ```
 yarn setup:releases
+./scripts/setup/install-bin
 ```
+
+You will need to be logged in to the `artsy_mobile` account, credentials in 1pass:
+
+`./bin/node_modules/.bin/eas login`
 
 ### Deploying
 

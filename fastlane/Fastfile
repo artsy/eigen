@@ -284,9 +284,6 @@ lane :ship_beta_android do |options|
 
   sh('yarn relay')
 
-  is_android_beta = deployment_target == 'firebase'
-  flag_android_beta(is_android_beta: is_android_beta)
-
   vname, vcode = set_build_version_android
   set_git_properties_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")
@@ -433,13 +430,6 @@ lane :set_git_properties_android do
   write_contents_to_file(BUILD_GRADLE, contents)
 end
 
-desc 'Set the android beta flag so we can differentiate betas in code'
-lane :flag_android_beta do |options|
-  is_android_beta = options[:is_android_beta]
-  $APP_JSON['isAndroidBeta'] = is_android_beta
-  write_contents_to_file($APP_JSON_PATH, JSON.pretty_generate($APP_JSON))
-end
-
 desc 'Update the rollout percentage for the latest release in the play store'
 lane :update_rollout_if_necessary do
   rollout_strategy = [0.1, 0.2, 0.5, 1.0]
@@ -490,19 +480,18 @@ lane :deploy_to_expo_updates do |options|
   # Will need to modify eigen code in any case
   release_name_base, dist_version, release_version = set_expo_release_values(deployment_name)
 
-  expo_command = "npx eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}"
+  expo_command = "./bin/node_modules/.bin/eas update --channel #{deployment_name} --message '#{description}' --platform #{platform}"
 
   if rollout_percentage
     expo_command += " --branch=#{deployment_name} --rollout=#{rollout_percentage}"
   end
 
-  sh("pushd .. > /dev/null && \
+  sh("pushd ../ > /dev/null && \
       #{expo_command} | tail -n1 && \
       popd > /dev/null")
   build_folder = File.expand_path("../dist/")
 
-  sh("yarn add @sentry/cli -D")
-  sentry_cli_path = 'node_modules/@sentry/cli/bin/sentry-cli'
+  sentry_cli_path = 'bin/node_modules/@sentry/cli/bin/sentry-cli'
 
   upload_expo_sourcemaps(
     sentry_cli_path: sentry_cli_path,

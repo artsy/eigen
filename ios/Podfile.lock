@@ -1695,7 +1695,7 @@ PODS:
     - Yoga
   - react-native-render-html (6.3.4):
     - React-Core
-  - react-native-safe-area-context (5.3.0):
+  - react-native-safe-area-context (5.4.1):
     - React-Core
   - react-native-shake (5.5.2):
     - DoubleConversion
@@ -2105,13 +2105,13 @@ PODS:
     - Yoga
   - RNLocalize (2.1.3):
     - React-Core
-  - rnmapbox-maps (10.1.33):
+  - rnmapbox-maps (10.1.36):
     - MapboxMaps (~> 10.19.0)
     - React
     - React-Core
-    - rnmapbox-maps/DynamicLibrary (= 10.1.33)
+    - rnmapbox-maps/DynamicLibrary (= 10.1.36)
     - Turf
-  - rnmapbox-maps/DynamicLibrary (10.1.33):
+  - rnmapbox-maps/DynamicLibrary (10.1.36):
     - MapboxMaps (~> 10.19.0)
     - React
     - React-Core
@@ -3011,7 +3011,7 @@ SPEC CHECKSUMS:
   react-native-netinfo: ce102083db558237dac20cf64172ef569ebe2dd9
   react-native-pager-view: c8b6ddfc7747d272ad953e632f1296e98ad59e28
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd
-  react-native-safe-area-context: fdb0a66feac038cb6eb1edafcf2ccee2b5cf0284
+  react-native-safe-area-context: dde2052b903c11d677c320b599c3244021c34ce8
   react-native-shake: 264c8fb4a8554f0a0ac319347bb4f513ed065cf4
   react-native-view-shot: 0ad68286bf0ac3717e56bfb02c7a7a63da4932bb
   react-native-webview: 508a7967877321541cc7ff68740f2c294243415c
@@ -3055,7 +3055,7 @@ SPEC CHECKSUMS:
   RNImageCropPicker: b0afedeefd8655254a15c34103718455fde6ce59
   RNKeychain: 09ce2f1d9251a3ebc49bf55f2d271a720e6d2086
   RNLocalize: 8493c6dd9ed1d4b52325796cdb81d794fc04f3bf
-  rnmapbox-maps: 42fe0ccc373fe24032aa224736feb4c39a24d604
+  rnmapbox-maps: 691fc8980de1a0a65332a3c1b4d9bea6d35e53d7
   RNPermissions: 92430517fd4353d5b2b7217cd1ca48ddd2875245
   RNReactNativeHapticFeedback: 7601768ee65ffc86fc93d7c30dd917031144ed3d
   RNReanimated: 6d22a1aec06a9787b797bc0c40fc2779be0599a5

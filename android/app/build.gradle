@@ -140,7 +140,8 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-             resValue "string", "expo_runtime_version", "\"${getRuntimeVersion()}\""
+            resValue "string", "expo_runtime_version", "\"${getRuntimeVersion()}\""
+            buildConfigField "boolean", "IS_BETA", "false"
 
             manifestPlaceholders = [
                 expoUpdatesEnabled: "false",
@@ -157,10 +158,11 @@ android {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             resValue "string", "expo_runtime_version", "\"${getRuntimeVersion()}\""
+            buildConfigField "boolean", "IS_BETA", "false"
 
             manifestPlaceholders = [
                 expoUpdatesEnabled: "true",
-                expoUpdatesCheckOnLaunch: "ON_LOAD",
+                expoUpdatesCheckOnLaunch: "ALWAYS",
                 expoUpdatesChannel: "production",
                 expoRuntimeVersion: getRuntimeVersion(),
                 expoUpdatesDisableAntibrickingMeasures: "false"

@@ -75,6 +75,17 @@ deployment to expo updates will fail.
 
 `yarn install:all`
 
+You will also need the release vars and bin deps:
+
+```
+yarn setup:releases
+./scripts/setup/install-bin
+```
+
+You will need to be logged in to the `artsy_mobile` account, credentials in 1pass:
+
+`./bin/node_modules/.bin/eas login`
+
 > [!IMPORTANT]
 > If the install results in changes to Podfile.lock you must do a Native Release Hotfix, please refer to that section of the docs.
 

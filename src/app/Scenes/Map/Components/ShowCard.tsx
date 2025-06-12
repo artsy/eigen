@@ -2,8 +2,9 @@ import { Box, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { ShowItemRow } from "app/Components/Lists/ShowItemRow"
-import { TabFairItemRow } from "app/Scenes/City/Components/TabFairItemRow"
+import { TabFairItemRow } from "app/Scenes/City/Components/TabFairItemRow/TabFairItemRow"
 import { Fair, Show } from "app/Scenes/Map/types"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { isEqual } from "lodash"
 import { Component } from "react"
@@ -14,7 +15,6 @@ import {
   NativeSyntheticEvent,
   TouchableOpacity,
 } from "react-native"
-import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
 
 const shadowDetails: any = {
@@ -22,6 +22,7 @@ const shadowDetails: any = {
   shadowColor: "black",
   shadowOpacity: 0.3,
   shadowOffset: { height: 0, width: 0 },
+  elevation: 2,
 }
 
 const Background = styled(Box)`
@@ -31,7 +32,6 @@ const Background = styled(Box)`
 `
 
 interface ShowCardProps {
-  relay: RelayProp
   shows: Array<Show | Fair>
   onSaveStarted?: () => void
   onSaveEnded?: () => void
@@ -43,7 +43,6 @@ interface ShowCardState {
 }
 
 const PageIndicator = styled(Box)`
-  height: ${themeGet("space.2")};
   border-radius: ${themeGet("space.1")};
   background: ${themeGet("colors.mono0")};
   margin-left: 15px;
@@ -95,7 +94,6 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
           {item.type === "Show" ? (
             <ShowItemRow
               show={item}
-              relay={this.props.relay}
               onSaveStarted={this.props.onSaveStarted}
               onSaveEnded={this.props.onSaveEnded}
               shouldHideSaveButton

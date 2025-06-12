@@ -50,22 +50,11 @@ export const features = {
     description: "Support dark mode",
     echoFlagKey: "ARDarkModeSupport",
   },
-  AREnableEditorialNews: {
-    readyForRelease: true,
-    description: "Enable news app in the home screen",
-    echoFlagKey: "AREnableEditorialNews",
-    showInDevMenu: true,
-  },
   // TODO: need to refresh it before releasing to avoid leaking the feature in not ready releases, marked as ready since 15 months ago
   AREnableArtworksConnectionForAuction: {
     readyForRelease: true,
     description: "Use artworksConnection for Auction screen",
     echoFlagKey: "AREnableArtworksConnectionForAuction",
-  },
-  ARImpressionsTrackingHomeRailViews: {
-    description: "Enable tracking rail views on home screen",
-    readyForRelease: true,
-    echoFlagKey: "ARImpressionsTrackingHomeRailViews",
   },
   ARImpressionsTrackingHomeItemViews: {
     description: "Enable Tracking Items views on Home Screen",
@@ -76,16 +65,6 @@ export const features = {
     description: "Enable New Auctions Home Rail Card",
     readyForRelease: true,
     echoFlagKey: "AREnableNewAuctionsRailCard",
-  },
-  AREnableShowsForYouLocation: {
-    description: "Enable Shows For You Location",
-    readyForRelease: true,
-    echoFlagKey: "AREnableShowsForYouLocation",
-  },
-  AREnableGalleriesForYou: {
-    description: "Enable Galleries For You",
-    readyForRelease: true,
-    echoFlagKey: "AREnableGalleriesForYou",
   },
   AREnableAdditionalSiftAndroidTracking: {
     description: "Send additional events to Sift on Android",
@@ -101,37 +80,6 @@ export const features = {
     description: "Show create alert in artist artworks list footer",
     readyForRelease: true,
     echoFlagKey: "ARShowCreateAlertInArtistArtworksListFooter",
-  },
-  AREnableLatestActivityRail: {
-    description: "Enable Latest Activity Rail",
-    readyForRelease: true,
-    echoFlagKey: "AREnableLatestActivityRail",
-  },
-  AREnableAlertsFilters: {
-    description: "Enable filters in alerts screen",
-    readyForRelease: true,
-    echoFlagKey: "AREnableAlertsFilters",
-  },
-  AREnableAlertsFiltersSizeFiltering: {
-    description: "Enable size filtering in alerts filters screen",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableAlertsFiltersSizeFiltering",
-  },
-  AREnableAlertDetailsInput: {
-    description: "Enable 'details' text input for alerts",
-    readyForRelease: true,
-    echoFlagKey: "AREnableAlertDetailsInput",
-  },
-  AREnableArtistSeriesFilter: {
-    description: "Enable artist series filter on Artist screen",
-    readyForRelease: true,
-    echoFlagKey: "AREnableArtistSeriesFilter",
-  },
-  AREnableAlertsSuggestedFilters: {
-    description: "Enable alerts suggested filters",
-    readyForRelease: true,
-    echoFlagKey: "AREnableAlertsSuggestedFilters",
   },
   AREnablePartnerOffersNotificationSwitch: {
     description: "Enable partner offers notification switch",
@@ -149,27 +97,11 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableExpiredPartnerOffers",
   },
-  AREnableArtistSeriesSuggestions: {
-    description: "Enable artist series suggestions",
-    readyForRelease: true,
-    echoFlagKey: "AREnableArtistSeriesSuggestions",
-  },
   AREnableProgressiveOnboardingAlerts: {
     description: "Enable progressive onboarding alerts",
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableProgressiveOnboardingAlerts",
-  },
-  AREnableAlertsFiltersArtistSeriesFiltering: {
-    description: 'Enable artist series selection on "More Filters" screen',
-    readyForRelease: true,
-    echoFlagKey: "AREnableAlertsFiltersArtistSeriesFiltering",
-  },
-  AREnableArtworksFeedView: {
-    description: "Enable artworks feed view",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableArtworksFeedView",
   },
   AREnableArtworkListOfferability: {
     description: "Enable Parnter Offer v1.5, edit sharing artwork list with partners for offers",
@@ -207,12 +139,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnablePaymentFailureBanner",
   },
-  AREnableAvailabilityFilter: {
-    description: "Enable availability filter",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableAvailabilityFilter",
-  },
   AREnableViewPortPrefetching: {
     description: "Enable viewport prefetching",
     readyForRelease: true,
@@ -224,12 +150,6 @@ export const features = {
     readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworkCardContextMenuIOS",
-  },
-  AREnableFramedFilter: {
-    description: "Enable show only framed works filter",
-    readyForRelease: true,
-    showInDevMenu: true,
-    echoFlagKey: "AREnableFramedFilter",
   },
   AREnableHidingDislikedArtworks: {
     description: "Enable hiding disliked artworks",

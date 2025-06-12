@@ -30,12 +30,14 @@ export interface UserPrefsModel {
   metric: Metric | ""
   priceRange: string
   defaultViewOption: ViewOption
+  previouslySelectedCitySlug: string | null
   setCurrency: Action<this, Currency>
   setMetric: Action<this, Metric>
   setPriceRange: Action<this, string>
   fetchRemoteUserPrefs: Thunk<UserPrefsModel>
   didRehydrate: ThunkOn<UserPrefsModel, {}, GlobalStoreModel>
   setDefaultViewOption: Action<this, ViewOption>
+  setPreviouslySelectedCitySlug: Action<this, string>
 }
 
 export const getUserPrefsModel = (): UserPrefsModel => ({
@@ -43,6 +45,7 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
   metric: DEFAULT_METRIC,
   priceRange: DEFAULT_PRICE_RANGE,
   defaultViewOption: "list",
+  previouslySelectedCitySlug: null,
   setCurrency: action((state, currency) => {
     if (currencies.includes(currency)) {
       state.currency = currency
@@ -87,6 +90,9 @@ export const getUserPrefsModel = (): UserPrefsModel => ({
   ),
   setDefaultViewOption: action((state, viewOption) => {
     state.defaultViewOption = viewOption
+  }),
+  setPreviouslySelectedCitySlug: action((state, citySlug) => {
+    state.previouslySelectedCitySlug = citySlug
   }),
 })
 

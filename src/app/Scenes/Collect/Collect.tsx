@@ -2,7 +2,12 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, SimpleMessage, Spacer, Text } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import { CollectArtworks_viewer$key } from "__generated__/CollectArtworks_viewer.graphql"
-import { CollectQuery, FilterArtworksInput } from "__generated__/CollectQuery.graphql"
+import { CollectArtworks_viewerAggregations$key } from "__generated__/CollectArtworks_viewerAggregations.graphql"
+import {
+  CollectQuery,
+  CollectQuery$data,
+  FilterArtworksInput,
+} from "__generated__/CollectQuery.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import {
   FilterArray,
@@ -30,10 +35,10 @@ import { withSuspense } from "app/utils/hooks/withSuspense"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { useRefreshControl } from "app/utils/refreshHelpers"
 import { useState } from "react"
-import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
+import { graphql, useFragment, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 interface CollectContentProps {
-  viewer: CollectArtworks_viewer$key
+  viewer: CollectQuery$data["viewer"]
 }
 
 interface CollectHeaderProps {
@@ -69,12 +74,17 @@ export const CollectContent: React.FC<CollectContentProps> = ({ viewer }) => {
 
   const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment(
     viewerFragment,
-    viewer
+    viewer as CollectArtworks_viewer$key
+  )
+
+  const viewerAggregationsData = useFragment(
+    viewerAggregationsFragment,
+    viewer as CollectArtworks_viewerAggregations$key
   )
 
   useArtworkFilters({
     refetch,
-    aggregations: data?.artworksConnection?.aggregations,
+    aggregations: viewerAggregationsData?.artworksConnectionAggregations?.aggregations,
     componentPath: "Collect/CollectArtworks",
     pageSize: PAGE_SIZE,
   })
@@ -138,34 +148,14 @@ export const CollectContent: React.FC<CollectContentProps> = ({ viewer }) => {
 
 export const viewerFragment = graphql`
   fragment CollectArtworks_viewer on Viewer
-  @refetchable(queryName: "CollectArtwork_RefetchQuery")
+  @refetchable(queryName: "CollectArtworks_RefetchQuery")
   @argumentDefinitions(
-    count: { type: "Int", defaultValue: 20 }
+    count: { type: "Int", defaultValue: 10 }
     cursor: { type: "String" }
     input: { type: "FilterArtworksInput" }
   ) {
-    artworksConnection(
-      first: $count
-      after: $cursor
-      input: $input
-      aggregations: [
-        ARTIST
-        ARTIST_NATIONALITY
-        LOCATION_CITY
-        MAJOR_PERIOD
-        MATERIALS_TERMS
-        MEDIUM
-        PARTNER
-        TOTAL
-      ]
-    ) @connection(key: "CollectArtworks_artworksConnection") {
-      aggregations {
-        slice
-        counts {
-          name
-          value
-        }
-      }
+    artworksConnection(first: $count, after: $cursor, input: $input)
+      @connection(key: "CollectArtworks_artworksConnection", filters: ["input"]) {
       edges {
         node {
           id
@@ -180,10 +170,36 @@ export const viewerFragment = graphql`
   }
 `
 
+const viewerAggregationsFragment = graphql`
+  fragment CollectArtworks_viewerAggregations on Viewer {
+    artworksConnectionAggregations: artworksConnection(
+      first: 0
+      aggregations: [
+        ARTIST
+        ARTIST_NATIONALITY
+        LOCATION_CITY
+        MAJOR_PERIOD
+        MATERIALS_TERMS
+        MEDIUM
+        PARTNER
+      ]
+    ) {
+      aggregations {
+        slice
+        counts {
+          name
+          value
+        }
+      }
+    }
+  }
+`
+
 export const collectQuery = graphql`
   query CollectQuery($input: FilterArtworksInput!) {
     viewer @required(action: THROW) {
       ...CollectArtworks_viewer @arguments(input: $input)
+      ...CollectArtworks_viewerAggregations
     }
   }
 `

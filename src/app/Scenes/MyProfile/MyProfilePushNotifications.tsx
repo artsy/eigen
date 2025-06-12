@@ -19,7 +19,6 @@ import { requestSystemPermissions } from "app/utils/requestPushNotificationsPerm
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import useAppState from "app/utils/useAppState"
-import { debounce, omit } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
 import { Alert, Linking, Platform, RefreshControl } from "react-native"
 import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
@@ -32,16 +31,64 @@ const INSTRUCTIONS = Platform.select({
   default: "",
 })
 
-export type UserPushNotificationSettings =
-  | "receiveLotOpeningSoonNotification"
-  | "receiveNewSalesNotification"
-  | "receiveNewWorksNotification"
-  | "receiveOutbidNotification"
-  | "receivePromotionNotification"
-  | "receivePurchaseNotification"
-  | "receiveSaleOpeningClosingNotification"
-  | "receiveOrderNotification"
-  | "receivePartnerOfferNotification"
+export type UserPushNotificationSettings = keyof Omit<
+  MyProfilePushNotifications_me$data,
+  "id" | " $fragmentType"
+>
+export const NOTIFICATION_SETTINGS: Record<
+  UserPushNotificationSettings,
+  {
+    title: string
+    description: string
+    key: UserPushNotificationSettings
+  }
+> = {
+  receivePartnerOfferNotification: {
+    title: "Offers on Saved Artworks",
+    description: "Offers from galleries on artworks you saved",
+    key: "receivePartnerOfferNotification",
+  },
+  receivePurchaseNotification: {
+    title: "Messages",
+    description: "Messages from sellers on your inquiries",
+    key: "receivePurchaseNotification",
+  },
+  receiveOutbidNotification: {
+    title: "Outbid Alerts",
+    description: "Alerts for when you've been outbid",
+    key: "receiveOutbidNotification",
+  },
+  receiveOrderNotification: {
+    title: "Order Updates",
+    description: "An order you've placed has an update",
+    key: "receiveOrderNotification",
+  },
+  receiveLotOpeningSoonNotification: {
+    title: "Lot Opening Soon",
+    description: "Your lots that are opening for live bidding soon",
+    key: "receiveLotOpeningSoonNotification",
+  },
+  receiveSaleOpeningClosingNotification: {
+    title: "Lot Opening Soon",
+    description: "Your lots that are opening for live bidding soon",
+    key: "receiveLotOpeningSoonNotification",
+  },
+  receiveNewWorksNotification: {
+    title: "New Works for You",
+    description: "New works added by artists you follow",
+    key: "receiveNewWorksNotification",
+  },
+  receiveNewSalesNotification: {
+    title: "New Auctions for You",
+    description: "New auctions with artists you follow",
+    key: "receiveNewSalesNotification",
+  },
+  receivePromotionNotification: {
+    title: "Promotions",
+    description: "Updates on Artsy's latest campaigns and special offers.",
+    key: "receivePromotionNotification",
+  },
+}
 
 export const OpenSettingsBanner = () => (
   <>
@@ -122,11 +169,9 @@ const MyProfilePushNotificationsPlaceholder: React.FC<{}> = () => {
               receiveOrderNotification: false,
               receiveOutbidNotification: false,
               receivePartnerOfferNotification: false,
-              receivePartnerShowNotification: false,
               receivePromotionNotification: false,
               receivePurchaseNotification: false,
               receiveSaleOpeningClosingNotification: false,
-              receiveViewingRoomNotification: false,
             } as MyProfilePushNotifications_me$data
           }
           isLoading={true}
@@ -182,21 +227,13 @@ export const MyProfilePushNotifications: React.FC<{
           [notificationType]: value,
         }
         setUserNotificationSettings(updatedUserNotificationSettings)
-        await updateNotificationPermissions(updatedUserNotificationSettings)
+        await updateMyUserProfile({ [notificationType]: value })
       } catch (error) {
         setUserNotificationSettings(userNotificationSettings)
         Alert.alert(typeof error === "string" ? error : "Something went wrong.")
       }
     },
     [userNotificationSettings]
-  )
-
-  const updateNotificationPermissions = useCallback(
-    debounce(async (updatedPermissions: MyProfilePushNotifications_me$data) => {
-      const validUpdatedPermissions = omit(updatedPermissions, "id")
-      await updateMyUserProfile(validUpdatedPermissions)
-    }, 500),
-    []
   )
 
   return (
@@ -262,92 +299,119 @@ const Content: React.FC<ContentProps> = (props) => {
         {!!enablePartnerOffersNotificationSwitch && (
           <NotificationPermissionsBox title="Gallery Offers" isLoading={isLoading}>
             <SwitchMenu
-              title="Offers on Saved Artworks"
-              description="Offers from galleries on artworks you saved"
+              title={NOTIFICATION_SETTINGS.receivePartnerOfferNotification.title}
+              description={NOTIFICATION_SETTINGS.receivePartnerOfferNotification.description}
               value={!!userNotificationSettings.receivePartnerOfferNotification}
               disabled={isLoading}
               onChange={(value) => {
-                handleUpdateUserNotificationSettings("receivePartnerOfferNotification", value)
+                handleUpdateUserNotificationSettings(
+                  NOTIFICATION_SETTINGS.receivePartnerOfferNotification.key,
+                  value
+                )
               }}
             />
           </NotificationPermissionsBox>
         )}
         <NotificationPermissionsBox title="Purchase Updates" isLoading={isLoading}>
           <SwitchMenu
-            title="Messages"
-            description="Messages from sellers on your inquiries"
+            title={NOTIFICATION_SETTINGS.receivePurchaseNotification.title}
+            description={NOTIFICATION_SETTINGS.receivePurchaseNotification.description}
             value={!!userNotificationSettings.receivePurchaseNotification}
             disabled={isLoading}
             onChange={(value) => {
-              handleUpdateUserNotificationSettings("receivePurchaseNotification", value)
+              handleUpdateUserNotificationSettings(
+                NOTIFICATION_SETTINGS.receivePurchaseNotification.key,
+                value
+              )
             }}
           />
           <SwitchMenu
-            title="Outbid Alerts"
-            description="Alerts for when you've been outbid"
+            title={NOTIFICATION_SETTINGS.receiveOutbidNotification.title}
+            description={NOTIFICATION_SETTINGS.receiveOutbidNotification.description}
             value={!!userNotificationSettings.receiveOutbidNotification}
             disabled={isLoading}
             onChange={(value) => {
-              handleUpdateUserNotificationSettings("receiveOutbidNotification", value)
+              handleUpdateUserNotificationSettings(
+                NOTIFICATION_SETTINGS.receiveOutbidNotification.key,
+                value
+              )
             }}
           />
           <SwitchMenu
-            title="Order Updates"
-            description="An order you've placed has an update"
+            title={NOTIFICATION_SETTINGS.receiveOrderNotification.title}
+            description={NOTIFICATION_SETTINGS.receiveOrderNotification.description}
             value={!!userNotificationSettings.receiveOrderNotification}
             disabled={isLoading}
             onChange={(value) => {
-              handleUpdateUserNotificationSettings("receiveOrderNotification", value)
+              handleUpdateUserNotificationSettings(
+                NOTIFICATION_SETTINGS.receiveOrderNotification.key,
+                value
+              )
             }}
           />
         </NotificationPermissionsBox>
         <NotificationPermissionsBox title="Reminders" isLoading={isLoading}>
           <SwitchMenu
-            title="Lot Opening Soon"
-            description="Your lots that are opening for live bidding soon"
+            title={NOTIFICATION_SETTINGS.receiveLotOpeningSoonNotification.title}
+            description={NOTIFICATION_SETTINGS.receiveLotOpeningSoonNotification.description}
             value={!!userNotificationSettings.receiveLotOpeningSoonNotification}
             disabled={isLoading}
             onChange={(value) => {
-              handleUpdateUserNotificationSettings("receiveLotOpeningSoonNotification", value)
+              handleUpdateUserNotificationSettings(
+                NOTIFICATION_SETTINGS.receiveLotOpeningSoonNotification.key,
+                value
+              )
             }}
           />
           <SwitchMenu
-            title="Auctions Starting and Closing"
-            description="Your registered auctions that are starting or closing soon"
+            title={NOTIFICATION_SETTINGS.receiveSaleOpeningClosingNotification.title}
+            description={NOTIFICATION_SETTINGS.receiveSaleOpeningClosingNotification.description}
             value={!!userNotificationSettings.receiveSaleOpeningClosingNotification}
             disabled={isLoading}
             onChange={(value) => {
-              handleUpdateUserNotificationSettings("receiveSaleOpeningClosingNotification", value)
+              handleUpdateUserNotificationSettings(
+                NOTIFICATION_SETTINGS.receiveSaleOpeningClosingNotification.key,
+                value
+              )
             }}
           />
         </NotificationPermissionsBox>
         <NotificationPermissionsBox title="Recommendations" isLoading={isLoading}>
           <SwitchMenu
             testID="newWorksSwitch"
-            title="New Works for You"
-            description="New works added by artists you follow"
+            title={NOTIFICATION_SETTINGS.receiveNewWorksNotification.title}
+            description={NOTIFICATION_SETTINGS.receiveNewWorksNotification.description}
             value={!!userNotificationSettings.receiveNewWorksNotification}
             disabled={isLoading}
             onChange={(value) => {
-              handleUpdateUserNotificationSettings("receiveNewWorksNotification", value)
+              handleUpdateUserNotificationSettings(
+                NOTIFICATION_SETTINGS.receiveNewWorksNotification.key,
+                value
+              )
             }}
           />
           <SwitchMenu
-            title="New Auctions for You"
-            description="New auctions with artists you follow"
+            title={NOTIFICATION_SETTINGS.receiveNewSalesNotification.title}
+            description={NOTIFICATION_SETTINGS.receiveNewSalesNotification.description}
             value={!!userNotificationSettings.receiveNewSalesNotification}
             disabled={isLoading}
             onChange={(value) => {
-              handleUpdateUserNotificationSettings("receiveNewSalesNotification", value)
+              handleUpdateUserNotificationSettings(
+                NOTIFICATION_SETTINGS.receiveNewSalesNotification.key,
+                value
+              )
             }}
           />
           <SwitchMenu
-            title="Promotions"
-            description="Updates on Artsy's latest campaigns and special offers."
+            title={NOTIFICATION_SETTINGS.receivePromotionNotification.title}
+            description={NOTIFICATION_SETTINGS.receivePromotionNotification.description}
             value={!!userNotificationSettings.receivePromotionNotification}
             disabled={isLoading}
             onChange={(value) => {
-              handleUpdateUserNotificationSettings("receivePromotionNotification", value)
+              handleUpdateUserNotificationSettings(
+                NOTIFICATION_SETTINGS.receivePromotionNotification.key,
+                value
+              )
             }}
           />
         </NotificationPermissionsBox>
@@ -362,14 +426,12 @@ const meFragment = graphql`
     receiveLotOpeningSoonNotification
     receiveNewSalesNotification
     receiveNewWorksNotification
+    receiveOrderNotification
     receiveOutbidNotification
+    receivePartnerOfferNotification
     receivePromotionNotification
     receivePurchaseNotification
     receiveSaleOpeningClosingNotification
-    receiveOrderNotification
-    receiveViewingRoomNotification
-    receivePartnerShowNotification
-    receivePartnerOfferNotification
   }
 `
 

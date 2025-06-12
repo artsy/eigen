@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Install vendored CLI tool dependencies
+echo "Installing bin toolchain dependencies..."
+cd bin
+yarn install --frozen-lockfile
+cd ..
+
+echo "✅ Bin dependencies installed successfully."

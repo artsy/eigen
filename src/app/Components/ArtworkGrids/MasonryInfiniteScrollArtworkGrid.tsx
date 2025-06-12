@@ -146,6 +146,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         ) : null
       }
       onScroll={rest.onScroll}
+      testID="masonry-artwork-grid"
     />
   )
 }

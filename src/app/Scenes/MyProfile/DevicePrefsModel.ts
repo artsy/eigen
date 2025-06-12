@@ -13,7 +13,7 @@ export interface DevicePrefsModel {
   environment: EnvironmentModel
   sessionState: {
     isDeepZoomModalVisible: boolean
-    hasChangedColorScheme: boolean
+    key: number
   }
   // color scheme
   darkModeOption: DarkModeOption
@@ -30,7 +30,7 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
 
   sessionState: {
     isDeepZoomModalVisible: false,
-    hasChangedColorScheme: false,
+    key: 0,
   },
 
   darkModeOption: "system",
@@ -56,7 +56,6 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
   }),
 
   setDarkModeOption: action((state, option) => {
-    state.sessionState.hasChangedColorScheme = true
     state.darkModeOption = option
   }),
   setIsDeepZoomModalVisible: action((state, isVisible) => {
