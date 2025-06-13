@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
+import { FullWidthIcon } from "@artsy/icons/native"
 import {
   Flex,
-  FullWidthIcon,
   GridIcon,
   Screen,
   Skeleton,
