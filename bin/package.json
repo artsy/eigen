@@ -3,6 +3,6 @@
   "private": true,
   "devDependencies": {
     "eas-cli": "16.9.0",
-    "@sentry/cli": "2.24.0"
+    "@sentry/cli": "^2.46.0"
   }
 }
