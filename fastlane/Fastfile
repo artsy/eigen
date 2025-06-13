@@ -295,6 +295,13 @@ lane :ship_beta_android do |options|
   set_git_properties_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
+  # Add badge if firebase deployment
+  if deployment_target == 'firebase'
+    puts "Adding badge for firebase deployment..."
+    add_badge(dark: true, shield: "#{latest_version}-#{bundle_version}-orange")
+    UI.success("✅ Badge added for firebase deployment")
+  end
+
   build_type = deployment_target == 'play_store' ? 'release' : 'beta'
   sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2'")
 
