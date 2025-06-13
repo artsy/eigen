@@ -1,76 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="8dp"
     android:background="@android:color/black">
 
-    <!-- Header with "Editorial" text and Artsy logo -->
-    <LinearLayout
+    <TextView
+        android:id="@+id/editorial_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:text="Editorial"
+        android:textColor="@android:color/white"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/artsy_logo"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:src="@mipmap/ic_launcher_round" />
+
+    <TextView
+        android:id="@+id/article_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="top">
+        android:layout_centerInParent="true"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:text="Latest Artsy Articles" />
 
-        <TextView
-            android:id="@+id/editorial_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Editorial"
-            android:textColor="@android:color/white"
-            android:textSize="12sp"
-            android:fontFamily="sans-serif" />
-
-        <ImageView
-            android:id="@+id/artsy_logo"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@mipmap/ic_launcher_round"
-            android:contentDescription="Artsy" />
-
-    </LinearLayout>
-
-    <!-- Spacer to push content to bottom -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <!-- Article content -->
-    <LinearLayout
+    <TextView
+        android:id="@+id/read_more"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_alignParentBottom="true"
+        android:text="Tap to read"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:gravity="center" />
 
-        <TextView
-            android:id="@+id/article_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
-            android:fontFamily="sans-serif"
-            android:maxLines="4"
-            android:ellipsize="end"
-            android:text="Article Title" />
-
-        <!-- Spacer between title and read more -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/read_more"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Read More"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
-            android:fontFamily="sans-serif"
-            android:textStyle="normal" />
-
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>
