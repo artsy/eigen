@@ -2,14 +2,11 @@ package net.artsy.app.widgets.client
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import net.artsy.app.widgets.models.Article
 import net.artsy.app.widgets.models.Artist
 import net.artsy.app.widgets.models.Artwork
 import net.artsy.app.widgets.models.ArtworkImage
 import org.json.JSONArray
 import org.json.JSONObject
-import org.xml.sax.Attributes
-import org.xml.sax.helpers.DefaultHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.InputStream
@@ -17,13 +14,11 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.xml.parsers.SAXParserFactory
 
 class ArtsyApiClient {
     
     companion object {
         private const val ARTWORKS_BASE_URL = "https://artsy-public.s3.amazonaws.com/artworks-of-the-day"
-        private const val RSS_URL = "https://www.artsy.net/rss/news"
         private const val GEMINI_PROXY = "https://d7hftxdivxxvm.cloudfront.net/"
         
         @Volatile
@@ -55,20 +50,6 @@ class ArtsyApiClient {
         }
     }
     
-    suspend fun fetchLatestArticles(): List<Article> {
-        return withContext(Dispatchers.IO) {
-            try {
-                val rssData = downloadBytes(RSS_URL)
-                if (rssData != null) {
-                    parseRssFeed(rssData)
-                } else {
-                    generateFallbackArticles()
-                }
-            } catch (e: Exception) {
-                generateFallbackArticles()
-            }
-        }
-    }
     
     suspend fun downloadArtworkImage(artwork: Artwork, widgetWidth: Int, widgetHeight: Int): Bitmap? {
         return withContext(Dispatchers.IO) {
@@ -124,93 +105,6 @@ class ArtsyApiClient {
         }
     }
     
-    private fun parseRssFeed(rssData: ByteArray): List<Article> {
-        try {
-            val articles = mutableListOf<Article>()
-            
-            val factory = SAXParserFactory.newInstance()
-            val saxParser = factory.newSAXParser()
-            
-            val handler = object : DefaultHandler() {
-                private var currentElement = ""
-                private var currentTitle = ""
-                private var currentLink = ""
-                private var currentPubDate = ""
-                private var insideItem = false
-                
-                override fun startElement(uri: String?, localName: String?, qName: String?, attributes: Attributes?) {
-                    currentElement = qName ?: ""
-                    if (currentElement == "item") {
-                        insideItem = true
-                        currentTitle = ""
-                        currentLink = ""
-                        currentPubDate = ""
-                    }
-                }
-                
-                override fun characters(ch: CharArray?, start: Int, length: Int) {
-                    if (insideItem) {
-                        val content = String(ch ?: charArrayOf(), start, length).trim()
-                        when (currentElement) {
-                            "title" -> currentTitle += content
-                            "link" -> currentLink += content
-                            "pubDate" -> currentPubDate += content
-                        }
-                    }
-                }
-                
-                override fun endElement(uri: String?, localName: String?, qName: String?) {
-                    if (qName == "item") {
-                        if (currentTitle.isNotEmpty() && currentLink.isNotEmpty()) {
-                            articles.add(
-                                Article(
-                                    title = currentTitle,
-                                    link = currentLink,
-                                    pubDate = currentPubDate
-                                )
-                            )
-                        }
-                        insideItem = false
-                        
-                        // Stop after collecting 4 articles
-                        if (articles.size >= 4) {
-                            return
-                        }
-                    }
-                }
-            }
-            
-            saxParser.parse(rssData.inputStream(), handler)
-            return articles.take(4).ifEmpty { generateFallbackArticles() }
-        } catch (e: Exception) {
-            return generateFallbackArticles()
-        }
-    }
-    
-    private fun generateFallbackArticles(): List<Article> {
-        return listOf(
-            Article(
-                title = "Latest Art News and Trends",
-                link = "https://www.artsy.net/article/artsy-editorial-latest-art-news",
-                pubDate = "Mon, 10 Jun 2024 12:00:00 GMT"
-            ),
-            Article(
-                title = "Emerging Artists to Watch",
-                link = "https://www.artsy.net/article/artsy-editorial-emerging-artists",
-                pubDate = "Sun, 9 Jun 2024 10:00:00 GMT"
-            ),
-            Article(
-                title = "Art Market Insights",
-                link = "https://www.artsy.net/article/artsy-editorial-art-market-insights",
-                pubDate = "Sat, 8 Jun 2024 15:00:00 GMT"
-            ),
-            Article(
-                title = "Gallery Spotlight",
-                link = "https://www.artsy.net/article/artsy-editorial-gallery-spotlight",
-                pubDate = "Fri, 7 Jun 2024 11:00:00 GMT"
-            )
-        )
-    }
     
     private fun buildImageUrl(token: String, width: Int, height: Int): String {
         val params = mapOf(
