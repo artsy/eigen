@@ -2,13 +2,32 @@ import { CheckmarkStrokeIcon } from "@artsy/icons/native"
 import { Box, Flex, Join, Separator, Text, TextProps, useSpace } from "@artsy/palette-mobile"
 import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
 import { useScreenDimensions } from "app/utils/hooks"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useEffect, useState } from "react"
 import { ScrollView, TouchableOpacity } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import cities from "../../../../data/cityDataSortedByDisplayPreference.json"
+import expandedCities from "../../../../data/cityDataSortedByDisplayPreference-expanded.json"
+import originalCities from "../../../../data/cityDataSortedByDisplayPreference.json"
 
-export type CityData = (typeof cities)[0]
+export type CityData = {
+  slug: string
+  name: string
+  coordinates: {
+    lat: number
+    lng: number
+  }
+  maxBounds: {
+    sw: {
+      lat: number
+      lng: number
+    }
+    ne: {
+      lat: number
+      lng: number
+    }
+  }
+}
 interface Props {
   selectedCity: string
   onSelectCity: (city: CityData) => void
@@ -21,8 +40,11 @@ export const CityPicker: React.FC<Props> = (props) => {
   const { size } = useScreenDimensions()
   const space = useSpace()
   const insets = useSafeAreaInsets()
+  const enabledExpandedList = useFeatureFlag("AREnableExpandedCityGuide")
 
-  const selectCity = (city: (typeof cities)[0]) => {
+  const cities = enabledExpandedList ? expandedCities : originalCities
+
+  const selectCity = (city: CityData) => {
     setSelectedCity(city.name)
     props.onSelectCity(city)
   }
