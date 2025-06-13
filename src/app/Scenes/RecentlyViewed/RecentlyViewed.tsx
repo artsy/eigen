@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
-import { FullWidthIcon } from "@artsy/icons/native"
-import { GridIcon, Screen } from "@artsy/palette-mobile"
+import { FullWidthIcon, GridIcon } from "@artsy/icons/native"
+import { Screen } from "@artsy/palette-mobile"
 import { RecentlyViewedArtworksQR } from "app/Scenes/RecentlyViewed/Components/RecentlyViewedArtworks"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"

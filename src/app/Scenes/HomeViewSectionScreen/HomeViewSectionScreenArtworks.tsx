@@ -1,6 +1,6 @@
 import { ScreenOwnerType } from "@artsy/cohesion"
-import { FullWidthIcon } from "@artsy/icons/native"
-import { GridIcon, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
+import { FullWidthIcon, GridIcon } from "@artsy/icons/native"
+import { Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionScreenArtworks_section$key } from "__generated__/HomeViewSectionScreenArtworks_section.graphql"
 import { HomeViewSectionScreenQuery } from "__generated__/HomeViewSectionScreenQuery.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
