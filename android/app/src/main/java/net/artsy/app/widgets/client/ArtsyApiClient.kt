@@ -2,7 +2,6 @@ package net.artsy.app.widgets.client
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import net.artsy.app.widgets.models.Article
 import net.artsy.app.widgets.models.Artist
 import net.artsy.app.widgets.models.Artwork
@@ -23,7 +22,6 @@ import javax.xml.parsers.SAXParserFactory
 class ArtsyApiClient {
     
     companion object {
-        private const val TAG = "ArtsyApiClient"
         private const val ARTWORKS_BASE_URL = "https://artsy-public.s3.amazonaws.com/artworks-of-the-day"
         private const val RSS_URL = "https://www.artsy.net/rss/news"
         private const val GEMINI_PROXY = "https://d7hftxdivxxvm.cloudfront.net/"
@@ -45,17 +43,13 @@ class ArtsyApiClient {
                 val feedDate = dateFormatter.format(Date())
                 val feedUrl = "$ARTWORKS_BASE_URL/$feedDate.json"
                 
-                Log.d(TAG, "Fetching artworks from: $feedUrl")
-                
                 val jsonString = downloadString(feedUrl)
                 if (jsonString != null) {
                     parseArtworksJson(jsonString)
                 } else {
-                    Log.w(TAG, "Failed to fetch artworks, using fallback")
                     listOf(Artwork.fallback())
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Error fetching artworks", e)
                 listOf(Artwork.fallback())
             }
         }
@@ -64,17 +58,13 @@ class ArtsyApiClient {
     suspend fun fetchLatestArticles(): List<Article> {
         return withContext(Dispatchers.IO) {
             try {
-                Log.d(TAG, "Fetching articles from RSS: $RSS_URL")
-                
                 val rssData = downloadBytes(RSS_URL)
                 if (rssData != null) {
                     parseRssFeed(rssData)
                 } else {
-                    Log.w(TAG, "Failed to fetch articles, using fallback")
                     generateFallbackArticles()
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Error fetching articles", e)
                 generateFallbackArticles()
             }
         }
@@ -84,10 +74,8 @@ class ArtsyApiClient {
         return withContext(Dispatchers.IO) {
             try {
                 val imageUrl = buildImageUrl(artwork.firstImageToken, widgetWidth, widgetHeight)
-                Log.d(TAG, "Downloading image from: $imageUrl")
                 downloadImage(imageUrl)
             } catch (e: Exception) {
-                Log.e(TAG, "Error downloading artwork image", e)
                 null
             }
         }
@@ -132,7 +120,6 @@ class ArtsyApiClient {
             
             return artworks.ifEmpty { listOf(Artwork.fallback()) }
         } catch (e: Exception) {
-            Log.e(TAG, "Error parsing artworks JSON", e)
             return listOf(Artwork.fallback())
         }
     }
@@ -196,7 +183,6 @@ class ArtsyApiClient {
             saxParser.parse(rssData.inputStream(), handler)
             return articles.take(4).ifEmpty { generateFallbackArticles() }
         } catch (e: Exception) {
-            Log.e(TAG, "Error parsing RSS feed", e)
             return generateFallbackArticles()
         }
     }
@@ -251,11 +237,9 @@ class ArtsyApiClient {
             if (connection.responseCode == HttpURLConnection.HTTP_OK) {
                 connection.inputStream.bufferedReader().use { it.readText() }
             } else {
-                Log.w(TAG, "HTTP ${connection.responseCode} for $urlString")
                 null
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Error downloading string from $urlString", e)
             null
         }
     }
@@ -271,11 +255,9 @@ class ArtsyApiClient {
             if (connection.responseCode == HttpURLConnection.HTTP_OK) {
                 connection.inputStream.readBytes()
             } else {
-                Log.w(TAG, "HTTP ${connection.responseCode} for $urlString")
                 null
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Error downloading bytes from $urlString", e)
             null
         }
     }
@@ -293,11 +275,9 @@ class ArtsyApiClient {
                 val inputStream: InputStream = connection.inputStream
                 BitmapFactory.decodeStream(inputStream)
             } else {
-                Log.w(TAG, "HTTP ${connection.responseCode} for image $imageUrl")
                 null
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Error downloading image from $imageUrl", e)
             null
         }
     }

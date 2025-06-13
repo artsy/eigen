@@ -6,7 +6,6 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.widget.RemoteViews
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,30 +15,21 @@ import net.artsy.app.widgets.client.ArtsyApiClient
 
 class LatestArticlesWidgetProvider : AppWidgetProvider() {
 
-    companion object {
-        private const val TAG = "LatestArticlesWidget"
-        private const val WIDGET_KIND = "LatestArticlesWidget"
-    }
-
     override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
-        Log.d(TAG, "onUpdate called for ${appWidgetIds.size} widgets")
-        
         appWidgetIds.forEach { appWidgetId ->
             updateWidget(context, appWidgetManager, appWidgetId)
         }
     }
 
     override fun onEnabled(context: Context) {
-        Log.d(TAG, "Widget enabled")
         super.onEnabled(context)
     }
 
     override fun onDisabled(context: Context) {
-        Log.d(TAG, "Widget disabled")
         super.onDisabled(context)
     }
 
@@ -48,8 +38,6 @@ class LatestArticlesWidgetProvider : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetId: Int
     ) {
-        Log.d(TAG, "Updating widget $appWidgetId")
-        
         val views = RemoteViews(context.packageName, R.layout.widget_latest_articles_small)
         
         // Set initial content immediately
@@ -71,8 +59,6 @@ class LatestArticlesWidgetProvider : AppWidgetProvider() {
                     // Update with article data
                     views.setTextViewText(R.id.article_title, article.title)
                     views.setTextViewText(R.id.read_more, "Read More")
-                    
-                    Log.d(TAG, "Article URL: ${article.url}")
                     
                     // Create intent with multiple fallback options
                     val articleIntent = createArticleIntent(context, article.url)
@@ -118,10 +104,8 @@ class LatestArticlesWidgetProvider : AppWidgetProvider() {
                 
                 // Update widget with final content
                 appWidgetManager.updateAppWidget(appWidgetId, views)
-                Log.d(TAG, "Widget $appWidgetId updated with article: ${article?.title ?: "none"}")
                 
             } catch (e: Exception) {
-                Log.e(TAG, "Error fetching articles for widget $appWidgetId", e)
                 // Update with fallback content
                 views.setTextViewText(R.id.article_title, "Latest Artsy Articles")
                 views.setTextViewText(R.id.read_more, "Tap to read")
@@ -138,9 +122,6 @@ class LatestArticlesWidgetProvider : AppWidgetProvider() {
         } else {
             articleUrl // fallback to original URL
         }
-        
-        Log.d(TAG, "Original URL: $articleUrl")
-        Log.d(TAG, "Formatted URL: $formattedUrl")
         
         // Create an explicit intent to launch the main Artsy activity
         val appIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {
@@ -167,7 +148,6 @@ class LatestArticlesWidgetProvider : AppWidgetProvider() {
                 null
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Error extracting article ID from URL: $articleUrl", e)
             null
         }
     }
@@ -178,7 +158,6 @@ class LatestArticlesWidgetProvider : AppWidgetProvider() {
         appWidgetId: Int,
         newOptions: android.os.Bundle
     ) {
-        Log.d(TAG, "Widget options changed for $appWidgetId")
         updateWidget(context, appWidgetManager, appWidgetId)
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
     }
