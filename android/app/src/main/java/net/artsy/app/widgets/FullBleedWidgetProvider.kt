@@ -27,7 +27,7 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
         appWidgetIds: IntArray
     ) {
         Log.d(TAG, "onUpdate called for ${appWidgetIds.size} widgets")
-        
+
         appWidgetIds.forEach { appWidgetId ->
             updateWidget(context, appWidgetManager, appWidgetId)
         }
@@ -49,46 +49,40 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
         appWidgetId: Int
     ) {
         Log.d(TAG, "Updating widget $appWidgetId")
-        
+
         val widgetOptions = appWidgetManager.getAppWidgetOptions(appWidgetId)
         val minWidth = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
         val minHeight = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
-        
-        // Determine widget size and layout
-        val isLarge = minWidth > 250 || minHeight > 250
-        val layoutId = if (isLarge) {
-            R.layout.widget_fullbleed_large
-        } else {
-            R.layout.widget_fullbleed_small
-        }
-        
-        val views = RemoteViews(context.packageName, layoutId)
-        
+
+        Log.d(TAG, "Widget $appWidgetId size: ${minWidth}x${minHeight}dp")
+
+        val views = RemoteViews(context.packageName, R.layout.widget_fullbleed)
+
         // Launch coroutine to fetch artwork data
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 val apiClient = ArtsyApiClient.getInstance()
                 val artworks = apiClient.fetchFeaturedArtworks()
                 val artwork = artworks.firstOrNull()
-                
+
                 if (artwork != null) {
                     // Set up click intent to open artwork in Artsy app
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(artwork.url)).apply {
                         setPackage(context.packageName) // Force opening in Artsy app
                     }
                     val pendingIntent = PendingIntent.getActivity(
-                        context, 
+                        context,
                         appWidgetId,
                         intent,
                         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                     )
                     views.setOnClickPendingIntent(R.id.artwork_image, pendingIntent)
-                    
+
                     // Load artwork image
                     val density = context.resources.displayMetrics.density
                     val widthPx = (minWidth * density).toInt()
                     val heightPx = (minHeight * density).toInt()
-                    
+
                     val bitmap = apiClient.downloadArtworkImage(artwork, widthPx, heightPx)
                     if (bitmap != null) {
                         views.setImageViewBitmap(R.id.artwork_image, bitmap)
@@ -97,7 +91,7 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
                         Log.w(TAG, "Failed to load artwork image for widget $appWidgetId")
                         // Keep default background
                     }
-                    
+
                     // Set up logo click intent to open Artsy app
                     val artsyIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.artsy.net")).apply {
                         setPackage(context.packageName) // Force opening in Artsy app
@@ -112,10 +106,10 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
                 } else {
                     Log.w(TAG, "No artwork found for widget $appWidgetId")
                 }
-                
+
                 // Update the widget
                 appWidgetManager.updateAppWidget(appWidgetId, views)
-                
+
             } catch (e: Exception) {
                 Log.e(TAG, "Error updating widget $appWidgetId", e)
                 // Update with default view
