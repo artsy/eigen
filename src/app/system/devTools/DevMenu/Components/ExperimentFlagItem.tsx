@@ -1,10 +1,10 @@
+import { LinkIcon } from "@artsy/icons/native"
 import {
   Button,
   CloseIcon,
   EditIcon,
   Flex,
   Join,
-  LinkIcon,
   Pill,
   Spacer,
   Text,
