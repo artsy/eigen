@@ -34,7 +34,7 @@ import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { useInitialNotification } from "./utils/useInitialNotification"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
-import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
+import { useScreenReaderAndFontScaleTracking } from "./utils/useScreenReaderAndFontScaleTracking"
 import useSyncNativeAuthState from "./utils/useSyncAuthState"
 
 require("./system/ignoreLogs")
@@ -101,7 +101,7 @@ const Main = () => {
     createAllChannels()
   }, [])
   usePreferredThemeTracking()
-  useScreenReaderTracking()
+  useScreenReaderAndFontScaleTracking()
   useFreshInstallTracking()
   usePurgeCacheOnAppUpdate()
   useHideSplashScreen()
