@@ -5,7 +5,8 @@ lane :upload_sentry_artifacts do |options|
   sentry_release_name = options[:sentry_release_name]
   platform = options[:platform]
   dist_version = options[:dist_version]
-  sentry_cli_path="./bin/node_modules/@sentry/cli/bin/sentry-cli"
+  sh("yarn add @sentry/cli -D")
+  sentry_cli_path="node_modules/@sentry/cli/bin/sentry-cli"
 
   project_slug = 'eigen'
   org_slug = 'artsynet'
