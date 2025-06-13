@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.widget.RemoteViews
 import kotlinx.coroutines.CoroutineScope
@@ -12,6 +13,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.artsy.app.R
 import net.artsy.app.widgets.client.ArtsyApiClient
+import net.artsy.app.widgets.models.Artwork
+import java.text.SimpleDateFormat
+import java.util.*
 
 class FullBleedWidgetProvider : AppWidgetProvider() {
 
@@ -49,7 +53,7 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
             try {
                 val apiClient = ArtsyApiClient.getInstance()
                 val artworks = apiClient.fetchFeaturedArtworks()
-                val artwork = artworks.firstOrNull()
+                val artwork = getNextArtwork(context, appWidgetId, artworks)
 
                 if (artwork != null) {
                     // Set up click intent to open artwork in Artsy app
@@ -105,5 +109,33 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
     ) {
         updateWidget(context, appWidgetManager, appWidgetId)
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
+    }
+
+    private fun getNextArtwork(context: Context, appWidgetId: Int, artworks: List<Artwork>): Artwork? {
+        if (artworks.isEmpty()) return null
+
+        val prefs = context.getSharedPreferences("fullbleed_widget_prefs", Context.MODE_PRIVATE)
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
+        
+        // Get stored values for this widget
+        val storedDate = prefs.getString("date_$appWidgetId", "")
+        val currentIndex = prefs.getInt("index_$appWidgetId", 0)
+        
+        val nextIndex = if (storedDate == today) {
+            // Same day: rotate to next artwork
+            (currentIndex + 1) % artworks.size
+        } else {
+            // New day: start from first artwork
+            0
+        }
+        
+        // Save current state
+        with(prefs.edit()) {
+            putString("date_$appWidgetId", today)
+            putInt("index_$appWidgetId", nextIndex)
+            apply()
+        }
+        
+        return artworks.getOrNull(nextIndex)
     }
 }
