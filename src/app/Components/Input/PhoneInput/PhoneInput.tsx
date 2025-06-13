@@ -1,6 +1,6 @@
 import {
   Flex,
-  InputProps,
+  InputComponentProps,
   Spacer,
   Text,
   Touchable,
@@ -27,7 +27,7 @@ export const PhoneInput = forwardRef<
     onModalFinishedClosing?: () => void
     maxModalHeight?: number
     shouldDisplayLocalError?: boolean
-  } & Omit<InputProps, "onChange">
+  } & Omit<InputComponentProps, "onChange">
 >(
   (
     {
