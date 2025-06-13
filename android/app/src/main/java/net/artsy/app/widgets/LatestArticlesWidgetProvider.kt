@@ -72,10 +72,10 @@ class LatestArticlesWidgetProvider : AppWidgetProvider() {
                     views.setTextViewText(R.id.article_title, article.title)
                     views.setTextViewText(R.id.read_more, "Read More")
                     
-                    // Set up click intent to open article
-                    val articleIntent = Intent(Intent.ACTION_VIEW, Uri.parse(article.url)).apply {
-                        setPackage(context.packageName)
-                    }
+                    Log.d(TAG, "Article URL: ${article.url}")
+                    
+                    // Create intent with multiple fallback options
+                    val articleIntent = createArticleIntent(context, article.url)
                     val articlePendingIntent = PendingIntent.getActivity(
                         context,
                         appWidgetId,
@@ -86,14 +86,26 @@ class LatestArticlesWidgetProvider : AppWidgetProvider() {
                     views.setOnClickPendingIntent(R.id.read_more, articlePendingIntent)
                     
                 } else {
-                    // No articles found
+                    // No articles found - create generic editorial intent
                     views.setTextViewText(R.id.article_title, "Latest Artsy Articles")
                     views.setTextViewText(R.id.read_more, "Tap to read")
+                    
+                    val genericIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.artsy.net/articles")).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    }
+                    val genericPendingIntent = PendingIntent.getActivity(
+                        context,
+                        appWidgetId,
+                        genericIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                    )
+                    views.setOnClickPendingIntent(R.id.article_title, genericPendingIntent)
+                    views.setOnClickPendingIntent(R.id.read_more, genericPendingIntent)
                 }
                 
                 // Set up logo click to go to Artsy editorial
                 val editorialIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.artsy.net/articles")).apply {
-                    setPackage(context.packageName)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
                 val editorialPendingIntent = PendingIntent.getActivity(
                     context,
@@ -115,6 +127,48 @@ class LatestArticlesWidgetProvider : AppWidgetProvider() {
                 views.setTextViewText(R.id.read_more, "Tap to read")
                 appWidgetManager.updateAppWidget(appWidgetId, views)
             }
+        }
+    }
+
+    private fun createArticleIntent(context: Context, articleUrl: String): Intent {
+        // Extract article ID from editorial URL to match React Native route format
+        val articleId = extractArticleId(articleUrl)
+        val formattedUrl = if (articleId != null) {
+            "https://www.artsy.net/article/$articleId"
+        } else {
+            articleUrl // fallback to original URL
+        }
+        
+        Log.d(TAG, "Original URL: $articleUrl")
+        Log.d(TAG, "Formatted URL: $formattedUrl")
+        
+        // Create an explicit intent to launch the main Artsy activity
+        val appIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {
+            action = Intent.ACTION_VIEW
+            data = Uri.parse(formattedUrl)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        }
+        
+        // If we have the app intent, return it; otherwise return web intent
+        return appIntent ?: Intent(Intent.ACTION_VIEW, Uri.parse(formattedUrl)).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+    }
+    
+    private fun extractArticleId(articleUrl: String): String? {
+        return try {
+            // Extract article ID from URLs like:
+            // https://www.artsy.net/article/artsy-editorial-something -> artsy-editorial-something
+            // https://www.artsy.net/article/some-article-id -> some-article-id
+            val uri = Uri.parse(articleUrl)
+            if (uri.host?.contains("artsy.net") == true && uri.pathSegments?.size == 2 && uri.pathSegments[0] == "article") {
+                uri.pathSegments[1]
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error extracting article ID from URL: $articleUrl", e)
+            null
         }
     }
 
