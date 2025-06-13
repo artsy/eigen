@@ -491,7 +491,7 @@ lane :deploy_to_expo_updates do |options|
       popd > /dev/null")
   build_folder = File.expand_path("../dist/")
 
-  sh("./scripts/setup/instal-bin")
+  sh("yarn add @sentry/cli -D")
   sentry_cli_path = 'bin/node_modules/@sentry/cli/bin/sentry-cli'
 
   upload_expo_sourcemaps(
