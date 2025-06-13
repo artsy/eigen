@@ -498,6 +498,9 @@ jobs:
           branch: beta-ios
       - install-bin-modules
       - run:
+          name: Install imagemagick
+          command: brew install imagemagick
+      - run:
           name: Deploy if beta testflight and firebase
           no_output_timeout: 20m
           command: ./scripts/deploys/deploy-if-beta-branch-ios BOTH
@@ -528,6 +531,9 @@ jobs:
           paths:
             - build-success.log
       - install-bin-modules
+      - run:
+          name: Install imagemagick
+          command: brew install imagemagick
       - run:
           name: Deploy if beta - play store and firebase
           command: ./scripts/deploys/deploy-if-beta-branch-android BOTH
