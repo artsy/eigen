@@ -14,7 +14,6 @@ import {
 } from "app/utils/track/SegmentTrackingProvider"
 import { useAndroidAppStyling } from "app/utils/useAndroidAppStyling"
 import { useDeepLinks } from "app/utils/useDeepLinks"
-import { useFontScaleTracking } from "app/utils/useFontScaleTracking"
 import { useHideSplashScreen } from "app/utils/useHideSplashScreen"
 import { useIdentifyUser } from "app/utils/useIdentifyUser"
 import { useListenToThemeChange } from "app/utils/useListenToThemeChange"
@@ -35,7 +34,7 @@ import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { useInitialNotification } from "./utils/useInitialNotification"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
-import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
+import { useScreenReaderAndFontScaleTracking } from "./utils/useScreenReaderAndFontScaleTracking"
 import useSyncNativeAuthState from "./utils/useSyncAuthState"
 
 require("./system/ignoreLogs")
@@ -102,13 +101,12 @@ const Main = () => {
     createAllChannels()
   }, [])
   usePreferredThemeTracking()
-  useScreenReaderTracking()
+  useScreenReaderAndFontScaleTracking()
   useFreshInstallTracking()
   usePurgeCacheOnAppUpdate()
   useHideSplashScreen()
   useAndroidAppStyling()
   useListenToThemeChange()
-  useFontScaleTracking()
 
   useEffect(() => {
     if (isLoggedIn) {
