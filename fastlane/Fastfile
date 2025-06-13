@@ -73,6 +73,13 @@ lane :ship_beta_ios do |options|
   sync_signing_ios(deployment_target: deployment_target)
   tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
 
+  # Add badge if firebase deployment
+  if deployment_target == 'firebase'
+    puts "Adding badge for firebase deployment..."
+    add_badge(dark: true, shield: "#{latest_version}-#{bundle_version}-orange")
+    UI.success("✅ Badge added for firebase deployment")
+  end
+
   # Workaround for timeout in ci
   ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
   export_method = deployment_target == 'testflight' ? 'app-store' : 'ad-hoc'
