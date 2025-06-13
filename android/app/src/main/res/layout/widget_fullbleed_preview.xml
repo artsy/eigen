@@ -4,12 +4,12 @@
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
-    <!-- Preview background with gradient -->
+    <!-- Preview background with actual image -->
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/widget_preview_artwork"
+        android:src="@drawable/widget_preview_image"
         android:contentDescription="Featured Artwork Preview" />
 
     <!-- Artsy logo in top right corner -->
