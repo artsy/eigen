@@ -111,15 +111,15 @@ android {
         applicationId "net.artsy.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 7
-        versionName "1.0.0"
+        versionCode 1674646226
+        versionName "8.76.0"
         vectorDrawables.useSupportLibrary = true
 
         multiDexEnabled true
 
-        buildConfigField "String", "GITCommitShortHash", '"c77772ee1"'
-        buildConfigField "String", "GITCommitHash", '"c77772ee1f32093109049504f7865f9737ad8474"'
-        buildConfigField "String", "GITCommitDate", '"2021-01-21T15:08:22+04:00"'
+        buildConfigField "String", "GITCommitShortHash", '"99ebb93b0b"'
+        buildConfigField "String", "GITCommitHash", '"99ebb93b0ba7701ef1eb86179d4f2321b63396d4"'
+        buildConfigField "String", "GITCommitDate", '"2025-06-16T15:07:35+02:00"'
         buildConfigField "String", "GITRemoteOriginURL", '"https://github.com/artsy/eigen.git"'
     }
 
