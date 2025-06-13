@@ -242,6 +242,7 @@ GEM
       mutex_m
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
+    image_magick (0.1.9)
     jmespath (1.6.2)
     json (2.12.2)
     jwt (2.10.1)
@@ -334,6 +335,7 @@ DEPENDENCIES
   fastlane-plugin-bundletool
   fastlane-plugin-firebase_app_distribution
   fastlane-plugin-sentry
+  image_magick
   json
   lowdown
   xcode-install
