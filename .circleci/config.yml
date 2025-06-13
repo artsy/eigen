@@ -533,7 +533,7 @@ jobs:
       - install-bin-modules
       - run:
           name: Install imagemagick
-          command: brew install imagemagick
+          command: sudo apt-get update && sudo apt-get install -y imagemagick
       - run:
           name: Deploy if beta - play store and firebase
           command: ./scripts/deploys/deploy-if-beta-branch-android BOTH
