@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-./scripts/deploys/deploy-beta-ios
-./scripts/deploys/deploy-beta-android
+./scripts/deploys/deploy-beta-ios FIREBASE
+./scripts/deploys/deploy-beta-android FIREBASE
