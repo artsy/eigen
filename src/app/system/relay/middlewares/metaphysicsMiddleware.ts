@@ -1,6 +1,10 @@
 import { captureMessage } from "@sentry/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { getCurrentEmissionState, unsafe__getEnvironment } from "app/store/GlobalStore"
+import {
+  getCurrentEmissionState,
+  globalStoreInstance,
+  unsafe__getEnvironment,
+} from "app/store/GlobalStore"
 import { CACHEABLE_DIRECTIVE_REGEX } from "app/system/relay/helpers/cacheHeaderMiddlewareHelpers"
 import { shouldSkipCDNCache } from "app/system/relay/middlewares/cacheHeaderMiddleware"
 import { GraphQLRequest } from "app/system/relay/middlewares/types"
@@ -142,6 +146,7 @@ export function persistedQueryMiddleware(): Middleware {
     try {
       return await next(req)
     } catch (e: any) {
+      checkForLocalMetaphysicsOverride(e)
       if (e.toString().includes("Unable to serve persisted query with ID")) {
         // this should not happen normally, but let's try again with full query text to avoid ruining the user's day?
         captureMessage(e.stack)
@@ -151,6 +156,22 @@ export function persistedQueryMiddleware(): Middleware {
       } else {
         throw e
       }
+    }
+  }
+}
+
+function checkForLocalMetaphysicsOverride(e: Error) {
+  if (__DEV__) {
+    const hasLocalhostMetaphysicsOverride = globalStoreInstance()
+      .getState()
+      .devicePrefs.environment.localOverrides.metaphysicsCDNURL?.includes("localhost")
+
+    if (e.message.includes("Network request failed") && hasLocalhostMetaphysicsOverride) {
+      throw new Error(
+        "Your request for localhost Metaphysics failed. \n\n" +
+          "Please ensure that your local server is available, " +
+          "or remove the localhost override."
+      )
     }
   }
 }
