@@ -27,6 +27,7 @@ export const updateSavedSearchAlert = (
                   settings {
                     name
                   }
+                  ...SavedSearchAlert_alert
                 }
               }
             }
