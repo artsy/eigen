@@ -73,6 +73,13 @@ lane :ship_beta_ios do |options|
   sync_signing_ios(deployment_target: deployment_target)
   tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
 
+  # Add badge if firebase deployment
+  if deployment_target == 'firebase'
+    puts "Adding badge for firebase deployment..."
+    add_badge(dark: false, shield: "#{bundle_version}-orange")
+    UI.success("✅ Badge added for firebase deployment")
+  end
+
   # Workaround for timeout in ci
   ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
   export_method = deployment_target == 'testflight' ? 'app-store' : 'ad-hoc'
@@ -287,6 +294,13 @@ lane :ship_beta_android do |options|
   vname, vcode = set_build_version_android
   set_git_properties_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")
+
+  # Add badge if firebase deployment
+  if deployment_target == 'firebase'
+    puts "Adding badge for firebase deployment..."
+    add_badge(dark: false, shield: "#{vcode}-orange")
+    UI.success("✅ Badge added for firebase deployment")
+  end
 
   build_type = deployment_target == 'play_store' ? 'release' : 'beta'
   sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2'")
