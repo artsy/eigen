@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
-import { FullWidthIcon, GridIcon, Screen } from "@artsy/palette-mobile"
+import { FullWidthIcon, GridIcon } from "@artsy/icons/native"
+import { Screen } from "@artsy/palette-mobile"
 import { NewWorksFromGalleriesYouFollowQR } from "app/Scenes/NewWorksFromGalleriesYouFollow/Components/NewWorksFromGalleriesYouFollow"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
