@@ -12,5 +12,10 @@ for TEST_FILE in $TEST_FILES; do
   fi
 done
 
+if [ $EXIT_CODE -ne 0 ]; then
+  echo "At least one test failed — uploading screenshots and notifying Slack"
+  ./scripts/ci/report-maestro-test-failure
+fi
+
 echo "Final Exit Code: $EXIT_CODE"
 exit $EXIT_CODE

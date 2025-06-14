@@ -4,8 +4,10 @@ set -euxo pipefail
 
 source ./scripts/ci/ci-setup-export-vars
 
+BUILD_TYPE=${1:-debug} # default to debug
+
 if [ "${LOCAL_BRANCH}" != "beta-ios" ] && [ "${LOCAL_BRANCH}" != "app_store_submission" ]; then
-	./scripts/ci/build-for-tests-ios
+	./scripts/ci/build-for-tests-ios ${BUILD_TYPE}
 else
 	echo "Skipping test build on beta deploy."
 fi

@@ -4,4 +4,5 @@ appId: ${MAESTRO_APP_ID}
     file: signup.yml
 - assertVisible: "Ready to find art you love?"
 - tapOn: "Skip.*"
-- assertVisible: "New Works for You"
+- assertVisible:
+    id: "search-button"
