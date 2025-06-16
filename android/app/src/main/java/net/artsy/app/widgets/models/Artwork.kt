@@ -1,7 +1,6 @@
 package net.artsy.app.widgets.models
 
 import android.graphics.Bitmap
-import java.net.URL
 
 data class Artwork(
     val id: String,

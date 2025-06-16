@@ -29,14 +29,6 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
         }
     }
 
-    override fun onEnabled(context: Context) {
-        super.onEnabled(context)
-    }
-
-    override fun onDisabled(context: Context) {
-        super.onDisabled(context)
-    }
-
     private fun updateWidget(
         context: Context,
         appWidgetManager: AppWidgetManager,
@@ -93,10 +85,8 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
 
                 // Update the widget
                 appWidgetManager.updateAppWidget(appWidgetId, views)
-
             } catch (e: Exception) {
-                // Update with default view
-                appWidgetManager.updateAppWidget(appWidgetId, views)
+                // Handle errors gracefully - widget will show default state
             }
         }
     }
@@ -107,8 +97,8 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
         appWidgetId: Int,
         newOptions: android.os.Bundle
     ) {
-        updateWidget(context, appWidgetManager, appWidgetId)
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions)
+        updateWidget(context, appWidgetManager, appWidgetId)
     }
 
     private fun getNextArtwork(context: Context, appWidgetId: Int, artworks: List<Artwork>): Artwork? {
@@ -116,11 +106,11 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
 
         val prefs = context.getSharedPreferences("fullbleed_widget_prefs", Context.MODE_PRIVATE)
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
-        
+
         // Get stored values for this widget
         val storedDate = prefs.getString("date_$appWidgetId", "")
         val currentIndex = prefs.getInt("index_$appWidgetId", 0)
-        
+
         val nextIndex = if (storedDate == today) {
             // Same day: rotate to next artwork
             (currentIndex + 1) % artworks.size
@@ -128,14 +118,14 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
             // New day: start from first artwork
             0
         }
-        
+
         // Save current state
         with(prefs.edit()) {
             putString("date_$appWidgetId", today)
             putInt("index_$appWidgetId", nextIndex)
             apply()
         }
-        
+
         return artworks.getOrNull(nextIndex)
     }
 }

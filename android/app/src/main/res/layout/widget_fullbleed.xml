@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:contentDescription="Featured Artwork" />
+        android:contentDescription="Featured Artwork"
+        android:scaleX="1.3"
+        android:scaleY="1.3"/>
 
     <!-- White Artsy logo in top right corner -->
     <ImageView
