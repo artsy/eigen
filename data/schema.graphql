@@ -11585,6 +11585,32 @@ type FilterSaleArtworksCounts {
   ): FormattedNumber
 }
 
+type FlagArtworkImportCellFailure {
+  mutationError: GravityMutationError
+}
+
+input FlagArtworkImportCellInput {
+  artworkImportID: String!
+  clientMutationId: String
+  columnName: String!
+  flaggedValue: String
+  rowID: String!
+  userNote: String!
+}
+
+type FlagArtworkImportCellPayload {
+  clientMutationId: String
+  flagArtworkImportCellOrError: FlagArtworkImportCellResponseOrError
+}
+
+union FlagArtworkImportCellResponseOrError =
+    FlagArtworkImportCellFailure
+  | FlagArtworkImportCellSuccess
+
+type FlagArtworkImportCellSuccess {
+  artworkImport: ArtworkImport
+}
+
 type FollowArtist {
   artist: Artist
   auto: Boolean
@@ -15405,6 +15431,7 @@ type Mutation {
 
   # Mark sale as ended.
   endSale(input: EndSaleInput!): EndSalePayload
+  flagArtworkImportCell(input: FlagArtworkImportCellInput!): FlagArtworkImportCellPayload
 
   # Follow (or unfollow) an artist
   followArtist(input: FollowArtistInput!): FollowArtistPayload
