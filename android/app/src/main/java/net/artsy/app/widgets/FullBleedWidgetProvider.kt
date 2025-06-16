@@ -69,18 +69,6 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
                     if (bitmap != null) {
                         views.setImageViewBitmap(R.id.artwork_image, bitmap)
                     }
-
-                    // Set up logo click intent to open Artsy app
-                    val artsyIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.artsy.net")).apply {
-                        setPackage(context.packageName) // Force opening in Artsy app
-                    }
-                    val artsyPendingIntent = PendingIntent.getActivity(
-                        context,
-                        appWidgetId + 10000, // Offset to avoid conflicts
-                        artsyIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                    )
-                    views.setOnClickPendingIntent(R.id.artsy_logo, artsyPendingIntent)
                 }
 
                 // Update the widget
