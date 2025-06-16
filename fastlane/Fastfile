@@ -78,7 +78,8 @@ lane :ship_beta_ios do |options|
   # Add badge if firebase deployment
   if deployment_target == 'firebase'
     puts "Adding badge for firebase deployment..."
-    add_badge(shield: "#{bundle_version}-#{FIREBASE_BADGE_TEXT_COLOR}", custom:   )
+    # The spaces at the beginning and end are important to avoid the badge being cut off
+    add_badge(shield: " #{bundle_version}-#{FIREBASE_BADGE_TEXT_COLOR} ", custom:   )
     UI.success("✅ Badge added for firebase deployment")
   end
 
