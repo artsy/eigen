@@ -97,7 +97,7 @@ export const GlobalStoreProvider: React.FC<{}> = ({ children }) => {
 }
 
 let _globalStoreInstance: ReturnType<typeof createGlobalStore> | undefined
-const globalStoreInstance = (): ReturnType<typeof createGlobalStore> => {
+export const globalStoreInstance = (): ReturnType<typeof createGlobalStore> => {
   if (_globalStoreInstance === undefined) {
     _globalStoreInstance = createGlobalStore()
   }
