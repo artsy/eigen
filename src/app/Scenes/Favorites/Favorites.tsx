@@ -102,8 +102,8 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
           }
         }}
       >
-        <Flex mx={2}>
-          <Flex alignItems="flex-end" mb={2}>
+        <Flex mx={2} mt={2}>
+          <Flex alignItems="flex-end">
             <FavoritesLearnMore />
           </Flex>
 
