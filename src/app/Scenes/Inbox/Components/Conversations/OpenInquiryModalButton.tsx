@@ -30,7 +30,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
       <ShadowSeparator />
       <Flex p={1} backgroundColor="mono0">
         <Flex flexDirection="row">
-          <GuaranteeIcon mr={1} mt="3px" />
+          <GuaranteeIcon height={22} width={22} mr={1} mt="3px" />
           <Flex flexShrink={1}>
             <Text color="mono60" variant="sm-display" mb={1} adjustsFontSizeToFit numberOfLines={2}>
               Always complete purchases with our secure checkout in order to be covered by{" "}

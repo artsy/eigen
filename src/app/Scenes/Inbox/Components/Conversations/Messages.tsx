@@ -139,7 +139,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
         placement="top"
         backgroundColor="blue100"
         duration="long"
-        Icon={() => <GuaranteeIcon fill="mono0" mr={1} />}
+        Icon={() => <GuaranteeIcon height={22} width={22} fill="mono0" mr={1} />}
       />
       <FlatList
         key={conversation.internalID}
