@@ -6,33 +6,39 @@ export const SavedSearchAlertScreenQuery = graphql`
   query SavedSearchAlertQuery($savedSearchAlertId: String!) {
     me {
       alert(id: $savedSearchAlertId) {
-        acquireable
-        additionalGeneIDs
-        artistIDs
-        artistSeriesIDs
-        atAuction
-        attributionClass
-        colors
-        dimensionRange
-        displayName
-        sizes
-        height
-        inquireableOnly
-        locationCities
-        majorPeriods
-        materialsTerms
-        offerable
-        partnerIDs
-        priceRange
-        settings {
-          email
-          name
-          push
-          details
-        }
-        width
+        ...SavedSearchAlert_alert @relay(mask: false)
       }
     }
+  }
+`
+
+export const alertFragment = graphql`
+  fragment SavedSearchAlert_alert on Alert {
+    acquireable
+    additionalGeneIDs
+    artistIDs
+    artistSeriesIDs
+    atAuction
+    attributionClass
+    colors
+    dimensionRange
+    displayName
+    sizes
+    height
+    inquireableOnly
+    locationCities
+    majorPeriods
+    materialsTerms
+    offerable
+    partnerIDs
+    priceRange
+    settings {
+      email
+      name
+      push
+      details
+    }
+    width
   }
 `
 
@@ -51,7 +57,6 @@ export const SavedSearchAlertQueryRenderer: React.FC<SearchCriteriaAlertBaseProp
   return (
     <QueryRenderer<SavedSearchAlertQuery>
       environment={getRelayEnvironment()}
-      fetchPolicy="store-and-network"
       query={SavedSearchAlertScreenQuery}
       render={render}
       variables={{ savedSearchAlertId }}
