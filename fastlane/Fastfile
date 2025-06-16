@@ -77,7 +77,7 @@ lane :ship_beta_ios do |options|
   # Add badge if firebase deployment
   if deployment_target == 'firebase'
     puts "Adding badge for firebase deployment..."
-    add_badge(shield: "#{bundle_version}-#{BADGE_TEXT_COLOR}", custom: BADGE_PATH)
+    add_badge(shield: "#{bundle_version}-#{BADGE_TEXT_COLOR}", custom: '../images/fastlane/beta_badge.png')
     UI.success("✅ Badge added for firebase deployment")
   end
 
@@ -299,7 +299,7 @@ lane :ship_beta_android do |options|
   # Add badge if firebase deployment
   if deployment_target == 'firebase'
     puts "Adding badge for firebase deployment..."
-    add_badge(shield: "#{vcode}-#{BADGE_TEXT_COLOR}", custom: BADGE_PATH)
+    add_badge(shield: "#{vcode}-#{BADGE_TEXT_COLOR}", custom: '../images/fastlane/beta_badge.png')
     UI.success("✅ Badge added for firebase deployment")
   end
 
