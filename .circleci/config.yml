@@ -97,12 +97,49 @@ commands:
             # this changes after pod install because we don't install dev tools on CI
             # so we save it to the cache to avoid comparison errors with Pods/Manifest.lock
             - ios/Podfile.lock
+  prep-ios-env:
+    steps:
+      # we can quit the macos build early if there were no native code changes
+      # and we're not on the beta branch
+      - run:
+          name: Quit early if possible
+          command: |
+            if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
+            then
+              circleci step halt
+            fi
+      - run:
+          name: Quit early if Draft PR
+          command: |
+            if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/eigen/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
+            then
+              circleci step halt
+            fi
+      - run:
+          name: Clear project dir
+          command: |
+            rm -rf  /Users/distiller/project/*
+      - checkout
+      - attach_workspace:
+          at: .
+      - install-node
+      - setup-awscli
+      - setup-env-file
+      - install-node-modules
+      - run-relay-compiler
+      - update-echo
+      - install-gems
+      - install-cocoapods
   install-bin-modules:
     steps:
       - run:
           name: Install bin modules
           command: ./scripts/setup/install-bin
   build-app-ios:
+    parameters:
+      build_type:
+        type: string
+        default: "debug"
     steps:
       - restore_cache:
           key: << pipeline.parameters.app_build_ios_cache_key >>
@@ -114,7 +151,7 @@ commands:
           command: ./scripts/setup/download-assets-ios
       - run:
           name: Build App
-          command: ./scripts/ci/ci-ios
+          command: ./scripts/ci/ci-ios << parameters.build_type >>
       - save_cache:
           key: << pipeline.parameters.app_build_ios_cache_key >>
           paths:
@@ -196,7 +233,30 @@ jobs:
           name: Update rollout if needed
           command: ./scripts/deploys/update-android-rollout-if-needed
 
-  run-e2e-tests:
+  build-maestro-ios:
+    environment:
+      BUNDLE_PATH: .vendor # path to install gems and use for caching
+
+    macos:
+      xcode: 16.2
+      resource_class: m2pro.medium
+
+    steps:
+      - checkout
+      - generate-checksums
+      - attach_workspace:
+          at: ../workspace
+      - restore_cache:
+          key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum "../workspace/.manifests/native_code" }}
+      - prep-ios-env
+      - build-app-ios:
+          build_type: "qa"
+      - save_cache:
+          key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum ".manifests/native_code" }}
+          paths:
+            - xcode_test_raw.log
+
+  run-e2e-tests-ios:
     parallelism: 4
 
     environment:
@@ -207,6 +267,8 @@ jobs:
       resource_class: m2pro.medium
 
     steps:
+      - checkout
+      - generate-checksums
       - attach_workspace:
           at: ../workspace
       - macos/preboot-simulator:
@@ -217,17 +279,16 @@ jobs:
           name: Install maestro
           command: curl -Ls "https://get.maestro.mobile.dev" | bash
       - run:
+          name: Check maestro version
+          command: maestro --version
+      - run:
           name: Install idb
           command: brew tap facebook/fb && brew install idb-companion
-      - run:
-          name: Clear project dir
-          command: |
-            rm -rf  /Users/distiller/project/*
-      - checkout
       - setup-awscli
+      - install-gems
       - run:
           name: Set up maestro env
-          command: ./scripts/setup/setup-maestro-env.sh
+          command: ./scripts/setup/setup-env-for-maestro
       - run:
           name: Download app zip
           command: aws s3 cp s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip ./Artsy.zip
@@ -442,37 +503,7 @@ jobs:
           at: ../workspace
       - restore_cache:
           key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum "../workspace/.manifests/native_code" }}
-      # we can quit the macos build early if there were no native code changes
-      # and we're not on the beta branch
-      - run:
-          name: Quit early if possible
-          command: |
-            if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
-            then
-              circleci step halt
-            fi
-      - run:
-          name: Quit early if Draft PR
-          command: |
-            if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/eigen/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
-            then
-              circleci step halt
-            fi
-      - run:
-          name: Clear project dir
-          command: |
-            rm -rf  /Users/distiller/project/*
-      - checkout
-      - attach_workspace:
-          at: .
-      - install-node
-      - setup-awscli
-      - setup-env-file
-      - install-node-modules
-      - run-relay-compiler
-      - update-echo
-      - install-gems
-      - install-cocoapods
+      - prep-ios-env
       - macos/preboot-simulator:
           version: "18.2"
           platform: "iOS"
@@ -571,12 +602,12 @@ workflows:
               only:
                 - main
     jobs:
-      - build-test-app-ios
       - deploy-nightly-beta
       - run-nightly-tasks
-      # - run-e2e-tests:
-      #     requires:
-      #       - build-test-app-ios
+      - build-maestro-ios
+      - run-e2e-tests-ios:
+          requires:
+            - build-maestro-ios
 
   flag-check:
     triggers:
@@ -657,11 +688,3 @@ workflows:
           requires:
             - build-test-app-ios
             - build-test-app-android
-
-      # - run-e2e-tests:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - beta-ios
-      #     requires:
-      #       - build-test-app-ios

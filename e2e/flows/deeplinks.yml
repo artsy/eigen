@@ -5,7 +5,7 @@ appId: ${MAESTRO_APP_ID}
     arguments:
       email: ${MAESTRO_TEST_EMAIL}
       password: ${MAESTRO_TEST_PASSWORD}
-- assertVisible: "New Works for You"
+- assertVisible: "For you"
 - killApp
 - openLink:
     link: https://www.artsy.net/artist/kaws

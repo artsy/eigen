@@ -39,6 +39,31 @@ lane :notify_if_new_license_agreement do
   end
 end
 
+desc "Notifies in slack if a maestro test failed"
+lane :report_maestro_failure do |options|
+  s3_url = options[:s3_url]
+  error_message = options[:error_message]
+  flow_name = options[:flow_name]
+  message = <<~MSG
+              :x: :tophat:
+              Maestro test failed!
+              Flow: #{flow_name}
+              Error: `#{error_message}`
+              Screenshot at time of failure:
+              #{s3_url}
+              See circle job for more details.
+            MSG
+  slack(
+    channel: '#bot-testing',
+    message: message,
+    success: false,
+    payload: {
+      'Circle Build' => ENV['CIRCLE_BUILD_URL']
+    },
+    default_payloads: []
+  )
+end
+
 desc "Notifies in slack if a beta failed to deploy"
 lane :notify_beta_failed do |options|
   exception = options[:exception]
