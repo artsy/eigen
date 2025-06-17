@@ -501,10 +501,7 @@ lane :deploy_to_expo_updates do |options|
       popd > /dev/null")
   build_folder = File.expand_path("../dist/")
 
-  sentry_cli_path = 'bin/node_modules/@sentry/cli/bin/sentry-cli'
-
   upload_expo_sourcemaps(
-    sentry_cli_path: sentry_cli_path,
     org_slug: 'artsynet',
     project_slug: 'eigen',
     platform: platform,

@@ -5,7 +5,6 @@ lane :upload_sentry_artifacts do |options|
   sentry_release_name = options[:sentry_release_name]
   platform = options[:platform]
   dist_version = options[:dist_version]
-  sentry_cli_path="./bin/node_modules/@sentry/cli/bin/sentry-cli"
 
   project_slug = 'eigen'
   org_slug = 'artsynet'
@@ -25,7 +24,6 @@ lane :upload_sentry_artifacts do |options|
 
   begin
     sentry_create_release(auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
-      sentry_cli_path: sentry_cli_path,
       org_slug: org_slug,
       project_slug: project_slug,
       version: sentry_release_name,
@@ -51,7 +49,6 @@ lane :upload_sentry_artifacts do |options|
   end
 
   upload_sentry_sourcemaps(
-    sentry_cli_path: sentry_cli_path,
     org_slug: org_slug,
     project_slug: project_slug,
     sentry_release_name: sentry_release_name,
@@ -62,7 +59,6 @@ lane :upload_sentry_artifacts do |options|
 end
 
 lane :upload_sentry_sourcemaps do |options|
-  sentry_cli_path = options[:sentry_cli_path]
   org_slug = options[:org_slug]
   project_slug = options[:project_slug]
   sentry_release_name = options[:sentry_release_name]
@@ -74,7 +70,6 @@ lane :upload_sentry_sourcemaps do |options|
   begin
     sentry_upload_sourcemap(
       auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
-      sentry_cli_path: sentry_cli_path,
       org_slug: org_slug,
       project_slug: project_slug,
       version: sentry_release_name,
@@ -92,7 +87,6 @@ lane :upload_sentry_sourcemaps do |options|
 end
 
 lane :upload_expo_sourcemaps do |options|
-  sentry_cli_path = options[:sentry_cli_path]
   org_slug = options[:org_slug]
   project_slug = options[:project_slug]
   sentry_release_name = options[:sentry_release_name]
@@ -111,7 +105,6 @@ lane :upload_expo_sourcemaps do |options|
   sourcemap_path = "#{file_base}.map"
 
   upload_sentry_sourcemaps(
-    sentry_cli_path: sentry_cli_path,
     org_slug: org_slug,
     project_slug: project_slug,
     sentry_release_name: sentry_release_name,
@@ -125,9 +118,8 @@ end
 private_lane :upload_dsyms_to_sentry do |options|
   org_slug = options[:org_slug]
   project_slug = options[:project_slug]
-  sentry_cli_path = options[:sentry_cli_path]
 
-  # make individual dSYM archives available to the sentry-cli tool.
+  # make individual dSYM archives available
   root = File.expand_path('..', __dir__)
   dsym_archive = File.join(root, 'Artsy.app.dSYM.zip')
   dsyms_path = File.join(root, 'dSYMs')
@@ -137,7 +129,6 @@ private_lane :upload_dsyms_to_sentry do |options|
     # No need to specify `dist` as the build number is encoded in the dSYM's Info.plist
     sentry_debug_files_upload(
       auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
-      sentry_cli_path: sentry_cli_path,
       org_slug: org_slug,
       project_slug: project_slug,
       path: dsym_path
