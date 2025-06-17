@@ -6,7 +6,7 @@ EXIT_CODE=0
 
 for TEST_FILE in $TEST_FILES; do
   echo "Running test: $TEST_FILE"
-  maestro test "$TEST_FILE" @.env.maestro
+  maestro test "$TEST_FILE" @.env.maestro.android
   if [ $? -ne 0 ]; then
     EXIT_CODE=1
   fi
