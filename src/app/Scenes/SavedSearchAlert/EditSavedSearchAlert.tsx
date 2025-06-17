@@ -250,7 +250,6 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
               environment={getRelayEnvironment()}
               query={EditSavedSearchAlertDetailsScreenQuery}
               variables={{ artistIDs: relayProps.me?.alert?.artistIDs as string[] }}
-              fetchPolicy="store-and-network"
               render={renderWithPlaceholder({
                 Container: EditSavedSearchAlertRefetchContainer,
                 renderPlaceholder: () => <EditSavedSearchFormPlaceholder />,

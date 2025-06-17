@@ -1,5 +1,6 @@
 import { ActionType, OwnerType, TappedBuyNow, TappedMakeOffer } from "@artsy/cohesion"
-import { Spacer, ShieldIcon, Flex, Text, Button } from "@artsy/palette-mobile"
+import { GuaranteeIcon } from "@artsy/icons/native"
+import { Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { OpenInquiryModalButton_artwork$data } from "__generated__/OpenInquiryModalButton_artwork.graphql"
 import { ShadowSeparator } from "app/Scenes/Inbox/Components/ShadowSeparator"
 import { navigate } from "app/system/navigation/navigate"
@@ -29,7 +30,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
       <ShadowSeparator />
       <Flex p={1} backgroundColor="mono0">
         <Flex flexDirection="row">
-          <ShieldIcon mr={1} mt="3px" />
+          <GuaranteeIcon height={22} width={22} mr={1} mt="3px" />
           <Flex flexShrink={1}>
             <Text color="mono60" variant="sm-display" mb={1} adjustsFontSizeToFit numberOfLines={2}>
               Always complete purchases with our secure checkout in order to be covered by{" "}

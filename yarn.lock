@@ -15,22 +15,22 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@artsy/cohesion@4.269.0":
-  version "4.269.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.269.0.tgz#f00c7e14804dab6bd335dbe0cb371bd1637ff20c"
-  integrity sha512-AB76J726nlw14fEM1pc3DzN6H052vtApqbXDPdzwQ1g4XvcbmNqVk2Sm79Fo15ZBbJb29poV88Sfu96GynZvzA==
+"@artsy/cohesion@4.273.0":
+  version "4.273.0"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.273.0.tgz#a9001b1c7d43e6cfef92c82d9ca1a6d40666c0a0"
+  integrity sha512-y/JMxHotntRcr0Jrd9Avz/8aR9NKURC6WNBRfPyQcepAghV+BEdGWNf6FyrqB14xm6kl6aY03Cr1Ls0kimxu0w==
   dependencies:
     core-js "3"
 
-"@artsy/icons@3.39.0":
-  version "3.39.0"
-  resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.39.0.tgz#99ffeb84249e3f22ce801828da8696c8dfea989d"
-  integrity sha512-LS7wngIX5TdN0+yPDVMu6fiXw4RE86RZ2ksBKiHNILXdd76JnCIwEla2WUamsVzKDypF1HRhlXhG2iOP7OX3AQ==
+"@artsy/icons@3.41.0":
+  version "3.41.0"
+  resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.41.0.tgz#9d7a4de85ea61791be1ec956f75e3c13ddf625ce"
+  integrity sha512-BmrJE0BSSxERd1nYBF58vEF+/y3++p1QC5ch6wIptRRpQ9Fag4JTfK3QuJ0O1l04D1y4mKEovZYrAvsIKZq6Zw==
 
-"@artsy/palette-mobile@17.15.0":
-  version "17.15.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.15.0.tgz#96e7e9cdef703b61955d55bcc677523c666aa827"
-  integrity sha512-fgCQAJzBUOsXTv0S6uTTwj6nOw+l4xp0C15o6JSLyJTi6K1/vreT938H3+hJYvP2zAHBhU/o1tdbMe56AZbESg==
+"@artsy/palette-mobile@17.16.0":
+  version "17.16.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.16.0.tgz#13fbc60e40c05040f56898887d9bd8f5bb9be69c"
+  integrity sha512-OSf4G/iAMk1zLcQ+POSFGf+SDcrNAMvFP9Z1EdpiMi8XT6jksclg5bSqEEgruDZsR/VwS7tyi/eHsGHF7tchPQ==
   dependencies:
     "@artsy/palette-tokens" "^7.0.0"
     "@shopify/flash-list" "1.7.6"

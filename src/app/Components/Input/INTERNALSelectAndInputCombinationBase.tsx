@@ -1,4 +1,4 @@
-import { Input, InputProps, InputRef } from "@artsy/palette-mobile"
+import { Input, InputComponentProps, InputRef } from "@artsy/palette-mobile"
 import { SelectModal } from "app/Components/Select/Components/SelectModal"
 import { SelectProps } from "app/Components/Select/Select"
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
@@ -25,7 +25,7 @@ export const INTERNALSelectAndInputCombinationBase = forwardRef<
     shouldDisplayLocalError?: boolean
     validate?: () => void
     displayForSelect?: string
-  } & Omit<InputProps, "onChange" | "onChangeText" | "renderLeftHandSection"> &
+  } & Omit<InputComponentProps, "onChange" | "onChangeText" | "renderLeftHandSection"> &
     TypeForSelect
 >(
   (

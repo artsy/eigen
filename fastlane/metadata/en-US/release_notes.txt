@@ -1,6 +1,3 @@
-This update includes a number of improvements and bug fixes including:
-
-- Select works are now available to purchase using Apple Pay
-- New Favorites Hub in the bottom navigation, see all your saved works, followed artists, and alerts in one place
+This update includes a number of improvements and bug fixes.
 
 Have feedback? Email us at support@artsy.net

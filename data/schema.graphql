@@ -11585,6 +11585,32 @@ type FilterSaleArtworksCounts {
   ): FormattedNumber
 }
 
+type FlagArtworkImportCellFailure {
+  mutationError: GravityMutationError
+}
+
+input FlagArtworkImportCellInput {
+  artworkImportID: String!
+  clientMutationId: String
+  columnName: String!
+  flaggedValue: String
+  rowID: String!
+  userNote: String!
+}
+
+type FlagArtworkImportCellPayload {
+  clientMutationId: String
+  flagArtworkImportCellOrError: FlagArtworkImportCellResponseOrError
+}
+
+union FlagArtworkImportCellResponseOrError =
+    FlagArtworkImportCellFailure
+  | FlagArtworkImportCellSuccess
+
+type FlagArtworkImportCellSuccess {
+  artworkImport: ArtworkImport
+}
+
 type FollowArtist {
   artist: Artist
   auto: Boolean
@@ -15405,6 +15431,7 @@ type Mutation {
 
   # Mark sale as ended.
   endSale(input: EndSaleInput!): EndSalePayload
+  flagArtworkImportCell(input: FlagArtworkImportCellInput!): FlagArtworkImportCellPayload
 
   # Follow (or unfollow) an artist
   followArtist(input: FollowArtistInput!): FollowArtistPayload
@@ -15696,6 +15723,9 @@ type Mutation {
 
   # Updates a profile.
   updateProfile(input: UpdateProfileMutationInput!): UpdateProfileMutationPayload
+
+  # Update a purchase
+  updatePurchase(input: updatePurchaseInput!): updatePurchasePayload
 
   # Update a quiz artwork interacted_with flag
   updateQuiz(input: updateQuizMutationInput!): updateQuizMutationPayload
@@ -18104,6 +18134,7 @@ type Purchase implements Node {
   # A type-specific ID.
   internalID: ID!
   note: String
+  ownerID: String
   ownerType: String
   sale: Sale
 
@@ -23167,6 +23198,16 @@ type UpdateProfileSuccess {
   profile: Profile
 }
 
+type UpdatePurchaseFailure {
+  mutationError: GravityMutationError
+}
+
+union UpdatePurchaseResponseOrError = UpdatePurchaseFailure | UpdatePurchaseSuccess
+
+type UpdatePurchaseSuccess {
+  purchase: Purchase
+}
+
 type UpdateSaleAgreementFailure {
   mutationError: GravityMutationError
 }
@@ -25918,6 +25959,32 @@ input updateOrderShippingAddressInput {
 type updateOrderShippingAddressPayload {
   clientMutationId: String
   orderOrError: SetOrderFulfillmentOptionResponse
+}
+
+input updatePurchaseInput {
+  artsyCommission: Float
+  artworkID: String
+  clientMutationId: String
+  discoverAdminID: String
+  email: String
+  fairID: String
+  id: String!
+  note: String
+  ownerID: String
+  ownerType: String
+  saleAdminID: String
+  saleDate: String
+  saleID: String
+
+  # Sale price in USD.
+  salePrice: Float
+  source: String
+  userID: String
+}
+
+type updatePurchasePayload {
+  clientMutationId: String
+  responseOrError: UpdatePurchaseResponseOrError
 }
 
 input updateQuizMutationInput {

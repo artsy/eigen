@@ -128,7 +128,7 @@ export const Search: React.FC = () => {
             onScroll={handleScroll}
             keyboardDismissMode="on-drag"
             keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{ paddingTop: space(2), flex: 1 }}
+            contentContainerStyle={{ paddingTop: space(2) }}
           >
             {!isDiscoverVariant && <TrendingArtists data={queryData} mb={4} />}
             {!isDiscoverVariant && <CuratedCollections collections={queryData} mb={4} />}

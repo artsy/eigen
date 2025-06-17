@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { screen } from "@testing-library/react-native"
 import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
@@ -20,9 +20,8 @@ describe("ArticleScreen", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("ArticleScreenPlaceholder"))
+    await screen.findByText("Article Title")
 
-    expect(screen.getByText("Article Title")).toBeOnTheScreen()
     expect(screen.getByTestId("ArticleRelatedArticlesRail")).toBeOnTheScreen()
   })
 
@@ -36,9 +35,7 @@ describe("ArticleScreen", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("ArticleScreenPlaceholder"))
-
-    expect(screen.getByText("Article Title")).toBeOnTheScreen()
+    await screen.findByText("Article Title")
     expect(screen.getByTestId("ArticleRelatedArticlesRail")).toBeOnTheScreen()
   })
 
@@ -53,7 +50,7 @@ describe("ArticleScreen", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("ArticleScreenPlaceholder"))
+    await screen.findByTestId("ArticleWebViewScreen")
 
     expect(screen.getByTestId("ArticleWebViewScreen")).toBeOnTheScreen()
   })

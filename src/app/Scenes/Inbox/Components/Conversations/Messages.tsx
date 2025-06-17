@@ -1,4 +1,4 @@
-import { ShieldIcon } from "@artsy/palette-mobile"
+import { GuaranteeIcon } from "@artsy/icons/native"
 import { Messages_conversation$data } from "__generated__/Messages_conversation.graphql"
 import { ToastComponent } from "app/Components/Toast/ToastComponent"
 import { PAGE_SIZE } from "app/Components/constants"
@@ -139,7 +139,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
         placement="top"
         backgroundColor="blue100"
         duration="long"
-        Icon={() => <ShieldIcon shieldColor="mono0" checkColor="mono0" mr={1} />}
+        Icon={() => <GuaranteeIcon height={22} width={22} fill="mono0" mr={1} />}
       />
       <FlatList
         key={conversation.internalID}

@@ -1,14 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
-import {
-  Flex,
-  FullWidthIcon,
-  GridIcon,
-  Screen,
-  Skeleton,
-  SkeletonBox,
-  SkeletonText,
-  Spacer,
-} from "@artsy/palette-mobile"
+import { FullWidthIcon, GridIcon } from "@artsy/icons/native"
+import { Flex, Screen, Skeleton, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { WorksForYouArtworksQR } from "app/Components/WorksForYouArtworks"
 import { ViewOption } from "app/Scenes/Search/UserPrefsModel"
