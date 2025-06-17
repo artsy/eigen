@@ -1,4 +1,22 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-aws s3 cp s3://artsy-citadel/eigen/.env.maestro .env.maestro
+# Check if platform parameter is provided
+if [ $# -eq 0 ]; then
+    echo "Error: Platform parameter is required"
+    echo "Usage: $0 <platform>"
+    echo "Supported platforms: ios, android"
+    exit 1
+fi
+
+PLATFORM=$1
+
+# Validate platform parameter
+if [[ "$PLATFORM" != "ios" && "$PLATFORM" != "android" ]]; then
+    echo "Error: Invalid platform '$PLATFORM'"
+    echo "Supported platforms: ios, android"
+    exit 1
+fi
+
+# Download the environment file for the specified platform
+aws s3 cp "s3://artsy-citadel/eigen/.env.maestro.$PLATFORM" ".env.maestro.$PLATFORM"

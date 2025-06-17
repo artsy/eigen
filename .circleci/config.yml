@@ -288,7 +288,7 @@ jobs:
       - install-gems
       - run:
           name: Set up maestro env
-          command: ./scripts/setup/setup-env-for-maestro
+          command: ./scripts/setup/setup-env-for-maestro ios
       - run:
           name: Download app zip
           command: aws s3 cp s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip ./Artsy.zip
@@ -301,7 +301,7 @@ jobs:
       - run:
           name: Run Maestro Tests
           no_output_timeout: 25m
-          command: ./scripts/utils/run_maestro_shard.sh
+          command: ./scripts/utils/run_maestro_shard ios
 
   deploy-nightly-beta:
     environment:
