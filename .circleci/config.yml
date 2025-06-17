@@ -529,6 +529,9 @@ jobs:
           branch: beta-ios
       - install-bin-modules
       - run:
+          name: Install imagemagick & librsvg for badge
+          command: brew install imagemagick librsvg
+      - run:
           name: Deploy if beta testflight and firebase
           no_output_timeout: 20m
           command: ./scripts/deploys/deploy-if-beta-branch-ios BOTH
