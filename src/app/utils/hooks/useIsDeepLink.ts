@@ -1,5 +1,7 @@
 import { useIsFocused } from "@react-navigation/native"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
+import { fetchMarketingURL } from "app/utils/fetchMarketingURL"
+import { isMarketingURL } from "app/utils/isMarketingURL"
 import { useEffect, useState } from "react"
 import { Linking } from "react-native"
 
@@ -26,13 +28,20 @@ export const useIsDeepLink = () => {
 
   useEffect(() => {
     Linking.getInitialURL()
-      .then((url) => {
+      .then(async (url) => {
         if (!url) {
           setIsDeepLink(false)
           return
         }
 
-        const result = matchRoute(url)
+        let targetURL: string | null = url
+
+        // If the url is a marketing or email-link url, we need to fetch the redirect
+        if (isMarketingURL(url)) {
+          targetURL = (await fetchMarketingURL(url)) ?? "/"
+        }
+
+        const result = matchRoute(targetURL)
         const isExternalUrl = result.type === "external_url"
         const isHomeLink = result.type === "match" && result.module === "Home"
         const shouldTreatAsDeepLink = !isHomeLink && !isExternalUrl

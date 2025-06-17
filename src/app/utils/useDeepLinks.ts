@@ -1,7 +1,8 @@
-import { captureMessage } from "@sentry/react-native"
 import { GlobalStore } from "app/store/GlobalStore"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
+import { fetchMarketingURL } from "app/utils/fetchMarketingURL"
+import { isMarketingURL } from "app/utils/isMarketingURL"
 import { useEffect, useRef } from "react"
 import { Linking } from "react-native"
 import { useTracking } from "react-tracking"
@@ -45,24 +46,11 @@ export function useDeepLinks() {
     let targetURL
 
     // If the url is a marketing or email-link url, we need to fetch the redirect
-    if (url.includes("click.artsy.net") || url.includes("email-link.artsy.net")) {
-      try {
-        targetURL = await fetch(url)
-      } catch (error) {
-        if (__DEV__) {
-          console.warn(
-            `[handleDeepLink] Error fetching marketing url redirect on: ${url} failed with error: ${error}`
-          )
-        } else {
-          captureMessage(
-            `[handleDeepLink] Error fetching marketing url redirect on: ${url} failed with error: ${error}`,
-            "error"
-          )
-        }
-      }
+    if (isMarketingURL(url)) {
+      targetURL = await fetchMarketingURL(url)
     }
 
-    const deepLinkUrl = targetURL?.url ?? url
+    const deepLinkUrl = targetURL ?? url
 
     // We track the deep link opened event
     trackEvent(tracks.deepLink(deepLinkUrl))
