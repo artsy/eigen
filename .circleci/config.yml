@@ -301,7 +301,7 @@ jobs:
       - run:
           name: Run Maestro Tests
           no_output_timeout: 25m
-          command: ./scripts/utils/run_maestro_shard_ios.sh
+          command: ./scripts/utils/run_maestro_shard ios
 
   deploy-nightly-beta:
     environment:
