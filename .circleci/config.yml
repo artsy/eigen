@@ -183,6 +183,10 @@ commands:
       - update-echo
       - install-gems
   build-app-android:
+    parameters:
+      build_type:
+        type: string
+        default: "release"
     steps:
       - restore_cache:
           key: << pipeline.parameters.app_build_android_cache_key >>
@@ -196,7 +200,7 @@ commands:
       - run:
           name: Build App
           no_output_timeout: 30m
-          command: ./scripts/ci/ci-android
+          command: ./scripts/ci/ci-android << parameters.build_type >>
       - save_cache:
           key: << pipeline.parameters.app_build_android_cache_key >>
           paths:
