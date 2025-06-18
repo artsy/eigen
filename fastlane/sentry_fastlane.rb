@@ -40,7 +40,6 @@ lane :upload_sentry_artifacts do |options|
       upload_dsyms_to_sentry(
         org_slug: org_slug,
         project_slug: project_slug,
-        sentry_cli_path: sentry_cli_path
       )
     rescue StandardError => e
       message = 'Uploading dsyms to sentry failed.'
