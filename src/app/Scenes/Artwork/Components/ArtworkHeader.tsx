@@ -5,7 +5,6 @@ import {
   ExpiredOfferMessage,
   UnavailableOfferMessage,
 } from "app/Scenes/Artwork/Components/ArtworkMessages"
-import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { Schema } from "app/utils/track"
 import { guardFactory } from "app/utils/types/guardFactory"
@@ -52,7 +51,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
 
   return (
     <>
-      <ArtworkScreenHeader artwork={artwork} />
+      {/* <ArtworkScreenNavHeader artwork={artwork} /> */}
 
       <Box>
         {!!artworkOfferUnavailable && (
@@ -123,7 +122,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
 export const ArtworkHeaderFragmentContainer = createFragmentContainer(ArtworkHeader, {
   artwork: graphql`
     fragment ArtworkHeader_artwork on Artwork {
-      ...ArtworkScreenHeader_artwork
+      ...ArtworkScreenNavHeader_artwork
       ...ArtworkActions_artwork
       ...ArtworkTombstone_artwork
 
