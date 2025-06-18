@@ -15,11 +15,10 @@ import {
 import { AppModule, ModuleDescriptor } from "app/Navigation/routes"
 import { isModalScreen } from "app/Navigation/utils/isModalScreen"
 import { goBack } from "app/system/navigation/navigate"
-import { MotiView } from "moti"
 import { memo } from "react"
 import { Platform } from "react-native"
 import { isTablet } from "react-native-device-info"
-import { Easing, useAnimatedStyle, withTiming } from "react-native-reanimated"
+import Animated, { Easing, useAnimatedStyle, withTiming } from "react-native-reanimated"
 
 export const StackNavigator = createNativeStackNavigator<AuthenticatedRoutesParams>()
 
@@ -114,7 +113,7 @@ export const ScreenWrapper: React.FC<ScreenWrapperProps> = memo(
 
     return (
       <RetryErrorBoundary>
-        <MotiView
+        <Animated.View
           style={[
             {
               flex: 1,
@@ -123,7 +122,7 @@ export const ScreenWrapper: React.FC<ScreenWrapperProps> = memo(
           ]}
         >
           {children}
-        </MotiView>
+        </Animated.View>
       </RetryErrorBoundary>
     )
   }
