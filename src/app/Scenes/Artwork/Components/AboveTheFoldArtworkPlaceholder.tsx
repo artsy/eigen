@@ -48,20 +48,7 @@ export const AboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = (
   const { width, height } = useImagePlaceholder(artworkID)
 
   return (
-    <Flex flex={1}>
-      {/* Header */}
-      <Flex height={44} px={2} alignItems="center" flexDirection="row">
-        <Flex flex={1} flexDirection="row" alignItems="center" justifyContent="space-between">
-          <PlaceholderBox width={20} height={20} />
-
-          <Flex flexDirection="row" alignItems="center">
-            <PlaceholderBox width={105} height={25} />
-          </Flex>
-        </Flex>
-      </Flex>
-
-      <Spacer y={2} />
-
+    <Flex flex={1} pt={2}>
       {/* Artwork thumbnail */}
       <Flex mx="auto" py={2} height={CARD_HEIGHT} justifyContent="center">
         <PlaceholderBox width={width} height={height} />
