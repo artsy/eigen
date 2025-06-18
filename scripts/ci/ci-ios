@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-
 source ./scripts/ci/ci-setup-export-vars
 
 BUILD_TYPE=${1:-debug} # default to debug

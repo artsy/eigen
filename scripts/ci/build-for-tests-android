@@ -1,6 +1,22 @@
 #!/usr/bin/env bash
 set -exo pipefail
 
+BUILD_TYPE=${1:-release} # default to release
+if [ "$BUILD_TYPE" == "beta" ]; then
+	echo "Building Android App in Beta mode"
+	MODE="beta"
+else
+	echo "Building Android App in Release mode"
+	MODE="release"
+fi
+
 pushd android
-yarn react-native build-android --mode=release --extra-params='--max-workers 2'
+yarn react-native build-android --mode=$MODE --extra-params='--max-workers 2'
 popd
+
+if [ "$BUILD_TYPE" == "beta" ]; then
+	echo "Uploading Android App for Beta"
+	# Add upload logic here when needed
+  #TODO: Implement the upload logic similar to below but for android
+  # ./scripts/ci/upload-sim-app
+fi
