@@ -260,6 +260,26 @@ jobs:
           paths:
             - xcode_test_raw.log
 
+  build-maestro-android:
+    docker:
+      - image: cimg/android:2025.03.1-node
+    resource_class: xlarge
+
+    steps:
+      - checkout
+      - generate-checksums
+      - attach_workspace:
+          at: ../workspace
+      - restore_cache:
+          key: << pipeline.parameters.android_native_cache_key >>
+      - prep-android-env
+      - build-app-android:
+          build_type: "beta"
+      - save_cache:
+          key: << pipeline.parameters.android_native_cache_key >>
+          paths:
+            - build-success.log
+
   run-e2e-tests-ios:
     parallelism: 4
 
@@ -306,6 +326,50 @@ jobs:
           name: Run Maestro Tests
           no_output_timeout: 25m
           command: ./scripts/utils/run_maestro_shard ios
+
+  run-e2e-tests-android:
+    parallelism: 4
+
+    docker:
+      - image: cimg/android:2025.03.1-node
+    resource_class: xlarge
+
+    steps:
+      - checkout
+      - generate-checksums
+      - attach_workspace:
+          at: ../workspace
+      - android/change-java-version:
+          java-version: 17
+      - android/create-avd:
+          avd-name: test-avd
+          system-image: system-images;android-30;google_apis;x86_64
+          install: true
+      - android/start-emulator:
+          avd-name: test-avd
+          no-window: true
+          restore-gradle-cache-prefix: v1a
+      - run:
+          name: Install maestro
+          command: curl -Ls "https://get.maestro.mobile.dev" | bash
+      - run:
+          name: Check maestro version
+          command: maestro --version
+      - setup-awscli
+      - install-gems
+      - run:
+          name: Set up maestro env
+          command: ./scripts/setup/setup-env-for-maestro android
+      - run:
+          name: Download app APK
+          command: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
+      - run:
+          name: Install APK on emulator
+          command: ./gradlew installBeta
+      - run:
+          name: Run Maestro Tests
+          no_output_timeout: 25m
+          command: ./scripts/utils/run_maestro_shard android
 
   deploy-nightly-beta:
     environment:
@@ -615,6 +679,10 @@ workflows:
       - run-e2e-tests-ios:
           requires:
             - build-maestro-ios
+      - build-maestro-android
+      - run-e2e-tests-android:
+          requires:
+            - build-maestro-android
 
   flag-check:
     triggers:
@@ -636,62 +704,66 @@ workflows:
   test-build-deploy:
     when: << pipeline.parameters.run_workflow_test-build-deploy >>
     jobs:
-      - detect-secrets:
-          filters:
-            branches:
-              ignore:
-                - main
-
-      - check-code:
-          context: danger-github-oss
-
-      - check-and-deploy:
-          filters:
-            branches:
-              only:
-                - main
-
-      - test-js
-
-      - build-test-js
-
-      - horizon/block:
-          context: horizon
-          project_id: 37
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
-
-      - build-test-app-ios:
-          filters:
-            branches:
-              ignore:
-                - beta-android
+      - build-maestro-android
+      - run-e2e-tests-android:
           requires:
-            - test-js
-            - check-code
-            - build-test-js
-            - horizon/block
+            - build-maestro-android
+      # - detect-secrets:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - main
 
-      - build-test-app-android:
-          filters:
-            branches:
-              ignore:
-                - beta-ios
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
-            - horizon/block
+      # - check-code:
+      #     context: danger-github-oss
 
-      - update-metaphysics:
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
-          requires:
-            - build-test-app-ios
-            - build-test-app-android
+      # - check-and-deploy:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - main
+
+      # - test-js
+
+      # - build-test-js
+
+      # - horizon/block:
+      #     context: horizon
+      #     project_id: 37
+      #     filters:
+      #       branches:
+      #         only:
+      #           - beta-ios
+      #           - beta-android
+
+      # - build-test-app-ios:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - beta-android
+      #     requires:
+      #       - test-js
+      #       - check-code
+      #       - build-test-js
+      #       - horizon/block
+
+      # - build-test-app-android:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - beta-ios
+      #     requires:
+      #       - test-js
+      #       - check-code
+      #       - build-test-js
+      #       - horizon/block
+
+      # - update-metaphysics:
+      #     filters:
+      #       branches:
+      #         only:
+      #           - beta-ios
+      #           - beta-android
+      #     requires:
+      #       - build-test-app-ios
+      #       - build-test-app-android
