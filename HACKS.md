@@ -316,3 +316,9 @@ https://github.com/expo/expo/pull/36893
 #### Explanation/Context:
 
 Expo updates was not returning the reason an update failed to be available on iOS making debugging difficult.
+
+## patch-package for react-navigation/bottom-tabs
+
+This patch allows us to animate the appearance of the bottom tabs. This is currently not supported by @react-navigation/bottom-tabs but it's something they do when the user shows/hides the keyboard.
+
+See https://github.com/artsy/eigen/pull/12249 for more details.

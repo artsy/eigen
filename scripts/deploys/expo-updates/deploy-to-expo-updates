@@ -37,6 +37,9 @@ if [ -n "$rollout" ]; then
 else
   bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description" platform:ios
   bundle exec fastlane deploy_to_expo_updates deployment_name:$deployment description:"$description" platform:android
+  # reset changes made to app.json
+  git checkout app.json
+  git checkout dist/.gitkeep
 fi
 
 echo "Release to $deployment deployment successful."

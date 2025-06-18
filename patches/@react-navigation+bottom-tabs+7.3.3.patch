@@ -1,0 +1,37 @@
+diff --git a/node_modules/@react-navigation/bottom-tabs/lib/commonjs/views/BottomTabBar.js b/node_modules/@react-navigation/bottom-tabs/lib/commonjs/views/BottomTabBar.js
+index 8f0fb1c..755fce8 100644
+--- a/node_modules/@react-navigation/bottom-tabs/lib/commonjs/views/BottomTabBar.js
++++ b/node_modules/@react-navigation/bottom-tabs/lib/commonjs/views/BottomTabBar.js
+@@ -131,6 +131,7 @@ function BottomTabBar({
+     tabBarShowLabel,
+     tabBarLabelPosition,
+     tabBarHideOnKeyboard = false,
++    tabBarVisible = false,
+     tabBarVisibilityAnimationConfig,
+     tabBarVariant = 'uikit',
+     tabBarStyle,
+@@ -149,7 +150,7 @@ function BottomTabBar({
+   const dimensions = (0, _reactNativeSafeAreaContext.useSafeAreaFrame)();
+   const isKeyboardShown = (0, _useIsKeyboardShown.useIsKeyboardShown)();
+   const onHeightChange = _react.default.useContext(_BottomTabBarHeightCallbackContext.BottomTabBarHeightCallbackContext);
+-  const shouldShowTabBar = !(tabBarHideOnKeyboard && isKeyboardShown);
++  const shouldShowTabBar = !(tabBarHideOnKeyboard && isKeyboardShown) && !tabBarVisible;
+   const visibilityAnimationConfigRef = _react.default.useRef(tabBarVisibilityAnimationConfig);
+   _react.default.useEffect(() => {
+     visibilityAnimationConfigRef.current = tabBarVisibilityAnimationConfig;
+diff --git a/node_modules/@react-navigation/bottom-tabs/src/types.tsx b/node_modules/@react-navigation/bottom-tabs/src/types.tsx
+index 02f7119..01dfabc 100644
+--- a/node_modules/@react-navigation/bottom-tabs/src/types.tsx
++++ b/node_modules/@react-navigation/bottom-tabs/src/types.tsx
+@@ -224,6 +224,11 @@ export type BottomTabNavigationOptions = HeaderOptions & {
+    */
+   tabBarHideOnKeyboard?: boolean;
+ 
++  /**
++   * Whether the tab bar gets hidden when the screen is focused. Defaults to `false`.
++   */
++  tabBarVisible?: boolean;
++
+   /**
+    * Animation config for showing and hiding the tab bar when the keyboard is shown/hidden.
+    */
