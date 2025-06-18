@@ -66,12 +66,10 @@ export const HomeView: React.FC = memo(() => {
   const { trackExperiment: trackQuickLinksExperiment } = useExperimentVariant(
     "onyx_quick-links-experiment"
   )
-  const { trackExperiment: trackDiscoverTabExperiment } =
-    useExperimentVariant("diamond_discover-tab")
+
   const enableNavigationPills = useFeatureFlag("AREnableHomeViewQuickLinks")
 
   useEffect(() => {
-    trackDiscoverTabExperiment()
     trackInternalTestingExperiment()
 
     if (enableNavigationPills) {
