@@ -35,7 +35,6 @@ describe("ArtworkScreenHeader", () => {
     })
 
     expect(screen.getByLabelText("Artwork page header")).toBeTruthy()
-    // expect(screen.getByLabelText("Go back")).toBeTruthy()
     expect(screen.getByText("Create Alert")).toBeTruthy()
   })
 

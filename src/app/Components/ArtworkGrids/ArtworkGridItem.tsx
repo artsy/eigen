@@ -524,6 +524,8 @@ export default createFragmentContainer(Artwork, {
         blurhash
         url(version: ["larger", "large", "medium", "small", "square"])
         aspectRatio
+        width # required for guessing the image placeholder dimensions
+        height # required for guessing the image placeholder dimensions
         resized(width: $width) {
           src
           srcSet

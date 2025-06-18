@@ -51,8 +51,6 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
 
   return (
     <>
-      {/* <ArtworkScreenNavHeader artwork={artwork} /> */}
-
       <Box>
         {!!artworkOfferUnavailable && (
           <Flex mb={1}>
