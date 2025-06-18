@@ -1668,7 +1668,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-launch-arguments (4.0.4):
+  - react-native-launch-arguments (4.1.0):
     - React
   - react-native-netinfo (11.3.2):
     - React-Core
@@ -3007,7 +3007,7 @@ SPEC CHECKSUMS:
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-in-app-review: b3d1eed3d1596ebf6539804778272c4c65e4a400
   react-native-keys: b8628f6db75d113f89bae4a69422e58b0bbcd373
-  react-native-launch-arguments: 8ad8efa525a4c7cb72b3f69f05abfcba86f65dea
+  react-native-launch-arguments: 165260aba9544f00c66fae3e136b11484d0cb49b
   react-native-netinfo: ce102083db558237dac20cf64172ef569ebe2dd9
   react-native-pager-view: c8b6ddfc7747d272ad953e632f1296e98ad59e28
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd
