@@ -16,7 +16,5 @@ popd
 
 if [ "$BUILD_TYPE" == "beta" ]; then
 	echo "Uploading Android App for Beta"
-	# Add upload logic here when needed
-  #TODO: Implement the upload logic similar to below but for android
-  # ./scripts/ci/upload-sim-app
+  ./scripts/ci/upload-emu-app
 fi
