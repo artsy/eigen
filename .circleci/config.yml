@@ -343,12 +343,8 @@ jobs:
           java-version: 17
       - android/create-avd:
           avd-name: test-avd
-          system-image: system-images;android-30;google_apis;x86_64
+          system-image: system-images;android-34;google_apis;x86_64
           install: true
-      - android/start-emulator:
-          avd-name: test-avd
-          no-window: true
-          restore-gradle-cache-prefix: v1a
       - run:
           name: Install maestro
           command: curl -Ls "https://get.maestro.mobile.dev" | bash
