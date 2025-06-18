@@ -76,7 +76,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         contextScreenOwnerSlug={contextScreenOwnerSlug}
         contextScreenOwnerType={contextScreenOwnerType}
       >
-        <Box pr={2} backgroundColor="red100">
+        <Box pr={2}>
           <RouterLink
             to={href || artwork.href}
             underlayColor={backgroundColor}
