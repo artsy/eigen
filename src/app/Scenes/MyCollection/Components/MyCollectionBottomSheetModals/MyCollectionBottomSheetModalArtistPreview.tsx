@@ -19,8 +19,8 @@ import { QueryRenderer, createFragmentContainer, graphql } from "react-relay"
 import useDebounce from "react-use/lib/useDebounce"
 
 interface MyCollectionBottomSheetModalArtistPreviewProps {
-  artist: MyCollectionBottomSheetModalArtistPreview_artist$data
-  me: MyCollectionBottomSheetModalArtistPreview_me$data
+  artist: MyCollectionBottomSheetModalArtistPreview_artist$data | null
+  me: MyCollectionBottomSheetModalArtistPreview_me$data | null
   interestId: string
 }
 
@@ -224,8 +224,8 @@ export const MyCollectionBottomSheetModalArtistPreviewQueryRenderer: React.FC<{
       render={({ props }) => {
         return (
           <MyCollectionBottomSheetModalArtistPreviewFragmentContainer
-            artist={props?.artist || null || undefined}
-            me={props?.me || null || undefined}
+            artist={props?.artist || null}
+            me={props?.me || null}
           />
         )
       }}
