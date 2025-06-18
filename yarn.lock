@@ -14355,10 +14355,10 @@ react-native-keys@0.7.11:
     walk-sync "^3.0.0"
     xml2js "^0.6.2"
 
-react-native-launch-arguments@4.0.4:
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/react-native-launch-arguments/-/react-native-launch-arguments-4.0.4.tgz#5cdf12265b50bf98ad05c87f849da99e07ef5500"
-  integrity sha512-cB7Sy9m9MX5MvNJliSHEMFWRScSbr95gFuGWnaINBoIK9sP8hloKqhn0vKUHrMQGmNsC1PcpyeiniBqTiU9d5g==
+react-native-launch-arguments@4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-launch-arguments/-/react-native-launch-arguments-4.1.0.tgz#7f82b00edaaf239e3210216ce99c352dd7f792c5"
+  integrity sha512-aXWULNII2XG6eK6ysPp9eUDjZVmPh65DA5i7F3pQRraRdfYnv5r6cUulqRkUk5uvA8xokurslHjEjIjAEbxa/g==
 
 react-native-linear-gradient@2.8.3:
   version "2.8.3"
