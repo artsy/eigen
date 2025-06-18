@@ -655,3 +655,9 @@ jest.mock("app/utils/Sentinel", () => {
     Sentinel: View,
   }
 })
+jest.mock("react-native-blurhash", () => {
+  const ReactNative = require("react-native")
+  return {
+    Blurhash: ReactNative.View as any,
+  }
+})
