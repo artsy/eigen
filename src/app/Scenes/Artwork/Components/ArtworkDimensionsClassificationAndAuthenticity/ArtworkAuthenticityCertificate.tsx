@@ -28,12 +28,12 @@ export const ArtworkAuthenticityCertificate: React.FC<ArtworkAuthenticityCertifi
         <CertificateIcon mr={0.5} fill="mono60" height={25} width={25} />
         <Text color="mono60" variant="sm">
           Includes a{" "}
-          <RouterLink to="/artwork-certificate-of-authenticity" hasChildTouchable>
-            <LinkText color="mono60" variant="sm">
-              Certificate of Authenticity
-            </LinkText>
-          </RouterLink>
         </Text>
+        <RouterLink to="/artwork-certificate-of-authenticity" hasChildTouchable>
+          <LinkText color="mono60" variant="sm">
+            Certificate of Authenticity
+          </LinkText>
+        </RouterLink>
       </Flex>
     </>
   )

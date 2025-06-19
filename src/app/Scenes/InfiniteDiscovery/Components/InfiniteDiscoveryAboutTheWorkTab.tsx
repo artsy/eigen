@@ -75,27 +75,30 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
           <Flex gap={1}>
             {!!attributionClass?.length && (
               <Sentinel onChange={handleOnVisible}>
-                <Flex flexDirection="row" gap={0.5} alignItems="center">
+                <Flex flexDirection="row" gap={0.5} alignItems="center" testID="attribution">
                   <ArtworkIcon height={18} width={18} fill="mono60" />
-                  <Text variant="xs">
-                    {attributionClass[0]}{" "}
-                    <RouterLink
-                      to="/artwork-classifications"
-                      hasChildTouchable
-                      onPress={handleCollapse}
-                    >
-                      <LinkText variant="xs">{attributionClass[1]}</LinkText>
-                    </RouterLink>
-                  </Text>
+                  {!!attributionClass[0] && <Text variant="xs">{attributionClass[0]}</Text>}
+                  <RouterLink
+                    to="/artwork-classifications"
+                    hasChildTouchable
+                    onPress={handleCollapse}
+                  >
+                    <LinkText variant="xs">{attributionClass[1]}</LinkText>
+                  </RouterLink>
                 </Flex>
               </Sentinel>
             )}
 
             {!!hasCertificateOfAuthenticity && (
-              <Flex flexDirection="row" gap={0.5} alignItems="center">
+              <Flex
+                flexDirection="row"
+                gap={0.5}
+                alignItems="center"
+                testID="authenticity-certificate"
+              >
                 <CertificateIcon height={18} width={18} fill="mono60" testID="certificate-icon" />
-                <Text variant="xs">
-                  Includes a{" "}
+                <Flex flexDirection="row">
+                  <Text variant="xs">Includes a </Text>
                   <RouterLink
                     to="/artwork-certificate-of-authenticity"
                     hasChildTouchable
@@ -103,7 +106,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
                   >
                     <LinkText variant="xs">Certificate of Authenticity</LinkText>
                   </RouterLink>
-                </Text>
+                </Flex>
               </Flex>
             )}
           </Flex>
@@ -211,13 +214,16 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
               <Text variant="xs" color="mono60">
                 Questions about this piece?
               </Text>
-              <ContactGalleryButton
-                artwork={data}
-                me={me}
-                variant="outlineGray"
-                size="small"
-                icon={<EnvelopeIcon fill="mono100" width={16} height={16} />}
-              />
+
+              <Flex>
+                <ContactGalleryButton
+                  artwork={data}
+                  me={me}
+                  variant="outlineGray"
+                  size="small"
+                  icon={<EnvelopeIcon fill="mono100" width={16} height={16} />}
+                />
+              </Flex>
             </Flex>
           </Flex>
         </Flex>

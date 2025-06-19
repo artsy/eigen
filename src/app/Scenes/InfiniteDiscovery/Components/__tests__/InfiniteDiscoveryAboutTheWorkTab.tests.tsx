@@ -1,4 +1,4 @@
-import { screen, waitFor } from "@testing-library/react-native"
+import { screen, within } from "@testing-library/react-native"
 import { InfiniteDiscoveryAboutTheWorkTabTestQuery } from "__generated__/InfiniteDiscoveryAboutTheWorkTabTestQuery.graphql"
 import { AboutTheWorkTab } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryAboutTheWorkTab"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
@@ -45,12 +45,14 @@ describe("AboutTheWorkTab", () => {
     expect(screen.getByText("Frame included")).toBeOnTheScreen()
   })
 
-  it("renders certificate of authenticity section when available", () => {
+  it("renders certificate of authenticity section when available", async () => {
     const { mockResolveLastOperation } = renderWithRelay()
 
     mockResolveLastOperation({ Artwork: () => artwork })
 
-    expect(screen.getByText("Includes a Certificate of Authenticity")).toBeOnTheScreen()
+    const container = await screen.findByTestId("authenticity-certificate")
+    expect(within(container).getByText("Includes a")).toBeOnTheScreen()
+    expect(within(container).getByText("Certificate of Authenticity")).toBeOnTheScreen()
   })
 
   it("does not render optional fields when data is missing", async () => {
@@ -93,9 +95,9 @@ describe("AboutTheWorkTab", () => {
       // mockResolveLastOperation({})
       // await waitForElementToBeRemoved(() => screen.queryByText("Loading..."))
 
-      await waitFor(() => {
-        expect(screen.getByText("This is a unique work")).toBeOnTheScreen()
-      })
+      const container = await screen.findByTestId("attribution")
+      expect(within(container).getByText("This is a")).toBeOnTheScreen()
+      expect(within(container).getByText("unique work")).toBeOnTheScreen()
     })
 
     it("shows certificate icon when work has certificate and is not biddable", async () => {
