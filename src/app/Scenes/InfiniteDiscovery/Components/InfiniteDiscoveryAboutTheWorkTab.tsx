@@ -75,7 +75,7 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
           <Flex gap={1}>
             {!!attributionClass?.length && (
               <Sentinel onChange={handleOnVisible}>
-                <Flex flexDirection="row" gap={0.5} alignItems="center">
+                <Flex flexDirection="row" gap={0.5} alignItems="center" testID="attribution">
                   <ArtworkIcon height={18} width={18} fill="mono60" />
                   {!!attributionClass[0] && <Text variant="xs">{attributionClass[0]}</Text>}
                   <RouterLink
@@ -90,7 +90,12 @@ export const AboutTheWorkTab: FC<AboutTheWorkTabProps> = ({ artwork, me }) => {
             )}
 
             {!!hasCertificateOfAuthenticity && (
-              <Flex flexDirection="row" gap={0.5} alignItems="center">
+              <Flex
+                flexDirection="row"
+                gap={0.5}
+                alignItems="center"
+                testID="authenticity-certificate"
+              >
                 <CertificateIcon height={18} width={18} fill="mono60" testID="certificate-icon" />
                 <Flex flexDirection="row">
                   <Text variant="xs">Includes a </Text>
