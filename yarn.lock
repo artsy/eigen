@@ -27,17 +27,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.43.0.tgz#25dc75af5744a5138ce76f733454c795cf6577ce"
   integrity sha512-ph2hIGwZHmWITweS58qjCfTjQnDDyKZMpxgb+ekvPaFMV080n+FbWrpP1U8F2hHqULVvDuZPuW/JLKWD34UM3w==
 
-<<<<<<< HEAD
 "@artsy/palette-mobile@17.20.0":
   version "17.20.0"
   resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.20.0.tgz#9af044a08b873d143913580295025a39158de4fe"
   integrity sha512-tavOU3C95iaYI0CGMc4s86E9tPG9IHPqGensikGqiGaufreJDQe0zjtE1JQBQw4MMSlCG3UhDPiAf+NBzDVhdw==
-=======
-"@artsy/palette-mobile@17.19.0":
-  version "17.19.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.19.0.tgz#76c6b402f01656c234cf43614d854aa6d1728611"
-  integrity sha512-iObFh/bgM5r3tY50HxGC+XKShlwcn8da398+VntNjHyxxrqlamHG0aN38smqfNLIKoBTf+iSfYaocgAkfo4stQ==
->>>>>>> fb4420f7ac (chore: upgrade palette-mobile-again)
   dependencies:
     "@artsy/palette-tokens" "^7.0.0"
     "@shopify/flash-list" "1.7.6"
