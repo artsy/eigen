@@ -1,7 +1,7 @@
 import { Flex, Text } from "@artsy/palette-mobile"
 import { useRoute } from "@react-navigation/native"
 import { CollectionsByCategoriesRouteProp } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
-import { MARKETING_COLLECTION_CATEGORIES } from "app/Scenes/Search/components/ExploreByCategory/constants"
+import { MARKETING_COLLECTION_CATEGORIES } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategory"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { FC } from "react"
 
@@ -10,9 +10,7 @@ export const Footer: FC = () => {
   const category = decodeURI(params.category)
 
   // Get all categories except the current one
-  const categories = Object.values(MARKETING_COLLECTION_CATEGORIES).filter(
-    (c) => c.title !== category
-  )
+  const categories = MARKETING_COLLECTION_CATEGORIES.filter((c) => c.title !== category)
 
   if (categories.length === 0) {
     return null
