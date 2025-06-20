@@ -1,53 +1,43 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { FooterHomeViewSectionCardsTestQuery } from "__generated__/FooterHomeViewSectionCardsTestQuery.graphql"
 import { Footer } from "app/Scenes/CollectionsByCategory/Footer"
 import { navigate } from "app/system/navigation/navigate"
-import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { graphql } from "react-relay"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("@react-navigation/native", () => ({
   ...jest.requireActual("@react-navigation/native"),
   useRoute: () => ({
     params: {
-      category: "mock-category",
-      homeViewSectionId: "test-id",
+      category: "Medium",
+      entityID: "Medium",
     },
   }),
 }))
 
+jest.mock("app/system/navigation/navigate", () => ({
+  navigate: jest.fn(),
+}))
+
 describe("Footer", () => {
-  const { renderWithRelay } = setupTestWrapper<FooterHomeViewSectionCardsTestQuery>({
-    Component: ({ homeView }) => <Footer cards={homeView.section} homeViewSectionId="test-id" />,
-    query: graphql`
-      query FooterHomeViewSectionCardsTestQuery {
-        homeView @required(action: NONE) {
-          section(id: "test-id") @required(action: NONE) {
-            ...Footer_homeViewSectionCards
-          }
-        }
-      }
-    `,
+  beforeEach(() => {
+    jest.clearAllMocks()
   })
 
-  it("renders", () => {
-    renderWithRelay({ HomeViewCardConnection: () => cards })
+  it("renders other categories excluding current one", () => {
+    renderWithWrappers(<Footer />)
 
-    expect(screen.getByText(/mock-title-1/)).toBeOnTheScreen()
+    // Should show other categories but not "Medium" (current category)
+    expect(screen.getByText(/Movement/)).toBeOnTheScreen()
+    expect(screen.getByText(/Price/)).toBeOnTheScreen()
+    expect(screen.getByText(/Size/)).toBeOnTheScreen()
+    expect(screen.getByText(/Color/)).toBeOnTheScreen()
+    expect(screen.getByText(/Gallery/)).toBeOnTheScreen()
+    expect(screen.queryByText(/Medium/)).not.toBeOnTheScreen()
   })
 
-  it("navigates", () => {
-    renderWithRelay({ HomeViewCardConnection: () => cards })
+  it("navigates to another category", () => {
+    renderWithWrappers(<Footer />)
 
-    fireEvent.press(screen.getByText(/mock-title-1/))
-    expect(navigate).toHaveBeenCalledWith(
-      "/collections-by-category/mock-title-1?homeViewSectionId=test-id&entityID=mock-entity-id-1"
-    )
+    fireEvent.press(screen.getByText(/Movement/))
+    expect(navigate).toHaveBeenCalledWith("/collections-by-category/Movement?entityID=Movement")
   })
 })
-
-const cards = {
-  edges: [
-    { node: { title: "mock-title-1", entityID: "mock-entity-id-1" } },
-    { node: { title: "mock-title-2", entityID: "mock-entity-id-2" } },
-  ],
-}
