@@ -15,10 +15,11 @@ import {
 import { AppModule, ModuleDescriptor } from "app/Navigation/routes"
 import { isModalScreen } from "app/Navigation/utils/isModalScreen"
 import { goBack } from "app/system/navigation/navigate"
+import { MotiView } from "moti"
 import { memo } from "react"
 import { Platform } from "react-native"
 import { isTablet } from "react-native-device-info"
-import Animated, { Easing, useAnimatedStyle, withTiming } from "react-native-reanimated"
+import { Easing, withTiming } from "react-native-reanimated"
 
 export const StackNavigator = createNativeStackNavigator<AuthenticatedRoutesParams>()
 
@@ -102,27 +103,21 @@ export const ScreenWrapper: React.FC<ScreenWrapperProps> = memo(
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const tabBarHeight = hidesBottomTabs ? 0 : useBottomTabBarHeight()
 
-    const animatedStyle = useAnimatedStyle(() => {
-      return {
-        paddingBottom: withTiming(hidesBottomTabs ? 0 : tabBarHeight, {
-          duration: TAB_BAR_ANIMATION_DURATION,
-          easing: Easing.inOut(Easing.ease),
-        }),
-      }
-    })
-
     return (
       <RetryErrorBoundary>
-        <Animated.View
+        <MotiView
           style={[
             {
               flex: 1,
+              paddingBottom: withTiming(hidesBottomTabs ? 0 : tabBarHeight, {
+                duration: TAB_BAR_ANIMATION_DURATION,
+                easing: Easing.inOut(Easing.ease),
+              }),
             },
-            animatedStyle,
           ]}
         >
           {children}
-        </Animated.View>
+        </MotiView>
       </RetryErrorBoundary>
     )
   }
