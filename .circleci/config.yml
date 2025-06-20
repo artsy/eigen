@@ -348,17 +348,17 @@ jobs:
       - run:
           name: Install maestro
           command: curl -Ls "https://get.maestro.mobile.dev" | bash
+      - setup-awscli
       - run:
           name: Set up maestro env
           command: ./scripts/setup/setup-env-for-maestro android
       - run:
           name: Check maestro version
           command: maestro --version
-      - setup-awscli
       # - install-gems
       - run:
           name: Download app A
-          command: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.aab ./Artsy.aab
+          command: cd project && aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.aab ./Artsy.aab
       - run:
           name: Install APK on emulator
           command: cd project/android && ./gradlew installBeta && cd ..
