@@ -1,6 +1,5 @@
 import { Flex, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ExploreByCategoryCard } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategoryCard"
-import { MARKETING_COLLECTION_CATEGORIES } from "app/Scenes/Search/components/ExploreByCategory/constants"
 import React from "react"
 import { isTablet } from "react-native-device-info"
 
@@ -8,7 +7,7 @@ export const ExploreByCategory: React.FC = () => {
   const { width } = useScreenDimensions()
   const space = useSpace()
 
-  const cards = Object.values(MARKETING_COLLECTION_CATEGORIES)
+  const cards = MARKETING_COLLECTION_CATEGORIES
 
   const columns = !isTablet() ? 2 : 3
 
@@ -33,3 +32,42 @@ export const ExploreByCategory: React.FC = () => {
     </Flex>
   )
 }
+
+export interface MarketingCollectionCategory {
+  id: string
+  title: string
+  imageUrl: string
+}
+
+export const MARKETING_COLLECTION_CATEGORIES: MarketingCollectionCategory[] = [
+  {
+    id: "Medium",
+    title: "Medium",
+    imageUrl: "https://files.artsy.net/images/collections-mediums-category.jpeg",
+  },
+  {
+    id: "Movement",
+    title: "Movement",
+    imageUrl: "https://files.artsy.net/images/collections-movement-category.jpeg",
+  },
+  {
+    id: "Collect by Size",
+    title: "Size",
+    imageUrl: "https://files.artsy.net/images/collections-size-category.jpeg",
+  },
+  {
+    id: "Collect by Color",
+    title: "Color",
+    imageUrl: "https://files.artsy.net/images/collections-color-category.png",
+  },
+  {
+    id: "Collect by Price",
+    title: "Price",
+    imageUrl: "https://files.artsy.net/images/collections-price-category.jpeg",
+  },
+  {
+    id: "Gallery",
+    title: "Gallery",
+    imageUrl: "https://files.artsy.net/images/collections-gallery-category.jpeg",
+  },
+]

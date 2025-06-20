@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Image, Text, useSpace } from "@artsy/palette-mobile"
-import { MarketingCollectionCategory } from "app/Scenes/Search/components/ExploreByCategory/constants"
+import { MarketingCollectionCategory } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategory"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { FC } from "react"
 import { useTracking } from "react-tracking"
