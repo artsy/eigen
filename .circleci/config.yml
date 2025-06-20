@@ -352,9 +352,9 @@ jobs:
       - run:
           name: Set up maestro env
           command: ./scripts/setup/setup-env-for-maestro android
-      - run:
-          name: Check maestro version
-          command: maestro --version
+      # - run:
+      #     name: Check maestro version
+      #     command: maestro --version
       # - install-gems
       - run:
           name: Download app A
