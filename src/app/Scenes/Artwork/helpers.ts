@@ -48,14 +48,6 @@ export const useImagePlaceholder = (artworkID?: string) => {
   const imageRef = (artwork?.["image(includeAll:false)"] as Record)?.__ref as string
   const image = findRelayRecordByDataID(imageRef)
 
-  // The image url is the same for the artwork grid item and rail card
-  // And it's stored under the same key for both
-  // This key should match
-  // 1. src/app/Components/ArtworkRail/ArtworkRailCardImage.tsx-L87
-  // 2. src/app/Components/ArtworkGrids/ArtworkGridItem.tsx-L525
-  const imageUrl = (image?.['url(version:["larger","large","medium","small","square"])'] ||
-    image?.["url"]) as string | undefined
-
   const hasImageBeenFound = !!(image?.width && image?.height) || !!image?.aspectRatio
 
   // Calculate the dimensions of the image
@@ -67,6 +59,5 @@ export const useImagePlaceholder = (artworkID?: string) => {
     width,
     height,
     blurhash: image?.blurhash as string | null | undefined,
-    imageURL: imageUrl,
   }
 }
