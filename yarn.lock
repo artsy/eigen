@@ -27,10 +27,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.41.0.tgz#9d7a4de85ea61791be1ec956f75e3c13ddf625ce"
   integrity sha512-BmrJE0BSSxERd1nYBF58vEF+/y3++p1QC5ch6wIptRRpQ9Fag4JTfK3QuJ0O1l04D1y4mKEovZYrAvsIKZq6Zw==
 
-"@artsy/palette-mobile@17.16.0":
-  version "17.16.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.16.0.tgz#13fbc60e40c05040f56898887d9bd8f5bb9be69c"
-  integrity sha512-OSf4G/iAMk1zLcQ+POSFGf+SDcrNAMvFP9Z1EdpiMi8XT6jksclg5bSqEEgruDZsR/VwS7tyi/eHsGHF7tchPQ==
+"@artsy/palette-mobile@17.19.0":
+  version "17.19.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.19.0.tgz#76c6b402f01656c234cf43614d854aa6d1728611"
+  integrity sha512-iObFh/bgM5r3tY50HxGC+XKShlwcn8da398+VntNjHyxxrqlamHG0aN38smqfNLIKoBTf+iSfYaocgAkfo4stQ==
   dependencies:
     "@artsy/palette-tokens" "^7.0.0"
     "@shopify/flash-list" "1.7.6"
@@ -40,7 +40,7 @@
     lodash "^4.17.21"
     moti "^0.25.3"
     react-nanny "^2.15.0"
-    react-native-blurhash "^1.1.11"
+    react-native-blurhash "^2.1.1"
     react-native-collapsible-tab-view "^8.0.0"
     react-native-fast-image "^8.6.3"
     react-native-pager-view "6.5.0"
@@ -14226,15 +14226,10 @@ react-native-blob-util@0.19.11:
     base-64 "0.1.0"
     glob "^10.3.10"
 
-react-native-blurhash@2.1.1:
+react-native-blurhash@2.1.1, react-native-blurhash@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/react-native-blurhash/-/react-native-blurhash-2.1.1.tgz#c8079881422664691b387e43b020b846dfd196e6"
   integrity sha512-b1aA5Tn31pPbqmaWnhJv7zSuN6o9M1t4yHciPunfP89LDkH2dvDIynvkE00Hen4Vmt6SnyXViSYH34MyvTvRiA==
-
-react-native-blurhash@^1.1.11:
-  version "1.1.11"
-  resolved "https://registry.yarnpkg.com/react-native-blurhash/-/react-native-blurhash-1.1.11.tgz#cef102cc0239eb30c184235caf3fcb0b1f3ce33d"
-  integrity sha512-lYFf0C6vBz+wr5p81ABlzT9vSWmg4qTrtYGObBzhPOFIM8T0BHXbz0cCIE/gWgKFohLEWrwXFQ78GgHLlw7Jig==
 
 react-native-bootsplash@6.3.4:
   version "6.3.4"
