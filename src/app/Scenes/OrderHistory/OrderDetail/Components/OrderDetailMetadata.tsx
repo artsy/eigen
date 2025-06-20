@@ -12,11 +12,10 @@ const IMAGE_MAX_HEIGHT = 380
 
 export const OrderDetailMetadata: React.FC<OrderDetailMetadataProps> = ({ order }) => {
   const { width: screenWidth } = useScreenDimensions()
-
   const orderData = useFragment(fragment, order)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
-  // const artwork = orderData.lineItems?.[0]?.artwork
+  const artwork = orderData.lineItems?.[0]?.artwork
   const artworkVersion = orderData.lineItems?.[0]?.artworkVersion
   const artworkImage = artworkVersion?.image
 
@@ -59,6 +58,9 @@ export const OrderDetailMetadata: React.FC<OrderDetailMetadataProps> = ({ order 
           {artworkVersion?.date ? `, ${artworkVersion.date}` : ""}
         </Text>
       </Flex>
+      <Text variant="sm" color="mono60">
+        {artwork?.partner?.name}
+      </Text>
       {!!orderData.totalListPrice && (
         <Text variant="sm" color="mono60">
           List price: {orderData.totalListPrice.display}
@@ -99,6 +101,11 @@ const fragment = graphql`
       display
     }
     lineItems {
+      artwork {
+        partner {
+          name
+        }
+      }
       artworkVersion {
         title
         artistNames
