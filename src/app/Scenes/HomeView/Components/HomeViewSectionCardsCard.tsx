@@ -3,7 +3,6 @@ import { Flex, Image, SkeletonBox, Text, useSpace } from "@artsy/palette-mobile"
 import { HomeViewSectionCardsCard_card$key } from "__generated__/HomeViewSectionCardsCard_card.graphql"
 import { HomeViewSectionCardsCard_section$key } from "__generated__/HomeViewSectionCardsCard_section.graphql"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
@@ -27,9 +26,6 @@ export const HomeViewSectionCardsCard: FC<HomeViewSectionCardsCardProps> = ({
   const card = useFragment(cardFragment, _card)
   const section = useFragment(sectionFragment, _section)
   const tracking = useHomeViewTracking()
-
-  const { variant } = useExperimentVariant("diamond_discover-tab")
-  const isDiscoverVariant = variant.name === "variant-a" && variant.enabled
 
   if (!card || !section) {
     return null
@@ -55,9 +51,7 @@ export const HomeViewSectionCardsCard: FC<HomeViewSectionCardsCardProps> = ({
         card.entityType as ScreenOwnerType,
         href,
         section.contextModule as ContextModule,
-        index,
-        // TODO: remove the screenOwnerType parameter when the A/B test is dismantled
-        isDiscoverVariant ? OwnerType.search : OwnerType.home
+        index
       )
     }
   }

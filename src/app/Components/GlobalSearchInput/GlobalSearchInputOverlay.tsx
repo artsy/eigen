@@ -23,8 +23,6 @@ export const globalSearchInputOverlayQuery = graphql`
     viewer @skip(if: $skipSearchQuery) {
       ...SearchPills_viewer @arguments(term: $term)
     }
-    ...CuratedCollections_collections
-    ...TrendingArtists_query
   }
 `
 
