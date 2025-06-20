@@ -66,6 +66,8 @@ desc 'Ships iOS beta to TestFlight or Firebase'
 lane :ship_beta_ios do |options|
   deployment_target = options[:deployment_target] || 'testflight' # default to 'testflight'
 
+  reset_git_repo(force: true)
+
   bundle_version = set_build_version_ios
   set_git_properties_ios
 
