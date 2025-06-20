@@ -19,7 +19,7 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
   const space = useSpace()
   const tracking = useTracking()
 
-  const href = `/collections-by-category/${card.id}`
+  const href = `/collections-by-category/${card.title}`
   const navigationProps = {
     category: card.title,
     entityID: card.id,
