@@ -23,7 +23,6 @@ const CHIP_WIDTH = 230
 
 export const DiscoverSomethingNewChips: React.FC<DiscoverSomethingNewChipsProps> = ({
   collections: collectionsProp,
-  ...flexProps
 }) => {
   const space = useSpace()
   const tracking = useTracking()
@@ -50,7 +49,7 @@ export const DiscoverSomethingNewChips: React.FC<DiscoverSomethingNewChipsProps>
   }
 
   return (
-    <Flex {...flexProps}>
+    <Flex>
       <SectionTitle title="Discover Something New" mx={2} />
 
       <FlatList
