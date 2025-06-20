@@ -22,7 +22,7 @@ export const DiscoverSomethingNewChipsPlaceholder: React.FC<FlexProps> = (flexPr
           numColumns={numColumns}
           data={Array.from({ length: listSize })}
           renderItem={() => (
-            <Flex width={250} marginRight="10px">
+            <Flex width={250} mr={1}>
               <SkeletonBox height={60} borderRadius="5px" />
             </Flex>
           )}
