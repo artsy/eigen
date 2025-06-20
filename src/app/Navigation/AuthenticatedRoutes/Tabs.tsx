@@ -47,7 +47,7 @@ type TabRoutesParams = {
 const Tab = createBottomTabNavigator<TabRoutesParams>()
 
 const BOTTOM_TABS_HEIGHT = PixelRatio.getFontScale() < 1.5 ? 65 : 85
-export const TAB_BAR_ANIMATION_DURATION = 250
+export const TAB_BAR_ANIMATION_DURATION = 300
 
 const AppTabs: React.FC = () => {
   const { tabsBadges } = useBottomTabsBadges()

@@ -1,5 +1,5 @@
 diff --git a/node_modules/@react-navigation/bottom-tabs/lib/commonjs/views/BottomTabBar.js b/node_modules/@react-navigation/bottom-tabs/lib/commonjs/views/BottomTabBar.js
-index 8f0fb1c..755fce8 100644
+index 8f0fb1c..bfc1cfc 100644
 --- a/node_modules/@react-navigation/bottom-tabs/lib/commonjs/views/BottomTabBar.js
 +++ b/node_modules/@react-navigation/bottom-tabs/lib/commonjs/views/BottomTabBar.js
 @@ -131,6 +131,7 @@ function BottomTabBar({
@@ -19,6 +19,17 @@ index 8f0fb1c..755fce8 100644
    const visibilityAnimationConfigRef = _react.default.useRef(tabBarVisibilityAnimationConfig);
    _react.default.useEffect(() => {
      visibilityAnimationConfigRef.current = tabBarVisibilityAnimationConfig;
+@@ -251,6 +252,10 @@ function BottomTabBar({
+           outputRange: [layout.height + insets[tabBarPosition === 'top' ? 'top' : 'bottom'] + _reactNative.StyleSheet.hairlineWidth, 0]
+         })
+       }],
++      opacity: visible.interpolate({
++        inputRange: [0, 1],
++        outputRange: [0, 1]
++      }),
+       // Absolutely position the tab bar so that the content is below it
+       // This is needed to avoid gap at bottom when the tab bar is hidden
+       position: isTabBarHidden ? 'absolute' : undefined
 diff --git a/node_modules/@react-navigation/bottom-tabs/src/types.tsx b/node_modules/@react-navigation/bottom-tabs/src/types.tsx
 index 02f7119..01dfabc 100644
 --- a/node_modules/@react-navigation/bottom-tabs/src/types.tsx
