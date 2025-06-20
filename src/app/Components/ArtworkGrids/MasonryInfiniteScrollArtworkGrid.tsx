@@ -1,6 +1,6 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { useSpace } from "@artsy/palette-mobile"
-import { MasonryFlashList, MasonryFlashListProps } from "@shopify/flash-list"
+import { FlashListProps, MasonryFlashList, MasonryFlashListProps } from "@shopify/flash-list"
 import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryArtworkGridItem } from "app/Components/ArtworkGrids/MasonryArtworkGridItem"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
@@ -9,11 +9,10 @@ import {
   MASONRY_LIST_PAGE_SIZE,
   MasonryArtworkItem,
   NUM_COLUMNS_MASONRY,
-  ON_END_REACHED_THRESHOLD_MASONRY,
   masonryRenderItemProps,
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
-import React, { FC, useCallback } from "react"
+import React, { FC, useCallback, useMemo } from "react"
 import Animated from "react-native-reanimated"
 
 type MasonryFlashListOmittedProps = Omit<
@@ -74,11 +73,11 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   const shouldDisplaySpinner = !!artworks.length && !!isLoading && !!hasMore
   const shouldDisplayHeader = !!artworks.length && ListHeaderComponent !== undefined
 
-  const onEndReached = () => {
+  const onEndReached = useCallback(() => {
     if (!!hasMore && !isLoading && !!loadMore) {
       loadMore?.(pageSize)
     }
-  }
+  }, [hasMore, isLoading, loadMore, pageSize])
 
   const renderItem = useCallback(
     ({ item, index, columnIndex }: masonryRenderItemProps) => (
@@ -106,47 +105,73 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         hideSaveIcon={hideSaveIcon}
       />
     ),
-    [rest.numColumns]
+    [
+      contextModule,
+      contextScreenOwnerType,
+      contextScreen,
+      contextScreenOwnerId,
+      contextScreenOwnerSlug,
+      rest.numColumns,
+      space,
+      artworks.length,
+      partnerOffer,
+      priceOfferMessage,
+      onPress,
+      hideSaleInfo,
+      hideSaveIcon,
+    ]
   )
 
   const FlashlistComponent = animated ? AnimatedMasonryFlashList : MasonryFlashList
 
-  const hasArtworks = artworks.length > 0
+  const getAdjustedNumColumns = useCallback(() => {
+    return rest.numColumns ?? NUM_COLUMNS_MASONRY
+  }, [rest.numColumns])
 
-  const getAdjustedNumColumns = () => {
-    if (hasArtworks) {
-      return rest.numColumns ?? NUM_COLUMNS_MASONRY
-    }
-    // WARNING: if the masonry is empty we need to have numColumns=1 to avoid a crash
-    // that happens only when we dynamically change the number of columns see more here:
-    // https://github.com/artsy/eigen/pull/10319
-    return 1
+  const flashlistComponentProps = useMemo(() => {
+    return {
+      keyboardShouldPersistTaps: "handled",
+      ListHeaderComponent: shouldDisplayHeader ? ListHeaderComponent : null,
+      ListEmptyComponent: ListEmptyComponent,
+      refreshControl: refreshControl,
+      onScroll: rest.onScroll,
+      testID: "masonry-artwork-grid",
+    } satisfies Omit<FlashListProps<MasonryArtworkItem>, "numColumns" | "data" | "renderItem">
+  }, [shouldDisplayHeader, ListHeaderComponent, ListEmptyComponent, refreshControl, rest.onScroll])
+
+  if (artworks.length === 0) {
+    return (
+      <FlashlistComponent
+        data={[]}
+        renderItem={() => null}
+        {...flashlistComponentProps}
+        numColumns={NUM_COLUMNS_MASONRY}
+        contentContainerStyle={{
+          // No paddings are needed for single column grids
+          paddingHorizontal: space(2),
+        }}
+      />
+    )
   }
 
   return (
     <FlashlistComponent
-      keyboardShouldPersistTaps="handled"
-      contentContainerStyle={{
-        // No paddings are needed for single column grids
-        paddingHorizontal: getAdjustedNumColumns() === 1 ? 0 : space(2),
-      }}
-      data={artworks}
+      {...flashlistComponentProps}
+      data={artworks as unknown as readonly MasonryArtworkItem[]}
       keyExtractor={(item) => item.id}
-      onEndReached={onEndReached}
-      onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
       numColumns={getAdjustedNumColumns()}
-      estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
-      ListHeaderComponent={shouldDisplayHeader ? ListHeaderComponent : null}
-      ListEmptyComponent={ListEmptyComponent}
-      refreshControl={refreshControl}
       renderItem={renderItem}
       ListFooterComponent={
         hasMore ? (
           <Footer ListFooterComponent={ListFooterComponent} isLoading={shouldDisplaySpinner} />
         ) : null
       }
-      onScroll={rest.onScroll}
-      testID="masonry-artwork-grid"
+      estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
+      onEndReached={onEndReached}
+      contentContainerStyle={{
+        // No paddings are needed for single column grids
+        paddingHorizontal: getAdjustedNumColumns() === 1 ? 0 : space(2),
+      }}
     />
   )
 }
