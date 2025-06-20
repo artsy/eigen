@@ -583,9 +583,6 @@ export const artsyDotNetRoutes = defineRoutes([
     Component: ArtworkScreen,
     options: {
       hidesBottomTabs: true,
-      screenOptions: {
-        headerShown: false,
-      },
     },
     queries: [ArtworkScreenQuery],
   },

@@ -65,9 +65,9 @@ export function AboveTheFoldQueryRenderer<
     }
   }, [])
 
-  // we should call render if we have all the data already
+  // we should call render if we have all above the data already
   // we should also call render if we are no longer waiting for a debounce
-  const shouldCallRender = (aboveArgs?.props && belowArgs?.props) || hasFinishedDebouncing
+  const shouldCallRender = aboveArgs?.props || hasFinishedDebouncing
 
   const render = useMemo(
     () =>

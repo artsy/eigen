@@ -1,4 +1,5 @@
-import { Flex, Join, Spacer, useSpace } from "@artsy/palette-mobile"
+import { Flex, ImageSkeleton, Join, Spacer } from "@artsy/palette-mobile"
+import { CARD_HEIGHT } from "app/Scenes/Artwork/Components/ArtworkHeader"
 import { useImagePlaceholder } from "app/Scenes/Artwork/helpers"
 import { PlaceholderBox, PlaceholderText, RandomNumberGenerator } from "app/utils/placeholders"
 import { times } from "lodash"
@@ -9,18 +10,9 @@ interface AboveTheFoldPlaceholderProps {
 }
 
 const ArtworkActionsPlaceholder = () => {
-  const space = useSpace()
-
   return (
     <Flex flexDirection="row" justifyContent="center">
-      {times(3).map((index) => (
-        <PlaceholderBox
-          key={`auction-${index}`}
-          width={50}
-          height={18}
-          marginHorizontal={space(1)}
-        />
-      ))}
+      <PlaceholderBox width={200} height={22} />
     </Flex>
   )
 }
@@ -53,27 +45,16 @@ const ArtworkDetailsPlaceholder = () => {
 }
 
 export const AboveTheFoldPlaceholder: React.FC<AboveTheFoldPlaceholderProps> = ({ artworkID }) => {
-  const { width, height } = useImagePlaceholder(artworkID)
+  const { width, height, blurhash } = useImagePlaceholder(artworkID)
 
   return (
-    <Flex flex={1}>
-      {/* Header */}
-      <Flex height={44} px={2} alignItems="center" flexDirection="row">
-        <Flex flex={1} flexDirection="row" alignItems="center" justifyContent="space-between">
-          <PlaceholderBox width={20} height={20} />
-
-          <Flex flexDirection="row" alignItems="center">
-            <PlaceholderBox width={105} height={25} />
-          </Flex>
-        </Flex>
-      </Flex>
-
+    <Flex flex={1} pt={2}>
       {/* Artwork thumbnail */}
-      <Flex mx="auto" pt={2}>
-        <PlaceholderBox width={width} height={height} />
+      <Flex mx="auto" py={2} height={CARD_HEIGHT} justifyContent="center">
+        <ImageSkeleton dimensions={{ width, height }} blurhash={blurhash} />
       </Flex>
 
-      <Spacer y={1} />
+      <Spacer y={4} />
 
       {/* Content */}
       <Flex px={2}>
