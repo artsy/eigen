@@ -91,15 +91,6 @@ const fragment = graphql`
     totalListPrice {
       display
     }
-    itemsTotal {
-      display
-    }
-    shippingTotal {
-      display
-    }
-    taxTotal {
-      display
-    }
     lineItems {
       artwork {
         partner {
