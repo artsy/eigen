@@ -88,7 +88,7 @@ export const MARKETING_COLLECTION_CATEGORIES: Record<string, MarketingCollection
       "new-to-artsy",
     ],
   },
-} as const
+}
 
 export const ORDERED_CATEGORY_KEYS = Object.keys(
   MARKETING_COLLECTION_CATEGORIES
