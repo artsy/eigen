@@ -7,6 +7,7 @@ import { withProfiler } from "@sentry/react-native"
 import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
+import { DiscoverSomethingNew } from "app/Scenes/Search/components/DiscoverSomethingNew/DiscoverSomethingNew"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
@@ -119,6 +120,7 @@ export const Search: React.FC = () => {
             keyboardShouldPersistTaps="handled"
             contentContainerStyle={{ paddingTop: space(2) }}
           >
+            <DiscoverSomethingNew />
             <TrendingArtists data={queryData} mb={4} />
             <CuratedCollections collections={queryData} mb={4} />
 
