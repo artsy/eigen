@@ -349,19 +349,19 @@ jobs:
           name: Install maestro
           command: curl -Ls "https://get.maestro.mobile.dev" | bash
       - run:
-          name: Check maestro version
-          command: maestro --version
-      - setup-awscli
-      - install-gems
-      - run:
           name: Set up maestro env
           command: ./scripts/setup/setup-env-for-maestro android
       - run:
-          name: Download app APK
-          command: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
+          name: Check maestro version
+          command: maestro --version
+      - setup-awscli
+      # - install-gems
+      - run:
+          name: Download app A
+          command: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.aab ./Artsy.aab
       - run:
           name: Install APK on emulator
-          command: ./gradlew installBeta
+          command: cd project/android && ./gradlew installBeta && cd ..
       - run:
           name: Run Maestro Tests
           no_output_timeout: 25m
