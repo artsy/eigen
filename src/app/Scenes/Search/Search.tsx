@@ -20,7 +20,6 @@ import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { CuratedCollections } from "./CuratedCollections"
 import { SearchResults } from "./SearchResults"
-import { TrendingArtists } from "./TrendingArtists"
 import { CityGuideCTA } from "./components/CityGuideCTA"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
 import { SEARCH_PILLS, TOP_PILL } from "./constants"
@@ -123,7 +122,6 @@ export const Search: React.FC = () => {
           >
             <DiscoverSomethingNew />
             <ExploreByCategory />
-            <TrendingArtists data={queryData} mb={4} />
             <CuratedCollections collections={queryData} mb={4} />
 
             <HorizontalPadding>{!!shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
@@ -142,7 +140,6 @@ export const SearchScreenQuery = graphql`
       ...SearchPills_viewer @arguments(term: $term)
     }
     ...CuratedCollections_collections
-    ...TrendingArtists_query
   }
 `
 

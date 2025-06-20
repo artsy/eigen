@@ -24,7 +24,6 @@ export const globalSearchInputOverlayQuery = graphql`
       ...SearchPills_viewer @arguments(term: $term)
     }
     ...CuratedCollections_collections
-    ...TrendingArtists_query
   }
 `
 
