@@ -85,35 +85,6 @@ lane :upload_sentry_sourcemaps do |options|
   end
 end
 
-lane :upload_expo_sourcemaps do |options|
-  org_slug = options[:org_slug]
-  project_slug = options[:project_slug]
-  sentry_release_name = options[:sentry_release_name]
-  dist = options[:dist]
-  build_folder = options[:build_folder]
-  platform = options[:platform]
-
-  sourcemap_dir = "#{build_folder}/_expo/static/js"
-  file_base = Dir.glob("#{sourcemap_dir}/#{platform}/index*.hbc").first
-
-  unless file_base
-    raise "JS bundle not found for platform: #{platform}"
-  end
-
-  bundle_path = file_base
-  sourcemap_path = "#{file_base}.map"
-
-  upload_sentry_sourcemaps(
-    org_slug: org_slug,
-    project_slug: project_slug,
-    sentry_release_name: sentry_release_name,
-    dist: dist,
-    bundle_path: bundle_path,
-    sourcemap_path: sourcemap_path,
-    silence_failures: true # we ship expo releases every commit to main, failures are noisy
-  )
-end
-
 private_lane :upload_dsyms_to_sentry do |options|
   org_slug = options[:org_slug]
   project_slug = options[:project_slug]
