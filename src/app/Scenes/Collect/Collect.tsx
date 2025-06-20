@@ -113,7 +113,7 @@ export const CollectContent: React.FC<CollectContentProps> = ({ viewer }) => {
         contextScreenOwnerType={OwnerType.collect}
         contextScreen={OwnerType.collect}
         ListEmptyComponent={
-          <Flex mx={2}>
+          <Flex>
             <CollectHeader
               appliedFiltersCount={appliedFiltersCount}
               setIsArtworksFilterModalVisible={setIsArtworksFilterModalVisible}

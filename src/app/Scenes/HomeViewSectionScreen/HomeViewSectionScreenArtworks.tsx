@@ -81,7 +81,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           disableAutoLayout
           pageSize={PAGE_SIZE}
           ListEmptyComponent={
-            <SimpleMessage m={2}>Nothing yet. Please check back later.</SimpleMessage>
+            <SimpleMessage my={2}>Nothing yet. Please check back later.</SimpleMessage>
           }
           refreshControl={RefreshControl}
           hasMore={hasNext}
