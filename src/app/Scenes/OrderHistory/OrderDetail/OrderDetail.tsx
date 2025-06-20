@@ -17,6 +17,7 @@ import { OrderDetailHelpLinks } from "app/Scenes/OrderHistory/OrderDetail/Compon
 import { OrderDetailMessage } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailMessage"
 import { OrderDetailMetadata } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailMetadata"
 import { OrderDetailPaymentInfo } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailPaymentInfo"
+import { OrderDetailPriceBreakdown } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailPriceBreakdown"
 import { NoFallback, SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -57,54 +58,7 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
         <OrderDetailMetadata order={orderData} />
 
         {/* 4th Part: Artwork price breakdown */}
-        <Box my={1}>
-          <Flex flexDirection="row" justifyContent="space-between">
-            <Text variant="sm" color="mono60">
-              Price
-            </Text>
-            <Text variant="sm" color="mono60">
-              $15,000
-            </Text>
-          </Flex>
-
-          <Flex flexDirection="row" justifyContent="space-between">
-            <Text variant="sm" color="mono60">
-              Standard shipping
-            </Text>
-            <Text variant="sm" color="mono60">
-              $0
-            </Text>
-          </Flex>
-
-          <Flex flexDirection="row" justifyContent="space-between">
-            <Text variant="sm" color="mono60">
-              Tax*
-            </Text>
-            <Text variant="sm" color="mono60">
-              $100
-            </Text>
-          </Flex>
-
-          <Spacer y={0.5} />
-
-          <Flex flexDirection="row" justifyContent="space-between">
-            <Text variant="sm" fontWeight="bold">
-              Total
-            </Text>
-            <Text variant="sm" fontWeight="bold">
-              $15,100
-            </Text>
-          </Flex>
-
-          <Spacer y={2} />
-          <Text variant="xs" color="mono60">
-            *Additional duties and taxes{" "}
-            <LinkText variant="xs" color="mono60">
-              may apply at import
-            </LinkText>
-            .
-          </Text>
-        </Box>
+        <OrderDetailPriceBreakdown order={data} />
 
         <Spacer y={2} />
 
@@ -156,6 +110,7 @@ const orderDetailFragment = graphql`
     ...OrderDetailPaymentInfo_order
     ...OrderDetailFulfillment_order
     ...OrderDetailMetadata_order
+    ...OrderDetailPriceBreakdown_order
   }
 `
 
