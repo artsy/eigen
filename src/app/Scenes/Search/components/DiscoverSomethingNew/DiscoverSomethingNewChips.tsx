@@ -1,10 +1,4 @@
-import {
-  ActionType,
-  ContextModule,
-  OwnerType,
-  ScreenOwnerType,
-  TappedCardGroup,
-} from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Chip, Flex, useSpace } from "@artsy/palette-mobile"
 import { DiscoverSomethingNewChips_collection$key } from "__generated__/DiscoverSomethingNewChips_collection.graphql"
 import { SectionTitle } from "app/Components/SectionTitle"
@@ -38,14 +32,7 @@ export const DiscoverSomethingNewChips: React.FC<DiscoverSomethingNewChipsProps>
   const handleOnChipPress = (collection: (typeof collections)[number], index: number) => {
     const href = `/collection/${collection.slug}`
 
-    tracking.trackEvent(
-      tracks.tappedCardGroup(
-        collection.internalID,
-        "MarketingCollection" as ScreenOwnerType, // TODO: stop typecasting this once cohesion is updated to include marketingCollection
-        href,
-        index
-      )
-    )
+    tracking.trackEvent(tracks.tappedCardGroup(collection.internalID, href, index))
   }
 
   return (
@@ -119,15 +106,14 @@ const fragment = graphql`
 `
 
 const tracks = {
-  tappedCardGroup: (entityID: string, entityType: ScreenOwnerType, href: string, index: number) =>
-    ({
-      action: ActionType.tappedCardGroup,
-      context_module: ContextModule.discoverSomethingNewRail,
-      context_screen_owner_type: OwnerType.search,
-      destination_screen_owner_type: entityType,
-      destination_path: href,
-      destination_screen_owner_id: entityID,
-      horizontal_slide_position: index,
-      type: "thumbnail",
-    }) as TappedCardGroup, // TODO: stop typecasting this once cohesion is updated to include destination_path
+  tappedCardGroup: (entityID: string, href: string, index: number) => ({
+    action: ActionType.tappedCardGroup,
+    context_module: ContextModule.discoverSomethingNewRail,
+    context_screen_owner_type: OwnerType.search,
+    destination_screen_owner_type: OwnerType.marketingCollection,
+    destination_path: href,
+    destination_screen_owner_id: entityID,
+    horizontal_slide_position: index,
+    type: "thumbnail",
+  }),
 }
