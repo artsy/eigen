@@ -21,7 +21,7 @@ commands:
     steps:
       - node/install:
           install-yarn: true
-          node-version: "20.9.0"
+          node-version: << pipeline.parameters.node_version >>
   generate-checksums:
     steps:
       - run:
@@ -217,7 +217,7 @@ jobs:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 16.2
+      xcode: << pipeline.parameters.xcode_version >>
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -238,7 +238,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 16.2
+      xcode: << pipeline.parameters.xcode_version >>
       resource_class: m2pro.medium
 
     steps:
@@ -263,7 +263,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 16.2
+      xcode: << pipeline.parameters.xcode_version >>
       resource_class: m2pro.medium
 
     steps:
@@ -308,7 +308,7 @@ jobs:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 16.2
+      xcode: << pipeline.parameters.xcode_version >>
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -326,7 +326,7 @@ jobs:
 
   build-deploy-ios-testflight:
     macos:
-      xcode: 16.2
+      xcode: << pipeline.parameters.xcode_version >>
       resource_class: macos.m1.medium.gen1
     steps:
       - checkout
@@ -338,7 +338,7 @@ jobs:
 
   build-deploy-ios-firebase:
     macos:
-      xcode: 16.2
+      xcode: << pipeline.parameters.xcode_version >>
       resource_class: macos.m1.medium.gen1
     steps:
       - checkout
@@ -356,7 +356,7 @@ jobs:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 16.2
+      xcode: << pipeline.parameters.xcode_version >>
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -389,7 +389,7 @@ jobs:
     parallelism: 16
     executor:
       name: node/default
-      tag: "20.9.0"
+      tag: << pipeline.parameters.node_version >>
     resource_class: large
     steps:
       - checkout
@@ -409,7 +409,7 @@ jobs:
   update-metaphysics:
     executor:
       name: node/default
-      tag: "20.9.0"
+      tag: << pipeline.parameters.node_version >>
     resource_class: medium
     steps:
       - checkout
@@ -424,7 +424,7 @@ jobs:
   check-code:
     executor:
       name: node/default
-      tag: "20.9.0"
+      tag: << pipeline.parameters.node_version >>
     resource_class: small
     steps:
       - checkout
@@ -448,7 +448,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 16.2
+      xcode: << pipeline.parameters.xcode_version >>
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -463,7 +463,7 @@ jobs:
   build-test-js:
     executor:
       name: node/default
-      tag: "20.9.0"
+      tag: << pipeline.parameters.node_version >>
     resource_class: medium
     steps:
       - checkout
@@ -496,7 +496,7 @@ jobs:
   build-echo-test-js:
     executor:
       name: node/default
-      tag: "20.9.0"
+      tag: << pipeline.parameters.node_version >>
     resource_class: medium
     steps:
       - checkout
@@ -522,7 +522,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 16.2
+      xcode: << pipeline.parameters.xcode_version >>
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -594,6 +594,12 @@ jobs:
           command: ./scripts/deploys/deploy-if-beta-branch-android BOTH
 
 parameters:
+  xcode_version:
+    type: string
+    default: "16.2"
+  node_version:
+    type: string
+    default: "20.9.0"
   run_workflow_build-run-tests-for-echo:
     type: boolean
     default: false
