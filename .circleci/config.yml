@@ -324,6 +324,30 @@ jobs:
           name: Deploy betas
           command: ./scripts/deploys/deploy-beta-both
 
+  build-deploy-ios-testflight:
+    macos:
+      xcode: 16.2
+      resource_class: macos.m1.medium.gen1
+    steps:
+      - checkout
+      - prep-ios-env
+      - install-bin-modules
+      - run:
+          name: Build and deploy iOS to TestFlight
+          command: bundle exec fastlane ship_beta_ios deployment_target:testflight
+
+  build-deploy-ios-firebase:
+    macos:
+      xcode: 16.2
+      resource_class: macos.m1.medium.gen1
+    steps:
+      - checkout
+      - prep-ios-env
+      - install-bin-modules
+      - run:
+          name: Build and deploy iOS to Firebase
+          command: bundle exec fastlane ship_beta_ios deployment_target:firebase
+
   check-and-deploy:
     environment:
       BUNDLE_PATH: .vendor
@@ -670,6 +694,26 @@ workflows:
             - check-code
             - build-test-js
             - horizon/block
+
+      - build-deploy-ios-testflight:
+          requires:
+            - horizon/block
+            - test-js
+            - build-test-js
+            - check-code
+          filters:
+            branches:
+              only: brian+george/code-sign-beta-failure
+
+      - build-deploy-ios-firebase:
+          requires:
+            - horizon/block
+            - test-js
+            - build-test-js
+            - check-code
+          filters:
+            branches:
+              only: brian+george/code-sign-beta-failure
 
       - build-test-app-android:
           filters:
