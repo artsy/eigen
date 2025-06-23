@@ -3,7 +3,8 @@ import {
   OrderDetailPriceBreakdown_order$data,
   OrderDetailPriceBreakdown_order$key,
 } from "__generated__/OrderDetailPriceBreakdown_order.graphql"
-import { RouterLink } from "app/system/navigation/RouterLink"
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { graphql, useFragment } from "react-relay"
 
 interface OrderDetailPriceBreakdownProps {
@@ -80,19 +81,13 @@ export const OrderDetailPriceBreakdown: React.FC<OrderDetailPriceBreakdownProps>
 
       <Spacer y={2} />
 
-      <Flex flexDirection="row" alignItems="center">
-        <Text variant="xs" color="mono60">
-          *Additional duties and taxes{" "}
-        </Text>
-        <RouterLink to={IMPORT_TAX_URL} hasChildTouchable>
-          <LinkText variant="xs" color="mono60">
-            may apply at import
-          </LinkText>
-        </RouterLink>
-        <Text variant="xs" color="mono60">
-          .
-        </Text>
-      </Flex>
+      <Text variant="xs" color="mono60">
+        *Additional duties and taxes{" "}
+        <LinkText onPress={() => navigate(IMPORT_TAX_URL)} variant="xs" color="mono60">
+          may apply at import
+        </LinkText>
+        .
+      </Text>
     </Box>
   )
 }
