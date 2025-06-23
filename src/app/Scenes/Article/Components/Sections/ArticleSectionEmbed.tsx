@@ -3,11 +3,11 @@ import { ArticleSectionEmbed_section$key } from "__generated__/ArticleSectionEmb
 import { WebView } from "react-native-webview"
 import { useFragment, graphql } from "react-relay"
 
-interface Props {
+interface ArticleSectionEmbedProps {
   section: ArticleSectionEmbed_section$key
 }
 
-export const ArticleSectionEmbed: React.FC<Props> = ({ section }) => {
+export const ArticleSectionEmbed: React.FC<ArticleSectionEmbedProps> = ({ section }) => {
   const data = useFragment(
     graphql`
       fragment ArticleSectionEmbed_section on ArticleSectionEmbed {
