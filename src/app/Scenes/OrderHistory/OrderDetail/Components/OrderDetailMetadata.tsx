@@ -2,6 +2,7 @@ import { Box, Flex, Image, Spacer, Text, useScreenDimensions } from "@artsy/pale
 import { OrderDetailMetadata_order$key } from "__generated__/OrderDetailMetadata_order.graphql"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { sizeToFit } from "app/utils/useSizeToFit"
+import { Text as RNText } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface OrderDetailMetadataProps {
@@ -49,11 +50,15 @@ export const OrderDetailMetadata: React.FC<OrderDetailMetadataProps> = ({ order 
       <Spacer y={1} />
 
       {/* Metadata */}
-      <Text variant="sm">{artworkVersion?.artistNames}</Text>
+      <RNText numberOfLines={1}>
+        <Text variant="sm">{artworkVersion?.artistNames}</Text>
+      </RNText>
       <Flex flexDirection="row" alignItems="center">
-        <Text variant="sm" color="mono60" style={{ flex: 1 }} numberOfLines={1}>
-          {artworkVersion?.title}
-        </Text>
+        <RNText numberOfLines={1} style={{ flexShrink: 1 }}>
+          <Text variant="sm" color="mono60">
+            {artworkVersion?.title}
+          </Text>
+        </RNText>
         <Text variant="sm" color="mono60">
           {artworkVersion?.date ? `, ${artworkVersion.date}` : ""}
         </Text>
