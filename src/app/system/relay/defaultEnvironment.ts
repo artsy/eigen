@@ -43,7 +43,14 @@ const network = new RelayNetworkLayer(
     metaphysicsExtensionsLoggerMiddleware(),
     cacheHeaderMiddleware(),
     simpleLoggerMiddleware(),
-    __DEV__ && logRelay ? relayErrorMiddleware() : null,
+    __DEV__ && logRelay
+      ? relayErrorMiddleware({
+          disableServerMiddlewareTip: true,
+          // We only use relay so no need prefix this with relay error
+          prefix: " ",
+          logger: cleanConsoleError,
+        })
+      : null,
     __DEV__ && logRelay ? perfMiddleware() : null,
     timingMiddleware(),
     checkAuthenticationMiddleware(), // KEEP AS CLOSE TO THE BOTTOM OF THIS ARRAY AS POSSIBLE. It needs to run as early as possible in the middlewares.
@@ -76,3 +83,15 @@ export const bottomTabsRelayEnvironment = new Environment({
   ]),
   store: new Store(new RecordSource()),
 })
+
+function cleanConsoleError(...args: any[]) {
+  // Flatten and join all string-like arguments
+  const message = args
+    .map((arg) => (typeof arg === "string" ? arg : JSON.stringify(arg, null, 2)))
+    .join(" ")
+
+  // Remove format specifiers like %c, %O, etc.
+  const cleanedMessage = message.replace(/%[a-zA-Z]/g, "")
+
+  console.error(cleanedMessage)
+}
