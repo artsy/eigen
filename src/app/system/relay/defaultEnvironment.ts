@@ -46,8 +46,7 @@ const network = new RelayNetworkLayer(
     __DEV__ && logRelay
       ? relayErrorMiddleware({
           disableServerMiddlewareTip: true,
-          // We only use relay so no need prefix this with relay error
-          prefix: " ",
+          prefix: "[RELAY-NETWORK]",
           logger: cleanConsoleError,
         })
       : null,
