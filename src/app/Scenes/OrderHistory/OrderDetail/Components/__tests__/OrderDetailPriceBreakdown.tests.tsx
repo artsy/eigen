@@ -66,7 +66,7 @@ describe("OrderDetailPriceBreakdown", () => {
   it("renders import tax disclaimer with link", () => {
     renderWithRelay()
 
-    expect(screen.getByText("*Additional duties and taxes")).toBeOnTheScreen()
+    expect(screen.getByText("*Additional duties and taxes may apply at import.")).toBeOnTheScreen()
     expect(screen.getByText("may apply at import")).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("may apply at import"))
