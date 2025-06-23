@@ -671,7 +671,7 @@ workflows:
       #         only:
       #           - main
 
-      # - test-js
+      - test-js
 
       # - build-test-js
 
@@ -698,7 +698,7 @@ workflows:
       - build-deploy-ios-testflight:
           requires:
             - horizon/block
-            # - test-js
+            - test-js
             # - build-test-js
             # - check-code
           filters:
