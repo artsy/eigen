@@ -34,6 +34,8 @@ import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { useRefreshControl } from "app/utils/refreshHelpers"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { useState } from "react"
 import { graphql, useFragment, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -269,12 +271,16 @@ const CollectQueryRenderer: React.FC<CollectQueryRendererProps> = withSuspense({
 
 export const Collect: React.FC<CollectQueryRendererProps> = (props) => {
   return (
-    <Screen>
-      <Screen.AnimatedHeader onBack={goBack} title="Collect" />
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({ context_screen_owner_type: OwnerType.collect })}
+    >
+      <Screen>
+        <Screen.AnimatedHeader onBack={goBack} title="Collect" />
 
-      <Screen.Body fullwidth>
-        <CollectQueryRenderer {...props} />
-      </Screen.Body>
-    </Screen>
+        <Screen.Body fullwidth>
+          <CollectQueryRenderer {...props} />
+        </Screen.Body>
+      </Screen>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
