@@ -9,6 +9,6 @@ if [ $DISTRIBUTION_TARGET == "FIREBASE" ]; then
 elif [ $DISTRIBUTION_TARGET == "TESTFLIGHT" ]; then
   bundle exec fastlane ship_beta_ios deployment_target:testflight
 elif [ $DISTRIBUTION_TARGET == "BOTH" ]; then
-  bundle exec fastlane ship_beta_ios deployment_target:firebase
   bundle exec fastlane ship_beta_ios deployment_target:testflight
+  bundle exec fastlane ship_beta_ios deployment_target:firebase
 fi
