@@ -501,17 +501,14 @@ lane :deploy_to_expo_updates do |options|
   sh("pushd ../ > /dev/null && \
       #{expo_command} | tail -n1 && \
       popd > /dev/null")
-  build_folder = File.expand_path("../dist/")
 
-  upload_expo_sourcemaps(
-    org_slug: 'artsynet',
-    project_slug: 'eigen',
-    platform: platform,
-    sentry_release_name: "#{platform}-#{release_name_base}",
-    dist: dist_version,
-    build_folder: build_folder,
-    silence_failures: true # we ship expo releases every commit to main, failures are noisy
-  )
+  # Export environment variables for Sentry sourcemap upload
+  ENV['SENTRY_RELEASE'] = "#{platform}-#{release_name_base}"
+  ENV['SENTRY_DIST'] = dist_version
+
+  puts "🔧 Uploading sourcemaps to Sentry with release: #{platform}-#{release_name_base}, dist: #{dist_version}"
+  sh("cd .. && npx sentry-expo-upload-sourcemaps dist")
+
   tag_and_push(tag: "#{platform}-#{release_name_base}")
 
   puts "🚀 Deploying to #{deployment_name} with description '#{description}' for platform #{platform}"
