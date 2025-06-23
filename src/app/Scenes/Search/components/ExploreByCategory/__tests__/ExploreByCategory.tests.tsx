@@ -50,7 +50,7 @@ describe("ExploreByCategory", () => {
       context_module: "exploreBy",
       context_screen_owner_type: "search",
       destination_screen_owner_type: "collectionsCategory",
-      destination_path: "/collections-by-category/Price",
+      destination_path: "/collections-by-category/Collect by Price",
       destination_screen_owner_id: "Collect by Price",
       horizontal_slide_position: 4,
       type: "thumbnail",

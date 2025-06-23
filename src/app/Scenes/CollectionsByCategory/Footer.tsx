@@ -24,7 +24,11 @@ export const Footer: FC = () => {
         <RouterLink
           disablePrefetch
           key={`category_rail_${index}`}
-          to={`/collections-by-category/${c.title}?entityID=${c.id}`}
+          to={`/collections-by-category/${c.id}`}
+          navigationProps={{
+            category: c.title,
+            entityID: c.id,
+          }}
         >
           <Text variant="xl" color="mono0">
             {c.title}

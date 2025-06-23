@@ -19,7 +19,7 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
   const space = useSpace()
   const tracking = useTracking()
 
-  const href = `/collections-by-category/${card.title}`
+  const href = `/collections-by-category/${card.id}`
   const navigationProps = {
     category: card.title,
     entityID: card.id,
@@ -32,12 +32,7 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
   }
 
   return (
-    <RouterLink
-      to={href}
-      prefetchVariables={{ category: card.id }}
-      navigationProps={navigationProps}
-      onPress={handleCardPress}
-    >
+    <RouterLink to={href} navigationProps={navigationProps} onPress={handleCardPress}>
       <Flex borderRadius={5} overflow="hidden">
         <Image src={card.imageUrl} width={imageWidth} aspectRatio={IMAGE_RATIO} />
 
