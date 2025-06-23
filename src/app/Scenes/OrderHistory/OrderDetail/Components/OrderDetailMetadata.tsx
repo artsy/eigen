@@ -13,6 +13,7 @@ const IMAGE_MAX_HEIGHT = 380
 
 export const OrderDetailMetadata: React.FC<OrderDetailMetadataProps> = ({ order }) => {
   const { width: screenWidth } = useScreenDimensions()
+  const imageContainer = { height: IMAGE_MAX_HEIGHT, width: screenWidth - 40 }
   const orderData = useFragment(fragment, order)
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
@@ -21,8 +22,11 @@ export const OrderDetailMetadata: React.FC<OrderDetailMetadataProps> = ({ order 
   const artworkImage = artworkVersion?.image
 
   const { height, width } = sizeToFit(
-    { height: artworkImage?.height ?? 0, width: artworkImage?.width ?? 0 },
-    { height: IMAGE_MAX_HEIGHT, width: screenWidth - 40 }
+    {
+      height: artworkImage?.height ?? imageContainer.height,
+      width: artworkImage?.width ?? imageContainer.width,
+    },
+    imageContainer
   )
 
   return (
