@@ -125,6 +125,12 @@ commands:
       - install-node
       - setup-awscli
       - setup-env-file
+      - run:
+          name: Download fonts from s3
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download ios assets
+          command: ./scripts/setup/download-assets-ios
       - install-node-modules
       - run-relay-compiler
       - update-echo
@@ -143,12 +149,6 @@ commands:
     steps:
       - restore_cache:
           key: << pipeline.parameters.app_build_ios_cache_key >>
-      - run:
-          name: Download fonts from s3
-          command: ./scripts/setup/download-fonts
-      - run:
-          name: Download ios assets
-          command: ./scripts/setup/download-assets-ios
       - run:
           name: Build App
           command: ./scripts/ci/ci-ios << parameters.build_type >>
@@ -708,7 +708,7 @@ workflows:
       - build-deploy-ios-firebase:
           requires:
             - horizon/block
-            # - test-js
+            - test-js
             # - build-test-js
             # - check-code
           filters:
