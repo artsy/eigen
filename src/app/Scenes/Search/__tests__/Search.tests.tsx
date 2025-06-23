@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { SearchScreen } from "app/Scenes/Search/Search"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
@@ -21,7 +21,9 @@ describe("Search", () => {
     expect(screen.queryByText("Artists")).not.toBeOnTheScreen()
 
     // should show City Guide
-    expect(screen.getByText("City Guide")).toBeOnTheScreen()
+    await waitFor(() => {
+      expect(screen.getByText("City Guide")).toBeOnTheScreen()
+    })
 
     fireEvent.changeText(searchInput, "Ba")
   })
