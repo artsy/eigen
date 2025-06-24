@@ -351,6 +351,28 @@ jobs:
           name: Build and deploy iOS to Firebase
           command: bundle exec fastlane ship_beta_ios deployment_target:firebase
 
+  build-deploy-android-playstore:
+    docker:
+      - image: cimg/android:2025.03.1-node
+    resource_class: xlarge
+    steps:
+      - prep-android-env
+      - install-bin-modules
+      - run:
+          name: Build and deploy Android to Play Store
+          command: bundle exec fastlane ship_beta_android deployment_target:playstore
+
+  build-deploy-android-firebase:
+    docker:
+      - image: cimg/android:2025.03.1-node
+    resource_class: xlarge
+    steps:
+      - prep-android-env
+      - install-bin-modules
+      - run:
+          name: Build and deploy Android to Firebase
+          command: bundle exec fastlane ship_beta_android deployment_target:firebase
+
   check-and-deploy:
     environment:
       BUNDLE_PATH: .vendor
@@ -705,21 +727,41 @@ workflows:
       #       - horizon/block
 
       - build-deploy-ios-testflight:
-          requires:
-            - horizon/block
-            - test-js
-            # - build-test-js
-            # - check-code
+          # requires:
+          #   - horizon/block
+          #   - test-js
+          # - build-test-js
+          # - check-code
           filters:
             branches:
               only: brian+george/code-sign-beta-failure
 
       - build-deploy-ios-firebase:
-          requires:
-            - horizon/block
-            - test-js
-            # - build-test-js
-            # - check-code
+          # requires:
+          #   - horizon/block
+          #   - test-js
+          # - build-test-js
+          # - check-code
+          filters:
+            branches:
+              only: brian+george/code-sign-beta-failure
+
+      - build-deploy-android-playstore:
+          # requires:
+          #   - horizon/block
+          #   - test-js
+          # - build-test-js
+          # - check-code
+          filters:
+            branches:
+              only: brian+george/code-sign-beta-failure
+
+      - build-deploy-android-firebase:
+          # requires:
+          #   - horizon/block
+          #   - test-js
+          # - build-test-js
+          # - check-code
           filters:
             branches:
               only: brian+george/code-sign-beta-failure
