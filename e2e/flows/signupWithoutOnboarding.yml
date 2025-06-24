@@ -1,7 +1,24 @@
 appId: ${MAESTRO_APP_ID}
 ---
+- launchApp:
+    clearState: false
+    arguments:
+      shouldSignOut: "true"
+- runScript:
+    file: signup.js
+- assertVisible: "Sign up or log in"
+- tapOn: "Email Input"
+- inputText: ${output.signup.email}
+- tapOn: "Continue.*"
+- assertVisible:
+    id: "password"
+- inputText: ${output.signup.password}
+- tapOn: "Continue.*"
+- inputText: "Test McTest"
 - runFlow:
-    file: signup.yml
+    commands:
+      - tapOn: Accept terms and privacy policy checkbox
+- tapOn: "Continue.*"
 - assertVisible: "Ready to find art you love?"
 - tapOn: "Skip.*"
 - assertVisible:
