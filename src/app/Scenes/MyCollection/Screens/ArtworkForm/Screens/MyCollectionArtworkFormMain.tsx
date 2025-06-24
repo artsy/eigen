@@ -36,6 +36,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { dismissModal, goBack, popToRoot } from "app/system/navigation/navigate"
 import { artworkMediumCategories } from "app/utils/artworkMediumCategories"
 import { LocationWithDetails } from "app/utils/googleMaps"
+import { useAndroidActionSheetStyles } from "app/utils/hooks/useAndroidActionSheetStyles"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { showPhotoActionSheet } from "app/utils/requestPhotos"
 import { isEmpty } from "lodash"
@@ -60,6 +61,7 @@ export const MyCollectionArtworkFormMain: React.FC<
   const color = useColor()
 
   const { showActionSheetWithOptions } = useActionSheet()
+  const androidCustomSheetStyles = useAndroidActionSheetStyles()
 
   const { mode, artwork } = MyCollectionArtworkStore.useStoreState((state) => state)
 
@@ -153,6 +155,7 @@ export const MyCollectionArtworkFormMain: React.FC<
             destructiveButtonIndex: 0,
             cancelButtonIndex: 1,
             useModal: true,
+            ...androidCustomSheetStyles,
           },
           (buttonIndex) => {
             if (buttonIndex === 0) {
