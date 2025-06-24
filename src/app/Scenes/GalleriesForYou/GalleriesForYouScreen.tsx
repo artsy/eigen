@@ -27,10 +27,14 @@ interface GalleriesForYouProps {
 export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) => {
   const visualizeLocation = useDevToggle("DTLocationDetectionVisialiser")
 
+  // Refetch in case the user doesn't follow artists and there are no results
+  // This will show results even in case the user doesn't follow any artists
+  const [includePartnersWithFollowedArtists, setIncludePartnersWithFollowedArtists] = useState(true)
+
   const queryParams = {
     near: location && `${location?.lat},${location?.lng}`,
     includePartnersNearIpBasedLocation: !location,
-    includePartnersWithFollowedArtists: true,
+    includePartnersWithFollowedArtists: includePartnersWithFollowedArtists,
   }
 
   const queryData = useLazyLoadQuery<GalleriesForYouScreenQuery>(GalleriesForYouQuery, queryParams)
@@ -42,25 +46,21 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
 
   const ipLocation = queryData.requestLocation?.coordinates
 
-  const userLocation = location || { lat: ipLocation?.lat!, lng: ipLocation?.lng! }
+  const userLocation = location || { lat: ipLocation?.lat, lng: ipLocation?.lng }
 
   const RefreshControl = useRefreshControl(refetch)
 
   const partners = extractNodes(data.partnersConnection)
 
-  // Refetch in case the user doesn't follow artists and there are no results
-  // This will show results even in case the user doesn't follow any artists
-  const [hasRefetched, setHasRefetched] = useState(false)
-
   useEffect(() => {
-    if (partners.length || hasRefetched) return
+    if (partners.length || !includePartnersWithFollowedArtists) return
 
     refetch({
       ...queryParams,
       includePartnersWithFollowedArtists: false,
     })
 
-    setHasRefetched(true)
+    setIncludePartnersWithFollowedArtists(false)
   }, [partners])
 
   return (
