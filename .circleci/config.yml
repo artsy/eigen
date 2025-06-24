@@ -631,9 +631,11 @@ jobs:
     working_directory: ~/project
     steps:
       - checkout
+      - setup-awscli
       - run:
-          name: Set up Ruby & Bundler (if needed)
-          command: bundle install # Only if you use Bundler
+          name: Download android assets
+          command: ./scripts/setup/download-assets-android
+      - install-gems
       - run:
           name: Get next Android version code
           command: fastlane get_next_android_build_version
