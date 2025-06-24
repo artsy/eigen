@@ -1,4 +1,4 @@
-import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import MapboxGL from "@rnmapbox/maps"
 import { themeGet } from "@styled-system/theme-get"
