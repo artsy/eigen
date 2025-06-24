@@ -81,9 +81,11 @@ export const OrderDetailMetadata: React.FC<OrderDetailMetadataProps> = ({ order 
             {artworkVersion?.title}
           </Text>
         </RNText>
-        <Text variant="sm" color="mono60">
-          {artworkVersion?.date ? `, ${artworkVersion.date}` : ""}
-        </Text>
+        {!!artworkVersion?.date && (
+          <Text variant="sm" color="mono60">
+            , {artworkVersion.date}
+          </Text>
+        )}
       </Flex>
       <Text variant="sm" color="mono60">
         {artwork?.partner?.name}
