@@ -359,8 +359,13 @@ jobs:
       - prep-android-env
       - install-bin-modules
       - run:
+          name: Load version code
+          command: |
+            VERSION_CODE=$(cat next_version_code.txt)
+            echo "export VERSION_CODE=$VERSION_CODE" >> $BASH_ENV
+      - run:
           name: Build and deploy Android to Play Store
-          command: bundle exec fastlane ship_beta_android deployment_target:playstore
+          command: bundle exec fastlane ship_beta_android deployment_target:playstore version_code:$VERSION_CODE
 
   build-deploy-android-firebase:
     docker:
@@ -370,8 +375,13 @@ jobs:
       - prep-android-env
       - install-bin-modules
       - run:
+          name: Load version code
+          command: |
+            VERSION_CODE=$(cat next_version_code.txt)
+            echo "export VERSION_CODE=$VERSION_CODE" >> $BASH_ENV
+      - run:
           name: Build and deploy Android to Firebase
-          command: bundle exec fastlane ship_beta_android deployment_target:firebase
+          command: bundle exec fastlane ship_beta_android deployment_target:firebase version_code:$VERSION_CODE
 
   check-and-deploy:
     environment:
@@ -615,6 +625,23 @@ jobs:
           name: Deploy if beta - play store and firebase
           command: ./scripts/deploys/deploy-if-beta-branch-android BOTH
 
+  prepare-android-version:
+    docker:
+      - image: cimg/android:2025.03.1-node
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run:
+          name: Set up Ruby & Bundler (if needed)
+          command: bundle install # Only if you use Bundler
+      - run:
+          name: Get next Android version code
+          command: fastlane get_next_android_build_version
+      - persist_to_workspace:
+          root: .
+          paths:
+            - next_version_code.txt
+
 parameters:
   xcode_version:
     type: string
@@ -726,8 +753,11 @@ workflows:
       #       - build-test-js
       #       - horizon/block
 
+      - prepare-android-version
+
       - build-deploy-ios-testflight:
-          # requires:
+          requires:
+            - prepare-android-version
           #   - horizon/block
           #   - test-js
           # - build-test-js
@@ -737,7 +767,8 @@ workflows:
               only: brian+george/code-sign-beta-failure
 
       - build-deploy-ios-firebase:
-          # requires:
+          requires:
+            - prepare-android-version
           #   - horizon/block
           #   - test-js
           # - build-test-js
