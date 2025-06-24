@@ -21,6 +21,7 @@ export type Brand =
   | "JCB"
   | "UnionPay"
   | "Unknown"
+  | (string & {})
 
 interface BrandCreditCardIconProps extends IconProps {
   type: Brand

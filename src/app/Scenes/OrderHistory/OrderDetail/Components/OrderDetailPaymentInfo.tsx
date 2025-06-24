@@ -4,10 +4,7 @@ import {
   OrderDetailPaymentInfo_order$data,
   OrderDetailPaymentInfo_order$key,
 } from "__generated__/OrderDetailPaymentInfo_order.graphql"
-import {
-  Brand,
-  BrandCreditCardIcon,
-} from "app/Scenes/OrderHistory/OrderDetail/Components/BrandCreditCardIcon"
+import { BrandCreditCardIcon } from "app/Scenes/OrderHistory/OrderDetail/Components/BrandCreditCardIcon"
 import { DateTime } from "luxon"
 import { graphql, useFragment } from "react-relay"
 
@@ -65,7 +62,7 @@ const getPaymentMethodContent = (order: NonNullable<OrderDetailPaymentInfo_order
       }).toFormat("MM/yy")
 
       return {
-        Icon: (props: IconProps) => <BrandCreditCardIcon type={brand as Brand} {...props} />,
+        Icon: (props: IconProps) => <BrandCreditCardIcon type={brand} {...props} />,
         text: `•••• ${lastDigits}  Exp ${formattedExpDate}`,
       }
     }
