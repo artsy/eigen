@@ -19,3 +19,4 @@ export const ICON_HIT_SLOP = {
   left: 5,
 }
 export const BACK_BUTTON_SIZE_SIZE = 40
+export const SCROLLVIEW_PADDING_BOTTOM_OFFSET = 80

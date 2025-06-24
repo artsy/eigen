@@ -2,6 +2,7 @@ import { Flex, Join, Spacer } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { OnboardingOrderedSetQuery } from "__generated__/OnboardingOrderedSetQuery.graphql"
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
+import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
@@ -40,7 +41,7 @@ const OnboardingOrderedSet: React.FC<OnboardingOrderedSetProps> = ({ id }) => {
     <FlatList
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{
-        paddingBottom: 80,
+        paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET,
       }}
       data={nodes}
       ItemSeparatorComponent={() => <Spacer y={2} />}
