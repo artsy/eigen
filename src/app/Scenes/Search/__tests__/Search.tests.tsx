@@ -1,6 +1,6 @@
-import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { SearchScreen } from "app/Scenes/Search/Search"
-import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("lodash/throttle", () => (fn: any) => {
   fn.flush = jest.fn()
@@ -8,14 +8,10 @@ jest.mock("lodash/throttle", () => (fn: any) => {
 })
 
 describe("Search", () => {
-  const { renderWithRelay } = setupTestWrapper({
-    Component: () => <SearchScreen route={{} as any} navigation={{} as any} />,
-  })
-
   it("should render a text input with placeholder and no pills", async () => {
-    renderWithRelay()
+    renderWithWrappers(<SearchScreen route={{} as any} navigation={{} as any} />)
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("search-placeholder"))
+    await screen.findByPlaceholderText("Search Artsy")
 
     const searchInput = screen.getByPlaceholderText("Search Artsy")
 
