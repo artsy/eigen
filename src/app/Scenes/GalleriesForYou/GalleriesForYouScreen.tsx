@@ -46,7 +46,7 @@ export const GalleriesForYou: React.FC<GalleriesForYouProps> = ({ location }) =>
 
   const ipLocation = queryData.requestLocation?.coordinates
 
-  const userLocation = location || { lat: ipLocation?.lat, lng: ipLocation?.lng }
+  const userLocation = location || { lat: ipLocation?.lat!, lng: ipLocation?.lng! }
 
   const RefreshControl = useRefreshControl(refetch)
 
