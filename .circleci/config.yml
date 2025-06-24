@@ -357,6 +357,8 @@ jobs:
     working_directory: ~/project
     resource_class: xlarge
     steps:
+      - attach_workspace:
+          at: .
       - prep-android-env
       - install-bin-modules
       - run:
@@ -374,6 +376,8 @@ jobs:
     working_directory: ~/project
     resource_class: xlarge
     steps:
+      - attach_workspace:
+          at: .
       - prep-android-env
       - install-bin-modules
       - run:
