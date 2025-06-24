@@ -642,7 +642,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - next_version_code.txt
+            - fastlane/next_version_code.txt
 
 parameters:
   xcode_version:
