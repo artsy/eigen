@@ -18844,6 +18844,15 @@ type Query {
     osWeights: [Float] = [0.6, 0.4]
   ): ArtworkConnection
 
+  # Discovery Marketing Collections for personalized recommendations
+  discoveryMarketingCollections(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    size: Int = 12
+  ): [MarketingCollection]
+
   # A namespace external partners (provided by Galaxy)
   external: External!
 
@@ -24544,6 +24553,15 @@ type Viewer {
     # Weights for the KNN and MLT query
     osWeights: [Float] = [0.6, 0.4]
   ): ArtworkConnection
+
+  # Discovery Marketing Collections for personalized recommendations
+  discoveryMarketingCollections(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    size: Int = 12
+  ): [MarketingCollection]
 
   # A namespace external partners (provided by Galaxy)
   external: External!
