@@ -19,6 +19,10 @@ export const useAndroidActionSheetStyles = (): Partial<ActionSheetOptions> => {
       backgroundColor: color("mono0"),
       paddingBottom: space(2),
     },
+    separatorStyle: {
+      backgroundColor: color("mono0"),
+    },
+    useModal: false,
   }
 }
 
@@ -39,6 +43,7 @@ export const __unsafe__useAndroidActionSheetStyles = (): Partial<ActionSheetOpti
         backgroundColor: THEMES.v3dark.colors.mono0,
         paddingBottom: THEMES.v3dark.space[2] as DimensionValue,
       },
+      useModal: false,
     }
   }
 
@@ -50,5 +55,6 @@ export const __unsafe__useAndroidActionSheetStyles = (): Partial<ActionSheetOpti
       backgroundColor: THEMES.v3light.colors.mono0,
       paddingBottom: THEMES.v3light.space[2] as DimensionValue,
     },
+    useModal: false,
   }
 }
