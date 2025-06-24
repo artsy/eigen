@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native"
 import { OnboardingSearchResultsQuery } from "__generated__/OnboardingSearchResultsQuery.graphql"
 import { OnboardingSearchResults_viewer$key } from "__generated__/OnboardingSearchResults_viewer.graphql"
 import { ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
+import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { times } from "lodash"
@@ -44,7 +45,7 @@ const OnboardingSearchResults: React.FC<OnboardingSearchResultsProps> = ({ entit
       showsVerticalScrollIndicator={false}
       data={searchResults}
       contentContainerStyle={{
-        paddingBottom: 80,
+        paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET,
       }}
       ItemSeparatorComponent={() => <Spacer y={2} />}
       keyExtractor={(item, index) => {

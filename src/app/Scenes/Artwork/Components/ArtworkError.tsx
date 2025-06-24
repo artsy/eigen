@@ -4,6 +4,7 @@ import { ArtworkErrorQuery } from "__generated__/ArtworkErrorQuery.graphql"
 import { ArtworkErrorRecentlyViewed_homePage$key } from "__generated__/ArtworkErrorRecentlyViewed_homePage.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { NavigationHeader } from "app/Components/NavigationHeader"
+import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { ArtworkModuleRailFragmentContainer } from "app/Scenes/HomeView/Components/ArtworkModuleRail"
 import { ArtworkRecommendationsRail } from "app/Scenes/HomeView/Components/ArtworkRecommendationsRail"
 import { NewWorksForYouRail } from "app/Scenes/HomeView/Components/NewWorksForYouRail"
@@ -30,7 +31,7 @@ export const ArtworkError: React.FC<ArtworkErrorProps> = ({ homePage, me, viewer
     <Flex flex={1}>
       <NavigationHeader onLeftButtonPress={goBack} />
 
-      <ScrollView contentContainerStyle={{ paddingBottom: 80 }}>
+      <ScrollView contentContainerStyle={{ paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET }}>
         <Flex p={2}>
           <Text variant="lg-display">The artwork you were looking for isn't available.</Text>
         </Flex>
