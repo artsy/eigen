@@ -1,5 +1,6 @@
 import { Box, Flex, Image, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { OrderDetailMetadata_order$key } from "__generated__/OrderDetailMetadata_order.graphql"
+import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { sizeToFit } from "app/utils/useSizeToFit"
 import { Text as RNText } from "react-native"
@@ -35,18 +36,35 @@ export const OrderDetailMetadata: React.FC<OrderDetailMetadataProps> = ({ order 
         {/* Image */}
         {!!artworkImage?.url && (
           <Flex alignItems="center">
-            <Image
-              accessible
-              accessibilityRole="image"
-              accessibilityLabel={artworkVersion?.title || "Artwork image"}
-              src={artworkImage.url}
-              aspectRatio={artworkImage.aspectRatio ?? 1}
-              width={width}
-              height={height}
-              blurhash={showBlurhash ? artworkImage.blurhash : undefined}
-              geminiResizeMode="fit"
-              resizeMode="contain"
-            />
+            {!!artwork?.slug && artwork.published ? (
+              <RouterLink to={`/artwork/${artwork.slug}`}>
+                <Image
+                  accessible
+                  accessibilityRole="image"
+                  accessibilityLabel={artworkVersion?.title || "Artwork image"}
+                  src={artworkImage.url}
+                  aspectRatio={artworkImage.aspectRatio ?? 1}
+                  width={width}
+                  height={height}
+                  blurhash={showBlurhash ? artworkImage.blurhash : undefined}
+                  geminiResizeMode="fit"
+                  resizeMode="contain"
+                />
+              </RouterLink>
+            ) : (
+              <Image
+                accessible
+                accessibilityRole="image"
+                accessibilityLabel={artworkVersion?.title || "Artwork image"}
+                src={artworkImage.url}
+                aspectRatio={artworkImage.aspectRatio ?? 1}
+                width={width}
+                height={height}
+                blurhash={showBlurhash ? artworkImage.blurhash : undefined}
+                geminiResizeMode="fit"
+                resizeMode="contain"
+              />
+            )}
           </Flex>
         )}
       </Box>
@@ -105,6 +123,8 @@ const fragment = graphql`
         partner {
           name
         }
+        slug
+        published
       }
       artworkVersion {
         title
