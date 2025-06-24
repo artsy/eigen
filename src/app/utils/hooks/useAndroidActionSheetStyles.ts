@@ -41,6 +41,7 @@ export const __unsafe__useAndroidActionSheetStyles = (): Partial<ActionSheetOpti
       },
     }
   }
+
   return {
     textStyle: {
       color: THEMES.v3light.colors.mono100,
