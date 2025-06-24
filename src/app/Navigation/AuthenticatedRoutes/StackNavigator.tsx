@@ -5,20 +5,14 @@ import {
   THEMES,
   Touchable,
 } from "@artsy/palette-mobile"
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
-import {
-  AuthenticatedRoutesParams,
-  TAB_BAR_ANIMATION_DURATION,
-} from "app/Navigation/AuthenticatedRoutes/Tabs"
+import { ScreenWrapper } from "app/Navigation/AuthenticatedRoutes/ScreenWrapper"
+import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { AppModule, ModuleDescriptor } from "app/Navigation/routes"
 import { isModalScreen } from "app/Navigation/utils/isModalScreen"
 import { goBack } from "app/system/navigation/navigate"
-import { memo } from "react"
 import { Platform } from "react-native"
 import { isTablet } from "react-native-device-info"
-import Animated, { Easing, useAnimatedStyle, withTiming } from "react-native-reanimated"
 
 export const StackNavigator = createNativeStackNavigator<AuthenticatedRoutesParams>()
 
@@ -91,39 +85,3 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
     />
   )
 }
-
-export interface ScreenWrapperProps {
-  readonly hidesBottomTabs?: boolean
-}
-
-export const ScreenWrapper: React.FC<ScreenWrapperProps> = memo(
-  ({ hidesBottomTabs = false, children }) => {
-    // We don't have the bottom tabs context on modal screens
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const tabBarHeight = hidesBottomTabs ? 0 : useBottomTabBarHeight()
-
-    const animatedStyle = useAnimatedStyle(() => {
-      return {
-        paddingBottom: withTiming(hidesBottomTabs ? 0 : tabBarHeight, {
-          duration: TAB_BAR_ANIMATION_DURATION,
-          easing: Easing.inOut(Easing.ease),
-        }),
-      }
-    })
-
-    return (
-      <RetryErrorBoundary>
-        <Animated.View
-          style={[
-            {
-              flex: 1,
-            },
-            animatedStyle,
-          ]}
-        >
-          {children}
-        </Animated.View>
-      </RetryErrorBoundary>
-    )
-  }
-)
