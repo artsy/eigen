@@ -1,4 +1,4 @@
-import { ShieldIcon, VisaIcon } from "@artsy/icons/native"
+import { ShieldIcon } from "@artsy/icons/native"
 import {
   Box,
   Flex,
@@ -13,6 +13,7 @@ import {
 } from "@artsy/palette-mobile"
 import { OrderDetailQuery } from "__generated__/OrderDetailQuery.graphql"
 import { OrderDetail_order$key } from "__generated__/OrderDetail_order.graphql"
+import { OrderDetailPaymentInfo } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailPaymentInfo"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { sizeToFit } from "app/utils/useSizeToFit"
@@ -205,20 +206,7 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
       <Spacer y={2} />
 
       {/* 7th Part: Payment */}
-      <Box px={2}>
-        <Text variant="sm" fontWeight="bold">
-          Payment method
-        </Text>
-
-        <Spacer y={0.5} />
-
-        <Flex flexDirection="row" alignItems="center">
-          <VisaIcon mr={0.5} />
-
-          <Text variant="xs"> •••• 4242 </Text>
-          <Text variant="xs"> Exp 12/29 </Text>
-        </Flex>
-      </Box>
+      <OrderDetailPaymentInfo order={data} />
     </Screen.ScrollView>
   )
 }
@@ -227,6 +215,7 @@ const orderDetailFragment = graphql`
   fragment OrderDetail_order on Order {
     id
     internalID
+    ...OrderDetailPaymentInfo_order
 
     lineItems {
       artwork {
