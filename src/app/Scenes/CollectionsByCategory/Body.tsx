@@ -102,7 +102,7 @@ export const BodyWithSuspense = withSuspense({
   Component: () => {
     const { params } = useRoute<CollectionsByCategoriesRouteProp>()
     const data = useLazyLoadQuery<BodyCollectionsByCategoryQuery>(collectionsByCategoryQuery, {
-      category: params.entityID,
+      category: params.category,
     })
 
     if (!data.viewer) {

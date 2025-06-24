@@ -38,6 +38,8 @@ describe("Footer", () => {
     renderWithWrappers(<Footer />)
 
     fireEvent.press(screen.getByText(/Movement/))
-    expect(navigate).toHaveBeenCalledWith("/collections-by-category/Movement?entityID=Movement")
+    expect(navigate).toHaveBeenCalledWith("/collections-by-category/Movement", {
+      passProps: { category: "Movement", entityID: "Movement" },
+    })
   })
 })
