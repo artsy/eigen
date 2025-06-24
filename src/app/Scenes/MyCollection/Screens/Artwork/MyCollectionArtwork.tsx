@@ -10,6 +10,7 @@ import {
 } from "@artsy/palette-mobile"
 import { MyCollectionArtworkQuery } from "__generated__/MyCollectionArtworkQuery.graphql"
 import { RetryErrorBoundary } from "app/Components/RetryErrorBoundary"
+import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { MyCollectionArtworkAboutWork } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkAbout/MyCollectionArtworkAboutWork"
 import { MyCollectionArtworkArticles } from "app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkAbout/MyCollectionArtworkArticles"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -109,7 +110,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
       />
 
       <Screen.ScrollView
-        contentContainerStyle={{ paddingBottom: 80 }}
+        contentContainerStyle={{ paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET }}
         refreshControl={
           <RefreshControl
             refreshing={isRefreshing}

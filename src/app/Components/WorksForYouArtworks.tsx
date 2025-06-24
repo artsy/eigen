@@ -3,6 +3,7 @@ import { Flex, Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
 import { WorksForYouArtworksQuery } from "__generated__/WorksForYouArtworksQuery.graphql"
 import { WorksForYouArtworks_viewer$key } from "__generated__/WorksForYouArtworks_viewer.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
+import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { NewWorksForYouPlaceholder } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { GlobalStore } from "app/store/GlobalStore"
 import { extractNodes } from "app/utils/extractNodes"
@@ -57,7 +58,7 @@ export const WorksForYouArtworks: React.FC<NewWorksForYouProps> = ({ viewer }) =
         )}
         onScroll={scrollHandler}
         refreshControl={RefreshControl}
-        style={{ paddingBottom: 120 }}
+        style={{ paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET }}
       />
     </Flex>
   )

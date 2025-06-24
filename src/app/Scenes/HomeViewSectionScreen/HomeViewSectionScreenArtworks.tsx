@@ -4,7 +4,7 @@ import { Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionScreenArtworks_section$key } from "__generated__/HomeViewSectionScreenArtworks_section.graphql"
 import { HomeViewSectionScreenQuery } from "__generated__/HomeViewSectionScreenQuery.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
-import { PAGE_SIZE } from "app/Components/constants"
+import { PAGE_SIZE, SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -90,7 +90,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           }}
           isLoading={isLoadingNext}
           onScroll={scrollHandler}
-          style={{ paddingBottom: 120 }}
+          style={{ paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET }}
           contextScreenOwnerType={section.ownerType as ScreenOwnerType}
         />
       </Screen.Body>

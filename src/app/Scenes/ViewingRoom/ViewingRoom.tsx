@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import { ViewingRoom_viewingRoom$data } from "__generated__/ViewingRoom_viewingRoom.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
+import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
@@ -157,7 +158,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
               setDisplayViewWorksButton(true)
             }
           }, [])}
-          contentContainerStyle={{ paddingBottom: 80 }}
+          contentContainerStyle={{ paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET }}
           viewabilityConfig={{ itemVisiblePercentThreshold: 15 }}
           data={sections}
           ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}
