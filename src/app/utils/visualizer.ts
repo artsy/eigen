@@ -2,6 +2,7 @@ import Clipboard from "@react-native-clipboard/clipboard"
 import { Toast } from "app/Components/Toast/Toast"
 import { unsafe_getDevToggle } from "app/store/GlobalStore"
 import { DevToggleName } from "app/store/config/features"
+import { __unsafe__useAndroidActionSheetStyles } from "app/utils/hooks/useAndroidActionSheetStyles"
 
 export const visualize = (
   type: string,
@@ -24,6 +25,7 @@ export const visualize = (
           message,
           options: ["Copy description", "Continue"],
           cancelButtonIndex: 1,
+          ...__unsafe__useAndroidActionSheetStyles(),
         },
         (buttonIndex) => {
           if (buttonIndex === 0) {

@@ -1,4 +1,4 @@
-import { Flex, Box, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Text } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import Clipboard from "@react-native-clipboard/clipboard"
 import MapboxGL from "@rnmapbox/maps"
@@ -6,6 +6,7 @@ import { themeGet } from "@styled-system/theme-get"
 import { LocationMap_location$data } from "__generated__/LocationMap_location.graphql"
 import { Pin } from "app/Components/Icons/Pin"
 import { ArtsyMapStyleURL } from "app/Scenes/Map/GlobalMap"
+import { __unsafe__useAndroidActionSheetStyles } from "app/utils/hooks/useAndroidActionSheetStyles"
 import { Linking, TouchableOpacity } from "react-native"
 import Keys from "react-native-keys"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -96,6 +97,7 @@ export const tappedOnMap = (
         "Copy Address",
         "Cancel",
       ],
+      ...__unsafe__useAndroidActionSheetStyles(),
       get cancelButtonIndex() {
         return this.options.length - 1
       },

@@ -21,6 +21,7 @@ import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectio
 import { deleteUserInterest } from "app/Scenes/MyCollection/mutations/deleteUserInterest"
 import { updateUserInterest } from "app/Scenes/MyCollection/mutations/updateUserInterest"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { useAndroidActionSheetStyles } from "app/utils/hooks/useAndroidActionSheetStyles"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useState } from "react"
@@ -40,6 +41,7 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   const artworksCountWithinMyCollection = me?.myCollectionConnection?.totalCount ?? 0
   const canBeRemoved = artworksCountWithinMyCollection === 0
   const { showActionSheetWithOptions } = useActionSheet()
+  const androidCustomSheetStyles = useAndroidActionSheetStyles()
 
   const [isPrivate, setIsPrivate] = useState(me.userInterest?.private ?? false)
 
@@ -132,6 +134,7 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
                     destructiveButtonIndex: 0,
                     cancelButtonIndex: 1,
                     useModal: true,
+                    ...androidCustomSheetStyles,
                   },
                   (buttonIndex) => {
                     if (buttonIndex === 0) {
