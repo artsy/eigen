@@ -354,6 +354,7 @@ jobs:
   build-deploy-android-playstore:
     docker:
       - image: cimg/android:2025.03.1-node
+    working_directory: ~/project
     resource_class: xlarge
     steps:
       - prep-android-env
@@ -361,7 +362,7 @@ jobs:
       - run:
           name: Load version code
           command: |
-            VERSION_CODE=$(cat next_version_code.txt)
+            VERSION_CODE=$(cat fastlane/next_version_code.txt)
             echo "export VERSION_CODE=$VERSION_CODE" >> $BASH_ENV
       - run:
           name: Build and deploy Android to Play Store
@@ -370,6 +371,7 @@ jobs:
   build-deploy-android-firebase:
     docker:
       - image: cimg/android:2025.03.1-node
+    working_directory: ~/project
     resource_class: xlarge
     steps:
       - prep-android-env
@@ -377,7 +379,7 @@ jobs:
       - run:
           name: Load version code
           command: |
-            VERSION_CODE=$(cat next_version_code.txt)
+            VERSION_CODE=$(cat fastlane/next_version_code.txt)
             echo "export VERSION_CODE=$VERSION_CODE" >> $BASH_ENV
       - run:
           name: Build and deploy Android to Firebase
