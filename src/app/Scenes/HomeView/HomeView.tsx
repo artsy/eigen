@@ -1,7 +1,7 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
 import { PortalHost } from "@gorhom/portal"
-import { useFocusEffect } from "@react-navigation/native"
+import { useFocusEffect, useIsFocused } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
 import { HomeViewFetchMeQuery } from "__generated__/HomeViewFetchMeQuery.graphql"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
@@ -44,6 +44,7 @@ export const homeViewScreenQueryVariables = () => ({
 
 export const HomeView: React.FC = memo(() => {
   const flashlistRef = useBottomTabsScrollToTop()
+  const isFocused = useIsFocused()
 
   const [isRefreshing, setIsRefreshing] = useState(false)
 
@@ -80,7 +81,7 @@ export const HomeView: React.FC = memo(() => {
   const { data, loadNext, hasNext } = usePaginationFragment<
     HomeViewQuery,
     HomeViewSectionsConnection_viewer$key
-  >(sectionsFragment, queryData.viewer)
+  >(sectionsFragment, queryData.viewer || null)
 
   const [savedArtworksCount, setSavedArtworksCount] = useState(0)
   const [refetchKey, setRefetchKey] = useState(0)
@@ -180,7 +181,11 @@ export const HomeView: React.FC = memo(() => {
           renderItem={({ item, index }) => {
             return <Section section={item} my={2} index={index} refetchKey={refetchKey} />
           }}
-          onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
+          onEndReached={() => {
+            if (isFocused && queryData.viewer) {
+              loadNext(NUMBER_OF_SECTIONS_TO_LOAD)
+            }
+          }}
           ListHeaderComponent={HomeHeader}
           ListFooterComponent={
             hasNext ? (
