@@ -1,8 +1,10 @@
-import { Flex, HeartFillIcon, HeartIcon, Text, Touchable } from "@artsy/palette-mobile"
+import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
+import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtworkRailCardMeta_artwork$key } from "__generated__/ArtworkRailCardMeta_artwork.graphql"
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
+import { ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtils"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { HEART_ICON_SIZE } from "app/Components/constants"
@@ -115,7 +117,11 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
     !sale?.isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals
 
   return (
-    <Flex flexDirection="row" justifyContent="space-between">
+    <Flex
+      flexDirection="row"
+      justifyContent="space-between"
+      height={ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT}
+    >
       <Flex flex={1}>
         {!!lotLabel && (
           <Text lineHeight="20px" color={secondaryColor} numberOfLines={1}>
@@ -215,7 +221,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
                 fill="blue100"
               />
             ) : (
-              <HeartIcon
+              <HeartStrokeIcon
                 testID="empty-heart-icon"
                 height={HEART_ICON_SIZE}
                 width={HEART_ICON_SIZE}

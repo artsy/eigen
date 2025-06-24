@@ -23,7 +23,7 @@ export const ArtworkSocialSignal: React.FC<ArtworkSocialSignalProps> = ({
     case curatorsPick && !hideCuratorsPick:
       return (
         <Box alignItems="center" flexDirection="row">
-          <FireIcon fill="mono100" />
+          <FireIcon fill={primaryColor} />
           <Text color={primaryColor} variant="xs" textAlign="center">
             {" "}
             Curators’ Pick
@@ -34,8 +34,8 @@ export const ArtworkSocialSignal: React.FC<ArtworkSocialSignalProps> = ({
     case increasedInterest && !hideIncreasedInterest:
       return (
         <Box flexDirection="row" alignItems="center">
-          <ArrowUpRightIcon fill="mono100" />
-          <Text color={primaryColor} variant="xs">
+          <ArrowUpRightIcon fill={primaryColor} />
+          <Text color={primaryColor} variant="xs" textAlign="center">
             {" "}
             Increased Interest
           </Text>
