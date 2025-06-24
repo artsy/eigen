@@ -15,7 +15,6 @@ import {
 } from "app/Scenes/HomeView/Components/HomeViewSectionCardsCard"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import React, { memo } from "react"
@@ -34,9 +33,6 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
   const { width } = useScreenDimensions()
   const space = useSpace()
   const section = useFragment(fragment, _section)
-
-  const { variant } = useExperimentVariant("diamond_discover-tab")
-  const isDiscoverVariant = variant.name === "variant-a" && variant.enabled
 
   const columns = !isTablet() ? 2 : 3
 
@@ -65,13 +61,10 @@ export const HomeViewSectionCards: React.FC<HomeViewSectionCardsProps> = ({
         })}
       </Flex>
 
-      {/* TODO: If we decide to keep the Discover tab and dismantle this A/B test, we will need to continue excluding the sentinel. Find an elegant way to do that. */}
-      {!isDiscoverVariant && (
-        <HomeViewSectionSentinel
-          contextModule={section.contextModule as ContextModule}
-          index={index}
-        />
-      )}
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }

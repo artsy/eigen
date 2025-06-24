@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
+import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import {
   Chip,
   Flex,
@@ -15,7 +15,6 @@ import { getSnapToOffsets } from "app/Scenes/CollectionsByCategory/CollectionsCh
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -41,9 +40,6 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
   const section = useFragment(fragment, sectionProp)
   const cards = extractNodes(section.cardsConnection)
 
-  const { variant } = useExperimentVariant("diamond_discover-tab")
-  const isDiscoverVariant = variant.name === "variant-a" && variant.enabled
-
   if (cards.length === 0) return null
 
   const numRows = !isTablet() ? 3 : 2
@@ -58,9 +54,7 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
         card.entityType as ScreenOwnerType,
         card.href,
         section.contextModule as ContextModule,
-        index,
-        // TODO: remove the screenOwnerType parameter when the A/B test is dismantled
-        isDiscoverVariant ? OwnerType.search : OwnerType.home
+        index
       )
     }
   }
@@ -105,13 +99,10 @@ export const HomeViewSectionCardsChips: React.FC<HomeViewSectionCardsChipsProps>
         )}
       />
 
-      {/* TODO: If we decide to keep the Discover tab and dismantle this A/B test, we will need to continue excluding the sentinel. Find an elegant way to do that. */}
-      {!isDiscoverVariant && (
-        <HomeViewSectionSentinel
-          contextModule={section.contextModule as ContextModule}
-          index={index}
-        />
-      )}
+      <HomeViewSectionSentinel
+        contextModule={section.contextModule as ContextModule}
+        index={index}
+      />
     </Flex>
   )
 }
