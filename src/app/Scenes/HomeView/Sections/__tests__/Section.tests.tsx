@@ -93,17 +93,5 @@ describe("Section", () => {
       renderWithWrappers(<Section section={section} index={1} />)
       expect(screen.getByTestId("HomeViewSectionArticlesCardsPlaceholder")).toBeOnTheScreen()
     })
-
-    it("renders Chips", () => {
-      const section = {
-        __typename: "SomeSectionType",
-        internalID: "42",
-        component: {
-          type: "Chips",
-        },
-      } as SectionProps["section"]
-      renderWithWrappers(<Section section={section} index={1} />)
-      expect(screen.getByTestId("HomeViewSectionCardsChipsPlaceholder")).toBeOnTheScreen()
-    })
   })
 })
