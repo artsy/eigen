@@ -757,30 +757,30 @@ workflows:
 
       - prepare-android-version
 
-      - build-deploy-ios-testflight:
-          requires:
-            - prepare-android-version
-          #   - horizon/block
-          #   - test-js
-          # - build-test-js
-          # - check-code
-          filters:
-            branches:
-              only: brian+george/code-sign-beta-failure
+      # - build-deploy-ios-testflight:
+      #     requires:
+      #     #   - horizon/block
+      #     #   - test-js
+      #     # - build-test-js
+      #     # - check-code
+      #     filters:
+      #       branches:
+      #         only: brian+george/code-sign-beta-failure
 
-      - build-deploy-ios-firebase:
-          requires:
-            - prepare-android-version
-          #   - horizon/block
-          #   - test-js
-          # - build-test-js
-          # - check-code
-          filters:
-            branches:
-              only: brian+george/code-sign-beta-failure
+      # - build-deploy-ios-firebase:
+      #     requires:
+
+      #     #   - horizon/block
+      #     #   - test-js
+      #     # - build-test-js
+      #     # - check-code
+      #     filters:
+      #       branches:
+      #         only: brian+george/code-sign-beta-failure
 
       - build-deploy-android-playstore:
-          # requires:
+          requires:
+            - prepare-android-version
           #   - horizon/block
           #   - test-js
           # - build-test-js
@@ -790,7 +790,8 @@ workflows:
               only: brian+george/code-sign-beta-failure
 
       - build-deploy-android-firebase:
-          # requires:
+          requires:
+            - prepare-android-version
           #   - horizon/block
           #   - test-js
           # - build-test-js
