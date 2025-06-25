@@ -330,8 +330,6 @@ jobs:
   run-e2e-tests-android:
     parallelism: 4
 
-    # docker:
-    #   - image: cimg/android:2025.03.1-node
     executor:
       name: android/android_machine
       resource_class: xlarge
@@ -346,7 +344,7 @@ jobs:
           java_version: 17
       - android/create_avd:
           avd_name: test-avd
-          system_image: system-images;android-34;google_apis;x86_64
+          system_image: system-images;android-30;google_apis;x86_64
           install: true
       - android/start_emulator:
           avd_name: test-avd
