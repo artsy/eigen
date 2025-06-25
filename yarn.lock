@@ -27,10 +27,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.43.0.tgz#25dc75af5744a5138ce76f733454c795cf6577ce"
   integrity sha512-ph2hIGwZHmWITweS58qjCfTjQnDDyKZMpxgb+ekvPaFMV080n+FbWrpP1U8F2hHqULVvDuZPuW/JLKWD34UM3w==
 
-"@artsy/palette-mobile@17.19.0":
-  version "17.19.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.19.0.tgz#76c6b402f01656c234cf43614d854aa6d1728611"
-  integrity sha512-iObFh/bgM5r3tY50HxGC+XKShlwcn8da398+VntNjHyxxrqlamHG0aN38smqfNLIKoBTf+iSfYaocgAkfo4stQ==
+"@artsy/palette-mobile@17.20.0":
+  version "17.20.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.20.0.tgz#9af044a08b873d143913580295025a39158de4fe"
+  integrity sha512-tavOU3C95iaYI0CGMc4s86E9tPG9IHPqGensikGqiGaufreJDQe0zjtE1JQBQw4MMSlCG3UhDPiAf+NBzDVhdw==
   dependencies:
     "@artsy/palette-tokens" "^7.0.0"
     "@shopify/flash-list" "1.7.6"
@@ -41,7 +41,7 @@
     moti "^0.25.3"
     react-nanny "^2.15.0"
     react-native-blurhash "^2.1.1"
-    react-native-collapsible-tab-view "^8.0.0"
+    react-native-collapsible-tab-view "^8.0.1"
     react-native-fast-image "^8.6.3"
     react-native-pager-view "6.5.0"
     react-native-popover-view "^5.1.7"
@@ -14251,10 +14251,10 @@ react-native-bootsplash@6.3.4:
     ts-dedent "^2.2.0"
     xml-formatter "^3.6.3"
 
-react-native-collapsible-tab-view@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-collapsible-tab-view/-/react-native-collapsible-tab-view-8.0.0.tgz#b308e5cf6b94ae57099196b50a87f2d63c894a13"
-  integrity sha512-p3/CfBtCn/7qAllFeBM8KI4cCqqYfE0gzO/bh/oX6ewk2hE7HF0QQpZBGZlLdLJDo1lUXRlTSP2VLAYgky2maw==
+react-native-collapsible-tab-view@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-collapsible-tab-view/-/react-native-collapsible-tab-view-8.0.1.tgz#af1d73fe34e3b8afc8d66a644db0516e3e18801b"
+  integrity sha512-/MRimYn4FB4Dzmypy0J976FVZeX9OEOyFR3fogO68YDHyleSEEgVI2ecrcbtJ4jC8LPT0weDhJPtUQtWtzlQ8A==
   dependencies:
     use-deep-compare "^1.1.0"
 
