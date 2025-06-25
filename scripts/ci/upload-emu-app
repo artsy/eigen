@@ -3,24 +3,24 @@ set -euxo pipefail
 
 APP_NAME="Artsy"
 ANDROID_DIR="android"
-S3_DEST="s3://artsy-citadel/eigen/builds/android/${APP_NAME}-latest.aab"
+S3_DEST="s3://artsy-citadel/eigen/builds/android/${APP_NAME}-latest.apk"
 BUILD_TYPE="beta"
 
 # Find the .aab file
-AAB_PATH=$(find "$ANDROID_DIR/app/build/outputs/bundle/$BUILD_TYPE" -name "*.aab" -type f | head -n1)
+APK_PATH=$(find "$ANDROID_DIR/app/build/outputs/apk/$BUILD_TYPE" -name "*.apk" -type f | head -n1)
 
-if [ -z "$AAB_PATH" ]; then
-  echo "❌ AAB not found in $ANDROID_DIR/app/build/outputs/bundle/$BUILD_TYPE!" >&2
+if [ -z "$APK_PATH" ]; then
+  echo "❌ APK not found in $ANDROID_DIR/app/build/outputs/apk/$BUILD_TYPE!" >&2
   exit 1
 fi
 
-echo "✅ Found AAB at: $AAB_PATH"
+echo "✅ Found apk at: $APK_PATH"
 
 # Copy and rename the AAB
-AAB_NAME="${APP_NAME}-latest.aab"
+APK_NAME="${APP_NAME}-latest.apk"
 cp "$AAB_PATH" "$AAB_NAME"
 
 # Upload to S3
-aws s3 cp "$AAB_NAME" "$S3_DEST"
+aws s3 cp "$APK_NAME" "$S3_DEST"
 
-echo "✅ Uploaded $AAB_NAME to $S3_DEST"
+echo "✅ Uploaded $APK_NAME to $S3_DEST"
