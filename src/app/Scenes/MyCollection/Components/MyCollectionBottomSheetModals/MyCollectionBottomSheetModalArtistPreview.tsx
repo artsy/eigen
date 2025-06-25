@@ -2,47 +2,48 @@ import { InfoIcon } from "@artsy/icons/native"
 import { Checkbox, Flex, Join, Message, Spacer, Text } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { MyCollectionBottomSheetModalArtistPreviewQuery } from "__generated__/MyCollectionBottomSheetModalArtistPreviewQuery.graphql"
-import { MyCollectionBottomSheetModalArtistPreview_artist$data } from "__generated__/MyCollectionBottomSheetModalArtistPreview_artist.graphql"
-import { MyCollectionBottomSheetModalArtistPreview_me$data } from "__generated__/MyCollectionBottomSheetModalArtistPreview_me.graphql"
+import { MyCollectionBottomSheetModalArtistPreview_artist$key } from "__generated__/MyCollectionBottomSheetModalArtistPreview_artist.graphql"
+import { MyCollectionBottomSheetModalArtistPreview_me$key } from "__generated__/MyCollectionBottomSheetModalArtistPreview_me.graphql"
 import { ArtistListItemContainer, ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
-import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { useToast } from "app/Components/Toast/toastHook"
 import { ArtistKindPills } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistPreview/ArtistKindPills"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { deleteUserInterest } from "app/Scenes/MyCollection/mutations/deleteUserInterest"
 import { updateUserInterest } from "app/Scenes/MyCollection/mutations/updateUserInterest"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { useState } from "react"
-import { QueryRenderer, createFragmentContainer, graphql } from "react-relay"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import useDebounce from "react-use/lib/useDebounce"
 
 interface MyCollectionBottomSheetModalArtistPreviewProps {
-  artist: MyCollectionBottomSheetModalArtistPreview_artist$data | null
-  me: MyCollectionBottomSheetModalArtistPreview_me$data | null
+  artist: MyCollectionBottomSheetModalArtistPreview_artist$key
+  me: MyCollectionBottomSheetModalArtistPreview_me$key
   interestId: string
 }
 
 export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   MyCollectionBottomSheetModalArtistPreviewProps
 > = ({ artist, me, interestId }) => {
-  const artworksCountWithinMyCollection = me?.myCollectionConnection?.totalCount ?? 0
+  const artistData = useFragment(artistFragment, artist)
+  const meData = useFragment(meFragment, me)
+
+  const artworksCountWithinMyCollection = meData?.myCollectionConnection?.totalCount ?? 0
   const canBeRemoved = artworksCountWithinMyCollection === 0
 
   const { showActionSheetWithOptions } = useActionSheet()
 
-  const [isPrivate, setIsPrivate] = useState(me?.userInterest?.private ?? false)
+  const [isPrivate, setIsPrivate] = useState(meData?.userInterest?.private ?? false)
 
   const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
 
   const toast = useToast()
 
-  const bottomOffset = useArtworkListsBottomOffset(2)
-
   useDebounce(
     () => {
-      if (me?.userInterest?.private === isPrivate) {
+      if (meData?.userInterest?.private === isPrivate) {
         return
       }
 
@@ -61,20 +62,12 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
     setViewKind({ viewKind: null })
   }
 
-  if (!artist || !me || !me.userInterest) {
-    return (
-      <AutoHeightBottomSheet
-        visible={!artist || !me || !me.userInterest}
-        closeOnBackdropClick
-        onDismiss={dismissBottomView}
-      >
-        <Flex px={2} pt={2} mb={`${bottomOffset}px`}>
-          <Join separator={<Spacer y={4} />}>
-            <ArtistListItemPlaceholder />
-          </Join>
-        </Flex>
-      </AutoHeightBottomSheet>
-    )
+  const safeAreaInset = useSafeAreaInsets()
+
+  if (!artistData || !meData?.userInterest) {
+    console.log("LOGD hmmmm artist = ", artistData, "me = ", meData)
+
+    return <LoadingSkeleton />
   }
 
   const deleteArtist = () => {
@@ -105,16 +98,16 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
       closeOnBackdropClick
       enableDismissOnClose
     >
-      <Flex px={2} pt={2} mb={`${bottomOffset}px`}>
+      <Flex px={2} pt={2} mb={`${safeAreaInset.bottom}px`}>
         <Join separator={<Spacer y={2} />}>
           <ArtistListItemContainer
-            artist={artist}
-            disableNavigation={!!artist?.isPersonalArtist}
+            artist={artistData}
+            disableNavigation={!!artistData?.isPersonalArtist}
             uploadsCount={artworksCountWithinMyCollection}
-            isPrivate={me.userInterest?.private}
-            showFollowButton={!artist?.isPersonalArtist}
+            isPrivate={meData.userInterest?.private}
+            showFollowButton={!artistData?.isPersonalArtist}
           />
-          <ArtistKindPills artist={artist} />
+          <ArtistKindPills artist={artistData} />
 
           <Flex flexDirection="row" alignItems="flex-start">
             <Checkbox
@@ -173,62 +166,79 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   )
 }
 
-export const MyCollectionBottomSheetModalArtistPreviewFragmentContainer = createFragmentContainer(
-  MyCollectionBottomSheetModalArtistPreview,
-  {
-    artist: graphql`
-      fragment MyCollectionBottomSheetModalArtistPreview_artist on Artist {
-        ...ArtistListItem_artist
-        ...ArtistKindPills_artist
-        isPersonalArtist
-      }
-    `,
-    me: graphql`
-      fragment MyCollectionBottomSheetModalArtistPreview_me on Me {
-        myCollectionConnection(artistIDs: [$artistID]) {
-          totalCount
-        }
-        userInterest(id: $interestId) {
-          id
-          private
-        }
-      }
-    `,
-  }
-)
-
-export const MyCollectionBottomSheetModalArtistPreviewQueryRenderer: React.FC<{
+export const MyCollectionBottomSheetModalArtistPreviewQueryRenderer = withSuspense<{
   artistID: string
   interestId: string
-}> = ({ artistID, interestId }) => {
+}>({
+  Component: ({ artistID, interestId }) => {
+    const data = useLazyLoadQuery<MyCollectionBottomSheetModalArtistPreviewQuery>(query, {
+      artistID,
+      interestId,
+    })
+
+    if (!data?.artist || !data?.me) {
+      return <LoadingSkeleton />
+    }
+
+    return (
+      <MyCollectionBottomSheetModalArtistPreview
+        artist={data.artist}
+        me={data.me}
+        interestId={interestId}
+      />
+    )
+  },
+  LoadingFallback: () => <LoadingSkeleton />,
+  ErrorFallback: () => null,
+})
+
+const query = graphql`
+  query MyCollectionBottomSheetModalArtistPreviewQuery($artistID: String!, $interestId: String!) {
+    artist(id: $artistID) {
+      ...MyCollectionBottomSheetModalArtistPreview_artist
+    }
+    me {
+      ...MyCollectionBottomSheetModalArtistPreview_me
+    }
+  }
+`
+
+const artistFragment = graphql`
+  fragment MyCollectionBottomSheetModalArtistPreview_artist on Artist {
+    ...ArtistListItem_artist
+    ...ArtistKindPills_artist
+    isPersonalArtist
+  }
+`
+
+const meFragment = graphql`
+  fragment MyCollectionBottomSheetModalArtistPreview_me on Me {
+    myCollectionConnection(artistIDs: [$artistID]) {
+      totalCount
+    }
+    userInterest(id: $interestId) {
+      id
+      private
+    }
+  }
+`
+
+const LoadingSkeleton: React.FC = () => {
+  const safeAreaInset = useSafeAreaInsets()
+
+  const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
+
+  const dismissBottomView = () => {
+    setViewKind({ viewKind: null })
+  }
+
   return (
-    <QueryRenderer<MyCollectionBottomSheetModalArtistPreviewQuery>
-      environment={getRelayEnvironment()}
-      query={graphql`
-        query MyCollectionBottomSheetModalArtistPreviewQuery(
-          $artistID: String!
-          $interestId: String!
-        ) {
-          artist(id: $artistID) {
-            ...MyCollectionBottomSheetModalArtistPreview_artist
-          }
-          me {
-            ...MyCollectionBottomSheetModalArtistPreview_me
-          }
-        }
-      `}
-      variables={{
-        artistID,
-        interestId,
-      }}
-      render={({ props }) => {
-        return (
-          <MyCollectionBottomSheetModalArtistPreviewFragmentContainer
-            artist={props?.artist || null}
-            me={props?.me || null}
-          />
-        )
-      }}
-    />
+    <AutoHeightBottomSheet visible closeOnBackdropClick onDismiss={dismissBottomView}>
+      <Flex px={2} pt={2} mb={`${safeAreaInset.bottom}px`}>
+        <Join separator={<Spacer y={4} />}>
+          <ArtistListItemPlaceholder />
+        </Join>
+      </Flex>
+    </AutoHeightBottomSheet>
   )
 }
