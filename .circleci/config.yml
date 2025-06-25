@@ -158,8 +158,8 @@ commands:
             - derived_data
   prep-android-env:
     steps:
-      - android/change-java-version:
-          java-version: 17
+      - android/change_java_version:
+          java_version: 17
       - run:
           name: Quit early if possible
           command: |
