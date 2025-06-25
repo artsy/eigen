@@ -355,10 +355,10 @@ jobs:
       - install-gems
       - run:
           name: Download Android app
-          command: cd project && aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
+          command: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
       - run:
           name: Install APK on emulator
-          command: adb install -r ./project/Artsy.apk
+          command: adb install -r ./Artsy.apk
       - run:
           name: Run Maestro Tests
           no_output_timeout: 25m
