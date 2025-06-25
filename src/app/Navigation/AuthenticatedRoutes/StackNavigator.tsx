@@ -30,6 +30,8 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
       options={{
         presentation: isModalScreen(module) ? "fullScreenModal" : "card",
         orientation: !isTablet() ? "portrait" : "default",
+        animation: !isModalScreen(module) ? "slide_from_right" : undefined,
+        animationDuration: 350,
         headerShown: module.options?.screenOptions?.headerShown ?? true,
         headerLeft: ({ canGoBack }) => {
           if (!canGoBack) {
