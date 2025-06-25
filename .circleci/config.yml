@@ -5,7 +5,7 @@ orbs:
   queue: eddiewebb/queue@2.2.1
   horizon: artsy/release@0.0.1
   macos: circleci/macos@2.5.4
-  android: circleci/android@2.5.0
+  android: circleci/android@3.1.0
 
 commands:
   await-previous-builds:
@@ -339,12 +339,16 @@ jobs:
       - generate-checksums
       - attach_workspace:
           at: ../workspace
-      - android/change-java-version:
-          java-version: 17
-      - android/create-avd:
-          avd-name: test-avd
-          system-image: system-images;android-34;google_apis;x86_64
+      - android/change_java_version:
+          java_version: 17
+      - android/create_avd:
+          avd_name: test-avd
+          system_image: system-images;android-34;google_apis;x86_64
           install: true
+      - android/start_emulator:
+          avd_name: test-avd
+          no_window: true
+          restore_gradle_cache_prefix: v1a
       - run:
           name: Install maestro
           command: curl -Ls "https://get.maestro.mobile.dev" | bash
