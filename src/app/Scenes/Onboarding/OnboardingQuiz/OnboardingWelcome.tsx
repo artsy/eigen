@@ -1,4 +1,4 @@
-import { ArtsyLogoBlackIcon, Button, Spacer, Flex, Box, Text, Spinner } from "@artsy/palette-mobile"
+import { ArtsyLogoBlackIcon, Box, Button, Flex, Spacer, Spinner, Text } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { OnboardingWelcomeQuery } from "__generated__/OnboardingWelcomeQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"

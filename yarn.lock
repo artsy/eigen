@@ -3935,6 +3935,11 @@
   resolved "https://registry.yarnpkg.com/@react-native/normalize-color/-/normalize-color-2.1.0.tgz#939b87a9849e81687d3640c5efa2a486ac266f91"
   integrity sha512-Z1jQI2NpdFJCVgpY+8Dq/Bt3d+YUi1928Q+/CZm/oh66fzM0RUl54vvuXlPJKybH4pdCZey1eDTPaLHkMPNgWA==
 
+"@react-native/normalize-colors@0.76.8":
+  version "0.76.8"
+  resolved "https://registry.yarnpkg.com/@react-native/normalize-colors/-/normalize-colors-0.76.8.tgz#79380c178ec7437f4857bebeb860ee97bb069318"
+  integrity sha512-FRjRvs7RgsXjkbGSOjYSxhX5V70c0IzA/jy3HXeYpATMwD9fOR1DbveLW497QGsVdCa0vThbJUtR8rIzAfpHQA==
+
 "@react-native/normalize-colors@0.76.9":
   version "0.76.9"
   resolved "https://registry.yarnpkg.com/@react-native/normalize-colors/-/normalize-colors-0.76.9.tgz#1c45ce49871ccea7d6fa9332cb14724adf326d6a"
@@ -9274,6 +9279,19 @@ expo-modules-core@2.2.3:
   integrity sha512-01QqZzpP/wWlxnNly4G06MsOBUTbMDj02DQigZoXfDh80vd/rk3/uVXqnZgOdLSggTs6DnvOgAUy0H2q30XdUg==
   dependencies:
     invariant "^2.2.4"
+
+expo-navigation-bar@~4.0.9:
+  version "4.0.9"
+  resolved "https://registry.yarnpkg.com/expo-navigation-bar/-/expo-navigation-bar-4.0.9.tgz#e0409c2db8f6384d12c87f45c2674effc9fae1b6"
+  integrity sha512-dCJ04yPixFOUixJaWlmCZafGeQ1L1g6vWn+oX8rqPnYN9kYCMUz2aRNnhRRoK5MBGFTK/nue2D49TE/AwwWt9w==
+  dependencies:
+    "@react-native/normalize-colors" "0.76.8"
+    debug "^4.3.2"
+
+expo-status-bar@~2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/expo-status-bar/-/expo-status-bar-2.0.1.tgz#fc07726346dc30fbb68aadb0d7890b34fba42eee"
+  integrity sha512-AkIPX7jWHRPp83UBZ1iXtVvyr0g+DgBVvIXTtlmPtmUsm8Vq9Bb5IGj86PW8osuFlgoTVAg7HI/+Ok7yEYwiRg==
 
 expo-structured-headers@~4.0.0:
   version "4.0.0"
