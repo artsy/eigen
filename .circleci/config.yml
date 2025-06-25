@@ -336,24 +336,33 @@ jobs:
     steps:
       - checkout
 
-      - run:
-          name: Install Android system image
-          command: sdkmanager "system-images;android-30;google_apis;x86"
+      - android/create_avd:
+          avd_name: myavd
+          install: true
+          system_image: system-images;android-31;default;x86_64
+      - android/start_emulator:
+          avd_name: myavd
+          no_window: true
+          restore_gradle_cache_prefix: v1a
 
-      - run:
-          name: Create AVD
-          command: |
-            echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;x86" --force
-            echo "hw.ramSize=2048" >> ~/.android/avd/test.avd/config.ini
-            echo "disk.dataPartition.size=2048M" >> ~/.android/avd/test.avd/config.ini
+      # - run:
+      #     name: Install Android system image
+      #     command: sdkmanager "system-images;android-30;google_apis;x86"
 
-      - run:
-          name: Start emulator manually
-          no_output_timeout: 10m
-          command: |
-            emulator -avd test -no-window -no-audio -no-snapshot -no-boot-anim -accel off -qemu -m 2048 &
-            adb wait-for-device
-            adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
+      # - run:
+      #     name: Create AVD
+      #     command: |
+      #       echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;x86" --force
+      #       echo "hw.ramSize=2048" >> ~/.android/avd/test.avd/config.ini
+      #       echo "disk.dataPartition.size=2048M" >> ~/.android/avd/test.avd/config.ini
+
+      # - run:
+      #     name: Start emulator manually
+      #     no_output_timeout: 10m
+      #     command: |
+      #       emulator -avd test -no-window -no-audio -no-snapshot -no-boot-anim -accel off -qemu -m 2048 &
+      #       adb wait-for-device
+      #       adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
 
       - run:
           name: Confirm emulator running
