@@ -341,7 +341,7 @@ jobs:
       - android/create_avd:
           avd_name: myavd
           install: true
-          system_image: system-images;android-31;default;x86_64
+          system_image: system-images;android-30;google_apis;x86
       - android/start_emulator:
           avd_name: myavd
           no_window: true
