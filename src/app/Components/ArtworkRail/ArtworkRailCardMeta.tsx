@@ -4,7 +4,6 @@ import { ArtworkRailCardMeta_artwork$key } from "__generated__/ArtworkRailCardMe
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
-import { ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtils"
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { HEART_ICON_SIZE } from "app/Components/constants"
@@ -23,7 +22,6 @@ export interface ArtworkRailCardCommonProps extends ArtworkActionTrackingProps {
   hideIncreasedInterestSignal?: boolean
   hideCuratorsPickSignal?: boolean
   lotLabel?: string | null
-  containerHeight?: number
   showSaveIcon?: boolean
   showPartnerName?: boolean
   /**
@@ -117,11 +115,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
     !sale?.isAuction && !displayLimitedTimeOfferSignal && !!collectorSignals
 
   return (
-    <Flex
-      flexDirection="row"
-      justifyContent="space-between"
-      height={ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT}
-    >
+    <Flex flexDirection="row" justifyContent="space-between">
       <Flex flex={1}>
         {!!lotLabel && (
           <Text lineHeight="20px" color={secondaryColor} numberOfLines={1}>
