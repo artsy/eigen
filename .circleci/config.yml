@@ -349,7 +349,6 @@ jobs:
       - android/start_emulator:
           avd_name: test-avd
           no_window: true
-          restore_gradle_cache_prefix: v1a
       - run:
           name: Install maestro
           command: curl -Ls "https://get.maestro.mobile.dev" | bash
