@@ -355,10 +355,10 @@ jobs:
       - install-gems
       - run:
           name: Download Android app
-          command: cd project && aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.aab ./Artsy.aab
+          command: cd project && aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
       - run:
           name: Install APK on emulator
-          command: cd project/android && ./gradlew installBeta && cd ..
+          command: adb install -r ./project/Artsy.apk
       - run:
           name: Run Maestro Tests
           no_output_timeout: 25m
@@ -697,10 +697,10 @@ workflows:
   test-build-deploy:
     when: << pipeline.parameters.run_workflow_test-build-deploy >>
     jobs:
-      - build-maestro-android
-      - run-e2e-tests-android:
-          requires:
-            - build-maestro-android
+      # - build-maestro-android
+      - run-e2e-tests-android
+        # requires:
+        #   - build-maestro-android
       # - detect-secrets:
       #     filters:
       #       branches:
