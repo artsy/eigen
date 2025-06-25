@@ -309,7 +309,7 @@ jobs:
           name: Install idb
           command: brew tap facebook/fb && brew install idb-companion
       - setup-awscli
-      - install-gems
+      - install-gems # do we need this here?
       - run:
           name: Set up maestro env
           command: ./scripts/setup/setup-env-for-maestro ios
@@ -363,7 +363,7 @@ jobs:
       - run:
           name: Set up maestro env
           command: ./scripts/setup/setup-env-for-maestro android
-      - install-gems
+      # - install-gems
       - run:
           name: Download Android app
           command: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
