@@ -6,7 +6,7 @@ ANDROID_DIR="android"
 S3_DEST="s3://artsy-citadel/eigen/builds/android/${APP_NAME}-latest.apk"
 BUILD_TYPE="beta"
 
-# Find the .aab file
+# Find the .apk file
 APK_PATH=$(find "$ANDROID_DIR/app/build/outputs/apk/$BUILD_TYPE" -name "*.apk" -type f | head -n1)
 
 if [ -z "$APK_PATH" ]; then
@@ -16,9 +16,9 @@ fi
 
 echo "✅ Found apk at: $APK_PATH"
 
-# Copy and rename the AAB
+# Copy and rename the APK
 APK_NAME="${APP_NAME}-latest.apk"
-cp "$AAB_PATH" "$AAB_NAME"
+cp "$APK_PATH" "$APK_NAME"
 
 # Upload to S3
 aws s3 cp "$APK_NAME" "$S3_DEST"
