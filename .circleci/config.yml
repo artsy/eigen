@@ -338,13 +338,33 @@ jobs:
       - run:
           name: List installed system images
           command: sdkmanager --list | grep "system-images"
-      - android/create_avd:
-          avd_name: myavd
-          install: true
-          system_image: system-images;android-30;google_apis;x86
-      - android/start_emulator:
-          avd_name: myavd
-          no_window: true
+      - run:
+          name: Create AVD for API 30 x86
+          command: |
+            echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;x86" --force
+            echo "hw.ramSize=2048" >> ~/.android/avd/test.avd/config.ini
+            echo "disk.dataPartition.size=2048M" >> ~/.android/avd/test.avd/config.ini
+            echo "hw.gpu.enabled=no" >> ~/.android/avd/test.avd/config.ini
+            echo "hw.gpu.mode=off" >> ~/.android/avd/test.avd/config.ini
+
+      - run:
+          name: Start emulator (manual)
+          no_output_timeout: 10m
+          command: |
+            emulator -avd test \
+            -no-snapshot \
+            -no-boot-anim \
+            -no-audio \
+            -no-window \
+            -no-metrics \
+            -accel off \
+            -gpu swiftshader_indirect \
+            -qemu -m 2048 &
+            # Wait for the emulator to start
+            adb wait-for-device
+            # Wait for system boot complete
+            adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
+            adb shell input keyevent 82  # unlock screen
 
       # - run:
       #     name: Install Android system image
