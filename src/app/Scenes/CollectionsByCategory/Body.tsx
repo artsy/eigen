@@ -12,6 +12,7 @@ import {
   CollectionsChips,
   CollectionsChipsPlaceholder,
 } from "app/Scenes/CollectionsByCategory/CollectionsChips"
+import { getTitleForCategory } from "app/Scenes/Search/components/ExploreByCategory/constants"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -22,7 +23,8 @@ interface BodyProps {
 export const Body: React.FC<BodyProps> = ({ viewer }) => {
   const data = useFragment(fragment, viewer)
   const { params } = useRoute<CollectionsByCategoriesRouteProp>()
-  const category = params.category
+  const category = decodeURI(params.category)
+  const title = getTitleForCategory(category)
 
   if (!data?.marketingCollections) {
     return null
@@ -32,9 +34,9 @@ export const Body: React.FC<BodyProps> = ({ viewer }) => {
     <Flex gap={4}>
       <Flex gap={2}>
         <Text variant="xl" px={2}>
-          {category}
+          {title}
         </Text>
-        <Text px={2}>Explore collections by {category.toLowerCase()}</Text>
+        <Text px={2}>Explore collections by {title.toLowerCase()}</Text>
         {/* TODO: fix typings broken by some unknown reason here, prob related to @plural */}
         <CollectionsChips marketingCollections={data.marketingCollections as any} />
       </Flex>
@@ -101,8 +103,9 @@ export const collectionsByCategoryQuery = graphql`
 export const BodyWithSuspense = withSuspense({
   Component: () => {
     const { params } = useRoute<CollectionsByCategoriesRouteProp>()
+    const category = decodeURI(params.category)
     const data = useLazyLoadQuery<BodyCollectionsByCategoryQuery>(collectionsByCategoryQuery, {
-      category: params.entityID,
+      category,
     })
 
     if (!data.viewer) {

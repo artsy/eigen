@@ -8,13 +8,15 @@ import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.gr
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
 import { DiscoverSomethingNew } from "app/Scenes/Search/components/DiscoverSomethingNew/DiscoverSomethingNew"
+import { ExploreByCategory } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategory"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { Schema } from "app/utils/track"
 import { memo, RefObject, Suspense, useRef, useState } from "react"
-import { KeyboardAvoidingView, ScrollView } from "react-native"
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { SearchResults } from "./SearchResults"
@@ -38,6 +40,7 @@ export const searchQueryDefaultVariables: SearchQuery$variables = {
 
 export const Search: React.FC = () => {
   const space = useSpace()
+  const insets = useSafeAreaInsets()
 
   const searchPillsRef = useRef<ScrollView>(null)
   const searchInputRef = useRef<GlobalSearchInput>(null)
@@ -49,6 +52,9 @@ export const Search: React.FC = () => {
   const { trackEvent } = useTracking()
 
   const shouldShowCityGuide = !isTablet()
+
+  const bottomPadding =
+    Platform.OS === "ios" ? Math.max(insets.bottom + 60, 80) : Math.max(insets.bottom + 40, 60)
 
   const {
     data: queryData,
@@ -116,9 +122,10 @@ export const Search: React.FC = () => {
             onScroll={handleScroll}
             keyboardDismissMode="on-drag"
             keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{ paddingTop: space(2) }}
+            contentContainerStyle={{ paddingTop: space(2), paddingBottom: bottomPadding }}
           >
             <DiscoverSomethingNew />
+            <ExploreByCategory />
 
             <HorizontalPadding>{!!shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
 
