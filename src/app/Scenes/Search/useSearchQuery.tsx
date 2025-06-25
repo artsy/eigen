@@ -1,4 +1,3 @@
-import { SearchScreenQuery } from "app/Scenes/Search/Search"
 import { useState } from "react"
 import { GraphQLTaggedNode, useLazyLoadQuery, useRelayEnvironment } from "react-relay"
 import { FetchPolicy, fetchQuery, OperationType, VariablesOf } from "relay-runtime"
@@ -38,7 +37,7 @@ export function useSearchQuery<TQuery extends OperationType>(
 
     setIsRefreshing(true)
 
-    fetchQuery(environment, SearchScreenQuery, updatedVariables).subscribe({
+    fetchQuery(environment, query, updatedVariables).subscribe({
       complete: () => {
         setIsRefreshing(false)
 
