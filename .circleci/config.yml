@@ -333,7 +333,7 @@ jobs:
     executor:
       name: android/android_machine
       resource_class: xlarge
-      tag: default
+      tag: 2024.11.1
 
     steps:
       - checkout
@@ -349,6 +349,7 @@ jobs:
       - android/start_emulator:
           avd_name: test-avd
           no_window: true
+          restore_gradle_cache_prefix: v1a
       - run:
           name: Install maestro
           command: curl -Ls "https://get.maestro.mobile.dev" | bash
