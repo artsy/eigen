@@ -335,7 +335,9 @@ jobs:
 
     steps:
       - checkout
-
+      - run:
+          name: List installed system images
+          command: sdkmanager --list | grep "system-images"
       - android/create_avd:
           avd_name: myavd
           install: true
