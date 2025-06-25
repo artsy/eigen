@@ -276,16 +276,6 @@ We want to be able to promote past android builds to prod because we are creatin
 the latest. The developer APIs for google play only return the latest release and fastlane verifies that a release exists before allowing
 promotion. We added custom logic to work around this.
 
-## react-native-collapsible-tab-view patch
-
-#### When we can remove this:
-
-After updates to both/either react native react-native-collapsible-tab-view. Remove the patch, reinstall deps and run the app on Android and check if affected components like My Collection render correctly. If they do you can remove the patch.
-
-#### Explanation/Context:
-
-After upgrading to react native 0.75 screens like my collection using this library stopped rendering on Android. This was fixed with a patch that added some style changes to the components from the package.
-
 ## patch-pacakge for react-native-reanimated
 
 #### When can we remove this:
