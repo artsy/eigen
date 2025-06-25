@@ -343,7 +343,7 @@ jobs:
           java_version: 17
       - android/create_avd:
           avd_name: test-avd
-          system_image: system-images;android-34;google_apis;x86_64
+          system_image: system-images;android-30;google_apis;arm64-v8a
           install: true
       - android/start_emulator:
           avd_name: test-avd
