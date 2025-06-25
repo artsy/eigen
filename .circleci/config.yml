@@ -345,7 +345,6 @@ jobs:
       - android/start_emulator:
           avd_name: myavd
           no_window: true
-          restore_gradle_cache_prefix: v1a
 
       # - run:
       #     name: Install Android system image
