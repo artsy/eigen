@@ -342,14 +342,20 @@ jobs:
           at: ../workspace
       - android/change_java_version:
           java_version: 17
-      - android/create_avd:
-          avd_name: test-avd
-          system_image: system-images;android-31;google_apis;x86_64
-          install: true
-      - android/start_emulator:
-          avd_name: test-avd
-          no_window: true
-          restore_gradle_cache_prefix: v1a
+      - run:
+          name: Install system image and create AVD
+          command: |
+            sdkmanager "system-images;android-30;google_apis;x86"
+            echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;x86" --force
+            echo "hw.ramSize=2048" >> ~/.android/avd/test.avd/config.ini
+            echo "disk.dataPartition.size=2048M" >> ~/.android/avd/test.avd/config.ini
+      - run:
+          name: Start emulator manually
+          no_output_timeout: 10m
+          command: |
+            emulator -avd test -no-window -no-audio -no-boot-anim -no-snapshot &
+            adb wait-for-device
+            adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
       - run:
           name: Install maestro
           command: curl -Ls "https://get.maestro.mobile.dev" | bash
