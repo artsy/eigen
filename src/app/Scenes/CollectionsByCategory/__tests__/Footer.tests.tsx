@@ -1,53 +1,31 @@
-import { fireEvent, screen } from "@testing-library/react-native"
-import { FooterHomeViewSectionCardsTestQuery } from "__generated__/FooterHomeViewSectionCardsTestQuery.graphql"
+import { screen } from "@testing-library/react-native"
 import { Footer } from "app/Scenes/CollectionsByCategory/Footer"
-import { navigate } from "app/system/navigation/navigate"
-import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { graphql } from "react-relay"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("@react-navigation/native", () => ({
   ...jest.requireActual("@react-navigation/native"),
   useRoute: () => ({
     params: {
-      category: "mock-category",
-      homeViewSectionId: "test-id",
+      category: "Medium",
     },
   }),
 }))
 
 describe("Footer", () => {
-  const { renderWithRelay } = setupTestWrapper<FooterHomeViewSectionCardsTestQuery>({
-    Component: ({ homeView }) => <Footer cards={homeView.section} homeViewSectionId="test-id" />,
-    query: graphql`
-      query FooterHomeViewSectionCardsTestQuery {
-        homeView @required(action: NONE) {
-          section(id: "test-id") @required(action: NONE) {
-            ...Footer_homeViewSectionCards
-          }
-        }
-      }
-    `,
+  it("renders explore more categories text", () => {
+    renderWithWrappers(<Footer />)
+
+    expect(screen.getByText("Explore more categories")).toBeOnTheScreen()
   })
 
-  it("renders", () => {
-    renderWithRelay({ HomeViewCardConnection: () => cards })
+  it("renders other categories excluding current one", () => {
+    renderWithWrappers(<Footer />)
 
-    expect(screen.getByText(/mock-title-1/)).toBeOnTheScreen()
-  })
-
-  it("navigates", () => {
-    renderWithRelay({ HomeViewCardConnection: () => cards })
-
-    fireEvent.press(screen.getByText(/mock-title-1/))
-    expect(navigate).toHaveBeenCalledWith(
-      "/collections-by-category/mock-title-1?homeViewSectionId=test-id&entityID=mock-entity-id-1"
-    )
+    expect(screen.getByText("Movement")).toBeOnTheScreen()
+    expect(screen.getByText("Size")).toBeOnTheScreen()
+    expect(screen.getByText("Color")).toBeOnTheScreen()
+    expect(screen.getByText("Price")).toBeOnTheScreen()
+    expect(screen.getByText("Gallery")).toBeOnTheScreen()
+    expect(screen.queryByText("Medium")).not.toBeOnTheScreen()
   })
 })
-
-const cards = {
-  edges: [
-    { node: { title: "mock-title-1", entityID: "mock-entity-id-1" } },
-    { node: { title: "mock-title-2", entityID: "mock-entity-id-2" } },
-  ],
-}
