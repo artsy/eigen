@@ -327,6 +327,38 @@ jobs:
           no_output_timeout: 25m
           command: ./scripts/utils/run_maestro_shard ios
 
+  test-android-emulators:
+    executor:
+      name: android/android_machine
+      resource_class: xlarge
+      tag: default
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Android system image
+          command: sdkmanager "system-images;android-30;google_apis;x86"
+
+      - run:
+          name: Create AVD
+          command: |
+            echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;x86" --force
+            echo "hw.ramSize=2048" >> ~/.android/avd/test.avd/config.ini
+            echo "disk.dataPartition.size=2048M" >> ~/.android/avd/test.avd/config.ini
+
+      - run:
+          name: Start emulator manually
+          no_output_timeout: 10m
+          command: |
+            emulator -avd test -no-window -no-audio -no-snapshot -no-boot-anim -accel off -qemu -m 2048 &
+            adb wait-for-device
+            adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
+
+      - run:
+          name: Confirm emulator running
+          command: adb devices
+
   run-e2e-tests-android:
     parallelism: 4
 
@@ -709,7 +741,9 @@ workflows:
     when: << pipeline.parameters.run_workflow_test-build-deploy >>
     jobs:
       # - build-maestro-android
-      - run-e2e-tests-android
+
+      # - run-e2e-tests-android
+      - test-android-emulators
         # requires:
         #   - build-maestro-android
       # - detect-secrets:
