@@ -1,20 +1,11 @@
-import {
-  Checkbox,
-  Flex,
-  InfoCircleIcon,
-  Join,
-  Message,
-  Spacer,
-  Text,
-  useSpace,
-} from "@artsy/palette-mobile"
-import { BOTTOM_TABS_HEIGHT } from "@artsy/palette-mobile/dist/elements/Screen/StickySubHeader"
+import { InfoIcon } from "@artsy/icons/native"
+import { Checkbox, Flex, Join, Message, Spacer, Text } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { MyCollectionBottomSheetModalArtistPreviewQuery } from "__generated__/MyCollectionBottomSheetModalArtistPreviewQuery.graphql"
 import { MyCollectionBottomSheetModalArtistPreview_artist$data } from "__generated__/MyCollectionBottomSheetModalArtistPreview_artist.graphql"
 import { MyCollectionBottomSheetModalArtistPreview_me$data } from "__generated__/MyCollectionBottomSheetModalArtistPreview_me.graphql"
 import { ArtistListItemContainer, ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
+import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { useToast } from "app/Components/Toast/toastHook"
 import { ArtistKindPills } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistPreview/ArtistKindPills"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
@@ -23,15 +14,14 @@ import { updateUserInterest } from "app/Scenes/MyCollection/mutations/updateUser
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useAndroidActionSheetStyles } from "app/utils/hooks/useAndroidActionSheetStyles"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
-import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { QueryRenderer, createFragmentContainer, graphql } from "react-relay"
 import useDebounce from "react-use/lib/useDebounce"
 
 interface MyCollectionBottomSheetModalArtistPreviewProps {
-  artist: MyCollectionBottomSheetModalArtistPreview_artist$data
-  me: MyCollectionBottomSheetModalArtistPreview_me$data
+  artist: MyCollectionBottomSheetModalArtistPreview_artist$data | null
+  me: MyCollectionBottomSheetModalArtistPreview_me$data | null
   interestId: string
 }
 
@@ -40,21 +30,20 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
 > = ({ artist, me, interestId }) => {
   const artworksCountWithinMyCollection = me?.myCollectionConnection?.totalCount ?? 0
   const canBeRemoved = artworksCountWithinMyCollection === 0
+
   const { showActionSheetWithOptions } = useActionSheet()
   const androidCustomSheetStyles = useAndroidActionSheetStyles()
 
-  const [isPrivate, setIsPrivate] = useState(me.userInterest?.private ?? false)
+  const [isPrivate, setIsPrivate] = useState(me?.userInterest?.private ?? false)
 
   const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
 
   const toast = useToast()
-  const { bottom } = useSafeAreaInsets()
-
-  const space = useSpace()
+  const safeAreaInset = useSafeAreaInsets()
 
   useDebounce(
     () => {
-      if (me.userInterest?.private === isPrivate) {
+      if (me?.userInterest?.private === isPrivate) {
         return
       }
 
@@ -69,6 +58,22 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
     [isPrivate]
   )
 
+  const dismissBottomView = () => {
+    setViewKind({ viewKind: null })
+  }
+
+  if (!artist || !me?.userInterest) {
+    return (
+      <AutoHeightBottomSheet visible closeOnBackdropClick onDismiss={dismissBottomView}>
+        <Flex px={2} pt={2} mb={`${safeAreaInset.bottom}px`}>
+          <Join separator={<Spacer y={4} />}>
+            <ArtistListItemPlaceholder />
+          </Join>
+        </Flex>
+      </AutoHeightBottomSheet>
+    )
+  }
+
   const deleteArtist = () => {
     deleteUserInterest({
       id: interestId,
@@ -78,7 +83,7 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
           backgroundColor: "green100",
         })
         // Hide modal after removing artist
-        setViewKind({ viewKind: null })
+        dismissBottomView()
 
         refreshMyCollection()
       })
@@ -91,12 +96,13 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   }
 
   return (
-    <BottomSheetView
-      style={{
-        paddingBottom: bottom + BOTTOM_TABS_HEIGHT + space(2),
-      }}
+    <AutoHeightBottomSheet
+      visible
+      onDismiss={dismissBottomView}
+      closeOnBackdropClick
+      enableDismissOnClose
     >
-      <Flex px={2} pt={2}>
+      <Flex px={2} pt={2} mb={`${safeAreaInset.bottom}px`}>
         <Join separator={<Spacer y={2} />}>
           <ArtistListItemContainer
             artist={artist}
@@ -155,13 +161,13 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
               <Message
                 variant="default"
                 title="To remove this artist, please remove their artworks from My Collection first."
-                IconComponent={() => <InfoCircleIcon width={18} height={18} fill="mono100" />}
+                IconComponent={() => <InfoIcon width={18} height={18} fill="mono100" />}
               />
             </>
           )}
         </Join>
       </Flex>
-    </BottomSheetView>
+    </AutoHeightBottomSheet>
   )
 }
 
@@ -213,28 +219,14 @@ export const MyCollectionBottomSheetModalArtistPreviewQueryRenderer: React.FC<{
         artistID,
         interestId,
       }}
-      render={renderWithPlaceholder({
-        Container: MyCollectionBottomSheetModalArtistPreviewFragmentContainer,
-        renderPlaceholder: LoadingSkeleton,
-        renderFallback: () => null,
-        initialProps: {
-          interestId,
-        },
-      })}
+      render={({ props }) => {
+        return (
+          <MyCollectionBottomSheetModalArtistPreviewFragmentContainer
+            artist={props?.artist || null}
+            me={props?.me || null}
+          />
+        )
+      }}
     />
-  )
-}
-
-const LoadingSkeleton = () => {
-  return (
-    <>
-      <BottomSheetView>
-        <Flex px={2} pt={2}>
-          <Join separator={<Spacer y={4} />}>
-            <ArtistListItemPlaceholder />
-          </Join>
-        </Flex>
-      </BottomSheetView>
-    </>
   )
 }
