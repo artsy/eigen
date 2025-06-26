@@ -742,6 +742,9 @@ workflows:
       - build-deploy-ios-testflight:
           requires:
             - horizon/block
+            - test-js
+            - check-code
+            - build-test-js
           filters:
             branches:
               only: brian+george/code-sign-beta-failure # TODO: test
