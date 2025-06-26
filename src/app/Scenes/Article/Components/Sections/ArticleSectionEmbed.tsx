@@ -1,5 +1,6 @@
 import { Flex } from "@artsy/palette-mobile"
 import { ArticleSectionEmbed_section$key } from "__generated__/ArticleSectionEmbed_section.graphql"
+import { Platform } from "react-native"
 import { WebView } from "react-native-webview"
 import { useFragment, graphql } from "react-relay"
 
@@ -20,6 +21,10 @@ export const ArticleSectionEmbed: React.FC<ArticleSectionEmbedProps> = ({ sectio
   )
 
   if (!data.url) return null
+
+  if (Platform.OS === "android" && data.url?.includes("apple.com")) {
+    return null
+  }
 
   const height = Number(data.mobileHeight || data.height || 300)
 
