@@ -16324,6 +16324,8 @@ type OrderMutationError {
   mutationError: ExchangeError!
 }
 
+union OrderMutationResponse = OrderMutationError | OrderMutationSuccess
+
 type OrderMutationSuccess {
   order: Order!
 }
@@ -21014,8 +21016,6 @@ type Services {
   convection: ConvectionService!
   metaphysics: MetaphysicsService!
 }
-
-union SetOrderFulfillmentOptionResponse = OrderMutationError | OrderMutationSuccess
 
 # Shipping line
 type ShippingLine {
@@ -25900,7 +25900,7 @@ input setOrderFulfillmentOptionInput {
 
 type setOrderFulfillmentOptionPayload {
   clientMutationId: String
-  orderOrError: SetOrderFulfillmentOptionResponse
+  orderOrError: OrderMutationResponse
 }
 
 enum sort {
@@ -25932,7 +25932,7 @@ input submitOrderInput {
 
 type submitOrderPayload {
   clientMutationId: String
-  orderOrError: SetOrderFulfillmentOptionResponse
+  orderOrError: OrderMutationResponse
 }
 
 input unsetOrderFulfillmentOptionInput {
@@ -25944,7 +25944,7 @@ input unsetOrderFulfillmentOptionInput {
 
 type unsetOrderFulfillmentOptionPayload {
   clientMutationId: String
-  orderOrError: SetOrderFulfillmentOptionResponse
+  orderOrError: OrderMutationResponse
 }
 
 input unsetOrderPaymentMethodInput {
@@ -25956,7 +25956,7 @@ input unsetOrderPaymentMethodInput {
 
 type unsetOrderPaymentMethodPayload {
   clientMutationId: String
-  orderOrError: SetOrderFulfillmentOptionResponse
+  orderOrError: OrderMutationResponse
 }
 
 input updateAlertInput {
@@ -26066,7 +26066,7 @@ input updateOrderInput {
 
 type updateOrderPayload {
   clientMutationId: String
-  orderOrError: SetOrderFulfillmentOptionResponse
+  orderOrError: OrderMutationResponse
 }
 
 input updateOrderShippingAddressInput {
@@ -26104,7 +26104,7 @@ input updateOrderShippingAddressInput {
 
 type updateOrderShippingAddressPayload {
   clientMutationId: String
-  orderOrError: SetOrderFulfillmentOptionResponse
+  orderOrError: OrderMutationResponse
 }
 
 input updatePurchaseInput {
