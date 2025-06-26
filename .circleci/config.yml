@@ -610,7 +610,7 @@ jobs:
       - install-gems
       - run:
           name: Get next Android version code
-          command: fastlane get_next_android_build_version
+          command: bundle exec fastlane get_next_android_build_version
       - persist_to_workspace:
           root: .
           paths:
