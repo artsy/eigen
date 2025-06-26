@@ -16,6 +16,10 @@ jest.mock("app/Scenes/CollectionsByCategory/CollectionRail", () => ({
   CollectionRailPlaceholder: () => null,
 }))
 
+jest.mock("app/Scenes/Search/components/ExploreByCategory/constants", () => ({
+  getTitleForCategory: () => "mock-category",
+}))
+
 describe("Body", () => {
   const { renderWithRelay } = setupTestWrapper<BodyHomeViewSectionCardsTestQuery>({
     Component: ({ viewer }) => <Body viewer={viewer} />,
