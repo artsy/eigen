@@ -43,8 +43,9 @@ export const useImagePlaceholder = (artworkID?: string) => {
   const screenDimensions = useScreenDimensions()
 
   // Try to find the image for the artwork in the Relay store
-  const artwork = findRelayRecord("slug", artworkID)
-  const imageRef = (artwork?.image as Record)?.__ref as string
+  const artwork = findRelayRecord("slug", artworkID) || findRelayRecord("id", artworkID)
+  // image(includeAll:false) is key for the image that is used in the artwork grid item and rail card
+  const imageRef = (artwork?.["image(includeAll:false)"] as Record)?.__ref as string
   const image = findRelayRecordByDataID(imageRef)
 
   const hasImageBeenFound = !!(image?.width && image?.height) || !!image?.aspectRatio
@@ -54,5 +55,9 @@ export const useImagePlaceholder = (artworkID?: string) => {
     ? getImageDimensionsByImage(screenDimensions, image)
     : getDefaultImageDimensions(screenDimensions, space(1))
 
-  return { width, height, blurhash: image?.blurhash as string | null | undefined }
+  return {
+    width,
+    height,
+    blurhash: image?.blurhash as string | null | undefined,
+  }
 }

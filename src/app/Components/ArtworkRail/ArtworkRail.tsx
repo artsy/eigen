@@ -1,10 +1,13 @@
-import { Flex, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import { Flex, SkeletonBox, SkeletonText, Spacer, useSpace } from "@artsy/palette-mobile"
 import { FlashList } from "@shopify/flash-list"
 import {
   ArtworkRail_artworks$data,
   ArtworkRail_artworks$key,
 } from "__generated__/ArtworkRail_artworks.graphql"
-import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
+import {
+  ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT,
+  ArtworkRailCard,
+} from "app/Components/ArtworkRail/ArtworkRailCard"
 import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   ARTWORK_RAIL_CARD_MIN_WIDTH,
@@ -64,6 +67,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
     ...otherProps
   }) => {
     const artworks = useFragment(artworksFragment, otherProps.artworks)
+    const space = useSpace()
 
     const renderItem: ListRenderItem<Artwork> = useCallback(
       ({ item, index }) => {
@@ -92,7 +96,14 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
     // Context https://github.com/artsy/eigen/pull/11207
     const ListComponent =
       Platform.OS === "ios"
-        ? (props: any) => <FlashList estimatedItemSize={ARTWORK_RAIL_CARD_MIN_WIDTH} {...props} />
+        ? (props: any) => (
+            <FlashList
+              estimatedItemSize={
+                ARTWORK_RAIL_CARD_IMAGE_HEIGHT + ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + space(1)
+              }
+              {...props}
+            />
+          )
         : FlatList
 
     return (

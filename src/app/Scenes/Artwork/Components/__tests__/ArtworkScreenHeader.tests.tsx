@@ -1,8 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { ArtworkScreenHeaderTestQuery } from "__generated__/ArtworkScreenHeaderTestQuery.graphql"
 import { ArtworkStoreProvider } from "app/Scenes/Artwork/ArtworkStore"
-import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
-import { goBack } from "app/system/navigation/navigate"
+import { ArtworkScreenNavHeader } from "app/Scenes/Artwork/Components/ArtworkScreenNavHeader"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -13,7 +12,7 @@ describe("ArtworkScreenHeader", () => {
       if (props?.artwork) {
         return (
           <ArtworkStoreProvider>
-            <ArtworkScreenHeader artwork={props.artwork} />
+            <ArtworkScreenNavHeader artwork={props.artwork} />
           </ArtworkStoreProvider>
         )
       }
@@ -22,7 +21,7 @@ describe("ArtworkScreenHeader", () => {
     query: graphql`
       query ArtworkScreenHeaderTestQuery @relay_test_operation @raw_response_type {
         artwork(id: "some-artwork") {
-          ...ArtworkScreenHeader_artwork
+          ...ArtworkScreenNavHeader_artwork
         }
       }
     `,
@@ -36,18 +35,7 @@ describe("ArtworkScreenHeader", () => {
     })
 
     expect(screen.getByLabelText("Artwork page header")).toBeTruthy()
-    expect(screen.getByLabelText("Go back")).toBeTruthy()
     expect(screen.getByText("Create Alert")).toBeTruthy()
-  })
-
-  it("calls go back when the back button is pressed", () => {
-    renderWithRelay({})
-
-    expect(screen.getByLabelText("Go back")).toBeTruthy()
-
-    fireEvent.press(screen.getByLabelText("Go back"))
-
-    expect(goBack).toHaveBeenCalledTimes(1)
   })
 
   describe("Create alert button", () => {
@@ -58,7 +46,6 @@ describe("ArtworkScreenHeader", () => {
         }),
       })
 
-      expect(screen.getByLabelText("Go back")).toBeTruthy()
       expect(screen.queryByText("Create Alert")).toBeFalsy()
     })
 

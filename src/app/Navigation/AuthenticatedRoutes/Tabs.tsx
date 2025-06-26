@@ -15,7 +15,7 @@ import { modules } from "app/Navigation/utils/modules"
 import { useBottomTabsBadges } from "app/Navigation/utils/useBottomTabsBadges"
 import { BottomTabOption, BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
-import { bottomTabsConfig, useSearchTabName } from "app/Scenes/BottomTabs/bottomTabsConfig"
+import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { OnboardingQuiz } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
@@ -47,14 +47,13 @@ type TabRoutesParams = {
 const Tab = createBottomTabNavigator<TabRoutesParams>()
 
 const BOTTOM_TABS_HEIGHT = PixelRatio.getFontScale() < 1.5 ? 65 : 85
-export const TAB_BAR_ANIMATION_DURATION = 250
+export const TAB_BAR_ANIMATION_DURATION = 300
 
 const AppTabs: React.FC = () => {
   const { tabsBadges } = useBottomTabsBadges()
   const color = useColor()
   const isStaging = useIsStaging()
   const insets = useSafeAreaInsets()
-  const searchTabName = useSearchTabName()
 
   const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
 
@@ -139,9 +138,6 @@ const AppTabs: React.FC = () => {
           ),
           tabBarLabelPosition: "below-icon",
           tabBarLabel: () => {
-            const tabName =
-              route.name === "search" ? searchTabName : bottomTabsConfig[route.name].name
-
             return (
               <Flex
                 flex={1}
@@ -158,7 +154,7 @@ const AppTabs: React.FC = () => {
                   color="mono100"
                   numberOfLines={1}
                 >
-                  {tabName}
+                  {bottomTabsConfig[route.name].name}
                 </Text>
               </Flex>
             )

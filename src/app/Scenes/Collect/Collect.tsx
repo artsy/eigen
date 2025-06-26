@@ -28,12 +28,14 @@ import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilter
 import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { PAGE_SIZE } from "app/Components/constants"
+import { PAGE_SIZE, SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { useRefreshControl } from "app/utils/refreshHelpers"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { useState } from "react"
 import { graphql, useFragment, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
@@ -132,7 +134,7 @@ export const CollectContent: React.FC<CollectContentProps> = ({ viewer }) => {
         refreshControl={RefreshControl}
         style={{
           // Extra padding at the bottom of the screen so it's clear that there's no more content
-          paddingBottom: 120,
+          paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET,
         }}
       />
 
@@ -269,12 +271,16 @@ const CollectQueryRenderer: React.FC<CollectQueryRendererProps> = withSuspense({
 
 export const Collect: React.FC<CollectQueryRendererProps> = (props) => {
   return (
-    <Screen>
-      <Screen.AnimatedHeader onBack={goBack} title="Collect" />
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({ context_screen_owner_type: OwnerType.collect })}
+    >
+      <Screen>
+        <Screen.AnimatedHeader onBack={goBack} title="Collect" />
 
-      <Screen.Body fullwidth>
-        <CollectQueryRenderer {...props} />
-      </Screen.Body>
-    </Screen>
+        <Screen.Body fullwidth>
+          <CollectQueryRenderer {...props} />
+        </Screen.Body>
+      </Screen>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }

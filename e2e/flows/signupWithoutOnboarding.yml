@@ -1,8 +1,0 @@
-appId: ${MAESTRO_APP_ID}
----
-- runFlow:
-    file: signup.yml
-- assertVisible: "Ready to find art you love?"
-- tapOn: "Skip.*"
-- assertVisible:
-    id: "search-button"

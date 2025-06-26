@@ -22,18 +22,18 @@
   dependencies:
     core-js "3"
 
-"@artsy/icons@3.41.0":
-  version "3.41.0"
-  resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.41.0.tgz#9d7a4de85ea61791be1ec956f75e3c13ddf625ce"
-  integrity sha512-BmrJE0BSSxERd1nYBF58vEF+/y3++p1QC5ch6wIptRRpQ9Fag4JTfK3QuJ0O1l04D1y4mKEovZYrAvsIKZq6Zw==
+"@artsy/icons@3.43.0":
+  version "3.43.0"
+  resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.43.0.tgz#25dc75af5744a5138ce76f733454c795cf6577ce"
+  integrity sha512-ph2hIGwZHmWITweS58qjCfTjQnDDyKZMpxgb+ekvPaFMV080n+FbWrpP1U8F2hHqULVvDuZPuW/JLKWD34UM3w==
 
-"@artsy/palette-mobile@17.19.0":
-  version "17.19.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.19.0.tgz#76c6b402f01656c234cf43614d854aa6d1728611"
-  integrity sha512-iObFh/bgM5r3tY50HxGC+XKShlwcn8da398+VntNjHyxxrqlamHG0aN38smqfNLIKoBTf+iSfYaocgAkfo4stQ==
+"@artsy/palette-mobile@17.21.0":
+  version "17.21.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.21.0.tgz#ff3b8bf0f17ce62b3fb84f88460565e7e8b1bb21"
+  integrity sha512-zZwQw4TkY+jzmNu65079KlLFJ/xh8Cr7SCnv2SIbpiBC7y89o5GMa6IvEhhRuDOfqTFP6nXLI7DjwlGXSCRbvA==
   dependencies:
     "@artsy/palette-tokens" "^7.0.0"
-    "@shopify/flash-list" "1.7.6"
+    "@shopify/flash-list" "^1.8.3"
     "@styled-system/core" "^5.1.2"
     "@styled-system/theme-get" "^5.1.2"
     events "^3.3.0"
@@ -41,7 +41,7 @@
     moti "^0.25.3"
     react-nanny "^2.15.0"
     react-native-blurhash "^2.1.1"
-    react-native-collapsible-tab-view "^8.0.0"
+    react-native-collapsible-tab-view "^8.0.1"
     react-native-fast-image "^8.6.3"
     react-native-pager-view "6.5.0"
     react-native-popover-view "^5.1.7"
@@ -4237,10 +4237,10 @@
   dependencies:
     "@sentry/core" "8.54.0"
 
-"@shopify/flash-list@1.7.6":
-  version "1.7.6"
-  resolved "https://registry.yarnpkg.com/@shopify/flash-list/-/flash-list-1.7.6.tgz#367e76866c71d1f1be0ff70f0b28be4bbfbcf595"
-  integrity sha512-0kuuAbWgy4YSlN05mt0ScvxK8uiDixMsICWvDed+LTxvZ5+5iRyt3M8cRLUroB8sfiZlJJZWlxHrx0frBpsYOQ==
+"@shopify/flash-list@^1.8.3":
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/@shopify/flash-list/-/flash-list-1.8.3.tgz#08829644d7177b094ff016a71e2b2fef633d8af6"
+  integrity sha512-vXuj6JyuMjONVOXjEhWFeaONPuWN/53Cl2LeyeM8TZ0JzUcNU+BE6iyga1/yyJeDf0K7YPgAE/PcUX2+DM1LiA==
   dependencies:
     recyclerlistview "4.2.3"
     tslib "2.8.1"
@@ -14251,10 +14251,10 @@ react-native-bootsplash@6.3.4:
     ts-dedent "^2.2.0"
     xml-formatter "^3.6.3"
 
-react-native-collapsible-tab-view@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-collapsible-tab-view/-/react-native-collapsible-tab-view-8.0.0.tgz#b308e5cf6b94ae57099196b50a87f2d63c894a13"
-  integrity sha512-p3/CfBtCn/7qAllFeBM8KI4cCqqYfE0gzO/bh/oX6ewk2hE7HF0QQpZBGZlLdLJDo1lUXRlTSP2VLAYgky2maw==
+react-native-collapsible-tab-view@8.0.1, react-native-collapsible-tab-view@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-collapsible-tab-view/-/react-native-collapsible-tab-view-8.0.1.tgz#af1d73fe34e3b8afc8d66a644db0516e3e18801b"
+  integrity sha512-/MRimYn4FB4Dzmypy0J976FVZeX9OEOyFR3fogO68YDHyleSEEgVI2ecrcbtJ4jC8LPT0weDhJPtUQtWtzlQ8A==
   dependencies:
     use-deep-compare "^1.1.0"
 

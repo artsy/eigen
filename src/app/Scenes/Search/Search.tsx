@@ -6,12 +6,10 @@ import * as Sentry from "@sentry/react-native"
 import { withProfiler } from "@sentry/react-native"
 import { SearchQuery, SearchQuery$variables } from "__generated__/SearchQuery.graphql"
 import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearchInput"
-import { HomeViewSectionCardsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionCards"
-import { HomeViewSectionCardsChipsQueryRenderer } from "app/Scenes/HomeView/Sections/HomeViewSectionCardsChips"
 import { SearchPills } from "app/Scenes/Search/SearchPills"
+import { DiscoverSomethingNew } from "app/Scenes/Search/components/DiscoverSomethingNew/DiscoverSomethingNew"
 import { useRefetchWhenQueryChanged } from "app/Scenes/Search/useRefetchWhenQueryChanged"
 import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
-import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { Schema } from "app/utils/track"
 import { memo, RefObject, Suspense, useRef, useState } from "react"
@@ -19,9 +17,7 @@ import { KeyboardAvoidingView, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { CuratedCollections } from "./CuratedCollections"
 import { SearchResults } from "./SearchResults"
-import { TrendingArtists } from "./TrendingArtists"
 import { CityGuideCTA } from "./components/CityGuideCTA"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
 import { SEARCH_PILLS, TOP_PILL } from "./constants"
@@ -38,7 +34,6 @@ export const SEARCH_INPUT_PLACEHOLDER = [
 export const searchQueryDefaultVariables: SearchQuery$variables = {
   term: "",
   skipSearchQuery: true,
-  isDiscoverVariant: false,
 }
 
 export const Search: React.FC = () => {
@@ -52,21 +47,14 @@ export const Search: React.FC = () => {
 
   const scrollYOffset = useRef(0)
   const { trackEvent } = useTracking()
-  const { variant } = useExperimentVariant("diamond_discover-tab")
-  const isDiscoverVariant = variant.name === "variant-a" && variant.enabled
 
   const shouldShowCityGuide = !isTablet()
-
-  const searchQueryVariables = {
-    ...searchQueryDefaultVariables,
-    isDiscoverVariant,
-  }
 
   const {
     data: queryData,
     refetch,
     isLoading,
-  } = useSearchQuery<SearchQuery>(SearchScreenQuery, searchQueryVariables)
+  } = useSearchQuery<SearchQuery>(SearchScreenQuery, searchQueryDefaultVariables)
 
   useRefetchWhenQueryChanged({ query: searchQuery, refetch })
 
@@ -130,21 +118,7 @@ export const Search: React.FC = () => {
             keyboardShouldPersistTaps="handled"
             contentContainerStyle={{ paddingTop: space(2) }}
           >
-            {!isDiscoverVariant && <TrendingArtists data={queryData} mb={4} />}
-            {!isDiscoverVariant && <CuratedCollections collections={queryData} mb={4} />}
-
-            {!!isDiscoverVariant && (
-              <HomeViewSectionCardsChipsQueryRenderer
-                sectionID="home-view-section-discover-something-new"
-                index={0}
-              />
-            )}
-            {!!isDiscoverVariant && (
-              <HomeViewSectionCardsQueryRenderer
-                sectionID="home-view-section-explore-by-category"
-                index={0}
-              />
-            )}
+            <DiscoverSomethingNew />
 
             <HorizontalPadding>{!!shouldShowCityGuide && <CityGuideCTA />}</HorizontalPadding>
 
@@ -157,16 +131,10 @@ export const Search: React.FC = () => {
 }
 
 export const SearchScreenQuery = graphql`
-  query SearchQuery(
-    $term: String!
-    $skipSearchQuery: Boolean!
-    $isDiscoverVariant: Boolean = false
-  ) {
+  query SearchQuery($term: String!, $skipSearchQuery: Boolean!) {
     viewer @skip(if: $skipSearchQuery) {
       ...SearchPills_viewer @arguments(term: $term)
     }
-    ...CuratedCollections_collections @skip(if: $isDiscoverVariant)
-    ...TrendingArtists_query @skip(if: $isDiscoverVariant)
   }
 `
 

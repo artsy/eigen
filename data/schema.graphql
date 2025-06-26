@@ -3117,7 +3117,8 @@ type ArtworkImport implements Node {
     timezone: String
   ): String
   createdBy: ArtworkImportCreatedBy
-  currency: String
+  currency: String!
+  dimensionMetric: String!
   fileName: String!
 
   # A globally unique ID.
@@ -4496,6 +4497,9 @@ input BulkUpdateArtworksMetadataInput {
 
   # Whether the artworks must be listed as Make Offer
   offer: Boolean
+
+  # Adjusts the artworks' prices according to the value passed (percentage).
+  priceAdjustment: Int
 
   # The price for the artworks
   priceListed: Float
@@ -8639,6 +8643,8 @@ type CreateArtworkImportFailure {
 input CreateArtworkImportInput {
   async: Boolean
   clientMutationId: String
+  currency: String
+  dimensionMetric: String
   fileName: String
   parseWithAI: Boolean
   parseWithAIModel: String
@@ -13592,6 +13598,7 @@ enum LengthUnitPreference {
 # A line item in an order
 type LineItem {
   artwork: Artwork
+  artworkOrEditionSet: ArtworkOrEditionSetType
   artworkVersion: ArtworkVersion
   currencyCode: String!
 
@@ -15665,6 +15672,7 @@ type Mutation {
 
   # Updates an artwork.
   updateArtwork(input: UpdateArtworkMutationInput!): UpdateArtworkMutationPayload
+  updateArtworkImport(input: UpdateArtworkImportInput!): UpdateArtworkImportPayload
   updateArtworkImportRow(input: UpdateArtworkImportRowInput!): UpdateArtworkImportRowPayload
 
   # Updates the flags on a partner.
@@ -16315,6 +16323,8 @@ enum OrderModeEnum {
 type OrderMutationError {
   mutationError: ExchangeError!
 }
+
+union OrderMutationResponse = OrderMutationError | OrderMutationSuccess
 
 type OrderMutationSuccess {
   order: Order!
@@ -18844,6 +18854,15 @@ type Query {
     osWeights: [Float] = [0.6, 0.4]
   ): ArtworkConnection
 
+  # Discovery Marketing Collections for personalized recommendations
+  discoveryMarketingCollections(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    size: Int = 12
+  ): [MarketingCollection!]
+
   # A namespace external partners (provided by Galaxy)
   external: External!
 
@@ -18894,6 +18913,9 @@ type Query {
     near: Near
     sort: FairSorts
     status: EventStatus
+
+    # Search term to match against fair names for authenticated users
+    term: String
   ): FairConnection
 
   # A Feature
@@ -20995,8 +21017,6 @@ type Services {
   metaphysics: MetaphysicsService!
 }
 
-union SetOrderFulfillmentOptionResponse = OrderMutationError | OrderMutationSuccess
-
 # Shipping line
 type ShippingLine {
   # The monetary amount for the line
@@ -22067,6 +22087,23 @@ input UpdateArtworkEditionSetInput {
   shippingWeightMetric: String
 }
 
+type UpdateArtworkImportFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtworkImportInput {
+  clientMutationId: String
+  currency: String
+  dimensionMetric: String
+}
+
+type UpdateArtworkImportPayload {
+  artworkImportOrError: UpdateArtworkImportResponseOrError
+  clientMutationId: String
+}
+
+union UpdateArtworkImportResponseOrError = UpdateArtworkImportFailure | UpdateArtworkImportSuccess
+
 type UpdateArtworkImportRowFailure {
   mutationError: GravityMutationError
 }
@@ -22089,6 +22126,11 @@ union UpdateArtworkImportRowResponseOrError =
   | UpdateArtworkImportRowSuccess
 
 type UpdateArtworkImportRowSuccess {
+  artworkImport: ArtworkImport
+  success: Boolean!
+}
+
+type UpdateArtworkImportSuccess {
   artworkImport: ArtworkImport
   success: Boolean!
 }
@@ -24545,6 +24587,15 @@ type Viewer {
     osWeights: [Float] = [0.6, 0.4]
   ): ArtworkConnection
 
+  # Discovery Marketing Collections for personalized recommendations
+  discoveryMarketingCollections(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    size: Int = 12
+  ): [MarketingCollection!]
+
   # A namespace external partners (provided by Galaxy)
   external: External!
 
@@ -24595,6 +24646,9 @@ type Viewer {
     near: Near
     sort: FairSorts
     status: EventStatus
+
+    # Search term to match against fair names for authenticated users
+    term: String
   ): FairConnection
 
   # A Feature
@@ -25846,7 +25900,7 @@ input setOrderFulfillmentOptionInput {
 
 type setOrderFulfillmentOptionPayload {
   clientMutationId: String
-  orderOrError: SetOrderFulfillmentOptionResponse
+  orderOrError: OrderMutationResponse
 }
 
 enum sort {
@@ -25878,7 +25932,7 @@ input submitOrderInput {
 
 type submitOrderPayload {
   clientMutationId: String
-  orderOrError: SetOrderFulfillmentOptionResponse
+  orderOrError: OrderMutationResponse
 }
 
 input unsetOrderFulfillmentOptionInput {
@@ -25890,7 +25944,7 @@ input unsetOrderFulfillmentOptionInput {
 
 type unsetOrderFulfillmentOptionPayload {
   clientMutationId: String
-  orderOrError: SetOrderFulfillmentOptionResponse
+  orderOrError: OrderMutationResponse
 }
 
 input unsetOrderPaymentMethodInput {
@@ -25902,7 +25956,7 @@ input unsetOrderPaymentMethodInput {
 
 type unsetOrderPaymentMethodPayload {
   clientMutationId: String
-  orderOrError: SetOrderFulfillmentOptionResponse
+  orderOrError: OrderMutationResponse
 }
 
 input updateAlertInput {
@@ -26012,7 +26066,7 @@ input updateOrderInput {
 
 type updateOrderPayload {
   clientMutationId: String
-  orderOrError: SetOrderFulfillmentOptionResponse
+  orderOrError: OrderMutationResponse
 }
 
 input updateOrderShippingAddressInput {
@@ -26050,7 +26104,7 @@ input updateOrderShippingAddressInput {
 
 type updateOrderShippingAddressPayload {
   clientMutationId: String
-  orderOrError: SetOrderFulfillmentOptionResponse
+  orderOrError: OrderMutationResponse
 }
 
 input updatePurchaseInput {

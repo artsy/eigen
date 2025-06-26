@@ -1,4 +1,4 @@
-import { ShieldIcon, VisaIcon } from "@artsy/icons/native"
+import { ShieldIcon } from "@artsy/icons/native"
 import {
   Box,
   Flex,
@@ -13,6 +13,8 @@ import {
 } from "@artsy/palette-mobile"
 import { OrderDetailQuery } from "__generated__/OrderDetailQuery.graphql"
 import { OrderDetail_order$key } from "__generated__/OrderDetail_order.graphql"
+import { OrderDetailFulfillment } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailFulfillment"
+import { OrderDetailPaymentInfo } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailPaymentInfo"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { sizeToFit } from "app/utils/useSizeToFit"
@@ -184,41 +186,14 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
       <Spacer y={2} />
 
       {/* 6th Part: Shipping */}
-      <Box px={2}>
-        <Text variant="sm" fontWeight="bold">
-          Ship to
-        </Text>
-
-        <Spacer y={0.5} />
-
-        <Box>
-          <Text variant="xs">Viviana Flores</Text>
-          <Text variant="xs">401 Broadway</Text>
-          <Text variant="xs">New York, NY 10013</Text>
-          <Text variant="xs">United States</Text>
-          <Text variant="xs">(212) 456-7890</Text>
-        </Box>
-      </Box>
+      <OrderDetailFulfillment order={data} />
 
       <Spacer y={2} />
       <Box backgroundColor="mono5" height={10} />
       <Spacer y={2} />
 
       {/* 7th Part: Payment */}
-      <Box px={2}>
-        <Text variant="sm" fontWeight="bold">
-          Payment method
-        </Text>
-
-        <Spacer y={0.5} />
-
-        <Flex flexDirection="row" alignItems="center">
-          <VisaIcon mr={0.5} />
-
-          <Text variant="xs"> •••• 4242 </Text>
-          <Text variant="xs"> Exp 12/29 </Text>
-        </Flex>
-      </Box>
+      <OrderDetailPaymentInfo order={data} />
     </Screen.ScrollView>
   )
 }
@@ -227,6 +202,8 @@ const orderDetailFragment = graphql`
   fragment OrderDetail_order on Order {
     id
     internalID
+    ...OrderDetailPaymentInfo_order
+    ...OrderDetailFulfillment_order
 
     lineItems {
       artwork {

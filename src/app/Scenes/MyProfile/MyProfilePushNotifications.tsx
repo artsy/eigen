@@ -69,8 +69,8 @@ export const NOTIFICATION_SETTINGS: Record<
     key: "receiveLotOpeningSoonNotification",
   },
   receiveSaleOpeningClosingNotification: {
-    title: "Lot Opening Soon",
-    description: "Your lots that are opening for live bidding soon",
+    title: "Auctions Starting and Closing",
+    description: "Your registered auctions that are starting or closing soon",
     key: "receiveLotOpeningSoonNotification",
   },
   receiveNewWorksNotification: {
