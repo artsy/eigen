@@ -27,13 +27,13 @@
   resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.43.0.tgz#25dc75af5744a5138ce76f733454c795cf6577ce"
   integrity sha512-ph2hIGwZHmWITweS58qjCfTjQnDDyKZMpxgb+ekvPaFMV080n+FbWrpP1U8F2hHqULVvDuZPuW/JLKWD34UM3w==
 
-"@artsy/palette-mobile@17.20.0":
-  version "17.20.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.20.0.tgz#9af044a08b873d143913580295025a39158de4fe"
-  integrity sha512-tavOU3C95iaYI0CGMc4s86E9tPG9IHPqGensikGqiGaufreJDQe0zjtE1JQBQw4MMSlCG3UhDPiAf+NBzDVhdw==
+"@artsy/palette-mobile@17.21.0":
+  version "17.21.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.21.0.tgz#ff3b8bf0f17ce62b3fb84f88460565e7e8b1bb21"
+  integrity sha512-zZwQw4TkY+jzmNu65079KlLFJ/xh8Cr7SCnv2SIbpiBC7y89o5GMa6IvEhhRuDOfqTFP6nXLI7DjwlGXSCRbvA==
   dependencies:
     "@artsy/palette-tokens" "^7.0.0"
-    "@shopify/flash-list" "1.7.6"
+    "@shopify/flash-list" "^1.8.3"
     "@styled-system/core" "^5.1.2"
     "@styled-system/theme-get" "^5.1.2"
     events "^3.3.0"
@@ -4237,10 +4237,10 @@
   dependencies:
     "@sentry/core" "8.54.0"
 
-"@shopify/flash-list@1.7.6":
-  version "1.7.6"
-  resolved "https://registry.yarnpkg.com/@shopify/flash-list/-/flash-list-1.7.6.tgz#367e76866c71d1f1be0ff70f0b28be4bbfbcf595"
-  integrity sha512-0kuuAbWgy4YSlN05mt0ScvxK8uiDixMsICWvDed+LTxvZ5+5iRyt3M8cRLUroB8sfiZlJJZWlxHrx0frBpsYOQ==
+"@shopify/flash-list@^1.8.3":
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/@shopify/flash-list/-/flash-list-1.8.3.tgz#08829644d7177b094ff016a71e2b2fef633d8af6"
+  integrity sha512-vXuj6JyuMjONVOXjEhWFeaONPuWN/53Cl2LeyeM8TZ0JzUcNU+BE6iyga1/yyJeDf0K7YPgAE/PcUX2+DM1LiA==
   dependencies:
     recyclerlistview "4.2.3"
     tslib "2.8.1"
@@ -14251,7 +14251,7 @@ react-native-bootsplash@6.3.4:
     ts-dedent "^2.2.0"
     xml-formatter "^3.6.3"
 
-react-native-collapsible-tab-view@^8.0.1:
+react-native-collapsible-tab-view@8.0.1, react-native-collapsible-tab-view@^8.0.1:
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/react-native-collapsible-tab-view/-/react-native-collapsible-tab-view-8.0.1.tgz#af1d73fe34e3b8afc8d66a644db0516e3e18801b"
   integrity sha512-/MRimYn4FB4Dzmypy0J976FVZeX9OEOyFR3fogO68YDHyleSEEgVI2ecrcbtJ4jC8LPT0weDhJPtUQtWtzlQ8A==
