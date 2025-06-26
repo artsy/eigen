@@ -1,4 +1,5 @@
-import { Flex, HeartFillIcon, HeartIcon, Text, Touchable } from "@artsy/palette-mobile"
+import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
+import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { ArtworkRailCardMeta_artwork$key } from "__generated__/ArtworkRailCardMeta_artwork.graphql"
 import { ArtworkAuctionTimer } from "app/Components/ArtworkGrids/ArtworkAuctionTimer"
 import { ArtworkSocialSignal } from "app/Components/ArtworkGrids/ArtworkSocialSignal"
@@ -21,7 +22,6 @@ export interface ArtworkRailCardCommonProps extends ArtworkActionTrackingProps {
   hideIncreasedInterestSignal?: boolean
   hideCuratorsPickSignal?: boolean
   lotLabel?: string | null
-  containerHeight?: number
   showSaveIcon?: boolean
   showPartnerName?: boolean
   /**
@@ -215,7 +215,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
                 fill="blue100"
               />
             ) : (
-              <HeartIcon
+              <HeartStrokeIcon
                 testID="empty-heart-icon"
                 height={HEART_ICON_SIZE}
                 width={HEART_ICON_SIZE}
