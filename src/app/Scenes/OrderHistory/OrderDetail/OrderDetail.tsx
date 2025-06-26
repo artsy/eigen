@@ -49,9 +49,9 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
       <Box px={2}>
         {/* 1st Part: Greetings */}
         <Box>
-          <Text variant="lg-display">Great Choice, Vivianna!</Text>
+          <Text variant="lg-display">{orderData.displayTexts.title}</Text>
 
-          <Text variant="xs">Order #123456789</Text>
+          <Text variant="xs">Order #{orderData.code}</Text>
         </Box>
 
         <Spacer y={4} />
@@ -186,8 +186,11 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
 
 const orderDetailFragment = graphql`
   fragment OrderDetail_order on Order {
-    id
     internalID
+    code
+    displayTexts {
+      title
+    }
     ...OrderDetailMessage_order
     ...OrderDetailPaymentInfo_order
     ...OrderDetailFulfillment_order
