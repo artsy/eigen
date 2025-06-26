@@ -719,7 +719,9 @@ workflows:
           filters:
             branches:
               ignore:
+                - beta-ios
                 - beta-android
+                - brian+george/code-sign-beta-failure
           requires:
             - test-js
             - check-code
@@ -730,6 +732,8 @@ workflows:
             branches:
               ignore:
                 - beta-ios
+                - beta-android
+                - brian+george/code-sign-beta-failure
           requires:
             - test-js
             - check-code
@@ -738,7 +742,6 @@ workflows:
       - build-deploy-ios-testflight:
           requires:
             - horizon/block
-            - build-test-app-ios
           filters:
             branches:
               only: brian+george/code-sign-beta-failure # TODO: test
@@ -746,7 +749,9 @@ workflows:
       - build-deploy-ios-firebase:
           requires:
             - horizon/block
-            - build-test-app-ios
+            - test-js
+            - check-code
+            - build-test-js
           filters:
             branches:
               only: brian+george/code-sign-beta-failure # TODO: test
@@ -759,8 +764,10 @@ workflows:
       - build-deploy-android-playstore:
           requires:
             - horizon/block
+            - test-js
+            - check-code
+            - build-test-js
             - prepare-android-version
-            - build-test-app-android
           filters:
             branches:
               only: brian+george/code-sign-beta-failure # TODO: test
@@ -768,8 +775,10 @@ workflows:
       - build-deploy-android-firebase:
           requires:
             - horizon/block
+            - test-js
+            - check-code
+            - build-test-js
             - prepare-android-version
-            - build-test-app-android
           filters:
             branches:
               only: brian+george/code-sign-beta-failure # TODO: test
