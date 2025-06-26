@@ -5,7 +5,6 @@ import { MyCollectionBottomSheetModalArtistPreviewQuery } from "__generated__/My
 import { MyCollectionBottomSheetModalArtistPreview_artist$data } from "__generated__/MyCollectionBottomSheetModalArtistPreview_artist.graphql"
 import { MyCollectionBottomSheetModalArtistPreview_me$data } from "__generated__/MyCollectionBottomSheetModalArtistPreview_me.graphql"
 import { ArtistListItemContainer, ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
-import { useArtworkListsBottomOffset } from "app/Components/ArtworkLists/useArtworkListsBottomOffset"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import { useToast } from "app/Components/Toast/toastHook"
 import { ArtistKindPills } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistPreview/ArtistKindPills"
@@ -15,6 +14,7 @@ import { updateUserInterest } from "app/Scenes/MyCollection/mutations/updateUser
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { useState } from "react"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { QueryRenderer, createFragmentContainer, graphql } from "react-relay"
 import useDebounce from "react-use/lib/useDebounce"
 
@@ -37,8 +37,7 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
   const setViewKind = MyCollectionTabsStore.useStoreActions((actions) => actions.setViewKind)
 
   const toast = useToast()
-
-  const bottomOffset = useArtworkListsBottomOffset(2)
+  const safeAreaInset = useSafeAreaInsets()
 
   useDebounce(
     () => {
@@ -61,14 +60,10 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
     setViewKind({ viewKind: null })
   }
 
-  if (!artist || !me || !me.userInterest) {
+  if (!artist || !me?.userInterest) {
     return (
-      <AutoHeightBottomSheet
-        visible={!artist || !me || !me.userInterest}
-        closeOnBackdropClick
-        onDismiss={dismissBottomView}
-      >
-        <Flex px={2} pt={2} mb={`${bottomOffset}px`}>
+      <AutoHeightBottomSheet visible closeOnBackdropClick onDismiss={dismissBottomView}>
+        <Flex px={2} pt={2} mb={`${safeAreaInset.bottom}px`}>
           <Join separator={<Spacer y={4} />}>
             <ArtistListItemPlaceholder />
           </Join>
@@ -105,7 +100,7 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
       closeOnBackdropClick
       enableDismissOnClose
     >
-      <Flex px={2} pt={2} mb={`${bottomOffset}px`}>
+      <Flex px={2} pt={2} mb={`${safeAreaInset.bottom}px`}>
         <Join separator={<Spacer y={2} />}>
           <ArtistListItemContainer
             artist={artist}
