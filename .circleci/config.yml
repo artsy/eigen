@@ -8,15 +8,6 @@ orbs:
   android: circleci/android@2.5.0
 
 commands:
-  await-previous-builds:
-    parameters:
-      branch:
-        description: The branch to wait on
-        type: string
-    steps:
-      - queue/until_front_of_line:
-          time: "30" # how long a queue will wait until the job exits
-          only-on-branch: <<parameters.branch>> # restrict queueing to a specific branch (default *)
   install-node:
     steps:
       - node/install:
@@ -582,9 +573,6 @@ jobs:
           path: xcode_test_raw.log
           prefix: tests
 
-      - await-previous-builds: # TODO: Do we still need this?
-          branch: beta-ios
-
   build-test-app-android:
     docker:
       - image: cimg/android:2025.03.1-node
@@ -595,8 +583,6 @@ jobs:
       - restore_cache:
           key: << pipeline.parameters.android_native_cache_key >>
       - prep-android-env
-      - await-previous-builds:
-          branch: beta-android # TODO: Do we still need this?
       - build-app-android
       - run:
           name: Save success file
