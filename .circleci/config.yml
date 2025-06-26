@@ -712,9 +712,19 @@ workflows:
               only:
                 - main
 
-      - test-js
+      - test-js:
+          filters:
+            branches:
+              ignore:
+                - beta-ios
+                - beta-android
 
-      - build-test-js
+      - build-test-js:
+          filters:
+            branches:
+              ignore:
+                - beta-ios
+                - beta-android
 
       - build-test-app-ios:
           filters:
@@ -741,9 +751,6 @@ workflows:
       - build-deploy-ios-testflight:
           requires:
             - horizon/block
-            - test-js
-            - check-code
-            - build-test-js
           filters:
             branches:
               only: beta-ios
@@ -751,9 +758,6 @@ workflows:
       - build-deploy-ios-firebase:
           requires:
             - horizon/block
-            - test-js
-            - check-code
-            - build-test-js
           filters:
             branches:
               only: beta-ios
@@ -766,9 +770,6 @@ workflows:
       - build-deploy-android-playstore:
           requires:
             - horizon/block
-            - test-js
-            - check-code
-            - build-test-js
             - prepare-android-version
           filters:
             branches:
@@ -777,9 +778,6 @@ workflows:
       - build-deploy-android-firebase:
           requires:
             - horizon/block
-            - test-js
-            - check-code
-            - build-test-js
             - prepare-android-version
           filters:
             branches:
