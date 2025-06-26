@@ -4498,6 +4498,9 @@ input BulkUpdateArtworksMetadataInput {
   # Whether the artworks must be listed as Make Offer
   offer: Boolean
 
+  # Adjusts the artworks' prices according to the value passed (percentage).
+  priceAdjustment: Int
+
   # The price for the artworks
   priceListed: Float
 
