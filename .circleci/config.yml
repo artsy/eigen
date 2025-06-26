@@ -351,7 +351,7 @@ jobs:
             echo "export VERSION_CODE=$VERSION_CODE" >> $BASH_ENV
       - run:
           name: Build and deploy Android to Play Store
-          command: bundle exec fastlane ship_beta_android deployment_target:playstore version_code:$VERSION_CODE
+          command: bundle exec fastlane ship_beta_android deployment_target:play_store version_code:$VERSION_CODE
 
   build-deploy-android-firebase:
     docker:
