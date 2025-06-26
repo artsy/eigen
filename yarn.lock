@@ -4245,7 +4245,7 @@
     recyclerlistview "4.2.3"
     tslib "2.8.1"
 
-"@shopify/flash-list@1.8.3":
+"@shopify/flash-list@^1.8.3":
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/@shopify/flash-list/-/flash-list-1.8.3.tgz#08829644d7177b094ff016a71e2b2fef633d8af6"
   integrity sha512-vXuj6JyuMjONVOXjEhWFeaONPuWN/53Cl2LeyeM8TZ0JzUcNU+BE6iyga1/yyJeDf0K7YPgAE/PcUX2+DM1LiA==
