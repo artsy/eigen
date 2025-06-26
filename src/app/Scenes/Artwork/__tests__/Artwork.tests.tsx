@@ -3,7 +3,6 @@ import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMore
 import { Artwork, ArtworkScreen } from "app/Scenes/Artwork/Artwork"
 import { ArtworkDetails } from "app/Scenes/Artwork/Components/ArtworkDetails"
 import { ArtworkHistory } from "app/Scenes/Artwork/Components/ArtworkHistory"
-import { ArtworkScreenHeader } from "app/Scenes/Artwork/Components/ArtworkScreenHeader"
 import { ArtworkStickyBottomContent } from "app/Scenes/Artwork/Components/ArtworkStickyBottomContent"
 import { ArtworksInSeriesRail } from "app/Scenes/Artwork/Components/ArtworksInSeriesRail"
 import { ImageCarousel } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
@@ -54,13 +53,12 @@ jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
 describe("Artwork", () => {
   let environment: ReturnType<typeof createMockEnvironment>
 
-  const TestRenderer = ({ isVisible = true, onLoad = jest.fn() }) => (
+  const TestRenderer = ({ isVisible = true }) => (
     <ArtworkScreen
       isVisible={isVisible}
       artworkID="ignored"
       environment={environment}
       tracking={{ trackEvent: jest.fn() } as any}
-      onLoad={onLoad}
     />
   )
 
@@ -80,7 +78,6 @@ describe("Artwork", () => {
     resolveMostRecentRelayOperation(environment)
 
     await flushPromiseQueue()
-    expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ArtworkStickyBottomContent)).toBeTruthy()
@@ -115,7 +112,6 @@ describe("Artwork", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
     expect(screen.UNSAFE_queryByType(ActivityIndicator)).toBeNull()
@@ -964,7 +960,6 @@ describe("Artwork", () => {
       expect(screen.UNSAFE_queryByType(ArtistSeriesMoreSeries)).toBeNull()
 
       // Displayed in unlisted private artworks
-      expect(screen.UNSAFE_queryByType(ArtworkScreenHeader)).toBeTruthy()
       expect(screen.UNSAFE_queryByType(ImageCarousel)).toBeTruthy()
       expect(screen.UNSAFE_queryByType(ArtworkDetails)).toBeTruthy()
       expect(screen.UNSAFE_queryByType(ShippingAndTaxesFragmentContainer)).toBeTruthy()
