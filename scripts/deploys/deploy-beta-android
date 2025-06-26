@@ -6,4 +6,4 @@ source ./scripts/ci/ci-setup-export-vars
 ./scripts/deploys/check_version_synced
 ./scripts/deploys/check_build_status android
 
-git push origin "$LOCAL_BRANCH:brian+george/code-sign-beta-failure" -f --no-verify
+git push origin "$LOCAL_BRANCH:beta-android" -f --no-verify
