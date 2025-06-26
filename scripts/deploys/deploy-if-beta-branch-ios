@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-set -euxo pipefail
-
-source ./scripts/ci/ci-setup-export-vars
-
-if [ "${LOCAL_BRANCH}" == "beta-ios" ]; then
-  DISTRIBUTION_TARGET="${1-"TESTFLIGHT"}"
-  ./scripts/deploys/distribute-ios $DISTRIBUTION_TARGET
-fi
