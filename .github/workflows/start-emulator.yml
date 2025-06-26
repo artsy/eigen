@@ -1,0 +1,27 @@
+name: Start Android Emulator
+
+on:
+  workflow_dispatch:
+
+jobs:
+  start-emulator:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "zulu"
+
+      - name: Start Android Emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          arch: x86
+          avd-name: test-emulator
+          disable-animations: true
+          script: adb devices
