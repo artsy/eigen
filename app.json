@@ -1,9 +1,12 @@
 {
   "appName": "eigen",
-  "version": "8.76.0",
+  "version": "8.77.0",
   "slug": "eigen",
   "expo": {
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "runtimeVersion": "257035bdc63217c4adf6e7c7f0bfeea9ca986f22",
     "owner": "artsy_org",
     "extra": {
