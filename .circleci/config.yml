@@ -599,7 +599,7 @@ jobs:
 
   prepare-android-version:
     docker:
-      - image: cimg/android:2025.03.1-node
+      - image: cimg/ruby:3.1.6
     working_directory: ~/project
     steps:
       - checkout
