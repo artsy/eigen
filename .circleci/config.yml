@@ -1,5 +1,43 @@
 version: 2.1
 
+defaults: &beta_branches_only
+  filters:
+    branches:
+      only:
+        - beta-ios
+        - beta-android
+
+defaults_beta_ios: &ios_beta_branch_only
+  filters:
+    branches:
+      only:
+        - beta-ios
+
+defaults_beta_android: &android_beta_branch_only
+  filters:
+    branches:
+      only:
+        - beta-android
+
+defaults_ignore_beta: &ignore_beta_branches
+  filters:
+    branches:
+      ignore:
+        - beta-ios
+        - beta-android
+
+defaults_main: &main_only
+  filters:
+    branches:
+      only:
+        - main
+
+defaults_ignore_main: &ignore_main_branches
+  filters:
+    branches:
+      ignore:
+        - main
+
 orbs:
   node: circleci/node@5.3.0
   queue: eddiewebb/queue@2.2.1
@@ -689,106 +727,66 @@ workflows:
     when: << pipeline.parameters.run_workflow_test-build-deploy >>
     jobs:
       - detect-secrets:
-          filters:
-            branches:
-              ignore:
-                - main
+          <<: *ignore_main_branches
 
       - check-code:
           context: danger-github-oss
 
       - horizon/block:
+          <<: *beta_branches_only
           context: horizon
           project_id: 37
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
 
       - check-and-deploy:
-          filters:
-            branches:
-              only:
-                - main
+          <<: *main_only
 
       - test-js:
-          filters:
-            branches:
-              ignore:
-                - beta-ios
-                - beta-android
+          <<: *ignore_beta_branches
 
       - build-test-js:
-          filters:
-            branches:
-              ignore:
-                - beta-ios
-                - beta-android
+          <<: *ignore_beta_branches
 
       - build-test-app-ios:
-          filters:
-            branches:
-              ignore:
-                - beta-ios
-                - beta-android
+          <<: *ignore_beta_branches
           requires:
             - test-js
             - check-code
             - build-test-js
 
       - build-test-app-android:
-          filters:
-            branches:
-              ignore:
-                - beta-ios
-                - beta-android
+          <<: *ignore_beta_branches
           requires:
             - test-js
             - check-code
             - build-test-js
 
       - build-deploy-ios-testflight:
+          <<: *ios_beta_branch_only
           requires:
             - horizon/block
-          filters:
-            branches:
-              only: beta-ios
 
       - build-deploy-ios-firebase:
+          <<: *ios_beta_branch_only
           requires:
             - horizon/block
-          filters:
-            branches:
-              only: beta-ios
 
       - prepare-android-version:
-          filters:
-            branches:
-              only: beta-android
+          <<: *android_beta_branch_only
 
       - build-deploy-android-playstore:
+          <<: *android_beta_branch_only
           requires:
             - horizon/block
             - prepare-android-version
-          filters:
-            branches:
-              only: beta-android
 
       - build-deploy-android-firebase:
+          <<: *android_beta_branch_only
           requires:
             - horizon/block
             - prepare-android-version
-          filters:
-            branches:
-              only: beta-android
 
       - update-metaphysics:
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
+          <<: *beta_branches_only
           requires:
             - build-deploy-ios-testflight
             - build-deploy-android-playstore
