@@ -703,7 +703,8 @@ workflows:
           filters:
             branches:
               only:
-                - brian+george/code-sign-beta-failure
+                - beta-ios
+                - beta-android
 
       - check-and-deploy:
           filters:
@@ -721,7 +722,6 @@ workflows:
               ignore:
                 - beta-ios
                 - beta-android
-                - brian+george/code-sign-beta-failure
           requires:
             - test-js
             - check-code
@@ -733,7 +733,6 @@ workflows:
               ignore:
                 - beta-ios
                 - beta-android
-                - brian+george/code-sign-beta-failure
           requires:
             - test-js
             - check-code
@@ -747,7 +746,7 @@ workflows:
             - build-test-js
           filters:
             branches:
-              only: brian+george/code-sign-beta-failure # TODO: test
+              only: beta-ios
 
       - build-deploy-ios-firebase:
           requires:
@@ -757,12 +756,12 @@ workflows:
             - build-test-js
           filters:
             branches:
-              only: brian+george/code-sign-beta-failure # TODO: test
+              only: beta-ios
 
       - prepare-android-version:
           filters:
             branches:
-              only: brian+george/code-sign-beta-failure
+              only: beta-android
 
       - build-deploy-android-playstore:
           requires:
@@ -773,7 +772,7 @@ workflows:
             - prepare-android-version
           filters:
             branches:
-              only: brian+george/code-sign-beta-failure # TODO: test
+              only: beta-android
 
       - build-deploy-android-firebase:
           requires:
@@ -784,13 +783,14 @@ workflows:
             - prepare-android-version
           filters:
             branches:
-              only: brian+george/code-sign-beta-failure # TODO: test
+              only: beta-android
 
       - update-metaphysics:
           filters:
             branches:
               only:
-                - brian+george/code-sign-beta-failure
+                - beta-ios
+                - beta-android
           requires:
             - build-deploy-ios-testflight
             - build-deploy-android-playstore
