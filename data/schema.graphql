@@ -16243,6 +16243,9 @@ type Order {
   # Phone number of the buyer
   buyerPhoneNumber: String @deprecated(reason: "Use `order.fulfillmentDetails.phoneNumber`")
 
+  # Calculated state of the order that defines buyer facing state/actions
+  buyerState: OrderBuyerStateEnum
+
   # Expiration for the current state of the order
   buyerStateExpiresAt: String
 
@@ -16308,6 +16311,47 @@ type Order {
 
   # The total list price of items (accounting for limited partner offer if applicable)
   totalListPrice: Money
+}
+
+enum OrderBuyerStateEnum {
+  # Order has been approved
+  APPROVED
+
+  # Order has been cancelled
+  CANCELLED
+
+  # Order is completed
+  COMPLETED
+
+  # Order was declined by the buyer
+  DECLINED_BY_BUYER
+
+  # Order was declined by the seller
+  DECLINED_BY_SELLER
+
+  # Order is incomplete (pending or abandoned)
+  INCOMPLETE
+
+  # Payment has failed
+  PAYMENT_FAILED
+
+  # Processing offline payment
+  PROCESSING_OFFLINE_PAYMENT
+
+  # Processing payment
+  PROCESSING_PAYMENT
+
+  # Order has been refunded
+  REFUNDED
+
+  # Order has been shipped
+  SHIPPED
+
+  # Order has been submitted
+  SUBMITTED
+
+  # Order status is unknown
+  UNKNOWN
 }
 
 enum OrderCreditCardWalletTypeEnum {
