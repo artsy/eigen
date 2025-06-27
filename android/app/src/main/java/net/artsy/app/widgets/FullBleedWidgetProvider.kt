@@ -42,8 +42,7 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
         val views = RemoteViews(context.packageName, R.layout.widget_fullbleed)
         
         // Show loading spinner and overlay initially
-        views.setViewVisibility(R.id.loading_spinner, View.VISIBLE)
-        views.setViewVisibility(R.id.loading_overlay, View.VISIBLE)
+        setLoadingVisibility(views, true)
 
         // Launch coroutine to fetch artwork data
         CoroutineScope(Dispatchers.Main).launch {
@@ -77,8 +76,7 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
                         views.setImageViewBitmap(R.id.artwork_image, scaledBitmap)
                         
                         // Hide loading spinner and overlay once image is loaded
-                        views.setViewVisibility(R.id.loading_spinner, View.GONE)
-                        views.setViewVisibility(R.id.loading_overlay, View.GONE)
+                        setLoadingVisibility(views, false)
                     }
                 }
 
@@ -86,8 +84,7 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
                 appWidgetManager.updateAppWidget(appWidgetId, views)
             } catch (e: Exception) {
                 // Handle errors gracefully - hide spinner and overlay, show default state
-                views.setViewVisibility(R.id.loading_spinner, View.GONE)
-                views.setViewVisibility(R.id.loading_overlay, View.GONE)
+                setLoadingVisibility(views, false)
                 appWidgetManager.updateAppWidget(appWidgetId, views)
             }
         }
@@ -156,5 +153,11 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
         } else {
             scaledBitmap
         }
+    }
+
+    private fun setLoadingVisibility(views: RemoteViews, isLoading: Boolean) {
+        val visibility = if (isLoading) View.VISIBLE else View.GONE
+        views.setViewVisibility(R.id.loading_spinner, visibility)
+        views.setViewVisibility(R.id.loading_overlay, visibility)
     }
 }
