@@ -7,8 +7,8 @@ data class Artist(
     companion object {
         fun fallback(): Artist {
             return Artist(
-                id = "fallback-artist-id",
-                name = "Unknown Artist"
+                id = "alex-katz",
+                name = "Alex Katz"
             )
         }
     }

@@ -8,7 +8,7 @@ data class ArtworkImage(
     companion object {
         fun fallback(): ArtworkImage {
             return ArtworkImage(
-                geminiToken = "fallback-token",
+                geminiToken = "pd7rW3I1mXhW0vbAJDVm3Q",
                 isDefault = true,
                 position = 0
             )
