@@ -1,32 +1,33 @@
-import { Flex, Spinner } from "@artsy/palette-mobile"
 import { MapRenderer } from "app/Scenes/Map/MapRenderer"
 import { cityNearLocation } from "app/Scenes/Map/helpers/cityNearLocation"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useLocation } from "app/utils/hooks/useLocation"
-import { useEffect } from "react"
-import cities from "../../../../data/cityDataSortedByDisplayPreference.json"
+import expandedCities from "../../../../data/cityDataSortedByDisplayPreference-expanded.json"
+import originalCities from "../../../../data/cityDataSortedByDisplayPreference.json"
 
 export const CityGuide: React.FC = () => {
+  const enabledExpandedList = useFeatureFlag("AREnableExpandedCityGuide")
+  const cities = enabledExpandedList ? expandedCities : originalCities
+
   const previouslySelectedCitySlug = GlobalStore.useAppState(
     (state) => state.userPrefs.previouslySelectedCitySlug
   )
-  const { setPreviouslySelectedCitySlug } = GlobalStore.actions.userPrefs
 
-  const { location, isLoading } = useLocation()
+  const { location } = useLocation()
 
-  useEffect(() => {
-    if (location && cityNearLocation(cities, location)) {
-      setPreviouslySelectedCitySlug(cityNearLocation(cities, location)?.slug ?? "")
+  let initialCitySlug = "new-york-ny-usa"
+
+  if (location) {
+    const nearest = cityNearLocation(cities, location)
+    if (nearest) {
+      initialCitySlug = nearest.slug
     }
-  }, [location])
-
-  if (isLoading && !previouslySelectedCitySlug) {
-    return (
-      <Flex flex={1} justifyContent="center" alignItems="center">
-        <Spinner />
-      </Flex>
-    )
   }
 
-  return <MapRenderer citySlug={previouslySelectedCitySlug ?? "new-york-ny-usa"} />
+  if (previouslySelectedCitySlug) {
+    initialCitySlug = previouslySelectedCitySlug
+  }
+
+  return <MapRenderer citySlug={initialCitySlug} />
 }
