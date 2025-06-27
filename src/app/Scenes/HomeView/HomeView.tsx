@@ -196,7 +196,6 @@ export const HomeView: React.FC = memo(() => {
           }
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
           onEndReachedThreshold={2}
-          maxToRenderPerBatch={6}
           stickyHeaderIndices={[0]}
           windowSize={15}
         />
