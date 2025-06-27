@@ -1,6 +1,24 @@
 #!/usr/bin/env bash
 set -exo pipefail
 
+BUILD_TYPE=${1:-release} # default to release
+if [ "$BUILD_TYPE" == "beta" ]; then
+	echo "Building Android App in Beta mode"
+	MODE="beta"
+else
+	echo "Building Android App in Release mode"
+	MODE="release"
+fi
+CAPITALIZED_BUILD_TYPE="$(echo "$BUILD_TYPE" | awk '{print toupper(substr($0,1,1)) substr($0,2)}')"
+
 pushd android
-yarn react-native build-android --mode=release --extra-params='--max-workers 2'
+
+echo "Running Gradle task: assemble${CAPITALIZED_BUILD_TYPE}"
+./gradlew assemble${CAPITALIZED_BUILD_TYPE}
+
 popd
+
+if [ "$BUILD_TYPE" == "beta" ]; then
+	echo "Uploading Android App for Beta"
+  ./scripts/ci/upload-emu-app
+fi

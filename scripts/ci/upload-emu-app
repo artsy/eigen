@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+APP_NAME="Artsy"
+ANDROID_DIR="android"
+S3_DEST="s3://artsy-citadel/eigen/builds/android/${APP_NAME}-latest.apk"
+BUILD_TYPE="beta"
+
+# Find the .apk file
+APK_PATH=$(find "$ANDROID_DIR/app/build/outputs/apk/$BUILD_TYPE" -name "*.apk" -type f | head -n1)
+
+if [ -z "$APK_PATH" ]; then
+  echo "❌ APK not found in $ANDROID_DIR/app/build/outputs/apk/$BUILD_TYPE!" >&2
+  exit 1
+fi
+
+echo "✅ Found apk at: $APK_PATH"
+
+# Copy and rename the APK
+APK_NAME="${APP_NAME}-latest.apk"
+cp "$APK_PATH" "$APK_NAME"
+
+# Upload to S3
+aws s3 cp "$APK_NAME" "$S3_DEST"
+
+echo "✅ Uploaded $APK_NAME to $S3_DEST"
