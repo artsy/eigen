@@ -18,9 +18,9 @@ Sometimes we need to test a release build on the emulator or our local device, w
 
 > The release APK will be available at: `android/app/build/outputs/apk/release/app-release.apk`
 
-1. Download the required keystore:
+1. Setup the local environament for generating a release build, including downloading the required keystores:
    ```bash
-   ./scripts/setup/download-assets-android
+   yarn setup:releases
    ```
 2. Set environment variables with passwords from 1Password: Go to 1Password > Engineering > `Eigen release keystore password and secret json (google play store)`
    ```bash
@@ -48,3 +48,13 @@ Sometimes we need to test a release build on the emulator or our local device, w
    ```bash
    ./android/gradlew installRelease
    ```
+
+### Extract apk from downloaded fast lane builds
+
+1. Run:
+
+   ```bash
+   ./scripts/deploys/create-android-apk
+   ```
+
+2. Choose the release bundle you want to use.
