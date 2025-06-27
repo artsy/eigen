@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.view.View
 import android.widget.RemoteViews
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,6 +40,10 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
         val minHeight = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
 
         val views = RemoteViews(context.packageName, R.layout.widget_fullbleed)
+        
+        // Show loading spinner and overlay initially
+        views.setViewVisibility(R.id.loading_spinner, View.VISIBLE)
+        views.setViewVisibility(R.id.loading_overlay, View.VISIBLE)
 
         // Launch coroutine to fetch artwork data
         CoroutineScope(Dispatchers.Main).launch {
@@ -70,13 +75,20 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
                         // Apply top-crop scaling by pre-processing the bitmap
                         val scaledBitmap = createTopCroppedBitmap(bitmap, widthPx, heightPx)
                         views.setImageViewBitmap(R.id.artwork_image, scaledBitmap)
+                        
+                        // Hide loading spinner and overlay once image is loaded
+                        views.setViewVisibility(R.id.loading_spinner, View.GONE)
+                        views.setViewVisibility(R.id.loading_overlay, View.GONE)
                     }
                 }
 
                 // Update the widget
                 appWidgetManager.updateAppWidget(appWidgetId, views)
             } catch (e: Exception) {
-                // Handle errors gracefully - widget will show default state
+                // Handle errors gracefully - hide spinner and overlay, show default state
+                views.setViewVisibility(R.id.loading_spinner, View.GONE)
+                views.setViewVisibility(R.id.loading_overlay, View.GONE)
+                appWidgetManager.updateAppWidget(appWidgetId, views)
             }
         }
     }

@@ -10,7 +10,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
+        android:src="@drawable/widget_preview_image"
         android:contentDescription="Featured Artwork"/>
+
+    <!-- Dark overlay for loading state -->
+    <ImageView
+        android:id="@+id/loading_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="visible"
+        android:contentDescription="Loading overlay" />
+
+    <!-- Loading spinner overlay -->
+    <ProgressBar
+        android:id="@+id/loading_spinner"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        style="?android:attr/progressBarStyle" />
 
     <!-- White Artsy logo in top right corner -->
     <ImageView
