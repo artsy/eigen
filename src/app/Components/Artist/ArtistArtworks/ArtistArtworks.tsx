@@ -19,7 +19,10 @@ import {
   ArtistArtworksQuery$data,
   FilterArtworksInput,
 } from "__generated__/ArtistArtworksQuery.graphql"
-import { ArtistArtworks_artist$key } from "__generated__/ArtistArtworks_artist.graphql"
+import {
+  ArtistArtworks_artist$data,
+  ArtistArtworks_artist$key,
+} from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtistArtworks_artistAggregation$key } from "__generated__/ArtistArtworks_artistAggregation.graphql"
 import { ArtistArtworksFilterHeader } from "app/Components/Artist/ArtistArtworks/ArtistArtworksFilterHeader"
 import { useCreateSavedSearchModalFilters } from "app/Components/Artist/ArtistArtworks/hooks/useCreateSavedSearchModalFilters"
@@ -172,30 +175,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     }
   }
 
-  const CreateAlertButton: React.FC<{ contextModule: ContextModule }> = ({ contextModule }) => {
-    const { trackCreateAlertTap } = useCreateAlertTracking({
-      contextScreenOwnerType: OwnerType.artist,
-      contextScreenOwnerId: artist.internalID,
-      contextScreenOwnerSlug: artist.slug,
-      contextModule: contextModule,
-    })
-
-    return (
-      <Button
-        variant="outline"
-        mx="auto"
-        icon={<BellIcon />}
-        size="small"
-        onPress={() => {
-          trackCreateAlertTap()
-          setIsCreateAlertModalVisible(true)
-        }}
-      >
-        Create Alert
-      </Button>
-    )
-  }
-
   const renderItem = useCallback(({ item, index, columnIndex }) => {
     const imgAspectRatio = item.image?.aspectRatio ?? 1
     const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
@@ -220,6 +199,19 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     )
   }, [])
 
+  const listFooterComponent = useMemo(
+    () => (
+      <ListFooterComponent
+        showCreateAlertAtEndOfList={showCreateAlertAtEndOfList}
+        shouldDisplaySpinner={!!isLoadingNext && hasNext}
+        artist={artist}
+        setIsCreateAlertModalVisible={setIsCreateAlertModalVisible}
+        hasNext={hasNext}
+      />
+    ),
+    [showCreateAlertAtEndOfList, isLoadingNext, hasNext, artist, setIsCreateAlertModalVisible]
+  )
+
   if (!artist.statuses?.artworks) {
     return (
       <Tabs.ScrollView>
@@ -236,7 +228,11 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
 
         <Spacer y={2} />
 
-        <CreateAlertButton contextModule={ContextModule.artworkGridEmptyState} />
+        <CreateAlertButton
+          contextModule={ContextModule.artworkGridEmptyState}
+          artist={artist}
+          setIsCreateAlertModalVisible={setIsCreateAlertModalVisible}
+        />
 
         <Spacer y={6} />
 
@@ -261,24 +257,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
           sizeMetric={sizeMetric}
         />
       </Tabs.ScrollView>
-    )
-  }
-
-  const ListFooterComponenet = () => {
-    return (
-      <>
-        {!!showCreateAlertAtEndOfList && !hasNext && (
-          <Message
-            title="Get notified when new works are added."
-            containerStyle={{ my: 2 }}
-            IconComponent={() => {
-              return <CreateAlertButton contextModule={ContextModule.artistArtworksGridEnd} />
-            }}
-            iconPosition="right"
-          />
-        )}
-        <AnimatedMasonryListFooter shouldDisplaySpinner={!!hasNext && isLoadingNext} />
-      </>
     )
   }
 
@@ -335,7 +313,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
             </Flex>
           </>
         }
-        ListFooterComponent={<ListFooterComponenet />}
+        ListFooterComponent={listFooterComponent}
       />
 
       <ArtworkFilterNavigator
@@ -358,6 +336,70 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
         visible={isCreateAlertModalVisible}
       />
     </Flex>
+  )
+}
+
+const ListFooterComponent: React.FC<{
+  showCreateAlertAtEndOfList: boolean
+  shouldDisplaySpinner: boolean
+  artist: ArtistArtworks_artist$data
+  setIsCreateAlertModalVisible: (isCreateAlertModalVisible: boolean) => void
+  hasNext: boolean
+}> = ({
+  showCreateAlertAtEndOfList,
+  shouldDisplaySpinner,
+  artist,
+  setIsCreateAlertModalVisible,
+  hasNext,
+}) => {
+  return (
+    <>
+      {!!showCreateAlertAtEndOfList && !hasNext && (
+        <Message
+          title="Get notified when new works are added."
+          containerStyle={{ my: 2 }}
+          IconComponent={() => {
+            return (
+              <CreateAlertButton
+                contextModule={ContextModule.artistArtworksGridEnd}
+                artist={artist}
+                setIsCreateAlertModalVisible={setIsCreateAlertModalVisible}
+              />
+            )
+          }}
+          iconPosition="right"
+        />
+      )}
+      <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
+    </>
+  )
+}
+
+const CreateAlertButton: React.FC<{
+  contextModule: ContextModule
+  artist: ArtistArtworks_artist$data
+  setIsCreateAlertModalVisible: (isCreateAlertModalVisible: boolean) => void
+}> = ({ contextModule, artist, setIsCreateAlertModalVisible }) => {
+  const { trackCreateAlertTap } = useCreateAlertTracking({
+    contextScreenOwnerType: OwnerType.artist,
+    contextScreenOwnerId: artist.internalID,
+    contextScreenOwnerSlug: artist.slug,
+    contextModule: contextModule,
+  })
+
+  return (
+    <Button
+      variant="outline"
+      mx="auto"
+      icon={<BellIcon />}
+      size="small"
+      onPress={() => {
+        trackCreateAlertTap()
+        setIsCreateAlertModalVisible(true)
+      }}
+    >
+      Create Alert
+    </Button>
   )
 }
 
