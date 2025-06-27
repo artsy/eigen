@@ -1,17 +1,7 @@
-import { ShieldIcon } from "@artsy/icons/native"
-import {
-  Box,
-  Flex,
-  LinkText,
-  Message,
-  Screen,
-  Spacer,
-  Text,
-  useColor,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { Box, Screen, Spacer, Text, useColor, useSpace } from "@artsy/palette-mobile"
 import { OrderDetailQuery } from "__generated__/OrderDetailQuery.graphql"
 import { OrderDetail_order$key } from "__generated__/OrderDetail_order.graphql"
+import { OrderDetailBuyerProtection } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailBuyerProtection"
 import { OrderDetailFulfillment } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailFulfillment"
 import { OrderDetailHelpLinks } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailHelpLinks"
 import { OrderDetailMessage } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailMessage"
@@ -58,23 +48,12 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
         <OrderDetailMetadata order={orderData} />
 
         {/* 4th Part: Artwork price breakdown */}
-        <OrderDetailPriceBreakdown order={data} />
+        <OrderDetailPriceBreakdown order={orderData} />
 
         <Spacer y={2} />
 
         {/* 5th Part: Artsy Buyer Protection */}
-        <Message variant="default" containerStyle={{ px: 1 }}>
-          <Flex flexDirection="row" alignItems="flex-start">
-            <ShieldIcon fill="mono100" mr={0.5} mt="2px" />
-
-            <Flex flex={1}>
-              <Text variant="xs">
-                Your purchase is protected with{" "}
-                <LinkText variant="xs">Artsy’s buyer protection</LinkText>.
-              </Text>
-            </Flex>
-          </Flex>
-        </Message>
+        <OrderDetailBuyerProtection />
       </Box>
 
       <Spacer y={2} />
