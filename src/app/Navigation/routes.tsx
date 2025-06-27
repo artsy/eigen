@@ -1,5 +1,6 @@
 import { BackButton, Flex } from "@artsy/palette-mobile"
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack"
+import { artistArtworksQuery } from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtsyWebViewConfig, ArtsyWebViewPage } from "app/Components/ArtsyWebView"
 import { BidFlow } from "app/Components/Containers/BidFlow"
 import { InboxScreen, InboxScreenQuery } from "app/Components/Containers/Inbox"
@@ -450,7 +451,7 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    queries: [ArtistScreenQuery],
+    queries: [ArtistScreenQuery, artistArtworksQuery],
     prepareVariables: [({ artistID }) => ({ artistID, ...defaultArtistVariables })],
   },
   {
