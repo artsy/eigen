@@ -1,0 +1,78 @@
+import { fireEvent, screen } from "@testing-library/react-native"
+import { OrderDetailPriceBreakdown } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailPriceBreakdown"
+import { navigate } from "app/system/navigation/navigate"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
+
+describe("OrderDetailPriceBreakdown", () => {
+  const { renderWithRelay } = setupTestWrapper({
+    Component: (props: any) => <OrderDetailPriceBreakdown order={props.me.order} />,
+    query: graphql`
+      query OrderDetailPriceBreakdownTestsQuery @relay_test_operation {
+        me {
+          order(id: "test-order") {
+            ...OrderDetailPriceBreakdown_order
+          }
+        }
+      }
+    `,
+  })
+
+  it("renders pricing breakdown lines", () => {
+    renderWithRelay({
+      Order: () => ({
+        pricingBreakdownLines: [
+          {
+            __typename: "SubtotalLine",
+            displayName: "Price",
+            amount: { amount: "1000", currencySymbol: "$" },
+          },
+          {
+            __typename: "ShippingLine",
+            displayName: "Standard Shipping",
+            amount: { amount: "42.99", currencySymbol: "$" },
+          },
+          {
+            __typename: "TaxLine",
+            displayName: "Tax",
+            amount: { amount: "99.58", currencySymbol: "$" },
+          },
+          {
+            __typename: "TotalLine",
+            displayName: "Total",
+            amount: { display: "US$1052.57" },
+          },
+        ],
+      }),
+    })
+
+    // Subtotal
+    expect(screen.getByText("Price")).toBeOnTheScreen()
+    expect(screen.getByText("$1000")).toBeOnTheScreen()
+
+    // Shipping
+    expect(screen.getByText("Standard Shipping")).toBeOnTheScreen()
+    expect(screen.getByText("$42.99")).toBeOnTheScreen()
+
+    // Tax
+    expect(screen.getByText("Tax*")).toBeOnTheScreen()
+    expect(screen.getByText("$99.58")).toBeOnTheScreen()
+
+    // Total
+    expect(screen.getByText("Total")).toBeOnTheScreen()
+    expect(screen.getByText("US$1052.57")).toBeOnTheScreen()
+  })
+
+  it("renders import tax disclaimer with link", () => {
+    renderWithRelay()
+
+    expect(screen.getByText("*Additional duties and taxes may apply at import.")).toBeOnTheScreen()
+    expect(screen.getByText("may apply at import")).toBeOnTheScreen()
+
+    fireEvent.press(screen.getByText("may apply at import"))
+
+    expect(navigate).toHaveBeenCalledWith(
+      "https://support.artsy.net/s/article/How-are-taxes-and-customs-fees-calculated"
+    )
+  })
+})
