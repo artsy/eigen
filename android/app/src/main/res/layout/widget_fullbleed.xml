@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:layout_gravity="top|center_horizontal"
         android:contentDescription="Featured Artwork"/>
 
     <!-- White Artsy logo in top right corner -->
