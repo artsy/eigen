@@ -34,8 +34,12 @@ describe("OrderDetailMetadata", () => {
               title: "Guernica",
               date: "1936",
               attributionClass: { shortDescription: "Unique work" },
-              dimensions: { in: "24 × 36 in", cm: "61 × 91.4 cm" },
               image: { url: "https://example.com/artwork.jpg" },
+            },
+            artworkOrEditionSet: {
+              __typename: "Artwork",
+              price: "€1,242",
+              dimensions: { in: "24 × 36 in", cm: "61 × 91.4 cm" },
             },
           },
         ],

@@ -22,6 +22,14 @@ export const OrderDetailMetadata: React.FC<OrderDetailMetadataProps> = ({ order 
   const artworkVersion = orderData.lineItems?.[0]?.artworkVersion
   const artworkImage = artworkVersion?.image
 
+  const artworkOrEditionSet = orderData.lineItems[0]?.artworkOrEditionSet
+  const isArtworkOrEditionSet =
+    !!artworkOrEditionSet &&
+    (artworkOrEditionSet.__typename === "Artwork" ||
+      artworkOrEditionSet?.__typename === "EditionSet")
+  const dimensions = isArtworkOrEditionSet ? artworkOrEditionSet.dimensions : null
+  const price = isArtworkOrEditionSet ? artworkOrEditionSet.price : null
+
   const { height, width } = sizeToFit(
     {
       height: artworkImage?.height ?? imageContainer.height,
@@ -90,9 +98,9 @@ export const OrderDetailMetadata: React.FC<OrderDetailMetadataProps> = ({ order 
       <Text variant="sm" color="mono60">
         {artwork?.partner?.name}
       </Text>
-      {!!orderData.totalListPrice && (
+      {!!price && (
         <Text variant="sm" color="mono60">
-          List price: {orderData.totalListPrice.display}
+          List price: {price}
         </Text>
       )}
 
@@ -104,9 +112,9 @@ export const OrderDetailMetadata: React.FC<OrderDetailMetadataProps> = ({ order 
         </Text>
       )}
 
-      {!!artworkVersion?.dimensions && (
+      {!!dimensions && (
         <Text variant="sm" color="mono60">
-          {artworkVersion.dimensions.in} | {artworkVersion.dimensions.cm}
+          {dimensions.in} | {dimensions.cm}
         </Text>
       )}
 
@@ -117,9 +125,6 @@ export const OrderDetailMetadata: React.FC<OrderDetailMetadataProps> = ({ order 
 
 const fragment = graphql`
   fragment OrderDetailMetadata_order on Order {
-    totalListPrice {
-      display
-    }
     lineItems {
       artwork {
         partner {
@@ -135,16 +140,29 @@ const fragment = graphql`
         attributionClass {
           shortDescription
         }
-        dimensions {
-          in
-          cm
-        }
         image {
           blurhash
           url(version: ["larger", "large", "medium", "small", "square"])
           aspectRatio
           height
           width
+        }
+      }
+      artworkOrEditionSet {
+        __typename
+        ... on Artwork {
+          price
+          dimensions {
+            in
+            cm
+          }
+        }
+        ... on EditionSet {
+          price
+          dimensions {
+            in
+            cm
+          }
         }
       }
     }
