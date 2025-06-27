@@ -33,7 +33,7 @@ The Artsy app includes a "Featured Artworks" widget that displays curated artwor
 | **Identifier**            | `FullBleedWidget`                             | `FullBleedWidgetProvider`           |
 | **Supported Sizes**       | `.systemSmall` (2x2)<br/>`.systemLarge` (4x4) | Fully resizable (minimum 2x2 cells) |
 | **Layout Implementation** | `FullBleed+View.swift`                        | `widget_fullbleed.xml`              |
-| **Image Scaling**         | `.scaleEffect(1.3)` with `.scaledToFill()`    | `android:scaleType="centerCrop"`    |
+| **Image Scaling**         | `.scaleEffect(1.3)` with `.scaledToFill()`    | Custom top-crop bitmap processing   |
 
 ### LatestArticles Widget (iOS Only)
 
