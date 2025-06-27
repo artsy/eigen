@@ -166,6 +166,13 @@ export const HomeView: React.FC = memo(() => {
 
   useDarkModeOnboarding()
 
+  const renderItem = useCallback(
+    ({ item, index }) => {
+      return <Section section={item} my={2} index={index} refetchKey={refetchKey} />
+    },
+    [refetchKey]
+  )
+
   return (
     <Screen safeArea={true}>
       <Screen.Body fullwidth>
@@ -177,9 +184,7 @@ export const HomeView: React.FC = memo(() => {
           ref={flashlistRef as RefObject<FlatList>}
           data={sections}
           keyExtractor={(item) => item.internalID}
-          renderItem={({ item, index }) => {
-            return <Section section={item} my={2} index={index} refetchKey={refetchKey} />
-          }}
+          renderItem={renderItem}
           onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
           ListHeaderComponent={HomeHeader}
           ListFooterComponent={
@@ -191,6 +196,7 @@ export const HomeView: React.FC = memo(() => {
           }
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
           onEndReachedThreshold={2}
+          maxToRenderPerBatch={6}
           stickyHeaderIndices={[0]}
           windowSize={15}
         />
