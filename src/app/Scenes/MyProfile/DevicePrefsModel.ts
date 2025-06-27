@@ -1,11 +1,8 @@
-import {
-  ArtsyNativeModule,
-  DEFAULT_NAVIGATION_BAR_COLOR,
-} from "app/NativeModules/ArtsyNativeModule"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
 import { EnvironmentModel, getEnvironmentModel } from "app/store/config/EnvironmentModel"
+import { setAppStyling } from "app/utils/useAndroidAppStyling"
 import { action, Action, computed, Computed, effectOn, EffectOn } from "easy-peasy"
-import { Appearance, Platform, StatusBar } from "react-native"
+import { Appearance } from "react-native"
 
 export type DarkModeOption = "on" | "off" | "system"
 
@@ -64,21 +61,11 @@ export const getDevicePrefsModel = (): DevicePrefsModel => ({
   updateStatusBarStyle: effectOn([(state) => state], (_, change) => {
     const [state] = change.current
 
-    if (state.colorScheme === "dark") {
-      StatusBar.setBarStyle("light-content")
-
-      if (Platform.OS === "android") {
-        ArtsyNativeModule.setNavigationBarColor("#000000")
-        ArtsyNativeModule.setAppLightContrast(true)
-      }
-    } else {
-      StatusBar.setBarStyle("dark-content")
-
-      if (Platform.OS === "android") {
-        ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
-        ArtsyNativeModule.setAppLightContrast(false)
-      }
-    }
+    // Wait an animation frame to make sure the dark mode screen animation is in sync
+    //  with the status bar and navigation bar
+    requestAnimationFrame(() => {
+      setAppStyling(state.colorScheme)
+    })
   }),
   setSessionState: action((state, sessionState) => {
     state.sessionState = {

@@ -1,8 +1,7 @@
-import {
-  ArtsyNativeModule,
-  DEFAULT_NAVIGATION_BAR_COLOR,
-} from "app/NativeModules/ArtsyNativeModule"
+import { THEMES } from "@artsy/palette-mobile"
 import { GlobalStore } from "app/store/GlobalStore"
+import * as NavigationBar from "expo-navigation-bar"
+import * as StatusBar from "expo-status-bar"
 import { useEffect } from "react"
 import { Platform } from "react-native"
 
@@ -14,21 +13,40 @@ export const useAndroidAppStyling = () => {
   useEffect(() => {
     if (isHydrated) {
       // We wait a bit until the UI finishes drawing behind the splash screen
-      setTimeout(() => {
-        if (Platform.OS === "android") {
-          ArtsyNativeModule.setAppStyling()
-        }
+      if (Platform.OS === "android") {
+        // this is required for edge to edge content
+        NavigationBar.setPositionAsync("absolute")
+      }
 
-        if (isLoggedIn && Platform.OS === "android") {
-          if (theme === "dark") {
-            ArtsyNativeModule.setNavigationBarColor("#000000")
-            ArtsyNativeModule.setAppLightContrast(true)
-          } else {
-            ArtsyNativeModule.setNavigationBarColor(DEFAULT_NAVIGATION_BAR_COLOR)
-            ArtsyNativeModule.setAppLightContrast(false)
-          }
-        }
-      }, 500)
+      if (isLoggedIn) {
+        setAppStyling(theme)
+      }
     }
+    // We intentionally don't want to re-run this effect when the theme changes because we handle that separately
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isHydrated, isLoggedIn])
+}
+
+export const setAppStyling = (theme: "dark" | "light") => {
+  if (Platform.OS === "android") {
+    NavigationBar.setPositionAsync("absolute")
+  }
+
+  if (theme === "dark") {
+    setDarkTheme()
+  } else {
+    setLightTheme()
+  }
+}
+
+const setDarkTheme = () => {
+  StatusBar.setStatusBarBackgroundColor(THEMES.v3dark.colors.mono0, true)
+  StatusBar.setStatusBarStyle("light", true)
+  NavigationBar.setBackgroundColorAsync(`${THEMES.v3dark.colors.mono0}00`)
+}
+
+const setLightTheme = () => {
+  StatusBar.setStatusBarBackgroundColor(THEMES.v3light.colors.mono0, true)
+  StatusBar.setStatusBarStyle("dark", true)
+  NavigationBar.setBackgroundColorAsync(`${THEMES.v3light.colors.mono0}00`)
 }
