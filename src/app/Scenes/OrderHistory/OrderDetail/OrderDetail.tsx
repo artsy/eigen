@@ -8,12 +8,14 @@ import {
   Screen,
   Spacer,
   Text,
+  useColor,
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
 import { OrderDetailQuery } from "__generated__/OrderDetailQuery.graphql"
 import { OrderDetail_order$key } from "__generated__/OrderDetail_order.graphql"
 import { OrderDetailFulfillment } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailFulfillment"
+import { OrderDetailHelpLinks } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailHelpLinks"
 import { OrderDetailMessage } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailMessage"
 import { OrderDetailPaymentInfo } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailPaymentInfo"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
@@ -30,6 +32,7 @@ const IMAGE_MAX_HEIGHT = 380
 const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
   const { width: screenWidth } = useScreenDimensions()
   const space = useSpace()
+  const color = useColor()
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
   const orderData = useFragment(orderDetailFragment, order)
 
@@ -45,7 +48,10 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
   )
 
   return (
-    <Screen.ScrollView contentContainerStyle={{ paddingVertical: space(2) }}>
+    <Screen.ScrollView
+      style={{ backgroundColor: color("mono5") }}
+      contentContainerStyle={{ paddingTop: space(2), backgroundColor: color("mono0") }}
+    >
       <Box px={2}>
         {/* 1st Part: Greetings */}
         <Box>
@@ -180,6 +186,11 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
 
       {/* 7th Part: Payment */}
       <OrderDetailPaymentInfo order={orderData} />
+
+      <Spacer y={2} />
+
+      {/* 8th Part: Help links */}
+      <OrderDetailHelpLinks />
     </Screen.ScrollView>
   )
 }
