@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react-native"
+import { screen, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { ArticleScreen } from "app/Scenes/Article/ArticleScreen"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
@@ -12,27 +12,31 @@ describe("ArticleScreen", () => {
 
   it("renders standard article", async () => {
     renderWithRelay({
-      Query: () => ({
-        article: {
-          title: "Article Title",
-          layout: "STANDARD",
-        },
+      Article: () => ({
+        title: "Article Title",
+        layout: "STANDARD",
       }),
     })
 
-    await screen.findByText("Article Title")
+    await waitForElementToBeRemoved(() => screen.queryByTestId("ArticleScreenPlaceholder"), {
+      timeout: 15000,
+    })
+
+    expect(screen.getByText("Article Title")).toBeOnTheScreen()
 
     expect(screen.getByTestId("ArticleRelatedArticlesRail")).toBeOnTheScreen()
   })
 
   it("renders featured article", async () => {
     renderWithRelay({
-      Query: () => ({
-        article: {
-          title: "Article Title",
-          layout: "FEATURE",
-        },
+      Article: () => ({
+        title: "Article Title",
+        layout: "FEATURE",
       }),
+    })
+
+    await waitForElementToBeRemoved(() => screen.queryByTestId("ArticleScreenPlaceholder"), {
+      timeout: 15000,
     })
 
     await screen.findByText("Article Title")
@@ -41,16 +45,16 @@ describe("ArticleScreen", () => {
 
   it("redirects to webview if not standard or feature", async () => {
     renderWithRelay({
-      Query: () => ({
-        article: {
-          internalID: "foo",
-          title: "Article Title",
-          layout: "VIDEO",
-        },
+      Article: () => ({
+        internalID: "foo",
+        title: "Article Title",
+        layout: "VIDEO",
       }),
     })
 
-    await screen.findByTestId("ArticleWebViewScreen")
+    await waitForElementToBeRemoved(() => screen.queryByTestId("ArticleScreenPlaceholder"), {
+      timeout: 15000,
+    })
 
     expect(screen.getByTestId("ArticleWebViewScreen")).toBeOnTheScreen()
   })
