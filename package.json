@@ -70,7 +70,6 @@
     "setup:releases:update!": "scripts/setup/update-env-for-releases",
     "start": "WITH_ROZENITE=true concurrently --raw 'react-native start' 'yarn relay:watch'",
     "start:reset-cache": "yarn start --reset-cache",
-    "sync-cities": "curl https://raw.githubusercontent.com/artsy/metaphysics/main/src/schema/city/cityDataSortedByDisplayPreference.json -o data/cityDataSortedByDisplayPreference.json",
     "sync-schema": "curl https://raw.githubusercontent.com/artsy/metaphysics/main/_schemaV2.graphql -o data/schema.graphql; yarn prettier --write --parser graphql data/schema.graphql",
     "sync-schema:localhost": "cd ../metaphysics && yarn dump-schema ../eigen/data/schema.graphql && cd -; yarn prettier --write --parser graphql data/schema.graphql",
     "test": "jest",
