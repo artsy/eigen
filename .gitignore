@@ -115,6 +115,7 @@ build/
 local.properties
 
 # android
+*.apk
 *.keystore
 !debug.keystore
 android-secret.json

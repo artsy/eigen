@@ -16,11 +16,45 @@ Sometimes we need to test a release build on the emulator or our local device, w
 
 ## Android
 
-- Download the `release.keystore` from 1Password (named `Eigen release keystore password and secret json (google play store) - release.keystore`), and put it at `eigen/android/app/release.keystore`.
-- Start the packager with `yarn start`.
-- You will need the `ANDROID_KEYSTORE_PASSWORD` from 1Password, so have it handy. It will be in the item named `Eigen release keystore password and secret json (google play store)`.
-- First place you will need it is right now. In your terminal, run `export ANDROID_KEYSTORE_PASSWORD=<the password>`, replacing `<the password>` with the password from 1Password. The final command will look something like `export ANDROID_KEYSTORE_PASSWORD=some-password-wow-123`, no math signs `<>`.
-- Uninstall the app from the emulator if it's already installed. This is needed because it's differently signed for debug and for release, and the emulator can't replace them automatically.
-- In the same terminal, build the release app using `cd android; ./gradlew installRelease`.
-- Verify that the built app is in `eigen/android/app/build/outputs/apk/release/app-release.apk`.
-- The app should already be installed on the emulator now. If not, install it by dragging it on the emulator.
+> The release APK will be available at: `android/app/build/outputs/apk/release/app-release.apk`
+
+1. Setup the local environament for generating a release build, including downloading the required keystores:
+   ```bash
+   yarn setup:releases
+   ```
+2. Set environment variables with passwords from 1Password: Go to 1Password > Engineering > `Eigen release keystore password and secret json (google play store)`
+   ```bash
+   export ANDROID_KEYSTORE_PASSWORD=<new keystore password (jan 9 2023)>
+   export ANDROID_KEY_PASSWORD=<new key password (jan 9 2023)>
+   ```
+
+### Generate standalone APK
+
+```bash
+./android/gradlew assembleRelease
+```
+
+### Generate and install APK on emulator
+
+1. Start the Metro bundler:
+
+   ```bash
+   yarn start
+   ```
+
+2. Uninstall existing app from emulator (required due to different signing): Go to emulator settings and uninstall the app manually
+
+3. Build and install release app:
+   ```bash
+   ./android/gradlew installRelease
+   ```
+
+### Extract apk from downloaded fast lane builds
+
+1. Run:
+
+   ```bash
+   ./scripts/deploys/create-android-apk
+   ```
+
+2. Choose the release bundle you want to use.
