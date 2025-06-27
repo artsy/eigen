@@ -2,14 +2,13 @@ import {
   Flex,
   Screen,
   Separator,
-  ShareIcon,
   Skeleton,
   SkeletonBox,
   SkeletonText,
   Spacer,
   Tabs,
 } from "@artsy/palette-mobile"
-import { useRoute } from "@react-navigation/native"
+import { useNavigation, useRoute } from "@react-navigation/native"
 import {
   ArtistAboveTheFoldQuery,
   FilterArtworksInput,
@@ -36,11 +35,10 @@ import { LoadFailureView } from "app/Components/LoadFailureView"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
-import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { Environment, graphql } from "react-relay"
 
@@ -75,22 +73,12 @@ export const Artist: React.FC<ArtistProps> = ({
   scrollToArtworksGrid,
   searchCriteria,
 }) => {
-  const [headerHeight, setHeaderHeight] = useState(0)
   const popoverMessage = usePopoverMessage()
   const { showShareSheet } = useShareSheet()
 
-  useEffect(() => {
-    if (!!fetchCriteriaError) {
-      popoverMessage.show({
-        title: "Sorry, an error occured",
-        message: "Failed to get saved search criteria",
-        placement: "top",
-        type: "error",
-      })
-    }
-  }, [fetchCriteriaError])
+  const navigation = useNavigation()
 
-  const handleSharePress = () => {
+  const handleSharePress = useCallback(() => {
     if (
       artistAboveTheFold.name &&
       artistAboveTheFold.name &&
@@ -107,20 +95,36 @@ export const Artist: React.FC<ArtistProps> = ({
         currentImageUrl: artistAboveTheFold.coverArtwork?.image?.url ?? undefined,
       })
     }
-  }
+  }, [artistAboveTheFold, showShareSheet])
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        if (artistAboveTheFold) {
+          return (
+            <ArtistHeaderNavRight artist={artistAboveTheFold} onSharePress={handleSharePress} />
+          )
+        }
+
+        return null
+      },
+    })
+  }, [artistAboveTheFold, navigation, handleSharePress])
+
+  useEffect(() => {
+    if (!!fetchCriteriaError) {
+      popoverMessage.show({
+        title: "Sorry, an error occured",
+        message: "Failed to get saved search criteria",
+        placement: "top",
+        type: "error",
+      })
+    }
+  }, [fetchCriteriaError])
 
   const renderBelowTheHeaderComponent = useCallback(
-    () => (
-      <ArtistHeader
-        artist={artistAboveTheFold}
-        onLayoutChange={({ nativeEvent }) => {
-          if (headerHeight !== nativeEvent.layout.height) {
-            setHeaderHeight(nativeEvent.layout.height)
-          }
-        }}
-      />
-    ),
-    [artistAboveTheFold, headerHeight]
+    () => <ArtistHeader artist={artistAboveTheFold} />,
+    [artistAboveTheFold]
   )
 
   return (
@@ -137,23 +141,16 @@ export const Artist: React.FC<ArtistProps> = ({
           initialTabName={initialTab}
           title={artistAboveTheFold.name ?? ""}
           showLargeHeaderText={false}
-          headerProps={{
-            rightElements: (
-              <ArtistHeaderNavRight artist={artistAboveTheFold} onSharePress={handleSharePress} />
-            ),
-            onBack: goBack,
-          }}
           BelowTitleHeaderComponent={renderBelowTheHeaderComponent}
+          hideScreen
         >
           <Tabs.Tab name="Artworks" label="Artworks">
-            <Tabs.Lazy>
-              <ArtistArtworks
-                artist={artistAboveTheFold}
-                searchCriteria={searchCriteria}
-                predefinedFilters={predefinedFilters}
-                scrollToArtworksGrid={scrollToArtworksGrid}
-              />
-            </Tabs.Lazy>
+            <ArtistArtworks
+              artist={artistAboveTheFold}
+              searchCriteria={searchCriteria}
+              predefinedFilters={predefinedFilters}
+              scrollToArtworksGrid={scrollToArtworksGrid}
+            />
           </Tabs.Tab>
 
           <Tabs.Tab name="Insights" label="Auction Results">
@@ -343,8 +340,7 @@ const ArtistSkeleton: React.FC = () => {
   const { height, width } = useArtistHeaderImageDimensions()
 
   return (
-    <Screen>
-      <Screen.Header rightElements={<ShareIcon width={23} height={23} />} />
+    <Screen safeArea={false}>
       <Screen.Body fullwidth>
         <Skeleton>
           <SkeletonBox width={width} height={height} />

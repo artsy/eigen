@@ -445,11 +445,6 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/artist/:artistID",
     name: "Artist",
     Component: ArtistQueryRenderer,
-    options: {
-      screenOptions: {
-        headerShown: false,
-      },
-    },
     queries: [ArtistScreenQuery],
     prepareVariables: [({ artistID }) => ({ artistID, ...defaultArtistVariables })],
   },
