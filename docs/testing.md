@@ -1,17 +1,15 @@
-# Testing components best practices
+# Testing Best Practices
 
-## Table of Contents
+- [React Native Testing](#react-native-testing)
+  - [How Should I Query?](#how-should-i-query)
+  - [Testing examples for:](#examples)
+    - [useLazyLoadQuery](#testing-a-component-that-has-uselazyloadquery)
+    - [useFragment](#testing-a-component-with-usefragment)
+  - [setupTestWrapper for relay components](#setuptestwrapper)
+  - [renderWithWrappers for non relay components](#renderwithwrappers)
+- [Android Native Testing](#android-native-testing)
 
-- [How Should I Query?](#how-should-i-query)
-- [Testing examples for:](#examples)
-  - [useLazyLoadQuery](#testing-a-component-that-has-uselazyloadquery)
-  - [useFragment](#testing-a-component-with-usefragment)
-- [setupTestWrapper for relay components](#setuptestwrapper)
-  - [setupTestWrapper params](#setuptestwrapper-params)
-  - [renderWithRelay function](#renderwithrelay-function)
-  - [renderWithRelay params](#renderwithrelay-params)
-  - [renderWithRelay return values](#renderwithrelay-return-values)
-- [renderWithWrappers for non relay components](#renderwithwrappers)
+# React Native Testing
 
 ## How should I query
 
@@ -153,3 +151,39 @@ const { env, mockResolveLastOperation, mockRejectLastOperation } = renderWithRel
 The `renderWithWrappers` function is a testing helper designed to simplify the testing of components in our React Native testing environment. It provides a way to render components wrapped with our wrappers, allowing you to test various scenarios efficiently and easily.
 
 We use this function when we want to test something that is not related to Relay but needs the rest of the wrappers of our app, for example, a component that uses `useNavigation` hook.
+
+# Android Native Testing
+
+For Android native code (Java/Kotlin), we use JUnit and MockK for unit testing. The tests are located in `android/app/src/test/java/` and follow the standard Android testing patterns.
+
+## Running Android Tests
+
+To run Android native tests during development:
+
+```bash
+# Run all Android unit tests
+yarn android:test
+
+# Or run directly with Gradle
+cd android && ./gradlew testDebugUnitTest
+
+# Run specific test class
+cd android && ./gradlew testDebugUnitTest --tests "net.artsy.app.widgets.FullBleedWidgetProviderTest"
+
+# Run tests matching a pattern
+cd android && ./gradlew testDebugUnitTest --tests "net.artsy.app.widgets.*"
+```
+
+## Android Test Examples
+
+Widget tests are located in `android/app/src/test/java/net/artsy/app/widgets/`:
+
+- **FullBleedWidgetProviderTest.kt** - Tests core widget functionality
+- **ArtworkRotationTest.kt** - Comprehensive tests for artwork selection and state management
+
+## Test Reports
+
+After running tests, HTML reports are generated at:
+`android/app/build/reports/tests/testDebugUnitTest/index.html`
+
+The tests integrate with the existing development workflow and can be run alongside React Native tests in CI/CD pipelines.
