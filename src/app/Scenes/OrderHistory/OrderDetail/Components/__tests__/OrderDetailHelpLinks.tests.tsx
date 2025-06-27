@@ -4,7 +4,7 @@ import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 describe("OrderDetailHelpLinks", () => {
-  it("renders the help link seciton", () => {
+  it("renders the help link section", () => {
     renderWithWrappers(<OrderDetailHelpLinks />)
 
     expect(screen.getByText("Visit our help center")).toBeOnTheScreen()
