@@ -123,7 +123,7 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
         val sourceWidth = bitmap.width
         val sourceHeight = bitmap.height
 
-        // Calculate scale to fill the target dimensions (same logic as TopCropImageView)
+        // Calculate scale to fill the target dimensions
         val scale = if (sourceWidth * targetHeight > sourceHeight * targetWidth) {
             targetHeight.toFloat() / sourceHeight.toFloat()
         } else {
