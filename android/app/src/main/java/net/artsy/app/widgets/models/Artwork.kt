@@ -23,8 +23,8 @@ data class Artwork(
     companion object {
         fun fallback(): Artwork {
             return Artwork(
-                id ="alex-katz-brisk-day-iii-5",
-                title = "Brisk Day III",
+                id ="alex-katz-brisk-day-34",
+                title = "Brisk Day",
                 artist = Artist.fallback(),
                 artworkImages = listOf(ArtworkImage.fallback())
             )
