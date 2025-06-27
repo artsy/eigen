@@ -6,7 +6,11 @@ import { navigate } from "app/system/navigation/navigate"
 import { sendEmail } from "app/utils/sendEmail"
 import { DateTime } from "luxon"
 
-export const getMessageContent = (order: OrderDetailMessage_order$data) => {
+interface MessageDetailsProps {
+  order: OrderDetailMessage_order$data
+}
+
+export const MessageDetails: React.FC<MessageDetailsProps> = ({ order }) => {
   const messageType = order.displayTexts.messageType
 
   const formattedStateExpireTime =

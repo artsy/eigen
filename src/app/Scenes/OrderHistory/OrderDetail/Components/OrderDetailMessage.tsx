@@ -1,6 +1,6 @@
 import { Box } from "@artsy/palette-mobile"
 import { OrderDetailMessage_order$key } from "__generated__/OrderDetailMessage_order.graphql"
-import { getMessageContent } from "app/Scenes/OrderHistory/OrderDetail/utils/getMessageContent"
+import { MessageDetails } from "app/Scenes/OrderHistory/OrderDetail/Components/MessageDetails"
 import { graphql, useFragment } from "react-relay"
 
 interface OrderDetailMessageProps {
@@ -14,7 +14,11 @@ export const OrderDetailMessage: React.FC<OrderDetailMessageProps> = ({ order })
     return null
   }
 
-  return <Box>{getMessageContent(orderData)}</Box>
+  return (
+    <Box>
+      <MessageDetails order={orderData} />
+    </Box>
+  )
 }
 
 const orderDetailMessageFragment = graphql`
