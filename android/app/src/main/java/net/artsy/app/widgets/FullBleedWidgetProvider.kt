@@ -67,7 +67,9 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
 
                     val bitmap = apiClient.downloadArtworkImage(artwork, widthPx, heightPx)
                     if (bitmap != null) {
-                        views.setImageViewBitmap(R.id.artwork_image, bitmap)
+                        // Apply top-crop scaling by pre-processing the bitmap
+                        val scaledBitmap = createTopCroppedBitmap(bitmap, widthPx, heightPx)
+                        views.setImageViewBitmap(R.id.artwork_image, scaledBitmap)
                     }
                 }
 
@@ -115,5 +117,32 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
         }
 
         return artworks.getOrNull(nextIndex)
+    }
+
+    private fun createTopCroppedBitmap(bitmap: android.graphics.Bitmap, targetWidth: Int, targetHeight: Int): android.graphics.Bitmap {
+        val sourceWidth = bitmap.width
+        val sourceHeight = bitmap.height
+
+        // Calculate scale to fill the target dimensions (same logic as TopCropImageView)
+        val scale = if (sourceWidth * targetHeight > sourceHeight * targetWidth) {
+            targetHeight.toFloat() / sourceHeight.toFloat()
+        } else {
+            targetWidth.toFloat() / sourceWidth.toFloat()
+        }
+
+        val scaledWidth = (sourceWidth * scale).toInt()
+        val scaledHeight = (sourceHeight * scale).toInt()
+
+        // Create scaled bitmap
+        val scaledBitmap = android.graphics.Bitmap.createScaledBitmap(bitmap, scaledWidth, scaledHeight, true)
+
+        // If scaled bitmap is larger than target, crop from center-top
+        return if (scaledWidth > targetWidth || scaledHeight > targetHeight) {
+            val startX = maxOf(0, (scaledWidth - targetWidth) / 2)
+            val startY = (0.15f * scaledWidth).toInt() // Top crop offset (15% of height)
+            android.graphics.Bitmap.createBitmap(scaledBitmap, startX, startY, targetWidth, targetHeight)
+        } else {
+            scaledBitmap
+        }
     }
 }
