@@ -20,6 +20,7 @@ import { HomeViewSectionViewingRoomsQueryRenderer } from "app/Scenes/HomeView/Se
 import { useExperimentVariant } from "app/system/flags/hooks/useExperimentVariant"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { CleanRelayFragment } from "app/utils/relayHelpers"
+import { memo } from "react"
 
 export interface SectionProps extends FlexProps {
   section: CleanRelayFragment<HomeViewSectionGeneric_section$data>
@@ -33,7 +34,7 @@ export interface SectionSharedProps extends FlexProps {
   refetchKey?: number
 }
 
-export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
+export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
   const enableNavigationPills = useFeatureFlag("AREnableHomeViewQuickLinks")
   const { variant: quickLinksExperimentVariant } = useExperimentVariant(
     "onyx_quick-links-experiment"
@@ -114,4 +115,4 @@ export const Section: React.FC<SectionProps> = ({ section, ...rest }) => {
       }
       return null
   }
-}
+})
