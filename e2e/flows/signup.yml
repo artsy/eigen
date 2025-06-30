@@ -1,4 +1,4 @@
-appId: net.artsy.app
+appId: lol.imsoinvalid.app
 ---
 - launchApp:
     clearState: false
