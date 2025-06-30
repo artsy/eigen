@@ -353,9 +353,7 @@ const ArtistSkeleton: React.FC = () => {
             <Spacer y={0.5} />
             <SkeletonText variant="lg">American, b. 1945</SkeletonText>
           </Flex>
-
           <Spacer y={4} />
-
           {/* Tabs */}
           <Flex justifyContent="space-around" flexDirection="row" px={2}>
             <SkeletonText variant="xs">Artworks</SkeletonText>
