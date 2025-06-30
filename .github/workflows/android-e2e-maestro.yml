@@ -65,7 +65,7 @@ jobs:
           disable-spellchecker: true
           disable-linux-hw-accel: false
           enable-hw-keyboard: true
-          emulator-options: -no-snapshot-save -gpu swiftshader_indirect -noaudio -no-boot-anim
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: |
             echo "🔍 Emulator started, verifying..."
             adb devices -l
@@ -90,3 +90,5 @@ jobs:
 
             echo "🧪 Running signup.yml Maestro test..."
             maestro test e2e/flows/signup.yml -e MAESTRO_APP_ID=net.artsy.app
+
+            ./scripts/ci/report-maestro-test-failure
