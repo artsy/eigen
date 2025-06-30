@@ -53,7 +53,7 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
         <Spacer y={2} />
 
         {/* 5th Part: Artsy Buyer Protection */}
-        <OrderDetailBuyerProtection />
+        <OrderDetailBuyerProtection order={orderData} />
       </Box>
 
       <Spacer y={2} />
@@ -73,7 +73,7 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
       <Spacer y={2} />
 
       {/* 8th Part: Help links */}
-      <OrderDetailHelpLinks />
+      <OrderDetailHelpLinks order={orderData} />
     </Screen.ScrollView>
   )
 }
@@ -85,10 +85,12 @@ const orderDetailFragment = graphql`
     displayTexts {
       title
     }
-    ...OrderDetailMessage_order
-    ...OrderDetailPaymentInfo_order
+    ...OrderDetailBuyerProtection_order
     ...OrderDetailFulfillment_order
+    ...OrderDetailHelpLinks_order
+    ...OrderDetailMessage_order
     ...OrderDetailMetadata_order
+    ...OrderDetailPaymentInfo_order
     ...OrderDetailPriceBreakdown_order
   }
 `
