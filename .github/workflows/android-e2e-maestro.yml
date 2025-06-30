@@ -20,14 +20,6 @@ jobs:
       MAESTRO_TEST_PASSWORD: ${{ secrets.MAESTRO_TEST_PASSWORD }}
 
     steps:
-      - name: Export Maestro env
-        shell: bash
-        run: |
-          echo "MAESTRO_APP_ID=net.artsy.app" >> $GITHUB_ENV
-          echo "MAESTRO_TEST_EMAIL=detox+test@example.com" >> $GITHUB_ENV
-          # if you need to pull in the password too:
-          echo "MAESTRO_TEST_PASSWORD=${{ secrets.MAESTRO_TEST_PASSWORD }}" >> $GITHUB_ENV
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
