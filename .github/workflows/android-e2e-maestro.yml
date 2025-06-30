@@ -78,25 +78,15 @@ jobs:
               hw_accel_flag="$HW_ACCEL_OVERRIDE"
             else
               if [[ "$OSTYPE" == "darwin"* ]]; then
-                # On Apple Silicon (ARM64), use HVF. On Intel Macs, use hvf
-                if [[ $(uname -m) == "arm64" ]]; then
-                  hw_accel_flag="-accel hvf"
-                else
-                  # Intel Mac - check for VMX support
-                  HW_ACCEL_SUPPORT=$(sysctl -a | grep -E -c '(vmx|svm)')
-                  if [[ $HW_ACCEL_SUPPORT == 0 ]]; then
-                    hw_accel_flag="-accel off"
-                  else
-                    hw_accel_flag="-accel hvf"
-                  fi
-                fi
+                # On macOS (both Intel and Apple Silicon), use auto acceleration
+                hw_accel_flag="-accel auto"
               else
                 # Linux - check for KVM support
                 HW_ACCEL_SUPPORT=$(grep -E -c '(vmx|svm)' /proc/cpuinfo)
                 if [[ $HW_ACCEL_SUPPORT == 0 ]]; then
                   hw_accel_flag="-accel off"
                 else
-                  hw_accel_flag="-accel kvm"
+                  hw_accel_flag="-accel auto"
                 fi
               fi
             fi
