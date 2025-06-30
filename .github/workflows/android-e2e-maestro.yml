@@ -20,9 +20,11 @@ jobs:
         shard-count: [4]
 
     env:
-      # 2) Export exactly the same vars your script expects
+      # CircleCI compatibility for sharding
       CIRCLE_NODE_INDEX: ${{ matrix.shard-index }}
       CIRCLE_NODE_TOTAL: ${{ matrix.shard-count }}
+      # Maestro environment variables
+      MAESTRO_APP_ID: net.artsy.app
 
     steps:
       - name: Checkout repository
