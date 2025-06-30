@@ -10,9 +10,14 @@ import { useTracking } from "react-tracking"
 interface ArtworkMakerProps {
   artistName: string
   href?: string | null
+  verifiedRepresentativesCount?: number
 }
 
-const ArtworkMaker: React.FC<ArtworkMakerProps> = ({ artistName, href }) => {
+const ArtworkMaker: React.FC<ArtworkMakerProps> = ({
+  artistName,
+  href,
+  verifiedRepresentativesCount,
+}) => {
   const { trackEvent } = useTracking()
 
   const handleArtistTap = () => {
@@ -32,6 +37,7 @@ const ArtworkMaker: React.FC<ArtworkMakerProps> = ({ artistName, href }) => {
       disabled={!href}
       to={href}
       onPress={handleArtistTap}
+      navigationProps={{ verifiedRepresentativesCount }}
     >
       <Text variant="lg-display">{artistName}</Text>
     </RouterLink>
@@ -68,6 +74,7 @@ const ArtworkMultipleMakers: React.FC<ArtworkMultipleMakersProps> = ({ artists }
                 key={artist?.href}
                 artistName={artistNameWithComma}
                 href={artist?.href}
+                verifiedRepresentativesCount={artist?.verifiedRepresentatives?.length}
               />
             )
           })}
@@ -97,7 +104,13 @@ const ArtworkMakerTitle: React.FC<ArtworkMakerTitleProps> = ({ artwork }) => {
   }
 
   if (!!artists && artists?.length === 1 && !!artists[0]?.name) {
-    return <ArtworkMaker artistName={artists[0].name} href={artists[0].href} />
+    return (
+      <ArtworkMaker
+        artistName={artists[0].name}
+        href={artists[0].href}
+        verifiedRepresentativesCount={artists[0].verifiedRepresentatives?.length}
+      />
+    )
   }
 
   if (!!artists && artists?.length > 1) {
@@ -114,6 +127,9 @@ export const ArtworkMakerTitleFragmentContainer = createFragmentContainer(Artwor
       artists(shallow: true) {
         name
         href
+        verifiedRepresentatives {
+          internalID
+        }
       }
     }
   `,

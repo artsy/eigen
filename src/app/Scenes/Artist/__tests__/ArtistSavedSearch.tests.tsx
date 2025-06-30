@@ -34,7 +34,13 @@ jest.mock("@react-navigation/native", () => {
   }
 })
 
-type ArtistQueries = "ArtistAboveTheFoldQuery" | "ArtistBelowTheFoldQuery" | "SearchCriteriaQuery"
+type ArtistQueries =
+  | "ArtistAboveTheFoldQuery"
+  | "ArtistBelowTheFoldQuery"
+  | "SearchCriteriaQuery"
+  | "ArtistArtworksQuery"
+  | "MarketStatsQuery"
+  | "ArtistInsightsAuctionResultsQuery"
 
 describe("Saved search banner on artist screen", () => {
   const originalError = console.error
@@ -86,6 +92,10 @@ describe("Saved search banner on artist screen", () => {
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
+    mockMostRecentOperation("ArtistBelowTheFoldQuery", MockArtistBelowTheFoldQuery)
+    mockMostRecentOperation("MarketStatsQuery", MockMarketStatsQuery)
+    mockMostRecentOperation("ArtistArtworksQuery", MockArtistArtworksQuery)
+    mockMostRecentOperation("ArtistInsightsAuctionResultsQuery")
 
     await flushPromiseQueue()
 
@@ -113,6 +123,9 @@ describe("Saved search banner on artist screen", () => {
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
+    mockMostRecentOperation("ArtistBelowTheFoldQuery", MockArtistBelowTheFoldQuery)
+    mockMostRecentOperation("MarketStatsQuery", MockMarketStatsQuery)
+    mockMostRecentOperation("ArtistArtworksQuery", MockArtistArtworksQuery)
 
     await flushPromiseQueue()
 
@@ -130,6 +143,11 @@ const MockSearchCriteriaQuery: MockResolvers = {
       atAuction: null,
       width: null,
       height: null,
+      additionalGeneIDs: [],
+      artistSeriesIDs: [],
+      locationCities: [],
+      materialsTerms: [],
+      partnerIDs: [],
     }
   },
 }
@@ -142,9 +160,104 @@ const MockArtistAboveTheFoldQuery: MockResolvers = {
       auctionResultsConnection: {
         totalCount: 0,
       },
+      insights: [],
     }
   },
-  ArtistInsight() {
-    return { entities: ["test"] }
+}
+
+const MockArtistBelowTheFoldQuery: MockResolvers = {
+  Artist() {
+    return {
+      articles: [],
+      biographyBlurb: { text: "Artist biography" },
+      insights: [],
+    }
+  },
+}
+
+const MockArtistArtworksQuery: MockResolvers = {
+  Artist() {
+    return {
+      internalID: "artist-internal-id",
+      slug: "artist-slug",
+      artworks: {
+        counts: {
+          total: 100,
+        },
+        edges: [
+          {
+            node: {
+              id: "artwork-1",
+              slug: "artwork-1",
+              image: {
+                url: "https://example.com/image1.jpg",
+              },
+              title: "Artwork 1",
+              date: "2021",
+              partner: {
+                name: "Gallery 1",
+              },
+              sale_message: "$10,000",
+            },
+          },
+          {
+            node: {
+              id: "artwork-2",
+              slug: "artwork-2",
+              image: {
+                url: "https://example.com/image2.jpg",
+              },
+              title: "Artwork 2",
+              date: "2022",
+              partner: {
+                name: "Gallery 2",
+              },
+              sale_message: "$15,000",
+            },
+          },
+        ],
+      },
+      aggregations: {
+        aggregations: [
+          {
+            slice: "MEDIUM",
+            counts: [
+              { name: "Photography", value: "photography", count: 10 },
+              { name: "Painting", value: "painting", count: 20 },
+            ],
+          },
+          {
+            slice: "RARITY",
+            counts: [
+              { name: "Unique", value: "unique", count: 5 },
+              { name: "Limited edition", value: "limited-edition", count: 15 },
+            ],
+          },
+          {
+            slice: "WAYS_TO_BUY",
+            counts: [
+              { name: "Buy now", value: "buy-now", count: 8 },
+              { name: "Make offer", value: "make-offer", count: 12 },
+            ],
+          },
+        ],
+      },
+      counts: {
+        artworks: 100,
+      },
+      statuses: {
+        artworks: true,
+      },
+    }
+  },
+}
+
+const MockMarketStatsQuery: MockResolvers = {
+  Artist() {
+    return {
+      priceInsightsConnection: {
+        edges: [],
+      },
+    }
   },
 }

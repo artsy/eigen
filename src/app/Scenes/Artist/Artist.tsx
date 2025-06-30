@@ -10,13 +10,11 @@ import {
   Tabs,
 } from "@artsy/palette-mobile"
 import { useRoute } from "@react-navigation/native"
-import {
-  ArtistAboveTheFoldQuery,
-  FilterArtworksInput,
-} from "__generated__/ArtistAboveTheFoldQuery.graphql"
+import { ArtistAboveTheFoldQuery } from "__generated__/ArtistAboveTheFoldQuery.graphql"
+import { FilterArtworksInput } from "__generated__/ArtistArtworks_artistRefetch.graphql"
 import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
-import ArtistArtworks from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
+import { ArtistArtworksQueryRenderer } from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeader, useArtistHeaderImageDimensions } from "app/Components/Artist/ArtistHeader"
 import { ArtistHeaderNavRight } from "app/Components/Artist/ArtistHeaderNavRight"
 import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
@@ -31,10 +29,10 @@ import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/Artwor
 import { DEFAULT_ARTWORK_SORT } from "app/Components/ArtworkFilter/Filters/SortOptions"
 import { getOnlyFilledSearchCriteriaValues } from "app/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
-import { PlaceholderGrid } from "app/Components/ArtworkGrids/GenericGrid"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
+import { SkeletonPill } from "app/Components/SkeletonPill/SkeletonPill"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -63,6 +61,7 @@ interface ArtistProps {
   predefinedFilters?: FilterArray
   scrollToArtworksGrid: boolean
   searchCriteria: SearchCriteriaAttributes | null
+  input: FilterArtworksInput
 }
 
 export const Artist: React.FC<ArtistProps> = ({
@@ -74,6 +73,7 @@ export const Artist: React.FC<ArtistProps> = ({
   predefinedFilters,
   scrollToArtworksGrid,
   searchCriteria,
+  input,
 }) => {
   const [headerHeight, setHeaderHeight] = useState(0)
   const popoverMessage = usePopoverMessage()
@@ -147,8 +147,9 @@ export const Artist: React.FC<ArtistProps> = ({
         >
           <Tabs.Tab name="Artworks" label="Artworks">
             <Tabs.Lazy>
-              <ArtistArtworks
-                artist={artistAboveTheFold}
+              <ArtistArtworksQueryRenderer
+                artistID={artistAboveTheFold.internalID}
+                input={input}
                 searchCriteria={searchCriteria}
                 predefinedFilters={predefinedFilters}
                 scrollToArtworksGrid={scrollToArtworksGrid}
@@ -185,6 +186,7 @@ export const Artist: React.FC<ArtistProps> = ({
 }
 
 interface ArtistQueryRendererProps {
+  alertID?: string
   artistID: string
   categories?: string[]
   environment?: Environment
@@ -192,15 +194,15 @@ interface ArtistQueryRendererProps {
   predefinedFilters?: FilterArray
   scrollToArtworksGrid?: boolean
   search_criteria_id?: string
-  alertID?: string
   sizes?: string[]
+  // This is used to determine if the artist has a verified representative for a more accurate skeleton
+  verifiedRepresentativesCount?: number
 }
 
 export const ArtistScreenQuery = graphql`
-  query ArtistAboveTheFoldQuery($artistID: String!, $input: FilterArtworksInput) {
+  query ArtistAboveTheFoldQuery($artistID: String!) {
     artist(id: $artistID) @principalField {
       ...ArtistHeader_artist
-      ...ArtistArtworks_artist @arguments(input: $input)
       ...ArtistHeaderNavRight_artist
       id
       internalID
@@ -224,15 +226,16 @@ export const defaultArtistVariables = {
 }
 
 export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
+  alertID,
   artistID,
   categories,
   environment,
   initialTab,
   predefinedFilters,
-  search_criteria_id,
   scrollToArtworksGrid = false,
-  alertID,
+  search_criteria_id,
   sizes,
+  verifiedRepresentativesCount,
 }) => {
   // exctact filter params from the query string. This is needed when
   // the screen is opened via deeplink (/artist/kaws?attribution_class=..., for instance)
@@ -249,7 +252,9 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
       alertId={alertID ?? search_criteria_id}
       environment={environment}
       render={{
-        renderPlaceholder: () => <ArtistSkeleton />,
+        renderPlaceholder: () => (
+          <ArtistSkeleton verifiedRepresentativesCount={verifiedRepresentativesCount} />
+        ),
         renderComponent: (searchCriteriaProps) => {
           const { savedSearchCriteria, fetchCriteriaError } = searchCriteriaProps
           const predefinedFilterParams = filterArtworksParams(filters ?? [], "artwork")
@@ -277,7 +282,6 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
                 query: ArtistScreenQuery,
                 variables: {
                   artistID,
-                  input: input as FilterArtworksInput,
                 },
               }}
               below={{
@@ -295,7 +299,9 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
                 <LoadFailureView showBackButton error={error} trackErrorBoundary={false} />
               )}
               render={{
-                renderPlaceholder: () => <ArtistSkeleton />,
+                renderPlaceholder: () => (
+                  <ArtistSkeleton verifiedRepresentativesCount={verifiedRepresentativesCount} />
+                ),
                 renderComponent: ({ above, below }) => {
                   if (!above.artist) {
                     throw new Error("no artist data")
@@ -313,6 +319,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
                         sizes: sizes ?? [],
                       })}
                       scrollToArtworksGrid={scrollToArtworksGrid}
+                      input={input as FilterArtworksInput}
                     />
                   )
                 },
@@ -339,7 +346,9 @@ const LoadingPage: React.FC<{}> = ({}) => {
   )
 }
 
-const ArtistSkeleton: React.FC = () => {
+const ArtistSkeleton: React.FC<{ verifiedRepresentativesCount?: number }> = ({
+  verifiedRepresentativesCount = 0,
+}) => {
   const { height, width } = useArtistHeaderImageDimensions()
 
   return (
@@ -348,15 +357,34 @@ const ArtistSkeleton: React.FC = () => {
       <Screen.Body fullwidth>
         <Skeleton>
           <SkeletonBox width={width} height={height} />
+
           <Spacer y={2} />
+
           <Flex px={2}>
-            <SkeletonText variant="lg">Artist Name Artist Name</SkeletonText>
+            <SkeletonText variant="lg-display">Artist Name</SkeletonText>
             <Spacer y={0.5} />
-            <SkeletonText variant="lg">American, b. 1945</SkeletonText>
+            <SkeletonText variant="lg-display">American, b. 1945</SkeletonText>
           </Flex>
 
-          <Spacer y={4} />
+          <Spacer y={2} />
 
+          {verifiedRepresentativesCount > 0 && (
+            <Flex pointerEvents="none" px={2}>
+              <SkeletonText variant="sm" color="mono60">
+                Featured representation
+              </SkeletonText>
+
+              <Spacer y={2} />
+
+              <Flex flexDirection="row">
+                {Array.from({ length: verifiedRepresentativesCount }).map((_, index) => {
+                  return <SkeletonPill key={index} />
+                })}
+              </Flex>
+            </Flex>
+          )}
+
+          <Spacer y={4} />
           {/* Tabs */}
           <Flex justifyContent="space-around" flexDirection="row" px={2}>
             <SkeletonText variant="xs">Artworks</SkeletonText>
@@ -366,8 +394,6 @@ const ArtistSkeleton: React.FC = () => {
         </Skeleton>
 
         <Separator mt={1} mb={4} />
-
-        <PlaceholderGrid />
       </Screen.Body>
     </Screen>
   )
