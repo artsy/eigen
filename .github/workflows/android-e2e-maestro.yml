@@ -51,6 +51,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+      - name: Set up env for ci
+        run: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci
+
       - name: Download Android App (APK)
         run: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
 
