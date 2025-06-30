@@ -38,24 +38,30 @@ jobs:
       - name: Download Android App (APK)
         run: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
 
-      - name: Start Android emulator
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 34
-          target: google_apis # Use 'google_apis' to include Google Play services
-          arch: x86_64
-          profile: Nexus 6
-          # The script runs in the background while the emulator is running
-          script: echo "Emulator started"
-
       - name: Install Maestro
         run: curl -Ls "https://get.maestro.mobile.dev" | bash
 
       - name: Add Maestro to PATH
         run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
 
-      - name: Install the app on the emulator
-        run: adb install Artsy.apk
+      - name: Run tests with Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: Nexus 6
+          disable-animations: true
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          script: |
+            echo "Emulator started, installing app..."
+            adb install Artsy.apk
+            echo "App installed, running E2E tests..."
+            ./scripts/utils/run_maestro_shard android
 
-      - name: Run Maestro E2E tests
-        run: ./scripts/utils/run_maestro_shard android
+      # - name: Upload test results
+      #   if: always() # This step will run even if the test step fails
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: maestro-test-results
+      #     path: .maestro/
