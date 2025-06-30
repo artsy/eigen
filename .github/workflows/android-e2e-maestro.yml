@@ -54,7 +54,13 @@ jobs:
           disable-animations: true
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: |
-            echo "Emulator started, installing app..."
+            echo "Waiting for emulator to be ready..."
+            adb wait-for-device
+            echo "Device detected, waiting for boot completion..."
+            adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
+            echo "Boot completed, unlocking device..."
+            adb shell input keyevent 82
+            echo "Device ready, installing app..."
             adb install Artsy.apk
             echo "App installed, running E2E tests..."
             ./scripts/utils/run_maestro_shard android
