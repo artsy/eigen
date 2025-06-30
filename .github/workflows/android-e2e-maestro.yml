@@ -98,6 +98,8 @@ jobs:
             adb install Artsy.apk
 
             echo "🧪 Running signup.yml Maestro test..."
-            maestro test e2e/flows/signup.yml -e MAESTRO_APP_ID=net.artsy.app
+            maestro test e2e/flows/signup.yml -e MAESTRO_APP_ID=net.artsy.app || echo "maestro_failed=true" >> $GITHUB_ENV
 
-            ./scripts/ci/report-maestro-test-failure
+      - name: Report Maestro test failure
+        if: env.maestro_failed == 'true'
+        run: ./scripts/ci/report-maestro-test-failure
