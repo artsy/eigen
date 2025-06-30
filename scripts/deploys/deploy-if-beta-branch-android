@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-set -exo pipefail
-
-source ./scripts/ci/ci-setup-export-vars
-
-if [ "${LOCAL_BRANCH}" == "beta-android" ]; then
-  DISTRIBUTION_TARGET="${1-"PLAY_STORE"}"
-  ./scripts/deploys/distribute-android $DISTRIBUTION_TARGET
-fi

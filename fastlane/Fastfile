@@ -291,10 +291,15 @@ end
 desc 'Ship android beta to play store or firebase'
 lane :ship_beta_android do |options|
   deployment_target = options[:deployment_target] || 'play_store' # default to 'play_store'
-
+  version_code = options[:version_code]
   sh('yarn relay')
 
-  vname, vcode = set_build_version_android
+  if version_code.nil? || version_code.empty?
+    vname, vcode = set_build_version_android
+  else
+    vname, vcode = set_build_version_android(version_code: version_code)
+  end
+
   set_git_properties_android
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
@@ -426,6 +431,18 @@ lane :set_build_version_android do |options|
   write_contents_to_file(BUILD_GRADLE, contents)
 
   [next_version_name, next_version_code]
+end
+
+
+desc 'Get next android build version code'
+lane :get_next_android_build_version do
+  current_version_code = google_play_track_version_codes(
+      track: 'alpha'
+  ).first
+  next_version_code = current_version_code + 1
+  file_dir = "#{Dir.pwd}/next_version_code.txt"
+  puts "Writing next version code to: #{file_dir}"
+  File.write(file_dir, next_version_code.to_s)
 end
 
 desc 'Set some git properties on android for reading in builds'

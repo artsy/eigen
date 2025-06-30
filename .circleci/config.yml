@@ -1,5 +1,43 @@
 version: 2.1
 
+defaults: &beta_branches_only
+  filters:
+    branches:
+      only:
+        - beta-ios
+        - beta-android
+
+defaults_beta_ios: &ios_beta_branch_only
+  filters:
+    branches:
+      only:
+        - beta-ios
+
+defaults_beta_android: &android_beta_branch_only
+  filters:
+    branches:
+      only:
+        - beta-android
+
+defaults_ignore_beta: &ignore_beta_branches
+  filters:
+    branches:
+      ignore:
+        - beta-ios
+        - beta-android
+
+defaults_main: &main_only
+  filters:
+    branches:
+      only:
+        - main
+
+defaults_ignore_main: &ignore_main_branches
+  filters:
+    branches:
+      ignore:
+        - main
+
 orbs:
   node: circleci/node@5.3.0
   queue: eddiewebb/queue@2.2.1
@@ -8,20 +46,11 @@ orbs:
   android: circleci/android@2.5.0
 
 commands:
-  await-previous-builds:
-    parameters:
-      branch:
-        description: The branch to wait on
-        type: string
-    steps:
-      - queue/until_front_of_line:
-          time: "30" # how long a queue will wait until the job exits
-          only-on-branch: <<parameters.branch>> # restrict queueing to a specific branch (default *)
   install-node:
     steps:
       - node/install:
           install-yarn: true
-          node-version: "20.9.0"
+          node-version: << pipeline.parameters.node_version >>
   generate-checksums:
     steps:
       - run:
@@ -115,16 +144,18 @@ commands:
             then
               circleci step halt
             fi
-      - run:
-          name: Clear project dir
-          command: |
-            rm -rf  /Users/distiller/project/*
       - checkout
       - attach_workspace:
           at: .
       - install-node
       - setup-awscli
       - setup-env-file
+      - run:
+          name: Download fonts from s3
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download ios assets
+          command: ./scripts/setup/download-assets-ios
       - install-node-modules
       - run-relay-compiler
       - update-echo
@@ -144,12 +175,6 @@ commands:
       - restore_cache:
           key: << pipeline.parameters.app_build_ios_cache_key >>
       - run:
-          name: Download fonts from s3
-          command: ./scripts/setup/download-fonts
-      - run:
-          name: Download ios assets
-          command: ./scripts/setup/download-assets-ios
-      - run:
           name: Build App
           command: ./scripts/ci/ci-ios << parameters.build_type >>
       - save_cache:
@@ -168,10 +193,6 @@ commands:
               circleci step halt
             fi
       - run:
-          name: Clear project dir
-          command: |
-            rm -rf /home/circleci/project/*
-      - run:
           name: Install ninja
           command: sudo apt-get install ninja-build
       - checkout
@@ -182,10 +203,6 @@ commands:
       - run-relay-compiler
       - update-echo
       - install-gems
-  build-app-android:
-    steps:
-      - restore_cache:
-          key: << pipeline.parameters.app_build_android_cache_key >>
       - generate-query-map
       - run:
           name: Download fonts from s3
@@ -193,6 +210,10 @@ commands:
       - run:
           name: Download android assets
           command: ./scripts/setup/download-assets-android
+  build-app-android:
+    steps:
+      - restore_cache:
+          key: << pipeline.parameters.app_build_android_cache_key >>
       - run:
           name: Build App
           no_output_timeout: 30m
@@ -217,7 +238,7 @@ jobs:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 16.2
+      xcode: << pipeline.parameters.xcode_version >>
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -238,7 +259,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 16.2
+      xcode: << pipeline.parameters.xcode_version >>
       resource_class: m2pro.medium
 
     steps:
@@ -263,7 +284,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 16.2
+      xcode: << pipeline.parameters.xcode_version >>
       resource_class: m2pro.medium
 
     steps:
@@ -308,7 +329,7 @@ jobs:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 16.2
+      xcode: << pipeline.parameters.xcode_version >>
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -324,12 +345,77 @@ jobs:
           name: Deploy betas
           command: ./scripts/deploys/deploy-beta-both
 
+  build-deploy-ios-testflight:
+    macos:
+      xcode: << pipeline.parameters.xcode_version >>
+      resource_class: macos.m1.medium.gen1
+    steps:
+      - checkout
+      - prep-ios-env
+      - install-bin-modules
+      - run:
+          name: Build and deploy iOS to TestFlight
+          command: bundle exec fastlane ship_beta_ios deployment_target:testflight
+
+  build-deploy-ios-firebase:
+    macos:
+      xcode: << pipeline.parameters.xcode_version >>
+      resource_class: macos.m1.medium.gen1
+    steps:
+      - checkout
+      - prep-ios-env
+      - install-bin-modules
+      - run:
+          name: Install imagemagick & librsvg for badge
+          command: brew install imagemagick librsvg
+      - run:
+          name: Build and deploy iOS to Firebase
+          command: bundle exec fastlane ship_beta_ios deployment_target:firebase
+
+  build-deploy-android-playstore:
+    docker:
+      - image: cimg/android:2025.03.1-node
+    working_directory: ~/project
+    resource_class: xlarge
+    steps:
+      - prep-android-env
+      - attach_workspace:
+          at: .
+      - install-bin-modules
+      - run:
+          name: Load version code
+          command: |
+            VERSION_CODE=$(cat fastlane/next_version_code.txt)
+            echo "export VERSION_CODE=$VERSION_CODE" >> $BASH_ENV
+      - run:
+          name: Build and deploy Android to Play Store
+          command: bundle exec fastlane ship_beta_android deployment_target:play_store version_code:$VERSION_CODE
+
+  build-deploy-android-firebase:
+    docker:
+      - image: cimg/android:2025.03.1-node
+    working_directory: ~/project
+    resource_class: xlarge
+    steps:
+      - prep-android-env
+      - attach_workspace:
+          at: .
+      - install-bin-modules
+      - run:
+          name: Load version code
+          command: |
+            VERSION_CODE=$(cat fastlane/next_version_code.txt)
+            echo "export VERSION_CODE=$VERSION_CODE" >> $BASH_ENV
+      - run:
+          name: Build and deploy Android to Firebase
+          command: bundle exec fastlane ship_beta_android deployment_target:firebase version_code:$VERSION_CODE
+
   check-and-deploy:
     environment:
       BUNDLE_PATH: .vendor
 
     macos:
-      xcode: 16.2
+      xcode: << pipeline.parameters.xcode_version >>
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -351,7 +437,7 @@ jobs:
               ./scripts/deploys/expo-updates/maybe-notify-beta-needed
               circleci-agent step halt
             fi
-      - run-relay-compiler
+      # - run-relay-compiler
       # - run:
       #     name: Handle Deployment for expo updates
       #     command: |
@@ -362,7 +448,7 @@ jobs:
     parallelism: 16
     executor:
       name: node/default
-      tag: "20.9.0"
+      tag: << pipeline.parameters.node_version >>
     resource_class: large
     steps:
       - checkout
@@ -382,7 +468,7 @@ jobs:
   update-metaphysics:
     executor:
       name: node/default
-      tag: "20.9.0"
+      tag: << pipeline.parameters.node_version >>
     resource_class: medium
     steps:
       - checkout
@@ -397,7 +483,7 @@ jobs:
   check-code:
     executor:
       name: node/default
-      tag: "20.9.0"
+      tag: << pipeline.parameters.node_version >>
     resource_class: small
     steps:
       - checkout
@@ -421,7 +507,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 16.2
+      xcode: << pipeline.parameters.xcode_version >>
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -436,7 +522,7 @@ jobs:
   build-test-js:
     executor:
       name: node/default
-      tag: "20.9.0"
+      tag: << pipeline.parameters.node_version >>
     resource_class: medium
     steps:
       - checkout
@@ -469,7 +555,7 @@ jobs:
   build-echo-test-js:
     executor:
       name: node/default
-      tag: "20.9.0"
+      tag: << pipeline.parameters.node_version >>
     resource_class: medium
     steps:
       - checkout
@@ -495,7 +581,7 @@ jobs:
       BUNDLE_PATH: .vendor # path to install gems and use for caching
 
     macos:
-      xcode: 16.2
+      xcode: << pipeline.parameters.xcode_version >>
       resource_class: macos.m1.medium.gen1
 
     steps:
@@ -525,17 +611,6 @@ jobs:
           path: xcode_test_raw.log
           prefix: tests
 
-      - await-previous-builds:
-          branch: beta-ios
-      - install-bin-modules
-      - run:
-          name: Install imagemagick & librsvg for badge
-          command: brew install imagemagick librsvg
-      - run:
-          name: Deploy if beta testflight and firebase
-          no_output_timeout: 20m
-          command: ./scripts/deploys/deploy-if-beta-branch-ios BOTH
-
   build-test-app-android:
     docker:
       - image: cimg/android:2025.03.1-node
@@ -546,8 +621,6 @@ jobs:
       - restore_cache:
           key: << pipeline.parameters.android_native_cache_key >>
       - prep-android-env
-      - await-previous-builds:
-          branch: beta-android
       - build-app-android
       - run:
           name: Save success file
@@ -561,12 +634,33 @@ jobs:
           key: << pipeline.parameters.android_native_cache_key >>
           paths:
             - build-success.log
-      - install-bin-modules
+
+  prepare-android-version:
+    docker:
+      - image: cimg/ruby:3.1.6
+    working_directory: ~/project
+    steps:
+      - checkout
+      - setup-awscli
       - run:
-          name: Deploy if beta - play store and firebase
-          command: ./scripts/deploys/deploy-if-beta-branch-android BOTH
+          name: Download android assets
+          command: ./scripts/setup/download-assets-android
+      - install-gems
+      - run:
+          name: Get next Android version code
+          command: bundle exec fastlane get_next_android_build_version
+      - persist_to_workspace:
+          root: .
+          paths:
+            - fastlane/next_version_code.txt
 
 parameters:
+  xcode_version:
+    type: string
+    default: "16.2"
+  node_version:
+    type: string
+    default: "20.9.0"
   run_workflow_build-run-tests-for-echo:
     type: boolean
     default: false
@@ -633,61 +727,66 @@ workflows:
     when: << pipeline.parameters.run_workflow_test-build-deploy >>
     jobs:
       - detect-secrets:
-          filters:
-            branches:
-              ignore:
-                - main
+          <<: *ignore_main_branches
 
       - check-code:
           context: danger-github-oss
 
-      - check-and-deploy:
-          filters:
-            branches:
-              only:
-                - main
-
-      - test-js
-
-      - build-test-js
-
       - horizon/block:
+          <<: *beta_branches_only
           context: horizon
           project_id: 37
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
+
+      - check-and-deploy:
+          <<: *main_only
+
+      - test-js:
+          <<: *ignore_beta_branches
+
+      - build-test-js:
+          <<: *ignore_beta_branches
 
       - build-test-app-ios:
-          filters:
-            branches:
-              ignore:
-                - beta-android
+          <<: *ignore_beta_branches
           requires:
             - test-js
             - check-code
             - build-test-js
-            - horizon/block
 
       - build-test-app-android:
-          filters:
-            branches:
-              ignore:
-                - beta-ios
+          <<: *ignore_beta_branches
           requires:
             - test-js
             - check-code
             - build-test-js
+
+      - build-deploy-ios-testflight:
+          <<: *ios_beta_branch_only
+          requires:
             - horizon/block
 
-      - update-metaphysics:
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
+      - build-deploy-ios-firebase:
+          <<: *ios_beta_branch_only
           requires:
-            - build-test-app-ios
-            - build-test-app-android
+            - horizon/block
+
+      - prepare-android-version:
+          <<: *android_beta_branch_only
+
+      - build-deploy-android-playstore:
+          <<: *android_beta_branch_only
+          requires:
+            - horizon/block
+            - prepare-android-version
+
+      - build-deploy-android-firebase:
+          <<: *android_beta_branch_only
+          requires:
+            - horizon/block
+            - prepare-android-version
+
+      - update-metaphysics:
+          <<: *beta_branches_only
+          requires:
+            - build-deploy-ios-testflight
+            - build-deploy-android-playstore
