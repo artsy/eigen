@@ -25,6 +25,8 @@ jobs:
       CIRCLE_NODE_TOTAL: ${{ matrix.shard-count }}
       # Maestro environment variables
       MAESTRO_APP_ID: net.artsy.app
+      MAESTRO_TEST_EMAIL: detox+test@example.com
+      MAESTRO_TEST_PASSWORD: ${{ secrets.MAESTRO_TEST_PASSWORD }}
 
     steps:
       - name: Checkout repository
