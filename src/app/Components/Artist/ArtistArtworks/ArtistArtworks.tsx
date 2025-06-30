@@ -465,10 +465,10 @@ const ArtistArtworksPlaceholder = () => {
       scrollEnabled={false}
       contentContainerStyle={{ flex: 1, paddingHorizontal: 0, paddingTop: space(2) }}
     >
-      <Flex px={2}>
+      <Flex px={2} testID="ArtistArtworksPlaceholder">
         <Flex flexDirection="row" justifyContent="space-between">
           <SkeletonText>Create Alert</SkeletonText>
-          <SkeletonText>Sory & Filter</SkeletonText>
+          <SkeletonText>Sort & Filter</SkeletonText>
         </Flex>
 
         <Spacer y={2} />

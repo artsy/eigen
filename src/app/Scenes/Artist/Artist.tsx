@@ -32,13 +32,14 @@ import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSear
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
+import { SkeletonPill } from "app/Components/SkeletonPill/SkeletonPill"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
 import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useState } from "react"
-import { ActivityIndicator, PixelRatio, View } from "react-native"
+import { ActivityIndicator, View } from "react-native"
 import { Environment, graphql } from "react-relay"
 
 const INITIAL_TAB = "Artworks"
@@ -377,15 +378,7 @@ const ArtistSkeleton: React.FC<{ verifiedRepresentativesCount?: number }> = ({
 
               <Flex flexDirection="row">
                 {Array.from({ length: verifiedRepresentativesCount }).map((_, index) => {
-                  return (
-                    <SkeletonBox
-                      key={index}
-                      width={150 + Math.random() * 100}
-                      height={PixelRatio.getFontScale() * 30}
-                      mr={1}
-                      borderRadius={15}
-                    />
-                  )
+                  return <SkeletonPill key={index} />
                 })}
               </Flex>
             </Flex>

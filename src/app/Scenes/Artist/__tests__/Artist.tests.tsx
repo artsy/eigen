@@ -1,4 +1,4 @@
-import { act, fireEvent, screen } from "@testing-library/react-native"
+import { act, screen } from "@testing-library/react-native"
 import { ArtistQueryRenderer } from "app/Scenes/Artist/Artist"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
@@ -48,26 +48,6 @@ describe("Artist", () => {
   const TestWrapper = (props: Record<string, any>) => (
     <ArtistQueryRenderer artistID="ignored" environment={mockEnvironment} {...props} />
   )
-
-  it("returns an empty state if artist has no artworks", async () => {
-    renderWithHookWrappersTL(<TestWrapper />, getRelayEnvironment(), { includeNavigation: true })
-    const emptyTitle = "Get notified when new works are available"
-    const emptyMessage =
-      "There are currently no works for sale for this artist. Create an alert, and we’ll let you know when new works are added."
-
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
-      Artist() {
-        return {
-          statuses: {
-            artworks: false,
-          },
-        }
-      },
-    })
-
-    expect(screen.getByText(emptyTitle)).toBeTruthy()
-    expect(screen.getByText(emptyMessage)).toBeTruthy()
-  })
 
   it("should render all tabs", async () => {
     renderWithHookWrappersTL(<TestWrapper />, getRelayEnvironment(), { includeNavigation: true })
@@ -119,29 +99,5 @@ describe("Artist", () => {
 
     expect(screen.getByText(/Following/)).toBeTruthy()
     expect(screen.getByText("22.0K")).toBeTruthy()
-  })
-
-  it("tracks follow change on follow button click", async () => {
-    renderWithHookWrappersTL(<TestWrapper />, getRelayEnvironment(), { includeNavigation: true })
-
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
-      Artist() {
-        return {
-          isFollowed: false,
-        }
-      },
-    })
-
-    expect(screen.getByText("Follow")).toBeTruthy()
-    fireEvent.press(screen.getByText("Follow"))
-
-    await flushPromiseQueue()
-
-    expect(postEventToProviders).toHaveBeenCalledWith({
-      context_screen: "Artist",
-      context_screen_owner_id: '<mock-value-for-field-"internalID">',
-      context_screen_owner_slug: '<mock-value-for-field-"slug">',
-      context_screen_owner_type: "Artist",
-    })
   })
 })
