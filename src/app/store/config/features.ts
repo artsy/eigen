@@ -175,12 +175,6 @@ export const features = {
     showInDevMenu: true,
     echoFlagKey: "AREnableHomeViewQuickLinks",
   },
-  ARDarkModeOnboarding: {
-    readyForRelease: true,
-    showInDevMenu: true,
-    description: "Enable Dark mode onboarding task",
-    echoFlagKey: "ARDarkModeOnboarding",
-  },
   AREnableQuickLinksAnimation2: {
     readyForRelease: true,
     showInDevMenu: true,
