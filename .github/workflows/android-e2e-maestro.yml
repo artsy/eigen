@@ -59,8 +59,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Setup Maestro environment variables
-        run: ./scripts/setup/setup-env-for-maestro android
+      # - name: Setup Maestro environment variables
+      #   run: ./scripts/setup/setup-env-for-maestro android
 
       - name: Download Android App (APK)
         run: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
@@ -109,4 +109,4 @@ jobs:
             adb install Artsy.apk
 
             echo "🧪 Running signup.yml Maestro test..."
-            maestro test e2e/flows/signup.yml
+            maestro test e2e/flows/signup.yml -e MAESTRO_APP_ID=net.artsy.app
