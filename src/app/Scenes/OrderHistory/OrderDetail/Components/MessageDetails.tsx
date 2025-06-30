@@ -15,7 +15,9 @@ export const MessageDetails: React.FC<MessageDetailsProps> = ({ order }) => {
 
   const formattedStateExpireTime =
     order.buyerStateExpiresAt &&
-    DateTime.fromISO(order.buyerStateExpiresAt).toFormat("MMM dd, h:mm a ZZZZ")
+    DateTime.fromISO(order.buyerStateExpiresAt)
+      .setLocale(DateTime.now().locale)
+      .toFormat("MMM dd, h:mm a ZZZZ")
 
   switch (messageType) {
     case "SUBMITTED_ORDER":
@@ -231,7 +233,10 @@ export const MessageDetails: React.FC<MessageDetailsProps> = ({ order }) => {
         !!estimatedDeliveryWindow
 
       const formattedEstimatedDelivery =
-        estimatedDelivery && DateTime.fromISO(estimatedDelivery).toFormat("MMM dd, yyyy")
+        estimatedDelivery &&
+        DateTime.fromISO(estimatedDelivery)
+          .setLocale(DateTime.now().locale)
+          .toFormat("MMM dd, yyyy")
 
       const estimatedDeliveryDisplay =
         (estimatedDeliveryWindow || formattedEstimatedDelivery) &&
