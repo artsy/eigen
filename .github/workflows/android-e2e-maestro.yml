@@ -5,10 +5,18 @@ on:
   push:
     branches:
       - main # Or your primary development branch
-
   pull_request:
     branches:
       - main # Triggers on pull requests targeting the main branch
+
+env:
+  ANDROID_ARCH: x86_64
+  ANDROID_TARGET: google_apis
+  API_LEVEL: 34
+  ANDROID_BUILD_TOOLS_VERSION: 34.0.0
+  ANDROID_SDK_PACKAGES: system-images;android-34;google_apis;x86_64 platforms;android-34 build-tools;34.0.0 platform-tools emulator
+  EMULATOR_TIMEOUT: 350
+  EMULATOR_NAME: test-avd
 
 jobs:
   e2e-tests:
@@ -25,12 +33,27 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
+      - name: Add Android SDK tools to PATH
+        run: |
+          echo "$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/${{ env.ANDROID_BUILD_TOOLS_VERSION }}" >> $GITHUB_PATH
+
+      - name: Install Android SDK packages
+        run: |
+          yes Y | sdkmanager --licenses
+          sdkmanager --install ${ANDROID_SDK_PACKAGES}
+
+      - name: Create AVD
+        run: |
+          echo "no" | avdmanager --verbose create avd --force -n $EMULATOR_NAME --abi "${ANDROID_TARGET}/${ANDROID_ARCH}" -k "system-images;android-${API_LEVEL};${ANDROID_TARGET};${ANDROID_ARCH}"
+          echo "hw.ramSize=2048" >> ~/.android/avd/$EMULATOR_NAME.avd/config.ini
+          echo "disk.dataPartition.size=2048M" >> ~/.android/avd/$EMULATOR_NAME.avd/config.ini
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1 # Change this if your S3 bucket is in a different region
+          aws-region: us-east-1
 
       - name: Setup Maestro environment variables
         run: ./scripts/setup/setup-env-for-maestro android
@@ -44,26 +67,112 @@ jobs:
       - name: Add Maestro to PATH
         run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
 
-      - name: Run tests with Android emulator
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 34
-          target: google_apis
-          arch: x86_64
-          profile: Nexus 6
-          disable-animations: true
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
-          script: |
-            echo "Waiting for emulator to be ready..."
-            adb wait-for-device
-            echo "Device detected, waiting for boot completion..."
-            adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
-            echo "Boot completed, unlocking device..."
-            adb shell input keyevent 82
-            echo "Device ready, installing app..."
-            adb install Artsy.apk
-            echo "App installed, running E2E tests..."
-            ./scripts/utils/run_maestro_shard android
+      - name: Launch emulator and run tests
+        run: |
+          # Function to check hardware acceleration
+          check_hardware_acceleration() {
+            if [[ "$HW_ACCEL_OVERRIDE" != "" ]]; then
+              hw_accel_flag="$HW_ACCEL_OVERRIDE"
+            else
+              if [[ "$OSTYPE" == "darwin"* ]]; then
+                HW_ACCEL_SUPPORT=$(sysctl -a | grep -E -c '(vmx|svm)')
+              else
+                HW_ACCEL_SUPPORT=$(grep -E -c '(vmx|svm)' /proc/cpuinfo)
+              fi
+
+              if [[ $HW_ACCEL_SUPPORT == 0 ]]; then
+                hw_accel_flag="-accel off"
+              else
+                hw_accel_flag="-accel on"
+              fi
+            fi
+            echo "$hw_accel_flag"
+          }
+
+          # Function to launch emulator
+          launch_emulator() {
+            adb devices | grep emulator | cut -f1 | xargs -I {} adb -s "{}" emu kill
+            hw_accel_flag=$(check_hardware_acceleration)
+            options="@${EMULATOR_NAME} -no-window -no-snapshot -screen no-touch -noaudio -memory 2048 -no-boot-anim ${hw_accel_flag} -camera-back none"
+
+            if [[ "$OSTYPE" == *darwin* ]] || [[ "$OSTYPE" == *macos* ]]; then
+              echo "${OSTYPE}: emulator ${options} -gpu swiftshader_indirect"
+              nohup emulator $options -gpu swiftshader_indirect &
+            else
+              echo "${OSTYPE}: emulator ${options} -gpu off"
+              nohup emulator $options -gpu off &
+            fi
+
+            if [ $? -ne 0 ]; then
+              echo "Error launching emulator"
+              return 1
+            fi
+          }
+
+          # Function to check emulator status
+          check_emulator_status() {
+            echo "==> Checking emulator booting up status"
+            start_time=$(date +%s)
+            timeout=${EMULATOR_TIMEOUT:-300}
+
+            while true; do
+              result=$(adb shell getprop sys.boot_completed 2>&1)
+
+              if [ "$result" == "1" ]; then
+                echo "==> Emulator is ready: '$result'"
+                adb devices -l
+                adb shell input keyevent 82
+                break
+              elif [ "$result" == "" ]; then
+                echo "==> Emulator is partially booted, waiting..."
+              else
+                echo "==> $result, please wait..."
+              fi
+
+              current_time=$(date +%s)
+              elapsed_time=$((current_time - start_time))
+              if [ $elapsed_time -gt $timeout ]; then
+                echo "==> Timeout after ${timeout} seconds elapsed"
+                return 1
+              fi
+              sleep 4
+            done
+          }
+
+          # Function to disable animations
+          disable_animation() {
+            adb shell "settings put global window_animation_scale 0.0"
+            adb shell "settings put global transition_animation_scale 0.0"
+            adb shell "settings put global animator_duration_scale 0.0"
+          }
+
+          # Function to set hidden API policy
+          hidden_policy() {
+            adb shell "settings put global hidden_api_policy_pre_p_apps 1;settings put global hidden_api_policy_p_apps 1;settings put global hidden_api_policy 1"
+          }
+
+          # Main execution
+          echo "Launching emulator..."
+          launch_emulator
+          sleep 2
+
+          echo "Checking emulator status..."
+          check_emulator_status
+          sleep 1
+
+          echo "Disabling animations..."
+          disable_animation
+          sleep 1
+
+          echo "Setting hidden API policy..."
+          hidden_policy
+          sleep 1
+
+          echo "Installing app..."
+          adb install Artsy.apk
+
+          echo "Running E2E tests..."
+          ./scripts/utils/run_maestro_shard android
 
       # - name: Upload test results
       #   if: always() # This step will run even if the test step fails
