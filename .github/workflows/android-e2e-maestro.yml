@@ -9,18 +9,9 @@ on:
     branches:
       - main # Triggers on pull requests targeting the main branch
 
-env:
-  ANDROID_ARCH: arm64-v8a
-  ANDROID_TARGET: google_apis
-  API_LEVEL: 34
-  ANDROID_BUILD_TOOLS_VERSION: 34.0.0
-  ANDROID_SDK_PACKAGES: system-images;android-34;google_apis;arm64-v8a platforms;android-34 build-tools;34.0.0 platform-tools emulator
-  EMULATOR_TIMEOUT: 350
-  EMULATOR_NAME: test-avd
-
 jobs:
   e2e-tests:
-    runs-on: macos-latest # macOS runners are recommended for Android emulator performance
+    runs-on: ubuntu-latest # Use ubuntu-latest for better Android emulator support
     timeout-minutes: 30
 
     steps:
@@ -33,23 +24,11 @@ jobs:
           distribution: "temurin"
           java-version: "17"
 
-      - name: Add Android SDK tools to PATH
+      - name: Enable KVM group perms
         run: |
-          echo "$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/${{ env.ANDROID_BUILD_TOOLS_VERSION }}" >> $GITHUB_PATH
-
-      - name: Install Android SDK packages
-        run: |
-          yes Y | sdkmanager --licenses
-          sdkmanager --install ${ANDROID_SDK_PACKAGES}
-
-      - name: Create AVD
-        run: |
-          echo "no" | avdmanager --verbose create avd --force -n $EMULATOR_NAME --abi "${ANDROID_TARGET}/${ANDROID_ARCH}" -k "system-images;android-${API_LEVEL};${ANDROID_TARGET};${ANDROID_ARCH}"
-          echo "hw.ramSize=2048" >> ~/.android/avd/$EMULATOR_NAME.avd/config.ini
-          echo "disk.dataPartition.size=2048M" >> ~/.android/avd/$EMULATOR_NAME.avd/config.ini
-          echo "hw.cpu.arch=arm64" >> ~/.android/avd/$EMULATOR_NAME.avd/config.ini
-          echo "hw.gpu.enabled=yes" >> ~/.android/avd/$EMULATOR_NAME.avd/config.ini
-          echo "hw.gpu.mode=swiftshader_indirect" >> ~/.android/avd/$EMULATOR_NAME.avd/config.ini
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -70,155 +49,24 @@ jobs:
       - name: Add Maestro to PATH
         run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
 
-      - name: Launch Android emulator
-        run: |
-          # Function to check hardware acceleration
-          check_hardware_acceleration() {
-            if [[ "$HW_ACCEL_OVERRIDE" != "" ]]; then
-              hw_accel_flag="$HW_ACCEL_OVERRIDE"
-            else
-              if [[ "$OSTYPE" == "darwin"* ]]; then
-                # On macOS (both Intel and Apple Silicon), use auto acceleration
-                hw_accel_flag="-accel auto"
-              else
-                # Linux - check for KVM support
-                HW_ACCEL_SUPPORT=$(grep -E -c '(vmx|svm)' /proc/cpuinfo)
-                if [[ $HW_ACCEL_SUPPORT == 0 ]]; then
-                  hw_accel_flag="-accel off"
-                else
-                  hw_accel_flag="-accel auto"
-                fi
-              fi
-            fi
-            echo "$hw_accel_flag"
-          }
-
-          # Function to launch emulator
-          launch_emulator() {
-            # Kill any existing emulators
-            adb devices | grep emulator | cut -f1 | xargs -I {} adb -s "{}" emu kill || true
-
-            hw_accel_flag=$(check_hardware_acceleration)
-            echo "Using hardware acceleration: $hw_accel_flag"
-
-            options="@${EMULATOR_NAME} -no-window -no-snapshot -screen no-touch -noaudio -memory 2048 -no-boot-anim ${hw_accel_flag} -camera-back none"
-
-            if [[ "$OSTYPE" == *darwin* ]] || [[ "$OSTYPE" == *macos* ]]; then
-              echo "Launching emulator on macOS: emulator ${options} -gpu swiftshader_indirect"
-              nohup emulator $options -gpu swiftshader_indirect &
-            else
-              echo "Launching emulator on Linux: emulator ${options} -gpu off"
-              nohup emulator $options -gpu off &
-            fi
-
-            emulator_pid=$!
-            echo "Emulator PID: $emulator_pid"
-
-            if [ $? -ne 0 ]; then
-              echo "Error launching emulator"
-              return 1
-            fi
-          }
-
-          echo "🚀 Launching emulator..."
-          launch_emulator
-          sleep 5
-
-      - name: Wait for emulator to boot
-        run: |
-          # Function to check emulator status
-          check_emulator_status() {
-            echo "==> Checking emulator booting up status"
-            start_time=$(date +%s)
-            timeout=${EMULATOR_TIMEOUT:-300}
-
-            while true; do
-              # Check if any emulator is running
-              if ! adb devices | grep -q emulator; then
-                echo "==> No emulator detected yet, waiting..."
-                current_time=$(date +%s)
-                elapsed_time=$((current_time - start_time))
-                if [ $elapsed_time -gt $timeout ]; then
-                  echo "==> Timeout: No emulator detected after ${timeout} seconds"
-                  return 1
-                fi
-                sleep 5
-                continue
-              fi
-
-              # Check boot completion
-              result=$(adb shell getprop sys.boot_completed 2>&1)
-
-              if [ "$result" == "1" ]; then
-                echo "==> ✅ Emulator is ready and fully booted!"
-                adb devices -l
-                echo "==> Unlocking device screen..."
-                adb shell input keyevent 82
-                break
-              elif [ "$result" == "" ]; then
-                echo "==> Emulator is partially booted, waiting..."
-              else
-                echo "==> Boot status: $result, waiting..."
-              fi
-
-              current_time=$(date +%s)
-              elapsed_time=$((current_time - start_time))
-              if [ $elapsed_time -gt $timeout ]; then
-                echo "==> ❌ Timeout after ${timeout} seconds elapsed"
-                echo "==> Current boot status: $result"
-                adb devices -l
-                return 1
-              fi
-              sleep 4
-            done
-          }
-
-          echo "⏳ Waiting for emulator to boot..."
-          check_emulator_status
-
-      - name: Verify emulator is ready
-        run: |
-          echo "🔍 Verifying emulator status..."
-
-          # Show connected devices
-          echo "Connected devices:"
-          adb devices -l
-
-          # Check Android version
-          echo "Android version:"
-          adb shell getprop ro.build.version.release
-
-          # Check API level
-          echo "API level:"
-          adb shell getprop ro.build.version.sdk
-
-          # Check if device is unlocked and ready
-          echo "Screen state:"
-          adb shell dumpsys power | grep "mWakefulness" || echo "Could not check screen state"
-
-          # Disable animations for better test performance
-          echo "Disabling animations..."
-          adb shell "settings put global window_animation_scale 0.0"
-          adb shell "settings put global transition_animation_scale 0.0"
-          adb shell "settings put global animator_duration_scale 0.0"
-
-          # Set hidden API policy
-          echo "Setting hidden API policy..."
-          adb shell "settings put global hidden_api_policy_pre_p_apps 1;settings put global hidden_api_policy_p_apps 1;settings put global hidden_api_policy 1"
-
-          echo "✅ Emulator is ready for testing!"
-
-      - name: Install and test app
-        run: |
-          echo "📱 Installing app..."
-          adb install Artsy.apk
-
-          echo "🧪 Running E2E tests..."
-          ./scripts/utils/run_maestro_shard android
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
+      - name: Run tests with Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
         with:
-          name: maestro-test-results
-          path: .maestro/
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: Nexus 6
+          cores: 2
+          ram-size: 4096M
+          heap-size: 512M
+          disable-animations: true
+          disable-spellchecker: true
+          disable-linux-hw-accel: false
+          enable-hw-keyboard: true
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          script: |
+            echo "🔍 Emulator started, verifying..."
+            adb devices -l
+
+            echo "📋 System info:"
+            adb shell getprop ro.build.version.release
