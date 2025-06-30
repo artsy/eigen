@@ -13,6 +13,10 @@ jobs:
   e2e-tests:
     runs-on: ubuntu-latest # Use ubuntu-latest for better Android emulator support
     timeout-minutes: 30
+    strategy:
+      matrix:
+        node_index: [0, 1, 2, 4]
+        total_nodes: [4]
 
     env:
       MAESTRO_APP_ID: net.artsy.app
@@ -53,6 +57,9 @@ jobs:
 
       - name: Set up env for ci
         run: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci
+
+      - name: Set up maestro env
+        run: ./scripts/setup/setup-env-for-maestro android
 
       - name: Download Android App (APK)
         run: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
@@ -100,9 +107,11 @@ jobs:
             echo "📱 Installing app..."
             adb install Artsy.apk
 
-            echo "🧪 Running signup.yml Maestro test..."
-            maestro test e2e/flows/signup.yml -e MAESTRO_APP_ID=net.artsy.app || echo "maestro_failed=true" >> $GITHUB_ENV
+            echo "🧪 Running maestro test..."
+            /scripts/utils/run_maestro_shard_android android ${{ matrix.node_index }} ${{ matrix.total_nodes }}
 
-      - name: Report Maestro test failure
-        if: env.maestro_failed == 'true'
-        run: ./scripts/ci/report-maestro-test-failure
+      # maestro test e2e/flows/signup.yml -e MAESTRO_APP_ID=net.artsy.app || echo "maestro_failed=true" >> $GITHUB_ENV
+
+      # - name: Report Maestro test failure
+      #   if: env.maestro_failed == 'true'
+      #   run: ./scripts/ci/report-maestro-test-failure
