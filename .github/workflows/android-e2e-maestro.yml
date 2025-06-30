@@ -70,7 +70,7 @@ jobs:
       - name: Add Maestro to PATH
         run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
 
-      - name: Launch emulator and run tests
+      - name: Launch Android emulator
         run: |
           # Function to check hardware acceleration
           check_hardware_acceleration() {
@@ -78,7 +78,7 @@ jobs:
               hw_accel_flag="$HW_ACCEL_OVERRIDE"
             else
               if [[ "$OSTYPE" == "darwin"* ]]; then
-                # On Apple Silicon (ARM64), use HVF. On Intel Macs, use hvf or hax
+                # On Apple Silicon (ARM64), use HVF. On Intel Macs, use hvf
                 if [[ $(uname -m) == "arm64" ]]; then
                   hw_accel_flag="-accel hvf"
                 else
@@ -105,17 +105,24 @@ jobs:
 
           # Function to launch emulator
           launch_emulator() {
-            adb devices | grep emulator | cut -f1 | xargs -I {} adb -s "{}" emu kill
+            # Kill any existing emulators
+            adb devices | grep emulator | cut -f1 | xargs -I {} adb -s "{}" emu kill || true
+
             hw_accel_flag=$(check_hardware_acceleration)
+            echo "Using hardware acceleration: $hw_accel_flag"
+
             options="@${EMULATOR_NAME} -no-window -no-snapshot -screen no-touch -noaudio -memory 2048 -no-boot-anim ${hw_accel_flag} -camera-back none"
 
             if [[ "$OSTYPE" == *darwin* ]] || [[ "$OSTYPE" == *macos* ]]; then
-              echo "${OSTYPE}: emulator ${options} -gpu swiftshader_indirect"
+              echo "Launching emulator on macOS: emulator ${options} -gpu swiftshader_indirect"
               nohup emulator $options -gpu swiftshader_indirect &
             else
-              echo "${OSTYPE}: emulator ${options} -gpu off"
+              echo "Launching emulator on Linux: emulator ${options} -gpu off"
               nohup emulator $options -gpu off &
             fi
+
+            emulator_pid=$!
+            echo "Emulator PID: $emulator_pid"
 
             if [ $? -ne 0 ]; then
               echo "Error launching emulator"
@@ -123,6 +130,12 @@ jobs:
             fi
           }
 
+          echo "🚀 Launching emulator..."
+          launch_emulator
+          sleep 5
+
+      - name: Wait for emulator to boot
+        run: |
           # Function to check emulator status
           check_emulator_status() {
             echo "==> Checking emulator booting up status"
@@ -130,67 +143,92 @@ jobs:
             timeout=${EMULATOR_TIMEOUT:-300}
 
             while true; do
+              # Check if any emulator is running
+              if ! adb devices | grep -q emulator; then
+                echo "==> No emulator detected yet, waiting..."
+                current_time=$(date +%s)
+                elapsed_time=$((current_time - start_time))
+                if [ $elapsed_time -gt $timeout ]; then
+                  echo "==> Timeout: No emulator detected after ${timeout} seconds"
+                  return 1
+                fi
+                sleep 5
+                continue
+              fi
+
+              # Check boot completion
               result=$(adb shell getprop sys.boot_completed 2>&1)
 
               if [ "$result" == "1" ]; then
-                echo "==> Emulator is ready: '$result'"
+                echo "==> ✅ Emulator is ready and fully booted!"
                 adb devices -l
+                echo "==> Unlocking device screen..."
                 adb shell input keyevent 82
                 break
               elif [ "$result" == "" ]; then
                 echo "==> Emulator is partially booted, waiting..."
               else
-                echo "==> $result, please wait..."
+                echo "==> Boot status: $result, waiting..."
               fi
 
               current_time=$(date +%s)
               elapsed_time=$((current_time - start_time))
               if [ $elapsed_time -gt $timeout ]; then
-                echo "==> Timeout after ${timeout} seconds elapsed"
+                echo "==> ❌ Timeout after ${timeout} seconds elapsed"
+                echo "==> Current boot status: $result"
+                adb devices -l
                 return 1
               fi
               sleep 4
             done
           }
 
-          # Function to disable animations
-          disable_animation() {
-            adb shell "settings put global window_animation_scale 0.0"
-            adb shell "settings put global transition_animation_scale 0.0"
-            adb shell "settings put global animator_duration_scale 0.0"
-          }
-
-          # Function to set hidden API policy
-          hidden_policy() {
-            adb shell "settings put global hidden_api_policy_pre_p_apps 1;settings put global hidden_api_policy_p_apps 1;settings put global hidden_api_policy 1"
-          }
-
-          # Main execution
-          echo "Launching emulator..."
-          launch_emulator
-          sleep 2
-
-          echo "Checking emulator status..."
+          echo "⏳ Waiting for emulator to boot..."
           check_emulator_status
-          sleep 1
 
+      - name: Verify emulator is ready
+        run: |
+          echo "🔍 Verifying emulator status..."
+
+          # Show connected devices
+          echo "Connected devices:"
+          adb devices -l
+
+          # Check Android version
+          echo "Android version:"
+          adb shell getprop ro.build.version.release
+
+          # Check API level
+          echo "API level:"
+          adb shell getprop ro.build.version.sdk
+
+          # Check if device is unlocked and ready
+          echo "Screen state:"
+          adb shell dumpsys power | grep "mWakefulness" || echo "Could not check screen state"
+
+          # Disable animations for better test performance
           echo "Disabling animations..."
-          disable_animation
-          sleep 1
+          adb shell "settings put global window_animation_scale 0.0"
+          adb shell "settings put global transition_animation_scale 0.0"
+          adb shell "settings put global animator_duration_scale 0.0"
 
+          # Set hidden API policy
           echo "Setting hidden API policy..."
-          hidden_policy
-          sleep 1
+          adb shell "settings put global hidden_api_policy_pre_p_apps 1;settings put global hidden_api_policy_p_apps 1;settings put global hidden_api_policy 1"
 
-          echo "Installing app..."
+          echo "✅ Emulator is ready for testing!"
+
+      - name: Install and test app
+        run: |
+          echo "📱 Installing app..."
           adb install Artsy.apk
 
-          echo "Running E2E tests..."
+          echo "🧪 Running E2E tests..."
           ./scripts/utils/run_maestro_shard android
 
-      # - name: Upload test results
-      #   if: always() # This step will run even if the test step fails
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: maestro-test-results
-      #     path: .maestro/
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-test-results
+          path: .maestro/
