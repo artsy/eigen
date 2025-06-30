@@ -108,7 +108,7 @@ jobs:
             adb install Artsy.apk
 
             echo "🧪 Running maestro test..."
-            /scripts/utils/run_maestro_shard_android android ${{ matrix.node_index }} ${{ matrix.total_nodes }}
+            ./scripts/utils/run_maestro_shard_android android ${{ matrix.node_index }} ${{ matrix.total_nodes }}
 
       # maestro test e2e/flows/signup.yml -e MAESTRO_APP_ID=net.artsy.app || echo "maestro_failed=true" >> $GITHUB_ENV
 
