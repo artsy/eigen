@@ -17,6 +17,7 @@ _Please note: Links should point to specific commits, and not a branch (in case 
     - [Example when creating a new screen](#example-when-creating-a-new-screen)
     - [Example when adding a component(s) to src/app/components](#example-when-adding-a-components-to-srcappcomponents)
       - [AVOID index.ts(x) files](#avoid-indextsx-files)
+      - [Do not import components/hooks/functions... directly from a different scene](#do-not-import-componentshooksfunctions-directly-from-a-different-scene)
     - [When committing code](#when-committing-code)
   - [Frontend](#frontend)
     - [Styling](#styling)
@@ -127,6 +128,12 @@ Assuming you would like to add **one or more** components to `src/app/Components
 #### AVOID index.ts(x) files
 
 We try to avoid the use of `index.ts(x)` files to prevent noise in the file structure and circular dependencies and make it easier to navigate between files.
+
+#### Do not import components/hooks/functions... directly from a different scene
+
+Assuming you are about to add a `Component` to `SceneA`. You notice later that it's already built in `SceneB`. In that case, you need to extract `Component` to a shared directory: `src/App/Components`
+
+The same thing applies for hooks, utils etc...
 
 ### When committing code
 
