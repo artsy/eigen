@@ -514,6 +514,7 @@ lane :deploy_to_expo_updates do |options|
   end
 
   sh("pushd ../ > /dev/null && \
+      set -o pipefail && \
       #{expo_command} | tail -n1 && \
       popd > /dev/null")
 
