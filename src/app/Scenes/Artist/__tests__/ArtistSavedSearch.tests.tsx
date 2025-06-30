@@ -94,11 +94,10 @@ describe("Saved search banner on artist screen", () => {
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
     mockMostRecentOperation("ArtistBelowTheFoldQuery", MockArtistBelowTheFoldQuery)
     mockMostRecentOperation("MarketStatsQuery", MockMarketStatsQuery)
-
-    await flushPromiseQueue()
-
     mockMostRecentOperation("ArtistArtworksQuery", MockArtistArtworksQuery)
     mockMostRecentOperation("ArtistInsightsAuctionResultsQuery")
+
+    await flushPromiseQueue()
 
     fireEvent.press(screen.getByText("Sort & Filter"))
 
