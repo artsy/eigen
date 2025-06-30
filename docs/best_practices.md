@@ -91,23 +91,17 @@ For example `mutations`, `hooks` and `utils` would be **camelCase** folders, whi
 │ │ ├── MyScreenComponentA.tsx
 │ │ ├── MyScreenComponentB.tsx
 
-│ ├── mutations
-│ │ ├── __tests__
-│ │ │ ├── mutationFunction.tests.ts
-│ │ │ ├── useMyMutation.tests.ts
-│ │ ├── mutationFunction.ts
-│ │ ├── useMyMutation.ts  👈 hook mutations still go here
-
 │ ├── hooks
 │ │ ├── __tests__
 │ │ │ ├── useMyHook.tests.ts
+│ │ │ ├── useMyMutation.tests.ts
 │ │ ├── useMyHook.ts
-
-│ ├──├── utilFunction.tests.ts
-│ │ ├── utilFunction.ts
+│ │ ├── useMyMutation.ts  👈 hook mutations still go here
 
 ├── … utils
 │ │ ├── __tests__
+│ ├─│ ├── utilFunction.tests.ts
+│ │ ├── utilFunction.ts
 │ │ │
 
 ```
