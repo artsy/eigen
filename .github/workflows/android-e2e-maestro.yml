@@ -4,7 +4,7 @@ on:
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
   push:
     branches:
-      - main # Or your primary development branch
+      - gkartalis/android-e2e-PHIRE-1847 # Or your primary development branch
   pull_request:
     branches:
       - main # Triggers on pull requests targeting the main branch
