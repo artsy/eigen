@@ -3118,7 +3118,8 @@ type ArtworkImport implements Node {
     timezone: String
   ): String
   createdBy: ArtworkImportCreatedBy
-  currency: String
+  currency: String!
+  dimensionMetric: String!
   fileName: String!
 
   # A globally unique ID.
