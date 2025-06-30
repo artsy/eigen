@@ -47,6 +47,9 @@ jobs:
           echo "no" | avdmanager --verbose create avd --force -n $EMULATOR_NAME --abi "${ANDROID_TARGET}/${ANDROID_ARCH}" -k "system-images;android-${API_LEVEL};${ANDROID_TARGET};${ANDROID_ARCH}"
           echo "hw.ramSize=2048" >> ~/.android/avd/$EMULATOR_NAME.avd/config.ini
           echo "disk.dataPartition.size=2048M" >> ~/.android/avd/$EMULATOR_NAME.avd/config.ini
+          echo "hw.cpu.arch=arm64" >> ~/.android/avd/$EMULATOR_NAME.avd/config.ini
+          echo "hw.gpu.enabled=yes" >> ~/.android/avd/$EMULATOR_NAME.avd/config.ini
+          echo "hw.gpu.mode=swiftshader_indirect" >> ~/.android/avd/$EMULATOR_NAME.avd/config.ini
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -75,15 +78,26 @@ jobs:
               hw_accel_flag="$HW_ACCEL_OVERRIDE"
             else
               if [[ "$OSTYPE" == "darwin"* ]]; then
-                HW_ACCEL_SUPPORT=$(sysctl -a | grep -E -c '(vmx|svm)')
+                # On Apple Silicon (ARM64), use HVF. On Intel Macs, use hvf or hax
+                if [[ $(uname -m) == "arm64" ]]; then
+                  hw_accel_flag="-accel hvf"
+                else
+                  # Intel Mac - check for VMX support
+                  HW_ACCEL_SUPPORT=$(sysctl -a | grep -E -c '(vmx|svm)')
+                  if [[ $HW_ACCEL_SUPPORT == 0 ]]; then
+                    hw_accel_flag="-accel off"
+                  else
+                    hw_accel_flag="-accel hvf"
+                  fi
+                fi
               else
+                # Linux - check for KVM support
                 HW_ACCEL_SUPPORT=$(grep -E -c '(vmx|svm)' /proc/cpuinfo)
-              fi
-
-              if [[ $HW_ACCEL_SUPPORT == 0 ]]; then
-                hw_accel_flag="-accel off"
-              else
-                hw_accel_flag="-accel on"
+                if [[ $HW_ACCEL_SUPPORT == 0 ]]; then
+                  hw_accel_flag="-accel off"
+                else
+                  hw_accel_flag="-accel kvm"
+                fi
               fi
             fi
             echo "$hw_accel_flag"
