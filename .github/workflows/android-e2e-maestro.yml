@@ -1,0 +1,61 @@
+name: Android E2E Tests (Maestro)
+
+on:
+  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+  push:
+    branches:
+      - main # Or your primary development branch
+
+  pull_request:
+    branches:
+      - main # Triggers on pull requests targeting the main branch
+
+jobs:
+  e2e-tests:
+    runs-on: macos-latest # macOS runners are recommended for Android emulator performance
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1 # Change this if your S3 bucket is in a different region
+
+      - name: Setup Maestro environment variables
+        run: ./scripts/setup/setup-env-for-maestro android
+
+      - name: Download Android App (APK)
+        run: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
+
+      - name: Start Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis # Use 'google_apis' to include Google Play services
+          arch: x86_64
+          profile: Nexus 6
+          # The script runs in the background while the emulator is running
+          script: echo "Emulator started"
+
+      - name: Install Maestro
+        run: curl -Ls "https://get.maestro.mobile.dev" | bash
+
+      - name: Add Maestro to PATH
+        run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+
+      - name: Install the app on the emulator
+        run: adb install Artsy.apk
+
+      - name: Run Maestro E2E tests
+        run: ./scripts/utils/run_maestro_shard android
