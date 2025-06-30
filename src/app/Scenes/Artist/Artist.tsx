@@ -38,7 +38,7 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useState } from "react"
-import { ActivityIndicator, View } from "react-native"
+import { ActivityIndicator, PixelRatio, View } from "react-native"
 import { Environment, graphql } from "react-relay"
 
 const INITIAL_TAB = "Artworks"
@@ -185,6 +185,7 @@ export const Artist: React.FC<ArtistProps> = ({
 }
 
 interface ArtistQueryRendererProps {
+  alertID?: string
   artistID: string
   categories?: string[]
   environment?: Environment
@@ -192,8 +193,9 @@ interface ArtistQueryRendererProps {
   predefinedFilters?: FilterArray
   scrollToArtworksGrid?: boolean
   search_criteria_id?: string
-  alertID?: string
   sizes?: string[]
+  // This is used to determine if the artist has a verified representative for a more accurate skeleton
+  verifiedRepresentativesCount?: number
 }
 
 export const ArtistScreenQuery = graphql`
@@ -223,15 +225,16 @@ export const defaultArtistVariables = {
 }
 
 export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
+  alertID,
   artistID,
   categories,
   environment,
   initialTab,
   predefinedFilters,
-  search_criteria_id,
   scrollToArtworksGrid = false,
-  alertID,
+  search_criteria_id,
   sizes,
+  verifiedRepresentativesCount,
 }) => {
   // exctact filter params from the query string. This is needed when
   // the screen is opened via deeplink (/artist/kaws?attribution_class=..., for instance)
@@ -248,7 +251,9 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
       alertId={alertID ?? search_criteria_id}
       environment={environment}
       render={{
-        renderPlaceholder: () => <ArtistSkeleton />,
+        renderPlaceholder: () => (
+          <ArtistSkeleton verifiedRepresentativesCount={verifiedRepresentativesCount} />
+        ),
         renderComponent: (searchCriteriaProps) => {
           const { savedSearchCriteria, fetchCriteriaError } = searchCriteriaProps
           const predefinedFilterParams = filterArtworksParams(filters ?? [], "artwork")
@@ -293,7 +298,9 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = ({
                 <LoadFailureView showBackButton error={error} trackErrorBoundary={false} />
               )}
               render={{
-                renderPlaceholder: () => <ArtistSkeleton />,
+                renderPlaceholder: () => (
+                  <ArtistSkeleton verifiedRepresentativesCount={verifiedRepresentativesCount} />
+                ),
                 renderComponent: ({ above, below }) => {
                   if (!above.artist) {
                     throw new Error("no artist data")
@@ -338,7 +345,9 @@ const LoadingPage: React.FC<{}> = ({}) => {
   )
 }
 
-const ArtistSkeleton: React.FC = () => {
+const ArtistSkeleton: React.FC<{ verifiedRepresentativesCount?: number }> = ({
+  verifiedRepresentativesCount = 0,
+}) => {
   const { height, width } = useArtistHeaderImageDimensions()
 
   return (
@@ -347,12 +356,41 @@ const ArtistSkeleton: React.FC = () => {
       <Screen.Body fullwidth>
         <Skeleton>
           <SkeletonBox width={width} height={height} />
+
           <Spacer y={2} />
+
           <Flex px={2}>
-            <SkeletonText variant="lg">Artist Name Artist Name</SkeletonText>
+            <SkeletonText variant="lg-display">Artist Name</SkeletonText>
             <Spacer y={0.5} />
-            <SkeletonText variant="lg">American, b. 1945</SkeletonText>
+            <SkeletonText variant="lg-display">American, b. 1945</SkeletonText>
           </Flex>
+
+          <Spacer y={2} />
+
+          {verifiedRepresentativesCount > 0 && (
+            <Flex pointerEvents="none" px={2}>
+              <SkeletonText variant="sm" color="mono60">
+                Featured representation
+              </SkeletonText>
+
+              <Spacer y={2} />
+
+              <Flex flexDirection="row">
+                {Array.from({ length: verifiedRepresentativesCount }).map((_, index) => {
+                  return (
+                    <SkeletonBox
+                      key={index}
+                      width={150 + Math.random() * 100}
+                      height={PixelRatio.getFontScale() * 30}
+                      mr={1}
+                      borderRadius={15}
+                    />
+                  )
+                })}
+              </Flex>
+            </Flex>
+          )}
+
           <Spacer y={4} />
           {/* Tabs */}
           <Flex justifyContent="space-around" flexDirection="row" px={2}>
