@@ -61,11 +61,11 @@ jobs:
           cores: 2
           ram-size: 4096M
           heap-size: 512M
-          disable-animations: true
+          disable-animations: false
           disable-spellchecker: true
           disable-linux-hw-accel: false
           enable-hw-keyboard: true
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          emulator-options: -no-snapshot-save -gpu swiftshader_indirect -noaudio -no-boot-anim
           script: |
             echo "🔍 Emulator started, verifying..."
             adb devices -l
