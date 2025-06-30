@@ -773,9 +773,9 @@ workflows:
       # - build-maestro-android
 
       # - run-e2e-tests-android
-      # - test-android-emulators
-      # requires:
-      #   - build-maestro-android
+      - test-android-emulators
+        # requires:
+        #   - build-maestro-android
       # - detect-secrets:
       #     filters:
       #       branches:
