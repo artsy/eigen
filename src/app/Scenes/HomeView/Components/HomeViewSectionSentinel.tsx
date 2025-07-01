@@ -22,8 +22,9 @@ export const HomeViewSectionSentinel: React.FC<HomeViewSectionSentinelProps> = (
     (actions) => actions.addTrackedSectionTypes
   )
 
-  const handleImageVisibility = useCallback(
+  const handleVisibilityChange = useCallback(
     (visible) => {
+      console.log({ visible, contextModule })
       if (visible && !trackedSections.includes(contextModule)) {
         viewedSection(contextModule as ContextModule, index)
         addTrackedSection(contextModule)
@@ -35,5 +36,5 @@ export const HomeViewSectionSentinel: React.FC<HomeViewSectionSentinelProps> = (
     [contextModule, viewedSection, addTrackedSection, trackedSections]
   )
 
-  return <Sentinel onChange={handleImageVisibility} />
+  return <Sentinel onChange={handleVisibilityChange} />
 }
