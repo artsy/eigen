@@ -130,6 +130,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
             horizontal
             data={artistData.verifiedRepresentatives}
             keyExtractor={({ partner }) => `representative-${partner.internalID}`}
+            showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <RouterLink
                 onPress={() => {
