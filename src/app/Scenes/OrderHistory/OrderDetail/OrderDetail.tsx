@@ -1,4 +1,15 @@
-import { Box, Screen, Spacer, Text, useColor, useSpace } from "@artsy/palette-mobile"
+import {
+  Box,
+  Screen,
+  Skeleton,
+  SkeletonBox,
+  SkeletonText,
+  Spacer,
+  Text,
+  useColor,
+  useScreenDimensions,
+  useSpace,
+} from "@artsy/palette-mobile"
 import { OrderDetailQuery } from "__generated__/OrderDetailQuery.graphql"
 import { OrderDetail_order$key } from "__generated__/OrderDetail_order.graphql"
 import { OrderDetailBuyerProtection } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailBuyerProtection"
@@ -8,7 +19,7 @@ import { OrderDetailMessage } from "app/Scenes/OrderHistory/OrderDetail/Componen
 import { OrderDetailMetadata } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailMetadata"
 import { OrderDetailPaymentInfo } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailPaymentInfo"
 import { OrderDetailPriceBreakdown } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailPriceBreakdown"
-import { NoFallback, SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface OrderDetailProps {
@@ -95,6 +106,37 @@ const orderDetailFragment = graphql`
   }
 `
 
+const OrderDetailSkeleton: React.FC = () => {
+  const { width: screenWidth } = useScreenDimensions()
+
+  return (
+    <Skeleton>
+      <Box px={2} pt={2}>
+        <SkeletonText variant="lg-display">Great Choice!</SkeletonText>
+
+        <SkeletonText variant="xs">Order #1231231234</SkeletonText>
+
+        <Box my={4}>
+          <SkeletonText variant="sm" mb={2}>
+            Thank you! Your order is being processed. You will receive an email shortly with all the
+            details.
+          </SkeletonText>
+
+          <SkeletonText variant="sm" mb={2}>
+            The gallery will confirm by MON 12, h:mm am CEST.
+          </SkeletonText>
+
+          <SkeletonText variant="sm">
+            You can contact the gallery with any questions about your order.
+          </SkeletonText>
+        </Box>
+
+        <SkeletonBox height={380} width={screenWidth - 40} />
+      </Box>
+    </Skeleton>
+  )
+}
+
 export const OrderDetailQR: React.FC<{ orderID: string }> = withSuspense({
   Component: ({ orderID }) => {
     const data = useLazyLoadQuery<OrderDetailQuery>(
@@ -109,7 +151,7 @@ export const OrderDetailQR: React.FC<{ orderID: string }> = withSuspense({
 
     return <OrderDetail order={data.me.order} />
   },
-  LoadingFallback: SpinnerFallback,
+  LoadingFallback: OrderDetailSkeleton,
   ErrorFallback: NoFallback,
 })
 
