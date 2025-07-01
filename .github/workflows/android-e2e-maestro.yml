@@ -15,8 +15,8 @@ jobs:
     timeout-minutes: 30
     strategy:
       matrix:
-        node_index: [0, 1, 2, 4]
-        total_nodes: [4]
+        node_index: [0, 1, 2]
+        total_nodes: [3]
 
     env:
       MAESTRO_APP_ID: net.artsy.app
