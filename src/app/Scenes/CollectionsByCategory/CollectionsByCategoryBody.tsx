@@ -1,8 +1,8 @@
 import { Flex, Separator, Skeleton, SkeletonText, Text } from "@artsy/palette-mobile"
 import { useRoute } from "@react-navigation/native"
 import { FlashList } from "@shopify/flash-list"
-import { BodyCollectionsByCategoryQuery } from "__generated__/BodyCollectionsByCategoryQuery.graphql"
-import { BodyCollectionsByCategory_viewer$key } from "__generated__/BodyCollectionsByCategory_viewer.graphql"
+import { CollectionsByCategoryBodyQuery } from "__generated__/CollectionsByCategoryBodyQuery.graphql"
+import { CollectionsByCategoryBody_viewer$key } from "__generated__/CollectionsByCategoryBody_viewer.graphql"
 import {
   CollectionRailPlaceholder,
   CollectionRailWithSuspense,
@@ -16,11 +16,11 @@ import { getTitleForCategory } from "app/Scenes/Search/components/ExploreByCateg
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
-interface BodyProps {
-  viewer: BodyCollectionsByCategory_viewer$key
+interface CollectionsByCategoryBodyProps {
+  viewer: CollectionsByCategoryBody_viewer$key
 }
 
-export const Body: React.FC<BodyProps> = ({ viewer }) => {
+export const CollectionsByCategoryBody: React.FC<CollectionsByCategoryBodyProps> = ({ viewer }) => {
   const data = useFragment(fragment, viewer)
   const { params } = useRoute<CollectionsByCategoriesRouteProp>()
   const category = decodeURI(params.category)
@@ -63,7 +63,7 @@ export const Body: React.FC<BodyProps> = ({ viewer }) => {
 const ESTIMATED_ITEM_SIZE = 390
 
 const fragment = graphql`
-  fragment BodyCollectionsByCategory_viewer on Viewer
+  fragment CollectionsByCategoryBody_viewer on Viewer
   @argumentDefinitions(category: { type: "String" }) {
     marketingCollections(category: $category, sort: CURATED, first: 20) {
       ...CollectionsChips_marketingCollections
@@ -72,7 +72,7 @@ const fragment = graphql`
   }
 `
 
-const BodyPlaceholder: React.FC = () => {
+const CollectionsByCategoryBodyPlaceholder: React.FC = () => {
   return (
     <Skeleton>
       <Flex gap={4}>
@@ -92,28 +92,28 @@ const BodyPlaceholder: React.FC = () => {
   )
 }
 
-export const collectionsByCategoryQuery = graphql`
-  query BodyCollectionsByCategoryQuery($category: String!) {
-    viewer {
-      ...BodyCollectionsByCategory_viewer @arguments(category: $category)
-    }
-  }
-`
-
-export const BodyWithSuspense = withSuspense({
+export const CollectionsByCategoryBodyWithSuspense = withSuspense({
   Component: () => {
     const { params } = useRoute<CollectionsByCategoriesRouteProp>()
     const category = decodeURI(params.category)
-    const data = useLazyLoadQuery<BodyCollectionsByCategoryQuery>(collectionsByCategoryQuery, {
+    const data = useLazyLoadQuery<CollectionsByCategoryBodyQuery>(collectionsByCategoryQuery, {
       category,
     })
 
     if (!data.viewer) {
-      return <BodyPlaceholder />
+      return null
     }
 
-    return <Body viewer={data.viewer} />
+    return <CollectionsByCategoryBody viewer={data.viewer} />
   },
-  LoadingFallback: BodyPlaceholder,
+  LoadingFallback: CollectionsByCategoryBodyPlaceholder,
   ErrorFallback: NoFallback,
 })
+
+export const collectionsByCategoryQuery = graphql`
+  query CollectionsByCategoryBodyQuery($category: String!) {
+    viewer {
+      ...CollectionsByCategoryBody_viewer @arguments(category: $category)
+    }
+  }
+`

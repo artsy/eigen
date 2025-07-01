@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react-native"
-import { BodyHomeViewSectionCardsTestQuery } from "__generated__/BodyHomeViewSectionCardsTestQuery.graphql"
-import { Body } from "app/Scenes/CollectionsByCategory/Body"
+import { CollectionsByCategoryBodyTestQuery } from "__generated__/CollectionsByCategoryBodyTestQuery.graphql"
+import { CollectionsByCategoryBody } from "app/Scenes/CollectionsByCategory/CollectionsByCategoryBody"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -21,12 +21,12 @@ jest.mock("app/Scenes/Search/components/ExploreByCategory/constants", () => ({
 }))
 
 describe("Body", () => {
-  const { renderWithRelay } = setupTestWrapper<BodyHomeViewSectionCardsTestQuery>({
-    Component: ({ viewer }) => <Body viewer={viewer} />,
+  const { renderWithRelay } = setupTestWrapper<CollectionsByCategoryBodyTestQuery>({
+    Component: ({ viewer }) => <CollectionsByCategoryBody viewer={viewer} />,
     query: graphql`
-      query BodyHomeViewSectionCardsTestQuery {
+      query CollectionsByCategoryBodyTestQuery {
         viewer @required(action: NONE) {
-          ...BodyCollectionsByCategory_viewer
+          ...CollectionsByCategoryBody_viewer
         }
       }
     `,
