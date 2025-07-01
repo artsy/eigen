@@ -16,7 +16,8 @@ import net.artsy.app.R
 import net.artsy.app.widgets.client.ArtsyApiClient
 import net.artsy.app.widgets.models.Artwork
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 class FullBleedWidgetProvider : AppWidgetProvider() {
 
@@ -40,7 +41,7 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
         val minHeight = widgetOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
 
         val views = RemoteViews(context.packageName, R.layout.widget_fullbleed)
-        
+
         // Show loading spinner and overlay initially
         setLoadingVisibility(views, true)
 
@@ -74,7 +75,7 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
                         // Apply top-crop scaling by pre-processing the bitmap
                         val scaledBitmap = createTopCroppedBitmap(bitmap, widthPx, heightPx)
                         views.setImageViewBitmap(R.id.artwork_image, scaledBitmap)
-                        
+
                         // Hide loading spinner and overlay once image is loaded
                         setLoadingVisibility(views, false)
                     }
