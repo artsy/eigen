@@ -22,7 +22,7 @@ export const ExploreByCategory: React.FC = memo(
 )
 
 const query = graphql`
-  query ExploreByCategoryQuery {
+  query ExploreByCategoryQuery @cacheable {
     categories: discoveryCategoriesConnection {
       ...ExploreByCategoryCards_category
     }
