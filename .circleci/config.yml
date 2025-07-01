@@ -327,68 +327,6 @@ jobs:
           no_output_timeout: 25m
           command: ./scripts/utils/run_maestro_shard ios
 
-  test-android-emulators:
-    executor:
-      name: android/android_machine
-      resource_class: xlarge
-      tag: default
-
-    steps:
-      - checkout
-      - run:
-          name: List installed system images
-          command: sdkmanager --list | grep "system-images"
-      - run:
-          name: Create AVD for API 30 x86
-          command: |
-            echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;x86" --force
-            echo "hw.ramSize=2048" >> ~/.android/avd/test.avd/config.ini
-            echo "disk.dataPartition.size=2048M" >> ~/.android/avd/test.avd/config.ini
-            echo "hw.gpu.enabled=no" >> ~/.android/avd/test.avd/config.ini
-            echo "hw.gpu.mode=off" >> ~/.android/avd/test.avd/config.ini
-
-      - run:
-          name: Start emulator (manual)
-          no_output_timeout: 10m
-          command: |
-            emulator -avd test \
-            -no-snapshot \
-            -no-boot-anim \
-            -no-audio \
-            -no-window \
-            -no-metrics \
-            -accel off \
-            -gpu swiftshader_indirect \
-            -qemu -m 2048 &
-            # Wait for the emulator to start
-            adb wait-for-device
-            # Wait for system boot complete
-            adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
-            adb shell input keyevent 82  # unlock screen
-
-      # - run:
-      #     name: Install Android system image
-      #     command: sdkmanager "system-images;android-30;google_apis;x86"
-
-      # - run:
-      #     name: Create AVD
-      #     command: |
-      #       echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;x86" --force
-      #       echo "hw.ramSize=2048" >> ~/.android/avd/test.avd/config.ini
-      #       echo "disk.dataPartition.size=2048M" >> ~/.android/avd/test.avd/config.ini
-
-      # - run:
-      #     name: Start emulator manually
-      #     no_output_timeout: 10m
-      #     command: |
-      #       emulator -avd test -no-window -no-audio -no-snapshot -no-boot-anim -accel off -qemu -m 2048 &
-      #       adb wait-for-device
-      #       adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
-
-      - run:
-          name: Confirm emulator running
-          command: adb devices
-
   run-e2e-tests-android:
     parallelism: 4
 
@@ -767,71 +705,70 @@ workflows:
       - build-echo-test-js
       - test-js
 
-  test-build-deploy:
-    when: << pipeline.parameters.run_workflow_test-build-deploy >>
-    jobs:
-      # - build-maestro-android
+  # test-build-deploy:
+  #   when: << pipeline.parameters.run_workflow_test-build-deploy >>
+  #   jobs:
+  # - build-maestro-android
 
-      # - run-e2e-tests-android
-      - test-android-emulators
-        # requires:
-        #   - build-maestro-android
-      # - detect-secrets:
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - main
+  # - run-e2e-tests-android
+  # requires:
+  #   - build-maestro-android
+  # - detect-secrets:
+  #     filters:
+  #       branches:
+  #         ignore:
+  #           - main
 
-      # - check-code:
-      #     context: danger-github-oss
+  # - check-code:
+  #     context: danger-github-oss
 
-      # - check-and-deploy:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - main
+  # - check-and-deploy:
+  #     filters:
+  #       branches:
+  #         only:
+  #           - main
 
-      # - test-js
+  # - test-js
 
-      # - build-test-js
+  # - build-test-js
 
-      # - horizon/block:
-      #     context: horizon
-      #     project_id: 37
-      #     filters:
-      #       branches:
-      #         only:
-      #           - beta-ios
-      #           - beta-android
+  # - horizon/block:
+  #     context: horizon
+  #     project_id: 37
+  #     filters:
+  #       branches:
+  #         only:
+  #           - beta-ios
+  #           - beta-android
 
-      # - build-test-app-ios:
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - beta-android
-      #     requires:
-      #       - test-js
-      #       - check-code
-      #       - build-test-js
-      #       - horizon/block
+  # - build-test-app-ios:
+  #     filters:
+  #       branches:
+  #         ignore:
+  #           - beta-android
+  #     requires:
+  #       - test-js
+  #       - check-code
+  #       - build-test-js
+  #       - horizon/block
 
-      # - build-test-app-android:
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - beta-ios
-      #     requires:
-      #       - test-js
-      #       - check-code
-      #       - build-test-js
-      #       - horizon/block
+  # - build-test-app-android:
+  #     filters:
+  #       branches:
+  #         ignore:
+  #           - beta-ios
+  #     requires:
+  #       - test-js
+  #       - check-code
+  #       - build-test-js
+  #       - horizon/block
 
-      # - update-metaphysics:
-      #     filters:
-      #       branches:
-      #         only:
-      #           - beta-ios
-      #           - beta-android
-      #     requires:
-      #       - build-test-app-ios
-      #       - build-test-app-android
+  # - update-metaphysics:
+  #     filters:
+  #       branches:
+  #         only:
+  #           - beta-ios
+  #           - beta-android
+  #     requires:
+  #       - build-test-app-ios
+  #       - build-test-app-android
