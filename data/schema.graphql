@@ -10521,6 +10521,9 @@ type DiscoveryCategory {
   # The URL of the image representing this category
   imageUrl: String
 
+  # The slug of the category
+  slug: String
+
   # The display title of the category
   title: String!
 }
@@ -19158,6 +19161,7 @@ type Query {
     artistID: String
     before: String
     category: String
+    categorySlug: String
     first: Int
     isFeaturedArtistContent: Boolean
     last: Int
@@ -24874,6 +24878,7 @@ type Viewer {
     artistID: String
     before: String
     category: String
+    categorySlug: String
     first: Int
     isFeaturedArtistContent: Boolean
     last: Int
