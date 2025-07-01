@@ -14,9 +14,8 @@ import { useSearchQuery } from "app/Scenes/Search/useSearchQuery"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { Schema } from "app/utils/track"
 import { memo, RefObject, Suspense, useRef, useState } from "react"
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native"
+import { KeyboardAvoidingView, ScrollView } from "react-native"
 import { isTablet } from "react-native-device-info"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { SearchResults } from "./SearchResults"
@@ -40,7 +39,6 @@ export const searchQueryDefaultVariables: SearchQuery$variables = {
 
 export const Search: React.FC = () => {
   const space = useSpace()
-  const insets = useSafeAreaInsets()
 
   const searchPillsRef = useRef<ScrollView>(null)
   const searchInputRef = useRef<GlobalSearchInput>(null)
@@ -52,9 +50,6 @@ export const Search: React.FC = () => {
   const { trackEvent } = useTracking()
 
   const shouldShowCityGuide = !isTablet()
-
-  const bottomPadding =
-    Platform.OS === "ios" ? Math.max(insets.bottom + 60, 80) : Math.max(insets.bottom + 40, 60)
 
   const {
     data: queryData,
@@ -122,7 +117,7 @@ export const Search: React.FC = () => {
             onScroll={handleScroll}
             keyboardDismissMode="on-drag"
             keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{ paddingTop: space(2), paddingBottom: bottomPadding }}
+            contentContainerStyle={{ paddingTop: space(2) }}
           >
             <DiscoverSomethingNew />
             <ExploreByCategory />

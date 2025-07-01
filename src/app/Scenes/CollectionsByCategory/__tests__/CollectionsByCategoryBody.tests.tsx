@@ -7,17 +7,13 @@ import { graphql } from "react-relay"
 jest.mock("@react-navigation/native", () => ({
   ...jest.requireActual("@react-navigation/native"),
   useRoute: () => ({
-    params: { category: "mock-category" },
+    params: { category: "mock-category", title: "Category" },
   }),
 }))
 
 jest.mock("app/Scenes/CollectionsByCategory/CollectionRail", () => ({
   CollectionRailWithSuspense: () => null,
   CollectionRailPlaceholder: () => null,
-}))
-
-jest.mock("app/Scenes/Search/components/ExploreByCategory/constants", () => ({
-  getTitleForCategory: () => "mock-category",
 }))
 
 describe("Body", () => {

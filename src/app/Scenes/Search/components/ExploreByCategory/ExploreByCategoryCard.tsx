@@ -27,6 +27,10 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
   }
 
   const href = `/collections-by-category/${card.category}`
+  const navigationProps = {
+    title: card.title,
+    category: card.category,
+  }
 
   const columns = NUM_COLUMNS_MASONRY
 
@@ -45,7 +49,12 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
      * CollectionsByCategory with other viewers it has in the cache. By providing the category ID as
      * a variable, its viewer will be stored in its own cache key.
      */
-    <RouterLink to={href} onPress={handleCardPress} prefetchVariables={{ category: card.category }}>
+    <RouterLink
+      to={href}
+      onPress={handleCardPress}
+      prefetchVariables={{ category: card.category }}
+      navigationProps={navigationProps}
+    >
       <Flex borderRadius={5} overflow="hidden">
         <Image src={card.imageUrl} width={imageWidth} aspectRatio={IMAGE_RATIO} />
 

@@ -12,7 +12,6 @@ import {
   CollectionsChips,
   CollectionsChipsPlaceholder,
 } from "app/Scenes/CollectionsByCategory/CollectionsChips"
-import { getTitleForCategory } from "app/Scenes/Search/components/ExploreByCategory/constants"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -23,8 +22,7 @@ interface CollectionsByCategoryBodyProps {
 export const CollectionsByCategoryBody: React.FC<CollectionsByCategoryBodyProps> = ({ viewer }) => {
   const data = useFragment(fragment, viewer)
   const { params } = useRoute<CollectionsByCategoriesRouteProp>()
-  const category = decodeURI(params.category)
-  const title = getTitleForCategory(category)
+  const title = params.title
 
   if (!data?.marketingCollections) {
     return null
@@ -68,6 +66,7 @@ const fragment = graphql`
     marketingCollections(category: $category, sort: CURATED, first: 20) {
       ...CollectionsChips_marketingCollections
       slug @required(action: NONE)
+      title
     }
   }
 `
@@ -92,6 +91,14 @@ const CollectionsByCategoryBodyPlaceholder: React.FC = () => {
   )
 }
 
+export const collectionsByCategoryQuery = graphql`
+  query CollectionsByCategoryBodyQuery($category: String!) {
+    viewer {
+      ...CollectionsByCategoryBody_viewer @arguments(category: $category)
+    }
+  }
+`
+
 export const CollectionsByCategoryBodyWithSuspense = withSuspense({
   Component: () => {
     const { params } = useRoute<CollectionsByCategoriesRouteProp>()
@@ -109,11 +116,3 @@ export const CollectionsByCategoryBodyWithSuspense = withSuspense({
   LoadingFallback: CollectionsByCategoryBodyPlaceholder,
   ErrorFallback: NoFallback,
 })
-
-export const collectionsByCategoryQuery = graphql`
-  query CollectionsByCategoryBodyQuery($category: String!) {
-    viewer {
-      ...CollectionsByCategoryBody_viewer @arguments(category: $category)
-    }
-  }
-`

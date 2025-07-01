@@ -35,6 +35,10 @@ export const CollectionsByCategoryFooter: FC<CollectionsByCategoryFooterProps> =
           disablePrefetch
           key={`category_rail_${index}`}
           to={`/collections-by-category/${c.category}`}
+          navigationProps={{
+            title: c.title,
+            category: c.category,
+          }}
         >
           <Text variant="xl" color="mono0">
             {c.title}
@@ -44,6 +48,17 @@ export const CollectionsByCategoryFooter: FC<CollectionsByCategoryFooterProps> =
     </Flex>
   )
 }
+
+const fragment = graphql`
+  fragment CollectionsByCategoryFooter_category on DiscoveryCategoriesConnectionConnection {
+    edges {
+      node {
+        title @required(action: NONE)
+        category @required(action: NONE)
+      }
+    }
+  }
+`
 
 const CollectionsByCategoryFooterPlaceholder: FC = () => {
   return (
@@ -61,6 +76,14 @@ const CollectionsByCategoryFooterPlaceholder: FC = () => {
   )
 }
 
+const query = graphql`
+  query CollectionsByCategoryFooterQuery {
+    categories: discoveryCategoriesConnection {
+      ...CollectionsByCategoryFooter_category
+    }
+  }
+`
+
 export const CollectionsByCategoryFooterWithSuspense = withSuspense({
   Component: () => {
     const data = useLazyLoadQuery<CollectionsByCategoryFooterQuery>(query, {})
@@ -74,22 +97,3 @@ export const CollectionsByCategoryFooterWithSuspense = withSuspense({
   LoadingFallback: CollectionsByCategoryFooterPlaceholder,
   ErrorFallback: NoFallback,
 })
-
-const query = graphql`
-  query CollectionsByCategoryFooterQuery {
-    categories: discoveryCategoriesConnection {
-      ...CollectionsByCategoryFooter_category
-    }
-  }
-`
-
-const fragment = graphql`
-  fragment CollectionsByCategoryFooter_category on DiscoveryCategoriesConnectionConnection {
-    edges {
-      node {
-        title @required(action: NONE)
-        category @required(action: NONE)
-      }
-    }
-  }
-`

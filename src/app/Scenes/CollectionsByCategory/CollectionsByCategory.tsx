@@ -3,7 +3,6 @@ import { Flex, Screen } from "@artsy/palette-mobile"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import { CollectionsByCategoryBodyWithSuspense } from "app/Scenes/CollectionsByCategory/CollectionsByCategoryBody"
 import { CollectionsByCategoryFooterWithSuspense } from "app/Scenes/CollectionsByCategory/CollectionsByCategoryFooter"
-import { getTitleForCategory } from "app/Scenes/Search/components/ExploreByCategory/constants"
 import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -13,6 +12,7 @@ export type CollectionsByCategoriesRouteProp = RouteProp<
   {
     collections: {
       category: string
+      title: string
     }
   },
   "collections"
@@ -22,7 +22,7 @@ export const CollectionsByCategory: FC = () => {
   const { params } = useRoute<CollectionsByCategoriesRouteProp>()
   const category = decodeURI(params.category)
 
-  const title = getTitleForCategory(category)
+  const title = params.title
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
