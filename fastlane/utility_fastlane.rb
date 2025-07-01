@@ -51,14 +51,19 @@ lane :report_maestro_failure do |options|
               Error: `#{error_message}`
               Screenshot at time of failure:
               #{s3_url}
-              See circle job for more details.
+              See github action run for more details.
             MSG
+
+  # Construct GitHub Actions run URL
+  github_repo = ENV['GITHUB_REPOSITORY']
+  run_id = ENV['GITHUB_RUN_ID']
+  github_url = "https://github.com/#{github_repo}/actions/runs/#{run_id}"
   slack(
     channel: '#bot-testing',
     message: message,
     success: false,
     payload: {
-      'Circle Build' => ENV['CIRCLE_BUILD_URL']
+      'GitHub Actions' => github_url
     },
     default_payloads: []
   )
