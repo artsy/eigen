@@ -1,8 +1,9 @@
 import { fireEvent, screen } from "@testing-library/react-native"
+import { ExploreByCategoryCardTestQuery } from "__generated__/ExploreByCategoryCardTestQuery.graphql"
 import { ExploreByCategoryCard } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategoryCard"
-import { MarketingCollectionCategory } from "app/Scenes/Search/components/ExploreByCategory/constants"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
-import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 const mockRouterLinkProps = { to: "", prefetchVariables: {} }
 
@@ -26,42 +27,75 @@ jest.mock("app/system/navigation/RouterLink", () => ({
 }))
 
 describe("ExploreByCategoryCard", () => {
-  const mockCard: MarketingCollectionCategory = {
+  const mockCategory = {
     category: "Medium",
     title: "Medium",
     imageUrl: "https://example.com/image.jpg",
   }
 
-  const defaultProps = {
-    card: mockCard,
-    imageWidth: 150,
-    index: 0,
-  }
+  const { renderWithRelay } = setupTestWrapper<ExploreByCategoryCardTestQuery>({
+    Component: ({ categories }) => {
+      const category = categories?.edges?.[0]?.node
+      if (!category) return null
+      return <ExploreByCategoryCard category={category} index={0} />
+    },
+    query: graphql`
+      query ExploreByCategoryCardTestQuery @relay_test_operation {
+        categories: discoveryCategoriesConnection {
+          edges {
+            node {
+              ...ExploreByCategoryCard_category
+            }
+          }
+        }
+      }
+    `,
+  })
 
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
   it("renders the card title", () => {
-    renderWithWrappers(<ExploreByCategoryCard {...defaultProps} />)
+    renderWithRelay({
+      DiscoveryCategoriesConnectionConnection: () => ({
+        edges: [{ node: mockCategory }],
+      }),
+      DiscoveryCategory: () => mockCategory,
+    })
 
     expect(screen.getByText("Medium")).toBeOnTheScreen()
   })
 
   it("renders with correct RouterLink href", () => {
-    renderWithWrappers(<ExploreByCategoryCard {...defaultProps} />)
+    renderWithRelay({
+      DiscoveryCategoriesConnectionConnection: () => ({
+        edges: [{ node: mockCategory }],
+      }),
+      DiscoveryCategory: () => mockCategory,
+    })
 
     expect(mockRouterLinkProps.to).toBe("/collections-by-category/Medium")
   })
 
   it("sets correct prefetch variables", () => {
-    renderWithWrappers(<ExploreByCategoryCard {...defaultProps} />)
+    renderWithRelay({
+      DiscoveryCategoriesConnectionConnection: () => ({
+        edges: [{ node: mockCategory }],
+      }),
+      DiscoveryCategory: () => mockCategory,
+    })
 
     expect(mockRouterLinkProps.prefetchVariables).toEqual({ category: "Medium" })
   })
 
   it("tracks card press event", () => {
-    renderWithWrappers(<ExploreByCategoryCard {...defaultProps} />)
+    renderWithRelay({
+      DiscoveryCategoriesConnectionConnection: () => ({
+        edges: [{ node: mockCategory }],
+      }),
+      DiscoveryCategory: () => mockCategory,
+    })
 
     const routerLink = screen.getByTestId("router-link")
     fireEvent.press(routerLink)
@@ -80,13 +114,18 @@ describe("ExploreByCategoryCard", () => {
   })
 
   it("handles different card categories", () => {
-    const colorCard: MarketingCollectionCategory = {
+    const colorCard = {
       category: "Collect by Color",
       title: "Color",
       imageUrl: "https://example.com/color.png",
     }
 
-    renderWithWrappers(<ExploreByCategoryCard {...defaultProps} card={colorCard} index={2} />)
+    renderWithRelay({
+      DiscoveryCategoriesConnectionConnection: () => ({
+        edges: [{ node: colorCard }],
+      }),
+      DiscoveryCategory: () => colorCard,
+    })
 
     expect(screen.getByText("Color")).toBeOnTheScreen()
     expect(mockRouterLinkProps.to).toBe("/collections-by-category/Collect by Color")
@@ -94,7 +133,32 @@ describe("ExploreByCategoryCard", () => {
   })
 
   it("tracks with correct index position", () => {
-    renderWithWrappers(<ExploreByCategoryCard {...defaultProps} index={3} />)
+    const { renderWithRelay: renderWithDifferentIndex } =
+      setupTestWrapper<ExploreByCategoryCardTestQuery>({
+        Component: ({ categories }) => {
+          const category = categories?.edges?.[0]?.node
+          if (!category) return null
+          return <ExploreByCategoryCard category={category} index={3} />
+        },
+        query: graphql`
+          query ExploreByCategoryCardIndexTestQuery @relay_test_operation {
+            categories: discoveryCategoriesConnection {
+              edges {
+                node {
+                  ...ExploreByCategoryCard_category
+                }
+              }
+            }
+          }
+        `,
+      })
+
+    renderWithDifferentIndex({
+      DiscoveryCategoriesConnectionConnection: () => ({
+        edges: [{ node: mockCategory }],
+      }),
+      DiscoveryCategory: () => mockCategory,
+    })
 
     const routerLink = screen.getByTestId("router-link")
     fireEvent.press(routerLink)

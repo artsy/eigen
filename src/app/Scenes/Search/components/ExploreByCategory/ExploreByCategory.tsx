@@ -1,35 +1,30 @@
-import { Flex, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
-import { ExploreByCategoryCard } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategoryCard"
-import { MARKETING_COLLECTION_CATEGORIES } from "app/Scenes/Search/components/ExploreByCategory/constants"
-import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
-import React from "react"
+import { ExploreByCategoryQuery } from "__generated__/ExploreByCategoryQuery.graphql"
+import { ExploreByCategoryCards } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategoryCards"
+import { ExploreByCategoryCardsPlaceholder } from "app/Scenes/Search/components/ExploreByCategory/ExploreByCategoryCardsPlaceholder"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { memo } from "react"
+import { graphql, useLazyLoadQuery } from "react-relay"
 
-export const ExploreByCategory: React.FC = () => {
-  const { width } = useScreenDimensions()
-  const space = useSpace()
+export const ExploreByCategory: React.FC = memo(
+  withSuspense({
+    Component: () => {
+      const data = useLazyLoadQuery<ExploreByCategoryQuery>(query, {})
 
-  const cards = MARKETING_COLLECTION_CATEGORIES
+      if (!data?.categories) {
+        return null
+      }
 
-  const columns = NUM_COLUMNS_MASONRY
+      return <ExploreByCategoryCards categories={data.categories} />
+    },
+    LoadingFallback: ExploreByCategoryCardsPlaceholder,
+    ErrorFallback: NoFallback,
+  })
+)
 
-  const imageColumnGaps = columns === 2 ? space(0.5) : 0
-  const imageWidth = width / columns - space(2) - imageColumnGaps
-
-  return (
-    <Flex p={2} gap={2}>
-      <Text>Explore by Category</Text>
-      <Flex flexDirection="row" flexWrap="wrap" gap={1}>
-        {cards.map((card, index) => {
-          return (
-            <ExploreByCategoryCard
-              card={card}
-              imageWidth={imageWidth}
-              index={index}
-              key={`exploreBy-${index}`}
-            />
-          )
-        })}
-      </Flex>
-    </Flex>
-  )
-}
+const query = graphql`
+  query ExploreByCategoryQuery {
+    categories: discoveryCategoriesConnection {
+      ...ExploreByCategoryCards_category
+    }
+  }
+`

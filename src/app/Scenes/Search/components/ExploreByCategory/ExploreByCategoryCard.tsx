@@ -1,25 +1,37 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Image, Text, useSpace } from "@artsy/palette-mobile"
-import { MarketingCollectionCategory } from "app/Scenes/Search/components/ExploreByCategory/constants"
+import { Flex, Image, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { ExploreByCategoryCard_category$key } from "__generated__/ExploreByCategoryCard_category.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { NUM_COLUMNS_MASONRY } from "app/utils/masonryHelpers"
 import { FC } from "react"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ExploreByCategoryCardProps {
-  card: MarketingCollectionCategory
-  imageWidth: number
+  category: ExploreByCategoryCard_category$key
   index: number
 }
 
 export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
-  card,
+  category: categoryProp,
   index,
-  imageWidth,
 }) => {
+  const { width } = useScreenDimensions()
   const space = useSpace()
   const tracking = useTracking()
 
+  const card = useFragment(fragment, categoryProp)
+
+  if (!card) {
+    return null
+  }
+
   const href = `/collections-by-category/${card.category}`
+
+  const columns = NUM_COLUMNS_MASONRY
+
+  const imageColumnGaps = columns === 2 ? space(0.5) : 0
+  const imageWidth = width / columns - space(2) - imageColumnGaps
 
   const handleCardPress = () => {
     if (href) {
@@ -45,7 +57,15 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
   )
 }
 
-const IMAGE_RATIO = 0.85
+const fragment = graphql`
+  fragment ExploreByCategoryCard_category on DiscoveryCategory {
+    category
+    imageUrl @required(action: NONE)
+    title
+  }
+`
+
+export const IMAGE_RATIO = 0.85
 
 const tracks = {
   tappedCardGroup: (category: string, href: string, index: number) => ({
