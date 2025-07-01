@@ -97,7 +97,11 @@ const orderDetailFragment = graphql`
 
 export const OrderDetailQR: React.FC<{ orderID: string }> = withSuspense({
   Component: ({ orderID }) => {
-    const data = useLazyLoadQuery<OrderDetailQuery>(orderDetailQRQuery, { orderID })
+    const data = useLazyLoadQuery<OrderDetailQuery>(
+      orderDetailQRQuery,
+      { orderID },
+      { fetchPolicy: "store-and-network" }
+    )
 
     if (!data.me?.order) {
       return null
