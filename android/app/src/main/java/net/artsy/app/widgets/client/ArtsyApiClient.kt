@@ -2,6 +2,7 @@ package net.artsy.app.widgets.client
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import net.artsy.app.widgets.models.Artist
 import net.artsy.app.widgets.models.Artwork
 import net.artsy.app.widgets.models.ArtworkImage
@@ -21,6 +22,7 @@ class ArtsyApiClient {
     companion object {
         private const val ARTWORKS_BASE_URL = "https://artsy-public.s3.amazonaws.com/artworks-of-the-day"
         private const val GEMINI_PROXY = "https://d7hftxdivxxvm.cloudfront.net/"
+        private const val TAG = "ArtsyApiClient"
 
         @Volatile
         private var INSTANCE: ArtsyApiClient? = null
@@ -46,6 +48,7 @@ class ArtsyApiClient {
                     listOf(Artwork.fallback())
                 }
             } catch (e: Exception) {
+                Log.e(TAG, "Error fetching artworks", e)
                 listOf(Artwork.fallback())
             }
         }
@@ -58,6 +61,7 @@ class ArtsyApiClient {
                 val imageUrl = buildImageUrl(artwork.firstImageToken, widgetWidth, widgetHeight)
                 downloadImage(imageUrl)
             } catch (e: Exception) {
+                Log.e(TAG, "Error downloading image", e)
                 null
             }
         }
@@ -102,6 +106,7 @@ class ArtsyApiClient {
 
             return artworks.ifEmpty { listOf(Artwork.fallback()) }
         } catch (e: Exception) {
+                Log.e(TAG, "Error parsing the artworks json", e)
             return listOf(Artwork.fallback())
         }
     }
@@ -135,6 +140,7 @@ class ArtsyApiClient {
                 null
             }
         } catch (e: Exception) {
+            Log.e(TAG, "Error downloading", e)
             null
         }
     }

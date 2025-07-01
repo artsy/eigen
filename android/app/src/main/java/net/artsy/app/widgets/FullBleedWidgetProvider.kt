@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
 import kotlinx.coroutines.CoroutineScope
@@ -20,6 +21,10 @@ import java.util.Date
 import java.util.Locale
 
 class FullBleedWidgetProvider : AppWidgetProvider() {
+
+    companion object {
+        private const val TAG = "FullBleedWidget"
+    }
 
     override fun onUpdate(
         context: Context,
@@ -85,6 +90,7 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
                 appWidgetManager.updateAppWidget(appWidgetId, views)
             } catch (e: Exception) {
                 // Handle errors gracefully - hide spinner and overlay, show default state
+                Log.e(TAG, "Error updating widget", e)
                 setLoadingVisibility(views, false)
                 appWidgetManager.updateAppWidget(appWidgetId, views)
             }
