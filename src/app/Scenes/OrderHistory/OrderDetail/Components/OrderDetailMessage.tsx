@@ -15,7 +15,7 @@ export const OrderDetailMessage: React.FC<OrderDetailMessageProps> = ({ order })
   }
 
   return (
-    <Box>
+    <Box py={2}>
       <MessageDetails order={orderData} />
     </Box>
   )

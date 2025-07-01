@@ -39,11 +39,11 @@ export const OrderDetailMetadata: React.FC<OrderDetailMetadataProps> = ({ order 
   )
 
   return (
-    <Box>
-      <Box py={1}>
+    <Box pt={2}>
+      <Box>
         {/* Image */}
         {!!artworkImage?.url && (
-          <Flex alignItems="center">
+          <Flex alignItems="center" py={1}>
             {!!artwork?.slug && artwork.published ? (
               <RouterLink to={`/artwork/${artwork.slug}`}>
                 <Image
