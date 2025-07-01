@@ -82,22 +82,4 @@ describe("Artist", () => {
       context_screen_owner_type: "Artist",
     })
   })
-
-  it("displays follow button for artist with formatted follow count", () => {
-    renderWithHookWrappersTL(<TestWrapper />, getRelayEnvironment(), { includeNavigation: true })
-
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", {
-      Artist() {
-        return {
-          isFollowed: true,
-          counts: {
-            follows: 22000,
-          },
-        }
-      },
-    })
-
-    expect(screen.getByText(/Following/)).toBeTruthy()
-    expect(screen.getByText("22.0K")).toBeTruthy()
-  })
 })
