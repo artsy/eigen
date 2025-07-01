@@ -55,9 +55,11 @@ import {
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
-import { PlaceholderGrid } from "app/utils/placeholderGrid"
+import { PlaceholderGrid, TabsPlaceholderGrid } from "app/utils/placeholderGrid"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { Platform } from "react-native"
+import { useHeaderMeasurements } from "react-native-collapsible-tab-view"
 import { graphql, useFragment, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -499,13 +501,18 @@ export const ArtistArtworksQueryRenderer = withSuspense<ArtistArtworksQueryRende
   },
 })
 
+const SUB_TAB_BAR_HEIGHT = 70
+
 const ArtistArtworksPlaceholder = () => {
   const space = useSpace()
 
+  const { height } = useHeaderMeasurements()
+  // Tabs.ScrollView paddingTop is not working on Android, so we need to set it manually
+  const androidPaddingTop = Platform.OS === "android" ? SUB_TAB_BAR_HEIGHT + height : space(2)
+
   return (
     <Tabs.ScrollView
-      scrollEnabled={false}
-      contentContainerStyle={{ flex: 1, paddingHorizontal: 0, paddingTop: space(2) }}
+      contentContainerStyle={{ paddingHorizontal: 0, paddingTop: androidPaddingTop }}
     >
       <Flex px={2} testID="ArtistArtworksPlaceholder">
         <Flex flexDirection="row" justifyContent="space-between">
@@ -530,8 +537,16 @@ const ArtistArtworksPlaceholder = () => {
 }
 
 const ArtistArtworksError: React.FC<LoadFailureViewProps> = (fallbackProps) => {
+  const space = useSpace()
+
+  const { height } = useHeaderMeasurements()
+  // Tabs.ScrollView paddingTop is not working on Android, so we need to set it manually
+  const androidPaddingTop = Platform.OS === "android" ? SUB_TAB_BAR_HEIGHT + height : space(2)
+
   return (
-    <Tabs.ScrollView contentContainerStyle={{ paddingHorizontal: 0, paddingTop: 20 }}>
+    <Tabs.ScrollView
+      contentContainerStyle={{ paddingHorizontal: 0, paddingTop: androidPaddingTop }}
+    >
       <LoadFailureView
         onRetry={fallbackProps.onRetry}
         useSafeArea={false}
