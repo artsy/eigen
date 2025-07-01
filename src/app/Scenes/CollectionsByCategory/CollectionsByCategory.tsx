@@ -2,7 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { Flex, Screen } from "@artsy/palette-mobile"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import { CollectionsByCategoryBodyWithSuspense } from "app/Scenes/CollectionsByCategory/CollectionsByCategoryBody"
-import { FooterWithSuspense } from "app/Scenes/CollectionsByCategory/Footer"
+import { CollectionsByCategoryFooterWithSuspense } from "app/Scenes/CollectionsByCategory/CollectionsByCategoryFooter"
 import { getTitleForCategory } from "app/Scenes/Search/components/ExploreByCategory/constants"
 import { goBack } from "app/system/navigation/navigate"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
@@ -38,7 +38,7 @@ export const CollectionsByCategory: FC = () => {
             <Flex gap={4}>
               <CollectionsByCategoryBodyWithSuspense />
 
-              <FooterWithSuspense />
+              <CollectionsByCategoryFooterWithSuspense />
             </Flex>
           </Screen.ScrollView>
         </Screen.Body>

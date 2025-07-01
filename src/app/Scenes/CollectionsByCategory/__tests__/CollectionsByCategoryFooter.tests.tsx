@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react-native"
-import { FooterCollectionsByCategoryTestQuery } from "__generated__/FooterCollectionsByCategoryTestQuery.graphql"
-import { Footer } from "app/Scenes/CollectionsByCategory/Footer"
+import { CollectionsByCategoryFooterTestQuery } from "__generated__/CollectionsByCategoryFooterTestQuery.graphql"
+import { CollectionsByCategoryFooter } from "app/Scenes/CollectionsByCategory/CollectionsByCategoryFooter"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -14,12 +14,12 @@ jest.mock("@react-navigation/native", () => ({
 }))
 
 describe("Footer", () => {
-  const { renderWithRelay } = setupTestWrapper<FooterCollectionsByCategoryTestQuery>({
-    Component: ({ categories }) => <Footer categories={categories!} />,
+  const { renderWithRelay } = setupTestWrapper<CollectionsByCategoryFooterTestQuery>({
+    Component: ({ categories }) => <CollectionsByCategoryFooter categories={categories!} />,
     query: graphql`
-      query FooterCollectionsByCategoryTestQuery {
+      query CollectionsByCategoryFooterTestQuery {
         categories: discoveryCategoriesConnection {
-          ...Footer_category
+          ...CollectionsByCategoryFooter_category
         }
       }
     `,

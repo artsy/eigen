@@ -1,7 +1,7 @@
 import { Flex, Skeleton, SkeletonText, Text } from "@artsy/palette-mobile"
 import { useRoute } from "@react-navigation/native"
-import { FooterCollectionsByCategoryQuery } from "__generated__/FooterCollectionsByCategoryQuery.graphql"
-import { Footer_category$key } from "__generated__/Footer_category.graphql"
+import { CollectionsByCategoryFooterQuery } from "__generated__/CollectionsByCategoryFooterQuery.graphql"
+import { CollectionsByCategoryFooter_category$key } from "__generated__/CollectionsByCategoryFooter_category.graphql"
 import { CollectionsByCategoriesRouteProp } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
@@ -9,11 +9,13 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { FC } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
-interface FooterProps {
-  categories: Footer_category$key
+interface CollectionsByCategoryFooterProps {
+  categories: CollectionsByCategoryFooter_category$key
 }
 
-export const Footer: FC<FooterProps> = ({ categories: categoriesProp }) => {
+export const CollectionsByCategoryFooter: FC<CollectionsByCategoryFooterProps> = ({
+  categories: categoriesProp,
+}) => {
   const { params } = useRoute<CollectionsByCategoriesRouteProp>()
   const connection = useFragment(fragment, categoriesProp)
 
@@ -43,7 +45,7 @@ export const Footer: FC<FooterProps> = ({ categories: categoriesProp }) => {
   )
 }
 
-const FooterPlaceholder: FC = () => {
+const CollectionsByCategoryFooterPlaceholder: FC = () => {
   return (
     <Skeleton>
       <Flex p={2} gap={2}>
@@ -59,30 +61,30 @@ const FooterPlaceholder: FC = () => {
   )
 }
 
-export const FooterWithSuspense = withSuspense({
+export const CollectionsByCategoryFooterWithSuspense = withSuspense({
   Component: () => {
-    const data = useLazyLoadQuery<FooterCollectionsByCategoryQuery>(query, {})
+    const data = useLazyLoadQuery<CollectionsByCategoryFooterQuery>(query, {})
 
     if (!data?.categories) {
       return null
     }
 
-    return <Footer categories={data.categories} />
+    return <CollectionsByCategoryFooter categories={data.categories} />
   },
-  LoadingFallback: FooterPlaceholder,
+  LoadingFallback: CollectionsByCategoryFooterPlaceholder,
   ErrorFallback: NoFallback,
 })
 
 const query = graphql`
-  query FooterCollectionsByCategoryQuery {
+  query CollectionsByCategoryFooterQuery {
     categories: discoveryCategoriesConnection {
-      ...Footer_category
+      ...CollectionsByCategoryFooter_category
     }
   }
 `
 
 const fragment = graphql`
-  fragment Footer_category on DiscoveryCategoriesConnectionConnection {
+  fragment CollectionsByCategoryFooter_category on DiscoveryCategoriesConnectionConnection {
     edges {
       node {
         title @required(action: NONE)
