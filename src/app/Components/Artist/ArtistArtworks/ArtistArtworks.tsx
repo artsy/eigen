@@ -508,11 +508,11 @@ const ArtistArtworksPlaceholder = () => {
 
   const { height } = useHeaderMeasurements()
   // Tabs.ScrollView paddingTop is not working on Android, so we need to set it manually
-  const androidPaddingTop = Platform.OS === "android" ? SUB_TAB_BAR_HEIGHT + height : space(2)
+  const paddingTop = Platform.OS === "android" ? SUB_TAB_BAR_HEIGHT + height : space(2)
 
   return (
     <Tabs.ScrollView
-      contentContainerStyle={{ paddingHorizontal: 0, paddingTop: androidPaddingTop }}
+      contentContainerStyle={{ paddingHorizontal: 0, paddingTop: paddingTop }}
       scrollEnabled={false}
     >
       <Flex px={2} testID="ArtistArtworksPlaceholder">
@@ -545,9 +545,7 @@ const ArtistArtworksError: React.FC<LoadFailureViewProps> = (fallbackProps) => {
   const paddingTop = Platform.OS === "android" ? SUB_TAB_BAR_HEIGHT + height : space(2)
 
   return (
-    <Tabs.ScrollView
-      contentContainerStyle={{ paddingHorizontal: 0, paddingTop: androidPaddingTop }}
-    >
+    <Tabs.ScrollView contentContainerStyle={{ paddingHorizontal: 0, paddingTop: paddingTop }}>
       <LoadFailureView
         onRetry={fallbackProps.onRetry}
         useSafeArea={false}
