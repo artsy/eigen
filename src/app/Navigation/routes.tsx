@@ -721,7 +721,7 @@ export const artsyDotNetRoutes = defineRoutes([
     },
   },
   {
-    path: "/collections-by-category/:category",
+    path: "/collections-by-category/:slug",
     name: "CollectionsByCategory",
     Component: CollectionsByCategory,
     options: {

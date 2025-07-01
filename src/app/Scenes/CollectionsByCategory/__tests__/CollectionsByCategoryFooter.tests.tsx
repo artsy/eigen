@@ -8,7 +8,7 @@ jest.mock("@react-navigation/native", () => ({
   ...jest.requireActual("@react-navigation/native"),
   useRoute: () => ({
     params: {
-      category: "Medium",
+      slug: "medium",
     },
   }),
 }))
@@ -32,37 +32,37 @@ describe("Footer", () => {
           {
             node: {
               title: "Movement",
-              category: "Movement",
+              slug: "movement",
             },
           },
           {
             node: {
               title: "Size",
-              category: "Size",
+              slug: "size",
             },
           },
           {
             node: {
               title: "Color",
-              category: "Color",
+              slug: "color",
             },
           },
           {
             node: {
               title: "Price",
-              category: "Price",
+              slug: "price",
             },
           },
           {
             node: {
               title: "Gallery",
-              category: "Gallery",
+              slug: "gallery",
             },
           },
           {
             node: {
               title: "Medium",
-              category: "Medium",
+              slug: "medium",
             },
           },
         ],
@@ -79,37 +79,37 @@ describe("Footer", () => {
           {
             node: {
               title: "Movement",
-              category: "Movement",
+              slug: "movement",
             },
           },
           {
             node: {
               title: "Size",
-              category: "Size",
+              slug: "size",
             },
           },
           {
             node: {
               title: "Color",
-              category: "Color",
+              slug: "color",
             },
           },
           {
             node: {
               title: "Price",
-              category: "Price",
+              slug: "price",
             },
           },
           {
             node: {
               title: "Gallery",
-              category: "Gallery",
+              slug: "gallery",
             },
           },
           {
             node: {
               title: "Medium",
-              category: "Medium",
+              slug: "medium",
             },
           },
         ],

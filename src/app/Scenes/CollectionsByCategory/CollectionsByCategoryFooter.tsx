@@ -17,10 +17,11 @@ export const CollectionsByCategoryFooter: FC<CollectionsByCategoryFooterProps> =
   categories: categoriesProp,
 }) => {
   const { params } = useRoute<CollectionsByCategoriesRouteProp>()
+  const slug = params.slug
+
   const connection = useFragment(fragment, categoriesProp)
 
-  const category = decodeURI(params.category)
-  const categories = extractNodes(connection).filter((c) => c.category !== category)
+  const categories = extractNodes(connection).filter((c) => c.slug !== slug)
 
   if (categories.length === 0) {
     return null
@@ -34,10 +35,9 @@ export const CollectionsByCategoryFooter: FC<CollectionsByCategoryFooterProps> =
         <RouterLink
           disablePrefetch
           key={`category_rail_${index}`}
-          to={`/collections-by-category/${c.category}`}
+          to={`/collections-by-category/${c.slug}`}
           navigationProps={{
             title: c.title,
-            category: c.category,
           }}
         >
           <Text variant="xl" color="mono0">
@@ -54,7 +54,7 @@ const fragment = graphql`
     edges {
       node {
         title @required(action: NONE)
-        category @required(action: NONE)
+        slug @required(action: NONE)
       }
     }
   }

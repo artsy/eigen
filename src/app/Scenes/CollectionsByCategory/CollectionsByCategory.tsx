@@ -11,7 +11,7 @@ import { FC } from "react"
 export type CollectionsByCategoriesRouteProp = RouteProp<
   {
     collections: {
-      category: string
+      slug: string
       title: string
     }
   },
@@ -20,15 +20,14 @@ export type CollectionsByCategoriesRouteProp = RouteProp<
 
 export const CollectionsByCategory: FC = () => {
   const { params } = useRoute<CollectionsByCategoriesRouteProp>()
-  const category = decodeURI(params.category)
-
+  const slug = params.slug
   const title = params.title
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({
         context_screen_owner_type: OwnerType.collectionsCategory,
-        context_screen_owner_slug: category,
+        context_screen_owner_slug: slug,
       })}
     >
       <Screen>

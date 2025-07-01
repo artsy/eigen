@@ -5,13 +5,14 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-const mockRouterLinkProps = { to: "", prefetchVariables: {} }
+const mockRouterLinkProps = { to: "", prefetchVariables: {}, navigationProps: {} }
 
 jest.mock("app/system/navigation/RouterLink", () => ({
-  RouterLink: ({ children, to, onPress, prefetchVariables }: any) => {
+  RouterLink: ({ children, to, navigationProps, onPress, prefetchVariables }: any) => {
     const { TouchableOpacity } = require("react-native")
     mockRouterLinkProps.to = to
     mockRouterLinkProps.prefetchVariables = prefetchVariables
+    mockRouterLinkProps.navigationProps = navigationProps
     return (
       <TouchableOpacity
         accessibilityRole="button"
@@ -28,7 +29,7 @@ jest.mock("app/system/navigation/RouterLink", () => ({
 
 describe("ExploreByCategoryCard", () => {
   const mockCategory = {
-    category: "Medium",
+    slug: "medium",
     title: "Medium",
     imageUrl: "https://example.com/image.jpg",
   }
@@ -75,7 +76,7 @@ describe("ExploreByCategoryCard", () => {
       DiscoveryCategory: () => mockCategory,
     })
 
-    expect(mockRouterLinkProps.to).toBe("/collections-by-category/Medium")
+    expect(mockRouterLinkProps.to).toBe("/collections-by-category/medium")
   })
 
   it("sets correct prefetch variables", () => {
@@ -86,7 +87,18 @@ describe("ExploreByCategoryCard", () => {
       DiscoveryCategory: () => mockCategory,
     })
 
-    expect(mockRouterLinkProps.prefetchVariables).toEqual({ category: "Medium" })
+    expect(mockRouterLinkProps.prefetchVariables).toEqual({ categorySlug: "medium" })
+  })
+
+  it("sets correct navigation props", () => {
+    renderWithRelay({
+      DiscoveryCategoriesConnectionConnection: () => ({
+        edges: [{ node: mockCategory }],
+      }),
+      DiscoveryCategory: () => mockCategory,
+    })
+
+    expect(mockRouterLinkProps.navigationProps).toEqual({ title: "Medium" })
   })
 
   it("tracks card press event", () => {
@@ -106,8 +118,8 @@ describe("ExploreByCategoryCard", () => {
       context_module: "exploreBy",
       context_screen_owner_type: "search",
       destination_screen_owner_type: "collectionsCategory",
-      destination_path: "/collections-by-category/Medium",
-      destination_screen_owner_id: "Medium",
+      destination_path: "/collections-by-category/medium",
+      destination_screen_owner_id: "medium",
       horizontal_slide_position: 0,
       type: "thumbnail",
     })
@@ -115,7 +127,7 @@ describe("ExploreByCategoryCard", () => {
 
   it("handles different card categories", () => {
     const colorCard = {
-      category: "Collect by Color",
+      slug: "collect-by-color",
       title: "Color",
       imageUrl: "https://example.com/color.png",
     }
@@ -128,8 +140,9 @@ describe("ExploreByCategoryCard", () => {
     })
 
     expect(screen.getByText("Color")).toBeOnTheScreen()
-    expect(mockRouterLinkProps.to).toBe("/collections-by-category/Collect by Color")
-    expect(mockRouterLinkProps.prefetchVariables).toEqual({ category: "Collect by Color" })
+    expect(mockRouterLinkProps.to).toBe("/collections-by-category/collect-by-color")
+    expect(mockRouterLinkProps.prefetchVariables).toEqual({ categorySlug: "collect-by-color" })
+    expect(mockRouterLinkProps.navigationProps).toEqual({ title: "Color" })
   })
 
   it("tracks with correct index position", () => {

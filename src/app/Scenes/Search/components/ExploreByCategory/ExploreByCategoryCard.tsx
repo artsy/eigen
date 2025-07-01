@@ -26,10 +26,9 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
     return null
   }
 
-  const href = `/collections-by-category/${card.category}`
+  const href = `/collections-by-category/${card.slug}`
   const navigationProps = {
     title: card.title,
-    category: card.category,
   }
 
   const columns = NUM_COLUMNS_MASONRY
@@ -39,21 +38,21 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
 
   const handleCardPress = () => {
     if (href) {
-      tracking.trackEvent(tracks.tappedCardGroup(card.category, href, index))
+      tracking.trackEvent(tracks.tappedCardGroup(card.slug, href, index))
     }
   }
 
   return (
     /**
      * A prefetchVariable is passed to RouterLink so that Relay doesn't confuse the viewer used by
-     * CollectionsByCategory with other viewers it has in the cache. By providing the category ID as
-     * a variable, its viewer will be stored in its own cache key.
+     * CollectionsByCategory with other viewers it has in the cache. By providing the category slug
+     * as a variable, its viewer will be stored in its own cache key.
      */
     <RouterLink
       to={href}
-      onPress={handleCardPress}
-      prefetchVariables={{ category: card.category }}
       navigationProps={navigationProps}
+      onPress={handleCardPress}
+      prefetchVariables={{ categorySlug: card.slug }}
     >
       <Flex borderRadius={5} overflow="hidden">
         <Image src={card.imageUrl} width={imageWidth} aspectRatio={IMAGE_RATIO} />
@@ -70,6 +69,7 @@ const fragment = graphql`
   fragment ExploreByCategoryCard_category on DiscoveryCategory {
     category
     imageUrl @required(action: NONE)
+    slug @required(action: NONE)
     title
   }
 `

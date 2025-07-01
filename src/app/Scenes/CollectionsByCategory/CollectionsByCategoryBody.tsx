@@ -21,6 +21,7 @@ interface CollectionsByCategoryBodyProps {
 
 export const CollectionsByCategoryBody: React.FC<CollectionsByCategoryBodyProps> = ({ viewer }) => {
   const data = useFragment(fragment, viewer)
+
   const { params } = useRoute<CollectionsByCategoriesRouteProp>()
   const title = params.title
 
@@ -62,8 +63,8 @@ const ESTIMATED_ITEM_SIZE = 390
 
 const fragment = graphql`
   fragment CollectionsByCategoryBody_viewer on Viewer
-  @argumentDefinitions(category: { type: "String" }) {
-    marketingCollections(category: $category, sort: CURATED, first: 20) {
+  @argumentDefinitions(categorySlug: { type: "String" }) {
+    marketingCollections(categorySlug: $categorySlug, sort: CURATED, first: 20) {
       ...CollectionsChips_marketingCollections
       slug @required(action: NONE)
       title
@@ -92,9 +93,9 @@ const CollectionsByCategoryBodyPlaceholder: React.FC = () => {
 }
 
 export const collectionsByCategoryQuery = graphql`
-  query CollectionsByCategoryBodyQuery($category: String!) {
+  query CollectionsByCategoryBodyQuery($categorySlug: String!) {
     viewer {
-      ...CollectionsByCategoryBody_viewer @arguments(category: $category)
+      ...CollectionsByCategoryBody_viewer @arguments(categorySlug: $categorySlug)
     }
   }
 `
@@ -102,9 +103,10 @@ export const collectionsByCategoryQuery = graphql`
 export const CollectionsByCategoryBodyWithSuspense = withSuspense({
   Component: () => {
     const { params } = useRoute<CollectionsByCategoriesRouteProp>()
-    const category = decodeURI(params.category)
+    const slug = params.slug
+
     const data = useLazyLoadQuery<CollectionsByCategoryBodyQuery>(collectionsByCategoryQuery, {
-      category,
+      categorySlug: slug,
     })
 
     if (!data.viewer) {
