@@ -81,7 +81,7 @@ const fragment = graphql`
       postalCode
       country
       phoneNumber {
-        display
+        display(format: INTERNATIONAL)
       }
     }
     selectedFulfillmentOption {
