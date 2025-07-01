@@ -6,7 +6,7 @@ import { ReadMore } from "app/Components/ReadMore"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { withSuspense } from "app/utils/hooks/withSuspense"
-import { FC, useMemo } from "react"
+import { FC, memo, useMemo } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface ArtistListItemShortProps {
@@ -14,7 +14,7 @@ interface ArtistListItemShortProps {
   onPress?: () => void
 }
 
-export const ArtistListItemShort: FC<ArtistListItemShortProps> = ({ artist, onPress }) => {
+export const ArtistListItemShort: FC<ArtistListItemShortProps> = memo(({ artist, onPress }) => {
   const data = useFragment(fragment, artist)
 
   const followButton = useMemo(
@@ -49,7 +49,7 @@ export const ArtistListItemShort: FC<ArtistListItemShortProps> = ({ artist, onPr
       )}
     </>
   )
-}
+})
 
 const fragment = graphql`
   fragment ArtistListItemShort_artist on Artist {
