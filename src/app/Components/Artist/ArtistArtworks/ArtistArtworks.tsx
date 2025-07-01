@@ -542,7 +542,7 @@ const ArtistArtworksError: React.FC<LoadFailureViewProps> = (fallbackProps) => {
 
   const { height } = useHeaderMeasurements()
   // Tabs.ScrollView paddingTop is not working on Android, so we need to set it manually
-  const androidPaddingTop = Platform.OS === "android" ? SUB_TAB_BAR_HEIGHT + height : space(2)
+  const paddingTop = Platform.OS === "android" ? SUB_TAB_BAR_HEIGHT + height : space(2)
 
   return (
     <Tabs.ScrollView
