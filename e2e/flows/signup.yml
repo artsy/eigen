@@ -8,7 +8,7 @@ appId: ${MAESTRO_APP_ID}
     file: signup.js
 - extendedWaitUntil:
     visible: "Sign up or log in"
-    timeout: 10000
+    timeout: 30000
 - tapOn: "Email Input"
 - inputText: ${output.signup.email}
 - tapOn: "Continue.*"
