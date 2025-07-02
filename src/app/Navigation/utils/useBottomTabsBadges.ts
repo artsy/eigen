@@ -22,7 +22,7 @@ export const useBottomTabsBadges = () => {
   const tabsBadges: Record<string, BadgeProps> = {}
 
   const visualClueStyles = {
-    backgroundColor: color("red50"),
+    backgroundColor: color("blue100"),
     top: 2,
     minWidth: VISUAL_CLUE_HEIGHT,
     maxHeight: VISUAL_CLUE_HEIGHT,
@@ -75,7 +75,7 @@ export const useBottomTabsBadges = () => {
           tabsBadges[tab] = {
             tabBarBadge: unreadConversationsCount,
             tabBarBadgeStyle: {
-              backgroundColor: color("red50"),
+              ...visualClueStyles,
             },
           }
         }
