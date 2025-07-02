@@ -17,7 +17,7 @@ export const MessageDetails: React.FC<MessageDetailsProps> = ({ order }) => {
     order.buyerStateExpiresAt &&
     DateTime.fromISO(order.buyerStateExpiresAt)
       .setLocale(DateTime.now().locale)
-      .toFormat("MMM dd, h:mm a ZZZZ")
+      .toFormat("MMM d, h:mm a ZZZZ")
 
   switch (messageType) {
     case "SUBMITTED_ORDER":

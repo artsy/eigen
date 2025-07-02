@@ -42,18 +42,14 @@ const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
     >
       <Box px={2}>
         {/* 1st Part: Greetings */}
-        <Box>
+        <Box pb={2}>
           <Text variant="lg-display">{orderData.displayTexts.title}</Text>
 
           <Text variant="xs">Order #{orderData.code}</Text>
         </Box>
 
-        <Spacer y={4} />
-
         {/* 2nd Part: Overview */}
         <OrderDetailMessage order={orderData} />
-
-        <Spacer y={4} />
 
         {/* 3rd Part: Artwork image and metadata */}
         <OrderDetailMetadata order={orderData} />
