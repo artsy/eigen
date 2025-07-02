@@ -15,6 +15,12 @@ export const useAndroidActionSheetStyles = (): Partial<ActionSheetOptions> => {
     textStyle: {
       color: color("mono100"),
     },
+    titleTextStyle: {
+      color: color("mono60"),
+    },
+    messageTextStyle: {
+      color: color("mono60"),
+    },
     containerStyle: {
       backgroundColor: color("mono0"),
       paddingBottom: space(2),
@@ -39,6 +45,12 @@ export const __unsafe__useAndroidActionSheetStyles = (): Partial<ActionSheetOpti
       textStyle: {
         color: THEMES.v3dark.colors.mono100,
       },
+      titleTextStyle: {
+        color: THEMES.v3dark.colors.mono60,
+      },
+      messageTextStyle: {
+        color: THEMES.v3dark.colors.mono60,
+      },
       containerStyle: {
         backgroundColor: THEMES.v3dark.colors.mono0,
         paddingBottom: THEMES.v3dark.space[2] as DimensionValue,
@@ -50,6 +62,12 @@ export const __unsafe__useAndroidActionSheetStyles = (): Partial<ActionSheetOpti
   return {
     textStyle: {
       color: THEMES.v3light.colors.mono100,
+    },
+    titleTextStyle: {
+      color: THEMES.v3light.colors.mono60,
+    },
+    messageTextStyle: {
+      color: THEMES.v3light.colors.mono60,
     },
     containerStyle: {
       backgroundColor: THEMES.v3light.colors.mono0,

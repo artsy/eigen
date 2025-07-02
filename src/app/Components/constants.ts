@@ -20,3 +20,6 @@ export const ICON_HIT_SLOP = {
 }
 export const BACK_BUTTON_SIZE_SIZE = 40
 export const SCROLLVIEW_PADDING_BOTTOM_OFFSET = 80
+
+// This is the default value of iOS transition duration
+export const DEFAULT_SCREEN_ANIMATION_DURATION = 350

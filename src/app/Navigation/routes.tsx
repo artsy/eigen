@@ -1,5 +1,6 @@
 import { BackButton, Flex } from "@artsy/palette-mobile"
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack"
+import { artistArtworksQuery } from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtsyWebViewConfig, ArtsyWebViewPage } from "app/Components/ArtsyWebView"
 import { BidFlow } from "app/Components/Containers/BidFlow"
 import { InboxScreen, InboxScreenQuery } from "app/Components/Containers/Inbox"
@@ -91,8 +92,8 @@ import { CityGuide } from "app/Scenes/CityGuide/CityGuide"
 import { Collect, collectQuery, prepareCollectVariables } from "app/Scenes/Collect/Collect"
 import { CollectionScreen, CollectionScreenQuery } from "app/Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListScreen } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
-import { collectionsByCategoryQuery } from "app/Scenes/CollectionsByCategory/Body"
 import { CollectionsByCategory } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
+import { collectionsByCategoryQuery } from "app/Scenes/CollectionsByCategory/CollectionsByCategoryBody"
 import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import { FairScreen, FairScreenQuery } from "app/Scenes/Fair/Fair"
 import {
@@ -445,12 +446,7 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/artist/:artistID",
     name: "Artist",
     Component: ArtistQueryRenderer,
-    options: {
-      screenOptions: {
-        headerShown: false,
-      },
-    },
-    queries: [ArtistScreenQuery],
+    queries: [ArtistScreenQuery, artistArtworksQuery],
     prepareVariables: [({ artistID }) => ({ artistID, ...defaultArtistVariables })],
   },
   {
@@ -725,7 +721,7 @@ export const artsyDotNetRoutes = defineRoutes([
     },
   },
   {
-    path: "/collections-by-category/:category",
+    path: "/collections-by-category/:slug",
     name: "CollectionsByCategory",
     Component: CollectionsByCategory,
     options: {

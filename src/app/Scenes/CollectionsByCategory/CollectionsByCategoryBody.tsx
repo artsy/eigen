@@ -1,8 +1,8 @@
 import { Flex, Separator, Skeleton, SkeletonText, Text } from "@artsy/palette-mobile"
 import { useRoute } from "@react-navigation/native"
 import { FlashList } from "@shopify/flash-list"
-import { BodyCollectionsByCategoryQuery } from "__generated__/BodyCollectionsByCategoryQuery.graphql"
-import { BodyCollectionsByCategory_viewer$key } from "__generated__/BodyCollectionsByCategory_viewer.graphql"
+import { CollectionsByCategoryBodyQuery } from "__generated__/CollectionsByCategoryBodyQuery.graphql"
+import { CollectionsByCategoryBody_viewer$key } from "__generated__/CollectionsByCategoryBody_viewer.graphql"
 import {
   CollectionRailPlaceholder,
   CollectionRailWithSuspense,
@@ -15,14 +15,15 @@ import {
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
-interface BodyProps {
-  viewer: BodyCollectionsByCategory_viewer$key
+interface CollectionsByCategoryBodyProps {
+  viewer: CollectionsByCategoryBody_viewer$key
 }
 
-export const Body: React.FC<BodyProps> = ({ viewer }) => {
+export const CollectionsByCategoryBody: React.FC<CollectionsByCategoryBodyProps> = ({ viewer }) => {
   const data = useFragment(fragment, viewer)
+
   const { params } = useRoute<CollectionsByCategoriesRouteProp>()
-  const category = params.category
+  const title = params.title
 
   if (!data?.marketingCollections) {
     return null
@@ -32,9 +33,9 @@ export const Body: React.FC<BodyProps> = ({ viewer }) => {
     <Flex gap={4}>
       <Flex gap={2}>
         <Text variant="xl" px={2}>
-          {category}
+          {title}
         </Text>
-        <Text px={2}>Explore collections by {category.toLowerCase()}</Text>
+        <Text px={2}>Explore collections by {title.toLowerCase()}</Text>
         {/* TODO: fix typings broken by some unknown reason here, prob related to @plural */}
         <CollectionsChips marketingCollections={data.marketingCollections as any} />
       </Flex>
@@ -61,16 +62,17 @@ export const Body: React.FC<BodyProps> = ({ viewer }) => {
 const ESTIMATED_ITEM_SIZE = 390
 
 const fragment = graphql`
-  fragment BodyCollectionsByCategory_viewer on Viewer
-  @argumentDefinitions(category: { type: "String" }) {
-    marketingCollections(category: $category, sort: CURATED, first: 20) {
+  fragment CollectionsByCategoryBody_viewer on Viewer
+  @argumentDefinitions(categorySlug: { type: "String" }) {
+    marketingCollections(categorySlug: $categorySlug, sort: CURATED, first: 20) {
       ...CollectionsChips_marketingCollections
       slug @required(action: NONE)
+      title
     }
   }
 `
 
-const BodyPlaceholder: React.FC = () => {
+const CollectionsByCategoryBodyPlaceholder: React.FC = () => {
   return (
     <Skeleton>
       <Flex gap={4}>
@@ -91,26 +93,28 @@ const BodyPlaceholder: React.FC = () => {
 }
 
 export const collectionsByCategoryQuery = graphql`
-  query BodyCollectionsByCategoryQuery($category: String!) {
+  query CollectionsByCategoryBodyQuery($categorySlug: String!) {
     viewer {
-      ...BodyCollectionsByCategory_viewer @arguments(category: $category)
+      ...CollectionsByCategoryBody_viewer @arguments(categorySlug: $categorySlug)
     }
   }
 `
 
-export const BodyWithSuspense = withSuspense({
+export const CollectionsByCategoryBodyWithSuspense = withSuspense({
   Component: () => {
     const { params } = useRoute<CollectionsByCategoriesRouteProp>()
-    const data = useLazyLoadQuery<BodyCollectionsByCategoryQuery>(collectionsByCategoryQuery, {
-      category: params.entityID,
+    const slug = params.slug
+
+    const data = useLazyLoadQuery<CollectionsByCategoryBodyQuery>(collectionsByCategoryQuery, {
+      categorySlug: slug,
     })
 
     if (!data.viewer) {
-      return <BodyPlaceholder />
+      return null
     }
 
-    return <Body viewer={data.viewer} />
+    return <CollectionsByCategoryBody viewer={data.viewer} />
   },
-  LoadingFallback: BodyPlaceholder,
+  LoadingFallback: CollectionsByCategoryBodyPlaceholder,
   ErrorFallback: NoFallback,
 })

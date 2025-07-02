@@ -35,7 +35,7 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = (props) => {
               right={0}
               accessibilityLabel="Unseen Notifications Indicator"
             >
-              <VisualClueDot diameter={8} color="red50" />
+              <VisualClueDot diameter={8} />
             </Box>
           )}
         </>

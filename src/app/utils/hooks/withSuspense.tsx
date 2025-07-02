@@ -1,5 +1,6 @@
 import { Flex, Spinner } from "@artsy/palette-mobile"
 import { captureException } from "@sentry/react-native"
+import { FadeIn } from "app/Components/FadeIn"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ReactElement, Suspense } from "react"
 import { ErrorBoundary, FallbackProps } from "react-error-boundary"
@@ -81,7 +82,9 @@ export const withSuspense = <T extends Object | any>({
             </ProvidePlaceholderContext>
           }
         >
-          <Component {...props} />
+          <FadeIn style={{ flex: 1 }} slide={false}>
+            <Component {...props} />
+          </FadeIn>
         </Suspense>
       </ErrorBoundary>
     )

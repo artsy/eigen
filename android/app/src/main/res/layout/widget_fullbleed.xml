@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <!-- Background artwork image scaled to fill and slightly cropped -->
+    <ImageView
+        android:id="@+id/artwork_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:scaleX="1.3"
+        android:scaleY="1.3"
+        android:src="@drawable/widget_preview_image"
+        android:contentDescription="Featured Artwork"/>
+
+    <!-- Dark overlay for loading state -->
+    <ImageView
+        android:id="@+id/loading_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="visible"
+        android:contentDescription="Loading overlay" />
+
+    <!-- Loading spinner overlay -->
+    <ProgressBar
+        android:id="@+id/loading_spinner"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        style="?android:attr/progressBarStyle" />
+
+    <!-- White Artsy logo in top right corner -->
+    <ImageView
+        android:id="@+id/artsy_logo"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="top|end"
+        android:layout_margin="16dp"
+        android:src="@mipmap/ic_launcher_round"
+        android:contentDescription="Artsy" />
+
+</FrameLayout>

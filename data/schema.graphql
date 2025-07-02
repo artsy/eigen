@@ -3118,7 +3118,8 @@ type ArtworkImport implements Node {
     timezone: String
   ): String
   createdBy: ArtworkImportCreatedBy
-  currency: String
+  currency: String!
+  dimensionMetric: String!
   fileName: String!
 
   # A globally unique ID.
@@ -10490,6 +10491,41 @@ input DisableSecondFactorInput {
 type DisableSecondFactorPayload {
   clientMutationId: String
   secondFactorOrErrors: SecondFactorOrErrorsUnion!
+}
+
+# A connection to a list of items.
+type DiscoveryCategoriesConnectionConnection {
+  # A list of edges.
+  edges: [DiscoveryCategoriesConnectionEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type DiscoveryCategoriesConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: DiscoveryCategory
+}
+
+# A category for discovering and browsing art
+type DiscoveryCategory {
+  # The ID of the category
+  category: String!
+
+  # The URL of the image representing this category
+  imageUrl: String
+
+  # The slug of the category
+  slug: String
+
+  # The display title of the category
+  title: String!
 }
 
 input DislikeArtworkInput {
@@ -18895,6 +18931,14 @@ type Query {
     osWeights: [Float] = [0.6, 0.4]
   ): ArtworkConnection
 
+  # A connection of discovery categories for browsing art
+  discoveryCategoriesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): DiscoveryCategoriesConnectionConnection
+
   # Discovery Marketing Collections for personalized recommendations
   discoveryMarketingCollections(
     after: String
@@ -19117,6 +19161,7 @@ type Query {
     artistID: String
     before: String
     category: String
+    categorySlug: String
     first: Int
     isFeaturedArtistContent: Boolean
     last: Int
@@ -24606,6 +24651,14 @@ type Viewer {
     osWeights: [Float] = [0.6, 0.4]
   ): ArtworkConnection
 
+  # A connection of discovery categories for browsing art
+  discoveryCategoriesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): DiscoveryCategoriesConnectionConnection
+
   # Discovery Marketing Collections for personalized recommendations
   discoveryMarketingCollections(
     after: String
@@ -24825,6 +24878,7 @@ type Viewer {
     artistID: String
     before: String
     category: String
+    categorySlug: String
     first: Int
     isFeaturedArtistContent: Boolean
     last: Int

@@ -6,6 +6,7 @@ import {
   Touchable,
 } from "@artsy/palette-mobile"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { DEFAULT_SCREEN_ANIMATION_DURATION } from "app/Components/constants"
 import { ScreenWrapper } from "app/Navigation/AuthenticatedRoutes/ScreenWrapper"
 import { AuthenticatedRoutesParams } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { AppModule, ModuleDescriptor } from "app/Navigation/routes"
@@ -31,7 +32,7 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
         presentation: isModalScreen(module) ? "fullScreenModal" : "card",
         orientation: !isTablet() ? "portrait" : "default",
         animation: !isModalScreen(module) ? "slide_from_right" : undefined,
-        animationDuration: 350,
+        animationDuration: DEFAULT_SCREEN_ANIMATION_DURATION,
         headerShown: module.options?.screenOptions?.headerShown ?? true,
         headerLeft: ({ canGoBack }) => {
           if (!canGoBack) {
