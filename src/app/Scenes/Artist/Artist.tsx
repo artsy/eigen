@@ -15,7 +15,7 @@ import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.g
 import { ArtistAboutContainer } from "app/Components/Artist/ArtistAbout/ArtistAbout"
 import { ArtistArtworksQueryRenderer } from "app/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeader, useArtistHeaderImageDimensions } from "app/Components/Artist/ArtistHeader"
-import { ArtistHeaderNavRight } from "app/Components/Artist/ArtistHeaderNavRight"
+import { ArtistHeaderNavRightQueryRenderer } from "app/Components/Artist/ArtistHeaderNavRight"
 import { ArtistInsightsFragmentContainer } from "app/Components/Artist/ArtistInsights/ArtistInsights"
 import {
   FilterArray,
@@ -30,7 +30,6 @@ import { getOnlyFilledSearchCriteriaValues } from "app/Components/ArtworkFilter/
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
-import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"
 import { SkeletonPill } from "app/Components/SkeletonPill/SkeletonPill"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
@@ -74,42 +73,24 @@ export const Artist: React.FC<ArtistProps> = ({
   input,
 }) => {
   const popoverMessage = usePopoverMessage()
-  const { showShareSheet } = useShareSheet()
 
   const navigation = useNavigation()
-
-  const handleSharePress = useCallback(() => {
-    if (
-      artistAboveTheFold.name &&
-      artistAboveTheFold.name &&
-      artistAboveTheFold.slug &&
-      artistAboveTheFold.href
-    ) {
-      showShareSheet({
-        type: "artist",
-        internalID: artistAboveTheFold.internalID,
-        slug: artistAboveTheFold.slug,
-        artists: [{ name: artistAboveTheFold.name ?? null }],
-        title: artistAboveTheFold.name,
-        href: artistAboveTheFold.href,
-        currentImageUrl: artistAboveTheFold.coverArtwork?.image?.url ?? undefined,
-      })
-    }
-  }, [artistAboveTheFold, showShareSheet])
 
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => {
         if (artistAboveTheFold) {
           return (
-            <ArtistHeaderNavRight artist={artistAboveTheFold} onSharePress={handleSharePress} />
+            <Flex>
+              <ArtistHeaderNavRightQueryRenderer artistID={artistAboveTheFold.internalID} />
+            </Flex>
           )
         }
 
         return null
       },
     })
-  }, [artistAboveTheFold, navigation, handleSharePress])
+  }, [artistAboveTheFold, navigation])
 
   useEffect(() => {
     if (!!fetchCriteriaError) {
@@ -199,8 +180,8 @@ interface ArtistQueryRendererProps {
 }
 
 export const ArtistScreenQuery = graphql`
-  query ArtistAboveTheFoldQuery($artistID: String!) {
-    artist(id: $artistID) @principalField {
+  query ArtistAboveTheFoldQuery($artistID: String!) @cacheable {
+    artist(id: $artistID) {
       ...ArtistHeader_artist
       ...ArtistHeaderNavRight_artist
       id
@@ -208,11 +189,6 @@ export const ArtistScreenQuery = graphql`
       slug
       href
       name
-      coverArtwork {
-        image {
-          url(version: "larger")
-        }
-      }
     }
   }
 `
