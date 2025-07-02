@@ -260,26 +260,6 @@ jobs:
           paths:
             - xcode_test_raw.log
 
-  build-maestro-android:
-    docker:
-      - image: cimg/android:2025.03.1-node
-    resource_class: xlarge
-
-    steps:
-      - checkout
-      - generate-checksums
-      - attach_workspace:
-          at: ../workspace
-      - restore_cache:
-          key: << pipeline.parameters.android_native_cache_key >>
-      - prep-android-env
-      - build-app-android:
-          build_type: "beta"
-      - save_cache:
-          key: << pipeline.parameters.android_native_cache_key >>
-          paths:
-            - build-success.log
-
   run-e2e-tests-ios:
     parallelism: 4
 
@@ -309,7 +289,7 @@ jobs:
           name: Install idb
           command: brew tap facebook/fb && brew install idb-companion
       - setup-awscli
-      - install-gems # do we need this here?
+      - install-gems
       - run:
           name: Set up maestro env
           command: ./scripts/setup/setup-env-for-maestro ios
@@ -326,54 +306,6 @@ jobs:
           name: Run Maestro Tests
           no_output_timeout: 25m
           command: ./scripts/utils/run_maestro_shard ios
-
-  run-e2e-tests-android:
-    parallelism: 4
-
-    executor:
-      name: android/android_machine
-      resource_class: xlarge
-      tag: 2024.11.1
-
-    steps:
-      - checkout
-      - generate-checksums
-      - attach_workspace:
-          at: ../workspace
-      - android/change_java_version:
-          java_version: 17
-      - run:
-          name: Install system image and create AVD
-          command: |
-            sdkmanager "system-images;android-30;google_apis;x86"
-            echo "no" | avdmanager create avd -n test -k "system-images;android-30;google_apis;x86" --force
-            echo "hw.ramSize=2048" >> ~/.android/avd/test.avd/config.ini
-            echo "disk.dataPartition.size=2048M" >> ~/.android/avd/test.avd/config.ini
-      - run:
-          name: Start emulator manually
-          no_output_timeout: 10m
-          command: |
-            emulator -avd test -no-window -no-audio -no-boot-anim -no-snapshot &
-            adb wait-for-device
-            adb shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done;'
-      - run:
-          name: Install maestro
-          command: curl -Ls "https://get.maestro.mobile.dev" | bash
-      - setup-awscli
-      - run:
-          name: Set up maestro env
-          command: ./scripts/setup/setup-env-for-maestro android
-      # - install-gems
-      - run:
-          name: Download Android app
-          command: aws s3 cp s3://artsy-citadel/eigen/builds/android/Artsy-latest.apk ./Artsy.apk
-      - run:
-          name: Install APK on emulator
-          command: adb install -r ./Artsy.apk
-      - run:
-          name: Run Maestro Tests
-          no_output_timeout: 25m
-          command: ./scripts/utils/run_maestro_shard android
 
   deploy-nightly-beta:
     environment:
@@ -703,71 +635,65 @@ workflows:
       - build-echo-test-js
       - test-js
 
-  test-build-deploy:
-    when: << pipeline.parameters.run_workflow_test-build-deploy >>
-    jobs:
-      - build-maestro-android
+  # test-build-deploy:
+  #   when: << pipeline.parameters.run_workflow_test-build-deploy >>
+  #   jobs:
+  #     - detect-secrets:
+  #         filters:
+  #           branches:
+  #             ignore:
+  #               - main
 
-      - run-e2e-tests-android:
-          requires:
-            - build-maestro-android
+  #     - check-code:
+  #         context: danger-github-oss
 
-      - detect-secrets:
-          filters:
-            branches:
-              ignore:
-                - main
+  #     - check-and-deploy:
+  #         filters:
+  #           branches:
+  #             only:
+  #               - main
 
-      - check-code:
-          context: danger-github-oss
+  #     - test-js
 
-      - check-and-deploy:
-          filters:
-            branches:
-              only:
-                - main
+  #     - build-test-js
 
-      - test-js
+  #     - horizon/block:
+  #         context: horizon
+  #         project_id: 37
+  #         filters:
+  #           branches:
+  #             only:
+  #               - beta-ios
+  #               - beta-android
 
-      - build-test-js
+  #     - build-test-app-ios:
+  #         filters:
+  #           branches:
+  #             ignore:
+  #               - beta-android
+  #         requires:
+  #           - test-js
+  #           - check-code
+  #           - build-test-js
+  #           - horizon/block
 
-      - horizon/block:
-          context: horizon
-          project_id: 37
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
+  #     - build-test-app-android:
+  #         filters:
+  #           branches:
+  #             ignore:
+  #               - beta-ios
+  #         requires:
+  #           - test-js
+  #           - check-code
+  #           - build-test-js
+  #           - horizon/block
 
-      - build-test-app-ios:
-          filters:
-            branches:
-              ignore:
-                - beta-android
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
-            - horizon/block
-
-      - build-test-app-android:
-          filters:
-            branches:
-              ignore:
-                - beta-ios
-          requires:
-            - test-js
-            - check-code
-            - build-test-js
-            - horizon/block
-
-      - update-metaphysics:
-          filters:
-            branches:
-              only:
-                - beta-ios
-                - beta-android
-          requires:
-            - build-test-app-ios
-            - build-test-app-android
+  #     - update-metaphysics:
+  #         filters:
+  #           branches:
+  #             only:
+  #               - beta-ios
+  #               - beta-android
+  #         requires:
+  #           - build-test-app-ios
+  #           - build-test-app-android

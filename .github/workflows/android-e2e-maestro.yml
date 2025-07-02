@@ -14,14 +14,10 @@ jobs:
     runs-on: ubuntu-latest # Use ubuntu-latest for better Android emulator support
     timeout-minutes: 30
     strategy:
+      fail-fast: false # Don't cancel other jobs if one fails
       matrix:
         node_index: [0, 1, 2]
         total_nodes: [3]
-
-    env:
-      MAESTRO_APP_ID: net.artsy.app
-      MAESTRO_TEST_EMAIL: detox+test@example.com
-      MAESTRO_TEST_PASSWORD: ${{ secrets.MAESTRO_TEST_PASSWORD }}
 
     steps:
       - name: Checkout repository
@@ -30,7 +26,7 @@ jobs:
       - name: Set up Java 17
         uses: actions/setup-java@v4
         with:
-          distribution: "temurin"
+          distribution: "zulu"
           java-version: "17"
 
       - name: Set up Ruby
@@ -76,10 +72,10 @@ jobs:
           api-level: 34
           target: google_apis
           arch: x86_64
-          profile: Nexus 6
-          cores: 2
-          ram-size: 4096M
-          heap-size: 512M
+          ram-size: "8192M"
+          heap-size: "4096M"
+          disk-size: "10G"
+          cores: 4
           disable-animations: false
           disable-spellchecker: true
           disable-linux-hw-accel: false
@@ -109,26 +105,8 @@ jobs:
 
             echo "🧪 Testing app launch before running Maestro tests..."
 
-            echo "🧹 Clearing logcat..."
-            adb logcat -c
-
             echo "🚀 Launching app manually..."
             adb shell am start -n net.artsy.app/.MainActivity
 
-            echo "⏱️ Waiting for app to stabilize..."
-            sleep 10
-
-            echo "📋 Checking foreground activity:"
-            adb shell dumpsys activity activities | grep mResumedActivity || echo "No resumed activity"
-
-            echo "📄 Capturing logcat (filtered):"
-            adb logcat -d | grep -iE 'artsy|fatal|exception|crash' || echo "No errors found"
-
             echo "🧪 Running maestro test..."
             ./scripts/utils/run_maestro_shard_android android ${{ matrix.node_index }} ${{ matrix.total_nodes }}
-
-      # maestro test e2e/flows/signup.yml -e MAESTRO_APP_ID=net.artsy.app || echo "maestro_failed=true" >> $GITHUB_ENV
-
-      # - name: Report Maestro test failure
-      #   if: env.maestro_failed == 'true'
-      #   run: ./scripts/ci/report-maestro-test-failure

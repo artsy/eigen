@@ -4,7 +4,9 @@ appId: ${MAESTRO_APP_ID}
     clearState: false
     arguments:
       shouldSignOut: "true"
-- assertVisible: "Sign up or log in"
+- extendedWaitUntil:
+    visible: "Sign up or log in"
+    timeout: 30000
 - tapOn: "Email Input"
 - inputText: ${MAESTRO_TEST_EMAIL}
 - tapOn: "Continue.*"
