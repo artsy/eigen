@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import {
   Box,
   Screen,
@@ -20,6 +21,8 @@ import { OrderDetailMetadata } from "app/Scenes/OrderHistory/OrderDetail/Compone
 import { OrderDetailPaymentInfo } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailPaymentInfo"
 import { OrderDetailPriceBreakdown } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailPriceBreakdown"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
+import { screen } from "app/utils/track/helpers"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface OrderDetailProps {
@@ -145,7 +148,16 @@ export const OrderDetailQR: React.FC<{ orderID: string }> = withSuspense({
       return null
     }
 
-    return <OrderDetail order={data.me.order} />
+    return (
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({
+          context_screen_owner_type: OwnerType.ordersDetail,
+          context_screen_owner_id: data.me.order.internalID,
+        })}
+      >
+        <OrderDetail order={data.me.order} />
+      </ProvideScreenTrackingWithCohesionSchema>
+    )
   },
   LoadingFallback: OrderDetailSkeleton,
   ErrorFallback: NoFallback,
@@ -155,6 +167,7 @@ const orderDetailQRQuery = graphql`
   query OrderDetailQuery($orderID: ID!) {
     me {
       order(id: $orderID) {
+        internalID
         ...OrderDetail_order
       }
     }
