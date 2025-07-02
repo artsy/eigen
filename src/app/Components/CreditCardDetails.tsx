@@ -2,6 +2,7 @@ import { bullet, DEFAULT_HIT_SLOP, Text, Touchable } from "@artsy/palette-mobile
 import { CreditCardDetails_card$data } from "__generated__/CreditCardDetails_card.graphql"
 import { BrandCreditCardIcon } from "app/Components/BrandCreditCardIcon/BrandCreditCardIcon"
 import { MenuItem } from "app/Components/MenuItem"
+import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
 import { DateTime } from "luxon"
 import { ActivityIndicator } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -23,7 +24,13 @@ const CreditCardDetails = ({
   return (
     <MenuItem
       title={bullet.repeat(4) + " " + lastDigits}
-      icon={<BrandCreditCardIcon type={brand} width={30} height={26} />}
+      icon={
+        <BrandCreditCardIcon
+          type={brand}
+          width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+          height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+        />
+      }
       subtitle={formattedExpirationDate}
       rightView={
         isDeleting ? (
