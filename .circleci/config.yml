@@ -175,6 +175,8 @@ commands:
           name: Install ninja
           command: sudo apt-get install ninja-build
       - checkout
+      - restore_cache:
+          key: << pipeline.parameters.app_build_android_cache_key >>
       - install-node
       - setup-awscli
       - setup-env-file
@@ -182,10 +184,6 @@ commands:
       - run-relay-compiler
       - update-echo
       - install-gems
-  build-app-android:
-    steps:
-      - restore_cache:
-          key: << pipeline.parameters.app_build_android_cache_key >>
       - generate-query-map
       - run:
           name: Download fonts from s3
@@ -193,6 +191,8 @@ commands:
       - run:
           name: Download android assets
           command: ./scripts/setup/download-assets-android
+  build-app-android:
+    steps:
       - run:
           name: Build App
           no_output_timeout: 30m
