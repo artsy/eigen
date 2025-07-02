@@ -633,70 +633,65 @@ workflows:
       - build-echo-test-js
       - test-js
 
-  # test-build-deploy:
-  #   when: << pipeline.parameters.run_workflow_test-build-deploy >>
-  #   jobs:
-  # - build-maestro-android
+  test-build-deploy:
+    when: << pipeline.parameters.run_workflow_test-build-deploy >>
+    jobs:
+      - detect-secrets:
+          filters:
+            branches:
+              ignore:
+                - main
 
-  # - run-e2e-tests-android
-  # requires:
-  #   - build-maestro-android
-  # - detect-secrets:
-  #     filters:
-  #       branches:
-  #         ignore:
-  #           - main
+      - check-code:
+          context: danger-github-oss
 
-  # - check-code:
-  #     context: danger-github-oss
+      - check-and-deploy:
+          filters:
+            branches:
+              only:
+                - main
 
-  # - check-and-deploy:
-  #     filters:
-  #       branches:
-  #         only:
-  #           - main
+      - test-js
 
-  # - test-js
+      - build-test-js
 
-  # - build-test-js
+      - horizon/block:
+          context: horizon
+          project_id: 37
+          filters:
+            branches:
+              only:
+                - beta-ios
+                - beta-android
 
-  # - horizon/block:
-  #     context: horizon
-  #     project_id: 37
-  #     filters:
-  #       branches:
-  #         only:
-  #           - beta-ios
-  #           - beta-android
+      - build-test-app-ios:
+          filters:
+            branches:
+              ignore:
+                - beta-android
+          requires:
+            - test-js
+            - check-code
+            - build-test-js
+            - horizon/block
 
-  # - build-test-app-ios:
-  #     filters:
-  #       branches:
-  #         ignore:
-  #           - beta-android
-  #     requires:
-  #       - test-js
-  #       - check-code
-  #       - build-test-js
-  #       - horizon/block
+      - build-test-app-android:
+          filters:
+            branches:
+              ignore:
+                - beta-ios
+          requires:
+            - test-js
+            - check-code
+            - build-test-js
+            - horizon/block
 
-  # - build-test-app-android:
-  #     filters:
-  #       branches:
-  #         ignore:
-  #           - beta-ios
-  #     requires:
-  #       - test-js
-  #       - check-code
-  #       - build-test-js
-  #       - horizon/block
-
-  # - update-metaphysics:
-  #     filters:
-  #       branches:
-  #         only:
-  #           - beta-ios
-  #           - beta-android
-  #     requires:
-  #       - build-test-app-ios
-  #       - build-test-app-android
+      - update-metaphysics:
+          filters:
+            branches:
+              only:
+                - beta-ios
+                - beta-android
+          requires:
+            - build-test-app-ios
+            - build-test-app-android
