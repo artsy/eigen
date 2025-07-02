@@ -1,30 +1,30 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex } from "@artsy/palette-mobile"
-import { SaleArtworksRail_me$data } from "__generated__/SaleArtworksRail_me.graphql"
+import { SaleArtworksRail_me$key } from "__generated__/SaleArtworksRail_me.graphql"
 import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
 import { SaleArtworkTileRailCardContainer } from "app/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createFragmentContainer, graphql, useFragment } from "react-relay"
 
 interface Props {
-  me: SaleArtworksRail_me$data
+  me: SaleArtworksRail_me$key
 }
 
 export const INITIAL_NUMBER_TO_RENDER = 4
 
 export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
-  const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
+  const data = useFragment(fragment, me)
+  const artworks = extractNodes(data?.lotsByFollowedArtistsConnection)
 
   if (!artworks?.length) {
     return null
   }
 
   return (
-    <Flex mt={4}>
+    <>
       <SectionTitle title="Lots by artists you follow" mx={2} />
-
       <CardRailFlatList
         data={artworks}
         initialNumToRender={INITIAL_NUMBER_TO_RENDER}
@@ -32,9 +32,9 @@ export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
         renderItem={({ item: artwork }) => (
           <SaleArtworkTileRailCardContainer
             onPress={() => {
-              navigate(artwork.href!)
+              navigate(artwork.href)
             }}
-            saleArtwork={artwork.saleArtwork!}
+            saleArtwork={artwork.saleArtwork}
             useSquareAspectRatio
             useCustomSaleMessage
             contextScreenOwnerType={OwnerType.sale}
@@ -42,28 +42,30 @@ export const SaleArtworksRail: React.FC<Props> = ({ me }) => {
         )}
         keyExtractor={(item) => item.id}
       />
-    </Flex>
+    </>
   )
 }
 
-export const SaleArtworksRailContainer = createFragmentContainer(SaleArtworksRail, {
-  me: graphql`
-    fragment SaleArtworksRail_me on Me @argumentDefinitions(saleID: { type: "ID" }) {
-      lotsByFollowedArtistsConnection(
-        first: 10
-        includeArtworksByFollowedArtists: true
-        saleID: $saleID
-      ) {
-        edges {
-          node {
-            id
-            href
-            saleArtwork {
-              ...SaleArtworkTileRailCard_saleArtwork
-            }
+const fragment = graphql`
+  fragment SaleArtworksRail_me on Me @argumentDefinitions(saleID: { type: "ID" }) {
+    lotsByFollowedArtistsConnection(
+      first: 10
+      includeArtworksByFollowedArtists: true
+      saleID: $saleID
+    ) {
+      edges {
+        node {
+          id
+          href @required(action: NONE)
+          saleArtwork {
+            ...SaleArtworkTileRailCard_saleArtwork
           }
         }
       }
     }
-  `,
+  }
+`
+
+export const SaleArtworksRailContainer = createFragmentContainer(SaleArtworksRail, {
+  me: fragment,
 })

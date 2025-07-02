@@ -16,7 +16,9 @@ import { DEFAULT_NEW_SALE_ARTWORK_SORT } from "app/Components/ArtworkFilter/Filt
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import Spinner from "app/Components/Spinner"
 import { CascadingEndTimesBanner } from "app/Scenes/Artwork/Components/CascadingEndTimesBanner"
+import { SaleWithTabsQueryRenderer } from "app/Scenes/Sale/SaleWithTabs"
 import { unsafe__getEnvironment } from "app/store/GlobalStore"
+// eslint-disable-next-line no-restricted-imports
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
@@ -33,11 +35,10 @@ import { useTracking } from "react-tracking"
 import useInterval from "react-use/lib/useInterval"
 import usePrevious from "react-use/lib/usePrevious"
 import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
-import { NewBuyNowArtworksRailContainer } from "./Components/NewBuyNowArtworksRail"
 import { NewSaleLotsListContainer } from "./Components/NewSaleLotsList"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
-import { SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
+import { SaleArtworksRail } from "./Components/SaleArtworksRail"
 import { COVER_IMAGE_HEIGHT, SaleHeaderContainer as SaleHeader } from "./Components/SaleHeader"
 import { SaleLotsListContainer } from "./Components/SaleLotsList"
 import { saleStatus } from "./helpers"
@@ -79,7 +80,7 @@ const NOOP = () => {}
 
 export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   const tracking = useTracking()
-  const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction")
+  const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction2")
 
   const flatListRef = useRef<FlatList<any>>(null)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -239,15 +240,15 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     },
     {
       key: SALE_ARTWORKS_RAIL,
-      content: <SaleArtworksRailContainer me={me} />,
+      content: (
+        <Flex mt={4}>
+          <SaleArtworksRail me={me} />
+        </Flex>
+      ),
     },
     {
       key: BUY_NOW_ARTWORKS_RAIL,
-      content: enableArtworksConnection ? (
-        <NewBuyNowArtworksRailContainer sale={sale} />
-      ) : (
-        <BuyNowArtworksRailContainer sale={sale} />
-      ),
+      content: <BuyNowArtworksRailContainer sale={sale} />,
     },
     {
       key: SALE_LOTS_LIST,
@@ -441,7 +442,7 @@ const SaleScreenBelowQuery = graphql`
   }
 `
 
-const SaleScreenBelowNewQuery = graphql`
+export const SaleScreenBelowNewQuery = graphql`
   query SaleBelowTheFoldNewQuery($saleID: ID, $input: FilterArtworksInput) {
     viewer {
       unfilteredArtworks: artworksConnection(
@@ -461,11 +462,17 @@ export const SaleQueryRenderer: React.FC<{
   environment?: Environment
 }> = ({ saleID, environment }) => {
   const { trackEvent } = useTracking()
-  const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction")
+  const enableArtworksConnection = useFeatureFlag("AREnableArtworksConnectionForAuction2")
 
   useEffect(() => {
     trackEvent(tracks.pageView(saleID))
   }, [])
+
+  console.log("cb::saleID", { saleID })
+
+  if (enableArtworksConnection) {
+    return <SaleWithTabsQueryRenderer saleID={saleID} />
+  }
 
   return (
     <Screen>
@@ -505,9 +512,11 @@ export const SaleQueryRenderer: React.FC<{
               }
               return <LoadFailureView error={error} trackErrorBoundary={false} />
             }
+
             if (!props?.above.me || !props.above.sale) {
               return <SalePlaceholder />
             }
+
             return <SaleContainer sale={props.above.sale} me={props.above.me} below={props.below} />
           }}
           cacheConfig={{

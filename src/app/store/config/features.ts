@@ -50,11 +50,11 @@ export const features = {
     description: "Support dark mode",
     echoFlagKey: "ARDarkModeSupport",
   },
-  // TODO: need to refresh it before releasing to avoid leaking the feature in not ready releases, marked as ready since 15 months ago
-  AREnableArtworksConnectionForAuction: {
-    readyForRelease: true,
-    description: "Use artworksConnection for Auction screen",
-    echoFlagKey: "AREnableArtworksConnectionForAuction",
+  AREnableArtworksConnectionForAuction2: {
+    readyForRelease: false,
+    description: "Use artworksConnection for Auction screen v2",
+    showInDevMenu: true,
+    echoFlagKey: "AREnableArtworksConnectionForAuction2",
   },
   ARImpressionsTrackingHomeItemViews: {
     description: "Enable Tracking Items views on Home Screen",

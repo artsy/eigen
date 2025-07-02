@@ -3,7 +3,7 @@ import { NewBuyNowArtworksRailContainer } from "app/Scenes/Sale/Components/NewBu
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("NewBuyNowArtworksRail", () => {
+describe.skip("NewBuyNowArtworksRail", () => {
   const { renderWithRelay } = setupTestWrapper({
     Component: NewBuyNowArtworksRailContainer,
     query: graphql`

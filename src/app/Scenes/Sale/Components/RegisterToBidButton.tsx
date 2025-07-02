@@ -80,7 +80,7 @@ export const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({
       return null
     } else {
       return (
-        <Flex flexDirection="row" alignItems="center">
+        <Flex flexDirection="row" alignItems="center" pointerEvents="none">
           <CheckIcon fill="green100" mr={8} />
           <Text color="green100" fontWeight="500">
             You're approved to bid
