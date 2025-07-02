@@ -1,4 +1,4 @@
-appId: net.artsy.app
+appId: ${MAESTRO_APP_ID}
 ---
 - launchApp:
     clearState: false
