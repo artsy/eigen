@@ -7,7 +7,6 @@ import net.artsy.app.widgets.models.Artist
 import net.artsy.app.widgets.models.Artwork
 import net.artsy.app.widgets.models.ArtworkImage
 import org.json.JSONArray
-import org.json.JSONObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.InputStream

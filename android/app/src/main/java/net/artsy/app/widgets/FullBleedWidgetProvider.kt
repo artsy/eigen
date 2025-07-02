@@ -5,9 +5,8 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import android.graphics.Bitmap
-import android.net.Uri
+import androidx.core.net.toUri
+import androidx.core.content.edit
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
@@ -60,7 +59,7 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
 
                 if (artwork != null) {
                     // Set up click intent to open artwork in Artsy app
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(artwork.url)).apply {
+                    val intent = Intent(Intent.ACTION_VIEW, artwork.url.toUri()).apply {
                         setPackage(context.packageName) // Force opening in Artsy app
                     }
                     val pendingIntent = PendingIntent.getActivity(
@@ -124,10 +123,9 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
         }
 
         // Save current state
-        with(prefs.edit()) {
+        prefs.edit {
             putString("date_$appWidgetId", today)
             putInt("index_$appWidgetId", nextIndex)
-            apply()
         }
 
         return artworks.getOrNull(nextIndex)
