@@ -550,7 +550,7 @@ jobs:
       - setup-env-file
       - install-node-modules
       - run-relay-compiler
-      # would it be possible to deferenciate this with a flag in order to not duplicate code?
+      # would it be possible to differentiate this with a flag in order to not duplicate code?
       - update-staging-echo
       - generate-query-map
       - run:
@@ -680,13 +680,11 @@ workflows:
       - deploy-nightly-beta
       - run-nightly-tasks
       - build-maestro-ios
+      - build-maestro-android
       - run-e2e-tests-ios:
           requires:
             - build-maestro-ios
-      - build-maestro-android
-      - run-e2e-tests-android:
-          requires:
-            - build-maestro-android
+            - build-maestro-android # remove me when we move to github actions
 
   flag-check:
     triggers:
@@ -705,70 +703,71 @@ workflows:
       - build-echo-test-js
       - test-js
 
-  # test-build-deploy:
-  #   when: << pipeline.parameters.run_workflow_test-build-deploy >>
-  #   jobs:
-  # - build-maestro-android
+  test-build-deploy:
+    when: << pipeline.parameters.run_workflow_test-build-deploy >>
+    jobs:
+      - build-maestro-android
 
-  # - run-e2e-tests-android
-  # requires:
-  #   - build-maestro-android
-  # - detect-secrets:
-  #     filters:
-  #       branches:
-  #         ignore:
-  #           - main
+      - run-e2e-tests-android:
+          requires:
+            - build-maestro-android
 
-  # - check-code:
-  #     context: danger-github-oss
+      - detect-secrets:
+          filters:
+            branches:
+              ignore:
+                - main
 
-  # - check-and-deploy:
-  #     filters:
-  #       branches:
-  #         only:
-  #           - main
+      - check-code:
+          context: danger-github-oss
 
-  # - test-js
+      - check-and-deploy:
+          filters:
+            branches:
+              only:
+                - main
 
-  # - build-test-js
+      - test-js
 
-  # - horizon/block:
-  #     context: horizon
-  #     project_id: 37
-  #     filters:
-  #       branches:
-  #         only:
-  #           - beta-ios
-  #           - beta-android
+      - build-test-js
 
-  # - build-test-app-ios:
-  #     filters:
-  #       branches:
-  #         ignore:
-  #           - beta-android
-  #     requires:
-  #       - test-js
-  #       - check-code
-  #       - build-test-js
-  #       - horizon/block
+      - horizon/block:
+          context: horizon
+          project_id: 37
+          filters:
+            branches:
+              only:
+                - beta-ios
+                - beta-android
 
-  # - build-test-app-android:
-  #     filters:
-  #       branches:
-  #         ignore:
-  #           - beta-ios
-  #     requires:
-  #       - test-js
-  #       - check-code
-  #       - build-test-js
-  #       - horizon/block
+      - build-test-app-ios:
+          filters:
+            branches:
+              ignore:
+                - beta-android
+          requires:
+            - test-js
+            - check-code
+            - build-test-js
+            - horizon/block
 
-  # - update-metaphysics:
-  #     filters:
-  #       branches:
-  #         only:
-  #           - beta-ios
-  #           - beta-android
-  #     requires:
-  #       - build-test-app-ios
-  #       - build-test-app-android
+      - build-test-app-android:
+          filters:
+            branches:
+              ignore:
+                - beta-ios
+          requires:
+            - test-js
+            - check-code
+            - build-test-js
+            - horizon/block
+
+      - update-metaphysics:
+          filters:
+            branches:
+              only:
+                - beta-ios
+                - beta-android
+          requires:
+            - build-test-app-ios
+            - build-test-app-android
