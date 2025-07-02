@@ -5,10 +5,8 @@ appId: ${MAESTRO_APP_ID}
     arguments:
       email: ${MAESTRO_TEST_EMAIL}
       password: ${MAESTRO_TEST_PASSWORD}
-- extendedWaitUntil:
-    visible:
-      id: "search-button"
-    timeout: 30000
+- assertVisible:
+    id: "search-button"
 - killApp
 - openLink:
     link: https://www.artsy.net/artist/kaws
