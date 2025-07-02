@@ -19,13 +19,16 @@ jest.mock("app/Components/Artist/useFollowArtist", () => ({
   }),
 }))
 
-describe("ArtistHeaderNavRight", () => {
-  const mockOnSharePress = jest.fn()
+const mockShowShareSheet = jest.fn()
+jest.mock("app/Components/ShareSheet/ShareSheetContext", () => ({
+  useShareSheet: () => ({
+    showShareSheet: mockShowShareSheet,
+  }),
+}))
 
+describe("ArtistHeaderNavRight", () => {
   const { renderWithRelay } = setupTestWrapper<ArtistHeaderNavRightTestsQuery>({
-    Component: ({ artist }) => (
-      <ArtistHeaderNavRight artist={artist!} onSharePress={mockOnSharePress} />
-    ),
+    Component: ({ artist }) => <ArtistHeaderNavRight artist={artist!} />,
     query: graphql`
       query ArtistHeaderNavRightTestsQuery @relay_test_operation {
         artist(id: "artist-id") {
@@ -56,7 +59,7 @@ describe("ArtistHeaderNavRight", () => {
     const shareButton = screen.getByLabelText("Share")
     fireEvent.press(shareButton)
 
-    expect(mockOnSharePress).toHaveBeenCalledTimes(1)
+    expect(mockShowShareSheet).toHaveBeenCalledTimes(1)
   })
 
   it("renders the follow button when artist is not followed", () => {
