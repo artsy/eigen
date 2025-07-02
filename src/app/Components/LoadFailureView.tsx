@@ -22,7 +22,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 import { JustifyContentValue } from "./Bidding/Elements/types"
 
-interface LoadFailureViewProps {
+export interface LoadFailureViewProps {
   error?: Error
   onRetry?: (() => void) | null
   justifyContent?: JustifyContentValue

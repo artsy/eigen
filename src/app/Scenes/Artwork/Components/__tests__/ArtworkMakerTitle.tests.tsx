@@ -53,7 +53,9 @@ describe("ArtworkMakerTitle", () => {
     expect(screen.queryByText(/Andy Warhol/)).toBeTruthy()
     fireEvent.press(screen.getByText(/Andy Warhol/))
 
-    expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
+    expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol", {
+      passProps: { verifiedRepresentativesCount: 1 },
+    })
   })
 
   describe("for an artwork with more than 3 artists", () => {
