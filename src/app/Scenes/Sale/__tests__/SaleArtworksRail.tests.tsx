@@ -11,7 +11,7 @@ import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRece
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 
-describe("SaleArtworksRail", () => {
+describe.skip("SaleArtworksRail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (

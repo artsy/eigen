@@ -1,7 +1,8 @@
 import { IconProps } from "@artsy/icons/native"
 import { Color } from "@artsy/palette-mobile"
 import { ActionSheetProps } from "@expo/react-native-action-sheet"
-import React from "react"
+import React, { FC } from "react"
+import { StyledComponent } from "styled-components"
 
 export type ToastDuration = "long" | "short"
 
@@ -25,7 +26,7 @@ export interface ToastDetails {
 
   onPress?: (helpers: ToastOnPressHelpers) => void
   hideOnPress?: boolean
-  Icon?: React.FC<IconProps>
+  Icon?: FC<IconProps> | StyledComponent<any, any, IconProps, never>
   imageURL?: string
   backgroundColor?: Color
   duration?: ToastDuration
