@@ -47,12 +47,12 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
 
         val views = RemoteViews(context.packageName, R.layout.widget_fullbleed)
 
-        // Show loading spinner and overlay initially
-        setLoadingVisibility(views, true)
-
         // Launch coroutine to fetch artwork data
         CoroutineScope(Dispatchers.Main).launch {
             try {
+                // Show loading spinner and overlay initially
+                setLoadingVisibility(views, true)
+
                 val apiClient = ArtsyApiClient.getInstance()
                 val artworks = apiClient.fetchFeaturedArtworks()
                 val artwork = getNextArtwork(context, appWidgetId, artworks)
@@ -80,17 +80,16 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
                         // Apply top-crop scaling by pre-processing the bitmap
                         val scaledBitmap = createTopCroppedBitmap(bitmap, widthPx, heightPx)
                         views.setImageViewBitmap(R.id.artwork_image, scaledBitmap)
-
-                        // Hide loading spinner and overlay once image is loaded
-                        setLoadingVisibility(views, false)
+                    } else {
+                        Log.e(TAG, "Failed to download artwork image")
                     }
                 }
 
-                // Update the widget
+                setLoadingVisibility(views, false)
                 appWidgetManager.updateAppWidget(appWidgetId, views)
             } catch (e: Exception) {
-                // Handle errors gracefully - hide spinner and overlay, show default state
                 Log.e(TAG, "Error updating widget", e)
+
                 setLoadingVisibility(views, false)
                 appWidgetManager.updateAppWidget(appWidgetId, views)
             }
