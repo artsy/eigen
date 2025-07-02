@@ -78,9 +78,7 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
 
                     val bitmap = apiClient.downloadArtworkImage(artwork, widthPx, heightPx)
                     if (bitmap != null) {
-                        // Apply top-crop scaling by pre-processing the bitmap
-                        val scaledBitmap = createTopCroppedBitmap(bitmap, widthPx, heightPx)
-                        views.setImageViewBitmap(R.id.artwork_image, scaledBitmap)
+                        views.setImageViewBitmap(R.id.artwork_image, bitmap)
                     } else {
                         Log.e(TAG, "Failed to download artwork image")
                     }
@@ -133,33 +131,6 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
         }
 
         return artworks.getOrNull(nextIndex)
-    }
-
-    private fun createTopCroppedBitmap(bitmap: Bitmap, targetWidth: Int, targetHeight: Int): Bitmap {
-        val sourceWidth = bitmap.width
-        val sourceHeight = bitmap.height
-
-        // Calculate scale to fill the target dimensions
-        val scale = if (sourceWidth * targetHeight > sourceHeight * targetWidth) {
-            targetHeight.toFloat() / sourceHeight.toFloat()
-        } else {
-            targetWidth.toFloat() / sourceWidth.toFloat()
-        }
-
-        val scaledWidth = (sourceWidth * scale).toInt()
-        val scaledHeight = (sourceHeight * scale).toInt()
-
-        // Create scaled bitmap
-        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, scaledWidth, scaledHeight, true)
-
-        // If scaled bitmap is larger than target, crop from center-top
-        return if (scaledWidth > targetWidth || scaledHeight > targetHeight) {
-            val startX = maxOf(0, (scaledWidth - targetWidth) / 2)
-            val startY = (0.15f * scaledWidth).toInt() // Top crop offset (15% of height)
-            Bitmap.createBitmap(scaledBitmap, startX, startY, targetWidth, targetHeight)
-        } else {
-            scaledBitmap
-        }
     }
 
     private fun setLoadingVisibility(views: RemoteViews, isLoading: Boolean) {
