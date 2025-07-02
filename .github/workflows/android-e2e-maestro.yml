@@ -73,11 +73,10 @@ jobs:
           target: google_apis
           arch: x86_64
           profile: Nexus 6
-          cores: 2
-          ram-size: '8192M'
-          heap-size: '4096M'
-          disk-size: '10G'
-          cores: '4'
+          ram-size: "8192M"
+          heap-size: "4096M"
+          disk-size: "10G"
+          cores: 4
           disable-animations: false
           disable-spellchecker: true
           disable-linux-hw-accel: false
