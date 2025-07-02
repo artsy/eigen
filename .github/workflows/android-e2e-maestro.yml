@@ -19,11 +19,6 @@ jobs:
         node_index: [0, 1, 2]
         total_nodes: [3]
 
-    env:
-      MAESTRO_APP_ID: net.artsy.app
-      MAESTRO_TEST_EMAIL: detox+test@example.com
-      MAESTRO_TEST_PASSWORD: ${{ secrets.MAESTRO_TEST_PASSWORD }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -107,23 +102,6 @@ jobs:
 
             echo "📱 Installing app..."
             adb install Artsy.apk
-
-            echo "🧪 Testing app launch before running Maestro tests..."
-
-            echo "🧹 Clearing logcat..."
-            adb logcat -c
-
-            echo "🚀 Launching app manually..."
-            adb shell am start -n net.artsy.app/.MainActivity
-
-            echo "⏱️ Waiting for app to stabilize..."
-            sleep 10
-
-            echo "📋 Checking foreground activity:"
-            adb shell dumpsys activity activities | grep mResumedActivity || echo "No resumed activity"
-
-            echo "📄 Capturing logcat (filtered):"
-            adb logcat -d | grep -iE 'artsy|fatal|exception|crash' || echo "No errors found"
 
             echo "🧪 Running maestro test..."
             ./scripts/utils/run_maestro_shard_android android ${{ matrix.node_index }} ${{ matrix.total_nodes }}
