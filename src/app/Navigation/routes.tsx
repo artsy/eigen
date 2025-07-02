@@ -92,8 +92,8 @@ import { CityGuide } from "app/Scenes/CityGuide/CityGuide"
 import { Collect, collectQuery, prepareCollectVariables } from "app/Scenes/Collect/Collect"
 import { CollectionScreen, CollectionScreenQuery } from "app/Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListScreen } from "app/Scenes/Collection/Components/FullFeaturedArtistList"
-import { collectionsByCategoryQuery } from "app/Scenes/CollectionsByCategory/Body"
 import { CollectionsByCategory } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
+import { collectionsByCategoryQuery } from "app/Scenes/CollectionsByCategory/CollectionsByCategoryBody"
 import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
 import { FairScreen, FairScreenQuery } from "app/Scenes/Fair/Fair"
 import {
@@ -721,7 +721,7 @@ export const artsyDotNetRoutes = defineRoutes([
     },
   },
   {
-    path: "/collections-by-category/:category",
+    path: "/collections-by-category/:slug",
     name: "CollectionsByCategory",
     Component: CollectionsByCategory,
     options: {

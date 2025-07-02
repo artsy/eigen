@@ -22,7 +22,7 @@ export const DiscoverSomethingNew: React.FC = memo(
 )
 
 const query = graphql`
-  query DiscoverSomethingNewQuery {
+  query DiscoverSomethingNewQuery @cacheable {
     collections: discoveryMarketingCollections {
       ...DiscoverSomethingNewChips_collection
     }
