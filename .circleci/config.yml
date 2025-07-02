@@ -306,12 +306,12 @@ jobs:
   run-native-tests-android:
     docker:
       - image: cimg/android:2025.03.1-node
-    resource_class: large
+    resource_class: xlarge
     steps:
       - prep-android-env
       - run:
           name: Run Android unit tests
-          command: yarn android:test
+          command: yarn android:test:ci
       - store_test_results:
           path: android/app/build/test-results
       - store_artifacts:
