@@ -1,7 +1,7 @@
 import { ContextModule } from "@artsy/cohesion"
 import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
-import { useViewabilityConfig } from "app/Scenes/HomeView/hooks/useViewabilityConfig"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useViewabilityConfig } from "app/utils/hooks/useViewabilityConfig"
 import { useEffect, useRef, useState } from "react"
 import { ViewToken } from "react-native"
 import { useTracking } from "react-tracking"

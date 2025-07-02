@@ -1,6 +1,6 @@
 import { Action, action, createContextStore } from "easy-peasy"
 
-interface HomeViewStoreModel {
+export interface HomeViewStoreModel {
   trackedSections: string[]
   trackedSectionTypes: string[]
   trackedExperiments: string[]
@@ -12,7 +12,7 @@ interface HomeViewStoreModel {
   setVisibleSections: Action<this, string[]>
 }
 
-const HomeViewStoreModel: HomeViewStoreModel = {
+export const HomeViewStoreModel: HomeViewStoreModel = {
   trackedSections: [],
   trackedSectionTypes: [],
   trackedExperiments: [],
@@ -41,6 +41,11 @@ const HomeViewStoreModel: HomeViewStoreModel = {
   }),
 }
 
-export const HomeViewStore = createContextStore(HomeViewStoreModel)
+export const HomeViewStore = createContextStore<HomeViewStoreModel>((initialData) => {
+  return {
+    ...HomeViewStoreModel,
+    ...initialData,
+  }
+})
 
 export const HomeViewStoreProvider = HomeViewStore.Provider

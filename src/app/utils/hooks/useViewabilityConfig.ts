@@ -2,7 +2,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { useRef } from "react"
 import { ViewabilityConfig } from "react-native"
 
-const DEFAULT_ITEM_VISIBLE_PERCENT_THRESHOLD = 60
+const DEFAULT_ITEM_VISIBLE_PERCENT_THRESHOLD = 50
 const DEFAULT_MINIMUM_VIEW_TIME = 1000
 
 export const useViewabilityConfig = () => {

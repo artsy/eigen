@@ -119,8 +119,12 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         showSaveIcon
         moreHref={moreHref}
         onMorePress={onMorePress}
-        onViewableItemsChanged={onViewableItemsChanged}
-        viewabilityConfig={viewabilityConfig}
+        {...(section.trackItemImpressions
+          ? {
+              onViewableItemsChanged: onViewableItemsChanged,
+              viewabilityConfig: viewabilityConfig,
+            }
+          : {})}
       />
 
       <HomeViewSectionSentinel
@@ -148,6 +152,7 @@ const fragment = graphql`
       }
     }
     ownerType
+    trackItemImpressions
 
     artworksConnection(first: 10) {
       edges {
