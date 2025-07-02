@@ -4,7 +4,7 @@ import {
   OrderDetailPaymentInfo_order$data,
   OrderDetailPaymentInfo_order$key,
 } from "__generated__/OrderDetailPaymentInfo_order.graphql"
-import { BrandCreditCardIcon } from "app/Scenes/OrderHistory/OrderDetail/Components/BrandCreditCardIcon"
+import { BrandCreditCardIcon } from "app/Components/BrandCreditCardIcon/BrandCreditCardIcon"
 import { DateTime } from "luxon"
 import { graphql, useFragment } from "react-relay"
 
