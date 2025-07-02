@@ -196,6 +196,8 @@ commands:
           name: Install ninja
           command: sudo apt-get install ninja-build
       - checkout
+      - restore_cache:
+          key: << pipeline.parameters.app_build_android_cache_key >>
       - install-node
       - setup-awscli
       - setup-env-file
@@ -212,8 +214,6 @@ commands:
           command: ./scripts/setup/download-assets-android
   build-app-android:
     steps:
-      - restore_cache:
-          key: << pipeline.parameters.app_build_android_cache_key >>
       - run:
           name: Build App
           no_output_timeout: 30m
@@ -323,6 +323,20 @@ jobs:
           name: Run Maestro Tests
           no_output_timeout: 25m
           command: ./scripts/utils/run_maestro_shard ios
+
+  run-native-tests-android:
+    docker:
+      - image: cimg/android:2025.03.1-node
+    resource_class: xlarge
+    steps:
+      - prep-android-env
+      - run:
+          name: Run Android unit tests
+          command: yarn android:test:ci
+      - store_test_results:
+          path: android/app/build/test-results
+      - store_artifacts:
+          path: android/app/build/reports/tests
 
   deploy-nightly-beta:
     environment:
@@ -705,6 +719,7 @@ workflows:
       - run-e2e-tests-ios:
           requires:
             - build-maestro-ios
+      - run-native-tests-android
 
   flag-check:
     triggers:

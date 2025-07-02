@@ -13,6 +13,8 @@
   "main": "index.js",
   "scripts": {
     "android": "react-native run-android --active-arch-only",
+    "android:test": "cd android && ./gradlew testDebugUnitTest --parallel && cd ..",
+    "android:test:ci": "cd android && ./gradlew testDebugUnitTest --parallel --no-daemon && cd ..",
     "check-flags": "./scripts/check-flags/check-flags.js",
     "ci": "yarn ci:type-check && yarn ci:lint && yarn prettier-project -l && rm -rf src/__generated__ && yarn relay && yarn ci:test",
     "ci:lint": "yarn lint --format json --out eslint-errors.json",

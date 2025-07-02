@@ -211,6 +211,9 @@ dependencies {
     implementation 'com.facebook.fresco:webpsupport:2.6.0'
     implementation 'com.android.support:support-core-utils:24.2.1'
 
+    // Test dependencies
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'io.mockk:mockk:1.13.12'
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
