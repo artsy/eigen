@@ -87,7 +87,7 @@ class FullBleedWidgetProvider : AppWidgetProvider() {
                 setLoadingVisibility(views, false)
                 appWidgetManager.updateAppWidget(appWidgetId, views)
             } catch (e: Exception) {
-                Log.e(TAG, "Error updating widget", e)
+                Log.e(TAG, "Error updating widget: ${e.message ?: e.toString()}")
 
                 setLoadingVisibility(views, false)
                 appWidgetManager.updateAppWidget(appWidgetId, views)

@@ -48,7 +48,7 @@ class ArtsyApiClient {
                     listOf(Artwork.fallback())
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Error fetching artworks", e)
+                Log.e(TAG, "Error fetching artworks: ${e.message ?: e.toString()}")
                 listOf(Artwork.fallback())
             }
         }
@@ -61,7 +61,7 @@ class ArtsyApiClient {
                 val imageUrl = buildImageUrl(artwork.firstImageToken, widgetWidth, widgetHeight)
                 downloadImage(imageUrl)
             } catch (e: Exception) {
-                Log.e(TAG, "Error downloading image", e)
+                Log.e(TAG, "Error downloading image: ${e.message ?: e.toString()}")
                 null
             }
         }
@@ -106,7 +106,7 @@ class ArtsyApiClient {
 
             return artworks.ifEmpty { listOf(Artwork.fallback()) }
         } catch (e: Exception) {
-                Log.e(TAG, "Error parsing the artworks json", e)
+                Log.e(TAG, "Error parsing the artworks json: ${e.message ?: e.toString()}")
             return listOf(Artwork.fallback())
         }
     }
@@ -140,7 +140,7 @@ class ArtsyApiClient {
                 null
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Error downloading", e)
+            Log.e(TAG, "Error downloading from $urlString: ${e.message ?: e.toString()}")
             null
         }
     }
