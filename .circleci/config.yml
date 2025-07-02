@@ -306,9 +306,8 @@ jobs:
   run-native-tests-android:
     docker:
       - image: cimg/android:2025.03.1-node
-    resource_class: medium
+    resource_class: large
     steps:
-      - checkout
       - prep-android-env
       - run:
           name: Run Android unit tests
