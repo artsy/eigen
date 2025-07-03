@@ -4,11 +4,7 @@ on:
   schedule:
     - cron: "0 6 * * *" # Runs daily at 6:00 AM UTC
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
-    inputs:
-    xcode-version:
-      description: "The xcode version to use"
-      required: false
-      default: "16.2.0"
+
   push:
     branches:
       - gkartalis/PHIRE-1889-ios-e2e-gh-actions
@@ -67,8 +63,9 @@ jobs:
           brew tap facebook/fb
           brew install idb-companion
 
-      - name: Check Xcode and iOS Simulator availability
+      - name: Select Xcode 16.2
         run: |
+          sudo xcode-select -s /Applications/Xcode_16.2.app
           echo "🔍 Xcode version:"
           xcodebuild -version
           echo ""
