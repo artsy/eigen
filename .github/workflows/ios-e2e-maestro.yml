@@ -66,10 +66,13 @@ jobs:
       - name: Select Xcode version
         run: sudo xcode-select -s /Applications/Xcode_16.2.app
 
-      - name: Select and boot iPhone 16 Pro iOS 18.2 simulator
+      - name: Create and boot iPhone 16 Pro iOS 18.2 simulator
         run: |
-          echo "📱 Selecting iPhone 16 Pro simulator with iOS 18.2..."
-          SIMULATOR_UDID=$(./scripts/utils/set_sim.sh)
+          echo "📱 Creating iPhone 16 Pro simulator with iOS 18.2..."
+          # Create the simulator
+          SIMULATOR_UDID=$(xcrun simctl create "iPhone 16 Pro Test" com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro com.apple.CoreSimulator.SimRuntime.iOS-18-2)
+          echo "Created simulator with UDID: $SIMULATOR_UDID"
+          echo "SIMULATOR_UDID=$SIMULATOR_UDID" >> $GITHUB_ENV
 
           # Boot the simulator with arm64 architecture for Apple Silicon
           echo "🚀 Booting simulator..."
