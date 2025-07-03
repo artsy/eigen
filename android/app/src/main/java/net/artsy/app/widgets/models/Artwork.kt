@@ -18,7 +18,7 @@ data class Artwork(
         }
 
     val url: String
-        get() = "https://www.artsy.net/artwork/$id"
+        get() = "https://www.artsy.net/artwork/$id?utm_medium=android_widget"
 
     companion object {
         fun fallback(): Artwork {
