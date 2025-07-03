@@ -1,6 +1,7 @@
 import { ArrowUpRightIcon, FireIcon } from "@artsy/icons/native"
 import { Box, Text } from "@artsy/palette-mobile"
 import { ArtworkSocialSignal_collectorSignals$key } from "__generated__/ArtworkSocialSignal_collectorSignals.graphql"
+import { Text as RNText } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface ArtworkSocialSignalProps {
@@ -22,12 +23,14 @@ export const ArtworkSocialSignal: React.FC<ArtworkSocialSignalProps> = ({
   switch (true) {
     case curatorsPick && !hideCuratorsPick:
       return (
-        <Box alignItems="center" flexDirection="row">
+        <Box flexDirection="row" alignItems="center">
           <FireIcon fill={primaryColor} />
-          <Text color={primaryColor} variant="xs" textAlign="center">
-            {" "}
-            Curators’ Pick
-          </Text>
+          <RNText numberOfLines={1} ellipsizeMode="tail">
+            <Text color={primaryColor} variant="xs" textAlign="center">
+              {" "}
+              Curators’ Pick
+            </Text>
+          </RNText>
         </Box>
       )
 
@@ -35,10 +38,12 @@ export const ArtworkSocialSignal: React.FC<ArtworkSocialSignalProps> = ({
       return (
         <Box flexDirection="row" alignItems="center">
           <ArrowUpRightIcon fill={primaryColor} />
-          <Text color={primaryColor} variant="xs" textAlign="center">
-            {" "}
-            Increased Interest
-          </Text>
+          <RNText numberOfLines={1} ellipsizeMode="tail">
+            <Text color={primaryColor} variant="xs" textAlign="center">
+              {" "}
+              Increased Interest
+            </Text>
+          </RNText>
         </Box>
       )
 
