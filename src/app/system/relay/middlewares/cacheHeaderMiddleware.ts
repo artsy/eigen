@@ -1,3 +1,4 @@
+import { GlobalStore, unsafe_getDevToggle } from "app/store/GlobalStore"
 import { getCurrentURL } from "app/system/navigation/utils/getCurrentURL"
 import {
   hasNoCacheParamPresent,
@@ -65,6 +66,16 @@ export const cacheHeaderMiddleware = (): Middleware => {
     const cacheControlHeader = (() => {
       if (shouldSkipCDNCache(req as GraphQLRequest)) {
         return { "Cache-Control": "no-cache" }
+      }
+
+      if (unsafe_getDevToggle("DTCacheHitsVisialiser")) {
+        GlobalStore.actions.toast.add({
+          message: `${(req as GraphQLRequest).operation.name} hit cache 🚀`,
+          placement: "bottom",
+          options: {
+            backgroundColor: "green100",
+          },
+        })
       }
 
       return {}
