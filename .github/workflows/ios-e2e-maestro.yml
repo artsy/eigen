@@ -69,16 +69,7 @@ jobs:
       - name: Select and boot iPhone 16 Pro iOS 18.2 simulator
         run: |
           echo "📱 Selecting iPhone 16 Pro simulator with iOS 18.2..."
-
-          SIMULATOR_UDID=$(xcrun simctl list devices | \
-          awk '/iPhone 16 Pro (/{flag=1} /Shutdown|Booted/{if(flag && $0 ~ /iOS 18.2/){print $NF; exit}})
-
-          # Sanitize the UDID
-          SIMULATOR_UDID=${SIMULATOR_UDID//[\(\)]/}
-
-          # Output the UDID and export to environment
-          echo "Using existing simulator with UDID: $SIMULATOR_UDID"
-          echo "SIMULATOR_UDID=$SIMULATOR_UDID" >> $GITHUB_ENV
+          SIMULATOR_UDID=$(./scripts/utils/set_sim.sh)
 
           # Boot the simulator with arm64 architecture for Apple Silicon
           echo "🚀 Booting simulator..."
