@@ -62,23 +62,16 @@ jobs:
           brew tap facebook/fb
           brew install idb-companion
 
-      - name: Create iOS simulator
+      - name: Check Xcode and iOS Simulator availability
         run: |
-          # Create iPhone 15 Pro simulator with iOS 17
-          xcrun simctl create "iPhone-15-Pro-Maestro" "iPhone 15 Pro" "iOS17.0" || echo "Simulator may already exist"
-
-          # Get the UDID of our simulator
-          SIMULATOR_ID=$(xcrun simctl list devices | grep "iPhone-15-Pro-Maestro" | grep -oE '[0-9A-F-]{36}' | head -1)
-          echo "SIMULATOR_ID=$SIMULATOR_ID" >> $GITHUB_ENV
-          echo "Created simulator with ID: $SIMULATOR_ID"
-
-      - name: Boot iOS simulator
-        run: |
-          echo "Booting simulator: $SIMULATOR_ID"
-          xcrun simctl boot $SIMULATOR_ID --arch=arm64
-
-          # Wait for simulator to be ready
-          echo "Waiting for simulator to boot..."
-          xcrun simctl bootstatus $SIMULATOR_ID -b
-
-          echo "Simulator booted successfully"
+          echo "🔍 Xcode version:"
+          xcodebuild -version
+          echo ""
+          echo "📱 Available iOS runtimes:"
+          xcrun simctl list runtimes | grep iOS
+          echo ""
+          echo "📱 Available device types:"
+          xcrun simctl list devicetypes | grep iPhone
+          echo ""
+          echo "📱 Currently existing simulators:"
+          xcrun simctl list devices
