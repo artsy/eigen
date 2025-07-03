@@ -182,7 +182,7 @@ export const features = {
     echoFlagKey: "AREnableQuickLinksAnimation2",
   },
   AREnableNewOrderDetails: {
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     description: "Enable new order details screen",
     echoFlagKey: "AREnableNewOrderDetails",
