@@ -16307,6 +16307,9 @@ type Order {
   # A globally unique ID.
   id: ID!
 
+  # Impulse conversation Id for the order
+  impulseConversationId: String
+
   # A type-specific ID likely used as a database ID.
   internalID: ID!
 
