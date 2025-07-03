@@ -63,29 +63,21 @@ jobs:
           brew tap facebook/fb
           brew install idb-companion
 
-      - name: Check Xcode and iOS Simulator availability
+      - name: Select Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app
+
+      - name: Select and boot iPhone 16 Pro iOS 18.2 simulator
         run: |
-          sudo xcode-select -s /Applications/Xcode_16.2.app
+          echo "📱 Selecting iPhone 16 Pro simulator with iOS 18.2..."
 
-          echo "🔍 Xcode version:"
-          xcodebuild -version
-          echo ""
-          echo "📱 Available iOS runtimes:"
-          xcrun simctl list runtimes | grep iOS
-          echo ""
-          echo "📱 Available device types:"
-          xcrun simctl list devicetypes | grep iPhone
-          echo ""
-          echo "📱 Currently existing simulators:"
-          xcrun simctl list devices
+          SIMULATOR_UDID=$(xcrun simctl list devices | \
+          awk '/iPhone 16 Pro (/{flag=1} /Shutdown|Booted/{if(flag && $0 ~ /iOS 18.2/){print $NF; exit}})
 
-      - name: Create and boot iPhone 16 Pro iOS 18.2 simulator
-        run: |
-          echo "📱 Creating iPhone 16 Pro simulator with iOS 18.2..."
+          # Sanitize the UDID
+          SIMULATOR_UDID=${SIMULATOR_UDID//[\(\)]/}
 
-          # Create the simulator
-          SIMULATOR_UDID=$(xcrun simctl create "iPhone 16 Pro Test" com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro com.apple.CoreSimulator.SimRuntime.iOS-18-2)
-          echo "Created simulator with UDID: $SIMULATOR_UDID"
+          # Output the UDID and export to environment
+          echo "Using existing simulator with UDID: $SIMULATOR_UDID"
           echo "SIMULATOR_UDID=$SIMULATOR_UDID" >> $GITHUB_ENV
 
           # Boot the simulator with arm64 architecture for Apple Silicon
@@ -110,10 +102,6 @@ jobs:
             echo "❌ Timeout: Simulator failed to boot within 120 seconds"
             exit 1
           fi
-
-          # Verify simulator is running
-          echo "✅ Simulator status:"
-          xcrun simctl list devices | grep "$SIMULATOR_UDID"
 
           echo "📱 Installing app..."
           ./scripts/utils/install_app_in_booted_sims.sh
