@@ -119,7 +119,7 @@ jobs:
           ./scripts/utils/install_app_in_booted_sims.sh
 
       - name: Set Maestro driver timeout
-        run: echo "MAESTRO_DRIVER_STARTUP_TIMEOUT=30000" >> $GITHUB_ENV
+        run: echo "MAESTRO_DRIVER_STARTUP_TIMEOUT=60000" >> $GITHUB_ENV
 
       - name: Run Maestro E2E Tests (Shard ${{ matrix.node_index }})
         run: |
