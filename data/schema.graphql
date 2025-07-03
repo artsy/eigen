@@ -1662,9 +1662,8 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   biographyBlurb(
     format: Format
 
-    # If true, will return featured bio over Artsy one.
+    # DEPRECATED: Artsy bios are always returned over featured bios.
     partnerBio: Boolean = true
-      @deprecated(reason: "Artsy bios are always returned over featured bios.")
   ): ArtistBlurb
   birthday: String
   blurb(format: Format): String
@@ -2574,6 +2573,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Can a user request a lot conditions report for this artwork?
   canRequestLotConditionsReport: Boolean
+
+  # This field is intended for use exclusively on the individual Artwork page for alt tags
+  caption: String
 
   # Represents the "**medium type**", such as _Painting_. (This field is also commonly referred to as just "medium", but should not be confused with the artwork attribute called `medium`.)
   category: String @deprecated(reason: "Prefer to use `mediumType`.")
