@@ -76,8 +76,6 @@
 
 #import "ARTNativeScreenPresenterModule.h"
 
-// CityGuide
-#import "ARMapContainerViewController.h"
 
 // Sentry Swift Access
 #import "ARSentryReporter.h"
