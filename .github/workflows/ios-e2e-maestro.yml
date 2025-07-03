@@ -94,7 +94,22 @@ jobs:
 
           # Wait for the simulator to be ready
           echo "⏳ Waiting for simulator to be ready..."
-          timeout 120s bash -c 'while [[ $(xcrun simctl list devices | grep "$0" | grep -c "Booted") -eq 0 ]]; do sleep 2; done' "$SIMULATOR_UDID"
+          WAIT_COUNT=0
+          MAX_WAIT=60  # 60 iterations * 2 seconds = 120 seconds max wait
+          while [[ $WAIT_COUNT -lt $MAX_WAIT ]]; do
+            if xcrun simctl list devices | grep "$SIMULATOR_UDID" | grep -q "Booted"; then
+              echo "✅ Simulator is booted and ready!"
+              break
+            fi
+            echo "Still waiting... (attempt $((WAIT_COUNT + 1))/$MAX_WAIT)"
+            sleep 2
+            WAIT_COUNT=$((WAIT_COUNT + 1))
+          done
+
+          if [[ $WAIT_COUNT -eq $MAX_WAIT ]]; then
+            echo "❌ Timeout: Simulator failed to boot within 120 seconds"
+            exit 1
+          fi
 
           # Verify simulator is running
           echo "✅ Simulator status:"
