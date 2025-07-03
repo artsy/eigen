@@ -1,5 +1,6 @@
 import { Box, Flex, Image, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
+import { BOTTOM_TABS_HEIGHT } from "app/Navigation/AuthenticatedRoutes/Tabs"
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { modules } from "app/Navigation/utils/modules"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -16,7 +17,6 @@ const EDGE_TOAST_HEIGHT = 60
 const IMAGE_SIZE = 40
 const EDGE_TOAST_PADDING = 10
 const NAVBAR_HEIGHT = 44
-const TABBAR_HEIGHT = 50
 
 export const TOAST_DURATION_MAP: Record<ToastDuration, number> = {
   short: 2500,
@@ -64,7 +64,7 @@ export const ToastComponent = ({
   const toastBottomPadding = useMemo(() => {
     // This is needed to avoid importing modules during tests
     if (__TEST__) {
-      return TABBAR_HEIGHT
+      return BOTTOM_TABS_HEIGHT
     }
 
     const moduleName = internal_navigationRef?.current?.getCurrentRoute()
@@ -78,7 +78,7 @@ export const ToastComponent = ({
       return bottomPadding || 0
     }
 
-    return TABBAR_HEIGHT
+    return BOTTOM_TABS_HEIGHT
   }, [])
 
   if (placement === "middle") {

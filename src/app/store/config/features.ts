@@ -230,6 +230,9 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
   DTLocationDetectionVisialiser: {
     description: "Location detection visualiser",
   },
+  DTCacheHitsVisialiser: {
+    description: "Cache hits visualiser",
+  },
   DTShowNavigationVisualiser: {
     description: "Navigation visualiser",
   },
