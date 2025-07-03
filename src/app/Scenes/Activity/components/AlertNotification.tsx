@@ -114,7 +114,16 @@ export const alertNotificationFragment = graphql`
     item {
       ... on AlertNotificationItem {
         alert {
+          # ❌ This internalID resolves to e.g. 2c401e6b-a8f2-4268-8646-63242dda22d4
+          # i.e. a uuid for Gravity SearchCriteria.
+          #
+          # Sending the SearchCriteria id (as opposed to the UserSearchCriteria id)
+          # works fine for the Gravity GET /me/alert/:id but *not* the corresponding PUT, thus the mutation *fails*.
+          #
+          # (This is resolved from inside of MP's me.notification, see QR in ActivityItemScreen.tsx)
           internalID
+          # 👆🏽
+
           artists {
             name
             slug

@@ -232,7 +232,15 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
 
 const alertFragment = graphql`
   fragment SavedSearchListItem_alert on Alert {
+    # ✅ This internalID resolves to e.g. 98680
+    # i.e. an integer id for a Gravity UserSearchCriteria.
+    #
+    # This works fine for the Gravity PUT so the mutation *succeeds*.
+    #
+    # (This is resolved from inside of MP's me.alertsConnection, see QR in Alerts.tsx)
     internalID
+    # 👆🏽
+
     artistSeriesIDs
     title: displayName(only: [artistIDs])
     subtitle: displayName(except: [artistIDs])
