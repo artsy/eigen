@@ -124,4 +124,4 @@ jobs:
       - name: Run Maestro E2E Tests (Shard ${{ matrix.node_index }})
         run: |
           echo "🧪 Running Maestro E2E tests for shard ${{ matrix.node_index }} of ${{ matrix.total_nodes }}..."
-          ./scripts/utils/run_maestro_shard_ios ios ${{ matrix.node_index }} ${{ matrix.total_nodes }}
+          ./scripts/utils/run_maestro_shard ios ${{ matrix.node_index }} ${{ matrix.total_nodes }}
