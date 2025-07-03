@@ -1,0 +1,87 @@
+name: iOS E2E Tests (Maestro)
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # Runs daily at 6:00 AM UTC
+  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+  push:
+    branches:
+      - gkartalis/PHIRE-1889-ios-e2e-gh-actions
+  pull_request:
+    branches:
+      - main # Triggers on pull requests targeting the main branch
+
+jobs:
+  e2e-tests:
+    # if: github.ref == 'refs/heads/main'
+    runs-on: macos-latest # iOS simulators require macOS runners
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false # Don't cancel other jobs if one fails
+      matrix:
+        node_index: [0, 1, 2]
+        total_nodes: [3]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.1.6"
+          bundler-cache: true
+
+      - name: Install Ruby dependencies
+        run: bundle install
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Set up env for ci
+        run: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci
+
+      - name: Set up maestro env
+        run: ./scripts/setup/setup-env-for-maestro ios
+
+      - name: Download iOS App
+        run: aws s3 cp s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip ./Artsy.zip
+
+      - name: Unzip iOS App
+        run: unzip Artsy.zip
+
+      - name: Install Maestro
+        run: curl -Ls "https://get.maestro.mobile.dev" | bash
+
+      - name: Add Maestro to PATH
+        run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+
+      - name: Install Facebook IDB
+        run: |
+          brew tap facebook/fb
+          brew install idb-companion
+
+      - name: Create iOS simulator
+        run: |
+          # Create iPhone 15 Pro simulator with iOS 17
+          xcrun simctl create "iPhone-15-Pro-Maestro" "iPhone 15 Pro" "iOS17.0" || echo "Simulator may already exist"
+
+          # Get the UDID of our simulator
+          SIMULATOR_ID=$(xcrun simctl list devices | grep "iPhone-15-Pro-Maestro" | grep -oE '[0-9A-F-]{36}' | head -1)
+          echo "SIMULATOR_ID=$SIMULATOR_ID" >> $GITHUB_ENV
+          echo "Created simulator with ID: $SIMULATOR_ID"
+
+      - name: Boot iOS simulator
+        run: |
+          echo "Booting simulator: $SIMULATOR_ID"
+          xcrun simctl boot $SIMULATOR_ID
+
+          # Wait for simulator to be ready
+          echo "Waiting for simulator to boot..."
+          xcrun simctl bootstatus $SIMULATOR_ID -b
+
+          echo "Simulator booted successfully"
