@@ -13,7 +13,7 @@ interface OrderDetailHelpLinksProps {
 }
 
 export const OrderDetailHelpLinks: React.FC<OrderDetailHelpLinksProps> = ({ order }) => {
-  const orderData = useFragment(fragment, order)
+  const { internalID, mode, source } = useFragment(fragment, order)
   const orderDetailTracks = useOrderDetailTracking()
 
   return (
@@ -31,7 +31,7 @@ export const OrderDetailHelpLinks: React.FC<OrderDetailHelpLinksProps> = ({ orde
           <Text variant="xs" color="mono60">
             <LinkText
               onPress={() => {
-                orderDetailTracks.clickedVisitHelpCenter(orderData.internalID, orderData.mode)
+                orderDetailTracks.tappedVisitHelpCenter(internalID, mode, source)
                 navigate(HELP_CENTER_LINK)
               }}
               variant="xs"
@@ -51,5 +51,6 @@ const fragment = graphql`
   fragment OrderDetailHelpLinks_order on Order {
     internalID
     mode
+    source
   }
 `

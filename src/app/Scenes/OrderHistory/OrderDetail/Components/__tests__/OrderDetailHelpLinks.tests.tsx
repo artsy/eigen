@@ -21,7 +21,7 @@ describe("OrderDetailHelpLinks", () => {
 
   it("renders the help link section", () => {
     renderWithRelay({
-      Order: () => ({ mode: "BUY", internalID: "order-id" }),
+      Order: () => ({ mode: "BUY", source: "PARTNER_OFFER", internalID: "order-id" }),
     })
 
     expect(screen.getByText("Visit our help center")).toBeOnTheScreen()
@@ -39,7 +39,7 @@ describe("OrderDetailHelpLinks", () => {
         "context_screen_owner_type": "orders-detail",
         "destination_screen_owner_slug": "0TO3b000000UessGAC/buy",
         "destination_screen_owner_type": "articles",
-        "flow": "Buy now",
+        "flow": "Partner offer",
       },
     ]
   `)
