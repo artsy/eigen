@@ -118,4 +118,5 @@ jobs:
           echo "📱 Installing app..."
           ./scripts/utils/install_app_in_booted_sims.sh
 
+          export MAESTRO_DRIVER_STARTUP_TIMEOUT=30000 # setting 30 seconds
           ./scripts/utils/run_maestro_shard_ios ios ${{ matrix.node_index }} ${{ matrix.total_nodes }}
