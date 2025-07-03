@@ -15,12 +15,14 @@ import useDebounce from "react-use/lib/useDebounce"
 
 interface ArtistHeaderNavRightProps {
   artist: ArtistHeaderNavRight_artist$key
+  setShowSimilarArtists: (show: boolean) => void
 }
 
 const CONTAINER_WIDTH = 185 * PixelRatio.getFontScale()
 
 export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   artist: artistProp,
+  setShowSimilarArtists,
 }) => {
   const space = useSpace()
   const { currentScrollY, scrollYOffset } = useScreenScrollContext()
@@ -60,61 +62,69 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   }, [artist, showShareSheet])
 
   return (
-    <MotiView
-      animate={{
-        transform: [
-          {
-            translateX: displayFollowButton
-              ? 0
-              : CONTAINER_WIDTH -
-                ACCESSIBLE_DEFAULT_ICON_SIZE -
-                space(1) * PixelRatio.getFontScale(),
-          },
-        ],
-      }}
-      transition={{
-        type: "timing",
-        duration: 200,
-      }}
-    >
-      <Flex
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="flex-end"
-        width={CONTAINER_WIDTH}
-        py={1}
+    <Flex>
+      <MotiView
+        animate={{
+          transform: [
+            {
+              translateX: displayFollowButton
+                ? 0
+                : CONTAINER_WIDTH -
+                  ACCESSIBLE_DEFAULT_ICON_SIZE -
+                  space(1) * PixelRatio.getFontScale(),
+            },
+          ],
+        }}
+        transition={{
+          type: "timing",
+          duration: 200,
+        }}
       >
-        <TouchableOpacity
-          accessibilityRole="button"
-          accessibilityLabel="Share"
-          onPress={handleSharePress}
+        <Flex
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="flex-end"
+          width={CONTAINER_WIDTH}
+          py={1}
         >
-          <ShareIcon width={ACCESSIBLE_DEFAULT_ICON_SIZE} height={ACCESSIBLE_DEFAULT_ICON_SIZE} />
-        </TouchableOpacity>
+          <TouchableOpacity
+            accessibilityRole="button"
+            accessibilityLabel="Share"
+            onPress={handleSharePress}
+          >
+            <ShareIcon width={ACCESSIBLE_DEFAULT_ICON_SIZE} height={ACCESSIBLE_DEFAULT_ICON_SIZE} />
+          </TouchableOpacity>
 
-        <MotiView
-          animate={{
-            opacity: displayFollowButton ? 1 : 0,
-          }}
-          transition={{
-            type: "timing",
-            duration: 200,
-          }}
-        >
-          <FollowButton
-            haptic
-            isFollowed={isFollowed}
-            longestText="Following 999.9k"
-            followCount={artist?.counts.follows}
-            onPress={() => setIsFollowed(!isFollowed)}
-            ml={1}
-            // Using maxWidth and minWidth to prevent the button from changing width when the text changes
-            maxWidth={followButtonWidth}
-            minWidth={followButtonWidth}
-          />
-        </MotiView>
-      </Flex>
-    </MotiView>
+          <MotiView
+            animate={{
+              opacity: displayFollowButton ? 1 : 0,
+            }}
+            transition={{
+              type: "timing",
+              duration: 200,
+            }}
+          >
+            <FollowButton
+              haptic
+              isFollowed={isFollowed}
+              longestText="Following 999.9k"
+              followCount={artist?.counts.follows}
+              onPress={() => {
+                setIsFollowed(!isFollowed)
+
+                if (!artist?.isFollowed) {
+                  setShowSimilarArtists(true)
+                }
+              }}
+              ml={1}
+              // Using maxWidth and minWidth to prevent the button from changing width when the text changes
+              maxWidth={followButtonWidth}
+              minWidth={followButtonWidth}
+            />
+          </MotiView>
+        </Flex>
+      </MotiView>
+    </Flex>
   )
 }
 
@@ -147,11 +157,12 @@ const artistHeaderNavRightQuery = graphql`
 
 interface ArtistHeaderNavRightQueryRendererProps {
   artistID: string
+  setShowSimilarArtists: (show: boolean) => void
 }
 
 export const ArtistHeaderNavRightQueryRenderer: React.FC<ArtistHeaderNavRightQueryRendererProps> =
   withSuspense({
-    Component: ({ artistID }) => {
+    Component: ({ artistID, setShowSimilarArtists }) => {
       const data = useLazyLoadQuery<ArtistHeaderNavRightQuery>(artistHeaderNavRightQuery, {
         artistID,
       })
@@ -160,7 +171,9 @@ export const ArtistHeaderNavRightQueryRenderer: React.FC<ArtistHeaderNavRightQue
         return null
       }
 
-      return <ArtistHeaderNavRight artist={data.artist} />
+      return (
+        <ArtistHeaderNavRight artist={data.artist} setShowSimilarArtists={setShowSimilarArtists} />
+      )
     },
     // We don't want to show a loading fallback here because it degrades the UX in this case
     LoadingFallback: () => <Flex />,

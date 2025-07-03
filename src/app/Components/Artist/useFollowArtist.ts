@@ -134,7 +134,6 @@ const mutation = graphql`
         id
         isFollowed
         ...useFollowArtist_artist
-        ...ArtistHeaderNavRight_artist
       }
     }
   }

@@ -28,7 +28,9 @@ jest.mock("app/Components/ShareSheet/ShareSheetContext", () => ({
 
 describe("ArtistHeaderNavRight", () => {
   const { renderWithRelay } = setupTestWrapper<ArtistHeaderNavRightTestsQuery>({
-    Component: ({ artist }) => <ArtistHeaderNavRight artist={artist!} />,
+    Component: ({ artist }) => (
+      <ArtistHeaderNavRight artist={artist!} setShowSimilarArtists={jest.fn()} />
+    ),
     query: graphql`
       query ArtistHeaderNavRightTestsQuery @relay_test_operation {
         artist(id: "artist-id") {

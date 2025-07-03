@@ -14,6 +14,7 @@ import {
   ArtistHeader_artist$data,
   ArtistHeader_artist$key,
 } from "__generated__/ArtistHeader_artist.graphql"
+import { SimilarArtistsRailQueryRenderer } from "app/Components/Artist/SimilarArtistsRail"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { FlatList, LayoutChangeEvent, ViewProps } from "react-native"
@@ -29,7 +30,9 @@ const ARTIST_HEADER_SCROLL_MARGIN = 100
 
 interface Props {
   artist: ArtistHeader_artist$key
+  artistBelowTheFold?: ArtistHeader_artist$key
   onLayoutChange?: ViewProps["onLayout"]
+  showSimilarArtists?: boolean
 }
 
 export const useArtistHeaderImageDimensions = () => {
@@ -47,7 +50,7 @@ export const useArtistHeaderImageDimensions = () => {
   }
 }
 
-export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
+export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange, showSimilarArtists }) => {
   const space = useSpace()
   const showBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
@@ -91,68 +94,74 @@ export const ArtistHeader: React.FC<Props> = ({ artist, onLayoutChange }) => {
   }
 
   return (
-    <Flex pointerEvents="box-none" onLayout={handleOnLayout}>
-      {!!artistData?.coverArtwork?.image?.url && (
-        <Flex pointerEvents="none">
-          <Image
-            accessibilityLabel={`${artistData.name} cover image`}
-            src={artistData.coverArtwork.image.url}
-            aspectRatio={aspectRatio}
-            width={width}
-            height={height}
-            style={{ alignSelf: "center" }}
-            blurhash={showBlurhash ? artistData.coverArtwork.image.blurhash : undefined}
-          />
-          <Spacer y={2} />
-        </Flex>
-      )}
-      <Box px={2} pointerEvents="none">
-        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-          <Flex flex={1}>
-            <Text variant="lg-display">{artistData.name}</Text>
-            {!!bylineRequired && (
-              <Text variant="lg-display" color="mono60">
-                {descriptiveString}
+    <Flex pointerEvents="box-none">
+      <SimilarArtistsRailQueryRenderer
+        artistID={artistData.internalID}
+        showSimilarArtists={showSimilarArtists}
+      />
+      <Flex pointerEvents="box-none" onLayout={handleOnLayout}>
+        {!!artistData?.coverArtwork?.image?.url && (
+          <Flex pointerEvents="none">
+            <Image
+              accessibilityLabel={`${artistData.name} cover image`}
+              src={artistData.coverArtwork.image.url}
+              aspectRatio={aspectRatio}
+              width={width}
+              height={height}
+              style={{ alignSelf: "center" }}
+              blurhash={showBlurhash ? artistData.coverArtwork.image.blurhash : undefined}
+            />
+            <Spacer y={2} />
+          </Flex>
+        )}
+        <Box px={2} pointerEvents="none">
+          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+            <Flex flex={1}>
+              <Text variant="lg-display">{artistData.name}</Text>
+              {!!bylineRequired && (
+                <Text variant="lg-display" color="mono60">
+                  {descriptiveString}
+                </Text>
+              )}
+            </Flex>
+          </Flex>
+        </Box>
+
+        {!!hasVerifiedRepresentatives && (
+          <Flex pointerEvents="box-none">
+            <Flex pointerEvents="none" px={2}>
+              <Text pt={2} pb={1} variant="sm" color="mono60">
+                Featured representation
               </Text>
-            )}
+            </Flex>
+            <FlatList
+              horizontal
+              data={artistData.verifiedRepresentatives}
+              keyExtractor={({ partner }) => `representative-${partner.internalID}`}
+              showsHorizontalScrollIndicator={false}
+              renderItem={({ item }) => (
+                <RouterLink
+                  onPress={() => {
+                    trackEvent(tracks.tappedVerifiedRepresentative(artistData, item.partner))
+                  }}
+                  to={item.partner.href}
+                  hasChildTouchable
+                >
+                  <Pill variant="profile" src={item.partner.profile?.icon?.url ?? undefined}>
+                    {item.partner.name}
+                  </Pill>
+                </RouterLink>
+              )}
+              ItemSeparatorComponent={() => <Spacer x={1} />}
+              contentContainerStyle={{
+                paddingHorizontal: space(2),
+              }}
+            />
           </Flex>
-        </Flex>
-      </Box>
+        )}
 
-      {!!hasVerifiedRepresentatives && (
-        <Flex pointerEvents="box-none">
-          <Flex pointerEvents="none" px={2}>
-            <Text pt={2} pb={1} variant="sm" color="mono60">
-              Featured representation
-            </Text>
-          </Flex>
-          <FlatList
-            horizontal
-            data={artistData.verifiedRepresentatives}
-            keyExtractor={({ partner }) => `representative-${partner.internalID}`}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <RouterLink
-                onPress={() => {
-                  trackEvent(tracks.tappedVerifiedRepresentative(artistData, item.partner))
-                }}
-                to={item.partner.href}
-                hasChildTouchable
-              >
-                <Pill variant="profile" src={item.partner.profile?.icon?.url ?? undefined}>
-                  {item.partner.name}
-                </Pill>
-              </RouterLink>
-            )}
-            ItemSeparatorComponent={() => <Spacer x={1} />}
-            contentContainerStyle={{
-              paddingHorizontal: space(2),
-            }}
-          />
-        </Flex>
-      )}
-
-      <Spacer y={2} />
+        <Spacer y={2} />
+      </Flex>
     </Flex>
   )
 }
