@@ -3,6 +3,8 @@ import { ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwo
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+  ARTWORK_RAIL_CARD_MAX_WIDTH,
+  ARTWORK_RAIL_CARD_MIN_WIDTH,
   ArtworkRailCardImage,
 } from "app/Components/ArtworkRail/ArtworkRailCardImage"
 import {
@@ -114,6 +116,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                 height={
                   ARTWORK_RAIL_CARD_IMAGE_HEIGHT + ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + space(1)
                 }
+                minWidth={ARTWORK_RAIL_CARD_MIN_WIDTH}
+                maxWidth={ARTWORK_RAIL_CARD_MAX_WIDTH}
                 justifyContent="flex-start"
               >
                 <ArtworkRailCardImage artwork={artwork} />
