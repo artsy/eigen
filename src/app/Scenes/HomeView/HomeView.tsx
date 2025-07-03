@@ -5,6 +5,7 @@ import { useFocusEffect } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
 import { HomeViewFetchMeQuery } from "__generated__/HomeViewFetchMeQuery.graphql"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
+import { HomeViewSectionArtworks_section$data } from "__generated__/HomeViewSectionArtworks_section.graphql"
 import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
@@ -12,7 +13,7 @@ import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboar
 import { RetryErrorBoundary, useRetryErrorBoundaryContext } from "app/Components/RetryErrorBoundary"
 import { EmailConfirmationBannerFragmentContainer } from "app/Scenes/HomeView/Components/EmailConfirmationBanner"
 import { HomeHeader } from "app/Scenes/HomeView/Components/HomeHeader"
-import { HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
+import { HomeViewStore, HomeViewStoreProvider } from "app/Scenes/HomeView/HomeViewContext"
 import { Section } from "app/Scenes/HomeView/Sections/Section"
 import { useHomeViewExperimentTracking } from "app/Scenes/HomeView/hooks/useHomeViewExperimentTracking"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
@@ -27,12 +28,13 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsDeepLink } from "app/utils/hooks/useIsDeepLink"
+import { useViewabilityConfig } from "app/utils/hooks/useViewabilityConfig"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
-import { memo, RefObject, Suspense, useCallback, useEffect, useState } from "react"
-import { FlatList, Linking, RefreshControl, StatusBar } from "react-native"
+import { memo, RefObject, Suspense, useCallback, useEffect, useRef, useState } from "react"
+import { FlatList, Linking, RefreshControl, StatusBar, ViewToken } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const NUMBER_OF_SECTIONS_TO_LOAD = 10
@@ -44,7 +46,26 @@ export const homeViewScreenQueryVariables = () => ({
 export const HomeView: React.FC = memo(() => {
   const flashlistRef = useBottomTabsScrollToTop()
 
+  const setViewableSections = HomeViewStore.useStoreActions(
+    (actions) => actions.setViewableSections
+  )
+
   const [isRefreshing, setIsRefreshing] = useState(false)
+
+  const onViewableItemsChanged = useRef(
+    ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
+      const newViewableRails = new Set<string>()
+
+      // Track currently viewable rails // needed to enable tracking artwork views
+      viewableItems.forEach(({ item }: { item: HomeViewSectionArtworks_section$data }) => {
+        newViewableRails.add(item.internalID)
+      })
+
+      setViewableSections(Array.from(newViewableRails))
+    }
+  ).current
+
+  const viewabilityConfig = useViewabilityConfig()
 
   const { fetchKey } = useRetryErrorBoundaryContext()
 
@@ -196,6 +217,8 @@ export const HomeView: React.FC = memo(() => {
           maxToRenderPerBatch={6}
           stickyHeaderIndices={[0]}
           windowSize={15}
+          viewabilityConfig={viewabilityConfig}
+          onViewableItemsChanged={onViewableItemsChanged}
         />
         {!!data?.me && <EmailConfirmationBannerFragmentContainer me={data.me} />}
       </Screen.Body>

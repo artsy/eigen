@@ -1,8 +1,9 @@
 import { ContextModule } from "@artsy/cohesion"
 import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { useViewabilityConfig } from "app/utils/hooks/useViewabilityConfig"
 import { useEffect, useRef, useState } from "react"
-import { ViewToken, ViewabilityConfig } from "react-native"
+import { ViewToken } from "react-native"
 import { useTracking } from "react-tracking"
 
 type TrackableItem = { id: string; index: number | null }
@@ -22,12 +23,7 @@ export const useItemsImpressionsTracking = ({
 
   const enableItemsViewsTracking = useFeatureFlag("ARImpressionsTrackingHomeItemViews")
 
-  const viewabilityConfig = useRef<ViewabilityConfig>({
-    // Percent of of the item that is visible for a partially occluded item to count as "viewable"
-    itemVisiblePercentThreshold: 60,
-    minimumViewTime: 2000,
-    waitForInteraction: false,
-  }).current
+  const viewabilityConfig = useViewabilityConfig()
 
   const onViewableItemsChanged = useRef(
     ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {

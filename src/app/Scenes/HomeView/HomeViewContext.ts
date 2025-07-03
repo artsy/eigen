@@ -1,19 +1,22 @@
 import { Action, action, createContextStore } from "easy-peasy"
 
-interface HomeViewStoreModel {
+export interface HomeViewStoreModel {
   trackedSections: string[]
   trackedSectionTypes: string[]
   trackedExperiments: string[]
+  viewableSections: string[]
 
   addTrackedSection: Action<this, string>
   addTrackedSectionTypes: Action<this, string>
   addTrackedExperiment: Action<this, string>
+  setViewableSections: Action<this, string[]>
 }
 
-const HomeViewStoreModel: HomeViewStoreModel = {
+export const HomeViewStoreModel: HomeViewStoreModel = {
   trackedSections: [],
   trackedSectionTypes: [],
   trackedExperiments: [],
+  viewableSections: [],
 
   addTrackedSection: action((state, payload) => {
     if (state.trackedSections.includes(payload)) {
@@ -32,6 +35,9 @@ const HomeViewStoreModel: HomeViewStoreModel = {
       return
     }
     state.trackedExperiments.push(payload)
+  }),
+  setViewableSections: action((state, payload) => {
+    state.viewableSections = payload
   }),
 }
 

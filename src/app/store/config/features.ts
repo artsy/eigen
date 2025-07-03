@@ -59,6 +59,7 @@ export const features = {
   ARImpressionsTrackingHomeItemViews: {
     description: "Enable Tracking Items views on Home Screen",
     readyForRelease: true,
+    showInDevMenu: true,
     echoFlagKey: "ARImpressionsTrackingHomeItemViews",
   },
   AREnableNewAuctionsRailCard: {
@@ -238,6 +239,9 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
   },
   DTEasyMyCollectionArtworkCreation: {
     description: "MyCollection artworks easy add",
+  },
+  DTShowArtworkInternalIDOnRails: {
+    description: "Show artwork internal ID on artwork rails",
   },
   DTMyCollectionDeleteAllArtworks: {
     description: "MyCollection delete all artworks",

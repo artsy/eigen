@@ -8,6 +8,7 @@ import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtil
 import { ArtworkSaleMessage } from "app/Components/ArtworkRail/ArtworkSaleMessage"
 import { HEART_ICON_SIZE } from "app/Components/constants"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
@@ -57,6 +58,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
   showSaveIcon = false,
 }) => {
   const { trackEvent } = useTracking()
+  const showArtworkInternalID = useDevToggle("DTShowArtworkInternalIDOnRails")
 
   const artwork = useFragment(artworkMetaFragment, artworkProp)
 
@@ -121,6 +123,16 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
           <Text lineHeight="20px" color={secondaryColor} numberOfLines={1}>
             Lot {lotLabel}
           </Text>
+        )}
+
+        {/* This is useful for debugging purposes */}
+        {!!showArtworkInternalID && (
+          // We are double wrapping the text in a RNText to fix the ellipsizeMode issue on android
+          <RNText numberOfLines={1} ellipsizeMode="middle">
+            <Text color="blue100" variant="xs" fontWeight="bold">
+              {artwork.internalID}
+            </Text>
+          </RNText>
         )}
 
         {!hideArtistName && !!artistNames && (

@@ -19,9 +19,11 @@ import {
 import { ProgressiveOnboardingLongPressContextMenu } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingLongPressContextMenu"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
+import { HomeViewStore } from "app/Scenes/HomeView/HomeViewContext"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
+import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -44,6 +46,16 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const tracking = useHomeViewTracking()
 
   const section = useFragment(fragment, sectionProp)
+  const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
+
+  const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
+    // It is important here to tell if the rail is visible or not, because the viewability config
+    // default behavior, doesn't take into account the fact that the rail could be not visible
+    // on the screen because it's within a scrollable container.
+    isRailVisible: viewableSections.includes(section.internalID),
+    contextModule: section.contextModule as ContextModule,
+  })
+
   let artworks = extractNodes(section.artworksConnection)
 
   if (isDislikeArtworksEnabledFor(section.contextModule)) {
@@ -107,6 +119,12 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         showSaveIcon
         moreHref={moreHref}
         onMorePress={onMorePress}
+        {...(section.trackItemImpressions
+          ? {
+              onViewableItemsChanged: onViewableItemsChanged,
+              viewabilityConfig: viewabilityConfig,
+            }
+          : {})}
       />
 
       <HomeViewSectionSentinel
@@ -134,6 +152,7 @@ const fragment = graphql`
       }
     }
     ownerType
+    trackItemImpressions
 
     artworksConnection(first: 10) {
       edges {
