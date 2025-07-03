@@ -46,13 +46,13 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const tracking = useHomeViewTracking()
 
   const section = useFragment(fragment, sectionProp)
-  const visibleSections = HomeViewStore.useStoreState((state) => state.visibleSections)
+  const viewableSections = HomeViewStore.useStoreState((state) => state.viewableSections)
 
   const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
     // It is important here to tell if the rail is visible or not, because the viewability config
     // default behavior, doesn't take into account the fact that the rail could be not visible
     // on the screen because it's within a scrollable container.
-    isRailVisible: visibleSections.includes(section.internalID),
+    isRailVisible: viewableSections.includes(section.internalID),
     contextModule: section.contextModule as ContextModule,
   })
 

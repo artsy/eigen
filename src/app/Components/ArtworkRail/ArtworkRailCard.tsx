@@ -119,8 +119,6 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
                 minWidth={ARTWORK_RAIL_CARD_MIN_WIDTH}
                 maxWidth={ARTWORK_RAIL_CARD_MAX_WIDTH}
                 justifyContent="flex-start"
-                minWidth={ARTWORK_RAIL_CARD_MIN_WIDTH}
-                maxWidth={ARTWORK_RAIL_CARD_MAX_WIDTH}
               >
                 <ArtworkRailCardImage artwork={artwork} />
 

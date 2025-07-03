@@ -46,20 +46,22 @@ export const homeViewScreenQueryVariables = () => ({
 export const HomeView: React.FC = memo(() => {
   const flashlistRef = useBottomTabsScrollToTop()
 
-  const setVisibleSections = HomeViewStore.useStoreActions((actions) => actions.setVisibleSections)
+  const setViewableSections = HomeViewStore.useStoreActions(
+    (actions) => actions.setViewableSections
+  )
 
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const onViewableItemsChanged = useRef(
     ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
-      const newVisibleRails = new Set<string>()
+      const newViewableRails = new Set<string>()
 
-      // Track currently visible rails // needed to enabe tracking artwork views
+      // Track currently viewable rails // needed to enable tracking artwork views
       viewableItems.forEach(({ item }: { item: HomeViewSectionArtworks_section$data }) => {
-        newVisibleRails.add(item.internalID)
+        newViewableRails.add(item.internalID)
       })
 
-      setVisibleSections(Array.from(newVisibleRails))
+      setViewableSections(Array.from(newViewableRails))
     }
   ).current
 

@@ -4,19 +4,19 @@ export interface HomeViewStoreModel {
   trackedSections: string[]
   trackedSectionTypes: string[]
   trackedExperiments: string[]
-  visibleSections: string[]
+  viewableSections: string[]
 
   addTrackedSection: Action<this, string>
   addTrackedSectionTypes: Action<this, string>
   addTrackedExperiment: Action<this, string>
-  setVisibleSections: Action<this, string[]>
+  setViewableSections: Action<this, string[]>
 }
 
 export const HomeViewStoreModel: HomeViewStoreModel = {
   trackedSections: [],
   trackedSectionTypes: [],
   trackedExperiments: [],
-  visibleSections: [],
+  viewableSections: [],
 
   addTrackedSection: action((state, payload) => {
     if (state.trackedSections.includes(payload)) {
@@ -36,16 +36,11 @@ export const HomeViewStoreModel: HomeViewStoreModel = {
     }
     state.trackedExperiments.push(payload)
   }),
-  setVisibleSections: action((state, payload) => {
-    state.visibleSections = payload
+  setViewableSections: action((state, payload) => {
+    state.viewableSections = payload
   }),
 }
 
-export const HomeViewStore = createContextStore<HomeViewStoreModel>((initialData) => {
-  return {
-    ...HomeViewStoreModel,
-    ...initialData,
-  }
-})
+export const HomeViewStore = createContextStore(HomeViewStoreModel)
 
 export const HomeViewStoreProvider = HomeViewStore.Provider

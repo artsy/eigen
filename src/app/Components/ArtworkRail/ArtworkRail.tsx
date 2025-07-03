@@ -113,7 +113,6 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
         showsHorizontalScrollIndicator={false}
         onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={viewabilityConfig}
-        onViewableItemsChanged={onViewableItemsChanged}
       />
     )
   }

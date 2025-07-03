@@ -39,12 +39,7 @@ describe("HomeViewSectionArtworks", () => {
         return null
       }
       return (
-        <HomeViewStoreProvider
-          runtimeModel={{
-            ...HomeViewStoreModel,
-            visibleSections: ["home-view-section-new-works-for-you"],
-          }}
-        >
+        <HomeViewStoreProvider>
           <HomeViewStoreVisitor />
           <HomeViewSectionArtworks section={props.homeView.section} index={0} />
         </HomeViewStoreProvider>
@@ -198,6 +193,8 @@ describe("HomeViewSectionArtworks", () => {
         }),
       })
 
+      homeViewStoreActions.setViewableSections(["home-view-section-new-works-for-you"])
+
       // Find the ArtworkRail component and trigger onViewableItemsChanged
       const artworkRail = await UNSAFE_root.findByType(FlatList)
 
@@ -255,7 +252,7 @@ describe("HomeViewSectionArtworks", () => {
         }),
       })
 
-      homeViewStoreActions.setVisibleSections([])
+      homeViewStoreActions.setViewableSections([])
 
       // Find the ArtworkRail component and trigger onViewableItemsChanged
       const artworkRail = await UNSAFE_root.findByType(FlatList)
@@ -299,7 +296,7 @@ describe("HomeViewSectionArtworks", () => {
         }),
       })
 
-      homeViewStoreActions.setVisibleSections([])
+      homeViewStoreActions.setViewableSections(["home-view-section-new-works-for-you"])
 
       // Find the ArtworkRail component
       const artworkRail = await UNSAFE_root.findByType(FlatList)
@@ -338,6 +335,8 @@ describe("HomeViewSectionArtworks", () => {
           },
         }),
       })
+
+      homeViewStoreActions.setViewableSections(["home-view-section-new-works-for-you"])
 
       // Find the ArtworkRail component and trigger onViewableItemsChanged multiple times
       const artworkRail = await UNSAFE_root.findByType(FlatList)

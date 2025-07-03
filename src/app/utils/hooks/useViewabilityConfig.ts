@@ -3,7 +3,7 @@ import { useRef } from "react"
 import { ViewabilityConfig } from "react-native"
 
 const DEFAULT_ITEM_VISIBLE_PERCENT_THRESHOLD = 50
-const DEFAULT_MINIMUM_VIEW_TIME = 1000
+const DEFAULT_MINIMUM_VIEW_TIME_MILLISECONDS = 1000
 
 export const useViewabilityConfig = () => {
   const itemVisiblePercentThreshold = Number(
@@ -19,9 +19,9 @@ export const useViewabilityConfig = () => {
     GlobalStore.useAppState(
       (state) =>
         state.artsyPrefs.echo.state.messages.find(
-          (message) => message.name === "ImpressionsTrackingMinimumViewTime"
+          (message) => message.name === "ImpressionsTrackingMinimumViewTimeMilliseconds"
         )?.content
-    ) ?? DEFAULT_MINIMUM_VIEW_TIME
+    ) ?? DEFAULT_MINIMUM_VIEW_TIME_MILLISECONDS
   )
 
   const viewabilityConfig = useRef<ViewabilityConfig>({

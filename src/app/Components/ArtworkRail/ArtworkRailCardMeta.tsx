@@ -129,7 +129,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
         {!!showArtworkInternalID && (
           // We are double wrapping the text in a RNText to fix the ellipsizeMode issue on android
           <RNText numberOfLines={1} ellipsizeMode="middle">
-            <Text color="green100" variant="xs" fontWeight="bold">
+            <Text color="blue100" variant="xs" fontWeight="bold">
               {artwork.internalID}
             </Text>
           </RNText>
