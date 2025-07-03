@@ -28,7 +28,7 @@ export const OrderDetailBuyerProtection: React.FC<OrderDetailBuyerProtectionProp
             Your purchase is protected with{" "}
             <LinkText
               onPress={() => {
-                orderDetailTracks.clickedBuyerProtection(orderData.internalID)
+                orderDetailTracks.tappedBuyerProtection(orderData.internalID)
                 navigate(BUYER_GUARANTEE_LINK)
               }}
               variant="xs"
