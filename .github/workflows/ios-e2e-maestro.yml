@@ -114,3 +114,8 @@ jobs:
           # Verify simulator is running
           echo "✅ Simulator status:"
           xcrun simctl list devices | grep "$SIMULATOR_UDID"
+
+          echo "📱 Installing app..."
+          ./scripts/utils/install_app_in_booted_sims.sh
+
+          ./scripts/utils/run_maestro_shard_ios ios ${{ matrix.node_index }} ${{ matrix.total_nodes }}
