@@ -7,9 +7,6 @@ on:
   push:
     branches:
       - gkartalis/PHIRE-1889-ios-e2e-gh-actions
-  pull_request:
-    branches:
-      - main # Triggers on pull requests targeting the main branch
 
 jobs:
   e2e-tests:
@@ -78,7 +75,7 @@ jobs:
       - name: Boot iOS simulator
         run: |
           echo "Booting simulator: $SIMULATOR_ID"
-          xcrun simctl boot $SIMULATOR_ID
+          xcrun simctl boot $SIMULATOR_ID --arch=arm64
 
           # Wait for simulator to be ready
           echo "Waiting for simulator to boot..."
