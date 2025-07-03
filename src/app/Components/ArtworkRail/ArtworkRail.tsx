@@ -49,10 +49,12 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
     ListHeaderComponent = <Spacer x={2} />,
     ListFooterComponent = <Spacer x={2} />,
     hideArtistName = false,
+    listRef,
     itemHref,
     showPartnerName = true,
     dark = false,
     showSaveIcon = false,
+    onViewableItemsChanged,
     viewabilityConfig,
     moreHref,
     onMorePress,
@@ -104,10 +106,12 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
           </>
         }
         ListHeaderComponent={ListHeaderComponent}
+        ref={listRef}
         onEndReached={onEndReached}
         onEndReachedThreshold={onEndReachedThreshold}
         renderItem={renderItem}
         showsHorizontalScrollIndicator={false}
+        onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={viewabilityConfig}
       />
     )
