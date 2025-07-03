@@ -20,19 +20,29 @@ import { OrderDetailMessage } from "app/Scenes/OrderHistory/OrderDetail/Componen
 import { OrderDetailMetadata } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailMetadata"
 import { OrderDetailPaymentInfo } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailPaymentInfo"
 import { OrderDetailPriceBreakdown } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailPriceBreakdown"
+import { useOrderDetailTracking } from "app/Scenes/OrderHistory/OrderDetail/hooks/useOrderDetailTracking"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
+import { useEffect } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface OrderDetailProps {
   order: OrderDetail_order$key
 }
 
-const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
+export const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
   const space = useSpace()
   const color = useColor()
   const orderData = useFragment(orderDetailFragment, order)
+  const orderDetailTracks = useOrderDetailTracking()
+
+  useEffect(() => {
+    if (!!orderData) {
+      orderDetailTracks.orderDetailsViewed(orderData.internalID, orderData.displayTexts.messageType)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   if (!orderData) {
     return null
@@ -94,6 +104,7 @@ const orderDetailFragment = graphql`
     code
     displayTexts {
       title
+      messageType
     }
     ...OrderDetailBuyerProtection_order
     ...OrderDetailFulfillment_order
