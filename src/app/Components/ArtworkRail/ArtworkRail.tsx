@@ -1,13 +1,9 @@
-import { Flex, SkeletonBox, SkeletonText, Spacer, useSpace } from "@artsy/palette-mobile"
-import { FlashList } from "@shopify/flash-list"
+import { Flex, SkeletonBox, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import {
   ArtworkRail_artworks$data,
   ArtworkRail_artworks$key,
 } from "__generated__/ArtworkRail_artworks.graphql"
-import {
-  ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT,
-  ArtworkRailCard,
-} from "app/Components/ArtworkRail/ArtworkRailCard"
+import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import {
   ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
   ARTWORK_RAIL_CARD_MIN_WIDTH,
@@ -16,7 +12,7 @@ import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import React, { memo, ReactElement, useCallback } from "react"
-import { FlatList, ListRenderItem, Platform, ViewabilityConfig } from "react-native"
+import { FlatList, ListRenderItem, ViewabilityConfig } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
@@ -47,19 +43,19 @@ export interface ArtworkRailProps extends ArtworkActionTrackingProps {
 
 export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
   ({
-    listRef,
     onPress,
     onEndReached,
     onEndReachedThreshold,
     ListHeaderComponent = <Spacer x={2} />,
     ListFooterComponent = <Spacer x={2} />,
     hideArtistName = false,
+    listRef,
     itemHref,
     showPartnerName = true,
     dark = false,
     showSaveIcon = false,
-    viewabilityConfig,
     onViewableItemsChanged,
+    viewabilityConfig,
     moreHref,
     onMorePress,
     hideIncreasedInterestSignal,
@@ -67,7 +63,6 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
     ...otherProps
   }) => {
     const artworks = useFragment(artworksFragment, otherProps.artworks)
-    const space = useSpace()
 
     const renderItem: ListRenderItem<Artwork> = useCallback(
       ({ item, index }) => {
@@ -92,22 +87,8 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
       [hideArtistName, onPress, showPartnerName]
     )
 
-    // On android we are using a flatlist to fix some image issues
-    // Context https://github.com/artsy/eigen/pull/11207
-    const ListComponent =
-      Platform.OS === "ios"
-        ? (props: any) => (
-            <FlashList
-              estimatedItemSize={
-                ARTWORK_RAIL_CARD_IMAGE_HEIGHT + ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + space(1)
-              }
-              {...props}
-            />
-          )
-        : FlatList
-
     return (
-      <ListComponent
+      <FlatList
         data={artworks}
         horizontal
         keyExtractor={(item: Artwork) => item.internalID}
@@ -125,11 +106,12 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
           </>
         }
         ListHeaderComponent={ListHeaderComponent}
-        listRef={listRef}
+        ref={listRef}
         onEndReached={onEndReached}
         onEndReachedThreshold={onEndReachedThreshold}
         renderItem={renderItem}
         showsHorizontalScrollIndicator={false}
+        onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={viewabilityConfig}
       />
     )
