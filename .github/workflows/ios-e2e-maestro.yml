@@ -63,9 +63,10 @@ jobs:
           brew tap facebook/fb
           brew install idb-companion
 
-      - name: Select Xcode 16.2
+      - name: Check Xcode and iOS Simulator availability
         run: |
           sudo xcode-select -s /Applications/Xcode_16.2.app
+
           echo "🔍 Xcode version:"
           xcodebuild -version
           echo ""
@@ -77,3 +78,24 @@ jobs:
           echo ""
           echo "📱 Currently existing simulators:"
           xcrun simctl list devices
+
+      - name: Create and boot iPhone 16 Pro iOS 18.2 simulator
+        run: |
+          echo "📱 Creating iPhone 16 Pro simulator with iOS 18.2..."
+
+          # Create the simulator
+          SIMULATOR_UDID=$(xcrun simctl create "iPhone 16 Pro Test" com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro com.apple.CoreSimulator.SimRuntime.iOS-18-2)
+          echo "Created simulator with UDID: $SIMULATOR_UDID"
+          echo "SIMULATOR_UDID=$SIMULATOR_UDID" >> $GITHUB_ENV
+
+          # Boot the simulator with arm64 architecture for Apple Silicon
+          echo "🚀 Booting simulator..."
+          xcrun simctl boot "$SIMULATOR_UDID" --arch=arm64
+
+          # Wait for the simulator to be ready
+          echo "⏳ Waiting for simulator to be ready..."
+          timeout 120s bash -c 'while [[ $(xcrun simctl list devices | grep "$0" | grep -c "Booted") -eq 0 ]]; do sleep 2; done' "$SIMULATOR_UDID"
+
+          # Verify simulator is running
+          echo "✅ Simulator status:"
+          xcrun simctl list devices | grep "$SIMULATOR_UDID"
