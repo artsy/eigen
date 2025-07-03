@@ -43,7 +43,7 @@ orbs:
   queue: eddiewebb/queue@2.2.1
   horizon: artsy/release@0.0.1
   macos: circleci/macos@2.5.4
-  android: circleci/android@3.0.0
+  android: circleci/android@3.0.2
 
 commands:
   install-node:
