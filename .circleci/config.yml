@@ -423,6 +423,12 @@ jobs:
           at: .
       - install-bin-modules
       - run:
+          name: Download fonts from s3
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download android assets
+          command: ./scripts/setup/download-assets-android
+      - run:
           name: Load version code
           command: |
             VERSION_CODE=$(cat fastlane/next_version_code.txt)
@@ -441,6 +447,12 @@ jobs:
       - attach_workspace:
           at: .
       - install-bin-modules
+      - run:
+          name: Download fonts from s3
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download android assets
+          command: ./scripts/setup/download-assets-android
       - run:
           name: Load version code
           command: |
