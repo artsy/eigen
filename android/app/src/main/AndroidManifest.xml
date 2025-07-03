@@ -121,7 +121,23 @@
         <data android:pathPrefix="/viewing-rooms"/>
         <data android:pathPrefix="/works-for-you"/>
       </intent-filter>
+
+      <intent-filter android:autoVerify="true">
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:scheme="https" android:host="click.artsy.net" android:pathPrefix="/"/>
+      </intent-filter>
+
+      <intent-filter android:autoVerify="true">
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:scheme="https" android:host="email-link.artsy.net" android:pathPrefix="/"/>
+      </intent-filter>
     </activity>
+
+
     <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions"/>
     <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher"/>
     <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver" android:exported="false">

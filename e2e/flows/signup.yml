@@ -6,7 +6,9 @@ appId: ${MAESTRO_APP_ID}
       shouldSignOut: "true"
 - runScript:
     file: signup.js
-- assertVisible: "Sign up or log in"
+- extendedWaitUntil:
+    visible: "Sign up or log in"
+    timeout: 30000
 - tapOn: "Email Input"
 - inputText: ${output.signup.email}
 - tapOn: "Continue.*"

@@ -5,19 +5,26 @@ appId: ${MAESTRO_APP_ID}
     arguments:
       email: ${MAESTRO_TEST_EMAIL}
       password: ${MAESTRO_TEST_PASSWORD}
-- assertVisible: "For you"
+- assertVisible:
+    id: "search-button"
 - killApp
 - openLink:
     link: https://www.artsy.net/artist/kaws
-    autoVerify: false
-- assertVisible: "Kaws"
+    autoVerify: true
+- extendedWaitUntil:
+    visible: "Kaws"
+    timeout: 20000
 - killApp
 - openLink:
     link: https://click.artsy.net/f/a/epPWiX0dJaHHMiXAnSrzSg~~/AAQRxQA~/RgRj95QSP0SQaHR0cHM6Ly93d3cuYXJ0c3kubmV0L2NvbGxlY3Rpb24vYXVjdGlvbi1oaWdobGlnaHRzP3V0bV9zb3VyY2U9YnJhemUmdXRtX21lZGl1bT1lbWFpbCZ1dG1fY2FtcGFpZ249bnRmJnV0bV90ZXJtPTYyMTRmYjlkZWI0ZWZkN2RiNjBjZTcwNDk1NWU4NDQ1VwNzcGNCCmIFEg8VYlEJKGBSEmJyaWJlY2sxQGdtYWlsLmNvbVgEAAAAfw~~
-    autoVerify: false
-- assertVisible: "Highlights at Auction This Week"
+    autoVerify: true
+- extendedWaitUntil:
+    visible: "Highlights at Auction This Week"
+    timeout: 20000
 - killApp
 - openLink:
     link: "https://email-link.artsy.net/ls/click?upn=u001.XPbk8dXjc6dwd18Yq2uPM3eTWB4YbDUmeJTAXXTF513sTSKEFRIPxrFgGj8gd2LN9AcRIza5p2-2Fi0huqjv6GWgdnpwA-2FRyTEIYA-2BT1-2F0josxHnYTzJpKeJEmkfzDQlMEY9y6FknqDddY-2BKmm5qtTrTIF2hxySbdUboaYf5ofK-2Bj-2FgSolzBiLvvzai-2FmvjWbSpNpJHWATexQixwLakesmmZUBoRoLkCnxs59pBxJPbB3JZyP13cv77lbfn1WzJ86fiW-2B5MQcd2qss7wLGBI-2BZuy-2FxDkbFuDzpfYPDlaUs1-2BuyO9rqleUCwXPEuyWXZ3aGJrh-_dWIRBTTKlL2IhQqV5a1Cy38Sd4xylePmkTfQkXpdWOLZbG0vcWuzG-2BSSjZ7xaSUgPR0lxFBD0Zz4mpyMqiSRd7GblcbPN8eH0NYfUK6pmADWc2UoFXyJdeq-2F-2BOyOeWlS7O-2FOrHgB9-2BOGtV1nkIFPq97vJTNmWtBMDOt77SsursARR1LHG7CnzBEedV5yll40aEh9LTjA47-2BfpvonTwdxvYfd6ZWsZN2uRczvCs34ipSKUClLSzq0xCn8IjAixssMm2IreBk6LmNzHPC1YLqmZ77pv0qTxX095mxh8mk7f9rJJ8Tg1fyfRFriXGsQqgHlY-2BqTf2aAU6LS9NVXirqdp20-2BHXhzUZbaCnkQNASABts91iKoZaDeV4xnYuuo3L-2F8"
-    autoVerify: false
-- assertVisible: "The artwork you were looking for isn't available."
+    autoVerify: true
+- extendedWaitUntil:
+    visible: "The artwork you were looking for isn't available."
+    timeout: 20000

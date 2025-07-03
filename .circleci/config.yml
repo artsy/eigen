@@ -43,7 +43,7 @@ orbs:
   queue: eddiewebb/queue@2.2.1
   horizon: artsy/release@0.0.1
   macos: circleci/macos@2.5.4
-  android: circleci/android@2.5.0
+  android: circleci/android@3.0.0
 
 commands:
   install-node:
@@ -183,8 +183,8 @@ commands:
             - derived_data
   prep-android-env:
     steps:
-      - android/change-java-version:
-          java-version: 17
+      - android/change_java_version:
+          java_version: 17
       - run:
           name: Quit early if possible
           command: |
@@ -205,6 +205,14 @@ commands:
       - run-relay-compiler
       - update-echo
       - install-gems
+  build-app-android:
+    parameters:
+      build_type:
+        type: string
+        default: "release"
+    steps:
+      - restore_cache:
+          key: << pipeline.parameters.app_build_android_cache_key >>
       - generate-query-map
       - run:
           name: Download fonts from s3
@@ -212,12 +220,10 @@ commands:
       - run:
           name: Download android assets
           command: ./scripts/setup/download-assets-android
-  build-app-android:
-    steps:
       - run:
           name: Build App
           no_output_timeout: 30m
-          command: ./scripts/ci/ci-android
+          command: ./scripts/ci/ci-android << parameters.build_type >>
       - save_cache:
           key: << pipeline.parameters.app_build_android_cache_key >>
           paths:
@@ -276,6 +282,26 @@ jobs:
           key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum ".manifests/native_code" }}
           paths:
             - xcode_test_raw.log
+
+  build-maestro-android:
+    docker:
+      - image: cimg/android:2025.03.1-node
+    resource_class: xlarge
+
+    steps:
+      - checkout
+      - generate-checksums
+      - attach_workspace:
+          at: ../workspace
+      - restore_cache:
+          key: << pipeline.parameters.android_native_cache_key >>
+      - prep-android-env
+      - build-app-android:
+          build_type: "beta"
+      - save_cache:
+          key: << pipeline.parameters.android_native_cache_key >>
+          paths:
+            - build-success.log
 
   run-e2e-tests-ios:
     parallelism: 4
@@ -578,7 +604,7 @@ jobs:
       - setup-env-file
       - install-node-modules
       - run-relay-compiler
-      # would it be possible to deferenciate this with a flag in order to not duplicate code?
+      # would it be possible to differentiate this with a flag in order to not duplicate code?
       - update-staging-echo
       - generate-query-map
       - run:
@@ -716,9 +742,11 @@ workflows:
       - deploy-nightly-beta
       - run-nightly-tasks
       - build-maestro-ios
+      - build-maestro-android
       - run-e2e-tests-ios:
           requires:
             - build-maestro-ios
+            - build-maestro-android # remove me when we move to github actions
       - run-native-tests-android
 
   flag-check:

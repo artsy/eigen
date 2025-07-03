@@ -3,8 +3,10 @@ set -exo pipefail
 
 source ./scripts/ci/ci-setup-export-vars
 
+BUILD_TYPE=${1:-release} # default to release
+
 if [ "${LOCAL_BRANCH}" != "beta-android" ] && [ "${LOCAL_BRANCH}" != "app_store_submission" ]; then
-	./scripts/ci/build-for-tests-android
+	./scripts/ci/build-for-tests-android ${BUILD_TYPE}
 else
 	echo "Skipping test build on beta deploy."
 fi
