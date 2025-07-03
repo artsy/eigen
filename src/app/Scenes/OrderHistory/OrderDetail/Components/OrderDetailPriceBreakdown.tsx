@@ -3,6 +3,7 @@ import {
   OrderDetailPriceBreakdown_order$data,
   OrderDetailPriceBreakdown_order$key,
 } from "__generated__/OrderDetailPriceBreakdown_order.graphql"
+import { useOrderDetailTracking } from "app/Scenes/OrderHistory/OrderDetail/hooks/useOrderDetailTracking"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { graphql, useFragment } from "react-relay"
@@ -17,7 +18,8 @@ const IMPORT_TAX_URL =
 type PriceBreakdownLine = OrderDetailPriceBreakdown_order$data["pricingBreakdownLines"][number]
 
 export const OrderDetailPriceBreakdown: React.FC<OrderDetailPriceBreakdownProps> = ({ order }) => {
-  const { pricingBreakdownLines } = useFragment(fragment, order)
+  const { pricingBreakdownLines, internalID, source, mode } = useFragment(fragment, order)
+  const orderDetailTracks = useOrderDetailTracking()
 
   const renderBreakdownLines = (line: PriceBreakdownLine, index: number) => {
     if (!line) {
@@ -83,7 +85,14 @@ export const OrderDetailPriceBreakdown: React.FC<OrderDetailPriceBreakdownProps>
 
       <Text variant="xs" color="mono60">
         *Additional duties and taxes{" "}
-        <LinkText onPress={() => navigate(IMPORT_TAX_URL)} variant="xs" color="mono60">
+        <LinkText
+          onPress={() => {
+            orderDetailTracks.tappedImportFees(internalID, mode, source)
+            navigate(IMPORT_TAX_URL)
+          }}
+          variant="xs"
+          color="mono60"
+        >
           may apply at import
         </LinkText>
         .
@@ -94,6 +103,9 @@ export const OrderDetailPriceBreakdown: React.FC<OrderDetailPriceBreakdownProps>
 
 const fragment = graphql`
   fragment OrderDetailPriceBreakdown_order on Order {
+    internalID
+    mode
+    source
     pricingBreakdownLines {
       __typename
       ... on ShippingLine {
