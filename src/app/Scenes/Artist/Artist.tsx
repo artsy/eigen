@@ -35,7 +35,7 @@ import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { useCallback, useEffect } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { Environment, graphql } from "react-relay"
 
@@ -73,6 +73,7 @@ export const Artist: React.FC<ArtistProps> = ({
   input,
 }) => {
   const popoverMessage = usePopoverMessage()
+  const [showSimilarArtists, setShowSimilarArtists] = useState(false)
 
   const navigation = useNavigation()
 
@@ -82,7 +83,10 @@ export const Artist: React.FC<ArtistProps> = ({
         if (artistAboveTheFold) {
           return (
             <Flex>
-              <ArtistHeaderNavRightQueryRenderer artistID={artistAboveTheFold.internalID} />
+              <ArtistHeaderNavRightQueryRenderer
+                artistID={artistAboveTheFold.internalID}
+                setShowSimilarArtists={setShowSimilarArtists}
+              />
             </Flex>
           )
         }
@@ -104,8 +108,8 @@ export const Artist: React.FC<ArtistProps> = ({
   }, [fetchCriteriaError])
 
   const renderBelowTheHeaderComponent = useCallback(
-    () => <ArtistHeader artist={artistAboveTheFold} />,
-    [artistAboveTheFold]
+    () => <ArtistHeader artist={artistAboveTheFold} showSimilarArtists={showSimilarArtists} />,
+    [artistAboveTheFold, showSimilarArtists]
   )
 
   return (

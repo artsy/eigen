@@ -5,8 +5,13 @@ import { LayoutAnimation } from "react-native"
 
 const ICON_SIZE = 18
 
-export const CallapseWithTitle: React.FC<{ title: string }> = ({ children, title }) => {
-  const [expanded, setExpanded] = useState(false)
+export const CallapseWithTitle: React.FC<{ title: string; expanded?: boolean }> = ({
+  children,
+  title,
+  expanded: expandedProp,
+}) => {
+  const [expanded, setExpanded] = useState(expandedProp ?? false)
+
   return (
     <Flex px={2}>
       <Touchable
