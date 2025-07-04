@@ -1,5 +1,4 @@
 import { Box, Flex, useColor, useSpace } from "@artsy/palette-mobile"
-import { BOTTOM_TABS_HEIGHT } from "@artsy/palette-mobile/dist/elements/Screen/StickySubHeader"
 import { useNavigation } from "@react-navigation/native"
 import MapboxGL from "@rnmapbox/maps"
 import { GlobalMap_viewer$key } from "__generated__/GlobalMap_viewer.graphql"
@@ -18,7 +17,7 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { isEqual, uniq } from "lodash"
 import { AnimatePresence } from "moti"
 import React, { useEffect, useRef, useState } from "react"
-import { Animated, Dimensions, Platform } from "react-native"
+import { Animated } from "react-native"
 import Keys from "react-native-keys"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useRefetchableFragment } from "react-relay"
@@ -268,11 +267,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
   const renderShowCard = () => {
     const hasShows = activeShows.length > 0
 
-    // Check if it's an iPhone with ears (iPhone X, Xr, Xs, etc...)
-    const iPhoneHasEars = safeAreaInsets.top > 20
-
-    const platformBottom = Platform.OS === "ios" ? (iPhoneHasEars ? 80 : 45) : 0
-
     // We need to update activeShows in case of a mutation (save show)
     const updatedShows: Array<Fair | Show> = activeShows.map((item: any) => {
       if (item.type === "Show") {
@@ -286,7 +280,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
     return (
       <Flex
         style={{
-          bottom: hasShows ? platformBottom : -150,
           left: 0,
           right: 0,
           position: "absolute",
@@ -504,14 +497,14 @@ export const GlobalMap: React.FC<Props> = (props) => {
       <Flex flexDirection="column" style={{ backgroundColor: color("mono5") }}>
         <MapboxGL.MapView
           ref={mapRef}
-          style={{ width: "100%", height: Dimensions.get("window").height }}
+          style={{ width: "100%", height: "100%" }}
           {...mapProps}
           onCameraChanged={onRegionIsChanging}
           onDidFinishLoadingMap={onDidFinishRenderingMapFully}
           attributionEnabled
           logoEnabled
           logoPosition={{
-            bottom: Platform.OS === "ios" ? BOTTOM_TABS_HEIGHT + space(2) : space(4),
+            bottom: space(2),
             left: space(2),
           }}
           onPress={onPressMap}
@@ -545,7 +538,14 @@ export const GlobalMap: React.FC<Props> = (props) => {
           )}
         </MapboxGL.MapView>
         {!!city && (
-          <Flex position="absolute" bottom={0} left={0} right={0} height={200}>
+          <Flex
+            position="absolute"
+            bottom={0}
+            left={0}
+            right={0}
+            height={200}
+            justifyContent="flex-end"
+          >
             {renderShowCard()}
           </Flex>
         )}

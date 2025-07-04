@@ -1,4 +1,4 @@
-import { Box, Text } from "@artsy/palette-mobile"
+import { Box, Flex, Text } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { ShowItemRow } from "app/Components/Lists/ShowItemRow"
@@ -155,7 +155,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     ) : (
       <ThemeAwareClassTheme>
         {({ space }) => (
-          <>
+          <Flex>
             <PageIndicator style={shadowDetails} mx={1} px={0.5} my={0.5}>
               <Text
                 variant="xs"
@@ -183,7 +183,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
               decelerationRate="fast"
               horizontal
             />
-          </>
+          </Flex>
         )}
       </ThemeAwareClassTheme>
     )
