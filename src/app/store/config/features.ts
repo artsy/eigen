@@ -188,6 +188,12 @@ export const features = {
     description: "Enable new order details screen",
     echoFlagKey: "AREnableNewOrderDetails",
   },
+  AREnableExpandedCityGuide: {
+    readyForRelease: false,
+    showInDevMenu: true,
+    description: "Enable expanded city list in City Guide",
+    echoFlagKey: "AREnableExpandedCityGuide",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
