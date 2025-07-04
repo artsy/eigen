@@ -16742,9 +16742,9 @@ type Partner implements Node {
     before: String
     first: Int
     last: Int
-    page: Int = 1
+    page: Int
     query: String!
-    size: Int = 10
+    size: Int
   ): ArtworkConnection
   cached: Int
   categories: [PartnerCategory]
