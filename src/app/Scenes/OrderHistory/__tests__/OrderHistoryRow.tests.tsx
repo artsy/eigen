@@ -335,7 +335,7 @@ describe("OrderHistoryRow", () => {
 
       const button = screen.getByTestId("view-order-button")
       fireEvent.press(button)
-      expect(navigate).toHaveBeenCalledWith("/user/purchases/internal-id")
+      expect(navigate).toHaveBeenCalledWith("/orders/internal-id/details")
     })
   })
 })
