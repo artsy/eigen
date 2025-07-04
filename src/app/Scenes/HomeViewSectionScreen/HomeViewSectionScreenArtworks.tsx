@@ -1,10 +1,11 @@
-import { ScreenOwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
 import { FullWidthIcon, GridIcon } from "@artsy/icons/native"
 import { Screen, SimpleMessage, Text } from "@artsy/palette-mobile"
 import { HomeViewSectionScreenArtworks_section$key } from "__generated__/HomeViewSectionScreenArtworks_section.graphql"
 import { HomeViewSectionScreenQuery } from "__generated__/HomeViewSectionScreenQuery.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PAGE_SIZE, SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
+import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -34,6 +35,12 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
     artworksFragment,
     props.section
   )
+
+  const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
+    isInViewport: true,
+    contextModule: ContextModule.artworkGrid,
+    contextScreenOwnerType: section.ownerType as OwnerType,
+  })
 
   const artworks = extractNodes(section?.artworksConnection)
 
@@ -92,6 +99,12 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           onScroll={scrollHandler}
           style={{ paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET }}
           contextScreenOwnerType={section.ownerType as ScreenOwnerType}
+          {...(section.trackItemImpressions
+            ? {
+                onViewableItemsChanged: onViewableItemsChanged,
+                viewabilityConfig: viewabilityConfig,
+              }
+            : {})}
         />
       </Screen.Body>
     </>
@@ -107,12 +120,14 @@ export const artworksFragment = graphql`
       title
     }
     ownerType
+    trackItemImpressions
     artworksConnection(after: $cursor, first: $count)
       @connection(key: "ArtworksScreenHomeSection_artworksConnection", filters: []) {
       totalCount
       edges {
         node {
           id
+          internalID # This is for tracking
           slug
           href
           image(includeAll: false) {

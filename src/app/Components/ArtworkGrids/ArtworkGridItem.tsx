@@ -34,6 +34,7 @@ import { useArtworkBidding } from "app/utils/Websockets/auctions/useArtworkBiddi
 import { getArtworkSignalTrackingFields } from "app/utils/getArtworkSignalTrackingFields"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
+import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useSaveArtwork } from "app/utils/mutations/useSaveArtwork"
 import { RandomNumberGenerator } from "app/utils/placeholders"
@@ -115,6 +116,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
 }) => {
   const itemRef = useRef<any>()
   const disappearableRef = useRef<Disappearable>(null)
+  const showArtworkInternalID = useDevToggle("DTShowArtworkInternalIDOnRails")
 
   const color = useColor()
   const tracking = useTracking()
@@ -325,6 +327,16 @@ export const Artwork: React.FC<ArtworkProps> = ({
               style={artworkMetaStyle}
             >
               <Flex flex={1}>
+                {/* This is useful for debugging purposes */}
+                {!!showArtworkInternalID && (
+                  // We are double wrapping the text in a RNText to fix the ellipsizeMode issue on android
+                  <RNText numberOfLines={1} ellipsizeMode="middle">
+                    <Text color="blue100" variant="xs" fontWeight="bold">
+                      {artwork.internalID}
+                    </Text>
+                  </RNText>
+                )}
+
                 {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
                   <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
                     Lot {artwork.saleArtwork.lotLabel}

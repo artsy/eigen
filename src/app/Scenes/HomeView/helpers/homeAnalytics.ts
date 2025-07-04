@@ -365,18 +365,20 @@ export default class HomeAnalytics {
   static trackItemViewed({
     artworkId,
     contextModule,
+    contextScreenOwnerType = OwnerType.home,
     position,
     type,
   }: {
     artworkId: string
     contextModule: ContextModule
+    contextScreenOwnerType?: OwnerType
     position: number
     type: "artwork"
   }): ItemViewed {
     return {
       action: ActionType.itemViewed,
       context_module: contextModule,
-      context_screen: OwnerType.home,
+      context_screen: contextScreenOwnerType,
       item_type: type,
       item_id: artworkId,
       position,
