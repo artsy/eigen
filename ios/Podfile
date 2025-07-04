@@ -119,9 +119,6 @@ target 'Artsy' do
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
 
-  # For Stripe integration with Emission. Using a fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
-  pod 'Pulley', git: 'https://github.com/artsy/Pulley.git', branch: 'master'
-
   # Facebook
   pod 'FBSDKCoreKit', '~> 17'
   pod 'FBSDKLoginKit', '~> 17'

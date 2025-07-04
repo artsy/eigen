@@ -315,7 +315,6 @@ PODS:
   - ORStackView (2.0.3):
     - FLKAutoLayout
   - PromisesObjC (2.4.0)
-  - Pulley (2.6.2)
   - Quick (2.0.0)
   - RCT-Folly (2024.10.14.00):
     - boost
@@ -2402,7 +2401,6 @@ DEPENDENCIES:
   - OCMock
   - OHHTTPStubs (= 3.1.2)
   - ORStackView (= 2.0.3)
-  - Pulley (from `https://github.com/artsy/Pulley.git`, branch `master`)
   - Quick (= 2.0.0)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
@@ -2659,9 +2657,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/artsy/Interstellar.git
   ISO8601DateFormatter:
     :git: https://github.com/artsy/iso-8601-date-formatter
-  Pulley:
-    :branch: master
-    :git: https://github.com/artsy/Pulley.git
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTDeprecation:
@@ -2874,9 +2869,6 @@ CHECKOUT OPTIONS:
   ISO8601DateFormatter:
     :commit: 1a48b819c85903ded669e74e476aceffebf311fc
     :git: https://github.com/artsy/iso-8601-date-formatter
-  Pulley:
-    :commit: f677b18b332ea3798dc379879dbc0d038efd3ccc
-    :git: https://github.com/artsy/Pulley.git
   SwiftyJSON:
     :commit: af76cf3ef710b6ca5f8c05f3a31307d44a3c5828
     :git: https://github.com/SwiftyJSON/SwiftyJSON/
@@ -2965,7 +2957,6 @@ SPEC CHECKSUMS:
   OpenSSL-Universal: b60a3702c9fea8b3145549d421fdb018e53ab7b4
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
-  Pulley: edc993fb57f7eb20541c8453d0fce10559f21dac
   Quick: ce1276c7c27ba2da3cb2fd0cde053c3648b3b22d
   RCT-Folly: ea9d9256ba7f9322ef911169a9f696e5857b9e17
   RCTDeprecation: ebe712bb05077934b16c6bf25228bdec34b64f83
@@ -3091,6 +3082,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: feb4910aba9742cfedc059e2b2902e22ffe9954a
 
-PODFILE CHECKSUM: 453e9d12d057c195b6c50bb335987aacc46e2759
+PODFILE CHECKSUM: 9c3f288534b6f32e16fc3bd8167e669651df8387
 
 COCOAPODS: 1.16.2
