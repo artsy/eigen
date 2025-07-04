@@ -22,7 +22,10 @@ for screenshot in "$SCREENSHOTS_DIR"/*.png; do
   S3_PATH="s3://artsy-citadel/eigen/screenshots/$LATEST/$BASENAME"
 
   aws s3 cp "$screenshot" "$S3_PATH"
-  URL=$(aws s3 presign "$S3_PATH" --expires-in 86400)
+  # 15 days × 24 hours/day × 60 min/hour × 60 sec/min
+  EXPIRES_IN=$((15 * 24 * 60 * 60))  # → 1296000 seconds
+
+  URL=$(aws s3 presign "$S3_PATH" --expires-in "$EXPIRES_IN")
 
   bundle exec fastlane report_maestro_failure s3_url:$URL error_message:"$ERROR_MESSAGE" flow_name:"$FLOW_NAME"
 done
