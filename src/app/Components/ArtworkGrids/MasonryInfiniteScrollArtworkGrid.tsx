@@ -67,6 +67,8 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   priceOfferMessage,
   refreshControl,
   ListFooterComponent,
+  onViewableItemsChanged,
+  viewabilityConfig,
   ...rest
 }) => {
   const space = useSpace()
@@ -172,6 +174,8 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         // No paddings are needed for single column grids
         paddingHorizontal: getAdjustedNumColumns() === 1 ? 0 : space(2),
       }}
+      onViewableItemsChanged={onViewableItemsChanged}
+      viewabilityConfig={viewabilityConfig}
     />
   )
 }

@@ -35,7 +35,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
     const listRef = useRef<FlatList<any>>(null)
 
     const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
-      isRailVisible,
+      isInViewport: isRailVisible,
       contextModule: ContextModule.newWorksForYouRail,
     })
 
