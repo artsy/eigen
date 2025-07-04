@@ -59,7 +59,7 @@ lane :report_maestro_failure do |options|
   run_id = ENV['GITHUB_RUN_ID']
   github_url = "https://github.com/#{github_repo}/actions/runs/#{run_id}"
   slack(
-    channel: '#bot-testing',
+    channel: '#mobile-alerts',
     message: message,
     success: false,
     payload: {
