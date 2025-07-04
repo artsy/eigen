@@ -106,4 +106,4 @@ jobs:
             adb shell am start -n net.artsy.app/.MainActivity
 
             echo "🧪 Running maestro test..."
-            ./scripts/utils/run_maestro_shard_android android ${{ matrix.node_index }} ${{ matrix.total_nodes }}
+            ./scripts/utils/run_maestro_shard android ${{ matrix.node_index }} ${{ matrix.total_nodes }}
