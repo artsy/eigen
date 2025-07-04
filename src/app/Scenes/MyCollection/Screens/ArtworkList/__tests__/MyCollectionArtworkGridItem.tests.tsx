@@ -14,7 +14,7 @@ const mockArtwork = {
     internalID: "artist-id",
   },
   images: null,
-  medium: "artwork medium",
+  medium: "Painting",
   mediumType: {
     name: "artwork category",
   },
@@ -60,8 +60,28 @@ describe("MyCollectionArtworkGridItem", () => {
     expect(navigate).toHaveBeenCalledWith("/my-collection/artwork/artwork-slug", {
       passProps: {
         artistInternalID: "artist-id",
-        medium: "artwork medium",
-        category: "artwork category",
+        medium: "Painting",
+      },
+    })
+  })
+
+  it("navigates to artwork detail on tap with correct meduim", () => {
+    renderWithRelay({
+      Artwork: () => ({
+        ...mockArtwork,
+        medium: "unknown medium",
+        mediumType: {
+          name: "artwork category",
+        },
+      }),
+    })
+
+    fireEvent.press(screen.getByLabelText("Go to artwork details"))
+
+    expect(navigate).toHaveBeenCalledWith("/my-collection/artwork/artwork-slug", {
+      passProps: {
+        artistInternalID: "artist-id",
+        medium: "artwork category",
       },
     })
   })
@@ -109,7 +129,7 @@ describe("MyCollectionArtworkGridItem", () => {
             isP1: true,
           },
         },
-        medium: "artwork medium",
+        medium: "Painting",
         marketPriceInsights: {
           demandRank: 0.91,
         },
@@ -130,7 +150,7 @@ describe("MyCollectionArtworkGridItem", () => {
             isP1: false,
           },
         },
-        medium: "artwork medium",
+        medium: "Painting",
         marketPriceInsights: {
           demandRank: 0.91,
         },

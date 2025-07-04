@@ -1095,6 +1095,13 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
+    prepareVariables: [
+      ({ artworkId, artistInternalID, medium }) => ({
+        artworkId,
+        artistInternalID,
+        medium,
+      }),
+    ],
     queries: [MyCollectionArtworkScreenQuery],
   },
   {
