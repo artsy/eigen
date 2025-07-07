@@ -11,11 +11,13 @@ _Please note: Links should point to specific commits, and not a branch (in case 
 
 - [:world_map: Our Best Practices](#world_map-our-best-practices)
 - [Contents](#contents)
-
   - [Examples \& Hacks](#examples--hacks)
   - [History](#history)
     - [File Structure Organization](#file-structure-organization)
-      - [index.ts files](#indexts-files)
+    - [Example when creating a new screen](#example-when-creating-a-new-screen)
+    - [Example when adding a component(s) to src/app/components](#example-when-adding-a-components-to-srcappcomponents)
+      - [AVOID index.ts(x) files](#avoid-indextsx-files)
+      - [Do not import components/hooks/functions... directly from a different scene](#do-not-import-componentshooksfunctions-directly-from-a-different-scene)
     - [When committing code](#when-committing-code)
   - [Frontend](#frontend)
     - [Styling](#styling)
@@ -23,11 +25,8 @@ _Please note: Links should point to specific commits, and not a branch (in case 
   - [Fetching data](#fetching-data)
   - [Testing](#testing)
   - [Navigation](#navigation)
-    - [iOS Navigation](#ios-navigation)
   - [Analytics and tracking](#analytics-and-tracking)
-  - [A/b testing](a_b_testing_best_practices.md)
   - [VirtualizedList best practices](#virtualizedlist-best-practices)
-
     - [Never nest ScrollViews.](#never-nest-scrollviews)
     - [Always default to `FlashList`.](#always-default-to-flashlist)
     - [Use `memo` to the rescue. See: https://reactnative.dev/docs/optimizing-flatlist-configuration#use-memo](#use-memo-to-the-rescue-see-httpsreactnativedevdocsoptimizing-flatlist-configurationuse-memo)
@@ -35,7 +34,6 @@ _Please note: Links should point to specific commits, and not a branch (in case 
     - [Use `LazyFlatlist` in order to define your own lazy loading logic.](#use-lazyflatlist-in-order-to-define-your-own-lazy-loading-logic)
     - [Does your component contain animations?](#does-your-component-contain-animations)
     - [More granular control on when updates happen can do magic sometimes! `requestAnimationFrame`, `queueMicroTask` and `InteractionManager.runAfterInteractions` can come to the rescue here!](#more-granular-control-on-when-updates-happen-can-do-magic-sometimes-requestanimationframe-queuemicrotask-and-interactionmanagerrunafterinteractions-can-come-to-the-rescue-here)
-
   - [Formik](#formik)
   - [Miscellaneous](#miscellaneous)
     - [Parts of the app that are still being handled in native code (Objective-C and Swift) instead of react-native on iOS](#parts-of-the-app-that-are-still-being-handled-in-native-code-objective-c-and-swift-instead-of-react-native-on-ios)
@@ -61,64 +59,86 @@ The Artsy app was initially written in Objective-C and Swift and React Native wa
 
 ### File Structure Organization
 
-The React Native parts of the app live in `src/` and most of our components on `app/`.
-Within this folder things can be a bit messy 👀 but we are working on improving that!
+In this part of the docs, we go through how we usually like to organise our folders.
 
-Files that export a JSX component end in `.tsx` and files that don't end in `.ts` by default.
+> Please keep in mind that some old folders might not be following the practices we describe below, Bonus points if you update them.
 
-We use **PascalCase** for **Components and Component Folders**, but keep everything else within the Component folder(eg. mutations, state, utils) **camelCase**.
-Test files follow the same pattern.
+The React Native parts of the Eigen live inside `src/app`.
 
-For example `mutations`, `routes`, `state` would be **camelCase** folders, while `MyComponent.tsx` would be a **PascalCase** file.
+We are using typescript. Files containing a JSX component end in `.tsx` and files that don't end in `.ts`.
 
-```
-├── MyComponentFolder
-│   ├── MyComponent.tsx
-│   ├── MyComponent.tests.tsx
-│   ├── mutations
-│   |  ├── mutationFunction.ts
-│   ├── state
-│   |  ├── stateFunction.ts
-│   ├── utils
-│   |  ├── utilFunction.ts
-│   |  ├── utilFunction.tests.ts
-├── …
-```
+We use **PascalCase** for **Components and Component Folders**, but keep everything else within the Component folder(eg. mutations, state, utils) in **camelCase**.
 
-Another example is:
+Test files follow the same pattern and end in `.tests.ts(x)`.
 
-If we have a `buttons` folder which exports many button components, we keep it **lowercase**.
+For example `mutations`, `hooks` and `utils` would be **camelCase** folders, while `Screen.tsx` would be a **PascalCase** file.
+
+### Example when creating a new screen
 
 ```
-├── buttons
-│   ├── RedButton.tsx
-│   ├── GreenButton.tsx
-│   ├── YellowButton.tsx
-│   ├── buttons.tests.tsx
-│   ├── buttons.stories.tsx
-├── …
+
+├── MyScreen
+
+│ ├── __tests__
+│ │ ├── MyScreen.tests.tsx
+
+│ ├── MyScreen.tsx
+│ ├── MyScreenStoreModel.tsx
+
+│ ├── Components
+│ │ ├── __tests__
+│ │ | ├── MyScreenComponentA.tests.tsx
+│ │ | ├── MyScreenComponentB.tests.tsx
+│ │ ├── MyScreenComponentA.tsx
+│ │ ├── MyScreenComponentB.tsx
+
+│ ├── hooks
+│ │ ├── __tests__
+│ │ │ ├── useMyHook.tests.ts
+│ │ │ ├── useMyMutation.tests.ts
+│ │ ├── useMyHook.ts
+│ │ ├── useMyMutation.ts  👈 hook mutations still go here
+
+├── … utils
+│ │ ├── __tests__
+│ ├─│ ├── utilFunction.tests.ts
+│ │ ├── utilFunction.ts
+│ │ │
+
 ```
 
-However, if we have a `Button` folder which exports only one button component, we write that with in **PascalCase**.
+### Example when adding a component(s) to src/app/components
+
+Assuming you would like to add **one or more** components to `src/app/Components`. In this case, you need to **create a folder** that exports the component
 
 ```
-├── Button
-│   ├── Button.tsx
-│   ├── Button.tests.tsx
-│   ├── Button.stories.tsx
+
+### src/app/Components
+
+├── MyComponent
+│ ├── MyComponent.tsx
+
+│ ├── __tests__
+│ │ ├── MyComponent.tests.tsx
+
 ```
 
 `Note:` Updating capitalisation on folders can cause issues in git and locally so please refrain from renaming existing folders until we come up with a strategy about this. (TODO)
 
-#### index.ts files
+#### AVOID index.ts(x) files
 
-We try to avoid the use of `index.ts` files to prevent noise in the file structure and circular dependencies and make it easier to navigate between files.
+We try to avoid the use of `index.ts(x)` files to prevent noise in the file structure and circular dependencies and make it easier to navigate between files.
+
+#### Do not import components/hooks/functions... directly from a different scene
+
+Assuming you are about to add a `Component` to `SceneA`. You notice later that it's already built in `SceneB`. In that case, you need to extract `Component` to a shared directory: `src/App/Components`
+
+The same thing applies for hooks, utils etc...
 
 ### When committing code
 
-- Use the [semantic commit message](https://seesparkbox.com/foundry/semantic_commit_messages) format in the title of your PR (eg. feat, fix, style, test, refactor, docs)
+- At Artsy, we follow [semantic commit messages](https://sparkbox.com/foundry/semantic_commit_messages) for PR names and commits. More details available in [Best Practices for Naming and Merging PRs RFC](https://github.com/artsy/README/issues/327)
 - When merging a PR, choose "Squash and merge" (unless you have good reason not to)
-- Do not use "Squash and merge" on a new version deployment PR
 
 ## Frontend
 
