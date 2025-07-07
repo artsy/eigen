@@ -19,6 +19,7 @@ import {
 } from "app/Components/ArtworkFilter/useArtworkFilters"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
+import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
@@ -163,6 +164,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
               </Flex>
             )
           }}
+          contentContainerStyle={{ paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET }}
         />
       </Flex>
     </>
