@@ -1,36 +1,58 @@
+import { Flex } from "@artsy/palette-mobile"
 import { ArtistFollowButtonQueryRenderer } from "app/Components/ArtistFollowButton"
-import { useMemo } from "react"
-import { View } from "react-native"
-import { TDefaultRendererProps } from "react-native-render-html"
+import { PartnerFollowButtonQueryRenderer } from "app/Components/PartnerFollowButton"
+import { CustomRendererProps, TNode, NodeWithChildren, Node } from "react-native-render-html"
 
-const extractIdFromHref = (href: string): string => {
-  return href.split("/").pop() ?? ""
+interface H2NodeChild extends Node {
+  attribs: { href?: string }
+  name: string
+  data?: string
 }
 
-export const CustomH2Renderer = ({ TDefaultRenderer, tnode, ...props }: TDefaultRendererProps) => {
-  const textContent = tnode.domNode?.textContent ?? ""
+// Weirdly this lib is not typed well, so we need to manually type the node
+export type H2Node = TNode & {
+  init?: {
+    domNode: NodeWithChildren & {
+      children: H2NodeChild[]
+      attribs: {
+        href?: string
+      }
+    }
+  }
+}
 
-  const artistLinks = useMemo(() => {
-    return tnode.children.filter(
-      (child) => child.tagName === "a" && child.domNode?.attribs?.href?.startsWith("/artist/")
+/**
+ * Component used by Articles, this is responsible for rendering follow buttons when
+ * receiving partner or artist link
+ */
+export const CustomH2Renderer = ({
+  TDefaultRenderer,
+  tnode,
+  ...props
+}: CustomRendererProps<H2Node>) => {
+  const href = tnode.init?.domNode.children?.[0]?.attribs?.href
+  const nodeType = tnode.init?.domNode.type
+  const isLink = nodeType === "tag" && tnode.init?.domNode.children?.[0]?.name === "a"
+  const [, __, ___, entity, id] = href ? href.split("/") : []
+
+  const hasManyChildren = tnode.init?.domNode.children && tnode.init.domNode.children.length > 1
+  const isBighH2 =
+    hasManyChildren &&
+    tnode.init?.domNode.children.some(
+      (child: H2NodeChild) => child.type === "text" && child.data?.includes(",")
     )
-  }, [tnode])
 
-  const hasComma = textContent.includes(",")
-
-  const shouldRenderFollowCTA = artistLinks.length === 1 && !hasComma
-
-  const artistHref = artistLinks[0]?.domNode?.attribs?.href
-  const artistID = artistHref ? extractIdFromHref(artistHref) : null
+  if (!entity || !id || !isLink || isBighH2) {
+    return <TDefaultRenderer tnode={tnode} {...props} />
+  }
 
   return (
-    <View style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap" }}>
+    <Flex flexDirection="row" alignItems="center" flexWrap="wrap" gap={0.5}>
       <TDefaultRenderer tnode={tnode} {...props} />
-      {!!shouldRenderFollowCTA && !!artistID && (
-        <View style={{ marginLeft: 8 }}>
-          <ArtistFollowButtonQueryRenderer artistID={artistID} />
-        </View>
-      )}
-    </View>
+
+      {entity === "artist" && <ArtistFollowButtonQueryRenderer artistID={id} />}
+
+      {entity === "partner" && <PartnerFollowButtonQueryRenderer partnerID={id} />}
+    </Flex>
   )
 }
