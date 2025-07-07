@@ -22,8 +22,8 @@ for screenshot in "$SCREENSHOTS_DIR"/*.png; do
   S3_PATH="s3://artsy-citadel/eigen/screenshots/$LATEST/$BASENAME"
 
   aws s3 cp "$screenshot" "$S3_PATH"
-  # 15 days × 24 hours/day × 60 min/hour × 60 sec/min
-  EXPIRES_IN=$((15 * 24 * 60 * 60))  # → 1296000 seconds
+  # 7 days minus 1 hour (max allowed is exactly 604800 seconds)
+  EXPIRES_IN=$((7 * 24 * 60 * 60 - 3600))  # → 600400 seconds (7 days - 1 hour)
 
   URL=$(aws s3 presign "$S3_PATH" --expires-in "$EXPIRES_IN")
 
