@@ -43,7 +43,7 @@ export const CityBottomSheet: React.FC<CityBottomSheetProps> = ({ ...props }) =>
       ref={bottomSheetRef}
       enableDynamicSizing={false}
       enablePanDownToClose={false}
-      snapPoints={[bottom + 95, height * 0.88]}
+      snapPoints={[bottom || 30, height * 0.75]}
       index={-1}
       handleIndicatorStyle={{
         ...defaultIndicatorHandleStyle(color),

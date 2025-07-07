@@ -36,7 +36,7 @@ export const ArtworkRecommendationsRail: React.FC<
   const listRef = useRef<FlatList<any>>(null)
 
   const { onViewableItemsChanged, viewabilityConfig } = useItemsImpressionsTracking({
-    isRailVisible,
+    isInViewport: isRailVisible,
     contextModule: ContextModule.artworkRecommendationsRail,
   })
 

@@ -1,6 +1,7 @@
 import { fireEvent, screen } from "@testing-library/react-native"
 import { OrderHistoryRowTestsQuery } from "__generated__/OrderHistoryRowTestsQuery.graphql"
 import { OrderHistoryRowContainer } from "app/Scenes/OrderHistory/OrderHistoryRow"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
@@ -323,19 +324,26 @@ describe("OrderHistoryRow", () => {
       })
     })
 
-    it("navigates to the purchase summary when the order has a processing offer", () => {
-      renderWithRelay({
-        CommerceOrder: () => ({
-          ...mockOrder,
-          internalID: "internal-id",
-          displayState: "PROCESSING",
-          mode: "OFFER",
-        }),
-      })
+    describe.each([
+      [true, "/orders/internal-id/details"],
+      [false, "/user/purchases/internal-id"],
+    ])("when AREnableNewOrderDetails is %s", (featureFlagValue, navigateUrl) => {
+      it("navigates to the correct order details", () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewOrderDetails: featureFlagValue })
 
-      const button = screen.getByTestId("view-order-button")
-      fireEvent.press(button)
-      expect(navigate).toHaveBeenCalledWith("/user/purchases/internal-id")
+        renderWithRelay({
+          CommerceOrder: () => ({
+            ...mockOrder,
+            internalID: "internal-id",
+            displayState: "PROCESSING",
+            mode: "OFFER",
+          }),
+        })
+
+        fireEvent.press(screen.getByTestId("view-order-button"))
+
+        expect(navigate).toHaveBeenCalledWith(navigateUrl)
+      })
     })
   })
 })

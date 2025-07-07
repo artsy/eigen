@@ -1,4 +1,4 @@
-import { ContextModule } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useViewabilityConfig } from "app/utils/hooks/useViewabilityConfig"
@@ -9,11 +9,13 @@ import { useTracking } from "react-tracking"
 type TrackableItem = { id: string; index: number | null }
 
 export const useItemsImpressionsTracking = ({
-  isRailVisible = true,
+  isInViewport = true,
   contextModule,
+  contextScreenOwnerType,
 }: {
   contextModule: ContextModule
-  isRailVisible: boolean
+  isInViewport: boolean
+  contextScreenOwnerType?: OwnerType
 }) => {
   // An array of items that are currently rendered on the screen // not necessarily visible!
   const [renderedItems, setRenderedItems] = useState<Array<TrackableItem>>([])
@@ -40,7 +42,7 @@ export const useItemsImpressionsTracking = ({
 
   useEffect(() => {
     // We would like to trigger the tracking only when the rail is visible and only once per item
-    if (enableItemsViewsTracking && isRailVisible && renderedItems.length > 0) {
+    if (enableItemsViewsTracking && isInViewport && renderedItems.length > 0) {
       renderedItems.forEach(({ id, index }) => {
         if (!trackedItems.has(id) && index !== null) {
           tracking.trackEvent(
@@ -48,6 +50,7 @@ export const useItemsImpressionsTracking = ({
               artworkId: id,
               type: "artwork",
               contextModule: contextModule,
+              contextScreenOwnerType: contextScreenOwnerType,
               position: index,
             })
           )
@@ -55,7 +58,14 @@ export const useItemsImpressionsTracking = ({
         }
       })
     }
-  }, [enableItemsViewsTracking, isRailVisible, tracking, renderedItems])
+  }, [
+    enableItemsViewsTracking,
+    isInViewport,
+    tracking,
+    renderedItems,
+    contextScreenOwnerType,
+    contextModule,
+  ])
 
   return {
     onViewableItemsChanged,

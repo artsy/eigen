@@ -303,53 +303,6 @@ jobs:
           paths:
             - build-success.log
 
-  run-e2e-tests-ios:
-    parallelism: 4
-
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
-
-    macos:
-      xcode: << pipeline.parameters.xcode_version >>
-      resource_class: m2pro.medium
-
-    steps:
-      - checkout
-      - generate-checksums
-      - attach_workspace:
-          at: ../workspace
-      - macos/preboot-simulator:
-          version: "18.2"
-          platform: "iOS"
-          device: "iPhone 16 Pro"
-      - run:
-          name: Install maestro
-          command: curl -Ls "https://get.maestro.mobile.dev" | bash
-      - run:
-          name: Check maestro version
-          command: maestro --version
-      - run:
-          name: Install idb
-          command: brew tap facebook/fb && brew install idb-companion
-      - setup-awscli
-      - install-gems
-      - run:
-          name: Set up maestro env
-          command: ./scripts/setup/setup-env-for-maestro ios
-      - run:
-          name: Download app zip
-          command: aws s3 cp s3://artsy-citadel/eigen/builds/ios/Artsy-latest.zip ./Artsy.zip
-      - run:
-          name: Unzip the app
-          command: unzip Artsy.zip
-      - run:
-          name: Install app in booted sims
-          command: ./scripts/utils/install_app_in_booted_sims.sh
-      - run:
-          name: Run Maestro Tests
-          no_output_timeout: 25m
-          command: ./scripts/utils/run_maestro_shard ios
-
   run-native-tests-android:
     docker:
       - image: cimg/android:2025.03.1-node
@@ -755,10 +708,6 @@ workflows:
       - run-nightly-tasks
       - build-maestro-ios
       - build-maestro-android
-      - run-e2e-tests-ios:
-          requires:
-            - build-maestro-ios
-            - build-maestro-android # remove me when we move to github actions
       - run-native-tests-android
 
   flag-check:
