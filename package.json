@@ -322,7 +322,6 @@
     "tmp": "0.2.1",
     "tsx": "4.19.1",
     "typescript": "5.2.2",
-    "vscode-apollo-relay": "1.5.2",
     "yargs": "17.7.2"
   },
   "resolutions": {
