@@ -29,8 +29,6 @@ export const ArtworkError: React.FC<ArtworkErrorProps> = ({ homePage, me, viewer
 
   return (
     <Flex flex={1}>
-      <NavigationHeader onLeftButtonPress={goBack} />
-
       <ScrollView contentContainerStyle={{ paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET }}>
         <Flex p={2}>
           <Text variant="lg-display">The artwork you were looking for isn't available.</Text>
