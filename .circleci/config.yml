@@ -682,7 +682,6 @@ parameters:
     default: v16-test-success-{{ checksum "../workspace/.manifests/android_native" }}
 
 workflows:
-  version: 2
   nightly:
     triggers:
       - schedule:
