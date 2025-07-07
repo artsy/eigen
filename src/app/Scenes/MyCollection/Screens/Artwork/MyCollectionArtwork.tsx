@@ -17,7 +17,6 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
-import { getVortexMedium } from "app/utils/marketPriceInsightHelpers"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -37,7 +36,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   artworkId,
   artistInternalID,
   medium,
-  category,
 }) => {
   const { trackEvent } = useTracking()
 
@@ -45,11 +43,10 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
 
   const queryVariables = {
     artworkId: artworkId || "",
-    // To not let the whole query fail if the artwork doesn't has an artist
     artistInternalID: artistInternalID || "",
-    // TODO: Fix this logic once we only need category to fetch insights
-    medium: getVortexMedium(medium, category),
+    medium: medium || "",
   }
+
   const data = useLazyLoadQuery<MyCollectionArtworkQuery>(
     MyCollectionArtworkScreenQuery,
     queryVariables,
@@ -209,11 +206,11 @@ const MyCollectionArtworkPlaceholder = () => (
     </Flex>
   </ProvidePlaceholderContext>
 )
+
 export interface MyCollectionArtworkScreenProps {
-  artworkId: string | null
-  artistInternalID: string | null
-  medium: string | null
-  category: string | null
+  artworkId: string
+  artistInternalID: string
+  medium: string
 }
 
 export const MyCollectionArtworkScreen: React.FC<MyCollectionArtworkScreenProps> = (props) => {
