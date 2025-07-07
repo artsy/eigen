@@ -3,6 +3,7 @@ import { Box, VisualClueDot } from "@artsy/palette-mobile"
 import { ICON_HIT_SLOP } from "app/Components/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React from "react"
 
 interface ActivityIndicatorProps {
@@ -12,6 +13,7 @@ interface ActivityIndicatorProps {
 export const ActivityIndicator: React.FC<ActivityIndicatorProps> = (props) => {
   const { hasUnseenNotifications } = props
   const tracking = useHomeViewTracking()
+  const showBlueDots = useFeatureFlag("AREnableBlueActivityDots")
 
   const navigateToActivityPanel = () => {
     tracking.tappedNotificationBell()
@@ -35,7 +37,7 @@ export const ActivityIndicator: React.FC<ActivityIndicatorProps> = (props) => {
               right={0}
               accessibilityLabel="Unseen Notifications Indicator"
             >
-              <VisualClueDot diameter={8} />
+              <VisualClueDot diameter={8} color={showBlueDots ? "blue100" : "red50"} />
             </Box>
           )}
         </>

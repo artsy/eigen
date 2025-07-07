@@ -15,6 +15,9 @@ jest.mock("app/utils/hooks/useVisualClue", () => ({
 jest.mock("app/utils/useTabBarBadge", () => ({
   useTabBarBadge: jest.fn(),
 }))
+jest.mock("app/utils/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: (flag: string) => flag === "AREnableBlueActivityDots",
+}))
 
 // Settings for the test
 describe("useBottomTabsBadges", () => {
