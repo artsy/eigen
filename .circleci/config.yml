@@ -205,6 +205,12 @@ commands:
       - run-relay-compiler
       - update-echo
       - install-gems
+      - run:
+          name: Download fonts from s3
+          command: ./scripts/setup/download-fonts
+      - run:
+          name: Download android assets
+          command: ./scripts/setup/download-assets-android
   build-app-android:
     parameters:
       build_type:
@@ -214,12 +220,6 @@ commands:
       - restore_cache:
           key: << pipeline.parameters.app_build_android_cache_key >>
       - generate-query-map
-      - run:
-          name: Download fonts from s3
-          command: ./scripts/setup/download-fonts
-      - run:
-          name: Download android assets
-          command: ./scripts/setup/download-assets-android
       - run:
           name: Build App
           no_output_timeout: 30m
@@ -376,12 +376,6 @@ jobs:
           at: .
       - install-bin-modules
       - run:
-          name: Download fonts from s3
-          command: ./scripts/setup/download-fonts
-      - run:
-          name: Download android assets
-          command: ./scripts/setup/download-assets-android
-      - run:
           name: Load version code
           command: |
             VERSION_CODE=$(cat fastlane/next_version_code.txt)
@@ -400,12 +394,6 @@ jobs:
       - attach_workspace:
           at: .
       - install-bin-modules
-      - run:
-          name: Download fonts from s3
-          command: ./scripts/setup/download-fonts
-      - run:
-          name: Download android assets
-          command: ./scripts/setup/download-assets-android
       - run:
           name: Load version code
           command: |
@@ -694,7 +682,6 @@ parameters:
     default: v16-test-success-{{ checksum "../workspace/.manifests/android_native" }}
 
 workflows:
-  version: 2
   nightly:
     triggers:
       - schedule:
