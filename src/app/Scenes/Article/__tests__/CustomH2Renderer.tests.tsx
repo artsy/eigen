@@ -19,6 +19,21 @@ const mockPartnerFollowButtonQueryRenderer = jest.mocked(
   require("app/Components/PartnerFollowButton").PartnerFollowButtonQueryRenderer
 )
 
+const createMockCustomRendererProps = (tnode: any) =>
+  ({
+    TDefaultRenderer: mockTDefaultRenderer,
+    tnode,
+    InternalRenderer: jest.fn(),
+    TNodeChildrenRenderer: jest.fn(),
+    sharedProps: {},
+    style: {},
+    textProps: {},
+    viewProps: {},
+    type: "block" as const,
+    renderIndex: 0,
+    renderLength: 1,
+  }) as any
+
 describe("CustomH2Renderer", () => {
   beforeEach(() => {
     jest.clearAllMocks()
@@ -29,9 +44,7 @@ describe("CustomH2Renderer", () => {
   it("renders default renderer when no href is provided", () => {
     const tnode = createMockTNode()
 
-    renderWithWrappers(
-      <CustomH2Renderer TDefaultRenderer={mockTDefaultRenderer} tnode={tnode as any} />
-    )
+    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
@@ -40,7 +53,7 @@ describe("CustomH2Renderer", () => {
   it("renders default renderer when href is malformed", () => {
     const tnode = createMockTNode("invalid-url")
 
-    renderWithWrappers(<CustomH2Renderer TDefaultRenderer={mockTDefaultRenderer} tnode={tnode} />)
+    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
@@ -49,7 +62,7 @@ describe("CustomH2Renderer", () => {
   it("renders default renderer when href does not contain entity and id", () => {
     const tnode = createMockTNode("https://artsy.net/some")
 
-    renderWithWrappers(<CustomH2Renderer TDefaultRenderer={mockTDefaultRenderer} tnode={tnode} />)
+    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
@@ -58,7 +71,7 @@ describe("CustomH2Renderer", () => {
   it("renders artist follow button when href contains artist entity", () => {
     const tnode = createMockTNode("https://artsy.net/artist/banksy")
 
-    renderWithWrappers(<CustomH2Renderer TDefaultRenderer={mockTDefaultRenderer} tnode={tnode} />)
+    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
@@ -72,7 +85,7 @@ describe("CustomH2Renderer", () => {
   it("renders partner follow button when href contains partner entity", () => {
     const tnode = createMockTNode("https://artsy.net/partner/gagosian")
 
-    renderWithWrappers(<CustomH2Renderer TDefaultRenderer={mockTDefaultRenderer} tnode={tnode} />)
+    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
@@ -86,7 +99,7 @@ describe("CustomH2Renderer", () => {
   it("renders default renderer when entity is not artist or partner", () => {
     const tnode = createMockTNode("/artwork/some-artwork-id")
 
-    renderWithWrappers(<CustomH2Renderer TDefaultRenderer={mockTDefaultRenderer} tnode={tnode} />)
+    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
@@ -95,7 +108,7 @@ describe("CustomH2Renderer", () => {
   it("handles complex href paths correctly", () => {
     const tnode = createMockTNode("https://artsy.net/some/prefix/artist/jean-michel-basquiat")
 
-    renderWithWrappers(<CustomH2Renderer TDefaultRenderer={mockTDefaultRenderer} tnode={tnode} />)
+    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
@@ -105,7 +118,7 @@ describe("CustomH2Renderer", () => {
   it("handles href with domain correctly", () => {
     const tnode = createMockTNode("https://artsy.net/artist/kaws")
 
-    renderWithWrappers(<CustomH2Renderer TDefaultRenderer={mockTDefaultRenderer} tnode={tnode} />)
+    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
@@ -119,7 +132,7 @@ describe("CustomH2Renderer", () => {
   it("renders default renderer when isBigH2 is true with artist link", () => {
     const tnode = createMockTNodeWithComma("https://artsy.net/artist/banksy")
 
-    renderWithWrappers(<CustomH2Renderer TDefaultRenderer={mockTDefaultRenderer} tnode={tnode} />)
+    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
@@ -129,7 +142,7 @@ describe("CustomH2Renderer", () => {
   it("renders default renderer when isBigH2 is true with partner link", () => {
     const tnode = createMockTNodeWithComma("https://artsy.net/partner/gagosian")
 
-    renderWithWrappers(<CustomH2Renderer TDefaultRenderer={mockTDefaultRenderer} tnode={tnode} />)
+    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
@@ -139,7 +152,7 @@ describe("CustomH2Renderer", () => {
   it("renders follow button when multiple children but no comma in text", () => {
     const tnode = createMockTNodeWithMultipleChildren("https://artsy.net/artist/banksy")
 
-    renderWithWrappers(<CustomH2Renderer TDefaultRenderer={mockTDefaultRenderer} tnode={tnode} />)
+    renderWithWrappers(<CustomH2Renderer {...createMockCustomRendererProps(tnode)} />)
 
     expect(mockTDefaultRenderer).toHaveBeenCalled()
     expect(screen.getByText("Default H2 Content")).toBeTruthy()
