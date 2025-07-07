@@ -27,6 +27,7 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   contextScreen?: ScreenOwnerType
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string
+  contextScreenQuery?: string
   contextScreenOwnerType?: ScreenOwnerType
   hasMore?: boolean
   hideSaleInfo?: boolean
@@ -52,6 +53,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   contextModule,
   contextScreen,
   contextScreenOwnerId,
+  contextScreenQuery,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
   hasMore,
@@ -92,6 +94,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         contextScreen={contextScreen}
         contextScreenOwnerId={contextScreenOwnerId}
         contextScreenOwnerSlug={contextScreenOwnerSlug}
+        contextScreenQuery={contextScreenQuery}
         numColumns={rest.numColumns}
         artworkMetaStyle={{
           // Since the grid is full width,
@@ -113,6 +116,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       contextScreen,
       contextScreenOwnerId,
       contextScreenOwnerSlug,
+      contextScreenQuery,
       rest.numColumns,
       space,
       artworks.length,
@@ -149,7 +153,6 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         {...flashlistComponentProps}
         numColumns={NUM_COLUMNS_MASONRY}
         contentContainerStyle={{
-          // No paddings are needed for single column grids
           paddingHorizontal: space(2),
         }}
       />
@@ -173,6 +176,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       contentContainerStyle={{
         // No paddings are needed for single column grids
         paddingHorizontal: getAdjustedNumColumns() === 1 ? 0 : space(2),
+        ...rest.contentContainerStyle,
       }}
       onViewableItemsChanged={onViewableItemsChanged}
       viewabilityConfig={viewabilityConfig}

@@ -4,7 +4,7 @@ import { SimpleErrorMessage } from "app/Components/ErrorView/SimpleErrorMessage"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { graphql, QueryRenderer } from "react-relay"
-import { SearchArtworksGridPaginationContainer } from "./SearchArtworksGrid"
+import { SearchArtworksGrid } from "./SearchArtworksGrid"
 import { SearchArtworksGridPlaceholder } from "./components/placeholders/SearchArtworksGridPlaceholder"
 
 export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ keyword }) => {
@@ -14,14 +14,15 @@ export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ key
         environment={getRelayEnvironment()}
         query={graphql`
           query SearchArtworksContainerQuery($count: Int!, $cursor: String, $keyword: String) {
-            viewer {
+            viewer @required(action: THROW) {
               ...SearchArtworksGrid_viewer
                 @arguments(count: $count, cursor: $cursor, keyword: $keyword)
+              ...SearchArtworksGrid_aggregations @arguments(keyword: $keyword)
             }
           }
         `}
         render={renderWithPlaceholder({
-          Container: SearchArtworksGridPaginationContainer,
+          Container: SearchArtworksGrid,
           renderPlaceholder: () => <SearchArtworksGridPlaceholder />,
           initialProps: { keyword },
           renderFallback: () => <SimpleErrorMessage />,

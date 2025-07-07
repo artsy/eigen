@@ -44,7 +44,7 @@ const GlobalSearchInputOverlayContent: React.FC<{ query: string }> = ({ query })
   return (
     <SearchContext.Provider value={searchProviderValues}>
       {shouldStartSearching(query) && !!data.viewer ? (
-        <>
+        <Flex flex={1}>
           <Box pb={1}>
             <SearchPills
               viewer={data.viewer}
@@ -62,7 +62,7 @@ const GlobalSearchInputOverlayContent: React.FC<{ query: string }> = ({ query })
               refetch({ term: query, skipSearchQuery: false })
             }}
           />
-        </>
+        </Flex>
       ) : (
         <ScrollView
           keyboardDismissMode="on-drag"
