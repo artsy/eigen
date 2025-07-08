@@ -49,7 +49,7 @@ We will want to checkout the tag `ios-7.2.0-2022.02.03.14-submission`:
 Get the commit hash for the bug fix you want to release in the hotfix. If it was merged into main you want the hash of the merge commit.
 You can find it in the github ui or by checking out main after the merge and running `git log --oneline`.
 
-Run the script `./scripts/deploys/expo-updates/apply-fix.sh <commit-hash>`
+Run the script `./scripts/deploys/expo-updates/apply-fix <commit-hash>`
 Passing the commit hash of the fix, if there are multiple you can run multiple times.
 
 If you see output like: `Warning: native code changed you cannot use expo updates for this hotfix, please follow the native beta deployment steps.`
