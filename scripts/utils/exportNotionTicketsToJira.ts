@@ -118,7 +118,6 @@ async function createJiraIssue(
           customfield_10130: {
             value: bugSeverity, // Bug Severity
           },
-          labels: [team, "mobile"],
           issuetype: {
             name: "Bug",
           },
@@ -134,8 +133,40 @@ async function createJiraIssue(
     const data = await response.json()
     console.log(chalk.bold.green("Successfully created Jira issue:"))
     console.log(JSON.stringify(data, null, 2))
+
+    return data.key
   } catch (error) {
     console.error(chalk.bold.red("Error creating Jira issue:"))
+    console.error(error)
+  }
+}
+
+async function updateJiraLabels(issueKey: string, labels: string[]) {
+  try {
+    const auth = Buffer.from(`${JIRA_EMAIL}:${JIRA_API_TOKEN}`).toString("base64")
+    const response = await fetch(`${JIRA_BASE_URL}/rest/api/3/issue/${issueKey}`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Basic ${auth}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        update: {
+          labels: labels.map((label) => ({ add: label })),
+        },
+      }),
+    })
+
+    if (!response.ok) {
+      console.error(await response.text())
+      throw new Error(
+        `Failed to update labels for ${issueKey}: ${response.status} ${response.statusText}`
+      )
+    }
+
+    console.log(chalk.bold.green(`Successfully updated labels for ${issueKey}`))
+  } catch (error) {
+    console.error(chalk.bold.red("Error updating Jira labels:"))
     console.error(error)
   }
 }
@@ -183,7 +214,15 @@ async function main() {
     }
 
     for (const issue of validIssues) {
-      await createJiraIssue(issue.summary, issue.notionUrl, issue.severity, issue.team)
+      const issueKey = await createJiraIssue(
+        issue.summary,
+        issue.notionUrl,
+        issue.severity,
+        issue.team
+      )
+      if (issueKey) {
+        await updateJiraLabels(issueKey, [issue.team, "mobile"])
+      }
     }
   }
 }
