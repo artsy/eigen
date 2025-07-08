@@ -72,7 +72,7 @@ async function createJiraIssue(
   issueSummary: string,
   issueLink: string,
   bugSeverity: string,
-  component: string
+  team: string
 ) {
   try {
     const auth = Buffer.from(`${JIRA_EMAIL}:${JIRA_API_TOKEN}`).toString("base64")
@@ -118,11 +118,7 @@ async function createJiraIssue(
           customfield_10130: {
             value: bugSeverity, // Bug Severity
           },
-          components: [
-            {
-              name: component,
-            },
-          ],
+          labels: [team, "mobile"],
           issuetype: {
             name: "Bug",
           },
@@ -147,7 +143,7 @@ async function createJiraIssue(
 interface ValidIssue {
   summary: string
   severity: string
-  component: string
+  team: string
   notionUrl: string
 }
 
@@ -168,10 +164,10 @@ async function main() {
       const notionPageUrl = page.url
 
       const severity = page.properties["Bug Severity"]?.select?.name || null
-      const component = page.properties.Components?.select?.name || null
+      const team = page.properties.Team?.select?.name || null
 
-      if (!severity || !component) {
-        console.error(chalk.bold.red("Missing Bug Severity or Component for page:"))
+      if (!severity || !team) {
+        console.error(chalk.bold.red("Missing Bug Severity or Team for page:"))
         console.error(chalk.bold.red(notionPageUrl))
         console.error(chalk.bold.red("Please fill in the missing fields and try again."))
         return
@@ -181,13 +177,13 @@ async function main() {
       validIssues.push({
         summary: issueSummary,
         severity: fullSeverity,
-        component,
+        team,
         notionUrl: notionPageUrl,
       })
     }
 
     for (const issue of validIssues) {
-      await createJiraIssue(issue.summary, issue.notionUrl, issue.severity, issue.component)
+      await createJiraIssue(issue.summary, issue.notionUrl, issue.severity, issue.team)
     }
   }
 }
