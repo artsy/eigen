@@ -1,3 +1,6 @@
-This update includes a number of improvements and bug fixes.
+This update includes a number of improvements and bug fixes including:
+
+- New Order Details screen
+- A new Featured Artworks widget to see daily curated artworks right on your home screen
 
 Have feedback? Email us at support@artsy.net
