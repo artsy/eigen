@@ -95,9 +95,10 @@ Let `#practice-mobile` know you will be deploying a hotfix and to hold off deplo
 Run the script to deploy the hotfix to the canary channel:
 `./scripts/deploys/expo-updates/deploy-to-expo-updates 'canary' 'hotfix description'`
 
-## Test your update in the production app
+## Test your update in the firebase equivalent of the production app
 
-Download the latest app from the app store or play store
+Find and download the equivalent build in firebase app tester to the production app, it should have the same build number as the latest submissions found in step 1.
+
 Enable the dev menu and download the expo updates bundle from the staging deployment.
 Test that the fix is working as intended and do some basic QA to make sure the app is functioning correctly.
 
