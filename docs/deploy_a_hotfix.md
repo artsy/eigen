@@ -106,7 +106,9 @@ Test that the fix is working as intended and do some basic QA to make sure the a
 If QA goes well run the script to promote the bundle to production.
 Make sure to monitor the app as it rolls out to users.
 
-`./scripts/deploys/expo-updates/deploy-to-prod <rollout_percentage>`
+> ⚠️ **IMPORTANT:** This will deploy the code from your local branch to production. Make sure you are on the branch with the changes you want to deploy and _only_ the changes you want to deploy!
+
+`./scripts/deploys/expo-updates/deploy-to-production <rollout_percentage>`
 
 For example if you wanted to rollout to 50% of users you would pass `50` for rollout_percentage. If it is critical to get the fix out fast
 you can pass `100` otherwise it is suggested you pass `50` and monitor before updating to 100%.
@@ -115,7 +117,9 @@ you can pass `100` otherwise it is suggested you pass `50` and monitor before up
 
 If all looks good with the fix you can update the rollout to all users:
 
-`./scripts/deploys/expo-updates/update-rollout 100`
+`./scripts/deploys/expo-updates/update-rollout`
+
+This will start an interactive dialog where you can choose the release you want to update the rollout for. Remember to update for both iOS and Android!
 
 </details>
 
