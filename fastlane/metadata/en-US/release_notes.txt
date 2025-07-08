@@ -1,3 +1,5 @@
-This update includes a number of improvements and bug fixes.
+This update includes a number of improvements and bug fixes including:
+
+- Redesigned order details with improved layout and clearer status updates
 
 Have feedback? Email us at support@artsy.net
