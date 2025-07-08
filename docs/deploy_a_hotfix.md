@@ -68,9 +68,6 @@ Ask #practice-mobile if anything has been deployed as a hot fix previously targe
 
 ## Install dependencies
 
-> [!IMPORTANT]
-> If the install results in changes to Podfile.lock you must do a Native Release Hotfix, please refer to that section of the docs.
-
 Since the branch you are on is older than main it is likely some node deps are out of date locally. You will need to update your local deps otherwise the
 deployment to expo updates will fail.
 
@@ -88,6 +85,8 @@ yarn setup:releases
 You will need to be logged in to the `artsy_mobile` account, credentials in 1pass:
 
 `./bin/node_modules/.bin/eas login`
+
+> ⚠️ **IMPORTANT:** If the install results in changes to Podfile.lock you must do a Native Release Hotfix. Please refer to that section of the docs.
 
 ## Deploy your change to expo updates canary channel
 
