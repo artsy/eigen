@@ -17,7 +17,7 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { isEqual, uniq } from "lodash"
 import { AnimatePresence } from "moti"
 import React, { useEffect, useRef, useState } from "react"
-import { Animated, StatusBar } from "react-native"
+import { Animated } from "react-native"
 import Keys from "react-native-keys"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useRefetchableFragment } from "react-relay"
@@ -135,6 +135,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
           </Animated.View>
         )
       },
+      headerShadowVisible: false,
     })
   }, [navigation, viewer, userLocation, showCityPicker, activePin])
 
@@ -490,7 +491,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
         context_screen_owner_id: props.citySlug,
       }}
     >
-      <StatusBar barStyle="dark-content" />
+      {/* <StatusBar barStyle="dark-content" tra/> */}
       {/* TODO: think of a better way to animate the appearance of the city picker */}
       <AnimatePresence>
         {!!showCityPicker && (
@@ -506,6 +507,10 @@ export const GlobalMap: React.FC<Props> = (props) => {
           onDidFinishLoadingMap={onDidFinishRenderingMapFully}
           attributionEnabled
           logoEnabled
+          attributionPosition={{
+            bottom: space(2),
+            right: space(2),
+          }}
           logoPosition={{
             bottom: space(2),
             left: space(2),
