@@ -7,9 +7,11 @@ import {
   useSpace,
   useTheme,
 } from "@artsy/palette-mobile"
+import { CustomH2Renderer } from "app/Scenes/Article/CustomH2Renderer"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { merge } from "lodash"
-import RenderHtml, { MixedStyleRecord } from "react-native-render-html"
+import RenderHtml, { CustomBlockRenderer, MixedStyleRecord } from "react-native-render-html"
 
 interface HTMLProps extends FlexProps {
   html: string
@@ -46,6 +48,9 @@ export const HTML: React.FC<HTMLProps> = ({
         contentWidth={contentWidth}
         source={{ html }}
         systemFonts={[FONTS.regular, FONTS.italic, FONTS.medium, FONTS.mediumItalic]}
+        renderers={{
+          h2: CustomH2Renderer as CustomBlockRenderer,
+        }}
         renderersProps={{
           a: {
             onPress: (event, href) => {
