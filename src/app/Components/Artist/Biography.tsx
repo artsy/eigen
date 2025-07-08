@@ -4,7 +4,7 @@ import { HTML } from "app/Components/HTML"
 import { useState } from "react"
 import { graphql, useFragment } from "react-relay"
 
-const MAX_CHARS = 250
+export const MAX_CHARS = 250
 export const MAX_WIDTH_BIO = 650
 
 interface BiographyProps {
@@ -20,7 +20,8 @@ export const Biography: React.FC<BiographyProps> = ({ artist, variant = "sm" }) 
     return null
   }
 
-  const text = data.biographyBlurb.text
+  const credit = data.biographyBlurb.credit
+  const text = !!credit ? `${data.biographyBlurb.text} ${credit}` : data.biographyBlurb.text
   const truncatedText = text.slice(0, MAX_CHARS)
   const canExpand = text.length > MAX_CHARS
 
@@ -44,8 +45,9 @@ export const Biography: React.FC<BiographyProps> = ({ artist, variant = "sm" }) 
 
 const query = graphql`
   fragment Biography_artist on Artist {
-    biographyBlurb(format: HTML, partnerBio: false) {
+    biographyBlurb(format: HTML) {
       text
+      credit
     }
   }
 `
