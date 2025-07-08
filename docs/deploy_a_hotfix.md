@@ -93,7 +93,7 @@ You will need to be logged in to the `artsy_mobile` account, credentials in 1pas
 Let `#practice-mobile` know you will be deploying a hotfix and to hold off deploying to expo updates or betas.
 
 Run the script to deploy the hotfix to the canary channel:
-`./scripts/deploys/expo-updates/deploy-to-expo-updates 'staging' 'hotfix description'`
+`./scripts/deploys/expo-updates/deploy-to-expo-updates 'canary' 'hotfix description'`
 
 ## Test your update in the production app
 
