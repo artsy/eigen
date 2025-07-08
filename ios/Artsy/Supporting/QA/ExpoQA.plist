@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>EXUpdatesCheckOnLaunch</key>
-	<string>NEVER</string>
+	<string>ALWAYS</string>
 	<key>EXUpdatesDisableAntiBrickingMeasures</key>
-	<true/>
+	<false/>
 	<key>EXUpdatesEnabled</key>
 	<true/>
 	<key>EXUpdatesLaunchWaitMs</key>
@@ -13,7 +13,7 @@
 	<key>EXUpdatesRequestHeaders</key>
 	<dict>
 		<key>expo-channel-name</key>
-		<string>canary</string>
+		<string>staging</string>
 	</dict>
 	<key>EXUpdatesRuntimeVersion</key>
 	<string>replaced-at-build-time</string>
