@@ -1,4 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
+import { AppleIcon } from "@artsy/icons/native"
 import { Flex, LinkText, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
 import { MyAccount_me$key } from "__generated__/MyAccount_me.graphql"
@@ -169,13 +170,7 @@ export const MyAccount: React.FC<{ me: MyAccount_me$key }> = (props) => {
                 onPress={() => {
                   linkOrUnlink("apple")
                 }}
-                icon={
-                  <Image
-                    source={require(`images/apple.webp`)}
-                    resizeMode="contain"
-                    style={{ marginRight: 10, tintColor: "black" }}
-                  />
-                }
+                icon={<AppleIcon mr={1} fill="mono100" />}
               />
             )}
           </Flex>
@@ -245,13 +240,7 @@ const MyAccountPlaceholder: React.FC = () => {
             isLinked={false}
             isLoading
             onPress={() => {}}
-            icon={
-              <Image
-                source={require(`images/apple.webp`)}
-                resizeMode="contain"
-                style={{ marginRight: 10, tintColor: "black" }}
-              />
-            }
+            icon={<AppleIcon mr={1} fill="mono100" />}
           />
         )}
       </Flex>
