@@ -68,12 +68,7 @@ async function fetchNotionDatabase(databaseId: string) {
   }
 }
 
-async function createJiraIssue(
-  issueSummary: string,
-  issueLink: string,
-  bugSeverity: string,
-  team: string
-) {
+async function createJiraIssue(issueSummary: string, issueLink: string, bugSeverity: string) {
   try {
     const auth = Buffer.from(`${JIRA_EMAIL}:${JIRA_API_TOKEN}`).toString("base64")
     const response = await fetch(`${JIRA_BASE_URL}/rest/api/3/issue`, {
@@ -214,12 +209,7 @@ async function main() {
     }
 
     for (const issue of validIssues) {
-      const issueKey = await createJiraIssue(
-        issue.summary,
-        issue.notionUrl,
-        issue.severity,
-        issue.team
-      )
+      const issueKey = await createJiraIssue(issue.summary, issue.notionUrl, issue.severity)
       if (issueKey) {
         await updateJiraLabels(issueKey, [issue.team, "mobile"])
       }
