@@ -5225,6 +5225,7 @@ type CommerceBuyOrder implements CommerceOrder {
     # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+  stripeConfirmationToken: String
   taxTotal(
     decimal: String = "."
 
@@ -6074,6 +6075,7 @@ type CommerceOfferOrder implements CommerceOrder {
     # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+  stripeConfirmationToken: String
   taxTotal(
     decimal: String = "."
 
@@ -6409,6 +6411,7 @@ interface CommerceOrder {
     # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See http://www.iana.org/time-zones, https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+  stripeConfirmationToken: String
   taxTotal(
     decimal: String = "."
 
@@ -16345,6 +16348,9 @@ type Order {
   # Source of the order
   source: OrderSourceEnum!
 
+  # Stripe confirmation token for the order
+  stripeConfirmationToken: String
+
   # The total amount for tax
   taxTotal: Money
 
@@ -26141,6 +26147,9 @@ input updateOrderInput {
 
   # Payment method.
   paymentMethod: OrderPaymentMethodEnum
+
+  # Stripe confirmation token
+  stripeConfirmationToken: String
 }
 
 type updateOrderPayload {
