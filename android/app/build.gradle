@@ -177,10 +177,10 @@ android {
 
             manifestPlaceholders = [
                 expoUpdatesEnabled: "true",
-                expoUpdatesCheckOnLaunch: "ALWAYS",
-                expoUpdatesChannel: "staging",
+                expoUpdatesCheckOnLaunch: "NEVER",
+                expoUpdatesChannel: "canary",
                 expoRuntimeVersion: getRuntimeVersion(),
-                expoUpdatesDisableAntibrickingMeasures: "false"
+                expoUpdatesDisableAntibrickingMeasures: "true"
             ]
         }
     }
