@@ -302,7 +302,7 @@
     "lint-staged": "13.2.3",
     "ora": "5.4.0",
     "patch-package": "6.4.7",
-    "pod-install": "0.3.9",
+    "pod-install": "0.3.10",
     "postinstall-prepare": "1.0.1",
     "prettier": "3.1.1",
     "prompt-sync": "4.2.0",
