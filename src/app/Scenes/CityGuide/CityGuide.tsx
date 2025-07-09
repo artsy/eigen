@@ -1,4 +1,4 @@
-import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
+import { Flex, Spinner } from "@artsy/palette-mobile"
 import { MapRenderer } from "app/Scenes/Map/MapRenderer"
 import { cityNearLocation } from "app/Scenes/Map/helpers/cityNearLocation"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -28,9 +28,5 @@ export const CityGuide: React.FC = () => {
     )
   }
 
-  return (
-    <Screen safeArea={false}>
-      <MapRenderer citySlug={previouslySelectedCitySlug ?? "new-york-ny-usa"} />
-    </Screen>
-  )
+  return <MapRenderer citySlug={previouslySelectedCitySlug ?? "new-york-ny-usa"} />
 }

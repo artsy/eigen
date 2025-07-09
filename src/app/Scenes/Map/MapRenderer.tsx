@@ -1,8 +1,6 @@
-import { Screen } from "@artsy/palette-mobile"
 import { MapRendererQuery } from "__generated__/MapRendererQuery.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { SpinnerFallback, withSuspense } from "app/utils/hooks/withSuspense"
-import { Platform } from "react-native"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { GlobalMap } from "./GlobalMap"
 
@@ -34,11 +32,7 @@ const MapRendererInner: React.FC<MapRendererProps> = (props) => {
     return null
   }
 
-  return (
-    <Screen safeArea={Platform.OS === "android"}>
-      <GlobalMap {...props} viewer={data.viewer} />
-    </Screen>
-  )
+  return <GlobalMap {...props} viewer={data.viewer} />
 }
 
 export const MapRenderer = withSuspense<MapRendererProps>({

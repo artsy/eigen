@@ -17,7 +17,7 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { isEqual, uniq } from "lodash"
 import { AnimatePresence } from "moti"
 import React, { useEffect, useRef, useState } from "react"
-import { Animated } from "react-native"
+import { Animated, Platform } from "react-native"
 import Keys from "react-native-keys"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useRefetchableFragment } from "react-relay"
@@ -491,7 +491,6 @@ export const GlobalMap: React.FC<Props> = (props) => {
         context_screen_owner_id: props.citySlug,
       }}
     >
-      {/* <StatusBar barStyle="dark-content" tra/> */}
       {/* TODO: think of a better way to animate the appearance of the city picker */}
       <AnimatePresence>
         {!!showCityPicker && (
@@ -516,6 +515,15 @@ export const GlobalMap: React.FC<Props> = (props) => {
             left: space(2),
           }}
           onPress={onPressMap}
+          scaleBarPosition={
+            Platform.OS === "android"
+              ? {
+                  top: safeAreaInsets.top + space(6),
+                  left: space(2),
+                }
+              : // The default position is fine on iOS // no need to override it
+                undefined
+          }
         >
           <MapboxGL.Camera
             ref={cameraRef}
