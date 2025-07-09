@@ -51,7 +51,7 @@ export const AuthBackground: React.FC = () => {
             // We want to show this text in white regardless of the theme to make sure it can be read clearly
             color="white"
           >
-            Collect Art by the World’s Leading Artists
+            Discover and Buy Art that Moves You.
           </Text>
 
           <Spacer y={1} />
@@ -61,7 +61,8 @@ export const AuthBackground: React.FC = () => {
             // We want to show this text in white regardless of the theme to make sure it can be read clearly
             color="white"
           >
-            Build your personalized profile, get market insights and buy art with confidence.
+            Your personalized guide to fresh artworks and the latest stories—and the easiest way to
+            buy art you love.
           </Text>
 
           <Spacer y={2} />
