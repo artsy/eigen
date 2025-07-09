@@ -88,6 +88,7 @@ end
 private_lane :upload_dsyms_to_sentry do |options|
   org_slug = options[:org_slug]
   project_slug = options[:project_slug]
+  dist = options[:dist]
 
   # make individual dSYM archives available
   root = File.expand_path('..', __dir__)
@@ -96,13 +97,18 @@ private_lane :upload_dsyms_to_sentry do |options|
   sh "unzip -d #{dsyms_path} #{dsym_archive}"
 
   Dir.glob(File.join(dsyms_path, '*.dSYM')).each do |dsym_path|
-    # No need to specify `dist` as the build number is encoded in the dSYM's Info.plist
-    sentry_debug_files_upload(
+    params = {
       auth_token: ENV['SENTRY_UPLOAD_AUTH_KEY'],
       org_slug: org_slug,
       project_slug: project_slug,
       path: dsym_path
-    )
+    }
+
+     # For native iOS builds the dist is in the Info.plist
+     # for js only builds we need to pass the dist manually
+    params[:dist] = dist if dist
+
+    sentry_debug_files_upload(**params)
 
     puts "Uploaded dsym for #{project_slug}"
   end

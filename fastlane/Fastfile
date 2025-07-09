@@ -525,6 +525,20 @@ lane :deploy_to_expo_updates do |options|
   puts "🔧 Uploading sourcemaps to Sentry with release: #{platform}-#{release_name_base}, dist: #{dist_version}"
   sh("cd .. && npx sentry-expo-upload-sourcemaps dist")
 
+  if platform == "ios"
+    puts "🔧 Uploading dSYMs to Sentry for release: #{platform}-#{release_name_base}"
+    begin
+      upload_dsyms_to_sentry(
+        org_slug: 'artsynet',
+        project_slug: 'eigen',
+        dist: dist_version
+      )
+    rescue StandardError => e
+      message = 'Uploading dsyms to sentry failed.'
+      handle_error(e, message)
+    end
+  end
+
   tag_and_push(tag: "#{platform}-#{release_name_base}")
 
   puts "🚀 Deploying to #{deployment_name} with description '#{description}' for platform #{platform}"
