@@ -13790,10 +13790,10 @@ pngjs@^3.3.0:
   resolved "https://registry.yarnpkg.com/pngjs/-/pngjs-3.4.0.tgz#99ca7d725965fb655814eaf65f38f12bbdbf555f"
   integrity sha512-NCrCHhWmnQklfH4MtJMRjZ2a8c80qXeMlQMv2uVp9ISJMTt562SbGd6n2oq0PaPgKm7Z6pL9E2UlLIhC+SHL3w==
 
-pod-install@0.3.9:
-  version "0.3.9"
-  resolved "https://registry.yarnpkg.com/pod-install/-/pod-install-0.3.9.tgz#521027390c5c2d96e377cfe8dfcee62d31db5aba"
-  integrity sha512-cBuJf+LCWG+WYwl1KvBgogtl19ZODpfN35lxKfHz7txVZcgfoVqzsqvgy47k31aVmmv6WifW0T2lTtHKGRyfdQ==
+pod-install@0.3.10:
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/pod-install/-/pod-install-0.3.10.tgz#a5b66b6de21e23f7a073d45aa08b25fe27076d3d"
+  integrity sha512-eQRYCQFxcJe1kyd8G3F++yF56XbTj9fyAUJvc7FVIOv0IH+7f/r7h7qBnkfUYnRI1mMhWja6M5hlEyZ7lZT8og==
 
 popmotion@11.0.3:
   version "11.0.3"
