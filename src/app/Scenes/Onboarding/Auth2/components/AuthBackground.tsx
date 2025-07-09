@@ -1,4 +1,5 @@
-import { ArtsyLogoWhiteIcon, Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
+import { ArtsyLogoIcon } from "@artsy/icons/native"
+import { Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { MotiView } from "moti"
 import React, { useEffect, useState } from "react"
@@ -18,7 +19,7 @@ export const AuthBackground: React.FC = () => {
       <AnimatedBackground />
 
       <Flex alignItems="center" width="100%">
-        <ArtsyLogoWhiteIcon height={25} width={75} mt={safeArea.top} />
+        <ArtsyLogoIcon height={25} width={75} mt={safeArea.top} fill="white" />
       </Flex>
 
       <Flex flex={1} px={2} justifyContent="center" position="relative" top={-safeArea.top * 2}>
@@ -51,7 +52,7 @@ export const AuthBackground: React.FC = () => {
             // We want to show this text in white regardless of the theme to make sure it can be read clearly
             color="white"
           >
-            Discover and Buy Art that Moves You.
+            Discover and Buy Art that Moves You
           </Text>
 
           <Spacer y={1} />
