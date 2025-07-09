@@ -16,7 +16,7 @@ export const ArtistInsightsEmpty: FC<BoxProps> = (props) => {
 
       <Spacer y={2} />
 
-      <RouterLink to="/price-database">
+      <RouterLink to="/price-database" hasChildTouchable>
         <Button variant="outline" mx="auto">
           View Artsy’s Price Database
         </Button>
