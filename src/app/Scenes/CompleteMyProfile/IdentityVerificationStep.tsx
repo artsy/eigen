@@ -5,6 +5,8 @@ import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
 import { useCompleteMyProfileSteps } from "app/Scenes/CompleteMyProfile/hooks/useCompleteMyProfileSteps"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { useHandleIDVerification } from "app/Scenes/MyProfile/useHandleVerification"
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { FC } from "react"
 import { graphql, useFragment } from "react-relay"
 
@@ -53,7 +55,16 @@ export const IdentityVerificationStep: FC = () => {
                 <Flex flexDirection="row" flexWrap="wrap">
                   <Text color="mono60">
                     Identify Verification is required for some transactions. For more details, see
-                    our <LinkText color="mono60">FAQs</LinkText>.
+                    our{" "}
+                    <LinkText
+                      color="mono60"
+                      onPress={() => {
+                        navigate("https://www.artsy.net/identity-verification-faq")
+                      }}
+                    >
+                      FAQs
+                    </LinkText>
+                    .
                   </Text>
                 </Flex>
               </Flex>
