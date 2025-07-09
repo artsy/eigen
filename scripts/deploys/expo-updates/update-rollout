@@ -1,0 +1,4 @@
+#!/bin/bash
+set -euo pipefail
+
+./bin/node_modules/.bin/eas update:edit
