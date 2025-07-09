@@ -17,7 +17,7 @@ import { ProvideScreenTracking, Schema } from "app/utils/track"
 import { isEqual, uniq } from "lodash"
 import { AnimatePresence } from "moti"
 import React, { useEffect, useRef, useState } from "react"
-import { Animated } from "react-native"
+import { Animated, Platform } from "react-native"
 import Keys from "react-native-keys"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useRefetchableFragment } from "react-relay"
@@ -54,6 +54,8 @@ export const ArtsyMapStyleURL = "mapbox://styles/artsyit/cjrb59mjb2tsq2tqxl17pfo
 const DefaultZoomLevel = 11
 const MinZoomLevel = 9
 const MaxZoomLevel = 17.5
+
+const SHOW_CARD_HEIGHT = 150
 
 export enum DrawerPosition {
   open = "open",
@@ -133,6 +135,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
           </Animated.View>
         )
       },
+      headerShadowVisible: false,
     })
   }, [navigation, viewer, userLocation, showCityPicker, activePin])
 
@@ -283,7 +286,7 @@ export const GlobalMap: React.FC<Props> = (props) => {
           left: 0,
           right: 0,
           position: "absolute",
-          height: 150,
+          height: SHOW_CARD_HEIGHT,
         }}
       >
         {!!hasShows && (
@@ -503,11 +506,24 @@ export const GlobalMap: React.FC<Props> = (props) => {
           onDidFinishLoadingMap={onDidFinishRenderingMapFully}
           attributionEnabled
           logoEnabled
+          attributionPosition={{
+            bottom: space(2),
+            right: space(2),
+          }}
           logoPosition={{
             bottom: space(2),
             left: space(2),
           }}
           onPress={onPressMap}
+          scaleBarPosition={
+            Platform.OS === "android"
+              ? {
+                  top: safeAreaInsets.top + space(6),
+                  left: space(2),
+                }
+              : // The default position is fine on iOS // no need to override it
+                undefined
+          }
         >
           <MapboxGL.Camera
             ref={cameraRef}
@@ -537,13 +553,13 @@ export const GlobalMap: React.FC<Props> = (props) => {
             </>
           )}
         </MapboxGL.MapView>
-        {!!city && (
+        {!!city && activeShows.length > 0 && (
           <Flex
             position="absolute"
             bottom={0}
             left={0}
             right={0}
-            height={200}
+            height={SHOW_CARD_HEIGHT}
             justifyContent="flex-end"
           >
             {renderShowCard()}
