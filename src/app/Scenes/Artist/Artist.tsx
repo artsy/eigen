@@ -183,7 +183,6 @@ export const ArtistScreenQuery = graphql`
   query ArtistAboveTheFoldQuery($artistID: String!) @cacheable {
     artist(id: $artistID) {
       ...ArtistHeader_artist
-      ...ArtistHeaderNavRight_artist
       id
       internalID
       slug
