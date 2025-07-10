@@ -26013,6 +26013,9 @@ input submitOrderInput {
 
   # Order id.
   id: ID!
+
+  # Whether the credit card should be one-time use.
+  oneTimeUse: Boolean
 }
 
 type submitOrderPayload {
