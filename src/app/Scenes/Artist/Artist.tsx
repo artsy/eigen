@@ -8,7 +8,7 @@ import {
   Spacer,
   Tabs,
 } from "@artsy/palette-mobile"
-import { useNavigation, useRoute } from "@react-navigation/native"
+import { useRoute } from "@react-navigation/native"
 import { ArtistAboveTheFoldQuery } from "__generated__/ArtistAboveTheFoldQuery.graphql"
 import { FilterArtworksInput } from "__generated__/ArtistArtworks_artistRefetch.graphql"
 import { ArtistBelowTheFoldQuery } from "__generated__/ArtistBelowTheFoldQuery.graphql"
@@ -32,10 +32,11 @@ import { LoadFailureView } from "app/Components/LoadFailureView"
 import { usePopoverMessage } from "app/Components/PopoverMessage/popoverMessageHooks"
 import { SkeletonPill } from "app/Components/SkeletonPill/SkeletonPill"
 import { SearchCriteriaQueryRenderer } from "app/Scenes/Artist/SearchCriteria"
+import { goBack } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { useCallback, useEffect } from "react"
+import React, { useCallback, useEffect, useMemo } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { Environment, graphql } from "react-relay"
 
@@ -74,24 +75,6 @@ export const Artist: React.FC<ArtistProps> = ({
 }) => {
   const popoverMessage = usePopoverMessage()
 
-  const navigation = useNavigation()
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerRight: () => {
-        if (artistAboveTheFold) {
-          return (
-            <Flex>
-              <ArtistHeaderNavRightQueryRenderer artistID={artistAboveTheFold.internalID} />
-            </Flex>
-          )
-        }
-
-        return null
-      },
-    })
-  }, [artistAboveTheFold, navigation])
-
   useEffect(() => {
     if (!!fetchCriteriaError) {
       popoverMessage.show({
@@ -108,6 +91,10 @@ export const Artist: React.FC<ArtistProps> = ({
     [artistAboveTheFold]
   )
 
+  const artistHeaderRight = useMemo(() => {
+    return <ArtistHeaderNavRightQueryRenderer artistID={artistAboveTheFold.internalID} />
+  }, [artistAboveTheFold])
+
   return (
     <ProvideScreenTracking
       info={{
@@ -123,7 +110,10 @@ export const Artist: React.FC<ArtistProps> = ({
           title={artistAboveTheFold.name ?? ""}
           showLargeHeaderText={false}
           BelowTitleHeaderComponent={renderBelowTheHeaderComponent}
-          hideScreen
+          headerProps={{
+            rightElements: artistHeaderRight,
+            onBack: goBack,
+          }}
         >
           <Tabs.Tab name="Artworks" label="Artworks">
             <Tabs.Lazy>
