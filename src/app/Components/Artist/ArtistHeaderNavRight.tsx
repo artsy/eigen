@@ -10,7 +10,6 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { MotiView } from "moti"
 import { useCallback, useState } from "react"
 import { PixelRatio, TouchableOpacity } from "react-native"
-import { useDerivedValue } from "react-native-reanimated"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import useDebounce from "react-use/lib/useDebounce"
 
@@ -24,7 +23,7 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   artist: artistProp,
 }) => {
   const space = useSpace()
-  const { currentScrollYAnimated, scrollYOffset } = useScreenScrollContext()
+  const { currentScrollY, scrollYOffset } = useScreenScrollContext()
   const artist = useFragment(fragment, artistProp)
   const [isFollowed, setIsFollowed] = useState(!!artist?.isFollowed)
 
@@ -41,9 +40,7 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
     [isFollowed]
   )
 
-  const displayFollowButton = useDerivedValue(() => {
-    return !scrollYOffset || currentScrollYAnimated.value < scrollYOffset + NAVBAR_HEIGHT
-  }, [scrollYOffset, currentScrollYAnimated.value])
+  const displayFollowButton = !scrollYOffset || currentScrollY < scrollYOffset + NAVBAR_HEIGHT
 
   // The container width minus the share icon width minus the padding on the left and right
   const followButtonWidth = CONTAINER_WIDTH - ACCESSIBLE_DEFAULT_ICON_SIZE - space(2)
@@ -67,7 +64,7 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
       animate={{
         transform: [
           {
-            translateX: displayFollowButton.value
+            translateX: displayFollowButton
               ? 0
               : CONTAINER_WIDTH -
                 ACCESSIBLE_DEFAULT_ICON_SIZE -
@@ -97,7 +94,7 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
 
         <MotiView
           animate={{
-            opacity: displayFollowButton.value ? 1 : 0,
+            opacity: displayFollowButton ? 1 : 0,
           }}
           transition={{
             type: "timing",
