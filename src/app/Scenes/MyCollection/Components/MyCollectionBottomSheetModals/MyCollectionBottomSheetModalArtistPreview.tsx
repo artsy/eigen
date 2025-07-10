@@ -1,26 +1,21 @@
 import { InfoIcon } from "@artsy/icons/native"
 import {
-  Box,
   Checkbox,
   Flex,
   Join,
   Message,
-  Pill,
   SkeletonBox,
   SkeletonText,
   Spacer,
-  Spinner,
   Text,
-  useScreenDimensions,
 } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { BottomSheetView } from "@gorhom/bottom-sheet"
 import { MyCollectionBottomSheetModalArtistPreviewQuery } from "__generated__/MyCollectionBottomSheetModalArtistPreviewQuery.graphql"
 import { MyCollectionBottomSheetModalArtistPreview_artist$data } from "__generated__/MyCollectionBottomSheetModalArtistPreview_artist.graphql"
 import { MyCollectionBottomSheetModalArtistPreview_me$data } from "__generated__/MyCollectionBottomSheetModalArtistPreview_me.graphql"
-import { ArtistListItemContainer, ArtistListItemPlaceholder } from "app/Components/ArtistListItem"
+import { ArtistListItemContainer } from "app/Components/ArtistListItem"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
-import { SkeletonPill } from "app/Components/SkeletonPill/SkeletonPill"
 import { useToast } from "app/Components/Toast/toastHook"
 import { ArtistKindPills } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistPreview/ArtistKindPills"
 import { SNAP_POINTS } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistsPrompt"
@@ -28,7 +23,6 @@ import { deleteUserInterest } from "app/Scenes/MyCollection/mutations/deleteUser
 import { updateUserInterest } from "app/Scenes/MyCollection/mutations/updateUserInterest"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useAndroidActionSheetStyles } from "app/utils/hooks/useAndroidActionSheetStyles"
-import { PlaceholderBox } from "app/utils/placeholders"
 import { refreshMyCollection } from "app/utils/refreshHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import { useState } from "react"
