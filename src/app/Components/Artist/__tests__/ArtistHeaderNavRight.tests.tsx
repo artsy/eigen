@@ -8,6 +8,9 @@ import { graphql } from "react-relay"
 jest.mock("@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext", () => ({
   useScreenScrollContext: () => ({
     currentScrollY: 0,
+    currentScrollYAnimated: {
+      value: 0,
+    },
     scrollYOffset: 0,
   }),
 }))

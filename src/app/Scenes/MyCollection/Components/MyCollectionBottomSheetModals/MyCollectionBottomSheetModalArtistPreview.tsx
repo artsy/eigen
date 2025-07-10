@@ -42,7 +42,6 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
 > = ({ artist, me, interestId, onDismiss }) => {
   const artworksCountWithinMyCollection = me.myCollectionConnection?.totalCount ?? 0
   const canBeRemoved = artworksCountWithinMyCollection === 0
-
   const { showActionSheetWithOptions } = useActionSheet()
   const androidCustomSheetStyles = useAndroidActionSheetStyles()
 
@@ -53,7 +52,7 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
 
   useDebounce(
     () => {
-      if (me?.userInterest?.private === isPrivate) {
+      if (me.userInterest?.private === isPrivate) {
         return
       }
 
