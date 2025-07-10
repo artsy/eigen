@@ -341,7 +341,7 @@ jobs:
   build-deploy-ios-testflight:
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: macos.m1.medium.gen1
+      resource_class: m4pro.medium
     steps:
       - checkout
       - prep-ios-env
@@ -353,7 +353,7 @@ jobs:
   build-deploy-ios-firebase:
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: macos.m1.medium.gen1
+      resource_class: m4pro.medium
     steps:
       - checkout
       - prep-ios-env
@@ -409,7 +409,7 @@ jobs:
 
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: macos.m1.medium.gen1
+      resource_class: m4pro.medium
 
     steps:
       - checkout
@@ -501,7 +501,7 @@ jobs:
 
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: macos.m1.medium.gen1
+      resource_class: m4pro.medium
 
     steps:
       - checkout
@@ -575,7 +575,7 @@ jobs:
 
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: macos.m1.medium.gen1
+      resource_class: m4pro.medium
 
     steps:
       - attach_workspace:
