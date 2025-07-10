@@ -97,6 +97,7 @@ export const MyCollectionBottomSheetModalArtistPreview: React.FC<
           uploadsCount={artworksCountWithinMyCollection}
           isPrivate={me.userInterest?.private}
           showFollowButton={!artist?.isPersonalArtist}
+          onPress={onDismiss}
         />
         <ArtistKindPills artist={artist} />
 
