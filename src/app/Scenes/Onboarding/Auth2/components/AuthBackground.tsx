@@ -2,9 +2,8 @@ import { ArtsyLogoIcon } from "@artsy/icons/native"
 import { Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { MotiView } from "moti"
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { Image } from "react-native"
-import { isTablet } from "react-native-device-info"
 import LinearGradient from "react-native-linear-gradient"
 import { Easing } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -76,33 +75,9 @@ export const AuthBackground: React.FC = () => {
 const AnimatedBackground: React.FC = React.memo(() => {
   const { width: screenWidth, height: screenHeight } = useScreenDimensions()
 
-  const [translateXEnd, setTranslateXEnd] = useState<{ firstStop: number; secondStop: number }>({
-    firstStop: 0,
-    secondStop: 0,
-  })
-
-  useEffect(() => {
-    if (isTablet()) {
-      return
-    }
-
-    const imgProps = Image.resolveAssetSource(require("images/WelcomeImage.webp"))
-
-    // We want to animate the background only when the device width is smaller than the scaled image width
-    const imgScale = imgProps.height / screenHeight
-    const imgWidth = imgProps.width * imgScale
-
-    if (screenWidth < imgWidth) {
-      const rightMarginFirstStop = 120
-      const rightMarginSecondStop = 320
-
-      // Calculate final positions
-      setTranslateXEnd({
-        firstStop: -(imgWidth - screenWidth - rightMarginFirstStop),
-        secondStop: -(imgWidth - screenWidth - rightMarginSecondStop),
-      })
-    }
-  }, [screenWidth, screenHeight])
+  // Scale factor to ensure image covers enough of the screen
+  const heightScaleFactor = 1.1
+  const adjustedHeight = screenHeight * heightScaleFactor
 
   return (
     <>
@@ -112,37 +87,42 @@ const AnimatedBackground: React.FC = React.memo(() => {
         transition={{ type: "timing", duration: 1000 }}
       >
         <MotiView
-          from={{ translateX: 0 }}
-          animate={{
-            translateX: [translateXEnd?.firstStop, translateXEnd?.secondStop],
-          }}
+          from={{ scale: 1, translateX: 0 }}
+          // Slow zoom-in with subtle pan to create cinematic movement
+          animate={{ scale: 1.2, translateX: -screenWidth * 0.05 }}
           transition={{
             type: "timing",
-            duration: 50000,
-            loop: true,
+            duration: 10000,
           }}
           style={{
-            alignItems: "flex-end",
+            alignItems: "center",
+            justifyContent: "center",
             position: "absolute",
+            width: screenWidth,
+            height: adjustedHeight,
+            // Shift container up to ensure bottom coverage during zoom-in animation
+            top: -screenHeight * 0.05,
           }}
         >
           <Image
             source={require("images/WelcomeImage.webp")}
             resizeMode="cover"
-            style={{ height: screenHeight }}
+            style={{
+              width: screenWidth,
+              height: adjustedHeight,
+            }}
+          />
+          <LinearGradient
+            colors={["rgba(0, 0, 0, 0)", `rgba(0, 0, 0, 0.85)`]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={{
+              position: "absolute",
+              width: screenWidth,
+              height: adjustedHeight,
+            }}
           />
         </MotiView>
-
-        <LinearGradient
-          colors={["rgba(0, 0, 0, 0)", `rgba(0, 0, 0, 0.85)`]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 0.9 }}
-          style={{
-            position: "absolute",
-            width: "100%",
-            height: screenHeight,
-          }}
-        />
       </MotiView>
     </>
   )
