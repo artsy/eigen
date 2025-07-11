@@ -44,13 +44,5 @@ export const useHideSplashScreen = () => {
         return
       }
     }
-
-    // As a fallback, hide the splash screen after 3 seconds in case the above logic fails
-    if (isHydrated && isNavigationReady) {
-      setTimeout(() => {
-        hideSplashScreen()
-      }, 3000)
-      return
-    }
   }, [isHydrated, isLoggedIn, isNavigationReady, isUnleashReady])
 }
