@@ -24,7 +24,7 @@ export const useHideSplashScreen = () => {
       await RNBootSplash.hide({ fade: true })
     }
 
-    if (isHydrated) {
+    if (isHydrated && isNavigationReady) {
       if (isLoggedIn && isNavigationReady && isUnleashReady) {
         Linking.getInitialURL().then((url) => {
           const isDeepLink = !!url
@@ -41,12 +41,16 @@ export const useHideSplashScreen = () => {
 
       if (!isLoggedIn && isNavigationReady) {
         hideSplashScreen()
+        return
       }
     }
 
     // As a fallback, hide the splash screen after 3 seconds in case the above logic fails
-    setTimeout(() => {
-      hideSplashScreen()
-    }, 3000)
+    if (isHydrated && isNavigationReady) {
+      setTimeout(() => {
+        hideSplashScreen()
+      }, 3000)
+      return
+    }
   }, [isHydrated, isLoggedIn, isNavigationReady, isUnleashReady])
 }
