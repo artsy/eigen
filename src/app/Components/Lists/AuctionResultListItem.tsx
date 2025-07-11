@@ -7,7 +7,7 @@ import { QAInfoManualPanel, QAInfoRow } from "app/utils/QAInfo"
 import { capitalize } from "lodash"
 import moment from "moment"
 import { useState } from "react"
-import FastImage from "react-native-fast-image"
+import FastImage from "@d11/react-native-fast-image"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 

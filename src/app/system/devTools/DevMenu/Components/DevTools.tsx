@@ -20,7 +20,7 @@ import { capitalize, sortBy } from "lodash"
 import { useState } from "react"
 import { Alert, Button, Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
-import FastImage from "react-native-fast-image"
+import FastImage from "@d11/react-native-fast-image"
 import Keychain from "react-native-keychain"
 import Keys from "react-native-keys"
 

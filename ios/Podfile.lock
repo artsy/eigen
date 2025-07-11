@@ -269,17 +269,22 @@ PODS:
     - iOSSnapshotTestCase/Core
   - ISO8601DateFormatter (0.7.1)
   - JWTDecode (2.0.0)
-  - libwebp (1.3.2):
-    - libwebp/demux (= 1.3.2)
-    - libwebp/mux (= 1.3.2)
-    - libwebp/sharpyuv (= 1.3.2)
-    - libwebp/webp (= 1.3.2)
-  - libwebp/demux (1.3.2):
+  - libavif/core (0.11.1)
+  - libavif/libdav1d (0.11.1):
+    - libavif/core
+    - libdav1d (>= 0.6.0)
+  - libdav1d (1.2.0)
+  - libwebp (1.5.0):
+    - libwebp/demux (= 1.5.0)
+    - libwebp/mux (= 1.5.0)
+    - libwebp/sharpyuv (= 1.5.0)
+    - libwebp/webp (= 1.5.0)
+  - libwebp/demux (1.5.0):
     - libwebp/webp
-  - libwebp/mux (1.3.2):
+  - libwebp/mux (1.5.0):
     - libwebp/demux
-  - libwebp/sharpyuv (1.3.2)
-  - libwebp/webp (1.3.2):
+  - libwebp/sharpyuv (1.5.0)
+  - libwebp/webp (1.5.0):
     - libwebp/sharpyuv
   - Mantle (1.5.6):
     - Mantle/extobjc (= 1.5.6)
@@ -2023,10 +2028,13 @@ PODS:
     - React-Core
   - RNDeviceInfo (14.0.0):
     - React-Core
-  - RNFastImage (8.6.3):
+  - RNFastImage (8.10.0):
+    - libavif/core (~> 0.11.1)
+    - libavif/libdav1d (~> 0.11.1)
     - React-Core
-    - SDWebImage (~> 5.19.1)
-    - SDWebImageWebPCoder (~> 0.8.4)
+    - SDWebImage (>= 5.19.1)
+    - SDWebImageAVIFCoder (~> 0.11.0)
+    - SDWebImageWebPCoder (~> 0.14)
   - RNFlashList (1.8.3):
     - DoubleConversion
     - glog
@@ -2277,9 +2285,12 @@ PODS:
   - SDWebImage (5.19.1):
     - SDWebImage/Core (= 5.19.1)
   - SDWebImage/Core (5.19.1)
-  - SDWebImageWebPCoder (0.8.5):
+  - SDWebImageAVIFCoder (0.11.0):
+    - libavif/core (>= 0.11.0)
+    - SDWebImage (~> 5.10)
+  - SDWebImageWebPCoder (0.14.6):
     - libwebp (~> 1.0)
-    - SDWebImage/Core (~> 5.10)
+    - SDWebImage/Core (~> 5.17)
   - segment-analytics-react-native (2.20.3):
     - React-Core
     - sovran-react-native
@@ -2483,7 +2494,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
-  - RNFastImage (from `../node_modules/react-native-fast-image`)
+  - "RNFastImage (from `../node_modules/@d11/react-native-fast-image`)"
   - "RNFlashList (from `../node_modules/@shopify/flash-list`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
@@ -2550,6 +2561,8 @@ SPEC REPOS:
     - INTUAnimationEngine
     - iOSSnapshotTestCase
     - JWTDecode
+    - libavif
+    - libdav1d
     - libwebp
     - Mantle
     - MapboxCommon
@@ -2572,6 +2585,7 @@ SPEC REPOS:
     - ReachabilitySwift
     - RecaptchaInterop
     - SDWebImage
+    - SDWebImageAVIFCoder
     - SDWebImageWebPCoder
     - Sentry
     - Sift
@@ -2816,7 +2830,7 @@ EXTERNAL SOURCES:
   RNDeviceInfo:
     :path: "../node_modules/react-native-device-info"
   RNFastImage:
-    :path: "../node_modules/react-native-fast-image"
+    :path: "../node_modules/@d11/react-native-fast-image"
   RNFlashList:
     :path: "../node_modules/@shopify/flash-list"
   RNGestureHandler:
@@ -2939,7 +2953,9 @@ SPEC CHECKSUMS:
   iOSSnapshotTestCase: a670511f9ee3829c2b9c23e6e68f315fd7b6790f
   ISO8601DateFormatter: 8311a2d4e265b269b2fed7ab4db685dcb0a7ccb2
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
-  libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
+  libavif: 84bbb62fb232c3018d6f1bab79beea87e35de7b7
+  libdav1d: 23581a4d8ec811ff171ed5e2e05cd27bad64c39f
+  libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
   MapboxCommon: 119f3759f7dc9457f0695848108ab323eb643cb4
   MapboxCoreMaps: ca17f67baced23f8c952166ac6314c35bad3f66c
@@ -3039,7 +3055,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: b44e8a4e798c3e1f56bffccd0f591f674fb9198f
   RNCClipboard: e1d17c9d093d8129ef50b39b63a17a0e8ccd0ade
   RNDeviceInfo: f632df5f5d9262794c03eac265e4a0f6dbb14f0a
-  RNFastImage: 118468000fe3eed2a8267e610351b0291024dc28
+  RNFastImage: b508cbf84894005f533b980b1bf578e654827f7c
   RNFlashList: 490b55e0e9e01b30e7a289aa0543f0aee659d6b8
   RNGestureHandler: e9ff57ef12ccdb4ec8687e95b8d5194f4a2350c5
   RNGoogleSignin: b8f09e3ec56e09497e1e53b0ff66d5a45916c6b1
@@ -3055,7 +3071,8 @@ SPEC CHECKSUMS:
   RNShare: 00cd4a8167ab0755a7645c052f4637c74d709476
   RNSVG: 3421710ac15f4f2dc47e5c122f2c2e4282116830
   SDWebImage: 40b0b4053e36c660a764958bff99eed16610acbb
-  SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
+  SDWebImageAVIFCoder: 00310d246aab3232ce77f1d8f0076f8c4b021d90
+  SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
   segment-analytics-react-native: 6f98edf18246782ee7428c5380c6519a3d2acf5e
   Sentry: 1ca8405451040482877dcd344dfa3ef80b646631
   Sift: 7c27188ba3533c0a1be541d7efb68384e17e544c
