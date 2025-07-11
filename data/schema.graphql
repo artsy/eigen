@@ -4462,7 +4462,43 @@ type BidderPositionSuggestedNextBid {
 # exceed the size of a 32-bit integer, it's encoded as a string.
 scalar BigInt
 
-input BulkUpdateArtworksFilterInput {
+type BulkAddArtworksToShowMutationFailure {
+  mutationError: GravityMutationError
+}
+
+input BulkAddArtworksToShowMutationInput {
+  clientMutationId: String
+
+  # Filter options to apply
+  filters: BulkArtworkFilterInput
+
+  # ID of the partner
+  id: String!
+
+  # ID of the show to which artworks will be added
+  showId: String!
+}
+
+type BulkAddArtworksToShowMutationPayload {
+  bulkAddArtworksToShowOrError: BulkAddArtworksToShowMutationType
+  clientMutationId: String
+}
+
+type BulkAddArtworksToShowMutationSuccess {
+  skippedPartnerArtworks: BulkAddArtworksToShowResponse
+  updatedPartnerArtworks: BulkAddArtworksToShowResponse
+}
+
+union BulkAddArtworksToShowMutationType =
+    BulkAddArtworksToShowMutationFailure
+  | BulkAddArtworksToShowMutationSuccess
+
+type BulkAddArtworksToShowResponse {
+  count: Int
+  ids: [String]
+}
+
+input BulkArtworkFilterInput {
   # Filter artworks by artist id
   artistId: String
 
@@ -4519,7 +4555,7 @@ input BulkUpdateArtworksMetadataMutationInput {
   clientMutationId: String
 
   # Filter options to apply
-  filters: BulkUpdateArtworksFilterInput
+  filters: BulkArtworkFilterInput
 
   # ID of the partner
   id: String!
@@ -15037,6 +15073,11 @@ type Mutation {
   assignArtworkImportArtist(
     input: AssignArtworkImportArtistInput!
   ): AssignArtworkImportArtistPayload
+
+  # Bulk add artworks to a show
+  bulkAddArtworksToShow(
+    input: BulkAddArtworksToShowMutationInput!
+  ): BulkAddArtworksToShowMutationPayload
 
   # Update all artworks that belong to the partner
   bulkUpdateArtworksMetadata(
