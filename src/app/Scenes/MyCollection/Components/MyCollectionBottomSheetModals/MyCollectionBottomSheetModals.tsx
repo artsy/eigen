@@ -3,7 +3,7 @@ import BottomSheet, { BottomSheetProps } from "@gorhom/bottom-sheet"
 import { DefaultBottomSheetBackdrop } from "app/Components/BottomSheet/DefaultBottomSheetBackdrop"
 import { defaultIndicatorHandleStyle } from "app/Components/BottomSheet/defaultIndicatorHandleStyle"
 import { MyCollectionBottomSheetModalAdd } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalAdd"
-import { MyCollectionBottomSheetModalArtistPreviewQueryRenderer } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistPreview"
+import { MyCollectionBottomSheetModal } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalArtistPreview"
 import { MyCollectionBottomSheetModalProfile } from "app/Scenes/MyCollection/Components/MyCollectionBottomSheetModals/MyCollectionBottomSheetModalProfile"
 import { MyCollectionTabsStore } from "app/Scenes/MyCollection/State/MyCollectionTabsStore"
 import { useCallback, useMemo, useRef } from "react"
@@ -53,15 +53,19 @@ export const MyCollectionBottomSheetModals: React.FC<{}> = () => {
         }}
       >
         {view === "Add" && <MyCollectionBottomSheetModalAdd />}
-        {view === "Artist" && !!artistId && !!interestId ? (
-          <MyCollectionBottomSheetModalArtistPreviewQueryRenderer
-            artistID={artistId}
-            interestId={interestId}
-          />
-        ) : null}
         {view === "Profile" && (
           <MyCollectionBottomSheetModalProfile isVisible={view === "Profile"} />
         )}
+        {view === "Artist" && !!artistId && !!interestId ? (
+          <MyCollectionBottomSheetModal
+            visible={view === "Artist" && !!artistId && !!interestId}
+            artistID={artistId}
+            interestId={interestId}
+            onDismiss={() => {
+              setViewKind({ viewKind: null })
+            }}
+          />
+        ) : null}
       </BottomSheet>
     </>
   )
