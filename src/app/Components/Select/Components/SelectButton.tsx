@@ -1,3 +1,4 @@
+import { TriangleDownIcon } from "@artsy/icons/native"
 import {
   Flex,
   HORIZONTAL_PADDING,
@@ -7,7 +8,6 @@ import {
   InputVariant,
   Text,
   Touchable,
-  TriangleDown,
   getInputState,
   getInputVariant,
   getInputVariants,
@@ -149,7 +149,7 @@ export const SelectButton: React.FC<{
               right: HORIZONTAL_PADDING,
             }}
           >
-            <TriangleDown fill="mono60" height={16} width={16} />
+            <TriangleDownIcon fill="mono60" height={16} width={16} />
           </Flex>
         </AnimatedFlex>
       </Touchable>

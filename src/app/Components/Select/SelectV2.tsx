@@ -1,9 +1,9 @@
+import { TriangleDownIcon } from "@artsy/icons/native"
 import {
   Autocomplete,
   Spacer,
   CloseIcon,
   CheckIcon,
-  TriangleDown,
   Flex,
   useColor,
   Text,
@@ -148,7 +148,7 @@ const SelectButton: React.FC<{
               {placeholder ?? "Pick an option"}
             </Text>
           )}
-          <TriangleDown />
+          <TriangleDownIcon />
         </Flex>
       </TouchableOpacity>
     </Flex>

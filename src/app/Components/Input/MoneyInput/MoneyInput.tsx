@@ -1,12 +1,5 @@
-import {
-  Flex,
-  InputProps,
-  Spacer,
-  Text,
-  Touchable,
-  TriangleDown,
-  useColor,
-} from "@artsy/palette-mobile"
+import { TriangleDownIcon } from "@artsy/icons/native"
+import { Flex, InputProps, Spacer, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { TextVariant } from "@artsy/palette-tokens/dist/typography/v3"
 import {
   INTERNALSelectAndInputCombinationBase,
@@ -135,7 +128,7 @@ export const MoneyInput = forwardRef<
                       currencyOptions[0].label}
                   </Text>
                   <Spacer x={0.5} />
-                  <TriangleDown width="8" />
+                  <TriangleDownIcon width="8" />
                 </Flex>
               </Flex>
             </Touchable>
