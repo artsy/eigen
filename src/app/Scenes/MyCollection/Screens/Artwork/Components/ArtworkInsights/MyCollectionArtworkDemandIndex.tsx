@@ -1,5 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { Flex, Separator, Spacer, Text, TriangleDown } from "@artsy/palette-mobile"
+import { TriangleDownIcon } from "@artsy/icons/native"
+import { Flex, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { MyCollectionArtworkDemandIndex_artwork$key } from "__generated__/MyCollectionArtworkDemandIndex_artwork.graphql"
 import { MyCollectionArtworkDemandIndex_artworkPriceInsights$key } from "__generated__/MyCollectionArtworkDemandIndex_artworkPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
@@ -97,7 +98,7 @@ const ProgressBar: React.FC<{ width: number }> = ({ width }) => {
     <>
       <Flex width="100%" position="relative" height={10} left={-6}>
         <Flex left={pctWidth} position="absolute">
-          <TriangleDown />
+          <TriangleDownIcon />
         </Flex>
       </Flex>
       <Flex height={24} width="100%" bg="mono5">
