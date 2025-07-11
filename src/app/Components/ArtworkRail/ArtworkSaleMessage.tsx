@@ -4,6 +4,7 @@ import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtil
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { displayAsLinethrought, parsedSaleMessage } from "app/utils/getSaleMessgeOrBidInfo"
 import { getTimer } from "app/utils/getTimer"
+import { Text as RNText } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface ArtworkSaleMessageProps {
@@ -58,17 +59,18 @@ export const ArtworkSaleMessage: React.FC<ArtworkSaleMessageProps> = ({
               )
             }
             return (
-              <Text
-                key={index}
-                lineHeight="20px"
-                variant="xs"
-                color={saleInfoTextColor}
-                numberOfLines={1}
-                fontWeight={saleInfoTextWeight}
-                {...saleInfoTextStyle}
-              >
-                {part}
-              </Text>
+              <RNText key={index} numberOfLines={1} ellipsizeMode="tail">
+                <Text
+                  lineHeight="20px"
+                  variant="xs"
+                  color={saleInfoTextColor}
+                  numberOfLines={1}
+                  fontWeight={saleInfoTextWeight}
+                  {...saleInfoTextStyle}
+                >
+                  {part}
+                </Text>
+              </RNText>
             )
           })}
         </Flex>
@@ -86,16 +88,18 @@ export const ArtworkSaleMessage: React.FC<ArtworkSaleMessageProps> = ({
     )
   } else
     return (
-      <Text
-        lineHeight="20px"
-        variant="xs"
-        color={saleInfoTextColor}
-        numberOfLines={1}
-        fontWeight={saleInfoTextWeight}
-        {...saleInfoTextStyle}
-      >
-        {saleMessage}
-      </Text>
+      <RNText numberOfLines={1} ellipsizeMode="tail">
+        <Text
+          lineHeight="20px"
+          variant="xs"
+          color={saleInfoTextColor}
+          numberOfLines={1}
+          fontWeight={saleInfoTextWeight}
+          {...saleInfoTextStyle}
+        >
+          {saleMessage}
+        </Text>
+      </RNText>
     )
 }
 
