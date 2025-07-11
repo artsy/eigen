@@ -214,30 +214,6 @@ https://github.com/SwiftyJSON/SwiftyJSON/issues/1154
 Apples has started requiring apps and certain 3rd party libraries declare in a privacy manifest why they use some apis, SwiftyJSON is one of them. The
 privacy manifest has been added in 5.0.2 but the version has not been published to cocoapods.
 
-## Patch-package for react-native-fast-image
-
-#### When we can remove this:
-
-When the library uses the latest SDWebImage that includes privacy manifests, a version >= 5.19
-https://github.com/DylanVann/react-native-fast-image/issues/1031
-
-#### Explanation/Context
-
-Apples has started requiring apps and certain 3rd party libraries declare in a privacy manifest why they use some apis. SDWebImage is one of those,
-SDWebImage has been updated to include a privacy manifest but the wrapper we use, react-native-fast-image, has not.
-https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_use_of_required_reason_api?language=objc
-
-## Patch-package for react-native-fast-image second part
-
-#### When we can remove this:
-
-When the library releases this commit https://github.com/muntius/react-native-fast-image/commit/fc2b8acd97f07989e312f5cbd61d2e541fda3611#diff-24ce0837ec34bb03c94a76bc62258a10d1c729e2e6b2f3ac706eab55f76dc0ecR87
-and when this issue is closed https://github.com/DylanVann/react-native-fast-image/issues/1002
-
-#### Explanation/Context
-
-https://artsynet.sentry.io/issues/4479226101/events/d98fd95bd4c74271a184596c901fac26/ started having some sentry crashes for this reason in iOS 17 and this patch fixes the issue (taken from the main branch of the fast-image repo but not released yet).
-
 ## Modular headers for firebase deps in Podfile
 
 #### When we can remove this

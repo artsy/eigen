@@ -27,12 +27,13 @@
   resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.43.0.tgz#25dc75af5744a5138ce76f733454c795cf6577ce"
   integrity sha512-ph2hIGwZHmWITweS58qjCfTjQnDDyKZMpxgb+ekvPaFMV080n+FbWrpP1U8F2hHqULVvDuZPuW/JLKWD34UM3w==
 
-"@artsy/palette-mobile@17.25.0":
-  version "17.25.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.25.0.tgz#318e7a36de67e4c86abbd88ababfcfb83d46ac28"
-  integrity sha512-AYV677uW0LzGxHBCd8yw0diXKgZtCBhpdHbKh3n8nmGhTJG5wKUQPrJQI1s3ulS+TLLUjpO3kD9h3DOXEgdkzw==
+"@artsy/palette-mobile@17.26.0":
+  version "17.26.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.26.0.tgz#4ded3c8c5efcd696865dc833b8bb8b145c5eb957"
+  integrity sha512-xihUD0aXb6lZVuCm6mo1BvO16LUd5/SkWYV39ygOWQjS8VAmqdpsTloKX8cCCrcvRMh88oNAeyqT8UFeb7DFWA==
   dependencies:
     "@artsy/palette-tokens" "^7.0.0"
+    "@d11/react-native-fast-image" "^8.10.0"
     "@shopify/flash-list" "^1.8.3"
     "@styled-system/core" "^5.1.2"
     "@styled-system/theme-get" "^5.1.2"
@@ -42,7 +43,6 @@
     react-nanny "^2.15.0"
     react-native-blurhash "^2.1.1"
     react-native-collapsible-tab-view "^8.0.1"
-    react-native-fast-image "^8.6.3"
     react-native-pager-view "6.5.0"
     react-native-popover-view "^5.1.7"
     react-spring "8.0.23"
@@ -2172,6 +2172,11 @@
   version "13.1.1"
   resolved "https://registry.yarnpkg.com/@braze/react-native-sdk/-/react-native-sdk-13.1.1.tgz#14584bc7e0c8e2705c5eee7e1c9a86d02eb76fc0"
   integrity sha512-Fe1CeOSLuxur8sN7OyTvb0CQQNIhriGgsM0Jf2RIznAGwsylaja68AwJAGNRXZLy97e7gr2irTaVrvl02UUG9A==
+
+"@d11/react-native-fast-image@8.10.0", "@d11/react-native-fast-image@^8.10.0":
+  version "8.10.0"
+  resolved "https://registry.yarnpkg.com/@d11/react-native-fast-image/-/react-native-fast-image-8.10.0.tgz#020e3655da562756a1dd13cd2e5a6793a2bf58ac"
+  integrity sha512-ga/UzBReOA1vhXNAickvJbBzAWH3Rg1hu/ZJnKn+SfRFoWvq+X0xOiARHMVR8lkm6MV9ZQSE3vgoKmmVgthNoQ==
 
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
@@ -14273,11 +14278,6 @@ react-native-document-picker@9.3.0:
   integrity sha512-X/j0xKn8cObckpHTNwE/hW9WzBiP6oKx820FYu1Nat43QnnHmmT6uozFgAUDcJfxmZGcEdLlbv0lNhnyRXJyyA==
   dependencies:
     invariant "^2.2.4"
-
-react-native-fast-image@8.6.3, react-native-fast-image@^8.6.3:
-  version "8.6.3"
-  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.6.3.tgz#6edc3f9190092a909d636d93eecbcc54a8822255"
-  integrity sha512-Sdw4ESidXCXOmQ9EcYguNY2swyoWmx53kym2zRsvi+VeFCHEdkO+WG1DK+6W81juot40bbfLNhkc63QnWtesNg==
 
 react-native-fbsdk-next@13.0.0:
   version "13.0.0"

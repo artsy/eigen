@@ -1,9 +1,9 @@
 import { ActionType, ContextModule, OwnerType, TappedArticleGroup } from "@artsy/cohesion"
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
+import FastImage from "@d11/react-native-fast-image"
 import { Article_article$data, Article_article$key } from "__generated__/Article_article.graphql"
 import { Article_artist$data, Article_artist$key } from "__generated__/Article_artist.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import FastImage from "react-native-fast-image"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 

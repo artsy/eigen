@@ -6,7 +6,7 @@ import {
 import { useScreenDimensions } from "app/utils/hooks/useScreenDimensions"
 import { useContext, useEffect, useState } from "react"
 import { LayoutAnimation } from "react-native"
-import FastImage from "react-native-fast-image"
+import FastImage from "@d11/react-native-fast-image"
 import { Zoom } from "react-native-reanimated-zoom"
 import usePrevious from "react-use/lib/usePrevious"
 

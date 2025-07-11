@@ -1,5 +1,5 @@
 import { Spacer, Box, useSpace, Text, Flex, BoxProps } from "@artsy/palette-mobile"
-import FastImage from "react-native-fast-image"
+import FastImage from "@d11/react-native-fast-image"
 import { CardTag, CardTagProps } from "./CardTag"
 export interface SmallCardProps extends BoxProps {
   images: string[]
