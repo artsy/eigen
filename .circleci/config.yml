@@ -245,7 +245,7 @@ jobs:
 
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: macos.m1.medium.gen1
+      resource_class: << pipeline.parameters.normal_mac_runner >>
 
     steps:
       - checkout
@@ -266,7 +266,7 @@ jobs:
 
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: m2pro.medium
+      resource_class: << pipeline.parameters.normal_mac_runner >>
 
     steps:
       - checkout
@@ -323,7 +323,7 @@ jobs:
 
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: macos.m1.medium.gen1
+      resource_class: << pipeline.parameters.normal_mac_runner >>
 
     steps:
       - checkout
@@ -341,7 +341,7 @@ jobs:
   build-deploy-ios-testflight:
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: macos.m1.medium.gen1
+      resource_class: << pipeline.parameters.fast_mac_runner >>
     steps:
       - checkout
       - prep-ios-env
@@ -353,7 +353,7 @@ jobs:
   build-deploy-ios-firebase:
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: macos.m1.medium.gen1
+      resource_class: << pipeline.parameters.fast_mac_runner >>
     steps:
       - checkout
       - prep-ios-env
@@ -409,7 +409,7 @@ jobs:
 
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: macos.m1.medium.gen1
+      resource_class: << pipeline.parameters.fast_mac_runner >>
 
     steps:
       - checkout
@@ -501,7 +501,7 @@ jobs:
 
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: macos.m1.medium.gen1
+      resource_class: << pipeline.parameters.normal_mac_runner >>
 
     steps:
       - checkout
@@ -575,7 +575,7 @@ jobs:
 
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: macos.m1.medium.gen1
+      resource_class: << pipeline.parameters.fast_mac_runner >>
 
     steps:
       - attach_workspace:
@@ -654,6 +654,12 @@ parameters:
   node_version:
     type: string
     default: "20.9.0"
+  fast_mac_runner:
+    type: string
+    default: "m4pro.medium"
+  normal_mac_runner:
+    type: string
+    default: "m2pro.medium"
   run_workflow_build-run-tests-for-echo:
     type: boolean
     default: false
