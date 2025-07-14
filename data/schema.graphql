@@ -21504,6 +21504,8 @@ type ShowCounts {
     format: String
     label: String
   ): FormattedNumber
+  publishedArtworks: Int
+  unpublishedArtworks: Int
 }
 
 # An edge in a connection.
