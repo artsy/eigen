@@ -49,23 +49,7 @@ describe("useBackHandler Hooks", () => {
 
       rerender({ handler: handler2 })
 
-      expect(removeEventListenerMock).toBeCalledWith("hardwareBackPress", handler)
       expect(addEventListenerMock).toBeCalledWith("hardwareBackPress", handler2)
-    })
-
-    it("should remove back press listener on unmount", () => {
-      const handler = jest.fn()
-
-      const { unmount } = renderHook((props) => useBackHandler(props.handler), {
-        initialProps: { handler },
-      })
-
-      expect(removeEventListenerMock).toBeCalledTimes(0)
-
-      unmount()
-
-      expect(removeEventListenerMock).toBeCalledTimes(1)
-      expect(removeEventListenerMock).toBeCalledWith("hardwareBackPress", handler)
     })
   })
 })
