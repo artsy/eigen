@@ -49,6 +49,16 @@ export const useInfiniteDiscoveryTracking = () => {
         mode: "swipe",
       })
     },
+    tappedMore: () => {
+      // TODO: ActionType
+      // trackEvent({
+      //   action: ActionType.tappedMore,
+      //   context_module: ContextModule.infiniteDiscovery,
+      //   context_screen_owner_id: artworkId,
+      //   context_screen_owner_slug: artworkSlug,
+      //   context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+      // })
+    },
     tappedShare: (artworkId: string, artworkSlug: string) => {
       trackEvent({
         action: ActionType.tappedShare,
