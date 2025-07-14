@@ -245,7 +245,7 @@ jobs:
 
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: macos.m1.medium.gen1
+      resource_class: m2pro.medium
 
     steps:
       - checkout
@@ -323,7 +323,7 @@ jobs:
 
     macos:
       xcode: << pipeline.parameters.xcode_version >>
-      resource_class: macos.m1.medium.gen1
+      resource_class: m2pro.medium
 
     steps:
       - checkout
