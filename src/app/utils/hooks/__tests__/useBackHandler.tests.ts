@@ -20,7 +20,6 @@ jest.mock("react-native", () => ({
 
 describe("useBackHandler Hooks", () => {
   const addEventListenerMock = BackHandler.addEventListener as jest.Mock
-  const removeEventListenerMock = BackHandler.removeEventListener as jest.Mock
 
   beforeEach(() => {
     jest.clearAllMocks()
