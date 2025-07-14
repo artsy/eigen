@@ -1743,8 +1743,27 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-webview (13.6.3):
+  - react-native-webview (13.15.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.10.14.00)
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - React-nativeconfig (0.76.9)
   - React-NativeModulesApple (0.76.9):
     - glog
@@ -3021,7 +3040,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: dde2052b903c11d677c320b599c3244021c34ce8
   react-native-shake: 264c8fb4a8554f0a0ac319347bb4f513ed065cf4
   react-native-view-shot: 0ad68286bf0ac3717e56bfb02c7a7a63da4932bb
-  react-native-webview: 508a7967877321541cc7ff68740f2c294243415c
+  react-native-webview: ab7d17cb9fd64af9f4a9e3936248364995518f74
   React-nativeconfig: 8efdb1ef1e9158c77098a93085438f7e7b463678
   React-NativeModulesApple: cebca2e5320a3d66e123cade23bd90a167ffce5e
   React-perflogger: 72e653eb3aba9122f9e57cf012d22d2486f33358
