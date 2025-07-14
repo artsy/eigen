@@ -24,43 +24,23 @@ export const useHideSplashScreen = () => {
       await RNBootSplash.hide({ fade: true })
     }
 
-    // Early return if basic requirements aren't met
-    if (!isHydrated || !isNavigationReady) {
-      return
-    }
+    if (isHydrated) {
+      if (isLoggedIn && isNavigationReady && isUnleashReady) {
+        Linking.getInitialURL().then((url) => {
+          const isDeepLink = !!url
+          if (!isDeepLink) {
+            prefetchUrl("/", homeViewScreenQueryVariables())
+          }
+          setTimeout(() => {
+            hideSplashScreen()
+          }, HOME_VIEW_SPLASH_SCREEN_DELAY)
+        })
 
-    // Handle logged-out users - hide splash immediately
-    if (!isLoggedIn) {
-      hideSplashScreen()
-      return
-    }
-
-    // Handle logged-in users - wait for unleash flags and add delay
-    if (!isUnleashReady) {
-      return
-    }
-
-    let timeoutId: NodeJS.Timeout | undefined
-
-    const handleLoggedInUser = async () => {
-      const url = await Linking.getInitialURL()
-      const isDeepLink = !!url
-
-      if (!isDeepLink) {
-        prefetchUrl("/", homeViewScreenQueryVariables())
+        return
       }
 
-      timeoutId = setTimeout(() => {
+      if (!isLoggedIn && isNavigationReady) {
         hideSplashScreen()
-      }, HOME_VIEW_SPLASH_SCREEN_DELAY)
-    }
-
-    handleLoggedInUser()
-
-    // Cleanup timeout on unmount or dependency change
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId)
       }
     }
   }, [isHydrated, isLoggedIn, isNavigationReady, isUnleashReady])
