@@ -6,7 +6,7 @@ import { FC, useMemo } from "react"
 import { ViewProps } from "react-native"
 import { Pressable } from "react-native-gesture-handler"
 import Animated, {
-  Extrapolate,
+  Extrapolation,
   interpolate,
   useAnimatedProps,
   useAnimatedStyle,
@@ -39,7 +39,7 @@ export const InfiniteDiscoveryBottomSheetBackdrop: FC<BottomSheetDefaultBackdrop
         animatedIndex.value,
         [-1, disappearsOnIndex, appearsOnIndex],
         [0, 0, MAX_OPACITY],
-        Extrapolate.CLAMP
+        Extrapolation.CLAMP
       ),
     }
   })

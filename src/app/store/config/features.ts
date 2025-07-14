@@ -82,6 +82,12 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "ARShowCreateAlertInArtistArtworksListFooter",
   },
+  AREnabledDiscoverDailyNegativeSignals: {
+    description: "Enable negative signals in Discover Daily",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnabledDiscoverDailyNegativeSignals",
+  },
   AREnablePartnerOffersNotificationSwitch: {
     description: "Enable partner offers notification switch",
     readyForRelease: true,
