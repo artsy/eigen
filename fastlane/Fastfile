@@ -139,6 +139,7 @@ def deploy_ios_beta(deployment_target:)
       changelog: beta_readme,
       itc_provider: 'ArtsyInc',
       distribute_external: true,
+      wait_processing_timeout_duration: 900, # 15 minutes
       groups: ['Artsy People', 'Applause People']
     )
   else
