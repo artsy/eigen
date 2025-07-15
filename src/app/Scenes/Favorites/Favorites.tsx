@@ -17,7 +17,6 @@ import { SavesTab } from "app/Scenes/Favorites/SavesTab"
 import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { useEffect } from "react"
-import { Alert, BackHandler } from "react-native"
 import Animated, { useAnimatedStyle } from "react-native-reanimated"
 
 export const Pills: {
