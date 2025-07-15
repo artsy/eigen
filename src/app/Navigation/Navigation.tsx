@@ -117,15 +117,17 @@ export const Navigation = () => {
 }
 
 const NavigationLoadingIndicator = () => {
-  return !!__DEV__ ? (
+  return (
     <Flex backgroundColor="mono0" flex={1} justifyContent="center">
-      <Flex px={2} mt={2} backgroundColor="mono0" alignItems="center">
-        <Spinner color="devpurple" size="large" />
-        <Spacer y={4} />
-        <Text color="mono100" variant="xs" textAlign="center">
-          Reloading previous navigation state
-        </Text>
-      </Flex>
+      {!!__DEV__ && (
+        <Flex px={2} mt={2} backgroundColor="mono0" alignItems="center">
+          <Spinner color="devpurple" size="large" />
+          <Spacer y={4} />
+          <Text color="mono100" variant="xs" textAlign="center">
+            Reloading previous navigation state
+          </Text>
+        </Flex>
+      )}
     </Flex>
-  ) : null
+  )
 }
