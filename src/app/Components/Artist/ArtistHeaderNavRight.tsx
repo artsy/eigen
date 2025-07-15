@@ -10,7 +10,12 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { MotiView } from "moti"
 import { useCallback, useState } from "react"
 import { PixelRatio, TouchableOpacity } from "react-native"
-import { Easing, useAnimatedStyle, useDerivedValue, withTiming } from "react-native-reanimated"
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useDerivedValue,
+  withTiming,
+} from "react-native-reanimated"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import useDebounce from "react-use/lib/useDebounce"
 
@@ -32,7 +37,7 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   const { handleFollowToggle } = useFollowArtist(artist)
 
   // The container width minus the share icon width minus the padding on the left and right
-  const followButtonWidth = CONTAINER_WIDTH - ACCESSIBLE_DEFAULT_ICON_SIZE - space(1)
+  const followButtonWidth = CONTAINER_WIDTH - ACCESSIBLE_DEFAULT_ICON_SIZE - space(2)
 
   useDebounce(
     () => {
@@ -44,19 +49,25 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
     [isFollowed]
   )
 
+  const followAreaDeltaX = (followButtonWidth + space(2)) * PixelRatio.getFontScale()
   const displayFollowButton = useDerivedValue(() => {
     return !scrollYOffset || currentScrollYAnimated.value < scrollYOffset + NAVBAR_HEIGHT
   })
-  const followAreaDeltaX = (followButtonWidth + space(2)) * PixelRatio.getFontScale()
-  const followButtonTranslateX = useDerivedValue(() => {
-    if (displayFollowButton.value) {
-      return 0
-    }
 
-    return followAreaDeltaX
-  })
-  const style = useAnimatedStyle(() => {
-    return {
+  // convert the space into primitive types to be user on the UI thread
+  const space1 = space(1)
+  const space2 = space(2)
+  const spacerWidth = useDerivedValue(
+    () => (displayFollowButton.value ? space1 : space2),
+    [space1, space2]
+  )
+  const followButtonTranslateX = useDerivedValue(() =>
+    displayFollowButton.value ? 0 : followAreaDeltaX
+  )
+  const followButtonOpacity = useDerivedValue(() => (displayFollowButton.value ? 1 : 0))
+
+  const viewStyle = useAnimatedStyle(
+    () => ({
       transform: [
         {
           translateX: withTiming(followButtonTranslateX.value, {
@@ -65,8 +76,12 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
           }),
         },
       ],
-    }
-  }, [followAreaDeltaX])
+    }),
+    [followAreaDeltaX]
+  )
+  const followButtonStyle = useAnimatedStyle(() => ({
+    opacity: withTiming(followButtonOpacity.value, { duration: 200 }),
+  }))
 
   const handleSharePress = useCallback(() => {
     if (artist?.name && artist?.name && artist?.slug && artist?.href) {
@@ -83,10 +98,9 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
   }, [artist, showShareSheet])
 
   return (
-    <MotiView style={style}>
+    <MotiView style={viewStyle}>
       <Flex
         flexDirection="row"
-        gap={1}
         alignItems="center"
         justifyContent="flex-end"
         width={CONTAINER_WIDTH}
@@ -100,15 +114,9 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
           <ShareIcon width={ACCESSIBLE_DEFAULT_ICON_SIZE} height={ACCESSIBLE_DEFAULT_ICON_SIZE} />
         </TouchableOpacity>
 
-        <MotiView
-          animate={{
-            opacity: displayFollowButton ? 1 : 0,
-          }}
-          transition={{
-            type: "timing",
-            duration: 200,
-          }}
-        >
+        <Animated.View style={{ width: spacerWidth }} />
+
+        <MotiView style={followButtonStyle}>
           <FollowButton
             haptic
             isFollowed={isFollowed}
