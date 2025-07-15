@@ -1,15 +1,6 @@
 import { ContextModule } from "@artsy/cohesion"
-import {
-  BellIcon,
-  Flex,
-  HeartIcon,
-  MultiplePersonsIcon,
-  Pill,
-  Screen,
-  Spacer,
-  Text,
-  useColor,
-} from "@artsy/palette-mobile"
+import { HeartStrokeIcon, IconProps, BellStrokeIcon, GroupIcon } from "@artsy/icons/native"
+import { Flex, Pill, Screen, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { useScreenScrollContext } from "@artsy/palette-mobile/dist/elements/Screen/ScreenScrollContext"
 import {
   createMaterialTopTabNavigator,
@@ -26,28 +17,29 @@ import { SavesTab } from "app/Scenes/Favorites/SavesTab"
 import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { useEffect } from "react"
+import { Alert, BackHandler } from "react-native"
 import Animated, { useAnimatedStyle } from "react-native-reanimated"
 
 export const Pills: {
-  Icon: React.FC<{ fill: string }>
+  Icon: React.FC<IconProps>
   title: string
   key: FavoritesTab
   contextModule: ContextModule
 }[] = [
   {
-    Icon: HeartIcon,
+    Icon: HeartStrokeIcon,
     title: "Saves",
     key: "saves",
     contextModule: ContextModule.favoritesSaves,
   },
   {
-    Icon: MultiplePersonsIcon,
+    Icon: GroupIcon,
     title: "Follows",
     key: "follows",
     contextModule: ContextModule.favoritesFollows,
   },
   {
-    Icon: BellIcon,
+    Icon: BellStrokeIcon,
     title: "Alerts",
     key: "alerts",
     contextModule: ContextModule.favoritesAlerts,
@@ -81,6 +73,7 @@ const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, naviga
       ],
     }
   })
+
   const activeRoute = state.routes[state.index].name
 
   return (
@@ -173,6 +166,7 @@ export const Favorites = () => {
       <Screen>
         <Screen.Body fullwidth>
           <FavoriteTopNavigator.Navigator
+            backBehavior="none"
             tabBar={FavoritesHeaderTapBar}
             screenOptions={{
               swipeEnabled: false,
