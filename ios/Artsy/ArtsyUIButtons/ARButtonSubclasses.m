@@ -178,11 +178,11 @@ const CGFloat ARButtonAnimationDuration = 0.15;
     };
 }
 
-- (void)animateLayer:(CALayer *)layer fromColor:(UIColor *)fromColor toColor:(UIColor *)toColor forKey:(NSString *)key
+- (void)animateLayer:(CALayer *)layer fromColor:(CGColorRef)fromColor toColor:(CGColorRef)toColor forKey:(NSString *)key
 {
     CABasicAnimation *fade = [CABasicAnimation animation];
-    fade.fromValue = (__bridge id)fromColor.CGColor;
-    fade.toValue   = (__bridge id)toColor.CGColor;
+    fade.fromValue = (__bridge id)fromColor;
+    fade.toValue = (__bridge id)toColor;
     fade.duration = ARButtonAnimationDuration;
     [layer addAnimation:fade forKey:key];
 }
