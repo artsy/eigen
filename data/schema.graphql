@@ -3201,6 +3201,8 @@ enum ArtworkImportError {
 type ArtworkImportRow {
   artists: [Artist!]
   artwork: Artwork
+  currency: String!
+  dimensionMetric: String!
   errors: [ArtworkImportRowError!]!
 
   # A globally unique ID.
