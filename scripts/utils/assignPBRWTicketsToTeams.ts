@@ -15,7 +15,7 @@ config({ path: resolve(__dirname, "../../.env.releases") })
  * Script to assign PBRW tickets to teams based on "Product Team:" field in ticket description
  *
  * This script:
- * 1. Fetches tickets from the "Define" column on the PBRW board
+ * 1. Fetches tickets from the "TO DO" column on the PBRW board
  * 2. Reads each ticket's description to find "Product Team:" field
  * 3. Adds the team name as a lowercase label to the ticket
  *
@@ -123,16 +123,16 @@ function extractTextFromADF(adf: any): string {
 }
 
 /**
- * Fetch tickets from the "Define" column in the "Everything else" swimlane
- * This uses the board API to get tickets that are in the Define status
+ * Fetch tickets from the "TO DO" column in the "Everything else" swimlane
+ * This uses the board API to get tickets that are in the TO DO status
  */
 async function fetchEverythingElseTickets(): Promise<JiraIssue[]> {
   try {
-    console.log(chalk.blue("Fetching tickets from Define column in Everything else swimlane..."))
+    console.log(chalk.blue("Fetching tickets from TO DO column in Everything else swimlane..."))
 
-    // JQL to find tickets in PBRW project that are in Define column and might be in "Everything else" swimlane
-    // We'll fetch tickets in Define status that don't have team labels
-    const jql = `project = PBRW AND status = "Define" AND (assignee is EMPTY OR labels not in (sapphire, amber, diamond, emerald, onyx))`
+    // JQL to find tickets in PBRW project that are in TO DO column and might be in "Everything else" swimlane
+    // We'll fetch tickets in TO DO status that don't have team labels
+    const jql = `project = PBRW AND status = "TO DO" AND (assignee is EMPTY OR labels not in (Sapphire, Amber, Diamond, Emerald, Onyx, Expedite))`
 
     const response = await fetch(`${JIRA_BASE_URL}/rest/api/3/search`, {
       method: "POST",
@@ -277,12 +277,12 @@ async function processTicket(ticket: JiraIssue, isDryRun = false): Promise<void>
  */
 async function main(): Promise<void> {
   try {
-    console.log(chalk.bold.blue("Starting PBRW ticket team assignment for Define column..."))
+    console.log(chalk.bold.blue("Starting PBRW ticket team assignment for TO DO column..."))
 
     const tickets = await fetchEverythingElseTickets()
 
     if (tickets.length === 0) {
-      console.log(chalk.yellow("No tickets found in Define column"))
+      console.log(chalk.yellow("No tickets found in TO DO column"))
       return
     }
 
