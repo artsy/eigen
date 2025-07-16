@@ -2,9 +2,9 @@ import { useFlagsStatus } from "@unleash/proxy-client-react"
 import { homeViewScreenQueryVariables } from "app/Scenes/HomeView/HomeView"
 import { GlobalStore } from "app/store/GlobalStore"
 import { usePrefetch } from "app/utils/queryPrefetching"
+import * as SplashScreen from "expo-splash-screen"
 import { useEffect } from "react"
 import { Linking } from "react-native"
-import RNBootSplash from "react-native-bootsplash"
 
 const HOME_VIEW_SPLASH_SCREEN_DELAY = 1200
 
@@ -21,7 +21,8 @@ export const useHideSplashScreen = () => {
   useEffect(() => {
     const hideSplashScreen = async () => {
       setSessionState({ isSplashScreenVisible: false })
-      await RNBootSplash.hide({ fade: true })
+      // await SplashScreen.hide({ fade: true })
+      await SplashScreen.hideAsync()
     }
 
     if (isHydrated) {

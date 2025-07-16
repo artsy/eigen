@@ -29,7 +29,6 @@
 
 #import "Keys.h"
 #import <ObjectiveSugar/ObjectiveSugar.h>
-#import "RNBootSplash.h"
 
 #import <ReactAppDependencyProvider/RCTAppDependencyProvider.h>
 
@@ -149,7 +148,6 @@ static ARAppDelegate *_sharedInstanceOverride = nil;
                           moduleName:(NSString *)moduleName
                            initProps:(NSDictionary *)initProps {
   UIView *rootView = [super createRootViewWithBridge:bridge moduleName:moduleName initProps:initProps];
-  [RNBootSplash initWithStoryboard:@"BootSplash" rootView:rootView]; // ⬅️ initialize the splash screen
   return rootView;
 }
 

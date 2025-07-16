@@ -17,7 +17,6 @@
     "android": {},
     "ios": {},
     "plugins": [
-      ["react-native-bootsplash", { "assetsDir": "assets/bootsplash" }],
       [
         "@sentry/react-native/expo",
         {
