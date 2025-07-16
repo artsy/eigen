@@ -72,9 +72,9 @@ const AppTabs: React.FC = () => {
             contextScreenOwnerType: BottomTabOption[tabName as BottomTabType],
           })
         )
-        // we are handling the tracking of the favorites tab withing the screen
+        // we are handling the tracking of the favorites tab withing the screen, as well as home
         // https://artsy.slack.com/archives/C05EQL4R5N0/p1744919145046069
-        if (tabName !== "favorites") {
+        if (tabName !== "favorites" && tabName !== "home") {
           postEventToProviders(tabsTracks.tabScreenView(tabName))
         }
       }
