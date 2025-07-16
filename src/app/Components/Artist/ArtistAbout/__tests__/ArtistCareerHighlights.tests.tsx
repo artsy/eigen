@@ -30,16 +30,16 @@ describe("ArtistCareerHighlights", () => {
     expect(screen.queryByText("GH, IJ, and KL")).not.toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Highlight 1"))
-    expect(screen.queryByText("AB, CD, and EF")).toBeOnTheScreen()
+    expect(screen.getByText("AB, CD, and EF")).toBeOnTheScreen()
     expect(screen.queryByText("GH, IJ, and KL")).not.toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Highlight 2"))
-    expect(screen.queryByText("AB, CD, and EF")).toBeOnTheScreen()
-    expect(screen.queryByText("GH, IJ, and KL")).toBeOnTheScreen()
+    expect(screen.getByText("AB, CD, and EF")).toBeOnTheScreen()
+    expect(screen.getByText("GH, IJ, and KL")).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Highlight 1"))
     expect(screen.queryByText("AB, CD, and EF")).not.toBeOnTheScreen()
-    expect(screen.queryByText("GH, IJ, and KL")).toBeOnTheScreen()
+    expect(screen.getByText("GH, IJ, and KL")).toBeOnTheScreen()
 
     fireEvent.press(screen.getByText("Highlight 2"))
     expect(screen.queryByText("AB, CD, and EF")).not.toBeOnTheScreen()
@@ -55,9 +55,82 @@ describe("ArtistCareerHighlights", () => {
 
     expect(screen.queryByText("element 1")).not.toBeOnTheScreen()
     expect(screen.queryByText("element 2")).not.toBeOnTheScreen()
-    expect(screen.queryByText("element 3")).toBeOnTheScreen()
-    expect(screen.queryByText("element 4")).toBeOnTheScreen()
-    expect(screen.queryByText("element 5")).toBeOnTheScreen()
+    expect(screen.getByText("element 3")).toBeOnTheScreen()
+    expect(screen.getByText("element 4")).toBeOnTheScreen()
+    expect(screen.getByText("element 5")).toBeOnTheScreen()
+  })
+
+  describe("formatList function", () => {
+    it("returns empty string for empty array", () => {
+      renderWithRelay({
+        Artist: () => ({
+          insights: [{ entities: [], label: "Test", description: "fallback" }],
+        }),
+      })
+
+      fireEvent.press(screen.getByText("Test"))
+      expect(screen.getByText("fallback")).toBeOnTheScreen()
+    })
+
+    it("returns single item for array with one element", () => {
+      renderWithRelay({
+        Artist: () => ({
+          insights: [{ entities: ["Single Item"], label: "Test", description: "fallback" }],
+        }),
+      })
+
+      fireEvent.press(screen.getByText("Test"))
+      expect(screen.getByText("Single Item")).toBeOnTheScreen()
+    })
+
+    it("formats two items with 'and'", () => {
+      renderWithRelay({
+        Artist: () => ({
+          insights: [{ entities: ["First", "Second"], label: "Test", description: "fallback" }],
+        }),
+      })
+
+      fireEvent.press(screen.getByText("Test"))
+      expect(screen.getByText("First and Second")).toBeOnTheScreen()
+    })
+
+    it("formats multiple items with commas and 'and'", () => {
+      renderWithRelay({
+        Artist: () => ({
+          insights: [
+            { entities: ["First", "Second", "Third"], label: "Test", description: "fallback" },
+          ],
+        }),
+      })
+
+      fireEvent.press(screen.getByText("Test"))
+      expect(screen.getByText("First, Second, and Third")).toBeOnTheScreen()
+    })
+
+    it("handles items with commas correctly", () => {
+      renderWithRelay({
+        Artist: () => ({
+          insights: [
+            {
+              entities: [
+                "Museum of Modern Art, New York",
+                "Whitney Museum, New York",
+                "Tate Modern, London",
+              ],
+              label: "Test",
+              description: "fallback",
+            },
+          ],
+        }),
+      })
+
+      fireEvent.press(screen.getByText("Test"))
+      expect(
+        screen.getByText(
+          "Museum of Modern Art, New York, Whitney Museum, New York, and Tate Modern, London"
+        )
+      ).toBeOnTheScreen()
+    })
   })
 })
 
