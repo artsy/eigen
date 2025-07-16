@@ -1,9 +1,8 @@
 import { ActionType, ContextModule, OwnerType, TappedMainArtworkGrid } from "@artsy/cohesion"
+import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
 import {
   Box,
   Flex,
-  HeartFillIcon,
-  HeartIcon,
   Image,
   Skeleton,
   SkeletonBox,
@@ -469,11 +468,11 @@ const ArtworkHeartIcon: React.FC<{ isSaved: boolean | null; index?: number }> = 
     // We only try to show the save onboard Popover in the 1st element
     return (
       <ProgressiveOnboardingSaveArtwork>
-        <HeartIcon {...iconProps} />
+        <HeartStrokeIcon {...iconProps} />
       </ProgressiveOnboardingSaveArtwork>
     )
   }
-  return <HeartIcon {...iconProps} />
+  return <HeartStrokeIcon {...iconProps} />
 }
 
 export default createFragmentContainer(Artwork, {
