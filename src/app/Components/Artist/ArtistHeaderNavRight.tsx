@@ -10,12 +10,7 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { MotiView } from "moti"
 import { useCallback, useState } from "react"
 import { PixelRatio, TouchableOpacity } from "react-native"
-import Animated, {
-  Easing,
-  useAnimatedStyle,
-  useDerivedValue,
-  withTiming,
-} from "react-native-reanimated"
+import { Easing, useAnimatedStyle, useDerivedValue, withTiming } from "react-native-reanimated"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import useDebounce from "react-use/lib/useDebounce"
 
@@ -79,6 +74,9 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
     }),
     [followAreaDeltaX]
   )
+  const spacerStyle = useAnimatedStyle(() => ({
+    width: withTiming(spacerWidth.value, { duration: 200 }),
+  }))
   const followButtonStyle = useAnimatedStyle(() => ({
     opacity: withTiming(followButtonOpacity.value, { duration: 200 }),
   }))
@@ -114,7 +112,7 @@ export const ArtistHeaderNavRight: React.FC<ArtistHeaderNavRightProps> = ({
           <ShareIcon width={ACCESSIBLE_DEFAULT_ICON_SIZE} height={ACCESSIBLE_DEFAULT_ICON_SIZE} />
         </TouchableOpacity>
 
-        <Animated.View style={{ width: spacerWidth }} />
+        <MotiView style={spacerStyle} />
 
         <MotiView style={followButtonStyle}>
           <FollowButton
