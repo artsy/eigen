@@ -75,41 +75,71 @@ export const AuthBackground: React.FC = () => {
 const AnimatedBackground: React.FC = React.memo(() => {
   const { width: screenWidth, height: screenHeight } = useScreenDimensions()
 
-  // Scale factor to ensure image covers enough of the screen
-  const heightScaleFactor = 1.1
-  const adjustedHeight = screenHeight * heightScaleFactor
+  // size and position the image
+  const IMAGE_SCALE = 1.2
+  const IMAGE_OFFSET = (IMAGE_SCALE - 1) / 2
+
+  // zoom into the image
+  const ZOOM_SCALE = 1.2
+  const ZOOM_X = -screenWidth * 0.1
+  const ZOOM_Y = -screenHeight * 0.05
+  const ZOOM_DURATION = 15000
+
+  // pan across the image
+  const PAN_X = screenWidth * 0.15
+  const PAN_Y = -screenHeight * 0.1
+  const PAN_DURATION = 30000
+
+  /**
+   * This component defines 3 animations that happen in the following sequence:
+   *
+   * 0 - 1s: viewport fades-in image
+   * 0 - 15s: viewport zooms-into image and slightly pans to the right
+   * 15s - 45s: viewport pans to the bottom-left of the image and slightly zooms-out (and loops)
+   *
+   * It also includes a linear gradient so that the text on this screen doesn't blend into the image
+   * and become difficult to read.
+   */
 
   return (
-    <>
+    <MotiView
+      from={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ type: "timing", duration: 1000 }}
+      style={{
+        height: screenHeight,
+        width: screenWidth,
+        position: "absolute",
+      }}
+    >
       <MotiView
-        from={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ type: "timing", duration: 1000 }}
+        from={{ scale: 1, translateX: 0, translateY: 0 }}
+        animate={{ scale: ZOOM_SCALE, translateX: ZOOM_X, translateY: ZOOM_Y }}
+        transition={{ type: "timing", duration: ZOOM_DURATION }}
       >
         <MotiView
-          from={{ scale: 1, translateX: 0 }}
-          // Slow zoom-in with subtle pan to create cinematic movement
-          animate={{ scale: 1.2, translateX: -screenWidth * 0.05 }}
+          from={{ scale: ZOOM_SCALE, translateX: ZOOM_X, translateY: ZOOM_Y }}
+          animate={{
+            scale: 1,
+            translateX: PAN_X,
+            translateY: PAN_Y,
+          }}
           transition={{
             type: "timing",
-            duration: 10000,
-          }}
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            position: "absolute",
-            width: screenWidth,
-            height: adjustedHeight,
-            // Shift container up to ensure bottom coverage during zoom-in animation
-            top: -screenHeight * 0.05,
+            delay: ZOOM_DURATION,
+            duration: PAN_DURATION,
+            loop: true,
+            easing: Easing.inOut(Easing.ease),
           }}
         >
           <Image
             source={require("images/WelcomeImage.webp")}
-            resizeMode="cover"
             style={{
-              width: screenWidth,
-              height: adjustedHeight,
+              height: screenHeight * IMAGE_SCALE,
+              width: screenWidth * IMAGE_SCALE,
+              position: "absolute",
+              left: -screenWidth * IMAGE_OFFSET,
+              top: -screenHeight * IMAGE_OFFSET,
             }}
           />
           <LinearGradient
@@ -117,13 +147,15 @@ const AnimatedBackground: React.FC = React.memo(() => {
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
             style={{
+              width: screenWidth * IMAGE_SCALE,
+              height: screenHeight * IMAGE_SCALE,
               position: "absolute",
-              width: screenWidth,
-              height: adjustedHeight,
+              left: -screenWidth * IMAGE_OFFSET,
+              top: -screenHeight * IMAGE_OFFSET,
             }}
           />
         </MotiView>
       </MotiView>
-    </>
+    </MotiView>
   )
 })
