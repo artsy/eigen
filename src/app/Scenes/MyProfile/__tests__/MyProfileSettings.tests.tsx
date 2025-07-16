@@ -23,6 +23,22 @@ describe("MyProfileSettings", () => {
     expect(navigate).toHaveBeenCalledWith("/orders")
   })
 
+  it("renders Preferences section", () => {
+    renderWithWrappers(<MyProfileSettings />)
+
+    expect(screen.getByText("Preferences")).toBeOnTheScreen()
+
+    const priceRange = screen.getByText("Price Range")
+    expect(priceRange).toBeOnTheScreen()
+    fireEvent.press(priceRange)
+    expect(navigate).toHaveBeenCalledWith("/my-account/edit-price-range")
+
+    const darkMode = screen.getByText("Dark Mode")
+    expect(darkMode).toBeOnTheScreen()
+    fireEvent.press(darkMode)
+    expect(navigate).toHaveBeenCalledWith("/my-account/dark-mode")
+  })
+
   it("renders Account section", () => {
     renderWithWrappers(<MyProfileSettings />)
 
@@ -42,11 +58,6 @@ describe("MyProfileSettings", () => {
     expect(notifications).toBeOnTheScreen()
     fireEvent.press(notifications)
     expect(navigate).toHaveBeenCalledWith("my-profile/push-notifications")
-
-    const preferences = screen.getByText("Preferences")
-    expect(preferences).toBeOnTheScreen()
-    fireEvent.press(preferences)
-    expect(navigate).toHaveBeenCalledWith("my-profile/preferences")
   })
 
   it("renders Support section", () => {

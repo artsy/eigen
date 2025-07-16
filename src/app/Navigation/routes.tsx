@@ -168,10 +168,6 @@ import {
   MyProfilePaymentScreenQuery,
 } from "app/Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "app/Scenes/MyProfile/MyProfilePaymentNewCreditCard"
-import {
-  myProfilePreferencesQuery,
-  MyProfilePreferencesQueryRenderer,
-} from "app/Scenes/MyProfile/MyProfilePreferences"
 import { MyProfilePrivacy } from "app/Scenes/MyProfile/MyProfilePrivacy"
 import { MyProfilePushNotificationsQueryRenderer } from "app/Scenes/MyProfile/MyProfilePushNotifications"
 import { MyProfileSettings } from "app/Scenes/MyProfile/MyProfileSettings"
@@ -1016,6 +1012,18 @@ export const artsyDotNetRoutes = defineRoutes([
     queries: [MyAccountScreenQuery],
   },
   {
+    path: "/my-account/dark-mode",
+    name: "DarkModeSettings",
+    Component: DarkModeSettings,
+    options: {
+      screenOptions: {
+        headerShown: false,
+        headerTitle: "Dark Mode",
+      },
+      hidesBottomTabs: true,
+    },
+  },
+  {
     path: "/my-account/delete-account",
     name: "MyAccountDeleteAccount",
     Component: MyAccountDeleteAccountQueryRenderer,
@@ -1240,17 +1248,6 @@ export const artsyDotNetRoutes = defineRoutes([
       screenOptions: {
         headerShown: false,
         headerTitle: "Push Notifications",
-      },
-    },
-  },
-  {
-    path: "/my-profile/preferences",
-    name: "MyProfilePreferences",
-    Component: MyProfilePreferencesQueryRenderer,
-    queries: [myProfilePreferencesQuery],
-    options: {
-      screenOptions: {
-        headerShown: false,
       },
     },
   },
@@ -1533,18 +1530,6 @@ export const artsyDotNetRoutes = defineRoutes([
       screenOptions: {
         headerShown: false,
       },
-    },
-  },
-  {
-    path: "/settings/dark-mode",
-    name: "DarkModeSettings",
-    Component: DarkModeSettings,
-    options: {
-      screenOptions: {
-        headerShown: false,
-        headerTitle: "Dark Mode",
-      },
-      hidesBottomTabs: true,
     },
   },
   {
