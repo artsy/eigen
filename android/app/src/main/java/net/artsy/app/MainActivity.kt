@@ -14,7 +14,6 @@ import android.net.Uri
 import androidx.annotation.Nullable
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
-import com.zoontek.rnbootsplash.RNBootSplash
 import com.dieam.reactnativepushnotification.modules.RNPushNotification
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
@@ -43,8 +42,6 @@ class MainActivity : ReactActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        RNBootSplash.init(this, R.style.BootTheme)
-
         // Following line is required to prevent a crash
         // See HACKS.md for more context
         // https://github.com/software-mansion/react-native-screens/issues/17

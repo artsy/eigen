@@ -42,7 +42,7 @@
         <data android:scheme="@string/fb_login_protocol_scheme"/>
       </intent-filter>
     </activity>
-    <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize" android:exported="true" android:fitsSystemWindows="true" android:theme="@style/BootTheme">
+    <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize" android:exported="true" android:fitsSystemWindows="true" android:theme="@style/AppTheme">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
@@ -152,7 +152,7 @@
         <action android:name="com.google.firebase.MESSAGING_EVENT"/>
       </intent-filter>
     </service>
-    
+
     <!-- Widget Providers -->
     <receiver android:name=".widgets.FullBleedWidgetProvider" android:exported="true">
       <intent-filter>
@@ -161,7 +161,7 @@
       <meta-data android:name="android.appwidget.provider"
         android:resource="@xml/fullbleed_widget_info" />
     </receiver>
-    
-    
+
+
   </application>
 </manifest>

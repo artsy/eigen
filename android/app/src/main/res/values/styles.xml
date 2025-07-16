@@ -6,6 +6,7 @@
         <item name="android:forceDarkAllowed">false</item>
         <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
         <item name="android:navigationBarColor">#FFFFFF</item>
+        <item name="android:windowBackground">@drawable/splashscreen</item> <!-- this line instructs the system to use 'splashscreen.xml' as a background of the whole application -->
     </style>
 
     <style name="Theme.FullScreenDialog" parent="Theme.AppCompat.Light.NoActionBar">
@@ -15,11 +16,5 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:forceDarkAllowed">false</item>
-    </style>
-
-    <style name="BootTheme" parent="Theme.BootSplash.TransparentStatus">
-        <item name="bootSplashBackground">@color/bootsplash_background</item>
-        <item name="bootSplashLogo">@drawable/bootsplash_logo</item>
-        <item name="postBootSplashTheme">@style/AppTheme</item>
     </style>
 </resources>
