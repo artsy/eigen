@@ -29,15 +29,20 @@ export const ArtistCareerHighlights: React.FC<ArtistCareerHighlightsProps> = ({ 
         return (
           <Expandable label={label} key={`expandable-highlight-${index}`}>
             <Text color="mono60" my={1}>
-              {entities.length > 0
-                ? entities.join(", ").replace(/,\s([^,]+)$/, ", and $1")
-                : description}
+              {entities.length > 0 ? formatList(entities) : description}
             </Text>
           </Expandable>
         )
       })}
     </Flex>
   )
+}
+
+const formatList = (entities: readonly string[]) => {
+  if (entities.length === 0) return ""
+  if (entities.length === 1) return entities[0]
+  if (entities.length === 2) return entities.join(" and ")
+  return entities.slice(0, -1).join(", ") + ", and " + entities[entities.length - 1]
 }
 
 const fragment = graphql`
