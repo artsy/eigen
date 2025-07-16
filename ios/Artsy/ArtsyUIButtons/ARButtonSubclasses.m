@@ -181,8 +181,8 @@ const CGFloat ARButtonAnimationDuration = 0.15;
 - (void)animateLayer:(CALayer *)layer fromColor:(CGColorRef)fromColor toColor:(CGColorRef)toColor forKey:(NSString *)key
 {
     CABasicAnimation *fade = [CABasicAnimation animation];
-    fade.fromValue = (__bridge id)fromColor;
-    fade.toValue = (__bridge id)toColor;
+    fade.fromValue = (__bridge id)(fromColor);
+    fade.toValue = (__bridge id)(toColor);
     fade.duration = ARButtonAnimationDuration;
     [layer addAnimation:fade forKey:key];
 }
