@@ -1012,6 +1012,18 @@ export const artsyDotNetRoutes = defineRoutes([
     queries: [MyAccountScreenQuery],
   },
   {
+    path: "/my-account/dark-mode",
+    name: "DarkModeSettings",
+    Component: DarkModeSettings,
+    options: {
+      screenOptions: {
+        headerShown: false,
+        headerTitle: "Dark Mode",
+      },
+      hidesBottomTabs: true,
+    },
+  },
+  {
     path: "/my-account/delete-account",
     name: "MyAccountDeleteAccount",
     Component: MyAccountDeleteAccountQueryRenderer,
@@ -1518,18 +1530,6 @@ export const artsyDotNetRoutes = defineRoutes([
       screenOptions: {
         headerShown: false,
       },
-    },
-  },
-  {
-    path: "/settings/dark-mode",
-    name: "DarkModeSettings",
-    Component: DarkModeSettings,
-    options: {
-      screenOptions: {
-        headerShown: false,
-        headerTitle: "Dark Mode",
-      },
-      hidesBottomTabs: true,
     },
   },
   {

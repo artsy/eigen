@@ -36,7 +36,7 @@ describe("MyProfileSettings", () => {
     const darkMode = screen.getByText("Dark Mode")
     expect(darkMode).toBeOnTheScreen()
     fireEvent.press(darkMode)
-    expect(navigate).toHaveBeenCalledWith("/settings/dark-mode")
+    expect(navigate).toHaveBeenCalledWith("/my-account/dark-mode")
   })
 
   it("renders Account section", () => {

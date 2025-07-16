@@ -71,7 +71,7 @@ export const MyProfileSettings: React.FC = () => {
                 />
                 <MenuItem
                   title="Dark Mode"
-                  href="/settings/dark-mode"
+                  href="/my-account/dark-mode"
                   // TODO: Replace with dark mode icon once ready
                   icon={<BagIcon />}
                 />

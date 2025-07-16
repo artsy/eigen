@@ -760,7 +760,7 @@ describe("artsy.net routes", () => {
   })
 
   it("routes to DarkModeSettings", () => {
-    expect(matchRoute("/settings/dark-mode")).toMatchInlineSnapshot(`
+    expect(matchRoute("/my-account/dark-mode")).toMatchInlineSnapshot(`
       {
         "module": "DarkModeSettings",
         "params": {},
