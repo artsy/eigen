@@ -27,10 +27,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.47.0.tgz#a7d08b67882db99f0466a2549cfcc0d091c8a1f9"
   integrity sha512-WtwqDioA+ISlTyXbDbP/LE1voVoEWEpTdihQQuY4ca/7Tpt/GWRsIrxUg2023P+cdjDlj0exlPjDq50CPfii7Q==
 
-"@artsy/palette-mobile@17.27.0":
-  version "17.27.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.27.0.tgz#03438aa825f736ac05e2ff159928b3316593466b"
-  integrity sha512-1Bf3s/gCXWoYnswv5abZchA2S+0PiRIupEPVDttoVubeRhyQXHUD2L40Xo4spUv7LMcmrYJ2OAUGvY4oGWfUZg==
+"@artsy/palette-mobile@17.28.0":
+  version "17.28.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.28.0.tgz#f1fd749b431485b023ec34aede9f6df6996057e8"
+  integrity sha512-20myChH08vqCKQwgPTAIRyQ3MTXqkZ1aAgh2cS9/Hvdg+9I2B36Zk8HFe+UEbyjUu9krJhA4OXmQHISYl9JEuA==
   dependencies:
     "@artsy/palette-tokens" "^7.0.0"
     "@d11/react-native-fast-image" "^8.10.0"
@@ -44,7 +44,7 @@
     react-native-blurhash "^2.1.1"
     react-native-collapsible-tab-view "^8.0.1"
     react-native-pager-view "6.5.0"
-    react-native-popover-view "^5.1.7"
+    react-native-popover-view "^6.1.0"
     react-spring "8.0.23"
     styled-system "^5.1.5"
 
@@ -14438,10 +14438,10 @@ react-native-permissions@3.8.4:
     picocolors "^1.0.0"
     pkg-dir "^5.0.0"
 
-react-native-popover-view@^5.1.7:
-  version "5.1.9"
-  resolved "https://registry.yarnpkg.com/react-native-popover-view/-/react-native-popover-view-5.1.9.tgz#5106240e561ad133e6bbf83ca404ecdd2d721f42"
-  integrity sha512-jjcVfH6hUN2bnB8wwtiELyb5184K90L3qZ+h0u6dSfVdyxgDbbkPS336a9JmNoaUGIrQYwZpRUd5Cgai35Am2w==
+react-native-popover-view@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-popover-view/-/react-native-popover-view-6.1.0.tgz#1d0dd1573d95edfb611a0f712d1439d5deb374a9"
+  integrity sha512-j1CB+yPwTKlBvIJBNb1AwiHyF/r+W5+AJIbHk79GRa+0z6PVtW4C7NWJWPqUVkCMOcJtewl6Pr6f2dc/87cVyQ==
   dependencies:
     deprecated-react-native-prop-types "^2.3.0"
     prop-types "^15.8.1"
