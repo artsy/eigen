@@ -27,10 +27,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.47.0.tgz#a7d08b67882db99f0466a2549cfcc0d091c8a1f9"
   integrity sha512-WtwqDioA+ISlTyXbDbP/LE1voVoEWEpTdihQQuY4ca/7Tpt/GWRsIrxUg2023P+cdjDlj0exlPjDq50CPfii7Q==
 
-"@artsy/palette-mobile@17.26.0":
-  version "17.26.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.26.0.tgz#4ded3c8c5efcd696865dc833b8bb8b145c5eb957"
-  integrity sha512-xihUD0aXb6lZVuCm6mo1BvO16LUd5/SkWYV39ygOWQjS8VAmqdpsTloKX8cCCrcvRMh88oNAeyqT8UFeb7DFWA==
+"@artsy/palette-mobile@17.27.0":
+  version "17.27.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.27.0.tgz#03438aa825f736ac05e2ff159928b3316593466b"
+  integrity sha512-1Bf3s/gCXWoYnswv5abZchA2S+0PiRIupEPVDttoVubeRhyQXHUD2L40Xo4spUv7LMcmrYJ2OAUGvY4oGWfUZg==
   dependencies:
     "@artsy/palette-tokens" "^7.0.0"
     "@d11/react-native-fast-image" "^8.10.0"
