@@ -22,7 +22,7 @@ index bc85786..d1b3233 100644
 -      // The deferredRootView needs to be dark mode aware so we set the color to be the same as the splashscreen background.
 -      rootView.backgroundColor = UIColor(named: "SplashScreenBackground") ?? .white
 +      // Use the BG color from the splash screen view, falling back to the asset
-+      let bgColor = view.backgroundColor ?? UIColor(named: "SplashScreenBackground")
++      let bgColor = view.backgroundColor ?? UIColor(named: "BootSplashBackground-987182")
 +      rootView.backgroundColor = bgColor ?? UIColor.white
        rootView.addSubview(view)
 
