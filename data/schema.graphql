@@ -14448,6 +14448,7 @@ type Me implements Node {
   followsAndSaves: FollowsAndSaves
   hasCreditCards: Boolean
   hasPassword: Boolean!
+  hasPriceRange: Boolean!
   hasQualifiedCreditCards: Boolean
   hasSecondFactorEnabled: Boolean!
   icon: Image
