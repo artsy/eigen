@@ -119,7 +119,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
         showSaveIcon
         moreHref={moreHref}
         onMorePress={onMorePress}
-        {...(section.trackItemImpressions
+        {...(section?.trackItemImpressions
           ? {
               onViewableItemsChanged: onViewableItemsChanged,
               viewabilityConfig: viewabilityConfig,
