@@ -99,7 +99,7 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           onScroll={scrollHandler}
           style={{ paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET }}
           contextScreenOwnerType={section.ownerType as ScreenOwnerType}
-          {...(section.trackItemImpressions
+          {...(section?.trackItemImpressions
             ? {
                 onViewableItemsChanged: onViewableItemsChanged,
                 viewabilityConfig: viewabilityConfig,
