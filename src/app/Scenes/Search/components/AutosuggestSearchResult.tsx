@@ -16,7 +16,7 @@ import { Schema } from "app/utils/track"
 import { useContext } from "react"
 import { useTracking } from "react-tracking"
 import { ResultWithHighlight } from "./ResultWithHighlight"
-import { IMAGE_SIZE, SearchResultImage } from "./SearchResultImage"
+import { SearchResultImage } from "./SearchResultImage"
 
 export type OnResultPress = (result: AutosuggestResult) => void
 export type TrackResultPress = (result: AutosuggestResult, itemIndex?: number) => void
