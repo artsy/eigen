@@ -108,7 +108,7 @@ const Main = () => {
   useHideSplashScreen()
   useAndroidAppStyling()
   useListenToThemeChange()
-  useTrackAppState()
+  // useTrackAppState()
 
   useEffect(() => {
     if (isLoggedIn) {
