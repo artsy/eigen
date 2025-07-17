@@ -1,9 +1,9 @@
-import { ArtsyLogoWhiteIcon, Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
+import { ArtsyLogoIcon } from "@artsy/icons/native"
+import { Flex, Spacer, Text, useScreenDimensions } from "@artsy/palette-mobile"
 import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { MotiView } from "moti"
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { Image } from "react-native"
-import { isTablet } from "react-native-device-info"
 import LinearGradient from "react-native-linear-gradient"
 import { Easing } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -18,7 +18,7 @@ export const AuthBackground: React.FC = () => {
       <AnimatedBackground />
 
       <Flex alignItems="center" width="100%">
-        <ArtsyLogoWhiteIcon height={25} width={75} mt={safeArea.top} />
+        <ArtsyLogoIcon height={25} width={75} mt={safeArea.top} fill="white" />
       </Flex>
 
       <Flex flex={1} px={2} justifyContent="center" position="relative" top={-safeArea.top * 2}>
@@ -51,7 +51,7 @@ export const AuthBackground: React.FC = () => {
             // We want to show this text in white regardless of the theme to make sure it can be read clearly
             color="white"
           >
-            Collect Art by the World’s Leading Artists
+            Discover and Buy Art that Moves You
           </Text>
 
           <Spacer y={1} />
@@ -61,7 +61,8 @@ export const AuthBackground: React.FC = () => {
             // We want to show this text in white regardless of the theme to make sure it can be read clearly
             color="white"
           >
-            Build your personalized profile, get market insights and buy art with confidence.
+            Your personalized guide to fresh artworks and the latest stories—and the easiest way to
+            buy art you love.
           </Text>
 
           <Spacer y={2} />
@@ -74,74 +75,87 @@ export const AuthBackground: React.FC = () => {
 const AnimatedBackground: React.FC = React.memo(() => {
   const { width: screenWidth, height: screenHeight } = useScreenDimensions()
 
-  const [translateXEnd, setTranslateXEnd] = useState<{ firstStop: number; secondStop: number }>({
-    firstStop: 0,
-    secondStop: 0,
-  })
+  // size and position the image
+  const IMAGE_SCALE = 1.2
+  const IMAGE_OFFSET = (IMAGE_SCALE - 1) / 2
 
-  useEffect(() => {
-    if (isTablet()) {
-      return
-    }
+  // zoom into the image
+  const ZOOM_SCALE = 1.2
+  const ZOOM_X = -screenWidth * 0.1
+  const ZOOM_Y = -screenHeight * 0.05
+  const ZOOM_DURATION = 15000
 
-    const imgProps = Image.resolveAssetSource(require("images/WelcomeImage.webp"))
+  // pan across the image
+  const PAN_X = screenWidth * 0.15
+  const PAN_Y = -screenHeight * 0.1
+  const PAN_DURATION = 30000
 
-    // We want to animate the background only when the device width is smaller than the scaled image width
-    const imgScale = imgProps.height / screenHeight
-    const imgWidth = imgProps.width * imgScale
-
-    if (screenWidth < imgWidth) {
-      const rightMarginFirstStop = 120
-      const rightMarginSecondStop = 320
-
-      // Calculate final positions
-      setTranslateXEnd({
-        firstStop: -(imgWidth - screenWidth - rightMarginFirstStop),
-        secondStop: -(imgWidth - screenWidth - rightMarginSecondStop),
-      })
-    }
-  }, [screenWidth, screenHeight])
+  /**
+   * This component defines 3 animations that happen in the following sequence:
+   *
+   * 0 - 1s: viewport fades-in image
+   * 0 - 15s: viewport zooms-into image and slightly pans to the right
+   * 15s - 45s: viewport pans to the bottom-left of the image and slightly zooms-out (and loops)
+   *
+   * It also includes a linear gradient so that the text on this screen doesn't blend into the image
+   * and become difficult to read.
+   */
 
   return (
-    <>
+    <MotiView
+      from={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ type: "timing", duration: 1000 }}
+      style={{
+        height: screenHeight,
+        width: screenWidth,
+        position: "absolute",
+      }}
+    >
       <MotiView
-        from={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ type: "timing", duration: 1000 }}
+        from={{ scale: 1, translateX: 0, translateY: 0 }}
+        animate={{ scale: ZOOM_SCALE, translateX: ZOOM_X, translateY: ZOOM_Y }}
+        transition={{ type: "timing", duration: ZOOM_DURATION }}
       >
         <MotiView
-          from={{ translateX: 0 }}
+          from={{ scale: ZOOM_SCALE, translateX: ZOOM_X, translateY: ZOOM_Y }}
           animate={{
-            translateX: [translateXEnd?.firstStop, translateXEnd?.secondStop],
+            scale: 1,
+            translateX: PAN_X,
+            translateY: PAN_Y,
           }}
           transition={{
             type: "timing",
-            duration: 50000,
+            delay: ZOOM_DURATION,
+            duration: PAN_DURATION,
             loop: true,
-          }}
-          style={{
-            alignItems: "flex-end",
-            position: "absolute",
+            easing: Easing.inOut(Easing.ease),
           }}
         >
           <Image
             source={require("images/WelcomeImage.webp")}
-            resizeMode="cover"
-            style={{ height: screenHeight }}
+            style={{
+              height: screenHeight * IMAGE_SCALE,
+              width: screenWidth * IMAGE_SCALE,
+              position: "absolute",
+              left: -screenWidth * IMAGE_OFFSET,
+              top: -screenHeight * IMAGE_OFFSET,
+            }}
+          />
+          <LinearGradient
+            colors={["rgba(0, 0, 0, 0)", `rgba(0, 0, 0, 0.85)`]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={{
+              width: screenWidth * IMAGE_SCALE,
+              height: screenHeight * IMAGE_SCALE,
+              position: "absolute",
+              left: -screenWidth * IMAGE_OFFSET,
+              top: -screenHeight * IMAGE_OFFSET,
+            }}
           />
         </MotiView>
-
-        <LinearGradient
-          colors={["rgba(0, 0, 0, 0)", `rgba(0, 0, 0, 0.85)`]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 0.9 }}
-          style={{
-            position: "absolute",
-            width: "100%",
-            height: screenHeight,
-          }}
-        />
       </MotiView>
-    </>
+    </MotiView>
   )
 })

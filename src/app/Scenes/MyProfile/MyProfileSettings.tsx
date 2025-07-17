@@ -5,7 +5,7 @@ import {
   TappedEditedProfile,
   TappedMyCollection,
 } from "@artsy/cohesion"
-import { BagIcon, CreditCardIcon, FilterIcon, LockIcon, MobileIcon } from "@artsy/icons/native"
+import { BagIcon, CreditCardIcon, LockIcon, MobileIcon, MoneyBackIcon } from "@artsy/icons/native"
 import { Flex, Join, LinkText, Screen, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
 import { MenuItem } from "app/Components/MenuItem"
@@ -59,6 +59,25 @@ export const MyProfileSettings: React.FC = () => {
               </>
 
               <>
+                <Text variant="xs" color="mono60" px={2} mt={2}>
+                  Preferences
+                </Text>
+
+                <MenuItem
+                  title="Price Range"
+                  href="/my-account/edit-price-range"
+                  // TODO: Replace with the icon provided by design
+                  icon={<MoneyBackIcon />}
+                />
+                <MenuItem
+                  title="Dark Mode"
+                  href="/my-account/dark-mode"
+                  // TODO: Replace with dark mode icon once ready
+                  icon={<BagIcon />}
+                />
+              </>
+
+              <>
                 <Text variant="xs" color="mono60" px={2}>
                   Account
                 </Text>
@@ -69,12 +88,6 @@ export const MyProfileSettings: React.FC = () => {
                   title="Notifications"
                   href="my-profile/push-notifications"
                   icon={<MobileIcon />}
-                />
-                <MenuItem
-                  title="Preferences"
-                  // Jira ticket: ONYX-1642
-                  href="my-profile/preferences"
-                  icon={<FilterIcon />}
                 />
               </>
 
