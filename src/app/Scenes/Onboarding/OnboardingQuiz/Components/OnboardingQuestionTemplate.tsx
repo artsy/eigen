@@ -181,4 +181,5 @@ const STATE_KEYS: Record<Exclude<OnboardingContextAction["type"], "RESET">, keyo
   SET_ANSWER_TWO: "questionTwo",
   SET_ANSWER_THREE: "questionThree",
   FOLLOW: "followedIds",
+  SET_PRICE_RANGE: "priceRange",
 }

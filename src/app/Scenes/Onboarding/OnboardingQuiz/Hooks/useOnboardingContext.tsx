@@ -7,6 +7,9 @@ export interface State {
   questionTwo: string[]
   questionThree: string | null
   followedIds: string[]
+  priceRange: string | null
+  priceRangeMin: number | null
+  priceRangeMax: number | null
 }
 
 export const DEFAULT_STATE: State = {
@@ -14,6 +17,9 @@ export const DEFAULT_STATE: State = {
   questionTwo: [],
   questionThree: null,
   followedIds: [],
+  priceRange: null,
+  priceRangeMin: null,
+  priceRangeMax: null,
 }
 
 export type OnboardingContextAction =
@@ -22,6 +28,10 @@ export type OnboardingContextAction =
   | { type: "SET_ANSWER_TWO"; payload: string }
   | { type: "SET_ANSWER_THREE"; payload: string }
   | { type: "FOLLOW"; payload: string }
+  | {
+      type: "SET_PRICE_RANGE"
+      payload: { priceRange: string; priceRangeMin: number; priceRangeMax: number }
+    }
 
 const reducer = (onReset: () => void) => (state: State, action: OnboardingContextAction) => {
   switch (action.type) {
@@ -55,6 +65,14 @@ const reducer = (onReset: () => void) => (state: State, action: OnboardingContex
         followedIds: state.followedIds.includes(action.payload)
           ? state.followedIds.filter((id) => id !== action.payload)
           : [...state.followedIds, action.payload],
+      }
+
+    case "SET_PRICE_RANGE":
+      return {
+        ...state,
+        priceRange: action.payload.priceRange,
+        priceRangeMin: action.payload.priceRangeMin,
+        priceRangeMax: action.payload.priceRangeMax,
       }
 
     default:

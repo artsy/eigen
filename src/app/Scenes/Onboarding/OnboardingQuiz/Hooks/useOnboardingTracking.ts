@@ -121,6 +121,16 @@ export const useOnboardingTracking = () => {
     trackEvent(isFollowed ? unfollowPayload : followPayload)
   }
 
+  const trackAnsweredPriceRange = (priceRange: string) => {
+    const payload: OnboardingUserInputData = {
+      action: ActionType.onboardingUserInputData,
+      // TODO: Add Price Range Context Module
+      context_module: "priceRange",
+      data_input: priceRange,
+    }
+
+    trackEvent(payload)
+  }
   const trackCompletedOnboarding = () => {
     const payload: CompletedOnboarding = {
       action: ActionType.completedOnboarding,
@@ -138,5 +148,6 @@ export const useOnboardingTracking = () => {
     trackGalleryFollow,
     trackGeneFollow,
     trackCompletedOnboarding,
+    trackAnsweredPriceRange,
   }
 }

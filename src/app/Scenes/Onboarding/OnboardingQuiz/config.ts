@@ -14,7 +14,12 @@ export const useConfig = ({ basis, onDone }: UseConfig) => {
         VIEW_WELCOME,
         VIEW_QUESTION_ONE,
         VIEW_QUESTION_TWO,
-        VIEW_QUESTION_THREE,
+        {
+          [DECISION_PRICE_RANGE_FROM_QUESTION_TWO]: {
+            [OPTION_FINDING_GREAT_INVESTMENTS]: [VIEW_PRICE_RANGE, VIEW_QUESTION_THREE],
+            default: [VIEW_QUESTION_THREE],
+          },
+        },
         {
           [DECISION_WHERE_WOULD_YOU_LIKE_TO_DIVE_IN]: {
             [OPTION_THE_ART_TASTE_QUIZ]: [VIEW_THE_ART_TASTE_QUIZ],
@@ -27,6 +32,11 @@ export const useConfig = ({ basis, onDone }: UseConfig) => {
         },
       ],
       conditions: {
+        [DECISION_PRICE_RANGE_FROM_QUESTION_TWO]: () => {
+          return basis.current?.questionTwo?.includes(OPTION_FINDING_GREAT_INVESTMENTS)
+            ? OPTION_FINDING_GREAT_INVESTMENTS
+            : "default"
+        },
         [DECISION_WHERE_WOULD_YOU_LIKE_TO_DIVE_IN]: () => {
           return basis.current?.questionThree!
         },
@@ -73,10 +83,10 @@ export const useConfig = ({ basis, onDone }: UseConfig) => {
 }
 
 export const OPTION_YES_I_LOVE_COLLECTING_ART = "Yes, I love collecting art"
-export const OPTION_NO_IM_JUST_STARTING_OUT = "No, I’m just starting out"
+export const OPTION_NO_IM_JUST_STARTING_OUT = "No, I'm just starting out"
 
 export const OPTION_DEVELOPING_MY_ART_TASTES = "Developing my art tastes"
-export const OPTION_KEEP_TRACK_OF_ART = "Keeping track of art I’m interested in"
+export const OPTION_KEEP_TRACK_OF_ART = "Keeping track of art I'm interested in"
 export const OPTION_FINDING_GREAT_INVESTMENTS = "Finding my next great investment"
 export const OPTION_COLLECTING_ART_THAT_MOVES_ME = "Collecting art that moves me"
 
@@ -99,4 +109,6 @@ export const VIEW_CURATED_ARTWORKS = "VIEW_CURATED_ARTWORKS"
 export const VIEW_ARTISTS_ON_THE_RISE = "VIEW_ARTISTS_ON_THE_RISE"
 export const VIEW_FOLLOW_GALLERIES = "VIEW_FOLLOW_GALLERIES"
 
+export const VIEW_PRICE_RANGE = "VIEW_PRICE_RANGE"
 export const DECISION_WHERE_WOULD_YOU_LIKE_TO_DIVE_IN = "DECISION_WHERE_WOULD_YOU_LIKE_TO_DIVE_IN"
+export const DECISION_PRICE_RANGE_FROM_QUESTION_TWO = "DECISION_PRICE_RANGE_FROM_QUESTION_TWO"

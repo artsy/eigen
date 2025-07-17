@@ -212,9 +212,9 @@ export const AuthenticatedRoutesStack = createNativeStackNavigator()
 export const AuthenticatedRoutes: React.FC = () => {
   const onboardingState = GlobalStore.useAppState((state) => state.onboarding.onboardingState)
 
-  if (onboardingState === "incomplete") {
-    return <OnboardingQuiz />
-  }
+  // if (onboardingState === "incomplete") {
+  return <OnboardingQuiz />
+  // }
 
   return (
     <AuthenticatedRoutesStack.Navigator>

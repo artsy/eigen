@@ -1,6 +1,7 @@
-import { useNavigation } from "@react-navigation/native"
+import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking"
+import { OnboardingNavigationStack } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import {
   OPTION_COLLECTING_ART_THAT_MOVES_ME,
   OPTION_DEVELOPING_MY_ART_TASTES,
@@ -15,14 +16,18 @@ export const OnboardingQuestionTwo = () => {
     state: { questionTwo },
   } = useOnboardingContext()
   const { trackAnsweredQuestionTwo } = useOnboardingTracking()
-  const { navigate } = useNavigation()
+  const { navigate } = useNavigation<NavigationProp<OnboardingNavigationStack>>()
 
   const handleNext = useCallback(() => {
     if (questionTwo) {
       trackAnsweredQuestionTwo(questionTwo)
     }
-    // @ts-expect-error
-    navigate("OnboardingQuestionThree")
+
+    if (questionTwo.includes(OPTION_FINDING_GREAT_INVESTMENTS)) {
+      navigate("OnboardingPriceRange")
+    } else {
+      navigate("OnboardingQuestionThree")
+    }
   }, [navigate, questionTwo, trackAnsweredQuestionTwo])
 
   return (
