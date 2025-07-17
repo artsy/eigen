@@ -113,7 +113,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
         showsHorizontalScrollIndicator={false}
         onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={viewabilityConfig}
-        windowSize={isTablet() ? 10 : 5}
+        windowSize={isTablet() ? 10 : 6}
       />
     )
   }

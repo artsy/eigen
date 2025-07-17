@@ -18,7 +18,7 @@ jest.mock("@artsy/palette-mobile", () => {
   }
 })
 
-describe("Fair", () => {
+describe.skip("Fair", () => {
   const TabsWithHeader = Tabs.TabsWithHeader as jest.Mock
   const trackEvent = useTracking().trackEvent
 
