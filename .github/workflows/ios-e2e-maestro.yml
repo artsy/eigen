@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: "0 6 * * *" # Runs daily at 6:00 AM UTC
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+  push:
+    branches:
+      - gkartalis/e2e-test-runners
   pull_request:
     branches:
       - gkartalis/e2e-test-runners
