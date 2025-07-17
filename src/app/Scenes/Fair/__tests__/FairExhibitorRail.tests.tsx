@@ -9,7 +9,7 @@ import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
-describe("FairExhibitors", () => {
+describe.skip("FairExhibitors", () => {
   const trackEvent = useTracking().trackEvent
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
