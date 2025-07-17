@@ -1,6 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, Spinner, Tabs, useSpace } from "@artsy/palette-mobile"
 import { MasonryFlashList } from "@shopify/flash-list"
+import { FairArtworksQuery } from "__generated__/FairArtworksQuery.graphql"
 import { FairArtworks_fair$key } from "__generated__/FairArtworks_fair.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import {
@@ -14,8 +15,10 @@ import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { HeaderArtworksFilterWithTotalArtworks } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { FAIR2_ARTWORKS_PAGE_SIZE } from "app/Components/constants"
+import { FairTabError } from "app/Scenes/Fair/Components/FairTabError"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
   MASONRY_LIST_PAGE_SIZE,
@@ -25,7 +28,7 @@ import {
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useState } from "react"
-import { graphql, usePaginationFragment } from "react-relay"
+import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface FairArtworksProps {
@@ -377,6 +380,48 @@ const fragment = graphql`
     }
   }
 `
+
+export const fairArtworksQuery = graphql`
+  query FairArtworksQuery($id: String!) {
+    fair(id: $id) {
+      ...FairArtworks_fair @arguments(input: { sort: "-decayed_merch" })
+    }
+  }
+`
+
+interface FairArtworksQueryRendererProps {
+  fairID: string
+}
+
+export const FairArtworksQueryRenderer: React.FC<FairArtworksQueryRendererProps> = withSuspense({
+  Component: (props) => {
+    const data = useLazyLoadQuery<FairArtworksQuery>(fairArtworksQuery, { id: props.fairID })
+
+    if (!data.fair) {
+      return null
+    }
+
+    return <FairArtworks fair={data.fair} />
+  },
+  LoadingFallback: () => <FairArtworksPlaceholder />,
+  ErrorFallback: (fallbackProps) => <FairTabError {...fallbackProps} />,
+})
+
+const FairArtworksPlaceholder: React.FC = () => {
+  const space = useSpace()
+
+  return (
+    <Tabs.ScrollView
+      contentContainerStyle={{ paddingHorizontal: 0, paddingTop: space(4), width: "100%" }}
+      // We don't want to allow scrolling so scroll position isn't lost after the query is complete
+      scrollEnabled={false}
+    >
+      <Flex>
+        <Spinner />
+      </Flex>
+    </Tabs.ScrollView>
+  )
+}
 
 const tracks = {
   closeArtworksFilter: (fair: any) => ({

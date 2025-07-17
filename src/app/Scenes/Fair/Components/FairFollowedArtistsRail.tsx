@@ -8,6 +8,7 @@ import {
   CollectorSignals,
   getArtworkSignalTrackingFields,
 } from "app/utils/getArtworkSignalTrackingFields"
+import { memo } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -15,7 +16,7 @@ interface FairFollowedArtistsRailProps {
   fair: FairFollowedArtistsRail_fair$data
 }
 
-export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = ({ fair }) => {
+export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = memo(({ fair }) => {
   const { trackEvent } = useTracking()
   const artworks = extractNodes(fair?.filterArtworksConnection)
 
@@ -27,6 +28,7 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = (
     <>
       <Flex>
         <SectionTitle
+          mx={2}
           title="Works by artists you follow"
           href={artworks.length > 2 ? `/fair/${fair.slug}/followedArtists` : undefined}
           onPress={
@@ -51,10 +53,13 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = (
             )
           )
         }}
+        onMorePress={() => {
+          trackEvent(tracks.tappedViewAll(fair))
+        }}
       />
     </>
   )
-}
+})
 
 export const FairFollowedArtistsRailFragmentContainer = createFragmentContainer(
   FairFollowedArtistsRail,
@@ -63,7 +68,7 @@ export const FairFollowedArtistsRailFragmentContainer = createFragmentContainer(
       fragment FairFollowedArtistsRail_fair on Fair {
         internalID
         slug
-        filterArtworksConnection(first: 20, input: { includeArtworksByFollowedArtists: true }) {
+        filterArtworksConnection(first: 10, input: { includeArtworksByFollowedArtists: true }) {
           edges {
             node {
               ...ArtworkRail_artworks
