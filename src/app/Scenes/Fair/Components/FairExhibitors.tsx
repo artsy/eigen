@@ -1,10 +1,13 @@
-import { Flex, Box, Tabs } from "@artsy/palette-mobile"
+import { Box, Flex, Tabs, useSpace } from "@artsy/palette-mobile"
 import { FairExhibitors_fair$data } from "__generated__/FairExhibitors_fair.graphql"
 import Spinner from "app/Components/Spinner"
 import { FAIR2_EXHIBITORS_PAGE_SIZE } from "app/Components/constants"
+import { FairTabError } from "app/Scenes/Fair/Components/FairTabError"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
+import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import React, { useCallback } from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { FairExhibitorRailFragmentContainer } from "./FairExhibitorRail"
 
 interface FairExhibitorsProps {
@@ -42,13 +45,11 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
   return (
     <Tabs.FlatList
       // reseting padding to -2 to remove the default padding from the FlatList
-      contentContainerStyle={{ padding: -2 }}
+      contentContainerStyle={{ padding: -2, paddingTop: 20 }}
       data={showsWithArtworks}
-      ListHeaderComponent={<Flex my={2} />}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       onEndReached={loadMoreExhibitors}
-      nestedScrollEnabled
       ListFooterComponent={
         shouldDisplaySpinner ? (
           <Box p={2}>
@@ -58,6 +59,11 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
           </Box>
         ) : null
       }
+      // We want to limit the number of loaded windows to 2 because the items are pretty heavy
+      windowSize={3}
+      // We are slowing down the scrolling intentionally because the screen is too heavy and scrolling
+      // too fast leads to dropped frames
+      decelerationRate={0.995}
     />
   )
 }
@@ -67,7 +73,7 @@ export const FairExhibitorsFragmentContainer = createPaginationContainer(
   {
     fair: graphql`
       fragment FairExhibitors_fair on Fair
-      @argumentDefinitions(first: { type: "Int", defaultValue: 30 }, after: { type: "String" }) {
+      @argumentDefinitions(first: { type: "Int", defaultValue: 3 }, after: { type: "String" }) {
         internalID
         slug
         exhibitors: showsConnection(first: $first, after: $after, sort: FEATURED_ASC)
@@ -91,7 +97,7 @@ export const FairExhibitorsFragmentContainer = createPaginationContainer(
       return { first, after, id }
     },
     query: graphql`
-      query FairExhibitorsQuery($id: String!, $first: Int!, $after: String) {
+      query FairExhibitorsPaginationQuery($id: String!, $first: Int!, $after: String) {
         fair(id: $id) {
           ...FairExhibitors_fair @arguments(first: $first, after: $after)
         }
@@ -99,3 +105,42 @@ export const FairExhibitorsFragmentContainer = createPaginationContainer(
     `,
   }
 )
+
+export const fairExhibitorsQuery = graphql`
+  query FairExhibitorsQuery($id: String!) @cacheable {
+    fair(id: $id) {
+      ...FairExhibitors_fair
+    }
+  }
+`
+
+export const FairExhibitorsQueryRenderer: React.FC<{ fairID: string }> = ({ fairID }) => {
+  return (
+    <QueryRenderer
+      environment={getRelayEnvironment()}
+      query={fairExhibitorsQuery}
+      variables={{ id: fairID }}
+      render={renderWithPlaceholder({
+        Container: FairExhibitorsFragmentContainer,
+        renderPlaceholder: () => <FairExhibitorsPlaceholder />,
+        renderFallback: (fallbackProps) => <FairTabError {...fallbackProps} />,
+      })}
+    />
+  )
+}
+
+const FairExhibitorsPlaceholder: React.FC = () => {
+  const space = useSpace()
+
+  return (
+    <Tabs.ScrollView
+      contentContainerStyle={{ paddingHorizontal: 0, paddingTop: space(4), width: "100%" }}
+      // We don't want to allow scrolling so scroll position isn't lost after the query is complete
+      scrollEnabled={false}
+    >
+      <Flex>
+        <Spinner />
+      </Flex>
+    </Tabs.ScrollView>
+  )
+}

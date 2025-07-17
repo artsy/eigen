@@ -8,6 +8,7 @@ import {
   CollectorSignals,
   getArtworkSignalTrackingFields,
 } from "app/utils/getArtworkSignalTrackingFields"
+import { memo } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -15,7 +16,7 @@ interface FairExhibitorRailProps {
   show: FairExhibitorRail_show$data
 }
 
-const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
+const FairExhibitorRail: React.FC<FairExhibitorRailProps> = memo(({ show }) => {
   const { trackEvent } = useTracking()
 
   const artworks = extractNodes(show?.artworksConnection)
@@ -51,10 +52,16 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
             )
           )
         }}
+        onMorePress={() => {
+          if (!viewAllUrl) return
+
+          trackEvent(tracks.tappedShow(show))
+        }}
+        showSaveIcon
       />
     </>
   )
-}
+})
 
 export const FairExhibitorRailFragmentContainer = createFragmentContainer(FairExhibitorRail, {
   show: graphql`
@@ -77,7 +84,7 @@ export const FairExhibitorRailFragmentContainer = createFragmentContainer(FairEx
         internalID
         slug
       }
-      artworksConnection(first: 20) {
+      artworksConnection(first: 10) {
         edges {
           node {
             ...ArtworkRail_artworks
