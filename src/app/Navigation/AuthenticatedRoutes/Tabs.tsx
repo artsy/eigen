@@ -3,6 +3,7 @@ import { Flex, Text, useColor } from "@artsy/palette-mobile"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { PlatformPressable } from "@react-navigation/elements"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { ProgressiveOnboardingPriceRangeHome } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingPriceRangeHome"
 import { FavoritesTab } from "app/Navigation/AuthenticatedRoutes/FavoritesTab"
 import { HomeTab } from "app/Navigation/AuthenticatedRoutes/HomeTab"
 import { InboxTab } from "app/Navigation/AuthenticatedRoutes/InboxTab"
@@ -18,6 +19,7 @@ import { BottomTabsIcon } from "app/Scenes/BottomTabs/BottomTabsIcon"
 import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { OnboardingQuiz } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import { GlobalStore } from "app/store/GlobalStore"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
 import { useCallback } from "react"
@@ -54,6 +56,10 @@ const AppTabs: React.FC = () => {
   const color = useColor()
   const isStaging = useIsStaging()
   const insets = useSafeAreaInsets()
+
+  const enableProgressiveOnboardingPriceRangeHome = useFeatureFlag(
+    "AREnableProgressiveOnboardingPriceRangeHome"
+  )
 
   const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
 
@@ -124,11 +130,27 @@ const AppTabs: React.FC = () => {
             },
           },
           tabBarIcon: ({ focused }) => {
-            return (
-              <Flex pt={1}>
-                <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
-              </Flex>
-            )
+            const Icon = () => {
+              return (
+                <Flex pt={1}>
+                  <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
+                </Flex>
+              )
+            }
+
+            const WrappedIcon = () => {
+              return (
+                <ProgressiveOnboardingPriceRangeHome>
+                  <Icon />
+                </ProgressiveOnboardingPriceRangeHome>
+              )
+            }
+
+            if (route.name === "profile" && enableProgressiveOnboardingPriceRangeHome) {
+              return <WrappedIcon />
+            }
+
+            return <Icon />
           },
           tabBarButton: (props) => (
             <PlatformPressable
