@@ -37,7 +37,7 @@ jest.mock("app/Navigation/Navigation", () => ({
 describe("ProgressiveOnboardingPriceRangeHome", () => {
   const { renderWithRelay } = setupTestWrapper({
     Component: () => (
-      <ProgressiveOnboardingPriceRangeHome enabled={true}>
+      <ProgressiveOnboardingPriceRangeHome>
         <Text>Content</Text>
       </ProgressiveOnboardingPriceRangeHome>
     ),

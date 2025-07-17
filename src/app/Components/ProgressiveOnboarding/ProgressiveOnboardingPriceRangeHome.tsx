@@ -17,10 +17,7 @@ import { useTracking } from "react-tracking"
 // This delay needs to be longer than the time it takes to load the first few sections of the home tab
 const PRICE_RANGE_ONBOARDING_POPOVER_DELAY = 4000
 
-export const ProgressiveOnboardingPriceRangeHome: React.FC<{ enabled: boolean }> = ({
-  children,
-  enabled,
-}) => {
+export const ProgressiveOnboardingPriceRangeHome: React.FC = ({ children }) => {
   const {
     isDismissed: isDismissedFn,
     sessionState: { isReady },
@@ -51,7 +48,6 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<{ enabled: boolean }>
   const isPriceRangePopoverDisplayable =
     // We don't want to show the price range popover if the user has already set a price range
     hasPriceRange === false &&
-    enabled &&
     // Only show the popover if you are on the home screen
     currentRoute === "Home" &&
     !isDismissed &&
@@ -59,7 +55,7 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<{ enabled: boolean }>
 
   const { isActive, clearActivePopover } = useSetActivePopover(isPriceRangePopoverDisplayable)
 
-  const debounedIsAcive = useDebouncedValue({
+  const debounceIsActive = useDebouncedValue({
     value: isActive,
     delay: PRICE_RANGE_ONBOARDING_POPOVER_DELAY,
   })
@@ -70,7 +66,7 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<{ enabled: boolean }>
   }
 
   const isVisible =
-    debounedIsAcive.debouncedValue &&
+    debounceIsActive.debouncedValue &&
     // We are intentionally checking for isDismissed again here to ensure that the popover is dismissed without delay
     !isDismissed
 

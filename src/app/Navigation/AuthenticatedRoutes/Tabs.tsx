@@ -135,7 +135,7 @@ const AppTabs: React.FC = () => {
 
             const WrappedIcon = () => {
               return (
-                <ProgressiveOnboardingPriceRangeHome enabled={route.name === "profile"}>
+                <ProgressiveOnboardingPriceRangeHome>
                   <Icon />
                 </ProgressiveOnboardingPriceRangeHome>
               )
