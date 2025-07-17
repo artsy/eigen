@@ -34,12 +34,6 @@ jest.mock("app/Navigation/Navigation", () => ({
   },
 }))
 
-jest.mock("app/NativeModules/ArtsyNativeModule", () => ({
-  ArtsyNativeModule: {
-    launchCount: 2,
-  },
-}))
-
 describe("ProgressiveOnboardingPriceRangeHome", () => {
   const { renderWithRelay } = setupTestWrapper({
     Component: () => (

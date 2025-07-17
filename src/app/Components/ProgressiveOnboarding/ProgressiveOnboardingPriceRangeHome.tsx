@@ -3,7 +3,6 @@ import { Flex, Popover, Text, Touchable } from "@artsy/palette-mobile"
 import { ProgressiveOnboardingPriceRangeHomeQuery } from "__generated__/ProgressiveOnboardingPriceRangeHomeQuery.graphql"
 import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
-import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { internal_navigationRef } from "app/Navigation/Navigation"
 import { GlobalStore } from "app/store/GlobalStore"
 import { PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME } from "app/store/ProgressiveOnboardingModel"
@@ -56,8 +55,6 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<{ enabled: boolean }>
     // Only show the popover if you are on the home screen
     currentRoute === "Home" &&
     !isDismissed &&
-    // Do not show the popover if it's the user's first session
-    ArtsyNativeModule.launchCount > 1 &&
     isReady
 
   const { isActive, clearActivePopover } = useSetActivePopover(isPriceRangePopoverDisplayable)
