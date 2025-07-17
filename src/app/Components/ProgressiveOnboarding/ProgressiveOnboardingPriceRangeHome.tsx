@@ -35,7 +35,7 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<{ enabled: boolean }>
   const { trackEvent } = useProgressiveOnboardingTracking({
     name: PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME,
     contextScreenOwnerType: OwnerType.home,
-    contextModule: ContextModule.tabBar,
+    contextModule: ContextModule.bottomTabs,
   })
 
   useEffect(() => {
@@ -121,7 +121,7 @@ const tracks = {
     return {
       action: ActionType.tappedPopover,
       context_screen_owner_type: OwnerType.home,
-      context_module: ContextModule.tabBar,
+      context_module: ContextModule.bottomTabs,
       type: PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME,
     }
   },
