@@ -194,6 +194,12 @@ export const features = {
     description: "Enable blue activity dots",
     echoFlagKey: "AREnableBlueActivityDots",
   },
+  AREnableProgressiveOnboardingPriceRangeHome: {
+    readyForRelease: false,
+    showInDevMenu: true,
+    description: "Enable progressive onboarding price range home",
+    echoFlagKey: "AREnableProgressiveOnboardingPriceRangeHome",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
