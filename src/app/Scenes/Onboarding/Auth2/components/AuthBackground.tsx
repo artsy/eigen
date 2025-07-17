@@ -4,6 +4,7 @@ import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { MotiView } from "moti"
 import React from "react"
 import { Image } from "react-native"
+import { isTablet } from "react-native-device-info"
 import LinearGradient from "react-native-linear-gradient"
 import { Easing } from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
@@ -46,24 +47,24 @@ export const AuthBackground: React.FC = () => {
             easing: isMounted ? Easing.linear : Easing.out(Easing.circle),
           }}
         >
-          <Text
-            variant="xl"
-            // We want to show this text in white regardless of the theme to make sure it can be read clearly
-            color="white"
-          >
-            Discover and Buy Art that Moves You
-          </Text>
+          <Flex maxWidth={isTablet() ? 600 : undefined} gap={isTablet() ? 2 : 1}>
+            <Text
+              variant={isTablet() ? "xxl" : "xl"}
+              // We want to show this text in white regardless of the theme to make sure it can be read clearly
+              color="white"
+            >
+              Discover and Buy Art that Moves You
+            </Text>
 
-          <Spacer y={1} />
-
-          <Text
-            variant="sm"
-            // We want to show this text in white regardless of the theme to make sure it can be read clearly
-            color="white"
-          >
-            Your personalized guide to fresh artworks and the latest stories—and the easiest way to
-            buy art you love.
-          </Text>
+            <Text
+              variant={isTablet() ? "lg" : "sm"}
+              // We want to show this text in white regardless of the theme to make sure it can be read clearly
+              color="white"
+            >
+              Your personalized guide to fresh artworks and the latest stories—and the easiest way
+              to buy art you love.
+            </Text>
+          </Flex>
 
           <Spacer y={2} />
         </MotiView>
