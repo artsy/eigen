@@ -125,13 +125,27 @@ const AppTabs: React.FC = () => {
             },
           },
           tabBarIcon: ({ focused }) => {
-            return (
-              <ProgressiveOnboardingPriceRangeHome enabled={route.name === "profile"}>
+            const Icon = () => {
+              return (
                 <Flex pt={1}>
                   <BottomTabsIcon tab={route.name} state={focused ? "active" : "inactive"} />
                 </Flex>
-              </ProgressiveOnboardingPriceRangeHome>
-            )
+              )
+            }
+
+            const WrappedIcon = () => {
+              return (
+                <ProgressiveOnboardingPriceRangeHome enabled={route.name === "profile"}>
+                  <Icon />
+                </ProgressiveOnboardingPriceRangeHome>
+              )
+            }
+
+            if (route.name === "profile") {
+              return <WrappedIcon />
+            }
+
+            return <Icon />
           },
           tabBarButton: (props) => (
             <PlatformPressable
