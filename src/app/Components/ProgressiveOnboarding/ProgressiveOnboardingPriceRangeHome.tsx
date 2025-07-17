@@ -101,7 +101,7 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC = ({ children }) => {
         <Touchable noFeedback accessibilityRole="button" onPress={onPress}>
           <Flex maxWidth={250}>
             <Text variant="xs" color="mono0">
-              Set you preferred price range in your profile at any time.
+              Set your preferred price range in your profile at any time.
             </Text>
           </Flex>
         </Touchable>
