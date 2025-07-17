@@ -81,7 +81,7 @@ describe("ProgressiveOnboardingPriceRangeHome", () => {
   it("does not show popover when the user has a price range", async () => {
     renderWithRelay({
       Me: () => ({
-        priceRange: 1000,
+        hasPriceRange: true,
       }),
     })
 
@@ -109,7 +109,7 @@ describe("ProgressiveOnboardingPriceRangeHome", () => {
 
 const mockProps = {
   Me: () => ({
-    priceRange: null,
+    hasPriceRange: false,
   }),
 }
 

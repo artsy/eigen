@@ -26,7 +26,7 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<{ enabled: boolean }>
     sessionState: { isReady },
   } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
 
-  const [hasNoPriceRange, setHasNoPriceRange] = useState<boolean | null>(null)
+  const [hasPriceRange, setHasPriceRange] = useState<boolean | null>(null)
 
   const tracking = useTracking()
 
@@ -39,8 +39,8 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<{ enabled: boolean }>
   })
 
   useEffect(() => {
-    fetchPriceRange().then((priceRange) => {
-      setHasNoPriceRange(!priceRange)
+    fetchPriceRange().then((result) => {
+      setHasPriceRange(result)
     })
   }, [])
 
@@ -50,7 +50,7 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC<{ enabled: boolean }>
 
   const isPriceRangePopoverDisplayable =
     // We don't want to show the price range popover if the user has already set a price range
-    !!hasNoPriceRange &&
+    hasPriceRange === false &&
     enabled &&
     // Only show the popover if you are on the home screen
     currentRoute === "Home" &&
@@ -127,16 +127,13 @@ const tracks = {
   },
 }
 
-const fetchPriceRange = async (): Promise<string | null | undefined> => {
+const fetchPriceRange = async (): Promise<boolean> => {
   const result = await fetchQuery<ProgressiveOnboardingPriceRangeHomeQuery>(
     getRelayEnvironment(),
     graphql`
       query ProgressiveOnboardingPriceRangeHomeQuery {
         me @required(action: NONE) {
-          priceRange
-          pricePreference
-          priceRangeMax
-          priceRangeMin
+          hasPriceRange
         }
       }
     `,
@@ -146,5 +143,5 @@ const fetchPriceRange = async (): Promise<string | null | undefined> => {
     }
   ).toPromise()
 
-  return result?.me?.priceRange
+  return !!result?.me?.hasPriceRange
 }
