@@ -1,7 +1,6 @@
 import { useColor } from "@artsy/palette-mobile"
 import { BottomTabType } from "app/Scenes/BottomTabs/BottomTabType"
 import { bottomTabsConfig } from "app/Scenes/BottomTabs/bottomTabsConfig"
-import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useVisualClue } from "app/utils/hooks/useVisualClue"
 import { useTabBarBadge } from "app/utils/useTabBarBadge"
 import { StyleProp, TextStyle } from "react-native"
@@ -16,7 +15,6 @@ type BadgeProps = { tabBarBadge?: string | number; tabBarBadgeStyle: StyleProp<T
  */
 export const useBottomTabsBadges = () => {
   const color = useColor()
-  const showBlueDots = useFeatureFlag("AREnableBlueActivityDots")
 
   const { showVisualClue } = useVisualClue()
   const { unreadConversationsCount, hasUnseenNotifications } = useTabBarBadge()
@@ -24,7 +22,7 @@ export const useBottomTabsBadges = () => {
   const tabsBadges: Record<string, BadgeProps> = {}
 
   const visualClueStyles = {
-    backgroundColor: showBlueDots ? color("blue100") : color("red50"),
+    backgroundColor: color("blue100"),
     top: 2,
     minWidth: VISUAL_CLUE_HEIGHT,
     maxHeight: VISUAL_CLUE_HEIGHT,
@@ -77,7 +75,7 @@ export const useBottomTabsBadges = () => {
           tabsBadges[tab] = {
             tabBarBadge: unreadConversationsCount,
             tabBarBadgeStyle: {
-              backgroundColor: showBlueDots ? color("blue100") : color("red50"),
+              backgroundColor: color("blue100"),
             },
           }
         }
