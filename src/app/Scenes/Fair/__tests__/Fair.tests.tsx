@@ -18,7 +18,16 @@ jest.mock("@artsy/palette-mobile", () => {
   }
 })
 
-describe.skip("Fair", () => {
+jest.mock("app/utils/queryPrefetching", () => {
+  const queryPrefetching = jest.requireActual("app/utils/queryPrefetching")
+
+  return {
+    ...queryPrefetching,
+    prefetchQuery: jest.fn(),
+  }
+})
+
+describe("Fair", () => {
   const TabsWithHeader = Tabs.TabsWithHeader as jest.Mock
   const trackEvent = useTracking().trackEvent
 

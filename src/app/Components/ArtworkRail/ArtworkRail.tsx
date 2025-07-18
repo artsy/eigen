@@ -113,7 +113,9 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
         showsHorizontalScrollIndicator={false}
         onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={viewabilityConfig}
-        windowSize={isTablet() ? 10 : 6}
+        // Because this is a horizontal rail, we don't want to load more than 3 screens before and after
+        // The default 21 (10 before and 10 after) is too much
+        windowSize={isTablet() ? 10 : 5}
       />
     )
   }

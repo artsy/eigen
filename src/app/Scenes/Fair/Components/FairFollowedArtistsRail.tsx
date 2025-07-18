@@ -68,7 +68,7 @@ export const FairFollowedArtistsRailFragmentContainer = createFragmentContainer(
       fragment FairFollowedArtistsRail_fair on Fair {
         internalID
         slug
-        filterArtworksConnection(first: 10, input: { includeArtworksByFollowedArtists: true }) {
+        filterArtworksConnection(first: 20, input: { includeArtworksByFollowedArtists: true }) {
           edges {
             node {
               ...ArtworkRail_artworks
