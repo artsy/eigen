@@ -57,6 +57,9 @@ export const FairCollections: React.FC<FairCollectionsProps> = memo(({ fair, ...
       <SectionTitle mx={2} title="Curated Highlights" />
 
       <CardRailFlatList<Collection>
+        // This is required to avoid broken virtualization on nested flatlists
+        // See https://artsy.slack.com/archives/C02BAQ5K7/p1752833523972209?thread_ts=1752761208.038099&cid=C02BAQ5K7
+        disableVirtualization
         data={fair.marketingCollections}
         keyExtractor={(_, i) => String(i)}
         renderItem={renderItem}

@@ -27,7 +27,7 @@ import { goBack } from "app/system/navigation/navigate"
 import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { prefetchQuery } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { Suspense, useEffect } from "react"
+import React, { Suspense, useCallback, useEffect } from "react"
 import { TouchableOpacity } from "react-native"
 import RNShare from "react-native-share"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -55,6 +55,10 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
       variables: { id: data.internalID },
     })
   }, [data.internalID])
+
+  const renderBelowHeaderComponent = useCallback(() => {
+    return <FairHeader fair={data} />
+  }, [data])
 
   if (!data) {
     return null
@@ -107,7 +111,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         initialTabName="Overview"
         title={`${data.name}`}
         showLargeHeaderText={false}
-        BelowTitleHeaderComponent={() => <FairHeader fair={data} />}
+        BelowTitleHeaderComponent={renderBelowHeaderComponent}
         onTabChange={({ tabName }) => handleTabChange(tabName)}
         headerProps={{
           onBack: goBack,
