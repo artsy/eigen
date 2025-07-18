@@ -7,6 +7,8 @@ import {
 } from "__generated__/FairExhibitorRail_show.graphql"
 import { ArtworkRail, ArtworkRailPlaceholder } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   CollectorSignals,
@@ -63,6 +65,7 @@ export const FairExhibitorRail: React.FC<FairExhibitorRailProps> = memo(({ show:
           if (!viewAllUrl) return
 
           trackEvent(tracks.tappedShow(show))
+          navigate(viewAllUrl)
         }}
         showSaveIcon
       />

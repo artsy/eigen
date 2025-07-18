@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Flex, Spinner, Tabs, useSpace } from "@artsy/palette-mobile"
+import { Flex, SkeletonText, Spacer, Spinner, Tabs, useSpace } from "@artsy/palette-mobile"
 import { MasonryFlashList } from "@shopify/flash-list"
 import { FairArtworksQuery } from "__generated__/FairArtworksQuery.graphql"
 import { FairArtworks_fair$key } from "__generated__/FairArtworks_fair.graphql"
@@ -26,6 +26,7 @@ import {
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
+import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useState } from "react"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -412,12 +413,17 @@ const FairArtworksPlaceholder: React.FC = () => {
 
   return (
     <Tabs.ScrollView
-      contentContainerStyle={{ paddingHorizontal: 0, paddingTop: space(4), width: "100%" }}
-      // We don't want to allow scrolling so scroll position isn't lost after the query is complete
-      scrollEnabled={false}
+      contentContainerStyle={{ paddingHorizontal: 0, paddingTop: space(2), width: "100%" }}
     >
       <Flex>
-        <Spinner />
+        <Flex flexDirection="row" justifyContent="space-between" px={2}>
+          <SkeletonText>100 Artworks</SkeletonText>
+          <SkeletonText>Sort and Filter</SkeletonText>
+        </Flex>
+
+        <Spacer y={2} />
+
+        <PlaceholderGrid />
       </Flex>
     </Tabs.ScrollView>
   )

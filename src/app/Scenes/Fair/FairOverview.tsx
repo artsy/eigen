@@ -156,6 +156,8 @@ const FairOverviewPlaceholder: React.FC = () => {
   return (
     <Tabs.ScrollView
       contentContainerStyle={{ paddingHorizontal: 0, paddingTop: space(4), width: "100%" }}
+      // Do not allow scrolling while the fair is loading because there is nothing to show
+      scrollEnabled={false}
     >
       <Flex alignItems="center">
         <Spinner />

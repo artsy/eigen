@@ -3,6 +3,7 @@ import { Flex } from "@artsy/palette-mobile"
 import { FairFollowedArtistsRail_fair$data } from "__generated__/FairFollowedArtistsRail_fair.graphql"
 import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   CollectorSignals,
@@ -24,13 +25,14 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = m
     return null
   }
 
+  const viewAllUrl = `/fair/${fair.slug}/followedArtists`
   return (
     <>
       <Flex>
         <SectionTitle
           mx={2}
           title="Works by artists you follow"
-          href={artworks.length > 2 ? `/fair/${fair.slug}/followedArtists` : undefined}
+          href={artworks.length > 2 ? viewAllUrl : undefined}
           onPress={
             artworks.length > 2
               ? () => {
@@ -53,8 +55,10 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = m
             )
           )
         }}
+        showSaveIcon
         onMorePress={() => {
           trackEvent(tracks.tappedViewAll(fair))
+          navigate(viewAllUrl)
         }}
       />
     </>
@@ -68,7 +72,7 @@ export const FairFollowedArtistsRailFragmentContainer = createFragmentContainer(
       fragment FairFollowedArtistsRail_fair on Fair {
         internalID
         slug
-        filterArtworksConnection(first: 20, input: { includeArtworksByFollowedArtists: true }) {
+        filterArtworksConnection(first: 10, input: { includeArtworksByFollowedArtists: true }) {
           edges {
             node {
               ...ArtworkRail_artworks
