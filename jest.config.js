@@ -19,7 +19,6 @@ module.exports = {
   transform: {
     "^[./a-zA-Z0-9$_-]+\\.(bmp|gif|jpg|jpeg|mp4|png|psd|svg|webp)$":
       "<rootDir>/node_modules/react-native/jest/assetFileTransformer.js",
-    ".*(ts|tsx|js|jsx)$": "babel-jest",
     "\\.graphql$": "jest-raw-loader",
   },
   transformIgnorePatterns: [

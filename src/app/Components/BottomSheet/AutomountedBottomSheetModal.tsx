@@ -53,8 +53,6 @@ export const AutomountedBottomSheetModal: FC<AutomountedBottomSheetModalProps> =
 
   useEffect(() => {
     BackHandler.addEventListener("hardwareBackPress", androidBackHandler)
-
-    return () => BackHandler.removeEventListener("hardwareBackPress", androidBackHandler)
   }, [androidBackHandler])
 
   const renderBackdrop = useCallback(

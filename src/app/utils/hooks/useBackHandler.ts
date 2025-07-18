@@ -13,8 +13,6 @@ export function useBackHandler(handler: () => boolean) {
   useFocusEffect(
     useCallback(() => {
       BackHandler.addEventListener("hardwareBackPress", handler)
-
-      return () => BackHandler.removeEventListener("hardwareBackPress", handler)
     }, [handler])
   )
 }
