@@ -21,6 +21,8 @@ import { RouterLink } from "app/system/navigation/RouterLink"
 import { truncatedTextLimit } from "app/utils/hardware"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { FC } from "react"
+import { Platform } from "react-native"
+import { useHeaderMeasurements } from "react-native-collapsible-tab-view"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface FairOverviewProps {
@@ -152,10 +154,13 @@ export const FairOverviewQueryRenderer: React.FC<{ fairID: string }> = withSuspe
 
 const FairOverviewPlaceholder: React.FC = () => {
   const space = useSpace()
+  const { height } = useHeaderMeasurements()
+  // Tabs.ScrollView paddingTop is not working on Android, so we need to set it manually
+  const paddingTop = Platform.OS === "android" ? height + 80 : space(4)
 
   return (
     <Tabs.ScrollView
-      contentContainerStyle={{ paddingHorizontal: 0, paddingTop: space(4), width: "100%" }}
+      contentContainerStyle={{ paddingHorizontal: 0, paddingTop, width: "100%" }}
       // Do not allow scrolling while the fair is loading because there is nothing to show
       scrollEnabled={false}
     >

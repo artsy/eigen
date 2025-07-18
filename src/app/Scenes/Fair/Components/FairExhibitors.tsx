@@ -7,6 +7,8 @@ import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import React, { useCallback } from "react"
+import { Platform } from "react-native"
+import { useHeaderMeasurements } from "react-native-collapsible-tab-view"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { FairExhibitorRailQueryRenderer } from "./FairExhibitorRail"
 
@@ -20,6 +22,10 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
   const space = useSpace()
   const showsWithArtworks = shows.filter((show) => show?.counts?.artworks ?? 0 > 0)
   const shouldDisplaySpinner = !!shows.length && !!relay.isLoading() && !!relay.hasMore()
+
+  const { height } = useHeaderMeasurements()
+  // Tabs.ScrollView paddingTop is not working on Android, so we need to set it manually
+  const paddingTop = Platform.OS === "android" ? height + 80 : space(2)
 
   const loadMoreExhibitors = useCallback(() => {
     if (!relay.hasMore() || relay.isLoading()) {
@@ -46,7 +52,7 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
   return (
     <Tabs.FlatList
       // reseting padding to -2 to remove the default padding from the FlatList
-      contentContainerStyle={{ padding: -2, paddingTop: space(2) }}
+      contentContainerStyle={{ padding: -2, paddingTop: paddingTop }}
       data={showsWithArtworks}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
