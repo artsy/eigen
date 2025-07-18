@@ -382,8 +382,8 @@ const fragment = graphql`
 `
 
 export const fairArtworksQuery = graphql`
-  query FairArtworksQuery($id: String!) {
-    fair(id: $id) {
+  query FairArtworksQuery($fairID: String!) {
+    fair(id: $fairID) {
       ...FairArtworks_fair @arguments(input: { sort: "-decayed_merch" })
     }
   }
@@ -395,7 +395,7 @@ interface FairArtworksQueryRendererProps {
 
 export const FairArtworksQueryRenderer: React.FC<FairArtworksQueryRendererProps> = withSuspense({
   Component: (props) => {
-    const data = useLazyLoadQuery<FairArtworksQuery>(fairArtworksQuery, { id: props.fairID })
+    const data = useLazyLoadQuery<FairArtworksQuery>(fairArtworksQuery, { fairID: props.fairID })
 
     if (!data.fair) {
       return null

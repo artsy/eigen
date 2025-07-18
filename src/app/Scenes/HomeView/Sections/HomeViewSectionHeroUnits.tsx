@@ -1,7 +1,10 @@
 import { ContextModule } from "@artsy/cohesion"
 import { Flex, FlexProps, Skeleton, SkeletonBox, Spacer } from "@artsy/palette-mobile"
 import { HomeViewSectionHeroUnitsQuery } from "__generated__/HomeViewSectionHeroUnitsQuery.graphql"
-import { HomeViewSectionHeroUnits_section$key } from "__generated__/HomeViewSectionHeroUnits_section.graphql"
+import {
+  HomeViewSectionHeroUnits_section$data,
+  HomeViewSectionHeroUnits_section$key,
+} from "__generated__/HomeViewSectionHeroUnits_section.graphql"
 import { PaginationDots } from "app/Components/PaginationDots"
 import { HERO_UNIT_CARD_HEIGHT, HeroUnit } from "app/Scenes/HomeView/Components/HeroUnit"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
@@ -14,8 +17,9 @@ import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracki
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { isNumber } from "lodash"
-import { memo, useRef, useState } from "react"
+import { memo, useCallback, useRef, useState } from "react"
 import { FlatList, ViewabilityConfig, ViewToken } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -23,6 +27,8 @@ interface HomeViewSectionHeroUnitsProps extends FlexProps {
   section: HomeViewSectionHeroUnits_section$key
   index: number
 }
+
+type HeroUnitItem = ExtractNodeType<HomeViewSectionHeroUnits_section$data["heroUnitsConnection"]>
 
 export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> = ({
   section: sectionProp,
@@ -51,6 +57,31 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
 
   const { width } = useScreenDimensions()
 
+  const renderItem = useCallback(
+    ({ item, index }: { item: HeroUnitItem; index: number }) => {
+      return (
+        <HeroUnit
+          item={{
+            internalID: item.internalID,
+            title: item.title,
+            body: item.body,
+            imageSrc: item.image?.imageURL ?? "",
+            url: item.link.url,
+            buttonText: item.link.text,
+          }}
+          onPress={() => {
+            tracking.tappedHeroUnitGroup(
+              item.link.url,
+              section.contextModule as ContextModule,
+              index
+            )
+          }}
+        />
+      )
+    },
+    [tracking, section.contextModule]
+  )
+
   if (!heroUnits || heroUnits.length === 0) {
     return null
   }
@@ -62,32 +93,16 @@ export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> =
         decelerationRate="fast"
         horizontal
         keyExtractor={(item) => item.internalID}
-        renderItem={({ item, index }) => (
-          <HeroUnit
-            item={{
-              internalID: item.internalID,
-              title: item.title,
-              body: item.body,
-              imageSrc: item.image?.imageURL ?? "",
-              url: item.link.url,
-              buttonText: item.link.text,
-            }}
-            onPress={() => {
-              tracking.tappedHeroUnitGroup(
-                item.link.url,
-                section.contextModule as ContextModule,
-                index
-              )
-            }}
-          />
-        )}
+        renderItem={renderItem}
         snapToAlignment="start"
         snapToInterval={width}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
       />
+
       <Spacer y={2} />
+
       <PaginationDots currentIndex={currentIndex} length={heroUnits.length} />
 
       <HomeViewSectionSentinel

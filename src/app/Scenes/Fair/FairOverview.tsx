@@ -128,7 +128,7 @@ const fragment = graphql`
   }
 `
 
-const fairOverviewQuery = graphql`
+export const fairOverviewQuery = graphql`
   query FairOverviewQuery($fairID: String!) {
     fair(id: $fairID) {
       ...FairOverview_fair

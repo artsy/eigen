@@ -110,8 +110,8 @@ export const FairExhibitorsFragmentContainer = createPaginationContainer(
 )
 
 export const fairExhibitorsQuery = graphql`
-  query FairExhibitorsQuery($id: String!) @cacheable {
-    fair(id: $id) {
+  query FairExhibitorsQuery($fairID: String!) @cacheable {
+    fair(id: $fairID) {
       ...FairExhibitors_fair
     }
   }
@@ -122,7 +122,7 @@ export const FairExhibitorsQueryRenderer: React.FC<{ fairID: string }> = ({ fair
     <QueryRenderer
       environment={getRelayEnvironment()}
       query={fairExhibitorsQuery}
-      variables={{ id: fairID }}
+      variables={{ fairID: fairID }}
       render={renderWithPlaceholder({
         Container: FairExhibitorsFragmentContainer,
         renderPlaceholder: () => <FairExhibitorsPlaceholder />,

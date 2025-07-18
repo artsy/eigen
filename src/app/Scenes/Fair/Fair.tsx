@@ -47,12 +47,12 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
   useEffect(() => {
     prefetchQuery({
       query: fairExhibitorsQuery,
-      variables: { id: data.internalID },
+      variables: { fairID: data.internalID },
     })
 
     prefetchQuery({
       query: fairArtworksQuery,
-      variables: { id: data.internalID },
+      variables: { fairID: data.internalID },
     })
   }, [data.internalID])
 
