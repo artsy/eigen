@@ -8,7 +8,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import React, { useCallback } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
-import { FairExhibitorRailFragmentContainer } from "./FairExhibitorRail"
+import { FairExhibitorRailQueryRenderer } from "./FairExhibitorRail"
 
 interface FairExhibitorsProps {
   fair: FairExhibitors_fair$data
@@ -17,6 +17,7 @@ interface FairExhibitorsProps {
 
 const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
   const shows = extractNodes(fair?.exhibitors)
+  const space = useSpace()
   const showsWithArtworks = shows.filter((show) => show?.counts?.artworks ?? 0 > 0)
   const shouldDisplaySpinner = !!shows.length && !!relay.isLoading() && !!relay.hasMore()
 
@@ -35,7 +36,7 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
   const renderItem = useCallback(({ item: show }) => {
     return (
       <Box key={show.id} mb={4}>
-        <FairExhibitorRailFragmentContainer show={show} />
+        <FairExhibitorRailQueryRenderer showID={show.internalID} />
       </Box>
     )
   }, [])
@@ -45,11 +46,13 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
   return (
     <Tabs.FlatList
       // reseting padding to -2 to remove the default padding from the FlatList
-      contentContainerStyle={{ padding: -2, paddingTop: 20 }}
+      contentContainerStyle={{ padding: -2, paddingTop: space(2) }}
       data={showsWithArtworks}
       renderItem={renderItem}
       keyExtractor={keyExtractor}
       onEndReached={loadMoreExhibitors}
+      // Only load the next page when the user is 20% away from the end of the list
+      onEndReachedThreshold={0.5}
       ListFooterComponent={
         shouldDisplaySpinner ? (
           <Box p={2}>
@@ -59,8 +62,8 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
           </Box>
         ) : null
       }
-      // We want to limit the number of loaded windows to 2 because the items are pretty heavy
-      windowSize={3}
+      // We want to limit the number of loaded windows to 5 because the items are pretty heavy
+      windowSize={5}
       // We are slowing down the scrolling intentionally because the screen is too heavy and scrolling
       // too fast leads to dropped frames
       decelerationRate={0.995}
@@ -81,10 +84,10 @@ export const FairExhibitorsFragmentContainer = createPaginationContainer(
           edges {
             node {
               id
+              internalID
               counts {
                 artworks
               }
-              ...FairExhibitorRail_show
             }
           }
         }

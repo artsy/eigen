@@ -1,5 +1,8 @@
 import { FairExhibitorsTestsQuery } from "__generated__/FairExhibitorsTestsQuery.graphql"
-import { FairExhibitorRailFragmentContainer } from "app/Scenes/Fair/Components/FairExhibitorRail"
+import {
+  FairExhibitorRail,
+  FairExhibitorRailQueryRenderer,
+} from "app/Scenes/Fair/Components/FairExhibitorRail"
 import { FairExhibitorsFragmentContainer } from "app/Scenes/Fair/Components/FairExhibitors"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -69,7 +72,7 @@ describe("FairExhibitors", () => {
         },
       }),
     })
-    expect(wrapper.root.findAllByType(FairExhibitorRailFragmentContainer)).toHaveLength(2)
+    expect(wrapper.root.findAllByType(FairExhibitorRailQueryRenderer)).toHaveLength(2)
   })
 
   it("skips over any partners with no artworks", () => {

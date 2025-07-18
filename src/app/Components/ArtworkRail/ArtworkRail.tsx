@@ -91,6 +91,9 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
       <FlatList
         data={artworks}
         horizontal
+        // This is required to avoid broken virtualization on nested flatlists
+        // See https://artsy.slack.com/archives/C02BAQ5K7/p1752833523972209?thread_ts=1752761208.038099&cid=C02BAQ5K7
+        disableVirtualization
         keyExtractor={(item: Artwork) => item.internalID}
         ListFooterComponent={
           <>
