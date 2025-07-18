@@ -17,7 +17,7 @@ import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
-import { useRef, useState } from "react"
+import { memo, useRef, useState } from "react"
 import { GestureResponderEvent, PixelRatio, Platform } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -34,127 +34,129 @@ export interface ArtworkRailCardProps
   testID?: string
 }
 
-export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
-  contextModule,
-  contextScreenOwnerType,
-  contextScreenOwnerId,
-  contextScreenOwnerSlug,
-  contextScreen,
-  dark = false,
-  href,
-  hideArtistName = false,
-  hideIncreasedInterestSignal = false,
-  hideCuratorsPickSignal = false,
-  lotLabel,
-  showPartnerName = false,
-  onPress,
-  SalePriceComponent,
-  showSaveIcon = false,
-  testID,
-  ...restProps
-}) => {
-  const enableContextMenuIOS = useFeatureFlag("AREnableArtworkCardContextMenuIOS")
-  const isIOS = Platform.OS === "ios"
+export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = memo(
+  ({
+    contextModule,
+    contextScreenOwnerType,
+    contextScreenOwnerId,
+    contextScreenOwnerSlug,
+    contextScreen,
+    dark = false,
+    href,
+    hideArtistName = false,
+    hideIncreasedInterestSignal = false,
+    hideCuratorsPickSignal = false,
+    lotLabel,
+    showPartnerName = false,
+    onPress,
+    SalePriceComponent,
+    showSaveIcon = false,
+    testID,
+    ...restProps
+  }) => {
+    const enableContextMenuIOS = useFeatureFlag("AREnableArtworkCardContextMenuIOS")
+    const isIOS = Platform.OS === "ios"
 
-  const { trackEvent } = useTracking()
-  const space = useSpace()
+    const { trackEvent } = useTracking()
+    const space = useSpace()
 
-  const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
-  const disappearableRef = useRef<Disappearable>(null)
+    const [showCreateArtworkAlertModal, setShowCreateArtworkAlertModal] = useState(false)
+    const disappearableRef = useRef<Disappearable>(null)
 
-  const artwork = useFragment(artworkFragment, restProps.artwork)
+    const artwork = useFragment(artworkFragment, restProps.artwork)
 
-  const backgroundColor = dark ? "mono100" : "mono0"
+    const backgroundColor = dark ? "mono100" : "mono0"
 
-  const supressArtwork = () => {
-    disappearableRef.current?.disappear()
-  }
+    const supressArtwork = () => {
+      disappearableRef.current?.disappear()
+    }
 
-  return (
-    <Disappearable ref={disappearableRef}>
-      <AnalyticsContextProvider
-        contextScreenOwnerId={contextScreenOwnerId}
-        contextScreenOwnerSlug={contextScreenOwnerSlug}
-        contextScreenOwnerType={contextScreenOwnerType}
-      >
-        <Box pr={2}>
-          <RouterLink
-            to={href || artwork.href}
-            underlayColor={backgroundColor}
-            onPress={onPress}
-            // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
-            onLongPress={() => {
-              // Android long press is tracked inside of the ContextMenuArtwork component
-              if (contextModule && contextScreenOwnerType && isIOS && enableContextMenuIOS) {
-                trackEvent(
-                  trackLongPress.longPressedArtwork(
-                    contextModule,
-                    contextScreenOwnerType,
-                    artwork.slug
+    return (
+      <Disappearable ref={disappearableRef}>
+        <AnalyticsContextProvider
+          contextScreenOwnerId={contextScreenOwnerId}
+          contextScreenOwnerSlug={contextScreenOwnerSlug}
+          contextScreenOwnerType={contextScreenOwnerType}
+        >
+          <Box pr={2}>
+            <RouterLink
+              to={href || artwork.href}
+              underlayColor={backgroundColor}
+              onPress={onPress}
+              // To prevent navigation when opening the long-press context menu, `onLongPress` & `delayLongPress` need to be set (https://github.com/mpiannucci/react-native-context-menu-view/issues/60)
+              onLongPress={() => {
+                // Android long press is tracked inside of the ContextMenuArtwork component
+                if (contextModule && contextScreenOwnerType && isIOS && enableContextMenuIOS) {
+                  trackEvent(
+                    trackLongPress.longPressedArtwork(
+                      contextModule,
+                      contextScreenOwnerType,
+                      artwork.slug
+                    )
                   )
-                )
-              }
-            }}
-            delayLongPress={400}
-            testID={testID}
-          >
-            <ContextMenuArtwork
-              contextModule={contextModule}
-              contextScreenOwnerType={contextScreenOwnerType}
-              onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
-              onSupressArtwork={supressArtwork}
-              artwork={artwork}
-              artworkDisplayProps={{
-                dark,
-                showPartnerName,
-                hideArtistName,
-                lotLabel,
-                SalePriceComponent,
-              }}
-            >
-              <Flex
-                height={
-                  ARTWORK_RAIL_CARD_IMAGE_HEIGHT + ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + space(1)
                 }
-                minWidth={ARTWORK_RAIL_CARD_MIN_WIDTH}
-                maxWidth={ARTWORK_RAIL_CARD_MAX_WIDTH}
-                justifyContent="flex-start"
+              }}
+              delayLongPress={400}
+              testID={testID}
+            >
+              <ContextMenuArtwork
+                contextModule={contextModule}
+                contextScreenOwnerType={contextScreenOwnerType}
+                onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
+                onSupressArtwork={supressArtwork}
+                artwork={artwork}
+                artworkDisplayProps={{
+                  dark,
+                  showPartnerName,
+                  hideArtistName,
+                  lotLabel,
+                  SalePriceComponent,
+                }}
               >
-                <ArtworkRailCardImage artwork={artwork} />
+                <Flex
+                  height={
+                    ARTWORK_RAIL_CARD_IMAGE_HEIGHT + ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + space(1)
+                  }
+                  minWidth={ARTWORK_RAIL_CARD_MIN_WIDTH}
+                  maxWidth={ARTWORK_RAIL_CARD_MAX_WIDTH}
+                  justifyContent="flex-start"
+                >
+                  <ArtworkRailCardImage artwork={artwork} />
 
-                <Spacer y={1} />
+                  <Spacer y={1} />
 
-                <ArtworkRailCardMeta
-                  artwork={artwork}
-                  contextModule={contextModule}
-                  contextScreen={contextScreen}
-                  contextScreenOwnerId={contextScreenOwnerId}
-                  contextScreenOwnerSlug={contextScreenOwnerSlug}
-                  contextScreenOwnerType={contextScreenOwnerType}
-                  dark={dark}
-                  hideArtistName={hideArtistName}
-                  hideCuratorsPickSignal={hideCuratorsPickSignal}
-                  hideIncreasedInterestSignal={hideIncreasedInterestSignal}
-                  lotLabel={lotLabel}
-                  SalePriceComponent={SalePriceComponent}
-                  showPartnerName={showPartnerName}
-                  showSaveIcon={showSaveIcon}
-                  backgroundColor={backgroundColor}
-                />
-              </Flex>
-            </ContextMenuArtwork>
-          </RouterLink>
-        </Box>
+                  <ArtworkRailCardMeta
+                    artwork={artwork}
+                    contextModule={contextModule}
+                    contextScreen={contextScreen}
+                    contextScreenOwnerId={contextScreenOwnerId}
+                    contextScreenOwnerSlug={contextScreenOwnerSlug}
+                    contextScreenOwnerType={contextScreenOwnerType}
+                    dark={dark}
+                    hideArtistName={hideArtistName}
+                    hideCuratorsPickSignal={hideCuratorsPickSignal}
+                    hideIncreasedInterestSignal={hideIncreasedInterestSignal}
+                    lotLabel={lotLabel}
+                    SalePriceComponent={SalePriceComponent}
+                    showPartnerName={showPartnerName}
+                    showSaveIcon={showSaveIcon}
+                    backgroundColor={backgroundColor}
+                  />
+                </Flex>
+              </ContextMenuArtwork>
+            </RouterLink>
+          </Box>
 
-        <CreateArtworkAlertModal
-          artwork={artwork}
-          onClose={() => setShowCreateArtworkAlertModal(false)}
-          visible={showCreateArtworkAlertModal}
-        />
-      </AnalyticsContextProvider>
-    </Disappearable>
-  )
-}
+          <CreateArtworkAlertModal
+            artwork={artwork}
+            onClose={() => setShowCreateArtworkAlertModal(false)}
+            visible={showCreateArtworkAlertModal}
+          />
+        </AnalyticsContextProvider>
+      </Disappearable>
+    )
+  }
+)
 
 const artworkFragment = graphql`
   fragment ArtworkRailCard_artwork on Artwork {

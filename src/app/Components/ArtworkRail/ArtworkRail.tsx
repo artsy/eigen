@@ -91,6 +91,9 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
       <FlatList
         data={artworks}
         horizontal
+        // This is required to avoid broken virtualization on nested flatlists
+        // See https://artsy.slack.com/archives/C02BAQ5K7/p1752833523972209?thread_ts=1752761208.038099&cid=C02BAQ5K7
+        disableVirtualization
         keyExtractor={(item: Artwork) => item.internalID}
         ListFooterComponent={
           <>
@@ -113,6 +116,9 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
         showsHorizontalScrollIndicator={false}
         onViewableItemsChanged={onViewableItemsChanged}
         viewabilityConfig={viewabilityConfig}
+        // Because this is a horizontal rail, we don't want to load more than 3 screens before and after
+        // The default 21 (10 before and 10 after) is too much
+        windowSize={isTablet() ? 10 : 5}
       />
     )
   }

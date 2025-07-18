@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedArticleGroup } from "@artsy/cohesion"
 import { Box, BoxProps, Image, Text } from "@artsy/palette-mobile"
 import { FairEditorial_fair$data } from "__generated__/FairEditorial_fair.graphql"
+import { SectionTitle } from "app/Components/SectionTitle"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -40,7 +41,7 @@ export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) =
         alignItems="center"
         justifyContent="space-between"
       >
-        <Text variant="sm-display">Related Reading</Text>
+        <SectionTitle title="Related Reading" px={2} />
 
         {(fair.articles.totalCount ?? 0) > 5 && (
           <RouterLink to={`/fair/${fair.slug}/articles`}>

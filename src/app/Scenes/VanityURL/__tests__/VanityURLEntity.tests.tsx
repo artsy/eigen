@@ -13,6 +13,14 @@ jest.mock("../VanityURLPossibleRedirect", () => ({
   VanityURLPossibleRedirect: () => null,
 }))
 
+jest.mock("app/utils/queryPrefetching", () => {
+  const queryPrefetching = jest.requireActual("app/utils/queryPrefetching")
+  return {
+    ...queryPrefetching,
+    prefetchQuery: jest.fn(),
+  }
+})
+
 const TestRenderer: React.FC<{
   entity: "fair" | "partner" | "unknown"
   slugType?: "profileID" | "fairID"
