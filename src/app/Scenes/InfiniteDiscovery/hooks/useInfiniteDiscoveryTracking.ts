@@ -59,12 +59,13 @@ export const useInfiniteDiscoveryTracking = () => {
       //   context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
       // })
     },
-    tappedShare: (artworkId: string, artworkSlug: string) => {
+    tappedShare: (id: string, slug: string) => {
+      // TODO: check if something else is necessary to differentiate Artist/Artwork share
       trackEvent({
         action: ActionType.tappedShare,
         context_module: ContextModule.infiniteDiscovery,
-        context_screen_owner_id: artworkId,
-        context_screen_owner_slug: artworkSlug,
+        context_screen_owner_id: id,
+        context_screen_owner_slug: slug,
         context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
       })
     },

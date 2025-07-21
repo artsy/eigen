@@ -10,6 +10,7 @@ import {
   Touchable,
 } from "@artsy/palette-mobile"
 import { useBottomSheet } from "@gorhom/bottom-sheet"
+import { captureException } from "@sentry/react-native"
 import { InfiniteDiscoveryNegativeSignals_artwork$key } from "__generated__/InfiniteDiscoveryNegativeSignals_artwork.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
@@ -40,30 +41,31 @@ export const InfiniteDiscoveryNegativeSignals: FC<InfiniteDiscoveryNegativeSigna
     return null
   }
 
-  const handleSharePressed = () => {
-    if (!data || !data.slug || !data.title) {
-      return
-    }
-
-    track.tappedShare(data.internalID, data.slug)
+  const handleSharePressed = (
+    id: string,
+    slug: string,
+    path: "artwork" | "artist",
+    title: string
+  ) => {
+    track.tappedShare(id, slug)
 
     const url = getShareURL(
-      `/artwork/${data.slug}?utm_content=discover-daily-share&utm_medium=product-share`
+      `/${path}/${slug}?utm_content=discover-daily-share&utm_medium=product-share`
     )
-    const message = `View ${data.title} on Artsy`
+    const message = `View ${title} on Artsy`
 
     RNShare.open({
-      title: data.title,
+      title,
       message: message + "\n" + url,
       failOnCancel: false,
     })
       .then((result) => {
         if (result.success) {
-          track.share(data.internalID, data.slug, result.message)
+          track.share(id, slug, result.message)
         }
       })
       .catch((error) => {
-        console.error("InfiniteDiscovery.tsx", error)
+        console.error("InfiniteDiscoveryNegativeSignals.tsx", error)
       })
   }
 
@@ -85,8 +87,14 @@ export const InfiniteDiscoveryNegativeSignals: FC<InfiniteDiscoveryNegativeSigna
             if (artist) {
               commitMutation({
                 variables: { input: { artistId: artist.internalID } },
-                onError: () =>
-                  show("Something went wrong, try again", "bottom", { backgroundColor: "red100" }),
+                onError: (e) => {
+                  captureException(e, {
+                    tags: {
+                      source: "InfiniteDiscoveryNegativeSignals.tsx: handleSeeFewerArtistArtworks",
+                    },
+                  })
+                  show("Something went wrong, try again", "bottom", { backgroundColor: "red100" })
+                },
               })
             }
           })
@@ -96,6 +104,8 @@ export const InfiniteDiscoveryNegativeSignals: FC<InfiniteDiscoveryNegativeSigna
       },
     ])
   }
+
+  const artist = data.artists?.[0]
 
   return (
     <Flex p={2} flex={1} gap={2}>
@@ -137,7 +147,7 @@ export const InfiniteDiscoveryNegativeSignals: FC<InfiniteDiscoveryNegativeSigna
           <Touchable
             accessibilityRole="button"
             accessibilityLabel="Share artwork"
-            onPress={handleSharePressed}
+            onPress={() => handleSharePressed(data.internalID, data.slug, "artwork", data.title)}
             hitSlop={DEFAULT_HIT_SLOP}
           >
             <ShareIcon width={24} height={24} />
@@ -145,21 +155,23 @@ export const InfiniteDiscoveryNegativeSignals: FC<InfiniteDiscoveryNegativeSigna
         </Flex>
       </Flex>
 
-      <Touchable
-        accessibilityRole="button"
-        accessibilityLabel="Share artwork"
-        onPress={handleSharePressed}
-        hitSlop={DEFAULT_HIT_SLOP}
-      >
-        <Flex flexDirection="row" alignItems="center" gap={1} flexShrink={0}>
-          <ShareIcon width={24} height={24} />
-          <Text>Share Artist</Text>
-        </Flex>
-      </Touchable>
+      {data.artists.length === 1 && !!artist && (
+        <Touchable
+          accessibilityRole="button"
+          accessibilityLabel="Share artist"
+          onPress={() => handleSharePressed(artist.internalID, artist.slug, "artist", artist.name)}
+          hitSlop={DEFAULT_HIT_SLOP}
+        >
+          <Flex flexDirection="row" alignItems="center" gap={1} flexShrink={0}>
+            <ShareIcon width={24} height={24} />
+            <Text>Share Artist</Text>
+          </Flex>
+        </Touchable>
+      )}
 
       <Touchable
         accessibilityRole="button"
-        accessibilityLabel="Share artwork"
+        accessibilityLabel="See fewer artworks by this artist"
         onPress={handleSeeFewerArtistArtworks}
         hitSlop={DEFAULT_HIT_SLOP}
       >
@@ -183,6 +195,9 @@ const fragment = graphql`
     saleMessage @required(action: NONE)
     artists @required(action: NONE) {
       internalID @required(action: NONE)
+      href @required(action: NONE)
+      name @required(action: NONE)
+      slug @required(action: NONE)
     }
     image(includeAll: false) {
       url(version: "medium")

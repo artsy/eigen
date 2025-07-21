@@ -24,6 +24,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   )
   const { setMoreInfoSheetVisible } = GlobalStore.actions.infiniteDiscovery
   const hideRightButton = !topArtwork || !topArtwork.slug || !topArtwork.title
+  const rightButtonLabel = negativeSignalsEnabled ? "More information" : "Share Artwork"
 
   const handleExitPressed = () => {
     if (savedArtworksCount > 0) {
@@ -111,9 +112,9 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
         rightElements={
           <Touchable
             accessibilityRole="button"
-            accessibilityLabel="More information"
+            accessibilityLabel={rightButtonLabel}
             onPress={handleOnRightButtonPressed}
-            testID="share-icon"
+            testID="top-right-icon"
             hitSlop={DEFAULT_HIT_SLOP}
             haptic
           >

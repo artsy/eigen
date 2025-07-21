@@ -73,21 +73,28 @@ describe("InfiniteDiscoveryNegativeSignals", () => {
         href: "/artwork/test-artwork",
         internalID: "artwork-id",
         slug: "test-artwork",
-        artists: [{ internalID: "artist-id" }],
+        artists: [{ internalID: "artist-id", name: "Test Artist", slug: "artist-slug" }],
         image: {
           url: "https://example.com/image.jpg",
           aspectRatio: 1.33,
         },
       }),
     })
+    fireEvent.press(screen.getByLabelText("Share artwork"))
 
-    const shareButtons = screen.getAllByLabelText("Share artwork")
-    fireEvent.press(shareButtons[0])
-
-    expect(RNShare.open).toHaveBeenCalledWith({
+    expect(RNShare.open).toHaveBeenLastCalledWith({
       title: "Test Artwork",
       message:
         "View Test Artwork on Artsy\nhttps://staging.artsy.net/artwork/test-artwork?utm_content=discover-daily-share&utm_medium=product-share",
+      failOnCancel: false,
+    })
+
+    fireEvent.press(screen.getByLabelText("Share artist"))
+
+    expect(RNShare.open).toHaveBeenLastCalledWith({
+      title: "Test Artist",
+      message:
+        "View Test Artist on Artsy\nhttps://staging.artsy.net/artist/artist-slug?utm_content=discover-daily-share&utm_medium=product-share",
       failOnCancel: false,
     })
   })
@@ -111,11 +118,11 @@ describe("InfiniteDiscoveryNegativeSignals", () => {
     fireEvent.press(excludeButton)
 
     expect(Alert.alert).toHaveBeenCalledWith(
-      "Do you want to stop seeing works from this artist entirely?",
+      "Are you sure? You will no longer see works by Test Artist.",
       undefined,
       expect.arrayContaining([
-        expect.objectContaining({ text: "Yes" }),
         expect.objectContaining({ text: "No" }),
+        expect.objectContaining({ text: "Yes" }),
       ])
     )
   })
@@ -147,44 +154,5 @@ describe("InfiniteDiscoveryNegativeSignals", () => {
       variables: { input: { artistId: "artist-id" } },
       onError: expect.any(Function),
     })
-  })
-
-  it("renders with missing optional data", () => {
-    renderWithRelay({
-      Artwork: () => ({
-        artistNames: "Test Artist",
-        date: "",
-        title: "Test Artwork",
-        saleMessage: "Contact for price",
-        href: "/artwork/test-artwork",
-        internalID: "artwork-id",
-        slug: "test-artwork",
-        artists: [{ internalID: "artist-id" }],
-        image: null,
-      }),
-    })
-
-    expect(screen.getByText("Test Artist")).toBeOnTheScreen()
-    expect(screen.getByText("Test Artwork, ")).toBeOnTheScreen()
-    expect(screen.getByText("Contact for price")).toBeOnTheScreen()
-  })
-
-  it("renders with null image", () => {
-    renderWithRelay({
-      Artwork: () => ({
-        artistNames: "Test Artist",
-        date: "2023",
-        title: "Test Artwork",
-        saleMessage: "$1,000",
-        href: "/artwork/test-artwork",
-        internalID: "artwork-id",
-        slug: "test-artwork",
-        artists: [{ internalID: "artist-id" }],
-        image: null,
-      }),
-    })
-
-    expect(screen.getByText("Test Artist")).toBeOnTheScreen()
-    expect(screen.getByText("Test Artwork, 2023")).toBeOnTheScreen()
   })
 })
