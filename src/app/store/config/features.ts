@@ -188,12 +188,6 @@ export const features = {
     description: "Enable new order details screen",
     echoFlagKey: "AREnableNewOrderDetails",
   },
-  AREnableBlueActivityDots: {
-    readyForRelease: true,
-    showInDevMenu: true,
-    description: "Enable blue activity dots",
-    echoFlagKey: "AREnableBlueActivityDots",
-  },
   AREnableProgressiveOnboardingPriceRangeHome: {
     readyForRelease: true,
     showInDevMenu: true,
