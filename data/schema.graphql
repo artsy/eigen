@@ -3145,6 +3145,7 @@ type ArtworkImport implements Node {
     last: Int
   ): ArtworkImportRowConnection
   state: ArtworkImportState
+  summary: ArtworkImportSummary
   unmatchedArtistNames: [String!]!
 }
 
@@ -3273,6 +3274,11 @@ enum ArtworkImportState {
   ARTWORKS_CREATION_COMPLETE
   CANCELED
   PENDING
+}
+
+type ArtworkImportSummary {
+  currencies: [String!]!
+  dimensionMetrics: [String!]!
 }
 
 type ArtworkImportTransformedData {
@@ -15785,6 +15791,12 @@ type Mutation {
 
   # Updates an artwork.
   updateArtwork(input: UpdateArtworkMutationInput!): UpdateArtworkMutationPayload
+  updateArtworkImportCurrency(
+    input: UpdateArtworkImportCurrencyInput!
+  ): UpdateArtworkImportCurrencyPayload
+  updateArtworkImportDimensionMetric(
+    input: UpdateArtworkImportDimensionMetricInput!
+  ): UpdateArtworkImportDimensionMetricPayload
   updateArtworkImportRow(input: UpdateArtworkImportRowInput!): UpdateArtworkImportRowPayload
 
   # Updates the flags on a partner.
@@ -22258,6 +22270,54 @@ input UpdateArtworkEditionSetInput {
   published: Boolean
   shippingWeight: Float
   shippingWeightMetric: String
+}
+
+type UpdateArtworkImportCurrencyFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtworkImportCurrencyInput {
+  artworkImportID: String!
+  clientMutationId: String
+  fromCurrency: String!
+  toCurrency: String!
+}
+
+type UpdateArtworkImportCurrencyPayload {
+  clientMutationId: String
+  updateArtworkImportCurrencyOrError: UpdateArtworkImportCurrencyResponseOrError
+}
+
+union UpdateArtworkImportCurrencyResponseOrError =
+    UpdateArtworkImportCurrencyFailure
+  | UpdateArtworkImportCurrencySuccess
+
+type UpdateArtworkImportCurrencySuccess {
+  artworkImport: ArtworkImport
+}
+
+type UpdateArtworkImportDimensionMetricFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtworkImportDimensionMetricInput {
+  artworkImportID: String!
+  clientMutationId: String
+  fromDimensionMetric: String!
+  toDimensionMetric: String!
+}
+
+type UpdateArtworkImportDimensionMetricPayload {
+  clientMutationId: String
+  updateArtworkImportDimensionMetricOrError: UpdateArtworkImportDimensionMetricResponseOrError
+}
+
+union UpdateArtworkImportDimensionMetricResponseOrError =
+    UpdateArtworkImportDimensionMetricFailure
+  | UpdateArtworkImportDimensionMetricSuccess
+
+type UpdateArtworkImportDimensionMetricSuccess {
+  artworkImport: ArtworkImport
 }
 
 type UpdateArtworkImportRowFailure {
