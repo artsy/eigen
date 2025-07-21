@@ -28,7 +28,7 @@ describe("MyProfileSettings", () => {
 
     expect(screen.getByText("Preferences")).toBeOnTheScreen()
 
-    const priceRange = screen.getByText("Price Range")
+    const priceRange = screen.getByText("Artwork Budget")
     expect(priceRange).toBeOnTheScreen()
     fireEvent.press(priceRange)
     expect(navigate).toHaveBeenCalledWith("/my-account/edit-price-range")

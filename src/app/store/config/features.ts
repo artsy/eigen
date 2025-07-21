@@ -195,7 +195,7 @@ export const features = {
     echoFlagKey: "AREnableBlueActivityDots",
   },
   AREnableProgressiveOnboardingPriceRangeHome: {
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     description: "Enable progressive onboarding price range home",
     echoFlagKey: "AREnableProgressiveOnboardingPriceRangeHome",

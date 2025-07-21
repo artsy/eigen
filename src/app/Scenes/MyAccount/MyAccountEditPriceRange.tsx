@@ -16,7 +16,7 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
 // TODO: Replace with the latest description provided by design
-const DESCRIPTION = `Changing your price range improves what you see, ensuring it’s more useful—not more limited.`
+const DESCRIPTION = `Letting us know your maximum budget for an artwork helps us provide more relevant recommendations.`
 
 export const MyAccountEditPriceRange: React.FC<{
   me: MyAccountEditPriceRange_me$key
@@ -71,7 +71,7 @@ export const MyAccountEditPriceRange: React.FC<{
       })}
     >
       <MyProfileScreenWrapper
-        title="Price Range"
+        title="Artwork Budget"
         onPress={handleSave}
         isValid={isValid}
         loading={isLoading}
@@ -85,7 +85,7 @@ export const MyAccountEditPriceRange: React.FC<{
         <Spacer y={4} />
 
         <Select
-          title="Price Range"
+          title="Artwork Budget"
           options={PRICE_BUCKETS}
           enableSearch={false}
           value={priceRange}
@@ -106,7 +106,7 @@ export const MyAccountEditPriceRange: React.FC<{
 
 const MyAccountEditPriceRangePlaceholder: React.FC<{}> = () => {
   return (
-    <MyProfileScreenWrapper title="Price Range">
+    <MyProfileScreenWrapper title="Artwork Budget">
       <SkeletonText variant="sm-display">{DESCRIPTION}</SkeletonText>
 
       <Spacer y={4} />
