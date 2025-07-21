@@ -37,7 +37,7 @@ describe("MyAccountEditPriceRangeQueryRenderer", () => {
 
     await flushPromiseQueue()
 
-    expect(screen.getAllByText("Price Range")[0]).toBeTruthy()
+    expect(screen.getAllByText("Artwork Budget")[0]).toBeTruthy()
 
     expect(screen.getByText("Under $2,500")).toBeTruthy()
   })

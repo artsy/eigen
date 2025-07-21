@@ -65,7 +65,7 @@ export const MyProfileSettings: React.FC = () => {
                 </Text>
 
                 <MenuItem
-                  title="Price Range"
+                  title="Artwork Budget"
                   href="/my-account/edit-price-range"
                   icon={<MoneyBackIcon />}
                 />
