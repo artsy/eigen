@@ -4542,6 +4542,9 @@ input BulkUpdateArtworksMetadataInput {
   # The partner location ID to assign
   locationId: String
 
+  # The medium (materials) to be assigned, E.g. Oil on Canvas
+  medium: String
+
   # Whether the artworks must be listed as Make Offer
   offer: Boolean
 
@@ -4550,6 +4553,9 @@ input BulkUpdateArtworksMetadataInput {
 
   # The price for the artworks
   priceListed: Float
+
+  # The provenance to be assigned
+  provenance: String
 
   # Publish or unpublish artworks
   published: Boolean
