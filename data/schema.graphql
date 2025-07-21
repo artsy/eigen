@@ -4559,6 +4559,9 @@ input BulkUpdateArtworksMetadataInput {
 
   # Publish or unpublish artworks
   published: Boolean
+
+  # Details about the signature
+  signature: String
 }
 
 type BulkUpdateArtworksMetadataMutationFailure {
