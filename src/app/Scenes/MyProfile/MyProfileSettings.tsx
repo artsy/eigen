@@ -8,6 +8,7 @@ import {
 import { BagIcon, CreditCardIcon, LockIcon, MobileIcon, MoneyBackIcon } from "@artsy/icons/native"
 import { Flex, Join, LinkText, Screen, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
+import { DarkModeIcon } from "app/Components/Icons/DarkModeIcon"
 import { MenuItem } from "app/Components/MenuItem"
 import { UserAccountHeaderQueryRenderer } from "app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -66,15 +67,9 @@ export const MyProfileSettings: React.FC = () => {
                 <MenuItem
                   title="Price Range"
                   href="/my-account/edit-price-range"
-                  // TODO: Replace with the icon provided by design
                   icon={<MoneyBackIcon />}
                 />
-                <MenuItem
-                  title="Dark Mode"
-                  href="/my-account/dark-mode"
-                  // TODO: Replace with dark mode icon once ready
-                  icon={<BagIcon />}
-                />
+                <MenuItem title="Dark Mode" href="/my-account/dark-mode" icon={<DarkModeIcon />} />
               </>
 
               <>
