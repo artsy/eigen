@@ -16,7 +16,7 @@ export const FullScreenLoadingImage: React.FC<FullScreenLoadingImageProps> = ({
   return (
     <ImageBackground
       resizeMode="cover"
-      style={{ ...StyleSheet.absoluteFillObject, height: "100%", width: "100%" }}
+      style={{ ...StyleSheet.absoluteFillObject }}
       source={imgSource}
     >
       <Flex flex={1} alignItems="center" justifyContent="center">
