@@ -23,7 +23,7 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
-import { memo } from "react"
+import { memo, useCallback } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionFairsProps {
@@ -33,73 +33,77 @@ interface HomeViewSectionFairsProps {
 
 type FairItem = ExtractNodeType<HomeViewSectionFairs_section$data["fairsConnection"]>
 
-export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = ({
-  section: sectionProp,
-  index,
-  ...flexProps
-}) => {
-  const tracking = useHomeViewTracking()
+export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = memo(
+  ({ section: sectionProp, index, ...flexProps }) => {
+    const tracking = useHomeViewTracking()
 
-  const section = useFragment(fragment, sectionProp)
-  const viewAll = section.component?.behaviors?.viewAll
+    const section = useFragment(fragment, sectionProp)
+    const viewAll = section.component?.behaviors?.viewAll
 
-  const fairs = extractNodes(section.fairsConnection)
+    const fairs = extractNodes(section.fairsConnection)
 
-  let href = viewAll && getHomeViewSectionHref(viewAll?.href, section)
+    let href = viewAll && getHomeViewSectionHref(viewAll?.href, section)
 
-  // Only apply the "Featured Fairs" href to the specific "Featured Fairs" section instance.
-  if (!href && section.internalID === "home-view-section-featured-fairs") {
-    href = "/featured-fairs"
-  }
+    // Only apply the "Featured Fairs" href to the specific "Featured Fairs" section instance.
+    if (!href && section.internalID === "home-view-section-featured-fairs") {
+      href = "/featured-fairs"
+    }
 
-  const onViewAllPress = () => {
-    tracking.tappedFairGroupViewAll(
-      section.contextModule as ContextModule,
-      (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
+    const onViewAllPress = () => {
+      tracking.tappedFairGroupViewAll(
+        section.contextModule as ContextModule,
+        (viewAll?.ownerType || section.ownerType) as ScreenOwnerType
+      )
+    }
+
+    const renderItem = useCallback(
+      ({ item, index }) => {
+        return (
+          <FairCard
+            key={item.internalID}
+            fair={item}
+            onPress={(fair) => {
+              tracking.tappedFairGroup(
+                fair.internalID,
+                fair.slug,
+                section.contextModule as ContextModule,
+                index
+              )
+            }}
+          />
+        )
+      },
+      [section.contextModule, tracking]
+    )
+
+    if (!fairs?.length) return null
+
+    return (
+      <Flex {...flexProps}>
+        <SectionTitle
+          href={href}
+          title={section.component?.title}
+          subtitle={section.component?.description}
+          onPress={href ? onViewAllPress : undefined}
+          mx={2}
+        />
+
+        <CardRailFlatList<FairItem>
+          data={fairs}
+          initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
+          renderItem={renderItem}
+          disableVirtualization
+          windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
+        />
+
+        <HomeViewSectionSentinel
+          contextModule={section.contextModule as ContextModule}
+          index={index}
+        />
+      </Flex>
     )
   }
-
-  if (!fairs?.length) return null
-
-  return (
-    <Flex {...flexProps}>
-      <SectionTitle
-        href={href}
-        title={section.component?.title}
-        subtitle={section.component?.description}
-        onPress={href ? onViewAllPress : undefined}
-        mx={2}
-      />
-
-      <CardRailFlatList<FairItem>
-        data={fairs}
-        initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
-        renderItem={({ item, index }) => {
-          return (
-            <FairCard
-              key={item.internalID}
-              fair={item}
-              onPress={(fair) => {
-                tracking.tappedFairGroup(
-                  fair.internalID,
-                  fair.slug,
-                  section.contextModule as ContextModule,
-                  index
-                )
-              }}
-            />
-          )
-        }}
-        windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
-      />
-
-      <HomeViewSectionSentinel
-        contextModule={section.contextModule as ContextModule}
-        index={index}
-      />
-    </Flex>
-  )
-}
+)
 
 const fragment = graphql`
   fragment HomeViewSectionFairs_section on HomeViewSectionFairs {
@@ -191,28 +195,26 @@ const homeViewSectionFairsQuery = graphql`
   }
 `
 
-export const HomeViewSectionFairsQueryRenderer: React.FC<SectionSharedProps> = memo(
-  withSuspense({
-    Component: ({ sectionID, index, ...flexProps }) => {
-      const data = useLazyLoadQuery<HomeViewSectionFairsQuery>(
-        homeViewSectionFairsQuery,
-        {
-          id: sectionID,
+export const HomeViewSectionFairsQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
+  Component: ({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionFairsQuery>(
+      homeViewSectionFairsQuery,
+      {
+        id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
         },
-        {
-          networkCacheConfig: {
-            force: false,
-          },
-        }
-      )
-
-      if (!data.homeView.section) {
-        return null
       }
+    )
 
-      return <HomeViewSectionFairs section={data.homeView.section} index={index} {...flexProps} />
-    },
-    LoadingFallback: HomeViewSectionFairsPlaceholder,
-    ErrorFallback: NoFallback,
-  })
-)
+    if (!data.homeView.section) {
+      return null
+    }
+
+    return <HomeViewSectionFairs section={data.homeView.section} index={index} {...flexProps} />
+  },
+  LoadingFallback: HomeViewSectionFairsPlaceholder,
+  ErrorFallback: NoFallback,
+})
