@@ -11,6 +11,7 @@ import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { extractNodes } from "app/utils/extractNodes"
+import { memo } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 export const ARTIST_CARD_WIDTH = 295
@@ -26,85 +27,81 @@ interface ArtistCardProps {
 
 export const IMAGE_MAX_HEIGHT = 180
 
-export const ArtistCard: React.FC<ArtistCardProps> = ({
-  artist,
-  onDismiss,
-  onFollow,
-  onPress,
-  showDefaultFollowButton = false,
-}) => {
-  const color = useColor()
-  const { handleFollowToggle } = useFollowArtist(artist)
+export const ArtistCard: React.FC<ArtistCardProps> = memo(
+  ({ artist, onDismiss, onFollow, onPress, showDefaultFollowButton = false }) => {
+    const color = useColor()
+    const { handleFollowToggle } = useFollowArtist(artist)
 
-  if (__DEV__) {
-    if (showDefaultFollowButton && onFollow) {
-      console.warn(
-        "ArtistCard: onFollow and showDefaultFollowButton are both set, onFollow will be ignored"
-      )
+    if (__DEV__) {
+      if (showDefaultFollowButton && onFollow) {
+        console.warn(
+          "ArtistCard: onFollow and showDefaultFollowButton are both set, onFollow will be ignored"
+        )
+      }
     }
-  }
 
-  const artistImages = extractNodes(artist.filterArtworksConnection)
-    .filter((artwork) => {
-      // Image is valid and has a width and height
-      return (
-        artwork.image?.resized?.src && artwork.image.resized.width && artwork.image.resized.height
-      )
-    })
-    .map((artwork) => artwork.image?.resized) as Array<{
-    height: number
-    src: string
-    width: number
-  }>
+    const artistImages = extractNodes(artist.filterArtworksConnection)
+      .filter((artwork) => {
+        // Image is valid and has a width and height
+        return (
+          artwork.image?.resized?.src && artwork.image.resized.width && artwork.image.resized.height
+        )
+      })
+      .map((artwork) => artwork.image?.resized) as Array<{
+      height: number
+      src: string
+      width: number
+    }>
 
-  return (
-    <RouterLink onPress={onPress} to={artist.href}>
-      <Flex width={ARTIST_CARD_WIDTH} overflow="hidden">
-        <ArtworkCardImages images={artistImages} />
+    return (
+      <RouterLink onPress={onPress} to={artist.href}>
+        <Flex width={ARTIST_CARD_WIDTH} overflow="hidden">
+          <ArtworkCardImages images={artistImages} />
 
-        <Flex flexDirection="row" mt={1}>
-          <Flex flex={1} flexDirection="column" justifyContent="center">
-            <Text numberOfLines={1}>{artist.name}</Text>
-            {!!artist.formattedNationalityAndBirthday && (
-              <Text numberOfLines={1} variant="xs" color="mono60">
-                {artist.formattedNationalityAndBirthday}
-              </Text>
+          <Flex flexDirection="row" mt={1}>
+            <Flex flex={1} flexDirection="column" justifyContent="center">
+              <Text numberOfLines={1}>{artist.name}</Text>
+              {!!artist.formattedNationalityAndBirthday && (
+                <Text numberOfLines={1} variant="xs" color="mono60">
+                  {artist.formattedNationalityAndBirthday}
+                </Text>
+              )}
+            </Flex>
+            {!!(onFollow || showDefaultFollowButton) && (
+              <Flex>
+                <FollowButton
+                  isFollowed={!!artist.isFollowed}
+                  onPress={onFollow ?? handleFollowToggle}
+                />
+              </Flex>
             )}
           </Flex>
-          {!!(onFollow || showDefaultFollowButton) && (
-            <Flex>
-              <FollowButton
-                isFollowed={!!artist.isFollowed}
-                onPress={onFollow ?? handleFollowToggle}
-              />
+          {!!onDismiss && (
+            <Flex
+              position="absolute"
+              overflow="hidden"
+              backgroundColor={color("mono0")}
+              alignItems="center"
+              justifyContent="center"
+              borderRadius={12}
+              style={{ top: 6, right: 6, width: 24, height: 24 }}
+            >
+              <Touchable
+                accessibilityRole="button"
+                accessibilityLabel="Close"
+                hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+                activeOpacity={0.2}
+                onPress={onDismiss}
+              >
+                <CloseIcon fill="mono60" width={16} height={16} />
+              </Touchable>
             </Flex>
           )}
         </Flex>
-        {!!onDismiss && (
-          <Flex
-            position="absolute"
-            overflow="hidden"
-            backgroundColor={color("mono0")}
-            alignItems="center"
-            justifyContent="center"
-            borderRadius={12}
-            style={{ top: 6, right: 6, width: 24, height: 24 }}
-          >
-            <Touchable
-              accessibilityRole="button"
-              accessibilityLabel="Close"
-              hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-              activeOpacity={0.2}
-              onPress={onDismiss}
-            >
-              <CloseIcon fill="mono60" width={16} height={16} />
-            </Touchable>
-          </Flex>
-        )}
-      </Flex>
-    </RouterLink>
-  )
-}
+      </RouterLink>
+    )
+  }
+)
 
 // Refers to how much should images hide behind each other
 const IMAGE_OVERLAY = 20
