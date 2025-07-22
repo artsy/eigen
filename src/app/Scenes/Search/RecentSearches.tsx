@@ -33,7 +33,7 @@ export const RecentSearches: React.FC = () => {
             />
           )}
           ListFooterComponent={() => (
-            <Box backgroundColor="red">
+            <Box my={1}>
               <Spacer y={6} />
             </Box>
           )}

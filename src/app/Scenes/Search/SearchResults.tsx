@@ -1,5 +1,5 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Box, Flex } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import {
   AutosuggestResult,
   AutosuggestResults,
