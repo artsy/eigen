@@ -1,12 +1,13 @@
 import { Flex, useColor } from "@artsy/palette-mobile"
 import { MotiView } from "moti"
+import { memo } from "react"
 
 interface PaginationDotsProps {
   currentIndex: number
   length: number
 }
 
-export const PaginationDots: React.FC<PaginationDotsProps> = (props) => {
+export const PaginationDots: React.FC<PaginationDotsProps> = memo((props) => {
   const { currentIndex, length } = props
 
   return (
@@ -16,13 +17,13 @@ export const PaginationDots: React.FC<PaginationDotsProps> = (props) => {
       ))}
     </Flex>
   )
-}
+})
 
 interface PaginationDotProps {
   active: boolean
 }
 
-const PaginationDot: React.FC<PaginationDotProps> = (props) => {
+const PaginationDot: React.FC<PaginationDotProps> = memo((props) => {
   const color = useColor()
   const { active } = props
   const diameter = 5
@@ -40,4 +41,4 @@ const PaginationDot: React.FC<PaginationDotProps> = (props) => {
       }}
     />
   )
-}
+})
