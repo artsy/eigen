@@ -21,7 +21,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
-import { memo } from "react"
+import { memo, useCallback } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -30,75 +30,81 @@ interface HomeViewSectionActivityProps {
   index: number
 }
 
-export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = ({
-  section: sectionProp,
-  index,
-  ...flexProps
-}) => {
-  const tracking = useHomeViewTracking()
+export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = memo(
+  ({ section: sectionProp, index, ...flexProps }) => {
+    const tracking = useHomeViewTracking()
 
-  const section = useFragment(sectionFragment, sectionProp)
-  const notifications = extractNodes(section.notificationsConnection).filter((notification) =>
-    shouldDisplayNotification(notification, "rail")
-  )
-  const viewAll = section.component?.behaviors?.viewAll
+    const section = useFragment(sectionFragment, sectionProp)
+    const notifications = extractNodes(section.notificationsConnection).filter((notification) =>
+      shouldDisplayNotification(notification, "rail")
+    )
+    const viewAll = section.component?.behaviors?.viewAll
 
-  if (!notifications.length) {
-    return null
-  }
+    const renderItem = useCallback(
+      ({ item, index }) => {
+        return (
+          <ActivityRailItem
+            item={item}
+            onPress={() => {
+              tracking.tappedActivityGroup(
+                item.targetHref,
+                section.contextModule as ContextModule,
+                index
+              )
+            }}
+          />
+        )
+      },
+      [tracking, section.contextModule]
+    )
 
-  const href = viewAll?.href || "/notifications"
+    if (!notifications.length) {
+      return null
+    }
 
-  const onMorePress = () => {
-    tracking.tappedActivityGroupViewAll(
-      section.contextModule as ContextModule,
-      (viewAll?.ownerType || OwnerType.activities) as ScreenOwnerType
+    const href = viewAll?.href || "/notifications"
+
+    const onMorePress = () => {
+      tracking.tappedActivityGroupViewAll(
+        section.contextModule as ContextModule,
+        (viewAll?.ownerType || OwnerType.activities) as ScreenOwnerType
+      )
+    }
+
+    return (
+      <Flex {...flexProps}>
+        <Flex px={2}>
+          <SectionTitle href={href} title={section.component?.title} onPress={onMorePress} />
+        </Flex>
+
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          ListHeaderComponent={() => <Spacer x={2} />}
+          ListFooterComponent={
+            viewAll
+              ? () => (
+                  <SeeAllCard buttonText={viewAll.buttonText} onPress={onMorePress} href={href} />
+                )
+              : undefined
+          }
+          disableVirtualization
+          ItemSeparatorComponent={() => <Spacer x={2} />}
+          data={notifications}
+          initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
+          windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
+          keyExtractor={(item) => item.internalID}
+          renderItem={renderItem}
+        />
+
+        <HomeViewSectionSentinel
+          contextModule={section.contextModule as ContextModule}
+          index={index}
+        />
+      </Flex>
     )
   }
-
-  return (
-    <Flex {...flexProps}>
-      <Flex px={2}>
-        <SectionTitle href={href} title={section.component?.title} onPress={onMorePress} />
-      </Flex>
-
-      <FlatList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        ListHeaderComponent={() => <Spacer x={2} />}
-        ListFooterComponent={
-          viewAll
-            ? () => <SeeAllCard buttonText={viewAll.buttonText} onPress={onMorePress} href={href} />
-            : undefined
-        }
-        ItemSeparatorComponent={() => <Spacer x={2} />}
-        data={notifications}
-        initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
-        windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
-        keyExtractor={(item) => item.internalID}
-        renderItem={({ item, index }) => {
-          return (
-            <ActivityRailItem
-              item={item}
-              onPress={() => {
-                tracking.tappedActivityGroup(
-                  item.targetHref,
-                  section.contextModule as ContextModule,
-                  index
-                )
-              }}
-            />
-          )
-        }}
-      />
-
-      <HomeViewSectionSentinel
-        contextModule={section.contextModule as ContextModule}
-        index={index}
-      />
-    </Flex>
-  )
-}
+)
 
 const sectionFragment = graphql`
   fragment HomeViewSectionActivity_section on HomeViewSectionActivity {
@@ -185,29 +191,25 @@ const HomeViewSectionActivityPlaceholder: React.FC<FlexProps> = (flexProps) => {
   )
 }
 
-export const HomeViewSectionActivityQueryRenderer: React.FC<SectionSharedProps> = memo(
-  withSuspense({
-    Component: ({ sectionID, index, refetchKey, ...flexProps }) => {
-      const data = useLazyLoadQuery<HomeViewSectionActivityQuery>(
-        homeViewSectionActivityQuery,
-        {
-          id: sectionID,
-        },
-        {
-          fetchKey: refetchKey,
-          fetchPolicy: "store-and-network",
-        }
-      )
-
-      if (!data.homeView.section) {
-        return null
+export const HomeViewSectionActivityQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
+  Component: ({ sectionID, index, refetchKey, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionActivityQuery>(
+      homeViewSectionActivityQuery,
+      {
+        id: sectionID,
+      },
+      {
+        fetchKey: refetchKey,
+        fetchPolicy: "store-and-network",
       }
+    )
 
-      return (
-        <HomeViewSectionActivity section={data.homeView.section} index={index} {...flexProps} />
-      )
-    },
-    LoadingFallback: HomeViewSectionActivityPlaceholder,
-    ErrorFallback: NoFallback,
-  })
-)
+    if (!data.homeView.section) {
+      return null
+    }
+
+    return <HomeViewSectionActivity section={data.homeView.section} index={index} {...flexProps} />
+  },
+  LoadingFallback: HomeViewSectionActivityPlaceholder,
+  ErrorFallback: NoFallback,
+})
