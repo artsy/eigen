@@ -105,9 +105,9 @@
     "braces": "in the resolutions - needed to resolve a security dependency issue - need to remove this when the issue is resolved and packages are updated"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.282.0",
+    "@artsy/cohesion": "4.287.0",
     "@artsy/icons": "3.47.0",
-    "@artsy/palette-mobile": "17.26.0",
+    "@artsy/palette-mobile": "17.29.0",
     "@artsy/to-title-case": "1.1.0",
     "@braze/react-native-sdk": "15.0.1",
     "@d11/react-native-fast-image": "8.10.0",

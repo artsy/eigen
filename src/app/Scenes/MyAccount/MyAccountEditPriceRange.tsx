@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Text, Touchable } from "@artsy/palette-mobile"
+import { SkeletonText, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountEditPriceRangeQuery } from "__generated__/MyAccountEditPriceRangeQuery.graphql"
 import { MyAccountEditPriceRange_me$key } from "__generated__/MyAccountEditPriceRange_me.graphql"
@@ -14,6 +14,9 @@ import { screen } from "app/utils/track/helpers"
 import React, { useEffect, useState } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { updateMyUserProfile } from "./updateMyUserProfile"
+
+// TODO: Replace with the latest description provided by design
+const DESCRIPTION = `Letting us know your maximum budget for an artwork helps us provide more relevant recommendations.`
 
 export const MyAccountEditPriceRange: React.FC<{
   me: MyAccountEditPriceRange_me$key
@@ -68,13 +71,21 @@ export const MyAccountEditPriceRange: React.FC<{
       })}
     >
       <MyProfileScreenWrapper
-        title="Price Range"
+        title="Artwork Budget"
         onPress={handleSave}
         isValid={isValid}
         loading={isLoading}
+        contentContainerStyle={{
+          // Override the default paddingTop
+          paddingTop: 0,
+        }}
       >
+        <Text variant="sm-display">{DESCRIPTION}</Text>
+
+        <Spacer y={4} />
+
         <Select
-          title="Price Range"
+          title="Artwork Budget"
           options={PRICE_BUCKETS}
           enableSearch={false}
           value={priceRange}
@@ -95,7 +106,11 @@ export const MyAccountEditPriceRange: React.FC<{
 
 const MyAccountEditPriceRangePlaceholder: React.FC<{}> = () => {
   return (
-    <MyProfileScreenWrapper title="Price Range">
+    <MyProfileScreenWrapper title="Artwork Budget">
+      <SkeletonText variant="sm-display">{DESCRIPTION}</SkeletonText>
+
+      <Spacer y={4} />
+
       <PlaceholderBox height={40} />
     </MyProfileScreenWrapper>
   )

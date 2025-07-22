@@ -95,6 +95,7 @@ import { CollectionFullFeaturedArtistListScreen } from "app/Scenes/Collection/Co
 import { CollectionsByCategory } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
 import { collectionsByCategoryQuery } from "app/Scenes/CollectionsByCategory/CollectionsByCategoryBody"
 import { CompleteMyProfile } from "app/Scenes/CompleteMyProfile/CompleteMyProfile"
+import { fairExhibitorsQuery } from "app/Scenes/Fair/Components/FairExhibitors"
 import { FairScreen, FairScreenQuery } from "app/Scenes/Fair/Fair"
 import {
   FairAllFollowedArtistsQueryRenderer,
@@ -102,6 +103,7 @@ import {
 } from "app/Scenes/Fair/FairAllFollowedArtists"
 import { FairArticlesQueryRenderer } from "app/Scenes/Fair/FairArticles"
 import { FaireMoreInfoScreenQuery, FairMoreInfoQueryRenderer } from "app/Scenes/Fair/FairMoreInfo"
+import { fairOverviewQuery } from "app/Scenes/Fair/FairOverview"
 import { FeaturedFairsScreen, featuredFairsScreenQuery } from "app/Scenes/Fair/FeaturedFairsScreen"
 import { Favorites } from "app/Scenes/Favorites/Favorites"
 import { FeatureQueryRenderer, FeatureScreenQuery } from "app/Scenes/Feature/Feature"
@@ -168,10 +170,6 @@ import {
   MyProfilePaymentScreenQuery,
 } from "app/Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "app/Scenes/MyProfile/MyProfilePaymentNewCreditCard"
-import {
-  myProfilePreferencesQuery,
-  MyProfilePreferencesQueryRenderer,
-} from "app/Scenes/MyProfile/MyProfilePreferences"
 import { MyProfilePrivacy } from "app/Scenes/MyProfile/MyProfilePrivacy"
 import { MyProfilePushNotificationsQueryRenderer } from "app/Scenes/MyProfile/MyProfilePushNotifications"
 import { MyProfileSettings } from "app/Scenes/MyProfile/MyProfileSettings"
@@ -804,7 +802,8 @@ export const artsyDotNetRoutes = defineRoutes([
         headerShown: false,
       },
     },
-    queries: [FairScreenQuery],
+    queries: [FairScreenQuery, fairOverviewQuery, fairExhibitorsQuery],
+    prepareVariables: [({ fairID }) => ({ fairID })],
   },
   {
     path: "/fair/:fairID/articles",
@@ -1014,6 +1013,18 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
     queries: [MyAccountScreenQuery],
+  },
+  {
+    path: "/my-account/dark-mode",
+    name: "DarkModeSettings",
+    Component: DarkModeSettings,
+    options: {
+      screenOptions: {
+        headerShown: false,
+        headerTitle: "Dark Mode",
+      },
+      hidesBottomTabs: true,
+    },
   },
   {
     path: "/my-account/delete-account",
@@ -1240,17 +1251,6 @@ export const artsyDotNetRoutes = defineRoutes([
       screenOptions: {
         headerShown: false,
         headerTitle: "Push Notifications",
-      },
-    },
-  },
-  {
-    path: "/my-profile/preferences",
-    name: "MyProfilePreferences",
-    Component: MyProfilePreferencesQueryRenderer,
-    queries: [myProfilePreferencesQuery],
-    options: {
-      screenOptions: {
-        headerShown: false,
       },
     },
   },
@@ -1533,18 +1533,6 @@ export const artsyDotNetRoutes = defineRoutes([
       screenOptions: {
         headerShown: false,
       },
-    },
-  },
-  {
-    path: "/settings/dark-mode",
-    name: "DarkModeSettings",
-    Component: DarkModeSettings,
-    options: {
-      screenOptions: {
-        headerShown: false,
-        headerTitle: "Dark Mode",
-      },
-      hidesBottomTabs: true,
     },
   },
   {

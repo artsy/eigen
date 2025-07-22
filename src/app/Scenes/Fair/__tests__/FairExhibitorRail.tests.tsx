@@ -1,13 +1,23 @@
 import { FairExhibitorRailTestsQuery } from "__generated__/FairExhibitorRailTestsQuery.graphql"
 import { ArtworkRailCard } from "app/Components/ArtworkRail/ArtworkRailCard"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { FairExhibitorRailFragmentContainer } from "app/Scenes/Fair/Components/FairExhibitorRail"
+import { FairExhibitorRail } from "app/Scenes/Fair/Components/FairExhibitorRail"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+
+// Mock memo to return the same instance of the component
+// issue: https://github.com/facebook/react/issues/17301
+jest.mock("react", () => {
+  const actualReact = jest.requireActual("react")
+  return {
+    ...actualReact,
+    memo: (component: React.ComponentType<any>) => component,
+  }
+})
 
 describe("FairExhibitors", () => {
   const trackEvent = useTracking().trackEvent
@@ -35,7 +45,7 @@ describe("FairExhibitors", () => {
             return null
           }
 
-          return <FairExhibitorRailFragmentContainer show={props.show} />
+          return <FairExhibitorRail show={props.show} />
         }}
       />
     )
@@ -79,6 +89,7 @@ describe("FairExhibitors", () => {
       }),
     })
     const artwork = wrapper.root.findAllByType(ArtworkRailCard)
+
     act(() => artwork[0].props.onPress())
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
