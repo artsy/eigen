@@ -28,7 +28,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
-import { memo } from "react"
+import { memo, useCallback } from "react"
 import { Dimensions, FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
@@ -40,88 +40,92 @@ interface HomeViewSectionAuctionResultsProps {
 // Avoid the card width to be too wide on tablets
 export const AUCTION_RESULT_CARD_WIDTH = Math.min(400, Dimensions.get("window").width * 0.9)
 
-export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResultsProps> = ({
-  section: sectionProp,
-  index,
-  ...flexProps
-}) => {
-  const section = useFragment(sectionFragment, sectionProp)
-  const tracking = useHomeViewTracking()
+export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResultsProps> = memo(
+  ({ section: sectionProp, index, ...flexProps }) => {
+    const section = useFragment(sectionFragment, sectionProp)
+    const tracking = useHomeViewTracking()
 
-  if (!section || !section.auctionResultsConnection?.totalCount) {
-    return null
-  }
+    const renderItem = useCallback(
+      ({ item, index }) => {
+        return (
+          <AuctionResultListItemFragmentContainer
+            showArtistName
+            auctionResult={item}
+            width={AUCTION_RESULT_CARD_WIDTH}
+            onTrack={() => {
+              tracking.tappedAuctionResultGroup(
+                item.internalID,
+                item.slug,
+                section.contextModule as ContextModule,
+                index
+              )
+            }}
+          />
+        )
+      },
+      [section.contextModule, tracking]
+    )
 
-  const auctionResults = extractNodes(section.auctionResultsConnection)
-  const viewAll = section.component?.behaviors?.viewAll
-
-  const href = viewAll?.href || "/auction-results-for-artists-you-follow"
-
-  const onHeaderPress = () => {
-    if (href) {
-      tracking.tappedAuctionResultGroupViewAll(
-        section.contextModule as ContextModule,
-        viewAll?.ownerType as ScreenOwnerType
-      )
+    if (!section || !section.auctionResultsConnection?.totalCount) {
+      return null
     }
-  }
 
-  const onViewAllPress = () => {
-    if (href) {
-      tracking.tappedAuctionResultGroupViewAll(
-        section.contextModule as ContextModule,
-        (viewAll?.ownerType || OwnerType.auctionResultsForArtistsYouFollow) as ScreenOwnerType
-      )
+    const auctionResults = extractNodes(section.auctionResultsConnection)
+    const viewAll = section.component?.behaviors?.viewAll
+
+    const href = viewAll?.href || "/auction-results-for-artists-you-follow"
+
+    const onHeaderPress = () => {
+      if (href) {
+        tracking.tappedAuctionResultGroupViewAll(
+          section.contextModule as ContextModule,
+          viewAll?.ownerType as ScreenOwnerType
+        )
+      }
     }
+
+    const onViewAllPress = () => {
+      if (href) {
+        tracking.tappedAuctionResultGroupViewAll(
+          section.contextModule as ContextModule,
+          (viewAll?.ownerType || OwnerType.auctionResultsForArtistsYouFollow) as ScreenOwnerType
+        )
+      }
+    }
+
+    return (
+      <Flex {...flexProps}>
+        <SectionTitle
+          href={href}
+          onPress={onHeaderPress}
+          mx={2}
+          title={section.component?.title ?? "Auction Results"}
+        />
+
+        <FlatList
+          horizontal
+          initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
+          windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
+          data={auctionResults}
+          disableVirtualization
+          showsHorizontalScrollIndicator={false}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.internalID}
+          ListFooterComponent={
+            viewAll ? (
+              <BrowseMoreRailCard href={href} onPress={onViewAllPress} text={viewAll.buttonText} />
+            ) : undefined
+          }
+        />
+
+        <HomeViewSectionSentinel
+          contextModule={section.contextModule as ContextModule}
+          index={index}
+        />
+      </Flex>
+    )
   }
-
-  return (
-    <Flex {...flexProps}>
-      <SectionTitle
-        href={href}
-        onPress={onHeaderPress}
-        mx={2}
-        title={section.component?.title ?? "Auction Results"}
-      />
-
-      <FlatList
-        horizontal
-        initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
-        windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
-        data={auctionResults}
-        showsHorizontalScrollIndicator={false}
-        renderItem={({ item, index }) => {
-          return (
-            <AuctionResultListItemFragmentContainer
-              showArtistName
-              auctionResult={item}
-              width={AUCTION_RESULT_CARD_WIDTH}
-              onTrack={() => {
-                tracking.tappedAuctionResultGroup(
-                  item.internalID,
-                  item.slug,
-                  section.contextModule as ContextModule,
-                  index
-                )
-              }}
-            />
-          )
-        }}
-        keyExtractor={(item) => item.internalID}
-        ListFooterComponent={
-          viewAll ? (
-            <BrowseMoreRailCard href={href} onPress={onViewAllPress} text={viewAll.buttonText} />
-          ) : undefined
-        }
-      />
-
-      <HomeViewSectionSentinel
-        contextModule={section.contextModule as ContextModule}
-        index={index}
-      />
-    </Flex>
-  )
-}
+)
 
 const sectionFragment = graphql`
   fragment HomeViewSectionAuctionResults_section on HomeViewSectionAuctionResults {
