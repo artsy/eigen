@@ -122,7 +122,11 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
 
       <Flex flexGrow={1}>
         {useScrollView ? (
-          <ScrollView style={{ flex: 1 }}>
+          <ScrollView
+            style={{ flex: 1 }}
+            keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="on-drag"
+          >
             {filteredOptions.map((option, index) => renderItem({ item: option, index }))}
             {footerComponent}
           </ScrollView>
@@ -131,6 +135,8 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
             style={{ flex: 1 }}
             data={filteredOptions}
             ListFooterComponent={footerComponent}
+            keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="on-drag"
             renderItem={renderItem}
             windowSize={11}
             getItemLayout={(_, index) => ({
