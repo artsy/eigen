@@ -20,7 +20,7 @@ index fb2147f..a80c05d 100644
              }
              return result;
 diff --git a/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/mapview/RNMBXMapView.kt b/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/mapview/RNMBXMapView.kt
-index d390514..77e7b61 100644
+index d390514..97cca31 100644
 --- a/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/mapview/RNMBXMapView.kt
 +++ b/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/mapview/RNMBXMapView.kt
 @@ -15,7 +15,7 @@ import android.widget.FrameLayout
@@ -35,7 +35,7 @@ index d390514..77e7b61 100644
 @@ -131,11 +131,9 @@ class RNMBXLifeCycle {
                      }
                  }
-
+ 
 -                override fun getLifecycle(): Lifecycle {
 -                    return lifecycleRegistry
 -                }
@@ -50,7 +50,6 @@ index d390514..77e7b61 100644
      this.position = position
      this.margins = margins
  }
-\ No newline at end of file
 -
 -
 -
@@ -59,14 +58,14 @@ index 4df25e1..5edd07e 100644
 --- a/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/mapview/RNMBXMapViewManager.kt
 +++ b/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/mapview/RNMBXMapViewManager.kt
 @@ -34,13 +34,13 @@ import java.util.HashMap
-
+ 
  fun ReadableArray.forEachString(action: (String) -> Unit) {
      for (i in 0 until size()) {
 -        action(getString(i))
 +       getString(i)?.let { action(it) }
      }
  }
-
+ 
  fun ReadableArray.asArrayString(): Array<String> {
      val result = Array<String>(size()) {
 -        getString(it)
@@ -75,7 +74,7 @@ index 4df25e1..5edd07e 100644
      return result
  }
 diff --git a/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/styles/RNMBXStyleValue.kt b/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/styles/RNMBXStyleValue.kt
-index db13128..bf003c1 100644
+index db13128..0e8fb27 100644
 --- a/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/styles/RNMBXStyleValue.kt
 +++ b/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/styles/RNMBXStyleValue.kt
 @@ -82,7 +82,9 @@ class RNMBXStyleValue(config: ReadableMap) {
@@ -115,12 +114,12 @@ index db13128..bf003c1 100644
 @@ -131,7 +135,7 @@ class RNMBXStyleValue(config: ReadableMap) {
              return null
          }
-
+ 
 -    fun getMap(_key: String?): ReadableMap? {
 +    fun getMap(_key: String): ReadableMap? {
          return map
      }
-
+ 
 diff --git a/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/styles/sources/RNMBXShapeSourceManager.kt b/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/styles/sources/RNMBXShapeSourceManager.kt
 index 637372d..2b45f07 100644
 --- a/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/styles/sources/RNMBXShapeSourceManager.kt
@@ -135,7 +134,7 @@ index 637372d..2b45f07 100644
                  builder.add(argument)
              }
 diff --git a/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/styles/sources/RNMBXTileSourceManager.kt b/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/styles/sources/RNMBXTileSourceManager.kt
-index 3b0a072..bd61299 100644
+index 3b0a072..6c77f5a 100644
 --- a/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/styles/sources/RNMBXTileSourceManager.kt
 +++ b/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/styles/sources/RNMBXTileSourceManager.kt
 @@ -41,7 +41,7 @@ abstract class RNMBXTileSourceManager<T : RNMBXTileSource<*>> internal construct
@@ -148,25 +147,25 @@ index 3b0a072..bd61299 100644
          }
          source!!.tileUrlTemplates = urls
 diff --git a/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/shapeAnimators/RNMBXChangeLineOffsetsShapeAnimatorModule.kt b/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/shapeAnimators/RNMBXChangeLineOffsetsShapeAnimatorModule.kt
-index 28d1020..9d77aba 100644
+index 28d1020..41f80d5 100644
 --- a/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/shapeAnimators/RNMBXChangeLineOffsetsShapeAnimatorModule.kt
 +++ b/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/shapeAnimators/RNMBXChangeLineOffsetsShapeAnimatorModule.kt
 @@ -210,7 +210,7 @@ private fun buildLineString(_coordinates: ReadableArray): LineString {
-
+ 
      for (i in 0 until _coordinates.size()) {
          val arr = _coordinates.getArray(i)
 -        val coord = Point.fromLngLat(arr.getDouble(0), arr.getDouble(1))
 +        val coord = Point.fromLngLat(arr!!.getDouble(0), arr.getDouble(1))
          coordinates = coordinates.plus(coord)
      }
-
+ 
 diff --git a/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/utils/extensions/Dynamic.kt b/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/utils/extensions/Dynamic.kt
-index d52fa21..b1d2c85 100644
+index d52fa21..cdd88d9 100644
 --- a/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/utils/extensions/Dynamic.kt
 +++ b/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/utils/extensions/Dynamic.kt
 @@ -33,15 +33,16 @@ fun ReadableArray.toValue(): Value {
      var result = ArrayList<Value>(size())
-
+ 
      for (i in 0 until size()) {
 -        result.add(
          when (getType(i)) {
@@ -227,7 +226,7 @@ index 5a06406..7032b6c 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXAtmosphereManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXAtmosphereManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXAtmosphereManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXAtmosphereManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXAtmosphereManagerDelegate(U viewManager) {
@@ -246,7 +245,7 @@ index 76568d1..89c5662 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXBackgroundLayerManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXBackgroundLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXBackgroundLayerManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXBackgroundLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXBackgroundLayerManagerDelegate(U viewManager) {
@@ -257,7 +256,7 @@ index 2b3e086..dbace3f 100644
 --- a/node_modules/@rnmapbox/maps/android/src/main/old-arch/com/facebook/react/viewmanagers/RNMBXCalloutManagerDelegate.java
 +++ b/node_modules/@rnmapbox/maps/android/src/main/old-arch/com/facebook/react/viewmanagers/RNMBXCalloutManagerDelegate.java
 @@ -11,10 +11,12 @@ package com.facebook.react.viewmanagers;
-
+ 
  import android.view.View;
  import androidx.annotation.Nullable;
 +
@@ -265,7 +264,7 @@ index 2b3e086..dbace3f 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXCalloutManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXCalloutManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXCalloutManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXCalloutManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXCalloutManagerDelegate(U viewManager) {
@@ -284,7 +283,7 @@ index eef1384..9e4c5a2 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXCameraManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXCameraManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXCameraManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXCameraManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXCameraManagerDelegate(U viewManager) {
@@ -303,7 +302,7 @@ index 3b2b41b..1ee3092 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXCircleLayerManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXCircleLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXCircleLayerManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXCircleLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXCircleLayerManagerDelegate(U viewManager) {
@@ -322,7 +321,7 @@ index f3bd0f8..7f63c59 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXCustomLocationProviderManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXCustomLocationProviderManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXCustomLocationProviderManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXCustomLocationProviderManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXCustomLocationProviderManagerDelegate(U viewManager) {
@@ -341,7 +340,7 @@ index 0293627..c37a8b7 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXFillExtrusionLayerManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXFillExtrusionLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXFillExtrusionLayerManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXFillExtrusionLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXFillExtrusionLayerManagerDelegate(U viewManager) {
@@ -360,7 +359,7 @@ index 6e5f1ad..da19e3f 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXFillLayerManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXFillLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXFillLayerManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXFillLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXFillLayerManagerDelegate(U viewManager) {
@@ -379,7 +378,7 @@ index f7358c2..39fd79b 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXHeatmapLayerManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXHeatmapLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXHeatmapLayerManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXHeatmapLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXHeatmapLayerManagerDelegate(U viewManager) {
@@ -398,7 +397,7 @@ index 0857a07..5abf7c1 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXImageManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXImageManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXImageManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXImageManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXImageManagerDelegate(U viewManager) {
@@ -417,7 +416,7 @@ index d0f6999..bb46c55 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXImageSourceManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXImageSourceManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXImageSourceManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXImageSourceManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXImageSourceManagerDelegate(U viewManager) {
@@ -436,7 +435,7 @@ index 59a80b2..7147c92 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXImagesManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXImagesManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXImagesManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXImagesManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXImagesManagerDelegate(U viewManager) {
@@ -455,7 +454,7 @@ index 90cd362..31c8194 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXLightManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXLightManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXLightManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXLightManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXLightManagerDelegate(U viewManager) {
@@ -474,7 +473,7 @@ index 47b42a5..abd033f 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXLineLayerManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXLineLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXLineLayerManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXLineLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXLineLayerManagerDelegate(U viewManager) {
@@ -493,7 +492,7 @@ index 9cff5aa..783ee90 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXMapViewManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXMapViewManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXMapViewManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXMapViewManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXMapViewManagerDelegate(U viewManager) {
@@ -504,7 +503,7 @@ index 9f88fce..084c995 100644
 --- a/node_modules/@rnmapbox/maps/android/src/main/old-arch/com/facebook/react/viewmanagers/RNMBXMarkerViewContentManagerDelegate.java
 +++ b/node_modules/@rnmapbox/maps/android/src/main/old-arch/com/facebook/react/viewmanagers/RNMBXMarkerViewContentManagerDelegate.java
 @@ -11,10 +11,12 @@ package com.facebook.react.viewmanagers;
-
+ 
  import android.view.View;
  import androidx.annotation.Nullable;
 +
@@ -512,7 +511,7 @@ index 9f88fce..084c995 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXMarkerViewContentManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXMarkerViewContentManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXMarkerViewContentManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXMarkerViewContentManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXMarkerViewContentManagerDelegate(U viewManager) {
@@ -531,7 +530,7 @@ index 78fd466..1adc4a9 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXMarkerViewManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXMarkerViewManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXMarkerViewManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXMarkerViewManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXMarkerViewManagerDelegate(U viewManager) {
@@ -550,7 +549,7 @@ index 28dfb46..1054fbc 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXModelLayerManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXModelLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXModelLayerManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXModelLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXModelLayerManagerDelegate(U viewManager) {
@@ -569,7 +568,7 @@ index 7513c49..fcef289 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXModelsManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXModelsManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXModelsManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXModelsManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXModelsManagerDelegate(U viewManager) {
@@ -588,7 +587,7 @@ index b0ef22a..c73d1a5 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXNativeUserLocationManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXNativeUserLocationManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXNativeUserLocationManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXNativeUserLocationManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXNativeUserLocationManagerDelegate(U viewManager) {
@@ -607,7 +606,7 @@ index 70aa36d..9fb8bcb 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXPointAnnotationManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXPointAnnotationManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXPointAnnotationManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXPointAnnotationManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXPointAnnotationManagerDelegate(U viewManager) {
@@ -626,7 +625,7 @@ index 6a0ef3b..cdf0f58 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXRasterDemSourceManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXRasterDemSourceManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXRasterDemSourceManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXRasterDemSourceManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXRasterDemSourceManagerDelegate(U viewManager) {
@@ -645,7 +644,7 @@ index 0630ce3..629fd18 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXRasterLayerManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXRasterLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXRasterLayerManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXRasterLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXRasterLayerManagerDelegate(U viewManager) {
@@ -664,7 +663,7 @@ index 68c2634..29198ae 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXRasterSourceManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXRasterSourceManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXRasterSourceManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXRasterSourceManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXRasterSourceManagerDelegate(U viewManager) {
@@ -683,7 +682,7 @@ index 75ebce1..e697ad3 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXShapeSourceManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXShapeSourceManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXShapeSourceManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXShapeSourceManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXShapeSourceManagerDelegate(U viewManager) {
@@ -702,7 +701,7 @@ index 446a1aa..58579fc 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXSkyLayerManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXSkyLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXSkyLayerManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXSkyLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXSkyLayerManagerDelegate(U viewManager) {
@@ -721,7 +720,7 @@ index 5a867b7..0e8f234 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXStyleImportManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXStyleImportManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXStyleImportManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXStyleImportManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXStyleImportManagerDelegate(U viewManager) {
@@ -740,7 +739,7 @@ index ebf1112..ee9e8b0 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXSymbolLayerManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXSymbolLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXSymbolLayerManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXSymbolLayerManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXSymbolLayerManagerDelegate(U viewManager) {
@@ -759,7 +758,7 @@ index 54a428c..332465e 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXTerrainManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXTerrainManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXTerrainManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXTerrainManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXTerrainManagerDelegate(U viewManager) {
@@ -778,7 +777,7 @@ index c47abe3..55adc84 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXVectorSourceManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXVectorSourceManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXVectorSourceManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXVectorSourceManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXVectorSourceManagerDelegate(U viewManager) {
@@ -797,22 +796,50 @@ index dc37ae1..ec23013 100644
  import com.facebook.react.uimanager.BaseViewManagerDelegate;
 -import com.facebook.react.uimanager.BaseViewManagerInterface;
 +import com.facebook.react.uimanager.LayoutShadowNode;
-
+ 
 -public class RNMBXViewportManagerDelegate<T extends View, U extends BaseViewManagerInterface<T> & RNMBXViewportManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
 +public class RNMBXViewportManagerDelegate<T extends View, U extends BaseViewManager<T, ? extends LayoutShadowNode> & RNMBXViewportManagerInterface<T>> extends BaseViewManagerDelegate<T, U> {
    public RNMBXViewportManagerDelegate(U viewManager) {
      super(viewManager);
    }
+diff --git a/node_modules/@rnmapbox/maps/android/src/main/old-arch/com/rnmapbox/rnmbx/NativeRNMBXLocationModuleSpec.java b/node_modules/@rnmapbox/maps/android/src/main/old-arch/com/rnmapbox/rnmbx/NativeRNMBXLocationModuleSpec.java
+index e5db5cb..4273d3b 100644
+--- a/node_modules/@rnmapbox/maps/android/src/main/old-arch/com/rnmapbox/rnmbx/NativeRNMBXLocationModuleSpec.java
++++ b/node_modules/@rnmapbox/maps/android/src/main/old-arch/com/rnmapbox/rnmbx/NativeRNMBXLocationModuleSpec.java
+@@ -21,9 +21,11 @@ import com.facebook.react.bridge.ReactModuleWithSpec;
+ import com.facebook.react.bridge.ReadableMap;
+ import com.facebook.react.turbomodule.core.interfaces.TurboModule;
+ import javax.annotation.Nonnull;
++import javax.security.auth.callback.Callback;
+ 
+ public abstract class NativeRNMBXLocationModuleSpec extends ReactContextBaseJavaModule implements ReactModuleWithSpec, TurboModule {
+   public static final String NAME = "RNMBXLocationModule";
++  protected Callback mEventEmitterCallback;
+ 
+   public NativeRNMBXLocationModuleSpec(ReactApplicationContext reactContext) {
+     super(reactContext);
+@@ -35,7 +37,9 @@ public abstract class NativeRNMBXLocationModuleSpec extends ReactContextBaseJava
+   }
+ 
+   protected final void emitOnLocationUpdate(ReadableMap value) {
+-    mEventEmitterCallback.invoke("onLocationUpdate", value);
++    if (mEventEmitterCallback != null) {
++      mEventEmitterCallback.invoke("onLocationUpdate", value);
++    }
+   }
+ 
+   @ReactMethod
 diff --git a/node_modules/@rnmapbox/maps/android/src/main/rn-compat/rn75/com/rnmapbox/rnmbx/rncompat/ReadableMap.kt b/node_modules/@rnmapbox/maps/android/src/main/rn-compat/rn75/com/rnmapbox/rnmbx/rncompat/ReadableMap.kt
-index fee7f22..6181dc9 100644
+index fee7f22..194e630 100644
 --- a/node_modules/@rnmapbox/maps/android/src/main/rn-compat/rn75/com/rnmapbox/rnmbx/rncompat/ReadableMap.kt
 +++ b/node_modules/@rnmapbox/maps/android/src/main/rn-compat/rn75/com/rnmapbox/rnmbx/rncompat/ReadableMap.kt
 @@ -1,7 +1,7 @@
  package com.rnmapbox.rnmbx.rncompat.readable_map
  import com.facebook.react.bridge.ReadableMap
-
+ 
 -fun ReadableMap.getEntryIterator():  Iterator<Map. Entry<String, Any>>
 +fun ReadableMap.getEntryIterator(): Iterator<Map.Entry<String, Any?>>
  {
      return this.entryIterator
  }
+\ No newline at end of file
