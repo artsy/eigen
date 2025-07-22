@@ -39,7 +39,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   const hasInteractedWithOnboarding = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
   )
-  const { setMoreInfoSheetVisible } = GlobalStore.actions.infiniteDiscovery
 
   const [topArtworkId, setTopArtworkId] = useState<string | null>(null)
   const topArtwork = useMemo(
@@ -72,10 +71,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       })
     }
   }, [artworks])
-
-  useEffect(() => {
-    return () => setMoreInfoSheetVisible(false)
-  }, [setMoreInfoSheetVisible])
 
   // Prefetches the negative signals bottom sheet when top card changes
   useEffect(() => {
@@ -206,8 +201,7 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
             {!!negativeSignalsEnabled && (
               <InfiniteDiscoveryNegativeSignalsBottomSheet
                 artworkID={topArtwork.internalID}
-                artworkSlug={topArtwork.slug}
-                key={topArtwork.slug}
+                key={topArtwork.internalID}
               />
             )}
           </>

@@ -14,6 +14,7 @@ import { captureException } from "@sentry/react-native"
 import { InfiniteDiscoveryNegativeSignals_artwork$key } from "__generated__/InfiniteDiscoveryNegativeSignals_artwork.graphql"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
+import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
 import { useExcludeArtistFromDiscovery } from "app/Scenes/InfiniteDiscovery/hooks/useExcludeArtistFromDiscovery"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -163,7 +164,7 @@ export const InfiniteDiscoveryNegativeSignals: FC<InfiniteDiscoveryNegativeSigna
           hitSlop={DEFAULT_HIT_SLOP}
         >
           <Flex flexDirection="row" alignItems="center" gap={1} flexShrink={0}>
-            <ShareIcon width={24} height={24} />
+            <ShareIcon width={ACCESSIBLE_DEFAULT_ICON_SIZE} height={ACCESSIBLE_DEFAULT_ICON_SIZE} />
             <Text>Share Artist</Text>
           </Flex>
         </Touchable>
@@ -176,7 +177,7 @@ export const InfiniteDiscoveryNegativeSignals: FC<InfiniteDiscoveryNegativeSigna
         hitSlop={DEFAULT_HIT_SLOP}
       >
         <Flex flexDirection="row" alignItems="center" gap={1}>
-          <NoArtIcon width={24} height={24} />
+          <NoArtIcon width={ACCESSIBLE_DEFAULT_ICON_SIZE} height={ACCESSIBLE_DEFAULT_ICON_SIZE} />
           <Text>See fewer artworks by this artist</Text>
         </Flex>
       </Touchable>

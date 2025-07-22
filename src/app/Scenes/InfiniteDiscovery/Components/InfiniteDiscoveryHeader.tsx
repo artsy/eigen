@@ -1,5 +1,5 @@
 import { ChevronDownIcon, MoreIcon, ShareIcon } from "@artsy/icons/native"
-import { DEFAULT_HIT_SLOP, Flex, Screen, Text, Touchable } from "@artsy/palette-mobile"
+import { DEFAULT_HIT_SLOP, Flex, LinkText, Screen, Touchable } from "@artsy/palette-mobile"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
 import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
@@ -38,14 +38,9 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
           },
           backgroundColor: "green100",
           description: (
-            <Text
-              variant="xs"
-              color="mono0"
-              style={{ textDecorationLine: "underline" }}
-              onPress={() => navigate("/favorites/saves")}
-            >
+            <LinkText variant="xs" color="mono0" onPress={() => navigate("/favorites/saves")}>
               Tap to see all of your saved artworks.
-            </Text>
+            </LinkText>
           ),
           duration: "long",
         }
