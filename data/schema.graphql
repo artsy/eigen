@@ -16443,6 +16443,10 @@ type Order {
   totalListPrice: Money
 }
 
+type OrderActionData {
+  clientSecret: String!
+}
+
 enum OrderBuyerStateEnum {
   # Order has been approved
   APPROVED
@@ -16494,11 +16498,18 @@ enum OrderModeEnum {
   OFFER
 }
 
+type OrderMutationActionRequired {
+  actionData: OrderActionData!
+}
+
 type OrderMutationError {
   mutationError: ExchangeError!
 }
 
-union OrderMutationResponse = OrderMutationError | OrderMutationSuccess
+union OrderMutationResponse =
+    OrderMutationActionRequired
+  | OrderMutationError
+  | OrderMutationSuccess
 
 type OrderMutationSuccess {
   order: Order!
