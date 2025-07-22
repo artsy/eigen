@@ -1,3 +1,34 @@
+diff --git a/node_modules/@rnmapbox/maps/android/src/main/old-arch/com/rnmapbox/rnmbx/NativeRNMBXLocationModuleSpec.java b/node_modules/@rnmapbox/maps/android/src/main/old-arch/com/rnmapbox/rnmbx/NativeRNMBXLocationModuleSpec.java
+index e5db5cb..43f40ae 100644
+--- a/node_modules/@rnmapbox/maps/android/src/main/old-arch/com/rnmapbox/rnmbx/NativeRNMBXLocationModuleSpec.java
++++ b/node_modules/@rnmapbox/maps/android/src/main/old-arch/com/rnmapbox/rnmbx/NativeRNMBXLocationModuleSpec.java
+@@ -19,12 +19,15 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
+ import com.facebook.react.bridge.ReactMethod;
+ import com.facebook.react.bridge.ReactModuleWithSpec;
+ import com.facebook.react.bridge.ReadableMap;
++import com.facebook.react.bridge.Callback;
+ import com.facebook.react.turbomodule.core.interfaces.TurboModule;
+ import javax.annotation.Nonnull;
+ 
+ public abstract class NativeRNMBXLocationModuleSpec extends ReactContextBaseJavaModule implements ReactModuleWithSpec, TurboModule {
+   public static final String NAME = "RNMBXLocationModule";
+   
++  protected Callback mEventEmitterCallback;
++
+   public NativeRNMBXLocationModuleSpec(ReactApplicationContext reactContext) {
+     super(reactContext);
+   }
+@@ -35,7 +38,9 @@ public abstract class NativeRNMBXLocationModuleSpec extends ReactContextBaseJava
+   }
+ 
+   protected final void emitOnLocationUpdate(ReadableMap value) {
+-    mEventEmitterCallback.invoke("onLocationUpdate", value);
++    if (mEventEmitterCallback != null) {
++      mEventEmitterCallback.invoke("onLocationUpdate", value);
++    }
+   }
+ 
+   @ReactMethod
 diff --git a/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/images/RNMBXImagesManager.kt b/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/images/RNMBXImagesManager.kt
 index fb2147f..a80c05d 100644
 --- a/node_modules/@rnmapbox/maps/android/src/main/java/com/rnmapbox/rnmbx/components/images/RNMBXImagesManager.kt
