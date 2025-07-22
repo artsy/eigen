@@ -1,4 +1,5 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ActionType, OwnerType } from "@artsy/cohesion"
+import { SavedPriceRange } from "@artsy/cohesion/dist/Schema/Events/SavedPriceRange"
 import { SkeletonText, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { MyAccountEditPriceRangeQuery } from "__generated__/MyAccountEditPriceRangeQuery.graphql"
@@ -13,6 +14,7 @@ import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import React, { useEffect, useState } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
+import { useTracking } from "react-tracking"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
 // TODO: Replace with the latest description provided by design
@@ -22,6 +24,7 @@ export const MyAccountEditPriceRange: React.FC<{
   me: MyAccountEditPriceRange_me$key
 }> = (props) => {
   const me = useFragment(meFragment, props.me)
+  const { trackEvent } = useTracking()
   const [isLoading, setIsLoading] = useState(false)
 
   const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
@@ -54,6 +57,7 @@ export const MyAccountEditPriceRange: React.FC<{
     try {
       setIsLoading(true)
       await updateMyUserProfile({ priceRangeMin, priceRangeMax })
+      trackEvent(tracks.savePriceRange(priceRange))
       goBack()
     } catch (e: any) {
       setReceivedError(e)
@@ -166,3 +170,13 @@ export const PRICE_BUCKETS: Array<SelectOption<string>> = [
   { label: "Under $100,000", value: "-1:100000" },
   { label: "No budget in mind", value: "-1:1000000000000" },
 ]
+
+const tracks = {
+  savePriceRange: (priceRange: string): SavedPriceRange => {
+    return {
+      action: ActionType.savedPriceRange,
+      context_screen_owner_type: OwnerType.accountPriceRange,
+      value: priceRange,
+    }
+  },
+}
