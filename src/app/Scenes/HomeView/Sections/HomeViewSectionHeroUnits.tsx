@@ -9,18 +9,15 @@ import { PaginationDots } from "app/Components/PaginationDots"
 import { HERO_UNIT_CARD_HEIGHT, HeroUnit } from "app/Scenes/HomeView/Components/HeroUnit"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
-import {
-  HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
-  HORIZONTAL_FLATLIST_WINDOW_SIZE,
-} from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
+import { useViewabilityConfig } from "app/utils/hooks/useViewabilityConfig"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { isNumber } from "lodash"
-import { memo, useCallback, useRef, useState } from "react"
-import { FlatList, ViewabilityConfig, ViewToken } from "react-native"
+import { memo, useCallback, useMemo, useRef, useState } from "react"
+import { FlatList, ViewToken } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionHeroUnitsProps extends FlexProps {
@@ -30,88 +27,91 @@ interface HomeViewSectionHeroUnitsProps extends FlexProps {
 
 type HeroUnitItem = ExtractNodeType<HomeViewSectionHeroUnits_section$data["heroUnitsConnection"]>
 
-export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> = ({
-  section: sectionProp,
-  index,
-  ...flexProps
-}) => {
-  const tracking = useHomeViewTracking()
+export const HomeViewSectionHeroUnits: React.FC<HomeViewSectionHeroUnitsProps> = memo(
+  ({ section: sectionProp, index, ...flexProps }) => {
+    const tracking = useHomeViewTracking()
 
-  const section = useFragment(fragment, sectionProp)
-  const heroUnits = extractNodes(section.heroUnitsConnection)
+    const section = useFragment(fragment, sectionProp)
+    const heroUnits = extractNodes(section.heroUnitsConnection)
 
-  const [currentIndex, setCurrentIndex] = useState(0)
+    const [currentIndex, setCurrentIndex] = useState(0)
 
-  const onViewableItemsChanged = ({ viewableItems }: { viewableItems: ViewToken[] }) => {
-    if (viewableItems.length > 0) {
-      const index = viewableItems[0].index
+    const onViewableItemsChanged = useRef(({ viewableItems }: { viewableItems: ViewToken[] }) => {
+      if (viewableItems.length > 0) {
+        const index = viewableItems[0].index
 
-      if (isNumber(index)) {
-        setCurrentIndex(index)
+        if (isNumber(index)) {
+          setCurrentIndex(index)
+        }
       }
-    }
-  }
+    })
 
-  const viewabilityConfig: ViewabilityConfig = { itemVisiblePercentThreshold: 25 }
-  const viewabilityConfigCallbackPairs = useRef([{ onViewableItemsChanged, viewabilityConfig }])
+    const viewabilityConfig = useViewabilityConfig()
 
-  const { width } = useScreenDimensions()
+    const { width } = useScreenDimensions()
 
-  const renderItem = useCallback(
-    ({ item, index }: { item: HeroUnitItem; index: number }) => {
+    const renderItem = useCallback(
+      ({ item, index }: { item: HeroUnitItem; index: number }) => {
+        return (
+          <HeroUnit
+            item={{
+              internalID: item.internalID,
+              title: item.title,
+              body: item.body,
+              imageSrc: item.image?.imageURL ?? "",
+              url: item.link.url,
+              buttonText: item.link.text,
+            }}
+            onPress={() => {
+              tracking.tappedHeroUnitGroup(
+                item.link.url,
+                section.contextModule as ContextModule,
+                index
+              )
+            }}
+          />
+        )
+      },
+      [tracking, section.contextModule]
+    )
+
+    const HeroUnits = useMemo(() => {
       return (
-        <HeroUnit
-          item={{
-            internalID: item.internalID,
-            title: item.title,
-            body: item.body,
-            imageSrc: item.image?.imageURL ?? "",
-            url: item.link.url,
-            buttonText: item.link.text,
-          }}
-          onPress={() => {
-            tracking.tappedHeroUnitGroup(
-              item.link.url,
-              section.contextModule as ContextModule,
-              index
-            )
-          }}
+        <FlatList
+          data={heroUnits}
+          decelerationRate="fast"
+          horizontal
+          keyExtractor={(item) => item.internalID}
+          renderItem={renderItem}
+          snapToAlignment="start"
+          snapToInterval={width}
+          viewabilityConfig={viewabilityConfig}
+          onViewableItemsChanged={onViewableItemsChanged.current}
         />
       )
-    },
-    [tracking, section.contextModule]
-  )
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
-  if (!heroUnits || heroUnits.length === 0) {
-    return null
+    if (!heroUnits || heroUnits.length === 0) {
+      return null
+    }
+
+    return (
+      <Flex {...flexProps}>
+        {HeroUnits}
+
+        <Spacer y={2} />
+
+        <PaginationDots currentIndex={currentIndex} length={heroUnits.length} />
+
+        <HomeViewSectionSentinel
+          contextModule={section.contextModule as ContextModule}
+          index={index}
+        />
+      </Flex>
+    )
   }
-
-  return (
-    <Flex {...flexProps}>
-      <FlatList
-        data={heroUnits}
-        decelerationRate="fast"
-        horizontal
-        keyExtractor={(item) => item.internalID}
-        renderItem={renderItem}
-        snapToAlignment="start"
-        snapToInterval={width}
-        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-        initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
-        windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
-      />
-
-      <Spacer y={2} />
-
-      <PaginationDots currentIndex={currentIndex} length={heroUnits.length} />
-
-      <HomeViewSectionSentinel
-        contextModule={section.contextModule as ContextModule}
-        index={index}
-      />
-    </Flex>
-  )
-}
+)
 
 const fragment = graphql`
   fragment HomeViewSectionHeroUnits_section on HomeViewSectionHeroUnits {
@@ -163,30 +163,26 @@ const homeViewSectionHeroUnitsQuery = graphql`
   }
 `
 
-export const HomeViewSectionHeroUnitsQueryRenderer: React.FC<SectionSharedProps> = memo(
-  withSuspense({
-    Component: ({ sectionID, index, ...flexProps }) => {
-      const data = useLazyLoadQuery<HomeViewSectionHeroUnitsQuery>(
-        homeViewSectionHeroUnitsQuery,
-        {
-          id: sectionID,
+export const HomeViewSectionHeroUnitsQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
+  Component: ({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionHeroUnitsQuery>(
+      homeViewSectionHeroUnitsQuery,
+      {
+        id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
         },
-        {
-          networkCacheConfig: {
-            force: false,
-          },
-        }
-      )
-
-      if (!data.homeView.section) {
-        return null
       }
+    )
 
-      return (
-        <HomeViewSectionHeroUnits section={data.homeView.section} index={index} {...flexProps} />
-      )
-    },
-    LoadingFallback: HomeViewSectionHeroUnitsPlaceholder,
-    ErrorFallback: NoFallback,
-  })
-)
+    if (!data.homeView.section) {
+      return null
+    }
+
+    return <HomeViewSectionHeroUnits section={data.homeView.section} index={index} {...flexProps} />
+  },
+  LoadingFallback: HomeViewSectionHeroUnitsPlaceholder,
+  ErrorFallback: NoFallback,
+})

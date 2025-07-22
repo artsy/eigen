@@ -29,7 +29,6 @@ export const HeroUnit: React.FC<HeroUnitItemProps> = memo(({ item, onPress }) =>
   const { width: screenWidth } = useScreenDimensions()
   const cardImageWidth = screenWidth > 700 ? screenWidth / 2 : CARD_IMAGE_WIDTH
 
-  console.log("======> prefetching", url)
   return (
     <RouterLink key={internalID} to={url} onPress={onPress} haptic="impactLight">
       <Flex bg="mono100" flexDirection="row" height={HERO_UNIT_CARD_HEIGHT} width={screenWidth}>
