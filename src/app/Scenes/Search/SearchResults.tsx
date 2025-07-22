@@ -1,5 +1,5 @@
 import { ContextModule } from "@artsy/cohesion"
-import { Flex } from "@artsy/palette-mobile"
+import { Box, Flex } from "@artsy/palette-mobile"
 import {
   AutosuggestResult,
   AutosuggestResults,
@@ -36,7 +36,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ selectedPill, quer
 
   if (isTopPillSelected) {
     return (
-      <Flex mx={2} mb={2} mt={0}>
+      <Flex mx={2} mb={4}>
         <AutosuggestResults
           query={query}
           showResultType

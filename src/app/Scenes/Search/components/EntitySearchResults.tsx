@@ -23,7 +23,6 @@ interface SearchResultsProps {
 
 const PAGE_SIZE = isTablet() ? 40 : 20
 const ESTIMATED_ITEM_SIZE = 56
-const SEARCH_RESULTS_BOTTOM_PADDING = 140
 
 export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selectedPill }) => {
   const space = useSpace()
@@ -74,9 +73,9 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
       accessibilityLabel={`${selectedPill.displayName} search results list`}
       ref={flashListRef}
       contentContainerStyle={{
-        paddingVertical: space(1),
+        paddingTop: space(1),
         paddingHorizontal: space(2),
-        paddingBottom: SEARCH_RESULTS_BOTTOM_PADDING,
+        paddingBottom: space(6),
       }}
       data={hits}
       keyExtractor={(item, index) => item.internalID ?? index.toString()}
@@ -90,7 +89,7 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
         <SingleIndexEmptyResultsMessage query={query} selectedPill={selectedPill} />
       )}
       ListFooterComponent={
-        <Flex alignItems="center" my={2}>
+        <Flex alignItems="center" my={4}>
           {isLoadingNext ? <Spinner testID="spinner" /> : null}
         </Flex>
       }

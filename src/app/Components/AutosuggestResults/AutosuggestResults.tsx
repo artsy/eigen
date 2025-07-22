@@ -163,7 +163,7 @@ const AutosuggestResultsFlatList: React.FC<{
     return () => (
       <Flex pb={6} height={250}>
         {hasMoreResults ? (
-          <Flex justifyContent="center" pb={6}>
+          <Flex justifyContent="center" pb={6} mt={1}>
             <Spinner />
           </Flex>
         ) : (
