@@ -18,53 +18,51 @@ interface HomeViewSectionArticlesProps {
   index: number
 }
 
-export const HomeViewSectionArticles: React.FC<HomeViewSectionArticlesProps> = ({
-  section: sectionProp,
-  index,
-  ...flexProps
-}) => {
-  const section = useFragment(sectionFragment, sectionProp)
-  const tracking = useHomeViewTracking()
-  const viewAll = section.component?.behaviors?.viewAll
+export const HomeViewSectionArticles: React.FC<HomeViewSectionArticlesProps> = memo(
+  ({ section: sectionProp, index, ...flexProps }) => {
+    const section = useFragment(sectionFragment, sectionProp)
+    const tracking = useHomeViewTracking()
+    const viewAll = section.component?.behaviors?.viewAll
 
-  if (!section.articlesConnection) {
-    return null
-  }
-
-  const handleTitlePress = () => {
-    if (viewAll?.href) {
-      tracking.tappedArticleGroupViewAll(
-        section.contextModule as ContextModule,
-        viewAll?.ownerType as ScreenOwnerType
-      )
+    if (!section.articlesConnection) {
+      return null
     }
+
+    const handleTitlePress = () => {
+      if (viewAll?.href) {
+        tracking.tappedArticleGroupViewAll(
+          section.contextModule as ContextModule,
+          viewAll?.ownerType as ScreenOwnerType
+        )
+      }
+    }
+
+    return (
+      <Flex {...flexProps}>
+        <ArticlesRail
+          articlesConnection={section.articlesConnection}
+          onTitlePress={handleTitlePress}
+          onPress={(article, index) => {
+            tracking.tappedArticleGroup(
+              article.internalID,
+              article.slug,
+              section.contextModule as ContextModule,
+              index
+            )
+          }}
+          title={section.component?.title ?? ""}
+          subtitle={section.component?.description ?? ""}
+          titleHref={viewAll?.href}
+        />
+
+        <HomeViewSectionSentinel
+          contextModule={section.contextModule as ContextModule}
+          index={index}
+        />
+      </Flex>
+    )
   }
-
-  return (
-    <Flex {...flexProps}>
-      <ArticlesRail
-        articlesConnection={section.articlesConnection}
-        onTitlePress={handleTitlePress}
-        onPress={(article, index) => {
-          tracking.tappedArticleGroup(
-            article.internalID,
-            article.slug,
-            section.contextModule as ContextModule,
-            index
-          )
-        }}
-        title={section.component?.title ?? ""}
-        subtitle={section.component?.description ?? ""}
-        titleHref={viewAll?.href}
-      />
-
-      <HomeViewSectionSentinel
-        contextModule={section.contextModule as ContextModule}
-        index={index}
-      />
-    </Flex>
-  )
-}
+)
 
 const sectionFragment = graphql`
   fragment HomeViewSectionArticles_section on HomeViewSectionArticles {
@@ -117,30 +115,26 @@ const HomeViewSectionArticlesPlaceholder: React.FC<FlexProps> = (flexProps) => {
   )
 }
 
-export const HomeViewSectionArticlesQueryRenderer: React.FC<SectionSharedProps> = memo(
-  withSuspense({
-    Component: ({ sectionID, index, ...flexProps }) => {
-      const data = useLazyLoadQuery<HomeViewSectionArticlesQuery>(
-        homeViewSectionArticlesQuery,
-        {
-          id: sectionID,
+export const HomeViewSectionArticlesQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
+  Component: ({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionArticlesQuery>(
+      homeViewSectionArticlesQuery,
+      {
+        id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
         },
-        {
-          networkCacheConfig: {
-            force: false,
-          },
-        }
-      )
-
-      if (!data.homeView.section) {
-        return null
       }
+    )
 
-      return (
-        <HomeViewSectionArticles section={data.homeView.section} index={index} {...flexProps} />
-      )
-    },
-    LoadingFallback: HomeViewSectionArticlesPlaceholder,
-    ErrorFallback: NoFallback,
-  })
-)
+    if (!data.homeView.section) {
+      return null
+    }
+
+    return <HomeViewSectionArticles section={data.homeView.section} index={index} {...flexProps} />
+  },
+  LoadingFallback: HomeViewSectionArticlesPlaceholder,
+  ErrorFallback: NoFallback,
+})
