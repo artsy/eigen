@@ -11,7 +11,7 @@ import {
 } from "app/Scenes/HomeView/helpers/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { memo } from "react"
+import { memo, useCallback } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
@@ -29,6 +29,18 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = memo(
     const articlesConnection = useFragment(articlesConnectionFragment, restProps.articlesConnection)
 
     const articles = extractNodes(articlesConnection)
+
+    const renderItem = useCallback(
+      ({ item, index }) => (
+        <ArticleCardContainer
+          onPress={() => {
+            onPress?.(item, index)
+          }}
+          article={item}
+        />
+      ),
+      [onPress]
+    )
 
     if (!articles.length) {
       return null
@@ -54,15 +66,9 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = memo(
             initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
             windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
             data={articles}
+            disableVirtualization
             keyExtractor={(item) => `${item.internalID}`}
-            renderItem={({ item, index }) => (
-              <ArticleCardContainer
-                onPress={() => {
-                  onPress?.(item, index)
-                }}
-                article={item}
-              />
-            )}
+            renderItem={renderItem}
           />
         </Flex>
       </Flex>
