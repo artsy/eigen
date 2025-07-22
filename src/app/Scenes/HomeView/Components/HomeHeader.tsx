@@ -4,9 +4,10 @@ import { GlobalSearchInput } from "app/Components/GlobalSearchInput/GlobalSearch
 import { PaymentFailureBanner } from "app/Scenes/HomeView/Components/PaymentFailureBanner"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { memo } from "react"
 import { ActivityIndicator } from "./ActivityIndicator"
 
-export const HomeHeader: React.FC = () => {
+export const HomeHeader: React.FC = memo(() => {
   const showPaymentFailureBanner = useFeatureFlag("AREnablePaymentFailureBanner")
   const hasUnseenNotifications = GlobalStore.useAppState(
     (state) => state.bottomTabs.hasUnseenNotifications
@@ -27,4 +28,4 @@ export const HomeHeader: React.FC = () => {
       </Flex>
     </Flex>
   )
-}
+})
