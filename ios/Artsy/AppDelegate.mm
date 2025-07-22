@@ -31,6 +31,8 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import "RNBootSplash.h"
 
+#import <ReactAppDependencyProvider/RCTAppDependencyProvider.h>
+
 @interface ARAppDelegate ()
 @property (strong, nonatomic, readwrite) NSString *referralURLRepresentation;
 @property (strong, nonatomic, readwrite) NSString *landingURLRepresentation;
@@ -102,6 +104,7 @@ static ARAppDelegate *_sharedInstanceOverride = nil;
     [self setupSharedEmission];
 
     self.moduleName = @"main";
+    self.dependencyProvider = [RCTAppDependencyProvider new];
 
     // You can add your custom initial props in the dictionary below.
     // They will be passed down to the ViewController used by React Native.
