@@ -14,13 +14,20 @@ import { Fair_fair$data, Fair_fair$key } from "__generated__/Fair_fair.graphql"
 import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
 import { useToast } from "app/Components/Toast/toastHook"
-import { FairArtworks } from "app/Scenes/Fair/Components/FairArtworks"
-import { FairExhibitorsFragmentContainer } from "app/Scenes/Fair/Components/FairExhibitors"
-import { FairOverview } from "app/Scenes/Fair/FairOverview"
+import {
+  fairArtworksQuery,
+  FairArtworksQueryRenderer,
+} from "app/Scenes/Fair/Components/FairArtworks"
+import {
+  fairExhibitorsQuery,
+  FairExhibitorsQueryRenderer,
+} from "app/Scenes/Fair/Components/FairExhibitors"
+import { FairOverviewQueryRenderer } from "app/Scenes/Fair/FairOverview"
 import { goBack } from "app/system/navigation/navigate"
 import { PlaceholderGrid } from "app/utils/placeholderGrid"
+import { prefetchQuery } from "app/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
-import React, { Suspense } from "react"
+import React, { Suspense, useCallback, useEffect } from "react"
 import { TouchableOpacity } from "react-native"
 import RNShare from "react-native-share"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
@@ -34,7 +41,24 @@ interface FairProps {
 export const Fair: React.FC<FairProps> = ({ fair }) => {
   const data = useFragment(fragment, fair)
   const tracking = useTracking()
+
   const toast = useToast()
+
+  useEffect(() => {
+    prefetchQuery({
+      query: fairExhibitorsQuery,
+      variables: { fairID: data.internalID },
+    })
+
+    prefetchQuery({
+      query: fairArtworksQuery,
+      variables: { fairID: data.internalID },
+    })
+  }, [data.internalID])
+
+  const renderBelowHeaderComponent = useCallback(() => {
+    return <FairHeader fair={data} />
+  }, [data])
 
   if (!data) {
     return null
@@ -87,7 +111,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
         initialTabName="Overview"
         title={`${data.name}`}
         showLargeHeaderText={false}
-        BelowTitleHeaderComponent={() => <FairHeader fair={data} />}
+        BelowTitleHeaderComponent={renderBelowHeaderComponent}
         onTabChange={({ tabName }) => handleTabChange(tabName)}
         headerProps={{
           onBack: goBack,
@@ -106,14 +130,14 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
       >
         <Tabs.Tab name="Overview" label="Overview">
           <Tabs.Lazy>
-            <FairOverview fair={data} />
+            <FairOverviewQueryRenderer fairID={data.internalID} />
           </Tabs.Lazy>
         </Tabs.Tab>
 
         {!!hasExhibitors ? (
           <Tabs.Tab name="Exhibitors" label="Exhibitors">
             <Tabs.Lazy>
-              <FairExhibitorsFragmentContainer fair={data} />
+              <FairExhibitorsQueryRenderer fairID={data.internalID} />
             </Tabs.Lazy>
           </Tabs.Tab>
         ) : null}
@@ -131,7 +155,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                 </Flex>
               }
             >
-              <FairArtworks fair={data} />
+              <FairArtworksQueryRenderer fairID={data.internalID} />
             </Suspense>
           </ArtworkFiltersStoreProvider>
         </Tabs.Tab>
@@ -142,11 +166,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
 
 const fragment = graphql`
   fragment Fair_fair on Fair {
-    ...FairOverview_fair
     ...FairHeader_fair
-    ...FairArtworks_fair @arguments(input: { sort: "-decayed_merch" })
-    ...FairExhibitors_fair
-
     internalID
     slug
     name
@@ -158,8 +178,8 @@ const fragment = graphql`
 `
 
 export const FairScreenQuery = graphql`
-  query FairQuery($fairID: String!) {
-    fair(id: $fairID) @principalField {
+  query FairQuery($fairID: String!) @cacheable {
+    fair(id: $fairID) @required(action: THROW) {
       ...Fair_fair
     }
   }
@@ -225,8 +245,6 @@ export const FairPlaceholder: React.FC = () => {
             <SkeletonText>Exhibitors</SkeletonText>
             <SkeletonText>Artworks</SkeletonText>
           </Flex>
-
-          <SkeletonText mx={2}>Fair Text Long Placeholder</SkeletonText>
         </Flex>
       </Skeleton>
     </Flex>

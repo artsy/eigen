@@ -1,21 +1,31 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex } from "@artsy/palette-mobile"
-import { FairExhibitorRail_show$data } from "__generated__/FairExhibitorRail_show.graphql"
-import { ArtworkRail } from "app/Components/ArtworkRail/ArtworkRail"
+import { Flex, SkeletonText, Spacer } from "@artsy/palette-mobile"
+import { FairExhibitorRailQuery } from "__generated__/FairExhibitorRailQuery.graphql"
+import {
+  FairExhibitorRail_show$data,
+  FairExhibitorRail_show$key,
+} from "__generated__/FairExhibitorRail_show.graphql"
+import { ArtworkRail, ArtworkRailPlaceholder } from "app/Components/ArtworkRail/ArtworkRail"
 import { SectionTitle } from "app/Components/SectionTitle"
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   CollectorSignals,
   getArtworkSignalTrackingFields,
 } from "app/utils/getArtworkSignalTrackingFields"
-import { createFragmentContainer, graphql } from "react-relay"
+import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { memo } from "react"
+import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface FairExhibitorRailProps {
-  show: FairExhibitorRail_show$data
+  show: FairExhibitorRail_show$key
 }
 
-const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
+export const FairExhibitorRail: React.FC<FairExhibitorRailProps> = memo(({ show: showProp }) => {
+  const show = useFragment(fairExhibitorRailFragment, showProp)
+
   const { trackEvent } = useTracking()
 
   const artworks = extractNodes(show?.artworksConnection)
@@ -51,42 +61,84 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
             )
           )
         }}
+        onMorePress={() => {
+          if (!viewAllUrl) return
+
+          trackEvent(tracks.tappedShow(show))
+          navigate(viewAllUrl)
+        }}
+        showSaveIcon
       />
     </>
   )
-}
+})
 
-export const FairExhibitorRailFragmentContainer = createFragmentContainer(FairExhibitorRail, {
-  show: graphql`
-    fragment FairExhibitorRail_show on Show {
+const fairExhibitorRailFragment = graphql`
+  fragment FairExhibitorRail_show on Show {
+    internalID
+    slug
+    href
+    partner {
+      ... on Partner {
+        name
+      }
+      ... on ExternalPartner {
+        name
+      }
+    }
+    counts {
+      artworks
+    }
+    fair {
       internalID
       slug
-      href
-      partner {
-        ... on Partner {
-          name
-        }
-        ... on ExternalPartner {
-          name
-        }
-      }
-      counts {
-        artworks
-      }
-      fair {
-        internalID
-        slug
-      }
-      artworksConnection(first: 20) {
-        edges {
-          node {
-            ...ArtworkRail_artworks
-          }
+    }
+    artworksConnection(first: 10) {
+      edges {
+        node {
+          ...ArtworkRail_artworks
         }
       }
     }
-  `,
+  }
+`
+
+const fairExhibitorRailQuery = graphql`
+  query FairExhibitorRailQuery($id: String!) {
+    show(id: $id) {
+      ...FairExhibitorRail_show
+    }
+  }
+`
+export const FairExhibitorRailQueryRenderer: React.FC<{ showID: string }> = withSuspense({
+  Component: ({ showID }) => {
+    const data = useLazyLoadQuery<FairExhibitorRailQuery>(fairExhibitorRailQuery, { id: showID })
+
+    if (!data.show) {
+      return null
+    }
+
+    return <FairExhibitorRail show={data.show} />
+  },
+  LoadingFallback: () => <FairExhibitorRailPlaceholder />,
+  ErrorFallback: NoFallback,
 })
+
+const FairExhibitorRailPlaceholder: React.FC = () => {
+  return (
+    <Flex mx={2}>
+      <SkeletonText variant="sm-display">Arwtworks Rail</SkeletonText>
+
+      <Spacer y={0.5} />
+
+      <SkeletonText variant="xs">X works</SkeletonText>
+
+      <Spacer y={2} />
+
+      <ArtworkRailPlaceholder />
+    </Flex>
+  )
+}
 
 const tracks = {
   tappedArtwork: (

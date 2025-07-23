@@ -5,12 +5,37 @@ index 9a7c544..a565075 100644
 @@ -37,7 +37,7 @@ public protocol AppLoaderTaskDelegate: AnyObject {
    func appLoaderTaskDidFinishAllLoading(_: AppLoaderTask)
  }
- 
+
 -public enum RemoteCheckResultNotAvailableReason {
 +public enum RemoteCheckResultNotAvailableReason: String {
    /**
     * No update manifest or rollback directive received from the update server.
     */
+diff --git a/node_modules/expo-updates/ios/EXUpdates/ReactDelegateHandler/ExpoUpdatesReactDelegateHandler.swift b/node_modules/expo-updates/ios/EXUpdates/ReactDelegateHandler/ExpoUpdatesReactDelegateHandler.swift
+index bc85786..d1b3233 100644
+--- a/node_modules/expo-updates/ios/EXUpdates/ReactDelegateHandler/ExpoUpdatesReactDelegateHandler.swift
++++ b/node_modules/expo-updates/ios/EXUpdates/ReactDelegateHandler/ExpoUpdatesReactDelegateHandler.swift
+@@ -44,13 +44,16 @@ public final class ExpoUpdatesReactDelegateHandler: ExpoReactDelegateHandler, Ap
+     // We should use the splashscreens view here, otherwise a black view appears in the middle of the launch sequence.
+     if let view = createSplashScreenview(), let rootView = self.deferredRootView {
+       view.translatesAutoresizingMaskIntoConstraints = false
+-      // The deferredRootView needs to be dark mode aware so we set the color to be the same as the splashscreen background.
+-      rootView.backgroundColor = UIColor(named: "SplashScreenBackground") ?? .white
++      // Use the BG color from the splash screen view, falling back to the asset
++      let bgColor = view.backgroundColor ?? UIColor(named: "BootSplashBackground-987182")
++      rootView.backgroundColor = bgColor ?? UIColor.white
+       rootView.addSubview(view)
+
+       NSLayoutConstraint.activate([
+-        view.centerXAnchor.constraint(equalTo: rootView.centerXAnchor),
+-        view.centerYAnchor.constraint(equalTo: rootView.centerYAnchor)
++        view.leadingAnchor.constraint(equalTo: rootView.leadingAnchor),
++        view.trailingAnchor.constraint(equalTo: rootView.trailingAnchor),
++        view.topAnchor.constraint(equalTo: rootView.topAnchor),
++        view.bottomAnchor.constraint(equalTo: rootView.bottomAnchor)
+       ])
+     }
+     return self.deferredRootView
 diff --git a/node_modules/expo-updates/ios/EXUpdates/UpdatesModule.swift b/node_modules/expo-updates/ios/EXUpdates/UpdatesModule.swift
 index 517f137..f197d37 100644
 --- a/node_modules/expo-updates/ios/EXUpdates/UpdatesModule.swift

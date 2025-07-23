@@ -82,6 +82,12 @@ export const features = {
     readyForRelease: true,
     echoFlagKey: "ARShowCreateAlertInArtistArtworksListFooter",
   },
+  AREnabledDiscoverDailyNegativeSignals: {
+    description: "Enable negative signals in Discover Daily",
+    readyForRelease: false,
+    showInDevMenu: true,
+    echoFlagKey: "AREnabledDiscoverDailyNegativeSignals",
+  },
   AREnablePartnerOffersNotificationSwitch: {
     description: "Enable partner offers notification switch",
     readyForRelease: true,
@@ -188,14 +194,8 @@ export const features = {
     description: "Enable new order details screen",
     echoFlagKey: "AREnableNewOrderDetails",
   },
-  AREnableBlueActivityDots: {
-    readyForRelease: true,
-    showInDevMenu: true,
-    description: "Enable blue activity dots",
-    echoFlagKey: "AREnableBlueActivityDots",
-  },
   AREnableProgressiveOnboardingPriceRangeHome: {
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     description: "Enable progressive onboarding price range home",
     echoFlagKey: "AREnableProgressiveOnboardingPriceRangeHome",

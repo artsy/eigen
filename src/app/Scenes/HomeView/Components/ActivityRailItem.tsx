@@ -14,6 +14,7 @@ import { useMarkNotificationAsRead } from "app/Scenes/Activity/mutations/useMark
 import { getActivityItemHref } from "app/Scenes/Activity/utils/getActivityItemHref"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { memo } from "react"
 import { graphql, useFragment } from "react-relay"
 
 interface ActivityRailItemProps {
@@ -24,7 +25,7 @@ interface ActivityRailItemProps {
 export const ACTIVITY_RAIL_ARTWORK_IMAGE_SIZE = 60
 export const ACTIVITY_RAIL_ITEM_WIDTH = 240
 
-export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
+export const ActivityRailItem: React.FC<ActivityRailItemProps> = memo((props) => {
   const enableBlurhash = useFeatureFlag("ARShowBlurhashImagePlaceholder")
 
   const markAsRead = useMarkNotificationAsRead()
@@ -93,7 +94,7 @@ export const ActivityRailItem: React.FC<ActivityRailItemProps> = (props) => {
       </Flex>
     </RouterLink>
   )
-}
+})
 
 interface HeadlineProps {
   headline: string

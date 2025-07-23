@@ -7,6 +7,16 @@ import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
+// Mock memo to return the same instance of the component
+// issue: https://github.com/facebook/react/issues/17301
+jest.mock("react", () => {
+  const actualReact = jest.requireActual("react")
+  return {
+    ...actualReact,
+    memo: (component: React.ComponentType<any>) => component,
+  }
+})
+
 describe("ArtworksInSeriesRail", () => {
   const { renderWithRelay } = setupTestWrapper<ArtworksInSeriesRailTestsQuery>({
     Component: ({ artwork }) => <ArtworksInSeriesRail artwork={artwork!} />,

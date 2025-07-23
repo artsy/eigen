@@ -15,36 +15,34 @@ interface HomeViewSectionShowsProps extends FlexProps {
   index: number
 }
 
-export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = ({
-  section: sectionProp,
-  index,
-  ...flexProps
-}) => {
-  const section = useFragment(fragment, sectionProp)
-  const component = section.component
-  const tracking = useHomeViewTracking()
+export const HomeViewSectionShows: React.FC<HomeViewSectionShowsProps> = memo(
+  ({ section: sectionProp, index, ...flexProps }) => {
+    const section = useFragment(fragment, sectionProp)
+    const component = section.component
+    const tracking = useHomeViewTracking()
 
-  return (
-    <Flex>
-      <ShowsRailContainer
-        title={component?.title || "Shows"}
-        onTrack={(show, index) => {
-          tracking.tappedShowGroup(
-            show.internalID,
-            show.slug,
-            section.contextModule as ContextModule,
-            index
-          )
-        }}
-        {...flexProps}
-      />
-      <HomeViewSectionSentinel
-        contextModule={section.contextModule as ContextModule}
-        index={index}
-      />
-    </Flex>
-  )
-}
+    return (
+      <Flex>
+        <ShowsRailContainer
+          title={component?.title || "Shows"}
+          onTrack={(show, index) => {
+            tracking.tappedShowGroup(
+              show.internalID,
+              show.slug,
+              section.contextModule as ContextModule,
+              index
+            )
+          }}
+          {...flexProps}
+        />
+        <HomeViewSectionSentinel
+          contextModule={section.contextModule as ContextModule}
+          index={index}
+        />
+      </Flex>
+    )
+  }
+)
 
 const fragment = graphql`
   fragment HomeViewSectionShows_section on HomeViewSectionShows {
@@ -77,28 +75,26 @@ const homeViewSectionShowsQuery = graphql`
   }
 `
 
-export const HomeViewSectionShowsQueryRenderer: React.FC<SectionSharedProps> = memo(
-  withSuspense({
-    Component: ({ sectionID, index, ...flexProps }) => {
-      const data = useLazyLoadQuery<HomeViewSectionShowsQuery>(
-        homeViewSectionShowsQuery,
-        {
-          id: sectionID,
+export const HomeViewSectionShowsQueryRenderer: React.FC<SectionSharedProps> = withSuspense({
+  Component: ({ sectionID, index, ...flexProps }) => {
+    const data = useLazyLoadQuery<HomeViewSectionShowsQuery>(
+      homeViewSectionShowsQuery,
+      {
+        id: sectionID,
+      },
+      {
+        networkCacheConfig: {
+          force: false,
         },
-        {
-          networkCacheConfig: {
-            force: false,
-          },
-        }
-      )
-
-      if (!data.homeView.section) {
-        return null
       }
+    )
 
-      return <HomeViewSectionShows section={data.homeView.section} index={index} {...flexProps} />
-    },
-    LoadingFallback: HomeViewSectionShowsPlaceholder,
-    ErrorFallback: NoFallback,
-  })
-)
+    if (!data.homeView.section) {
+      return null
+    }
+
+    return <HomeViewSectionShows section={data.homeView.section} index={index} {...flexProps} />
+  },
+  LoadingFallback: HomeViewSectionShowsPlaceholder,
+  ErrorFallback: NoFallback,
+})

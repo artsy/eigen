@@ -1,21 +1,23 @@
-import { ChevronDownIcon, ShareIcon } from "@artsy/icons/native"
-import { DEFAULT_HIT_SLOP, Flex, Screen, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { Screen, Spacer } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
+import { InfiniteDiscoveryNegativeSignalsBottomSheetQuery$variables } from "__generated__/InfiniteDiscoveryNegativeSignalsBottomSheetQuery.graphql"
 import { InfiniteDiscoveryQueryRendererQuery$data } from "__generated__/InfiniteDiscoveryQueryRendererQuery.graphql"
-import { getShareURL } from "app/Components/ShareSheet/helpers"
-import { useToast } from "app/Components/Toast/toastHook"
 import { InfiniteDiscoveryBottomSheet } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryBottomSheet"
+import { InfiniteDiscoveryHeader } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryHeader"
+import {
+  InfiniteDiscoveryNegativeSignalsBottomSheet,
+  negativeSignalsQuery,
+} from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryNegativeSignalsBottomSheet"
 import { InfiniteDiscoveryOnboarding } from "app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryOnboarding"
 import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
 import { useCreateUserSeenArtwork } from "app/Scenes/InfiniteDiscovery/mutations/useCreateUserSeenArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
-import { goBack, navigate } from "app/system/navigation/navigate"
-import { pluralize } from "app/utils/pluralize"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { prefetchQuery } from "app/utils/queryPrefetching"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Key, useCallback, useEffect, useMemo, useState } from "react"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import RNShare from "react-native-share"
 
 interface InfiniteDiscoveryProps {
   fetchMoreArtworks: (undiscoveredArtworks: string[]) => void
@@ -30,16 +32,12 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
   fetchMoreArtworks,
   artworks,
 }) => {
-  const toast = useToast()
   const track = useInfiniteDiscoveryTracking()
   const [commitMutation] = useCreateUserSeenArtwork()
+  const negativeSignalsEnabled = useFeatureFlag("AREnabledDiscoverDailyNegativeSignals")
 
   const hasInteractedWithOnboarding = GlobalStore.useAppState(
     (state) => state.infiniteDiscovery.hasInteractedWithOnboarding
-  )
-
-  const savedArtworksCount = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.savedArtworksCount
   )
 
   const [topArtworkId, setTopArtworkId] = useState<string | null>(null)
@@ -73,6 +71,16 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
       })
     }
   }, [artworks])
+
+  // Prefetches the negative signals bottom sheet when top card changes
+  useEffect(() => {
+    if (topArtworkId && negativeSignalsEnabled) {
+      prefetchQuery<InfiniteDiscoveryNegativeSignalsBottomSheetQuery$variables>({
+        query: negativeSignalsQuery,
+        variables: { id: topArtworkId },
+      })
+    }
+  }, [topArtworkId, negativeSignalsEnabled])
 
   const topCardIndex = artworks.findIndex((artwork) => artwork.internalID === topArtworkId)
   const unswipedCardIds = artworks
@@ -155,66 +163,6 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     fetchMoreArtworks(unswipedCardIds)
   }, [fetchMoreArtworks, unswipedCardIds])
 
-  const handleExitPressed = () => {
-    if (savedArtworksCount > 0) {
-      toast.show(
-        `Nice! You saved ${savedArtworksCount} ${pluralize("artwork", savedArtworksCount)}.`,
-        "bottom",
-        {
-          onPress: () => {
-            track.tappedSummary()
-            navigate("/favorites/saves")
-          },
-          backgroundColor: "green100",
-          description: (
-            <Text
-              variant="xs"
-              color="mono0"
-              style={{ textDecorationLine: "underline" }}
-              onPress={() => navigate("/favorites/saves")}
-            >
-              Tap to see all of your saved artworks.
-            </Text>
-          ),
-          duration: "long",
-        }
-      )
-    }
-
-    track.tappedExit()
-
-    goBack()
-  }
-
-  const hideShareButton = !topArtwork || !topArtwork.slug || !topArtwork.title
-
-  const handleSharePressed = () => {
-    if (!topArtwork || !topArtwork.slug || !topArtwork.title) {
-      return
-    }
-
-    track.tappedShare(topArtwork.internalID, topArtwork.slug)
-
-    const url = getShareURL(
-      `/artwork/${topArtwork.slug}?utm_content=discover-daily-share&utm_medium=product-share`
-    )
-    const message = `View ${topArtwork.title} on Artsy`
-
-    RNShare.open({
-      title: topArtwork.title,
-      message: message + "\n" + url,
-      failOnCancel: false,
-    })
-      .then((result) => {
-        if (result.success) {
-          track.share(topArtwork.internalID, topArtwork.slug, result.message)
-        }
-      })
-      .catch((error) => {
-        console.error("InfiniteDiscovery.tsx", error)
-      })
-  }
-
   // Get the last 2 artworks from the infinite discovery
   // We are showing the last 2 artworks instead of 2 because we reverse the artworks array
   // Inside the Swiper component
@@ -224,38 +172,17 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     <Screen safeArea={false}>
       <InfiniteDiscoveryOnboarding artworks={onboardingArtworks} />
 
-      <Screen.Body fullwidth style={{ marginTop: insets.top }}>
-        <Flex zIndex={-100}>
-          <Screen.Header
-            title="Discover Daily"
-            leftElements={
-              <Touchable
-                accessibilityRole="button"
-                accessibilityLabel="Exit Discover Daily"
-                onPress={handleExitPressed}
-                testID="close-icon"
-                hitSlop={DEFAULT_HIT_SLOP}
-                haptic
-              >
-                <ChevronDownIcon />
-              </Touchable>
-            }
-            hideRightElements={hideShareButton}
-            rightElements={
-              <Touchable
-                accessibilityRole="button"
-                accessibilityLabel="Share Artwork"
-                onPress={handleSharePressed}
-                testID="share-icon"
-                hitSlop={DEFAULT_HIT_SLOP}
-                haptic
-              >
-                <ShareIcon width={24} height={24} />
-              </Touchable>
-            }
-          />
-        </Flex>
+      {/*
+        disableKeyboardAvoidance necessary to avoid a white area appearing when hiding the keyboard
+        related issues:
+          - https://github.com/facebook/react-native/issues/27526
+          - https://github.com/facebook/react-native/issues/47140
+      */}
+      <Screen.Body fullwidth style={{ marginTop: insets.top }} disableKeyboardAvoidance>
+        <InfiniteDiscoveryHeader topArtwork={topArtwork} />
+
         <Spacer y={1} />
+
         <Swiper
           cards={artworks}
           onReachTriggerIndex={handleFetchMore}
@@ -265,11 +192,19 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
           onSwipe={handleSwipe}
         />
         {!!topArtwork && (
-          <InfiniteDiscoveryBottomSheet
-            artworkID={topArtwork.internalID}
-            artworkSlug={topArtwork.slug}
-            artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
-          />
+          <>
+            <InfiniteDiscoveryBottomSheet
+              artworkID={topArtwork.internalID}
+              artworkSlug={topArtwork.slug}
+              artistIDs={topArtwork.artists.map((data) => data?.internalID ?? "")}
+            />
+            {!!negativeSignalsEnabled && (
+              <InfiniteDiscoveryNegativeSignalsBottomSheet
+                artworkID={topArtwork.internalID}
+                key={topArtwork.internalID}
+              />
+            )}
+          </>
         )}
       </Screen.Body>
     </Screen>

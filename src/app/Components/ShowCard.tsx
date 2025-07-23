@@ -2,6 +2,7 @@ import { toTitleCase } from "@artsy/to-title-case"
 import { ShowCard_show$data } from "__generated__/ShowCard_show.graphql"
 import { CardWithMetaData } from "app/Components/Cards/CardWithMetaData"
 import { compact } from "lodash"
+import { memo } from "react"
 import { GestureResponderEvent, ViewProps } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -11,7 +12,7 @@ interface ShowCardProps extends ViewProps {
   onPress?(event: GestureResponderEvent): void
 }
 
-export const ShowCard: React.FC<ShowCardProps> = ({ show, isFluid, onPress }) => {
+export const ShowCard: React.FC<ShowCardProps> = memo(({ show, isFluid, onPress }) => {
   const imageURL = show.metaImage?.url
 
   const showCity = getShowCity({
@@ -36,7 +37,7 @@ export const ShowCard: React.FC<ShowCardProps> = ({ show, isFluid, onPress }) =>
       onPress={onPress}
     />
   )
-}
+})
 
 export const getShowCity = ({
   showName,

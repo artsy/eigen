@@ -31,7 +31,7 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
-import { memo } from "react"
+import { memo, useCallback } from "react"
 import {
   createPaginationContainer,
   graphql,
@@ -70,6 +70,26 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
     })
   }
 
+  const renderItem = useCallback(
+    ({ item, index }) => {
+      return (
+        <ArtistCardContainer
+          artist={item}
+          showDefaultFollowButton
+          onPress={() => {
+            tracking.tappedArtistGroup(
+              item.internalID,
+              item.slug,
+              section.contextModule as ContextModule,
+              index
+            )
+          }}
+        />
+      )
+    },
+    [section.contextModule, tracking]
+  )
+
   if (!section.artistsConnection?.totalCount) {
     return null
   }
@@ -97,6 +117,7 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
       <CardRailFlatList<Artist>
         data={artists}
         keyExtractor={(artist) => artist.internalID}
+        disableVirtualization
         onEndReached={onEndReached}
         ItemSeparatorComponent={() => <Spacer x={1} />}
         ListFooterComponent={() => {
@@ -116,22 +137,7 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
 
           return <Spacer x={2} />
         }}
-        renderItem={({ item: artist, index }) => {
-          return (
-            <ArtistCardContainer
-              artist={artist}
-              showDefaultFollowButton
-              onPress={() => {
-                tracking.tappedArtistGroup(
-                  artist.internalID,
-                  artist.slug,
-                  section.contextModule as ContextModule,
-                  index
-                )
-              }}
-            />
-          )
-        }}
+        renderItem={renderItem}
         initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
         windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
       />

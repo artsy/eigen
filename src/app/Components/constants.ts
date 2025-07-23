@@ -2,7 +2,7 @@ import { PixelRatio } from "react-native"
 
 export const PAGE_SIZE = 10
 export const FAIR2_ARTWORKS_PAGE_SIZE = 30
-export const FAIR2_EXHIBITORS_PAGE_SIZE = 10
+export const FAIR2_EXHIBITORS_PAGE_SIZE = 5
 export const SHOW2_ARTWORKS_PAGE_SIZE = 30
 export const SAVED_SERCHES_PAGE_SIZE = 20
 export const ALERTS_PAGE_SIZE = 10

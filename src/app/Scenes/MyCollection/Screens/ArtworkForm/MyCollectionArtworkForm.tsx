@@ -26,7 +26,8 @@ import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { refreshMyCollection, refreshMyCollectionInsights } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect, useRef, useState } from "react"
-import { Alert, Dimensions } from "react-native"
+import { Alert } from "react-native"
+import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useTracking } from "react-tracking"
 import { SavingArtworkModal } from "./Components/SavingArtworkModal"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
@@ -151,7 +152,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
     validationSchema: artworkSchema,
   })
 
-  const { width, height } = Dimensions.get("screen")
+  const safeAreaInsets = useSafeAreaInsets()
 
   return (
     <NavigationIndependentTree>
@@ -160,7 +161,11 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           <Stack.Navigator
             screenOptions={{
               headerShown: false,
-              cardStyle: { backgroundColor: color("background") },
+              cardStyle: {
+                backgroundColor: color("background"),
+                paddingTop: safeAreaInsets.top,
+                paddingBottom: safeAreaInsets.bottom,
+              },
             }}
           >
             {mode === "add" && (
@@ -180,19 +185,9 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           </Stack.Navigator>
 
           {mode === "add" && loading ? (
-            <FadeIn style={{ position: "absolute" }} slide>
-              <Flex
-                height={height}
-                width={width}
-                left={0}
-                bottom={0}
-                top={0}
-                right={0}
-                position="absolute"
-                testID="saving-artwork-modal"
-              >
+            <FadeIn slide>
+              <Flex height="100%" width="100%" testID="saving-artwork-modal">
                 <SavingArtworkModal
-                  testID="saving-artwork-modal"
                   isVisible={loading}
                   loadingText={isArtworkSaved ? savingArtworkModalDisplayText : "Saving artwork"}
                 />
@@ -201,16 +196,8 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
           ) : null}
 
           {mode === "edit" && loading ? (
-            <FadeIn style={{ position: "absolute" }} slide>
-              <Flex
-                height={height}
-                width={width}
-                left={0}
-                bottom={0}
-                top={0}
-                right={0}
-                testID="saving-artwork-modal"
-              >
+            <FadeIn slide style={{ position: "absolute", height: "100%", width: "100%" }}>
+              <Flex flex={1} testID="saving-artwork-modal">
                 <LoadingSpinner />
               </Flex>
             </FadeIn>
@@ -229,7 +216,7 @@ export const MyCollectionArtworkAdd: React.FC<{
 
 export const MyCollectionArtworkFormScreen: React.FC<MyCollectionArtworkFormProps> = (props) => {
   return (
-    <Screen>
+    <Screen safeArea={false}>
       <MyCollectionArtworkStore.Provider runtimeModel={props}>
         <MyCollectionArtworkForm {...props} />
       </MyCollectionArtworkStore.Provider>
