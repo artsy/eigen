@@ -2,9 +2,8 @@ import { Stopwatch, Flex, Text } from "@artsy/palette-mobile"
 import { ActivityItem_notification$data } from "__generated__/ActivityItem_notification.graphql"
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { Time, getTimer } from "app/utils/getTimer"
+import { DateTime } from "luxon"
 import { FC, useEffect, useRef, useState } from "react"
-
-const INTERVAL = 1000
 
 interface ExpiresInTimerProps {
   // TOFIX: this should have it's own relay fragment, no prop drilling with relay data!
@@ -27,6 +26,22 @@ export const ExpiresInTimer: FC<ExpiresInTimerProps> = ({ item }) => {
   const [hasEnded, setHasEnded] = useState(getTimer(expiresAt)["hasEnded"])
 
   useEffect(() => {
+    // Do not update the timer if the offer is expiring in longer than an hour
+    if (
+      DateTime.fromISO(expiresAt ?? "")
+        .diffNow()
+        .as("hours") > 1
+    ) {
+      return
+    }
+
+    const INTERVAL =
+      DateTime.fromISO(expiresAt ?? "")
+        .diffNow()
+        .as("minutes") < 5
+        ? 1000
+        : 60000
+
     intervalId.current = setInterval(() => {
       const { hasEnded: timerHasEnded, time: timerTime } = getTimer(expiresAt)
 
