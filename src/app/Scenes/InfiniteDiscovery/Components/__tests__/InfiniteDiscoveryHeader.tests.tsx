@@ -26,6 +26,7 @@ const mockTrack = {
   tappedExit: jest.fn(),
   tappedSummary: jest.fn(),
   tappedShare: jest.fn(),
+  tappedMore: jest.fn(),
   share: jest.fn(),
 }
 
@@ -101,6 +102,7 @@ describe("InfiniteDiscoveryHeader", () => {
       const rightButton = screen.getByTestId("top-right-icon")
       fireEvent.press(rightButton)
 
+      expect(mockTrack.tappedMore).toHaveBeenCalledWith("artwork-id", "test-artwork")
       expect(setMoreInfoSheetVisibleSpy).toHaveBeenCalledWith(true)
     })
 
@@ -121,7 +123,7 @@ describe("InfiniteDiscoveryHeader", () => {
       const rightButton = screen.getByTestId("top-right-icon")
       fireEvent.press(rightButton)
 
-      expect(mockTrack.tappedShare).toHaveBeenCalledWith("artwork-id", "test-artwork")
+      expect(mockTrack.tappedShare).toHaveBeenCalledWith("artwork-id", "test-artwork", "artwork")
       expect(RNShare.open).toHaveBeenCalledWith({
         title: "Test Artwork",
         message:
