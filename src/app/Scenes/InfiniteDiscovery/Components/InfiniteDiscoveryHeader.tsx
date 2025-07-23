@@ -57,7 +57,7 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
       return
     }
 
-    track.tappedShare(topArtwork.internalID, topArtwork.slug)
+    track.tappedShare(topArtwork.internalID, topArtwork.slug, "artwork")
 
     const url = getShareURL(
       `/artwork/${topArtwork.slug}?utm_content=discover-daily-share&utm_medium=product-share`
@@ -80,7 +80,8 @@ export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = (
   }
 
   const handleOnRightButtonPressed = () => {
-    if (negativeSignalsEnabled) {
+    if (negativeSignalsEnabled && topArtwork) {
+      track.tappedMore(topArtwork?.internalID, topArtwork?.slug)
       setMoreInfoSheetVisible(true)
     } else {
       handleSharePressed()

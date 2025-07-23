@@ -42,13 +42,15 @@ export const InfiniteDiscoveryNegativeSignals: FC<InfiniteDiscoveryNegativeSigna
     return null
   }
 
+  const artist = data.artists?.[0]
+
   const handleSharePressed = (
     id: string,
     slug: string,
     path: "artwork" | "artist",
     title: string
   ) => {
-    track.tappedShare(id, slug)
+    track.tappedShare(id, slug, path)
 
     const url = getShareURL(
       `/${path}/${slug}?utm_content=discover-daily-share&utm_medium=product-share`
@@ -75,9 +77,11 @@ export const InfiniteDiscoveryNegativeSignals: FC<InfiniteDiscoveryNegativeSigna
   }
 
   const handleSeeFewerArtistArtworks = () => {
-    if (isInFlight || !data.artistNames) {
+    if (isInFlight || !data.artistNames || !artist?.internalID) {
       return
     }
+
+    track.tappedSeeFewerWorks(data.internalID, data.slug, artist.internalID, NEGATIVE_SIGNAL_TEXT)
 
     Alert.alert(`Are you sure? You will no longer see works by ${data.artistNames}.`, undefined, [
       { text: "No" },
@@ -100,13 +104,12 @@ export const InfiniteDiscoveryNegativeSignals: FC<InfiniteDiscoveryNegativeSigna
             }
           })
 
+          track.tappedConfirmSeeFewerWorks(data.internalID, data.slug, artist.internalID)
           collapse()
         },
       },
     ])
   }
-
-  const artist = data.artists?.[0]
 
   return (
     <Flex p={2} flex={1} gap={2}>
@@ -178,7 +181,7 @@ export const InfiniteDiscoveryNegativeSignals: FC<InfiniteDiscoveryNegativeSigna
       >
         <Flex flexDirection="row" alignItems="center" gap={1}>
           <NoArtIcon width={ACCESSIBLE_DEFAULT_ICON_SIZE} height={ACCESSIBLE_DEFAULT_ICON_SIZE} />
-          <Text>See fewer artworks by this artist</Text>
+          <Text>{NEGATIVE_SIGNAL_TEXT}</Text>
         </Flex>
       </Touchable>
     </Flex>
@@ -251,3 +254,5 @@ export const InfiniteDiscoveryNegativeSignalsPlaceholder: FC = () => {
     </Flex>
   )
 }
+
+const NEGATIVE_SIGNAL_TEXT = "See fewer artworks by this artist"

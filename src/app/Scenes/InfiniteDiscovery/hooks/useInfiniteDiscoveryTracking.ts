@@ -1,4 +1,12 @@
-import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import {
+  ActionType,
+  ContextModule,
+  OwnerType,
+  Tapped3Dots,
+  TappedConfirmSeeFewerWorks,
+  TappedSeeFewerWorks,
+  TappedShare,
+} from "@artsy/cohesion"
 import { Schema } from "app/utils/track"
 import { useTracking } from "react-tracking"
 
@@ -49,25 +57,26 @@ export const useInfiniteDiscoveryTracking = () => {
         mode: "swipe",
       })
     },
-    tappedMore: () => {
-      // TODO: ActionType
-      // trackEvent({
-      //   action: ActionType.tappedMore,
-      //   context_module: ContextModule.infiniteDiscovery,
-      //   context_screen_owner_id: artworkId,
-      //   context_screen_owner_slug: artworkSlug,
-      //   context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
-      // })
+    tappedMore: (artworkId: string, artworkSlug: string) => {
+      trackEvent({
+        action: ActionType.tapped3Dots,
+        context_module: ContextModule.infiniteDiscovery,
+        context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+        context_screen_owner_id: artworkId,
+        context_screen_owner_slug: artworkSlug,
+      } as Tapped3Dots)
     },
-    tappedShare: (id: string, slug: string) => {
-      // TODO: check if something else is necessary to differentiate Artist/Artwork share
+    tappedShare: (id: string, slug: string, type: "artwork" | "artist") => {
       trackEvent({
         action: ActionType.tappedShare,
         context_module: ContextModule.infiniteDiscovery,
         context_screen_owner_id: id,
         context_screen_owner_slug: slug,
-        context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
-      })
+        context_screen_owner_type:
+          type === "artwork"
+            ? OwnerType.infiniteDiscoveryArtwork
+            : OwnerType.infiniteDiscoveryArtist,
+      } as TappedShare)
     },
     tappedSummary: () => {
       trackEvent({
@@ -76,6 +85,32 @@ export const useInfiniteDiscoveryTracking = () => {
         context_screen_owner_type: OwnerType.home,
         subject: "Tap here to navigate to your Saves area in your profile.",
       })
+    },
+    tappedSeeFewerWorks: (
+      artworkId: string,
+      artworkSlug: string,
+      artistId: string,
+      subject: string
+    ) => {
+      trackEvent({
+        artist_id: artistId,
+        action: ActionType.tappedSeeFewerWorks,
+        context_module: ContextModule.infiniteDiscovery,
+        context_screen_owner_id: artworkId,
+        context_screen_owner_slug: artworkSlug,
+        context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+        subject,
+      } as TappedSeeFewerWorks)
+    },
+    tappedConfirmSeeFewerWorks: (artworkId: string, artworkSlug: string, artistId: string) => {
+      trackEvent({
+        action: ActionType.tappedConfirmSeeFewerWorks,
+        context_module: ContextModule.infiniteDiscovery,
+        context_screen_owner_type: OwnerType.infiniteDiscoveryArtwork,
+        context_screen_owner_id: artworkId,
+        context_screen_owner_slug: artworkSlug,
+        artist_id: artistId,
+      } as TappedConfirmSeeFewerWorks)
     },
     artworkImageSwipe: () => {
       trackEvent({

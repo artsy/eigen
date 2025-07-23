@@ -18,6 +18,16 @@ jest.mock("app/Scenes/InfiniteDiscovery/hooks/useExcludeArtistFromDiscovery", ()
 // Mock Alert.alert
 jest.spyOn(Alert, "alert").mockImplementation(jest.fn())
 
+const mockTrack = {
+  tappedShare: jest.fn(),
+  tappedSeeFewerWorks: jest.fn(),
+  tappedConfirmSeeFewerWorks: jest.fn(),
+}
+
+jest.mock("app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking", () => ({
+  useInfiniteDiscoveryTracking: () => mockTrack,
+}))
+
 describe("InfiniteDiscoveryNegativeSignals", () => {
   const { renderWithRelay } = setupTestWrapper({
     Component: InfiniteDiscoveryNegativeSignals,
@@ -82,6 +92,7 @@ describe("InfiniteDiscoveryNegativeSignals", () => {
     })
     fireEvent.press(screen.getByLabelText("Share artwork"))
 
+    expect(mockTrack.tappedShare).toHaveBeenCalledWith("artwork-id", "test-artwork", "artwork")
     expect(RNShare.open).toHaveBeenLastCalledWith({
       title: "Test Artwork",
       message:
@@ -91,6 +102,7 @@ describe("InfiniteDiscoveryNegativeSignals", () => {
 
     fireEvent.press(screen.getByLabelText("Share artist"))
 
+    expect(mockTrack.tappedShare).toHaveBeenCalledWith("artist-id", "artist-slug", "artist")
     expect(RNShare.open).toHaveBeenLastCalledWith({
       title: "Test Artist",
       message:
@@ -117,6 +129,12 @@ describe("InfiniteDiscoveryNegativeSignals", () => {
     const excludeButton = screen.getByText("See fewer artworks by this artist")
     fireEvent.press(excludeButton)
 
+    expect(mockTrack.tappedSeeFewerWorks).toHaveBeenCalledWith(
+      "artwork-id",
+      "test-artwork",
+      "artist-id",
+      "See fewer artworks by this artist"
+    )
     expect(Alert.alert).toHaveBeenCalledWith(
       "Are you sure? You will no longer see works by Test Artist.",
       undefined,
@@ -150,6 +168,11 @@ describe("InfiniteDiscoveryNegativeSignals", () => {
     const yesButton = alertCall[2]?.find((button: any) => button.text === "Yes")
     yesButton?.onPress()
 
+    expect(mockTrack.tappedConfirmSeeFewerWorks).toHaveBeenCalledWith(
+      "artwork-id",
+      "test-artwork",
+      "artist-id"
+    )
     expect(mockCommitMutation).toHaveBeenCalledWith({
       variables: { input: { artistId: "artist-id" } },
       onError: expect.any(Function),
