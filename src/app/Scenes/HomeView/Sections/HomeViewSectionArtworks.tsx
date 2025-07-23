@@ -52,7 +52,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
     // It is important here to tell if the rail is visible or not, because the viewability config
     // default behavior, doesn't take into account the fact that the rail could be not visible
     // on the screen because it's within a scrollable container.
-    isInViewport: viewableSections.includes(section.internalID),
+    isInViewport: viewableSections.includes(section.internalID) && section.trackItemImpressions,
     contextModule: section.contextModule as ContextModule,
   })
 
