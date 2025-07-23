@@ -112,6 +112,11 @@ lane :ship_beta_ios do |options|
       dist_version: bundle_version,
       platform: 'ios'
     )
+  elsif (deployment_target == 'firebase')
+    upload_dsyms_to_sentry(
+      project_slug: 'eigen',
+      org_slug: 'artsynet'
+    )
   end
 
   deploy_ios_beta(deployment_target: deployment_target)
