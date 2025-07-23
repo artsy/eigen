@@ -1,5 +1,5 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { Flex, Screen, Spinner } from "@artsy/palette-mobile"
+import { Flex, Spinner } from "@artsy/palette-mobile"
 import { PortalHost } from "@gorhom/portal"
 import { useFocusEffect } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
@@ -33,8 +33,9 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
-import { memo, RefObject, Suspense, useCallback, useEffect, useRef, useState } from "react"
+import { memo, RefObject, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, Linking, RefreshControl, StatusBar, ViewToken } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const NUMBER_OF_SECTIONS_TO_LOAD = 10
@@ -114,7 +115,7 @@ export const HomeView: React.FC = memo(() => {
 
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
 
-  const sections = extractNodes(data?.homeView.sectionsConnection)
+  const sections = useMemo(() => extractNodes(data?.homeView.sectionsConnection), [data])
 
   useEffect(() => {
     Linking.getInitialURL().then((url) => {
@@ -184,45 +185,41 @@ export const HomeView: React.FC = memo(() => {
     })
   }
 
-  const renderItem = useCallback(
-    ({ item, index }) => {
-      return <Section section={item} my={2} index={index} refetchKey={refetchKey} />
-    },
-    [refetchKey]
-  )
+  const renderItem = useCallback(({ item, index }) => {
+    return (
+      <Section section={item} my={2} index={index} refetchKey={refetchKey} key={item.internalID} />
+    )
+  }, [])
 
   return (
-    <Screen safeArea={true}>
-      <Screen.Body fullwidth>
-        <FlatList
-          automaticallyAdjustKeyboardInsets
-          keyboardDismissMode="on-drag"
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-          ref={flashlistRef as RefObject<FlatList>}
-          data={sections}
-          keyExtractor={(item) => item.internalID}
-          renderItem={renderItem}
-          onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
-          ListHeaderComponent={HomeHeader}
-          ListFooterComponent={
-            hasNext ? (
-              <Flex width="100%" justifyContent="center" alignItems="center" height={200}>
-                <Spinner />
-              </Flex>
-            ) : null
-          }
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-          onEndReachedThreshold={2}
-          maxToRenderPerBatch={6}
-          stickyHeaderIndices={[0]}
-          windowSize={15}
-          viewabilityConfig={viewabilityConfig}
-          onViewableItemsChanged={onViewableItemsChanged}
-        />
-        {!!data?.me && <EmailConfirmationBannerFragmentContainer me={data.me} />}
-      </Screen.Body>
-    </Screen>
+    <SafeAreaView>
+      <FlatList
+        automaticallyAdjustKeyboardInsets
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+        ref={flashlistRef as RefObject<FlatList>}
+        data={sections}
+        renderItem={renderItem}
+        onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
+        ListHeaderComponent={HomeHeader}
+        ListFooterComponent={
+          hasNext ? (
+            <Flex width="100%" justifyContent="center" alignItems="center" height={200}>
+              <Spinner />
+            </Flex>
+          ) : null
+        }
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+        onEndReachedThreshold={2}
+        maxToRenderPerBatch={6}
+        stickyHeaderIndices={[0]}
+        windowSize={15}
+        viewabilityConfig={viewabilityConfig}
+        onViewableItemsChanged={onViewableItemsChanged}
+      />
+      {!!data?.me && <EmailConfirmationBannerFragmentContainer me={data.me} />}
+    </SafeAreaView>
   )
 })
 
@@ -322,13 +319,11 @@ export const homeViewScreenQuery = graphql`
 const HomeViewScreenPlaceholder: React.FC = () => {
   return (
     <ProvidePlaceholderContext>
-      <Screen safeArea={true}>
-        <Screen.Body fullwidth>
-          <Flex testID="new-home-view-skeleton">
-            <HomeHeader />
-          </Flex>
-        </Screen.Body>
-      </Screen>
+      <SafeAreaView>
+        <Flex testID="new-home-view-skeleton">
+          <HomeHeader />
+        </Flex>
+      </SafeAreaView>
     </ProvidePlaceholderContext>
   )
 }
