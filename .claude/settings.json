@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [],
+    "deny": [
+      "Read(.env.maestro.android)",
+      "Read(.env.maestro.ios)",
+      "Read(.env.releases)",
+      "Read(.env.shared)",
+      "Read(.env)",
+      "Read(android-secret.json)",
+      "Read(eigen-firebase-app-distribution.json)",
+      "Read(google-services.json)",
+      "Read(keys.shared.json)",
+      "Read(release.keystore)"
+    ]
+  }
+}
