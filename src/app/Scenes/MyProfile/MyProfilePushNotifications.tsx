@@ -71,7 +71,7 @@ export const NOTIFICATION_SETTINGS: Record<
   receiveSaleOpeningClosingNotification: {
     title: "Auctions Starting and Closing",
     description: "Your registered auctions that are starting or closing soon",
-    key: "receiveLotOpeningSoonNotification",
+    key: "receiveSaleOpeningClosingNotification",
   },
   receiveNewWorksNotification: {
     title: "New Works for You",
