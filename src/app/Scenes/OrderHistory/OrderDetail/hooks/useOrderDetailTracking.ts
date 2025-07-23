@@ -4,6 +4,7 @@ import {
   OrderDetailsViewed,
   OwnerType,
   TappedBuyerProtection,
+  TappedContactGallery,
   TappedImportFees,
   TappedVisitHelpCenter,
 } from "@artsy/cohesion"
@@ -42,6 +43,15 @@ export const useOrderDetailTracking = () => {
           destination_screen_owner_type: OwnerType.articles,
         }
 
+        trackEvent(payload)
+      },
+      tappedContactGallery: (orderId: string) => {
+        const payload: TappedContactGallery = {
+          action: ActionType.tappedContactGallery,
+          context_owner_type: OwnerType.ordersDetail,
+          context_owner_id: orderId,
+          context_owner_slug: OwnerType.ordersDetail,
+        }
         trackEvent(payload)
       },
       tappedImportFees: (
