@@ -225,6 +225,12 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     <Screen safeArea={false}>
       <InfiniteDiscoveryOnboarding artworks={onboardingArtworks} />
 
+      {/*
+        disableKeyboardAvoidance necessary to avoid a white area appearing when hiding the keyboard
+        related issues:
+          - https://github.com/facebook/react-native/issues/27526
+          - https://github.com/facebook/react-native/issues/47140
+      */}
       <Screen.Body fullwidth style={{ marginTop: insets.top }} disableKeyboardAvoidance>
         <Flex zIndex={-100}>
           <Screen.Header
