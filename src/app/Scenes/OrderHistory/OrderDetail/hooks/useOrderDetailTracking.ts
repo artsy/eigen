@@ -50,7 +50,6 @@ export const useOrderDetailTracking = () => {
           action: ActionType.tappedContactGallery,
           context_owner_type: OwnerType.ordersDetail,
           context_owner_id: orderId,
-          context_owner_slug: OwnerType.ordersDetail,
         }
         trackEvent(payload)
       },
