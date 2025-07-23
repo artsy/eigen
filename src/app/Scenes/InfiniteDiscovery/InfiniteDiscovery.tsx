@@ -10,6 +10,7 @@ import { Swiper } from "app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
 import { useCreateUserSeenArtwork } from "app/Scenes/InfiniteDiscovery/mutations/useCreateUserSeenArtwork"
 import { GlobalStore } from "app/store/GlobalStore"
+// eslint-disable-next-line no-restricted-imports
 import { goBack, navigate } from "app/system/navigation/navigate"
 import { pluralize } from "app/utils/pluralize"
 import { ExtractNodeType } from "app/utils/relayHelpers"
@@ -224,7 +225,13 @@ export const InfiniteDiscovery: React.FC<InfiniteDiscoveryProps> = ({
     <Screen safeArea={false}>
       <InfiniteDiscoveryOnboarding artworks={onboardingArtworks} />
 
-      <Screen.Body fullwidth style={{ marginTop: insets.top }}>
+      {/*
+        disableKeyboardAvoidance necessary to avoid a white area appearing when hiding the keyboard
+        related issues:
+          - https://github.com/facebook/react-native/issues/27526
+          - https://github.com/facebook/react-native/issues/47140
+      */}
+      <Screen.Body fullwidth style={{ marginTop: insets.top }} disableKeyboardAvoidance>
         <Flex zIndex={-100}>
           <Screen.Header
             title="Discover Daily"
