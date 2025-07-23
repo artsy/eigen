@@ -295,7 +295,6 @@ describe("OrderDetailMessage", () => {
           {
             "action": "tappedContactGallery",
             "context_owner_id": "order-id",
-            "context_owner_slug": "orders-detail",
             "context_owner_type": "orders-detail",
           },
         ]
