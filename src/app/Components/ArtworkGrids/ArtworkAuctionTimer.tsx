@@ -78,13 +78,13 @@ const AuctionTimerBid: React.FC<{
     }
 
     // Update the timer every second if the lot is closing in less than 5 minute, otherwise update every minute
-    const UPDATE_INTERVAL = lotEndAt.diffNow().as("minutes") < 5 ? 1000 : 60000
+    const interval = lotEndAt.diffNow().as("minutes") < 5 ? 1000 : 60000
 
     intervalId.current = setInterval(() => {
       const { time: timerTime } = getTimer(lotClosesAt ?? "")
 
       setTime(timerTime)
-    }, UPDATE_INTERVAL)
+    }, interval)
 
     return () => {
       if (intervalId.current) clearInterval(intervalId.current)

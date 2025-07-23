@@ -26,16 +26,14 @@ export const ExpiresInTimer: FC<ExpiresInTimerProps> = ({ item }) => {
   const [hasEnded, setHasEnded] = useState(getTimer(expiresAt)["hasEnded"])
 
   useEffect(() => {
-    // Do not update the timer if the offer is expiring in longer than an hour
-    if (
-      DateTime.fromISO(expiresAt ?? "")
-        .diffNow()
-        .as("hours") > 1
-    ) {
+    const expiresInLongerThanOneHour = DateTime.fromISO(expiresAt ?? "").diffNow()
+
+    if (expiresInLongerThanOneHour) {
+      // We do not want to update the timer if the offer is expiring in longer than an hour
       return
     }
 
-    const INTERVAL =
+    const interval =
       DateTime.fromISO(expiresAt ?? "")
         .diffNow()
         .as("minutes") < 5
@@ -47,7 +45,7 @@ export const ExpiresInTimer: FC<ExpiresInTimerProps> = ({ item }) => {
 
       setHasEnded(timerHasEnded)
       setTime(timerTime)
-    }, INTERVAL)
+    }, interval)
 
     return () => {
       if (intervalId.current) clearInterval(intervalId.current)
