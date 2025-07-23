@@ -71,7 +71,6 @@ export const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ ...r
           height={displayImageHeight}
           aspectRatio={image.aspectRatio}
           blurhash={showBlurhash ? image.blurhash : undefined}
-          performResize={false}
           resizeMode="cover"
           testID="artwork-rail-card-image"
         />
