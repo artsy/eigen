@@ -3,12 +3,12 @@ import { Flex, Screen, Text, useColor } from "@artsy/palette-mobile"
 import * as Sentry from "@sentry/react-native"
 import { addBreadcrumb } from "@sentry/react-native"
 import { NavigationHeader } from "app/Components/NavigationHeader"
-import { BottomTabRoutes } from "app/Scenes/BottomTabs/bottomTabsConfig"
 import { getCurrentEmissionState, GlobalStore } from "app/store/GlobalStore"
 import {
   dismissModal,
   goBack,
   GoBackProps,
+  // eslint-disable-next-line no-restricted-imports
   navigate,
   navigationEvents,
 } from "app/system/navigation/navigate"
@@ -266,10 +266,7 @@ export const ArtsyWebView = forwardRef<
       const modulePathName = new URL(targetURL).pathname?.split(/\/+/).filter(Boolean) ?? []
 
       const shouldDismissModal =
-        isPresentedModally &&
-        result.type === "match" &&
-        modulePathName.length > 0 &&
-        BottomTabRoutes.includes("/" + modulePathName[0])
+        isPresentedModally && result.type === "match" && modulePathName.length > 0
 
       // if it's an external url, or a route with a native view, use `navigate`
       if (!__TEST__) {
