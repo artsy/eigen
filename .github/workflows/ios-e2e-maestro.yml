@@ -4,11 +4,17 @@ on:
   schedule:
     - cron: "0 6 * * *" # Runs daily at 6:00 AM UTC
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+  push:
+    branches:
+      - gkartalis/e2e-test-runners
+  pull_request:
+    branches:
+      - gkartalis/e2e-test-runners
 
 jobs:
   e2e-tests:
-    if: github.ref == 'refs/heads/main'
-    runs-on: macos-latest # iOS simulators require macOS runners
+    # if: github.ref == 'refs/heads/main'
+    runs-on: macos-15 # iOS simulators require macOS runners
     timeout-minutes: 45
     strategy:
       fail-fast: false # Don't cancel other jobs if one fails
@@ -97,7 +103,7 @@ jobs:
           ./scripts/utils/install_app_in_booted_sims.sh
 
       - name: Set Maestro driver timeout
-        run: echo "MAESTRO_DRIVER_STARTUP_TIMEOUT=60000" >> $GITHUB_ENV
+        run: echo "MAESTRO_DRIVER_STARTUP_TIMEOUT=240000" >> $GITHUB_ENV
 
       - name: Run Maestro E2E Tests (Shard ${{ matrix.node_index }})
         run: |
