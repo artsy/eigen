@@ -45,7 +45,7 @@ const GlobalSearchInputOverlayContent: React.FC<{ query: string }> = ({ query })
     <SearchContext.Provider value={searchProviderValues}>
       {shouldStartSearching(query) && !!data.viewer ? (
         <>
-          <Box pb={1}>
+          <Box mb={1}>
             <SearchPills
               viewer={data.viewer}
               ref={searchPillsRef}
@@ -69,6 +69,7 @@ const GlobalSearchInputOverlayContent: React.FC<{ query: string }> = ({ query })
           keyboardShouldPersistTaps="handled"
           contentContainerStyle={{
             paddingHorizontal: space(2),
+            paddingBottom: space(6),
           }}
         >
           {recentSearches.length ? <RecentSearches /> : <GlobalSearchInputOverlayEmptyState />}
@@ -115,8 +116,12 @@ export const GlobalSearchInputOverlay: React.FC<{
     <FadeIn style={{ flex: 1 }} slide={false}>
       <Portal hostName={`${ownerType}-SearchOverlay`}>
         <Flex style={{ ...StyleSheet.absoluteFillObject }}>
-          <Flex flex={1} backgroundColor="mono0" style={{ ...insets }}>
-            <Flex px={2} pt={2}>
+          <Flex
+            flex={1}
+            backgroundColor="mono0"
+            style={{ top: insets.top, marginBottom: insets.bottom }}
+          >
+            <Flex px={2} mt={2}>
               <RoundSearchInput
                 placeholder={SEARCH_INPUT_PLACEHOLDER}
                 accessibilityHint="Search artists, artworks, galleries etc."

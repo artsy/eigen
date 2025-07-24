@@ -1,8 +1,7 @@
+import { CloseIcon, ChevronRightIcon } from "@artsy/icons/native"
 import {
-  ArrowRightIcon,
-  ArtworkIcon,
   AuctionIcon,
-  CloseIcon,
+  ArtworkIcon,
   Flex,
   Pill,
   Spacer,
@@ -17,7 +16,7 @@ import { Schema } from "app/utils/track"
 import { useContext } from "react"
 import { useTracking } from "react-tracking"
 import { ResultWithHighlight } from "./ResultWithHighlight"
-import { IMAGE_SIZE, SearchResultImage } from "./SearchResultImage"
+import { SearchResultImage } from "./SearchResultImage"
 
 export type OnResultPress = (result: AutosuggestResult) => void
 export type TrackResultPress = (result: AutosuggestResult, itemIndex?: number) => void
@@ -120,11 +119,7 @@ export const AutosuggestSearchResult: React.FC<{
       >
         <Flex flex={1} flexDirection="row" alignItems="center">
           <Flex flex={1}>
-            <Flex
-              height={secondaryLabel ? IMAGE_SIZE + 12 : IMAGE_SIZE}
-              flexDirection="row"
-              alignItems="center"
-            >
+            <Flex flexDirection="row" alignItems="center">
               <SearchResultImage
                 imageURL={result.coverArtwork?.imageUrl || result.imageUrl}
                 initials={initials}
@@ -167,7 +162,7 @@ export const AutosuggestSearchResult: React.FC<{
           </Flex>
           {!onDelete && (
             <Flex pl={1}>
-              <ArrowRightIcon height={18} width={18} />
+              <ChevronRightIcon height={18} width={18} />
             </Flex>
           )}
         </Flex>

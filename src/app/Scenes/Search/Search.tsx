@@ -88,12 +88,12 @@ export const Search: React.FC = () => {
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }}>
-      <Flex px={2} pt={2}>
+      <Flex px={2} mt={2}>
         <GlobalSearchInput ownerType={OwnerType.search} ref={searchInputRef} />
       </Flex>
       <Flex flex={1} collapsable={false}>
         {shouldStartSearching(searchQuery) && !!queryData.viewer ? (
-          <>
+          <Box backgroundColor="blue">
             <Box pt={2} pb={1}>
               <SearchPills
                 viewer={queryData.viewer}
@@ -110,7 +110,7 @@ export const Search: React.FC = () => {
               // TODO: to be removed on ES results PR
               onRetry={handleRetry}
             />
-          </>
+          </Box>
         ) : (
           <ScrollView
             ref={scrollableRef as RefObject<ScrollView>}

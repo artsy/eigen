@@ -1,4 +1,4 @@
-import { SimpleMessage, Spacer } from "@artsy/palette-mobile"
+import { Box, SimpleMessage, Spacer } from "@artsy/palette-mobile"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { GlobalStore } from "app/store/GlobalStore"
 import { FlatList } from "react-native"
@@ -31,6 +31,11 @@ export const RecentSearches: React.FC = () => {
                 GlobalStore.actions.search.deleteRecentSearch(item.props)
               }}
             />
+          )}
+          ListFooterComponent={() => (
+            <Box my={1}>
+              <Spacer y={6} />
+            </Box>
           )}
         />
       ) : (

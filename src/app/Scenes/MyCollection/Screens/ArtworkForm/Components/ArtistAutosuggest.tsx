@@ -124,7 +124,7 @@ export const ArtistAutosuggest: React.FC<ArtistAutosuggestProps> = ({
         />
         {trimmedQuery === "" && isValidElement(Hint) && Hint}
         {showResults ? (
-          <Box height="100%" pb={6}>
+          <Box height="100%" mb={6}>
             <AutosuggestResults
               query={trimmedQuery}
               prependResults={filteredCollecteArtists}

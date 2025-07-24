@@ -97,7 +97,6 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
         mode={FilterModalMode.Search}
       />
 
-      {/* <Flex flexDirection="row" justifyContent="space-between" alignItems="center"> */}
       <ArtworksFilterHeader
         childrenPosition="left"
         onFilterPress={handleOpenFilterArtworksModal}
@@ -107,7 +106,6 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
           {artworksCount} {artworksCount === 1 ? "Artwork" : "Artworks"}
         </Text>
       </ArtworksFilterHeader>
-      {/* </Flex> */}
 
       <Flex flex={1} justifyContent="center" mx={2}>
         <MasonryFlashList
@@ -135,11 +133,9 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
           onEndReached={loadMore}
           onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
           ListFooterComponent={
-            shouldDisplaySpinner ? (
-              <Flex my={4} flexDirection="row" justifyContent="center">
-                <Spinner />
-              </Flex>
-            ) : null
+            <Flex alignItems="center" my={4}>
+              {shouldDisplaySpinner ? <Spinner /> : null}
+            </Flex>
           }
           renderItem={({ item, index, columnIndex }) => {
             const imgAspectRatio = item.image?.aspectRatio ?? 1
