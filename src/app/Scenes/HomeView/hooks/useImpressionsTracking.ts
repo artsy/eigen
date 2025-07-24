@@ -2,8 +2,9 @@ import { ContextModule, OwnerType } from "@artsy/cohesion"
 import HomeAnalytics from "app/Scenes/HomeView/helpers/homeAnalytics"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useViewabilityConfig } from "app/utils/hooks/useViewabilityConfig"
-import { useEffect, useRef, useState } from "react"
+import { useRef } from "react"
 import { ViewToken } from "react-native"
+import { useSharedValue, useAnimatedReaction, runOnJS } from "react-native-reanimated"
 import { useTracking } from "react-tracking"
 
 type TrackableItem = { id: string; index: number | null }
@@ -18,7 +19,7 @@ export const useItemsImpressionsTracking = ({
   contextScreenOwnerType?: OwnerType
 }) => {
   // An array of items that are currently rendered on the screen // not necessarily visible!
-  const [renderedItems, setRenderedItems] = useState<Array<TrackableItem>>([])
+  const renderedItems = useSharedValue<Array<TrackableItem>>([])
   const trackedItems = useRef<Set<string>>(new Set()).current
 
   const tracking = useTracking()
@@ -27,23 +28,10 @@ export const useItemsImpressionsTracking = ({
 
   const viewabilityConfig = useViewabilityConfig()
 
-  const onViewableItemsChanged = useRef(
-    ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
-      if (enableItemsViewsTracking) {
-        const newRenderdItems: Array<TrackableItem> = []
-
-        viewableItems.forEach(({ item, index }) => {
-          newRenderdItems.push({ id: item.internalID, index })
-        })
-        setRenderedItems(newRenderdItems)
-      }
-    }
-  ).current
-
-  useEffect(() => {
+  const trackItems = (items: Array<TrackableItem>) => {
     // We would like to trigger the tracking only when the rail is visible and only once per item
-    if (enableItemsViewsTracking && isInViewport && renderedItems.length > 0) {
-      renderedItems.forEach(({ id, index }) => {
+    if (enableItemsViewsTracking && isInViewport && items.length > 0) {
+      items.forEach(({ id, index }) => {
         if (!trackedItems.has(id) && index !== null) {
           tracking.trackEvent(
             HomeAnalytics.trackItemViewed({
@@ -58,14 +46,28 @@ export const useItemsImpressionsTracking = ({
         }
       })
     }
-  }, [
-    enableItemsViewsTracking,
-    isInViewport,
-    tracking,
-    renderedItems,
-    contextScreenOwnerType,
-    contextModule,
-  ])
+  }
+
+  const onViewableItemsChanged = useRef(
+    ({ viewableItems }: { viewableItems: ViewToken[]; changed: ViewToken[] }) => {
+      if (enableItemsViewsTracking) {
+        const newRenderdItems: Array<TrackableItem> = []
+
+        viewableItems.forEach(({ item, index }) => {
+          newRenderdItems.push({ id: item.internalID, index })
+        })
+        renderedItems.value = newRenderdItems
+      }
+    }
+  ).current
+
+  useAnimatedReaction(
+    () => renderedItems.value,
+    (currentItems) => {
+      runOnJS(trackItems)(currentItems)
+    },
+    [enableItemsViewsTracking, isInViewport, contextScreenOwnerType, contextModule]
+  )
 
   return {
     onViewableItemsChanged,
