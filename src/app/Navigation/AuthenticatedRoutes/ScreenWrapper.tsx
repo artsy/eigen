@@ -26,7 +26,7 @@ export const ScreenWrapper: React.FC<ScreenWrapperProps> = memo(
     const navigation = useNavigation()
 
     useEffect(() => {
-      const unsubscribe = navigation.addListener("blur", () => {
+      const unsubscribe = navigation.addListener("focus", () => {
         const nextRoute = internal_navigationRef.current?.getCurrentRoute()?.name
 
         const nextRoutehidesBottomTabs = !!(
