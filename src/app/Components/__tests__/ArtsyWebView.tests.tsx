@@ -8,7 +8,7 @@ import {
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { goBack, navigate } from "app/system/navigation/navigate"
+import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
 import { appJson } from "app/utils/jsonFiles"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import mockFetch from "jest-fetch-mock"
@@ -302,6 +302,17 @@ describe("ArtsyWebViewPage", () => {
         })
       })
       expect(navigate).toHaveBeenCalledWith("https://google.com")
+    })
+
+    it("dismisses the modal before navigating to an internal url when the webview is presented modally", () => {
+      const view = render({ isPresentedModally: true })
+      act(() => {
+        webViewProps(view).onNavigationStateChange?.({
+          ...mockOnNavigationStateChange,
+          url: "https://staging.artsy.net/orders/order-id/details",
+        })
+      })
+      expect(dismissModal).toHaveBeenCalled()
     })
 
     describe("the inner WebView's goBack method", () => {
