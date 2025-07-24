@@ -27,6 +27,7 @@ const orderDetailMessageFragment = graphql`
     code
     currencyCode
     internalID
+    impulseConversationId
     displayTexts {
       messageType
     }

@@ -1,6 +1,7 @@
 import { Flex, LinkText, Spacer, Text } from "@artsy/palette-mobile"
 import { OrderDetailMessage_order$data } from "__generated__/OrderDetailMessage_order.graphql"
 import { WireTransferInfo } from "app/Scenes/OrderHistory/OrderDetail/Components/WireTransferInfo"
+import { useOrderDetailTracking } from "app/Scenes/OrderHistory/OrderDetail/hooks/useOrderDetailTracking"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { sendEmail } from "app/utils/sendEmail"
@@ -11,6 +12,7 @@ interface MessageDetailsProps {
 }
 
 export const MessageDetails: React.FC<MessageDetailsProps> = ({ order }) => {
+  const orderDetailTracks = useOrderDetailTracking()
   const messageType = order.displayTexts.messageType
 
   const formattedStateExpireTime =
@@ -64,7 +66,22 @@ export const MessageDetails: React.FC<MessageDetailsProps> = ({ order }) => {
 
           <Spacer y={2} />
 
-          <Text variant="sm">You can contact the gallery with any questions about your offer.</Text>
+          <Text variant="sm">
+            You can{" "}
+            {!!order.impulseConversationId ? (
+              <LinkText
+                onPress={() => {
+                  orderDetailTracks.tappedContactGallery(order.internalID)
+                  navigate(`/user/conversations/${order.impulseConversationId}`)
+                }}
+              >
+                contact the gallery
+              </LinkText>
+            ) : (
+              "contact the gallery"
+            )}{" "}
+            with any questions about your offer.
+          </Text>
         </>
       )
 

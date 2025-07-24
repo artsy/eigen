@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { OrderDetailMessageTestsQuery } from "__generated__/OrderDetailMessageTestsQuery.graphql"
 import { OrderDetailMessage } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailMessage"
 import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Linking } from "react-native"
 import { graphql } from "react-relay"
@@ -273,6 +274,31 @@ describe("OrderDetailMessage", () => {
       fireEvent.press(screen.getByText("orders@artsy.net"))
 
       await waitFor(() => expect(openUrlSpy).toHaveBeenCalledWith("mailto:orders@artsy.net"))
+    })
+
+    it("opens the conversation when the user clicks 'contact the gallery'", () => {
+      renderWithRelay({
+        Order: () => ({
+          internalID: "order-id",
+          displayTexts: { messageType: "SUBMITTED_OFFER" },
+          impulseConversationId: "conv-123",
+        }),
+      })
+
+      expect(screen.getByText("contact the gallery")).toBeOnTheScreen()
+
+      fireEvent.press(screen.getByText("contact the gallery"))
+
+      expect(navigate).toBeCalledWith("/user/conversations/conv-123")
+      expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+        [
+          {
+            "action": "tappedContactGallery",
+            "context_owner_id": "order-id",
+            "context_owner_type": "orders-detail",
+          },
+        ]
+      `)
     })
   })
 })
