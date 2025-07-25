@@ -1,6 +1,6 @@
+import { CloseIcon } from "@artsy/icons/native"
 import {
   ArrowRightIcon,
-  CloseIcon,
   ArrowLeftIcon,
   ShareIcon,
   Flex,
