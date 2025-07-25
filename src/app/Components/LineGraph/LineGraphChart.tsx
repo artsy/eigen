@@ -1,4 +1,5 @@
-import { StarCircleIcon, Flex, useColor, Text, Color } from "@artsy/palette-mobile"
+import { StarCircleIcon } from "@artsy/icons/native"
+import { Flex, useColor, Text, Color } from "@artsy/palette-mobile"
 import { compact, noop } from "lodash"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Dimensions } from "react-native"
