@@ -1,4 +1,5 @@
 import { Flex, MenuItem, SearchInput, Text } from "@artsy/palette-mobile"
+import FastImage from "@d11/react-native-fast-image"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Clipboard from "@react-native-clipboard/clipboard"
 import * as Sentry from "@sentry/react-native"
@@ -20,7 +21,6 @@ import { capitalize, sortBy } from "lodash"
 import { useState } from "react"
 import { Alert, Button, Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
-import FastImage from "@d11/react-native-fast-image"
 import Keychain from "react-native-keychain"
 import Keys from "react-native-keys"
 

@@ -1,5 +1,5 @@
-import { ShowIcon } from "@artsy/icons/native"
-import { ShareIcon, Flex, Text, useSpace, Join, Spacer, Touchable } from "@artsy/palette-mobile"
+import { ShareIcon, ShowIcon } from "@artsy/icons/native"
+import { Flex, Text, useSpace, Join, Spacer, Touchable } from "@artsy/palette-mobile"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
