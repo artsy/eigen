@@ -1,13 +1,5 @@
-import { ShowIcon } from "@artsy/icons/native"
-import {
-  XCircleIcon,
-  EyeClosedIcon,
-  Flex,
-  useTheme,
-  Text,
-  Color,
-  Spinner,
-} from "@artsy/palette-mobile"
+import { HideIcon, ShowIcon } from "@artsy/icons/native"
+import { XCircleIcon, Flex, useTheme, Text, Color, Spinner } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { MeasuredView } from "app/utils/MeasuredView"
 import { isArray, isString } from "lodash"
@@ -155,7 +147,7 @@ export const Input = forwardRef<InputRef, InputProps>(
             accessibilityLabel={showPassword ? "hide password button" : "show password button"}
             hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
           >
-            {!showPassword ? <EyeClosedIcon fill="mono30" /> : <ShowIcon fill="mono60" />}
+            {!showPassword ? <HideIcon fill="mono30" /> : <ShowIcon fill="mono60" />}
           </TouchableOpacity>
         </Flex>
       )
