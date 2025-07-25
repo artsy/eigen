@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ShareIcon } from "@artsy/icons/native"
 import {
   Flex,
-  ShareIcon,
   Skeleton,
   SkeletonBox,
   SkeletonText,

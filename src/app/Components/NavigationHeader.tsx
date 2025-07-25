@@ -1,5 +1,5 @@
-import { ChevronLeftIcon, ChevronRightIcon, CloseIcon } from "@artsy/icons/native"
-import { ShareIcon, Flex, useTheme, Text, Separator } from "@artsy/palette-mobile"
+import { ChevronLeftIcon, ChevronRightIcon, CloseIcon, ShareIcon } from "@artsy/icons/native"
+import { Flex, useTheme, Text, Separator } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ResponsiveAlignItemsValue } from "app/Components/Bidding/Elements/types"
 import { TouchableOpacity } from "react-native"

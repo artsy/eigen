@@ -1,4 +1,5 @@
-import { Button, Flex, ShareIcon, Spacer, Text } from "@artsy/palette-mobile"
+import { ShareIcon } from "@artsy/icons/native"
+import { Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { ViewingRoomQuery } from "__generated__/ViewingRoomQuery.graphql"
 import { ViewingRoom_viewingRoom$data } from "__generated__/ViewingRoom_viewingRoom.graphql"

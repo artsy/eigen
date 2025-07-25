@@ -1,9 +1,9 @@
+import { ShareIcon } from "@artsy/icons/native"
 import {
   Box,
   Flex,
   Screen,
   Separator,
-  ShareIcon,
   Skeleton,
   SkeletonBox,
   SkeletonText,
