@@ -1,4 +1,5 @@
-import { Box, Flex, InfoCircleIcon, Input, Screen, Text } from "@artsy/palette-mobile"
+import { InfoIcon } from "@artsy/icons/native"
+import { Box, Flex, Input, Screen, Text } from "@artsy/palette-mobile"
 import { InquiryModal_artwork$key } from "__generated__/InquiryModal_artwork.graphql"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
@@ -188,7 +189,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork: _artwork, m
                 />
               </Box>
               <Box flexDirection="row">
-                <InfoCircleIcon mr={0.5} style={{ marginTop: 2 }} />
+                <InfoIcon mr={0.5} style={{ marginTop: 2 }} />
                 <Box flex={1}>
                   <Text variant="xs" color="mono60">
                     By clicking send, we will share your profile with {artwork.partner?.name}.
