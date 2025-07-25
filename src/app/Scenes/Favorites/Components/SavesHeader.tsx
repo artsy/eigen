@@ -1,5 +1,5 @@
-import { AddIcon } from "@artsy/icons/native"
-import { Flex, TagIcon, Touchable, Text, Spacer, Join } from "@artsy/palette-mobile"
+import { AddIcon, TagIcon } from "@artsy/icons/native"
+import { Flex, Touchable, Text, Spacer, Join } from "@artsy/palette-mobile"
 import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { ProgressiveOnboardingOfferSettings } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingOfferSettings"
 import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
