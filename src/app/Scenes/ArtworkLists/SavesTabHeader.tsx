@@ -1,10 +1,9 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { AddIcon } from "@artsy/icons/native"
+import { AddIcon, HeartStrokeIcon } from "@artsy/icons/native"
 import {
   Box,
   Button,
   Flex,
-  HeartIcon,
   InstitutionIcon,
   Join,
   LinkText,
@@ -91,7 +90,7 @@ export const SavesTabHeader = () => {
         modalContent={
           <Join separator={<Spacer y={2} />}>
             <Flex flexDirection="row" alignItems="flex-start">
-              <HeartIcon mr={0.5} />
+              <HeartStrokeIcon mr={0.5} />
               <Flex flex={1}>
                 <Text variant="sm-display">Curate your own list of works you love.</Text>
               </Flex>
