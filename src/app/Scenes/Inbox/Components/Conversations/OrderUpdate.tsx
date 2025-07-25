@@ -1,6 +1,6 @@
+import { MoneyFillIcon } from "@artsy/icons/native"
 import {
   Spacer,
-  MoneyFillIcon,
   AlertCircleFillIcon,
   IconProps,
   Flex,

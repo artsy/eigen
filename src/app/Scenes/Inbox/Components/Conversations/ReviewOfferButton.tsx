@@ -1,13 +1,6 @@
 import { ActionType, OwnerType, TappedViewOffer } from "@artsy/cohesion"
-import { ChevronRightIcon } from "@artsy/icons/native"
-import {
-  MoneyFillIcon,
-  AlertCircleFillIcon,
-  IconProps,
-  Flex,
-  Text,
-  Color,
-} from "@artsy/palette-mobile"
+import { ChevronRightIcon, MoneyFillIcon } from "@artsy/icons/native"
+import { AlertCircleFillIcon, IconProps, Flex, Text, Color } from "@artsy/palette-mobile"
 import { ConversationCTA_conversation$data } from "__generated__/ConversationCTA_conversation.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { ExtractNodeType } from "app/utils/relayHelpers"

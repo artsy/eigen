@@ -1,4 +1,5 @@
-import { AlertCircleFillIcon, MoneyFillIcon } from "@artsy/palette-mobile"
+import { MoneyFillIcon } from "@artsy/icons/native"
+import { AlertCircleFillIcon } from "@artsy/palette-mobile"
 import { ConversationCTA_conversation$data } from "__generated__/ConversationCTA_conversation.graphql"
 import {
   ReviewOfferButton,
