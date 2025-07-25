@@ -1,4 +1,4 @@
-import { CloseIcon } from "@artsy/icons/native"
+import { ChevronSmallLeftIcon, CloseIcon } from "@artsy/icons/native"
 import {
   Spacer,
   CheckCircleFillIcon,
@@ -9,7 +9,6 @@ import {
   Button,
   LegacyScreen,
   Touchable,
-  ChevronIcon,
   DEFAULT_HIT_SLOP,
 } from "@artsy/palette-mobile"
 import { useFocusEffect, useNavigation } from "@react-navigation/native"
@@ -112,7 +111,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
       <LegacyScreen.Body>
         <Flex flexDirection="row" alignItems="center" justifyContent="space-between" height={40}>
           <Touchable accessibilityRole="button" onPress={handleBack} hitSlop={DEFAULT_HIT_SLOP}>
-            <ChevronIcon direction="left" />
+            <ChevronSmallLeftIcon />
           </Touchable>
 
           <Touchable

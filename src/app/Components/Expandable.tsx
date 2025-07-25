@@ -1,4 +1,5 @@
-import { ChevronIcon, Collapse, Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
+import { ChevronSmallRightIcon } from "@artsy/icons/native"
+import { Collapse, Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { MAX_WIDTH_BIO } from "app/Components/Artist/Biography"
 import { MotiView } from "moti"
 import { useState } from "react"
@@ -54,7 +55,7 @@ export const Expandable: React.FC<ExpandableProps> = ({
             style={{ transform: [{ rotate: !!expanded ? "-90deg" : "90deg" }] }}
             transition={{ type: "timing" }}
           >
-            <ChevronIcon fill="mono100" />
+            <ChevronSmallRightIcon fill="mono100" />
           </MotiView>
         </Flex>
       </Touchable>

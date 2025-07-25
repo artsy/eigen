@@ -1,4 +1,5 @@
-import { ChevronIcon, Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
+import { ChevronSmallDownIcon, ChevronSmallRightIcon, IconProps } from "@artsy/icons/native"
+import { Flex, Text, Touchable, useColor } from "@artsy/palette-mobile"
 
 export const DevMenuButtonItem: React.FC<{
   disabled?: boolean
@@ -6,7 +7,7 @@ export const DevMenuButtonItem: React.FC<{
   title: React.ReactNode
   titleColor?: string
   value?: React.ReactNode
-  direction?: "right" | "left" | "up" | "down"
+  direction?: "right" | "down"
 }> = ({ disabled = false, onPress, title, titleColor = "mono100", value, direction = "right" }) => {
   const color = useColor()
   return (
@@ -37,11 +38,32 @@ export const DevMenuButtonItem: React.FC<{
               </Text>
             </Flex>
             <Flex ml={1} flex={1}>
-              <ChevronIcon left={0.5} height={20} width={20} direction={direction} fill="mono60" />
+              <ChevronDirectionIcon
+                left={0.5}
+                height={20}
+                width={20}
+                direction={direction}
+                fill="mono60"
+              />
             </Flex>
           </Flex>
         )}
       </Flex>
     </Touchable>
   )
+}
+
+interface ChevronDirectionIcon extends IconProps {
+  direction: "right" | "down"
+}
+
+const ChevronDirectionIcon: React.FC<ChevronDirectionIcon> = ({ direction, ...rest }) => {
+  switch (direction) {
+    case "down":
+      return <ChevronSmallDownIcon {...rest} />
+
+    case "right":
+    default:
+      return <ChevronSmallRightIcon {...rest} />
+  }
 }
