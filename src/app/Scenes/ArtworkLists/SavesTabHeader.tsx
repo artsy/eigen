@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { AddIcon } from "@artsy/icons/native"
 import {
-  AddIcon,
   Box,
   Button,
   Flex,

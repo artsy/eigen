@@ -1,4 +1,5 @@
-import { AddIcon, BorderBox, Box, Flex, XCircleIcon, useColor } from "@artsy/palette-mobile"
+import { AddIcon } from "@artsy/icons/native"
+import { BorderBox, Box, Flex, XCircleIcon, useColor } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigationHeader as NavHeader } from "app/Components/NavigationHeader"
