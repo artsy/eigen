@@ -1,4 +1,4 @@
-import { StarCircleFill } from "@artsy/palette-mobile"
+import { StarCircleFillIcon } from "@artsy/icons/native"
 import { ClosedLotStanding_saleArtwork$data } from "__generated__/ClosedLotStanding_saleArtwork.graphql"
 import { ClosedLotStanding } from "app/Scenes/MyBids/Components/ClosedLotStanding"
 import { extractText } from "app/utils/tests/extractText"
@@ -81,7 +81,7 @@ describe(ClosedLotStanding, () => {
               lotState: { soldStatus: "Sold" },
             })}
           />
-        ).root.findAllByType(StarCircleFill).length
+        ).root.findAllByType(StarCircleFillIcon).length
       ).toBe(1)
     })
   })
