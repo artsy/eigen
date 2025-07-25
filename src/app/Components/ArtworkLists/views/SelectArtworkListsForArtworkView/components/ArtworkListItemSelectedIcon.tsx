@@ -1,5 +1,4 @@
-import { CheckmarkStrokeIcon } from "@artsy/icons/native"
-import { EmptyCheckCircleIcon } from "@artsy/palette-mobile"
+import { CheckmarkStrokeIcon, EmptyCheckCircleIcon } from "@artsy/icons/native"
 
 interface ArtworkListItemSelectedIconProps {
   selected: boolean
