@@ -1,6 +1,6 @@
 import { ContextModule } from "@artsy/cohesion"
-import { ChevronRightIcon } from "@artsy/icons/native"
-import { ExclamationMarkCircleFill, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { AlertFillIcon, ChevronRightIcon } from "@artsy/icons/native"
+import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 import { useTracking } from "react-tracking"
 
@@ -40,7 +40,7 @@ export const CompleteRegistrationCTAWrapper: React.FunctionComponent<
         mt={1}
       >
         <>
-          <ExclamationMarkCircleFill fill="mono100" />
+          <AlertFillIcon fill="mono100" />
           <Text mx={0.5} variant="sm">
             Complete registration
           </Text>
