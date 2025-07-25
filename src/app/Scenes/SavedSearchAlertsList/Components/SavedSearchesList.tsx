@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { BellStrokeIcon, FilterIcon } from "@artsy/icons/native"
+import { BellStrokeIcon, FilterIcon, TrendingIcon } from "@artsy/icons/native"
 import {
   Flex,
   Join,
@@ -9,7 +9,6 @@ import {
   Spacer,
   Spinner,
   Text,
-  TrendingIcon,
   useTheme,
 } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"

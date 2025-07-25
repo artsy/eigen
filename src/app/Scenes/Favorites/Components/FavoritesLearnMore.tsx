@@ -1,4 +1,4 @@
-import { BellStrokeIcon, HeartStrokeIcon } from "@artsy/icons/native"
+import { BellStrokeIcon, HeartStrokeIcon, TrendingIcon } from "@artsy/icons/native"
 import {
   DEFAULT_HIT_SLOP,
   Flex,
@@ -10,7 +10,6 @@ import {
   Spacer,
   Text,
   Touchable,
-  TrendingIcon,
 } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
