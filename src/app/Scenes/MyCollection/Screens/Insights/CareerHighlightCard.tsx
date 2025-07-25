@@ -1,9 +1,8 @@
-import { InstitutionIcon } from "@artsy/icons/native"
+import { GroupIcon, InstitutionIcon } from "@artsy/icons/native"
 import {
   FairIcon,
   IconProps,
   PublicationIcon,
-  UserMultiIcon,
   UserSingleIcon,
   Flex,
   Text,
@@ -138,7 +137,7 @@ export const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
       label = `${
         pl ? "Artists were" : "Artist was"
       } in a group show at ${article}major institution${ending}.`
-      Icon = UserMultiIcon
+      Icon = GroupIcon
       break
     case "REVIEWED":
       label = `${
