@@ -1,5 +1,12 @@
-import { FairIcon, GroupIcon, InstitutionIcon, PublicationIcon } from "@artsy/icons/native"
-import { IconProps, UserSingleIcon, Flex, Text, Button, Touchable } from "@artsy/palette-mobile"
+import {
+  FairIcon,
+  GroupIcon,
+  IconProps,
+  InstitutionIcon,
+  PersonIcon,
+  PublicationIcon,
+} from "@artsy/icons/native"
+import { Flex, Text, Button, Touchable } from "@artsy/palette-mobile"
 import { Fragment, FunctionComponent } from "react"
 import { Image } from "react-native"
 
@@ -141,7 +148,7 @@ export const getCareerHiglight = (type: CareerHighlightKind, count: number) => {
       label = `${
         pl ? "Artists" : "Artist"
       } had a solo show at ${article}major institution${ending}.`
-      Icon = UserSingleIcon
+      Icon = PersonIcon
       break
     /*
     case "": // TODO: Collected by artists
