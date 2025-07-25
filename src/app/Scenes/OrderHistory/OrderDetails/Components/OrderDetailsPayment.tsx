@@ -1,4 +1,5 @@
-import { InstitutionIcon, CreditCardIcon, CreditCardType, Flex, Text } from "@artsy/palette-mobile"
+import { InstitutionIcon } from "@artsy/icons/native"
+import { CreditCardIcon, CreditCardType, Flex, Text } from "@artsy/palette-mobile"
 import { OrderDetailsPayment_order$data } from "__generated__/OrderDetailsPayment_order.graphql"
 import { createFragmentContainer, graphql } from "react-relay"
 

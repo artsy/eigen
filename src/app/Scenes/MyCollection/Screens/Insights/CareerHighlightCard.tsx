@@ -1,7 +1,7 @@
+import { InstitutionIcon } from "@artsy/icons/native"
 import {
   FairIcon,
   IconProps,
-  InstitutionIcon,
   PublicationIcon,
   UserMultiIcon,
   UserSingleIcon,
