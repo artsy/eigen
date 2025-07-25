@@ -1,13 +1,5 @@
-import { FairIcon, GroupIcon, InstitutionIcon } from "@artsy/icons/native"
-import {
-  IconProps,
-  PublicationIcon,
-  UserSingleIcon,
-  Flex,
-  Text,
-  Button,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { FairIcon, GroupIcon, InstitutionIcon, PublicationIcon } from "@artsy/icons/native"
+import { IconProps, UserSingleIcon, Flex, Text, Button, Touchable } from "@artsy/palette-mobile"
 import { Fragment, FunctionComponent } from "react"
 import { Image } from "react-native"
 

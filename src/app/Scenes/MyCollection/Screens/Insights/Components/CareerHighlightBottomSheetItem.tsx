@@ -1,5 +1,5 @@
-import { ArtworkIcon, FairIcon, GroupIcon } from "@artsy/icons/native"
-import { Spacer, PublicationIcon, UserSingleIcon, Flex, Box, Text } from "@artsy/palette-mobile"
+import { ArtworkIcon, FairIcon, GroupIcon, PublicationIcon } from "@artsy/icons/native"
+import { Spacer, UserSingleIcon, Flex, Box, Text } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { CareerHighlightKindValueType } from "app/Scenes/MyCollection/Screens/Insights/CareerHighlightBottomSheet"
 import { useScreenDimensions } from "app/utils/hooks"
