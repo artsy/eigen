@@ -1,14 +1,5 @@
-import { BellStrokeIcon } from "@artsy/icons/native"
-import {
-  ArtworkIcon,
-  Box,
-  Button,
-  FilterIcon,
-  Flex,
-  Join,
-  Spacer,
-  Text,
-} from "@artsy/palette-mobile"
+import { BellStrokeIcon, FilterIcon } from "@artsy/icons/native"
+import { ArtworkIcon, Box, Button, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { ScrollView } from "react-native"
