@@ -1,16 +1,5 @@
-import { LinkIcon } from "@artsy/icons/native"
-import {
-  Button,
-  CloseIcon,
-  EditIcon,
-  Flex,
-  Join,
-  Pill,
-  Spacer,
-  Text,
-  useColor,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { CloseIcon, EditIcon, LinkIcon } from "@artsy/icons/native"
+import { Button, Flex, Join, Pill, Spacer, Text, useColor, useSpace } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
 import { IVariant, useFlags } from "@unleash/proxy-client-react"
 import { FONTS } from "app/Components/HTML"

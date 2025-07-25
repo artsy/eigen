@@ -1,4 +1,4 @@
-import { ArrowRightIcon } from "@artsy/palette-mobile"
+import { ChevronRightIcon } from "@artsy/icons/native"
 import { SectionTitle } from "app/Components/SectionTitle"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -8,7 +8,7 @@ describe("SectionTitle", () => {
     const tree = renderWithWrappersLEGACY(<SectionTitle title="Hello" />)
 
     expect(extractText(tree.root)).toContain("Hello")
-    expect(tree.root.findAllByType(ArrowRightIcon)).toHaveLength(0)
+    expect(tree.root.findAllByType(ChevronRightIcon)).toHaveLength(0)
     expect(tree.root.findAllByProps({ testID: "subtitle" })).toHaveLength(0)
   })
 
@@ -17,7 +17,7 @@ describe("SectionTitle", () => {
 
     expect(extractText(tree.root.findByProps({ testID: "title" }))).toContain("Hello")
     expect(extractText(tree.root.findByProps({ testID: "subtitle" }))).toBe("welcome to test")
-    expect(tree.root.findAllByType(ArrowRightIcon)).toHaveLength(0)
+    expect(tree.root.findAllByType(ChevronRightIcon)).toHaveLength(0)
   })
 
   it(`renders a right arrow when given an 'onPress' prop`, async () => {
@@ -28,7 +28,7 @@ describe("SectionTitle", () => {
 
     expect(extractText(tree.root.findByProps({ testID: "title" }))).toContain("Hello")
     expect(extractText(tree.root.findByProps({ testID: "subtitle" }))).toBe("welcome to test")
-    expect(tree.root.findAllByType(ArrowRightIcon)).toHaveLength(1)
+    expect(tree.root.findAllByType(ChevronRightIcon)).toHaveLength(1)
     tree.root.findByProps({ testID: "touchable-wrapper" }).props.onPress()
     expect(onPress).toHaveBeenCalled()
   })

@@ -1,5 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { StarCircleFill, Flex, Text } from "@artsy/palette-mobile"
+import { StarCircleFillIcon } from "@artsy/icons/native"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { ClosedLotStanding_saleArtwork$data } from "__generated__/ClosedLotStanding_saleArtwork.graphql"
 import { TimelySale } from "app/Scenes/MyBids/helpers/timely"
 import { navigate } from "app/system/navigation/navigate"
@@ -52,7 +53,7 @@ export const ClosedLotStanding = ({
       : saleArtwork?.isHighestBidder
         ? "won"
         : "lost"
-  const Badge = result === "won" ? StarCircleFill : undefined
+  const Badge = result === "won" ? StarCircleFillIcon : undefined
 
   const bidderMessages: { [k in BidderResult]: React.ComponentType } = {
     won: Won,

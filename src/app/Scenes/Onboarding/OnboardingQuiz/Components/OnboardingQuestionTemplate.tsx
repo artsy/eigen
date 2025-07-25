@@ -1,6 +1,6 @@
+import { CheckmarkFillIcon, ChevronSmallLeftIcon, CloseIcon } from "@artsy/icons/native"
 import {
   Spacer,
-  CheckCircleFillIcon,
   Flex,
   Box,
   ProgressBar,
@@ -8,8 +8,6 @@ import {
   Button,
   LegacyScreen,
   Touchable,
-  CloseIcon,
-  ChevronIcon,
   DEFAULT_HIT_SLOP,
 } from "@artsy/palette-mobile"
 import { useFocusEffect, useNavigation } from "@react-navigation/native"
@@ -112,7 +110,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
       <LegacyScreen.Body>
         <Flex flexDirection="row" alignItems="center" justifyContent="space-between" height={40}>
           <Touchable accessibilityRole="button" onPress={handleBack} hitSlop={DEFAULT_HIT_SLOP}>
-            <ChevronIcon direction="left" />
+            <ChevronSmallLeftIcon />
           </Touchable>
 
           <Touchable
@@ -175,7 +173,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
 }
 
 const CheckCircleFillIconWhite = () => {
-  return <CheckCircleFillIcon fill="mono0" />
+  return <CheckmarkFillIcon fill="mono0" />
 }
 
 const STATE_KEYS: Record<Exclude<OnboardingContextAction["type"], "RESET">, keyof State> = {

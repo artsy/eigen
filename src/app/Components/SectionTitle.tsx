@@ -1,11 +1,5 @@
-import {
-  ArrowRightIcon,
-  Flex,
-  FlexProps,
-  SpacingUnit,
-  Text,
-  TextProps,
-} from "@artsy/palette-mobile"
+import { ChevronRightIcon } from "@artsy/icons/native"
+import { Flex, FlexProps, SpacingUnit, Text, TextProps } from "@artsy/palette-mobile"
 import { toTitleCase } from "@artsy/to-title-case"
 import { RouterLink } from "app/system/navigation/RouterLink"
 
@@ -97,7 +91,7 @@ const Wrapper: React.FC<{ onPress?(): void; href?: string | null; navigationProp
 const RightButton = () => (
   <Flex flexDirection="row" flex={1}>
     <Flex my="auto">
-      <ArrowRightIcon width={12} fill="mono60" ml={0.5} />
+      <ChevronRightIcon width={12} fill="mono60" ml={0.5} />
     </Flex>
   </Flex>
 )

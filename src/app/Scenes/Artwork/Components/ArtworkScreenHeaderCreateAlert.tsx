@@ -1,5 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { BellIcon, Button } from "@artsy/palette-mobile"
+import { BellStrokeIcon } from "@artsy/icons/native"
+import { Button } from "@artsy/palette-mobile"
 import { ArtworkScreenHeaderCreateAlert_artwork$key } from "__generated__/ArtworkScreenHeaderCreateAlert_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { hasBiddingEnded } from "app/Scenes/Artwork/utils/hasBiddingEnded"
@@ -52,7 +53,7 @@ export const ArtworkScreenHeaderCreateAlert: React.FC<ArtworkScreenHeaderCreateA
           trackCreateAlertTap()
           setShowCreateArtworkAlertModal(true)
         }}
-        icon={<BellIcon fill={isForSale ? "mono100" : "mono0"} />}
+        icon={<BellStrokeIcon fill={isForSale ? "mono100" : "mono0"} />}
       >
         Create Alert
       </Button>

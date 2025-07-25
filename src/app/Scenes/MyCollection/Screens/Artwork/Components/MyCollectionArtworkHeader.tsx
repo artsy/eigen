@@ -1,5 +1,6 @@
 import { tappedCollectedArtworkImages } from "@artsy/cohesion"
-import { Flex, Join, NoImageIcon, Spacer, Text, useColor } from "@artsy/palette-mobile"
+import { NoArtIcon } from "@artsy/icons/native"
+import { Flex, Join, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { MyCollectionArtworkHeader_artwork$key } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import { ImageCarouselFragmentContainer } from "app/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import { navigate } from "app/system/navigation/navigate"
@@ -42,7 +43,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
           justifyContent="center"
           mx={2}
         >
-          <NoImageIcon fill="mono60" mx="auto" />
+          <NoArtIcon fill="mono60" mx="auto" />
         </Flex>
       )}
 

@@ -1,4 +1,4 @@
-import { CheckCircleIcon, EmptyCheckCircleIcon } from "@artsy/palette-mobile"
+import { CheckmarkStrokeIcon, EmptyCheckCircleIcon } from "@artsy/icons/native"
 
 interface ArtworkListItemSelectedIconProps {
   selected: boolean
@@ -9,7 +9,7 @@ const ICON_SIZE = 24
 export const ArtworkListItemSelectedIcon = ({ selected }: ArtworkListItemSelectedIconProps) => {
   if (selected) {
     return (
-      <CheckCircleIcon
+      <CheckmarkStrokeIcon
         testID="artworkListItemSelectedIcon"
         width={ICON_SIZE}
         height={ICON_SIZE}

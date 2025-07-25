@@ -1,11 +1,9 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { AddIcon, HeartStrokeIcon, InstitutionIcon, TrendingIcon } from "@artsy/icons/native"
 import {
-  AddIcon,
   Box,
   Button,
   Flex,
-  HeartIcon,
-  InstitutionIcon,
   Join,
   LinkText,
   Skeleton,
@@ -13,7 +11,6 @@ import {
   SkeletonText,
   Spacer,
   Text,
-  TrendingIcon,
 } from "@artsy/palette-mobile"
 import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { AutoHeightInfoModal } from "app/Components/Buttons/InfoButton"
@@ -91,7 +88,7 @@ export const SavesTabHeader = () => {
         modalContent={
           <Join separator={<Spacer y={2} />}>
             <Flex flexDirection="row" alignItems="flex-start">
-              <HeartIcon mr={0.5} />
+              <HeartStrokeIcon mr={0.5} />
               <Flex flex={1}>
                 <Text variant="sm-display">Curate your own list of works you love.</Text>
               </Flex>

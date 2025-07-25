@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
-import { Spacer, NoArtworkIcon, Flex, Text, Touchable, Image } from "@artsy/palette-mobile"
+import { NoArtIcon } from "@artsy/icons/native"
+import { Spacer, Flex, Text, Touchable, Image } from "@artsy/palette-mobile"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import { useScreenDimensions } from "app/utils/hooks"
 import {
@@ -81,7 +82,7 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
               {data.artist?.imageUrl ? (
                 <Image width={40} height={40} src={data.artist.imageUrl} />
               ) : (
-                <NoArtworkIcon width={28} height={28} opacity={0.3} />
+                <NoArtIcon width={28} height={28} opacity={0.3} />
               )}
             </Flex>
             {/* Sale Artwork Artist Name */}

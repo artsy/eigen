@@ -1,4 +1,5 @@
-import { MoneyFillIcon, AlertCircleFillIcon, Flex, Color } from "@artsy/palette-mobile"
+import { AlertFillIcon, MoneyFillIcon } from "@artsy/icons/native"
+import { Flex, Color } from "@artsy/palette-mobile"
 import { ConversationCTATestsQuery } from "__generated__/ConversationCTATestsQuery.graphql"
 import { CTAPopUp } from "app/Scenes/Inbox/Components/Conversations/CTAPopUp"
 import {
@@ -123,7 +124,7 @@ describe("ConversationCTA", () => {
 
       expectReviewOfferButton(wrapper, {
         bg: "red100",
-        Icon: AlertCircleFillIcon,
+        Icon: AlertFillIcon,
         strings: [
           "Payment Failed",
           "Unable to process payment for accepted offer. Update payment method.",
@@ -154,7 +155,7 @@ describe("ConversationCTA", () => {
       expectReviewOfferButton(wrapper, {
         bg: "orange150",
         strings: ["Offer Received"],
-        Icon: AlertCircleFillIcon,
+        Icon: AlertFillIcon,
       })
     })
 
@@ -196,7 +197,7 @@ describe("ConversationCTA", () => {
       expectReviewOfferButton(wrapper, {
         bg: "orange150",
         strings: ["Counteroffer Received", "Confirm Total"],
-        Icon: AlertCircleFillIcon,
+        Icon: AlertFillIcon,
       })
     })
 
@@ -224,7 +225,7 @@ describe("ConversationCTA", () => {
       expectReviewOfferButton(wrapper, {
         bg: "orange150",
         strings: ["Offer Accepted", "Confirm total"],
-        Icon: AlertCircleFillIcon,
+        Icon: AlertFillIcon,
       })
     })
 

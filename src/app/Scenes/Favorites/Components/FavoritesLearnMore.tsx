@@ -1,18 +1,13 @@
 import {
-  BellIcon,
-  DEFAULT_HIT_SLOP,
-  Flex,
-  HeartIcon,
+  BellStrokeIcon,
+  GroupIcon,
+  HeartStrokeIcon,
+  HelpIcon,
   InstitutionIcon,
-  Join,
-  MultiplePersonsIcon,
-  QuestionCircleIcon,
   SettingsIcon,
-  Spacer,
-  Text,
-  Touchable,
   TrendingIcon,
-} from "@artsy/palette-mobile"
+} from "@artsy/icons/native"
+import { DEFAULT_HIT_SLOP, Flex, Join, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { CallapseWithTitle } from "app/Scenes/Favorites/Components/CollapseWithTitle"
@@ -42,7 +37,10 @@ const SECTIONS = [
     content: (
       <Flex>
         <Join separator={<Spacer y={1} />}>
-          <TitleWithIcon icon={<HeartIcon />} title="Curate your own list of works you love" />
+          <TitleWithIcon
+            icon={<HeartStrokeIcon />}
+            title="Curate your own list of works you love"
+          />
           <TitleWithIcon
             icon={<TrendingIcon />}
             title="Get better recommendations with every Save"
@@ -61,7 +59,7 @@ const SECTIONS = [
       <Flex>
         <Join separator={<Spacer y={1} />}>
           <TitleWithIcon
-            icon={<MultiplePersonsIcon />}
+            icon={<GroupIcon />}
             title="Get updates on your favorite artists, including new artworks, shows, exhibitions and more."
           />
           <TitleWithIcon
@@ -69,7 +67,7 @@ const SECTIONS = [
             title="Tailor your experience, helping you discover artworks that match your taste."
           />
           <TitleWithIcon
-            icon={<BellIcon />}
+            icon={<BellStrokeIcon />}
             title="Never miss out by exploring your Activity and receiving timely email updates"
           />
         </Join>
@@ -82,7 +80,7 @@ const SECTIONS = [
       <Flex>
         <Join separator={<Spacer y={1} />}>
           <TitleWithIcon
-            icon={<BellIcon />}
+            icon={<BellStrokeIcon />}
             title="If you’re on the hunt for a particular artwork, create an Alert and we’ll notify you when there’s a match."
           />
           <TitleWithIcon
@@ -118,7 +116,7 @@ export const FavoritesLearnMore = () => {
           trackTappedInfoBubble(activeTab)
         }}
       >
-        <QuestionCircleIcon height={ICON_SIZE} width={ICON_SIZE} hitSlop={DEFAULT_HIT_SLOP} />
+        <HelpIcon height={ICON_SIZE} width={ICON_SIZE} hitSlop={DEFAULT_HIT_SLOP} />
       </Touchable>
 
       <AutomountedBottomSheetModal

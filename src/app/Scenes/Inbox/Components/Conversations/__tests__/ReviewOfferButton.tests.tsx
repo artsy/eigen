@@ -1,4 +1,4 @@
-import { AlertCircleFillIcon, MoneyFillIcon } from "@artsy/palette-mobile"
+import { AlertFillIcon, MoneyFillIcon } from "@artsy/icons/native"
 import { ConversationCTA_conversation$data } from "__generated__/ConversationCTA_conversation.graphql"
 import {
   ReviewOfferButton,
@@ -50,7 +50,7 @@ describe("ReviewOfferButton", () => {
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Offer Accepted - Confirm total")
-    expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(AlertFillIcon)).toHaveLength(1)
   })
 
   it("shows correct message for accepted offers", () => {
@@ -58,7 +58,7 @@ describe("ReviewOfferButton", () => {
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Counteroffer Received - Confirm Total")
-    expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(AlertFillIcon)).toHaveLength(1)
   })
 
   it("shows correct message for accepted offers", () => {
@@ -74,7 +74,7 @@ describe("ReviewOfferButton", () => {
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Unable to process payment for accepted offer. Update payment method.")
-    expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(AlertFillIcon)).toHaveLength(1)
   })
 
   it("shows correct message and icon for received offers", () => {
@@ -82,7 +82,7 @@ describe("ReviewOfferButton", () => {
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Offer Received")
-    expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(AlertFillIcon)).toHaveLength(1)
   })
 
   it("shows correct messaging and icon when offer is a counteroffer", () => {
@@ -90,7 +90,7 @@ describe("ReviewOfferButton", () => {
 
     const text = extractText(wrapper.root)
     expect(text).toContain("Counteroffer Received")
-    expect(wrapper.root.findAllByType(AlertCircleFillIcon)).toHaveLength(1)
+    expect(wrapper.root.findAllByType(AlertFillIcon)).toHaveLength(1)
   })
 
   it("shows correct expiration in minutes when there is less than 1 hour left", () => {

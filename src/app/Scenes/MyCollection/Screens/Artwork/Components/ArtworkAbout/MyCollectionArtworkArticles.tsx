@@ -1,5 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { ArrowRightIcon, Flex, Spacer, Text, useSpace } from "@artsy/palette-mobile"
+import { ChevronRightIcon } from "@artsy/icons/native"
+import { Flex, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import {
   MyCollectionArtworkArticles_article$data,
   MyCollectionArtworkArticles_article$key,
@@ -46,7 +47,7 @@ export const MyCollectionArtworkArticles: React.FC<MyCollectionArtworkArticlesPr
           </Flex>
 
           <Flex my="auto">
-            <ArrowRightIcon width={12} fill="mono60" ml={0.5} />
+            <ChevronRightIcon width={12} fill="mono60" ml={0.5} />
           </Flex>
         </Flex>
       </RouterLink>

@@ -1,4 +1,4 @@
-import { DecreaseIcon, IncreaseIcon } from "@artsy/palette-mobile"
+import { ArrowDownIcon, ArrowUpIcon } from "@artsy/icons/native"
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
 import {
   MarketStatsFragmentContainer,
@@ -95,7 +95,7 @@ describe("MarketStats", () => {
       })
 
       // eslint-disable-next-line testing-library/await-async-queries
-      expect(tree.findByType(DecreaseIcon)).toBeDefined()
+      expect(tree.findByType(ArrowDownIcon)).toBeDefined()
     })
 
     it("displays no arrow when percentage is 0", () => {
@@ -105,9 +105,9 @@ describe("MarketStats", () => {
       })
 
       // eslint-disable-next-line testing-library/await-async-queries
-      expect(tree.findAllByType(DecreaseIcon).length).toEqual(0)
+      expect(tree.findAllByType(ArrowDownIcon).length).toEqual(0)
       // eslint-disable-next-line testing-library/await-async-queries
-      expect(tree.findAllByType(IncreaseIcon).length).toEqual(0)
+      expect(tree.findAllByType(ArrowUpIcon).length).toEqual(0)
     })
 
     it("displays up arrow when percentage is positive", () => {
@@ -117,7 +117,7 @@ describe("MarketStats", () => {
       })
 
       // eslint-disable-next-line testing-library/await-async-queries
-      expect(tree.findByType(IncreaseIcon)).toBeDefined()
+      expect(tree.findByType(ArrowUpIcon)).toBeDefined()
     })
   })
 

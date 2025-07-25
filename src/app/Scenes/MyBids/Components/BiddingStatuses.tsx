@@ -2,12 +2,13 @@ import {
   ArrowheadUpCircleFillIcon,
   ArrowheadDownCircleFillIcon,
   BookmarkFillIcon,
+  AlertFillIcon,
 } from "@artsy/icons/native"
-import { ExclamationMarkCircleFill, Text } from "@artsy/palette-mobile"
+import { Text } from "@artsy/palette-mobile"
 
 export const ReserveNotMet = () => (
   <>
-    <ExclamationMarkCircleFill />
+    <AlertFillIcon />
     <Text variant="xs" color="mono60">
       {" "}
       Reserve not met

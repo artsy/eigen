@@ -1,4 +1,5 @@
-import { Spacer, DocumentIcon, Box, Text, Separator } from "@artsy/palette-mobile"
+import { DocumentIcon } from "@artsy/icons/native"
+import { Spacer, Box, Text, Separator } from "@artsy/palette-mobile"
 import { AttachmentList_conversation$data } from "__generated__/AttachmentList_conversation.graphql"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"

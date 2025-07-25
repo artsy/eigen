@@ -1,5 +1,7 @@
-import { InstitutionIcon, CreditCardIcon, CreditCardType, Flex, Text } from "@artsy/palette-mobile"
+import { InstitutionIcon } from "@artsy/icons/native"
+import { CreditCardType, Flex, Text } from "@artsy/palette-mobile"
 import { OrderDetailsPayment_order$data } from "__generated__/OrderDetailsPayment_order.graphql"
+import { BrandCreditCardIcon } from "app/Components/BrandCreditCardIcon/BrandCreditCardIcon"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface OrderDetailsPaymentProps {
@@ -49,7 +51,11 @@ const PaymentMethodDetails: React.FC<OrderDetailsPaymentProps> = ({
       case "CreditCard":
         return (
           <>
-            <CreditCardIcon type={paymentMethodDetails.brand as CreditCardType} mr={1} width="17" />
+            <BrandCreditCardIcon
+              type={paymentMethodDetails.brand as CreditCardType}
+              mr={1}
+              width="17"
+            />
             <Text variant="sm" color="mono60">
               {paymentMethodDetails.brand} ending in {paymentMethodDetails.lastDigits}
             </Text>

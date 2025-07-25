@@ -1,4 +1,5 @@
-import { BellFillIcon, Flex, Separator, Text, useColor } from "@artsy/palette-mobile"
+import { BellFilledIcon } from "@artsy/icons/native"
+import { Flex, Separator, Text, useColor } from "@artsy/palette-mobile"
 import { MenuItem } from "app/Components/MenuItem"
 import { ScrollView, View } from "react-native"
 import { Gesture, GestureDetector } from "react-native-gesture-handler"
@@ -132,7 +133,11 @@ const Solution2 = () => {
           },
         ]}
       >
-        <BellFillIcon height={24} width={24} style={{ position: "absolute", right: 20, top: 20 }} />
+        <BellFilledIcon
+          height={24}
+          width={24}
+          style={{ position: "absolute", right: 20, top: 20 }}
+        />
 
         <Animated.View
           style={[

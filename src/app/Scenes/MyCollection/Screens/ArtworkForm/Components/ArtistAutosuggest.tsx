@@ -1,4 +1,5 @@
-import { AddIcon, Box, Button, Flex, Input, Spacer, Text, Touchable } from "@artsy/palette-mobile"
+import { AddIcon } from "@artsy/icons/native"
+import { Box, Button, Flex, Input, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import {
   ArtistAutosuggestQuery,
   ArtistAutosuggestQuery$data,

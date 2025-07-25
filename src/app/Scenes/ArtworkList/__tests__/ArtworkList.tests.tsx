@@ -84,34 +84,34 @@ describe("ArtworkList", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkListOfferability: true })
     })
 
-    it("should display the EyeClosedIcon if not shareable with partners", async () => {
+    it("should display the HideIcon if not shareable with partners", async () => {
       const { mockResolveLastOperation } = renderWithRelay()
 
       mockResolveLastOperation({
         Me: () => ({ artworkList: { ...defaultArtworkList, shareableWithPartners: false } }),
       })
 
-      expect(screen.getByLabelText("EyeClosedIcon")).toBeOnTheScreen()
+      expect(screen.getByLabelText("HideIcon")).toBeOnTheScreen()
     })
 
-    it("should NOT display the EyeClosedIcon if shareable with partners", async () => {
+    it("should NOT display the HideIcon if shareable with partners", async () => {
       const { mockResolveLastOperation } = renderWithRelay()
 
       mockResolveLastOperation({
         Me: () => ({ artworkList: { ...defaultArtworkList, shareableWithPartners: true } }),
       })
 
-      expect(screen.queryByLabelText("EyeClosedIcon")).not.toBeOnTheScreen()
+      expect(screen.queryByLabelText("HideIcon")).not.toBeOnTheScreen()
     })
 
-    it("should display the Popover when user clicks the EyeClosedIcon", async () => {
+    it("should display the Popover when user clicks the HideIcon", async () => {
       const { mockResolveLastOperation } = renderWithRelay()
 
       mockResolveLastOperation({
         Me: () => ({ artworkList: { ...defaultArtworkList, shareableWithPartners: false } }),
       })
 
-      fireEvent.press(screen.getByLabelText("EyeClosedIcon"))
+      fireEvent.press(screen.getByLabelText("HideIcon"))
 
       expect(
         screen.getByText(
@@ -120,14 +120,14 @@ describe("ArtworkList", () => {
       ).toBeOnTheScreen()
     })
 
-    it("should dismiss the Popover when the user clicks the EyeClosedIcon", async () => {
+    it("should dismiss the Popover when the user clicks the HideIcon", async () => {
       const { mockResolveLastOperation } = renderWithRelay()
 
       mockResolveLastOperation({
         Me: () => ({ artworkList: { ...defaultArtworkList, shareableWithPartners: false } }),
       })
 
-      fireEvent.press(screen.getByLabelText("EyeClosedIcon"))
+      fireEvent.press(screen.getByLabelText("HideIcon"))
 
       expect(
         screen.getByText(
@@ -135,7 +135,7 @@ describe("ArtworkList", () => {
         )
       ).toBeOnTheScreen()
 
-      fireEvent.press(screen.getByLabelText("EyeClosedIcon"))
+      fireEvent.press(screen.getByLabelText("HideIcon"))
 
       expect(
         screen.queryByText(

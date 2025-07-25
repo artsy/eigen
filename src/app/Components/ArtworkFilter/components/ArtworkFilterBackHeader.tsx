@@ -1,4 +1,5 @@
-import { ArrowLeftIcon, Box, useTheme, Text, Separator } from "@artsy/palette-mobile"
+import { ChevronLeftIcon } from "@artsy/icons/native"
+import { Box, useTheme, Text, Separator } from "@artsy/palette-mobile"
 import { TouchableOpacity } from "react-native"
 
 export interface ArtworkFilterBackHeaderProps {
@@ -35,7 +36,7 @@ export const ArtworkFilterBackHeader: React.FC<ArtworkFilterBackHeaderProps> = (
           accessibilityLabel="Header back button"
           style={{ paddingRight: space(0.5) }}
         >
-          <ArrowLeftIcon fill="mono100" />
+          <ChevronLeftIcon fill="mono100" />
         </TouchableOpacity>
         <Box flex={1} ml={1} mr={2}>
           <Text variant="sm-display" numberOfLines={2} lineHeight="18px">

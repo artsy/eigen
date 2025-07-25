@@ -1,4 +1,5 @@
-import { bullet, Flex, NoArtworkIcon, Spacer, Stopwatch, Text } from "@artsy/palette-mobile"
+import { NoArtIcon } from "@artsy/icons/native"
+import { bullet, Flex, Spacer, Stopwatch, Text } from "@artsy/palette-mobile"
 import FastImage from "@d11/react-native-fast-image"
 import { addBreadcrumb } from "@sentry/react-native"
 import { AuctionResultListItem_auctionResult$data } from "__generated__/AuctionResultListItem_auctionResult.graphql"
@@ -76,7 +77,7 @@ const AuctionResultListItem: React.FC<Props> = memo(
               alignItems="center"
               justifyContent="center"
             >
-              <NoArtworkIcon width={30} height={30} fill="mono60" />
+              <NoArtIcon width={30} height={30} fill="mono60" />
             </Flex>
           ) : (
             <Flex

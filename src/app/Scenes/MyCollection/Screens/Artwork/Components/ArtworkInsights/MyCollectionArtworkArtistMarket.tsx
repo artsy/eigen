@@ -1,13 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import {
-  DecreaseIcon,
-  Flex,
-  IncreaseIcon,
-  Separator,
-  Spacer,
-  Text,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { ArrowDownIcon, ArrowUpIcon } from "@artsy/icons/native"
+import { Flex, Separator, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionArtworkArtistMarket_artwork$key } from "__generated__/MyCollectionArtworkArtistMarket_artwork.graphql"
 import { MyCollectionArtworkArtistMarket_artworkPriceInsights$key } from "__generated__/MyCollectionArtworkArtistMarket_artworkPriceInsights.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
@@ -52,7 +45,7 @@ export const MyCollectionArtworkArtistMarket: React.FC<MyCollectionArtworkArtist
   const SalePriceEstimatePerformance = ({ value }: { value: number }) => {
     const sign = value < 0 ? "down" : "up"
     const color = sign === "up" ? "green100" : "red100"
-    const Arrow = sign === "up" ? IncreaseIcon : DecreaseIcon
+    const Arrow = sign === "up" ? ArrowUpIcon : ArrowDownIcon
 
     return (
       <Flex flexDirection="row" alignItems="center">

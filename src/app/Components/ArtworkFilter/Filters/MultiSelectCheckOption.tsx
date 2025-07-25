@@ -1,4 +1,5 @@
-import { CheckIcon, Flex, Box, Text, Separator } from "@artsy/palette-mobile"
+import { CheckmarkIcon } from "@artsy/icons/native"
+import { Flex, Box, Text, Separator } from "@artsy/palette-mobile"
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterData } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -108,7 +109,7 @@ export const CheckMarkOptionListItem = ({
 
         {!!selected && (
           <Box testID={`selected-checkmark-${item.displayText}`}>
-            <CheckIcon fill="mono100" />
+            <CheckmarkIcon fill="mono100" />
           </Box>
         )}
       </Flex>

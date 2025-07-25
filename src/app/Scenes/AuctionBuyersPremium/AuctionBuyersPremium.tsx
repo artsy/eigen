@@ -1,4 +1,5 @@
-import { Flex, useSpace, Text, Screen, CloseIcon, Touchable } from "@artsy/palette-mobile"
+import { CloseIcon } from "@artsy/icons/native"
+import { Flex, useSpace, Text, Screen, Touchable } from "@artsy/palette-mobile"
 import { AuctionBuyersPremiumQuery } from "__generated__/AuctionBuyersPremiumQuery.graphql"
 import { AuctionBuyersPremium_sale$data } from "__generated__/AuctionBuyersPremium_sale.graphql"
 import { goBack } from "app/system/navigation/navigate"

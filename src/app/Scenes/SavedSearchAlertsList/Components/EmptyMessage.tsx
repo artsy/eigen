@@ -1,14 +1,5 @@
-import {
-  ArtworkIcon,
-  BellIcon,
-  Box,
-  Button,
-  FilterIcon,
-  Flex,
-  Join,
-  Spacer,
-  Text,
-} from "@artsy/palette-mobile"
+import { ArtworkIcon, BellStrokeIcon, FilterIcon } from "@artsy/icons/native"
+import { Box, Button, Flex, Join, Spacer, Text } from "@artsy/palette-mobile"
 import SearchIcon from "app/Components/Icons/SearchIcon"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { ScrollView } from "react-native"
@@ -73,7 +64,7 @@ export const EmptyMessage: React.FC = () => {
         <Join separator={<Spacer y={2} />}>
           <InfoSection title={t.search.title} body={t.search.body} icon={<SearchIcon />} />
           <InfoSection title={t.filter.title} body={t.filter.body} icon={<FilterIcon />} />
-          <InfoSection title={t.create.title} body={t.create.body} icon={<BellIcon />} />
+          <InfoSection title={t.create.title} body={t.create.body} icon={<BellStrokeIcon />} />
           <InfoSection title={t.match.title} body={t.match.body} icon={<ArtworkIcon />} />
         </Join>
         <Spacer y={4} />

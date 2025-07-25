@@ -1,11 +1,5 @@
-import {
-  Flex,
-  Image,
-  ImageSetIcon,
-  Text,
-  useScreenDimensions,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { ImageSetIcon } from "@artsy/icons/native"
+import { Flex, Image, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArticleSectionImageSet_article$data } from "__generated__/ArticleSectionImageSet_article.graphql"
 import { ArticleSectionImageSet_section$data } from "__generated__/ArticleSectionImageSet_section.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"

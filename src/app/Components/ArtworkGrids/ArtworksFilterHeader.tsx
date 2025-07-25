@@ -1,11 +1,5 @@
-import {
-  bullet,
-  FilterIcon,
-  Flex,
-  Text,
-  Separator,
-  TouchableHighlightColor,
-} from "@artsy/palette-mobile"
+import { FilterIcon } from "@artsy/icons/native"
+import { bullet, Flex, Text, Separator, TouchableHighlightColor } from "@artsy/palette-mobile"
 import { ProgressiveOnboardingAlertFilters } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingAlertFilters"
 
 interface FilterHeaderProps {

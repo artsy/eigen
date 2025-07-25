@@ -1,13 +1,5 @@
-import {
-  Spacer,
-  MoneyFillIcon,
-  AlertCircleFillIcon,
-  IconProps,
-  Flex,
-  Text,
-  LinkText,
-  Color,
-} from "@artsy/palette-mobile"
+import { AlertFillIcon, IconProps, MoneyFillIcon } from "@artsy/icons/native"
+import { Spacer, Flex, Text, LinkText, Color } from "@artsy/palette-mobile"
 import { OrderUpdate_event$data } from "__generated__/OrderUpdate_event.graphql"
 
 import { navigate } from "app/system/navigation/navigate"
@@ -44,7 +36,7 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event, conversationId 
       }
     } else if (offer.fromParticipant === "SELLER") {
       color = "orange150"
-      Icon = AlertCircleFillIcon
+      Icon = AlertFillIcon
       if (offer.offerAmountChanged) {
         message = `You received ${isCounter ? "a counteroffer" : "an offer"} for ${
           event.offer.amount
@@ -63,12 +55,12 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event, conversationId 
       color = "green100"
       message = `${orderUpdateState === "offer_approved" ? "Offer" : "Purchase"} Accepted`
     } else if (orderUpdateState === "offer_processing_approval") {
-      Icon = AlertCircleFillIcon
+      Icon = AlertFillIcon
       color = "yellow100"
       textColor = "mono100"
       message = "Offer accepted. Payment Processing"
     } else if (orderUpdateState === "buy_processing_approval") {
-      Icon = AlertCircleFillIcon
+      Icon = AlertFillIcon
       color = "yellow100"
       textColor = "mono100"
       message = "Order approved. Payment Processing"

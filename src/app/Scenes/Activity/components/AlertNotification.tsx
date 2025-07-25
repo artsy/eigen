@@ -1,14 +1,5 @@
-import {
-  // eslint-disable-next-line local-rules/no-palette-icon-imports
-  ArrowRightIcon,
-  Button,
-  DEFAULT_HIT_SLOP,
-  Flex,
-  Pill,
-  Screen,
-  Spacer,
-  Text,
-} from "@artsy/palette-mobile"
+import { ChevronRightIcon } from "@artsy/icons/native"
+import { Button, DEFAULT_HIT_SLOP, Flex, Pill, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { AlertNotification_notification$key } from "__generated__/AlertNotification_notification.graphql"
 import { ActivityErrorScreen } from "app/Scenes/Activity/components/ActivityErrorScreen"
 import { NotificationArtworkList } from "app/Scenes/Activity/components/NotificationArtworkList"
@@ -92,7 +83,7 @@ export const AlertNotification: FC<AlertNotificationProps> = ({ notification }) 
             <Flex flexDirection="row">
               <Text fontWeight="bold">View all works by {artist.name}</Text>
               <Flex alignSelf="center">
-                <ArrowRightIcon fill="mono30" ml={0.5} pl={0.3} />
+                <ChevronRightIcon fill="mono30" ml={0.5} pl={0.3} />
               </Flex>
             </Flex>
           </RouterLink>

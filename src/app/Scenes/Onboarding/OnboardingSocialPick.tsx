@@ -1,4 +1,5 @@
-import { Button, EnvelopeIcon, Flex, Join, LegacyScreen, Spacer, Text } from "@artsy/palette-mobile"
+import { EnvelopeIcon } from "@artsy/icons/native"
+import { Button, Flex, Join, LegacyScreen, Spacer, Text } from "@artsy/palette-mobile"
 import { statusCodes } from "@react-native-google-signin/google-signin"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"

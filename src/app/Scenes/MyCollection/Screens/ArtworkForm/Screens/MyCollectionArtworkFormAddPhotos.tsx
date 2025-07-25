@@ -1,4 +1,5 @@
-import { AddIcon, BorderBox, Box, Flex, XCircleIcon, useColor } from "@artsy/palette-mobile"
+import { AddIcon, CloseFillIcon } from "@artsy/icons/native"
+import { BorderBox, Box, Flex, useColor } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { NavigationHeader as NavHeader } from "app/Components/NavigationHeader"
@@ -161,7 +162,7 @@ const DeletePhotoButton: React.FC<{ photo: ImageProps; onDelete: () => void }> =
           })
         }}
       >
-        <XCircleIcon width={20} height={20} />
+        <CloseFillIcon width={20} height={20} />
       </TouchableOpacity>
     </Box>
   )

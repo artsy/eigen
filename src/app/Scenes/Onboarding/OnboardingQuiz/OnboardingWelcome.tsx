@@ -1,4 +1,5 @@
-import { ArtsyLogoBlackIcon, Button, Spacer, Flex, Box, Text, Spinner } from "@artsy/palette-mobile"
+import { ArtsyLogoIcon } from "@artsy/icons/native"
+import { Button, Spacer, Flex, Box, Text, Spinner } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { OnboardingWelcomeQuery } from "__generated__/OnboardingWelcomeQuery.graphql"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -204,7 +205,7 @@ const ArtsyLogoAbsoluteHeader = () => {
 
   return (
     <Box position="absolute" top={`${top + 44}px`} left={2}>
-      <ArtsyLogoBlackIcon fill="mono0" />
+      <ArtsyLogoIcon height={32} width={94} fill="mono0" />
     </Box>
   )
 }

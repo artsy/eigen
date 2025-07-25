@@ -1,4 +1,5 @@
-import { ArrowUpIcon, Flex, Text } from "@artsy/palette-mobile"
+import { ChevronUpIcon } from "@artsy/icons/native"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { useBottomSheet } from "@gorhom/bottom-sheet"
 import { BottomSheetDefaultHandleProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetHandle/types"
 import { useBottomSheetAnimatedStyles } from "app/Scenes/InfiniteDiscovery/hooks/useBottomSheetAnimatedStyles"
@@ -29,7 +30,7 @@ export const InfiniteDiscoveryBottomeSheetHandle: FC<BottomSheetDefaultHandlePro
       backgroundColor="mono0"
     >
       <Animated.View style={animatedHandle}>
-        <ArrowUpIcon width={20} height={20} fill="mono60" />
+        <ChevronUpIcon width={20} height={20} fill="mono60" />
       </Animated.View>
 
       <Animated.View style={[opacityStyle, heightTextStyle]}>

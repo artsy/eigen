@@ -1,5 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { BellIcon, Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
+import { BellStrokeIcon } from "@artsy/icons/native"
+import { Button, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { ArtworkAuctionCreateAlertHeader_artwork$key } from "__generated__/ArtworkAuctionCreateAlertHeader_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import { hasBiddingEnded } from "app/Scenes/Artwork/utils/hasBiddingEnded"
@@ -87,7 +88,13 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
 
         {hasLostBid ? (
           <RouterLink to="/favorites/alerts" hasChildTouchable>
-            <Button size="large" variant="outline" haptic icon={<BellIcon fill="mono100" />} block>
+            <Button
+              size="large"
+              variant="outline"
+              haptic
+              icon={<BellStrokeIcon fill="mono100" />}
+              block
+            >
               Manage your Alerts
             </Button>
           </RouterLink>
@@ -100,7 +107,7 @@ export const ArtworkAuctionCreateAlertHeader: FC<ArtworkAuctionCreateAlertHeader
               trackCreateAlertTap()
               setShowCreateArtworkAlertModal(true)
             }}
-            icon={<BellIcon fill="mono0" />}
+            icon={<BellStrokeIcon fill="mono0" />}
             block
           >
             Create Alert

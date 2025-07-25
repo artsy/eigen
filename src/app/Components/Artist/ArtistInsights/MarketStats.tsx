@@ -1,13 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import {
-  DecreaseIcon,
-  Flex,
-  IncreaseIcon,
-  Join,
-  Separator,
-  Spacer,
-  Text,
-} from "@artsy/palette-mobile"
+import { ArrowDownIcon, ArrowUpIcon } from "@artsy/icons/native"
+import { Flex, Join, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { MarketStatsQuery } from "__generated__/MarketStatsQuery.graphql"
 import { MarketStats_priceInsightsConnection$data } from "__generated__/MarketStats_priceInsightsConnection.graphql"
 import { InfoButton } from "app/Components/Buttons/InfoButton"
@@ -57,9 +50,9 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
   const actualMedianSaleOverEstimatePercentage =
     selectedPriceInsight?.medianSaleOverEstimatePercentage || 0
   if (actualMedianSaleOverEstimatePercentage < 0) {
-    deltaIcon = <DecreaseIcon />
+    deltaIcon = <ArrowDownIcon />
   } else if (actualMedianSaleOverEstimatePercentage > 0) {
-    deltaIcon = <IncreaseIcon />
+    deltaIcon = <ArrowUpIcon />
   }
   const formattedMedianSaleOverEstimatePercentage = Math.abs(actualMedianSaleOverEstimatePercentage)
 

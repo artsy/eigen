@@ -5,7 +5,8 @@ import {
   ScreenOwnerType,
   TappedArtistSeriesGroup,
 } from "@artsy/cohesion"
-import { ArrowRightIcon, Flex, Image, Text, useColor } from "@artsy/palette-mobile"
+import { ChevronRightIcon } from "@artsy/icons/native"
+import { Flex, Image, Text, useColor } from "@artsy/palette-mobile"
 import { ArtistSeriesConnectionEdge } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { useTracking } from "react-tracking"
@@ -90,7 +91,7 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
             </Flex>
           </Flex>
           <Flex alignSelf="center">
-            <ArrowRightIcon />
+            <ChevronRightIcon />
           </Flex>
         </Flex>
       </Flex>

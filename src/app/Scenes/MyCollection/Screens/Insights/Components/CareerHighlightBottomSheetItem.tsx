@@ -1,14 +1,5 @@
-import {
-  Spacer,
-  FairIcon,
-  ArtworkIcon,
-  PublicationIcon,
-  UserMultiIcon,
-  UserSingleIcon,
-  Flex,
-  Box,
-  Text,
-} from "@artsy/palette-mobile"
+import { ArtworkIcon, FairIcon, GroupIcon, PersonIcon, PublicationIcon } from "@artsy/icons/native"
+import { Spacer, Flex, Box, Text } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { CareerHighlightKindValueType } from "app/Scenes/MyCollection/Screens/Insights/CareerHighlightBottomSheet"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -53,12 +44,12 @@ const SectionedHighlight: React.FC<{ header: string; body: string[] }> = ({ head
       case "Solo Show":
         text =
           bodyCount > 1 ? "Solo shows at major institutions" : "Solo show at a major institution"
-        IconComponent = <UserSingleIcon />
+        IconComponent = <PersonIcon />
         break
       case "Group Show":
         text =
           bodyCount > 1 ? "Group shows at major institutions" : "Group show at a major institution"
-        IconComponent = <UserMultiIcon />
+        IconComponent = <GroupIcon />
         break
       case "Review":
         text =

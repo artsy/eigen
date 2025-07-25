@@ -48,20 +48,20 @@ describe("ArtworkListEmptyState", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableArtworkListOfferability: true })
     })
 
-    it("renderes the EyeClosedIcon if not shareable with partners", async () => {
+    it("renderes the HideIcon if not shareable with partners", async () => {
       renderWithRelay({
         Me: () => ({ artworkList: { default: false, shareableWithPartners: false } }),
       })
 
-      expect(screen.getByLabelText("EyeClosedIcon")).toBeOnTheScreen()
+      expect(screen.getByLabelText("HideIcon")).toBeOnTheScreen()
     })
 
-    it("does not render the EyeClosedIcon if shareable with partners", async () => {
+    it("does not render the HideIcon if shareable with partners", async () => {
       renderWithRelay({
         Me: () => ({ artworkList: { default: false, shareableWithPartners: true } }),
       })
 
-      expect(screen.queryByLabelText("EyeClosedIcon")).not.toBeOnTheScreen()
+      expect(screen.queryByLabelText("HideIcon")).not.toBeOnTheScreen()
     })
   })
 })
