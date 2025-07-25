@@ -1,4 +1,5 @@
-import { Spacer, TimerIcon, Flex, Text, Color } from "@artsy/palette-mobile"
+import { StopwatchIcon } from "@artsy/icons/native"
+import { Spacer, Flex, Text, Color } from "@artsy/palette-mobile"
 import { ArtworkLotTimer_artwork$data } from "__generated__/ArtworkLotTimer_artwork.graphql"
 import { ArtworkAuctionProgressBar } from "app/Components/Bidding/Components/ArtworkAuctionProgressBar"
 import {
@@ -197,7 +198,7 @@ const RenderCountdown: React.FC<AuctionWebsocketWrapperProps> = ({
               ) : (
                 <SimpleTicker duration={duration} separator="  " variant="md" />
               )}
-              <TimerIcon height={24} width={24} fill={getColor()} ml={1} />
+              <StopwatchIcon height={24} width={24} fill={getColor()} ml={1} />
             </Flex>
           </>
         )}

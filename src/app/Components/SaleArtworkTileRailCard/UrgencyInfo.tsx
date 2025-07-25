@@ -1,4 +1,5 @@
-import { Flex, Text, TimerIcon } from "@artsy/palette-mobile"
+import { StopwatchIcon } from "@artsy/icons/native"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { Time, getTimer } from "app/utils/getTimer"
 import { DateTime } from "luxon"
 import moment from "moment-timezone"
@@ -33,7 +34,7 @@ export const UrgencyInfo: React.FC<UrgencyInfoProps> = (props) => {
     return (
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Flex flexDirection="row" alignItems="center">
-          <TimerIcon height={16} width={16} fill={color} />
+          <StopwatchIcon height={16} width={16} fill={color} />
           <Text variant="xs" italic color={color ?? "mono100"}>
             {" "}
             {timeText}
