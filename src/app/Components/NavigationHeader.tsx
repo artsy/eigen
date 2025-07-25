@@ -1,13 +1,5 @@
-import { CloseIcon } from "@artsy/icons/native"
-import {
-  ArrowRightIcon,
-  ArrowLeftIcon,
-  ShareIcon,
-  Flex,
-  useTheme,
-  Text,
-  Separator,
-} from "@artsy/palette-mobile"
+import { ChevronLeftIcon, CloseIcon } from "@artsy/icons/native"
+import { ArrowRightIcon, ShareIcon, Flex, useTheme, Text, Separator } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ResponsiveAlignItemsValue } from "app/Components/Bidding/Elements/types"
 import { TouchableOpacity } from "react-native"
@@ -48,7 +40,7 @@ export const NavigationHeader: React.FC<NavigationHeaderProps> = ({
     if (useXButton) {
       return <CloseIcon fill="mono100" />
     } else {
-      return <ArrowLeftIcon fill="mono100" />
+      return <ChevronLeftIcon fill="mono100" />
     }
   }
 
