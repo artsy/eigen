@@ -1,6 +1,5 @@
-import { GroupIcon, InstitutionIcon } from "@artsy/icons/native"
+import { FairIcon, GroupIcon, InstitutionIcon } from "@artsy/icons/native"
 import {
-  FairIcon,
   IconProps,
   PublicationIcon,
   UserSingleIcon,
