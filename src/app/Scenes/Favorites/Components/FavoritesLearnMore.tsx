@@ -1,8 +1,7 @@
-import { BellStrokeIcon, HeartStrokeIcon, TrendingIcon } from "@artsy/icons/native"
+import { BellStrokeIcon, HeartStrokeIcon, InstitutionIcon, TrendingIcon } from "@artsy/icons/native"
 import {
   DEFAULT_HIT_SLOP,
   Flex,
-  InstitutionIcon,
   Join,
   MultiplePersonsIcon,
   QuestionCircleIcon,

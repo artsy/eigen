@@ -1,10 +1,9 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { AddIcon, HeartStrokeIcon, TrendingIcon } from "@artsy/icons/native"
+import { AddIcon, HeartStrokeIcon, InstitutionIcon, TrendingIcon } from "@artsy/icons/native"
 import {
   Box,
   Button,
   Flex,
-  InstitutionIcon,
   Join,
   LinkText,
   Skeleton,
