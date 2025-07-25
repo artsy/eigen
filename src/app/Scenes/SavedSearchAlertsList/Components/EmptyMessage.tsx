@@ -1,6 +1,6 @@
+import { BellStrokeIcon } from "@artsy/icons/native"
 import {
   ArtworkIcon,
-  BellIcon,
   Box,
   Button,
   FilterIcon,
@@ -73,7 +73,7 @@ export const EmptyMessage: React.FC = () => {
         <Join separator={<Spacer y={2} />}>
           <InfoSection title={t.search.title} body={t.search.body} icon={<SearchIcon />} />
           <InfoSection title={t.filter.title} body={t.filter.body} icon={<FilterIcon />} />
-          <InfoSection title={t.create.title} body={t.create.body} icon={<BellIcon />} />
+          <InfoSection title={t.create.title} body={t.create.body} icon={<BellStrokeIcon />} />
           <InfoSection title={t.match.title} body={t.match.body} icon={<ArtworkIcon />} />
         </Join>
         <Spacer y={4} />
