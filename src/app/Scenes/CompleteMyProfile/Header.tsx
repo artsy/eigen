@@ -1,6 +1,6 @@
+import { CheckmarkStrokeIcon } from "@artsy/icons/native"
 import {
   CheckCircleFillIcon,
-  CheckCircleIcon,
   Flex,
   ProgressBar,
   Text,
@@ -62,7 +62,7 @@ export const Header: FC = () => {
             {isCompleted ? (
               <CheckCircleFillIcon fill="green100" />
             ) : (
-              <CheckCircleIcon fill="mono60" />
+              <CheckmarkStrokeIcon fill="mono60" />
             )}
           </Flex>
         )}
