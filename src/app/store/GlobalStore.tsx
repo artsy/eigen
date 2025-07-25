@@ -77,11 +77,8 @@ export const __globalStoreTestUtils__ = __TEST__
     }
   : undefined
 
-if (__TEST__) {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.reset()
-  })
-}
+// Note: The beforeEach hook for resetting GlobalStore has been moved to setupJest.tsx
+// to avoid issues with SWC's lazy module loading
 
 const hooks = createTypedHooks<GlobalStoreModel>()
 

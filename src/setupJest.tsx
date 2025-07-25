@@ -6,6 +6,7 @@ import mockClipboard from "@react-native-clipboard/clipboard/jest/clipboard-mock
 import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
 // @ts-ignore-next-line
 import mockStripe from "@stripe/stripe-react-native/jest/mock.js"
+import "@testing-library/react-native"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks"
@@ -18,6 +19,8 @@ import "react-native-gesture-handler/jestSetup"
 // @ts-ignore-next-line
 import mockSafeAreaContext from "react-native-safe-area-context/jest/mock"
 import track, { useTracking } from "react-tracking"
+
+// Preload modules that have Jest hooks to avoid lazy loading issues
 
 // 👇 needed after upgrading to reanimated 3 otherwise tests break
 require("setimmediate")
@@ -67,6 +70,10 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
   beforeEach((done) => {
     mockTrackEvent.mockClear()
     mockPostEventToProviders.mockClear()
+    // Reset GlobalStore for each test
+    if ((global as any).__globalStoreTestUtils__) {
+      ;(global as any).__globalStoreTestUtils__.reset()
+    }
     const types: Array<"error" | "warn"> = ["error", "warn"]
     types.forEach((type) => {
       // Don't spy on loggers that have been modified by the current test.

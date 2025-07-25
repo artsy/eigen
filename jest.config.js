@@ -1,3 +1,4 @@
+const path = require("path")
 const moduleNameMap = require("./alias").jestModuleNameMap
 
 module.exports = {
@@ -19,7 +20,43 @@ module.exports = {
   transform: {
     "^[./a-zA-Z0-9$_-]+\\.(bmp|gif|jpg|jpeg|mp4|png|psd|svg|webp)$":
       "<rootDir>/node_modules/react-native/jest/assetFileTransformer.js",
-    "\\.graphql$": "jest-raw-loader",
+    "\\.(gql|graphql)$": "@graphql-tools/jest-transform",
+    "^(?!.*node_modules)(?!.*utils/tests/).+\\.(ts|tsx)$": [
+      "@swc/jest",
+      {
+        jsc: {
+          parser: {
+            syntax: "typescript",
+            tsx: true,
+            decorators: true,
+            dynamicImport: true
+          },
+          transform: {
+            react: {
+              runtime: "automatic"
+            }
+          },
+          experimental: {
+            plugins: [
+              ["@swc/plugin-loadable-components", {}],
+              ["@swc/plugin-styled-components", {
+                ssr: true,
+                displayName: true
+              }],
+              ["@swc/plugin-relay", {
+                rootDir: path.resolve(process.cwd(), "src"),
+                artifactDirectory: "__generated__",
+                language: "typescript"
+              }]
+            ]
+          }
+        },
+        module: {
+          type: "commonjs",
+          lazy: true
+        }
+      }
+    ]
   },
   transformIgnorePatterns: [
     "node_modules/(?!(react-native(-.*)?/(@react-native-community/.*))?|react-navigation|@react-navigation/.*)",

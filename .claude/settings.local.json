@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "Bash(yarn jest)",
+      "Bash(yarn jest:*)",
+      "Bash(npm view:*)",
+      "Bash(git checkout:*)"
+    ],
+    "deny": []
+  }
+}
