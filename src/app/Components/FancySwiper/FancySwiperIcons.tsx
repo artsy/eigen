@@ -1,5 +1,5 @@
-import { CloseIcon } from "@artsy/icons/native"
-import { Flex, HeartFillIcon, HeartIcon, Touchable } from "@artsy/palette-mobile"
+import { CloseIcon, HeartFillIcon } from "@artsy/icons/native"
+import { Flex, HeartIcon, Touchable } from "@artsy/palette-mobile"
 import { SWIPE_MAGNITUDE } from "app/Components/FancySwiper/FancySwiper"
 import { Animated } from "react-native"
 
