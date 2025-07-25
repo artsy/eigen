@@ -1,9 +1,8 @@
-import { ArtworkIcon } from "@artsy/icons/native"
+import { ArtworkIcon, GroupIcon } from "@artsy/icons/native"
 import {
   Spacer,
   FairIcon,
   PublicationIcon,
-  UserMultiIcon,
   UserSingleIcon,
   Flex,
   Box,
@@ -58,7 +57,7 @@ const SectionedHighlight: React.FC<{ header: string; body: string[] }> = ({ head
       case "Group Show":
         text =
           bodyCount > 1 ? "Group shows at major institutions" : "Group show at a major institution"
-        IconComponent = <UserMultiIcon />
+        IconComponent = <GroupIcon />
         break
       case "Review":
         text =

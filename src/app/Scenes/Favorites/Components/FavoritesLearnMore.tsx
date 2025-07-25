@@ -1,9 +1,14 @@
-import { BellStrokeIcon, HeartStrokeIcon, InstitutionIcon, TrendingIcon } from "@artsy/icons/native"
+import {
+  BellStrokeIcon,
+  GroupIcon,
+  HeartStrokeIcon,
+  InstitutionIcon,
+  TrendingIcon,
+} from "@artsy/icons/native"
 import {
   DEFAULT_HIT_SLOP,
   Flex,
   Join,
-  MultiplePersonsIcon,
   QuestionCircleIcon,
   SettingsIcon,
   Spacer,
@@ -61,7 +66,7 @@ const SECTIONS = [
       <Flex>
         <Join separator={<Spacer y={1} />}>
           <TitleWithIcon
-            icon={<MultiplePersonsIcon />}
+            icon={<GroupIcon />}
             title="Get updates on your favorite artists, including new artworks, shows, exhibitions and more."
           />
           <TitleWithIcon
