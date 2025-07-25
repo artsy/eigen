@@ -1,4 +1,5 @@
-import { MoneyFillIcon, AlertCircleFillIcon, Flex, Color } from "@artsy/palette-mobile"
+import { MoneyFillIcon } from "@artsy/icons/native"
+import { AlertCircleFillIcon, Flex, Color } from "@artsy/palette-mobile"
 import { ConversationCTATestsQuery } from "__generated__/ConversationCTATestsQuery.graphql"
 import { CTAPopUp } from "app/Scenes/Inbox/Components/Conversations/CTAPopUp"
 import {
