@@ -1,5 +1,5 @@
+import { BellStrokeIcon } from "@artsy/icons/native"
 import {
-  BellIcon,
   DEFAULT_HIT_SLOP,
   Flex,
   HeartIcon,
@@ -69,7 +69,7 @@ const SECTIONS = [
             title="Tailor your experience, helping you discover artworks that match your taste."
           />
           <TitleWithIcon
-            icon={<BellIcon />}
+            icon={<BellStrokeIcon />}
             title="Never miss out by exploring your Activity and receiving timely email updates"
           />
         </Join>
@@ -82,7 +82,7 @@ const SECTIONS = [
       <Flex>
         <Join separator={<Spacer y={1} />}>
           <TitleWithIcon
-            icon={<BellIcon />}
+            icon={<BellStrokeIcon />}
             title="If you’re on the hunt for a particular artwork, create an Alert and we’ll notify you when there’s a match."
           />
           <TitleWithIcon
