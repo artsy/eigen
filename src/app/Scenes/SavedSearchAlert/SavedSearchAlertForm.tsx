@@ -14,7 +14,7 @@ import { goBack, navigate, popToRoot } from "app/system/navigation/navigate"
 import { refreshSavedAlerts } from "app/utils/refreshHelpers"
 import { FormikProvider, useFormik } from "formik"
 import { useEffect, useState } from "react"
-import { Alert, StyleProp, ViewStyle } from "react-native"
+import { Alert, Keyboard, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
 import { useFirstMountState } from "react-use/lib/useFirstMountState"
 import { Form } from "./Components/Form"
@@ -88,6 +88,8 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     enableReinitialize: true,
     initialErrors: {},
     onSubmit: async (values) => {
+      Keyboard.dismiss()
+
       const userAlertSettings: SavedSearchAlertFormValues = {
         name: values.name,
         email: values.email,
