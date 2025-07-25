@@ -1,8 +1,7 @@
-import { CloseIcon, TriangleDownIcon } from "@artsy/icons/native"
+import { CheckmarkIcon, CloseIcon, TriangleDownIcon } from "@artsy/icons/native"
 import {
   Autocomplete,
   Spacer,
-  CheckIcon,
   Flex,
   useColor,
   Text,
@@ -326,7 +325,7 @@ const SelectModal: React.FC<{
               )}
               {localValue === item.value ? (
                 <PopIn>
-                  <CheckIcon width={25} height={25} />
+                  <CheckmarkIcon width={25} height={25} />
                 </PopIn>
               ) : null}
             </Flex>

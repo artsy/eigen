@@ -1,5 +1,5 @@
-import { ChevronSmallRightIcon } from "@artsy/icons/native"
-import { Box, CheckIcon } from "@artsy/palette-mobile"
+import { CheckmarkIcon, ChevronSmallRightIcon } from "@artsy/icons/native"
+import { Box } from "@artsy/palette-mobile"
 import { Tab, TabsProps } from "app/Components/LegacyTabs"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useState } from "react"
@@ -52,7 +52,7 @@ export const StepTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, tabs }) =
                     // noop
                   }}
                 />
-                {!!completed && <CheckIcon fill="green100" height={15} width={15} />}
+                {!!completed && <CheckmarkIcon fill="green100" height={15} width={15} />}
               </Box>
               <ChevronSmallRightIcon fill="mono60" height={10} width={10} />
             </Box>
