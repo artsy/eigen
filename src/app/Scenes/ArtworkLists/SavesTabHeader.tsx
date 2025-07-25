@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { AddIcon, HeartStrokeIcon } from "@artsy/icons/native"
+import { AddIcon, HeartStrokeIcon, TrendingIcon } from "@artsy/icons/native"
 import {
   Box,
   Button,
@@ -12,7 +12,6 @@ import {
   SkeletonText,
   Spacer,
   Text,
-  TrendingIcon,
 } from "@artsy/palette-mobile"
 import { ArtworkListsStore } from "app/Components/ArtworkLists/ArtworkListsStore"
 import { AutoHeightInfoModal } from "app/Components/Buttons/InfoButton"
