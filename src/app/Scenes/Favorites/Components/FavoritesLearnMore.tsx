@@ -2,6 +2,7 @@ import {
   BellStrokeIcon,
   GroupIcon,
   HeartStrokeIcon,
+  HelpIcon,
   InstitutionIcon,
   TrendingIcon,
 } from "@artsy/icons/native"
@@ -9,7 +10,6 @@ import {
   DEFAULT_HIT_SLOP,
   Flex,
   Join,
-  QuestionCircleIcon,
   SettingsIcon,
   Spacer,
   Text,
@@ -123,7 +123,7 @@ export const FavoritesLearnMore = () => {
           trackTappedInfoBubble(activeTab)
         }}
       >
-        <QuestionCircleIcon height={ICON_SIZE} width={ICON_SIZE} hitSlop={DEFAULT_HIT_SLOP} />
+        <HelpIcon height={ICON_SIZE} width={ICON_SIZE} hitSlop={DEFAULT_HIT_SLOP} />
       </Touchable>
 
       <AutomountedBottomSheetModal
