@@ -1,8 +1,7 @@
-import { BellStrokeIcon } from "@artsy/icons/native"
+import { BellStrokeIcon, HeartStrokeIcon } from "@artsy/icons/native"
 import {
   DEFAULT_HIT_SLOP,
   Flex,
-  HeartIcon,
   InstitutionIcon,
   Join,
   MultiplePersonsIcon,
@@ -42,7 +41,10 @@ const SECTIONS = [
     content: (
       <Flex>
         <Join separator={<Spacer y={1} />}>
-          <TitleWithIcon icon={<HeartIcon />} title="Curate your own list of works you love" />
+          <TitleWithIcon
+            icon={<HeartStrokeIcon />}
+            title="Curate your own list of works you love"
+          />
           <TitleWithIcon
             icon={<TrendingIcon />}
             title="Get better recommendations with every Save"
