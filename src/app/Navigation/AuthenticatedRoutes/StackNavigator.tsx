@@ -1,5 +1,5 @@
-import { CloseIcon } from "@artsy/icons/native"
-import { ArrowLeftIcon, DEFAULT_HIT_SLOP, THEMES, Touchable } from "@artsy/palette-mobile"
+import { ChevronLeftIcon, CloseIcon } from "@artsy/icons/native"
+import { DEFAULT_HIT_SLOP, THEMES, Touchable } from "@artsy/palette-mobile"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { DEFAULT_SCREEN_ANIMATION_DURATION } from "app/Components/constants"
 import { ScreenWrapper } from "app/Navigation/AuthenticatedRoutes/ScreenWrapper"
@@ -52,7 +52,7 @@ export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, modu
               {isModalScreen(module) ? (
                 <CloseIcon fill="mono100" />
               ) : (
-                <ArrowLeftIcon fill="mono100" />
+                <ChevronLeftIcon fill="mono100" />
               )}
             </Touchable>
           )
