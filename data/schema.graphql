@@ -18558,6 +18558,7 @@ type Query {
   # A list of Articles
   articles(
     auctionID: String
+    authorID: String
     channelID: String
     featured: Boolean
 
@@ -24447,6 +24448,7 @@ type Viewer {
   # A list of Articles
   articles(
     auctionID: String
+    authorID: String
     channelID: String
     featured: Boolean
 
