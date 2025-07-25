@@ -1,6 +1,6 @@
 import { ActionType, DeletedSavedSearch, OwnerType } from "@artsy/cohesion"
-import { ChevronSmallRightIcon, NoArtIcon } from "@artsy/icons/native"
-import { Box, Flex, Image, Text, Touchable, TrashIcon, useColor } from "@artsy/palette-mobile"
+import { ChevronSmallRightIcon, NoArtIcon, TrashIcon } from "@artsy/icons/native"
+import { Box, Flex, Image, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import {
   SavedSearchListItem_alert$data,
   SavedSearchListItem_alert$key,
