@@ -1,4 +1,5 @@
-import { CheckIcon, Box } from "@artsy/palette-mobile"
+import { CheckmarkIcon } from "@artsy/icons/native"
+import { Box } from "@artsy/palette-mobile"
 import { ColorsSwatch } from "app/Components/ArtworkFilter/Filters/ColorsSwatch"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 
@@ -13,7 +14,7 @@ describe("Colors swatch", () => {
         selected
       />
     )
-    const selectedCheckIcon = selectedTree.root.findByType(CheckIcon)
+    const selectedCheckIcon = selectedTree.root.findByType(CheckmarkIcon)
     expect(selectedCheckIcon.props.fill).toMatch("#fff")
 
     const unselectedTree = renderWithWrappersLEGACY(
@@ -25,7 +26,7 @@ describe("Colors swatch", () => {
         selected={false}
       />
     )
-    const unselectedCheckIcon = unselectedTree.root.findAllByType(CheckIcon)
+    const unselectedCheckIcon = unselectedTree.root.findAllByType(CheckmarkIcon)
     expect(unselectedCheckIcon.length).toEqual(0)
   })
 
