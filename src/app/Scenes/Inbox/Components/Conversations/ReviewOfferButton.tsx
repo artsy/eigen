@@ -1,6 +1,6 @@
 import { ActionType, OwnerType, TappedViewOffer } from "@artsy/cohesion"
+import { ChevronRightIcon } from "@artsy/icons/native"
 import {
-  ArrowRightIcon,
   MoneyFillIcon,
   AlertCircleFillIcon,
   IconProps,
@@ -167,7 +167,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
           </Flex>
         </Flex>
         <Flex>
-          <ArrowRightIcon fill="mono0" />
+          <ChevronRightIcon fill="mono0" />
         </Flex>
       </Flex>
     </TouchableWithoutFeedback>

@@ -1,4 +1,5 @@
-import { ArrowRightIcon, Flex, Text } from "@artsy/palette-mobile"
+import { ChevronRightIcon } from "@artsy/icons/native"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { Schema } from "app/utils/track"
 import React from "react"
@@ -35,7 +36,7 @@ export const ContextGridCTA: React.FC<ContextGridCTAProps> = ({ href, label, con
           {label}
         </Text>
         <Flex alignSelf="center">
-          <ArrowRightIcon fill="mono30" ml={1} />
+          <ChevronRightIcon fill="mono30" ml={1} />
         </Flex>
       </Flex>
     </RouterLink>

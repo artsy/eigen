@@ -1,11 +1,5 @@
-import {
-  ArrowRightIcon,
-  Flex,
-  Separator,
-  Skeleton,
-  SkeletonText,
-  Spacer,
-} from "@artsy/palette-mobile"
+import { ChevronRightIcon } from "@artsy/icons/native"
+import { Flex, Separator, Skeleton, SkeletonText, Spacer } from "@artsy/palette-mobile"
 import { ArtworkRail_artworks$data } from "__generated__/ArtworkRail_artworks.graphql"
 import { CollectionRailCollectionsByCategoryQuery } from "__generated__/CollectionRailCollectionsByCategoryQuery.graphql"
 import { CollectionRail_marketingCollection$key } from "__generated__/CollectionRail_marketingCollection.graphql"
@@ -59,7 +53,7 @@ export const CollectionRail: FC<CollectionRailProps> = ({
               RightButtonContent={() => (
                 <Flex flexDirection="row" flex={1}>
                   <Flex my="auto">
-                    <ArrowRightIcon fill="mono60" ml={0.5} />
+                    <ChevronRightIcon fill="mono60" ml={0.5} />
                   </Flex>
                 </Flex>
               )}
@@ -106,7 +100,7 @@ export const CollectionRailPlaceholder: FC<Partial<CollectionRailProps>> = ({ la
       <Flex px={2}>
         <Flex justifyContent="space-between" flexDirection="row">
           <SkeletonText variant="md">Category title</SkeletonText>
-          <ArrowRightIcon />
+          <ChevronRightIcon />
         </Flex>
 
         <Spacer y={1} />
