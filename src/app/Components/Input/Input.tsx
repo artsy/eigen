@@ -1,6 +1,6 @@
+import { ShowIcon } from "@artsy/icons/native"
 import {
   XCircleIcon,
-  EyeOpenedIcon,
   EyeClosedIcon,
   Flex,
   useTheme,
@@ -155,7 +155,7 @@ export const Input = forwardRef<InputRef, InputProps>(
             accessibilityLabel={showPassword ? "hide password button" : "show password button"}
             hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
           >
-            {!showPassword ? <EyeClosedIcon fill="mono30" /> : <EyeOpenedIcon fill="mono60" />}
+            {!showPassword ? <EyeClosedIcon fill="mono30" /> : <ShowIcon fill="mono60" />}
           </TouchableOpacity>
         </Flex>
       )
