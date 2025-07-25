@@ -1,13 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
-import {
-  ChevronIcon,
-  Flex,
-  Join,
-  RadioButton,
-  Spacer,
-  Text,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { ChevronSmallDownIcon } from "@artsy/icons/native"
+import { Flex, Join, RadioButton, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { FollowedArtistsQueryRenderer } from "app/Scenes/Favorites/Components/FollowedArtists"
@@ -60,8 +53,7 @@ export const FollowOptionPicker: React.FC<{}> = () => {
           <Text variant="sm-display" mr={0.5}>
             {FOLLOW_OPTIONS.find(({ value }) => value === followOption)?.label}
           </Text>
-          <ChevronIcon
-            direction="down"
+          <ChevronSmallDownIcon
             style={{
               // We are manually adding a tiny padding here to make sure that the arrow is centered
               // This is a workaround our icon

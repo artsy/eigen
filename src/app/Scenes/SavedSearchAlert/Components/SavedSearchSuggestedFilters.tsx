@@ -1,13 +1,6 @@
 import { ActionType, OwnerType, SelectedSuggestedFilter } from "@artsy/cohesion"
-import {
-  ChevronIcon,
-  Flex,
-  Skeleton,
-  SkeletonBox,
-  Spacer,
-  Text,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { ChevronSmallRightIcon } from "@artsy/icons/native"
+import { Flex, Skeleton, SkeletonBox, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { SavedSearchSuggestedFiltersFetchQuery } from "__generated__/SavedSearchSuggestedFiltersFetchQuery.graphql"
 import { SearchCriteria } from "app/Components/ArtworkFilter/SavedSearch/types"
@@ -164,10 +157,9 @@ const MoreFiltersButton: React.FC<{ text: string }> = ({ text }) => {
         <Text color="blue100" variant="xs">
           {text}
         </Text>
-        <ChevronIcon
+        <ChevronSmallRightIcon
           height={14}
           width={14}
-          direction="right"
           fill="blue100"
           ml={0.5}
           // More filters has no characters that extend below the baseline,

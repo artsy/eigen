@@ -1,7 +1,7 @@
 import { ActionType, DeletedSavedSearch, OwnerType } from "@artsy/cohesion"
+import { ChevronSmallRightIcon } from "@artsy/icons/native"
 import {
   Box,
-  ChevronIcon,
   Flex,
   Image,
   NoImageIcon,
@@ -219,7 +219,7 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
                       </Text>
                     )}
                   </Flex>
-                  <ChevronIcon direction="right" fill="mono60" />
+                  <ChevronSmallRightIcon fill="mono60" />
                 </Flex>
               </Box>
             </Touchable>
