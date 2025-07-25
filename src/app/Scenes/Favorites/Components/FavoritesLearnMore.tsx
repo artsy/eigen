@@ -4,17 +4,10 @@ import {
   HeartStrokeIcon,
   HelpIcon,
   InstitutionIcon,
+  SettingsIcon,
   TrendingIcon,
 } from "@artsy/icons/native"
-import {
-  DEFAULT_HIT_SLOP,
-  Flex,
-  Join,
-  SettingsIcon,
-  Spacer,
-  Text,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { DEFAULT_HIT_SLOP, Flex, Join, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
 import { CallapseWithTitle } from "app/Scenes/Favorites/Components/CollapseWithTitle"
