@@ -4,7 +4,6 @@ import {
   tappedRegisterToBid,
   TappedRegisterToBidArgs,
 } from "@artsy/cohesion"
-// eslint-disable-next-line local-rules/no-palette-icon-imports
 import { Spacer, CheckIcon, Flex, Box, Text, Button } from "@artsy/palette-mobile"
 import { RegisterToBidButton_me$data } from "__generated__/RegisterToBidButton_me.graphql"
 import { RegisterToBidButton_sale$data } from "__generated__/RegisterToBidButton_sale.graphql"

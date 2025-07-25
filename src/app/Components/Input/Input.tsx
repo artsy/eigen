@@ -1,9 +1,6 @@
 import {
-  // eslint-disable-next-line local-rules/no-palette-icon-imports
   XCircleIcon,
-  // eslint-disable-next-line local-rules/no-palette-icon-imports
   EyeOpenedIcon,
-  // eslint-disable-next-line local-rules/no-palette-icon-imports
   EyeClosedIcon,
   Flex,
   useTheme,

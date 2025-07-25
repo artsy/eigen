@@ -1,4 +1,5 @@
-import { Box, Button, CloseIcon, Spacer, Text, useColor } from "@artsy/palette-mobile"
+import { CloseIcon } from "@artsy/icons/native"
+import { Box, Button, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { popToRoot } from "app/system/navigation/navigate"
 import { Modal, SafeAreaView } from "react-native"

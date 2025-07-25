@@ -1,4 +1,5 @@
-import { CloseIcon, ChevronIcon, useColor } from "@artsy/palette-mobile"
+import { CloseIcon } from "@artsy/icons/native"
+import { ChevronIcon, useColor } from "@artsy/palette-mobile"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useEffect, useRef } from "react"
 import { Animated, TouchableOpacity, ViewStyle } from "react-native"

@@ -1,5 +1,4 @@
 import {
-  // eslint-disable-next-line local-rules/no-palette-icon-imports
   ArrowRightIcon,
   Button,
   DEFAULT_HIT_SLOP,

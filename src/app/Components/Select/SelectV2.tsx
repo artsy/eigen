@@ -1,8 +1,7 @@
-import { TriangleDownIcon } from "@artsy/icons/native"
+import { CloseIcon, TriangleDownIcon } from "@artsy/icons/native"
 import {
   Autocomplete,
   Spacer,
-  CloseIcon,
   CheckIcon,
   Flex,
   useColor,

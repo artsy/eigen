@@ -1,10 +1,5 @@
-import {
-  ArrowLeftIcon,
-  CloseIcon,
-  DEFAULT_HIT_SLOP,
-  THEMES,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { CloseIcon } from "@artsy/icons/native"
+import { ArrowLeftIcon, DEFAULT_HIT_SLOP, THEMES, Touchable } from "@artsy/palette-mobile"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { DEFAULT_SCREEN_ANIMATION_DURATION } from "app/Components/constants"
 import { ScreenWrapper } from "app/Navigation/AuthenticatedRoutes/ScreenWrapper"

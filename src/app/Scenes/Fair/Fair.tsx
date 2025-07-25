@@ -1,7 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import {
   Flex,
-  // eslint-disable-next-line local-rules/no-palette-icon-imports
   ShareIcon,
   Skeleton,
   SkeletonBox,

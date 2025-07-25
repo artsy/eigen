@@ -1,3 +1,4 @@
+import { CloseIcon } from "@artsy/icons/native"
 import {
   Spacer,
   CheckCircleFillIcon,
@@ -8,7 +9,6 @@ import {
   Button,
   LegacyScreen,
   Touchable,
-  CloseIcon,
   ChevronIcon,
   DEFAULT_HIT_SLOP,
 } from "@artsy/palette-mobile"

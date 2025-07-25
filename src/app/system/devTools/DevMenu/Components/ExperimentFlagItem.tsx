@@ -1,7 +1,6 @@
-import { LinkIcon } from "@artsy/icons/native"
+import { CloseIcon, LinkIcon } from "@artsy/icons/native"
 import {
   Button,
-  CloseIcon,
   EditIcon,
   Flex,
   Join,
