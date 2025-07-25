@@ -1,4 +1,5 @@
-import { DownloadIcon, Flex, IconProps, Text } from "@artsy/palette-mobile"
+import { DownloadIcon, IconProps } from "@artsy/icons/native"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { FileDownload_attachment$data } from "__generated__/FileDownload_attachment.graphql"
 import { Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
