@@ -1,13 +1,5 @@
-import {
-  Box,
-  Flex,
-  HeartFillIcon,
-  HeartIcon,
-  Spacer,
-  Text,
-  useSpace,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { HeartFillIcon } from "@artsy/icons/native"
+import { Box, Flex, HeartIcon, Spacer, Text, useSpace, Touchable } from "@artsy/palette-mobile"
 import { ArtworkSaveButton_artwork$key } from "__generated__/ArtworkSaveButton_artwork.graphql"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { isOpenOrUpcomingSale } from "app/Scenes/Artwork/utils/isOpenOrUpcomingSale"
