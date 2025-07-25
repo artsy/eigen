@@ -1,14 +1,5 @@
-import { CheckmarkFillIcon } from "@artsy/icons/native"
-import {
-  Text,
-  Flex,
-  Touchable,
-  Button,
-  AddCircleIcon,
-  Image,
-  Skeleton,
-  SkeletonBox,
-} from "@artsy/palette-mobile"
+import { AddStrokeIcon, CheckmarkFillIcon } from "@artsy/icons/native"
+import { Text, Flex, Touchable, Button, Image, Skeleton, SkeletonBox } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { ImageSelector_me$key } from "__generated__/ImageSelector_me.graphql"
 import { ProgressState } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
@@ -108,7 +99,7 @@ export const ImageSelector: FC<ImageSelectorProps> = ({ src, onImageSelect }) =>
               <CheckmarkFillIcon width={ICON_SIZE} height={ICON_SIZE} fill="green100" />
             )}
 
-            {!!displayInitials && <AddCircleIcon width={ICON_SIZE} height={ICON_SIZE} />}
+            {!!displayInitials && <AddStrokeIcon width={ICON_SIZE} height={ICON_SIZE} />}
           </Flex>
         </Flex>
         <Button variant="outline" size="small" onPress={handleImagePress} loading={isLoading}>
