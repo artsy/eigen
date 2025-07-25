@@ -1,7 +1,7 @@
+import { ArtworkIcon } from "@artsy/icons/native"
 import {
   Spacer,
   FairIcon,
-  ArtworkIcon,
   PublicationIcon,
   UserMultiIcon,
   UserSingleIcon,

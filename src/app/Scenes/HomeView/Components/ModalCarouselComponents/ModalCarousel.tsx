@@ -1,4 +1,5 @@
-import { ArtworkIcon, Flex, GraphIcon, IconProps, Join, Spacer, Text } from "@artsy/palette-mobile"
+import { ArtworkIcon } from "@artsy/icons/native"
+import { Flex, GraphIcon, IconProps, Join, Spacer, Text } from "@artsy/palette-mobile"
 import { ModalCarouselContainer } from "./ModalCarouselContainer"
 import { ModalCarouselScreenWrapper } from "./ModalCarouselScreenWrapper"
 
