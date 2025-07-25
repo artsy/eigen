@@ -1,4 +1,5 @@
-import { CertificateIcon, Flex, LinkText, Text } from "@artsy/palette-mobile"
+import { CertificateIcon } from "@artsy/icons/native"
+import { Flex, LinkText, Text } from "@artsy/palette-mobile"
 import { ArtworkAuthenticityCertificate_artwork$data } from "__generated__/ArtworkAuthenticityCertificate_artwork.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { createFragmentContainer, graphql } from "react-relay"
