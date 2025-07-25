@@ -4533,6 +4533,9 @@ input BulkArtworkFilterInput {
 }
 
 input BulkUpdateArtworksMetadataInput {
+  # The artist IDs to be assigned
+  artistIds: [String]
+
   # The availaiblity to be assigned
   availability: Availability
 
