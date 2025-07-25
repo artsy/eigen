@@ -1,6 +1,6 @@
 import { ActionType, OwnerType, TappedViewOffer } from "@artsy/cohesion"
-import { ChevronRightIcon, MoneyFillIcon } from "@artsy/icons/native"
-import { AlertCircleFillIcon, IconProps, Flex, Text, Color } from "@artsy/palette-mobile"
+import { AlertFillIcon, ChevronRightIcon, IconProps, MoneyFillIcon } from "@artsy/icons/native"
+import { Flex, Text, Color } from "@artsy/palette-mobile"
 import { ConversationCTA_conversation$data } from "__generated__/ConversationCTA_conversation.graphql"
 import { navigate } from "app/system/navigation/navigate"
 import { ExtractNodeType } from "app/utils/relayHelpers"
@@ -55,7 +55,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
         backgroundColor: "red100",
         message: "Payment Failed",
         subMessage: "Unable to process payment for accepted offer. Update payment method.",
-        Icon: AlertCircleFillIcon,
+        Icon: AlertFillIcon,
         url: `/orders/${orderID}/payment/new`,
         modalTitle: "Update Payment Details",
       }
@@ -66,7 +66,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
         backgroundColor: "orange150",
         message: `${offerType} Received`,
         subMessage: `The offer expires in ${expiresIn}`,
-        Icon: AlertCircleFillIcon,
+        Icon: AlertFillIcon,
         url: `/orders/${orderID}`,
         modalTitle: "Review Offer",
       }
@@ -88,7 +88,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
         backgroundColor: "orange150",
         message: `Offer Accepted - Confirm total`,
         subMessage: `The offer expires in ${expiresIn}`,
-        Icon: AlertCircleFillIcon,
+        Icon: AlertFillIcon,
         url: `/orders/${orderID}`,
         modalTitle: "Review Offer",
       }
@@ -99,7 +99,7 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
         backgroundColor: "orange150",
         message: `Counteroffer Received - Confirm Total`,
         subMessage: `The offer expires in ${expiresIn}`,
-        Icon: AlertCircleFillIcon,
+        Icon: AlertFillIcon,
         url: `/orders/${orderID}`,
         modalTitle: "Review Offer",
       }
