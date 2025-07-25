@@ -1,4 +1,5 @@
-import { ArtworkIcon, Flex, LinkText, Text } from "@artsy/palette-mobile"
+import { ArtworkIcon } from "@artsy/icons/native"
+import { Flex, LinkText, Text } from "@artsy/palette-mobile"
 import { ArtworkClassification_artwork$data } from "__generated__/ArtworkClassification_artwork.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { createFragmentContainer, graphql } from "react-relay"

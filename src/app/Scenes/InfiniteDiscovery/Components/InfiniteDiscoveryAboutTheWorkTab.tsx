@@ -1,7 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
-import { CertificateIcon, EnvelopeIcon } from "@artsy/icons/native"
+import { ArtworkIcon, CertificateIcon, EnvelopeIcon } from "@artsy/icons/native"
 import {
-  ArtworkIcon,
   Flex,
   FlexProps,
   LinkText,

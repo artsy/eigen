@@ -1,13 +1,5 @@
-import { CloseIcon, ChevronRightIcon } from "@artsy/icons/native"
-import {
-  AuctionIcon,
-  ArtworkIcon,
-  Flex,
-  Pill,
-  Spacer,
-  Text,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { CloseIcon, ChevronRightIcon, ArtworkIcon } from "@artsy/icons/native"
+import { AuctionIcon, Flex, Pill, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { AutosuggestResult } from "app/Components/AutosuggestResults/AutosuggestResults"
 import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -181,7 +173,8 @@ export const AutosuggestSearchResult: React.FC<{
               navigationProps={{ initialTab: "Artworks" }}
               onPress={onPress}
             >
-              <Pill Icon={ArtworkIcon}>Artworks</Pill>
+              {/* TODO: MOPRAT-863: remove `any` after removing icons and icons types from Palette Mobile */}
+              <Pill Icon={ArtworkIcon as any}>Artworks</Pill>
             </RouterLink>
 
             <Spacer x={1} />
