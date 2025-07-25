@@ -1,12 +1,5 @@
-import {
-  Button,
-  Flex,
-  ReloadIcon,
-  Spacer,
-  Text,
-  quoteLeft,
-  quoteRight,
-} from "@artsy/palette-mobile"
+import { ReloadIcon } from "@artsy/icons/native"
+import { Button, Flex, Spacer, Text, quoteLeft, quoteRight } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AutosuggestResults_results$data } from "__generated__/AutosuggestResults_results.graphql"
