@@ -1,4 +1,5 @@
-import { Spacer, CloseCircleIcon, CheckCircleIcon, Flex, Text } from "@artsy/palette-mobile"
+import { CheckmarkStrokeIcon } from "@artsy/icons/native"
+import { Spacer, CloseCircleIcon, Flex, Text } from "@artsy/palette-mobile"
 import { AuctionPrice_artwork$data } from "__generated__/AuctionPrice_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/system/navigation/navigate"
@@ -79,7 +80,7 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
             {!!myBidPresent && (
               <Text variant="sm-display">
                 {myBidWinning ? (
-                  <CheckCircleIcon
+                  <CheckmarkStrokeIcon
                     height="16"
                     fill="green100"
                     accessibilityLabel="My Bid Winning Icon"
