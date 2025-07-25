@@ -1,5 +1,5 @@
+import { AddIcon } from "@artsy/icons/native"
 import {
-  AddIcon,
   Box,
   Button,
   Flex,
