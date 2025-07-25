@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ChevronRightIcon } from "@artsy/icons/native"
 import {
-  ArrowRightIcon,
   ClockFill,
   ExclamationMarkCircleFill,
   Flex,
@@ -34,7 +34,7 @@ export const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string 
           <Text mx={0.5} variant="sm">
             Complete registration
           </Text>
-          <ArrowRightIcon />
+          <ChevronRightIcon />
         </>
       )}
       {props.children}
