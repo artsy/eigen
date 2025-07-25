@@ -1,4 +1,5 @@
-import { QuestionCircleIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { HelpIcon } from "@artsy/icons/native"
+import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 import { navigate } from "app/system/navigation/navigate"
 
 export const Support = () => {
@@ -16,7 +17,7 @@ export const Support = () => {
         }}
       >
         <Flex mb={1} alignItems="center" flexDirection="row">
-          <QuestionCircleIcon mr={1} />
+          <HelpIcon mr={1} />
           <Text variant="sm">Inquiries FAQ</Text>
         </Flex>
       </Touchable>
