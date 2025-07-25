@@ -6,8 +6,8 @@ import {
   share,
   Share as ShareType,
 } from "@artsy/cohesion"
-import { LinkIcon } from "@artsy/icons/native"
-import { InstagramAppIcon, MoreIcon, ShareIcon, WhatsAppAppIcon } from "@artsy/palette-mobile"
+import { InstagramAppIcon, LinkIcon } from "@artsy/icons/native"
+import { MoreIcon, ShareIcon, WhatsAppAppIcon } from "@artsy/palette-mobile"
 import { BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet"
 import Clipboard from "@react-native-clipboard/clipboard"
 import Sentry, { captureException, captureMessage } from "@sentry/react-native"
