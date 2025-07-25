@@ -1,9 +1,9 @@
+import { CheckmarkFillIcon } from "@artsy/icons/native"
 import {
   Text,
   Flex,
   Touchable,
   Button,
-  CheckCircleFillIcon,
   AddCircleIcon,
   Image,
   Skeleton,
@@ -105,7 +105,7 @@ export const ImageSelector: FC<ImageSelectorProps> = ({ src, onImageSelect }) =>
             borderRadius={ICON_SIZE / 2}
           >
             {!!displayAvatar && (
-              <CheckCircleFillIcon width={ICON_SIZE} height={ICON_SIZE} fill="green100" />
+              <CheckmarkFillIcon width={ICON_SIZE} height={ICON_SIZE} fill="green100" />
             )}
 
             {!!displayInitials && <AddCircleIcon width={ICON_SIZE} height={ICON_SIZE} />}

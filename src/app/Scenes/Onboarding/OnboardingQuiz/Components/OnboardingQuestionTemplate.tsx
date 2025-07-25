@@ -1,7 +1,6 @@
-import { ChevronSmallLeftIcon, CloseIcon } from "@artsy/icons/native"
+import { CheckmarkFillIcon, ChevronSmallLeftIcon, CloseIcon } from "@artsy/icons/native"
 import {
   Spacer,
-  CheckCircleFillIcon,
   Flex,
   Box,
   ProgressBar,
@@ -174,7 +173,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
 }
 
 const CheckCircleFillIconWhite = () => {
-  return <CheckCircleFillIcon fill="mono0" />
+  return <CheckmarkFillIcon fill="mono0" />
 }
 
 const STATE_KEYS: Record<Exclude<OnboardingContextAction["type"], "RESET">, keyof State> = {

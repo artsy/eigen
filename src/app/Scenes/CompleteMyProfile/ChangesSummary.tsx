@@ -1,5 +1,5 @@
-import { CheckmarkStrokeIcon } from "@artsy/icons/native"
-import { Button, Flex, Screen, Spacer, Text, CheckCircleFillIcon } from "@artsy/palette-mobile"
+import { CheckmarkFillIcon, CheckmarkStrokeIcon } from "@artsy/icons/native"
+import { Button, Flex, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { navigate } from "app/system/navigation/navigate"
@@ -57,7 +57,7 @@ export const ChangesSummary: FC = () => {
             {steps.includes("LocationStep") && (
               <Flex flexDirection="row" alignItems="center" gap={1}>
                 {hasLocation ? (
-                  <CheckCircleFillIcon fill="green100" />
+                  <CheckmarkFillIcon fill="green100" />
                 ) : (
                   <CheckmarkStrokeIcon fill="mono60" />
                 )}
@@ -70,7 +70,7 @@ export const ChangesSummary: FC = () => {
             {steps.includes("ProfessionStep") && (
               <Flex flexDirection="row" alignItems="center" gap={1}>
                 {hasProfession ? (
-                  <CheckCircleFillIcon fill="green100" />
+                  <CheckmarkFillIcon fill="green100" />
                 ) : (
                   <CheckmarkStrokeIcon fill="mono60" />
                 )}
@@ -83,7 +83,7 @@ export const ChangesSummary: FC = () => {
             {steps.includes("AvatarStep") && (
               <Flex flexDirection="row" alignItems="center" gap={1}>
                 {hasIconUrl ? (
-                  <CheckCircleFillIcon fill="green100" />
+                  <CheckmarkFillIcon fill="green100" />
                 ) : (
                   <CheckmarkStrokeIcon fill="mono60" />
                 )}
@@ -96,7 +96,7 @@ export const ChangesSummary: FC = () => {
             {steps.includes("IdentityVerificationStep") && (
               <Flex flexDirection="row" alignItems="center" gap={1}>
                 {hasIsIdentityVerified ? (
-                  <CheckCircleFillIcon fill="green100" />
+                  <CheckmarkFillIcon fill="green100" />
                 ) : (
                   <CheckmarkStrokeIcon fill="mono60" />
                 )}

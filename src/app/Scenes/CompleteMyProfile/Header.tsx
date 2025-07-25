@@ -1,12 +1,5 @@
-import { CheckmarkStrokeIcon } from "@artsy/icons/native"
-import {
-  CheckCircleFillIcon,
-  Flex,
-  ProgressBar,
-  Text,
-  Touchable,
-  useScreenDimensions,
-} from "@artsy/palette-mobile"
+import { CheckmarkFillIcon, CheckmarkStrokeIcon } from "@artsy/icons/native"
+import { Flex, ProgressBar, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
 import { RouteProp, useRoute } from "@react-navigation/native"
 import {
   CompleteMyProfileNavigationRoutes,
@@ -60,7 +53,7 @@ export const Header: FC = () => {
         {!!isChangesSummary && (
           <Flex>
             {isCompleted ? (
-              <CheckCircleFillIcon fill="green100" />
+              <CheckmarkFillIcon fill="green100" />
             ) : (
               <CheckmarkStrokeIcon fill="mono60" />
             )}
