@@ -1,15 +1,6 @@
 import { ActionType, DeletedSavedSearch, OwnerType } from "@artsy/cohesion"
-import { ChevronSmallRightIcon } from "@artsy/icons/native"
-import {
-  Box,
-  Flex,
-  Image,
-  NoImageIcon,
-  Text,
-  Touchable,
-  TrashIcon,
-  useColor,
-} from "@artsy/palette-mobile"
+import { ChevronSmallRightIcon, NoArtIcon } from "@artsy/icons/native"
+import { Box, Flex, Image, Text, Touchable, TrashIcon, useColor } from "@artsy/palette-mobile"
 import {
   SavedSearchListItem_alert$data,
   SavedSearchListItem_alert$key,
@@ -203,7 +194,7 @@ export const SavedSearchListItem: React.FC<SavedSearchListItemProps> = (props) =
                             performResize={false}
                           />
                         ) : (
-                          <NoImageIcon fill="mono60" mx="auto" />
+                          <NoArtIcon fill="mono60" mx="auto" />
                         )}
                       </Flex>
                     </Flex>

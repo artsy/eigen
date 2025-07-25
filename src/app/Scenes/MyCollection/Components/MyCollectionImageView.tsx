@@ -1,4 +1,5 @@
-import { NoImageIcon, Flex, useColor, Image } from "@artsy/palette-mobile"
+import { NoArtIcon } from "@artsy/icons/native"
+import { Flex, useColor, Image } from "@artsy/palette-mobile"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import React from "react"
 
@@ -34,7 +35,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
         height={120}
         justifyContent="center"
       >
-        <NoImageIcon fill="mono60" mx="auto" />
+        <NoArtIcon fill="mono60" mx="auto" />
       </Flex>
     )
   }
