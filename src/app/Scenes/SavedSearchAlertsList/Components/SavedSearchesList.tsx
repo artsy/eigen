@@ -1,7 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { BellStrokeIcon } from "@artsy/icons/native"
+import { BellStrokeIcon, FilterIcon } from "@artsy/icons/native"
 import {
-  FilterIcon,
   Flex,
   Join,
   LinkText,
