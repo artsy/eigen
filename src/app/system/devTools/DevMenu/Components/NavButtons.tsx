@@ -1,5 +1,5 @@
-import { CloseIcon } from "@artsy/icons/native"
-import { Flex, Join, LogoutIcon, ReloadIcon, Spacer } from "@artsy/palette-mobile"
+import { CloseIcon, LogoutIcon } from "@artsy/icons/native"
+import { Flex, Join, ReloadIcon, Spacer } from "@artsy/palette-mobile"
 import { GlobalStore } from "app/store/GlobalStore"
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
 import { Alert, DevSettings, TouchableOpacity } from "react-native"
