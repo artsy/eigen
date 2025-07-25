@@ -1,4 +1,5 @@
-import { DEFAULT_HIT_SLOP, MoreIcon, Screen, Touchable } from "@artsy/palette-mobile"
+import { MoreIcon } from "@artsy/icons/native"
+import { DEFAULT_HIT_SLOP, Screen, Touchable } from "@artsy/palette-mobile"
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { ActivityContent, ActivityContentPlaceholder } from "app/Scenes/Activity/ActivityContent"
 import { ActivityScreenStore } from "app/Scenes/Activity/ActivityScreenStore"

@@ -1,4 +1,4 @@
-import { MoreIcon } from "@artsy/palette-mobile"
+import { MoreIcon } from "@artsy/icons/native"
 import { ArtworkListHeader_me$key } from "__generated__/ArtworkListHeader_me.graphql"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { ManageArtworkListView } from "app/Scenes/ArtworkList/ManageArtworkListView"
