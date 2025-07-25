@@ -1,8 +1,7 @@
 import { ActionType, ContextModule, OwnerType, TappedLearnMore } from "@artsy/cohesion"
-import { GuaranteeIcon } from "@artsy/icons/native"
+import { GuaranteeIcon, VerifiedIcon } from "@artsy/icons/native"
 import {
   Spacer,
-  VerifiedIcon,
   IconProps,
   SecureLockIcon,
   Flex,
