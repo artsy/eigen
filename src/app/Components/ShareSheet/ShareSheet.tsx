@@ -6,8 +6,7 @@ import {
   share,
   Share as ShareType,
 } from "@artsy/cohesion"
-import { InstagramAppIcon, LinkIcon, MoreIcon, ShareIcon } from "@artsy/icons/native"
-import { WhatsAppAppIcon } from "@artsy/palette-mobile"
+import { InstagramAppIcon, LinkIcon, MoreIcon, ShareIcon, WhatsAppIcon } from "@artsy/icons/native"
 import { BottomSheetScrollView, BottomSheetView } from "@gorhom/bottom-sheet"
 import Clipboard from "@react-native-clipboard/clipboard"
 import Sentry, { captureException, captureMessage } from "@sentry/react-native"
@@ -177,7 +176,7 @@ export const ShareSheet = () => {
           {!!showWhatsAppItem && (
             <CustomShareSheetItem
               title="WhatsApp"
-              Icon={<WhatsAppAppIcon />}
+              Icon={<WhatsAppIcon />}
               onPress={shareOnWhatsApp}
             />
           )}
