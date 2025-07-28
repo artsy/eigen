@@ -45,7 +45,7 @@ lane :report_maestro_failure do |options|
   error_message = options[:error_message]
   flow_name = options[:flow_name]
   platform = options[:platform] || "unknown"
-
+  puts platform
   # Set platform-specific icon
   platform_icon = case platform.downcase
                   when "ios"

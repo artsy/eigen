@@ -7,7 +7,7 @@ PLATFORM=${1:-"unknown"}
 echo "Platform: $PLATFORM"
 
 # Capitalize platform for display
-PLATFORM_DISPLAY=$(echo "$PLATFORM" | sed 's/.*/\u&/')
+PLATFORM_DISPLAY=$(echo "$PLATFORM")
 
 # Get latest Maestro test directory
 # Parse out the flow file and error message
