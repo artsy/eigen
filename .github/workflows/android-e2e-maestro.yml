@@ -90,16 +90,21 @@ jobs:
 
             # Wait for device boot completion
             echo "⏳ Waiting for device boot completion..."
-            timeout=100
-            while [ $timeout -gt 0 ]; do
+            booted=false
+            for i in $(seq 1 20); do
               if adb shell getprop sys.boot_completed 2>/dev/null | grep -q "1"; then
                 echo "✅ Device boot completed"
+                booted=true
                 break
               fi
-              echo "⏳ Still waiting for boot... (${timeout}s remaining)"
+              echo "⏳ Still waiting for boot... (attempt $i/20)"
               sleep 5
-              timeout=$((timeout - 5))
             done
+
+            if [ "$booted" = "false" ]; then
+              echo "❌ Timed out waiting for device to boot."
+              exit 1
+            fi
 
             adb wait-for-device
             sleep 5
