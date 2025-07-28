@@ -7,7 +7,7 @@ on:
 
 jobs:
   e2e-tests:
-    # if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     runs-on: macos-15 # iOS simulators require macOS runners
     timeout-minutes: 45
     strategy:
