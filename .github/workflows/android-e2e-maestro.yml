@@ -66,6 +66,9 @@ jobs:
       - name: Install Maestro
         run: curl -Ls "https://get.maestro.mobile.dev" | bash
 
+      - name: check versions
+        run: avdmanager list device
+
       - name: Add Maestro to PATH
         run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
 
@@ -78,7 +81,6 @@ jobs:
           ram-size: "8192M"
           heap-size: "4096M"
           disk-size: "10G"
-          profile: "Pixel 9"
           cores: 4
           disable-animations: false
           disable-spellchecker: true
