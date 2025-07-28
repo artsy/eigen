@@ -88,27 +88,6 @@ jobs:
             echo "🔍 Emulator started, verifying..."
             adb devices -l
 
-            # Wait for device boot completion
-            echo "⏳ Waiting for device boot completion..."
-            booted=false
-            for i in $(seq 1 20); do
-              if adb shell getprop sys.boot_completed 2>/dev/null | grep -q "1"; then
-                echo "✅ Device boot completed"
-                booted=true
-                break
-              fi
-              echo "⏳ Still waiting for boot... (attempt $i/20)"
-              sleep 5
-            done
-
-            if [ "$booted" = "false" ]; then
-              echo "❌ Timed out waiting for device to boot."
-              exit 1
-            fi
-
-            adb wait-for-device
-            sleep 5
-
             echo "📋 System info:"
             adb shell getprop ro.build.version.release
             adb shell getprop ro.build.version.sdk
