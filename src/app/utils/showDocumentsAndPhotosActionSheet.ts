@@ -1,9 +1,9 @@
 import { ActionSheetOptions } from "@expo/react-native-action-sheet"
+import RNDocumentPicker, { DocumentPickerResponse } from "@react-native-documents/picker"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { isArray } from "lodash"
 import { Platform } from "react-native"
-import RNDocumentPicker, { DocumentPickerResponse } from "react-native-document-picker"
 import ImagePicker, { Image } from "react-native-image-crop-picker"
 import { osMajorVersion } from "./platformUtil"
 

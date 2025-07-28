@@ -52,6 +52,7 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
   )
 
 export const TestProviders: React.FC<{
+  children?: React.ReactNode
   skipRelay?: boolean
   includeNavigation?: boolean
   includeArtworkLists?: boolean
@@ -82,7 +83,7 @@ export const TestProviders: React.FC<{
 
 // Providers with preset props
 
-const TestFlagProvider: React.FC = ({ children }) => {
+const TestFlagProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   return <FlagProvider startClient={false}>{children}</FlagProvider>
 }
 
@@ -90,20 +91,20 @@ const GestureHandlerProvider = (props: { children?: React.ReactNode }) => (
   <GestureHandlerRootView style={{ flex: 1 }} {...props} />
 )
 
-const RelayDefaultEnvProvider = (props: { children?: React.ReactNode }) => (
-  <RelayEnvironmentProvider environment={getRelayEnvironment()}>
-    {props.children}
-  </RelayEnvironmentProvider>
-)
+const RelayDefaultEnvProvider = (props: { children?: React.ReactNode }) => {
+  const Provider = RelayEnvironmentProvider as any
+  return <Provider environment={getRelayEnvironment()}>{props.children}</Provider>
+}
 
 const SuspenseProvider = (props: { children?: React.ReactNode }) => (
   <Suspense fallback={<Spinner />} {...props} />
 )
 
-const TrackingProvider: React.FC = ({ children }) => {
+const TrackingProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const { Track } = useTracking({}, { dispatch: (data) => postEventToProviders(data) })
+  const TrackComponent = Track as any
 
-  return <Track>{children}</Track>
+  return <TrackComponent>{children}</TrackComponent>
 }
 
 // theme with dark mode support

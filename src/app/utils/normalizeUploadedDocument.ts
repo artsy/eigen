@@ -1,5 +1,5 @@
+import { DocumentPickerResponse } from "@react-native-documents/picker"
 import { isDocument } from "app/utils/showDocumentsAndPhotosActionSheet"
-import { DocumentPickerResponse } from "react-native-document-picker"
 import { Image as RNPickerImage } from "react-native-image-crop-picker"
 import { v4 as uuid } from "uuid"
 
