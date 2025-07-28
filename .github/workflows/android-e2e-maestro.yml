@@ -83,10 +83,24 @@ jobs:
           disable-spellchecker: true
           disable-linux-hw-accel: false
           enable-hw-keyboard: true
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -netdelay none -netspeed full
           script: |
             echo "🔍 Emulator started, verifying..."
             adb devices -l
+
+            # Wait for device boot completion
+            echo "⏳ Waiting for device boot completion..."
+            for i in {1..20}; do
+              if adb shell getprop sys.boot_completed | grep -q "1"; then
+                echo "✅ Device boot completed"
+                break
+              fi
+              echo "⏳ Waiting for boot... ($i/20)"
+              sleep 5
+            done
+
+            adb wait-for-device
+            sleep 5
 
             echo "📋 System info:"
             adb shell getprop ro.build.version.release
