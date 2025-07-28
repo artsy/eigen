@@ -45,9 +45,20 @@ lane :report_maestro_failure do |options|
   error_message = options[:error_message]
   flow_name = options[:flow_name]
   platform = options[:platform] || "unknown"
+
+  # Set platform-specific icon
+  platform_icon = case platform.downcase
+                  when "ios"
+                    "🍏"
+                  when "android"
+                    "🤖"
+                  else
+                    "📱"
+                  end
+
   message = <<~MSG
               :x: :tophat:
-              Maestro test failed for #{platform}!
+              Maestro test failed for #{platform_icon} #{platform}!
               Flow: #{flow_name}
               Error: `#{error_message}`
               Screenshot at time of failure:
