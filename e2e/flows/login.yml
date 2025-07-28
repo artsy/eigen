@@ -14,4 +14,4 @@ appId: ${MAESTRO_APP_ID}
 - tapOn: "Continue.*"
 - extendedWaitUntil:
     visible: "Have a budget in mind?"
-    timeout: 30000
+    timeout: 10000
