@@ -22382,7 +22382,7 @@ input UpdateArtworkImportRowInput {
   artworkImportRowID: String!
   clientMutationId: String
   fieldName: String!
-  fieldValue: String!
+  fieldValue: String
 }
 
 type UpdateArtworkImportRowPayload {
