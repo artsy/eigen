@@ -123,8 +123,8 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           animate={{ opacity: 1 }}
           transition={{ type: "timing", duration: 1500 }}
         >
-          {/* we explicitly want it white */}
-          <ArtsyLogoIcon fill="#FFF" height={25} width={75} />
+          {/* we explicitly want it to be white */}
+          <ArtsyLogoIcon fill="white" height={25} width={75} />
         </MotiView>
 
         <MotiView
