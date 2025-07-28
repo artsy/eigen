@@ -20271,6 +20271,14 @@ type ResizedImageUrl {
   width: Int
 }
 
+input S3LocationInput {
+  # The S3 bucket name where the image is stored.
+  bucket: String!
+
+  # The S3 key (object path) for the image.
+  key: String!
+}
+
 # The conditions for uploading assets to media.artsy.net
 type S3PolicyConditionsType {
   # The assigned access control
@@ -22425,6 +22433,9 @@ input UpdateArtworkMutationInput {
 
   # The id of the artwork to update.
   id: String!
+
+  # A list of S3 locations (bucket and key pairs) for artwork images to be added.
+  imageS3Locations: [S3LocationInput!]
 
   # True for `Make Offer` artworks
   offer: Boolean
