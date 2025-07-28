@@ -12,6 +12,7 @@ export interface AuctionPriceProps {
   auctionState: AuctionTimerState
 }
 
+// TODO: remove since it's not used anywhere
 export class AuctionPrice extends React.Component<AuctionPriceProps> {
   handleBuyersPremiumTap = () => {
     const auctionInternalID =
