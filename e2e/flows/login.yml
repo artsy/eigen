@@ -12,6 +12,4 @@ appId: ${MAESTRO_APP_ID}
 - tapOn: "Continue.*"
 - inputText: ${MAESTRO_TEST_PASSWORD}
 - tapOn: "Continue.*"
-- extendedWaitUntil:
-    visible: "Have a budget in mind?"
-    timeout: 10000
+- assertVisible: "Have a budget in mind?"
