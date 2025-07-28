@@ -30,6 +30,7 @@ export const ToastComponent = ({
   message,
   description,
   onPress,
+  hideOnPress,
   Icon,
   backgroundColor = "mono100",
   duration = "short",
@@ -185,7 +186,17 @@ export const ToastComponent = ({
         <Touchable
           accessibilityRole="button"
           style={{ flex: 1 }}
-          onPress={() => onPress({ id, showActionSheetWithOptions })}
+          onPress={() => {
+            onPress?.({ id, showActionSheetWithOptions })
+
+            if (hideOnPress) {
+              Animated.timing(opacityAnim, {
+                toValue: 0,
+                useNativeDriver: true,
+                duration: 450,
+              }).start(() => GlobalStore.actions.toast.remove(id))
+            }
+          }}
         >
           {innerTopBottom}
         </Touchable>

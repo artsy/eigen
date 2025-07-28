@@ -6,6 +6,7 @@ import { HomeViewSectionScreenQuery } from "__generated__/HomeViewSectionScreenQ
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PAGE_SIZE, SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
+import { usePriceRangeToast } from "app/Scenes/HomeViewSectionScreen/hooks/usePriceRangeToast"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -49,6 +50,12 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
   const { scrollHandler } = Screen.useListenForScreenScroll()
 
   const numOfColumns = defaultViewOption === "grid" ? NUM_COLUMNS_MASONRY : 1
+
+  usePriceRangeToast({
+    artworksLength: artworks.length,
+    totalCount: section.artworksConnection?.totalCount ?? 0,
+    sectionInternalID: section.internalID,
+  })
 
   return (
     <>

@@ -14,6 +14,10 @@ import { useEffect, useState } from "react"
 import { fetchQuery, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
+export const PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE = "Have a budget in mind?"
+export const PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT =
+  "Share a artwork budget in your account preferences at any time."
+
 // This delay needs to be longer than the time it takes to load the first few sections of the home tab
 const PRICE_RANGE_ONBOARDING_POPOVER_DELAY = 4000
 
@@ -82,6 +86,7 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC = ({ children }) => {
     }, 1000)
   }
 
+  console.log("LOGD ProgressiveOnboardingPriceRangeHome isVisible:", isVisible, hasPriceRange)
   return (
     <Popover
       visible={isVisible}
@@ -93,7 +98,7 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC = ({ children }) => {
       title={
         <Touchable accessibilityRole="button" noFeedback onPress={onPress}>
           <Text variant="xs" color="mono0" fontWeight="bold">
-            Have a budget in mind?
+            {PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE}
           </Text>
         </Touchable>
       }
@@ -101,7 +106,7 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC = ({ children }) => {
         <Touchable noFeedback accessibilityRole="button" onPress={onPress}>
           <Flex maxWidth={250}>
             <Text variant="xs" color="mono0">
-              Share a artwork budget in your account preferences at any time.
+              {PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT}
             </Text>
           </Flex>
         </Touchable>
