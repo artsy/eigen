@@ -71,6 +71,12 @@ jobs:
           restore-keys: |
             pods-${{ runner.os }}-
 
+      - name: Download fonts from s3
+        run: ./scripts/setup/download-fonts
+
+      - name: Download ios assets
+        run: ./scripts/setup/download-assets-ios
+
       - name: Install CocoaPods
         run: yarn pod-install
 
