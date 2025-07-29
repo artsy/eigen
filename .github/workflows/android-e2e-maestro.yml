@@ -14,7 +14,7 @@ on:
 jobs:
   e2e-tests:
     # if: github.ref == 'refs/heads/main'
-    runs-on: macos-15-large # Use ubuntu-latest for better Android emulator support
+    runs-on: ubuntu-latest # Use ubuntu-latest for better Android emulator support
     timeout-minutes: 45
     strategy:
       fail-fast: false # Don't cancel other jobs if one fails
@@ -40,6 +40,12 @@ jobs:
 
       - name: Install Ruby dependencies
         run: bundle install
+
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
