@@ -1,0 +1,57 @@
+name: Build iOS QA App for Maestro
+
+on:
+  workflow_dispatch: # Allows manual trigger
+  push:
+    branches:
+      - gkartalis/PHIRE-1942
+
+jobs:
+  build-ios-qa:
+    runs-on: macos-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.1.6"
+          bundler-cache: true
+
+      - name: Install Ruby dependencies
+        run: bundle install
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.9.0"
+          cache: "yarn"
+
+      - name: Install Node dependencies
+        run: yarn install:all
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Set up environment for CI
+        run: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci
+
+      - name: Build iOS QA app
+        run: ./scripts/ci/ci-ios "qa"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-qa-build
+          path: |
+            archives/
+            *.zip
+          retention-days: 7
