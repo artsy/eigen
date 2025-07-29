@@ -41,10 +41,28 @@ jobs:
           aws-region: us-east-1
 
       - name: Set up environment for CI
-        run: touch .env.shared && touch keys.shared.json && scripts/setup/setup-env-for-ci
+        run: |
+          touch .env.shared && touch keys.shared.json
+          scripts/setup/setup-env-for-ci
+          echo "Environment setup completed"
+
+      - name: Debug build environment
+        run: |
+          echo "Node version: $(node --version)"
+          echo "Yarn version: $(yarn --version)"
+          echo "Ruby version: $(ruby --version)"
+          echo "Xcode version:"
+          xcodebuild -version
+          echo "Available iOS simulators:"
+          xcrun simctl list devices ios --json | jq '.devices | keys[]'
 
       - name: Build iOS QA app
-        run: ./scripts/ci/ci-ios "qa"
+        run: |
+          echo "Starting iOS QA build..."
+          set -x  # Enable verbose logging
+          ./scripts/ci/ci-ios "qa"
+        env:
+          VERBOSE: 1
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
