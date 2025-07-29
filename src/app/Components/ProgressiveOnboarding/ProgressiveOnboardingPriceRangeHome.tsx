@@ -86,7 +86,6 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC = ({ children }) => {
     }, 1000)
   }
 
-  console.log("LOGD ProgressiveOnboardingPriceRangeHome isVisible:", isVisible, hasPriceRange)
   return (
     <Popover
       visible={isVisible}
@@ -128,7 +127,7 @@ const tracks = {
   },
 }
 
-const fetchPriceRange = async (): Promise<boolean> => {
+export const fetchPriceRange = async (): Promise<boolean> => {
   const result = await fetchQuery<ProgressiveOnboardingPriceRangeHomeQuery>(
     getRelayEnvironment(),
     graphql`
