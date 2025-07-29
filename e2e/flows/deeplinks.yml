@@ -5,8 +5,9 @@ appId: ${MAESTRO_APP_ID}
     arguments:
       email: ${MAESTRO_TEST_EMAIL}
       password: ${MAESTRO_TEST_PASSWORD}
-- assertVisible:
-    id: "search-button"
+- extendedWaitUntil:
+    visible: "Dismiss popover"
+    timeout: 10000
 - killApp
 - openLink:
     link: https://www.artsy.net/artist/kaws
