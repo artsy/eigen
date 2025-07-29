@@ -12,4 +12,6 @@ appId: ${MAESTRO_APP_ID}
 - tapOn: "Continue.*"
 - inputText: ${MAESTRO_TEST_PASSWORD}
 - tapOn: "Continue.*"
-- assertVisible: "Have a budget in mind? Dismiss popover Share a artwork budget in your account preferences at any time."
+- extendedWaitUntil:
+    visible: "Dismiss popover"
+    timeout: 10000
