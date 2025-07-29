@@ -14,7 +14,7 @@ on:
 jobs:
   e2e-tests:
     # if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest # Use ubuntu-latest for better Android emulator support
+    runs-on: macos-15-large # Use ubuntu-latest for better Android emulator support
     timeout-minutes: 45
     strategy:
       fail-fast: false # Don't cancel other jobs if one fails
