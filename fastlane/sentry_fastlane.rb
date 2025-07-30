@@ -85,7 +85,7 @@ lane :upload_sentry_sourcemaps do |options|
   end
 end
 
-lane :upload_dsyms_to_sentry do |options|
+private_lane :upload_dsyms_to_sentry do |options|
   org_slug = options[:org_slug]
   project_slug = options[:project_slug]
 
