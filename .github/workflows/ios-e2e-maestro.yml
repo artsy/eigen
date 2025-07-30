@@ -1,16 +1,16 @@
 name: iOS E2E Tests (Maestro)
 
 on:
-  workflow_run:
-    workflows: ["Build iOS QA App for Maestro"]
-    types:
-      - completed
+  push:
+    branches:
+      - brian/e2e-stability # change this to your branch name if not 'main'
+  schedule:
+    - cron: "0 6 * * *" # Runs daily at 6:00 AM UTC
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
 
 jobs:
   e2e-tests:
-    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: macos-15
+    runs-on: macos-15 # iOS simulators require macOS runners
     timeout-minutes: 45
     strategy:
       fail-fast: false # Don't cancel other jobs if one fails
