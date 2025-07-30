@@ -14739,10 +14739,10 @@ react-native-document-picker@9.3.0:
   dependencies:
     invariant "^2.2.4"
 
-react-native-fbsdk-next@13.0.0:
-  version "13.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-fbsdk-next/-/react-native-fbsdk-next-13.0.0.tgz#d44d29352c2677626479dcd333b7a1671f04a1dc"
-  integrity sha512-Bfe2xFbtBPyX3aCgxb+NBGH9pLvb0NnlUnALkmkIU2++imdJN+aUpXRpMGyGm+OqApAEcELNBytYh9W3anR58g==
+react-native-fbsdk-next@13.4.1:
+  version "13.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-fbsdk-next/-/react-native-fbsdk-next-13.4.1.tgz#e2cb0d0c40ac00abcecceb2ee24473e74c9d8e18"
+  integrity sha512-Cto+oF0FJyvxKDjKyLKI5DgnLCeeRlXvVQb8qw0XesT1Xune1ijDWAnvt9fy6wXJ4G7K510xKkcSUsbK/KyPhg==
 
 react-native-flipper@^0.164.0:
   version "0.164.0"

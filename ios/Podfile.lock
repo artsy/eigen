@@ -80,7 +80,7 @@ PODS:
     - Specta (~> 2.0)
   - Expo (52.0.46):
     - ExpoModulesCore
-  - ExpoAdapterFBSDKNext (13.0.0):
+  - ExpoAdapterFBSDKNext (13.4.1):
     - ExpoModulesCore
     - FBSDKCoreKit
     - React-Core
@@ -151,21 +151,21 @@ PODS:
   - EXUpdatesInterface (1.0.0):
     - ExpoModulesCore
   - fast_float (6.1.4)
-  - FBAEMKit (17.0.0):
-    - FBSDKCoreKit_Basics (= 17.0.0)
+  - FBAEMKit (18.0.0):
+    - FBSDKCoreKit_Basics (= 18.0.0)
   - FBLazyVector (0.77.2)
-  - FBSDKCoreKit (17.0.0):
-    - FBAEMKit (= 17.0.0)
-    - FBSDKCoreKit_Basics (= 17.0.0)
-  - FBSDKCoreKit_Basics (17.0.0)
-  - FBSDKGamingServicesKit (17.0.0):
-    - FBSDKCoreKit (= 17.0.0)
-    - FBSDKCoreKit_Basics (= 17.0.0)
-    - FBSDKShareKit (= 17.0.0)
-  - FBSDKLoginKit (17.0.0):
-    - FBSDKCoreKit (= 17.0.0)
-  - FBSDKShareKit (17.0.0):
-    - FBSDKCoreKit (= 17.0.0)
+  - FBSDKCoreKit (18.0.0):
+    - FBAEMKit (= 18.0.0)
+    - FBSDKCoreKit_Basics (= 18.0.0)
+  - FBSDKCoreKit_Basics (18.0.0)
+  - FBSDKGamingServicesKit (18.0.0):
+    - FBSDKCoreKit (= 18.0.0)
+    - FBSDKCoreKit_Basics (= 18.0.0)
+    - FBSDKShareKit (= 18.0.0)
+  - FBSDKLoginKit (18.0.0):
+    - FBSDKCoreKit (= 18.0.0)
+  - FBSDKShareKit (18.0.0):
+    - FBSDKCoreKit (= 18.0.0)
   - Firebase/Auth (10.23.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 10.23.0)
@@ -1554,20 +1554,20 @@ PODS:
     - React-Core
   - react-native-document-picker (9.3.0):
     - React-Core
-  - react-native-fbsdk-next (13.0.0):
+  - react-native-fbsdk-next (13.4.1):
     - React-Core
-    - react-native-fbsdk-next/Core (= 13.0.0)
-    - react-native-fbsdk-next/Login (= 13.0.0)
-    - react-native-fbsdk-next/Share (= 13.0.0)
-  - react-native-fbsdk-next/Core (13.0.0):
-    - FBSDKCoreKit (~> 17.0.0)
+    - react-native-fbsdk-next/Core (= 13.4.1)
+    - react-native-fbsdk-next/Login (= 13.4.1)
+    - react-native-fbsdk-next/Share (= 13.4.1)
+  - react-native-fbsdk-next/Core (13.4.1):
+    - FBSDKCoreKit (~> 18.0)
     - React-Core
-  - react-native-fbsdk-next/Login (13.0.0):
-    - FBSDKLoginKit (~> 17.0.0)
+  - react-native-fbsdk-next/Login (13.4.1):
+    - FBSDKLoginKit (~> 18.0)
     - React-Core
-  - react-native-fbsdk-next/Share (13.0.0):
-    - FBSDKGamingServicesKit (~> 17.0.0)
-    - FBSDKShareKit (~> 17.0.0)
+  - react-native-fbsdk-next/Share (13.4.1):
+    - FBSDKGamingServicesKit (~> 18.0)
+    - FBSDKShareKit (~> 18.0)
     - React-Core
   - react-native-geolocation (3.0.6):
     - React-Core
@@ -2343,9 +2343,6 @@ DEPENDENCIES:
   - EXUpdatesInterface (from `../node_modules/expo-updates-interface/ios`)
   - fast_float (from `../node_modules/react-native/third-party-podspecs/fast_float.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
-  - FBSDKCoreKit (~> 17)
-  - FBSDKLoginKit (~> 17)
-  - FBSDKShareKit (~> 17)
   - Firebase/Auth (= 10.23.0)
   - FirebaseCore
   - FirebaseCoreExtension
@@ -2879,7 +2876,7 @@ SPEC CHECKSUMS:
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": 7a3ac7ad2b9bae43aadb4dca08113bb495c98f3e
   Expo: a6ff273c618506b12129a0d06f2a08201bfbcf43
-  ExpoAdapterFBSDKNext: 7e281be5078ab6eda58ac8c489ea2c2b8ea31b70
+  ExpoAdapterFBSDKNext: 16c905ebd6449c37bd5dfbb2784a678ce084b26e
   ExpoAdapterGoogleSignIn: 3a02de846d07a35ed9d505bb45f66592d20c1de0
   ExpoAsset: 48386d40d53a8c1738929b3ed509bcad595b5516
   ExpoFileSystem: 42d363d3b96f9afab980dcef60d5657a4443c655
@@ -2890,13 +2887,13 @@ SPEC CHECKSUMS:
   EXUpdates: 8a0a8fb681dd7f0da956e0fea3d76514700f0f2d
   EXUpdatesInterface: 7c977640bdd8b85833c19e3959ba46145c5719db
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
-  FBAEMKit: 31a20c2d8744d8c57d3a5b7ae4e27b4fdd819193
+  FBAEMKit: e34530df538b8eb8aeb53c35867715ba6c63ef0c
   FBLazyVector: 4c16dde959a9d6b24f2aa32cb87cb919a1ace3f3
-  FBSDKCoreKit: dac911b656816f8d0b06e5fa4bac60e89505bb3b
-  FBSDKCoreKit_Basics: 92b7b7458d57091370b0b6cc197578874c3b4b16
-  FBSDKGamingServicesKit: 0ae05466560dca03aa6c8691746e664c351b5d9e
-  FBSDKLoginKit: 5d5271ebfd1e39c6b071de8db5c4bd6255be3561
-  FBSDKShareKit: 09dbbe11cf43a4a831b92f064f974e9a01b4f8bc
+  FBSDKCoreKit: d3f479a69127acebb1c6aad91c1a33907bcf6c2f
+  FBSDKCoreKit_Basics: 017b6dc2a1862024815a8229e75661e627ac1e29
+  FBSDKGamingServicesKit: cdb625419879a651d07906d8f874fc76291be660
+  FBSDKLoginKit: 5875762d1fe09ddcb05d03365d4f5dc34413843d
+  FBSDKShareKit: 082d1b087d6481af36f8d8433542f25f2fc2c8dd
   Firebase: 333ec7c6b12fa09c77b5162cda6b862102211d50
   FirebaseAppCheckInterop: a1955ce8c30f38f87e7d091630e871e91154d65d
   FirebaseAuth: 22eb85d3853141de7062bfabc131aa7d6335cade
@@ -2976,7 +2973,7 @@ SPEC CHECKSUMS:
   react-native-context-menu-view: 74fbcf8a5f842c4802d0121addda2f8ffca43604
   react-native-cookies: b90327af903c8a7652100201d890c50a98697799
   react-native-document-picker: 6b08d834d4e4252bb8aad13d852e27666294b5b9
-  react-native-fbsdk-next: 495b829e8b30c90f56b852100f44c99047f7c2e2
+  react-native-fbsdk-next: 52f81e60eb3e8e0e06cf9728b4572d3509ca9d01
   react-native-geolocation: def10765a5144e7a76837093d43303d70bb6addf
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-in-app-review: b3d1eed3d1596ebf6539804778272c4c65e4a400
@@ -3068,6 +3065,6 @@ SPEC CHECKSUMS:
   "XCTest+OHHTTPStubSuiteCleanUp": 4469ec8863c6bc022c5089a9b94233eb3416c5ee
   Yoga: 31a098f74c16780569aebd614a0f37a907de0189
 
-PODFILE CHECKSUM: f47bd2973c6a9b9b6314cf80d6d67f7ab8958344
+PODFILE CHECKSUM: 9f82c83cecc7ff90e5bcd486c574eb20f1435769
 
 COCOAPODS: 1.16.2

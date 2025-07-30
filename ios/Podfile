@@ -119,11 +119,6 @@ target 'Artsy' do
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
 
-  # Facebook
-  pod 'FBSDKCoreKit', '~> 17'
-  pod 'FBSDKLoginKit', '~> 17'
-  pod 'FBSDKShareKit', '~> 17'
-
   # Google & Firebase
   pod 'Firebase/Auth', '10.23.0'
 
