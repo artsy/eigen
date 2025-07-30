@@ -1,4 +1,5 @@
-import { EntityHeader, EnvelopeIcon, Flex } from "@artsy/palette-mobile"
+import { EnvelopeIcon } from "@artsy/icons/native"
+import { EntityHeader, Flex } from "@artsy/palette-mobile"
 import { MyProfileEditModal_me$key } from "__generated__/MyProfileEditModal_me.graphql"
 import { ShortContactGallery_artwork$key } from "__generated__/ShortContactGallery_artwork.graphql"
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"

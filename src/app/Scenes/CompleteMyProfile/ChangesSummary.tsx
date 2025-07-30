@@ -1,12 +1,5 @@
-import {
-  Button,
-  Flex,
-  Screen,
-  Spacer,
-  Text,
-  CheckCircleFillIcon,
-  CheckCircleIcon,
-} from "@artsy/palette-mobile"
+import { CheckmarkFillIcon, CheckmarkStrokeIcon } from "@artsy/icons/native"
+import { Button, Flex, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
 import { navigate } from "app/system/navigation/navigate"
@@ -64,9 +57,9 @@ export const ChangesSummary: FC = () => {
             {steps.includes("LocationStep") && (
               <Flex flexDirection="row" alignItems="center" gap={1}>
                 {hasLocation ? (
-                  <CheckCircleFillIcon fill="green100" />
+                  <CheckmarkFillIcon fill="green100" />
                 ) : (
-                  <CheckCircleIcon fill="mono60" />
+                  <CheckmarkStrokeIcon fill="mono60" />
                 )}
                 <Text variant="md" color={hasLocation ? "mono100" : "mono60"}>
                   Location
@@ -77,9 +70,9 @@ export const ChangesSummary: FC = () => {
             {steps.includes("ProfessionStep") && (
               <Flex flexDirection="row" alignItems="center" gap={1}>
                 {hasProfession ? (
-                  <CheckCircleFillIcon fill="green100" />
+                  <CheckmarkFillIcon fill="green100" />
                 ) : (
-                  <CheckCircleIcon fill="mono60" />
+                  <CheckmarkStrokeIcon fill="mono60" />
                 )}
                 <Text variant="md" color={hasProfession ? "mono100" : "mono60"}>
                   Profession
@@ -90,9 +83,9 @@ export const ChangesSummary: FC = () => {
             {steps.includes("AvatarStep") && (
               <Flex flexDirection="row" alignItems="center" gap={1}>
                 {hasIconUrl ? (
-                  <CheckCircleFillIcon fill="green100" />
+                  <CheckmarkFillIcon fill="green100" />
                 ) : (
-                  <CheckCircleIcon fill="mono60" />
+                  <CheckmarkStrokeIcon fill="mono60" />
                 )}
                 <Text variant="md" color={hasIconUrl ? "mono100" : "mono60"}>
                   Profile Image
@@ -103,9 +96,9 @@ export const ChangesSummary: FC = () => {
             {steps.includes("IdentityVerificationStep") && (
               <Flex flexDirection="row" alignItems="center" gap={1}>
                 {hasIsIdentityVerified ? (
-                  <CheckCircleFillIcon fill="green100" />
+                  <CheckmarkFillIcon fill="green100" />
                 ) : (
-                  <CheckCircleIcon fill="mono60" />
+                  <CheckmarkStrokeIcon fill="mono60" />
                 )}
                 <Text variant="md" color={hasIsIdentityVerified ? "mono100" : "mono60"}>
                   ID Verification Email

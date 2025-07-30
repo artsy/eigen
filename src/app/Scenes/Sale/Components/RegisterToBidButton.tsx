@@ -4,8 +4,8 @@ import {
   tappedRegisterToBid,
   TappedRegisterToBidArgs,
 } from "@artsy/cohesion"
-// eslint-disable-next-line local-rules/no-palette-icon-imports
-import { Spacer, CheckIcon, Flex, Box, Text, Button } from "@artsy/palette-mobile"
+import { CheckmarkIcon } from "@artsy/icons/native"
+import { Spacer, Flex, Box, Text, Button } from "@artsy/palette-mobile"
 import { RegisterToBidButton_me$data } from "__generated__/RegisterToBidButton_me.graphql"
 import { RegisterToBidButton_sale$data } from "__generated__/RegisterToBidButton_sale.graphql"
 // eslint-disable-next-line no-restricted-imports
@@ -81,7 +81,7 @@ export const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({
     } else {
       return (
         <Flex flexDirection="row" alignItems="center">
-          <CheckIcon fill="green100" mr={8} />
+          <CheckmarkIcon fill="green100" mr={8} />
           <Text color="green100" fontWeight="500">
             You're approved to bid
           </Text>

@@ -1,11 +1,5 @@
-import {
-  FilterIcon,
-  Flex,
-  Box,
-  Text,
-  Separator,
-  TouchableHighlightColor,
-} from "@artsy/palette-mobile"
+import { FilterIcon } from "@artsy/icons/native"
+import { Flex, Box, Text, Separator, TouchableHighlightColor } from "@artsy/palette-mobile"
 import { useScreenDimensions } from "app/utils/hooks"
 import React, { useEffect, useState } from "react"
 import { Animated, Dimensions, LayoutChangeEvent, PixelRatio } from "react-native"

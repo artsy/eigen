@@ -1,16 +1,5 @@
-import {
-  // eslint-disable-next-line local-rules/no-palette-icon-imports
-  XCircleIcon,
-  // eslint-disable-next-line local-rules/no-palette-icon-imports
-  EyeOpenedIcon,
-  // eslint-disable-next-line local-rules/no-palette-icon-imports
-  EyeClosedIcon,
-  Flex,
-  useTheme,
-  Text,
-  Color,
-  Spinner,
-} from "@artsy/palette-mobile"
+import { CloseFillIcon, HideIcon, ShowIcon } from "@artsy/icons/native"
+import { Flex, useTheme, Text, Color, Spinner } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { MeasuredView } from "app/utils/MeasuredView"
 import { isArray, isString } from "lodash"
@@ -158,7 +147,7 @@ export const Input = forwardRef<InputRef, InputProps>(
             accessibilityLabel={showPassword ? "hide password button" : "show password button"}
             hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
           >
-            {!showPassword ? <EyeClosedIcon fill="mono30" /> : <EyeOpenedIcon fill="mono60" />}
+            {!showPassword ? <HideIcon fill="mono30" /> : <ShowIcon fill="mono60" />}
           </TouchableOpacity>
         </Flex>
       )
@@ -342,7 +331,7 @@ export const Input = forwardRef<InputRef, InputProps>(
                     hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
                     accessibilityLabel="Clear input button"
                   >
-                    <XCircleIcon fill="mono30" />
+                    <CloseFillIcon fill="mono30" />
                   </TouchableOpacity>
                 </Flex>
               )

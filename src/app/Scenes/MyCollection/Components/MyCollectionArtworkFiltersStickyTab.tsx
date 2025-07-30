@@ -1,5 +1,5 @@
+import { FilterIcon } from "@artsy/icons/native"
 import {
-  FilterIcon,
   Flex,
   INPUT_MIN_HEIGHT,
   Input,

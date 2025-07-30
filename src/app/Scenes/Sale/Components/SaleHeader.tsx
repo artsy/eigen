@@ -1,4 +1,5 @@
-import { ShareIcon, Flex, Text, Touchable, Image, useColor } from "@artsy/palette-mobile"
+import { ShareIcon } from "@artsy/icons/native"
+import { Flex, Text, Touchable, Image, useColor } from "@artsy/palette-mobile"
 import { SaleHeader_sale$data } from "__generated__/SaleHeader_sale.graphql"
 import { CaretButton } from "app/Components/Buttons/CaretButton"
 import { useShareSheet } from "app/Components/ShareSheet/ShareSheetContext"

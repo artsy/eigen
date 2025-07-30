@@ -1,4 +1,5 @@
-import { Box, Button, EyeOpenedIcon, Flex, Separator, Spacer, Text } from "@artsy/palette-mobile"
+import { ShowIcon } from "@artsy/icons/native"
+import { Box, Button, Flex, Separator, Spacer, Text } from "@artsy/palette-mobile"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
@@ -88,7 +89,7 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
             >
               <TouchableWithoutFeedback accessibilityRole="button" onPress={viewInAR}>
                 <Flex flexDirection="row" mx={1} height={24} alignItems="center">
-                  <EyeOpenedIcon />
+                  <ShowIcon />
                   <Spacer x={0.5} />
                   <Text variant="xs">View on wall</Text>
                 </Flex>

@@ -1,12 +1,5 @@
-import {
-  CloseIcon,
-  Flex,
-  FollowButton,
-  Image,
-  Text,
-  Touchable,
-  useColor,
-} from "@artsy/palette-mobile"
+import { CloseIcon } from "@artsy/icons/native"
+import { Flex, FollowButton, Image, Text, Touchable, useColor } from "@artsy/palette-mobile"
 import { ArtistCard_artist$data } from "__generated__/ArtistCard_artist.graphql"
 import { useFollowArtist } from "app/Components/Artist/useFollowArtist"
 import { RouterLink } from "app/system/navigation/RouterLink"

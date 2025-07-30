@@ -1,13 +1,5 @@
-import {
-  EyeOpenedIcon,
-  ShareIcon,
-  Flex,
-  Text,
-  useSpace,
-  Join,
-  Spacer,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { ShareIcon, ShowIcon } from "@artsy/icons/native"
+import { Flex, Text, useSpace, Join, Spacer, Touchable } from "@artsy/palette-mobile"
 import { ArtworkActions_artwork$data } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkHeader_artwork$data } from "__generated__/ArtworkHeader_artwork.graphql"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
@@ -92,7 +84,7 @@ export const ArtworkActions: React.FC<ArtworkActionsProps> = ({ artwork, shareOn
             onPress={() => openViewInRoom()}
           >
             <UtilButton>
-              <EyeOpenedIcon mr={0.5} />
+              <ShowIcon mr={0.5} />
               <Text variant="sm">View in Room</Text>
             </UtilButton>
           </Touchable>

@@ -1,4 +1,5 @@
-import { NoArtworkIcon, Flex, useColor, Text, Touchable, Image } from "@artsy/palette-mobile"
+import { NoArtIcon } from "@artsy/icons/native"
+import { Flex, useColor, Text, Touchable, Image } from "@artsy/palette-mobile"
 import { ArtistItem_artist$key } from "__generated__/ArtistItem_artist.graphql"
 import { graphql, useFragment } from "react-relay"
 
@@ -38,7 +39,7 @@ export const ArtistItem: React.FC<ArtistItemProps> = ({ isFirst, onPress, ...res
           style={{ marginTop: 3 }}
         >
           {!artist.imageUrl ? (
-            <NoArtworkIcon width={28} height={28} opacity={0.3} />
+            <NoArtIcon width={28} height={28} opacity={0.3} />
           ) : (
             <Image width={40} height={40} src={artist.imageUrl} />
           )}

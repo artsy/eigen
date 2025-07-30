@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
-import { BackButton, InfoCircleIcon, Screen, Touchable } from "@artsy/palette-mobile"
+import { InfoIcon } from "@artsy/icons/native"
+import { BackButton, Screen, Touchable } from "@artsy/palette-mobile"
 import NetInfo from "@react-native-community/netinfo"
 import { ConversationQuery } from "__generated__/ConversationQuery.graphql"
 import { Conversation_me$data } from "__generated__/Conversation_me.graphql"
@@ -164,7 +165,7 @@ export class Conversation extends React.Component<Props, State> {
             }}
             hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
           >
-            <InfoCircleIcon />
+            <InfoIcon />
           </Touchable>
         }
       >

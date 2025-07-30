@@ -1,4 +1,5 @@
-import { ArtsyLogoBlackIcon, Flex, Image, Text, useColor } from "@artsy/palette-mobile"
+import { ArtsyLogoIcon } from "@artsy/icons/native"
+import { Flex, Image, Text, useColor } from "@artsy/palette-mobile"
 import { useOffscreenStyle } from "app/utils/hooks"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useSizeToFitScreen } from "app/utils/useSizeToFit"
@@ -73,7 +74,7 @@ export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({
               </Text>
             ) : null}
           </Flex>
-          <ArtsyLogoBlackIcon scale={0.8} />
+          <ArtsyLogoIcon height={25} width={75} />
         </Flex>
       </ViewShot>
     </Flex>

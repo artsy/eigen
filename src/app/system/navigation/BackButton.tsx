@@ -1,4 +1,5 @@
-import { CloseIcon, ChevronIcon, useColor } from "@artsy/palette-mobile"
+import { ChevronSmallLeftIcon, CloseIcon } from "@artsy/icons/native"
+import { useColor } from "@artsy/palette-mobile"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useEffect, useRef } from "react"
 import { Animated, TouchableOpacity, ViewStyle } from "react-native"
@@ -52,7 +53,7 @@ export const BackButton: React.FC<{
         {showCloseIcon ? (
           <CloseIcon fill="mono100" width={26} height={26} />
         ) : (
-          <ChevronIcon direction="left" fill="mono100" />
+          <ChevronSmallLeftIcon fill="mono100" />
         )}
       </TouchableOpacity>
     </Animated.View>

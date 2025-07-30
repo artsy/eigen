@@ -1,16 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedLearnMore } from "@artsy/cohesion"
-import { GuaranteeIcon } from "@artsy/icons/native"
-import {
-  Spacer,
-  VerifiedIcon,
-  IconProps,
-  SecureLockIcon,
-  Flex,
-  Box,
-  Text,
-  LinkText,
-  Join,
-} from "@artsy/palette-mobile"
+import { GuaranteeIcon, LockIcon, VerifiedIcon } from "@artsy/icons/native"
+import { Spacer, IconProps, Flex, Box, Text, LinkText, Join } from "@artsy/palette-mobile"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useTracking } from "react-tracking"
@@ -46,7 +36,7 @@ export const ArtsyGuarantee: React.FC = () => {
 
       <Join separator={<Spacer y={1} />}>
         <Flex flexDirection="row" alignItems="center">
-          <SecureLockIcon
+          <LockIcon
             accessibilityRole="image"
             accessibilityLabel="Secure Checkout Icon"
             {...iconProps}

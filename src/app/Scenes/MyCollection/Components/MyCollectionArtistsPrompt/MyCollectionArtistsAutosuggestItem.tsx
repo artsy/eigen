@@ -1,4 +1,5 @@
-import { Avatar, Button, CheckIcon, Flex, Text } from "@artsy/palette-mobile"
+import { CheckmarkIcon } from "@artsy/icons/native"
+import { Avatar, Button, Flex, Text } from "@artsy/palette-mobile"
 import { MyCollectionArtistsAutosuggestItem_artist$key } from "__generated__/MyCollectionArtistsAutosuggestItem_artist.graphql"
 import { MyCollectionAddCollectedArtistsStore } from "app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsStore"
 import { MotiView } from "moti"
@@ -56,7 +57,7 @@ export const MyCollectionArtistsAutosuggestItem: FC<MyCollectionArtistsAutosugge
 
         <Button
           size="small"
-          icon={selected ? <CheckIcon fill="mono0" /> : undefined}
+          icon={selected ? <CheckmarkIcon fill="mono0" /> : undefined}
           variant={selected ? "fillSuccess" : "outline"}
           onPress={handleOnPress}
         >
