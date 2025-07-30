@@ -101,7 +101,7 @@ jobs:
         run: |
           echo "Starting Android QA build..."
           set -x  # Enable verbose logging
-          ./scripts/ci/ci-android "qa"
+          ./scripts/ci/ci-android "beta"
         env:
           VERBOSE: 1
 
