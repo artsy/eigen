@@ -107,16 +107,5 @@ jobs:
           ./scripts/ci/ci-android "beta"
         env:
           VERBOSE: 1
-
-      # - name: Upload build artifacts
-      #   uses: actions/upload-artifact@v4
-      #   if: always()
-      #   with:
-      #     name: android-qa-build
-      #     path: |
-      #       android/app/build/outputs/
-      #       android/app/build/outputs/apk/
-      #       android/app/build/outputs/bundle/
-      #       *.apk
-      #       *.aab
-      #     retention-days: 7
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
