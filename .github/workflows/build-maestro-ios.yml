@@ -8,6 +8,7 @@ on:
 
 jobs:
   build-ios-qa:
+    if: github.ref == 'refs/heads/main'
     runs-on: macos-latest
     timeout-minutes: 60
 
