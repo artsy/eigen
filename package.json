@@ -5,7 +5,7 @@
   "description": "Artsy mobile app.",
   "engines": {
     "node": "20.x",
-    "yarn": "1.x"
+    "yarn": "4.x"
   },
   "reactNativePermissionsIOS": [
     "Notifications"

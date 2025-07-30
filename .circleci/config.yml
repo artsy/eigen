@@ -39,7 +39,7 @@ defaults_ignore_main: &ignore_main_branches
         - main
 
 orbs:
-  node: circleci/node@5.3.0
+  node: circleci/node@7.1.0
   queue: eddiewebb/queue@2.2.1
   horizon: artsy/release@0.0.1
   macos: circleci/macos@2.5.4
@@ -51,6 +51,9 @@ commands:
       - node/install:
           install-yarn: true
           node-version: << pipeline.parameters.node_version >>
+          yarn-version: << pipeline.parameters.yarn_version >>
+          nvm-cache-key: v18-nvm-{{ checksum "package-lock.json" }}
+
   generate-checksums:
     steps:
       - run:
@@ -76,7 +79,7 @@ commands:
   install-node-modules:
     steps:
       - node/install-packages:
-          pkg-manager: yarn
+          pkg-manager: yarn-berry
           cache-version: v22
   run-relay-compiler:
     steps:
@@ -654,6 +657,9 @@ parameters:
   node_version:
     type: string
     default: "20.9.0"
+  yarn_version:
+    type: string
+    default: "4.9.2"
   fast_mac_runner:
     type: string
     default: "m4pro.medium"
@@ -669,7 +675,7 @@ parameters:
   # Update Manually these versions below in order to hard overwrite the caches
   gems_cache_key:
     type: string
-    default: v13-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
+    default: v14-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
   cocoapods_cache_key:
     type: string
     default: v33-pods-{{ checksum ".manifests/cocoapods" }}
