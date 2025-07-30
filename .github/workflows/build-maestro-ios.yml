@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-ios-qa:
-    runs-on: macos-latest
+    runs-on: macos-15
     timeout-minutes: 60
 
     steps:
