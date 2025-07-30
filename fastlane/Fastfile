@@ -112,6 +112,11 @@ lane :ship_beta_ios do |options|
       dist_version: bundle_version,
       platform: 'ios'
     )
+  elsif (deployment_target == 'firebase')
+    upload_dsyms_to_sentry(
+      project_slug: 'eigen',
+      org_slug: 'artsynet'
+    )
   end
 
   deploy_ios_beta(deployment_target: deployment_target)
@@ -523,9 +528,8 @@ lane :deploy_to_expo_updates do |options|
 
   # Export environment variables for Sentry sourcemap upload
   ENV['SENTRY_RELEASE'] = "#{platform}-#{release_name_base}"
-  ENV['SENTRY_DIST'] = dist_version
 
-  puts "🔧 Uploading sourcemaps to Sentry with release: #{platform}-#{release_name_base}, dist: #{dist_version}"
+  puts "🔧 Uploading sourcemaps to Sentry with release: #{platform}-#{release_name_base}"
   sh("cd .. && npx sentry-expo-upload-sourcemaps dist")
 
   tag_and_push(tag: "#{platform}-#{release_name_base}")
