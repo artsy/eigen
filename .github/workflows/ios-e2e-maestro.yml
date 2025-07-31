@@ -16,6 +16,7 @@ jobs:
       matrix:
         node_index: [0, 1, 2]
         total_nodes: [3]
+      max-parallel: 1 # Limit parallelism to avoid resource contention
 
     steps:
       - name: Checkout repository
