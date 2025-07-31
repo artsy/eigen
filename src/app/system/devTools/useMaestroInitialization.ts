@@ -1,4 +1,3 @@
-import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect } from "react"
 import { LaunchArguments } from "react-native-launch-arguments"
@@ -7,6 +6,7 @@ interface MaestroLaunchArguments {
   email?: string
   password?: string
   shouldSignOut?: boolean
+  useMaestroInit?: boolean
 }
 
 export const useMaestroInitialization = () => {
@@ -17,7 +17,17 @@ export const useMaestroInitialization = () => {
   const { dismissAll } = GlobalStore.actions.progressiveOnboarding
 
   useEffect(() => {
-    if (!ArtsyNativeModule.isBetaOrDev || !isHydrated) {
+    if (!isHydrated) {
+      return
+    }
+
+    const args = LaunchArguments.value<MaestroLaunchArguments>()
+    const email = args.email
+    const password = args.password
+    const shouldSignOut = args.shouldSignOut
+    const useMaestroInit = args.useMaestroInit
+
+    if (!useMaestroInit) {
       return
     }
 
@@ -27,11 +37,6 @@ export const useMaestroInitialization = () => {
 
     // Dismiss all progressive onboarding popovers for Maestro tests
     dismissAll()
-
-    const args = LaunchArguments.value<MaestroLaunchArguments>()
-    const email = args.email
-    const password = args.password
-    const shouldSignOut = args.shouldSignOut
 
     if (email && password) {
       GlobalStore.actions.auth.signIn({

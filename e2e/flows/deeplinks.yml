@@ -5,6 +5,7 @@ appId: ${MAESTRO_APP_ID}
     arguments:
       email: ${MAESTRO_TEST_EMAIL}
       password: ${MAESTRO_TEST_PASSWORD}
+      useMaestroInit: "true"
 - assertVisible:
     id: "search-button"
 - killApp
