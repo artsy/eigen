@@ -10,6 +10,56 @@ The onboarding workflow consists of:
 - **Workflow Engine** (`config.ts`) - Controls the flow logic and screen order
 - **Screen Components** - Individual onboarding screens
 
+## Architecture
+
+### OnboardingQuestionTemplate
+
+The `OnboardingQuestionTemplate` provides a consistent layout with progress bar, navigation, and Next button. It supports two modes:
+
+#### Pill Mode (Multiple Choice)
+
+```typescript
+<OnboardingQuestionTemplate
+  question="Your Question"
+  subtitle="Optional subtitle"
+  answers={["Option 1", "Option 2", "Option 3"]}
+  action="SET_ANSWER_TWO"
+  onNext={handleNext}
+/>
+```
+
+#### Children Mode (Custom Content)
+
+```typescript
+<OnboardingQuestionTemplate
+  question="Your Question"
+  subtitle="Optional subtitle"
+  action="SET_CUSTOM_FIELD"
+  onNext={handleNext}
+>
+  <CustomComponent />
+  <TextInput />
+</OnboardingQuestionTemplate>
+```
+
+### Store Provider Usage
+
+Access onboarding state and actions using `useOnboardingContext`:
+
+```typescript
+const { state, dispatch, next, back } = useOnboardingContext()
+
+// Read state
+const currentSelection = state.priceRange
+
+// Update state
+dispatch({ type: "SET_PRICE_RANGE", payload: "0-1000" })
+
+// Navigate
+next() // Go to next screen
+back() // Go to previous screen
+```
+
 ## Step-by-Step Guide
 
 ### Step 1: Create Your New Screen Component
@@ -19,46 +69,33 @@ Create a new file in `src/app/Scenes/Onboarding/OnboardingQuiz/` directory:
 ```typescript
 // OnboardingYourNewScreen.tsx
 import { StackScreenProps } from "@react-navigation/stack"
-import { Flex, Text, Button, useSpace } from "@artsy/palette-mobile"
 import { OnboardingNavigationStack } from "./OnboardingQuiz"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
-import { useOnboardingTracking } from "./Hooks/useOnboardingTracking"
+import { OnboardingQuestionTemplate } from "./Components/OnboardingQuestionTemplate"
 
 type Props = StackScreenProps<OnboardingNavigationStack, "OnboardingYourNewScreen">
 
-export const OnboardingYourNewScreen: React.FC<Props> = ({ navigation }) => {
+const ANSWER_OPTIONS = [
+  "Option 1",
+  "Option 2",
+  "Option 3"
+]
+
+export const OnboardingYourNewScreen: React.FC<Props> = () => {
   const { next } = useOnboardingContext()
-  const tracking = useOnboardingTracking()
-  const space = useSpace()
 
-  const handleContinue = () => {
-    // Track the action if needed
-    tracking.trackTappedNext("your_new_screen")
-
-    // Navigate to next screen
+  const handleNext = () => {
     next()
   }
 
   return (
-    <Flex flex={1} px={2} py={6}>
-      <Flex flex={1}>
-        <Text variant="lg-display" mb={2}>
-          Your Screen Title
-        </Text>
-        <Text variant="sm" color="black60">
-          Your screen description
-        </Text>
-
-        {/* Add your screen content here */}
-      </Flex>
-
-      <Button
-        block
-        onPress={handleContinue}
-      >
-        Continue
-      </Button>
-    </Flex>
+    <OnboardingQuestionTemplate
+      question="Your Question"
+      subtitle="Optional subtitle"
+      answers={ANSWER_OPTIONS}
+      action="SET_YOUR_FIELD"
+      onNext={handleNext}
+    />
   )
 }
 ```
@@ -178,19 +215,17 @@ back()
 
 If you need to track user interactions:
 
-1. Add tracking events in `useOnboardingTracking.ts`
-2. Call tracking methods in your screen component
-
 ```typescript
-const tracking = useOnboardingTracking()
+import { useOnboardingTracking } from "./Hooks/useOnboardingTracking"
 
-// Track screen view
-useEffect(() => {
-  tracking.trackScreenView("your_new_screen")
-}, [])
+const { trackAnsweredQuestionOne } = useOnboardingTracking()
 
-// Track user actions
-tracking.trackTappedOption("your_new_screen", selectedOption)
+const handleNext = () => {
+  // Track the user's selection
+  trackAnsweredQuestionOne(selectedValue)
+
+  next()
+}
 ```
 
 ## Example: Adding a Price Range Screen as a Linear Screen
@@ -201,59 +236,34 @@ Here's a complete example of adding a price range selection screen:
 
 ```typescript
 import { StackScreenProps } from "@react-navigation/stack"
-import { Flex, Text, Button, RadioButton, useSpace } from "@artsy/palette-mobile"
-import { useState } from "react"
 import { OnboardingNavigationStack } from "./OnboardingQuiz"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
+import { OnboardingQuestionTemplate } from "./Components/OnboardingQuestionTemplate"
 
 type Props = StackScreenProps<OnboardingNavigationStack, "OnboardingPriceRange">
 
 const PRICE_RANGES = [
-  { value: "0-1000", label: "Under $1,000" },
-  { value: "1000-5000", label: "$1,000 - $5,000" },
-  { value: "5000-10000", label: "$5,000 - $10,000" },
-  { value: "10000+", label: "$10,000 and above" },
+  "Under $1,000",
+  "$1,000 - $5,000",
+  "$5,000 - $10,000",
+  "$10,000 and above"
 ]
 
 export const OnboardingPriceRange: React.FC<Props> = () => {
-  const { next, state, setState } = useOnboardingContext()
-  const [selected, setSelected] = useState(state.priceRange)
-  const space = useSpace()
+  const { next } = useOnboardingContext()
 
-  const handleContinue = () => {
-    setState({ priceRange: selected })
+  const handleNext = () => {
     next()
   }
 
   return (
-    <Flex flex={1} px={2} py={6}>
-      <Flex flex={1}>
-        <Text variant="lg-display" mb={2}>
-          What's your art budget?
-        </Text>
-        <Text variant="sm" color="black60" mb={4}>
-          This helps us show you works within your price range
-        </Text>
-
-        {PRICE_RANGES.map((range) => (
-          <RadioButton
-            key={range.value}
-            text={range.label}
-            selected={selected === range.value}
-            onPress={() => setSelected(range.value)}
-            mb={2}
-          />
-        ))}
-      </Flex>
-
-      <Button
-        block
-        onPress={handleContinue}
-        disabled={!selected}
-      >
-        Continue
-      </Button>
-    </Flex>
+    <OnboardingQuestionTemplate
+      question="What's your art budget?"
+      subtitle="This helps us show you works within your price range"
+      answers={PRICE_RANGES}
+      action="SET_PRICE_RANGE"
+      onNext={handleNext}
+    />
   )
 }
 ```
@@ -362,10 +372,10 @@ export const useConfig = ({ basis, onDone }: UseConfig) => {
       conditions: {
         [DECISION_SHOULD_SHOW_PRICE_RANGE]: () => {
           // Show price range screen for investment or budget-conscious options
-          const questionTwoAnswer = basis.current?.questionTwo
+          const questionTwoAnswers = basis.current?.questionTwo
           const showPriceRange =
-            questionTwoAnswer === OPTION_FINDING_GREAT_INVESTMENTS ||
-            questionTwoAnswer === OPTION_HUNTING_FOR_ART_WITHIN_BUDGET
+            questionTwoAnswers?.includes(OPTION_FINDING_GREAT_INVESTMENTS) ||
+            questionTwoAnswers?.includes(OPTION_HUNTING_FOR_ART_WITHIN_BUDGET)
 
           return String(showPriceRange)
         },
@@ -408,12 +418,12 @@ To test your conditional navigation:
 ```typescript
 // In your test file or debugging
 const mockState = {
-  questionTwo: OPTION_FINDING_GREAT_INVESTMENTS, // Should show price range
+  questionTwo: [OPTION_FINDING_GREAT_INVESTMENTS], // Should show price range
 }
 
 // Or to skip price range
 const mockState2 = {
-  questionTwo: OPTION_DEVELOPING_MY_ART_TASTES, // Should skip price range
+  questionTwo: [OPTION_DEVELOPING_MY_ART_TASTES], // Should skip price range
 }
 ```
 
