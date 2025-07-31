@@ -7,6 +7,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { useScreenDimensions } from "app/utils/hooks"
 import { useEffect, useMemo, useState } from "react"
 import { Animated } from "react-native"
+import { FullWindowOverlay } from "react-native-screens"
 import useTimeoutFn from "react-use/lib/useTimeoutFn"
 import { ToastDetails, ToastDuration } from "./types"
 
@@ -92,31 +93,33 @@ export const ToastComponent = ({
     )
 
     return (
-      <AnimatedFlex
-        width={MIDDLE_TOAST_SIZE}
-        height={MIDDLE_TOAST_SIZE}
-        position="absolute"
-        top={(height - MIDDLE_TOAST_SIZE) / 2}
-        left={(width - MIDDLE_TOAST_SIZE) / 2}
-        backgroundColor={color(backgroundColor)}
-        opacity={opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 0.9] })}
-        borderRadius={6}
-        overflow="hidden"
-        zIndex={999}
-      >
-        {onPress !== undefined ? (
-          <Touchable
-            accessibilityRole="button"
-            style={{ flex: 1 }}
-            onPress={() => onPress({ id, showActionSheetWithOptions })}
-            underlayColor={color("mono60")}
-          >
-            {innerMiddle}
-          </Touchable>
-        ) : (
-          innerMiddle
-        )}
-      </AnimatedFlex>
+      <FullWindowOverlay>
+        <AnimatedFlex
+          width={MIDDLE_TOAST_SIZE}
+          height={MIDDLE_TOAST_SIZE}
+          position="absolute"
+          top={(height - MIDDLE_TOAST_SIZE) / 2}
+          left={(width - MIDDLE_TOAST_SIZE) / 2}
+          backgroundColor={color(backgroundColor)}
+          opacity={opacityAnim.interpolate({ inputRange: [0, 1], outputRange: [0, 0.9] })}
+          borderRadius={6}
+          overflow="hidden"
+          zIndex={9999999}
+        >
+          {onPress !== undefined ? (
+            <Touchable
+              accessibilityRole="button"
+              style={{ flex: 1 }}
+              onPress={() => onPress({ id, showActionSheetWithOptions })}
+              underlayColor={color("mono60")}
+            >
+              {innerMiddle}
+            </Touchable>
+          ) : (
+            innerMiddle
+          )}
+        </AnimatedFlex>
+      </FullWindowOverlay>
     )
   }
 

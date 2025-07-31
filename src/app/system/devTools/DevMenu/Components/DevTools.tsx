@@ -13,6 +13,7 @@ import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMen
 import { DevToggleItem } from "app/system/devTools/DevMenu/Components/DevToggleItem"
 import { eigenSentryReleaseName } from "app/system/errorReporting/setupSentry"
 import { useUnleashEnvironment } from "app/system/flags/hooks/useUnleashEnvironment"
+// eslint-disable-next-line no-restricted-imports
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
 import { saveToken } from "app/utils/PushNotification"
@@ -35,7 +36,7 @@ export const DevTools: React.FC<{}> = () => {
   const server = GlobalStore.useAppState((s) => s.devicePrefs.environment.strings.webURL).slice(
     "https://".length
   )
-  const { __clearDissmissed } = GlobalStore.actions.progressiveOnboarding
+  const { __clearDissmissed, dismissAll } = GlobalStore.actions.progressiveOnboarding
   const toast = useToast()
 
   const { unleashEnv } = useUnleashEnvironment()
@@ -122,6 +123,13 @@ export const DevTools: React.FC<{}> = () => {
             onPress={() => {
               __clearDissmissed()
               toast.show("Progressive Onboarding progress cleared ✅", "middle")
+            }}
+          />
+          <DevMenuButtonItem
+            title="Hide all Progressive Onboarding popovers"
+            onPress={() => {
+              dismissAll()
+              toast.show("Progressive Onboarding popovers hidden ✅", "middle")
             }}
           />
           <DevMenuButtonItem

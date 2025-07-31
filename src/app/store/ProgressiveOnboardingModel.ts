@@ -14,6 +14,7 @@ interface DismissedKeyStatus {
 export interface ProgressiveOnboardingModel {
   dismissed: DismissedKey[]
   dismiss: Action<this, ProgressiveOnboardingKey | readonly ProgressiveOnboardingKey[]>
+  dismissAll: Action<this>
   isDismissed: Computed<this, (key: ProgressiveOnboardingKey) => DismissedKeyStatus>
   sessionState: {
     // Controls when the Progressive Onboarding Popovers are able to de displayed
@@ -43,6 +44,14 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
       (d) => d.key
     )
     state.sessionState = { isReady: state.sessionState.isReady }
+  }),
+  dismissAll: action((state) => {
+    const timestamp = Date.now()
+
+    state.dismissed = uniqBy(
+      [...state.dismissed, ...PROGRESSIVE_ONBOARDING_KEYS.map((key) => ({ key, timestamp }))],
+      (d) => d.key
+    )
   }),
   isDismissed: computed(({ dismissed }) => {
     return (key) => {
