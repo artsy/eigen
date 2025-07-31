@@ -8,8 +8,15 @@ import {
   OPTION_YES_I_LOVE_COLLECTING_ART,
   useConfig,
 } from "app/Scenes/Onboarding/OnboardingQuiz/config"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 
 describe("config", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      ARShowOnboardingPriceRangeScreen: true,
+    })
+  })
+
   it("should move forward through workflow", () => {
     const {
       result: {

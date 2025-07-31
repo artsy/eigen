@@ -2,6 +2,7 @@ import {
   OPTION_FINDING_GREAT_INVESTMENTS,
   OPTION_HUNTING_FOR_ART_WITHIN_BUDGET,
 } from "app/Scenes/Onboarding/OnboardingQuiz/config"
+import { unsafe_getFeatureFlag } from "app/store/GlobalStore"
 
 /**
  * Determines whether the price range screen should be shown based on an answers array
@@ -9,7 +10,11 @@ import {
  * @returns boolean indicating whether to show the price range screen
  */
 export const shouldShowPriceRange = (answers?: string[] | null): boolean => {
-  if (!answers || answers.length === 0) {
+  if (
+    !answers ||
+    answers.length === 0 ||
+    !unsafe_getFeatureFlag("ARShowOnboardingPriceRangeScreen")
+  ) {
     return false
   }
 
