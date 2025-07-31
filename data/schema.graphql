@@ -4266,6 +4266,14 @@ type AuthenticationType {
 
 type Author {
   articles: [Article!]!
+  articlesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): AuthorArticlesConnectionConnection
   bio(format: Format): String
 
   # A globally unique ID.
@@ -4277,6 +4285,26 @@ type Author {
   internalID: ID!
   name: String!
   twitterHandle: String
+}
+
+# A connection to a list of items.
+type AuthorArticlesConnectionConnection {
+  # A list of edges.
+  edges: [AuthorArticlesConnectionEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type AuthorArticlesConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Article
 }
 
 enum Availability {
