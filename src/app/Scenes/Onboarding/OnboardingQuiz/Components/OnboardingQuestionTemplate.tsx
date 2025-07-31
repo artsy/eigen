@@ -23,11 +23,12 @@ import { LayoutAnimation } from "react-native"
 import { AnimatedFadingPill, FADE_OUT_PILL_ANIMATION_DURATION } from "./AnimatedFadingPill"
 
 interface OnboardingQuestionTemplateProps {
-  answers: string[]
-  action: Exclude<OnboardingContextAction["type"], "RESET">
+  answers?: string[]
+  action?: Exclude<OnboardingContextAction["type"], "RESET">
   onNext: () => void
   question: string
   subtitle?: string
+  children?: React.ReactNode
 }
 
 const NAVIGATE_TO_NEXT_SCREEN_DELAY = 500
@@ -39,6 +40,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
   onNext,
   question,
   subtitle,
+  children,
 }) => {
   const { canGoBack, goBack } = useNavigation()
   const { dispatch, back, next, onDone, progress, state } = useOnboardingContext()
@@ -46,11 +48,16 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
   const [hideUnselectedPills, setHideUnselectedPills] = useState(false)
   const [isNextBtnDisabled, setIsNextBtnDisabled] = useState(false)
 
-  const stateKey = STATE_KEYS[action]
-  const selected = (answer: string) =>
-    typeof state[stateKey] === "object"
-      ? state[stateKey]?.includes(answer)
+  const hasChildren = !!children
+
+  const stateKey = action ? STATE_KEYS[action] : null
+  const selected = (answer: string): boolean => {
+    if (!stateKey) return false
+
+    return typeof state[stateKey] === "object"
+      ? state[stateKey]?.includes(answer) || false
       : state[stateKey] === answer
+  }
 
   const navigateToNextScreen = useCallback(
     () =>
@@ -63,17 +70,24 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
   const handleNext = useCallback(() => {
     // force disable next button
     setIsNextBtnDisabled(true)
-    // trigger the fade out animation in the unselected pill components
-    setHideUnselectedPills(true)
 
-    setTimeout(() => {
-      LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 200 })
-      setShowPillTick(true)
-      next()
+    if (hasChildren) {
+      // For children mode, call onNext directly without animations
+      onNext()
+    } else {
+      // Original behavior for pill-based answers
+      // trigger the fade out animation in the unselected pill components
+      setHideUnselectedPills(true)
 
-      navigateToNextScreen()
-    }, ADD_TICK_AND_ANIMATE_PROGRESS_BAR_DELAY)
-  }, [next, navigateToNextScreen])
+      setTimeout(() => {
+        LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 200 })
+        setShowPillTick(true)
+        next()
+
+        navigateToNextScreen()
+      }, ADD_TICK_AND_ANIMATE_PROGRESS_BAR_DELAY)
+    }
+  }, [hasChildren, onNext, next, navigateToNextScreen])
 
   const handleBack = useCallback(() => {
     back()
@@ -81,7 +95,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
     if (canGoBack()) {
       goBack()
     }
-  }, [back])
+  }, [back, canGoBack, goBack])
 
   useFocusEffect(
     useCallback(() => {
@@ -101,7 +115,9 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
   // if we don't call this hook, the back button will crash the app
   useBackHandler(androidHardwareBackButtonHandler)
 
-  const isDisabled = isNextBtnDisabled || !state[stateKey] || state[stateKey]?.length === 0
+  // Revert to original isDisabled logic
+  const isDisabled =
+    isNextBtnDisabled || !stateKey || !state[stateKey] || state[stateKey]?.length === 0
 
   const debouncedHandleSkip = debounce(onDone, 1000)
 
@@ -137,29 +153,34 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
             </>
           )}
           <Spacer y={2} />
-          {answers.map((answer, index) => {
-            const isVisible = !hideUnselectedPills || !!selected(answer)
-            const shouldShowPillTick = showPillTick && selected(answer)
 
-            return (
-              <React.Fragment key={`${answer}+${index}`}>
-                <AnimatedFadingPill
-                  variant="default"
-                  isVisible={isVisible}
-                  key={`${answer}-pill`}
-                  Icon={!!shouldShowPillTick ? CheckCircleFillIconWhite : undefined}
-                  onPress={() => dispatch({ type: action, payload: answer })}
-                  selected={selected(answer)}
-                >
-                  {!!shouldShowPillTick && <Spacer x={1} />}
-                  <Text variant="sm" color={selected(answer) ? "mono0" : "mono100"}>
-                    {answer}
-                  </Text>
-                </AnimatedFadingPill>
-                {!!isVisible && <Spacer y={2} />}
-              </React.Fragment>
-            )
-          })}
+          {hasChildren
+            ? // Render children when provided
+              children
+            : // Original pill rendering logic
+              answers?.map((answer, index) => {
+                const isVisible = !hideUnselectedPills || !!selected(answer)
+                const shouldShowPillTick = showPillTick && selected(answer)
+
+                return (
+                  <React.Fragment key={`${answer}+${index}`}>
+                    <AnimatedFadingPill
+                      variant="default"
+                      isVisible={isVisible}
+                      key={`${answer}-pill`}
+                      Icon={!!shouldShowPillTick ? CheckCircleFillIconWhite : undefined}
+                      onPress={() => action && dispatch({ type: action, payload: answer })}
+                      selected={selected(answer)}
+                    >
+                      {!!shouldShowPillTick && <Spacer x={1} />}
+                      <Text variant="sm" color={selected(answer) ? "mono0" : "mono100"}>
+                        {answer}
+                      </Text>
+                    </AnimatedFadingPill>
+                    {!!isVisible && <Spacer y={2} />}
+                  </React.Fragment>
+                )
+              })}
         </Flex>
         <Flex>
           <Button block disabled={isDisabled} onPress={handleNext}>
@@ -180,5 +201,6 @@ const STATE_KEYS: Record<Exclude<OnboardingContextAction["type"], "RESET">, keyo
   SET_ANSWER_ONE: "questionOne",
   SET_ANSWER_TWO: "questionTwo",
   SET_ANSWER_THREE: "questionThree",
+  SET_PRICE_RANGE: "priceRange",
   FOLLOW: "followedIds",
 }
