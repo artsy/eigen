@@ -84,7 +84,7 @@ export const features = {
   },
   AREnabledDiscoverDailyNegativeSignals: {
     description: "Enable negative signals in Discover Daily",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnabledDiscoverDailyNegativeSignals",
   },
