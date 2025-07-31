@@ -63,6 +63,8 @@ jobs:
 
       - name: Create and boot iPhone 14 Pro iOS 16.2 simulator
         run: |
+          xcrun simctl list runtimes
+
           echo "📱 Creating iPhone 14 Pro simulator with iOS 16.2..."
           # Create the simulator
           SIMULATOR_UDID=$(xcrun simctl create "iPhone 14 Pro Test" com.apple.CoreSimulator.SimDeviceType.iPhone-14-Pro com.apple.CoreSimulator.SimRuntime.iOS-16-2)
