@@ -71,9 +71,9 @@ jobs:
           echo "Created simulator with UDID: $SIMULATOR_UDID"
           echo "SIMULATOR_UDID=$SIMULATOR_UDID" >> $GITHUB_ENV
 
-          # Boot the simulator with arm64 architecture for Apple Silicon
+          # Boot the simulator
           echo "🚀 Booting simulator..."
-          xcrun simctl boot "$SIMULATOR_UDID" --arch=arm64
+          xcrun simctl boot "$SIMULATOR_UDID"
 
           # Wait for the simulator to be ready
           echo "⏳ Waiting for simulator to be ready..."
