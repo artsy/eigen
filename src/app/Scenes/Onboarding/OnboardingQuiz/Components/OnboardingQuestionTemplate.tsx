@@ -11,6 +11,7 @@ import {
   DEFAULT_HIT_SLOP,
 } from "@artsy/palette-mobile"
 import { useFocusEffect, useNavigation } from "@react-navigation/native"
+import { ACCESSIBLE_DEFAULT_ICON_SIZE } from "app/Components/constants"
 import {
   OnboardingContextAction,
   State,
@@ -19,7 +20,7 @@ import {
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { debounce } from "lodash"
 import React, { FC, useCallback, useState } from "react"
-import { LayoutAnimation } from "react-native"
+import { LayoutAnimation, Platform } from "react-native"
 import { AnimatedFadingPill, FADE_OUT_PILL_ANIMATION_DURATION } from "./AnimatedFadingPill"
 
 interface OnboardingQuestionTemplateProps {
@@ -188,7 +189,15 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
 }
 
 const CheckCircleFillIconWhite = () => {
-  return <CheckmarkFillIcon fill="mono0" />
+  return (
+    <Flex pr={Platform.OS === "android" ? 1 : 0}>
+      <CheckmarkFillIcon
+        fill="mono0"
+        height={ACCESSIBLE_DEFAULT_ICON_SIZE}
+        width={ACCESSIBLE_DEFAULT_ICON_SIZE}
+      />
+    </Flex>
+  )
 }
 
 const STATE_KEYS: Record<Exclude<OnboardingContextAction["type"], "RESET">, keyof State> = {
