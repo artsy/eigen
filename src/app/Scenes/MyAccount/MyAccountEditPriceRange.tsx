@@ -6,6 +6,7 @@ import { MyAccountEditPriceRangeQuery } from "__generated__/MyAccountEditPriceRa
 import { MyAccountEditPriceRange_me$key } from "__generated__/MyAccountEditPriceRange_me.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
 import { Select, SelectOption } from "app/Components/Select"
+import { useToast } from "app/Components/Toast/toastHook"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { goBack } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -25,13 +26,14 @@ export const MyAccountEditPriceRange: React.FC<{
 }> = (props) => {
   const me = useFragment(meFragment, props.me)
   const { trackEvent } = useTracking()
-  const [isLoading, setIsLoading] = useState(false)
+  const toast = useToast()
+  const navigation = useNavigation()
 
+  const [isLoading, setIsLoading] = useState(false)
   const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
   const [priceRange, setPriceRange] = useState<string>(me.priceRange ?? "")
   const [priceRangeMax, setPriceRangeMax] = useState<number | null | undefined>(me.priceRangeMax)
   const [priceRangeMin, setPriceRangeMin] = useState<number | null | undefined>(me.priceRangeMin)
-  const navigation = useNavigation()
 
   useEffect(() => {
     setReceivedError(undefined)
@@ -63,6 +65,12 @@ export const MyAccountEditPriceRange: React.FC<{
       setReceivedError(e)
     } finally {
       setIsLoading(false)
+      toast.show("Artwork budget set", "bottom", {
+        description:
+          "We will  tailor your experience to better match your preferences going forward",
+        duration: "short",
+        backgroundColor: "green100",
+      })
     }
   }
 

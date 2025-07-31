@@ -59,7 +59,7 @@ export function usePriceRangeToast({
             await AsyncStorage.setItem(PRICE_RANGE_TOAST_KEY, String(now.getTime()))
 
             toast.show(PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE, "bottom", {
-              description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT || undefined,
+              description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
               duration: "long",
               onPress: () => {
                 InteractionManager.runAfterInteractions(() => {
