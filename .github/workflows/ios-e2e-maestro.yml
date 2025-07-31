@@ -9,14 +9,14 @@ on:
 jobs:
   e2e-tests:
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: macos-14 # iOS simulators require macOS runners
+    runs-on: macos-13 # iOS simulators require macOS runners
     timeout-minutes: 45
     strategy:
       fail-fast: false # Don't cancel other jobs if one fails
       matrix:
         node_index: [0, 1, 2]
         total_nodes: [3]
-      max-parallel: 1 # Limit parallelism to avoid resource contention
+      # max-parallel: 1 # Limit parallelism to avoid resource contention
 
     steps:
       - name: Checkout repository
@@ -61,14 +61,11 @@ jobs:
           brew tap facebook/fb
           brew install idb-companion
 
-      - name: Select Xcode version
-        run: sudo xcode-select -s /Applications/Xcode_16.2.app
-
-      - name: Create and boot iPhone 16 Pro iOS 18.2 simulator
+      - name: Create and boot iPhone 14 Pro iOS 16.2 simulator
         run: |
-          echo "📱 Creating iPhone 16 Pro simulator with iOS 18.2..."
+          echo "📱 Creating iPhone 14 Pro simulator with iOS 16.2..."
           # Create the simulator
-          SIMULATOR_UDID=$(xcrun simctl create "iPhone 16 Pro Test" com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro com.apple.CoreSimulator.SimRuntime.iOS-18-2)
+          SIMULATOR_UDID=$(xcrun simctl create "iPhone 14 Pro Test" com.apple.CoreSimulator.SimDeviceType.iPhone-14-Pro com.apple.CoreSimulator.SimRuntime.iOS-16-2)
           echo "Created simulator with UDID: $SIMULATOR_UDID"
           echo "SIMULATOR_UDID=$SIMULATOR_UDID" >> $GITHUB_ENV
 
