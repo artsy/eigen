@@ -1,4 +1,4 @@
-import { useColor, SpinnerProps } from "@artsy/palette-mobile"
+import { useColor, SpinnerProps, Flex } from "@artsy/palette-mobile"
 import { useAnimatedValue } from "app/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import React, { useEffect } from "react"
 import { Animated, Easing } from "react-native"
@@ -87,10 +87,10 @@ export const CircularSpinner: React.FC<SpinnerProps> = ({
   ]
 
   return (
-    <>
+    <Flex>
       <CircleBackground size={size} color={color(theColor)} />
       <Circle size={size} color={color(theColor)} style={style} {...rest} />
-    </>
+    </Flex>
   )
 }
 
@@ -98,6 +98,7 @@ type CircleProps = Omit<SpinnerProps, "color"> & { color?: string }
 
 const Circle = styled(Animated.View)<CircleProps>`
   background: black;
+  position: absolute;
 
   ${(props) => {
     const { width, height, borderWidth, radius } = getSize(props)
@@ -137,7 +138,6 @@ const CircleBackground = styled(Animated.View)<CircleProps>`
       background: transparent;
       width: ${width}px;
       height: ${height}px;
-      top: ${height}px;
     `
   }};
 `

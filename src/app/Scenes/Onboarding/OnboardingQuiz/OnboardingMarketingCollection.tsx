@@ -1,13 +1,14 @@
-import { Flex, Button, LegacyScreen, Spacer } from "@artsy/palette-mobile"
+import { Button, Flex, LegacyScreen, Spacer, Spinner } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { OnboardingMarketingCollectionQuery } from "__generated__/OnboardingMarketingCollectionQuery.graphql"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { CircularSpinner } from "app/Components/CircularSpinner"
 import { FullScreenLoadingImage } from "app/Components/FullScreenLoadingImage"
 import { OnboardingNavigationStack } from "app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { Suspense } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { images, MarketingCollectionHeader } from "./Components/MarketingCollectionHeader"
+import { MarketingCollectionHeader } from "./Components/MarketingCollectionHeader"
 
 export type OnboardingMarketingCollectionSlug =
   | "artists-on-the-rise"
@@ -46,7 +47,9 @@ const OnboardingMarketingCollection: React.FC<OnboardingMarketingCollectionProps
           description={description}
           marketingCollection={marketingCollection}
         />
+
         <Spacer y={2} />
+
         <InfiniteScrollArtworksGrid
           // we are deliberately limiting the number of artworks shown in these grids
           loadMore={() => null}
@@ -74,10 +77,9 @@ export const OnboardingMarketingCollectionScreen: React.FC<OnboardingMarketingCo
 ) => (
   <Suspense
     fallback={
-      <FullScreenLoadingImage
-        imgSource={images[props.slug]}
-        loadingText={"Great choice" + "\n" + "We’re finding a collection for you"}
-      />
+      <Flex flex={1} alignItems="center" justifyContent="center">
+        <Spinner color="mono100" size="large" />
+      </Flex>
     }
   >
     <OnboardingMarketingCollection {...props} />
@@ -89,7 +91,7 @@ const OnboardingMarketingCollectionScreenQuery = graphql`
     marketingCollection(slug: $slug) {
       ...MarketingCollectionHeaderFragment_marketingCollection
       internalID
-      artworks: artworksConnection(first: 100, page: 1, sort: "-decayed_merch") {
+      artworks: artworksConnection(first: 20, page: 1, sort: "-decayed_merch") {
         ...InfiniteScrollArtworksGrid_connection
       }
     }
