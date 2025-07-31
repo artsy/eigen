@@ -48,10 +48,16 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
   dismissAll: action((state) => {
     const timestamp = Date.now()
 
-    state.dismissed = uniqBy(
-      [...state.dismissed, ...PROGRESSIVE_ONBOARDING_KEYS.map((key) => ({ key, timestamp }))],
+    // Clone inputs before mutating state
+    const dismissed = [...state.dismissed]
+    const keys = [...PROGRESSIVE_ONBOARDING_KEYS] // ensure this is not from state
+
+    const dismissedKeys = uniqBy(
+      [...dismissed, ...keys.map((key) => ({ key, timestamp }))],
       (d) => d.key
     )
+
+    state.dismissed = dismissedKeys
   }),
   isDismissed: computed(({ dismissed }) => {
     return (key) => {
