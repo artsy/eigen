@@ -1,13 +1,14 @@
 name: Build iOS QA App for Maestro
 
 on:
-  schedule:
-    - cron: "0 6 * * *" # Runs daily at 6:00 AM UTC
+  push:
+    branches:
+      - brian/e2e-stability # change this to your branch name if not 'main'
   workflow_dispatch: # Allows manual trigger
 
 jobs:
   build-ios-qa:
-    if: github.ref == 'refs/heads/main'
+    # if: github.ref == 'refs/heads/main'
     runs-on: macos-15
     timeout-minutes: 60
 
