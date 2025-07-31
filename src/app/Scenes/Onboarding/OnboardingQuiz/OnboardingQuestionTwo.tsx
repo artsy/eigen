@@ -26,7 +26,7 @@ export const OnboardingQuestionTwo = () => {
       trackAnsweredQuestionTwo(questionTwo)
     }
 
-    // Check if we should show the price range screen using the helper
+    // Check if we should navigate to the price range screen
     const showPriceRange = shouldShowPriceRange(questionTwo)
 
     // Update the workflow state
@@ -36,7 +36,6 @@ export const OnboardingQuestionTwo = () => {
     if (showPriceRange) {
       navigate("OnboardingPriceRange")
     } else {
-      console.log("------")
       navigate("OnboardingQuestionThree")
     }
   }, [next, navigate, questionTwo, trackAnsweredQuestionTwo])

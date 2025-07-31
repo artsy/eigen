@@ -24,7 +24,7 @@ import { AnimatedFadingPill, FADE_OUT_PILL_ANIMATION_DURATION } from "./Animated
 
 interface OnboardingQuestionTemplateProps {
   answers?: string[]
-  action?: Exclude<OnboardingContextAction["type"], "RESET">
+  action: Exclude<OnboardingContextAction["type"], "RESET">
   onNext: () => void
   question: string
   subtitle?: string
@@ -50,14 +50,11 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
 
   const hasChildren = !!children
 
-  const stateKey = action ? STATE_KEYS[action] : null
-  const selected = (answer: string): boolean => {
-    if (!stateKey) return false
-
-    return typeof state[stateKey] === "object"
-      ? state[stateKey]?.includes(answer) || false
+  const stateKey = STATE_KEYS[action]
+  const selected = (answer: string) =>
+    typeof state[stateKey] === "object"
+      ? state[stateKey]?.includes(answer)
       : state[stateKey] === answer
-  }
 
   const navigateToNextScreen = useCallback(
     () =>
@@ -72,10 +69,9 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
     setIsNextBtnDisabled(true)
 
     if (hasChildren) {
-      // For children mode, call onNext directly without animations
       onNext()
     } else {
-      // Original behavior for pill-based answers
+      // Default behavior for pill-based answers
       // trigger the fade out animation in the unselected pill components
       setHideUnselectedPills(true)
 
@@ -115,9 +111,7 @@ export const OnboardingQuestionTemplate: FC<OnboardingQuestionTemplateProps> = (
   // if we don't call this hook, the back button will crash the app
   useBackHandler(androidHardwareBackButtonHandler)
 
-  // Revert to original isDisabled logic
-  const isDisabled =
-    isNextBtnDisabled || !stateKey || !state[stateKey] || state[stateKey]?.length === 0
+  const isDisabled = isNextBtnDisabled || !state[stateKey] || state[stateKey]?.length === 0
 
   const debouncedHandleSkip = debounce(onDone, 1000)
 

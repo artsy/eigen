@@ -3,27 +3,16 @@ import { SavedPriceRange } from "@artsy/cohesion/dist/Schema/Events/SavedPriceRa
 import { Spacer, Text } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
-import { Select, SelectOption } from "app/Components/Select"
+import { PRICE_BUCKETS } from "app/Components/PriceRange/constants"
+import { Select } from "app/Components/Select"
 import { updateMyUserProfile } from "app/Scenes/MyAccount/updateMyUserProfile"
-import { useState, useCallback } from "react"
+import { useCallback, useState } from "react"
 import { useTracking } from "react-tracking"
 import { OnboardingQuestionTemplate } from "./Components/OnboardingQuestionTemplate"
 import { useOnboardingContext } from "./Hooks/useOnboardingContext"
 import { OnboardingNavigationStack } from "./OnboardingQuiz"
 
 type Props = StackScreenProps<OnboardingNavigationStack, "OnboardingPriceRange">
-
-const PRICE_BUCKETS: Array<SelectOption<string>> = [
-  { label: "Select a price range", value: "" },
-  { label: "Under $500", value: "-1:500" },
-  { label: "Under $2,500", value: "-1:2500" },
-  { label: "Under $5,000", value: "-1:5000" },
-  { label: "Under $10,000", value: "-1:10000" },
-  { label: "Under $25,000", value: "-1:25000" },
-  { label: "Under $50,000", value: "-1:50000" },
-  { label: "Under $100,000", value: "-1:100000" },
-  { label: "No budget in mind", value: "-1:1000000000000" },
-]
 
 export const OnboardingPriceRange: React.FC<Props> = () => {
   const { next, dispatch, state } = useOnboardingContext()
@@ -54,7 +43,6 @@ export const OnboardingPriceRange: React.FC<Props> = () => {
       // Continue to the next screen in the onboarding flow
       next()
 
-      // Navigate to Question Three
       navigate("OnboardingQuestionThree")
     } catch (e: any) {
       setError(e?.message || "Something went wrong")

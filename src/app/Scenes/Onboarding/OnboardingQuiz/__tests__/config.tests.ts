@@ -48,7 +48,7 @@ describe("config", () => {
         basis: {
           current: {
             questionOne: OPTION_YES_I_LOVE_COLLECTING_ART,
-            questionTwo: [OPTION_DEVELOPING_MY_ART_TASTES], // Non-budget option, skips price range
+            questionTwo: [OPTION_DEVELOPING_MY_ART_TASTES],
             questionThree: OPTION_TOP_AUCTION_LOTS,
             priceRange: null,
             followedIds: [],
@@ -75,10 +75,6 @@ describe("config", () => {
 
     expect(workflowEngine.back()).toEqual("VIEW_WELCOME")
     expect(workflowEngine.index).toEqual(0)
-
-    // Note: Calling back() from index 0 is buggy in WorkflowEngine
-    // It sets index to -1 which makes current() return undefined
-    // So we test that we're at the start correctly
     expect(workflowEngine.isStart()).toBe(true)
     expect(workflowEngine.current()).toEqual("VIEW_WELCOME")
   })
