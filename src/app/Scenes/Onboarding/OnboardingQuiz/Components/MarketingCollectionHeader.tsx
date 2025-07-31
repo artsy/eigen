@@ -19,7 +19,7 @@ export const MarketingCollectionHeader: React.FC<MarketingCollectionHeaderProps>
 
   return (
     <Flex>
-      <Flex pt={6} px={2}>
+      <Flex>
         <Text variant="xl" color="mono100">
           {collection.title}
         </Text>

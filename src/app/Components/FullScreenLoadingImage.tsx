@@ -15,22 +15,20 @@ export const FullScreenLoadingImage: React.FC<FullScreenLoadingImageProps> = ({
   imgSource,
   spacerHeight = 2,
 }) => {
-  const Content = () => {
+  const Content = ({ color = "white" }: { color?: string }) => {
     return (
       <Flex flex={1} alignItems="center" justifyContent="center">
-        <CircularSpinner color="white" size="large" />
+        <CircularSpinner color={color} size="large" />
 
         <Spacer y={spacerHeight} />
 
         {!!title && (
-          // {/* Setting the text color to white in light and dark mode because of the background image. */}
-          <Text variant="md" color="white" textAlign="center" fontWeight="bold" mb={1}>
+          <Text variant="md" color={color} textAlign="center" fontWeight="bold" mb={1}>
             {title}
           </Text>
         )}
 
-        {/* Setting the text color to white in light and dark mode because of the background image. */}
-        <Text variant="sm-display" color="white" textAlign="center">
+        <Text variant="sm-display" color={color} textAlign="center">
           {loadingText}
         </Text>
       </Flex>
@@ -38,7 +36,7 @@ export const FullScreenLoadingImage: React.FC<FullScreenLoadingImageProps> = ({
   }
 
   if (!imgSource) {
-    return <Content />
+    return <Content color="mono100" />
   }
   return (
     <ImageBackground
