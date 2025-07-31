@@ -4714,6 +4714,9 @@ type Card {
 
   # The last 4 digits of the card.
   last4: String!
+
+  # The type of payment method.
+  type: String!
 }
 
 type CareerHighlight implements Node {
@@ -20326,6 +20329,9 @@ type S3PolicyDocumentType {
 type SEPADebit {
   # The last 4 digits of the bank account.
   last4: String!
+
+  # The type of payment method.
+  type: String!
 }
 
 type Sale implements Node {
@@ -22236,6 +22242,9 @@ type USBankAccount {
 
   # The last 4 digits of the bank account.
   last4: String!
+
+  # The type of payment method.
+  type: String!
 }
 
 union UnderlyingCurrentEvent = Sale | Show
