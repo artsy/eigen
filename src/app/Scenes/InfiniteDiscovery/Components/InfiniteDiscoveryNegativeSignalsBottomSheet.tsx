@@ -52,7 +52,7 @@ export const InfiniteDiscoveryNegativeSignalsBottomSheet: FC<
   const { setMoreInfoSheetVisible } = GlobalStore.actions.infiniteDiscovery
 
   const handleOnSheetChange = (index: number) => {
-    if (index === 0 && moreInfoSheetVisible) {
+    if ([-1, 0].includes(index) && moreInfoSheetVisible) {
       setMoreInfoSheetVisible(false)
     }
   }
