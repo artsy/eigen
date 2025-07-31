@@ -20442,6 +20442,9 @@ type Sale implements Node {
   isClosed: Boolean
   isGalleryAuction: Boolean
   isLiveOpen: Boolean
+
+  # True for live auctions once live part is happening or in the past
+  isLiveOpenHappened: Boolean
   isLotConditionsReportEnabled: Boolean
 
   # True for a cascading-end-time enabled sale where lots have started closing
