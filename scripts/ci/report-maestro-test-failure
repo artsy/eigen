@@ -2,6 +2,13 @@
 
 set -e
 
+# Get platform parameter (android, ios, etc.)
+PLATFORM=${1:-"unknown"}
+echo "Platform: $PLATFORM"
+
+# Capitalize platform for display
+PLATFORM_DISPLAY=$(echo "$PLATFORM")
+
 # Get latest Maestro test directory
 # Parse out the flow file and error message
 # Upload screenshots to S3 and report failure via Fastlane
@@ -27,5 +34,5 @@ for screenshot in "$SCREENSHOTS_DIR"/*.png; do
 
   URL=$(aws s3 presign "$S3_PATH" --expires-in "$EXPIRES_IN")
 
-  bundle exec fastlane report_maestro_failure s3_url:$URL error_message:"$ERROR_MESSAGE" flow_name:"$FLOW_NAME"
+  bundle exec fastlane report_maestro_failure s3_url:$URL error_message:"$ERROR_MESSAGE" flow_name:"$FLOW_NAME" platform:"$PLATFORM_DISPLAY"
 done
