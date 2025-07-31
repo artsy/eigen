@@ -61,13 +61,13 @@ jobs:
           brew tap facebook/fb
           brew install idb-companion
 
-      - name: Create and boot iPhone 14 Pro iOS 16.2 simulator
+      - name: Create and boot iPhone 14 Pro iOS 17.2 simulator
         run: |
           xcrun simctl list runtimes
 
-          echo "📱 Creating iPhone 14 Pro simulator with iOS 16.2..."
+          echo "📱 Creating iPhone 14 Pro simulator with iOS 17.2..."
           # Create the simulator
-          SIMULATOR_UDID=$(xcrun simctl create "iPhone 14 Pro Test" com.apple.CoreSimulator.SimDeviceType.iPhone-14-Pro com.apple.CoreSimulator.SimRuntime.iOS-16-2)
+          SIMULATOR_UDID=$(xcrun simctl create "iPhone 14 Pro Test" com.apple.CoreSimulator.SimDeviceType.iPhone-14-Pro com.apple.CoreSimulator.SimRuntime.iOS-17-2)
           echo "Created simulator with UDID: $SIMULATOR_UDID"
           echo "SIMULATOR_UDID=$SIMULATOR_UDID" >> $GITHUB_ENV
 
