@@ -12,7 +12,7 @@ appId: ${MAESTRO_APP_ID}
     link: https://www.artsy.net/artist/kaws
     autoVerify: true
 - extendedWaitUntil:
-    visible: "Kaws"
+    visible: "KAWS"
     timeout: 20000
 - killApp
 - openLink:
