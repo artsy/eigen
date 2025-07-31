@@ -48,5 +48,5 @@ export const useMaestroInitialization = () => {
     } else if (shouldSignOut && isLoggedIn) {
       GlobalStore.actions.auth.signOut()
     }
-  }, [isHydrated])
+  }, [isHydrated, dismissAll])
 }

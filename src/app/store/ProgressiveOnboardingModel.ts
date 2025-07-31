@@ -46,6 +46,7 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
     state.sessionState = { isReady: state.sessionState.isReady }
   }),
   dismissAll: action((state) => {
+    console.log("🚀 dismissAll action called!")
     const timestamp = Date.now()
 
     // Clone inputs before mutating state
@@ -55,6 +56,12 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
     const dismissedKeys = uniqBy(
       [...dismissed, ...keys.map((key) => ({ key, timestamp }))],
       (d) => d.key
+    )
+
+    console.log("✅ New dismissed count:", state.dismissed.length)
+    console.log(
+      "📝 Dismissed keys:",
+      state.dismissed.map((d) => d.key)
     )
 
     state.dismissed = dismissedKeys

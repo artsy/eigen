@@ -20,6 +20,7 @@ const PRICE_RANGE_ONBOARDING_POPOVER_DELAY = 4000
 export const ProgressiveOnboardingPriceRangeHome: React.FC = ({ children }) => {
   const {
     isDismissed: isDismissedFn,
+    dismissed,
     sessionState: { isReady },
   } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
 
@@ -47,11 +48,21 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC = ({ children }) => {
 
   const isPriceRangePopoverDisplayable =
     // We don't want to show the price range popover if the user has already set a price range
+    !isDismissed &&
     hasPriceRange === false &&
     // Only show the popover if you are on the home screen
     currentRoute === "Home" &&
-    !isDismissed &&
     isReady
+
+  console.log("PriceRangePopover Debug:", {
+    isDismissed,
+    hasPriceRange,
+    currentRoute,
+    isReady,
+    isPriceRangePopoverDisplayable,
+    dismissedKeys: dismissed.map((d) => d.key),
+    totalDismissed: dismissed.length,
+  })
 
   const { isActive, clearActivePopover } = useSetActivePopover(isPriceRangePopoverDisplayable)
 
