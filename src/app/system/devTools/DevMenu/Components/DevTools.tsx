@@ -118,6 +118,12 @@ export const DevTools: React.FC<{}> = () => {
             }}
           />
           <DevMenuButtonItem
+            title="Set Onboarding state to incomplete"
+            onPress={() => {
+              GlobalStore.actions.onboarding.setOnboardingState("incomplete")
+            }}
+          />
+          <DevMenuButtonItem
             title="Clear Progressive Onboarding progress"
             onPress={() => {
               __clearDissmissed()
