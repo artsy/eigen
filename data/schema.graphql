@@ -18000,10 +18000,7 @@ enum PartnersSortType {
   SORTABLE_ID_DESC
 }
 
-type PaymentMethodPreview {
-  # Details of the card used in the payment method.
-  card: Card
-}
+union PaymentMethodPreview = Card | SEPADebit | USBankAccount
 
 union PaymentMethodUnion = BankAccount | CreditCard | WireTransfer
 
@@ -20326,6 +20323,11 @@ type S3PolicyDocumentType {
   expiration: String!
 }
 
+type SEPADebit {
+  # The last 4 digits of the bank account.
+  last4: String!
+}
+
 type Sale implements Node {
   # Returns a connection of artworks for a sale.
   artworksConnection(
@@ -22226,6 +22228,14 @@ union TriggerCampaignMutationSuccessOrError =
 type TriggerCampaignPayload {
   clientMutationId: String
   successOrError: TriggerCampaignMutationSuccessOrError
+}
+
+type USBankAccount {
+  # The name of the bank.
+  bankName: String!
+
+  # The last 4 digits of the bank account.
+  last4: String!
 }
 
 union UnderlyingCurrentEvent = Sale | Show
