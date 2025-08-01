@@ -8,6 +8,8 @@ appId: ${MAESTRO_APP_ID}
       useMaestroInit: "true"
 - assertVisible:
     id: "search-button"
+- waitFor:
+    duration: 5000 # wait 5 seconds to give OS time to verify universal link
 - killApp
 - openLink:
     link: https://www.artsy.net/artist/kaws
