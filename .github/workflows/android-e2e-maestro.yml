@@ -1,11 +1,10 @@
 name: Android E2E Tests (Maestro)
 
 on:
-  workflow_run:
-    workflows: ["Build Android QA App for Maestro"]
-    types:
-      - completed
-  workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
+  push:
+    branches:
+      - brian/e2e-stability # change this to your branch name if not 'main'
+  workflow_dispatch: # Allows manual trigger
 
 jobs:
   e2e-tests:
