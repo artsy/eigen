@@ -1,5 +1,4 @@
-import { Flex, Spacer, SpacerProps, Text } from "@artsy/palette-mobile"
-import { CircularSpinner } from "app/Components/CircularSpinner"
+import { Flex, Spacer, SpacerProps, Spinner, Text } from "@artsy/palette-mobile"
 import { ImageBackground, ImageSourcePropType, StyleSheet } from "react-native"
 
 interface FullScreenLoadingImageProps {
@@ -18,7 +17,9 @@ export const FullScreenLoadingImage: React.FC<FullScreenLoadingImageProps> = ({
   const Content = ({ color = "white" }: { color?: string }) => {
     return (
       <Flex flex={1} alignItems="center" justifyContent="center">
-        <CircularSpinner color={color} size="large" />
+        <Flex alignItems="center" mb={1}>
+          <Spinner size="large" color={color} />
+        </Flex>
 
         <Spacer y={spacerHeight} />
 
