@@ -5,8 +5,10 @@ import {
   Outbid,
   ReserveNotMet,
   BiddingLiveNow,
+  LiveAuction,
 } from "app/Scenes/MyBids/Components/BiddingStatuses"
 import { LotFragmentContainer } from "app/Scenes/MyBids/Components/Lot"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -32,7 +34,7 @@ export const SaleActiveBidItem: React.FC<SaleActiveBidItemProps> = ({ lotStandin
       <Flex flexDirection="row" justifyContent="space-between">
         <LotFragmentContainer saleArtwork={saleArtwork} />
         <Flex>
-          {!saleArtwork.sale?.isLiveOpen && (
+          {!saleArtwork.sale?.isLiveOpenHappened && (
             <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
               <Text variant="xs">{sellingPrice}</Text>
               <Text variant="xs" color="mono60">
@@ -44,6 +46,8 @@ export const SaleActiveBidItem: React.FC<SaleActiveBidItemProps> = ({ lotStandin
           <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
             {saleArtwork.sale?.isLiveOpen ? (
               <BiddingLiveNow />
+            ) : saleArtwork.sale?.isLiveOpenHappened ? (
+              <LiveAuction />
             ) : lotStanding?.activeBid?.isWinning &&
               saleArtwork.reserveStatus === "ReserveNotMet" ? (
               <ReserveNotMet />
@@ -84,6 +88,7 @@ export const SaleActiveBidItemContainer = createFragmentContainer(SaleActiveBidI
         }
         sale {
           isLiveOpen
+          isLiveOpenHappened
           slug
         }
       }
