@@ -1,4 +1,4 @@
-import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { GlobalStore } from "app/store/GlobalStore"
 import { OnboardingProvider } from "./Hooks/useOnboardingContext"
@@ -29,7 +29,7 @@ export type OnboardingNavigationStack = {
   OnboardingPostFollowLoadingScreen: undefined
 }
 
-const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
+const StackNavigator = createNativeStackNavigator<OnboardingNavigationStack>()
 
 export const OnboardingQuiz = () => {
   const { trackCompletedOnboarding } = useOnboardingTracking()
@@ -51,9 +51,8 @@ export const OnboardingQuiz = () => {
     <OnboardingProvider onDone={handleDone}>
       <StackNavigator.Navigator
         screenOptions={{
-          ...TransitionPresets.DefaultTransition,
+          animation: "slide_from_right",
           headerShown: false,
-          headerMode: "screen",
           gestureEnabled: false,
         }}
       >

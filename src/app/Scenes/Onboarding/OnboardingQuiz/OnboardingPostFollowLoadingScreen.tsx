@@ -8,7 +8,7 @@ const NAVIGATE_TO_NEXT_SCREEN_DELAY = 2000
 
 export const OnboardingPostFollowLoadingScreen = () => {
   const { onDone } = useOnboardingContext()
-  const text = "Great start\nFollow more as you browse and\ncontinue tailoring Artsy to your tastes"
+  const text = "Follow more as you browse and\ncontinue tailoring Artsy to your tastes"
 
   // prevents Android users from going back with hardware button
   useBackHandler(() => true)
@@ -19,6 +19,7 @@ export const OnboardingPostFollowLoadingScreen = () => {
       <LegacyScreen.Background>
         <FullScreenLoadingImage
           imgSource={require("images/HirstTheWonder.webp")}
+          title="Great start"
           loadingText={text}
         />
       </LegacyScreen.Background>

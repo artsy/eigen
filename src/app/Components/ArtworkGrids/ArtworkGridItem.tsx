@@ -54,6 +54,7 @@ export interface ArtworkProps extends ArtworkActionTrackingProps {
   artwork: ArtworkGridItem_artwork$data
   artworkMetaStyle?: ViewProps["style"]
   disableArtworksListPrompt?: boolean
+  disableProgressiveOnboarding?: boolean
   /** Hide sale info */
   height?: number
   hideCuratorsPickSignal?: boolean
@@ -95,6 +96,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     contextScreenQuery,
     disableArtworksListPrompt = false,
     height,
+    disableProgressiveOnboarding = false,
     hideCuratorsPickSignal = false,
     hideIncreasedInterestSignal = false,
     hidePartner = false,
@@ -438,7 +440,11 @@ export const Artwork: React.FC<ArtworkProps> = memo(
                       onPress={disableArtworksListPrompt ? handleArtworkSave : saveArtworkToLists}
                       testID="save-artwork-icon"
                     >
-                      <ArtworkHeartIcon isSaved={!!isSaved} index={itemIndex} />
+                      <ArtworkHeartIcon
+                        isSaved={!!isSaved}
+                        index={itemIndex}
+                        disableProgressiveOnboarding={disableProgressiveOnboarding}
+                      />
                     </Touchable>
                   </Flex>
                 )}
@@ -457,16 +463,17 @@ export const Artwork: React.FC<ArtworkProps> = memo(
   }
 )
 
-const ArtworkHeartIcon: React.FC<{ isSaved: boolean | null; index?: number }> = ({
-  isSaved,
-  index,
-}) => {
+const ArtworkHeartIcon: React.FC<{
+  isSaved: boolean | null
+  index?: number
+  disableProgressiveOnboarding?: boolean
+}> = ({ isSaved, index, disableProgressiveOnboarding = false }) => {
   const iconProps = { height: HEART_ICON_SIZE, width: HEART_ICON_SIZE, testID: "empty-heart-icon" }
 
   if (isSaved) {
     return <HeartFillIcon {...iconProps} testID="filled-heart-icon" fill="blue100" />
   }
-  if (index === 0) {
+  if (index === 0 && !disableProgressiveOnboarding) {
     // We only try to show the save onboard Popover in the 1st element
     return (
       <ProgressiveOnboardingSaveArtwork>

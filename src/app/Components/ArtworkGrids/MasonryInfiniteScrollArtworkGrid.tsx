@@ -28,7 +28,14 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string
   contextScreenOwnerType?: ScreenOwnerType
+  /** Do not show add to artworks list prompt */
+  disableArtworksListPrompt?: boolean
+  disableProgressiveOnboarding?: boolean
   hasMore?: boolean
+  hideCreateAlertOnArtworkPreview?: boolean
+  hideCuratorsPick?: boolean
+  hideIncreasedInterest?: boolean
+  hideViewFollowsLink?: boolean
   hideSaleInfo?: boolean
   hideSaveIcon?: boolean
   isLoading?: boolean
@@ -54,7 +61,12 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
+  disableArtworksListPrompt,
+  disableProgressiveOnboarding,
   hasMore,
+  hideCreateAlertOnArtworkPreview,
+  hideCuratorsPick,
+  hideIncreasedInterest,
   hideSaleInfo,
   hideSaveIcon,
   isLoading,
@@ -105,6 +117,11 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         onPress={onPress}
         hideSaleInfo={hideSaleInfo}
         hideSaveIcon={hideSaveIcon}
+        disableArtworksListPrompt={disableArtworksListPrompt}
+        disableProgressiveOnboarding={disableProgressiveOnboarding}
+        hideIncreasedInterestSignal={hideIncreasedInterest}
+        hideCuratorsPickSignal={hideCuratorsPick}
+        hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
       />
     ),
     [
@@ -121,6 +138,11 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       onPress,
       hideSaleInfo,
       hideSaveIcon,
+      disableArtworksListPrompt,
+      disableProgressiveOnboarding,
+      hideIncreasedInterest,
+      hideCuratorsPick,
+      hideCreateAlertOnArtworkPreview,
     ]
   )
 
