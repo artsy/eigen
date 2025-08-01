@@ -16,7 +16,7 @@ import { useTracking } from "react-tracking"
 
 export const PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE = "Have a budget in mind?"
 export const PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT =
-  "Share a artwork budget in your account preferences at any time."
+  "Set an artwork budget in your profile at any time."
 
 // This delay needs to be longer than the time it takes to load the first few sections of the home tab
 const PRICE_RANGE_ONBOARDING_POPOVER_DELAY = 4000
@@ -41,7 +41,7 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC = ({ children }) => {
 
   useEffect(() => {
     fetchPriceRange().then((result) => {
-      setHasPriceRange(result)
+      setHasPriceRange(result.hasPriceRange)
     })
   }, [])
 
@@ -127,13 +127,17 @@ const tracks = {
   },
 }
 
-export const fetchPriceRange = async (): Promise<boolean> => {
+export const fetchPriceRange = async (): Promise<{
+  hasPriceRange: boolean
+  hasStaleArtworkBudget: boolean
+}> => {
   const result = await fetchQuery<ProgressiveOnboardingPriceRangeHomeQuery>(
     getRelayEnvironment(),
     graphql`
       query ProgressiveOnboardingPriceRangeHomeQuery {
         me @required(action: NONE) {
           hasPriceRange
+          hasStaleArtworkBudget
         }
       }
     `,
@@ -143,5 +147,8 @@ export const fetchPriceRange = async (): Promise<boolean> => {
     }
   ).toPromise()
 
-  return !!result?.me?.hasPriceRange
+  return {
+    hasPriceRange: !!result?.me?.hasPriceRange,
+    hasStaleArtworkBudget: result?.me?.hasStaleArtworkBudget ?? true,
+  }
 }

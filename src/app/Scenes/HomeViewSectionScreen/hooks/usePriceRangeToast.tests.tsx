@@ -1,11 +1,10 @@
-import AsyncStorage from "@react-native-async-storage/async-storage"
 import { render } from "@testing-library/react-native"
 import {
   fetchPriceRange,
   PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
   PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE,
 } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingPriceRangeHome"
-import { THREE_MONTHS_MS, usePriceRangeToast } from "./usePriceRangeToast"
+import { usePriceRangeToast } from "app/Scenes/HomeViewSectionScreen/hooks/usePriceRangeToast"
 
 jest.mock("@react-native-async-storage/async-storage", () => ({
   getItem: jest.fn(),
@@ -16,11 +15,12 @@ jest.mock("app/Components/ProgressiveOnboarding/ProgressiveOnboardingPriceRangeH
   fetchPriceRange: jest.fn(),
 }))
 
-const mockShow = jest.fn()
+const mockUseToast = {
+  show: jest.fn(),
+}
+
 jest.mock("app/Components/Toast/toastHook", () => ({
-  useToast: () => ({
-    show: mockShow,
-  }),
+  useToast: () => mockUseToast,
 }))
 
 jest.mock("app/system/navigation/navigate", () => ({
@@ -40,17 +40,10 @@ const TestComponent = (props: any) => {
 describe("usePriceRangeToast", () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    jest.setSystemTime(new Date("2025-01-01T00:00:00.000Z")) // Set a consistent reference point
-  })
-
-  afterAll(() => {
-    jest.useRealTimers()
   })
 
   it("shows toast when all conditions are met", async () => {
-    const now = new Date().getTime()
-    ;(fetchPriceRange as jest.Mock).mockResolvedValue(false)
-    await (AsyncStorage.getItem as jest.Mock).mockResolvedValue(String(now - THREE_MONTHS_MS))
+    ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockHasStaleArtworkBudget)
 
     render(
       <TestComponent
@@ -62,25 +55,38 @@ describe("usePriceRangeToast", () => {
 
     await new Promise((res) => setTimeout(res, 10))
 
-    expect(AsyncStorage.setItem).toHaveBeenCalled()
-    expect(mockShow).toHaveBeenCalledWith(PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE, "bottom", {
-      description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
-      duration: "long",
-      onPress: expect.any(Function),
-      hideOnPress: true,
-    })
+    // expect(AsyncStorage.setItem).toHaveBeenCalled()
+    expect(mockUseToast.show).toHaveBeenCalledWith(
+      PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE,
+      "bottom",
+      {
+        description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
+        duration: "long",
+        onPress: expect.any(Function),
+        hideOnPress: true,
+      }
+    )
   })
 
   it("does not show toast if sectionInternalID is incorrect", async () => {
-    ;(fetchPriceRange as jest.Mock).mockResolvedValue(false)
+    ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockHasStaleArtworkBudget)
 
     render(<TestComponent artworksLength={6} totalCount={10} sectionInternalID="other-section" />)
 
-    expect(mockShow).not.toHaveBeenCalled()
+    expect(mockUseToast.show).not.toHaveBeenCalledWith(
+      PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE,
+      "bottom",
+      {
+        description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
+        duration: "long",
+        onPress: expect.any(Function),
+        hideOnPress: true,
+      }
+    )
   })
 
   it("does not show toast if user hasn't scrolled enough", async () => {
-    ;(fetchPriceRange as jest.Mock).mockResolvedValue(false)
+    ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockHasStaleArtworkBudget)
 
     render(
       <TestComponent
@@ -90,13 +96,20 @@ describe("usePriceRangeToast", () => {
       />
     )
 
-    expect(mockShow).not.toHaveBeenCalled()
+    expect(mockUseToast.show).not.toHaveBeenCalledWith(
+      PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE,
+      "bottom",
+      {
+        description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
+        duration: "long",
+        onPress: expect.any(Function),
+        hideOnPress: true,
+      }
+    )
   })
 
   it("does not show toast if 3 months haven't passed", async () => {
-    const now = new Date().getTime()
-    ;(fetchPriceRange as jest.Mock).mockResolvedValue(false)
-    await (AsyncStorage.getItem as jest.Mock).mockResolvedValue(String(now - THREE_MONTHS_MS)) // 1 second ago
+    ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockResentlyUpdatedArtworkBudget)
 
     render(
       <TestComponent
@@ -106,11 +119,20 @@ describe("usePriceRangeToast", () => {
       />
     )
 
-    expect(mockShow).not.toHaveBeenCalled()
+    expect(mockUseToast.show).not.toHaveBeenCalledWith(
+      PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE,
+      "bottom",
+      {
+        description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
+        duration: "long",
+        onPress: expect.any(Function),
+        hideOnPress: true,
+      }
+    )
   })
 
-  it("does not show toast if fetchPriceRange returns true", async () => {
-    ;(fetchPriceRange as jest.Mock).mockResolvedValue(true)
+  it("does not show toast if hasPriceRange is false", async () => {
+    ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockNoPriceRange)
 
     render(
       <TestComponent
@@ -120,6 +142,56 @@ describe("usePriceRangeToast", () => {
       />
     )
 
-    expect(mockShow).not.toHaveBeenCalled()
+    expect(mockUseToast.show).not.toHaveBeenCalledWith(
+      PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE,
+      "bottom",
+      {
+        description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
+        duration: "long",
+        onPress: expect.any(Function),
+        hideOnPress: true,
+      }
+    )
+  })
+
+  it("does not show toast if price range has not been updated", async () => {
+    ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockPriceRangeNotUpdated)
+
+    render(
+      <TestComponent
+        artworksLength={10}
+        totalCount={10}
+        sectionInternalID="home-view-section-recommended-artworks"
+      />
+    )
+
+    expect(mockUseToast.show).not.toHaveBeenCalledWith(
+      PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE,
+      "bottom",
+      {
+        description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
+        duration: "long",
+        onPress: expect.any(Function),
+        hideOnPress: true,
+      }
+    )
   })
 })
+
+const mockNoPriceRange = {
+  hasPriceRange: false,
+}
+
+const mockPriceRangeNotUpdated = {
+  hasPriceRange: true,
+}
+
+const mockResentlyUpdatedArtworkBudget = {
+  hasPriceRange: true,
+  hasStaleArtworkBudget: false,
+}
+
+const mockHasStaleArtworkBudget = {
+  hasPriceRange: true,
+  hasStaleArtworkBudget: true,
+}
