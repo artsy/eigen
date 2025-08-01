@@ -36,7 +36,7 @@ export const DevTools: React.FC<{}> = () => {
   const server = GlobalStore.useAppState((s) => s.devicePrefs.environment.strings.webURL).slice(
     "https://".length
   )
-  const { __clearDissmissed, dismissAll } = GlobalStore.actions.progressiveOnboarding
+  const { __clearDissmissed } = GlobalStore.actions.progressiveOnboarding
   const toast = useToast()
 
   const { unleashEnv } = useUnleashEnvironment()
@@ -123,13 +123,6 @@ export const DevTools: React.FC<{}> = () => {
             onPress={() => {
               __clearDissmissed()
               toast.show("Progressive Onboarding progress cleared ✅", "middle")
-            }}
-          />
-          <DevMenuButtonItem
-            title="Hide all Progressive Onboarding popovers"
-            onPress={() => {
-              dismissAll()
-              toast.show("Progressive Onboarding popovers hidden ✅", "middle")
             }}
           />
           <DevMenuButtonItem

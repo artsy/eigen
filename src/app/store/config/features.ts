@@ -261,6 +261,9 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
   DTShowWebviewIndicator: {
     description: "Webview indicator",
   },
+  DTHideAllOnboardingPopovers: {
+    description: "Hide all onboarding popovers",
+  },
   DTShowInstagramShot: {
     description: "Instagram viewshot debug",
   },

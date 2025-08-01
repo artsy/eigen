@@ -14,7 +14,6 @@ export const useMaestroInitialization = () => {
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const { setPushPermissionsRequestedThisSession, setPushNotificationSettingsPromptSeen } =
     GlobalStore.actions.artsyPrefs.pushPromptLogic
-  const { dismissAll } = GlobalStore.actions.progressiveOnboarding
 
   useEffect(() => {
     if (!isHydrated) {
@@ -36,7 +35,10 @@ export const useMaestroInitialization = () => {
     setPushNotificationSettingsPromptSeen(true)
 
     // Dismiss all progressive onboarding popovers for Maestro tests
-    dismissAll()
+    GlobalStore.actions.artsyPrefs.features.setLocalOverride({
+      key: "DTHideAllOnboardingPopovers",
+      value: true,
+    })
 
     if (email && password) {
       GlobalStore.actions.auth.signIn({
