@@ -111,7 +111,7 @@
     "@artsy/to-title-case": "1.1.0",
     "@braze/react-native-sdk": "15.0.1",
     "@d11/react-native-fast-image": "8.10.0",
-    "@expo/react-native-action-sheet": "4.0.1",
+    "@expo/react-native-action-sheet": "4.1.1",
     "@gorhom/bottom-sheet": "5.1.2",
     "@gorhom/portal": "1.0.14",
     "@invertase/react-native-apple-authentication": "2.1.5",
