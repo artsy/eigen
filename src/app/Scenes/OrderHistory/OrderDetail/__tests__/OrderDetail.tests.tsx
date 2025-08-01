@@ -7,10 +7,11 @@ import { graphql } from "react-relay"
 
 describe("OrderDetail", () => {
   const { renderWithRelay } = setupTestWrapper<OrderDetailTestsQuery>({
-    Component: (props: any) => <OrderDetail order={props.me.order} />,
+    Component: (props) => <OrderDetail order={props.me!.order!} me={props.me!} />,
     query: graphql`
       query OrderDetailTestsQuery @relay_test_operation {
         me {
+          ...OrderDetail_me
           order(id: "order-id") {
             ...OrderDetail_order
           }

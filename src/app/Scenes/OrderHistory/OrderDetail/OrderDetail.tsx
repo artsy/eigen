@@ -12,6 +12,7 @@ import {
   useSpace,
 } from "@artsy/palette-mobile"
 import { OrderDetailQuery } from "__generated__/OrderDetailQuery.graphql"
+import { OrderDetail_me$key } from "__generated__/OrderDetail_me.graphql"
 import { OrderDetail_order$key } from "__generated__/OrderDetail_order.graphql"
 import { OrderDetailBuyerProtection } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailBuyerProtection"
 import { OrderDetailFulfillment } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailFulfillment"
@@ -29,12 +30,14 @@ import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface OrderDetailProps {
   order: OrderDetail_order$key
+  me: OrderDetail_me$key
 }
 
-export const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
+export const OrderDetail: React.FC<OrderDetailProps> = ({ order, me }) => {
   const space = useSpace()
   const color = useColor()
   const orderData = useFragment(orderDetailFragment, order)
+  const meData = useFragment(meOrderDetailFragment, me)
   const orderDetailTracks = useOrderDetailTracking()
 
   useEffect(() => {
@@ -93,7 +96,7 @@ export const OrderDetail: React.FC<OrderDetailProps> = ({ order }) => {
       <Spacer y={2} />
 
       {/* 8th Part: Help links */}
-      <OrderDetailHelpLinks order={orderData} />
+      <OrderDetailHelpLinks order={orderData} me={meData} />
     </Screen.ScrollView>
   )
 }
@@ -113,6 +116,13 @@ const orderDetailFragment = graphql`
     ...OrderDetailMetadata_order
     ...OrderDetailPaymentInfo_order
     ...OrderDetailPriceBreakdown_order
+  }
+`
+
+const meOrderDetailFragment = graphql`
+  fragment OrderDetail_me on Me {
+    id
+    ...OrderDetailHelpLinks_me
   }
 `
 
@@ -166,7 +176,7 @@ export const OrderDetailQR: React.FC<{ orderID: string }> = withSuspense({
           context_screen_owner_id: data.me.order.internalID,
         })}
       >
-        <OrderDetail order={data.me.order} />
+        <OrderDetail order={data.me.order} me={data.me} />
       </ProvideScreenTrackingWithCohesionSchema>
     )
   },
@@ -177,6 +187,7 @@ export const OrderDetailQR: React.FC<{ orderID: string }> = withSuspense({
 const orderDetailQRQuery = graphql`
   query OrderDetailQuery($orderID: ID!) {
     me {
+      ...OrderDetail_me
       order(id: $orderID) {
         internalID
         ...OrderDetail_order
