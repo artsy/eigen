@@ -1,4 +1,4 @@
-import { Button, Flex, Screen, Spacer } from "@artsy/palette-mobile"
+import { Button, Flex, Screen } from "@artsy/palette-mobile"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { OnboardingMarketingCollectionQuery } from "__generated__/OnboardingMarketingCollectionQuery.graphql"
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
@@ -68,15 +68,16 @@ const OnboardingMarketingCollection: React.FC<OnboardingMarketingCollectionProps
                   description={description}
                   marketingCollection={marketingCollection}
                 />
-                <Spacer y={2} />
               </>
             }
             disableArtworksListPrompt
+            disableProgressiveOnboarding
             hideCuratorsPick={slug === "curators-picks-emerging"}
             hideIncreasedInterest={slug === "curators-picks-emerging"}
             hideViewFollowsLink
             hideCreateAlertOnArtworkPreview
           />
+
           <Flex p={2} backgroundColor="mono0">
             <Button block onPress={() => navigate("OnboardingPostFollowLoadingScreen")} mb={1}>
               Explore More on Artsy
@@ -106,7 +107,7 @@ const ErrorFallback: React.FC<LoadFailureViewProps> = (fallbackProps) => {
     if (!__DEV__) {
       onDone()
     }
-  }, [])
+  }, [onDone])
 
   if (!__DEV__) {
     // We don't want to show the error fallback in production, instead just navigate to the home

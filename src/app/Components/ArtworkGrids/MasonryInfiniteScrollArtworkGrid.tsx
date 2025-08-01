@@ -30,6 +30,7 @@ interface MasonryInfiniteScrollArtworkGridProps extends MasonryFlashListOmittedP
   contextScreenOwnerType?: ScreenOwnerType
   /** Do not show add to artworks list prompt */
   disableArtworksListPrompt?: boolean
+  disableProgressiveOnboarding?: boolean
   hasMore?: boolean
   hideCreateAlertOnArtworkPreview?: boolean
   hideCuratorsPick?: boolean
@@ -61,11 +62,11 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   contextScreenOwnerSlug,
   contextScreenOwnerType,
   disableArtworksListPrompt,
+  disableProgressiveOnboarding,
   hasMore,
   hideCreateAlertOnArtworkPreview,
   hideCuratorsPick,
   hideIncreasedInterest,
-  hideViewFollowsLink,
   hideSaleInfo,
   hideSaveIcon,
   isLoading,
@@ -117,6 +118,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
         hideSaleInfo={hideSaleInfo}
         hideSaveIcon={hideSaveIcon}
         disableArtworksListPrompt={disableArtworksListPrompt}
+        disableProgressiveOnboarding={disableProgressiveOnboarding}
         hideIncreasedInterestSignal={hideIncreasedInterest}
         hideCuratorsPickSignal={hideCuratorsPick}
         hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
@@ -137,6 +139,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
       hideSaleInfo,
       hideSaveIcon,
       disableArtworksListPrompt,
+      disableProgressiveOnboarding,
       hideIncreasedInterest,
       hideCuratorsPick,
       hideCreateAlertOnArtworkPreview,

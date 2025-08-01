@@ -18,8 +18,8 @@ export const MarketingCollectionHeader: React.FC<MarketingCollectionHeaderProps>
   const collection = useFragment(marketingCollectionHeaderFragment, marketingCollection)
 
   return (
-    <Flex>
-      <Flex>
+    <Flex mx={-2}>
+      <Flex mx={2} mb={2}>
         <Text variant="xl" color="mono100">
           {collection.title}
         </Text>
@@ -29,12 +29,14 @@ export const MarketingCollectionHeader: React.FC<MarketingCollectionHeaderProps>
         <Text variant="sm-display" color="mono100">
           {description}
         </Text>
+
         <Spacer y={1} />
+
         <Text variant="sm" color="mono100">
           {SAVE_INSTRUCTIONS}
         </Text>
-        <Spacer y={2} />
       </Flex>
+
       <Separator />
     </Flex>
   )
