@@ -14545,6 +14545,9 @@ type Me implements Node {
   hasPriceRange: Boolean!
   hasQualifiedCreditCards: Boolean
   hasSecondFactorEnabled: Boolean!
+
+  # Indicates whether the Artwork Budget was updated within the past three months
+  hasStaleArtworkBudget: Boolean!
   icon: Image
 
   # A globally unique ID.
