@@ -4285,6 +4285,7 @@ type Author {
   # A type-specific ID.
   internalID: ID!
   name: String!
+  role: String
   twitterHandle: String
 }
 
