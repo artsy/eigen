@@ -10,7 +10,7 @@ on:
 jobs:
   e2e-tests:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: macos-15
+    runs-on: macos-14 # iOS simulators require macOS runners
     timeout-minutes: 45
     strategy:
       fail-fast: false # Don't cancel other jobs if one fails
@@ -51,7 +51,7 @@ jobs:
         run: unzip Artsy.zip
 
       - name: Install Maestro
-        run: curl -Ls "https://get.maestro.mobile.dev" | bash
+        run: export MAESTRO_VERSION=1.40.0; curl -Ls "https://get.maestro.mobile.dev" | bash
 
       - name: Add Maestro to PATH
         run: echo "$HOME/.maestro/bin" >> $GITHUB_PATH
@@ -60,10 +60,11 @@ jobs:
         run: |
           brew tap facebook/fb
           brew install idb-companion
-
-      - name: Select Xcode version
-        run: sudo xcode-select -s /Applications/Xcode_16.2.app
-
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: "17"
+          distribution: "zulu"
       - name: Create and boot iPhone 16 Pro iOS 18.2 simulator
         run: |
           echo "📱 Creating iPhone 16 Pro simulator with iOS 18.2..."
@@ -72,9 +73,9 @@ jobs:
           echo "Created simulator with UDID: $SIMULATOR_UDID"
           echo "SIMULATOR_UDID=$SIMULATOR_UDID" >> $GITHUB_ENV
 
-          # Boot the simulator with arm64 architecture for Apple Silicon
+          # Boot the simulator
           echo "🚀 Booting simulator..."
-          xcrun simctl boot "$SIMULATOR_UDID" --arch=arm64
+          xcrun simctl boot "$SIMULATOR_UDID"
 
           # Wait for the simulator to be ready
           echo "⏳ Waiting for simulator to be ready..."
@@ -98,8 +99,11 @@ jobs:
           echo "📱 Installing app..."
           ./scripts/utils/install_app_in_booted_sims.sh
 
+          echo "🚀 Bring simulator to foreground..."
+          open -a simulator
+
       - name: Set Maestro driver timeout
-        run: echo "MAESTRO_DRIVER_STARTUP_TIMEOUT=60000" >> $GITHUB_ENV
+        run: echo "MAESTRO_DRIVER_STARTUP_TIMEOUT=120000" >> $GITHUB_ENV
 
       - name: Run Maestro E2E Tests (Shard ${{ matrix.node_index }})
         run: |
