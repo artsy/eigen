@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, Text } from "@artsy/palette-mobile"
 import { ActiveLotStanding_saleArtwork$data } from "__generated__/ActiveLotStanding_saleArtwork.graphql"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
 import { TouchableOpacity } from "react-native"
@@ -45,6 +46,7 @@ export const ActiveLotStanding = ({
       destination_screen_owner_id: saleArtwork?.artwork?.internalID,
       destination_screen_owner_slug: saleArtwork?.artwork?.slug,
     })
+    // eslint-disable-next-line no-restricted-imports
     navigate(saleArtwork?.artwork?.href as string)
   }
 
@@ -56,7 +58,7 @@ export const ActiveLotStanding = ({
     >
       <Flex flexDirection="row" justifyContent="space-between">
         <Lot saleArtwork={saleArtwork} isSmallScreen={isSmallScreen} />
-        {!sale.isLiveOpen && (
+        {!sale.isLiveOpenHappened && (
           <Flex>
             <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
               <Text variant="xs">{sellingPrice}</Text>
@@ -90,7 +92,7 @@ export const ActiveLotStandingFragmentContainer = createFragmentContainer(Active
       isHighestBidder
       sale {
         status
-        isLiveOpen
+        isLiveOpenHappened
         liveStartAt
         endAt
       }
