@@ -43,13 +43,6 @@ describe("OrderDetailAskSpecialistModal", () => {
     jest.clearAllMocks()
   })
 
-  // it("renders the modal with correct content", () => {
-  //   renderWithRelay({
-  //     Me: () => ({ name: "John Doe", email: "john@example.com" }),
-  //     Artwork: () => ({ internalID: "artwork-123" }),
-  //   })
-  // })
-
   it("submits inquiry with correct parameters", async () => {
     mockSubmit.mockImplementation(({ onCompleted }) => onCompleted())
 
