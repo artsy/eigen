@@ -67,8 +67,6 @@ jobs:
           distribution: "zulu"
       - name: Create and boot iPhone 16 Pro iOS 18.2 simulator
         run: |
-          xcrun simctl list runtimes
-
           echo "📱 Creating iPhone 16 Pro simulator with iOS 18.2..."
           # Create the simulator
           SIMULATOR_UDID=$(xcrun simctl create "iPhone 16 Pro Test" com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro com.apple.CoreSimulator.SimRuntime.iOS-18-2)
@@ -101,6 +99,7 @@ jobs:
           echo "📱 Installing app..."
           ./scripts/utils/install_app_in_booted_sims.sh
 
+          echo "🚀 Bring simulator to foreground..."
           open -a simulator
 
       - name: Set Maestro driver timeout
