@@ -50,6 +50,10 @@ export const getVisualClueModel = (): VisualClueModel => ({
   }),
   // Method used to clean the store for easier DX
   _removeVisualClueAsSeen: action((state, clueName) => {
+    if (clueName === "all") {
+      state.seenVisualClues = []
+      return
+    }
     const index = state.seenVisualClues.indexOf(clueName)
     if (index === -1) {
       return
