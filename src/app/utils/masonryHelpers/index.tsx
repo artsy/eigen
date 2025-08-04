@@ -8,7 +8,7 @@ export const NUM_COLUMNS_MASONRY = isTablet() ? 3 : 2
 
 export const ON_END_REACHED_THRESHOLD_MASONRY = 2
 
-export const MASONRY_LIST_PAGE_SIZE = 15
+export const MASONRY_LIST_PAGE_SIZE = 10
 
 export interface masonryRenderItemProps {
   item: MasonryArtworkItem
