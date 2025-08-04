@@ -46,7 +46,7 @@ export function usePriceRangeToast({
     }
 
     fetchPriceRange().then(({ hasPriceRange, hasStaleArtworkBudget }) => {
-      if (!hasPriceRange || !hasStaleArtworkBudget || hasSeenToast) return
+      if (!hasPriceRange || !hasStaleArtworkBudget) return
 
       // user scrolls through 50% of artworks on the screen
       const hasScrolledEnough = totalCount > 0 && artworksLength / totalCount > 0.5
@@ -75,10 +75,12 @@ export function usePriceRangeToast({
           })
 
           tracking.trackEvent(tracks.onToastView())
+
+          setTimeout(() => {
+            setVisualClueAsSeen(toastName)
+          })
         } catch (e) {
-          console.error("Failed to maybe show price range toast", e)
-        } finally {
-          setVisualClueAsSeen(toastName)
+          console.error("Failed to show price range toast", e)
         }
       }
 
