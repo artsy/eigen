@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedPopover } from "@artsy/cohesion"
 import { Flex, Popover, Text, Touchable } from "@artsy/palette-mobile"
-import { ProgressiveOnboardingPriceRangeHomeQuery } from "__generated__/ProgressiveOnboardingPriceRangeHomeQuery.graphql"
+import { fetchPriceRange } from "app/Components/PriceRange/fetchPriceRange"
 import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { internal_navigationRef } from "app/Navigation/Navigation"
@@ -8,10 +8,8 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME } from "app/store/ProgressiveOnboardingModel"
 // eslint-disable-next-line no-restricted-imports
 import { navigate, switchTab } from "app/system/navigation/navigate"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { useEffect, useState } from "react"
-import { fetchQuery, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 export const PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE = "Have a budget in mind?"
@@ -125,30 +123,4 @@ const tracks = {
       type: PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME,
     }
   },
-}
-
-export const fetchPriceRange = async (): Promise<{
-  hasPriceRange: boolean
-  hasStaleArtworkBudget: boolean
-}> => {
-  const result = await fetchQuery<ProgressiveOnboardingPriceRangeHomeQuery>(
-    getRelayEnvironment(),
-    graphql`
-      query ProgressiveOnboardingPriceRangeHomeQuery {
-        me @required(action: NONE) {
-          hasPriceRange
-          hasStaleArtworkBudget
-        }
-      }
-    `,
-    {},
-    {
-      fetchPolicy: "store-or-network",
-    }
-  ).toPromise()
-
-  return {
-    hasPriceRange: !!result?.me?.hasPriceRange,
-    hasStaleArtworkBudget: result?.me?.hasStaleArtworkBudget ?? true,
-  }
 }

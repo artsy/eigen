@@ -200,6 +200,12 @@ export const features = {
     description: "Enable progressive onboarding price range home",
     echoFlagKey: "AREnableProgressiveOnboardingPriceRangeHome",
   },
+  AREnablePriceRangeToast: {
+    readyForRelease: true,
+    showInDevMenu: true,
+    description: "Enable price range toast promting users to set a price range",
+    echoFlagKey: "AREnablePriceRangeToast",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {

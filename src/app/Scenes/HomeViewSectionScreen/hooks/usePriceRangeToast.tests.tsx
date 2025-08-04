@@ -1,26 +1,26 @@
-import { render } from "@testing-library/react-native"
+import { fetchPriceRange } from "app/Components/PriceRange/fetchPriceRange"
 import {
-  fetchPriceRange,
   PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
   PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE,
 } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingPriceRangeHome"
 import { usePriceRangeToast } from "app/Scenes/HomeViewSectionScreen/hooks/usePriceRangeToast"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
+import { navigate } from "app/system/navigation/navigate"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 
 jest.mock("@react-native-async-storage/async-storage", () => ({
   getItem: jest.fn(),
   setItem: jest.fn(),
 }))
 
-jest.mock("app/Components/ProgressiveOnboarding/ProgressiveOnboardingPriceRangeHome", () => ({
+jest.mock("app/Components/PriceRange/fetchPriceRange", () => ({
   fetchPriceRange: jest.fn(),
 }))
 
-const mockUseToast = {
-  show: jest.fn(),
-}
-
+const mockShow = jest.fn()
 jest.mock("app/Components/Toast/toastHook", () => ({
-  useToast: () => mockUseToast,
+  useToast: () => ({ show: mockShow }),
 }))
 
 jest.mock("app/system/navigation/navigate", () => ({
@@ -40,12 +40,13 @@ const TestComponent = (props: any) => {
 describe("usePriceRangeToast", () => {
   beforeEach(() => {
     jest.clearAllMocks()
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePriceRangeToast: true })
   })
 
   it("shows toast when all conditions are met", async () => {
     ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockHasStaleArtworkBudget)
 
-    render(
+    renderWithWrappers(
       <TestComponent
         artworksLength={6}
         totalCount={10}
@@ -55,63 +56,18 @@ describe("usePriceRangeToast", () => {
 
     await new Promise((res) => setTimeout(res, 10))
 
-    // expect(AsyncStorage.setItem).toHaveBeenCalled()
-    expect(mockUseToast.show).toHaveBeenCalledWith(
-      PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE,
-      "bottom",
-      {
-        description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
-        duration: "long",
-        onPress: expect.any(Function),
-        hideOnPress: true,
-      }
-    )
+    expect(mockShow).toHaveBeenCalledWith(PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE, "bottom", {
+      description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
+      duration: "long",
+      onPress: expect.any(Function),
+      hideOnPress: true,
+    })
   })
 
-  it("does not show toast if sectionInternalID is incorrect", async () => {
+  it("tracks toast viewed event", async () => {
     ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockHasStaleArtworkBudget)
 
-    render(<TestComponent artworksLength={6} totalCount={10} sectionInternalID="other-section" />)
-
-    expect(mockUseToast.show).not.toHaveBeenCalledWith(
-      PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE,
-      "bottom",
-      {
-        description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
-        duration: "long",
-        onPress: expect.any(Function),
-        hideOnPress: true,
-      }
-    )
-  })
-
-  it("does not show toast if user hasn't scrolled enough", async () => {
-    ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockHasStaleArtworkBudget)
-
-    render(
-      <TestComponent
-        artworksLength={2}
-        totalCount={10}
-        sectionInternalID="home-view-section-recommended-artworks"
-      />
-    )
-
-    expect(mockUseToast.show).not.toHaveBeenCalledWith(
-      PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE,
-      "bottom",
-      {
-        description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
-        duration: "long",
-        onPress: expect.any(Function),
-        hideOnPress: true,
-      }
-    )
-  })
-
-  it("does not show toast if 3 months haven't passed", async () => {
-    ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockResentlyUpdatedArtworkBudget)
-
-    render(
+    renderWithWrappers(
       <TestComponent
         artworksLength={6}
         totalCount={10}
@@ -119,22 +75,108 @@ describe("usePriceRangeToast", () => {
       />
     )
 
-    expect(mockUseToast.show).not.toHaveBeenCalledWith(
-      PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE,
-      "bottom",
-      {
-        description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
-        duration: "long",
-        onPress: expect.any(Function),
-        hideOnPress: true,
-      }
+    await new Promise((res) => setTimeout(res, 10))
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "viewedToast",
+      context_screen_owner_type: "artworkRecommendations",
+      subject: "price-range-toast",
+    })
+  })
+
+  it("tracks toast tapped event and navigate", async () => {
+    ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockHasStaleArtworkBudget)
+
+    renderWithWrappers(
+      <TestComponent
+        artworksLength={6}
+        totalCount={10}
+        sectionInternalID="home-view-section-recommended-artworks"
+      />
     )
+
+    await new Promise((res) => setTimeout(res, 10))
+
+    expect(mockShow).toHaveBeenCalledWith(PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE, "bottom", {
+      description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
+      duration: "long",
+      onPress: expect.any(Function),
+      hideOnPress: true,
+    })
+
+    // Since the toast is mocked and not rendered in the test environment,
+    // we manually invoke the onPress handler from the mocked show() call
+    // to simulate the user tapping the toast
+    const toastCall = mockShow.mock.calls[0]
+    const toastConfig = toastCall[2]
+    toastConfig.onPress()
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action: "tappedToast",
+      context_screen_owner_type: "artworkRecommendations",
+      subject: "price-range-toast",
+    })
+
+    expect(navigate).toHaveBeenCalledWith("my-account/edit-price-range")
+  })
+
+  it("does not show toast if sectionInternalID is incorrect", async () => {
+    ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockHasStaleArtworkBudget)
+
+    renderWithWrappers(
+      <TestComponent artworksLength={6} totalCount={10} sectionInternalID="other-section" />
+    )
+
+    expect(mockShow).not.toHaveBeenCalledWith(PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE, "bottom", {
+      description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
+      duration: "long",
+      onPress: expect.any(Function),
+      hideOnPress: true,
+    })
+  })
+
+  it("does not show toast if user hasn't scrolled enough", async () => {
+    ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockHasStaleArtworkBudget)
+
+    renderWithWrappers(
+      <TestComponent
+        artworksLength={2}
+        totalCount={10}
+        sectionInternalID="home-view-section-recommended-artworks"
+      />
+    )
+
+    expect(mockShow).not.toHaveBeenCalledWith(PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE, "bottom", {
+      description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
+      duration: "long",
+      onPress: expect.any(Function),
+      hideOnPress: true,
+    })
+  })
+
+  it("does not show toast if 3 months haven't passed", async () => {
+    ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockResentlyUpdatedArtworkBudget)
+
+    renderWithWrappers(
+      <TestComponent
+        artworksLength={6}
+        totalCount={10}
+        sectionInternalID="home-view-section-recommended-artworks"
+      />
+    )
+
+    expect(mockShow).not.toHaveBeenCalledWith(PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE, "bottom", {
+      description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
+      duration: "long",
+      onPress: expect.any(Function),
+      hideOnPress: true,
+    })
   })
 
   it("does not show toast if hasPriceRange is false", async () => {
     ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockNoPriceRange)
 
-    render(
+    renderWithWrappers(
       <TestComponent
         artworksLength={10}
         totalCount={10}
@@ -142,22 +184,18 @@ describe("usePriceRangeToast", () => {
       />
     )
 
-    expect(mockUseToast.show).not.toHaveBeenCalledWith(
-      PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE,
-      "bottom",
-      {
-        description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
-        duration: "long",
-        onPress: expect.any(Function),
-        hideOnPress: true,
-      }
-    )
+    expect(mockShow).not.toHaveBeenCalledWith(PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE, "bottom", {
+      description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
+      duration: "long",
+      onPress: expect.any(Function),
+      hideOnPress: true,
+    })
   })
 
   it("does not show toast if price range has not been updated", async () => {
     ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockPriceRangeNotUpdated)
 
-    render(
+    renderWithWrappers(
       <TestComponent
         artworksLength={10}
         totalCount={10}
@@ -165,16 +203,12 @@ describe("usePriceRangeToast", () => {
       />
     )
 
-    expect(mockUseToast.show).not.toHaveBeenCalledWith(
-      PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE,
-      "bottom",
-      {
-        description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
-        duration: "long",
-        onPress: expect.any(Function),
-        hideOnPress: true,
-      }
-    )
+    expect(mockShow).not.toHaveBeenCalledWith(PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE, "bottom", {
+      description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
+      duration: "long",
+      onPress: expect.any(Function),
+      hideOnPress: true,
+    })
   })
 })
 

@@ -1,13 +1,16 @@
+import { ActionType, OwnerType, TappedToast, ViewedToast } from "@artsy/cohesion"
+import { fetchPriceRange } from "app/Components/PriceRange/fetchPriceRange"
 import {
-  fetchPriceRange,
   PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
   PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE,
 } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingPriceRangeHome"
 import { useToast } from "app/Components/Toast/toastHook"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useEffect, useRef } from "react"
 import { InteractionManager } from "react-native"
+import { useTracking } from "react-tracking"
 
 export const PRICE_RANGE_TOAST_KEY = "priceRangeToastLastShown"
 
@@ -23,11 +26,13 @@ export function usePriceRangeToast({
   sectionInternalID,
 }: PriceRangeToastProps) {
   const toast = useToast()
+  const tracking = useTracking()
   const hasShownPriceRangeToast = useRef(false)
+  const enablePriceRangeToast = useFeatureFlag("AREnablePriceRangeToast")
 
   useEffect(() => {
     // proceed only for the "We Think You'll Love" section screen
-    if (sectionInternalID !== "home-view-section-recommended-artworks") {
+    if (sectionInternalID !== "home-view-section-recommended-artworks" || !enablePriceRangeToast) {
       return
     }
 
@@ -50,12 +55,16 @@ export function usePriceRangeToast({
             description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
             duration: "long",
             onPress: () => {
+              tracking.trackEvent(tracks.onToastPress())
+
               InteractionManager.runAfterInteractions(() => {
                 navigate("my-account/edit-price-range")
               })
             },
             hideOnPress: true,
           })
+
+          tracking.trackEvent(tracks.onToastView())
         } catch (e) {
           console.error("Failed to maybe show price range toast", e)
         }
@@ -63,5 +72,23 @@ export function usePriceRangeToast({
 
       maybeShowToast()
     })
-  }, [artworksLength, totalCount, sectionInternalID, toast])
+  }, [artworksLength, totalCount, sectionInternalID, toast, tracking, enablePriceRangeToast])
+}
+
+const tracks = {
+  onToastPress: (): TappedToast => {
+    return {
+      action: ActionType.tappedToast,
+      context_screen_owner_type: OwnerType.artworkRecommendations,
+      subject: "price-range-toast",
+    }
+  },
+
+  onToastView: (): ViewedToast => {
+    return {
+      action: ActionType.viewedToast,
+      context_screen_owner_type: OwnerType.artworkRecommendations,
+      subject: "price-range-toast",
+    }
+  },
 }
