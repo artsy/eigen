@@ -8,8 +8,10 @@ appId: ${MAESTRO_APP_ID}
       useMaestroInit: "true"
 - assertVisible:
     id: "search-button"
-- waitFor:
-    duration: 5000 # wait 5 seconds to give OS time to verify universal link
+- scrollUntilVisible: # we do this just to give time to fetch deeplink verifications, can get rid of if we have a test run before deeplinks on same sim
+    element: "News"
+    timeout: 50000
+    speed: 60
 - killApp
 - openLink:
     link: https://www.artsy.net/artist/kaws
