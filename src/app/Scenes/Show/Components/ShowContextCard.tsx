@@ -3,6 +3,7 @@ import { Flex, Box, BoxProps, Text, useScreenDimensions, Image } from "@artsy/pa
 import { ShowContextCard_show$data } from "__generated__/ShowContextCard_show.graphql"
 import { SmallCard } from "app/Components/Cards"
 import { SectionTitle } from "app/Components/SectionTitle"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -99,7 +100,13 @@ const ContextCard: React.FC<ContextCardProps> = ({
     <SmallCard images={imageUrls} /> // 3-up image layout
   ) : (
     <Flex width="100%" borderRadius={4} overflow="hidden">
-      <Image testID="main-image" width={width} aspectRatio={1.5} src={imageUrls[0]} />
+      <Image
+        testID="main-image"
+        width={width}
+        aspectRatio={1.5}
+        // we need to pass an empty string in case imageUrls is empty
+        src={imageUrls[0] || ""}
+      />
     </Flex>
   )
 
