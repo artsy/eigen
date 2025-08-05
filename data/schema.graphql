@@ -849,9 +849,11 @@ type AnalyticsPageviewStats {
 # Audience stats of a partner
 type AnalyticsPartnerAudienceStats {
   commercialVisitors: Int!
+  commercialVisitorsPercentageChanged: Int!
   partnerId: String!
   period: AnalyticsQueryPeriodEnum!
   uniqueVisitors: Int!
+  uniqueVisitorsPercentageChanged: Int!
 }
 
 # Inquiry count time series data of a partner
