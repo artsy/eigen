@@ -1,4 +1,5 @@
-import { Spacer, Flex, LegacyScreen, Text, ArtsyLogoBlackIcon, Button } from "@artsy/palette-mobile"
+import { ArtsyLogoIcon } from "@artsy/icons/native"
+import { Spacer, Flex, LegacyScreen, Text, Button } from "@artsy/palette-mobile"
 import { useNavigation, NavigationProp } from "@react-navigation/native"
 import { ArtQuizNavigationStack } from "app/Scenes/ArtQuiz/ArtQuiz"
 import { GlobalStore } from "app/store/GlobalStore"
@@ -15,7 +16,7 @@ export const ArtQuizWelcome = () => {
     <LegacyScreen>
       <LegacyScreen.Body>
         <Flex flex={1} justifyContent="center">
-          <ArtsyLogoBlackIcon scale={0.75} />
+          <ArtsyLogoIcon height={24} width={70} />
           <Spacer y={2} />
           <Text variant="xl">What's your art taste?</Text>
           <Spacer y={2} />

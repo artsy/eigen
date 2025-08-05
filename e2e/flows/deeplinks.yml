@@ -5,14 +5,17 @@ appId: ${MAESTRO_APP_ID}
     arguments:
       email: ${MAESTRO_TEST_EMAIL}
       password: ${MAESTRO_TEST_PASSWORD}
+      useMaestroInit: "true"
 - assertVisible:
     id: "search-button"
+- waitFor:
+    duration: 5000 # wait 5 seconds to give OS time to verify universal link
 - killApp
 - openLink:
     link: https://www.artsy.net/artist/kaws
     autoVerify: true
 - extendedWaitUntil:
-    visible: "Kaws"
+    visible: "KAWS"
     timeout: 20000
 - killApp
 - openLink:

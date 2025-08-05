@@ -9,6 +9,7 @@
 !default.xcworkspace
 .build
 .clang-format
+.claude/settings.local.json
 .idea/
 .pt
 .recordingSnapshots

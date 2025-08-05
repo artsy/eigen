@@ -1,13 +1,15 @@
 name: Android E2E Tests (Maestro)
 
 on:
-  schedule:
-    - cron: "0 6 * * *" # Runs daily at 6:00 AM UTC
+  workflow_run:
+    workflows: ["Build Android QA App for Maestro"]
+    types:
+      - completed
   workflow_dispatch: # Allows you to trigger the workflow manually from the Actions tab
 
 jobs:
   e2e-tests:
-    if: github.ref == 'refs/heads/main'
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest # Use ubuntu-latest for better Android emulator support
     timeout-minutes: 30
     strategy:

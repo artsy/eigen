@@ -24,7 +24,7 @@ done
 
 if [ $EXIT_CODE -ne 0 ]; then
   echo "At least one test failed — uploading screenshots and notifying Slack"
-  ./scripts/ci/report-maestro-test-failure
+  ./scripts/ci/report-maestro-test-failure "$PLATFORM"
 fi
 
 exit $EXIT_CODE

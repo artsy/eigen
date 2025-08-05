@@ -1,4 +1,5 @@
-import { ChevronIcon, Flex, Text, Touchable } from "@artsy/palette-mobile"
+import { ChevronSmallRightIcon } from "@artsy/icons/native"
+import { Flex, Text, Touchable } from "@artsy/palette-mobile"
 
 interface CustomShareSheetItemProps {
   title: string
@@ -19,7 +20,7 @@ export const CustomShareSheetItem: React.FC<CustomShareSheetItemProps> = ({
           {title}
         </Text>
         <Flex flex={1} />
-        <ChevronIcon />
+        <ChevronSmallRightIcon />
       </Flex>
     </Touchable>
   )

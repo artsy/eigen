@@ -1,7 +1,6 @@
 import { ContextModule } from "@artsy/cohesion"
+import { ChevronDownIcon, ChevronUpIcon } from "@artsy/icons/native"
 import {
-  ArrowDownIcon,
-  ArrowUpIcon,
   Flex,
   FlexProps,
   Skeleton,
@@ -73,7 +72,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
   const [showAll, setShowAll] = useState(false)
 
   const displayTaskStack = tasks.length > 1 && !showAll
-  const HeaderIconComponent = showAll ? ArrowUpIcon : ArrowDownIcon
+  const HeaderIconComponent = showAll ? ChevronUpIcon : ChevronDownIcon
 
   // TODO: remove this when this reanimated issue gets fixed
   // https://github.com/software-mansion/react-native-reanimated/issues/5728

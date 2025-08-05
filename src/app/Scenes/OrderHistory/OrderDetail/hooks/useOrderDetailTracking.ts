@@ -3,6 +3,7 @@ import {
   ContextModule,
   OrderDetailsViewed,
   OwnerType,
+  TappedAskSpecialist,
   TappedBuyerProtection,
   TappedContactGallery,
   TappedImportFees,
@@ -29,6 +30,29 @@ export const useOrderDetailTracking = () => {
           context_owner_type: OwnerType.ordersDetail,
           context_owner_id: orderId,
           message_type: messageType,
+        }
+
+        trackEvent(payload)
+      },
+
+      tappedAskSpecialist: (
+        orderId: OrderDetailHelpLinks_order$data["internalID"],
+        orderType: OrderDetailHelpLinks_order$data["mode"],
+        orderSource: OrderDetailHelpLinks_order$data["source"]
+      ) => {
+        const flow =
+          orderType === "OFFER"
+            ? "Make offer"
+            : orderSource === "PARTNER_OFFER"
+              ? "Partner offer"
+              : "Buy now"
+
+        const payload: TappedAskSpecialist = {
+          action: ActionType.tappedAskSpecialist,
+          context_module: ContextModule.ordersDetail,
+          context_screen_owner_id: orderId,
+          context_screen_owner_type: OwnerType.ordersDetail,
+          flow,
         }
 
         trackEvent(payload)

@@ -1,8 +1,8 @@
+import { CheckmarkIcon } from "@artsy/icons/native"
 import {
   Avatar,
   Box,
   Button,
-  CheckIcon,
   Flex,
   Input,
   Spacer,
@@ -290,7 +290,7 @@ const Overlay: React.FC<{ disabled: boolean }> = ({ disabled }) => {
         justifyContent="center"
         alignItems="center"
       >
-        <CheckIcon fill="mono0" height={30} width={30} opacity={1} />
+        <CheckmarkIcon fill="mono0" height={30} width={30} opacity={1} />
       </Flex>
     </>
   )

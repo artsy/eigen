@@ -1,4 +1,5 @@
-import { Button, CheckIcon, Flex, LinkText, Screen, Spacer, Text } from "@artsy/palette-mobile"
+import { CheckmarkIcon } from "@artsy/icons/native"
+import { Button, Flex, LinkText, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { IdentityVerificationStep_me$key } from "__generated__/IdentityVerificationStep_me.graphql"
 import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { Footer } from "app/Scenes/CompleteMyProfile/Footer"
@@ -47,7 +48,7 @@ export const IdentityVerificationStep: FC = () => {
                 {!isIdentityVerified ? (
                   <Button onPress={handleSendVerification}>Send verification Email</Button>
                 ) : (
-                  <Button icon={<CheckIcon fill="mono0" />} variant="fillSuccess">
+                  <Button icon={<CheckmarkIcon fill="mono0" />} variant="fillSuccess">
                     Email sent
                   </Button>
                 )}

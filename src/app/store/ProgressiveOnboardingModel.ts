@@ -1,3 +1,4 @@
+import { unsafe_getDevToggle } from "app/store/GlobalStore"
 import { Action, Computed, action, computed } from "easy-peasy"
 import { uniqBy } from "lodash"
 
@@ -46,6 +47,12 @@ export const getProgressiveOnboardingModel = (): ProgressiveOnboardingModel => (
   }),
   isDismissed: computed(({ dismissed }) => {
     return (key) => {
+      // Check dev toggle first - if enabled, treat all popovers as dismissed
+      const hideAllPopovers = unsafe_getDevToggle("DTHideAllOnboardingPopovers")
+      if (hideAllPopovers) {
+        return { status: true, timestamp: Date.now() }
+      }
+
       const dismissedKey = dismissed.find((d) => d.key === key)
 
       return dismissedKey

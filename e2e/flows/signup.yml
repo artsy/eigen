@@ -4,6 +4,7 @@ appId: ${MAESTRO_APP_ID}
     clearState: false
     arguments:
       shouldSignOut: "true"
+      useMaestroInit: "true"
 - runScript:
     file: signup.js
 - extendedWaitUntil:

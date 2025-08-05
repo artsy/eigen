@@ -1,9 +1,9 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
+import { NoArtIcon } from "@artsy/icons/native"
 import {
   Box,
   Flex,
   Join,
-  NoArtworkIcon,
   Separator,
   Spacer,
   Text,
@@ -11,6 +11,7 @@ import {
   useSpace,
   useTheme,
 } from "@artsy/palette-mobile"
+import FastImage from "@d11/react-native-fast-image"
 import { NavigationProp, useNavigation } from "@react-navigation/native"
 import { addBreadcrumb } from "@sentry/react-native"
 import { AuctionResultQuery } from "__generated__/AuctionResultQuery.graphql"
@@ -33,7 +34,6 @@ import { capitalize } from "lodash"
 import moment from "moment"
 import React, { Suspense, useEffect, useLayoutEffect, useState } from "react"
 import { Image, ScrollView, TextInput, TouchableWithoutFeedback } from "react-native"
-import FastImage from "@d11/react-native-fast-image"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ComparableWorksFragmentContainer } from "./ComparableWorks"
@@ -333,7 +333,7 @@ const AuctionResultImage = ({
       alignItems="center"
       justifyContent="center"
     >
-      {!isLoading && <NoArtworkIcon width={30} height={30} fill="mono60" />}
+      {!isLoading && <NoArtIcon width={30} height={30} fill="mono60" />}
     </Box>
   )
 }

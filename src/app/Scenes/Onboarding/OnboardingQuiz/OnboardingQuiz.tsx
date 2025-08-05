@@ -8,6 +8,7 @@ import { OnboardingCuratedArtworks } from "./OnboardingCuratedArtworks"
 import { OnboardingFollowArtists } from "./OnboardingFollowArtists"
 import { OnboardingFollowGalleries } from "./OnboardingFollowGalleries"
 import { OnboardingPostFollowLoadingScreen } from "./OnboardingPostFollowLoadingScreen"
+import { OnboardingPriceRange } from "./OnboardingPriceRange"
 import { OnboardingQuestionOne } from "./OnboardingQuestionOne"
 import { OnboardingQuestionThree } from "./OnboardingQuestionThree"
 import { OnboardingQuestionTwo } from "./OnboardingQuestionTwo"
@@ -19,6 +20,7 @@ export type OnboardingNavigationStack = {
   OnboardingQuestionOne: undefined
   OnboardingQuestionTwo: undefined
   OnboardingQuestionThree: undefined
+  OnboardingPriceRange: undefined
   OnboardingArtistsOnTheRise: undefined
   OnboardingCuratedArtworks: undefined
   OnboardingTopAuctionLots: undefined
@@ -58,6 +60,7 @@ export const OnboardingQuiz = () => {
         <StackNavigator.Screen name="OnboardingWelcomeScreen" component={OnboardingWelcomeScreen} />
         <StackNavigator.Screen name="OnboardingQuestionOne" component={OnboardingQuestionOne} />
         <StackNavigator.Screen name="OnboardingQuestionTwo" component={OnboardingQuestionTwo} />
+        <StackNavigator.Screen name="OnboardingPriceRange" component={OnboardingPriceRange} />
         <StackNavigator.Screen name="OnboardingQuestionThree" component={OnboardingQuestionThree} />
 
         <StackNavigator.Screen

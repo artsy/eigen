@@ -11,6 +11,7 @@ import {
   OPTION_KEEP_TRACK_OF_ART,
   OPTION_TOP_AUCTION_LOTS,
   OPTION_THE_ART_TASTE_QUIZ,
+  OPTION_HUNTING_FOR_ART_WITHIN_BUDGET,
 } from "app/Scenes/Onboarding/OnboardingQuiz/config"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useCallback, useMemo } from "react"
@@ -38,7 +39,7 @@ export const OnboardingQuestionThree = () => {
       // @ts-expect-error
       navigate(nextScreen)
     }
-  }, [navigate, nextScreen, questionThree, trackAnsweredQuestionThree])
+  }, [navigate, nextScreen, questionThree, trackAnsweredQuestionThree, onDone])
 
   const options = useMemo(() => {
     switch (true) {
@@ -82,6 +83,7 @@ export const OnboardingQuestionThree = () => {
         return [OPTION_FOLLOW_ARTISTS_I_WANT_TO_COLLECT, OPTION_FOLLOW_GALLERIES_IM_INTERESTED_IN]
 
       case questionTwo[0] === OPTION_FINDING_GREAT_INVESTMENTS:
+      case questionTwo[0] === OPTION_HUNTING_FOR_ART_WITHIN_BUDGET:
       case questionTwo[0] === OPTION_COLLECTING_ART_THAT_MOVES_ME:
         return [
           OPTION_THE_ART_TASTE_QUIZ,

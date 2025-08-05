@@ -1,14 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import {
-  ArrowRightIcon,
-  ClockFill,
-  ExclamationMarkCircleFill,
-  Flex,
-  Image,
-  Separator,
-  Text,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { AlertFillIcon, ChevronRightIcon } from "@artsy/icons/native"
+import { ClockFill, Flex, Image, Separator, Text, Touchable } from "@artsy/palette-mobile"
 import { SaleCard_me$data } from "__generated__/SaleCard_me.graphql"
 import { SaleCard_sale$data } from "__generated__/SaleCard_sale.graphql"
 import { CompleteRegistrationCTAWrapper } from "app/Scenes/MyBids/Components/CompleteRegistrationCTAWrapper"
@@ -30,11 +22,11 @@ export const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string 
     <Flex flexDirection="row" alignItems="center" justifyContent="center" py={1} bg="mono5" mt={1}>
       {!props.children && (
         <>
-          <ExclamationMarkCircleFill fill="mono100" />
+          <AlertFillIcon fill="mono100" />
           <Text mx={0.5} variant="sm">
             Complete registration
           </Text>
-          <ArrowRightIcon />
+          <ChevronRightIcon />
         </>
       )}
       {props.children}

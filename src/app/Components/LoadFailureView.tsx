@@ -1,10 +1,10 @@
+import { ReloadIcon } from "@artsy/icons/native"
 import {
   BackButton,
   Box,
   BoxProps,
   DEFAULT_HIT_SLOP,
   Flex,
-  ReloadIcon,
   Text,
   Touchable,
   useColor,

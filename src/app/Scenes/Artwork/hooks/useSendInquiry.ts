@@ -3,12 +3,12 @@ import { useSendInquiry_collectorProfile$key } from "__generated__/useSendInquir
 import { useSendInquiry_me$key } from "__generated__/useSendInquiry_me.graphql"
 import { InquiryQuestionInput } from "__generated__/useSubmitInquiryRequestMutation.graphql"
 import { useInquirySuccessPopover } from "app/Scenes/Artwork/Components/CommercialButtons/useInquirySuccessPopover"
-import { useSubmitInquiryRequest } from "app/Scenes/Artwork/Components/CommercialButtons/useSubmitInquiryRequest"
 import { useArtworkInquiryContext } from "app/utils/ArtworkInquiry/ArtworkInquiryStore"
 import {
   userShouldBePromptedToAddArtistsToCollection,
   userShouldBePromptedToCompleteProfile,
 } from "app/utils/collectorPromptHelpers"
+import { useSubmitInquiryRequest } from "app/utils/mutations/useSubmitInquiryRequest"
 import { Schema } from "app/utils/track"
 import { useState } from "react"
 import { graphql, useFragment } from "react-relay"

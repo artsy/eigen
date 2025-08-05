@@ -1,13 +1,5 @@
-import {
-  Button,
-  Checkbox,
-  Flex,
-  InfoCircleIcon,
-  Message,
-  Spacer,
-  Text,
-  useColor,
-} from "@artsy/palette-mobile"
+import { InfoIcon } from "@artsy/icons/native"
+import { Button, Checkbox, Flex, Message, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { MyCollectionArtworkFormDeleteArtworkModalQuery } from "__generated__/MyCollectionArtworkFormDeleteArtworkModalQuery.graphql"
 import LoadingModal from "app/Components/Modals/LoadingModal"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
@@ -86,7 +78,7 @@ export const MyCollectionArtworkFormDeleteArtworkModal: React.FC<MyCollectionArt
                 <Message
                   variant="default"
                   title="To remove this artist, please remove all their other artworks from My Collection first."
-                  IconComponent={() => <InfoCircleIcon width={18} height={18} fill="mono100" />}
+                  IconComponent={() => <InfoIcon width={18} height={18} fill="mono100" />}
                 />
               </>
             )}

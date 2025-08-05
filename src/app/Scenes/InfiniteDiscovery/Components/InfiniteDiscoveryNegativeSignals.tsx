@@ -83,32 +83,37 @@ export const InfiniteDiscoveryNegativeSignals: FC<InfiniteDiscoveryNegativeSigna
 
     track.tappedSeeFewerWorks(data.internalID, data.slug, artist.internalID, NEGATIVE_SIGNAL_TEXT)
 
-    Alert.alert(`Are you sure? You will no longer see works by ${data.artistNames}.`, undefined, [
-      { text: "No" },
-      {
-        text: "Yes",
-        onPress: () => {
-          data.artists.forEach((artist) => {
-            if (artist) {
-              commitMutation({
-                variables: { input: { artistId: artist.internalID } },
-                onError: (e) => {
-                  captureException(e, {
-                    tags: {
-                      source: "InfiniteDiscoveryNegativeSignals.tsx: handleSeeFewerArtistArtworks",
-                    },
-                  })
-                  show("Something went wrong, try again", "bottom", { backgroundColor: "red100" })
-                },
-              })
-            }
-          })
+    Alert.alert(
+      `Are you sure? You will no longer see works by ${data.artistNames} in Discover Daily.`,
+      undefined,
+      [
+        { text: "No" },
+        {
+          text: "Yes",
+          onPress: () => {
+            data.artists.forEach((artist) => {
+              if (artist) {
+                commitMutation({
+                  variables: { input: { artistId: artist.internalID } },
+                  onError: (e) => {
+                    captureException(e, {
+                      tags: {
+                        source:
+                          "InfiniteDiscoveryNegativeSignals.tsx: handleSeeFewerArtistArtworks",
+                      },
+                    })
+                    show("Something went wrong, try again", "bottom", { backgroundColor: "red100" })
+                  },
+                })
+              }
+            })
 
-          track.tappedConfirmSeeFewerWorks(data.internalID, data.slug, artist.internalID)
-          collapse()
+            track.tappedConfirmSeeFewerWorks(data.internalID, data.slug, artist.internalID)
+            collapse()
+          },
         },
-      },
-    ])
+      ]
+    )
   }
 
   return (

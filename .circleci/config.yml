@@ -260,49 +260,6 @@ jobs:
           name: Update rollout if needed
           command: ./scripts/deploys/update-android-rollout-if-needed
 
-  build-maestro-ios:
-    environment:
-      BUNDLE_PATH: .vendor # path to install gems and use for caching
-
-    macos:
-      xcode: << pipeline.parameters.xcode_version >>
-      resource_class: << pipeline.parameters.normal_mac_runner >>
-
-    steps:
-      - checkout
-      - generate-checksums
-      - attach_workspace:
-          at: ../workspace
-      - restore_cache:
-          key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum "../workspace/.manifests/native_code" }}
-      - prep-ios-env
-      - build-app-ios:
-          build_type: "qa"
-      - save_cache:
-          key: << pipeline.parameters.ios_native_code_cache_prefix >>-{{ checksum ".manifests/native_code" }}
-          paths:
-            - xcode_test_raw.log
-
-  build-maestro-android:
-    docker:
-      - image: cimg/android:2025.03.1-node
-    resource_class: xlarge
-
-    steps:
-      - checkout
-      - generate-checksums
-      - attach_workspace:
-          at: ../workspace
-      - restore_cache:
-          key: << pipeline.parameters.android_native_cache_key >>
-      - prep-android-env
-      - build-app-android:
-          build_type: "beta"
-      - save_cache:
-          key: << pipeline.parameters.android_native_cache_key >>
-          paths:
-            - build-success.log
-
   run-native-tests-android:
     docker:
       - image: cimg/android:2025.03.1-node
@@ -699,8 +656,6 @@ workflows:
     jobs:
       - deploy-nightly-beta
       - run-nightly-tasks
-      - build-maestro-ios
-      - build-maestro-android
       - run-native-tests-android
 
   flag-check:

@@ -1,13 +1,5 @@
-import {
-  Box,
-  Flex,
-  HeartFillIcon,
-  HeartIcon,
-  Spacer,
-  Text,
-  useSpace,
-  Touchable,
-} from "@artsy/palette-mobile"
+import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
+import { Box, Flex, Spacer, Text, useSpace, Touchable } from "@artsy/palette-mobile"
 import { ArtworkSaveButton_artwork$key } from "__generated__/ArtworkSaveButton_artwork.graphql"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { isOpenOrUpcomingSale } from "app/Scenes/Artwork/utils/isOpenOrUpcomingSale"
@@ -30,7 +22,7 @@ const WatchLotIcon: React.FC<IconProps> = ({ isSaved }) => {
     return <HeartFillIcon accessibilityLabel="unwatch lot icon" fill="blue100" />
   }
 
-  return <HeartIcon accessibilityLabel="watch lot icon" />
+  return <HeartStrokeIcon accessibilityLabel="watch lot icon" />
 }
 
 const SaveButtonIcon: React.FC<IconProps> = ({ isSaved }) => {
@@ -38,7 +30,7 @@ const SaveButtonIcon: React.FC<IconProps> = ({ isSaved }) => {
     return <HeartFillIcon accessibilityLabel="Saved icon" fill="blue100" />
   }
 
-  return <HeartIcon accessibilityLabel="Save icon" />
+  return <HeartStrokeIcon accessibilityLabel="Save icon" />
 }
 
 const getSaveButtonText = (isSaved: boolean, openOrUpcomingSale: boolean) => {

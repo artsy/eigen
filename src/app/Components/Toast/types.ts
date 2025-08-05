@@ -1,4 +1,5 @@
-import { IconProps, Color } from "@artsy/palette-mobile"
+import { IconProps } from "@artsy/icons/native"
+import { Color } from "@artsy/palette-mobile"
 import { ActionSheetProps } from "@expo/react-native-action-sheet"
 import React from "react"
 
