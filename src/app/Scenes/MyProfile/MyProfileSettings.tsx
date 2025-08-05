@@ -33,6 +33,9 @@ export const MyProfileSettings: React.FC = () => {
 
   const { goBack, canGoBack } = useNavigation()
 
+  // This file is the entry point for the Profile Tab,
+  // we added this to handle the back button behavior
+  // on child screens in order to be able to go back to the Profile Tab.
   useBackHandler(() => {
     if (!!canGoBack()) {
       goBack()
