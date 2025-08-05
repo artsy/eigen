@@ -203,7 +203,7 @@ export const features = {
   AREnablePriceRangeToast: {
     readyForRelease: true,
     showInDevMenu: true,
-    description: "Enable price range toast promting users to update a price range",
+    description: "Enable price range toast prompting users to update a price range",
     echoFlagKey: "AREnablePriceRangeToast",
   },
 } satisfies { [key: string]: FeatureDescriptor }

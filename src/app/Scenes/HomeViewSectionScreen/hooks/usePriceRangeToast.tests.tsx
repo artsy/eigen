@@ -155,7 +155,7 @@ describe("usePriceRangeToast", () => {
   })
 
   it("does not show toast if 3 months haven't passed", async () => {
-    ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockResentlyUpdatedArtworkBudget)
+    ;(fetchPriceRange as jest.Mock).mockResolvedValue(mockRecentlyUpdatedArtworkBudget)
 
     renderWithWrappers(
       <TestComponent
@@ -220,7 +220,7 @@ const mockPriceRangeNotUpdated = {
   hasPriceRange: true,
 }
 
-const mockResentlyUpdatedArtworkBudget = {
+const mockRecentlyUpdatedArtworkBudget = {
   hasPriceRange: true,
   hasStaleArtworkBudget: false,
 }
