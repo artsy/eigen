@@ -849,9 +849,11 @@ type AnalyticsPageviewStats {
 # Audience stats of a partner
 type AnalyticsPartnerAudienceStats {
   commercialVisitors: Int!
+  commercialVisitorsPercentageChanged: Int!
   partnerId: String!
   period: AnalyticsQueryPeriodEnum!
   uniqueVisitors: Int!
+  uniqueVisitorsPercentageChanged: Int!
 }
 
 # Inquiry count time series data of a partner
@@ -1892,6 +1894,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   # The most recent show for an artist
   recentShow: String
   related: ArtistRelatedData
+  residencies: String
 
   # publications that have reviewed the artist
   reviewSources: String
@@ -22367,6 +22370,7 @@ input UpdateArtistMutationInput {
   deathday: String
   displayName: String
   first: String
+  foundations: String
   gender: String
   groupIndicator: ArtistGroupIndicator
   hometown: String
@@ -22377,6 +22381,7 @@ input UpdateArtistMutationInput {
   nationality: String
   public: Boolean
   recentShow: String
+  residencies: String
   reviewSources: String
   targetSupplyPriority: ArtistTargetSupplyPriority
   targetSupplyType: ArtistTargetSupplyType
