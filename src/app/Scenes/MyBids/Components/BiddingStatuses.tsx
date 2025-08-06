@@ -55,12 +55,15 @@ export const Passed = () => (
 )
 
 export const BiddingLiveNow = () => (
-  <>
-    <Text variant="xs" color="blue100">
-      {" "}
-      Bidding live now
-    </Text>
-  </>
+  <Text variant="xs" color="blue100">
+    Bidding live now
+  </Text>
+)
+
+export const LiveAuction = () => (
+  <Text variant="xs" color="mono60">
+    Live auction
+  </Text>
 )
 
 export const Watching = () => (
