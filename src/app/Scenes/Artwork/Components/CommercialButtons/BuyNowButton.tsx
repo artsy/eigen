@@ -42,7 +42,7 @@ export const BuyNowButton = ({
 }: BuyNowButtonProps) => {
   const [isCommittingCreateOrderMutation, setIsCommittingCreateOrderMutation] = useState(false)
 
-  const { saleMessage, internalID, slug } = useFragment(artworkFragment, artwork)
+  const { saleMessage, internalID } = useFragment(artworkFragment, artwork)
   const { trackEvent } = useTracking()
   const analytics = useAnalyticsContext()
 
@@ -196,7 +196,6 @@ export const BuyNowButton = ({
 const artworkFragment = graphql`
   fragment BuyNowButton_artwork on Artwork {
     internalID
-    slug
     saleMessage
   }
 `
