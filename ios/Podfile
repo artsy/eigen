@@ -1,8 +1,10 @@
 require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
 # frozen_string_literal: true
 
-source 'https://cdn.cocoapods.org/'
+# Important: Artsy must come first, see here: https://github.com/artsy/eigen/issues/12584
 source 'https://github.com/artsy/Specs.git'
+source 'https://cdn.cocoapods.org/'
+
 
 require 'dotenv'
 Dotenv.load('../.env.shared')

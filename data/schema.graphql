@@ -17164,6 +17164,7 @@ type Partner implements Node {
     page: Int = 1
     query: String!
     size: Int = 10
+    status: [String]
   ): ShowConnection
 
   # A slug ID.
