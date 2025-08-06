@@ -1025,12 +1025,10 @@ describe("Artwork", () => {
   })
 
   describe("Order webview callbacks", () => {
-    it("triggers navigating to the order details on Order Submission event", async () => {
+    it("triggers navigating to the order details on Order Submission event", () => {
       renderWithWrappers(<TestRenderer />, { includeNavigation: true })
 
       resolveMostRecentRelayOperation(environment)
-
-      await flushPromiseQueue()
 
       act(() => callback?.({ orderId: "order-id", isPurchase: false }))
 
