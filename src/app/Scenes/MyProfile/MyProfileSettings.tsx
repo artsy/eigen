@@ -7,7 +7,6 @@ import {
 } from "@artsy/cohesion"
 import { BagIcon, CreditCardIcon, LockIcon, MobileIcon, MoneyBackIcon } from "@artsy/icons/native"
 import { Flex, Join, LinkText, Screen, Spacer, Text, Touchable } from "@artsy/palette-mobile"
-import { useNavigation } from "@react-navigation/native"
 import * as Sentry from "@sentry/react-native"
 import { DarkModeIcon } from "app/Components/Icons/DarkModeIcon"
 import { MenuItem } from "app/Components/MenuItem"
@@ -18,7 +17,6 @@ import { useSetDevMode } from "app/system/devTools/useSetDevMode"
 import { navigate } from "app/system/navigation/navigate"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { presentEmailComposer } from "app/utils/email/presentEmailComposer"
-import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { Alert, ScrollView } from "react-native"
 import DeviceInfo from "react-native-device-info"
 import { useTracking } from "react-tracking"
@@ -30,20 +28,6 @@ export const MyProfileSettings: React.FC = () => {
   const tracking = useTracking()
 
   const scrollableRef = useBottomTabsScrollToTop() as React.RefObject<ScrollView>
-
-  const { goBack, canGoBack } = useNavigation()
-
-  // This file is the entry point for the Profile Tab,
-  // we added this to handle the back button behavior
-  // on child screens in order to be able to go back to the Profile Tab.
-  useBackHandler(() => {
-    if (!!canGoBack()) {
-      goBack()
-      return true
-    }
-
-    return false
-  })
 
   return (
     <Screen>
