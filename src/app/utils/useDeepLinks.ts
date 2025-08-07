@@ -48,6 +48,10 @@ export function useDeepLinks() {
     // If the url is a marketing or email-link url, we need to fetch the redirect
     if (isMarketingURL(url)) {
       targetURL = await fetchMarketingURL(url)
+      if (!targetURL || targetURL === url) {
+        // we need to return if the fetch fails, otherwise we can get stuck in a nav loop
+        return
+      }
     }
 
     const deepLinkUrl = targetURL ?? url
