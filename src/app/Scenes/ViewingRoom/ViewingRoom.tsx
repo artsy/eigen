@@ -25,7 +25,7 @@ interface ViewingRoomProps {
 
 interface ViewingRoomSection {
   key: string
-  content: JSX.Element
+  content: React.JSX.Element
 }
 
 // Same as Gravity model viewing_room_status

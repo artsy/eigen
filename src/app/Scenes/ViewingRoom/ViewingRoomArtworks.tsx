@@ -20,7 +20,7 @@ interface ViewingRoomArtworksProps {
 
 interface ArtworkSection {
   key: string
-  content: JSX.Element
+  content: React.JSX.Element
 }
 
 export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) => {

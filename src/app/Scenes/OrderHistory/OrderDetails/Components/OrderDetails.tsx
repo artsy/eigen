@@ -1,3 +1,4 @@
+import React from "react"
 import { Box, Flex, Separator, Text } from "@artsy/palette-mobile"
 import { OrderDetailsQuery } from "__generated__/OrderDetailsQuery.graphql"
 import { OrderDetails_order$data } from "__generated__/OrderDetails_order.graphql"
@@ -24,7 +25,7 @@ export interface OrderDetailsProps {
 export interface SectionListItem {
   key: string
   title?: string
-  data: readonly JSX.Element[]
+  data: readonly React.JSX.Element[]
 }
 
 const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {

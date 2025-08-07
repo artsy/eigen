@@ -1,3 +1,4 @@
+import React from "react"
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Box, Flex, Join, Screen, Spacer } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
@@ -51,7 +52,7 @@ interface Props {
 
 interface SaleSection {
   key: string
-  content: JSX.Element
+  content: React.JSX.Element
 }
 
 const SALE_HEADER = "header"

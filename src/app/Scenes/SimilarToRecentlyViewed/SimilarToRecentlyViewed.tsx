@@ -1,3 +1,4 @@
+import React from "react"
 import { OwnerType } from "@artsy/cohesion"
 import { Screen, SimpleMessage, Spacer } from "@artsy/palette-mobile"
 import { SimilarToRecentlyViewedQuery } from "__generated__/SimilarToRecentlyViewedQuery.graphql"
@@ -60,7 +61,7 @@ const ArtworksGrid: React.FC<{
   artworks: ExtractNodeType<
     SimilarToRecentlyViewed_artworksConnection$data["similarToRecentlyViewedConnection"]
   >[]
-  RefreshControl: JSX.Element
+  RefreshControl: React.JSX.Element
   hasNext: boolean
   isLoadingNext: boolean
   loadMore: (pageSize: number) => void

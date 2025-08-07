@@ -1,3 +1,4 @@
+import React from "react"
 import { Box, Spacer, Text } from "@artsy/palette-mobile"
 import { ShowMoreInfoQuery } from "__generated__/ShowMoreInfoQuery.graphql"
 import { ShowMoreInfo_show$data } from "__generated__/ShowMoreInfo_show.graphql"
@@ -19,7 +20,7 @@ const DISPLAYABLE_PARTNER_TYPES = {
 
 interface Section {
   key: string
-  element: JSX.Element
+  element: React.JSX.Element
 }
 
 export interface ShowMoreInfoProps {

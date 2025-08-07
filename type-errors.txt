@@ -13,7 +13,7 @@ src/app/Components/__tests__/RetryErrorBoundary.tests.tsx(16,10): error TS2786: 
       Type 'new (props: RetryErrorBoundaryProps) => RetryErrorBoundary' is not assignable to type 'new (props: any) => Component<any, any, any>'.
         Construct signature return types 'RetryErrorBoundary' and 'Component<any, any, any>' are incompatible.
           The types returned by 'render()' are incompatible between these types.
-            Type 'string | number | bigint | boolean | Iterable<ReactNode> | Promise<ReactNode> | Element | null | undefined' is not assignable to type 'ReactNode'.
+            Type 'string | number | bigint | boolean | Element | Iterable<ReactNode> | Promise<ReactNode> | null | undefined' is not assignable to type 'ReactNode'.
               Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
                 Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
                   Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
@@ -24,7 +24,7 @@ src/app/Components/__tests__/RetryErrorBoundary.tests.tsx(42,10): error TS2786: 
       Type 'new (props: RetryErrorBoundaryProps) => RetryErrorBoundary' is not assignable to type 'new (props: any) => Component<any, any, any>'.
         Construct signature return types 'RetryErrorBoundary' and 'Component<any, any, any>' are incompatible.
           The types returned by 'render()' are incompatible between these types.
-            Type 'string | number | bigint | boolean | Iterable<ReactNode> | Promise<ReactNode> | Element | null | undefined' is not assignable to type 'ReactNode'.
+            Type 'string | number | bigint | boolean | Element | Iterable<ReactNode> | Promise<ReactNode> | null | undefined' is not assignable to type 'ReactNode'.
               Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
                 Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
                   Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
@@ -41,7 +41,6 @@ src/app/Components/ArtistAutosuggest/ArtistAutosuggest.tsx(53,29): error TS2322:
     Type 'RefObject<InputRef | null>' is not assignable to type 'RefObject<InputRef>'.
       Type 'InputRef | null' is not assignable to type 'InputRef'.
         Type 'null' is not assignable to type 'InputRef'.
-src/app/Components/ArtistListItem.tsx(41,17): error TS2503: Cannot find namespace 'JSX'.
 src/app/Components/ArtsyWebView.tsx(290,11): error TS2322: Type 'RefObject<WebViewWithShareTitleUrl | null>' is not assignable to type '(Ref<WebView<{ enableApplePay: true; ref: RefObject<WebViewWithShareTitleUrl | null>; sharedCookiesEnabled: true; decelerationRate: "normal"; ... 5 more ...; onNavigationStateChange: (evt: WebViewNavigation) => void; }>> | undefined) & RefObject<...>'.
   Type 'RefObject<WebViewWithShareTitleUrl | null>' is not assignable to type 'RefObject<WebView<{ enableApplePay: true; ref: RefObject<WebViewWithShareTitleUrl | null>; sharedCookiesEnabled: true; decelerationRate: "normal"; ... 5 more ...; onNavigationStateChange: (evt: WebViewNavigation) => void; }> | null> & RefObject<...>'.
     Type 'RefObject<WebViewWithShareTitleUrl | null>' is not assignable to type 'RefObject<WebView<{ enableApplePay: true; ref: RefObject<WebViewWithShareTitleUrl | null>; sharedCookiesEnabled: true; decelerationRate: "normal"; source: { ...; }; ... 4 more ...; onNavigationStateChange: (evt: WebViewNavigation) => void; }> | null>'.
@@ -50,24 +49,15 @@ src/app/Components/ArtsyWebView.tsx(290,11): error TS2322: Type 'RefObject<WebVi
           Type 'WebViewWithShareTitleUrl' is not assignable to type 'WebView<{ enableApplePay: true; ref: RefObject<WebViewWithShareTitleUrl | null>; sharedCookiesEnabled: true; decelerationRate: "normal"; source: { ...; }; ... 4 more ...; onNavigationStateChange: (evt: WebViewNavigation) => void; }>'.
             Types of property 'props' are incompatible.
               Property 'ref' is missing in type 'Readonly<IOSWebViewProps & AndroidWebViewProps & WindowsWebViewProps>' but required in type 'Readonly<IOSWebViewProps & AndroidWebViewProps & WindowsWebViewProps & { enableApplePay: true; ref: RefObject<WebViewWithShareTitleUrl | null>; ... 7 more ...; onNavigationStateChange: (evt: WebViewNavigation) => void; }>'.
-src/app/Components/ArtworkFilter/components/ArtworkFilterOptionItem.tsx(9,24): error TS2503: Cannot find namespace 'JSX'.
 src/app/Components/ArtworkFilter/Filters/MultiSelectOption.tsx(127,13): error TS2322: Type 'ComponentType<any> | ReactElement<unknown, string | JSXElementConstructor<any>> | null | undefined' is not assignable to type 'ReactNode'.
   Type 'ComponentClass<any, any>' is not assignable to type 'ReactNode'.
-src/app/Components/ArtworkFilter/Filters/SingleSelectOption.tsx(16,37): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/ArtworkFilter/Filters/SingleSelectOption.tsx(17,25): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/ArtworkFilter/Filters/SingleSelectOption.tsx(44,45): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/ArtworkFilter/Filters/SingleSelectOption.tsx(45,42): error TS2503: Cannot find namespace 'JSX'.
 src/app/Components/ArtworkGrids/ArtworkGridItem.tsx(117,21): error TS2554: Expected 1 arguments, but got 0.
-src/app/Components/ArtworkGrids/InfiniteScrollArtworksGrid.tsx(63,21): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/ArtworkGrids/InfiniteScrollArtworksGrid.tsx(66,21): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/ArtworkGrids/InfiniteScrollArtworksGrid.tsx(312,21): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/ArtworkGrids/InfiniteScrollArtworksGrid.tsx(315,32): error TS2503: Cannot find namespace 'JSX'.
 src/app/Components/ArtworkGrids/InfiniteScrollArtworksGrid.tsx(353,13): error TS2322: Type '{ hideIncreasedInterestSignal: boolean | undefined; hideCuratorsPickSignal: boolean | undefined; hideRegisterBySignal: boolean | undefined; hideViewFollowsLink: boolean; ... 27 more ...; key: string; } | { ...; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; } & MappedFragmentProps<...>'.
   Type '{ hideIncreasedInterestSignal: boolean | undefined; hideCuratorsPickSignal: boolean | undefined; hideRegisterBySignal: boolean | undefined; hideViewFollowsLink: boolean; hideCreateAlertOnArtworkPreview: boolean; ... 26 more ...; key: string; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; } & MappedFragmentProps<...>'.
     Property 'hideViewFollowsLink' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; } & MappedFragmentProps<...>'.
 src/app/Components/ArtworkGrids/MasonryArtworkGridItem.tsx(80,9): error TS2322: Type '{ artwork: Artwork; artworkMetaStyle: false | "" | ViewStyle | RegisteredStyle<ViewStyle> | RecursiveArray<Falsy | ViewStyle | RegisteredStyle<...>> | null; ... 12 more ...; hideSaleInfo?: boolean | undefined; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; }'.
   Property 'numColumns' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; }'.
-src/app/Components/ArtworkRail/ArtworkRailCardMeta.tsx(160,9): error TS2322: Type 'false | ComponentType<any> | Element' is not assignable to type 'ReactNode'.
+src/app/Components/ArtworkRail/ArtworkRailCardMeta.tsx(160,9): error TS2322: Type 'false | Element | ComponentType<any>' is not assignable to type 'ReactNode'.
   Type 'ComponentClass<any, any>' is not assignable to type 'ReactNode'.
 src/app/Components/AutosuggestResults/AutosuggestResults.tsx(176,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
 src/app/Components/AutosuggestResults/AutosuggestResults.tsx(176,43): error TS7031: Binding element 'index' implicitly has an 'any' type.
@@ -78,17 +68,12 @@ src/app/Components/Bidding/Context/__tests__/TimeOffsetProvider.tests.tsx(7,23):
 src/app/Components/Bidding/Context/__tests__/TimeOffsetProvider.tests.tsx(21,32): error TS2571: Object is of type 'unknown'.
 src/app/Components/Bidding/Context/TimeOffsetProvider.tsx(3,23): error TS7016: Could not find a declaration file for module 'prop-types'. '/Users/brianbeckerle/Code/eigen/node_modules/prop-types/index.js' implicitly has an 'any' type.
   Try `npm i --save-dev @types/prop-types` if it exists or add a new declaration (.d.ts) file containing `declare module 'prop-types';`
-src/app/Components/Bidding/Screens/Registration.tsx(380,29): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/Bidding/Screens/Registration.tsx(408,29): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/Bidding/Screens/Registration.tsx(568,12): error TS2739: Type '{ navigation: NativeStackNavigationProp<BiddingNavigationStackParams, "RegisterToBid", undefined>; route: RouteProp<BiddingNavigationStackParams, "RegisterToBid">; }' is missing the following properties from type 'MappedFragmentProps<Pick<Omit<RegistrationProps, "relay">, "children" | "navigation" | "route" | "id" | "style" | "sale" | "hitSlop" | "needsOffscreenAlphaCompositing" | ... 81 more ... | "me">>': sale, me
+src/app/Components/Bidding/Screens/Registration.tsx(568,12): error TS2739: Type '{ navigation: NativeStackNavigationProp<BiddingNavigationStackParams, "RegisterToBid", undefined>; route: RouteProp<BiddingNavigationStackParams, "RegisterToBid">; }' is missing the following properties from type 'MappedFragmentProps<Pick<Omit<RegistrationProps, "relay">, "style" | "me" | "sale" | "children" | "navigation" | "route" | "id" | "hitSlop" | "needsOffscreenAlphaCompositing" | ... 80 more ... | "accessibilityLargeContentTitle">>': me, sale
 src/app/Components/Bidding/Screens/Registration.tsx(568,38): error TS2698: Spread types may only be created from object types.
 src/app/Components/BottomSheet/AutoHeightBottomSheet.tsx(17,24): error TS2322: Type 'ReactNode | ReactNode[] | FC<{ data?: any; }>' is not assignable to type 'ReactNode | ReactNode[]'.
   Type 'FC<{ data?: any; }>' is not assignable to type 'ReactNode | ReactNode[]'.
 src/app/Components/BottomSheetInput.tsx(10,8): error TS7006: Parameter 'args' implicitly has an 'any' type.
 src/app/Components/BottomSheetInput.tsx(18,8): error TS7006: Parameter 'args' implicitly has an 'any' type.
-src/app/Components/Buttons/InfoButton.tsx(19,17): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/Buttons/InfoButton.tsx(24,18): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/Buttons/InfoButton.tsx(99,17): error TS2503: Cannot find namespace 'JSX'.
 src/app/Components/Buttons/InfoButton.tsx(134,7): error TS2322: Type '(({ children }: { children: ReactElement<unknown, string | JSXElementConstructor<any>>; }) => Element) | undefined' is not assignable to type 'ComponentType<{ children?: ReactNode; }> | undefined'.
   Type '({ children }: { children: React.ReactElement; }) => JSX.Element' is not assignable to type 'ComponentType<{ children?: ReactNode; }> | undefined'.
     Type '({ children }: { children: React.ReactElement; }) => JSX.Element' is not assignable to type 'FunctionComponent<{ children?: ReactNode; }>'.
@@ -100,13 +85,11 @@ src/app/Components/Buttons/InfoButton.tsx(134,7): error TS2322: Type '(({ childr
 src/app/Components/Containers/Inbox.tsx(194,36): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"Inbox_me">; } | null | undefined' is not assignable to type '_FragmentRefs<"Inbox_me">'.
   Type 'undefined' is not assignable to type '_FragmentRefs<"Inbox_me">'.
 src/app/Components/Containers/Inquiry.tsx(85,51): error TS2694: Namespace 'React' has no exported member 'Props'.
-src/app/Components/Containers/Inquiry.tsx(85,57): error TS2503: Cannot find namespace 'JSX'.
 src/app/Components/Containers/Inquiry.tsx(96,3): error TS2339: Property 'children' does not exist on type 'BottomAlignedProps'.
 src/app/Components/Containers/Inquiry.tsx(221,10): error TS2322: Type '{ children: Element[]; onPress: () => void; buttonText: string; disabled: boolean; }' is not assignable to type 'IntrinsicAttributes & BottomAlignedProps'.
   Property 'children' does not exist on type 'IntrinsicAttributes & BottomAlignedProps'.
-src/app/Components/ContextMenu/ContextMenuArtworkPreviewCard.tsx(98,11): error TS2322: Type 'false | ComponentType<any> | Element' is not assignable to type 'ReactNode'.
+src/app/Components/ContextMenu/ContextMenuArtworkPreviewCard.tsx(98,11): error TS2322: Type 'false | Element | ComponentType<any>' is not assignable to type 'ReactNode'.
   Type 'ComponentClass<any, any>' is not assignable to type 'ReactNode'.
-src/app/Components/EmbeddedCarousel.tsx(10,34): error TS2503: Cannot find namespace 'JSX'.
 src/app/Components/Gene/GeneArtworks.tsx(84,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
 src/app/Components/Gene/GeneArtworks.tsx(84,43): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
 src/app/Components/GlobalSearchInput/GlobalSearchInputOverlay.tsx(45,29): error TS2322: Type '{ inputRef: RefObject<InputRef | null>; queryRef: RefObject<string>; }' is not assignable to type '{ inputRef: RefObject<InputRef>; queryRef: Ref<string>; }'.
@@ -119,10 +102,7 @@ src/app/Components/HeaderButton.tsx(67,9): error TS2322: Type 'ReactNode | Share
   Type 'SharedValue<ReactNode>' is not assignable to type 'ReactNode'.
 src/app/Components/Icons/ChevronIcon.tsx(4,42): error TS2694: Namespace 'React' has no exported member 'Props'.
 src/app/Components/Icons/ChevronIcon.tsx(36,13): error TS2339: Property 'defaultProps' does not exist on type 'FC<ChevronIconProps>'.
-src/app/Components/Input/Input.tsx(40,10): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/Input/Input.tsx(77,29): error TS2503: Cannot find namespace 'JSX'.
 src/app/Components/Input/Input.tsx(120,22): error TS2554: Expected 1 arguments, but got 0.
-src/app/Components/LegacyTabs/LegacyTab.tsx(6,17): error TS2503: Cannot find namespace 'JSX'.
 src/app/Components/LineGraph/LineGraphChart.tsx(290,12): error TS2769: No overload matches this call.
   Overload 1 of 2, '(props: EventMixinCommonProps): { state: {}; getEventState: (eventKey: string | number, namespace: string, childType?: string | undefined) => any; getScopedEvents: (events: any, namespace: any, childType: any, baseProps: any) => {}; ... 43 more ...; events: unknown; }', gave the following error.
     Type '{ dependentAxis: true; style: { axis: { stroke: string; strokeDasharray: number; }; ticks: { size: number; }; grid: { stroke: ({ tick }: { tick: number; }) => string; strokeDasharray: number; }; }; axisLabelComponent: Element; maxDomain: number; minDomain: number; tickFormat: (tick: number) => string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<{ state: {}; getEventState: (eventKey: string | number, namespace: string, childType?: string | undefined) => any; getScopedEvents: (events: any, namespace: any, childType: any, baseProps: any) => {}; ... 43 more ...; events: unknown; }> & Pick<...> & InexactPartial<......'.
@@ -143,17 +123,13 @@ src/app/Components/LineGraph/LineGraphChart.tsx(316,12): error TS2769: No overlo
         Types of parameters '__0' and 'args' are incompatible.
           Type 'CallbackArgs' is not assignable to type '{ tick: number; }'.
             Property 'tick' is optional in type 'CallbackArgs' but required in type '{ tick: number; }'.
-src/app/Components/LineGraph/ScatterPointsContainers.tsx(8,9): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/LineGraph/types.ts(15,20): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/LineGraph/types.ts(16,20): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/LocationAutocomplete.tsx(22,27): error TS2503: Cannot find namespace 'JSX'.
 src/app/Components/ParentAwareScrollView.tsx(52,7): error TS2571: Object is of type 'unknown'.
 src/app/Components/ParentAwareScrollView.tsx(56,26): error TS2571: Object is of type 'unknown'.
 src/app/Components/ParentAwareScrollView.tsx(64,7): error TS2571: Object is of type 'unknown'.
 src/app/Components/ParentAwareScrollView.tsx(78,30): error TS2339: Property 'horizontal' does not exist on type '{}'.
 src/app/Components/RetryErrorBoundary.tsx(53,3): error TS2416: Property 'render' in type 'RetryErrorBoundary' is not assignable to the same property in base type 'Component<RetryErrorBoundaryProps, RetryErrorBoundaryState, any>'.
-  Type '() => string | number | bigint | boolean | Iterable<ReactNode> | Promise<ReactNode> | Element | null | undefined' is not assignable to type '() => ReactNode'.
-    Type 'string | number | bigint | boolean | Iterable<ReactNode> | Promise<ReactNode> | Element | null | undefined' is not assignable to type 'ReactNode'.
+  Type '() => string | number | bigint | boolean | Element | Iterable<ReactNode> | Promise<ReactNode> | null | undefined' is not assignable to type '() => ReactNode'.
+    Type 'string | number | bigint | boolean | Element | Iterable<ReactNode> | Promise<ReactNode> | null | undefined' is not assignable to type 'ReactNode'.
       Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
         Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
           Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
@@ -164,24 +140,14 @@ src/app/Components/RetryErrorBoundary.tsx(109,6): error TS2786: 'RetryErrorBound
       Type 'new (props: RetryErrorBoundaryProps) => RetryErrorBoundary' is not assignable to type 'new (props: any) => Component<any, any, any>'.
         Construct signature return types 'RetryErrorBoundary' and 'Component<any, any, any>' are incompatible.
           The types returned by 'render()' are incompatible between these types.
-            Type 'string | number | bigint | boolean | Iterable<ReactNode> | Promise<ReactNode> | Element | null | undefined' is not assignable to type 'ReactNode'.
+            Type 'string | number | bigint | boolean | Element | Iterable<ReactNode> | Promise<ReactNode> | null | undefined' is not assignable to type 'ReactNode'.
               Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
                 Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
                   Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
                     Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
-src/app/Components/Select/Components/SelectButton.tsx(33,26): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/Select/Components/SelectModal.tsx(26,51): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/Select/Select.tsx(26,78): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/Select/Select.tsx(27,53): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/Select/Select.tsx(32,26): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/Select/SelectV2.tsx(39,78): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/Select/SelectV2.tsx(40,53): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/Select/SelectV2.tsx(167,51): error TS2503: Cannot find namespace 'JSX'.
 src/app/Components/ShareSheet/ShareSheet.tsx(170,15): error TS2322: Type 'RefObject<ViewShot | null>' is not assignable to type 'RefObject<ViewShot>'.
   Type 'ViewShot | null' is not assignable to type 'ViewShot'.
     Type 'null' is not assignable to type 'ViewShot'.
-src/app/Components/States/ZeroState.tsx(8,11): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/States/ZeroState.tsx(9,18): error TS2503: Cannot find namespace 'JSX'.
 src/app/Navigation/AuthenticatedRoutes/FavoritesTab.tsx(8,7): error TS2322: Type 'ReactNode | Promise<ReactNode>' is not assignable to type 'ReactNode'.
   Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
     Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
@@ -229,7 +195,7 @@ src/app/Navigation/AuthenticatedRoutes/ScreenWrapper.tsx(51,8): error TS2786: 'R
       Type 'new (props: RetryErrorBoundaryProps) => RetryErrorBoundary' is not assignable to type 'new (props: any) => Component<any, any, any>'.
         Construct signature return types 'RetryErrorBoundary' and 'Component<any, any, any>' are incompatible.
           The types returned by 'render()' are incompatible between these types.
-            Type 'string | number | bigint | boolean | Iterable<ReactNode> | Promise<ReactNode> | Element | null | undefined' is not assignable to type 'ReactNode'.
+            Type 'string | number | bigint | boolean | Element | Iterable<ReactNode> | Promise<ReactNode> | null | undefined' is not assignable to type 'ReactNode'.
               Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
                 Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
                   Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
@@ -265,23 +231,15 @@ src/app/Scenes/ArtistSeries/ArtistSeriesArtworks.tsx(93,50): error TS7031: Bindi
 src/app/Scenes/ArtistSeries/ArtistSeriesArtworks.tsx(124,9): error TS2322: Type 'RefObject<MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }> | null>' is not assignable to type 'RefObject<MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>>'.
   Type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }> | null' is not assignable to type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>'.
     Type 'null' is not assignable to type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>'.
-src/app/Scenes/Artwork/Artwork.tsx(576,12): error TS2503: Cannot find namespace 'JSX'.
 src/app/Scenes/Artwork/Components/CommercialButtons/__tests__/CollapsibleArtworkDetails.tests.tsx(9,77): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"CollapsibleArtworkDetails_artwork">; } | null | undefined' is not assignable to type '_FragmentRefs<"CollapsibleArtworkDetails_artwork">'.
   Type 'undefined' is not assignable to type '_FragmentRefs<"CollapsibleArtworkDetails_artwork">'.
 src/app/Scenes/Artwork/Components/CommercialButtons/__tests__/InquiryModal.tests.tsx(26,41): error TS2322: Type '{ state: Reducer<ArtworkInquiryContextState, ArtworkInquiryActions>; dispatch: React.ActionDispatch<React.AnyActionArg>; }' is not assignable to type 'ArtworkInquiryContextProps'.
   Types of property 'state' are incompatible.
     Type 'Reducer<ArtworkInquiryContextState, ArtworkInquiryActions>' is not assignable to type 'ArtworkInquiryContextState'.
 src/app/Scenes/Artwork/Components/CommercialButtons/__tests__/InquiryModal.tests.tsx(188,40): error TS2558: Expected 2 type arguments, but got 1.
-src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/DeepZoom/DeepZoomLevel.tsx(50,38): error TS2503: Cannot find namespace 'JSX'.
-src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/DeepZoom/DeepZoomLevel.tsx(54,37): error TS2503: Cannot find namespace 'JSX'.
-src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/DeepZoom/DeepZoomLevel.tsx(208,19): error TS2503: Cannot find namespace 'JSX'.
-src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/DeepZoom/DeepZoomOverlay.tsx(74,19): error TS2503: Cannot find namespace 'JSX'.
 src/app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext.tsx(78,31): error TS2554: Expected 1 arguments, but got 0.
 src/app/Scenes/Artwork/Components/ImageCarousel/useSpringValue.ts(20,16): error TS2554: Expected 1 arguments, but got 0.
 src/app/Scenes/Artwork/Components/ImageCarousel/useSpringValue.ts(31,7): error TS2322: Type 'undefined' is not assignable to type 'CompositeAnimation'.
-src/app/Scenes/ArtworkList/ArtworkListEmptyState.tsx(11,19): error TS2503: Cannot find namespace 'JSX'.
-src/app/Scenes/BottomTabs/BottomTabsIcon.tsx(15,48): error TS2503: Cannot find namespace 'JSX'.
-src/app/Scenes/BottomTabs/BottomTabsIcon.tsx(15,71): error TS2503: Cannot find namespace 'JSX'.
 src/app/Scenes/Collection/Screens/CollectionArtworks.tsx(106,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
 src/app/Scenes/Collection/Screens/CollectionArtworks.tsx(106,43): error TS7031: Binding element 'index' implicitly has an 'any' type.
 src/app/Scenes/Collection/Screens/CollectionArtworks.tsx(106,50): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
@@ -303,8 +261,6 @@ src/app/Scenes/Favorites/Favorites.tsx(169,13): error TS2322: Type 'FC<MaterialT
       Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
         Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
           Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
-src/app/Scenes/Feature/Feature.tsx(27,12): error TS2503: Cannot find namespace 'JSX'.
-src/app/Scenes/Feature/Feature.tsx(35,12): error TS2503: Cannot find namespace 'JSX'.
 src/app/Scenes/HomeView/Components/ArticlesRail.tsx(34,10): error TS7031: Binding element 'item' implicitly has an 'any' type.
 src/app/Scenes/HomeView/Components/ArticlesRail.tsx(34,16): error TS7031: Binding element 'index' implicitly has an 'any' type.
 src/app/Scenes/HomeView/Components/ArtistRails/ArtistRail.tsx(36,19): error TS2554: Expected 1 arguments, but got 0.
@@ -313,7 +269,6 @@ src/app/Scenes/HomeView/Components/ArtworkModuleRail.tsx(120,9): error TS2322: T
   Type 'FlatList<any> | null' is not assignable to type 'FlatList<any>'.
     Type 'null' is not assignable to type 'FlatList<any>'.
 src/app/Scenes/HomeView/Components/HomeViewSectionSentinel.tsx(26,6): error TS7006: Parameter 'visible' implicitly has an 'any' type.
-src/app/Scenes/HomeView/Components/ModalCarouselComponents/ModalCarouselScreenWrapper.tsx(9,25): error TS2503: Cannot find namespace 'JSX'.
 src/app/Scenes/HomeView/Components/ShowsRail.tsx(53,10): error TS7031: Binding element 'item' implicitly has an 'any' type.
 src/app/Scenes/HomeView/Components/ShowsRail.tsx(53,16): error TS7031: Binding element 'index' implicitly has an 'any' type.
 src/app/Scenes/HomeView/Components/ShowsRail.tsx(54,10): error TS2741: Property 'isFluid' is missing in type '{ show: any; onPress: () => void; }' but required in type 'MappedFragmentProps<Pick<Omit<ShowCardProps, "relay">, keyof ShowCardProps>>'.
@@ -325,7 +280,7 @@ src/app/Scenes/HomeView/HomeView.tsx(266,8): error TS2786: 'RetryErrorBoundary' 
       Type 'new (props: RetryErrorBoundaryProps) => RetryErrorBoundary' is not assignable to type 'new (props: any) => Component<any, any, any>'.
         Construct signature return types 'RetryErrorBoundary' and 'Component<any, any, any>' are incompatible.
           The types returned by 'render()' are incompatible between these types.
-            Type 'string | number | bigint | boolean | Iterable<ReactNode> | Promise<ReactNode> | Element | null | undefined' is not assignable to type 'ReactNode'.
+            Type 'string | number | bigint | boolean | Element | Iterable<ReactNode> | Promise<ReactNode> | null | undefined' is not assignable to type 'ReactNode'.
               Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
                 Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
                   Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
@@ -344,13 +299,11 @@ src/app/Scenes/HomeView/Sections/HomeViewSectionTasks.tsx(264,37): error TS2345:
     Type 'null' is not assignable to type 'SwipeableMethods'.
 src/app/Scenes/Inbox/Components/Conversations/__tests__/InquiryPurchaseButton.tests.tsx(31,14): error TS2322: Type '{ children: string; artwork: { readonly " $fragmentSpreads": FragmentRefs<"InquiryPurchaseButton_artwork">; }; editionSetID: null; conversationID: string; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<InquiryPurchaseButtonProps, "relay">, keyof InquiryPurchaseButtonProps>> & { ...; }'.
   Property 'children' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<InquiryPurchaseButtonProps, "relay">, keyof InquiryPurchaseButtonProps>> & { ...; }'.
-src/app/Scenes/Inbox/Components/Conversations/__tests__/MakeOfferModal.tests.tsx(38,46): error TS2503: Cannot find namespace 'JSX'.
 src/app/Scenes/Inbox/Components/Conversations/Composer.tsx(106,27): error TS2339: Property 'children' does not exist on type 'Readonly<Props>'.
 src/app/Scenes/Inbox/Components/Conversations/Composer.tsx(121,21): error TS2322: Type '(input: TextInput | null) => TextInput | null' is not assignable to type 'Ref<TextInput> | undefined'.
   Type '(input: TextInput | null) => TextInput | null' is not assignable to type '(instance: TextInput | null) => void | (() => VoidOrUndefinedOnly)'.
     Type 'TextInput | null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
       Type 'null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
-src/app/Scenes/Inbox/Components/Conversations/Conversations.tsx(21,16): error TS2503: Cannot find namespace 'JSX'.
 src/app/Scenes/Inbox/Components/Conversations/InquiryPurchaseButton.tsx(23,3): error TS2339: Property 'children' does not exist on type 'InquiryPurchaseButtonProps'.
 src/app/Scenes/Inbox/Components/Conversations/Message.tsx(115,20): error TS2322: Type '{ children: Element; onPress: (url: string) => Promise<void>; linkStyle: { color: string; textDecorationLine: "underline"; }; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<HyperLink> & Readonly<Props>'.
   Property 'children' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<HyperLink> & Readonly<Props>'.
@@ -368,7 +321,6 @@ src/app/Scenes/Inbox/Components/Conversations/PurchaseModal.tsx(61,12): error TS
 src/app/Scenes/Inbox/Screens/Conversation.tsx(176,11): error TS2322: Type 'null' is not assignable to type 'string | undefined'.
 src/app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard.tsx(191,13): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"ArtistListItem_artist">; } | null | undefined' is not assignable to type '_FragmentRefs<"ArtistListItem_artist">'.
   Type 'undefined' is not assignable to type '_FragmentRefs<"ArtistListItem_artist">'.
-src/app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCardPopover.tsx(11,13): error TS2503: Cannot find namespace 'JSX'.
 src/app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryMoreWorksTab.tsx(39,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
 src/app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryMoreWorksTab.tsx(39,43): error TS7031: Binding element 'index' implicitly has an 'any' type.
 src/app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryMoreWorksTab.tsx(39,50): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
@@ -386,7 +338,7 @@ src/app/Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork.tsx(219,8): erro
       Type 'new (props: RetryErrorBoundaryProps) => RetryErrorBoundary' is not assignable to type 'new (props: any) => Component<any, any, any>'.
         Construct signature return types 'RetryErrorBoundary' and 'Component<any, any, any>' are incompatible.
           The types returned by 'render()' are incompatible between these types.
-            Type 'string | number | bigint | boolean | Iterable<ReactNode> | Promise<ReactNode> | Element | null | undefined' is not assignable to type 'ReactNode'.
+            Type 'string | number | bigint | boolean | Element | Iterable<ReactNode> | Promise<ReactNode> | null | undefined' is not assignable to type 'ReactNode'.
               Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
                 Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
                   Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
@@ -398,9 +350,6 @@ src/app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistAutosuggest.tsx
         Type 'null' is not assignable to type 'InputRef'.
 src/app/Scenes/MyCollection/Screens/Insights/CareerHighlightBottomSheet.tsx(91,6): error TS7006: Parameter 'props' implicitly has an 'any' type.
 src/app/Scenes/MyCollection/Screens/Insights/CareerHighlightBottomSheet.tsx(97,6): error TS7006: Parameter 'props' implicitly has an 'any' type.
-src/app/Scenes/MyCollection/Screens/Insights/CareerHighlightsBigCardsSwiper.tsx(24,12): error TS2503: Cannot find namespace 'JSX'.
-src/app/Scenes/MyCollection/Screens/Insights/Components/CareerHighlightBottomSheetItem.tsx(51,24): error TS2503: Cannot find namespace 'JSX'.
-src/app/Scenes/MyCollection/Screens/Insights/Components/MyCollectionSelectArtist.tsx(12,25): error TS2503: Cannot find namespace 'JSX'.
 src/app/Scenes/MyCollection/Screens/Insights/MedianSalePriceAtAuction.tsx(156,6): error TS7006: Parameter 'newArtistID' implicitly has an 'any' type.
 src/app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists.tsx(37,30): error TS2322: Type '() => null' is not assignable to type 'ReactNode'.
 src/app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsAutosuggest.tsx(105,29): error TS2322: Type '{ inputRef: RefObject<InputRef | null>; queryRef: RefObject<string>; }' is not assignable to type '{ inputRef: RefObject<InputRef>; queryRef: Ref<string>; }'.

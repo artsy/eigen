@@ -1,3 +1,4 @@
+import React from "react"
 import {
   ArtworkIcon,
   BellIcon,
@@ -16,7 +17,7 @@ import { ScrollView } from "react-native"
 interface InfoSectionProps {
   title: string
   body: string
-  icon: JSX.Element
+  icon: React.JSX.Element
 }
 
 const InfoSection: React.FC<InfoSectionProps> = (props) => {

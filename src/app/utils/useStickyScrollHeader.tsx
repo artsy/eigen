@@ -1,3 +1,4 @@
+import React from "react"
 import { Flex, Text } from "@artsy/palette-mobile"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { useMemo, useRef } from "react"
@@ -12,7 +13,7 @@ export const useStickyScrollHeader = ({
   fadeInStart = DEFAULT_FADE_IN_START,
   fadeInEnd,
 }: {
-  header?: JSX.Element
+  header?: React.JSX.Element
   headerText?: string
   fadeInStart?: number
   fadeInEnd?: number
