@@ -148,7 +148,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
     <ProvideScreenTracking info={tracks.context(viewingRoom.internalID, viewingRoom.slug)}>
       <View style={{ flex: 1, position: "relative" }}>
         <FlatList<ViewingRoomSection>
-          onViewableItemsChanged={useCallback(({ viewableItems }) => {
+          onViewableItemsChanged={useCallback(({ viewableItems }: { viewableItems: any }) => {
             if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "body")) {
               trackBodyImpression()
               LayoutAnimation.configureNext({

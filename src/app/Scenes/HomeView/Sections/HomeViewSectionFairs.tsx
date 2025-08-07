@@ -57,7 +57,7 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = memo(
     }
 
     const renderItem = useCallback(
-      ({ item, index }) => {
+      ({ item, index }: { item: any; index: number }) => {
         return (
           <FairCard
             key={item.internalID}

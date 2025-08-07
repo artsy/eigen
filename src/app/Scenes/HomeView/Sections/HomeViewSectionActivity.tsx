@@ -41,7 +41,7 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = m
     const viewAll = section.component?.behaviors?.viewAll
 
     const renderItem = useCallback(
-      ({ item, index }) => {
+      ({ item, index }: { item: any; index: number }) => {
         return (
           <ActivityRailItem
             item={item}

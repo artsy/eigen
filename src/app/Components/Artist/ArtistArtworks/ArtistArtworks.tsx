@@ -177,29 +177,32 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     }
   }
 
-  const renderItem = useCallback(({ item, index, columnIndex }) => {
-    const imgAspectRatio = item.image?.aspectRatio ?? 1
-    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-    const imgHeight = imgWidth / imgAspectRatio
+  const renderItem = useCallback(
+    ({ item, index, columnIndex }: { item: any; index: number; columnIndex: number }) => {
+      const imgAspectRatio = item.image?.aspectRatio ?? 1
+      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+      const imgHeight = imgWidth / imgAspectRatio
 
-    return (
-      <Flex
-        pl={columnIndex === 0 ? 0 : 1}
-        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-        mt={2}
-      >
-        <ArtworkGridItem
-          {...props}
-          itemIndex={index}
-          contextScreenOwnerType={OwnerType.artist}
-          contextScreenOwnerId={artist.internalID}
-          contextScreenOwnerSlug={artist.slug}
-          artwork={item}
-          height={imgHeight}
-        />
-      </Flex>
-    )
-  }, [])
+      return (
+        <Flex
+          pl={columnIndex === 0 ? 0 : 1}
+          pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+          mt={2}
+        >
+          <ArtworkGridItem
+            {...props}
+            itemIndex={index}
+            contextScreenOwnerType={OwnerType.artist}
+            contextScreenOwnerId={artist.internalID}
+            contextScreenOwnerSlug={artist.slug}
+            artwork={item}
+            height={imgHeight}
+          />
+        </Flex>
+      )
+    },
+    []
+  )
 
   const listFooterComponent = useMemo(
     () => (

@@ -50,7 +50,7 @@ export const ShowsRail: React.FC<ShowsRailProps> = memo(
     const hasShows = shows?.length
 
     const renderItem = useCallback(
-      ({ item, index }) => (
+      ({ item, index }: { item: any; index: number }) => (
         <ShowCardContainer
           show={item}
           onPress={() => {

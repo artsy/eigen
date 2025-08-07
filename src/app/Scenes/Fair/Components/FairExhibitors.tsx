@@ -39,7 +39,7 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
     })
   }, [relay.hasMore(), relay.isLoading()])
 
-  const renderItem = useCallback(({ item: show }) => {
+  const renderItem = useCallback(({ item: show }: { item: any }) => {
     return (
       <Box key={show.id} mb={4}>
         <FairExhibitorRailQueryRenderer showID={show.internalID} />

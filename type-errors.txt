@@ -1,11 +1,5 @@
 yarn run v1.22.21
-$ yarn relay; yarn tsc
-$ [ -f data/complete.queryMap.json ] || echo '{}' > data/complete.queryMap.json && relay-compiler --repersist
-[0m[34m[INFO] [0mQuerying files to compile...
-[0m[34m[INFO] [0m[default] compiling...
-[0m[34m[INFO] [0m[default] compiled documents: 1136 reader, 634 normalization, 1206 operation text
-[0m[34m[INFO] [0mCompilation completed.
-[0m[34m[INFO] [0mDone.
+warning ../package.json: No license field
 $ /Users/brianbeckerle/Code/eigen/node_modules/.bin/tsc
 src/app/Components/__tests__/RetryErrorBoundary.tests.tsx(16,10): error TS2786: 'RetryErrorBoundary' cannot be used as a JSX component.
   Its type 'typeof RetryErrorBoundary' is not a valid JSX element type.
@@ -30,9 +24,6 @@ src/app/Components/__tests__/RetryErrorBoundary.tests.tsx(42,10): error TS2786: 
                   Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
                     Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
 src/app/Components/__tests__/ShowCard.tests.tsx(27,13): error TS2741: Property 'isFluid' is missing in type '{ show: { readonly " $fragmentSpreads": FragmentRefs<"ShowCard_show">; }; onPress: Mock<any, any, any>; }' but required in type 'MappedFragmentProps<Pick<Omit<ShowCardProps, "relay">, keyof ShowCardProps>>'.
-src/app/Components/Artist/ArtistArtworks/ArtistArtworks.tsx(180,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/app/Components/Artist/ArtistArtworks/ArtistArtworks.tsx(180,43): error TS7031: Binding element 'index' implicitly has an 'any' type.
-src/app/Components/Artist/ArtistArtworks/ArtistArtworks.tsx(180,50): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
 src/app/Components/Artist/ArtistArtworks/ArtistArtworks.tsx(274,9): error TS2322: Type 'RefObject<MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }> | null>' is not assignable to type 'RefObject<MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>>'.
   Type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }> | null' is not assignable to type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>'.
     Type 'null' is not assignable to type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>'.
@@ -59,8 +50,6 @@ src/app/Components/ArtworkGrids/MasonryArtworkGridItem.tsx(80,9): error TS2322: 
   Property 'numColumns' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; }'.
 src/app/Components/ArtworkRail/ArtworkRailCardMeta.tsx(160,9): error TS2322: Type 'false | Element | ComponentType<any>' is not assignable to type 'ReactNode'.
   Type 'ComponentClass<any, any>' is not assignable to type 'ReactNode'.
-src/app/Components/AutosuggestResults/AutosuggestResults.tsx(176,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/app/Components/AutosuggestResults/AutosuggestResults.tsx(176,43): error TS7031: Binding element 'index' implicitly has an 'any' type.
 src/app/Components/Bidding/Components/Timer.tsx(7,23): error TS7016: Could not find a declaration file for module 'prop-types'. '/Users/brianbeckerle/Code/eigen/node_modules/prop-types/index.js' implicitly has an 'any' type.
   Try `npm i --save-dev @types/prop-types` if it exists or add a new declaration (.d.ts) file containing `declare module 'prop-types';`
 src/app/Components/Bidding/Context/__tests__/TimeOffsetProvider.tests.tsx(7,23): error TS7016: Could not find a declaration file for module 'prop-types'. '/Users/brianbeckerle/Code/eigen/node_modules/prop-types/index.js' implicitly has an 'any' type.
@@ -68,7 +57,7 @@ src/app/Components/Bidding/Context/__tests__/TimeOffsetProvider.tests.tsx(7,23):
 src/app/Components/Bidding/Context/__tests__/TimeOffsetProvider.tests.tsx(21,32): error TS2571: Object is of type 'unknown'.
 src/app/Components/Bidding/Context/TimeOffsetProvider.tsx(3,23): error TS7016: Could not find a declaration file for module 'prop-types'. '/Users/brianbeckerle/Code/eigen/node_modules/prop-types/index.js' implicitly has an 'any' type.
   Try `npm i --save-dev @types/prop-types` if it exists or add a new declaration (.d.ts) file containing `declare module 'prop-types';`
-src/app/Components/Bidding/Screens/Registration.tsx(568,12): error TS2739: Type '{ navigation: NativeStackNavigationProp<BiddingNavigationStackParams, "RegisterToBid", undefined>; route: RouteProp<BiddingNavigationStackParams, "RegisterToBid">; }' is missing the following properties from type 'MappedFragmentProps<Pick<Omit<RegistrationProps, "relay">, "style" | "me" | "sale" | "children" | "navigation" | "route" | "id" | "hitSlop" | "needsOffscreenAlphaCompositing" | ... 80 more ... | "accessibilityLargeContentTitle">>': me, sale
+src/app/Components/Bidding/Screens/Registration.tsx(568,12): error TS2739: Type '{ navigation: NativeStackNavigationProp<BiddingNavigationStackParams, "RegisterToBid", undefined>; route: RouteProp<BiddingNavigationStackParams, "RegisterToBid">; }' is missing the following properties from type 'MappedFragmentProps<Pick<Omit<RegistrationProps, "relay">, "style" | "children" | "navigation" | "route" | "id" | "sale" | "hitSlop" | "needsOffscreenAlphaCompositing" | ... 81 more ... | "me">>': sale, me
 src/app/Components/Bidding/Screens/Registration.tsx(568,38): error TS2698: Spread types may only be created from object types.
 src/app/Components/BottomSheet/AutoHeightBottomSheet.tsx(17,24): error TS2322: Type 'ReactNode | ReactNode[] | FC<{ data?: any; }>' is not assignable to type 'ReactNode | ReactNode[]'.
   Type 'FC<{ data?: any; }>' is not assignable to type 'ReactNode | ReactNode[]'.
@@ -90,8 +79,6 @@ src/app/Components/Containers/Inquiry.tsx(221,10): error TS2322: Type '{ childre
   Property 'children' does not exist on type 'IntrinsicAttributes & BottomAlignedProps'.
 src/app/Components/ContextMenu/ContextMenuArtworkPreviewCard.tsx(98,11): error TS2322: Type 'false | Element | ComponentType<any>' is not assignable to type 'ReactNode'.
   Type 'ComponentClass<any, any>' is not assignable to type 'ReactNode'.
-src/app/Components/Gene/GeneArtworks.tsx(84,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/app/Components/Gene/GeneArtworks.tsx(84,43): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
 src/app/Components/GlobalSearchInput/GlobalSearchInputOverlay.tsx(45,29): error TS2322: Type '{ inputRef: RefObject<InputRef | null>; queryRef: RefObject<string>; }' is not assignable to type '{ inputRef: RefObject<InputRef>; queryRef: Ref<string>; }'.
   Types of property 'inputRef' are incompatible.
     Type 'RefObject<InputRef | null>' is not assignable to type 'RefObject<InputRef>'.
@@ -225,9 +212,6 @@ src/app/Navigation/Navigation.tsx(53,15): error TS2345: Argument of type '{ curr
 src/app/Scenes/Activity/ActivityEmptyView.tsx(73,59): error TS2322: Type 'ReactElement<unknown, string | JSXElementConstructor<any>> | undefined' is not assignable to type 'ReactElement<RefreshControlProps, string | JSXElementConstructor<any>> | undefined'.
   Type 'ReactElement<unknown, string | JSXElementConstructor<any>>' is not assignable to type 'ReactElement<RefreshControlProps, string | JSXElementConstructor<any>>'.
     Type 'unknown' is not assignable to type 'RefreshControlProps'.
-src/app/Scenes/ArtistSeries/ArtistSeriesArtworks.tsx(93,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/app/Scenes/ArtistSeries/ArtistSeriesArtworks.tsx(93,43): error TS7031: Binding element 'index' implicitly has an 'any' type.
-src/app/Scenes/ArtistSeries/ArtistSeriesArtworks.tsx(93,50): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
 src/app/Scenes/ArtistSeries/ArtistSeriesArtworks.tsx(124,9): error TS2322: Type 'RefObject<MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }> | null>' is not assignable to type 'RefObject<MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>>'.
   Type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }> | null' is not assignable to type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>'.
     Type 'null' is not assignable to type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>'.
@@ -240,19 +224,12 @@ src/app/Scenes/Artwork/Components/CommercialButtons/__tests__/InquiryModal.tests
 src/app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext.tsx(78,31): error TS2554: Expected 1 arguments, but got 0.
 src/app/Scenes/Artwork/Components/ImageCarousel/useSpringValue.ts(20,16): error TS2554: Expected 1 arguments, but got 0.
 src/app/Scenes/Artwork/Components/ImageCarousel/useSpringValue.ts(31,7): error TS2322: Type 'undefined' is not assignable to type 'CompositeAnimation'.
-src/app/Scenes/Collection/Screens/CollectionArtworks.tsx(106,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/app/Scenes/Collection/Screens/CollectionArtworks.tsx(106,43): error TS7031: Binding element 'index' implicitly has an 'any' type.
-src/app/Scenes/Collection/Screens/CollectionArtworks.tsx(106,50): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
 src/app/Scenes/Collection/Screens/CollectionArtworks.tsx(140,9): error TS2322: Type 'RefObject<MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }> | null>' is not assignable to type 'RefObject<MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>>'.
   Type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }> | null' is not assignable to type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>'.
     Type 'null' is not assignable to type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>'.
 src/app/Scenes/CompleteMyProfile/LocationStep.tsx(72,15): error TS2322: Type 'RefObject<TextInput | null>' is not assignable to type 'RefObject<TextInput>'.
   Type 'TextInput | null' is not assignable to type 'TextInput'.
     Type 'null' is not assignable to type 'TextInput'.
-src/app/Scenes/Fair/Components/FairArtworks.tsx(91,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/app/Scenes/Fair/Components/FairArtworks.tsx(91,43): error TS7031: Binding element 'index' implicitly has an 'any' type.
-src/app/Scenes/Fair/Components/FairArtworks.tsx(91,50): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
-src/app/Scenes/Fair/Components/FairExhibitors.tsx(42,43): error TS7031: Binding element 'show' implicitly has an 'any' type.
 src/app/Scenes/Favorites/Components/FollowedArtists.tsx(76,13): error TS2322: Type '{ readonly id: string; readonly internalID: string; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtistListItem_artist">; } | null | undefined' is not assignable to type '_FragmentRefs<"ArtistListItem_artist">'.
   Type 'undefined' is not assignable to type '_FragmentRefs<"ArtistListItem_artist">'.
 src/app/Scenes/Favorites/Favorites.tsx(169,13): error TS2322: Type 'FC<MaterialTopTabBarProps>' is not assignable to type '(props: MaterialTopTabBarProps) => ReactNode'.
@@ -261,38 +238,24 @@ src/app/Scenes/Favorites/Favorites.tsx(169,13): error TS2322: Type 'FC<MaterialT
       Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
         Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
           Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
-src/app/Scenes/HomeView/Components/ArticlesRail.tsx(34,10): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/app/Scenes/HomeView/Components/ArticlesRail.tsx(34,16): error TS7031: Binding element 'index' implicitly has an 'any' type.
 src/app/Scenes/HomeView/Components/ArtistRails/ArtistRail.tsx(36,19): error TS2554: Expected 1 arguments, but got 0.
 src/app/Scenes/HomeView/Components/ArtistRails/RecommendedArtistsRail.tsx(42,19): error TS2554: Expected 1 arguments, but got 0.
 src/app/Scenes/HomeView/Components/ArtworkModuleRail.tsx(120,9): error TS2322: Type 'RefObject<FlatList<any> | null>' is not assignable to type 'RefObject<FlatList<any>>'.
   Type 'FlatList<any> | null' is not assignable to type 'FlatList<any>'.
     Type 'null' is not assignable to type 'FlatList<any>'.
 src/app/Scenes/HomeView/Components/HomeViewSectionSentinel.tsx(26,6): error TS7006: Parameter 'visible' implicitly has an 'any' type.
-src/app/Scenes/HomeView/Components/ShowsRail.tsx(53,10): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/app/Scenes/HomeView/Components/ShowsRail.tsx(53,16): error TS7031: Binding element 'index' implicitly has an 'any' type.
 src/app/Scenes/HomeView/Components/ShowsRail.tsx(54,10): error TS2741: Property 'isFluid' is missing in type '{ show: any; onPress: () => void; }' but required in type 'MappedFragmentProps<Pick<Omit<ShowCardProps, "relay">, keyof ShowCardProps>>'.
-src/app/Scenes/HomeView/HomeView.tsx(188,8): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/app/Scenes/HomeView/HomeView.tsx(188,14): error TS7031: Binding element 'index' implicitly has an 'any' type.
 src/app/Scenes/HomeView/HomeView.tsx(266,8): error TS2786: 'RetryErrorBoundary' cannot be used as a JSX component.
   Its type 'typeof RetryErrorBoundary' is not a valid JSX element type.
     Types of construct signatures are incompatible.
       Type 'new (props: RetryErrorBoundaryProps) => RetryErrorBoundary' is not assignable to type 'new (props: any) => Component<any, any, any>'.
         Construct signature return types 'RetryErrorBoundary' and 'Component<any, any, any>' are incompatible.
           The types returned by 'render()' are incompatible between these types.
-            Type 'string | number | bigint | boolean | Element | Iterable<ReactNode> | Promise<ReactNode> | null | undefined' is not assignable to type 'ReactNode'.
+            Type 'string | number | bigint | boolean | Iterable<ReactNode> | Promise<ReactNode> | Element | null | undefined' is not assignable to type 'ReactNode'.
               Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
                 Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
                   Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
                     Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
-src/app/Scenes/HomeView/Sections/HomeViewSectionActivity.tsx(44,10): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/app/Scenes/HomeView/Sections/HomeViewSectionActivity.tsx(44,16): error TS7031: Binding element 'index' implicitly has an 'any' type.
-src/app/Scenes/HomeView/Sections/HomeViewSectionArtists.tsx(74,8): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/app/Scenes/HomeView/Sections/HomeViewSectionArtists.tsx(74,14): error TS7031: Binding element 'index' implicitly has an 'any' type.
-src/app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults.tsx(49,10): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults.tsx(49,16): error TS7031: Binding element 'index' implicitly has an 'any' type.
-src/app/Scenes/HomeView/Sections/HomeViewSectionFairs.tsx(60,10): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/app/Scenes/HomeView/Sections/HomeViewSectionFairs.tsx(60,16): error TS7031: Binding element 'index' implicitly has an 'any' type.
 src/app/Scenes/HomeView/Sections/HomeViewSectionSales.tsx(47,19): error TS2554: Expected 1 arguments, but got 0.
 src/app/Scenes/HomeView/Sections/HomeViewSectionTasks.tsx(264,37): error TS2345: Argument of type 'RefObject<SwipeableMethods | null>' is not assignable to parameter of type 'RefObject<SwipeableMethods>'.
   Type 'SwipeableMethods | null' is not assignable to type 'SwipeableMethods'.
@@ -321,15 +284,10 @@ src/app/Scenes/Inbox/Components/Conversations/PurchaseModal.tsx(61,12): error TS
 src/app/Scenes/Inbox/Screens/Conversation.tsx(176,11): error TS2322: Type 'null' is not assignable to type 'string | undefined'.
 src/app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard.tsx(191,13): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"ArtistListItem_artist">; } | null | undefined' is not assignable to type '_FragmentRefs<"ArtistListItem_artist">'.
   Type 'undefined' is not assignable to type '_FragmentRefs<"ArtistListItem_artist">'.
-src/app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryMoreWorksTab.tsx(39,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryMoreWorksTab.tsx(39,43): error TS7031: Binding element 'index' implicitly has an 'any' type.
-src/app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryMoreWorksTab.tsx(39,50): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
 src/app/Scenes/MyAccount/Components/MyAccountFieldEditScreen.tsx(43,29): error TS2554: Expected 1 arguments, but got 0.
 src/app/Scenes/MyAccount/Components/MyAccountFieldEditScreen.tsx(123,21): error TS2322: Type 'undefined' is not assignable to type 'AlertArgs'.
 src/app/Scenes/MyAccount/Components/MyAccountFieldEditScreen.tsx(137,3): error TS2339: Property 'children' does not exist on type '{ title: string; }'.
 src/app/Scenes/MyBids/Components/Lot.tsx(18,36): error TS2339: Property 'children' does not exist on type 'Readonly<Props>'.
-src/app/Scenes/MyCollection/MyCollectionArtworks.tsx(81,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/app/Scenes/MyCollection/MyCollectionArtworks.tsx(81,43): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
 src/app/Scenes/MyCollection/MyCollectionArtworks.tsx(93,11): error TS2322: Type '{ contextScreenOwnerType: OwnerType; contextScreenOwnerId: any; contextScreenOwnerSlug: any; artwork: any; height: number; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<MyCollectionArtworkGridItemProps, "relay">, "artwork">> & { ...; }'.
   Property 'contextScreenOwnerType' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<MyCollectionArtworkGridItemProps, "relay">, "artwork">> & { ...; }'.
 src/app/Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork.tsx(219,8): error TS2786: 'RetryErrorBoundary' cannot be used as a JSX component.
@@ -403,15 +361,10 @@ src/app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailBuyerProtection.ts
   Property 'children' does not exist on type 'IntrinsicAttributes & MessageProps'.
 src/app/Scenes/OrderHistory/OrderDetails/__tests__/OrderDetailsPayment.tests.tsx(9,70): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"OrderDetailsPayment_order">; } | null | undefined' is not assignable to type '_FragmentRefs<"OrderDetailsPayment_order">'.
   Type 'undefined' is not assignable to type '_FragmentRefs<"OrderDetailsPayment_order">'.
-src/app/Scenes/OrderHistory/OrderDetails/Components/OrderDetails.tsx(27,18): error TS2503: Cannot find namespace 'JSX'.
-src/app/Scenes/Partner/Components/PartnerArtwork.tsx(61,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/app/Scenes/Partner/Components/PartnerArtwork.tsx(61,43): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
-src/app/Scenes/Partner/Components/PartnerOverviewList.tsx(39,8): error TS7031: Binding element 'item' implicitly has an 'any' type.
 src/app/Scenes/Sale/__tests__/Sale.tests.tsx(19,24): error TS2322: Type '() => null' is not assignable to type 'ReactNode'.
 src/app/Scenes/Sale/Components/SaleActiveBids.tsx(50,63): error TS2322: Type '{ readonly saleArtwork: { readonly slug: string; } | null | undefined; readonly " $fragmentSpreads": FragmentRefs<"SaleActiveBidItem_lotStanding">; } | null | undefined' is not assignable to type '_FragmentRefs<"SaleActiveBidItem_lotStanding">'.
   Type 'undefined' is not assignable to type '_FragmentRefs<"SaleActiveBidItem_lotStanding">'.
 src/app/Scenes/Sale/Components/SaleArtworkListItem.tsx(28,19): error TS2554: Expected 1 arguments, but got 0.
-src/app/Scenes/Sale/Sale.tsx(54,12): error TS2503: Cannot find namespace 'JSX'.
 src/app/Scenes/SaleInfo/__tests__/SaleInfo.tests.tsx(10,53): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"SaleInfo_sale">; } | null | undefined' is not assignable to type '_FragmentRefs<"SaleInfo_sale">'.
   Type 'undefined' is not assignable to type '_FragmentRefs<"SaleInfo_sale">'.
 src/app/Scenes/SaleInfo/__tests__/SaleInfo.tests.tsx(10,65): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"SaleInfo_me">; } | null | undefined' is not assignable to type '_FragmentRefs<"SaleInfo_me">'.
@@ -422,21 +375,10 @@ src/app/Scenes/SavedSearchAlert/__tests__/CreateSavedSearchModal.tests.tsx(93,34
 src/app/Scenes/SavedSearchAlert/__tests__/CreateSavedSearchModal.tests.tsx(128,10): error TS2559: Type '{ children: (string | Element)[]; }' has no properties in common with type 'IntrinsicAttributes'.
 src/app/Scenes/SavedSearchAlert/screens/__tests__/ConfirmationScreen.tests.tsx(60,34): error TS2339: Property 'children' does not exist on type '{}'.
 src/app/Scenes/SavedSearchAlert/screens/__tests__/ConfirmationScreen.tests.tsx(75,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
-src/app/Scenes/SavedSearchAlertsList/Components/EmptyMessage.tsx(19,9): error TS2503: Cannot find namespace 'JSX'.
 src/app/Scenes/SavedSearchAlertsList/SavedSearchAlertsList.tsx(23,48): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"SavedSearchesList_me">; } | null | undefined' is not assignable to type '_FragmentRefs<"SavedSearchesList_me">'.
   Type 'undefined' is not assignable to type '_FragmentRefs<"SavedSearchesList_me">'.
 src/app/Scenes/Search/__tests__/RecentSearches.tests.tsx(29,48): error TS2322: Type 'null' is not assignable to type 'InputRef'.
-src/app/Scenes/Search/components/EntitySearchResults.tsx(66,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/app/Scenes/Search/components/EntitySearchResults.tsx(66,43): error TS7031: Binding element 'index' implicitly has an 'any' type.
-src/app/Scenes/Show/Screens/ShowMoreInfo.tsx(22,12): error TS2503: Cannot find namespace 'JSX'.
-src/app/Scenes/Show/Show.tsx(24,12): error TS2503: Cannot find namespace 'JSX'.
 src/app/Scenes/SimilarToRecentlyViewed/__tests__/SimilarToRecentlyViewed.tests.tsx(9,28): error TS2559: Type '{ me: { readonly " $fragmentSpreads": FragmentRefs<"SimilarToRecentlyViewed_artworksConnection">; } | null | undefined; }' has no properties in common with type 'IntrinsicAttributes'.
-src/app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed.tsx(63,19): error TS2503: Cannot find namespace 'JSX'.
-src/app/Scenes/Tag/TagArtworks.tsx(90,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
-src/app/Scenes/Tag/TagArtworks.tsx(90,43): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
-src/app/Scenes/ViewingRoom/ViewingRoom.tsx(28,12): error TS2503: Cannot find namespace 'JSX'.
-src/app/Scenes/ViewingRoom/ViewingRoom.tsx(151,50): error TS7031: Binding element 'viewableItems' implicitly has an 'any' type.
-src/app/Scenes/ViewingRoom/ViewingRoomArtworks.tsx(23,12): error TS2503: Cannot find namespace 'JSX'.
 src/app/utils/__legacy_do_not_use__navigator-ios-shim.tsx(78,30): error TS2322: Type '(ref: NavigationContainerRef<RootParamList> | null) => NavigationContainerRef<RootParamList> | null' is not assignable to type 'Ref<NavigationContainerRef<RootParamList>> | undefined'.
   Type '(ref: NavigationContainerRef<RootParamList> | null) => NavigationContainerRef<RootParamList> | null' is not assignable to type '(instance: NavigationContainerRef<RootParamList> | null) => void | (() => VoidOrUndefinedOnly)'.
     Type 'NavigationContainerRef<RootParamList> | null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
@@ -444,7 +386,5 @@ src/app/utils/__legacy_do_not_use__navigator-ios-shim.tsx(78,30): error TS2322: 
 src/app/utils/ArtworkInquiry/ArtworkInquiryStore.tsx(70,40): error TS2558: Expected 2 type arguments, but got 1.
 src/app/utils/ArtworkInquiry/ArtworkInquiryStore.tsx(76,46): error TS2322: Type 'Reducer<ArtworkInquiryContextState, ArtworkInquiryActions>' is not assignable to type 'ArtworkInquiryContextState'.
 src/app/utils/flattenChildren.ts(11,42): error TS18046: 'child.props' is of type 'unknown'.
-src/app/utils/useElasticOverscroll.tsx(3,46): error TS2503: Cannot find namespace 'JSX'.
-src/app/utils/useStickyScrollHeader.tsx(15,12): error TS2503: Cannot find namespace 'JSX'.
-info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+error Command failed with exit code 1.
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

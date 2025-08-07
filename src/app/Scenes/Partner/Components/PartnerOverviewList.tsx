@@ -36,7 +36,7 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
   }
 
   const renderItem = useCallback(
-    ({ item }) => (
+    ({ item }: { item: any }) => (
       <Flex py={1}>
         <ArtistListItem artist={item} />
       </Flex>

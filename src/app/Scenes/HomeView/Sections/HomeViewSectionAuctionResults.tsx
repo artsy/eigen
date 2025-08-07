@@ -46,7 +46,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
     const tracking = useHomeViewTracking()
 
     const renderItem = useCallback(
-      ({ item, index }) => {
+      ({ item, index }: { item: any; index: number }) => {
         return (
           <AuctionResultListItemFragmentContainer
             showArtistName

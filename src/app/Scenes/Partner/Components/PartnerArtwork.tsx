@@ -58,7 +58,7 @@ export const PartnerArtwork: React.FC<{
   const emptyText =
     "There are no matching works from this gallery.\nTry changing your search filters"
 
-  const renderItem = useCallback(({ item, columnIndex }) => {
+  const renderItem = useCallback(({ item, columnIndex }: { item: any; columnIndex: number }) => {
     const imgAspectRatio = item.image?.aspectRatio ?? 1
     const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
     const imgHeight = imgWidth / imgAspectRatio

@@ -103,7 +103,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
     })
   }
 
-  const renderItem = useCallback(({ item, index, columnIndex }) => {
+  const renderItem = useCallback(({ item, index, columnIndex }: { item: any; index: number; columnIndex: number }) => {
     const imgAspectRatio = item.image?.aspectRatio ?? 1
     const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
     const imgHeight = imgWidth / imgAspectRatio

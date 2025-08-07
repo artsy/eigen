@@ -71,7 +71,7 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
   }
 
   const renderItem = useCallback(
-    ({ item, index }) => {
+    ({ item, index }: { item: any; index: number }) => {
       return (
         <ArtistCardContainer
           artist={item}

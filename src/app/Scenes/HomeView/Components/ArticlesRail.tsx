@@ -31,7 +31,7 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = memo(
     const articles = extractNodes(articlesConnection)
 
     const renderItem = useCallback(
-      ({ item, index }) => (
+      ({ item, index }: { item: any; index: number }) => (
         <ArticleCardContainer
           onPress={() => {
             onPress?.(item, index)

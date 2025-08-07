@@ -185,7 +185,7 @@ export const HomeView: React.FC = memo(() => {
   }
 
   const renderItem = useCallback(
-    ({ item, index }) => {
+    ({ item, index }: { item: any; index: number }) => {
       return <Section section={item} my={2} index={index} refetchKey={refetchKey} />
     },
     [refetchKey]

@@ -173,7 +173,7 @@ const AutosuggestResultsFlatList: React.FC<{
     )
   }, [hasMoreResults, noResults, ListFooterComponent])
 
-  const renderItem = useCallback(({ item, index }) => {
+  const renderItem = useCallback(({ item, index }: { item: any; index: number }) => {
     if (CustomListItemComponent) {
       return <CustomListItemComponent item={item} highlight={query} />
     }

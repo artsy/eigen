@@ -63,7 +63,7 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
     }
   }, [query])
 
-  const renderItem = useCallback(({ item, index }) => {
+  const renderItem = useCallback(({ item, index }: { item: any; index: number }) => {
     return <SearchResult result={item} selectedPill={selectedPill} query={query} position={index} />
   }, [])
 
