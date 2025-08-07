@@ -332,8 +332,6 @@ def deploy_android_beta(deployment_target:)
     supply(
       track: 'alpha',
       skip_upload_apk: true,
-      skip_upload_metadata: true,
-      skip_upload_changelogs: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
       aab: './android/app/build/outputs/bundle/release/app-release.aab'
@@ -359,8 +357,6 @@ lane :promote_beta_android do
     version_code: selected_version_code,
     track_promote_to: 'production',
     rollout: '0.1',
-    skip_upload_metadata: true,
-    skip_upload_changelogs: true,
     skip_upload_images: true,
     skip_upload_screenshots: true,
     skip_upload_aab: true,
