@@ -3,7 +3,7 @@ import {
   PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
   PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE,
 } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingPriceRangeHome"
-import { usePriceRangeToast } from "app/Scenes/HomeViewSectionScreen/hooks/usePriceRangeToast"
+import { useSetPriceRangeReminder } from "app/Scenes/HomeViewSectionScreen/hooks/useSetPriceRangeReminder"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -33,11 +33,11 @@ jest.mock("react-native/Libraries/Interaction/InteractionManager", () => ({
 }))
 
 const TestComponent = (props: any) => {
-  usePriceRangeToast(props)
+  useSetPriceRangeReminder(props)
   return null
 }
 
-describe("usePriceRangeToast", () => {
+describe("useSetPriceRangeReminder", () => {
   beforeEach(() => {
     jest.clearAllMocks()
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnablePriceRangeToast: true })

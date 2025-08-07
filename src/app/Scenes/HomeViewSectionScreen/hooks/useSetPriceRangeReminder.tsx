@@ -1,4 +1,4 @@
-import { ActionType, OwnerType, TappedToast, ViewedToast } from "@artsy/cohesion"
+import { ActionType, ScreenOwnerType, TappedToast, ViewedToast } from "@artsy/cohesion"
 import { fetchPriceRange } from "app/Components/PriceRange/fetchPriceRange"
 import {
   PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
@@ -14,18 +14,20 @@ import { useEffect, useRef } from "react"
 import { InteractionManager } from "react-native"
 import { useTracking } from "react-tracking"
 
-export const PRICE_RANGE_TOAST_KEY = "priceRangeToastLastShown"
+const SCROLL_THRESHOLD = 0.5
 
 export interface PriceRangeToastProps {
   artworksLength: number
   totalCount: number
   sectionInternalID: string
+  contextScreenOwnerType: ScreenOwnerType
 }
 
-export function usePriceRangeToast({
+export function useSetPriceRangeReminder({
   artworksLength,
   totalCount,
   sectionInternalID,
+  contextScreenOwnerType,
 }: PriceRangeToastProps) {
   const toast = useToast()
   const tracking = useTracking()
@@ -49,7 +51,7 @@ export function usePriceRangeToast({
       if (!hasPriceRange || !hasStaleArtworkBudget) return
 
       // user scrolls through 50% of artworks on the screen
-      const hasScrolledEnough = totalCount > 0 && artworksLength / totalCount > 0.5
+      const hasScrolledEnough = totalCount > 0 && artworksLength / totalCount > SCROLL_THRESHOLD
 
       if (totalCount === 0 || !hasScrolledEnough || hasShownPriceRangeToast.current) {
         return
@@ -58,14 +60,14 @@ export function usePriceRangeToast({
       // prevent parallel triggers
       hasShownPriceRangeToast.current = true
 
-      const maybeShowToast = async () => {
+      const showToast = async () => {
         addClue(toastName)
         try {
           toast.show(PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE, "bottom", {
             description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
             duration: "long",
             onPress: () => {
-              tracking.trackEvent(tracks.onToastPress())
+              tracking.trackEvent(tracks.onToastPress(contextScreenOwnerType))
 
               InteractionManager.runAfterInteractions(() => {
                 navigate("my-account/edit-price-range")
@@ -74,7 +76,7 @@ export function usePriceRangeToast({
             hideOnPress: true,
           })
 
-          tracking.trackEvent(tracks.onToastView())
+          tracking.trackEvent(tracks.onToastView(contextScreenOwnerType))
 
           setTimeout(() => {
             setVisualClueAsSeen(toastName)
@@ -84,7 +86,7 @@ export function usePriceRangeToast({
         }
       }
 
-      maybeShowToast()
+      showToast()
     })
   }, [
     artworksLength,
@@ -95,22 +97,23 @@ export function usePriceRangeToast({
     enablePriceRangeToast,
     hasSeenToast,
     toastName,
+    contextScreenOwnerType,
   ])
 }
 
 const tracks = {
-  onToastPress: (): TappedToast => {
+  onToastPress: (contextScreenOwnerType: ScreenOwnerType): TappedToast => {
     return {
       action: ActionType.tappedToast,
-      context_screen_owner_type: OwnerType.artworkRecommendations,
+      context_screen_owner_type: contextScreenOwnerType, // OwnerType.artworkRecommendations,
       subject: "price-range-toast",
     }
   },
 
-  onToastView: (): ViewedToast => {
+  onToastView: (contextScreenOwnerType: ScreenOwnerType): ViewedToast => {
     return {
       action: ActionType.viewedToast,
-      context_screen_owner_type: OwnerType.artworkRecommendations,
+      context_screen_owner_type: contextScreenOwnerType, // OwnerType.artworkRecommendations,
       subject: "price-range-toast",
     }
   },

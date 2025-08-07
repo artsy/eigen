@@ -6,7 +6,7 @@ import { HomeViewSectionScreenQuery } from "__generated__/HomeViewSectionScreenQ
 import { MasonryInfiniteScrollArtworkGrid } from "app/Components/ArtworkGrids/MasonryInfiniteScrollArtworkGrid"
 import { PAGE_SIZE, SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
-import { usePriceRangeToast } from "app/Scenes/HomeViewSectionScreen/hooks/usePriceRangeToast"
+import { useSetPriceRangeReminder } from "app/Scenes/HomeViewSectionScreen/hooks/useSetPriceRangeReminder"
 import { GlobalStore } from "app/store/GlobalStore"
 import { goBack } from "app/system/navigation/navigate"
 import { extractNodes } from "app/utils/extractNodes"
@@ -51,10 +51,11 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
 
   const numOfColumns = defaultViewOption === "grid" ? NUM_COLUMNS_MASONRY : 1
 
-  usePriceRangeToast({
+  useSetPriceRangeReminder({
     artworksLength: artworks.length,
     totalCount: section.artworksConnection?.totalCount ?? 0,
     sectionInternalID: section.internalID,
+    contextScreenOwnerType: section.ownerType as ScreenOwnerType,
   })
 
   return (
@@ -127,6 +128,7 @@ export const artworksFragment = graphql`
       title
     }
     ownerType
+    contextModule
     trackItemImpressions
     artworksConnection(after: $cursor, first: $count)
       @connection(key: "ArtworksScreenHomeSection_artworksConnection", filters: []) {

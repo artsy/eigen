@@ -18,6 +18,7 @@ const EDGE_TOAST_HEIGHT = 60
 const IMAGE_SIZE = 40
 const EDGE_TOAST_PADDING = 10
 const NAVBAR_HEIGHT = 44
+const TOAST_ANIMATION_DURATION = 450
 
 export const TOAST_DURATION_MAP: Record<ToastDuration, number> = {
   short: 2500,
@@ -59,7 +60,7 @@ export const ToastComponent = ({
     Animated.timing(opacityAnim, {
       toValue: 0,
       useNativeDriver: true,
-      duration: 450,
+      duration: TOAST_ANIMATION_DURATION,
     }).start(() => GlobalStore.actions.toast.remove(id))
   }, toastDuration)
 
@@ -196,7 +197,7 @@ export const ToastComponent = ({
               Animated.timing(opacityAnim, {
                 toValue: 0,
                 useNativeDriver: true,
-                duration: 450,
+                duration: TOAST_ANIMATION_DURATION,
               }).start(() => GlobalStore.actions.toast.remove(id))
             }
           }}

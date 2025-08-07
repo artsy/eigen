@@ -61,17 +61,17 @@ export const MyAccountEditPriceRange: React.FC<{
       setIsLoading(true)
       await updateMyUserProfile({ priceRangeMin, priceRangeMax })
       trackEvent(tracks.savePriceRange(priceRange))
-      goBack()
-    } catch (e: any) {
-      setReceivedError(e)
-    } finally {
-      setIsLoading(false)
       toast.show("Artwork budget set", "bottom", {
         description:
           "We will tailor your experience to better match your preferences going forward",
         duration: "short",
         backgroundColor: "green100",
       })
+      goBack()
+    } catch (e: any) {
+      setReceivedError(e)
+    } finally {
+      setIsLoading(false)
     }
   }
 
