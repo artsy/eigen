@@ -10,7 +10,12 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 
-export const ProgressiveOnboardingSaveArtwork: React.FC<{ contextScreenOwnerType?: OwnerType }> = ({
+interface ProgressiveOnboardingSaveArtworkProps {
+  contextScreenOwnerType?: OwnerType
+  children?: React.ReactNode
+}
+
+export const ProgressiveOnboardingSaveArtwork: React.FC<ProgressiveOnboardingSaveArtworkProps> = ({
   children,
 }) => {
   const [isInView, setIsInView] = useState(false)

@@ -71,7 +71,7 @@ export const SectionTitle: React.FC<
   )
 }
 
-const Wrapper: React.FC<{ onPress?(): void; href?: string | null; navigationProps?: object }> = ({
+const Wrapper: React.FC<{ onPress?(): void; href?: string | null; navigationProps?: object; children?: React.ReactNode }> = ({
   children,
   href,
   navigationProps,

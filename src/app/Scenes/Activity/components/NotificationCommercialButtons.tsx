@@ -43,7 +43,11 @@ export const CommercialButtonsQueryRenderer: React.FC<{
   )
 }
 
-const RowContainer: React.FC = ({ children }) => {
+interface RowContainerProps {
+  children?: React.ReactNode
+}
+
+const RowContainer: React.FC<RowContainerProps> = ({ children }) => {
   const childArray = Children.map(children, (child) => {
     return <Flex flex={1}>{child}</Flex>
   })

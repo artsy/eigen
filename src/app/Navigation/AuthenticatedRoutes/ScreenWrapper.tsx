@@ -10,6 +10,7 @@ import { useAnimatedStyle, useSharedValue } from "react-native-reanimated"
 
 export interface ScreenWrapperProps {
   readonly hidesBottomTabs?: boolean
+  children?: React.ReactNode
 }
 
 /**

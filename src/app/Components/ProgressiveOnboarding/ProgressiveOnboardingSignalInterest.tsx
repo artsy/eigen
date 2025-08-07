@@ -7,7 +7,11 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
-export const ProgressiveOnboardingSignalInterest: React.FC = ({ children }) => {
+interface ProgressiveOnboardingSignalInterestProps {
+  children?: React.ReactNode
+}
+
+export const ProgressiveOnboardingSignalInterest: React.FC<ProgressiveOnboardingSignalInterestProps> = ({ children }) => {
   const {
     isDismissed,
     sessionState: { isReady },
