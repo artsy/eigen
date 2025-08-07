@@ -10,7 +10,7 @@ interface Props {
   order: WirePaymentSection_order$data
 }
 
-const NumberedListItem: React.FC<{ index: number }> = ({ children, index }) => (
+const NumberedListItem: React.FC<{ index: number; children?: React.ReactNode }> = ({ children, index }) => (
   <Flex flexDirection="row">
     <Flex minWidth={20}>
       <Text>{index}.</Text>

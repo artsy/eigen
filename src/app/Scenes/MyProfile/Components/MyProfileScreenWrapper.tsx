@@ -11,6 +11,7 @@ export interface MyProfileScreenWrapperProps {
   hideLeftElements?: boolean
   contentContainerStyle?: ViewStyle
   RefreshControl?: React.ReactElement<RefreshControlProps>
+  children?: React.ReactNode
 }
 export const MyProfileScreenWrapper: React.FC<MyProfileScreenWrapperProps> = ({
   children,

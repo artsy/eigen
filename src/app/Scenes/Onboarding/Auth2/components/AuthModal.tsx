@@ -19,7 +19,11 @@ const HEIGHT = {
   collapsed: 300,
 }
 
-export const AuthModal: React.FC = ({ children }) => {
+interface AuthModalProps {
+  children?: React.ReactNode
+}
+
+export const AuthModal: React.FC<AuthModalProps> = ({ children }) => {
   const { isModalExpanded, isMounted, currentScreen } = AuthContext.useStoreState((state) => state)
 
   const { color, space } = useTheme()

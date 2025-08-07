@@ -20,7 +20,7 @@ import { useTracking } from "react-tracking"
 
 export const COVER_IMAGE_HEIGHT = 100
 
-export const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string }> = (props) => (
+export const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string; children?: React.ReactNode }> = (props) => (
   <Touchable
     accessibilityRole="button"
     style={{ marginTop: 15 }}
@@ -47,6 +47,7 @@ interface SaleCardProps {
   me: SaleCard_me$data
   smallScreen: boolean
   hideChildren?: boolean
+  children?: React.ReactNode
 }
 
 export const SaleCard: React.FC<SaleCardProps> = ({

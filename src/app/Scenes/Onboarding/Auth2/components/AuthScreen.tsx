@@ -3,6 +3,7 @@ import { AuthContext, AuthScreen as AuthScreenItem } from "app/Scenes/Onboarding
 
 interface AuthScreenProps {
   name: AuthScreenItem["name"]
+  children?: React.ReactNode
 }
 
 export const AuthScreen: React.FC<AuthScreenProps> = ({ children, name }) => {

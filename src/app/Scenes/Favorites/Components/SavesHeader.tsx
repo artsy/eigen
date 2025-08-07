@@ -50,6 +50,7 @@ export const SavesHeader = () => {
 
 interface TouchableElementProps {
   onPress: () => void
+  children?: React.ReactNode
 }
 
 const TouchableElement: React.FC<TouchableElementProps> = ({ onPress, children }) => {

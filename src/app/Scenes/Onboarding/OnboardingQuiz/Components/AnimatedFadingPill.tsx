@@ -10,6 +10,7 @@ interface FadingPillProps {
   Icon?: React.FC<IconProps>
   onPress?: MotiPressableProps["onPress"]
   isVisible: boolean
+  children?: React.ReactNode
 }
 
 export const FADE_OUT_PILL_ANIMATION_DURATION = 500

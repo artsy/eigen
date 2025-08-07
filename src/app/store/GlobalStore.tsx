@@ -92,7 +92,7 @@ export const GlobalStore = {
   },
 }
 
-export const GlobalStoreProvider: React.FC<{}> = ({ children }) => {
+export const GlobalStoreProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   return <StoreProvider store={globalStoreInstance()}>{children}</StoreProvider>
 }
 

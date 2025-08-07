@@ -5,7 +5,7 @@ import { LayoutAnimation } from "react-native"
 
 const ICON_SIZE = 18
 
-export const CallapseWithTitle: React.FC<{ title: string }> = ({ children, title }) => {
+export const CallapseWithTitle: React.FC<{ title: string; children?: React.ReactNode }> = ({ children, title }) => {
   const [expanded, setExpanded] = useState(false)
   return (
     <Flex px={2}>

@@ -18,6 +18,7 @@ interface AnimatedViewProps {
   swipedKeys: SharedValue<Key[]>
   style?: ViewStyle | ViewStyle[]
   internalID: string
+  children?: React.ReactNode
 }
 
 export const AnimatedView: FC<AnimatedViewProps> = ({

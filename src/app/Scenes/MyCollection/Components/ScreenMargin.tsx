@@ -4,6 +4,7 @@ import { SpaceProps } from "styled-system"
 
 interface ScreenMarginProps extends SpaceProps<SpacingUnitsTheme> {
   ref?: React.Ref<View>
+  children?: React.ReactNode
 }
 
 export const ScreenMargin: React.FC<ScreenMarginProps> = ({ children, ...rest }) => {

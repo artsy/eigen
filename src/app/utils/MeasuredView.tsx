@@ -13,6 +13,7 @@ interface Props {
 
   /** for debugging, this will render the view where it is, not offscreen. */
   show?: boolean
+  children?: React.ReactNode
 }
 
 /**

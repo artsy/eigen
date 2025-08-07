@@ -5,7 +5,7 @@ import { useUnleashInitializer } from "app/system/flags/hooks/useUnleashInitiali
 import { useUnleashListener } from "app/system/flags/hooks/useUnleashListener"
 import Keys from "react-native-keys"
 
-export const WrappedFlagProvider: React.FC = ({ children }) => {
+export const WrappedFlagProvider: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const { unleashEnv: env } = useUnleashEnvironment()
 
   const storageName = (name: string) => `unleash-values:${name}`
@@ -37,7 +37,7 @@ export const WrappedFlagProvider: React.FC = ({ children }) => {
   )
 }
 
-const UnleashInitializer: React.FC = ({ children }) => {
+const UnleashInitializer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   useUnleashListener()
   useUnleashInitializer()
 

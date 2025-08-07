@@ -10,6 +10,7 @@ export interface WrappersProps {
   skipRelay?: boolean
   includeNavigation?: boolean
   includeArtworkLists?: boolean
+  children?: React.ReactNode
 }
 
 const Wrappers: React.FC<WrappersProps> = ({

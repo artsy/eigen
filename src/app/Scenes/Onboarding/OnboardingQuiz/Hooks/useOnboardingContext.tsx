@@ -88,6 +88,7 @@ const OnboardingContext = createContext<{
 
 interface OnboardingProviderProps {
   onDone(): void
+  children?: React.ReactNode
 }
 
 export const OnboardingProvider: FC<OnboardingProviderProps> = ({ children, onDone }) => {

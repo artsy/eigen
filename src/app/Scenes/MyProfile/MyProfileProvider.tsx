@@ -11,7 +11,11 @@ export const MyProfileContext = React.createContext<MyProfileInterface>({
   setLocalImage: () => {},
 })
 
-export const MyProfileProvider: React.FC = ({ children }) => {
+interface MyProfileProviderProps {
+  children?: React.ReactNode
+}
+
+export const MyProfileProvider: React.FC<MyProfileProviderProps> = ({ children }) => {
   const [localImage, setLocalImage] = useState<string>("")
 
   return (

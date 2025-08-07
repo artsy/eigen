@@ -22,6 +22,7 @@ interface MedianSalePriceChartDataContextProviderProps {
   artistId: string
   initialCategory: string
   queryData: MedianSalePriceAtAuctionQuery$data
+  children?: React.ReactNode
 }
 
 interface MedianSalePriceChartDataContextValueType {
