@@ -16,6 +16,7 @@ interface AnimatedBottomButtonProps {
   isVisible: boolean
   onPress?: () => void
   buttonStyles?: StyleProp<ViewStyle>
+  children?: React.ReactNode
 }
 
 export const AnimatedBottomButton: React.FC<AnimatedBottomButtonProps> = ({

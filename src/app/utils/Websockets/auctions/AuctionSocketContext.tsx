@@ -26,6 +26,7 @@ export interface AuctionWebsocketContextProviderProps {
   enabled: boolean
   channelInfo: AuctionWebsocketChannelInfo
   callbacks?: ConnectionCallbacks
+  children?: React.ReactNode
 }
 
 const initialValues = {

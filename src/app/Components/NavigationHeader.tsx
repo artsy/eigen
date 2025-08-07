@@ -24,8 +24,9 @@ export interface NavigationHeaderProps {
   useXButton?: boolean
   useShareButton?: boolean
   rightCloseButton?: boolean
-  renderRightButton?: () => JSX.Element
+  renderRightButton?: () => React.ReactElement
   alignItems?: ResponsiveAlignItemsValue
+  children?: React.ReactNode
 }
 
 export const NavigationHeader: React.FC<NavigationHeaderProps> = ({

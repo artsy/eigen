@@ -7,6 +7,7 @@ export const PageWithSimpleHeader: React.FC<{
   left?: React.ReactNode
   right?: React.ReactNode
   noSeparator?: boolean
+  children?: React.ReactNode
 }> = ({ title, titleWeight, left, right, children, noSeparator }) => {
   return (
     <Box style={{ flex: 1 }}>

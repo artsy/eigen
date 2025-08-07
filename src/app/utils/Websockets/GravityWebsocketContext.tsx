@@ -16,7 +16,11 @@ const initialValues = {
 
 const WebsocketContext = createContext<GravityWebsocketContextValueType>(initialValues)
 
-export const GravityWebsocketContextProvider: React.FC = ({ children }) => {
+interface GravityWebsocketContextProviderProps {
+  children?: React.ReactNode
+}
+
+export const GravityWebsocketContextProvider: React.FC<GravityWebsocketContextProviderProps> = ({ children }) => {
   const [actionCable, setActionCable] = useState<any | null>(null)
   const [channelsHolder, setChannelsHolder] = useState<any | null>(null)
 

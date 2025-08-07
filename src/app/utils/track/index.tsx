@@ -94,6 +94,7 @@ export const track: Track = (trackingInfo, options) => {
 
 interface ProvideScreenTrackingProps {
   info: Schema.PageView
+  children?: React.ReactNode
 }
 
 /** Deprecated
@@ -112,6 +113,7 @@ export const ProvideScreenTracking: React.FC<ProvideScreenTrackingProps> = (prop
 
 interface ProvideScreenTrackingWithCohesionSchemaProps {
   info: Screen
+  children?: React.ReactNode
 }
 // Uses schema defined in Cohesion
 export const ProvideScreenTrackingWithCohesionSchema: React.FC<

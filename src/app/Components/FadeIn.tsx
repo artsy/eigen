@@ -14,6 +14,7 @@ export const FadeIn: React.FC<{
   style?: ViewStyle
   slide?: boolean
   duration?: number
+  children?: React.ReactNode
 }> = ({
   slide = true,
   delay = 0,
