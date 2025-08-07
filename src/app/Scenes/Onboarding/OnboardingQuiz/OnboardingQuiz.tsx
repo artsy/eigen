@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { GlobalStore } from "app/store/GlobalStore"
+import { isTablet } from "react-native-device-info"
 import { OnboardingProvider } from "./Hooks/useOnboardingContext"
 import { useUpdateUserProfile } from "./Hooks/useUpdateUserProfile"
 import { OnboardingArtistsOnTheRise } from "./OnboardingArtistsOnTheRise"
@@ -54,6 +55,7 @@ export const OnboardingQuiz = () => {
           animation: "slide_from_right",
           headerShown: false,
           gestureEnabled: false,
+          orientation: !isTablet() ? "portrait" : "default",
         }}
       >
         <StackNavigator.Screen name="OnboardingWelcomeScreen" component={OnboardingWelcomeScreen} />
