@@ -10,7 +10,7 @@ appId: ${MAESTRO_APP_ID}
     id: "search-button"
 - scrollUntilVisible: # we do this just to give time to fetch deeplink verifications, can get rid of if we have a test run before deeplinks on same sim
     element: "News"
-    timeout: 50000
+    timeout: 90000
     speed: 60
 - killApp
 - openLink:
