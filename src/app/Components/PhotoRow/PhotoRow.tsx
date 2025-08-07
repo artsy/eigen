@@ -6,6 +6,7 @@ import { Image } from "react-native"
 interface PhotoRowContainerProps {
   error?: boolean
   errorMsg?: string
+  children?: React.ReactNode
 }
 
 const PhotoRowContainer: React.FC<PhotoRowContainerProps> = ({ error, errorMsg, children }) => (

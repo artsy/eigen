@@ -8,6 +8,7 @@ export interface TabBarContainerProps {
   activeTabIndex: number
   scrollEnabled: boolean
   tabLayouts: Array<LayoutRectangle | null>
+  children?: React.ReactNode
 }
 
 /**

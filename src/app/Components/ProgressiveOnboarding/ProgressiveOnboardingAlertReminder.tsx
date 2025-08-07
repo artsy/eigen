@@ -8,6 +8,7 @@ import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 
 interface ProgressiveOnboardingAlertReminderProps {
   visible: boolean
+  children?: React.ReactNode
 }
 export const ProgressiveOnboardingAlertReminder: React.FC<
   ProgressiveOnboardingAlertReminderProps

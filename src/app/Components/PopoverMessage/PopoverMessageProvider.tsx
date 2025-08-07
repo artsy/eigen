@@ -18,7 +18,11 @@ export const PopoverMessageContext = createContext<PopoverMessageContextContextV
   hide: () => {},
 })
 
-export const PopoverMessageProvider: React.FC = ({ children }) => {
+interface PopoverMessageProviderProps {
+  children?: React.ReactNode
+}
+
+export const PopoverMessageProvider: React.FC<PopoverMessageProviderProps> = ({ children }) => {
   const [popoverMessage, setPopoverMessage] = useState<PopoverMessageItem | null>(null)
   const showingPopoverMessage = useRef<boolean>(false)
   const lastStartedAt = useRef<number | null>(null)

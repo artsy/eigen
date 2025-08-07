@@ -11,7 +11,11 @@ import { Platform } from "react-native"
 // We don't want to show the onboarding popover on the first launch
 const MIN_LAUNCH_COUNT = 2
 
-export const ProgressiveOnboardingLongPressContextMenu: React.FC = ({ children }) => {
+interface ProgressiveOnboardingLongPressContextMenuProps {
+  children?: React.ReactNode
+}
+
+export const ProgressiveOnboardingLongPressContextMenu: React.FC<ProgressiveOnboardingLongPressContextMenuProps> = ({ children }) => {
   const enableLongPressContextMenuOnboarding = useFeatureFlag(
     "AREnableLongPressContextMenuOnboarding"
   )

@@ -17,7 +17,11 @@ import { useTracking } from "react-tracking"
 // This delay needs to be longer than the time it takes to load the first few sections of the home tab
 const PRICE_RANGE_ONBOARDING_POPOVER_DELAY = 4000
 
-export const ProgressiveOnboardingPriceRangeHome: React.FC = ({ children }) => {
+interface ProgressiveOnboardingPriceRangeHomeProps {
+  children?: React.ReactNode
+}
+
+export const ProgressiveOnboardingPriceRangeHome: React.FC<ProgressiveOnboardingPriceRangeHomeProps> = ({ children }) => {
   const {
     isDismissed: isDismissedFn,
     sessionState: { isReady },

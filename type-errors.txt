@@ -1,0 +1,736 @@
+yarn run v1.22.21
+$ yarn relay; yarn tsc
+$ [ -f data/complete.queryMap.json ] || echo '{}' > data/complete.queryMap.json && relay-compiler --repersist
+[0m[34m[INFO] [0mQuerying files to compile...
+[0m[34m[INFO] [0m[default] compiling...
+[0m[34m[INFO] [0m[default] compiled documents: 1136 reader, 634 normalization, 1206 operation text
+[0m[34m[INFO] [0mCompilation completed.
+[0m[34m[INFO] [0mDone.
+$ /Users/brianbeckerle/Code/eigen/node_modules/.bin/tsc
+src/app/Components/__tests__/RetryErrorBoundary.tests.tsx(16,10): error TS2786: 'RetryErrorBoundary' cannot be used as a JSX component.
+  Its type 'typeof RetryErrorBoundary' is not a valid JSX element type.
+    Types of construct signatures are incompatible.
+      Type 'new (props: RetryErrorBoundaryProps) => RetryErrorBoundary' is not assignable to type 'new (props: any) => Component<any, any, any>'.
+        Construct signature return types 'RetryErrorBoundary' and 'Component<any, any, any>' are incompatible.
+          The types returned by 'render()' are incompatible between these types.
+            Type 'string | number | bigint | boolean | Iterable<ReactNode> | Element | Promise<ReactNode> | null | undefined' is not assignable to type 'ReactNode'.
+              Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
+                Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
+                  Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
+                    Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
+src/app/Components/__tests__/RetryErrorBoundary.tests.tsx(42,10): error TS2786: 'RetryErrorBoundary' cannot be used as a JSX component.
+  Its type 'typeof RetryErrorBoundary' is not a valid JSX element type.
+    Types of construct signatures are incompatible.
+      Type 'new (props: RetryErrorBoundaryProps) => RetryErrorBoundary' is not assignable to type 'new (props: any) => Component<any, any, any>'.
+        Construct signature return types 'RetryErrorBoundary' and 'Component<any, any, any>' are incompatible.
+          The types returned by 'render()' are incompatible between these types.
+            Type 'string | number | bigint | boolean | Iterable<ReactNode> | Element | Promise<ReactNode> | null | undefined' is not assignable to type 'ReactNode'.
+              Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
+                Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
+                  Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
+                    Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
+src/app/Components/__tests__/ShowCard.tests.tsx(27,13): error TS2741: Property 'isFluid' is missing in type '{ show: { readonly " $fragmentSpreads": FragmentRefs<"ShowCard_show">; }; onPress: Mock<any, any, any>; }' but required in type 'MappedFragmentProps<Pick<Omit<ShowCardProps, "relay">, keyof ShowCardProps>>'.
+src/app/Components/Artist/ArtistArtworks/ArtistArtworks.tsx(180,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Components/Artist/ArtistArtworks/ArtistArtworks.tsx(180,43): error TS7031: Binding element 'index' implicitly has an 'any' type.
+src/app/Components/Artist/ArtistArtworks/ArtistArtworks.tsx(180,50): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
+src/app/Components/Artist/ArtistArtworks/ArtistArtworks.tsx(274,9): error TS2322: Type 'RefObject<MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }> | null>' is not assignable to type 'RefObject<MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>>'.
+  Type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }> | null' is not assignable to type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>'.
+    Type 'null' is not assignable to type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>'.
+src/app/Components/ArtistAutosuggest/ArtistAutosuggest.tsx(53,29): error TS2322: Type '{ inputRef: RefObject<InputRef | null>; queryRef: RefObject<string>; }' is not assignable to type '{ inputRef: RefObject<InputRef>; queryRef: Ref<string>; }'.
+  Types of property 'inputRef' are incompatible.
+    Type 'RefObject<InputRef | null>' is not assignable to type 'RefObject<InputRef>'.
+      Type 'InputRef | null' is not assignable to type 'InputRef'.
+        Type 'null' is not assignable to type 'InputRef'.
+src/app/Components/ArtistAutosuggest/ArtistAutosuggestResults.tsx(78,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/ArtistAutosuggest/ArtistAutosuggestResults.tsx(86,8): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/ArtistAutosuggest/ArtistAutosuggestResults.tsx(100,6): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/ArtistAutosuggest/ArtistAutosuggestResults.tsx(111,46): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/Components/ArtistListItem.tsx(41,17): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/ArtsyWebView.tsx(290,11): error TS2322: Type 'RefObject<WebViewWithShareTitleUrl | null>' is not assignable to type '(Ref<WebView<{ enableApplePay: true; ref: RefObject<WebViewWithShareTitleUrl | null>; sharedCookiesEnabled: true; decelerationRate: "normal"; ... 5 more ...; onNavigationStateChange: (evt: WebViewNavigation) => void; }>> | undefined) & RefObject<...>'.
+  Type 'RefObject<WebViewWithShareTitleUrl | null>' is not assignable to type 'RefObject<WebView<{ enableApplePay: true; ref: RefObject<WebViewWithShareTitleUrl | null>; sharedCookiesEnabled: true; decelerationRate: "normal"; ... 5 more ...; onNavigationStateChange: (evt: WebViewNavigation) => void; }> | null> & RefObject<...>'.
+    Type 'RefObject<WebViewWithShareTitleUrl | null>' is not assignable to type 'RefObject<WebView<{ enableApplePay: true; ref: RefObject<WebViewWithShareTitleUrl | null>; sharedCookiesEnabled: true; decelerationRate: "normal"; source: { ...; }; ... 4 more ...; onNavigationStateChange: (evt: WebViewNavigation) => void; }> | null>'.
+      Type 'WebViewWithShareTitleUrl | null' is not assignable to type 'WebView<{ enableApplePay: true; ref: RefObject<WebViewWithShareTitleUrl | null>; sharedCookiesEnabled: true; decelerationRate: "normal"; source: { ...; }; ... 4 more ...; onNavigationStateChange: (evt: WebViewNavigation) => void; }> | null'.
+        Type 'WebViewWithShareTitleUrl' is not assignable to type 'WebView<{ enableApplePay: true; ref: RefObject<WebViewWithShareTitleUrl | null>; sharedCookiesEnabled: true; decelerationRate: "normal"; source: { ...; }; ... 4 more ...; onNavigationStateChange: (evt: WebViewNavigation) => void; }> | null'.
+          Type 'WebViewWithShareTitleUrl' is not assignable to type 'WebView<{ enableApplePay: true; ref: RefObject<WebViewWithShareTitleUrl | null>; sharedCookiesEnabled: true; decelerationRate: "normal"; source: { ...; }; ... 4 more ...; onNavigationStateChange: (evt: WebViewNavigation) => void; }>'.
+            Types of property 'props' are incompatible.
+              Property 'ref' is missing in type 'Readonly<IOSWebViewProps & AndroidWebViewProps & WindowsWebViewProps>' but required in type 'Readonly<IOSWebViewProps & AndroidWebViewProps & WindowsWebViewProps & { enableApplePay: true; ref: RefObject<WebViewWithShareTitleUrl | null>; ... 7 more ...; onNavigationStateChange: (evt: WebViewNavigation) => void; }>'.
+src/app/Components/ArtworkFilter/components/ArtworkFilterApplyButton.tsx(105,20): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/ArtworkFilter/components/ArtworkFilterOptionItem.tsx(9,24): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/ArtworkFilter/Filters/MultiSelectOption.tsx(127,13): error TS2322: Type 'ReactElement<unknown, string | JSXElementConstructor<any>> | ComponentType<any> | null | undefined' is not assignable to type 'ReactNode'.
+  Type 'ComponentClass<any, any>' is not assignable to type 'ReactNode'.
+src/app/Components/ArtworkFilter/Filters/SingleSelectOption.tsx(16,37): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/ArtworkFilter/Filters/SingleSelectOption.tsx(17,25): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/ArtworkFilter/Filters/SingleSelectOption.tsx(44,45): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/ArtworkFilter/Filters/SingleSelectOption.tsx(45,42): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/ArtworkGrids/ArtworkGridItem.tsx(117,21): error TS2554: Expected 1 arguments, but got 0.
+src/app/Components/ArtworkGrids/ArtworkGridItem.tsx(472,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes & { contextScreenOwnerType?: OwnerType | undefined; }'.
+src/app/Components/ArtworkGrids/ArtworksFilterHeader.tsx(40,10): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/ArtworkGrids/InfiniteScrollArtworksGrid.tsx(63,21): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/ArtworkGrids/InfiniteScrollArtworksGrid.tsx(66,21): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/ArtworkGrids/InfiniteScrollArtworksGrid.tsx(312,21): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/ArtworkGrids/InfiniteScrollArtworksGrid.tsx(315,32): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/ArtworkGrids/InfiniteScrollArtworksGrid.tsx(353,13): error TS2322: Type '{ hideIncreasedInterestSignal: boolean | undefined; hideCuratorsPickSignal: boolean | undefined; hideRegisterBySignal: boolean | undefined; hideViewFollowsLink: boolean; ... 27 more ...; key: string; } | { ...; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; } & MappedFragmentProps<...>'.
+  Type '{ hideIncreasedInterestSignal: boolean | undefined; hideCuratorsPickSignal: boolean | undefined; hideRegisterBySignal: boolean | undefined; hideViewFollowsLink: boolean; hideCreateAlertOnArtworkPreview: boolean; ... 26 more ...; key: string; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; } & MappedFragmentProps<...>'.
+    Property 'hideViewFollowsLink' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; } & MappedFragmentProps<...>'.
+src/app/Components/ArtworkGrids/MasonryArtworkGridItem.tsx(80,9): error TS2322: Type '{ artwork: Artwork; artworkMetaStyle: false | "" | ViewStyle | RegisteredStyle<ViewStyle> | RecursiveArray<ViewStyle | Falsy | RegisteredStyle<...>> | null; ... 12 more ...; hideSaleInfo?: boolean | undefined; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; }'.
+  Property 'numColumns' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; }'.
+src/app/Components/ArtworkRail/ArtworkRailCardMeta.tsx(160,9): error TS2322: Type 'false | Element | ComponentType<any>' is not assignable to type 'ReactNode'.
+  Type 'ComponentClass<any, any>' is not assignable to type 'ReactNode'.
+src/app/Components/AuctionResultsList.tsx(147,6): error TS2559: Type '{ children: (Element | ReactElement<unknown, string | JSXElementConstructor<any>>)[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/AutosuggestResults/AutosuggestResults.tsx(176,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Components/AutosuggestResults/AutosuggestResults.tsx(176,43): error TS7031: Binding element 'index' implicitly has an 'any' type.
+src/app/Components/AutosuggestResults/AutosuggestResults.tsx(198,8): error TS2559: Type '{ children: (false | Element)[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/Bidding/Components/Timer.tsx(7,23): error TS7016: Could not find a declaration file for module 'prop-types'. '/Users/brianbeckerle/Code/eigen/node_modules/prop-types/index.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/prop-types` if it exists or add a new declaration (.d.ts) file containing `declare module 'prop-types';`
+src/app/Components/Bidding/Context/__tests__/TimeOffsetProvider.tests.tsx(7,23): error TS7016: Could not find a declaration file for module 'prop-types'. '/Users/brianbeckerle/Code/eigen/node_modules/prop-types/index.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/prop-types` if it exists or add a new declaration (.d.ts) file containing `declare module 'prop-types';`
+src/app/Components/Bidding/Context/__tests__/TimeOffsetProvider.tests.tsx(21,32): error TS2571: Object is of type 'unknown'.
+src/app/Components/Bidding/Context/TimeOffsetProvider.tsx(3,23): error TS7016: Could not find a declaration file for module 'prop-types'. '/Users/brianbeckerle/Code/eigen/node_modules/prop-types/index.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/prop-types` if it exists or add a new declaration (.d.ts) file containing `declare module 'prop-types';`
+src/app/Components/Bidding/Screens/Registration.tsx(60,27): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/Components/Bidding/Screens/Registration.tsx(376,29): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/Bidding/Screens/Registration.tsx(404,29): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/Bidding/Screens/Registration.tsx(407,15): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/Bidding/Screens/Registration.tsx(409,15): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/Bidding/Screens/Registration.tsx(443,18): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/Bidding/Screens/Registration.tsx(444,18): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/Bidding/Screens/Registration.tsx(454,16): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/Bidding/Screens/Registration.tsx(564,12): error TS2739: Type '{ navigation: NativeStackNavigationProp<BiddingNavigationStackParams, "RegisterToBid", undefined>; route: RouteProp<BiddingNavigationStackParams, "RegisterToBid">; }' is missing the following properties from type 'MappedFragmentProps<Pick<Omit<RegistrationProps, "relay">, "children" | "id" | "testID" | "style" | "hitSlop" | "needsOffscreenAlphaCompositing" | "onLayout" | "pointerEvents" | ... 81 more ... | "sale">>': me, sale
+src/app/Components/Bidding/Screens/Registration.tsx(564,38): error TS2698: Spread types may only be created from object types.
+src/app/Components/BottomSheet/AutoHeightBottomSheet.tsx(17,24): error TS2322: Type 'ReactNode | ReactNode[] | FC<{ data?: any; }>' is not assignable to type 'ReactNode | ReactNode[]'.
+  Type 'FC<{ data?: any; }>' is not assignable to type 'ReactNode | ReactNode[]'.
+src/app/Components/BottomSheetInput.tsx(10,8): error TS7006: Parameter 'args' implicitly has an 'any' type.
+src/app/Components/BottomSheetInput.tsx(18,8): error TS7006: Parameter 'args' implicitly has an 'any' type.
+src/app/Components/Buttons/InfoButton.tsx(19,17): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/Buttons/InfoButton.tsx(24,18): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/Buttons/InfoButton.tsx(99,17): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/Buttons/InfoButton.tsx(134,7): error TS2322: Type '(({ children }: { children: ReactElement<unknown, string | JSXElementConstructor<any>>; }) => Element) | undefined' is not assignable to type 'ComponentType<{ children?: ReactNode; }> | undefined'.
+  Type '({ children }: { children: React.ReactElement; }) => JSX.Element' is not assignable to type 'ComponentType<{ children?: ReactNode; }> | undefined'.
+    Type '({ children }: { children: React.ReactElement; }) => JSX.Element' is not assignable to type 'FunctionComponent<{ children?: ReactNode; }>'.
+      Types of parameters '__0' and 'props' are incompatible.
+        Type '{ children?: ReactNode; }' is not assignable to type '{ children: ReactElement<unknown, string | JSXElementConstructor<any>>; }'.
+          Types of property 'children' are incompatible.
+            Type 'ReactNode' is not assignable to type 'ReactElement<unknown, string | JSXElementConstructor<any>>'.
+              Type 'undefined' is not assignable to type 'ReactElement<unknown, string | JSXElementConstructor<any>>'.
+src/app/Components/Cards/CardWithMetaData.tsx(126,10): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/Containers/Inbox.tsx(194,36): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"Inbox_me">; } | null | undefined' is not assignable to type '_FragmentRefs<"Inbox_me">'.
+  Type 'undefined' is not assignable to type '_FragmentRefs<"Inbox_me">'.
+src/app/Components/Containers/Inquiry.tsx(85,51): error TS2694: Namespace 'React' has no exported member 'Props'.
+src/app/Components/Containers/Inquiry.tsx(85,57): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/Containers/Inquiry.tsx(96,3): error TS2339: Property 'children' does not exist on type 'BottomAlignedProps'.
+src/app/Components/Containers/Inquiry.tsx(221,10): error TS2322: Type '{ children: Element[]; onPress: () => void; buttonText: string; disabled: boolean; }' is not assignable to type 'IntrinsicAttributes & BottomAlignedProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & BottomAlignedProps'.
+src/app/Components/ContextMenu/ContextMenuArtworkPreviewCard.tsx(98,11): error TS2322: Type 'false | Element | ComponentType<any>' is not assignable to type 'ReactNode'.
+  Type 'ComponentClass<any, any>' is not assignable to type 'ReactNode'.
+src/app/Components/EmbeddedCarousel.tsx(10,34): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/Gene/GeneArtworks.tsx(84,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Components/Gene/GeneArtworks.tsx(84,43): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
+src/app/Components/GlobalSearchInput/GlobalSearchInputOverlay.tsx(45,29): error TS2322: Type '{ inputRef: RefObject<InputRef | null>; queryRef: RefObject<string>; }' is not assignable to type '{ inputRef: RefObject<InputRef>; queryRef: Ref<string>; }'.
+  Types of property 'inputRef' are incompatible.
+    Type 'RefObject<InputRef | null>' is not assignable to type 'RefObject<InputRef>'.
+      Type 'InputRef | null' is not assignable to type 'InputRef'.
+        Type 'null' is not assignable to type 'InputRef'.
+src/app/Components/GlobalSearchInput/GlobalSearchInputOverlay.tsx(142,23): error TS2322: Type 'FC<SpinnerProps>' is not assignable to type 'ReactNode'.
+src/app/Components/HeaderButton.tsx(67,9): error TS2322: Type 'ReactNode | SharedValue<ReactNode>' is not assignable to type 'ReactNode'.
+  Type 'SharedValue<ReactNode>' is not assignable to type 'ReactNode'.
+src/app/Components/Icons/ChevronIcon.tsx(4,42): error TS2694: Namespace 'React' has no exported member 'Props'.
+src/app/Components/Icons/ChevronIcon.tsx(36,13): error TS2339: Property 'defaultProps' does not exist on type 'FC<ChevronIconProps>'.
+src/app/Components/Input/Input.tsx(40,10): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/Input/Input.tsx(77,29): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/Input/Input.tsx(120,22): error TS2554: Expected 1 arguments, but got 0.
+src/app/Components/Input/Input.tsx(178,14): error TS2322: Type '{ children: Element; key: string; setMeasuredState: ({ width }: ViewMeasurements) => void; }' is not assignable to type 'IntrinsicAttributes & Props'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & Props'.
+src/app/Components/LegacyTabs/__tests__/LegacyTabs.tests.tsx(45,6): error TS2322: Type '{ children: Element[]; tabLayouts: LayoutRectangle[]; activeTabIndex: number; scrollEnabled: true; }' is not assignable to type 'IntrinsicAttributes & TabBarContainerProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & TabBarContainerProps'.
+src/app/Components/LegacyTabs/ContentTabs.tsx(13,6): error TS2322: Type '{ children: Element[]; scrollEnabled: true; activeTabIndex: number; tabLayouts: (LayoutRectangle | null)[]; }' is not assignable to type 'IntrinsicAttributes & TabBarContainerProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & TabBarContainerProps'.
+src/app/Components/LegacyTabs/LegacyNavigationalTabs.tsx(19,6): error TS2322: Type '{ children: Element[]; scrollEnabled: boolean; activeTabIndex: number; tabLayouts: (LayoutRectangle | null)[]; }' is not assignable to type 'IntrinsicAttributes & TabBarContainerProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & TabBarContainerProps'.
+src/app/Components/LegacyTabs/LegacyStepTabs.tsx(22,6): error TS2322: Type '{ children: Element[]; scrollEnabled: false; activeTabIndex: number; tabLayouts: (LayoutRectangle | null)[]; }' is not assignable to type 'IntrinsicAttributes & TabBarContainerProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & TabBarContainerProps'.
+src/app/Components/LegacyTabs/LegacyTab.tsx(6,17): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/LegacyTabs/LegacyTabBarContainer.tsx(20,3): error TS2339: Property 'children' does not exist on type 'TabBarContainerProps'.
+src/app/Components/LineGraph/LineGraphChart.tsx(290,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: EventMixinCommonProps): { state: {}; getEventState: (eventKey: string | number, namespace: string, childType?: string | undefined) => any; getScopedEvents: (events: any, namespace: any, childType: any, baseProps: any) => {}; ... 43 more ...; events: unknown; }', gave the following error.
+    Type '{ dependentAxis: true; style: { axis: { stroke: string; strokeDasharray: number; }; ticks: { size: number; }; grid: { stroke: ({ tick }: { tick: number; }) => string; strokeDasharray: number; }; }; axisLabelComponent: Element; maxDomain: number; minDomain: number; tickFormat: (tick: number) => string; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<{ state: {}; getEventState: (eventKey: string | number, namespace: string, childType?: string | undefined) => any; getScopedEvents: (events: any, namespace: any, childType: any, baseProps: any) => {}; ... 43 more ...; events: unknown; }> & Pick<...> & InexactPartial<......'.
+      Property 'dependentAxis' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<{ state: {}; getEventState: (eventKey: string | number, namespace: string, childType?: string | undefined) => any; getScopedEvents: (events: any, namespace: any, childType: any, baseProps: any) => {}; ... 43 more ...; events: unknown; }> & Pick<...> & InexactPartial<......'.
+  Overload 2 of 2, '(props: VictoryAxisProps): VictoryAxisBase', gave the following error.
+    Type '({ tick }: { tick: number; }) => string' is not assignable to type 'StringOrNumberOrCallback | undefined'.
+      Type '({ tick }: { tick: number; }) => string' is not assignable to type 'VictoryStringOrNumberCallback'.
+        Types of parameters '__0' and 'args' are incompatible.
+          Type 'CallbackArgs' is not assignable to type '{ tick: number; }'.
+            Property 'tick' is optional in type 'CallbackArgs' but required in type '{ tick: number; }'.
+src/app/Components/LineGraph/LineGraphChart.tsx(316,12): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: EventMixinCommonProps): { state: {}; getEventState: (eventKey: string | number, namespace: string, childType?: string | undefined) => any; getScopedEvents: (events: any, namespace: any, childType: any, baseProps: any) => {}; ... 43 more ...; events: unknown; }', gave the following error.
+    Type '{ crossAxis: true; style: { axis: { stroke: string; strokeDasharray: number; }; ticks: { size: number; }; grid: { stroke: ({ tick }: { tick: number; }) => string; strokeDasharray: number; }; }; tickValues: number[]; axisLabelComponent: Element; maxDomain: number; minDomain: number; tickFormat: (tick: number) => stri...' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<{ state: {}; getEventState: (eventKey: string | number, namespace: string, childType?: string | undefined) => any; getScopedEvents: (events: any, namespace: any, childType: any, baseProps: any) => {}; ... 43 more ...; events: unknown; }> & Pick<...> & InexactPartial<......'.
+      Property 'crossAxis' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<{ state: {}; getEventState: (eventKey: string | number, namespace: string, childType?: string | undefined) => any; getScopedEvents: (events: any, namespace: any, childType: any, baseProps: any) => {}; ... 43 more ...; events: unknown; }> & Pick<...> & InexactPartial<......'.
+  Overload 2 of 2, '(props: VictoryAxisProps): VictoryAxisBase', gave the following error.
+    Type '({ tick }: { tick: number; }) => string' is not assignable to type 'StringOrNumberOrCallback | undefined'.
+      Type '({ tick }: { tick: number; }) => string' is not assignable to type 'VictoryStringOrNumberCallback'.
+        Types of parameters '__0' and 'args' are incompatible.
+          Type 'CallbackArgs' is not assignable to type '{ tick: number; }'.
+            Property 'tick' is optional in type 'CallbackArgs' but required in type '{ tick: number; }'.
+src/app/Components/LineGraph/ScatterPointsContainers.tsx(8,9): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/LineGraph/types.ts(15,20): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/LineGraph/types.ts(16,20): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/LocationAutocomplete.tsx(22,27): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/ParentAwareScrollView.tsx(52,7): error TS2571: Object is of type 'unknown'.
+src/app/Components/ParentAwareScrollView.tsx(56,26): error TS2571: Object is of type 'unknown'.
+src/app/Components/ParentAwareScrollView.tsx(64,7): error TS2571: Object is of type 'unknown'.
+src/app/Components/ParentAwareScrollView.tsx(78,30): error TS2339: Property 'horizontal' does not exist on type '{}'.
+src/app/Components/PhotoRow/PhotoRow.tsx(11,81): error TS2339: Property 'children' does not exist on type 'PhotoRowContainerProps'.
+src/app/Components/PhotoRow/PhotoRow.tsx(37,4): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes & PhotoRowContainerProps'.
+src/app/Components/PhotoRow/PhotoRow.tsx(38,6): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/PhotoRow/PhotoRow.tsx(74,6): error TS2322: Type '{ children: Element[]; error: boolean | undefined; errorMsg: string | undefined; }' is not assignable to type 'IntrinsicAttributes & PhotoRowContainerProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & PhotoRowContainerProps'.
+src/app/Components/PopoverMessage/PopoverMessageProvider.tsx(21,52): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/Components/ProgressiveOnboarding/__tests__/ProgressiveOnboardingAlertFilters.tests.tsx(33,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/ProgressiveOnboarding/__tests__/ProgressiveOnboardingAlertFinish.tests.tsx(10,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/ProgressiveOnboarding/__tests__/ProgressiveOnboardingAlertReminder.tests.tsx(33,8): error TS2322: Type '{ children: Element; visible: true; }' is not assignable to type 'IntrinsicAttributes & ProgressiveOnboardingAlertReminderProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & ProgressiveOnboardingAlertReminderProps'.
+src/app/Components/ProgressiveOnboarding/__tests__/ProgressiveOnboardingOfferSettings.tests.tsx(39,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/ProgressiveOnboarding/__tests__/ProgressiveOnboardingPriceRangeHome.tests.tsx(40,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/ProgressiveOnboarding/__tests__/ProgressiveOnboardingSaveArtwork.tests.tsx(40,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes & { contextScreenOwnerType?: OwnerType | undefined; }'.
+src/app/Components/ProgressiveOnboarding/__tests__/ProgressiveOnboardingSignalInterest.tests.tsx(38,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/ProgressiveOnboarding/__tests__/useDismissSavedArtwork.tests.tsx(12,43): error TS2559: Type '{ children: any; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/ProgressiveOnboarding/__tests__/useEnableProgressiveOnboarding.tests.tsx(11,43): error TS2559: Type '{ children: any; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/ProgressiveOnboarding/__tests__/useSetActivePopover.tests.tsx(23,43): error TS2559: Type '{ children: any; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Components/ProgressiveOnboarding/ProgressiveOnboardingAlertFilters.tsx(10,63): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/Components/ProgressiveOnboarding/ProgressiveOnboardingAlertFinish.tsx(8,62): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/Components/ProgressiveOnboarding/ProgressiveOnboardingAlertReminder.tsx(14,8): error TS2339: Property 'children' does not exist on type 'ProgressiveOnboardingAlertReminderProps'.
+src/app/Components/ProgressiveOnboarding/ProgressiveOnboardingLongPressContextMenu.tsx(14,71): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/Components/ProgressiveOnboarding/ProgressiveOnboardingOfferSettings.tsx(10,64): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/Components/ProgressiveOnboarding/ProgressiveOnboardingPriceRangeHome.tsx(20,65): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/Components/ProgressiveOnboarding/ProgressiveOnboardingSaveArtwork.tsx(14,3): error TS2339: Property 'children' does not exist on type '{ contextScreenOwnerType?: OwnerType | undefined; }'.
+src/app/Components/ProgressiveOnboarding/ProgressiveOnboardingSignalInterest.tsx(10,65): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/Components/RetryErrorBoundary.tsx(53,3): error TS2416: Property 'render' in type 'RetryErrorBoundary' is not assignable to the same property in base type 'Component<RetryErrorBoundaryProps, RetryErrorBoundaryState, any>'.
+  Type '() => string | number | bigint | boolean | Iterable<ReactNode> | Element | Promise<ReactNode> | null | undefined' is not assignable to type '() => ReactNode'.
+    Type 'string | number | bigint | boolean | Iterable<ReactNode> | Element | Promise<ReactNode> | null | undefined' is not assignable to type 'ReactNode'.
+      Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
+        Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
+          Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
+            Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
+src/app/Components/RetryErrorBoundary.tsx(109,6): error TS2786: 'RetryErrorBoundary' cannot be used as a JSX component.
+  Its type 'typeof RetryErrorBoundary' is not a valid JSX element type.
+    Types of construct signatures are incompatible.
+      Type 'new (props: RetryErrorBoundaryProps) => RetryErrorBoundary' is not assignable to type 'new (props: any) => Component<any, any, any>'.
+        Construct signature return types 'RetryErrorBoundary' and 'Component<any, any, any>' are incompatible.
+          The types returned by 'render()' are incompatible between these types.
+            Type 'string | number | bigint | boolean | Iterable<ReactNode> | Element | Promise<ReactNode> | null | undefined' is not assignable to type 'ReactNode'.
+              Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
+                Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
+                  Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
+                    Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
+src/app/Components/SectionTitle.tsx(44,6): error TS2322: Type '{ children: Element; onPress: (() => any) | undefined; href: string | null | undefined; navigationProps: object | undefined; }' is not assignable to type 'IntrinsicAttributes & { onPress?(): void; href?: string | null | undefined; navigationProps?: object | undefined; }'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & { onPress?(): void; href?: string | null | undefined; navigationProps?: object | undefined; }'.
+src/app/Components/SectionTitle.tsx(75,3): error TS2339: Property 'children' does not exist on type '{ onPress?(): void; href?: string | null | undefined; navigationProps?: object | undefined; }'.
+src/app/Components/Select/Components/SelectButton.tsx(33,26): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/Select/Components/SelectModal.tsx(26,51): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/Select/Select.tsx(26,78): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/Select/Select.tsx(27,53): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/Select/Select.tsx(32,26): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/Select/SelectV2.tsx(39,78): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/Select/SelectV2.tsx(40,53): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/Select/SelectV2.tsx(167,51): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/ShareSheet/ShareSheet.tsx(170,15): error TS2322: Type 'RefObject<ViewShot | null>' is not assignable to type 'RefObject<ViewShot>'.
+  Type 'ViewShot | null' is not assignable to type 'ViewShot'.
+    Type 'null' is not assignable to type 'ViewShot'.
+src/app/Components/States/ZeroState.tsx(8,11): error TS2503: Cannot find namespace 'JSX'.
+src/app/Components/States/ZeroState.tsx(9,18): error TS2503: Cannot find namespace 'JSX'.
+src/app/Navigation/AuthenticatedRoutes/FavoritesTab.tsx(8,7): error TS2322: Type 'ReactNode | Promise<ReactNode>' is not assignable to type 'ReactNode'.
+  Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
+    Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
+      Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
+        Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
+src/app/Navigation/AuthenticatedRoutes/HomeTab.tsx(8,7): error TS2322: Type 'ReactNode | Promise<ReactNode>' is not assignable to type 'ReactNode'.
+  Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
+    Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
+      Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
+        Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
+src/app/Navigation/AuthenticatedRoutes/InboxTab.tsx(8,7): error TS2322: Type 'ReactNode | Promise<ReactNode>' is not assignable to type 'ReactNode'.
+  Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
+    Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
+      Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
+        Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
+src/app/Navigation/AuthenticatedRoutes/InboxTab.tsx(13,7): error TS2322: Type 'ReactNode | Promise<ReactNode>' is not assignable to type 'ReactNode'.
+  Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
+    Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
+      Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
+        Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
+src/app/Navigation/AuthenticatedRoutes/modalRoutes.tsx(15,7): error TS2322: Type '(ReactNode | Promise<ReactNode>)[]' is not assignable to type 'ReactNode'.
+  Type '(ReactNode | Promise<ReactNode>)[]' is not assignable to type 'Iterable<ReactNode>'.
+    The types returned by '[Symbol.iterator]().next(...)' are incompatible between these types.
+      Type 'IteratorResult<ReactNode | Promise<ReactNode>, undefined>' is not assignable to type 'IteratorResult<ReactNode, any>'.
+        Type 'IteratorYieldResult<ReactNode | Promise<ReactNode>>' is not assignable to type 'IteratorResult<ReactNode, any>'.
+          Type 'IteratorYieldResult<ReactNode | Promise<ReactNode>>' is not assignable to type 'IteratorYieldResult<ReactNode>'.
+            Type 'ReactNode | Promise<ReactNode>' is not assignable to type 'ReactNode'.
+              Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
+                Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
+                  Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
+                    Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
+src/app/Navigation/AuthenticatedRoutes/ProfileTab.tsx(8,7): error TS2322: Type 'ReactNode | Promise<ReactNode>' is not assignable to type 'ReactNode'.
+  Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
+    Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
+      Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
+        Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
+src/app/Navigation/AuthenticatedRoutes/ProfileTab.tsx(12,7): error TS2322: Type 'ReactNode | Promise<ReactNode>' is not assignable to type 'ReactNode'.
+  Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
+    Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
+      Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
+        Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
+src/app/Navigation/AuthenticatedRoutes/ScreenWrapper.tsx(19,52): error TS2339: Property 'children' does not exist on type 'ScreenWrapperProps'.
+src/app/Navigation/AuthenticatedRoutes/ScreenWrapper.tsx(50,8): error TS2786: 'RetryErrorBoundary' cannot be used as a JSX component.
+  Its type 'typeof RetryErrorBoundary' is not a valid JSX element type.
+    Types of construct signatures are incompatible.
+      Type 'new (props: RetryErrorBoundaryProps) => RetryErrorBoundary' is not assignable to type 'new (props: any) => Component<any, any, any>'.
+        Construct signature return types 'RetryErrorBoundary' and 'Component<any, any, any>' are incompatible.
+          The types returned by 'render()' are incompatible between these types.
+            Type 'string | number | bigint | boolean | Iterable<ReactNode> | Element | Promise<ReactNode> | null | undefined' is not assignable to type 'ReactNode'.
+              Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
+                Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
+                  Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
+                    Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
+src/app/Navigation/AuthenticatedRoutes/SearchTab.tsx(8,7): error TS2322: Type 'ReactNode | Promise<ReactNode>' is not assignable to type 'ReactNode'.
+  Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
+    Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
+      Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
+        Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
+src/app/Navigation/AuthenticatedRoutes/sharedRoutes.tsx(17,7): error TS2322: Type '(ReactNode | Promise<ReactNode>)[]' is not assignable to type 'ReactNode'.
+  Type '(ReactNode | Promise<ReactNode>)[]' is not assignable to type 'Iterable<ReactNode>'.
+    The types returned by '[Symbol.iterator]().next(...)' are incompatible between these types.
+      Type 'IteratorResult<ReactNode | Promise<ReactNode>, undefined>' is not assignable to type 'IteratorResult<ReactNode, any>'.
+        Type 'IteratorYieldResult<ReactNode | Promise<ReactNode>>' is not assignable to type 'IteratorResult<ReactNode, any>'.
+          Type 'IteratorYieldResult<ReactNode | Promise<ReactNode>>' is not assignable to type 'IteratorYieldResult<ReactNode>'.
+            Type 'ReactNode | Promise<ReactNode>' is not assignable to type 'ReactNode'.
+              Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
+                Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
+                  Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
+                    Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
+src/app/Navigation/AuthenticatedRoutes/StackNavigator.tsx(83,12): error TS2322: Type '{ children: Element; hidesBottomTabs: boolean; }' is not assignable to type 'IntrinsicAttributes & ScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & ScreenWrapperProps'.
+src/app/Navigation/AuthenticatedRoutes/Tabs.tsx(67,6): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/app/Navigation/AuthenticatedRoutes/Tabs.tsx(143,18): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Navigation/Navigation.tsx(53,15): error TS2345: Argument of type '{ current: NavigationContainerRef<any> | null; }' is not assignable to parameter of type 'RefObject<NavigationContainerRef<any>>'.
+  Types of property 'current' are incompatible.
+    Type 'NavigationContainerRef<any> | null' is not assignable to type 'NavigationContainerRef<any>'.
+      Type 'null' is not assignable to type 'NavigationContainerRef<any>'.
+        Type 'null' is not assignable to type '{ dispatch(action: Readonly<{ type: string; payload?: object | undefined; source?: string | undefined; target?: string | undefined; }> | ((state: Readonly<Readonly<{ key: string; index: number; routeNames: string[]; history?: unknown[] | undefined; routes: NavigationRoute<...>[]; type: string; stale: false; }>>) => ...'.
+src/app/Scenes/Activity/ActivityEmptyView.tsx(73,59): error TS2322: Type 'ReactElement<unknown, string | JSXElementConstructor<any>> | undefined' is not assignable to type 'ReactElement<RefreshControlProps, string | JSXElementConstructor<any>> | undefined'.
+  Type 'ReactElement<unknown, string | JSXElementConstructor<any>>' is not assignable to type 'ReactElement<RefreshControlProps, string | JSXElementConstructor<any>>'.
+    Type 'unknown' is not assignable to type 'RefreshControlProps'.
+src/app/Scenes/Activity/components/NotificationCommercialButtons.tsx(46,35): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/Scenes/Activity/components/NotificationCommercialButtons.tsx(97,8): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Artist/SearchCriteria.tsx(56,21): error TS2559: Type '{ children: ReactElement<unknown, string | JSXElementConstructor<any>>; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/ArtistSeries/ArtistSeriesArtworks.tsx(93,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Scenes/ArtistSeries/ArtistSeriesArtworks.tsx(93,43): error TS7031: Binding element 'index' implicitly has an 'any' type.
+src/app/Scenes/ArtistSeries/ArtistSeriesArtworks.tsx(93,50): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
+src/app/Scenes/ArtistSeries/ArtistSeriesArtworks.tsx(124,9): error TS2322: Type 'RefObject<MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }> | null>' is not assignable to type 'RefObject<MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>>'.
+  Type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }> | null' is not assignable to type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>'.
+    Type 'null' is not assignable to type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>'.
+src/app/Scenes/Artwork/Artwork.tsx(524,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Artwork/Artwork.tsx(576,12): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/Artwork/Components/ArtworkCommercialButtons.tsx(23,35): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/Scenes/Artwork/Components/ArtworkCommercialButtons.tsx(65,10): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Artwork/Components/ArtworkCommercialButtons.tsx(97,8): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Artwork/Components/ArtworkCommercialButtons.tsx(126,10): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Artwork/Components/ArtworkCommercialButtons.tsx(138,8): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Artwork/Components/ArtworkCommercialButtons.tsx(148,10): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Artwork/Components/ArtworkCommercialButtons.tsx(172,10): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Artwork/Components/BelowTheFoldPlaceholder.tsx(21,6): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Artwork/Components/CommercialButtons/__tests__/CollapsibleArtworkDetails.tests.tsx(9,77): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"CollapsibleArtworkDetails_artwork">; } | null | undefined' is not assignable to type '_FragmentRefs<"CollapsibleArtworkDetails_artwork">'.
+  Type 'undefined' is not assignable to type '_FragmentRefs<"CollapsibleArtworkDetails_artwork">'.
+src/app/Scenes/Artwork/Components/CommercialButtons/__tests__/InquiryModal.tests.tsx(26,41): error TS2322: Type '{ state: Reducer<ArtworkInquiryContextState, ArtworkInquiryActions>; dispatch: React.ActionDispatch<React.AnyActionArg>; }' is not assignable to type 'ArtworkInquiryContextProps'.
+  Types of property 'state' are incompatible.
+    Type 'Reducer<ArtworkInquiryContextState, ArtworkInquiryActions>' is not assignable to type 'ArtworkInquiryContextState'.
+src/app/Scenes/Artwork/Components/CommercialButtons/__tests__/InquiryModal.tests.tsx(188,40): error TS2558: Expected 2 type arguments, but got 1.
+src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/DeepZoom/DeepZoomLevel.tsx(50,38): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/DeepZoom/DeepZoomLevel.tsx(54,37): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/DeepZoom/DeepZoomLevel.tsx(208,19): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/DeepZoom/DeepZoomOverlay.tsx(74,19): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/ImageCarouselFullScreen.tsx(89,10): error TS2322: Type '{ children: Element; onClose: () => void; }' is not assignable to type 'IntrinsicAttributes & { onClose(): void; }'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & { onClose(): void; }'.
+src/app/Scenes/Artwork/Components/ImageCarousel/FullScreen/VerticalSwipeToDismiss.tsx(35,73): error TS2339: Property 'children' does not exist on type '{ onClose(): void; }'.
+src/app/Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext.tsx(78,31): error TS2554: Expected 1 arguments, but got 0.
+src/app/Scenes/Artwork/Components/ImageCarousel/useSpringValue.ts(20,16): error TS2554: Expected 1 arguments, but got 0.
+src/app/Scenes/Artwork/Components/ImageCarousel/useSpringValue.ts(31,7): error TS2322: Type 'undefined' is not assignable to type 'CompositeAnimation'.
+src/app/Scenes/Artwork/hooks/__tests__/useSendInquiry.tests.tsx(247,6): error TS2559: Type '{ children: any; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/ArtworkList/ArtworkList.tsx(205,6): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/ArtworkList/ArtworkListEmptyState.tsx(11,19): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/ArtworkLists/SavesTabHeader.tsx(49,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/ArtworkLists/SavesTabHeader.tsx(68,12): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/ArtworkRecommendations/ArtworkRecommendations.tsx(94,6): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/BottomTabs/BottomTabsIcon.tsx(15,48): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/BottomTabs/BottomTabsIcon.tsx(15,71): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/Collection/Screens/CollectionArtworks.tsx(106,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Scenes/Collection/Screens/CollectionArtworks.tsx(106,43): error TS7031: Binding element 'index' implicitly has an 'any' type.
+src/app/Scenes/Collection/Screens/CollectionArtworks.tsx(106,50): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
+src/app/Scenes/Collection/Screens/CollectionArtworks.tsx(140,9): error TS2322: Type 'RefObject<MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }> | null>' is not assignable to type 'RefObject<MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>>'.
+  Type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }> | null' is not assignable to type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>'.
+    Type 'null' is not assignable to type 'MasonryFlashListRef<{ readonly id: string; readonly image: { readonly aspectRatio: number; } | null | undefined; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtworkGridItem_artwork">; }>'.
+src/app/Scenes/CompleteMyProfile/LocationStep.tsx(72,15): error TS2322: Type 'RefObject<TextInput | null>' is not assignable to type 'RefObject<TextInput>'.
+  Type 'TextInput | null' is not assignable to type 'TextInput'.
+    Type 'null' is not assignable to type 'TextInput'.
+src/app/Scenes/Fair/Components/FairArtworks.tsx(91,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Scenes/Fair/Components/FairArtworks.tsx(91,43): error TS7031: Binding element 'index' implicitly has an 'any' type.
+src/app/Scenes/Fair/Components/FairArtworks.tsx(91,50): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
+src/app/Scenes/Fair/Components/FairExhibitors.tsx(42,43): error TS7031: Binding element 'show' implicitly has an 'any' type.
+src/app/Scenes/Favorites/Components/CollapseWithTitle.tsx(8,66): error TS2339: Property 'children' does not exist on type '{ title: string; }'.
+src/app/Scenes/Favorites/Components/FavoritesLearnMore.tsx(143,18): error TS2322: Type '{ children: Element; title: string; key: string; }' is not assignable to type 'IntrinsicAttributes & { title: string; }'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & { title: string; }'.
+src/app/Scenes/Favorites/Components/FollowedArtists.tsx(76,13): error TS2322: Type '{ readonly id: string; readonly internalID: string; readonly slug: string; readonly " $fragmentSpreads": FragmentRefs<"ArtistListItem_artist">; } | null | undefined' is not assignable to type '_FragmentRefs<"ArtistListItem_artist">'.
+  Type 'undefined' is not assignable to type '_FragmentRefs<"ArtistListItem_artist">'.
+src/app/Scenes/Favorites/Components/SavesHeader.tsx(32,12): error TS2322: Type '{ children: Element[]; onPress: () => void; }' is not assignable to type 'IntrinsicAttributes & TouchableElementProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & TouchableElementProps'.
+src/app/Scenes/Favorites/Components/SavesHeader.tsx(38,14): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Favorites/Components/SavesHeader.tsx(39,16): error TS2322: Type '{ children: Element[]; onPress: () => void; }' is not assignable to type 'IntrinsicAttributes & TouchableElementProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & TouchableElementProps'.
+src/app/Scenes/Favorites/Components/SavesHeader.tsx(55,71): error TS2339: Property 'children' does not exist on type 'TouchableElementProps'.
+src/app/Scenes/Favorites/Favorites.tsx(169,13): error TS2322: Type 'FC<MaterialTopTabBarProps>' is not assignable to type '(props: MaterialTopTabBarProps) => ReactNode'.
+  Type 'ReactNode | Promise<ReactNode>' is not assignable to type 'ReactNode'.
+    Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
+      Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
+        Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
+          Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
+src/app/Scenes/Feature/Feature.tsx(27,12): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/Feature/Feature.tsx(35,12): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/GalleriesForYou/GalleriesForYouScreen.tsx(189,6): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/HomeView/Components/ArticlesRail.tsx(34,10): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Scenes/HomeView/Components/ArticlesRail.tsx(34,16): error TS7031: Binding element 'index' implicitly has an 'any' type.
+src/app/Scenes/HomeView/Components/ArtistRails/ArtistRail.tsx(36,19): error TS2554: Expected 1 arguments, but got 0.
+src/app/Scenes/HomeView/Components/ArtistRails/RecommendedArtistsRail.tsx(42,19): error TS2554: Expected 1 arguments, but got 0.
+src/app/Scenes/HomeView/Components/ArtworkModuleRail.tsx(120,9): error TS2322: Type 'RefObject<FlatList<any> | null>' is not assignable to type 'RefObject<FlatList<any>>'.
+  Type 'FlatList<any> | null' is not assignable to type 'FlatList<any>'.
+    Type 'null' is not assignable to type 'FlatList<any>'.
+src/app/Scenes/HomeView/Components/HomeViewSectionSentinel.tsx(26,6): error TS7006: Parameter 'visible' implicitly has an 'any' type.
+src/app/Scenes/HomeView/Components/ModalCarouselComponents/ModalCarousel.tsx(13,8): error TS2322: Type '{ children: Element[]; isVisible: boolean; toggleModal: (isVisible: boolean) => void; }' is not assignable to type 'IntrinsicAttributes & FullScreenCarouselProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & FullScreenCarouselProps'.
+src/app/Scenes/HomeView/Components/ModalCarouselComponents/ModalCarouselContainer.tsx(19,3): error TS2339: Property 'children' does not exist on type 'FullScreenCarouselProps'.
+src/app/Scenes/HomeView/Components/ModalCarouselComponents/ModalCarouselScreenWrapper.tsx(9,25): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/HomeView/Components/ShowsRail.tsx(53,10): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Scenes/HomeView/Components/ShowsRail.tsx(53,16): error TS7031: Binding element 'index' implicitly has an 'any' type.
+src/app/Scenes/HomeView/Components/ShowsRail.tsx(54,10): error TS2741: Property 'isFluid' is missing in type '{ show: any; onPress: () => void; }' but required in type 'MappedFragmentProps<Pick<Omit<ShowCardProps, "relay">, keyof ShowCardProps>>'.
+src/app/Scenes/HomeView/HomeView.tsx(188,8): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Scenes/HomeView/HomeView.tsx(188,14): error TS7031: Binding element 'index' implicitly has an 'any' type.
+src/app/Scenes/HomeView/HomeView.tsx(266,8): error TS2786: 'RetryErrorBoundary' cannot be used as a JSX component.
+  Its type 'typeof RetryErrorBoundary' is not a valid JSX element type.
+    Types of construct signatures are incompatible.
+      Type 'new (props: RetryErrorBoundaryProps) => RetryErrorBoundary' is not assignable to type 'new (props: any) => Component<any, any, any>'.
+        Construct signature return types 'RetryErrorBoundary' and 'Component<any, any, any>' are incompatible.
+          The types returned by 'render()' are incompatible between these types.
+            Type 'string | number | bigint | boolean | Iterable<ReactNode> | Element | Promise<ReactNode> | null | undefined' is not assignable to type 'ReactNode'.
+              Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
+                Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
+                  Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
+                    Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
+src/app/Scenes/HomeView/HomeView.tsx(324,6): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/HomeView/Sections/HomeViewSectionActivity.tsx(44,10): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Scenes/HomeView/Sections/HomeViewSectionActivity.tsx(44,16): error TS7031: Binding element 'index' implicitly has an 'any' type.
+src/app/Scenes/HomeView/Sections/HomeViewSectionArtists.tsx(74,8): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Scenes/HomeView/Sections/HomeViewSectionArtists.tsx(74,14): error TS7031: Binding element 'index' implicitly has an 'any' type.
+src/app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults.tsx(49,10): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Scenes/HomeView/Sections/HomeViewSectionAuctionResults.tsx(49,16): error TS7031: Binding element 'index' implicitly has an 'any' type.
+src/app/Scenes/HomeView/Sections/HomeViewSectionFairs.tsx(60,10): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Scenes/HomeView/Sections/HomeViewSectionFairs.tsx(60,16): error TS7031: Binding element 'index' implicitly has an 'any' type.
+src/app/Scenes/HomeView/Sections/HomeViewSectionSales.tsx(47,19): error TS2554: Expected 1 arguments, but got 0.
+src/app/Scenes/HomeView/Sections/HomeViewSectionTasks.tsx(264,37): error TS2345: Argument of type 'RefObject<SwipeableMethods | null>' is not assignable to parameter of type 'RefObject<SwipeableMethods>'.
+  Type 'SwipeableMethods | null' is not assignable to type 'SwipeableMethods'.
+    Type 'null' is not assignable to type 'SwipeableMethods'.
+src/app/Scenes/Inbox/Components/Conversations/__tests__/InquiryPurchaseButton.tests.tsx(31,14): error TS2322: Type '{ children: string; artwork: { readonly " $fragmentSpreads": FragmentRefs<"InquiryPurchaseButton_artwork">; }; editionSetID: null; conversationID: string; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<InquiryPurchaseButtonProps, "relay">, keyof InquiryPurchaseButtonProps>> & { ...; }'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<InquiryPurchaseButtonProps, "relay">, keyof InquiryPurchaseButtonProps>> & { ...; }'.
+src/app/Scenes/Inbox/Components/Conversations/__tests__/MakeOfferModal.tests.tsx(38,46): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/Inbox/Components/Conversations/Composer.tsx(106,27): error TS2339: Property 'children' does not exist on type 'Readonly<Props>'.
+src/app/Scenes/Inbox/Components/Conversations/Composer.tsx(121,21): error TS2322: Type '(input: TextInput | null) => TextInput | null' is not assignable to type 'Ref<TextInput> | undefined'.
+  Type '(input: TextInput | null) => TextInput | null' is not assignable to type '(instance: TextInput | null) => void | (() => VoidOrUndefinedOnly)'.
+    Type 'TextInput | null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
+      Type 'null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
+src/app/Scenes/Inbox/Components/Conversations/Conversations.tsx(21,16): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/Inbox/Components/Conversations/InquiryPurchaseButton.tsx(23,3): error TS2339: Property 'children' does not exist on type 'InquiryPurchaseButtonProps'.
+src/app/Scenes/Inbox/Components/Conversations/Message.tsx(115,20): error TS2322: Type '{ children: Element; onPress: (url: string) => Promise<void>; linkStyle: { color: string; textDecorationLine: "underline"; }; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<HyperLink> & Readonly<Props>'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<HyperLink> & Readonly<Props>'.
+src/app/Scenes/Inbox/Components/Conversations/OpenInquiryModalButton.tsx(96,18): error TS2322: Type '{ children: string; artwork: OpenInquiryModalButton_artwork$data; editionSetID: string | null; conversationID: string; onPress: () => void; replaceModalView: false; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<InquiryPurchaseButtonProps, "relay">, keyof InquiryPurchaseButtonProps>> & { ...; }'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<InquiryPurchaseButtonProps, "relay">, keyof InquiryPurchaseButtonProps>> & { ...; }'.
+src/app/Scenes/Inbox/Components/Conversations/Preview/Attachment/AttachmentPreview.tsx(27,25): error TS2339: Property 'children' does not exist on type 'Readonly<Props>'.
+src/app/Scenes/Inbox/Components/Conversations/Preview/Attachment/FileDownload.tsx(28,6): error TS2322: Type '{ children: Element; attachment: FileDownload_attachment$data; onSelected: () => void; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<Props, "relay">, keyof Props>> & { componentRef?: ((ref: any) => void) | undefined; }'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<Props, "relay">, keyof Props>> & { componentRef?: ((ref: any) => void) | undefined; }'.
+src/app/Scenes/Inbox/Components/Conversations/Preview/Attachment/ImagePreview.tsx(15,6): error TS2322: Type '{ children: Element; attachment: ImagePreview_attachment$data; onSelected: ((reactNodeHandle: number, attachmentID: string) => void) | undefined; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<Props, "relay">, keyof Props>> & { componentRef?: ((ref: any) => void) | undefined; }'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<Props, "relay">, keyof Props>> & { componentRef?: ((ref: any) => void) | undefined; }'.
+src/app/Scenes/Inbox/Components/Conversations/Preview/Attachment/PDFPreview.tsx(32,4): error TS2322: Type '{ children: Element; attachment: PDFPreview_attachment$data; onSelected: ((reactNodeHandle: number, attachmentID: string) => void) | undefined; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<Props, "relay">, keyof Props>> & { componentRef?: ((ref: any) => void) | undefined; }'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<Props, "relay">, keyof Props>> & { componentRef?: ((ref: any) => void) | undefined; }'.
+src/app/Scenes/Inbox/Components/Conversations/PurchaseModal.tsx(61,12): error TS2322: Type '{ children: string; artwork: PurchaseModal_artwork$data; disabled: boolean; editionSetID: string | null; conversationID: string; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<InquiryPurchaseButtonProps, "relay">, keyof InquiryPurchaseButtonProps>> & { ...; }'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<InquiryPurchaseButtonProps, "relay">, keyof InquiryPurchaseButtonProps>> & { ...; }'.
+src/app/Scenes/Inbox/Screens/Conversation.tsx(176,11): error TS2322: Type 'null' is not assignable to type 'string | undefined'.
+src/app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard.tsx(191,13): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"ArtistListItem_artist">; } | null | undefined' is not assignable to type '_FragmentRefs<"ArtistListItem_artist">'.
+  Type 'undefined' is not assignable to type '_FragmentRefs<"ArtistListItem_artist">'.
+src/app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCardPopover.tsx(11,13): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryMoreWorksTab.tsx(39,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryMoreWorksTab.tsx(39,43): error TS7031: Binding element 'index' implicitly has an 'any' type.
+src/app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryMoreWorksTab.tsx(39,50): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
+src/app/Scenes/InfiniteDiscovery/Components/Swiper/AnimatedView.tsx(24,3): error TS2339: Property 'children' does not exist on type 'AnimatedViewProps'.
+src/app/Scenes/InfiniteDiscovery/Components/Swiper/Swiper.tsx(211,16): error TS2322: Type '{ children: Element; index: number; activeCardX: SharedValue<number>; activeIndex: SharedValue<number>; swipedKeys: SharedValue<Key[]>; swipedCardX: SharedValue<...>; key: string; internalID: string; }' is not assignable to type 'IntrinsicAttributes & AnimatedViewProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & AnimatedViewProps'.
+src/app/Scenes/MyAccount/Components/MyAccountFieldEditScreen.tsx(43,29): error TS2554: Expected 1 arguments, but got 0.
+src/app/Scenes/MyAccount/Components/MyAccountFieldEditScreen.tsx(123,21): error TS2322: Type 'undefined' is not assignable to type 'AlertArgs'.
+src/app/Scenes/MyAccount/Components/MyAccountFieldEditScreen.tsx(137,3): error TS2339: Property 'children' does not exist on type '{ title: string; }'.
+src/app/Scenes/MyAccount/MyAccount.tsx(104,8): error TS2322: Type '{ children: (false | Element)[]; title: string; contentContainerStyle: { paddingTop: number; paddingHorizontal: number; }; }' is not assignable to type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+src/app/Scenes/MyAccount/MyAccount.tsx(195,6): error TS2322: Type '{ children: Element[]; title: string; contentContainerStyle: { paddingHorizontal: number; }; }' is not assignable to type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+src/app/Scenes/MyAccount/MyAccountEditEmail.tsx(63,8): error TS2322: Type '{ children: Element; title: string; onPress: () => Promise<void>; isValid: boolean; }' is not assignable to type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+src/app/Scenes/MyAccount/MyAccountEditEmail.tsx(97,6): error TS2322: Type '{ children: Element; title: string; }' is not assignable to type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+src/app/Scenes/MyAccount/MyAccountEditPassword.tsx(103,8): error TS2322: Type '{ children: Element; title: string; onPress: () => Promise<void>; isValid: boolean; }' is not assignable to type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+src/app/Scenes/MyAccount/MyAccountEditPhone.tsx(50,8): error TS2322: Type '{ children: Element; title: string; onPress: () => Promise<void>; isValid: boolean; }' is not assignable to type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+src/app/Scenes/MyAccount/MyAccountEditPhone.tsx(74,6): error TS2322: Type '{ children: Element; title: string; }' is not assignable to type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+src/app/Scenes/MyAccount/MyAccountEditPriceRange.tsx(77,8): error TS2322: Type '{ children: Element[]; title: string; onPress: () => Promise<void>; isValid: boolean; loading: boolean; contentContainerStyle: { paddingTop: number; }; }' is not assignable to type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+src/app/Scenes/MyAccount/MyAccountEditPriceRange.tsx(113,6): error TS2322: Type '{ children: Element[]; title: string; }' is not assignable to type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+src/app/Scenes/MyBids/Components/Lot.tsx(18,36): error TS2339: Property 'children' does not exist on type 'Readonly<Props>'.
+src/app/Scenes/MyBids/Components/SaleCard.tsx(31,15): error TS2339: Property 'children' does not exist on type '{ navLink?: string | undefined; }'.
+src/app/Scenes/MyBids/Components/SaleCard.tsx(40,14): error TS2339: Property 'children' does not exist on type '{ navLink?: string | undefined; }'.
+src/app/Scenes/MyBids/Components/SaleCard.tsx(57,3): error TS2339: Property 'children' does not exist on type 'SaleCardProps'.
+src/app/Scenes/MyBids/Components/SaleCard.tsx(81,10): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes & { navLink?: string | undefined; }'.
+src/app/Scenes/MyBids/MyBids.tsx(109,31): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes & { topBorder?: boolean | undefined; }'.
+src/app/Scenes/MyBids/MyBids.tsx(127,20): error TS2322: Type '{ children: Element; key: string; sale: { readonly internalID: string; readonly registrationStatus: { readonly qualifiedForBidding: boolean | null | undefined; } | null | undefined; readonly " $fragmentSpreads": FragmentRefs<...>; }; me: MyBids_me$data; smallScreen: boolean; hideChildren: boolean; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<SaleCardProps, "relay">, keyof SaleCardProps>> & { ...; }'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<SaleCardProps, "relay">, keyof SaleCardProps>> & { ...; }'.
+src/app/Scenes/MyBids/MyBids.tsx(159,30): error TS2559: Type '{ children: string; }' has no properties in common with type 'IntrinsicAttributes & { topBorder?: boolean | undefined; }'.
+src/app/Scenes/MyBids/MyBids.tsx(201,14): error TS2339: Property 'children' does not exist on type '{ topBorder?: boolean | undefined; }'.
+src/app/Scenes/MyCollection/Components/__tests__/ScreenMargin.tests.tsx(8,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes & ScreenMarginProps'.
+src/app/Scenes/MyCollection/Components/ScreenMargin.tsx(9,61): error TS2339: Property 'children' does not exist on type 'ScreenMarginProps'.
+src/app/Scenes/MyCollection/MyCollectionArtworks.tsx(81,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Scenes/MyCollection/MyCollectionArtworks.tsx(81,43): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
+src/app/Scenes/MyCollection/MyCollectionArtworks.tsx(93,11): error TS2322: Type '{ contextScreenOwnerType: OwnerType; contextScreenOwnerId: any; contextScreenOwnerSlug: any; artwork: any; height: number; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<MyCollectionArtworkGridItemProps, "relay">, "artwork">> & { ...; }'.
+  Property 'contextScreenOwnerType' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<MyCollectionArtworkGridItemProps, "relay">, "artwork">> & { ...; }'.
+src/app/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/MyCollectionArtworkArtistArticles.tsx(28,6): error TS2559: Type '{ children: (Element | Element[])[]; }' has no properties in common with type 'IntrinsicAttributes & ScreenMarginProps'.
+src/app/Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork.tsx(196,4): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork.tsx(219,8): error TS2786: 'RetryErrorBoundary' cannot be used as a JSX component.
+  Its type 'typeof RetryErrorBoundary' is not a valid JSX element type.
+    Types of construct signatures are incompatible.
+      Type 'new (props: RetryErrorBoundaryProps) => RetryErrorBoundary' is not assignable to type 'new (props: any) => Component<any, any, any>'.
+        Construct signature return types 'RetryErrorBoundary' and 'Component<any, any, any>' are incompatible.
+          The types returned by 'render()' are incompatible between these types.
+            Type 'string | number | bigint | boolean | Iterable<ReactNode> | Element | Promise<ReactNode> | null | undefined' is not assignable to type 'ReactNode'.
+              Type 'Promise<ReactNode>' is not assignable to type 'ReactNode'.
+                Type 'Promise<ReactNode>' is not assignable to type 'Promise<AwaitedReactNode>'.
+                  Type 'ReactNode' is not assignable to type 'AwaitedReactNode'.
+                    Type 'Promise<AwaitedReactNode>' is not assignable to type 'AwaitedReactNode'.
+src/app/Scenes/MyCollection/Screens/ArtworkForm/Components/__tests__/ArrowDetails.tests.tsx(10,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArrowDetails.tsx(3,42): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/Scenes/MyCollection/Screens/ArtworkForm/Components/ArtistAutosuggest.tsx(111,29): error TS2322: Type '{ inputRef: RefObject<InputRef | null>; queryRef: RefObject<string>; }' is not assignable to type '{ inputRef: RefObject<InputRef>; queryRef: Ref<string>; }'.
+  Types of property 'inputRef' are incompatible.
+    Type 'RefObject<InputRef | null>' is not assignable to type 'RefObject<InputRef>'.
+      Type 'InputRef | null' is not assignable to type 'InputRef'.
+        Type 'null' is not assignable to type 'InputRef'.
+src/app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkFormArtist.tsx(68,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes & ScreenMarginProps'.
+src/app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkFormArtist.tsx(89,4): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkFormMain.tsx(415,14): error TS2559: Type '{ children: false | Element; }' has no properties in common with type 'IntrinsicAttributes & ScreenMarginProps'.
+src/app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkFormMain.tsx(433,16): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes & ScreenMarginProps'.
+src/app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkFormMain.tsx(490,10): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes & ScreenMarginProps'.
+src/app/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkFormMain.tsx(491,12): error TS2559: Type '{ children: (false | Element)[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/MyCollection/Screens/Insights/CareerHighlightBottomSheet.tsx(91,6): error TS7006: Parameter 'props' implicitly has an 'any' type.
+src/app/Scenes/MyCollection/Screens/Insights/CareerHighlightBottomSheet.tsx(97,6): error TS7006: Parameter 'props' implicitly has an 'any' type.
+src/app/Scenes/MyCollection/Screens/Insights/CareerHighlightsBigCardsSwiper.tsx(24,12): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/MyCollection/Screens/Insights/CareerHighlightsBigCardsSwiper.tsx(196,6): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/MyCollection/Screens/Insights/CareerHighlightsBigCardsSwiper.tsx(210,6): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/MyCollection/Screens/Insights/Components/CareerHighlightBottomSheetItem.tsx(51,24): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/MyCollection/Screens/Insights/Components/MyCollectionSelectArtist.tsx(12,25): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/MyCollection/Screens/Insights/MedianSalePriceAtAuction.tsx(112,10): error TS2322: Type '{ children: Element[]; artistId: any; initialCategory: string; queryData: MedianSalePriceAtAuctionQuery$data; }' is not assignable to type 'IntrinsicAttributes & MedianSalePriceChartDataContextProviderProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MedianSalePriceChartDataContextProviderProps'.
+src/app/Scenes/MyCollection/Screens/Insights/MedianSalePriceAtAuction.tsx(156,6): error TS7006: Parameter 'newArtistID' implicitly has an 'any' type.
+src/app/Scenes/MyCollection/Screens/Insights/MedianSalePriceAtAuction.tsx(218,6): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/MyCollection/Screens/Insights/providers/MedianSalePriceChartDataContext.tsx(65,46): error TS2339: Property 'children' does not exist on type 'MedianSalePriceChartDataContextProviderProps'.
+src/app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtists.tsx(37,30): error TS2322: Type '() => null' is not assignable to type 'ReactNode'.
+src/app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsAutosuggest.tsx(105,29): error TS2322: Type '{ inputRef: RefObject<InputRef | null>; queryRef: RefObject<string>; }' is not assignable to type '{ inputRef: RefObject<InputRef>; queryRef: Ref<string>; }'.
+  Types of property 'inputRef' are incompatible.
+    Type 'RefObject<InputRef | null>' is not assignable to type 'RefObject<InputRef>'.
+      Type 'InputRef | null' is not assignable to type 'InputRef'.
+        Type 'null' is not assignable to type 'InputRef'.
+src/app/Scenes/MyCollection/Screens/MyCollectionAddCollectedArtists/MyCollectionAddCollectedArtistsAutosuggest.tsx(204,6): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/MyProfile/__tests__/DarkModeSettings.tests.tsx(10,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/MyProfile/Components/MyProfileScreenWrapper.tsx(16,3): error TS2339: Property 'children' does not exist on type 'MyProfileScreenWrapperProps'.
+src/app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader.tsx(64,8): error TS2322: Type '{ children: Element; showBorder: boolean | undefined; scrollEnabled: boolean; }' is not assignable to type 'IntrinsicAttributes & { showBorder?: boolean | undefined; scrollEnabled?: boolean | undefined; }'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & { showBorder?: boolean | undefined; scrollEnabled?: boolean | undefined; }'.
+src/app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader.tsx(258,6): error TS2322: Type '{ children: Element[]; showBorder: boolean | undefined; }' is not assignable to type 'IntrinsicAttributes & { showBorder?: boolean | undefined; scrollEnabled?: boolean | undefined; }'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & { showBorder?: boolean | undefined; scrollEnabled?: boolean | undefined; }'.
+src/app/Scenes/MyProfile/Components/UserAccountHeader/UserAccountHeader.tsx(282,9): error TS2339: Property 'children' does not exist on type '{ showBorder?: boolean | undefined; scrollEnabled?: boolean | undefined; }'.
+src/app/Scenes/MyProfile/Components/UserProfileFields.tsx(59,11): error TS2322: Type 'RefObject<TextInput | null>' is not assignable to type 'RefObject<TextInput>'.
+  Type 'TextInput | null' is not assignable to type 'TextInput'.
+    Type 'null' is not assignable to type 'TextInput'.
+src/app/Scenes/MyProfile/LoggedInUserInfo.tsx(45,17): error TS2322: Type '{ me: { readonly " $fragmentSpreads": FragmentRefs<"LoggedInUserInfo_me">; } | null | undefined; }' is not assignable to type 'MappedFragmentProps<Pick<Omit<UserProfileProps, "relay">, "me">>'.
+  Types of property 'me' are incompatible.
+    Type '{ readonly " $fragmentSpreads": FragmentRefs<"LoggedInUserInfo_me">; } | null | undefined' is not assignable to type '_FragmentRefs<"LoggedInUserInfo_me">'.
+      Type 'undefined' is not assignable to type '_FragmentRefs<"LoggedInUserInfo_me">'.
+src/app/Scenes/MyProfile/MyProfileEditForm.tsx(299,6): error TS2559: Type '{ children: (Element | Element[])[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/MyProfile/MyProfilePayment.tsx(129,8): error TS2322: Type '{ children: Element[]; title: string; RefreshControl: Element; }' is not assignable to type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+src/app/Scenes/MyProfile/MyProfilePayment.tsx(163,6): error TS2322: Type '{ children: Element; title: string; contentContainerStyle: { paddingHorizontal: number; }; }' is not assignable to type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+src/app/Scenes/MyProfile/MyProfilePayment.tsx(231,37): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"MyProfilePayment_me">; } | null | undefined' is not assignable to type '_FragmentRefs<"MyProfilePayment_me">'.
+  Type 'undefined' is not assignable to type '_FragmentRefs<"MyProfilePayment_me">'.
+src/app/Scenes/MyProfile/MyProfilePaymentNewCreditCard.tsx(184,8): error TS2322: Type '{ children: Element[]; title: string; onPress: () => Promise<void>; isValid: boolean; loading: boolean; }' is not assignable to type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+src/app/Scenes/MyProfile/MyProfilePrivacy.tsx(14,8): error TS2322: Type '{ children: Element[]; title: string; contentContainerStyle: { paddingHorizontal: number; }; }' is not assignable to type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+src/app/Scenes/MyProfile/MyProfileProvider.tsx(14,47): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/Scenes/MyProfile/MyProfilePushNotifications.tsx(160,6): error TS2322: Type '{ children: Element; title: string; contentContainerStyle: { paddingHorizontal: number; }; }' is not assignable to type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+src/app/Scenes/MyProfile/MyProfilePushNotifications.tsx(245,8): error TS2322: Type '{ children: (false | Element)[]; title: string; contentContainerStyle: { paddingHorizontal: number; }; RefreshControl: Element; }' is not assignable to type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+src/app/Scenes/MyProfile/MyProfileTermsAndConditions.tsx(14,8): error TS2322: Type '{ children: Element[]; title: string; contentContainerStyle: { paddingHorizontal: number; }; }' is not assignable to type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+src/app/Scenes/Onboarding/Auth2/AuthApp.tsx(22,12): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Onboarding/Auth2/AuthScenes.tsx(14,10): error TS2322: Type '{ children: Element; name: "LoginWelcomeStep"; }' is not assignable to type 'IntrinsicAttributes & AuthScreenProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & AuthScreenProps'.
+src/app/Scenes/Onboarding/Auth2/AuthScenes.tsx(18,10): error TS2322: Type '{ children: Element; name: "LoginPasswordStep"; }' is not assignable to type 'IntrinsicAttributes & AuthScreenProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & AuthScreenProps'.
+src/app/Scenes/Onboarding/Auth2/AuthScenes.tsx(22,10): error TS2322: Type '{ children: Element; name: "LoginOTPStep"; }' is not assignable to type 'IntrinsicAttributes & AuthScreenProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & AuthScreenProps'.
+src/app/Scenes/Onboarding/Auth2/AuthScenes.tsx(26,10): error TS2322: Type '{ children: Element; name: "ForgotPasswordStep"; }' is not assignable to type 'IntrinsicAttributes & AuthScreenProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & AuthScreenProps'.
+src/app/Scenes/Onboarding/Auth2/AuthScenes.tsx(30,10): error TS2322: Type '{ children: Element; name: "SignUpNameStep"; }' is not assignable to type 'IntrinsicAttributes & AuthScreenProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & AuthScreenProps'.
+src/app/Scenes/Onboarding/Auth2/AuthScenes.tsx(34,10): error TS2322: Type '{ children: Element; name: "SignUpPasswordStep"; }' is not assignable to type 'IntrinsicAttributes & AuthScreenProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & AuthScreenProps'.
+src/app/Scenes/Onboarding/Auth2/components/AuthModal.tsx(22,39): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/Scenes/Onboarding/Auth2/components/AuthScreen.tsx(8,57): error TS2339: Property 'children' does not exist on type 'AuthScreenProps'.
+src/app/Scenes/Onboarding/Auth2/hooks/useInputAutofocus.tsx(33,7): error TS2322: Type 'number' is not assignable to type 'Timeout'.
+src/app/Scenes/Onboarding/Auth2/scenes/ForgotPasswordStep.tsx(81,5): error TS2322: Type 'RefObject<TextInput | null>' is not assignable to type 'RefObject<TextInput>'.
+  Type 'TextInput | null' is not assignable to type 'TextInput'.
+    Type 'null' is not assignable to type 'TextInput'.
+src/app/Scenes/Onboarding/Auth2/scenes/LoginOTPStep.tsx(37,5): error TS2322: Type 'RefObject<TextInput | null>' is not assignable to type 'RefObject<TextInput>'.
+  Type 'TextInput | null' is not assignable to type 'TextInput'.
+    Type 'null' is not assignable to type 'TextInput'.
+src/app/Scenes/Onboarding/Auth2/scenes/LoginPasswordStep.tsx(105,5): error TS2322: Type 'RefObject<TextInput | null>' is not assignable to type 'RefObject<TextInput>'.
+  Type 'TextInput | null' is not assignable to type 'TextInput'.
+    Type 'null' is not assignable to type 'TextInput'.
+src/app/Scenes/Onboarding/Auth2/scenes/LoginWelcomeStep.tsx(101,5): error TS2322: Type 'RefObject<TextInput | null>' is not assignable to type 'RefObject<TextInput>'.
+  Type 'TextInput | null' is not assignable to type 'TextInput'.
+    Type 'null' is not assignable to type 'TextInput'.
+src/app/Scenes/Onboarding/Auth2/scenes/SignUpNameStep.tsx(99,5): error TS2322: Type 'RefObject<TextInput | null>' is not assignable to type 'RefObject<TextInput>'.
+  Type 'TextInput | null' is not assignable to type 'TextInput'.
+    Type 'null' is not assignable to type 'TextInput'.
+src/app/Scenes/Onboarding/Auth2/scenes/SignUpPasswordStep.tsx(71,5): error TS2322: Type 'RefObject<TextInput | null>' is not assignable to type 'RefObject<TextInput>'.
+  Type 'TextInput | null' is not assignable to type 'TextInput'.
+    Type 'null' is not assignable to type 'TextInput'.
+src/app/Scenes/Onboarding/OnboardingCreateAccount/OnboardingCreateAccount.tsx(201,43): error TS2339: Property 'children' does not exist on type 'OnboardingCreateAccountScreenWrapperProps'.
+src/app/Scenes/Onboarding/OnboardingCreateAccount/OnboardingCreateAccountEmail.tsx(27,6): error TS2322: Type '{ children: Element; onBackButtonPress: () => void; title: string; }' is not assignable to type 'IntrinsicAttributes & OnboardingCreateAccountScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & OnboardingCreateAccountScreenWrapperProps'.
+src/app/Scenes/Onboarding/OnboardingCreateAccount/OnboardingCreateAccountName.tsx(28,6): error TS2322: Type '{ children: Element[]; onBackButtonPress: () => void; title: string; caption: string; }' is not assignable to type 'IntrinsicAttributes & OnboardingCreateAccountScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & OnboardingCreateAccountScreenWrapperProps'.
+src/app/Scenes/Onboarding/OnboardingCreateAccount/OnboardingCreateAccountPassword.tsx(22,6): error TS2322: Type '{ children: Element; onBackButtonPress: () => void; title: string; caption: string; }' is not assignable to type 'IntrinsicAttributes & OnboardingCreateAccountScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & OnboardingCreateAccountScreenWrapperProps'.
+src/app/Scenes/Onboarding/OnboardingQuiz/Components/AnimatedFadingPill.tsx(22,17): error TS2339: Property 'children' does not exist on type '{ variant?: "search" | "default" | "filter" | "badge" | "dotted" | undefined; src?: undefined; selected?: boolean | undefined; disabled?: boolean | undefined; Icon?: FC<IconProps> | undefined; onPress?: (() => void) | undefined; }'.
+src/app/Scenes/Onboarding/OnboardingQuiz/Components/OnboardingQuestionTemplate.tsx(148,18): error TS2322: Type '{ children: (false | Element)[]; variant: "default"; isVisible: boolean; key: string; Icon: (() => Element) | undefined; onPress: () => void; selected: boolean | undefined; }' is not assignable to type 'IntrinsicAttributes & FadingPillProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & FadingPillProps'.
+src/app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext.tsx(93,67): error TS2339: Property 'children' does not exist on type 'OnboardingProviderProps'.
+src/app/Scenes/Onboarding/OnboardingQuiz/OnboardingOrderedSet.tsx(96,4): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Onboarding/OnboardingQuiz/OnboardingQuiz.tsx(49,6): error TS2322: Type '{ children: Element; onDone: () => void; }' is not assignable to type 'IntrinsicAttributes & OnboardingProviderProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & OnboardingProviderProps'.
+src/app/Scenes/Onboarding/OnboardingQuiz/OnboardingSearchResults.tsx(170,4): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/OrderHistory/__tests__/OrderHistoryRow.tests.tsx(40,40): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"OrderHistoryRow_order">; } | null | undefined' is not assignable to type '_FragmentRefs<"OrderHistoryRow_order">'.
+  Type 'undefined' is not assignable to type '_FragmentRefs<"OrderHistoryRow_order">'.
+src/app/Scenes/OrderHistory/OrderDetail/Components/MessageDetails.tsx(134,12): error TS2322: Type '{ children: Element; index: number; }' is not assignable to type 'IntrinsicAttributes & { index: number; }'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & { index: number; }'.
+src/app/Scenes/OrderHistory/OrderDetail/Components/MessageDetails.tsx(138,12): error TS2322: Type '{ children: Element; index: number; }' is not assignable to type 'IntrinsicAttributes & { index: number; }'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & { index: number; }'.
+src/app/Scenes/OrderHistory/OrderDetail/Components/MessageDetails.tsx(144,12): error TS2322: Type '{ children: Element; index: number; }' is not assignable to type 'IntrinsicAttributes & { index: number; }'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & { index: number; }'.
+src/app/Scenes/OrderHistory/OrderDetail/Components/MessageDetails.tsx(365,58): error TS2339: Property 'children' does not exist on type '{ index: number; }'.
+src/app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailBuyerProtection.tsx(22,6): error TS2322: Type '{ children: Element; variant: "default"; containerStyle: { px: 1; }; }' is not assignable to type 'IntrinsicAttributes & MessageProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MessageProps'.
+src/app/Scenes/OrderHistory/OrderDetails/__tests__/OrderDetailsPayment.tests.tsx(9,70): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"OrderDetailsPayment_order">; } | null | undefined' is not assignable to type '_FragmentRefs<"OrderDetailsPayment_order">'.
+  Type 'undefined' is not assignable to type '_FragmentRefs<"OrderDetailsPayment_order">'.
+src/app/Scenes/OrderHistory/OrderDetails/Components/OrderDetails.tsx(27,18): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/OrderHistory/OrderDetails/Components/WirePaymentSection.tsx(13,58): error TS2339: Property 'children' does not exist on type '{ index: number; }'.
+src/app/Scenes/OrderHistory/OrderDetails/Components/WirePaymentSection.tsx(66,10): error TS2322: Type '{ children: Element; index: number; }' is not assignable to type 'IntrinsicAttributes & { index: number; }'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & { index: number; }'.
+src/app/Scenes/OrderHistory/OrderDetails/Components/WirePaymentSection.tsx(70,10): error TS2322: Type '{ children: Element; index: number; }' is not assignable to type 'IntrinsicAttributes & { index: number; }'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & { index: number; }'.
+src/app/Scenes/OrderHistory/OrderDetails/Components/WirePaymentSection.tsx(76,10): error TS2322: Type '{ children: Element; index: number; }' is not assignable to type 'IntrinsicAttributes & { index: number; }'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & { index: number; }'.
+src/app/Scenes/Partner/Components/PartnerArtwork.tsx(61,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Scenes/Partner/Components/PartnerArtwork.tsx(61,43): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
+src/app/Scenes/Partner/Components/PartnerHeader.tsx(26,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Partner/Components/PartnerHeader.tsx(36,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Partner/Components/PartnerHeader.tsx(75,34): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/Scenes/Partner/Components/PartnerOverviewList.tsx(39,8): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Scenes/PrivacyRequest/PrivacyRequest.tsx(9,6): error TS2322: Type '{ children: Element; title: string; contentContainerStyle: { paddingHorizontal: number; }; }' is not assignable to type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+  Property 'children' does not exist on type 'IntrinsicAttributes & MyProfileScreenWrapperProps'.
+src/app/Scenes/Sale/__tests__/Sale.tests.tsx(19,24): error TS2322: Type '() => null' is not assignable to type 'ReactNode'.
+src/app/Scenes/Sale/Components/SaleActiveBids.tsx(50,63): error TS2322: Type '{ readonly saleArtwork: { readonly slug: string; } | null | undefined; readonly " $fragmentSpreads": FragmentRefs<"SaleActiveBidItem_lotStanding">; } | null | undefined' is not assignable to type '_FragmentRefs<"SaleActiveBidItem_lotStanding">'.
+  Type 'undefined' is not assignable to type '_FragmentRefs<"SaleActiveBidItem_lotStanding">'.
+src/app/Scenes/Sale/Components/SaleArtworkListItem.tsx(28,19): error TS2554: Expected 1 arguments, but got 0.
+src/app/Scenes/Sale/Sale.tsx(54,12): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/Sale/Sale.tsx(349,4): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/SaleInfo/__tests__/SaleInfo.tests.tsx(10,53): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"SaleInfo_sale">; } | null | undefined' is not assignable to type '_FragmentRefs<"SaleInfo_sale">'.
+  Type 'undefined' is not assignable to type '_FragmentRefs<"SaleInfo_sale">'.
+src/app/Scenes/SaleInfo/__tests__/SaleInfo.tests.tsx(10,65): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"SaleInfo_me">; } | null | undefined' is not assignable to type '_FragmentRefs<"SaleInfo_me">'.
+  Type 'undefined' is not assignable to type '_FragmentRefs<"SaleInfo_me">'.
+src/app/Scenes/Sales/Sales.tsx(61,37): error TS2554: Expected 1 arguments, but got 0.
+src/app/Scenes/Sales/Sales.tsx(63,38): error TS2554: Expected 1 arguments, but got 0.
+src/app/Scenes/SavedSearchAlert/__tests__/CreateSavedSearchModal.tests.tsx(93,34): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/Scenes/SavedSearchAlert/__tests__/CreateSavedSearchModal.tests.tsx(128,10): error TS2559: Type '{ children: (string | Element)[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/SavedSearchAlert/screens/__tests__/ConfirmationScreen.tests.tsx(60,34): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/Scenes/SavedSearchAlert/screens/__tests__/ConfirmationScreen.tests.tsx(75,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/SavedSearchAlertsList/Components/EmptyMessage.tsx(19,9): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/SavedSearchAlertsList/Components/SavedSearchesList.tsx(85,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/SavedSearchAlertsList/SavedSearchAlertsList.tsx(23,48): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"SavedSearchesList_me">; } | null | undefined' is not assignable to type '_FragmentRefs<"SavedSearchesList_me">'.
+  Type 'undefined' is not assignable to type '_FragmentRefs<"SavedSearchesList_me">'.
+src/app/Scenes/Search/__tests__/RecentSearches.tests.tsx(29,48): error TS2322: Type 'null' is not assignable to type 'InputRef'.
+src/app/Scenes/Search/__tests__/SearchModel.tests.tsx(112,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Search/components/__tests__/AutosuggestSearchResult.tests.tsx(33,4): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Search/components/EntitySearchResults.tsx(66,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Scenes/Search/components/EntitySearchResults.tsx(66,43): error TS7031: Binding element 'index' implicitly has an 'any' type.
+src/app/Scenes/Search/components/placeholders/SearchPlaceholder.tsx(88,6): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Search/components/placeholders/SingleIndexSearchPlaceholder.tsx(17,4): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Search/Search.tsx(125,14): error TS2559: Type '{ children: false | Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Search/Search.tsx(162,40): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/Scenes/Show/Screens/ShowMoreInfo.tsx(22,12): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/Show/Show.tsx(24,12): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/SimilarToRecentlyViewed/__tests__/SimilarToRecentlyViewed.tests.tsx(9,28): error TS2559: Type '{ me: { readonly " $fragmentSpreads": FragmentRefs<"SimilarToRecentlyViewed_artworksConnection">; } | null | undefined; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed.tsx(63,19): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/SimilarToRecentlyViewed/SimilarToRecentlyViewed.tsx(131,6): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/Tag/TagArtworks.tsx(90,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
+src/app/Scenes/Tag/TagArtworks.tsx(90,43): error TS7031: Binding element 'columnIndex' implicitly has an 'any' type.
+src/app/Scenes/ViewingRoom/Components/ViewingRoomsHomeRail.tsx(23,4): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/ViewingRoom/ViewingRoom.tsx(28,12): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/ViewingRoom/ViewingRoom.tsx(151,50): error TS7031: Binding element 'viewableItems' implicitly has an 'any' type.
+src/app/Scenes/ViewingRoom/ViewingRoomArtwork.tsx(229,4): error TS2559: Type '{ children: Element[]; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/Scenes/ViewingRoom/ViewingRoomArtworks.tsx(23,12): error TS2503: Cannot find namespace 'JSX'.
+src/app/Scenes/ViewingRoom/ViewingRoomsList.tsx(191,4): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/store/GlobalStore.tsx(95,53): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/system/flags/Components/WrappedFlagProvider.tsx(8,49): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/system/flags/Components/WrappedFlagProvider.tsx(35,27): error TS2322: Type '{ children: any; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'children' does not exist on type 'IntrinsicAttributes'.
+src/app/system/flags/Components/WrappedFlagProvider.tsx(40,41): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/utils/__legacy_do_not_use__navigator-ios-shim.tsx(78,30): error TS2322: Type '(ref: NavigationContainerRef<RootParamList> | null) => NavigationContainerRef<RootParamList> | null' is not assignable to type 'Ref<NavigationContainerRef<RootParamList>> | undefined'.
+  Type '(ref: NavigationContainerRef<RootParamList> | null) => NavigationContainerRef<RootParamList> | null' is not assignable to type '(instance: NavigationContainerRef<RootParamList> | null) => void | (() => VoidOrUndefinedOnly)'.
+    Type 'NavigationContainerRef<RootParamList> | null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
+      Type 'null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
+src/app/utils/__tests__/placeholders.tests.tsx(20,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/utils/__tests__/placeholders.tests.tsx(30,8): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/utils/AboveTheFoldQueryRenderer.tsx(23,18): error TS2694: Namespace 'React' has no exported member 'ReactChild'.
+src/app/utils/AboveTheFoldQueryRenderer.tsx(29,21): error TS2694: Namespace 'React' has no exported member 'ReactChild'.
+src/app/utils/AboveTheFoldQueryRenderer.tsx(30,40): error TS2694: Namespace 'React' has no exported member 'ReactChild'.
+src/app/utils/ArtworkInquiry/ArtworkInquiryStore.tsx(70,40): error TS2558: Expected 2 type arguments, but got 1.
+src/app/utils/ArtworkInquiry/ArtworkInquiryStore.tsx(76,46): error TS2322: Type 'Reducer<ArtworkInquiryContextState, ArtworkInquiryActions>' is not assignable to type 'ArtworkInquiryContextState'.
+src/app/utils/CatchErrors.tsx(10,23): error TS2339: Property 'children' does not exist on type 'Readonly<{}>'.
+src/app/utils/flattenChildren.ts(11,42): error TS18046: 'child.props' is of type 'unknown'.
+src/app/utils/hooks/withSuspense.tsx(80,14): error TS2559: Type '{ children: Element; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/utils/MeasuredView.tsx(21,49): error TS2339: Property 'children' does not exist on type 'Props'.
+src/app/utils/placeholders.tsx(19,55): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/utils/placeholders.tsx(30,3): error TS2339: Property 'children' does not exist on type 'ViewStyle & { testID?: string | undefined; }'.
+src/app/utils/renderWithPlaceholder.tsx(24,36): error TS2694: Namespace 'React' has no exported member 'ReactChild'.
+src/app/utils/renderWithPlaceholder.tsx(25,45): error TS2694: Namespace 'React' has no exported member 'ReactChild'.
+src/app/utils/renderWithPlaceholder.tsx(92,10): error TS2559: Type '{ children: React.ReactChild; }' has no properties in common with type 'IntrinsicAttributes'.
+src/app/utils/tests/NavigationTestsProvider.tsx(5,53): error TS2339: Property 'children' does not exist on type '{}'.
+src/app/utils/tests/renderWithWrappers.tsx(19,3): error TS2339: Property 'children' does not exist on type 'WrappersProps'.
+src/app/utils/tests/renderWithWrappers.tsx(37,11): error TS2559: Type '{ children: ReactElement; }' has no properties in common with type 'IntrinsicAttributes & WrappersProps'.
+src/app/utils/useElasticOverscroll.tsx(3,46): error TS2503: Cannot find namespace 'JSX'.
+src/app/utils/useStickyScrollHeader.tsx(15,12): error TS2503: Cannot find namespace 'JSX'.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

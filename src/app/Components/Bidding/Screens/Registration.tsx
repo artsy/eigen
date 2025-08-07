@@ -57,7 +57,11 @@ interface RegistrationState {
   errorModalDetailText: string
 }
 
-const Hint: React.FC = ({ children }) => (
+interface HintProps {
+  children?: React.ReactNode
+}
+
+const Hint: React.FC<HintProps> = ({ children }) => (
   <Text variant="sm-display" mb={4} color="mono60">
     {children}
   </Text>
