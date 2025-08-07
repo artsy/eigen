@@ -24,6 +24,7 @@ export interface ToastDetails {
   cta?: string
 
   onPress?: (helpers: ToastOnPressHelpers) => void
+  hideOnPress?: boolean
   Icon?: React.FC<IconProps>
   imageURL?: string
   backgroundColor?: Color
@@ -35,6 +36,7 @@ export type ToastOptions = Pick<
   ToastDetails,
   | "description"
   | "onPress"
+  | "hideOnPress"
   | "Icon"
   | "backgroundColor"
   | "duration"

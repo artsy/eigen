@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedPopover } from "@artsy/cohesion"
 import { Flex, Popover, Text, Touchable } from "@artsy/palette-mobile"
-import { ProgressiveOnboardingPriceRangeHomeQuery } from "__generated__/ProgressiveOnboardingPriceRangeHomeQuery.graphql"
+import { fetchPriceRange } from "app/Components/PriceRange/fetchPriceRange"
 import { useProgressiveOnboardingTracking } from "app/Components/ProgressiveOnboarding/useProgressiveOnboardingTracking"
 import { useSetActivePopover } from "app/Components/ProgressiveOnboarding/useSetActivePopover"
 import { internal_navigationRef } from "app/Navigation/Navigation"
@@ -8,11 +8,13 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME } from "app/store/ProgressiveOnboardingModel"
 // eslint-disable-next-line no-restricted-imports
 import { navigate, switchTab } from "app/system/navigation/navigate"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { useEffect, useState } from "react"
-import { fetchQuery, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+
+export const PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE = "Have a budget in mind?"
+export const PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT =
+  "Set an artwork budget in your profile at any time."
 
 // This delay needs to be longer than the time it takes to load the first few sections of the home tab
 const PRICE_RANGE_ONBOARDING_POPOVER_DELAY = 4000
@@ -37,7 +39,7 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC = ({ children }) => {
 
   useEffect(() => {
     fetchPriceRange().then((result) => {
-      setHasPriceRange(result)
+      setHasPriceRange(result.hasPriceRange)
     })
   }, [])
 
@@ -93,7 +95,7 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC = ({ children }) => {
       title={
         <Touchable accessibilityRole="button" noFeedback onPress={onPress}>
           <Text variant="xs" color="mono0" fontWeight="bold">
-            Have a budget in mind?
+            {PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE}
           </Text>
         </Touchable>
       }
@@ -101,7 +103,7 @@ export const ProgressiveOnboardingPriceRangeHome: React.FC = ({ children }) => {
         <Touchable noFeedback accessibilityRole="button" onPress={onPress}>
           <Flex maxWidth={250}>
             <Text variant="xs" color="mono0">
-              Share a artwork budget in your account preferences at any time.
+              {PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT}
             </Text>
           </Flex>
         </Touchable>
@@ -121,23 +123,4 @@ const tracks = {
       type: PROGRESSIVE_ONBOARDING_PRICE_RANGE_POPOVER_HOME,
     }
   },
-}
-
-const fetchPriceRange = async (): Promise<boolean> => {
-  const result = await fetchQuery<ProgressiveOnboardingPriceRangeHomeQuery>(
-    getRelayEnvironment(),
-    graphql`
-      query ProgressiveOnboardingPriceRangeHomeQuery {
-        me @required(action: NONE) {
-          hasPriceRange
-        }
-      }
-    `,
-    {},
-    {
-      fetchPolicy: "store-or-network",
-    }
-  ).toPromise()
-
-  return !!result?.me?.hasPriceRange
 }

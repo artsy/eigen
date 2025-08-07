@@ -206,6 +206,12 @@ export const features = {
     description: "Show onboarding price range screen",
     echoFlagKey: "ARShowOnboardingPriceRangeScreen",
   },
+  AREnablePriceRangeToast: {
+    readyForRelease: true,
+    showInDevMenu: true,
+    description: "Enable price range toast prompting users to update a price range",
+    echoFlagKey: "AREnablePriceRangeToast",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
