@@ -70,7 +70,11 @@ export const getOffsetBetweenGravityClock = async () => {
   }
 }
 
-export class TimeOffsetProvider extends React.Component {
+interface TimeOffsetProviderProps {
+  children?: React.ReactNode
+}
+
+export class TimeOffsetProvider extends React.Component<TimeOffsetProviderProps> {
   static childContextTypes = {
     timeOffsetInMilliSeconds: PropTypes.number,
   }

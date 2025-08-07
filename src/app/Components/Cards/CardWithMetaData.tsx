@@ -165,6 +165,7 @@ export const ListHeader = ({ title = "" }) => (
 
 interface CardWithMetaDataListItemProps {
   index: number
+  children?: React.ReactNode
 }
 
 export const CardWithMetaDataListItem: React.FC<CardWithMetaDataListItemProps> = ({

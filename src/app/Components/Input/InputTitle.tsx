@@ -1,6 +1,6 @@
 import { useColor, Text } from "@artsy/palette-mobile"
 
-export const InputTitle: React.FC<{ optional?: boolean; required?: boolean }> = ({
+export const InputTitle: React.FC<{ optional?: boolean; required?: boolean; children?: React.ReactNode }> = ({
   children: title,
   optional,
   required,

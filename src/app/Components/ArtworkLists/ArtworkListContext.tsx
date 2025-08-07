@@ -8,6 +8,7 @@ interface ArtworkListContextState {
 
 interface ArtworkListProviderProps {
   artworkListID: string
+  children?: React.ReactNode
 }
 
 const ArtworkListContext = createContext<ArtworkListContextState>({

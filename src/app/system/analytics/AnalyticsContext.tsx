@@ -6,6 +6,7 @@ export interface AnalyticsContextProps {
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string
   contextScreenOwnerType?: ScreenOwnerType
+  children?: React.ReactNode
 }
 
 const AnalyticsContext = createContext<AnalyticsContextProps>({})

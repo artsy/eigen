@@ -185,7 +185,11 @@ export const ArtworkListsStore = createContextStore((initialData) => ({
   ...initialData,
 }))
 
-export const ArtworkListsProvider: FC = ({ children }) => {
+interface ArtworkListsProviderProps {
+  children?: React.ReactNode
+}
+
+export const ArtworkListsProvider: FC<ArtworkListsProviderProps> = ({ children }) => {
   return (
     <ArtworkListsStore.Provider runtimeModel={{ state: { ...getArtworkListsStoreInitialState() } }}>
       <ListElements>{children}</ListElements>
@@ -193,7 +197,11 @@ export const ArtworkListsProvider: FC = ({ children }) => {
   )
 }
 
-const ListElements: FC = ({ children }) => {
+interface ListElementsProps {
+  children?: React.ReactNode
+}
+
+const ListElements: FC<ListElementsProps> = ({ children }) => {
   const {
     artwork,
     artworkListOfferSettingsViewVisible,

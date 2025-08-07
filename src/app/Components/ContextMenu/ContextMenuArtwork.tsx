@@ -39,6 +39,7 @@ interface ContextMenuArtworkProps {
   contextModule?: ContextModule
   contextScreenOwnerType?: ScreenOwnerType
   hideCreateAlertOnArtworkPreview?: boolean
+  children?: React.ReactNode
 }
 
 export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({

@@ -1,8 +1,9 @@
 import { KeyboardAvoidingView, View } from "react-native"
 
-export interface BottomAlignedProps extends React.Props<JSX.Element> {
+export interface BottomAlignedProps {
   onPress?: () => void
   buttonComponent: any
+  children?: React.ReactNode
 }
 
 export const BottomAlignedButtonWrapper: React.FC<BottomAlignedProps> = (props) => (

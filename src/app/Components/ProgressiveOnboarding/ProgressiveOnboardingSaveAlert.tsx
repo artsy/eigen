@@ -8,7 +8,11 @@ import { PROGRESSIVE_ONBOARDING_ALERT_CHAIN } from "app/store/ProgressiveOnboard
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
-export const ProgressiveOnboardingSaveAlert: React.FC = ({ children }) => {
+interface ProgressiveOnboardingSaveAlertProps {
+  children?: React.ReactNode
+}
+
+export const ProgressiveOnboardingSaveAlert: React.FC<ProgressiveOnboardingSaveAlertProps> = ({ children }) => {
   const {
     isDismissed,
     sessionState: { isReady },
