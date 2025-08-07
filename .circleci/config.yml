@@ -678,67 +678,67 @@ workflows:
   test-build-deploy:
     when: << pipeline.parameters.run_workflow_test-build-deploy >>
     jobs:
-      # - detect-secrets:
-      #     <<: *ignore_main_branches
+      - detect-secrets:
+          <<: *ignore_main_branches
 
       - check-code:
           context: danger-github-oss
 
-      # - horizon/block:
-      #     <<: *beta_branches_only
-      #     context: horizon
-      #     project_id: 37
+      - horizon/block:
+          <<: *beta_branches_only
+          context: horizon
+          project_id: 37
 
-      # - check-and-deploy:
-      #     <<: *main_only
+      - check-and-deploy:
+          <<: *main_only
 
-      # - test-js:
-      #     <<: *ignore_beta_branches
+      - test-js:
+          <<: *ignore_beta_branches
 
-      # - build-test-js:
-      #     <<: *ignore_beta_branches
+      - build-test-js:
+          <<: *ignore_beta_branches
 
-      # - build-test-app-ios:
-      #     <<: *ignore_beta_branches
-      #     requires:
-      #       - test-js
-      #       - check-code
-      #       - build-test-js
+      - build-test-app-ios:
+          <<: *ignore_beta_branches
+          requires:
+            - test-js
+            - check-code
+            - build-test-js
 
-      # - build-test-app-android:
-      #     <<: *ignore_beta_branches
-      #     requires:
-      #       - test-js
-      #       - check-code
-      #       - build-test-js
+      - build-test-app-android:
+          <<: *ignore_beta_branches
+          requires:
+            - test-js
+            - check-code
+            - build-test-js
 
-      # - build-deploy-ios-testflight:
-      #     <<: *ios_beta_branch_only
-      #     requires:
-      #       - horizon/block
+      - build-deploy-ios-testflight:
+          <<: *ios_beta_branch_only
+          requires:
+            - horizon/block
 
-      # - build-deploy-ios-firebase:
-      #     <<: *ios_beta_branch_only
-      #     requires:
-      #       - horizon/block
+      - build-deploy-ios-firebase:
+          <<: *ios_beta_branch_only
+          requires:
+            - horizon/block
 
-      # - prepare-android-version:
-      #     <<: *android_beta_branch_only
+      - prepare-android-version:
+          <<: *android_beta_branch_only
 
-      # - build-deploy-android-playstore:
-      #     <<: *android_beta_branch_only
-      #     requires:
-      #       - horizon/block
-      #       - prepare-android-version
+      - build-deploy-android-playstore:
+          <<: *android_beta_branch_only
+          requires:
+            - horizon/block
+            - prepare-android-version
 
-      # - build-deploy-android-firebase:
-      #     <<: *android_beta_branch_only
-      #     requires:
-      #       - horizon/block
-      #       - prepare-android-version
+      - build-deploy-android-firebase:
+          <<: *android_beta_branch_only
+          requires:
+            - horizon/block
+            - prepare-android-version
 
-      # - update-metaphysics:
-      #     <<: *beta_branches_only
-      #     requires:
-      #       - build-deploy-ios-testflight
-      #       - build-deploy-android-playstore
+      - update-metaphysics:
+          <<: *beta_branches_only
+          requires:
+            - build-deploy-ios-testflight
+            - build-deploy-android-playstore
