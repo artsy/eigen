@@ -51,7 +51,7 @@ src/app/Components/ArtsyWebView.tsx(290,11): error TS2322: Type 'RefObject<WebVi
             Types of property 'props' are incompatible.
               Property 'ref' is missing in type 'Readonly<IOSWebViewProps & AndroidWebViewProps & WindowsWebViewProps>' but required in type 'Readonly<IOSWebViewProps & AndroidWebViewProps & WindowsWebViewProps & { enableApplePay: true; ref: RefObject<WebViewWithShareTitleUrl | null>; ... 7 more ...; onNavigationStateChange: (evt: WebViewNavigation) => void; }>'.
 src/app/Components/ArtworkFilter/components/ArtworkFilterOptionItem.tsx(9,24): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/ArtworkFilter/Filters/MultiSelectOption.tsx(127,13): error TS2322: Type 'ReactElement<unknown, string | JSXElementConstructor<any>> | ComponentType<any> | null | undefined' is not assignable to type 'ReactNode'.
+src/app/Components/ArtworkFilter/Filters/MultiSelectOption.tsx(127,13): error TS2322: Type 'ComponentType<any> | ReactElement<unknown, string | JSXElementConstructor<any>> | null | undefined' is not assignable to type 'ReactNode'.
   Type 'ComponentClass<any, any>' is not assignable to type 'ReactNode'.
 src/app/Components/ArtworkFilter/Filters/SingleSelectOption.tsx(16,37): error TS2503: Cannot find namespace 'JSX'.
 src/app/Components/ArtworkFilter/Filters/SingleSelectOption.tsx(17,25): error TS2503: Cannot find namespace 'JSX'.
@@ -67,7 +67,7 @@ src/app/Components/ArtworkGrids/InfiniteScrollArtworksGrid.tsx(353,13): error TS
     Property 'hideViewFollowsLink' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; } & MappedFragmentProps<...>'.
 src/app/Components/ArtworkGrids/MasonryArtworkGridItem.tsx(80,9): error TS2322: Type '{ artwork: Artwork; artworkMetaStyle: false | "" | ViewStyle | RegisteredStyle<ViewStyle> | RecursiveArray<Falsy | ViewStyle | RegisteredStyle<...>> | null; ... 12 more ...; hideSaleInfo?: boolean | undefined; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; }'.
   Property 'numColumns' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; }'.
-src/app/Components/ArtworkRail/ArtworkRailCardMeta.tsx(160,9): error TS2322: Type 'false | Element | ComponentType<any>' is not assignable to type 'ReactNode'.
+src/app/Components/ArtworkRail/ArtworkRailCardMeta.tsx(160,9): error TS2322: Type 'false | ComponentType<any> | Element' is not assignable to type 'ReactNode'.
   Type 'ComponentClass<any, any>' is not assignable to type 'ReactNode'.
 src/app/Components/AutosuggestResults/AutosuggestResults.tsx(176,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
 src/app/Components/AutosuggestResults/AutosuggestResults.tsx(176,43): error TS7031: Binding element 'index' implicitly has an 'any' type.
@@ -80,7 +80,7 @@ src/app/Components/Bidding/Context/TimeOffsetProvider.tsx(3,23): error TS7016: C
   Try `npm i --save-dev @types/prop-types` if it exists or add a new declaration (.d.ts) file containing `declare module 'prop-types';`
 src/app/Components/Bidding/Screens/Registration.tsx(380,29): error TS2503: Cannot find namespace 'JSX'.
 src/app/Components/Bidding/Screens/Registration.tsx(408,29): error TS2503: Cannot find namespace 'JSX'.
-src/app/Components/Bidding/Screens/Registration.tsx(568,12): error TS2739: Type '{ navigation: NativeStackNavigationProp<BiddingNavigationStackParams, "RegisterToBid", undefined>; route: RouteProp<BiddingNavigationStackParams, "RegisterToBid">; }' is missing the following properties from type 'MappedFragmentProps<Pick<Omit<RegistrationProps, "relay">, "style" | "testID" | "children" | "hitSlop" | "id" | "needsOffscreenAlphaCompositing" | "onLayout" | "pointerEvents" | ... 81 more ... | "me">>': sale, me
+src/app/Components/Bidding/Screens/Registration.tsx(568,12): error TS2739: Type '{ navigation: NativeStackNavigationProp<BiddingNavigationStackParams, "RegisterToBid", undefined>; route: RouteProp<BiddingNavigationStackParams, "RegisterToBid">; }' is missing the following properties from type 'MappedFragmentProps<Pick<Omit<RegistrationProps, "relay">, "children" | "navigation" | "route" | "id" | "style" | "sale" | "hitSlop" | "needsOffscreenAlphaCompositing" | ... 81 more ... | "me">>': sale, me
 src/app/Components/Bidding/Screens/Registration.tsx(568,38): error TS2698: Spread types may only be created from object types.
 src/app/Components/BottomSheet/AutoHeightBottomSheet.tsx(17,24): error TS2322: Type 'ReactNode | ReactNode[] | FC<{ data?: any; }>' is not assignable to type 'ReactNode | ReactNode[]'.
   Type 'FC<{ data?: any; }>' is not assignable to type 'ReactNode | ReactNode[]'.
@@ -104,7 +104,7 @@ src/app/Components/Containers/Inquiry.tsx(85,57): error TS2503: Cannot find name
 src/app/Components/Containers/Inquiry.tsx(96,3): error TS2339: Property 'children' does not exist on type 'BottomAlignedProps'.
 src/app/Components/Containers/Inquiry.tsx(221,10): error TS2322: Type '{ children: Element[]; onPress: () => void; buttonText: string; disabled: boolean; }' is not assignable to type 'IntrinsicAttributes & BottomAlignedProps'.
   Property 'children' does not exist on type 'IntrinsicAttributes & BottomAlignedProps'.
-src/app/Components/ContextMenu/ContextMenuArtworkPreviewCard.tsx(98,11): error TS2322: Type 'false | Element | ComponentType<any>' is not assignable to type 'ReactNode'.
+src/app/Components/ContextMenu/ContextMenuArtworkPreviewCard.tsx(98,11): error TS2322: Type 'false | ComponentType<any> | Element' is not assignable to type 'ReactNode'.
   Type 'ComponentClass<any, any>' is not assignable to type 'ReactNode'.
 src/app/Components/EmbeddedCarousel.tsx(10,34): error TS2503: Cannot find namespace 'JSX'.
 src/app/Components/Gene/GeneArtworks.tsx(84,37): error TS7031: Binding element 'item' implicitly has an 'any' type.
@@ -492,14 +492,9 @@ src/app/utils/__legacy_do_not_use__navigator-ios-shim.tsx(78,30): error TS2322: 
   Type '(ref: NavigationContainerRef<RootParamList> | null) => NavigationContainerRef<RootParamList> | null' is not assignable to type '(instance: NavigationContainerRef<RootParamList> | null) => void | (() => VoidOrUndefinedOnly)'.
     Type 'NavigationContainerRef<RootParamList> | null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
       Type 'null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
-src/app/utils/AboveTheFoldQueryRenderer.tsx(23,18): error TS2694: Namespace 'React' has no exported member 'ReactChild'.
-src/app/utils/AboveTheFoldQueryRenderer.tsx(29,21): error TS2694: Namespace 'React' has no exported member 'ReactChild'.
-src/app/utils/AboveTheFoldQueryRenderer.tsx(30,40): error TS2694: Namespace 'React' has no exported member 'ReactChild'.
 src/app/utils/ArtworkInquiry/ArtworkInquiryStore.tsx(70,40): error TS2558: Expected 2 type arguments, but got 1.
 src/app/utils/ArtworkInquiry/ArtworkInquiryStore.tsx(76,46): error TS2322: Type 'Reducer<ArtworkInquiryContextState, ArtworkInquiryActions>' is not assignable to type 'ArtworkInquiryContextState'.
 src/app/utils/flattenChildren.ts(11,42): error TS18046: 'child.props' is of type 'unknown'.
-src/app/utils/renderWithPlaceholder.tsx(24,36): error TS2694: Namespace 'React' has no exported member 'ReactChild'.
-src/app/utils/renderWithPlaceholder.tsx(25,45): error TS2694: Namespace 'React' has no exported member 'ReactChild'.
 src/app/utils/useElasticOverscroll.tsx(3,46): error TS2503: Cannot find namespace 'JSX'.
 src/app/utils/useStickyScrollHeader.tsx(15,12): error TS2503: Cannot find namespace 'JSX'.
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

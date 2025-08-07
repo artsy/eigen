@@ -1,12 +1,13 @@
 import { Flex, Text, useColor } from "@artsy/palette-mobile"
+import React from "react"
 
 interface ZeroStateProps {
   title?: string
   bigTitle?: string
   subtitle?: string
   separators?: boolean
-  image?: JSX.Element
-  callToAction?: JSX.Element
+  image?: React.JSX.Element
+  callToAction?: React.JSX.Element
   minHeight?: number
   showBorder?: boolean
 }

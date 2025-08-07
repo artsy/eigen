@@ -1,4 +1,5 @@
 import { Flex } from "@artsy/palette-mobile"
+import React from "react"
 import { ArtistItem_artist$key } from "__generated__/ArtistItem_artist.graphql"
 import { AboveTheFoldFlatList } from "app/Components/AboveTheFoldFlatList"
 import Spinner from "app/Components/Spinner"
@@ -9,7 +10,7 @@ import { isTablet } from "react-native-device-info"
 interface SelectArtistListProps {
   artistsList: ArtistItem_artist$key[]
   isLoadingNext: boolean
-  ListHeaderComponent?: JSX.Element
+  ListHeaderComponent?: React.JSX.Element
   onItemPress: (artistID: string) => void
   onEndReached: () => void
 }

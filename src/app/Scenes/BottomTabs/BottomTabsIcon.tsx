@@ -1,4 +1,5 @@
 import { useColor } from "@artsy/palette-mobile"
+import React from "react"
 import { PixelRatio } from "react-native"
 import Svg, { Path } from "react-native-svg"
 import { BottomTabType } from "./BottomTabType"
@@ -12,7 +13,7 @@ export const BottomTabsIcon: React.FC<{ tab: BottomTabType; state: "active" | "i
 }) => {
   const color = useColor()
 
-  const ICONS: Record<BottomTabType, { active: JSX.Element; inactive: JSX.Element }> = {
+  const ICONS: Record<BottomTabType, { active: React.JSX.Element; inactive: React.JSX.Element }> = {
     home: {
       active: (
         <>

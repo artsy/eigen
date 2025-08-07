@@ -1,4 +1,5 @@
 import { Flex, Popover, Text } from "@artsy/palette-mobile"
+import React from "react"
 import { GlobalStore } from "app/store/GlobalStore"
 import {
   PROGRESSIVE_ONBOARDING_INFINITE_DISCOVERY_SAVE_REMINDER_1,
@@ -8,7 +9,7 @@ import {
 interface InfiniteDiscoveryArtworkCardPopoverProps {
   isTopCard: boolean
   index: number
-  children: JSX.Element
+  children: React.JSX.Element
 }
 
 export const InfiniteDiscoveryArtworkCardPopover: React.FC<

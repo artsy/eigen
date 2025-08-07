@@ -37,7 +37,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   description?: string
   descriptionColor?: Color
   error?: string
-  icon?: JSX.Element
+  icon?: React.JSX.Element
   loading?: boolean
   disabled?: boolean
   optional?: boolean
@@ -74,7 +74,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   canHidePassword?: boolean
   inputTextStyle?: TextStyle
   onClear?(): void
-  renderLeftHandSection?(): JSX.Element
+  renderLeftHandSection?(): React.JSX.Element
 }
 
 // wrapping some of the RNTextInput functionality, so we can call our own funcs too.

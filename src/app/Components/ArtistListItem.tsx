@@ -14,6 +14,7 @@ import { RouterLink } from "app/system/navigation/RouterLink"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
 import { pluralize } from "app/utils/pluralize"
 import { Schema } from "app/utils/track"
+import React from "react"
 import { StyleProp, ViewStyle } from "react-native"
 import {
   Environment,
@@ -38,7 +39,7 @@ interface Props {
   includeTombstone?: boolean
   isPrivate?: boolean
   relay: RelayProp
-  RightButton?: JSX.Element
+  RightButton?: React.JSX.Element
   showFollowButton?: boolean
   uploadsCount?: number | null
   withFeedback?: boolean

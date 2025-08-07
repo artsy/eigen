@@ -71,7 +71,7 @@ export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
   // At the moment we just render all of the levels and let them decide whether or not to show any tiles
   // this lets us avoid this component needing to update.
   const levelElements = useMemo(() => {
-    const result: JSX.Element[] = []
+    const result: React.JSX.Element[] = []
     for (let level = minLevel; level <= maxLevel; level++) {
       result.push(
         <DeepZoomLevel

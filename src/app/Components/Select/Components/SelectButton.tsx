@@ -15,6 +15,7 @@ import {
   useSpace,
   useTheme,
 } from "@artsy/palette-mobile"
+import React from "react"
 import { THEME } from "@artsy/palette-tokens"
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated"
 
@@ -30,7 +31,7 @@ export const SelectButton: React.FC<{
   subTitle?: string
   testID?: string
   title?: string
-  tooltipText?: string | JSX.Element
+  tooltipText?: string | React.JSX.Element
   value?: React.ReactNode
   error?: string
 }> = ({

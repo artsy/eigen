@@ -8,7 +8,7 @@ import { extractNodes } from "app/utils/extractNodes"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { ActionNames, ActionTypes } from "app/utils/track/schema"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { ActivityIndicator, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -18,7 +18,7 @@ import { NoMessages } from "./NoMessages"
 interface Props {
   me?: Conversations_me$data
   relay: RelayPaginationProp
-  headerView?: JSX.Element
+  headerView?: React.JSX.Element
   onRefresh?: () => any
   isActiveTab: boolean
 }

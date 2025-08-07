@@ -11,7 +11,7 @@ import {
 import { INPUT_HEIGHT } from "app/Components/Input"
 import { SearchInput } from "app/Components/SearchInput"
 import { SelectOption } from "app/Components/Select/Select"
-import { useEffect, useMemo, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, Modal, TouchableOpacity } from "react-native"
 
 export const SelectModal: React.FC<{
@@ -23,7 +23,7 @@ export const SelectModal: React.FC<{
   maxHeight?: number
   onDismiss(): any
   onSelectValue(value: unknown, index: number): any
-  renderItemLabel?(value: SelectOption<unknown>): JSX.Element
+  renderItemLabel?(value: SelectOption<unknown>): React.JSX.Element
   onModalFinishedClosing?(): void
   testID?: string
 }> = ({

@@ -82,7 +82,7 @@ const ResponseRateLine = styled.View`
   margin-top: 5px;
 `
 
-export interface BottomAlignedProps extends React.Props<JSX.Element> {
+export interface BottomAlignedProps extends React.Props<React.JSX.Element> {
   onPress: () => void
   buttonText: string
   disabled?: boolean

@@ -1,11 +1,11 @@
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { G } from "react-native-svg"
 import { Point } from "victory-native"
 import { ChartGestureEventType, ChartGestureObservable } from "./LineGraphChart"
 
 interface HighlightIconContainerProps {
   dataTag?: string
-  icon: JSX.Element
+  icon: React.JSX.Element
   onHighlightPressed: (datum: any) => void
 }
 

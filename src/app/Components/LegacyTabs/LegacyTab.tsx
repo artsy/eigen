@@ -1,9 +1,10 @@
 import { useColor, Text, TextProps } from "@artsy/palette-mobile"
+import React from "react"
 import { ViewProps, Pressable, View, ViewStyle } from "react-native"
 
 export interface TabProps {
   label: string
-  superscript?: JSX.Element
+  superscript?: React.JSX.Element
   active: boolean
   style?: ViewStyle
   onPress: () => void

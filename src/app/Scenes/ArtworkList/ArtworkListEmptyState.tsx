@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Separator, Text } from "@artsy/palette-mobile"
 import { ArtworkListEmptyState_me$key } from "__generated__/ArtworkListEmptyState_me.graphql"
+import React from "react"
 import { ArtworkListHeader } from "app/Scenes/ArtworkList/ArtworkListHeader"
 import { ArtworkListTitle } from "app/Scenes/ArtworkList/ArtworkListTitle"
 import { RouterLink } from "app/system/navigation/RouterLink"
@@ -8,7 +9,7 @@ import { graphql, useFragment } from "react-relay"
 
 interface ArtworkListEmptyStateProps {
   me: ArtworkListEmptyState_me$key | null | undefined
-  refreshControl: JSX.Element
+  refreshControl: React.JSX.Element
 }
 
 export const ArtworkListEmptyState = ({ me, refreshControl }: ArtworkListEmptyStateProps) => {

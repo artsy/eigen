@@ -24,7 +24,7 @@ const SUPPORTED_ITEM_TYPES = ["FeaturedLink", "Artwork"]
 
 interface FlatListSection {
   key: string
-  content: JSX.Element
+  content: React.JSX.Element
 }
 
 type FlatListSections = Array<FlatListSection | FlatListSections>
@@ -32,7 +32,7 @@ type FlatListSections = Array<FlatListSection | FlatListSections>
 function addSeparatorBetweenAllSections(
   sections: FlatListSections,
   key: string,
-  element: JSX.Element
+  element: React.JSX.Element
 ) {
   const result: FlatListSections = []
   for (let i = 0; i < sections.length; i++) {
