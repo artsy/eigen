@@ -332,6 +332,8 @@ def deploy_android_beta(deployment_target:)
     supply(
       track: 'alpha',
       skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
       aab: './android/app/build/outputs/bundle/release/app-release.aab'
