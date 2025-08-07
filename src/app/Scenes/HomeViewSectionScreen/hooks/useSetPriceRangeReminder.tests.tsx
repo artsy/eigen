@@ -72,6 +72,7 @@ describe("useSetPriceRangeReminder", () => {
         artworksLength={6}
         totalCount={10}
         sectionInternalID="home-view-section-recommended-artworks"
+        contextScreenOwnerType="artworkRecommendations"
       />
     )
 
@@ -92,6 +93,7 @@ describe("useSetPriceRangeReminder", () => {
         artworksLength={6}
         totalCount={10}
         sectionInternalID="home-view-section-recommended-artworks"
+        contextScreenOwnerType="artworkRecommendations"
       />
     )
 

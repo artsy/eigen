@@ -105,7 +105,7 @@ const tracks = {
   onToastPress: (contextScreenOwnerType: ScreenOwnerType): TappedToast => {
     return {
       action: ActionType.tappedToast,
-      context_screen_owner_type: contextScreenOwnerType, // OwnerType.artworkRecommendations,
+      context_screen_owner_type: contextScreenOwnerType,
       subject: "price-range-toast",
     }
   },
@@ -113,7 +113,7 @@ const tracks = {
   onToastView: (contextScreenOwnerType: ScreenOwnerType): ViewedToast => {
     return {
       action: ActionType.viewedToast,
-      context_screen_owner_type: contextScreenOwnerType, // OwnerType.artworkRecommendations,
+      context_screen_owner_type: contextScreenOwnerType,
       subject: "price-range-toast",
     }
   },
