@@ -191,7 +191,7 @@ async function main() {
 
       const severity = page.properties["Bug Severity"]?.select?.name || null
       const team = page.properties.Team?.select?.name || null
-      const status = page.properties.Status?.select?.name || null // 👈 Add this line
+      const status = page.properties.Status?.select?.name || null
 
       // 👇 Skip bugs that are marked as Fixed/Handled
       if (status === "Fixed/Handled") {
