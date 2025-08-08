@@ -43,7 +43,8 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
     [data.artistSeriesArtworks]
   )
   const shouldDisplaySpinner = isLoadingNext && hasNext
-  const gridRef = useRef<MasonryFlashListRef<(typeof artworksList)[0]>>(null)
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const gridRef = useRef<MasonryFlashListRef<(typeof artworksList)[0]>>(null!)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setFiltersCountAction
   )
@@ -90,28 +91,31 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
     tracking.trackEvent(tracks.clearFilters(id, slug))
   }
 
-  const renderItem = useCallback(({ item, index, columnIndex }: { item: any; index: number; columnIndex: number }) => {
-    const imgAspectRatio = item.image?.aspectRatio ?? 1
-    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-    const imgHeight = imgWidth / imgAspectRatio
+  const renderItem = useCallback(
+    ({ item, index, columnIndex }: { item: any; index: number; columnIndex: number }) => {
+      const imgAspectRatio = item.image?.aspectRatio ?? 1
+      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+      const imgHeight = imgWidth / imgAspectRatio
 
-    return (
-      <Flex
-        pl={columnIndex === 0 ? 0 : 1}
-        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-        mt={2}
-      >
-        <ArtworkGridItem
-          itemIndex={index}
-          contextScreenOwnerType={OwnerType.artistSeries}
-          contextScreenOwnerId={data.internalID}
-          contextScreenOwnerSlug={data.slug}
-          artwork={item}
-          height={imgHeight}
-        />
-      </Flex>
-    )
-  }, [])
+      return (
+        <Flex
+          pl={columnIndex === 0 ? 0 : 1}
+          pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+          mt={2}
+        >
+          <ArtworkGridItem
+            itemIndex={index}
+            contextScreenOwnerType={OwnerType.artistSeries}
+            contextScreenOwnerId={data.internalID}
+            contextScreenOwnerSlug={data.slug}
+            artwork={item}
+            height={imgHeight}
+          />
+        </Flex>
+      )
+    },
+    []
+  )
 
   return (
     <>
