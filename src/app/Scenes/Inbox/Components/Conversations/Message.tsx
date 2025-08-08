@@ -1,6 +1,5 @@
-import { Spacer, Flex, BoxProps, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, BoxProps, Text, useColor } from "@artsy/palette-mobile"
 import { Message_message$data } from "__generated__/Message_message.graphql"
-import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
@@ -30,6 +29,7 @@ interface Props extends Omit<BoxProps, "color"> {
 
 export const Message: React.FC<Props> = ({ message, showTimeSince, conversationId }) => {
   const tracking = useTracking()
+  const color = useColor()
 
   const renderAttachmentPreviews = (
     attachments: Props["message"]["attachments"],
@@ -102,45 +102,37 @@ export const Message: React.FC<Props> = ({ message, showTimeSince, conversationI
   const alignSelf = isFromUser ? "flex-end" : undefined
   const alignAttachments = isFromUser ? "flex-end" : "flex-start"
 
+  const backgroundColor = color(isFromUser ? "mono100" : "mono10")
   return (
-    <ThemeAwareClassTheme>
-      {({ color }) => {
-        const backgroundColor = color(isFromUser ? "mono100" : "mono10")
-        return (
-          <>
-            <Flex
-              maxWidth="66.67%"
-              alignItems={alignAttachments}
-              flexDirection="column"
-              style={{ alignSelf }}
-            >
-              <AttachmentContainer
-                style={{
-                  backgroundColor: color(isFromUser ? "mono100" : "mono10"),
-                }}
-              >
-                <Hyperlink
-                  onPress={onLinkPress}
-                  linkStyle={{
-                    color: color("blue100"),
-                    textDecorationLine: "underline",
-                  }}
-                >
-                  <Text variant="sm" color={textColor}>
-                    {body}
-                  </Text>
-                </Hyperlink>
-              </AttachmentContainer>
-              {!!message.attachments?.length && <Spacer y={0.5} />}
-              {renderAttachmentPreviews(message.attachments, backgroundColor)}
-            </Flex>
-            {!!showTimeSince && (
-              <TimeSince time={message.createdAt} style={{ alignSelf }} mt={0.5} />
-            )}
-          </>
-        )
-      }}
-    </ThemeAwareClassTheme>
+    <>
+      <Flex
+        maxWidth="66.67%"
+        alignItems={alignAttachments}
+        flexDirection="column"
+        style={{ alignSelf }}
+      >
+        <AttachmentContainer
+          style={{
+            backgroundColor: color(isFromUser ? "mono100" : "mono10"),
+          }}
+        >
+          <Hyperlink
+            onPress={onLinkPress}
+            linkStyle={{
+              color: color("blue100"),
+              textDecorationLine: "underline",
+            }}
+          >
+            <Text variant="sm" color={textColor}>
+              {body}
+            </Text>
+          </Hyperlink>
+        </AttachmentContainer>
+        {!!message.attachments?.length && <Spacer y={0.5} />}
+        {renderAttachmentPreviews(message.attachments, backgroundColor)}
+      </Flex>
+      {!!showTimeSince && <TimeSince time={message.createdAt} style={{ alignSelf }} mt={0.5} />}
+    </>
   )
 }
 
