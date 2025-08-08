@@ -7,7 +7,6 @@ import { Schema } from "app/utils/track"
 import { compact } from "lodash"
 import React from "react"
 import { Linking, Platform, View } from "react-native"
-import Hyperlink from "react-native-hyperlink"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -115,18 +114,11 @@ export const Message: React.FC<Props> = ({ message, showTimeSince, conversationI
           style={{
             backgroundColor: color(isFromUser ? "mono100" : "mono10"),
           }}
+          onPress={onLinkPress}
         >
-          <Hyperlink
-            onPress={onLinkPress}
-            linkStyle={{
-              color: color("blue100"),
-              textDecorationLine: "underline",
-            }}
-          >
-            <Text variant="sm" color={textColor}>
-              {body}
-            </Text>
-          </Hyperlink>
+          <Text variant="sm" color={textColor}>
+            {body}
+          </Text>
         </AttachmentContainer>
         {!!message.attachments?.length && <Spacer y={0.5} />}
         {renderAttachmentPreviews(message.attachments, backgroundColor)}

@@ -48,7 +48,6 @@ export const Conversation: React.FC<Props> = ({
   const [failedMessageText, setFailedMessageText] = useState<string | null>(null)
 
   const messagesRef = useRef<any>(null)
-  const composerRef = useRef<any>(null)
   const tracking = useTracking()
 
   const handleConnectivityChange = (state: any) => {
@@ -159,7 +158,6 @@ export const Conversation: React.FC<Props> = ({
       <ComposerFragmentContainer
         conversation={conversation}
         disabled={sendingMessage || !isConnected}
-        ref={(composer: any) => (composerRef.current = composer)}
         value={failedMessageText}
         onSubmit={(text: string) => {
           setSendingMessage(true)

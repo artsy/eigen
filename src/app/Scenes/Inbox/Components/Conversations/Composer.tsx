@@ -39,7 +39,14 @@ interface Props {
   children?: React.ReactNode
 }
 
-const Composer: React.FC<Props> = ({ disabled, onSubmit, value, conversation, children }) => {
+const ComposerInner: React.FC<Props & { forwardedRef?: React.Ref<TextInput> }> = ({
+  disabled,
+  onSubmit,
+  value,
+  conversation,
+  children,
+  forwardedRef,
+}) => {
   const [active, setActive] = useState(false)
   const [text, setText] = useState<string | null>(null)
   const inputRef = useRef<TextInput>(null)
@@ -78,6 +85,16 @@ const Composer: React.FC<Props> = ({ disabled, onSubmit, value, conversation, ch
     borderWidth: 1,
     fontFamily: "Unica77LL-Regular",
   }
+  // expose ref if provided
+  useEffect(() => {
+    if (forwardedRef && inputRef.current) {
+      if (typeof forwardedRef === "function") {
+        forwardedRef(inputRef.current)
+      } else if (typeof forwardedRef === "object") {
+        ;(forwardedRef as any).current = inputRef.current
+      }
+    }
+  }, [forwardedRef])
   return (
     <KeyboardAvoidingView
       behavior="padding"
@@ -115,6 +132,10 @@ const Composer: React.FC<Props> = ({ disabled, onSubmit, value, conversation, ch
     </KeyboardAvoidingView>
   )
 }
+
+const Composer = React.forwardRef<TextInput, Props>((props, ref) => (
+  <ComposerInner {...props} forwardedRef={ref} />
+))
 
 export default Composer
 
