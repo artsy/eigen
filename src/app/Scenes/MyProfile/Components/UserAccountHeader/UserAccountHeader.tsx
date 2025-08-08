@@ -279,6 +279,7 @@ const Placeholder: React.FC<{ showBorder?: boolean }> = ({ showBorder }) => {
 const AccountCardWapper: React.FC<{
   showBorder?: boolean
   scrollEnabled?: boolean
+  children?: React.ReactNode
 }> = ({ children, showBorder, scrollEnabled }) => {
   return showBorder ? (
     <Flex

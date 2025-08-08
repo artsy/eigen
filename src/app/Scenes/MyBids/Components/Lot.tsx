@@ -11,6 +11,7 @@ interface Props {
   /** An optional 20px^2 badge to display in the upper-left corner of the artwork thumbnail */
   ArtworkBadge?: React.ComponentType
   isSmallScreen?: boolean
+  children?: React.ReactNode
 }
 
 class Lot extends React.Component<Props> {

@@ -194,6 +194,7 @@ interface OnboardingCreateAccountScreenWrapperProps {
   onBackButtonPress?: () => void
   title: string
   caption?: string
+  children?: React.ReactNode
 }
 
 export const OnboardingCreateAccountScreenWrapper: React.FC<
