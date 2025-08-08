@@ -1,10 +1,12 @@
 import { Text } from "@artsy/palette-mobile"
 import { screen } from "@testing-library/react-native"
-import { TimeOffsetProvider } from "app/Components/Bidding/Context/TimeOffsetProvider"
+import {
+  TimeOffsetProvider,
+  useTimeOffset,
+} from "app/Components/Bidding/Context/TimeOffsetProvider"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import PropTypes from "prop-types"
 import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
 
@@ -12,14 +14,10 @@ const SECONDS = 1000
 const MINUTES = 60 * SECONDS
 const DATE_NOW = 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
 
-class TestConsumer extends React.Component {
-  static contextTypes = {
-    timeOffsetInMilliSeconds: PropTypes.number,
-  }
+const TestConsumer: React.FC = () => {
+  const { timeOffsetInMilliSeconds } = useTimeOffset()
 
-  render() {
-    return <Text>Time Offset: {this.context.timeOffsetInMilliSeconds}</Text>
-  }
+  return <Text>Time Offset: {timeOffsetInMilliSeconds}</Text>
 }
 
 describe("TimeOffsetProvider", () => {
