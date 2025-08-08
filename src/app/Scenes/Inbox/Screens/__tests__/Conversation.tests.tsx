@@ -1,5 +1,5 @@
 import { Touchable } from "@artsy/palette-mobile"
-import { screen, waitFor } from "@testing-library/react-native"
+import { screen } from "@testing-library/react-native"
 import { ConversationTestsQuery } from "__generated__/ConversationTestsQuery.graphql"
 import ConnectivityBanner from "app/Components/ConnectivityBanner"
 import Composer from "app/Scenes/Inbox/Components/Conversations/Composer"
