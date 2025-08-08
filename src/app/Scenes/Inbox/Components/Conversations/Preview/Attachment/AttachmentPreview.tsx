@@ -13,6 +13,7 @@ const Container = styled.View`
 `
 
 export interface AttachmentProps {
+  children?: React.ReactNode
   // reactNodeHandle is passed to the native side to decide which UIView to show the
   // download progress bar on.
   onSelected?: (reactNodeHandle: number, attachmentID: string) => void

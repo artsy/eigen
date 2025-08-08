@@ -133,7 +133,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
   )
 })
 
-export const MyAccountFieldEditScreenPlaceholder: React.FC<{ title: string }> = ({
+export const MyAccountFieldEditScreenPlaceholder: React.FC<{ children?: React.ReactNode; title: string }> = ({
   children,
   title,
 }) => (

@@ -32,6 +32,7 @@ const Container = styled.View`
 `
 
 interface Props {
+  children?: React.ReactNode
   disabled?: boolean
   onSubmit?: (text: string) => any
   value?: string

@@ -8,6 +8,7 @@ import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql } from "react-relay"
 
 export interface InquiryPurchaseButtonProps {
+  children?: React.ReactNode
   artwork: InquiryPurchaseButton_artwork$data
   editionSetID: string | null
   conversationID: string
