@@ -51,8 +51,8 @@ export const Conversation: React.FC<Props> = ({
   const composerRef = useRef<any>(null)
   const tracking = useTracking()
 
-  const handleConnectivityChange = (connectionInfo: any) => {
-    setIsConnected(connectionInfo.isConnected)
+  const handleConnectivityChange = (state: any) => {
+    setIsConnected(state.isConnected)
   }
 
   const refetch = React.useCallback(() => {
