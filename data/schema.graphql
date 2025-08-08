@@ -3158,7 +3158,7 @@ type ArtworkImport implements Node {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
-  locationID: String!
+  locationID: String
   rawDataMapping: JSON!
   rowsConnection(
     after: String
