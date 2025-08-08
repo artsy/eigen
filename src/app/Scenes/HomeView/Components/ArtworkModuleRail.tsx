@@ -52,7 +52,8 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
 }) => {
   const tracking = useTracking()
   const railRef = useRef<View>(null)
-  const listRef = useRef<FlatList<any>>(null)
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const listRef = useRef<FlatList<any>>(null!)
   useImperativeHandle(scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))

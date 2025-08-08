@@ -62,7 +62,8 @@ const ForgotPasswordStepForm: React.FC = () => {
   const navigation = useAuthNavigation()
   const screen = useAuthScreen()
   const { color } = useTheme()
-  const forgotPasswordRef = useRef<Input>(null)
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const forgotPasswordRef = useRef<Input>(null!)
 
   const handleBackButtonPress = () => {
     navigation.goBack()
