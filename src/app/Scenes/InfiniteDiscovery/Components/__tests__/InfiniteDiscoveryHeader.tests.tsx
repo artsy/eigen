@@ -5,14 +5,34 @@ import { GlobalStore, __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import RNShare from "react-native-share"
 
+const mockGoBack = jest.fn()
+const mockNavigate = jest.fn()
+
 jest.mock("app/system/navigation/navigate", () => ({
-  goBack: jest.fn(),
-  navigate: jest.fn(),
+  goBack: mockGoBack,
+  navigate: mockNavigate,
 }))
 
 jest.mock("react-native-share", () => ({
   open: jest.fn(),
 }))
+
+const mockAddListener = jest.fn((event, callback) => {
+  if (event === "beforeRemove") {
+    ;(mockAddListener as any).beforeRemoveCallback = callback
+  }
+  return jest.fn()
+})
+
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native")
+  return {
+    ...actualNav,
+    useNavigation: () => ({
+      addListener: mockAddListener,
+    }),
+  }
+})
 
 const mockUseToast = {
   show: jest.fn(),
@@ -55,6 +75,7 @@ describe("InfiniteDiscoveryHeader", () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    ;(mockAddListener as any).beforeRemoveCallback = undefined
     GlobalStore.actions.infiniteDiscovery.resetSavedArtworksCount()
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnabledDiscoverDailyNegativeSignals: false })
     ;(RNShare.open as jest.Mock).mockResolvedValue({ success: true, message: "shared" })
@@ -74,8 +95,8 @@ describe("InfiniteDiscoveryHeader", () => {
     GlobalStore.actions.infiniteDiscovery.incrementSavedArtworksCount()
     renderWithWrappers(<InfiniteDiscoveryHeader topArtwork={mockTopArtwork} />)
 
-    const closeButton = screen.getByTestId("close-icon")
-    fireEvent.press(closeButton)
+    // Simulate the navigation beforeRemove event that triggers the toast
+    ;(mockAddListener as any).beforeRemoveCallback()
 
     expect(mockUseToast.show).toHaveBeenCalledWith(
       "Nice! You saved 3 artworks.",
