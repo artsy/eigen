@@ -153,7 +153,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
         length: embeddedCardBoundingBox.width,
       })}
       snapToOffsets={offsets}
-      keyExtractor={(item, index) => item.url || index.toString()}
+      keyExtractor={(item, index) => (item?.url ? `${item.url}${index}` : index.toString())}
       decelerationRate="fast"
       onScroll={onScroll}
       scrollEventThrottle={50}
