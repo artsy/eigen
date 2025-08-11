@@ -36,7 +36,6 @@ interface Props {
   onSubmit?: (text: string) => any
   value?: string
   conversation: Composer_conversation$data
-  children?: React.ReactNode
 }
 
 const ComposerInner: React.FC<Props & { forwardedRef?: React.Ref<TextInput> }> = ({
