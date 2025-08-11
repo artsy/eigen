@@ -112,7 +112,7 @@ export const Message: React.FC<Props> = ({ message, showTimeSince, conversationI
       >
         <AttachmentContainer
           style={{
-            backgroundColor: color(isFromUser ? "mono100" : "mono10"),
+            backgroundColor,
           }}
           onPress={onLinkPress}
         >
