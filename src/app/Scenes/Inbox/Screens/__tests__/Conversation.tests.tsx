@@ -47,10 +47,10 @@ it("looks correct when rendered", () => {
     },
   }))
 
-  const view = renderWithRelay()
+  renderWithRelay()
 
-  const composer = view.UNSAFE_getByType(Composer)
-  const banners = view.UNSAFE_queryAllByType(ConnectivityBanner)
+  const composer = screen.UNSAFE_getByType(Composer)
+  const banners = screen.UNSAFE_queryAllByType(ConnectivityBanner)
 
   expect(composer.props.disabled).toBeFalsy()
   expect(banners).toHaveLength(0)
