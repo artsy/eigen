@@ -147,7 +147,7 @@ export const Conversation: React.FC<Props> = ({
         <Touchable
           accessibilityRole="button"
           onPress={() => {
-            navigate(`/conversation/${me?.conversation?.internalID}/details`)
+            navigate(`/conversation/${conversation?.internalID}/details`)
           }}
           hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
         >
