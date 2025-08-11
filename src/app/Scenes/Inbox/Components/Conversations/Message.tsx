@@ -1,14 +1,14 @@
-import { Spacer, Flex, BoxProps, Text } from "@artsy/palette-mobile"
+import { Spacer, Flex, BoxProps, Text, useColor } from "@artsy/palette-mobile"
 import { Message_message$data } from "__generated__/Message_message.graphql"
-import { ThemeAwareClassTheme } from "app/Components/DarkModeClassTheme"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
-import { Schema, Track, track as _track } from "app/utils/track"
+import { Schema } from "app/utils/track"
 import { compact } from "lodash"
 import React from "react"
 import { Linking, Platform, View } from "react-native"
-import Hyperlink from "react-native-hyperlink"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { FileDownloadFragmentContainer as FileDownload } from "./Preview/Attachment/FileDownload"
 import ImagePreview from "./Preview/Attachment/ImagePreview"
@@ -26,15 +26,20 @@ interface Props extends Omit<BoxProps, "color"> {
   conversationId: string
 }
 
-const track: Track<Props> = _track
+export const Message: React.FC<Props> = ({ message, showTimeSince, conversationId }) => {
+  const tracking = useTracking()
+  const color = useColor()
 
-@track()
-export class Message extends React.Component<Props> {
-  renderAttachmentPreviews(attachments: Props["message"]["attachments"], backgroundColor: string) {
+  const renderAttachmentPreviews = (
+    attachments: Props["message"]["attachments"],
+    backgroundColor: string
+  ) => {
     // reactNodeHandle is passed to the native side to decide which UIView to show the
     // download progress bar on.
     const previewAttachment = (reactNodeHandle: number, attachmentID: string) => {
-      const attachment = compact(attachments).find(({ internalID }) => internalID === attachmentID)!
+      const attachment = compact(attachments).find(({ internalID }) => internalID === attachmentID)
+      if (!attachment) return
+
       if (Platform.OS === "ios") {
         return LegacyNativeModules.ARTNativeScreenPresenterModule.presentMediaPreviewController(
           reactNodeHandle,
@@ -49,12 +54,13 @@ export class Message extends React.Component<Props> {
     return compact(attachments).map((attachment, index) => {
       const isImage = attachment?.contentType?.startsWith("image")
       const isPDF = attachment?.contentType === "application/pdf"
+      const attachmentsLength = attachments?.length || 0
       return (
         <AttachmentContainer
           style={{
             backgroundColor,
             flex: 1,
-            marginBottom: index === attachments!.length - 1 ? 0 : 5,
+            marginBottom: index === attachmentsLength - 1 ? 0 : 5,
             width: "100%",
           }}
           key={attachment.internalID}
@@ -79,63 +85,47 @@ export class Message extends React.Component<Props> {
     })
   }
 
-  @track((props) => ({
-    action_type: Schema.ActionTypes.Tap,
-    action_name: Schema.ActionNames.ConversationLink,
-    owner_type: Schema.OwnerEntityTypes.Conversation,
-    owner_id: props.conversationId,
-  }))
-  onLinkPress(url: string) {
+  const onLinkPress = (url: string) => {
+    tracking.trackEvent({
+      action_type: Schema.ActionTypes.Tap,
+      action_name: Schema.ActionNames.ConversationLink,
+      owner_type: Schema.OwnerEntityTypes.Conversation,
+      owner_id: conversationId,
+    })
+
     return navigate(url)
   }
 
-  render() {
-    const { message, showTimeSince } = this.props
-    const { isFromUser, body } = message
-    const textColor = isFromUser ? "mono0" : "mono100"
-    const alignSelf = isFromUser ? "flex-end" : undefined
-    const alignAttachments = isFromUser ? "flex-end" : "flex-start"
-    return (
-      <ThemeAwareClassTheme>
-        {({ color }) => {
-          const backgroundColor = color(isFromUser ? "mono100" : "mono10")
-          return (
-            <>
-              <Flex
-                maxWidth="66.67%"
-                alignItems={alignAttachments}
-                flexDirection="column"
-                style={{ alignSelf }}
-              >
-                <AttachmentContainer
-                  style={{
-                    backgroundColor: color(isFromUser ? "mono100" : "mono10"),
-                  }}
-                >
-                  <Hyperlink
-                    onPress={this.onLinkPress.bind(this)}
-                    linkStyle={{
-                      color: color("blue100"),
-                      textDecorationLine: "underline",
-                    }}
-                  >
-                    <Text variant="sm" color={textColor}>
-                      {body}
-                    </Text>
-                  </Hyperlink>
-                </AttachmentContainer>
-                {!!message.attachments?.length && <Spacer y={0.5} />}
-                {this.renderAttachmentPreviews(message.attachments, backgroundColor)}
-              </Flex>
-              {!!showTimeSince && (
-                <TimeSince time={message.createdAt} style={{ alignSelf }} mt={0.5} />
-              )}
-            </>
-          )
-        }}
-      </ThemeAwareClassTheme>
-    )
-  }
+  const { isFromUser, body } = message
+  const textColor = isFromUser ? "mono0" : "mono100"
+  const alignSelf = isFromUser ? "flex-end" : undefined
+  const alignAttachments = isFromUser ? "flex-end" : "flex-start"
+
+  const backgroundColor = color(isFromUser ? "mono100" : "mono10")
+  return (
+    <>
+      <Flex
+        maxWidth="66.67%"
+        alignItems={alignAttachments}
+        flexDirection="column"
+        style={{ alignSelf }}
+      >
+        <AttachmentContainer
+          style={{
+            backgroundColor,
+          }}
+          onPress={onLinkPress}
+        >
+          <Text variant="sm" color={textColor}>
+            {body}
+          </Text>
+        </AttachmentContainer>
+        {!!message.attachments?.length && <Spacer y={0.5} />}
+        {renderAttachmentPreviews(message.attachments, backgroundColor)}
+      </Flex>
+      {!!showTimeSince && <TimeSince time={message.createdAt} style={{ alignSelf }} mt={0.5} />}
+    </>
+  )
 }
 
 export default createFragmentContainer(Message, {
