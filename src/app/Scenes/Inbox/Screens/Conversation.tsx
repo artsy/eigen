@@ -182,10 +182,6 @@ export const Conversation: React.FC<Props> = ({
           <Messages
             componentRef={(messages) => (messagesRef.current = messages)}
             conversation={conversation as any}
-            onDataFetching={(loading: boolean) => {
-              // Handle loading state if needed
-              console.log("Data fetching:", loading)
-            }}
             onRefresh={() => {
               relay.refetch(
                 { conversationID: conversation?.internalID },
