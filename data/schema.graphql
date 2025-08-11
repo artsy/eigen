@@ -3291,6 +3291,7 @@ type ArtworkImportRowImage {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  publicUrl: String
   s3Bucket: String
   s3Key: String
 }
