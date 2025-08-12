@@ -70,6 +70,7 @@ export const FollowedArtists: React.FC<Props> = ({ me }) => {
         )
       }
       renderItem={({ item }) => {
+        if (!item.artist) return null
         return (
           <ArtistListItem
             avatarSize="sm"
