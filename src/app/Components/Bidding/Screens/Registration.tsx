@@ -564,7 +564,7 @@ export const RegistrationQueryRenderer: React.FC<
         `}
         cacheConfig={{ force: true }} // We want to always fetch latest sale registration status, CC info, etc.
         variables={{ saleID }}
-        render={renderWithLoadProgress((props) => (
+        render={renderWithLoadProgress((props: any) => (
           <RegistrationContainer {...props} {...screenProps} />
         ))}
       />
