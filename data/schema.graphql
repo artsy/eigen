@@ -13472,14 +13472,6 @@ type ImageEdge {
   node: Image
 }
 
-input ImagePositionInput {
-  # The ID of the image to update
-  id: String!
-
-  # The new position for the image (0-based)
-  position: Int!
-}
-
 type ImageURLs {
   normalized: String
 }
@@ -22565,8 +22557,8 @@ input UpdateArtworkImportRowImagesInput {
   artworkImportID: String!
   clientMutationId: String
 
-  # Array of image position updates
-  images: [ImagePositionInput!]!
+  # Array of image IDs in desired position order
+  positions: [String!]!
 }
 
 type UpdateArtworkImportRowImagesPayload {
