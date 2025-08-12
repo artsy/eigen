@@ -24,7 +24,7 @@ describe("ShowCard", () => {
       {}
     )
 
-    return <ShowCardContainer show={queryData.show!} onPress={mockOnPress} />
+    return <ShowCardContainer show={queryData.show!} isFluid={true} onPress={mockOnPress} />
   }
 
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -34,7 +34,7 @@ describe("ShowCard", () => {
   })
 
   it("navigates to the show page", async () => {
-    const { getByText, debug } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Show: () => ({
@@ -51,8 +51,6 @@ describe("ShowCard", () => {
         },
       }),
     })
-
-    debug()
 
     await flushPromiseQueue()
 
