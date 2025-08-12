@@ -16,7 +16,7 @@ describe("Sale", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (
-    <Suspense fallback={() => null}>
+    <Suspense fallback={null}>
       <SaleQueryRenderer saleID="sale-id" environment={mockEnvironment} />
     </Suspense>
   )
