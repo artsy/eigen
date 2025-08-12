@@ -75,7 +75,7 @@ export function useNewImageCarouselContext({
   onImageIndexChange?: (imageIndex: number) => void
 }): ImageCarouselContext {
   const embeddedImageRefs = useMemo(() => [], [])
-  const embeddedFlatListRef = useRef<FlatList<any>>()
+  const embeddedFlatListRef = useRef<FlatList<any>>(null)
   const xScrollOffsetAnimatedValue = useRef<Animated.Value>(new Animated.Value(0))
   const [imageIndex, setImageIndex] = useGlobalState(0)
   const [lastImageIndex, setLastImageIndex] = useGlobalState(0)

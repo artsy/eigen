@@ -25,7 +25,7 @@ interface Props {
 const CONTAINER_HEIGHT = 100
 
 export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwnerType }) => {
-  const itemRef = useRef<any>()
+  const itemRef = useRef<any>(null)
   const tracking = useTracking()
 
   const onPress = () => {
