@@ -16,3 +16,21 @@ Complicated React 19 type errors to come back to later:
    - Issue: Relay fragment nullable issue with artwork.artists?.[0]
    - Conditional rendering causes linter issues
    - Need proper pattern for handling nullable Relay fragments in JSX without linter conflicts
+
+4. src/app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailBuyerProtection.tsx(22,6): error TS2322: Type '{ children: Element; variant: "default"; containerStyle: { px: 1; }; }' is not assignable to type 'IntrinsicAttributes & MessageProps'.
+   - Issue: Message component in React 19 doesn't accept children prop
+   - The Message component usage pattern has changed in React 19
+   - Need to investigate new Message component API or use alternative approach
+   - Complex because it affects component functionality and requires understanding new patterns
+
+5. src/app/Scenes/Inbox/Components/Conversations/Message.tsx(115,20): error TS2322: Type '{ children: Element; onPress: (url: string) => Promise<void>; linkStyle: { color: string; textDecorationLine: "underline"; }; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<HyperLink> & Readonly<Props>'.
+   - Issue: HyperLink component in React 19 doesn't accept children prop  
+   - The Hyperlink component usage pattern has changed in React 19
+   - Need to investigate new Hyperlink component API or use alternative text/link components
+   - Complex because it affects link functionality in message components
+
+6. src/app/Scenes/MyCollection/MyCollectionArtworks.tsx(93,11): error TS2322: Type '{ contextScreenOwnerType: OwnerType; contextScreenOwnerId: any; contextScreenOwnerSlug: any; artwork: any; height: number; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<...>'.
+   - Issue: Component receiving props not defined in interface (contextScreenOwnerType, contextScreenOwnerId, etc.)
+   - MyCollectionArtworkGridItemProps only accepts 'artwork' but component called with additional props
+   - Need to either update component interface to accept these props or refactor calling code
+   - Complex because it might affect tracking/analytics functionality

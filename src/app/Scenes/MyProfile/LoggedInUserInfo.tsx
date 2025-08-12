@@ -41,8 +41,8 @@ export const UserProfileQueryRenderer: React.FC = () => (
     render={({ error, props }) => {
       if (error) {
         return null
-      } else if (props) {
-        return <UserProfileFragmentContainer {...props} />
+      } else if (props?.me) {
+        return <UserProfileFragmentContainer me={props.me} />
       } else {
         return (
           <Box mb={1}>
