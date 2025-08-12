@@ -6,7 +6,7 @@ import { graphql } from "react-relay"
 
 describe("PaymentSection", () => {
   const { renderWithRelay } = setupTestWrapper<OrderDetailsPaymentTestsQuery>({
-    Component: (props) => <PaymentMethodSummaryItemFragmentContainer order={props.order} />,
+    Component: (props) => <PaymentMethodSummaryItemFragmentContainer order={props.order!} />,
     query: graphql`
       query OrderDetailsPaymentTestsQuery($orderID: ID!) @relay_test_operation {
         order: commerceOrder(id: $orderID) {
