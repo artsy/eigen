@@ -20125,6 +20125,9 @@ input RemoveArtworkImportImageInput {
   artworkImportID: String!
   clientMutationId: String
   imageID: String!
+
+  # The ID of the row containing the image
+  rowID: String!
 }
 
 type RemoveArtworkImportImagePayload {
@@ -22569,8 +22572,11 @@ input UpdateArtworkImportRowImagesInput {
   artworkImportID: String!
   clientMutationId: String
 
+  # The ID of the row to update images for
+  rowID: String!
+
   # Array of image IDs in desired position order
-  positions: [String!]!
+  sortedImageIDs: [String!]!
 }
 
 type UpdateArtworkImportRowImagesPayload {
