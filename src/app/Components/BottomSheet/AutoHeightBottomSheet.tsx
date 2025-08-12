@@ -6,10 +6,9 @@ import {
 
 export type AutoHeightBottomSheetProps = Omit<AutomountedBottomSheetModalProps, "snapPoints">
 
-export const AutoHeightBottomSheet: React.FC<AutoHeightBottomSheetProps> = ({
-  children,
-  ...rest
-}) => {
+export const AutoHeightBottomSheet: React.FC<
+  React.PropsWithChildren<AutoHeightBottomSheetProps>
+> = ({ children, ...rest }) => {
   if (!rest.visible) return null
 
   return (
