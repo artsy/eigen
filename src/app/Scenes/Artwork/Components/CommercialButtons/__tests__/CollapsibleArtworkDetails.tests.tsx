@@ -6,7 +6,7 @@ import { graphql } from "react-relay"
 
 describe("CollapsibleArtworkDetails", () => {
   const { renderWithRelay } = setupTestWrapper<CollapsibleArtworkDetailsTestsQuery>({
-    Component: ({ artwork }) => <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />,
+    Component: ({ artwork }) => <CollapsibleArtworkDetailsFragmentContainer artwork={artwork!} />,
     query: graphql`
       query CollapsibleArtworkDetailsTestsQuery @relay_test_operation {
         artwork(id: "some-slug") {
