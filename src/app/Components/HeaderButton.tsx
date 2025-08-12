@@ -1,14 +1,16 @@
 import { Touchable, useColor } from "@artsy/palette-mobile"
 import { useScreenDimensions } from "app/utils/hooks"
+import React from "react"
 import { StyleProp, ViewProps, ViewStyle } from "react-native"
 import Animated, { AnimateProps, FadeIn, FadeOut } from "react-native-reanimated"
 
-interface HeaderButtonProps extends AnimateProps<ViewProps> {
+interface HeaderButtonProps extends Omit<AnimateProps<ViewProps>, 'children'> {
   style?: StyleProp<Animated.AnimateStyle<ViewStyle>>
   shouldHide?: boolean
   position: "left" | "right"
   applySafeAreaTopInsets?: boolean
   onPress: () => void
+  children?: React.ReactNode
 }
 
 // Constants
