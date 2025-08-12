@@ -3291,6 +3291,7 @@ type ArtworkImportRowImage {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  position: Int!
   publicUrl: String
   s3Bucket: String
   s3Key: String
@@ -13471,6 +13472,14 @@ type ImageEdge {
   node: Image
 }
 
+input ImagePositionInput {
+  # The ID of the image to update
+  id: String!
+
+  # The new position for the image (0-based)
+  position: Int!
+}
+
 type ImageURLs {
   normalized: String
 }
@@ -15876,6 +15885,12 @@ type Mutation {
     input: UpdateArtworkImportDimensionMetricInput!
   ): UpdateArtworkImportDimensionMetricPayload
   updateArtworkImportRow(input: UpdateArtworkImportRowInput!): UpdateArtworkImportRowPayload
+  updateArtworkImportRowImage(
+    input: UpdateArtworkImportRowImageInput!
+  ): UpdateArtworkImportRowImagePayload
+  updateArtworkImportRowImages(
+    input: UpdateArtworkImportRowImagesInput!
+  ): UpdateArtworkImportRowImagesPayload
   updateArtworkImportWeightMetric(
     input: UpdateArtworkImportWeightMetricInput!
   ): UpdateArtworkImportWeightMetricPayload
@@ -22513,6 +22528,59 @@ union UpdateArtworkImportResponseOrError = UpdateArtworkImportFailure | UpdateAr
 
 type UpdateArtworkImportRowFailure {
   mutationError: GravityMutationError
+}
+
+type UpdateArtworkImportRowImageFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtworkImportRowImageInput {
+  artworkImportID: String!
+  clientMutationId: String
+  imageID: String!
+
+  # New position for the image (0-based)
+  position: Int!
+}
+
+type UpdateArtworkImportRowImagePayload {
+  clientMutationId: String
+  updateArtworkImportRowImageOrError: UpdateArtworkImportRowImageResponseOrError
+}
+
+union UpdateArtworkImportRowImageResponseOrError =
+    UpdateArtworkImportRowImageFailure
+  | UpdateArtworkImportRowImageSuccess
+
+type UpdateArtworkImportRowImageSuccess {
+  artworkImport: ArtworkImport
+  artworkImportID: String!
+}
+
+type UpdateArtworkImportRowImagesFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtworkImportRowImagesInput {
+  artworkImportID: String!
+  clientMutationId: String
+
+  # Array of image position updates
+  images: [ImagePositionInput!]!
+}
+
+type UpdateArtworkImportRowImagesPayload {
+  clientMutationId: String
+  updateArtworkImportRowImagesOrError: UpdateArtworkImportRowImagesResponseOrError
+}
+
+union UpdateArtworkImportRowImagesResponseOrError =
+    UpdateArtworkImportRowImagesFailure
+  | UpdateArtworkImportRowImagesSuccess
+
+type UpdateArtworkImportRowImagesSuccess {
+  artworkImport: ArtworkImport
+  artworkImportID: String!
 }
 
 input UpdateArtworkImportRowInput {
