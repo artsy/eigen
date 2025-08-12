@@ -1,0 +1,7 @@
+Complicated React 19 type errors to come back to later:
+
+1. src/app/Navigation/AuthenticatedRoutes/Tabs.tsx(198,28): error TS2345: Argument of type 'EventArg<"tabPress", true, undefined>' is not assignable to parameter of type 'NativeSyntheticEvent<TouchEvent>'.
+   - Issue: React Navigation event type mismatch with React Native event handler
+   - The handleTabPress function expects NativeSyntheticEvent<TouchEvent> but receives EventArg from React Navigation
+   - Complex because it involves changing how tab press events are handled in navigation
+   - Need to investigate proper React Navigation event handling patterns

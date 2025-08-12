@@ -1,11 +1,12 @@
 import { Flex, Spacer, Text } from "@artsy/palette-mobile"
 import { RouterLink } from "app/system/navigation/RouterLink"
+import { RefreshControlProps } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import { NotificationType } from "./types"
 
 interface ActivityEmptyViewProps {
   type: NotificationType
-  refreshControl?: React.ReactElement
+  refreshControl?: React.ReactElement<RefreshControlProps>
 }
 
 const artistLink = (
