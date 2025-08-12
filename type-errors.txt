@@ -7,15 +7,11 @@ $ [ -f data/complete.queryMap.json ] || echo '{}' > data/complete.queryMap.json 
 [0m[34m[INFO] [0mCompilation completed.
 [0m[34m[INFO] [0mDone.
 $ /Users/brianbeckerle/Code/eigen/node_modules/.bin/tsc
-src/app/Components/__tests__/ShowCard.tests.tsx(27,13): error TS2741: Property 'isFluid' is missing in type '{ show: { readonly " $fragmentSpreads": FragmentRefs<"ShowCard_show">; }; onPress: Mock<any, any, any>; }' but required in type 'MappedFragmentProps<Pick<Omit<ShowCardProps, "relay">, keyof ShowCardProps>>'.
-src/app/Components/ArtworkGrids/InfiniteScrollArtworksGrid.tsx(353,13): error TS2322: Type '{ hideIncreasedInterestSignal: boolean | undefined; hideCuratorsPickSignal: boolean | undefined; hideRegisterBySignal: boolean | undefined; hideViewFollowsLink: boolean; ... 27 more ...; key: string; } | { ...; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; } & MappedFragmentProps<...>'.
-  Type '{ hideIncreasedInterestSignal: boolean | undefined; hideCuratorsPickSignal: boolean | undefined; hideRegisterBySignal: boolean | undefined; hideViewFollowsLink: boolean; hideCreateAlertOnArtworkPreview: boolean; ... 26 more ...; key: string; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; } & MappedFragmentProps<...>'.
-    Property 'hideViewFollowsLink' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; } & MappedFragmentProps<...>'.
-src/app/Components/ArtworkGrids/MasonryArtworkGridItem.tsx(80,9): error TS2322: Type '{ artwork: Artwork; artworkMetaStyle: false | "" | ViewStyle | RegisteredStyle<ViewStyle> | RecursiveArray<Falsy | ViewStyle | RegisteredStyle<...>> | null; ... 12 more ...; hideSaleInfo?: boolean | undefined; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; }'.
+src/app/Components/ArtworkGrids/MasonryArtworkGridItem.tsx(80,9): error TS2322: Type '{ artwork: Artwork; artworkMetaStyle: false | "" | ViewStyle | RegisteredStyle<ViewStyle> | RecursiveArray<ViewStyle | Falsy | RegisteredStyle<...>> | null; ... 12 more ...; hideSaleInfo?: boolean | undefined; }' is not assignable to type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; }'.
   Property 'numColumns' does not exist on type 'IntrinsicAttributes & MappedFragmentProps<Pick<Omit<ArtworkProps, "relay">, keyof ArtworkProps>> & { ...; }'.
 src/app/Components/ArtworkRail/ArtworkRailCardMeta.tsx(160,9): error TS2322: Type 'false | ComponentType<any> | Element' is not assignable to type 'ReactNode'.
   Type 'ComponentClass<any, any>' is not assignable to type 'ReactNode'.
-src/app/Components/Bidding/Screens/Registration.tsx(568,12): error TS2739: Type '{ navigation: NativeStackNavigationProp<BiddingNavigationStackParams, "RegisterToBid", undefined>; route: RouteProp<BiddingNavigationStackParams, "RegisterToBid">; }' is missing the following properties from type 'MappedFragmentProps<Pick<Omit<RegistrationProps, "relay">, "children" | "navigation" | "route" | "id" | "style" | "sale" | "me" | "hitSlop" | "needsOffscreenAlphaCompositing" | ... 80 more ... | "accessibilityLargeContentTitle">>': sale, me
+src/app/Components/Bidding/Screens/Registration.tsx(568,12): error TS2739: Type '{ navigation: NativeStackNavigationProp<BiddingNavigationStackParams, "RegisterToBid", undefined>; route: RouteProp<BiddingNavigationStackParams, "RegisterToBid">; }' is missing the following properties from type 'MappedFragmentProps<Pick<Omit<RegistrationProps, "relay">, "children" | "id" | "style" | "sale" | "navigation" | "route" | "hitSlop" | "needsOffscreenAlphaCompositing" | ... 81 more ... | "me">>': sale, me
 src/app/Components/Bidding/Screens/Registration.tsx(568,38): error TS2698: Spread types may only be created from object types.
 src/app/Components/BottomSheet/AutoHeightBottomSheet.tsx(17,24): error TS2322: Type 'ReactNode | ReactNode[] | FC<{ data?: any; }>' is not assignable to type 'ReactNode | ReactNode[]'.
   Type 'FC<{ data?: any; }>' is not assignable to type 'ReactNode | ReactNode[]'.
@@ -27,8 +23,6 @@ src/app/Components/Buttons/InfoButton.tsx(134,7): error TS2322: Type '(({ childr
           Types of property 'children' are incompatible.
             Type 'ReactNode' is not assignable to type 'ReactElement<unknown, string | JSXElementConstructor<any>>'.
               Type 'undefined' is not assignable to type 'ReactElement<unknown, string | JSXElementConstructor<any>>'.
-src/app/Components/Containers/Inbox.tsx(194,36): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"Inbox_me">; } | null | undefined' is not assignable to type '_FragmentRefs<"Inbox_me">'.
-  Type 'undefined' is not assignable to type '_FragmentRefs<"Inbox_me">'.
 src/app/Components/ContextMenu/ContextMenuArtworkPreviewCard.tsx(98,11): error TS2322: Type 'false | ComponentType<any> | Element' is not assignable to type 'ReactNode'.
   Type 'ComponentClass<any, any>' is not assignable to type 'ReactNode'.
 src/app/Components/HeaderButton.tsx(67,9): error TS2322: Type 'ReactNode | SharedValue<ReactNode>' is not assignable to type 'ReactNode'.
@@ -103,6 +97,5 @@ src/app/Scenes/SaleInfo/__tests__/SaleInfo.tests.tsx(10,65): error TS2322: Type 
   Type 'undefined' is not assignable to type '_FragmentRefs<"SaleInfo_me">'.
 src/app/Scenes/SavedSearchAlertsList/SavedSearchAlertsList.tsx(23,48): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"SavedSearchesList_me">; } | null | undefined' is not assignable to type '_FragmentRefs<"SavedSearchesList_me">'.
   Type 'undefined' is not assignable to type '_FragmentRefs<"SavedSearchesList_me">'.
-src/app/Scenes/SimilarToRecentlyViewed/__tests__/SimilarToRecentlyViewed.tests.tsx(9,28): error TS2559: Type '{ me: { readonly " $fragmentSpreads": FragmentRefs<"SimilarToRecentlyViewed_artworksConnection">; } | null | undefined; }' has no properties in common with type 'IntrinsicAttributes'.
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
 info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
