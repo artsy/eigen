@@ -4,11 +4,11 @@ import {
   Spacer,
   Text,
   Touchable,
+  InfoCircleIcon,
   useColor,
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
-import { InfoCircleIcon } from "@artsy/icons/native"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import React, { forwardRef, useImperativeHandle, useMemo, useState } from "react"
 import { Modal, Platform, ScrollView, SafeAreaView } from "react-native"

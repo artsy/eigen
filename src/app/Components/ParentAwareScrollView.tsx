@@ -11,6 +11,22 @@ type ScrollContext = {
   horizontal: boolean
 }
 
+interface VirtualizedListContextType {
+  horizontal?: boolean
+  registerAsNestedChild: (options: {
+    cellKey: string
+    key: string
+    ref: any
+    parentDebugInfo: any
+  }) => void
+  unregisterAsNestedChild: (options: {
+    key: string
+    ref: any
+    state: any
+  }) => void
+  debugInfo: any
+}
+
 // @ts-expect-error
 const ScrollViewContext: React.Context<ScrollContext> = ScrollView.Context
 
@@ -38,6 +54,7 @@ interface State {
  */
 class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> {
   static contextType = VirtualizedList.contextType
+  declare context: VirtualizedListContextType
 
   state = {
     cellKey: "defaultScrollListCellKey",
