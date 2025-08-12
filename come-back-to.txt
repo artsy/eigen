@@ -5,3 +5,9 @@ Complicated React 19 type errors to come back to later:
    - The handleTabPress function expects NativeSyntheticEvent<TouchEvent> but receives EventArg from React Navigation
    - Complex because it involves changing how tab press events are handled in navigation
    - Need to investigate proper React Navigation event handling patterns
+
+2. src/app/Scenes/Favorites/Favorites.tsx(169,13): error TS2322: Type 'FC<MaterialTopTabBarProps>' is not assignable to type '(props: MaterialTopTabBarProps) => ReactNode'.
+   - Issue: React 19 FC type is stricter about return types (can return Promise<ReactNode>)
+   - The tabBar prop expects a function returning ReactNode but FC can return ReactNode | Promise<ReactNode>
+   - Dangerous to cast - need to investigate proper React 19 FC patterns for navigation components
+   - May need to change FavoritesHeaderTapBar from FC to regular function component

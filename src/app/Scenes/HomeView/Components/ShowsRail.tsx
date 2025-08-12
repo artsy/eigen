@@ -53,6 +53,7 @@ export const ShowsRail: React.FC<ShowsRailProps> = memo(
       ({ item, index }: { item: any; index: number }) => (
         <ShowCardContainer
           show={item}
+          isFluid={false}
           onPress={() => {
             if (onTrack) {
               return onTrack(item, index)
