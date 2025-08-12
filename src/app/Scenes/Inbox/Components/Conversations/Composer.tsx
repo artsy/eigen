@@ -119,7 +119,9 @@ export default class Composer extends React.Component<Props, State> {
                     onEndEditing={() => this.setState({ active: false })}
                     onFocus={() => this.setState({ active: this.input.isFocused() })}
                     onChangeText={(text) => this.setState({ text })}
-                    ref={(input) => (this.input = input)}
+                    ref={(input) => {
+                      this.input = input
+                    }}
                     style={inputStyles}
                     multiline
                     value={this.state.text || undefined}
