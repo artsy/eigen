@@ -187,14 +187,16 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
     return (
       <Flex backgroundColor="mono0" width="100%" style={containerStyle || { borderRadius: 10 }}>
         <Flex p={2}>
-          <ArtistListItemContainer
-            artist={artwork.artists?.[0]}
-            avatarSize="xxs"
-            includeTombstone={false}
-            contextModule={ContextModule.infiniteDiscoveryArtworkCard}
-            contextScreenOwnerId={artwork.internalID}
-            contextScreenOwnerSlug={artwork.slug}
-          />
+          {artwork.artists?.[0] && (
+            <ArtistListItemContainer
+              artist={artwork.artists[0]}
+              avatarSize="xxs"
+              includeTombstone={false}
+              contextModule={ContextModule.infiniteDiscoveryArtworkCard}
+              contextScreenOwnerId={artwork.internalID}
+              contextScreenOwnerSlug={artwork.slug}
+            />
+          )}
         </Flex>
         <Flex alignItems="center" minHeight={adjustedMaxHeight} justifyContent="center">
           <Animated.View

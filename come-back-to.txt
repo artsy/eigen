@@ -11,3 +11,8 @@ Complicated React 19 type errors to come back to later:
    - The tabBar prop expects a function returning ReactNode but FC can return ReactNode | Promise<ReactNode>
    - Dangerous to cast - need to investigate proper React 19 FC patterns for navigation components
    - May need to change FavoritesHeaderTapBar from FC to regular function component
+
+3. src/app/Scenes/InfiniteDiscovery/Components/InfiniteDiscoveryArtworkCard.tsx(191,13): error TS2322: Type '{ readonly " $fragmentSpreads": FragmentRefs<"ArtistListItem_artist">; } | null | undefined' is not assignable to type '_FragmentRefs<"ArtistListItem_artist">'.
+   - Issue: Relay fragment nullable issue with artwork.artists?.[0]
+   - Conditional rendering causes linter issues
+   - Need proper pattern for handling nullable Relay fragments in JSX without linter conflicts

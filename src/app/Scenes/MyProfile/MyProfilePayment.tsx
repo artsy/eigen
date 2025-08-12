@@ -228,6 +228,7 @@ const MyProfilePaymentSuspense: React.FC = () => {
     { fetchPolicy: "store-and-network" }
   )
 
+  if (!data.me) return null
   return <MyProfilePaymentContainer me={data.me} />
 }
 
