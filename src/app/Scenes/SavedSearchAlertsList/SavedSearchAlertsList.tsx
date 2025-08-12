@@ -20,6 +20,7 @@ const SavedSearchAlertsList: React.FC = () => {
     { fetchPolicy: "store-and-network" }
   )
 
+  if (!data.me) return null
   return <SavedSearchesListPaginationContainer me={data.me} />
 }
 
