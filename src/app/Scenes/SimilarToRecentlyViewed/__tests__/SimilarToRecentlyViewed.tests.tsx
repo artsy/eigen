@@ -6,7 +6,7 @@ import { graphql } from "react-relay"
 
 describe("SimilarToRecentlyViewed", () => {
   const { renderWithRelay } = setupTestWrapper<SimilarToRecentlyViewedTestsQuery>({
-    Component: (props) => <SimilarToRecentlyViewed {...props} />,
+    Component: () => <SimilarToRecentlyViewed />,
     query: graphql`
       query SimilarToRecentlyViewedTestsQuery {
         me {
