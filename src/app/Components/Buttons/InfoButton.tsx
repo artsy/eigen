@@ -1,7 +1,6 @@
 import {
   Button,
   Flex,
-  InfoCircleIcon,
   Spacer,
   Text,
   Touchable,
@@ -9,6 +8,7 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
+import { InfoCircleIcon } from "@artsy/icons/native"
 import { AutoHeightBottomSheet } from "app/Components/BottomSheet/AutoHeightBottomSheet"
 import React, { forwardRef, useImperativeHandle, useMemo, useState } from "react"
 import { Modal, Platform, ScrollView, SafeAreaView } from "react-native"
@@ -108,13 +108,13 @@ export const AutoHeightInfoModal: React.FC<{
 
   const containerComponent = useMemo(() => {
     if (Platform.OS === "ios") {
-      return ({ children }: { children: React.ReactElement }) => (
+      return ({ children }: { children?: React.ReactNode }) => (
         <FullWindowOverlay>{children}</FullWindowOverlay>
       )
     }
 
     if (Platform.OS === "android" && isPresentedModally) {
-      return ({ children }: { children: React.ReactElement }) => (
+      return ({ children }: { children?: React.ReactNode }) => (
         <Modal visible={visible} transparent statusBarTranslucent>
           {children}
         </Modal>
