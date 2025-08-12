@@ -4,7 +4,7 @@ import {
   ArtworkInquiryContextProps,
   ArtworkInquiryContextState,
 } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import { createContext, Reducer, useContext, useReducer } from "react"
+import { createContext, useContext, useReducer } from "react"
 
 export const initialArtworkInquiryState: ArtworkInquiryContextState = {
   shippingLocation: null,
@@ -67,7 +67,7 @@ export const ArtworkInquiryContext = createContext<ArtworkInquiryContextProps>(n
 export const useArtworkInquiryContext = () => useContext(ArtworkInquiryContext)
 
 export const ArtworkInquiryStateProvider = ({ children }: any) => {
-  const [state, dispatch] = useReducer<Reducer<ArtworkInquiryContextState, ArtworkInquiryActions>>(
+  const [state, dispatch] = useReducer<ArtworkInquiryContextState, [ArtworkInquiryActions]>(
     artworkInquiryStateReducer,
     initialArtworkInquiryState
   )
