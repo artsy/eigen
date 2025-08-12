@@ -88,13 +88,13 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
   }, [])
 
   const renderBackdrop = useCallback(
-    (props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} />,
+    (props: any) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} />,
     []
   )
 
   // using our custom background to ensure backgroundColor is white
   const renderBackground = useCallback(
-    (props) => (
+    (props: any) => (
       <Flex {...props} backgroundColor="mono0" borderTopRightRadius={10} borderTopLeftRadius={10} />
     ),
     []

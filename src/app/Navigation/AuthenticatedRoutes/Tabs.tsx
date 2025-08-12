@@ -23,7 +23,13 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
 import { useCallback } from "react"
-import { Easing, InteractionManager, PixelRatio, Platform } from "react-native"
+import {
+  Easing,
+  InteractionManager,
+  NativeSyntheticEvent,
+  PixelRatio,
+  Platform,
+} from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 if (Platform.OS === "ios") {
@@ -64,10 +70,10 @@ const AppTabs: React.FC = () => {
   const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
 
   const handleTabPress = useCallback(
-    (e) => {
+    (e: NativeSyntheticEvent<TouchEvent>) => {
       // the tab name is saved in e.target postfixed with random string like sell-Nw_wCNTWwOg95v
       const tabName = Object.keys(bottomTabsConfig).find(
-        (tab) => e.target?.startsWith(tab)
+        (tab) => e.target?.toString().startsWith(tab)
       ) as BottomTabType
 
       if (Object.keys(BottomTabOption).includes(tabName) && selectedTab !== tabName) {

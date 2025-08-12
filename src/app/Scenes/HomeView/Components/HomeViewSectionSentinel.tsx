@@ -23,7 +23,7 @@ export const HomeViewSectionSentinel: React.FC<HomeViewSectionSentinelProps> = (
   )
 
   const handleVisibilityChange = useCallback(
-    (visible) => {
+    (visible: boolean) => {
       if (visible && !trackedSections.includes(contextModule)) {
         viewedSection(contextModule as ContextModule, index)
         addTrackedSection(contextModule)
