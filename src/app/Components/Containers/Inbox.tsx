@@ -178,7 +178,7 @@ export const InboxPlaceholder = () => {
 }
 
 interface InboxQueryRendererProps extends StackScreenProps<any> {
-  isVisible?: boolean
+  isVisible: boolean
 }
 
 const InboxQueryRenderer: React.FC<InboxQueryRendererProps> = memo((props) => {
@@ -187,6 +187,10 @@ const InboxQueryRenderer: React.FC<InboxQueryRendererProps> = memo((props) => {
     {},
     { fetchPolicy: "store-and-network" }
   )
+
+  if (!data.me) {
+    return null
+  }
 
   return (
     <Sentry.TimeToInitialDisplay record>
