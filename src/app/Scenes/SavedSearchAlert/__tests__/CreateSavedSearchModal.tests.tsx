@@ -21,6 +21,7 @@ import {
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import React from "react"
 
 jest.mock("app/Scenes/SavedSearchAlert/queries/getAlertByCriteria", () => ({
   getAlertByCriteria: () => Promise.resolve(null),
@@ -90,7 +91,7 @@ const mockedMutationResult: SavedSearchAlertMutationResult = {
   searchCriteriaID: "searchCriteriaID",
 }
 
-const TestWrapper: React.FC = ({ children }) => (
+const TestWrapper: React.FC<React.PropsWithChildren<{}>> = ({ children }) => (
   <SavedSearchStoreProvider
     runtimeModel={{
       ...savedSearchModel,
