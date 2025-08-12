@@ -27,7 +27,7 @@ export const useInputAutofocus = ({
       return
     }
 
-    let timeout: NodeJS.Timeout
+    let timeout: ReturnType<typeof setTimeout>
 
     requestAnimationFrame(() => {
       timeout = setTimeout(() => {
