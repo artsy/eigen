@@ -1,5 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
-import { Box, Flex, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { Box, Flex, Tabs, useSpace } from "@artsy/palette-mobile"
 import { MyCollectionArtworksQuery } from "__generated__/MyCollectionArtworksQuery.graphql"
 import { MyCollectionArtworks_me$key } from "__generated__/MyCollectionArtworks_me.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
@@ -42,9 +41,6 @@ interface MyCollectionArtworksProps {
 }
 
 export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({ me }) => {
-  const space = useSpace()
-  const { width } = useScreenDimensions()
-
   const { setIsFilterModalVisible, setFiltersCount } = MyCollectionTabsStore.useStoreActions(
     (actions) => actions
   )
