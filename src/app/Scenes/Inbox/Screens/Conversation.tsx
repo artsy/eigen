@@ -158,7 +158,7 @@ export const Conversation: React.FC<Props> = ({
       <ComposerFragmentContainer
         conversation={conversation}
         disabled={sendingMessage || !isConnected}
-        value={failedMessageText}
+        value={failedMessageText ?? undefined}
         onSubmit={(text: string) => {
           setSendingMessage(true)
           setFailedMessageText(null)

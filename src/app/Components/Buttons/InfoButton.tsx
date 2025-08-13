@@ -5,7 +5,6 @@ import {
   Spacer,
   Text,
   Touchable,
-  InfoCircleIcon,
   useColor,
   useScreenDimensions,
   useSpace,
