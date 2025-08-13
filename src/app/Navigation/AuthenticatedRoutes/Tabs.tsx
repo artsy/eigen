@@ -23,13 +23,7 @@ import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { postEventToProviders } from "app/utils/track/providers"
 import { useCallback } from "react"
-import {
-  Easing,
-  InteractionManager,
-  NativeSyntheticEvent,
-  PixelRatio,
-  Platform,
-} from "react-native"
+import { Easing, InteractionManager, PixelRatio, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 if (Platform.OS === "ios") {
@@ -70,12 +64,7 @@ const AppTabs: React.FC = () => {
   const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
 
   const handleTabPress = useCallback(
-    (e: NativeSyntheticEvent<TouchEvent>) => {
-      // the tab name is saved in e.target postfixed with random string like sell-Nw_wCNTWwOg95v
-      const tabName = Object.keys(bottomTabsConfig).find(
-        (tab) => e.target?.toString().startsWith(tab)
-      ) as BottomTabType
-
+    (tabName: BottomTabType) => {
       if (Object.keys(BottomTabOption).includes(tabName) && selectedTab !== tabName) {
         GlobalStore.actions.bottomTabs.setSelectedTab(tabName)
         postEventToProviders(
@@ -194,9 +183,13 @@ const AppTabs: React.FC = () => {
       screenListeners={{
         tabPress: (e) => {
           // The goal of this is to queue up the tab press event to be handled after the tab has changed
-          InteractionManager.runAfterInteractions(() => {
-            handleTabPress(e)
-          })
+          // Extract tab name from the navigation event's target (route name)
+          const routeName = e.target?.split("-")[0] // Remove any suffixes from the route name
+          if (routeName && Object.keys(bottomTabsConfig).includes(routeName)) {
+            InteractionManager.runAfterInteractions(() => {
+              handleTabPress(routeName as BottomTabType)
+            })
+          }
         },
       }}
     >
