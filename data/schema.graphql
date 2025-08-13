@@ -4649,6 +4649,9 @@ input BulkUpdateArtworksMetadataInput {
 
   # Details about the signature
   signature: String
+
+  # The title of the artwork
+  title: String
 }
 
 type BulkUpdateArtworksMetadataMutationFailure {
