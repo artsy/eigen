@@ -1,6 +1,7 @@
 import { WorkflowEngine } from "app/utils/WorkflowEngine/WorkflowEngine"
 import { useRef, useState } from "react"
 import { State } from "./Hooks/useOnboardingContext"
+import { shouldShowPriceRange } from "./utils/shouldShowPriceRange"
 
 interface UseConfig {
   basis: React.RefObject<State>
@@ -14,7 +15,12 @@ export const useConfig = ({ basis, onDone }: UseConfig) => {
         VIEW_WELCOME,
         VIEW_QUESTION_ONE,
         VIEW_QUESTION_TWO,
-        VIEW_QUESTION_THREE,
+        {
+          [DECISION_SHOULD_SHOW_PRICE_RANGE]: {
+            true: [VIEW_PRICE_RANGE, VIEW_QUESTION_THREE],
+            false: [VIEW_QUESTION_THREE],
+          },
+        },
         {
           [DECISION_WHERE_WOULD_YOU_LIKE_TO_DIVE_IN]: {
             [OPTION_THE_ART_TASTE_QUIZ]: [VIEW_THE_ART_TASTE_QUIZ],
@@ -27,8 +33,14 @@ export const useConfig = ({ basis, onDone }: UseConfig) => {
         },
       ],
       conditions: {
+        [DECISION_SHOULD_SHOW_PRICE_RANGE]: () => {
+          const questionTwoAnswers = basis.current?.questionTwo
+          const showPriceRange = shouldShowPriceRange(questionTwoAnswers)
+
+          return String(showPriceRange)
+        },
         [DECISION_WHERE_WOULD_YOU_LIKE_TO_DIVE_IN]: () => {
-          return basis.current?.questionThree!
+          return basis.current?.questionThree || ""
         },
       },
     })
@@ -79,6 +91,7 @@ export const OPTION_DEVELOPING_MY_ART_TASTES = "Developing my art tastes"
 export const OPTION_KEEP_TRACK_OF_ART = "Keeping track of art I’m interested in"
 export const OPTION_FINDING_GREAT_INVESTMENTS = "Finding my next great investment"
 export const OPTION_COLLECTING_ART_THAT_MOVES_ME = "Collecting art that moves me"
+export const OPTION_HUNTING_FOR_ART_WITHIN_BUDGET = "Hunting for art within my budget"
 
 export const OPTION_THE_ART_TASTE_QUIZ = "The Art Taste Quiz"
 export const OPTION_TOP_AUCTION_LOTS = "Top auction lots"
@@ -91,6 +104,7 @@ export const VIEW_WELCOME = "VIEW_WELCOME"
 export const VIEW_QUESTION_ONE = "VIEW_QUESTION_ONE"
 export const VIEW_QUESTION_TWO = "VIEW_QUESTION_TWO"
 export const VIEW_QUESTION_THREE = "VIEW_QUESTION_THREE"
+export const VIEW_PRICE_RANGE = "VIEW_PRICE_RANGE"
 
 export const VIEW_FOLLOW_ARTISTS = "VIEW_FOLLOW_ARTISTS"
 export const VIEW_THE_ART_TASTE_QUIZ = "VIEW_THE_ART_TASTE_QUIZ"
@@ -100,3 +114,4 @@ export const VIEW_ARTISTS_ON_THE_RISE = "VIEW_ARTISTS_ON_THE_RISE"
 export const VIEW_FOLLOW_GALLERIES = "VIEW_FOLLOW_GALLERIES"
 
 export const DECISION_WHERE_WOULD_YOU_LIKE_TO_DIVE_IN = "DECISION_WHERE_WOULD_YOU_LIKE_TO_DIVE_IN"
+export const DECISION_SHOULD_SHOW_PRICE_RANGE = "DECISION_SHOULD_SHOW_PRICE_RANGE"

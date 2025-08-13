@@ -136,7 +136,7 @@ describe("InfiniteDiscoveryNegativeSignals", () => {
       "See fewer artworks by this artist"
     )
     expect(Alert.alert).toHaveBeenCalledWith(
-      "Are you sure? You will no longer see works by Test Artist.",
+      "Are you sure? You will no longer see works by Test Artist in Discover Daily.",
       undefined,
       expect.arrayContaining([
         expect.objectContaining({ text: "No" }),

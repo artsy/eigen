@@ -1,7 +1,9 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { StarCircleFill, Flex, Text } from "@artsy/palette-mobile"
+import { StarCircleFillIcon } from "@artsy/icons/native"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { ClosedLotStanding_saleArtwork$data } from "__generated__/ClosedLotStanding_saleArtwork.graphql"
 import { TimelySale } from "app/Scenes/MyBids/helpers/timely"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import moment from "moment-timezone"
 import { TouchableOpacity } from "react-native"
@@ -52,7 +54,7 @@ export const ClosedLotStanding = ({
       : saleArtwork?.isHighestBidder
         ? "won"
         : "lost"
-  const Badge = result === "won" ? StarCircleFill : undefined
+  const Badge = result === "won" ? StarCircleFillIcon : undefined
 
   const bidderMessages: { [k in BidderResult]: React.ComponentType } = {
     won: Won,
@@ -83,7 +85,7 @@ export const ClosedLotStanding = ({
     >
       <Flex flexDirection="row" justifyContent="space-between">
         <Lot saleArtwork={saleArtwork} subtitle={subtitle} ArtworkBadge={Badge} />
-        {!sale.isLiveOpen && (
+        {!sale.isLiveOpenHappened && (
           <Flex>
             <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
               <Text variant="xs">{sellingPrice}</Text>
@@ -116,7 +118,7 @@ export const ClosedLotStandingFragmentContainer = createFragmentContainer(Closed
         }
       }
       sale {
-        isLiveOpen
+        isLiveOpenHappened
         endAt
         status
       }

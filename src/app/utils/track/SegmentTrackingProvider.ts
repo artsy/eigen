@@ -1,6 +1,7 @@
 import { SegmentClient, createClient } from "@segment/analytics-react-native"
 import { BrazePlugin } from "@segment/analytics-react-native-plugin-braze"
 import { addBreadcrumb } from "@sentry/react-native"
+import { AddAppNamePlugin } from "app/utils/track/AddAppNamePlugin"
 import { visualize } from "app/utils/visualizer"
 import { Platform } from "react-native"
 import Keys from "react-native-keys"
@@ -31,6 +32,7 @@ export const SegmentTrackingProvider: TrackingProvider = {
 
     analytics = createClient({ writeKey: writeKey })
     analytics.add({ plugin: new BrazePlugin() })
+    analytics.add({ plugin: new AddAppNamePlugin() })
   },
 
   identify: (userId, traits) => {

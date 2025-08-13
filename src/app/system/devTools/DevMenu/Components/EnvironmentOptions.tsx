@@ -1,4 +1,5 @@
-import { ChevronIcon, Flex, Separator, Spacer, Text, useColor } from "@artsy/palette-mobile"
+import { ChevronSmallRightIcon } from "@artsy/icons/native"
+import { Flex, Separator, Spacer, Text, useColor } from "@artsy/palette-mobile"
 import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { GlobalStore } from "app/store/GlobalStore"
 import { EnvironmentKey, environment } from "app/store/config/EnvironmentModel"
@@ -105,7 +106,7 @@ export const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose 
                     <Text variant="sm-display">{strings[key as EnvironmentKey]}</Text>
                   </Flex>
                 </Flex>
-                <ChevronIcon fill="mono60" direction="right" />
+                <ChevronSmallRightIcon fill="mono60" />
               </Flex>
             </TouchableHighlight>
           )

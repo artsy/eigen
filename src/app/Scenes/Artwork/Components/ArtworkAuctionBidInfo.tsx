@@ -1,10 +1,5 @@
-import {
-  CheckCircleFillIcon,
-  CloseCircleFillIcon,
-  Flex,
-  FlexProps,
-  Text,
-} from "@artsy/palette-mobile"
+import { CheckmarkFillIcon, CloseFillIcon } from "@artsy/icons/native"
+import { Flex, FlexProps, Text } from "@artsy/palette-mobile"
 import { ArtworkAuctionBidInfo_artwork$key } from "__generated__/ArtworkAuctionBidInfo_artwork.graphql"
 import { useFragment, graphql } from "react-relay"
 
@@ -30,7 +25,7 @@ export const ArtworkAuctionBidInfo: React.FC<ArtworkAuctionBidInfoProps> = ({
 
     if (myLotStanding.activeBid?.isWinning) {
       return (
-        <CheckCircleFillIcon
+        <CheckmarkFillIcon
           height="16"
           fill="green100"
           accessibilityLabel="My Bid Winning Icon"
@@ -40,12 +35,7 @@ export const ArtworkAuctionBidInfo: React.FC<ArtworkAuctionBidInfoProps> = ({
     }
 
     return (
-      <CloseCircleFillIcon
-        height="16"
-        fill="red100"
-        accessibilityLabel="My Bid Losing Icon"
-        mr={0.5}
-      />
+      <CloseFillIcon height="16" fill="red100" accessibilityLabel="My Bid Losing Icon" mr={0.5} />
     )
   }
 

@@ -1,12 +1,5 @@
-import {
-  Spacer,
-  useTheme,
-  ArtsyLogoWhiteIcon,
-  Flex,
-  Text,
-  Button,
-  LegacyScreen,
-} from "@artsy/palette-mobile"
+import { ArtsyLogoIcon } from "@artsy/icons/native"
+import { Spacer, useTheme, Flex, Text, Button, LegacyScreen } from "@artsy/palette-mobile"
 import { StackScreenProps } from "@react-navigation/stack"
 import {
   ArtsyNativeModule,
@@ -130,7 +123,8 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           animate={{ opacity: 1 }}
           transition={{ type: "timing", duration: 1500 }}
         >
-          <ArtsyLogoWhiteIcon height={25} width={75} />
+          {/* we explicitly want it to be white */}
+          <ArtsyLogoIcon fill="white" height={25} width={75} />
         </MotiView>
 
         <MotiView

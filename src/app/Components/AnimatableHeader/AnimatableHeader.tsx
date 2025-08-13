@@ -1,4 +1,5 @@
-import { ArrowLeftIcon, Flex, Text, useTheme } from "@artsy/palette-mobile"
+import { ChevronLeftIcon } from "@artsy/icons/native"
+import { Flex, Text, useTheme } from "@artsy/palette-mobile"
 import { FadeInLeft } from "app/utils/animations/FadeInLeft"
 import { useEffect } from "react"
 import { TouchableOpacity, View } from "react-native"
@@ -36,7 +37,7 @@ export const AnimatableHeader = (props: AnimatableHeaderProps) => {
         onPress={props.onLeftButtonPress}
         accessibilityLabel="Header back button"
       >
-        <ArrowLeftIcon fill="mono100" mt="2px" />
+        <ChevronLeftIcon fill="mono100" mt="2px" />
       </TouchableOpacity>
 
       <Flex

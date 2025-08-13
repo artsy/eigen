@@ -5,7 +5,9 @@ import { useNavigation } from "@react-navigation/native"
 import { MyAccountEditPriceRangeQuery } from "__generated__/MyAccountEditPriceRangeQuery.graphql"
 import { MyAccountEditPriceRange_me$key } from "__generated__/MyAccountEditPriceRange_me.graphql"
 import { LoadFailureView } from "app/Components/LoadFailureView"
-import { Select, SelectOption } from "app/Components/Select"
+import { PRICE_BUCKETS } from "app/Components/PriceRange/constants"
+import { Select } from "app/Components/Select"
+import { useToast } from "app/Components/Toast/toastHook"
 import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfileScreenWrapper"
 import { goBack } from "app/system/navigation/navigate"
 import { withSuspense } from "app/utils/hooks/withSuspense"
@@ -25,13 +27,14 @@ export const MyAccountEditPriceRange: React.FC<{
 }> = (props) => {
   const me = useFragment(meFragment, props.me)
   const { trackEvent } = useTracking()
-  const [isLoading, setIsLoading] = useState(false)
+  const toast = useToast()
+  const navigation = useNavigation()
 
+  const [isLoading, setIsLoading] = useState(false)
   const [receivedError, setReceivedError] = useState<string | undefined>(undefined)
   const [priceRange, setPriceRange] = useState<string>(me.priceRange ?? "")
   const [priceRangeMax, setPriceRangeMax] = useState<number | null | undefined>(me.priceRangeMax)
   const [priceRangeMin, setPriceRangeMin] = useState<number | null | undefined>(me.priceRangeMin)
-  const navigation = useNavigation()
 
   useEffect(() => {
     setReceivedError(undefined)
@@ -58,6 +61,12 @@ export const MyAccountEditPriceRange: React.FC<{
       setIsLoading(true)
       await updateMyUserProfile({ priceRangeMin, priceRangeMax })
       trackEvent(tracks.savePriceRange(priceRange))
+      toast.show("Artwork budget set", "bottom", {
+        description:
+          "We will tailor your experience to better match your preferences going forward",
+        duration: "short",
+        backgroundColor: "green100",
+      })
       goBack()
     } catch (e: any) {
       setReceivedError(e)
@@ -158,18 +167,6 @@ export const MyAccountEditPriceRangeQueryRenderer: React.FC<{}> = withSuspense({
     )
   },
 })
-
-export const PRICE_BUCKETS: Array<SelectOption<string>> = [
-  { label: "Select a price range", value: "" },
-  { label: "Under $500", value: "-1:500" },
-  { label: "Under $2,500", value: "-1:2500" },
-  { label: "Under $5,000", value: "-1:5000" },
-  { label: "Under $10,000", value: "-1:10000" },
-  { label: "Under $25,000", value: "-1:25000" },
-  { label: "Under $50,000", value: "-1:50000" },
-  { label: "Under $100,000", value: "-1:100000" },
-  { label: "No budget in mind", value: "-1:1000000000000" },
-]
 
 const tracks = {
   savePriceRange: (priceRange: string): SavedPriceRange => {

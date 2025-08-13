@@ -1,4 +1,5 @@
-import { CloseIcon, Flex, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
+import { CloseIcon } from "@artsy/icons/native"
+import { Flex, Text, Touchable, useScreenDimensions } from "@artsy/palette-mobile"
 import { FlashList } from "@shopify/flash-list"
 import {
   ArticleSlideShow_article$data,

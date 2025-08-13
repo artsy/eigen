@@ -1,14 +1,12 @@
 import { ChevronDownIcon, MoreIcon, ShareIcon } from "@artsy/icons/native"
-import { DEFAULT_HIT_SLOP, Flex, LinkText, Screen, Touchable } from "@artsy/palette-mobile"
+import { DEFAULT_HIT_SLOP, Flex, Screen, Touchable } from "@artsy/palette-mobile"
 import { getShareURL } from "app/Components/ShareSheet/helpers"
-import { useToast } from "app/Components/Toast/toastHook"
 import { InfiniteDiscoveryArtwork } from "app/Scenes/InfiniteDiscovery/InfiniteDiscovery"
 import { useInfiniteDiscoveryTracking } from "app/Scenes/InfiniteDiscovery/hooks/useInfiniteDiscoveryTracking"
+import { useSavesSummaryToast } from "app/Scenes/InfiniteDiscovery/hooks/useSavesSummaryToast"
 import { GlobalStore } from "app/store/GlobalStore"
-// eslint-disable-next-line no-restricted-imports
-import { goBack, navigate } from "app/system/navigation/navigate"
+import { goBack } from "app/system/navigation/navigate"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
-import { pluralize } from "app/utils/pluralize"
 import RNShare from "react-native-share"
 
 interface InfiniteDiscoveryHeaderProps {
@@ -16,39 +14,15 @@ interface InfiniteDiscoveryHeaderProps {
 }
 
 export const InfiniteDiscoveryHeader: React.FC<InfiniteDiscoveryHeaderProps> = ({ topArtwork }) => {
+  useSavesSummaryToast()
   const negativeSignalsEnabled = useFeatureFlag("AREnabledDiscoverDailyNegativeSignals")
-  const toast = useToast()
   const track = useInfiniteDiscoveryTracking()
-  const savedArtworksCount = GlobalStore.useAppState(
-    (state) => state.infiniteDiscovery.savedArtworksCount
-  )
   const { setMoreInfoSheetVisible } = GlobalStore.actions.infiniteDiscovery
   const hideRightButton = !topArtwork || !topArtwork.slug || !topArtwork.title
   const rightButtonLabel = negativeSignalsEnabled ? "More information" : "Share Artwork"
 
   const handleExitPressed = () => {
-    if (savedArtworksCount > 0) {
-      toast.show(
-        `Nice! You saved ${savedArtworksCount} ${pluralize("artwork", savedArtworksCount)}.`,
-        "bottom",
-        {
-          onPress: () => {
-            track.tappedSummary()
-            navigate("/favorites/saves")
-          },
-          backgroundColor: "green100",
-          description: (
-            <LinkText variant="xs" color="mono0" onPress={() => navigate("/favorites/saves")}>
-              Tap to see all of your saved artworks.
-            </LinkText>
-          ),
-          duration: "long",
-        }
-      )
-    }
-
     track.tappedExit()
-
     goBack()
   }
 

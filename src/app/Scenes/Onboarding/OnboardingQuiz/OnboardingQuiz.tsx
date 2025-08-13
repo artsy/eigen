@@ -1,6 +1,7 @@
-import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { useOnboardingTracking } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingTracking"
 import { GlobalStore } from "app/store/GlobalStore"
+import { isTablet } from "react-native-device-info"
 import { OnboardingProvider } from "./Hooks/useOnboardingContext"
 import { useUpdateUserProfile } from "./Hooks/useUpdateUserProfile"
 import { OnboardingArtistsOnTheRise } from "./OnboardingArtistsOnTheRise"
@@ -8,6 +9,7 @@ import { OnboardingCuratedArtworks } from "./OnboardingCuratedArtworks"
 import { OnboardingFollowArtists } from "./OnboardingFollowArtists"
 import { OnboardingFollowGalleries } from "./OnboardingFollowGalleries"
 import { OnboardingPostFollowLoadingScreen } from "./OnboardingPostFollowLoadingScreen"
+import { OnboardingPriceRange } from "./OnboardingPriceRange"
 import { OnboardingQuestionOne } from "./OnboardingQuestionOne"
 import { OnboardingQuestionThree } from "./OnboardingQuestionThree"
 import { OnboardingQuestionTwo } from "./OnboardingQuestionTwo"
@@ -19,6 +21,7 @@ export type OnboardingNavigationStack = {
   OnboardingQuestionOne: undefined
   OnboardingQuestionTwo: undefined
   OnboardingQuestionThree: undefined
+  OnboardingPriceRange: undefined
   OnboardingArtistsOnTheRise: undefined
   OnboardingCuratedArtworks: undefined
   OnboardingTopAuctionLots: undefined
@@ -27,7 +30,7 @@ export type OnboardingNavigationStack = {
   OnboardingPostFollowLoadingScreen: undefined
 }
 
-const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
+const StackNavigator = createNativeStackNavigator<OnboardingNavigationStack>()
 
 export const OnboardingQuiz = () => {
   const { trackCompletedOnboarding } = useOnboardingTracking()
@@ -49,15 +52,16 @@ export const OnboardingQuiz = () => {
     <OnboardingProvider onDone={handleDone}>
       <StackNavigator.Navigator
         screenOptions={{
-          ...TransitionPresets.DefaultTransition,
+          animation: "slide_from_right",
           headerShown: false,
-          headerMode: "screen",
           gestureEnabled: false,
+          orientation: !isTablet() ? "portrait" : "default",
         }}
       >
         <StackNavigator.Screen name="OnboardingWelcomeScreen" component={OnboardingWelcomeScreen} />
         <StackNavigator.Screen name="OnboardingQuestionOne" component={OnboardingQuestionOne} />
         <StackNavigator.Screen name="OnboardingQuestionTwo" component={OnboardingQuestionTwo} />
+        <StackNavigator.Screen name="OnboardingPriceRange" component={OnboardingPriceRange} />
         <StackNavigator.Screen name="OnboardingQuestionThree" component={OnboardingQuestionThree} />
 
         <StackNavigator.Screen

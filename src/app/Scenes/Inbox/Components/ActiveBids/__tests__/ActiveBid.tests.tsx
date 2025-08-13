@@ -7,15 +7,21 @@ it("renders without throwing a error", () => {
 })
 
 it("looks right for bids in live open auctions", () => {
-  const tree = renderWithWrappersLEGACY(<ActiveBid bid={bid(true)} />)
-  expect(extractText(tree.root)).toMatch("Live bidding now open")
+  const view = renderWithWrappersLEGACY(<ActiveBid bid={bid(true, true)} />)
+  expect(extractText(view.root)).toMatch("Live bidding now open")
 })
 
-const bid = (isOpen?: boolean) => {
+it("looks right for bids in live closed auctions", () => {
+  const view = renderWithWrappersLEGACY(<ActiveBid bid={bid(false, true)} />)
+  expect(extractText(view.root)).toMatch("Live auction")
+})
+
+const bid = (isLiveOpen?: boolean, isLiveOpenHappened?: boolean) => {
   return {
     is_leading_bidder: false,
     sale: {
-      is_live_open: isOpen,
+      isLiveOpen: isLiveOpen,
+      isLiveOpenHappened: isLiveOpenHappened,
       href: "/to-the-auction",
     },
     most_recent_bid: {

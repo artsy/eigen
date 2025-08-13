@@ -1,7 +1,15 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { OnboardingQuestionTemplate } from "app/Scenes/Onboarding/OnboardingQuiz/Components/OnboardingQuestionTemplate"
 import { useOnboardingContext } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
+import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
+
+jest.mock("app/NativeModules/ArtsyNativeModule", () => ({
+  ArtsyNativeModule: {
+    gitCommitShortHash: "de4dc0de",
+    isBetaOrDev: true,
+  },
+}))
 
 jest.mock("app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext")
 const useOnboardingContextMock = useOnboardingContext as jest.Mock
@@ -20,6 +28,9 @@ const contextValue = (answer: string | null = null) => ({
 describe("onboarding question template", () => {
   beforeEach(() => {
     useOnboardingContextMock.mockReset()
+    __globalStoreTestUtils__?.injectFeatureFlags({
+      ARShowOnboardingPriceRangeScreen: true,
+    })
   })
 
   it.each(["question", "subtitle", "answer 1", "answer 2", "Next"])(

@@ -1,4 +1,5 @@
-import { Spacer, CloseCircleIcon, CheckCircleIcon, Flex, Text } from "@artsy/palette-mobile"
+import { CheckmarkStrokeIcon, CloseStrokeIcon } from "@artsy/icons/native"
+import { Spacer, Flex, Text } from "@artsy/palette-mobile"
 import { AuctionPrice_artwork$data } from "__generated__/AuctionPrice_artwork.graphql"
 import { AuctionTimerState } from "app/Components/Bidding/Components/Timer"
 import { navigate } from "app/system/navigation/navigate"
@@ -11,6 +12,7 @@ export interface AuctionPriceProps {
   auctionState: AuctionTimerState
 }
 
+// TODO: remove since it's not used anywhere
 export class AuctionPrice extends React.Component<AuctionPriceProps> {
   handleBuyersPremiumTap = () => {
     const auctionInternalID =
@@ -79,13 +81,13 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
             {!!myBidPresent && (
               <Text variant="sm-display">
                 {myBidWinning ? (
-                  <CheckCircleIcon
+                  <CheckmarkStrokeIcon
                     height="16"
                     fill="green100"
                     accessibilityLabel="My Bid Winning Icon"
                   />
                 ) : (
-                  <CloseCircleIcon
+                  <CloseStrokeIcon
                     height="16"
                     fill="red100"
                     accessibilityLabel="My Bid Losing Icon"

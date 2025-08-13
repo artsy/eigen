@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Box, Separator, SpacingUnit, useSpace } from "@artsy/palette-mobile"
 import { useNavigation } from "@react-navigation/native"
 import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery.graphql"
@@ -18,10 +18,10 @@ import { ArtworkScreenNavHeader } from "app/Scenes/Artwork/Components/ArtworkScr
 import { AbreviatedArtsyGuarantee } from "app/Scenes/Artwork/Components/PrivateArtwork/AbreviatedArtsyGuarantee"
 import { PrivateArtworkExclusiveAccess } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkExclusiveAccess"
 import { PrivateArtworkMetadata } from "app/Scenes/Artwork/Components/PrivateArtwork/PrivateArtworkMetadata"
-import { OfferSubmittedModal } from "app/Scenes/Inbox/Components/Conversations/OfferSubmittedModal"
 import { GlobalStore } from "app/store/GlobalStore"
 import { AnalyticsContextProvider } from "app/system/analytics/AnalyticsContext"
-import { navigationEvents } from "app/system/navigation/navigate"
+// eslint-disable-next-line no-restricted-imports
+import { goBack, navigate, navigationEvents } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { AboveTheFoldQueryRenderer } from "app/utils/AboveTheFoldQueryRenderer"
 import { QAInfoPanel } from "app/utils/QAInfo"
@@ -32,9 +32,11 @@ import {
 import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
+import { promptForReview } from "app/utils/promptForReview"
 import { ProvideScreenTracking, Schema } from "app/utils/track"
+import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { FlatList, RefreshControl } from "react-native"
+import { FlatList, InteractionManager, RefreshControl } from "react-native"
 import {
   Environment,
   RelayRefetchProp,
@@ -202,6 +204,30 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
 
     markArtworkAsRecentlyViewed()
   })
+
+  // navigate the user to the native order details screen on order submission
+  useSetWebViewCallback<{ orderId: string; isPurchase: boolean }>(
+    "orderSubmitted",
+    ({ orderId, isPurchase }) => {
+      if (orderId) {
+        goBack()
+        InteractionManager.runAfterInteractions(() => {
+          navigate(`/orders/${orderId}/details`)
+        })
+      }
+
+      if (isPurchase) {
+        setTimeout(() => {
+          promptForReview({
+            contextModule: ContextModule.ordersSubmitted,
+            contextOwnerType: OwnerType.artwork,
+            contextOwnerSlug: slug,
+            contextOwnerId: internalID,
+          })
+        }, 5000)
+      }
+    }
+  )
 
   const onRefresh = (cb?: () => any) => {
     if (refreshing) {
@@ -566,7 +592,6 @@ export const Artwork: React.FC<ArtworkProps> = (props) => {
       )}
 
       <QAInfo />
-      <OfferSubmittedModal />
     </>
   )
 }

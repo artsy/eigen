@@ -1,15 +1,12 @@
-import { useColor, useSpace } from "@artsy/palette-mobile"
+import { useColor } from "@artsy/palette-mobile"
 import { NavigationContainerRef } from "@react-navigation/native"
-import {
-  CardStyleInterpolators,
-  createStackNavigator,
-  TransitionPresets,
-} from "@react-navigation/stack"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { AuthApp } from "app/Scenes/Onboarding/Auth2/AuthApp"
 import { OAuthProvider } from "app/store/AuthModel"
 import { GlobalStore } from "app/store/GlobalStore"
 import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
+import { isTablet } from "react-native-device-info"
 import { ForgotPassword } from "./ForgotPassword"
 import {
   OnboardingCreateAccount,
@@ -55,7 +52,7 @@ declare global {
   }
 }
 
-const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
+const StackNavigator = createNativeStackNavigator<OnboardingNavigationStack>()
 
 export const __unsafe__onboardingNavigationRef: React.MutableRefObject<NavigationContainerRef<any> | null> =
   {
@@ -65,7 +62,6 @@ export const __unsafe__onboardingNavigationRef: React.MutableRefObject<Navigatio
 export const OnboardingWelcomeScreens = () => {
   const userIsDev = GlobalStore.useAppState((s) => s.artsyPrefs.userIsDev.value)
   const color = useColor()
-  const space = useSpace()
 
   const signupLoginFusionEnabled = useFeatureFlag("AREnableSignupLoginFusion")
 
@@ -74,11 +70,15 @@ export const OnboardingWelcomeScreens = () => {
       initialRouteName={signupLoginFusionEnabled ? "OnboardingHome" : "OnboardingWelcome"}
       screenOptions={{
         headerShown: false,
-        headerMode: "screen",
       }}
     >
       {signupLoginFusionEnabled ? (
-        <StackNavigator.Group screenOptions={{ ...TransitionPresets.SlideFromRightIOS }}>
+        <StackNavigator.Group
+          screenOptions={{
+            animation: "slide_from_right",
+            orientation: !isTablet() ? "portrait" : "default",
+          }}
+        >
           <StackNavigator.Screen name="OnboardingHome" component={AuthApp} />
           <StackNavigator.Screen name="OnboardingSocialLink" component={OnboardingSocialLink} />
           {/**
@@ -90,24 +90,25 @@ export const OnboardingWelcomeScreens = () => {
           <StackNavigator.Screen name="OnboardingWebView" component={OnboardingWebView} />
         </StackNavigator.Group>
       ) : (
-        <StackNavigator.Group screenOptions={{ ...TransitionPresets.SlideFromRightIOS }}>
+        <StackNavigator.Group
+          screenOptions={{
+            orientation: !isTablet() ? "portrait" : "default",
+            animation: "slide_from_right",
+          }}
+        >
           <StackNavigator.Screen name="OnboardingWelcome" component={OnboardingWelcome} />
           <StackNavigator.Screen
             name="OnboardingLogin"
             component={OnboardingLogin}
             options={({ route: { params } }) => ({
-              cardStyleInterpolator: params?.withFadeAnimation
-                ? CardStyleInterpolators.forFadeFromBottomAndroid
-                : CardStyleInterpolators.forHorizontalIOS,
+              animation: params?.withFadeAnimation ? "fade" : "slide_from_right",
             })}
           />
           <StackNavigator.Screen
             name="OnboardingLoginWithEmail"
             component={OnboardingLoginWithEmail}
             options={({ route: { params } }) => ({
-              cardStyleInterpolator: params?.withFadeAnimation
-                ? CardStyleInterpolators.forFadeFromBottomAndroid
-                : CardStyleInterpolators.forHorizontalIOS,
+              animation: params?.withFadeAnimation ? "fade" : "slide_from_right",
             })}
           />
           <StackNavigator.Screen name="OnboardingLoginWithOTP" component={OnboardingLoginWithOTP} />
@@ -115,9 +116,7 @@ export const OnboardingWelcomeScreens = () => {
             name="OnboardingCreateAccount"
             component={OnboardingCreateAccount}
             options={({ route: { params } }) => ({
-              cardStyleInterpolator: params?.withFadeAnimation
-                ? CardStyleInterpolators.forFadeFromBottomAndroid
-                : CardStyleInterpolators.forHorizontalIOS,
+              animation: params?.withFadeAnimation ? "fade" : "slide_from_right",
             })}
           />
           <StackNavigator.Screen
@@ -130,22 +129,20 @@ export const OnboardingWelcomeScreens = () => {
         </StackNavigator.Group>
       )}
 
-      <StackNavigator.Group>
+      <StackNavigator.Group
+        screenOptions={{
+          orientation: !isTablet() ? "portrait" : "default",
+        }}
+      >
         {!!userIsDev && (
           <StackNavigator.Screen
             name="DevMenu"
             component={DevMenu}
             options={{
-              headerLeftContainerStyle: {
-                paddingLeft: space(1),
-              },
               headerTitle: "Dev Settings",
               headerShown: true,
               headerTintColor: color("mono100"),
               headerLeft: () => <></>,
-              headerRightContainerStyle: {
-                paddingRight: space(2),
-              },
             }}
           />
         )}

@@ -14,10 +14,6 @@ interface ArticleSectionProps {
 export const ArticleSection: React.FC<ArticleSectionProps> = ({ article, section }) => {
   const data = useFragment(fragment, section)
 
-  if (data.__typename === "ArticleSectionImageSet") {
-    return null
-  }
-
   switch (data.__typename) {
     case "ArticleSectionText":
       return <ArticleSectionText section={data} article={article} />

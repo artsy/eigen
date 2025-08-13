@@ -1,4 +1,5 @@
-import { EyeClosedIcon, Flex, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { HideIcon } from "@artsy/icons/native"
+import { Flex, Text, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { ArtworkListItem_collection$key } from "__generated__/ArtworkListItem_collection.graphql"
 import { FourUpImageLayout } from "app/Scenes/ArtworkLists/FourUpImageLayout"
 import { StackedImageLayout } from "app/Scenes/ArtworkLists/StackedImageLayout"
@@ -62,7 +63,7 @@ export const ArtworkListItem: FC<ArtworkListItemProps> = ({ artworkList, imagesL
             </Flex>
 
             {!item.shareableWithPartners && !!isArtworkListOfferabilityEnabled && (
-              <EyeClosedIcon ml={0.5} fill="mono100" />
+              <HideIcon ml={0.5} fill="mono100" />
             )}
           </Flex>
           <Text variant="xs" color="mono60" numberOfLines={1}>

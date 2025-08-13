@@ -1,7 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
+import { BellStrokeIcon, FilterIcon, TrendingIcon } from "@artsy/icons/native"
 import {
-  BellIcon,
-  FilterIcon,
   Flex,
   Join,
   LinkText,
@@ -10,7 +9,6 @@ import {
   Spacer,
   Spinner,
   Text,
-  TrendingIcon,
   useTheme,
 } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
@@ -289,7 +287,7 @@ export const SavedSearchesListWrapper: React.FC<SavedSearchListWrapperProps> = (
             modalContent={
               <Join separator={<Spacer y={2} />}>
                 <Flex flexDirection="row" alignItems="flex-start">
-                  <BellIcon mr={0.5} />
+                  <BellStrokeIcon mr={0.5} />
                   <Flex flex={1}>
                     <Text variant="sm-display">
                       If you’re on the hunt for a particular artwork, create an Alert and we’ll

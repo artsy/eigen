@@ -1,4 +1,5 @@
-import { Box, CheckIcon, Color, Text } from "@artsy/palette-mobile"
+import { CheckmarkIcon } from "@artsy/icons/native"
+import { Box, Color, Text } from "@artsy/palette-mobile"
 import { TouchableRow, TouchableRowProps } from "app/Components/TouchableRow"
 
 type ColorsSwatchProps = TouchableRowProps & {
@@ -29,7 +30,7 @@ export const ColorsSwatch: React.FC<ColorsSwatchProps> = ({
           bg={backgroundColor}
         >
           {!!selected && (
-            <CheckIcon
+            <CheckmarkIcon
               position="absolute"
               top="50%"
               left="50%"

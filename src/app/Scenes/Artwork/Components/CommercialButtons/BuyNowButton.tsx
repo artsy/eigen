@@ -1,20 +1,13 @@
-import {
-  ActionType,
-  ContextModule,
-  OwnerType,
-  ScreenOwnerType,
-  TappedBuyNow,
-} from "@artsy/cohesion"
-import { ButtonProps, Button } from "@artsy/palette-mobile"
+import { ActionType, ContextModule, ScreenOwnerType, TappedBuyNow } from "@artsy/cohesion"
+import { Button, ButtonProps } from "@artsy/palette-mobile"
 import { BuyNowButton_artwork$key } from "__generated__/BuyNowButton_artwork.graphql"
 import { Toast } from "app/Components/Toast/Toast"
 import { useCreateOrder } from "app/Scenes/Artwork/hooks/useCreateOrder"
 import { usePartnerOfferMutation } from "app/Scenes/PartnerOffer/mutations/usePartnerOfferCheckoutMutation"
 import { AnalyticsContextProps, useAnalyticsContext } from "app/system/analytics/AnalyticsContext"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { getTimer } from "app/utils/getTimer"
-import { promptForReview } from "app/utils/promptForReview"
-import { useSetWebViewCallback } from "app/utils/useWebViewEvent"
 import { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -49,20 +42,9 @@ export const BuyNowButton = ({
 }: BuyNowButtonProps) => {
   const [isCommittingCreateOrderMutation, setIsCommittingCreateOrderMutation] = useState(false)
 
-  const { saleMessage, internalID, slug } = useFragment(artworkFragment, artwork)
+  const { saleMessage, internalID } = useFragment(artworkFragment, artwork)
   const { trackEvent } = useTracking()
   const analytics = useAnalyticsContext()
-
-  useSetWebViewCallback<{ orderCode: string; message: string }>("orderSuccessful", () => {
-    setTimeout(() => {
-      promptForReview({
-        contextModule: ContextModule.ordersSubmitted,
-        contextOwnerType: OwnerType.artwork,
-        contextOwnerSlug: slug,
-        contextOwnerId: internalID,
-      })
-    }, 3000)
-  })
 
   const [partnerOfferTimer, setPartnerOfferTimer] = useState(
     partnerOffer?.endAt ? getTimer(partnerOffer.endAt) : null
@@ -214,7 +196,6 @@ export const BuyNowButton = ({
 const artworkFragment = graphql`
   fragment BuyNowButton_artwork on Artwork {
     internalID
-    slug
     saleMessage
   }
 `

@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { ArtistSeriesMoreSeries } from "app/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { Artwork, ArtworkScreen } from "app/Scenes/Artwork/Artwork"
 import { ArtworkDetails } from "app/Scenes/Artwork/Components/ArtworkDetails"
@@ -20,7 +20,7 @@ import {
 import { ArtworkFixture } from "app/__fixtures__/ArtworkFixture"
 
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
-import { navigationEvents } from "app/system/navigation/navigate"
+import { goBack, navigate, navigationEvents } from "app/system/navigation/navigate"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
@@ -49,6 +49,19 @@ jest.mock("app/Components/Bidding/Context/TimeOffsetProvider", () => {
   }
   return { TimeOffsetProvider }
 })
+
+jest.mock("react-native/Libraries/Interaction/InteractionManager", () => ({
+  ...jest.requireActual("react-native/Libraries/Interaction/InteractionManager"),
+  runAfterInteractions: jest.fn((callback) => callback()),
+}))
+
+let callback: ([...args]: any) => void
+jest.mock("app/utils/useWebViewEvent", () => ({
+  useSetWebViewCallback: (_: string, cb: ([...args]: any) => void) => {
+    callback = cb
+    return jest.fn()
+  },
+}))
 
 describe("Artwork", () => {
   let environment: ReturnType<typeof createMockEnvironment>
@@ -1008,6 +1021,19 @@ describe("Artwork", () => {
         type: "Link",
         flow: "Exclusive access",
       })
+    })
+  })
+
+  describe("Order webview callbacks", () => {
+    it("triggers navigating to the order details on Order Submission event", () => {
+      renderWithWrappers(<TestRenderer />, { includeNavigation: true })
+
+      resolveMostRecentRelayOperation(environment)
+
+      act(() => callback?.({ orderId: "order-id", isPurchase: false }))
+
+      expect(goBack).toHaveBeenCalled()
+      expect(navigate).toHaveBeenCalledWith("/orders/order-id/details")
     })
   })
 })

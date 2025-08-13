@@ -12,7 +12,10 @@ import { BackHandler } from "react-native"
 export function useBackHandler(handler: () => boolean) {
   useFocusEffect(
     useCallback(() => {
-      BackHandler.addEventListener("hardwareBackPress", handler)
+      const subscription = BackHandler.addEventListener("hardwareBackPress", handler)
+
+      // Return cleanup function to remove listener when component unmounts or loses focus
+      return () => subscription.remove()
     }, [handler])
   )
 }

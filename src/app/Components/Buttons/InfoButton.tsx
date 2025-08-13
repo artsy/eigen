@@ -1,3 +1,4 @@
+import { InfoIcon } from "@artsy/icons/native"
 import {
   Button,
   Flex,
@@ -71,7 +72,7 @@ export const InfoButton = forwardRef<
               </Text>
             )}
 
-            <InfoCircleIcon fill="mono60" />
+            <InfoIcon fill="mono60" />
           </Flex>
         </Touchable>
 

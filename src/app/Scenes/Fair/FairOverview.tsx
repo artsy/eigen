@@ -1,13 +1,5 @@
-import {
-  ChevronIcon,
-  Flex,
-  Separator,
-  Spacer,
-  Spinner,
-  Tabs,
-  Text,
-  useSpace,
-} from "@artsy/palette-mobile"
+import { ChevronSmallRightIcon } from "@artsy/icons/native"
+import { Flex, Separator, Spacer, Spinner, Tabs, Text, useSpace } from "@artsy/palette-mobile"
 import { FairOverviewQuery } from "__generated__/FairOverviewQuery.graphql"
 import { FairOverview_fair$key } from "__generated__/FairOverview_fair.graphql"
 import { ReadMore } from "app/Components/ReadMore"
@@ -65,7 +57,7 @@ export const FairOverview: FC<FairOverviewProps> = ({ fair }) => {
             <RouterLink to={`/fair/${data.slug}/info`}>
               <Flex pt={2} flexDirection="row" justifyContent="flex-start" alignItems="center">
                 <Text variant="sm">More info</Text>
-                <ChevronIcon mr="-5px" mt="4px" />
+                <ChevronSmallRightIcon mr="-5px" mt="4px" />
               </Flex>
             </RouterLink>
           )}

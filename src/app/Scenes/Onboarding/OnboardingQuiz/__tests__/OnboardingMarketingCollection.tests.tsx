@@ -26,7 +26,6 @@ jest.mock("@react-navigation/native", () => {
 
 describe("OnboardingMarketingCollection", () => {
   const description = "This is the description."
-  const placeholderText = "Great choice\nWe’re finding a collection for you"
 
   const { renderWithRelay } = setupTestWrapper({
     Component: () => (
@@ -44,11 +43,12 @@ describe("OnboardingMarketingCollection", () => {
       }),
     })
 
-    expect(screen.getByText(placeholderText)).toBeTruthy()
+    expect(screen.getByText("Great choice")).toBeTruthy()
+    expect(screen.getByText(/finding a collection for you/)).toBeTruthy()
 
-    await waitForElementToBeRemoved(() => screen.queryByText(placeholderText))
+    await waitForElementToBeRemoved(() => screen.queryByText("Great choice"))
 
-    expect(screen.queryByText(placeholderText)).toBeNull()
+    expect(screen.queryByText("Great choice")).toBeNull()
 
     expect(screen.getByText("Example Collection")).toBeTruthy()
     expect(screen.getByText(description)).toBeTruthy()

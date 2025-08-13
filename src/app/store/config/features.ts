@@ -84,7 +84,7 @@ export const features = {
   },
   AREnabledDiscoverDailyNegativeSignals: {
     description: "Enable negative signals in Discover Daily",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnabledDiscoverDailyNegativeSignals",
   },
@@ -200,6 +200,18 @@ export const features = {
     description: "Enable progressive onboarding price range home",
     echoFlagKey: "AREnableProgressiveOnboardingPriceRangeHome",
   },
+  ARShowOnboardingPriceRangeScreen: {
+    readyForRelease: true,
+    showInDevMenu: true,
+    description: "Show onboarding price range screen",
+    echoFlagKey: "ARShowOnboardingPriceRangeScreen",
+  },
+  AREnablePriceRangeToast: {
+    readyForRelease: true,
+    showInDevMenu: true,
+    description: "Enable price range toast prompting users to update a price range",
+    echoFlagKey: "AREnablePriceRangeToast",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
@@ -260,6 +272,9 @@ export const devToggles: { [key: string]: DevToggleDescriptor } = {
   },
   DTShowWebviewIndicator: {
     description: "Webview indicator",
+  },
+  DTHideAllOnboardingPopovers: {
+    description: "Hide all onboarding popovers",
   },
   DTShowInstagramShot: {
     description: "Instagram viewshot debug",

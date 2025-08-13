@@ -1,0 +1,111 @@
+name: Build Android QA App for Maestro
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # Runs daily at 6:00 AM UTC
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  build-android-qa:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17"
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.1.6"
+          bundler-cache: true
+
+      - name: Install Ruby dependencies
+        run: bundle install
+
+      - name: Install ninja
+        run: sudo apt-get update && sudo apt-get install ninja-build
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.9.0"
+          cache: "yarn"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Set up environment for CI
+        run: |
+          touch .env.shared && touch keys.shared.json
+          scripts/setup/setup-env-for-ci
+          echo "Environment setup completed"
+
+      - name: Cache node modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+            ~/.cache/yarn
+          key: yarn-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            yarn-${{ runner.os }}-
+
+      - name: Install Node.js dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            android/.gradle
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: Download fonts from s3
+        run: ./scripts/setup/download-fonts
+
+      - name: Download android assets
+        run: ./scripts/setup/download-assets-android
+
+      - name: Run relay compiler
+        run: yarn relay
+
+      - name: Debug build environment
+        run: |
+          echo "Node version: $(node --version)"
+          echo "Yarn version: $(yarn --version)"
+          echo "Ruby version: $(ruby --version)"
+          echo "Java version:"
+          java -version
+          echo "Android SDK info:"
+          echo "ANDROID_HOME: $ANDROID_HOME"
+          echo "Available Android SDK platforms:"
+          ls -la $ANDROID_HOME/platforms/ || echo "No platforms found"
+          echo "Available Android build tools:"
+          ls -la $ANDROID_HOME/build-tools/ || echo "No build tools found"
+
+      - name: Build Android QA app
+        run: |
+          echo "Starting Android QA build..."
+          set -x  # Enable verbose logging
+          ./scripts/ci/ci-android "beta"
+        env:
+          VERBOSE: 1
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}

@@ -2,6 +2,7 @@ import { Image } from "@artsy/palette-mobile"
 import { themeGet } from "@styled-system/theme-get"
 import { ActiveBid_bid$data } from "__generated__/ActiveBid_bid.graphql"
 import { BodyText, MetadataText } from "app/Scenes/Inbox/Components/Typography"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
@@ -49,13 +50,15 @@ const StatusLabel = styled(MetadataText)`
         return themeGet("colors.copper100")
       case "losing":
         return themeGet("colors.red100")
-      case "live_auction":
+      case "live_active":
         return themeGet("colors.blue100")
+      case "live_auction":
+        return themeGet("colors.mono60")
     }
   }};
 `
 
-type BidStatus = "winning" | "reserve" | "losing" | "live_auction"
+type BidStatus = "winning" | "reserve" | "losing" | "live_active" | "live_auction"
 
 interface Props {
   bid: ActiveBid_bid$data
@@ -76,10 +79,13 @@ class ActiveBid extends React.Component<Props, State> {
 
   updateStatus() {
     const bid = this.props.bid
-    const isInLiveOpenAuction = bid.sale && bid.sale.is_live_open
+    const isInLiveOpenAuction = bid?.sale?.isLiveOpen
+    const isInLiveAuction = bid?.sale?.isLiveOpenHappened
 
     let status: BidStatus = "losing"
     if (isInLiveOpenAuction) {
+      status = "live_active"
+    } else if (isInLiveAuction) {
       status = "live_auction"
     } else {
       const leadingBidder = bid.is_leading_bidder
@@ -95,8 +101,10 @@ class ActiveBid extends React.Component<Props, State> {
 
   get statusLabel(): string {
     switch (this.state.status) {
-      case "live_auction":
+      case "live_active":
         return "Join Live"
+      case "live_auction":
+        return "Live auction"
       case "winning":
       case "reserve":
         return "Highest Bid"
@@ -109,7 +117,7 @@ class ActiveBid extends React.Component<Props, State> {
     const bid = this.props.bid
     // push user into live auction if it's open; otherwise go to artwork
     const href =
-      this.state.status === "live_auction"
+      this.state.status === "live_active" || this.state.status === "live_auction"
         ? bid?.sale?.href
         : bid?.most_recent_bid?.sale_artwork?.artwork?.href
 
@@ -130,15 +138,18 @@ class ActiveBid extends React.Component<Props, State> {
 
     const headline = `Lot ${lotNumber} · ${artistName} `
 
-    const isInOpenLiveAuction = this.props.bid.sale && this.props.bid.sale.is_live_open
+    const isInOpenLiveAuction = this.props.bid.sale && this.props.bid.sale.isLiveOpen
+    const isInLiveAuction = this.props.bid.sale && this.props.bid.sale.isLiveOpenHappened
     const bidderPositions = bid?.sale_artwork?.counts?.bidder_positions || null
     const bidderPositionsLabel = bidderPositions + " " + (bidderPositions === 1 ? "Bid" : "Bids")
 
     const subtitle = isInOpenLiveAuction
       ? "Live bidding now open"
-      : `${bid?.sale_artwork?.highest_bid?.display || ""} (${
-          bidderPositions ? bidderPositionsLabel : ""
-        })`
+      : isInLiveAuction
+        ? "Live auction"
+        : `${bid?.sale_artwork?.highest_bid?.display || ""} (${
+            bidderPositions ? bidderPositionsLabel : ""
+          })`
 
     return (
       <TouchableWithoutFeedback accessibilityRole="button" onPress={this.handleTap}>
@@ -164,7 +175,8 @@ export default createFragmentContainer(ActiveBid, {
       is_leading_bidder: isLeadingBidder
       sale {
         href
-        is_live_open: isLiveOpen
+        isLiveOpen
+        isLiveOpenHappened
       }
       most_recent_bid: mostRecentBid {
         id

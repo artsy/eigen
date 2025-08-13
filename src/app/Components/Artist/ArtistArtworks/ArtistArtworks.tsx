@@ -1,6 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { BellStrokeIcon } from "@artsy/icons/native"
 import {
-  BellIcon,
   Box,
   Button,
   Flex,
@@ -397,7 +397,7 @@ const CreateAlertButton: React.FC<{
     <Button
       variant="outline"
       mx="auto"
-      icon={<BellIcon />}
+      icon={<BellStrokeIcon />}
       size="small"
       onPress={() => {
         trackCreateAlertTap()

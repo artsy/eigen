@@ -849,9 +849,11 @@ type AnalyticsPageviewStats {
 # Audience stats of a partner
 type AnalyticsPartnerAudienceStats {
   commercialVisitors: Int!
+  commercialVisitorsPercentageChanged: Int!
   partnerId: String!
   period: AnalyticsQueryPeriodEnum!
   uniqueVisitors: Int!
+  uniqueVisitorsPercentageChanged: Int!
 }
 
 # Inquiry count time series data of a partner
@@ -1892,6 +1894,7 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
   # The most recent show for an artist
   recentShow: String
   related: ArtistRelatedData
+  residencies: String
 
   # publications that have reviewed the artist
   reviewSources: String
@@ -2618,6 +2621,9 @@ type Artwork implements Node & Searchable & Sellable {
   # Notes by a partner or MyCollection user on the artwork, can only be accessed by partner or the user that owns the artwork
   confidentialNotes: String
   consignmentSubmission: ArtworkConsignmentSubmission
+    @deprecated(
+      reason: "This field is deprecated as collector artwork submissions are no longer accepted."
+    )
   contactLabel: String
 
   # Pre-filled inquiry text
@@ -2693,6 +2699,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Whether a request for price estimate has been submitted for this artwork
   hasPriceEstimateRequest: Boolean
+    @deprecated(
+      reason: "This field is deprecated as collector artwork submissions are no longer accepted."
+    )
   hasTitle: Boolean!
 
   # The height as expressed by the original input metric
@@ -2777,6 +2786,9 @@ type Artwork implements Node & Searchable & Sellable {
   # Do we want to encourage inquiries on this work?
   isInquireable: Boolean
   isListed: Boolean!
+    @deprecated(
+      reason: "This field is deprecated as collector artwork submissions are no longer accepted."
+    )
   isNotForSale: String
 
   # Whether a user can make an offer on a work
@@ -2790,6 +2802,9 @@ type Artwork implements Node & Searchable & Sellable {
   # Whether a work is available for pickup
   isPickupAvailable: Boolean
   isPriceEstimateRequestable: Boolean
+    @deprecated(
+      reason: "This field is deprecated as collector artwork submissions are no longer accepted."
+    )
   isPriceHidden: Boolean
   isPriceRange: Boolean
 
@@ -2826,7 +2841,15 @@ type Artwork implements Node & Searchable & Sellable {
   layer(id: String): ArtworkLayer
   layers: [ArtworkLayer]
   listPrice: ListPrice
-  listedArtworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection!
+  listedArtworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection!
+    @deprecated(
+      reason: "This field is deprecated as collector artwork submissions are no longer accepted."
+    )
 
   # In CMS, has the artwork been marked as BNMO?
   listingOptions: ArtworkListingOptions
@@ -2937,6 +2960,9 @@ type Artwork implements Node & Searchable & Sellable {
   # A slug ID.
   slug: ID!
   submissionId: String
+    @deprecated(
+      reason: "This field is deprecated as collector artwork submissions are no longer accepted."
+    )
   taxInfo: TaxInfo
   title: String
 
@@ -3132,6 +3158,7 @@ type ArtworkImport implements Node {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  locationID: String
   rawDataMapping: JSON!
   rowsConnection(
     after: String
@@ -3147,6 +3174,7 @@ type ArtworkImport implements Node {
   state: ArtworkImportState
   summary: ArtworkImportSummary
   unmatchedArtistNames: [String!]!
+  weightMetric: String!
 }
 
 # A connection to a list of items.
@@ -3193,6 +3221,7 @@ enum ArtworkImportError {
   INVALID_PRICE
   INVALID_SIGNATURE
   INVALID_TITLE
+  INVALID_WEIGHT
   INVALID_WIDTH
   MISSING_ARTIST
   MISSING_DATE
@@ -3219,6 +3248,7 @@ type ArtworkImportRow {
   priceListed: Money
   rawData: JSON!
   transformedData: ArtworkImportTransformedData!
+  weightMetric: String!
 }
 
 # A connection to a list of items.
@@ -3261,6 +3291,8 @@ type ArtworkImportRowImage {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  position: Int!
+  publicUrl: String
   s3Bucket: String
   s3Key: String
 }
@@ -3280,6 +3312,7 @@ enum ArtworkImportState {
 type ArtworkImportSummary {
   currencies: [String!]!
   dimensionMetrics: [String!]!
+  weightMetrics: [String!]!
 }
 
 type ArtworkImportTransformedData {
@@ -3303,6 +3336,7 @@ type ArtworkImportTransformedData {
   price: String
   signature: [String]
   signatureDetails: String
+  weight: String
   width: String
 }
 
@@ -4243,17 +4277,47 @@ type AuthenticationType {
 
 type Author {
   articles: [Article!]!
+  articlesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): AuthorArticlesConnectionConnection
   bio(format: Format): String
 
   # A globally unique ID.
   id: ID!
   image: Image
   initials(length: Int = 3): String
+  instagramHandle: String
 
   # A type-specific ID.
   internalID: ID!
   name: String!
+  role: String
   twitterHandle: String
+}
+
+# A connection to a list of items.
+type AuthorArticlesConnectionConnection {
+  # A list of edges.
+  edges: [AuthorArticlesConnectionEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type AuthorArticlesConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Article
 }
 
 enum Availability {
@@ -4544,11 +4608,32 @@ input BulkUpdateArtworksMetadataInput {
   # The category (medium type) to be assigned
   category: String
 
+  # If COA is provided by a third-party authenticating body.
+  coaByAuthenticatingBody: Boolean
+
+  # If COA is provided by the gallery.
+  coaByGallery: Boolean
+
+  # The artwork condition to be assigned
+  conditionDescription: String
+
   # Flat fee for domestic shipping. It must be entered in cents.
   domesticShippingFeeCents: Int
 
   # Whether the artworks must be listed as Purchase
   ecommerce: Boolean
+
+  # The exhibition history to be assigned
+  exhibitionHistory: String
+
+  # Whether a certificate of authenticity is provided for these artworks.
+  hasCertificateOfAuthenticity: Boolean
+
+  # The image rights to be assigned
+  imageRights: String
+
+  # The literature to be assigned
+  literature: String
 
   # The partner location ID to assign
   locationId: String
@@ -4573,6 +4658,9 @@ input BulkUpdateArtworksMetadataInput {
 
   # Details about the signature
   signature: String
+
+  # The title of the artwork
+  title: String
 }
 
 type BulkUpdateArtworksMetadataMutationFailure {
@@ -8728,6 +8816,7 @@ input CreateArtworkImportInput {
   async: Boolean
   clientMutationId: String
   fileName: String
+  locationID: String
   parseWithAI: Boolean
   parseWithAIModel: String
   partnerID: String!
@@ -14257,6 +14346,7 @@ input MatchArtworkImportRowImageInput {
   artworkImportID: String!
   clientMutationId: String
   fileName: String!
+  rowID: String
   s3Bucket: String!
   s3Key: String!
 }
@@ -14491,6 +14581,9 @@ type Me implements Node {
   hasPriceRange: Boolean!
   hasQualifiedCreditCards: Boolean
   hasSecondFactorEnabled: Boolean!
+
+  # Indicates whether the Artwork Budget was updated within the past three months
+  hasStaleArtworkBudget: Boolean!
   icon: Image
 
   # A globally unique ID.
@@ -15680,6 +15773,7 @@ type Mutation {
   removeArtworkFromPartnerShow(
     input: RemoveArtworkFromPartnerShowMutationInput!
   ): RemoveArtworkFromPartnerShowMutationPayload
+  removeArtworkImportImage(input: RemoveArtworkImportImageInput!): RemoveArtworkImportImagePayload
   removeAssetFromConsignmentSubmission(
     # Parameters for RemoveAssetFromConsignmentSubmission
     input: RemoveAssetFromConsignmentSubmissionInput!
@@ -15799,6 +15893,7 @@ type Mutation {
 
   # Updates an artwork.
   updateArtwork(input: UpdateArtworkMutationInput!): UpdateArtworkMutationPayload
+  updateArtworkImport(input: UpdateArtworkImportInput!): UpdateArtworkImportPayload
   updateArtworkImportCurrency(
     input: UpdateArtworkImportCurrencyInput!
   ): UpdateArtworkImportCurrencyPayload
@@ -15806,6 +15901,15 @@ type Mutation {
     input: UpdateArtworkImportDimensionMetricInput!
   ): UpdateArtworkImportDimensionMetricPayload
   updateArtworkImportRow(input: UpdateArtworkImportRowInput!): UpdateArtworkImportRowPayload
+  updateArtworkImportRowImage(
+    input: UpdateArtworkImportRowImageInput!
+  ): UpdateArtworkImportRowImagePayload
+  updateArtworkImportRowImages(
+    input: UpdateArtworkImportRowImagesInput!
+  ): UpdateArtworkImportRowImagesPayload
+  updateArtworkImportWeightMetric(
+    input: UpdateArtworkImportWeightMetricInput!
+  ): UpdateArtworkImportWeightMetricPayload
 
   # Updates the flags on a partner.
   updateCMSLastAccessTimestamp(
@@ -17095,6 +17199,7 @@ type Partner implements Node {
     page: Int = 1
     query: String!
     size: Int = 10
+    status: [String]
   ): ShowConnection
 
   # A slug ID.
@@ -17977,10 +18082,7 @@ enum PartnersSortType {
   SORTABLE_ID_DESC
 }
 
-type PaymentMethodPreview {
-  # Details of the card used in the payment method.
-  card: Card
-}
+union PaymentMethodPreview = Card | SEPADebit | USBankAccount
 
 union PaymentMethodUnion = BankAccount | CreditCard | WireTransfer
 
@@ -20027,6 +20129,33 @@ type RemoveArtworkFromPartnerShowSuccess {
   show: Show
 }
 
+type RemoveArtworkImportImageFailure {
+  mutationError: GravityMutationError
+}
+
+input RemoveArtworkImportImageInput {
+  artworkImportID: String!
+  clientMutationId: String
+  imageID: String!
+
+  # The ID of the row containing the image
+  rowID: String!
+}
+
+type RemoveArtworkImportImagePayload {
+  clientMutationId: String
+  removeArtworkImportImageOrError: RemoveArtworkImportImageResponseOrError
+}
+
+union RemoveArtworkImportImageResponseOrError =
+    RemoveArtworkImportImageFailure
+  | RemoveArtworkImportImageSuccess
+
+type RemoveArtworkImportImageSuccess {
+  artworkImport: ArtworkImport
+  success: Boolean!
+}
+
 # Autogenerated input type of RemoveAssetFromConsignmentSubmission
 input RemoveAssetFromConsignmentSubmissionInput {
   assetID: String
@@ -20271,6 +20400,14 @@ type ResizedImageUrl {
   width: Int
 }
 
+input S3LocationInput {
+  # The S3 bucket name where the image is stored.
+  bucket: String!
+
+  # The S3 key (object path) for the image.
+  key: String!
+}
+
 # The conditions for uploading assets to media.artsy.net
 type S3PolicyConditionsType {
   # The assigned access control
@@ -20293,6 +20430,11 @@ type S3PolicyDocumentType {
 
   # An expiration date string.
   expiration: String!
+}
+
+type SEPADebit {
+  # The last 4 digits of the bank account.
+  last4: String!
 }
 
 type Sale implements Node {
@@ -20381,6 +20523,9 @@ type Sale implements Node {
   isClosed: Boolean
   isGalleryAuction: Boolean
   isLiveOpen: Boolean
+
+  # True for live auctions once live part is happening or in the past
+  isLiveOpenHappened: Boolean
   isLotConditionsReportEnabled: Boolean
 
   # True for a cascading-end-time enabled sale where lots have started closing
@@ -22197,6 +22342,14 @@ type TriggerCampaignPayload {
   successOrError: TriggerCampaignMutationSuccessOrError
 }
 
+type USBankAccount {
+  # The name of the bank.
+  bankName: String!
+
+  # The last 4 digits of the bank account.
+  last4: String!
+}
+
 union UnderlyingCurrentEvent = Sale | Show
 
 input UnlinkAuthenticationMutationInput {
@@ -22256,6 +22409,7 @@ input UpdateArtistMutationInput {
   deathday: String
   displayName: String
   first: String
+  foundations: String
   gender: String
   groupIndicator: ArtistGroupIndicator
   hometown: String
@@ -22266,6 +22420,7 @@ input UpdateArtistMutationInput {
   nationality: String
   public: Boolean
   recentShow: String
+  residencies: String
   reviewSources: String
   targetSupplyPriority: ArtistTargetSupplyPriority
   targetSupplyType: ArtistTargetSupplyType
@@ -22373,8 +22528,81 @@ type UpdateArtworkImportDimensionMetricSuccess {
   artworkImport: ArtworkImport
 }
 
+type UpdateArtworkImportFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtworkImportInput {
+  artworkImportID: String!
+  clientMutationId: String
+  locationID: String
+}
+
+type UpdateArtworkImportPayload {
+  clientMutationId: String
+  updateArtworkImportOrError: UpdateArtworkImportResponseOrError
+}
+
+union UpdateArtworkImportResponseOrError = UpdateArtworkImportFailure | UpdateArtworkImportSuccess
+
 type UpdateArtworkImportRowFailure {
   mutationError: GravityMutationError
+}
+
+type UpdateArtworkImportRowImageFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtworkImportRowImageInput {
+  artworkImportID: String!
+  clientMutationId: String
+  imageID: String!
+
+  # New position for the image (0-based)
+  position: Int!
+}
+
+type UpdateArtworkImportRowImagePayload {
+  clientMutationId: String
+  updateArtworkImportRowImageOrError: UpdateArtworkImportRowImageResponseOrError
+}
+
+union UpdateArtworkImportRowImageResponseOrError =
+    UpdateArtworkImportRowImageFailure
+  | UpdateArtworkImportRowImageSuccess
+
+type UpdateArtworkImportRowImageSuccess {
+  artworkImport: ArtworkImport
+  artworkImportID: String!
+}
+
+type UpdateArtworkImportRowImagesFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtworkImportRowImagesInput {
+  artworkImportID: String!
+  clientMutationId: String
+
+  # The ID of the row to update images for
+  rowID: String!
+
+  # Array of image IDs in desired position order
+  sortedImageIDs: [String!]!
+}
+
+type UpdateArtworkImportRowImagesPayload {
+  clientMutationId: String
+  updateArtworkImportRowImagesOrError: UpdateArtworkImportRowImagesResponseOrError
+}
+
+union UpdateArtworkImportRowImagesResponseOrError =
+    UpdateArtworkImportRowImagesFailure
+  | UpdateArtworkImportRowImagesSuccess
+
+type UpdateArtworkImportRowImagesSuccess {
+  artworkImport: ArtworkImport
+  artworkImportID: String!
 }
 
 input UpdateArtworkImportRowInput {
@@ -22382,7 +22610,7 @@ input UpdateArtworkImportRowInput {
   artworkImportRowID: String!
   clientMutationId: String
   fieldName: String!
-  fieldValue: String!
+  fieldValue: String
 }
 
 type UpdateArtworkImportRowPayload {
@@ -22397,6 +22625,34 @@ union UpdateArtworkImportRowResponseOrError =
 type UpdateArtworkImportRowSuccess {
   artworkImport: ArtworkImport
   success: Boolean!
+}
+
+type UpdateArtworkImportSuccess {
+  artworkImport: ArtworkImport
+}
+
+type UpdateArtworkImportWeightMetricFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtworkImportWeightMetricInput {
+  artworkImportID: String!
+  clientMutationId: String
+  fromWeightMetric: String!
+  toWeightMetric: String!
+}
+
+type UpdateArtworkImportWeightMetricPayload {
+  clientMutationId: String
+  updateArtworkImportWeightMetricOrError: UpdateArtworkImportWeightMetricResponseOrError
+}
+
+union UpdateArtworkImportWeightMetricResponseOrError =
+    UpdateArtworkImportWeightMetricFailure
+  | UpdateArtworkImportWeightMetricSuccess
+
+type UpdateArtworkImportWeightMetricSuccess {
+  artworkImport: ArtworkImport
 }
 
 input UpdateArtworkMutationInput {
@@ -22425,6 +22681,9 @@ input UpdateArtworkMutationInput {
 
   # The id of the artwork to update.
   id: String!
+
+  # A list of S3 locations (bucket and key pairs) for artwork images to be added.
+  imageS3Locations: [S3LocationInput!]
 
   # True for `Make Offer` artworks
   offer: Boolean
@@ -23120,6 +23379,9 @@ input UpdatePartnerFlagsMutationInput {
 
   # The default partner location ID to use for artworks. If null, the flag will be unset.
   artworksDefaultPartnerLocationId: String
+
+  # The default weight metric system to use for artworks. If null, the flag will be unset.
+  artworksDefaultWeightMetric: String
   clientMutationId: String
 
   # The id of the partner to update.

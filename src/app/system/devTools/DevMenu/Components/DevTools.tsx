@@ -1,4 +1,5 @@
 import { Flex, MenuItem, SearchInput, Text } from "@artsy/palette-mobile"
+import FastImage from "@d11/react-native-fast-image"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import Clipboard from "@react-native-clipboard/clipboard"
 import * as Sentry from "@sentry/react-native"
@@ -12,15 +13,16 @@ import { DevMenuButtonItem } from "app/system/devTools/DevMenu/Components/DevMen
 import { DevToggleItem } from "app/system/devTools/DevMenu/Components/DevToggleItem"
 import { eigenSentryReleaseName } from "app/system/errorReporting/setupSentry"
 import { useUnleashEnvironment } from "app/system/flags/hooks/useUnleashEnvironment"
+// eslint-disable-next-line no-restricted-imports
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
 import { saveToken } from "app/utils/PushNotification"
+import { _removeVisualClueAsSeen } from "app/utils/hooks/useVisualClue"
 import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
 import { capitalize, sortBy } from "lodash"
 import { useState } from "react"
 import { Alert, Button, Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
-import FastImage from "@d11/react-native-fast-image"
 import Keychain from "react-native-keychain"
 import Keys from "react-native-keys"
 
@@ -103,6 +105,12 @@ export const DevTools: React.FC<{}> = () => {
             }}
           />
           <DevMenuButtonItem
+            title="Clear Visual Clues"
+            onPress={() => {
+              _removeVisualClueAsSeen("all")
+            }}
+          />
+          <DevMenuButtonItem
             title="Clear Relay Cache"
             onPress={() => {
               _globalCacheRef?.clear()
@@ -115,6 +123,12 @@ export const DevTools: React.FC<{}> = () => {
               Promise.all([FastImage.clearMemoryCache(), FastImage.clearDiskCache()]).then(() => {
                 toast.show("FastImage cache cleared ✅", "middle")
               })
+            }}
+          />
+          <DevMenuButtonItem
+            title="Set Onboarding state to incomplete"
+            onPress={() => {
+              GlobalStore.actions.onboarding.setOnboardingState("incomplete")
             }}
           />
           <DevMenuButtonItem

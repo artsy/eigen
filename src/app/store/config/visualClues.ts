@@ -33,6 +33,10 @@ export const visualClues = defineVisualClues({
   MyCollectionArtistsCollectedOnboardingTooltip2: {
     description: "Collected Artists: Tap to add more artists or artworks tooltip.",
   },
+  PriceRangeToast: {
+    description:
+      "Toast that appears when the user scrolls through the recommendations section and has not updated the price range in a long time",
+  },
 })
 
 export const visualClueNames = Object.keys(visualClues)
