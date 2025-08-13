@@ -166,7 +166,7 @@ export const Favorites = () => {
         <Screen.Body fullwidth>
           <FavoriteTopNavigator.Navigator
             backBehavior="none"
-            tabBar={FavoritesHeaderTabBar}
+            tabBar={(props) => <FavoritesHeaderTabBar {...props} />}
             screenOptions={{
               swipeEnabled: false,
             }}
