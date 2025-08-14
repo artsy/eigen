@@ -3634,6 +3634,42 @@ enum AssetType {
   IMAGE
 }
 
+type AssignArtistToPartnerFailure {
+  mutationError: GravityMutationError
+}
+
+input AssignArtistToPartnerMutationInput {
+  # The ID of the artist to assign.
+  artistID: String!
+  clientMutationId: String
+
+  # Whether the artist should be featured.
+  featured: Boolean
+
+  # The ID of the partner to assign the artist to.
+  partnerID: String!
+
+  # The URL of the image to use for the partner artist.
+  remoteImageUrl: String
+}
+
+type AssignArtistToPartnerMutationPayload {
+  clientMutationId: String
+
+  # On success: the created partner artist. On error: the error that occurred.
+  partnerArtistOrError: AssignArtistToPartnerResponseOrError
+}
+
+union AssignArtistToPartnerResponseOrError =
+    AssignArtistToPartnerFailure
+  | AssignArtistToPartnerSuccess
+
+type AssignArtistToPartnerSuccess {
+  artist: Artist
+  partner: Partner
+  partnerArtist: PartnerArtist
+}
+
 type AssignArtworkImportArtistFailure {
   mutationError: GravityMutationError
 }
@@ -15206,6 +15242,11 @@ type Mutation {
   artworksCollectionsBatchUpdate(
     input: ArtworksCollectionsBatchUpdateInput!
   ): ArtworksCollectionsBatchUpdatePayload
+
+  # Assigns an artist to a partner, creating a PartnerArtist record.
+  assignArtistToPartner(
+    input: AssignArtistToPartnerMutationInput!
+  ): AssignArtistToPartnerMutationPayload
   assignArtworkImportArtist(
     input: AssignArtworkImportArtistInput!
   ): AssignArtworkImportArtistPayload
