@@ -1,6 +1,8 @@
 {
   "permissions": {
-    "allow": [],
+    "allow": [
+
+    ],
     "deny": [
       "Read(.env.maestro.android)",
       "Read(.env.maestro.ios)",
@@ -11,7 +13,9 @@
       "Read(eigen-firebase-app-distribution.json)",
       "Read(google-services.json)",
       "Read(keys.shared.json)",
-      "Read(release.keystore)"
+      "Read(release.keystore)",
+      "Bash(hokusai:*)",
+      "Bash(aws:*)]"
     ]
   }
 }
