@@ -242,8 +242,8 @@ lane :check_flags do
   flags = JSON.parse(flag_file)
   hidden_flags = flags['hiddenFlags']
 
-  if (hidden_flags.nil? || hidden_flags.empty?)
-    puts "[INFO] No hidden flags found"
+  if hidden_flags.nil? || hidden_flags.empty?
+    puts '[INFO] No hidden flags found!'
   else
 
     hidden_flags_message = ''
