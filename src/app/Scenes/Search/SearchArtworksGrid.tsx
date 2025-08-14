@@ -4,7 +4,6 @@ import {
   Flex,
   quoteLeft,
   quoteRight,
-  Spinner,
   Text,
   useScreenDimensions,
   useTheme,
@@ -19,13 +18,14 @@ import {
 } from "app/Components/ArtworkFilter/useArtworkFilters"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
-import { SCROLLVIEW_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
+import { SCROLLVIEW_SEARCH_RESULTS_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import {
   ESTIMATED_MASONRY_ITEM_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
+import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 
 import { Schema } from "app/utils/track"
 import { OwnerEntityTypes, PageNames } from "app/utils/track/schema"
@@ -133,9 +133,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
           onEndReached={loadMore}
           onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
           ListFooterComponent={
-            <Flex alignItems="center" my={4}>
-              {shouldDisplaySpinner ? <Spinner /> : null}
-            </Flex>
+            <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
           }
           renderItem={({ item, index, columnIndex }) => {
             const imgAspectRatio = item.image?.aspectRatio ?? 1
@@ -160,7 +158,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
               </Flex>
             )
           }}
-          contentContainerStyle={{ paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET }}
+          contentContainerStyle={{ paddingBottom: SCROLLVIEW_SEARCH_RESULTS_PADDING_BOTTOM_OFFSET }}
         />
       </Flex>
     </>

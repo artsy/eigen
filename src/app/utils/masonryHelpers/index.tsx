@@ -6,7 +6,7 @@ export const ESTIMATED_MASONRY_ITEM_SIZE = 272
 
 export const NUM_COLUMNS_MASONRY = isTablet() ? 3 : 2
 
-export const ON_END_REACHED_THRESHOLD_MASONRY = 2
+export const ON_END_REACHED_THRESHOLD_MASONRY = 1.2
 
 export const MASONRY_LIST_PAGE_SIZE = 10
 
