@@ -58,7 +58,7 @@ describe("useSetPriceRangeReminder", () => {
 
     expect(mockShow).toHaveBeenCalledWith(PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE, "bottom", {
       description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
-      duration: "long",
+      duration: "superLong",
       onPress: expect.any(Function),
       hideOnPress: true,
     })
@@ -101,7 +101,7 @@ describe("useSetPriceRangeReminder", () => {
 
     expect(mockShow).toHaveBeenCalledWith(PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE, "bottom", {
       description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
-      duration: "long",
+      duration: "superLong",
       onPress: expect.any(Function),
       hideOnPress: true,
     })
@@ -129,12 +129,7 @@ describe("useSetPriceRangeReminder", () => {
       <TestComponent artworksLength={6} totalCount={10} sectionInternalID="other-section" />
     )
 
-    expect(mockShow).not.toHaveBeenCalledWith(PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE, "bottom", {
-      description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
-      duration: "long",
-      onPress: expect.any(Function),
-      hideOnPress: true,
-    })
+    expect(mockShow).not.toHaveBeenCalled()
   })
 
   it("does not show toast if user hasn't scrolled enough", async () => {
@@ -148,12 +143,7 @@ describe("useSetPriceRangeReminder", () => {
       />
     )
 
-    expect(mockShow).not.toHaveBeenCalledWith(PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE, "bottom", {
-      description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
-      duration: "long",
-      onPress: expect.any(Function),
-      hideOnPress: true,
-    })
+    expect(mockShow).not.toHaveBeenCalled()
   })
 
   it("does not show toast if 3 months haven't passed", async () => {
@@ -167,12 +157,7 @@ describe("useSetPriceRangeReminder", () => {
       />
     )
 
-    expect(mockShow).not.toHaveBeenCalledWith(PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE, "bottom", {
-      description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
-      duration: "long",
-      onPress: expect.any(Function),
-      hideOnPress: true,
-    })
+    expect(mockShow).not.toHaveBeenCalled()
   })
 
   it("does not show toast if hasPriceRange is false", async () => {
@@ -186,12 +171,7 @@ describe("useSetPriceRangeReminder", () => {
       />
     )
 
-    expect(mockShow).not.toHaveBeenCalledWith(PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE, "bottom", {
-      description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
-      duration: "long",
-      onPress: expect.any(Function),
-      hideOnPress: true,
-    })
+    expect(mockShow).not.toHaveBeenCalled()
   })
 
   it("does not show toast if price range has not been updated", async () => {
@@ -205,12 +185,7 @@ describe("useSetPriceRangeReminder", () => {
       />
     )
 
-    expect(mockShow).not.toHaveBeenCalledWith(PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE, "bottom", {
-      description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
-      duration: "long",
-      onPress: expect.any(Function),
-      hideOnPress: true,
-    })
+    expect(mockShow).not.toHaveBeenCalled()
   })
 })
 
