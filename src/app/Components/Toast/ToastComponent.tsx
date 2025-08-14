@@ -23,6 +23,7 @@ const TOAST_ANIMATION_DURATION = 450
 export const TOAST_DURATION_MAP: Record<ToastDuration, number> = {
   short: 2500,
   long: 5000,
+  superLong: 10000,
 }
 
 export const ToastComponent = ({

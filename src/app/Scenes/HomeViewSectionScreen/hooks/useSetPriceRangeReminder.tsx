@@ -65,7 +65,7 @@ export function useSetPriceRangeReminder({
         try {
           toast.show(PROGRESSIVE_ONBOARDING_PRICE_RANGE_TITLE, "bottom", {
             description: PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT,
-            duration: "long",
+            duration: "superLong",
             onPress: () => {
               tracking.trackEvent(tracks.onToastPress(contextScreenOwnerType))
 

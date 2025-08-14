@@ -3,7 +3,7 @@ import { Color } from "@artsy/palette-mobile"
 import { ActionSheetProps } from "@expo/react-native-action-sheet"
 import React from "react"
 
-export type ToastDuration = "long" | "short"
+export type ToastDuration = "long" | "short" | "superLong"
 
 export type ToastPlacement = "middle" | "top" | "bottom"
 

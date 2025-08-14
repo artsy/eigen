@@ -64,7 +64,7 @@ export const MyAccountEditPriceRange: React.FC<{
       toast.show("Artwork budget set", "bottom", {
         description:
           "We will tailor your experience to better match your preferences going forward",
-        duration: "short",
+        duration: "long",
         backgroundColor: "green100",
       })
       goBack()
