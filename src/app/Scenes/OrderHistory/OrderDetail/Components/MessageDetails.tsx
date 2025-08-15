@@ -2,6 +2,7 @@ import { Flex, LinkText, Spacer, Text } from "@artsy/palette-mobile"
 import { OrderDetailMessage_order$data } from "__generated__/OrderDetailMessage_order.graphql"
 import { WireTransferInfo } from "app/Scenes/OrderHistory/OrderDetail/Components/WireTransferInfo"
 import { useOrderDetailTracking } from "app/Scenes/OrderHistory/OrderDetail/hooks/useOrderDetailTracking"
+import { RouterLink } from "app/system/navigation/RouterLink"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { sendEmail } from "app/utils/sendEmail"
@@ -383,8 +384,13 @@ const ContactOrders: React.FC<{ emailSubject?: string }> = ({ emailSubject }) =>
 )
 
 const YourCollectionNote: React.FC = () => (
-  <Text variant="sm">
-    This artwork will be added to{" "}
-    <LinkText onPress={() => navigate("/my-collection")}>your Collection on Artsy</LinkText>.
-  </Text>
+  <RouterLink to="/my-collection" activeOpacity={1}>
+    <Text variant="sm">
+      This artwork will be added to{" "}
+      <Text variant="sm" underline>
+        your Collection on Artsy
+      </Text>
+      .
+    </Text>
+  </RouterLink>
 )
