@@ -51,4 +51,26 @@ describe("FairHeader", () => {
 
     expect(screen.getByText("Closed")).toBeOnTheScreen()
   })
+
+  it("does not render the timing info for the Artsy Edition Shop instance", () => {
+    renderWithRelay({
+      Fair: () => ({
+        slug: "the-artsy-edition-shop",
+        endAt: "2020-09-19T08:00:00+00:00",
+      }),
+    })
+
+    expect(screen.queryByText("Closed")).not.toBeOnTheScreen()
+  })
+
+  it("displays a custom subheader", () => {
+    renderWithRelay({
+      Fair: () => ({
+        slug: "the-artsy-edition-shop",
+        endAt: "2020-09-19T08:00:00+00:00",
+      }),
+    })
+
+    expect(screen.getByText("Your Chance to Own an Icon")).toBeOnTheScreen()
+  })
 })

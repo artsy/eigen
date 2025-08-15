@@ -15,6 +15,7 @@ export const FairHeader: FC<FairHeaderProps> = ({ fair }) => {
     return null
   }
 
+  const isArtsyEditionShop = data.slug === "the-artsy-edition-shop"
   const profileImageUrl = data.profile?.icon?.imageUrl
 
   return (
@@ -44,10 +45,16 @@ export const FairHeader: FC<FairHeaderProps> = ({ fair }) => {
         </Flex>
       ) : null}
       <Flex px={2} pointerEvents="none">
-        <Text variant="lg-display" py={2}>
+        <Text variant="lg-display" pt={2} pb={isArtsyEditionShop ? 0 : 2}>
           {data.name}
         </Text>
-        <FairTiming fair={data} />
+        {isArtsyEditionShop ? (
+          <Text variant="sm" pb={2} color="mono60">
+            Your Chance to Own an Icon
+          </Text>
+        ) : (
+          <FairTiming fair={data} />
+        )}
       </Flex>
     </Flex>
   )
@@ -56,6 +63,7 @@ export const FairHeader: FC<FairHeaderProps> = ({ fair }) => {
 const fragment = graphql`
   fragment FairHeader_fair on Fair {
     name
+    slug
     profile {
       icon {
         imageUrl: url(version: "untouched-png")
