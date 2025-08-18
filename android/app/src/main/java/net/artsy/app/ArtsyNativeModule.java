@@ -16,8 +16,9 @@ import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.module.annotations.ReactModule;
+import com.facebook.react.turbomodule.core.interfaces.TurboModule;
 
 import org.apache.commons.io.FileUtils;
 
@@ -26,7 +27,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class ArtsyNativeModule extends ReactContextBaseJavaModule {
+@ReactModule(name = ArtsyNativeModule.NAME)
+public class ArtsyNativeModule extends ArtsyNativeSpec {
+    public static final String NAME = "ArtsyNativeModule";
     // this is called on application launch by MainApplication#onCreate
     private static final String LAUNCH_COUNT = "launchCount";
     public static void didLaunch(SharedPreferences prefs) {
@@ -45,7 +48,7 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
     @NonNull
     @Override
     public String getName() {
-        return "ArtsyNativeModule";
+        return NAME;
     }
 
     @Override
