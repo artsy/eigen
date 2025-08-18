@@ -14374,6 +14374,46 @@ type MatchArtworkImportArtistsSuccess {
   unmatched: Int!
 }
 
+type MatchArtworkImportImagesFailure {
+  mutationError: GravityMutationError
+}
+
+input MatchArtworkImportImagesImageInput {
+  # The image filename
+  fileName: String!
+
+  # S3 bucket of the uploaded image asset
+  s3Bucket: String!
+
+  # S3 key of the uploaded image asset
+  s3Key: String!
+}
+
+input MatchArtworkImportImagesInput {
+  artworkImportID: String!
+  clientMutationId: String
+
+  # Array of image objects to match
+  images: [MatchArtworkImportImagesImageInput!]!
+
+  # ID of the row to associate the images with (required if images don't already exist)
+  rowID: String
+}
+
+type MatchArtworkImportImagesPayload {
+  clientMutationId: String
+  matchArtworkImportImagesOrError: MatchArtworkImportImagesResponseOrError
+}
+
+union MatchArtworkImportImagesResponseOrError =
+    MatchArtworkImportImagesFailure
+  | MatchArtworkImportImagesSuccess
+
+type MatchArtworkImportImagesSuccess {
+  artworkImport: ArtworkImport
+  success: Boolean!
+}
+
 type MatchArtworkImportRowImageFailure {
   mutationError: GravityMutationError
 }
@@ -15783,6 +15823,7 @@ type Mutation {
   matchArtworkImportArtists(
     input: MatchArtworkImportArtistsInput!
   ): MatchArtworkImportArtistsPayload
+  matchArtworkImportImages(input: MatchArtworkImportImagesInput!): MatchArtworkImportImagesPayload
   matchArtworkImportRowImage(
     input: MatchArtworkImportRowImageInput!
   ): MatchArtworkImportRowImagePayload
