@@ -177,8 +177,7 @@ import { MyProfileTermsAndConditions } from "app/Scenes/MyProfile/MyProfileTerms
 import { NewWorksForYouQueryRenderer } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { NewWorksFromGalleriesYouFollowScreenQuery } from "app/Scenes/NewWorksFromGalleriesYouFollow/Components/NewWorksFromGalleriesYouFollow"
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
-import { OrderDetailQR } from "app/Scenes/OrderHistory/OrderDetail/OrderDetail"
-import { OrderDetailsQueryRender } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetails"
+import { OrderDetailsQR } from "app/Scenes/OrderHistory/OrderDetails/OrderDetails"
 import { OrderHistoryQueryRender } from "app/Scenes/OrderHistory/OrderHistory"
 import { PartnerQueryRenderer, PartnerScreenQuery } from "app/Scenes/Partner/Partner"
 import {
@@ -238,7 +237,7 @@ import {
   ViewingRoomsListScreen,
   viewingRoomsListScreenQuery,
 } from "app/Scenes/ViewingRoom/ViewingRoomsList"
-import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "app/store/GlobalStore"
+import { unsafe__getEnvironment } from "app/store/GlobalStore"
 import { DevMenu } from "app/system/devTools/DevMenu/DevMenu"
 import { goBack } from "app/system/navigation/navigate"
 import { replaceParams } from "app/system/navigation/utils/replaceParams"
@@ -1603,24 +1602,20 @@ export const artsyDotNetRoutes = defineRoutes([
     },
     queries: [ConversationScreenQuery],
   },
-  ...(unsafe_getFeatureFlag("AREnableNewOrderDetails")
-    ? [
-        {
-          path: "/orders/:orderID/details",
-          name: "OrderDetail",
-          Component: OrderDetailQR,
-          options: {
-            screenOptions: {
-              headerTitle: "Order Details",
-            },
-          },
-        },
-      ]
-    : []),
+  {
+    path: "/orders/:orderID/details",
+    name: "OrderDetail",
+    Component: OrderDetailsQR,
+    options: {
+      screenOptions: {
+        headerTitle: "Order Details",
+      },
+    },
+  },
   {
     path: "/user/purchases/:orderID",
     name: "OrderDetails",
-    Component: OrderDetailsQueryRender,
+    Component: OrderDetailsQR,
     options: {
       screenOptions: {
         headerTitle: "Order Details",

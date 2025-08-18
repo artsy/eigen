@@ -1,18 +1,18 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { OrderDetailPriceBreakdown } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailPriceBreakdown"
+import { OrderDetailsPriceBreakdown } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsPriceBreakdown"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("OrderDetailPriceBreakdown", () => {
+describe("OrderDetailsPriceBreakdown", () => {
   const { renderWithRelay } = setupTestWrapper({
-    Component: (props: any) => <OrderDetailPriceBreakdown order={props.me.order} />,
+    Component: (props: any) => <OrderDetailsPriceBreakdown order={props.me.order} />,
     query: graphql`
-      query OrderDetailPriceBreakdownTestsQuery @relay_test_operation {
+      query OrderDetailsPriceBreakdownTestsQuery @relay_test_operation {
         me {
           order(id: "test-order") {
-            ...OrderDetailPriceBreakdown_order
+            ...OrderDetailsPriceBreakdown_order
           }
         }
       }

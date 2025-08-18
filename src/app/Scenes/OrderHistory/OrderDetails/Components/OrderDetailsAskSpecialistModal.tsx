@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Input, Screen, Separator, Text } from "@artsy/palette-mobile"
-import { OrderDetailAskSpecialistModal_me$key } from "__generated__/OrderDetailAskSpecialistModal_me.graphql"
-import { OrderDetailAskSpecialistModal_order$key } from "__generated__/OrderDetailAskSpecialistModal_order.graphql"
+import { OrderDetailsAskSpecialistModal_me$key } from "__generated__/OrderDetailsAskSpecialistModal_me.graphql"
+import { OrderDetailsAskSpecialistModal_order$key } from "__generated__/OrderDetailsAskSpecialistModal_order.graphql"
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { useToast } from "app/Components/Toast/toastHook"
 import { useSubmitInquiryRequest } from "app/utils/mutations/useSubmitInquiryRequest"
@@ -9,14 +9,14 @@ import { Modal } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useFragment } from "react-relay"
 
-interface OrderDetailAskSpecialistModalProps {
-  order: OrderDetailAskSpecialistModal_order$key
-  me: OrderDetailAskSpecialistModal_me$key
+interface OrderDetailsAskSpecialistModalProps {
+  order: OrderDetailsAskSpecialistModal_order$key
+  me: OrderDetailsAskSpecialistModal_me$key
   visible: boolean
   handleDismiss: () => void
 }
 
-export const OrderDetailAskSpecialistModal: React.FC<OrderDetailAskSpecialistModalProps> = ({
+export const OrderDetailsAskSpecialistModal: React.FC<OrderDetailsAskSpecialistModalProps> = ({
   me,
   order,
   visible,
@@ -129,7 +129,7 @@ export const OrderDetailAskSpecialistModal: React.FC<OrderDetailAskSpecialistMod
 }
 
 const orderFragment = graphql`
-  fragment OrderDetailAskSpecialistModal_order on Order {
+  fragment OrderDetailsAskSpecialistModal_order on Order {
     lineItems {
       artwork {
         internalID
@@ -138,7 +138,7 @@ const orderFragment = graphql`
   }
 `
 const meFragment = graphql`
-  fragment OrderDetailAskSpecialistModal_me on Me {
+  fragment OrderDetailsAskSpecialistModal_me on Me {
     name
     email
   }

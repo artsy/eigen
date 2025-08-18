@@ -1,16 +1,16 @@
 import { screen } from "@testing-library/react-native"
-import { OrderDetailPaymentInfo } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailPaymentInfo"
+import { OrderDetailsPaymentInfo } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsPaymentInfo"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("OrderDetailPaymentInfo", () => {
+describe("OrderDetailsPaymentInfo", () => {
   const { renderWithRelay } = setupTestWrapper({
-    Component: (props: any) => <OrderDetailPaymentInfo order={props.me.order} />,
+    Component: (props: any) => <OrderDetailsPaymentInfo order={props.me.order} />,
     query: graphql`
-      query OrderDetailPaymentInfoTestsQuery @relay_test_operation {
+      query OrderDetailsPaymentInfoTestsQuery @relay_test_operation {
         me {
           order(id: "test-order") {
-            ...OrderDetailPaymentInfo_order
+            ...OrderDetailsPaymentInfo_order
           }
         }
       }

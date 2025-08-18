@@ -188,12 +188,6 @@ export const features = {
     description: "Enable quick links animation",
     echoFlagKey: "AREnableQuickLinksAnimation2",
   },
-  AREnableNewOrderDetails: {
-    readyForRelease: true,
-    showInDevMenu: true,
-    description: "Enable new order details screen",
-    echoFlagKey: "AREnableNewOrderDetails",
-  },
   AREnableProgressiveOnboardingPriceRangeHome: {
     readyForRelease: true,
     showInDevMenu: true,

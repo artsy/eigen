@@ -1,25 +1,27 @@
 import { Box, Flex, LinkText, Spacer, Text } from "@artsy/palette-mobile"
 import {
-  OrderDetailPriceBreakdown_order$data,
-  OrderDetailPriceBreakdown_order$key,
-} from "__generated__/OrderDetailPriceBreakdown_order.graphql"
-import { useOrderDetailTracking } from "app/Scenes/OrderHistory/OrderDetail/hooks/useOrderDetailTracking"
+  OrderDetailsPriceBreakdown_order$data,
+  OrderDetailsPriceBreakdown_order$key,
+} from "__generated__/OrderDetailsPriceBreakdown_order.graphql"
+import { useOrderDetailsTracking } from "app/Scenes/OrderHistory/OrderDetails/hooks/useOrderDetailsTracking"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { graphql, useFragment } from "react-relay"
 
-interface OrderDetailPriceBreakdownProps {
-  order: OrderDetailPriceBreakdown_order$key
+interface OrderDetailsPriceBreakdownProps {
+  order: OrderDetailsPriceBreakdown_order$key
 }
 
 const IMPORT_TAX_URL =
   "https://support.artsy.net/s/article/How-are-taxes-and-customs-fees-calculated"
 
-type PriceBreakdownLine = OrderDetailPriceBreakdown_order$data["pricingBreakdownLines"][number]
+type PriceBreakdownLine = OrderDetailsPriceBreakdown_order$data["pricingBreakdownLines"][number]
 
-export const OrderDetailPriceBreakdown: React.FC<OrderDetailPriceBreakdownProps> = ({ order }) => {
+export const OrderDetailsPriceBreakdown: React.FC<OrderDetailsPriceBreakdownProps> = ({
+  order,
+}) => {
   const { pricingBreakdownLines, internalID, source, mode } = useFragment(fragment, order)
-  const orderDetailTracks = useOrderDetailTracking()
+  const orderDetailTracks = useOrderDetailsTracking()
 
   const renderBreakdownLines = (line: PriceBreakdownLine, index: number) => {
     if (!line) {
@@ -102,7 +104,7 @@ export const OrderDetailPriceBreakdown: React.FC<OrderDetailPriceBreakdownProps>
 }
 
 const fragment = graphql`
-  fragment OrderDetailPriceBreakdown_order on Order {
+  fragment OrderDetailsPriceBreakdown_order on Order {
     internalID
     mode
     source

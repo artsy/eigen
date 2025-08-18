@@ -11,17 +11,17 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
-import { OrderDetailQuery } from "__generated__/OrderDetailQuery.graphql"
-import { OrderDetail_me$key } from "__generated__/OrderDetail_me.graphql"
-import { OrderDetail_order$key } from "__generated__/OrderDetail_order.graphql"
-import { OrderDetailBuyerProtection } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailBuyerProtection"
-import { OrderDetailFulfillment } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailFulfillment"
-import { OrderDetailHelpLinks } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailHelpLinks"
-import { OrderDetailMessage } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailMessage"
-import { OrderDetailMetadata } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailMetadata"
-import { OrderDetailPaymentInfo } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailPaymentInfo"
-import { OrderDetailPriceBreakdown } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailPriceBreakdown"
-import { useOrderDetailTracking } from "app/Scenes/OrderHistory/OrderDetail/hooks/useOrderDetailTracking"
+import { OrderDetailsQuery } from "__generated__/OrderDetailsQuery.graphql"
+import { OrderDetails_me$key } from "__generated__/OrderDetails_me.graphql"
+import { OrderDetails_order$key } from "__generated__/OrderDetails_order.graphql"
+import { OrderDetailsBuyerProtection } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsBuyerProtection"
+import { OrderDetailsFulfillment } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsFulfillment"
+import { OrderDetailsHelpLinks } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsHelpLinks"
+import { OrderDetailsMessage } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsMessage"
+import { OrderDetailsMetadata } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsMetadata"
+import { OrderDetailsPaymentInfo } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsPaymentInfo"
+import { OrderDetailsPriceBreakdown } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsPriceBreakdown"
+import { useOrderDetailsTracking } from "app/Scenes/OrderHistory/OrderDetails/hooks/useOrderDetailsTracking"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
@@ -29,16 +29,16 @@ import { useEffect } from "react"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface OrderDetailProps {
-  order: OrderDetail_order$key
-  me: OrderDetail_me$key
+  order: OrderDetails_order$key
+  me: OrderDetails_me$key
 }
 
-export const OrderDetail: React.FC<OrderDetailProps> = ({ order, me }) => {
+export const OrderDetails: React.FC<OrderDetailProps> = ({ order, me }) => {
   const space = useSpace()
   const color = useColor()
-  const orderData = useFragment(orderDetailFragment, order)
-  const meData = useFragment(meOrderDetailFragment, me)
-  const orderDetailTracks = useOrderDetailTracking()
+  const orderData = useFragment(orderDetailsFragment, order)
+  const meData = useFragment(meOrderDetailsFragment, me)
+  const orderDetailTracks = useOrderDetailsTracking()
 
   useEffect(() => {
     if (!!orderData) {
@@ -65,18 +65,18 @@ export const OrderDetail: React.FC<OrderDetailProps> = ({ order, me }) => {
         </Box>
 
         {/* 2nd Part: Overview */}
-        <OrderDetailMessage order={orderData} />
+        <OrderDetailsMessage order={orderData} />
 
         {/* 3rd Part: Artwork image and metadata */}
-        <OrderDetailMetadata order={orderData} />
+        <OrderDetailsMetadata order={orderData} />
 
         {/* 4th Part: Artwork price breakdown */}
-        <OrderDetailPriceBreakdown order={orderData} />
+        <OrderDetailsPriceBreakdown order={orderData} />
 
         <Spacer y={2} />
 
         {/* 5th Part: Artsy Buyer Protection */}
-        <OrderDetailBuyerProtection order={orderData} />
+        <OrderDetailsBuyerProtection order={orderData} />
       </Box>
 
       <Spacer y={2} />
@@ -84,49 +84,49 @@ export const OrderDetail: React.FC<OrderDetailProps> = ({ order, me }) => {
       <Spacer y={2} />
 
       {/* 6th Part: Shipping */}
-      <OrderDetailFulfillment order={orderData} />
+      <OrderDetailsFulfillment order={orderData} />
 
       <Spacer y={2} />
       <Box backgroundColor="mono5" height={10} />
       <Spacer y={2} />
 
       {/* 7th Part: Payment */}
-      <OrderDetailPaymentInfo order={orderData} />
+      <OrderDetailsPaymentInfo order={orderData} />
 
       <Spacer y={2} />
 
       {/* 8th Part: Help links */}
-      <OrderDetailHelpLinks order={orderData} me={meData} />
+      <OrderDetailsHelpLinks order={orderData} me={meData} />
     </Screen.ScrollView>
   )
 }
 
-const orderDetailFragment = graphql`
-  fragment OrderDetail_order on Order {
+const orderDetailsFragment = graphql`
+  fragment OrderDetails_order on Order {
     internalID
     code
     displayTexts {
       title
       messageType
     }
-    ...OrderDetailBuyerProtection_order
-    ...OrderDetailFulfillment_order
-    ...OrderDetailHelpLinks_order
-    ...OrderDetailMessage_order
-    ...OrderDetailMetadata_order
-    ...OrderDetailPaymentInfo_order
-    ...OrderDetailPriceBreakdown_order
+    ...OrderDetailsBuyerProtection_order
+    ...OrderDetailsFulfillment_order
+    ...OrderDetailsHelpLinks_order
+    ...OrderDetailsMessage_order
+    ...OrderDetailsMetadata_order
+    ...OrderDetailsPaymentInfo_order
+    ...OrderDetailsPriceBreakdown_order
   }
 `
 
-const meOrderDetailFragment = graphql`
-  fragment OrderDetail_me on Me {
+const meOrderDetailsFragment = graphql`
+  fragment OrderDetails_me on Me {
     id
-    ...OrderDetailHelpLinks_me
+    ...OrderDetailsHelpLinks_me
   }
 `
 
-const OrderDetailSkeleton: React.FC = () => {
+const OrderDetailsSkeleton: React.FC = () => {
   const { width: screenWidth } = useScreenDimensions()
 
   return (
@@ -157,10 +157,10 @@ const OrderDetailSkeleton: React.FC = () => {
   )
 }
 
-export const OrderDetailQR: React.FC<{ orderID: string }> = withSuspense({
+export const OrderDetailsQR: React.FC<{ orderID: string }> = withSuspense({
   Component: ({ orderID }) => {
-    const data = useLazyLoadQuery<OrderDetailQuery>(
-      orderDetailQRQuery,
+    const data = useLazyLoadQuery<OrderDetailsQuery>(
+      orderDetailsQRQuery,
       { orderID },
       { fetchPolicy: "store-and-network" }
     )
@@ -176,21 +176,21 @@ export const OrderDetailQR: React.FC<{ orderID: string }> = withSuspense({
           context_screen_owner_id: data.me.order.internalID,
         })}
       >
-        <OrderDetail order={data.me.order} me={data.me} />
+        <OrderDetails order={data.me.order} me={data.me} />
       </ProvideScreenTrackingWithCohesionSchema>
     )
   },
-  LoadingFallback: OrderDetailSkeleton,
+  LoadingFallback: OrderDetailsSkeleton,
   ErrorFallback: NoFallback,
 })
 
-const orderDetailQRQuery = graphql`
-  query OrderDetailQuery($orderID: ID!) {
+const orderDetailsQRQuery = graphql`
+  query OrderDetailsQuery($orderID: ID!) {
     me {
-      ...OrderDetail_me
+      ...OrderDetails_me
       order(id: $orderID) {
         internalID
-        ...OrderDetail_order
+        ...OrderDetails_order
       }
     }
   }

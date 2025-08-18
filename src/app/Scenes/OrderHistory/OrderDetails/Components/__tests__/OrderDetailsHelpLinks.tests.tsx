@@ -1,20 +1,20 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { OrderDetailHelpLinksTestsQuery } from "__generated__/OrderDetailHelpLinksTestsQuery.graphql"
-import { OrderDetailHelpLinks } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailHelpLinks"
+import { OrderDetailsHelpLinksTestsQuery } from "__generated__/OrderDetailsHelpLinksTestsQuery.graphql"
+import { OrderDetailsHelpLinks } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsHelpLinks"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("OrderDetailHelpLinks", () => {
-  const { renderWithRelay } = setupTestWrapper<OrderDetailHelpLinksTestsQuery>({
-    Component: (props) => <OrderDetailHelpLinks order={props.me!.order!} me={props.me!} />,
+describe("OrderDetailsHelpLinks", () => {
+  const { renderWithRelay } = setupTestWrapper<OrderDetailsHelpLinksTestsQuery>({
+    Component: (props) => <OrderDetailsHelpLinks order={props.me!.order!} me={props.me!} />,
     query: graphql`
-      query OrderDetailHelpLinksTestsQuery @relay_test_operation {
+      query OrderDetailsHelpLinksTestsQuery @relay_test_operation {
         me {
-          ...OrderDetailHelpLinks_me
+          ...OrderDetailsHelpLinks_me
           order(id: "order-id") {
-            ...OrderDetailHelpLinks_order
+            ...OrderDetailsHelpLinks_order
           }
         }
       }

@@ -1,17 +1,17 @@
 import { screen } from "@testing-library/react-native"
-import { OrderDetailFulfillmentTestsQuery } from "__generated__/OrderDetailFulfillmentTestsQuery.graphql"
-import { OrderDetailFulfillment } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailFulfillment"
+import { OrderDetailsFulfillmentTestsQuery } from "__generated__/OrderDetailsFulfillmentTestsQuery.graphql"
+import { OrderDetailsFulfillment } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsFulfillment"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("OrderDetailFulfillment", () => {
-  const { renderWithRelay } = setupTestWrapper<OrderDetailFulfillmentTestsQuery>({
-    Component: (props: any) => <OrderDetailFulfillment order={props.me.order} />,
+describe("OrderDetailsFulfillment", () => {
+  const { renderWithRelay } = setupTestWrapper<OrderDetailsFulfillmentTestsQuery>({
+    Component: (props: any) => <OrderDetailsFulfillment order={props.me.order} />,
     query: graphql`
-      query OrderDetailFulfillmentTestsQuery @relay_test_operation {
+      query OrderDetailsFulfillmentTestsQuery @relay_test_operation {
         me {
           order(id: "order-id") {
-            ...OrderDetailFulfillment_order
+            ...OrderDetailsFulfillment_order
           }
         }
       }

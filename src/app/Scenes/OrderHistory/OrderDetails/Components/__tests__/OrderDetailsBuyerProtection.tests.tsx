@@ -1,18 +1,18 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { OrderDetailBuyerProtection } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailBuyerProtection"
+import { OrderDetailsBuyerProtection } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsBuyerProtection"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("OrderDetailBuyerProtection", () => {
+describe("OrderDetailsBuyerProtection", () => {
   const { renderWithRelay } = setupTestWrapper({
-    Component: (props: any) => <OrderDetailBuyerProtection order={props.me.order} {...props} />,
+    Component: (props: any) => <OrderDetailsBuyerProtection order={props.me.order} {...props} />,
     query: graphql`
-      query OrderDetailBuyerProtectionTestsQuery @relay_test_operation {
+      query OrderDetailsBuyerProtectionTestsQuery @relay_test_operation {
         me {
           order(id: "order-id") {
-            ...OrderDetailBuyerProtection_order
+            ...OrderDetailsBuyerProtection_order
           }
         }
       }

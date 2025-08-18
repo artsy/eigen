@@ -1,7 +1,7 @@
 import { Flex, LinkText, Spacer, Text } from "@artsy/palette-mobile"
-import { OrderDetailMessage_order$data } from "__generated__/OrderDetailMessage_order.graphql"
-import { WireTransferInfo } from "app/Scenes/OrderHistory/OrderDetail/Components/WireTransferInfo"
-import { useOrderDetailTracking } from "app/Scenes/OrderHistory/OrderDetail/hooks/useOrderDetailTracking"
+import { OrderDetailsMessage_order$data } from "__generated__/OrderDetailsMessage_order.graphql"
+import { WireTransferInfo } from "app/Scenes/OrderHistory/OrderDetails/Components/WireTransferInfo"
+import { useOrderDetailsTracking } from "app/Scenes/OrderHistory/OrderDetails/hooks/useOrderDetailsTracking"
 import { RouterLink } from "app/system/navigation/RouterLink"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
@@ -9,11 +9,11 @@ import { sendEmail } from "app/utils/sendEmail"
 import { DateTime } from "luxon"
 
 interface MessageDetailsProps {
-  order: OrderDetailMessage_order$data
+  order: OrderDetailsMessage_order$data
 }
 
 export const MessageDetails: React.FC<MessageDetailsProps> = ({ order }) => {
-  const orderDetailTracks = useOrderDetailTracking()
+  const orderDetailTracks = useOrderDetailsTracking()
   const messageType = order.displayTexts.messageType
 
   const formattedStateExpireTime =

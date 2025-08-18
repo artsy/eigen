@@ -1,9 +1,9 @@
 import { MessageIcon } from "@artsy/icons/native"
 import { Box, Flex, LinkText, Spacer, Text } from "@artsy/palette-mobile"
-import { OrderDetailHelpLinks_me$key } from "__generated__/OrderDetailHelpLinks_me.graphql"
-import { OrderDetailHelpLinks_order$key } from "__generated__/OrderDetailHelpLinks_order.graphql"
-import { OrderDetailAskSpecialistModal } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailAskSpecialistModal"
-import { useOrderDetailTracking } from "app/Scenes/OrderHistory/OrderDetail/hooks/useOrderDetailTracking"
+import { OrderDetailsHelpLinks_me$key } from "__generated__/OrderDetailsHelpLinks_me.graphql"
+import { OrderDetailsHelpLinks_order$key } from "__generated__/OrderDetailsHelpLinks_order.graphql"
+import { OrderDetailsAskSpecialistModal } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsAskSpecialistModal"
+import { useOrderDetailsTracking } from "app/Scenes/OrderHistory/OrderDetails/hooks/useOrderDetailsTracking"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useState } from "react"
@@ -11,16 +11,16 @@ import { graphql, useFragment } from "react-relay"
 
 const HELP_CENTER_LINK = "https://support.artsy.net/s/topic/0TO3b000000UessGAC/buy"
 
-interface OrderDetailHelpLinksProps {
-  order: OrderDetailHelpLinks_order$key
-  me: OrderDetailHelpLinks_me$key
+interface OrderDetailsHelpLinksProps {
+  order: OrderDetailsHelpLinks_order$key
+  me: OrderDetailsHelpLinks_me$key
 }
 
-export const OrderDetailHelpLinks: React.FC<OrderDetailHelpLinksProps> = ({ order, me }) => {
+export const OrderDetailsHelpLinks: React.FC<OrderDetailsHelpLinksProps> = ({ order, me }) => {
   const [isVisible, setVisible] = useState(false)
   const orderData = useFragment(orderFragment, order)
   const meData = useFragment(meFragment, me)
-  const orderDetailTracks = useOrderDetailTracking()
+  const orderDetailTracks = useOrderDetailsTracking()
 
   const { internalID, mode, source } = orderData
 
@@ -59,7 +59,7 @@ export const OrderDetailHelpLinks: React.FC<OrderDetailHelpLinksProps> = ({ orde
         </Flex>
       </Flex>
 
-      <OrderDetailAskSpecialistModal
+      <OrderDetailsAskSpecialistModal
         visible={isVisible}
         handleDismiss={() => setVisible(false)}
         me={meData}
@@ -70,15 +70,15 @@ export const OrderDetailHelpLinks: React.FC<OrderDetailHelpLinksProps> = ({ orde
 }
 
 const orderFragment = graphql`
-  fragment OrderDetailHelpLinks_order on Order {
+  fragment OrderDetailsHelpLinks_order on Order {
     internalID
     mode
     source
-    ...OrderDetailAskSpecialistModal_order
+    ...OrderDetailsAskSpecialistModal_order
   }
 `
 const meFragment = graphql`
-  fragment OrderDetailHelpLinks_me on Me {
-    ...OrderDetailAskSpecialistModal_me
+  fragment OrderDetailsHelpLinks_me on Me {
+    ...OrderDetailsAskSpecialistModal_me
   }
 `

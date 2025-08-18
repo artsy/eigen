@@ -1,5 +1,7 @@
-import { CommerceOrderDisplayStateEnum } from "__generated__/OrderDetailsHeader_info.graphql"
-import { CommerceBuyerOfferActionEnum } from "__generated__/OrderHistoryRow_order.graphql"
+import {
+  CommerceBuyerOfferActionEnum,
+  CommerceOrderDisplayStateEnum,
+} from "__generated__/OrderHistoryRow_order.graphql"
 
 export function getOrderStatus(
   displayState: CommerceOrderDisplayStateEnum | CommerceBuyerOfferActionEnum
