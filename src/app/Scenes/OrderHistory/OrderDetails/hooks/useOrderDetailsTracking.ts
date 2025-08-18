@@ -9,20 +9,20 @@ import {
   TappedImportFees,
   TappedVisitHelpCenter,
 } from "@artsy/cohesion"
-import { OrderDetailHelpLinks_order$data } from "__generated__/OrderDetailHelpLinks_order.graphql"
-import { OrderDetailPriceBreakdown_order$data } from "__generated__/OrderDetailPriceBreakdown_order.graphql"
-import { OrderDetail_order$data } from "__generated__/OrderDetail_order.graphql"
+import { OrderDetailsHelpLinks_order$data } from "__generated__/OrderDetailsHelpLinks_order.graphql"
+import { OrderDetailsPriceBreakdown_order$data } from "__generated__/OrderDetailsPriceBreakdown_order.graphql"
+import { OrderDetails_order$data } from "__generated__/OrderDetails_order.graphql"
 import { useMemo } from "react"
 import { useTracking } from "react-tracking"
 
-export const useOrderDetailTracking = () => {
+export const useOrderDetailsTracking = () => {
   const { trackEvent } = useTracking()
 
   const tracks = useMemo(() => {
     return {
       orderDetailsViewed: (
-        orderId: OrderDetail_order$data["internalID"],
-        messageType: OrderDetail_order$data["displayTexts"]["messageType"]
+        orderId: OrderDetails_order$data["internalID"],
+        messageType: OrderDetails_order$data["displayTexts"]["messageType"]
       ) => {
         const payload: OrderDetailsViewed = {
           action: ActionType.orderDetailsViewed,
@@ -36,9 +36,9 @@ export const useOrderDetailTracking = () => {
       },
 
       tappedAskSpecialist: (
-        orderId: OrderDetailHelpLinks_order$data["internalID"],
-        orderType: OrderDetailHelpLinks_order$data["mode"],
-        orderSource: OrderDetailHelpLinks_order$data["source"]
+        orderId: OrderDetailsHelpLinks_order$data["internalID"],
+        orderType: OrderDetailsHelpLinks_order$data["mode"],
+        orderSource: OrderDetailsHelpLinks_order$data["source"]
       ) => {
         const flow =
           orderType === "OFFER"
@@ -57,7 +57,7 @@ export const useOrderDetailTracking = () => {
 
         trackEvent(payload)
       },
-      tappedBuyerProtection: (orderId: OrderDetail_order$data["internalID"]) => {
+      tappedBuyerProtection: (orderId: OrderDetails_order$data["internalID"]) => {
         const payload: TappedBuyerProtection = {
           action: ActionType.tappedBuyerProtection,
           context_module: ContextModule.ordersDetail,
@@ -78,9 +78,9 @@ export const useOrderDetailTracking = () => {
         trackEvent(payload)
       },
       tappedImportFees: (
-        orderID: OrderDetailPriceBreakdown_order$data["internalID"],
-        orderType: OrderDetailPriceBreakdown_order$data["mode"],
-        orderSource: OrderDetailPriceBreakdown_order$data["source"]
+        orderID: OrderDetailsPriceBreakdown_order$data["internalID"],
+        orderType: OrderDetailsPriceBreakdown_order$data["mode"],
+        orderSource: OrderDetailsPriceBreakdown_order$data["source"]
       ) => {
         const flow =
           orderType === "OFFER"
@@ -102,9 +102,9 @@ export const useOrderDetailTracking = () => {
         trackEvent(payload)
       },
       tappedVisitHelpCenter: (
-        orderId: OrderDetailHelpLinks_order$data["internalID"],
-        orderType: OrderDetailHelpLinks_order$data["mode"],
-        orderSource: OrderDetailHelpLinks_order$data["source"]
+        orderId: OrderDetailsHelpLinks_order$data["internalID"],
+        orderType: OrderDetailsHelpLinks_order$data["mode"],
+        orderSource: OrderDetailsHelpLinks_order$data["source"]
       ) => {
         const flow =
           orderType === "OFFER"

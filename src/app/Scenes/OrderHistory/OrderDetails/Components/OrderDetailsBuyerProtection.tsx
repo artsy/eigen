@@ -1,22 +1,22 @@
 import { ShieldIcon } from "@artsy/icons/native"
 import { Flex, LinkText, Message, Text } from "@artsy/palette-mobile"
-import { OrderDetailBuyerProtection_order$key } from "__generated__/OrderDetailBuyerProtection_order.graphql"
-import { useOrderDetailTracking } from "app/Scenes/OrderHistory/OrderDetail/hooks/useOrderDetailTracking"
+import { OrderDetailsBuyerProtection_order$key } from "__generated__/OrderDetailsBuyerProtection_order.graphql"
+import { useOrderDetailsTracking } from "app/Scenes/OrderHistory/OrderDetails/hooks/useOrderDetailsTracking"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { graphql, useFragment } from "react-relay"
 
 const BUYER_GUARANTEE_LINK = "https://support.artsy.net/s/article/The-Artsy-Guarantee"
 
-interface OrderDetailBuyerProtectionProps {
-  order: OrderDetailBuyerProtection_order$key
+interface OrderDetailsBuyerProtectionProps {
+  order: OrderDetailsBuyerProtection_order$key
 }
 
-export const OrderDetailBuyerProtection: React.FC<OrderDetailBuyerProtectionProps> = ({
+export const OrderDetailsBuyerProtection: React.FC<OrderDetailsBuyerProtectionProps> = ({
   order,
 }) => {
   const orderData = useFragment(fragment, order)
-  const orderDetailTracks = useOrderDetailTracking()
+  const orderDetailTracks = useOrderDetailsTracking()
 
   return (
     <Message variant="default" containerStyle={{ px: 1 }}>
@@ -44,7 +44,7 @@ export const OrderDetailBuyerProtection: React.FC<OrderDetailBuyerProtectionProp
 }
 
 const fragment = graphql`
-  fragment OrderDetailBuyerProtection_order on Order {
+  fragment OrderDetailsBuyerProtection_order on Order {
     internalID
   }
 `

@@ -1,20 +1,20 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
-import { OrderDetailMessageTestsQuery } from "__generated__/OrderDetailMessageTestsQuery.graphql"
-import { OrderDetailMessage } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailMessage"
+import { OrderDetailsMessageTestsQuery } from "__generated__/OrderDetailsMessageTestsQuery.graphql"
+import { OrderDetailsMessage } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsMessage"
 import { navigate } from "app/system/navigation/navigate"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { Linking } from "react-native"
 import { graphql } from "react-relay"
 
-describe("OrderDetailMessage", () => {
-  const { renderWithRelay } = setupTestWrapper<OrderDetailMessageTestsQuery>({
-    Component: (props: any) => <OrderDetailMessage order={props.me.order} />,
+describe("OrderDetailsMessage", () => {
+  const { renderWithRelay } = setupTestWrapper<OrderDetailsMessageTestsQuery>({
+    Component: (props: any) => <OrderDetailsMessage order={props.me.order} />,
     query: graphql`
-      query OrderDetailMessageTestsQuery @relay_test_operation {
+      query OrderDetailsMessageTestsQuery @relay_test_operation {
         me {
           order(id: "order-id") {
-            ...OrderDetailMessage_order
+            ...OrderDetailsMessage_order
           }
         }
       }

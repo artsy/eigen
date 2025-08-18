@@ -1,18 +1,18 @@
 import { ApplePayMarkIcon, GooglePayIcon, HomeIcon } from "@artsy/icons/native"
 import { Box, Flex, IconProps, Spacer, Text } from "@artsy/palette-mobile"
 import {
-  OrderDetailPaymentInfo_order$data,
-  OrderDetailPaymentInfo_order$key,
-} from "__generated__/OrderDetailPaymentInfo_order.graphql"
+  OrderDetailsPaymentInfo_order$data,
+  OrderDetailsPaymentInfo_order$key,
+} from "__generated__/OrderDetailsPaymentInfo_order.graphql"
 import { BrandCreditCardIcon } from "app/Components/BrandCreditCardIcon/BrandCreditCardIcon"
 import { DateTime } from "luxon"
 import { graphql, useFragment } from "react-relay"
 
-interface OrderDetailPaymentInfoProps {
-  order: OrderDetailPaymentInfo_order$key
+interface OrderDetailsPaymentInfoProps {
+  order: OrderDetailsPaymentInfo_order$key
 }
 
-export const OrderDetailPaymentInfo: React.FC<OrderDetailPaymentInfoProps> = ({ order }) => {
+export const OrderDetailsPaymentInfo: React.FC<OrderDetailsPaymentInfoProps> = ({ order }) => {
   const orderData = useFragment(fragment, order)
 
   const { Icon, text } = getPaymentMethodContent(orderData)
@@ -38,7 +38,7 @@ export const OrderDetailPaymentInfo: React.FC<OrderDetailPaymentInfoProps> = ({ 
   )
 }
 
-const getPaymentMethodContent = (order: NonNullable<OrderDetailPaymentInfo_order$data>) => {
+const getPaymentMethodContent = (order: NonNullable<OrderDetailsPaymentInfo_order$data>) => {
   const { creditCardWalletType, paymentMethodDetails } = order
 
   if (creditCardWalletType) {
@@ -79,7 +79,7 @@ const getPaymentMethodContent = (order: NonNullable<OrderDetailPaymentInfo_order
 }
 
 const fragment = graphql`
-  fragment OrderDetailPaymentInfo_order on Order {
+  fragment OrderDetailsPaymentInfo_order on Order {
     creditCardWalletType
     paymentMethodDetails {
       __typename

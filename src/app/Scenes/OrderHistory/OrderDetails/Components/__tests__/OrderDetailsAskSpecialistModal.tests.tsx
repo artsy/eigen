@@ -1,6 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react-native"
-import { OrderDetailAskSpecialistModalTestsQuery } from "__generated__/OrderDetailAskSpecialistModalTestsQuery.graphql"
-import { OrderDetailAskSpecialistModal } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailAskSpecialistModal"
+import { OrderDetailsAskSpecialistModalTestsQuery } from "__generated__/OrderDetailsAskSpecialistModalTestsQuery.graphql"
+import { OrderDetailsAskSpecialistModal } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsAskSpecialistModal"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
@@ -15,12 +15,12 @@ jest.mock("app/Components/Toast/toastHook", () => ({
   useToast: () => ({ show: mockShow }),
 }))
 
-describe("OrderDetailAskSpecialistModal", () => {
+describe("OrderDetailsAskSpecialistModal", () => {
   const mockHandleDismiss = jest.fn()
 
-  const { renderWithRelay } = setupTestWrapper<OrderDetailAskSpecialistModalTestsQuery>({
+  const { renderWithRelay } = setupTestWrapper<OrderDetailsAskSpecialistModalTestsQuery>({
     Component: (props) => (
-      <OrderDetailAskSpecialistModal
+      <OrderDetailsAskSpecialistModal
         order={props.me!.order!}
         me={props.me!}
         visible={true}
@@ -28,11 +28,11 @@ describe("OrderDetailAskSpecialistModal", () => {
       />
     ),
     query: graphql`
-      query OrderDetailAskSpecialistModalTestsQuery @relay_test_operation {
+      query OrderDetailsAskSpecialistModalTestsQuery @relay_test_operation {
         me {
-          ...OrderDetailAskSpecialistModal_me
+          ...OrderDetailsAskSpecialistModal_me
           order(id: "order-id") {
-            ...OrderDetailAskSpecialistModal_order
+            ...OrderDetailsAskSpecialistModal_order
           }
         }
       }

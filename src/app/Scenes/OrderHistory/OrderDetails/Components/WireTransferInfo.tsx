@@ -1,11 +1,11 @@
 import { LinkIcon } from "@artsy/icons/native"
 import { Box, Flex, Spacer, Text, TextProps } from "@artsy/palette-mobile"
 import Clipboard from "@react-native-clipboard/clipboard"
-import { OrderDetailMessage_order$data } from "__generated__/OrderDetailMessage_order.graphql"
+import { OrderDetailsMessage_order$data } from "__generated__/OrderDetailsMessage_order.graphql"
 import { useToast } from "app/Components/Toast/toastHook"
 
 interface WireTransferInfoProps {
-  order: Pick<OrderDetailMessage_order$data, "currencyCode" | "code">
+  order: Pick<OrderDetailsMessage_order$data, "currencyCode" | "code">
 }
 
 export const WireTransferInfo: React.FC<WireTransferInfoProps> = ({ order }) => {

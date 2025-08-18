@@ -1,13 +1,13 @@
 import { Box, Text } from "@artsy/palette-mobile"
-import { OrderDetailFulfillment_order$key } from "__generated__/OrderDetailFulfillment_order.graphql"
+import { OrderDetailsFulfillment_order$key } from "__generated__/OrderDetailsFulfillment_order.graphql"
 import { COUNTRY_SELECT_OPTIONS } from "app/Components/CountrySelect"
 import { graphql, useFragment } from "react-relay"
 
-interface OrderDetailFulfillmentProps {
-  order: OrderDetailFulfillment_order$key
+interface OrderDetailsFulfillmentProps {
+  order: OrderDetailsFulfillment_order$key
 }
 
-export const OrderDetailFulfillment: React.FC<OrderDetailFulfillmentProps> = ({ order }) => {
+export const OrderDetailsFulfillment: React.FC<OrderDetailsFulfillmentProps> = ({ order }) => {
   const orderData = useFragment(fragment, order)
 
   if (!orderData) {
@@ -71,7 +71,7 @@ export const OrderDetailFulfillment: React.FC<OrderDetailFulfillmentProps> = ({ 
 }
 
 const fragment = graphql`
-  fragment OrderDetailFulfillment_order on Order {
+  fragment OrderDetailsFulfillment_order on Order {
     fulfillmentDetails {
       name
       addressLine1

@@ -1,17 +1,17 @@
 import { fireEvent, screen } from "@testing-library/react-native"
-import { OrderDetailMetadata } from "app/Scenes/OrderHistory/OrderDetail/Components/OrderDetailMetadata"
+import { OrderDetailsMetadata } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsMetadata"
 import { navigate } from "app/system/navigation/navigate"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
-describe("OrderDetailMetadata", () => {
+describe("OrderDetailsMetadata", () => {
   const { renderWithRelay } = setupTestWrapper({
-    Component: (props: any) => <OrderDetailMetadata order={props.me.order} />,
+    Component: (props: any) => <OrderDetailsMetadata order={props.me.order} />,
     query: graphql`
-      query OrderDetailMetadataTestsQuery @relay_test_operation {
+      query OrderDetailsMetadataTestsQuery @relay_test_operation {
         me {
           order(id: "test-order") {
-            ...OrderDetailMetadata_order
+            ...OrderDetailsMetadata_order
           }
         }
       }

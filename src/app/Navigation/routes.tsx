@@ -177,7 +177,7 @@ import { MyProfileTermsAndConditions } from "app/Scenes/MyProfile/MyProfileTerms
 import { NewWorksForYouQueryRenderer } from "app/Scenes/NewWorksForYou/NewWorksForYou"
 import { NewWorksFromGalleriesYouFollowScreenQuery } from "app/Scenes/NewWorksFromGalleriesYouFollow/Components/NewWorksFromGalleriesYouFollow"
 import { NewWorksFromGalleriesYouFollowScreen } from "app/Scenes/NewWorksFromGalleriesYouFollow/NewWorksFromGalleriesYouFollow"
-import { OrderDetailQR } from "app/Scenes/OrderHistory/OrderDetail/OrderDetail"
+import { OrderDetailsQR } from "app/Scenes/OrderHistory/OrderDetails/OrderDetails"
 import { OrderHistoryQueryRender } from "app/Scenes/OrderHistory/OrderHistory"
 import { PartnerQueryRenderer, PartnerScreenQuery } from "app/Scenes/Partner/Partner"
 import {
@@ -1605,7 +1605,7 @@ export const artsyDotNetRoutes = defineRoutes([
   {
     path: "/orders/:orderID/details",
     name: "OrderDetail",
-    Component: OrderDetailQR,
+    Component: OrderDetailsQR,
     options: {
       screenOptions: {
         headerTitle: "Order Details",
@@ -1615,7 +1615,7 @@ export const artsyDotNetRoutes = defineRoutes([
   {
     path: "/user/purchases/:orderID",
     name: "OrderDetails",
-    Component: OrderDetailQR,
+    Component: OrderDetailsQR,
     options: {
       screenOptions: {
         headerTitle: "Order Details",

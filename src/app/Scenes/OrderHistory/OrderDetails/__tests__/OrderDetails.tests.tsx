@@ -1,19 +1,19 @@
 import { screen } from "@testing-library/react-native"
-import { OrderDetailTestsQuery } from "__generated__/OrderDetailTestsQuery.graphql"
-import { OrderDetail } from "app/Scenes/OrderHistory/OrderDetail/OrderDetail"
+import { OrderDetailsTestsQuery } from "__generated__/OrderDetailsTestsQuery.graphql"
+import { OrderDetails } from "app/Scenes/OrderHistory/OrderDetails/OrderDetails"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 import { graphql } from "react-relay"
 
 describe("OrderDetail", () => {
-  const { renderWithRelay } = setupTestWrapper<OrderDetailTestsQuery>({
-    Component: (props) => <OrderDetail order={props.me!.order!} me={props.me!} />,
+  const { renderWithRelay } = setupTestWrapper<OrderDetailsTestsQuery>({
+    Component: (props) => <OrderDetails order={props.me!.order!} me={props.me!} />,
     query: graphql`
-      query OrderDetailTestsQuery @relay_test_operation {
+      query OrderDetailsTestsQuery @relay_test_operation {
         me {
-          ...OrderDetail_me
+          ...OrderDetails_me
           order(id: "order-id") {
-            ...OrderDetail_order
+            ...OrderDetails_order
           }
         }
       }
