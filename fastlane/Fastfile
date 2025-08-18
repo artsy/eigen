@@ -557,7 +557,8 @@ error do |lane, exception|
   end
 
   if is_ci
-    notify_beta_failed(exception: exception)
+    # notify_beta_failed(exception: exception)
+    UI.error("Beta failed to deploy! #{exception.message}")
   else
     UI.error("Beta failed to deploy! #{exception.message}")
   end
