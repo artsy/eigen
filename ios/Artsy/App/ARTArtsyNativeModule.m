@@ -9,10 +9,21 @@
 #import "ArtsyAPI+DeviceTokens.h"
 #import "ARAppConstants.h"
 
+#ifdef RCT_NEW_ARCH_ENABLED
+#import "ArtsyNativeModuleSpec.h"
+#endif
+
 
 @implementation ARTArtsyNativeModule
 
 RCT_EXPORT_MODULE(ArtsyNativeModule);
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const facebook::react::ObjCTurboModule::InitParams &)params
+{
+    return std::make_shared<facebook::react::NativeArtsyNativeModuleSpecJSI>(params);
+}
+#endif
 
 
 RCT_EXPORT_METHOD(updateAuthState:(NSString *) token
@@ -49,5 +60,14 @@ RCT_EXPORT_METHOD(getPushToken:(RCTPromiseResolveBlock)completion reject:(RCTPro
         @"isBetaOrDev": @([ARAppStatus isBetaOrDev]),
     };
 }
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (facebook::react::ModuleConstants<JS::NativeArtsyNativeModule::Constants>)getConstants {
+    return facebook::react::typedConstants<JS::NativeArtsyNativeModule::Constants>({
+        .gitCommitShortHash = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"GITCommitShortHash"],
+        .isBetaOrDev = @([ARAppStatus isBetaOrDev])
+    });
+}
+#endif
 
 @end
