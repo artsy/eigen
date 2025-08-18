@@ -188,12 +188,6 @@ export const features = {
     description: "Enable quick links animation",
     echoFlagKey: "AREnableQuickLinksAnimation2",
   },
-  AREnableNewOrderDetails: {
-    readyForRelease: true,
-    showInDevMenu: true,
-    description: "Enable new order details screen",
-    echoFlagKey: "AREnableNewOrderDetails",
-  },
   AREnableProgressiveOnboardingPriceRangeHome: {
     readyForRelease: true,
     showInDevMenu: true,
@@ -205,6 +199,12 @@ export const features = {
     showInDevMenu: true,
     description: "Show onboarding price range screen",
     echoFlagKey: "ARShowOnboardingPriceRangeScreen",
+  },
+  AREnablePriceRangeToast: {
+    readyForRelease: true,
+    showInDevMenu: true,
+    description: "Enable price range toast prompting users to update a price range",
+    echoFlagKey: "AREnablePriceRangeToast",
   },
 } satisfies { [key: string]: FeatureDescriptor }
 

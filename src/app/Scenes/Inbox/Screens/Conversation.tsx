@@ -13,13 +13,15 @@ import { sendConversationMessage } from "app/Scenes/Inbox/Components/Conversatio
 import { updateConversation } from "app/Scenes/Inbox/Components/Conversations/UpdateConversation"
 import { ShadowSeparator } from "app/Scenes/Inbox/Components/ShadowSeparator"
 import { GlobalStore } from "app/store/GlobalStore"
+// eslint-disable-next-line no-restricted-imports
 import { goBack, navigate, navigationEvents } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import NavigatorIOS from "app/utils/__legacy_do_not_use__navigator-ios-shim"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { track as _track, ProvideScreenTracking, Schema, Track } from "app/utils/track"
-import React from "react"
+import { ProvideScreenTracking, Schema } from "app/utils/track"
+import React, { useEffect, useRef, useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 const Container = styled.View`
@@ -34,56 +36,27 @@ interface Props {
   navigator: NavigatorIOS
 }
 
-interface State {
-  sendingMessage: boolean
-  isConnected: boolean
-  markedMessageAsRead: boolean
-  fetchingData: boolean
-  failedMessageText: string | null
-}
+export const Conversation: React.FC<Props> = ({
+  me,
+  relay,
+  onMessageSent,
+  navigator: _navigator,
+}) => {
+  const [sendingMessage, setSendingMessage] = useState(false)
+  const [isConnected, setIsConnected] = useState(true)
+  const [markedMessageAsRead, setMarkedMessageAsRead] = useState(false)
+  const [failedMessageText, setFailedMessageText] = useState<string | null>(null)
 
-const track: Track<Props, State> = _track
+  const messagesRef = useRef<any>(null)
+  const tracking = useTracking()
 
-@track()
-export class Conversation extends React.Component<Props, State> {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  messages: MessagesComponent
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  composer: Composer
-
-  // Assume if the component loads, connection exists (this way the banner won't flash unnecessarily)
-  state = {
-    sendingMessage: false,
-    isConnected: true,
-    markedMessageAsRead: false,
-    fetchingData: false,
-    failedMessageText: null,
+  const handleConnectivityChange = (state: any) => {
+    setIsConnected(state.isConnected)
   }
 
-  componentDidMount() {
-    NetInfo.addEventListener(this.handleConnectivityChange)
-    this.maybeMarkLastMessageAsRead()
-    navigationEvents.addListener("modalDismissed", this.handleModalDismissed)
-    navigationEvents.addListener("goBack", this.handleModalDismissed)
-  }
-
-  componentWillUnmount() {
-    navigationEvents.removeListener("modalDismissed", this.handleModalDismissed)
-    navigationEvents.removeListener("goBack", this.handleModalDismissed)
-  }
-
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  handleConnectivityChange = (isConnected) => {
-    this.setState({ isConnected })
-  }
-
-  handleModalDismissed = () => {
-    this.refetch()
-  }
-
-  refetch = () => {
-    this.props.relay.refetch(
-      { conversationID: this.props.me.conversation?.internalID },
+  const refetch = React.useCallback(() => {
+    relay.refetch(
+      { conversationID: me.conversation?.internalID },
       null,
       (error) => {
         if (error) {
@@ -92,133 +65,140 @@ export class Conversation extends React.Component<Props, State> {
       },
       { force: true }
     )
-  }
+  }, [relay, me.conversation?.internalID])
 
-  maybeMarkLastMessageAsRead() {
-    const conversation = this.props.me.conversation
-    if (conversation?.unread && !this.state.markedMessageAsRead) {
+  const handleModalDismissed = React.useCallback(() => {
+    refetch()
+  }, [refetch])
+
+  const maybeMarkLastMessageAsRead = React.useCallback(() => {
+    const conversation = me.conversation
+    if (conversation?.unread && !markedMessageAsRead && conversation.lastMessageID) {
       updateConversation(
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        conversation,
+        conversation as any,
         conversation.lastMessageID,
         (_response) => {
-          this.setState({ markedMessageAsRead: true })
+          setMarkedMessageAsRead(true)
           GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
         },
         (error) => {
           console.warn(error)
-          this.setState({ markedMessageAsRead: true })
+          setMarkedMessageAsRead(true)
           GlobalStore.actions.bottomTabs.fetchCurrentUnreadConversationCount()
         }
       )
     }
-  }
+  }, [me.conversation, markedMessageAsRead])
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  @track((props) => ({
-    action_type: Schema.ActionTypes.Success,
-    action_name: Schema.ActionNames.ConversationSendReply,
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    owner_id: props.me.conversation.internalID,
-    owner_type: Schema.OwnerEntityTypes.Conversation,
-  }))
-  messageSuccessfullySent(text: string) {
-    this.setState({ sendingMessage: false })
+  const messageSuccessfullySent = (text: string) => {
+    tracking.trackEvent({
+      action_type: Schema.ActionTypes.Success,
+      action_name: Schema.ActionNames.ConversationSendReply,
+      owner_id: me.conversation?.internalID,
+      owner_type: Schema.OwnerEntityTypes.Conversation,
+    })
 
-    if (this.props.onMessageSent) {
-      this.props.onMessageSent(text)
+    setSendingMessage(false)
+
+    if (onMessageSent) {
+      onMessageSent(text)
     }
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  @track((props) => ({
-    action_type: Schema.ActionTypes.Fail,
-    action_name: Schema.ActionNames.ConversationSendReply,
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    owner_id: props.me.conversation.internalID,
-    owner_type: Schema.OwnerEntityTypes.Conversation,
-  }))
-  messageFailedToSend(error: Error, text: string) {
+  const messageFailedToSend = (error: Error, text: string) => {
+    tracking.trackEvent({
+      action_type: Schema.ActionTypes.Fail,
+      action_name: Schema.ActionNames.ConversationSendReply,
+      owner_id: me.conversation?.internalID,
+      owner_type: Schema.OwnerEntityTypes.Conversation,
+    })
+
     console.warn(error)
-    this.setState({ sendingMessage: false, failedMessageText: text })
+    setSendingMessage(false)
+    setFailedMessageText(text)
   }
 
-  render() {
-    const conversation = this.props.me.conversation
+  useEffect(() => {
+    NetInfo.addEventListener(handleConnectivityChange)
+    maybeMarkLastMessageAsRead()
+    navigationEvents.addListener("modalDismissed", handleModalDismissed)
+    navigationEvents.addListener("goBack", handleModalDismissed)
 
-    if (!conversation) {
-      return <LoadFailureView trackErrorBoundary={false} />
+    return () => {
+      navigationEvents.removeListener("modalDismissed", handleModalDismissed)
+      navigationEvents.removeListener("goBack", handleModalDismissed)
     }
+  }, [handleModalDismissed, maybeMarkLastMessageAsRead])
 
-    const partnerName = conversation.to.name
+  const conversation = me.conversation
 
-    return (
-      <PageWithSimpleHeader
-        title={partnerName}
-        left={<BackButton onPress={goBack} />}
-        noSeparator
-        right={
-          <Touchable
-            accessibilityRole="button"
-            onPress={() => {
-              navigate(`/conversation/${this.props.me?.conversation?.internalID}/details`)
-            }}
-            hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-          >
-            <InfoIcon />
-          </Touchable>
-        }
-      >
-        <ComposerFragmentContainer
-          conversation={conversation}
-          disabled={this.state.sendingMessage || !this.state.isConnected}
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          ref={(composer) => (this.composer = composer)}
-          value={this.state.failedMessageText}
-          onSubmit={(text: string) => {
-            this.setState({ sendingMessage: true, failedMessageText: null })
-            sendConversationMessage(
-              this.props.relay.environment,
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              conversation,
-              text,
-              (_response) => {
-                this.messageSuccessfullySent(text)
-              },
-              (error) => {
-                this.messageFailedToSend(error, text)
-              }
-            )
-            this.messages.scrollToLastMessage()
-          }}
-        >
-          <Container>
-            <ShadowSeparator />
-            {!this.state.isConnected && <ConnectivityBanner />}
-            <Messages
-              componentRef={(messages) => (this.messages = messages)}
-              conversation={conversation as any}
-              onDataFetching={(loading: boolean) => {
-                this.setState({ fetchingData: loading })
-              }}
-              onRefresh={() => {
-                this.props.relay.refetch(
-                  { conversationID: conversation?.internalID },
-                  null,
-                  (error) => {
-                    if (error) {
-                      console.error("Conversation.tsx", error.message)
-                    }
-                  },
-                  { force: true }
-                )
-              }}
-            />
-          </Container>
-        </ComposerFragmentContainer>
-      </PageWithSimpleHeader>
-    )
+  if (!conversation) {
+    return <LoadFailureView trackErrorBoundary={false} />
   }
+
+  const partnerName = conversation.to.name
+
+  return (
+    <PageWithSimpleHeader
+      title={partnerName}
+      left={<BackButton onPress={goBack} />}
+      noSeparator
+      right={
+        <Touchable
+          accessibilityRole="button"
+          onPress={() => {
+            navigate(`/conversation/${conversation?.internalID}/details`)
+          }}
+          hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+        >
+          <InfoIcon />
+        </Touchable>
+      }
+    >
+      <ComposerFragmentContainer
+        conversation={conversation}
+        disabled={sendingMessage || !isConnected}
+        value={failedMessageText}
+        onSubmit={(text: string) => {
+          setSendingMessage(true)
+          setFailedMessageText(null)
+          sendConversationMessage(
+            relay.environment,
+            conversation as any,
+            text,
+            (_response) => {
+              messageSuccessfullySent(text)
+            },
+            (error) => {
+              messageFailedToSend(error, text)
+            }
+          )
+          messagesRef.current?.scrollToLastMessage()
+        }}
+      >
+        <Container>
+          <ShadowSeparator />
+          {!isConnected && <ConnectivityBanner />}
+          <Messages
+            componentRef={(messages) => (messagesRef.current = messages)}
+            conversation={conversation as any}
+            onRefresh={() => {
+              relay.refetch(
+                { conversationID: conversation?.internalID },
+                null,
+                (error) => {
+                  if (error) {
+                    console.error("Conversation.tsx", error.message)
+                  }
+                },
+                { force: true }
+              )
+            }}
+          />
+        </Container>
+      </ComposerFragmentContainer>
+    </PageWithSimpleHeader>
+  )
 }
 
 export const ConversationFragmentContainer = createRefetchContainer(

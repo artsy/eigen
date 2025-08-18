@@ -3158,6 +3158,7 @@ type ArtworkImport implements Node {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  locationID: String
   rawDataMapping: JSON!
   rowsConnection(
     after: String
@@ -3290,6 +3291,8 @@ type ArtworkImportRowImage {
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
+  position: Int!
+  publicUrl: String
   s3Bucket: String
   s3Key: String
 }
@@ -3629,6 +3632,42 @@ type ArtworksCollectionsBatchUpdateSuccess {
 enum AssetType {
   ADDITIONAL_FILE
   IMAGE
+}
+
+type AssignArtistToPartnerFailure {
+  mutationError: GravityMutationError
+}
+
+input AssignArtistToPartnerMutationInput {
+  # The ID of the artist to assign.
+  artistID: String!
+  clientMutationId: String
+
+  # Whether the artist should be featured.
+  featured: Boolean
+
+  # The ID of the partner to assign the artist to.
+  partnerID: String!
+
+  # The URL of the image to use for the partner artist.
+  remoteImageUrl: String
+}
+
+type AssignArtistToPartnerMutationPayload {
+  clientMutationId: String
+
+  # On success: the created partner artist. On error: the error that occurred.
+  partnerArtistOrError: AssignArtistToPartnerResponseOrError
+}
+
+union AssignArtistToPartnerResponseOrError =
+    AssignArtistToPartnerFailure
+  | AssignArtistToPartnerSuccess
+
+type AssignArtistToPartnerSuccess {
+  artist: Artist
+  partner: Partner
+  partnerArtist: PartnerArtist
 }
 
 type AssignArtworkImportArtistFailure {
@@ -4605,11 +4644,32 @@ input BulkUpdateArtworksMetadataInput {
   # The category (medium type) to be assigned
   category: String
 
+  # If COA is provided by a third-party authenticating body.
+  coaByAuthenticatingBody: Boolean
+
+  # If COA is provided by the gallery.
+  coaByGallery: Boolean
+
+  # The artwork condition to be assigned
+  conditionDescription: String
+
   # Flat fee for domestic shipping. It must be entered in cents.
   domesticShippingFeeCents: Int
 
   # Whether the artworks must be listed as Purchase
   ecommerce: Boolean
+
+  # The exhibition history to be assigned
+  exhibitionHistory: String
+
+  # Whether a certificate of authenticity is provided for these artworks.
+  hasCertificateOfAuthenticity: Boolean
+
+  # The image rights to be assigned
+  imageRights: String
+
+  # The literature to be assigned
+  literature: String
 
   # The partner location ID to assign
   locationId: String
@@ -4634,6 +4694,9 @@ input BulkUpdateArtworksMetadataInput {
 
   # Details about the signature
   signature: String
+
+  # The title of the artwork
+  title: String
 }
 
 type BulkUpdateArtworksMetadataMutationFailure {
@@ -8789,6 +8852,7 @@ input CreateArtworkImportInput {
   async: Boolean
   clientMutationId: String
   fileName: String
+  locationID: String
   parseWithAI: Boolean
   parseWithAIModel: String
   partnerID: String!
@@ -15178,6 +15242,11 @@ type Mutation {
   artworksCollectionsBatchUpdate(
     input: ArtworksCollectionsBatchUpdateInput!
   ): ArtworksCollectionsBatchUpdatePayload
+
+  # Assigns an artist to a partner, creating a PartnerArtist record.
+  assignArtistToPartner(
+    input: AssignArtistToPartnerMutationInput!
+  ): AssignArtistToPartnerMutationPayload
   assignArtworkImportArtist(
     input: AssignArtworkImportArtistInput!
   ): AssignArtworkImportArtistPayload
@@ -15865,6 +15934,7 @@ type Mutation {
 
   # Updates an artwork.
   updateArtwork(input: UpdateArtworkMutationInput!): UpdateArtworkMutationPayload
+  updateArtworkImport(input: UpdateArtworkImportInput!): UpdateArtworkImportPayload
   updateArtworkImportCurrency(
     input: UpdateArtworkImportCurrencyInput!
   ): UpdateArtworkImportCurrencyPayload
@@ -15872,6 +15942,12 @@ type Mutation {
     input: UpdateArtworkImportDimensionMetricInput!
   ): UpdateArtworkImportDimensionMetricPayload
   updateArtworkImportRow(input: UpdateArtworkImportRowInput!): UpdateArtworkImportRowPayload
+  updateArtworkImportRowImage(
+    input: UpdateArtworkImportRowImageInput!
+  ): UpdateArtworkImportRowImagePayload
+  updateArtworkImportRowImages(
+    input: UpdateArtworkImportRowImagesInput!
+  ): UpdateArtworkImportRowImagesPayload
   updateArtworkImportWeightMetric(
     input: UpdateArtworkImportWeightMetricInput!
   ): UpdateArtworkImportWeightMetricPayload
@@ -20102,6 +20178,9 @@ input RemoveArtworkImportImageInput {
   artworkImportID: String!
   clientMutationId: String
   imageID: String!
+
+  # The ID of the row containing the image
+  rowID: String!
 }
 
 type RemoveArtworkImportImagePayload {
@@ -22490,8 +22569,81 @@ type UpdateArtworkImportDimensionMetricSuccess {
   artworkImport: ArtworkImport
 }
 
+type UpdateArtworkImportFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtworkImportInput {
+  artworkImportID: String!
+  clientMutationId: String
+  locationID: String
+}
+
+type UpdateArtworkImportPayload {
+  clientMutationId: String
+  updateArtworkImportOrError: UpdateArtworkImportResponseOrError
+}
+
+union UpdateArtworkImportResponseOrError = UpdateArtworkImportFailure | UpdateArtworkImportSuccess
+
 type UpdateArtworkImportRowFailure {
   mutationError: GravityMutationError
+}
+
+type UpdateArtworkImportRowImageFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtworkImportRowImageInput {
+  artworkImportID: String!
+  clientMutationId: String
+  imageID: String!
+
+  # New position for the image (0-based)
+  position: Int!
+}
+
+type UpdateArtworkImportRowImagePayload {
+  clientMutationId: String
+  updateArtworkImportRowImageOrError: UpdateArtworkImportRowImageResponseOrError
+}
+
+union UpdateArtworkImportRowImageResponseOrError =
+    UpdateArtworkImportRowImageFailure
+  | UpdateArtworkImportRowImageSuccess
+
+type UpdateArtworkImportRowImageSuccess {
+  artworkImport: ArtworkImport
+  artworkImportID: String!
+}
+
+type UpdateArtworkImportRowImagesFailure {
+  mutationError: GravityMutationError
+}
+
+input UpdateArtworkImportRowImagesInput {
+  artworkImportID: String!
+  clientMutationId: String
+
+  # The ID of the row to update images for
+  rowID: String!
+
+  # Array of image IDs in desired position order
+  sortedImageIDs: [String!]!
+}
+
+type UpdateArtworkImportRowImagesPayload {
+  clientMutationId: String
+  updateArtworkImportRowImagesOrError: UpdateArtworkImportRowImagesResponseOrError
+}
+
+union UpdateArtworkImportRowImagesResponseOrError =
+    UpdateArtworkImportRowImagesFailure
+  | UpdateArtworkImportRowImagesSuccess
+
+type UpdateArtworkImportRowImagesSuccess {
+  artworkImport: ArtworkImport
+  artworkImportID: String!
 }
 
 input UpdateArtworkImportRowInput {
@@ -22514,6 +22666,10 @@ union UpdateArtworkImportRowResponseOrError =
 type UpdateArtworkImportRowSuccess {
   artworkImport: ArtworkImport
   success: Boolean!
+}
+
+type UpdateArtworkImportSuccess {
+  artworkImport: ArtworkImport
 }
 
 type UpdateArtworkImportWeightMetricFailure {

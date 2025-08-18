@@ -17,6 +17,7 @@ import { useUnleashEnvironment } from "app/system/flags/hooks/useUnleashEnvironm
 import { dismissModal, navigate } from "app/system/navigation/navigate"
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
 import { saveToken } from "app/utils/PushNotification"
+import { _removeVisualClueAsSeen } from "app/utils/hooks/useVisualClue"
 import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"
 import { capitalize, sortBy } from "lodash"
 import { useState } from "react"
@@ -101,6 +102,12 @@ export const DevTools: React.FC<{}> = () => {
               AsyncStorage.clear().then(() => {
                 toast.show("AsyncStorage cleared ✅", "middle")
               })
+            }}
+          />
+          <DevMenuButtonItem
+            title="Clear Visual Clues"
+            onPress={() => {
+              _removeVisualClueAsSeen("all")
             }}
           />
           <DevMenuButtonItem

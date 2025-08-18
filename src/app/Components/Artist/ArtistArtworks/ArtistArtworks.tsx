@@ -35,6 +35,7 @@ import { convertSavedSearchCriteriaToFilterParams } from "app/Components/Artwork
 import { SearchCriteriaAttributes } from "app/Components/ArtworkFilter/SavedSearch/types"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
+import { HEADER_HEIGHT } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { Props as InfiniteScrollGridProps } from "app/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { LoadFailureView, LoadFailureViewProps } from "app/Components/LoadFailureView"
@@ -501,29 +502,30 @@ export const ArtistArtworksQueryRenderer = withSuspense<ArtistArtworksQueryRende
   },
 })
 
-const SUB_TAB_BAR_HEIGHT = 70
-
 const ArtistArtworksPlaceholder = () => {
   const space = useSpace()
 
   const { height } = useHeaderMeasurements()
   // Tabs.ScrollView paddingTop is not working on Android, so we need to set it manually
-  const paddingTop = Platform.OS === "android" ? SUB_TAB_BAR_HEIGHT + height : space(2)
+  const paddingTop = Platform.OS === "android" ? height + HEADER_HEIGHT + space(1) : space(1)
 
   return (
     <Tabs.ScrollView
-      contentContainerStyle={{ paddingHorizontal: 0, paddingTop: paddingTop }}
+      contentContainerStyle={{
+        paddingHorizontal: 0,
+        paddingTop: paddingTop,
+      }}
       scrollEnabled={false}
     >
-      <Flex px={2} testID="ArtistArtworksPlaceholder" gap={2}>
+      <Flex px={2} testID="ArtistArtworksPlaceholder" gap={1}>
         <Flex flexDirection="row" justifyContent="space-between">
-          <SkeletonText>Create Alert</SkeletonText>
-          <SkeletonText>Sort & Filter</SkeletonText>
+          <SkeletonText variant="sm">Create Alert</SkeletonText>
+          <SkeletonText variant="sm">Sort & Filter</SkeletonText>
         </Flex>
 
-        <Flex borderBottomWidth={1} borderBottomColor="mono100" mx={-2} />
+        <Flex borderBottomWidth={1} borderBottomColor="mono30" mx={-2} />
 
-        <SkeletonText variant="xs">XX Artworks</SkeletonText>
+        <SkeletonText variant="sm">XX Artworks</SkeletonText>
 
         <PlaceholderGrid mx={0} />
       </Flex>
@@ -536,7 +538,7 @@ const ArtistArtworksError: React.FC<LoadFailureViewProps> = (fallbackProps) => {
 
   const { height } = useHeaderMeasurements()
   // Tabs.ScrollView paddingTop is not working on Android, so we need to set it manually
-  const paddingTop = Platform.OS === "android" ? SUB_TAB_BAR_HEIGHT + height : space(2)
+  const paddingTop = Platform.OS === "android" ? height + HEADER_HEIGHT + space(2) : space(2)
 
   return (
     <Tabs.ScrollView contentContainerStyle={{ paddingHorizontal: 0, paddingTop: paddingTop }}>

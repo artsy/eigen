@@ -19,20 +19,15 @@ import { MyBidsContainer } from "app/Scenes/MyBids/MyBids"
 import { listenToNativeEvents } from "app/store/NativeModel"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { PlaceholderBox, PlaceholderText } from "app/utils/placeholders"
-import { track } from "app/utils/track"
 import { ActionNames, ActionTypes } from "app/utils/track/schema"
-import React, { memo } from "react"
+import React, { memo, useEffect, useRef, useState } from "react"
 import { EmitterSubscription } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp, useLazyLoadQuery } from "react-relay"
+import { useTracking } from "react-tracking"
 
 enum Tab {
   bids = "bids",
   inquiries = "inquiries",
-}
-// Inbox
-interface State {
-  fetchingData: boolean
-  activeTab: Tab
 }
 
 interface Props {
@@ -41,74 +36,57 @@ interface Props {
   isVisible: boolean
 }
 
-@track()
-export class Inbox extends React.Component<Props, State> {
-  // @ts-ignore STRICTNESS_MIGRATION
-  conversations: ConversationsRef
+export const Inbox: React.FC<Props> = memo(({ me, relay: _relay, isVisible: _isVisible }) => {
+  const [activeTab, setActiveTab] = useState<Tab>(Tab.bids)
+  const listenerRef = useRef<EmitterSubscription | null>(null)
+  const tracking = useTracking()
 
-  // @ts-ignore STRICTNESS_MIGRATION
-  myBids: MyBidsRef
-
-  state = {
-    fetchingData: false,
-    activeTab: Tab.bids,
-  }
-
-  listener: EmitterSubscription | null = null
-
-  flatListHeight = 0
-
-  componentDidMount() {
-    this.listener = listenToNativeEvents((event) => {
+  useEffect(() => {
+    listenerRef.current = listenToNativeEvents((event) => {
       if (event.type === "NOTIFICATION_RECEIVED") {
         // TODO: Figure out this one, maybe in the individual components
         // or maybe set a 'force refetch' state, pass into the isActiveTab prop (with a better name), and then unset it
         // this.fetchData()
       }
     })
-  }
 
-  componentWillUnmount() {
-    this.listener?.remove?.()
-  }
+    return () => {
+      listenerRef.current?.remove?.()
+    }
+  }, [])
 
-  @track((_props, _state, args) => {
-    const index = args[0]
+  const handleNavigationTab = (tabName: string) => {
+    const index = tabName === "bids" ? 0 : 1
     const tabs = ["inboxBids", "inboxInquiries"]
 
-    return {
+    tracking.trackEvent({
       action: ActionType.tappedNavigationTab,
       context_module: tabs[index],
       context_screen_owner_type: tabs[index],
       action_type: ActionTypes.Tap,
       action_name: ActionNames.InboxTab,
-    }
-  })
-  handleNavigationTab(tabName: string) {
-    this.setState({ activeTab: tabName as Tab })
-  }
-  render() {
-    const hasActiveBids = (this.props.me?.myBids?.active ?? []).length > 0
-    const initialPageName = hasActiveBids ? "bids" : "inquiries"
+    })
 
-    return (
-      <TabsContainer
-        initialTabName={initialPageName}
-        onTabChange={({ tabName }) => this.handleNavigationTab(tabName)}
-      >
-        <Tabs.Tab name="bids" label="Bids">
-          <MyBidsContainer isActiveTab={this.state.activeTab === Tab.bids} me={this.props.me} />
-        </Tabs.Tab>
-        <Tabs.Tab name="inquiries" label="Inquiries">
-          <ConversationsContainer
-            me={this.props.me}
-            isActiveTab={this.state.activeTab === Tab.inquiries}
-          />
-        </Tabs.Tab>
-      </TabsContainer>
-    )
+    setActiveTab(tabName as Tab)
   }
-}
+
+  const hasActiveBids = (me?.myBids?.active ?? []).length > 0
+  const initialPageName = hasActiveBids ? "bids" : "inquiries"
+
+  return (
+    <TabsContainer
+      initialTabName={initialPageName}
+      onTabChange={({ tabName }) => handleNavigationTab(tabName)}
+    >
+      <Tabs.Tab name="bids" label="Bids">
+        <MyBidsContainer isActiveTab={activeTab === Tab.bids} me={me} />
+      </Tabs.Tab>
+      <Tabs.Tab name="inquiries" label="Inquiries">
+        <ConversationsContainer me={me} isActiveTab={activeTab === Tab.inquiries} />
+      </Tabs.Tab>
+    </TabsContainer>
+  )
+})
 
 export const InboxContainer = createRefetchContainer(
   Inbox,

@@ -242,24 +242,29 @@ lane :check_flags do
   flags = JSON.parse(flag_file)
   hidden_flags = flags['hiddenFlags']
 
-  hidden_flags_message = ''
-  hidden_flags.each do |flag_name|
-    hidden_flags_message += "\n :alert-orange: #{flag_name}"
+  if hidden_flags.nil? || hidden_flags.empty?
+    puts '[INFO] No hidden flags found!'
+  else
+
+    hidden_flags_message = ''
+    hidden_flags.each do |flag_name|
+      hidden_flags_message += "\n :alert-orange: #{flag_name}"
+    end
+
+    message = <<~MSG
+      :alert-orange: :checkered_flag: :steam_locomotive: :alert-orange:
+      We are getting ready for an app release!
+
+      *Did you forget to set readyForRelease to true :interrobang:*
+      *Features HIDDEN in the upcoming release*:
+      #{hidden_flags_message}
+
+      If a feature here should be going out this release please follow the docs here:
+      https://github.com/artsy/eigen/blob/main/docs/developing_a_feature.md#releasing-a-feature
+      @onyx-devs @phires @amber-devs @diamond-devs @emerald-devs
+    MSG
+    slack(message: message, default_payloads: [], link_names: true)
   end
-
-  message = <<~MSG
-    :alert-orange: :checkered_flag: :steam_locomotive: :alert-orange:
-    We are getting ready for an app release!
-
-    *Did you forget to set readyForRelease to true :interrobang:*
-    *Features HIDDEN in the upcoming release*:
-    #{hidden_flags_message}
-
-    If a feature here should be going out this release please follow the docs here:
-    https://github.com/artsy/eigen/blob/main/docs/developing_a_feature.md#releasing-a-feature
-    @onyx-devs @phires @amber-devs @diamond-devs @emerald-devs
-  MSG
-  slack(message: message, default_payloads: [], link_names: true)
 end
 
 def generate_app_store_connect_api_key

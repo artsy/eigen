@@ -324,26 +324,19 @@ describe("OrderHistoryRow", () => {
       })
     })
 
-    describe.each([
-      [true, "/orders/internal-id/details"],
-      [false, "/user/purchases/internal-id"],
-    ])("when AREnableNewOrderDetails is %s", (featureFlagValue, navigateUrl) => {
-      it("navigates to the correct order details", () => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewOrderDetails: featureFlagValue })
-
-        renderWithRelay({
-          CommerceOrder: () => ({
-            ...mockOrder,
-            internalID: "internal-id",
-            displayState: "PROCESSING",
-            mode: "OFFER",
-          }),
-        })
-
-        fireEvent.press(screen.getByTestId("view-order-button"))
-
-        expect(navigate).toHaveBeenCalledWith(navigateUrl)
+    it("navigates to the correct order details", () => {
+      renderWithRelay({
+        CommerceOrder: () => ({
+          ...mockOrder,
+          internalID: "internal-id",
+          displayState: "PROCESSING",
+          mode: "OFFER",
+        }),
       })
+
+      fireEvent.press(screen.getByTestId("view-order-button"))
+
+      expect(navigate).toHaveBeenCalledWith("/orders/internal-id/details")
     })
   })
 })

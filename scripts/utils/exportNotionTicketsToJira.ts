@@ -191,6 +191,13 @@ async function main() {
 
       const severity = page.properties["Bug Severity"]?.select?.name || null
       const team = page.properties.Team?.select?.name || null
+      const status = page.properties.Status?.select?.name || null
+
+      // 👇 Skip bugs that are marked as Fixed/Handled
+      if (status === "Fixed/Handled") {
+        console.log(chalk.yellow(`Skipping bug marked as Fixed/Handled: ${issueSummary}`))
+        continue
+      }
 
       if (!severity || !team) {
         console.error(chalk.bold.red("Missing Bug Severity or Team for page:"))
