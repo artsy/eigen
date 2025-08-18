@@ -1603,20 +1603,16 @@ export const artsyDotNetRoutes = defineRoutes([
     },
     queries: [ConversationScreenQuery],
   },
-  ...(unsafe_getFeatureFlag("AREnableNewOrderDetails")
-    ? [
-        {
-          path: "/orders/:orderID/details",
-          name: "OrderDetail",
-          Component: OrderDetailQR,
-          options: {
-            screenOptions: {
-              headerTitle: "Order Details",
-            },
-          },
-        },
-      ]
-    : []),
+  {
+    path: "/orders/:orderID/details",
+    name: "OrderDetail",
+    Component: OrderDetailQR,
+    options: {
+      screenOptions: {
+        headerTitle: "Order Details",
+      },
+    },
+  },
   {
     path: "/user/purchases/:orderID",
     name: "OrderDetails",

@@ -42,8 +42,6 @@ const getStateColor = (displayState: BuyerDisplayStateEnum) => {
 }
 
 const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, orderId, mode }) => {
-  const AREnableNewOrderDetails = useFeatureFlag("AREnableNewOrderDetails")
-
   switch (displayState) {
     case "PAYMENT_FAILED":
       return (
@@ -86,11 +84,7 @@ const OrderActionButton: React.FC<OrderActionButtonProps> = ({ displayState, ord
     case "PROCESSING_APPROVAL":
     case "IN_TRANSIT":
       return (
-        <RouterLink
-          hasChildTouchable
-          testID="view-order-button"
-          to={AREnableNewOrderDetails ? `/orders/${orderId}/details` : `/user/purchases/${orderId}`}
-        >
+        <RouterLink hasChildTouchable testID="view-order-button" to={`/orders/${orderId}/details`}>
           <Button block variant="fillGray">
             {mode == "OFFER" ? "View Offer" : "View Order"}
           </Button>
