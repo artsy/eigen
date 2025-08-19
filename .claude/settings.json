@@ -15,7 +15,7 @@
       "Read(keys.shared.json)",
       "Read(release.keystore)",
       "Bash(hokusai:*)",
-      "Bash(aws:*)]"
+      "Bash(aws:*)"
     ]
   }
 }
