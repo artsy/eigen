@@ -9,7 +9,7 @@ import { NavigationHeader } from "app/Components/NavigationHeader"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import { dismissModal, goBack, navigate } from "app/system/navigation/navigate"
-import { appJson } from "app/utils/jsonFiles"
+import { getAppVersion } from "app/utils/appVersion"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import mockFetch from "jest-fetch-mock"
 import { debounce } from "lodash"
@@ -175,8 +175,8 @@ describe("ArtsyWebViewPage", () => {
       expect(source).toHaveProperty("headers")
       expect(source?.headers["User-Agent"]).toBe(
         `Artsy-Mobile android some-system-name/some-system-version Artsy-Mobile/${
-          appJson().version
-        } Eigen/some-build-number/${appJson().version}`
+          getAppVersion()
+        } Eigen/some-build-number/${getAppVersion()}`
       )
     })
   })

@@ -1,7 +1,8 @@
 import { captureMessage } from "@sentry/react-native"
 import { unsafe_getDevToggle } from "app/store/GlobalStore"
 import { GlobalStoreModel } from "app/store/GlobalStoreModel"
-import { appJson, echoLaunchJson } from "app/utils/jsonFiles"
+import { getAppVersion } from "app/utils/appVersion"
+import { echoLaunchJson } from "app/utils/jsonFiles"
 import { action, Action, computed, Computed, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import moment from "moment-timezone"
 import { Platform } from "react-native"
@@ -81,7 +82,7 @@ export const getEchoModel = (): EchoModel => ({
     }
   ),
   forceUpdateMessage: computed((state) => {
-    const appVersion = appJson().version
+    const appVersion = getAppVersion()
     const killedVersions = state.state.killedVersions
 
     const killedVersion = killedVersions[Platform.OS as keyof Echo["killedVersions"]][appVersion]

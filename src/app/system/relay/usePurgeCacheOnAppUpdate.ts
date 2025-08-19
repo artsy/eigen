@@ -1,14 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { _globalCacheRef } from "app/system/relay/defaultEnvironment"
 import { useEffect } from "react"
-import DeviceInfo from "react-native-device-info"
+import { getAppVersion } from "app/utils/appVersion"
 
 const APP_CURRENT_VERSION_KEY = "EIGEN_APP_CURRENT_VERSION_KEY"
 
 /** Clears the relay cache when a user runs their app for the first time after updating the app */
 export const usePurgeCacheOnAppUpdate = () => {
   useEffect(() => {
-    const currentVersion = DeviceInfo.getVersion()
+    const currentVersion = getAppVersion()
     AsyncStorage.getItem(APP_CURRENT_VERSION_KEY).then((value) => {
       if (value !== currentVersion) {
         let version = currentVersion

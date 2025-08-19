@@ -18,7 +18,7 @@ import { goBack } from "app/system/navigation/navigate"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import React, { useEffect } from "react"
 import { Alert, NativeModules, PixelRatio, ScrollView } from "react-native"
-import DeviceInfo from "react-native-device-info"
+import { getAppVersion, getBuildNumber } from "app/utils/appVersion"
 
 export const DevMenu: React.FC<{}> = () => {
   const userEmail = GlobalStore.useAppState((s) => s.auth.userEmail)
@@ -83,7 +83,7 @@ export const DevMenu: React.FC<{}> = () => {
       <Text variant="xs" color="grey" mx={2} mt={2}>
         Build:{" "}
         <Text variant="xs">
-          v{DeviceInfo.getVersion()}, build {DeviceInfo.getBuildNumber()} (
+          v{getAppVersion()}, build {getBuildNumber()} (
           {ArtsyNativeModule.gitCommitShortHash})
         </Text>
       </Text>
