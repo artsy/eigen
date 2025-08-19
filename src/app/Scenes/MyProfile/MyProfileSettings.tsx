@@ -18,11 +18,11 @@ import { navigate } from "app/system/navigation/navigate"
 import { useBottomTabsScrollToTop } from "app/utils/bottomTabsHelper"
 import { presentEmailComposer } from "app/utils/email/presentEmailComposer"
 import { Alert, ScrollView } from "react-native"
-import DeviceInfo from "react-native-device-info"
+import { getAppVersion } from "app/utils/appVersion"
 import { useTracking } from "react-tracking"
 
 export const MyProfileSettings: React.FC = () => {
-  const appVersion = DeviceInfo.getVersion()
+  const appVersion = getAppVersion()
   const { updateTapCount } = useSetDevMode()
   const { value: userIsDev } = GlobalStore.useAppState((store) => store.artsyPrefs.userIsDev)
   const tracking = useTracking()

@@ -2,10 +2,10 @@ import { MenuItem } from "app/Components/MenuItem"
 import { useSetDevMode } from "app/system/devTools/useSetDevMode"
 import React from "react"
 import { ScrollView } from "react-native"
-import DeviceInfo from "react-native-device-info"
+import { getAppVersion } from "app/utils/appVersion"
 
 export const About: React.FC = () => {
-  const appVersion = DeviceInfo.getVersion()
+  const appVersion = getAppVersion()
 
   const { updateTapCount } = useSetDevMode()
 

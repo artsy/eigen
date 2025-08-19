@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/react-native"
+import { getAppVersion } from "app/utils/appVersion"
 import { appJson } from "app/utils/jsonFiles"
 import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
@@ -18,7 +19,7 @@ export const eigenSentryReleaseName = () => {
   } else {
     const prefix = Platform.OS === "ios" ? "ios" : "android"
     const buildNumber = DeviceInfo.getBuildNumber()
-    const version = DeviceInfo.getVersion()
+    const version = getAppVersion()
     return prefix + "-" + version + "-" + buildNumber
   }
 }
