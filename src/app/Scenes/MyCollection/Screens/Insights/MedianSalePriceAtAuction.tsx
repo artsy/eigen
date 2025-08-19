@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { NoArtIcon } from "@artsy/icons/native"
-import { Spacer, Flex, Text, Touchable, Image, Screen, useSpace, Box } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Touchable, Image, Screen } from "@artsy/palette-mobile"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
 import { goBack } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
@@ -36,7 +36,6 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
 }) => {
   const [isVisible, setVisible] = useState<boolean>(false)
   const [newArtistID, setNewArtistID] = useState<string | null>(null)
-  const space = useSpace()
 
   const isFirstMount = useRef(true)
 
