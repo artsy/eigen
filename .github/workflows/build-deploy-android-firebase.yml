@@ -104,7 +104,8 @@ jobs:
 
       - name: Get next Android version code and set environment variable
         run: |
-          VERSION_CODE=$(bundle exec fastlane get_next_android_build_version)
+          bundle exec fastlane get_next_android_build_version
+          VERSION_CODE=$(cat fastlane/next_version_code.txt)
           echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
 
       - name: Build and deploy Android to Firebase
