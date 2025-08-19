@@ -103,13 +103,3 @@ jobs:
           ./scripts/ci/ci-ios "qa"
         env:
           VERBOSE: 1
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: ios-qa-build
-          path: |
-            archives/
-            *.zip
-          retention-days: 7

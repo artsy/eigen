@@ -3,12 +3,14 @@ name: Build and Deploy Android to Firebase
 on:
   push:
     branches:
-      - gkartalis/PHIRE-1995
+      - beta-android
+  schedule:
+    - cron: "0 5 * * *" # Runs daily at 5:00 AM UTC
   workflow_dispatch: # Allows manual trigger
 
 jobs:
   build-deploy-android-firebase:
-    # if: github.ref == 'refs/heads/beta-android'
+    if: github.ref == 'refs/heads/beta-android'
     runs-on: ubuntu-latest
     timeout-minutes: 90
 
@@ -113,14 +115,3 @@ jobs:
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-
-      # - name: Upload build artifacts
-      #   uses: actions/upload-artifact@v4
-      #   if: always()
-      #   with:
-      #     name: android-firebase-build
-      #     path: |
-      #       fastlane/reports/
-      #       *.log
-      #       android/app/build/outputs/
-      #     retention-days: 7

@@ -3,12 +3,14 @@ name: Build and Deploy iOS to Firebase
 on:
   push:
     branches:
-      - gkartalis/PHIRE-1995
+      - beta-ios
+  schedule:
+    - cron: "0 5 * * *" # Runs daily at 5:00 AM UTC
   workflow_dispatch: # Allows manual trigger
 
 jobs:
   build-deploy-ios-firebase:
-    # if: github.ref == 'refs/heads/beta-ios'
+    if: github.ref == 'refs/heads/beta-ios'
     runs-on: macos-14
     timeout-minutes: 90
 
@@ -110,14 +112,3 @@ jobs:
         env:
           FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 120
           FASTLANE_XCODE_LIST_TIMEOUT: 120
-
-      # - name: Upload build artifacts
-      #   uses: actions/upload-artifact@v4
-      #   if: always()
-      #   with:
-      #     name: ios-firebase-build
-      #     path: |
-      #       fastlane/reports/
-      #       *.log
-      #       archives/
-      #     retention-days: 7
