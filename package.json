@@ -317,7 +317,7 @@
     "relay-test-utils": "18.2.0",
     "rimraf": "3.0.2",
     "sponge": "0.1.0",
-    "tmp": "0.2.1",
+    "tmp": "0.2.4",
     "tsx": "4.19.1",
     "typescript": "5.2.2",
     "yargs": "17.7.2"
