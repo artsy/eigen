@@ -33,6 +33,11 @@ export const OrderDetailAskSpecialistModal: React.FC<OrderDetailAskSpecialistMod
 
   const artworkID = orderData.lineItems[0]?.artwork?.internalID
 
+  const closeModal = () => {
+    setMessage("")
+    handleDismiss()
+  }
+
   const handleSubmit = () => {
     if (!message.trim()) {
       return
@@ -56,7 +61,7 @@ export const OrderDetailAskSpecialistModal: React.FC<OrderDetailAskSpecialistMod
       },
       onError: () => setError(true),
       onCompleted: () => {
-        handleDismiss()
+        closeModal()
         toast.show("Your message has been sent", "bottom", {
           backgroundColor: "green100",
         })
@@ -65,14 +70,9 @@ export const OrderDetailAskSpecialistModal: React.FC<OrderDetailAskSpecialistMod
   }
 
   return (
-    <Modal
-      onRequestClose={handleDismiss}
-      visible={visible}
-      statusBarTranslucent
-      animationType="slide"
-    >
+    <Modal onRequestClose={closeModal} visible={visible} statusBarTranslucent animationType="slide">
       <Screen>
-        <NavigationHeader useXButton onLeftButtonPress={handleDismiss}>
+        <NavigationHeader useXButton onLeftButtonPress={closeModal}>
           Send message to Artsy
         </NavigationHeader>
         {!!error && (
@@ -111,7 +111,7 @@ export const OrderDetailAskSpecialistModal: React.FC<OrderDetailAskSpecialistMod
               placeholder="Leave your comments"
               title="Your message"
               accessibilityLabel="Your message"
-              defaultValue=""
+              defaultValue={message}
               onChangeText={setMessage}
               required
             />
