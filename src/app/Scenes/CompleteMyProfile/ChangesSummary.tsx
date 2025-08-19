@@ -2,6 +2,7 @@ import { CheckmarkFillIcon, CheckmarkStrokeIcon } from "@artsy/icons/native"
 import { Button, Flex, Screen, Spacer, Text } from "@artsy/palette-mobile"
 import { CompleteMyProfileStore } from "app/Scenes/CompleteMyProfile/CompleteMyProfileProvider"
 import { useCompleteProfile } from "app/Scenes/CompleteMyProfile/hooks/useCompleteProfile"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { FC } from "react"
 
@@ -45,7 +46,9 @@ export const ChangesSummary: FC = () => {
                   style={{ textDecorationLine: "underline" }}
                   onPress={() => navigate(`my-profile/edit`)}
                   suppressHighlighting
-                >{` Settings`}</Text>
+                >
+                  Settings
+                </Text>
                 .
               </>
             ) : (
@@ -116,18 +119,22 @@ export const ChangesSummary: FC = () => {
                   style={{ textDecorationLine: "underline" }}
                   onPress={handleAddArtistsToMyCollection}
                   suppressHighlighting
-                >{` My Collection`}</Text>
+                >
+                  My Collection
+                </Text>
                 .
               </>
             ) : (
               <>
-                You can update your profile at any time in
+                You can update your profile at any time in{" "}
                 <Text
                   variant="sm"
                   style={{ textDecorationLine: "underline" }}
                   onPress={() => navigate(`my-profile/edit`)}
                   suppressHighlighting
-                >{` Settings`}</Text>
+                >
+                  Settings
+                </Text>
                 .
               </>
             )}
