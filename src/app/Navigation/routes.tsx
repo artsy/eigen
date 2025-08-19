@@ -1171,6 +1171,11 @@ export const artsyDotNetRoutes = defineRoutes([
     path: "/my-collection/median-sale-price-at-auction/:artistID",
     name: "MedianSalePriceAtAuction",
     Component: MedianSalePriceAtAuction,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
   },
   {
     path: "/my-collection/collected-artists/privacy-settings",
