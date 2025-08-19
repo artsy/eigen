@@ -104,9 +104,8 @@ jobs:
 
       - name: Load version code
         run: |
-          VERSION_CODE=$(date +%s)
+          VERSION_CODE=$(cat fastlane/next_version_code.txt)
           echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
-          echo "Generated version code: $VERSION_CODE"
 
       - name: Build and deploy Android to Play Store
         run: bundle exec fastlane ship_beta_android deployment_target:play_store version_code:$VERSION_CODE
