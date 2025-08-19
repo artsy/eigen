@@ -14382,6 +14382,9 @@ input MatchArtworkImportImagesImageInput {
   # The image filename
   fileName: String!
 
+  # ID of the row to associate the images with (required if images don't already exist)
+  rowID: String
+
   # S3 bucket of the uploaded image asset
   s3Bucket: String!
 
@@ -14395,9 +14398,6 @@ input MatchArtworkImportImagesInput {
 
   # Array of image objects to match
   images: [MatchArtworkImportImagesImageInput!]!
-
-  # ID of the row to associate the images with (required if images don't already exist)
-  rowID: String
 }
 
 type MatchArtworkImportImagesPayload {
