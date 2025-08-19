@@ -1,7 +1,8 @@
 import { OwnerType } from "@artsy/cohesion"
 import { NoArtIcon } from "@artsy/icons/native"
-import { Spacer, Flex, Text, Touchable, Image } from "@artsy/palette-mobile"
+import { Spacer, Flex, Text, Touchable, Image, Screen } from "@artsy/palette-mobile"
 import { MedianSalePriceAtAuctionQuery } from "__generated__/MedianSalePriceAtAuctionQuery.graphql"
+import { goBack } from "app/system/navigation/navigate"
 import { useScreenDimensions } from "app/utils/hooks"
 import {
   PlaceholderBox,
@@ -58,79 +59,82 @@ const MedianSalePriceAtAuctionScreen: React.FC<MedianSalePriceAtAuctionProps> = 
     !!data.me?.myCollectionInfo?.artistsCount && data.me.myCollectionInfo.artistsCount > 1
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <Flex pt={6}>
-        <Flex mx={2}>
-          <Text variant="lg-display" mb={0.5} testID="Median_Auction_Price_title">
-            Median Auction Price
-          </Text>
-          <Text variant="xs">Track price stability or growth for your artists.</Text>
+    <Screen>
+      <Screen.Header onBack={goBack} />
+      <Screen.Body fullwidth>
+        <Screen.ScrollView showsVerticalScrollIndicator={false}>
+          <Flex mx={2}>
+            <Text variant="lg-display" mb={0.5} testID="Median_Auction_Price_title">
+              Median Auction Price
+            </Text>
+            <Text variant="xs">Track price stability or growth for your artists.</Text>
 
-          {/* Artists Info */}
-          <Flex py={2} flexDirection="row" justifyContent="space-between" alignItems="center">
-            <Flex
-              width={40}
-              height={40}
-              borderRadius={20}
-              backgroundColor="mono10"
-              alignItems="center"
-              justifyContent="center"
-              overflow="hidden"
-              // To align the image with the text we have to add top margin to compensate the line height.
-              style={{ marginTop: 3 }}
-            >
-              {data.artist?.imageUrl ? (
-                <Image width={40} height={40} src={data.artist.imageUrl} />
-              ) : (
-                <NoArtIcon width={28} height={28} opacity={0.3} />
-              )}
-            </Flex>
-            {/* Sale Artwork Artist Name */}
-            <Flex flex={1} pl={1}>
-              {!!data.artist?.name && (
-                <Text variant="sm-display" ellipsizeMode="middle" numberOfLines={2}>
-                  {data.artist.name}
-                </Text>
-              )}
-            </Flex>
-
-            {!!enableChangeArtist && (
-              <Touchable
-                accessibilityRole="button"
-                testID="change-artist-touchable"
-                onPress={() => setVisible(true)}
-                haptic
-                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            {/* Artists Info */}
+            <Flex py={2} flexDirection="row" justifyContent="space-between" alignItems="center">
+              <Flex
+                width={40}
+                height={40}
+                borderRadius={20}
+                backgroundColor="mono10"
+                alignItems="center"
+                justifyContent="center"
+                overflow="hidden"
+                // To align the image with the text we have to add top margin to compensate the line height.
+                style={{ marginTop: 3 }}
               >
-                <Text style={{ textDecorationLine: "underline" }} variant="xs" color="mono60">
-                  Change Artist
-                </Text>
-              </Touchable>
-            )}
+                {data.artist?.imageUrl ? (
+                  <Image width={40} height={40} src={data.artist.imageUrl} />
+                ) : (
+                  <NoArtIcon width={28} height={28} opacity={0.3} />
+                )}
+              </Flex>
+              {/* Sale Artwork Artist Name */}
+              <Flex flex={1} pl={1}>
+                {!!data.artist?.name && (
+                  <Text variant="sm-display" ellipsizeMode="middle" numberOfLines={2}>
+                    {data.artist.name}
+                  </Text>
+                )}
+              </Flex>
+
+              {!!enableChangeArtist && (
+                <Touchable
+                  accessibilityRole="button"
+                  testID="change-artist-touchable"
+                  onPress={() => setVisible(true)}
+                  haptic
+                  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                >
+                  <Text style={{ textDecorationLine: "underline" }} variant="xs" color="mono60">
+                    Change Artist
+                  </Text>
+                </Touchable>
+              )}
+            </Flex>
           </Flex>
-        </Flex>
 
-        <MedianSalePriceChartDataContextProvider
-          artistId={queryArgs.variables.artistId}
-          initialCategory={initialCategory}
-          queryData={data}
-        >
-          <MedianSalePriceChartTracking artistID={queryArgs.variables.artistID} />
-          <MedianSalePriceChart />
-          <CareerHighlightBottomSheet artistSparklines={data} />
-        </MedianSalePriceChartDataContextProvider>
+          <MedianSalePriceChartDataContextProvider
+            artistId={queryArgs.variables.artistId}
+            initialCategory={initialCategory}
+            queryData={data}
+          >
+            <MedianSalePriceChartTracking artistID={queryArgs.variables.artistID} />
+            <MedianSalePriceChart />
+            <CareerHighlightBottomSheet artistSparklines={data} />
+          </MedianSalePriceChartDataContextProvider>
 
-        <SelectArtistModal
-          queryData={data}
-          visible={isVisible}
-          closeModal={() => setVisible(false)}
-          onItemPress={(artistId) => {
-            setVisible(false)
-            setNewArtistID(artistId)
-          }}
-        />
-      </Flex>
-    </ScrollView>
+          <SelectArtistModal
+            queryData={data}
+            visible={isVisible}
+            closeModal={() => setVisible(false)}
+            onItemPress={(artistId) => {
+              setVisible(false)
+              setNewArtistID(artistId)
+            }}
+          />
+        </Screen.ScrollView>
+      </Screen.Body>
+    </Screen>
   )
 }
 
@@ -217,61 +221,66 @@ const LoadingSkeleton = () => {
   const rng = new RandomNumberGenerator(100)
   return (
     <ProvidePlaceholderContext>
-      <Flex mx={2} pt={6}>
-        <Text variant="lg-display" mb={0.5}>
-          Median Auction Price
-        </Text>
-        <Text variant="xs">Track price stability or growth for your artists.</Text>
+      <Screen>
+        <Screen.Header onBack={goBack} />
+        <Screen.Body fullwidth>
+          <Flex mx={2}>
+            <Text variant="lg-display" mb={0.5}>
+              Median Auction Price
+            </Text>
+            <Text variant="xs">Track price stability or growth for your artists.</Text>
 
-        <Flex py={2} flexDirection="row" justifyContent="space-between" alignItems="center">
-          <Flex flexDirection="row" alignItems="center">
-            <Flex
-              width={40}
-              height={40}
-              borderRadius={20}
-              backgroundColor="mono10"
-              alignItems="center"
-              justifyContent="center"
-              overflow="hidden"
-              style={{ marginTop: 3 }}
-            />
-            <Spacer x={1} />
-            <PlaceholderText width={150} height={10} marginTop={6} />
-          </Flex>
-
-          <PlaceholderText width={70} height={10} marginTop={6} />
-        </Flex>
-        <Spacer y={0.5} />
-        <PlaceholderText width={30} height={20} />
-        <Flex flexDirection="row" alignItems="center">
-          <PlaceholderBox width={10} height={10} borderRadius={5} marginRight={7} />
-          <PlaceholderText width={60} height={7} marginTop={6} />
-        </Flex>
-        <PlaceholderText width={100} height={7} />
-        <Spacer y={2} />
-        <PlaceholderBox width="100%" height={screenHeight / 2.8} marginVertical={10} />
-        <Flex flexDirection="row" my="25px" justifyContent="center">
-          <PlaceholderBox height={15} width={25} marginHorizontal={10} />
-          <PlaceholderBox height={15} width={25} marginHorizontal={10} />
-        </Flex>
-
-        <Flex>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((c) => {
-              const w = rng.next() * 100 + 100
-              return (
-                <PlaceholderBox
-                  key={`${c}`}
-                  width={w}
-                  height={25}
-                  borderRadius={10}
-                  marginRight={10}
+            <Flex py={2} flexDirection="row" justifyContent="space-between" alignItems="center">
+              <Flex flexDirection="row" alignItems="center">
+                <Flex
+                  width={40}
+                  height={40}
+                  borderRadius={20}
+                  backgroundColor="mono10"
+                  alignItems="center"
+                  justifyContent="center"
+                  overflow="hidden"
+                  style={{ marginTop: 3 }}
                 />
-              )
-            })}
-          </ScrollView>
-        </Flex>
-      </Flex>
+                <Spacer x={1} />
+                <PlaceholderText width={150} height={10} marginTop={6} />
+              </Flex>
+
+              <PlaceholderText width={70} height={10} marginTop={6} />
+            </Flex>
+            <Spacer y={0.5} />
+            <PlaceholderText width={30} height={20} />
+            <Flex flexDirection="row" alignItems="center">
+              <PlaceholderBox width={10} height={10} borderRadius={5} marginRight={7} />
+              <PlaceholderText width={60} height={7} marginTop={6} />
+            </Flex>
+            <PlaceholderText width={100} height={7} />
+            <Spacer y={2} />
+            <PlaceholderBox width="100%" height={screenHeight / 2.8} marginVertical={10} />
+            <Flex flexDirection="row" my="25px" justifyContent="center">
+              <PlaceholderBox height={15} width={25} marginHorizontal={10} />
+              <PlaceholderBox height={15} width={25} marginHorizontal={10} />
+            </Flex>
+
+            <Flex>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((c) => {
+                  const w = rng.next() * 100 + 100
+                  return (
+                    <PlaceholderBox
+                      key={`${c}`}
+                      width={w}
+                      height={25}
+                      borderRadius={10}
+                      marginRight={10}
+                    />
+                  )
+                })}
+              </ScrollView>
+            </Flex>
+          </Flex>
+        </Screen.Body>
+      </Screen>
     </ProvidePlaceholderContext>
   )
 }
