@@ -274,7 +274,7 @@ jobs:
       - store_artifacts:
           path: android/app/build/reports/tests
 
-  deploy-nightly-beta:
+  nightly-create-next-version:
     environment:
       BUNDLE_PATH: .vendor
 
@@ -291,9 +291,6 @@ jobs:
       - run:
           name: Create next version if needed
           command: ./scripts/deploys/create-next-version-if-needed
-      - run:
-          name: Deploy betas
-          command: ./scripts/deploys/deploy-beta-both
 
   check-and-deploy:
     environment:
@@ -570,7 +567,7 @@ workflows:
               only:
                 - main
     jobs:
-      - deploy-nightly-beta
+      - nightly-create-next-version
       - run-nightly-tasks
       - run-native-tests-android
 
