@@ -102,6 +102,16 @@ jobs:
       - name: Install bin modules
         run: ./scripts/setup/install-bin
 
+      - name: Get next Android version code
+        run: bundle exec fastlane get_next_android_build_version
+
+      - name: Upload version code artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-version-code
+          path: fastlane/next_version_code.txt
+          retention-days: 1
+
       - name: Load version code
         run: |
           VERSION_CODE=$(cat fastlane/next_version_code.txt)
