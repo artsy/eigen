@@ -2256,7 +2256,7 @@ PODS:
     - sovran-react-native
   - Sentry/HybridSDK (8.48.0)
   - Sift (2.2.4)
-  - sift-react-native (0.1.8):
+  - sift-react-native (0.1.15):
     - React
     - Sift
   - SocketRocket (0.7.1)
@@ -3041,7 +3041,7 @@ SPEC CHECKSUMS:
   segment-analytics-react-native: 6f98edf18246782ee7428c5380c6519a3d2acf5e
   Sentry: 1ca8405451040482877dcd344dfa3ef80b646631
   Sift: 742454b5796a717df185f6dbae569e5dce357322
-  sift-react-native: b146219794a56be21d30931b6317d9080770ae7a
+  sift-react-native: 136f9b31b8324dbed1436bfbb0ec6b3b01c587e1
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   sovran-react-native: 5aca73bffa66562f8cd8cbb4b766e4c40da9743b
   Specta: b79d84043684b35ffdc2680df578dc318ec2efc2
