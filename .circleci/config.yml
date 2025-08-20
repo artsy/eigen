@@ -7,18 +7,6 @@ defaults: &beta_branches_only
         - beta-ios
         - beta-android
 
-defaults_beta_ios: &ios_beta_branch_only
-  filters:
-    branches:
-      only:
-        - beta-ios
-
-defaults_beta_android: &android_beta_branch_only
-  filters:
-    branches:
-      only:
-        - beta-android
-
 defaults_ignore_beta: &ignore_beta_branches
   filters:
     branches:
@@ -274,7 +262,7 @@ jobs:
       - store_artifacts:
           path: android/app/build/reports/tests
 
-  deploy-nightly-beta:
+  nightly-create-next-version:
     environment:
       BUNDLE_PATH: .vendor
 
@@ -291,74 +279,6 @@ jobs:
       - run:
           name: Create next version if needed
           command: ./scripts/deploys/create-next-version-if-needed
-      - run:
-          name: Deploy betas
-          command: ./scripts/deploys/deploy-beta-both
-
-  build-deploy-ios-testflight:
-    macos:
-      xcode: << pipeline.parameters.xcode_version >>
-      resource_class: << pipeline.parameters.fast_mac_runner >>
-    steps:
-      - checkout
-      - prep-ios-env
-      - install-bin-modules
-      - run:
-          name: Build and deploy iOS to TestFlight
-          command: bundle exec fastlane ship_beta_ios deployment_target:testflight
-
-  build-deploy-ios-firebase:
-    macos:
-      xcode: << pipeline.parameters.xcode_version >>
-      resource_class: << pipeline.parameters.fast_mac_runner >>
-    steps:
-      - checkout
-      - prep-ios-env
-      - install-bin-modules
-      - run:
-          name: Install imagemagick & librsvg for badge
-          command: brew install imagemagick librsvg
-      - run:
-          name: Build and deploy iOS to Firebase
-          command: bundle exec fastlane ship_beta_ios deployment_target:firebase
-
-  build-deploy-android-playstore:
-    docker:
-      - image: cimg/android:2025.03.1-node
-    working_directory: ~/project
-    resource_class: xlarge
-    steps:
-      - prep-android-env
-      - attach_workspace:
-          at: .
-      - install-bin-modules
-      - run:
-          name: Load version code
-          command: |
-            VERSION_CODE=$(cat fastlane/next_version_code.txt)
-            echo "export VERSION_CODE=$VERSION_CODE" >> $BASH_ENV
-      - run:
-          name: Build and deploy Android to Play Store
-          command: bundle exec fastlane ship_beta_android deployment_target:play_store version_code:$VERSION_CODE
-
-  build-deploy-android-firebase:
-    docker:
-      - image: cimg/android:2025.03.1-node
-    working_directory: ~/project
-    resource_class: xlarge
-    steps:
-      - prep-android-env
-      - attach_workspace:
-          at: .
-      - install-bin-modules
-      - run:
-          name: Load version code
-          command: |
-            VERSION_CODE=$(cat fastlane/next_version_code.txt)
-            echo "export VERSION_CODE=$VERSION_CODE" >> $BASH_ENV
-      - run:
-          name: Build and deploy Android to Firebase
-          command: bundle exec fastlane ship_beta_android deployment_target:firebase version_code:$VERSION_CODE
 
   check-and-deploy:
     environment:
@@ -585,25 +505,6 @@ jobs:
           paths:
             - build-success.log
 
-  prepare-android-version:
-    docker:
-      - image: cimg/ruby:3.1.6
-    working_directory: ~/project
-    steps:
-      - checkout
-      - setup-awscli
-      - run:
-          name: Download android assets
-          command: ./scripts/setup/download-assets-android
-      - install-gems
-      - run:
-          name: Get next Android version code
-          command: bundle exec fastlane get_next_android_build_version
-      - persist_to_workspace:
-          root: .
-          paths:
-            - fastlane/next_version_code.txt
-
 parameters:
   xcode_version:
     type: string
@@ -654,7 +555,7 @@ workflows:
               only:
                 - main
     jobs:
-      - deploy-nightly-beta
+      - nightly-create-next-version
       - run-nightly-tasks
       - run-native-tests-android
 
@@ -712,33 +613,5 @@ workflows:
             - check-code
             - build-test-js
 
-      - build-deploy-ios-testflight:
-          <<: *ios_beta_branch_only
-          requires:
-            - horizon/block
-
-      - build-deploy-ios-firebase:
-          <<: *ios_beta_branch_only
-          requires:
-            - horizon/block
-
-      - prepare-android-version:
-          <<: *android_beta_branch_only
-
-      - build-deploy-android-playstore:
-          <<: *android_beta_branch_only
-          requires:
-            - horizon/block
-            - prepare-android-version
-
-      - build-deploy-android-firebase:
-          <<: *android_beta_branch_only
-          requires:
-            - horizon/block
-            - prepare-android-version
-
       - update-metaphysics:
           <<: *beta_branches_only
-          requires:
-            - build-deploy-ios-testflight
-            - build-deploy-android-playstore

@@ -340,7 +340,7 @@ def deploy_android_beta(deployment_target:)
     )
   elsif deployment_target == 'firebase'
     firebase_app_distribution(
-      app: ENV['FIREBASE_APP_ID'],
+      app: ENV['FIREBASE_ANDROID_APP_ID'],
       groups: 'artsy-people',
       android_artifact_path: './android/app/build/outputs/bundle/beta/app-beta.aab'
     )

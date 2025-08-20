@@ -1,0 +1,112 @@
+name: Build and Deploy Android to Firebase
+
+on:
+  push:
+    branches:
+      - beta-android
+  schedule:
+    - cron: "0 5 * * *" # Runs daily at 5:00 AM UTC
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  build-deploy-android-firebase:
+    if: github.ref == 'refs/heads/beta-android'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "zulu"
+          java-version: "17"
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.1.6"
+          bundler-cache: true
+
+      - name: Install Ruby dependencies
+        run: bundle install
+
+      - name: Install ninja
+        run: sudo apt-get update && sudo apt-get install ninja-build
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.9.0"
+          cache: "yarn"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Set up environment for CI
+        run: |
+          touch .env.shared && touch keys.shared.json
+          scripts/setup/setup-env-for-ci
+          echo "Environment setup completed"
+
+      - name: Cache node modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+            ~/.cache/yarn
+          key: yarn-${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            yarn-${{ runner.os }}-
+
+      - name: Install Node.js dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            android/.gradle
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: Download fonts from s3
+        run: ./scripts/setup/download-fonts
+
+      - name: Download android assets
+        run: ./scripts/setup/download-assets-android
+
+      - name: Run relay compiler
+        run: yarn relay
+
+      - name: Update echo
+        run: ./scripts/setup/update-echo
+
+      - name: Install bin modules
+        run: ./scripts/setup/install-bin
+
+      - name: Get next Android version code and set environment variable
+        run: |
+          bundle exec fastlane get_next_android_build_version
+          VERSION_CODE=$(cat fastlane/next_version_code.txt)
+          echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
+
+      - name: Build and deploy Android to Firebase
+        run: bundle exec fastlane ship_beta_android deployment_target:firebase version_code:$VERSION_CODE
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}

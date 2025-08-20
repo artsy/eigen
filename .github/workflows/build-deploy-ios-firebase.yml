@@ -1,19 +1,26 @@
-name: Build iOS QA App for Maestro
+name: Build and Deploy iOS to Firebase
 
 on:
+  push:
+    branches:
+      - beta-ios
   schedule:
-    - cron: "0 6 * * *" # Runs daily at 6:00 AM UTC
+    - cron: "0 5 * * *" # Runs daily at 5:00 AM UTC
   workflow_dispatch: # Allows manual trigger
 
 jobs:
-  build-ios-qa:
-    if: github.ref == 'refs/heads/main'
+  build-deploy-ios-firebase:
+    if: github.ref == 'refs/heads/beta-ios'
     runs-on: macos-14
-    timeout-minutes: 60
+    timeout-minutes: 90
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -83,23 +90,20 @@ jobs:
       - name: Run relay compiler
         run: yarn relay
 
+      - name: Update echo
+        run: ./scripts/setup/update-echo
+
       - name: Select Xcode version
         run: sudo xcode-select -s /Applications/Xcode_16.2.app
 
-      - name: Debug build environment
-        run: |
-          echo "Node version: $(node --version)"
-          echo "Yarn version: $(yarn --version)"
-          echo "Ruby version: $(ruby --version)"
-          echo "Xcode version:"
-          xcodebuild -version
-          echo "Available iOS simulators:"
-          xcrun simctl list devices ios --json | jq '.devices | keys[]'
+      - name: Install bin modules
+        run: ./scripts/setup/install-bin
 
-      - name: Build iOS QA app
-        run: |
-          echo "Starting iOS QA build..."
-          set -x  # Enable verbose logging
-          ./scripts/ci/ci-ios "qa"
+      - name: Install imagemagick & librsvg for badge
+        run: brew install imagemagick librsvg
+
+      - name: Build and deploy iOS to Firebase
+        run: bundle exec fastlane ship_beta_ios deployment_target:firebase
         env:
-          VERBOSE: 1
+          FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 120
+          FASTLANE_XCODE_LIST_TIMEOUT: 120
