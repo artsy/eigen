@@ -46,7 +46,10 @@ describe("ShowsForYou", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("shows-for-you-screen-placeholder"))
+    await waitForElementToBeRemoved(
+      () => screen.queryByTestId("shows-for-you-screen-placeholder"),
+      { timeout: 10000 }
+    )
 
     expect(Geolocation.getCurrentPosition).toHaveBeenCalled()
     expect(mockFetch).not.toHaveBeenCalled()

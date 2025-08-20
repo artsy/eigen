@@ -1,5 +1,7 @@
 import { ArtsyLogoIcon } from "@artsy/icons/native"
 import { Flex, useColor, Text, Button } from "@artsy/palette-mobile"
+import { getAppVersion, getBuildNumber } from "app/utils/appVersion"
+import { useIsStaging } from "app/utils/hooks/useIsStaging"
 import { Linking, Platform } from "react-native"
 
 interface ForceUpdateProps {
@@ -10,6 +12,7 @@ const PLAYSTORE_URL = "https://play.google.com/store/apps/details?id=net.artsy.a
 const APP_STORE_URL = "https://apps.apple.com/us/app/artsy-buy-sell-original-art/id703796080"
 
 export const ForceUpdate: React.FC<ForceUpdateProps> = ({ forceUpdateMessage }) => {
+  const isStaging = useIsStaging()
   const color = useColor()
   const handleUpdate = () => {
     const storeURL = Platform.OS === "android" ? PLAYSTORE_URL : APP_STORE_URL
@@ -41,6 +44,14 @@ export const ForceUpdate: React.FC<ForceUpdateProps> = ({ forceUpdateMessage }) 
       >
         Update Artsy
       </Button>
+      {!!isStaging && (
+        <Text variant="xs" color="devpurple" mx={2} mt={2}>
+          Build Details:{" "}
+          <Text variant="xs" color="devpurple">
+            version: {getAppVersion()}, build: {getBuildNumber()}
+          </Text>
+        </Text>
+      )}
     </Flex>
   )
 }
