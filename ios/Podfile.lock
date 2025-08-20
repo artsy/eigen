@@ -1625,7 +1625,7 @@ PODS:
     - React-Core
   - react-native-safe-area-context (5.4.1):
     - React-Core
-  - react-native-shake (5.5.2):
+  - react-native-shake (6.7.8):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2982,7 +2982,7 @@ SPEC CHECKSUMS:
   react-native-pager-view: 81d9f4abac79ecaaee6b3996c53b93f975a0d8dd
   react-native-render-html: 5afc4751f1a98621b3009432ef84c47019dcb2bd
   react-native-safe-area-context: dde2052b903c11d677c320b599c3244021c34ce8
-  react-native-shake: bc49a715bced63657a25705a062ed31fec8391da
+  react-native-shake: d7ab9db554e68b9bb4a7b2e82ebd49ddc8fda91a
   react-native-view-shot: 9ee917dc412dde74db0142ce63b94ab7eddfece7
   react-native-webview: 3772c8537fd6d7869791820a7b154fb546bcef7b
   React-nativeconfig: f77b4627803bf7886a1f2e96b33b8af34e583cc4
