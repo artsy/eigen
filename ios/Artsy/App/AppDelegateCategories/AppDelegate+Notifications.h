@@ -1,4 +1,4 @@
-#import "AppDelegate.h"
+#import "NotAppDelegate.h"
 #import <UserNotifications/UNUserNotificationCenter.h>
 
  @interface ARAppDelegate (Notifications) <UNUserNotificationCenterDelegate>

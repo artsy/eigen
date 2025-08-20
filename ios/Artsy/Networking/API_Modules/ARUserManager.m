@@ -16,7 +16,7 @@
 #import "ARKeychainable.h"
 #import "ARSystemTime.h"
 #import "ARLogger.h"
-#import "AppDelegate.h"
+#import "NotAppDelegate.h"
 
 #import "MTLModel+JSON.h"
 #import "AFHTTPRequestOperation+JSON.h"
