@@ -3,6 +3,8 @@ import FlagProvider, { IConfig } from "@unleash/proxy-client-react"
 import { useUnleashEnvironment } from "app/system/flags/hooks/useUnleashEnvironment"
 import { useUnleashInitializer } from "app/system/flags/hooks/useUnleashInitializer"
 import { useUnleashListener } from "app/system/flags/hooks/useUnleashListener"
+import { getAppVersion } from "app/utils/appVersion"
+import { Platform } from "react-native"
 import Keys from "react-native-keys"
 
 export const WrappedFlagProvider: React.FC = ({ children }) => {
@@ -11,6 +13,12 @@ export const WrappedFlagProvider: React.FC = ({ children }) => {
   const storageName = (name: string) => `unleash-values:${name}`
 
   const config: IConfig = {
+    context: {
+      properties: {
+        appVersion: getAppVersion(),
+        appPlatformOS: Platform.OS,
+      },
+    },
     url:
       env === "production"
         ? Keys.secureFor("UNLEASH_PROXY_URL_PRODUCTION")
