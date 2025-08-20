@@ -4653,6 +4653,9 @@ input BulkUpdateArtworksMetadataInput {
   # The artwork condition to be assigned
   conditionDescription: String
 
+  # Show/Hide the price range of an artwork
+  displayPriceRange: Boolean
+
   # Flat fee for domestic shipping. It must be entered in cents.
   domesticShippingFeeCents: Int
 
@@ -4682,6 +4685,9 @@ input BulkUpdateArtworksMetadataInput {
 
   # Adjusts the artworks' prices according to the value passed (percentage).
   priceAdjustment: Int
+
+  # Show/Hide the price of an artwork
+  priceHidden: Boolean
 
   # The price for the artworks
   priceListed: Float
