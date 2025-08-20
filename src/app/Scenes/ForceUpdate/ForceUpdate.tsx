@@ -1,8 +1,10 @@
 import { ArtsyLogoIcon } from "@artsy/icons/native"
 import { Flex, useColor, Text, Button } from "@artsy/palette-mobile"
-import { getAppVersion, getBuildNumber } from "app/utils/appVersion"
+import { getBuildNumber } from "app/utils/appVersion"
 import { useIsStaging } from "app/utils/hooks/useIsStaging"
+import { appJson } from "app/utils/jsonFiles"
 import { Linking, Platform } from "react-native"
+import DeviceInfo from "react-native-device-info"
 
 interface ForceUpdateProps {
   forceUpdateMessage: string | undefined
@@ -48,7 +50,13 @@ export const ForceUpdate: React.FC<ForceUpdateProps> = ({ forceUpdateMessage }) 
         <Text variant="xs" color="devpurple" mx={2} mt={2}>
           Build Details:{" "}
           <Text variant="xs" color="devpurple">
-            version: {getAppVersion()}, build: {getBuildNumber()}
+            DeviceInfo Version: {DeviceInfo.getVersion()}
+          </Text>
+          <Text variant="xs" color="devpurple">
+            AppJson version: {appJson().version}
+          </Text>
+          <Text variant="xs" color="devpurple">
+            Build Number: {getBuildNumber()}
           </Text>
         </Text>
       )}
