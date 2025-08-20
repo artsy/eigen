@@ -77,7 +77,7 @@ commands:
     steps:
       - node/install-packages:
           pkg-manager: yarn
-          cache-version: v21
+          cache-version: v22
   run-relay-compiler:
     steps:
       - run:

@@ -121,6 +121,7 @@ jest.mock("sift-react-native", () => ({
   unsetUserId: jest.fn(),
   setUserId: jest.fn(),
   upload: jest.fn(),
+  setPageName: jest.fn(),
 }))
 
 // Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
