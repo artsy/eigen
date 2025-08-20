@@ -13,7 +13,7 @@ export const useCreateArtists = () => {
       return
     }
 
-    const results = await Promise.allSettled(
+    const results = await Promise.all(
       customArtists.map(async (customArtist) => {
         try {
           return await createArtist({
