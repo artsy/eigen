@@ -7,18 +7,6 @@ defaults: &beta_branches_only
         - beta-ios
         - beta-android
 
-defaults_beta_ios: &ios_beta_branch_only
-  filters:
-    branches:
-      only:
-        - beta-ios
-
-defaults_beta_android: &android_beta_branch_only
-  filters:
-    branches:
-      only:
-        - beta-android
-
 defaults_ignore_beta: &ignore_beta_branches
   filters:
     branches:

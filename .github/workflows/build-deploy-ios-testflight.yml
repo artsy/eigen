@@ -22,7 +22,6 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
