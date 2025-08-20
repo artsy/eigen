@@ -1568,8 +1568,27 @@ PODS:
     - FBSDKGamingServicesKit (~> 18.0)
     - FBSDKShareKit (~> 18.0)
     - React-Core
-  - react-native-geolocation (3.0.6):
+  - react-native-geolocation (3.4.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-get-random-values (1.11.0):
     - React-Core
   - react-native-in-app-review (4.3.3):
@@ -2973,7 +2992,7 @@ SPEC CHECKSUMS:
   react-native-cookies: b90327af903c8a7652100201d890c50a98697799
   react-native-document-picker: 6b08d834d4e4252bb8aad13d852e27666294b5b9
   react-native-fbsdk-next: 52f81e60eb3e8e0e06cf9728b4572d3509ca9d01
-  react-native-geolocation: def10765a5144e7a76837093d43303d70bb6addf
+  react-native-geolocation: 697f7e4206386120bfdcf0c6a858e956360c734c
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
   react-native-in-app-review: b3d1eed3d1596ebf6539804778272c4c65e4a400
   react-native-keys: 761d3e227d4043e52dcff8fb1bcc7d4461ae2431
