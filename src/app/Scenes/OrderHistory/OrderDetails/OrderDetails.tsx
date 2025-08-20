@@ -1,6 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import {
   Box,
+  Flex,
   Screen,
   Skeleton,
   SkeletonBox,
@@ -14,6 +15,7 @@ import {
 import { OrderDetailsQuery } from "__generated__/OrderDetailsQuery.graphql"
 import { OrderDetails_me$key } from "__generated__/OrderDetails_me.graphql"
 import { OrderDetails_order$key } from "__generated__/OrderDetails_order.graphql"
+import { LoadFailureView } from "app/Components/LoadFailureView"
 import { OrderDetailsBuyerProtection } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsBuyerProtection"
 import { OrderDetailsFulfillment } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsFulfillment"
 import { OrderDetailsHelpLinks } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsHelpLinks"
@@ -22,7 +24,7 @@ import { OrderDetailsMetadata } from "app/Scenes/OrderHistory/OrderDetails/Compo
 import { OrderDetailsPaymentInfo } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsPaymentInfo"
 import { OrderDetailsPriceBreakdown } from "app/Scenes/OrderHistory/OrderDetails/Components/OrderDetailsPriceBreakdown"
 import { useOrderDetailsTracking } from "app/Scenes/OrderHistory/OrderDetails/hooks/useOrderDetailsTracking"
-import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
+import { withSuspense } from "app/utils/hooks/withSuspense"
 import { ProvideScreenTrackingWithCohesionSchema } from "app/utils/track"
 import { screen } from "app/utils/track/helpers"
 import { useEffect } from "react"
@@ -166,7 +168,15 @@ export const OrderDetailsQR: React.FC<{ orderID: string }> = withSuspense({
     )
 
     if (!data.me?.order) {
-      return null
+      return (
+        <Flex mt={4} p={2} alignItems="center">
+          <Text variant="md">Order details not available</Text>
+          <Spacer y={1} />
+          <Text color="mono60" textAlign="center" variant="sm-display">
+            This order is temporarily unavailable. Please check back later.
+          </Text>
+        </Flex>
+      )
     }
 
     return (
@@ -181,7 +191,9 @@ export const OrderDetailsQR: React.FC<{ orderID: string }> = withSuspense({
     )
   },
   LoadingFallback: OrderDetailsSkeleton,
-  ErrorFallback: NoFallback,
+  ErrorFallback: ({ error, resetErrorBoundary: retry }) => {
+    return <LoadFailureView trackErrorBoundary={false} error={error} onRetry={retry} />
+  },
 })
 
 const orderDetailsQRQuery = graphql`
