@@ -2,7 +2,7 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import "ARDispatchManager.h"
-#import "AppDelegate.h"
+#import "NotAppDelegate.h"
 
 #import "UIView+HitTestExpansion.h"
 #import "UIViewController+InnermostTopViewController.h"

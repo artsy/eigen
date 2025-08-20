@@ -1,4 +1,4 @@
-#import "AppDelegate.h"
+#import "NotAppDelegate.h"
 #import "AppDelegate+Notifications.h"
 
 #import "ARAnalyticsConstants.h"

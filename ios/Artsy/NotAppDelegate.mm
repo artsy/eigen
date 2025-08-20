@@ -7,7 +7,7 @@
 #import "BrazeReactBridge.h"
 #import "BrazeReactUtils.h"
 
-#import "AppDelegate.h"
+#import "NotAppDelegate.h"
 #import "AppDelegate+Emission.h"
 #import "AppDelegate+Echo.h"
 #import "AppDelegate+Notifications.h"

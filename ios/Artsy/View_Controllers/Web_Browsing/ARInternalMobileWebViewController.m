@@ -4,7 +4,7 @@
 #import "UIViewController+FullScreenLoading.h"
 #import "ARRouter.h"
 #import "ARInternalShareValidator.h"
-#import "AppDelegate.h"
+#import "NotAppDelegate.h"
 #import "AROptions.h"
 #import "AREmission.h"
 

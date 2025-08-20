@@ -1,4 +1,4 @@
-#import "AppDelegate.h"
+#import "NotAppDelegate.h"
 #import "ArtsyEcho.h"
 
 @interface ARAppDelegate (Echo)

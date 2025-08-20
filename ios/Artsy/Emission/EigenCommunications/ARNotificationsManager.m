@@ -1,5 +1,5 @@
 #import "ARNotificationsManager.h"
-#import "AppDelegate.h"
+#import "NotAppDelegate.h"
 #import "AppDelegate+DeeplinkTimeout.h"
 
 // This class is being used as a generic bridge between obj-c and TS for state and events.
