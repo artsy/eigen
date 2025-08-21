@@ -10,7 +10,6 @@ on:
 
 jobs:
   build-deploy-ios-firebase:
-    if: github.ref == 'refs/heads/beta-ios'
     runs-on: macos-14
     timeout-minutes: 90
 
