@@ -590,8 +590,8 @@ lane :build_maestro_android do
   vname, vcode = set_build_version_android
   set_git_properties_android
 
-  # Build Android app in beta mode (unsigned for testing)
-  sh("yarn react-native build-android --mode=beta --extra-params='--no-daemon --max-workers 2'")
+  # Build Android APK in beta mode using gradlew
+  sh("cd android && ./gradlew assembleBeta")
 
   # Upload to S3
   upload_android_maestro_to_s3
