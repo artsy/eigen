@@ -602,8 +602,11 @@ lane :build_maestro_android do
     verbose: true
   )
 
+  # Ensure we have the full path to the APK file
+  full_apk_path = File.expand_path(apk_output_path)
+
   # Upload to S3
-  upload_android_maestro_to_s3(apk_output_path)
+  upload_android_maestro_to_s3(full_apk_path)
 end
 
 def upload_ios_maestro_to_s3
