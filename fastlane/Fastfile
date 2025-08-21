@@ -590,11 +590,20 @@ lane :build_maestro_android do
   vname, vcode = set_build_version_android
   set_git_properties_android
 
-  # Build Android APK in beta mode using gradlew
-  sh("cd android && ./gradlew assembleBeta")
+  # Build Android AAB in beta mode using React Native CLI (same as other lanes)
+  sh("yarn react-native build-android --mode=beta --extra-params='--no-daemon --max-workers 2'")
+
+  # Convert AAB to APK using existing bundletool logic
+  aab_path = './android/app/build/outputs/bundle/beta/app-beta.aab'
+  apk_output_path = "#{vcode}.apk"
+  bundletool(
+    aab_path: aab_path,
+    apk_output_path: apk_output_path,
+    verbose: true
+  )
 
   # Upload to S3
-  upload_android_maestro_to_s3
+  upload_android_maestro_to_s3(apk_output_path)
 end
 
 def upload_ios_maestro_to_s3
@@ -624,23 +633,18 @@ def upload_ios_maestro_to_s3
   UI.success("✅ Uploaded #{zip_name} to #{s3_dest}")
 end
 
-def upload_android_maestro_to_s3
+def upload_android_maestro_to_s3(apk_path)
   app_name = "Artsy"
-  android_dir = "android"
   s3_dest = "#{S3_ANDROID_BUILDS_PATH}#{app_name}-latest.apk"
-  build_type = "beta"
-
-  # Find the .apk file
-  apk_path = Dir.glob("#{android_dir}/app/build/outputs/apk/#{build_type}/*.apk").first
 
   if apk_path.nil? || !File.exist?(apk_path)
-    UI.error("❌ APK not found in #{android_dir}/app/build/outputs/apk/#{build_type}/!")
+    UI.error("❌ Maestro APK not found at: #{apk_path}")
     raise "Android Maestro app build not found"
   end
 
   UI.success("✅ Found apk at: #{apk_path}")
 
-  # Copy and rename the APK
+  # Copy and rename the APK for consistent S3 naming
   apk_name = "#{app_name}-latest.apk"
   sh("cp #{apk_path} #{apk_name}")
 
