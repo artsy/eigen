@@ -10,7 +10,6 @@ on:
 
 jobs:
   build-deploy-android-playstore:
-    if: github.ref == 'refs/heads/beta-android'
     runs-on: ubuntu-latest
     timeout-minutes: 90
 
