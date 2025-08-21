@@ -1,12 +1,11 @@
+import notifee, { AndroidImportance } from "@notifee/react-native"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { __globalStoreTestUtils__, GlobalStore } from "app/store/GlobalStore"
 import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
 import { navigate } from "app/system/navigation/navigate"
 import * as Push from "app/utils/PushNotification"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
 import { Platform } from "react-native"
-import PushNotification from "react-native-push-notification"
 
 Object.defineProperty(Platform, "OS", { get: jest.fn(() => "android") }) // We only use this for android only for now
 const mockFetch = jest.fn()
@@ -32,8 +31,9 @@ describe("Push Notification Tests", () => {
   })
 
   it("Initialises", async () => {
-    await Push.configure()
-    expect(PushNotification.configure).toHaveBeenCalled()
+    const cleanup = await Push.configure()
+    expect(typeof cleanup).toBe("function")
+    cleanup()
   })
 
   describe("saveToken", () => {
@@ -167,56 +167,56 @@ describe("Push Notification Tests", () => {
 
   describe("Channels and Local Notifications", () => {
     it("creates Channel", async () => {
-      const testChannel = { id: "test_channel_id", name: "test_channel_name" }
-      Push.createChannel(testChannel.id, testChannel.name)
-      expect(PushNotification.createChannel).toHaveBeenCalled()
+      const testChannel = {
+        id: "test_channel_id",
+        name: "test_channel_name",
+        importance: AndroidImportance.HIGH,
+      }
+      await Push.createChannel(testChannel)
+      expect(notifee.createChannel).toHaveBeenCalled()
     })
-    it("creates LocalNotification", () => {
+    it("creates LocalNotification", async () => {
       const notification = {
         data: { channelId: Push.CHANNELS[0].id },
         title: "A test push notification",
-        foreground: true,
-        userInteraction: false,
-        badge: 0,
-        message: "A test push",
-        alert: {},
-        id: "22",
-        sound: "default",
-
-        finish: () => {},
+        body: "A test push",
       }
 
-      PushNotification.channelExists = jest.fn().mockImplementationOnce((_, cb) => {
-        cb(true)
-      })
+      // Mock existing channel
+      ;(notifee.getChannels as jest.Mock).mockResolvedValueOnce([
+        { id: Push.CHANNELS[0].id, name: "Test Channel" },
+      ])
 
-      Push.createLocalNotification(notification)
-      expect(PushNotification.createChannel).not.toHaveBeenCalled()
-      expect(PushNotification.localNotification).toHaveBeenCalled()
+      await Push.createLocalNotification(notification)
+      expect(notifee.displayNotification).toHaveBeenCalled()
 
+      // Mock non-existing channel
       notification.data = { channelId: "unknown_channel_id" }
-      PushNotification.channelExists = jest.fn().mockImplementationOnce((_, cb) => {
-        cb(false)
-      })
-      Push.createLocalNotification(notification)
-      expect(PushNotification.createChannel).toHaveBeenCalled()
-      expect(PushNotification.localNotification).toHaveBeenCalled()
+      ;(notifee.getChannels as jest.Mock).mockResolvedValueOnce([])
+
+      await Push.createLocalNotification(notification)
+      expect(notifee.createChannel).toHaveBeenCalled()
+      expect(notifee.displayNotification).toHaveBeenCalled()
     })
   })
 
   describe("Notification permission status", () => {
-    it("should return Authorized status when there are permissions to alert on Android", async () => {
-      mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: true }))
+    it("should return Authorized status when there are permissions on Android", async () => {
+      ;(notifee.getNotificationSettings as jest.Mock).mockResolvedValueOnce({
+        authorizationStatus: 1, // AUTHORIZED
+      })
       const status = await Push.getNotificationPermissionsStatus()
 
       expect(status).toBe(Push.PushAuthorizationStatus.Authorized)
     })
 
-    it("should return Denied status when there is no permission to alert on Android", async () => {
-      mockFetchNotificationPermissions(true).mockImplementationOnce((cb) => cb({ alert: true }))
+    it("should return Denied status when there is no permission on Android", async () => {
+      ;(notifee.getNotificationSettings as jest.Mock).mockResolvedValueOnce({
+        authorizationStatus: 2, // DENIED
+      })
       const status = await Push.getNotificationPermissionsStatus()
 
-      expect(status).toBe(Push.PushAuthorizationStatus.Authorized)
+      expect(status).toBe(Push.PushAuthorizationStatus.Denied)
     })
   })
 })

@@ -202,6 +202,7 @@ dependencies {
 
     implementation "com.google.firebase:firebase-analytics:19.0.0" // so we can see push notification reports on firebase
     implementation 'com.google.firebase:firebase-messaging:21.1.0'
+    implementation 'app.notifee:core:7.8.2' // Notifee for local notifications
 
     implementation 'commons-io:commons-io:2.8.0'
 

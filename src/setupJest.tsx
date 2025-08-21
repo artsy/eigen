@@ -384,15 +384,56 @@ jest.mock("app/utils/hooks/useDebouncedValue", () => ({
   useDebouncedValue: ({ value }: any) => ({ debouncedValue: value }),
 }))
 
-jest.mock("react-native-push-notification", () => ({
-  configure: jest.fn(),
-  onRegister: jest.fn(),
-  onNotification: jest.fn(),
-  addEventListener: jest.fn(),
-  requestPermissions: jest.fn(),
-  checkPermissions: jest.fn(),
+jest.mock("@react-native-firebase/messaging", () => () => ({
+  getToken: jest.fn(() => Promise.resolve("test-fcm-token")),
+  onTokenRefresh: jest.fn(() => jest.fn()),
+  onMessage: jest.fn(() => jest.fn()),
+  setBackgroundMessageHandler: jest.fn(),
+  requestPermission: jest.fn(() => Promise.resolve(1)),
+  hasPermission: jest.fn(() => Promise.resolve(1)),
+}))
+
+jest.mock("@react-native-firebase/app", () => ({
+  firebase: {
+    messaging: jest.fn(() => ({
+      getToken: jest.fn(() => Promise.resolve("test-fcm-token")),
+      onTokenRefresh: jest.fn(() => jest.fn()),
+      onMessage: jest.fn(() => jest.fn()),
+      setBackgroundMessageHandler: jest.fn(),
+    })),
+  },
+}))
+
+jest.mock("@notifee/react-native", () => ({
+  default: {
+    createChannel: jest.fn(),
+    displayNotification: jest.fn(),
+    getChannels: jest.fn(),
+    getNotificationSettings: jest.fn(),
+    getInitialNotification: jest.fn(),
+    onForegroundEvent: jest.fn(() => jest.fn()), // Return unsubscribe function
+    onBackgroundEvent: jest.fn(() => jest.fn()), // Return unsubscribe function
+    getTriggerNotificationIds: jest.fn(),
+  },
   createChannel: jest.fn(),
-  localNotification: jest.fn(),
+  displayNotification: jest.fn(),
+  getChannels: jest.fn(),
+  getNotificationSettings: jest.fn(),
+  getInitialNotification: jest.fn(),
+  onForegroundEvent: jest.fn(() => jest.fn()), // Return unsubscribe function
+  onBackgroundEvent: jest.fn(() => jest.fn()), // Return unsubscribe function
+  getTriggerNotificationIds: jest.fn(),
+  AndroidImportance: {
+    DEFAULT: 3,
+    HIGH: 4,
+    LOW: 2,
+    MIN: 1,
+    NONE: 0,
+  },
+  EventType: {
+    PRESS: 1,
+    ACTION_PRESS: 2,
+  },
 }))
 
 jest.mock("react-native-keychain", () => ({

@@ -1,7 +1,11 @@
 import { action, Action } from "easy-peasy"
-import { ReceivedNotification } from "react-native-push-notification"
 
-export interface PendingPushNotification extends Omit<ReceivedNotification, "userInfo" | "finish"> {
+export interface PendingPushNotification {
+  id: string
+  foreground: boolean
+  userInteraction: boolean
+  message: string | null
+  data: any
   tappedAt: number
   finish?: () => {}
 }
