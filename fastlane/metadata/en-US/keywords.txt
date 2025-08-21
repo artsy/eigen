@@ -1,1 +1,1 @@
-fine,collect,buy,art,artwork,gallery,auction,bid,artist,painting,print,photography,fair
+collect,artwork,gallery,auction,bid,artist,painting,print,photography,fair,museum,learn,inspire
