@@ -21221,6 +21221,7 @@ enum SearchEntity {
 
 enum SearchMode {
   AUTOSUGGEST
+  INTERNAL_AUTOSUGGEST
   SITE
 }
 
