@@ -602,8 +602,8 @@ lane :build_maestro_android do
     verbose: true
   )
 
-  # Ensure we have the full path to the APK file
-  full_apk_path = File.expand_path(apk_output_path)
+  # Ensure we have the full path to the APK file (bundletool creates it in project root, not fastlane dir)
+  full_apk_path = File.expand_path("../#{apk_output_path}")
 
   # Upload to S3
   upload_android_maestro_to_s3(full_apk_path)
