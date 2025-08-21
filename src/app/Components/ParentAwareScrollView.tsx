@@ -19,11 +19,7 @@ interface VirtualizedListContextType {
     ref: any
     parentDebugInfo: any
   }) => void
-  unregisterAsNestedChild: (options: {
-    key: string
-    ref: any
-    state: any
-  }) => void
+  unregisterAsNestedChild: (options: { key: string; ref: any; state: any }) => void
   debugInfo: any
 }
 
@@ -54,6 +50,7 @@ interface State {
  */
 class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> {
   static contextType = VirtualizedList.contextType
+  // TODO: see if we can get rid of this and associated babel setting
   declare context: VirtualizedListContextType
 
   state = {

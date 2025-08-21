@@ -7,7 +7,7 @@ module.exports = (api) => {
 
   const plugins = [
     "@babel/plugin-transform-named-capturing-groups-regex",
-    "@babel/plugin-transform-flow-strip-types",
+    ["@babel/plugin-transform-flow-strip-types", { allowDeclareFields: true }],
     ["@babel/plugin-proposal-decorators", { version: "legacy" }],
     ["@babel/plugin-transform-private-methods", { loose: true }], // needed for latest jest, must come after decorators
     ["@babel/plugin-transform-class-properties", { loose: true }], // must come after decorators
