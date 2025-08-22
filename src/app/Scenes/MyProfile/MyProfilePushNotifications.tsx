@@ -12,7 +12,7 @@ import { MyProfileScreenWrapper } from "app/Scenes/MyProfile/Components/MyProfil
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
-} from "app/utils/PushNotification"
+} from "app/system/notifications/getNotificationsPermissions"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import { requestSystemPermissions } from "app/utils/requestPushNotificationsPermission"

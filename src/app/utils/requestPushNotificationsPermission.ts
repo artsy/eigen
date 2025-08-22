@@ -1,8 +1,8 @@
 import { GlobalStore, unsafe_getPushPromptSettings } from "app/store/GlobalStore"
 import {
-  PushAuthorizationStatus,
   getNotificationPermissionsStatus,
-} from "app/utils/PushNotification"
+  PushAuthorizationStatus,
+} from "app/system/notifications/getNotificationsPermissions"
 import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
 import { postEventToProviders } from "app/utils/track/providers"
 import { Alert, Linking, Platform } from "react-native"
