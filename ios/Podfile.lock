@@ -2089,7 +2089,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNLocalize (2.1.3):
+  - RNLocalize (3.5.2):
     - React-Core
   - rnmapbox-maps (10.1.38):
     - MapboxMaps (~> 10.19.0)
@@ -3045,7 +3045,7 @@ SPEC CHECKSUMS:
   RNGoogleSignin: b8f09e3ec56e09497e1e53b0ff66d5a45916c6b1
   RNImageCropPicker: b0afedeefd8655254a15c34103718455fde6ce59
   RNKeychain: e593cdad28fe4365dbfa703d25560d765a16bc52
-  RNLocalize: 8493c6dd9ed1d4b52325796cdb81d794fc04f3bf
+  RNLocalize: 3c4d0abd777a546fa77bdb6caef85a87fb9ea349
   rnmapbox-maps: 0eca9a44a883564bfbcbbb649ba3087224612fd6
   RNPermissions: 92430517fd4353d5b2b7217cd1ca48ddd2875245
   RNReactNativeHapticFeedback: 7601768ee65ffc86fc93d7c30dd917031144ed3d
