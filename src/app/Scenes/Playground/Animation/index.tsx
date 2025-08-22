@@ -1,4 +1,5 @@
-import { Button, Flex, Screen, Text } from "@artsy/palette-mobile"
+import { Button, Flex, Screen } from "@artsy/palette-mobile"
+import notifee from "@notifee/react-native"
 import { L0IntroductionToReanimated } from "app/Scenes/Playground/Animation/L0-Reanimated"
 import { L1AnimatedComponent } from "app/Scenes/Playground/Animation/L1-Animated-Components"
 import { L2SharedValues } from "app/Scenes/Playground/Animation/L2-Shared-Values"
@@ -9,6 +10,7 @@ import { Exercice } from "app/Scenes/Playground/Animation/L5-Exercice"
 // eslint-disable-next-line prefer-const
 let LEVEL = 5
 
+// @ts-ignore
 const Content: React.FC = () => {
   switch (LEVEL) {
     case 0:
@@ -29,15 +31,32 @@ const Content: React.FC = () => {
 }
 
 const TestContent: React.FC = () => {
+  const handlePress = async () => {
+    // Request permissions (required for iOS)
+    await notifee.requestPermission()
+
+    const channelId = await notifee.createChannel({
+      id: "Test",
+      name: "Test Channel",
+    })
+
+    await notifee.displayNotification({
+      title: "Notification Title",
+      body: "Main body content of the notification",
+      android: {
+        channelId,
+        smallIcon: "ic_launcher", // optional, defaults to 'ic_launcher'.
+        // pressAction is needed if you want the notification to open the app when pressed
+        pressAction: {
+          id: "default",
+        },
+      },
+    })
+  }
+
   return (
     <Flex justifyContent="center" alignItems="center" flex={1}>
-      <Button
-        onPress={() => {
-          console.log("Trigger Push Notification")
-        }}
-      >
-        Trigger Push Notification
-      </Button>
+      <Button onPress={handlePress}>Trigger Push Notification</Button>
     </Flex>
   )
 }

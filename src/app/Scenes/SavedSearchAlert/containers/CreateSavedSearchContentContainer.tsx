@@ -8,11 +8,11 @@ import { CreateSavedSearchContentContainer_viewer$data } from "__generated__/Cre
 import { NavigationHeader } from "app/Components/NavigationHeader"
 import { SavedSearchAlertForm } from "app/Scenes/SavedSearchAlert/SavedSearchAlertForm"
 import { CreateSavedSearchAlertNavigationStack } from "app/Scenes/SavedSearchAlert/SavedSearchAlertModel"
-import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import {
   getNotificationPermissionsStatus,
   PushAuthorizationStatus,
-} from "app/utils/PushNotification"
+} from "app/system/notifications/getNotificationsPermissions"
+import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import useAppState from "app/utils/useAppState"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
