@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { NativeState } from "app/store/NativeModel"
-import { PushAuthorizationStatus } from "app/utils/PushNotification"
+import { PushAuthorizationStatus } from "app/system/notifications/getNotificationsPermissions"
 import { NativeModules as AllNativeModules, Platform } from "react-native"
 import { getLocales, getTimeZone } from "react-native-localize"
 import type { Image as RNCImage } from "react-native-image-crop-picker"
