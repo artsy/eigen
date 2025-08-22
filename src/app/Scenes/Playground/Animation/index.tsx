@@ -45,7 +45,7 @@ const TestContent: React.FC = () => {
       body: "Main body content of the notification",
       android: {
         channelId,
-        smallIcon: "ic_launcher", // optional, defaults to 'ic_launcher'.
+        smallIcon: "ic_notification", // optional, defaults to 'ic_launcher'.
         // pressAction is needed if you want the notification to open the app when pressed
         pressAction: {
           id: "default",
