@@ -1,6 +1,8 @@
+import notifee, { AndroidChannel, AndroidImportance } from "@notifee/react-native"
 import { GlobalStore } from "app/store/GlobalStore"
 // import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
-// import { navigate } from "app/system/navigation/navigate"
+// eslint-disable-next-line no-restricted-imports
+import { navigate } from "app/system/navigation/navigate"
 // import PushNotification, { ReceivedNotification } from "react-native-push-notification"
 import { logAction, logNotification } from "./loggers"
 
@@ -9,11 +11,12 @@ export const HAS_PENDING_NOTIFICATION = "HAS_PENDING_NOTIFICATION"
 
 const MAX_ELAPSED_TAPPED_NOTIFICATION_TIME = 90 // seconds
 
-export const CHANNELS = [
+export const CHANNELS: AndroidChannel[] = [
   {
     name: "Artsy's default notifications channel",
     id: "Default",
-    properties: { channelDescription: "Artsy's default notifications channel" },
+    description: "Artsy's default notifications channel",
+    importance: AndroidImportance.HIGH,
   },
 ]
 
@@ -96,25 +99,22 @@ export const saveToken = (token: string, ignoreSameTokenCheck = false) => {
   // })
 }
 
-export const createChannel = (channelId: string, channelName: string, properties: any = {}) => {
-  // PushNotification.createChannel(
-  //   {
-  //     channelId,
-  //     channelName,
-  //     ...properties,
-  //   },
-  //   (created) => {
-  //     if (created && __DEV__) {
-  //       console.log(`NEW CHANNEL ${channelName} CREATED`)
-  //     }
-  //   }
-  // )
+// Creates Android notification channel (iOS doesn't use channels)
+export const createChannel = async (channel: AndroidChannel) => {
+  try {
+    await notifee.createChannel(channel)
+    if (__DEV__) {
+      console.log(`NEW CHANNEL ${channel.id} CREATED`)
+    }
+  } catch (error) {
+    if (__DEV__) {
+      console.warn(`Failed to create channel ${channel.id}:`, error)
+    }
+  }
 }
 
-export const createAllChannels = () => {
-  CHANNELS.forEach((channel) => {
-    createChannel(channel.name, channel.id, channel.properties)
-  })
+export const createAllChannels = async () => {
+  await Promise.all(CHANNELS.map((channel) => createChannel(channel)))
 }
 
 export const createLocalNotification = (notification: TypedNotification) => {
