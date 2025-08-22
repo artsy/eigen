@@ -6,6 +6,7 @@ import { DevMenuWrapper } from "app/system/devTools/DevMenu/DevMenuWrapper"
 import { useMaestroInitialization } from "app/system/devTools/useMaestroInitialization"
 import { useRageShakeDevMenu } from "app/system/devTools/useRageShakeDevMenu"
 import { setupSentry } from "app/system/errorReporting/setupSentry"
+import { usePushNotifications } from "app/system/notifications/usePushNotifications"
 import { usePurgeCacheOnAppUpdate } from "app/system/relay/usePurgeCacheOnAppUpdate"
 import { addTrackingProvider } from "app/utils/track"
 import {
@@ -29,11 +30,10 @@ import { useWebViewCookies } from "./Components/ArtsyWebView"
 import { Providers } from "./Providers"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { DynamicIslandStagingIndicator } from "./utils/DynamicIslandStagingIndicator"
-import { createAllChannels, savePendingToken } from "./utils/PushNotification"
+import { savePendingToken } from "./utils/PushNotification"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
-// import { useInitialNotification } from "./utils/useInitialNotification"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenReaderAndFontScaleTracking } from "./utils/useScreenReaderAndFontScaleTracking"
 import useSyncNativeAuthState from "./utils/useSyncAuthState"
@@ -93,14 +93,11 @@ const Main = () => {
   useSiftConfig()
   useWebViewCookies()
   useDeepLinks()
-  // useInitialNotification()
   useInitializeQueryPrefetching()
   useIdentifyUser()
   useSyncNativeAuthState()
 
-  useEffect(() => {
-    createAllChannels()
-  }, [])
+  usePushNotifications()
   usePreferredThemeTracking()
   useScreenReaderAndFontScaleTracking()
   useFreshInstallTracking()
@@ -110,6 +107,7 @@ const Main = () => {
   useListenToThemeChange()
   useTrackAppState()
 
+  // TODO: Remove this because it doesn't make sense
   useEffect(() => {
     if (isLoggedIn) {
       savePendingToken()
