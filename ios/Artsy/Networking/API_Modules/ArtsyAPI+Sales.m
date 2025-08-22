@@ -1,7 +1,7 @@
 #import "Artwork.h"
 #import "ArtsyAPI+Private.h"
 #import "ArtsyAPI+Sales.h"
-#import "ARRouter.h"
+#import "ARRouter+RestAPI.h"
 #import "ARAnalyticsConstants.h"
 
 #import "MTLModel+JSON.h"

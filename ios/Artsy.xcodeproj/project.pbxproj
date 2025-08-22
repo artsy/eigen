@@ -33,6 +33,7 @@
 		7448C2EC42E1DD4A032A6C70 /* Pods_ArtsyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C1B6860831AE690075CFD4C /* Pods_ArtsyTests.framework */; };
 		8E4207792A055D2D006888BD /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8E4207782A055D2D006888BD /* AppDelegate.mm */; };
 		CB0D52052AF56984000E6C08 /* LiveAuctionTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0D52042AF56984000E6C08 /* LiveAuctionTestUtils.swift */; };
+		CB0F3C762E58E91E0029A028 /* ARRouter+RestAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0F3C752E58E9150029A028 /* ARRouter+RestAPI.m */; };
 		CB18282829CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB18282729CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift */; };
 		CB18282B29D35F29006A0805 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB18282A29D35F29006A0805 /* GoogleService-Info.plist */; };
 		CB18283A29D36A3A006A0805 /* Unica77LL-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = CB18283529D36A3A006A0805 /* Unica77LL-Medium.otf */; };
@@ -583,6 +584,8 @@
 		B6786672018842FE1C6B598E /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
 		B6D4E35184C4A1196A06A1A7 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Artsy/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		CB0D52042AF56984000E6C08 /* LiveAuctionTestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveAuctionTestUtils.swift; sourceTree = "<group>"; };
+		CB0F3C742E58E8B30029A028 /* ARRouter+RestAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARRouter+RestAPI.h"; sourceTree = "<group>"; };
+		CB0F3C752E58E9150029A028 /* ARRouter+RestAPI.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ARRouter+RestAPI.m"; sourceTree = "<group>"; };
 		CB18282729CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARAugmentedWallBasedVIRViewController.swift; sourceTree = "<group>"; };
 		CB18282A29D35F29006A0805 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "GoogleService-Info.plist"; path = "Artsy/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		CB18283529D36A3A006A0805 /* Unica77LL-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Unica77LL-Medium.otf"; sourceTree = "<group>"; };
@@ -3058,6 +3061,8 @@
 				CBE325ED27E275A200395A93 /* Mantle_Extensions */,
 				CBE325F227E275A200395A93 /* Live_Auctions */,
 				CBE325F527E275A200395A93 /* ARRouter.h */,
+				CB0F3C742E58E8B30029A028 /* ARRouter+RestAPI.h */,
+				CB0F3C752E58E9150029A028 /* ARRouter+RestAPI.m */,
 				CBE325F627E275A200395A93 /* ARNetworkConstants.h */,
 				CBE325F727E275A200395A93 /* ARRouter+GraphQL.h */,
 				CBE325F827E275A200395A93 /* ARSystemTime.h */,
@@ -3947,6 +3952,7 @@
 				CB18284529DF3DE9006A0805 /* FocusSquare.swift in Sources */,
 				CBE326A427E275A300395A93 /* ARNavigationButtonsViewController.m in Sources */,
 				CBE3267E27E275A300395A93 /* NSArray+Additions.m in Sources */,
+				CB0F3C762E58E91E0029A028 /* ARRouter+RestAPI.m in Sources */,
 				CBE326E327E275A300395A93 /* ARValueTransformer.m in Sources */,
 				CBE326A627E275A300395A93 /* ARInternalMobileWebViewController.m in Sources */,
 				CBE2946229E4C19000AA77DD /* VirtualArtwork.swift in Sources */,
