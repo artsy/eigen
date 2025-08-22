@@ -35,7 +35,10 @@ export const saveToken = (token: string, ignoreSameTokenCheck = true) => {
       } else {
         const environment = unsafe__getEnvironment()
         const url = environment.gravityURL + "/api/v1/device"
-        const name = __TEST__ ? "my-device-name" : DeviceInfo.getDeviceId()
+        const name = __TEST__
+          ? "my-device-name"
+          : DeviceInfo.getDeviceId() || DeviceInfo.getDeviceNameSync()
+
         const production = environment.env === "production"
         const body = JSON.stringify({
           name,
