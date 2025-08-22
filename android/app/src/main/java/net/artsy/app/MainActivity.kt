@@ -15,7 +15,7 @@ import androidx.annotation.Nullable
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.zoontek.rnbootsplash.RNBootSplash
-import com.dieam.reactnativepushnotification.modules.RNPushNotification
+
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 
@@ -54,43 +54,6 @@ class MainActivity : ReactActivity() {
             // prevent screen rotation on phones
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
-
-
-        RNPushNotification.IntentHandlers.add(object : RNPushNotification.RNIntentHandler {
-            override fun onNewIntent(intent: Intent) {
-                // If your provider requires some parsing on the intent before the data can be
-                // used, add that code here. Otherwise leave empty.
-            }
-
-            override fun getBundleFromIntent(intent: Intent): Bundle? {
-                // See here:
-                // https://github.com/zo0r/react-native-push-notification#handling-custom-payloads
-
-                // This should return the bundle data that will be serialized to the
-                // `notification.data`
-                // property sent to the `onNotification()` handler. Return `null` if there is no
-                // data
-                // or this is not an intent from your provider.
-
-                // Parse braze notifications and
-                // send the url in the data bundle so
-                // it can be read in our notification callback
-                // on ts side, we may want to pass other stuff for tracking
-                val source = intent.getStringExtra("source")
-                if (source != null && source.equals("appboy", ignoreCase = true)) {
-                    if (intent.hasExtra("uri")) {
-                        val bundle = Bundle()
-                        val uriBundle = Bundle()
-                        val uri = intent.getStringExtra("uri")
-                        uriBundle.putString("url", uri)
-                        bundle.putBundle("data", uriBundle)
-                        return bundle
-                    }
-                }
-
-                return null
-            }
-        })
     }
 
     // Basic overriding this class required for braze integration:
