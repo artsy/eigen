@@ -33,6 +33,7 @@ import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
+import { usePromptForUpdate } from "app/utils/usePromptForUpdate"
 import { memo, RefObject, Suspense, useCallback, useEffect, useRef, useState } from "react"
 import { FlatList, Linking, RefreshControl, StatusBar, ViewToken } from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -113,6 +114,7 @@ export const HomeView: React.FC = memo(() => {
   const tracking = useHomeViewTracking()
 
   useMaybePromptForReview({ contextModule: ContextModule.tabBar, contextOwnerType: OwnerType.home })
+  usePromptForUpdate()
 
   const sections = extractNodes(data?.homeView.sectionsConnection)
 

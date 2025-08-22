@@ -27,13 +27,27 @@ import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.InstallStateUpdatedListener
 
 import android.util.Log
 
 class MainActivity : ReactActivity() {
-    private val DAYS_FOR_FLEXIBLE_UPDATE = 7
+    private val DAYS_FOR_FLEXIBLE_UPDATE = -1
+    private val DAYS_FOR_IMMEDIATE_UPDATE = 14
     private val TAG = "ArtsyApp"
     private lateinit var appUpdateManager: AppUpdateManager
+
+    private val updateResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartIntentSenderForResult()
+    ) { result ->
+        Log.d(TAG, "Update flow result: ${result.resultCode}")
+        if (result.resultCode != RESULT_OK) {
+            Log.d(TAG, "Update flow failed! Result code: ${result.resultCode}")
+        }
+    }
+
+    private lateinit var installStateUpdatedListener: InstallStateUpdatedListener
 
     /**
      * Returns the name of the main component registered from JavaScript. This is
@@ -105,6 +119,49 @@ class MainActivity : ReactActivity() {
         })
         appUpdateManager = AppUpdateManagerFactory.create(this)
 
+        installStateUpdatedListener = InstallStateUpdatedListener { state ->
+            Log.d(TAG, "Install state updated: ${state.installStatus()}")
+            when (state.installStatus()) {
+                InstallStatus.DOWNLOADED -> {
+                    Log.d(TAG, "Update downloaded, notifying React Native")
+                    notifyReactNativeUpdateDownloaded()
+                }
+                InstallStatus.INSTALLED -> {
+                    Log.d(TAG, "Update installed successfully")
+                    appUpdateManager.unregisterListener(installStateUpdatedListener)
+                }
+                InstallStatus.FAILED -> {
+                    Log.d(TAG, "Update installation failed")
+                    appUpdateManager.unregisterListener(installStateUpdatedListener)
+                }
+            }
+        }
+
+        appUpdateManager.registerListener(installStateUpdatedListener)
+
+        // Register this activity with the native module for RN bridge
+        ArtsyNativeModule.setMainActivity(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        appUpdateManager
+            .appUpdateInfo
+            .addOnSuccessListener { appUpdateInfo ->
+                if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                    Log.d(TAG, "onResume: Update downloaded, notifying React Native")
+                    notifyReactNativeUpdateDownloaded()
+                }
+            }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        appUpdateManager.unregisterListener(installStateUpdatedListener)
+    }
+
+    fun checkForAppUpdateFromRN() {
         checkForAppUpdate()
     }
 
@@ -120,36 +177,60 @@ class MainActivity : ReactActivity() {
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
             Log.d(TAG, "checkForAppUpdate: adding listener, appUpdateInfo: ${appUpdateInfo.toString()}")
 
+            val staleDays = appUpdateInfo.clientVersionStalenessDays() ?: -1
+
             Log.d(TAG, "checkForAppUpdate: conditions: \n" +
                     "appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE: ${appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE}\n" +
-                    "(appUpdateInfo.clientVersionStalenessDays() ?: -1) >= DAYS_FOR_FLEXIBLE_UPDATE: ${(appUpdateInfo.clientVersionStalenessDays() ?: -1) >= DAYS_FOR_FLEXIBLE_UPDATE}\n" +
-                    "appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE): ${appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)}"
+                    "staleDays ($staleDays) >= DAYS_FOR_IMMEDIATE_UPDATE ($DAYS_FOR_IMMEDIATE_UPDATE): ${staleDays >= DAYS_FOR_IMMEDIATE_UPDATE}\n" +
+                    "staleDays ($staleDays) >= DAYS_FOR_FLEXIBLE_UPDATE ($DAYS_FOR_FLEXIBLE_UPDATE): ${staleDays >= DAYS_FOR_FLEXIBLE_UPDATE}\n" +
+                    "appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE): ${appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)}\n" +
+                    "appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE): ${appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)}"
             )
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
-                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
-                Log.d(TAG, "appUpdateInfoTask.addOnSuccessListener: passed appUpdateInfo if statements")
-                // Start a flexible update
-                try {
-                    Log.d(TAG, "appUpdateInfoTask.addOnSuccessListener: trying to start an update flow")
-                    appUpdateManager.startUpdateFlowForResult(
-                        appUpdateInfo,
-                        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
-                            Log.d(TAG, "startUpdateFlowForResult: getting result: ${result.toString()}")
-                            // handle callback
-                            if (result.resultCode != RESULT_OK) {
-                                Log.d(TAG, "Update flow failed! Result code: ${result.resultCode}")
-                                // If the update is canceled or fails,
-                                // you can request to start the update again.
-                            }
-                        },
-                        AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build()
-                    )
-                } catch (e: IntentSender.SendIntentException) {
-                    Log.d(TAG, "startUpdateFlowForResult: errored out with ${e.toString()}")
-                    e.printStackTrace()
+
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
+                when {
+                    staleDays >= DAYS_FOR_IMMEDIATE_UPDATE && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE) -> {
+                        Log.d(TAG, "Starting immediate update (app is $staleDays days stale)")
+                        startUpdateFlow(appUpdateInfo, AppUpdateType.IMMEDIATE)
+                    }
+                    staleDays >= DAYS_FOR_FLEXIBLE_UPDATE && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE) -> {
+                        Log.d(TAG, "Starting flexible update (app is $staleDays days stale)")
+                        startUpdateFlow(appUpdateInfo, AppUpdateType.FLEXIBLE)
+                    }
+                    else -> {
+                        Log.d(TAG, "Update available but conditions not met for update prompt")
+                    }
                 }
             }
         }
+    }
+
+    private fun startUpdateFlow(appUpdateInfo: AppUpdateInfo, updateType: Int) {
+        try {
+            val updateTypeString = if (updateType == AppUpdateType.IMMEDIATE) "immediate" else "flexible"
+            Log.d(TAG, "startUpdateFlow: Starting $updateTypeString update flow")
+
+            appUpdateManager.startUpdateFlowForResult(
+                appUpdateInfo,
+                updateResultLauncher,
+                AppUpdateOptions.newBuilder(updateType).build()
+            )
+            Log.d(TAG, "startUpdateFlow: $updateTypeString update flow started successfully")
+        } catch (e: IntentSender.SendIntentException) {
+            Log.e(TAG, "startUpdateFlow: Failed to start update flow", e)
+            e.printStackTrace()
+        }
+    }
+
+    private fun notifyReactNativeUpdateDownloaded() {
+        // Store the update state and trigger event
+        ArtsyNativeModule.setUpdateDownloadedState(true)
+        ArtsyNativeModule.triggerUpdateDownloadedEvent()
+        Log.d(TAG, "Update downloaded state set and event triggered for React Native")
+    }
+
+    fun completeAppUpdate() {
+        appUpdateManager.completeUpdate()
     }
 
     // Basic overriding this class required for braze integration:
