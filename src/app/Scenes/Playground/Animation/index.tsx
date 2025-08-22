@@ -1,4 +1,4 @@
-import { Flex, Text } from "@artsy/palette-mobile"
+import { Flex, Screen, Text } from "@artsy/palette-mobile"
 import { L0IntroductionToReanimated } from "app/Scenes/Playground/Animation/L0-Reanimated"
 import { L1AnimatedComponent } from "app/Scenes/Playground/Animation/L1-Animated-Components"
 import { L2SharedValues } from "app/Scenes/Playground/Animation/L2-Shared-Values"
@@ -30,13 +30,11 @@ export const Animations = () => {
   }
 
   return (
-    <Flex>
-      <Flex backgroundColor="mono10" p={2}>
-        <Text variant="sm-display" fontWeight="bold" textAlign="center">
-          Animations with Reanimated 3
-        </Text>
-      </Flex>
-      <Content />
-    </Flex>
+    <Screen>
+      <Screen.Header title="Animations with Reanimated 3" hideLeftElements />
+      <Screen.Body fullwidth>
+        <Content />
+      </Screen.Body>
+    </Screen>
   )
 }
