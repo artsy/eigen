@@ -23,9 +23,6 @@
     <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
     <meta-data android:name="com.facebook.sdk.AutoLogAppEventsEnabled" android:value="false"/>
     <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notification"/>
-    <meta-data android:name="com.dieam.reactnativepushnotification.notification_foreground" android:value="false"/>
-    <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/white"/>
-    <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/white"/>
     <meta-data android:name="expo.modules.updates.ENABLED" android:value="${expoUpdatesEnabled}" />
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="${expoUpdatesCheckOnLaunch}" />
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0" />
@@ -137,22 +134,12 @@
       </intent-filter>
     </activity>
 
-
-    <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions"/>
-    <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher"/>
-    <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationBootEventReceiver" android:exported="false">
-      <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED"/>
-        <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
-        <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
-      </intent-filter>
-    </receiver>
     <service android:name=".BrazePushListenerService" android:exported="false">
       <intent-filter>
         <action android:name="com.google.firebase.MESSAGING_EVENT"/>
       </intent-filter>
     </service>
-    
+
     <!-- Widget Providers -->
     <receiver android:name=".widgets.FullBleedWidgetProvider" android:exported="true">
       <intent-filter>
@@ -161,7 +148,7 @@
       <meta-data android:name="android.appwidget.provider"
         android:resource="@xml/fullbleed_widget_info" />
     </receiver>
-    
-    
+
+
   </application>
 </manifest>
