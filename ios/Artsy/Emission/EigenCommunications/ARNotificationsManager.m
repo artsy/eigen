@@ -174,6 +174,11 @@ RCT_EXPORT_MODULE();
     [self dispatchAfterBootstrap:notificationReceived data:@{}];
 }
 
+- (void)notificationReceivedWithPayload:(NSDictionary *)payload
+{
+    [self dispatchAfterBootstrap:notificationReceived data:payload ? payload : @{}];
+}
+
 - (void)modalDismissed
 {
     [self dispatchAfterBootstrap:modalDismissed data:@{}];
