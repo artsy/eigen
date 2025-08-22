@@ -108,15 +108,14 @@ android {
         applicationId "net.artsy.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 7
-        versionName "1.0.0"
-
-        buildConfigField "String", "REACT_NATIVE_RELEASE_LEVEL", "\"${findProperty('reactNativeReleaseLevel') ?: 'stable'}\""
+        versionCode 1674646332
+        versionName "8.82.0"
 
         vectorDrawables.useSupportLibrary = true
 
         multiDexEnabled true
 
+        buildConfigField "String", "REACT_NATIVE_RELEASE_LEVEL", "\"${findProperty('reactNativeReleaseLevel') ?: 'stable'}\""
         buildConfigField "String", "GITCommitShortHash", '"c77772ee1"'
         buildConfigField "String", "GITCommitHash", '"c77772ee1f32093109049504f7865f9737ad8474"'
         buildConfigField "String", "GITCommitDate", '"2021-01-21T15:08:22+04:00"'
