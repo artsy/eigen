@@ -30,7 +30,6 @@ import { useWebViewCookies } from "./Components/ArtsyWebView"
 import { Providers } from "./Providers"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { DynamicIslandStagingIndicator } from "./utils/DynamicIslandStagingIndicator"
-import { savePendingToken } from "./utils/PushNotification"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
@@ -84,7 +83,6 @@ const Main = () => {
     (state) => state.auth.sessionState.isUserIdentified
   )
 
-  const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const forceUpdateMessage = GlobalStore.useAppState(
     (state) => state.artsyPrefs.echo.forceUpdateMessage
   )
@@ -96,7 +94,6 @@ const Main = () => {
   useInitializeQueryPrefetching()
   useIdentifyUser()
   useSyncNativeAuthState()
-
   usePushNotifications()
   usePreferredThemeTracking()
   useScreenReaderAndFontScaleTracking()
@@ -106,13 +103,6 @@ const Main = () => {
   useAndroidAppStyling()
   useListenToThemeChange()
   useTrackAppState()
-
-  // TODO: Remove this because it doesn't make sense
-  useEffect(() => {
-    if (isLoggedIn) {
-      savePendingToken()
-    }
-  }, [isLoggedIn])
 
   if (!isHydrated || !isUserIdentified) {
     return <View />
