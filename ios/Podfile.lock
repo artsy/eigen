@@ -2279,7 +2279,7 @@ PODS:
     - React
     - Sift
   - SocketRocket (0.7.1)
-  - sovran-react-native (1.1.1):
+  - sovran-react-native (1.1.3):
     - React-Core
   - Specta (2.0.0)
   - Starscream (4.0.8)
@@ -3062,7 +3062,7 @@ SPEC CHECKSUMS:
   Sift: 742454b5796a717df185f6dbae569e5dce357322
   sift-react-native: 136f9b31b8324dbed1436bfbb0ec6b3b01c587e1
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  sovran-react-native: 5aca73bffa66562f8cd8cbb4b766e4c40da9743b
+  sovran-react-native: a3ad3f8ff90c2002b2aa9790001a78b0b0a38594
   Specta: b79d84043684b35ffdc2680df578dc318ec2efc2
   Starscream: 19b5533ddb925208db698f0ac508a100b884a1b9
   Stripe: d1824162e4bcb6ead10401a0dc8e8a3d5ffee41f
