@@ -33,7 +33,7 @@ import { createAllChannels, savePendingToken } from "./utils/PushNotification"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
-import { useInitialNotification } from "./utils/useInitialNotification"
+// import { useInitialNotification } from "./utils/useInitialNotification"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenReaderAndFontScaleTracking } from "./utils/useScreenReaderAndFontScaleTracking"
 import useSyncNativeAuthState from "./utils/useSyncAuthState"
@@ -93,7 +93,7 @@ const Main = () => {
   useSiftConfig()
   useWebViewCookies()
   useDeepLinks()
-  useInitialNotification()
+  // useInitialNotification()
   useInitializeQueryPrefetching()
   useIdentifyUser()
   useSyncNativeAuthState()
