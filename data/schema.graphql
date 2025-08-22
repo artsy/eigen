@@ -4691,6 +4691,9 @@ input BulkUpdateArtworksMetadataInput {
   # The image rights to be assigned
   imageRights: String
 
+  # Flat fee for international shipping. It must be entered in cents.
+  internationalShippingFeeCents: Int
+
   # The literature to be assigned
   literature: String
 
