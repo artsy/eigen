@@ -536,7 +536,7 @@ parameters:
     default: v28-app_build_ios-{{ checksum ".manifests/app_build" }}
   app_build_android_cache_key:
     type: string
-    default: v10-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
+    default: v11-app_build_android-{{ checksum "../workspace/.manifests/app_build" }}
   ios_native_code_cache_prefix:
     type: string
     # this one is not including the checksum due to path differences in the checksum
