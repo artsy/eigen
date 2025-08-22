@@ -1,8 +1,8 @@
 import { __globalStoreTestUtils__ } from "app/store/GlobalStore"
 import {
-  PushAuthorizationStatus,
   getNotificationPermissionsStatus,
-} from "app/utils/PushNotification"
+  PushAuthorizationStatus,
+} from "app/system/notifications/getNotificationsPermissions"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { Alert } from "react-native"
 
