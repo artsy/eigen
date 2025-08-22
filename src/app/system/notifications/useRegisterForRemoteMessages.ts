@@ -1,7 +1,9 @@
 import messaging from "@react-native-firebase/messaging"
+import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { GlobalStore } from "app/store/GlobalStore"
 import { saveToken } from "app/utils/PushNotification"
 import { useEffect } from "react"
+import { Platform } from "react-native"
 
 /**
  * This hook is used to register the device FCM
@@ -11,6 +13,9 @@ export const useRegisterForRemoteMessages = () => {
 
   useEffect(() => {
     console.log("DEBUG: useRegisterForRemoteMessages - isLoggedIn:", isLoggedIn)
+    // On Android, we need to register for remote messages to get the token
+    // On iOS, we don't need to register for remote messages to get the token
+    // because it's handled by the app delegate
     if (isLoggedIn) {
       registerForRemoteMessages()
     }
@@ -21,8 +26,15 @@ export const useRegisterForRemoteMessages = () => {
       // Register the device with FCM
       await messaging().registerDeviceForRemoteMessages()
 
-      // Get the token
-      const token = await messaging().getToken()
+      let token = ""
+      if (Platform.OS === "android") {
+        // Get the token
+        token = await messaging().getToken()
+      } else {
+        // Get the token
+        token = (await LegacyNativeModules.ArtsyNativeModule.getPushToken()) ?? ""
+        console.log("[DEBUG] token", token)
+      }
 
       if (!token) {
         console.error("DEBUG: Failed to obtain FCM token")

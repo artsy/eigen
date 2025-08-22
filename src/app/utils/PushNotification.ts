@@ -18,7 +18,7 @@ export const savePendingToken = async () => {
   }
 }
 
-export const saveToken = (token: string, ignoreSameTokenCheck = true) => {
+export const saveToken = (token: string, ignoreSameTokenCheck = false) => {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise<boolean>(async (resolve, reject) => {
     const previousToken = await AsyncStorage.getItem(PUSH_NOTIFICATION_TOKEN)

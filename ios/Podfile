@@ -121,9 +121,6 @@ target 'Artsy' do
   pod 'MultiDelegate'
   pod 'ObjectiveSugar'
 
-  # Google & Firebase
-  pod 'Firebase/Auth', '10.23.0'
-
   # Workaround for firebase flipper issues
   # See https://github.com/invertase/react-native-firebase/issues/6425#issuecomment-1952403075
   pod 'FirebaseCore', :modular_headers => true
