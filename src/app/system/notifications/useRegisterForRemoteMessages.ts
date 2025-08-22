@@ -1,0 +1,53 @@
+import messaging from "@react-native-firebase/messaging"
+import { GlobalStore } from "app/store/GlobalStore"
+import { saveToken } from "app/utils/PushNotification"
+import { useEffect } from "react"
+
+/**
+ * This hook is used to register the device FCM
+ */
+export const useRegisterForRemoteMessages = () => {
+  const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
+
+  useEffect(() => {
+    console.log("DEBUG: useRegisterForRemoteMessages - isLoggedIn:", isLoggedIn)
+    if (isLoggedIn) {
+      registerForRemoteMessages()
+    }
+  }, [isLoggedIn])
+
+  const registerForRemoteMessages = async () => {
+    try {
+      // Register the device with FCM
+      await messaging().registerDeviceForRemoteMessages()
+
+      // Get the token
+      const token = await messaging().getToken()
+
+      if (!token) {
+        console.error("DEBUG: Failed to obtain FCM token")
+        return
+      }
+
+      // Save the token
+      try {
+        await saveToken(token)
+      } catch (error) {
+        console.error("DEBUG: Failed to save token:", error)
+      }
+
+      // Set up token refresh listener
+      const unsubscribe = messaging().onTokenRefresh(async (newToken) => {
+        try {
+          await saveToken(newToken)
+        } catch (error) {
+          console.error("DEBUG: Failed to save refreshed token:", error)
+        }
+      })
+
+      return unsubscribe
+    } catch (error) {
+      console.error("DEBUG: Error in registerForRemoteMessages:", error)
+    }
+  }
+}
