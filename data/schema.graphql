@@ -4356,6 +4356,26 @@ type AuthorArticlesConnectionEdge {
   node: Article
 }
 
+# A connection to a list of items.
+type AuthorConnection {
+  # A list of edges.
+  edges: [AuthorEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type AuthorEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: Author
+}
+
 enum Availability {
   FOR_SALE
   NOT_FOR_SALE
@@ -19011,6 +19031,14 @@ type Query {
     # The ID of the author
     id: String!
   ): Author
+  authorsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): AuthorConnection
 
   # A user's bank account
   bankAccount(
@@ -25078,6 +25106,14 @@ type Viewer {
     # The ID of the author
     id: String!
   ): Author
+  authorsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): AuthorConnection
 
   # A user's bank account
   bankAccount(
