@@ -11,15 +11,13 @@ export const usePromptForUpdate = () => {
   const toast = useToast()
 
   useEffect(() => {
-    const eventEmitter = new NativeEventEmitter(NativeModules.ArtsyNativeModule)
-    console.warn("usePromptForUpdate effect running, Platform.OS:", Platform.OS)
     // Only run on Android
     if (Platform.OS !== "android") {
-      console.warn("Skipping update check - not Android")
       return
     }
 
-    console.warn("Calling promptForUpdate")
+    const eventEmitter = new NativeEventEmitter(NativeModules.ArtsyNativeModule)
+
     setTimeout(() => {
       // delay prompt until homescreen loads
       ArtsyNativeModule.checkForAppUpdate()
@@ -27,15 +25,11 @@ export const usePromptForUpdate = () => {
 
     // Check if an update was already downloaded and show toast
     if (ArtsyNativeModule.updateDownloaded) {
-      console.warn("Update already downloaded, showing toast")
       showUpdateDownloadedToast()
-    } else {
-      console.warn("No update downloaded yet")
     }
 
     // Listen for update download events
-    const eventListener = eventEmitter.addListener("onAppUpdateDownloaded", (event) => {
-      console.warn("Received update downloaded event:", event)
+    const eventListener = eventEmitter.addListener("onAppUpdateDownloaded", () => {
       showUpdateDownloadedToast()
     })
 
@@ -48,7 +42,7 @@ export const usePromptForUpdate = () => {
     try {
       await ArtsyNativeModule.completeAppUpdate()
     } catch (error: any) {
-      console.warn("Failed to complete app update:", error)
+      console.log("Failed to complete app update:", error)
     }
   }
 
