@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-restricted-imports
 import "app/system/notifications/testNotification" // Import to register global test function
-import { useCreateAndroidNotificationChannels } from "app/system/notifications/useCreateAndroidChannels"
-import { useHandleRemoteMessages } from "app/system/notifications/useHandleRemoteMessages"
-import { useListenToRemoteMessages } from "app/system/notifications/useListenToRemoteMessages"
-import { useRegisterForRemoteMessages } from "app/system/notifications/useRegisterForRemoteMessages"
+import { useAndroidCreatePushNotificationChannels } from "app/system/notifications/useAndroidCreatePushNotificationChannels"
+import { useAndroidListenToFCMMessages } from "app/system/notifications/useAndroidListenToFCMMessages"
+import { useHandlePushNotifications } from "app/system/notifications/useHandlePushNotifications"
+import { useRegisterForPushNotifications } from "app/system/notifications/useRegisterForRemoteMessages"
 
 /**
  * This hook is used to handle push notifications and display them
@@ -14,8 +14,8 @@ import { useRegisterForRemoteMessages } from "app/system/notifications/useRegist
  * - Handles remote messages
  */
 export const usePushNotifications = () => {
-  useCreateAndroidNotificationChannels()
-  useRegisterForRemoteMessages()
-  useListenToRemoteMessages()
-  useHandleRemoteMessages()
+  useAndroidCreatePushNotificationChannels()
+  useRegisterForPushNotifications()
+  useAndroidListenToFCMMessages()
+  useHandlePushNotifications()
 }
