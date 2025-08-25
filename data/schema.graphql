@@ -4327,13 +4327,14 @@ type Author {
   id: ID!
   image: Image
   initials(length: Int = 3): String
-  instagramHandle: String
+  instagramHandle: String @deprecated(reason: "Use `socials.instagram` instead")
 
   # A type-specific ID.
   internalID: ID!
   name: String!
   role: String
-  twitterHandle: String
+  socials: AuthorSocials
+  twitterHandle: String @deprecated(reason: "Use `socials.x` instead")
 }
 
 # A connection to a list of items.
@@ -4374,6 +4375,21 @@ type AuthorEdge {
 
   # The item at the end of the edge
   node: Author
+}
+
+type AuthorSocials {
+  instagram: AuthorSocialsInstagram
+  x: AuthorSocialsX
+}
+
+type AuthorSocialsInstagram {
+  handle: String!
+  url: String!
+}
+
+type AuthorSocialsX {
+  handle: String!
+  url: String!
 }
 
 enum Availability {
