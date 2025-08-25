@@ -31,12 +31,13 @@ export const useListenToRemoteMessages = () => {
         await notifee.displayNotification({
           title: message.notification?.title,
           body: message.notification?.body,
-          data: message.data,
+          data: { ...message.notification, ...message.data },
           android:
             Platform.OS === "android"
               ? {
                   smallIcon: "ic_notification",
                   channelId,
+                  badgeCount: message.notification?.android?.count,
                 }
               : undefined,
         })
@@ -60,14 +61,14 @@ export const useListenToRemoteMessages = () => {
     if (Platform.OS === "ios") {
       iosListenerRef.current = listenToNativeEvents((event) => {
         if (event.type === "NOTIFICATION_RECEIVED") {
+          console.log("DEBUG: NOTIFICATION_RECEIVED", event)
           const alert = event.payload?.aps?.alert
+          const eventID = event.payload?.["item_id"]
+
           const message: FirebaseMessagingTypes.RemoteMessage = {
-            messageId: alert?.id || alert?.title,
+            messageId: event.payload?.["item_id"],
             fcmOptions: {},
-            notification: {
-              title: alert?.title,
-              body: alert?.body,
-            },
+            notification: event.payload,
           }
           onMessageReceived(message)
         }
