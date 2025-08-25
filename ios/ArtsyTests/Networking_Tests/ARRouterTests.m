@@ -1,4 +1,4 @@
-#import "ARRouter.h"
+#import "ARRouter+RestAPI.h"
 #import "AROptions.h"
 #import "ARNetworkConstants.h"
 #import "ARUserManager+Stubs.h"

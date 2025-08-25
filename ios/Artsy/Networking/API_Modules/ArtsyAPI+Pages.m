@@ -1,7 +1,7 @@
 #import "ArtsyAPI+Pages.h"
 #import "ArtsyAPI+Private.h"
 
-#import "ARRouter.h"
+#import "ARRouter+RestAPI.h"
 #import "ARLogger.h"
 
 

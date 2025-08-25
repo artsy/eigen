@@ -63,14 +63,14 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:userDataPath]) {
         _currentUser = [NSKeyedUnarchiver unarchiveObjectWithFile:userDataPath exceptionBlock:^id(NSException *exception) {
-            ARErrorLog(@"%@", exception.reason);
+            NSLog(@"%@", exception.reason);
             [[NSFileManager defaultManager] removeItemAtPath:userDataPath error:nil];
             return nil;
         }];
 
         // safeguard
         if (!_currentUser.userID) {
-            ARErrorLog(@"Deserialized user %@ does not have an ID.", _currentUser);
+            NSLog(@"Deserialized user %@ does not have an ID.", _currentUser);
             _currentUser = nil;
         }
     }
@@ -206,7 +206,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         NSError *error = nil;
         [[NSFileManager defaultManager] removeItemAtPath:userDataPath error:&error];
         if (error) {
-            ARErrorLog(@"Error Deleting User Data %@", error.localizedDescription);
+            NSLog(@"Error Deleting User Data %@", error.localizedDescription);
         }
     }
 }

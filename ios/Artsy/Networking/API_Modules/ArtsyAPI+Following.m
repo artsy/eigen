@@ -1,4 +1,4 @@
-#import "ARRouter.h"
+#import "ARRouter+RestAPI.h"
 #import "ArtsyAPI+Private.h"
 
 
