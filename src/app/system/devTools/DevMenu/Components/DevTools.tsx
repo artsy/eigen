@@ -195,7 +195,7 @@ export const DevTools: React.FC<{}> = () => {
               if (Platform.OS === "android" && status === "granted") {
                 const token = await LegacyNativeModules.ArtsyNativeModule.getPushToken()
                 if (token) {
-                  saveToken(token, true)
+                  saveToken(token)
                 }
               }
             }}
