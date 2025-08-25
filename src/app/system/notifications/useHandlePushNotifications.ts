@@ -1,6 +1,6 @@
 import notifee, { Event, EventType, Notification } from "@notifee/react-native"
+import { listenToNativeEvents } from "app/NativeModules/utils/listenToNativeEvents"
 import { GlobalStore } from "app/store/GlobalStore"
-import { listenToNativeEvents } from "app/store/NativeModel"
 // eslint-disable-next-line no-restricted-imports
 import { navigate, navigationEvents } from "app/system/navigation/navigate"
 import { logNotification } from "app/utils/loggers"
@@ -17,6 +17,7 @@ export const useHandlePushNotifications = () => {
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const { trackEvent } = useTracking()
   const iosListenerRef = useRef<EmitterSubscription | null>(null)
+  const notificationPayload = useRef<Notification | null>(null)
 
   const handleNotification = useCallback(
     (notification: Notification) => {
@@ -27,22 +28,14 @@ export const useHandlePushNotifications = () => {
         message: notification.body?.toString(),
       })
 
-      const url = notification.data?.url as string | undefined
-
-      if (isLoggedIn && url) {
-        navigationEvents.emit("requestModalDismiss")
-        navigate(url, {
-          passProps: notification.data,
-          ignoreDebounce: true,
-        })
-      }
+      notificationPayload.current = notification
     },
-    [isLoggedIn, trackEvent]
+    [trackEvent]
   )
 
   // Subscribe to iOS native notification taps
   useEffect(() => {
-    if (Platform.OS === "ios") {
+    if (Platform.OS === "ios" && isNavigationReady) {
       iosListenerRef.current = listenToNativeEvents((event) => {
         if (
           event.type === "NOTIFICATION_RECEIVED" &&
@@ -65,7 +58,7 @@ export const useHandlePushNotifications = () => {
         iosListenerRef.current?.remove?.()
       }
     }
-  }, [handleNotification])
+  }, [handleNotification, isLoggedIn, isNavigationReady])
 
   // Subscribe to Notifee events (mainly for Android)
   useEffect(() => {
@@ -115,4 +108,21 @@ export const useHandlePushNotifications = () => {
       return
     }
   }, [isNavigationReady, handleNotification])
+
+  // Navigate to the notification URL if the user is logged in
+  useEffect(() => {
+    if (isLoggedIn && notificationPayload.current) {
+      navigationEvents.emit("requestModalDismiss")
+
+      const url = notificationPayload.current.data?.url as string
+
+      navigate(url, {
+        passProps: notificationPayload.current.data,
+        ignoreDebounce: true,
+      })
+
+      // Reset the notification payload after navigation
+      notificationPayload.current = null
+    }
+  }, [isLoggedIn])
 }
