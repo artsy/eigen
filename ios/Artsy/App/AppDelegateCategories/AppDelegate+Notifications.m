@@ -139,29 +139,7 @@
     return normalizedInfo;
 }
 
-- (void)tappedNotification:(NSDictionary *)notificationInfo url:(NSString *)url;
-{
 
-    NSDictionary *normalizedInfo = [self normalizedNotificationInfo:notificationInfo];
-    [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationTapped traits:normalizedInfo];
-
-    NSDictionary *props = [self filteredProps:notificationInfo];
-    [[AREmission sharedInstance] navigate:url withProps:props];
-}
-
-- (NSDictionary *)filteredProps:(NSDictionary *)props;
-{
-    const NSArray *allowedKeys = @[@"searchCriteriaID"];
-
-    NSMutableDictionary *filteredDictionary = [NSMutableDictionary dictionary];
-    for (NSString *key in [props allKeys]) {
-        id value = props[key];
-        if ([allowedKeys containsObject:key] && ![value isKindOfClass:[NSNull class]]) {
-            filteredDictionary[key] = value;
-        }
-    }
-    return filteredDictionary;
-}
 
 - (UIWindow *)findVisibleWindow
 {
@@ -205,6 +183,8 @@
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{
     BOOL processedByBraze = ARAppDelegate.braze != nil && [ARAppDelegate.braze.notifications handleUserNotificationWithResponse:response
                                                                                                     withCompletionHandler:completionHandler];
+
+    // Only forward payload to React Native - let JS handle navigation
     NSDictionary *userInfo = response.notification.request.content.userInfo;
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];
     [notificationInfo setObject:@"Tapped" forKey:@"NotificationAction"]; // Indicate this was tapped
