@@ -105,7 +105,7 @@ export const useHandlePushNotifications = () => {
   }, [handleNotification])
 
   useEffect(() => {
-    if (!isNavigationReady) {
+    if (isNavigationReady) {
       notifee.getInitialNotification().then((initialNotification) => {
         if (initialNotification) {
           handleNotification(initialNotification.notification)
