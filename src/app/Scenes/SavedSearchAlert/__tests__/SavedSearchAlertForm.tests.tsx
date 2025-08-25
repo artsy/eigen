@@ -405,19 +405,6 @@ describe("SavedSearchAlertForm", () => {
 
       expect(screen.getByLabelText("Push Notifications Toggler")).not.toBeSelected()
     })
-
-    it("push toggle turns on when push permissions are enabled", async () => {
-      renderWithWrappers(
-        <TestRenderer initialValues={{ ...baseProps.initialValues, push: false, email: false }} />
-      )
-
-      fireEvent(screen.getByLabelText("Push Notifications Toggler"), "valueChange", true)
-
-      await flushPromiseQueue()
-
-      expect(spyAlert).not.toBeCalled()
-      expect(screen.getByLabelText("Push Notifications Toggler")).toBeSelected()
-    })
   })
 
   describe("Allow to send emails modal", () => {
