@@ -384,15 +384,32 @@ jest.mock("app/utils/hooks/useDebouncedValue", () => ({
   useDebouncedValue: ({ value }: any) => ({ debouncedValue: value }),
 }))
 
-jest.mock("react-native-push-notification", () => ({
-  configure: jest.fn(),
-  onRegister: jest.fn(),
-  onNotification: jest.fn(),
-  addEventListener: jest.fn(),
-  requestPermissions: jest.fn(),
-  checkPermissions: jest.fn(),
+jest.mock("@notifee/react-native", () => ({
+  displayNotification: jest.fn(),
+  getNotificationSettings: jest.fn(),
+  onForegroundEvent: jest.fn(() => jest.fn()),
+  onBackgroundEvent: jest.fn(),
+  getInitialNotification: jest.fn(),
   createChannel: jest.fn(),
-  localNotification: jest.fn(),
+  AuthorizationStatus: {
+    AUTHORIZED: 1,
+    DENIED: 0,
+  },
+  EventType: {
+    PRESS: 1,
+    DELIVERED: 2,
+  },
+}))
+
+jest.mock("@react-native-firebase/messaging", () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    registerDeviceForRemoteMessages: jest.fn(),
+    getToken: jest.fn(),
+    onMessage: jest.fn(() => jest.fn()),
+    setBackgroundMessageHandler: jest.fn(),
+    onTokenRefresh: jest.fn(() => jest.fn()),
+  })),
 }))
 
 jest.mock("react-native-keychain", () => ({

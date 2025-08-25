@@ -6,7 +6,7 @@ import {
   MyProfilePushNotifications,
   UserPushNotificationSettings,
 } from "app/Scenes/MyProfile/MyProfilePushNotifications"
-import { PushAuthorizationStatus } from "app/utils/PushNotification"
+import { PushAuthorizationStatus } from "app/system/notifications/getNotificationsPermissions"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"

@@ -122,7 +122,7 @@ static ARAppDelegate *_sharedInstanceOverride = nil;
 {
     [self setupForAppLaunch:launchOptions];
     [self setupAnalytics:application withLaunchOptions:launchOptions];
-    
+
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     center.delegate = self;
 

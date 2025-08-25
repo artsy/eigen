@@ -32,6 +32,7 @@
 - (NSDictionary *)reactState;
 
 - (void)notificationReceived;
+- (void)notificationReceivedWithPayload:(NSDictionary *)payload;
 
 - (void)modalDismissed;
 

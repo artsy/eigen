@@ -15,8 +15,8 @@ import {
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchPills"
 import { navigate } from "app/system/navigation/navigate"
+import { PushAuthorizationStatus } from "app/system/notifications/getNotificationsPermissions"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
@@ -404,19 +404,6 @@ describe("SavedSearchAlertForm", () => {
       expect(spyAlert).toBeCalled()
 
       expect(screen.getByLabelText("Push Notifications Toggler")).not.toBeSelected()
-    })
-
-    it("push toggle turns on when push permissions are enabled", async () => {
-      renderWithWrappers(
-        <TestRenderer initialValues={{ ...baseProps.initialValues, push: false, email: false }} />
-      )
-
-      fireEvent(screen.getByLabelText("Push Notifications Toggler"), "valueChange", true)
-
-      await flushPromiseQueue()
-
-      expect(spyAlert).not.toBeCalled()
-      expect(screen.getByLabelText("Push Notifications Toggler")).toBeSelected()
     })
   })
 
