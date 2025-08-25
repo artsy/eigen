@@ -1,6 +1,12 @@
+import notifee, {
+  AndroidChannel,
+  AndroidImportance,
+  EventType,
+  Notification,
+} from "@notifee/react-native"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import messaging from "@react-native-firebase/messaging"
 import { captureMessage } from "@sentry/react-native"
-import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import {
   getCurrentEmissionState,
   GlobalStore,
@@ -9,10 +15,10 @@ import {
   unsafe_getUserAccessToken,
 } from "app/store/GlobalStore"
 import { PendingPushNotification } from "app/store/PendingPushNotificationModel"
+// eslint-disable-next-line no-restricted-imports
 import { navigate, navigationEvents } from "app/system/navigation/navigate"
 import { Platform } from "react-native"
 import DeviceInfo from "react-native-device-info"
-import PushNotification, { ReceivedNotification } from "react-native-push-notification"
 import { logAction, logNotification } from "./loggers"
 import { SegmentTrackingProvider } from "./track/SegmentTrackingProvider"
 import { AnalyticsConstants } from "./track/constants"
@@ -22,15 +28,17 @@ export const HAS_PENDING_NOTIFICATION = "HAS_PENDING_NOTIFICATION"
 
 const MAX_ELAPSED_TAPPED_NOTIFICATION_TIME = 90 // seconds
 
-export const CHANNELS = [
+export const CHANNELS: AndroidChannel[] = [
   {
     name: "Artsy's default notifications channel",
     id: "Default",
-    properties: { channelDescription: "Artsy's default notifications channel" },
+    description: "Artsy's default notifications channel",
+    importance: AndroidImportance.HIGH,
   },
 ]
 
-type TypedNotification = Omit<ReceivedNotification, "userInfo"> & { title?: string }
+// TypedNotification extends Notifee's Notification type
+type TypedNotification = Notification & { data: any; title?: string }
 
 export enum PushAuthorizationStatus {
   NotDetermined = "notDetermined",
@@ -49,7 +57,7 @@ export const savePendingToken = async () => {
   }
 }
 
-export const saveToken = (token: string, ignoreSameTokenCheck = false) => {
+export const saveToken = (token: string, ignoreSameTokenCheck = true) => {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise<boolean>(async (resolve, reject) => {
     const previousToken = await AsyncStorage.getItem(PUSH_NOTIFICATION_TOKEN)
@@ -110,53 +118,71 @@ export const saveToken = (token: string, ignoreSameTokenCheck = false) => {
   })
 }
 
-export const createChannel = (channelId: string, channelName: string, properties: any = {}) => {
-  PushNotification.createChannel(
-    {
-      channelId,
-      channelName,
-      ...properties,
-    },
-    (created) => {
-      if (created && __DEV__) {
-        console.log(`NEW CHANNEL ${channelName} CREATED`)
-      }
+// Creates Android notification channel (iOS doesn't use channels)
+export const createChannel = async (channel: AndroidChannel) => {
+  try {
+    await notifee.createChannel(channel)
+    if (__DEV__) {
+      console.log(`NEW CHANNEL ${channel.id} CREATED`)
     }
-  )
-}
-
-export const createAllChannels = () => {
-  CHANNELS.forEach((channel) => {
-    createChannel(channel.name, channel.id, channel.properties)
-  })
-}
-
-export const createLocalNotification = (notification: TypedNotification) => {
-  const channelId = notification.data.channelId ?? CHANNELS[0].id
-  const channelName = notification.data.channelName ?? channelId
-
-  const create = () => {
-    PushNotification.localNotification({
-      /* Android Only Properties */
-      channelId, // (required) channelId, if the channel doesn't exist, notification will not trigger.
-      subText: notification.subText,
-      ignoreInForeground: false, // (optional) if true, the notification will not be visible when the app is in the foreground (useful for parity with how iOS notifications appear). should be used in combine with `com.dieam.reactnativepushnotification.notification_foreground` setting
-      onlyAlertOnce: false, // (optional) alert will open only once with sound and notify, default: false
-      userInfo: notification.data,
-
-      /* iOS and Android properties */
-      id: 0,
-      message: notification.title ?? "Artsy", // (required)
-    })
+  } catch (error) {
+    if (__DEV__) {
+      console.warn(`Failed to create channel ${channel.id}:`, error)
+    }
   }
-  PushNotification.channelExists(channelId, (exists) => {
-    if (exists) {
-      create()
-    } else {
-      createChannel(channelId, channelName)
-      create()
+}
+
+export const createAllChannels = async () => {
+  await Promise.all(CHANNELS.map((channel) => createChannel(channel)))
+}
+
+export const createLocalNotification = async (notification: TypedNotification) => {
+  const channelId = notification.data?.channelId ?? CHANNELS[0].id
+  const channelName = notification.data?.channelName ?? channelId
+
+  const create = async () => {
+    const notificationBody: Notification = {
+      title: notification.title ?? "Artsy",
+      body: notification.body,
+      data: notification.data,
+      android: {
+        channelId,
+        smallIcon: "ic_launcher",
+        pressAction: {
+          id: "default",
+        },
+      },
+      ios: {
+        foregroundPresentationOptions: {
+          alert: true,
+          badge: true,
+          sound: true,
+        },
+      },
     }
-  })
+
+    await notifee.displayNotification(notificationBody)
+  }
+
+  try {
+    const channels = await notifee.getChannels()
+    const channelExists = channels.some((channel) => channel.id === channelId)
+
+    if (channelExists) {
+      await create()
+    } else {
+      await createChannel({
+        id: channelId,
+        name: channelName,
+        importance: AndroidImportance.DEFAULT,
+      })
+      await create()
+    }
+  } catch (error) {
+    if (__DEV__) {
+      console.warn("Failed to create local notification:", error)
+    }
+  }
 }
 
 export const handlePendingNotification = (notification: PendingPushNotification | null) => {
@@ -173,9 +199,7 @@ export const handlePendingNotification = (notification: PendingPushNotification 
 let lastEventTimestamp = 0
 const DEBOUNCE_THRESHOLD = 500 // 500ms threshold
 
-export const handleReceivedNotification = (
-  notification: Omit<ReceivedNotification, "userInfo">
-) => {
+export const handleReceivedNotification = (notification: any) => {
   if (__DEV__ && !__TEST__) {
     console.log("RECEIVED NOTIFICATION", notification)
   }
@@ -188,7 +212,6 @@ export const handleReceivedNotification = (
     // and also navigate only once to the deeplink url
     // ios handles it in the native side
     // debounce events to avoid double tracking and double navigating
-    // once we migrate away from this library we can refactor this
 
     if (Platform.OS === "android" && now - lastEventTimestamp > DEBOUNCE_THRESHOLD) {
       lastEventTimestamp = now
@@ -216,8 +239,15 @@ export const handleReceivedNotification = (
 
     if (!isLoggedIn || !isNavigationReady) {
       // removing finish because we do not use it on android and we don't want to serialise functions at this time
-      const newNotification = { ...notification, finish: undefined, tappedAt: Date.now() }
-      delete newNotification.finish
+      const newNotification: PendingPushNotification = {
+        id: notification.id || Date.now().toString(),
+        foreground: notification.foreground || false,
+        userInteraction: notification.userInteraction || false,
+        message: notification.message || null,
+        data: notification.data || {},
+        tappedAt: Date.now(),
+        finish: undefined,
+      }
       GlobalStore.actions.pendingPushNotification.setPendingPushNotification(newNotification)
       return
     }
@@ -229,12 +259,19 @@ export const handleReceivedNotification = (
     // In order to have a consistent behaviour in Android & iOS with the most flexibility,
     // it is best to handle it manually by prompting a local notification when onNotification
     // is triggered by a remote push notification on foreground
-    const typedNotification: TypedNotification = { ...notification }
-    createLocalNotification(typedNotification)
+    const typedNotification: TypedNotification = {
+      ...notification,
+      data: notification.data || {},
+    }
+    createLocalNotification(typedNotification).catch((error) => {
+      if (__DEV__) {
+        console.warn("Failed to create local notification:", error)
+      }
+    })
   }
 }
 
-export const handleNotificationAction = (notification: Omit<ReceivedNotification, "userInfo">) => {
+export const handleNotificationAction = (notification: any) => {
   if (__DEV__) {
     if (logAction) {
       console.log("ACTION:", notification.action)
@@ -245,69 +282,152 @@ export const handleNotificationAction = (notification: Omit<ReceivedNotification
   }
 }
 
+// Set up Firebase background message handler (must be called outside of component)
+messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+  if (__DEV__) {
+    console.log("Message handled in the background!", remoteMessage)
+  }
+
+  // Convert FCM message to our notification format
+  if (remoteMessage.notification || remoteMessage.data) {
+    const notification = {
+      id: remoteMessage.messageId,
+      title: remoteMessage.notification?.title,
+      body: remoteMessage.notification?.body,
+      data: remoteMessage.data || {},
+    }
+
+    // Display the notification using Notifee
+    await createLocalNotification(notification as TypedNotification)
+  }
+})
+
 export async function configure() {
-  PushNotification.configure({
-    // (optional) Called when Token is generated (iOS and Android)
-    onRegister: async (token) => {
-      try {
-        saveToken(token.token)
-      } catch (e) {
-        captureMessage(`Error saving push notification token: ${e}`, "info")
-      }
-    },
+  // Get FCM token for push notification registration
+  try {
+    const fcmToken = await messaging().getToken()
+    if (fcmToken) {
+      await saveToken(fcmToken)
+    }
+  } catch (error) {
+    if (__DEV__) {
+      console.warn("Failed to get FCM token:", error)
+    }
+    captureMessage(`Error getting FCM token: ${error}`, "error")
+  }
 
-    // (required) Called when a remote is received or opened, or local notification is opened
-    onNotification: handleReceivedNotification,
-
-    // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
-    onAction: handleNotificationAction,
-
-    // (optional) Called when the user fails to register for remote notifications. Typically occurs when APNS is having issues, or the device is a simulator. (iOS)
-    onRegistrationError: (err) => {
+  // Listen for token refresh events
+  const unsubscribeTokenRefresh = messaging().onTokenRefresh(async (token) => {
+    try {
+      await saveToken(token)
+    } catch (error) {
       if (__DEV__) {
-        console.error(err?.message, err)
+        console.warn("Failed to save refreshed token:", error)
       }
-    },
-
-    // IOS ONLY (optional): default: all - Permissions to register.
-    // permissions: {
-    //   alert: true,
-    //   badge: true,
-    //   sound: true,
-    // },
-
-    // Should the initial notification be popped automatically
-    // default: true
-    popInitialNotification: true,
-
-    /**
-     * (optional) default: true
-     * - Specified if permissions (ios) and token (android and ios) will requested or not,
-     * - if not, you must call PushNotificationsHandler.requestPermissions() later
-     * - if you are not using remote notification or do not have Firebase installed, use this:
-     *     requestPermissions: Platform.OS === 'ios'
-     */
-    // TODO:- Update this as required when implementing for ios
-    requestPermissions: false,
-  })
-}
-
-export const getNotificationPermissionsStatus = (): Promise<PushAuthorizationStatus> => {
-  return new Promise((resolve) => {
-    if (Platform.OS === "ios") {
-      LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions(
-        (_, result: PushAuthorizationStatus) => {
-          resolve(result)
-        }
-      )
-    } else if (Platform.OS === "android") {
-      PushNotification.checkPermissions((permissions) => {
-        resolve(
-          permissions.alert ? PushAuthorizationStatus.Authorized : PushAuthorizationStatus.Denied
-        )
-      })
+      captureMessage(`Error saving refreshed FCM token: ${error}`, "error")
     }
   })
+
+  // Handle FCM messages when app is in foreground
+  const unsubscribeOnMessage = messaging().onMessage(async (remoteMessage) => {
+    if (__DEV__) {
+      console.log("FCM message received in foreground:", remoteMessage)
+    }
+
+    // Convert FCM message to our notification format and display
+    if (remoteMessage.notification || remoteMessage.data) {
+      const notification: TypedNotification = {
+        id: remoteMessage.messageId,
+        title: remoteMessage.notification?.title,
+        body: remoteMessage.notification?.body,
+        data: remoteMessage.data || {},
+      }
+
+      // Display as local notification
+      await createLocalNotification(notification)
+    }
+  })
+
+  // Set up event handlers for notification interactions
+  const unsubscribeForegroundEvents = notifee.onForegroundEvent(({ type, detail }) => {
+    if (type === EventType.PRESS) {
+      const notification = {
+        data: detail.notification?.data || {},
+        userInteraction: true,
+        foreground: false,
+        message: detail.notification?.title || detail.notification?.body,
+      }
+      handleReceivedNotification(notification)
+    } else if (type === EventType.ACTION_PRESS && detail.pressAction?.id) {
+      const notification = {
+        action: detail.pressAction.id,
+        data: detail.notification?.data || {},
+      }
+      handleNotificationAction(notification)
+    }
+  })
+
+  // Handle background events (when app is in background/killed)
+  notifee.onBackgroundEvent(async ({ type, detail }) => {
+    if (type === EventType.PRESS) {
+      const notification = {
+        data: detail.notification?.data || {},
+        userInteraction: true,
+        foreground: false,
+        message: detail.notification?.title || detail.notification?.body,
+      }
+      handleReceivedNotification(notification)
+    }
+  })
+
+  // Get initial notification if app was opened from a notification
+  const initialNotification = await notifee.getInitialNotification()
+  if (initialNotification) {
+    const notification = {
+      data: initialNotification.notification?.data || {},
+      userInteraction: true,
+      foreground: false,
+      message: initialNotification.notification?.title || initialNotification.notification?.body,
+    }
+    handleReceivedNotification(notification)
+  }
+
+  // Create default channels
+  await createAllChannels()
+
+  // Return cleanup function
+  return () => {
+    unsubscribeForegroundEvents()
+    unsubscribeTokenRefresh()
+    unsubscribeOnMessage()
+  }
+}
+
+export const getNotificationPermissionsStatus = async (): Promise<PushAuthorizationStatus> => {
+  try {
+    const settings = await notifee.getNotificationSettings()
+
+    if (Platform.OS === "ios") {
+      switch (settings.authorizationStatus) {
+        case 1: // AUTHORIZED
+          return PushAuthorizationStatus.Authorized
+        case 2: // DENIED
+          return PushAuthorizationStatus.Denied
+        default:
+          return PushAuthorizationStatus.NotDetermined
+      }
+    } else {
+      // Android
+      return settings.authorizationStatus === 1
+        ? PushAuthorizationStatus.Authorized
+        : PushAuthorizationStatus.Denied
+    }
+  } catch (error) {
+    if (__DEV__) {
+      console.warn("Error getting notification permission status:", error)
+    }
+    return PushAuthorizationStatus.NotDetermined
+  }
 }
 
 module.exports = {
