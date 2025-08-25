@@ -6,9 +6,9 @@ import { useEffect } from "react"
 import { Platform } from "react-native"
 
 /**
- * This hook is used to register the device FCM
+ * This hook is used to register the device for push notifications
  */
-export const useRegisterForRemoteMessages = () => {
+export const useRegisterForPushNotifications = () => {
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
 
   useEffect(() => {
