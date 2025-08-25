@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -15,7 +14,6 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.Arguments;
-
 
 import java.io.File;
 import java.util.HashMap;
@@ -51,9 +49,6 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
             WritableMap params = Arguments.createMap();
             params.putString("message", "Update downloaded successfully");
             instance.sendEvent(params);
-            Log.d(TAG, "Update downloaded event sent to React Native");
-        } else {
-            Log.e(TAG, "ArtsyNativeModule instance is null, cannot send event");
         }
     }
 
@@ -95,9 +90,7 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void checkForAppUpdate(Promise promise) {
-        Log.d(TAG, "checkForAppUpdate called from React Native");
         if (mainActivity != null) {
-            Log.d(TAG, "MainActivity reference found, calling update check");
             mainActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -105,13 +98,11 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
                         mainActivity.checkForAppUpdateFromRN();
                         promise.resolve(true);
                     } catch (Exception e) {
-                        Log.e(TAG, "Error checking for update", e);
                         promise.reject("UPDATE_CHECK_FAILED", "Failed to check for app update", e);
                     }
                 }
             });
         } else {
-            Log.e(TAG, "MainActivity reference is null");
             promise.reject("NO_MAIN_ACTIVITY", "MainActivity reference not available");
         }
     }
