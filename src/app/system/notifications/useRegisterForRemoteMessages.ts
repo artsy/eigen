@@ -12,7 +12,6 @@ export const useRegisterForRemoteMessages = () => {
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
 
   useEffect(() => {
-    console.log("DEBUG: useRegisterForRemoteMessages - isLoggedIn:", isLoggedIn)
     // On Android, we need to register for remote messages to get the token
     // On iOS, we don't need to register for remote messages to get the token
     // because it's handled by the app delegate
@@ -33,7 +32,6 @@ export const useRegisterForRemoteMessages = () => {
       } else {
         // Get the token
         token = (await LegacyNativeModules.ArtsyNativeModule.getPushToken()) ?? ""
-        console.log("[DEBUG] token", token)
       }
 
       if (!token) {
