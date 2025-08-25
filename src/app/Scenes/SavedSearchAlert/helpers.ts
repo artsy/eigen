@@ -72,6 +72,7 @@ export const checkOrRequestPushPermissions = async () => {
   const notificationStatus = await getNotificationPermissionsStatus()
 
   const pushPromptSettings = unsafe_getPushPromptSettings()
+
   if (!pushPromptSettings) {
     return
   }
