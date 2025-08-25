@@ -27,7 +27,7 @@ module.exports = (api) => {
     "react-native-reanimated/plugin", // has to be listed last according to the documentation. https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/installation/#babel-plugin
   ]
 
-  const prodPlugins = [["transform-remove-console", { exclude: ["error", "warn"] }], ...plugins]
+  const prodPlugins = [["transform-remove-console", { exclude: ["error"] }], ...plugins]
 
   const babelPlugins = isProd ? prodPlugins : plugins
 
