@@ -14,7 +14,6 @@ export const promptForUpdate = () => {
     })
 }
 
-// Function to complete app update
 export const completeAppUpdate = () => {
   return ArtsyNativeModule.completeAppUpdate()?.catch((error: any) => {
     console.warn("Failed to complete app update:", error)
