@@ -167,3 +167,7 @@ main.jsbundle.map
 .expo
 dist/
 web-build/
+
+
+# Cursor MPC
+.cursor/mcp.json
