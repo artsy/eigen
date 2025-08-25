@@ -3,9 +3,9 @@ import { useEffect } from "react"
 import { Platform } from "react-native"
 
 /**
- * This hook is used to create the Android notification channels
+ * This hook is used to create the Android push notification channels
  */
-export const useCreateAndroidNotificationChannels = () => {
+export const useAndroidCreatePushNotificationChannels = () => {
   useEffect(() => {
     console.log("DEBUG: useCreateAndroidNotificationChannels - Platform:", Platform.OS)
 

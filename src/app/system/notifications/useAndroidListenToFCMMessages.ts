@@ -1,16 +1,14 @@
 import notifee, { AuthorizationStatus } from "@notifee/react-native"
 import messaging, { FirebaseMessagingTypes } from "@react-native-firebase/messaging"
-import { listenToNativeEvents } from "app/store/NativeModel"
 // eslint-disable-next-line no-restricted-imports
-import { useEffect, useRef } from "react"
-import { EmitterSubscription, Platform } from "react-native"
+import { useEffect } from "react"
+import { Platform } from "react-native"
 
 /**
- * This hook is used to listen to remote messages and display them
+ * This hook is used to listen to FCM messages and display them
+ * This is used for Android only
  */
-export const useListenToRemoteMessages = () => {
-  const iosListenerRef = useRef<EmitterSubscription | null>(null)
-
+export const useAndroidListenToFCMMessages = () => {
   useEffect(() => {
     const onMessageReceived = async (message: FirebaseMessagingTypes.RemoteMessage) => {
       try {
@@ -18,7 +16,6 @@ export const useListenToRemoteMessages = () => {
         const settings = await notifee.getNotificationSettings()
 
         if (settings.authorizationStatus !== AuthorizationStatus.AUTHORIZED) {
-          console.log("DEBUG: Notifications not authorized", settings.authorizationStatus)
           return
         }
 
@@ -55,27 +52,6 @@ export const useListenToRemoteMessages = () => {
 
       return () => {
         unsubscribeFCMForeground()
-      }
-    }
-
-    if (Platform.OS === "ios") {
-      iosListenerRef.current = listenToNativeEvents((event) => {
-        if (event.type === "NOTIFICATION_RECEIVED") {
-          console.log("DEBUG: NOTIFICATION_RECEIVED", event)
-          const alert = event.payload?.aps?.alert
-          const eventID = event.payload?.["item_id"]
-
-          const message: FirebaseMessagingTypes.RemoteMessage = {
-            messageId: event.payload?.["item_id"],
-            fcmOptions: {},
-            notification: event.payload,
-          }
-          onMessageReceived(message)
-        }
-      })
-
-      return () => {
-        iosListenerRef.current?.remove?.()
       }
     }
   }, [])
