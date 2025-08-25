@@ -90,7 +90,7 @@ jobs:
         run: yarn relay
 
       - name: Build Android app and upload to S3 for Maestro
-        run: bundle exec fastlane build_maestro_android
+        run: bundle exec fastlane ship_beta_android maestro:true
         env:
           VERBOSE: 1
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
