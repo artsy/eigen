@@ -33,7 +33,6 @@ class MainActivity : ReactActivity() {
     private val updateResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
-        Log.d(TAG, "Update flow result: ${result.resultCode}")
         if (result.resultCode != RESULT_OK) {
             Log.d(TAG, "Update flow failed! Result code: ${result.resultCode}")
         }
@@ -112,18 +111,14 @@ class MainActivity : ReactActivity() {
         appUpdateManager = AppUpdateManagerFactory.create(this)
 
         installStateUpdatedListener = InstallStateUpdatedListener { state ->
-            Log.d(TAG, "Install state updated: ${state.installStatus()}")
             when (state.installStatus()) {
                 InstallStatus.DOWNLOADED -> {
-                    Log.d(TAG, "Update downloaded, notifying React Native")
                     notifyReactNativeUpdateDownloaded()
                 }
                 InstallStatus.INSTALLED -> {
-                    Log.d(TAG, "Update installed successfully")
                     appUpdateManager.unregisterListener(installStateUpdatedListener)
                 }
                 InstallStatus.FAILED -> {
-                    Log.d(TAG, "Update installation failed")
                     appUpdateManager.unregisterListener(installStateUpdatedListener)
                 }
             }
@@ -142,7 +137,6 @@ class MainActivity : ReactActivity() {
             .appUpdateInfo
             .addOnSuccessListener { appUpdateInfo ->
                 if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
-                    Log.d(TAG, "onResume: Update downloaded, notifying React Native")
                     notifyReactNativeUpdateDownloaded()
                 }
             }
@@ -158,8 +152,6 @@ class MainActivity : ReactActivity() {
     }
 
     private fun checkForAppUpdate() {
-        Log.d(TAG, "here we go!")
-        Log.d(TAG, "checkForAppUpdate: started checking for update!")
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
 
         appUpdateInfoTask.addOnFailureListener { appUpdateInfo ->
@@ -167,22 +159,12 @@ class MainActivity : ReactActivity() {
         }
 
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
-            Log.d(TAG, "checkForAppUpdate: adding listener, appUpdateInfo: ${appUpdateInfo.toString()}")
-
             val staleDays = appUpdateInfo.clientVersionStalenessDays() ?: -1
-
-            Log.d(TAG, "checkForAppUpdate: conditions: \n" +
-                    "appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE: ${appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE}\n" +
-                    "staleDays ($staleDays) >= DAYS_FOR_FLEXIBLE_UPDATE ($DAYS_FOR_FLEXIBLE_UPDATE): ${staleDays >= DAYS_FOR_FLEXIBLE_UPDATE}\n" +
-                    "appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE): ${appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)}\n" +
-                    "appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE): ${appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)}"
-            )
 
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
                 when {
                     staleDays >= DAYS_FOR_FLEXIBLE_UPDATE && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE) -> {
-                        Log.d(TAG, "Starting flexible update (app is $staleDays days stale)")
-                        startUpdateFlow(appUpdateInfo, AppUpdateType.FLEXIBLE)
+                        startUpdateFlow(appUpdateInfo)
                     }
                     else -> {
                         Log.d(TAG, "Update available but conditions not met for update prompt")
@@ -192,19 +174,14 @@ class MainActivity : ReactActivity() {
         }
     }
 
-    private fun startUpdateFlow(appUpdateInfo: AppUpdateInfo, updateType: Int) {
+    private fun startUpdateFlow(appUpdateInfo: AppUpdateInfo,) {
         try {
-            val updateTypeString = if (updateType == AppUpdateType.IMMEDIATE) "immediate" else "flexible"
-            Log.d(TAG, "startUpdateFlow: Starting $updateTypeString update flow")
-
             appUpdateManager.startUpdateFlowForResult(
                 appUpdateInfo,
                 updateResultLauncher,
-                AppUpdateOptions.newBuilder(updateType).build()
+                AppUpdateOptions.newBuilder(AppUpdateType.FLEXIBLE).build()
             )
-            Log.d(TAG, "startUpdateFlow: $updateTypeString update flow started successfully")
         } catch (e: IntentSender.SendIntentException) {
-            Log.e(TAG, "startUpdateFlow: Failed to start update flow", e)
             e.printStackTrace()
         }
     }
@@ -213,7 +190,6 @@ class MainActivity : ReactActivity() {
         // Store the update state and trigger event
         ArtsyNativeModule.setUpdateDownloadedState(true)
         ArtsyNativeModule.triggerUpdateDownloadedEvent()
-        Log.d(TAG, "Update downloaded state set and event triggered for React Native")
     }
 
     fun completeAppUpdate() {
