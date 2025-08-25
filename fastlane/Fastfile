@@ -587,20 +587,21 @@ lane :build_maestro_ios do
   bundle_version = set_build_version_ios
   set_git_properties_ios
 
-
   # Build iOS app with QA scheme for simulator (no codesigning needed)
   build_ios_app(
     build_path: "archives",
     workspace: 'ios/Artsy.xcworkspace',
     scheme: 'Artsy (QA)',
+    export_method: "development",
+    skip_codesigning: true,
+    skip_archive: true,
     configuration: 'QA',
     destination: 'generic/platform=iOS Simulator',
-    skip_codesigning: true,
-    skip_archive: false,
-    silent: true
+    silent: true,
+    sdk: 'iphonesimulator',
+    xcargs: "GCC_PREPROCESSOR_DEFINITIONS='$(inherited)'"
   )
 
-  # Upload to S3
   upload_ios_maestro_to_s3
 end
 
