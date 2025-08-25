@@ -4724,6 +4724,9 @@ input BulkUpdateArtworksMetadataInput {
   # Details about the signature
   signature: String
 
+  # Types of signatures on the artwork
+  signatureTypes: [ArtworkSignatureTypeEnum]
+
   # The title of the artwork
   title: String
 }
