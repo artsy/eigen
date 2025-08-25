@@ -47,8 +47,11 @@ export const useHandleRemoteMessages = () => {
       console.log("[DEBUG] NOTIFICATION:", event.detail.notification)
     }
 
-    if (event.type === EventType.PRESS) {
-      handleNotification(event.detail.notification)
+    switch (event.type) {
+      case EventType.PRESS:
+      case EventType.DELIVERED:
+        handleNotification(event.detail.notification)
+        break
     }
   }
 

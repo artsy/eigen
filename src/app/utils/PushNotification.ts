@@ -11,18 +11,18 @@ export const savePendingToken = async () => {
   const hasPendingToken = await AsyncStorage.getItem(HAS_PENDING_NOTIFICATION)
   const token = await AsyncStorage.getItem(PUSH_NOTIFICATION_TOKEN)
   if (token && hasPendingToken === "true") {
-    const saved = await saveToken(token, true)
+    const saved = await saveToken(token)
     if (saved) {
       await AsyncStorage.removeItem(HAS_PENDING_NOTIFICATION)
     }
   }
 }
 
-export const saveToken = (token: string, ignoreSameTokenCheck = false) => {
+export const saveToken = (token: string) => {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise<boolean>(async (resolve, reject) => {
     const previousToken = await AsyncStorage.getItem(PUSH_NOTIFICATION_TOKEN)
-    if (token !== previousToken || ignoreSameTokenCheck) {
+    if (token !== previousToken) {
       const { authenticationToken, userAgent } = getCurrentEmissionState()
       if (!authenticationToken) {
         // user is not logged in. The first time a user opens the app, expect token to be gotten before the global store is initialised
