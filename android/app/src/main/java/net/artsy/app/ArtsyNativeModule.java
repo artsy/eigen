@@ -58,7 +58,7 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
         if (instance != null) {
             WritableMap params = Arguments.createMap();
             params.putString("message", "Update downloaded successfully");
-            instance.sendEvent("onAppUpdateDownloaded", params);
+            instance.sendEvent(params);
             Log.d(TAG, "Update downloaded event sent to React Native");
         } else {
             Log.e(TAG, "ArtsyNativeModule instance is null, cannot send event");
@@ -266,10 +266,10 @@ public class ArtsyNativeModule extends ReactContextBaseJavaModule {
         }
     }
 
-    private void sendEvent(String eventName, WritableMap params) {
+    private void sendEvent(WritableMap params) {
         getReactApplicationContext()
             .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-            .emit(eventName, params);
+            .emit("onAppUpdateDownloaded", params);
     }
 
     @ReactMethod

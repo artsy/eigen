@@ -111,8 +111,8 @@ android {
         applicationId "net.artsy.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1674646332
-        versionName "8.82.0"
+        versionCode 7
+        versionName "1.0.0"
         vectorDrawables.useSupportLibrary = true
 
         multiDexEnabled true
@@ -218,7 +218,6 @@ dependencies {
     // Test dependencies
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'io.mockk:mockk:1.13.12'
-
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

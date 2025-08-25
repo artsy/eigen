@@ -1,18 +1,11 @@
 package net.artsy.app
 import expo.modules.ReactActivityDelegateWrapper
 
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-import android.view.View
-import android.view.WindowInsets
-import android.view.WindowManager
 import android.content.Intent
 import android.content.IntentSender
-import android.net.Uri
-import androidx.annotation.Nullable
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.zoontek.rnbootsplash.RNBootSplash
@@ -20,8 +13,8 @@ import com.dieam.reactnativepushnotification.modules.RNPushNotification
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateOptions
@@ -34,7 +27,6 @@ import android.util.Log
 
 class MainActivity : ReactActivity() {
     private val DAYS_FOR_FLEXIBLE_UPDATE = -1
-    private val DAYS_FOR_IMMEDIATE_UPDATE = 14
     private val TAG = "ArtsyApp"
     private lateinit var appUpdateManager: AppUpdateManager
 
@@ -181,7 +173,6 @@ class MainActivity : ReactActivity() {
 
             Log.d(TAG, "checkForAppUpdate: conditions: \n" +
                     "appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE: ${appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE}\n" +
-                    "staleDays ($staleDays) >= DAYS_FOR_IMMEDIATE_UPDATE ($DAYS_FOR_IMMEDIATE_UPDATE): ${staleDays >= DAYS_FOR_IMMEDIATE_UPDATE}\n" +
                     "staleDays ($staleDays) >= DAYS_FOR_FLEXIBLE_UPDATE ($DAYS_FOR_FLEXIBLE_UPDATE): ${staleDays >= DAYS_FOR_FLEXIBLE_UPDATE}\n" +
                     "appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE): ${appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)}\n" +
                     "appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE): ${appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)}"
@@ -189,10 +180,6 @@ class MainActivity : ReactActivity() {
 
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE) {
                 when {
-                    staleDays >= DAYS_FOR_IMMEDIATE_UPDATE && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE) -> {
-                        Log.d(TAG, "Starting immediate update (app is $staleDays days stale)")
-                        startUpdateFlow(appUpdateInfo, AppUpdateType.IMMEDIATE)
-                    }
                     staleDays >= DAYS_FOR_FLEXIBLE_UPDATE && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE) -> {
                         Log.d(TAG, "Starting flexible update (app is $staleDays days stale)")
                         startUpdateFlow(appUpdateInfo, AppUpdateType.FLEXIBLE)

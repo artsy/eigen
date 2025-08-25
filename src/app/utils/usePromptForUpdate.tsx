@@ -6,7 +6,6 @@ import { completeAppUpdate, promptForUpdate } from "./promptForUpdate"
 
 /**
  * This is used to check for app updates on every app launch.
- * Updates are triggered based on app staleness (7+ days for flexible, 14+ days for immediate).
  * Also monitors for downloaded updates and shows restart toast.
  */
 export const usePromptForUpdate = () => {
@@ -25,7 +24,7 @@ export const usePromptForUpdate = () => {
     setTimeout(() => {
       // delay prompt until homescreen loads
       promptForUpdate()
-    }, 10000)
+    }, 12000)
 
     // Check if an update was already downloaded and show toast
     if (ArtsyNativeModule.updateDownloaded) {
@@ -44,12 +43,12 @@ export const usePromptForUpdate = () => {
     return () => {
       eventListener.remove()
     }
-  }, [ArtsyNativeModule.updateDownloaded])
+  }, [])
 
   const showUpdateDownloadedToast = () => {
-    toast.show("Update downloaded. Reload and apply the update.", "bottom", {
+    toast.show("Update downloaded. Reload to apply the update.", "bottom", {
       backgroundColor: "green100",
-      cta: "Reload the App",
+      cta: "Reload",
       onPress: completeAppUpdate,
       duration: "superLong",
     })
