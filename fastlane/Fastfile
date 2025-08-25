@@ -589,7 +589,7 @@ lane :build_maestro_ios do
 
   # Build iOS app with QA scheme for simulator (no codesigning needed)
   build_ios_app(
-    derived_data: "derived_data",
+    derived_data_path: "derived_data",
     build_path: "archives",
     workspace: 'ios/Artsy.xcworkspace',
     scheme: 'Artsy (QA)',
