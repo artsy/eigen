@@ -1551,8 +1551,27 @@ PODS:
     - React
   - react-native-cookies (6.0.11):
     - React-Core
-  - react-native-document-picker (9.3.0):
+  - react-native-document-picker (9.3.1):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
     - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-fbsdk-next (13.4.1):
     - React-Core
     - react-native-fbsdk-next/Core (= 13.4.1)
@@ -2923,7 +2942,7 @@ SPEC CHECKSUMS:
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
   FXBlurView: db786c2561cb49a09ae98407f52460096ab8a44f
-  glog: eb93e2f488219332457c3c4eafd2738ddc7e80b8
+  glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
   GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
@@ -2990,7 +3009,7 @@ SPEC CHECKSUMS:
   react-native-blurhash: bab22da783c13c6fa5004a56559c287f56f0c7a1
   react-native-context-menu-view: 74fbcf8a5f842c4802d0121addda2f8ffca43604
   react-native-cookies: b90327af903c8a7652100201d890c50a98697799
-  react-native-document-picker: 6b08d834d4e4252bb8aad13d852e27666294b5b9
+  react-native-document-picker: 67f639fe9ec052951315abb7b5514ec61fe5e1b7
   react-native-fbsdk-next: 52f81e60eb3e8e0e06cf9728b4572d3509ca9d01
   react-native-geolocation: 697f7e4206386120bfdcf0c6a858e956360c734c
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
