@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-android-qa:
-    if: github.ref == 'refs/heads/main'
+    # if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
@@ -90,7 +90,7 @@ jobs:
         run: yarn relay
 
       - name: Build Android app and upload to S3 for Maestro
-        run: bundle exec fastlane ship_beta_android maestro:true
+        run: bundle exec fastlane build_maestro_android
         env:
           VERBOSE: 1
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
