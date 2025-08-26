@@ -206,6 +206,12 @@ export const features = {
     description: "Enable price range toast prompting users to update a price range",
     echoFlagKey: "AREnablePriceRangeToast",
   },
+  AREnableExpandedCityGuide: {
+    readyForRelease: false,
+    showInDevMenu: true,
+    description: "Enable expanded city list in City Guide",
+    echoFlagKey: "AREnableExpandedCityGuide",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
