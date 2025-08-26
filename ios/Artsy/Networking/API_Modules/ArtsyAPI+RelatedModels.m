@@ -2,7 +2,7 @@
 #import "Artwork.h"
 #import "Gene.h"
 #import "ArtsyAPI+Private.h"
-#import "ARRouter.h"
+#import "ARRouter+RestAPI.h"
 
 
 @implementation ArtsyAPI (RelatedModels)

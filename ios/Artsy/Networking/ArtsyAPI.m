@@ -5,7 +5,7 @@
 #import "ARAppConstants.h"
 #import "ARDefaults.h"
 #import "ARDispatchManager.h"
-#import "ARRouter.h"
+#import "ARRouter+RestAPI.h"
 #import "ARNetworkErrorManager.h"
 #import "ARLogger.h"
 
