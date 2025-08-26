@@ -614,10 +614,14 @@ def upload_ios_maestro_to_s3
   configuration = "QA"
 
   # Find the .app bundle
-  app_path = Dir.glob("#{derived_data_path}/Build/Products/#{configuration}-iphonesimulator/#{app_name}.app").first
+  project_root = File.expand_path('..')
+  full_derived_data_path = File.expand_path(derived_data_path, project_root)
+  app_search_pattern = "#{full_derived_data_path}/Build/Products/#{configuration}-iphonesimulator/#{app_name}.app"
+  app_path = Dir.glob(app_search_pattern).first
 
   if app_path.nil? || !File.exist?(app_path)
-    UI.error("❌ .app not found in #{derived_data_path}/Build/Products/#{configuration}-iphonesimulator/!")
+    UI.error("❌ .app not found at: #{app_search_pattern}")
+    UI.error("Searched in: #{full_derived_data_path}/Build/Products/#{configuration}-iphonesimulator/")
     raise "iOS Maestro app build not found"
   end
 
@@ -625,12 +629,16 @@ def upload_ios_maestro_to_s3
 
   # Zip the .app bundle
   zip_name = "#{app_name}-latest.zip"
-  Dir.chdir(File.dirname(app_path)) do
-    sh("zip -r #{zip_name} #{File.basename(app_path)}")
+  app_dir = File.dirname(app_path)
+  app_basename = File.basename(app_path)
+
+  Dir.chdir(app_dir) do
+    sh("zip -r #{zip_name} #{app_basename}")
   end
 
   # Upload to S3
-  sh("aws s3 cp #{File.dirname(app_path)}/#{zip_name} #{s3_dest}")
+  zip_path = File.join(app_dir, zip_name)
+  sh("aws s3 cp #{zip_path} #{s3_dest}")
   UI.success("✅ Uploaded #{zip_name} to #{s3_dest}")
 end
 
