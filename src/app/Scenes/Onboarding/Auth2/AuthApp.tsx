@@ -12,18 +12,21 @@ export const AuthApp: React.FC = () => {
   useAndroidStatusBarColor()
 
   return (
-    <Screen safeArea={false}>
-      <AuthContext.Provider>
-        <Screen.Background>
-          <AuthBackground />
-        </Screen.Background>
+    <AuthContext.Provider>
+      <AuthBackground />
+    </AuthContext.Provider>
+    // <Screen safeArea={false}>
+    //
+    //     <Screen.Background>
 
-        <Screen.Body>
-          <AuthModal>
-            <AuthScenes />
-          </AuthModal>
-        </Screen.Body>
-      </AuthContext.Provider>
-    </Screen>
+    //     </Screen.Background>
+
+    //     <Screen.Body>
+    //       <AuthModal>
+    //         <AuthScenes />
+    //       </AuthModal>
+    //     </Screen.Body>
+    //
+    // </Screen>
   )
 }
