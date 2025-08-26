@@ -9,6 +9,6 @@ jest.mock("app/system/notifications/getNotificationsPermissions", () => ({
   },
 }))
 
-export const mockFetchNotificationPermissions = (isAndroid: boolean) => {
+export const mockFetchNotificationPermissions = () => {
   return getNotificationPermissionsStatus as jest.Mock<any>
 }

@@ -11,6 +11,19 @@ import DeviceInfo from "react-native-device-info"
 export const saveToken = async (token: string) => {
   const { authenticationToken, userAgent } = getCurrentEmissionState()
 
+  // Check for valid authentication token before proceeding
+  if (!authenticationToken) {
+    if (__DEV__) {
+      console.warn(`Cannot save push token: No authentication token available`)
+    } else {
+      captureMessage(
+        `Error saving push notification token: No authentication token available`,
+        "error"
+      )
+    }
+    return false
+  }
+
   const environment = unsafe__getEnvironment()
   const url = environment.gravityURL + "/api/v1/device"
   const name = DeviceInfo.getDeviceId() || DeviceInfo.getDeviceNameSync()
@@ -44,11 +57,17 @@ export const saveToken = async (token: string) => {
     } else {
       captureMessage(`Error saving push notification token: ${error}`, "error")
     }
+    // Return false when fetch request fails
+    return false
   }
 
-  if (response?.status < 200 || response?.status > 299 || response?.error) {
+  // Ensure response exists before checking status
+  if (!response || response.status < 200 || response.status > 299 || response.error) {
     if (__DEV__) {
-      console.warn(`New Push Token ${token} was NOT saved`, response?.error)
+      console.warn(
+        `New Push Token ${token} was NOT saved`,
+        response?.error || "No response received"
+      )
     }
     return false
   }

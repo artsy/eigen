@@ -21,12 +21,18 @@ jest.mock("@react-native-firebase/messaging", () => ({
   })),
 }))
 
+const mockMessaging = {
+  onMessage: jest.fn(),
+  setBackgroundMessageHandler: jest.fn(),
+}
+
+jest.mocked(messaging).mockReturnValue(mockMessaging as any)
+
 jest.mock("react-native", () => ({
   Platform: { OS: "android" },
 }))
 
 describe("useAndroidListenToFCMMessages", () => {
-  const mockMessaging = messaging()
   const mockOnMessage = mockMessaging.onMessage as jest.Mock
   const mockSetBackgroundMessageHandler = mockMessaging.setBackgroundMessageHandler as jest.Mock
   const mockGetNotificationSettings = notifee.getNotificationSettings as jest.Mock
@@ -39,6 +45,7 @@ describe("useAndroidListenToFCMMessages", () => {
     // Default mocks
     const mockUnsubscribe = jest.fn()
     mockOnMessage.mockReturnValue(mockUnsubscribe)
+    mockSetBackgroundMessageHandler.mockReturnValue(mockUnsubscribe)
     mockGetNotificationSettings.mockResolvedValue({
       authorizationStatus: AuthorizationStatus.AUTHORIZED,
     })
@@ -175,6 +182,7 @@ describe("useAndroidListenToFCMMessages", () => {
     it("should cleanup listeners on unmount", () => {
       const mockUnsubscribe = jest.fn()
       mockOnMessage.mockReturnValue(mockUnsubscribe)
+      mockSetBackgroundMessageHandler.mockReturnValue(mockUnsubscribe)
 
       const { unmount } = renderHook(() => useAndroidListenToFCMMessages())
 

@@ -76,7 +76,7 @@ jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills", () => {
 
 describe("CreateSavedSearchAlert", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const notificationPermissions = mockFetchNotificationPermissions(false)
+  const notificationPermissions = mockFetchNotificationPermissions()
 
   beforeEach(() => {
     mockEnvironment = getMockRelayEnvironment()
@@ -97,9 +97,7 @@ describe("CreateSavedSearchAlert", () => {
   }
 
   const setStatusForPushNotifications = (status: PushAuthorizationStatus) => {
-    notificationPermissions.mockImplementation((cb) => {
-      cb(null, status)
-    })
+    notificationPermissions.mockImplementation(() => Promise.resolve(status))
   }
 
   const mockOperationByName = async (operationName: string, mockResolvers: MockResolvers) => {

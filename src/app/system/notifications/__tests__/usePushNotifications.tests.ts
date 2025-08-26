@@ -21,8 +21,6 @@ jest.mock("../useHandlePushNotifications", () => ({
   useHandlePushNotifications: jest.fn(),
 }))
 
-jest.mock("../testNotification", () => ({}))
-
 describe("usePushNotifications", () => {
   beforeEach(() => {
     jest.clearAllMocks()
