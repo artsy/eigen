@@ -7,14 +7,11 @@ import { Platform } from "react-native"
  */
 export const useAndroidCreatePushNotificationChannels = () => {
   useEffect(() => {
-    console.log("DEBUG: useCreateAndroidNotificationChannels - Platform:", Platform.OS)
-
     // Request Notifee permissions first (important for both platforms)
     const requestPermissionsAndCreateChannels = async () => {
       try {
         // Request Notifee permissions
-        const settings = await notifee.requestPermission()
-        console.log("DEBUG: Notifee permissions requested:", settings)
+        await notifee.requestPermission()
 
         // Create Android channels if on Android
         if (Platform.OS === "android") {
@@ -52,10 +49,8 @@ export const createChannel = async (channel: AndroidChannel) => {
 }
 
 export const createAndroidNotificationChannels = async () => {
-  console.log("DEBUG: Creating Android notification channels...")
   try {
     await Promise.all(CHANNELS.map((channel) => createChannel(channel)))
-    console.log("DEBUG: All Android notification channels created successfully")
   } catch (error) {
     console.error("DEBUG: Error creating Android notification channels:", error)
   }
