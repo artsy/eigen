@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-native"
 import { useAndroidCreatePushNotificationChannels } from "app/system/notifications/useAndroidCreatePushNotificationChannels"
 import { useAndroidListenToFCMMessages } from "app/system/notifications/useAndroidListenToFCMMessages"
 import { useHandlePushNotifications } from "app/system/notifications/useHandlePushNotifications"
@@ -20,8 +20,6 @@ jest.mock("../useAndroidListenToFCMMessages", () => ({
 jest.mock("../useHandlePushNotifications", () => ({
   useHandlePushNotifications: jest.fn(),
 }))
-
-jest.mock("../testNotification", () => ({}))
 
 describe("usePushNotifications", () => {
   beforeEach(() => {
