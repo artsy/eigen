@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-native"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useRegisterForPushNotifications } from "app/system/notifications/useRegisterForRemoteMessages"
@@ -251,7 +251,7 @@ describe("useRegisterForPushNotifications", () => {
 
       // User logs in
       mockUseAppState.mockReturnValue(true)
-      rerender()
+      rerender(() => {})
 
       await waitForAsync()
 
