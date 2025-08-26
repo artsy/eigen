@@ -67,6 +67,6 @@ export const ArtsyNativeModule = {
       : (NativeModules.ArtsyNativeModule.getConstants().updateDownloaded as boolean),
   completeAppUpdate:
     Platform.OS === "ios"
-      ? console.error("lockActivityScreenOrientation is unsupported on iOS")
+      ? console.error("completeAppUpdate is unsupported on iOS")
       : NativeModules.ArtsyNativeModule.completeAppUpdate,
 }
