@@ -26,5 +26,4 @@ import "react-native-url-polyfill/auto"
 
 require("react-native-gesture-handler")
 const { App } = require("./src/app/App")
-
 export default registerRootComponent(App)

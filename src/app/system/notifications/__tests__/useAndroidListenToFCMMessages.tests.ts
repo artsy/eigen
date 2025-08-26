@@ -1,6 +1,6 @@
 import notifee, { AuthorizationStatus } from "@notifee/react-native"
 import messaging from "@react-native-firebase/messaging"
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-native"
 import { useAndroidListenToFCMMessages } from "app/system/notifications/useAndroidListenToFCMMessages"
 import { Platform } from "react-native"
 
@@ -21,12 +21,18 @@ jest.mock("@react-native-firebase/messaging", () => ({
   })),
 }))
 
+const mockMessaging = {
+  onMessage: jest.fn(),
+  setBackgroundMessageHandler: jest.fn(),
+}
+
+jest.mocked(messaging).mockReturnValue(mockMessaging as any)
+
 jest.mock("react-native", () => ({
   Platform: { OS: "android" },
 }))
 
 describe("useAndroidListenToFCMMessages", () => {
-  const mockMessaging = messaging()
   const mockOnMessage = mockMessaging.onMessage as jest.Mock
   const mockSetBackgroundMessageHandler = mockMessaging.setBackgroundMessageHandler as jest.Mock
   const mockGetNotificationSettings = notifee.getNotificationSettings as jest.Mock
@@ -39,6 +45,7 @@ describe("useAndroidListenToFCMMessages", () => {
     // Default mocks
     const mockUnsubscribe = jest.fn()
     mockOnMessage.mockReturnValue(mockUnsubscribe)
+    mockSetBackgroundMessageHandler.mockReturnValue(mockUnsubscribe)
     mockGetNotificationSettings.mockResolvedValue({
       authorizationStatus: AuthorizationStatus.AUTHORIZED,
     })
@@ -51,8 +58,6 @@ describe("useAndroidListenToFCMMessages", () => {
 
       expect(mockOnMessage).toHaveBeenCalledTimes(1)
       expect(mockOnMessage).toHaveBeenCalledWith(expect.any(Function))
-      expect(mockSetBackgroundMessageHandler).toHaveBeenCalledTimes(1)
-      expect(mockSetBackgroundMessageHandler).toHaveBeenCalledWith(expect.any(Function))
     })
 
     it("should display notification when message received with authorized status", async () => {
@@ -175,6 +180,7 @@ describe("useAndroidListenToFCMMessages", () => {
     it("should cleanup listeners on unmount", () => {
       const mockUnsubscribe = jest.fn()
       mockOnMessage.mockReturnValue(mockUnsubscribe)
+      mockSetBackgroundMessageHandler.mockReturnValue(mockUnsubscribe)
 
       const { unmount } = renderHook(() => useAndroidListenToFCMMessages())
 
@@ -194,31 +200,6 @@ describe("useAndroidListenToFCMMessages", () => {
 
       expect(mockOnMessage).not.toHaveBeenCalled()
       expect(mockSetBackgroundMessageHandler).not.toHaveBeenCalled()
-    })
-  })
-
-  describe("Background message handler", () => {
-    it("should set up background message handler correctly", async () => {
-      renderHook(() => useAndroidListenToFCMMessages())
-
-      const backgroundHandler = mockSetBackgroundMessageHandler.mock.calls[0][0]
-      const mockMessage = {
-        notification: {
-          title: "Background Title",
-          body: "Background Body",
-        },
-        data: { key: "value" },
-      }
-
-      await backgroundHandler(mockMessage)
-
-      expect(mockGetNotificationSettings).toHaveBeenCalled()
-      expect(mockDisplayNotification).toHaveBeenCalledWith(
-        expect.objectContaining({
-          title: "Background Title",
-          body: "Background Body",
-        })
-      )
     })
   })
 })

@@ -5599,6 +5599,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-documents/picker@npm:10.1.5":
+  version: 10.1.5
+  resolution: "@react-native-documents/picker@npm:10.1.5"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/bc1215a73dd8919c45bc21337092b2baac2241d7d7708c5234306a35bf294358bc98c6fad6d01f68c7691da29e439e016dd86c22e0be91a9423fa67a80e234eb
+  languageName: node
+  linkType: hard
+
 "@react-native-firebase/app@npm:23.1.0":
   version: 23.1.0
   resolution: "@react-native-firebase/app@npm:23.1.0"
@@ -12165,6 +12175,7 @@ __metadata:
     "@react-native-community/geolocation": "npm:3.4.0"
     "@react-native-community/netinfo": "npm:11.4.1"
     "@react-native-cookies/cookies": "npm:6.0.11"
+    "@react-native-documents/picker": "npm:10.1.5"
     "@react-native-firebase/app": "npm:23.1.0"
     "@react-native-firebase/messaging": "npm:23.1.0"
     "@react-native-google-signin/google-signin": "npm:11.0.1"

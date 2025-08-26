@@ -124,6 +124,7 @@
     "@react-native-community/geolocation": "3.4.0",
     "@react-native-community/netinfo": "11.4.1",
     "@react-native-cookies/cookies": "6.0.11",
+    "@react-native-documents/picker": "10.1.5",
     "@react-native-firebase/app": "23.1.0",
     "@react-native-firebase/messaging": "23.1.0",
     "@react-native-google-signin/google-signin": "11.0.1",

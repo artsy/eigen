@@ -1,10 +1,9 @@
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
-import { NotificationsManager } from "app/NativeModules/NotificationsManager"
-import { navigate, navigationEvents } from "app/system/navigation/navigate"
-import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
+// This event listener needs to be imported so that the event listeners are setup before the app is mounted
+// @ts-ignore
+import "app/NativeModules/utils/listenToNativeEvents"
 import { InfoType } from "app/utils/track/providers"
 import { Action, action, Thunk, thunk } from "easy-peasy"
-import { GlobalStore } from "./GlobalStore"
 
 // These should match the values in emission/Pod/Classes/EigenCommunications/ARNotificationsManager.m
 export type NativeEvent =

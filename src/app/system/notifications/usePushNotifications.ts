@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-restricted-imports
-import "app/system/notifications/testNotification" // Import to register global test function
 import { useAndroidCreatePushNotificationChannels } from "app/system/notifications/useAndroidCreatePushNotificationChannels"
 import { useAndroidListenToFCMMessages } from "app/system/notifications/useAndroidListenToFCMMessages"
 import { useHandlePushNotifications } from "app/system/notifications/useHandlePushNotifications"
