@@ -18,7 +18,7 @@ export const AuthBackground: React.FC = () => {
     <Flex backgroundColor="black" height="100%" pt="-200px" pb="-200px">
       <AnimatedBackground />
 
-      {/* <Flex alignItems="center" width="100%">
+      <Flex alignItems="center" width="100%">
         <ArtsyLogoIcon height={25} width={75} mt={safeArea.top} fill="white" />
       </Flex>
 
@@ -68,28 +68,28 @@ export const AuthBackground: React.FC = () => {
 
           <Spacer y={2} />
         </MotiView>
-      </Flex> */}
+      </Flex>
     </Flex>
   )
 }
 
 const AnimatedBackground: React.FC = React.memo(() => {
-  // const { width: screenWidth, height: screenHeight } = useScreenDimensions()
+  const { width: screenWidth, height: screenHeight } = useScreenDimensions()
 
-  // // size and position the image
-  // const IMAGE_SCALE = 1.2
-  // const IMAGE_OFFSET = (IMAGE_SCALE - 1) / 2
+  // size and position the image
+  const IMAGE_SCALE = 1.2
+  const IMAGE_OFFSET = (IMAGE_SCALE - 1) / 2
 
-  // // zoom into the image
-  // const ZOOM_SCALE = 1.2
-  // const ZOOM_X = -400 * 0.1
-  // const ZOOM_Y = -1000 * 0.05
-  // const ZOOM_DURATION = 1500
+  // zoom into the image
+  const ZOOM_SCALE = 1.2
+  const ZOOM_X = -screenWidth * 0.1
+  const ZOOM_Y = -screenHeight * 0.05
+  const ZOOM_DURATION = 15000
 
-  // // pan across the image
-  // const PAN_X = 400 * 0.15
-  // const PAN_Y = -1000 * 0.1
-  // const PAN_DURATION = 30000
+  // pan across the image
+  const PAN_X = screenWidth * 0.15
+  const PAN_Y = -screenHeight * 0.1
+  const PAN_DURATION = 30000
 
   /**
    * This component defines 3 animations that happen in the following sequence:
@@ -103,65 +103,60 @@ const AnimatedBackground: React.FC = React.memo(() => {
    */
 
   return (
-    // <MotiView
-    //   from={{ opacity: 0 }}
-    //   animate={{ opacity: 1 }}
-    //   transition={{ type: "timing", duration: 1000 }}
-    //   style={{
-    //     height: screenHeight,
-    //     width: screenWidth,
-    //     position: "absolute",
-    //   }}
-    // >
-    //   <MotiView
-    //     from={{ scale: 1, translateX: 0, translateY: 0 }}
-    //     animate={{ scale: ZOOM_SCALE, translateX: ZOOM_X, translateY: ZOOM_Y }}
-    //     transition={{ type: "timing", duration: ZOOM_DURATION }}
-    //   >
     <MotiView
-      from={{ scale: 3, translateX: -100, translateY: 300 }}
-      animate={{
-        scale: 1,
-        translateX: 100,
-        translateY: 100,
-      }}
-      transition={{
-        type: "timing",
-        // delay: 1000,
-        duration: 1000,
-        //loop: true,
-        //easing: Easing.inOut(Easing.ease),
+      from={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ type: "timing", duration: 1000 }}
+      style={{
+        height: screenHeight,
+        width: screenWidth,
+        position: "absolute",
       }}
     >
-      {/* <Image
-        source={require("images/WelcomeImage.webp")}
-        style={{
-          height: screenHeight * IMAGE_SCALE,
-          width: screenWidth * IMAGE_SCALE,
-          position: "absolute",
-          left: -screenWidth * IMAGE_OFFSET,
-          top: -screenHeight * IMAGE_OFFSET,
-        }}
-      />
-      <LinearGradient
-        colors={["rgba(0, 0, 0, 0)", `rgba(81, 59, 59, 0.85)`]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 0, y: 1 }}
-        style={{
-          width: screenWidth * IMAGE_SCALE,
-          height: screenHeight * IMAGE_SCALE,
-          position: "absolute",
-          left: -screenWidth * IMAGE_OFFSET,
-          top: -screenHeight * IMAGE_OFFSET,
-        }}
-      /> */}
-      <Flex backgroundColor="blue10">
-        <Text variant="lg" color="white">
-          Welcome to the Art Gallery
-        </Text>
-      </Flex>
+      <MotiView
+        from={{ scale: 1, translateX: 0, translateY: 0 }}
+        animate={{ scale: ZOOM_SCALE, translateX: ZOOM_X, translateY: ZOOM_Y }}
+        transition={{ type: "timing", duration: ZOOM_DURATION }}
+      >
+        <MotiView
+          from={{ scale: ZOOM_SCALE, translateX: ZOOM_X, translateY: ZOOM_Y }}
+          animate={{
+            scale: 1,
+            translateX: PAN_X,
+            translateY: PAN_Y,
+          }}
+          transition={{
+            type: "timing",
+            delay: ZOOM_DURATION,
+            duration: PAN_DURATION,
+            loop: true,
+            easing: Easing.inOut(Easing.ease),
+          }}
+        >
+          <Image
+            source={require("images/WelcomeImage.webp")}
+            style={{
+              height: screenHeight * IMAGE_SCALE,
+              width: screenWidth * IMAGE_SCALE,
+              position: "absolute",
+              left: -screenWidth * IMAGE_OFFSET,
+              top: -screenHeight * IMAGE_OFFSET,
+            }}
+          />
+          <LinearGradient
+            colors={["rgba(0, 0, 0, 0)", `rgba(0, 0, 0, 0.85)`]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={{
+              width: screenWidth * IMAGE_SCALE,
+              height: screenHeight * IMAGE_SCALE,
+              position: "absolute",
+              left: -screenWidth * IMAGE_OFFSET,
+              top: -screenHeight * IMAGE_OFFSET,
+            }}
+          />
+        </MotiView>
+      </MotiView>
     </MotiView>
-    // </MotiView>
-    // </MotiView>
   )
 })
