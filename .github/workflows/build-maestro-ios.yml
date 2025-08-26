@@ -86,20 +86,8 @@ jobs:
       - name: Select Xcode version
         run: sudo xcode-select -s /Applications/Xcode_16.2.app
 
-      - name: Debug build environment
-        run: |
-          echo "Node version: $(node --version)"
-          echo "Yarn version: $(yarn --version)"
-          echo "Ruby version: $(ruby --version)"
-          echo "Xcode version:"
-          xcodebuild -version
-          echo "Available iOS simulators:"
-          xcrun simctl list devices ios --json | jq '.devices | keys[]'
-
-      - name: Build iOS QA app
-        run: |
-          echo "Starting iOS QA build..."
-          set -x  # Enable verbose logging
-          ./scripts/ci/ci-ios "qa"
+      - name: Build iOS app and upload to S3 for Maestro
+        run: bundle exec fastlane build_maestro_ios
         env:
-          VERBOSE: 1
+          FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT: 120
+          FASTLANE_XCODE_LIST_TIMEOUT: 120

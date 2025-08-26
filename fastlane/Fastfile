@@ -85,16 +85,9 @@ lane :ship_beta_ios do |options|
 
   # Workaround for timeout in ci
   ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
-  export_method = deployment_target == 'testflight' ? 'app-store' : 'ad-hoc'
-  scheme = deployment_target == 'testflight' ? 'Artsy' : 'Artsy (QA)'
-  build_ios_app(
-    build_path: "archives",
-    workspace: 'ios/Artsy.xcworkspace',
-    scheme: scheme,
-    export_method: export_method,
-    codesigning_identity: 'Apple Distribution: Art.sy Inc. (23KMWZ572J)',
-    silent: true
-  )
+
+  build_params = ios_build_params(deployment_target)
+  build_ios_app(**build_params)
 
   # avoid duplicate uploads to sentry
   if (deployment_target == 'testflight')
@@ -559,4 +552,48 @@ error do |lane, exception|
   else
     UI.error("Beta failed to deploy! #{exception.message}")
   end
+end
+
+desc 'Build iOS app and upload to S3 for Maestro testing'
+lane :build_maestro_ios do
+  bundle_version = set_build_version_ios
+  set_git_properties_ios
+
+  # Build iOS app with QA scheme for simulator (no codesigning needed)
+  build_params = ios_build_params('maestro')
+  build_ios_app(**build_params)
+
+  upload_ios_maestro_to_s3
+end
+
+desc 'Build Android app and upload to S3 for Maestro testing'
+lane :build_maestro_android do |options|
+  version_code = options[:version_code]
+  sh('yarn relay')
+
+  if version_code.nil? || version_code.empty?
+    vname, vcode = set_build_version_android
+  else
+    vname, vcode = set_build_version_android(version_code: version_code)
+  end
+
+  set_git_properties_android
+
+  # Build Android AAB in beta mode for Maestro testing
+  sh("yarn react-native build-android --mode=beta --extra-params='--no-daemon --max-workers 2'")
+
+  # Convert AAB to APK using existing bundletool logic
+  aab_path = './android/app/build/outputs/bundle/beta/app-beta.aab'
+  apk_output_path = "#{vcode}.apk"
+  bundletool(
+    aab_path: aab_path,
+    apk_output_path: apk_output_path,
+    verbose: true
+  )
+
+  # Ensure we have the full path to the APK file (bundletool creates it in project root, not fastlane dir)
+  full_apk_path = File.expand_path("../#{apk_output_path}")
+
+  # Upload to S3 for Maestro testing
+  upload_android_maestro_to_s3(full_apk_path)
 end

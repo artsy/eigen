@@ -86,25 +86,8 @@ jobs:
       - name: Run relay compiler
         run: yarn relay
 
-      - name: Debug build environment
-        run: |
-          echo "Node version: $(node --version)"
-          echo "Yarn version: $(yarn --version)"
-          echo "Ruby version: $(ruby --version)"
-          echo "Java version:"
-          java -version
-          echo "Android SDK info:"
-          echo "ANDROID_HOME: $ANDROID_HOME"
-          echo "Available Android SDK platforms:"
-          ls -la $ANDROID_HOME/platforms/ || echo "No platforms found"
-          echo "Available Android build tools:"
-          ls -la $ANDROID_HOME/build-tools/ || echo "No build tools found"
-
-      - name: Build Android QA app
-        run: |
-          echo "Starting Android QA build..."
-          set -x  # Enable verbose logging
-          ./scripts/ci/ci-android "beta"
+      - name: Build Android app and upload to S3 for Maestro
+        run: bundle exec fastlane build_maestro_android
         env:
           VERBOSE: 1
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}

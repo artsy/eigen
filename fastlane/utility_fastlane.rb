@@ -323,3 +323,98 @@ def write_contents_to_file(path, contents)
 rescue => e
   UI.error("Failed to write to #{path}: #{e.message}")
 end
+
+def upload_ios_maestro_to_s3
+  app_name = "Artsy"
+  derived_data_path = ENV['DERIVED_DATA_PATH'] || 'derived_data'
+  s3_dest = "#{S3_IOS_BUILDS_PATH}#{app_name}-latest.zip"
+  configuration = "QA"
+
+  # Find the .app bundle
+  project_root = File.expand_path('..')
+  full_derived_data_path = File.expand_path(derived_data_path, project_root)
+  app_search_pattern = "#{full_derived_data_path}/Build/Products/#{configuration}-iphonesimulator/#{app_name}.app"
+  app_path = Dir.glob(app_search_pattern).first
+
+  if app_path.nil? || !File.exist?(app_path)
+    UI.error("❌ .app not found at: #{app_search_pattern}")
+    UI.error("Searched in: #{full_derived_data_path}/Build/Products/#{configuration}-iphonesimulator/")
+    raise "iOS Maestro app build not found"
+  end
+
+  UI.success("✅ Found app at: #{app_path}")
+
+  # Zip the .app bundle
+  zip_name = "#{app_name}-latest.zip"
+  app_dir = File.dirname(app_path)
+  app_basename = File.basename(app_path)
+
+  Dir.chdir(app_dir) do
+    sh("zip -r #{zip_name} #{app_basename}")
+  end
+
+  # Upload to S3
+  zip_path = File.join(app_dir, zip_name)
+  sh("aws s3 cp #{zip_path} #{s3_dest}")
+  UI.success("✅ Uploaded #{zip_name} to #{s3_dest}")
+end
+
+def upload_android_maestro_to_s3(apk_path)
+  app_name = "Artsy"
+  s3_dest = "#{S3_ANDROID_BUILDS_PATH}#{app_name}-latest.apk"
+
+  if apk_path.nil? || !File.exist?(apk_path)
+    UI.error("❌ Maestro APK not found at: #{apk_path}")
+    raise "Android Maestro app build not found"
+  end
+
+  UI.success("✅ Found apk at: #{apk_path}")
+
+  # Copy and rename the APK for consistent S3 naming
+  apk_name = "#{app_name}-latest.apk"
+  sh("cp #{apk_path} #{apk_name}")
+
+  # Upload to S3
+  sh("aws s3 cp #{apk_name} #{s3_dest}")
+  UI.success("✅ Uploaded #{apk_name} to #{s3_dest}")
+end
+
+def ios_build_params(deployment_target)
+  case deployment_target
+  when 'testflight'
+    {
+      build_path: "archives",
+      workspace: 'ios/Artsy.xcworkspace',
+      scheme: 'Artsy',
+      export_method: 'app-store',
+      codesigning_identity: 'Apple Distribution: Art.sy Inc. (23KMWZ572J)',
+      silent: true
+    }
+  when 'firebase'
+    {
+      build_path: "archives",
+      workspace: 'ios/Artsy.xcworkspace',
+      scheme: 'Artsy (QA)',
+      export_method: 'ad-hoc',
+      codesigning_identity: 'Apple Distribution: Art.sy Inc. (23KMWZ572J)',
+      silent: true
+    }
+  when 'maestro'
+    {
+      derived_data_path: "derived_data",
+      build_path: "archives",
+      workspace: 'ios/Artsy.xcworkspace',
+      scheme: 'Artsy (QA)',
+      export_method: "development",
+      skip_codesigning: true,
+      skip_archive: true,
+      configuration: 'QA',
+      destination: 'generic/platform=iOS Simulator',
+      silent: true,
+      sdk: 'iphonesimulator',
+      xcargs: "GCC_PREPROCESSOR_DEFINITIONS='$(inherited)'"
+    }
+  else
+    raise "Unknown deployment target: #{deployment_target}"
+  end
+end
