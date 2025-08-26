@@ -4,13 +4,10 @@ on:
   schedule:
     - cron: "0 6 * * *" # Runs daily at 6:00 AM UTC
   workflow_dispatch: # Allows manual trigger
-  push:
-    branches:
-      - gkartalis/PHIRE-2090
 
 jobs:
   build-ios-qa:
-    # if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     runs-on: macos-14
     timeout-minutes: 60
 
