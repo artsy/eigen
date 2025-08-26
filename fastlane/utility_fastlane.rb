@@ -378,3 +378,43 @@ def upload_android_maestro_to_s3(apk_path)
   sh("aws s3 cp #{apk_name} #{s3_dest}")
   UI.success("✅ Uploaded #{apk_name} to #{s3_dest}")
 end
+
+def ios_build_params(deployment_target)
+  case deployment_target
+  when 'testflight'
+    {
+      build_path: "archives",
+      workspace: 'ios/Artsy.xcworkspace',
+      scheme: 'Artsy',
+      export_method: 'app-store',
+      codesigning_identity: 'Apple Distribution: Art.sy Inc. (23KMWZ572J)',
+      silent: true
+    }
+  when 'firebase'
+    {
+      build_path: "archives",
+      workspace: 'ios/Artsy.xcworkspace',
+      scheme: 'Artsy (QA)',
+      export_method: 'ad-hoc',
+      codesigning_identity: 'Apple Distribution: Art.sy Inc. (23KMWZ572J)',
+      silent: true
+    }
+  when 'maestro'
+    {
+      derived_data_path: "derived_data",
+      build_path: "archives",
+      workspace: 'ios/Artsy.xcworkspace',
+      scheme: 'Artsy (QA)',
+      export_method: "development",
+      skip_codesigning: true,
+      skip_archive: true,
+      configuration: 'QA',
+      destination: 'generic/platform=iOS Simulator',
+      silent: true,
+      sdk: 'iphonesimulator',
+      xcargs: "GCC_PREPROCESSOR_DEFINITIONS='$(inherited)'"
+    }
+  else
+    raise "Unknown deployment target: #{deployment_target}"
+  end
+end

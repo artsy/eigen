@@ -85,16 +85,9 @@ lane :ship_beta_ios do |options|
 
   # Workaround for timeout in ci
   ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
-  export_method = deployment_target == 'testflight' ? 'app-store' : 'ad-hoc'
-  scheme = deployment_target == 'testflight' ? 'Artsy' : 'Artsy (QA)'
-  build_ios_app(
-    build_path: "archives",
-    workspace: 'ios/Artsy.xcworkspace',
-    scheme: scheme,
-    export_method: export_method,
-    codesigning_identity: 'Apple Distribution: Art.sy Inc. (23KMWZ572J)',
-    silent: true
-  )
+
+  build_params = ios_build_params(deployment_target)
+  build_ios_app(**build_params)
 
   # avoid duplicate uploads to sentry
   if (deployment_target == 'testflight')
@@ -567,20 +560,8 @@ lane :build_maestro_ios do
   set_git_properties_ios
 
   # Build iOS app with QA scheme for simulator (no codesigning needed)
-  build_ios_app(
-    derived_data_path: "derived_data",
-    build_path: "archives",
-    workspace: 'ios/Artsy.xcworkspace',
-    scheme: 'Artsy (QA)',
-    export_method: "development",
-    skip_codesigning: true,
-    skip_archive: true,
-    configuration: 'QA',
-    destination: 'generic/platform=iOS Simulator',
-    silent: true,
-    sdk: 'iphonesimulator',
-    xcargs: "GCC_PREPROCESSOR_DEFINITIONS='$(inherited)'"
-  )
+  build_params = ios_build_params('maestro')
+  build_ios_app(**build_params)
 
   upload_ios_maestro_to_s3
 end
