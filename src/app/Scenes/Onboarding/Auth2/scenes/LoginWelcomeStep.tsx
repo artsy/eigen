@@ -155,59 +155,61 @@ const LoginWelcomeStepForm: React.FC = () => {
         onSubmitEditing={handleSubmit}
       />
 
-      <MotiView
-        from={{ opacity: isModalExpanded ? 0 : 1 }}
-        animate={{ opacity: isModalExpanded ? 1 : 0 }}
-        transition={{ type: "timing", duration: 400, easing: Easing.linear }}
-        style={{ display: isModalExpanded ? "flex" : "none" }}
-      >
-        <Spacer y={2} />
-
-        <Button
-          block
-          width="100%"
-          onPress={handleSubmit}
-          loading={isSubmitting}
-          disabled={!isValid || !values.email}
-          accessibilityHint="Continue to the next screen"
+      {!!isModalExpanded && (
+        <MotiView
+          from={{ opacity: 0 }}
+          animate={{ opacity: isModalExpanded ? 1 : 0 }}
+          transition={{ type: "timing", duration: 400, easing: Easing.linear }}
         >
-          Continue
-        </Button>
-      </MotiView>
+          <Spacer y={2} />
 
-      <MotiView
-        from={{ opacity: isModalExpanded ? 1 : 0 }}
-        animate={{ opacity: isModalExpanded ? 0 : 1 }}
-        transition={{ type: "timing", duration: 400, easing: Easing.linear }}
-        style={{ display: isModalExpanded ? "none" : "flex" }}
-        testID="social-signin-and-disclaimers"
-      >
-        <Spacer y={2} />
-
-        <SocialLoginButtons />
-
-        <Spacer y={1} />
-
-        <Text variant="xxs" color="mono60" textAlign="center">
-          By tapping Continue with Apple, Facebook, or Google, you agree to Artsy’s{" "}
-          <LinkText
-            variant="xxs"
-            onPress={() => navigation.navigate("OnboardingWebView", { url: "/terms" })}
-            accessibilityHint="View the Terms and Conditions"
+          <Button
+            block
+            width="100%"
+            onPress={handleSubmit}
+            loading={isSubmitting}
+            disabled={!isValid || !values.email}
+            accessibilityHint="Continue to the next screen"
           >
-            Terms and Conditions
-          </LinkText>{" "}
-          and{" "}
-          <LinkText
-            variant="xxs"
-            onPress={() => navigation.navigate("OnboardingWebView", { url: "/privacy" })}
-            accessibilityHint="View the Privacy Policy"
-          >
-            Privacy Policy
-          </LinkText>
-          .
-        </Text>
-      </MotiView>
+            Continue
+          </Button>
+        </MotiView>
+      )}
+
+      {!isModalExpanded && (
+        <MotiView
+          from={{ opacity: 1 }}
+          animate={{ opacity: isModalExpanded ? 0 : 1 }}
+          transition={{ type: "timing", duration: 400, easing: Easing.linear }}
+          testID="social-signin-and-disclaimers"
+        >
+          <Spacer y={2} />
+
+          <SocialLoginButtons />
+
+          <Spacer y={1} />
+
+          <Text variant="xxs" color="mono60" textAlign="center">
+            By tapping Continue with Apple, Facebook, or Google, you agree to Artsy’s{" "}
+            <LinkText
+              variant="xxs"
+              onPress={() => navigation.navigate("OnboardingWebView", { url: "/terms" })}
+              accessibilityHint="View the Terms and Conditions"
+            >
+              Terms and Conditions
+            </LinkText>{" "}
+            and{" "}
+            <LinkText
+              variant="xxs"
+              onPress={() => navigation.navigate("OnboardingWebView", { url: "/privacy" })}
+              accessibilityHint="View the Privacy Policy"
+            >
+              Privacy Policy
+            </LinkText>
+            .
+          </Text>
+        </MotiView>
+      )}
     </Flex>
   )
 }
