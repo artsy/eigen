@@ -4689,7 +4689,10 @@ input BulkUpdateArtworksMetadataInput {
   # The artwork condition to be assigned
   conditionDescription: String
 
-  # Show/Hide the price range of an artwork
+  # Array of dates as numbers to be assigned
+  dates: [Int]
+
+  # Set artwork price visibility to price range
   displayPriceRange: Boolean
 
   # Flat fee for domestic shipping. It must be entered in cents.
@@ -4697,6 +4700,9 @@ input BulkUpdateArtworksMetadataInput {
 
   # Whether the artworks must be listed as Purchase
   ecommerce: Boolean
+
+  # Set artwork price visibility to exact price
+  exactPrice: Boolean
 
   # The exhibition history to be assigned
   exhibitionHistory: String
@@ -4725,7 +4731,7 @@ input BulkUpdateArtworksMetadataInput {
   # Adjusts the artworks' prices according to the value passed (percentage).
   priceAdjustment: Int
 
-  # Show/Hide the price of an artwork
+  # Set artwork price visibility to price on request
   priceHidden: Boolean
 
   # The price for the artworks
