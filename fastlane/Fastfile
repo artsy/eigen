@@ -294,11 +294,10 @@ end
 
 # Android Lanes
 
-desc 'Ship android beta to play store, firebase, or build for maestro testing'
+desc 'Ship android beta to play store or firebase'
 lane :ship_beta_android do |options|
   deployment_target = options[:deployment_target] || 'play_store' # default to 'play_store'
   version_code = options[:version_code]
-  maestro = options[:maestro] || false # default to false
   sh('yarn relay')
 
   if version_code.nil? || version_code.empty?
@@ -308,44 +307,24 @@ lane :ship_beta_android do |options|
   end
 
   set_git_properties_android
+  tag_and_push(tag: "android-#{vname}-#{vcode}")
 
-  if maestro
-    # Build Android AAB in beta mode for Maestro testing
-    sh("yarn react-native build-android --mode=beta --extra-params='--no-daemon --max-workers 2'")
+  build_type = deployment_target == 'play_store' ? 'release' : 'beta'
+  sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2'")
 
-    # Convert AAB to APK using existing bundletool logic
-    aab_path = './android/app/build/outputs/bundle/beta/app-beta.aab'
-    apk_output_path = "#{vcode}.apk"
-    bundletool(
-      aab_path: aab_path,
-      apk_output_path: apk_output_path,
-      verbose: true
+  if (deployment_target == 'play_store')
+    # important! this must match the release version specified
+    # in Eigen in order for sourcemaps to work correctly
+    sentry_release_name = "android-#{vname}-#{vcode}"
+    upload_sentry_artifacts(
+      sentry_release_name: sentry_release_name,
+      dist_version: "#{vcode}",
+      platform: 'android'
     )
-
-    # Ensure we have the full path to the APK file (bundletool creates it in project root, not fastlane dir)
-    full_apk_path = File.expand_path("../#{apk_output_path}")
-
-    # Upload to S3 for Maestro testing
-    upload_android_maestro_to_s3(full_apk_path)
-  else
-    tag_and_push(tag: "android-#{vname}-#{vcode}")
-    build_type = deployment_target == 'play_store' ? 'release' : 'beta'
-    sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2'")
-
-    if (deployment_target == 'play_store')
-      # important! this must match the release version specified
-      # in Eigen in order for sourcemaps to work correctly
-      sentry_release_name = "android-#{vname}-#{vcode}"
-      upload_sentry_artifacts(
-        sentry_release_name: sentry_release_name,
-        dist_version: "#{vcode}",
-        platform: 'android'
-      )
-      s3_upload_android_build(app_version: vcode, app_path: "../android/app/build/outputs/bundle/release/app-release.aab")
-    end
-
-    deploy_android_beta(deployment_target: deployment_target)
+    s3_upload_android_build(app_version: vcode, app_path: "../android/app/build/outputs/bundle/release/app-release.aab")
   end
+
+  deploy_android_beta(deployment_target: deployment_target)
 end
 
 def deploy_android_beta(deployment_target:)
@@ -606,58 +585,34 @@ lane :build_maestro_ios do
   upload_ios_maestro_to_s3
 end
 
+desc 'Build Android app and upload to S3 for Maestro testing'
+lane :build_maestro_android do |options|
+  version_code = options[:version_code]
+  sh('yarn relay')
 
-def upload_ios_maestro_to_s3
-  app_name = "Artsy"
-  derived_data_path = ENV['DERIVED_DATA_PATH'] || 'derived_data'
-  s3_dest = "#{S3_IOS_BUILDS_PATH}#{app_name}-latest.zip"
-  configuration = "QA"
-
-  # Find the .app bundle
-  project_root = File.expand_path('..')
-  full_derived_data_path = File.expand_path(derived_data_path, project_root)
-  app_search_pattern = "#{full_derived_data_path}/Build/Products/#{configuration}-iphonesimulator/#{app_name}.app"
-  app_path = Dir.glob(app_search_pattern).first
-
-  if app_path.nil? || !File.exist?(app_path)
-    UI.error("❌ .app not found at: #{app_search_pattern}")
-    UI.error("Searched in: #{full_derived_data_path}/Build/Products/#{configuration}-iphonesimulator/")
-    raise "iOS Maestro app build not found"
+  if version_code.nil? || version_code.empty?
+    vname, vcode = set_build_version_android
+  else
+    vname, vcode = set_build_version_android(version_code: version_code)
   end
 
-  UI.success("✅ Found app at: #{app_path}")
+  set_git_properties_android
 
-  # Zip the .app bundle
-  zip_name = "#{app_name}-latest.zip"
-  app_dir = File.dirname(app_path)
-  app_basename = File.basename(app_path)
+  # Build Android AAB in beta mode for Maestro testing
+  sh("yarn react-native build-android --mode=beta --extra-params='--no-daemon --max-workers 2'")
 
-  Dir.chdir(app_dir) do
-    sh("zip -r #{zip_name} #{app_basename}")
-  end
+  # Convert AAB to APK using existing bundletool logic
+  aab_path = './android/app/build/outputs/bundle/beta/app-beta.aab'
+  apk_output_path = "#{vcode}.apk"
+  bundletool(
+    aab_path: aab_path,
+    apk_output_path: apk_output_path,
+    verbose: true
+  )
 
-  # Upload to S3
-  zip_path = File.join(app_dir, zip_name)
-  sh("aws s3 cp #{zip_path} #{s3_dest}")
-  UI.success("✅ Uploaded #{zip_name} to #{s3_dest}")
-end
+  # Ensure we have the full path to the APK file (bundletool creates it in project root, not fastlane dir)
+  full_apk_path = File.expand_path("../#{apk_output_path}")
 
-def upload_android_maestro_to_s3(apk_path)
-  app_name = "Artsy"
-  s3_dest = "#{S3_ANDROID_BUILDS_PATH}#{app_name}-latest.apk"
-
-  if apk_path.nil? || !File.exist?(apk_path)
-    UI.error("❌ Maestro APK not found at: #{apk_path}")
-    raise "Android Maestro app build not found"
-  end
-
-  UI.success("✅ Found apk at: #{apk_path}")
-
-  # Copy and rename the APK for consistent S3 naming
-  apk_name = "#{app_name}-latest.apk"
-  sh("cp #{apk_path} #{apk_name}")
-
-  # Upload to S3
-  sh("aws s3 cp #{apk_name} #{s3_dest}")
-  UI.success("✅ Uploaded #{apk_name} to #{s3_dest}")
+  # Upload to S3 for Maestro testing
+  upload_android_maestro_to_s3(full_apk_path)
 end
