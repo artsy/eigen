@@ -582,36 +582,36 @@ workflows:
       - detect-secrets:
           <<: *ignore_main_branches
 
-      # - check-code:
-      #     context: danger-github-oss
+      - check-code:
+          context: danger-github-oss
 
-      # - horizon/block:
-      #     <<: *beta_branches_only
-      #     context: horizon
-      #     project_id: 37
+      - horizon/block:
+          <<: *beta_branches_only
+          context: horizon
+          project_id: 37
 
-      # - check-and-deploy:
-      #     <<: *main_only
+      - check-and-deploy:
+          <<: *main_only
 
-      # - test-js:
-      #     <<: *ignore_beta_branches
+      - test-js:
+          <<: *ignore_beta_branches
 
-      # - build-test-js:
-      #     <<: *ignore_beta_branches
+      - build-test-js:
+          <<: *ignore_beta_branches
 
-      # - build-test-app-ios:
-      #     <<: *ignore_beta_branches
-      #     requires:
-      #       - test-js
-      #       - check-code
-      #       - build-test-js
+      - build-test-app-ios:
+          <<: *ignore_beta_branches
+          requires:
+            - test-js
+            - check-code
+            - build-test-js
 
-      # - build-test-app-android:
-      #     <<: *ignore_beta_branches
-      #     requires:
-      #       - test-js
-      #       - check-code
-      #       - build-test-js
+      - build-test-app-android:
+          <<: *ignore_beta_branches
+          requires:
+            - test-js
+            - check-code
+            - build-test-js
 
-      # - update-metaphysics:
-      #     <<: *beta_branches_only
+      - update-metaphysics:
+          <<: *beta_branches_only
