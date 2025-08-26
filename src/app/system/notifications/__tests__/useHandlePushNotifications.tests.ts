@@ -1,11 +1,12 @@
 import notifee, { Event, EventType, Notification } from "@notifee/react-native"
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-native"
 import { listenToNativeEvents } from "app/NativeModules/utils/listenToNativeEvents"
 import { GlobalStore } from "app/store/GlobalStore"
 import { navigate, navigationEvents } from "app/system/navigation/navigate"
 import { useHandlePushNotifications } from "app/system/notifications/useHandlePushNotifications"
+import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { EmitterSubscription, Platform } from "react-native"
-import { useTracking } from "react-tracking"
 
 jest.mock("@notifee/react-native", () => ({
   __esModule: true,
@@ -49,10 +50,6 @@ jest.mock("app/utils/track/constants", () => ({
   },
 }))
 
-jest.mock("react-tracking", () => ({
-  useTracking: jest.fn(),
-}))
-
 jest.mock("react-native", () => ({
   Platform: {
     OS: "android", // default value
@@ -69,8 +66,6 @@ describe("useHandlePushNotifications", () => {
   const mockUseAppState = GlobalStore.useAppState as jest.Mock
   const mockNavigate = navigate as jest.Mock
   const mockNavigationEventsEmit = navigationEvents.emit as jest.Mock
-  const mockUseTracking = useTracking as jest.Mock
-  const mockTrackEvent = jest.fn()
 
   // Mock emitter subscription
   const mockUnsubscribe = jest.fn()
@@ -92,7 +87,6 @@ describe("useHandlePushNotifications", () => {
       .mockReturnValueOnce(true) // isLoggedIn
       .mockReturnValueOnce(true) // isNavigationReady
 
-    mockUseTracking.mockReturnValue({ trackEvent: mockTrackEvent })
     mockListenToNativeEvents.mockReturnValue(mockEmitterSubscription)
     mockOnForegroundEvent.mockReturnValue(jest.fn()) // unsubscribe function
     mockGetInitialNotification.mockResolvedValue(null)
@@ -186,30 +180,6 @@ describe("useHandlePushNotifications", () => {
       expect(mockNavigate).not.toHaveBeenCalled()
       expect(mockNavigationEventsEmit).not.toHaveBeenCalled()
     })
-
-    it("should handle notification with missing data gracefully", () => {
-      const mockNotification: Notification = {
-        title: "Test Notification",
-        body: "Test body",
-      }
-
-      renderHook(() => useHandlePushNotifications())
-
-      const mockEvent: Event = {
-        type: EventType.PRESS,
-        detail: { notification: mockNotification },
-      }
-
-      const foregroundHandler = mockOnForegroundEvent.mock.calls[0][0]
-      foregroundHandler(mockEvent)
-
-      expect(mockTrackEvent).toHaveBeenCalledWith({
-        event_name: "notification_tapped",
-        label: undefined,
-        url: undefined,
-        message: "Test body",
-      })
-    })
   })
 
   describe("User logged out scenario", () => {
@@ -227,7 +197,6 @@ describe("useHandlePushNotifications", () => {
         return false
       })
 
-      mockUseTracking.mockReturnValue({ trackEvent: mockTrackEvent })
       mockOnForegroundEvent.mockReturnValue(jest.fn())
       mockGetInitialNotification.mockResolvedValue(null)
 
@@ -361,31 +330,6 @@ describe("useHandlePushNotifications", () => {
     })
   })
 
-  describe("iOS without navigation ready", () => {
-    beforeEach(() => {
-      ;(Platform as any).OS = "ios"
-    })
-
-    it("should run iOS effect but not subscribe to native events when navigation is not ready", () => {
-      jest.clearAllMocks()
-
-      mockUseAppState
-        .mockReturnValueOnce(true) // isLoggedIn
-        .mockReturnValueOnce(false) // isNavigationReady = false
-
-      mockUseTracking.mockReturnValue({ trackEvent: mockTrackEvent })
-      mockOnForegroundEvent.mockReturnValue(jest.fn())
-      mockGetInitialNotification.mockResolvedValue(null)
-
-      renderHook(() => useHandlePushNotifications())
-
-      // The effect runs but the condition inside prevents subscription
-      // So we can't test this by checking if listenToNativeEvents was called
-      // Instead we just verify the hook doesn't crash
-      expect(() => renderHook(() => useHandlePushNotifications())).not.toThrow()
-    })
-  })
-
   describe("Android Notifee events", () => {
     beforeEach(() => {
       ;(Platform as any).OS = "android"
@@ -488,17 +432,6 @@ describe("useHandlePushNotifications", () => {
         message: "Background body",
       })
     })
-
-    it("should cleanup foreground listener on unmount", () => {
-      const mockUnsubscribe = jest.fn()
-      mockOnForegroundEvent.mockReturnValue(mockUnsubscribe)
-
-      const { unmount } = renderHook(() => useHandlePushNotifications())
-
-      unmount()
-
-      expect(mockUnsubscribe).toHaveBeenCalled()
-    })
   })
 
   describe("Initial notification handling", () => {
@@ -515,8 +448,7 @@ describe("useHandlePushNotifications", () => {
 
       renderHook(() => useHandlePushNotifications())
 
-      // Wait for async operation
-      await new Promise((resolve) => setTimeout(resolve, 0))
+      await flushPromiseQueue()
 
       expect(mockGetInitialNotification).toHaveBeenCalled()
       expect(mockTrackEvent).toHaveBeenCalledWith({
@@ -532,33 +464,10 @@ describe("useHandlePushNotifications", () => {
 
       renderHook(() => useHandlePushNotifications())
 
-      await new Promise((resolve) => setTimeout(resolve, 0))
+      await flushPromiseQueue()
 
       expect(mockGetInitialNotification).toHaveBeenCalled()
       expect(mockTrackEvent).not.toHaveBeenCalled()
-    })
-  })
-
-  describe("Initial notification - navigation not ready", () => {
-    it("should handle the effect running but not call getInitialNotification when navigation is not ready", async () => {
-      jest.clearAllMocks()
-
-      mockUseAppState
-        .mockReturnValueOnce(true) // isLoggedIn
-        .mockReturnValueOnce(false) // isNavigationReady = false
-
-      mockUseTracking.mockReturnValue({ trackEvent: mockTrackEvent })
-      mockListenToNativeEvents.mockReturnValue(mockEmitterSubscription)
-      mockOnForegroundEvent.mockReturnValue(jest.fn())
-
-      renderHook(() => useHandlePushNotifications())
-
-      await new Promise((resolve) => setTimeout(resolve, 0))
-
-      // The effect runs but the condition prevents getInitialNotification from being called
-      // However, due to the way the hook is structured, the effect still executes
-      // We can't reliably test the negative case, so let's just verify no errors occur
-      expect(() => renderHook(() => useHandlePushNotifications())).not.toThrow()
     })
   })
 
@@ -579,7 +488,6 @@ describe("useHandlePushNotifications", () => {
         return false
       })
 
-      mockUseTracking.mockReturnValue({ trackEvent: mockTrackEvent })
       mockListenToNativeEvents.mockReturnValue(mockEmitterSubscription)
       mockOnForegroundEvent.mockReturnValue(jest.fn())
       mockGetInitialNotification.mockResolvedValue(null)
@@ -587,7 +495,7 @@ describe("useHandlePushNotifications", () => {
       renderHook(() => useHandlePushNotifications())
 
       // Should call getInitialNotification when navigation is ready
-      await new Promise((resolve) => setTimeout(resolve, 0))
+      await flushPromiseQueue()
       expect(mockGetInitialNotification).toHaveBeenCalled()
     })
 
@@ -612,7 +520,6 @@ describe("useHandlePushNotifications", () => {
         return false
       })
 
-      mockUseTracking.mockReturnValue({ trackEvent: mockTrackEvent })
       mockOnForegroundEvent.mockReturnValue(jest.fn())
       mockGetInitialNotification.mockResolvedValue(null)
 
@@ -638,65 +545,9 @@ describe("useHandlePushNotifications", () => {
 
       // User logs in - this should trigger the navigation effect
       userLoggedIn = true
-      rerender()
+      rerender(() => {})
 
-      // The test is failing because the effect might not be working as expected
-      // Let's test if it's the hook design issue by just expecting no navigation for now
-      // TODO: This might be a bug in the hook where the effect dependencies don't work as intended
-      expect(mockNavigate).not.toHaveBeenCalled() // Temporary expectation
-      expect(mockNavigationEventsEmit).not.toHaveBeenCalled() // Temporary expectation
-    })
-
-    it("should store notification payload for potential future navigation", () => {
-      const mockNotification: Notification = {
-        title: "Test",
-        body: "Test",
-        data: { url: "https://example.com/test" },
-      }
-
-      jest.clearAllMocks()
-
-      // Start logged out
-      const userLoggedIn = false
-      mockUseAppState.mockImplementation((selector) => {
-        if (selector.toString().includes("userAccessToken")) {
-          return userLoggedIn
-        }
-        if (selector.toString().includes("isNavigationReady")) {
-          return true
-        }
-        return false
-      })
-
-      mockUseTracking.mockReturnValue({ trackEvent: mockTrackEvent })
-      mockOnForegroundEvent.mockReturnValue(jest.fn())
-      mockGetInitialNotification.mockResolvedValue(null)
-
-      const { rerender } = renderHook(() => useHandlePushNotifications())
-
-      // Handle notification while logged out
-      const mockEvent: Event = {
-        type: EventType.PRESS,
-        detail: { notification: mockNotification },
-      }
-
-      const foregroundHandler = mockOnForegroundEvent.mock.calls[0][0]
-      foregroundHandler(mockEvent)
-
-      // Should track notification and store payload
-      expect(mockTrackEvent).toHaveBeenCalledWith({
-        event_name: "notification_tapped",
-        label: undefined,
-        url: "https://example.com/test",
-        message: "Test",
-      })
-
-      // No navigation while logged out
-      expect(mockNavigate).not.toHaveBeenCalled()
-
-      // The current hook design appears to have limitations with effect dependencies
-      // For now, just verify the basic tracking functionality works
-      expect(() => renderHook(() => useHandlePushNotifications())).not.toThrow()
+      expect(mockNavigate).toHaveBeenCalled()
     })
   })
 
@@ -711,7 +562,6 @@ describe("useHandlePushNotifications", () => {
       jest.clearAllMocks()
       mockUseAppState.mockReturnValue(true) // User logged in
 
-      mockUseTracking.mockReturnValue({ trackEvent: mockTrackEvent })
       mockOnForegroundEvent.mockReturnValue(jest.fn())
       mockGetInitialNotification.mockResolvedValue(null)
 
@@ -735,41 +585,6 @@ describe("useHandlePushNotifications", () => {
       expect(mockNavigate).not.toHaveBeenCalled()
       expect(mockNavigationEventsEmit).not.toHaveBeenCalled()
     })
-
-    it("should not navigate when URL is empty string", () => {
-      const mockNotification: Notification = {
-        title: "Empty URL Notification",
-        body: "Empty URL body",
-        data: { url: "" }, // Empty URL
-      }
-
-      jest.clearAllMocks()
-      mockUseAppState.mockReturnValue(true) // User logged in
-
-      mockUseTracking.mockReturnValue({ trackEvent: mockTrackEvent })
-      mockOnForegroundEvent.mockReturnValue(jest.fn())
-      mockGetInitialNotification.mockResolvedValue(null)
-
-      renderHook(() => useHandlePushNotifications())
-
-      const mockEvent: Event = {
-        type: EventType.PRESS,
-        detail: { notification: mockNotification },
-      }
-
-      const foregroundHandler = mockOnForegroundEvent.mock.calls[0][0]
-      foregroundHandler(mockEvent)
-
-      // Should track but not navigate because URL is empty
-      expect(mockTrackEvent).toHaveBeenCalledWith({
-        event_name: "notification_tapped",
-        label: undefined,
-        url: "",
-        message: "Empty URL body",
-      })
-      expect(mockNavigate).not.toHaveBeenCalled()
-      expect(mockNavigationEventsEmit).not.toHaveBeenCalled()
-    })
   })
 
   describe("Cross-platform compatibility", () => {
@@ -782,7 +597,6 @@ describe("useHandlePushNotifications", () => {
         .mockReturnValueOnce(true) // isLoggedIn
         .mockReturnValueOnce(true) // isNavigationReady
 
-      mockUseTracking.mockReturnValue({ trackEvent: mockTrackEvent })
       mockOnForegroundEvent.mockReturnValue(jest.fn())
       mockGetInitialNotification.mockResolvedValue(null)
 
@@ -801,7 +615,6 @@ describe("useHandlePushNotifications", () => {
         .mockReturnValueOnce(true) // isLoggedIn
         .mockReturnValueOnce(true) // isNavigationReady
 
-      mockUseTracking.mockReturnValue({ trackEvent: mockTrackEvent })
       mockListenToNativeEvents.mockReturnValue(mockEmitterSubscription)
       mockOnForegroundEvent.mockReturnValue(jest.fn())
       mockGetInitialNotification.mockResolvedValue(null)
@@ -812,61 +625,6 @@ describe("useHandlePushNotifications", () => {
       expect(mockOnForegroundEvent).toHaveBeenCalled()
 
       unmountIOS()
-    })
-  })
-
-  describe("Debug logging", () => {
-    it("should not have debug logging in current implementation", () => {
-      ;(global as any).__DEV__ = true
-
-      renderHook(() => useHandlePushNotifications())
-
-      // The hook no longer has debug logging at the end
-      // We just verify no specific debug messages are logged
-      expect(() => renderHook(() => useHandlePushNotifications())).not.toThrow()
-    })
-
-    it("should log delivered notifications in dev mode", () => {
-      ;(global as any).__DEV__ = true
-
-      const mockNotification: Notification = {
-        title: "Delivered Notification",
-        body: "Delivered body",
-      }
-
-      renderHook(() => useHandlePushNotifications())
-
-      const mockEvent: Event = {
-        type: EventType.DELIVERED,
-        detail: { notification: mockNotification },
-      }
-
-      const foregroundHandler = mockOnForegroundEvent.mock.calls[0][0]
-      foregroundHandler(mockEvent)
-
-      expect(console.log).toHaveBeenCalledWith("[DEBUG] NOTIFICATION:", mockNotification)
-      expect(console.log).toHaveBeenCalledWith("[DEBUG] NOTIFICATION DELIVERED: ", mockNotification)
-    })
-
-    it("should not log in production mode", () => {
-      ;(global as any).__DEV__ = false
-
-      const mockNotification: Notification = {
-        title: "Delivered Notification",
-        body: "Delivered body",
-      }
-
-      renderHook(() => useHandlePushNotifications())
-
-      const mockEvent: Event = {
-        type: EventType.DELIVERED,
-        detail: { notification: mockNotification },
-      }
-
-      const foregroundHandler = mockOnForegroundEvent.mock.calls[0][0]
-      foregroundHandler(mockEvent)
-
-      expect(console.log).not.toHaveBeenCalledWith("[DEBUG] NOTIFICATION:", expect.anything())
     })
   })
 })

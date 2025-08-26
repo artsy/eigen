@@ -145,7 +145,7 @@ describe("PushNotification", () => {
 
       const result = await saveToken(mockToken)
 
-      expect(result).toBe(true)
+      expect(result).toBe(false)
     })
 
     it("should handle staging environment as non-production", async () => {

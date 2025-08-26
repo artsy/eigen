@@ -10,6 +10,7 @@ import { ArtsyNativeModule } from "app/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "app/NativeModules/LegacyNativeModules"
 import { ScreenDimensionsWithSafeAreas } from "app/utils/hooks"
 import { mockPostEventToProviders, mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import chalk from "chalk"
 import * as matchers from "jest-extended"
@@ -686,3 +687,12 @@ jest.mock("react-native-blurhash", () => {
     Blurhash: ReactNative.View as any,
   }
 })
+
+jest.mock("app/system/notifications/getNotificationsPermissions", () => ({
+  getNotificationPermissionsStatus: mockFetchNotificationPermissions,
+  PushAuthorizationStatus: {
+    NotDetermined: "notDetermined",
+    Authorized: "authorized",
+    Denied: "denied",
+  },
+}))

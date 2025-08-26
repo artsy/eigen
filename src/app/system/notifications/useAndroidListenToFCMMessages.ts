@@ -47,8 +47,8 @@ export const useAndroidListenToFCMMessages = () => {
       // The listeners for FCM messages
       const unsubscribeFCMForeground = messaging().onMessage(onMessageReceived)
 
-      // This is a special handler for FCM messages when the app is in the background or quit state.
-      messaging().setBackgroundMessageHandler(onMessageReceived)
+      // TODO: Do we need a background message handler?
+      // messaging().setBackgroundMessageHandler(onMessageReceived)
 
       return () => {
         unsubscribeFCMForeground()

@@ -5,7 +5,7 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { navigate, navigationEvents } from "app/system/navigation/navigate"
 import { logNotification } from "app/utils/loggers"
 import { AnalyticsConstants } from "app/utils/track/constants"
-import { useCallback, useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { EmitterSubscription, Platform } from "react-native"
 import { useTracking } from "react-tracking"
 
@@ -17,7 +17,7 @@ export const useHandlePushNotifications = () => {
   const isNavigationReady = GlobalStore.useAppState((state) => state.sessionState.isNavigationReady)
   const { trackEvent } = useTracking()
   const iosListenerRef = useRef<EmitterSubscription | null>(null)
-  const notificationPayload = useRef<Notification | null>(null)
+  const [pendingNotification, setPendingNotification] = useState<Notification | null>(null)
 
   const handleNotification = useCallback(
     (notification: Notification) => {
@@ -28,7 +28,7 @@ export const useHandlePushNotifications = () => {
         message: notification.body?.toString(),
       })
 
-      notificationPayload.current = notification
+      setPendingNotification(notification)
     },
     [trackEvent]
   )
@@ -41,8 +41,6 @@ export const useHandlePushNotifications = () => {
           event.type === "NOTIFICATION_RECEIVED" &&
           event.payload?.NotificationAction === "Tapped"
         ) {
-          console.log("DEBUG: iOS notification tapped", event.payload)
-
           // Create a Notification object from the iOS payload
           const notification: Notification = {
             title: event.payload?.aps?.alert?.title || event.payload?.title,
@@ -111,18 +109,19 @@ export const useHandlePushNotifications = () => {
 
   // Navigate to the notification URL if the user is logged in
   useEffect(() => {
-    if (isLoggedIn && notificationPayload.current) {
+    if (isLoggedIn && pendingNotification) {
       navigationEvents.emit("requestModalDismiss")
 
-      const url = notificationPayload.current.data?.url as string
+      const url = pendingNotification.data?.url as string
 
+      // Validate URL before navigation to prevent errors
       navigate(url, {
-        passProps: notificationPayload.current.data,
+        passProps: pendingNotification.data,
         ignoreDebounce: true,
       })
 
-      // Reset the notification payload after navigation
-      notificationPayload.current = null
+      // Reset the notification payload after navigation attempt
+      setPendingNotification(null)
     }
-  }, [isLoggedIn])
+  }, [isLoggedIn, pendingNotification])
 }

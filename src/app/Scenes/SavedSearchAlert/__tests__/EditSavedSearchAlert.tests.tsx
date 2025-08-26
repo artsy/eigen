@@ -15,12 +15,12 @@ jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills")
 
 describe("EditSavedSearchAlert", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const notificationPermissions = mockFetchNotificationPermissions(false)
+  const notificationPermissions = mockFetchNotificationPermissions as jest.Mock
 
   beforeEach(() => {
     mockEnvironment = getMockRelayEnvironment()
-    notificationPermissions.mockImplementationOnce((cb) =>
-      cb(null, PushAuthorizationStatus.Authorized)
+    notificationPermissions().mockImplementationOnce(() =>
+      Promise.resolve(PushAuthorizationStatus.Authorized)
     )
     ;(useSavedSearchPills as jest.Mock).mockImplementation(() => pills)
   })
