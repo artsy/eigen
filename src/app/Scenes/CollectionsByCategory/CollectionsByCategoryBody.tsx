@@ -43,7 +43,6 @@ export const CollectionsByCategoryBody: React.FC<CollectionsByCategoryBodyProps>
       <Separator borderColor="mono10" />
 
       <FlashList
-        estimatedItemSize={ESTIMATED_ITEM_SIZE}
         data={data.marketingCollections}
         keyExtractor={(item) => `artwork_rail_${item?.slug}`}
         renderItem={({ item, index }) => {
@@ -58,8 +57,6 @@ export const CollectionsByCategoryBody: React.FC<CollectionsByCategoryBodyProps>
     </Flex>
   )
 }
-
-const ESTIMATED_ITEM_SIZE = 390
 
 const fragment = graphql`
   fragment CollectionsByCategoryBody_viewer on Viewer

@@ -16,7 +16,6 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { GeneArtworksFilterHeader } from "app/Components/Gene/GeneArtworksFilterHeader"
 import { extractNodes } from "app/utils/extractNodes"
 import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
   MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -108,7 +107,6 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
       <Tabs.Masonry
         data={artworks}
         numColumns={NUM_COLUMNS_MASONRY}
-        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={
           initialArtworksTotal ? (

@@ -1,5 +1,5 @@
 import { Flex, Spacer, Spinner, useSpace } from "@artsy/palette-mobile"
-import { FlashList } from "@shopify/flash-list"
+import { FlashList, FlashListRef } from "@shopify/flash-list"
 import { EntitySearchResultsQuery } from "__generated__/EntitySearchResultsQuery.graphql"
 import { EntitySearchResults_searchConnection$key } from "__generated__/EntitySearchResults_searchConnection.graphql"
 import { SimpleErrorMessage } from "app/Components/ErrorView/SimpleErrorMessage"
@@ -22,11 +22,10 @@ interface SearchResultsProps {
 }
 
 const PAGE_SIZE = isTablet() ? 40 : 20
-const ESTIMATED_ITEM_SIZE = 56
 
 export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selectedPill }) => {
   const space = useSpace()
-  const flashListRef = useRef<FlashList<SearchResultInterface>>(null)
+  const flashListRef = useRef<FlashListRef<SearchResultInterface>>(null)
   const { inputRef } = useContext(SearchContext)
 
   const selectedEntity = SEARCH_PILL_KEY_TO_SEARCH_ENTITY?.[selectedPill.key]
@@ -80,7 +79,6 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
       data={hits}
       keyExtractor={(item, index) => item.internalID ?? index.toString()}
       renderItem={renderItem}
-      estimatedItemSize={ESTIMATED_ITEM_SIZE}
       showsVerticalScrollIndicator={false}
       ItemSeparatorComponent={() => <Spacer y={2} />}
       keyboardDismissMode="on-drag"

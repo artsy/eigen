@@ -8,7 +8,7 @@ import {
   useScreenDimensions,
   useTheme,
 } from "@artsy/palette-mobile"
-import { MasonryFlashList } from "@shopify/flash-list"
+import { FlashList } from "@shopify/flash-list"
 import { SearchArtworksGrid_viewer$data } from "__generated__/SearchArtworksGrid_viewer.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -20,11 +20,7 @@ import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworksFilterHeader } from "app/Components/ArtworkGrids/ArtworksFilterHeader"
 import { SCROLLVIEW_SEARCH_RESULTS_PADDING_BOTTOM_OFFSET } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
-import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
-  NUM_COLUMNS_MASONRY,
-  ON_END_REACHED_THRESHOLD_MASONRY,
-} from "app/utils/masonryHelpers"
+import { NUM_COLUMNS_MASONRY, ON_END_REACHED_THRESHOLD_MASONRY } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 
 import { Schema } from "app/utils/track"
@@ -108,13 +104,13 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
       </ArtworksFilterHeader>
 
       <Flex flex={1} justifyContent="center" mx={2}>
-        <MasonryFlashList
+        <FlashList
+          masonry={true}
           showsVerticalScrollIndicator={false}
           data={artworks}
           keyExtractor={(item) => item.id}
           numColumns={NUM_COLUMNS_MASONRY}
           // this number is the estimated size of the artworkGridItem component
-          estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
           ListEmptyComponent={
@@ -135,7 +131,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
           ListFooterComponent={
             <AnimatedMasonryListFooter shouldDisplaySpinner={shouldDisplaySpinner} />
           }
-          renderItem={({ item, index, columnIndex }) => {
+          renderItem={({ item, index }) => {
             const imgAspectRatio = item.image?.aspectRatio ?? 1
             const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
 
@@ -143,8 +139,9 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
 
             return (
               <Flex
-                pl={columnIndex === 0 ? 0 : 1}
-                pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+                // pl={columnIndex === 0 ? 0 : 1}
+                // pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+                backgroundColor="red10"
                 mt={2}
               >
                 <ArtworkGridItem
@@ -209,6 +206,7 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
               id
               slug
               image(includeAll: false) {
+                imageURL
                 aspectRatio
               }
               ...ArtworkGridItem_artwork @arguments(includeAllImages: false)

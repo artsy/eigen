@@ -8,7 +8,7 @@ import {
   Text,
   useSpace,
 } from "@artsy/palette-mobile"
-import { MasonryFlashList } from "@shopify/flash-list"
+import { FlashList } from "@shopify/flash-list"
 import { ArtworkAutosuggestResultsContainerQuery } from "__generated__/ArtworkAutosuggestResultsContainerQuery.graphql"
 import { ArtworkAutosuggestResults_viewer$data } from "__generated__/ArtworkAutosuggestResults_viewer.graphql"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
@@ -18,11 +18,7 @@ import { PAGE_SIZE } from "app/Components/constants"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
 import { useScreenDimensions } from "app/utils/hooks"
-import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
-  NUM_COLUMNS_MASONRY,
-  ON_END_REACHED_THRESHOLD_MASONRY,
-} from "app/utils/masonryHelpers"
+import { NUM_COLUMNS_MASONRY, ON_END_REACHED_THRESHOLD_MASONRY } from "app/utils/masonryHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import React, { useCallback, useEffect } from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -64,13 +60,13 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
   }, [viewer.artworks?.edges?.length])
 
   return (
-    <MasonryFlashList
+    <FlashList
+      masonry={true}
       contentContainerStyle={{ paddingBottom: space(12) }}
       showsVerticalScrollIndicator={false}
       data={artworks}
       numColumns={NUM_COLUMNS_MASONRY}
       keyExtractor={(item) => item.id}
-      estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
       keyboardShouldPersistTaps="handled"
       onEndReached={loadMore}
       onEndReachedThreshold={ON_END_REACHED_THRESHOLD_MASONRY}
@@ -96,7 +92,7 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
           </Box>
         </Box>
       }
-      renderItem={({ item, index, columnIndex }) => {
+      renderItem={({ item, index }) => {
         const imgAspectRatio = item.image?.aspectRatio ?? 1
         const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
 
@@ -104,8 +100,8 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
 
         return (
           <Flex
-            pl={columnIndex === 0 ? 0 : 1}
-            pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+            // pl={columnIndex === 0 ? 0 : 1}
+            // pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
             mt={2}
           >
             <ArtworkGridItem

@@ -93,7 +93,6 @@ export const HomeViewSectionScreenArtworks: React.FC<ArtworksScreenHomeSection> 
           animated
           artworks={artworks}
           numColumns={numOfColumns}
-          disableAutoLayout
           pageSize={PAGE_SIZE}
           ListEmptyComponent={
             <SimpleMessage my={2}>Nothing yet. Please check back later.</SimpleMessage>

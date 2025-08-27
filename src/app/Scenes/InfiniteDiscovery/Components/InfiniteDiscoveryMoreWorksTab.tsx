@@ -8,11 +8,7 @@ import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/Filter
 import { PAGE_SIZE } from "app/Components/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import { withSuspense } from "app/utils/hooks/withSuspense"
-import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
-  NUM_COLUMNS_MASONRY,
-  ON_END_REACHED_THRESHOLD_MASONRY,
-} from "app/utils/masonryHelpers"
+import { NUM_COLUMNS_MASONRY, ON_END_REACHED_THRESHOLD_MASONRY } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { PlaceholderGrid } from "app/utils/placeholderGrid"
 import { FC, useCallback } from "react"
@@ -64,7 +60,6 @@ export const MoreWorksTab: FC<MoreWorksTabProps> = ({ artworks: _artworks }) => 
     <Tabs.Masonry
       data={artworks}
       numColumns={NUM_COLUMNS_MASONRY}
-      estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
       keyboardShouldPersistTaps="handled"
       keyExtractor={(item) => item?.internalID}
       ListEmptyComponent={<FilteredArtworkGridZeroState />}

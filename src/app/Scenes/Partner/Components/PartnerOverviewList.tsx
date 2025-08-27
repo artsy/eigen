@@ -48,7 +48,6 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
 
   return (
     <Tabs.FlashList
-      estimatedItemSize={85}
       data={artists}
       keyExtractor={keyExtractor}
       ListHeaderComponent={() => {

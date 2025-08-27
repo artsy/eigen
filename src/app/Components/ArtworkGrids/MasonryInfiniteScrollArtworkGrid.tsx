@@ -1,11 +1,10 @@
 import { ContextModule, ScreenOwnerType } from "@artsy/cohesion"
 import { useSpace } from "@artsy/palette-mobile"
-import { FlashListProps, MasonryFlashList, MasonryFlashListProps } from "@shopify/flash-list"
+import { FlashListProps, FlashList } from "@shopify/flash-list"
 import { PriceOfferMessage } from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { MasonryArtworkGridItem } from "app/Components/ArtworkGrids/MasonryArtworkGridItem"
 import { PartnerOffer } from "app/Scenes/Activity/components/PartnerOfferCreatedNotification"
 import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
   MASONRY_LIST_PAGE_SIZE,
   MasonryArtworkItem,
   NUM_COLUMNS_MASONRY,
@@ -16,7 +15,7 @@ import React, { FC, useCallback, useMemo } from "react"
 import Animated from "react-native-reanimated"
 
 type MasonryFlashListOmittedProps = Omit<
-  MasonryFlashListProps<MasonryArtworkItem[]>,
+  FlashListProps<MasonryArtworkItem[]>,
   "renderItem" | "data"
 >
 
@@ -146,7 +145,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
     ]
   )
 
-  const FlashlistComponent = animated ? AnimatedMasonryFlashList : MasonryFlashList
+  const FlashlistComponent = animated ? AnimatedMasonryFlashList : FlashList
 
   const getAdjustedNumColumns = useCallback(() => {
     return rest.numColumns ?? NUM_COLUMNS_MASONRY
@@ -181,6 +180,7 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
   return (
     <FlashlistComponent
       {...flashlistComponentProps}
+      masonry={true}
       data={artworks as unknown as readonly MasonryArtworkItem[]}
       keyExtractor={(item) => item.id}
       numColumns={getAdjustedNumColumns()}
@@ -190,7 +190,6 @@ export const MasonryInfiniteScrollArtworkGrid: React.FC<MasonryInfiniteScrollArt
           <Footer ListFooterComponent={ListFooterComponent} isLoading={shouldDisplaySpinner} />
         ) : null
       }
-      estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
       onEndReached={onEndReached}
       contentContainerStyle={{
         // No paddings are needed for single column grids
@@ -219,5 +218,5 @@ const Footer: FC<{
 }
 
 const AnimatedMasonryFlashList = Animated.createAnimatedComponent(
-  MasonryFlashList
-) as unknown as typeof MasonryFlashList
+  FlashList
+) as unknown as typeof FlashList

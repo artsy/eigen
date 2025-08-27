@@ -32,7 +32,6 @@ export const NotificationArtworkList: FC<NotificationArtworkListProps> = ({
         animated
         artworks={artworks}
         numColumns={1}
-        disableAutoLayout
         contextScreenOwnerType={OwnerType.activity}
         contextScreen={OwnerType.activity}
         hasMore={false}

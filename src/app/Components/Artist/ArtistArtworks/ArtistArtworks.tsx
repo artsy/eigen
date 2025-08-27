@@ -13,7 +13,7 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
-import { MasonryFlashListRef } from "@shopify/flash-list"
+import { FlashListRef } from "@shopify/flash-list"
 import {
   ArtistArtworksQuery,
   ArtistArtworksQuery$data,
@@ -50,7 +50,6 @@ import { extractNodes } from "app/utils/extractNodes"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { withSuspense } from "app/utils/hooks/withSuspense"
 import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
   MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -103,7 +102,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const artworks = useMemo(() => extractNodes(artist.artworks), [artist.artworks])
 
   const artworksCount = artist.artworks?.counts?.total ?? 0
-  const gridRef = useRef<MasonryFlashListRef<(typeof artworks)[0]>>(null)
+  const gridRef = useRef<FlashListRef<(typeof artworks)[0]>>(null)
 
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
@@ -270,7 +269,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
       <Tabs.Masonry
         data={artworks}
         numColumns={NUM_COLUMNS_MASONRY}
-        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
         keyboardShouldPersistTaps="handled"
         innerRef={gridRef}
         ListEmptyComponent={

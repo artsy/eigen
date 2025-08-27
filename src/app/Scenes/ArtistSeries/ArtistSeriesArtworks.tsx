@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Box, Flex, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
-import { MasonryFlashListRef } from "@shopify/flash-list"
+import { FlashListRef } from "@shopify/flash-list"
 import { ArtistSeriesArtworks_artistSeries$key } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -9,11 +9,7 @@ import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
 import { FilteredArtworkGridZeroState } from "app/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { HeaderArtworksFilterWithTotalArtworks } from "app/Components/HeaderArtworksFilter/HeaderArtworksFilterWithTotalArtworks"
 import { extractNodes } from "app/utils/extractNodes"
-import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
-  NUM_COLUMNS_MASONRY,
-  ON_END_REACHED_THRESHOLD_MASONRY,
-} from "app/utils/masonryHelpers"
+import { NUM_COLUMNS_MASONRY, ON_END_REACHED_THRESHOLD_MASONRY } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
@@ -43,7 +39,7 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
     [data.artistSeriesArtworks]
   )
   const shouldDisplaySpinner = isLoadingNext && hasNext
-  const gridRef = useRef<MasonryFlashListRef<(typeof artworksList)[0]>>(null)
+  const gridRef = useRef<FlashListRef<(typeof artworksList)[0]>>(null)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setFiltersCountAction
   )
@@ -119,7 +115,6 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
         testID="ArtistSeriesArtworksGrid"
         data={artworksList}
         numColumns={NUM_COLUMNS_MASONRY}
-        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
         keyboardShouldPersistTaps="handled"
         innerRef={gridRef}
         ListEmptyComponent={

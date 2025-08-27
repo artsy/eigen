@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Box, Flex, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
-import { MasonryFlashListRef } from "@shopify/flash-list"
+import { FlashListRef } from "@shopify/flash-list"
 import { CollectionArtworks_collection$data } from "__generated__/CollectionArtworks_collection.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
@@ -11,7 +11,6 @@ import { HeaderArtworksFilterWithTotalArtworks } from "app/Components/HeaderArtw
 import { extractNodes } from "app/utils/extractNodes"
 import { get } from "app/utils/get"
 import {
-  ESTIMATED_MASONRY_ITEM_SIZE,
   MASONRY_LIST_PAGE_SIZE,
   NUM_COLUMNS_MASONRY,
   ON_END_REACHED_THRESHOLD_MASONRY,
@@ -43,7 +42,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
     () => extractNodes(collection.collectionArtworks),
     [collection.collectionArtworks]
   )
-  const gridRef = useRef<MasonryFlashListRef<(typeof artworksList)[0]>>(null)
+  const gridRef = useRef<FlashListRef<(typeof artworksList)[0]>>(null)
 
   const scrollToTop = () => {
     gridRef?.current?.scrollToOffset({ offset: 0, animated: true })
@@ -135,7 +134,6 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
       <Tabs.Masonry
         data={artworksList}
         numColumns={NUM_COLUMNS_MASONRY}
-        estimatedItemSize={ESTIMATED_MASONRY_ITEM_SIZE}
         keyboardShouldPersistTaps="handled"
         innerRef={gridRef}
         ListEmptyComponent={

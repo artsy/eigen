@@ -108,7 +108,6 @@ export const CollectContent: React.FC<CollectContentProps> = ({ viewer }) => {
         loadMore={() => loadNext(PAGE_SIZE)}
         hasMore={hasNext}
         numColumns={NUM_COLUMNS_MASONRY}
-        disableAutoLayout
         pageSize={PAGE_SIZE}
         contextModule={ContextModule.artworkGrid}
         // TODO: Add tracking

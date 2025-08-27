@@ -58,7 +58,6 @@ const OnboardingMarketingCollection: React.FC<OnboardingMarketingCollectionProps
             loadMore={() => null}
             hasMore={false}
             numColumns={NUM_COLUMNS_MASONRY}
-            disableAutoLayout
             hideSaveIcon={slug === "curators-picks-emerging"}
             onScroll={scrollHandler}
             ListHeaderComponent={
