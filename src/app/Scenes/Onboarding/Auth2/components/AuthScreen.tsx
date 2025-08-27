@@ -13,7 +13,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({ children, name }) => {
 
   return (
     <>
-      <Flex display="flex" zIndex={isVisible ? 1 : 0} testID="auth-screen">
+      <Flex display="flex" zIndex={1} testID="auth-screen">
         {children}
       </Flex>
     </>
