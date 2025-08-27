@@ -27,14 +27,14 @@
   resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.49.0.tgz#f7e502892cc009538a464155dea0edc720ee6d00"
   integrity sha512-HomLdxzWoQXUgZSzRPxxiUV6AcMoxwzejqtQ13FahuSwnDikPO3BJv4oeCg92IV2U3xRaP2MIl4shK+Fq2pyhA==
 
-"@artsy/palette-mobile@17.31.0":
-  version "17.31.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.31.0.tgz#ca45b89813639e10b19131bf33257165dca25b4e"
-  integrity sha512-rcp69FJScbMGAlUV+/grEJw4m1WQ94zk/UzrBWhxSXpaViKt2e8bXxFut6iBUYh0poI0dBdyhvRk9ozgZ28frQ==
+"@artsy/palette-mobile@17.32.0--canary.373.4107.0":
+  version "17.32.0--canary.373.4107.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.32.0--canary.373.4107.0.tgz#900131fa1038afdbd98a4256530cd6c992fb89d8"
+  integrity sha512-uTJqvF9hqOEjXwcRz6+Du/Uk1pZA9RqOWZHZKQJzShs3ir/sU98iCNmnW5wh0Gb5QbBgKWS9yxe64vc13wDnFA==
   dependencies:
     "@artsy/palette-tokens" "^7.0.0"
     "@d11/react-native-fast-image" "^8.10.0"
-    "@shopify/flash-list" "^1.8.3"
+    "@shopify/flash-list" "^2.0.3"
     "@styled-system/core" "^5.1.2"
     "@styled-system/theme-get" "^5.1.2"
     events "^3.3.0"
@@ -4676,14 +4676,6 @@
   integrity sha512-JL8UDjrsKxKclTdLXfuHfE7B3KbrAPEYP7tMyN/xiO2vsF6D84fjwYyalO0ZMtuFZE6vpSze8ZOLEh6hLnPYsw==
   dependencies:
     "@sentry/core" "8.54.0"
-
-"@shopify/flash-list@^1.8.3":
-  version "1.8.3"
-  resolved "https://registry.yarnpkg.com/@shopify/flash-list/-/flash-list-1.8.3.tgz#08829644d7177b094ff016a71e2b2fef633d8af6"
-  integrity sha512-vXuj6JyuMjONVOXjEhWFeaONPuWN/53Cl2LeyeM8TZ0JzUcNU+BE6iyga1/yyJeDf0K7YPgAE/PcUX2+DM1LiA==
-  dependencies:
-    recyclerlistview "4.2.3"
-    tslib "2.8.1"
 
 "@shopify/flash-list@^2.0.3":
   version "2.0.3"
@@ -12656,7 +12648,7 @@ lodash-es@^4.17.11, lodash-es@^4.17.21:
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
   integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
 
-lodash.debounce@4.0.8, lodash.debounce@^4.0.8:
+lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==
@@ -14422,7 +14414,7 @@ prompts@^2.0.1, prompts@^2.3.2, prompts@^2.4.2:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@*, prop-types@15.8.1, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.8.1:
+prop-types@*, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -15180,15 +15172,6 @@ recursive-readdir-sync@1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/recursive-readdir-sync/-/recursive-readdir-sync-1.0.6.tgz#1dbf6d32f3c5bb8d3cde97a6c588d547a9e13d56"
   integrity sha1-Hb9tMvPFu4083pemxYjVR6nhPVY=
-
-recyclerlistview@4.2.3:
-  version "4.2.3"
-  resolved "https://registry.yarnpkg.com/recyclerlistview/-/recyclerlistview-4.2.3.tgz#14032e7ad2f24396e24d5b3060c6ba76b567f000"
-  integrity sha512-STR/wj/FyT8EMsBzzhZ1l2goYirMkIgfV3gYEPxI3Kf3lOnu6f7Dryhyw7/IkQrgX5xtTcDrZMqytvteH9rL3g==
-  dependencies:
-    lodash.debounce "4.0.8"
-    prop-types "15.8.1"
-    ts-object-utils "0.0.5"
 
 redent@^3.0.0:
   version "3.0.0"
@@ -16964,11 +16947,6 @@ ts-interface-checker@^0.1.9:
   version "0.1.13"
   resolved "https://registry.yarnpkg.com/ts-interface-checker/-/ts-interface-checker-0.1.13.tgz#784fd3d679722bc103b1b4b8030bcddb5db2a699"
   integrity sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==
-
-ts-object-utils@0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/ts-object-utils/-/ts-object-utils-0.0.5.tgz#95361cdecd7e52167cfc5e634c76345e90a26077"
-  integrity sha512-iV0GvHqOmilbIKJsfyfJY9/dNHCs969z3so90dQWsO1eMMozvTpnB1MEaUbb3FYtZTGjv5sIy/xmslEz0Rg2TA==
 
 ts-toolbelt@^6.15.1:
   version "6.15.5"
