@@ -194,7 +194,8 @@ export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
       <ContextMenu
         actions={contextActions}
         onPress={handleContextPress}
-        preview={artworkPreviewComponent(artwork, artworkDisplayProps)}
+        // TODO: figure out why this breaks the images layout everywhere that the contextMenuArtwork is used on iOS
+        // preview={artworkPreviewComponent(artwork, artworkDisplayProps)}
         hideShadows={true}
         previewBackgroundColor={!!dark ? color("mono100") : color("mono0")}
       >
