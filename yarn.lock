@@ -14699,9 +14699,9 @@ react-native-collapsible-tab-view@8.0.1, react-native-collapsible-tab-view@^8.0.
   dependencies:
     use-deep-compare "^1.1.0"
 
-"react-native-context-menu-view@git+https://github.com/artsy/react-native-context-menu-view.git#v1.10.10-artsy":
+"react-native-context-menu-view@git+https://github.com/artsy/react-native-context-menu-view.git#brian/new-arch-woes":
   version "1.10.0"
-  resolved "git+https://github.com/artsy/react-native-context-menu-view.git#e5a6bf3abba774936cac9ae2988704f0d7443c14"
+  resolved "git+https://github.com/artsy/react-native-context-menu-view.git#a39841e5ab2715c1cf2722043e6707be9c98717d"
 
 react-native-device-info@14.0.0:
   version "14.0.0"
