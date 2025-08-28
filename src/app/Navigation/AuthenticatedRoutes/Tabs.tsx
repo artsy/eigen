@@ -195,14 +195,14 @@ const AppTabs: React.FC = () => {
       }}
     >
       <Tab.Screen name="home" component={HomeTab} options={{ ...tabsBadges["home"] }} />
-      <Tab.Screen name="search" component={SearchTab} />
+      {/* <Tab.Screen name="search" component={SearchTab} />
       <Tab.Screen name="inbox" component={InboxTab} options={{ ...tabsBadges["inbox"] }} />
       <Tab.Screen
         name="favorites"
         component={FavoritesTab}
         options={{ ...tabsBadges["favorites"] }}
       />
-      <Tab.Screen name="profile" component={ProfileTab} options={{ ...tabsBadges["profile"] }} />
+      <Tab.Screen name="profile" component={ProfileTab} options={{ ...tabsBadges["profile"] }} /> */}
     </Tab.Navigator>
   )
 }
