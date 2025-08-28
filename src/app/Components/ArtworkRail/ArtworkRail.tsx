@@ -12,7 +12,7 @@ import { BrowseMoreRailCard } from "app/Components/BrowseMoreRailCard"
 import { RandomWidthPlaceholderText } from "app/utils/placeholders"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import React, { memo, ReactElement, useCallback } from "react"
-import { FlatList, ListRenderItem, ViewabilityConfig } from "react-native"
+import { FlatList, ListRenderItem, ScrollView, ViewabilityConfig } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
 
@@ -44,18 +44,12 @@ export interface ArtworkRailProps extends ArtworkActionTrackingProps {
 export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
   ({
     onPress,
-    onEndReached,
-    onEndReachedThreshold,
     ListHeaderComponent = <Spacer x={2} />,
     ListFooterComponent = <Spacer x={2} />,
     hideArtistName = false,
-    listRef,
-    itemHref,
     showPartnerName = true,
     dark = false,
     showSaveIcon = false,
-    onViewableItemsChanged,
-    viewabilityConfig,
     moreHref,
     onMorePress,
     hideIncreasedInterestSignal,
@@ -64,62 +58,46 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = memo(
   }) => {
     const artworks = useFragment(artworksFragment, otherProps.artworks)
 
-    const renderItem: ListRenderItem<Artwork> = useCallback(
-      ({ item, index }) => {
-        return (
-          <ArtworkRailCard
-            testID={`artwork-${item.slug}`}
-            artwork={item}
-            href={itemHref?.(item)}
-            showPartnerName={showPartnerName}
-            hideArtistName={hideArtistName}
-            dark={dark}
-            onPress={() => {
-              onPress?.(item, index)
-            }}
-            showSaveIcon={showSaveIcon}
-            hideIncreasedInterestSignal={hideIncreasedInterestSignal}
-            hideCuratorsPickSignal={hideCuratorsPickSignal}
-            {...otherProps}
-          />
-        )
-      },
-      [hideArtistName, onPress, showPartnerName]
-    )
+    if (!artworks.length) return null
 
     return (
-      <FlatList
-        data={artworks}
-        horizontal
-        // This is required to avoid broken virtualization on nested flatlists
-        // See https://artsy.slack.com/archives/C02BAQ5K7/p1752833523972209?thread_ts=1752761208.038099&cid=C02BAQ5K7
-        disableVirtualization
-        keyExtractor={(item: Artwork) => item.internalID}
-        ListFooterComponent={
-          <>
-            {!!(onMorePress || moreHref) && (
-              <BrowseMoreRailCard
+      <Flex>
+        {ListHeaderComponent}
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 8 }}
+        >
+          {artworks.map((item, index) => (
+            <Flex key={item.internalID} mr={2}>
+              <ArtworkRailCard
+                testID={`artwork-${item.slug}`}
+                artwork={item}
+                href={otherProps.itemHref?.(item)}
+                showPartnerName={showPartnerName}
+                hideArtistName={hideArtistName}
                 dark={dark}
-                href={moreHref}
-                onPress={onMorePress}
-                text="Browse All Artworks"
+                onPress={() => onPress?.(item, index)}
+                showSaveIcon={showSaveIcon}
+                hideIncreasedInterestSignal={hideIncreasedInterestSignal}
+                hideCuratorsPickSignal={hideCuratorsPickSignal}
+                {...otherProps}
               />
-            )}
-            {ListFooterComponent}
-          </>
-        }
-        ListHeaderComponent={ListHeaderComponent}
-        ref={listRef}
-        onEndReached={onEndReached}
-        onEndReachedThreshold={onEndReachedThreshold}
-        renderItem={renderItem}
-        showsHorizontalScrollIndicator={false}
-        onViewableItemsChanged={onViewableItemsChanged}
-        viewabilityConfig={viewabilityConfig}
-        // Because this is a horizontal rail, we don't want to load more than 3 screens before and after
-        // The default 21 (10 before and 10 after) is too much
-        windowSize={isTablet() ? 10 : 5}
-      />
+            </Flex>
+          ))}
+
+          {!!(onMorePress || moreHref) && (
+            <BrowseMoreRailCard
+              dark={dark}
+              href={moreHref}
+              onPress={onMorePress}
+              text="Browse All Artworks"
+            />
+          )}
+
+          {ListFooterComponent}
+        </ScrollView>
+      </Flex>
     )
   }
 )
