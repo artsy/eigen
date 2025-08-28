@@ -1,18 +1,14 @@
-import { Flex, Spacer } from "@artsy/palette-mobile"
+import { Flex } from "@artsy/palette-mobile"
 import {
   ArticlesRail_articlesConnection$data,
   ArticlesRail_articlesConnection$key,
 } from "__generated__/ArticlesRail_articlesConnection.graphql"
 import { ArticleCardContainer } from "app/Components/ArticleCard"
 import { SectionTitle } from "app/Components/SectionTitle"
-import {
-  HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
-  HORIZONTAL_FLATLIST_WINDOW_SIZE,
-} from "app/Scenes/HomeView/helpers/constants"
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
-import { memo, useCallback } from "react"
-import { FlatList } from "react-native"
+import { memo } from "react"
+import { ScrollView } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface ArticlesRailProps {
@@ -27,20 +23,7 @@ interface ArticlesRailProps {
 export const ArticlesRail: React.FC<ArticlesRailProps> = memo(
   ({ onTitlePress, onPress, title, subtitle, titleHref, ...restProps }) => {
     const articlesConnection = useFragment(articlesConnectionFragment, restProps.articlesConnection)
-
     const articles = extractNodes(articlesConnection)
-
-    const renderItem = useCallback(
-      ({ item, index }) => (
-        <ArticleCardContainer
-          onPress={() => {
-            onPress?.(item, index)
-          }}
-          article={item}
-        />
-      ),
-      [onPress]
-    )
 
     if (!articles.length) {
       return null
@@ -56,21 +39,22 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = memo(
           subtitle={subtitle}
         />
 
-        <Flex>
-          <FlatList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            ListHeaderComponent={() => <Spacer x={2} />}
-            ListFooterComponent={() => <Spacer x={2} />}
-            ItemSeparatorComponent={() => <Spacer x={2} />}
-            initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
-            windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
-            data={articles}
-            disableVirtualization
-            keyExtractor={(item) => `${item.internalID}`}
-            renderItem={renderItem}
-          />
-        </Flex>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 16 }} // matches Spacer x={2}
+        >
+          {articles.map((item, index) => (
+            <Flex key={item.internalID} mr={2}>
+              <ArticleCardContainer
+                onPress={() => {
+                  onPress?.(item, index)
+                }}
+                article={item}
+              />
+            </Flex>
+          ))}
+        </ScrollView>
       </Flex>
     )
   }
