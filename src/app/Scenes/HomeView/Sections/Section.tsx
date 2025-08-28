@@ -49,47 +49,140 @@ export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
 
   switch (section.component?.type) {
     case "FeaturedCollection":
+      // return (
+      //   <HomeViewSectionFeaturedCollectionQueryRenderer sectionID={section.internalID} {...rest} />
+      // )
       return (
-        <HomeViewSectionFeaturedCollectionQueryRenderer sectionID={section.internalID} {...rest} />
+        <Flex height={100} width={300}>
+          <Text>{section.__typename}</Text>
+        </Flex>
       )
     case "ArticlesCard":
-      return <HomeViewSectionArticlesCardsQueryRenderer sectionID={section.internalID} {...rest} />
+      // return <HomeViewSectionArticlesCardsQueryRenderer sectionID={section.internalID} {...rest} />
+      return (
+        <Flex height={100} width={300}>
+          <Text>{section.__typename}</Text>
+        </Flex>
+      )
   }
 
   switch (section.__typename) {
     case "HomeViewSectionActivity":
-      return <HomeViewSectionActivityQueryRenderer sectionID={section.internalID} {...rest} />
+      return (
+        <Flex height={100} width={300}>
+          <Text>{section.__typename}</Text>
+        </Flex>
+      )
+    // return <HomeViewSectionActivityQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionArtworks":
+      // return (
+      //   <Flex height={100} width={300}>
+      //     <Text>{section.__typename}</Text>
+      //   </Flex>
+      // )
       return <HomeViewSectionArtworksQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionCard":
-      return <HomeViewSectionCardQueryRenderer sectionID={section.internalID} {...rest} />
+      return (
+        <Flex height={100} width={300}>
+          <Text>{section.__typename}</Text>
+        </Flex>
+      )
+    // return <HomeViewSectionCardQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionGeneric":
-      return <HomeViewSectionGeneric section={section} {...rest} />
+      return (
+        <Flex height={100} width={300}>
+          <Text>{section.__typename}</Text>
+        </Flex>
+      )
+    // return <HomeViewSectionGeneric section={section} {...rest} />
     case "HomeViewSectionArticles":
-      return <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} {...rest} />
+      // return (
+      //   <Flex height={100} width={300}>
+      //     <Text>{section.__typename}</Text>
+      //   </Flex>
+      // )
+      return (
+        <Flex>
+          <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} {...rest} />
+          {/* <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} {...rest} />
+          <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} {...rest} />
+          <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} {...rest} />
+          <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} {...rest} />
+          <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} {...rest} />
+          <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} {...rest} />
+          <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} {...rest} />
+          <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} {...rest} />
+          <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} {...rest} />
+          <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} {...rest} />
+          <HomeViewSectionArticlesQueryRenderer sectionID={section.internalID} {...rest} /> */}
+        </Flex>
+      )
     case "HomeViewSectionArtists":
-      return <HomeViewSectionArtistsQueryRenderer sectionID={section.internalID} {...rest} />
+      return (
+        <Flex height={100} width={300}>
+          <Text>{section.__typename}</Text>
+        </Flex>
+      )
+    // return <HomeViewSectionArtistsQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionAuctionResults":
-      return <HomeViewSectionAuctionResultsQueryRenderer sectionID={section.internalID} {...rest} />
+      return (
+        <Flex height={100} width={300}>
+          <Text>{section.__typename}</Text>
+        </Flex>
+      )
+    // return <HomeViewSectionAuctionResultsQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionHeroUnits":
-      return <HomeViewSectionHeroUnitsQueryRenderer sectionID={section.internalID} {...rest} />
+      return (
+        <Flex height={100} width={300}>
+          <Text>{section.__typename}</Text>
+        </Flex>
+      )
+    // return <HomeViewSectionHeroUnitsQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionFairs":
-      return <HomeViewSectionFairsQueryRenderer sectionID={section.internalID} {...rest} />
+      return (
+        <Flex height={100} width={300}>
+          <Text>{section.__typename}</Text>
+        </Flex>
+      )
+    // return <HomeViewSectionFairsQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionMarketingCollections":
       return (
-        <HomeViewSectionMarketingCollectionsQueryRenderer
-          sectionID={section.internalID}
-          {...rest}
-        />
+        // <HomeViewSectionMarketingCollectionsQueryRenderer
+        //   sectionID={section.internalID}
+        //   {...rest}
+        // />
+        <Flex height={100} width={300}>
+          <Text>{section.__typename}</Text>
+        </Flex>
       )
     case "HomeViewSectionShows":
-      return <HomeViewSectionShowsQueryRenderer sectionID={section.internalID} {...rest} />
+      return (
+        <Flex height={100} width={300}>
+          <Text>{section.__typename}</Text>
+        </Flex>
+      )
+    // return <HomeViewSectionShowsQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionViewingRooms":
-      return <HomeViewSectionViewingRoomsQueryRenderer sectionID={section.internalID} {...rest} />
+      return (
+        <Flex height={100} width={300}>
+          <Text>{section.__typename}</Text>
+        </Flex>
+      )
+    // return <HomeViewSectionViewingRoomsQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionSales":
-      return <HomeViewSectionSalesQueryRenderer sectionID={section.internalID} {...rest} />
+      return (
+        <Flex height={100} width={300}>
+          <Text>{section.__typename}</Text>
+        </Flex>
+      )
+    //return <HomeViewSectionSalesQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionTasks":
-      return <HomeViewSectionTasksQueryRenderer sectionID={section.internalID} {...rest} />
+      return (
+        <Flex height={100} width={300}>
+          <Text>{section.__typename}</Text>
+        </Flex>
+      )
+    //return <HomeViewSectionTasksQueryRenderer sectionID={section.internalID} {...rest} />
     case "HomeViewSectionNavigationPills": {
       if (
         enableNavigationPills &&
@@ -97,8 +190,13 @@ export const Section: React.FC<SectionProps> = memo(({ section, ...rest }) => {
         quickLinksExperimentVariant.name === "experiment"
       ) {
         return (
-          <HomeViewSectionNavigationPillsQueryRenderer sectionID={section.internalID} {...rest} />
+          <Flex height={100} width={300}>
+            <Text>{section.__typename}</Text>
+          </Flex>
         )
+        // return (
+        //   <HomeViewSectionNavigationPillsQueryRenderer sectionID={section.internalID} {...rest} />
+        // )
       }
 
       return null
