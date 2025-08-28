@@ -11,9 +11,7 @@ import {
 } from "@artsy/palette-mobile"
 import { HomeViewSectionArtistsMainQuery } from "__generated__/HomeViewSectionArtistsMainQuery.graphql"
 import { HomeViewSectionArtists_section$data } from "__generated__/HomeViewSectionArtists_section.graphql"
-import { CardRailFlatList } from "app/Components/CardRail/CardRailFlatList"
 import { SectionTitle } from "app/Components/SectionTitle"
-import { PAGE_SIZE } from "app/Components/constants"
 import {
   ARTIST_CARD_WIDTH,
   IMAGE_MAX_HEIGHT as ARTIST_RAIL_IMAGE_MAX_HEIGHT,
@@ -21,17 +19,14 @@ import {
 } from "app/Scenes/HomeView/Components/ArtistRails/ArtistCard"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
-import {
-  HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT,
-  HORIZONTAL_FLATLIST_WINDOW_SIZE,
-} from "app/Scenes/HomeView/helpers/constants"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { extractNodes } from "app/utils/extractNodes"
 import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
-import { memo, useCallback } from "react"
+import { memo } from "react"
+import { ScrollView } from "react-native"
 import {
   createPaginationContainer,
   graphql,
@@ -39,7 +34,7 @@ import {
   useLazyLoadQuery,
 } from "react-relay"
 
-interface HomeViewSectionArtworksProps {
+interface HomeViewSectionArtistsProps {
   section: HomeViewSectionArtists_section$data
   relay: RelayPaginationProp
   index: number
@@ -47,108 +42,79 @@ interface HomeViewSectionArtworksProps {
 
 type Artist = ExtractNodeType<HomeViewSectionArtists_section$data["artistsConnection"]>
 
-export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
-  section,
-  relay,
-  index,
-  ...flexProps
-}) => {
-  const { hasMore, isLoading, loadMore } = relay
-  const tracking = useHomeViewTracking()
+export const HomeViewSectionArtists: React.FC<HomeViewSectionArtistsProps & FlexProps> = memo(
+  ({ section, index, ...flexProps }) => {
+    const tracking = useHomeViewTracking()
+    const viewAll = section.component?.behaviors?.viewAll
 
-  const viewAll = section.component?.behaviors?.viewAll
-
-  const onEndReached = () => {
-    if (!hasMore() && !isLoading()) {
-      return
+    if (!section.artistsConnection?.totalCount) {
+      return null
     }
 
-    loadMore(PAGE_SIZE, (error) => {
-      if (error) {
-        console.error(error.message)
+    const artists = extractNodes(section.artistsConnection)
+
+    const onSectionViewAll = () => {
+      if (viewAll?.href) {
+        tracking.tappedArticleGroupViewAll(
+          section.contextModule as ContextModule,
+          viewAll?.ownerType as ScreenOwnerType
+        )
       }
-    })
-  }
-
-  const renderItem = useCallback(
-    ({ item, index }) => {
-      return (
-        <ArtistCardContainer
-          artist={item}
-          showDefaultFollowButton
-          onPress={() => {
-            tracking.tappedArtistGroup(
-              item.internalID,
-              item.slug,
-              section.contextModule as ContextModule,
-              index
-            )
-          }}
-        />
-      )
-    },
-    [section.contextModule, tracking]
-  )
-
-  if (!section.artistsConnection?.totalCount) {
-    return null
-  }
-
-  const artists = extractNodes(section.artistsConnection)
-
-  const onSectionViewAll = () => {
-    if (viewAll?.href) {
-      tracking.tappedArticleGroupViewAll(
-        section.contextModule as ContextModule,
-        viewAll?.ownerType as ScreenOwnerType
-      )
     }
-  }
 
-  return (
-    <Flex {...flexProps}>
-      <Flex px={2}>
-        <SectionTitle
-          href={viewAll?.href}
-          title={section.component?.title}
-          onPress={viewAll ? onSectionViewAll : undefined}
+    // TODO: Still not performant, look into bringing back useCallback
+
+    return (
+      <Flex {...flexProps}>
+        <Flex px={2}>
+          <SectionTitle
+            href={viewAll?.href}
+            title={section.component?.title}
+            onPress={viewAll ? onSectionViewAll : undefined}
+          />
+        </Flex>
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 8 }}
+        >
+          {artists.map((artist, idx) => (
+            <Flex key={(artist as Artist).internalID} mr={2}>
+              <ArtistCardContainer
+                artist={artist as Artist}
+                showDefaultFollowButton
+                onPress={() => {
+                  tracking.tappedArtistGroup(
+                    (artist as Artist).internalID,
+                    (artist as Artist).slug,
+                    section.contextModule as ContextModule,
+                    idx
+                  )
+                }}
+              />
+            </Flex>
+          ))}
+
+          {/* Simple spacer at end instead of ListFooterComponent */}
+          <Flex
+            width={ARTIST_CARD_WIDTH / 2}
+            height={ARTIST_RAIL_IMAGE_MAX_HEIGHT}
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Spinner />
+          </Flex>
+        </ScrollView>
+
+        <HomeViewSectionSentinel
+          contextModule={section.contextModule as ContextModule}
+          index={index}
         />
       </Flex>
-      <CardRailFlatList<Artist>
-        data={artists}
-        keyExtractor={(artist) => artist.internalID}
-        disableVirtualization
-        onEndReached={onEndReached}
-        ItemSeparatorComponent={() => <Spacer x={1} />}
-        ListFooterComponent={() => {
-          if (hasMore() && isLoading()) {
-            return (
-              <Flex
-                width={ARTIST_RAIL_IMAGE_MAX_HEIGHT / 2}
-                height={ARTIST_RAIL_IMAGE_MAX_HEIGHT}
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Spinner />
-                <Spacer x={2} />
-              </Flex>
-            )
-          }
-
-          return <Spacer x={2} />
-        }}
-        renderItem={renderItem}
-        initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
-        windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}
-      />
-
-      <HomeViewSectionSentinel
-        contextModule={section.contextModule as ContextModule}
-        index={index}
-      />
-    </Flex>
-  )
-}
+    )
+  }
+)
 
 export const HomeViewSectionArtistsPaginationContainer = createPaginationContainer(
   HomeViewSectionArtists,
