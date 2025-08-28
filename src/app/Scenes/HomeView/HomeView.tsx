@@ -116,27 +116,27 @@ export const HomeView: React.FC = memo(() => {
 
   const sections = extractNodes(data?.homeView.sectionsConnection)
 
-  useEffect(() => {
-    Linking.getInitialURL().then((url) => {
-      const isDeepLink = !!url
-      if (!isDeepLink) {
-        prefetchUrl<SearchQuery>("search")
-        prefetchUrl("my-profile")
-        prefetchUrl("inbox")
-        prefetchUrl("infinite-discovery")
-      }
-    })
-  }, [])
+  // useEffect(() => {
+  //   Linking.getInitialURL().then((url) => {
+  //     const isDeepLink = !!url
+  //     if (!isDeepLink) {
+  //       prefetchUrl<SearchQuery>("search")
+  //       prefetchUrl("my-profile")
+  //       prefetchUrl("inbox")
+  //       prefetchUrl("infinite-discovery")
+  //     }
+  //   })
+  // }, [])
 
-  useEffect(() => {
-    requestPushNotificationsPermission()
-  }, [])
+  // useEffect(() => {
+  //   requestPushNotificationsPermission()
+  // }, [])
 
-  useFocusEffect(
-    useCallback(() => {
-      tracking.screen(OwnerType.home)
-    }, [])
-  )
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     tracking.screen(OwnerType.home)
+  //   }, [])
+  // )
 
   const fetchSavedArtworksCount = async () => {
     fetchQuery<HomeViewFetchMeQuery>(
@@ -161,9 +161,9 @@ export const HomeView: React.FC = memo(() => {
     })
   }
 
-  useEffect(() => {
-    fetchSavedArtworksCount()
-  }, [])
+  // useEffect(() => {
+  //   fetchSavedArtworksCount()
+  // }, [])
 
   const handleRefresh = () => {
     if (isRefreshing) return
@@ -205,20 +205,20 @@ export const HomeView: React.FC = memo(() => {
           renderItem={renderItem}
           onEndReached={() => loadNext(NUMBER_OF_SECTIONS_TO_LOAD)}
           ListHeaderComponent={HomeHeader}
-          ListFooterComponent={
-            hasNext ? (
-              <Flex width="100%" justifyContent="center" alignItems="center" height={200}>
-                <Spinner />
-              </Flex>
-            ) : null
-          }
+          // ListFooterComponent={
+          //   hasNext ? (
+          //     <Flex width="100%" justifyContent="center" alignItems="center" height={200}>
+          //       <Spinner />
+          //     </Flex>
+          //   ) : null
+          // }
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
           onEndReachedThreshold={2}
           maxToRenderPerBatch={6}
           stickyHeaderIndices={[0]}
           windowSize={15}
           viewabilityConfig={viewabilityConfig}
-          onViewableItemsChanged={onViewableItemsChanged}
+          //={onViewableItemsChanged}
         />
         {!!data?.me && <EmailConfirmationBannerFragmentContainer me={data.me} />}
       </Screen.Body>
