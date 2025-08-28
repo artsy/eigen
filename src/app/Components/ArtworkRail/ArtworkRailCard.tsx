@@ -1,4 +1,4 @@
-import { Box, Flex, Spacer, useSpace } from "@artsy/palette-mobile"
+import { Box, Flex, Spacer, Text, useSpace } from "@artsy/palette-mobile"
 import { ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { CreateArtworkAlertModal } from "app/Components/Artist/ArtistArtworks/CreateArtworkAlertModal"
 import {
@@ -72,14 +72,14 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = memo(
     }
 
     return (
-      <Disappearable ref={disappearableRef}>
-        <AnalyticsContextProvider
-          contextScreenOwnerId={contextScreenOwnerId}
-          contextScreenOwnerSlug={contextScreenOwnerSlug}
-          contextScreenOwnerType={contextScreenOwnerType}
-        >
-          <Box pr={2}>
-            <RouterLink
+      // <Disappearable ref={disappearableRef}>
+      <AnalyticsContextProvider
+        contextScreenOwnerId={contextScreenOwnerId}
+        contextScreenOwnerSlug={contextScreenOwnerSlug}
+        contextScreenOwnerType={contextScreenOwnerType}
+      >
+        <Box pr={2}>
+          {/* <RouterLink
               to={href || artwork.href}
               underlayColor={backgroundColor}
               onPress={onPress}
@@ -98,8 +98,8 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = memo(
               }}
               delayLongPress={400}
               testID={testID}
-            >
-              <ContextMenuArtwork
+            > */}
+          {/* <ContextMenuArtwork
                 contextModule={contextModule}
                 contextScreenOwnerType={contextScreenOwnerType}
                 onCreateAlertActionPress={() => setShowCreateArtworkAlertModal(true)}
@@ -112,48 +112,46 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = memo(
                   lotLabel,
                   SalePriceComponent,
                 }}
-              >
-                <Flex
-                  height={
-                    ARTWORK_RAIL_CARD_IMAGE_HEIGHT + ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + space(1)
-                  }
-                  minWidth={ARTWORK_RAIL_CARD_MIN_WIDTH}
-                  maxWidth={ARTWORK_RAIL_CARD_MAX_WIDTH}
-                  justifyContent="flex-start"
-                >
-                  <ArtworkRailCardImage artwork={artwork} />
+              > */}
+          <Flex
+            height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT + ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT + space(1)}
+            minWidth={ARTWORK_RAIL_CARD_MIN_WIDTH}
+            maxWidth={ARTWORK_RAIL_CARD_MAX_WIDTH}
+            justifyContent="flex-start"
+          >
+            <ArtworkRailCardImage artwork={artwork} />
 
-                  <Spacer y={1} />
+            <Spacer y={1} />
 
-                  <ArtworkRailCardMeta
-                    artwork={artwork}
-                    contextModule={contextModule}
-                    contextScreen={contextScreen}
-                    contextScreenOwnerId={contextScreenOwnerId}
-                    contextScreenOwnerSlug={contextScreenOwnerSlug}
-                    contextScreenOwnerType={contextScreenOwnerType}
-                    dark={dark}
-                    hideArtistName={hideArtistName}
-                    hideCuratorsPickSignal={hideCuratorsPickSignal}
-                    hideIncreasedInterestSignal={hideIncreasedInterestSignal}
-                    lotLabel={lotLabel}
-                    SalePriceComponent={SalePriceComponent}
-                    showPartnerName={showPartnerName}
-                    showSaveIcon={showSaveIcon}
-                    backgroundColor={backgroundColor}
-                  />
-                </Flex>
-              </ContextMenuArtwork>
-            </RouterLink>
-          </Box>
+            <ArtworkRailCardMeta
+              artwork={artwork}
+              contextModule={contextModule}
+              contextScreen={contextScreen}
+              contextScreenOwnerId={contextScreenOwnerId}
+              contextScreenOwnerSlug={contextScreenOwnerSlug}
+              contextScreenOwnerType={contextScreenOwnerType}
+              dark={dark}
+              hideArtistName={hideArtistName}
+              hideCuratorsPickSignal={hideCuratorsPickSignal}
+              hideIncreasedInterestSignal={hideIncreasedInterestSignal}
+              lotLabel={lotLabel}
+              SalePriceComponent={SalePriceComponent}
+              showPartnerName={showPartnerName}
+              showSaveIcon={showSaveIcon}
+              backgroundColor={backgroundColor}
+            />
+          </Flex>
+          {/* </ContextMenuArtwork> */}
+          {/* </RouterLink> */}
+        </Box>
 
-          <CreateArtworkAlertModal
+        {/* <CreateArtworkAlertModal
             artwork={artwork}
             onClose={() => setShowCreateArtworkAlertModal(false)}
             visible={showCreateArtworkAlertModal}
-          />
-        </AnalyticsContextProvider>
-      </Disappearable>
+          /> */}
+      </AnalyticsContextProvider>
+      // </Disappearable>
     )
   }
 )
