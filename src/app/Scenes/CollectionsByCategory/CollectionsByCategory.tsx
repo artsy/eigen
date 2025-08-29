@@ -13,6 +13,8 @@ export type CollectionsByCategoriesRouteProp = RouteProp<
     collections: {
       slug: string
       title: string
+      filters?: string
+      type: "MarketingCollection" | "ArtworksWithFilter"
     }
   },
   "collections"
@@ -44,4 +46,24 @@ export const CollectionsByCategory: FC = () => {
       </Screen>
     </ProvideScreenTrackingWithCohesionSchema>
   )
+}
+
+export const useCollectionsByCategoryParams = () => {
+  const { params } = useRoute<CollectionsByCategoriesRouteProp>()
+  let filters
+
+  console.log("cb::params", { params })
+
+  try {
+    filters = JSON.parse(params?.filters ?? "{}")
+  } catch (e) {
+    console.error("[CollectionsByCategory] error when parsing the json filters")
+  }
+
+  console.log("cb::params", { params, filters })
+
+  return {
+    slug: params.slug,
+    filters: filters,
+  }
 }

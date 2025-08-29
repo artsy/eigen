@@ -26,13 +26,14 @@ export const ExploreByCategoryCard: FC<ExploreByCategoryCardProps> = ({
     return null
   }
 
+  console.log("cb::card", { card })
+
   const href = `/collections-by-category/${card.slug}`
   const navigationProps = {
     title: card.title,
   }
 
   const columns = NUM_COLUMNS_MASONRY
-
   const imageColumnGaps = columns === 2 ? space(0.5) : 0
   const imageWidth = width / columns - space(2) - imageColumnGaps
 
@@ -70,7 +71,11 @@ const fragment = graphql`
     category
     imageUrl @required(action: NONE)
     slug @required(action: NONE)
+    href
     title
+    filtersForArtworksConnection {
+      totalCount
+    }
   }
 `
 

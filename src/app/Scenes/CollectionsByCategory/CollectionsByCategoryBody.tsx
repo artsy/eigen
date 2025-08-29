@@ -7,7 +7,10 @@ import {
   CollectionRailPlaceholder,
   CollectionRailWithSuspense,
 } from "app/Scenes/CollectionsByCategory/CollectionRail"
-import { CollectionsByCategoriesRouteProp } from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
+import {
+  CollectionsByCategoriesRouteProp,
+  useCollectionsByCategoryParams,
+} from "app/Scenes/CollectionsByCategory/CollectionsByCategory"
 import {
   CollectionsChips,
   CollectionsChipsPlaceholder,
@@ -102,8 +105,7 @@ export const collectionsByCategoryQuery = graphql`
 
 export const CollectionsByCategoryBodyWithSuspense = withSuspense({
   Component: () => {
-    const { params } = useRoute<CollectionsByCategoriesRouteProp>()
-    const slug = params.slug
+    const { slug } = useCollectionsByCategoryParams()
 
     const data = useLazyLoadQuery<CollectionsByCategoryBodyQuery>(collectionsByCategoryQuery, {
       categorySlug: slug,
@@ -118,3 +120,5 @@ export const CollectionsByCategoryBodyWithSuspense = withSuspense({
   LoadingFallback: CollectionsByCategoryBodyPlaceholder,
   ErrorFallback: NoFallback,
 })
+
+// path: /collections-by-category/collect-by-price

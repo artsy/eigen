@@ -722,6 +722,18 @@ export const artsyDotNetRoutes = defineRoutes([
       },
     },
   },
+  // TODO: adjust here
+  {
+    path: "/collections-by-filter/:slug",
+    name: "CollectionsByFilter",
+    Component: CollectionsByCategory,
+    options: {
+      screenOptions: {
+        headerShown: false,
+      },
+    },
+    queries: [],
+  },
   {
     path: "/collections-by-category/:slug",
     name: "CollectionsByCategory",
