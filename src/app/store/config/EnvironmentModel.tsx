@@ -45,7 +45,8 @@ export const environment = defineEnvironmentOptions({
     description: "Metaphysics URL",
     presets: {
       local: "http://localhost:5001/v2",
-      staging: "https://metaphysics-staging.artsy.net/v2",
+      staging: "http://localhost:5001/v2",
+      // staging: "https://metaphysics-staging.artsy.net/v2",
       production: "https://metaphysics-production.artsy.net/v2",
     },
   },
