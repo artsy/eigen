@@ -3318,22 +3318,27 @@ type ArtworkImportSummary {
 type ArtworkImportTransformedData {
   artistNames: String
   artworkCondition: String
+  artworkDescription: String
   artworkTitle: String
   certificateOfAuthenticity: String
   classification: String
   date: String
   depth: String
   diameter: String
+  exhibitionHistory: String
   framedDepth: String
   framedDiameter: String
   framedHeight: String
   framedWidth: String
   height: String
   imageFileNames: String
+  imageRights: String
   inventoryId: String
   materials: String
   medium: String
   price: String
+  provenance: String
+  series: String
   signature: [String]
   signatureDetails: String
   weight: String
