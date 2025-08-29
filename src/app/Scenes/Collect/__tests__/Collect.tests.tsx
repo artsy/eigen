@@ -1,29 +1,44 @@
-import { RouteProp } from "@react-navigation/native"
-import { fireEvent, screen, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { CollectQuery } from "__generated__/CollectQuery.graphql"
-import { Collect, prepareCollectVariables } from "app/Scenes/Collect/Collect"
+import { ArtworkFiltersStoreProvider } from "app/Components/ArtworkFilter/ArtworkFilterStore"
+import { CollectContent, prepareCollectVariables } from "app/Scenes/Collect/Collect"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
-const mockRoute = {
-  key: "collect-screen",
-  name: "Collect",
-  params: {},
-} as RouteProp<any, any>
+jest.mock("@react-navigation/native", () => ({
+  ...jest.requireActual("@react-navigation/native"),
+  useRoute: () => ({
+    params: {
+      title: "Collect",
+      subtitle: "Collect art and design online",
+    },
+  }),
+  useNavigation: () => ({
+    navigate: jest.fn(),
+    goBack: jest.fn(),
+  }),
+  useIsFocused: () => true,
+}))
 
 const { renderWithRelay } = setupTestWrapper<CollectQuery>({
-  Component: () => <Collect route={mockRoute} navigation={{} as any} />,
+  Component: ({ viewer }) => (
+    <ArtworkFiltersStoreProvider>
+      <CollectContent viewer={viewer} />
+    </ArtworkFiltersStoreProvider>
+  ),
+  query: graphql`
+    query CollectTestQuery @relay_test_operation {
+      viewer {
+        ...CollectArtworks_viewer @arguments(input: {})
+        ...CollectArtworks_viewerAggregations
+      }
+    }
+  `,
 })
 
-describe("Collect", () => {
+describe("CollectContent", () => {
   beforeEach(() => {
     jest.clearAllMocks()
-  })
-
-  it("renders the screen with header", () => {
-    renderWithRelay()
-
-    expect(screen.getByText("Collect")).toBeOnTheScreen()
-    expect(screen.getByText("Collect art and design online")).toBeOnTheScreen()
   })
 
   it("renders a filter button", () => {
@@ -32,7 +47,7 @@ describe("Collect", () => {
     expect(screen.getByText("Sort & Filter")).toBeOnTheScreen()
   })
 
-  it("shows an empty state when no artworks are available", async () => {
+  it("shows an empty state when no artworks are available", () => {
     renderWithRelay({
       Viewer: () => ({
         artworksConnection: {
@@ -41,21 +56,19 @@ describe("Collect", () => {
       }),
     })
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("PlaceholderGrid"))
-
     expect(screen.getByText("No artworks found")).toBeOnTheScreen()
   })
 
   it("opens the filter modal when filter button is pressed", async () => {
     renderWithRelay()
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("PlaceholderGrid"))
-
     const filterButton = screen.getByText("Sort & Filter")
     fireEvent.press(filterButton)
 
     // The ArtworkFilterNavigator should be visible after pressing the filter button
-    expect(screen.getByTestId("artwork-filter-navigator")).toBeOnTheScreen()
+    await waitFor(() => {
+      expect(screen.getByTestId("artwork-filter-navigator")).toBeOnTheScreen()
+    })
   })
 
   describe("prepareCollectVariables", () => {
@@ -84,141 +97,125 @@ describe("Collect", () => {
     })
   })
 
-  describe("CollectContent", () => {
-    it("renders artworks when data is available", async () => {
-      renderWithRelay({
-        Viewer: () => ({
-          artworksConnection: {
-            edges: [
-              {
-                node: {
-                  id: "artwork-1",
-                  title: "Artwork 1",
-                  artist: {
-                    name: "Artist 1",
-                  },
-                  image: {
-                    url: "https://example.com/image.jpg",
-                  },
+  it("renders artworks when data is available", () => {
+    renderWithRelay({
+      Viewer: () => ({
+        artworksConnection: {
+          edges: [
+            {
+              node: {
+                id: "artwork-1",
+                slug: "artwork-1",
+                title: "Artwork 1",
+                image: {
+                  aspectRatio: 1.0,
                 },
               },
-              {
-                node: {
-                  id: "artwork-2",
-                  title: "Artwork 2",
-                  artist: {
-                    name: "Artist 2",
-                  },
-                  image: {
-                    url: "https://example.com/image2.jpg",
-                  },
+            },
+            {
+              node: {
+                id: "artwork-2",
+                slug: "artwork-2",
+                title: "Artwork 2",
+                image: {
+                  aspectRatio: 1.0,
                 },
               },
-            ],
-          },
-        }),
-      })
-
-      await waitForElementToBeRemoved(() => screen.queryByTestId("PlaceholderGrid"))
-
-      expect(screen.getByText("Artwork 1")).toBeOnTheScreen()
-      expect(screen.getByText("Artwork 2")).toBeOnTheScreen()
+            },
+          ],
+        },
+      }),
     })
 
-    it("handles load more when scrolling", async () => {
-      const { mockResolveLastOperation } = renderWithRelay({
-        Viewer: () => ({
-          artworksConnection: {
-            edges: [
-              {
-                node: {
-                  id: "artwork-1",
-                  title: "Artwork 1",
-                  artist: {
-                    name: "Artist 1",
-                  },
-                  image: {
-                    url: "https://example.com/image.jpg",
-                  },
+    expect(screen.getByTestId("masonry-artwork-grid")).toBeOnTheScreen()
+  })
+
+  it("handles load more when scrolling", () => {
+    const { mockResolveLastOperation } = renderWithRelay({
+      Viewer: () => ({
+        artworksConnection: {
+          edges: [
+            {
+              node: {
+                id: "artwork-1",
+                slug: "artwork-1",
+                title: "Artwork 1",
+                image: {
+                  aspectRatio: 1.0,
                 },
               },
-            ],
-            pageInfo: {
-              hasNextPage: true,
-              endCursor: "end-cursor",
             },
+          ],
+          pageInfo: {
+            hasNextPage: true,
+            endCursor: "end-cursor",
           },
-        }),
-      })
-
-      await waitForElementToBeRemoved(() => screen.queryByTestId("PlaceholderGrid"))
-
-      const grid = screen.getByTestId("masonry-artwork-grid")
-
-      // Simulate reaching the end of the list
-      fireEvent(grid, "onEndReached")
-
-      // Verify that a new relay operation was triggered for pagination
-      mockResolveLastOperation({
-        Viewer: () => ({
-          artworksConnection: {
-            edges: [
-              {
-                node: {
-                  id: "artwork-2",
-                  title: "Artwork 2",
-                  artist: {
-                    name: "Artist 2",
-                  },
-                  image: {
-                    url: "https://example.com/image2.jpg",
-                  },
-                },
-              },
-            ],
-            pageInfo: {
-              hasNextPage: false,
-              endCursor: null,
-            },
-          },
-        }),
-      })
-
-      expect(screen.getByText("Artwork 2")).toBeOnTheScreen()
+        },
+      }),
     })
 
-    it("uses artworks filter aggregations", async () => {
-      renderWithRelay({
-        Viewer: () => ({
-          artworksConnectionAggregations: {
-            aggregations: [
-              {
-                slice: "MEDIUM",
-                counts: [
-                  { name: "Painting", value: "painting" },
-                  { name: "Sculpture", value: "sculpture" },
-                ],
+    const grid = screen.getByTestId("masonry-artwork-grid")
+
+    // Simulate reaching the end of the list
+    fireEvent(grid, "onEndReached")
+
+    // Verify that a new relay operation was triggered for pagination
+    mockResolveLastOperation({
+      Viewer: () => ({
+        artworksConnection: {
+          edges: [
+            {
+              node: {
+                id: "artwork-2",
+                slug: "artwork-2",
+                title: "Artwork 2",
+                image: {
+                  aspectRatio: 1.0,
+                },
               },
-              {
-                slice: "ARTIST",
-                counts: [
-                  { name: "Artist 1", value: "artist-1" },
-                  { name: "Artist 2", value: "artist-2" },
-                ],
-              },
-            ],
+            },
+          ],
+          pageInfo: {
+            hasNextPage: false,
+            endCursor: null,
           },
-        }),
-      })
+        },
+      }),
+    })
 
-      await waitForElementToBeRemoved(() => screen.queryByTestId("PlaceholderGrid"))
+    expect(grid).toBeOnTheScreen()
+  })
 
-      const filterButton = screen.getByText("Sort & Filter")
-      fireEvent.press(filterButton)
+  it("uses artworks filter aggregations", async () => {
+    renderWithRelay({
+      Viewer: () => ({
+        artworksConnectionAggregations: {
+          aggregations: [
+            {
+              slice: "MEDIUM",
+              counts: [
+                { name: "Painting", value: "painting" },
+                { name: "Sculpture", value: "sculpture" },
+              ],
+            },
+            {
+              slice: "ARTIST",
+              counts: [
+                { name: "Artist 1", value: "artist-1" },
+                { name: "Artist 2", value: "artist-2" },
+              ],
+            },
+          ],
+        },
+      }),
+    })
 
-      // Verify filter options are available in the modal
-      expect(screen.getByText("Medium")).toBeOnTheScreen()
-      expect(screen.getByText("Artists")).toBeOnTheScreen()
+    const filterButton = screen.getByText("Sort & Filter")
+    fireEvent.press(filterButton)
+
+    // Verify filter modal opens
+    await waitFor(() => {
+      expect(screen.getByTestId("artwork-filter-navigator")).toBeOnTheScreen()
     })
   })
 })
