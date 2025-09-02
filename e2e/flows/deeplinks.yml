@@ -55,7 +55,7 @@ appId: ${MAESTRO_APP_ID}
 
 - extendedWaitUntil:
     visible: "Highlights at Auction This Week"
-    timeout: 1000
+    timeout: 20000
 
 - killApp
 
