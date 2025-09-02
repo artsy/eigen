@@ -122,7 +122,6 @@ const artworkFragment = graphql`
     artistNames
     date
     title
-    realizedPrice
     sale {
       isAuction
       isClosed
