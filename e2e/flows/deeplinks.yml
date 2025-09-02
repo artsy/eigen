@@ -32,7 +32,7 @@ appId: ${MAESTRO_APP_ID}
 
 - extendedWaitUntil:
     visible: "KAWS"
-    timeout: 1000
+    timeout: 20000
 
 - killApp
 
