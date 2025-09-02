@@ -330,7 +330,6 @@ describe("ArtworkGridItem", () => {
           sale: {
             isClosed: true,
           },
-          realizedPrice: null,
           title: "Some Kind of Dinosaur",
         }),
       })
@@ -357,7 +356,6 @@ describe("ArtworkGridItem", () => {
               bidCount: 1,
             },
           },
-          realizedPrice: null,
         }),
       })
 
@@ -517,7 +515,6 @@ describe("ArtworkGridItem", () => {
             ...artwork,
             saleMessage: "$120,500",
             sale: { ...artwork.sale, isAuction: false },
-            realizedPrice: null,
             collectorSignals,
           }),
         })
@@ -529,7 +526,7 @@ describe("ArtworkGridItem", () => {
       it("doesn't show the limited-time offer signal for auction artworks", () => {
         renderWithRelay({
           // artwork is by default an auction
-          Artwork: () => ({ ...artwork, realizedPrice: null, collectorSignals }),
+          Artwork: () => ({ ...artwork, collectorSignals }),
         })
 
         expect(screen.queryByText("Limited-Time Offer")).not.toBeOnTheScreen()
@@ -542,7 +539,6 @@ describe("ArtworkGridItem", () => {
             Artwork: () => ({
               ...artwork,
               sale: { ...artwork.sale, isAuction: false },
-              realizedPrice: null,
               collectorSignals,
             }),
           },
@@ -566,7 +562,6 @@ describe("ArtworkGridItem", () => {
             Artwork: () => ({
               ...artwork,
               sale: { ...artwork.sale, isClosed: false },
-              realizedPrice: null,
               collectorSignals: { auction: { liveBiddingStarted: true } },
             }),
           })
@@ -579,7 +574,6 @@ describe("ArtworkGridItem", () => {
             Artwork: () => ({
               ...artwork,
               sale: { ...artwork.sale, isClosed: false },
-              realizedPrice: null,
               collectorSignals: {
                 auction: {
                   lotClosesAt: DateTime.fromMillis(Date.now()).minus({ days: 1 }).toISO(),
@@ -600,7 +594,6 @@ describe("ArtworkGridItem", () => {
             Artwork: () => ({
               ...artwork,
               sale: { ...artwork.sale, isClosed: false },
-              realizedPrice: null,
               collectorSignals: { auction: { registrationEndsAt: registerDate.toISO() } },
             }),
           })
@@ -616,7 +609,6 @@ describe("ArtworkGridItem", () => {
             Artwork: () => ({
               ...artwork,
               sale: { ...artwork.sale, isClosed: false },
-              realizedPrice: null,
               collectorSignals: {
                 auction: {
                   lotClosesAt: DateTime.fromMillis(Date.now()).plus({ days: 1 }).toISO(),
@@ -633,7 +625,6 @@ describe("ArtworkGridItem", () => {
             Artwork: () => ({
               ...artwork,
               sale: { ...artwork.sale, isClosed: false },
-              realizedPrice: null,
               collectorSignals: {
                 auction: {
                   lotClosesAt: DateTime.fromMillis(Date.now()).plus({ minutes: 1 }).toISO(),
@@ -653,7 +644,6 @@ describe("ArtworkGridItem", () => {
             ...artwork,
             sale: { ...artwork.sale, isClosed: false },
             saleArtwork: { currentBid: { display: "$3,700" } },
-            realizedPrice: null,
             collectorSignals: { auction: { bidCount: 7 } },
           }),
         })
