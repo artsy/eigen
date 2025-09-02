@@ -76,6 +76,7 @@ appId: ${MAESTRO_APP_ID}
       - waitForAnimationToEnd:
           timeout: 2000
 
-- extendedWaitUntil:
-    visible: "Thoughts For The Free life #5 (The Whole Universe Surrenders), 2022"
-    timeout: 1000
+- scrollUntilVisible: # we do this just to give time to fetch deeplink verifications, can get rid of if we have a test run before deeplinks on same sim
+    element: "Thoughts For The Free life #5 (The Whole Universe Surrenders), 2022"
+    timeout: 90000
+    speed: 60
