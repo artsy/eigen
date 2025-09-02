@@ -1,5 +1,6 @@
 appId: ${MAESTRO_APP_ID}
 ---
+- killApp
 - launchApp:
     clearState: false
     arguments:
