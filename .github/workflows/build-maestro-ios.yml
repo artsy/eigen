@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-ios-qa:
-    if: github.ref == 'refs/heads/main'
+    # if: github.ref == 'refs/heads/main'
     runs-on: macos-14
     timeout-minutes: 60
 
