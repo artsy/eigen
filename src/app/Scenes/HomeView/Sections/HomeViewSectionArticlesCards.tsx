@@ -66,14 +66,7 @@ export const HomeViewSectionArticlesCards: React.FC<HomeViewSectionArticlesCards
 
   return (
     <Flex {...flexProps}>
-      <Flex
-        mx={2}
-        p={2}
-        border="1px solid"
-        borderColor="mono30"
-        gap={2}
-        accessibilityLabel="News Section"
-      >
+      <Flex mx={2} p={2} border="1px solid" borderColor="mono30" gap={2}>
         <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
           <Text variant="lg-display">{section.component?.title}</Text>
           <Text variant="lg-display">{date()}</Text>
