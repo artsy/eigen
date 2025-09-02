@@ -102,6 +102,11 @@ jobs:
           echo "🚀 Bring simulator to foreground..."
           open -a simulator
 
+          echo "Prefetch app associations"
+          xcrun simctl openurl booted https://artsy.net/apple-app-site-association
+          xcrun simctl openurl booted https://email-link.artsy.net/apple-app-site-association
+          xcrun simctl openurl booted https://click.artsy.net/apple-app-site-association
+
       - name: Set Maestro driver timeout
         run: echo "MAESTRO_DRIVER_STARTUP_TIMEOUT=120000" >> $GITHUB_ENV
 

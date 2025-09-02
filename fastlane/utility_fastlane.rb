@@ -406,7 +406,7 @@ def ios_build_params(deployment_target)
       workspace: 'ios/Artsy.xcworkspace',
       scheme: 'Artsy (QA)',
       export_method: "development",
-      skip_codesigning: true,
+      codesigning_identity: 'Apple Distribution: Art.sy Inc. (23KMWZ572J)',
       skip_archive: true,
       configuration: 'QA',
       destination: 'generic/platform=iOS Simulator',

@@ -1,35 +1,82 @@
 appId: ${MAESTRO_APP_ID}
 ---
+- killApp
 - launchApp:
     clearState: false
     arguments:
       email: ${MAESTRO_TEST_EMAIL}
       password: ${MAESTRO_TEST_PASSWORD}
       useMaestroInit: "true"
+
 - assertVisible:
     id: "search-button"
-- scrollUntilVisible: # we do this just to give time to fetch deeplink verifications, can get rid of if we have a test run before deeplinks on same sim
-    element: "News"
-    timeout: 90000
-    speed: 60
 - killApp
-- openLink:
-    link: https://www.artsy.net/artist/kaws
-    autoVerify: true
+
+# --- First deeplink (Artist) ---
+- repeat:
+    while:
+      notVisible: "KAWS"
+    times: 3
+    commands:
+      - openLink:
+          link: https://artsy.net/artist/kaws
+          autoVerify: true
+      # If Safari steals it, bail out and retry
+      - runFlow:
+          when:
+            visible: "Safari"
+          commands:
+            - pressKey: home
+      - waitForAnimationToEnd:
+          timeout: 2000
+
 - extendedWaitUntil:
     visible: "KAWS"
     timeout: 20000
+
 - killApp
-- openLink:
-    link: https://click.artsy.net/f/a/epPWiX0dJaHHMiXAnSrzSg~~/AAQRxQA~/RgRj95QSP0SQaHR0cHM6Ly93d3cuYXJ0c3kubmV0L2NvbGxlY3Rpb24vYXVjdGlvbi1oaWdobGlnaHRzP3V0bV9zb3VyY2U9YnJhemUmdXRtX21lZGl1bT1lbWFpbCZ1dG1fY2FtcGFpZ249bnRmJnV0bV90ZXJtPTYyMTRmYjlkZWI0ZWZkN2RiNjBjZTcwNDk1NWU4NDQ1VwNzcGNCCmIFEg8VYlEJKGBSEmJyaWJlY2sxQGdtYWlsLmNvbVgEAAAAfw~~
-    autoVerify: true
+
+# --- Second deeplink (Auction Highlights) ---
+- repeat:
+    while:
+      notVisible: "Highlights at Auction This Week"
+    times: 3
+    commands:
+      - openLink:
+          link: https://click.artsy.net/f/a/epPWiX0dJaHHMiXAnSrzSg~~/AAQRxQA~/RgRj95QSP0SQaHR0cHM6Ly93d3cuYXJ0c3kubmV0L2NvbGxlY3Rpb24vYXVjdGlvbi1oaWdobGlnaHRzP3V0bV9zb3VyY2U9YnJhemUmdXRtX21lZGl1bT1lbWFpbCZ1dG1fY2FtcGFpZ249bnRmJnV0bV90ZXJtPTYyMTRmYjlkZWI0ZWZkN2RiNjBjZTcwNDk1NWU4NDQ1VwNzcGNCCmIFEg8VYlEJKGBSEmJyaWJlY2sxQGdtYWlsLmNvbVgEAAAAfw~~
+          autoVerify: true
+      - runFlow:
+          when:
+            visible: "Safari"
+          commands:
+            - pressKey: home
+      - waitForAnimationToEnd:
+          timeout: 2000
+
 - extendedWaitUntil:
     visible: "Highlights at Auction This Week"
     timeout: 20000
+
 - killApp
-- openLink:
-    link: "https://email-link.artsy.net/ls/click?upn=u001.XPbk8dXjc6dwd18Yq2uPM3eTWB4YbDUmeJTAXXTF513UfbpBYrTcpcRSdtUyB-2BSCBlBmFoMJbhBvaGOfEvcXiqUS67NMILv3UV6sBY2MOGKFJcurKxb3tMi0e25bfwBWXkrJblnCMw1W5cPh90tEuY10cVqA57xvHauHAqsUErWhWuxnGhYiyLDhP0gPQWwF-2FWqthAaA6Jl0Bobdp0-2F88kefsgpRuqIlHmtSPOF-2BUj4wVdQoGHMVZMWLjQakyJ3peDDJQnh1-2FAnfM58AH5cddjK5jaZTJksETKqH4-2F32GDt0Xx0vdaJPFBCHYgcGivG5xsoh_QwqAzO3iv7ONmhQImFvY4MqHR7Wp5NceTxn5lPidd2QAWEuxDREE-2FBshz3TA37FMPBfK3ITfszsq6G843eD5BmD8q9VIq11DFrtceIDX31DUKl2kpNGYG1xt0VIwW8aGT0r0HogV3i1yTb9DakGSvCWhju8ZYQFHeNaSeDBWnrhJgcyJowCh-2Feb4cPdzMh6E2HV-2B8IvHqEaLIw6gLuqTvGlZFf1AoTBrgPIpChyMAfZYiCJN-2B7Wd89q0B4GgS9LzXtfjNu1fAnDdYrfeM0ZRXcOEnE1LJ2cGKJmypz32yB0k2aM5PDFM-2Fm4LXKNYRWntXNvydW-2FhSOg6nkkLD7jsfTBmTN0iNwapkM-2B5Wf8kP08-3D"
-    autoVerify: true
-- extendedWaitUntil:
-    visible: "Thoughts For The Free life #5 (The Whole Universe Surrenders), 2022"
-    timeout: 20000
+
+# --- Third deeplink (Email link) ---
+- repeat:
+    while:
+      notVisible: "Thoughts For The Free life #5 (The Whole Universe Surrenders), 2022"
+    times: 3
+    commands:
+      - openLink:
+          link: https://email-link.artsy.net/ls/click?upn=u001.XPbk8dXjc6dwd18Yq2uPM3eTWB4YbDUmeJTAXXTF513UfbpBYrTcpcRSdtUyB-2BSCBlBmFoMJbhBvaGOfEvcXiqUS67NMILv3UV6sBY2MOGKFJcurKxb3tMi0e25bfwBWXkrJblnCMw1W5cPh90tEuY10cVqA57xvHauHAqsUErWhWuxnGhYiyLDhP0gPQWwF-2FWqthAaA6Jl0Bobdp0-2F88kefsgpRuqIlHmtSPOF-2BUj4wVdQoGHMVZMWLjQakyJ3peDDJQnh1-2FAnfM58AH5cddjK5jaZTJksETKqH4-2F32GDt0Xx0vdaJPFBCHYgcGivG5xsoh_QwqAzO3iv7ONmhQImFvY4MqHR7Wp5NceTxn5lPidd2QAWEuxDREE-2FBshz3TA37FMPBfK3ITfszsq6G843eD5BmD8q9VIq11DFrtceIDX31DUKl2kpNGYG1xt0VIwW8aGT0r0HogV3i1yTb9DakGSvCWhju8ZYQFHeNaSeDBWnrhJgcyJowCh-2Feb4cPdzMh6E2HV-2B8IvHqEaLIw6gLuqTvGlZFf1AoTBrgPIpChyMAfZYiCJN-2B7Wd89q0B4GgS9LzXtfjNu1fAnDdYrfeM0ZRXcOEnE1LJ2cGKJmypz32yB0k2aM5PDFM-2Fm4LXKNYRWntXNvydW-2FhSOg6nkkLD7jsfTBmTN0iNwapkM-2B5Wf8kP08-3D
+          autoVerify: true
+      - runFlow:
+          when:
+            visible: "Safari"
+          commands:
+            - pressKey: home
+      - waitForAnimationToEnd:
+          timeout: 2000
+
+- scrollUntilVisible: # we do this just to give time to fetch deeplink verifications, can get rid of if we have a test run before deeplinks on same sim
+    element: "Thoughts For The Free life #5 (The Whole Universe Surrenders), 2022"
+    timeout: 90000
+    speed: 60
