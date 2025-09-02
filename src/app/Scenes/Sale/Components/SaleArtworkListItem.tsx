@@ -124,7 +124,6 @@ export const SaleArtworkListItemContainer = createFragmentContainer(SaleArtworkL
         height
         width
       }
-      realizedPrice
       saleMessage
       slug
       title

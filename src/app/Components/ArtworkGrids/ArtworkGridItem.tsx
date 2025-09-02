@@ -553,7 +553,6 @@ export default createFragmentContainer(Artwork, {
           height
         }
       }
-      realizedPrice
       collectorSignals {
         partnerOffer {
           isAvailable

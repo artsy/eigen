@@ -253,7 +253,6 @@ const artworkMetaFragment = graphql`
     artistNames
     date
     isUnlisted
-    realizedPrice
     sale {
       isAuction
       isClosed
