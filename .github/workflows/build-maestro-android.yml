@@ -4,10 +4,13 @@ on:
   schedule:
     - cron: "0 6 * * *" # Runs daily at 6:00 AM UTC
   workflow_dispatch: # Allows manual trigger
+  push:
+    branches:
+      - gkartalis/PHIRE-2112
 
 jobs:
   build-android-qa:
-    if: github.ref == 'refs/heads/main'
+    # if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
