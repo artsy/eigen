@@ -5,7 +5,7 @@
 #import "ARNetworkConstants.h"
 #import "ARInternalShareValidator.h"
 #import "AREmission.h"
-#import "NotAppDelegate.h"
+#import "ARAppDelegateHelper.h"
 
 
 static WKNavigationAction *StubNavActionForRequest(NSURLRequest *request, WKNavigationType type)
@@ -157,8 +157,8 @@ describe(@"unauthenticated", ^{
         __block ARInternalMobileWebViewController *controller;
 
         beforeEach(^{
-            ARAppDelegate *delegate = [[ARAppDelegate alloc] init];
-            [ARAppDelegate setSharedInstanceForTesting:delegate];
+            ARAppDelegateHelper *delegate = [[ARAppDelegateHelper alloc] init];
+            [ARAppDelegateHelper setSharedInstanceForTesting:delegate];
             controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@""]];
         });
 

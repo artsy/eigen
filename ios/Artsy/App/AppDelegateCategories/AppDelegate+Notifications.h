@@ -1,7 +1,7 @@
-#import "NotAppDelegate.h"
+#import "ARAppDelegateHelper.h"
 #import <UserNotifications/UNUserNotificationCenter.h>
 
- @interface ARAppDelegate (Notifications) <UNUserNotificationCenterDelegate>
+ @interface ARAppDelegateHelper (Notifications) <UNUserNotificationCenterDelegate>
 
  - (void)applicationDidReceiveRemoteNotification:(NSDictionary *)userInfo inApplicationState:(UIApplicationState)applicationState;
 

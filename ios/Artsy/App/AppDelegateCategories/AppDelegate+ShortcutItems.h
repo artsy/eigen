@@ -1,6 +1,6 @@
-#import "NotAppDelegate.h"
+#import "ARAppDelegateHelper.h"
 
- @interface ARAppDelegate (ShortCutItems)
+ @interface ARAppDelegateHelper (ShortCutItems)
 
  - (NSArray<UIApplicationShortcutItem *> *)shortcutItems;
 

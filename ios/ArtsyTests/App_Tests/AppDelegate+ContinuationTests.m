@@ -1,5 +1,5 @@
 #import "ARUserManager.h"
-#import "NotAppDelegate.h"
+#import "ARAppDelegateHelper.h"
 
 #import <CoreSpotlight/CoreSpotlight.h>
 #import "AREmission.h"

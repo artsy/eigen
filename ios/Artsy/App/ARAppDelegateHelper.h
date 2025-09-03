@@ -1,8 +1,9 @@
 #import <UIKit/UIKit.h>
 #import <Expo/Expo.h>
 #import <BrazeKit/BrazeKit-Swift.h>
+#import "ARWindow.h"
 
-@class ARWindow, ArtsyEcho;
+@class ArtsyEcho;
 
 @interface ARAppDelegateHelper : NSObject
 

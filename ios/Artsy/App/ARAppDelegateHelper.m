@@ -1,5 +1,4 @@
 #import "ARAppDelegateHelper.h"
-#import "NotAppDelegate.h"
 #import "AppDelegate+Echo.h"
 #import "AppDelegate+Emission.h"
 #import "ARFonts.h"

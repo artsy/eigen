@@ -1,4 +1,4 @@
-#import "NotAppDelegate.h"
+#import "ARAppDelegateHelper.h"
 #import "AppDelegate+Notifications.h"
 
 #import "ARAnalyticsConstants.h"
@@ -40,15 +40,15 @@ describe(@"receiveRemoteNotification", ^{
     __block void (^completionHandler)(UNNotificationPresentationOptions) = ^(UNNotificationPresentationOptions options) {};
 
     beforeEach(^{
-        delegate = [[ARAppDelegate alloc] init];
-        [ARAppDelegate setSharedInstanceForTesting:delegate];
+        delegate = [[ARAppDelegateHelper alloc] init];
+        [ARAppDelegateHelper setSharedInstanceForTesting:delegate];
 
         mockEmissionSharedInstance = [OCMockObject partialMockForObject:AREmission.sharedInstance];;
     });
 
     afterEach(^{
         [mockEmissionSharedInstance stopMocking];
-        [ARAppDelegate setSharedInstanceForTesting:nil];
+        [ARAppDelegateHelper setSharedInstanceForTesting:nil];
     });
 
     sharedExamplesFor(@"when receiving a notification", ^(NSDictionary *prefs) {

@@ -10,7 +10,7 @@
 @import Darwin.POSIX.sys.utsname;
 
 
-@implementation ARAppDelegate (Emission)
+@implementation ARAppDelegateHelper (Emission)
 
 - (AREmission *)setupSharedEmission
 {
