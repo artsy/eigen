@@ -1,8 +1,10 @@
 import { HeartFillIcon, HeartStrokeIcon } from "@artsy/icons/native"
 import { Box, Flex, Spacer, Text, useSpace, Touchable } from "@artsy/palette-mobile"
 import { ArtworkSaveButton_artwork$key } from "__generated__/ArtworkSaveButton_artwork.graphql"
+import { ArtworkSaveIconWrapper } from "app/Components/ArtworkGrids/ArtworkSaveIconWrapper"
 import { useSaveArtworkToArtworkLists } from "app/Components/ArtworkLists/useSaveArtworkToArtworkLists"
 import { isOpenOrUpcomingSale } from "app/Scenes/Artwork/utils/isOpenOrUpcomingSale"
+import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { Schema } from "app/utils/track"
 import { StyleSheet } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -17,15 +19,13 @@ interface IconProps {
   isSaved: boolean
 }
 
-const WatchLotIcon: React.FC<IconProps> = ({ isSaved }) => {
-  if (isSaved) {
-    return <HeartFillIcon accessibilityLabel="unwatch lot icon" fill="blue100" />
+const SaveButtonIcon: React.FC<IconProps> = ({ isSaved }) => {
+  const enableArtworkHeartIconAnimation = useFeatureFlag("AREnableArtworkSaveIconAnimation")
+
+  if (enableArtworkHeartIconAnimation) {
+    return <ArtworkSaveIconWrapper isSaved={!!isSaved} />
   }
 
-  return <HeartStrokeIcon accessibilityLabel="watch lot icon" />
-}
-
-const SaveButtonIcon: React.FC<IconProps> = ({ isSaved }) => {
   if (isSaved) {
     return <HeartFillIcon accessibilityLabel="Saved icon" fill="blue100" />
   }
@@ -93,11 +93,8 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({
       onPress={saveArtworkToLists}
     >
       <Flex flexDirection="row" justifyContent="flex-start" alignItems="center">
-        {openOrUpcomingSale ? (
-          <WatchLotIcon isSaved={!!isSaved} />
-        ) : (
-          <SaveButtonIcon isSaved={!!isSaved} />
-        )}
+        <SaveButtonIcon isSaved={!!isSaved} />
+
         <Spacer x={0.5} />
 
         <Box position="relative">
@@ -110,7 +107,9 @@ export const ArtworkSaveButton: React.FC<ArtworkSaveButtonProps> = ({
             </Text>
           )}
           <Box {...StyleSheet.absoluteFillObject}>
-            <Text variant="sm">{buttonCopy}</Text>
+            <Text variant="sm" selectable={false}>
+              {buttonCopy}
+            </Text>
           </Box>
         </Box>
       </Flex>
