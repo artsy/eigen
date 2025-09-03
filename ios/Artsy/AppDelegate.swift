@@ -3,17 +3,23 @@ import React
 import ReactAppDependencyProvider
 
 
-//@UIApplicationMain
+@UIApplicationMain
 class AppDelegate: ExpoAppDelegate {
     var window: UIWindow?
 
     var reactNativeDelegate: ExpoReactNativeFactoryDelegate?
     var reactNativeFactory: RCTReactNativeFactory?
+    
+    // Reference to the Objective-C helper
+    let helper = ARAppDelegateHelper.sharedInstance()
 
     public override func application(
       _ application: UIApplication,
       didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
+      // Initialize the helper with launch options
+      helper.setup(withLaunchOptions: launchOptions)
+      
       let delegate = ReactNativeDelegate()
       let factory = ExpoReactNativeFactory(delegate: delegate)
       delegate.dependencyProvider = RCTAppDependencyProvider()
@@ -23,7 +29,14 @@ class AppDelegate: ExpoAppDelegate {
       bindReactNativeFactory(factory)
 
   #if os(iOS) || os(tvOS)
-      window = UIWindow(frame: UIScreen.main.bounds)
+      // Use ARWindow if it exists in helper, otherwise create UIWindow
+      if let arWindow = helper.window {
+          window = arWindow
+      } else {
+          window = UIWindow(frame: UIScreen.main.bounds)
+          helper.window = window as? ARWindow
+      }
+      
       factory.startReactNative(
         withModuleName: "main",
         in: window,
@@ -31,6 +44,12 @@ class AppDelegate: ExpoAppDelegate {
   #endif
 
       return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+    }
+    
+    // Forward applicationDidBecomeActive to helper
+    override func applicationDidBecomeActive(_ application: UIApplication) {
+        super.applicationDidBecomeActive(application)
+        helper.applicationDidBecomeActive()
     }
 
     // Linking API
