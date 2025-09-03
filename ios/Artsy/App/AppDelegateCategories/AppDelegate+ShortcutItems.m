@@ -1,7 +1,7 @@
 #import "AppDelegate+ShortcutItems.h"
 #import "AREmission.h"
 
-@implementation ARAppDelegate (ShortcutItems)
+@implementation ARAppDelegateHelper (ShortcutItems)
 
 - (NSArray<UIApplicationShortcutItem *> *)shortcutItems
 {

@@ -4,7 +4,7 @@
 #import "UIViewController+FullScreenLoading.h"
 #import "ARRouter.h"
 #import "ARInternalShareValidator.h"
-#import "NotAppDelegate.h"
+#import "ARAppDelegateHelper.h"
 #import "AROptions.h"
 #import "AREmission.h"
 
@@ -153,7 +153,7 @@ static void *ARProgressContext = &ARProgressContext;
 
     if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
         if ([self.shareValidator isSocialSharingURL:URL]) {
-            ARWindow *window = ARAppDelegate.sharedInstance.window;
+            ARWindow *window = ARAppDelegateHelper.sharedInstance.window;
             CGPoint lastTouchPointInView = [window convertPoint:window.lastTouchPoint toView:self.view];
             CGRect position = (CGRect){.origin = lastTouchPointInView, .size = CGSizeZero};
             [self.shareValidator shareURL:URL inView:self.view frame:position];

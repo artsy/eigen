@@ -3,7 +3,7 @@ import React
 import ReactAppDependencyProvider
 
 
-@UIApplicationMain
+// @UIApplicationMain
 class AppDelegate: ExpoAppDelegate {
     var window: UIWindow?
 
@@ -18,8 +18,8 @@ class AppDelegate: ExpoAppDelegate {
       didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
       // Initialize the helper with launch options
-      helper.setup(withLaunchOptions: launchOptions)
-      
+      helper?.setup(launchOptions: launchOptions)
+
       let delegate = ReactNativeDelegate()
       let factory = ExpoReactNativeFactory(delegate: delegate)
       delegate.dependencyProvider = RCTAppDependencyProvider()
@@ -30,11 +30,11 @@ class AppDelegate: ExpoAppDelegate {
 
   #if os(iOS) || os(tvOS)
       // Use ARWindow if it exists in helper, otherwise create UIWindow
-      if let arWindow = helper.window {
+      if let arWindow = helper?.window {
           window = arWindow
       } else {
           window = UIWindow(frame: UIScreen.main.bounds)
-          helper.window = window as? ARWindow
+          helper?.window = window as? ARWindow
       }
       
       factory.startReactNative(
@@ -49,7 +49,7 @@ class AppDelegate: ExpoAppDelegate {
     // Forward applicationDidBecomeActive to helper
     override func applicationDidBecomeActive(_ application: UIApplication) {
         super.applicationDidBecomeActive(application)
-        helper.applicationDidBecomeActive()
+        helper?.applicationDidBecomeActive()
     }
 
     // Linking API

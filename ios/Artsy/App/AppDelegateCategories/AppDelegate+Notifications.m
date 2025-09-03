@@ -7,7 +7,7 @@
 #import "ArtsyAPI+DeviceTokens.h"
 #import "User.h"
 
-@implementation ARAppDelegate (Notifications)
+@implementation ARAppDelegateHelper (Notifications)
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
@@ -71,7 +71,7 @@
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];
     [[NSUserDefaults standardUserDefaults] setValue:@YES forKey:ARAPNSHasSeenPushDialog];
 
-    [[[ARAppDelegate braze] notifications] registerDeviceToken:deviceTokenData];
+    [[[ARAppDelegateHelper braze] notifications] registerDeviceToken:deviceTokenData];
 
 // We only record device tokens on the Artsy service in case of Beta or App Store builds.
 #ifndef DEBUG
@@ -96,7 +96,7 @@
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler;
 {
-    BOOL processedByBraze = ARAppDelegate.braze != nil && [ARAppDelegate.braze.notifications handleBackgroundNotificationWithUserInfo:userInfo
+    BOOL processedByBraze = ARAppDelegateHelper.braze != nil && [ARAppDelegateHelper.braze.notifications handleBackgroundNotificationWithUserInfo:userInfo
                                                                                                                fetchCompletionHandler:handler];
     if (processedByBraze) {
         NSString *url = userInfo[@"ab_uri"];
@@ -199,9 +199,9 @@
 // Handle the notification view on when the app is in the foreground
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler{
 
-    if (ARAppDelegate.braze != nil) {
+    if (ARAppDelegateHelper.braze != nil) {
       // Forward notification payload to Braze for processing.
-      [ARAppDelegate.braze.notifications handleForegroundNotificationWithNotification:notification];
+      [ARAppDelegateHelper.braze.notifications handleForegroundNotificationWithNotification:notification];
     }
 
     NSDictionary *userInfo = notification.request.content.userInfo;
@@ -213,7 +213,7 @@
 
 // Handle the tapping on the notification when the app in the foreground
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler{
-    BOOL processedByBraze = ARAppDelegate.braze != nil && [ARAppDelegate.braze.notifications handleUserNotificationWithResponse:response
+    BOOL processedByBraze = ARAppDelegateHelper.braze != nil && [ARAppDelegateHelper.braze.notifications handleUserNotificationWithResponse:response
                                                                                                     withCompletionHandler:completionHandler];
     NSDictionary *userInfo = response.notification.request.content.userInfo;
     NSMutableDictionary *notificationInfo = [[NSMutableDictionary alloc] initWithDictionary:userInfo];

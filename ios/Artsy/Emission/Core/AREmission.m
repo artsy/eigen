@@ -1,5 +1,5 @@
 #import "AREmission.h"
-#import "NotAppDelegate.h"
+#import "ARAppDelegateHelper.h"
 #import "ARTemporaryAPIModule.h"
 
 @implementation AREmission
