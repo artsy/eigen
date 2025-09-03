@@ -3320,6 +3320,7 @@ type ArtworkImportTransformedData {
   artworkCondition: String
   artworkDescription: String
   artworkTitle: String
+  bibliography: String
   certificateOfAuthenticity: String
   classification: String
   date: String
