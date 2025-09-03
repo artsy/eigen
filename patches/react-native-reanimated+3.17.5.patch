@@ -28,13 +28,13 @@ index adcfb6e..9244d1b 100644
  export type FlatListPropsWithLayout<T> = ReanimatedFlatListPropsWithLayout<T>;
  interface AnimatedFlatListComplement<T> extends FlatList<T> {
 diff --git a/node_modules/react-native-reanimated/src/component/FlatList.tsx b/node_modules/react-native-reanimated/src/component/FlatList.tsx
-index 8353d53..29caea6 100644
+index 8353d53..2136d4f 100644
 --- a/node_modules/react-native-reanimated/src/component/FlatList.tsx
 +++ b/node_modules/react-native-reanimated/src/component/FlatList.tsx
 @@ -17,15 +17,20 @@ import { AnimatedView } from './View';
- 
+
  const AnimatedFlatList = createAnimatedComponent(FlatList);
- 
+
 -interface CellRendererComponentProps {
 -  onLayout?: ((event: LayoutChangeEvent) => void) | undefined;
 -  children: React.ReactNode;
@@ -46,7 +46,7 @@ index 8353d53..29caea6 100644
 +   children: React.ReactNode;
 +   style?: StyleProp<AnimatedStyle<ViewStyle>>;
  }
- 
+
  const createCellRendererComponent = (
    itemLayoutAnimationRef?: React.MutableRefObject<
      ILayoutAnimationBuilder | undefined
@@ -56,7 +56,7 @@ index 8353d53..29caea6 100644
    >
  ) => {
    const CellRendererComponent = (props: CellRendererComponentProps) => {
-@@ -34,7 +39,14 @@ const createCellRendererComponent = (
+@@ -34,7 +39,15 @@ const createCellRendererComponent = (
          // TODO TYPESCRIPT This is temporary cast is to get rid of .d.ts file.
          layout={itemLayoutAnimationRef?.current as any}
          onLayout={props.onLayout}
@@ -69,10 +69,11 @@ index 8353d53..29caea6 100644
 +                item: props.item,
 +              })
 +            : cellRendererComponentStyleRef?.current,
++          ]}>
          {props.children}
        </AnimatedView>
      );
-@@ -58,6 +70,20 @@ interface ReanimatedFlatListPropsWithLayout<T>
+@@ -58,6 +71,20 @@ interface ReanimatedFlatListPropsWithLayout<T>
    skipEnteringExitingAnimations?: boolean;
    /** Property `CellRendererComponent` is not supported in `Animated.FlatList`. */
    CellRendererComponent?: never;
@@ -91,9 +92,9 @@ index 8353d53..29caea6 100644
 +      }) => StyleProp<AnimatedStyle<StyleProp<ViewStyle>>>)
 +    | undefined;
  }
- 
+
  export type FlatListPropsWithLayout<T> = ReanimatedFlatListPropsWithLayout<T>;
-@@ -74,8 +100,12 @@ const FlatListForwardRefRender = function <Item = any>(
+@@ -74,8 +101,12 @@ const FlatListForwardRefRender = function <Item = any>(
    props: ReanimatedFlatListPropsWithLayout<Item>,
    ref: React.ForwardedRef<FlatList>
  ) {
@@ -105,13 +106,13 @@ index 8353d53..29caea6 100644
 +    CellRendererComponentStyle,
 +    ...restProps
 +  } = props;
- 
+
    // Set default scrollEventThrottle, because user expects
    // to have continuous scroll events and
-@@ -89,9 +119,16 @@ const FlatListForwardRefRender = function <Item = any>(
+@@ -89,9 +120,16 @@ const FlatListForwardRefRender = function <Item = any>(
    const itemLayoutAnimationRef = useRef(itemLayoutAnimation);
    itemLayoutAnimationRef.current = itemLayoutAnimation;
- 
+
 +  const cellRendererComponentStyleRef = useRef(CellRendererComponentStyle);
 +  cellRendererComponentStyleRef.current = CellRendererComponentStyle;
 +
@@ -125,5 +126,5 @@ index 8353d53..29caea6 100644
 +      ),
 +    [itemLayoutAnimationRef, cellRendererComponentStyleRef]
    );
- 
+
    const animatedFlatList = (
