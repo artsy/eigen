@@ -1,4 +1,4 @@
-import { RegisterScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
+import { registerScreen, StackNavigator } from "app/Navigation/AuthenticatedRoutes/StackNavigator"
 import { AppModule } from "app/Navigation/routes"
 import { isModalScreen } from "app/Navigation/utils/isModalScreen"
 import { nonTabModules } from "app/Navigation/utils/modules"
@@ -15,7 +15,7 @@ export const sharedRoutes = () => {
   return (
     <StackNavigator.Group>
       {nonModalModules.map(([moduleName, module]) => {
-        return <RegisterScreen key={moduleName} name={moduleName as AppModule} module={module} />
+        return registerScreen({ name: moduleName as AppModule, module })
       })}
     </StackNavigator.Group>
   )
