@@ -16,7 +16,10 @@ const ArtworkListContext = createContext<ArtworkListContextState>({
 })
 
 // TODO: remove this one in favor of ArtworkListStore
-export const ArtworkListProvider: FC<ArtworkListProviderProps> = ({ artworkListID, children }) => {
+export const ArtworkListProvider: FC<React.PropsWithChildren<ArtworkListProviderProps>> = ({
+  artworkListID,
+  children,
+}) => {
   const [removedArtworkIDs, setRemovedArtworkIDs] = useState<string[]>([])
 
   const callback = useCallback((artworkID: string) => {

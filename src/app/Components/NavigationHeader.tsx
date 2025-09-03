@@ -20,7 +20,7 @@ export interface NavigationHeaderProps {
   alignItems?: ResponsiveAlignItemsValue
 }
 
-export const NavigationHeader: React.FC<NavigationHeaderProps> = ({
+export const NavigationHeader: React.FC<React.PropsWithChildren<NavigationHeaderProps>> = ({
   children,
   hideBottomDivider = false,
   leftButtonText,

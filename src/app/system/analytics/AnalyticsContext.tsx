@@ -10,7 +10,10 @@ export interface AnalyticsContextProps {
 
 const AnalyticsContext = createContext<AnalyticsContextProps>({})
 
-export const AnalyticsContextProvider: FC<AnalyticsContextProps> = ({ children, ...rest }) => {
+export const AnalyticsContextProvider: FC<React.PropsWithChildren<AnalyticsContextProps>> = ({
+  children,
+  ...rest
+}) => {
   return <AnalyticsContext.Provider value={rest}>{children}</AnalyticsContext.Provider>
 }
 
