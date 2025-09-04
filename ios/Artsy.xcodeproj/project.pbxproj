@@ -45,6 +45,7 @@
 		CB18284829DF3F75006A0805 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB18284729DF3F75006A0805 /* Utilities.swift */; };
 		CB2033322E5656B700A06281 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2033312E5656B700A06281 /* AppDelegate.swift */; };
 		CB2033342E56593C00A06281 /* maybemain.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2033332E56593700A06281 /* maybemain.swift */; };
+		CB3EFE582E69C8420004F49F /* ARAppDelegateHelper+Testing.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3EFE572E69C8420004F49F /* ARAppDelegateHelper+Testing.m */; };
 		CB43266627E8F39B00B29DD6 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB43266527E8F39B00B29DD6 /* Stickers.xcassets */; };
 		CB43266A27E8F39B00B29DD6 /* ArtsyStickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CB43267627E8F6F900B29DD6 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB43267527E8F6F900B29DD6 /* NotificationService.swift */; };
@@ -598,6 +599,8 @@
 		CB18284729DF3F75006A0805 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		CB2033312E5656B700A06281 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CB2033332E56593700A06281 /* maybemain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = maybemain.swift; sourceTree = "<group>"; };
+		CB3EFE562E69C8420004F49F /* ARAppDelegateHelper+Testing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegateHelper+Testing.h"; sourceTree = "<group>"; };
+		CB3EFE572E69C8420004F49F /* ARAppDelegateHelper+Testing.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegateHelper+Testing.m"; sourceTree = "<group>"; };
 		CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArtsyStickers.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB43266527E8F39B00B29DD6 /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
 		CB43266727E8F39B00B29DD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1888,6 +1891,8 @@
 		CB43278327E8FEE400B29DD6 /* Supporting_Files */ = {
 			isa = PBXGroup;
 			children = (
+				CB3EFE562E69C8420004F49F /* ARAppDelegateHelper+Testing.h */,
+				CB3EFE572E69C8420004F49F /* ARAppDelegateHelper+Testing.m */,
 				CBA7CF22282BF6310025AEA5 /* Artsy_Tests-Info.plist */,
 				CB43278427E8FEE400B29DD6 /* InfoPlist.strings */,
 				CB43278627E8FEE400B29DD6 /* Artsy_Tests-Prefix.pch */,
@@ -4117,6 +4122,7 @@
 				CB43296327E9104E00B29DD6 /* Article.swift in Sources */,
 				CB43289527E8FEE500B29DD6 /* AppDelegate+NotificationsTests.m in Sources */,
 				CB4328AC27E8FEE500B29DD6 /* EXPMatcher+UINavigationController.m in Sources */,
+				CB3EFE582E69C8420004F49F /* ARAppDelegateHelper+Testing.m in Sources */,
 				CB4328A427E8FEE500B29DD6 /* UserTests.m in Sources */,
 				CB43295027E8FEE600B29DD6 /* UIApplicationStateEnumTests.m in Sources */,
 				CB4328BC27E8FEE500B29DD6 /* ArtsyAPI+SystemTimeTests.m in Sources */,
