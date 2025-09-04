@@ -120,7 +120,7 @@ describe("Sale", () => {
       })
     )
 
-    const registerButton = await tree.findByType(RegisterToBidButtonContainer)
+    const registerButton = await tree.findAllByType(RegisterToBidButtonContainer)
     expect(registerButton).toHaveLength(1)
   })
 
@@ -140,7 +140,7 @@ describe("Sale", () => {
       })
     )
 
-    const registerButton = await tree.findByType(RegisterToBidButtonContainer)
+    const registerButton = await tree.findAllByType(RegisterToBidButtonContainer)
     expect(registerButton).toHaveLength(0)
   })
 
@@ -159,7 +159,7 @@ describe("Sale", () => {
       })
     )
 
-    const registerButton = await tree.findByType(RegisterToBidButtonContainer)
+    const registerButton = await tree.findAllByType(RegisterToBidButtonContainer)
     expect(registerButton).toHaveLength(0)
   })
 
@@ -180,7 +180,7 @@ describe("Sale", () => {
       })
     )
 
-    const cascadingEndTimesBanner = await tree.findByType(CascadingEndTimesBanner)
+    const cascadingEndTimesBanner = await tree.findAllByType(CascadingEndTimesBanner)
     expect(cascadingEndTimesBanner).toHaveLength(1)
   })
 
@@ -201,7 +201,7 @@ describe("Sale", () => {
       })
     )
 
-    const cascadingEndTimesBanner = await tree.findByType(CascadingEndTimesBanner)
+    const cascadingEndTimesBanner = await tree.findAllByType(CascadingEndTimesBanner)
     expect(cascadingEndTimesBanner).toHaveLength(0)
   })
 
@@ -222,7 +222,7 @@ describe("Sale", () => {
       })
     )
 
-    const cascadingEndTimesBanner = await tree.findByType(CascadingEndTimesBanner)
+    const cascadingEndTimesBanner = await tree.findAllByType(CascadingEndTimesBanner)
     expect(cascadingEndTimesBanner).toHaveLength(0)
   })
 })
