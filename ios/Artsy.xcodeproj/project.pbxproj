@@ -44,7 +44,7 @@
 		CB18284629DF3DED006A0805 /* FocusSquareSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB18284029DEFA5A006A0805 /* FocusSquareSegment.swift */; };
 		CB18284829DF3F75006A0805 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB18284729DF3F75006A0805 /* Utilities.swift */; };
 		CB2033322E5656B700A06281 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2033312E5656B700A06281 /* AppDelegate.swift */; };
-		CB2033342E56593C00A06281 /* maybemain.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2033332E56593700A06281 /* maybemain.swift */; };
+		CB2033342E56593C00A06281 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2033332E56593700A06281 /* main.swift */; };
 		CB3EFE582E69C8420004F49F /* ARAppDelegateHelper+Testing.m in Sources */ = {isa = PBXBuildFile; fileRef = CB3EFE572E69C8420004F49F /* ARAppDelegateHelper+Testing.m */; };
 		CB43266627E8F39B00B29DD6 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB43266527E8F39B00B29DD6 /* Stickers.xcassets */; };
 		CB43266A27E8F39B00B29DD6 /* ArtsyStickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -250,7 +250,6 @@
 		CBE3269627E275A300395A93 /* ArtsyEcho.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE3249F27E275A100395A93 /* ArtsyEcho.m */; };
 		CBE3269727E275A300395A93 /* AppDelegate+ShortcutItems.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A127E275A100395A93 /* AppDelegate+ShortcutItems.m */; };
 		CBE3269927E275A300395A93 /* SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A327E275A100395A93 /* SwiftExtensions.swift */; };
-		CBE3269A27E275A300395A93 /* notmain.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324A927E275A100395A93 /* notmain.m */; };
 		CBE3269B27E275A300395A93 /* AppDelegate+Echo.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324AC27E275A100395A93 /* AppDelegate+Echo.m */; };
 		CBE3269C27E275A300395A93 /* ARTArtsyNativeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324AE27E275A100395A93 /* ARTArtsyNativeModule.m */; };
 		CBE3269D27E275A300395A93 /* AppDelegate+Emission.m in Sources */ = {isa = PBXBuildFile; fileRef = CBE324B027E275A100395A93 /* AppDelegate+Emission.m */; };
@@ -598,7 +597,7 @@
 		CB18284329DEFA6D006A0805 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		CB18284729DF3F75006A0805 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		CB2033312E5656B700A06281 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CB2033332E56593700A06281 /* maybemain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = maybemain.swift; sourceTree = "<group>"; };
+		CB2033332E56593700A06281 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		CB3EFE562E69C8420004F49F /* ARAppDelegateHelper+Testing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegateHelper+Testing.h"; sourceTree = "<group>"; };
 		CB3EFE572E69C8420004F49F /* ARAppDelegateHelper+Testing.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegateHelper+Testing.m"; sourceTree = "<group>"; };
 		CB43266327E8F39900B29DD6 /* ArtsyStickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArtsyStickers.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -976,7 +975,6 @@
 		CBE324A527E275A100395A93 /* ARUserActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserActivity.h; sourceTree = "<group>"; };
 		CBE324A627E275A100395A93 /* AppDelegate+Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Notifications.h"; sourceTree = "<group>"; };
 		CBE324A727E275A100395A93 /* AppDelegate+ActivityContinuation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+ActivityContinuation.h"; sourceTree = "<group>"; };
-		CBE324A927E275A100395A93 /* notmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = notmain.m; sourceTree = "<group>"; };
 		CBE324AB27E275A100395A93 /* ARAnalyticsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAnalyticsConstants.h; sourceTree = "<group>"; };
 		CBE324AC27E275A100395A93 /* AppDelegate+Echo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Echo.m"; sourceTree = "<group>"; };
 		CBE324AD27E275A100395A93 /* ARAppStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppStatus.h; sourceTree = "<group>"; };
@@ -2541,7 +2539,7 @@
 				CBC1F3F32E68D0D4008CCF48 /* ARWindow.m */,
 				CBC1F3EF2E68CF11008CCF48 /* ARAppDelegateHelper.h */,
 				CBC1F3F02E68CF11008CCF48 /* ARAppDelegateHelper.m */,
-				CB2033332E56593700A06281 /* maybemain.swift */,
+				CB2033332E56593700A06281 /* main.swift */,
 				CB51280D2DB2EBCE00C6A884 /* AppDelegateCategories */,
 				CBE3249927E275A100395A93 /* ARTArtsyNativeModule.h */,
 				CBE324AE27E275A100395A93 /* ARTArtsyNativeModule.m */,
@@ -2559,7 +2557,6 @@
 				CBE3249F27E275A100395A93 /* ArtsyEcho.m */,
 				CBE324B527E275A100395A93 /* EchoNew.json */,
 				CBE324A327E275A100395A93 /* SwiftExtensions.swift */,
-				CBE324A927E275A100395A93 /* notmain.m */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -3838,7 +3835,7 @@
 				CBE3279227E275A400395A93 /* User.m in Sources */,
 				CBE3277927E275A400395A93 /* ArtsyAPI+Notifications.m in Sources */,
 				CBE3267327E275A300395A93 /* Int+Metrification.swift in Sources */,
-				CB2033342E56593C00A06281 /* maybemain.swift in Sources */,
+				CB2033342E56593C00A06281 /* main.swift in Sources */,
 				CBE326CE27E275A300395A93 /* LiveAuctionBidButton.swift in Sources */,
 				CBE326DE27E275A300395A93 /* UIViewController+InnermostTopViewController.m in Sources */,
 				CBE326DD27E275A300395A93 /* ARURLItemProvider.m in Sources */,
@@ -3857,7 +3854,6 @@
 				CBE3279B27E275A400395A93 /* LiveBidder.m in Sources */,
 				CBE3278827E275A400395A93 /* Artwork.m in Sources */,
 				CBE3268827E275A300395A93 /* Interstellar+Artsy.swift in Sources */,
-				CBE3269A27E275A300395A93 /* notmain.m in Sources */,
 				CBE326AE27E275A300395A93 /* LiveAuctionLotListViewController.swift in Sources */,
 				CBE3270727E275A300395A93 /* ARSerifNavigationViewController.m in Sources */,
 				CBE326FA27E275A300395A93 /* ARInformationView.m in Sources */,
