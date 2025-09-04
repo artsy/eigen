@@ -167,10 +167,9 @@ interface CardWithMetaDataListItemProps {
   index: number
 }
 
-export const CardWithMetaDataListItem: React.FC<CardWithMetaDataListItemProps> = ({
-  children,
-  index,
-}) => {
+export const CardWithMetaDataListItem: React.FC<
+  React.PropsWithChildren<CardWithMetaDataListItemProps>
+> = ({ children, index }) => {
   const numColumns = useNumColumns()
 
   if (numColumns === 1) {

@@ -5,6 +5,7 @@ import { SaleCard_me$data } from "__generated__/SaleCard_me.graphql"
 import { SaleCard_sale$data } from "__generated__/SaleCard_sale.graphql"
 import { CompleteRegistrationCTAWrapper } from "app/Scenes/MyBids/Components/CompleteRegistrationCTAWrapper"
 import { SaleInfo } from "app/Scenes/MyBids/Components/SaleInfo"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { Dimensions } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -12,7 +13,9 @@ import { useTracking } from "react-tracking"
 
 export const COVER_IMAGE_HEIGHT = 100
 
-export const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string }> = (props) => (
+export const RegistrationCTAWrapper: React.FC<React.PropsWithChildren<{ navLink?: string }>> = (
+  props
+) => (
   <Touchable
     accessibilityRole="button"
     style={{ marginTop: 15 }}
@@ -41,7 +44,7 @@ interface SaleCardProps {
   hideChildren?: boolean
 }
 
-export const SaleCard: React.FC<SaleCardProps> = ({
+export const SaleCard: React.FC<React.PropsWithChildren<SaleCardProps>> = ({
   sale,
   me,
   smallScreen,

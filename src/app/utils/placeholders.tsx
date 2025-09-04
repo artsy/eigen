@@ -16,7 +16,7 @@ export function usePlaceholderContext() {
   return context
 }
 
-export const ProvidePlaceholderContext: React.FC = ({ children }) => (
+export const ProvidePlaceholderContext: React.FC<React.PropsWithChildren> = ({ children }) => (
   <PlaceholderContext.Provider value={{}}>{children}</PlaceholderContext.Provider>
 )
 
@@ -26,7 +26,7 @@ export const ProvidePlaceholderContext: React.FC = ({ children }) => (
 /**
  * @deprecated use `SkeletonBox` from palette-mobile instead instead
  */
-export const PlaceholderBox: React.FC<ViewStyle & { testID?: string }> = ({
+export const PlaceholderBox: React.FC<React.PropsWithChildren<ViewStyle & { testID?: string }>> = ({
   children,
   testID,
   ...styles

@@ -32,7 +32,10 @@ import { Animated, NativeScrollEvent, NativeSyntheticEvent, ScrollView, View } f
  * If the user stops scrolling at a large enough threshold, the 'onClose' callback is called.
  *
  */
-export const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = ({ children, onClose }) => {
+export const VerticalSwipeToDismiss: React.FC<React.PropsWithChildren<{ onClose(): void }>> = ({
+  children,
+  onClose,
+}) => {
   // keep track of the scroll view's scrollY value
   const { height: screenHeight, width: screenWidth, orientation } = useScreenDimensions()
   const scrollY = useAnimatedValue(screenHeight)

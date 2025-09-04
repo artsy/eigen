@@ -110,7 +110,10 @@ export const RouterLink: React.FC<RouterLinkProps & TouchableProps> = ({
   )
 }
 
-const Border: React.FC<{ prefetchState: PrefetchState }> = ({ children, prefetchState }) => {
+const Border: React.FC<React.PropsWithChildren<{ prefetchState: PrefetchState }>> = ({
+  children,
+  prefetchState,
+}) => {
   if (!prefetchState) {
     return <>{children}</>
   }

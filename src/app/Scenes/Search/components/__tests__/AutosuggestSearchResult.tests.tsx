@@ -3,7 +3,6 @@ import { SearchContext } from "app/Scenes/Search/SearchContext"
 import { AutosuggestSearchResult } from "app/Scenes/Search/components/AutosuggestSearchResult"
 import { GlobalStore, GlobalStoreProvider } from "app/store/GlobalStore"
 import { navigate } from "app/system/navigation/navigate"
-import { CatchErrors } from "app/utils/CatchErrors"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Pressable, TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
@@ -34,9 +33,7 @@ const TestWrapper: typeof AutosuggestSearchResult = (props) => (
     <SearchContext.Provider
       value={{ inputRef: { current: { blur: inputBlurMock } as any }, queryRef: { current: "" } }}
     >
-      <CatchErrors>
-        <_TestWrapper {...props} />
-      </CatchErrors>
+      <_TestWrapper {...props} />
     </SearchContext.Provider>
   </GlobalStoreProvider>
 )

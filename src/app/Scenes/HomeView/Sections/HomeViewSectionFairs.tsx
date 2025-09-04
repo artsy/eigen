@@ -24,6 +24,7 @@ import { useMemoizedRandom } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
 import { memo, useCallback } from "react"
+import { ListRenderItem } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionFairsProps {
@@ -56,7 +57,7 @@ export const HomeViewSectionFairs: React.FC<HomeViewSectionFairsProps> = memo(
       )
     }
 
-    const renderItem = useCallback(
+    const renderItem: ListRenderItem<FairItem> = useCallback(
       ({ item, index }) => {
         return (
           <FairCard

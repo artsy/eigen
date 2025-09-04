@@ -1,7 +1,10 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Box, Flex, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
-import { MasonryFlashListRef } from "@shopify/flash-list"
-import { ArtistSeriesArtworks_artistSeries$key } from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
+import { MasonryFlashListRef, MasonryListRenderItem } from "@shopify/flash-list"
+import {
+  ArtistSeriesArtworks_artistSeries$data,
+  ArtistSeriesArtworks_artistSeries$key,
+} from "__generated__/ArtistSeriesArtworks_artistSeries.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { ArtworksFiltersStore } from "app/Components/ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
@@ -15,6 +18,7 @@ import {
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { graphql, usePaginationFragment } from "react-relay"
@@ -25,6 +29,8 @@ interface ArtistSeriesArtworksProps {
 }
 
 const PAGE_SIZE = 10
+
+type Artworks = ExtractNodeType<ArtistSeriesArtworks_artistSeries$data["artistSeriesArtworks"]>
 
 export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ artistSeries }) => {
   const { data, isLoadingNext, hasNext, loadNext, refetch } = usePaginationFragment(
@@ -90,28 +96,31 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
     tracking.trackEvent(tracks.clearFilters(id, slug))
   }
 
-  const renderItem = useCallback(({ item, index, columnIndex }) => {
-    const imgAspectRatio = item.image?.aspectRatio ?? 1
-    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-    const imgHeight = imgWidth / imgAspectRatio
+  const renderItem: MasonryListRenderItem<Artworks> = useCallback(
+    ({ item, index, columnIndex }) => {
+      const imgAspectRatio = item.image?.aspectRatio ?? 1
+      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+      const imgHeight = imgWidth / imgAspectRatio
 
-    return (
-      <Flex
-        pl={columnIndex === 0 ? 0 : 1}
-        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-        mt={2}
-      >
-        <ArtworkGridItem
-          itemIndex={index}
-          contextScreenOwnerType={OwnerType.artistSeries}
-          contextScreenOwnerId={data.internalID}
-          contextScreenOwnerSlug={data.slug}
-          artwork={item}
-          height={imgHeight}
-        />
-      </Flex>
-    )
-  }, [])
+      return (
+        <Flex
+          pl={columnIndex === 0 ? 0 : 1}
+          pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+          mt={2}
+        >
+          <ArtworkGridItem
+            itemIndex={index}
+            contextScreenOwnerType={OwnerType.artistSeries}
+            contextScreenOwnerId={data.internalID}
+            contextScreenOwnerSlug={data.slug}
+            artwork={item}
+            height={imgHeight}
+          />
+        </Flex>
+      )
+    },
+    []
+  )
 
   return (
     <>

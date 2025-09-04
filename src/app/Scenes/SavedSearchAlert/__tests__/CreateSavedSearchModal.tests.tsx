@@ -90,7 +90,7 @@ const mockedMutationResult: SavedSearchAlertMutationResult = {
   searchCriteriaID: "searchCriteriaID",
 }
 
-const TestWrapper: React.FC = ({ children }) => (
+const TestWrapper: React.FC<React.PropsWithChildren> = ({ children }) => (
   <SavedSearchStoreProvider
     runtimeModel={{
       ...savedSearchModel,

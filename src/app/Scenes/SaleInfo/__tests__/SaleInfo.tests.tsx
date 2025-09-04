@@ -7,7 +7,7 @@ import { graphql } from "react-relay"
 
 describe("SaleInfo", () => {
   const { renderWithRelay } = setupTestWrapper<SaleInfoTestsQuery>({
-    Component: ({ sale, me }) => <SaleInfoContainer sale={sale} me={me} />,
+    Component: ({ sale, me }) => <SaleInfoContainer sale={sale!} me={me!} />,
     query: graphql`
       query SaleInfoTestsQuery($saleID: String!) @relay_test_operation {
         sale(id: $saleID) {

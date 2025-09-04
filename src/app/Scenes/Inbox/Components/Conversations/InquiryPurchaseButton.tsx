@@ -1,6 +1,7 @@
 import { ButtonProps, Button } from "@artsy/palette-mobile"
 import { InquiryPurchaseButtonOrderMutation } from "__generated__/InquiryPurchaseButtonOrderMutation.graphql"
 import { InquiryPurchaseButton_artwork$data } from "__generated__/InquiryPurchaseButton_artwork.graphql"
+// eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import React, { useState } from "react"
@@ -16,7 +17,9 @@ export interface InquiryPurchaseButtonProps {
   disabled?: ButtonProps["disabled"]
 }
 
-export const InquiryPurchaseButton: React.FC<InquiryPurchaseButtonProps> = ({
+export const InquiryPurchaseButton: React.FC<
+  React.PropsWithChildren<InquiryPurchaseButtonProps>
+> = ({
   artwork,
   editionSetID,
   conversationID,

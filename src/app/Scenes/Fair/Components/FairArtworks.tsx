@@ -1,8 +1,11 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Flex, SkeletonText, Spacer, Spinner, Tabs, useSpace } from "@artsy/palette-mobile"
-import { MasonryFlashList } from "@shopify/flash-list"
+import { MasonryFlashList, MasonryListRenderItem } from "@shopify/flash-list"
 import { FairArtworksQuery } from "__generated__/FairArtworksQuery.graphql"
-import { FairArtworks_fair$key } from "__generated__/FairArtworks_fair.graphql"
+import {
+  FairArtworks_fair$data,
+  FairArtworks_fair$key,
+} from "__generated__/FairArtworks_fair.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import {
   aggregationsType,
@@ -27,6 +30,7 @@ import {
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { PlaceholderGrid } from "app/utils/placeholderGrid"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useState } from "react"
 import { Platform } from "react-native"
@@ -40,6 +44,8 @@ interface FairArtworksProps {
   aggregations?: aggregationsType
   followedArtistCount?: number | null | undefined
 }
+
+type FairArtworkType = ExtractNodeType<NonNullable<FairArtworks_fair$data["fairArtworks"]>>
 
 export const FairArtworks: React.FC<FairArtworksProps> = ({
   fair,
@@ -88,28 +94,31 @@ export const FairArtworks: React.FC<FairArtworksProps> = ({
     setFiltersCountAction({ ...counts, total: artworksTotal })
   }, [artworksTotal])
 
-  const renderItem = useCallback(({ item, index, columnIndex }) => {
-    const imgAspectRatio = item.image?.aspectRatio ?? 1
-    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-    const imgHeight = imgWidth / imgAspectRatio
+  const renderItem: MasonryListRenderItem<FairArtworkType> = useCallback(
+    ({ item, index, columnIndex }) => {
+      const imgAspectRatio = item.image?.aspectRatio ?? 1
+      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+      const imgHeight = imgWidth / imgAspectRatio
 
-    return (
-      <Flex
-        pl={columnIndex === 0 ? 0 : 1}
-        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-        mt={2}
-      >
-        <ArtworkGridItem
-          itemIndex={index}
-          contextScreenOwnerType={OwnerType.fair}
-          contextScreenOwnerId={data.internalID}
-          contextScreenOwnerSlug={data.slug}
-          artwork={item}
-          height={imgHeight}
-        />
-      </Flex>
-    )
-  }, [])
+      return (
+        <Flex
+          pl={columnIndex === 0 ? 0 : 1}
+          pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+          mt={2}
+        >
+          <ArtworkGridItem
+            itemIndex={index}
+            contextScreenOwnerType={OwnerType.fair}
+            contextScreenOwnerId={data.internalID}
+            contextScreenOwnerSlug={data.slug}
+            artwork={item}
+            height={imgHeight}
+          />
+        </Flex>
+      )
+    },
+    []
+  )
 
   if (!data) {
     return null

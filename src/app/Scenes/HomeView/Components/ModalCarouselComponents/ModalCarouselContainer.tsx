@@ -1,6 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { BackButton, Button, Flex, useColor, useSpace } from "@artsy/palette-mobile"
 import { Tab } from "app/Scenes/MyCollection/MyCollection"
+// eslint-disable-next-line no-restricted-imports
 import { navigate, switchTab } from "app/system/navigation/navigate"
 import { screen } from "app/utils/track/helpers"
 import { useEffect, useRef, useState } from "react"
@@ -15,7 +16,7 @@ export interface FullScreenCarouselProps {
   toggleModal: (isVisible: boolean) => void
 }
 
-export const ModalCarouselContainer: React.FC<FullScreenCarouselProps> = ({
+export const ModalCarouselContainer: React.FC<React.PropsWithChildren<FullScreenCarouselProps>> = ({
   children,
   isVisible,
   initialPage = 0,

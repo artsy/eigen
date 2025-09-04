@@ -19,8 +19,8 @@ const SavedSearchAlertsList: React.FC = () => {
     {},
     { fetchPolicy: "store-and-network" }
   )
-
-  return <SavedSearchesListPaginationContainer me={data.me} />
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return <SavedSearchesListPaginationContainer me={data.me!} />
 }
 
 const SavedSearchAlertsListPlaceholderWrapper: React.FC = () => {

@@ -16,7 +16,7 @@ export interface TabBarContainerProps {
  * <TabBarContainer>{props.tabs.map((tab) => <Tab {...tab} />)}</TabContainer>
  * ```
  */
-export const TabBarContainer: React.FC<TabBarContainerProps> = ({
+export const TabBarContainer: React.FC<React.PropsWithChildren<TabBarContainerProps>> = ({
   children,
   activeTabIndex,
   scrollEnabled,
@@ -33,8 +33,10 @@ export const TabBarContainer: React.FC<TabBarContainerProps> = ({
       // attempt to center the active tab
       let left = 0
       for (let i = 0; i < activeTabIndex; i++) {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         left += tabLayouts[i]!.width
       }
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const center = left + tabLayouts[activeTabIndex]!.width / 2
       const scrollLeft = center - screen.width / 2
       scrollViewRef.current?.scrollTo({ x: scrollLeft })

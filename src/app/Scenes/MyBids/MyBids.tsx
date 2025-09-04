@@ -195,7 +195,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
   )
 }
 
-const BidTitle: React.FC<{ topBorder?: boolean }> = (props) => (
+const BidTitle: React.FC<React.PropsWithChildren<{ topBorder?: boolean }>> = (props) => (
   <Flex bg="mono0">
     <Text variant="sm-display" mx={2} my={2}>
       {props.children}

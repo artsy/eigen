@@ -2,7 +2,7 @@ import { ChevronSmallRightIcon } from "@artsy/icons/native"
 import { Box, BoxProps, Text } from "@artsy/palette-mobile"
 import { ShowInfo_show$data } from "__generated__/ShowInfo_show.graphql"
 import { RouterLink } from "app/system/navigation/RouterLink"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 export interface ShowInfoProps extends BoxProps {
   show: ShowInfo_show$data
@@ -27,11 +27,16 @@ export const ShowInfo: React.FC<ShowInfoProps> = ({ show, ...rest }) => {
   )
 }
 
-export const ShowInfoFragmentContainer = createFragmentContainer(ShowInfo, {
-  show: graphql`
-    fragment ShowInfo_show on Show {
-      href
-      about: description
-    }
-  `,
-})
+// 👇 Cast the component to the prop shape expected by the Relay HOC.
+// This avoids the React.FC<...>.propTypes mismatch error.
+export const ShowInfoFragmentContainer = createFragmentContainer(
+  ShowInfo as React.ComponentType<ShowInfoProps & { relay?: RelayProp }>,
+  {
+    show: graphql`
+      fragment ShowInfo_show on Show {
+        href
+        about: description
+      }
+    `,
+  }
+)

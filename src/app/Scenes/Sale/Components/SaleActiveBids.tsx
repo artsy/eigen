@@ -47,7 +47,8 @@ export const SaleActiveBids: React.FC<SaleActiveBidsProps> = ({ me, relay, saleI
         data={me.lotStandings}
         ListHeaderComponent={() => <SectionTitle title="Your active bids" />}
         ItemSeparatorComponent={() => <Separator my={1} />}
-        renderItem={({ item }) => <SaleActiveBidItemContainer lotStanding={item} />}
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        renderItem={({ item }) => <SaleActiveBidItemContainer lotStanding={item!} />}
         keyExtractor={(item) => `${item?.saleArtwork?.slug}`}
       />
     </Flex>

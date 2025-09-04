@@ -35,7 +35,7 @@ function getCurrentDimensions(): ScreenDimensions {
   }
 }
 
-export const ProvideScreenDimensions: React.FC = ({ children }) => {
+export const ProvideScreenDimensions: React.FC<React.PropsWithChildren> = ({ children }) => {
   const safeAreaInsets = useSafeAreaInsets()
   const [dimensions, setDimensions] = useState<ScreenDimensions>(getCurrentDimensions())
 

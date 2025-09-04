@@ -4,6 +4,7 @@ import { useMetaDataTextColor } from "app/Components/ArtworkRail/ArtworkRailUtil
 import { ArtworkDisplayProps } from "app/Components/ContextMenu/ContextMenuArtwork"
 import { ContextMenuArtworkPreviewCardImage } from "app/Components/ContextMenu/ContextMenuArtworkPreviewCardImage"
 import { saleMessageOrBidInfo } from "app/utils/getSaleMessgeOrBidInfo"
+import { isValidElement } from "react"
 import { PixelRatio } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { graphql, useFragment } from "react-relay"
@@ -95,7 +96,7 @@ export const ContextMenuArtworkPreviewCard: React.FC<ContextMenuArtworkPreviewCa
               {partner?.name}
             </Text>
           )}
-          {SalePriceComponent
+          {isValidElement(SalePriceComponent)
             ? SalePriceComponent
             : !!saleMessage && (
                 <Text

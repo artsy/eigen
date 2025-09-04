@@ -159,7 +159,7 @@ const SearchScreenInner: React.FC<SearchScreenProps> = () => {
 
 export const SearchScreen = memo(withProfiler(SearchScreenInner, { name: "Search" }))
 
-const HorizontalPadding: React.FC = ({ children }) => {
+const HorizontalPadding: React.FC<React.PropsWithChildren> = ({ children }) => {
   return <Box px={2}>{children}</Box>
 }
 

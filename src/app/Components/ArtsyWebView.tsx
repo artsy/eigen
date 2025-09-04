@@ -21,7 +21,7 @@ import { Schema } from "app/utils/track"
 import { useWebViewCallback } from "app/utils/useWebViewEvent"
 import { debounce } from "lodash"
 import { parse as parseQueryString } from "query-string"
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
+import { forwardRef, LegacyRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { KeyboardAvoidingView, Platform } from "react-native"
 import { Edge } from "react-native-safe-area-context"
 import Share from "react-native-share"
@@ -287,7 +287,7 @@ export const ArtsyWebView = forwardRef<
       <Flex flex={1}>
         <WebView
           enableApplePay
-          ref={innerRef}
+          ref={innerRef as LegacyRef<WebView>}
           // sharedCookiesEnabled is required on iOS for the user to be implicitly logged into force/prediction
           // on android it works without it
           sharedCookiesEnabled

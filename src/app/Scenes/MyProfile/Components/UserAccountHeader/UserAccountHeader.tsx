@@ -276,10 +276,12 @@ const Placeholder: React.FC<{ showBorder?: boolean }> = ({ showBorder }) => {
   )
 }
 
-const AccountCardWapper: React.FC<{
-  showBorder?: boolean
-  scrollEnabled?: boolean
-}> = ({ children, showBorder, scrollEnabled }) => {
+const AccountCardWapper: React.FC<
+  React.PropsWithChildren<{
+    showBorder?: boolean
+    scrollEnabled?: boolean
+  }>
+> = ({ children, showBorder, scrollEnabled }) => {
   return showBorder ? (
     <Flex
       minHeight={200}

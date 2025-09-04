@@ -8,6 +8,7 @@ import {
   Flex,
   useSpace,
 } from "@artsy/palette-mobile"
+import { MasonryListRenderItem } from "@shopify/flash-list"
 import { TagArtworks_tag$data } from "__generated__/TagArtworks_tag.graphql"
 import { ArtworkFilterNavigator } from "app/Components/ArtworkFilter"
 import { FilterModalMode } from "app/Components/ArtworkFilter/ArtworkFilterOptionsScreen"
@@ -23,10 +24,13 @@ import {
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+
+type TagArtworkType = ExtractNodeType<NonNullable<TagArtworks_tag$data["artworks"]>>
 
 interface TagArtworksProps {
   tag?: TagArtworks_tag$data | null
@@ -87,7 +91,7 @@ const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay }) => {
     }
   }, [relay.hasMore(), relay.isLoading()])
 
-  const renderItem = useCallback(({ item, columnIndex }) => {
+  const renderItem: MasonryListRenderItem<TagArtworkType> = useCallback(({ item, columnIndex }) => {
     const imgAspectRatio = item.image?.aspectRatio ?? 1
     const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
     const imgHeight = imgWidth / imgAspectRatio

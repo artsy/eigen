@@ -8,6 +8,7 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
+import { MasonryListRenderItem } from "@shopify/flash-list"
 import { GeneArtworks_gene$data } from "__generated__/GeneArtworks_gene.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import { useArtworkFilters } from "app/Components/ArtworkFilter/useArtworkFilters"
@@ -22,6 +23,7 @@ import {
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useRef, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -31,6 +33,8 @@ interface GeneArtworksContainerProps {
   gene: GeneArtworks_gene$data
   relay: RelayPaginationProp
 }
+
+type Artwork = ExtractNodeType<GeneArtworks_gene$data["artworks"]>
 
 export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ gene, relay }) => {
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
@@ -81,7 +85,7 @@ export const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = ({ ge
     }
   }, [relay.hasMore(), relay.isLoading()])
 
-  const renderItem = useCallback(({ item, columnIndex }) => {
+  const renderItem: MasonryListRenderItem<Artwork> = useCallback(({ item, columnIndex }) => {
     const imgAspectRatio = item.image?.aspectRatio ?? 1
     const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
     const imgHeight = imgWidth / imgAspectRatio

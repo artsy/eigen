@@ -73,7 +73,8 @@ export const FollowedArtists: React.FC<Props> = ({ me }) => {
         return (
           <ArtistListItem
             avatarSize="sm"
-            artist={item.artist}
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            artist={item?.artist!}
             withFeedback
             containerStyle={{ paddingHorizontal: space(2) }}
             onPress={() => {

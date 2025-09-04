@@ -15,7 +15,7 @@ export interface ScreenWrapperProps {
 /**
  * This component wraps all screens we have in the app.
  */
-export const ScreenWrapper: React.FC<ScreenWrapperProps> = memo(
+export const ScreenWrapper: React.FC<React.PropsWithChildren<ScreenWrapperProps>> = memo(
   ({ hidesBottomTabs: hidesBottomTabsProp = false, children }) => {
     // We don't have the bottom tabs context on modal screens
     // eslint-disable-next-line react-hooks/rules-of-hooks

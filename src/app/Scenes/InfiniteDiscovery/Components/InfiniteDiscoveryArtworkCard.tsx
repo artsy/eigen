@@ -188,7 +188,8 @@ export const InfiniteDiscoveryArtworkCard: React.FC<InfiniteDiscoveryArtworkCard
       <Flex backgroundColor="mono0" width="100%" style={containerStyle || { borderRadius: 10 }}>
         <Flex p={2}>
           <ArtistListItemContainer
-            artist={artwork.artists?.[0]}
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            artist={artwork.artists?.[0]!}
             avatarSize="xxs"
             includeTombstone={false}
             contextModule={ContextModule.infiniteDiscoveryArtworkCard}

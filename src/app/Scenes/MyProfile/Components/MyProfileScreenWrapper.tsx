@@ -12,7 +12,9 @@ export interface MyProfileScreenWrapperProps {
   contentContainerStyle?: ViewStyle
   RefreshControl?: React.ReactElement<RefreshControlProps>
 }
-export const MyProfileScreenWrapper: React.FC<MyProfileScreenWrapperProps> = ({
+export const MyProfileScreenWrapper: React.FC<
+  React.PropsWithChildren<MyProfileScreenWrapperProps>
+> = ({
   children,
   title,
   onPress,

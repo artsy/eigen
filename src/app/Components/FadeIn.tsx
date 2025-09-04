@@ -9,12 +9,14 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated"
 
-export const FadeIn: React.FC<{
-  delay?: number
-  style?: ViewStyle
-  slide?: boolean
-  duration?: number
-}> = ({
+export const FadeIn: React.FC<
+  React.PropsWithChildren<{
+    delay?: number
+    style?: ViewStyle
+    slide?: boolean
+    duration?: number
+  }>
+> = ({
   slide = true,
   delay = 0,
   children,

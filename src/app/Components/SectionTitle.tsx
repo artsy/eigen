@@ -65,12 +65,13 @@ export const SectionTitle: React.FC<
   )
 }
 
-const Wrapper: React.FC<{ onPress?(): void; href?: string | null; navigationProps?: object }> = ({
-  children,
-  href,
-  navigationProps,
-  onPress,
-}) => {
+const Wrapper: React.FC<
+  React.PropsWithChildren<{
+    onPress?(): void
+    href?: string | null
+    navigationProps?: object
+  }>
+> = ({ children, href, navigationProps, onPress }) => {
   if (onPress) {
     return (
       <RouterLink

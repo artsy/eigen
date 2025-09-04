@@ -53,7 +53,10 @@ interface TouchableElementProps {
   onPress: () => void
 }
 
-const TouchableElement: React.FC<TouchableElementProps> = ({ onPress, children }) => {
+const TouchableElement: React.FC<React.PropsWithChildren<TouchableElementProps>> = ({
+  onPress,
+  children,
+}) => {
   return (
     <Touchable accessibilityRole="button" onPress={onPress}>
       <Flex flexDirection="row" alignItems="center">

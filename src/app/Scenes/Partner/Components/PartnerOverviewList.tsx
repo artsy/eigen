@@ -1,13 +1,20 @@
 import { Flex, Spacer, Tabs, Text } from "@artsy/palette-mobile"
+import { ListRenderItem } from "@shopify/flash-list"
 import { PartnerOverviewListArtistsQuery } from "__generated__/PartnerOverviewListArtistsQuery.graphql"
-import { PartnerOverviewListArtists_partner$key } from "__generated__/PartnerOverviewListArtists_partner.graphql"
+import {
+  PartnerOverviewListArtists_partner$key,
+  PartnerOverviewListArtists_partner$data,
+} from "__generated__/PartnerOverviewListArtists_partner.graphql"
 import { ArtistListItemContainer as ArtistListItem } from "app/Components/ArtistListItem"
 import { ReadMore } from "app/Components/ReadMore"
 import { PartnerLocationSection } from "app/Scenes/Partner/Components/PartnerLocationSection"
 import { extractNodes } from "app/utils/extractNodes"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { useCallback } from "react"
 import { ActivityIndicator } from "react-native"
 import { graphql, usePaginationFragment } from "react-relay"
+
+type ArtistType = ExtractNodeType<PartnerOverviewListArtists_partner$data["artistsConnection"]>
 
 interface PartnerOverviewListProps {
   aboutText?: string | null
@@ -35,7 +42,7 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
     loadNext(20)
   }
 
-  const renderItem = useCallback(
+  const renderItem: ListRenderItem<ArtistType> = useCallback(
     ({ item }) => (
       <Flex py={1}>
         <ArtistListItem artist={item} />
@@ -44,7 +51,7 @@ export const PartnerOverviewList: React.FC<PartnerOverviewListProps> = ({
     [handleLoadMore]
   )
 
-  const keyExtractor = useCallback((item: any, i: number) => `${i}-${item.id}`, [])
+  const keyExtractor = useCallback((item: ArtistType, i: number) => `${i}-${item.id}`, [])
 
   return (
     <Tabs.FlashList

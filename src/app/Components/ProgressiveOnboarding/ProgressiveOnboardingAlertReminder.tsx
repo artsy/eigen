@@ -10,7 +10,7 @@ interface ProgressiveOnboardingAlertReminderProps {
   visible: boolean
 }
 export const ProgressiveOnboardingAlertReminder: React.FC<
-  ProgressiveOnboardingAlertReminderProps
+  React.PropsWithChildren<ProgressiveOnboardingAlertReminderProps>
 > = ({ children, visible }) => {
   const { isDismissed } = GlobalStore.useAppState((state) => state.progressiveOnboarding)
 

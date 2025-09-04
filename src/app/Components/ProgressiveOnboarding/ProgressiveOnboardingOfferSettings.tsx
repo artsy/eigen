@@ -7,7 +7,9 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { useDebouncedValue } from "app/utils/hooks/useDebouncedValue"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 
-export const ProgressiveOnboardingOfferSettings: React.FC = ({ children }) => {
+export const ProgressiveOnboardingOfferSettings: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
   const {
     isDismissed,
     sessionState: { isReady },
