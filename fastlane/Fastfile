@@ -71,48 +71,56 @@ lane :ship_beta_ios do |options|
 
   latest_version = $APP_JSON['version']
 
-  # Builds the app
-  sync_signing_ios(deployment_target: deployment_target)
-  tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
+  # # Builds the app
+  # sync_signing_ios(deployment_target: deployment_target)
+  # tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
 
-  # Add badge if firebase deployment
-  if deployment_target == 'firebase'
-    puts "Adding badge for firebase deployment..."
-    # The spaces at the beginning and end are important to avoid the badge being cut off
-    add_badge(shield: " #{bundle_version}-#{FIREBASE_BADGE_TEXT_COLOR} ", custom: FIREBASE_BADGE_IMAGE_PATH)
-    UI.success("✅ Badge added for firebase deployment")
-  end
+  # # Add badge if firebase deployment
+  # if deployment_target == 'firebase'
+  #   puts "Adding badge for firebase deployment..."
+  #   # The spaces at the beginning and end are important to avoid the badge being cut off
+  #   add_badge(shield: " #{bundle_version}-#{FIREBASE_BADGE_TEXT_COLOR} ", custom: FIREBASE_BADGE_IMAGE_PATH)
+  #   UI.success("✅ Badge added for firebase deployment")
+  # end
 
-  # Workaround for timeout in ci
-  ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
+  # # Workaround for timeout in ci
+  # ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
 
-  build_params = ios_build_params(deployment_target)
-  build_ios_app(**build_params)
+  # build_params = ios_build_params(deployment_target)
+  # build_ios_app(**build_params)
 
-  # avoid duplicate uploads to sentry
-  if (deployment_target == 'testflight')
-    # important! this must match the release version specified
-    # in Eigen in order for sourcemaps to work correctly
-    sentry_release_name = "ios-#{latest_version}-#{bundle_version}"
-    extract_ios_bundle_and_sourcemap(
-      archive_root: "../archives",
-      dist_dir: "../dist/ios",
-      app_name: "Artsy"
-    )
+  # # avoid duplicate uploads to sentry
+  # if (deployment_target == 'testflight')
+  #   # important! this must match the release version specified
+  #   # in Eigen in order for sourcemaps to work correctly
+  #   sentry_release_name = "ios-#{latest_version}-#{bundle_version}"
+  #   extract_ios_bundle_and_sourcemap(
+  #     archive_root: "../archives",
+  #     dist_dir: "../dist/ios",
+  #     app_name: "Artsy"
+  #   )
 
-    upload_sentry_artifacts(
-      sentry_release_name: sentry_release_name,
-      dist_version: bundle_version,
-      platform: 'ios'
-    )
-  elsif (deployment_target == 'firebase')
-    upload_dsyms_to_sentry(
-      project_slug: 'eigen',
-      org_slug: 'artsynet'
-    )
-  end
+  #   upload_sentry_artifacts(
+  #     sentry_release_name: sentry_release_name,
+  #     dist_version: bundle_version,
+  #     platform: 'ios'
+  #   )
+  # elsif (deployment_target == 'firebase')
+  #   upload_dsyms_to_sentry(
+  #     project_slug: 'eigen',
+  #     org_slug: 'artsynet'
+  #   )
+  # end
 
-  deploy_ios_beta(deployment_target: deployment_target)
+  # deploy_ios_beta(deployment_target: deployment_target)
+
+  # Add GitHub comment with build tag after successful deployment
+  build_tag = "ios-#{latest_version}-#{bundle_version}"
+  add_github_deployment_comment(
+    build_tag: build_tag,
+    platform: 'ios',
+    deployment_target: deployment_target
+  )
 end
 
 def deploy_ios_beta(deployment_target:)
@@ -291,7 +299,7 @@ desc 'Ship android beta to play store or firebase'
 lane :ship_beta_android do |options|
   deployment_target = options[:deployment_target] || 'play_store' # default to 'play_store'
   version_code = options[:version_code]
-  sh('yarn relay')
+  # sh('yarn relay')
 
   if version_code.nil? || version_code.empty?
     vname, vcode = set_build_version_android
@@ -299,25 +307,33 @@ lane :ship_beta_android do |options|
     vname, vcode = set_build_version_android(version_code: version_code)
   end
 
-  set_git_properties_android
-  tag_and_push(tag: "android-#{vname}-#{vcode}")
+  # set_git_properties_android
+  # tag_and_push(tag: "android-#{vname}-#{vcode}")
 
-  build_type = deployment_target == 'play_store' ? 'release' : 'beta'
-  sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2'")
+  # build_type = deployment_target == 'play_store' ? 'release' : 'beta'
+  # sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2'")
 
-  if (deployment_target == 'play_store')
-    # important! this must match the release version specified
-    # in Eigen in order for sourcemaps to work correctly
-    sentry_release_name = "android-#{vname}-#{vcode}"
-    upload_sentry_artifacts(
-      sentry_release_name: sentry_release_name,
-      dist_version: "#{vcode}",
-      platform: 'android'
-    )
-    s3_upload_android_build(app_version: vcode, app_path: "../android/app/build/outputs/bundle/release/app-release.aab")
-  end
+  # if (deployment_target == 'play_store')
+  #   # important! this must match the release version specified
+  #   # in Eigen in order for sourcemaps to work correctly
+  #   sentry_release_name = "android-#{vname}-#{vcode}"
+  #   upload_sentry_artifacts(
+  #     sentry_release_name: sentry_release_name,
+  #     dist_version: "#{vcode}",
+  #     platform: 'android'
+  #   )
+  #   s3_upload_android_build(app_version: vcode, app_path: "../android/app/build/outputs/bundle/release/app-release.aab")
+  # end
 
-  deploy_android_beta(deployment_target: deployment_target)
+  # deploy_android_beta(deployment_target: deployment_target)
+
+  # Add GitHub comment with build tag after successful deployment
+  build_tag = "android-#{vname}-#{vcode}"
+  add_github_deployment_comment(
+    build_tag: build_tag,
+    platform: 'android',
+    deployment_target: deployment_target
+  )
 end
 
 def deploy_android_beta(deployment_target:)
