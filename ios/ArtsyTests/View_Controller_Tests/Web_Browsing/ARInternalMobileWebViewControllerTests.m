@@ -5,7 +5,7 @@
 #import "ARNetworkConstants.h"
 #import "ARInternalShareValidator.h"
 #import "AREmission.h"
-#import "ARAppDelegateHelper.h"
+#import "ARAppDelegateHelper+Testing.h"
 
 
 static WKNavigationAction *StubNavActionForRequest(NSURLRequest *request, WKNavigationType type)
@@ -163,7 +163,7 @@ describe(@"unauthenticated", ^{
         });
 
         afterAll(^{
-            [ARAppDelegate setSharedInstanceForTesting:nil];
+            [ARAppDelegateHelper setSharedInstanceForTesting:nil];
         });
 
         it(@"handles a non-native internal link being clicked", ^{
@@ -208,14 +208,14 @@ describe(@"sharing", ^{
 
     beforeEach(^{
         controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@""]];
-        ARAppDelegate *delegate = [[ARAppDelegate alloc] init];
-        [ARAppDelegate setSharedInstanceForTesting:delegate];
+        ARAppDelegateHelper *delegate = [[ARAppDelegateHelper alloc] init];
+        [ARAppDelegateHelper setSharedInstanceForTesting:delegate];
         shareValidator = [OCMockObject niceMockForClass:[ARInternalShareValidator class]];
         controller.shareValidator = shareValidator;
     });
 
     afterAll(^{
-        [ARAppDelegate setSharedInstanceForTesting:nil];
+        [ARAppDelegateHelper setSharedInstanceForTesting:nil];
     });
 
 
