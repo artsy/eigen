@@ -31,7 +31,6 @@
 		41C4F9EA2F4426F255F9C051 /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FF9A08D850B10E68492E49 /* libPods-Artsy.a */; };
 		5E14D748482D1C91EDFD78D5 /* Pods_ArtsyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E85EAB2C3E6196CF3F118F7 /* Pods_ArtsyTests.framework */; };
 		7448C2EC42E1DD4A032A6C70 /* Pods_ArtsyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C1B6860831AE690075CFD4C /* Pods_ArtsyTests.framework */; };
-		8E4207792A055D2D006888BD /* NotAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8E4207782A055D2D006888BD /* NotAppDelegate.mm */; };
 		CB0D52052AF56984000E6C08 /* LiveAuctionTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB0D52042AF56984000E6C08 /* LiveAuctionTestUtils.swift */; };
 		CB0F3C762E58E91E0029A028 /* ARRouter+RestAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = CB0F3C752E58E9150029A028 /* ARRouter+RestAPI.m */; };
 		CB18282829CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB18282729CE1DD1006A0805 /* ARAugmentedWallBasedVIRViewController.swift */; };
@@ -582,7 +581,6 @@
 		36B80F603A77F1EFD957AB24 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 		4C1B6860831AE690075CFD4C /* Pods_ArtsyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ArtsyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8329A607F98AD2DF9F290C93 /* Pods-Artsy.qa.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.qa.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.qa.xcconfig"; sourceTree = "<group>"; };
-		8E4207782A055D2D006888BD /* NotAppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NotAppDelegate.mm; sourceTree = "<group>"; };
 		A13D613770ABA09F958CEC44 /* Pods-ArtsyTests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyTests.store.xcconfig"; path = "Target Support Files/Pods-ArtsyTests/Pods-ArtsyTests.store.xcconfig"; sourceTree = "<group>"; };
 		A7FF9A08D850B10E68492E49 /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6786672018842FE1C6B598E /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
@@ -990,7 +988,6 @@
 		CBE324B427E275A100395A93 /* ARFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFonts.h; sourceTree = "<group>"; };
 		CBE324B527E275A100395A93 /* EchoNew.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EchoNew.json; sourceTree = "<group>"; };
 		CBE324B627E275A100395A93 /* ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivity.m; sourceTree = "<group>"; };
-		CBE324B727E275A100395A93 /* NotAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotAppDelegate.h; sourceTree = "<group>"; };
 		CBE324B927E275A100395A93 /* ARDefaultNavigationTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDefaultNavigationTransition.m; sourceTree = "<group>"; };
 		CBE324BA27E275A100395A93 /* ARNavigationTransitionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationTransitionController.m; sourceTree = "<group>"; };
 		CBE324BB27E275A100395A93 /* ARNavigationTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARNavigationTransition.m; sourceTree = "<group>"; };
@@ -2427,8 +2424,6 @@
 		CBE3210527D9615000395A93 /* Artsy */ = {
 			isa = PBXGroup;
 			children = (
-				CBE324B727E275A100395A93 /* NotAppDelegate.h */,
-				8E4207782A055D2D006888BD /* NotAppDelegate.mm */,
 				CB2033312E5656B700A06281 /* AppDelegate.swift */,
 				CB18283429D36A3A006A0805 /* fonts */,
 				1A4E5115283F91BA0008EF35 /* ArtsyUIButtons */,
@@ -3846,7 +3841,6 @@
 				CB2033342E56593C00A06281 /* maybemain.swift in Sources */,
 				CBE326CE27E275A300395A93 /* LiveAuctionBidButton.swift in Sources */,
 				CBE326DE27E275A300395A93 /* UIViewController+InnermostTopViewController.m in Sources */,
-				8E4207792A055D2D006888BD /* NotAppDelegate.mm in Sources */,
 				CBE326DD27E275A300395A93 /* ARURLItemProvider.m in Sources */,
 				CBE326E727E275A300395A93 /* ARHTTPRequestOperationLogger.m in Sources */,
 				CBE326E827E275A300395A93 /* ARLogger.m in Sources */,
