@@ -9,10 +9,11 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated"
 
-export const ArtworkSaveIconWrapper: React.FC<{ isSaved: boolean; testID?: string }> = ({
-  isSaved,
-  testID,
-}) => {
+export const ArtworkSaveIconWrapper: React.FC<{
+  isSaved: boolean
+  testID?: string
+  accessibilityLabel?: string
+}> = ({ isSaved, testID, accessibilityLabel }) => {
   const scaleAnimation = useSharedValue(1)
   const didMount = useRef(false)
 
@@ -43,7 +44,7 @@ export const ArtworkSaveIconWrapper: React.FC<{ isSaved: boolean; testID?: strin
   }, [isSaved, scaleAnimation])
 
   return (
-    <Animated.View style={animatedStyles} testID={testID}>
+    <Animated.View style={animatedStyles} testID={testID} accessibilityLabel={accessibilityLabel}>
       {!!isSaved ? (
         <HeartFillIcon height={HEART_ICON_SIZE} width={HEART_ICON_SIZE} fill="blue100" />
       ) : (

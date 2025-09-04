@@ -23,20 +23,21 @@ interface IconProps {
 const SaveButtonIcon: React.FC<IconProps> = ({ isSaved, isLot = false }) => {
   const enableArtworkHeartIconAnimation = useFeatureFlag("AREnableArtworkSaveIconAnimation")
 
+  let accessibilityLabel = isLot ? "watch lot icon" : "Save icon"
+
+  if (isSaved) {
+    accessibilityLabel = isLot ? "unwatch lot icon" : "Saved icon"
+  }
+
   if (enableArtworkHeartIconAnimation) {
-    return <ArtworkSaveIconWrapper isSaved={!!isSaved} />
+    return <ArtworkSaveIconWrapper isSaved={!!isSaved} accessibilityLabel={accessibilityLabel} />
   }
 
   if (isSaved) {
-    return (
-      <HeartFillIcon
-        accessibilityLabel={isLot ? "unwatch lot icon" : "Saved icon"}
-        fill="blue100"
-      />
-    )
+    return <HeartFillIcon accessibilityLabel={accessibilityLabel} fill="blue100" />
   }
 
-  return <HeartStrokeIcon accessibilityLabel={isLot ? "watch lot icon" : "Save icon"} />
+  return <HeartStrokeIcon accessibilityLabel={accessibilityLabel} />
 }
 
 const getSaveButtonText = (isSaved: boolean, openOrUpcomingSale: boolean) => {
