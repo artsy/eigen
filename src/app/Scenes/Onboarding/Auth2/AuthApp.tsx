@@ -3,13 +3,12 @@ import { AuthContext } from "app/Scenes/Onboarding/Auth2/AuthContext"
 import { AuthScenes } from "app/Scenes/Onboarding/Auth2/AuthScenes"
 import { AuthBackground } from "app/Scenes/Onboarding/Auth2/components/AuthBackground"
 import { AuthModal } from "app/Scenes/Onboarding/Auth2/components/AuthModal"
-import { useAndroidStatusBarColor } from "app/Scenes/Onboarding/Auth2/hooks/useAndroidStatusBarColor"
+import { StatusBar } from "react-native"
 
 export const AuthApp: React.FC = () => {
-  useAndroidStatusBarColor()
-
   return (
     <Screen safeArea={false}>
+      <StatusBar translucent />
       <AuthContext.Provider>
         <Screen.Background>
           <AuthBackground />
