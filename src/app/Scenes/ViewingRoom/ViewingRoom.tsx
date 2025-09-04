@@ -152,7 +152,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
           onViewableItemsChanged={useCallback(
             ({ viewableItems }: { viewableItems: ViewToken[] }) => {
               if (
-                viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "body")
+                viewableItems.find((viewableItem) => viewableItem.item.key === "body")
               ) {
                 trackBodyImpression()
                 LayoutAnimation.configureNext({
