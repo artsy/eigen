@@ -39,32 +39,29 @@ export const MoreWorksTab: FC<MoreWorksTabProps> = ({ artworks: _artworks }) => 
   }
 
   const renderItem: MasonryListRenderItem<ExtractNodeType<typeof data.artworksConnection>> =
-    useCallback(
-      ({ item, index, columnIndex }) => {
-        const imgAspectRatio = item.image?.aspectRatio ?? 1
-        const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-        const imgHeight = imgWidth / imgAspectRatio
+    useCallback(({ item, index, columnIndex }) => {
+      const imgAspectRatio = item.image?.aspectRatio ?? 1
+      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+      const imgHeight = imgWidth / imgAspectRatio
 
-        return (
-          <Flex
-            pl={columnIndex === 0 ? 0 : 1}
-            pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-            mt={2}
-          >
-            <ArtworkGridItem
-              itemIndex={index}
-              contextModule={ContextModule.infiniteDiscoveryDrawer}
-              contextScreenOwnerType={OwnerType.infiniteDiscoveryArtwork}
-              contextScreenOwnerId={item.internalID}
-              contextScreenOwnerSlug={item.internalID}
-              artwork={item}
-              height={imgHeight}
-            />
-          </Flex>
-        )
-      },
-      []
-    )
+      return (
+        <Flex
+          pl={columnIndex === 0 ? 0 : 1}
+          pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+          mt={2}
+        >
+          <ArtworkGridItem
+            itemIndex={index}
+            contextModule={ContextModule.infiniteDiscoveryDrawer}
+            contextScreenOwnerType={OwnerType.infiniteDiscoveryArtwork}
+            contextScreenOwnerId={item.internalID}
+            contextScreenOwnerSlug={item.slug}
+            artwork={item}
+            height={imgHeight}
+          />
+        </Flex>
+      )
+    }, [])
 
   const masonry = (
     <Tabs.Masonry
@@ -105,6 +102,7 @@ const fragment = graphql`
         node {
           ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
           internalID
+          slug
           image(includeAll: false) {
             aspectRatio
           }
