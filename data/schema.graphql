@@ -3171,6 +3171,8 @@ type ArtworkImport implements Node {
     hasErrors: Boolean
     last: Int
   ): ArtworkImportRowConnection
+  s3Bucket: String!
+  s3Key: String!
   state: ArtworkImportState
   summary: ArtworkImportSummary
   unmatchedArtistNames: [String!]!
