@@ -2,8 +2,8 @@ import { fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { EditSavedSearchAlertQueryRenderer } from "app/Scenes/SavedSearchAlert/EditSavedSearchAlert"
 import { useSavedSearchPills } from "app/Scenes/SavedSearchAlert/useSavedSearchPills"
 import { goBack } from "app/system/navigation/navigate"
+import { PushAuthorizationStatus } from "app/system/notifications/getNotificationsPermissions"
 import { getMockRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import { PushAuthorizationStatus } from "app/utils/PushNotification"
 import { extractText } from "app/utils/tests/extractText"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "app/utils/tests/mockFetchNotificationPermissions"
@@ -15,12 +15,12 @@ jest.mock("app/Scenes/SavedSearchAlert/useSavedSearchPills")
 
 describe("EditSavedSearchAlert", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const notificationPermissions = mockFetchNotificationPermissions(false)
+  const notificationPermissions = mockFetchNotificationPermissions as jest.Mock
 
   beforeEach(() => {
     mockEnvironment = getMockRelayEnvironment()
-    notificationPermissions.mockImplementationOnce((cb) =>
-      cb(null, PushAuthorizationStatus.Authorized)
+    notificationPermissions().mockImplementationOnce(() =>
+      Promise.resolve(PushAuthorizationStatus.Authorized)
     )
     ;(useSavedSearchPills as jest.Mock).mockImplementation(() => pills)
   })

@@ -1,14 +1,14 @@
+import { Notification } from "@notifee/react-native"
 import { action, Action } from "easy-peasy"
-import { ReceivedNotification } from "react-native-push-notification"
 
-export interface PendingPushNotification extends Omit<ReceivedNotification, "userInfo" | "finish"> {
+export interface PendingPushNotification extends Notification {
   tappedAt: number
   finish?: () => {}
 }
 
 export interface PendingPushNotificationModel {
-  notification: PendingPushNotification | null
-  setPendingPushNotification: Action<this, PendingPushNotification | null>
+  notification: Notification | null
+  setPendingPushNotification: Action<this, Notification | null>
 }
 
 export const getPendingPushNotificationModel = (): PendingPushNotificationModel => ({
