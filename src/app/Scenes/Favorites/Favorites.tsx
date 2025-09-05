@@ -45,7 +45,7 @@ export const Pills: {
   },
 ]
 
-const FavoritesHeaderTapBar: React.FC<MaterialTopTabBarProps> = ({ state, navigation }) => {
+const FavoritesHeaderTabBar: React.FC<MaterialTopTabBarProps> = ({ state, navigation }) => {
   const color = useColor()
 
   const activeTab = FavoritesContextStore.useStoreState((state) => state.activeTab)
@@ -166,7 +166,7 @@ export const Favorites = () => {
         <Screen.Body fullwidth>
           <FavoriteTopNavigator.Navigator
             backBehavior="none"
-            tabBar={FavoritesHeaderTapBar}
+            tabBar={(props) => <FavoritesHeaderTabBar {...props} />}
             screenOptions={{
               swipeEnabled: false,
             }}
