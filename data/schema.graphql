@@ -4694,6 +4694,9 @@ input BulkUpdateArtworksMetadataInput {
   # The artist IDs to be assigned
   artistIds: [String]
 
+  # The attribution class to be assigned, E.g. unique, open edition, limited edition
+  attributionClass: String
+
   # The availaiblity to be assigned
   availability: Availability
 
@@ -4720,6 +4723,9 @@ input BulkUpdateArtworksMetadataInput {
 
   # Whether the artworks must be listed as Purchase
   ecommerce: Boolean
+
+  # Number of additional edition sets to be created for each artwork
+  editionSetsCount: Int
 
   # Set artwork price visibility to exact price
   exactPrice: Boolean
