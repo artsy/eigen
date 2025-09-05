@@ -23,13 +23,13 @@ export interface SelectProps<ValueType> {
   optional?: boolean
   options: Array<SelectOption<ValueType>>
   placeholder?: string
-  renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): JSX.Element
-  renderItemLabel?(value: SelectOption<ValueType>): JSX.Element
+  renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): React.JSX.Element
+  renderItemLabel?(value: SelectOption<ValueType>): React.JSX.Element
   required?: boolean
   subTitle?: string
   testID?: string
   title?: string
-  tooltipText?: string | JSX.Element
+  tooltipText?: string | React.JSX.Element
   value: ValueType | null | undefined
 }
 

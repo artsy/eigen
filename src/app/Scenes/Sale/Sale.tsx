@@ -51,7 +51,7 @@ interface Props {
 
 interface SaleSection {
   key: string
-  content: JSX.Element
+  content: React.JSX.Element
 }
 
 const SALE_HEADER = "header"

@@ -26,7 +26,7 @@ interface ViewingRoomProps {
 
 interface ViewingRoomSection {
   key: string
-  content: JSX.Element
+  content: React.JSX.Element
 }
 
 // Same as Gravity model viewing_room_status
@@ -151,9 +151,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
         <FlatList<ViewingRoomSection>
           onViewableItemsChanged={useCallback(
             ({ viewableItems }: { viewableItems: ViewToken[] }) => {
-              if (
-                viewableItems.find((viewableItem) => viewableItem.item.key === "body")
-              ) {
+              if (viewableItems.find((viewableItem) => viewableItem.item.key === "body")) {
                 trackBodyImpression()
                 LayoutAnimation.configureNext({
                   ...LayoutAnimation.Presets.easeInEaseOut,

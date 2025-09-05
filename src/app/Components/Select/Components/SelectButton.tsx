@@ -30,7 +30,7 @@ export const SelectButton: React.FC<{
   subTitle?: string
   testID?: string
   title?: string
-  tooltipText?: string | JSX.Element
+  tooltipText?: string | React.JSX.Element
   value?: React.ReactNode
   error?: string
 }> = ({

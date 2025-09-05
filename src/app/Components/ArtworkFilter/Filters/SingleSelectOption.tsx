@@ -13,8 +13,8 @@ interface SingleSelectOptionScreenProps extends NavigationHeaderProps {
   navigation: StackNavigationProp<ParamListBase>
   filterHeaderText: string
   selectedOption: FilterData
-  filterOptions: Array<FilterData | JSX.Element>
-  ListHeaderComponent?: JSX.Element
+  filterOptions: Array<FilterData | React.JSX.Element>
+  ListHeaderComponent?: React.JSX.Element
   withExtraPadding?: boolean
   useScrollView?: boolean
   rightButtonText?: string
@@ -41,8 +41,8 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
   const handleBackNavigation = () => {
     navigation.goBack()
   }
-  const keyExtractor = (_item: FilterData | JSX.Element, index: number) => String(index)
-  const renderItem = (item: FilterData | JSX.Element) => {
+  const keyExtractor = (_item: FilterData | React.JSX.Element, index: number) => String(index)
+  const renderItem = (item: FilterData | React.JSX.Element) => {
     if (isFilterData(item)) {
       return (
         <ListItem
@@ -54,7 +54,7 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
       )
     }
 
-    // Otherwise just return JSX.Element
+    // Otherwise just return React.JSX.Element
     return item
   }
 

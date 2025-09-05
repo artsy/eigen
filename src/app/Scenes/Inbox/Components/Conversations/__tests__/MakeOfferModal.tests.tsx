@@ -35,7 +35,7 @@ const renderComponent = ({ props, error }: RenderComponentProps) => {
 }
 
 interface TestRenderProps {
-  renderer: (props: RenderComponentProps) => JSX.Element | undefined
+  renderer: (props: RenderComponentProps) => React.JSX.Element | undefined
 }
 
 const TestRenderer = ({ renderer }: TestRenderProps) => {
