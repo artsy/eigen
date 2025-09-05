@@ -3229,6 +3229,7 @@ enum ArtworkImportError {
   MISSING_TITLE
   UNMATCHED_ARTIST
   UNMATCHED_IMAGE
+  UNSUPPORTED_IMAGE_SEPERATOR
 }
 
 type ArtworkImportRow {
