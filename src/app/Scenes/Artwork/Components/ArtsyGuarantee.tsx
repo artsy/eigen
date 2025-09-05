@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType, TappedLearnMore } from "@artsy/cohesion"
-import { GuaranteeIcon, LockIcon, VerifiedIcon } from "@artsy/icons/native"
-import { Spacer, IconProps, Flex, Box, Text, LinkText, Join } from "@artsy/palette-mobile"
+import { GuaranteeIcon, IconProps, LockIcon, VerifiedIcon } from "@artsy/icons/native"
+import { Spacer, Flex, Box, Text, LinkText, Join } from "@artsy/palette-mobile"
 // eslint-disable-next-line no-restricted-imports
 import { navigate } from "app/system/navigation/navigate"
 import { useTracking } from "react-tracking"

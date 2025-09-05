@@ -1,5 +1,5 @@
-import { BoltFillIcon } from "@artsy/icons/native"
-import { IconProps, Stopwatch, Flex, Box, Text } from "@artsy/palette-mobile"
+import { BoltFillIcon, IconProps, StopwatchIcon } from "@artsy/icons/native"
+import { Flex, Box, Text } from "@artsy/palette-mobile"
 import { TimelySale } from "app/Scenes/MyBids/helpers/timely"
 import { DateTime } from "luxon"
 import ordinal from "ordinal"
@@ -68,7 +68,7 @@ export const SaleInfo = ({
       line1 = line1Message("Live bidding begins", endMoment)
     }
   } else {
-    Icon = Stopwatch
+    Icon = StopwatchIcon
     noteColor = "mono60"
     line1 = line1Message("Closes", endMoment)
     line2 = line2Message("Ends", endMoment)

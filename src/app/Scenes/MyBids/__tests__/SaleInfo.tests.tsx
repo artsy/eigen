@@ -1,5 +1,5 @@
-import { BoltFillIcon } from "@artsy/icons/native"
-import { Stopwatch, Text } from "@artsy/palette-mobile"
+import { BoltFillIcon, StopwatchIcon } from "@artsy/icons/native"
+import { Text } from "@artsy/palette-mobile"
 import { SaleInfo } from "app/Scenes/MyBids/Components/SaleInfo"
 import { extractText } from "app/utils/tests/extractText"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
@@ -133,7 +133,7 @@ describe(SaleInfo, () => {
       expect(
         renderWithWrappersLEGACY(
           <SaleInfo sale={saleFixture({ endAt: "2020-08-01T15:00:00+00:00" })} />
-        ).root.findAllByType(Stopwatch).length
+        ).root.findAllByType(StopwatchIcon).length
       ).toBe(1)
     })
     describe("time bounds", () => {
