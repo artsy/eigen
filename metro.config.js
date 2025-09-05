@@ -5,6 +5,7 @@
  * @type {import('@react-native/metro-config').MetroConfig}
  */
 
+import { withRozenite } from "@rozenite/metro"
 const path = require("path")
 const { mergeConfig } = require("@react-native/metro-config")
 const { getSentryExpoConfig } = require("@sentry/react-native/metro")
@@ -34,4 +35,4 @@ const config = {
   },
 }
 
-module.exports = mergeConfig(getSentryExpoConfig(__dirname), config)
+module.exports = withRozenite(mergeConfig(getSentryExpoConfig(__dirname), config))
