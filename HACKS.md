@@ -308,3 +308,13 @@ Expo updates is interfering with the splash screen on iOS, causing it to flash w
 This patch allows us to animate the appearance of the bottom tabs. This is currently not supported by @react-navigation/bottom-tabs but it's something they do when the user shows/hides the keyboard.
 
 See https://github.com/artsy/eigen/pull/12249 for more details.
+
+## Resolutions @react-native/dev-middleware
+
+#### When can we remove this:
+
+When Rozenite stable release is published and no longer requires this resolution
+
+#### Explanation/Context:
+
+This resolution was added to fix Rozenite integration issues. Rozenite was unable to display its dev tools tabs because it couldn't properly detect whether we were using Expo CLI or React Native CLI, causing confusion in its tooling detection logic. The resolution ensures Rozenite can correctly identify our development environment and render its interface properly.

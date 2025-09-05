@@ -4288,35 +4288,12 @@
     readline "^1.3.0"
     semver "^7.1.3"
 
-"@react-native/debugger-frontend@0.76.9":
-  version "0.76.9"
-  resolved "https://registry.yarnpkg.com/@react-native/debugger-frontend/-/debugger-frontend-0.76.9.tgz#b329b8e5dccda282a11a107a79fa65268b2e029c"
-  integrity sha512-0Ru72Bm066xmxFuOXhhvrryxvb57uI79yDSFf+hxRpktkC98NMuRenlJhslMrbJ6WjCu1vOe/9UjWNYyxXTRTA==
-
 "@react-native/debugger-frontend@0.77.3":
   version "0.77.3"
   resolved "https://registry.yarnpkg.com/@react-native/debugger-frontend/-/debugger-frontend-0.77.3.tgz#38efdcb673e8cebd2d3c41278128d198c68b8503"
   integrity sha512-FTERmc43r/3IpTvUZTr9gVVTgOIrg1hrkN57POr/CiL8RbcY/nv6vfNM7/CXG5WF8ckHiLeWTcRHzJUl1+rFkw==
 
-"@react-native/dev-middleware@0.76.9":
-  version "0.76.9"
-  resolved "https://registry.yarnpkg.com/@react-native/dev-middleware/-/dev-middleware-0.76.9.tgz#2fdb716707d90b4d085cabb61cc466fabdd2500f"
-  integrity sha512-xkd3C3dRcmZLjFTEAOvC14q3apMLouIvJViCZY/p1EfCMrNND31dgE1dYrLTiI045WAWMt5bD15i6f7dE2/QWA==
-  dependencies:
-    "@isaacs/ttlcache" "^1.4.1"
-    "@react-native/debugger-frontend" "0.76.9"
-    chrome-launcher "^0.15.2"
-    chromium-edge-launcher "^0.2.0"
-    connect "^3.6.5"
-    debug "^2.2.0"
-    invariant "^2.2.4"
-    nullthrows "^1.1.1"
-    open "^7.0.3"
-    selfsigned "^2.4.1"
-    serve-static "^1.13.1"
-    ws "^6.2.3"
-
-"@react-native/dev-middleware@0.77.3":
+"@react-native/dev-middleware@0.76.9", "@react-native/dev-middleware@0.77.3":
   version "0.77.3"
   resolved "https://registry.yarnpkg.com/@react-native/dev-middleware/-/dev-middleware-0.77.3.tgz#9b78a9e92b59413d8835b62463cfba148fc38d45"
   integrity sha512-tCylGMjibJAEl2r2nWX5L5CvK6XFLGbjhe7Su7OcxRGrynHin87rAmcaTeoTtbtsREFlFM0f4qxcmwCxmbZHJw==

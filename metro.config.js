@@ -5,9 +5,9 @@
  * @type {import('@react-native/metro-config').MetroConfig}
  */
 
-import { withRozenite } from "@rozenite/metro"
 const path = require("path")
 const { mergeConfig } = require("@react-native/metro-config")
+const { withRozenite } = require("@rozenite/metro")
 const { getSentryExpoConfig } = require("@sentry/react-native/metro")
 const { FileStore } = require("metro-cache")
 
