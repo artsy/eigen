@@ -1,4 +1,5 @@
-import { IconProps, Flex, useSpace, Text, EntityHeader } from "@artsy/palette-mobile"
+import { IconProps } from "@artsy/icons/native"
+import { Flex, useSpace, Text, EntityHeader } from "@artsy/palette-mobile"
 import {
   CareerHighlightBigCardBiennial_myCollectionInfo$data,
   CareerHighlightBigCardBiennial_myCollectionInfo$key,
