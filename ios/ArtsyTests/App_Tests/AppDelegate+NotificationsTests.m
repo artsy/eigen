@@ -1,5 +1,5 @@
-#import "AppDelegate.h"
 #import "AppDelegate+Notifications.h"
+#import "ARAppDelegateHelper+Testing.h"
 
 #import "ARAnalyticsConstants.h"
 #import "ARNotificationView.h"
@@ -20,7 +20,7 @@ DictionaryWithAppState(NSDictionary *input, UIApplicationState appState)
     return [dictionary copy];
 }
 
-@interface ARAppDelegate()
+@interface ARAppDelegateHelper()
 - (UIViewController *)getGlobalTopViewController;
 @end
 
@@ -32,7 +32,7 @@ describe(@"receiveRemoteNotification", ^{
         @"url": @"http://artsy.net/works-for-you",
     };
 
-    __block ARAppDelegate *delegate = nil;
+    __block ARAppDelegateHelper *delegate = nil;
     __block UIApplicationState appState = -1;
     __block id mockEmissionSharedInstance = nil;
     __block UNNotification *unNotification = nil;
@@ -40,15 +40,15 @@ describe(@"receiveRemoteNotification", ^{
     __block void (^completionHandler)(UNNotificationPresentationOptions) = ^(UNNotificationPresentationOptions options) {};
 
     beforeEach(^{
-        delegate = [[ARAppDelegate alloc] init];
-        [ARAppDelegate setSharedInstanceForTesting:delegate];
+        delegate = [[ARAppDelegateHelper alloc] init];
+        [ARAppDelegateHelper setSharedInstanceForTesting:delegate];
 
         mockEmissionSharedInstance = [OCMockObject partialMockForObject:AREmission.sharedInstance];;
     });
 
     afterEach(^{
         [mockEmissionSharedInstance stopMocking];
-        [ARAppDelegate setSharedInstanceForTesting:nil];
+        [ARAppDelegateHelper setSharedInstanceForTesting:nil];
     });
 
     sharedExamplesFor(@"when receiving a notification", ^(NSDictionary *prefs) {

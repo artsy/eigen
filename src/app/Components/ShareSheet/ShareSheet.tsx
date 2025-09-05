@@ -37,7 +37,8 @@ export const ShareSheet = () => {
   const isArtwork = data?.type === "artwork"
   const showWhatsAppItem = useCanOpenURL("whatsapp://send?phone=+491898")
   const toast = useToast()
-  const shotRef = useRef<ViewShot>(null)
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const shotRef = useRef<ViewShot>(null!)
   const showInstagramStoriesItem =
     useCanOpenURL("instagram://user?username=instagram") &&
     data?.type !== "sale" &&

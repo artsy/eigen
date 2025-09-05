@@ -5,7 +5,7 @@ import { ChartGestureEventType, ChartGestureObservable } from "./LineGraphChart"
 
 interface HighlightIconContainerProps {
   dataTag?: string
-  icon: JSX.Element
+  icon: React.JSX.Element
   onHighlightPressed: (datum: any) => void
 }
 

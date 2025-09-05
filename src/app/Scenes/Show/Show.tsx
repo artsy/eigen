@@ -21,7 +21,7 @@ import { ShowViewingRoomFragmentContainer as ShowViewingRoom } from "./Component
 
 interface Section {
   key: string
-  element: JSX.Element
+  element: React.JSX.Element
 }
 
 interface ShowQueryRendererProps {

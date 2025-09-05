@@ -62,7 +62,8 @@ const SignUpPasswordStepForm: React.FC = () => {
 
   const navigation = useAuthNavigation()
   const screen = useAuthScreen()
-  const passwordRef = useRef<Input>(null)
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const passwordRef = useRef<Input>(null!)
 
   const { color } = useTheme()
 

@@ -76,7 +76,8 @@ export const ArtsyWebViewPage = ({
 } & ArtsyWebViewConfig) => {
   const [canGoBack, setCanGoBack] = useState(false)
   const webURL = useEnvironment().webURL
-  const ref = useRef<WebViewWithShareTitleUrl>(null)
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const ref = useRef<WebViewWithShareTitleUrl>(null!)
   const tracking = useTracking()
 
   const handleArticleShare = async () => {

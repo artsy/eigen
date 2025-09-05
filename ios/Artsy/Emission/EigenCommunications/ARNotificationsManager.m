@@ -1,5 +1,5 @@
 #import "ARNotificationsManager.h"
-#import "AppDelegate.h"
+#import "ARAppDelegateHelper.h"
 #import "AppDelegate+DeeplinkTimeout.h"
 
 // This class is being used as a generic bridge between obj-c and TS for state and events.
@@ -187,7 +187,7 @@ RCT_EXPORT_MODULE();
 - (void)requestNavigation:(NSString *)route withProps:(NSDictionary *)props
 {
     if (!route) return;
-    [[ARAppDelegate sharedInstance] startDeeplinkTimeoutWithRoute:route];
+    [[ARAppDelegateHelper sharedInstance] startDeeplinkTimeoutWithRoute:route];
     [self dispatchAfterBootstrap:requestNavigation data:@{@"route": route, @"props": props}];
 }
 

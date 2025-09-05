@@ -7,7 +7,8 @@ export const SearchContext = createContext<{
 }>(null as any)
 
 export function useSearchProviderValues(query: string) {
-  const inputRef = useRef<InputRef>(null)
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const inputRef = useRef<InputRef>(null!)
   const queryRef = useRef(query)
   queryRef.current = query
 

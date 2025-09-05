@@ -34,8 +34,8 @@ export interface SelectProps<ValueType> {
   required?: boolean
   testID?: string
   onSelectValue(value: ValueType, index: number): void
-  renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): JSX.Element
-  renderItemLabel?(value: SelectOption<ValueType>): JSX.Element
+  renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): React.JSX.Element
+  renderItemLabel?(value: SelectOption<ValueType>): React.JSX.Element
   onModalFinishedClosing?(): void
 }
 interface State {
@@ -162,7 +162,7 @@ const SelectModal: React.FC<{
   maxHeight?: number
   onDismiss(): any
   onSelectValue(value: unknown, index: number): any
-  renderItemLabel?(value: SelectOption<unknown>): JSX.Element
+  renderItemLabel?(value: SelectOption<unknown>): React.JSX.Element
   onModalFinishedClosing?(): void
 }> = (props) => {
   const color = useColor()

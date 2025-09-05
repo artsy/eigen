@@ -8,7 +8,8 @@ import { FC, useRef } from "react"
 import { KeyboardAvoidingView } from "react-native"
 
 export const LocationStep: FC = () => {
-  const ref = useRef<Input>(null)
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const ref = useRef<Input>(null!)
   const { goNext } = useCompleteProfile()
 
   const location = CompleteMyProfileStore.useStoreState((state) => state.progressState.location)

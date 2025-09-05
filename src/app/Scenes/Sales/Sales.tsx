@@ -58,9 +58,9 @@ export const Sales: React.FC = () => {
   const [currentSalesCount, setCurrentSalesCount] = useState(Number.MAX_VALUE)
   const [upcomingSalesCount, setUpcomingSalesCount] = useState(Number.MAX_VALUE)
 
-  const currentAuctionsRefreshRef = useRef<CurrentlyRunningAuctionsRefetchType>()
+  const currentAuctionsRefreshRef = useRef<CurrentlyRunningAuctionsRefetchType>(null)
 
-  const upcomingAuctionsRefreshRef = useRef<UpcomingAuctionsRefetchType>()
+  const upcomingAuctionsRefreshRef = useRef<UpcomingAuctionsRefetchType>(null)
 
   const setCurrentAuctionsRefreshProp = (refreshProp: CurrentlyRunningAuctionsRefetchType) =>
     (currentAuctionsRefreshRef.current = refreshProp)

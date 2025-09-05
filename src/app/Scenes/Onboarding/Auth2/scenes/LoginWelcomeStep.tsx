@@ -94,7 +94,8 @@ const LoginWelcomeStepForm: React.FC = () => {
     useFormikContext<LoginEmailFormValues>()
 
   const navigation = useNavigation<NavigationProp<OnboardingNavigationStack>>()
-  const emailRef = useRef<Input>(null)
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const emailRef = useRef<Input>(null!)
 
   useInputAutofocus({
     screenName: "LoginWelcomeStep",

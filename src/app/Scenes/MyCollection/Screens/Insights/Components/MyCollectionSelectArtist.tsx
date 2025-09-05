@@ -9,7 +9,7 @@ import { isTablet } from "react-native-device-info"
 interface SelectArtistListProps {
   artistsList: ArtistItem_artist$key[]
   isLoadingNext: boolean
-  ListHeaderComponent?: JSX.Element
+  ListHeaderComponent?: React.JSX.Element
   onItemPress: (artistID: string) => void
   onEndReached: () => void
 }
