@@ -5,7 +5,7 @@ import { CareerHighlightBottomSheet_query$key } from "__generated__/CareerHighli
 import { delay } from "app/utils/delay"
 import { useScreenDimensions } from "app/utils/hooks"
 import { compact } from "lodash"
-import { RefAttributes, useCallback, useEffect, useMemo, useRef } from "react"
+import React, { RefAttributes, useCallback, useEffect, useMemo, useRef } from "react"
 import { View } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { FlatList } from "react-native-gesture-handler"
@@ -93,7 +93,7 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
   }, [])
 
   const renderBackdrop = useCallback(
-    (props: JSX.IntrinsicAttributes & BottomSheetDefaultBackdropProps) => (
+    (props: React.JSX.IntrinsicAttributes & BottomSheetDefaultBackdropProps) => (
       <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} />
     ),
     []
@@ -101,7 +101,7 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
 
   // using our custom background to ensure backgroundColor is white
   const renderBackground = useCallback(
-    (props: JSX.IntrinsicAttributes & BoxProps & RefAttributes<View>) => (
+    (props: React.JSX.IntrinsicAttributes & BoxProps & RefAttributes<View>) => (
       <Flex {...props} backgroundColor="mono0" borderTopRightRadius={10} borderTopLeftRadius={10} />
     ),
     []
