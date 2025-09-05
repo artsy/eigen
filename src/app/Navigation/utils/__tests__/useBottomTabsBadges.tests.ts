@@ -1,5 +1,5 @@
 import { useColor, useSpace } from "@artsy/palette-mobile"
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-native"
 import { useBottomTabsBadges } from "app/Navigation/utils/useBottomTabsBadges"
 import { useVisualClue } from "app/utils/hooks/useVisualClue"
 import { useTabBarBadge } from "app/utils/useTabBarBadge"

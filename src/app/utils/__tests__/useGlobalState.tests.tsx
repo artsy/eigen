@@ -1,5 +1,4 @@
-import { act, renderHook } from "@testing-library/react-hooks"
-import { screen } from "@testing-library/react-native"
+import { act, renderHook, screen } from "@testing-library/react-native"
 import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { useGlobalState } from "app/utils/useGlobalState"
 import { Text } from "react-native"

@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook, waitFor } from "@testing-library/react-native"
 import { matchRoute } from "app/system/navigation/utils/matchRoute"
 import { useIsDeepLink } from "app/utils/hooks/useIsDeepLink"
 import { Linking } from "react-native"
@@ -29,14 +29,13 @@ describe("useIsDeepLink", () => {
     mockUseIsFocusedMock.mockReturnValue(true)
 
     // Render the hook under test
-    const { result, waitForNextUpdate } = renderHook(() => useIsDeepLink())
+    const { result } = renderHook(() => useIsDeepLink())
 
-    // Wait for async effects to resolve
-    await waitForNextUpdate()
-
-    expect(result.current).toEqual({
-      isDeepLink: true,
-    })
+    await waitFor(() =>
+      expect(result.current).toEqual({
+        isDeepLink: true,
+      })
+    )
     expect(mockUseIsFocusedMock).toHaveBeenCalled()
     expect(mockLinkingGetInitialURL).toHaveBeenCalled()
     expect(mockMatchRoute).toHaveBeenCalled()
@@ -48,12 +47,14 @@ describe("useIsDeepLink", () => {
     mockUseIsFocusedMock.mockReturnValue(true)
 
     // Render the hook under test
-    const { result, waitForNextUpdate } = renderHook(() => useIsDeepLink())
+    const { result } = renderHook(() => useIsDeepLink())
 
     // Wait for async effects to resolve
-    await waitForNextUpdate()
-
-    expect(result.current.isDeepLink).toEqual(false)
+    await waitFor(() =>
+      expect(result.current).toEqual({
+        isDeepLink: false,
+      })
+    )
     expect(mockUseIsFocusedMock).toHaveBeenCalled()
     expect(mockLinkingGetInitialURL).toHaveBeenCalled()
     expect(mockMatchRoute).toHaveBeenCalled()
@@ -66,12 +67,13 @@ describe("useIsDeepLink", () => {
     mockUseIsFocusedMock.mockReturnValue(true)
 
     // Render the hook under test
-    const { result, waitForNextUpdate } = renderHook(() => useIsDeepLink())
+    const { result } = renderHook(() => useIsDeepLink())
 
-    // Wait for async effects to resolve
-    await waitForNextUpdate()
-
-    expect(result.current.isDeepLink).toEqual(false)
+    await waitFor(() =>
+      expect(result.current).toEqual({
+        isDeepLink: false,
+      })
+    )
     expect(mockUseIsFocusedMock).toHaveBeenCalled()
     expect(mockLinkingGetInitialURL).toHaveBeenCalled()
     expect(mockMatchRoute).toHaveBeenCalled()
@@ -84,12 +86,13 @@ describe("useIsDeepLink", () => {
     mockUseIsFocusedMock.mockReturnValue(true)
 
     // Render the hook under test
-    const { result, waitForNextUpdate } = renderHook(() => useIsDeepLink())
+    const { result } = renderHook(() => useIsDeepLink())
 
-    // Wait for async effects to resolve
-    await waitForNextUpdate()
-
-    expect(result.current.isDeepLink).toEqual(true)
+    await waitFor(() =>
+      expect(result.current).toEqual({
+        isDeepLink: true,
+      })
+    )
     expect(mockUseIsFocusedMock).toHaveBeenCalled()
     expect(mockLinkingGetInitialURL).toHaveBeenCalled()
     expect(mockMatchRoute).toHaveBeenCalled()
@@ -105,10 +108,13 @@ describe("useIsDeepLink", () => {
     mockUseIsFocusedMock.mockReturnValue(true)
 
     // Render the hook under test
-    const { result, waitForNextUpdate } = renderHook(() => useIsDeepLink())
+    const { result } = renderHook(() => useIsDeepLink())
 
-    // Wait for async effects to resolve
-    await waitForNextUpdate()
+    await waitFor(() =>
+      expect(result.current).toEqual({
+        isDeepLink: false,
+      })
+    )
 
     expect(mockMatchRoute).toHaveBeenCalledWith("/")
 

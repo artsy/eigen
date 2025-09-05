@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-native"
 import { State } from "app/Scenes/Onboarding/OnboardingQuiz/Hooks/useOnboardingContext"
 import {
   OPTION_DEVELOPING_MY_ART_TASTES,

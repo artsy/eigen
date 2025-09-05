@@ -1,10 +1,13 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-native"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { BackHandler } from "react-native"
 
+const mockRemove = jest.fn()
+const mockSubscription = { remove: mockRemove }
+
 jest.mock("react-native", () => ({
   BackHandler: {
-    addEventListener: jest.fn(),
+    addEventListener: jest.fn(() => mockSubscription),
     removeEventListener: jest.fn(),
   },
   Platform: {
@@ -33,8 +36,8 @@ describe("useBackHandler Hooks", () => {
         initialProps: { handler },
       })
 
-      expect(addEventListenerMock).toBeCalledTimes(1)
-      expect(addEventListenerMock).toBeCalledWith("hardwareBackPress", handler)
+      expect(addEventListenerMock).toHaveBeenCalledTimes(1)
+      expect(addEventListenerMock).toHaveBeenCalledWith("hardwareBackPress", handler)
     })
 
     it("should resubscribe when passed handler will change", () => {
@@ -45,11 +48,11 @@ describe("useBackHandler Hooks", () => {
         initialProps: { handler },
       })
 
-      expect(addEventListenerMock).toBeCalledWith("hardwareBackPress", handler)
+      expect(addEventListenerMock).toHaveBeenCalledWith("hardwareBackPress", handler)
 
       rerender({ handler: handler2 })
 
-      expect(addEventListenerMock).toBeCalledWith("hardwareBackPress", handler2)
+      expect(addEventListenerMock).toHaveBeenCalledWith("hardwareBackPress", handler2)
     })
   })
 })

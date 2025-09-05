@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-native"
 import { useUnleashClient } from "@unleash/proxy-client-react"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useUnleashInitializer } from "app/system/flags/hooks/useUnleashInitializer"
@@ -142,7 +142,7 @@ describe("useUnleashInitializer", () => {
     authState = { userID: "user123", userAccessToken: "new-token" }
     mockJwtDecode.mockReturnValue({ roles: "user" })
 
-    rerender()
+    rerender(() => {})
 
     expect(mockClient.setContextField).toHaveBeenCalledTimes(3) // userId + userRoles on second call
     expect(mockClient.start).toHaveBeenCalledTimes(2)

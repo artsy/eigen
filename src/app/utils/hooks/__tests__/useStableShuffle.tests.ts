@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-native"
 import { useStableShuffle } from "app/utils/hooks/useStableShuffle"
 
 jest.mock("app/NativeModules/LegacyNativeModules", () => ({
@@ -91,7 +91,7 @@ describe("useStableShuffle", () => {
     const firstResult = result.current.shuffled
 
     // Rerender with the same inputs
-    rerender()
+    rerender(() => {})
 
     // The shuffled array should be the same object (memoized)
     expect(result.current.shuffled).toBe(firstResult)
