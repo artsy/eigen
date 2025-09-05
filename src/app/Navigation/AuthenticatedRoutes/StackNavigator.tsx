@@ -17,7 +17,7 @@ type StackNavigatorScreenProps = {
   module: ModuleDescriptor
 } & Omit<React.ComponentProps<typeof StackNavigator.Screen>, "component" | "getComponent">
 
-export const registerScreen: React.FC<StackNavigatorScreenProps> = ({ name, module, ...props }) => {
+export const registerScreen = ({ name, module, ...props }: StackNavigatorScreenProps) => {
   return (
     <StackNavigator.Screen
       {...props}
