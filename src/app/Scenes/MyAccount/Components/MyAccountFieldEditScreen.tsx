@@ -120,7 +120,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
                 setTimeout(() => {
                   if (afterLoadingAlert.current) {
                     Alert.alert(...afterLoadingAlert.current)
-                    afterLoadingAlert.current = undefined
+                    afterLoadingAlert.current = null
                   }
                 }, 150)
               }}
