@@ -1,4 +1,6 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import { useNetworkActivityDevTools } from "@rozenite/network-activity-plugin"
+import { usePerformanceMonitorDevTools } from "@rozenite/performance-monitor-plugin"
 import * as Sentry from "@sentry/react-native"
 import { Navigation } from "app/Navigation/Navigation"
 import { GlobalStore, unsafe__getEnvironment, unsafe_getDevToggle } from "app/store/GlobalStore"
@@ -66,6 +68,11 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 }
 
 const Main = () => {
+  // Rozenite plugins
+  useNetworkActivityDevTools()
+  usePerformanceMonitorDevTools()
+  // Rozenite plugins end
+
   useRageShakeDevMenu()
   useMaestroInitialization()
 
