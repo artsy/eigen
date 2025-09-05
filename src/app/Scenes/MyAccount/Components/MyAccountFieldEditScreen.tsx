@@ -40,7 +40,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
   React.PropsWithChildren<MyAccountFieldEditScreenProps>
 >(({ children, canSave, onSave, isSaveButtonVisible, title, contentContainerStyle }, ref) => {
   const [isSaving, setIsSaving] = useState<boolean>(false)
-  const afterLoadingAlert = useRef<AlertArgs>()
+  const afterLoadingAlert = useRef<AlertArgs>(null)
   const scrollViewRef = useRef<ScrollView>(null)
 
   const doTheAlert: AlertStatic["alert"] = (...args) => {

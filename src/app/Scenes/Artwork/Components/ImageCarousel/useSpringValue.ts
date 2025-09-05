@@ -17,7 +17,7 @@ export const useSpringValue = (
   config: Partial<Animated.SpringAnimationConfig> = {}
 ) => {
   const value = useAnimatedValue(currentValue)
-  const anim = useRef<Animated.CompositeAnimation>()
+  const anim = useRef<Animated.CompositeAnimation>(null)
   useEffect(() => {
     if (anim.current) {
       anim.current.stop()

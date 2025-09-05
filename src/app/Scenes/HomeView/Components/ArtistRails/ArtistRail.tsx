@@ -33,7 +33,7 @@ interface Props extends ViewProps {
 const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
   const { trackEvent } = useTracking()
 
-  const listRef = useRef<FlatList<any>>()
+  const listRef = useRef<FlatList<any>>(null)
   useImperativeHandle(props.scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))

@@ -106,7 +106,7 @@ export const Input = forwardRef<InputRef, InputProps>(
     const [focused, setFocused] = useState(false)
     const [showPassword, setShowPassword] = useState(!secureTextEntry)
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
-    const inputRef = useRef<TextInput>()
+    const inputRef = useRef<TextInput>(null)
 
     const localClear = () => {
       inputRef.current?.clear()
