@@ -27,11 +27,12 @@
   resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.50.0.tgz#7e7987d1e6fb79aa4b6148771206af1f0087da10"
   integrity sha512-eCl7WIIJ30M+P51MzSrkH1osqsUr45bwq92tSKNw2klrajPGbBylqc3e6UgP63esW8MghB7wgEMtDkrPbycj1A==
 
-"@artsy/palette-mobile@17.33.0":
-  version "17.33.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.33.0.tgz#5ac89113357ef28c80af1fb0147fdada4eaa5302"
-  integrity sha512-nudvYvgIyiXqabG0ueZP6Q1zPB1E/FwP6HJcYP3sDbb0SfJi7eNIHXcMSaF4U9h7iTBVxMUUVUak8ewIGWRYpw==
+"@artsy/palette-mobile@18.0.0":
+  version "18.0.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-18.0.0.tgz#558dfb96538f08d7486e6928b259a3b78f72823c"
+  integrity sha512-5N+1FsXJkjb/3sTG9ZnM9kxktxHiNKtZ3ExlaD5hxRwaqZ5jZxou6FAD4g1JL0kT2W4A6ll7bRYlIpDHKAr3kw==
   dependencies:
+    "@artsy/icons" "^3.49.0"
     "@artsy/palette-tokens" "^7.0.0"
     "@d11/react-native-fast-image" "^8.10.0"
     "@shopify/flash-list" "^1.8.3"
