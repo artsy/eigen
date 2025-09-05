@@ -511,7 +511,7 @@ parameters:
     default: "16.2"
   node_version:
     type: string
-    default: "20.9.0"
+    default: "22.0.0"
   fast_mac_runner:
     type: string
     default: "m4pro.medium"

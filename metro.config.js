@@ -7,6 +7,7 @@
 
 const path = require("path")
 const { mergeConfig } = require("@react-native/metro-config")
+const { withRozenite } = require("@rozenite/metro")
 const { getSentryExpoConfig } = require("@sentry/react-native/metro")
 const { FileStore } = require("metro-cache")
 
@@ -34,4 +35,4 @@ const config = {
   },
 }
 
-module.exports = mergeConfig(getSentryExpoConfig(__dirname), config)
+module.exports = withRozenite(mergeConfig(getSentryExpoConfig(__dirname), config))
