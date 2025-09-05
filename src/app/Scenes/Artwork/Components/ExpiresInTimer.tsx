@@ -1,4 +1,5 @@
-import { Color, Flex, Stopwatch, Text } from "@artsy/palette-mobile"
+import { StopwatchIcon } from "@artsy/icons/native"
+import { Color, Flex, Text } from "@artsy/palette-mobile"
 import { ArtworkPrice_partnerOffer$data } from "__generated__/ArtworkPrice_partnerOffer.graphql"
 import { formattedTimeLeftForPartnerOffer } from "app/Scenes/Artwork/utils/formattedTimeLeftForPartnerOffer"
 import { getTimer } from "app/utils/getTimer"
@@ -11,7 +12,7 @@ interface ExpiresInTimerProps {
 }
 
 const WatchIcon: FC<{ fill?: Color }> = ({ fill = "red100" }) => {
-  return <Stopwatch fill={fill} height={15} width={15} mr="2px" />
+  return <StopwatchIcon fill={fill} height={15} width={15} mr="2px" />
 }
 
 export const ExpiresInTimer: FC<ExpiresInTimerProps> = ({ item }) => {

@@ -1,4 +1,5 @@
-import { IconProps, Pill, PillVariant } from "@artsy/palette-mobile"
+import { IconProps } from "@artsy/icons/native"
+import { Pill, PillVariant } from "@artsy/palette-mobile"
 import { MotiPressableProps } from "moti/interactions"
 import Animated, { FadeInUp, FadeOutDown, Layout } from "react-native-reanimated"
 
