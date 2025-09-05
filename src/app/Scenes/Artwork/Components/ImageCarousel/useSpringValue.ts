@@ -28,7 +28,7 @@ export const useSpringValue = (
       ...config,
     })
     anim.current.start(() => {
-      anim.current = undefined
+      anim.current = null
     })
   }, [currentValue])
   return value
