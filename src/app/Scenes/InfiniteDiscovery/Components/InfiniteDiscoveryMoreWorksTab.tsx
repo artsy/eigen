@@ -1,6 +1,7 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { Flex, SimpleMessage, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
+import { MasonryListRenderItem } from "@shopify/flash-list"
 import { InfiniteDiscoveryMoreWorksTabQuery } from "__generated__/InfiniteDiscoveryMoreWorksTabQuery.graphql"
 import { InfiniteDiscoveryMoreWorksTab_artworks$key } from "__generated__/InfiniteDiscoveryMoreWorksTab_artworks.graphql"
 import ArtworkGridItem from "app/Components/ArtworkGrids/ArtworkGridItem"
@@ -15,6 +16,7 @@ import {
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { PlaceholderGrid } from "app/utils/placeholderGrid"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { FC, useCallback } from "react"
 import { Platform } from "react-native"
 import { graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
@@ -36,29 +38,30 @@ export const MoreWorksTab: FC<MoreWorksTabProps> = ({ artworks: _artworks }) => 
     }
   }
 
-  const renderItem = useCallback(({ item, index, columnIndex }) => {
-    const imgAspectRatio = item.image?.aspectRatio ?? 1
-    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-    const imgHeight = imgWidth / imgAspectRatio
+  const renderItem: MasonryListRenderItem<ExtractNodeType<typeof data.artworksConnection>> =
+    useCallback(({ item, index, columnIndex }) => {
+      const imgAspectRatio = item.image?.aspectRatio ?? 1
+      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+      const imgHeight = imgWidth / imgAspectRatio
 
-    return (
-      <Flex
-        pl={columnIndex === 0 ? 0 : 1}
-        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-        mt={2}
-      >
-        <ArtworkGridItem
-          itemIndex={index}
-          contextModule={ContextModule.infiniteDiscoveryDrawer}
-          contextScreenOwnerType={OwnerType.infiniteDiscoveryArtwork}
-          contextScreenOwnerId={item.internalID}
-          contextScreenOwnerSlug={item.slug}
-          artwork={item}
-          height={imgHeight}
-        />
-      </Flex>
-    )
-  }, [])
+      return (
+        <Flex
+          pl={columnIndex === 0 ? 0 : 1}
+          pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+          mt={2}
+        >
+          <ArtworkGridItem
+            itemIndex={index}
+            contextModule={ContextModule.infiniteDiscoveryDrawer}
+            contextScreenOwnerType={OwnerType.infiniteDiscoveryArtwork}
+            contextScreenOwnerId={item.internalID}
+            contextScreenOwnerSlug={item.slug}
+            artwork={item}
+            height={imgHeight}
+          />
+        </Flex>
+      )
+    }, [])
 
   const masonry = (
     <Tabs.Masonry
@@ -99,6 +102,7 @@ const fragment = graphql`
         node {
           ...ArtworkGridItem_artwork @arguments(includeAllImages: false)
           internalID
+          slug
           image(includeAll: false) {
             aspectRatio
           }

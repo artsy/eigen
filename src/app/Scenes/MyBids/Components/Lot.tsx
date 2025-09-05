@@ -13,36 +13,38 @@ interface Props {
   isSmallScreen?: boolean
 }
 
-class Lot extends React.Component<Props> {
-  render() {
-    const { saleArtwork, subtitle, children, ArtworkBadge, isSmallScreen } = this.props
-
-    return (
-      <Flex flexDirection="row" width="50%" paddingRight={2}>
-        <Flex mr={isSmallScreen ? 0.5 : 1}>
-          <Flex width={50} height={50} borderRadius={2} overflow="hidden">
-            <ImageWithFallback src={saleArtwork?.artwork?.image?.url} width={50} height={50} />
-          </Flex>
-          {!!ArtworkBadge && (
-            <Box position="absolute" top={-2} left={-5}>
-              <ArtworkBadge />
-            </Box>
-          )}
+const Lot: React.FC<React.PropsWithChildren<Props>> = ({
+  saleArtwork,
+  subtitle,
+  children,
+  ArtworkBadge,
+  isSmallScreen,
+}) => {
+  return (
+    <Flex flexDirection="row" width="50%" paddingRight={2}>
+      <Flex mr={isSmallScreen ? 0.5 : 1}>
+        <Flex width={50} height={50} borderRadius={2} overflow="hidden">
+          <ImageWithFallback src={saleArtwork?.artwork?.image?.url} width={50} height={50} />
         </Flex>
-        <Flex alignItems="baseline">
-          <Text variant="xs" numberOfLines={2}>
-            {saleArtwork?.artwork?.artistNames}
-          </Text>
-          <Text variant="xs" color="mono60" numberOfLines={1}>
-            {subtitle ? subtitle : !!saleArtwork.lotLabel && `Lot ${saleArtwork.lotLabel}`}
-          </Text>
-        </Flex>
-        <Flex width="50%" alignItems="flex-end">
-          {children}
-        </Flex>
+        {!!ArtworkBadge && (
+          <Box position="absolute" top={-2} left={-5}>
+            <ArtworkBadge />
+          </Box>
+        )}
       </Flex>
-    )
-  }
+      <Flex alignItems="baseline">
+        <Text variant="xs" numberOfLines={2}>
+          {saleArtwork?.artwork?.artistNames}
+        </Text>
+        <Text variant="xs" color="mono60" numberOfLines={1}>
+          {subtitle ? subtitle : !!saleArtwork.lotLabel && `Lot ${saleArtwork.lotLabel}`}
+        </Text>
+      </Flex>
+      <Flex width="50%" alignItems="flex-end">
+        {children}
+      </Flex>
+    </Flex>
+  )
 }
 
 export const LotFragmentContainer = createFragmentContainer(Lot, {

@@ -37,7 +37,7 @@ const mockOrder = {
 describe("OrderHistoryRow", () => {
   const { renderWithRelay } = setupTestWrapper<OrderHistoryRowTestsQuery>({
     Component: (props) => {
-      return <OrderHistoryRowContainer order={props.commerceOrder} />
+      return <OrderHistoryRowContainer order={props.commerceOrder!} />
     },
     query: graphql`
       query OrderHistoryRowTestsQuery @relay_test_operation {

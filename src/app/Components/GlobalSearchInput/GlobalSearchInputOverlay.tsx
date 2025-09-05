@@ -139,7 +139,7 @@ export const GlobalSearchInputOverlay: React.FC<{
 
             <Spacer y={2} />
 
-            <Suspense fallback={Spinner}>
+            <Suspense fallback={<Spinner />}>
               <GlobalSearchInputOverlayContent query={query} />
             </Suspense>
           </Flex>

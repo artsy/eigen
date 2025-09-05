@@ -10,7 +10,7 @@ import {
 import { DEFAULT_HIT_SLOP, Flex, Join, Spacer, Text, Touchable } from "@artsy/palette-mobile"
 import { BottomSheetScrollView } from "@gorhom/bottom-sheet"
 import { AutomountedBottomSheetModal } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
-import { CallapseWithTitle } from "app/Scenes/Favorites/Components/CollapseWithTitle"
+import { CollapseWithTitle } from "app/Scenes/Favorites/Components/CollapseWithTitle"
 import { FavoritesContextStore } from "app/Scenes/Favorites/FavoritesContextStore"
 import { useFavoritesTracking } from "app/Scenes/Favorites/useFavoritesTracking"
 import React, { useState } from "react"
@@ -138,9 +138,9 @@ export const FavoritesLearnMore = () => {
           <Join separator={<Spacer y={2} />}>
             {SECTIONS.map(({ title, content }) => {
               return (
-                <CallapseWithTitle title={title} key={title}>
+                <CollapseWithTitle title={title} key={title}>
                   {content}
-                </CallapseWithTitle>
+                </CollapseWithTitle>
               )
             })}
           </Join>

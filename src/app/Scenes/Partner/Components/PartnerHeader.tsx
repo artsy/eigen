@@ -72,7 +72,7 @@ export const PartnerHeaderContainer = createFragmentContainer(PartnerHeader, {
   `,
 })
 
-const Wrapper: React.FC<{}> = ({ children }) => {
+const Wrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <Box px={2} py={1}>
       {children}

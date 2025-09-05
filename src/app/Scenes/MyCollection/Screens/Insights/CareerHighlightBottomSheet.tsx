@@ -1,10 +1,12 @@
-import { Flex } from "@artsy/palette-mobile"
+import { BoxProps, Flex } from "@artsy/palette-mobile"
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet"
+import { BottomSheetDefaultBackdropProps } from "@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types"
 import { CareerHighlightBottomSheet_query$key } from "__generated__/CareerHighlightBottomSheet_query.graphql"
 import { delay } from "app/utils/delay"
 import { useScreenDimensions } from "app/utils/hooks"
 import { compact } from "lodash"
-import { useCallback, useEffect, useMemo, useRef } from "react"
+import { RefAttributes, useCallback, useEffect, useMemo, useRef } from "react"
+import { View } from "react-native"
 import { isTablet } from "react-native-device-info"
 import { FlatList } from "react-native-gesture-handler"
 import { graphql, useFragment } from "react-relay"
@@ -30,16 +32,18 @@ interface CareerHighlightBottomSheetProps {
   artistSparklines: CareerHighlightBottomSheet_query$key
 }
 
+interface CareerHighlightFlatlistData {
+  year: number
+  index: number
+  highlights: Record<CareerHighlightKindValueType, string[]>
+}
+
 export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProps> = ({
   artistSparklines,
 }) => {
   const data = useFragment(careerHighlighsBottomSheetFragment, artistSparklines)
 
-  const dataForFlatlist = (): Array<{
-    year: number
-    index: number
-    highlights: Record<CareerHighlightKindValueType, string[]>
-  }> => {
+  const dataForFlatlist = (): Array<CareerHighlightFlatlistData> => {
     const eventDigest = data.analyticsArtistSparklines?.edges?.find(
       (ev) => !!parseInt(ev?.node?.sparkles ?? "", 10) && ev?.node?.eventDigest
     )?.node?.eventDigest
@@ -59,6 +63,7 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
 
   const flatlistRef = useRef<FlatList>(null)
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const { selectedXAxisHighlight, onXAxisHighlightPressed } = dataContext!
 
   useEffect(() => {
@@ -88,13 +93,15 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
   }, [])
 
   const renderBackdrop = useCallback(
-    (props) => <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} />,
+    (props: JSX.IntrinsicAttributes & BottomSheetDefaultBackdropProps) => (
+      <BottomSheetBackdrop {...props} disappearsOnIndex={-1} appearsOnIndex={0} />
+    ),
     []
   )
 
   // using our custom background to ensure backgroundColor is white
   const renderBackground = useCallback(
-    (props) => (
+    (props: JSX.IntrinsicAttributes & BoxProps & RefAttributes<View>) => (
       <Flex {...props} backgroundColor="mono0" borderTopRightRadius={10} borderTopLeftRadius={10} />
     ),
     []
@@ -119,7 +126,8 @@ export const CareerHighlightBottomSheet: React.FC<CareerHighlightBottomSheetProp
       backdropComponent={renderBackdrop}
       backgroundComponent={renderBackground}
     >
-      <FlatList // Note that this FlatList is from "react-native-gesture-handler" in order for scrolls to work seamlessly on android. BottomSheetFlatlist shipped with BottomSheet is janky on iOS.
+      {/* // Note that this FlatList is from "react-native-gesture-handler" in order for scrolls to work seamlessly on android. BottomSheetFlatlist shipped with BottomSheet is janky on iOS. */}
+      <FlatList<CareerHighlightFlatlistData>
         testID="BottomSheetFlatlist"
         ref={flatlistRef}
         data={flatListData}

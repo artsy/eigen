@@ -32,6 +32,7 @@ import { useMemoizedRandom } from "app/utils/placeholders"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { times } from "lodash"
 import { memo, useCallback } from "react"
+import { ListRenderItem } from "react-native"
 import {
   createPaginationContainer,
   graphql,
@@ -70,7 +71,7 @@ export const HomeViewSectionArtists: React.FC<HomeViewSectionArtworksProps> = ({
     })
   }
 
-  const renderItem = useCallback(
+  const renderItem: ListRenderItem<Artist> = useCallback(
     ({ item, index }) => {
       return (
         <ArtistCardContainer

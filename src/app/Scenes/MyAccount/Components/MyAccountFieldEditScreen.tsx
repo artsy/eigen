@@ -133,10 +133,9 @@ export const MyAccountFieldEditScreen = React.forwardRef<
   )
 })
 
-export const MyAccountFieldEditScreenPlaceholder: React.FC<{ title: string }> = ({
-  children,
-  title,
-}) => (
+export const MyAccountFieldEditScreenPlaceholder: React.FC<
+  React.PropsWithChildren<{ title: string }>
+> = ({ children, title }) => (
   <MyAccountFieldEditScreen isSaveButtonVisible={false} canSave={false} title={title}>
     {children}
   </MyAccountFieldEditScreen>

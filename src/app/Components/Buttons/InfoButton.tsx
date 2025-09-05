@@ -131,6 +131,7 @@ export const AutoHeightInfoModal: React.FC<{
     <AutoHeightBottomSheet
       visible={visible}
       onDismiss={onDismiss}
+      // @ts-expect-error REACT_18_UPGRADE
       containerComponent={containerComponent}
       handleIndicatorStyle={
         // Inside modals, the gesture detector is not working on Android.

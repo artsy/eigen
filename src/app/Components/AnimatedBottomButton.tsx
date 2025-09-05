@@ -18,7 +18,7 @@ interface AnimatedBottomButtonProps {
   buttonStyles?: StyleProp<ViewStyle>
 }
 
-export const AnimatedBottomButton: React.FC<AnimatedBottomButtonProps> = ({
+export const AnimatedBottomButton: React.FC<React.PropsWithChildren<AnimatedBottomButtonProps>> = ({
   isVisible,
   buttonStyles = {},
   onPress,

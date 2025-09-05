@@ -5,9 +5,10 @@ import { FAIR2_EXHIBITORS_PAGE_SIZE } from "app/Components/constants"
 import { FairTabError } from "app/Scenes/Fair/Components/FairTabError"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
 import { extractNodes } from "app/utils/extractNodes"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { renderWithPlaceholder } from "app/utils/renderWithPlaceholder"
 import React, { useCallback } from "react"
-import { Platform } from "react-native"
+import { ListRenderItem, Platform } from "react-native"
 import { useHeaderMeasurements } from "react-native-collapsible-tab-view"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { FairExhibitorRailQueryRenderer } from "./FairExhibitorRail"
@@ -16,6 +17,8 @@ interface FairExhibitorsProps {
   fair: FairExhibitors_fair$data
   relay: RelayPaginationProp
 }
+
+type FairShowArtworks = ExtractNodeType<FairExhibitors_fair$data["exhibitors"]>
 
 const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
   const shows = extractNodes(fair?.exhibitors)
@@ -39,7 +42,7 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
     })
   }, [relay.hasMore(), relay.isLoading()])
 
-  const renderItem = useCallback(({ item: show }) => {
+  const renderItem: ListRenderItem<FairShowArtworks> = useCallback(({ item: show }) => {
     return (
       <Box key={show.id} mb={4}>
         <FairExhibitorRailQueryRenderer showID={show.internalID} />
@@ -47,7 +50,7 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
     )
   }, [])
 
-  const keyExtractor = (item: any) => String(item?.id)
+  const keyExtractor = (item: FairShowArtworks) => String(item?.id)
 
   return (
     <Tabs.FlatList

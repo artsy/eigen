@@ -1,7 +1,7 @@
 import { useColor, Color } from "@artsy/palette-mobile"
 import Svg, { G, Path } from "react-native-svg"
 
-interface ChevronIconProps extends React.Props<ChevronIconProps> {
+interface ChevronIconProps {
   expanded?: boolean
   initialDirection?: string
   width?: number

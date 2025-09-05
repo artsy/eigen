@@ -34,12 +34,9 @@ const initialValues = {
 
 const WebsocketContext = createContext<AuctionWebsocketContextProps>(initialValues)
 
-export const AuctionWebsocketContextProvider: React.FC<AuctionWebsocketContextProviderProps> = ({
-  channelInfo,
-  enabled,
-  children,
-  callbacks = {},
-}) => {
+export const AuctionWebsocketContextProvider: React.FC<
+  React.PropsWithChildren<AuctionWebsocketContextProviderProps>
+> = ({ channelInfo, enabled, children, callbacks = {} }) => {
   const [receivedData, setReceivedData] = useState(initialValues)
   const [channelKey, setChannelKey] = useState<string | undefined>(undefined)
 

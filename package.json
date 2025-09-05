@@ -241,7 +241,7 @@
     "@types/node": "14.18.32",
     "@types/qs": "6.9.7",
     "@types/query-string": "5.0.1",
-    "@types/react": "17.0.39",
+    "@types/react": "18.3.12",
     "@types/react-native-push-notification": "8.1.1",
     "@types/react-relay": "18.2.0",
     "@types/react-test-renderer": "17.0.1",
@@ -306,7 +306,7 @@
     "prompt-sync": "4.2.0",
     "prop-types": "15.7.2",
     "pull-lock": "1.0.0",
-    "react-dom": "17.0.2",
+    "react-dom": "18.3.1",
     "react-relay-network-modern": "6.2.2",
     "react-test-renderer": "18.3.1",
     "reactotron-react-native": "5.1.7",
@@ -323,7 +323,7 @@
     "yargs": "17.7.2"
   },
   "resolutions": {
-    "@types/react": "17.0.39",
+    "@types/react": "18.3.12",
     "@types/relay-runtime": "18.2.0",
     "@types/react-relay": "18.2.0",
     "braces": "^3.0.3"

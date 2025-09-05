@@ -363,7 +363,10 @@ export const MessageDetails: React.FC<MessageDetailsProps> = ({ order }) => {
   }
 }
 
-const NumberedListItem: React.FC<{ index: number }> = ({ children, index }) => (
+const NumberedListItem: React.FC<React.PropsWithChildren<{ index: number }>> = ({
+  children,
+  index,
+}) => (
   <Flex flexDirection="row" mb={0.5}>
     <Flex minWidth={20}>
       <Text variant="sm">{index}.</Text>

@@ -1,6 +1,9 @@
 import { AnimatePresence, MotiView } from "moti"
 
-export const FadeInLeft: React.FC<{ show: boolean }> = ({ children, show }) => {
+export const FadeInLeft: React.FC<React.PropsWithChildren<{ show: boolean }>> = ({
+  children,
+  show,
+}) => {
   return (
     <AnimatePresence>
       {!!show && (

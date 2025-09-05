@@ -1,6 +1,6 @@
 import { useConfig } from "app/Scenes/Onboarding/OnboardingQuiz/config"
 import { WorkflowEngine } from "app/utils/WorkflowEngine/WorkflowEngine"
-import { createContext, FC, useContext, useEffect, useReducer, useRef } from "react"
+import { createContext, useContext, useEffect, useReducer, useRef } from "react"
 
 export interface State {
   questionOne: string | null
@@ -99,7 +99,10 @@ interface OnboardingProviderProps {
   onDone(): void
 }
 
-export const OnboardingProvider: FC<OnboardingProviderProps> = ({ children, onDone }) => {
+export const OnboardingProvider: React.FC<React.PropsWithChildren<OnboardingProviderProps>> = ({
+  children,
+  onDone,
+}) => {
   const basis = useRef<State>(DEFAULT_STATE)
 
   const {

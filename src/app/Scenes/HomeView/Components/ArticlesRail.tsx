@@ -12,7 +12,7 @@ import {
 import { extractNodes } from "app/utils/extractNodes"
 import { ExtractNodeType } from "app/utils/relayHelpers"
 import { memo, useCallback } from "react"
-import { FlatList } from "react-native"
+import { FlatList, ListRenderItem } from "react-native"
 import { graphql, useFragment } from "react-relay"
 
 interface ArticlesRailProps {
@@ -24,13 +24,15 @@ interface ArticlesRailProps {
   titleHref?: string | null
 }
 
+type Articles = ExtractNodeType<ArticlesRail_articlesConnection$data>
+
 export const ArticlesRail: React.FC<ArticlesRailProps> = memo(
   ({ onTitlePress, onPress, title, subtitle, titleHref, ...restProps }) => {
     const articlesConnection = useFragment(articlesConnectionFragment, restProps.articlesConnection)
 
     const articles = extractNodes(articlesConnection)
 
-    const renderItem = useCallback(
+    const renderItem: ListRenderItem<Articles> = useCallback(
       ({ item, index }) => (
         <ArticleCardContainer
           onPress={() => {

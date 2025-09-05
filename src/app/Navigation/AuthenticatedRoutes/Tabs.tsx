@@ -2,6 +2,7 @@ import { ActionType, OwnerType, Screen, tappedTabBar } from "@artsy/cohesion"
 import { Flex, Text, useColor } from "@artsy/palette-mobile"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { PlatformPressable } from "@react-navigation/elements"
+import { EventArg } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { ProgressiveOnboardingPriceRangeHome } from "app/Components/ProgressiveOnboarding/ProgressiveOnboardingPriceRangeHome"
 import { FavoritesTab } from "app/Navigation/AuthenticatedRoutes/FavoritesTab"
@@ -64,7 +65,7 @@ const AppTabs: React.FC = () => {
   const selectedTab = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.selectedTab)
 
   const handleTabPress = useCallback(
-    (e) => {
+    (e: EventArg<"tabPress", true, undefined>) => {
       // the tab name is saved in e.target postfixed with random string like sell-Nw_wCNTWwOg95v
       const tabName = Object.keys(bottomTabsConfig).find(
         (tab) => e.target?.startsWith(tab)

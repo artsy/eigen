@@ -13,7 +13,7 @@ import {
   useScreenDimensions,
   useSpace,
 } from "@artsy/palette-mobile"
-import { MasonryFlashListRef } from "@shopify/flash-list"
+import { MasonryFlashListRef, MasonryListRenderItem } from "@shopify/flash-list"
 import {
   ArtistArtworksQuery,
   ArtistArtworksQuery$data,
@@ -57,12 +57,15 @@ import {
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
 import { PlaceholderGrid } from "app/utils/placeholderGrid"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { Schema } from "app/utils/track"
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Platform } from "react-native"
 import { useHeaderMeasurements } from "react-native-collapsible-tab-view"
 import { graphql, useFragment, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { useTracking } from "react-tracking"
+
+type ArtworkType = ExtractNodeType<ArtistArtworks_artist$data["artworks"]>
 
 interface ArtworksGridProps extends InfiniteScrollGridProps, ArtistArtworksQueryRendererProps {
   artist: NonNullable<ArtistArtworksQuery$data["artist"]>
@@ -178,29 +181,32 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
     }
   }
 
-  const renderItem = useCallback(({ item, index, columnIndex }) => {
-    const imgAspectRatio = item.image?.aspectRatio ?? 1
-    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-    const imgHeight = imgWidth / imgAspectRatio
+  const renderItem: MasonryListRenderItem<ArtworkType> = useCallback(
+    ({ item, index, columnIndex }) => {
+      const imgAspectRatio = item.image?.aspectRatio ?? 1
+      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+      const imgHeight = imgWidth / imgAspectRatio
 
-    return (
-      <Flex
-        pl={columnIndex === 0 ? 0 : 1}
-        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-        mt={2}
-      >
-        <ArtworkGridItem
-          {...props}
-          itemIndex={index}
-          contextScreenOwnerType={OwnerType.artist}
-          contextScreenOwnerId={artist.internalID}
-          contextScreenOwnerSlug={artist.slug}
-          artwork={item}
-          height={imgHeight}
-        />
-      </Flex>
-    )
-  }, [])
+      return (
+        <Flex
+          pl={columnIndex === 0 ? 0 : 1}
+          pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+          mt={2}
+        >
+          <ArtworkGridItem
+            {...props}
+            itemIndex={index}
+            contextScreenOwnerType={OwnerType.artist}
+            contextScreenOwnerId={artist.internalID}
+            contextScreenOwnerSlug={artist.slug}
+            artwork={item}
+            height={imgHeight}
+          />
+        </Flex>
+      )
+    },
+    []
+  )
 
   const listFooterComponent = useMemo(
     () => (

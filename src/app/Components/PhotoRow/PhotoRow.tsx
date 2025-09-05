@@ -8,7 +8,7 @@ interface PhotoRowContainerProps {
   errorMsg?: string
 }
 
-const PhotoRowContainer: React.FC<PhotoRowContainerProps> = ({ error, errorMsg, children }) => (
+const PhotoRowContainer: React.FC<React.PropsWithChildren<PhotoRowContainerProps>> = ({ error, errorMsg, children }) => (
   <>
     <Flex
       p={1}

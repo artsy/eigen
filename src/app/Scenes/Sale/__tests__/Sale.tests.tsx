@@ -16,7 +16,7 @@ describe("Sale", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (
-    <Suspense fallback={() => null}>
+    <Suspense fallback={null}>
       <SaleQueryRenderer saleID="sale-id" environment={mockEnvironment} />
     </Suspense>
   )
@@ -104,7 +104,7 @@ describe("Sale", () => {
     })
   })
 
-  it("renders a Register button when registrations are open", () => {
+  it("renders a Register button when registrations are open", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -120,10 +120,11 @@ describe("Sale", () => {
       })
     )
 
-    expect(tree.findAllByType(RegisterToBidButtonContainer)).toHaveLength(1)
+    const registerButton = await tree.findAllByType(RegisterToBidButtonContainer)
+    expect(registerButton).toHaveLength(1)
   })
 
-  it("doesn't render a Register button when registrations ended", () => {
+  it("doesn't render a Register button when registrations ended", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -139,10 +140,11 @@ describe("Sale", () => {
       })
     )
 
-    expect(tree.findAllByType(RegisterToBidButtonContainer)).toHaveLength(0)
+    const registerButton = await tree.findAllByType(RegisterToBidButtonContainer)
+    expect(registerButton).toHaveLength(0)
   })
 
-  it("doesn't render a Register button when it's closed", () => {
+  it("doesn't render a Register button when it's closed", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -157,10 +159,11 @@ describe("Sale", () => {
       })
     )
 
-    expect(tree.findAllByType(RegisterToBidButtonContainer)).toHaveLength(0)
+    const registerButton = await tree.findAllByType(RegisterToBidButtonContainer)
+    expect(registerButton).toHaveLength(0)
   })
 
-  it("renders the banner when the sale has cascading end times", () => {
+  it("renders the banner when the sale has cascading end times", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -177,10 +180,11 @@ describe("Sale", () => {
       })
     )
 
-    expect(tree.findAllByType(CascadingEndTimesBanner)).toHaveLength(1)
+    const cascadingEndTimesBanner = await tree.findAllByType(CascadingEndTimesBanner)
+    expect(cascadingEndTimesBanner).toHaveLength(1)
   })
 
-  it("doesn't render the banner when the sale does not have cascading end times", () => {
+  it("doesn't render the banner when the sale does not have cascading end times", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -197,10 +201,11 @@ describe("Sale", () => {
       })
     )
 
-    expect(tree.findAllByType(CascadingEndTimesBanner)).toHaveLength(0)
+    const cascadingEndTimesBanner = await tree.findAllByType(CascadingEndTimesBanner)
+    expect(cascadingEndTimesBanner).toHaveLength(0)
   })
 
-  it("doesn't render the banner when the sale has cascading end times but the sale is closed", () => {
+  it("doesn't render the banner when the sale has cascading end times but the sale is closed", async () => {
     const tree = renderWithWrappersLEGACY(<TestRenderer />).root
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -217,6 +222,7 @@ describe("Sale", () => {
       })
     )
 
-    expect(tree.findAllByType(CascadingEndTimesBanner)).toHaveLength(0)
+    const cascadingEndTimesBanner = await tree.findAllByType(CascadingEndTimesBanner)
+    expect(cascadingEndTimesBanner).toHaveLength(0)
   })
 })

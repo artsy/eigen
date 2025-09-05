@@ -82,7 +82,7 @@ const ResponseRateLine = styled.View`
   margin-top: 5px;
 `
 
-export interface BottomAlignedProps extends React.Props<JSX.Element> {
+export interface BottomAlignedProps {
   onPress: () => void
   buttonText: string
   disabled?: boolean
@@ -90,7 +90,7 @@ export interface BottomAlignedProps extends React.Props<JSX.Element> {
   showSeparator?: boolean
 }
 
-export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({
+export const BottomAlignedButton: React.FC<React.PropsWithChildren<BottomAlignedProps>> = ({
   buttonText,
   onPress,
   children,

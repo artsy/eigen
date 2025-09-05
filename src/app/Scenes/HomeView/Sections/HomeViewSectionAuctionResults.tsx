@@ -29,7 +29,7 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { memo, useCallback } from "react"
-import { Dimensions, FlatList } from "react-native"
+import { Dimensions, FlatList, ListRenderItem } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionAuctionResultsProps {
@@ -45,7 +45,7 @@ export const HomeViewSectionAuctionResults: React.FC<HomeViewSectionAuctionResul
     const section = useFragment(sectionFragment, sectionProp)
     const tracking = useHomeViewTracking()
 
-    const renderItem = useCallback(
+    const renderItem: ListRenderItem<(typeof auctionResults)[0]> = useCallback(
       ({ item, index }) => {
         return (
           <AuctionResultListItemFragmentContainer

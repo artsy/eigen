@@ -169,7 +169,8 @@ const InboxQueryRenderer: React.FC<InboxQueryRendererProps> = memo((props) => {
   return (
     <Sentry.TimeToInitialDisplay record>
       <Screen>
-        <InboxContainer {...props} me={data.me} />
+        {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
+        <InboxContainer isVisible={!!props.isVisible} me={data.me!} />
       </Screen>
     </Sentry.TimeToInitialDisplay>
   )

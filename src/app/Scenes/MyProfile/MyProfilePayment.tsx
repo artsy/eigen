@@ -228,7 +228,8 @@ const MyProfilePaymentSuspense: React.FC = () => {
     { fetchPolicy: "store-and-network" }
   )
 
-  return <MyProfilePaymentContainer me={data.me} />
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return <MyProfilePaymentContainer me={data.me!} />
 }
 
 export const MyProfilePaymentQueryRenderer: React.FC = () => {

@@ -100,7 +100,9 @@ interface ProvideScreenTrackingProps {
  * Please use `ProvideScreenTrackingWithCohesionSchema` instead.
  */
 // Uses schema defined in Cohesion
-export const ProvideScreenTracking: React.FC<ProvideScreenTrackingProps> = (props) => {
+export const ProvideScreenTracking: React.FC<
+  React.PropsWithChildren<ProvideScreenTrackingProps>
+> = (props) => {
   const tracking = useTracking()
 
   useLayoutEffect(() => {
@@ -115,7 +117,7 @@ interface ProvideScreenTrackingWithCohesionSchemaProps {
 }
 // Uses schema defined in Cohesion
 export const ProvideScreenTrackingWithCohesionSchema: React.FC<
-  ProvideScreenTrackingWithCohesionSchemaProps
+  React.PropsWithChildren<ProvideScreenTrackingWithCohesionSchemaProps>
 > = (props) => {
   const tracking = useTracking()
 

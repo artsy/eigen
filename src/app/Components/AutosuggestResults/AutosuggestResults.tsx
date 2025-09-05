@@ -1,6 +1,7 @@
 import { ReloadIcon } from "@artsy/icons/native"
 import { Button, Flex, Spacer, Text, quoteLeft, quoteRight } from "@artsy/palette-mobile"
 import { captureMessage } from "@sentry/react-native"
+import { ListRenderItem } from "@shopify/flash-list"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AutosuggestResults_results$data } from "__generated__/AutosuggestResults_results.graphql"
 import { AutosuggestResultsPlaceholder } from "app/Components/AutosuggestResults/AutosuggestResultsPlaceholder"
@@ -135,6 +136,7 @@ const AutosuggestResultsFlatList: React.FC<{
     const excludedIDs = prependResults.map((result) => result.internalID)
 
     const edges =
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       results.current?.results?.edges?.map((e, i) => ({ ...e?.node!, key: e?.node?.href! + i })) ??
       []
     const filteredEdges = edges.filter((node) => !excludedIDs.includes(node.internalID))
@@ -146,7 +148,10 @@ const AutosuggestResultsFlatList: React.FC<{
 
   // We want to show a loading spinner at the bottom so long as there are more results to be had
   const hasMoreResults =
-    results.current && results.current.results?.edges?.length! > 0 && relay.hasMore()
+    results.current &&
+    !!results.current.results?.edges?.length &&
+    results.current.results?.edges?.length > 0 &&
+    relay.hasMore()
 
   const noResults = results.current && allNodes.length === 0
 
@@ -166,7 +171,7 @@ const AutosuggestResultsFlatList: React.FC<{
     )
   }, [hasMoreResults, noResults, ListFooterComponent])
 
-  const renderItem = useCallback(({ item, index }) => {
+  const renderItem: ListRenderItem<AutosuggestResult> = useCallback(({ item, index }) => {
     if (CustomListItemComponent) {
       return <CustomListItemComponent item={item} highlight={query} />
     }

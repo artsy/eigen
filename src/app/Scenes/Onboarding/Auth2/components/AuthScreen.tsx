@@ -5,7 +5,10 @@ interface AuthScreenProps {
   name: AuthScreenItem["name"]
 }
 
-export const AuthScreen: React.FC<AuthScreenProps> = ({ children, name }) => {
+export const AuthScreen: React.FC<React.PropsWithChildren<AuthScreenProps>> = ({
+  children,
+  name,
+}) => {
   const { currentScreen } = AuthContext.useStoreState((state) => state)
   const isVisible = name === currentScreen?.name
 

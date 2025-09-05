@@ -7,7 +7,7 @@ import { getAppVersion } from "app/utils/appVersion"
 import { Platform } from "react-native"
 import Keys from "react-native-keys"
 
-export const WrappedFlagProvider: React.FC = ({ children }) => {
+export const WrappedFlagProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { unleashEnv: env } = useUnleashEnvironment()
 
   const storageName = (name: string) => `unleash-values:${name}`
@@ -40,12 +40,12 @@ export const WrappedFlagProvider: React.FC = ({ children }) => {
 
   return (
     <FlagProvider config={config} startClient={false}>
-      <UnleashInitializer children={children} />
+      <UnleashInitializer>{children}</UnleashInitializer>
     </FlagProvider>
   )
 }
 
-const UnleashInitializer: React.FC = ({ children }) => {
+const UnleashInitializer: React.FC<React.PropsWithChildren> = ({ children }) => {
   useUnleashListener()
   useUnleashInitializer()
 

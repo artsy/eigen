@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, screen } from "@testing-library/react-native"
 import { ShowCardTestsQuery } from "__generated__/ShowCardTestsQuery.graphql"
 import { ShowCardContainer, getShowCity } from "app/Components/ShowCard"
 import { navigate } from "app/system/navigation/navigate"
@@ -24,7 +24,7 @@ describe("ShowCard", () => {
       {}
     )
 
-    return <ShowCardContainer show={queryData.show!} onPress={mockOnPress} />
+    return <ShowCardContainer show={queryData.show!} onPress={mockOnPress} isFluid={false} />
   }
 
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -34,7 +34,7 @@ describe("ShowCard", () => {
   })
 
   it("navigates to the show page", async () => {
-    const { getByText, debug } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Show: () => ({
@@ -52,11 +52,9 @@ describe("ShowCard", () => {
       }),
     })
 
-    debug()
-
     await flushPromiseQueue()
 
-    const button = getByText("Berghain Art Show")
+    const button = screen.getByText("Berghain Art Show")
     fireEvent.press(button)
 
     expect(navigate).toHaveBeenCalledWith("/show/berghain-art-show")
@@ -64,7 +62,7 @@ describe("ShowCard", () => {
   })
 
   it("renders the show name, data and city ", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
+    renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
 
     resolveMostRecentRelayOperation(mockEnvironment, {
       Show: () => ({
@@ -84,12 +82,12 @@ describe("ShowCard", () => {
 
     await flushPromiseQueue()
 
-    const button = getByText("Berghain Art Show")
+    const button = screen.getByText("Berghain Art Show")
     fireEvent.press(button)
 
     expect(navigate).toHaveBeenCalledWith("/show/berghain-art-show")
     expect(mockOnPress).toHaveBeenCalled()
-    expect(getByText("Berlin • Mar 1-Apr 14")).toBeTruthy()
+    expect(screen.getByText("Berlin • Mar 1-Apr 14")).toBeTruthy()
   })
 })
 

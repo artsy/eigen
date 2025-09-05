@@ -158,6 +158,7 @@ export const Conversation: React.FC<Props> = ({
       <ComposerFragmentContainer
         conversation={conversation}
         disabled={sendingMessage || !isConnected}
+        // @ts-expect-error REACT_18_UPGRADE
         value={failedMessageText}
         onSubmit={(text: string) => {
           setSendingMessage(true)

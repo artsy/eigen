@@ -50,8 +50,15 @@ export const ShowsRail: React.FC<ShowsRailProps> = memo(
     const hasShows = shows?.length
 
     const renderItem = useCallback(
-      ({ item, index }) => (
+      ({
+        item,
+        index,
+      }: {
+        item: ExtractNodeType<ShowsRail_showsConnection$data>
+        index: number
+      }) => (
         <ShowCardContainer
+          isFluid={false}
           show={item}
           onPress={() => {
             if (onTrack) {
@@ -82,7 +89,7 @@ export const ShowsRail: React.FC<ShowsRailProps> = memo(
           }}
         />
 
-        <FlatList
+        <FlatList<ExtractNodeType<ShowsRail_showsConnection$data>>
           horizontal
           initialNumToRender={HORIZONTAL_FLATLIST_INTIAL_NUMBER_TO_RENDER_DEFAULT}
           windowSize={HORIZONTAL_FLATLIST_WINDOW_SIZE}

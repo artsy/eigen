@@ -16,7 +16,7 @@ const BUTTON_SIZE = 40
 const DURATION = 250
 const BUTTON_HORIZONTAL_OFFSET = 12
 
-export const HeaderButton: React.FC<HeaderButtonProps> = (props) => {
+export const HeaderButton: React.FC<React.PropsWithChildren<HeaderButtonProps>> = (props) => {
   const {
     shouldHide,
     style,

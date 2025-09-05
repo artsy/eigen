@@ -5,7 +5,9 @@ import { GlobalStore } from "app/store/GlobalStore"
 import { useFeatureFlag } from "app/utils/hooks/useFeatureFlag"
 import { useEffect } from "react"
 
-export const ProgressiveOnboardingAlertFinish: React.FC = ({ children }) => {
+export const ProgressiveOnboardingAlertFinish: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
   const {
     isDismissed,
     sessionState: { isReady },

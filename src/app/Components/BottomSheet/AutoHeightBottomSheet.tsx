@@ -3,16 +3,12 @@ import {
   AutomountedBottomSheetModal,
   AutomountedBottomSheetModalProps,
 } from "app/Components/BottomSheet/AutomountedBottomSheetModal"
-import { ReactNode } from "react"
 
-export type AutoHeightBottomSheetProps = Omit<AutomountedBottomSheetModalProps, "snapPoints"> & {
-  children?: ReactNode
-}
+export type AutoHeightBottomSheetProps = Omit<AutomountedBottomSheetModalProps, "snapPoints">
 
-export const AutoHeightBottomSheet: React.FC<AutoHeightBottomSheetProps> = ({
-  children,
-  ...rest
-}) => {
+export const AutoHeightBottomSheet: React.FC<
+  React.PropsWithChildren<AutoHeightBottomSheetProps>
+> = ({ children, ...rest }) => {
   if (!rest.visible) return null
 
   return (

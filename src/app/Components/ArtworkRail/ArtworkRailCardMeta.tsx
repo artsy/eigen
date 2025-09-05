@@ -13,6 +13,7 @@ import {
   ArtworkActionTrackingProps,
   tracks as artworkActionTracks,
 } from "app/utils/track/ArtworkActions"
+import React, { isValidElement } from "react"
 import { Text as RNText } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -165,7 +166,7 @@ export const ArtworkRailCardMeta: React.FC<ArtworkRailCardMetaProps> = ({
           </RNText>
         )}
 
-        {SalePriceComponent
+        {isValidElement(SalePriceComponent)
           ? SalePriceComponent
           : !!saleMessage && (
               <ArtworkSaleMessage

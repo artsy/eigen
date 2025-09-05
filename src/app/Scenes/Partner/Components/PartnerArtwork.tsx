@@ -1,5 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { Box, Flex, Tabs, useScreenDimensions, useSpace } from "@artsy/palette-mobile"
+import { MasonryListRenderItem } from "@shopify/flash-list"
 import { PartnerArtwork_partner$data } from "__generated__/PartnerArtwork_partner.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "app/Components/ArtworkFilter"
 import {
@@ -18,8 +19,11 @@ import {
   ON_END_REACHED_THRESHOLD_MASONRY,
 } from "app/utils/masonryHelpers"
 import { AnimatedMasonryListFooter } from "app/utils/masonryHelpers/AnimatedMasonryListFooter"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import React, { useCallback, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+
+type PartnerArtworkType = ExtractNodeType<NonNullable<PartnerArtwork_partner$data["artworks"]>>
 
 export const PartnerArtwork: React.FC<{
   partner: PartnerArtwork_partner$data
@@ -58,27 +62,30 @@ export const PartnerArtwork: React.FC<{
   const emptyText =
     "There are no matching works from this gallery.\nTry changing your search filters"
 
-  const renderItem = useCallback(({ item, columnIndex }) => {
-    const imgAspectRatio = item.image?.aspectRatio ?? 1
-    const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
-    const imgHeight = imgWidth / imgAspectRatio
+  const renderItem: MasonryListRenderItem<PartnerArtworkType> = useCallback(
+    ({ item, columnIndex }) => {
+      const imgAspectRatio = item.image?.aspectRatio ?? 1
+      const imgWidth = width / NUM_COLUMNS_MASONRY - space(2) - space(1)
+      const imgHeight = imgWidth / imgAspectRatio
 
-    return (
-      <Flex
-        pl={columnIndex === 0 ? 0 : 1}
-        pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
-        mt={2}
-      >
-        <ArtworkGridItem
-          contextScreenOwnerType={OwnerType.partner}
-          contextScreenOwnerId={partner.internalID}
-          contextScreenOwnerSlug={partner.slug}
-          artwork={item}
-          height={imgHeight}
-        />
-      </Flex>
-    )
-  }, [])
+      return (
+        <Flex
+          pl={columnIndex === 0 ? 0 : 1}
+          pr={NUM_COLUMNS_MASONRY - (columnIndex + 1) === 0 ? 0 : 1}
+          mt={2}
+        >
+          <ArtworkGridItem
+            contextScreenOwnerType={OwnerType.partner}
+            contextScreenOwnerId={partner.internalID}
+            contextScreenOwnerSlug={partner.slug}
+            artwork={item}
+            height={imgHeight}
+          />
+        </Flex>
+      )
+    },
+    []
+  )
 
   return (
     <>

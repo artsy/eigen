@@ -149,16 +149,21 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
     <ProvideScreenTracking info={tracks.context(viewingRoom.internalID, viewingRoom.slug)}>
       <View style={{ flex: 1, position: "relative" }}>
         <FlatList<ViewingRoomSection>
-          onViewableItemsChanged={useCallback(({ viewableItems }) => {
-            if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "body")) {
-              trackBodyImpression()
-              LayoutAnimation.configureNext({
-                ...LayoutAnimation.Presets.easeInEaseOut,
-                duration: 150,
-              })
-              setDisplayViewWorksButton(true)
-            }
-          }, [])}
+          onViewableItemsChanged={useCallback(
+            ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+              if (
+                viewableItems.find((viewableItem) => viewableItem.item.key === "body")
+              ) {
+                trackBodyImpression()
+                LayoutAnimation.configureNext({
+                  ...LayoutAnimation.Presets.easeInEaseOut,
+                  duration: 150,
+                })
+                setDisplayViewWorksButton(true)
+              }
+            },
+            []
+          )}
           contentContainerStyle={{ paddingBottom: SCROLLVIEW_PADDING_BOTTOM_OFFSET }}
           viewabilityConfig={{ itemVisiblePercentThreshold: 15 }}
           data={sections}

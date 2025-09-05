@@ -38,14 +38,9 @@ interface Props {
   conversation: Composer_conversation$data
 }
 
-const ComposerInner: React.FC<Props & { forwardedRef?: React.Ref<TextInput> }> = ({
-  disabled,
-  onSubmit,
-  value,
-  conversation,
-  children,
-  forwardedRef,
-}) => {
+const ComposerInner: React.FC<
+  React.PropsWithChildren<Props & { forwardedRef?: React.Ref<TextInput> }>
+> = ({ disabled, onSubmit, value, conversation, children, forwardedRef }) => {
   const [active, setActive] = useState(false)
   const [text, setText] = useState<string | null>(null)
   const inputRef = useRef<TextInput>(null)

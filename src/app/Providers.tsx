@@ -51,11 +51,13 @@ export const Providers: React.FC<{ children: React.ReactNode }> = ({ children })
     children
   )
 
-export const TestProviders: React.FC<{
-  skipRelay?: boolean
-  includeNavigation?: boolean
-  includeArtworkLists?: boolean
-}> = ({ children, skipRelay = false, includeNavigation = false, includeArtworkLists = true }) => {
+export const TestProviders: React.FC<
+  React.PropsWithChildren<{
+    skipRelay?: boolean
+    includeNavigation?: boolean
+    includeArtworkLists?: boolean
+  }>
+> = ({ children, skipRelay = false, includeNavigation = false, includeArtworkLists = true }) => {
   return combineProviders(
     [
       includeNavigation && NavigationTestsProvider,
@@ -82,7 +84,7 @@ export const TestProviders: React.FC<{
 
 // Providers with preset props
 
-const TestFlagProvider: React.FC = ({ children }) => {
+const TestFlagProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   return <FlagProvider startClient={false}>{children}</FlagProvider>
 }
 
@@ -90,20 +92,20 @@ const GestureHandlerProvider = (props: { children?: React.ReactNode }) => (
   <GestureHandlerRootView style={{ flex: 1 }} {...props} />
 )
 
-const RelayDefaultEnvProvider = (props: { children?: React.ReactNode }) => (
-  <RelayEnvironmentProvider environment={getRelayEnvironment()}>
-    {props.children}
-  </RelayEnvironmentProvider>
-)
+const RelayDefaultEnvProvider = (props: { children?: React.ReactNode }) => {
+  const Provider = RelayEnvironmentProvider as React.ComponentType<any>
+  return <Provider environment={getRelayEnvironment()}>{props.children}</Provider>
+}
 
 const SuspenseProvider = (props: { children?: React.ReactNode }) => (
   <Suspense fallback={<Spinner />} {...props} />
 )
 
-const TrackingProvider: React.FC = ({ children }) => {
+const TrackingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { Track } = useTracking({}, { dispatch: (data) => postEventToProviders(data) })
+  const TrackComponent = Track as React.ComponentType<any>
 
-  return <Track>{children}</Track>
+  return <TrackComponent>{children}</TrackComponent>
 }
 
 // theme with dark mode support

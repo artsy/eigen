@@ -6,7 +6,10 @@ import * as Sentry from "@sentry/react-native"
 import { HomeViewFetchMeQuery } from "__generated__/HomeViewFetchMeQuery.graphql"
 import { HomeViewQuery } from "__generated__/HomeViewQuery.graphql"
 import { HomeViewSectionArtworks_section$data } from "__generated__/HomeViewSectionArtworks_section.graphql"
-import { HomeViewSectionsConnection_viewer$key } from "__generated__/HomeViewSectionsConnection_viewer.graphql"
+import {
+  HomeViewSectionsConnection_viewer$key,
+  HomeViewSectionsConnection_viewer$data,
+} from "__generated__/HomeViewSectionsConnection_viewer.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { useDismissSavedArtwork } from "app/Components/ProgressiveOnboarding/useDismissSavedArtwork"
 import { useEnableProgressiveOnboarding } from "app/Components/ProgressiveOnboarding/useEnableProgressiveOnboarding"
@@ -31,10 +34,18 @@ import { useIsDeepLink } from "app/utils/hooks/useIsDeepLink"
 import { useViewabilityConfig } from "app/utils/hooks/useViewabilityConfig"
 import { ProvidePlaceholderContext } from "app/utils/placeholders"
 import { usePrefetch } from "app/utils/queryPrefetching"
+import { ExtractNodeType } from "app/utils/relayHelpers"
 import { requestPushNotificationsPermission } from "app/utils/requestPushNotificationsPermission"
 import { useMaybePromptForReview } from "app/utils/useMaybePromptForReview"
 import { memo, RefObject, Suspense, useCallback, useEffect, useRef, useState } from "react"
-import { FlatList, Linking, RefreshControl, StatusBar, ViewToken } from "react-native"
+import {
+  FlatList,
+  Linking,
+  RefreshControl,
+  StatusBar,
+  ViewToken,
+  ListRenderItem,
+} from "react-native"
 import { fetchQuery, graphql, useLazyLoadQuery, usePaginationFragment } from "react-relay"
 
 export const NUMBER_OF_SECTIONS_TO_LOAD = 10
@@ -42,6 +53,11 @@ export const NUMBER_OF_SECTIONS_TO_LOAD = 10
 export const homeViewScreenQueryVariables = () => ({
   count: NUMBER_OF_SECTIONS_TO_LOAD,
 })
+
+// Type for home view section items
+type HomeViewSectionType = ExtractNodeType<
+  HomeViewSectionsConnection_viewer$data["homeView"]["sectionsConnection"]
+>
 
 export const HomeView: React.FC = memo(() => {
   const flashlistRef = useBottomTabsScrollToTop()
@@ -184,7 +200,7 @@ export const HomeView: React.FC = memo(() => {
     })
   }
 
-  const renderItem = useCallback(
+  const renderItem: ListRenderItem<HomeViewSectionType> = useCallback(
     ({ item, index }) => {
       return <Section section={item} my={2} index={index} refetchKey={refetchKey} />
     },

@@ -41,7 +41,7 @@ interface ContextMenuArtworkProps {
   hideCreateAlertOnArtworkPreview?: boolean
 }
 
-export const ContextMenuArtwork: React.FC<ContextMenuArtworkProps> = ({
+export const ContextMenuArtwork: React.FC<React.PropsWithChildren<ContextMenuArtworkProps>> = ({
   children,
   haptic = true,
   artworkDisplayProps,

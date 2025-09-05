@@ -4,7 +4,7 @@ import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterData } from "app/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFilterBackHeader } from "app/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { SearchInput } from "app/Components/SearchInput"
-import React, { useCallback, useState } from "react"
+import React, { isValidElement, useCallback, useState } from "react"
 import { FlatList, ScrollView } from "react-native"
 import { MULTI_SELECT_OPTION_ITEM_HEIGHT, MultiSelectOptionItem } from "./MultiSelectOptionItem"
 
@@ -128,7 +128,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
             keyboardDismissMode="on-drag"
           >
             {filteredOptions.map((option, index) => renderItem({ item: option, index }))}
-            {footerComponent}
+            {isValidElement(footerComponent) && footerComponent}
           </ScrollView>
         ) : (
           <FlatList<FilterData>

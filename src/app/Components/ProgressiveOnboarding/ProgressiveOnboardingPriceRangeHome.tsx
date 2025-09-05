@@ -19,7 +19,9 @@ export const PROGRESSIVE_ONBOARDING_PRICE_RANGE_CONTENT =
 // This delay needs to be longer than the time it takes to load the first few sections of the home tab
 const PRICE_RANGE_ONBOARDING_POPOVER_DELAY = 4000
 
-export const ProgressiveOnboardingPriceRangeHome: React.FC = ({ children }) => {
+export const ProgressiveOnboardingPriceRangeHome: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
   const {
     isDismissed: isDismissedFn,
     sessionState: { isReady },

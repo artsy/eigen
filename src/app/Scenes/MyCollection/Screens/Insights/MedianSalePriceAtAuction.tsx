@@ -158,7 +158,7 @@ export const MedianSalePriceAtAuction: React.FC<{ artistID: string; initialCateg
   })
 
   const refetch = useCallback(
-    (newArtistID) => {
+    (newArtistID: string) => {
       if (newArtistID !== queryArgs.variables.artistID) {
         setQueryArgs((prev) => ({
           options: { fetchKey: (prev?.options.fetchKey ?? 0) + 1 },

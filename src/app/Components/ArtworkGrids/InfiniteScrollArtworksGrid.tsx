@@ -189,7 +189,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
   hideIncreasedInterest,
   hidePartner = false,
   hideRegisterBySignal,
-  hideViewFollowsLink = false,
   hideCreateAlertOnArtworkPreview = false,
   hideSaveIcon = false,
   isLoading,
@@ -350,7 +349,6 @@ const InfiniteScrollArtworksGrid: React.FC<Props & PrivateProps> = ({
             hideIncreasedInterestSignal={hideIncreasedInterest}
             hideCuratorsPickSignal={hideCuratorsPick}
             hideRegisterBySignal={hideRegisterBySignal}
-            hideViewFollowsLink={hideViewFollowsLink}
             hideCreateAlertOnArtworkPreview={hideCreateAlertOnArtworkPreview}
           />
         )

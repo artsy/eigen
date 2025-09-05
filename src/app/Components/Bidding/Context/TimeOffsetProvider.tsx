@@ -1,8 +1,12 @@
 import { TimeOffsetProviderQuery } from "__generated__/TimeOffsetProviderQuery.graphql"
 import { getRelayEnvironment } from "app/system/relay/defaultEnvironment"
-import PropTypes from "prop-types"
-import React from "react"
+import React, { createContext, useContext, useEffect, useState } from "react"
 import { fetchQuery, graphql } from "react-relay"
+
+// Create context for time offset
+const TimeOffsetContext = createContext<number>(0)
+
+export const useTimeOffset = () => useContext(TimeOffsetContext)
 
 const getLocalTimestampInMilliSeconds = () => {
   return Date.now()
@@ -70,28 +74,21 @@ export const getOffsetBetweenGravityClock = async () => {
   }
 }
 
-export class TimeOffsetProvider extends React.Component {
-  static childContextTypes = {
-    timeOffsetInMilliSeconds: PropTypes.number,
-  }
+export const TimeOffsetProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const [timeOffsetInMilliSeconds, setTimeOffsetInMilliSeconds] = useState(0)
 
-  state = {
-    timeOffsetInMilliSeconds: 0,
-  }
-
-  getChildContext() {
-    return {
-      timeOffsetInMilliSeconds: this.state.timeOffsetInMilliSeconds,
+  useEffect(() => {
+    const initializeTimeOffset = async () => {
+      const offset = await getOffsetBetweenGravityClock()
+      setTimeOffsetInMilliSeconds(offset)
     }
-  }
 
-  async UNSAFE_componentWillMount() {
-    const timeOffsetInMilliSeconds = await getOffsetBetweenGravityClock()
+    initializeTimeOffset()
+  }, [])
 
-    this.setState({ timeOffsetInMilliSeconds })
-  }
-
-  render() {
-    return this.props.children
-  }
+  return (
+    <TimeOffsetContext.Provider value={timeOffsetInMilliSeconds}>
+      {children}
+    </TimeOffsetContext.Provider>
+  )
 }

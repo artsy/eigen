@@ -197,7 +197,7 @@ interface OnboardingCreateAccountScreenWrapperProps {
 }
 
 export const OnboardingCreateAccountScreenWrapper: React.FC<
-  OnboardingCreateAccountScreenWrapperProps
+  React.PropsWithChildren<OnboardingCreateAccountScreenWrapperProps>
 > = ({ onBackButtonPress, title, caption, children }) => {
   const color = useColor()
   return (

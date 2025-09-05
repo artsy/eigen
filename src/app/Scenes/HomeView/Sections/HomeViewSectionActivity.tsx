@@ -22,7 +22,7 @@ import { NoFallback, withSuspense } from "app/utils/hooks/withSuspense"
 import { useMemoizedRandom } from "app/utils/placeholders"
 import { times } from "lodash"
 import { memo, useCallback } from "react"
-import { FlatList } from "react-native"
+import { FlatList, ListRenderItem } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 
 interface HomeViewSectionActivityProps {
@@ -40,7 +40,7 @@ export const HomeViewSectionActivity: React.FC<HomeViewSectionActivityProps> = m
     )
     const viewAll = section.component?.behaviors?.viewAll
 
-    const renderItem = useCallback(
+    const renderItem: ListRenderItem<(typeof notifications)[0]> = useCallback(
       ({ item, index }) => {
         return (
           <ActivityRailItem

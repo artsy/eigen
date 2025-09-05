@@ -1,5 +1,5 @@
 import { Flex, Spacer, Spinner, useSpace } from "@artsy/palette-mobile"
-import { FlashList } from "@shopify/flash-list"
+import { FlashList, ListRenderItem } from "@shopify/flash-list"
 import { EntitySearchResultsQuery } from "__generated__/EntitySearchResultsQuery.graphql"
 import { EntitySearchResults_searchConnection$key } from "__generated__/EntitySearchResults_searchConnection.graphql"
 import { SimpleErrorMessage } from "app/Components/ErrorView/SimpleErrorMessage"
@@ -63,7 +63,7 @@ export const EntitySearchResults: React.FC<SearchResultsProps> = ({ query, selec
     }
   }, [query])
 
-  const renderItem = useCallback(({ item, index }) => {
+  const renderItem: ListRenderItem<SearchResultInterface> = useCallback(({ item, index }) => {
     return <SearchResult result={item} selectedPill={selectedPill} query={query} position={index} />
   }, [])
 
