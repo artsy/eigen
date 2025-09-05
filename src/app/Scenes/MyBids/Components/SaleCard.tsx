@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { AlertFillIcon, ChevronRightIcon } from "@artsy/icons/native"
-import { ClockFill, Flex, Image, Separator, Text, Touchable } from "@artsy/palette-mobile"
+import { AlertFillIcon, ChevronRightIcon, ClockFillIcon } from "@artsy/icons/native"
+import { Flex, Image, Separator, Text, Touchable } from "@artsy/palette-mobile"
 import { SaleCard_me$data } from "__generated__/SaleCard_me.graphql"
 import { SaleCard_sale$data } from "__generated__/SaleCard_sale.graphql"
 import { CompleteRegistrationCTAWrapper } from "app/Scenes/MyBids/Components/CompleteRegistrationCTAWrapper"
@@ -74,7 +74,7 @@ export const SaleCard: React.FC<React.PropsWithChildren<SaleCardProps>> = ({
     } else {
       RegistrationCTA = () => (
         <RegistrationCTAWrapper>
-          <ClockFill fill="mono60" />
+          <ClockFillIcon fill="mono60" />
           <Text ml={0.5} color="mono60" variant="sm">
             Registration pending
           </Text>
