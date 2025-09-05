@@ -294,8 +294,10 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
               axis: { stroke: color("mono15"), strokeDasharray: 2 },
               ticks: { size: 0 },
               grid: {
-                stroke: ({ tick }: { tick: number }) =>
-                  Number(tick * maxima) === minMaxDomainY.max ? color("mono15") : "transparent",
+                stroke: ({ tick }: { tick?: number }) =>
+                  tick && Number(tick * maxima) === minMaxDomainY.max
+                    ? color("mono15")
+                    : "transparent",
                 strokeDasharray: 3,
               },
             }}
@@ -320,7 +322,8 @@ export const LineGraphChart: React.FC<LineGraphChartProps> = ({
               axis: { stroke: color("mono30"), strokeDasharray: 2 },
               ticks: { size: 0 },
               grid: {
-                stroke: ({ tick }: { tick: number }) => {
+                stroke: ({ tick }: { tick?: number }) => {
+                  if (!tick) return "transparent"
                   if (tick === lastPressedDatum?.x) {
                     return color("mono100")
                   }
