@@ -1,5 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
-import { waitFor } from "@testing-library/react-native"
+import { renderHook, waitFor } from "@testing-library/react-native"
 import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
 import { useScreenReaderAndFontScaleTracking } from "app/utils/useScreenReaderAndFontScaleTracking"
 

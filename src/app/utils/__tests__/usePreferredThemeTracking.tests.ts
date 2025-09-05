@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-native"
 import { SegmentTrackingProvider } from "app/utils/track/SegmentTrackingProvider"
 import { usePreferredThemeTracking } from "app/utils/usePreferredThemeTracking"
 

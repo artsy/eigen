@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-native"
 import { useBackHandler } from "app/utils/hooks/useBackHandler"
 import { BackHandler } from "react-native"
 
