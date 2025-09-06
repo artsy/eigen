@@ -1,13 +1,12 @@
 package net.artsy.app;
 
-import com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.braze.push.BrazeFirebaseMessagingService;
 
-public class BrazePushListenerService extends RNPushNotificationListenerService {
+public class BrazePushListenerService extends FirebaseMessagingService {
   @Override
   public void onMessageReceived(RemoteMessage remoteMessage) {
-    super.onMessageReceived(remoteMessage);
     if (BrazeFirebaseMessagingService.handleBrazeRemoteMessage(this, remoteMessage)) {
       // This Remote Message originated from Braze and a push notification was
       // displayed.

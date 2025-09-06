@@ -1,7 +1,7 @@
+import notifee from "@notifee/react-native"
 import { GlobalStore } from "app/store/GlobalStore"
 import { useEffect, useState } from "react"
 import { Platform } from "react-native"
-import PushNotification from "react-native-push-notification"
 import { handlePendingNotification, handleReceivedNotification } from "./PushNotification"
 
 export function useInitialNotification() {
@@ -22,18 +22,35 @@ export function useInitialNotification() {
       Platform.OS === "android"
     ) {
       // initial notification is most recent and should be prioritised
-      PushNotification.popInitialNotification((notification) => {
-        if (notification) {
-          handleReceivedNotification(notification)
-          // prevent loop where user logs out and logs back in and previously
-          // handled initial push notification is rehandled
-          setHasHandledInitialNotification(true)
-          return
-        }
-        handlePendingNotification(pendingNotification)
-      })
+      // POTENTIAL ISSUE: This duplicates the getInitialNotification() call in configure()
+      // Could lead to race conditions or handling the same notification twice :shrug:
+      notifee
+        .getInitialNotification()
+        .then((initialNotification) => {
+          if (initialNotification?.notification) {
+            const notification = {
+              data: initialNotification.notification.data || {},
+              userInteraction: true,
+              foreground: false,
+              message:
+                initialNotification.notification.title || initialNotification.notification.body,
+            }
+            handleReceivedNotification(notification)
+            // prevent loop where user logs out and logs back in and previously
+            // handled initial push notification is rehandled
+            setHasHandledInitialNotification(true)
+            return
+          }
+          handlePendingNotification(pendingNotification)
+        })
+        .catch((error) => {
+          if (__DEV__) {
+            console.warn("Error getting initial notification:", error)
+          }
+          handlePendingNotification(pendingNotification)
+        })
       return
     }
     handlePendingNotification(pendingNotification)
-  }, [isLoggedIn, isNavigationReady])
+  }, [hasHandledInitialNotification, isLoggedIn, isNavigationReady, pendingNotification])
 }
