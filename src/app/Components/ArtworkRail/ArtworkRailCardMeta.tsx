@@ -256,7 +256,7 @@ const ArtworkRailCardMetaSaveIcon: React.FC<{
       testID="empty-heart-icon"
       height={HEART_ICON_SIZE}
       width={HEART_ICON_SIZE}
-      fill={primaryColor || "mono100"}
+      fill={primaryColor}
     />
   )
 }
