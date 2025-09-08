@@ -1,5 +1,5 @@
-import { ApplePayMarkIcon, GooglePayIcon, HomeIcon } from "@artsy/icons/native"
-import { Box, Flex, IconProps, Spacer, Text } from "@artsy/palette-mobile"
+import { ApplePayMarkIcon, GooglePayIcon, HomeIcon, IconProps } from "@artsy/icons/native"
+import { Box, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import {
   OrderDetailsPaymentInfo_order$data,
   OrderDetailsPaymentInfo_order$key,
