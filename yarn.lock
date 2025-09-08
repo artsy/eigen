@@ -4518,10 +4518,10 @@
     "@types/geojson" "^7946.0.7"
     debounce "^1.2.0"
 
-"@segment/analytics-react-native-plugin-braze@0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-plugin-braze/-/analytics-react-native-plugin-braze-0.8.0.tgz#1893aaead730a31744e2646e2679a2febdaba8a7"
-  integrity sha512-ugL1J22BRFb66hPgMUVKWNfsrSqC06wOfaoQ2h304u+E0cmY1qXq/OlxiHBNun48A60RlLkwW4yqJAcJEvTCsQ==
+"@segment/analytics-react-native-plugin-braze@0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-plugin-braze/-/analytics-react-native-plugin-braze-0.6.1.tgz#f4c8a85852b50470a398e2b0330c6ed3d3b0e27c"
+  integrity sha512-jyksibkSHlE5CMoYc/Rs3N9m2cMjsryVz/HiZyuVZ0k+073w6ooZ3tWtwStsZHPiILCLEtLDLfM8j6NemBs3/g==
 
 "@segment/analytics-react-native@2.20.3":
   version "2.20.3"
