@@ -18,8 +18,8 @@ GEM
     artifactory (3.0.17)
     atomos (0.1.3)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1147.0)
-    aws-sdk-core (3.229.0)
+    aws-partitions (1.1155.0)
+    aws-sdk-core (3.232.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
@@ -27,11 +27,11 @@ GEM
       bigdecimal
       jmespath (~> 1, >= 1.6.1)
       logger
-    aws-sdk-kms (1.110.0)
-      aws-sdk-core (~> 3, >= 3.228.0)
+    aws-sdk-kms (1.112.0)
+      aws-sdk-core (~> 3, >= 3.231.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.196.1)
-      aws-sdk-core (~> 3, >= 3.228.0)
+    aws-sdk-s3 (1.198.0)
+      aws-sdk-core (~> 3, >= 3.231.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
     aws-sigv4 (1.12.1)
@@ -42,7 +42,7 @@ GEM
       fastlane (>= 2.0)
       mini_magick (>= 4.9.4, < 5.0.0)
     base64 (0.3.0)
-    bigdecimal (3.2.2)
+    bigdecimal (3.2.3)
     celluloid (0.18.0)
       timers (~> 4)
     celluloid-io (0.17.3)
@@ -96,7 +96,6 @@ GEM
     commander (4.6.0)
       highline (~> 2.0.0)
     concurrent-ruby (1.2.2)
-    csv (3.3.5)
     declarative (0.0.20)
     digest-crc (0.7.0)
       rake (>= 12.0.0, < 14.0.0)
@@ -180,8 +179,6 @@ GEM
       xcodeproj (>= 1.13.0, < 2.0.0)
       xcpretty (~> 0.4.1)
       xcpretty-travis-formatter (>= 0.0.3, < 2.0.0)
-    fastlane-plugin-appcenter (2.1.3)
-      csv
     fastlane-plugin-badge (1.5.0)
       badge (~> 0.13.0)
     fastlane-plugin-bundletool (1.1.1)
@@ -275,16 +272,16 @@ GEM
       trailblazer-option (>= 0.1.1, < 0.2.0)
       uber (< 0.2.0)
     retriable (3.1.2)
-    rexml (3.4.1)
+    rexml (3.4.3)
     rouge (3.28.0)
     ruby-macho (2.5.1)
     ruby2_keywords (0.0.5)
     rubyzip (2.4.1)
     security (0.1.5)
-    signet (0.20.0)
+    signet (0.21.0)
       addressable (~> 2.8)
       faraday (>= 0.17.5, < 3.a)
-      jwt (>= 1.5, < 3.0)
+      jwt (>= 1.5, < 4.0)
       multi_json (~> 1.10)
     simctl (1.6.10)
       CFPropertyList
@@ -331,7 +328,6 @@ DEPENDENCIES
   cocoapods-patch (~> 1.3.0)
   dotenv
   down
-  fastlane-plugin-appcenter
   fastlane-plugin-badge
   fastlane-plugin-bundletool
   fastlane-plugin-firebase_app_distribution
