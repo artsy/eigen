@@ -106,8 +106,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({
   const artworks = useMemo(() => extractNodes(artist.artworks), [artist.artworks])
 
   const artworksCount = artist.artworks?.counts?.total ?? 0
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const gridRef = useRef<MasonryFlashListRef<(typeof artworks)[0]>>(null!)
+  const gridRef = useRef<MasonryFlashListRef<(typeof artworks)[0]>>(null)
 
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 

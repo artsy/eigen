@@ -56,8 +56,7 @@ export const HomeViewSectionTasks: React.FC<HomeViewSectionTasksProps> = ({
   index,
   ...flexProps
 }) => {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const firstSwipeableRef = useRef<SwipeableMethods>(null!)
+  const firstSwipeableRef = useRef<SwipeableMethods>(null)
 
   // Define a Map of refs to each task but since it will never be
   // reassigned, we can access current immediately
@@ -257,8 +256,7 @@ const TaskItem = ({
   onOpenTask,
   setShowAll,
 }: TaskItemProps) => {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const taskRef = useRef<SwipeableMethods>(null!)
+  const taskRef = useRef<SwipeableMethods>(null)
 
   useEffect(() => {
     if (!taskRefs.has(task.internalID)) {

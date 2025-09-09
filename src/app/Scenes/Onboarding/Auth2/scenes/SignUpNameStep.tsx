@@ -92,8 +92,7 @@ const SignUpNameStepForm: React.FC = () => {
   const parentNavigation = useNavigation<NavigationProp<OnboardingNavigationStack>>()
   const { isAutomaticallySubscribed } = useCountryCode()
   const { color } = useTheme()
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const nameRef = useRef<Input>(null!)
+  const nameRef = useRef<Input>(null)
 
   useInputAutofocus({
     screenName: "SignUpNameStep",

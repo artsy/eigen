@@ -28,8 +28,7 @@ export const LoginOTPStep: React.FC = () => {
 
   const navigation = useAuthNavigation()
   const screen = useAuthScreen()
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const otpRef = useRef<Input>(null!)
+  const otpRef = useRef<Input>(null)
 
   const { color } = useTheme()
 

@@ -30,14 +30,10 @@ export const UserProfileFields: React.FC<UserProfileFieldsProps> = ({ bottomShee
   const formikBag = useFormikContext<UserProfileFormikSchema>()
   const { values, setFieldValue, handleChange, errors, validateForm } = formikBag
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const nameInputRef = useRef<Input>(null!)
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const locationInputRef = useRef<Input>(null!)
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const professionInputRef = useRef<Input>(null!)
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const relevantPositionsInputRef = useRef<Input>(null!)
+  const nameInputRef = useRef<Input>(null)
+  const locationInputRef = useRef<Input>(null)
+  const professionInputRef = useRef<Input>(null)
+  const relevantPositionsInputRef = useRef<Input>(null)
 
   const InputComponent = bottomSheetInput ? BottomSheetInput : Input
 

@@ -46,8 +46,7 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
     () => extractNodes(collection.collectionArtworks),
     [collection.collectionArtworks]
   )
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const gridRef = useRef<MasonryFlashListRef<(typeof artworksList)[0]>>(null!)
+  const gridRef = useRef<MasonryFlashListRef<(typeof artworksList)[0]>>(null)
 
   const scrollToTop = () => {
     gridRef?.current?.scrollToOffset({ offset: 0, animated: true })

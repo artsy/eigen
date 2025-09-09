@@ -49,8 +49,7 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
     [data.artistSeriesArtworks]
   )
   const shouldDisplaySpinner = isLoadingNext && hasNext
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const gridRef = useRef<MasonryFlashListRef<(typeof artworksList)[0]>>(null!)
+  const gridRef = useRef<MasonryFlashListRef<(typeof artworksList)[0]>>(null)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.setFiltersCountAction
   )
