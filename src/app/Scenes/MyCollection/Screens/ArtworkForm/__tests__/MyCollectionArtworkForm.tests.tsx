@@ -104,7 +104,8 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(screen.getByText("Select an Artist")).toBeTruthy()
 
-        fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "banksy")
+        const artistSearchInput = await screen.findByPlaceholderText("Search for artists on Artsy")
+        fireEvent.changeText(artistSearchInput, "banksy")
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
             errors: [],
@@ -122,7 +123,8 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(screen.getByText("Select an Artwork")).toBeTruthy()
 
-        fireEvent.changeText(screen.getByPlaceholderText("Search artworks"), "banksy")
+        const artworkSearchInput = await screen.findByPlaceholderText("Search artworks")
+        fireEvent.changeText(artworkSearchInput, "banksy")
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
             errors: [],
@@ -238,7 +240,8 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(screen.getByText("Select an Artist")).toBeTruthy()
 
-        fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "banksy")
+        const artistSearchInput = await screen.findByPlaceholderText("Search for artists on Artsy")
+        fireEvent.changeText(artistSearchInput, "banksy")
 
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
@@ -257,7 +260,8 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(screen.getByText("Select an Artwork")).toBeTruthy()
 
-        fireEvent.changeText(screen.getByPlaceholderText("Search artworks"), "Test Artwork Title")
+        const artworkSearchInput = await screen.findByPlaceholderText("Search artworks")
+        fireEvent.changeText(artworkSearchInput, "Test Artwork Title")
 
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
@@ -306,7 +310,8 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(screen.getByText("Select an Artist")).toBeTruthy()
 
-        fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "foo bar")
+        const artistSearchInput = await screen.findByPlaceholderText("Search for artists on Artsy")
+        fireEvent.changeText(artistSearchInput, "foo bar")
 
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
@@ -567,8 +572,10 @@ describe("MyCollectionArtworkForm", () => {
         await flushPromiseQueue()
 
         // Select Artist Screen
-
-        fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "banksy")
+        
+        // Wait for the artist search input to appear
+        const artistSearchInput = await screen.findByPlaceholderText("Search for artists on Artsy")
+        fireEvent.changeText(artistSearchInput, "banksy")
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
             errors: [],
@@ -583,7 +590,8 @@ describe("MyCollectionArtworkForm", () => {
 
         // Select Artwork Screen
 
-        fireEvent.changeText(screen.getByPlaceholderText("Search artworks"), "banksy")
+        const artworkSearchInput = await screen.findByPlaceholderText("Search artworks")
+        fireEvent.changeText(artworkSearchInput, "banksy")
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
             errors: [],
