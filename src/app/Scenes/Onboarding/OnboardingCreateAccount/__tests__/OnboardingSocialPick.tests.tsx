@@ -1,6 +1,7 @@
 import { mockNavigate } from "app/utils/tests/navigationMocks"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Platform } from "react-native"
+import { act } from "react-test-renderer"
 
 jest.mock("@react-navigation/native")
 
@@ -28,25 +29,37 @@ describe("OnboardingSocialPick", () => {
         Promise.resolve({ success: true })
       ) as any
       const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="login" />)
-      tree.root.findByProps({ testID: "continueWithFacebook" }).props.onPress()
+      
+      await act(async () => {
+        tree.root.findByProps({ testID: "continueWithFacebook" }).props.onPress()
+      })
+      
       expect(GlobalStore.actions.auth.authFacebook).toHaveBeenCalled()
     })
 
     it("logs in using google when the user presses on continue with google", async () => {
       GlobalStore.actions.auth.authGoogle = jest.fn(() => Promise.resolve({ success: true })) as any
       const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="login" />)
-      tree.root.findByProps({ testID: "continueWithGoogle" }).props.onPress()
+      
+      await act(async () => {
+        tree.root.findByProps({ testID: "continueWithGoogle" }).props.onPress()
+      })
+      
       expect(GlobalStore.actions.auth.authGoogle).toHaveBeenCalled()
     })
 
-    it("logs in using apple when the user presses on continue with apple", () => {
+    it("logs in using apple when the user presses on continue with apple", async () => {
       Platform.OS = "ios"
       Object.defineProperty(Platform, "Version", {
         get: () => 14,
       })
       GlobalStore.actions.auth.authApple = jest.fn(() => Promise.resolve({ success: true })) as any
       const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="login" />)
-      tree.root.findByProps({ testID: "continueWithApple" }).props.onPress()
+      
+      await act(async () => {
+        tree.root.findByProps({ testID: "continueWithApple" }).props.onPress()
+      })
+      
       expect(GlobalStore.actions.auth.authApple).toHaveBeenCalled()
     })
   })
@@ -67,7 +80,11 @@ describe("OnboardingSocialPick", () => {
       ) as any
 
       const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="signup" />)
-      tree.root.findByProps({ testID: "continueWithFacebook" }).props.onPress()
+      
+      await act(async () => {
+        tree.root.findByProps({ testID: "continueWithFacebook" }).props.onPress()
+      })
+      
       expect(GlobalStore.actions.auth.authFacebook).toHaveBeenCalled()
     })
 
@@ -75,18 +92,26 @@ describe("OnboardingSocialPick", () => {
       GlobalStore.actions.auth.authGoogle = jest.fn(() => Promise.resolve({ success: true })) as any
 
       const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="signup" />)
-      tree.root.findByProps({ testID: "continueWithGoogle" }).props.onPress()
+      
+      await act(async () => {
+        tree.root.findByProps({ testID: "continueWithGoogle" }).props.onPress()
+      })
+      
       expect(GlobalStore.actions.auth.authGoogle).toHaveBeenCalled()
     })
 
-    it("signs up in using apple when the user presses on continue with apple", () => {
+    it("signs up in using apple when the user presses on continue with apple", async () => {
       Platform.OS = "ios"
       Object.defineProperty(Platform, "Version", {
         get: () => 14,
       })
       GlobalStore.actions.auth.authApple = jest.fn(() => Promise.resolve({ success: true })) as any
       const tree = renderWithWrappersLEGACY(<OnboardingSocialPick mode="signup" />)
-      tree.root.findByProps({ testID: "continueWithApple" }).props.onPress()
+      
+      await act(async () => {
+        tree.root.findByProps({ testID: "continueWithApple" }).props.onPress()
+      })
+      
       expect(GlobalStore.actions.auth.authApple).toHaveBeenCalled()
     })
   })
