@@ -22,16 +22,22 @@
   dependencies:
     core-js "3"
 
-"@artsy/icons@3.50.0":
+"@artsy/icons@3.51.0":
+  version "3.51.0"
+  resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.51.0.tgz#4ae461d689b86048e8628801f109af07de4db5f6"
+  integrity sha512-x750SOXPWSKiQRhdJanU8H3qi+WYDjCSi9jDoq/nPR/0uBAN6IOyzv//xWQTDFq9IXZ+I2O8Pe25iRBE7S4RGA==
+
+"@artsy/icons@^3.49.0":
   version "3.50.0"
   resolved "https://registry.yarnpkg.com/@artsy/icons/-/icons-3.50.0.tgz#7e7987d1e6fb79aa4b6148771206af1f0087da10"
   integrity sha512-eCl7WIIJ30M+P51MzSrkH1osqsUr45bwq92tSKNw2klrajPGbBylqc3e6UgP63esW8MghB7wgEMtDkrPbycj1A==
 
-"@artsy/palette-mobile@17.33.0":
-  version "17.33.0"
-  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-17.33.0.tgz#5ac89113357ef28c80af1fb0147fdada4eaa5302"
-  integrity sha512-nudvYvgIyiXqabG0ueZP6Q1zPB1E/FwP6HJcYP3sDbb0SfJi7eNIHXcMSaF4U9h7iTBVxMUUVUak8ewIGWRYpw==
+"@artsy/palette-mobile@18.0.0":
+  version "18.0.0"
+  resolved "https://registry.yarnpkg.com/@artsy/palette-mobile/-/palette-mobile-18.0.0.tgz#558dfb96538f08d7486e6928b259a3b78f72823c"
+  integrity sha512-5N+1FsXJkjb/3sTG9ZnM9kxktxHiNKtZ3ExlaD5hxRwaqZ5jZxou6FAD4g1JL0kT2W4A6ll7bRYlIpDHKAr3kw==
   dependencies:
+    "@artsy/icons" "^3.49.0"
     "@artsy/palette-tokens" "^7.0.0"
     "@d11/react-native-fast-image" "^8.10.0"
     "@shopify/flash-list" "^1.8.3"
@@ -4518,10 +4524,10 @@
     "@types/geojson" "^7946.0.7"
     debounce "^1.2.0"
 
-"@segment/analytics-react-native-plugin-braze@0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-plugin-braze/-/analytics-react-native-plugin-braze-0.8.0.tgz#1893aaead730a31744e2646e2679a2febdaba8a7"
-  integrity sha512-ugL1J22BRFb66hPgMUVKWNfsrSqC06wOfaoQ2h304u+E0cmY1qXq/OlxiHBNun48A60RlLkwW4yqJAcJEvTCsQ==
+"@segment/analytics-react-native-plugin-braze@0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-plugin-braze/-/analytics-react-native-plugin-braze-0.6.1.tgz#f4c8a85852b50470a398e2b0330c6ed3d3b0e27c"
+  integrity sha512-jyksibkSHlE5CMoYc/Rs3N9m2cMjsryVz/HiZyuVZ0k+073w6ooZ3tWtwStsZHPiILCLEtLDLfM8j6NemBs3/g==
 
 "@segment/analytics-react-native@2.20.3":
   version "2.20.3"

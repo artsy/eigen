@@ -1,5 +1,5 @@
-import { NoArtIcon } from "@artsy/icons/native"
-import { bullet, Flex, Spacer, Stopwatch, Text } from "@artsy/palette-mobile"
+import { NoArtIcon, StopwatchIcon } from "@artsy/icons/native"
+import { bullet, Flex, Spacer, Text } from "@artsy/palette-mobile"
 import FastImage from "@d11/react-native-fast-image"
 import { addBreadcrumb } from "@sentry/react-native"
 import { AuctionResultListItem_auctionResult$data } from "__generated__/AuctionResultListItem_auctionResult.graphql"
@@ -211,7 +211,7 @@ const AuctionResultPriceSection = ({
 
   return (
     <Flex flexDirection="row" alignItems="center">
-      {resultText === "Awaiting results" && <Stopwatch height={15} width={15} mr={0.5} />}
+      {resultText === "Awaiting results" && <StopwatchIcon height={15} width={15} mr={0.5} />}
       <Text variant="xs" testID="price" italic>
         {resultText}
       </Text>
