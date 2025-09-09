@@ -113,6 +113,9 @@ describe("useSetPriceRangeReminder", () => {
     const toastConfig = toastCall[2]
     toastConfig.onPress()
 
+    // Wait for any async operations to complete
+    await new Promise((res) => setTimeout(res, 0))
+
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedToast",
       context_screen_owner_type: "artworkRecommendations",
