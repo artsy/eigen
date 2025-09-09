@@ -1,4 +1,5 @@
-import { Stopwatch, Flex, Text } from "@artsy/palette-mobile"
+import { StopwatchIcon } from "@artsy/icons/native"
+import { Flex, Text } from "@artsy/palette-mobile"
 import { ActivityItem_notification$data } from "__generated__/ActivityItem_notification.graphql"
 import { formattedTimeLeft } from "app/Scenes/Activity/utils/formattedTimeLeft"
 import { Time, getTimer } from "app/utils/getTimer"
@@ -11,7 +12,7 @@ interface ExpiresInTimerProps {
 }
 
 const WatchIcon: FC<{ fill?: string }> = ({ fill = "red100" }) => {
-  return <Stopwatch fill={fill} height={15} width={15} mr="2px" />
+  return <StopwatchIcon fill={fill} height={15} width={15} mr="2px" />
 }
 
 export const ExpiresInTimer: FC<ExpiresInTimerProps> = ({ item }) => {
