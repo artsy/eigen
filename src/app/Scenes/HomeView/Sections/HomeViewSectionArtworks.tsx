@@ -44,6 +44,8 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   index,
   ...flexProps
 }) => {
+  const enableUnderXArtworksCard = useFeatureFlag("AREnableUnderXArtworksCard")
+
   const tracking = useHomeViewTracking()
 
   const section = useFragment(fragment, sectionProp)
@@ -102,7 +104,9 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   const isFirstArtworkSection = section.contextModule === ContextModule.newWorksForYouRail
 
   const showUnderXArtsowksCard =
-    section.internalID === "home-view-section-new-works-for-you" && artworks.length > 4
+    enableUnderXArtworksCard &&
+    section.internalID === "home-view-section-new-works-for-you" &&
+    artworks.length > 4
 
   if (showUnderXArtsowksCard) {
     return (

@@ -206,6 +206,12 @@ export const features = {
     description: "Enable price range toast prompting users to update a price range",
     echoFlagKey: "AREnablePriceRangeToast",
   },
+  AREnableUnderXArtworksCard: {
+    readyForRelease: false,
+    showInDevMenu: true,
+    description: "Enable 'Under $X' artworks card on home",
+    // echoFlagKey: "AREnableUnderXArtworksCard",
+  },
 } satisfies { [key: string]: FeatureDescriptor }
 
 export interface DevToggleDescriptor {
