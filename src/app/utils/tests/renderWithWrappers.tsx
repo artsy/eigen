@@ -74,24 +74,24 @@ export const renderWithWrappersLEGACY = (component: ReactElement) => {
 /**
  * Enhanced version of renderWithWrappersLEGACY that provides utilities for React 19 compatibility.
  * Use this when you need to wait for async operations like Relay mock resolutions.
- * 
+ *
  * @param component - The React component to render
  * @returns An object with the rendered component and helper methods
  */
 export const renderWithWrappersLEGACYAsync = (component: ReactElement) => {
-  const renderedComponent = renderWithWrappersLEGACY(component)
-  
+  const view = renderWithWrappersLEGACY(component)
+
   return {
-    ...renderedComponent,
-    
+    ...view,
+
     /**
      * Wait for async operations to complete, then execute a callback with access to the root
      * @param callback - Function that receives the root and can make assertions
      * @param timeout - Optional timeout in ms (default: 5000)
      */
-    waitForAsync: async <T = void>(
+    waitForAsync: async <T = void,>(
       callback: (root: ReactTestRenderer.ReactTestInstance) => T | Promise<T>,
-      timeout: number = 5000
+      timeout = 5000
     ): Promise<T> => {
       return new Promise((resolve, reject) => {
         const timeoutId = setTimeout(() => {
@@ -101,13 +101,13 @@ export const renderWithWrappersLEGACYAsync = (component: ReactElement) => {
         const tryCallback = async () => {
           try {
             // Give React time to process updates
-            await new Promise(resolve => setTimeout(resolve, 0))
-            const result = await callback(renderedComponent.root)
+            await new Promise((resolve) => setTimeout(resolve, 0))
+            const result = await callback(view.root)
             clearTimeout(timeoutId)
             resolve(result)
           } catch (error) {
             // Retry if the callback fails (element not found yet)
-            if (error instanceof Error && error.message.includes('Unable to find')) {
+            if (error instanceof Error && error.message.includes("Unable to find")) {
               setTimeout(tryCallback, 10)
             } else {
               clearTimeout(timeoutId)
@@ -129,18 +129,22 @@ export const renderWithWrappersLEGACYAsync = (component: ReactElement) => {
     waitForElements: async (
       elementType: React.ComponentType<any> | string,
       expectedCount: number,
-      timeout: number = 5000
+      timeout = 5000
     ): Promise<ReactTestRenderer.ReactTestInstance[]> => {
       return new Promise((resolve, reject) => {
         const timeoutId = setTimeout(() => {
-          reject(new Error(`waitForElements timed out after ${timeout}ms waiting for ${expectedCount} elements of type ${elementType}`))
+          reject(
+            new Error(
+              `waitForElements timed out after ${timeout}ms waiting for ${expectedCount} elements of type ${elementType}`
+            )
+          )
         }, timeout)
 
         const checkElements = async () => {
           try {
             // Give React time to process updates
-            await new Promise(resolve => setTimeout(resolve, 0))
-            const elements = renderedComponent.root.findAllByType(elementType as any)
+            await new Promise((resolve) => setTimeout(resolve, 0))
+            const elements = await view.root.findAllByType(elementType as any)
             if (elements.length === expectedCount) {
               clearTimeout(timeoutId)
               resolve(elements)
@@ -154,7 +158,7 @@ export const renderWithWrappersLEGACYAsync = (component: ReactElement) => {
 
         checkElements()
       })
-    }
+    },
   }
 }
 
