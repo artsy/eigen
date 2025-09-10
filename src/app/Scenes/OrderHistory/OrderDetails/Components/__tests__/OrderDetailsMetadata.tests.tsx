@@ -56,6 +56,88 @@ describe("OrderDetailsMetadata", () => {
     expect(screen.getByText("24 × 36 in | 61 × 91.4 cm")).toBeOnTheScreen()
   })
 
+  it("renders single dimension when only inches are provided", () => {
+    renderWithRelay({
+      Order: () => ({
+        lineItems: [
+          {
+            artwork: {
+              partner: { name: "Test Partner" },
+            },
+            artworkVersion: {
+              artistNames: "Test Artist",
+              title: "Video Work",
+              date: "2023",
+            },
+            artworkOrEditionSet: {
+              __typename: "Artwork",
+              price: "€500",
+              dimensions: { in: "20 × 30 in", cm: null },
+            },
+          },
+        ],
+      }),
+    })
+
+    expect(screen.getByText("20 × 30 in")).toBeOnTheScreen()
+    expect(screen.queryByText(/\|/)).not.toBeOnTheScreen()
+  })
+
+  it("renders single dimension when only cm are provided", () => {
+    renderWithRelay({
+      Order: () => ({
+        lineItems: [
+          {
+            artwork: {
+              partner: { name: "Test Partner" },
+            },
+            artworkVersion: {
+              artistNames: "Test Artist",
+              title: "Sculpture Work",
+              date: "2023",
+            },
+            artworkOrEditionSet: {
+              __typename: "Artwork",
+              price: "€1000",
+              dimensions: { in: null, cm: "50 × 30 cm" },
+            },
+          },
+        ],
+      }),
+    })
+
+    expect(screen.getByText("50 × 30 cm")).toBeOnTheScreen()
+    expect(screen.queryByText(/\|/)).not.toBeOnTheScreen()
+  })
+
+  it("does not render dimensions when both are null", () => {
+    renderWithRelay({
+      Order: () => ({
+        lineItems: [
+          {
+            artwork: {
+              partner: { name: "Test Partner" },
+            },
+            artworkVersion: {
+              artistNames: "Test Artist",
+              title: "Conceptual Work",
+              date: "2023",
+            },
+            artworkOrEditionSet: {
+              __typename: "Artwork",
+              price: "€750",
+              dimensions: { in: null, cm: null },
+            },
+          },
+        ],
+      }),
+    })
+
+    expect(screen.queryByText(/cm/)).not.toBeOnTheScreen()
+    expect(screen.queryByText(/in/)).not.toBeOnTheScreen()
+    expect(screen.queryByText(/\|/)).not.toBeOnTheScreen()
+  })
+
   it("navigates to the artwork screen", () => {
     renderWithRelay({
       Order: () => ({

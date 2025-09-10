@@ -112,9 +112,11 @@ export const OrderDetailsMetadata: React.FC<OrderDetailsMetadataProps> = ({ orde
         </Text>
       )}
 
-      {!!dimensions && (
+      {(!!dimensions?.in || !!dimensions?.cm) && (
         <Text variant="sm" color="mono60">
-          {dimensions.in} | {dimensions.cm}
+          {dimensions?.in && dimensions?.cm
+            ? `${dimensions.in} | ${dimensions.cm}`
+            : dimensions?.in ?? dimensions?.cm}
         </Text>
       )}
 
