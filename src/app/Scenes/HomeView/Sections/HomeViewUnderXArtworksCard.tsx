@@ -3,12 +3,13 @@ import { RouterLink } from "app/system/navigation/RouterLink"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import { graphql, useFragment } from "react-relay"
 
-interface UnderXArtworksCardProps extends ArtworkActionTrackingProps {
+interface HomeViewUnderXArtworksCardProps extends ArtworkActionTrackingProps {
   artworks: any
 }
-
-export const UnderXArtworksCard: React.FC<UnderXArtworksCardProps> = ({ artworks }) => {
-  const artworksData = useFragment(underXArtworksCard, artworks)
+export const HomeViewUnderXArtworksCard: React.FC<HomeViewUnderXArtworksCardProps> = ({
+  artworks,
+}) => {
+  const artworksData = useFragment(homeViewunderXArtworksCard, artworks)
   const space = useSpace()
   const { width, height } = useScreenDimensions()
 
@@ -96,8 +97,8 @@ export const UnderXArtworksCard: React.FC<UnderXArtworksCardProps> = ({ artworks
   )
 }
 
-const underXArtworksCard = graphql`
-  fragment UnderXArtworksCard_artworks on Artwork @relay(plural: true) {
+const homeViewunderXArtworksCard = graphql`
+  fragment HomeViewUnderXArtworksCard_artworks on Artwork @relay(plural: true) {
     href
     internalID
     slug

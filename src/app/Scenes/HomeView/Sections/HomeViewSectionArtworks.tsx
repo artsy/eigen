@@ -20,8 +20,8 @@ import { ProgressiveOnboardingLongPressContextMenu } from "app/Components/Progre
 import { SectionTitle } from "app/Components/SectionTitle"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { HomeViewStore } from "app/Scenes/HomeView/HomeViewContext"
+import { HomeViewUnderXArtworksCard } from "app/Scenes/HomeView/Sections/HomeViewUnderXArtworksCard"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
-import { UnderXArtworksCard } from "app/Scenes/HomeView/Sections/UnderXArtworksCard"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
@@ -119,7 +119,7 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
           subtitle="James Jean, David Shrigley, Beau B. Frank"
         />
 
-        <UnderXArtworksCard
+        <HomeViewUnderXArtworksCard
           // TODO: should we use another contextModule and contextScreenOwnerType?
           contextModule={section.contextModule as ContextModule}
           contextScreenOwnerType={OwnerType.home}
@@ -194,7 +194,7 @@ const fragment = graphql`
         node {
           isDisliked @include(if: $enableHidingDislikedArtworks)
           ...ArtworkRail_artworks
-          ...UnderXArtworksCard_artworks
+          ...HomeViewUnderXArtworksCard_artworks
         }
       }
     }
