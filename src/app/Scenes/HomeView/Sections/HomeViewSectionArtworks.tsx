@@ -21,6 +21,7 @@ import { SectionTitle } from "app/Components/SectionTitle"
 import { HomeViewSectionSentinel } from "app/Scenes/HomeView/Components/HomeViewSectionSentinel"
 import { HomeViewStore } from "app/Scenes/HomeView/HomeViewContext"
 import { SectionSharedProps } from "app/Scenes/HomeView/Sections/Section"
+import { UnderXArtworksCard } from "app/Scenes/HomeView/Sections/UnderXArtworksCard"
 import { getHomeViewSectionHref } from "app/Scenes/HomeView/helpers/getHomeViewSectionHref"
 import { useHomeViewTracking } from "app/Scenes/HomeView/hooks/useHomeViewTracking"
 import { useItemsImpressionsTracking } from "app/Scenes/HomeView/hooks/useImpressionsTracking"
@@ -100,6 +101,37 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
   // This is a temporary solution to show the long press context menu only on the first artwork section
   const isFirstArtworkSection = section.contextModule === ContextModule.newWorksForYouRail
 
+  const showUnderXArtsowksCard =
+    section.internalID === "home-view-section-new-works-for-you" && artworks.length > 4
+
+  if (showUnderXArtsowksCard) {
+    return (
+      <Flex {...flexProps}>
+        <SectionTitle
+          mx={2}
+          // TODO: align on the title
+          title="Top Picks for You"
+          // TODO: align on the subtitle
+          subtitle="James Jean, David Shrigley, Beau B. Frank"
+        />
+
+        <UnderXArtworksCard
+          // TODO: should we use another contextModule and contextScreenOwnerType?
+          contextModule={section.contextModule as ContextModule}
+          contextScreenOwnerType={OwnerType.home}
+          artworks={artworks}
+        />
+
+        {/* TODO: should we use another contextModule and sectionType? */}
+        <HomeViewSectionSentinel
+          contextModule={section.contextModule as ContextModule}
+          sectionType={section.__typename}
+          index={index}
+        />
+      </Flex>
+    )
+  }
+
   return (
     <Flex {...flexProps}>
       <SectionTitle
@@ -110,7 +142,6 @@ export const HomeViewSectionArtworks: React.FC<HomeViewSectionArtworksProps> = (
       />
 
       {!!isFirstArtworkSection && <ProgressiveOnboardingLongPressContextMenu />}
-
       <ArtworkRail
         contextModule={section.contextModule as ContextModule}
         contextScreenOwnerType={OwnerType.home}
@@ -159,6 +190,7 @@ const fragment = graphql`
         node {
           isDisliked @include(if: $enableHidingDislikedArtworks)
           ...ArtworkRail_artworks
+          ...UnderXArtworksCard_artworks
         }
       }
     }
