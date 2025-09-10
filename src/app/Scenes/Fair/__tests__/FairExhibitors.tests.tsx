@@ -2,7 +2,7 @@ import { FairExhibitorsTestsQuery } from "__generated__/FairExhibitorsTestsQuery
 import { FairExhibitorRailQueryRenderer } from "app/Scenes/Fair/Components/FairExhibitorRail"
 import { FairExhibitorsFragmentContainer } from "app/Scenes/Fair/Components/FairExhibitors"
 import { extractText } from "app/utils/tests/extractText"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappersLEGACYAsync } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
@@ -10,7 +10,7 @@ describe("FairExhibitors", () => {
   const getWrapper = (mockResolvers = {}) => {
     const env = createMockEnvironment()
 
-    const tree = renderWithWrappersLEGACY(
+    const view = renderWithWrappersLEGACYAsync(
       <QueryRenderer<FairExhibitorsTestsQuery>
         environment={env}
         query={graphql`
@@ -40,10 +40,10 @@ describe("FairExhibitors", () => {
       MockPayloadGenerator.generate(operation, mockResolvers)
     )
 
-    return tree
+    return view
   }
 
-  it("renders the rails from exhibitors that have artworks", () => {
+  it("renders the rails from exhibitors that have artworks", async () => {
     const wrapper = getWrapper({
       Fair: () => ({
         exhibitors: {
@@ -69,7 +69,9 @@ describe("FairExhibitors", () => {
         },
       }),
     })
-    expect(wrapper.root.findAllByType(FairExhibitorRailQueryRenderer)).toHaveLength(2)
+
+    const fairRails = await wrapper.waitForElements(FairExhibitorRailQueryRenderer, 2)
+    expect(fairRails).toHaveLength(2)
   })
 
   it("skips over any partners with no artworks", () => {
