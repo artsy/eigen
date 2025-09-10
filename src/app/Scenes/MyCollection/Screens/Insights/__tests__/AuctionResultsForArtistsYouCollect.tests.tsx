@@ -1,35 +1,32 @@
+import { screen } from "@testing-library/react-native"
 import { AuctionResultsForArtistsYouCollect } from "app/Scenes/MyCollection/Screens/Insights/AuctionResultsForArtistsYouCollect"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-import { RelayEnvironmentProvider } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
 
 describe("AuctionResultsForArtistsYouCollect", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  const TestRenderer = () => (
-    <RelayEnvironmentProvider environment={mockEnvironment}>
-      <AuctionResultsForArtistsYouCollect />
-    </RelayEnvironmentProvider>
-  )
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper({
+    Component: (props) => <AuctionResultsForArtistsYouCollect {...props} />,
   })
 
   it("renders auction results", async () => {
-    const { getByTestId } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation({
-        errors: [],
-        data: { me: {} },
-      })
+    renderWithRelay({
+      Me: () => ({
+        myCollectionAuctionResults: {
+          edges: [
+            {
+              node: {
+                internalID: "auction-result-id",
+                artistID: "artist-id",
+                artistName: "Artist Name",
+                title: "Artwork Title",
+                dateText: "2020",
+                mediumText: "Oil on canvas",
+              },
+            },
+          ],
+        },
+      }),
     })
 
-    await flushPromiseQueue()
-
-    expect(getByTestId("Results_Section_List")).toBeTruthy()
+    expect(await screen.findByTestId("Results_Section_List")).toBeTruthy()
   })
 })
