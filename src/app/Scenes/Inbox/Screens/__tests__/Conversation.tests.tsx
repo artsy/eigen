@@ -17,6 +17,7 @@ jest.mock("app/system/navigation/navigate", () => ({
   navigationEvents: {
     addListener: jest.fn(),
     emit: jest.fn(),
+    removeListener: jest.fn(),
   },
 }))
 
