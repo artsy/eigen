@@ -10,6 +10,7 @@ import { useMultiSelect } from "app/Components/ArtworkFilter/Filters/useMultiSel
 import { extractText } from "app/utils/tests/extractText"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { act } from "react"
 import { Text, TouchableHighlight, TouchableWithoutFeedback, View } from "react-native"
 
 describe("useMultiSelect", () => {
@@ -79,26 +80,32 @@ describe("useMultiSelect", () => {
     )
   }
 
-  it("manages the nextParamValues", () => {
+  it("manages the nextParamValues", async () => {
     const tree = renderWithWrappersLEGACY(<MockComponent initialData={initialState} />)
 
     expect(extractText(tree.root.findByProps({ testID: "nextParamValues" }))).toEqual("[]")
 
     const buttons = tree.root.findAllByType(TouchableWithoutFeedback)
 
-    buttons[0].props.onPress()
+    await act(async () => {
+      buttons[0].props.onPress()
+    })
 
     expect(extractText(tree.root.findByProps({ testID: "nextParamValues" }))).toEqual(
       '["example-1"]'
     )
 
-    buttons[2].props.onPress()
+    await act(async () => {
+      buttons[2].props.onPress()
+    })
 
     expect(extractText(tree.root.findByProps({ testID: "nextParamValues" }))).toEqual(
       '["example-1","example-3"]'
     )
 
-    buttons[0].props.onPress()
+    await act(async () => {
+      buttons[0].props.onPress()
+    })
 
     expect(extractText(tree.root.findByProps({ testID: "nextParamValues" }))).toEqual(
       '["example-3"]'
