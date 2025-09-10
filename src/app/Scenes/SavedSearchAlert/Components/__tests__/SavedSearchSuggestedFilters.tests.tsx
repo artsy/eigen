@@ -1,4 +1,3 @@
-import { access } from "fs"
 import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { SavedSearchSuggestedFilters } from "app/Scenes/SavedSearchAlert/Components/SavedSearchSuggestedFilters"

@@ -1,4 +1,3 @@
-import { flush } from "@sentry/react-native"
 import { act, waitFor } from "@testing-library/react-native"
 import { CascadingEndTimesBanner } from "app/Scenes/Artwork/Components/CascadingEndTimesBanner"
 import { RegisterToBidButtonContainer } from "app/Scenes/Sale/Components/RegisterToBidButton"
