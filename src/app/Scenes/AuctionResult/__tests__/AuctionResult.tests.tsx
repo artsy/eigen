@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react-native"
+import { act, screen } from "@testing-library/react-native"
 import { AuctionResult_artist$data } from "__generated__/AuctionResult_artist.graphql"
 import { AuctionResult_auctionResult$data } from "__generated__/AuctionResult_auctionResult.graphql"
 import { AuctionResultQueryRenderer } from "app/Scenes/AuctionResult/AuctionResult"
@@ -37,7 +37,9 @@ describe("Activity", () => {
       Artist: () => artistFixture,
     })
 
-    await flushPromiseQueue()
+    await act(async () => {
+      await flushPromiseQueue()
+    })
 
     expect(screen.getAllByText("Pulp Fiction")).toBeTruthy()
     expect(screen.getAllByText("Bonhams")).toBeTruthy()
