@@ -72,6 +72,93 @@ export const renderWithWrappersLEGACY = (component: ReactElement) => {
 }
 
 /**
+ * Enhanced version of renderWithWrappersLEGACY that provides utilities for React 19 compatibility.
+ * Use this when you need to wait for async operations like Relay mock resolutions.
+ * 
+ * @param component - The React component to render
+ * @returns An object with the rendered component and helper methods
+ */
+export const renderWithWrappersLEGACYAsync = (component: ReactElement) => {
+  const renderedComponent = renderWithWrappersLEGACY(component)
+  
+  return {
+    ...renderedComponent,
+    
+    /**
+     * Wait for async operations to complete, then execute a callback with access to the root
+     * @param callback - Function that receives the root and can make assertions
+     * @param timeout - Optional timeout in ms (default: 5000)
+     */
+    waitForAsync: async <T = void>(
+      callback: (root: ReactTestRenderer.ReactTestInstance) => T | Promise<T>,
+      timeout: number = 5000
+    ): Promise<T> => {
+      return new Promise((resolve, reject) => {
+        const timeoutId = setTimeout(() => {
+          reject(new Error(`waitForAsync timed out after ${timeout}ms`))
+        }, timeout)
+
+        const tryCallback = async () => {
+          try {
+            // Give React time to process updates
+            await new Promise(resolve => setTimeout(resolve, 0))
+            const result = await callback(renderedComponent.root)
+            clearTimeout(timeoutId)
+            resolve(result)
+          } catch (error) {
+            // Retry if the callback fails (element not found yet)
+            if (error instanceof Error && error.message.includes('Unable to find')) {
+              setTimeout(tryCallback, 10)
+            } else {
+              clearTimeout(timeoutId)
+              reject(error)
+            }
+          }
+        }
+
+        tryCallback()
+      })
+    },
+
+    /**
+     * Wait for a specific number of elements of a given type to appear
+     * @param elementType - The component type to find
+     * @param expectedCount - Expected number of elements
+     * @param timeout - Optional timeout in ms (default: 5000)
+     */
+    waitForElements: async (
+      elementType: React.ComponentType<any> | string,
+      expectedCount: number,
+      timeout: number = 5000
+    ): Promise<ReactTestRenderer.ReactTestInstance[]> => {
+      return new Promise((resolve, reject) => {
+        const timeoutId = setTimeout(() => {
+          reject(new Error(`waitForElements timed out after ${timeout}ms waiting for ${expectedCount} elements of type ${elementType}`))
+        }, timeout)
+
+        const checkElements = async () => {
+          try {
+            // Give React time to process updates
+            await new Promise(resolve => setTimeout(resolve, 0))
+            const elements = renderedComponent.root.findAllByType(elementType as any)
+            if (elements.length === expectedCount) {
+              clearTimeout(timeoutId)
+              resolve(elements)
+            } else {
+              setTimeout(checkElements, 10)
+            }
+          } catch (error) {
+            setTimeout(checkElements, 10)
+          }
+        }
+
+        checkElements()
+      })
+    }
+  }
+}
+
+/**
  * Renders a React Component with our page wrappers
  * by using @testing-library/react-native
  * IMPORTANT: It is meant to be used for non-Relay components
