@@ -1,3 +1,4 @@
+import { access } from "fs"
 import { OwnerType } from "@artsy/cohesion"
 import { fireEvent, screen } from "@testing-library/react-native"
 import { SavedSearchSuggestedFilters } from "app/Scenes/SavedSearchAlert/Components/SavedSearchSuggestedFilters"
@@ -8,7 +9,7 @@ import {
 } from "app/Scenes/SavedSearchAlert/SavedSearchStore"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Suspense } from "react"
+import { act, Suspense } from "react"
 
 const mockNavigate = jest.fn()
 
@@ -39,7 +40,9 @@ describe("SavedSearchSuggestedFilters", () => {
     it("show Add Filters Menu", async () => {
       renderWithRelay({ PreviewSavedSearch: () => ({ suggestedFilters: [] }) })
 
-      await flushPromiseQueue()
+      await act(async () => {
+        await flushPromiseQueue()
+      })
 
       expect(screen.getByText("Add Filters")).toBeTruthy()
     })
@@ -48,7 +51,9 @@ describe("SavedSearchSuggestedFilters", () => {
     it("shows all suggested filters unselected", async () => {
       renderWithRelay({ PreviewSavedSearch: () => ({ suggestedFilters: mockSuggestedFilters }) })
 
-      await flushPromiseQueue()
+      await act(async () => {
+        await flushPromiseQueue()
+      })
 
       mockSuggestedFilters.forEach((filter) => {
         expect(screen.getByText(filter.displayValue)).toBeTruthy()
@@ -78,7 +83,9 @@ describe("SavedSearchSuggestedFilters", () => {
         }),
       })
 
-      await flushPromiseQueue()
+      await act(async () => {
+        await flushPromiseQueue()
+      })
 
       mockSuggestedFilters.forEach((filter) => {
         expect(screen.getByText(filter.displayValue)).toBeTruthy()
@@ -92,7 +99,9 @@ describe("SavedSearchSuggestedFilters", () => {
     it("navigates to filters screen on See More press", async () => {
       renderWithRelay({ PreviewSavedSearch: () => ({ suggestedFilters: mockSuggestedFilters }) })
 
-      await flushPromiseQueue()
+      await act(async () => {
+        await flushPromiseQueue()
+      })
 
       const moreFiltersButton = screen.getByText("More Filters")
       fireEvent(moreFiltersButton, "onPress")
