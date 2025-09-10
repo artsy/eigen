@@ -9,9 +9,9 @@ describe("MyCollectionCollectedArtistsPrivacy", () => {
   const { renderWithRelay } = setupTestWrapper<MyCollectionCollectedArtistsPrivacyQuery>({
     Component: MyCollectionCollectedArtistsPrivacyQueryRenderer,
     query: graphql`
-      query MyCollectionCollectedArtistsPrivacyQuery {
+      query MyCollectionCollectedArtistsPrivacy_Test_Query @relay_test_operation {
         me {
-          ...MyCollectionCollectedArtistsPrivacy_me
+          ...MyCollectionCollectedArtistsPrivacyArtistsList_me
         }
       }
     `,
