@@ -53,8 +53,9 @@ describe("LoginWelcomeStep", () => {
       renderExpandedWelcomeStep()
 
       fireEvent.press(screen.getByA11yHint("Go back to the previous screen"))
-
-      jest.advanceTimersByTime(1000)
+      act(() => {
+        jest.advanceTimersByTime(1000)
+      })
 
       expect(screen.queryByA11yHint("Go back to the previous screen")).not.toBeOnTheScreen()
       expect(screen.queryByA11yHint("Continue to the next screen")).not.toBeOnTheScreen()
@@ -178,6 +179,5 @@ const renderWelcomeStep = () => {
 const renderExpandedWelcomeStep = () => {
   renderWelcomeStep()
   fireEvent(screen.getByA11yHint("Enter your email address"), "focus")
-
   jest.advanceTimersByTime(1000)
 }

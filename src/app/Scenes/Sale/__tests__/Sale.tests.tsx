@@ -9,10 +9,6 @@ import { DateTime } from "luxon"
 import { Suspense } from "react"
 import { MockPayloadGenerator, createMockEnvironment } from "relay-test-utils"
 
-jest.mock("app/system/navigation/navigate", () => ({
-  navigate: jest.fn(),
-}))
-
 describe("Sale", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
@@ -50,6 +46,7 @@ describe("Sale", () => {
     )
 
     expect(navigate).toHaveBeenCalledTimes(0)
+
     await waitFor(() => expect(navigate).toHaveBeenCalledTimes(1))
     await waitFor(() =>
       expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug", {})

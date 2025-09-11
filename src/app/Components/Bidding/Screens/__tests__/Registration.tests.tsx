@@ -172,11 +172,14 @@ describe("when pressing register button", () => {
       <Registration {...initialPropsForUserWithoutCreditCardOrPhone} />
     )
     const registrationComponent = await root.findByType(Registration)
-    registrationComponent.instance.setState({
-      conditionsOfSaleChecked: true,
-      billingAddress,
-      creditCardToken: stripeToken.token,
-    })
+
+    act(() =>
+      registrationComponent.instance.setState({
+        conditionsOfSaleChecked: true,
+        billingAddress,
+        creditCardToken: stripeToken.token,
+      })
+    )
 
     const registerButton = await root.findByProps({ testID: "register-button" })
     await registerButton.props.onPress()
@@ -216,12 +219,14 @@ describe("when pressing register button", () => {
   })
 
   it("when there is a credit card on file, it commits mutation", async () => {
+    relay.commitMutation = jest.fn()
     const view = renderWithWrappersLEGACY(
       <Registration {...initialPropsForUserWithCreditCardAndPhone} />
     )
-    ;(await view.root.findByType(Registration)).instance.setState({ conditionsOfSaleChecked: true })
 
-    relay.commitMutation = jest.fn()
+    ;(await view.root.findByType(Registration)).instance.setState({
+      conditionsOfSaleChecked: true,
+    })
     ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
 
     expect(relay.commitMutation).toHaveBeenCalled()
@@ -237,15 +242,19 @@ describe("when pressing register button", () => {
 
     const registrationComponent = await root.findByType(Registration)
 
-    registrationComponent.instance.setState({
-      conditionsOfSaleChecked: true,
-      creditCardToken: stripeToken,
-      billingAddress,
+    act(() => {
+      registrationComponent.instance.setState({
+        conditionsOfSaleChecked: true,
+        creditCardToken: stripeToken,
+        billingAddress,
+      })
     })
 
     const registerButton = await root.findByProps({ testID: "register-button" })
 
-    registerButton.props.onPress()
+    act(() => {
+      registerButton.props.onPress()
+    })
 
     const buttons = await root.findAllByType(TouchableWithoutFeedback)
 
@@ -575,7 +584,10 @@ describe("when pressing register button", () => {
 
     const view = renderWithWrappersLEGACY(<Registration {...propsWithIDVSale} />)
 
-    ;(await view.root.findByType(Checkbox)).props.onPress()
+    await act(async () => {
+      const checkbox = await view.root.findByType(Checkbox)
+      checkbox.props.onPress()
+    })
     ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
 
     expect(mockNavigator.navigate).toHaveBeenCalledWith("RegistrationResult", {
@@ -596,7 +608,10 @@ describe("when pressing register button", () => {
       <Registration {...initialPropsForUserWithCreditCardAndPhone} />
     )
 
-    ;(await view.root.findByType(Checkbox)).props.onPress()
+    await act(async () => {
+      const checkbox = await view.root.findByType(Checkbox)
+      checkbox.props.onPress()
+    })
     ;(await view.root.findByProps({ testID: "register-button" })).props.onPress()
 
     expect(mockPostNotificationName).toHaveBeenCalledWith("ARAuctionArtworkRegistrationUpdated", {

@@ -76,9 +76,13 @@ describe("regarding the send button", () => {
     // This is because the component is wrapped by react-tracking, which changes the tree structure
     const tree = getWrapper({}, { onSubmit })
     const text = "Don't trust everything you see, even salt looks like sugar"
-    tree.root.findByType(TextInput).props.onChangeText(text)
+    act(() => {
+      tree.root.findByType(TextInput).props.onChangeText(text)
+    })
+
     tree.root.findByType(TouchableWithoutFeedback).props.onPress()
-    expect(onSubmit).toBeCalledWith(text)
+
+    expect(onSubmit).toHaveBeenCalledWith(text)
   })
 })
 

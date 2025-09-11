@@ -78,7 +78,7 @@ describe("CustomH2Renderer", () => {
     expect(screen.getByText("Artist Follow Button")).toBeTruthy()
     expect(mockArtistFollowButtonQueryRenderer).toHaveBeenCalledWith(
       expect.objectContaining({ artistID: "banksy" }),
-      expect.anything()
+      undefined
     )
   })
 
@@ -92,7 +92,7 @@ describe("CustomH2Renderer", () => {
     expect(screen.getByText("Partner Follow Button")).toBeTruthy()
     expect(mockPartnerFollowButtonQueryRenderer).toHaveBeenCalledWith(
       expect.objectContaining({ partnerID: "gagosian" }),
-      expect.anything()
+      undefined
     )
   })
 
@@ -125,7 +125,7 @@ describe("CustomH2Renderer", () => {
     expect(screen.getByText("Artist Follow Button")).toBeTruthy()
     expect(mockArtistFollowButtonQueryRenderer).toHaveBeenCalledWith(
       expect.objectContaining({ artistID: "kaws" }),
-      expect.anything()
+      undefined
     )
   })
 
@@ -159,7 +159,7 @@ describe("CustomH2Renderer", () => {
     expect(screen.getByText("Artist Follow Button")).toBeTruthy()
     expect(mockArtistFollowButtonQueryRenderer).toHaveBeenCalledWith(
       expect.objectContaining({ artistID: "banksy" }),
-      expect.anything()
+      undefined
     )
   })
 })

@@ -1,5 +1,5 @@
 import { Touchable } from "@artsy/palette-mobile"
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { TOAST_DURATION_MAP } from "app/Components/Toast/ToastComponent"
 import { useToast } from "app/Components/Toast/toastHook"
 import { ToastOptions, ToastPlacement } from "app/Components/Toast/types"
@@ -64,7 +64,9 @@ describe("Toast", () => {
     fireEvent.press(button)
 
     expect(screen.getByText("Consider yourself toasted!")).toBeOnTheScreen()
-    jest.advanceTimersByTime(TOAST_DURATION_MAP[duration] - 1000)
+    act(() => {
+      jest.advanceTimersByTime(TOAST_DURATION_MAP[duration] - 1000)
+    })
 
     // expects the toast to still be on the screen
     expect(screen.getByText("Consider yourself toasted!")).toBeOnTheScreen()
@@ -75,12 +77,13 @@ describe("Toast", () => {
     renderWithWrappers(<TestRenderer toastOptions={{ duration }} />)
 
     const button = screen.getByText("Some button text")
+
     fireEvent.press(button)
 
     expect(screen.getByText("Consider yourself toasted!")).toBeOnTheScreen()
 
     const ANIMATION_DURATION = 500
-    jest.advanceTimersByTime(TOAST_DURATION_MAP[duration] + ANIMATION_DURATION)
+    act(() => jest.advanceTimersByTime(TOAST_DURATION_MAP[duration] + ANIMATION_DURATION))
 
     expect(screen.queryByText("Consider yourself toasted!")).not.toBeOnTheScreen()
   })
