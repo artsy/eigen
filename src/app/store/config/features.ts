@@ -208,7 +208,7 @@ export const features = {
   },
   AREnableArtworkSaveIconAnimation: {
     description: "Enable artwork save icon animation",
-    readyForRelease: false,
+    readyForRelease: true,
     showInDevMenu: true,
     echoFlagKey: "AREnableArtworkSaveIconAnimation",
   },
