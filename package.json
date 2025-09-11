@@ -4,7 +4,7 @@
   "license": "MIT",
   "description": "Artsy mobile app.",
   "engines": {
-    "node": "20.x",
+    "node": "22.x",
     "yarn": "1.x"
   },
   "reactNativePermissionsIOS": [
@@ -227,6 +227,9 @@
     "@react-native/metro-config": "0.77.3",
     "@react-native/typescript-config": "0.77.3",
     "@react-navigation/devtools": "7.0.20",
+    "@rozenite/metro": "^1.0.0-alpha.12",
+    "@rozenite/network-activity-plugin": "1.0.0-alpha.12",
+    "@rozenite/performance-monitor-plugin": "1.0.0-alpha.12",
     "@testing-library/react-native": "13.2.0",
     "@types/argparse": "2.0.10",
     "@types/autosuggest-highlight": "3.2.3",
@@ -237,7 +240,6 @@
     "@types/lodash": "4.14.180",
     "@types/luxon": "2.0.9",
     "@types/moment-timezone": "0.5.30",
-    "@types/node": "14.18.32",
     "@types/qs": "6.9.7",
     "@types/query-string": "5.0.1",
     "@types/react": "18.3.12",
@@ -303,9 +305,9 @@
     "postinstall-prepare": "1.0.1",
     "prettier": "3.1.1",
     "prompt-sync": "4.2.0",
-    "prop-types": "15.7.2",
     "pull-lock": "1.0.0",
     "react-dom": "18.3.1",
+    "react-native-performance": "5.1.4",
     "react-relay-network-modern": "6.2.2",
     "react-test-renderer": "18.3.1",
     "reactotron-react-native": "5.1.7",
@@ -325,7 +327,8 @@
     "@types/react": "18.3.12",
     "@types/relay-runtime": "18.2.0",
     "@types/react-relay": "18.2.0",
-    "braces": "^3.0.3"
+    "braces": "^3.0.3",
+    "@react-native/dev-middleware": "0.77.3"
   },
   "pull-lock": {
     "ios/Podfile.lock": "echo \"🚨 New Podfile.lock detected!, you might need to run yarn install:all\" 🚨",
