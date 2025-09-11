@@ -28,6 +28,7 @@ const { Platform } = require("react-native")
 require("react-native-gesture-handler")
 const { App } = require("./src/app/App")
 
+// Initialize push notifications for both iOS and Android
 if (Platform.OS === "android") {
   require("./src/app/utils/PushNotification").configure()
 }
