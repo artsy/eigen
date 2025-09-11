@@ -226,6 +226,7 @@ export const LocationMap: React.FC<Props> = (props) => {
   return (
     <TouchableOpacity
       accessibilityRole="button"
+      accessibilityLabel="map"
       onPress={() =>
         showActionSheetWithOptions(
           ...tappedOnMap(lat, lng, address, summary, partnerName, city, postalCode)
