@@ -1,7 +1,6 @@
 import { Button, Checkbox, LinkText, Text } from "@artsy/palette-mobile"
 import { createToken } from "@stripe/stripe-react-native"
-import { fireEvent, screen } from "@testing-library/react-native"
-import { act } from "react-test-renderer"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { Registration_me$data } from "__generated__/Registration_me.graphql"
 import { Registration_sale$data } from "__generated__/Registration_sale.graphql"
 import { BidInfoRow } from "app/Components/Bidding/Components/BidInfoRow"
@@ -632,7 +631,7 @@ describe("when pressing register button", () => {
       const checkbox = await view.root.findByType(Checkbox)
       checkbox.props.onPress()
     })
-    
+
     await act(async () => {
       const registerButton = await view.root.findByProps({ testID: "register-button" })
       registerButton.props.onPress()
