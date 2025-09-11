@@ -195,6 +195,7 @@ const fragment = graphql`
           isDisliked @include(if: $enableHidingDislikedArtworks)
           ...ArtworkRail_artworks
           ...HomeViewUnderXArtworksCard_artworks
+          ...ArtworksCarousel_artworks
         }
       }
     }
