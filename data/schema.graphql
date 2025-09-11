@@ -3137,6 +3137,99 @@ union ArtworkFigures = Image | Video
 
 union ArtworkFilterFacet = Gene | Tag
 
+type ArtworkFilterNode {
+  # Artworks Elastic Search results
+  artworksConnection(
+    acquireable: Boolean
+    additionalGeneIDs: [String]
+    after: String
+    aggregationPartnerCities: [String]
+    aggregations: [ArtworkAggregation]
+    artistID: String
+    artistIDs: [String]
+    artistNationalities: [String]
+    artistSeriesID: String
+    artistSeriesIDs: [String]
+
+    # When provided, will only return artworks with these IDs.
+    artworkIDs: [String]
+    atAuction: Boolean
+    attributionClass: [String]
+    availability: String
+    before: String
+    categories: [String]
+    color: String
+    colors: [String]
+    dimensionRange: String
+
+    # When true, will skip pushing sold works to the back of the list. Useful in a CMS context.
+    disableNotForSaleSorting: Boolean
+    excludeArtworkIDs: [String]
+    extraAggregationGeneIDs: [String]
+    first: Int
+    forSale: Boolean
+
+    # When true, will only return framed artworks.
+    framed: Boolean
+    geneID: String
+    geneIDs: [String]
+    height: String
+    importSources: [String]
+    includeAllJSON: Boolean
+    includeArtworksByFollowedArtists: Boolean
+    includeMediumFilterInAggregation: Boolean
+    includeUnpublished: Boolean
+    input: FilterArtworksInput
+    inquireableOnly: Boolean
+    keyword: String
+
+    # When true, will only return exact keyword match
+    keywordMatchExact: Boolean
+    last: Int
+    locationCities: [String]
+    majorPeriods: [String]
+
+    # When true, will only return `marketable` works (not nude or provocative).
+    marketable: Boolean
+    marketingCollectionID: String
+    materialsTerms: [String]
+
+    # A string from the list of allocations, or * to denote all mediums
+    medium: String
+    offerable: Boolean
+    page: Int
+    partnerCities: [String]
+    partnerID: ID
+    partnerIDs: [String]
+    period: String
+    periods: [String]
+    priceRange: String
+
+    # When false, will only return unpublished artworks for authorized users.
+    published: Boolean
+    saleID: ID
+    showID: String
+
+    # When true, will only return signed artworks.
+    signed: Boolean
+    size: Int
+
+    # Filter results by Artwork sizes
+    sizes: [ArtworkSizes]
+    sold: Boolean
+    sort: String
+    tagID: String
+    visibilityLevel: String
+    width: String
+  ): FilterArtworksConnection
+
+  # The href for this filtered connection
+  href: String!
+
+  # The display title for this filtered connection
+  title: String!
+}
+
 union ArtworkHighlight = Article | Show
 
 type ArtworkImport implements Node {
@@ -10914,12 +11007,29 @@ type DiscoveryCategoriesConnectionEdge {
 }
 
 # A category for discovering and browsing art
-type DiscoveryCategory {
+type DiscoveryCategory implements Node {
   # The ID of the category
   category: String!
 
+  # A connection of artwork filters for this category
+  filtersForArtworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): FiltersForArtworksConnectionConnection
+
+  # The href of the category
+  href: String!
+
+  # A globally unique ID.
+  id: ID!
+
   # The URL of the image representing this category
   imageUrl: String
+
+  # A type-specific ID
+  internalID: String!
 
   # The slug of the category
   slug: String
@@ -12068,6 +12178,26 @@ type FilterSaleArtworksCounts {
     format: String
     label: String
   ): FormattedNumber
+}
+
+# A connection to a list of items.
+type FiltersForArtworksConnectionConnection {
+  # A list of edges.
+  edges: [FiltersForArtworksConnectionEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type FiltersForArtworksConnectionEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: ArtworkFilterNode
 }
 
 type FollowArtist {
@@ -19329,6 +19459,12 @@ type Query {
     last: Int
   ): DiscoveryCategoriesConnectionConnection
 
+  # A single discovery category for browsing art by slug
+  discoveryCategoryConnection(
+    # The slug of the discovery category to retrieve
+    slug: String!
+  ): DiscoveryCategory
+
   # Discovery Marketing Collections for personalized recommendations
   discoveryMarketingCollections(
     after: String
@@ -25198,6 +25334,12 @@ type Viewer {
     first: Int
     last: Int
   ): DiscoveryCategoriesConnectionConnection
+
+  # A single discovery category for browsing art by slug
+  discoveryCategoryConnection(
+    # The slug of the discovery category to retrieve
+    slug: String!
+  ): DiscoveryCategory
 
   # Discovery Marketing Collections for personalized recommendations
   discoveryMarketingCollections(
