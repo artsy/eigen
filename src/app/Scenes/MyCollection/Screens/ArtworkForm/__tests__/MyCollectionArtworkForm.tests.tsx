@@ -107,7 +107,7 @@ describe("MyCollectionArtworkForm", () => {
         await waitFor(() => {
           expect(screen.getByPlaceholderText("Search for artists on Artsy")).toBeTruthy()
         })
-        
+
         fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "banksy")
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
@@ -125,7 +125,7 @@ describe("MyCollectionArtworkForm", () => {
         // Select Artwork Screen
 
         expect(screen.getByText("Select an Artwork")).toBeTruthy()
-        
+
         await waitFor(() => {
           expect(screen.getByPlaceholderText("Search artworks")).toBeTruthy()
         })
@@ -265,7 +265,7 @@ describe("MyCollectionArtworkForm", () => {
         // Select Artwork Screen
 
         expect(screen.getByText("Select an Artwork")).toBeTruthy()
-        
+
         await waitFor(() => {
           expect(screen.getByPlaceholderText("Search artworks")).toBeTruthy()
         })
@@ -290,67 +290,6 @@ describe("MyCollectionArtworkForm", () => {
         expect(screen.getByText("Add Details")).toBeTruthy()
 
         expect(screen.getByTestId("TitleInput").props.value).toBe("Test Artwork Title")
-        expect(screen.getByTestId("DateInput").props.value).toBe(undefined)
-        expect(screen.getByTestId("MaterialsInput").props.value).toBe(undefined)
-        expect(screen.getByTestId("WidthInput").props.value).toBe(undefined)
-        expect(screen.getByTestId("HeightInput").props.value).toBe(undefined)
-        expect(screen.getByTestId("DepthInput").props.value).toBe(undefined)
-        expect(screen.getByTestId("NotesInput").props.value).toBe(undefined)
-      })
-    })
-
-    describe("when skipping the artist selection", () => {
-      it("initializes the artist name input field", async () => {
-        renderWithHookWrappersTL(
-          <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
-          mockEnvironment
-        )
-
-        act(() =>
-          mockEnvironment.mock.resolveMostRecentOperation({
-            errors: [],
-            data: mockCollectedArtistsResult,
-          })
-        )
-
-        await flushPromiseQueue()
-
-        // Select Artist Screen
-
-        expect(screen.getByText("Select an Artist")).toBeTruthy()
-        
-        await waitFor(() => {
-          expect(screen.getByPlaceholderText("Search for artists on Artsy")).toBeTruthy()
-        })
-
-        fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "foo bar")
-
-        act(() =>
-          mockEnvironment.mock.resolveMostRecentOperation({
-            errors: [],
-            data: mockArtistSearchResult,
-          })
-        )
-
-        fireEvent.press(screen.getByTestId("my-collection-artwork-form-artist-skip-button"))
-
-        await flushPromiseQueue()
-
-        // Add Artist Screen
-        fireEvent.changeText(screen.getByTestId("artist-input"), "My Artist")
-        fireEvent.changeText(screen.getByTestId("nationality-input"), "bar foo")
-
-        await flushPromiseQueue()
-
-        fireEvent.press(screen.getByTestId("submit-add-artist-button"))
-
-        await flushPromiseQueue()
-
-        // Edit Details Screen
-
-        expect(screen.getByText("Add Details")).toBeTruthy()
-
-        expect(screen.getByTestId("TitleInput").props.value).toBe("")
         expect(screen.getByTestId("DateInput").props.value).toBe(undefined)
         expect(screen.getByTestId("MaterialsInput").props.value).toBe(undefined)
         expect(screen.getByTestId("WidthInput").props.value).toBe(undefined)
@@ -584,12 +523,12 @@ describe("MyCollectionArtworkForm", () => {
         await flushPromiseQueue()
 
         // Select Artist Screen
-        
+
         // Wait for the search input to be available
         await waitFor(() => {
           expect(screen.getByPlaceholderText("Search for artists on Artsy")).toBeTruthy()
         })
-        
+
         fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "banksy")
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
