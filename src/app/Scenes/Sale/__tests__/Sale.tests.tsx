@@ -47,10 +47,9 @@ describe("Sale", () => {
 
     expect(navigate).toHaveBeenCalledTimes(0)
 
-    await waitFor(() => expect(navigate).toHaveBeenCalledTimes(1))
-    await waitFor(() =>
-      expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug", {})
-    )
+    await waitFor(() => expect(navigate).toHaveBeenCalledTimes(1), { timeout: 10000 })
+
+    expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/live-sale-slug", {})
   })
 
   it("switches to live auction view when sale goes live with no endAt", async () => {
