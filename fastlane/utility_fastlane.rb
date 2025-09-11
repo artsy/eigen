@@ -324,6 +324,56 @@ rescue => e
   UI.error("Failed to write to #{path}: #{e.message}")
 end
 
+def detect_github_pr_number(github_repo)
+
+  return nil unless github_repo && ENV["CHANGELOG_GITHUB_TOKEN_KEY"]
+
+  begin
+    # Get current commit SHA
+    current_sha = `git rev-parse HEAD`.strip
+    return nil if current_sha.empty?
+
+    UI.message("Looking for PR containing commit: #{current_sha[0..7]}...")
+
+    # Search for PRs containing this commit
+    response = github_api(
+      api_token: ENV["CHANGELOG_GITHUB_TOKEN_KEY"],
+      http_method: "GET",
+      path: "/repos/#{github_repo}/commits/#{current_sha}/pulls"
+    )
+
+    if response && response.any?
+      pr_number = response.first['number'].to_s
+      UI.success("🎯 Found PR ##{pr_number} containing current commit")
+      return pr_number
+    end
+
+    current_branch = `git rev-parse --abbrev-ref HEAD`.strip
+    if current_branch && current_branch != 'HEAD' && current_branch != 'main' && current_branch != 'master'
+      UI.message("Searching for PR with branch: #{current_branch}")
+
+      response = github_api(
+        api_token: ENV["CHANGELOG_GITHUB_TOKEN_KEY"],
+        http_method: "GET",
+        path: "/repos/#{github_repo}/pulls",
+        body: { head: "#{github_repo.split('/').first}:#{current_branch}", state: 'open' }
+      )
+
+      if response && response.any?
+        pr_number = response.first['number'].to_s
+        UI.success("🎯 Found open PR ##{pr_number} for branch: #{current_branch}")
+        return pr_number
+      end
+    end
+
+  rescue => e
+    UI.message("Could not auto-detect PR number via GitHub API: #{e.message}")
+  end
+
+  UI.message("ℹ️  No PR number detected automatically")
+  nil
+end
+
 def upload_ios_maestro_to_s3
   app_name = "Artsy"
   derived_data_path = ENV['DERIVED_DATA_PATH'] || 'derived_data'
@@ -416,5 +466,61 @@ def ios_build_params(deployment_target)
     }
   else
     raise "Unknown deployment target: #{deployment_target}"
+  end
+end
+
+desc "Add a GitHub comment with the build tag after successful deployment"
+lane :add_github_deployment_comment do |options|
+  build_tag = options[:build_tag]
+  platform = options[:platform]
+  deployment_target = options[:deployment_target]
+
+  return unless build_tag && platform
+
+  # Get GitHub information from environment
+  github_repo = ENV['GITHUB_REPOSITORY']
+  run_id = ENV['GITHUB_RUN_ID']
+  pr_number = detect_github_pr_number(github_repo)
+
+  # Skip if we don't have the necessary GitHub environment variables
+  return unless github_repo && (run_id || pr_number)
+
+  platform_emoji = case platform.downcase
+                   when 'ios'
+                     '🍏'
+                   when 'android'
+                     '🤖'
+                   else
+                     '⁉️'
+                   end
+
+  target_text = deployment_target == 'testflight' || deployment_target == 'play_store' ? 'store' : deployment_target
+
+  message = "#{platform_emoji} **#{platform.capitalize} #{target_text} deployment successful!**\n\n"
+  message += "**Build tag:** `#{build_tag}`\n"
+
+  if run_id
+    github_url = "https://github.com/#{github_repo}/actions/runs/#{run_id}"
+    message += "**GitHub Actions:** [View run](#{github_url})"
+  end
+
+  begin
+    if pr_number
+      # Comment on the PR
+      github_api(
+        api_token: ENV["CHANGELOG_GITHUB_TOKEN_KEY"],
+        http_method: "POST",
+        path: "/repos/#{github_repo}/issues/#{pr_number}/comments",
+        body: { body: message }
+      )
+      UI.success("✅ Added GitHub comment to PR ##{pr_number} for #{platform} deployment: #{build_tag}")
+    else
+      # If no PR, we could optionally create a commit comment or issue
+      UI.message("ℹ️  GitHub deployment comment created for #{platform}: #{build_tag}")
+      UI.message("Message: #{message}")
+    end
+  rescue => e
+    UI.error("❌ Failed to add GitHub comment: #{e.message}")
+    # Don't fail the deployment if GitHub comment fails
   end
 end
