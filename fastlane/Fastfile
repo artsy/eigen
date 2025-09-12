@@ -64,55 +64,62 @@ end
 
 desc 'Ships iOS beta to TestFlight or Firebase'
 lane :ship_beta_ios do |options|
-  deployment_target = options[:deployment_target] || 'testflight' # default to 'testflight'
+  begin
+    deployment_target = options[:deployment_target] || 'testflight' # default to 'testflight'
 
-  bundle_version = set_build_version_ios
-  set_git_properties_ios
+    bundle_version = set_build_version_ios
+    set_git_properties_ios
 
-  latest_version = $APP_JSON['version']
+    latest_version = $APP_JSON['version']
 
-  # Builds the app
-  sync_signing_ios(deployment_target: deployment_target)
-  tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
+    # Builds the app
+    sync_signing_ios(deployment_target: deployment_target)
+    tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
 
-  # Add badge if firebase deployment
-  if deployment_target == 'firebase'
-    puts "Adding badge for firebase deployment..."
-    # The spaces at the beginning and end are important to avoid the badge being cut off
-    add_badge(shield: " #{bundle_version}-#{FIREBASE_BADGE_TEXT_COLOR} ", custom: FIREBASE_BADGE_IMAGE_PATH)
-    UI.success("✅ Badge added for firebase deployment")
+    # Add badge if firebase deployment
+    if deployment_target == 'firebase'
+      puts "Adding badge for firebase deployment..."
+      # The spaces at the beginning and end are important to avoid the badge being cut off
+      add_badge(shield: " #{bundle_version}-#{FIREBASE_BADGE_TEXT_COLOR} ", custom: FIREBASE_BADGE_IMAGE_PATH)
+      UI.success("✅ Badge added for firebase deployment")
+    end
+
+    # Workaround for timeout in ci
+    ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
+
+    build_params = ios_build_params(deployment_target)
+    build_ios_app(**build_params)
+
+    # avoid duplicate uploads to sentry
+    if (deployment_target == 'testflight')
+      # important! this must match the release version specified
+      # in Eigen in order for sourcemaps to work correctly
+      sentry_release_name = "ios-#{latest_version}-#{bundle_version}"
+      extract_ios_bundle_and_sourcemap(
+        archive_root: "../archives",
+        dist_dir: "../dist/ios",
+        app_name: "Artsy"
+      )
+
+      upload_sentry_artifacts(
+        sentry_release_name: sentry_release_name,
+        dist_version: bundle_version,
+        platform: 'ios'
+      )
+    elsif (deployment_target == 'firebase')
+      upload_dsyms_to_sentry(
+        project_slug: 'eigen',
+        org_slug: 'artsynet'
+      )
+    end
+
+    deploy_ios_beta(deployment_target: deployment_target)
+  rescue => e
+    if is_ci
+      notify_build_failed(exception: e, lane_name: 'ship_beta_ios', platform: 'ios')
+    end
+    UI.error("Build failed with error: #{e.message}")
   end
-
-  # Workaround for timeout in ci
-  ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
-
-  build_params = ios_build_params(deployment_target)
-  build_ios_app(**build_params)
-
-  # avoid duplicate uploads to sentry
-  if (deployment_target == 'testflight')
-    # important! this must match the release version specified
-    # in Eigen in order for sourcemaps to work correctly
-    sentry_release_name = "ios-#{latest_version}-#{bundle_version}"
-    extract_ios_bundle_and_sourcemap(
-      archive_root: "../archives",
-      dist_dir: "../dist/ios",
-      app_name: "Artsy"
-    )
-
-    upload_sentry_artifacts(
-      sentry_release_name: sentry_release_name,
-      dist_version: bundle_version,
-      platform: 'ios'
-    )
-  elsif (deployment_target == 'firebase')
-    upload_dsyms_to_sentry(
-      project_slug: 'eigen',
-      org_slug: 'artsynet'
-    )
-  end
-
-  deploy_ios_beta(deployment_target: deployment_target)
 end
 
 def deploy_ios_beta(deployment_target:)
@@ -289,35 +296,42 @@ end
 
 desc 'Ship android beta to play store or firebase'
 lane :ship_beta_android do |options|
-  deployment_target = options[:deployment_target] || 'play_store' # default to 'play_store'
-  version_code = options[:version_code]
-  sh('yarn relay')
+  begin
+    deployment_target = options[:deployment_target] || 'play_store' # default to 'play_store'
+    version_code = options[:version_code]
+    sh('yarn relay')
 
-  if version_code.nil? || version_code.empty?
-    vname, vcode = set_build_version_android
-  else
-    vname, vcode = set_build_version_android(version_code: version_code)
+    if version_code.nil? || version_code.empty?
+      vname, vcode = set_build_version_android
+    else
+      vname, vcode = set_build_version_android(version_code: version_code)
+    end
+
+    set_git_properties_android
+    tag_and_push(tag: "android-#{vname}-#{vcode}")
+
+    build_type = deployment_target == 'play_store' ? 'release' : 'beta'
+    sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2'")
+
+    if (deployment_target == 'play_store')
+      # important! this must match the release version specified
+      # in Eigen in order for sourcemaps to work correctly
+      sentry_release_name = "android-#{vname}-#{vcode}"
+      upload_sentry_artifacts(
+        sentry_release_name: sentry_release_name,
+        dist_version: "#{vcode}",
+        platform: 'android'
+      )
+      s3_upload_android_build(app_version: vcode, app_path: "../android/app/build/outputs/bundle/release/app-release.aab")
+    end
+
+    deploy_android_beta(deployment_target: deployment_target)
+  rescue => e
+    if is_ci
+      notify_build_failed(exception: e, lane_name: 'ship_beta_android', platform: 'android')
+    end
+    UI.error("Build failed with error: #{e.message}")
   end
-
-  set_git_properties_android
-  tag_and_push(tag: "android-#{vname}-#{vcode}")
-
-  build_type = deployment_target == 'play_store' ? 'release' : 'beta'
-  sh("yarn react-native build-android --mode=#{build_type} --extra-params='--no-daemon --max-workers 2'")
-
-  if (deployment_target == 'play_store')
-    # important! this must match the release version specified
-    # in Eigen in order for sourcemaps to work correctly
-    sentry_release_name = "android-#{vname}-#{vcode}"
-    upload_sentry_artifacts(
-      sentry_release_name: sentry_release_name,
-      dist_version: "#{vcode}",
-      platform: 'android'
-    )
-    s3_upload_android_build(app_version: vcode, app_path: "../android/app/build/outputs/bundle/release/app-release.aab")
-  end
-
-  deploy_android_beta(deployment_target: deployment_target)
 end
 
 def deploy_android_beta(deployment_target:)
@@ -556,44 +570,58 @@ end
 
 desc 'Build iOS app and upload to S3 for Maestro testing'
 lane :build_maestro_ios do
-  bundle_version = set_build_version_ios
-  set_git_properties_ios
+  begin
+    bundle_version = set_build_version_ios
+    set_git_properties_ios
 
-  # Build iOS app with QA scheme for simulator (no codesigning needed)
-  build_params = ios_build_params('maestro')
-  build_ios_app(**build_params)
+    # Build iOS app with QA scheme for simulator (no codesigning needed)
+    build_params = ios_build_params('maestro')
+    build_ios_app(**build_params)
 
-  upload_ios_maestro_to_s3
+    upload_ios_maestro_to_s3
+  rescue => e
+    if is_ci
+      notify_build_failed(exception: e, lane_name: 'build_maestro_ios', platform: 'ios')
+    end
+    UI.error("Build failed with error: #{e.message}")
+  end
 end
 
 desc 'Build Android app and upload to S3 for Maestro testing'
 lane :build_maestro_android do |options|
-  version_code = options[:version_code]
-  sh('yarn relay')
+  begin
+    version_code = options[:version_code]
+    sh('yarn relay')
 
-  if version_code.nil? || version_code.empty?
-    vname, vcode = set_build_version_android
-  else
-    vname, vcode = set_build_version_android(version_code: version_code)
+    if version_code.nil? || version_code.empty?
+      vname, vcode = set_build_version_android
+    else
+      vname, vcode = set_build_version_android(version_code: version_code)
+    end
+
+    set_git_properties_android
+
+    # Build Android AAB in beta mode for Maestro testing
+    sh("yarn react-native build-android --mode=beta --extra-params='--no-daemon --max-workers 2'")
+
+    # Convert AAB to APK using existing bundletool logic
+    aab_path = './android/app/build/outputs/bundle/beta/app-beta.aab'
+    apk_output_path = "#{vcode}.apk"
+    bundletool(
+      aab_path: aab_path,
+      apk_output_path: apk_output_path,
+      verbose: true
+    )
+
+    # Ensure we have the full path to the APK file (bundletool creates it in project root, not fastlane dir)
+    full_apk_path = File.expand_path("../#{apk_output_path}")
+
+    # Upload to S3 for Maestro testing
+    upload_android_maestro_to_s3(full_apk_path)
+  rescue => e
+    if is_ci
+      notify_build_failed(exception: e, lane_name: 'build_maestro_android', platform: 'android')
+    end
+    UI.error("Build failed with error: #{e.message}")
   end
-
-  set_git_properties_android
-
-  # Build Android AAB in beta mode for Maestro testing
-  sh("yarn react-native build-android --mode=beta --extra-params='--no-daemon --max-workers 2'")
-
-  # Convert AAB to APK using existing bundletool logic
-  aab_path = './android/app/build/outputs/bundle/beta/app-beta.aab'
-  apk_output_path = "#{vcode}.apk"
-  bundletool(
-    aab_path: aab_path,
-    apk_output_path: apk_output_path,
-    verbose: true
-  )
-
-  # Ensure we have the full path to the APK file (bundletool creates it in project root, not fastlane dir)
-  full_apk_path = File.expand_path("../#{apk_output_path}")
-
-  # Upload to S3 for Maestro testing
-  upload_android_maestro_to_s3(full_apk_path)
 end
