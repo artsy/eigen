@@ -1,28 +1,35 @@
 import { CloseIcon } from "@artsy/icons/native"
 import {
-  Image,
   Flex,
   Screen,
-  Spacer,
   Text,
   useScreenDimensions,
   useSpace,
   Touchable,
   DEFAULT_HIT_SLOP,
+  Button,
+  Image,
 } from "@artsy/palette-mobile"
-import { ArtworkIndex } from "app/Scenes/HomeView/Sections/HomeViewUnderXArtworksCard"
-import { FlatList, Modal } from "react-native"
+import { Modal } from "react-native"
+import Animated, {
+  useAnimatedScrollHandler,
+  useSharedValue,
+  useAnimatedStyle,
+  interpolate,
+  Extrapolation,
+  SharedValue,
+} from "react-native-reanimated"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, useFragment } from "react-relay"
 
-interface ArtworksCarouselProps {
+interface ArtworksCarouselModalProps {
   isVisible: boolean
-  artworkIndex: ArtworkIndex
+  pressedArtworkIndex: number
   artworks: any
   closeModal: () => void
 }
 
-export const ArtworksCarousel: React.FC<ArtworksCarouselProps> = ({
+export const ArtworksCarouselModal: React.FC<ArtworksCarouselModalProps> = ({
   isVisible,
   artworks,
   closeModal,
@@ -51,12 +58,13 @@ export const ArtworksCarousel: React.FC<ArtworksCarouselProps> = ({
         >
           <CloseIcon fill="mono0" />
         </Touchable>
-        <ArtworksSwiper artworks={artworks} />
+        <ArtworksCarousel artworks={artworks} />
       </Screen>
     </Modal>
   )
 }
 
+// TODL remane to fragment ArtworksCarouselModal_artworks + rename the file
 const artworksCarousel = graphql`
   fragment ArtworksCarousel_artworks on Artwork @relay(plural: true) {
     href
@@ -77,59 +85,108 @@ const artworksCarousel = graphql`
   }
 `
 
-interface ArtworksSwiperProps {
+interface ArtworksCarouselProps {
   artworks: any
 }
 
-const ArtworksSwiper: React.FC<ArtworksSwiperProps> = ({ artworks }) => {
+const ArtworksCarousel: React.FC<ArtworksCarouselProps> = ({ artworks }) => {
   const artworksData = useFragment(artworksCarousel, artworks)
-  const { width } = useScreenDimensions()
-  const space = useSpace()
-  const imageWidth = width - space(4) - space(4)
-  /*
-  useEffect(() => {
-    if (query) {
-      // the query changed, prevent loading more pages until the user starts scrolling
-      userHasStartedScrolling.current = false
-    }
-    if (flatListRef.current) {
-      flatListRef.current.scrollToOffset({ offset: 0, animated: true })
-    }
-  }, [query])
-*/
+  const scrollX = useSharedValue(0)
+
+  const onScrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollX.value = event.contentOffset.x
+    },
+  })
 
   return (
-    <>
-      <Flex flex={1} justifyContent="center">
-        <FlatList
-          data={artworksData}
-          keyExtractor={(item) => item.internalID}
-          horizontal
-          renderItem={({ item: artwork, index }) => {
-            const firstItem = index === 0
-            const lastItem = index === artworksData.length - 1
+    <Flex flex={1} justifyContent="center">
+      <Animated.FlatList
+        data={artworksData}
+        keyExtractor={(item) => item.internalID}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        pagingEnabled
+        onScroll={onScrollHandler}
+        renderItem={({ item: artwork, index }) => {
+          return <ArtworksCarouselItem item={artwork} index={index} scrollX={scrollX} />
+        }}
+      />
+    </Flex>
+  )
+}
 
-            return (
-              <Flex
-                key={index}
-                justifyContent="center"
-                pl={firstItem ? 2 : 1}
-                pr={lastItem ? 2 : 1}
-              >
-                <Image
-                  src={artwork.image.url || ""}
-                  width={imageWidth}
-                  aspectRatio={artwork.image.aspectRatio || 1}
-                />
-                <Spacer y={2} />
-                <Text color="mono0">{artwork.artistNames}</Text>
-                <Text color="mono0">{artwork.title}</Text>
-                <Text color="mono0">{artwork.partner?.name}</Text>
-              </Flex>
-            )
-          }}
-        />
+interface ArtworksCarouselItemProps {
+  item: any // TODO: type artwork
+  index: number
+  scrollX: SharedValue<number>
+}
+
+export const ArtworksCarouselItem: React.FC<ArtworksCarouselItemProps> = ({
+  item: artwork,
+  index,
+  scrollX,
+}) => {
+  const { width } = useScreenDimensions()
+  const space = useSpace()
+  const imageWidth = width - space(4) - space(4) - space(2)
+
+  const rnAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateX: interpolate(
+            scrollX.value,
+            [(index - 1) * width, index * width, (index + 1) * width],
+            [-imageWidth * 0.25, 0, imageWidth * 0.25],
+            Extrapolation.CLAMP
+          ),
+        },
+        {
+          scale: interpolate(
+            scrollX.value,
+            [(index - 1) * width, index * width, (index + 1) * width],
+            [0.9, 1, 0.9],
+            Extrapolation.CLAMP
+          ),
+        },
+      ],
+    }
+  })
+  return (
+    <Animated.View
+      key={index}
+      style={[
+        {
+          justifyContent: "center",
+          alignItems: "center",
+          width: width,
+          gap: space(2),
+        },
+        rnAnimatedStyle,
+      ]}
+    >
+      <Image
+        src={artwork.image.url || ""}
+        width={imageWidth}
+        aspectRatio={artwork.image.aspectRatio || 1}
+      />
+      <Flex width={imageWidth} flexDirection="row" justifyContent="space-between">
+        <Flex flex={2}>
+          <Text color="mono0" numberOfLines={1}>
+            {artwork.artistNames}
+          </Text>
+          <Text color="mono0" numberOfLines={1}>
+            {artwork.title}
+          </Text>
+          <Text color="mono0" numberOfLines={1}>
+            {artwork.partner?.name}
+          </Text>
+        </Flex>
+        <Flex flex={1.5} alignItems="flex-end">
+          <Button>Hello</Button>
+        </Flex>
       </Flex>
-    </>
+    </Animated.View>
   )
 }

@@ -1,11 +1,9 @@
 import { Flex, Image, useSpace, useScreenDimensions } from "@artsy/palette-mobile"
-import { ArtworksCarousel } from "app/Scenes/HomeView/Sections/HomeViewUnderXArtworksCard/ArtworksCarousel"
+import { ArtworksCarouselModal } from "app/Scenes/HomeView/Sections/HomeViewUnderXArtworksCard/ArtworksCarousel"
 import { RouterLink } from "app/system/navigation/RouterLink"
 import { ArtworkActionTrackingProps } from "app/utils/track/ArtworkActions"
 import { useState } from "react"
 import { graphql, useFragment } from "react-relay"
-
-export type ArtworkIndex = 1 | 2 | 3
 
 interface HomeViewUnderXArtworksCardProps extends ArtworkActionTrackingProps {
   artworks: any
@@ -16,7 +14,7 @@ export const HomeViewUnderXArtworksCard: React.FC<HomeViewUnderXArtworksCardProp
   const artworksData = useFragment(homeViewunderXArtworksCard, artworks)
   const space = useSpace()
   const [artworksCarouselVisible, setArtworksCarouselVisible] = useState(false)
-  const [pressedArtworkIndex, setPressedArtworkIndex] = useState<ArtworkIndex>(1)
+  const [pressedArtworkIndex, setPressedArtworkIndex] = useState<number>(1)
   const { width, height } = useScreenDimensions()
 
   const smallArtworkHeight = 150
@@ -30,7 +28,7 @@ export const HomeViewUnderXArtworksCard: React.FC<HomeViewUnderXArtworksCardProp
         artwork,
         imageURL: artwork?.image?.url,
         width,
-        height: height / 3,
+        height: height / 2,
         aspectRatio: 1,
         href: artwork?.href,
       }
@@ -60,7 +58,7 @@ export const HomeViewUnderXArtworksCard: React.FC<HomeViewUnderXArtworksCardProp
   const leftArtwork = getArtworkConfig(1)
   const rightArtwork = getArtworkConfig(2)
 
-  const onArtworkPress = (artworkIndex: ArtworkIndex) => {
+  const onArtworkPress = (artworkIndex: number) => {
     setArtworksCarouselVisible(true)
     setPressedArtworkIndex(artworkIndex)
   }
@@ -69,7 +67,7 @@ export const HomeViewUnderXArtworksCard: React.FC<HomeViewUnderXArtworksCardProp
     <>
       <Flex width={width} maxWidth={width}>
         <Flex flex={1} mb={0.5}>
-          <RouterLink onPress={() => onArtworkPress(1)}>
+          <RouterLink onPress={() => onArtworkPress(0)}>
             <Image
               src={mainArtwork.imageURL || ""}
               width={mainArtwork.width}
@@ -94,7 +92,7 @@ export const HomeViewUnderXArtworksCard: React.FC<HomeViewUnderXArtworksCardProp
           </Flex>
 
           <Flex flex={2} height={150}>
-            <RouterLink onPress={() => onArtworkPress(1)}>
+            <RouterLink onPress={() => onArtworkPress(2)}>
               <Image
                 src={rightArtwork.imageURL || ""}
                 width={rightArtwork.width}
@@ -107,9 +105,9 @@ export const HomeViewUnderXArtworksCard: React.FC<HomeViewUnderXArtworksCardProp
         </Flex>
       </Flex>
 
-      <ArtworksCarousel
+      <ArtworksCarouselModal
         isVisible={artworksCarouselVisible}
-        artworkIndex={pressedArtworkIndex}
+        pressedArtworkIndex={pressedArtworkIndex}
         artworks={artworks}
         closeModal={() => {
           setArtworksCarouselVisible(false)
