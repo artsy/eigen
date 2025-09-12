@@ -15066,6 +15066,9 @@ type Me implements Node {
   # The user's most current pending identity verification, if it exists
   pendingIdentityVerification: IdentityVerification
   phone: String
+
+  # Two-letter country code for the user's phone number
+  phoneCountryCode: String
   phoneNumber: PhoneNumberType
 
   # User's price preference, in USD.
