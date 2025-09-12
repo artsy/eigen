@@ -188,7 +188,7 @@ describe("OrderDetailsMessage", () => {
             shipperName: "DHL",
             trackingNumber: "1231231234",
             trackingURL: "https://dhl.de/track/123456789",
-            estimatedDelivery: "2024-04-21T00:00:00Z",
+            estimatedDelivery: "2024-04-21T10:00:00Z",
             estimatedDeliveryWindow: null,
           },
         }),

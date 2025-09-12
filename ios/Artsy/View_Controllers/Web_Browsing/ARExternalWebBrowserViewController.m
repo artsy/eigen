@@ -13,7 +13,7 @@
 #import "ARDispatchManager.h"
 #import "ARTNativeScreenPresenterModule.h"
 
-#import "AppDelegate.h"
+#import "ARAppDelegateHelper.h"
 #import <CoreServices/CoreServices.h>
 
 #import "AREmission.h"

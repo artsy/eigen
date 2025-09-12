@@ -1,4 +1,4 @@
-import { fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen } from "@testing-library/react-native"
 import { PartnerShowOpenedNotification_Test_Query } from "__generated__/PartnerShowOpenedNotification_Test_Query.graphql"
 import { PartnerShowOpenedNotification } from "app/Scenes/Activity/components/PartnerShowOpenedNotification"
 import { navigate } from "app/system/navigation/navigate"
@@ -44,7 +44,9 @@ describe("PartnerShowOpenedNotification", () => {
       }),
     })
 
-    await flushPromiseQueue()
+    await act(async () => {
+      await flushPromiseQueue()
+    })
 
     expect(screen.getByText("Shows")).toBeTruthy()
 
@@ -61,13 +63,17 @@ describe("PartnerShowOpenedNotification", () => {
         }),
       })
 
-      await flushPromiseQueue()
+      await act(async () => {
+        await flushPromiseQueue()
+      })
 
       const viewAllWorksByLink = screen.getByTestId("show-item-visit-show-link")
 
       fireEvent.press(viewAllWorksByLink)
 
-      await flushPromiseQueue()
+      await act(async () => {
+        await flushPromiseQueue()
+      })
 
       expect(navigate).toHaveBeenCalledWith("/show/theo-theo-at-art-ono?entity=fair-booth")
     })

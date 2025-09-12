@@ -284,27 +284,20 @@ https://github.com/numandev1/react-native-keys/issues/86#issuecomment-2546610160
 
 Android was unable to build correctly on react-native 76 without excluding `libreactnative.so`
 
-## patch-package for expo-updates
-
-When expo-updates merges and releases this change:
-https://github.com/expo/expo/pull/36893
-
-#### Explanation/Context:
-
-Expo updates was not returning the reason an update failed to be available on iOS making debugging difficult.
-
-## patch-package for expo-updates
-
-#### When can we remove this:
-
-When expo updates addresses this issue https://github.com/expo/expo/issues/35410
-
-#### Explanation/Context:
-
-Expo updates is interfering with the splash screen on iOS, causing it to flash white before the app is ready. This patch modifies the splash screen behavior to prevent that flash.
-
 ## patch-package for react-navigation/bottom-tabs
 
 This patch allows us to animate the appearance of the bottom tabs. This is currently not supported by @react-navigation/bottom-tabs but it's something they do when the user shows/hides the keyboard.
 
 See https://github.com/artsy/eigen/pull/12249 for more details.
+
+## DOM Polyfills in src/polyfills.js
+
+#### When can we remove this:
+
+When libraries like `styled-components/native`, `moti`, and others properly isolate their web-specific code from React Native builds, or when React Native/Metro provides a way to completely exclude web code at the module parsing stage.
+
+#### Explanation/Context:
+
+With the upgrade to React Native 0.79 and Expo 53, Metro (0.82+) and Hermes became stricter about module evaluation. Libraries that include DOM references (document, HTMLElement, window, etc.) even behind platform checks like `Platform.OS === 'web'` now cause "Property doesn't exist" errors because the modules are evaluated at bundle time, not runtime.
+
+The polyfill file provides stub implementations for DOM APIs that these libraries reference. This is a common workaround used by many production React Native apps. The polyfill must be imported at the very top of index.js before any other imports to ensure it's available when modules are loaded.

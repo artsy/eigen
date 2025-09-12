@@ -1,6 +1,6 @@
-#import "AppDelegate.h"
+#import "ARAppDelegateHelper.h"
 #import "AREmission.h"
 
-@interface ARAppDelegate (Emission)
+@interface ARAppDelegateHelper (Emission)
 - (AREmission *)setupSharedEmission;
 @end

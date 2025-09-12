@@ -7,7 +7,7 @@ interface EmbeddedCarouselProps {
   title?: string
   testID: string
   data: object[]
-  renderItem: ({ item }: any) => JSX.Element
+  renderItem: ({ item }: any) => React.JSX.Element
   onCardPress?: () => void
 }
 

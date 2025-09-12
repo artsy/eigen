@@ -14,7 +14,7 @@ import {
 } from "app/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Reducer, Suspense, useReducer } from "react"
+import { Suspense, useReducer } from "react"
 import { graphql } from "react-relay"
 
 describe("inquiry modal", () => {
@@ -185,7 +185,7 @@ const mockArtwork = {
 }
 
 const useReducerWithInquiryModalVisible = (initialState: ArtworkInquiryContextState) => {
-  const [state, dispatch] = useReducer<Reducer<ArtworkInquiryContextState, ArtworkInquiryActions>>(
+  const [state, dispatch] = useReducer<ArtworkInquiryContextState, [ArtworkInquiryActions]>(
     artworkInquiryStateReducer,
     initialState
   )

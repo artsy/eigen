@@ -1,6 +1,6 @@
 #import "AppDelegate+Echo.h"
 
-@implementation ARAppDelegate (Echo)
+@implementation ARAppDelegateHelper (Echo)
 
 - (void)setupEcho
 {

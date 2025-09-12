@@ -46,17 +46,119 @@ const componentWithWrappers = (component: ReactElement) => {
 export const renderWithWrappersLEGACY = (component: ReactElement) => {
   const wrappedComponent = componentWithWrappers(component)
   try {
-    const renderedComponent = ReactTestRenderer.create(wrappedComponent)
+    let renderedComponent: ReactTestRenderer.ReactTestRenderer | undefined
+
+    // React 19 requires ReactTestRenderer.create to be wrapped in act
+    ReactTestRenderer.act(() => {
+      renderedComponent = ReactTestRenderer.create(wrappedComponent)
+    })
+
+    if (!renderedComponent) {
+      throw new Error("Failed to create test renderer")
+    }
 
     // monkey patch update method to wrap components
     const originalUpdate = renderedComponent.update
     renderedComponent.update = (nextElement: ReactElement) => {
-      originalUpdate(componentWithWrappers(nextElement))
+      ReactTestRenderer.act(() => {
+        originalUpdate(componentWithWrappers(nextElement))
+      })
     }
 
     return renderedComponent
   } catch (error: any) {
     throw new Error(error.stack)
+  }
+}
+
+/**
+ * Enhanced version of renderWithWrappersLEGACY that provides utilities for React 19 compatibility.
+ * Use this when you need to wait for async operations like Relay mock resolutions.
+ *
+ * @param component - The React component to render
+ * @returns An object with the rendered component and helper methods
+ */
+export const renderWithWrappersLEGACYAsync = (component: ReactElement) => {
+  const view = renderWithWrappersLEGACY(component)
+
+  return {
+    ...view,
+
+    /**
+     * Wait for async operations to complete, then execute a callback with access to the root
+     * @param callback - Function that receives the root and can make assertions
+     * @param timeout - Optional timeout in ms (default: 5000)
+     */
+    waitForAsync: async <T = void,>(
+      callback: (root: ReactTestRenderer.ReactTestInstance) => T | Promise<T>,
+      timeout = 5000
+    ): Promise<T> => {
+      return new Promise((resolve, reject) => {
+        const timeoutId = setTimeout(() => {
+          reject(new Error(`waitForAsync timed out after ${timeout}ms`))
+        }, timeout)
+
+        const tryCallback = async () => {
+          try {
+            // Give React time to process updates
+            await new Promise((resolve) => setTimeout(resolve, 0))
+            const result = await callback(view.root)
+            clearTimeout(timeoutId)
+            resolve(result)
+          } catch (error) {
+            // Retry if the callback fails (element not found yet)
+            if (error instanceof Error && error.message.includes("Unable to find")) {
+              setTimeout(tryCallback, 10)
+            } else {
+              clearTimeout(timeoutId)
+              reject(error)
+            }
+          }
+        }
+
+        tryCallback()
+      })
+    },
+
+    /**
+     * Wait for a specific number of elements of a given type to appear
+     * @param elementType - The component type to find
+     * @param expectedCount - Expected number of elements
+     * @param timeout - Optional timeout in ms (default: 5000)
+     */
+    waitForElements: async (
+      elementType: React.ComponentType<any> | string,
+      expectedCount: number,
+      timeout = 5000
+    ): Promise<ReactTestRenderer.ReactTestInstance[]> => {
+      return new Promise((resolve, reject) => {
+        const timeoutId = setTimeout(() => {
+          reject(
+            new Error(
+              `waitForElements timed out after ${timeout}ms waiting for ${expectedCount} elements of type ${elementType}`
+            )
+          )
+        }, timeout)
+
+        const checkElements = async () => {
+          try {
+            // Give React time to process updates
+            await new Promise((resolve) => setTimeout(resolve, 0))
+            const elements = await view.root.findAllByType(elementType as any)
+            if (elements.length === expectedCount) {
+              clearTimeout(timeoutId)
+              resolve(elements)
+            } else {
+              setTimeout(checkElements, 10)
+            }
+          } catch (error) {
+            setTimeout(checkElements, 10)
+          }
+        }
+
+        checkElements()
+      })
+    },
   }
 }
 

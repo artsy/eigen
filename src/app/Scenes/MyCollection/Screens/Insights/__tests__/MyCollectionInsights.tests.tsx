@@ -1,22 +1,40 @@
-import { MyCollectionInsights } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionInsights"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-import { resolveMostRecentRelayOperation } from "app/utils/tests/resolveMostRecentRelayOperation"
-import { createMockEnvironment } from "relay-test-utils"
+import { screen } from "@testing-library/react-native"
+import { MyCollectionInsightsQuery } from "__generated__/MyCollectionInsightsQuery.graphql"
+import { MyCollectionInsightsQR } from "app/Scenes/MyCollection/Screens/Insights/MyCollectionInsights"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 describe("MyCollectionInsights", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  const TestRenderer = () => <MyCollectionInsights />
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper<MyCollectionInsightsQuery>({
+    Component: MyCollectionInsightsQR,
+    query: graphql`
+      query MyCollectionInsights_Test_Query @relay_test_operation {
+        me {
+          ...AuctionResultsForArtistsYouCollectRail_me
+          ...MedianAuctionPriceRail_me
+          ...CareerHighlightsRail_me
+          auctionResults: myCollectionAuctionResults(first: 3) {
+            totalCount
+          }
+          myCollectionInfo {
+            artworksCount
+            ...MyCollectionInsightsOverview_myCollectionInfo
+          }
+          myCollectionConnection(first: 1) {
+            edges {
+              node {
+                id
+              }
+            }
+          }
+        }
+      }
+    `,
   })
 
   describe("when the step 1 of phase 1 feature flag is enabled ", () => {
     it("shows insights overview", async () => {
-      const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-      resolveMostRecentRelayOperation(mockEnvironment, {
+      renderWithRelay({
         Me: () => ({
           myCollectionConnection: myCollectionConnectionMock,
           myCollectionAuctionResults: myCollectionAuctionResultsMock,
@@ -24,18 +42,15 @@ describe("MyCollectionInsights", () => {
         }),
       })
 
-      await flushPromiseQueue()
-
-      expect(getByText("Total Artworks")).toBeTruthy()
-      expect(getByText("24")).toBeTruthy()
-      expect(getByText("Total Artists")).toBeTruthy()
-      expect(getByText("13")).toBeTruthy()
+      expect(await screen.findByText("Total Artworks")).toBeTruthy()
+      expect(screen.getByText("24")).toBeTruthy()
+      expect(screen.getByText("Total Artists")).toBeTruthy()
+      expect(screen.getByText("13")).toBeTruthy()
     })
   })
 
   it("shows empty state when the user has no artworks in their collection", async () => {
-    const { getByText } = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-    resolveMostRecentRelayOperation(mockEnvironment, {
+    renderWithRelay({
       Me: () => ({
         myCollectionConnection: { edges: [] },
         myCollectionAuctionResults: myCollectionAuctionResultsMock,
@@ -43,9 +58,7 @@ describe("MyCollectionInsights", () => {
       }),
     })
 
-    await flushPromiseQueue()
-
-    expect(getByText("Gain deeper knowledge of your collection")).toBeTruthy()
+    expect(await screen.findByText("Gain deeper knowledge of your collection")).toBeTruthy()
   })
 })
 

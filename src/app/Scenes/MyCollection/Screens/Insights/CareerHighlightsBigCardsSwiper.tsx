@@ -21,7 +21,7 @@ import { CareerHighlightsPromotionalCard } from "./CareerHighlightsPromotionalCa
 
 interface Slides {
   key: CareerHighlightKind | "promoCard"
-  content: JSX.Element
+  content: React.JSX.Element
 }
 
 interface CareerHighlightsBigCardsSwiperScreenProps {

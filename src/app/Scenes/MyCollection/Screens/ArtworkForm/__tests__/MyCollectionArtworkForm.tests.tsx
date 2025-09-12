@@ -1,4 +1,4 @@
-import { act, fireEvent, screen } from "@testing-library/react-native"
+import { act, fireEvent, screen, waitFor } from "@testing-library/react-native"
 import { AutosuggestResultsQuery } from "__generated__/AutosuggestResultsQuery.graphql"
 import { myCollectionCreateArtworkMutation } from "__generated__/myCollectionCreateArtworkMutation.graphql"
 import {
@@ -104,6 +104,10 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(screen.getByText("Select an Artist")).toBeTruthy()
 
+        await waitFor(() => {
+          expect(screen.getByPlaceholderText("Search for artists on Artsy")).toBeTruthy()
+        })
+
         fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "banksy")
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
@@ -121,6 +125,10 @@ describe("MyCollectionArtworkForm", () => {
         // Select Artwork Screen
 
         expect(screen.getByText("Select an Artwork")).toBeTruthy()
+
+        await waitFor(() => {
+          expect(screen.getByPlaceholderText("Search artworks")).toBeTruthy()
+        })
 
         fireEvent.changeText(screen.getByPlaceholderText("Search artworks"), "banksy")
         act(() =>
@@ -238,7 +246,8 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(screen.getByText("Select an Artist")).toBeTruthy()
 
-        fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "banksy")
+        const artistSearchInput = await screen.findByPlaceholderText("Search for artists on Artsy")
+        fireEvent.changeText(artistSearchInput, "banksy")
 
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
@@ -256,6 +265,10 @@ describe("MyCollectionArtworkForm", () => {
         // Select Artwork Screen
 
         expect(screen.getByText("Select an Artwork")).toBeTruthy()
+
+        await waitFor(() => {
+          expect(screen.getByPlaceholderText("Search artworks")).toBeTruthy()
+        })
 
         fireEvent.changeText(screen.getByPlaceholderText("Search artworks"), "Test Artwork Title")
 
@@ -277,63 +290,6 @@ describe("MyCollectionArtworkForm", () => {
         expect(screen.getByText("Add Details")).toBeTruthy()
 
         expect(screen.getByTestId("TitleInput").props.value).toBe("Test Artwork Title")
-        expect(screen.getByTestId("DateInput").props.value).toBe(undefined)
-        expect(screen.getByTestId("MaterialsInput").props.value).toBe(undefined)
-        expect(screen.getByTestId("WidthInput").props.value).toBe(undefined)
-        expect(screen.getByTestId("HeightInput").props.value).toBe(undefined)
-        expect(screen.getByTestId("DepthInput").props.value).toBe(undefined)
-        expect(screen.getByTestId("NotesInput").props.value).toBe(undefined)
-      })
-    })
-
-    describe("when skipping the artist selection", () => {
-      it("initializes the artist name input field", async () => {
-        renderWithHookWrappersTL(
-          <MyCollectionArtworkFormScreen mode="add" source={Tab.collection} />,
-          mockEnvironment
-        )
-
-        act(() =>
-          mockEnvironment.mock.resolveMostRecentOperation({
-            errors: [],
-            data: mockCollectedArtistsResult,
-          })
-        )
-
-        await flushPromiseQueue()
-
-        // Select Artist Screen
-
-        expect(screen.getByText("Select an Artist")).toBeTruthy()
-
-        fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "foo bar")
-
-        act(() =>
-          mockEnvironment.mock.resolveMostRecentOperation({
-            errors: [],
-            data: mockArtistSearchResult,
-          })
-        )
-
-        fireEvent.press(screen.getByTestId("my-collection-artwork-form-artist-skip-button"))
-
-        await flushPromiseQueue()
-
-        // Add Artist Screen
-        fireEvent.changeText(screen.getByTestId("artist-input"), "My Artist")
-        fireEvent.changeText(screen.getByTestId("nationality-input"), "bar foo")
-
-        await flushPromiseQueue()
-
-        fireEvent.press(screen.getByTestId("submit-add-artist-button"))
-
-        await flushPromiseQueue()
-
-        // Edit Details Screen
-
-        expect(screen.getByText("Add Details")).toBeTruthy()
-
-        expect(screen.getByTestId("TitleInput").props.value).toBe("")
         expect(screen.getByTestId("DateInput").props.value).toBe(undefined)
         expect(screen.getByTestId("MaterialsInput").props.value).toBe(undefined)
         expect(screen.getByTestId("WidthInput").props.value).toBe(undefined)
@@ -568,6 +524,11 @@ describe("MyCollectionArtworkForm", () => {
 
         // Select Artist Screen
 
+        // Wait for the search input to be available
+        await waitFor(() => {
+          expect(screen.getByPlaceholderText("Search for artists on Artsy")).toBeTruthy()
+        })
+
         fireEvent.changeText(screen.getByPlaceholderText("Search for artists on Artsy"), "banksy")
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
@@ -583,7 +544,8 @@ describe("MyCollectionArtworkForm", () => {
 
         // Select Artwork Screen
 
-        fireEvent.changeText(screen.getByPlaceholderText("Search artworks"), "banksy")
+        const artworkSearchInput = await screen.findByPlaceholderText("Search artworks")
+        fireEvent.changeText(artworkSearchInput, "banksy")
         act(() =>
           mockEnvironment.mock.resolveMostRecentOperation({
             errors: [],

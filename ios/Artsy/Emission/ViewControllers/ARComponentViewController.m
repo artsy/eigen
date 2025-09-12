@@ -1,6 +1,6 @@
 #import "ARComponentViewController.h"
 #import "AREmission.h"
-#import "AppDelegate.h"
+#import "ARAppDelegateHelper.h"
 
 #import <React/RCTRootView.h>
 #import <FLKAutoLayout/UIView+FLKAutoLayout.h>

@@ -3,7 +3,7 @@ import { Flex, Image, Text, useColor } from "@artsy/palette-mobile"
 import { useOffscreenStyle } from "app/utils/hooks"
 import { useDevToggle } from "app/utils/hooks/useDevToggle"
 import { useSizeToFitScreen } from "app/utils/useSizeToFit"
-import React, { RefObject } from "react"
+import React, { Ref } from "react"
 import ViewShot from "react-native-view-shot"
 
 /**
@@ -19,7 +19,7 @@ const InstagramStoryBackgroundDimensions = {
 const BottomLabelHeight = 350 // in pixels, before we scale it
 
 export interface InstagramStoryViewShotProps {
-  shotRef?: RefObject<ViewShot>
+  shotRef?: Ref<ViewShot>
   href: string
   artist: string
   title?: string

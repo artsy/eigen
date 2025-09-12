@@ -1,10 +1,9 @@
-import { Input, Text, Touchable } from "@artsy/palette-mobile"
+import { Input, Touchable } from "@artsy/palette-mobile"
+import { fireEvent, screen, within } from "@testing-library/react-native"
 import { Select } from "app/Components/Select/Select"
-import { extractText } from "app/utils/tests/extractText"
 import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappers } from "app/utils/tests/renderWithWrappers"
 import { Modal } from "react-native"
-import { act } from "react-test-renderer"
 
 jest.mock("react-native/Libraries/Interaction/InteractionManager", () => ({
   ...jest.requireActual("react-native/Libraries/Interaction/InteractionManager"),
@@ -23,9 +22,8 @@ const options = [
     searchTerms: ["Option 2"],
   },
 ]
-
 it("shows title and subtitle within the select", () => {
-  const view = renderWithWrappersLEGACY(
+  renderWithWrappers(
     <Select
       title="Title"
       subTitle="Subtitle"
@@ -35,16 +33,14 @@ it("shows title and subtitle within the select", () => {
     />
   )
 
-  // eslint-disable-next-line testing-library/await-async-queries
-  expect(view.root.findAllByType(Text)[0].props.children).toEqual("Title")
-  // eslint-disable-next-line testing-library/await-async-queries
-  expect(view.root.findAllByType(Text)[1].props.children).toEqual("Option 1")
+  expect(screen.getByText("Title")).toBeOnTheScreen()
+  expect(screen.getByText("Option 1")).toBeOnTheScreen()
 })
 
 it("selects correct value", async () => {
   const onSelectValue = jest.fn()
 
-  const view = renderWithWrappersLEGACY(
+  renderWithWrappers(
     <Select
       title="Title"
       subTitle="Subtitle"
@@ -54,15 +50,17 @@ it("selects correct value", async () => {
     />
   )
 
-  // eslint-disable-next-line testing-library/await-async-queries
-  await act(() => view.root.findAllByType(Touchable)[0].props.onPress())
+  fireEvent.press(screen.getByText("Option 1"))
 
   await flushPromiseQueue()
 
+  fireEvent.press(screen.UNSAFE_getAllByType(Touchable)[0])
+
+  await flushPromiseQueue()
+
+  const selectModal = screen.UNSAFE_getAllByType(Modal)[0]
   // eslint-disable-next-line testing-library/await-async-queries
-  const selectModal = view.root.findAllByType(Modal)[0]
-  // eslint-disable-next-line testing-library/await-async-queries
-  selectModal.findAllByType(Touchable)[1].props.onPress()
+  await selectModal.findAllByType(Touchable)[1].props.onPress()
 
   expect(onSelectValue).toHaveBeenCalledWith("option-2", 1)
 })
@@ -70,7 +68,7 @@ it("selects correct value", async () => {
 it("filters on search", async () => {
   const onSelectValue = jest.fn()
 
-  const view = renderWithWrappersLEGACY(
+  renderWithWrappers(
     <Select
       title="Title"
       subTitle="Subtitle"
@@ -81,23 +79,15 @@ it("filters on search", async () => {
     />
   )
 
-  // eslint-disable-next-line testing-library/await-async-queries
-  await act(() => view.root.findAllByType(Touchable)[0].props.onPress())
+  fireEvent.press(screen.UNSAFE_getAllByType(Touchable)[0])
 
   await flushPromiseQueue()
 
-  // eslint-disable-next-line testing-library/await-async-queries
-  const input = view.root.findAllByType(Input)[0]
+  const input = screen.UNSAFE_getAllByType(Input)[0]
 
-  input.props.onChangeText("Option 2")
+  fireEvent.changeText(input, "Option 2")
 
-  // eslint-disable-next-line testing-library/await-async-queries
-  const selectModal = view.root.findAllByType(Modal)[0]
+  const selectModal = within(screen.UNSAFE_getAllByType(Modal)[0])
 
-  // eslint-disable-next-line testing-library/await-async-queries
-  expect(selectModal.findAllByType(Touchable).length).toEqual(1)
-  // eslint-disable-next-line testing-library/await-async-queries
-  expect(extractText(selectModal.findAllByType(Touchable)[0].findAllByType(Text)[0])).toEqual(
-    "Option 2"
-  )
+  expect(selectModal.getByText("Option 2")).toBeOnTheScreen()
 })

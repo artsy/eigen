@@ -1,6 +1,6 @@
+import { DocumentPickerResponse } from "@react-native-documents/picker"
 import { NormalizedDocument } from "app/utils/normalizeUploadedDocument"
 import { isImage } from "app/utils/showDocumentsAndPhotosActionSheet"
-import { DocumentPickerResponse } from "react-native-document-picker"
 import { AssetCredentials } from "./gemini/getGeminiCredentialsForEnvironment"
 
 export { getGeminiCredentialsForEnvironment } from "./gemini/getGeminiCredentialsForEnvironment"

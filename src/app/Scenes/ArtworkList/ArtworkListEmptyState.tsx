@@ -8,7 +8,7 @@ import { graphql, useFragment } from "react-relay"
 
 interface ArtworkListEmptyStateProps {
   me: ArtworkListEmptyState_me$key | null | undefined
-  refreshControl: JSX.Element
+  refreshControl: React.JSX.Element
 }
 
 export const ArtworkListEmptyState = ({ me, refreshControl }: ArtworkListEmptyStateProps) => {

@@ -102,8 +102,6 @@ export const MyCollectionCollectedArtistsPrivacyQueryRenderer: React.FC<{}> = wi
       { fetchPolicy: "store-and-network" }
     )
 
-    console.warn("MyCollectionArtistsPrivacyQueryRenderer")
-
     if (!data.me) {
       return null
     }

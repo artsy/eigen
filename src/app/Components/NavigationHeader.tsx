@@ -16,7 +16,7 @@ export interface NavigationHeaderProps {
   useXButton?: boolean
   useShareButton?: boolean
   rightCloseButton?: boolean
-  renderRightButton?: () => JSX.Element
+  renderRightButton?: () => React.JSX.Element
   alignItems?: ResponsiveAlignItemsValue
 }
 

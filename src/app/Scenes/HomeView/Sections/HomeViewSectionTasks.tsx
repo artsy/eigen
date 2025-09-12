@@ -239,7 +239,7 @@ const tasksFragment = graphql`
 
 interface TaskItemProps {
   task: Task
-  taskRefs: Map<string, RefObject<SwipeableMethods>>
+  taskRefs: Map<string, RefObject<SwipeableMethods | null>>
   showAll: boolean
   index: number
   displayTaskStack: boolean

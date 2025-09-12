@@ -44,7 +44,7 @@ export const HomeViewSectionSales: React.FC<HomeViewSectionSalesProps> = ({
 }) => {
   const tracking = useHomeViewTracking()
 
-  const listRef = useRef<FlatList<any>>()
+  const listRef = useRef<FlatList<any>>(null)
   const section = useFragment(fragment, sectionProp)
 
   const sales = extractNodes(section.salesConnection)

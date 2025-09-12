@@ -117,7 +117,7 @@ export const Artwork: React.FC<ArtworkProps> = memo(
     updateRecentSearchesOnTap = false,
     hideCreateAlertOnArtworkPreview = false,
   }) => {
-    const itemRef = useRef<any>()
+    const itemRef = useRef<any>(null)
     const disappearableRef = useRef<Disappearable>(null)
     const showArtworkInternalID = useDevToggle("DTShowArtworkInternalIDOnRails")
 

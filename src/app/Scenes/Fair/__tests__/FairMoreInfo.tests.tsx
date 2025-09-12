@@ -1,55 +1,28 @@
-import { Text, LinkText } from "@artsy/palette-mobile"
+import { screen } from "@testing-library/react-native"
 import { FairMoreInfoTestsQuery } from "__generated__/FairMoreInfoTestsQuery.graphql"
-import { LocationMapContainer } from "app/Components/LocationMap/LocationMap"
 import { FairMoreInfoFragmentContainer } from "app/Scenes/Fair/FairMoreInfo"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { graphql, QueryRenderer } from "react-relay"
-import { ReactTestRenderer } from "react-test-renderer"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-
-const getText = (wrapper: ReactTestRenderer) =>
-  [...wrapper.root.findAllByType(Text), ...wrapper.root.findAllByType(LinkText)]
-    .map(({ props: { children } }) => children)
-    .join()
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 describe("FairMoreInfo", () => {
-  const getWrapper = (mockResolvers = {}) => {
-    const env = createMockEnvironment()
-    const tree = renderWithWrappersLEGACY(
-      <QueryRenderer<FairMoreInfoTestsQuery>
-        environment={env}
-        query={graphql`
-          query FairMoreInfoTestsQuery($fairID: String!) @relay_test_operation {
-            fair(id: $fairID) {
-              ...FairMoreInfo_fair
-            }
-          }
-        `}
-        variables={{ fairID: "art-basel-hong-kong-2019" }}
-        render={({ props, error }) => {
-          if (error) {
-            console.log(error)
-            return null
-          }
-
-          if (!props || !props.fair) {
-            return null
-          }
-
-          return <FairMoreInfoFragmentContainer fair={props.fair} />
-        }}
-      />
-    )
-
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
-
-    return tree
-  }
+  const { renderWithRelay } = setupTestWrapper<FairMoreInfoTestsQuery>({
+    Component: ({ fair }) => {
+      return <FairMoreInfoFragmentContainer fair={fair!} />
+    },
+    query: graphql`
+      query FairMoreInfoTestsQuery($fairID: String!) @relay_test_operation {
+        fair(id: $fairID) {
+          ...FairMoreInfo_fair
+        }
+      }
+    `,
+    variables: {
+      fairID: "art-basel-hong-kong-2019",
+    },
+  })
 
   it("displays more information about the fair", async () => {
-    const wrapper = getWrapper({
+    renderWithRelay({
       Fair: () => ({
         about: "This is the about.",
         summary: "This is the summary.",
@@ -72,20 +45,20 @@ describe("FairMoreInfo", () => {
         ticketsLink: "Ticket link",
       }),
     })
-    const rootText = getText(wrapper)
-    expect(rootText).toContain("This is the about.")
-    expect(rootText).toContain("Buy lots of art")
-    expect(rootText).toContain("A big expo center")
-    expect(rootText).toContain("Open every day at 5am")
-    expect(rootText).toContain("Ticket info")
-    expect(rootText).toContain("Art Basel Hong Kong")
-    expect(rootText).toContain("Buy Tickets")
-    expect(rootText).toContain("Google it")
-    expect(wrapper.root.findAllByType(LocationMapContainer).length).toBe(1)
+
+    expect(screen.getByText("This is the about.")).toBeOnTheScreen()
+    expect(screen.getByText("Buy lots of art")).toBeOnTheScreen()
+    expect(screen.getAllByText("A big expo center")).toHaveLength(2)
+    expect(screen.getByText("Open every day at 5am")).toBeOnTheScreen()
+    expect(screen.getByText("Ticket info")).toBeOnTheScreen()
+    expect(screen.getByText("Art Basel Hong Kong")).toBeOnTheScreen()
+    expect(screen.getByText("Buy Tickets")).toBeOnTheScreen()
+    expect(screen.getByText("Google it")).toBeOnTheScreen()
+    expect(screen.getByLabelText("map")).toBeOnTheScreen()
   })
 
   it("handles missing information", async () => {
-    const wrapper = getWrapper({
+    renderWithRelay({
       Fair: () => ({
         about: "",
         tagline: "",
@@ -98,13 +71,13 @@ describe("FairMoreInfo", () => {
         summary: "",
       }),
     })
-    const rootText = getText(wrapper)
-    expect(rootText).not.toContain("Location")
-    expect(rootText).not.toContain("Hours")
-    expect(rootText).not.toContain("Buy Tickets")
-    expect(rootText).not.toContain("Links")
-    expect(rootText).not.toContain("Tickets")
-    expect(rootText).not.toContain("Contact")
-    expect(wrapper.root.findAllByType(LocationMapContainer).length).toBe(0)
+
+    expect(screen.queryByText("Location")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Hours")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Buy Tickets")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Links")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Tickets")).not.toBeOnTheScreen()
+    expect(screen.queryByText("Contact")).not.toBeOnTheScreen()
+    expect(screen.queryByLabelText("map")).not.toBeOnTheScreen()
   })
 })

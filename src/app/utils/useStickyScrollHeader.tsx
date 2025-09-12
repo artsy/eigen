@@ -12,7 +12,7 @@ export const useStickyScrollHeader = ({
   fadeInStart = DEFAULT_FADE_IN_START,
   fadeInEnd,
 }: {
-  header?: JSX.Element
+  header?: React.JSX.Element
   headerText?: string
   fadeInStart?: number
   fadeInEnd?: number

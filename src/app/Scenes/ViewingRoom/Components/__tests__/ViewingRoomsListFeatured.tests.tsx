@@ -2,7 +2,7 @@ import { ViewingRoomsListFeaturedTestsQuery } from "__generated__/ViewingRoomsLi
 import { MediumCard } from "app/Components/Cards"
 import { FeaturedRail } from "app/Scenes/ViewingRoom/Components/ViewingRoomsListFeatured"
 import renderWithLoadProgress from "app/utils/renderWithLoadProgress"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
+import { renderWithWrappersLEGACYAsync } from "app/utils/tests/renderWithWrappers"
 import { graphql, QueryRenderer, RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
@@ -29,8 +29,8 @@ describe(FeaturedRail, () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  it("shows some cards", () => {
-    const tree = renderWithWrappersLEGACY(<TestRenderer />)
+  it("shows some cards", async () => {
+    const tree = renderWithWrappersLEGACYAsync(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Query: () => ({
@@ -58,6 +58,8 @@ describe(FeaturedRail, () => {
       })
     )
 
-    expect(tree.root.findAllByType(MediumCard)).toHaveLength(2)
+    // Wait for the elements to appear after Relay mock resolution
+    const cards = await tree.waitForElements(MediumCard, 2)
+    expect(cards).toHaveLength(2)
   })
 })

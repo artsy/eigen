@@ -1,52 +1,25 @@
-import { Text, TouchableWithScale } from "@artsy/palette-mobile"
+import { TouchableWithScale } from "@artsy/palette-mobile"
+import { screen, fireEvent } from "@testing-library/react-native"
 import { FairCollectionsTestsQuery } from "__generated__/FairCollectionsTestsQuery.graphql"
 import { FairCollectionsFragmentContainer } from "app/Scenes/Fair/Components/FairCollections"
-import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
-import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { mockTrackEvent } from "app/utils/tests/globallyMockedStuff"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 describe("FairCollections", () => {
-  const trackEvent = useTracking().trackEvent
-  const getWrapper = (mockResolvers = {}) => {
-    const env = createMockEnvironment()
-
-    const tree = renderWithWrappersLEGACY(
-      <QueryRenderer<FairCollectionsTestsQuery>
-        environment={env}
-        query={graphql`
-          query FairCollectionsTestsQuery($fairID: String!) @relay_test_operation {
-            fair(id: $fairID) {
-              ...FairCollections_fair
-            }
-          }
-        `}
-        variables={{ fairID: "art-basel-hong-kong-2020" }}
-        render={({ props, error }) => {
-          if (error) {
-            console.log(error)
-            return null
-          }
-
-          if (!props || !props.fair) {
-            return null
-          }
-
-          return <FairCollectionsFragmentContainer fair={props.fair} />
-        }}
-      />
-    )
-
-    env.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, mockResolvers)
-    )
-
-    return tree
-  }
+  const { renderWithRelay } = setupTestWrapper<FairCollectionsTestsQuery>({
+    Component: ({ fair }) => <FairCollectionsFragmentContainer fair={fair!} />,
+    query: graphql`
+      query FairCollectionsTestsQuery($fairID: String!) @relay_test_operation {
+        fair(id: $fairID) {
+          ...FairCollections_fair
+        }
+      }
+    `,
+  })
 
   it("renders the 2 collections", () => {
-    const wrapper = getWrapper({
+    renderWithRelay({
       Fair: () => ({
         marketingCollections: [
           {
@@ -61,22 +34,14 @@ describe("FairCollections", () => {
       }),
     })
 
-    const links = wrapper.root.findAllByType(TouchableWithScale)
-    expect(links).toHaveLength(2)
-
-    const text = wrapper.root
-      .findAllByType(Text)
-      .map(({ props: { children } }) => children)
-      .join()
-
-    expect(text).toContain("Big Artists, Small Sculptures")
-    expect(text).toContain("Collectible Sculptures")
-    expect(text).toContain("Example Collection 2")
-    expect(text).toContain("Subtitle 2")
+    expect(screen.getByText("Big Artists, Small Sculptures")).toBeOnTheScreen()
+    expect(screen.getByText("Collectible Sculptures")).toBeOnTheScreen()
+    expect(screen.getByText("Example Collection 2")).toBeOnTheScreen()
+    expect(screen.getByText("Subtitle 2")).toBeOnTheScreen()
   })
 
   it("tracks taps on collections", () => {
-    const wrapper = getWrapper({
+    renderWithRelay({
       Fair: () => ({
         internalID: "abc123",
         slug: "art-basel-hong-kong-2020",
@@ -87,10 +52,11 @@ describe("FairCollections", () => {
         ],
       }),
     })
-    const collection = wrapper.root.findAllByType(TouchableWithScale)[0]
-    act(() => collection.props.onPress())
 
-    expect(trackEvent).toHaveBeenCalledWith({
+    const collection = screen.UNSAFE_getAllByType(TouchableWithScale)[0]
+    fireEvent.press(collection)
+
+    expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedCollectionGroup",
       context_module: "curatedHighlightsRail",
       context_screen_owner_type: "fair",
@@ -104,12 +70,12 @@ describe("FairCollections", () => {
   })
 
   it("renders null if there are no collections", () => {
-    const wrapper = getWrapper({
+    renderWithRelay({
       Fair: () => ({
         marketingCollections: [],
       }),
     })
 
-    expect(wrapper.toJSON()).toBe(null)
+    expect(screen.toJSON()).toBeNull()
   })
 })

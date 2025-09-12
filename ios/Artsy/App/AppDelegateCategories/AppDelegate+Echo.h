@@ -1,7 +1,7 @@
-#import "AppDelegate.h"
+#import "ARAppDelegateHelper.h"
 #import "ArtsyEcho.h"
 
-@interface ARAppDelegate (Echo)
+@interface ARAppDelegateHelper (Echo)
 
 - (void)setupEcho;
 

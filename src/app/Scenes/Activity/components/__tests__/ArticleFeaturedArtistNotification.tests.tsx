@@ -2,39 +2,21 @@ import { fireEvent, screen } from "@testing-library/react-native"
 import { ArticleFeaturedArtistNotification_Test_Query } from "__generated__/ArticleFeaturedArtistNotification_Test_Query.graphql"
 import { ArticleFeaturedArtistNotification } from "app/Scenes/Activity/components/ArticleFeaturedArtistNotification"
 import { navigate } from "app/system/navigation/navigate"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
 import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
-import { Suspense } from "react"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { graphql } from "react-relay"
 
 describe("ArticleFeaturedArtistNotification", () => {
-  const TestRenderer = () => {
-    const data = useLazyLoadQuery<ArticleFeaturedArtistNotification_Test_Query>(
-      graphql`
-        query ArticleFeaturedArtistNotification_Test_Query {
-          me {
-            notification(id: "test-id") {
-              ...ArticleFeaturedArtistNotification_notification
-            }
+  const { renderWithRelay } = setupTestWrapper<ArticleFeaturedArtistNotification_Test_Query>({
+    Component: ({ me }) => <ArticleFeaturedArtistNotification notification={me?.notification!} />,
+    query: graphql`
+      query ArticleFeaturedArtistNotification_Test_Query {
+        me {
+          notification(id: "test-id") {
+            ...ArticleFeaturedArtistNotification_notification
           }
         }
-      `,
-      {}
-    )
-
-    if (!data.me?.notification) {
-      return null
-    }
-
-    return <ArticleFeaturedArtistNotification notification={data.me?.notification} />
-  }
-
-  const { renderWithRelay } = setupTestWrapper({
-    Component: () => (
-      <Suspense fallback={null}>
-        <TestRenderer />
-      </Suspense>
-    ),
+      }
+    `,
   })
 
   it("renders all elements", async () => {
@@ -43,8 +25,6 @@ describe("ArticleFeaturedArtistNotification", () => {
         notification,
       }),
     })
-
-    await flushPromiseQueue()
 
     expect(screen.getByText("Editorial")).toBeTruthy()
     expect(screen.getByText("An artist you follow is featured")).toBeTruthy()
@@ -59,13 +39,9 @@ describe("ArticleFeaturedArtistNotification", () => {
         }),
       })
 
-      await flushPromiseQueue()
-
       const artistName = screen.getByText("lee eun")
 
       fireEvent.press(artistName)
-
-      await flushPromiseQueue()
 
       expect(navigate).toHaveBeenCalledWith("/artist/lee-eun-1")
     })
@@ -79,13 +55,9 @@ describe("ArticleFeaturedArtistNotification", () => {
         }),
       })
 
-      await flushPromiseQueue()
-
       const editorialTitle = screen.getByTestId("article-card")
 
       fireEvent.press(editorialTitle)
-
-      await flushPromiseQueue()
 
       expect(navigate).toHaveBeenCalledWith(
         "/article/artsy-editorial-10-artists-discover-foundations"
@@ -95,13 +67,9 @@ describe("ArticleFeaturedArtistNotification", () => {
     it("opens article by pressing the Read Article CTA", async () => {
       renderWithRelay({ Me: () => ({ notification }) })
 
-      await flushPromiseQueue()
-
       const readArticleCTA = screen.getByText("Read Article")
 
       fireEvent.press(readArticleCTA)
-
-      await flushPromiseQueue()
 
       expect(navigate).toHaveBeenCalledWith(
         "/article/artsy-editorial-10-artists-discover-foundations"

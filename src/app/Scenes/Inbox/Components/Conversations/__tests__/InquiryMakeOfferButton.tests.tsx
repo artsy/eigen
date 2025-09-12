@@ -1,11 +1,11 @@
 import { Button } from "@artsy/palette-mobile"
+import { act } from "@testing-library/react-native"
 import { InquiryMakeOfferButtonTestsQuery } from "__generated__/InquiryMakeOfferButtonTestsQuery.graphql"
 import { InquiryMakeOfferButtonFragmentContainer } from "app/Scenes/Inbox/Components/Conversations/InquiryMakeOfferButton"
 import { navigate } from "app/system/navigation/navigate"
 import { renderWithWrappersLEGACY } from "app/utils/tests/renderWithWrappers"
 import { Alert } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 jest.spyOn(Alert, "alert")
@@ -63,24 +63,28 @@ const getWrapper = (mockResolvers = {}) => {
 }
 
 describe("Inquiry make offer button", () => {
-  it("navigates to the order webview when button is tapped", () => {
+  it("navigates to the order webview when button is tapped", async () => {
     const wrapper = getWrapper()
-    wrapper.root.findByType(Button).props.onPress()
-    env.mock.resolveMostRecentOperation((operation) => {
-      const mockResolvers = {
-        Mutation: () => {
-          return {
+
+    await act(async () => {
+      wrapper.root.findByType(Button).props.onPress()
+    })
+
+    await act(async () => {
+      env.mock.resolveMostRecentOperation((operation) => {
+        return MockPayloadGenerator.generate(operation, {
+          Mutation: () => ({
             createInquiryOfferOrder: {
               orderOrError: {
                 __typename: "CommerceOrderWithMutationSuccess",
                 order: { internalID: "4567" },
               },
             },
-          }
-        },
-      }
-      return MockPayloadGenerator.generate(operation, mockResolvers)
+          }),
+        })
+      })
     })
+
     expect(navigate).toHaveBeenCalledWith("/orders/4567", {
       modal: true,
       replaceActiveModal: true,
@@ -88,24 +92,28 @@ describe("Inquiry make offer button", () => {
     })
   })
 
-  it("presents an error dialogue if mutation returns an error response", () => {
+  it("presents an error dialogue if mutation returns an error response", async () => {
     const wrapper = getWrapper()
-    wrapper.root.findByType(Button).props.onPress()
-    env.mock.resolveMostRecentOperation((operation) => {
-      const mockResolvers = {
-        Mutation: () => {
-          return {
+
+    await act(async () => {
+      wrapper.root.findByType(Button).props.onPress()
+    })
+
+    await act(async () => {
+      env.mock.resolveMostRecentOperation((operation) => {
+        return MockPayloadGenerator.generate(operation, {
+          Mutation: () => ({
             createInquiryOfferOrder: {
               orderOrError: {
                 __typename: "CommerceOrderWithMutationFailure",
                 error: "ERRORRRRRR",
               },
             },
-          }
-        },
-      }
-      return MockPayloadGenerator.generate(operation, mockResolvers)
+          }),
+        })
+      })
     })
+
     expect(Alert.alert).toHaveBeenCalled()
   })
 })

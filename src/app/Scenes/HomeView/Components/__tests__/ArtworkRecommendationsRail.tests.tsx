@@ -1,60 +1,37 @@
+import { screen } from "@testing-library/react-native"
 import { ArtworkRecommendationsRailTestsQuery } from "__generated__/ArtworkRecommendationsRailTestsQuery.graphql"
 import { ArtworkRecommendationsRail } from "app/Scenes/HomeView/Components/ArtworkRecommendationsRail"
-import { flushPromiseQueue } from "app/utils/tests/flushPromiseQueue"
-import { renderWithHookWrappersTL } from "app/utils/tests/renderWithWrappers"
-import { graphql, useLazyLoadQuery } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
+import { setupTestWrapper } from "app/utils/tests/setupTestWrapper"
+import { graphql } from "react-relay"
 
 describe("ArtworkRecommendationsRail", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+  const { renderWithRelay } = setupTestWrapper<ArtworkRecommendationsRailTestsQuery>({
+    Component: ({ me }) => {
+      return (
+        <ArtworkRecommendationsRail
+          scrollRef={null}
+          title="Recommended Artworks"
+          me={me!}
+          isRailVisible
+        />
+      )
+    },
+    query: graphql`
+      query ArtworkRecommendationsRailTestsQuery @raw_response_type {
+        me {
+          ...ArtworkRecommendationsRail_me
+        }
+      }
+    `,
   })
 
-  const TestRenderer: React.FC = () => {
-    const queryData = useLazyLoadQuery<ArtworkRecommendationsRailTestsQuery>(
-      graphql`
-        query ArtworkRecommendationsRailTestsQuery @raw_response_type {
-          me {
-            ...ArtworkRecommendationsRail_me
-          }
-        }
-      `,
-      {}
-    )
-
-    return (
-      <ArtworkRecommendationsRail
-        scrollRef={null}
-        title="Recommended Artworks"
-        me={queryData.me!}
-        isRailVisible
-      />
-    )
-  }
-
-  const getWrapper = async () => {
-    const tree = renderWithHookWrappersTL(<TestRenderer />, mockEnvironment)
-
-    act(() => {
-      mockEnvironment.mock.resolveMostRecentOperation({
-        errors: [],
-        data: { me: mockMe },
-      })
+  it("Renders list of recommended artworks without throwing an error", async () => {
+    renderWithRelay({
+      Me: () => mockMe,
     })
 
-    await flushPromiseQueue()
-
-    return tree
-  }
-
-  it("Renders list of recommended artworks without throwing an error", async () => {
-    const { queryByText } = await getWrapper()
-
-    expect(queryByText("Nicolas Party")).toBeTruthy()
-    expect(queryByText("Andy Warhol")).toBeTruthy()
+    expect(screen.getByText("Nicolas Party")).toBeTruthy()
+    expect(screen.getByText("Andy Warhol")).toBeTruthy()
   })
 })
 
