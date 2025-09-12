@@ -237,7 +237,7 @@ const ArtworkRailCardMetaSaveIcon: React.FC<{
   const enableArtworkHeartIconAnimation = useFeatureFlag("AREnableArtworkSaveIconAnimation")
 
   if (enableArtworkHeartIconAnimation) {
-    return <ArtworkSaveIconWrapper isSaved={!!isSaved} />
+    return <ArtworkSaveIconWrapper isSaved={!!isSaved} fill={primaryColor} />
   }
 
   if (isSaved) {
